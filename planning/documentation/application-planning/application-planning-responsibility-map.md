@@ -16,7 +16,6 @@ Status: active reusable nested responsibility map
 | Current Domain selection/review algorithm | `domain-planning-workflow.md` |
 | High-level application realization/stress algorithm | `application-realization-workflow.md` |
 | Slice Strategy + one-Slice planning algorithm | `slice-planning-workflow.md` |
-| Semantic planning Directions | `direction-registry.md` |
 | Semantic planning Use Cases | `use-case-registry.md` |
 | Current reality recommended shape | `templates/CURRENT-WORKFLOW-AND-PROBLEM-ANALYSIS-DRAFT-TEMPLATE.md` |
 | Real-world / functional workflow recommended shape | `templates/FUNCTIONAL-WORKFLOW-DRAFT-TEMPLATE.md` |

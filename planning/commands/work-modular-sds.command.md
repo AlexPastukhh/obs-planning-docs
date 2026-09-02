@@ -17,7 +17,7 @@ Scope: representation preference only; no separate SDS runtime/profile.
     "medium sds",
     "work in modular sds",
     "work in medium sds"
-],
+  ],
   "description": "legacy compatibility alias; prefer MIXED / ASYMMETRIC SDS representation",
   "meaning": "Apply the MIXED / ASYMMETRIC owner/file representation preference from the canonical SDS Artifact Placement Map to the current IDTSPE/SDS planning state. This changes representation preference only; it does not select a different semantic profile, require a fixed file tree, or change Target authority.",
   "activeContextBehavior": "Reuse the current semantic owners. Consolidate/promote representation only when the MIXED / ASYMMETRIC example and current representation pressure justify it; owner identity does not change when content moves inline or to a dedicated file.",
@@ -38,7 +38,6 @@ Scope: representation preference only; no separate SDS runtime/profile.
   ],
   "userTarget": "<current SDS plan / owner set>",
   "palette": false,
-  "refinements": [],
-  "directionIds": ["DIR-PLAN-SOLUTION"]
+  "refinements": []
 }
 [/PLANNING_COMMAND_DEFINITION]

@@ -5,7 +5,7 @@ Scope: AI/chat sessions that plan, develop or materially change repository docum
 
 ## Mandatory Rule
 
-Before material work, resolve the applicable Direction and semantic entry (Workspace/methodology Use Case or Application Scenario) and follow its canonical owner route. Conversation memory, examples, generated projections, historical artifacts and implementation alone are not semantic authority.
+Before material work, resolve the applicable semantic entry (Workspace/methodology Use Case, Application Scenario, or other specialized current owner) and follow its canonical owner route. Conversation memory, examples, generated projections, historical artifacts and implementation alone are not semantic authority.
 
 For material planning/development answers also follow the installed peer [`documentation/idtspe-methodology/active/ai-reviewability/README.md`](documentation/idtspe-methodology/active/ai-reviewability/README.md).
 
@@ -61,7 +61,6 @@ Start from:
 
 ```text
 planning/README.md
-planning/direction-registry.md
 relevant primary semantic registry
   - Use-Case Registry for Workspace/methodology work
   - Scenario Catalog for Application behavior

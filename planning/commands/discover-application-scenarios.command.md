@@ -31,9 +31,6 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
   ],
   "userTarget": "<Application behavior space / Scenario boundary candidates>",
   "palette": true,
-  "directionIds": [
-    "DIR-PLAN-SOLUTION"
-  ],
   "helperPresentation": {
     "whenToUse": "Use when independently meaningful Scenario boundaries are unclear, incomplete or need consolidation before/while forming Scenario Targets.",
     "whatYouGet": "Scenario boundary candidates and selected/reused Scenario Planning targets; no separate discovery semantic owner.",

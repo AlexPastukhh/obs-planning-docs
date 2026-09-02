@@ -5,19 +5,19 @@ Main owner for `UC-PLAN-WORKSPACE-ESTABLISH-UC`.
 Scope: determine whether a useful Workspace result needs a new UC and, when justified, establish one coherent target UC contract plus proportional semantic/realization planning.
 
 Canonical planning principles: [`workspace-planning-principles-and-terminology.md`](workspace-planning-principles-and-terminology.md)
-Canonical generic UC semantics: [`../direction-and-use-case-registry-workflow.md`](../direction-and-use-case-registry-workflow.md)
+Canonical generic UC semantics: [`../principles-and-terminology.md`](../principles-and-terminology.md)
 Recommended integrated shape: [`WORKSPACE-USE-CASE-PLANNING-TEMPLATE.md`](WORKSPACE-USE-CASE-PLANNING-TEMPLATE.md)
 
 ## 1. Current State / Need
 
-Establish the useful Workspace result being sought. Read current relevant Direction/UC registries and owners proportionally. Summarize current state at high level and link exact current owners rather than copying complete current bodies.
+Establish the useful Workspace result being sought. Read current relevant Use-Case registries and owners proportionally. Summarize current state at high level and link exact current owners rather than copying complete current bodies.
 
 ## 2. Step 1 — Target UC
 
 1. Search current UCs for an existing capability that already owns the result.
 2. If an existing UC covers it, do not create a duplicate; hand off to `UC-PLAN-WORKSPACE-CHANGE-UC`.
 3. Otherwise apply the canonical independent-usefulness check.
-4. Define one Target UC Contract: stable identity/status, parent Direction, purpose, trigger/input, result/end state, boundaries, topology/optionality, owner route, required supporting reads, related Scenario/command when real, dependencies/handoffs and open decisions when material.
+4. Define one Target UC Contract: stable identity/status, purpose, trigger/input, result/end state, boundaries, topology/optionality, owner route, required supporting reads, related Scenario/command when real, dependencies/handoffs and open decisions when material.
 5. Resolve semantic UC relations and check nearby UCs for overlap/redundancy.
 6. Preserve any already-known Step-2/Step-3 meaning as Carry-Forward Context.
 

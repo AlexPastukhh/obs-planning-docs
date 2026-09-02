@@ -11,7 +11,7 @@ Status: active project command-system router
 ## Authority
 - `command-routing.md` → shared command policy
 - `commands/*.command.md` → concrete commands
-- Direction/Use-Case Registries → semantic capabilities
+- Use-Case Registries / Scenario Catalogs / specialized current owners → semantic capabilities
 - workflows/templates/current owners → complete meaning
 
 ## Resolution

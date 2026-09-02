@@ -35,9 +35,6 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
   ],
   "userTarget": "<update scope>",
   "palette": true,
-  "directionIds": [
-    "DIR-REPOSITORY"
-  ],
   "helperPresentation": {
     "whenToUse": "Use when you want to review exactly what will change before code/files/configuration are actually updated.",
     "whatYouGet": "A concise concrete pre-update plan derived from accepted context/current state, including preserve boundaries and verification without another design pass unless a real issue requires it.",

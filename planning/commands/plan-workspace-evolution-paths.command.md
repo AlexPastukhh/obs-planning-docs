@@ -20,21 +20,18 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
   "ownerFiles": [
     "planning/documentation/architecture-planning/architecture-path-analysis-workflow.md",
     "planning/documentation/architecture-planning/architecture-evolution-workflow.md",
-    "planning/documentation/architecture-planning/direction-registry.md"
+    "planning/documentation/architecture-planning/use-case-registry.md"
   ],
   "expectedOutput": "Evidence-backed Workspace change/path/evolution planning at the depth justified by the architecture question.",
   "permissionMode": "read-only-planning",
   "keyReminders": [
     "Compatibility alias only; there is no permanent TM-WEUC or canonical SDS Workspace Evolution Map.",
     "Use current natural owner/Architecture Planning/L5 semantics rather than reviving old WEUC Target ownership.",
-    "Material project-global architecture choices use the Workspace Architecture Planning Direction or normal Target Formation/Decisions.",
+    "Material project-global architecture choices use the Workspace Architecture Planning or normal Target Formation/Decisions.",
     "This command is read-only planning; it does not mutate repository files, commit or push."
   ],
   "userTarget": "<Workspace architecture/evolution path problem>",
   "palette": false,
-  "directionIds": [
-    "DIR-PLAN-ARCHITECTURE"
-  ],
   "helperPresentation": null,
   "refinements": [],
   "methodologyBinding": null

@@ -13,15 +13,15 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
   "commandFamily": [
     "что дальше по методологии"
   ],
-  "description": "Show Methodology Direction without executing it.",
-  "meaning": "Show Methodology Direction without executing it.",
+  "description": "Show the recommended methodology route without executing it.",
+  "meaning": "Show the recommended methodology route without executing it.",
   "activeContextBehavior": "Resolve or reuse the natural current IDTSPE Target/context; infer CREATE/REFINE/EXTEND/REVALIDATE/REPAIR from current state. Do not create a fake Target when the module/lens gate fails.",
   "traversalReadMode": "Reuse current reliable IDTSPE/SDS governance; targeted refresh of the selected owner route when uncertain; full bootstrap only when no reliable sufficient governance context exists.",
   "ownerFiles": [
     "planning/documentation/idtspe-methodology/active/idtspe-core/IDTSPE-SHELL.md",
     "planning/documentation/idtspe-methodology/active/idtspe-core/shared/idtspe-command-surface-contract.md"
   ],
-  "expectedOutput": "Methodology Direction View: Current Target / Exit Gate / recommended next / why / alternatives / reopen triggers.",
+  "expectedOutput": "Methodology Next-Step View: Current Target / Exit Gate / recommended next / why / alternatives / reopen triggers.",
   "permissionMode": "read-only-planning",
   "keyReminders": [
     "This is an IDTSPE orchestration/validator surface, not a Target Module.",
@@ -30,12 +30,9 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
   ],
   "userTarget": "<current planning state>",
   "palette": true,
-  "directionIds": [
-    "DIR-REPOSITORY"
-  ],
   "helperPresentation": {
     "whenToUse": "Use when you want to know the recommended next methodological Target/action without starting it.",
-    "whatYouGet": "Methodology Direction View: Current Target / Exit Gate / recommended next / why / alternatives / reopen triggers.",
+    "whatYouGet": "Methodology Next-Step View: Current Target / Exit Gate / recommended next / why / alternatives / reopen triggers.",
     "navigation": {
       "viewId": "IDTSPE",
       "viewLabel": "IDTSPE",

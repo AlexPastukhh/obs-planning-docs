@@ -3,9 +3,9 @@
 Status: active reusable methodology-family index
 Scope: understand, evaluate and evolve the architecture of an evolving Workspace through the work it must support, using the least complexity justified by current correctness, important Workspace work, representative Application runtime constraints and evidence-backed change pressure.
 
-## Direction
+## Role
 
-[`DIR-PLAN-ARCHITECTURE`](direction-registry.md) is a reusable peer Direction to Solution/Application Planning. It applies to evolving engineered Workspaces such as codebases, documentation/planning repositories, automation projects, data pipelines and knowledge/workspace systems.
+Architecture Planning is a reusable peer planning family to Solution/Application Planning. It applies to evolving engineered Workspaces such as codebases, documentation/planning repositories, automation projects, data pipelines and knowledge/workspace systems.
 
 Architecture Planning does not assume a separate architecture phase or architecture artifact. A valid result is that no additional architectural structure is justified now.
 
@@ -99,9 +99,9 @@ Architecture State / Decisions / Evolution
 
 1. `architecture-planning-responsibility-map.md`
 2. `architecture-planning-principles-and-terminology.md`
-3. `../direction-and-use-case-registry-workflow.md` when generic UC identity/boundary is material
+3. `../principles-and-terminology.md` when generic UC identity/boundary is material
 4. `workspace-use-cases-and-change-pressure.md`
-5. `direction-registry.md` + `use-case-registry.md`
+5. `use-case-registry.md`
 6. the workflow for the selected Use Case
 7. sibling `../workspace-planning/` only when canonical Workspace UC establishment/change/topology is required
 8. templates only when a stable materialized result helps

@@ -2,7 +2,7 @@
 
 Status: active reusable documentation-layer workflow
 Doc version: v1.6.0-editable-real-commands
-Scope: reusable rules for projecting accepted project Orientation, semantic Direction/Use-Case registries and real planning-command routes into the Tampermonkey/ChatGPT helper. The Commands surface edits validated local drafts of the real `planning/commands/*.command.md` definitions; Prompts remain separate non-authoritative helper-library insertions. Historical helper-command records are legacy compatibility only.
+Scope: reusable rules for projecting accepted project Orientation, Use-Case registries and real planning-command routes into the Tampermonkey/ChatGPT helper. The Commands surface edits validated local drafts of the real `planning/commands/*.command.md` definitions; Prompts remain separate non-authoritative helper-library insertions. Historical helper-command records are legacy compatibility only.
 
 ## 1. Core Rule
 
@@ -11,10 +11,6 @@ Tampermonkey is projection only.
 ```text
 Orientation authority:
   planning/README.md
-  planning/direction-registry.md
-
-Direction authority:
-  root/local Direction Registries
 
 Use-Case authority:
   reusable-family/local Use-Case Registries
@@ -271,62 +267,26 @@ Never guess expected base content for replace/delete operations.
 
 The full current source-selection/package algorithm remains in `build-replacement-archive-workflow.md` and the direct `planning/commands/build-replacement-archive.command.md`.
 
-## 9A. Four Planning Surfaces
+## 9A. Planning Helper Surfaces
 
 ```text
-Orientation:
-  explain planning architecture and select context;
-
-Directions:
-  project broad semantic Directions, topology and owner routes;
-
 Use Cases:
-  project independently useful supported capabilities;
+  project independently useful current capabilities from canonical Use-Case Registries;
 
 Commands:
-  project accepted repository command definitions reachable from the root Command Routing and their immediate execution permissions.
+  project accepted repository command definitions reachable from the root Command Routing and their immediate execution permissions;
+
+Prompts:
+  project reusable helper-library insertion text without granting semantic authority.
 ```
 
 Only Commands request immediate execution.
 
 A Use-Case insertion **activates semantic focus**, not command permission. The inserted body must let a new chat resolve the exact current registry entry and then follow that entry's current owner route instead of depending on a historical hard-coded owner list embedded in the Helper. Neighboring planning responsibilities are inputs/integration context unless the selected Use Case routes into them.
 
-Semantic projection is a derived helper view. The canonical registries remain authority. Repository verification must check exact-case source paths and registry parity so every current root Direction and every current canonical Use Case are projected, with no helper-only semantic Direction or UC appearing.
+Use-Case projection is a derived helper view. Canonical Use-Case Registries remain authority. Repository verification must check exact-case source paths and registry parity so every current canonical Use Case is projected, with no helper-only semantic UC appearing.
 
-## 9B. Shared Semantic Body Contract
-
-Orientation:
-
-```text
-[PLANNING_ORIENTATION]
-orientation_id:
-  <ID>
-
-orientation:
-  <name>
-
-mode:
-  adaptive / full
-
-source_of_truth:
-  - `<root owner>`
-
-read_rule:
-  <adaptive/full>
-
-instruction:
-  <context-selection instruction>
-
-user_target:
-  <placeholder>
-[/PLANNING_ORIENTATION]
-```
-
-Directions use the corresponding marker:
-
-```text
-[PLANNING_DIRECTION] ... [/PLANNING_DIRECTION]
-```
+## 9B. Shared Use-Case Body Contract
 
 A non-command semantic Use Case uses this focused contract:
 
@@ -431,7 +391,7 @@ The Use Cases surface uses **Open Commands** rather than inserting a duplicate e
 
 ## 9F. Semantic Inventory Source
 
-The helper semantic inventory is a projection of the current canonical Direction/Use-Case Registries. Do not maintain a second hand-written list here.
+The helper Use-Case inventory is a projection of the current canonical Use-Case Registries. Do not maintain a second hand-written list here.
 
 Required invariant:
 
@@ -441,18 +401,15 @@ canonical registries
 → tests verify exact projected UC set and exact-case source paths
 ```
 
-`UC-DOC-ORIENT` projects to the stable command ID `documentation_principles.read`; `UC-DOC-MAINTAIN-NAVIGATION` is a normal semantic Use Case without a direct command.
-
-Workspace/methodology semantic projection must follow the current canonical Use-Case Registries exactly. Application Directions are navigation-only on the helper semantic surfaces and route to their Scenario Catalogs; their application Scenarios do not become Workspace Use Cases. New canonical Workspace UCs appear through parity checks, while ordinary discovery techniques are not projected as UCs merely because documentation names them.
+Workspace/methodology semantic projection must follow the current canonical Use-Case Registries exactly. Application behavior remains owned by its Scenario Catalogs and is not projected as Workspace Use Cases merely for UI symmetry. New canonical Workspace UCs appear through parity checks, while ordinary discovery techniques are not projected as UCs merely because documentation names them.
 
 ## 9G. Multi-Surface UI Contract
 
 ```text
 tabs:
-  Orientation;
-  Directions;
   Use Cases;
   Commands;
+  Prompts;
 
 search:
   current surface only;
@@ -566,7 +523,7 @@ Do not edit the generated userscript manually and do not create a competing trac
 
 ```text
 - Do not project commands without an accepted repository command definition reachable from the root Command Routing.
-- Do not make Orientation, Direction or Use-Case activation execute a command or grant permissions.
+- Do not make Use-Case activation execute a command or grant permissions.
 - Do not duplicate a command-related Use Case as an execution action.
 - Do not project provisional Chat/AI/Work-State as accepted.
 - Do not make source modules, the generated userscript or the local/remote catalog cache a command or English-name source of truth.

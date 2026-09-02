@@ -31,7 +31,7 @@ Use this workflow when a ReviewDiff is pasted, attached, delivered by an applica
 Before concluding:
 
 1. identify the repository/change scope represented by the diff;
-2. resolve the applicable Direction / Use Case and current canonical owner(s);
+2. resolve the applicable Use Case / Scenario / specialized current owner(s);
 3. distinguish checked source facts from inference;
 4. inspect enough surrounding owner context to judge meaning, not only changed lines.
 

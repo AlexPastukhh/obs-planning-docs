@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {createRequire} from 'node:module';
 const require=createRequire(import.meta.url);
-const {repositorySaveFailureMessage,groupEntriesByDirections,favoriteEntries}=require('../src/planning-helper-ui.js');
+const {repositorySaveFailureMessage,favoriteEntries}=require('../src/planning-helper-ui.js');
 
 test('conflict with verified different remote reports confirmed divergence',()=>{
   const message=repositorySaveFailureMessage({kind:'conflict',message:'GitHub content changed since it was read and now differs from the intended file; nothing was overwritten.',details:{remoteSha:'fresh'}});
@@ -18,18 +18,7 @@ test('conflict whose reread fails reports unknown remote relation instead of div
 });
 
 
-test('direction grouping nests entries under current Directions and preserves cross-direction commands',()=>{
-  const dirs=[{id:'DIR-A',label:'A'},{id:'DIR-B',label:'B'}];
-  const entries=[{id:'one',directionId:'DIR-A'},{id:'two',directionIds:['DIR-A','DIR-B']},{id:'legacy'}];
-  const groups=groupEntriesByDirections(entries,dirs);
-  assert.deepEqual(groups.map((g)=>g.id),['DIR-A','DIR-B','OTHER']);
-  assert.deepEqual(groups[0].entries.map((e)=>e.id),['one','two']);
-  assert.deepEqual(groups[1].entries.map((e)=>e.id),['two']);
-  assert.deepEqual(groups[2].entries.map((e)=>e.id),['legacy']);
-});
-
-
-test('favorites project the same rows above Directions without changing original grouping',()=>{const entries=[{id:'a',directionId:'DIR-A'},{id:'b',directionId:'DIR-A'}];assert.deepEqual(favoriteEntries(entries,['b']).map((e)=>e.id),['b']);const groups=groupEntriesByDirections(entries,[{id:'DIR-A',label:'A'}]);assert.deepEqual(groups[0].entries.map((e)=>e.id),['a','b']);});
+test('favorites project selected stable IDs without requiring semantic grouping',()=>{const entries=[{id:'a'},{id:'b'}];assert.deepEqual(favoriteEntries(entries,['b']).map((e)=>e.id),['b']);});
 
 
 test('UI source exposes explicit one-shot bind actions instead of making ordinary Copy/Insert binding',async()=>{const fs=await import('node:fs');const source=fs.readFileSync(new URL('../src/planning-helper-ui.js',import.meta.url),'utf8');assert.match(source,/Bind \+ Insert/);assert.match(source,/Bind \+ Copy/);assert.match(source,/capture-chat-context/);assert.match(source,/onGetInvocationSideEffects/);});

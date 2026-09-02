@@ -21,7 +21,7 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
     "planning/documentation/idtspe-methodology/active/profiles/sds/lenses/frequent/LENS-WORKSPACE-EVOLUTION-ARCHITECTURE.md",
     "planning/documentation/idtspe-methodology/active/profiles/sds/shared/idtspe-command-surface-contract.md"
   ],
-  "expectedOutput": "Evolution / Change-Isolation findings routed through Core Finding Disposition to the natural owner; independently material workspace-architecture work routes to normal Target Formation / DIR-PLAN-ARCHITECTURE.",
+  "expectedOutput": "Evolution / Change-Isolation findings routed through Core Finding Disposition to the natural owner; independently material workspace-architecture work routes to normal Architecture Planning / Target Formation.",
   "permissionMode": "read-only-planning",
   "keyReminders": [
     "Resolve or reuse the natural IDTSPE Target/owner context before applying the Lens.",
@@ -31,13 +31,9 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
   ],
   "userTarget": "<target/result>",
   "palette": true,
-  "directionIds": [
-    "DIR-PLAN-ARCHITECTURE",
-    "DIR-PLAN-SOLUTION"
-  ],
   "helperPresentation": {
     "whenToUse": "Use when a selected Target needs explicit planned/probable evolution and change-isolation review.",
-    "whatYouGet": "Evolution / Change-Isolation findings routed through Core Finding Disposition to the natural owner; independently material workspace-architecture work routes to normal Target Formation / DIR-PLAN-ARCHITECTURE.",
+    "whatYouGet": "Evolution / Change-Isolation findings routed through Core Finding Disposition to the natural owner; independently material workspace-architecture work routes to normal Architecture Planning / Target Formation.",
     "navigation": {
       "viewId": "SDS",
       "viewLabel": "SDS — IDTSPE Profile",

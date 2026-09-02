@@ -7,7 +7,6 @@ Lightweight documentation-focused projection of the OBS repository for AI/human 
 ```text
 README.md
 → planning/README.md
-→ planning/direction-registry.md
 → selected primary semantic registry
    (Use-Case Registry for Workspace/methodology;
     Scenario Catalog for Application)

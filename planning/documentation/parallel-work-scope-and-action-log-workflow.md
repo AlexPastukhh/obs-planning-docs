@@ -20,66 +20,15 @@ Chats do not repartition the repository per task. Scope creation/split/merge/ret
 
 For nested registered roots, a path belongs to the deepest active registered root containing it. A parent scope excludes registered child subtrees.
 
-### 1.1 Direction / Use-Case Affinity
+### 1.1 Use-Case / Work-Family Affinity
 
-A Direction and a registered parallel-work scope are related architecture views, but they are not the same type and there is no mandatory 1:1 mapping.
+A registered parallel-work scope is a physical coordination boundary, not a semantic owner. When initially defining or explicitly splitting/merging scopes, inspect the relevant current Use-Case Registries, Scenario/application owners and other semantic owners before choosing physical roots. Prefer a scope boundary that corresponds to a cohesive independently coordinatable work family when that reduces routine cross-scope changes and makes ownership understandable.
 
-```text
-Direction
-= semantic family of independently useful Use Cases / broad work-result zone
+Do not mechanically create one scope per Use Case or registry group. One practical scope may host several closely related capabilities when they share one stable ownership/change boundary; conversely, one broad capability family may justify several registered scopes when its parts genuinely need independent parallel coordination.
 
-registered scope
-= fixed physical ownership, coordination and action-log boundary
-```
+Cross-family integration does not erase semantic or physical boundaries. If one planned/implemented work item changes files in several registered roots, ordinary cross-scope canonical-log/reference rules apply.
 
-When initially defining or explicitly splitting/merging scopes, inspect the repository Direction Registry and relevant Use-Case Registries before choosing physical roots. Prefer a scope boundary that corresponds to one broad independently coordinatable Direction/work family, or to a cohesive family of closely related Use Cases, when that reduces routine cross-scope changes and makes ownership understandable.
-
-Do not mechanically create one scope per Direction. One practical scope may host several closely related Directions when they share one stable ownership/change boundary; conversely, a large Direction may justify several registered scopes when its parts genuinely need independent parallel coordination.
-
-Cross-Direction integration does not erase either boundary:
-
-```text
-Use Case A / Direction A
-→ explicit dependency / integration / handoff
-→ Use Case B / Direction B
-
-≠ merge Directions
-≠ automatically merge registered scopes
-```
-
-A Use Case may therefore link to another Direction's Use Case or owner when a concrete integration requires it. If one planned/implemented work item actually changes files in several registered roots, ordinary cross-scope canonical-log/reference rules apply.
-
-A project Scope Registry may reference related Direction IDs or Use-Case families as optional navigation metadata, but the Direction/Use-Case Registries remain semantic authority and the Scope Registry remains physical boundary authority.
-
-## 2. Scope Log Placement
-
-Each active scope has one canonical high-level `action-log.md` at its registered root. The log file physically exposes the scope boundary; the Scope Registry remains canonical authority.
-
-There is no implicit repository-wide aggregate action log. A root-scope log, when present, owns only the root scope after registered children are excluded.
-
-## 3. What The Log Owns
-
-The scope log records material work history and rationale, not a transcript and not exact diff bytes.
-
-Supported record kinds include:
-
-```text
-IDEA REVIEW
-IDEA CLARIFICATION
-REVIEW DIFF
-APPLIED
-ACTION
-CROSS-SCOPE REFERENCE
-```
-
-- `IDEA REVIEW` stores the material result of a `собери идеи` / shared Idea review when logging is active.
-- `IDEA CLARIFICATION` stores a later ordinary message or checked fact that materially changes the collected Idea meaning, Current Conclusion, constraint, Q/R/P resolution or implementation requirement.
-- `REVIEW DIFF` stores only material semantic findings/corrections from ReviewDiff. A plain `APPROVABLE` result with no new material meaning is not logged.
-- `APPLIED` states what selected Idea/review/correction meaning the package target state makes true after successful Apply.
-- `ACTION` records another material completed/target-state action with concise rationale/result.
-- `CROSS-SCOPE REFERENCE` points to one canonical entry owned by another affected scope log.
-
-Do not copy canonical Scenario/workflow/Use-Case bodies into the log. Link to owners/evidence when useful.
+A project Scope Registry may reference related Use-Case families or current semantic owners as optional navigation metadata, but semantic owners remain semantic authority and the Scope Registry remains physical boundary authority.
 
 ### 3.1 Stable Identity And Minimum Record Shape
 

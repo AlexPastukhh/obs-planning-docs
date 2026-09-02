@@ -31,10 +31,6 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
   ],
   "userTarget": "<practical test with actual Evidence>",
   "palette": true,
-  "directionIds": [
-    "DIR-PLAN-TESTING",
-    "DIR-PLAN-SOLUTION"
-  ],
   "helperPresentation": {
     "whenToUse": "Use when the real implemented subject has produced actual observations/data that should update the same TM-PRACTICAL-TEST Target.",
     "whatYouGet": "Implemented Evidence interpretation for acceptance and/or learning, limitations/confounders, residual questions and revalidation/follow-up.",

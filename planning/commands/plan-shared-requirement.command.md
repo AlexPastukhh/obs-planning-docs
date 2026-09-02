@@ -31,9 +31,6 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
   ],
   "userTarget": "<one exceptional shared must-hold candidate>",
   "palette": true,
-  "directionIds": [
-    "DIR-PLAN-SOLUTION"
-  ],
   "helperPresentation": {
     "whenToUse": "Use when a must-hold rule genuinely crosses natural Scenario/Domain/Slice owners and may need a standalone shared owner.",
     "whatYouGet": "Standalone Requirement only when justified; otherwise a routed result back to the natural owner.",

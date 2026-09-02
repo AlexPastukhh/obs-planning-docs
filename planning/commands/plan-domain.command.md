@@ -32,9 +32,6 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
   ],
   "userTarget": "<one bounded Domain / Aggregate modeling problem>",
   "palette": true,
-  "directionIds": [
-    "DIR-PLAN-SOLUTION"
-  ],
   "helperPresentation": {
     "whenToUse": "Use when one Domain/Aggregate problem needs independently deep modeling/revalidation rather than only shallow Strategy support.",
     "whatYouGet": "Selected Domain / Aggregate Model at the depth justified by the current problem; dedicated prose artifact remains optional.",

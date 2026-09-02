@@ -9,18 +9,17 @@ Scope: canonical detailed application behavior owner for restoring durable repos
 
 ```text
 current GitHub planning/commands/*.command.md
-+ current seed/directions.json
 + current seed/use-cases.json
 + current catalog-order.json
 → validate
-→ replace local Direction + Command + Use-Case catalogs and local order
+→ replace local Command + Use-Case catalogs and local order
 → restore locally hidden repository catalog rows
 → preserve local Prompt content and Favorites
 ```
 
 The UI confirms before replacement because unsaved local Command drafts are intentionally discarded.
 
-**Boundary:** Hard Reload is explicit and performs repository reads only after confirmation. It does not mutate GitHub, does not overwrite local Prompt content and does not imply commit/push. Generated direction/use-case seeds are build-verified repository projections; canonical semantic meaning remains in registries.
+**Boundary:** Hard Reload is explicit and performs repository reads only after confirmation. It does not mutate GitHub, does not overwrite local Prompt content and does not imply commit/push. The generated use-case seed is a build-verified repository projection; canonical semantic meaning remains in current Use-Case registries and owners.
 
 **Traceability:**
 

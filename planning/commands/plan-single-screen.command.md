@@ -31,9 +31,6 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
   ],
   "userTarget": "<one selected Screen>",
   "palette": true,
-  "directionIds": [
-    "DIR-PLAN-SOLUTION"
-  ],
   "helperPresentation": {
     "whenToUse": "Use when one independently addressable Screen needs focused spatial/responsibility planning.",
     "whatYouGet": "One Screen Draft scope within the same Screen Target family.",

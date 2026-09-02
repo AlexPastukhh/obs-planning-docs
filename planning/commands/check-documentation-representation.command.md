@@ -31,9 +31,6 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
   ],
   "userTarget": "<target/result>",
   "palette": true,
-  "directionIds": [
-    "DIR-REPOSITORY"
-  ],
   "helperPresentation": {
     "whenToUse": "Use when you want an explicit decision whether material meaning should persist and in what representation.",
     "whatYouGet": "NO_PERSISTENCE / IMPLEMENTATION_NATIVE / existing owner / consolidated artifact / justified split / generated-derived decision, then P-14 placement.",

@@ -32,9 +32,6 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
   ],
   "userTarget": "<current vertical Slice / frontend realization problem>",
   "palette": false,
-  "directionIds": [
-    "DIR-PLAN-SOLUTION"
-  ],
   "helperPresentation": null,
   "refinements": [],
   "methodologyBinding": null

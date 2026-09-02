@@ -31,10 +31,6 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
   ],
   "userTarget": "<selected semantic/Evidence coverage scope>",
   "palette": true,
-  "directionIds": [
-    "DIR-PLAN-TESTING",
-    "DIR-PLAN-SOLUTION"
-  ],
   "helperPresentation": {
     "whenToUse": "Use when you want to check whether current actual tests/Evidence really prove current semantic obligations, including freshness, assertion strength, false-confidence Escape Risk and refactor fragility.",
     "whatYouGet": "A Test Proof Lens coverage review and material Findings without creating a separate coverage owner/Target.",

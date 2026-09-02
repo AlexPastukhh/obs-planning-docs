@@ -10,7 +10,6 @@ This area contains repository-level planning, reusable methodology, Session work
 - [`documentation/`](documentation/) — generic reusable repository-documentation capabilities and methodology areas.
 - [`AI-WORKING-CONTRACT.md`](AI-WORKING-CONTRACT.md) — current AI/chat working contract.
 - [`command-routing.md`](command-routing.md) and [`commands/`](commands/) — executable command routing and command definitions.
-- [`direction-registry.md`](direction-registry.md) — existing Direction navigation, still current pending explicit reconciliation.
 - [`areas/`](areas/) — project-local planning/application state.
 - [`helper-library/`](helper-library/) — Planning Helper source/library material.
 - [`dashboard/`](dashboard/) — current dashboard/view projections.

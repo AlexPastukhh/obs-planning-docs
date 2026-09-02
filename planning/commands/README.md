@@ -58,7 +58,6 @@ Every command file contains exactly one marker block:
     "whenToUse": "...",
     "whatYouGet": "..."
   },
-  "directionIds": ["DIR-..."],
   "refinements": []
 }
 [/PLANNING_COMMAND_DEFINITION]
@@ -75,7 +74,6 @@ The JSON is intentionally strict so repository writes, build-time validation and
 - IDs, canonical commands and aliases are unique across the complete catalog.
 - `ownerFiles` and `keyReminders` are arrays of strings.
 - `palette` is boolean. `false` keeps a registered command out of the normal palette without making it unregistered.
-- optional `directionIds` contains current Direction IDs for standalone palette/orchestration placement when the command is not a semantic UC's direct command; every listed Direction must exist.
 - optional `helperPresentation` carries `When To Use` / `What You Get` copy for Helper details; new IDTSPE canonical/focused surfaces provide it, while older commands remain valid without it.
 - one high-level command may orchestrate several existing UCs/Scenario owners when that gives a useful stable invocation surface. This never creates a semantic UC or lets the command own their algorithms.
 - refinements contain only compact owner-read instructions; they do not duplicate owner algorithms.

@@ -5,8 +5,7 @@ Status: active project-local runtime area
 Natural semantic route:
 
 ```text
-direction-registry.md
-→ use-case-registry.md
+use-case-registry.md
 → scenarios/README.md
 → runtime workflow / Dashboard owners
 ```

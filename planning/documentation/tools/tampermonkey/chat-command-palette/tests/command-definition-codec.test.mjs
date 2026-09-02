@@ -13,4 +13,4 @@ test('rejects nested file path',()=>assert.throws(()=>codec.parseCommandDefiniti
 
 test('rejects multiline command fields and unsafe owner paths',()=>{assert.throws(()=>codec.parseCommandDefinitionBatch(block({...base,command:'demo\ncommand',commandFamily:['demo\ncommand']})),/one safe text line/);assert.throws(()=>codec.parseCommandDefinitionBatch(block({...base,ownerFiles:['../outside.md']})),/invalid path segment/)});
 
-test('accepts optional explicit Direction placement for standalone command controls',()=>{const d=codec.parseCommandDefinitionBatch(block({...base,directionIds:['DIR-PLAN-SOLUTION']}))[0];assert.deepEqual(d.directionIds,['DIR-PLAN-SOLUTION']);assert.throws(()=>codec.parseCommandDefinitionBatch(block({...base,directionIds:['bad']})),/DIR-\* id/)});
+test('rejects retired Direction placement metadata',()=>{assert.throws(()=>codec.parseCommandDefinitionBatch(block({...base,directionIds:['DIR-PLAN-SOLUTION']})),/Unknown command definition field: directionIds/)});

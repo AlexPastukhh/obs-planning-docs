@@ -39,7 +39,7 @@ Review Priority
 
 built-in recheck
 → Current-Target Recheck
-→ Direction / Integration Recheck
+→ Plan / Integration Recheck
 ```
 
 The answer does not need an answer-level label. A repeated ordinary recheck with no new evidence should normally find no material omission that should have been caught before return. `крит` remains a separate optional adversarial review.

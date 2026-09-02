@@ -8,7 +8,7 @@ Scope: tracked Tampermonkey scripts used by the OBS planning system, including r
 
 ```text
 planning/documentation/tools/tampermonkey/chat-command-palette.user.js
-  generated install artifact for the modular Orientation / Directions / Use Cases / Commands helper;
+  generated install artifact for the modular Commands / Use Cases / Prompts helper;
   source/build/tests live under `chat-command-palette/`;
   planning-command definitions live under `planning/commands/`;
   real Planning Commands use one editable Commands surface with local draft state, Prompts use the helper library, and explicit GitHub actions are user-triggered;
@@ -74,11 +74,6 @@ Planning-helper semantics must come from:
 ```text
 Orientation:
   planning/README.md
-  planning/direction-registry.md
-
-Directions:
-  root/local Direction Registries
-
 Use Cases:
   reusable-family/local Use-Case Registries
 
@@ -374,13 +369,11 @@ The reusable Command Palette provides:
 - normal insertion/copy/import is RAM-first and performs no repository read/write; explicit Check GitHub / Sync missing / Reload GitHub / Save GitHub operate only on bounded command/helper-library paths and never run local Git, commit or push.
 ```
 
-## 9A. Orientation / Directions / Use Cases / Commands
+## 9A. Commands / Use Cases / Prompts
 
-The reusable planning helper has five current surfaces:
+The reusable planning helper has three current catalog surfaces:
 
 ```text
-Orientation
-Directions
 Use Cases
 Commands
 Prompts
@@ -389,11 +382,9 @@ Prompts
 Authority:
 
 ```text
-Orientation → root documentation;
-Directions  → Direction Registries;
-Use Cases   → Use-Case Registries;
-Commands    → root Command Routing → direct repository command definitions;
-Prompts     → helper prompt library as non-authoritative reusable insertion text.
+Use Cases → current canonical Use-Case Registries;
+Commands  → root Command Routing → direct repository command definitions;
+Prompts   → helper prompt library as non-authoritative reusable insertion text.
 ```
 
 Controls:
@@ -413,15 +404,6 @@ Open Commands:
 
 Refinement:
   shown only when the selected direct command definition currently declares one.
-```
-
-Projected Directions:
-
-```text
-Plan A Solution Or Workflow
-Use And Maintain Repository Documentation
-Use And Maintain Repository Documentation
-Develop And Maintain Documentation Workbench
 ```
 
 Projected Use Cases:
@@ -530,8 +512,8 @@ Before enabling or adapting the reusable helper for another project, verify:
 - Event IDs identify browser records only; Finished Sessions Markdown does not store them.
 - Duplicate protection uses source SHA-256, source row boundary, exact resulting row count and ordered appended sequence.
 - Reconciliation resolves contract columns by exact header names; fuzzy display matching cannot confuse `Session` with `Session #` or `#` with another column.
-- Do not treat the Planning Helper runtime, cache or generated artifact as Orientation, Direction, Use-Case or command authority.
-- Do not let Direction/Use-Case activation execute commands or grant permissions.
+- Do not treat the Planning Helper runtime, cache or generated artifact as Use-Case or command authority.
+- Do not let Use-Case activation execute commands or grant permissions.
 - Project `собери идеи` only from its accepted repository command definition and generic Idea owner route.
 - Do not add project-only command semantics outside the Command-Routing-reachable `planning/commands/*.command.md` registry.
 - Do not reintroduce retired Planning Item formation/reconciliation projections. Preserve semantic Use-Case boundaries, keep broader workflows distinct from commands, and do not treat historical ITEM-* registers as current command targets.

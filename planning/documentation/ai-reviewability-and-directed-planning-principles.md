@@ -87,7 +87,7 @@ Before returning a material result, perform two proportional passes.
 
 Reconstruct what the current target/scope must answer from the current source/owner rather than merely rereading the draft prose. Check for omissions, contradictions, unsupported assumptions, silently selected unresolved alternatives and incomplete completion criteria.
 
-### Direction / Integration Recheck
+### Plan / Integration Recheck
 
 Check Critical/High Key Points and the current target/scope against selected upstream/global direction, affected owners, Requirements/Constraints and material change pressure. Confirm that downstream planning realizes rather than silently rewrites upstream meaning.
 
@@ -112,7 +112,7 @@ new downstream evidence
 
 Do not use implementation inconvenience alone as authority to change Scenario/UC/Domain meaning.
 
-## 8. Planning Direction Vs Execution Order
+## 8. Planning Intent Vs Execution Order
 
 Keep two meanings separate:
 

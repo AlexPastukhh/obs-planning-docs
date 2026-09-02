@@ -7,8 +7,7 @@ Purpose: plan and review how selected behavior/correctness is proved without tra
 ## Read Order
 
 ```text
-direction-registry.md
-→ use-case-registry.md
+use-case-registry.md
 → testing-planning-principles-and-terminology.md
 → testing-planning-responsibility-map.md
 → selected workflow/template

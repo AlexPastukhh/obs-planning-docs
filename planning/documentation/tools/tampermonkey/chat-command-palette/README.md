@@ -2,33 +2,30 @@
 
 Status: active modular Tampermonkey helper implementation
 Version: `0.34.0`
-Scope: local-first Planning Helper with GitHub-backed Directions, Planning Commands and Use Cases; reusable Prompts; explicit repository recovery/publish actions; editable durable catalog order; Favorites; and wide/resizable browser UI.
+Scope: local-first Planning Helper with GitHub-backed Planning Commands and Use Cases; reusable Prompts; explicit repository recovery/publish actions; editable durable catalog order; Favorites; and wide/resizable browser UI.
 
 ## Read Order
 
 1. `planning/command-routing.md` — executable-command policy.
 2. `planning/commands/README.md` — Planning Command authority.
-3. `planning/direction-registry.md` — current Direction authority.
-4. current canonical Use-Case registries under `planning/**` (registry filename is matched case-insensitively; legacy/historical compatibility indexes are excluded) — Workspace/methodology Use-Case authority.
-5. `planning/helper-library/README.md` — Prompt / legacy helper insertion authority.
-6. `scenarios/README.md` — Planning Helper application behavior.
-7. `MANUAL-ACCEPTANCE.md` — browser/real-GitHub acceptance.
-8. focused `src/**` / `tests/**`.
+3. current canonical Use-Case registries under `planning/**` (registry filename is matched case-insensitively; legacy/historical compatibility indexes are excluded) — Workspace/methodology Use-Case authority.
+4. `planning/helper-library/README.md` — Prompt / legacy helper insertion authority.
+5. `scenarios/README.md` — Planning Helper application behavior.
+6. `MANUAL-ACCEPTANCE.md` — browser/real-GitHub acceptance.
+7. focused `src/**` / `tests/**`.
 
-The userscript is a runtime/projection, not semantic authority. It must not contain a maintained hard-coded catalog of current Commands, Use Cases or Directions.
+The userscript is a runtime/projection, not semantic authority. It must not contain a maintained hard-coded catalog of current Commands or Use Cases.
 
 ## Source / Cache Model
 
 ```text
 GitHub durable sources
-  planning/direction-registry.md
   planning/commands/*.command.md
   current canonical Use-Case registries under planning/**
   planning/helper-library/prompts/*.prompt.md
   catalog-order.json
 
 build-verified GitHub projections
-  seed/directions.json   <- planning/direction-registry.md
   seed/commands.json     <- planning/commands/*.command.md
   seed/use-cases.json    <- every current canonical Use-Case registry under planning/**
 
@@ -37,7 +34,7 @@ browser local snapshot / RAM
 
 explicit Hard Reload GitHub
   = authoritative repository -> local recovery for
-    Directions + Commands + Use Cases + catalog order
+    Commands + Use Cases + catalog order
 ```
 
 `seed/*.json` is repository-backed generated data, not independent semantic authority and not embedded as the live catalog in `chat-command-palette.user.js`. `npm run build:check` verifies that the generated catalogs still match their canonical GitHub sources.
@@ -52,14 +49,13 @@ Persistent key:
 obsPlanningHelper:v2:localSnapshot
 ```
 
-Schema v4 keeps:
+Schema v5 keeps:
 
 ```text
 planningCommands[]
-directions[] + directionCatalogSha
 useCases[] + useCaseCatalogSha
 helperItems[]
-catalogOrder { directions[], commands[], useCases[], prompts[] }
+catalogOrder { commands[], useCases[], prompts[] }
 catalogOrderSha
 hiddenCommandIds[]
 hiddenUseCaseIds[]
@@ -67,15 +63,11 @@ favoriteCommandIds[]
 favoriteUseCaseIds[]
 ```
 
-The snapshot is a browser working copy/cache. Losing it must not lose durable Direction/Command/Use-Case truth because those catalogs can be rebuilt from GitHub with `Hard Reload GitHub`.
+The snapshot is a browser working copy/cache. Losing it must not lose durable Command/Use-Case truth because those catalogs can be rebuilt from GitHub with `Hard Reload GitHub`.
 
 Favorites and local hides are local UI preferences. They reference stable IDs only and never copy semantic authority.
 
 ## Repository-Backed Catalogs
-
-### Directions
-
-Canonical source: `planning/direction-registry.md`. Build projection: `seed/directions.json`.
 
 ### Planning Commands
 
@@ -85,19 +77,18 @@ Commands may be created/edited locally as drafts. `Save GitHub` is explicit. `Re
 
 A Command linked directly as a current UC's Related command is reused as that UC's manual invocation route. A UC without a bespoke route receives a generated thin invocation row through `use_case.invoke`; this generated row is not a repository command file and not semantic authority.
 
-Standalone command controls that do not correspond to a UC may carry `directionIds` in their GitHub command definition rather than runtime hard-code.
 
 ### Use Cases
 
 Canonical source: all current canonical Use-Case registries under `planning/**`; registry filenames are matched case-insensitively and legacy/historical compatibility indexes are excluded. Build projection: `seed/use-cases.json`.
 
-The build discovers every current canonical UC, verifies unique IDs/current Directions/direct command mappings and regenerates the seed. Runtime treats that repository projection as recoverable local navigation. Use-Case Insert/Copy still resolves the exact current registry entry and owner route.
+The build discovers every current canonical UC, verifies unique IDs/direct command mappings and regenerates the seed. Runtime treats that repository projection as recoverable local navigation. Use-Case Insert/Copy still resolves the exact current registry entry and owner route.
 
 ### Prompts
 
 Prompt working content remains local-first and independently GitHub-backed through deterministic files in `planning/helper-library/prompts/*.prompt.md`.
 
-Hard Reload of Direction/Command/Use-Case catalogs does **not** overwrite local Prompt content.
+Hard Reload of Command/Use-Case catalogs does **not** overwrite local Prompt content.
 
 ## Catalog Order
 
@@ -107,7 +98,7 @@ Durable order source:
 planning/documentation/tools/tampermonkey/chat-command-palette/catalog-order.json
 ```
 
-It stores ordered stable IDs for Directions, Commands, Use Cases and Prompts. The UI exposes `↑` / `↓` for rows and Direction groups. Moving an item changes only local order. `Save order GitHub` explicitly persists the current order. Editing `catalog-order.json` directly in GitHub is also valid; `Hard Reload GitHub` adopts that order locally.
+It stores ordered stable IDs for Commands, Use Cases and Prompts. The UI exposes `↑` / `↓` for rows. Moving an item changes only local order. `Save order GitHub` explicitly persists the current order. Editing `catalog-order.json` directly in GitHub is also valid; `Hard Reload GitHub` adopts that order locally.
 
 Unknown/new IDs not listed in an older order file append after configured IDs rather than disappearing.
 
@@ -117,7 +108,7 @@ The preferred repository order starts with the canonical `idtspe` work/dispatch 
 
 ### Check GitHub
 
-Reads repository inventory/current generated catalog files and reports local/GitHub counts plus known SHA changes for Planning Commands, Directions, Use Cases, Prompts/helper records and catalog order. No local mutation occurs.
+Reads repository inventory/current generated catalog files and reports local/GitHub counts plus known SHA changes for Planning Commands, Use Cases, Prompts/helper records and catalog order. No local mutation occurs.
 
 ### Sync missing
 
@@ -133,11 +124,10 @@ Explicit authoritative recovery path:
 
 ```text
 fetch complete planning/commands catalog
-fetch seed/directions.json
 fetch seed/use-cases.json
 fetch catalog-order.json
 validate all catalogs
-replace local Directions + Commands + Use Cases + order
+replace local Commands + Use Cases + order
 clear local Command/Use-Case hide tombstones
 preserve Prompts and Favorites
 ```
@@ -154,13 +144,13 @@ Repository delete remains unsupported. Local Delete/hide makes zero GitHub write
 
 Desktop default is a wide panel (about 980px). The panel is resizable, persists `left/top/width/height`, clamps itself to the viewport, uses a wide content column with compact actions on desktop, and switches to one-column rows with wrapped actions on narrow screens.
 
-The same entity may appear in `★ Favorites` and its normal Direction group. Favorites are projections, not duplicate records.
+The same entity may appear in `★ Favorites` and its normal catalog position. Favorites are projections, not duplicate records.
 
 ## Safety Boundary
 
 - normal browse/edit/reorder/insert/copy is local-only;
 - all repository reads/writes are explicit UI actions;
-- Hard Reload is destructive only to the local Direction/Command/Use-Case cache/order and requires confirmation;
+- Hard Reload is destructive only to the local Command/Use-Case cache/order and requires confirmation;
 - local Prompt content is excluded from Hard Reload;
 - GitHub writes use deterministic paths and optimistic concurrency;
 - generated seeds/userscript never become canonical semantic authority;
@@ -172,7 +162,7 @@ The same entity may appear in `★ Favorites` and its normal Direction group. Fa
 Current methodology commands carry two GitHub-backed metadata layers: `methodologyBinding` is the stable IDTSPE runtime/profile/Target-Module-or-Lens binding, while `helperPresentation.navigation` owns mutable view/tab/section/order/badge/related rendering. The userscript runtime is generic and does not maintain current command IDs **or a hard-coded list of methodology views**. `methodologyViewDefinitions(entries)` derives the visible methodology view IDs, labels and order from current command metadata; `All commands` is the only generic Helper-owned fallback view.
 
 
-The Commands surface now has helper-owned navigation views in addition to the ordinary Direction-grouped `All commands` view:
+The Commands surface now has helper-owned navigation views in addition to the ordinary `All commands` view:
 
 ```text
 IDTSPE
@@ -228,4 +218,4 @@ npm run build
 npm run verify
 ```
 
-`verify` proves current Direction/UC/Command parity, manual UC invokability, command alias validity, local/repository boundaries, generated-script freshness and Scenario traceability.
+`verify` proves current UC/Command parity, manual UC invokability, command alias validity, local/repository boundaries, generated-script freshness and Scenario traceability.

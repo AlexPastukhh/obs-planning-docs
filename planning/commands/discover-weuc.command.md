@@ -19,7 +19,6 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
   "activeContextBehavior": "Resolve or reuse the natural current IDTSPE Target/context; infer CREATE/REFINE/EXTEND/REVALIDATE/REPAIR from current state. Do not create a fake Target when the module/lens gate fails.",
   "traversalReadMode": "Reuse current reliable IDTSPE/SDS governance; targeted refresh of the selected owner route when uncertain; full bootstrap only when no reliable sufficient governance context exists.",
   "ownerFiles": [
-    "planning/documentation/architecture-planning/direction-registry.md",
     "planning/documentation/architecture-planning/use-case-registry.md",
     "planning/documentation/architecture-planning/workspace-evolution-use-case-discovery-workflow.md"
   ],
@@ -28,14 +27,11 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
   "keyReminders": [
     "Compatibility alias only; there is no permanent TM-WEUC or canonical SDS Workspace Evolution Map.",
     "Use current natural owner/Architecture Planning/L5 semantics rather than reviving old WEUC Target ownership.",
-    "Material project-global architecture choices use the Workspace Architecture Planning Direction or normal Target Formation/Decisions.",
+    "Material project-global architecture choices use the Workspace Architecture Planning or normal Target Formation/Decisions.",
     "This command is read-only planning; it does not mutate repository files, commit or push."
   ],
   "userTarget": "<workspace area / expected future change>",
   "palette": false,
-  "directionIds": [
-    "DIR-PLAN-ARCHITECTURE"
-  ],
   "helperPresentation": null,
   "refinements": [],
   "methodologyBinding": null

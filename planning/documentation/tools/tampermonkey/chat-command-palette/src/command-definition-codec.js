@@ -13,7 +13,7 @@
     'schemaVersion', 'id', 'file', 'command', 'englishName', 'commandFamily',
     'description', 'meaning', 'activeContextBehavior', 'traversalReadMode',
     'ownerFiles', 'expectedOutput', 'permissionMode', 'keyReminders',
-    'userTarget', 'palette', 'refinements', 'directionIds', 'helperPresentation', 'methodologyBinding'
+    'userTarget', 'palette', 'refinements', 'helperPresentation', 'methodologyBinding'
   ]);
 
   function assert(condition, message) {
@@ -170,7 +170,6 @@
       palette: raw.palette,
       helperPresentation: normalizeHelperPresentation(raw.helperPresentation),
       methodologyBinding: normalizeMethodologyBinding(raw.methodologyBinding),
-      directionIds: raw.directionIds == null ? [] : stringArray(raw.directionIds, 'directionIds').map((id,index)=>{const value=singleLine(id,`directionIds[${index}]`);assert(/^DIR-[A-Z0-9-]+$/.test(value),`directionIds[${index}] must be a DIR-* id.`);return value;}),
       refinements
     };
   }
@@ -246,7 +245,6 @@
       palette: normalized.palette,
       ...(normalized.helperPresentation ? { helperPresentation: normalized.helperPresentation } : {}),
       ...(normalized.methodologyBinding ? { methodologyBinding: normalized.methodologyBinding } : {}),
-      ...(normalized.directionIds.length ? { directionIds: normalized.directionIds } : {}),
       refinements: normalized.refinements
     };
   }

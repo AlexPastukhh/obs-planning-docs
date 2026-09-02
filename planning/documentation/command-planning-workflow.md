@@ -39,4 +39,4 @@ planning/use-cases/UC-REPO-PLAN-UPDATE.md when a concrete repository transition 
 9. Decide helper projection separately.
 10. When a concrete repository transition is needed, hand off to `UC-REPO-PLAN-UPDATE`; do not implement through this workflow.
 
-Commands are optional. A repository remains fully discoverable through Directions and the applicable Use-Case Registry or Scenario Catalog without knowing command names.
+Commands are optional. A repository remains fully discoverable through README/navigation and the applicable Use-Case Registry, Scenario Catalog or specialized semantic owner without knowing command names.

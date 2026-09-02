@@ -5,8 +5,7 @@ Status: active project-local planning/application area
 ## Natural Route
 
 ```text
-direction-registry.md
-→ use-case-registry.md
+use-case-registry.md
 → scenarios/README.md
 → selected Scenario / workflow
 → reusable documentation owners when needed

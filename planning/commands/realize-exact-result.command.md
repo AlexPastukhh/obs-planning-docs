@@ -35,9 +35,6 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
   ],
   "userTarget": "<code or other exact directly integrable realization scope>",
   "palette": true,
-  "directionIds": [
-    "DIR-REPOSITORY"
-  ],
   "helperPresentation": {
     "whenToUse": "Use when upstream meaning is sufficiently determined and you want the literal exact result that could be integrated now; for code, this is the default implementation route and can optionally continue into explicitly authorized build/test/minor-repair work.",
     "whatYouGet": "Exact current directly integrable realization, code-first by default, with optional review → authorized integration/verification → bounded repair → final exact review loop.",

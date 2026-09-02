@@ -3,19 +3,19 @@
 Status: active current behavior owner
 Scope: canonical detailed application behavior owner for local draft/hide/Favorite/order/layout work without implicit repository mutation.
 
-**Trigger/input:** local Command/Prompt create/edit/delete, Command/Use-Case hide, Favorite toggle, item/Direction `↑`/`↓`, panel drag or resize.
+**Trigger/input:** local Command/Prompt create/edit/delete, Command/Use-Case hide, Favorite toggle, item `↑`/`↓`, panel drag or resize.
 
 **Successful result:** selected Helper-local content/preference/order/layout changes in RAM/local persistence only; canonical GitHub content remains untouched until an explicit repository action.
 
 **Current invariants:**
 
 - real Planning Commands are local drafts of GitHub-backed `planning/commands/*.command.md` records;
-- current Directions and Use Cases are local materializations of GitHub-backed generated catalogs whose semantic authority remains canonical registries;
+- current Use Cases are local materializations of the GitHub-backed generated catalog whose semantic authority remains canonical registries;
 - a visible Command/Use Case may be hidden locally without deleting repository authority;
 - Favorite state stores only stable IDs and duplicates the same row in `★ Favorites`;
 - `↑` / `↓` changes only local `catalogOrder`; unknown/new IDs append rather than disappear;
 - `Save order GitHub` is required when local order should become durable repository order;
-- Prompt edits remain local-first and are not overwritten by Direction/Command/Use-Case Hard Reload;
+- Prompt edits remain local-first and are not overwritten by Command/Use-Case Hard Reload;
 - panel position and size are local UI state only;
 - local content/order changes make zero GitHub requests.
 

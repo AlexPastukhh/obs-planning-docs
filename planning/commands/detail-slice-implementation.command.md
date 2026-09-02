@@ -31,9 +31,6 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
   ],
   "userTarget": "<existing Slice>",
   "palette": true,
-  "directionIds": [
-    "DIR-PLAN-SOLUTION"
-  ],
   "helperPresentation": {
     "whenToUse": "Use when the bounded Slice Target already exists and its implementation sequencing/runtime path needs deeper concrete detail.",
     "whatYouGet": "Refined material Uses/ownership boundary, optional Runtime Path and Evolution Steps for the same already selected Slice Target; no new Target identity.",

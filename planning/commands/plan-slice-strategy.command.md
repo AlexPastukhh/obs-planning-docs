@@ -32,9 +32,6 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
   ],
   "userTarget": "<Slice implementation-strategy scope>",
   "palette": true,
-  "directionIds": [
-    "DIR-PLAN-SOLUTION"
-  ],
   "helperPresentation": {
     "whenToUse": "Use when Slice decomposition/order, broad Domain/Aggregate position, or selected Slice addressability is material rather than obvious.",
     "whatYouGet": "Slice Portfolio / Realization Map, broad/shallow Domain / Aggregate Realization Map, and Selected Slice semantic-owner register; Target Formation remains responsible for any independently bounded Implementation Slice Target.",

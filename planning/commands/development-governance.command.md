@@ -23,7 +23,7 @@ Scope: working-context governance shortcut; semantic authority remains in linked
   "ownerFiles": [
     "planning/AI-WORKING-CONTRACT.md",
     "planning/README.md",
-    "planning/direction-registry.md",
+    "planning/use-case-registry.md",
     "planning/documentation/application-planning/application-planning-principles-and-terminology.md",
     "planning/documentation/application-planning/solution-and-scenario-planning-workflow.md",
     "planning/documentation/principles-and-terminology.md"
@@ -32,7 +32,7 @@ Scope: working-context governance shortcut; semantic authority remains in linked
   "permissionMode": "read-only",
   "keyReminders": [
     "Develop from current selected planning meaning, not an unreviewed Idea or conversational assumption.",
-    "Resolve current Direction / Application Scenario / Scenario owner before materially changing behavior.",
+    "Resolve the current Use Case / Application Scenario / semantic owner before materially changing behavior.",
     "Implementation Idea is not selected architecture.",
     "Documentation changed during development must follow reusable documentation principles.",
     "Code does not silently create a second documentation owner.",

@@ -5,7 +5,7 @@ Scope: canonical detailed application behavior owner for explicit non-mutating l
 
 **Trigger/input:** explicit `Check GitHub`.
 
-**Successful result:** the user sees local/GitHub counts and missing/changed evidence for Planning Commands, Directions, Use Cases, Prompts/helper records and durable catalog order, without local mutation.
+**Successful result:** the user sees local/GitHub counts and missing/changed evidence for Planning Commands, Use Cases, Prompts/helper records and durable catalog order, without local mutation.
 
 **Boundary:** same path/ID means inventory overlap only. It does not prove equal content unless SHA/content evidence establishes that separately. The action remains explicit and does not publish or reconcile local state.
 

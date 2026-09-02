@@ -45,7 +45,7 @@ These capabilities have **not** been retired or made legacy by the fundamental m
 |---|---|---|
 | `UC-REPO-ORIENT` | Orient In Repository And Resolve Work Route | `README.md` → `planning/README.md` → registries |
 | `UC-REPO-CURRENT-STATE` | Report Current Repository / Planning State | this registry → `documentation/status-reconciliation-workflow.md` → selected current owners |
-| `UC-REPO-PLAN-NEXT` | Plan The Next Concrete Step | selected Direction/Use Case/current owners |
+| `UC-REPO-PLAN-NEXT` | Plan The Next Concrete Step | selected Use Case / Scenario / current owners |
 | `UC-REPO-CRITICAL-REVIEW` | Critically Review A Claim / Plan / Diff | shared Idea owners + selected target/current owners + `documentation/review-diff-review-workflow.md` when target is ReviewDiff |
 | `UC-REPO-USE-ARCHIVE-SOURCE` | Use An Explicit Archive As Read Source | selected archive + applicable owners |
 | `UC-REPO-DEFINE-PARALLEL-SCOPES` | Define / Maintain Fixed Parallel-Work Scopes | `../parallel-work-scope-registry.md` + `documentation/parallel-work-scope-and-action-log-workflow.md` |

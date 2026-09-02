@@ -50,7 +50,7 @@ Ordinary planning commands do not inherit this reporting contract merely because
 ## Creation / Review Algorithm
 
 1. identify prompt purpose/profile and intended user result;
-2. resolve the current Direction + applicable semantic registry/owner route that the prompt must navigate;
+2. resolve the applicable semantic registry/owner route that the prompt must navigate;
 3. keep semantic authority in those owners and make the prompt explicitly defer to them;
 4. include only stable conceptual guidance needed to navigate/read correctly;
 5. choose output/evidence requirements proportionally to the profile;

@@ -14,7 +14,7 @@ Scope: representation preference only; no separate SDS runtime/profile.
     "фулл сдс",
     "full sds",
     "work in full sds"
-],
+  ],
   "description": "legacy compatibility alias; prefer COMPLEX SDS representation",
   "meaning": "Apply the COMPLEX owner/file representation preference from the canonical SDS Artifact Placement Map to the current IDTSPE/SDS planning state. This changes representation preference only; it does not select a different semantic profile, require a fixed file tree, or change Target authority.",
   "activeContextBehavior": "Reuse the current semantic owners. Consolidate/promote representation only when the COMPLEX example and current representation pressure justify it; owner identity does not change when content moves inline or to a dedicated file.",
@@ -35,7 +35,6 @@ Scope: representation preference only; no separate SDS runtime/profile.
   ],
   "userTarget": "<current SDS plan / owner set>",
   "palette": false,
-  "refinements": [],
-  "directionIds": ["DIR-PLAN-SOLUTION"]
+  "refinements": []
 }
 [/PLANNING_COMMAND_DEFINITION]

@@ -6,7 +6,7 @@ A repository using this methodology should expose a root AI/chat contract from n
 
 The contract must require the chat to:
 
-1. resolve the current Direction / Use Case before material work;
+1. resolve the current semantic entry / owner before material work;
 2. read applicable reusable documentation/planning principles;
 3. follow canonical owner routes rather than filenames/examples/projections by assumption;
 4. keep implementation and documentation ownership distinct;

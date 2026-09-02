@@ -1,13 +1,13 @@
 # Command Routing Workflow
 
 Status: active reusable documentation-layer workflow
-Scope: create and maintain a project's executable command-routing system without conflating commands with semantic Directions, Workspace/methodology Use Cases or Application Scenarios.
+Scope: create and maintain a project's executable command-routing system without conflating commands with Workspace/methodology Use Cases, Application Scenarios or other semantic owners.
 
 ## Core Model
 
 ```text
-Direction Registry
-→ broad semantic work directions
+README / current semantic navigation
+→ entry navigation
 
 Workspace / methodology Use-Case Registry
 → independently useful semantic capabilities

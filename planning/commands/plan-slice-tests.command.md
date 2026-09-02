@@ -30,10 +30,6 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
   ],
   "userTarget": "<Slice owner>",
   "palette": true,
-  "directionIds": [
-    "DIR-PLAN-TESTING",
-    "DIR-PLAN-SOLUTION"
-  ],
   "helperPresentation": {
     "whenToUse": "Use when a Slice needs focused orchestration/integration proof design.",
     "whatYouGet": "Slice-focused Test Design, normally integration-oriented for collaboration/runtime flow.",

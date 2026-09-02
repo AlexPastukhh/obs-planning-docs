@@ -30,10 +30,6 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
   ],
   "userTarget": "<Domain owner>",
   "palette": true,
-  "directionIds": [
-    "DIR-PLAN-TESTING",
-    "DIR-PLAN-SOLUTION"
-  ],
   "helperPresentation": {
     "whenToUse": "Use when a Domain owner needs focused unit/domain-rule proof design.",
     "whatYouGet": "Domain-focused Test Design, normally unit-test-oriented for isolated complex rules.",

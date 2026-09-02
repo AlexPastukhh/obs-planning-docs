@@ -9,7 +9,7 @@ Scope: canonical detailed application behavior owner for explicit Helper→GitHu
 
 **Conflict boundary:** optimistic conflicts are reread once. If remote bytes already equal intended bytes, the write is recovered as verified success without a second PUT. If bytes differ, nothing is overwritten automatically. A verified remote result remains remote success even if later local metadata persistence fails.
 
-**Semantic boundary:** order persistence changes presentation/order only; it does not change Direction/Command/Use-Case meaning.
+**Semantic boundary:** order persistence changes presentation/order only; it does not change Command/Use-Case meaning.
 
 **Traceability:**
 

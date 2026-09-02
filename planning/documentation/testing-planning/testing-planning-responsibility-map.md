@@ -4,7 +4,6 @@ Status: active reusable routing owner
 
 | Responsibility / task | Owner |
 |---|---|
-| Testing Direction / supported capabilities | `direction-registry.md` + `use-case-registry.md` |
 | Stable testing concepts and layer boundaries | `testing-planning-principles-and-terminology.md` |
 | Shared/cross-Slice strategy | `testing-strategy-workflow.md` |
 | Behavior-specific proof design / Behavior-to-Test Trace | `test-design-workflow.md` |

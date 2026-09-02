@@ -38,7 +38,6 @@ Scope: generic IDTSPE work-mode and installed-component dispatcher.
   ],
   "userTarget": "<optional TM/LENS selector + target/context, or current planning work>",
   "palette": true,
-  "directionIds": ["DIR-REPOSITORY", "DIR-PLAN-SOLUTION"],
   "helperPresentation": {
     "whenToUse": "Use `idtspe` for ordinary planning, or append a Target Module/Lens ID or short alias when you already know the component you want.",
     "whatYouGet": "One registry-driven entry to ordinary IDTSPE work and installed Target Module/Lens dispatch without memorizing repository command IDs.",

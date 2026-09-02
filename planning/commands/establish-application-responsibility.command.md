@@ -31,9 +31,6 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
   ],
   "userTarget": "<Application responsibility boundary>",
   "palette": true,
-  "directionIds": [
-    "DIR-PLAN-SOLUTION"
-  ],
   "helperPresentation": {
     "whenToUse": "Use when the immediate question is what the Application itself should own versus external/manual/system responsibilities.",
     "whatYouGet": "Responsibility-boundary refinement of the same Application Definition Target.",

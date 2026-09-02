@@ -33,9 +33,6 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
   ],
   "userTarget": "<IDTSPE governance / no Target required>",
   "palette": true,
-  "directionIds": [
-    "DIR-REPOSITORY"
-  ],
   "helperPresentation": {
     "whenToUse": "When IDTSPE governance is not current or you want explicit orientation before planning.",
     "whatYouGet": "Compact IDTSPE governance assimilation, installed profiles, permission boundary and current Target context when any.",

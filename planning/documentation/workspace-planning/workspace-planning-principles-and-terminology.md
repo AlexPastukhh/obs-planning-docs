@@ -3,7 +3,7 @@
 Status: active reusable canonical principles/terminology owner
 Scope: plan changes to evolving Workspaces through useful Workspace Use Cases, explicit semantic meaning and low-coupled vertical realization; also define Mini/Modular UCDS representation for accumulating current plans.
 
-Canonical generic UC identity/registry semantics: [`../direction-and-use-case-registry-workflow.md`](../direction-and-use-case-registry-workflow.md)
+Canonical generic UC identity/registry semantics: [`../principles-and-terminology.md`](../principles-and-terminology.md)
 Generic Architecture Lens: [`../architecture-planning/README.md`](../architecture-planning/README.md)
 AI reviewability/direction: [`../ai-reviewability-and-directed-planning-principles.md`](../ai-reviewability-and-directed-planning-principles.md)
 Recommended integrated shape: [`WORKSPACE-USE-CASE-PLANNING-TEMPLATE.md`](WORKSPACE-USE-CASE-PLANNING-TEMPLATE.md)
@@ -122,7 +122,7 @@ Implementation should not need to invent missing semantic decisions.
 
 ## 7. Semantic Owner Roles
 
-Recognizable roles remain Direction Registry, Use-Case Registry, Workflow, optional focused Model, Principles, Template, README/index, Command definition, Verification owners and Action Log. A semantic role does not imply one file of every role per UC.
+Recognizable roles remain Use-Case Registry, Workflow, optional focused Model, Principles, Template, README/index, Command definition, Verification owners and Action Log. A semantic role does not imply one file of every role per UC.
 
 Action Log owns material history/rationale; current UCDS planning owns current/forward selected meaning.
 

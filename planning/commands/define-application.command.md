@@ -31,9 +31,6 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
   ],
   "userTarget": "<one Application Definition>",
   "palette": true,
-  "directionIds": [
-    "DIR-PLAN-SOLUTION"
-  ],
   "helperPresentation": {
     "whenToUse": "Use when the product/application need, concept, responsibility or boundary should be established or revalidated.",
     "whatYouGet": "Application Definition with need/value/scope, selected responsibility, material alternatives, Q/R/P and Decisions.",

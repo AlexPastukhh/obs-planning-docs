@@ -1,10 +1,10 @@
 # Workspace Use Cases And Change Pressure
 
 Status: active reusable Architecture Planning semantic owner
-Scope: architecture-specific Workspace-work, Work-Path, Extension and change-pressure concepts. Generic Workspace Use-Case identity/contract remains owned by the reusable Direction/Use-Case registry methodology.
+Scope: architecture-specific Workspace-work, Work-Path, Extension and change-pressure concepts. Generic Workspace Use-Case identity/contract remains owned by the current reusable Use-Case documentation methodology.
 
-Generic UC identity/contract: [`../direction-and-use-case-registry-workflow.md`](../direction-and-use-case-registry-workflow.md)
-Canonical establish/change/topology planning for Workspace UCs: [`../workspace-planning/direction-registry.md`](../workspace-planning/direction-registry.md)
+Generic UC identity/contract: [`../principles-and-terminology.md`](../principles-and-terminology.md)
+Canonical establish/change/topology planning for Workspace UCs: [`../workspace-planning/use-case-registry.md`](../workspace-planning/use-case-registry.md)
 
 ## Workspace Use Case — Architecture Input View
 

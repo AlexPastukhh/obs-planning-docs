@@ -32,9 +32,6 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
   ],
   "userTarget": "<one Scenario>",
   "palette": true,
-  "directionIds": [
-    "DIR-PLAN-SOLUTION"
-  ],
   "helperPresentation": {
     "whenToUse": "Use when one concrete actor-visible Scenario needs full behavioral planning.",
     "whatYouGet": "One Scenario owner with Behavior/Requirements, DATA + Behavior Items, Development/Change Outlook and relevant Generic planning state.",

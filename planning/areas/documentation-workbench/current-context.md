@@ -6,8 +6,7 @@ Scope: concise current boundary and routes; complete behavior lives in current U
 ## Current Semantic Route
 
 ```text
-direction-registry.md
-→ use-case-registry.md
+use-case-registry.md
 → scenarios/README.md
 → selected current workflow / Scenario
 ```

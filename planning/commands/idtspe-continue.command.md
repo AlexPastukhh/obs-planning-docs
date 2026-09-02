@@ -30,11 +30,8 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
   ],
   "userTarget": "<current planning state>",
   "palette": true,
-  "directionIds": [
-    "DIR-REPOSITORY"
-  ],
   "helperPresentation": {
-    "whenToUse": "Use when the current Methodology Direction is clear and you want to execute the recommended next Target.",
+    "whenToUse": "Use when the current methodology route is clear and you want to execute the recommended next Target.",
     "whatYouGet": "The next Target is invoked through IDTSPE with normal gates/permissions; no fake Target is created.",
     "navigation": {
       "viewId": "IDTSPE",

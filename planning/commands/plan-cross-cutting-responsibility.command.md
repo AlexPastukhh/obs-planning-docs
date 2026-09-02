@@ -31,9 +31,6 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
   ],
   "userTarget": "<one shared non-vertical responsibility>",
   "palette": true,
-  "directionIds": [
-    "DIR-PLAN-SOLUTION"
-  ],
   "helperPresentation": {
     "whenToUse": "Use when a genuine shared implementation responsibility spans consumers and should not be duplicated locally.",
     "whatYouGet": "Cross-Cutting owner/consumer obligations when justified, otherwise a local/reuse route; distinct from Q/R/P Concern groups.",

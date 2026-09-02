@@ -34,9 +34,6 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
   ],
   "userTarget": "<SDS profile governance / no Target required>",
   "palette": true,
-  "directionIds": [
-    "DIR-PLAN-SOLUTION"
-  ],
   "helperPresentation": {
     "whenToUse": "When SDS profile governance is not current or you want explicit orientation before Application/Scenario/Domain/Slice planning.",
     "whatYouGet": "Compact SDS profile assimilation with current/next owner context when any; no task-specific Target is invented.",

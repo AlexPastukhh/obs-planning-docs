@@ -9,7 +9,6 @@ Scope: establish the minimum natural-navigation + semantic-owner architecture in
 README.md
 planning/README.md
 planning/AI-WORKING-CONTRACT.md          # when AI/chat work is used
-planning/direction-registry.md
 planning/use-case-registry.md             # optional root cross-family UCs
 planning/command-routing.md                # only when executable commands exist
 planning/commands/                         # only when commands exist
@@ -18,13 +17,12 @@ planning/commands/                         # only when commands exist
 For each substantial family/application:
 
 ```text
-direction-registry.md
 use-case-registry.md                       # Workspace/methodology family
 scenarios/README.md                        # Application behavioral catalog
 actual principles/workflow/current owners
 ```
 
-Use the registry shape that matches the Direction: Workspace/methodology capabilities use Use Cases; Application behavior uses Scenarios. Do not add an Application Use-Case alias merely for file-type symmetry.
+Use the semantic registry that matches the work: Workspace/methodology capabilities use Use Cases; Application behavior uses Scenarios. Do not add an Application Use-Case alias merely for file-type symmetry.
 
 ## Invariants
 

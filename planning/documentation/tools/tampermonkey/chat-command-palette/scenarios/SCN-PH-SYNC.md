@@ -5,9 +5,9 @@ Scope: canonical detailed application behavior owner for non-authoritative incre
 
 **Trigger/input:** explicit `Sync missing`, or `Reload` on one tracked Planning Command.
 
-**Successful result:** `Sync missing` adds repository Directions, Commands, Use Cases and Prompt/helper records absent locally without overwriting same-ID/path local records; `Reload` replaces one selected Planning Command with verified remote content.
+**Successful result:** `Sync missing` adds repository Commands, Use Cases and Prompt/helper records absent locally without overwriting same-ID/path local records; `Reload` replaces one selected Planning Command with verified remote content.
 
-**Boundary:** `Sync missing` is additive and not a complete freshness reset. Complete repository→local recovery/reconciliation of Direction/Command/Use-Case catalogs and durable order belongs to `SCN-PH-RECOVER` through `Hard Reload GitHub`. Neither branch publishes local content.
+**Boundary:** `Sync missing` is additive and not a complete freshness reset. Complete repository→local recovery/reconciliation of Command/Use-Case catalogs and durable order belongs to `SCN-PH-RECOVER` through `Hard Reload GitHub`. Neither branch publishes local content.
 
 **Traceability:**
 

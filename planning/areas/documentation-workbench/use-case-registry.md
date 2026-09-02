@@ -1,12 +1,10 @@
 # Documentation Workbench Use-Case Registry
 
 Status: active project-local semantic registry
-Parent Direction: [`direction-registry.md`](direction-registry.md)
 
 ## `UC-DW-DOC-REF` — Repository Documentation Change And Reference Review
 
 **Status:** active current
-**Parent Direction:** `DIR-DOCUMENTATION-WORKBENCH`
 
 **Trigger / input:** repository file/folder/stable section is selected for direct documentation work or accepted planning meaning is ready for materialization.
 
@@ -21,7 +19,6 @@ Parent Direction: [`direction-registry.md`](direction-registry.md)
 ## `UC-DW-PLANNING-TO-REPOSITORY` — Planning Meaning To Repository
 
 **Status:** active current
-**Parent Direction:** `DIR-DOCUMENTATION-WORKBENCH`
 
 **Trigger / input:** selected source/current owners/Ideas/current conclusions require integration and repository file handoff.
 

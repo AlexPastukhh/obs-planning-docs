@@ -1,12 +1,10 @@
 # Planning Runtime Use-Case Registry
 
 Status: active project-local semantic registry
-Parent Direction: [`direction-registry.md`](direction-registry.md)
 
 ## `UC-PR-END-SESSION` — End Active Planning Session
 
 **Status:** active current
-**Parent Direction:** `DIR-PLANNING-RUNTIME`
 **Purpose:** close the active operational planning session/day consistently and expose the resulting next state.
 **Trigger / accepted input:** user explicitly ends the active session/day workflow.
 **Result / end state:** current operational session state is closed/logged according to the runtime workflow and next state is explicit.

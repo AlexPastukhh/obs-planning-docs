@@ -5,7 +5,7 @@ Main owner for `UC-PLAN-WORKSPACE-REVIEW-TOPOLOGY`.
 Scope: review several Workspace UCs together when coherent boundaries/relations/topology are the independently useful result.
 
 Canonical planning principles: [`workspace-planning-principles-and-terminology.md`](workspace-planning-principles-and-terminology.md)
-Canonical generic UC semantics: [`../direction-and-use-case-registry-workflow.md`](../direction-and-use-case-registry-workflow.md)
+Canonical generic UC semantics: [`../principles-and-terminology.md`](../principles-and-terminology.md)
 Recommended integrated shape: [`WORKSPACE-USE-CASE-PLANNING-TEMPLATE.md`](WORKSPACE-USE-CASE-PLANNING-TEMPLATE.md)
 
 ## 1. Resolve The Multi-UC Concern

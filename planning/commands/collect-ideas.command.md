@@ -34,9 +34,6 @@ Scope: legacy compatibility command alias. Current planning behavior is owned by
   "userTarget": "<source/discussion to collect Ideas from>",
   "palette": false,
   "refinements": [],
-  "directionIds": [
-    "DIR-PLAN-SOLUTION"
-  ],
   "helperPresentation": null,
   "methodologyBinding": null
 }

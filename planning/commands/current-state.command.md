@@ -28,7 +28,7 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
   "keyReminders": [
     "Report current repo/chat/planning state from checked current owners.",
     "Separate known, local, unknown and not checked.",
-    "Use Directions/Use Cases to resolve the current owner instead of a manually synchronized global state register.",
+    "Use current Use-Case / Scenario / specialized owners to resolve the current owner instead of a manually synchronized global state register.",
     "Do not present an unstated future plan as confirmed.",
     "Do not edit or archive unless separately requested."
   ],

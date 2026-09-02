@@ -31,9 +31,6 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
   ],
   "userTarget": "<Screen map / screen-system scope>",
   "palette": true,
-  "directionIds": [
-    "DIR-PLAN-SOLUTION"
-  ],
   "helperPresentation": {
     "whenToUse": "Use when Scenario behavior requires explicit screen/window/spatial planning.",
     "whatYouGet": "Screen map, Scenario×Screen mapping, availability/routes/responsibilities; may validly conclude Screen Target is not justified.",

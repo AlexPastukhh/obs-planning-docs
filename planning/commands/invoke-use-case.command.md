@@ -19,7 +19,7 @@ Scope: generic manual invocation route for one selected current canonical Use Ca
   "activeContextBehavior": "Use the explicitly selected UC ID and current user target. Resolve that exact current canonical registry entry and follow its owner route; ask only when the UC identity or target is genuinely missing or ambiguous.",
   "traversalReadMode": "Targeted/full according to the selected UC owner route and current target.",
   "ownerFiles": [
-    "planning/documentation/direction-and-use-case-registry-workflow.md"
+    "planning/use-case-registry.md"
   ],
   "expectedOutput": "The selected Use Case result for the current user target, using current owner semantics and preserving its permission boundary.",
   "permissionMode": "read-only-unless-selected-uc-route-explicitly-authorizes-more",

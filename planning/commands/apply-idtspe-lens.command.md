@@ -35,9 +35,6 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
   ],
   "userTarget": "<lens> к <target/context>",
   "palette": true,
-  "directionIds": [
-    "DIR-REPOSITORY"
-  ],
   "helperPresentation": {
     "whenToUse": "Use when you already know which registered Lens perspective you want to apply, including a Lens normally reached through another Target Module.",
     "whatYouGet": "Material analysis/findings from that Lens inside the resolved IDTSPE Target context, with its Knowledge Basis loaded proportionally and material Finding Candidates crossing Core Finding Disposition before owner/State/lifecycle consequences.",

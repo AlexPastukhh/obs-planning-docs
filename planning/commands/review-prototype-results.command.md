@@ -31,9 +31,6 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
   ],
   "userTarget": "<prototype subject with actual Evidence>",
   "palette": true,
-  "directionIds": [
-    "DIR-PLAN-SOLUTION"
-  ],
   "helperPresentation": {
     "whenToUse": "Use after a prototype/experiment produced actual Evidence that should update the same Prototype Target.",
     "whatYouGet": "Prototype Results / Evidence interpretation, limitations, residual uncertainty and revalidation/follow-up.",

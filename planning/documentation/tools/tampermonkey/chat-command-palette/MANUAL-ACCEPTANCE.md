@@ -11,8 +11,8 @@ Canonical application semantics: [`scenarios/README.md`](scenarios/README.md). A
 - With an existing local snapshot and GitHub unavailable, reload ChatGPT and confirm Commands / Use Cases / Prompts browse/search from local state.
 - Confirm startup/open/search/Insert/Copy makes no GitHub request.
 - On a fresh/empty catalog snapshot, confirm Commands/Use Cases direct the user to `Hard Reload GitHub` instead of silently using a hard-coded bundled catalog.
-- After Hard Reload, confirm current Commands and Use Cases are grouped under current GitHub-backed Directions.
-- Favorite one Command and one Use Case; confirm `★ Favorites` duplicates the same row while the original remains in its Direction.
+- After Hard Reload, confirm current Commands and Use Cases are restored from their GitHub-backed catalogs.
+- Favorite one Command and one Use Case; confirm `★ Favorites` duplicates the same row while the original remains in the ordinary catalog.
 
 <a id="scn-ph-use"></a>
 ## `SCN-PH-USE`
@@ -31,7 +31,7 @@ Canonical application semantics: [`scenarios/README.md`](scenarios/README.md). A
 - Create/edit a Planning Command draft and Prompt locally; verify no GitHub request.
 - Hide/delete a Command and Use Case locally; confirm repository authority remains untouched.
 - Favorite/unfavorite Command/Use-Case IDs and confirm persistence.
-- Move Commands, Use Cases, Prompts and Direction groups with `↑` / `↓`; confirm immediate local order and zero GitHub requests.
+- Move Commands, Use Cases and Prompts with `↑` / `↓`; confirm immediate local order and zero GitHub requests.
 - Resize/drag the panel; reopen and confirm `left/top/width/height` persist and remain viewport-clamped.
 - On desktop confirm wide content/action layout; on a narrow viewport confirm actions wrap below content.
 
@@ -46,14 +46,14 @@ Canonical application semantics: [`scenarios/README.md`](scenarios/README.md). A
 ## `SCN-PH-CHECK-REPOSITORY`
 
 - Run `Check GitHub` against a controlled repository.
-- Verify inventory includes Planning Commands, Directions, Use Cases, Prompts/helper records and catalog-order status.
+- Verify inventory includes Planning Commands, Use Cases, Prompts/helper records and catalog-order status.
 - Confirm same-path/ID does not claim content equality without SHA/content evidence.
 - Confirm Check mutates no local catalog/order.
 
 <a id="scn-ph-sync"></a>
 ## `SCN-PH-SYNC`
 
-- Put a supported Direction/Command/Use-Case/Prompt record in GitHub that is absent locally; run `Sync missing` and confirm only missing content is added.
+- Put a supported Command/Use-Case/Prompt record in GitHub that is absent locally; run `Sync missing` and confirm only missing content is added.
 - Confirm same-ID/path local records are not overwritten.
 - Edit one tracked local Planning Command, run row `Reload`, and confirm only that command is replaced by GitHub content.
 
@@ -64,7 +64,7 @@ Canonical application semantics: [`scenarios/README.md`](scenarios/README.md). A
 - Exercise stale-SHA conflict with equal intended remote bytes; confirm recovered verified success without a second PUT.
 - Exercise real conflicting bytes; confirm no automatic overwrite.
 - Force local snapshot persistence failure after verified remote success; confirm UI reports remote success plus local-metadata warning.
-- Reorder Directions/Commands/Use Cases, run `Save order GitHub`, and verify only `catalog-order.json` changes with intended stable-ID order.
+- Reorder Commands/Use Cases, run `Save order GitHub`, and verify only `catalog-order.json` changes with intended stable-ID order.
 - Edit `catalog-order.json` directly in GitHub, then Hard Reload; confirm edited durable order becomes local order.
 - Confirm repository delete/local Git commit/push are unavailable.
 
@@ -72,16 +72,15 @@ Canonical application semantics: [`scenarios/README.md`](scenarios/README.md). A
 ## `SCN-PH-RECOVER`
 
 - Create local Command edits/hides and a local order divergence; keep a local Prompt with unsaved local content.
-- Run `Hard Reload GitHub`, accept confirmation and verify current GitHub Directions/Commands/Use Cases/order replace local catalog state; hidden catalog rows reappear; local Prompt content and Favorites survive.
-- Confirm no maintained Command/Use-Case/Direction catalog needs reinstalling with a new userscript for recovery.
+- Run `Hard Reload GitHub`, accept confirmation and verify current GitHub Commands/Use Cases/order replace local catalog state; hidden catalog rows reappear; local Prompt content and Favorites survive.
+- Confirm no maintained Command/Use-Case catalog needs reinstalling with a new userscript for recovery.
 - Exercise pasted recovery fallback and confirm it makes zero Helper-side GitHub requests and invents no SHA.
 
 ## Registry-driven parity / no-hardcode
 
-- Confirm `seed/directions.json` exactly projects current `planning/direction-registry.md`.
 - Confirm `seed/use-cases.json` exactly projects every current canonical Use-Case registry under `planning/**`, while legacy/historical compatibility indexes are not projected as current UCs.
 - Confirm `seed/commands.json` exactly projects current `planning/commands/*.command.md`.
-- Search generated `chat-command-palette.user.js` for representative current IDs (`UC-PLAN-DOMAIN`, `DIR-PLAN-SOLUTION`, `application_domain.plan`) and confirm they are absent as maintained catalog data.
+- Search generated `chat-command-palette.user.js` for representative current IDs (`UC-PLAN-DOMAIN`, `application_domain.plan`) and confirm they are absent as maintained catalog data.
 
 ## Universal order acceptance
 

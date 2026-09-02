@@ -5,7 +5,7 @@ Main owner for `UC-PLAN-WORKSPACE-CHANGE-UC`.
 Scope: integrate all currently selected change meaning for one existing Workspace UC into one coherent Target UC and proportional vertical realization plan.
 
 Canonical planning principles: [`workspace-planning-principles-and-terminology.md`](workspace-planning-principles-and-terminology.md)
-Canonical generic UC semantics: [`../direction-and-use-case-registry-workflow.md`](../direction-and-use-case-registry-workflow.md)
+Canonical generic UC semantics: [`../principles-and-terminology.md`](../principles-and-terminology.md)
 Recommended integrated shape: [`WORKSPACE-USE-CASE-PLANNING-TEMPLATE.md`](WORKSPACE-USE-CASE-PLANNING-TEMPLATE.md)
 
 ## 1. Current State

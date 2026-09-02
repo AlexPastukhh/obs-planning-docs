@@ -1,7 +1,7 @@
 # OBS Command Routing
 
 Status: active project-specific root command-system router
-Scope: mandatory executable-command entry and shared command routing/global policy. Semantic repository meaning is discovered through Direction Registries and the applicable primary semantic registry: Workspace/methodology Use-Case Registries or Application Scenario Catalogs.
+Scope: mandatory executable-command entry and shared command routing/global policy. Semantic repository meaning is discovered through README/navigation and the applicable primary semantic registry: Workspace/methodology Use-Case Registries, Application Scenario Catalogs or specialized semantic owners.
 
 ## Authority
 
@@ -12,11 +12,8 @@ planning/command-routing.md
 planning/commands/*.command.md
   = one concrete command route each;
 
-planning/direction-registry.md + local Direction Registries
-  = semantic work directions;
-
 planning/use-case-registry.md + local Use-Case Registries
-  = semantic independently useful Workspace/methodology capabilities;
+  = semantic independently useful Workspace/methodology capabilities; registry groups are navigation only;
 
 Application Scenario Catalogs + Scenario owners
   = independently meaningful Application behavior;
@@ -107,13 +104,13 @@ No unresolved choice or fallback authorizes destructive actions, unrelated scope
 - `commandFamily` includes the canonical trigger exactly;
 - command files own output, active-context behavior, reads and permissions;
 - reusable workflows own algorithms instead of being copied into command bodies;
-- commands are optional shortcuts: repository semantic discovery must remain possible through Directions and the applicable current Use-Case Registry or Scenario Catalog;
+- commands are optional shortcuts: repository semantic discovery must remain possible through README/navigation and the applicable current Use-Case Registry, Scenario Catalog or specialized semantic owner;
 - a retired/legacy compatibility command may preserve an old ID/alias for callers, but its `meaning`, `ownerFiles`, active-context behavior and expected output must route to current semantic/methodology authority. `palette:false` alone is not semantic retirement and must never keep an obsolete runtime alive.
 
 ## Permission Boundary
 
-Command permission is explicit and local to the selected command. Direction/semantic-entry activation never expands it. No command implies Git commit/push unless its direct definition explicitly owns that behavior.
+Command permission is explicit and local to the selected command. Semantic-entry activation never expands it. No command implies Git commit/push unless its direct definition explicitly owns that behavior.
 
 ## Planning Helper Boundary
 
-The helper projects commands from direct definitions. Orientation/Directions/Use Cases project semantic navigation from their registries. Generated helper artifacts never become command or semantic authority.
+The helper projects commands from direct definitions. Orientation/Use Cases project semantic navigation from current README/registry owners. Generated helper artifacts never become command or semantic authority.

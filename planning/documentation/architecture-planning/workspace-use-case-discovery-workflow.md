@@ -5,9 +5,9 @@ Main owner for `UC-PLAN-ARCH-WORKSPACE-USES`.
 Status: active reusable Use-Case owner workflow
 Scope: resolve current canonical Workspace UCs and discover architecture-relevant candidate useful results needed by Architecture Planning without becoming canonical UC establishment/change authority or inventing a mandatory exhaustive UC catalogue.
 
-Generic UC identity/contract: [`../direction-and-use-case-registry-workflow.md`](../direction-and-use-case-registry-workflow.md)
+Generic UC identity/contract: [`../principles-and-terminology.md`](../principles-and-terminology.md)
 Architecture-input semantics: [`workspace-use-cases-and-change-pressure.md`](workspace-use-cases-and-change-pressure.md)
-Canonical Workspace UC establishment/change/topology planning: [`../workspace-planning/direction-registry.md`](../workspace-planning/direction-registry.md)
+Canonical Workspace UC establishment/change/topology planning: [`../workspace-planning/use-case-registry.md`](../workspace-planning/use-case-registry.md)
 
 ## 1. Purpose
 

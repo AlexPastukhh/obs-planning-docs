@@ -58,7 +58,7 @@ A **Use-Case Registry** is the current functional map of a Use-Case scope.
 
 It groups Use Cases for readability and records where every current Use Case is canonically owned.
 
-A group heading is navigation only. It is not a Direction, capability owner, or additional ontology layer.
+A group heading is navigation only. It is not a capability owner or additional ontology layer.
 
 The minimal registry contract is:
 
