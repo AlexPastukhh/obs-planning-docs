@@ -1504,3 +1504,65 @@ Logging starts only after explicit user instruction; no pre-start history is rec
 **Target-State Result:** Replacement Package App documentation has a stable requirements hierarchy: Scenario BI own business behavior and reasons; Domain owners implement BI and optionally carry durable domain architecture requirements; Slices realize the same BI using Domain and optionally carry durable orchestration requirements; code-level mechanics stay in source or future generated traces; recommended templates guide documentation without becoming mandatory schemas.
 
 **APPLIED relation:** successful Apply of package `f19471a0-1e9b-4dc3-9b95-16d969bf5df8` refines the documentation operating model inside still-open ChangeSet `40ce50dd-c0d3-42ae-b6b7-9ea0e9b78f91`. Actual migration of Scenario BI, Domain owners, Slice BI mappings and Evolution Steps remains a separate following package unless review closes the ChangeSet first.
+
+### LOG-RPKG-069 — Establish Scenario behavioral-design documentation process
+
+**Type:** DOCUMENTATION ARCHITECTURE / SCENARIO PROCESS + FEATURE INTERACTIONS / NEW CHANGESET / APPLIED TARGET  
+**ChangeSet:** `5288db44-37ea-445b-b3e8-90f564b6cdd7`  
+**ChangeSet Label:** `Replacement Package App - Scenario Behavioral Design Documentation`  
+**Package:** `b07b856d-a761-4bb7-8cce-f0aef809a38c`
+
+**Selected documentation step:**
+- replace ambiguous Scenario `Stage` decomposition with a complete `Scenario Process Specification` whose Scenario-local `Feature Interactions` expose meaningful context/inputs, observable behavior, outcomes, Result/Outputs and transitions;
+- keep `Behavior Items` as the stable Scenario-owned business/application requirements (`Requirement + Reason`) consumed by Domain discovery, while introducing `UI Requirements` as a separate intentional presentation/interaction requirement class rather than allowing layout details to inflate BI;
+- make `Goal`, `Scenario Role` and `Why This Interaction Design` explicit separate meanings, and distinguish Context/Preconditions from Required Inputs plus meaningful Result from reusable Outputs;
+- require Scenario completeness checks so BI/UI requirements formalize behavior visible in the Process Specification instead of becoming a hidden second source of Scenario truth.
+
+**Behavioral design exploration:**
+- add `DOC-UC-07` for comparing candidate Feature Interaction and complete Scenario Process variants before authoritative maintenance;
+- allow alternatives to change inputs, process, Result/Outputs and whole composition, including explicit `Compose`, `Split` and `Replace` decisions;
+- compare both interaction internals and contracts/boundaries between interactions, including whether stronger outputs remove later manual inputs/interactions or whether composition removes a useful control/recovery point;
+- preserve `Strengths`, known `Problems`, neutral `Complexity`/complexity placement, `Risks` and open `Questions` only when they materially explain a design choice;
+- keep optional mental/visual/interactive walkthrough as a design technique for deciding how the Scenario should work, not as a required documentation dependency or a substitute for Scenario authority.
+
+**Authority / evolution boundaries:**
+- candidate/rejected alternatives do not become current truth, Migration Delta, Evolution Steps or architecture requirements automatically;
+- selected-but-unimplemented behavior is classified as `URGENT`/`PLANNED`; plausible useful future remains explicitly non-binding `POSSIBLE`; accepted implementation is promoted into current Process Specification;
+- Evolution Steps may change Process composition, Feature Interactions/contracts, BI and UI Requirements while remaining coherent user-visible/application behavioral changes rather than implementation refactors;
+- Domain remains BI-first and Aggregate/consistency-boundary driven; Feature Interaction names do not dictate Domain objects/aggregates;
+- Feature Interaction is behavioral decomposition and Slice is implementation decomposition; no 1:1 mapping is required.
+
+**Template/process integration:**
+- rebuild the Scenario template around Process Specification + Feature Interaction entries and add reusable forms for Feature Interaction, Feature Interaction Variant, Scenario Process Variant and UI Requirements;
+- update the Evolution Step form for process/FI/contract/BI/UI impact;
+- keep existing Aggregate, Domain Object, Slice, Cross-cutting Capability and generated-trace forms while adding direct anchors;
+- make every documentation use case link directly to the exact recommended template at the process step where it is needed; retain templates as flexible starting forms, not schemas;
+- align `README.md`, `domain-evolution.md` and the bottom integration rule with the same terminology without migrating actual Scenario, Slice or Domain owners in this package.
+
+**Preserved boundaries:**
+- no actual `scenarios/*`, `slices.md`, Domain owner, testing, protocol or runtime/source behavior is changed by this documentation-model package;
+- DI/SI remain optional durable architecture requirements; Cross-cutting Capability remains conditional; generated implementation traces remain source-derived/non-authoritative; normative documentation still does not duplicate code call graphs or accidental current UI layout.
+
+**Target-State Result:** Replacement Package App documentation can now first explore competing behavioral designs, then maintain a selected Scenario as one complete Process Specification composed of Feature Interactions with explicit contracts, BI/Reasons and intentional UI Requirements, and finally feed stable BI into Domain/Slice architecture. Templates are operationally linked from the corresponding documentation workflows, while candidate design alternatives and optional visual simulation remain clearly outside current truth until selected/classified.
+
+**APPLIED relation:** successful Apply of package `b07b856d-a761-4bb7-8cce-f0aef809a38c` establishes this documentation process for new ChangeSet `5288db44-37ea-445b-b3e8-90f564b6cdd7`. Migration of the three actual Scenario owners and downstream Domain/Slice mappings remains a separate following change after this documentation-model update is reviewed.
+
+### LOG-RPKG-070 — Correct preserved Domain/Slice principles and cross-interaction BI ownership
+
+**Type:** REVIEW DIFF / DOCUMENTATION MODEL CORRECTION / APPLIED TARGET  
+**Reviewed ChangeSet:** `5288db44-37ea-445b-b3e8-90f564b6cdd7`  
+**Corrects Package:** `b07b856d-a761-4bb7-8cce-f0aef809a38c`  
+**Correction Package:** `973485bf-8470-4797-8ae1-65576fcdc060`
+
+**Review finding / selected correction:**
+- restore the previously accepted Domain rule that a generic DRY slogan is not itself a useful `DI-*`; a durable Domain implementation requirement must identify the concrete duplicated semantic rule that needs one owner and why;
+- restore the previously accepted Slice rules that an existing Slice may evolve through internal modular expansion/composition and that a separate supporting Slice requires an independently meaningful capability/result or recovery/composition boundary rather than implementation size alone;
+- make the agreed boundary-BI case explicit: when one Scenario BI constrains several Feature Interactions, keep one authoritative `Requirement + Reason` and reference the same BI identity from each relevant interaction instead of duplicating/rewording the requirement; mirror that rule in the Feature Interaction template notes.
+
+**Preserved scope:**
+- no Scenario owner, `slices.md`, Domain owner, protocol, test or runtime/source behavior changes in this correction;
+- the Scenario Process / Feature Interaction / UI Requirement / design-variant model from `LOG-RPKG-069` remains unchanged; this package only restores semantic rules that were unintentionally lost or left implicit during that rewrite.
+
+**Target-State Result:** the new Scenario behavioral-design documentation model preserves the earlier BI→Domain→Slice architecture rules without ambiguity: Domain `DI-*` remains concrete rather than slogan-driven, Slice boundaries remain capability/recovery driven rather than size-driven, and one BI may constrain multiple Feature Interactions without creating duplicate BI authority.
+
+**APPLIED relation:** successful Apply of package `973485bf-8470-4797-8ae1-65576fcdc060` corrects the still-open ChangeSet `5288db44-37ea-445b-b3e8-90f564b6cdd7` after ReviewDiff `NEEDS_CORRECTION`; ChangeSet identity/label and Work Intent remain unchanged.
