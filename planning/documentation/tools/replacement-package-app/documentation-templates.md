@@ -19,6 +19,12 @@ Presentation should preserve meaning while making it easy to recover:
 
 Do not add empty sections merely to conform to a template. Do not turn template headings into a new bureaucracy, lifecycle or validation taxonomy.
 
+Planning depth is intentionally progressive:
+
+- during early Scenario design, `Application Benefit / Desired Result` + a candidate FI map + brief FI roles/local Results may be enough;
+- deepen uncertain FIs only far enough to validate boundaries and compare designs;
+- once behavior is selected/current, the Scenario owner should carry the complete Process Specification, including the needed FI Interaction Processes and BI.
+
 The documentation process and terminology are owned by [`documentation-use-cases.md`](documentation-use-cases.md). The use cases link directly to the forms below at the step where each form is useful.
 
 ---
@@ -33,13 +39,13 @@ Use the same owner form for current and planned future Scenarios; make owner sta
 Status: active current Scenario owner
 # or: planned future Scenario owner
 
-## User Goal
-...
+## Application Benefit / Desired Result
+<what useful application result this Scenario realizes>
 
 ## Process Specification
 
-### Process Map
-<compact FI topology / runtime branches / loops / terminal outcomes when useful>
+### Scenario Process / Feature Interaction Map
+<compact FI composition / ordering / cross-FI branches / loops / terminal outcomes>
 
 ### FI-RPKG-<SEMANTIC-NAME> — <readable Feature Interaction name>
 <Feature Interaction form>
@@ -56,7 +62,8 @@ Status: active current Scenario owner
 ```
 
 Notes:
-- Process Specification remains the complete behavioral specification.
+- The Benefit / Desired Result explains why the Scenario exists; the selected FI composition is how the Scenario realizes it.
+- Process Specification remains the complete behavioral specification: Scenario Process owns FI composition/transitions and detailed FI entries own FI-local runtime behavior.
 - FI/component-local UI Requirements may live with the FI; Screen-owned spatial/window requirements live in the selected Screen owner.
 - `Evolution Steps` contains Scenario-owned application-behavior changes, not lower-level implementation plans.
 - Current Scenario truth is not called transitional merely because future evolution exists.
@@ -72,11 +79,8 @@ Use as a recommended local form inside a Scenario Process Specification and duri
 ```text
 ### FI-RPKG-<SEMANTIC-NAME> — <readable name>
 
-Goal:
-<local meaningful result sought>
-
-Scenario Role:
-<why this interaction exists here and what it enables/prepares for the rest of the Scenario>
+Scenario Role / Local Purpose:
+<why this selected behavior exists here and what it enables/prepares for the rest of the Scenario>
 
 Context / Preconditions:
 <relevant already-established state>
@@ -139,11 +143,12 @@ Questions:
 
 Notes:
 
-- `Goal`, `Scenario Role` and `Why This Interaction Design` are different meanings; do not collapse them into one vague reason.
+- FI is a selected behavioral means inside the Scenario, not an independent top-level product goal.
+- `Scenario Role / Local Purpose` explains why the FI exists in this composition; `Why This Interaction Design` explains why this particular realization was selected.
 - Context/Preconditions are not automatically Required Inputs.
-- Result is not the same thing as Outputs.
-- Success, validation error, interruption and uncertainty are usually outcomes of the same FI while the local goal remains unchanged.
-- Behavior Items are Scenario behavioral requirements. FI/component-local UI Requirements may remain here; Screen-owned spatial/window requirements belong to the selected Screen owner and are referenced rather than duplicated.
+- Result is not the same thing as Outputs; local Result helps define a useful FI boundary.
+- Success, validation error, interruption and uncertainty are usually outcomes of the same FI while its Scenario-local role remains unchanged.
+- Behavior Items are implementation-independent requirements needed for selected FI behavior to correctly realize the Scenario. FI/component-local UI Requirements may remain here; Screen-owned spatial/window requirements belong to the selected Screen owner and are referenced rather than duplicated.
 - If one BI constrains the boundary between several Feature Interactions, define its `Requirement + Reason` once and reference the same BI identity from the other relevant interactions instead of duplicating/rewording it.
 - Do not document accidental current layout as a durable UI requirement.
 - Omit design-analysis headings for obvious/simple interactions when they add no information.
@@ -158,7 +163,7 @@ Use when a local interaction has materially different behavioral designs worth c
 ```text
 ### <candidate / variant name>
 
-Local Goal:
+Scenario Role / Local Purpose:
 ...
 
 Context / Preconditions:
@@ -208,12 +213,12 @@ Variants are not required to preserve the same input/output contract. A stronger
 <a id="template-scenario-process-variant"></a>
 ## Template — Scenario Process Variant
 
-Use to compare materially different complete compositions for the same Scenario Goal.
+Use to compare materially different complete FI compositions for the same Scenario Benefit / desired result.
 
 ```text
 ### <Scenario Process Variant>
 
-Scenario Goal:
+Application Benefit / Desired Result:
 ...
 
 Initial Context / Inputs:
@@ -253,7 +258,7 @@ Decision / rationale:
 <when useful>
 ```
 
-Compare both the interactions and the boundaries/contracts between them. More interactions may add control/recovery points; fewer interactions may reduce user work while increasing partial-completion/recovery complexity.
+Compare both the interactions and the boundaries/contracts between them. Explore enough FI-local runtime behavior to judge whether the candidate boundaries are real; do not require full FI detail while the high-level composition is still moving. More interactions may add control/recovery points; fewer interactions may reduce user work while increasing partial-completion/recovery complexity.
 
 ---
 

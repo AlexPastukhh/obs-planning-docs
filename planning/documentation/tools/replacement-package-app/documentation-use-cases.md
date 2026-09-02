@@ -7,9 +7,9 @@ Scope: how Replacement Package App documentation designs and preserves Scenario 
 
 Documentation must make these layers understandable without turning any one layer into a duplicate of another:
 
-1. what accepted user/application behavior is true now;
-2. how Scenario behavior and Screen realization are explored together before either is selected;
-3. which Feature Interactions, Behavior Items and interaction/component-local UI Requirements define selected Scenario behavior;
+1. which application benefit / desired result each Scenario exists to realize and what accepted user/application behavior is true now;
+2. how Scenario Feature Interaction composition and Screen realization are explored together before either is selected;
+3. which Feature Interactions, their internal Interaction Processes, Behavior Items and interaction/component-local UI Requirements define selected Scenario behavior;
 4. which selected Screen model owns spatial/window meaning, Scenario/FI-to-Screen relations and Screen-owned behavior requirements;
 5. what known application behavior may change or expand through Scenario-owned Evolution Steps;
 6. when selected Evolution Steps and materially independent local impacts are likely/intended to happen, and which steps depend on or enable others;
@@ -26,22 +26,23 @@ Documentation must make these layers understandable without turning any one laye
 The target semantic/implementation/proof flow is:
 
 ```text
-Scenario Goal
-→ Scenario Process Specification
-→ Feature Interactions
-   ├─ Behavior Items + Reasons
-   └─ FI/component-local UI Requirements
+Application Benefit / Desired Result
+→ Scenario
+   ├─ Scenario Process = selected FI composition / ordering / transitions
+   └─ Feature Interactions
+      ├─ Interaction Process
+      ├─ Behavior Items + Reasons
+      └─ FI/component-local UI Requirements
 ↔ selected Screen design
    ├─ Screen Map / Scenario×Screen / FI×Screen
    └─ Screen Behavior Items
-→ Domain discovery and Domain owners
-→ optional Domain Implementation Items
-→ Slice / optional Shared Implementation Capability
-→ optional Slice/shared Implementation Items
-→ local Tests / optional Test Items
-→ exact production + test code
+→ Domain discovery / Slice / optional Shared Implementation Capability
+   ├─ optional Domain / Slice / shared Implementation Items → production code
+   └─ local Tests / optional Test Items → test code
 → executed automated/practical Evidence
 ```
+
+This diagram shows authority/realization relationships, not chronological TDD order. When a credible executable proof boundary is known, failing proof may deliberately be written before production code while tests remain proof of required behavior rather than a second semantic authority.
 
 Evolution responsibility is deliberately split:
 
@@ -68,11 +69,13 @@ Implementation Items
 Design exploration precedes authoritative Scenario/Screen maintenance when behavior or spatial realization is not yet selected:
 
 ```text
-Scenario Goal
-→ candidate Scenario Process Variants
-↔ candidate Feature Interaction Variants
+Application Benefit / Scenario Desired Result
+→ candidate Scenario Process / FI composition
+→ brief FI roles + local Results
+↔ sketch uncertain FI Interaction Processes
+↔ discover candidate Behavior Items / constraints
 ↔ candidate Screen Set / Screen Variants
-→ compare contracts / composition / spatial realization / complexity
+→ revise FI boundaries / composition as needed
 → select or refine design
 → current Scenario + Screen truth OR Evolution Step OR retained/rejected alternative
 ```
@@ -89,45 +92,59 @@ Behavior or architecture that is already accepted as implemented.
 
 Current Scenario prose describes current user/application behavior. Current Domain/Slice prose describes current semantic responsibility and durable architecture constraints, not a manually maintained copy of source structure.
 
+### Application Benefit / desired result
+
+The useful application result that justifies a Scenario. It answers why the application should provide this Scenario at all.
+
+A Benefit / desired result is upstream of the selected Feature Interaction design. Different FI compositions may legitimately realize the same Benefit. Keep this meaning in the Scenario owner unless several Scenarios genuinely need one separate shared benefit owner.
+
+### Scenario
+
+A Scenario is one selected composition of Feature Interactions in an application interaction context that realizes an application Benefit / desired result.
+
+For UI applications, that interaction context may span one or more Screens/Windows. Do not force `1 Scenario = 1 Window`: Scenario owns behavioral composition, while selected Screen owners own spatial/window meaning.
+
 ### Scenario Process Specification
 
-The complete behavioral specification of one Scenario.
+The complete behavioral specification of one Scenario. It consists of two related scales:
 
-It makes meaningful behavior visible directly: context/inputs, Feature Interactions, observable application behavior, outcomes, branches, loops, retries, validation/error/uncertain paths, Results, Outputs, transitions and terminal outcomes.
+- **Scenario Process** — FI composition, ordering, transitions between FIs, cross-FI branches/loops and terminal outcomes;
+- **Feature Interaction specifications** — the local runtime behavior inside each selected FI, including context/inputs, Interaction Process, outcomes, Results, Outputs, retries/recovery/uncertainty when material and transitions back to the Scenario Process.
 
-A Process Specification is not merely a short overview whose missing semantics appear only later in Behavior Items. Behavior Items and UI Requirements formalize requirements already visible in the process; they do not become a second hidden source of Scenario behavior.
+The complete specification must still make meaningful observable behavior visible. Separating the two scales prevents a high-level Scenario map from absorbing FI internals while preserving full behavior authority in the Scenario owner.
 
-A compact Process Map may show topology while detailed Feature Interaction entries carry the full local behavior. These are two views of the same specification.
+A Process Specification is not merely a short overview whose missing semantics appear only later in Behavior Items. Behavior Items and UI Requirements formalize requirements already visible in the selected FI behavior; they do not become a second hidden source of Scenario behavior.
+
+A compact Scenario Process Map may show FI topology while detailed FI entries carry the full local behavior. Together they are the complete Process Specification.
 
 ### Feature Interaction
 
-A Scenario-local selected behavioral way to achieve one local meaningful result from particular context and inputs through observable application behavior, producing a Result and Outputs that may affect subsequent Scenario behavior.
+A Feature Interaction is a selected Scenario-local unit of application behavior through which the Scenario progresses toward its Benefit / desired result. It is a behavioral means inside the Scenario, not an independent top-level product goal.
 
-A Feature Interaction may be user-triggered, automatically continued by the application, externally driven, or a combination. It does not imply one button, one class or one Slice.
+A useful FI has a meaningful local role and Result sufficient to distinguish it from neighboring behavior. It may be user-triggered, automatically continued by the application, externally driven, or a combination. It does not imply one button, one class or one Slice.
 
 The important parts are:
 
-- **Goal** — what local meaningful result is sought;
-- **Scenario Role** — why this interaction exists at this point in the Scenario and what it enables/prepares for later behavior;
+- **Scenario Role / Local Purpose** — why this selected behavior exists here and what it enables/prepares for the Scenario;
 - **Context / Preconditions** — already-established state relevant to the interaction;
 - **Required Inputs** — information/artifacts/actions actually consumed by the interaction;
-- **Interaction Process** — observable user/application behavior;
+- **Interaction Process** — runtime user/application behavior inside this FI;
 - **Outcomes** — meaningful success/error/validation/uncertain results;
-- **Result** — meaningful application/user-world truth established by an outcome;
+- **Result** — meaningful local application/user-world truth established by an outcome and useful for defining the FI boundary;
 - **Outputs** — information/artifacts/identity/state produced for later consumption;
 - **Next Interactions** — transitions, loops or termination enabled by outcomes.
 
-`Goal`, `Scenario Role` and `Why This Interaction Design` are different questions. Goal says what is needed locally. Scenario Role explains why the interaction is needed in this Scenario composition. Design rationale explains why this particular input/process/result/output form was selected.
+`Scenario Role / Local Purpose` and `Why This Interaction Design` are different questions. Role/purpose explains why the FI exists in this Scenario composition. Design rationale explains why this particular input/process/result/output/control-point form was selected instead of another realization.
 
 ### Feature Interaction Variant
 
-An alternative behavioral design for a local Feature Interaction goal.
+An alternative behavioral design for the same Scenario-local role/responsibility.
 
 Variants may require fewer, more or different inputs; use different context; require different user actions; produce different-strength Results/Outputs; move control points; or remove the need for a later interaction. Variants are not required to preserve the same input/output contract.
 
 ### Scenario Process Variant
 
-An alternative composition of Feature Interactions for achieving the same Scenario Goal.
+An alternative composition of Feature Interactions for realizing the same Scenario Benefit / desired result.
 
 A Process Variant may add/remove interactions, compose several into one, split one into several, replace one interaction with another, change initial inputs, change contracts between interactions or produce different final outputs.
 
@@ -141,13 +158,15 @@ Do not represent a rejected alternative as a current runtime branch. Considering
 
 ### Behavior Item
 
-A Behavior Item is one atomic **business/application behavioral requirement** of a Scenario.
+A Behavior Item is one atomic **implementation-independent business/application behavioral requirement** that must hold for one or more selected Feature Interactions / their Interaction Processes to correctly realize the Scenario.
 
 It answers:
 
-> What must the application do, or what must remain true, for this Scenario behavior to be correct?
+> What must the application do, or what must remain true, for this selected FI behavior to be correct and therefore support the Scenario Benefit / desired result?
 
-A Behavior Item deliberately does **not** prescribe one implementation mechanism. It should remain valid across ordinary refactoring and across multiple possible implementations of the same behavior.
+A Behavior Item deliberately does **not** prescribe one implementation mechanism. It should remain valid across ordinary refactoring and across multiple possible implementations of the same selected behavior.
+
+Collectively, the BI set is the normative requirement decomposition through which selected FI behavior is made correct. Domain, Slice and Shared Implementation owners then implement those BI; tests verify that implementation rather than becoming a second behavior authority.
 
 Prefer a stable technical ID that does not encode document position or roadmap order, plus a readable name that communicates the requirement. For example:
 
@@ -165,7 +184,7 @@ Reason:
 <why this behavior exists>
 ```
 
-The `Reason` may explain a Scenario/Feature Interaction goal, later behavior that depends on the rule, a semantic boundary, recovery/uncertainty correctness, or a concrete bug/class of bugs the rule prevents. Do not invent a bug-prevention rationale when the rule is simply fundamental to the Scenario.
+The `Reason` may explain the Scenario Benefit / desired result, a Feature Interaction role, later behavior that depends on the rule, a semantic boundary, recovery/uncertainty correctness, or a concrete bug/class of bugs the rule prevents. Do not invent a bug-prevention rationale when the rule is simply fundamental to correct Scenario behavior.
 
 Behavior Items are the primary input for Domain discovery. The authoritative BI text stays in the Scenario; lower owners reference the same BI identity instead of rewriting it.
 
@@ -389,6 +408,7 @@ Keep semantic documentation stable, local and intentionally readable.
 - A separate Domain Object file is valid when that object has enough independent semantics, identity/lifecycle, cross-owner reuse or rules that an Aggregate file becomes less clear.
 - One Java class does not imply one Domain Object owner, and one Domain Object owner does not imply one Java class.
 - `Feature Interaction` is behavioral Scenario decomposition; `Slice` is implementation decomposition. Do not require 1:1 mapping.
+- Scenario/FI design is iterative: explore enough internal FI Interaction Process and candidate BI to judge boundaries, revise FI composition when that exploration exposes a better design, and do not fully detail every candidate FI before the high-level composition is stable enough to justify it.
 - Candidate/rejected design alternatives do not become current truth, Evolution Steps or architecture requirements automatically.
 - Optimize prose for **semantic readability without semantic loss**, not for the fewest lines:
   - one connected idea may remain prose;
@@ -407,26 +427,29 @@ Keep semantic documentation stable, local and intentionally readable.
 
 ### Goal
 
-A reader can open one current Scenario and understand its user goal, complete current behavioral process, meaningful Feature Interactions, core Behavior Items, interaction/component-local UI requirements and known Scenario-owned Evolution Steps without implementation details.
+A reader can open one current Scenario and understand the application Benefit / desired result it realizes, the selected Feature Interaction composition, the complete FI-local runtime behavior, core Behavior Items, interaction/component-local UI requirements and known Scenario-owned Evolution Steps without implementation details.
 
 ### Process
 
 1. Verify accepted current behavior from Scenario documentation, source/tests and accepted implementation state.
-2. Maintain the Scenario `User Goal` and complete `Process Specification` using [Template — Scenario owner](documentation-templates.md#template-scenario-owner) and [Template — Feature Interaction entry](documentation-templates.md#template-feature-interaction-entry).
-3. Keep context/inputs, observable process, branches, loops, retries, validation/failure/uncertainty, Results, Outputs and transitions explicit.
-4. Persist core implementation-independent Behavior Items with `Requirement + Reason` under the Feature Interaction where their need is clearest; reference one authoritative BI identity across several interactions when the rule spans their boundary.
-5. Maintain interaction/component-local UI Requirements near the owning Feature Interaction using [Template — UI / Screen requirement forms](documentation-templates.md#template-ui-requirement). When canonical meaning belongs to a Screen/spatial context, reference the selected Screen owner rather than keeping a second authoritative screen-level copy in the Scenario.
-6. Keep the Process Specification observably complete even when a detailed Screen-owned requirement lives elsewhere; Scenario prose must still explain what the user/application experiences.
-7. Maintain `Evolution Steps` only for coherent application-behavior changes canonically owned by this Scenario; use [Template — Evolution Step](documentation-templates.md#template-evolution-step).
-8. For each Evolution Step, describe WHAT changes in Scenario/FI/contracts/BI/UI behavior; reference affected Screen realization when useful but keep detailed Screen/Domain/Slice/test delta in their `Evolution Impact` sections.
-9. Use semantic stable IDs/names; `URGENT`, `PLANNED` or `POSSIBLE` may express useful step intent, while map timing/likelihood/order remains separate.
-10. Link one canonical step across affected Scenarios rather than duplicating it. Use a planned future Scenario when a complete future user-world behavior is clearer than a large local delta.
-11. When an Evolution Step is implemented, promote resulting behavior into current Scenario truth and retain historical rationale only when it still explains current meaning.
-12. Use DOC-UC-07 for design exploration and DOC-UC-09 for readable presentation.
+2. Maintain the Scenario's `Application Benefit / Desired Result` plus complete `Process Specification` using [Template — Scenario owner](documentation-templates.md#template-scenario-owner) and [Template — Feature Interaction entry](documentation-templates.md#template-feature-interaction-entry).
+3. Maintain the Scenario Process as the selected FI composition: ordering, transitions, cross-FI branches/loops and terminal outcomes. Keep this level high enough that FI internals are not duplicated in the topology.
+4. For each selected FI, maintain its Scenario Role / Local Purpose, Context/Preconditions, Required Inputs, internal Interaction Process, meaningful outcomes, Result, Outputs and Next Interactions. Include retry/recovery/validation/uncertainty only where they are part of that FI's real behavior.
+5. Persist core implementation-independent Behavior Items with `Requirement + Reason` under the FI where their need is clearest; reference one authoritative BI identity across several interactions when the rule spans their boundary.
+6. Maintain interaction/component-local UI Requirements near the owning FI using [Template — UI / Screen requirement forms](documentation-templates.md#template-ui-requirement). When canonical meaning belongs to a Screen/spatial context, reference the selected Screen owner rather than keeping a second authoritative screen-level copy in the Scenario.
+7. Keep the Process Specification observably complete even when a detailed Screen-owned requirement lives elsewhere; Scenario prose must still explain what the user/application experiences.
+8. Maintain `Evolution Steps` only for coherent application-behavior changes canonically owned by this Scenario; use [Template — Evolution Step](documentation-templates.md#template-evolution-step).
+9. For each Evolution Step, describe WHAT changes in Scenario/FI/contracts/BI/UI behavior; reference affected Screen realization when useful but keep detailed Screen/Domain/Slice/test delta in their `Evolution Impact` sections.
+10. Use semantic stable IDs/names; `URGENT`, `PLANNED` or `POSSIBLE` may express useful step intent, while map timing/likelihood/order remains separate.
+11. Link one canonical step across affected Scenarios rather than duplicating it. Use a planned future Scenario when a complete future application benefit/behavior is clearer than a large local delta.
+12. When an Evolution Step is implemented, promote resulting behavior into current Scenario truth and retain historical rationale only when it still explains current meaning.
+13. Use DOC-UC-07 for design exploration and DOC-UC-09 for readable presentation.
 
 ### Principles
 
-- Scenario identity follows a user need/result, not a button, Slice, class or implementation action.
+- A Scenario exists to realize an application Benefit / desired result; buttons, Slices, classes and implementation actions do not define its identity.
+- Scenario Process owns FI composition/transitions; each FI owns its local Interaction Process inside the same Scenario authority.
+- FI is a selected behavioral means inside the Scenario, not a separate top-level product goal.
 - Process Specification is complete; BI/UI/Screen references formalize visible behavior rather than hiding a second behavior source.
 - Evolution Step = WHAT application behavior changes.
 - Current truth is not called a transitional Scenario merely because future evolution is known.
@@ -616,29 +639,35 @@ No implementation-trace generator is established by this documentation model. Th
 
 ### Goal
 
-Explore how a Scenario and its spatial/UI realization **should work together**, compare meaningful behavioral and Screen alternatives, and select/refine design before treating it as authoritative Scenario/Screen truth or selected evolution.
+Start from an application Benefit / desired result, discover a coherent Scenario as a composition of Feature Interactions, explore enough FI runtime behavior to validate those boundaries, and co-design spatial/UI realization before treating the result as authoritative Scenario/Screen truth or selected evolution.
 
 ### Process
 
-1. Start from Scenario Goal and desired final Result; read current truth/Evolution Steps when the Scenario already exists.
-2. Propose candidate Scenario Process Variants with [Template — Scenario Process Variant](documentation-templates.md#template-scenario-process-variant): initial context/inputs, FI composition/contracts, final Result/Outputs.
-3. For non-obvious local behavior compare alternatives with [Template — Feature Interaction Variant analysis](documentation-templates.md#template-feature-interaction-variant-analysis); variants may legitimately change inputs, process, outcomes, Result/Outputs and neighboring interactions.
-4. In parallel, explore candidate **Screen Set Variants** (overall window/screen topology) and **individual Screen Variants** (different realization of one Screen responsibility) with [Template — Screen Set / Screen Variant analysis](documentation-templates.md#template-screen-variant-analysis).
-5. Map candidate Scenario/FI behavior to Screens: Scenario×Screen, FI×Screen, routes, visible/input/action state and material Screen-owned requirements.
-6. Treat design exploration as bidirectional. If Screen design exposes hidden manual context transfer, weak FI outputs, missing recovery/uncertainty, poor composition or misplaced complexity, revise Scenario/FI design rather than forcing the Screen to hide the problem.
-7. Compare interaction and Screen boundaries explicitly: control/recovery points, transferred context/outputs, user work, visibility/feedback, navigation/window topology, implementation/testing/evolution complexity.
-8. Record Strengths, Problems, Complexity, Risks and Questions only when they materially explain a decision; no scoring framework is required.
-9. Mental/visual/clickable/interactive walkthrough is optional design media. The documentation model must remain complete without a Scenario simulator/tool.
-10. Select/refine preferred design, then classify it correctly:
+1. Start from the application Benefit / desired final Result; read current truth/Evolution Steps when the Scenario already exists.
+2. Sketch a small candidate Scenario Process / FI map first. For each candidate FI, state only enough Scenario Role / Local Purpose and local Result to make the proposed boundary understandable.
+3. For uncertain/non-obvious FIs, sketch the internal Interaction Process far enough to test whether the FI can actually realize its role and whether the proposed boundary is coherent. Use [Template — Feature Interaction Variant analysis](documentation-templates.md#template-feature-interaction-variant-analysis) when materially different local realizations are worth comparing.
+4. Discover candidate BI/constraints exposed by that process exploration. Ask whether they reveal a missing FI, an unnecessary FI, two interactions that should be composed, one interaction that should be split, a wrong transition/contract or a better Scenario composition.
+5. Revise the FI map and repeat the FI-process/BI exploration until the high-level Scenario behavior is coherent. Do **not** require full Context/Inputs/Outcomes/BI detail for every candidate FI while the composition itself is still moving.
+6. Compare materially different complete compositions with [Template — Scenario Process Variant](documentation-templates.md#template-scenario-process-variant): initial context/inputs where material, FI composition/contracts and final Result/Outputs.
+7. In parallel, explore candidate **Screen Set Variants** (overall window/screen topology) and **individual Screen Variants** (different realization of one Screen responsibility) with [Template — Screen Set / Screen Variant analysis](documentation-templates.md#template-screen-variant-analysis).
+8. Map candidate Scenario/FI behavior to Screens: Scenario×Screen, FI×Screen, routes, visible/input/action state and material Screen-owned requirements. A Scenario may span multiple Screens/Windows; Screen topology does not define Scenario identity by itself.
+9. Treat design exploration as bidirectional. If Screen design exposes hidden manual context transfer, weak FI outputs, missing recovery/uncertainty, poor composition or misplaced complexity, revise Scenario/FI design rather than forcing the Screen to hide the problem.
+10. Compare interaction and Screen boundaries explicitly: control/recovery points, transferred context/outputs, user work, visibility/feedback, navigation/window topology, implementation/testing/evolution complexity.
+11. Record Strengths, Problems, Complexity, Risks and Questions only when they materially explain a decision; no scoring framework is required.
+12. Mental/visual/clickable/interactive walkthrough is optional design media. The documentation model must remain complete without a Scenario simulator/tool.
+13. Select/refine preferred design, then classify it correctly:
     - accepted/implemented behavior → current Scenario/Screen truth;
     - selected coherent unimplemented behavior → Scenario-owned Evolution Step;
     - plausible non-binding evolution → `POSSIBLE` only when worth preserving;
-    - complete future user-world behavior → planned future Scenario;
+    - complete future application benefit/behavior → planned future Scenario;
     - candidate/rejected alternative → not current truth/Evolution by default.
-11. Hand selected Scenario behavior to DOC-UC-01 and selected Screen realization to DOC-UC-11.
+14. Hand selected Scenario behavior to DOC-UC-01 and selected Screen realization to DOC-UC-11.
 
 ### Principles
 
+- Scenario design is not waterfall: Benefit ↔ FI composition ↔ FI Interaction Process ↔ BI discovery are iterated until boundaries are coherent.
+- Do not finalize FI decomposition before enough runtime behavior is understood to judge the boundaries.
+- Do not fully specify every candidate FI before the high-level composition is stable enough to justify that detail.
 - Scenario behavior authority and Screen spatial authority remain distinct even while designed together.
 - Candidate Screen/Scenario variants are design alternatives, not runtime branches or roadmap entries by default.
 - A Screen is not a frontend Slice; FI/Slice/Screen mappings are many-to-many when justified.
@@ -784,7 +813,7 @@ Maintain one canonical selected spatial/window model that explains where Scenari
 
 ### Process
 
-1. Start from selected Scenario Processes/FIs and intentional UI requirements; use DOC-UC-07 when Screen topology/realization is still being explored.
+1. Start from selected Scenario FI composition, FI Interaction Processes and intentional UI requirements; use DOC-UC-07 when Screen topology/realization is still being explored.
 2. Maintain one `Screen Map` by default using [Template — Screen owner](documentation-templates.md#template-screen-owner), including Screen inventory, Scenario×Screen relationships, FI×Screen relationships, routes/transitions and material global Screen constraints.
 3. For each Screen record purpose, Scenario roles, participating FIs, meaningful visible/input/action states, material spatial hierarchy/constraints and routes.
 4. Maintain Screen Behavior Items using [Template — UI / Screen requirement forms](documentation-templates.md#template-ui-requirement) only for durable spatial/window/UI behavior whose canonical meaning belongs to the Screen. Keep FI/component-local UI Requirements in Scenario/FI owners and core application BI in Scenario.
@@ -795,7 +824,7 @@ Maintain one canonical selected spatial/window model that explains where Scenari
 
 ### Principles
 
-- Scenario = behavior meaning; Screen = spatial/window meaning; frontend Slice/code = realization mechanism.
+- Scenario = selected FI composition that realizes an application Benefit / desired result; Screen = spatial/window meaning; frontend Slice/code = realization mechanism.
 - Placement normally does not become BI identity.
 - One Screen may use many Slices and one Slice may realize behavior across many Screens.
 - Do not create an empty Screen owner merely because the methodology supports one.
@@ -849,9 +878,9 @@ Adoption is incremental. This documentation-model update defines target process/
 
 A following integration should:
 
-1. reconcile accepted current Scenario truth and build complete Process Specifications;
-2. identify selected FIs, BI and FI/component-local UI Requirements;
-3. explore Scenario/FI and Screen Set/Screen variants together before freezing selected spatial realization;
+1. reconcile each Scenario's accepted application Benefit / desired result and build complete Process Specifications;
+2. establish the selected FI composition, then deepen each FI Interaction Process and derive/confirm BI and FI/component-local UI Requirements;
+3. use iterative FI composition ↔ Interaction Process ↔ BI exploration together with Screen Set/Screen variants before freezing selected behavioral/spatial realization;
 4. create a selected `screens.md` only when real Screen planning exists; maintain Scenario×Screen/FI×Screen/routes and Screen-owned requirements there;
 5. migrate known selected/plausible application changes into Scenario-owned semantically named Evolution Steps and create planned future Scenario owners where clearer;
 6. populate the Evolution Steps Map with sequence/dependencies/rough horizon/likelihood/readiness after canonical steps exist;

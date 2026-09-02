@@ -11,7 +11,7 @@ This application uses a small asymmetric documentation set whose durable owners 
 1. [`direction-registry.md`](direction-registry.md) — application route.
 2. [`documentation-use-cases.md`](documentation-use-cases.md) — documentation-process authority for Scenario+Screen design, Domain/Slice/shared implementation ownership, evolution-aware architecture, proof/TDD, readability and owner coverage.
 3. [`documentation-templates.md`](documentation-templates.md) — recommended forms, not schemas.
-4. Scenario owners — current user/application behavior. Target form: complete Process Specifications with FI/BI, FI/component-local UI Requirements and Scenario-owned **Evolution Steps** describing WHAT behavior changes.
+4. Scenario owners — selected Feature Interaction compositions that realize application Benefits / desired results in an application interaction context. Target form: complete Process Specifications with Scenario Process maps, FI Interaction Processes, BI, FI/component-local UI Requirements and Scenario-owned **Evolution Steps** describing WHAT behavior changes.
 5. Selected Screen model — target owner is normally one `screens.md` when real Screen planning exists; it owns Screen Map, Scenario×Screen/FI×Screen, routes and Screen Behavior Items for durable spatial/window/UI meaning. This methodology update does not create an empty Screen owner.
 6. [`evolution-steps-map.md`](evolution-steps-map.md) — WHEN / rough horizon / likelihood / dependency / order / readiness for selected Evolution Steps and materially independent local impacts. It does not redefine their delta.
 7. Domain owners — BI-first Aggregate/Object semantics, optional `DI-*`, local Tests/Test Items and `Evolution Impact` as integration proceeds.
@@ -27,17 +27,21 @@ This application uses a small asymmetric documentation set whose durable owners 
 The target semantic flow is:
 
 ```text
-Scenario Goal
-→ Scenario Process / Feature Interactions
-   ├─ BI
-   └─ FI/component UI requirements
+Application Benefit / Desired Result
+→ Scenario = selected FI composition in an application interaction context
+   ├─ Scenario Process = FI ordering / transitions / cross-FI branches
+   └─ Feature Interactions
+      ├─ Interaction Process
+      ├─ BI
+      └─ FI/component UI requirements
 ↔ selected Screen model
-→ Domain
-→ Slice / Shared Implementation Capability
-→ local Tests / Test Items
-→ production + test source
+→ Domain / Slice / Shared Implementation Capability
+   ├─ Implementation Items → production source
+   └─ local Tests / Test Items → test source
 → executed Evidence
 ```
+
+This is an authority/realization map, not chronological TDD order: failing proof may be written before production code while tests remain verification rather than behavioral authority.
 
 Evolution responsibilities are deliberately separate:
 
@@ -61,7 +65,7 @@ Known evolution should influence current boundaries when that makes later change
 
 Local Tests normally live with Aggregate/Slice/shared implementation owners. A **Test Item** is only a durable additional requirement on proof quality (for example no-mutation, public-boundary, persisted-state, isolation, false-positive or refactor/evolution resilience); it is not a second product/architecture requirement. When selected meaning and a credible executable proof boundary are known, target development flow is test-first. Experiments/prototypes are for genuinely unresolved feasibility/design/proof questions, after which production realization returns to test-first. Real-environment properties may require planned Practical Acceptance followed by executed Evidence.
 
-Design exploration supports Scenario Process/FI variants together with Screen Set/Screen variants. Candidate/rejected alternatives remain design material, not current truth or Evolution Steps by default. Optional visual/interactive walkthrough can help design but no simulator is required by the documentation architecture.
+Design exploration starts from the application Benefit / desired result and iterates `candidate FI composition ↔ FI Interaction Process ↔ candidate BI`, together with Screen Set/Screen variants. FI boundaries should not be finalized before enough internal process is understood to judge them, but candidate FIs should not be fully specified before the high-level composition is stable enough to justify that detail. Candidate/rejected alternatives remain design material, not current truth or Evolution Steps by default. Optional visual/interactive walkthrough can help design but no simulator is required by the documentation architecture.
 
 Documentation entities should carry readable semantic names; technical IDs are navigation, not meaning or roadmap order. Documentation optimizes for semantic readability without semantic loss. Source/test mechanics remain source authority; generated traces are derived/disposable.
 
@@ -108,4 +112,4 @@ The Swing app also exposes **Windows launcher → Install / update** for the sta
 
 ## Authority boundary
 
-Scenario documentation defines current user-visible behavior. Focused contracts define exact package/snapshot/browser boundaries. `testing-plan.md` maps automated proof responsibility without redefining behavior. Source defines current implementation mechanics. Automated tests prove only executed cases. `MANUAL-ACCEPTANCE.md` is the current practical-verification owner; the target model distinguishes planned acceptance from executed Evidence.
+Scenario documentation defines the application Benefit / desired result plus the selected FI composition and current user-visible behavior that realizes it. Focused contracts define exact package/snapshot/browser boundaries. `testing-plan.md` maps automated proof responsibility without redefining behavior. Source defines current implementation mechanics. Automated tests prove only executed cases. `MANUAL-ACCEPTANCE.md` is the current practical-verification owner; the target model distinguishes planned acceptance from executed Evidence.
