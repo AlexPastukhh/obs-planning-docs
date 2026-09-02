@@ -21,6 +21,7 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
   "activeContextBehavior": "Use the active approved scope and exact checked source state. An earlier-message archive is not current automatically. A source archive/snapshot may be selected for the active invocation when it is explicitly provided or selected for that invocation and, after inspection, matches the intended repository/target and completely covers the touched source. Otherwise use fully readable current repository files. Never guess touched base content.",
   "traversalReadMode": "Targeted/full depending on touched files and source certainty.",
   "ownerFiles": [
+    "planning/use-cases/UC-REPO-BUILD-REPLACEMENT-PACKAGE.md",
     "planning/documentation/build-replacement-archive-workflow.md"
   ],
   "expectedOutput": "One full replacement ZIP plus one short structured OBS-ACTION containing action, name, archive and packageId; for new independent target-mode work include exact PACKAGE.json workIntent and exact targetBranch so the consumer can automatically ensure GitHub Work Intent → workspace → Apply → Commit → Publish. A continuation of an already-existing legacy ChangeSet may omit targetBranch for compatibility. packageId matches PACKAGE.json; chatTabTitle is included only when an exact intended title was explicitly supplied/selected; complete replacement/base payloads required by the package contract; no local apply/diff/finalization commands.",

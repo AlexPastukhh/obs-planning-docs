@@ -1,322 +1,133 @@
 {
   "schemaVersion": 1,
   "kind": "use-case-seed",
-  "generatedFrom": "all current canonical Use-Case registries under planning/** (case-insensitive filename; legacy/historical compatibility indexes excluded)",
+  "generatedFrom": "all current canonical Use-Case registries under planning/** (case-insensitive filename; legacy/historical compatibility indexes excluded; root aggregation may repeat scoped entries)",
   "items": [
     {
-      "id": "UC-DOC-BUILD-REPLACEMENT-PACKAGE",
-      "label": "Build Replacement Package",
-      "description": "package an approved exact file transition for a local consumer",
+      "id": "UC-DOC-MAINTAIN-EXAMPLE",
+      "label": "Maintain Documentation Example",
+      "description": "A current non-authoritative example demonstrates the intended result/process/shape/behavior and is reachable from the semantic owner it illustrates.",
       "sources": [
         "planning/documentation/use-case-registry.md"
       ],
-      "instruction": "Resolve UC-DOC-BUILD-REPLACEMENT-PACKAGE in the current canonical registry and follow its current owner route (build-replacement-archive-workflow.md). Preserve its boundaries and permission model; this Helper projection is invocation/navigation only.",
-      "target": "<Build Replacement Package target>",
+      "instruction": "Resolve UC-DOC-MAINTAIN-EXAMPLE in the current canonical registry and follow its current owner route (planning/documentation/use-cases/UC-DOC-MAINTAIN-EXAMPLE.md). Preserve its boundaries and permission model; this Helper projection is invocation/navigation only.",
+      "target": "<Maintain Documentation Example target>",
       "directionId": "DIR-DOCUMENTATION",
       "manualInvocation": true,
-      "trigger": "approved file transition + exact touched base",
-      "result": "protocol-valid ZIP + OBS-ACTION",
-      "commandId": "replacement_archive.create"
+      "trigger": "Reusable meaning would be materially easier to understand through demonstration, or an existing example is stale, misleading, too large, or incorrectly treated as authority.",
+      "result": "A current non-authoritative example demonstrates the intended result/process/shape/behavior and is reachable from the semantic owner it illustrates."
     },
     {
-      "id": "UC-DOC-BUILD-REVIEWABLE-ARCHIVE",
-      "label": "Build Legacy Review-Diff Archive Route",
-      "description": "support the explicitly selected legacy repo-stored/clipboard diff-transfer package route",
+      "id": "UC-DOC-MAINTAIN-PRINCIPLES-TERMINOLOGY",
+      "label": "Maintain Principles & Terminology",
+      "description": "The area has one coherent term-centered owner for the needed vocabulary and stable semantic rules, with duplicated or misplaced meaning routed back to that owner.",
       "sources": [
         "planning/documentation/use-case-registry.md"
       ],
-      "instruction": "Resolve UC-DOC-BUILD-REVIEWABLE-ARCHIVE in the current canonical registry and follow its current owner route (reviewable-agent-output-and-commands-workflow.md + review-diff-file-workflow.md). Preserve its boundaries and permission model; this Helper projection is invocation/navigation only.",
-      "target": "<Build Legacy Review-Diff Archive Route target>",
+      "instruction": "Resolve UC-DOC-MAINTAIN-PRINCIPLES-TERMINOLOGY in the current canonical registry and follow its current owner route (planning/documentation/use-cases/UC-DOC-MAINTAIN-PRINCIPLES-TERMINOLOGY.md). Preserve its boundaries and permission model; this Helper projection is invocation/navigation only.",
+      "target": "<Maintain Principles & Terminology target>",
       "directionId": "DIR-DOCUMENTATION",
       "manualInvocation": true,
-      "trigger": "user explicitly selects legacy review-diff package mode",
-      "result": "route-owned archive + transfer/capture instructions",
-      "commandId": "replacement_archive.review_diff.create"
+      "trigger": "Stable shared vocabulary/rules in an area are missing, stale, duplicated, inconsistently defined, or mixed into operational Process.",
+      "result": "The area has one coherent term-centered owner for the needed vocabulary and stable semantic rules, with duplicated or misplaced meaning routed back to that owner."
     },
     {
-      "id": "UC-DOC-CONFIGURE-REVIEW-DEPENDENCIES",
-      "label": "Configure Required Dependency Reviews",
-      "description": "register semantic source→consumer relationships whose source changes must signal explicit downstream review",
+      "id": "UC-DOC-MAINTAIN-PROCESS",
+      "label": "Maintain Reusable Process",
+      "description": "The reusable Process is represented at the smallest useful scope, remains reachable from the Use Cases that need it, and does not become a competing owner of shared terminology or result meaning.",
       "sources": [
         "planning/documentation/use-case-registry.md"
       ],
-      "instruction": "Resolve UC-DOC-CONFIGURE-REVIEW-DEPENDENCIES in the current canonical registry and follow its current owner route (review-dependency-planning-workflow.md + Linked Notes mechanism when available). Preserve its boundaries and permission model; this Helper projection is invocation/navigation only.",
-      "target": "<Configure Required Dependency Reviews target>",
+      "instruction": "Resolve UC-DOC-MAINTAIN-PROCESS in the current canonical registry and follow its current owner route (planning/documentation/use-cases/UC-DOC-MAINTAIN-PROCESS.md). Preserve its boundaries and permission model; this Helper projection is invocation/navigation only.",
+      "target": "<Maintain Reusable Process target>",
       "directionId": "DIR-DOCUMENTATION",
       "manualInvocation": true,
-      "trigger": "a meaningful dependency should not rely on human memory to notice downstream impact",
-      "result": "explicit Review Dependency with source, consumer(s), reason/scope and freshness/review tracking route"
+      "trigger": "A repeated way of reaching one or more Use-Case Results needs to be established, clarified, changed, reused across Use Cases, or extracted because inline Process has become too substantial.",
+      "result": "The reusable Process is represented at the smallest useful scope, remains reachable from the Use Cases that need it, and does not become a competing owner of shared terminology or result meaning."
     },
     {
-      "id": "UC-DOC-ESTABLISH-DEPENDENCY",
-      "label": "Establish Semantic Dependency",
-      "description": "decide/classify one meaningful semantic dependency and its owner/handoff",
+      "id": "UC-DOC-MAINTAIN-README",
+      "label": "Maintain README Navigation",
+      "description": "The README accurately maps the current area and direct-child responsibilities, with natural next navigation and without becoming a second owner of Use-Case/Process/Principles meaning.",
       "sources": [
         "planning/documentation/use-case-registry.md"
       ],
-      "instruction": "Resolve UC-DOC-ESTABLISH-DEPENDENCY in the current canonical registry and follow its current owner route (review-dependency-planning-workflow.md). Preserve its boundaries and permission model; this Helper projection is invocation/navigation only.",
-      "target": "<Establish Semantic Dependency target>",
+      "instruction": "Resolve UC-DOC-MAINTAIN-README in the current canonical registry and follow its current owner route (planning/documentation/use-cases/UC-DOC-MAINTAIN-README.md). Preserve its boundaries and permission model; this Helper projection is invocation/navigation only.",
+      "target": "<Maintain README Navigation target>",
       "directionId": "DIR-DOCUMENTATION",
       "manualInvocation": true,
-      "trigger": "one owner/result materially depends on another",
-      "result": "selected semantic dependency intent/classification + affected owners + realization need when any"
+      "trigger": "An area's structure/responsibilities changed, readers cannot naturally determine what the area contains, or the README duplicates semantic bodies instead of serving structural navigation.",
+      "result": "The README accurately maps the current area and direct-child responsibilities, with natural next navigation and without becoming a second owner of Use-Case/Process/Principles meaning."
     },
     {
-      "id": "UC-DOC-FIND-OWNER",
-      "label": "Determine Where Information Belongs",
-      "description": "place meaning in the narrowest non-duplicated owner zone",
+      "id": "UC-DOC-MAINTAIN-TEMPLATE",
+      "label": "Maintain Documentation Template",
+      "description": "A shape-only current template exists where useful, remains reachable from the Use Case/Process that uses it, and contains no semantic decision logic that belongs in another owner.",
       "sources": [
         "planning/documentation/use-case-registry.md"
       ],
-      "instruction": "Resolve UC-DOC-FIND-OWNER in the current canonical registry and follow its current owner route (documentation-responsibility-zone-review-workflow.md). Preserve its boundaries and permission model; this Helper projection is invocation/navigation only.",
-      "target": "<Determine Where Information Belongs target>",
+      "instruction": "Resolve UC-DOC-MAINTAIN-TEMPLATE in the current canonical registry and follow its current owner route (planning/documentation/use-cases/UC-DOC-MAINTAIN-TEMPLATE.md). Preserve its boundaries and permission model; this Helper projection is invocation/navigation only.",
+      "target": "<Maintain Documentation Template target>",
       "directionId": "DIR-DOCUMENTATION",
       "manualInvocation": true,
-      "trigger": "content/file responsibility is unclear",
-      "result": "reusable/project classification + narrow canonical owner"
+      "trigger": "A repeated output or Process shape is useful enough to standardize, or an existing template is stale, over-prescriptive, semantically overloaded, or no longer used.",
+      "result": "A shape-only current template exists where useful, remains reachable from the Use Case/Process that uses it, and contains no semantic decision logic that belongs in another owner."
     },
     {
-      "id": "UC-DOC-MAINTAIN-COMMAND",
-      "label": "Create / Maintain Planning Command",
-      "description": "create or change a registered executable shortcut without turning it into semantic authority",
+      "id": "UC-DOC-MAINTAIN-USE-CASE",
+      "label": "Establish / Change Repository Use Case",
+      "description": "The capability is represented by the smallest correct current Use-Case set, every surviving Use Case has Situation, Result, and Process, and the applicable Use-Case Registry points to the canonical owner of each Use Case.",
       "sources": [
         "planning/documentation/use-case-registry.md"
       ],
-      "instruction": "Resolve UC-DOC-MAINTAIN-COMMAND in the current canonical registry and follow its current owner route (command-planning-workflow.md + command-routing-workflow.md). Preserve its boundaries and permission model; this Helper projection is invocation/navigation only.",
-      "target": "<Create / Maintain Planning Command target>",
+      "instruction": "Resolve UC-DOC-MAINTAIN-USE-CASE in the current canonical registry and follow its current owner route (planning/documentation/use-cases/UC-DOC-MAINTAIN-USE-CASE.md). Preserve its boundaries and permission model; this Helper projection is invocation/navigation only.",
+      "target": "<Establish / Change Repository Use Case target>",
       "directionId": "DIR-DOCUMENTATION",
       "manualInvocation": true,
-      "trigger": "a new command is useful or an existing command route/definition must change",
-      "result": "validated current planning/commands/*.command.md definition + correct semantic-entry/owner route + explicit output/permission boundary",
-      "commandId": "command.plan"
+      "trigger": "A recurring repository/documentation capability appears to be missing, duplicated, incorrectly bounded, split across several owners, or no longer independently useful.",
+      "result": "The capability is represented by the smallest correct current Use-Case set, every surviving Use Case has Situation, Result, and Process, and the applicable Use-Case Registry points to the canonical owner of each Use Case."
     },
     {
-      "id": "UC-DOC-MAINTAIN-NAVIGATION",
-      "label": "Maintain Repository Documentation Navigation",
-      "description": "maintain natural README/index/Direction-to-applicable-semantic-entry discovery routes without duplicating semantic bodies",
+      "id": "UC-DOC-MAINTAIN-USE-CASE-REGISTRY",
+      "label": "Maintain Use-Case Registry",
+      "description": "The registry for the selected scope lists every current Use Case and its canonical owner, with navigation-only grouping and without duplicating Use-Case bodies.",
       "sources": [
         "planning/documentation/use-case-registry.md"
       ],
-      "instruction": "Resolve UC-DOC-MAINTAIN-NAVIGATION in the current canonical registry and follow its current owner route (architecture principles + responsibility map + affected README/index/navigation owners; validate with coverage-review workflow). Preserve its boundaries and permission model; this Helper projection is invocation/navigation only.",
-      "target": "<Maintain Repository Documentation Navigation target>",
+      "instruction": "Resolve UC-DOC-MAINTAIN-USE-CASE-REGISTRY in the current canonical registry and follow its current owner route (planning/documentation/use-cases/UC-DOC-MAINTAIN-USE-CASE-REGISTRY.md). Preserve its boundaries and permission model; this Helper projection is invocation/navigation only.",
+      "target": "<Maintain Use-Case Registry target>",
       "directionId": "DIR-DOCUMENTATION",
       "manualInvocation": true,
-      "trigger": "a capability/behavior/owner is added, moved, renamed, retired or otherwise changes how readers should discover current meaning",
-      "result": "affected navigation/read-order owners lead naturally to current Direction → primary semantic registry → Workspace/methodology Use Case or Application Scenario → canonical owner routes"
+      "trigger": "Use-Case identity, location, current/legacy status, or coverage changed, or readers cannot reliably discover the current functional capability landscape.",
+      "result": "The registry for the selected scope lists every current Use Case and its canonical owner, with navigation-only grouping and without duplicating Use-Case bodies."
     },
     {
-      "id": "UC-DOC-MAINTAIN-PROMPT",
-      "label": "Create / Maintain Reusable Prompt",
-      "description": "create/review/change reusable AI bootstrap/diagnostic/helper insertion text that navigates current owners without becoming authority",
+      "id": "UC-DOC-PLAN-DOCUMENTATION-CHANGE",
+      "label": "Plan Repository Documentation Change",
+      "description": "The target documentation meaning is resolved to the needed depth, affected Use Cases and semantic owners are clear, and the change is ready for exact repository realization without implementation having to invent semantic decisions.",
       "sources": [
         "planning/documentation/use-case-registry.md"
       ],
-      "instruction": "Resolve UC-DOC-MAINTAIN-PROMPT in the current canonical registry and follow its current owner route (prompt-maintenance-workflow.md + planning/helper-library/README.md). Preserve its boundaries and permission model; this Helper projection is invocation/navigation only.",
-      "target": "<Create / Maintain Reusable Prompt target>",
+      "instruction": "Resolve UC-DOC-PLAN-DOCUMENTATION-CHANGE in the current canonical registry and follow its current owner route (planning/documentation/use-cases/UC-DOC-PLAN-DOCUMENTATION-CHANGE.md). Preserve its boundaries and permission model; this Helper projection is invocation/navigation only.",
+      "target": "<Plan Repository Documentation Change target>",
       "directionId": "DIR-DOCUMENTATION",
       "manualInvocation": true,
-      "trigger": "a reusable prompt is needed or an existing prompt is stale/duplicative/misrouting",
-      "result": "valid current prompt with explicit profile, owner-navigation boundary and proportional output/evidence contract"
+      "trigger": "A repository documentation capability, semantic owner structure, navigation model, dependency, or methodology needs a material change that cannot be resolved by simply reading a known owner or placing a file in an obvious existing responsibility.",
+      "result": "The target documentation meaning is resolved to the needed depth, affected Use Cases and semantic owners are clear, and the change is ready for exact repository realization without implementation having to invent semantic decisions."
     },
     {
-      "id": "UC-DOC-MAINTAIN-REGISTRIES",
-      "label": "Maintain Directions And Use Cases",
-      "description": "keep semantic Direction/Use-Case capability contracts current and complete",
+      "id": "UC-DOC-REVIEW-DOCUMENTATION",
+      "label": "Review Repository Documentation",
+      "description": "Material documentation findings are tied to their real semantic owners, verified and unverified areas are distinguished, and each required correction has a narrow current repair/change route without the review itself becoming new semantic authority.",
       "sources": [
         "planning/documentation/use-case-registry.md"
       ],
-      "instruction": "Resolve UC-DOC-MAINTAIN-REGISTRIES in the current canonical registry and follow its current owner route (direction-and-use-case-registry-workflow.md). Preserve its boundaries and permission model; this Helper projection is invocation/navigation only.",
-      "target": "<Maintain Directions And Use Cases target>",
+      "instruction": "Resolve UC-DOC-REVIEW-DOCUMENTATION in the current canonical registry and follow its current owner route (planning/documentation/use-cases/UC-DOC-REVIEW-DOCUMENTATION.md). Preserve its boundaries and permission model; this Helper projection is invocation/navigation only.",
+      "target": "<Review Repository Documentation target>",
       "directionId": "DIR-DOCUMENTATION",
       "manualInvocation": true,
-      "trigger": "semantic capability/direction meaning changes",
-      "result": "complete current registry entries + correct semantic parent/owner/handoff links"
-    },
-    {
-      "id": "UC-DOC-MAINTAIN-SHARED-EXACT-MEANING",
-      "label": "Maintain Shared Exact Meaning",
-      "description": "preserve one exact literal/shared definition across consumers when exact synchronization is truly required",
-      "sources": [
-        "planning/documentation/use-case-registry.md"
-      ],
-      "instruction": "Resolve UC-DOC-MAINTAIN-SHARED-EXACT-MEANING in the current canonical registry and follow its current owner route (review-dependency-planning-workflow.md). Preserve its boundaries and permission model; this Helper projection is invocation/navigation only.",
-      "target": "<Maintain Shared Exact Meaning target>",
-      "directionId": "DIR-DOCUMENTATION",
-      "manualInvocation": true,
-      "trigger": "repeated exact text/definition must remain synchronized",
-      "result": "canonical exact meaning + synchronized consumers through the narrowest suitable mechanism"
-    },
-    {
-      "id": "UC-DOC-ORIENT",
-      "label": "Bootstrap Reusable Documentation Governance",
-      "description": "load reusable documentation methodology and resolve the applicable documentation capability/owners",
-      "sources": [
-        "planning/documentation/use-case-registry.md"
-      ],
-      "instruction": "Resolve UC-DOC-ORIENT in the current canonical registry and follow its current owner route (documentation-principles-read-workflow.md + architecture principles + responsibility map + this registry). Preserve its boundaries and permission model; this Helper projection is invocation/navigation only.",
-      "target": "<Bootstrap Reusable Documentation Governance target>",
-      "directionId": "DIR-DOCUMENTATION",
-      "manualInvocation": true,
-      "trigger": "a new chat/session starts documentation work, reusable documentation principles are explicitly requested, or ownership/governance is uncertain",
-      "result": "reusable principles loaded + applicable UC-DOC-* and canonical reusable/current owners identified + permission boundary understood",
-      "commandId": "documentation_principles.read"
-    },
-    {
-      "id": "UC-DOC-PLAN-FILE-UPDATE",
-      "label": "Plan Concrete File / Docs / Code Update",
-      "description": "translate selected meaning into one concrete ordered file transition",
-      "sources": [
-        "planning/documentation/use-case-registry.md"
-      ],
-      "instruction": "Resolve UC-DOC-PLAN-FILE-UPDATE in the current canonical registry and follow its current owner route (file-update-overview-workflow.md). Preserve its boundaries and permission model; this Helper projection is invocation/navigation only.",
-      "target": "<Plan Concrete File / Docs / Code Update target>",
-      "directionId": "DIR-DOCUMENTATION",
-      "manualInvocation": true,
-      "trigger": "selected meaning needs concrete file transition",
-      "result": "ordered File Update Plan",
-      "commandId": "file_update.plan"
-    },
-    {
-      "id": "UC-DOC-PLAN-UPDATE",
-      "label": "Plan A Documentation Update",
-      "description": "plan a material documentation change through the affected Workspace UC(s), semantic rules/owners and vertical realization before execution",
-      "sources": [
-        "planning/documentation/use-case-registry.md"
-      ],
-      "instruction": "Resolve UC-DOC-PLAN-UPDATE in the current canonical registry and follow its current owner route (documentation-update-plan-workflow.md → workspace-planning/ as needed → file-update workflow only when an explicit ordered concrete file plan is selected). Preserve its boundaries and permission model; this Helper projection is invocation/navigation only.",
-      "target": "<Plan A Documentation Update target>",
-      "directionId": "DIR-DOCUMENTATION",
-      "manualInvocation": true,
-      "trigger": "material docs change needs integrated semantic/owner/realization review",
-      "result": "checked UC-centric documentation target plan to the selected depth, including exact affected-file surface when Step 3 is selected"
-    },
-    {
-      "id": "UC-DOC-RECONCILE-STATUS",
-      "label": "Reconcile Documentation / Owner Status",
-      "description": "resolve inconsistent active/current/deferred/retired state",
-      "sources": [
-        "planning/documentation/use-case-registry.md"
-      ],
-      "instruction": "Resolve UC-DOC-RECONCILE-STATUS in the current canonical registry and follow its current owner route (status-reconciliation-workflow.md). Preserve its boundaries and permission model; this Helper projection is invocation/navigation only.",
-      "target": "<Reconcile Documentation / Owner Status target>",
-      "directionId": "DIR-DOCUMENTATION",
-      "manualInvocation": true,
-      "trigger": "owner/status labels or routes may disagree",
-      "result": "explicit reconciled status + owner route"
-    },
-    {
-      "id": "UC-DOC-REVIEW-COVERAGE",
-      "label": "Review Repository Navigation / Semantic Coverage",
-      "description": "verify that Workspace/methodology capabilities, Application behavior and canonical owners are naturally discoverable through the correct semantic registry",
-      "sources": [
-        "planning/documentation/use-case-registry.md"
-      ],
-      "instruction": "Resolve UC-DOC-REVIEW-COVERAGE in the current canonical registry and follow its current owner route (repository-navigation-and-use-case-coverage-review-workflow.md). Preserve its boundaries and permission model; this Helper projection is invocation/navigation only.",
-      "target": "<Review Repository Navigation / Semantic Coverage target>",
-      "directionId": "DIR-DOCUMENTATION",
-      "manualInvocation": true,
-      "trigger": "repository discoverability/semantic coverage may be incomplete",
-      "result": "uncovered Workspace/methodology UCs, uncovered Application Scenarios, orphan owners, broken routes and incomplete semantic contracts identified with maintenance/planning handoffs"
-    },
-    {
-      "id": "UC-DOC-REVIEW-CURRENT-CONSISTENCY",
-      "label": "Review Current Semantic Consistency",
-      "description": "verify that current reusable/project owners, registries, templates and projections agree on selected meaning",
-      "sources": [
-        "planning/documentation/use-case-registry.md"
-      ],
-      "instruction": "Resolve UC-DOC-REVIEW-CURRENT-CONSISTENCY in the current canonical registry and follow its current owner route (current-semantic-consistency-review-workflow.md). Preserve its boundaries and permission model; this Helper projection is invocation/navigation only.",
-      "target": "<Review Current Semantic Consistency target>",
-      "directionId": "DIR-DOCUMENTATION",
-      "manualInvocation": true,
-      "trigger": "a material methodology change or consistency concern may leave stale/duplicated/conflicting current semantics",
-      "result": "checked contradictions/stale duplicates/orphan routes + selected corrective owner updates"
-    },
-    {
-      "id": "UC-DOC-REVIEW-DEPENDENCY-COVERAGE",
-      "label": "Review Dependency Coverage",
-      "description": "determine whether material semantic dependencies that must not rely on memory are represented/reviewable",
-      "sources": [
-        "planning/documentation/use-case-registry.md"
-      ],
-      "instruction": "Resolve UC-DOC-REVIEW-DEPENDENCY-COVERAGE in the current canonical registry and follow its current owner route (review-dependency-planning-workflow.md). Preserve its boundaries and permission model; this Helper projection is invocation/navigation only.",
-      "target": "<Review Dependency Coverage target>",
-      "directionId": "DIR-DOCUMENTATION",
-      "manualInvocation": true,
-      "trigger": "completeness of dependency handling materially affects correctness",
-      "result": "missing/weak/duplicate dependency findings + treatment route"
-    },
-    {
-      "id": "UC-DOC-REVIEW-DEPENDENTS",
-      "label": "Review Semantic Dependents",
-      "description": "review known consumers/dependents after material upstream change",
-      "sources": [
-        "planning/documentation/use-case-registry.md"
-      ],
-      "instruction": "Resolve UC-DOC-REVIEW-DEPENDENTS in the current canonical registry and follow its current owner route (review-dependency-planning-workflow.md). Preserve its boundaries and permission model; this Helper projection is invocation/navigation only.",
-      "target": "<Review Semantic Dependents target>",
-      "directionId": "DIR-DOCUMENTATION",
-      "manualInvocation": true,
-      "trigger": "selected source meaning changed or dependency review is explicitly requested/needed for correctness",
-      "result": "checked affected dependents + stale/current findings + required repairs"
-    },
-    {
-      "id": "UC-DOC-REVIEW-DIFF",
-      "label": "Semantically Review A Repository ReviewDiff",
-      "description": "determine whether an applied/proposed repository transition is correct, necessary and integrated",
-      "sources": [
-        "planning/documentation/use-case-registry.md"
-      ],
-      "instruction": "Resolve UC-DOC-REVIEW-DIFF in the current canonical registry and follow its current owner route (review-diff-review-workflow.md + affected current owners + planning-concerns-and-decisions-model.md + shared Idea owners only for material corrective alternatives). Preserve its boundaries and permission model; this Helper projection is invocation/navigation only.",
-      "target": "<Semantically Review A Repository ReviewDiff target>",
-      "directionId": "DIR-DOCUMENTATION",
-      "manualInvocation": true,
-      "trigger": "ReviewDiff is pasted/attached/delivered/selected for review",
-      "result": "checked findings + selected corrective plan when needed + current Concern/Decision state + ReviewDiff verdict",
-      "commandId": "critical_review.apply"
-    },
-    {
-      "id": "UC-DOC-REVIEW-EXAMPLES",
-      "label": "Review Practical Example Coverage",
-      "description": "decide whether reusable meaning needs a demonstration and where it belongs",
-      "sources": [
-        "planning/documentation/use-case-registry.md"
-      ],
-      "instruction": "Resolve UC-DOC-REVIEW-EXAMPLES in the current canonical registry and follow its current owner route (example-coverage-workflow.md). Preserve its boundaries and permission model; this Helper projection is invocation/navigation only.",
-      "target": "<Review Practical Example Coverage target>",
-      "directionId": "DIR-DOCUMENTATION",
-      "manualInvocation": true,
-      "trigger": "reusable method/template needs demonstration review",
-      "result": "example need / owner / boundary decision"
-    },
-    {
-      "id": "UC-DOC-REVISE-RETURNED-FILES",
-      "label": "Reconcile User-Returned Files",
-      "description": "reconcile externally edited/reviewed files into complete current artifacts",
-      "sources": [
-        "planning/documentation/use-case-registry.md"
-      ],
-      "instruction": "Resolve UC-DOC-REVISE-RETURNED-FILES in the current canonical registry and follow its current owner route (reviewable-agent-output-and-commands-workflow.md). Preserve its boundaries and permission model; this Helper projection is invocation/navigation only.",
-      "target": "<Reconcile User-Returned Files target>",
-      "directionId": "DIR-DOCUMENTATION",
-      "manualInvocation": true,
-      "trigger": "user returns edited files for revision",
-      "result": "complete reconciled files",
-      "commandId": "returned_files.revise"
-    },
-    {
-      "id": "UC-DOC-UPDATE",
-      "label": "Perform An Approved Documentation Update",
-      "description": "apply already selected documentation meaning to current owners",
-      "sources": [
-        "planning/documentation/use-case-registry.md"
-      ],
-      "instruction": "Resolve UC-DOC-UPDATE in the current canonical registry and follow its current owner route (documentation-update-workflow.md). Preserve its boundaries and permission model; this Helper projection is invocation/navigation only.",
-      "target": "<Perform An Approved Documentation Update target>",
-      "directionId": "DIR-DOCUMENTATION",
-      "manualInvocation": true,
-      "trigger": "selected meaning is authorized for docs change",
-      "result": "current owners updated consistently"
+      "trigger": "The current repository documentation may contain stale routes, duplicate semantic authority, orphan methodology/supporting files, unclear Use-Case boundaries, misleading navigation, or inconsistent application of the current documentation contracts.",
+      "result": "Material documentation findings are tied to their real semantic owners, verified and unverified areas are distinguished, and each required correction has a narrow current repair/change route without the review itself becoming new semantic authority."
     },
     {
       "id": "UC-DW-DOC-REF",
@@ -836,6 +647,20 @@
       "commandId": "review_audit.recheck"
     },
     {
+      "id": "UC-REPO-BUILD-REPLACEMENT-PACKAGE",
+      "label": "Build Replacement Package",
+      "description": "One protocol-valid Replacement Package ZIP exists with a new package identity, the correct ChangeSet identity, exact required base/replacement payloads, and a short OBS-ACTION handoff.",
+      "sources": [
+        "planning/use-case-registry.md"
+      ],
+      "instruction": "Resolve UC-REPO-BUILD-REPLACEMENT-PACKAGE in the current canonical registry and follow its current owner route (planning/use-cases/UC-REPO-BUILD-REPLACEMENT-PACKAGE.md). Preserve its boundaries and permission model; this Helper projection is invocation/navigation only.",
+      "target": "<Build Replacement Package target>",
+      "directionId": "DIR-REPOSITORY",
+      "manualInvocation": true,
+      "trigger": "An intended repository transition is sufficiently resolved to transport as a Replacement Package and exact current base state for every replace / delete operation is available.",
+      "result": "One protocol-valid Replacement Package ZIP exists with a new package identity, the correct ChangeSet identity, exact required base/replacement payloads, and a short OBS-ACTION handoff."
+    },
+    {
       "id": "UC-REPO-CRITICAL-REVIEW",
       "label": "Critically Review A Claim / Plan / Diff",
       "description": "truth-seek against a target instead of accepting it as given",
@@ -878,6 +703,34 @@
       "manualInvocation": true,
       "trigger": "repository scope boundaries/log locations need initial definition or explicit structural change",
       "result": "current root Scope Registry + canonical log at every active scope root"
+    },
+    {
+      "id": "UC-REPO-MAINTAIN-PLANNING-COMMAND",
+      "label": "Maintain Planning Command",
+      "description": "A valid current direct planning/commands/*.command.md definition exists and routes to the correct semantic capability/supporting owners without becoming semantic authority itself.",
+      "sources": [
+        "planning/use-case-registry.md"
+      ],
+      "instruction": "Resolve UC-REPO-MAINTAIN-PLANNING-COMMAND in the current canonical registry and follow its current owner route (planning/use-cases/UC-REPO-MAINTAIN-PLANNING-COMMAND.md). Preserve its boundaries and permission model; this Helper projection is invocation/navigation only.",
+      "target": "<Maintain Planning Command target>",
+      "directionId": "DIR-REPOSITORY",
+      "manualInvocation": true,
+      "trigger": "A stable executable Planning Command is useful, or an existing command trigger, route, output contract, presentation, or permission boundary is stale.",
+      "result": "A valid current direct planning/commands/*.command.md definition exists and routes to the correct semantic capability/supporting owners without becoming semantic authority itself."
+    },
+    {
+      "id": "UC-REPO-MAINTAIN-PROMPT",
+      "label": "Maintain Reusable Prompt",
+      "description": "A reusable prompt exists that performs its interaction/bootstrap job concisely while deferring semantic authority and permission to current repository owners/routes.",
+      "sources": [
+        "planning/use-case-registry.md"
+      ],
+      "instruction": "Resolve UC-REPO-MAINTAIN-PROMPT in the current canonical registry and follow its current owner route (planning/use-cases/UC-REPO-MAINTAIN-PROMPT.md). Preserve its boundaries and permission model; this Helper projection is invocation/navigation only.",
+      "target": "<Maintain Reusable Prompt target>",
+      "directionId": "DIR-REPOSITORY",
+      "manualInvocation": true,
+      "trigger": "Reusable prompt/insertion text would materially improve repeated AI interaction, or an existing prompt is stale, duplicative, too broad, or routes to obsolete owners.",
+      "result": "A reusable prompt exists that performs its interaction/bootstrap job concisely while deferring semantic authority and permission to current repository owners/routes."
     },
     {
       "id": "UC-REPO-ORIENT",
@@ -925,6 +778,20 @@
       "commandId": "plan.now"
     },
     {
+      "id": "UC-REPO-PLAN-UPDATE",
+      "label": "Plan Repository Update",
+      "description": "One concrete repository update plan exists with the affected current owners/paths, intended add / replace / delete operations, material ordering/dependencies, preservation boundaries, and verification.",
+      "sources": [
+        "planning/use-case-registry.md"
+      ],
+      "instruction": "Resolve UC-REPO-PLAN-UPDATE in the current canonical registry and follow its current owner route (planning/use-cases/UC-REPO-PLAN-UPDATE.md). Preserve its boundaries and permission model; this Helper projection is invocation/navigation only.",
+      "target": "<Plan Repository Update target>",
+      "directionId": "DIR-REPOSITORY",
+      "manualInvocation": true,
+      "trigger": "Selected semantic meaning needs a concrete repository/file transition before mutation, or an explicit Pre-Update is useful for reviewing what will change.",
+      "result": "One concrete repository update plan exists with the affected current owners/paths, intended add / replace / delete operations, material ordering/dependencies, preservation boundaries, and verification."
+    },
+    {
       "id": "UC-REPO-REFINE-CURRENT-PLAN",
       "label": "Refine The Current Plan",
       "description": "integrate material clarification/change into one accumulating current plan through the selected semantic owner",
@@ -938,6 +805,20 @@
       "trigger": "current planning meaning needs refinement, deeper review or directed continuation",
       "result": "updated current Target/owner + current Q/R/P/Decision trace + Artifact Placement/Methodology Direction when material",
       "commandId": "idtspe.work"
+    },
+    {
+      "id": "UC-REPO-REVIEW-DIFF",
+      "label": "Review Repository ReviewDiff",
+      "description": "The transition has a grounded semantic verdict — APPROVABLE, NEEDS CORRECTION, or BLOCKED BY MATERIAL DECISION — with material findings and the required correction direction when applicable.",
+      "sources": [
+        "planning/use-case-registry.md"
+      ],
+      "instruction": "Resolve UC-REPO-REVIEW-DIFF in the current canonical registry and follow its current owner route (planning/use-cases/UC-REPO-REVIEW-DIFF.md). Preserve its boundaries and permission model; this Helper projection is invocation/navigation only.",
+      "target": "<Review Repository ReviewDiff target>",
+      "directionId": "DIR-REPOSITORY",
+      "manualInvocation": true,
+      "trigger": "A ReviewDiff representing a proposed/applied repository transition is selected for semantic review.",
+      "result": "The transition has a grounded semantic verdict — APPROVABLE, NEEDS CORRECTION, or BLOCKED BY MATERIAL DECISION — with material findings and the required correction direction when applicable."
     },
     {
       "id": "UC-REPO-REVIEW-PLANNING-FINDINGS",
@@ -967,6 +848,62 @@
       "trigger": "user selects archive/snapshot for reading",
       "result": "checked source identity/coverage + source-bounded work context",
       "commandId": "archive_source.use"
+    },
+    {
+      "id": "UC-SESSION-CHECKPOINT",
+      "label": "Integrate Current Session Checkpoint",
+      "description": "A coherent current Checkpoint exists as Session State, with material current meaning integrated and useful unresolved/continuation points explicit.",
+      "sources": [
+        "planning/use-case-registry.md"
+      ],
+      "instruction": "Resolve UC-SESSION-CHECKPOINT in the current canonical registry and follow its current owner route (planning/session/use-cases/UC-SESSION-CHECKPOINT.md). Preserve its boundaries and permission model; this Helper projection is invocation/navigation only.",
+      "target": "<Integrate Current Session Checkpoint target>",
+      "directionId": "DIR-REPOSITORY",
+      "manualInvocation": true,
+      "trigger": "Broad Discussion and current work have accumulated enough material that accepted meaning, unresolved items, or the current plan/state are distributed or no longer reliably reconstructible from the latest messages alone.",
+      "result": "A coherent current Checkpoint exists as Session State, with material current meaning integrated and useful unresolved/continuation points explicit."
+    },
+    {
+      "id": "UC-SESSION-ESTABLISH-WORKFLOW",
+      "label": "Establish / Adjust Session Workflow",
+      "description": "The Session has a situation-appropriate current concern and way of working, with enough structure to continue productively without forcing an unnecessary methodology or file structure.",
+      "sources": [
+        "planning/use-case-registry.md"
+      ],
+      "instruction": "Resolve UC-SESSION-ESTABLISH-WORKFLOW in the current canonical registry and follow its current owner route (planning/session/use-cases/UC-SESSION-ESTABLISH-WORKFLOW.md). Preserve its boundaries and permission model; this Helper projection is invocation/navigation only.",
+      "target": "<Establish / Adjust Session Workflow target>",
+      "directionId": "DIR-REPOSITORY",
+      "manualInvocation": true,
+      "trigger": "The current work needs a clearer concern, working structure, or way of proceeding, or the existing Session Workflow no longer fits the situation.",
+      "result": "The Session has a situation-appropriate current concern and way of working, with enough structure to continue productively without forcing an unnecessary methodology or file structure."
+    },
+    {
+      "id": "UC-SESSION-MAINTAIN-STATE",
+      "label": "Maintain Session State",
+      "description": "Useful current working meaning is represented as coherent Session State at a granularity and physical structure appropriate to the current work.",
+      "sources": [
+        "planning/use-case-registry.md"
+      ],
+      "instruction": "Resolve UC-SESSION-MAINTAIN-STATE in the current canonical registry and follow its current owner route (planning/session/use-cases/UC-SESSION-MAINTAIN-STATE.md). Preserve its boundaries and permission model; this Helper projection is invocation/navigation only.",
+      "target": "<Maintain Session State target>",
+      "directionId": "DIR-REPOSITORY",
+      "manualInvocation": true,
+      "trigger": "Working meaning should survive the immediate conversation, has become too large or distributed to continue reliably, or needs a persistent representation for review, handoff, or later resumption.",
+      "result": "Useful current working meaning is represented as coherent Session State at a granularity and physical structure appropriate to the current work."
+    },
+    {
+      "id": "UC-SESSION-USE-REPOSITORY-GUIDANCE",
+      "label": "Use Repository Guidance In Current Session",
+      "description": "The Session has a situation-specific Guidance Orientation: relevant repository owners and recommendations are identified, their applicability to the current step is assessed, and useful state/workflow implications, actions, questions, or decisions are visible.",
+      "sources": [
+        "planning/use-case-registry.md"
+      ],
+      "instruction": "Resolve UC-SESSION-USE-REPOSITORY-GUIDANCE in the current canonical registry and follow its current owner route (planning/session/use-cases/UC-SESSION-USE-REPOSITORY-GUIDANCE.md). Preserve its boundaries and permission model; this Helper projection is invocation/navigation only.",
+      "target": "<Use Repository Guidance In Current Session target>",
+      "directionId": "DIR-REPOSITORY",
+      "manualInvocation": true,
+      "trigger": "Repository documentation may materially improve the current work, and it is useful to make the selected guidance and its current implications observable.",
+      "result": "The Session has a situation-specific Guidance Orientation: relevant repository owners and recommendations are identified, their applicability to the current step is assessed, and useful state/workflow implications, actions, questions, or decisions are visible."
     }
   ]
 }

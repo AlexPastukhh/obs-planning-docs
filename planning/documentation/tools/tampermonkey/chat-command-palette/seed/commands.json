@@ -184,42 +184,6 @@
     },
     {
       "schemaVersion": 1,
-      "id": "replacement_archive.review_diff.create",
-      "file": "build-archive-with-review-diff.command.md",
-      "command": "давай архив с review diff file",
-      "englishName": "build archive with review diff",
-      "commandFamily": [
-        "давай архив с review diff file",
-        "give arch rev dif",
-        "archive with review diff file"
-      ],
-      "description": "output package + repo review diff",
-      "meaning": "Produce a replacement archive plus the explicitly requested repository-stored review diff flow.",
-      "activeContextBehavior": "Use only when review-diff-file transfer is explicitly requested. This is a legacy reviewable package route: source selection, exact local-base verification, apply/diff and review behavior come from this command's own ownerFiles, not from the producer-only build replacement archive route.",
-      "traversalReadMode": "Targeted/full depending on touched files.",
-      "ownerFiles": [
-        "planning/documentation/reviewable-agent-output-and-commands-workflow.md",
-        "planning/documentation/review-diff-file-workflow.md",
-        "planning/documentation/documentation-update-workflow.md"
-      ],
-      "expectedOutput": "Replacement archive plus the approved review-diff-file flow; reviewed diff before commit/push.",
-      "permissionMode": "package-no-commit-push",
-      "keyReminders": [
-        "Output-package mode with review-diff-file transfer explicitly requested.",
-        "Follow this legacy route's ownerFiles for source selection, exact local-base verification, apply/diff and review.",
-        "Use the review-diff-file workflow only for the approved repository-stored diff path.",
-        "Produce full replacement files and apply/diff commands.",
-        "Do not commit or push before the pasted diff is reviewed."
-      ],
-      "userTarget": "<what archive/package and review diff should include>",
-      "palette": false,
-      "helperPresentation": null,
-      "methodologyBinding": null,
-      "directionIds": [],
-      "refinements": []
-    },
-    {
-      "schemaVersion": 1,
       "id": "replacement_archive.create",
       "file": "build-replacement-archive.command.md",
       "command": "давай архив",
@@ -235,9 +199,10 @@
       "activeContextBehavior": "Use the active approved scope and exact checked source state. An earlier-message archive is not current automatically. A source archive/snapshot may be selected for the active invocation when it is explicitly provided or selected for that invocation and, after inspection, matches the intended repository/target and completely covers the touched source. Otherwise use fully readable current repository files. Never guess touched base content.",
       "traversalReadMode": "Targeted/full depending on touched files and source certainty.",
       "ownerFiles": [
+        "planning/use-cases/UC-REPO-BUILD-REPLACEMENT-PACKAGE.md",
         "planning/documentation/build-replacement-archive-workflow.md"
       ],
-      "expectedOutput": "One full replacement ZIP plus one short structured OBS-ACTION containing required action, name, archive and packageId fields; packageId matches PACKAGE.json; chatTabTitle is included only when an exact intended title was explicitly supplied/selected; complete replacement/base payloads required by the package contract; no local apply/diff/finalization commands.",
+      "expectedOutput": "One full replacement ZIP plus one short structured OBS-ACTION containing action, name, archive and packageId; for new independent target-mode work include exact PACKAGE.json workIntent and exact targetBranch so the consumer can automatically ensure GitHub Work Intent → workspace → Apply → Commit → Publish. A continuation of an already-existing legacy ChangeSet may omit targetBranch for compatibility. packageId matches PACKAGE.json; chatTabTitle is included only when an exact intended title was explicitly supplied/selected; complete replacement/base payloads required by the package contract; no local apply/diff/finalization commands.",
       "permissionMode": "package-no-commit-push",
       "keyReminders": [
         "Package-producer mode, not archive read-source mode.",
@@ -251,7 +216,7 @@
         "Before reusing a changeSetId, verify that the ChangeSet is still open. Acceptance of its ReviewDiff as APPROVABLE finalizes/closes it for future package production.",
         "After an APPROVABLE ReviewDiff is accepted, every later replacement archive starts a new changeSetId + stable new changeSetLabel + new packageId, even when the later work is conceptually related or touches the same files.",
         "Produce one full replacement ZIP with PACKAGE.json, required base-files and replacement-files.",
-        "Return one short OBS-ACTION containing action, name, archive and packageId; packageId must match PACKAGE.json.",
+        "Return one short OBS-ACTION containing action, name, archive and packageId; for new independent target-mode work include exact PACKAGE.json workIntent from selected semantic context and exact targetBranch from checked source/target context. Omit targetBranch only when intentionally continuing an already-existing legacy ChangeSet; packageId must match PACKAGE.json.",
         "Include chatTabTitle only when the exact intended ChatGPT conversation/tab title was explicitly supplied or selected for the active invocation; otherwise omit it.",
         "Do not include clipboard/review-diff settings in OBS-ACTION.",
         "Do not apply locally, generate review/finalization commands, commit or push."
@@ -1617,21 +1582,23 @@
       "description": "plan command",
       "meaning": "Plan a command route and its documentation changes without implementing it.",
       "activeContextBehavior": "Ask which command only when the target command is unclear.",
-      "traversalReadMode": "Documentation-principles preflight, then targeted/full command-route reads.",
+      "traversalReadMode": "Targeted current command-capability and route reads; use repository update planning only when a concrete file transition is needed.",
       "ownerFiles": [
-        "planning/documentation/documentation-principles-read-workflow.md",
-        "planning/documentation/file-update-overview-workflow.md",
-        "planning/documentation/FILE-UPDATE-OVERVIEW-TEMPLATE.md",
+        "planning/use-cases/UC-REPO-MAINTAIN-PLANNING-COMMAND.md",
+        "planning/commands/README.md",
         "planning/documentation/command-planning-workflow.md",
         "planning/documentation/command-routing-workflow.md",
-        "planning/documentation/COMMAND-ROUTING-TEMPLATE.md"
+        "planning/documentation/COMMAND-ROUTING-TEMPLATE.md",
+        "planning/use-cases/UC-REPO-PLAN-UPDATE.md",
+        "planning/documentation/file-update-overview-workflow.md",
+        "planning/documentation/FILE-UPDATE-OVERVIEW-TEMPLATE.md"
       ],
       "expectedOutput": "Command family/type/English name/owner/registry/example/projection plan followed by План файл-обновление.",
       "permissionMode": "plan-only",
       "keyReminders": [
         "Plan a command route only.",
-        "Run the documentation-principles preflight.",
-        "Produce a file-update plan and read command-specific owners.",
+        "Use UC-REPO-MAINTAIN-PLANNING-COMMAND as the semantic capability and keep detailed algorithms in its supporting owners.",
+        "When a concrete repository transition must be planned, hand off through UC-REPO-PLAN-UPDATE rather than reviving the retired Documentation pre-update/bootstrap UC routes.",
         "Tampermonkey is projection, not source of truth.",
         "Do not edit files, create an archive, commit or push."
       ],
@@ -1839,6 +1806,7 @@
       "activeContextBehavior": "Use the clearly selected current semantic planning result as input. Ask target/scope only when active context does not make it clear. If invoked after collect-ideas work, continue from that selected/current semantic integration instead of reopening the whole Idea review unless material uncertainty remains.",
       "traversalReadMode": "Reuse/targeted/full by update risk.",
       "ownerFiles": [
+        "planning/use-cases/UC-REPO-PLAN-UPDATE.md",
         "planning/documentation/planning-concerns-and-decisions-model.md",
         "planning/documentation/idea-planning-principles-and-terminology.md",
         "planning/documentation/idea-review-and-planning-workflow.md",
@@ -1848,7 +1816,7 @@
       "expectedOutput": "Pre-Update / File Update Plan from one Current Selected Meaning: Current Conclusions and active concerns when material, then ordered concrete steps, exact files/actions/dependencies/checks, explicit boundaries and next authorized action.",
       "permissionMode": "plan-only",
       "keyReminders": [
-        "`Pre-Update` / `пред-апдейт` is the explicit continuation from semantic planning into concrete file planning; it is not a new semantic UC and not a global rename for SDS/UCDS Step 3.",
+        "`Pre-Update` / `пред-апдейт` invokes UC-REPO-PLAN-UPDATE for generic repository update planning; it is not a global rename for SDS/UCDS Step 3 or an implementation permission.",
         "Do not treat contextual `давай шаг 3` as a global command alias because Step 3 already has canonical meanings in SDS/UCDS; resolve it from active context instead.",
         "Plan file/docs/code/archive update only.",
         "Treat only explicit user statements and checked source facts as confirmed.",
@@ -2656,27 +2624,23 @@
         "documentation principles",
         "docs principles"
       ],
-      "description": "load reusable documentation governance",
-      "meaning": "Establish reusable documentation-governance context, resolve the applicable Documentation Use Case and canonical owners, and preserve the task's permission boundary without authorizing repository edits.",
-      "activeContextBehavior": "Use the active documentation/repository target when clear and resolve its UC-DOC-* + owners; if no task is active, load governance and stop ready for the next documentation task without forcing a target question.",
-      "traversalReadMode": "Full when reusable governance is not current/remembered or uncertain; targeted refresh only after a current full bootstrap.",
+      "description": "read current documentation guidance",
+      "meaning": "Use current Documentation principles and the current Documentation Use-Case registry as repository guidance for the active Session without recreating the retired UC-DOC-ORIENT/bootstrap runtime.",
+      "activeContextBehavior": "When an active documentation target is clear, use Session guidance to resolve the relevant current Documentation Use Case and owners. If no task is active, read the current Documentation principles/registry and stop without inventing a target.",
+      "traversalReadMode": "Targeted current guidance: Session repository-guidance owner plus current Documentation principles and Use-Case registry; do not traverse the retired bootstrap/responsibility-map chain by default.",
       "ownerFiles": [
-        "planning/AI-WORKING-CONTRACT.md",
-        "planning/documentation/direction-registry.md",
-        "planning/documentation/use-case-registry.md",
-        "planning/documentation/planning-docs-architecture-principles.md",
-        "planning/documentation/documentation-responsibility-map.md",
-        "planning/documentation/documentation-principles-read-workflow.md"
+        "planning/session/use-cases/UC-SESSION-USE-REPOSITORY-GUIDANCE.md",
+        "planning/documentation/principles-and-terminology.md",
+        "planning/documentation/use-case-registry.md"
       ],
-      "expectedOutput": "Compact reusable-documentation bootstrap result: selected Documentation Use Case when applicable, reusable owners loaded, current/project owners, permission boundary and material unresolved ownership/questions; no repository mutation.",
+      "expectedOutput": "Compact read-only Documentation guidance orientation: relevant current Documentation Use Case/owners when applicable, current principles/registry guidance, material applicability notes or unresolved ownership questions, and the preserved permission boundary; no repository mutation.",
       "permissionMode": "read-only",
       "keyReminders": [
-        "Apply reusable documentation principles to documentation work after this bootstrap.",
-        "Resolve DIR-DOCUMENTATION / the applicable UC-DOC-* and canonical owner before proposing a new file or moving meaning.",
-        "Keep reusable methodology separate from project/current state; README/index navigation does not own full semantic bodies.",
-        "Commands, examples, helper projections and implementation do not override canonical semantic owners.",
-        "Use full bootstrap when governance is not current/remembered or boundaries are uncertain; targeted refresh only after a current full pass.",
-        "If no active task exists, load governance and stop ready for the next documentation task instead of inventing a target.",
+        "This alias is a thin invocation shortcut, not a separate Documentation orientation Use Case.",
+        "Use UC-SESSION-USE-REPOSITORY-GUIDANCE for Session-level guidance selection and the current Documentation P&T/registry for Documentation meaning/navigation.",
+        "Resolve the applicable current Documentation Use Case and canonical owner when one is needed; do not revive the retired pre-fundamental UC-DOC-ORIENT route.",
+        "README/index navigation, commands, examples, helper projections and implementation do not override canonical semantic owners.",
+        "If no active task exists, read the current guidance and stop instead of inventing a target.",
         "This command is read-only and does not authorize file edits, archive creation, commit or push."
       ],
       "userTarget": "<documentation work in this session or none yet>",
@@ -3230,40 +3194,6 @@
         "DIR-PLAN-TESTING",
         "DIR-PLAN-SOLUTION"
       ],
-      "refinements": []
-    },
-    {
-      "schemaVersion": 1,
-      "id": "returned_files.revise",
-      "file": "revise-returned-files.command.md",
-      "command": "обн",
-      "englishName": "revise returned files",
-      "commandFamily": [
-        "обн",
-        "upd"
-      ],
-      "description": "revise returned files",
-      "meaning": "Review user-edited returned Markdown/docs/planning-draft files and produce complete revised versions.",
-      "activeContextBehavior": "Same-message returned files are the selected working versions; compare with clearly matching prior versions when available.",
-      "traversalReadMode": "Full read of every returned file; targeted read of matching prior versions and relevant owners/templates.",
-      "ownerFiles": [
-        "planning/documentation/reviewable-agent-output-and-commands-workflow.md"
-      ],
-      "expectedOutput": "Complete revised affected files plus compact significant-adjustment and unresolved-conflict summary.",
-      "permissionMode": "response-only",
-      "keyReminders": [
-        "Treat same-message returned files as the selected working versions.",
-        "Read every returned file completely.",
-        "Compare with clearly matching prior versions when available.",
-        "Preserve deliberate user edits unless they conflict with checked owner/safety rules or same-message clarification.",
-        "Return complete revised files, not isolated fragments.",
-        "Do not edit the repository, create an archive, commit or push unless separately requested."
-      ],
-      "userTarget": "<returned files and clarification to revise>",
-      "palette": false,
-      "helperPresentation": null,
-      "methodologyBinding": null,
-      "directionIds": [],
       "refinements": []
     },
     {

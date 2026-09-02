@@ -27,6 +27,16 @@ Groups are navigation only. Detailed `Situation`, `Result`, and `Process` meanin
 | `UC-DOC-MAINTAIN-README` | Maintain README Navigation | [`documentation/use-cases/UC-DOC-MAINTAIN-README.md`](documentation/use-cases/UC-DOC-MAINTAIN-README.md) |
 | `UC-DOC-MAINTAIN-USE-CASE-REGISTRY` | Maintain Use-Case Registry | [`documentation/use-cases/UC-DOC-MAINTAIN-USE-CASE-REGISTRY.md`](documentation/use-cases/UC-DOC-MAINTAIN-USE-CASE-REGISTRY.md) |
 
+## Repository Update / Delivery / Maintenance
+
+| ID | Use Case | Owner |
+|---|---|---|
+| `UC-REPO-PLAN-UPDATE` | Plan Repository Update | [`use-cases/UC-REPO-PLAN-UPDATE.md`](use-cases/UC-REPO-PLAN-UPDATE.md) |
+| `UC-REPO-BUILD-REPLACEMENT-PACKAGE` | Build Replacement Package | [`use-cases/UC-REPO-BUILD-REPLACEMENT-PACKAGE.md`](use-cases/UC-REPO-BUILD-REPLACEMENT-PACKAGE.md) |
+| `UC-REPO-REVIEW-DIFF` | Review Repository ReviewDiff | [`use-cases/UC-REPO-REVIEW-DIFF.md`](use-cases/UC-REPO-REVIEW-DIFF.md) |
+| `UC-REPO-MAINTAIN-PLANNING-COMMAND` | Maintain Planning Command | [`use-cases/UC-REPO-MAINTAIN-PLANNING-COMMAND.md`](use-cases/UC-REPO-MAINTAIN-PLANNING-COMMAND.md) |
+| `UC-REPO-MAINTAIN-PROMPT` | Maintain Reusable Prompt | [`use-cases/UC-REPO-MAINTAIN-PROMPT.md`](use-cases/UC-REPO-MAINTAIN-PROMPT.md) |
+
 ## Existing Current Repository Capabilities — Pending Reconciliation
 
 These capabilities have **not** been retired or made legacy by the fundamental migration. Their previous contracts remain current pending an explicit `KEEP / FOLD / MOVE / RETIRE` review.

@@ -1,7 +1,7 @@
 # Bootstrap Reusable Documentation Principles
 
 Status: active project command definition
-Scope: reusable documentation-governance bootstrap shortcut; semantic authority remains in linked registries/principles/current owners.
+Scope: thin read-only shortcut for using current Documentation guidance in the active Session; semantic authority remains in the current Session/Documentation owners.
 
 [PLANNING_COMMAND_DEFINITION]
 {
@@ -23,27 +23,23 @@ Scope: reusable documentation-governance bootstrap shortcut; semantic authority 
     "documentation principles",
     "docs principles"
   ],
-  "description": "load reusable documentation governance",
-  "meaning": "Establish reusable documentation-governance context, resolve the applicable Documentation Use Case and canonical owners, and preserve the task's permission boundary without authorizing repository edits.",
-  "activeContextBehavior": "Use the active documentation/repository target when clear and resolve its UC-DOC-* + owners; if no task is active, load governance and stop ready for the next documentation task without forcing a target question.",
-  "traversalReadMode": "Full when reusable governance is not current/remembered or uncertain; targeted refresh only after a current full bootstrap.",
+  "description": "read current documentation guidance",
+  "meaning": "Use current Documentation principles and the current Documentation Use-Case registry as repository guidance for the active Session without recreating the retired UC-DOC-ORIENT/bootstrap runtime.",
+  "activeContextBehavior": "When an active documentation target is clear, use Session guidance to resolve the relevant current Documentation Use Case and owners. If no task is active, read the current Documentation principles/registry and stop without inventing a target.",
+  "traversalReadMode": "Targeted current guidance: Session repository-guidance owner plus current Documentation principles and Use-Case registry; do not traverse the retired bootstrap/responsibility-map chain by default.",
   "ownerFiles": [
-    "planning/AI-WORKING-CONTRACT.md",
-    "planning/documentation/direction-registry.md",
-    "planning/documentation/use-case-registry.md",
-    "planning/documentation/planning-docs-architecture-principles.md",
-    "planning/documentation/documentation-responsibility-map.md",
-    "planning/documentation/documentation-principles-read-workflow.md"
+    "planning/session/use-cases/UC-SESSION-USE-REPOSITORY-GUIDANCE.md",
+    "planning/documentation/principles-and-terminology.md",
+    "planning/documentation/use-case-registry.md"
   ],
-  "expectedOutput": "Compact reusable-documentation bootstrap result: selected Documentation Use Case when applicable, reusable owners loaded, current/project owners, permission boundary and material unresolved ownership/questions; no repository mutation.",
+  "expectedOutput": "Compact read-only Documentation guidance orientation: relevant current Documentation Use Case/owners when applicable, current principles/registry guidance, material applicability notes or unresolved ownership questions, and the preserved permission boundary; no repository mutation.",
   "permissionMode": "read-only",
   "keyReminders": [
-    "Apply reusable documentation principles to documentation work after this bootstrap.",
-    "Resolve DIR-DOCUMENTATION / the applicable UC-DOC-* and canonical owner before proposing a new file or moving meaning.",
-    "Keep reusable methodology separate from project/current state; README/index navigation does not own full semantic bodies.",
-    "Commands, examples, helper projections and implementation do not override canonical semantic owners.",
-    "Use full bootstrap when governance is not current/remembered or boundaries are uncertain; targeted refresh only after a current full pass.",
-    "If no active task exists, load governance and stop ready for the next documentation task instead of inventing a target.",
+    "This alias is a thin invocation shortcut, not a separate Documentation orientation Use Case.",
+    "Use UC-SESSION-USE-REPOSITORY-GUIDANCE for Session-level guidance selection and the current Documentation P&T/registry for Documentation meaning/navigation.",
+    "Resolve the applicable current Documentation Use Case and canonical owner when one is needed; do not revive the retired pre-fundamental UC-DOC-ORIENT route.",
+    "README/index navigation, commands, examples, helper projections and implementation do not override canonical semantic owners.",
+    "If no active task exists, read the current guidance and stop instead of inventing a target.",
     "This command is read-only and does not authorize file edits, archive creation, commit or push."
   ],
   "userTarget": "<documentation work in this session or none yet>",

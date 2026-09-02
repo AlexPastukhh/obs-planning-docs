@@ -1,34 +1,20 @@
 # Documentation
 
-Generic reusable methodology for repository documentation plus existing documentation/planning methodology areas that are still pending reconciliation.
+Generic reusable methodology for repository documentation. The fundamental Documentation capabilities are independent of IDTSPE and other project methodologies.
 
-The fundamental Documentation capabilities are independent of IDTSPE. They may use IDTSPE or another planning approach when useful, but they do not belong to an IDTSPE profile.
-
-## Fundamental Current Owners
+## Current Owners
 
 - [`principles-and-terminology.md`](principles-and-terminology.md) — documentation vocabulary and stable semantic rules.
-- [`use-case-registry.md`](use-case-registry.md) — current Documentation capability overview, including unreviewed pre-fundamental capabilities.
-- [`use-cases/`](use-cases/) — fundamental Documentation Use-Case owners.
+- [`use-case-registry.md`](use-case-registry.md) — current generic Documentation capabilities.
+- [`use-cases/`](use-cases/) — current Documentation Use-Case owners.
 - [`templates/`](templates/) — shape-only templates introduced by the fundamental layer.
 
-## Existing Current Areas — Pending Reconciliation
+## Existing Supporting Areas — Pending File-Level Decomposition
 
-The following existing areas/files are **not** made legacy merely by introducing the fundamental layer:
+Older workflows, models, templates, tools, and methodology areas may still contain useful supporting meaning. Their former pre-fundamental `UC-DOC-*` identity does not remain current merely because a supporting file still exists.
 
-- `idtspe-methodology/` — IDTSPE methodology.
-- `application-planning/` — existing application-planning material pending later disposition.
-- `workspace-planning/` — existing workspace-planning material pending later disposition.
-- `architecture-planning/` — existing architecture-planning material pending later disposition.
-- `testing-planning/` — existing testing-planning material pending later disposition.
-- `tools/` — existing documentation/tooling support.
-- existing root workflows, models, templates, command support, dependency/review owners, and examples in this directory.
-
-Use [`use-case-registry.md`](use-case-registry.md) for current Documentation capability routes while that reconciliation is in progress.
+In particular, existing `idtspe-methodology/`, application/workspace/architecture/testing planning areas, `tools/`, and root supporting workflows remain available according to their own current owners/routes while later cleanup decides `KEEP / FOLD / MOVE / RETIRE` at file/meaning level.
 
 ## Provenance
 
-Exact pre-fundamental `README.md` and `use-case-registry.md` snapshots are preserved under [`legacy/`](legacy/).
-
-Those snapshots preserve prior bytes and history. They are not current semantic owners, and relative links inside them may reflect their former canonical location.
-
-No existing family is retired until an explicit disposition says so.
+Exact pre-fundamental `README.md` and `use-case-registry.md` snapshots remain under [`legacy/`](legacy/) as provenance. They are not current semantic owners, and relative links inside them may reflect their former canonical location.

@@ -25,6 +25,7 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
   "activeContextBehavior": "Use the clearly selected current semantic planning result as input. Ask target/scope only when active context does not make it clear. If invoked after collect-ideas work, continue from that selected/current semantic integration instead of reopening the whole Idea review unless material uncertainty remains.",
   "traversalReadMode": "Reuse/targeted/full by update risk.",
   "ownerFiles": [
+    "planning/use-cases/UC-REPO-PLAN-UPDATE.md",
     "planning/documentation/planning-concerns-and-decisions-model.md",
     "planning/documentation/idea-planning-principles-and-terminology.md",
     "planning/documentation/idea-review-and-planning-workflow.md",
@@ -34,7 +35,7 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
   "expectedOutput": "Pre-Update / File Update Plan from one Current Selected Meaning: Current Conclusions and active concerns when material, then ordered concrete steps, exact files/actions/dependencies/checks, explicit boundaries and next authorized action.",
   "permissionMode": "plan-only",
   "keyReminders": [
-    "`Pre-Update` / `пред-апдейт` is the explicit continuation from semantic planning into concrete file planning; it is not a new semantic UC and not a global rename for SDS/UCDS Step 3.",
+    "`Pre-Update` / `пред-апдейт` invokes UC-REPO-PLAN-UPDATE for generic repository update planning; it is not a global rename for SDS/UCDS Step 3 or an implementation permission.",
     "Do not treat contextual `давай шаг 3` as a global command alias because Step 3 already has canonical meanings in SDS/UCDS; resolve it from active context instead.",
     "Plan file/docs/code/archive update only.",
     "Treat only explicit user statements and checked source facts as confirmed.",

@@ -5,6 +5,7 @@ This area contains repository-level planning, reusable methodology, Session work
 ## Current Structural Navigation
 
 - [`use-case-registry.md`](use-case-registry.md) — repository-wide functional Use-Case overview.
+- [`use-cases/`](use-cases/) — repository-level Use-Case owners that are not Documentation- or Session-specific.
 - [`session/`](session/) — generic active-session workflow, guidance, state, and Checkpoint capabilities.
 - [`documentation/`](documentation/) — generic reusable repository-documentation capabilities and methodology areas.
 - [`AI-WORKING-CONTRACT.md`](AI-WORKING-CONTRACT.md) — current AI/chat working contract.
@@ -14,12 +15,12 @@ This area contains repository-level planning, reusable methodology, Session work
 - [`helper-library/`](helper-library/) — Planning Helper source/library material.
 - [`dashboard/`](dashboard/) — current dashboard/view projections.
 - [`planning-input-conventions.md`](planning-input-conventions.md) — input conventions used by current planning interaction.
-- `documentation/idtspe-methodology/` — IDTSPE methodology; separate from the generic Documentation and Session foundations.
+- `documentation/idtspe-methodology/` — IDTSPE methodology; separate from the generic Documentation, Session, and repository capability layers.
 
 ## Migration / Provenance
 
-The fundamental Use-Case layer does not silently retire existing repository capabilities or methodology families. Unreviewed existing capabilities remain current pending explicit `KEEP / FOLD / MOVE / RETIRE` decisions.
+Documentation UC identity reconciliation is complete: folded/retired pre-fundamental Documentation UCs are no longer current, while surviving cross-cutting capabilities are owned by repository-level UCs. Older supporting files remain until separate file-level decomposition proves what can be folded or retired safely.
 
-Exact pre-fundamental root navigation snapshots are preserved under [`legacy/`](legacy/). They are provenance, not current semantic owners.
+Exact pre-fundamental root navigation snapshots remain under [`legacy/`](legacy/) as provenance, not current semantic owners.
 
-README owns structural navigation only. Functional capability meaning belongs in the Use-Case registries and referenced current owners.
+README owns structural navigation only. Functional capability meaning belongs in Use-Case owners reached through the registries.
