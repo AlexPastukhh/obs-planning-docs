@@ -1566,3 +1566,72 @@ Logging starts only after explicit user instruction; no pre-start history is rec
 **Target-State Result:** the new Scenario behavioral-design documentation model preserves the earlier BI→Domain→Slice architecture rules without ambiguity: Domain `DI-*` remains concrete rather than slogan-driven, Slice boundaries remain capability/recovery driven rather than size-driven, and one BI may constrain multiple Feature Interactions without creating duplicate BI authority.
 
 **APPLIED relation:** successful Apply of package `973485bf-8470-4797-8ae1-65576fcdc060` corrects the still-open ChangeSet `5288db44-37ea-445b-b3e8-90f564b6cdd7` after ReviewDiff `NEEDS_CORRECTION`; ChangeSet identity/label and Work Intent remain unchanged.
+
+### LOG-RPKG-071 — Clarify Application Evolution ownership and documentation quality
+
+**Type:** DOCUMENTATION ARCHITECTURE / APPLICATION EVOLUTION OWNERSHIP / NAMING + READABILITY / NEW CHANGESET / APPLIED TARGET  
+**ChangeSet:** `ef0f38fa-aa0d-4b56-89cc-8c1fe6677fff`  
+**ChangeSet Label:** `Replacement Package App - Evolution Ownership and Documentation Clarity`  
+**Package:** `a42a0294-91cd-44a8-87a9-367220761003`
+
+**Rebased source boundary:**
+- the first prepared package for this ChangeSet (`5beda125-8c8e-41c2-a70c-46beaf4bd0a6`) was not applied because the local documentation source had advanced; the exact supplied local-base snapshot already contains the reviewed `LOG-RPKG-069` / `LOG-RPKG-070` Scenario Process / Feature Interaction / BI / UI / design-variant model;
+- this rebased package uses that local state as its exact replacement base and adds only the evolution-ownership / naming / readability / use-case-driven-owner refinement described below;
+- actual Scenario owners, `slices.md`, Domain owners, protocol, tests and runtime/source behavior remain outside this package.
+
+**Application Evolution ownership:**
+- make one `Application Evolution Step` a canonical Scenario-owned change that says **what application behavior changes**;
+- remove the implication that Domain, Slice or Cross-cutting Capability owners own the same Evolution Step; those owners instead maintain `Changes by Application Evolution Step`, describing **how that owner changes** to realize the Scenario-owned step;
+- retain `DI-*` / `SI-*` as optional durable implementation requirements derived from BI, invariants, selected application evolution or concrete architecture pressure;
+- clarify `domain-evolution.md` as an optional cross-owner view of Domain changes caused by a Scenario-owned step rather than an Evolution Step owner.
+
+**Evolution planning:**
+- add `evolution-steps-map.md` as the dedicated planning owner for **when / dependency / order / enablement / parallelism** of selected Scenario-owned Application Evolution Steps;
+- add `DOC-UC-08` so the map is explicitly justified and maintained by a Documentation Use Case rather than becoming an orphan planning file;
+- keep step identity semantic and stable across roadmap reorder: prefer names such as `EVO-RPKG-GIT-DERIVED-CURRENT-CHANGE` instead of ordinal `EVO-RPKG-001` when the number has no independent meaning;
+- allow planned future Scenario owners and allow a broad replacement Evolution Step to link a `Replacement Scenario` instead of embedding an unreadably large future Scenario delta in the current owner.
+
+**Readable naming / information transmission:**
+- add `DOC-UC-09` for semantic readability without semantic compression;
+- require intuitive human-readable names for Scenario, Feature Interaction, BI, UI Requirement, Evolution Step, Slice, Aggregate/Object and other durable documentation entities; technical IDs remain reference aids, not the primary carrier of meaning;
+- do not treat arbitrary `01/02/03` numbering as Scenario/Slice/FI/BI/EVO architecture or roadmap order;
+- structure dense text according to meaning: keep one coherent thought as prose, expose multiple independent facts/conditions/exceptions/consequences as bullets/sub-bullets or another explicit structure, and make branches/contracts/current-vs-future/before-vs-after distinctions visually recoverable without deleting conditions for brevity;
+- update templates to demonstrate the same readable semantic naming and presentation rules.
+
+**Use-case-driven documentation ownership:**
+- add `DOC-UC-10` and the explicit `No orphan documentation owner` principle;
+- every durable documentation owner must be needed by at least one explicit Documentation Use Case that explains why it exists and how it is created/maintained/consumed;
+- small terms/principles stay inside their natural use-case/process owner when no independent owner is justified; do not create generic `terms.md`, `principles.md`, `notes.md` files merely because the information appears generally useful;
+- templates remain valid because concrete Documentation Use Cases link to/use them at process steps; the new Evolution Steps Map is valid because DOC-UC-08 owns its maintenance process.
+
+**Scenario migration boundary:**
+- current Scenario owners continue unchanged in this package and therefore still use their existing prose until the later Scenario migration;
+- the future migration should describe current Scenario truth without calling the Scenario “transitional”, move known application changes into Scenario-owned semantically named Evolution Steps, create planned future Scenario owners where useful, then populate the Evolution Steps Map from those canonical steps;
+- lower Domain/Slice/cross-cutting documentation should migrate from `Evolution Steps` wording to `Changes by Application Evolution Step` when those owners are actually integrated.
+
+**Target-State Result:** documentation now has an unambiguous evolution responsibility split: Scenario owns **WHAT** application behavior changes, `evolution-steps-map.md` owns **WHEN / dependency / order**, and Domain/Slice/Cross-cutting owners document **HOW** they change to realize the canonical step. Naming/presentation rules prioritize readable meaning without semantic loss, and no durable documentation owner is created without an explicit Documentation Use Case.
+
+**APPLIED relation:** successful Apply of rebased package `a42a0294-91cd-44a8-87a9-367220761003` establishes this refined documentation model in new ChangeSet `ef0f38fa-aa0d-4b56-89cc-8c1fe6677fff`. Actual Scenario/Slice/Domain migration remains separate work after review of this documentation-model ChangeSet.
+
+### LOG-RPKG-072 — Correct documentation use-case coverage and migration-state wording
+
+**Type:** REVIEW DIFF / DOCUMENTATION MODEL CORRECTION / APPLIED TARGET  
+**Reviewed ChangeSet:** `ef0f38fa-aa0d-4b56-89cc-8c1fe6677fff`  
+**Corrects Package:** `a42a0294-91cd-44a8-87a9-367220761003`  
+**Correction Package:** `6e40b9bc-4643-454a-aacf-8b7c59d52cf5`
+
+**Review finding / selected correction:**
+- correct README wording that prematurely described current Scenario owners as already migrated to complete Process Specifications + canonical Application Evolution Steps; the documentation model is target form, while existing Scenario owners remain unchanged until the separate Scenario migration;
+- refine `No orphan documentation owner` from the over-broad rule “every file needs a Documentation Use Case” into explicit **use-case coverage**:
+  - documentation-process artifacts such as templates, terminology/principles, Evolution Steps Map and generated-documentation process/output require an explicit Documentation Use Case;
+  - application semantic/contract/proof owners may instead be justified by the application Scenario, Slice, testing or acceptance process that needs their information, without creating artificial meta Documentation Use Cases;
+- keep the core rule unchanged: no durable owner exists merely because information seems generally useful; every owner must still have a clear consumer/process, authority boundary and maintenance reason.
+
+**Preserved scope:**
+- Scenario-owned Application Evolution Step = WHAT, Evolution Steps Map = WHEN/order/dependency, and lower-owner `Changes by Application Evolution Step` = HOW remain unchanged;
+- semantic naming, non-ordinal identity and semantic-readability rules remain unchanged;
+- `evolution-steps-map.md`, templates, `domain-evolution.md`, actual Scenario/Slice/Domain owners, focused contracts, tests and runtime/source behavior are not modified by this correction.
+
+**Target-State Result:** the documentation model now distinguishes target documentation form from current unmigrated Scenario files and enforces use-case-driven ownership without forcing artificial Documentation Use Cases onto application contracts/proof owners. Documentation-process artifacts still require explicit DOC-UC ownership, while all durable owners retain explicit use-case/process coverage.
+
+**APPLIED relation:** successful Apply of correction package `6e40b9bc-4643-454a-aacf-8b7c59d52cf5` corrects the still-open ChangeSet `ef0f38fa-aa0d-4b56-89cc-8c1fe6677fff` after ReviewDiff `NEEDS_CORRECTION`; ChangeSet identity/label and Work Intent remain unchanged.

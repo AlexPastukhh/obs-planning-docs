@@ -1,13 +1,21 @@
 # Replacement Package App — Documentation Templates
 
 Status: active recommended-template owner
-Scope: recommended starting forms for Scenario behavioral design/maintenance, Evolution, Domain, Slice, Cross-cutting Capability and generated implementation-trace documentation.
+Scope: recommended starting forms for Scenario behavioral design/maintenance, Scenario-owned Application Evolution Steps, evolution planning, Domain/Slice changes by application evolution, Cross-cutting Capability and generated implementation-trace documentation.
 
 ## Template rule
 
 These templates are **recommended forms, not schemas**.
 
 A concrete document should contain the information needed to understand its owner or design decision. Sections may be omitted, combined, renamed, reordered or supplemented when another structure communicates the same meaning more clearly.
+
+Presentation should preserve meaning while making it easy to recover:
+
+- keep one connected idea as prose when prose is clearer;
+- expose independent facts, conditions, exceptions or consequences as bullets/sub-bullets or another explicit structure;
+- use readable entity names and pair technical IDs with human meaning;
+- do not use arbitrary numeric IDs as roadmap/architecture order;
+- never drop a condition merely to shorten the text.
 
 Do not add empty sections merely to conform to a template. Do not turn template headings into a new bureaucracy, lifecycle or validation taxonomy.
 
@@ -18,8 +26,13 @@ The documentation process and terminology are owned by [`documentation-use-cases
 <a id="template-scenario-owner"></a>
 ## Template — Scenario owner
 
+Use the same owner form for current and planned future Scenarios; make the owner status explicit instead of changing the semantic structure.
+
 ```text
-# SCN-RPKG-... — <Scenario>
+# SCN-RPKG-<SEMANTIC-NAME> — <readable Scenario name>
+
+Status: active current Scenario owner
+# or: planned future Scenario owner
 
 ## User Goal
 <meaningful end result sought by the user>
@@ -29,7 +42,7 @@ The documentation process and terminology are owned by [`documentation-use-cases
 ### Process Map
 <compact Feature Interaction topology, runtime branches, loops and terminal outcomes when useful>
 
-### FI-RPKG-... — <Feature Interaction>
+### FI-RPKG-<SEMANTIC-NAME> — <readable Feature Interaction name>
 <use the Feature Interaction entry form below>
 
 ### FI-RPKG-... — ...
@@ -41,11 +54,10 @@ The documentation process and terminology are owned by [`documentation-use-cases
 ## Scenario Process Alternatives
 <only when retained alternatives remain useful to an active/material design decision>
 
-## Migration Delta
+## Evolution Steps
 
-### EVO-RPKG-... — <user-visible/application behavioral change>
-Status: URGENT | PLANNED | POSSIBLE
-<use the Evolution Step form below when helpful>
+### EVO-RPKG-<SEMANTIC-NAME> — <readable application change>
+<use the Application Evolution Step form below>
 ```
 
 Notes:
@@ -53,7 +65,10 @@ Notes:
 - The Process Specification is the complete Scenario behavioral specification, not a short overview whose missing semantics appear only in BI/UI requirements.
 - `Stage` is not a normative Scenario decomposition in this model.
 - Feature Interaction, BI and UI requirement sections may be arranged differently when that makes the complete process clearer.
-- Migration Delta contains only still-unimplemented selected/plausible behavior, not every candidate/rejected design alternative.
+- `Evolution Steps` contains application-behavior changes canonically owned by this Scenario. It is not a lower-level implementation plan.
+- Do not call a current Scenario “transitional” merely because known future changes exist; describe current truth as current truth and put known change in Evolution Steps.
+- If a future target is clearer as a full Scenario, create a planned future Scenario owner and link it from the current Scenario's replacement Evolution Step.
+- Semantic IDs/names should remain meaningful if file order or roadmap order changes.
 
 ---
 
@@ -63,7 +78,7 @@ Notes:
 Use as a recommended local form inside a Scenario Process Specification and during behavioral design exploration.
 
 ```text
-### FI-RPKG-... — <name>
+### FI-RPKG-<SEMANTIC-NAME> — <readable name>
 
 Goal:
 <local meaningful result sought>
@@ -95,7 +110,7 @@ Next Interactions:
 
 Behavior Items:
 
-#### BI-RPKG-..-...
+#### BI-RPKG-<SEMANTIC-NAME> — <readable requirement name>
 Requirement:
 <implementation-independent business/application behavior / invariant / rule>
 
@@ -104,7 +119,7 @@ Reason:
 
 UI Requirements:
 
-#### UI-REQ-RPKG-...
+#### UI-REQ-RPKG-<SEMANTIC-NAME> — <readable UI requirement name>
 Requirement:
 <intentional visual/interaction requirement>
 
@@ -285,18 +300,22 @@ Use screen-level ownership only when no one Feature Interaction honestly owns th
 
 ---
 
-<a id="template-evolution-step"></a>
-## Template — Evolution Step entry
+<a id="template-application-evolution-step"></a>
+## Template — Application Evolution Step
 
-Use when an `EVO-*` needs a focused representation inside an owner.
+Use only in the canonical Scenario owner of the application change.
+
+The entry describes **what changes in application/Scenario behavior**. It does not describe how Domain/Slice implementation changes.
 
 ```text
-### EVO-RPKG-... — <change>
-Status: URGENT | PLANNED | POSSIBLE | IMPLEMENTED
-Scenario: <SCN owner>
+### EVO-RPKG-<SEMANTIC-NAME> — <readable application change>
+Intent: URGENT | PLANNED | POSSIBLE <only when useful>
+
+Change:
+<concise statement of what changes for the user/application process>
 
 Scenario Process Change:
-<what changes in the user/application process>
+<added/removed/replaced/composed/split behavior when material>
 
 Feature Interaction Impact:
 - adds: ...
@@ -319,17 +338,81 @@ UI Requirements:
 - changes: UI-REQ-...
 - removes: UI-REQ-...
 
-Owner impact:
-<Domain / Slice / cross-cutting impact relevant to this owner>
+Related Scenarios:
+<references only when the same application change affects another Scenario>
 
-Implementation requirements:
-<DI/SI references only when they exist>
+Replacement Scenario:
+<planned future Scenario link only when this change is too broad to remain understandable as a local delta>
+```
+
+Omit any field that adds no information.
+
+Rules:
+
+- One Application Evolution Step has one canonical Scenario owner.
+- The step says **what** application behavior changes; Domain/Slice implementation response belongs in `Changes by Application Evolution Step`.
+- Use semantic identity such as `EVO-RPKG-GIT-DERIVED-CURRENT-CHANGE`; do not encode roadmap position as `001/002/...` when the number has no independent meaning.
+- Intent does not define exact sequence; [`evolution-steps-map.md`](evolution-steps-map.md) owns planned order/dependencies.
+- A merely considered/rejected design alternative is not automatically an Evolution Step.
+
+---
+
+<a id="template-changes-by-application-evolution-step"></a>
+## Template — Changes by Application Evolution Step
+
+Use inside Domain, Slice or Cross-cutting Capability owners to describe **how that owner must change** to realize a Scenario-owned Application Evolution Step.
+
+```text
+## Changes by Application Evolution Step
+
+### EVO-RPKG-<SEMANTIC-NAME> — <readable application change>
+Canonical Scenario step:
+<link / Scenario owner>
+
+Owner Change:
+<Domain semantic/invariant/authority change OR Slice/cross-cutting responsibility/composition change>
+
+Behavior contribution:
+<BI contribution changes when useful>
+
+Implementation Items:
+<DI/SI/local implementation-item changes only when useful>
+
+Compatibility / transition:
+<only when a temporary implementation rule materially matters>
 
 Architecture decision:
 <only when material>
 ```
 
-Omit any field that adds no information. One Evolution Step remains one coherent user-visible/application behavioral evolution, not a technical refactor.
+Do not copy the Scenario-owned behavioral step into the lower owner. Reference it and document only this owner's response.
+
+---
+
+<a id="template-evolution-steps-map-entry"></a>
+## Template — Evolution Steps Map entry
+
+Use in [`evolution-steps-map.md`](evolution-steps-map.md) to plan sequence/dependencies without redefining the step.
+
+```text
+### <readable Application Evolution Step name>
+Evolution Step:
+<link to canonical Scenario-owned EVO>
+
+Depends on:
+- <step / condition>
+
+Enables:
+- <step / future Scenario / capability>
+
+Can run in parallel with:
+- <step, when useful>
+
+Planning note:
+<only ordering/dependency information; do not restate the behavioral delta>
+```
+
+The map order may change without changing Evolution Step identity.
 
 ---
 
@@ -366,9 +449,8 @@ Reason:
 Derived from:
 <BI / EVO / invariant / concrete architecture pressure, when useful>
 
-## Evolution Steps
-### EVO-...
-...
+## Changes by Application Evolution Step
+<use the Changes by Application Evolution Step form when this Domain owner must change for a Scenario-owned step>
 ```
 
 `Domain Implementation Items` are optional. A Domain owner that can be understood completely from its BI and invariants does not need artificial `DI-*` entries.
@@ -404,8 +486,8 @@ Reason:
 Derived from:
 ...
 
-## Evolution Steps
-...
+## Changes by Application Evolution Step
+<use the Changes by Application Evolution Step form when this Domain Object must change for a Scenario-owned step>
 ```
 
 A separate source class is not by itself a reason to create this file.
@@ -416,7 +498,7 @@ A separate source class is not by itself a reason to create this file.
 ## Template — Slice owner
 
 ```text
-# SL-RPKG-... — <Slice>
+# SL-RPKG-<SEMANTIC-NAME> — <readable Slice name>
 
 ## Result / Responsibility
 <application capability/result this Slice owns>
@@ -443,19 +525,11 @@ Reason:
 Derived from:
 <BI / EVO / Domain constraint / concrete architecture concern, when useful>
 
-## Evolution Steps
-### EVO-...
-Behavior contribution:
-...
-Domain impact:
-...
-Implementation Items:
-...
-Architecture decision:
-...
+## Changes by Application Evolution Step
+<use the Changes by Application Evolution Step form for each Scenario-owned application step that changes this Slice>
 ```
 
-Feature Interaction is behavioral decomposition and Slice is implementation decomposition; no 1:1 mapping is required. `Slice Implementation Items` are optional. Do not put current method names, service call chains, Java fields or adapter routing here just to describe the code.
+Feature Interaction is behavioral decomposition and Slice is implementation decomposition; no 1:1 mapping is required. `Slice Implementation Items` are optional. `Changes by Application Evolution Step` describes how this Slice changes; it does not make the Slice an owner of the Application Evolution Step. Do not put current method names, service call chains, Java fields or adapter routing here just to describe the code.
 
 ---
 
@@ -465,7 +539,7 @@ Feature Interaction is behavioral decomposition and Slice is implementation deco
 Use only when one real shared implementation responsibility spans several Slices.
 
 ```text
-# CC-RPKG-... — <Cross-cutting Capability>
+# CC-RPKG-<SEMANTIC-NAME> — <readable Cross-cutting Capability name>
 
 ## Responsibility
 ...
@@ -488,11 +562,11 @@ Derived from:
 ## Consumers
 - SL-...
 
-## Evolution Steps
-...
+## Changes by Application Evolution Step
+<use the Changes by Application Evolution Step form when a Scenario-owned application step changes this shared capability>
 ```
 
-A common principle such as DRY, logging or composition is not by itself a Cross-cutting Capability. A repeated Feature Interaction name is also not by itself proof of a shared implementation owner.
+A common principle such as DRY, logging or composition is not by itself a Cross-cutting Capability. A repeated Feature Interaction name is also not by itself proof of a shared implementation owner. Cross-cutting owners reference Scenario-owned Application Evolution Steps and document only their implementation response.
 
 ---
 

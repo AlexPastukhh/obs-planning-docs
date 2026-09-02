@@ -1,56 +1,71 @@
-# Replacement Package App — Domain Evolution
+# Replacement Package App — Domain Changes by Application Evolution Step
 
-Status: active shared domain-evolution map; step integration pending
-Scope: cross-owner semantic changes driven by Scenario Evolution Steps when more than one Domain/Slice owner benefits from one coherent evolution view.
+Status: active optional cross-owner Domain-change map; step integration pending
+Scope: cross-owner Domain semantic/implementation changes required by Scenario-owned Application Evolution Steps when one coherent shared view is clearer than duplicated local notes.
 
 ## Purpose
 
-This file is **not** the primary Domain model, not a registry of classes and not a mandatory owner for every Domain Object.
+This file is **not**:
 
-Current Domain documentation should be created through Domain discovery from Scenario Behavior Items. Feature Interaction context can explain where those BI arise, but Feature Interaction boundaries are not automatically Domain boundaries. Prefer an Aggregate owner when related Domain Objects share one consistency/invariant boundary; create a separate Domain Object owner when independent semantics, lifecycle, reuse or rule volume make that clearer.
+- the owner of Application Evolution Steps;
+- the primary Domain model;
+- a registry of classes;
+- mandatory for every Domain Object or every application change.
 
-This file exists only as an evolution map when one `EVO-RPKG-*` changes shared Domain meaning across several owners and duplicating that change in each owner would make the transition ambiguous.
+Canonical Application Evolution Steps live in Scenario owners and describe **what application behavior changes**.
 
-The documentation workflow and minimal terminology are owned by [`documentation-use-cases.md`](documentation-use-cases.md). The recommended focused evolution form is [`Template — Evolution Step entry`](documentation-templates.md#template-evolution-step).
+Domain/Aggregate/Object owners describe **how their semantics/implementation must change** under `Changes by Application Evolution Step`.
+
+This file exists only when one Scenario-owned step changes shared Domain meaning across several owners and one cross-owner view materially improves understanding of that implementation transition.
+
+The documentation workflow and terminology are owned by [`documentation-use-cases.md`](documentation-use-cases.md), especially DOC-UC-02, DOC-UC-05 and DOC-UC-10. Recommended lower-owner change form: [`Template — Changes by Application Evolution Step`](documentation-templates.md#template-changes-by-application-evolution-step).
 
 ## When to write here
 
-Write an Evolution Step here when:
+Use this cross-owner map when one canonical Application Evolution Step causes a shared semantic transition such as:
 
-- the same semantic change is consumed by multiple Domain/Slice owners;
-- duplicating the changing invariant/identity/state authority would create ambiguity;
-- the evolution introduces/removes a shared invariant or materially moves semantic authority;
-- one cross-owner view materially improves understanding of the transition.
+- the same invariant changing across several Domain/Slice owners;
+- identity/state authority moving between owners;
+- one concept becoming shared/retired/replaced across several owners;
+- compatibility/transitional semantics that must be interpreted consistently across owners;
+- duplicated local notes would make the intended semantic transition ambiguous.
 
-Keep the evolution only in its natural Scenario/Domain/Slice owner when the change is local and small.
+Do **not** create an entry here merely because several owners reference the same Application Evolution Step.
 
-## Evolution Step form
+If each owner can state its own change clearly, keep the change only in that owner's `Changes by Application Evolution Step` section.
 
-Use the same `EVO-RPKG-*` ID that originates in a Scenario Migration Delta.
+## Cross-owner change form
 
-A step may be written freely. Use the linked Evolution Step template when its fields improve clarity. At minimum, make the shared semantic change and affected owners understandable.
+Reference the exact canonical Scenario-owned step; do not redefine it here.
 
 Example:
 
 ```text
-## EVO-RPKG-NNN — <Scenario evolution change>
-Status: URGENT | PLANNED | POSSIBLE | IMPLEMENTED
-Scenario: <Scenario owner>
-Feature Interaction / BI context: <only when useful>
-Affected Domain/Slice owners: <owners>
+## EVO-RPKG-<SEMANTIC-NAME> — <readable application change>
+Canonical Scenario step:
+<link to Scenario-owned Application Evolution Step>
 
-### <Domain concept / invariant>
+Affected Domain/Slice owners:
+- <owner>
+- ...
+
+### <shared Domain concept / invariant / authority>
+
 Current meaning:
 ...
 
-Change:
+Required Domain change:
 ...
 
-Transitional / compatibility rule:
-...
+Compatibility / transition:
+<only when material>
+
+Owner responsibilities:
+- <owner> → <change>
+- ...
 
 Architecture decision:
-...
+<only when the shared transition needs one explicit decision>
 ```
 
 Only include fields that add useful information.
@@ -59,22 +74,22 @@ Only include fields that add useful information.
 
 The authoritative Behavior Item remains in its Scenario Process Specification. UI Requirements also remain Scenario/UI design requirements rather than being promoted into Domain semantics merely because they appear near the same interaction.
 
-Domain owners reference the BI they implement. Slice owners reference the BI they realize using Domain. `DI-*` / `SI-*` remain in the corresponding owner unless one shared evolution note is genuinely needed here.
+Domain owners reference BI they implement. Slice owners reference BI they realize using Domain. `DI-*` / `SI-*` remain in corresponding owners.
 
-Do not turn this file into a second copy of Feature Interaction behavior, BI, Domain owner or Slice owner content.
+This file may reference those items when needed to explain a shared transition, but it must not become a second owner of BI, DI, SI, Feature Interaction behavior or Application Evolution Step meaning.
 
 ## Promotion after implementation
 
-When an Evolution Step is accepted:
+When the canonical Application Evolution Step is accepted as implemented:
 
 1. Scenario current Process Specification / Feature Interactions / BI / UI requirements are updated as applicable;
 2. affected Domain current semantics are updated;
-3. affected Slice current responsibility is updated;
-4. obsolete transitional rules are removed only when compatibility is actually gone;
-5. the Evolution Step reference may remain where it still helps explain why the current invariant exists.
+3. affected Slice current responsibility/composition is updated;
+4. obsolete compatibility/transitional rules are removed only when implementation compatibility is actually gone;
+5. this cross-owner note may remain only when it still materially explains why current Domain semantics are shaped this way.
 
 ## Current integration state
 
-No step-specific Domain evolution entries are populated by this documentation-model refinement package.
+No step-specific Domain change entries are populated by this documentation-model refinement package.
 
-The next Scenario/Domain/Slice integration step should derive them from accepted current/target behavior rather than guessing Domain owners, Feature-Interaction-to-Slice mapping or class boundaries in advance.
+The next Scenario/Domain/Slice integration step should derive them from canonical Scenario-owned Application Evolution Steps rather than guessing Domain owners, Feature-Interaction-to-Slice mapping or class boundaries in advance.
