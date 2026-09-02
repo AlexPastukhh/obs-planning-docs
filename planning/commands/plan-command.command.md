@@ -24,9 +24,7 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
     "planning/documentation/command-planning-workflow.md",
     "planning/documentation/command-routing-workflow.md",
     "planning/documentation/COMMAND-ROUTING-TEMPLATE.md",
-    "planning/use-cases/UC-REPO-PLAN-UPDATE.md",
-    "planning/documentation/file-update-overview-workflow.md",
-    "planning/documentation/FILE-UPDATE-OVERVIEW-TEMPLATE.md"
+    "planning/use-cases/UC-REPO-PLAN-UPDATE.md"
   ],
   "expectedOutput": "Command family/type/English name/owner/registry/example/projection plan followed by План файл-обновление.",
   "permissionMode": "plan-only",

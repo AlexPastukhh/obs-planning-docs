@@ -3,7 +3,7 @@
 Status: active practical example
 Scope: demonstrate the current `план файл-обновление` output shape without owning methodology.
 
-Canonical owners: [`../file-update-overview-workflow.md`](../file-update-overview-workflow.md), [`../FILE-UPDATE-OVERVIEW-TEMPLATE.md`](../FILE-UPDATE-OVERVIEW-TEMPLATE.md).
+Canonical owners: [`../../use-cases/UC-REPO-PLAN-UPDATE.md`](../../use-cases/UC-REPO-PLAN-UPDATE.md), [`../../commands/plan-file-update.command.md`](../../commands/plan-file-update.command.md).
 
 ## План файл-обновление
 
@@ -114,7 +114,6 @@ Logging is already active, so the implementation package must accumulate the mat
 
 | Change | File | R | What changes | Why |
 |---|---|---|---|---|
-| Updated | `planning/documentation/file-update-overview-workflow.md` | file-update planning behavior | link practical example | discoverability |
 | Updated | `planning/documentation/review-diff-review-workflow.md` | ReviewDiff semantic review | link practical example | discoverability |
 | Updated | `planning/documentation/examples/PLAN-FILE-UPDATE-COMMAND-EXAMPLE.md` | example only | current complete example shape | practical coverage |
 | New | `planning/documentation/examples/REVIEW-DIFF-PRACTICAL-EXAMPLE.md` | example only | selected-correction + approval follow-up cases | practical coverage |

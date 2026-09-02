@@ -9,7 +9,6 @@ Use with:
 planning/documentation/idea-planning-principles-and-terminology.md
 planning/documentation/idea-review-and-planning-workflow.md
 planning/documentation/planning-concerns-and-decisions-model.md
-planning/documentation/documentation-responsibility-map.md
 selected current semantic/documentation/application owners affected by the diff
 ```
 

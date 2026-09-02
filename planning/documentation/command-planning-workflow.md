@@ -20,10 +20,10 @@ A command does not create the semantic capability it triggers.
 ```text
 planning/command-routing.md
 planning/commands/README.md + selected direct command definitions
+planning/use-cases/UC-REPO-MAINTAIN-PLANNING-COMMAND.md
 applicable current semantic registry: Workspace/methodology Use-Case Registry or Application Scenario Catalog
 planning/documentation/command-routing-workflow.md
-planning/documentation/documentation-principles-read-workflow.md
-planning/documentation/file-update-overview-workflow.md
+planning/use-cases/UC-REPO-PLAN-UPDATE.md when a concrete repository transition is needed
 ```
 
 ## Planning Steps
@@ -37,6 +37,6 @@ planning/documentation/file-update-overview-workflow.md
 7. Update `planning/command-routing.md` only when shared/global policy changes.
 8. Update the related semantic-entry command reference only where that registry/catalog contract actually owns such a reference.
 9. Decide helper projection separately.
-10. Produce a File Update Plan; do not implement through this workflow.
+10. When a concrete repository transition is needed, hand off to `UC-REPO-PLAN-UPDATE`; do not implement through this workflow.
 
 Commands are optional. A repository remains fully discoverable through Directions and the applicable Use-Case Registry or Scenario Catalog without knowing command names.

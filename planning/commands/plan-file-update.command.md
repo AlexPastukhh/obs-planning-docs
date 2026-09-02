@@ -28,9 +28,7 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
     "planning/use-cases/UC-REPO-PLAN-UPDATE.md",
     "planning/documentation/planning-concerns-and-decisions-model.md",
     "planning/documentation/idea-planning-principles-and-terminology.md",
-    "planning/documentation/idea-review-and-planning-workflow.md",
-    "planning/documentation/file-update-overview-workflow.md",
-    "planning/documentation/FILE-UPDATE-OVERVIEW-TEMPLATE.md"
+    "planning/documentation/idea-review-and-planning-workflow.md"
   ],
   "expectedOutput": "Pre-Update / File Update Plan from one Current Selected Meaning: Current Conclusions and active concerns when material, then ordered concrete steps, exact files/actions/dependencies/checks, explicit boundaries and next authorized action.",
   "permissionMode": "plan-only",

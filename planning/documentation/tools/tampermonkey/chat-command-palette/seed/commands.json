@@ -879,7 +879,7 @@
         "planning/direction-registry.md",
         "planning/documentation/application-planning/application-planning-principles-and-terminology.md",
         "planning/documentation/application-planning/solution-and-scenario-planning-workflow.md",
-        "planning/documentation/planning-docs-architecture-principles.md"
+        "planning/documentation/principles-and-terminology.md"
       ],
       "expectedOutput": "Established development governance route: selected planning Workspace Use Case and/or application Scenario/current owner plus documentation owner when docs are affected; no mutation permission implied.",
       "permissionMode": "read-only",
@@ -1105,7 +1105,6 @@
       "ownerFiles": [
         "planning/areas/planning-system/end-session-command-workflow.md",
         "planning/documentation/reviewable-agent-output-and-commands-workflow.md",
-        "planning/documentation/documentation-update-workflow.md",
         "planning/dashboard/index.md",
         "-Planning/Templates/Day File Template.md",
         "-Planning/Workflows/Real Reward Work Loop Workflow.md"
@@ -1589,9 +1588,7 @@
         "planning/documentation/command-planning-workflow.md",
         "planning/documentation/command-routing-workflow.md",
         "planning/documentation/COMMAND-ROUTING-TEMPLATE.md",
-        "planning/use-cases/UC-REPO-PLAN-UPDATE.md",
-        "planning/documentation/file-update-overview-workflow.md",
-        "planning/documentation/FILE-UPDATE-OVERVIEW-TEMPLATE.md"
+        "planning/use-cases/UC-REPO-PLAN-UPDATE.md"
       ],
       "expectedOutput": "Command family/type/English name/owner/registry/example/projection plan followed by План файл-обновление.",
       "permissionMode": "plan-only",
@@ -1809,9 +1806,7 @@
         "planning/use-cases/UC-REPO-PLAN-UPDATE.md",
         "planning/documentation/planning-concerns-and-decisions-model.md",
         "planning/documentation/idea-planning-principles-and-terminology.md",
-        "planning/documentation/idea-review-and-planning-workflow.md",
-        "planning/documentation/file-update-overview-workflow.md",
-        "planning/documentation/FILE-UPDATE-OVERVIEW-TEMPLATE.md"
+        "planning/documentation/idea-review-and-planning-workflow.md"
       ],
       "expectedOutput": "Pre-Update / File Update Plan from one Current Selected Meaning: Current Conclusions and active concerns when material, then ordered concrete steps, exact files/actions/dependencies/checks, explicit boundaries and next authorized action.",
       "permissionMode": "plan-only",

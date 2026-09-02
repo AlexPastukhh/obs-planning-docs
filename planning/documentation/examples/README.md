@@ -21,9 +21,9 @@ planning/areas/*
 
 | Example | Type | Owner | Status |
 |---|---|---|---|
-| `PLAN-COMMAND-VALID-EXECUTION-EXAMPLE.md` | Command-planning execution | `command-planning-workflow.md`, `documentation-principles-read-workflow.md` | current |
+| `PLAN-COMMAND-VALID-EXECUTION-EXAMPLE.md` | Command-planning execution | `UC-REPO-MAINTAIN-PLANNING-COMMAND` + `command-planning-workflow.md` | current |
 | `ARCHIVE-SOURCE-VS-OUTPUT-PACKAGE-EXAMPLE.md` | Archive read-source vs output-package source selection | `reviewable-agent-output-and-commands-workflow.md`, root Command Routing | current |
-| `PLAN-FILE-UPDATE-COMMAND-EXAMPLE.md` | File-update planning | `file-update-overview-workflow.md` | current |
+| `PLAN-FILE-UPDATE-COMMAND-EXAMPLE.md` | File-update planning | `UC-REPO-PLAN-UPDATE` + direct Pre-Update command | current |
 | `REVIEW-DIFF-PRACTICAL-EXAMPLE.md` | Semantic ReviewDiff review | `review-diff-review-workflow.md` + shared Idea owners | current |
 | `CRITICAL-REVIEW-COMMAND-EXAMPLE.md` | Critical review | root Command Routing and reviewable-output owner | current |
 | `CURRENT-PLANNING-STATE-RESPONSE-EXAMPLE.md` | Current-state response | root Command Routing and relevant state owners | current |

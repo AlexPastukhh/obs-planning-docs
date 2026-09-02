@@ -48,13 +48,12 @@ Planning Concerns/Q/R/P are a secondary lens attached to a concrete semantic own
 Read and follow:
 
 ```text
-planning/documentation/planning-docs-architecture-principles.md
-planning/documentation/documentation-responsibility-map.md
-planning/documentation/documentation-principles-read-workflow.md
+planning/session/use-cases/UC-SESSION-USE-REPOSITORY-GUIDANCE.md
+planning/documentation/principles-and-terminology.md
 planning/documentation/use-case-registry.md
 ```
 
-Then resolve the narrowest applicable workflow/template/current owner.
+Then resolve the narrowest applicable current Documentation Use Case and owner.
 
 ## Planning / Application Work
 
@@ -93,8 +92,9 @@ A technically valid or integrity-verified ReviewDiff is not automatically a sema
 When a ReviewDiff is supplied for review:
 
 ```text
-planning/documentation/use-case-registry.md
-→ UC-DOC-REVIEW-DIFF
+planning/use-case-registry.md
+→ UC-REPO-REVIEW-DIFF
+→ planning/use-cases/UC-REPO-REVIEW-DIFF.md
 → planning/documentation/review-diff-review-workflow.md
 → affected current owners
 → shared Idea methodology for material corrective alternatives

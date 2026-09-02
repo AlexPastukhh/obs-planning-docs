@@ -2,7 +2,7 @@
 
 Status: supporting reusable example
 Doc version: v0.5.0-repository-command-definition
-Scope: demonstrates safe plan-only command-route planning after the documentation-principles preflight.
+Scope: demonstrates safe plan-only command-route planning through the current command capability and repository-update owners.
 
 ## Demonstrated Route
 
@@ -14,9 +14,9 @@ English name:
   plan command
 
 Composition:
-  documentation-principles preflight
-  + plan file update
+  command capability owner
   + command-specific owner reads
+  + UC-REPO-PLAN-UPDATE when a concrete repository transition is needed
 ```
 
 ## Required Reads
@@ -24,12 +24,11 @@ Composition:
 ```text
 planning/command-routing.md
 planning/commands/README.md
-planning/documentation/documentation-principles-read-workflow.md
-planning/documentation/file-update-overview-workflow.md
-planning/documentation/FILE-UPDATE-OVERVIEW-TEMPLATE.md
+planning/use-cases/UC-REPO-MAINTAIN-PLANNING-COMMAND.md
 planning/documentation/command-planning-workflow.md
 planning/documentation/command-routing-workflow.md
 planning/documentation/COMMAND-ROUTING-TEMPLATE.md
+planning/use-cases/UC-REPO-PLAN-UPDATE.md
 planning/documentation/example-coverage-workflow.md
 planning/documentation/examples/README.md
 ```
@@ -37,8 +36,8 @@ planning/documentation/examples/README.md
 ## Valid Planning Output
 
 ```text
-Documentation principles preflight:
-  full
+Current command capability / route reads:
+  targeted to current owners
 
 Command family:
   canonical command, English name and aliases
@@ -68,9 +67,9 @@ Final block:
 ## Owners
 
 ```text
-planning/documentation/documentation-principles-read-workflow.md
+planning/use-cases/UC-REPO-MAINTAIN-PLANNING-COMMAND.md
 planning/documentation/command-planning-workflow.md
-planning/documentation/file-update-overview-workflow.md
+planning/use-cases/UC-REPO-PLAN-UPDATE.md
 ```
 
 This example demonstrates the route. It does not own command meaning, read order, output shape or permissions.

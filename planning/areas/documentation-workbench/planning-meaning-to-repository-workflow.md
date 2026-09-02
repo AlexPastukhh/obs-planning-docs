@@ -135,7 +135,7 @@ current-context.md
 ../../documentation/workspace-planning/use-case-registry.md
 ../../documentation/application-planning/solution-and-scenario-planning-workflow.md
 planning-item-register.md  # provenance/history only
-../../documentation/file-update-overview-workflow.md  # only when explicit ordered File Update Plan is selected/useful
+../../use-cases/UC-REPO-PLAN-UPDATE.md  # only when explicit ordered repository update planning is selected/useful
 ```
 
 No stage authorizes commit or push without separate explicit permission.
