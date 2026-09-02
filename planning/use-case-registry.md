@@ -1,27 +1,50 @@
-# OBS Root Use-Case Registry
+# Repository Use-Case Registry
 
-Status: active project-specific semantic registry
-Scope: repository-wide capabilities that do not belong more narrowly to one local application/methodology family.
+Status: transitional current functional overview
 
-Parent Direction Registry: [`direction-registry.md`](direction-registry.md)
+Groups are navigation only. Detailed `Situation`, `Result`, and `Process` meaning lives in the Use-Case owner.
 
-## Current Use Cases
+## Session Work
 
-| ID | Name | Status | Parent Direction | Purpose | Trigger / input | Result / end state | Boundaries | Owner route | Related command |
-|---|---|---|---|---|---|---|---|---|---|
-| `UC-REPO-ORIENT` | Orient In Repository And Resolve Work Route | active | `DIR-REPOSITORY` | find the correct semantic route before material work | new/uncertain repository task | relevant Direction, Use Case, owners and governance identified | orientation grants no edit/command permission | `README.md` → `planning/README.md` → registries | `режим разработки` when development governance is requested |
-| `UC-REPO-CURRENT-STATE` | Report Current Repository / Planning State | active | `DIR-REPOSITORY` | report checked current state without inventing certainty | state/status question | checked known/local/unknown state + next safe action | reporting does not mutate repository state | this registry → `documentation/status-reconciliation-workflow.md` → selected current owners | `положняк` |
-| `UC-REPO-PLAN-NEXT` | Plan The Next Concrete Step | active | `DIR-REPOSITORY` | select one justified next action from current context | active context needs immediate next planning step | one justified next step + unresolved blockers | not a substitute for full solution planning when broader work is required | selected Direction/Use Case/current owners | `планируй` |
-| `UC-REPO-CRITICAL-REVIEW` | Critically Review A Claim / Plan / Diff | active | `DIR-REPOSITORY` | truth-seek against a target instead of accepting it as given | target should be tested as hypothesis | supported strengths/issues/counterevidence/conclusion; material corrective Ideas reviewed proportionally | ordinary material answers use built-in reviewability first; do not manufacture criticism; ReviewDiff targets use `UC-DOC-REVIEW-DIFF`; read-only | shared Idea owners + selected target/current owners + `documentation/review-diff-review-workflow.md` when target is ReviewDiff | `крит` |
-| `UC-REPO-USE-ARCHIVE-SOURCE` | Use An Explicit Archive As Read Source | active | `DIR-REPOSITORY` | establish a bounded readable source snapshot | user selects archive/snapshot for reading | checked source identity/coverage + source-bounded work context | read-source mode is not replacement-package producer mode | selected archive + applicable owners | `арх` |
-| `UC-REPO-DEFINE-PARALLEL-SCOPES` | Define / Maintain Fixed Parallel-Work Scopes | active | `DIR-REPOSITORY` | establish stable repository areas that can be worked independently in parallel | repository scope boundaries/log locations need initial definition or explicit structural change | current root Scope Registry + canonical log at every active scope root | chats do not repartition scopes per task; scope changes are explicit registry architecture changes | `../parallel-work-scope-registry.md` + `documentation/parallel-work-scope-and-action-log-workflow.md` | none |
-| `UC-REPO-PARALLEL-WORK` | Work In Registered Parallel Scope(s) | active | `DIR-REPOSITORY` | run one workstream using already registered independent scope boundaries | work should proceed in parallel or scope ownership matters | selected registered scope(s), canonical scope log, cross-scope references when needed | does not create shadow copies or ad-hoc scope partitions; permissions remain route-specific | `../parallel-work-scope-registry.md` + `documentation/parallel-work-scope-and-action-log-workflow.md` | `начни параллельную работу` |
-| `UC-REPO-REFINE-CURRENT-PLAN` | Refine The Current Plan | active proportional | `DIR-REPOSITORY` | integrate material clarification/change into one accumulating current plan through the selected semantic owner | current planning meaning needs refinement, deeper review or directed continuation | updated current Target/owner + current Q/R/P/Decision trace + Artifact Placement/Methodology Direction when material | use IDTSPE as the current generic planning runtime; do not revive FIND/Concern queues or one-file-per-Target assumptions | `documentation/idtspe-methodology/active/idtspe-core/IDTSPE-DEFAULT-WORK-MODE.md` + `documentation/idtspe-methodology/active/idtspe-core/IDTSPE-SHELL.md` | `работай через idtspe` |
-| `UC-REPO-AUDIT-REVIEW` | Audit Review Coverage And Quality | active proportional | `DIR-REPOSITORY` | report what was actually reviewed, how sufficient it was and what a repeat review added | user asks what was checked / to recheck, or a broad coverage/quality claim needs evidence | checked files/semantic units + quality/sufficiency + partial/unchecked + review delta + next useful checks | does not replace semantic review; repeat review prefers changed/stale/unchecked/weak/newly relevant material over blind replay | `documentation/review-audit-workflow.md` | `перепроверь` |
-| `UC-REPO-REVIEW-PLANNING-FINDINGS` | Review Planning Findings / Q/R/P Completeness | active proportional | `DIR-REPOSITORY` | detect/deduplicate/group material concerns and verify priority/category/status/residual/trace completeness against current semantic owners | completeness of current planning concerns materially matters | owner-attached active concerns + Concern Groups + missing/duplicate/stale/obsolete/grouping/priority/category/status/residual/trace corrections | Concern/FIND is secondary lens only; no owner/current planned state = not an active concern; obvious consequences are integrated rather than registered; one shared resolution surface should not masquerade as unrelated Q/R/P | `documentation/planning-findings-review-workflow.md` + `documentation/planning-concerns-and-decisions-model.md` | none |
+| ID | Use Case | Owner |
+|---|---|---|
+| `UC-SESSION-ESTABLISH-WORKFLOW` | Establish / Adjust Session Workflow | [`session/use-cases/UC-SESSION-ESTABLISH-WORKFLOW.md`](session/use-cases/UC-SESSION-ESTABLISH-WORKFLOW.md) |
+| `UC-SESSION-USE-REPOSITORY-GUIDANCE` | Use Repository Guidance In Current Session | [`session/use-cases/UC-SESSION-USE-REPOSITORY-GUIDANCE.md`](session/use-cases/UC-SESSION-USE-REPOSITORY-GUIDANCE.md) |
+| `UC-SESSION-MAINTAIN-STATE` | Maintain Session State | [`session/use-cases/UC-SESSION-MAINTAIN-STATE.md`](session/use-cases/UC-SESSION-MAINTAIN-STATE.md) |
+| `UC-SESSION-CHECKPOINT` | Integrate Current Session Checkpoint | [`session/use-cases/UC-SESSION-CHECKPOINT.md`](session/use-cases/UC-SESSION-CHECKPOINT.md) |
 
-| `UC-IDTSPE-REVIEW-CONSISTENCY` | Review IDTSPE Plan Consistency | active proportional | `DIR-REPOSITORY` | validate current Target/Source/Decision/QRP/representation/methodology-direction consistency | material plan/evidence/coverage changed or the user explicitly requests consistency review | contradictions/stale Decisions/coverage or ownership gaps + reopen/revalidation routes | validator only; not a Target Module and no repository mutation permission | `documentation/idtspe-methodology/active/idtspe-core/shared/consistency-review-use-case.md` | `проверь консистентность плана` |
+## Documentation — Fundamental Current Capabilities
 
-`UC-REPO-RECHECK-CONTEXT` is retired. Rechecking material AI output is now built into the cross-cutting reviewability contract rather than modeled as a separate current repository capability. The legacy `обс` command definition remains hidden for compatibility only.
+| ID | Use Case | Owner |
+|---|---|---|
+| `UC-DOC-PLAN-DOCUMENTATION-CHANGE` | Plan Repository Documentation Change | [`documentation/use-cases/UC-DOC-PLAN-DOCUMENTATION-CHANGE.md`](documentation/use-cases/UC-DOC-PLAN-DOCUMENTATION-CHANGE.md) |
+| `UC-DOC-REVIEW-DOCUMENTATION` | Review Repository Documentation | [`documentation/use-cases/UC-DOC-REVIEW-DOCUMENTATION.md`](documentation/use-cases/UC-DOC-REVIEW-DOCUMENTATION.md) |
+| `UC-DOC-MAINTAIN-USE-CASE` | Establish / Change Repository Use Case | [`documentation/use-cases/UC-DOC-MAINTAIN-USE-CASE.md`](documentation/use-cases/UC-DOC-MAINTAIN-USE-CASE.md) |
+| `UC-DOC-MAINTAIN-PRINCIPLES-TERMINOLOGY` | Maintain Principles & Terminology | [`documentation/use-cases/UC-DOC-MAINTAIN-PRINCIPLES-TERMINOLOGY.md`](documentation/use-cases/UC-DOC-MAINTAIN-PRINCIPLES-TERMINOLOGY.md) |
+| `UC-DOC-MAINTAIN-PROCESS` | Maintain Reusable Process | [`documentation/use-cases/UC-DOC-MAINTAIN-PROCESS.md`](documentation/use-cases/UC-DOC-MAINTAIN-PROCESS.md) |
+| `UC-DOC-MAINTAIN-TEMPLATE` | Maintain Documentation Template | [`documentation/use-cases/UC-DOC-MAINTAIN-TEMPLATE.md`](documentation/use-cases/UC-DOC-MAINTAIN-TEMPLATE.md) |
+| `UC-DOC-MAINTAIN-EXAMPLE` | Maintain Documentation Example | [`documentation/use-cases/UC-DOC-MAINTAIN-EXAMPLE.md`](documentation/use-cases/UC-DOC-MAINTAIN-EXAMPLE.md) |
+| `UC-DOC-MAINTAIN-README` | Maintain README Navigation | [`documentation/use-cases/UC-DOC-MAINTAIN-README.md`](documentation/use-cases/UC-DOC-MAINTAIN-README.md) |
+| `UC-DOC-MAINTAIN-USE-CASE-REGISTRY` | Maintain Use-Case Registry | [`documentation/use-cases/UC-DOC-MAINTAIN-USE-CASE-REGISTRY.md`](documentation/use-cases/UC-DOC-MAINTAIN-USE-CASE-REGISTRY.md) |
 
-Every current entry explicitly owns purpose, trigger, result, boundaries and owner route. Use-Case activation grants no repository edit/commit/push permission. Capabilities with a narrower family owner belong in that family's registry rather than being copied here.
+## Existing Current Repository Capabilities — Pending Reconciliation
+
+These capabilities have **not** been retired or made legacy by the fundamental migration. Their previous contracts remain current pending an explicit `KEEP / FOLD / MOVE / RETIRE` review.
+
+| ID | Use Case | Owner / Current Route |
+|---|---|---|
+| `UC-REPO-ORIENT` | Orient In Repository And Resolve Work Route | `README.md` → `planning/README.md` → registries |
+| `UC-REPO-CURRENT-STATE` | Report Current Repository / Planning State | this registry → `documentation/status-reconciliation-workflow.md` → selected current owners |
+| `UC-REPO-PLAN-NEXT` | Plan The Next Concrete Step | selected Direction/Use Case/current owners |
+| `UC-REPO-CRITICAL-REVIEW` | Critically Review A Claim / Plan / Diff | shared Idea owners + selected target/current owners + `documentation/review-diff-review-workflow.md` when target is ReviewDiff |
+| `UC-REPO-USE-ARCHIVE-SOURCE` | Use An Explicit Archive As Read Source | selected archive + applicable owners |
+| `UC-REPO-DEFINE-PARALLEL-SCOPES` | Define / Maintain Fixed Parallel-Work Scopes | `../parallel-work-scope-registry.md` + `documentation/parallel-work-scope-and-action-log-workflow.md` |
+| `UC-REPO-PARALLEL-WORK` | Work In Registered Parallel Scope(s) | `../parallel-work-scope-registry.md` + `documentation/parallel-work-scope-and-action-log-workflow.md` |
+| `UC-REPO-REFINE-CURRENT-PLAN` | Refine The Current Plan | `documentation/idtspe-methodology/active/idtspe-core/IDTSPE-DEFAULT-WORK-MODE.md` + `documentation/idtspe-methodology/active/idtspe-core/IDTSPE-SHELL.md` |
+| `UC-REPO-AUDIT-REVIEW` | Audit Review Coverage And Quality | `documentation/review-audit-workflow.md` |
+| `UC-REPO-REVIEW-PLANNING-FINDINGS` | Review Planning Findings / Q/R/P Completeness | `documentation/planning-findings-review-workflow.md` + `documentation/planning-concerns-and-decisions-model.md` |
+| `UC-IDTSPE-REVIEW-CONSISTENCY` | Review IDTSPE Plan Consistency | `documentation/idtspe-methodology/active/idtspe-core/shared/consistency-review-use-case.md` |
+
+The exact pre-fundamental registry is preserved at [`legacy/use-case-registry.pre-fundamental-uc.md`](legacy/use-case-registry.pre-fundamental-uc.md) as provenance only; it is not the semantic owner of these capabilities.
+
+Existing narrower family registries remain current for their unreviewed capabilities until they are explicitly reconciled into this repository-wide overview.
