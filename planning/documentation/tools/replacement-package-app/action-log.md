@@ -1,7 +1,9 @@
 # Scope Action Log
 
 Scope: `SCOPE-REPLACEMENT-PACKAGE-APP`
-Status: active cumulative high-level log
+Status: legacy/provenance
+
+The fixed registered-scope/action-log coordination model is retired. Entries below are preserved historical records and are not current coordination, logging, package, or ownership authority. Future branch-based coordination is intentionally not defined here and requires its own current owner before use.
 
 Logging starts only after explicit user instruction; no pre-start history is reconstructed automatically.
 
