@@ -1,50 +1,54 @@
 # SL-RPKG-03 — Finalize And Publish Work
 
-Status: active current Slice owner
+Status: active current Slice owner with selected target evolution
 
-## Result / Responsibility
+## Current Result / Responsibility
 
 Finalize legacy ChangeSet work from a fresh exact Current Change, publish it, preserve Publication Pending after local success/remote failure, and explicitly/guardedly Reopen finalized legacy work.
 
-Selected future Finalize behavior is described only in `Evolution Impact` below; it is not current Slice responsibility.
+Selected target Finalize behavior below is not current Slice responsibility.
 
-## Scenario behavior realized
+## Current Scenario Behavior Realized
 
-Current FI:
 - `FI-RPKG-FINALIZE-LEGACY-CURRENT-WORK`
+- current legacy Finalize/publication/reopen BIs.
 
-Current BIs:
-- `BI-RPKG-CURRENT-FINALIZE-REQUIRES-FRESH-REVIEW`
-- `BI-RPKG-CURRENT-FINALIZE-OWNED-ONLY`
-- `BI-RPKG-CURRENT-PUBLICATION-FAILURE-PRESERVES-WORK`
-- `BI-RPKG-CURRENT-REOPEN-EXPLICIT`
-
-## Domain used
+## Domain Used
 
 Repository Work / ChangeSet; Repository Target.
 
-## Slice Implementation Items
+## Slice Implementation Items — Current
 
-### SI-RPKG-LEGACY-FINALIZE-OWNED-STAGING — Stage only authoritative legacy ownership
-Requirement:
-Legacy Finalize staging must be constrained to the exact current ChangeSet-owned paths after freshness proof.
+### SI-RPKG-LEGACY-FINALIZE-OWNED-STAGING
+
+Legacy Finalize stages only authoritative owned paths after freshness proof.
 
 ## Tests
 
-Current responsibility: `CoreTests` for review-baseline freshness, owned-only staging, commit/push/Publication Pending recovery and all-or-nothing Reopen ownership reacquisition.
+Current responsibility: `CoreTests` for legacy review freshness, owned staging, commit/push recovery and guarded Reopen.
 
 ## Evolution Impact
 
 ### EVO-RPKG-ADOPT-REVIEWED-RESULT-WORKFLOW
-Canonical Scenario step:
-[`EVO-RPKG-ADOPT-REVIEWED-RESULT-WORKFLOW`](../scenarios/SCN-RPKG-COMPLETE-REPOSITORY-WORK.md#evo-rpkg-adopt-reviewed-result-workflow)
 
-Target BI references:
-- `BI-RPKG-FINALIZE-ONLY-APPROVED-PUBLISHED-REVISION`
-- `BI-RPKG-FINALIZE-PRESERVES-REVIEWED-CONTENT`
-- `BI-RPKG-TARGET-MOVEMENT-NOT-AUTOMATIC-STALE`
-- `BI-RPKG-CONTENT-CHANGING-RECONCILIATION-STALES-APPROVAL`
-- `BI-RPKG-FINALIZED-WORK-IS-CLOSED`
+Target Scenario FIs:
+- `FI-RPKG-ENSURE-INTEGRATION-PULL-REQUEST`
+- `FI-RPKG-FINALIZE-REVIEWED-WORK`.
 
-Forced Migration:
-Target Finalize authority moves from legacy ReviewDiff/Path Ownership to reviewed published-result/PR/integration identity. Future Finalize/reconciliation must preserve the reviewed result identity or explicitly stale approval before a content-changing integration result can be accepted. This is future Slice delta, not a current `SI-*` requirement. Existing legacy semantics remain until legacy work is retired; they must not be silently reused for target work.
+Target Finalize is entered only from a proven `ReviewedPublished` work result and is composed by either:
+- the full reviewed handoff route; or
+- the manual `Finalize` control.
+
+Automatic Finalize receives PR semantic text and final Issue semantic text from the handoff. Manual Finalize obtains equivalent semantic input from UI.
+
+Target responsibilities include:
+- ensure one correct workBranch → persisted targetBranch PR;
+- preserve the reviewed work result through integration;
+- persist/reconcile one immutable Issue comment headed `## Final Work Record`;
+- bind exact package/result/published revision/PR/integration facts from proven App state;
+- close the Issue only after required final record persistence;
+- resume truthful partial finalization without blind re-integration or ambiguous duplicate final comments.
+
+Detailed iterative Review Records remain Builder-side Issue comments and are not rewritten by Finalize.
+
+This is future Slice delta, not a current `SI-*` requirement. Legacy semantics remain until legacy work retires.

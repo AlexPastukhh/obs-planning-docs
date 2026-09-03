@@ -1,137 +1,153 @@
 # SCN-RPKG-COMPLETE-REVIEWED-REPOSITORY-WORK — Complete Reviewed Repository Work
 
 Status: planned future Scenario owner
+
 Current authoritative behavior remains in `../SCN-RPKG-COMPLETE-REPOSITORY-WORK.md` until implementation migration makes this target current.
-This planned owner must not be used as evidence that reviewed-result confirmation, PR readiness or target Finalize are implemented.
+
+This planned owner must not be used as evidence that Builder-established repository work, reviewed-result confirmation, handoff route composition, PR/final logging or target Finalize are implemented.
 
 ## Application Benefit / Desired Result
 
-Realize an exact already-reviewed package in the real repository ChangeSet, preserve durable work identity and truthful recovery state, prove that the authoritative published revision is exactly the reviewed predicted result, maintain the correct integration Pull Request, and integrate only that approved result into the target branch.
+Realize one exact Builder-reviewed package in the exact repository work that Builder already established, preserve truthful recoverable execution state, and stop at the completion boundary explicitly requested by the user through the reviewed handoff.
 
-The Scenario must not require the user to execute internal Git actions manually in the ordinary path.
-
-## Process Specification
-
-### Scenario Process / Feature Interaction Map
+Depending on that concrete handoff, the App can:
 
 ```text
-reviewed Builder handoff
-↓
-FI-RPKG-ESTABLISH-REPOSITORY-WORK-INTENT
-↓
-FI-RPKG-REALIZE-REVIEWED-PACKAGE
-↓
-FI-RPKG-CONFIRM-REVIEWED-PUBLISHED-REVISION
-↓
-FI-RPKG-ENSURE-INTEGRATION-PULL-REQUEST
-↓
-FI-RPKG-FINALIZE-REVIEWED-WORK
-├─ Finalized
-└─ integration requires changed ChangeSet result
-      ↓
-   reviewed approval becomes stale
-      ↓
-   return to Builder correction/review flow
+apply only
+or
+apply + commit + push/publish
+or
+apply + commit + push/publish + integrate/finalize + close the Issue
 ```
 
-Optional diagnostic interaction:
+All routes use the same modular App actions and correctness rules.
 
-```text
-Inspect Current Change
-```
+Automatic composition is a convenience/orchestration path, not a second implementation of Apply, Commit, Push, verification, PR or Finalize.
 
-It is not part of the ordinary semantic approval path.
+When work is fully finalized, the closed GitHub Issue and related PR must remain useful durable history without requiring access to the original ChatGPT conversation.
 
-## Command composition routes
+---
 
-Command composition is orthogonal to Scenario/FI decomposition.
+# Scenario Inputs / Repository-Work Boundary
 
-```text
-Feature Interaction
-= semantic behavioral unit inside the Scenario
+The target consumer receives an exact reviewed handoff rendered by ChatGPT after Builder review.
 
-Command / button
-= one user entry that may invoke part of one FI,
-  resume one FI, or compose several FIs
-```
-
-The same Scenario behavior must remain authoritative regardless of which command route is used.
-
-### Route A — ordinary composed command
-
-The ordinary user can provide the reviewed package handoff once and invoke one top-level command:
-
-```text
-Apply Package
-↓
-ensure FI-RPKG-ESTABLISH-REPOSITORY-WORK-INTENT
-↓
-enter / resume FI-RPKG-REALIZE-REVIEWED-PACKAGE
-   ensure ChangeSet workspace when absent
-   → Apply
-   → Commit
-   → Publish
-↓
-FI-RPKG-CONFIRM-REVIEWED-PUBLISHED-REVISION
-↓
-FI-RPKG-ENSURE-INTEGRATION-PULL-REQUEST
-↓
-Ready for Finalize
-```
-
-The composed command does not create a second implementation of these behaviors. It invokes the same underlying semantic/domain actions and resumes from the persisted ChangeSet state.
-
-Retry of the same top-level command is state-dispatch, not restart:
-
-```text
-Work Intent missing
-→ ensure Work Intent
-
-workspace missing
-→ ensure workspace
-
-Ready(C1)
-→ Apply
-
-AppliedUncommitted(P2)
-→ Commit
-
-CommittedUnpublished(P2,C2)
-→ Publish
-
-PublicationUncertain(P2,C2)
-→ reconcile Publish
-
-Ready(C2), review-result identity not yet proven
-→ Confirm Reviewed Published Revision
-
-reviewed C2 proven, PR missing/stale
-→ Ensure Integration Pull Request
-
-all above satisfied
-→ Ready for Finalize
-```
-
-### Route B — full composed completion
-
-Because semantic review already happened before real Apply, the Scenario also supports an explicit one-command composition that continues through Finalize when every exact precondition remains satisfied.
-
-The selected command name in this target model is:
-
-```text
-Apply & Finalize
-```
+The repository work already exists before this Scenario begins.
 
 Conceptually:
 
 ```text
-Apply & Finalize
-↓
-FI-RPKG-ESTABLISH-REPOSITORY-WORK-INTENT
+Repository Work
+├─ repository
+├─ Issue identity
+├─ targetBranch
+├─ sourceCommit / expectedSource
+├─ workBranch
+└─ internal continuation identity when required by the protocol/runtime
+
+Reviewed Result
+├─ exact archive / packageId
+├─ expectedSource
+└─ expectedResult
+
+Concrete consumer route
+└─ one selected automatic stopping point
+```
+
+The App does **not** create a new independent Issue or work branch merely because a reviewed package arrives.
+
+The App must prove that the handoff addresses the exact existing repository work and may materialize/recover whatever local execution workspace is needed for that exact work branch. It must not silently substitute a different work branch or infer the integration target from current checkout state.
+
+`Handoff Intent` itself remains free semantic text in the Issue for ChatGPT continuity.
+
+Replacement Package App does not interpret that free text.
+
+ChatGPT reads `Handoff Intent` after `APPROVABLE` and renders one concrete consumer route.
+
+---
+
+# Concrete Handoff Routes
+
+The selected target supports three user-visible completion intents.
+
+The exact serialized protocol field names remain implementation/contract design.
+
+## Route 1 — Apply Only
+
+User meaning:
+
+```text
+Apply the reviewed package only.
+Do not commit.
+Do not push.
+Do not Finalize.
+```
+
+Automatic composition:
+
+```text
+exact reviewed handoff
 ↓
 FI-RPKG-REALIZE-REVIEWED-PACKAGE
+    Apply
+↓
+AppliedUncommitted
+↓
+STOP
+```
+
+Later modular continuation is allowed.
+
+For example:
+
+```text
+[Commit]
+↓
+[Push]
+↓
+App automatically performs reviewed published-result confirmation
+↓
+ReviewedPublished
+↓
+[Finalize]
+```
+
+A separate user `Verify` action is not required for the ordinary modular continuation path; confirmation is a deterministic proof step composed after successful Push/Publish.
+
+## Route 2 — Apply And Publish
+
+User meaning:
+
+```text
+Fully realize the reviewed package through Commit + Push/Publish.
+Leave integration/final closure for later.
+```
+
+Automatic composition:
+
+```text
+exact reviewed handoff
+↓
+FI-RPKG-REALIZE-REVIEWED-PACKAGE
+    Apply
+    Commit
+    Push / Publish
 ↓
 FI-RPKG-CONFIRM-REVIEWED-PUBLISHED-REVISION
+↓
+ReviewedPublished
+↓
+STOP
+```
+
+No PR/final integration is required merely to reach this stopping point.
+
+The Issue remains open.
+
+Later:
+
+```text
+[Finalize]
 ↓
 FI-RPKG-ENSURE-INTEGRATION-PULL-REQUEST
 ↓
@@ -140,621 +156,689 @@ FI-RPKG-FINALIZE-REVIEWED-WORK
 Finalized
 ```
 
-This is a fixed composition over the same FI behavior, not a second workflow engine or alternate semantic implementation.
+## Route 3 — Apply And Finalize
 
-If an earlier FI stops in a recoverable/blocked state, retry of the same `Apply & Finalize` command resumes from persisted Scenario truth. Finalize is attempted only after all prior exact preconditions are satisfied.
-
-If Finalize cannot preserve the reviewed result, the composed command stops with the same truthful blocked/stale behavior defined by `FI-RPKG-FINALIZE-REVIEWED-WORK`; it must not silently manufacture a different integrated result.
-
-### Route C — modular / advanced commands
-
-The same Scenario may be progressed through independently callable commands when diagnostics, recovery, migration testing or explicit advanced control make that useful.
-
-Candidate modular surfaces:
+User meaning:
 
 ```text
-Create / Update Work Intent
-Start Workspace
-Apply Only
-Commit Applied
-Publish
-Commit & Publish
-Abort Applied Package
-Verify Reviewed Result
-Ensure Pull Request
-Finalize
+Fully realize and close the reviewed repository work.
 ```
 
-These commands enter or resume the same FI processes and must preserve the same state transitions, identity checks and Behavior Items as the ordinary composed route.
-
-For example, these are two command routes through the same FI:
+Automatic composition:
 
 ```text
-Route A:
-Apply Package
-→ ensure workspace
-→ Apply
-→ Commit
-→ Publish
-
-Route B:
-Start Workspace
-→ Apply Only
-→ Commit Applied
-→ Publish
+exact reviewed handoff
+↓
+FI-RPKG-REALIZE-REVIEWED-PACKAGE
+    Apply
+    Commit
+    Push / Publish
+↓
+FI-RPKG-CONFIRM-REVIEWED-PUBLISHED-REVISION
+↓
+FI-RPKG-ENSURE-INTEGRATION-PULL-REQUEST
+↓
+FI-RPKG-FINALIZE-REVIEWED-WORK
+    integrate
+    prove final integration
+    append Final Work Record
+    close Issue
+↓
+Finalized
 ```
 
-Both must establish the same local result:
-
-```text
-exact reviewed package P2
-is authoritatively published as C2
-```
-
-`Commit & Publish` or similar convenience commands are fixed compositions over the same actions. They do not create separate Feature Interactions or separate business semantics.
-
-### Route-selection rule
-
-The Scenario supports all three routes over the same state/behavior authority:
-
-```text
-A. Ordinary route
-   Apply Package
-   → through reviewed-result verification + PR
-   → Ready for Finalize
-   → explicit Finalize
-
-B. Full composed route
-   Apply & Finalize
-   → through reviewed-result verification + PR
-   → Finalize in the same authorized command
-   → Finalized
-
-C. Modular / advanced route
-   → explicit individual/resume actions
-```
-
-`Apply Package` is the ordinary/default application route and deliberately stops at `Ready for Finalize`.
-
-`Apply & Finalize` is the explicit one-command end-to-end route. It is a fixed composition over the same Feature Interactions and domain actions; it does not introduce different repository semantics.
-
-`Finalize` remains independently callable for the ordinary route and for recovery/advanced control.
-
-## Cross-FI Behavior Items — command composition
-
-#### BI-RPKG-COMPOSED-AND-MODULAR-ROUTES-SHARE-SEMANTICS
-Requirement:
-Composed and modular command routes must invoke the same authoritative behavior, state transitions, identity checks and recovery rules rather than implementing separate meanings for the same repository work.
-
-Reason:
-Command convenience must not change correctness or produce route-dependent repository semantics.
-
-#### BI-RPKG-COMMANDS-DO-NOT-DEFINE-FI-BOUNDARIES
-Requirement:
-The existence of a separately invokable command must not by itself create a separate Feature Interaction, and one composed command may cross several Feature Interaction boundaries.
-
-Reason:
-Feature Interactions decompose Scenario behavior; commands are interaction/orchestration entries.
-
-#### BI-RPKG-COMPOSED-RETRY-RESUMES-ACROSS-FIS
-Requirement:
-Retrying the ordinary composed command must continue from the latest proven persisted Scenario state, including unsatisfied later FIs, rather than restarting already-established earlier behavior.
-
-Reason:
-A partial failure in Publish, reviewed-result verification or PR creation must not require the user to reconstruct the Scenario manually.
-
-#### BI-RPKG-APPLY-PACKAGE-STOPS-BEFORE-FINALIZE
-Requirement:
-The ordinary `Apply Package` route must stop at `Ready for Finalize` after reviewed-result verification and PR readiness; it must not implicitly integrate the ChangeSet into the target branch.
-
-Reason:
-Applying/publishing reviewed work and integrating/finalizing it remain distinct user-authorized completion boundaries.
-
-#### BI-RPKG-APPLY-AND-FINALIZE-USES-SAME-PRECONDITIONS
-Requirement:
-`Apply & Finalize` may provide one-command end-to-end completion, but it must satisfy the same reviewed-result, PR and Finalize preconditions as the separate `Apply Package` + `Finalize` route.
-
-Reason:
-Convenience composition must not weaken correctness or authorization boundaries.
+If any stage stops in a truthful recoverable state, retry of the same concrete handoff resumes from persisted proof rather than blindly replaying earlier side effects.
 
 ---
 
-## FI-RPKG-ESTABLISH-REPOSITORY-WORK-INTENT
+# Modular Continuation
 
-### Scenario Role / Local Purpose
+The same underlying App actions remain independently usable.
 
-Ensure one durable semantic repository-work identity exists independently of transient Builder/Chat invocation state.
+Current implementation already has modular Apply / Commit / Push-style actions; the target extends their composition rather than replacing them.
 
-### Interaction Process
+Selected target modular surfaces include:
 
 ```text
-reviewed handoff
-+
-repository identity
-+
-changeSetId
-+
-work intent:
-  Title
-  Goal
-  Why
-  Acceptance
-↓
-resolve exact Repository Target
-↓
-ensure one exact managed GitHub Issue
-↓
-persist/adopt exact Issue identity for ChangeSet
+Apply Only
+Commit
+Push / Publish
+Finalize
 ```
 
-This may also be independently invokable, but ordinary Apply can ensure it automatically.
+Diagnostic/recovery controls may remain separately callable where current implementation requires them.
 
-### Local Result
+A button does not create a separate Feature Interaction merely because it is separately invokable.
 
-One durable Work Intent / Issue exists for the exact logical ChangeSet.
+A composed handoff route may cross several Feature Interactions.
 
-### Behavior Items — selected
+## Semantic Input Rule
 
-This planned FI preserves the current Work Intent requirements without redefining them. Canonical definitions remain in the current Scenario owner:
-
-- [`BI-RPKG-WORK-INTENT-ONE-EXACT-ISSUE`](../SCN-RPKG-COMPLETE-REPOSITORY-WORK.md#bi-rpkg-work-intent-one-exact-issue--one-exact-managed-issue)
-- [`BI-RPKG-WORK-INTENT-DURABLE`](../SCN-RPKG-COMPLETE-REPOSITORY-WORK.md#bi-rpkg-work-intent-durable--work-intent-survives-interruption)
-
-## FI-RPKG-REALIZE-REVIEWED-PACKAGE
-
-### Scenario Role / Local Purpose
-
-Progress one exact reviewed package from its exact expected source to one authoritative published ChangeSet revision, or leave the work in an exact truthful recoverable/uncertain state.
-
-### Interaction Process
-
-This FI-local process may be entered by the ordinary composed `Apply Package` route or by modular/advanced commands. The FI semantics are the same in either route.
+When a stage needs user/ChatGPT semantic text, the text source depends on how the same stage is invoked.
 
 ```text
-exact reviewed package P2
-+
-expected source C1
-+
-ChangeSet X
-+
-targetBranch
-↓
-resolve/prove exact Repository Target
-↓
-ensure isolated ChangeSet workspace when absent
-↓
-prove current published/workspace source == C1
-↓
-Apply exact P2
-↓
-Commit exact applied result as C2
-↓
-Publish exact C2
-↓
-Ready(C2)
+automatic composed route
+→ semantic text comes from handoff
+
+manual modular route
+→ semantic text comes from App UI
 ```
 
-For a new ChangeSet:
+### Commit
+
+If the concrete handoff includes Commit:
 
 ```text
-targetBranch @ C0
-↓
-create/reconcile branch + isolated worktree
-↓
-baseCommit=C0
-publishedTip=C0
-↓
-P1
-↓
-C1
+commitMessage
 ```
 
-For a later package:
+is supplied through the handoff and used for that exact Commit attempt.
+
+If Commit is invoked later through the App's manual Commit control, the user can enter the commit message before the commit is created.
+
+App-owned exact metadata/trailers remain App responsibility and are not manually reconstructed by ChatGPT/user.
+
+Push/Publish does not require a separate semantic message.
+
+### Finalize
+
+If the concrete handoff includes Finalize, the handoff carries the semantic text required for the target integration record, conceptually including:
 
 ```text
-Ready(C1)
+pullRequestTitle
+pullRequestBody
+finalIssueComment
+```
+
+If Finalize is invoked manually, the App obtains the corresponding semantic inputs through its Finalize UI before the irreversible/external side effects that use them.
+
+The exact serialized names and UI layout remain contract/Screen implementation design.
+
+The semantic text must be persisted with operation intent strongly enough that retry does not silently substitute a different commit message, PR description or Final Work Record text after an external side effect may already have happened.
+
+---
+
+# Scenario Process / Feature Interaction Map
+
+```text
+exact Builder-reviewed handoff
 +
-P2 expectedSource=C1
-↓
-C2
+exact existing repository work
+        ↓
+
+FI-RPKG-REALIZE-REVIEWED-PACKAGE
+        ├─ Apply Only route
+        │    ↓
+        │  AppliedUncommitted
+        │    ↓
+        │  STOP
+        │
+        └─ route includes Commit + Push
+             ↓
+           Published
+             ↓
+
+FI-RPKG-CONFIRM-REVIEWED-PUBLISHED-REVISION
+        ├─ Apply And Publish route
+        │    ↓
+        │  ReviewedPublished
+        │    ↓
+        │  STOP
+        │
+        └─ route includes Finalize
+             ↓
+
+FI-RPKG-ENSURE-INTEGRATION-PULL-REQUEST
+        ↓
+FI-RPKG-FINALIZE-REVIEWED-WORK
+        ├─ reviewed result integrated unchanged
+        │    ↓
+        │  append/reconcile ## Final Work Record
+        │    ↓
+        │  close Issue
+        │    ↓
+        │  Finalized
+        │
+        └─ integration requires changed repository-work result
+             ↓
+           approval becomes stale
+             ↓
+           return to Builder correction/review flow
 ```
 
-The internal execution/recovery states remain meaningful:
+Manual controls may enter/resume the same process from the currently proven state.
+
+Optional supporting interaction:
 
 ```text
-Ready(C1)
-↓ Apply
-AppliedUncommitted(P2)
-↓ Commit
-CommittedUnpublished(P2,C2)
-↓ Publish
-Ready(C2)
+Inspect Current Change
+```
+
+remains diagnostic and does not create semantic approval.
+
+---
+
+# Cross-FI Behavior Items — Route Composition
+
+## BI-RPKG-HANDOFF-ROUTE-CONTROLS-AUTOMATIC-STOP
+
+Requirement:
+
+The concrete reviewed handoff must determine how far the App automatically composes the modular execution stages before stopping.
+
+Reason:
+
+The user's original `давай архив` completion intent must survive review and determine consumer behavior without relying on ChatGPT conversation memory at Apply time.
+
+## BI-RPKG-AUTOMATIC-AND-MANUAL-STAGES-SHARE-SEMANTICS
+
+Requirement:
+
+Automatic handoff composition and later button-driven continuation must invoke the same authoritative stage behavior, state transitions, identity checks and recovery rules.
+
+Reason:
+
+Convenience composition must not create route-dependent repository semantics.
+
+## BI-RPKG-APPLY-ONLY-STOPS-UNCOMMITTED
+
+Requirement:
+
+The Apply Only route must stop after exact package-file application without automatically committing, pushing, creating a PR or finalizing the work.
+
+Reason:
+
+The user explicitly requested a modular stopping point before repository publication.
+
+## BI-RPKG-APPLY-AND-PUBLISH-STOPS-BEFORE-INTEGRATION
+
+Requirement:
+
+The Apply And Publish route must automatically Apply, Commit and Push/Publish, confirm the reviewed published result, then stop with the Issue still open and without requiring PR/final integration.
+
+Reason:
+
+Publication of reviewed work and final integration/closure are distinct completion boundaries.
+
+## BI-RPKG-APPLY-AND-FINALIZE-COMPLETES-WORK
+
+Requirement:
+
+The Apply And Finalize route must use the same Apply/Commit/Push/verification/PR/Finalize behavior and may close the work only after every required exact precondition and final logging requirement is satisfied.
+
+Reason:
+
+One-message end-to-end completion must not weaken correctness compared with modular continuation.
+
+## BI-RPKG-SEMANTIC-STAGE-INPUT-FOLLOWS-ROUTE
+
+Requirement:
+
+When Commit or Finalize is invoked automatically, its semantic text must come from the authorized handoff; when invoked manually, equivalent semantic input must be obtained through the App UI.
+
+Reason:
+
+Automatic and modular execution should differ only in input/orchestration path, not in the semantic responsibility of the underlying stage.
+
+## BI-RPKG-PUSH-CONTINUES-TO-REVIEWED-CONFIRMATION
+
+Requirement:
+
+After successful Push/Publish of a reviewed package, the ordinary automatic or modular path must continue through reviewed published-result confirmation without requiring a separate user verification command.
+
+Reason:
+
+Confirmation is deterministic identity proof required to establish the published stopping point, not a separate semantic user decision.
+
+## BI-RPKG-COMPOSED-RETRY-RESUMES-PERSISTED-INTENT
+
+Requirement:
+
+Retry of an automatic route must resume from the latest proven repository/external state and reuse the already-authorized persisted semantic stage inputs rather than restarting or silently asking for/replacing them after uncertain side effects.
+
+Reason:
+
+Commit, push, PR and Issue operations cross durable side-effect boundaries.
+
+---
+
+# FI-RPKG-REALIZE-REVIEWED-PACKAGE
+
+## Scenario Role / Local Purpose
+
+Apply one exact reviewed package to the exact Builder-established repository work and, when the concrete route requires it, progress that same applied result through Commit and Push/Publish without changing package meaning.
+
+## Preconditions / Inputs
+
+At minimum:
+
+```text
+exact repository identity
+exact Issue/work identity
+persisted targetBranch
+exact workBranch
+exact expectedSource
+exact package / packageId
+exact reviewed expectedResult identity
+concrete route
+commitMessage when route includes Commit
+```
+
+The App proves the handoff matches the existing repository work before mutation.
+
+It does not create a second independent Issue/work branch identity.
+
+An execution workspace may be ensured/recovered for the exact existing `workBranch`, but implementation design must not silently replace the Builder-established repository-work identity.
+
+## Interaction Process
+
+Common Apply:
+
+```text
+exact existing repository work
++
+exact reviewed package Pn
++
+expectedSource Cn
+↓
+prove exact repository/work branch/source applicability
+↓
+Apply exact Pn
+↓
+AppliedUncommitted(Pn)
+```
+
+If the route stops here:
+
+```text
+AppliedUncommitted
+↓
+STOP
+```
+
+If the route includes publication:
+
+```text
+AppliedUncommitted(Pn)
++
+authorized commitMessage
+↓
+Commit exact applied result as Cn+1
+↓
+CommittedUnpublished(Pn, Cn+1)
+↓
+Push / Publish exact workBranch tip
+↓
+Published(Cn+1)
 ```
 
 If publication outcome cannot be determined:
 
 ```text
-PublicationUncertain(P2,C2)
+PublicationUncertain(Pn, Cn+1)
 ↓
-reconcile exact remote state before another push/package
+reconcile exact remote truth before another push/package/finalization step
 ```
 
-The same top-level `Apply Package` operation is the ordinary retry/resume entry across this FI and, once publication is satisfied, may continue into the later verification/PR FIs described by the Scenario command-composition route.
+## Outcomes
 
-Modular Start Workspace / Apply Only / Commit / Publish / Commit & Publish / Abort controls are alternative advanced/recovery entries into the same process. They are not separate Scenarios or automatically separate FIs.
+- `AppliedUncommitted` — exact package applied, no commit/push performed;
+- `CommittedUnpublished` — exact commit exists locally, push not yet established;
+- `Published` — exact work revision is published but reviewed-result equality still needs confirmation;
+- `PublicationUncertain` — remote truth must be reconciled;
+- fail-closed before mutation when repository/work/source/package identity cannot be proven.
 
-### Outcomes
+## Behavior Items — selected
 
-- exact package published and proven `Ready(C2)`;
-- recoverable `AppliedUncommitted`;
-- recoverable `CommittedUnpublished`;
-- recoverable/blocked `PublicationUncertain`;
-- fail-closed source/head/identity/divergence result.
+### BI-RPKG-APPLY-EXACT-REPOSITORY-WORK
 
-### Local Result
-
-An authoritative published revision exists for the exact reviewed package, or the ChangeSet retains truthful exact execution state from which safe recovery can continue.
-
-### Behavior Items — selected
-
-#### BI-RPKG-APPLY-EXACT-REPOSITORY-TARGET
 Requirement:
-Repository identity/target resolution must not silently substitute a different clone/target.
 
-Reason:
-The reviewed package/result is meaningful only for the exact repository work context selected for the ChangeSet.
+Real Apply must remain bound to the exact Builder-established repository, Issue/work identity, target branch and work branch rather than silently creating/substituting different logical work.
 
-#### BI-RPKG-APPLY-EXACT-PACKAGE
+### BI-RPKG-APPLY-EXACT-PACKAGE
+
 Requirement:
-The consumer must apply the exact reviewed package identity received in the handoff.
 
-Reason:
-Consumer verification must correspond to the same artifact that the Builder reviewed, not an equivalent reconstruction.
+The App must apply the exact package identity reviewed by Builder.
 
-#### BI-RPKG-APPLY-EXACT-EXPECTED-SOURCE
+### BI-RPKG-APPLY-EXACT-EXPECTED-SOURCE
+
 Requirement:
-Real Apply must prove the package is being applied to the exact expected source state before mutation.
 
-Reason:
-Applying to a different source would produce a result that was never replayed/reviewed.
+Real Apply must prove package applicability against the exact expected source before mutation.
 
-#### BI-RPKG-ORDINARY-APPLY-COMPOSES-INTERNAL-ACTIONS
+### BI-RPKG-RETRY-RESUMES
+
 Requirement:
-Ordinary user behavior may use one top-level Apply operation that ensures/resumes the required workspace, Apply, Commit and Publish actions from persisted execution truth and then continues to later unsatisfied composed Scenario behavior according to the command route.
 
-Reason:
-The ordinary UX should not require manual sequencing of recoverable internal actions merely because those actions remain independently callable.
+Retry must prove established Apply/Commit/Push side effects and resume from the latest proven state rather than blindly restarting.
 
-#### BI-RPKG-RETRY-RESUMES
+### BI-RPKG-PARTIAL-STATE-TRUTHFUL
+
 Requirement:
-Retry must resume/prove the same logical operation from the established state rather than restarting unrelated work.
 
-Reason:
-Repository, GitHub and publication operations cross durable side-effect boundaries that cannot be safely repeated blindly.
+Successful earlier stages and uncertain later stages must remain durably distinguishable.
 
-#### BI-RPKG-PARTIAL-STATE-TRUTHFUL
+### BI-RPKG-NO-NEXT-PACKAGE-WHILE-PUBLICATION-UNCERTAIN
+
 Requirement:
-Partial execution and uncertain publication must remain durably distinguishable and recoverable without guessing whether side effects occurred.
 
-Reason:
-Later recovery and verification depend on knowing exactly which durable side effects are already established.
-
-#### BI-RPKG-NO-NEXT-PACKAGE-WHILE-PUBLICATION-UNCERTAIN
-Requirement:
-A new package must not progress while the current publication outcome is unresolved.
+Another package must not progress while the publication result of the current package is unresolved.
 
 ---
 
-Reason:
-The expected source for the next package cannot be known until the previous publication outcome is reconciled.
+# FI-RPKG-CONFIRM-REVIEWED-PUBLISHED-REVISION
 
-## FI-RPKG-CONFIRM-REVIEWED-PUBLISHED-REVISION
+## Scenario Role / Local Purpose
 
-### Scenario Role / Local Purpose
+Prove that the authoritative published work revision is exactly the package result that ChatGPT semantically approved before real Apply.
 
-Prove that the real authoritative published ChangeSet revision is exactly the result already semantically approved by the Builder.
+This is an identity/proof FI, not a second semantic review.
 
-This replaces the old ordinary post-publish semantic review step.
-
-### Interaction Process
+## Interaction Process
 
 Builder review identity:
 
 ```text
-ChangeSet X
-package P2
-expected source C1
-reviewed predicted result T2
-verdict APPROVABLE
+repository work
+package Pn
+expected source Cn
+reviewed result Tn
+decision APPROVABLE
 ```
 
 Actual consumer result:
 
 ```text
-published commit C2
+published work commit Cn+1
 ```
 
-Consumer proves the relevant identities, including:
+Consumer proves at least:
 
 ```text
-C2 belongs to ChangeSet X
-C2 realizes package P2
-source/parent relationship is consistent with expected C1
-tree(C2) == T2
+published revision belongs to the exact workBranch/repository work
+published revision realizes package Pn in the expected execution chain
+tree(Cn+1) == Tn
 ```
-
-The strongest result proof is Git resulting-tree equality:
-
-```text
-actual published tree
-==
-reviewed predicted tree
-```
-
-Textual latest/cumulative diffs may be regenerated for diagnostics, but diff rendering equality is not the primary identity proof.
 
 If proof succeeds:
 
 ```text
-approval(P2, C1, T2)
-↓
-may be attributed/bound to actual published C2
+ReviewedPublished(Cn+1, Pn, Tn)
 ```
 
 If proof fails:
 
 ```text
-DO NOT bind approval
-DO NOT Finalize
-preserve the actual published ChangeSet revision as evidence
-mark the work blocked for explicit investigation/correction
-fail closed
+do not inherit APPROVABLE
+do not Finalize
+preserve actual published work as evidence
+fail closed for explicit investigation/correction
 ```
 
-The App does not automatically rollback/revert the published ChangeSet branch. The divergent revision has not yet been integrated into the target branch; preserving it gives an exact investigation source and avoids creating another unreviewed mutation as an automatic recovery side effect.
+The App does not automatically create an unreviewed rollback/revert merely because confirmation failed.
 
-### Local Result
+## Behavior Items — selected
 
-The actual published commit is either proven to be the exact reviewed result, or it remains unapproved and blocked from Finalize.
+### BI-RPKG-PUBLISHED-TREE-EQUALS-REVIEWED-TREE
 
-### Behavior Items — selected
+Approval may be attributed to a published revision only after proving its resulting Git tree equals the exact Builder-reproduced reviewed result.
 
-#### BI-RPKG-PUBLISHED-TREE-EQUALS-REVIEWED-TREE
-Requirement:
-Approval may be attributed to a published commit only after proving its Git tree equals the exact reviewed predicted result tree.
+### BI-RPKG-VERIFY-EXECUTION-IDENTITY
 
-Reason:
-This equality is the identity proof that binds pre-Apply semantic approval to the consumer’s real published result.
+Matching tree content must also belong to the intended repository-work/package/source execution identity.
 
-#### BI-RPKG-VERIFY-EXECUTION-IDENTITY
-Requirement:
-Result-tree equality alone must not allow approval to be attached to an unrelated ChangeSet/package/source context.
+### BI-RPKG-NO-SECOND-SEMANTIC-REVIEW-WHEN-IDENTITY-PROVEN
 
-Reason:
-Tree equality is useful only when it is attached to the intended ChangeSet/package/source execution rather than an unrelated matching tree.
+When exact identity is proven, the ordinary consumer flow does not require another semantic review of identical content.
 
-#### BI-RPKG-NO-SECOND-SEMANTIC-REVIEW-WHEN-IDENTITY-PROVEN
-Requirement:
-When the consumer proves the published revision is the exact reviewed result, ordinary workflow does not require a redundant second semantic review.
+### BI-RPKG-VERIFY-FAILS-CLOSED
 
-Reason:
-Re-reviewing identical content would duplicate semantic work without adding evidence once exact result identity is proven.
+Ambiguous/unproven identity cannot inherit Builder approval.
 
-#### BI-RPKG-VERIFY-FAILS-CLOSED
-Requirement:
-If exact reviewed-result identity cannot be proven, the published revision must not become approved merely because it appears similar.
+### BI-RPKG-VERIFY-MISMATCH-PRESERVES-EVIDENCE
 
-Reason:
-An unproven or ambiguous published result cannot safely inherit the Builder’s approval.
-
-#### BI-RPKG-VERIFY-MISMATCH-PRESERVES-EVIDENCE
-Requirement:
-A published revision that fails reviewed-result identity proof must remain preserved as exact ChangeSet evidence and must not be automatically reverted/rewritten by the verification step.
-
-Reason:
-The target branch is still protected by Finalize, while preserving the divergent ChangeSet revision keeps the failure diagnosable and avoids introducing another unreviewed automatic mutation.
-
-### Review-decision semantic change
-
-Old primary model:
-
-```text
-publish C2
-→ semantic review C2
-→ register NEEDS_CORRECTION / APPROVABLE
-```
-
-Target ordinary model:
-
-```text
-Builder semantic review before Apply
-→ APPROVABLE exact package/result
-→ publish C2
-→ consumer identity proof
-→ bind that existing approval to C2
-```
-
-Therefore the consumer's ordinary role is confirmation/binding of an existing exact semantic approval, not generation of a new semantic verdict.
-
-Exact persisted ReviewDecision/approval schema remains to be designed.
+A mismatching published work revision remains preserved for diagnosis and is blocked from Finalize rather than automatically rewritten.
 
 ---
 
-## FI-RPKG-ENSURE-INTEGRATION-PULL-REQUEST
+# FI-RPKG-ENSURE-INTEGRATION-PULL-REQUEST
 
-### Scenario Role / Local Purpose
+## Scenario Role / Local Purpose
 
-Ensure the ChangeSet has one correct GitHub integration surface for its currently published reviewed revision.
+Ensure one correct durable GitHub integration surface for the exact currently reviewed/published repository work when Finalize is requested.
 
-### Interaction Process
+This FI is not required merely to stop at `ReviewedPublished`.
+
+## Preconditions / Inputs
 
 ```text
-published ChangeSet branch @ C2
+ReviewedPublished exact work revision
+persisted workBranch
+persisted targetBranch
+Issue identity
+authorized PR semantic text from handoff or manual Finalize UI
+```
+
+## Interaction Process
+
+```text
+ReviewedPublished workBranch
 +
-targetBranch
+persisted targetBranch
 ↓
-find exact source/target PR
+find exact workBranch → targetBranch PR
 ├─ one correct PR exists
-│    → satisfied / verify current head
-└─ no correct PR
-     → create PR
-↓
-PR represents ChangeSet branch → intended target
+│    → verify current head/base
+│    → ensure required semantic integration record
+└─ none exists
+     → create exact PR
+     → write required semantic integration record
 ```
 
-PR creation failure does not invalidate an already successfully published package result. It is retryable independently.
+The PR should remain understandable as an integration record even when read separately from the original chat.
 
-### Local Result
+At minimum its durable meaning must identify/link:
 
-One correct Pull Request exists for the ChangeSet and intended target branch.
+```text
+repository work / Issue
+what is being integrated
+workBranch → targetBranch
+current reviewed/published work result
+where detailed iterative Review Records live
+```
 
-### Behavior Items — selected
+Detailed `Review Record` history remains canonical in the Issue and is not duplicated wholesale into the PR.
 
-#### BI-RPKG-ONE-CORRECT-PR
-Requirement:
-The ChangeSet must resolve to one correct PR for its exact source branch and intended target branch.
+PR create/update failure does not erase an already-published reviewed revision.
 
-Reason:
-Integration state must represent one unambiguous current ChangeSet result rather than parallel or stale PR candidates.
+## Behavior Items — selected
 
-#### BI-RPKG-PR-FAILURE-DOES-NOT-ROLL-BACK-PUBLISHED-REVISION
-Requirement:
-Failure to ensure the PR must not falsely erase or roll back already proven published repository work.
+### BI-RPKG-ONE-CORRECT-PR
 
-Reason:
-The published ChangeSet revision remains real repository truth even when creating/updating the integration PR fails.
+One exact workBranch/targetBranch integration PR must represent the current repository work when Finalize proceeds.
 
-#### BI-RPKG-PR-HEAD-MUST-REPRESENT-CURRENT-CHANGESET
-Requirement:
-Before Finalize, the PR must represent the currently approved published ChangeSet revision.
+### BI-RPKG-PR-HEAD-MUST-REPRESENT-CURRENT-WORK
+
+Before integration, PR head must represent the currently reviewed/published work revision.
+
+### BI-RPKG-PR-SEMANTIC-RECORD-IS-DURABLE
+
+The PR must retain enough semantic/integration context to understand the integrated work and locate the canonical Issue history later.
+
+### BI-RPKG-PR-FAILURE-DOES-NOT-ROLL-BACK-PUBLISHED-REVISION
+
+PR creation/update failure must not falsely erase or roll back already proven published work.
 
 ---
 
-Reason:
-A PR pointing at stale or unrelated head content cannot carry the reviewed result toward Finalize.
+# FI-RPKG-FINALIZE-REVIEWED-WORK
 
-## FI-RPKG-FINALIZE-REVIEWED-WORK
+## Scenario Role / Local Purpose
 
-### Scenario Role / Local Purpose
+Integrate only the exact approved published work, persist one durable final repository-work record in the Issue, and close the Issue only after the final result/logging boundary is proven.
 
-Integrate the exact approved ChangeSet result into the target branch without hidden content change and close the logical work only after integration is proven.
-
-### Preconditions
+## Preconditions
 
 Conceptually:
 
 ```text
-ChangeSet lifecycle = Active
-execution = Ready(C2)
-
-C2 is proven to equal reviewed result T2
-approval is valid for C2
-
+repository work is active/open
+published revision is ReviewedPublished
 PR exists
-PR head represents C2
-PR target = intended targetBranch
+PR head = current reviewed published work
+PR base = persisted targetBranch
+final semantic text is authorized
 ```
 
-### Interaction Process
+## Interaction Process
 
 ```text
-approved published C2
+ReviewedPublished exact work
++
+correct PR
 +
 current target branch state
 ↓
 attempt integration
 ↓
 verify integrated result
-├─ reviewed result preserved
+├─ reviewed work result preserved
 │    ↓
-│  lifecycle = Finalized
-│  record integration result/commit
-│  complete Work Intent / Issue
-│  cleanup isolated workspace when safe
+│  record exact integration result
+│    ↓
+│  append NEW Issue comment:
+│      ## Final Work Record
+│    ↓
+│  prove that final record belongs to this exact finalized work
+│    ↓
+│  close Issue
+│    ↓
+│  Finalized
 │
-└─ integration requires changing ChangeSet result
+└─ integration requires changing reviewed work result
      ↓
-   do not silently resolve into different content
+   do not silently manufacture different content
      ↓
-   approval becomes stale if a changed reconciliation result is produced
+   prior approval becomes stale
      ↓
-   ChangeSet remains active
+   keep Issue/work active
      ↓
-   return to Builder correction/review
+   return changed result to Builder correction/review
 ```
 
-Movement of the target branch alone does not automatically make approval stale.
+Target-branch movement alone does not automatically stale approval.
 
-Approval becomes stale when the ChangeSet result that would be integrated must change relative to the exact reviewed result.
+Approval becomes stale when the repository-work result that would be integrated must change relative to the exact reviewed result.
 
-### Local Result
+## Final Work Record
 
-Either:
+The final record is a **new GitHub Issue comment**.
 
-- the exact reviewed work is proven integrated and the ChangeSet is Finalized; or
-- integration is blocked truthfully and any content-changing reconciliation returns the work to the review loop.
+It is not a special native GitHub object and it is not stored as a second authoritative copy in the PR.
 
-### Behavior Items — selected
+System-owned framing:
 
-#### BI-RPKG-FINALIZE-ONLY-APPROVED-PUBLISHED-REVISION
-Requirement:
-Finalize must integrate only a published revision whose reviewed-result identity is currently valid.
+```text
+## Final Work Record
+```
 
-Reason:
-Finalize is allowed to rely on prior semantic review only for the exact published result whose identity was proven.
+The App combines semantic text from handoff/manual Finalize UI with exact proven execution facts.
 
-#### BI-RPKG-FINALIZE-PRESERVES-REVIEWED-CONTENT
-Requirement:
-Finalize must not silently alter the approved ChangeSet result while integrating it.
+Conceptually:
 
-Reason:
-Integration must not silently change the content that received approval.
+```text
+## Final Work Record
 
-#### BI-RPKG-TARGET-MOVEMENT-NOT-AUTOMATIC-STALE
-Requirement:
-Target-branch movement alone does not invalidate semantic approval when the exact reviewed ChangeSet result can still be integrated unchanged.
+Outcome:
+FINALIZED
 
-Reason:
-A moved target branch does not by itself change the reviewed ChangeSet result and should not invalidate approval unnecessarily.
+Summary:
+<ChatGPT/user semantic final text>
 
-#### BI-RPKG-CONTENT-CHANGING-RECONCILIATION-STALES-APPROVAL
-Requirement:
-If conflict/reconciliation produces a changed ChangeSet result, the prior approval becomes stale and the changed result must pass the Builder replay/review flow again.
+Final review:
+APPROVABLE
 
-Reason:
-Once reconciliation changes the ChangeSet result, the prior semantic review no longer proves the integrated content.
+Reviewed package/result:
+<exact proven identities>
 
-#### BI-RPKG-FINALIZED-WORK-IS-CLOSED
-Requirement:
-Finalized work remains immutable history for package-continuity purposes; later independent work starts a new ChangeSet identity rather than silently reopening the finalized one.
+Published work revision:
+<exact proven identity>
+
+Pull Request:
+<exact PR identity>
+
+Integration result:
+<exact proven identity/status>
+
+Important final notes:
+<semantic text when applicable>
+```
+
+Exact package/revision/PR/integration facts come from proven App/Builder state rather than from ChatGPT manually copying hashes into prose.
+
+The Final Work Record is historical evidence and is not edited later as ordinary workflow.
+
+Issue closure occurs only after required finalization proof and successful persistence/reconciliation of the exact Final Work Record.
+
+If integration succeeded but final comment/Issue-close external side effects are interrupted or uncertain, the App preserves truthful partial finalization state and resumes/reconciles the remaining logging/closure tail; it must not re-integrate the work blindly or emit ambiguous duplicate Final Work Records.
+
+## Behavior Items — selected
+
+### BI-RPKG-FINALIZE-ONLY-APPROVED-PUBLISHED-REVISION
+
+Finalize may integrate only the currently valid reviewed/published work revision.
+
+### BI-RPKG-FINALIZE-PRESERVES-REVIEWED-CONTENT
+
+Finalize must not silently change the reviewed repository-work result.
+
+### BI-RPKG-TARGET-MOVEMENT-NOT-AUTOMATIC-STALE
+
+Target movement alone does not invalidate approval when the reviewed work can still be integrated unchanged.
+
+### BI-RPKG-CONTENT-CHANGING-RECONCILIATION-STALES-APPROVAL
+
+Any reconciliation that changes the repository-work result invalidates prior approval and requires new Builder replay/review.
+
+### BI-RPKG-FINAL-WORK-RECORD-PRECEDES-ISSUE-CLOSE
+
+The exact Final Work Record must be durably established/reconciled before the Issue is closed by successful Finalize.
+
+### BI-RPKG-FINAL-WORK-RECORD-BINDS-PROVEN-RESULT
+
+Machine identities in the Final Work Record must come from exact proven execution/integration state rather than user/ChatGPT recollection.
+
+### BI-RPKG-FINAL-WORK-RECORD-NOT-DUPLICATED-BY-RETRY
+
+Retry/recovery must reconcile an uncertain already-created final record before creating another final record for the same successful finalization.
+
+### BI-RPKG-FINALIZED-WORK-IS-CLOSED
+
+Successful target Finalize closes the repository-work Issue; later independent work starts a new work identity rather than silently extending the finalized work.
 
 ---
 
-Reason:
-After successful integration, later independent changes need a new logical work identity rather than silently extending closed approved work.
-
-## Supporting interaction — Inspect Current Change
+# Supporting Interaction — Inspect Current Change
 
 Status: supporting / diagnostic; not a primary target Scenario.
 
 ## Purpose
 
-Allow a user to inspect the exact current Git-derived ChangeSet difference when useful for diagnostics, manual continuation, debugging or exceptional handoff.
+Allow inspection of exact Git-derived current work differences for diagnostics/manual support without recreating the old post-Apply semantic approval dependency.
 
-This is no longer the ordinary semantic-review route.
-
-## Interaction Process
-
-For ChangeSet X:
+For repository work with:
 
 ```text
-baseCommit = C0
-previousPublishedTip = Cn-1
-currentPublishedTip = Cn
+original source = C0
+previous published work revision = Cn-1
+current published work revision = Cn
+```
 
-↓
-derive from Git authority
+derive from Git authority:
 
+```text
 latest:
 Cn-1 → Cn
 
@@ -762,39 +846,102 @@ cumulative:
 C0 → Cn
 ```
 
-Possible user conveniences:
-
-```text
-View
-Open
-Copy latest
-Copy cumulative
-Export one Current Change ZIP
-```
-
-Automatic ChatGPT delivery is not required for the target primary workflow. The retained baseline convenience is manual View/Open/Copy/Export of exact Git-derived material. Automatic delivery may exist later only as an optional convenience and must not recreate the old post-Apply semantic-review dependency.
+Possible conveniences include View/Open/Copy/Export.
 
 ## Behavior Items — selected
 
-#### BI-RPKG-CURRENT-CHANGE-GIT-DERIVED
-Requirement:
-Current Change material must be derived from authoritative Git revisions, not from a separately maintained semantic ReviewDiff authority.
+### BI-RPKG-CURRENT-CHANGE-GIT-DERIVED
 
-Reason:
-The target workflow already has authoritative Git revision boundaries, so diagnostics should derive from them instead of recreating legacy Path Ownership authority.
+Current Change diagnostic material derives from authoritative Git revisions rather than a separate persisted approval authority.
 
-#### BI-RPKG-CURRENT-CHANGE-NOT-APPROVAL
-Requirement:
-Inspecting/copying/exporting Current Change does not create semantic approval and does not authorize Finalize.
+### BI-RPKG-CURRENT-CHANGE-NOT-APPROVAL
 
-Reason:
-Semantic approval belongs to the exact Builder-reviewed package/result identity, while Current Change is only an inspection projection.
+Inspecting/exporting Current Change does not create semantic approval or authorize Finalize.
 
-#### BI-RPKG-CURRENT-CHANGE-DIAGNOSTIC
-Requirement:
-The ordinary Complete Repository Work Scenario must not depend on manual Current Change handoff for semantic review.
+### BI-RPKG-CURRENT-CHANGE-DIAGNOSTIC
+
+Ordinary reviewed-result completion must not depend on a second manual Current Change handoff.
 
 ---
 
-Reason:
-Ordinary target completion should not depend on a manual review handoff after the exact package result was already reviewed before Apply.
+# Logging Model
+
+The target durable history is intentionally split by responsibility:
+
+```text
+GitHub Issue body
+= current semantic Work Intent
++ Handoff Intent
++ managed exact repository-work context
+
+GitHub Issue comments
+= planned immutable Builder Review Records
++ immutable App Final Work Record
+
+Git commits
+= exact implementation/publication history
++ semantic commit messages
+
+Pull Request
+= durable integration summary/history
++ link to repository-work Issue
+
+Builder review artifacts/state
+= exact package/replay/review proof inputs
+
+App persisted operation state/journals
+= deterministic execution/recovery authority
+```
+
+A separate repository `action-log.md` is not required by this target logging model.
+
+Closed Issues and completed PRs are intended historical reading surfaces: Issue tells the full semantic life of the repository work; PR tells the integration view.
+
+---
+
+# Builder / App Ownership Boundary
+
+Builder owns:
+
+```text
+Start Repository Work
+exact Issue/work branch/source context
+package construction
+deterministic package replay
+review material
+exact review identities
+```
+
+ChatGPT owns semantic development/review and handoff rendering.
+
+Replacement Package App owns:
+
+```text
+real Apply
+Commit
+Push / Publish
+reviewed published-result confirmation
+PR integration record
+Finalize
+Final Work Record
+Issue closure
+```
+
+App target behavior consumes Builder-established repository work rather than recreating its own competing Issue/work branch.
+
+Internal migration identity such as current `changeSetId` may remain during implementation migration where required; this Scenario does not require user-facing work identity to expose that internal mechanism.
+
+---
+
+# Methodology / Implementation Guard
+
+This Scenario selects behavioral WHAT.
+
+It does not yet select:
+
+- the exact future OBS-ACTION schema/route field names;
+- the exact UI layout for Commit/Finalize semantic inputs;
+- whether package Apply semantics are physically shared through one module or proved equivalent through another implementation shape;
+- the final storage/schema shape for reviewed-result binding or App recovery journals.
+
+Those HOW decisions belong to protocol, Screen, Domain, Slice/shared implementation and source/test owners when implementation planning selects them.

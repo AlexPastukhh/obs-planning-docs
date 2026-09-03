@@ -1,35 +1,11 @@
 # Replacement Package Workflow
 
-Status: active shared navigation owner
-Purpose: provide one entry point for the producer → package contract → consumer workflow without duplicating behavior ownership.
+Status: navigation-only compatibility entry
 
-## Ownership map
+Canonical planning for the connected Replacement Package Builder + Replacement Package App workflow is maintained at:
 
-```text
-Replacement Package Builder
-  current producer mechanics:
-  - planning/commands/build-replacement-archive.command.md
-  - planning/use-cases/UC-REPO-BUILD-REPLACEMENT-PACKAGE.md
-  - planning/documentation/build-replacement-archive-workflow.md
-  target Scenario:
-  - replacement-package-builder/scenarios/SCN-BLDR-BUILD-AND-REVIEW-REPLACEMENT-PACKAGE.md
-        ↓ exact reviewed package + handoff identity
-Package contract
-  - tools/replacement-package-app/PACKAGE-PROTOCOL.md
-        ↓ OBS-ACTION apply-package
-Replacement Package App
-  - tools/replacement-package-app/README.md
-  - tools/replacement-package-app/scenarios/
-```
+[`tools/replacement-package-app/README.md`](tools/replacement-package-app/README.md)
 
-This file is navigation only. It does not own Builder behavior, package schema, consumer behavior, Domain semantics, implementation mechanics or proof requirements.
+That root owns the shared Scenario catalog, evolution map, behavior-realization navigation, Domain/Slice/proof navigation and package/handoff contract for both modules.
 
-## Current vs target boundary
-
-**Current producer boundary:** exact readable source → replacement ZIP → OBS-ACTION → stop.
-
-**Selected target producer behavior:** exact build context → candidate → exact package → clean replay → semantic review of predicted result → APPROVABLE exact package/result identity → exact handoff → stop.
-
-**Current consumer capability:** Work Intent + isolated workspace + Apply/Commit/Publish are implemented for Git-backed work; Git-derived Current Change, reviewed-result confirmation, PR readiness and target Finalize semantics are not yet fully migrated.
-
-The package protocol remains the contract seam. Producer and consumer documentation must link through it rather than duplicating its schema rules.
+Repository-wide command/use-case entry points remain in their repository-wide catalogs and link into the canonical planning root rather than creating a second module documentation tree.

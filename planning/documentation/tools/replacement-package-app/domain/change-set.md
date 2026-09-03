@@ -1,12 +1,14 @@
 # Repository Work / ChangeSet
 
-Status: active current Aggregate owner with selected planned expansion
+Status: active current Aggregate owner with selected planned expansion/migration
 
 ## Responsibility
 
-Own one logical repository-work consistency boundary across repository target association, pinned Git execution identity, package realization/recovery and lifecycle facts that must remain mutually compatible. Selected future expansion adds reviewed-result identity, PR currentness and approval/finalization state to this same logical work boundary.
+Own current App repository-work consistency across Repository Target association, pinned Git execution identity, package realization/recovery and lifecycle facts.
 
-## Behavior Items implemented
+Selected future behavior additionally relates the consumer execution to Builder-established repository work, exact reviewed-result identity, PR currentness, final logging and closure.
+
+## Behavior Items Implemented
 
 Current:
 - `BI-RPKG-CURRENT-CHANGESET-ID-AUTHORITY`
@@ -15,69 +17,62 @@ Current:
 - `BI-RPKG-CURRENT-PUBLICATION-UNCERTAIN-BLOCKS-NEXT`
 - current legacy review/finalize binding BIs where persisted ChangeSet state is authority.
 
-Future BI families are referenced only from `Evolution Impact` below; they are not claimed as implemented by this current owner.
+Future BI families remain Scenario-owned and are not claimed implemented here.
 
 ## Domain Concepts / Invariants
 
 Current Git-backed:
-- stable `changeSetId` / label and exact Repository Target;
+- stable internal `changeSetId` / label and exact Repository Target;
 - Work Intent Issue reference when established;
 - exact target branch, deterministic ChangeSet branch/worktree and common-repository relation;
 - immutable `baseCommit` plus current proven `publishedTip`;
 - explicit execution truth such as `Ready`, `AppliedUncommitted`, `CommittedUnpublished`, `PublicationUncertain`;
-- package Apply/commit/publication evidence belongs to this same logical work identity.
+- package Apply/commit/publication evidence belongs to the same logical work identity.
 
-Legacy compatibility:
-- Path Ownership, persisted Current Change and legacy lifecycle/finalization facts remain valid only for legacy ChangeSets and are not silently projected onto Git-backed target work.
+Legacy compatibility remains current only for legacy work.
 
-Planned reviewed-result expansion:
-- exact Builder review binding: ChangeSet + package + expected source + reviewed predicted result identity;
+Planned reviewed-result target:
+- consume exact Builder-established Issue/work branch/target/source context;
+- exact Builder review binding: repository work + package + expected source + reviewed result;
 - actual published revision verification/currentness;
-- one current integration PR identity;
-- approval staleness determined by whether the reviewed result changed, not by target movement alone;
-- finalized target work is closed to package continuation.
+- one correct integration PR when Finalize is requested;
+- approval staleness follows whether the reviewed work result changes, not target movement alone;
+- successful Finalize includes exact Final Work Record persistence/reconciliation before Issue closure;
+- automatic route and modular continuation share the same execution truth.
 
-## Domain Implementation Items
+Current internal `changeSetId` may remain a hidden migration/runtime identity. This planned target does not require it to become the user-facing work identity.
 
-### DI-RPKG-CHANGESET-PINNED-GIT-BOUNDARY — Persist exact Git execution identity
+## Domain Implementation Items — Current
+
+### DI-RPKG-CHANGESET-PINNED-GIT-BOUNDARY
+
 Requirement:
-Git-backed execution decisions must use persisted exact target branch/branch/worktree/common-repository/`baseCommit`/`publishedTip` facts rather than mutable current-checkout state.
-
-Reason:
-Retry, applicability and publication proof require stable revision/workspace authority.
+Current Git-backed execution decisions use persisted exact target/branch/worktree/common-repository/`baseCommit`/`publishedTip` facts rather than mutable checkout state.
 
 ## Tests
 
-Most current proof is integration-oriented and therefore lives with `SL-RPKG-01`, `SL-RPKG-02`, `SL-RPKG-03` and `SL-RPKG-11`. New reviewed-result/currentness invariants should receive local Domain proof when they can be observed deterministically without reproducing Git orchestration.
-
-### Test Items
-
-#### TST-RPKG-CHANGESET-PARTIAL-STATE-CANNOT-BE-SILENTLY-NORMALIZED
-Requirement:
-Recovery/state tests must prove that uncertain or partially established durable state cannot be collapsed into a clean `Ready`/unstarted state without the required external/Git proof.
-
-Reason:
-False normalization would authorize unsafe retry or later package work.
+Current proof remains integration-oriented in `SL-RPKG-01`, `SL-RPKG-02`, `SL-RPKG-03` and `SL-RPKG-11`.
 
 ## Evolution Impact
 
 ### EVO-RPKG-DOWNGRADE-CURRENT-CHANGE-TO-DIAGNOSTIC
-Refactoring:
-Target Current Change projection stops being approval/finalization authority; legacy fields remain only while legacy ChangeSets require them.
+
+Target Current Change stops being approval/finalization authority; legacy fields remain while legacy ChangeSets require them.
 
 ### EVO-RPKG-ADOPT-REVIEWED-RESULT-WORKFLOW
-Canonical Scenario step:
-[`EVO-RPKG-ADOPT-REVIEWED-RESULT-WORKFLOW`](../scenarios/SCN-RPKG-COMPLETE-REPOSITORY-WORK.md#evo-rpkg-adopt-reviewed-result-workflow)
 
-Target BI references:
-- `BI-RPKG-PUBLISHED-TREE-EQUALS-REVIEWED-TREE`
-- `BI-RPKG-VERIFY-EXECUTION-IDENTITY`
-- `BI-RPKG-VERIFY-FAILS-CLOSED`
-- `BI-RPKG-ONE-CORRECT-PR`
-- target Finalize/approval-staleness/closure BI family in the planned reviewed-work Scenario.
+Canonical target Scenario:
+[`SCN-RPKG-COMPLETE-REVIEWED-REPOSITORY-WORK`](../scenarios/planned/SCN-RPKG-COMPLETE-REVIEWED-REPOSITORY-WORK.md)
 
-Expansion:
-Add reviewed-result binding, actual-published-result proof/currentness, PR reference/currentness and target Finalize/closure state around the existing ChangeSet identity. The future implementation must preserve enough immutable identity to relate ChangeSet, reviewed package, expected source, reviewed predicted result and actual published revision, and approval currentness must follow result identity rather than incidental target movement. These are future owner-shape requirements here, not current `DI-*` items.
+Expansion/migration:
+- bind current App execution to Builder-established repository work instead of silently creating a competing Issue/work branch;
+- persist/prove reviewed package/source/result identity through Apply/Commit/Push;
+- support automatic route stopping at AppliedUncommitted, ReviewedPublished or Finalized;
+- preserve semantic stage inputs across retry when the handoff supplied them;
+- own PR/finalization currentness and truthful partial finalization state;
+- preserve enough exact state to reconcile Final Work Record/Issue-close uncertainty without duplicate final records.
 
-Forced Migration:
-Target Finalize authority must not depend on legacy Path Ownership/ReviewDiff approval semantics.
+These are future owner-shape requirements, not new current `DI-*` items.
+
+Forced migration:
+Target Finalize must not depend on legacy ReviewDiff/Path Ownership approval semantics.

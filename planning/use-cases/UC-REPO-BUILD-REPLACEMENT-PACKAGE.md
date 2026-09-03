@@ -20,4 +20,4 @@ One protocol-valid Replacement Package ZIP exists with a new package identity, t
 ## Related
 
 - [`../commands/build-replacement-archive.command.md`](../commands/build-replacement-archive.command.md) — current `давай архив` executable route and permission boundary.
-- [`../documentation/build-replacement-archive-workflow.md`](../documentation/build-replacement-archive-workflow.md) — current extracted detailed producer Process.
+- [`../documentation/tools/replacement-package-app/build-replacement-archive-workflow.md`](../documentation/tools/replacement-package-app/build-replacement-archive-workflow.md) — current extracted detailed producer Process.

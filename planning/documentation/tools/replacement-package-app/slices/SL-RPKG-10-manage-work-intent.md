@@ -1,38 +1,41 @@
 # SL-RPKG-10 — Manage Repository Work Intent
 
-Status: active current Slice owner
+Status: active current Slice owner with planned target ownership migration
 
-## Result / Responsibility
+## Current Result / Responsibility
 
-Ensure one durable exact GitHub Issue carries the ChangeSet semantic Work Intent before target-mode repository execution; also support the standalone `create-work-intent` operation that stops after this result.
+Ensure one durable exact GitHub Issue carries the ChangeSet semantic Work Intent before current target-mode repository execution; support standalone `create-work-intent`.
 
-## Scenario behavior realized
+## Current Scenario Behavior Realized
 
-FI:
 - `FI-RPKG-ESTABLISH-CURRENT-WORK-INTENT`
-- planned `FI-RPKG-ESTABLISH-REPOSITORY-WORK-INTENT`
-
-Behavior Items:
 - `BI-RPKG-WORK-INTENT-ONE-EXACT-ISSUE`
 - `BI-RPKG-WORK-INTENT-DURABLE`
 
-## Domain used
+## Domain Used
 
 Work Intent; Repository Target; Repository Work / ChangeSet.
 
-## Slice Implementation Items
+## Slice Implementation Items — Current
 
 ### SI-RPKG-WORK-INTENT-DURABLE-CREATE-RECOVERY
-Requirement:
-Persist exact Issue-create intent before the external create side effect and reconcile by exact `ChangeSet-Id` marker after uncertain/lost response before another create is considered.
 
-Reason:
-External Issue truth may exist even when the local transport response was lost.
+Persist exact Issue-create intent before external create and reconcile exact marker identity after uncertain/lost response before another create.
 
 ## Tests
 
-`CoreTests` for external action routing, package Work Intent validation, exact marker identity, durable state/journal, duplicate conflict, uncertain-create reconciliation and Issue-reference propagation. Live GitHub authentication/network is practical/integration environment evidence.
+Current `CoreTests` cover routing, Work Intent validation, marker identity, journal/recovery and duplicate conflict.
 
 ## Evolution Impact
 
-The planned reviewed-result Scenario keeps this FI and owner; later stages consume the same established Work Intent identity.
+### EVO-RPKG-ADOPT-REVIEWED-RESULT-WORKFLOW
+
+Planned Builder Start Work creates the repository-work Issue before ChatGPT development.
+
+Therefore the planned App Scenario no longer has `FI-RPKG-ESTABLISH-REPOSITORY-WORK-INTENT` as its first FI.
+
+Target consumer behavior verifies/adopts the exact Builder-established Issue/work identity from the handoff and must not create a competing Issue.
+
+Implementation planning may reuse current SL-RPKG-10 GitHub Issue mechanics, move part of them to Builder, or introduce a genuinely shared lower-level capability. That HOW is not selected by this Slice owner.
+
+Current SL-RPKG-10 remains current implementation truth until migration is implemented/proved.

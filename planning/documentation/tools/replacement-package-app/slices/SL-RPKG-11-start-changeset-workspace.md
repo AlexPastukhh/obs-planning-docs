@@ -1,40 +1,41 @@
 # SL-RPKG-11 — Start ChangeSet Workspace
 
-Status: active current Slice owner
+Status: active current Slice owner with planned target ownership migration
 
-## Result / Responsibility
+## Current Result / Responsibility
 
-Ensure one isolated exact Git-backed workspace for a new target-mode ChangeSet, pinned to an exact target branch source and recoverable/idempotent through a durable workspace journal.
+Ensure one isolated exact Git-backed workspace for a new current target-mode ChangeSet, pinned to exact target branch source and recoverable/idempotent through a durable workspace journal.
 
-## Scenario behavior realized
+## Current Scenario Behavior Realized
 
-Supports:
-- `FI-RPKG-REALIZE-CURRENT-PACKAGE`
-- planned `FI-RPKG-REALIZE-REVIEWED-PACKAGE`
+Supports current `FI-RPKG-REALIZE-CURRENT-PACKAGE` and current exact-source/retry behavior.
 
-Behavior Items:
-- supports `BI-RPKG-CURRENT-EXACT-REPOSITORY-TARGET`
-- supports `BI-RPKG-CURRENT-GIT-RETRY-RESUMES`
-- supports target exact-source/package realization BIs
-
-## Domain used
+## Domain Used
 
 Repository Target; Repository Work / ChangeSet; Work Intent reference.
 
-## Slice Implementation Items
+## Slice Implementation Items — Current
 
 ### SI-RPKG-WORKSPACE-PINNED-SOURCE
-Requirement:
-Workspace creation must resolve and persist exact `baseCommit/publishedTip` from the explicit target branch, then create/verify the deterministic ChangeSet branch/worktree in the same Git common repository.
+
+Current workspace creation persists exact `baseCommit/publishedTip` from explicit target branch and creates/verifies deterministic ChangeSet branch/worktree.
 
 ### SI-RPKG-WORKSPACE-JOURNAL-BEFORE-GIT-MUTATION
-Requirement:
-Persist exact workspace intent before branch/worktree mutation so retry adopts only journal-owned partial effects and fails closed on unjournaled deterministic collisions.
+
+Persist exact workspace intent before branch/worktree mutation so retry adopts only owned partial effects.
 
 ## Tests
 
-`CoreTests` for exact target-branch pinning, deterministic branch/worktree/common-repository verification, idempotency, journal recovery/collision behavior and migration guards. Swing source contracts cover the current diagnostic Start workspace control.
+Current `CoreTests` cover target pinning, deterministic branch/worktree/common-repository verification, idempotency and recovery.
 
 ## Evolution Impact
 
-Reviewed-result identity extends the ChangeSet after package publication; it does not require a second workspace owner if current pinned workspace semantics remain sufficient.
+### EVO-RPKG-ADOPT-REVIEWED-RESULT-WORKFLOW
+
+Planned Builder Start Work already creates the logical work branch from the exact source before development.
+
+The target App must therefore consume that exact `workBranch`/source identity and may ensure/recover an execution workspace for it, but must not silently create a different logical work branch as a new consumer work identity.
+
+Whether the implementation reuses the current worktree mechanism, adopts an existing Builder workspace, or materializes another safe execution representation is implementation design.
+
+Current SL-RPKG-11 remains current implementation authority until migration.

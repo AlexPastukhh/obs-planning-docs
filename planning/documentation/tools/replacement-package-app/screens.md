@@ -1,9 +1,9 @@
 # Replacement Package App — Screens
 
-Status: active selected current Screen owner
-Scope: durable spatial/window meaning for the current Swing application. Scenario behavior remains authoritative in Scenario/FI owners.
+Status: active selected current Screen owner with planned reviewed-work evolution
+Scope: durable spatial/window meaning for the Swing application. Scenario behavior remains authoritative in Scenario/FI owners.
 
-## Screen Map
+## Current Screen Map
 
 ```text
 Main Work Window
@@ -12,128 +12,92 @@ Main Work Window
 ├─ current operation / External Interaction / outcome surfaces
 ├─ opens Snapshot Dialog
 └─ may open Review Destination Decision before an Apply mutation
-
-Snapshot Dialog
-→ freezes repository + mode + export/handoff intent
-→ returns to Main Work Window
-
-Review Destination Decision
-→ keep existing binding | apply and rebind | cancel
-→ returns to prepared Apply flow
 ```
 
-This owner intentionally does not freeze incidental pixel/layout details. Source owns exact Swing component arrangement.
+Current Snapshot and legacy Review Destination behavior remains as implemented; exact component arrangement remains source authority.
 
-## Scenario × Screen
+## Current Screen Behavior Items
 
-| Scenario | Main Work Window | Snapshot Dialog | Review Destination Decision |
-|---|---:|---:|---:|
-| Complete Prepared Repository Work | primary | — | conditional legacy/title route |
-| Provide Repository Context | entry/result | primary input surface | — |
-| Provide Current Change (legacy) | primary | — | binding may be established elsewhere; decision is Apply-time only |
-| Complete Reviewed Repository Work (planned) | expected primary evolution | — | legacy title-rebind semantics may retire/change |
+### SBI-RPKG-WORK-CONTEXT-VISIBLE
 
-## Feature Interaction × Screen
+The user can identify the current Repository Target/logical work context before context-sensitive repository operations.
 
-- repository-work resolution, Work Intent status, package realization, legacy Current Change and legacy Finalize/recovery are coordinated from the Main Work Window;
-- Snapshot materialization intent is collected by the Snapshot Dialog, while downstream delivery state returns to shared Main/interaction surfaces;
-- Review Destination Decision exists only when prepared legacy title-assisted rebind conflicts with an existing binding before repository mutation;
-- background execution remains bound to its captured operation context even if the visible user selection changes.
+### SBI-RPKG-NAVIGATION-DOES-NOT-RETARGET-IN-FLIGHT-OPERATION
 
-## Main Work Window
+Changing visible navigation cannot retarget an already captured running operation.
 
-Purpose:
-Expose one navigable current repository/work context, actions that are valid for that context, truthful execution/recovery state and current external interaction/outcome information.
+### SBI-RPKG-RECOVERY-STATE-IS-VISIBLE
 
-Scenario roles:
-- Complete Prepared Repository Work — primary execution/navigation surface;
-- Provide Repository Context — Snapshot entry/result access;
-- Provide Current Change — legacy Refresh/Copy/Open/Send/navigation;
-- planned Complete Reviewed Repository Work — future confirmation/PR/finalize state will evolve here unless a later Screen design selects another spatial model.
+Recoverable/uncertain execution state is distinguishable from clean success/failure.
 
-Meaningful visible/input/action states:
-- exact Repository Target and ChangeSet selection/scope/history;
-- unavailable stored target truth;
-- package/action input and target-mode vs legacy outcomes;
-- Work Intent / workspace / Apply / Commit / Publish current/recovery states;
-- legacy Current Change and Finalize/Publication Pending/Reopen controls;
-- External Interaction working/attention state;
-- meaningful operation outcomes.
+### SBI-RPKG-HISTORY-SELECTION-IS-READ-ONLY
 
-Screen Behavior Items:
+History navigation does not implicitly reopen finalized work.
 
-### SBI-RPKG-WORK-CONTEXT-VISIBLE — Visible work context matches navigation state
-Requirement:
-The user must be able to identify which Repository Target and logical ChangeSet the current work/navigation surface represents before invoking context-sensitive repository operations.
+### SBI-RPKG-SNAPSHOT-INTENT-FROZEN-TOGETHER
 
-Reason:
-Repository mutations are exact-context operations even though execution authority is revalidated independently of UI selection.
+Snapshot source/handoff intent is frozen together when export starts.
 
-### SBI-RPKG-NAVIGATION-DOES-NOT-RETARGET-IN-FLIGHT-OPERATION — Navigation cannot rewrite captured execution
-Requirement:
-Changing visible repository/ChangeSet navigation while an operation is running must not retarget that operation.
+### SBI-RPKG-REBIND-DECISION-PRECEDES-MUTATION
 
-Reason:
-Screen navigation is not mutation authority after the operation context has been captured.
-
-### SBI-RPKG-RECOVERY-STATE-IS-VISIBLE — Recoverable execution truth is exposed
-Requirement:
-States requiring retry/reconciliation/attention must be distinguishable from clean success and clean failure.
-
-Reason:
-The user needs to know whether work is already partially established or publication/delivery may have occurred.
-
-### SBI-RPKG-HISTORY-SELECTION-IS-READ-ONLY — History navigation does not implicitly reopen work
-Requirement:
-Selecting finalized history must remain read-only until an explicit guarded Reopen action is invoked.
-
-Reason:
-Navigation must not silently change repository-work lifecycle or reacquire ownership.
-
-Routes / transitions:
-Repository/ChangeSet selectors change current navigation only. Snapshot opens the Snapshot Dialog. Context-sensitive operations return outcomes to the same work surface.
-
-## Snapshot Dialog
-
-Purpose:
-Collect one coherent Snapshot operation intent before export begins.
-
-Meaningful visible/input/action states:
-- Repository Target inherited/selected from current context;
-- Local / Committed source mode;
-- export directory;
-- Export only / Export+Attach / Export+Attach+Send;
-- exact intended conversation when automatic handoff is requested.
-
-Screen Behavior Items:
-
-### SBI-RPKG-SNAPSHOT-INTENT-FROZEN-TOGETHER — Snapshot source and handoff intent are captured together
-Requirement:
-When Snapshot export begins, source selection, handoff mode and selected destination used by that operation must be frozen together rather than reread from later screen state.
-
-Reason:
-The artifact and its downstream intent form one operation context even though export success remains independent from handoff success.
-
-## Review Destination Decision
-
-Purpose:
-Resolve a prepared legacy title-assisted destination conflict before repository mutation.
-
-Screen Behavior Items:
-
-### SBI-RPKG-REBIND-DECISION-PRECEDES-MUTATION — Conflicting prepared rebind requires pre-mutation choice
-Requirement:
-When the prepared exact destination differs from an existing Review binding and current safety rules require confirmation, the user must choose keep / apply-and-rebind / cancel before repository mutation.
-
-Reason:
-A post-mutation prompt would make repository success depend on an unresolved destination policy and could surprise the user by silently replacing a binding.
+A prepared legacy destination conflict requiring confirmation is decided before repository mutation.
 
 ## Evolution Impact
 
 ### EVO-RPKG-DOWNGRADE-CURRENT-CHANGE-TO-DIAGNOSTIC
-Refactoring:
-Legacy approval-oriented Current Change controls may be reduced/relabelled as optional diagnostic/support controls for target work while remaining available for legacy compatibility until retirement.
+
+Legacy approval-oriented Current Change controls may reduce/relabel to diagnostic/support controls for target work while legacy compatibility remains.
 
 ### EVO-RPKG-ADOPT-REVIEWED-RESULT-WORKFLOW
-Expansion:
-Expose reviewed-result verification identity/currentness, PR readiness and target Finalize/reconciliation outcomes. Exact future layout is deliberately not selected here; behavioral owners should drive a later Screen design pass if spatial complexity becomes material.
+
+The planned Main Work Window must support modular continuation of reviewed work and make the relevant exact state visible.
+
+Selected target semantic input surfaces:
+
+```text
+manual Commit
+→ Commit message input
+→ Commit
+
+manual Finalize
+→ Pull Request title input
+→ Pull Request body/summary input
+→ Final Issue comment input
+→ Finalize
+```
+
+When the same stages are invoked automatically from a reviewed handoff, the App uses the authorized semantic inputs already carried/persisted by that handoff and does not require duplicate manual entry.
+
+The target screen must also expose enough state to distinguish at least:
+
+```text
+AppliedUncommitted
+CommittedUnpublished
+PublicationUncertain
+Published / awaiting reviewed-result confirmation
+ReviewedPublished / ready for Finalize
+Finalization/logging/Issue-close recovery state when incomplete
+Finalized
+```
+
+Exact future dialog vs inline layout is deliberately not selected here.
+
+### SBI-RPKG-MANUAL-SEMANTIC-INPUT-PARITY — Manual stage input matches automatic stage meaning
+
+Status: planned target.
+
+Requirement:
+Manual Commit/Finalize controls must provide the semantic inputs required by the same underlying stage that automatic handoff composition invokes.
+
+Reason:
+Modular continuation must not require a different semantic implementation merely because the automatic handoff stopped earlier.
+
+### SBI-RPKG-FINALIZATION-RECOVERY-VISIBLE — Final logging/closure recovery remains visible
+
+Status: planned target.
+
+Requirement:
+If integration is established but Final Work Record persistence or Issue closure remains uncertain/incomplete, the screen must expose that truthful recoverable state rather than presenting clean Finalized success.
+
+Reason:
+The user must be able to continue the logging/closure tail without blindly repeating integration.

@@ -1,94 +1,160 @@
-# Replacement Package App — Evolution Steps Map
+# Replacement Package Workflow — Evolution Steps Map
 
 Status: active evolution planning owner
-Scope: rough sequence, dependency, readiness and retirement relation between canonical Scenario-owned Evolution Steps. Behavioral delta remains canonical in Scenario owners; Domain/Slice/Screen impact remains canonical in lower owners.
+Scope: timing/dependency/readiness relations between canonical Builder + App Scenario-owned Evolution Steps.
 
-## Canonical steps referenced
+Behavioral delta remains canonical in Scenario owners. This map owns WHEN/dependency/readiness only.
 
-From current Complete Prepared Repository Work:
+## Canonical Steps Referenced
+
+App migration from current Complete Repository Work:
 - [`EVO-RPKG-DOWNGRADE-CURRENT-CHANGE-TO-DIAGNOSTIC`](scenarios/SCN-RPKG-COMPLETE-REPOSITORY-WORK.md#evo-rpkg-downgrade-current-change-to-diagnostic)
 - [`EVO-RPKG-ADOPT-REVIEWED-RESULT-WORKFLOW`](scenarios/SCN-RPKG-COMPLETE-REPOSITORY-WORK.md#evo-rpkg-adopt-reviewed-result-workflow)
 
-The legacy Current Change Scenario references the same downgrade step identity rather than defining a competing semantic change.
+Builder planned evolution:
+- [`EVO-BLDR-ALLOW-WORK-INTENT-REFINEMENT`](scenarios/SCN-BLDR-BUILD-AND-REVIEW-REPLACEMENT-PACKAGE.md#evo-bldr-allow-work-intent-refinement)
+- [`EVO-BLDR-PERSIST-SEMANTIC-REVIEW-HISTORY`](scenarios/SCN-BLDR-BUILD-AND-REVIEW-REPLACEMENT-PACKAGE.md#evo-bldr-persist-semantic-review-history)
 
-## Selected evolution map
+## Selected Evolution Map
 
 ```text
-Current mixed migration state
-  target-mode:
-    Work Intent → workspace → Apply → Commit → Publish → Ready
-  legacy:
-    Apply → Current Change/ReviewDiff → Finalize/Publication Pending/Reopen
+CURRENT APP
+Work Intent → workspace → Apply → Commit → Publish
++ legacy Current Change / Finalize
         │
-        ├──────────────┐
-        ↓              ↓
-EVO-RPKG-DOWNGRADE-  EVO-RPKG-ADOPT-
-CURRENT-CHANGE-TO-   REVIEWED-RESULT-
-DIAGNOSTIC           WORKFLOW
-        │              │
-        └──────┬───────┘
-               ↓
+        ├──────────────────────────────┐
+        ↓                              ↓
+EVO-RPKG-DOWNGRADE-           EVO-RPKG-ADOPT-
+CURRENT-CHANGE-TO-            REVIEWED-RESULT-
+DIAGNOSTIC                    WORKFLOW
+        │                              │
+        └──────────────┬───────────────┘
+                       ↓
 planned SCN-RPKG-COMPLETE-REVIEWED-REPOSITORY-WORK
-becomes eligible for promotion only after implementation + proof reconciliation
-               ↓
-legacy Current Change / legacy Finalize can retire only when no remaining
-legacy ChangeSet requires their current authority
+eligible for promotion after implementation + proof reconciliation
+
+PLANNED BUILDER BASELINE
+SCN-BLDR-BUILD-AND-REVIEW-REPLACEMENT-PACKAGE
+        │
+        ├────────→ EVO-BLDR-ALLOW-WORK-INTENT-REFINEMENT
+        └────────→ EVO-BLDR-PERSIST-SEMANTIC-REVIEW-HISTORY
 ```
 
-The two selected steps may be developed partly in parallel, but promotion of the planned complete target Scenario requires both semantic results: ordinary target work must not depend on legacy approval-oriented Current Change, and reviewed-result confirmation/PR/Finalize must exist.
+The planned App Scenario is the selected target behavior owner for:
+- consuming Builder-established Issue/work branch instead of creating competing target work;
+- handoff-selected automatic stop at Apply Only / ReviewedPublished / Finalized;
+- semantic Commit/Finalize inputs supplied by handoff or manual App UI;
+- PR as durable integration record;
+- immutable `## Final Work Record` before Issue closure.
+
+Those details are not redefined here.
 
 ## EVO-RPKG-DOWNGRADE-CURRENT-CHANGE-TO-DIAGNOSTIC
 
 Evolution Step:
 [`SCN-RPKG-COMPLETE-REPOSITORY-WORK`](scenarios/SCN-RPKG-COMPLETE-REPOSITORY-WORK.md#evo-rpkg-downgrade-current-change-to-diagnostic)
 
-Rough horizon / likelihood:
-Selected planned migration; required for target Scenario promotion.
+Rough horizon:
+Selected planned migration; required for target promotion.
 
 Depends on:
-- exact Git-backed ChangeSet base/published boundaries already exist;
-- target diagnostic projection design/proof is implemented.
+- exact Git-backed base/published boundaries;
+- Git-derived diagnostic projection implementation/proof.
 
 Enables:
-- Git-derived latest/cumulative Current Change for inspection/support;
-- removal of manual Current Change handoff from ordinary target approval authority;
-- eventual retirement of the standalone legacy Current Change Scenario after legacy work is gone.
+- optional latest/cumulative inspection;
+- removal of legacy ReviewDiff from ordinary target approval authority.
 
-Can run in parallel with:
-- reviewed-result identity/confirmation implementation, provided current vs planned authority stays explicit.
-
-Readiness / gate:
-Do not retire legacy ReviewDiff/Finalize semantics while persisted legacy ChangeSets still rely on them.
+Gate:
+Do not retire legacy behavior while persisted legacy work still relies on it.
 
 ## EVO-RPKG-ADOPT-REVIEWED-RESULT-WORKFLOW
 
 Evolution Step:
 [`SCN-RPKG-COMPLETE-REPOSITORY-WORK`](scenarios/SCN-RPKG-COMPLETE-REPOSITORY-WORK.md#evo-rpkg-adopt-reviewed-result-workflow)
 
-Rough horizon / likelihood:
+Rough horizon:
 Selected planned target.
 
 Depends on:
-- Builder planned replay/review Scenario defines exact approved package/source/result identity;
-- consumer package/protocol evolution supplies enough review identity for verification;
-- ChangeSet Domain can persist/prove reviewed-result binding/currentness;
-- PR and target Finalize proof boundaries are selected and implemented.
+- Builder Start Work + exact reviewed package/source/result identity;
+- consumer handoff/protocol evolution capable of expressing one concrete route plus required semantic stage inputs;
+- migration from App-created target Issue/work branch to verification/consumption of Builder-established repository work;
+- ChangeSet/recovery state sufficient for Apply/Commit/Push/Confirm/PR/Finalize resume;
+- planned Screen input surfaces for manual Commit/Finalize;
+- PR/final logging and Issue-close recovery proof.
 
 Enables:
-- consumer proof `actual published Git tree == reviewed predicted tree`;
-- no second semantic review when that identity is proven;
-- one correct/current integration PR;
-- approval-preserving Finalize/reconciliation semantics;
+- exact published-tree == reviewed-result confirmation;
+- no second semantic review when identity is proven;
+- user-selected automatic stopping at Apply Only, ReviewedPublished or Finalized;
+- modular button continuation using the same stage semantics;
+- finalization-time PR and durable Final Work Record;
 - promotion of [`SCN-RPKG-COMPLETE-REVIEWED-REPOSITORY-WORK`](scenarios/planned/SCN-RPKG-COMPLETE-REVIEWED-REPOSITORY-WORK.md).
 
-Can run in parallel with:
-- Git-derived Current Change diagnostic work, but final target promotion requires both.
+Gate:
+Current `PACKAGE-PROTOCOL.md` / runtime do not yet express the selected reviewed-result route + semantic-input contract. Current App Work Intent/workspace creation remains current truth until ownership migration is implemented/proved. Do not claim target current earlier.
 
-Readiness / gate:
-The current `PACKAGE-PROTOCOL.md` does not yet carry the planned reviewed-result identity; protocol/runtime changes are intentionally outside this documentation-only package and must be designed/implemented separately before target behavior is claimed current.
+## EVO-BLDR-ALLOW-WORK-INTENT-REFINEMENT
 
-## Retirement relation
+Evolution Step:
+[`SCN-BLDR-BUILD-AND-REVIEW-REPLACEMENT-PACKAGE`](scenarios/SCN-BLDR-BUILD-AND-REVIEW-REPLACEMENT-PACKAGE.md#evo-bldr-allow-work-intent-refinement)
 
-Legacy Current Change / legacy Finalize are current compatibility behavior, not future target architecture. Their retirement is **not** itself a reason to delete documentation early. Current owners remain until persisted/operated legacy work no longer needs them and implementation migration proves the target path.
+Rough horizon:
+PLANNED. May ship with or after baseline Builder Scenario.
 
-Completed evolution nodes need not stay active forever once current owners communicate the resulting truth.
+Depends on:
+- durable exact Issue established by Start Work;
+- selected/proved controlled Issue-update path that protects managed exact work context.
+
+Enables:
+- refinement of Goal / Why / Acceptance / scope / Handoff Intent for the same open work;
+- continuation across ChatGPT sessions without creating a new Issue merely for clarification.
+
+Gate:
+Do not claim implemented if workflow relies on unrestricted whole-Issue-body replacement or cannot protect repository/target/source/work-branch identity.
+
+## EVO-BLDR-PERSIST-SEMANTIC-REVIEW-HISTORY
+
+Evolution Step:
+[`SCN-BLDR-BUILD-AND-REVIEW-REPLACEMENT-PACKAGE`](scenarios/SCN-BLDR-BUILD-AND-REVIEW-REPLACEMENT-PACKAGE.md#evo-bldr-persist-semantic-review-history)
+
+Rough horizon:
+PLANNED. May ship with or after baseline Builder review flow.
+
+Depends on:
+- exact Builder Review Result identity;
+- durable repository-work Issue;
+- selected/proved append/reconciliation path for exact Issue comments.
+
+Enables:
+- immutable `## Review Record` comments;
+- later Review Records that state disposition of earlier findings plus new findings;
+- correction of an earlier review statement through a new record rather than rewriting history;
+- cross-session review continuity.
+
+Gate:
+Earlier Review Records must remain unchanged; retry must reconcile uncertain comment creation rather than create ambiguous duplicates; technical review identities bind from Builder state, not chat memory.
+
+## Cross-Module Logging Readiness
+
+Review logging and final logging have different owners:
+
+```text
+Builder review workflow
+→ immutable ## Review Record comments
+
+Replacement Package App Finalize
+→ immutable ## Final Work Record
+→ Issue close
+```
+
+PR remains the durable integration view and links back to the Issue; detailed iterative review history remains in Issue comments.
+
+No separate `action-log.md` is required by this target model.
+
+## Retirement Relation
+
+Legacy Current Change / legacy Finalize remain current compatibility behavior until persisted legacy work and implementation migration no longer require them.
+
+Completed evolution nodes may later retire from the active map once current owners communicate the resulting truth.

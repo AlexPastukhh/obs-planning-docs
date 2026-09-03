@@ -22,7 +22,7 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
   "traversalReadMode": "Targeted/full depending on touched files and source certainty.",
   "ownerFiles": [
     "planning/use-cases/UC-REPO-BUILD-REPLACEMENT-PACKAGE.md",
-    "planning/documentation/build-replacement-archive-workflow.md"
+    "planning/documentation/tools/replacement-package-app/build-replacement-archive-workflow.md"
   ],
   "expectedOutput": "One full replacement ZIP plus one short structured OBS-ACTION containing action, name, archive and packageId; for new independent target-mode work include exact PACKAGE.json workIntent and exact targetBranch so the consumer can automatically ensure GitHub Work Intent → workspace → Apply → Commit → Publish. A continuation of an already-existing legacy ChangeSet may omit targetBranch for compatibility. packageId matches PACKAGE.json; chatTabTitle is included only when an exact intended title was explicitly supplied/selected; complete replacement/base payloads required by the package contract; no local apply/diff/finalization commands.",
   "permissionMode": "package-no-commit-push",

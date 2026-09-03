@@ -1,61 +1,28 @@
 # Replacement Package Builder
 
-Status: active producer-side documentation entry
+Status: navigation-only compatibility stub
 
-## Purpose
+Canonical Builder + Replacement Package App planning documentation is maintained together under:
 
-Provide one navigation owner for replacement-package production while preserving the existing narrow owners for command entry, generic use case and detailed workflow.
+[`../tools/replacement-package-app/README.md`](../tools/replacement-package-app/README.md)
 
-## Current authoritative producer owners
+Builder Scenario:
 
-- `../../commands/build-replacement-archive.command.md` — command entry.
-- `../../use-cases/UC-REPO-BUILD-REPLACEMENT-PACKAGE.md` — generic repository use case.
-- `../build-replacement-archive-workflow.md` — current detailed producer workflow.
-- `../tools/replacement-package-app/PACKAGE-PROTOCOL.md` — package/handoff contract owned at the consumer boundary.
+[`../tools/replacement-package-app/scenarios/SCN-BLDR-BUILD-AND-REVIEW-REPLACEMENT-PACKAGE.md`](../tools/replacement-package-app/scenarios/SCN-BLDR-BUILD-AND-REVIEW-REPLACEMENT-PACKAGE.md)
 
-Do not move or duplicate those files merely to make navigation prettier. This README is the single producer documentation entry and points to the existing owners.
+Shared package/handoff contract:
 
-## Selected target behavior
+[`../tools/replacement-package-app/PACKAGE-PROTOCOL.md`](../tools/replacement-package-app/PACKAGE-PROTOCOL.md)
 
-- [`scenarios/SCN-BLDR-BUILD-AND-REVIEW-REPLACEMENT-PACKAGE.md`](scenarios/SCN-BLDR-BUILD-AND-REVIEW-REPLACEMENT-PACKAGE.md) — planned target Scenario.
-- [`behavior-realization-map.md`](behavior-realization-map.md) — derived current/target implementation coverage; not behavior authority.
+This directory is navigation-only. It is not a Scenario, Domain, Slice, evolution or realization authority.
 
-Target high-level flow:
+Global producer entry points remain in their repository-wide catalogs:
 
-```text
-Exact Build Context
-  ↓
-Develop Candidate
-  ↓
-Build Exact Package Pn
-  ↓
-Replay exact Pn from exact expected source in a fresh workspace
-  ↓
-Review latest delta + cumulative delta + full predicted result Tn
-  ├─ NEEDS_CORRECTION → new candidate → new ZIP/packageId → replay again
-  └─ APPROVABLE → hand off the exact reviewed package/result identity
-  ↓
-STOP
-```
+- `planning/commands/build-replacement-archive.command.md`
+- `planning/use-cases/UC-REPO-BUILD-REPLACEMENT-PACKAGE.md`
 
-## Current capability coverage
+The detailed current producer workflow is colocated in the canonical planning root:
 
-| Target capability | Current state |
-|---|---|
-| exact readable source / fail-closed base acquisition | CURRENT capability |
-| deterministic package materialization + protocol validation | CURRENT capability |
-| exact ZIP/package handoff | CURRENT capability, but not yet review-bound |
-| clean replay of the exact handoff package | PLANNED TARGET |
-| review of latest + cumulative + full predicted result | PLANNED TARGET |
-| approval bound to exact package/result identity | PLANNED TARGET |
-| correction invalidates prior review and forces new package identity | PARTIAL protocol support; target review loop not yet owned |
+- `planning/documentation/tools/replacement-package-app/build-replacement-archive-workflow.md`
 
-## Boundary
-
-The Builder is a producer. Even after the target replay/review loop is implemented, ordinary Builder completion is:
-
-```text
-exact APPROVABLE package + exact handoff identity → OBS-ACTION → stop
-```
-
-It does not apply files to the consumer repository, commit, publish, create PRs or finalize target-branch integration.
+Module-specific planning owners for Builder and Replacement Package App belong under the shared canonical planning root above.

@@ -338,10 +338,14 @@ Related / Replacement Scenario:
 Intent: PLANNED
 
 Change:
-Target-mode Complete Repository Work gains consumer-side confirmation that the actual published tree equals the Builder-reviewed predicted result, then one correct integration PR and approval-preserving Finalize semantics.
+Target-mode Complete Repository Work adopts the Builder-reviewed repository-work boundary: Builder establishes the durable Issue/work branch/source/target context before development; the App consumes that exact existing work, applies only the exact reviewed package result, and confirms any published revision against the reviewed result identity.
+
+The concrete reviewed handoff selects one of three automatic completion boundaries over the same modular App semantics: Apply only; Apply + Commit + Push/Publish + reviewed-result confirmation; or full completion through PR/integration/Finalize/Issue closure. Commit and Finalize semantic text comes from the automatic handoff when those stages are composed, or from App UI when the same stages are invoked manually.
+
+Full target Finalize preserves a durable integration history and appends/proves a final `## Final Work Record` Issue comment before closing the repository-work Issue.
 
 Scenario Process / Feature Interaction impact:
-The current target-mode stop after published `Ready` is replaced by the planned reviewed-result confirmation → PR → Finalize process.
+The current target-mode Work Intent/workspace creation + fixed Apply→Commit→Publish stop is replaced by consumption of Builder-established repository work plus route-selected modular/composed realization, reviewed-result confirmation, and optional PR→Finalize closure. The App must not create a duplicate Issue/work branch merely because the reviewed work is newly encountered by the consumer.
 
 Related / Replacement Scenario:
 [`planned/SCN-RPKG-COMPLETE-REVIEWED-REPOSITORY-WORK.md`](planned/SCN-RPKG-COMPLETE-REVIEWED-REPOSITORY-WORK.md).
