@@ -1,12 +1,12 @@
 # Repository Work / ChangeSet
 
-Status: active current Aggregate owner with selected planned expansion/migration
+Status: active current Aggregate owner with planned evolution impact
 
 ## Responsibility
 
 Own current App repository-work consistency across Repository Target association, pinned Git execution identity, package realization/recovery and lifecycle facts.
 
-Selected future behavior additionally relates the consumer execution to Builder-established repository work, exact reviewed-result identity, PR currentness, final logging and closure.
+The planned reviewed-result workflow materially affects this current Aggregate, but this document does not preselect `Repository Work / ChangeSet` as the future owner of all reviewed-result, PR, final-logging or closure state.
 
 ## Behavior Items Implemented
 
@@ -31,16 +31,22 @@ Current Git-backed:
 
 Legacy compatibility remains current only for legacy work.
 
-Planned reviewed-result target:
-- consume exact Builder-established Issue/work branch/target/source context;
-- exact Builder review binding: repository work + package + expected source + reviewed result;
-- actual published revision verification/currentness;
-- one correct integration PR when Finalize is requested;
-- approval staleness follows whether the reviewed work result changes, not target movement alone;
-- successful Finalize includes exact Final Work Record persistence/reconciliation before Issue closure;
-- automatic route and modular continuation share the same execution truth.
+Planned Scenario pressure on Domain realization includes:
+- consuming exact Builder-established Issue/work branch/target/source context;
+- preserving exact Builder review binding through consumer execution;
+- proving actual published revision currentness against the reviewed result;
+- supporting route/resume truth across Apply, Commit, Push, confirmation and optional Finalize;
+- supporting PR/integration/final-record/Issue-close correctness and recovery.
 
-Current internal `changeSetId` may remain a hidden migration/runtime identity. This planned target does not require it to become the user-facing work identity.
+These are Scenario requirements that future Domain realization must support. They are **not** a declaration that all of those facts belong inside this Aggregate.
+
+Open Domain allocation questions include:
+- whether reviewed-result binding belongs in this Aggregate, a narrower value/object, or another consistency owner;
+- whether PR/finalization state belongs with repository execution state or a separate integration/finalization owner;
+- whether final Issue-record reconciliation needs its own durable consistency boundary;
+- which Builder-established work facts are copied, referenced or independently verified by the consumer.
+
+Current internal `changeSetId` may remain a hidden migration/runtime identity. The planned target does not require it to become the user-facing work identity.
 
 ## Domain Implementation Items — Current
 
@@ -64,15 +70,14 @@ Target Current Change stops being approval/finalization authority; legacy fields
 Canonical target Scenario:
 [`SCN-RPKG-COMPLETE-REVIEWED-REPOSITORY-WORK`](../scenarios/planned/SCN-RPKG-COMPLETE-REVIEWED-REPOSITORY-WORK.md)
 
-Expansion/migration:
-- bind current App execution to Builder-established repository work instead of silently creating a competing Issue/work branch;
-- persist/prove reviewed package/source/result identity through Apply/Commit/Push;
-- support automatic route stopping at AppliedUncommitted, ReviewedPublished or Finalized;
-- preserve semantic stage inputs across retry when the handoff supplied them;
-- own PR/finalization currentness and truthful partial finalization state;
-- preserve enough exact state to reconcile Final Work Record/Issue-close uncertainty without duplicate final records.
+Impact on this current owner:
+- its current execution identity cannot silently conflict with Builder-established repository work;
+- current Apply/Commit/Push recovery state is a likely migration input to the target route/resume model;
+- current persisted facts may need to participate in reviewed-result proof and later finalization recovery.
 
-These are future owner-shape requirements, not new current `DI-*` items.
+Target allocation remains **TBD**. In particular, this Evolution Impact does not yet assign reviewed-result binding, PR currentness, final logging or Issue-close reconciliation to this Aggregate.
+
+No future `DI-*` item or expanded Aggregate boundary is selected here.
 
 Forced migration:
 Target Finalize must not depend on legacy ReviewDiff/Path Ownership approval semantics.

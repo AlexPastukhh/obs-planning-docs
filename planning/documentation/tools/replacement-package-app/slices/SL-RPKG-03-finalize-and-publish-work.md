@@ -1,12 +1,12 @@
 # SL-RPKG-03 — Finalize And Publish Work
 
-Status: active current Slice owner with selected target evolution
+Status: active current Slice owner with planned evolution impact
 
 ## Current Result / Responsibility
 
 Finalize legacy ChangeSet work from a fresh exact Current Change, publish it, preserve Publication Pending after local success/remote failure, and explicitly/guardedly Reopen finalized legacy work.
 
-Selected target Finalize behavior below is not current Slice responsibility.
+The planned target Finalize behavior affects this current Slice's migration, but future Slice ownership is not selected here.
 
 ## Current Scenario Behavior Realized
 
@@ -31,24 +31,17 @@ Current responsibility: `CoreTests` for legacy review freshness, owned staging, 
 
 ### EVO-RPKG-ADOPT-REVIEWED-RESULT-WORKFLOW
 
-Target Scenario FIs:
-- `FI-RPKG-ENSURE-INTEGRATION-PULL-REQUEST`
-- `FI-RPKG-FINALIZE-REVIEWED-WORK`.
+Canonical target behavior includes:
+- `FI-RPKG-ENSURE-INTEGRATION-PULL-REQUEST`;
+- `FI-RPKG-FINALIZE-REVIEWED-WORK`;
+- automatic/manual Finalize semantic-input parity;
+- immutable `## Final Work Record` persistence before Issue closure;
+- truthful recovery across PR/integration/final-comment/Issue-close side effects.
 
-Target Finalize is entered only from a proven `ReviewedPublished` work result and is composed by either:
-- the full reviewed handoff route; or
-- the manual `Finalize` control.
+This current Slice is affected because it owns legacy Finalize/publication recovery mechanics and may provide reusable implementation lessons or components.
 
-Automatic Finalize receives PR semantic text and final Issue semantic text from the handoff. Manual Finalize obtains equivalent semantic input from UI.
+The Evolution Impact does **not** select `SL-RPKG-03` as the target owner of PR creation, reviewed-result integration, Final Work Record reconciliation or Issue closure.
 
-Target responsibilities include:
-- ensure one correct workBranch → persisted targetBranch PR;
-- preserve the reviewed work result through integration;
-- persist/reconcile one immutable Issue comment headed `## Final Work Record`;
-- bind exact package/result/published revision/PR/integration facts from proven App state;
-- close the Issue only after required final record persistence;
-- resume truthful partial finalization without blind re-integration or ambiguous duplicate final comments.
+Target Slice decomposition and any future `SI-*` constraints remain **TBD** until Domain and Slice realization planning selects the correct consistency and implementation boundaries.
 
-Detailed iterative Review Records remain Builder-side Issue comments and are not rewritten by Finalize.
-
-This is future Slice delta, not a current `SI-*` requirement. Legacy semantics remain until legacy work retires.
+Legacy semantics remain current until legacy work retires.

@@ -12,8 +12,8 @@ The currently selected code-backed Domain owners belong to Replacement Package A
 | Owner | Kind | Current / planned role |
 |---|---|---|
 | [`Repository Target`](repository-target.md) | Domain Object / identity owner | CURRENT |
-| [`Work Intent`](work-intent.md) | Aggregate | CURRENT; planned ownership narrows/migrates because Builder creates target repository work |
-| [`Repository Work / ChangeSet`](change-set.md) | central Aggregate | CURRENT with selected reviewed-result/route/final-logging expansion |
+| [`Work Intent`](work-intent.md) | Aggregate | CURRENT; affected by planned ownership migration |
+| [`Repository Work / ChangeSet`](change-set.md) | central Aggregate | CURRENT; affected by planned reviewed-result workflow |
 | [`External Interaction`](external-interaction.md) | Aggregate | CURRENT |
 | [`Repository Snapshot`](repository-snapshot.md) | immutable Domain Object | CURRENT |
 
@@ -35,6 +35,10 @@ Each selected Domain owner separates:
 - `Evolution Impact` for canonical Scenario-owned Evolution Steps.
 
 Planned semantics never silently replace current semantics before implementation/proof migration.
+
+`Evolution Impact` on a current Domain owner means that the owner is affected by the Scenario change. It does **not** by itself select that Aggregate as the future consistency owner for reviewed-result identity, route state, PR currentness, final logging or Builder-side repository-work state.
+
+Target Domain decomposition remains deliberately **TBD** until the dedicated Domain realization review selects coherent consistency boundaries.
 
 ## Cross-module migration note
 

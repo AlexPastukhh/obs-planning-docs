@@ -9,17 +9,31 @@ Feature Interaction and Slice decompositions are intentionally not 1:1. A Slice 
 
 | Slice | Current responsibility |
 |---|---|
-| [`SL-RPKG-01`](slices/SL-RPKG-01-apply-replacement-work.md) | Current Apply→Commit→Publish + legacy Apply; planned reuse for handoff-selected Apply Only / Apply And Publish / Apply And Finalize routes. |
-| [`SL-RPKG-02`](slices/SL-RPKG-02-inspect-current-change.md) | Derive/persist current legacy ReviewDiff; planned Git-derived diagnostic projection. |
-| [`SL-RPKG-03`](slices/SL-RPKG-03-finalize-and-publish-work.md) | Legacy Finalize/publication recovery/Reopen; planned target PR + reviewed-result Finalize + Final Work Record + Issue close. |
+| [`SL-RPKG-01`](slices/SL-RPKG-01-apply-replacement-work.md) | Current Apply→Commit→Publish + legacy Apply. |
+| [`SL-RPKG-02`](slices/SL-RPKG-02-inspect-current-change.md) | Derive/persist current legacy ReviewDiff. |
+| [`SL-RPKG-03`](slices/SL-RPKG-03-finalize-and-publish-work.md) | Legacy Finalize/publication recovery/Reopen. |
 | [`SL-RPKG-04`](slices/SL-RPKG-04-export-repository-snapshot.md) | Produce exact Local/Committed Repository Snapshot. |
 | [`SL-RPKG-05`](slices/SL-RPKG-05-attach-repository-snapshot.md) | Deliver exact Snapshot through shared ChatGPT handoff capability. |
 | [`SL-RPKG-06`](slices/SL-RPKG-06-deliver-current-change.md) | Deliver exact legacy Current Change through shared ChatGPT handoff capability. |
 | [`SL-RPKG-07`](slices/SL-RPKG-07-select-existing-work-context.md) | Repository/ChangeSet navigation and truthful current/history projection. |
 | [`SL-RPKG-08`](slices/SL-RPKG-08-manage-external-interactions.md) | Persist/project current actionable/attention handoff truth. |
 | [`SL-RPKG-09`](slices/SL-RPKG-09-notify-operation-outcomes.md) | Report meaningful operation outcomes without granting mutation authority. |
-| [`SL-RPKG-10`](slices/SL-RPKG-10-manage-work-intent.md) | Current App Issue creation/recovery; planned target migrates creation to Builder and leaves consumer verification/adoption. |
-| [`SL-RPKG-11`](slices/SL-RPKG-11-start-changeset-workspace.md) | Current App logical branch/worktree creation; planned target consumes Builder-established work branch and ensures only its execution representation. |
+| [`SL-RPKG-10`](slices/SL-RPKG-10-manage-work-intent.md) | Current App Issue creation/recovery. |
+| [`SL-RPKG-11`](slices/SL-RPKG-11-start-changeset-workspace.md) | Current App logical branch/worktree creation. |
+
+## Target Slice allocation
+
+The planned Builder/App Scenarios identify future behavior, but the target Slice decomposition is **not selected yet**.
+
+Existing Slices may be affected, reused, narrowed, split or retired. An `Evolution Impact` section on a current Slice records migration pressure and reusable current mechanics; it does not by itself make that Slice the future owner of the target FI/BI family.
+
+In particular, this catalog does not yet select:
+- a dedicated reviewed-result confirmation Slice;
+- a dedicated Ensure-PR Slice;
+- `SL-RPKG-03` as the final owner of all target Finalize/logging behavior;
+- `SL-RPKG-01` as the final owner of all route composition behavior.
+
+Those allocations are decided in the next Slice realization review after Domain boundaries are selected.
 
 ## Builder Slice boundary
 

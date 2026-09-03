@@ -1,6 +1,6 @@
 # SL-RPKG-01 — Apply Replacement Work
 
-Status: active current Slice owner with selected target evolution
+Status: active current Slice owner with planned evolution impact
 
 ## Current Result / Responsibility
 
@@ -34,35 +34,18 @@ Primary current proof: repository/integration cases in `CoreTests`.
 
 ### EVO-RPKG-ADOPT-REVIEWED-RESULT-WORKFLOW
 
-Target FI:
-`FI-RPKG-REALIZE-REVIEWED-PACKAGE`.
+Canonical target behavior includes `FI-RPKG-REALIZE-REVIEWED-PACKAGE` plus route-selected continuation into later Scenario FIs.
 
-The Slice must consume the exact Builder-reviewed package plus exact existing repository-work context.
+This current Slice is affected because it already owns substantial Apply/Commit/Push mechanics and recovery behavior that implementation planning may reuse.
 
-Target route composition reuses the same modular mechanics:
+Target Scenario requirements relevant to that migration include:
+- Apply against the exact Builder-reviewed package and exact existing repository work;
+- Apply Only may stop at `AppliedUncommitted`;
+- automatic or manual Commit uses equivalent semantic input rules;
+- publication must preserve truthful retry/recovery state;
+- successful Push/Publish of reviewed work continues into deterministic reviewed-result confirmation;
+- the consumer must not create a competing logical Issue/work branch.
 
-```text
-Apply Only
-→ Apply
-→ STOP AppliedUncommitted
+These requirements do **not** yet select `SL-RPKG-01` as the final owner of all target realization or route composition.
 
-Apply And Publish
-→ Apply
-→ Commit
-→ Push/Publish
-→ automatically continue to Confirm Reviewed Published Revision
-→ STOP ReviewedPublished
-
-Apply And Finalize
-→ same Apply/Commit/Push
-→ later Confirm + PR + Finalize
-```
-
-The target App must not create a second independent repository-work Issue/branch merely because the reviewed package is applied.
-
-When Commit is included in the automatic handoff route, the authorized commit message comes from the handoff and must survive retry. When Commit is invoked manually, the same Commit behavior receives user-entered message text from the UI.
-
-Existing current Apply/Commit/Publish mechanics should evolve/reuse rather than be reimplemented as a separate “non-modular” engine.
-
-Target modular rule:
-A successful manual Push/Publish of reviewed work automatically proceeds to reviewed-result confirmation; ordinary modular continuation does not require a separate user Verify button.
+Target Slice allocation may reuse, narrow or split this Slice after Domain boundaries and cross-FI composition responsibilities are selected. No future `SI-*` item is selected here.
