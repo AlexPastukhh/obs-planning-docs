@@ -395,13 +395,7 @@ Independent implementations must not be assumed equivalent without proof.
 
 The Scenario does **not** select the implementation shape.
 
-Possible implementation-design candidates include:
-
-- one shared package-application module/library/engine used by Builder and App;
-- separate adapters over one shared core;
-- separate implementations with strong shared conformance vectors/proof if runtime sharing is genuinely impractical.
-
-A shared module is currently a strong design candidate, not a canonical Scenario HOW requirement until implementation planning selects it.
+The implementation-feasibility question and current candidate shapes are retained under `Realization Dependencies / Questions / Candidates` below so downstream Shared/Slice planning can resolve them without turning a candidate HOW into Scenario authority.
 
 ## Deterministic Replay Process
 
@@ -568,6 +562,110 @@ After `APPROVABLE`, the exact reviewed package is the eligible package; a suppos
 ### BI-BLDR-HANDOFF-VALUES-COME-FROM-REVIEW
 
 Technical identities used when ChatGPT renders the consumer handoff come from the exact Builder Review Result rather than being recomputed or recalled from conversation memory.
+
+---
+
+# Realization Dependencies / Questions / Candidates
+
+These entries are Scenario-owned **implementation-feasibility memory**, not Behavior Items and not implementation authority.
+
+They exist because the selected Builder runtime process depends on technical capabilities that must be credible before Domain/Slice/Shared implementation planning can safely freeze the realization.
+
+A candidate below does not become `DI-*`, `SI-*`, Shared Implementation ownership or source architecture merely because it is listed here.
+
+## Builder authenticated GitHub interaction
+
+Relevant Scenario / FI behavior:
+
+```text
+FI-BLDR-START-REPOSITORY-WORK
+→ create a new GitHub Issue
+→ create a new work branch from exact C0
+→ persist managed repository-work context
+
+EVO-BLDR-ALLOW-WORK-INTENT-REFINEMENT
+→ update controlled Issue semantic context
+
+EVO-BLDR-PERSIST-SEMANTIC-REVIEW-HISTORY
+→ append immutable Review Record comments
+```
+
+Dependency / Question — preserved planning example:
+
+> **Как можно сделать, чтобы Builder вообще взаимодействовал с GitHub? Надо ли какой-то token ему давать?**
+
+This is purely an implementation detail, but the answer matters to whether it is sensible to keep developing a Scenario in which Builder itself performs authenticated GitHub operations.
+
+Current assumption / candidate realization:
+
+Builder can be given or can reuse an authenticated GitHub capability in its real runtime environment. Possible mechanisms may include an already-authenticated `gh`/host environment, an API/OAuth/token-based capability, or another host-provided integration.
+
+No credential mechanism, token storage model, API client, connector or deployment shape is selected by this Scenario.
+
+Investigate during:
+- Shared Implementation / infrastructure capability planning for authenticated GitHub operations;
+- Slice planning for Start Work / Issue update orchestration;
+- source/runtime investigation of the actual Builder deployment environment;
+- Domain planning only if investigation exposes durable semantic identity/authority state rather than ordinary credentials/infrastructure.
+
+Scenario impact if invalidated:
+
+If Builder cannot reliably perform the required authenticated GitHub interactions in the intended runtime boundary, revisit `FI-BLDR-START-REPOSITORY-WORK` ownership/process and the later Issue-update path instead of forcing an unsuitable authentication mechanism merely to preserve the current FI map.
+
+## Canonical package semantics across Builder replay and App Apply
+
+Relevant Scenario / FI behavior:
+
+```text
+FI-BLDR-REVIEW-EXACT-PACKAGE-RESULT
+BI-BLDR-REPLAY-USES-CANONICAL-PACKAGE-SEMANTICS
+```
+
+Dependency / Question:
+
+Can Builder replay and Replacement Package App real Apply be implemented with sufficiently identical package semantics that the replayed result is credible proof of what the consumer will realize?
+
+Current assumption / candidate realizations:
+- one shared package-application module/library/engine used by Builder and App;
+- separate adapters over one shared core;
+- separate implementations with strong shared conformance vectors/proof if runtime sharing is genuinely impractical.
+
+A shared module is a strong candidate, not a selected Scenario HOW requirement.
+
+Investigate during:
+- Shared Implementation planning first, because a real reusable canonical package-semantics responsibility may exist;
+- Slice/source planning for runtime adapters and proof boundaries;
+- testing strategy/conformance design where physical sharing is not selected.
+
+Scenario impact if invalidated:
+
+If no implementation shape can provide credible semantic equivalence, revisit the deterministic replay/review contract; the Scenario must not claim package-result review as authorization evidence while consumer Apply can materially diverge.
+
+## Exact clean source/replay materialization
+
+Relevant Scenario / FI behavior:
+
+```text
+FI-BLDR-BUILD-EXACT-REPLACEMENT-PACKAGE
+FI-BLDR-REVIEW-EXACT-PACKAGE-RESULT
+```
+
+Dependency / Question:
+
+Can Builder reliably materialize/read the exact source revision `C0`, the intended work result and a fresh replay workspace without contamination from development edits or prior replay attempts?
+
+Current assumption:
+
+The implementation environment can obtain exact Git revision content and create an isolated/fresh filesystem or worktree-like replay boundary. The exact Git/worktree/temp-directory algorithm is not selected here.
+
+Investigate during:
+- Domain planning only for durable repository/source identity semantics;
+- Slice/Shared implementation planning for repository materialization/isolation mechanics;
+- source/runtime investigation for platform-specific Git/filesystem constraints.
+
+Scenario impact if invalidated:
+
+If the runtime cannot provide exact/fresh materialization with credible isolation, revise the Build/Replay process or runtime boundary before treating the Scenario as implementable.
 
 ---
 

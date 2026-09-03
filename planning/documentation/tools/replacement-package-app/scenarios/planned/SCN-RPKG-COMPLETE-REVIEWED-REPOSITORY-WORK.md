@@ -864,6 +864,95 @@ Ordinary reviewed-result completion must not depend on a second manual Current C
 
 ---
 
+# Realization Dependencies / Questions / Candidates
+
+These are non-authoritative implementation-feasibility notes retained by the planned Scenario because the selected runtime routes depend on them. They do not preselect the future Domain/Slice/Shared owner decomposition.
+
+## Exact reviewed-result identity through Apply / Commit / Push
+
+Relevant Scenario / FI behavior:
+
+```text
+FI-RPKG-REALIZE-REVIEWED-PACKAGE
+FI-RPKG-CONFIRM-REVIEWED-PUBLISHED-REVISION
+```
+
+Dependency / Question:
+
+Can the App persist/prove enough exact repository-work, package, source, resulting-tree and published-revision identity to fail closed when execution no longer represents the Builder-reviewed result, including across retries and process restarts?
+
+Current assumption:
+
+Git/repository evidence plus durable operation state can provide a deterministic identity/proof boundary. The exact Aggregate/state/journal schema is not selected here.
+
+Investigate during:
+- Domain planning for semantic identity/consistency boundaries;
+- Slice planning for Apply/Commit/Push/Confirm orchestration and recovery;
+- source/test investigation for exact Git tree/revision proof mechanics.
+
+Scenario impact if invalidated:
+
+If reliable reviewed-result identity cannot survive the execution/retry boundaries, revisit the Confirm FI and route stopping rules rather than weakening approval binding.
+
+## Authenticated GitHub PR / Issue finalization side effects
+
+Relevant Scenario / FI behavior:
+
+```text
+FI-RPKG-ENSURE-INTEGRATION-PULL-REQUEST
+FI-RPKG-FINALIZE-REVIEWED-WORK
+→ PR create/update/readback
+→ Final Work Record comment
+→ Issue close
+```
+
+Dependency / Question:
+
+Can the App perform authenticated GitHub PR/Issue operations with sufficient readback/reconciliation to distinguish success, failure and uncertain outcome without duplicating PRs or Final Work Records on retry?
+
+Current assumption / candidate realization:
+
+The App runtime can use an authenticated GitHub capability and persist operation intent/evidence before external side effects. Exact credential mechanism, GitHub client/API and journal representation remain implementation decisions.
+
+Investigate during:
+- Shared Implementation planning if Builder and App genuinely share one reusable GitHub interaction capability;
+- Domain planning for durable operation identity/currentness only where semantic consistency requires it;
+- Slice/source planning for external-side-effect orchestration and reconciliation.
+
+Scenario impact if invalidated:
+
+If reliable external-operation reconciliation is not feasible in the intended runtime, revisit the PR/Finalize interaction process and failure/uncertainty boundaries before implementation ownership is selected.
+
+## Integration while target branch moves
+
+Relevant Scenario / FI behavior:
+
+```text
+FI-RPKG-ENSURE-INTEGRATION-PULL-REQUEST
+FI-RPKG-FINALIZE-REVIEWED-WORK
+BI-RPKG-TARGET-MOVEMENT-NOT-AUTOMATIC-STALE
+BI-RPKG-CONTENT-CHANGING-RECONCILIATION-STALES-APPROVAL
+```
+
+Dependency / Question:
+
+Can implementation distinguish target movement that preserves the reviewed work result from reconciliation that changes reviewed content, and can it prove the final integration result strongly enough to decide whether approval remains valid?
+
+Current assumption:
+
+Git revision/tree comparison and explicit integration/reconciliation evidence can make this distinction. No merge/rebase/API algorithm is selected here.
+
+Investigate during:
+- Domain planning for approval/result currentness semantics;
+- Slice/source planning for PR/integration orchestration;
+- testing/prototype work for moved-target, conflict and content-changing reconciliation cases.
+
+Scenario impact if invalidated:
+
+If the implementation cannot prove preservation versus content-changing reconciliation, revise the Finalize behavior to fail closed at the uncertain boundary rather than silently treating target movement as safe or always stale.
+
+---
+
 # Logging Model
 
 The target durable history is intentionally split by responsibility:
@@ -935,7 +1024,9 @@ Internal migration identity such as current `changeSetId` may remain during impl
 
 # Methodology / Implementation Guard
 
-This Scenario selects behavioral WHAT.
+This Scenario selects behavioral WHAT and may retain material Realization Dependencies needed to judge whether that WHAT is technically credible.
+
+Those dependencies are questions/assumptions/candidates, not selected implementation authority.
 
 It does not yet select:
 

@@ -53,6 +53,25 @@ Status: active current Scenario owner
 ## Screen references
 <only when selected Screen relationships are needed to understand the observable process; detailed Screen-owned requirements stay in the Screen owner>
 
+## Realization Dependencies / Questions / Candidates
+<only material implementation-feasibility dependencies, assumptions, questions or candidate realizations on which Scenario plausibility or selected runtime composition depends>
+
+### <readable dependency / question>
+Relevant Scenario / FI behavior:
+<what selected behavior depends on this feasibility question>
+
+Dependency / Question:
+<what must be technically possible or understood>
+
+Current assumption / candidate realization:
+<non-authoritative idea/assumption only; omit when none>
+
+Investigate during:
+<Domain | Slice | Shared Implementation | source/infrastructure investigation | prototype/spike | other>
+
+Scenario impact if invalidated:
+<which FI/process/boundary may need Scenario feedback/revision>
+
 ## Scenario Process Alternatives
 <only retained material alternatives>
 
@@ -66,6 +85,8 @@ Notes:
 - Process Specification remains the complete behavioral specification: Scenario Process owns FI composition/transitions and detailed FI entries own FI-local runtime behavior.
 - FI/component-local UI Requirements may live with the FI; Screen-owned spatial/window requirements live in the selected Screen owner.
 - `Evolution Steps` contains Scenario-owned application-behavior changes, not lower-level implementation plans.
+- `Realization Dependencies / Questions / Candidates` is optional Scenario-owned feasibility memory. It may preserve implementation questions, assumptions and candidate HOW only when Scenario plausibility or runtime composition depends on them. It is not implementation authority and does not create `DI-*` / `SI-*` / shared Implementation Items.
+- When downstream implementation planning resolves one of these entries, the selected durable HOW belongs to its natural Domain/Slice/Shared/source owner. Keep only the Scenario-relevant dependency/result here.
 - Current Scenario truth is not called transitional merely because future evolution exists.
 - Semantic IDs/names remain meaningful if file/roadmap order changes.
 
