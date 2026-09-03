@@ -92,7 +92,7 @@ Canonical application semantics: [`scenarios/README.md`](scenarios/README.md). A
 - Confirm Scenario planning keeps Scenario identity tied to user/actor goal/Need/desired useful observable result and treats DATA/Behavior as iterative discovery inputs.
 - Confirm Domain discovery/planning can identify Value Object/Aggregate candidates from evidence, records Root/owned/outside/external/coordination boundaries, and permits select/split/merge/reject/no explicit Aggregate.
 - Confirm Slice planning distinguishes product priority from technical implementation sequence, cross-cutting applicability from ownership, semantic drift from harmless names/paths, and hands negative/no-mutation guarantees to testing.
-- Confirm `изучи внутренние юзкейсы` invokes `UC-PLAN-ARCH-WORKSPACE-USES`; `собери WEUC` / `исследуй WEUC-инстансы` invokes `UC-PLAN-ARCH-DISCOVER-WEUC`; `перепроверь` invokes `UC-REPO-AUDIT-REVIEW`.
+- Confirm `изучи внутренние юзкейсы` invokes `UC-PLAN-ARCH-WORKSPACE-USES`; `собери WEUC` / `исследуй WEUC-инстансы` invokes `UC-PLAN-ARCH-DISCOVER-WEUC`; `перепроверь` remains the direct `review_audit.recheck` command backed by the review-audit supporting Process.
 
 ## IDTSPE / SDS Methodology Navigation
 

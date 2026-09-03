@@ -164,4 +164,4 @@ Need / situation
 
 ## 12. Review Audit Boundary
 
-Built-in recheck tries to make the current answer good before return. `UC-REPO-AUDIT-REVIEW` is independently useful when the result itself must report checked files/semantic units, quality/sufficiency, partial/unchecked material and delta versus a prior review. A repeated audit should prefer new value over mechanically replaying already-current sufficient checks.
+Built-in recheck tries to make the current answer good before return. Explicit review-audit work is independently useful when the requested result itself must report checked files/semantic units, quality/sufficiency, partial/unchecked material and delta versus a prior review; this is a supporting review Process/command surface, not a fundamental repository Use Case. A repeated audit should prefer new value over mechanically replaying already-current sufficient checks.

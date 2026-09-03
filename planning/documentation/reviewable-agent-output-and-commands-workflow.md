@@ -181,7 +181,7 @@ Do not apply this boundary to package-producer commands that explicitly stop at 
 
 ## Review Audit Projection
 
-When `UC-REPO-AUDIT-REVIEW` is active, expose proportionally:
+When `review_audit.recheck` / `перепроверь` is selected, expose proportionally:
 
 ```text
 Checked

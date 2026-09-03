@@ -1,7 +1,8 @@
 # Planning Findings / Q/R/P Completeness Review Workflow
 
-Status: active reusable owner
-Semantic entry: `UC-REPO-REVIEW-PLANNING-FINDINGS`
+Status: active supporting workflow for planning-concern review
+Current semantic authority: [`planning-concerns-and-decisions-model.md`](planning-concerns-and-decisions-model.md) plus the selected methodology/Target owner.
+This file is not a repository-level Use-Case owner.
 Shared Concern semantics: [`planning-concerns-and-decisions-model.md`](planning-concerns-and-decisions-model.md)
 
 ## Purpose

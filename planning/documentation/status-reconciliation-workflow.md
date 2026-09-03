@@ -1,8 +1,6 @@
 # Status Reconciliation Workflow
-Related semantic Use Case: `UC-DOC-RECONCILE-STATUS` in `planning/documentation/use-case-registry.md`.
-
-
-Status: active reusable workflow
+Status: active reusable supporting Process
+Reachable from current-state/reporting and review routes when status evidence is material.
 Doc version: v0.2.0-obs-cleanup
 Scope: checking whether documentation status claims match available evidence.
 

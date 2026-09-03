@@ -1,7 +1,7 @@
-# Start Parallel Work
+# Start Parallel Work — Legacy Compatibility
 
-Status: active project command definition
-Scope: one concrete OBS Planning command route. Reusable behavior remains in linked owner files.
+Status: legacy compatibility command definition
+Scope: retired fixed parallel-work-scope invocation. No current branch-based coordination methodology is defined by this command.
 
 [PLANNING_COMMAND_DEFINITION]
 {
@@ -15,24 +15,21 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
     "start parallel work",
     "parallel workspace"
   ],
-  "description": "use registered parallel-work scope",
-  "meaning": "Resolve the fixed Parallel Work Scope Registry and establish one workstream inside the already registered affected scope(s), including canonical scope-log ownership for cross-scope work.",
-  "activeContextBehavior": "Use the active work target when clear; otherwise ask only for the concrete workstream target needed to resolve existing registered scope(s).",
-  "traversalReadMode": "Targeted/full by affected registered scope(s).",
-  "ownerFiles": [
-    "parallel-work-scope-registry.md",
-    "planning/documentation/parallel-work-scope-and-action-log-workflow.md"
-  ],
-  "expectedOutput": "Selected registered parallel-work scope(s), canonical scope log for the work, cross-scope boundary/reference requirements and the route-specific next action; no ad-hoc shadow workspace.",
-  "permissionMode": "scope-routing-only",
+  "description": "legacy compatibility command for retired fixed parallel-work scopes",
+  "meaning": "The former fixed Scope Registry/action-log coordination model is retired. Do not route current work through it and do not invent a branch workflow here; use the current ordinary work route until branch-based coordination has its own accepted owner.",
+  "activeContextBehavior": "Explain the retirement boundary and continue only through current non-legacy owners selected for the actual work.",
+  "traversalReadMode": "Current navigation only; legacy provenance may be read only when historical analysis is explicitly requested.",
+  "ownerFiles": [],
+  "expectedOutput": "A concise retirement/route clarification; no fixed-scope selection and no invented branch semantics.",
+  "permissionMode": "read-only",
   "keyReminders": [
-    "Read the root Scope Registry; do not invent or repartition scopes ad hoc.",
-    "A path belongs to the deepest active registered scope root containing it.",
-    "For cross-scope work choose one affected canonical log for the full record; other affected logs hold references only.",
-    "This command selects scope/log routing only and does not itself authorize edits, archive creation, commit or push."
+    "Fixed registered parallel-work scopes are legacy.",
+    "Do not treat legacy scope/action-log files as current authority.",
+    "Do not infer branch lifecycle, naming, merge, publish or isolation rules before a current branch-work owner exists.",
+    "This compatibility command grants no edit, archive, commit or push permission."
   ],
   "userTarget": "<parallel workstream target>",
-  "palette": true,
+  "palette": false,
   "refinements": []
 }
 [/PLANNING_COMMAND_DEFINITION]
