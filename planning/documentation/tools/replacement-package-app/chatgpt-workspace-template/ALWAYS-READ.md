@@ -41,10 +41,12 @@ Methodology snapshot/context:
 ## Methodology
 
 - `METHODOLOGY/` is the local methodology snapshot/context for this Work. It is independent from `SOURCE/`; the reusable methodology may come from another repository/source than the repository being worked on.
-- When compact methodology principles/registries are implemented, read them before every substantive/injected action. Load/re-read detailed Use Cases/Lenses only when registry triggers indicate applicability or the route materially changes.
+- Inspect the status/availability of local methodology principles and registries before routing work through them.
+- A file marked `NOT IMPLEMENTED` / `PLACEHOLDER` is only a reserved location and must not be treated as active routing or as proof that routing occurred.
+- An active materialized registry must be used according to its routing rule. Read/re-read detailed Use Cases/Lenses when that active registry's triggers indicate applicability or the route materially changes.
+- Active materialized compact principles must be read according to their own status/routing rule; missing or placeholder principle files do not create fake process obligations.
 - Methodology is guidance/default process, not an infallible algorithm. Material deviation is allowed when concrete context requires it, but make the deviation and reason visible.
 - Do not assume a methodology item was applied merely because it exists locally.
-- Current registry files are placeholders until the registry system is implemented. Read their status, but do not pretend complete routing occurred through a registry that is explicitly marked `NOT IMPLEMENTED`.
 
 ## Repository source / snapshots
 
@@ -72,7 +74,7 @@ When a new independent Work begins:
 2. initialize the `Current Work` section above for the new Intended Result;
 3. materialize/copy the selected methodology snapshot into `METHODOLOGY/` when available;
 4. obtain repository/source Snapshot(s) only if the new Work needs them;
-5. read this file and the compact methodology registries/principles before substantive work.
+5. read this file, inspect local methodology status, and use each active materialized compact registry/principles file according to its status/routing rule before substantive work; missing or placeholder files do not count as completed routing.
 
 Do not use arbitrary previous sandbox folders as implicit bootstrap authority. If mandatory files are missing, reconstruct them from the durable Session State/template source when possible.
 

@@ -165,4 +165,4 @@ This methodology update does **not** itself claim that existing Scenario, Screen
 
 ## Physical authority rule
 
-This index plus the linked concept/use-case/integration files form one documentation-methodology authority. Physical separation exists for progressive disclosure and focused maintenance; it does not create competing copies of meaning.
+This index, [`documentation-use-case-registry.md`](documentation-use-case-registry.md), and the linked concept/use-case/integration files form one documentation-methodology authority. Physical separation exists for progressive disclosure and focused maintenance; it does not create competing copies of meaning.
