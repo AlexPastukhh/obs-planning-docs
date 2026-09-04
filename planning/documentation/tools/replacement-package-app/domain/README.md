@@ -4,11 +4,11 @@ Status: active Domain ownership map
 
 Behavior Items remain authoritative in Scenario owners. Domain owners implement coherent groups of BI through stable semantic/consistency boundaries; there is deliberately not one Aggregate per BI.
 
-| Owner | Kind | Current / planned role |
+| Owner | Kind | Current role / planned routing |
 |---|---|---|
 | [`Repository Target`](repository-target.md) | Domain Object / identity owner | CURRENT |
 | [`Work Intent`](work-intent.md) | Aggregate | CURRENT |
-| [`Repository Work / ChangeSet`](change-set.md) | central Aggregate | CURRENT with selected planned expansion |
+| [`Repository Work / ChangeSet`](change-set.md) | central Aggregate | CURRENT; future reviewed-result/PR/integration/final-record ownership TBD through Requirements Discovery |
 | [`External Interaction`](external-interaction.md) | Aggregate | CURRENT |
 | [`Repository Snapshot`](repository-snapshot.md) | immutable Domain Object | CURRENT |
 

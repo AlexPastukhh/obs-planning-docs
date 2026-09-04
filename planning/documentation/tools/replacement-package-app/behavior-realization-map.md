@@ -2,7 +2,7 @@
 
 Status: active derived current/target navigation
 
-This file is **not** behavior authority and does not redefine BIs. Canonical BI meaning remains in Scenario owners. It answers one migration question: **where is each selected BI realized now, where will it be realized, and what proof responsibility exists?**
+This file is **not** behavior authority and does not redefine BIs. Canonical BI meaning remains in Scenario owners. It answers one migration question: **where is each selected BI realized now, where must planned realization be selected/routed, and what proof responsibility exists?**
 
 Status meanings:
 
@@ -71,9 +71,12 @@ Repository Work / ChangeSet Aggregate
   → base/published Git identity
   → current execution truth
   → package realization/recovery
-  → PLANNED: reviewed-result binding
-  → PLANNED: PR currentness
-  → PLANNED: approval staleness + Finalize/integration closure
+
+Planned reviewed-result workflow requirements
+  → reviewed-result confirmation/currentness
+  → PR/integration currentness
+  → final-record/closure
+  → owner/Item selection TBD through downstream Requirements Discovery
 
 External Interaction Aggregate
   → exact source/artifact + exact destination + delivery uncertainty
