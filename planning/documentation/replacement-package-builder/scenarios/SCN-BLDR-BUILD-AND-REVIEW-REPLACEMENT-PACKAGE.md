@@ -364,7 +364,7 @@ Rebuilding would create unreviewed bytes even if the intended content were belie
 
 Scenario Role / Local Purpose:
 
-Provide the consumer with the exact reviewed package and enough exact review identity for the consumer to prove that its real published result is the same result that was reviewed.
+Provide the consumer with the exact reviewed package and enough exact review identity for the consumer to prove that its real published result is the same result that was reviewed, while allowing more than one handoff transport to carry the same semantic Apply request.
 
 Interaction Process:
 
@@ -377,14 +377,28 @@ expected result T2 identity
 +
 ChangeSet / repository / target context
 ↓
-produce Apply handoff
+produce ONE semantic Apply handoff
+├─ existing/manual transport
+│    OBS-ACTION/1 + exact archive
+│
+└─ local-action transport
+     LOCAL-ACTION/1
+     command = replacement.applyPackage
+     arguments bind the exact reviewed artifact / handoff identity
+     display metadata is presentation only
 ↓
 Replacement Package App
+↓
+same Apply Package semantic intake
 ```
+
+The local-action transport is additive. It does not retire or redefine the existing `OBS-ACTION/1 + archive` handoff.
+
+`LOCAL-ACTION/1` is a generic machine-readable local-action envelope rather than an RPKG-specific transport format. This Scenario selects only the semantic command/result needed for replacement-package handoff; the generic Local Actions UI/transport implementation is outside Builder behavior.
 
 Result:
 
-Replacement Package App receives the exact reviewed package and review/result identity needed for later verification.
+Replacement Package App can receive the same exact reviewed package and review/result identity through either supported handoff transport. Transport choice does not change the semantic Apply command or the reviewed artifact being handed off.
 
 ### Behavior Items — selected
 
@@ -401,7 +415,33 @@ Handoff must carry or make available enough exact identity to let the consumer p
 
 Exact protocol/schema remains a later design decision.
 
----
-
 Reason:
 The consumer cannot bind pre-Apply approval to a published revision unless it can compare that revision with the reviewed predicted result.
+
+#### BI-BLDR-HANDOFF-TRANSPORT-ADDITIVE — Local Action extends rather than replaces the existing handoff
+Requirement:
+Introducing the local-action handoff must not remove or invalidate the existing `OBS-ACTION/1 + archive` transport.
+
+Reason:
+One-click local activation is an additional convenience path to the same consumer semantics, not a migration that makes the established handoff unusable.
+
+#### BI-BLDR-HANDOFF-TRANSPORT-SAME-SEMANTICS — Every transport carries one semantic Apply handoff
+Requirement:
+The existing handoff transport and `LOCAL-ACTION/1` must represent the same semantic replacement-package Apply request and the same exact reviewed package/result identity rather than creating transport-specific Apply meaning.
+
+Reason:
+The consumer must not have multiple authorities for repository mutation depending on how the handoff arrived.
+
+#### BI-BLDR-LOCAL-ACTION-BINDS-EXACT-ARTIFACT — Local Action identifies the exact reviewed artifact
+Requirement:
+A Builder-produced `LOCAL-ACTION/1` for `replacement.applyPackage` must bind or make resolvable the exact APPROVABLE package artifact and the authoritative arguments/identity required by the consumer.
+
+Reason:
+A one-click handoff is safe only if it addresses the exact reviewed package rather than a similarly named or later artifact.
+
+#### BI-BLDR-LOCAL-ACTION-DISPLAY-NONAUTHORITATIVE — Local Action display metadata is presentation only
+Requirement:
+Human-facing `display` metadata in `LOCAL-ACTION/1` must not determine the semantic command, repository target, package identity or other authoritative Apply input.
+
+Reason:
+Presentation labels may change without changing the action being authorized or the artifact being applied.

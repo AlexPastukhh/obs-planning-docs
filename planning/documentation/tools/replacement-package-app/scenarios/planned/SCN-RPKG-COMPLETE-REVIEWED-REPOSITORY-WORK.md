@@ -10,12 +10,24 @@ Realize one exact already-reviewed replacement package in the exact repository w
 
 The ordinary route must not require the user to manually reconstruct internal Git stages. Manual/advanced continuation remains available, but it must use the same behavioral authority and recovery truth.
 
+The reviewed handoff may arrive through the existing/manual transport or through an additional one-click local-action transport. Both transports enter the same semantic Apply Package intake and must not create transport-specific repository mutation semantics.
+
 ## Process Specification
 
 ### Scenario Process / Feature Interaction Map
 
 ```text
-reviewed package handoff
+reviewed Builder handoff
+├─ existing/manual transport
+│    OBS-ACTION/1 + exact archive
+│
+└─ local-action transport
+     LOCAL-ACTION/1
+     command = replacement.applyPackage
+     → explicit local activation
+     → rpkg://handoff/<opaque-token>
+          ↓
+same semantic reviewed-handoff intake
 ↓
 FI-RPKG-ESTABLISH-REPOSITORY-WORK-INTENT
 ↓
@@ -45,6 +57,82 @@ FI-RPKG-FINALIZE-REVIEWED-WORK
      ↓
    return to correction/review flow
 ```
+
+### Handoff entry transport extension
+
+Handoff transport is orthogonal to Scenario/FI decomposition. The selected extension adds a one-click local activation path while preserving the existing `OBS-ACTION/1 + archive` path.
+
+```text
+existing/manual transport
+OBS-ACTION/1 + exact archive
+        \
+         → same reviewed semantic handoff
+        /
+local-action transport
+LOCAL-ACTION/1
+→ external Local Actions surface
+→ explicit user activation
+→ rpkg://handoff/<opaque-token>
+```
+
+The generic Local Actions surface, including any Tampermonkey/Shadow-DOM presentation, is outside Replacement Package App Scenario authority. Its role is to present/transport a machine-readable action, not to authorize repository mutation independently.
+
+For the selected replacement-package action, the machine-readable handoff identifies semantic command `replacement.applyPackage` and authoritative arguments / exact artifact identity. Human-facing `display` metadata is presentation only.
+
+The selected Windows activation shape is deliberately narrow:
+
+```text
+rpkg://handoff/<opaque-token>
+```
+
+The URI does not expose a generic execute/shell/path surface. The token is only an external handoff-resolution identity. Any `rpkg://` activation is treated as untrusted external input: the application must strictly parse the allowed shape, resolve the exact staged handoff/package, validate it, and then enter the same existing semantic command / package validation pipeline used by the established transport.
+
+A repeated click, browser retry, URI relaunch or secondary process activation must not create a second logical Apply authority. Existing package/ChangeSet identity and recovery semantics remain authoritative.
+
+Behavior Items:
+
+#### BI-RPKG-HANDOFF-TRANSPORT-ADDITIVE — Local Action extends rather than replaces existing handoff
+Requirement:
+The local-action/URI transport must be added without removing or invalidating the existing `OBS-ACTION/1 + archive` transport.
+
+Reason:
+One-click activation is an additional handoff convenience, not a replacement of the established intake contract.
+
+#### BI-RPKG-HANDOFF-TRANSPORT-SAME-SEMANTICS — All handoff transports enter one Apply authority
+Requirement:
+Regardless of transport, the resolved reviewed handoff must enter the same `replacement.applyPackage` semantic command, identity checks, route selection, package validation and recovery behavior.
+
+Reason:
+Transport choice must not create an alternative repository mutation mechanism.
+
+#### BI-RPKG-URI-HANDOFF-STRICT-SHAPE — URI activation is a narrow handoff entry
+Requirement:
+The selected URI activation surface must accept only the product-owned handoff shape equivalent to `rpkg://handoff/<opaque-token>` and must not expose arbitrary command execution, shell invocation or arbitrary local-path execution.
+
+Reason:
+A custom URI can be invoked by callers other than the intended browser helper and must not become a generic local execution surface.
+
+#### BI-RPKG-URI-HANDOFF-UNTRUSTED-INPUT — External URI input never bypasses application validation
+Requirement:
+Receipt of an `rpkg://` activation must not itself prove package validity, repository applicability or authorization to mutate repository state. The resolved handoff/package must pass the normal strict application validation before repository mutation.
+
+Reason:
+Browser/Tampermonkey/Windows activation transports are not repository authority.
+
+#### BI-RPKG-HANDOFF-ACTIVATION-REPLAY-SAFE — Repeated activation uses existing logical-work recovery
+Requirement:
+Repeated activation of the same exact handoff must resolve to the same package/ChangeSet work and use existing idempotency/recovery truth rather than starting independent duplicate Apply execution.
+
+Reason:
+Double-clicks, browser retries, cold/warm activation races and secondary-process launches are ordinary transport failure/retry modes.
+
+#### BI-RPKG-LOCAL-ACTION-DISPLAY-NONAUTHORITATIVE — Display metadata does not drive Apply
+Requirement:
+Local-action presentation metadata must not determine semantic command dispatch, package identity, Repository Target, target branch or other authoritative Apply input.
+
+Reason:
+Presentation may change independently of the exact action being executed.
+
 
 Optional pre-publish support interaction:
 
@@ -507,6 +595,40 @@ Current selected Screen owner: [`../../screens.md`](../../screens.md). Future sp
 ## Realization Dependencies / Questions / Candidates
 
 These entries preserve only Scenario-relevant feasibility questions. They do **not** assign future Domain/Slice/Shared ownership or create Implementation/Test Items; downstream Requirements Discovery selects durable HOW and its natural owner.
+
+### Windows URI activation can enter the existing handoff pipeline
+Relevant Scenario / FI behavior:
+`BI-RPKG-HANDOFF-TRANSPORT-SAME-SEMANTICS`, `BI-RPKG-URI-HANDOFF-STRICT-SHAPE`, `BI-RPKG-URI-HANDOFF-UNTRUSTED-INPUT`, `BI-RPKG-HANDOFF-ACTIVATION-REPLAY-SAFE`.
+
+Dependency / Question:
+Can Replacement Package App register a stable Windows URI handler and receive one exact external handoff activation both when the application is stopped and when an instance is already running, without creating a second Apply authority or duplicate execution?
+
+Current assumption / candidate realization:
+Windows custom URI activation for a normal desktop application is considered feasible. Candidate realization is per-user `rpkg` protocol registration under `HKCU\Software\Classes\rpkg`, with the URL-protocol marker and `shell\open\command` targeting one stable installed application launcher. Cold launch passes the URI into application startup. If a primary application instance is already running, a secondary activation forwards the URI to that primary instance, activates/focuses the existing application as needed, and exits. The target launcher should have one stable installed path rather than depend on `java` in `PATH`, the current JDK, working directory or a development `.cmd`; a development registration command may still be useful for a spike. Exact installed-launcher packaging, registration lifecycle and local IPC mechanism remain downstream HOW.
+
+Registration belongs to installation/setup/diagnostics rather than each Apply operation. Setup should be able to verify the effective registration; uninstall/removal must not blindly delete a registration that no longer belongs to the same installation.
+
+Investigate during:
+Application bootstrap/installation Implementation Requirements Discovery + URI activation/recovery Proof Requirements Discovery.
+
+Scenario impact if invalidated:
+The one-click local-action transport would need another local activation mechanism, but existing/manual handoff and the authoritative Apply semantics remain unchanged.
+
+### Exact reviewed artifact can be resolved from opaque handoff activation
+Relevant Scenario / FI behavior:
+`BI-RPKG-HANDOFF-TRANSPORT-SAME-SEMANTICS`, `BI-RPKG-URI-HANDOFF-UNTRUSTED-INPUT`, `BI-RPKG-HANDOFF-ACTIVATION-REPLAY-SAFE`, `BI-RPKG-APPLY-EXACT-PACKAGE`.
+
+Dependency / Question:
+How does the one-click transport make the exact ChatGPT/Builder-produced package bytes plus machine-readable handoff available locally before or during `rpkg://handoff/<opaque-token>` activation, without manual archive discovery and without allowing the token to resolve to a different/later artifact?
+
+Current assumption / candidate realization:
+The external local-action transport can stage or otherwise make resolvable one exact handoff/artifact identity before activation, while the URI carries only an opaque token. The application resolves that token to exact local handoff/package material and proves package identity/fingerprint before entering the normal Apply intake. Candidate evidence may include `packageId` plus a cryptographic artifact fingerprint such as SHA-256. Exact download/staging location, completion signaling, token store and race-handling mechanism remain downstream HOW.
+
+Investigate during:
+Local handoff transport Implementation Requirements Discovery + package-intake/activation Proof Requirements Discovery.
+
+Scenario impact if invalidated:
+The one-click transport contract or activation ordering must change; existing/manual handoff remains available and Apply semantics do not change.
 
 ### Reviewed predicted-result identity can be consumed exactly
 Relevant Scenario / FI behavior:
