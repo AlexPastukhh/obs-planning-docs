@@ -8,13 +8,24 @@ Status: physically separated part of the recommended-template owner. Templates r
 ```text
 ### TST-RPKG-<SEMANTIC-NAME> — <readable proof requirement>
 Requirement:
-<additional condition needed for credible proof>
+<additional durable condition needed for credible proof>
 
 Reason:
-<false-positive / boundary / no-mutation / persistence / isolation / refactor-evolution reason>
+<bug-escape / wrong-boundary / no-mutation / persistence / isolation / failure / refactor-evolution reason>
+
+Derived from:
+<BI / invariant / Implementation Item / Proof Requirements Discovery finding>
+
+Pattern / rationale:
+<optional reusable proof Pattern reference>
+
+Group:
+<optional GRP-* when coupled with Implementation/Test Items>
 ```
 
-Do not restate every BI/invariant as a Test Item. Normal proof responsibility is already derived from the owning semantics. Refactor/evolution resilience means proof should remain stable while the property it proves remains unchanged; when an Evolution Step genuinely changes that property, the Test Item/test may legitimately change.
+Do not restate every BI/invariant as a Test Item. Normal proof responsibility is already derived from owning semantics. Proof Requirements Discovery may separately expose an Implementation Item; the Test Item itself does not own production structure. Use [Template — Item Group](implementation.md#template-item-group) when production/proof Items are one coupled decision.
+
+Refactor/evolution resilience means proof should remain stable while the property it proves remains unchanged; when an Evolution Step genuinely changes that property, the Test Item/test may legitimately change.
 
 ---
 <a id="template-shared-test-capability"></a>
@@ -40,7 +51,7 @@ Testing policy belongs in Test Strategy, not here.
 <a id="template-test-design"></a>
 ## Template — Optional Test Design
 
-Use only when how to prove a selected property credibly is itself non-trivial.
+Use only when how to prove a selected property credibly remains independently non-trivial after Proof Requirements Discovery.
 
 ```text
 Property / authority:
@@ -51,6 +62,8 @@ Setup / action / observation / assertions:
 ...
 False-confidence / no-mutation / isolation considerations:
 ...
+Requirements Discovery / Pattern refs:
+<only when useful>
 Decision:
 ...
 ```

@@ -41,7 +41,7 @@ Detailed: [`maintain-domain.md`](documentation-use-cases/maintain-domain.md)
 **Trigger:** BI/invariants require coherent Domain meaning, consistency boundaries or durable Domain requirements.  
 **Use when:** maintaining Aggregates/Domain Objects, invariants, BI ownership, `DI-*`, local Domain proof or Domain Evolution Impact.  
 **Do not use for:** deriving ontology from classes; Slice orchestration → DOC-UC-03; broad evolution pressure → DOC-UC-05; exact source mechanics → DOC-UC-06.  
-**Related / may route to:** DOC-UC-01, DOC-UC-03, DOC-UC-05, DOC-UC-06, DOC-UC-12.
+**Related / may route to:** DOC-UC-01, DOC-UC-03, DOC-UC-05, DOC-UC-06, DOC-UC-12, DOC-UC-14.
 
 ### DOC-UC-03 — Maintain Slice implementation from Behavior Items and Domain
 
@@ -49,7 +49,7 @@ Detailed: [`maintain-slice.md`](documentation-use-cases/maintain-slice.md)
 **Trigger:** selected behavior needs Slice-level composition/orchestration/recovery/ports or durable Slice requirements.  
 **Use when:** maintaining Slice result, BI/Domain realization, `SI-*`, local proof or Slice Evolution Impact.  
 **Do not use for:** redefining Scenario behavior; forcing FI=Slice; Domain invariants → DOC-UC-02; call-chain documentation → DOC-UC-06.  
-**Related / may route to:** DOC-UC-01, DOC-UC-02, DOC-UC-04, DOC-UC-05, DOC-UC-06, DOC-UC-12.
+**Related / may route to:** DOC-UC-01, DOC-UC-02, DOC-UC-04, DOC-UC-05, DOC-UC-06, DOC-UC-12, DOC-UC-14.
 
 ### DOC-UC-04 — Maintain Shared Implementation Capability when shared responsibility is real
 
@@ -57,7 +57,7 @@ Detailed: [`maintain-shared-implementation.md`](documentation-use-cases/maintain
 **Trigger:** several Slices create pressure for one real reusable implementation responsibility with real consumers/contract.  
 **Use when:** deciding/maintaining shared responsibility, consumers, durable shared requirements, proof or Evolution Impact.  
 **Do not use for:** generic DRY/helper similarity, speculative future mechanisms or Slice-local responsibility.  
-**Related / may route to:** DOC-UC-03, DOC-UC-05, DOC-UC-06, DOC-UC-12.
+**Related / may route to:** DOC-UC-03, DOC-UC-05, DOC-UC-06, DOC-UC-12, DOC-UC-14.
 
 ### DOC-UC-05 — Maintain evolution-aware implementation architecture
 
@@ -65,7 +65,7 @@ Detailed: [`maintain-evolution-aware-architecture.md`](documentation-use-cases/m
 **Trigger:** materially known Scenario evolution creates pressure on current Domain/Slice/shared boundaries.  
 **Use when:** deciding whether stable seams/ports/identity/ownership or `DI-*`/`SI-*`/shared requirements are justified now to avoid avoidable Forced Migration.  
 **Do not use for:** defining WHAT evolution changes → DOC-UC-01; planning WHEN/order/readiness → DOC-UC-08; prematurely implementing future behavior.  
-**Related / may route to:** DOC-UC-01, DOC-UC-02, DOC-UC-03, DOC-UC-04, DOC-UC-08, DOC-UC-12.
+**Related / may route to:** DOC-UC-01, DOC-UC-02, DOC-UC-03, DOC-UC-04, DOC-UC-08, DOC-UC-12, DOC-UC-14.
 
 ### DOC-UC-06 — Inspect current implementation without duplicating source documentation
 
@@ -121,7 +121,7 @@ Detailed: [`plan-realize-proof.md`](documentation-use-cases/plan-realize-proof.m
 **Trigger:** selected semantic/implementation meaning needs credible automated/practical proof, proof design or shared testing decisions.  
 **Use when:** selecting proof layer, Tests/Test Items, test-first realization, Test Design/experiment, Test Strategy/Shared Test Capability or Practical Acceptance/Evidence.  
 **Do not use for:** making tests semantic authority, documenting exact test methods/fixtures, or claiming PASS from unexecuted plans.  
-**Related / may route to:** DOC-UC-01, DOC-UC-02, DOC-UC-03, DOC-UC-04, DOC-UC-05, DOC-UC-06.
+**Related / may route to:** DOC-UC-01, DOC-UC-02, DOC-UC-03, DOC-UC-04, DOC-UC-05, DOC-UC-06, DOC-UC-14.
 
 ### DOC-UC-13 — Maintain documentation representation and decomposition
 
@@ -130,3 +130,11 @@ Detailed: [`maintain-documentation-representation.md`](documentation-use-cases/m
 **Use when:** splitting one logical owner across files, separating index/navigation from detail, reorganizing focused sections or preserving navigation after movement.  
 **Do not use for:** creating semantic owners merely because a file is large, splitting solely by line count, or deciding new semantic authority → DOC-UC-10.  
 **Related / may route to:** DOC-UC-09, DOC-UC-10 and the owner-specific UC for the content being decomposed.
+
+### DOC-UC-14 — Maintain Requirements Discovery and reusable Pattern Library
+
+Detailed: [`maintain-requirements-discovery-pattern-library.md`](documentation-use-cases/maintain-requirements-discovery-pattern-library.md)  
+**Trigger:** a recurring implementation/proof requirements question or reusable candidate solution needs to be added, refined, split, linked, merged or retired.  
+**Use when:** maintaining reusable Requirements Discovery question sets, cross-discovery routing, Item Group derivation rules, Pattern Registry metadata or reusable Pattern definitions consumed by DOC-UC-02/03/04/05/12.  
+**Do not use for:** storing concrete project DI/SI/shared/Test Items or one-off source mechanics; those belong to concrete implementation owners/source.  
+**Related / may route to:** DOC-UC-02, DOC-UC-03, DOC-UC-04, DOC-UC-05, DOC-UC-10, DOC-UC-12, DOC-UC-13.

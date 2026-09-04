@@ -62,9 +62,17 @@ Use three change kinds when they add meaning:
 A materially independent impact may be referenced by the Evolution Steps Map when it has different timing, likelihood or dependency meaning from the parent Evolution Step.
 
 When Tests are embedded in the affected owner, material test-suite change is part of that same owner's `Evolution Impact`: adding proof is normally Expansion and behavior-preserving suite/fixture reorganization is Refactoring. Do not create a parallel test-evolution owner merely because tests change; most Evolution Steps need no separate test-suite impact note.
+### Implementation Item
+
+An **Implementation Item** is an optional durable concrete requirement on how one implementation owner must realize selected meaning. It is not limited to named architecture patterns. A material selected requirement may concern correct realization, technical qualities, maintainability/cognitive simplicity, consistency/recovery/observability, composition/reuse/replaceability, materially known evolution, or testability when production structure materially affects credible proof.
+
+An Implementation Item must add realization meaning rather than restate semantic authority. If a statement is already the application/Domain truth required by a BI or invariant, keep that truth there. Create an Implementation Item when the concrete Domain/Slice/Shared implementation owner needs a durable HOW requirement in order to realize that truth well.
+
+A good Implementation Item survives ordinary implementation refactoring and does not become a method/field/call trace. `N/A`, “no additional requirement”, rejected candidates and transient notes do not create Items. Material selected answers produced by [Requirements Discovery](requirements-discovery/README.md) do.
+
 ### Domain Implementation Item
 
-A Domain Implementation Item (`DI-*`) is an optional durable requirement governing how a Domain owner must be shaped.
+A Domain Implementation Item (`DI-*`) is the Domain specialization of an Implementation Item: a durable concrete requirement governing how a Domain owner realizes selected BI/invariants and Domain meaning.
 
 A `DI-*` may be needed for:
 
@@ -78,9 +86,9 @@ A known future Evolution Step may therefore justify a stable semantic boundary, 
 A Domain owner may need no `DI-*` items. A good item survives ordinary implementation refactoring and does not become a method/field/call trace.
 ### Slice Implementation Item
 
-A Slice Implementation Item (`SI-*`) is an optional durable requirement governing how a Slice realizes selected behavior using Domain and infrastructure.
+A Slice Implementation Item (`SI-*`) is the Slice specialization of an Implementation Item: a durable concrete requirement governing how a Slice realizes selected behavior using Domain and infrastructure.
 
-It may cover current orchestration/separation/recovery/composition, a stable port/boundary, concrete reuse/non-duplication pressure, testability/observability or materially known `Evolution Impact` that should later be realizable through additive composition rather than avoidable Forced Migration.
+It may cover concrete functional realization constraints such as ordering/atomicity/result semantics, required technical qualities such as memory/latency/reliability when materially required, current orchestration/separation/recovery/composition, a stable port/boundary, concrete reuse/non-duplication pressure, maintainability/cognitive simplicity, testability/observability or materially known `Evolution Impact` that should later be realizable through additive composition rather than avoidable Forced Migration.
 
 A known future capability may justify a port or composition seam now; it does not justify implementing that future capability before its Evolution Step is selected for realization.
 

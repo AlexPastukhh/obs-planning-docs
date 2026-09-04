@@ -16,7 +16,9 @@ A Test Item may require, for example:
 - preserving isolation or deterministic failure injection;
 - keeping proof stable across behavior-preserving refactoring and planned additive evolution.
 
-A Test Item is not a new product/Domain/Slice requirement and does not create production architecture. If a stable port, compatibility rule or orchestration constraint is required, that requirement belongs to the appropriate BI/DI/SI/shared owner; the Test Item only says what additional proof quality is needed.
+A Test Item is not a new product/Domain/Slice requirement and does not itself own production architecture. If a stable port, compatibility rule, orchestration constraint or other production requirement is required, that requirement belongs to the appropriate BI/DI/SI/shared owner; the Test Item says what additional proof quality is needed.
+
+However, [Proof Requirements Discovery](requirements-discovery/proof/proof.md) is also an implementation-design feedback channel. If a proof question materially exposes a production requirement, create the corresponding Implementation Item in the natural implementation owner. Conversely, Implementation Requirements Discovery may expose an additional proof requirement and therefore a Test Item. When those Items are coupled parts of one implementation/proof decision, keep them in one Item Group so a material change to any member makes the whole group review-relevant.
 
 Refactor/evolution resilience means proof should stay stable while the property it proves remains unchanged. If an Evolution Step genuinely changes that property, changing or replacing the relevant Test Item/test is legitimate rather than a proof-stability failure.
 ### Test-first realization
@@ -78,7 +80,7 @@ Keep semantic documentation stable, local and intentionally readable.
 - Do not manually duplicate information that can be read reliably from source and changes only because code was refactored.
 - Do not manually maintain call chains, method/service routing, Java field inventories or code-shape traces in Scenario, Domain or Slice owners.
 - Do not document accidental current UI layout merely because it can be observed; record only intentional UI constraints worth preserving.
-- Record code-independent behavior, invariants, intentional UI requirements, architecture requirements, ownership and evolution pressure instead.
+- Record code-independent behavior, invariants, intentional UI requirements, durable implementation requirements, ownership and evolution pressure instead.
 - Keep a small term, invariant, principle or decision inside its natural Use Case/owner when a separate file would add ceremony rather than clarity.
 - Create a focused documentation owner only when an explicit use case/process needs that durable owner and independent/shared complexity justifies it. Documentation-process artifacts require a Documentation Use Case; application semantic/contract/proof owners may be justified by the Scenario, Slice, testing or acceptance process that needs them.
 - Do not create orphan `terms.md`, `principles.md`, `notes.md` or similar files merely because the information seems generally useful. If no explicit use case/process creates, maintains or consumes the owner, either keep the information in its natural owner or define the missing use case first.
@@ -87,7 +89,7 @@ Keep semantic documentation stable, local and intentionally readable.
 - One Java class does not imply one Domain Object owner, and one Domain Object owner does not imply one Java class.
 - `Feature Interaction` is behavioral Scenario decomposition; `Slice` is implementation decomposition. Do not require 1:1 mapping.
 - Scenario does not own implementation HOW, but it must retain material Realization Dependencies when feasibility assumptions/questions materially affect Scenario plausibility or runtime composition.
-- Scenario/FI design is iterative: explore enough internal FI Interaction Process, candidate BI and material realization feasibility to judge boundaries, revise FI composition when that exploration or later implementation discovery exposes a better/necessary design, and do not fully detail every candidate FI before the high-level composition is stable enough to justify it.
+- Scenario/FI design is iterative: explore enough internal FI Interaction Process, candidate BI and material realization feasibility to judge boundaries, revise FI composition when that exploration or later implementation investigation exposes a better/necessary design, and do not fully detail every candidate FI before the high-level composition is stable enough to justify it.
 - Prefer monotonic refinement and avoid unnecessary upstream churn, but never preserve an FI/process solely to avoid revisiting Scenario when implementation evidence invalidates its assumptions.
 - Candidate/rejected design alternatives do not become current truth, Evolution Steps or architecture requirements automatically.
 - Optimize prose for **semantic readability without semantic loss**, not for the fewest lines:

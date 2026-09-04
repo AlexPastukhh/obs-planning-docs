@@ -21,23 +21,20 @@ Behavior Items realized:
 - ...
 
 ## Slice Implementation Items
-### SI-...
-Requirement:
-<durable orchestration/composition/recovery/port/reuse requirement>
-Reason:
-<why current quality or materially known evolution needs it>
-Derived from:
-<BI / Domain constraint / Evolution Impact / concrete architecture pressure>
+<use Implementation Item form for selected durable realization requirements>
 
 ## Tests
 ### Test Items
-<only non-obvious durable proof-quality requirements>
+<selected additional proof-quality requirements>
+
+## Item Groups
+<only coupled SI/Test Items; material change to one member triggers group review>
 
 ## Evolution Impact
 <Evolution Impact form>
 ```
 
-Feature Interaction and Slice decompositions are not 1:1. A known future capability may justify a port/composition seam now without implementing that future capability prematurely.
+Use [Template — Implementation Item](implementation.md#template-implementation-item), [Template — Test Item](proof.md#template-test-item) and [Template — Item Group](implementation.md#template-item-group). Do not restate BI/Domain truth as SI; SI adds durable realization meaning. Feature Interaction and Slice decompositions are not 1:1. A known future capability may justify a low-cost port/composition seam now without implementing that future capability prematurely.
 
 ---
 <a id="template-shared-implementation-capability-owner"></a>
@@ -50,17 +47,21 @@ Use only when one real reusable implementation responsibility is consumed by sev
 
 ## Responsibility
 ...
+## Consumers
+- SL-...
+## Contract / Result
+<stable semantic consumer contract/result when material>
 ## Behavior Items / implementation requirements realized
 <references only when genuinely shared>
 ## Domain used
 ...
-## Consumers
-- SL-...
 ## Implementation Items
-<durable shared contract/composition/evolution requirements>
+<selected durable shared realization requirements>
 ## Tests
 ### Test Items
-<only when useful>
+<selected additional proof requirements>
+## Item Groups
+<only coupled implementation/proof decisions>
 ## Evolution Impact
 <only affected future steps>
 ```

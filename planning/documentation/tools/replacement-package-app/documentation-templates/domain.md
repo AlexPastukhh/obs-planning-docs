@@ -8,7 +8,7 @@ Status: physically separated part of the recommended-template owner. Templates r
 ```text
 # <Aggregate>
 
-## Responsibility
+## Responsibility / Consistency Boundary
 <business/domain responsibility and consistency boundary>
 
 ## Behavior Items implemented
@@ -18,23 +18,22 @@ Status: physically separated part of the recommended-template owner. Templates r
 <semantic meaning, not class/field inventory>
 
 ## Domain Implementation Items
-### DI-...
-Requirement:
-<durable current architecture requirement>
-Reason:
-<why it matters for current correctness/quality or materially known evolution>
-Derived from:
-<BI / invariant / Evolution Impact / concrete architecture pressure, when useful>
+<use Implementation Item form; DI-* only for selected durable realization requirements>
 
 ## Tests
 ### Test Items
-<only non-obvious durable proof-quality requirements>
+<selected additional proof-quality requirements only>
+
+## Item Groups
+<only coupled DI/Test Items; material change to one member triggers group review>
 
 ## Evolution Impact
 <Evolution Impact form for affected future steps>
 ```
 
-`DI-*`, Tests/Test Items and Evolution Impact are optional when their information is obvious/unneeded. Aggregate tests normally cover included Domain Objects unless independent ownership makes a separate proof owner clearer.
+Use [Template — Implementation Item](implementation.md#template-implementation-item) for `DI-*` and [Template — Item Group](implementation.md#template-item-group) for coupled realization/proof decisions. Use [Template — Test Item](proof.md#template-test-item) for non-obvious durable proof requirements.
+
+`DI-*`, Tests/Test Items, Item Groups and Evolution Impact are optional when no material additional requirement exists. Do not restate BI/invariants as DI. Aggregate tests normally cover included Domain Objects unless independent semantic ownership makes a separate proof owner clearer; a focused physical test file alone does not create a new semantic owner.
 
 ---
 <a id="template-domain-object-owner"></a>
@@ -52,9 +51,11 @@ Use separately only when independent semantics, identity/lifecycle, reuse or rul
 ## Identity / Relationships / Invariants
 ...
 ## Domain Implementation Items
-<DI-* only when useful>
-## Tests
-<only when independent test ownership is clearer than Aggregate-level proof>
+<DI-* only when selected Requirements Discovery answers add durable realization meaning>
+## Tests / Test Items
+<only when useful>
+## Item Groups
+<only coupled Items>
 ## Evolution Impact
 <only affected future steps>
 ```

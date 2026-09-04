@@ -37,6 +37,7 @@ Detailed forms are physically separated for focused reading while this file rema
 - [Scenario and Feature Interaction](documentation-templates/scenario.md)
 - [Screen and UI](documentation-templates/screen.md)
 - [Evolution](documentation-templates/evolution.md)
+- [Implementation requirements and Item Groups](documentation-templates/implementation.md)
 - [Domain](documentation-templates/domain.md)
 - [Slice and Shared Implementation](documentation-templates/slice-and-shared.md)
 - [Proof and Acceptance](documentation-templates/proof.md)
@@ -95,6 +96,16 @@ Moved to [`evolution.md#template-evolution-impact`](documentation-templates/evol
 ### Template — Evolution Steps Map entry
 
 Moved to [`evolution.md#template-evolution-steps-map-entry`](documentation-templates/evolution.md#template-evolution-steps-map-entry).
+
+<a id="template-implementation-item"></a>
+### Template — Implementation Item
+
+Moved to [`implementation.md#template-implementation-item`](documentation-templates/implementation.md#template-implementation-item).
+
+<a id="template-item-group"></a>
+### Template — Item Group
+
+Moved to [`implementation.md#template-item-group`](documentation-templates/implementation.md#template-item-group).
 
 <a id="template-aggregate-domain-owner"></a>
 ### Template — Aggregate Domain owner

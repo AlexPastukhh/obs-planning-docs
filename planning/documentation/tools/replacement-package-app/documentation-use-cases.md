@@ -1,7 +1,7 @@
 # Replacement Package App — Documentation Use Cases
 
 Status: active documentation-maintenance owner
-Scope: how Replacement Package App documentation designs and preserves Scenario behavior, discovers Domain meaning, describes Slice implementation requirements, stays evolution-aware, keeps source-level implementation evidence derived rather than manually duplicated, and maintains readable physical representation without confusing file boundaries with semantic authority.
+Scope: how Replacement Package App documentation designs and preserves Scenario behavior, discovers Domain meaning, derives concrete implementation/proof requirements through reusable Requirements Discovery, describes Slice/shared realization, stays evolution-aware, keeps source-level implementation evidence derived rather than manually duplicated, and maintains readable physical representation without confusing file boundaries with semantic authority.
 
 ## Purpose
 
@@ -23,7 +23,8 @@ Documentation must make these layers understandable without turning any one laye
 14. how to inspect current source/test mechanics without manually maintaining code-level traces in normative documentation;
 15. how to keep documentation readable, intuitively named and structurally clear without losing meaning;
 16. why every durable documentation owner exists and which explicit use case/process creates, maintains or consumes it;
-17. how one logical documentation owner may be physically decomposed for focused reading/maintenance without creating competing semantic authority.
+17. how one logical documentation owner may be physically decomposed for focused reading/maintenance without creating competing semantic authority;
+18. how reusable Implementation/Proof Requirements Discovery questions and candidate Patterns derive concrete owner-local Implementation/Test Items without becoming project-specific authority themselves.
 
 The target semantic/implementation/proof flow is:
 
@@ -42,9 +43,13 @@ Application Benefit / Desired Result
    └─ Screen Behavior Items
 → Domain discovery / Slice / optional Shared Implementation Capability
    ├─ inspect relevant Scenario Realization Dependencies
-   ├─ optional Domain / Slice / shared Implementation Items → production code
-   └─ local Tests / optional Test Items → test code
-↘ material implementation discovery may feed back into Scenario Process / FI design
+   ├─ Implementation Requirements Discovery ↔ Proof Requirements Discovery
+   │  ↔ reusable Pattern Registry candidate answers
+   ├─ material selected production answers → Domain / Slice / shared Implementation Items
+   ├─ material selected proof answers → local Test Items
+   ├─ coupled implementation/proof Items → Item Groups
+   └─ failing credible proof → production code → green/refactor
+↘ material implementation/proof evidence may feed back into Scenario Process / FI design
 → executed automated/practical Evidence
 ```
 
@@ -98,6 +103,11 @@ Shared methodology concepts are physically separated for focused reading; togeth
 - [Evolution and Implementation](documentation-use-cases/concepts-evolution-implementation.md)
 - [Proof and Documentation](documentation-use-cases/concepts-proof-documentation.md)
 
+## Requirements Discovery and reusable Patterns
+
+- [Requirements Discovery — Implementation and Proof](documentation-use-cases/requirements-discovery/README.md) defines the normative material-answer → Item, cross-discovery and Item Group rules.
+- [Requirements Pattern Registry](documentation-use-cases/patterns/REGISTRY.md) routes reusable candidate answers; Patterns are not mandatory architecture and do not become Items until selected/adapted into a concrete owner requirement.
+
 ## Documentation Use Case routing
 
 Before substantial documentation work, consult [`documentation-use-case-registry.md`](documentation-use-case-registry.md) to identify candidate Use Cases from explicit triggers, then read the applicable detailed Use Cases before relying on them for material decisions/changes. Several Use Cases may apply to one action.
@@ -125,6 +135,7 @@ The files below are the canonical detailed definitions. This file remains the st
 - [DOC-UC-12 — Plan and realize credible proof](documentation-use-cases/plan-realize-proof.md)
 <a id="doc-uc-documentation-representation"></a>
 - [DOC-UC-13 — Maintain documentation representation and decomposition](documentation-use-cases/maintain-documentation-representation.md)
+- [DOC-UC-14 — Maintain Requirements Discovery and reusable Pattern Library](documentation-use-cases/maintain-requirements-discovery-pattern-library.md)
 
 ## Template use
 
@@ -159,10 +170,11 @@ A following integration should:
 17. keep `domain-evolution.md` only for materially useful cross-owner Domain semantic transitions;
 18. keep source/test mechanics out of normative docs and generated traces derived/non-authoritative;
 19. preserve semantic naming/readability/no-orphan rules and explicit use-case/process coverage; use DOC-UC-13 when a logical owner needs clearer physical decomposition without changing semantic authority;
-20. keep unaffected current documentation unchanged until its actual migration is performed.
+20. when Domain/Slice/Shared/proof owners are migrated, use Requirements Discovery to derive material Implementation/Test Items, group coupled implementation/proof decisions, and keep reusable questions/Patterns in methodology rather than copying them into each owner;
+21. keep unaffected current documentation unchanged until its actual migration is performed.
 
 This methodology update does **not** itself claim that existing Scenario, Screen, Slice, Domain, testing or acceptance owners have already been migrated to these target forms.
 
 ## Physical authority rule
 
-This index, [`documentation-use-case-registry.md`](documentation-use-case-registry.md), and the linked concept/use-case/integration files form one documentation-methodology authority. Physical separation exists for progressive disclosure and focused maintenance; it does not create competing copies of meaning.
+This index, [`documentation-use-case-registry.md`](documentation-use-case-registry.md), and the linked concept/use-case/Requirements-Discovery/Pattern/integration files form one documentation-methodology authority. Physical separation exists for progressive disclosure and focused maintenance; it does not create competing copies of meaning.
