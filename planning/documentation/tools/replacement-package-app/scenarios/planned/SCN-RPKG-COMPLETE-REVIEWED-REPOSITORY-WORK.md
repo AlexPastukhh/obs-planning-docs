@@ -46,13 +46,13 @@ FI-RPKG-FINALIZE-REVIEWED-WORK
    return to correction/review flow
 ```
 
-Optional diagnostic interaction:
+Optional pre-publish support interaction:
 
 ```text
-Inspect Current Change
+Copy Diff
 ```
 
-Diagnostic inspection is not semantic approval and is not required by the ordinary reviewed-result route.
+`Copy Diff` is available only while exact local ChangeSet work is known not to be published. It copies a Git-derived diff to the clipboard for inspection/manual continuation; it is not semantic approval, does not attach/send anything to ChatGPT, and is not required by the ordinary reviewed-result route.
 
 ### Command composition routes
 
@@ -67,7 +67,7 @@ Apply Only
 → stop with exact applied/uncommitted state
 ```
 
-This route deliberately does not commit, publish, create an integration PR, integrate, write the Final Work Record or close the Issue.
+This route deliberately does not commit, publish, create an integration PR, integrate, write the Final Work Record or close the Issue. While the exact applied work is still known to be unpublished, the user may invoke `Copy Diff` as a local support action before later manual continuation.
 
 #### Route — Apply And Publish
 
@@ -99,7 +99,7 @@ This is the explicit end-to-end route. It must satisfy the same exact source, pu
 
 #### Manual / advanced continuation
 
-Manual controls may enter/resume individual stages such as Apply, Commit, Publish, reviewed-result verification, PR/integration and Finalize. They do not create separate Scenario meaning. Any retry or continuation resumes from the latest proven persisted Scenario truth rather than restarting established side effects.
+Manual controls may enter/resume individual stages such as Apply, `Copy Diff`, Commit, Publish, reviewed-result verification, PR/integration and Finalize. `Copy Diff` is a local clipboard support action available only in exact states where the current package work is known not to be published; it does not create a delivery/review route. These controls do not create separate Scenario meaning. Any retry or continuation resumes from the latest proven persisted Scenario truth rather than restarting established side effects.
 
 ### Cross-FI Behavior Items — route composition
 
@@ -454,35 +454,51 @@ After successful final integration/recording/Issue closure, later independent ch
 Reason:
 Completed approved work must remain a stable historical boundary.
 
-## Supporting interaction — Inspect Current Change
+## Supporting interaction — Copy Current Diff
 
-Status: supporting / diagnostic; not a primary approval path.
+Status: supporting / local pre-publish action; not a primary approval path.
 
 Purpose:
-Allow exact Git-derived inspection of current work for diagnostics, manual continuation, debugging or exceptional handoff without creating semantic approval.
+Let the user obtain an exact Git-derived diff in the clipboard when the current ChangeSet has local package work that is known not to be published, for inspection, debugging or manual continuation without creating another Scenario or ChatGPT handoff.
+
+The selected target has no standalone Current Change delivery Scenario and no `Send Diff to ChatGPT` behavior.
 
 Behavior Items:
 
-#### BI-RPKG-CURRENT-CHANGE-GIT-DERIVED — Diagnostic Current Change is Git-derived
+#### BI-RPKG-CURRENT-CHANGE-GIT-DERIVED — Copied diff is Git-derived
 Requirement:
-Target Current Change material must derive from authoritative Git revision boundaries rather than recreating legacy persisted ReviewDiff/Path Ownership authority.
+The copied target diff must derive from authoritative Git/workspace revision boundaries for the exact selected ChangeSet rather than recreating legacy persisted ReviewDiff/Path Ownership authority.
 
 Reason:
 Target work already has authoritative Git identity boundaries.
 
-#### BI-RPKG-CURRENT-CHANGE-NOT-APPROVAL — Diagnostic inspection does not approve
+#### BI-RPKG-CURRENT-CHANGE-NOT-APPROVAL — Copying diff does not approve
 Requirement:
-Inspecting/copying/exporting Current Change must not create semantic approval or independently authorize Finalize.
+Copying the diff must not create semantic approval or independently authorize Publish, integration or Finalize.
 
 Reason:
-Approval belongs to exact reviewed-result identity.
+Approval belongs to exact reviewed-result identity established by Builder review and consumer result confirmation.
 
-#### BI-RPKG-CURRENT-CHANGE-DIAGNOSTIC — Ordinary completion does not depend on manual Current Change review
+#### BI-RPKG-CURRENT-CHANGE-DIAGNOSTIC — Ordinary completion does not depend on Copy Diff
 Requirement:
-The ordinary reviewed-result Scenario must not require a manual Current Change handoff for semantic review.
+The ordinary reviewed-result Scenario must not require `Copy Diff` or any manual Current Change handoff for semantic review.
 
 Reason:
 The reviewed result was already semantically reviewed before Apply.
+
+#### BI-RPKG-CURRENT-CHANGE-COPY-ONLY-WHILE-UNPUBLISHED — Copy Diff is a pre-publish support boundary
+Requirement:
+`Copy Diff` is available only when the application can prove that the exact current local package work represented by the diff has not been published. Once publication is established, ordinary inspection/verification uses authoritative Git revision/result identity instead of a local diff-copy step.
+
+Reason:
+The support action exists for incomplete/manual application states; it must not become a second post-publish review workflow.
+
+#### BI-RPKG-CURRENT-CHANGE-COPY-STOPS-AT-CLIPBOARD — Copy Diff has no ChatGPT delivery side effect
+Requirement:
+The target `Copy Diff` action must stop after placing the exact diff text in the clipboard. It must not attach a `.diff`, target a conversation or trigger browser/extension Send behavior.
+
+Reason:
+Diff copying is local support inside package realization, while reviewed-result approval and external ChatGPT delivery are separate concerns.
 
 ## Screen references
 

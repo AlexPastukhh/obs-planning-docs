@@ -8,6 +8,8 @@ Prepared or already-existing logical repository work is brought into the exact i
 
 This current Scenario intentionally describes the **implemented migration state**. It does not claim the planned reviewed-result confirmation / PR / target Finalize workflow is current.
 
+Legacy Current Change remains represented here only as part of current compatibility behavior; it no longer has a separate Scenario owner. The selected target evolution retains local `Copy Diff` support before publication but does not retain Current Change delivery to ChatGPT as application behavior.
+
 ## Process Specification
 
 ### Scenario Process / Feature Interaction Map
@@ -216,7 +218,7 @@ Required Inputs:
 Exact ChangeSet identity, owned paths and repository baseline/current state.
 
 Interaction Process:
-The application derives the cumulative canonical ReviewDiff for the selected ChangeSet without mutating repository truth, persists the exact current review identity and exposes Refresh / Copy / Open / optional ChatGPT delivery.
+The application derives the cumulative canonical ReviewDiff for the selected ChangeSet without mutating repository truth, persists the exact current review identity and exposes the current legacy inspection controls. Existing delivery compatibility is current implementation behavior only; it is not retained by the selected target.
 
 Outcomes:
 - exact current ReviewDiff produced;
@@ -325,10 +327,10 @@ Selected current spatial/window responsibility is documented in [`../screens.md`
 Intent: PLANNED
 
 Change:
-Git-backed Current Change becomes a Git-derived optional diagnostic/support projection and no longer acts as semantic approval authority for ordinary target-mode work.
+Target reviewed-package work retains only a Git-derived local `Copy Diff` support action while exact local ChangeSet work is known not to be published. It does not create semantic approval, does not attach/send the diff to ChatGPT, and is not required by the ordinary reviewed-result route.
 
 Scenario Process / Feature Interaction impact:
-`FI-RPKG-INSPECT-LEGACY-CURRENT-CHANGE` remains only for legacy compatibility until legacy work is retired; target work uses diagnostic inspection separately from approval.
+`FI-RPKG-INSPECT-LEGACY-CURRENT-CHANGE` remains only inside this current Scenario for legacy compatibility until that implementation path is retired. In the target reviewed-work Scenario, standalone Current Change review/delivery disappears; local `Copy Diff` is a supporting action inside package realization/manual continuation and stops at the clipboard.
 
 Related / Replacement Scenario:
 [`planned/SCN-RPKG-COMPLETE-REVIEWED-REPOSITORY-WORK.md`](planned/SCN-RPKG-COMPLETE-REVIEWED-REPOSITORY-WORK.md).

@@ -1,49 +1,138 @@
 # SCN-RPKG-PROVIDE-REPOSITORY-CONTEXT — Provide Repository Context For Further Work
 
-Status: active current Scenario owner
+Status: active current Scenario owner with selected planned evolution
+
+The current implementation still contains in-application Snapshot Attach / Attach+Send compatibility. The selected target behavior below removes that handoff from this Scenario; documenting the target is not evidence that the implementation migration has already happened.
 
 ## Application Benefit / Desired Result
 
-Create a trustworthy portable representation of one exact registered repository state and, when useful, make that exact artifact available in one intended ordinary ChatGPT conversation without changing repository work.
+Create a trustworthy portable representation of one exact registered repository state and expose one exact future Snapshot path early enough that an independent consumer can begin waiting for that artifact before Snapshot materialization completes, without changing repository work.
 
-## Process Specification
+The Replacement Package App target stops at the exact artifact/path boundary. It does not attach or send the Snapshot to ChatGPT. An external consumer may use the copied path to wait for the file and later attach/send it elsewhere; such automation is outside this Scenario.
+
+## Current compatibility boundary
+
+Current Snapshot exactness/read-only behavior remains authoritative until implementation migration. Existing built-in ChatGPT attachment/send controls are compatibility behavior to retire, not selected target behavior.
+
+## Selected target Process Specification
 
 ### Scenario Process / Feature Interaction Map
 
 ```text
-FI-RPKG-MATERIALIZE-REPOSITORY-CONTEXT
-├─ Export only → terminal exact Snapshot
-└─ Attach / Attach+Send
-     ↓
-   FI-RPKG-DELIVER-REPOSITORY-CONTEXT
+user starts Snapshot export
+↓
+FI-RPKG-ALLOCATE-SNAPSHOT-DESTINATION
+↓
+exact future path selected
+↓
+exact path copied to clipboard
+↓
+FI-RPKG-MATERIALIZE-REPOSITORY-CONTEXT starts
+↓
+"Snapshot path copied / creation started" notification
+↓
+capture/materialization continues
+├─ exact Snapshot published at announced path → completion
+└─ capture/publication failure → explicit failure; announced path is not silently changed
 ```
+
+There is no selected target `Attach` / `Attach+Send` branch and no post-export path-copy dialog.
+
+### FI-RPKG-ALLOCATE-SNAPSHOT-DESTINATION — Establish exact future Snapshot path
+
+Scenario Role / Local Purpose:
+Expose one exact future artifact location before the potentially long Snapshot capture starts, so the user or an independent external consumer can begin waiting for that exact file immediately.
+
+Context / Preconditions:
+One registered Repository Target, Snapshot mode (`Local` or `Committed`) and the configured Snapshot output directory are known.
+
+Required Inputs:
+Exact Repository Target, mode/source selection and output directory.
+
+Interaction Process:
+Before Snapshot capture begins, the application selects a new collision-resistant Snapshot filename/path, proves that the exact candidate path is not already occupied, and retries candidate selection when an exact-name collision is detected. Once one path is selected, the application copies that exact future path to the clipboard, starts Snapshot materialization, and reports that the path was copied and creation has started while materialization continues asynchronously from the user's perspective.
+
+The selected target does not require the Snapshot file to exist at clipboard-copy time. The copied value is a promised destination for this operation, not a claim that creation has already completed.
+
+Outcomes:
+- exact unoccupied future path selected and copied → continue to materialization;
+- candidate collision → select another candidate before exposing a path;
+- output destination/path cannot be established safely → fail before announcing a future path.
+
+Result:
+One exact future Snapshot path is announced and available in the clipboard for this operation.
+
+Outputs:
+Exact announced Snapshot path and start notification.
+
+Next Interactions:
+`FI-RPKG-MATERIALIZE-REPOSITORY-CONTEXT`.
+
+Behavior Items:
+
+#### BI-RPKG-SNAPSHOT-FUTURE-PATH-BEFORE-CAPTURE — Future path is known before Snapshot capture
+Requirement:
+A successful Snapshot start must establish the exact future artifact path before the long-running capture/materialization work begins.
+
+Reason:
+An independent consumer must be able to begin waiting for the exact artifact without waiting for Snapshot completion first.
+
+#### BI-RPKG-SNAPSHOT-FUTURE-PATH-NONCOLLIDING — Do not announce an already occupied path
+Requirement:
+Before exposing a candidate Snapshot path, the application must prove that the exact candidate filename/path is not already occupied; an exact-name collision must cause a new candidate to be selected rather than reusing or overwriting the existing path.
+
+Reason:
+The copied path must identify only this Snapshot operation and must not alias an older artifact.
+
+#### BI-RPKG-SNAPSHOT-ANNOUNCED-PATH-IMMUTABLE — Announced path cannot silently change
+Requirement:
+After the exact future Snapshot path has been copied/announced, successful publication must use that same path. A later collision or publication problem must fail explicitly rather than silently choosing a different filename.
+
+Reason:
+An external waiter may already be watching the announced path.
+
+#### BI-RPKG-SNAPSHOT-PATH-COPIED-ON-START — Copy exact path before capture continues
+Requirement:
+Once the future path is safely selected, the application must place that exact path in the clipboard, start Snapshot creation, and then notify the user that the path was copied and creation has started while the operation continues.
+
+Reason:
+The path itself is the early handoff result needed before the artifact exists.
+
+#### BI-RPKG-SNAPSHOT-PATH-ANNOUNCEMENT-NOT-COMPLETION — Copied path does not claim file existence
+Requirement:
+Copying/announcing the future Snapshot path must not be represented as Snapshot completion; creation may still be in progress or may later fail.
+
+Reason:
+The external consumer is expected to wait for the file to appear at the announced path.
 
 ### FI-RPKG-MATERIALIZE-REPOSITORY-CONTEXT — Materialize exact Repository Snapshot
 
 Scenario Role / Local Purpose:
-Produce the exact portable repository-context artifact independently of any downstream browser result.
+Produce the exact portable repository-context artifact at the already-announced path without changing repository work.
 
 Context / Preconditions:
-One registered Repository Target and Snapshot mode (`Local` or `Committed`) are selected.
+One exact future Snapshot path has been announced and the exact Local or Committed source selection is known.
 
 Required Inputs:
-Exact Repository Target, exact mode/source selection and output location.
+Exact Repository Target, exact mode/source selection and exact announced output path.
 
 Interaction Process:
 The application revalidates target identity/readiness, freezes one exact Local or Committed source identity and builds the Snapshot ZIP. Local capture must represent one stable selected repository state; Committed capture must represent one immutable selected commit. Snapshot creation does not mutate repository work.
 
+Successful publication must create the Snapshot at exactly the announced path without overwriting another artifact. The application must not change the filename/path after announcement.
+
 Outcomes:
-- exact Snapshot published to a unique output path;
-- Repository Not Ready / unsupported entry / unstable source / confinement failure → no misleading final ZIP.
+- exact Snapshot published at the announced path;
+- Repository Not Ready / unsupported entry / unstable source / confinement/publication failure → explicit failure, no misleading final ZIP and no alternate silently chosen path.
 
 Result:
-One exact Repository Snapshot artifact exists or export has failed without changing repository work.
+One exact Repository Snapshot artifact exists at the previously announced path, or creation failed truthfully without changing repository work.
 
 Outputs:
-Snapshot ZIP, path and exact source metadata.
+Snapshot ZIP at the announced path and exact source metadata.
 
 Next Interactions:
-Export-only → terminal. Attach/Attach+Send → `FI-RPKG-DELIVER-REPOSITORY-CONTEXT`.
+Scenario terminates with success/failure notification. There is no target post-export path-copy window and no in-application ChatGPT attachment/send step.
 
 Behavior Items:
 
@@ -68,68 +157,63 @@ If the Local source changes such that one stable capture cannot be proven, expor
 Reason:
 A self-inconsistent context artifact cannot be treated as one repository state.
 
-### FI-RPKG-DELIVER-REPOSITORY-CONTEXT — Deliver exact Snapshot to one conversation
-
-Scenario Role / Local Purpose:
-Optionally make the already-created exact Snapshot available in the conversation selected for this export while keeping browser truth separate from repository/Snapshot truth.
-
-Context / Preconditions:
-Snapshot export succeeded and Attach or Attach+Send was selected before export.
-
-Required Inputs:
-Exact Snapshot artifact, frozen `conversationKey`, frozen attach/send mode.
-
-Interaction Process:
-Only after exact ZIP creation does the application attempt the selected Attach or Attach+Send interaction for the frozen artifact/destination/mode. Attach-only ends at confirmed `Attached`; Attach+Send preserves the distinction between failure before a possible Send and uncertainty after Send may have occurred. Snapshot delivery never changes the persisted Review-chat binding.
-
-Outcomes:
-- Attached / Sent / NoChanges-equivalent terminal result where applicable;
-- FailedBeforeSend / PreparedUnsent / Cancelled;
-- `UnknownAfterSend` when Send may have happened but cannot be proven.
-
-Result:
-The exact Snapshot is delivered to the frozen destination, or delivery truth remains explicit without invalidating the successful export.
-
-Outputs:
-External Interaction terminal/attention state.
-
-Next Interactions:
-Scenario terminates; retry after terminal outcome is a new interaction identity.
-
-Behavior Items:
-
-#### BI-RPKG-SNAPSHOT-HANDOFF-EXACT-ARTIFACT — Deliver the exact exported artifact
+#### BI-RPKG-SNAPSHOT-SUCCESS-AT-ANNOUNCED-PATH — Successful Snapshot appears at the copied path
 Requirement:
-Automatic handoff must attach the exact Snapshot bytes/fingerprint produced by this operation, not a later or similarly named artifact.
+A successful Snapshot operation must publish the exact artifact at the same exact path that was copied before capture.
 
 Reason:
-The conversation must receive the same repository context artifact whose successful export the application reported.
+The announced path is the external waiting contract for this operation.
 
-#### BI-RPKG-SNAPSHOT-HANDOFF-FROZEN-DESTINATION — Do not retarget Snapshot handoff
+#### BI-RPKG-SNAPSHOT-NO-POST-EXPORT-COPY-STEP — No completion dialog is required to obtain the path
 Requirement:
-Automatic Snapshot delivery must remain bound to the exact conversation and attach/send intent frozen with the export operation.
+The selected target must not require a post-export window/dialog whose purpose is to let the user copy the Snapshot path; that path was already delivered at operation start.
 
 Reason:
-Snapshot intent is captured with one conversation and must not follow later UI/browser movement.
+Waiting for completion before learning the path defeats the external-waiter use case and adds an unnecessary interaction.
 
-#### BI-RPKG-SNAPSHOT-DELIVERY-DOES-NOT-CHANGE-REVIEW-BINDING — Snapshot destination is not Review-chat binding
+#### BI-RPKG-SNAPSHOT-APP-STOPS-AT-PATH-BOUNDARY — App does not attach/send Snapshot in the target flow
 Requirement:
-Snapshot delivery must not create, replace or reinterpret the ChangeSet's Review-chat binding.
+After Snapshot creation starts and the future path is copied, Replacement Package App must not make ChatGPT attachment/send a required or selected target step of this Scenario.
 
 Reason:
-Repository-context sharing and ChangeSet review destination are separate user intents.
+The exact pre-announced path is sufficient for an independent external consumer to wait for and handle the artifact.
 
-#### BI-RPKG-SNAPSHOT-DELIVERY-FAILURE-DOES-NOT-INVALIDATE-EXPORT — Browser failure does not erase Snapshot success
-Requirement:
-Failure, cancellation or uncertainty in ChatGPT handoff must not rewrite a successfully created Snapshot as if export failed.
+## Why This Interaction Design
 
-Reason:
-The Snapshot artifact already exists independently of whether a browser interaction later succeeds.
+The future artifact path is exposed before materialization so an independent external consumer may begin waiting for that exact file before export completes. One intended example is a separate script that accepts the copied path, polls/waits for the file to appear, and then attaches/sends it to ChatGPT. That script, its polling strategy and ChatGPT automation are outside this Scenario and do not create Replacement Package App authority.
 
 ## Screen references
 
-The Snapshot dialog and handoff-related current screen rules are documented in [`../screens.md`](../screens.md).
+Current selected Screen owner remains [`../screens.md`](../screens.md). The selected target specifically removes the need for a post-export copy-path dialog and in-application Snapshot Attach/Attach+Send controls; exact future spatial changes remain Screen-owned.
+
+## Realization Dependencies / Questions / Candidates
+
+These entries record Scenario-relevant feasibility only and do not select implementation ownership.
+
+### Pre-announced path can be published without overwrite/collision races
+Relevant Scenario / FI behavior:
+`FI-RPKG-ALLOCATE-SNAPSHOT-DESTINATION`, `BI-RPKG-SNAPSHOT-FUTURE-PATH-NONCOLLIDING`, `BI-RPKG-SNAPSHOT-ANNOUNCED-PATH-IMMUTABLE`.
+
+Dependency / Question:
+How can the application safely announce one exact future path and later publish only to that path without overwriting an existing file or silently switching names if filesystem state changes?
+
+Current assumption / candidate realization:
+Use a high-entropy generated identifier in the Snapshot filename, check exact candidate absence before announcement and regenerate on collision, then use fail-closed/create-new final publication semantics. Exact identifier format, reservation/publication mechanism and implementation owner remain downstream HOW.
+
+Investigate during:
+Snapshot implementation Requirements Discovery + filesystem publication Proof Requirements Discovery.
+
+Scenario impact if invalidated:
+The early path-handoff contract would need a stronger reservation/ownership boundary before the path can be copied.
 
 ## Evolution Steps
 
-No selected application-behavior Evolution Step currently changes the core Snapshot benefit. Shared handoff implementation may evolve while these BIs remain stable.
+<a id="evo-rpkg-preannounce-snapshot-path-and-remove-inapp-handoff"></a>
+### EVO-RPKG-PREANNOUNCE-SNAPSHOT-PATH-AND-REMOVE-INAPP-HANDOFF — Move Snapshot handoff to exact future path
+Intent: PLANNED
+
+Change:
+Allocate one collision-resistant exact future Snapshot path before capture, copy it to the clipboard, notify that creation started, publish success only at that exact path, remove the post-export path-copy dialog, and retire in-application Snapshot ChatGPT Attach/Attach+Send from the selected Scenario.
+
+Scenario Process / Feature Interaction impact:
+Current built-in Snapshot delivery compatibility is replaced by an early exact-path boundary. External automation may consume that path but remains outside Replacement Package App Scenario behavior.
