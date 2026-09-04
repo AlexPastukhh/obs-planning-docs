@@ -36,4 +36,4 @@ Navigation can change while background work is running.
 
 ## Evolution Impact
 
-Planned reviewed-result state adds more ChangeSet facts to project, but does not change the rule that navigation is not execution authority.
+Planned reviewed-result work may add new facts that navigation can project if/when their natural owners are selected. Navigation remains a projection, not execution authority.

@@ -45,8 +45,8 @@ Target BI references:
 - `BI-RPKG-CURRENT-CHANGE-NOT-APPROVAL`
 - `BI-RPKG-CURRENT-CHANGE-DIAGNOSTIC`
 
-Expansion:
-Add Git-derived latest/cumulative projections from exact persisted ChangeSet Git boundaries. Target work already has exact base/published revision identity and should not recreate a second owned-path authority. This is future Slice delta, not a current `SI-*` requirement.
+Candidate impact:
+Target diagnostic Current Change should be Git-derived and must not recreate a second owned-path approval authority. Whether this existing Slice remains the implementation owner for that target projection is selected by downstream Requirements Discovery; this Impact does not create a future `SI-*` by itself.
 
 Refactoring:
 Remove semantic-approval/finalize authority from target Current Change use while preserving the legacy path until legacy retirement.

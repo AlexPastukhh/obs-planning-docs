@@ -30,7 +30,7 @@ Required Inputs:
 Exact Repository Target, exact mode/source selection and output location.
 
 Interaction Process:
-The application revalidates target identity/readiness, freezes the source identity, and builds the Snapshot ZIP. Local mode captures tracked-existing plus untracked non-ignored files and proves the capture is stable across two consistency observations; Committed mode resolves one immutable commit and reads regular file bytes from Git objects. The real Git index is not modified.
+The application revalidates target identity/readiness, freezes one exact Local or Committed source identity and builds the Snapshot ZIP. Local capture must represent one stable selected repository state; Committed capture must represent one immutable selected commit. Snapshot creation does not mutate repository work.
 
 Outcomes:
 - exact Snapshot published to a unique output path;
@@ -80,7 +80,7 @@ Required Inputs:
 Exact Snapshot artifact, frozen `conversationKey`, frozen attach/send mode.
 
 Interaction Process:
-Only after exact ZIP creation the application creates/reuses an equivalent actionable External Interaction for the frozen artifact/destination/mode. Attach-only ends at confirmed `Attached`; Attach+Send uses the guarded exact-attachment send engine. Pre-send cancellation/failure and post-click uncertainty remain distinct. Snapshot delivery never changes the persisted Review-chat binding.
+Only after exact ZIP creation does the application attempt the selected Attach or Attach+Send interaction for the frozen artifact/destination/mode. Attach-only ends at confirmed `Attached`; Attach+Send preserves the distinction between failure before a possible Send and uncertainty after Send may have occurred. Snapshot delivery never changes the persisted Review-chat binding.
 
 Outcomes:
 - Attached / Sent / NoChanges-equivalent terminal result where applicable;

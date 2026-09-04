@@ -6,7 +6,7 @@ Status: active current Slice owner
 
 Finalize legacy ChangeSet work from a fresh exact Current Change, publish it, preserve Publication Pending after local success/remote failure, and explicitly/guardedly Reopen finalized legacy work.
 
-Selected future Finalize behavior is described only in `Evolution Impact` below; it is not current Slice responsibility.
+The planned target Scenario also has a Finalize FI, but name adjacency does not assign that future reviewed-result integration responsibility to this legacy Slice.
 
 ## Scenario behavior realized
 
@@ -39,12 +39,6 @@ Current responsibility: `CoreTests` for review-baseline freshness, owned-only st
 Canonical Scenario step:
 [`EVO-RPKG-ADOPT-REVIEWED-RESULT-WORKFLOW`](../scenarios/SCN-RPKG-COMPLETE-REPOSITORY-WORK.md#evo-rpkg-adopt-reviewed-result-workflow)
 
-Target BI references:
-- `BI-RPKG-FINALIZE-ONLY-APPROVED-PUBLISHED-REVISION`
-- `BI-RPKG-FINALIZE-PRESERVES-REVIEWED-CONTENT`
-- `BI-RPKG-TARGET-MOVEMENT-NOT-AUTOMATIC-STALE`
-- `BI-RPKG-CONTENT-CHANGING-RECONCILIATION-STALES-APPROVAL`
-- `BI-RPKG-FINALIZED-WORK-IS-CLOSED`
 
-Forced Migration:
-Target Finalize authority moves from legacy ReviewDiff/Path Ownership to reviewed published-result/PR/integration identity. Future Finalize/reconciliation must preserve the reviewed result identity or explicitly stale approval before a content-changing integration result can be accepted. This is future Slice delta, not a current `SI-*` requirement. Existing legacy semantics remain until legacy work is retired; they must not be silently reused for target work.
+Candidate impact / ownership gate:
+Target Finalize authority moves away from legacy ReviewDiff/Path Ownership semantics to reviewed-result/integration identity. Existing legacy semantics remain until retirement and must not be silently reused. The target Finalize implementation owner is intentionally TBD: downstream Requirements Discovery may evolve this Slice, create a different Slice/shared capability, or place durable invariants in a Domain owner.

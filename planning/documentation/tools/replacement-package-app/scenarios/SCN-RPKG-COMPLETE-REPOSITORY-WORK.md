@@ -97,7 +97,7 @@ Required Inputs:
 Repository identity, `changeSetId`, Title, Goal, Why and Acceptance.
 
 Interaction Process:
-The application searches for the exact `ChangeSet-Id` marker, adopts/verifies one managed Issue, fails closed on multiple exact matches, journals create intent before an external create side effect and reconciles an uncertain create result before considering another create. The Issue reference is persisted and propagated to the ChangeSet when it exists.
+The application ensures one exact managed Issue represents the `ChangeSet-Id`, adopts/verifies an existing exact match, fails closed on conflicting exact matches and preserves truthful recovery when external Issue creation/update outcome is uncertain. The resulting Issue identity remains durable for the same logical work.
 
 Outcomes:
 - exact Issue exists and is verified → continue;
@@ -141,7 +141,7 @@ Required Inputs:
 Validated package operations/payloads, exact expected source, persisted ChangeSet state and route-specific repository context.
 
 Interaction Process:
-For target-mode work, the application ensures/reuses the deterministic isolated ChangeSet workspace pinned to exact published source, applies package paths using a durable prior/intended Apply journal, commits only proven package paths with package/ChangeSet identity, and publishes only the exact intended ChangeSet branch tip after remote proof. Retry resumes/proves `Ready → AppliedUncommitted → CommittedUnpublished → Ready`, reconciling `PublicationUncertain` before another push.
+For target-mode work, the application realizes the exact package against the exact expected published source, preserving truthful applied/committed/published boundaries. Retry proves established effects and resumes `Ready → AppliedUncommitted → CommittedUnpublished → Ready`; `PublicationUncertain` must be reconciled before another publication attempt or later package.
 
 For legacy work, package/source/ownership preflight precedes main-workspace mutation and current Path Ownership semantics remain active.
 
@@ -216,7 +216,7 @@ Required Inputs:
 Exact ChangeSet identity, owned paths and repository baseline/current state.
 
 Interaction Process:
-The application derives the cumulative canonical ReviewDiff for the selected ChangeSet through isolated Git/index mechanics, persists the exact current review identity and exposes Refresh / Copy / Open / optional ChatGPT delivery.
+The application derives the cumulative canonical ReviewDiff for the selected ChangeSet without mutating repository truth, persists the exact current review identity and exposes Refresh / Copy / Open / optional ChatGPT delivery.
 
 Outcomes:
 - exact current ReviewDiff produced;
@@ -267,7 +267,7 @@ Required Inputs:
 Exact ChangeSet, fresh Current Change identity and local commit message.
 
 Interaction Process:
-Finalize revalidates the current review baseline and ownership, stages only owned paths, commits and publishes. Publication failure preserves successful local commit/work as Publication Pending. Explicit Reopen can later return finalized legacy identity to Active only after guarded ownership reacquisition.
+Finalize proves that the persisted Current Change is still fresh and that only the ChangeSet-owned work will be included, then commits/publishes that legacy work. Publication failure preserves successful local work as Publication Pending. Explicit Reopen may later return finalized legacy identity to Active only when ownership can be safely reacquired.
 
 Outcomes:
 - Finalized;
@@ -338,10 +338,10 @@ Related / Replacement Scenario:
 Intent: PLANNED
 
 Change:
-Target-mode Complete Repository Work gains consumer-side confirmation that the actual published tree equals the Builder-reviewed predicted result, then one correct integration PR and approval-preserving Finalize semantics.
+Target-mode Complete Repository Work gains the selected three-route contract: Apply Only stops applied/uncommitted; Apply And Publish publishes and confirms actual result equals the reviewed predicted result, then stops pre-integration; Apply And Finalize continues through correct integration, final work record and Issue closure.
 
 Scenario Process / Feature Interaction impact:
-The current target-mode stop after published `Ready` is replaced by the planned reviewed-result confirmation → PR → Finalize process.
+The current target-mode stop after published `Ready` evolves into route-dependent planned behavior while preserving one semantic authority and resumable state.
 
 Related / Replacement Scenario:
 [`planned/SCN-RPKG-COMPLETE-REVIEWED-REPOSITORY-WORK.md`](planned/SCN-RPKG-COMPLETE-REVIEWED-REPOSITORY-WORK.md).

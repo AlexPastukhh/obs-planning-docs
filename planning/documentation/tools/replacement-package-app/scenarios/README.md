@@ -16,8 +16,8 @@ Scenario identity follows a real application/user result rather than controls, c
 
 | Status | Scenario | Application result |
 |---|---|---|
-| PLANNED FUTURE | [`SCN-RPKG-COMPLETE-REVIEWED-REPOSITORY-WORK`](planned/SCN-RPKG-COMPLETE-REVIEWED-REPOSITORY-WORK.md) | The exact Builder-reviewed package is realized, the actual published tree is proved equal to the reviewed predicted tree, one correct integration PR exists, and approved content is finalized without requiring a second semantic review. |
+| PLANNED FUTURE | [`SCN-RPKG-COMPLETE-REVIEWED-REPOSITORY-WORK`](planned/SCN-RPKG-COMPLETE-REVIEWED-REPOSITORY-WORK.md) | One reviewed package follows one of three explicit routes: Apply Only stops applied/uncommitted; Apply And Publish stops pre-integration after exact reviewed-result confirmation; Apply And Finalize continues through integration, `## Final Work Record` and managed Issue closure. |
 
-The planned Scenario is a selected target design, not a second current authority. Promotion requires implementation/proof reconciliation; the current Scenario remains authority until that happens.
+The planned Scenario is a selected target design, not a second current authority. It records Scenario-level realization dependencies but does not preassign future Domain/Slice/Shared ownership. Promotion requires downstream Requirements Discovery, implementation/proof reconciliation and evidence; the current Scenario remains authority until that happens.
 
 Shared work-context selection, external interaction management, notifications and other implementation capabilities support these Scenarios and are represented by Domain/Slice/shared owners rather than invented as extra user-world Scenarios.

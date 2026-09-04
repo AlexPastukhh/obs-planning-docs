@@ -1,10 +1,10 @@
 # Repository Work / ChangeSet
 
-Status: active current Aggregate owner with selected planned expansion
+Status: active current Aggregate owner
 
 ## Responsibility
 
-Own one logical repository-work consistency boundary across repository target association, pinned Git execution identity, package realization/recovery and lifecycle facts that must remain mutually compatible. Selected future expansion adds reviewed-result identity, PR currentness and approval/finalization state to this same logical work boundary.
+Own one logical current repository-work consistency boundary across repository target association, pinned Git execution identity, package realization/recovery and current lifecycle facts that must remain mutually compatible. Planned reviewed-result/PR/finalization behavior may require this owner to evolve, but that future ownership is not selected here.
 
 ## Behavior Items implemented
 
@@ -30,12 +30,9 @@ Current Git-backed:
 Legacy compatibility:
 - Path Ownership, persisted Current Change and legacy lifecycle/finalization facts remain valid only for legacy ChangeSets and are not silently projected onto Git-backed target work.
 
-Planned reviewed-result expansion:
-- exact Builder review binding: ChangeSet + package + expected source + reviewed predicted result identity;
-- actual published revision verification/currentness;
-- one current integration PR identity;
-- approval staleness determined by whether the reviewed result changed, not by target movement alone;
-- finalized target work is closed to package continuation.
+Planned reviewed-result note:
+- the planned Scenario introduces new result/currentness/integration requirements;
+- their durable owner and Item shape are selected later by Requirements Discovery rather than assumed to belong to ChangeSet.
 
 ## Domain Implementation Items
 
@@ -48,7 +45,7 @@ Retry, applicability and publication proof require stable revision/workspace aut
 
 ## Tests
 
-Most current proof is integration-oriented and therefore lives with `SL-RPKG-01`, `SL-RPKG-02`, `SL-RPKG-03` and `SL-RPKG-11`. New reviewed-result/currentness invariants should receive local Domain proof when they can be observed deterministically without reproducing Git orchestration.
+Most current proof is integration-oriented and therefore lives with `SL-RPKG-01`, `SL-RPKG-02`, `SL-RPKG-03` and `SL-RPKG-11`. If downstream Requirements Discovery selects new ChangeSet-owned reviewed-result/currentness invariants, they should receive local Domain proof when they can be observed deterministically without reproducing Git orchestration.
 
 ### Test Items
 
@@ -77,7 +74,7 @@ Target BI references:
 - target Finalize/approval-staleness/closure BI family in the planned reviewed-work Scenario.
 
 Expansion:
-Add reviewed-result binding, actual-published-result proof/currentness, PR reference/currentness and target Finalize/closure state around the existing ChangeSet identity. The future implementation must preserve enough immutable identity to relate ChangeSet, reviewed package, expected source, reviewed predicted result and actual published revision, and approval currentness must follow result identity rather than incidental target movement. These are future owner-shape requirements here, not current `DI-*` items.
+Candidate impact: the planned Scenario requires durable relationships among logical work, reviewed package/source/result, actual published result, integration currentness and final closure. Because current ChangeSet already owns related repository-work identity, it is a natural candidate to participate, but downstream Domain/Slice/Shared Requirements Discovery must decide which requirements actually belong here and create `DI-*`/`SI-*`/shared Items only after that selection.
 
 Forced Migration:
-Target Finalize authority must not depend on legacy Path Ownership/ReviewDiff approval semantics.
+Regardless of downstream owner selection, target Finalize authority must not depend on legacy Path Ownership/ReviewDiff approval semantics.

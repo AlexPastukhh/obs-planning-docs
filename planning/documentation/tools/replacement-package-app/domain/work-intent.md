@@ -38,4 +38,4 @@ Local Slice proof is owned primarily by [`../slices/SL-RPKG-10-manage-work-inten
 ## Evolution Impact
 
 ### EVO-RPKG-ADOPT-REVIEWED-RESULT-WORKFLOW
-No forced migration. The planned Complete Reviewed Repository Work Scenario keeps Work Intent as its first FI and later FIs consume the same established identity.
+The planned Complete Reviewed Repository Work Scenario keeps durable Work Intent as its first FI. Later FIs consume that established identity, but their reviewed-result/PR/integration/final-record requirements are not automatically owned by Work Intent.

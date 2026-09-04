@@ -11,7 +11,7 @@ Feature Interaction and Slice decompositions are intentionally not 1:1. A Slice 
 |---|---|
 | [`SL-RPKG-01`](slices/SL-RPKG-01-apply-replacement-work.md) | Validate/realize replacement work; target-mode Apply→Commit→Publish composition plus legacy Apply. |
 | [`SL-RPKG-02`](slices/SL-RPKG-02-inspect-current-change.md) | Derive/persist current legacy ReviewDiff; planned Git-derived diagnostic projection. |
-| [`SL-RPKG-03`](slices/SL-RPKG-03-finalize-and-publish-work.md) | Legacy Finalize/publication recovery/Reopen; planned target reviewed-result Finalize evolution. |
+| [`SL-RPKG-03`](slices/SL-RPKG-03-finalize-and-publish-work.md) | Legacy Finalize/publication recovery/Reopen. Planned target integration ownership remains TBD through Requirements Discovery. |
 | [`SL-RPKG-04`](slices/SL-RPKG-04-export-repository-snapshot.md) | Produce exact Local/Committed Repository Snapshot. |
 | [`SL-RPKG-05`](slices/SL-RPKG-05-attach-repository-snapshot.md) | Deliver exact Snapshot through shared ChatGPT handoff capability. |
 | [`SL-RPKG-06`](slices/SL-RPKG-06-deliver-current-change.md) | Deliver exact legacy Current Change through shared ChatGPT handoff capability. |
@@ -27,4 +27,4 @@ Feature Interaction and Slice decompositions are intentionally not 1:1. A Slice 
 
 ## Source boundary
 
-These Slice owners define durable implementation responsibility, selected BI/Domain relations, non-trivial `SI-*` constraints, proof responsibility and affected Evolution Impact. Exact classes, methods, journal record layouts, Git commands and Swing wiring remain source/test authority unless they become durable semantic/contract constraints.
+These Slice owners define current durable implementation responsibility, selected BI/Domain relations, non-trivial `SI-*` constraints, proof responsibility and affected Evolution Impact. Planned Scenario dependencies do not assign future reviewed-result/PR/integration/final-record behavior to a Slice merely because it is adjacent to current behavior; downstream Requirements Discovery selects that ownership. Exact classes, methods, journal record layouts, Git commands and Swing wiring remain source/test authority unless they become durable semantic/contract constraints.

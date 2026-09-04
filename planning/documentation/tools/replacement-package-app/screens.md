@@ -136,4 +136,4 @@ Legacy approval-oriented Current Change controls may be reduced/relabelled as op
 
 ### EVO-RPKG-ADOPT-REVIEWED-RESULT-WORKFLOW
 Expansion:
-Expose reviewed-result verification identity/currentness, PR readiness and target Finalize/reconciliation outcomes. Exact future layout is deliberately not selected here; behavioral owners should drive a later Screen design pass if spatial complexity becomes material.
+Future screen design must make the selected route/result distinctions understandable: Apply Only → applied/uncommitted, Apply And Publish → reviewed published result / pre-integration, Apply And Finalize → integration/final-record/Issue-close outcome, plus truthful recovery/stale-approval states. Exact future layout is deliberately not selected here; the Scenario drives a later Screen design pass.

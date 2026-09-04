@@ -14,6 +14,8 @@ Behavior Items remain authoritative in Scenario owners. Domain owners implement 
 
 Legacy Path Ownership and legacy persisted Current Change remain current implementation concepts while legacy behavior exists. They do not need standalone permanent target owners merely for symmetry.
 
+Planned Scenario dependencies do not preassign reviewed-result, PR, integration or final-record requirements to an existing Domain owner. Such ownership is selected through downstream Requirements Discovery.
+
 Each owner separates:
 - current semantic responsibility/invariants;
 - authoritative BI identities it implements;

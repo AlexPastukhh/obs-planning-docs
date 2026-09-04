@@ -11,7 +11,6 @@ Realize one validated replacement package against the exact repository-work cont
 Feature Interaction context:
 - `FI-RPKG-RESOLVE-CURRENT-REPOSITORY-WORK`
 - `FI-RPKG-REALIZE-CURRENT-PACKAGE`
-- planned `FI-RPKG-REALIZE-REVIEWED-PACKAGE`
 
 Behavior Items realized:
 - `BI-RPKG-CURRENT-PREFLIGHT-BEFORE-MUTATION`
@@ -21,7 +20,6 @@ Behavior Items realized:
 - `BI-RPKG-CURRENT-PARTIAL-STATE-TRUTHFUL`
 - `BI-RPKG-CURRENT-PUBLICATION-UNCERTAIN-BLOCKS-NEXT`
 - `BI-RPKG-CURRENT-LEGACY-OWNERSHIP-PROTECTS-UNRELATED-WORK`
-- planned target Apply/Retry/Partial-state BIs referenced in [`../behavior-realization-map.md`](../behavior-realization-map.md)
 
 ## Domain / Shared capabilities used
 
@@ -69,5 +67,5 @@ Crash/retry cases must establish both the persisted state and the real filesyste
 ## Evolution Impact
 
 ### EVO-RPKG-ADOPT-REVIEWED-RESULT-WORKFLOW
-Expansion:
-Consume Builder review identity with the exact package and preserve it through published result confirmation. Existing package realization mechanics should remain reusable rather than being reimplemented as a separate reviewed-package apply engine.
+Candidate impact:
+The planned Scenario still needs exact package realization and resumable Apply/Commit/Publish behavior, so this current Slice is a natural reuse candidate. Reviewed-result confirmation or route-specific responsibilities are **not** assigned here by the Scenario; downstream Requirements Discovery decides whether they create new `SI-*` Items here, another Slice, Shared capability or Domain requirement.

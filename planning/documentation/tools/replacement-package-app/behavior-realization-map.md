@@ -16,13 +16,14 @@ A proof-responsibility entry says where proof belongs/exists; it is **not** a cl
 
 ## BI → realization map
 
-| Behavior Item | State | Domain / Slice realization owner | Current DI/SI or future owner delta | Proof state/responsibility |
+| Behavior Item | State | Current realization / downstream routing | Current DI/SI or planned requirement status | Proof state/responsibility |
 |---|---|---|---|---|
 | `BI-RPKG-COMPOSED-AND-MODULAR-ROUTES-SHARE-SEMANTICS` | PARTIAL | Application composition / Slice | — | current subset in CoreTests; later FI chain missing |
 | `BI-RPKG-COMMANDS-DO-NOT-DEFINE-FI-BOUNDARIES` | PARTIAL | Application composition / docs | — | documentation + composition review; not a standalone runtime proof |
 | `BI-RPKG-COMPOSED-RETRY-RESUMES-ACROSS-FIS` | PARTIAL | Application composition + ChangeSet | `SI-RPKG-RETRY-BY-PROOF-NOT-RESTART` | current WorkIntent/workspace/apply/publish resume proof; later FIs missing |
-| `BI-RPKG-APPLY-PACKAGE-STOPS-BEFORE-FINALIZE` | PARTIAL | Application composition | — | current command already stops before legacy Finalize; target Confirm/PR readiness missing |
-| `BI-RPKG-APPLY-AND-FINALIZE-USES-SAME-PRECONDITIONS` | PLANNED TARGET | Application composition + ChangeSet | — | new target proof required |
+| `BI-RPKG-APPLY-ONLY-STOPS-UNCOMMITTED` | PLANNED TARGET | downstream Requirements Discovery; current modular Apply is only a partial analogue | owner/Item TBD | new route-boundary proof required |
+| `BI-RPKG-APPLY-AND-PUBLISH-STOPS-PRE-INTEGRATION` | PLANNED TARGET | downstream Requirements Discovery; current target-mode publish is only a partial analogue | owner/Item TBD | reviewed-result-confirmation + stop-boundary proof required |
+| `BI-RPKG-APPLY-AND-FINALIZE-USES-SAME-PRECONDITIONS` | PLANNED TARGET | downstream Requirements Discovery | owner/Item TBD | new target proof required |
 | `BI-RPKG-WORK-INTENT-ONE-EXACT-ISSUE` | CURRENT | Work Intent Aggregate | `SI-RPKG-WORK-INTENT-DURABLE-CREATE-RECOVERY` | CoreTests responsibility exists |
 | `BI-RPKG-WORK-INTENT-DURABLE` | CURRENT | Work Intent Aggregate | `SI-RPKG-WORK-INTENT-DURABLE-CREATE-RECOVERY` | CoreTests responsibility exists |
 | `BI-RPKG-APPLY-EXACT-REPOSITORY-TARGET` | CURRENT | Repository Target + ChangeSet | `DI-RPKG-REPOSITORY-TARGET-STABLE-IDENTITY` | CoreTests responsibility exists |
@@ -32,19 +33,20 @@ A proof-responsibility entry says where proof belongs/exists; it is **not** a cl
 | `BI-RPKG-RETRY-RESUMES` | PARTIAL | ChangeSet + realization Slice | `SI-RPKG-RETRY-BY-PROOF-NOT-RESTART` | current execution states proved; target Confirm/PR/Finalize resume missing |
 | `BI-RPKG-PARTIAL-STATE-TRUTHFUL` | CURRENT | ChangeSet | `SI-RPKG-APPLY-JOURNAL-BEFORE-MUTATION` | CoreTests responsibility exists |
 | `BI-RPKG-NO-NEXT-PACKAGE-WHILE-PUBLICATION-UNCERTAIN` | CURRENT | ChangeSet | `SI-RPKG-RETRY-BY-PROOF-NOT-RESTART` | CoreTests publication uncertainty responsibility exists |
-| `BI-RPKG-PUBLISHED-TREE-EQUALS-REVIEWED-TREE` | PLANNED TARGET | ChangeSet planned reviewed-result binding | future ChangeSet reviewed-result identity expansion | new proof required |
-| `BI-RPKG-VERIFY-EXECUTION-IDENTITY` | PLANNED TARGET | ChangeSet planned reviewed-result binding | future ChangeSet reviewed-result identity expansion | new proof required |
-| `BI-RPKG-NO-SECOND-SEMANTIC-REVIEW-WHEN-IDENTITY-PROVEN` | PLANNED TARGET | Confirm Reviewed Published Revision Slice | future ChangeSet reviewed-result identity expansion | new proof required |
-| `BI-RPKG-VERIFY-FAILS-CLOSED` | PLANNED TARGET | ChangeSet + Confirm Slice | future ChangeSet reviewed-result identity expansion | negative proof required |
-| `BI-RPKG-VERIFY-MISMATCH-PRESERVES-EVIDENCE` | PLANNED TARGET | ChangeSet + Confirm Slice | future ChangeSet reviewed-result identity expansion | negative/recovery proof required |
-| `BI-RPKG-ONE-CORRECT-PR` | PLANNED TARGET | ChangeSet PR reference + Ensure PR Slice | — | new GitHub/PR integration proof required |
-| `BI-RPKG-PR-FAILURE-DOES-NOT-ROLL-BACK-PUBLISHED-REVISION` | PLANNED TARGET | ChangeSet + Ensure PR Slice | — | new recovery proof required |
-| `BI-RPKG-PR-HEAD-MUST-REPRESENT-CURRENT-CHANGESET` | PLANNED TARGET | ChangeSet PR currentness + Ensure PR Slice | future ChangeSet reviewed-result identity expansion | new currentness proof required |
-| `BI-RPKG-FINALIZE-ONLY-APPROVED-PUBLISHED-REVISION` | PLANNED TARGET; legacy analogue exists | ChangeSet + Finalize Slice | future ChangeSet reviewed-result identity expansion | new target Finalize proof required |
-| `BI-RPKG-FINALIZE-PRESERVES-REVIEWED-CONTENT` | PLANNED TARGET; legacy analogue exists | ChangeSet + Finalize Slice | future ChangeSet approval-currentness expansion | new integration proof required |
-| `BI-RPKG-TARGET-MOVEMENT-NOT-AUTOMATIC-STALE` | PLANNED TARGET | ChangeSet + Finalize Slice | future ChangeSet approval-currentness expansion | new moved-target unchanged-result proof required |
-| `BI-RPKG-CONTENT-CHANGING-RECONCILIATION-STALES-APPROVAL` | PLANNED TARGET | ChangeSet + Finalize Slice | future ChangeSet approval-currentness expansion | new changed-result staleness proof required |
-| `BI-RPKG-FINALIZED-WORK-IS-CLOSED` | PLANNED TARGET; legacy lifecycle differs | ChangeSet lifecycle | — | new closure/new-ChangeSet continuity proof required |
+| `BI-RPKG-PUBLISHED-TREE-EQUALS-REVIEWED-TREE` | PLANNED TARGET | TBD by downstream Requirements Discovery | planned requirement; owner/Item TBD | new proof required |
+| `BI-RPKG-VERIFY-EXECUTION-IDENTITY` | PLANNED TARGET | TBD by downstream Requirements Discovery | planned requirement; owner/Item TBD | new proof required |
+| `BI-RPKG-NO-SECOND-SEMANTIC-REVIEW-WHEN-IDENTITY-PROVEN` | PLANNED TARGET | TBD by downstream Requirements Discovery | planned requirement; owner/Item TBD | new proof required |
+| `BI-RPKG-VERIFY-FAILS-CLOSED` | PLANNED TARGET | TBD by downstream Requirements Discovery | planned requirement; owner/Item TBD | negative proof required |
+| `BI-RPKG-VERIFY-MISMATCH-PRESERVES-EVIDENCE` | PLANNED TARGET | TBD by downstream Requirements Discovery | planned requirement; owner/Item TBD | negative/recovery proof required |
+| `BI-RPKG-ONE-CORRECT-PR` | PLANNED TARGET | TBD by downstream Requirements Discovery | — | new GitHub/PR integration proof required |
+| `BI-RPKG-PR-FAILURE-DOES-NOT-ROLL-BACK-PUBLISHED-REVISION` | PLANNED TARGET | TBD by downstream Requirements Discovery | — | new recovery proof required |
+| `BI-RPKG-PR-HEAD-MUST-REPRESENT-CURRENT-CHANGESET` | PLANNED TARGET | TBD by downstream Requirements Discovery | planned requirement; owner/Item TBD | new currentness proof required |
+| `BI-RPKG-FINALIZE-ONLY-APPROVED-PUBLISHED-REVISION` | PLANNED TARGET; legacy analogue exists | TBD by downstream Requirements Discovery | planned requirement; owner/Item TBD | new target Finalize proof required |
+| `BI-RPKG-FINALIZE-PRESERVES-REVIEWED-CONTENT` | PLANNED TARGET; legacy analogue exists | TBD by downstream Requirements Discovery | planned requirement; owner/Item TBD | new integration proof required |
+| `BI-RPKG-TARGET-MOVEMENT-NOT-AUTOMATIC-STALE` | PLANNED TARGET | TBD by downstream Requirements Discovery | planned requirement; owner/Item TBD | new moved-target unchanged-result proof required |
+| `BI-RPKG-CONTENT-CHANGING-RECONCILIATION-STALES-APPROVAL` | PLANNED TARGET | TBD by downstream Requirements Discovery | planned requirement; owner/Item TBD | new changed-result staleness proof required |
+| `BI-RPKG-FINAL-WORK-RECORD-BEFORE-ISSUE-CLOSE` | PLANNED TARGET | TBD by downstream Requirements Discovery | owner/Item TBD | integration + external Issue side-effect recovery proof required |
+| `BI-RPKG-FINALIZED-WORK-IS-CLOSED` | PLANNED TARGET; legacy lifecycle differs | TBD by downstream Requirements Discovery | — | new closure/new-ChangeSet continuity proof required |
 | `BI-RPKG-SNAPSHOT-READ-ONLY` | CURRENT | Repository Snapshot + Export Slice | `SI-RPKG-SNAPSHOT-CONSISTENCY-PROOF` | CoreTests responsibility exists |
 | `BI-RPKG-SNAPSHOT-EXACT-SOURCE` | CURRENT | Repository Snapshot + Repository Target | `SI-RPKG-SNAPSHOT-CONSISTENCY-PROOF` | CoreTests responsibility exists |
 | `BI-RPKG-SNAPSHOT-NO-MIXED-CAPTURE` | CURRENT | Repository Snapshot + Export Slice | `SI-RPKG-SNAPSHOT-CONSISTENCY-PROOF` | CoreTests responsibility exists |
@@ -52,9 +54,9 @@ A proof-responsibility entry says where proof belongs/exists; it is **not** a cl
 | `BI-RPKG-SNAPSHOT-HANDOFF-FROZEN-DESTINATION` | CURRENT | External Interaction | `SI-RPKG-HANDOFF-FROZEN-DESTINATION` | ChatBridge/Core proof responsibility exists |
 | `BI-RPKG-SNAPSHOT-DELIVERY-DOES-NOT-CHANGE-REVIEW-BINDING` | CURRENT | External Interaction + ChangeSet navigation | `SI-RPKG-HANDOFF-FROZEN-DESTINATION` | current bridge/source contract responsibility exists |
 | `BI-RPKG-SNAPSHOT-DELIVERY-FAILURE-DOES-NOT-INVALIDATE-EXPORT` | CURRENT | External Interaction + Repository Snapshot | — | ChatBridge/Core separation proof responsibility exists |
-| `BI-RPKG-CURRENT-CHANGE-GIT-DERIVED` | PLANNED TARGET | ChangeSet Current Change projection + Inspect Slice | future Git-derived Current Change Slice expansion | legacy ReviewDiff proof exists; Git-derived target proof missing |
-| `BI-RPKG-CURRENT-CHANGE-NOT-APPROVAL` | PLANNED TARGET transition | Inspect Slice + ChangeSet review binding | — | new semantic boundary proof required |
-| `BI-RPKG-CURRENT-CHANGE-DIAGNOSTIC` | PLANNED TARGET transition | Inspect Slice / optional support | — | ordinary target workflow proof must not depend on manual handoff |
+| `BI-RPKG-CURRENT-CHANGE-GIT-DERIVED` | PLANNED TARGET | TBD by downstream Requirements Discovery | planned requirement; owner/Item TBD | legacy ReviewDiff proof exists; Git-derived target proof missing |
+| `BI-RPKG-CURRENT-CHANGE-NOT-APPROVAL` | PLANNED TARGET transition | TBD by downstream Requirements Discovery | — | new semantic boundary proof required |
+| `BI-RPKG-CURRENT-CHANGE-DIAGNOSTIC` | PLANNED TARGET transition | TBD by downstream Requirements Discovery | — | ordinary target workflow proof must not depend on manual handoff |
 
 ## Aggregate summary
 

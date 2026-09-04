@@ -59,7 +59,15 @@ Automated proof should continue to cover, at the smallest credible integration b
 - browser delivery cannot become repository authorization;
 - possible-Send uncertainty cannot be rewritten into false clean cancellation or blindly resent.
 
-## Planned reviewed-result proof
+## Planned reviewed-result / route proof
+
+Planned proof must establish the Scenario contract without preselecting production owners:
+- Apply Only stops at applied/uncommitted and performs no implicit commit/publish/integration;
+- Apply And Publish proves actual published result == reviewed predicted result and stops pre-integration;
+- Apply And Finalize uses the same prior exactness proof, integrates only approved reviewed content, persists `## Final Work Record`, then closes the managed Issue;
+- modular/manual continuation establishes the same results as composed routes;
+- cross-discovery production/proof requirements become Items in their selected natural owners and coupled Items are grouped.
+
 
 The selected planned Scenario requires new proof before promotion to current:
 - Builder review identity is accepted only for the exact package/source/predicted-result tuple;

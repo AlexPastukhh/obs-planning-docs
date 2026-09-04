@@ -35,4 +35,4 @@ External Issue truth may exist even when the local transport response was lost.
 
 ## Evolution Impact
 
-The planned reviewed-result Scenario keeps this FI and owner; later stages consume the same established Work Intent identity.
+The planned reviewed-result Scenario keeps this FI/current owner for Work Intent. Later stages consume the established identity, but their new requirements are not assigned to this Slice by that relationship.

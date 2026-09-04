@@ -37,4 +37,4 @@ Persist exact workspace intent before branch/worktree mutation so retry adopts o
 
 ## Evolution Impact
 
-Reviewed-result identity extends the ChangeSet after package publication; it does not require a second workspace owner if current pinned workspace semantics remain sufficient.
+The planned Scenario continues to require exact workspace/source truth. Whether reviewed-result identity creates any additional workspace responsibility is a downstream Requirements Discovery question; current pinned workspace semantics remain the baseline candidate.

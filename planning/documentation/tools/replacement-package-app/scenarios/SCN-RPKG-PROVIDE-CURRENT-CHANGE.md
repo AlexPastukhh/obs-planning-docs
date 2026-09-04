@@ -32,7 +32,7 @@ Required Inputs:
 Exact Repository Target, exact ChangeSet and its current owned-path/baseline state.
 
 Interaction Process:
-The application derives the cumulative canonical ReviewDiff using isolated temporary-index mechanics, persists its exact identity/freshness with the ChangeSet and exposes Refresh / Copy / Open / Send support. Git-backed work is rejected rather than projected through this legacy owner.
+The application derives the cumulative canonical ReviewDiff without mutating repository truth, persists its exact identity/freshness with the ChangeSet and exposes Refresh / Copy / Open / Send support. Git-backed work is rejected rather than projected through this legacy owner.
 
 Outcomes:
 - exact non-empty ReviewDiff;
@@ -83,7 +83,7 @@ Required Inputs:
 Exact ReviewDiff source/fingerprint and exact conversation identity.
 
 Interaction Process:
-The bridge prepares the exact `.diff` attachment, guards destination/composer/attachment readiness, establishes `SendArmed` before the first application-controlled click, records the possible-Send boundary, and reports confirmed delivery or post-click uncertainty without blind resend. Equivalent actionable intent may dedupe; retry after terminal outcome creates a new interaction identity.
+The application attempts delivery of the exact `.diff` to the frozen destination, distinguishes failure before a possible Send from uncertainty after Send may have occurred, and never blindly resends across that uncertainty boundary. Equivalent in-flight intent may be reused; retry after terminal outcome is a new interaction identity.
 
 Outcomes:
 - Sent;

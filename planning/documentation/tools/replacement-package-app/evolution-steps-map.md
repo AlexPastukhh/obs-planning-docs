@@ -35,7 +35,7 @@ legacy Current Change / legacy Finalize can retire only when no remaining
 legacy ChangeSet requires their current authority
 ```
 
-The two selected steps may be developed partly in parallel, but promotion of the planned complete target Scenario requires both semantic results: ordinary target work must not depend on legacy approval-oriented Current Change, and reviewed-result confirmation/PR/Finalize must exist.
+The two selected steps may be developed partly in parallel, but promotion of the planned complete target Scenario requires both semantic results: ordinary target work must not depend on legacy approval-oriented Current Change, and the selected Apply Only / Apply And Publish / Apply And Finalize route contract must be implemented and proved.
 
 ## EVO-RPKG-DOWNGRADE-CURRENT-CHANGE-TO-DIAGNOSTIC
 
@@ -71,8 +71,8 @@ Selected planned target.
 Depends on:
 - Builder planned replay/review Scenario defines exact approved package/source/result identity;
 - consumer package/protocol evolution supplies enough review identity for verification;
-- ChangeSet Domain can persist/prove reviewed-result binding/currentness;
-- PR and target Finalize proof boundaries are selected and implemented.
+- downstream Requirements Discovery selects durable ownership for reviewed-result binding/currentness rather than assuming ChangeSet ownership;
+- PR/integration/final-record proof boundaries and their natural owners are selected and implemented downstream.
 
 Enables:
 - consumer proof `actual published Git tree == reviewed predicted tree`;

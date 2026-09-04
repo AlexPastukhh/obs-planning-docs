@@ -79,7 +79,7 @@ Current/legacy-current:
 Planned future:
 - `SCN-RPKG-COMPLETE-REVIEWED-REPOSITORY-WORK`
 
-Current source/tests implement legacy `SL-RPKG-01..09`, current Git-backed `SL-RPKG-10` and `SL-RPKG-11`, and the target-mode Work Intent → workspace → Apply → Commit → Publish composition. Git-derived Current Change, consumer confirmation of Builder-reviewed result identity, one correct integration PR and target Finalize are selected future behavior, not current truth.
+Current source/tests implement legacy `SL-RPKG-01..09`, current Git-backed `SL-RPKG-10` and `SL-RPKG-11`, and the target-mode Work Intent → workspace → Apply → Commit → Publish composition. Git-derived diagnostic Current Change and the planned three-route reviewed-result workflow are selected future behavior, not current truth: Apply Only stops applied/uncommitted; Apply And Publish stops pre-integration after reviewed-result confirmation; Apply And Finalize continues through integration, `## Final Work Record` and managed Issue closure. Future Domain/Slice ownership for new requirements remains downstream Requirements Discovery.
 
 The current external `OBS-ACTION/1` surface remains intentionally narrow:
 - `create-work-intent`
