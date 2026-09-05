@@ -5,7 +5,7 @@ Authority: [`documentation-use-cases.md`](documentation-use-cases.md)
 
 ## Template rule
 
-These forms are examples, not schemas. Use only the sections needed to preserve selected meaning. Omit irrelevant sections instead of writing `N/A`.
+These forms are **recommended examples, not schemas**. Choose the smallest representation that preserves selected meaning. Use, omit, combine, reorder or reshape sections when another form is clearer; do not copy headings mechanically or write `N/A` merely to satisfy a template. The semantic authority/boundary questions still need answers where they are material.
 
 Target semantic types are `Feature`, `Behavior Requirement`, `Scenario Requirement`, Production Requirement and Proof Requirement. Existing product owners may still use legacy `FI-*`, `BI-*`, `DI-*`, `SI-*` and `TST-*` labels until separately migrated; templates do not require bulk renaming.
 
@@ -13,7 +13,7 @@ Target semantic types are `Feature`, `Behavior Requirement`, `Scenario Requireme
 
 ## Template — Feature planning
 
-A Feature may live inside a Scenario owner, a focused Feature owner, or another suitable behavior owner. Create a separate file only when independent maintenance pressure justifies it.
+A Feature is the primary behavioral authority for its use-case boundary. Prefer an independently referenceable Feature owner/section; physical co-location with another document is acceptable only when Feature authority remains unambiguous and separate maintenance pressure does not justify another file.
 
 ```markdown
 ### F-RPKG-<SEMANTIC-NAME> — <readable Feature name>
@@ -29,9 +29,12 @@ Principal Result / Result family:
 
 Behavior:
 <context / input>
-→ <application-visible step>
+→ <ordered application-visible step>
+→ <meaningful semantic state/effect>
 → <branch / validation / retry / recovery when material>
-→ <Result>
+→ <principal Result / resulting state>
+
+Behavior may name semantically relevant ecosystem concepts (branch, Issue, package, commit, PR, persisted work identity, external result) when they are part of what the application must establish; keep exact classes/methods/private code paths downstream.
 
 #### Behavior Requirements
 
@@ -50,10 +53,11 @@ Reason:
 - Candidate / rejected approaches: ...
 - Implementation dependencies: ...
 - Platform / external constraints: ...
+- Partial-state / recovery concern: ...
 - Aggregate / Shared signals: ...
 - Proof concern: ...
 - Slice boundary observation: ...
-- Known Evolution pressure: ...
+- Known Evolution / Evolution Kind / Forced Migration pressure: ...
 
 Free form is preferred when a list/table would distort the reasoning.
 
@@ -78,6 +82,8 @@ A compact Feature may need only intent, Result, short behavior and one implement
 
 ## Template — Scenario / real user journey
 
+Use as much of this form as the journey needs. A compact process/table is often enough; use step sections when visible behavior, Result/continuity or Screen context needs explanation.
+
 ```markdown
 # SCN-RPKG-<SEMANTIC-NAME> — <readable Scenario name>
 
@@ -91,21 +97,34 @@ Status: <current | planned target | migration>
 
 ## Journey
 
-<Screen/context A>
-→ F-RPKG-<FEATURE-A>
-→ <Feature A Result>
-→ <Screen/context B or external context>
-→ F-RPKG-<FEATURE-B>
-→ <terminal Result>
+### Step — <readable journey step>
+
+Feature:
+`F-RPKG-<FEATURE-A>`
+
+Input / starting context:
+<what enters this Feature from the journey>
+
+Expected / visible behavior:
+<only the Feature behavior needed to understand this Scenario step; do not copy Feature internals>
+
+Resulting state / Result:
+<what becomes true after this Feature; not limited to an outbound payload>
+
+Continuity to next step:
+<identity / Data / context relied on later>
+
+Screen / external context:
+<where the step happens>
+
+Scenario-specific conditions:
+<cross-Feature / cross-Screen / cross-context meaning only>
+
+### Step — <next Feature or external-context step>
+...
 
 Branches / retry / re-entry:
-- ...
-
-## Features involved
-- `F-RPKG-...` — <role in this journey>
-
-## Screens / contexts involved
-- ...
+- <journey-level branch only when useful>
 
 ## Scenario Requirements
 
@@ -116,6 +135,9 @@ Requirement:
 Reason:
 <why journey correctness needs it>
 
+## Terminal Result / Benefit closure
+<why the composed Features satisfy the intended Benefit>
+
 ## E2E Proof Intent
 <what must be proven end-to-end; exact tests remain downstream proof>
 
@@ -123,7 +145,7 @@ Reason:
 - `EVO-RPKG-...`
 ```
 
-Scenario is not required to precede Feature Planning. It is the consistency/journey owner once the real path is known.
+Feature owners remain authoritative for detailed Feature behavior. Scenario may intentionally repeat a Feature Result or summarize visible behavior because Result/visible effect is the Feature's semantic interface with the journey; it should not reproduce the internal path that produces that Result.
 
 ---
 
@@ -251,8 +273,11 @@ Early/shallow form is valid:
 ```markdown
 ### EVO-RPKG-<SEMANTIC-NAME> — <readable qualitative change>
 
-Application capability / journey change:
+Application capability / journey / documentation-architecture change:
 <what becomes possible or changes>
+
+Evolution Kinds:
+- <Introduction | Expansion | Refactoring | Forced Migration | Retirement>
 
 Likely affected:
 - Benefit: ...
@@ -268,7 +293,10 @@ When enough detail is known, prefer complete target meaning:
 ```markdown
 ### EVO-RPKG-<SEMANTIC-NAME> — <readable qualitative change>
 
-Resulting usable application state:
+Evolution Kinds:
+- <Introduction | Expansion | Refactoring | Forced Migration | Retirement>
+
+Resulting usable application/documentation state:
 <what is complete after this Step>
 
 #### Target Feature: F-RPKG-...
@@ -288,8 +316,11 @@ Slice outlook:
 [UNCHANGED] ...
 [NEW] module / branch / entry adapter / separate Slice ...
 
-Forced migration:
-<only when real>
+Migration:
+<semantic/product/architecture/documentation migration work intrinsic to this Step, when any>
+
+Forced Migration:
+<only when this Evolution Kind is real>
 
 #### Target Scenario
 <include when cross-Feature / cross-Screen composition changes>
@@ -301,33 +332,36 @@ Forced migration:
 - Proof: ...
 ```
 
-Exact notation is flexible. The important rule is that a completed Step leaves a coherent usable application state and does not require the next Step merely for completeness.
+Exact notation is flexible. Evolution Kinds are composable, not a single exclusive enum. `[EXISTING] / [NEW] / [CHANGED] / [REMOVED]` is target-state accounting, while Evolution Kinds describe the nature of the transition. The important rule is that a completed Step leaves a coherent usable application/documentation state and does not require the next Step merely for completeness. Migration is part of Evolution Step machinery rather than a competing roadmap.
 
 ---
 
 <a id="template-evolution-impact"></a>
 ## Template — Evolution Impact
 
-Use this owner-local form when one canonical Evolution Step materially changes an existing Aggregate, Slice, Shared Capability, Screen or proof owner. It is future delta, not a second current Requirement list.
+Use this owner-local form when one canonical Evolution Step materially changes an **existing** Aggregate, Slice, Shared Capability, Screen or proof owner. It is future delta, not a second current Requirement list and not a separate migration roadmap.
 
 ```markdown
 ## Evolution Impact
 
 ### EVO-RPKG-<SEMANTIC-NAME> — <readable Step>
 
+Evolution Kinds for this owner:
+- <Expansion | Refactoring | Forced Migration | Retirement>
+
 [EXISTING] <meaning that remains>
 [NEW] <new owner responsibility / module / branch / proof>
 [CHANGED] <changed owner meaning>
 [REMOVED] <meaning intentionally removed>
 
-Forced migration:
-<only when real and unavoidable>
+Forced Migration:
+<what must move/replace because healthy additive evolution is not credible; only when real>
 
 Requirement consequences:
 <reference current/new Production or Proof Requirements when they are actually selected; do not duplicate them here>
 ```
 
-When enough detail is known, prefer showing the complete target owner state rather than only an isolated delta.
+A newly introduced Feature/owner is normally represented as `Introduction` directly in the canonical Step target rather than through a fictitious impact on something that did not exist. When enough detail is known, prefer showing the complete target owner state rather than only an isolated delta.
 
 ---
 

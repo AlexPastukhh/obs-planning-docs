@@ -140,7 +140,7 @@ application receives X
 → exposes truthful Result C
 ```
 
-Feature Planning is allowed and expected to think about implementation feasibility and shape, but it is not exact code design.
+Feature Planning is allowed and expected to think about implementation feasibility and shape, but it is not exact code design. Feature behavior may be an ordered application process and may name semantically relevant ecosystem concepts such as a Git branch, Issue, package, commit, PR, persisted work identity, filesystem artifact or external result when those concepts are part of the behavior the application must establish. Keep exact classes, methods, private call paths and incidental code structure downstream.
 
 A validation error, retry path, failure path, alternate transport or completion variant is not automatically a separate Feature. The boundary is decided by the Feature/Slice Boundary Check below.
 
@@ -235,17 +235,21 @@ candidate realization approaches
 rejected infeasible approaches
 implementation dependencies
 platform / runtime / external constraints
+partial-state / recovery concern
 state / consistency concern
 candidate Aggregate signal
 candidate Shared Capability signal
 proof/testability concern
 prototype / Practical Evidence
 open technical uncertainty
-known Evolution pressure
+known Evolution pressure / Evolution Kind pressure
 Feature/Slice boundary observation
 likely module / branch / entry-adapter shape
+possible Forced Migration pressure
 selected exception from a preferred methodology principle
 ```
+
+A concern may reason substantially deeper than the Feature's behavioral narrative when that depth is needed to establish feasibility or a healthy Feature/Slice boundary. It should still prefer application/architecture consequences over premature exact class/method design.
 
 A concern is a **downstream Source**, not automatically a Requirement. A candidate mechanism becomes a durable Requirement only when downstream discovery selects it because correctness, maintainability, proof or known evolution actually requires it.
 
@@ -271,29 +275,36 @@ with one Slice semantically owning another Slice.
 
 ### Scenario
 
-A **Scenario** is a real user/application journey through one or more Features, Screens and external contexts, driven by a Need/Application Benefit.
+A **Scenario** is a real user/application journey through one or more Features, Screens and external contexts, driven by a Need/Application Benefit. Its primary role is **Feature composition and consistency**: show that independently owned Features connect into a coherent journey and actually close the intended Benefit.
 
-It owns composition and journey truth such as:
+Scenario owns journey truth such as:
 
 ```text
 starting context
 Features involved
-Screens/contexts involved
+journey-level expected / visible behavior where useful
+meaningful Feature Result / resulting state
+continuity into the next Feature
+Screens / external contexts
 ordering / transitions
-cross-Feature state/Data continuity
-branches / loops / retry / re-entry
-terminal user/application result
+cross-Feature state/Data/identity continuity
+branches / loops / retry / re-entry at journey level
+terminal user/application Result / Benefit closure
 ```
+
+`Resulting state / Result` is broader than an outbound payload. It may say that meaningful application state now exists, for example `package applied`, `published revision exists`, `repository work is resumable` or `work finalized`. `Continuity to next Feature` separately records the subset of Data/identity/context that later Features depend on.
+
+Scenario may summarize the expected/visible behavior needed to understand one journey step, but it does not become a second authority for Feature internals. Full Feature-local validation, detailed branches/recovery, Behavior Requirements, Feature Data and Feature Implementation Concerns stay with the Feature owner unless they materially affect cross-Feature consistency. Repeating a Feature Result is intentional when that Result is the semantic interface with the surrounding journey.
 
 A Scenario is not a mandatory chronological parent of every Feature. Valid planning patterns include:
 
 ```text
-Scenario-first
 Feature-first
+Scenario-first
 Feature ↔ Scenario ↔ Screen iterative refinement
 ```
 
-Scenario is the behavioral contract for an end-to-end journey. An E2E test suite is an executable proof projection of that Scenario, not the authority that creates it.
+Feature owners remain the primary behavioral authorities. Scenario is the composition/consistency contract for the end-to-end journey and the natural semantic source for E2E proof. An E2E test suite is an executable proof projection of that selected journey, not the authority that creates it.
 
 ### Scenario Requirement
 
@@ -367,6 +378,32 @@ A completed Evolution Step must not require the next Evolution Step merely to fi
 
 Evolution Steps may begin shallow: a short capability description, a rough Scenario change or a partially identified affected Feature set is enough to influence current Discovery. Detail is refined progressively as planning deepens.
 
+### Evolution Kinds
+
+Use one common vocabulary for the nature of evolution:
+
+```text
+Introduction
+Expansion
+Refactoring
+Forced Migration
+Retirement
+```
+
+- **Introduction** — new Feature/capability/owner meaning appears in the target state. A newly introduced Feature is represented directly in the Step target; do not invent an Evolution Impact on a non-existent owner.
+- **Expansion** — existing capability/owner responsibility grows while its primary semantic boundary and authority remain healthy.
+- **Refactoring** — selected semantic capability remains substantially stable while representation/realization structure changes for cohesion, local reasoning, proofability, maintainability or evolution fitness.
+- **Forced Migration** — current semantic/implementation/documentation authority or structure cannot reasonably support the selected target through healthy additive evolution and must be moved, replaced or substantially reorganized.
+- **Retirement** — existing capability/behavior/authority is intentionally removed from the target state, immediately or through explicit compatibility staging.
+
+The kinds are not mutually exclusive. One Evolution Step may introduce one Feature, expand another, refactor an implementation owner, force migration of obsolete authority and retire legacy behavior as parts of one coherent application transition.
+
+`[EXISTING] / [NEW] / [CHANGED] / [REMOVED]` is complementary target-state accounting, not a competing taxonomy: Evolution Kind explains **the nature of the transition**; target-state notation explains **what remains/appears/changes/disappears**.
+
+### Migration is Evolution
+
+Any semantic/product/architecture/documentation migration is a form of Evolution, not a parallel planning mechanism. The canonical Evolution Step owns the qualitative transition and migration work intrinsic to reaching its target state. Affected existing owners describe their local delta through Evolution Impact. Do not create a competing migration roadmap for the same semantic transition.
+
 ### Planned future Scenario
 
 A future independently meaningful journey may be documented as a full planned Scenario before it is current. Keep the status explicit. An Evolution Step may link that target Scenario when the qualitative change is too broad to communicate as a small local journey delta.
@@ -379,7 +416,9 @@ The map does not redefine Feature/Scenario meaning and is not changed automatica
 
 ### Evolution Impact
 
-The effect of a canonical Evolution Step on one existing owner. Evolution Impact is future owner delta, not a second Requirement list.
+The effect of a canonical Evolution Step on one **existing** owner. Evolution Impact is future owner delta, not a second Requirement list and not a second migration roadmap.
+
+Evolution Impact uses the same Evolution Kinds as the Step when describing how that owner evolves: `Expansion`, `Refactoring`, `Forced Migration` and `Retirement` where applicable. `Introduction` normally belongs directly in the Step target for a new Feature/owner because there is no pre-existing owner to receive an impact.
 
 When enough detail is known, an Evolution Step extending an existing Feature should show the **full target Feature** with clear `[EXISTING]`, `[NEW]`, `[CHANGED]`, `[REMOVED]` meaning (or equivalent notation). If cross-Feature journey composition materially changes, include the target Scenario too.
 
@@ -517,32 +556,34 @@ Later Evidence may challenge Feature, Scenario, Screen, Slice, Aggregate, Shared
 
 ---
 
-## DOC-UC-01 — Maintain Scenario / real user journey behavioral specification
+## DOC-UC-01 — Maintain Scenario / real user journey composition and consistency
 
 ### Goal
 
-Keep one selected Scenario understandable as a real user/application journey through Features, Screens and external contexts, with genuine cross-Feature / cross-Screen Scenario Requirements and an explicit terminal Benefit/Result.
+Keep one selected Scenario understandable as a real user/application journey through independently owned Features, Screens and external contexts; verify their composition closes an Application Benefit; own genuine cross-Feature / cross-Screen Scenario Requirements without duplicating Feature internals.
 
 ### Process
 
 1. Start from a selected/current or planned real journey that contributes to an Application Benefit.
-2. Record starting context, Features involved, Screens/external contexts, ordering/transitions, Data/context continuity, branches/retry/re-entry and terminal Result.
-3. Keep Feature-local behavior with the Feature owner; Scenario owns composition/journey truth rather than duplicating Feature internals.
+2. Record the Feature sequence/composition and, for each material journey step, only the useful subset of: input/starting context, journey-level expected/visible behavior, meaningful Result/resulting state, continuity handed to later Features, and Screen/external context.
+3. Keep detailed Feature-local behavior with the Feature owner. Scenario may repeat/summarize a Feature Result or visible effect when needed to understand composition, but should not restate the internal algorithm that produces it.
 4. Discover Scenario Requirements only for behavior that is genuinely cross-Feature/cross-Screen/cross-context.
-5. Check that Feature preconditions can actually arise and Feature Results can feed later Features truthfully.
-6. Check selected Screens support the journey while Screen remains spatial/window authority.
-7. Route material feasibility uncertainty into affected Feature Implementation Concerns when ownership is known; keep temporary Scenario-level uncertainty only while cross-Feature ownership is unresolved.
-8. If the journey exposes a missing/merged/split Feature or a poor Slice boundary, return to DOC-UC-13 and re-run the Feature/Slice Boundary Check.
-9. Define E2E proof intent from the Scenario; tests remain proof rather than Scenario authority.
-10. Use DOC-UC-07 when the Scenario/Screen design itself is still being explored and DOC-UC-09 for semantic readability.
+5. Check that Feature preconditions can actually arise, Feature Results are truthful, continuity Data/identity/context is preserved, and later Features consume the intended prior state.
+6. Check that the composed journey actually reaches the terminal Result / closes the intended Application Benefit.
+7. Check selected Screens/external contexts support the journey while Screen remains spatial/window authority.
+8. Route material Feature-local feasibility uncertainty into affected Feature Implementation Concerns; keep temporary Scenario-level uncertainty only while cross-Feature ownership is unresolved.
+9. If the journey exposes a missing/merged/split Feature or a poor Slice boundary, return to DOC-UC-13 and re-run the Feature/Slice Boundary Check.
+10. Define E2E proof intent from the Scenario; tests remain proof rather than Scenario authority.
+11. Use DOC-UC-07 when the Scenario/Screen design itself is still being explored and DOC-UC-09 for semantic readability.
 
 ### Principles
 
+- Feature is the primary behavioral authority; Scenario is the journey composition/consistency owner.
 - Scenario-first is allowed but not mandatory.
-- Feature-first planning must eventually face real journey consistency.
-- Scenario is a journey/composition owner, not another name for a Feature or Slice.
-- A composite convenience entry may span several Features/Slices without merging their semantic boundaries.
+- Feature-first planning must eventually face real journey consistency and Benefit closure.
+- A composite convenience entry may span several Features/Slices without merging their semantic boundaries; record the exception explicitly when this intentionally contradicts a preferred boundary heuristic.
 - `1 Scenario = 1 Screen` is not required.
+- Scenario form is proportional: a compact flow/table is enough when it preserves the journey; prose/process detail is allowed when composition would otherwise be unclear.
 
 ---
 
@@ -644,8 +685,9 @@ Use known Evolution Steps to make current Feature/Slice/Aggregate/Shared boundar
 2. Ask whether repeated future changes stay within one cohesive Slice/module/branch or reveal distinct evolution lines.
 3. Distinguish a stable semantic seam needed now from speculative abstraction.
 4. Record durable current Requirement only when known evolution materially justifies it.
-5. Record future owner delta as Evolution Impact rather than pretending it is current behavior.
-6. Re-evaluate after Evidence or new Steps invalidate an earlier assumption.
+5. Record future owner delta as Evolution Impact rather than pretending it is current behavior; classify the local evolution with the common Evolution Kinds where useful.
+6. Treat semantic/product/architecture/documentation migration as Evolution. Keep migration work inside the canonical Step / affected Evolution Impacts rather than creating a competing roadmap.
+7. Re-evaluate after Evidence or new Steps invalidate an earlier assumption.
 
 ### Principles
 
@@ -707,21 +749,25 @@ Represent meaningful future application evolution early enough to influence curr
 
 ### Process
 
-1. Capture a new Evolution Step as soon as a material future capability/journey change is known. Early representation may be shallow.
-2. Record affected Benefits/Features/Scenarios as they become known.
+1. Capture a new Evolution Step as soon as a material future capability/journey/migration change is known. Early representation may be shallow.
+2. Record affected Benefits/Features/Scenarios as they become known and classify material transition nature with one or more Evolution Kinds: Introduction, Expansion, Refactoring, Forced Migration, Retirement.
 3. Use the Step during every relevant Discovery rather than waiting for late architecture review.
-4. When an existing Feature changes and enough detail is known, show the full target Feature with `[EXISTING]`, `[NEW]`, `[CHANGED]`, `[REMOVED]` (or equivalent) rather than only a detached delta.
-5. If Feature composition, ordering, cross-Feature Data/context or Screen journey changes, include the target Scenario.
-6. Include as many Feature/Slice changes as needed for the Step to end in a complete internally consistent usable application state.
-7. Several implementation packages/commits may realize one Evolution Step; intermediate code progress is not automatically a separate application Evolution Step.
-8. Record owner-local Evolution Impact in affected Slice/Aggregate/Shared/Screen owners when those owners are migrated/maintained.
+4. Represent a new Feature directly as Introduction in the Step target; do not invent a pre-existing Evolution Impact merely to explain its creation.
+5. When an existing Feature changes and enough detail is known, show the full target Feature with `[EXISTING]`, `[NEW]`, `[CHANGED]`, `[REMOVED]` (or equivalent) rather than only a detached delta.
+6. If Feature composition, ordering, cross-Feature Data/context or Screen journey changes, include the target Scenario.
+7. Include as many Feature/Slice changes and migration actions as needed for the Step to end in a complete internally consistent usable application/documentation state.
+8. Several implementation packages/commits may realize one Evolution Step; intermediate code progress is not automatically a separate application Evolution Step.
+9. Record owner-local Evolution Impact in affected existing Slice/Aggregate/Shared/Screen/proof owners when those owners are migrated/maintained; use the same Evolution Kinds locally.
+10. Keep migration planning in this canonical Step machinery; never create an independent competing migration roadmap for the same transition.
 
 ### Principles
 
-- Evolution Step boundary follows complete application capability, not Feature count.
+- Evolution Step boundary follows complete application capability/state transition, not Feature count.
+- Evolution Kinds are composable, not a single exclusive enum.
 - A Step may consist of two or more Features when only their completed composition creates a usable Scenario.
 - A Step may enable later Steps but must not depend on the next Step merely to become internally consistent.
 - Known evolution is strong Feature/Slice boundary evidence.
+- Migration is a form of Evolution; Forced Migration is one Evolution Kind, not a separate planning system.
 
 ---
 
@@ -763,10 +809,11 @@ Prevent orphan documentation owners whose purpose, authority or maintenance proc
 3. Ask whether the information can remain inside its natural existing owner without losing clarity.
 4. Create a separate owner only when independent/shared complexity, review, reuse or authority pressure makes separate ownership materially clearer.
 5. Link/reference existing authority instead of copying it into neighboring files.
-6. Keep templates because concrete Documentation Use Cases consume them; do not grow a passive template catalog disconnected from processes.
-7. For every durable owner, be able to answer what is authoritative here, what is referenced/derived, who updates it and what process needs it.
-8. Merge/retire an owner when its independent use-case/process coverage disappears.
-9. Audit newly introduced and materially retained methodology owners for compatibility references during methodology changes.
+6. Keep templates because concrete Documentation Use Cases consume them; treat them as recommended adaptable forms, not schemas that create authority by being copied.
+7. Keep migration planning with the canonical Evolution Step owner and affected Evolution Impacts; create a separate migration document only when it is clearly the selected canonical/subordinate owner rather than a competing semantic roadmap.
+8. For every durable owner, be able to answer what is authoritative here, what is referenced/derived, who updates it and what process needs it.
+9. Merge/retire an owner when its independent use-case/process coverage disappears.
+10. Audit newly introduced and materially retained methodology owners for compatibility references during methodology changes.
 
 ### Principles
 
@@ -835,14 +882,15 @@ Define one coherent Feature behavior that contributes to an Application Benefit 
 
 1. Start from relevant Application Benefit / task or from a Feature candidate discovered through Scenario/Screen work; use DOC-UC-07 when alternatives are still being explored.
 2. State the Feature intent and principal Result / Result family.
-3. Describe observable application behavior in application-language, including meaningful branches/failures/retry/recovery.
+3. Describe observable expected application behavior in application-language, including ordered steps, meaningful resulting state, branches/failures/retry/recovery. Semantically relevant technical ecosystem concepts are allowed when they are part of what the application must establish; exact code mechanics are not the default documentation level.
 4. Discover Behavior Requirements and Feature Data bidirectionally.
-5. Record material Feature Implementation Concerns: feasibility, dependencies, options, constraints, proofability and Slice-shape observations.
-6. If material feasibility is unresolved, prototype/research enough to decide whether the behavior is credible; revise the planned behavior when capability reality contradicts it.
-7. Inspect relevant known Evolution Steps.
-8. Run the four-group Feature/Slice Boundary Check.
-9. Select the current Feature boundary and Slice boundary hypothesis, or mark the boundary explicitly unresolved when one material concern still blocks selection.
-10. Feed implementation concerns and dependencies downstream; do not rewrite them as Requirements unless downstream reasoning actually selects them.
+5. Record material Feature Implementation Concerns: feasibility, dependencies, options, platform/external constraints, partial-state/recovery risks, proofability, Evolution Kind/Forced Migration pressure and Slice-shape observations.
+6. Use implementation-aware reasoning deeply enough to validate feasibility and the Feature/Slice boundary, but do not prematurely turn Feature Planning into class/method design.
+7. If material feasibility is unresolved, prototype/research enough to decide whether the behavior is credible; revise the planned behavior when capability reality contradicts it.
+8. Inspect relevant known Evolution Steps.
+9. Run the four-group Feature/Slice Boundary Check.
+10. Select the current Feature boundary and Slice boundary hypothesis, or mark the boundary explicitly unresolved when one material concern still blocks selection.
+11. Feed implementation concerns and dependencies downstream; do not rewrite them as Requirements unless downstream reasoning actually selects them.
 
 ### Principles
 
@@ -948,7 +996,7 @@ Production and Proof discovery are intentionally bidirectional. Proof difficulty
 Current lineage after this refactor:
 
 ```text
-DOC-UC-01  Scenario / journey behavioral specification
+DOC-UC-01  Scenario / journey composition and consistency
 DOC-UC-02  Domain / Aggregate discovery
 DOC-UC-03  Slice implementation
 DOC-UC-04  Shared Implementation Capability
@@ -967,12 +1015,13 @@ DOC-UC-14  owner-local Production ↔ Proof Requirements Discovery
 ## Representation rules
 
 - Prefer the smallest form that preserves meaning.
-- Feature/Scenario/Requirement content may live in one owner when separation adds no independent maintenance value.
+- Feature is the primary behavioral authority. Scenario references Features and owns composition/consistency; physical co-location is allowed only when that authority boundary remains unambiguous.
 - Separate owner files when responsibility, evolution, reuse or maintenance pressure makes them independently useful.
 - Tables are useful for coverage/navigation; prose/process forms are better when ordering/branching/invariants matter.
 - Free-form Feature Implementation Concerns are intentional; do not turn them into a rigid schema.
-- Evolution Step notation may vary as long as complete target meaning and existing/new/changed/removed effects are clear.
-- Templates below are examples, not schemas.
+- Evolution Step notation may vary as long as complete target meaning, Evolution Kinds and existing/new/changed/removed effects are clear where material.
+- Templates are **recommended forms/examples, not schemas**. Select, omit, combine or reshape sections according to the semantic meaning being preserved; do not copy every heading mechanically or manufacture `N/A`.
+- The underlying authority/boundary questions remain required where material even when the recommended presentation is adapted.
 
 ## Integration rule for existing Replacement Package App documentation
 
@@ -982,11 +1031,13 @@ When a current Scenario/Domain/Slice/Screen/testing owner is next migrated:
 
 1. preserve its accepted current/planned behavior first;
 2. identify Feature boundaries with the four-group check instead of mechanically converting each old FI to a Feature;
-3. convert Behavior Item meaning into structured Behavior Requirements without forcing 1:1 textual items;
-4. carry existing feasibility/realization dependencies into Feature Implementation Concerns where they belong;
-5. keep Domain/Aggregate semantic invariants with their owners;
-6. re-run Slice boundaries with implementation evidence, allowing module/branch/entry-adapter extension;
-7. convert durable implementation/test Items into Production/Proof Requirements by meaning, not prefix;
-8. preserve Evolution Steps, then strengthen them toward complete target Feature/Scenario states where material;
-9. update derived maps/testing navigation only after semantic owners are reconciled;
-10. do not modify unrelated product owners merely for terminology consistency.
+3. establish Feature owners as the primary behavioral authority, including meaningful ordered application behavior, Results, Behavior Requirements, Feature Data and Implementation Concerns;
+4. recompose Scenario owners around Feature sequence, journey-level expected/visible behavior where useful, Resulting state, continuity, Screen/external context and Benefit closure without copying Feature internals;
+5. convert Behavior Item meaning into Feature-local Behavior Requirements or genuine cross-Feature Scenario Requirements by meaning rather than 1:1 textual mapping;
+6. carry existing feasibility/realization dependencies into Feature Implementation Concerns where they belong;
+7. keep Domain/Aggregate semantic invariants with their owners;
+8. re-run Slice boundaries with implementation evidence, allowing module/branch/entry-adapter extension;
+9. convert durable implementation/test Items into Production/Proof Requirements by meaning, not prefix;
+10. preserve Evolution Steps, add/retain applicable Evolution Kinds, keep migration inside Step/Impact machinery and strengthen Steps toward complete target Feature/Scenario states where material;
+11. update derived maps/testing navigation only after semantic owners are reconciled;
+12. do not modify unrelated product owners merely for terminology consistency.

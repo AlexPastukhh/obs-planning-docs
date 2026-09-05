@@ -30,7 +30,9 @@ Scenario / real user journeys ↔ selected Screen model
 → production/test source + executed Evidence
 ```
 
-Scenario-first is allowed but not mandatory: Features, Scenarios and Screens are refined iteratively and must eventually be consistent. Tests/Evidence prove selected meaning; they do not create it. Slice independence means primarily locality of use-case change, not absence of dependencies.
+Feature owners are the primary behavioral authority. Scenarios compose those Features into real user/application journeys, summarize only the journey-level visible behavior/Results needed for understanding, verify input/result/context continuity and confirm that the composition closes the intended Application Benefit; they do not duplicate Feature internals. Scenario-first remains allowed but is not mandatory: Features, Scenarios and Screens are refined iteratively and must eventually be consistent. Tests/Evidence prove selected meaning; they do not create it. Slice independence means primarily locality of use-case change, not absence of dependencies.
+
+Known evolution uses one common vocabulary: `Introduction`, `Expansion`, `Refactoring`, `Forced Migration`, `Retirement`. Migration is a form of Evolution and belongs in canonical Evolution Step / Evolution Impact machinery rather than a competing roadmap.
 
 **Migration boundary:** current Scenario/FI/BI/Domain/Slice/testing owners remain current product truth until separately reconciled to the target Feature/Requirement model. This methodology update does not silently rename, regroup or reinterpret those product owners.
 
@@ -122,7 +124,7 @@ Target local-methodology ownership is:
 
 - app-level context owns Application Benefits / high-level responsibilities;
 - Feature owners/sections own coherent use-case behavior, Behavior Requirements, Feature Data and implementation concerns;
-- Scenario owners own real cross-Feature / cross-Screen journeys and Scenario Requirements;
+- Scenario owners own real cross-Feature / cross-Screen journey composition, Result/context continuity, Benefit closure and Scenario Requirements; Feature internals remain Feature authority;
 - Screen owner defines durable spatial/window meaning;
 - Domain/Aggregate owners define semantic identity/state/invariants/consistency;
 - Slice owners define end-to-end implementation of Feature boundaries; Shared owners define reusable non-end-to-end capabilities;

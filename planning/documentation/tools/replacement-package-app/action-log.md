@@ -1759,3 +1759,23 @@ Logging starts only after explicit user instruction; no pre-start history is rec
 **Compatibility result:** unchanged `domain-evolution.md` references `DOC-UC-02`, `DOC-UC-05`, `DOC-UC-10` again resolve to Domain discovery, evolution-aware implementation architecture and documentation ownership respectively, and `documentation-templates.md#template-evolution-impact` resolves again without editing the product owner.
 
 **APPLIED relation:** successful Apply of correction package `0665ab3f-ff1f-4f25-9968-886bf59fbc75` corrects the still-open ChangeSet `9263c08f-6172-4541-b47e-317c5d32d36a` after semantic review `NEEDS_CORRECTION`; ChangeSet identity/intent remain unchanged.
+
+
+### LOG-RPKG-077 — Clarify Feature-centered Scenario ownership and common Evolution Kinds
+
+**Type:** LOCAL METHODOLOGY CORRECTION / PACKAGE TARGET  
+**ChangeSet:** `10114cb7-6cf8-460f-8e45-6d51ee87a767`  
+**Package:** `297ad411-f9c3-4de4-bc0e-bf55a35514af`
+
+**Selected methodology correction:**
+- keep Feature as the primary behavioral authority and tighten Scenario ownership to journey composition/consistency: Feature sequence, journey-level visible behavior where useful, meaningful Result/resulting state, continuity into later Features, Screen/external context, cross-Feature Scenario Requirements and terminal Application Benefit closure;
+- explicitly allow Scenario to repeat/summarize a Feature Result because that Result is the semantic interface with the journey, while keeping the Feature's internal expected behavior, Requirements, Data and Implementation Concerns authoritative in the Feature owner;
+- allow Feature owners to describe ordered expected application behavior using semantically relevant ecosystem concepts while keeping exact class/method/private code mechanics downstream; deepen Feature Implementation Concerns for feasibility, partial-state/recovery, implementation dependency, proofability, Feature/Slice-boundary and known-evolution pressure;
+- define `Introduction`, `Expansion`, `Refactoring`, `Forced Migration` and `Retirement` as common composable **Evolution Kinds**; use the same vocabulary in owner-local Evolution Impact for existing owners, while new Features/owners are introduced directly in the canonical Step target;
+- make `Migration = Evolution` explicit: semantic/product/architecture/documentation migration belongs to canonical Evolution Step / Evolution Impact machinery and must not form a competing migration roadmap;
+- preserve `[EXISTING] / [NEW] / [CHANGED] / [REMOVED]` as target-state accounting complementary to Evolution Kinds rather than replacing them;
+- preserve templates as recommended adaptable examples, not schemas: choose the smallest representation that preserves meaning, omit/combine/reshape sections when useful and never manufacture `N/A` merely to copy a form exactly.
+
+**Ownership result:** this package changes only the Replacement Package App local methodology authority/navigation (`README.md`, `documentation-use-cases.md`, `documentation-templates.md`) plus this scope log. Existing product Scenario/Feature/FI/Screen/Domain/Slice/testing/contracts/source remain outside this package and are to be reconciled separately after the methodology is accepted.
+
+**Target-state result:** the local methodology now states where Feature behavior, Scenario journey composition, implementation-aware Feature concerns, Evolution Kinds and migration planning belong, while retaining flexible recommended templates and stable `DOC-UC-01..14` identities.
