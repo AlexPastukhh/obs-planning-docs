@@ -1735,3 +1735,27 @@ Logging starts only after explicit user instruction; no pre-start history is rec
 **Target-State Result:** after successful Apply, `documentation-use-cases.md` is the active Feature-centered local methodology authority, `documentation-templates.md` provides matching non-schema forms, `README.md` routes readers through the new model with an explicit legacy-product migration guard, and this log records the selected target without changing product Scenario/Slice meaning.
 
 **APPLIED relation:** successful Apply of package `e7cfd159-fa57-4249-bf6f-d07ae018de4a` establishes this new independent ChangeSet `9263c08f-6172-4541-b47e-317c5d32d36a` from the supplied `main` snapshot source; later product-document migration must be a separate selected change and must re-evaluate old FI/BI decomposition rather than mechanically rename it.
+
+
+### LOG-RPKG-076 — Correct stable methodology identities and compatibility anchors
+
+**Type:** REVIEW DIFF / LOCAL METHODOLOGY CORRECTION / APPLIED TARGET  
+**Reviewed ChangeSet:** `9263c08f-6172-4541-b47e-317c5d32d36a`  
+**Corrects Package:** `e7cfd159-fa57-4249-bf6f-d07ae018de4a`  
+**Correction Package:** `0665ab3f-ff1f-4f25-9968-886bf59fbc75`
+
+**Review finding / selected correction:**
+- preserve the accepted Feature/Slice methodology model from LOG-RPKG-075, but restore stable `DOC-UC-01..12` semantic identity lineage instead of reusing old IDs for unrelated new processes;
+- keep `DOC-UC-01` for Scenario/journey behavioral specification, `02` Domain/Aggregate, `03` Slice, `04` Shared Capability, `05` evolution-aware architecture, `06` implementation inspection, `07` design exploration, `08` Evolution Step planning, `09` semantic readability, `10` documentation ownership, `11` Screen model and `12` proof;
+- assign genuinely new target processes `DOC-UC-13` (Feature planning + Feature/Slice boundary hypothesis) and `DOC-UC-14` (owner-local Production ↔ Proof Requirements Discovery);
+- restore compatibility anchors `doc-uc-evolution-steps-map`, `doc-uc-semantic-readability`, `doc-uc-documentation-ownership` and `template-evolution-impact`; the Evolution Impact template now expresses the new target model while preserving the stable link target used by unchanged owners such as `domain-evolution.md`;
+- remove the accidental leading `\` presentation line from `documentation-use-cases.md` and `documentation-templates.md`.
+
+**Preserved methodology meaning:**
+- Feature remains the primary behavioral planning unit under one intent/principal Result family and Slice remains the end-to-end implementation side of that same boundary;
+- the four-group Feature/Slice Boundary Check, Feature Implementation Concerns, Scenario Requirements, change-locality definition of Slice isolation, structured Requirement semantics, Production ↔ Proof discovery and Evolution Step completeness rules remain unchanged;
+- current Scenario/Screen/Domain/Slice/testing/contracts/source remain outside this correction and are not semantically migrated.
+
+**Compatibility result:** unchanged `domain-evolution.md` references `DOC-UC-02`, `DOC-UC-05`, `DOC-UC-10` again resolve to Domain discovery, evolution-aware implementation architecture and documentation ownership respectively, and `documentation-templates.md#template-evolution-impact` resolves again without editing the product owner.
+
+**APPLIED relation:** successful Apply of correction package `0665ab3f-ff1f-4f25-9968-886bf59fbc75` corrects the still-open ChangeSet `9263c08f-6172-4541-b47e-317c5d32d36a` after semantic review `NEEDS_CORRECTION`; ChangeSet identity/intent remain unchanged.

@@ -1,4 +1,3 @@
-\
 # Replacement Package App — Documentation Use Cases
 
 Status: active documentation-maintenance owner
@@ -518,7 +517,315 @@ Later Evidence may challenge Feature, Scenario, Screen, Slice, Aggregate, Shared
 
 ---
 
-## DOC-UC-01 — Plan and maintain Feature behavior and Slice boundary hypothesis
+## DOC-UC-01 — Maintain Scenario / real user journey behavioral specification
+
+### Goal
+
+Keep one selected Scenario understandable as a real user/application journey through Features, Screens and external contexts, with genuine cross-Feature / cross-Screen Scenario Requirements and an explicit terminal Benefit/Result.
+
+### Process
+
+1. Start from a selected/current or planned real journey that contributes to an Application Benefit.
+2. Record starting context, Features involved, Screens/external contexts, ordering/transitions, Data/context continuity, branches/retry/re-entry and terminal Result.
+3. Keep Feature-local behavior with the Feature owner; Scenario owns composition/journey truth rather than duplicating Feature internals.
+4. Discover Scenario Requirements only for behavior that is genuinely cross-Feature/cross-Screen/cross-context.
+5. Check that Feature preconditions can actually arise and Feature Results can feed later Features truthfully.
+6. Check selected Screens support the journey while Screen remains spatial/window authority.
+7. Route material feasibility uncertainty into affected Feature Implementation Concerns when ownership is known; keep temporary Scenario-level uncertainty only while cross-Feature ownership is unresolved.
+8. If the journey exposes a missing/merged/split Feature or a poor Slice boundary, return to DOC-UC-13 and re-run the Feature/Slice Boundary Check.
+9. Define E2E proof intent from the Scenario; tests remain proof rather than Scenario authority.
+10. Use DOC-UC-07 when the Scenario/Screen design itself is still being explored and DOC-UC-09 for semantic readability.
+
+### Principles
+
+- Scenario-first is allowed but not mandatory.
+- Feature-first planning must eventually face real journey consistency.
+- Scenario is a journey/composition owner, not another name for a Feature or Slice.
+- A composite convenience entry may span several Features/Slices without merging their semantic boundaries.
+- `1 Scenario = 1 Screen` is not required.
+
+---
+
+## DOC-UC-02 — Discover and maintain Domain / Aggregate meaning
+
+### Goal
+
+Place semantic identity, state, lifecycle, invariants and consistency with the correct Domain/Aggregate owner rather than scattering them through Slices.
+
+### Process
+
+1. Start from selected Feature behavior, Behavior Requirements and Feature Data.
+2. Inspect relevant Feature Implementation Concerns, especially identity/state/consistency/retry/recovery findings and implementation dependencies.
+3. Inspect relevant Scenario Requirements and known Evolution Steps.
+4. Ask:
+   - what has stable semantic identity;
+   - which state dimensions/lifecycle transitions matter;
+   - which combinations are valid/impossible;
+   - what must remain correct/consistent together;
+   - which behavior is Domain/Aggregate meaning vs application/Slice coordination.
+5. Select or refine Aggregate/Domain boundary only to the depth the selected Feature/Slice materially needs.
+6. Perform owner-local Requirements Discovery through DOC-UC-14 for the selected Aggregate/Domain owner.
+7. If Aggregate evidence challenges the Feature/Slice boundary, return to the same Boundary Check rather than silently compensating in implementation.
+
+### Principles
+
+- No global deep Domain model is required upfront.
+- One Aggregate per Requirement/Feature is not required.
+- Aggregate dependencies do not violate Slice independence.
+- Feature Implementation Concerns are discovery evidence, not automatic Domain truth.
+
+---
+
+## DOC-UC-03 — Maintain Slice implementation and revalidate Feature/Slice boundary
+
+### Goal
+
+Realize one selected Feature as a coherent end-to-end Slice while keeping use-case changes locally understandable and locally changeable.
+
+### Process
+
+1. Start from selected Feature behavior, Behavior Requirements, Feature Data, Feature Implementation Concerns, implementation dependencies and relevant Scenario/Screen constraints.
+2. Load relevant Domain/Aggregate and Shared Capability meaning.
+3. Re-run the four-group Feature/Slice Boundary Check with implementation evidence now available.
+4. Confirm one of:
+   - existing Slice unchanged in boundary;
+   - ordinary Slice change;
+   - new/changed Slice Module;
+   - new/changed Slice Branch;
+   - new Entry Adapter/Variant;
+   - Shared Capability extraction;
+   - merge/split/reframe of Feature/Slice requiring upstream revalidation.
+5. Perform owner-local Production ↔ Proof Requirements Discovery through DOC-UC-14.
+6. Realize through TDD where executable proof is credible.
+7. Record only durable owner requirements; exact class/method mechanics remain source authority.
+8. Feed Evidence back into narrow revalidation when assumptions fail.
+
+### Principles
+
+- Slice independence means change locality, not dependency absence.
+- A material change to one use case should mainly touch its own Slice plus owners whose meaning genuinely changed.
+- Do not create separate frontend/backend/database Slices by technical layer.
+- Module/branch/adapter is preferable to a new Slice when intent/result remain one and variation localizes well.
+
+---
+
+## DOC-UC-04 — Maintain Shared Implementation Capability when shared responsibility is real
+
+### Goal
+
+Extract and maintain reusable non-end-to-end implementation responsibility only when several Slices genuinely need the same coherent capability.
+
+### Process
+
+1. Start from repeated Feature Implementation Concerns or implementation evidence across Slices.
+2. Ask whether the shared meaning is coherent and reusable rather than accidental code similarity.
+3. Keep use-case-specific policy/result behavior in consumer Slices.
+4. Define consumers and semantic boundary/contract.
+5. Perform owner-local Production ↔ Proof Requirements Discovery through DOC-UC-14.
+6. Recheck relevant Evolution Steps and change locality.
+
+### Principles
+
+- Shared capability is not a dumping ground for common utilities.
+- Extraction should reduce forced cross-Slice change coupling, not create a central god-owner.
+- Shared owner dependencies are normal and do not eliminate Slice independence.
+
+---
+
+## DOC-UC-05 — Maintain evolution-aware implementation architecture
+
+### Goal
+
+Use known Evolution Steps to make current Feature/Slice/Aggregate/Shared boundaries easier to evolve without prematurely implementing future behavior.
+
+### Process
+
+1. Inspect relevant known Steps during Feature/Slice Boundary Check and owner-local Requirements Discovery (DOC-UC-14).
+2. Ask whether repeated future changes stay within one cohesive Slice/module/branch or reveal distinct evolution lines.
+3. Distinguish a stable semantic seam needed now from speculative abstraction.
+4. Record durable current Requirement only when known evolution materially justifies it.
+5. Record future owner delta as Evolution Impact rather than pretending it is current behavior.
+6. Re-evaluate after Evidence or new Steps invalidate an earlier assumption.
+
+### Principles
+
+- Prefer change locality across the known evolution chain.
+- Avoid both premature implementation and avoidable forced migration.
+- Evolution fitness belongs to both production and proof.
+
+---
+
+## DOC-UC-06 — Inspect current implementation without duplicating source documentation
+
+### Goal
+
+Use current source/tests as exact realization Evidence while keeping normative docs focused on semantic behavior, boundaries and durable Requirements.
+
+### Process
+
+1. Read only source/test areas needed to answer the current planning question.
+2. Treat class/method/package mechanics as source authority.
+3. Promote a fact into normative documentation only when it is durable semantic/boundary/Requirement meaning.
+4. Use generated traces/maps as derived navigation only; regenerate rather than hand-maintain when source changes.
+5. Feed material implementation findings into Feature Implementation Concerns or owner-local Requirements Discovery.
+
+---
+
+## DOC-UC-07 — Explore and select Feature / Scenario / Screen design
+
+### Goal
+
+Explore candidate use-case boundaries and real journeys far enough to select coherent Feature/Slice hypotheses and Screen composition without turning design alternatives into current runtime behavior or roadmap truth.
+
+### Process
+
+1. Start from an Application Benefit / desired result, an existing Scenario, a Feature candidate or a Screen/interaction problem.
+2. Sketch the smallest candidate Feature set and real journey needed to understand the intended application result.
+3. For each non-obvious Feature candidate, use DOC-UC-13 far enough to expose intent, principal Result, meaningful behavior, Feature Data and material implementation concerns.
+4. Compare Feature boundaries using the four-group Feature/Slice Boundary Check; do not finalize boundaries merely from labels, screens, transports or current class structure.
+5. Compose candidate Features into realistic Scenario paths and selected/candidate Screens; check context/Data continuity, recovery/re-entry and terminal Result.
+6. Treat exploration bidirectionally: Scenario/Screen pressure may revise Feature boundaries, while Feature behavior/results may revise Scenario composition or Screen responsibilities.
+7. Compare materially different alternatives through qualitative strengths/problems/complexity/risks/questions when useful; no scoring framework is required.
+8. Classify the result correctly: selected current/planned Feature or Scenario truth, selected Evolution Step, planned future Scenario, or candidate/rejected alternative.
+9. Hand selected Scenario meaning to DOC-UC-01, selected Screen meaning to DOC-UC-11 and selected Feature/Slice hypothesis to DOC-UC-13 / DOC-UC-03.
+
+### Principles
+
+- Design exploration is iterative, not Scenario-first or Feature-first by rule.
+- Candidate alternatives are not runtime branches or Evolution Steps by default.
+- A Screen is not a frontend Slice.
+- Explore enough implementation reality to avoid implausible boundaries, but keep exact code design downstream.
+
+---
+
+<a id="doc-uc-evolution-steps-map"></a>
+## DOC-UC-08 — Plan and refine Evolution Steps
+
+### Goal
+
+Represent meaningful future application evolution early enough to influence current boundaries, then progressively refine each Step into a complete usable target state.
+
+### Process
+
+1. Capture a new Evolution Step as soon as a material future capability/journey change is known. Early representation may be shallow.
+2. Record affected Benefits/Features/Scenarios as they become known.
+3. Use the Step during every relevant Discovery rather than waiting for late architecture review.
+4. When an existing Feature changes and enough detail is known, show the full target Feature with `[EXISTING]`, `[NEW]`, `[CHANGED]`, `[REMOVED]` (or equivalent) rather than only a detached delta.
+5. If Feature composition, ordering, cross-Feature Data/context or Screen journey changes, include the target Scenario.
+6. Include as many Feature/Slice changes as needed for the Step to end in a complete internally consistent usable application state.
+7. Several implementation packages/commits may realize one Evolution Step; intermediate code progress is not automatically a separate application Evolution Step.
+8. Record owner-local Evolution Impact in affected Slice/Aggregate/Shared/Screen owners when those owners are migrated/maintained.
+
+### Principles
+
+- Evolution Step boundary follows complete application capability, not Feature count.
+- A Step may consist of two or more Features when only their completed composition creates a usable Scenario.
+- A Step may enable later Steps but must not depend on the next Step merely to become internally consistent.
+- Known evolution is strong Feature/Slice boundary evidence.
+
+---
+
+<a id="doc-uc-semantic-readability"></a>
+## DOC-UC-09 — Communicate documentation meaning clearly
+
+### Goal
+
+Make durable documentation easy to scan and accurately understand without simplifying away conditions, exceptions, boundaries, rationale or current/planned distinctions.
+
+### Process
+
+1. Identify the main semantic claim of each block before formatting it.
+2. Keep one connected idea as prose when prose communicates it best; use bullets/tables/process maps when they reveal independently meaningful structure.
+3. Make meaningful contrasts explicit when useful: current vs planned, success vs failure vs uncertainty, Feature vs Scenario, runtime branch vs design alternative, current Requirement vs Evolution Impact.
+4. Re-read structured wording against source meaning and verify no condition, exception, reason, authority boundary or outcome disappeared.
+5. Give Feature, Scenario, Requirement, Slice, Aggregate, Shared Capability, Evolution Step and other durable entities intuitive semantic names; technical IDs remain stable navigation aids, not meaning.
+6. Apply the same semantic-readability rule to templates and examples.
+
+### Principles
+
+- Optimize for semantic readability without semantic compression.
+- Shorter is not better when it removes required meaning.
+- Technical identifiers are navigation, not architecture or roadmap order.
+
+---
+
+<a id="doc-uc-documentation-ownership"></a>
+## DOC-UC-10 — Maintain use-case-driven documentation ownership
+
+### Goal
+
+Prevent orphan documentation owners whose purpose, authority or maintenance process is unclear while keeping each durable meaning with the narrowest correct owner.
+
+### Process
+
+1. Before creating or retaining a durable documentation owner, identify the process/use case that creates, maintains or consumes it.
+2. Distinguish documentation-process artifacts from application semantic/contract/proof owners; do not invent meta use cases merely to justify product owners.
+3. Ask whether the information can remain inside its natural existing owner without losing clarity.
+4. Create a separate owner only when independent/shared complexity, review, reuse or authority pressure makes separate ownership materially clearer.
+5. Link/reference existing authority instead of copying it into neighboring files.
+6. Keep templates because concrete Documentation Use Cases consume them; do not grow a passive template catalog disconnected from processes.
+7. For every durable owner, be able to answer what is authoritative here, what is referenced/derived, who updates it and what process needs it.
+8. Merge/retire an owner when its independent use-case/process coverage disappears.
+9. Audit newly introduced and materially retained methodology owners for compatibility references during methodology changes.
+
+### Principles
+
+- No orphan documentation owner.
+- A useful fact does not automatically justify a separate file.
+- Use-case coverage does not mean one Documentation Use Case per product file.
+- Compatibility identifiers/anchors are part of the documentation interface when existing owners depend on them.
+
+---
+
+## DOC-UC-11 — Maintain selected Screen model
+
+### Goal
+
+Keep durable spatial/window/UI meaning explicit while allowing Features and Scenarios to own behavior and journeys.
+
+### Process
+
+1. Maintain the Screen Map and important Screen responsibilities.
+2. Map Features/Scenarios to Screens only where spatial context matters.
+3. Keep Screen-owned behavior/UI constraints in the Screen owner.
+4. Use DOC-UC-01 / DOC-UC-07 Scenario planning to validate real transitions between Screens.
+5. Feed Screen constraints back into Feature/Scenario planning when they expose impossible or confusing behavior.
+6. Inspect relevant Evolution Steps.
+
+### Principles
+
+- `1 Feature = 1 Screen` and `1 Scenario = 1 Screen` are not required.
+- Screen is not a frontend Slice.
+- Do not make accidental pixel/layout details normative without durable meaning.
+
+---
+
+## DOC-UC-12 — Plan and realize credible proof
+
+### Goal
+
+Turn selected behavior and production Requirements into convincing proof without letting tests become a second semantic authority.
+
+### Process
+
+1. Start from relevant Feature/Scenario/Domain/Slice/Shared meaning and Proof Requirements discovered through DOC-UC-14 where owner-local discovery is material.
+2. Prefer a failing executable proof before production realization when a credible test boundary exists.
+3. Use integration/E2E proof when local proof cannot establish the required semantic result.
+4. Use Practical Acceptance when real environment behavior cannot be credibly automated.
+5. Keep shared Test Strategy only for cross-owner proof coordination.
+6. Execute proof and record Evidence against the exact build/state/environment exercised.
+7. If Evidence contradicts accepted meaning or boundary assumptions, open narrow revalidation instead of weakening the proof silently.
+
+### Principles
+
+- Tests prove selected truth; they do not create it.
+- `1 Requirement = 1 test` is not required.
+- Scenario is natural authority for E2E journey proof.
+- Refactoring-resilient proof should prefer semantic inputs/outputs/state/evidence over incidental private HOW.
+
+---
+
+## DOC-UC-13 — Plan and maintain Feature behavior and Slice boundary hypothesis
 
 ### Goal
 
@@ -526,7 +833,7 @@ Define one coherent Feature behavior that contributes to an Application Benefit 
 
 ### Process
 
-1. Start from relevant Application Benefit / task or from a Feature candidate discovered through Scenario/Screen work.
+1. Start from relevant Application Benefit / task or from a Feature candidate discovered through Scenario/Screen work; use DOC-UC-07 when alternatives are still being explored.
 2. State the Feature intent and principal Result / Result family.
 3. Describe observable application behavior in application-language, including meaningful branches/failures/retry/recovery.
 4. Discover Behavior Requirements and Feature Data bidirectionally.
@@ -556,121 +863,7 @@ Define one coherent Feature behavior that contributes to an Application Benefit 
 
 ---
 
-## DOC-UC-02 — Explore and maintain Scenario / Screen consistency
-
-### Goal
-
-Describe real user/application journeys through Features, Screens and external contexts; discover cross-Feature Scenario Requirements; and use those journeys as a consistency check on Feature boundaries and application usability.
-
-### Process
-
-1. Start from a Benefit/Need, an existing/new Feature set, or a Screen/interaction problem.
-2. Sketch realistic starting context and user path through Features/Screens/contexts.
-3. Record Feature ordering/composition, context/Data continuity, branches, retry/re-entry and terminal Result.
-4. Discover Scenario Requirements only for behavior that is genuinely cross-Feature/cross-Screen/cross-context.
-5. Check whether Feature preconditions can actually arise and Feature Results can feed later Features truthfully.
-6. Check whether selected Screens support the journey without making Screen spatial meaning the Feature authority.
-7. For implementation-uncertain Scenario Requirements, route feasibility concerns into affected Feature Implementation Concerns when possible; resolve cross-feature uncertainty before detailed owner planning.
-8. If the journey exposes a missing/merged/split Feature, return to DOC-UC-01 and re-run the boundary check.
-9. Define E2E proof expectations from the selected Scenario; tests remain proof rather than Scenario authority.
-
-### Principles
-
-- Scenario-first is allowed but not mandatory.
-- Feature-first is allowed but must eventually face real journey consistency.
-- `1 Scenario = 1 Screen` is not required.
-- Scenario is a composition/journey owner, not another name for a Slice.
-- Cross-Feature command/composite entry does not automatically merge Feature boundaries.
-
----
-
-## DOC-UC-03 — Discover and maintain Domain / Aggregate meaning
-
-### Goal
-
-Place semantic identity, state, lifecycle, invariants and consistency with the correct Domain/Aggregate owner rather than scattering them through Slices.
-
-### Process
-
-1. Start from selected Feature behavior, Behavior Requirements and Feature Data.
-2. Inspect relevant Feature Implementation Concerns, especially identity/state/consistency/retry/recovery findings and implementation dependencies.
-3. Inspect relevant Scenario Requirements and known Evolution Steps.
-4. Ask:
-   - what has stable semantic identity;
-   - which state dimensions/lifecycle transitions matter;
-   - which combinations are valid/impossible;
-   - what must remain correct/consistent together;
-   - which behavior is Domain/Aggregate meaning vs application/Slice coordination.
-5. Select or refine Aggregate/Domain boundary only to the depth the selected Feature/Slice materially needs.
-6. Perform owner-local Requirements Discovery for the selected Aggregate/Domain owner.
-7. If Aggregate evidence challenges the Feature/Slice boundary, return to the same Boundary Check rather than silently compensating in implementation.
-
-### Principles
-
-- No global deep Domain model is required upfront.
-- One Aggregate per Requirement/Feature is not required.
-- Aggregate dependencies do not violate Slice independence.
-- Feature Implementation Concerns are discovery evidence, not automatic Domain truth.
-
----
-
-## DOC-UC-04 — Maintain Slice implementation and revalidate Feature/Slice boundary
-
-### Goal
-
-Realize one selected Feature as a coherent end-to-end Slice while keeping use-case changes locally understandable and locally changeable.
-
-### Process
-
-1. Start from selected Feature behavior, Behavior Requirements, Feature Data, Feature Implementation Concerns, implementation dependencies and relevant Scenario/Screen constraints.
-2. Load relevant Domain/Aggregate and Shared Capability meaning.
-3. Re-run the four-group Feature/Slice Boundary Check with implementation evidence now available.
-4. Confirm one of:
-   - existing Slice unchanged in boundary;
-   - ordinary Slice change;
-   - new/changed Slice Module;
-   - new/changed Slice Branch;
-   - new Entry Adapter/Variant;
-   - Shared Capability extraction;
-   - merge/split/reframe of Feature/Slice requiring upstream revalidation.
-5. Perform owner-local Production ↔ Proof Requirements Discovery.
-6. Realize through TDD where executable proof is credible.
-7. Record only durable owner requirements; exact class/method mechanics remain source authority.
-8. Feed Evidence back into narrow revalidation when assumptions fail.
-
-### Principles
-
-- Slice independence means change locality, not dependency absence.
-- A material change to one use case should mainly touch its own Slice plus owners whose meaning genuinely changed.
-- Do not create separate frontend/backend/database Slices by technical layer.
-- Module/branch/adapter is preferable to a new Slice when intent/result remain one and variation localizes well.
-
----
-
-## DOC-UC-05 — Maintain Shared Implementation Capability when shared responsibility is real
-
-### Goal
-
-Extract and maintain reusable non-end-to-end implementation responsibility only when several Slices genuinely need the same coherent capability.
-
-### Process
-
-1. Start from repeated Feature Implementation Concerns or implementation evidence across Slices.
-2. Ask whether the shared meaning is coherent and reusable rather than accidental code similarity.
-3. Keep use-case-specific policy/result behavior in consumer Slices.
-4. Define consumers and semantic boundary/contract.
-5. Perform owner-local Production ↔ Proof Requirements Discovery.
-6. Recheck relevant Evolution Steps and change locality.
-
-### Principles
-
-- Shared capability is not a dumping ground for common utilities.
-- Extraction should reduce forced cross-Slice change coupling, not create a central god-owner.
-- Shared owner dependencies are normal and do not eliminate Slice independence.
-
----
-
-## DOC-UC-06 — Perform owner-local Requirements Discovery
+## DOC-UC-14 — Perform owner-local Requirements Discovery
 
 ### Goal
 
@@ -736,138 +929,6 @@ Production and Proof discovery are intentionally bidirectional. Proof difficulty
 
 ---
 
-## DOC-UC-07 — Plan and refine Evolution Steps
-
-### Goal
-
-Represent meaningful future application evolution early enough to influence current boundaries, then progressively refine each Step into a complete usable target state.
-
-### Process
-
-1. Capture a new Evolution Step as soon as a material future capability/journey change is known. Early representation may be shallow.
-2. Record affected Benefits/Features/Scenarios as they become known.
-3. Use the Step during every relevant Discovery rather than waiting for late architecture review.
-4. When an existing Feature changes and enough detail is known, show the full target Feature with `[EXISTING]`, `[NEW]`, `[CHANGED]`, `[REMOVED]` (or equivalent) rather than only a detached delta.
-5. If Feature composition, ordering, cross-Feature Data/context or Screen journey changes, include the target Scenario.
-6. Include as many Feature/Slice changes as needed for the Step to end in a complete internally consistent usable application state.
-7. Several implementation packages/commits may realize one Evolution Step; intermediate code progress is not automatically a separate application Evolution Step.
-8. Record owner-local Evolution Impact in affected Slice/Aggregate/Shared/Screen owners when those owners are migrated/maintained.
-
-### Principles
-
-- Evolution Step boundary follows complete application capability, not Feature count.
-- A Step may consist of two or more Features when only their completed composition creates a usable Scenario.
-- A Step may enable later Steps but must not depend on the next Step merely to become internally consistent.
-- Known evolution is strong Feature/Slice boundary evidence.
-
----
-
-## DOC-UC-08 — Maintain evolution-aware implementation architecture
-
-### Goal
-
-Use known Evolution Steps to make current Feature/Slice/Aggregate/Shared boundaries easier to evolve without prematurely implementing future behavior.
-
-### Process
-
-1. Inspect relevant known Steps during Feature/Slice Boundary Check and owner-local Requirements Discovery.
-2. Ask whether repeated future changes stay within one cohesive Slice/module/branch or reveal distinct evolution lines.
-3. Distinguish a stable semantic seam needed now from speculative abstraction.
-4. Record durable current Requirement only when known evolution materially justifies it.
-5. Record future owner delta as Evolution Impact rather than pretending it is current behavior.
-6. Re-evaluate after Evidence or new Steps invalidate an earlier assumption.
-
-### Principles
-
-- Prefer change locality across the known evolution chain.
-- Avoid both premature implementation and avoidable forced migration.
-- Evolution fitness belongs to both production and proof.
-
----
-
-## DOC-UC-09 — Plan and realize credible proof
-
-### Goal
-
-Turn selected behavior and production Requirements into convincing proof without letting tests become a second semantic authority.
-
-### Process
-
-1. Start from relevant Feature/Scenario/Domain/Slice/Shared meaning and Proof Requirements.
-2. Prefer a failing executable proof before production realization when a credible test boundary exists.
-3. Use integration/E2E proof when local proof cannot establish the required semantic result.
-4. Use Practical Acceptance when real environment behavior cannot be credibly automated.
-5. Keep shared Test Strategy only for cross-owner proof coordination.
-6. Execute proof and record Evidence against the exact build/state/environment exercised.
-7. If Evidence contradicts accepted meaning or boundary assumptions, open narrow revalidation instead of weakening the proof silently.
-
-### Principles
-
-- Tests prove selected truth; they do not create it.
-- `1 Requirement = 1 test` is not required.
-- Scenario is natural authority for E2E journey proof.
-- Refactoring-resilient proof should prefer semantic inputs/outputs/state/evidence over incidental private HOW.
-
----
-
-## DOC-UC-10 — Maintain selected Screen model
-
-### Goal
-
-Keep durable spatial/window/UI meaning explicit while allowing Features and Scenarios to own behavior and journeys.
-
-### Process
-
-1. Maintain the Screen Map and important Screen responsibilities.
-2. Map Features/Scenarios to Screens only where spatial context matters.
-3. Keep Screen-owned behavior/UI constraints in the Screen owner.
-4. Use Scenario planning to validate real transitions between Screens.
-5. Feed Screen constraints back into Feature/Scenario planning when they expose impossible or confusing behavior.
-6. Inspect relevant Evolution Steps.
-
-### Principles
-
-- `1 Feature = 1 Screen` and `1 Scenario = 1 Screen` are not required.
-- Screen is not a frontend Slice.
-- Do not make accidental pixel/layout details normative without durable meaning.
-
----
-
-## DOC-UC-11 — Inspect current implementation without duplicating source documentation
-
-### Goal
-
-Use current source/tests as exact realization Evidence while keeping normative docs focused on semantic behavior, boundaries and durable Requirements.
-
-### Process
-
-1. Read only source/test areas needed to answer the current planning question.
-2. Treat class/method/package mechanics as source authority.
-3. Promote a fact into normative documentation only when it is durable semantic/boundary/Requirement meaning.
-4. Use generated traces/maps as derived navigation only; regenerate rather than hand-maintain when source changes.
-5. Feed material implementation findings into Feature Implementation Concerns or owner-local Requirements Discovery.
-
----
-
-## DOC-UC-12 — Communicate meaning and maintain documentation ownership
-
-### Goal
-
-Keep the documentation model readable, semantically named, non-duplicative and justified by real maintenance/use processes.
-
-### Process
-
-1. Put each durable meaning with the narrowest correct owner.
-2. Link/reference existing authority instead of copying it into neighboring files.
-3. Prefer readable semantic names; technical IDs are navigation, not meaning or roadmap order.
-4. Keep candidates/rejected alternatives clearly non-authoritative.
-5. Do not create a durable document merely because information seems useful; identify the process that creates/maintains/consumes it.
-6. Use templates as recommended forms, never mandatory schemas.
-7. When a selected exception contradicts a preferred methodology principle, record the contradiction and consequences explicitly.
-8. Keep current/planned/migrating states visible.
-
----
-
 ## Non-duplication and ownership rules
 
 1. Application Benefits justify behavior; do not copy them into every downstream owner unless needed for local readability.
@@ -878,6 +939,30 @@ Keep the documentation model readable, semantically named, non-duplicative and j
 6. Cross-owner dependencies are normal. Optimize change locality rather than dependency elimination.
 7. Selected Feature/Slice boundaries are hypotheses supported by current evidence and may be revalidated.
 8. Current product documents using legacy FI/BI/Item forms remain authoritative for their existing meaning until separately migrated.
+
+
+### Stable Documentation Use Case identity compatibility
+
+`DOC-UC-01` through `DOC-UC-12` are stable methodology identities from the pre-refactor local methodology. When the process evolved, its stable ID is preserved. New target processes that have no prior semantic owner use new IDs (`DOC-UC-13+`) rather than reassigning an existing ID to unrelated meaning.
+
+Current lineage after this refactor:
+
+```text
+DOC-UC-01  Scenario / journey behavioral specification
+DOC-UC-02  Domain / Aggregate discovery
+DOC-UC-03  Slice implementation
+DOC-UC-04  Shared Implementation Capability
+DOC-UC-05  evolution-aware implementation architecture
+DOC-UC-06  current implementation inspection
+DOC-UC-07  Feature / Scenario / Screen design exploration
+DOC-UC-08  Evolution Step planning / map relationship
+DOC-UC-09  semantic readability
+DOC-UC-10  documentation ownership
+DOC-UC-11  selected Screen model
+DOC-UC-12  credible proof
+DOC-UC-13  Feature planning + Feature/Slice boundary hypothesis
+DOC-UC-14  owner-local Production ↔ Proof Requirements Discovery
+```
 
 ## Representation rules
 

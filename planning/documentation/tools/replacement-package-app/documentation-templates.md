@@ -1,4 +1,3 @@
-\
 # Replacement Package App — Documentation Templates
 
 Status: active recommended forms
@@ -303,6 +302,32 @@ Forced migration:
 ```
 
 Exact notation is flexible. The important rule is that a completed Step leaves a coherent usable application state and does not require the next Step merely for completeness.
+
+---
+
+<a id="template-evolution-impact"></a>
+## Template — Evolution Impact
+
+Use this owner-local form when one canonical Evolution Step materially changes an existing Aggregate, Slice, Shared Capability, Screen or proof owner. It is future delta, not a second current Requirement list.
+
+```markdown
+## Evolution Impact
+
+### EVO-RPKG-<SEMANTIC-NAME> — <readable Step>
+
+[EXISTING] <meaning that remains>
+[NEW] <new owner responsibility / module / branch / proof>
+[CHANGED] <changed owner meaning>
+[REMOVED] <meaning intentionally removed>
+
+Forced migration:
+<only when real and unavoidable>
+
+Requirement consequences:
+<reference current/new Production or Proof Requirements when they are actually selected; do not duplicate them here>
+```
+
+When enough detail is known, prefer showing the complete target owner state rather than only an isolated delta.
 
 ---
 
