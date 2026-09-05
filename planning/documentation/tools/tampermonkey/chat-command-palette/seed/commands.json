@@ -202,8 +202,6 @@
         "Otherwise use fully readable current repository files.",
         "Request only the minimum fresh source/snapshot when exact touched base content cannot be read reliably.",
         "Never guess expected base content for replace/delete operations.",
-        "Resolve the project Scope Registry when present; every affected scope log/reference required for coherent post-Apply state is part of the package transition.",
-        "When logging is active, include material Idea Review/later clarification/prior ReviewDiff correction meaning and the APPLIED target-state relation; do not defer log correctness to a later package.",
         "Before reusing a changeSetId, verify that the ChangeSet is still open. Acceptance of its ReviewDiff as APPROVABLE finalizes/closes it for future package production.",
         "After an APPROVABLE ReviewDiff is accepted, every later replacement archive starts a new changeSetId + stable new changeSetLabel + new packageId, even when the later work is conceptually related or touches the same files.",
         "Produce one full replacement ZIP with PACKAGE.json, required base-files and replacement-files.",
@@ -685,7 +683,6 @@
       "activeContextBehavior": "Use active area/work item if clear.",
       "traversalReadMode": "Targeted source checks for state claims.",
       "ownerFiles": [
-        "planning/use-case-registry.md",
         "planning/documentation/status-reconciliation-workflow.md"
       ],
       "expectedOutput": "Concise current state separating repo, local and unknown, plus next safe action.",
@@ -693,7 +690,7 @@
       "keyReminders": [
         "Report current repo/chat/planning state from checked current owners.",
         "Separate known, local, unknown and not checked.",
-        "Use current Use-Case / Scenario / specialized owners to resolve the current owner instead of a manually synchronized global state register.",
+        "Resolve current owners through the selected area's current navigation instead of a manually synchronized global state register.",
         "Do not present an unstated future plan as confirmed.",
         "Do not edit or archive unless separately requested."
       ],
@@ -2733,11 +2730,10 @@
         "recheck review coverage"
       ],
       "description": "incrementally recheck review coverage/quality and expose evidence",
-      "meaning": "Invoke UC-REPO-AUDIT-REVIEW to report what was actually checked, what remains partial/unchecked, whether prior review is sufficient, and what the current repeat review newly added without blindly replaying already-current sufficient checks.",
+      "meaning": "Report what was actually checked, what remains partial/unchecked, whether prior review is sufficient, and what the current repeat review newly added without blindly replaying already-current sufficient checks.",
       "activeContextBehavior": "Use the selected current target and the most relevant prior review evidence when available. On repeated review, first target changed/stale/unchecked/partial/weak/newly relevant material and only resample already-current sufficient material when risk, dependency changes, explicit full repetition or validation sampling justifies it.",
       "traversalReadMode": "Incremental targeted/full by requested claim, prior coverage, freshness, risk, dependency impact and unresolved gaps.",
       "ownerFiles": [
-        "planning/use-case-registry.md",
         "planning/documentation/review-audit-workflow.md",
         "planning/documentation/ai-reviewability-and-directed-planning-principles.md"
       ],
@@ -3090,24 +3086,21 @@
         "start parallel work",
         "parallel workspace"
       ],
-      "description": "use registered parallel-work scope",
-      "meaning": "Resolve the fixed Parallel Work Scope Registry and establish one workstream inside the already registered affected scope(s), including canonical scope-log ownership for cross-scope work.",
-      "activeContextBehavior": "Use the active work target when clear; otherwise ask only for the concrete workstream target needed to resolve existing registered scope(s).",
-      "traversalReadMode": "Targeted/full by affected registered scope(s).",
-      "ownerFiles": [
-        "parallel-work-scope-registry.md",
-        "planning/documentation/parallel-work-scope-and-action-log-workflow.md"
-      ],
-      "expectedOutput": "Selected registered parallel-work scope(s), canonical scope log for the work, cross-scope boundary/reference requirements and the route-specific next action; no ad-hoc shadow workspace.",
-      "permissionMode": "scope-routing-only",
+      "description": "legacy compatibility command for retired fixed parallel-work scopes",
+      "meaning": "The former fixed Scope Registry/action-log coordination model is retired. Do not route current work through it and do not invent a branch workflow here; use the current ordinary work route until branch-based coordination has its own accepted owner.",
+      "activeContextBehavior": "Explain the retirement boundary and continue only through current non-legacy owners selected for the actual work.",
+      "traversalReadMode": "Current navigation only; legacy provenance may be read only when historical analysis is explicitly requested.",
+      "ownerFiles": [],
+      "expectedOutput": "A concise retirement/route clarification; no fixed-scope selection and no invented branch semantics.",
+      "permissionMode": "read-only",
       "keyReminders": [
-        "Read the root Scope Registry; do not invent or repartition scopes ad hoc.",
-        "A path belongs to the deepest active registered scope root containing it.",
-        "For cross-scope work choose one affected canonical log for the full record; other affected logs hold references only.",
-        "This command selects scope/log routing only and does not itself authorize edits, archive creation, commit or push."
+        "Fixed registered parallel-work scopes are legacy.",
+        "Do not treat legacy scope/action-log files as current authority.",
+        "Do not infer branch lifecycle, naming, merge, publish or isolation rules before a current branch-work owner exists.",
+        "This compatibility command grants no edit, archive, commit or push permission."
       ],
       "userTarget": "<parallel workstream target>",
-      "palette": true,
+      "palette": false,
       "helperPresentation": null,
       "methodologyBinding": null,
       "refinements": []

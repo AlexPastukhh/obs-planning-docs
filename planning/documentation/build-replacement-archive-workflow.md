@@ -70,6 +70,8 @@ any newly produced ZIP
 
 Before reusing a prior `changeSetId`, verify that no accepted `APPROVABLE` ReviewDiff has finalized it. “Same logical work” is a reuse rule only while the ChangeSet is open. Conceptual continuity, overlapping files, or a later correction do **not** reopen a finalized ChangeSet.
 
+Once an `APPROVABLE` ReviewDiff is accepted, the next replacement archive MUST start a new ChangeSet.
+
 ## 4. Shared Producer / Consumer Protocol
 
 The literal below is a materialized Reference Object use. Canonical definition:
@@ -202,21 +204,3 @@ Do not add legacy PowerShell apply/diff stages, request pasted diff as part of t
 ## 7. Application Boundary
 
 The application owns ZIP discovery, consumer validation, repository path ownership/ChangeSet ledger, ApplicationAttempt history, mutation/rollback, cumulative ReviewDiff, diff handoff settings, review identity/staleness checks, Finalize and recovery. Do not pull those concerns back into the ChatGPT producer command.
-
-## 8. Registered Scope / Action-Log Final-State Rule
-
-When the target repository defines a root Parallel Work Scope Registry, package production must resolve it before finalizing operations.
-
-```text
-operations/target paths
-→ affected registered scopes (deepest active root wins)
-→ one canonical log for cross-scope work
-→ complete cumulative post-apply canonical log
-→ reference-only updates in every other affected scope log
-```
-
-When logging is active, the package target-state log must account for material `собери идеи` output, later ordinary material clarifications, and material corrections selected from prior ReviewDiff. The package also records `APPLIED` meaning for what will become true if this exact package successfully applies.
-
-A producer must treat the current package as potentially final: do not intentionally leave logs stale for a hypothetical later package. Existing logs use exact base bytes + complete replacement bytes; new logs use ordinary `add` operations. The V0.1 package schema itself does not change.
-
-A plain `APPROVABLE` ReviewDiff with no new material meaning does not require a log entry or a closing package. **However, once that APPROVABLE ReviewDiff is accepted, the current ChangeSet is finalized/closed for replacement-package continuity. The next replacement archive, if any, MUST start a new ChangeSet.**

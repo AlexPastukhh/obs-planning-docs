@@ -1,3 +1,12 @@
+# Legacy Parallel-Work Scope And Action Log Workflow
+
+Status: legacy/provenance
+Original current path: `planning/documentation/parallel-work-scope-and-action-log-workflow.md`
+
+The fixed scope/action-log architecture is retired from current reusable methodology. Future branch-based coordination is intentionally not inferred from this historical workflow.
+
+## Preserved Former Content
+
 # Parallel Work Scope And Action Log Workflow
 
 Status: active reusable cross-repository workflow

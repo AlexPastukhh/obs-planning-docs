@@ -19,136 +19,90 @@ Canonical owners: [`../../use-cases/UC-REPO-PLAN-UPDATE.md`](../../use-cases/UC-
 
 ### Target
 
-Extend the reusable scope-log workflow with stable record identity semantics and add practical ReviewDiff example coverage.
+Replace a transitional repository-wide Use-Case aggregation with scoped semantic navigation while preserving existing canonical Use-Case owners.
 
 ### Checked sources
 
-- current scope/log workflow;
-- current ReviewDiff semantic workflow;
-- current examples index;
-- root Parallel Work Scope Registry;
-- current scope action log.
+- `planning/README.md`;
+- `planning/use-case-registry.md`;
+- `planning/documentation/use-case-registry.md`;
+- `planning/session/use-case-registry.md`;
+- `planning/documentation/principles-and-terminology.md`.
 
-### Idea analysis
-
-#### IDEA-UPD-1 — Keep the identity contract inside the existing scope/log workflow
-
-**Source / Status:** confirmed ReviewDiff finding; correction route selected for planning.
-
-**Problem / Need:** cross-scope references depend on Entry IDs, but reusable semantics do not yet say that those IDs are stable or what minimum fields make the main record kinds usable.
-
-**Idea Variants:**
-
-- **Variant A:** create a separate log schema/specification file;
-- **Variant B:** add one focused identity/minimum-shape section to the existing reusable scope/log workflow.
-
-**Necessity / Better-Route:** a separate schema would add another owner for a small contract already inseparable from scope/log semantics.
-
-**Current Selected Variant:** **Variant B** — extend the existing workflow; do not create a new schema file.
-
-**Current Conclusion:** keep the correction local to the current owner and demonstrate it through examples rather than duplicating rules in examples.
-
-### Current Plan / Current conclusions
+### Current selected meaning
 
 ```text
-parallel-work-scope-and-action-log-workflow.md
-→ stable Scope ID + Entry ID invariants
-→ type-specific minimum record anchors
+README/navigation
+→ select relevant area
+→ follow that area's current navigation
+→ canonical owner
 
-review-diff-review-workflow.md
-→ links one practical semantic ReviewDiff example
-
-examples/
-→ update File Update example
-→ add ReviewDiff practical example
-→ index both as examples only
+Use-Case Registry
+→ complete only for its declared functional scope
+→ ID | Use Case | Owner
 ```
 
-### Planning Concerns / Q/R/P
+A root registry does not duplicate Session/Documentation/specialized-methodology capabilities merely to create one global catalogue.
 
-No material unresolved issues identified.
+### Update Step 1 — Normalize structural navigation
 
-### Registered Parallel-Work Scopes / Logs
-
-```text
-Affected Scope(s):
-  SCOPE-REUSABLE-DOCUMENTATION
-
-Canonical Log For This Work:
-  planning/documentation/action-log.md
-
-Reference-Only Logs:
-  none
-```
-
-Logging is already active, so the implementation package must accumulate the material ReviewDiff correction and this later clarification before its `APPLIED` target-state record.
-
-### Update Step 1 — Correct reusable log identity semantics
-
-**Objective:** make cross-scope Entry references stable without introducing a second schema owner.
+**Objective:** make root navigation area-oriented rather than ontology-oriented.
 
 #### Actions
 
-1. Add stable Scope ID and canonical Log Entry ID invariants to the scope/log workflow.
-2. Add concise minimum semantic anchors for each supported record kind.
-3. Keep the format flexible; do not turn the workflow into a serialization schema.
+1. Update root/planning README wording to route to the relevant area.
+2. Keep README structural; do not duplicate Use-Case bodies or specialized methodology semantics.
 
 #### Files changed in this step
 
-| Change | File | R | What changes | Why |
-|---|---|---|---|---|
-| Updated | `planning/documentation/parallel-work-scope-and-action-log-workflow.md` | reusable scope/log semantics | stable identity + minimum record shapes | cross-scope references need durable identity |
+| Change | File | Responsibility | What changes |
+|---|---|---|---|
+| Updated | `README.md` | repository structural entry | area-owned semantic navigation |
+| Updated | `planning/README.md` | Planning structural map | scoped registry responsibilities |
 
-### Update Step 2 — Add practical output coverage
+### Update Step 2 — Make registries scoped and minimal
 
-**Objective:** make the current ReviewDiff and File Update output shapes easy for future chats to reproduce correctly.
+**Objective:** leave functional meaning in canonical Use-Case owners.
 
 #### Actions
 
-1. Update this File Update example to demonstrate command metadata, selected variant, shared Planning Concern/Decision model and registered scope/log planning.
-2. Add a ReviewDiff example where a selected unapplied correction yields `NEEDS CORRECTION` even with an empty active concern projection.
-3. In the same ReviewDiff example, show the follow-up `APPROVABLE` case and the rule that approval-only results do not create log events.
-4. Link both examples from their owner workflows and the examples index.
+1. Keep only repository-specific current UCs in `planning/use-case-registry.md`.
+2. Keep Documentation UCs in `planning/documentation/use-case-registry.md` and Session UCs in `planning/session/use-case-registry.md`.
+3. Preserve the minimal registry row contract: `ID | Use Case | Owner`.
+4. Retire transitional identities instead of manufacturing owner files merely to preserve old catalogue rows.
 
 #### Files changed in this step
 
-| Change | File | R | What changes | Why |
-|---|---|---|---|---|
-| Updated | `planning/documentation/review-diff-review-workflow.md` | ReviewDiff semantic review | link practical example | discoverability |
-| Updated | `planning/documentation/examples/PLAN-FILE-UPDATE-COMMAND-EXAMPLE.md` | example only | current complete example shape | practical coverage |
-| New | `planning/documentation/examples/REVIEW-DIFF-PRACTICAL-EXAMPLE.md` | example only | selected-correction + approval follow-up cases | practical coverage |
-| Updated | `planning/documentation/examples/README.md` | examples navigation | index current examples | discoverability |
+| Change | File | Responsibility | What changes |
+|---|---|---|---|
+| Updated | `planning/use-case-registry.md` | repository-specific functional navigation | remove cross-scope aggregation/transitional rows |
+| Updated | `planning/documentation/use-case-registry.md` | Documentation functional navigation | current scoped rows only |
+| Updated | `planning/documentation/principles-and-terminology.md` | generic Documentation rules | registry completeness becomes scope-relative |
 
-### Update Step 3 — Preserve cumulative scope-log state
+### Update Step 3 — Reconcile dependent projections
 
-**Objective:** keep repository state and material reasoning/application history coherent after the package applies.
+**Objective:** keep executable/helper projections aligned with canonical owners.
 
 #### Actions
 
-1. Append the material ReviewDiff finding and selected correction.
-2. Append the user's later practical-example requirement as a material clarification.
-3. Append `APPLIED` for the exact package target state.
-
-#### Files changed in this step
-
-| Change | File | R | What changes | Why |
-|---|---|---|---|---|
-| Updated | `planning/documentation/action-log.md` | canonical scope history | cumulative REVIEW DIFF → clarification → APPLIED records | package final-state invariant |
+1. Route standalone commands directly to their real supporting owners when no independent UC is justified.
+2. Remove retired UC identities from Helper catalog ordering.
+3. Rebuild generated semantic projections and run current checks.
 
 ### Boundaries / intentionally unchanged
 
-- `COLLECT-IDEAS-PRACTICAL-EXAMPLE.md` remains unchanged because it already demonstrates the current shared Idea review and Current-Plan-relative aggregate contract.
-- No new log schema/template file is created.
-- No repository-wide aggregate log is introduced.
+- No new branch-work methodology is invented.
+- Specialized IDTSPE/SDS semantic units remain owned by IDTSPE/SDS.
+- Historical action-log and legacy/provenance records are not rewritten.
 - This plan does not edit files or create a package by itself.
 
 ### Checks / exit criteria
 
-1. Every new/changed example points back to canonical owners and does not become semantic authority.
-2. ReviewDiff example distinguishes selected correction from active/residual Planning Concerns.
-3. File Update example includes command metadata, one selected route, scope/log planning, boundaries and checks.
-4. No broken Markdown links.
-5. Existing repository tests/verify remain green.
+1. Every current registry row is `ID | Use Case | Owner` and points to a current owner.
+2. No transitional root UC aggregation remains.
+3. Retired root UC identities are absent from current generated Use-Case projections.
+4. Specialized IDTSPE Use Cases remain reachable from their own current registry.
+5. Generated Helper artifacts match current sources and tests pass.
 
 ### Package/source/delivery status
 
@@ -160,6 +114,6 @@ Delivery: requires separate `давай архив` authorization
 
 ### Следующее действие
 
-Build a continuation replacement package only after separate authorization.
+Build a replacement package only after separate authorization.
 
 **План файл-обновление**

@@ -24,15 +24,13 @@ Slice Strategy
 workspace folder
 = physical organization around that owner
 ≠ new semantic entity
-≠ automatic parallel-work scope
-≠ automatic action log
 ```
 
 No `current-draft.md` type exists. The current draft is the currently selected semantic owner/file for that planning unit.
 
 Prototype planning is upstream of this canonical current-behavior layer. `PSCN-*` Prototype Scenarios and `PSCR-*` Prototype Screens are provisional evidence/design and must not remain competing current owners after selected meaning is promoted into `SCN-*` / `SCR-*`. See [`../prototype-planning-workflow.md`](../prototype-planning-workflow.md).
 
-When a project benefits from physical separation, [`../requirements-and-change-context.md`](../requirements-and-change-context.md) recommends `solution-and-application/` for solution/concept/prototype/current Scenario/Screen/Requirement work and `domain-and-implementation/` for Domain/Slice work. Folder placement is organization only, not semantic ownership or registered scope creation.
+When a project benefits from physical separation, [`../requirements-and-change-context.md`](../requirements-and-change-context.md) recommends `solution-and-application/` for solution/concept/prototype/current Scenario/Screen/Requirement work and `domain-and-implementation/` for Domain/Slice work. Folder placement is organization only, not semantic ownership.
 
 ## 2. Shared Draft-State Contract
 
@@ -600,8 +598,6 @@ An upstream change does not silently rewrite downstream owners, and a downstream
 
 ## 12. Repository Boundaries
 
-- Workspace folder creation does not create a registered parallel-work scope.
-- Do not add `action-log.md` per Scenario/Screen/Domain/Slice unless that folder is separately registered as a real scope.
 - Git/history records document revision; Variant is not document revision.
 - Keep ordinary semantic links distinct from literal-sync Reference Objects.
 - Do not introduce `versions/` merely to store edit history.
