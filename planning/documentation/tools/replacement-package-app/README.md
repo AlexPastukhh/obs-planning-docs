@@ -9,17 +9,30 @@ Scope: local consumer for replacement packages, repository-work realization/reco
 This directory follows the local methodology defined by [`documentation-use-cases.md`](documentation-use-cases.md) and [`documentation-templates.md`](documentation-templates.md). Behavioral, implementation and proof authority are intentionally separate.
 
 ```text
-Application Benefit / Desired Result
-→ Scenario Process + Feature Interactions
-→ Behavior Items
-↔ selected Screen model
-→ Domain owners
-→ Slice / Shared Implementation owners
-→ local proof + shared Test Strategy
+Application Benefits / desired results
+→ Feature Planning
+   ├─ intent + principal Result
+   ├─ observable behavior
+   ├─ Behavior Requirements ↔ Feature Data
+   ├─ Feature Implementation Concerns
+   └─ Feature/Slice Boundary Check
+        ↓
+     Feature boundary ↔ Slice boundary hypothesis
+        ↕
+Scenario / real user journeys ↔ selected Screen model
+   └─ cross-Feature / cross-Screen Scenario Requirements
+→ Aggregate / Shared discovery when needed
+→ owner-local Slice / Aggregate / Shared Requirements Discovery
+   ├─ Correctness
+   ├─ Local Reasoning
+   └─ Evolution Fitness
+   across Production ↔ Proof
 → production/test source + executed Evidence
 ```
 
-Tests verify selected meaning; they do not create it. Feature Interaction and Slice decomposition are not 1:1.
+Scenario-first is allowed but not mandatory: Features, Scenarios and Screens are refined iteratively and must eventually be consistent. Tests/Evidence prove selected meaning; they do not create it. Slice independence means primarily locality of use-case change, not absence of dependencies.
+
+**Migration boundary:** current Scenario/FI/BI/Domain/Slice/testing owners remain current product truth until separately reconciled to the target Feature/Requirement model. This methodology update does not silently rename, regroup or reinterpret those product owners.
 
 ### Application behavior owners
 
@@ -105,9 +118,17 @@ run-app.cmd
 
 ## Authority boundary
 
-- Scenario owners define application Benefit, selected FI process and BI.
-- Screen owner defines durable spatial/window meaning.
-- Domain/Slice/shared owners define implementation responsibility and optional durable HOW constraints.
-- Focused contracts define independent integration boundaries.
-- Tests and evidence prove selected meaning; they do not redefine it.
-- Planned future owners must remain visibly planned until implementation + proof are reconciled and the resulting behavior is promoted to current truth.
+Target local-methodology ownership is:
+
+- app-level context owns Application Benefits / high-level responsibilities;
+- Feature owners/sections own coherent use-case behavior, Behavior Requirements, Feature Data and implementation concerns;
+- Scenario owners own real cross-Feature / cross-Screen journeys and Scenario Requirements;
+- Screen owner defines durable spatial/window meaning;
+- Domain/Aggregate owners define semantic identity/state/invariants/consistency;
+- Slice owners define end-to-end implementation of Feature boundaries; Shared owners define reusable non-end-to-end capabilities;
+- owner-local Production/Proof Requirements define durable realization/proof constraints;
+- focused contracts define independent integration boundaries;
+- tests and Evidence prove selected meaning; they do not redefine it;
+- planned future owners must remain visibly planned until implementation + proof are reconciled and resulting behavior is promoted to current truth.
+
+Existing product documents keep their current legacy FI/BI/Item representation until separately migrated; that representation is compatibility state, not target methodology ontology.

@@ -1,419 +1,318 @@
+\
 # Replacement Package App — Documentation Templates
 
-Status: active recommended-template owner
-Scope: recommended starting forms for Scenario/Screen design and maintenance, Scenario-owned Evolution Steps, evolution planning, Domain/Slice/shared implementation owners, local proof/Test Items and generated implementation-trace documentation.
+Status: active recommended forms
+Authority: [`documentation-use-cases.md`](documentation-use-cases.md)
 
 ## Template rule
 
-These templates are **recommended forms, not schemas**.
+These forms are examples, not schemas. Use only the sections needed to preserve selected meaning. Omit irrelevant sections instead of writing `N/A`.
 
-A concrete document should contain the information needed to understand its owner or design decision. Sections may be omitted, combined, renamed, reordered or supplemented when another structure communicates the same meaning more clearly.
-
-Presentation should preserve meaning while making it easy to recover:
-
-- keep one connected idea as prose when prose is clearer;
-- expose independent facts, conditions, exceptions or consequences as bullets/sub-bullets or another explicit structure;
-- use readable entity names and pair technical IDs with human meaning;
-- do not use arbitrary numeric IDs as roadmap/architecture order;
-- never drop a condition merely to shorten the text.
-
-Do not add empty sections merely to conform to a template. Do not turn template headings into a new bureaucracy, lifecycle or validation taxonomy.
-
-Planning depth is intentionally progressive:
-
-- during early Scenario design, `Application Benefit / Desired Result` + a candidate FI map + brief FI roles/local Results may be enough;
-- deepen uncertain FIs only far enough to validate boundaries and compare designs;
-- once behavior is selected/current, the Scenario owner should carry the complete Process Specification, including the needed FI Interaction Processes and BI.
-
-The documentation process and terminology are owned by [`documentation-use-cases.md`](documentation-use-cases.md). The use cases link directly to the forms below at the step where each form is useful.
+Target semantic types are `Feature`, `Behavior Requirement`, `Scenario Requirement`, Production Requirement and Proof Requirement. Existing product owners may still use legacy `FI-*`, `BI-*`, `DI-*`, `SI-*` and `TST-*` labels until separately migrated; templates do not require bulk renaming.
 
 ---
 
-<a id="template-scenario-owner"></a>
-## Template — Scenario owner
+## Template — Feature planning
 
-Use the same owner form for current and planned future Scenarios; make owner status explicit instead of changing semantic structure.
+A Feature may live inside a Scenario owner, a focused Feature owner, or another suitable behavior owner. Create a separate file only when independent maintenance pressure justifies it.
 
-```text
-# SCN-RPKG-<SEMANTIC-NAME> — <readable Scenario name>
-Status: active current Scenario owner
-# or: planned future Scenario owner
+```markdown
+### F-RPKG-<SEMANTIC-NAME> — <readable Feature name>
 
-## Application Benefit / Desired Result
-<what useful application result this Scenario realizes>
+Intent:
+<one application/user intent>
 
-## Process Specification
+Application Benefit / contribution:
+<why this Feature matters>
 
-### Scenario Process / Feature Interaction Map
-<compact FI composition / ordering / cross-FI branches / loops / terminal outcomes>
+Principal Result / Result family:
+<meaningful application/user result>
 
-### FI-RPKG-<SEMANTIC-NAME> — <readable Feature Interaction name>
-<Feature Interaction form>
+Behavior:
+<context / input>
+→ <application-visible step>
+→ <branch / validation / retry / recovery when material>
+→ <Result>
 
-## Screen references
-<only when selected Screen relationships are needed to understand the observable process; detailed Screen-owned requirements stay in the Screen owner>
+#### Behavior Requirements
 
-## Scenario Process Alternatives
-<only retained material alternatives>
+##### BR-RPKG-<SEMANTIC-NAME> — <readable requirement>
+Requirement:
+<rule / invariant / algorithm / protocol / state-machine fragment / contract>
 
-## Evolution Steps
-### EVO-RPKG-<SEMANTIC-NAME> — <readable behavioral change>
-<Evolution Step form>
+Reason:
+<why it must hold, when useful>
+
+#### Feature Data
+- `<semantic concept>` — <meaning / role>
+
+#### Feature Implementation Concerns
+- Feasibility: ...
+- Candidate / rejected approaches: ...
+- Implementation dependencies: ...
+- Platform / external constraints: ...
+- Aggregate / Shared signals: ...
+- Proof concern: ...
+- Slice boundary observation: ...
+- Known Evolution pressure: ...
+
+Free form is preferred when a list/table would distort the reasoning.
+
+#### Feature / Slice Boundary Check
+
+1. Intent / principal Result:
+   <same vs distinct intent/result evidence>
+2. Semantic entry:
+   <new semantic invocation vs transport/adapter>
+3. Realization cohesion / shared structure:
+   <shared path, module/branch/adapter vs separate path>
+4. Development / proof / evolution fitness:
+   <change locality, proof locality, known Evolution Steps>
+
+Boundary hypothesis:
+<one existing/new Feature ↔ one Slice; module/branch/adapter; or unresolved>
 ```
 
-Notes:
-- The Benefit / Desired Result explains why the Scenario exists; the selected FI composition is how the Scenario realizes it.
-- Process Specification remains the complete behavioral specification: Scenario Process owns FI composition/transitions and detailed FI entries own FI-local runtime behavior.
-- FI/component-local UI Requirements may live with the FI; Screen-owned spatial/window requirements live in the selected Screen owner.
-- `Evolution Steps` contains Scenario-owned application-behavior changes, not lower-level implementation plans.
-- Current Scenario truth is not called transitional merely because future evolution exists.
-- Semantic IDs/names remain meaningful if file/roadmap order changes.
+A compact Feature may need only intent, Result, short behavior and one implementation/boundary note.
 
 ---
 
-<a id="template-feature-interaction-entry"></a>
-## Template — Feature Interaction entry
+## Template — Scenario / real user journey
 
-Use as a recommended local form inside a Scenario Process Specification and during behavioral design exploration.
+```markdown
+# SCN-RPKG-<SEMANTIC-NAME> — <readable Scenario name>
 
-```text
-### FI-RPKG-<SEMANTIC-NAME> — <readable name>
+Status: <current | planned target | migration>
 
-Scenario Role / Local Purpose:
-<why this selected behavior exists here and what it enables/prepares for the rest of the Scenario>
+## Need / Application Benefit
+<what user/application need this journey satisfies>
 
-Context / Preconditions:
-<relevant already-established state>
+## Starting context
+<where the journey begins>
 
-Required Inputs:
-<input/artifact/action actually consumed by this interaction>
+## Journey
 
-Interaction Process:
-<observable user/application behavior; include meaningful automatic continuation>
+<Screen/context A>
+→ F-RPKG-<FEATURE-A>
+→ <Feature A Result>
+→ <Screen/context B or external context>
+→ F-RPKG-<FEATURE-B>
+→ <terminal Result>
 
-Outcomes:
-- <outcome / condition / resulting behavior>
+Branches / retry / re-entry:
 - ...
 
-Result:
-<meaningful application/user-world truth established by the main/relevant outcome>
+## Features involved
+- `F-RPKG-...` — <role in this journey>
 
-Outputs:
-<information/artifacts/identity/state available to later interactions>
+## Screens / contexts involved
+- ...
 
-Next Interactions:
-<outcome → next FI / loop / termination>
+## Scenario Requirements
 
-Behavior Items:
-
-#### BI-RPKG-<SEMANTIC-NAME> — <readable requirement name>
+### SR-RPKG-<SEMANTIC-NAME> — <readable cross-Feature requirement>
 Requirement:
-<implementation-independent business/application behavior / invariant / rule>
+<cross-Feature / cross-Screen / context-continuity rule>
 
 Reason:
-<why Scenario/FI correctness requires this behavior>
+<why journey correctness needs it>
 
-UI Requirements:
+## E2E Proof Intent
+<what must be proven end-to-end; exact tests remain downstream proof>
 
-#### UI-REQ-RPKG-<SEMANTIC-NAME> — <readable UI requirement name>
-Requirement:
-<intentional visual/interaction requirement>
-
-Reason:
-<why the presentation/interaction constraint matters, when useful>
-
-Why This Interaction Design:
-<why these inputs/actions/process/result/outputs/control points are selected>
-
-Strengths:
-<only when analysis remains useful>
-
-Problems:
-<known inherent trade-offs, only when useful>
-
-Complexity:
-<neutral complexity and where it is placed, only when useful>
-
-Risks:
-<potential/conditional issues, only when useful>
-
-Questions:
-<still-open material questions, only when useful>
+## Relevant Evolution Steps
+- `EVO-RPKG-...`
 ```
 
-Notes:
-
-- FI is a selected behavioral means inside the Scenario, not an independent top-level product goal.
-- `Scenario Role / Local Purpose` explains why the FI exists in this composition; `Why This Interaction Design` explains why this particular realization was selected.
-- Context/Preconditions are not automatically Required Inputs.
-- Result is not the same thing as Outputs; local Result helps define a useful FI boundary.
-- Success, validation error, interruption and uncertainty are usually outcomes of the same FI while its Scenario-local role remains unchanged.
-- Behavior Items are implementation-independent requirements needed for selected FI behavior to correctly realize the Scenario. FI/component-local UI Requirements may remain here; Screen-owned spatial/window requirements belong to the selected Screen owner and are referenced rather than duplicated.
-- If one BI constrains the boundary between several Feature Interactions, define its `Requirement + Reason` once and reference the same BI identity from the other relevant interactions instead of duplicating/rewording it.
-- Do not document accidental current layout as a durable UI requirement.
-- Omit design-analysis headings for obvious/simple interactions when they add no information.
+Scenario is not required to precede Feature Planning. It is the consistency/journey owner once the real path is known.
 
 ---
 
-<a id="template-feature-interaction-variant-analysis"></a>
-## Template — Feature Interaction Variant analysis
+## Template — behavioral / Screen design alternative
 
-Use when a local interaction has materially different behavioral designs worth comparing.
-
-```text
+```markdown
 ### <candidate / variant name>
 
-Scenario Role / Local Purpose:
+Status: candidate | selected | rejected
+
+Behavior / journey / Screen change:
 ...
 
-Context / Preconditions:
+Strengths / problems / complexity / risks / questions:
+- ...
+
+Effect on Feature/Slice boundary:
+- ...
+
+Reason selected/rejected:
 ...
-
-Required Inputs:
-...
-
-Interaction Process:
-...
-
-Outcomes:
-...
-
-Result:
-...
-
-Outputs:
-...
-
-Impact on neighboring interactions:
-<what inputs/outputs/control points become easier, harder, unnecessary or newly required>
-
-Strengths:
-...
-
-Problems:
-...
-
-Complexity:
-<user / process / behavioral / implementation / recovery / testing / evolution where material>
-
-Risks:
-...
-
-Questions:
-...
-
-Decision / rationale:
-<selected / rejected / still open only when useful; do not invent a lifecycle taxonomy>
 ```
 
-Variants are not required to preserve the same input/output contract. A stronger Result/Output or easier Input contract may legitimately remove another interaction from the Scenario.
+A design alternative is not a current runtime branch and is not automatically an Evolution Step.
 
 ---
 
-<a id="template-scenario-process-variant"></a>
-## Template — Scenario Process Variant
+## Template — Feature Implementation Concern
 
-Use to compare materially different complete FI compositions for the same Scenario Benefit / desired result.
+Use only for material implementation-aware uncertainty/decision memory.
 
-```text
-### <Scenario Process Variant>
+```markdown
+### Implementation Concern — <readable concern>
 
-Application Benefit / Desired Result:
-...
+Behavior / Requirement affected:
+<Feature / BR / SR reference>
 
-Initial Context / Inputs:
-...
+Question / risk:
+<what may make planned behavior/boundary difficult or invalid>
 
-Process Composition:
-FI-A
-→ FI-B
-→ FI-C
+Known capability / constraints:
+- ...
 
-Interaction Contracts:
-A.outputs → B.context/inputs
-B.outputs → C.context/inputs
+Candidate approaches:
+- A — ...
+- B — ...
 
-Final Result:
-...
+Evidence / prototype:
+- ...
 
-Final Outputs:
-...
+Selected direction / current conclusion:
+<if selected>
 
-Strengths:
-...
+Implementation dependencies:
+- ...
 
-Problems:
-...
+Boundary implications:
+<Aggregate / Shared / Slice module/branch/new Feature signal>
 
-Complexity:
-<include complexity placement when material>
-
-Risks:
-...
-
-Questions:
-...
-
-Decision / rationale:
-<when useful>
+Downstream attention:
+<what later Requirements Discovery must inspect>
 ```
 
-Compare both the interactions and the boundaries/contracts between them. Explore enough FI-local runtime behavior to judge whether the candidate boundaries are real; do not require full FI detail while the high-level composition is still moving. More interactions may add control/recovery points; fewer interactions may reduce user work while increasing partial-completion/recovery complexity.
+The concern is not automatically a Production Requirement.
 
 ---
 
-<a id="template-screen-variant-analysis"></a>
-## Template — Screen Set / Screen Variant analysis
+## Template — Feature/Slice boundary decision note
 
-Use during Scenario+Screen design exploration when materially different spatial/window realizations are worth comparing. A **Screen Set Variant** changes the overall Screen/window topology; an **individual Screen Variant** changes how one Screen responsibility is realized.
+```markdown
+### Boundary decision — <candidate behavior>
 
-```text
-### <candidate Screen Set / Screen Variant>
+Intent / Result:
+<evidence>
 
-Scope:
-<overall Screen Set | one Screen responsibility>
+Semantic entry:
+<evidence>
 
-Scenario / Feature Interaction coverage:
-<which selected/candidate behavior this variant must realize>
+Realization cohesion:
+<evidence>
 
-Screen topology / routes:
-<screens, entry/exit and navigation/window relations when material>
+Development / proof / evolution fitness:
+<change locality, testability, known Evolution Steps>
 
-Per-Screen responsibilities:
-<what each Screen makes available or controls>
+Decision:
+<same Feature/Slice | extension module | branch | entry adapter | separate Feature/Slice>
 
-Meaningful visible / input / action states:
-...
-
-Candidate Screen Behavior Items:
-<only durable Screen-owned requirements exposed by this variant>
-
-Impact on Scenario/FI contracts:
-<hidden/manual context transfer, changed outputs, recovery/control boundaries or other feedback into behavioral design>
-
-Strengths:
-...
-
-Problems:
-...
-
-Complexity:
-<user / spatial / navigation / implementation / testing / evolution where material>
-
-Risks:
-...
-
-Questions:
-...
-
-Decision / rationale:
-<selected / rejected / still open only when useful>
+Revalidation trigger:
+<what later Evidence would justify reopening this decision>
 ```
 
-Do not force every visual alternative into a retained artifact. Preserve a variant only while its comparison/rationale remains material to an active design decision.
+These are signals, not a numeric score.
 
 ---
 
-<a id="template-ui-requirement"></a>
-## Template — UI / Screen requirement forms
+## Template — selected methodology exception
 
-### Interaction/component-local UI Requirement
+```markdown
+### Selected exception — <name>
 
-```text
-#### UI-REQ-RPKG-<SEMANTIC-NAME> — <readable UI requirement>
-Requirement:
-<intentional interaction/component presentation requirement>
+Preferred principle:
+<what methodology normally favors>
+
+Selected exception:
+<what is intentionally different>
 
 Reason:
-<why it matters, when useful>
+<why the exception is worth it>
+
+Boundaries preserved:
+<what must not be reinterpreted because of this convenience>
+
+Downstream consequences / proof obligations:
+- ...
 ```
 
-Keep this with the owning Feature Interaction when the meaning is genuinely local.
-
-### Screen Behavior Item
-
-Use only when canonical meaning belongs to a Screen/spatial/window context. A technical prefix such as `SBI-*` may be used if/when the application adopts it, but readable semantic identity is more important than inventing a mandatory prefix now.
-
-```text
-#### <semantic Screen requirement ID/name> — <readable Screen behavior requirement>
-Requirement:
-<intentional Screen/spatial/window behavior or visibility/availability rule>
-
-Reason:
-<why the Screen realization requires it>
-```
-
-Current pixels/layout facts do not become durable requirements automatically.
+Example class: one convenience activation may compose two separate Features/Slices without merging their intents/results.
 
 ---
 
-<a id="template-evolution-step"></a>
 ## Template — Evolution Step
 
-Use only in the canonical Scenario owner. The entry describes **what changes in application/Scenario behavior**, not Domain/Slice/Screen/test implementation delta.
+Early/shallow form is valid:
 
-```text
-### EVO-RPKG-<SEMANTIC-NAME> — <readable application change>
-Intent: URGENT | PLANNED | POSSIBLE <only when useful>
+```markdown
+### EVO-RPKG-<SEMANTIC-NAME> — <readable qualitative change>
 
-Change:
-<what changes for the user/application process>
+Application capability / journey change:
+<what becomes possible or changes>
 
-Scenario Process / Feature Interaction impact:
-<added/removed/replaced/composed/split behavior when material>
+Likely affected:
+- Benefit: ...
+- Feature(s): ...
+- Scenario(s): ...
 
-Contract / Behavior Item / local UI impact:
-<only selected behavioral requirement changes>
-
-Affected Screen realization:
-<references when useful; detailed Screen delta stays in Screen Evolution Impact>
-
-Related / Replacement Scenario:
-<references only when useful>
+Known tension / open boundary question:
+- ...
 ```
 
-Intent does not define exact roadmap timing/likelihood/order; the Evolution Steps Map owns those planning relations.
+When enough detail is known, prefer complete target meaning:
+
+```markdown
+### EVO-RPKG-<SEMANTIC-NAME> — <readable qualitative change>
+
+Resulting usable application state:
+<what is complete after this Step>
+
+#### Target Feature: F-RPKG-...
+Intent:
+[UNCHANGED] ...
+
+Result:
+[UNCHANGED] ...
+
+Behavior:
+[EXISTING] ...
+[CHANGED] ...
+[NEW] ...
+[REMOVED] ...
+
+Slice outlook:
+[UNCHANGED] ...
+[NEW] module / branch / entry adapter / separate Slice ...
+
+Forced migration:
+<only when real>
+
+#### Target Scenario
+<include when cross-Feature / cross-Screen composition changes>
+
+#### Owner impacts
+- Aggregate: ...
+- Shared: ...
+- Screen: ...
+- Proof: ...
+```
+
+Exact notation is flexible. The important rule is that a completed Step leaves a coherent usable application state and does not require the next Step merely for completeness.
 
 ---
 
-<a id="template-evolution-impact"></a>
-## Template — Evolution Impact
-
-Use inside Domain, Slice, Screen or Shared Implementation Capability owners to describe **future owner delta** caused by a canonical Scenario-owned Evolution Step.
-
-```text
-## Evolution Impact
-
-### EVO-RPKG-<SEMANTIC-NAME> — <readable application change>
-Canonical Scenario step:
-<link / Scenario owner>
-
-Expansion:
-<additive capability/composition/port/consumer/test-proof delta, only when present>
-
-Refactoring:
-<behavior-preserving implementation or test-suite structural improvement, only when useful>
-
-Forced Migration:
-<existing logic/authority/representation that must move because additive realization is not practical; only when real>
-```
-
-Omit empty kinds. `Evolution Impact` does not repeat current `DI-*` / `SI-*` / shared Implementation Item `Requirement + Reason`. Those items shape the owner now; reference them only when needed to understand the future delta.
-
-When Tests are embedded in the owner, material test-suite change belongs in the same `Evolution Impact` and may be an Expansion or Refactoring; do not create a parallel test-evolution owner merely to say tests change. Most Evolution Steps need no separate test-suite note.
-
----
-
-<a id="template-evolution-steps-map-entry"></a>
 ## Template — Evolution Steps Map entry
 
-```text
-### <readable Evolution Step name>
-Evolution Step:
-<link to canonical Scenario-owned EVO>
+```markdown
+### EVO-RPKG-<SEMANTIC-NAME> — <readable Step>
 
 Rough horizon / likelihood:
-<only when useful>
+...
 
 Depends on:
 - ...
@@ -421,305 +320,264 @@ Depends on:
 Enables:
 - ...
 
-Can run in parallel with:
+Readiness / blocking evidence:
 - ...
 
-Readiness / gate:
-<only when useful>
-
-Materially independent local impact timing:
-- <lower-owner Evolution Impact reference> — <before/with/after/conditional/rough likelihood>
+Canonical Step owner:
+<Feature/Scenario/evolution owner link>
 ```
 
-Keep WHAT behavior/owner delta in the canonical owners; this entry is planning relationships only.
+The map records rough planning relationships; it does not redefine the Step's qualitative behavior.
 
 ---
 
-<a id="template-aggregate-domain-owner"></a>
-## Template — Aggregate Domain owner
+## Template — Aggregate / Domain owner
 
-```text
-# <Aggregate>
-
-## Responsibility
-<business/domain responsibility and consistency boundary>
-
-## Behavior Items implemented
-- BI-...
-
-## Domain Concepts / Invariants
-<semantic meaning, not class/field inventory>
-
-## Domain Implementation Items
-### DI-...
-Requirement:
-<durable current architecture requirement>
-Reason:
-<why it matters for current correctness/quality or materially known evolution>
-Derived from:
-<BI / invariant / Evolution Impact / concrete architecture pressure, when useful>
-
-## Tests
-### Test Items
-<only non-obvious durable proof-quality requirements>
-
-## Evolution Impact
-<Evolution Impact form for affected future steps>
-```
-
-`DI-*`, Tests/Test Items and Evolution Impact are optional when their information is obvious/unneeded. Aggregate tests normally cover included Domain Objects unless independent ownership makes a separate proof owner clearer.
-
----
-
-<a id="template-domain-object-owner"></a>
-## Template — Domain Object owner
-
-Use separately only when independent semantics, identity/lifecycle, reuse or rule volume makes this clearer than keeping the object inside its Aggregate.
-
-```text
-# <Domain Object>
+```markdown
+# <Aggregate / Domain Object>
 
 ## Responsibility / Meaning
-...
-## Behavior Items implemented
-- BI-...
-## Identity / Relationships / Invariants
-...
-## Domain Implementation Items
-<DI-* only when useful>
-## Tests
-<only when independent test ownership is clearer than Aggregate-level proof>
-## Evolution Impact
-<only affected future steps>
-```
+<semantic identity/state/lifecycle/invariant responsibility>
 
-A source class is not by itself a reason to create this owner.
+## Behavior / Data served
+- Feature / Behavior Requirement references
+- Feature Data concepts
 
----
-
-<a id="template-slice-owner"></a>
-## Template — Slice owner
-
-```text
-# SL-RPKG-<SEMANTIC-NAME> — <readable Slice name>
-
-## Result / Responsibility
+## Semantic model
+Identity:
 ...
 
-## Scenario behavior realized
-Feature Interaction context:
-- FI-... <navigation only when useful>
-Behavior Items realized:
-- BI-...
+State / lifecycle:
+...
 
-## Domain / Shared capabilities used
+Invariants / consistency boundary:
+...
+
+Semantic operations / rules:
+...
+
+## Relevant upstream Implementation Concerns
 - ...
 
-## Slice Implementation Items
-### SI-...
+## Production Requirements
+### PRD-RPKG-... — <readable requirement>
 Requirement:
-<durable orchestration/composition/recovery/port/reuse requirement>
-Reason:
-<why current quality or materially known evolution needs it>
-Derived from:
-<BI / Domain constraint / Evolution Impact / concrete architecture pressure>
+...
 
-## Tests
-### Test Items
-<only non-obvious durable proof-quality requirements>
+Reason:
+...
+
+## Proof Requirements
+### PFR-RPKG-... — <readable proof requirement>
+Requirement:
+...
 
 ## Evolution Impact
-<Evolution Impact form>
+### EVO-RPKG-...
+[EXISTING] ...
+[NEW/CHANGED/REMOVED] ...
 ```
 
-Feature Interaction and Slice decompositions are not 1:1. A known future capability may justify a port/composition seam now without implementing that future capability prematurely.
+Do not force one Aggregate per Feature/Requirement.
 
 ---
 
-<a id="template-shared-implementation-capability-owner"></a>
-## Template — Shared Implementation Capability owner
+## Template — Slice owner
 
-Use only when one real reusable implementation responsibility is consumed by several Slices.
+```markdown
+# SL-RPKG-<SEMANTIC-NAME> — <readable Slice name>
 
-```text
-# <semantic Shared Implementation Capability name>
+## Feature realized
+`F-RPKG-...`
+
+Intent / principal Result:
+...
+
+## End-to-end responsibility
+<semantic entry → application/domain/infrastructure path → meaningful Result>
+
+## Modules / Branches / Entry Adapters
+- [EXISTING] ...
+- [NEW] ...
+
+## Domain / Shared owners used
+- ...
+
+## Relevant Feature Implementation Concerns / dependencies
+- ...
+
+## Boundary recheck
+Intent / Result: ...
+Semantic entry: ...
+Realization cohesion: ...
+Development / proof / evolution fitness: ...
+Decision: ...
+
+## Production Requirements
+### PRD-RPKG-...
+Requirement:
+...
+
+## Proof Requirements
+### PFR-RPKG-...
+Requirement:
+...
+
+## Evolution Impact
+### EVO-RPKG-...
+...
+```
+
+A Slice may depend on Aggregate/Shared/external owners. Judge isolation by change locality, not dependency absence.
+
+---
+
+## Template — Shared Implementation Capability
+
+```markdown
+# <semantic Shared Capability name>
 
 ## Responsibility
-...
-## Behavior Items / implementation requirements realized
-<references only when genuinely shared>
-## Domain used
-...
-## Consumers
-- SL-...
-## Implementation Items
-<durable shared contract/composition/evolution requirements>
-## Tests
-### Test Items
-<only when useful>
-## Evolution Impact
-<only affected future steps>
-```
+<reusable non-end-to-end implementation meaning>
 
-Do not create one for generic DRY/logging/composition principles or merely similar helper code.
+## Consumers
+- `SL-RPKG-...`
+
+## Contract / boundary
+<input/output/result/failure semantics>
+
+## Production Requirements
+- ...
+
+## Proof Requirements
+- ...
+
+## Evolution Impact
+- ...
+```
 
 ---
 
-<a id="template-screen-owner"></a>
+## Template — owner-local Requirements Discovery note
+
+Use headings only when the reasoning is material.
+
+```markdown
+## Requirements Discovery
+
+### Correct Realization
+<what production must satisfy>
+
+### Correct Proof
+<what convincingly proves it>
+
+### Maintainability / Local Reasoning
+<cohesion, semantic contracts, local changeability>
+
+### Proof Maintainability / Local Reasoning
+<readability, diagnostics, low incidental coupling>
+
+### Evolution Fitness
+<known Evolution Steps and current production implications>
+
+### Proof Evolution Fitness
+<how proof stays valid or must evolve>
+```
+
+The six headings are not mandatory form fields. Group-level questions are the authority; use a smaller form when enough.
+
+---
+
 ## Template — Screen owner
 
-Default selected model may live in one `screens.md`; split individual Screen files only when independently useful.
-
-```text
+```markdown
 # Replacement Package App — Screens
 
 ## Screen Map
-<screen inventory / routes / global spatial constraints>
+<durable Screen/window topology>
 
 ## Scenario × Screen
-...
-## Feature Interaction × Screen
-...
+| Scenario | Screen/context | Role |
+|---|---|---|
+
+## Feature × Screen
+| Feature | Screen/context | Interaction role |
+|---|---|---|
 
 ## <Screen readable name>
-Purpose:
-...
-Scenario roles:
-...
-Feature Interactions:
-...
-Meaningful visible/input/action states:
-...
-Screen Behavior Items:
-<use Screen requirement form>
-Routes / transitions:
-...
-Spatial / accessibility constraints:
-<only intentional material constraints>
-
-## Evolution Impact
-<only affected future steps>
-```
-
-Screen is spatial/window meaning, not Scenario behavior authority or a frontend Slice.
-
----
-
-<a id="template-test-item"></a>
-## Template — Test Item
-
-```text
-### TST-RPKG-<SEMANTIC-NAME> — <readable proof requirement>
-Requirement:
-<additional condition needed for credible proof>
-
-Reason:
-<false-positive / boundary / no-mutation / persistence / isolation / refactor-evolution reason>
-```
-
-Do not restate every BI/invariant as a Test Item. Normal proof responsibility is already derived from the owning semantics. Refactor/evolution resilience means proof should remain stable while the property it proves remains unchanged; when an Evolution Step genuinely changes that property, the Test Item/test may legitimately change.
-
----
-
-<a id="template-shared-test-capability"></a>
-## Template — Shared Test Capability
-
-Use only for real reusable test machinery/behavior shared by several suites.
-
-```text
-# <readable Shared Test Capability>
 Responsibility:
 ...
-Consumers:
-- <test suite/owner>
-Requirements:
-<durable reusable test-capability requirements only when useful>
-Evolution Impact:
-<only when future evolution changes this shared test machinery>
+
+Screen-owned behavior / UI constraints:
+- ...
+
+## Evolution Impact
+- ...
 ```
 
-Testing policy belongs in Test Strategy, not here.
+Screen is spatial/window authority, not a frontend Slice.
 
 ---
 
-<a id="template-test-design"></a>
-## Template — Optional Test Design
+## Template — Test Strategy / Proof allocation
 
-Use only when how to prove a selected property credibly is itself non-trivial.
+```markdown
+# Replacement Package App — Test Strategy
 
-```text
-Property / authority:
-<BI / invariant / SI/DI / Screen requirement / contract>
-Proof layer / public boundary:
-...
-Setup / action / observation / assertions:
-...
-False-confidence / no-mutation / isolation considerations:
-...
-Decision:
-...
+## Cross-owner proof decisions
+<only decisions genuinely shared across owners>
+
+## Proof allocation
+| Behavior / Requirement | Owner | Proof layer | Evidence |
+|---|---|---|---|
+
+## Shared Test Capabilities
+- ...
 ```
 
-Embed locally by default; separate only when independently substantial.
+Local tests normally stay with their owning Slice/Aggregate/Shared implementation.
 
 ---
 
-<a id="template-practical-acceptance"></a>
 ## Template — Practical Acceptance plan and Evidence
 
-```text
+```markdown
 ## Acceptance Plan
-Target property:
-Operator / environment:
-Setup:
-Action:
-Observable evidence:
-Pass/fail rule:
+Environment / build identity:
+...
 
-## Evidence Campaign
-Date/build/environment:
-Acceptance plan ref:
-Result: PASS | FAIL | STALE
-Evidence:
-Limitations:
+Procedure:
+1. ...
+
+Expected observable result:
+...
+
+## Executed Evidence
+Executed at:
+...
+
+Exact build/source identity:
+...
+
+Observed result:
+...
+
+Status:
+PASS | FAIL | INCONCLUSIVE
 ```
 
-A plan is not executed Evidence.
+Planned acceptance is not Evidence until executed.
 
 ---
 
-<a id="template-generated-implementation-trace"></a>
 ## Recommended generated implementation-trace output
 
-Generated traces are derived artifacts, not normative owners. Their exact generator/output format may evolve.
-
-Recommended discoverability fields when tooling supports them:
+Generated traces are derived/disposable navigation, never semantic authority.
 
 ```text
-Generated: yes
-Source revision: <commit SHA>
-Root symbol: <symbol>
-
-Calls / callers:
-...
-
-Fields read / written:
-...
-
-Referenced types:
-...
-
-External boundaries:
-...
-
-Branches / results:
-<only when derivable with confidence>
+Feature / Requirement
+→ Slice / Aggregate / Shared owner
+→ source symbols/files
+→ test/proof symbols/files
+→ last verified source identity
 ```
-
-Recommended location when a generator is introduced:
-
-```text
-planning/documentation/tools/replacement-package-app/generated/implementation-traces/
-```
-
-Regenerate these artifacts instead of manually maintaining them. They never replace Scenario Process Specification, BI, UI Requirements, Domain invariants, Slice implementation requirements or source authority.

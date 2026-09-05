@@ -1706,3 +1706,32 @@ Logging starts only after explicit user instruction; no pre-start history is rec
 **Target-State Result:** the Screen/proof/evolution methodology retains the agreed architecture while restoring the operational package-production boundary, making use-case/template linkage internally true, giving Screen variants an explicit recommended design form and making material test-suite evolution part of the natural owner rather than a duplicated evolution hierarchy.
 
 **APPLIED relation:** successful Apply of correction package `05ee98dd-3f1e-46b4-bb27-1d1515c110c8` corrects the still-open ChangeSet `a52e9adc-a72d-467b-b1d8-d3a2a5a801b6` after ReviewDiff `NEEDS_CORRECTION`; ChangeSet identity/label and Work Intent remain unchanged.
+
+
+### LOG-RPKG-075 — Refactor local documentation methodology around Feature/Slice planning
+
+**Type:** DOCUMENTATION METHODOLOGY TARGET / APPLIED TARGET  
+**ChangeSet:** `9263c08f-6172-4541-b47e-317c5d32d36a`  
+**Package:** `e7cfd159-fa57-4249-bf6f-d07ae018de4a`
+
+**Selected methodology correction:**
+- make **Feature** the primary behavioral planning unit after application Benefits while keeping Scenario as the real user/application journey and cross-Feature/cross-Screen consistency owner rather than a mandatory upstream parent of every Feature;
+- define Feature and Slice as two sides of the same use-case boundary: Feature owns coherent observable behavior under one intent/principal Result family; Slice owns its end-to-end realization; there is no separate mandatory Slice Discovery phase;
+- require Feature Planning to include Behavior Requirements ↔ Feature Data plus free-form **Feature Implementation Concerns** for feasibility, implementation dependencies, candidate/rejected approaches, platform/external constraints, Aggregate/Shared signals, proofability and Slice-boundary/module/branch observations; downstream discovery must inspect those concerns instead of restarting feasibility reasoning from zero;
+- replace atomic Item ontology with structured **Requirement** semantics: Requirements may be algorithms, invariants, state machines, protocols, ordered processes or contracts, and Production ↔ Proof discovery uses the common Correctness / Local Reasoning / Evolution Fitness backbone;
+- define the four-group Feature/Slice Boundary Check: (1) intent/principal Result, (2) semantic entry vs transport, (3) realization cohesion/shared structure, (4) development/proof/evolution fitness including change locality and Slice isolation; repeat the same check later with stronger implementation Evidence;
+- define Slice independence as locality of responsibility/change rather than dependency absence and preserve normal Slice evolution through ordinary change, Module, Branch, Entry Adapter and Shared Capability extraction;
+- keep Scenario planning bidirectional with Features/Screens, add Scenario Requirements for genuine cross-Feature/cross-Screen journey constraints, and treat Scenario as behavioral authority for E2E proof rather than test code;
+- make relevant known Evolution Steps Sources for every material Discovery; allow shallow early Steps, but require a completed Step to end in a coherent usable application state, show full target Feature state when mature, and include target Scenario when cross-Feature journey composition changes;
+- allow explicitly selected exceptions to preferred methodology principles only when the contradiction, reason, preserved boundaries and downstream proof/implementation consequences are recorded.
+
+**Preserved current-product boundary:**
+- this package updates only the Replacement Package App **local documentation methodology** and its scope action log/navigation; it does not modify the separate main/reusable SDS/IDTSPE methodology;
+- current Scenario/FI/BI/Screen/Domain/Slice/testing/contract owners remain byte-for-byte outside this package and keep their existing product truth until separately migrated; legacy FI/BI/DI/SI/TST labels are compatibility representation, not restored target ontology;
+- `evolution-steps-map.md`, `slices.md`, `screens.md`, Scenario files, Domain files, Slice files, `testing-plan.md`, contracts and source/tests are not operations in this package.
+
+**Source basis:** user-supplied Local Snapshot `obs-planning-docs-local-base-90ec47d6-20260905-152150.zip`, repository `github:AlexPastukhh/obs-planning-docs`, base commit `90ec47d6099d8631e4b70953ef689bd530d28cc6`, branch `main`. Expected-source bytes for every replace operation come directly from `snapshot/`; no later branch/diff bytes are mixed into the package.
+
+**Target-State Result:** after successful Apply, `documentation-use-cases.md` is the active Feature-centered local methodology authority, `documentation-templates.md` provides matching non-schema forms, `README.md` routes readers through the new model with an explicit legacy-product migration guard, and this log records the selected target without changing product Scenario/Slice meaning.
+
+**APPLIED relation:** successful Apply of package `e7cfd159-fa57-4249-bf6f-d07ae018de4a` establishes this new independent ChangeSet `9263c08f-6172-4541-b47e-317c5d32d36a` from the supplied `main` snapshot source; later product-document migration must be a separate selected change and must re-evaluate old FI/BI decomposition rather than mechanically rename it.
