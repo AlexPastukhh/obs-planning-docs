@@ -26,6 +26,32 @@ PRIMARY / BOUNDED DEEP
 
 A valid result may conclude that no distinct Domain model/owner is useful.
 
+## Entry Depth Gate
+
+`PRIMARY / BOUNDED DEEP` modeling must not be used to discover the surrounding
+Slice/Aggregate landscape from scratch. Before entering deep mode, a minimum
+broad/shallow boundary result must already exist from `TM-SLICE-STRATEGY` or an
+equivalent local pass.
+
+Proportionally, that context identifies:
+
+```text
+selected candidate Domain/Aggregate responsibility
++ current Slice(s)/Scenario behavior using it
++ shallow neighboring Domain/Aggregate responsibility boundaries
++ Slice → Uses → Domain/Aggregate position
++ material unresolved boundary questions
+```
+
+The minimum result may be very small and need no separate Target/file. It does not
+require every Aggregate in the Application to be modeled. Its purpose is to make
+the selected deep problem a **bounded refinement of known context**.
+
+If deep modeling materially changes the Aggregate/Domain boundary, the Slice→Uses
+map, or which shared owner should hold a responsibility, return that finding to
+the Strategy/local boundary owner and revalidate/update the shallow result before
+continuing dependent deep planning.
+
 ## High-Level Example — Self-Contained Walkthrough
 
 ### Situation
@@ -96,7 +122,7 @@ no distinct Domain owner needed
 selected Scenario behavior / Requirements
 Scenario DATA / Behavior Items
 must-hold conditions / negative guarantees
-Slice Strategy scope / Slice→Domain use needs when used supportingly
+Slice Strategy scope / current boundary-discovery context / Slice→Domain use needs
 ```
 
 ### Evidence / Current-State Sources
@@ -191,7 +217,9 @@ Concrete Questions, Ideas, Q/R/P, Decisions and Evidence remain Core State.
 Individual alternatives stay Ideas/Branches until selected.
 
 Supporting use projects only enough selected modeling meaning back to the host
-Target; it does not force a separate child Target or file.
+Target; it does not force a separate child Target or file. This supporting/shallow
+use is the normal way to satisfy the Domain side of the boundary-discovery gate
+before any selected Domain/Aggregate problem is deepened.
 
 ## Target Step-Result Contract
 
@@ -281,6 +309,7 @@ A separate canonical Domain evolution map is not required.
 model traces to accepted behavior/DATA/must-hold meaning
 identity/state/invariant claims have evidence/rationale
 Aggregate boundary follows consistency meaning, not naming convention
+PRIMARY / BOUNDED DEEP mode starts only after sufficient shallow boundary context exists
 application/external coordination is not silently absorbed into Domain
 no-Domain result remains valid
 selected result is proportional

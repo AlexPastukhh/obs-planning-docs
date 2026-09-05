@@ -136,6 +136,35 @@ RU-SSTRAT-03
 
 `May Change / Extend` is a projection; Scenario remains behavioral authority.
 
+### Minimum boundary-discovery gate
+
+Before detailed `TM-IMPLEMENTATION-SLICE` planning or `TM-DOMAIN-DISCOVERY` in
+`PRIMARY / BOUNDED DEEP` mode, establish a **minimum broad/shallow boundary
+result** for the current planning horizon.
+
+The result is mandatory; an explicit `TM-SLICE-STRATEGY` Target/artifact is not.
+When one obvious small Slice makes a separate Strategy Target unnecessary,
+establish the same minimum result locally before deep planning.
+
+Proportionally, the minimum result identifies:
+
+```text
+current useful Slice boundaries/candidates
++ candidate/current Domain/Aggregate responsibilities relevant to those Slices
++ Slice → Uses → Domain/Aggregate meaning at shallow depth
++ genuine shared/Cross-Cutting owner candidates when material
++ material unresolved boundary questions that can change the selected owner
+```
+
+`Broad` means broad enough across the **current planning horizon** to contextualize
+the next selected owner; it does not mean exhaustively model the whole
+Application. `Shallow` means enough ownership/boundary meaning to choose what to
+deepen, not complete Slice or Aggregate realization planning.
+
+Only after this gate is satisfied should owner-local detailed implementation/proof
+Requirements Discovery begin. The gate itself must not be inflated into that
+deep work.
+
 ## 7. Domain / Aggregate Discovery Inside Strategy
 
 Strategy may use `TM-DOMAIN-DISCOVERY` in SUPPORTING role without creating a
@@ -154,9 +183,9 @@ Incidental code call graphs are not Strategy truth.
 
 ## 8. Slice / Aggregate Realization Loop
 
-After Strategy (or after locally establishing equivalent Slice meaning when an
-explicit Strategy is unnecessary), realization is intentionally **not forced into
-one ordering**.
+After the minimum boundary-discovery gate is satisfied (through explicit Strategy
+or a local equivalent), realization is intentionally **not forced into one
+ordering**.
 
 The Slice→Domain map can reveal useful working groups:
 
@@ -178,6 +207,17 @@ D. alternate Domain/Aggregate Modeling ↔ Implementation Slice refinement
 ```
 
 No approach is the universal SDS order.
+
+Invariant before **deep planning** of one selected Slice or Aggregate:
+
+> The selected owner is contextualized by the current broad/shallow boundary
+> result, so deep work refines a known responsibility instead of discovering the
+> surrounding Slice/Aggregate topology from scratch.
+
+Deep planning may refine that map. If it materially changes a Slice boundary, an
+Aggregate/Domain ownership boundary or a shared owner relation, surface the
+Finding and revalidate/update the shallow boundary result before continuing
+dependent deep work.
 
 Invariant before exact realization of one Slice:
 
@@ -274,10 +314,11 @@ For the current Target ask:
 
 1. Is the current Result sufficiently resolved for its consumer?
 2. Is there blocking Generic Q/R/P or Evidence need?
-3. Is the next useful work another existing natural owner?
-4. Is a supporting Target Module enough without a child Target?
-5. Does independent unresolved choice justify Target Formation?
-6. Is Exact Realization now the narrowest useful next Target?
-7. Did new Evidence challenge an upstream owner, requiring explicit revalidation?
+3. Before selecting deep Slice/Domain work, is the minimum boundary-discovery gate satisfied?
+4. Is the next useful work another existing natural owner?
+5. Is a supporting Target Module enough without a child Target?
+6. Does independent unresolved choice justify Target Formation?
+7. Is Exact Realization now the narrowest useful next Target?
+8. Did new Evidence challenge an upstream owner, requiring explicit revalidation?
 
 Prefer the narrowest owner/action that resolves the real remaining uncertainty.

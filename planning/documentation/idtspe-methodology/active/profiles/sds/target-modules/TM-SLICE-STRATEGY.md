@@ -17,8 +17,33 @@ Application-development layer theory may inform Resolution through Knowledge
 Basis/Lenses, but is not Target result ontology.
 
 When one obvious small Slice exists and decomposition/owner coordination adds no
-value, an explicit Strategy Target may be skipped; equivalent minimum Slice
-meaning is established locally before detailed planning.
+value, an explicit Strategy Target/artifact may be skipped. The **minimum
+boundary-discovery result itself may not be skipped**; establish it locally before
+detailed Slice or Aggregate planning.
+
+## Minimum Boundary-Discovery Gate
+
+Slice Strategy is the normal owner for broad/shallow boundary discovery. Before
+detailed `TM-IMPLEMENTATION-SLICE` planning or `TM-DOMAIN-DISCOVERY` in
+`PRIMARY / BOUNDED DEEP` mode, establish proportionally for the current planning
+horizon:
+
+```text
+current useful Slice boundaries/candidates
++ candidate/current Domain/Aggregate responsibilities relevant to them
++ Slice → Uses → Domain/Aggregate map at broad/shallow depth
++ genuine shared/Cross-Cutting owner candidates when material
++ material unresolved boundary questions that can change the selected owner
+```
+
+The horizon may contain one obvious Slice. `Broad` does not require scanning or
+modeling the whole Application; it means broad enough to understand the nearby
+responsibility landscape in which the next owner is selected. `Shallow` means
+enough to establish boundaries and usage context without prematurely doing the
+selected owner's detailed implementation/proof Requirements Discovery.
+
+An explicit Strategy artifact is optional when it adds no value. The boundary
+result is an operational entry gate regardless of representation.
 
 ## Core Boundary
 
@@ -214,9 +239,12 @@ a dedicated file never creates a second owner.
 
 ### 9. Revalidate from realization Evidence
 
-Detailed planning/code may challenge Strategy decomposition/Domain use. Surface a
-Finding Candidate and use Core disposition for bounded Strategy/Scenario/Domain
-revalidation rather than silent drift.
+Detailed planning/code may challenge Strategy decomposition/Domain use. If a deep
+Slice/Aggregate pass materially changes a Slice boundary, Domain/Aggregate
+ownership or shared-owner relation, surface a Finding Candidate and update/review
+the shallow boundary result before continuing dependent deep planning. Use Core
+disposition for bounded Strategy/Scenario/Domain revalidation rather than silent
+drift.
 
 ## Target Step-Result Contract
 
@@ -336,6 +364,7 @@ Slice ≠ technical layer
 Slice ≠ Aggregate
 frontend/backend split ≠ normal Slice decomposition
 Strategy future projection ≠ Scenario future authority
+explicit Strategy Target/artifact may be skipped; minimum boundary-discovery result may not
 RU-SSTRAT-02 stays Slice-centric
 file split ≠ new semantic owner
 stable contract/seam requires real semantic/shared/external/compatibility/consistency/evolution pressure
@@ -343,9 +372,14 @@ stable contract/seam requires real semantic/shared/external/compatibility/consis
 
 ## Exit / Handoff
 
-A Slice is ready for the next implementation-planning decision when its useful
-result, Primary Scenario, material obligations, Domain-use position and owner
-address are sufficient that downstream work does not invent product behavior.
+A Slice is ready for **deep** implementation planning when its useful result,
+Primary Scenario, material obligations, Domain-use position, surrounding boundary
+context and owner address are sufficient that downstream work refines the selected
+owner instead of inventing product behavior or the surrounding ownership map.
+
+Likewise, a candidate Domain/Aggregate responsibility is ready for
+`PRIMARY / BOUNDED DEEP` modeling only when the shallow map establishes enough
+Slice-use and neighboring-boundary context to know what is being deepened.
 
 When independent bounded Slice planning is useful, normal Target Formation may
 select/reuse `TM-IMPLEMENTATION-SLICE` for the same semantic Slice owner.

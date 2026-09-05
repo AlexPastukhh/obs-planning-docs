@@ -17,6 +17,36 @@ Units and are not separate Slice identities by default.
 Application-development theory may be supplied through Knowledge Basis/Lenses when
 useful; the Target contract itself stays semantic.
 
+## Entry Gate — Boundary Before Detail
+
+Do not enter detailed Slice planning from Scenario behavior alone. A minimum
+broad/shallow boundary result must first establish enough current planning context
+to know **which Slice owner is being deepened and what surrounding ownership it
+uses**.
+
+The gate may come from an explicit `TM-SLICE-STRATEGY` Target or an equivalent
+local pass when a separate Strategy artifact adds no value. Proportionally it
+provides:
+
+```text
+selected useful Slice boundary + Primary Scenario
++ nearby/current Slice context sufficient to understand this boundary
++ candidate/current Domain/Aggregate responsibilities used by the Slice
++ Slice → Uses → Domain/Aggregate map at shallow depth
++ material shared/Cross-Cutting candidates
++ material unresolved boundary questions
+```
+
+The planning horizon may contain only one obvious Slice. This gate does not
+require complete Application decomposition or complete Aggregate modeling. It
+precedes owner-local detailed implementation/proof Requirements Discovery; the
+deep pass may refine only the Domain/Aggregate owners it materially touches.
+
+If detailed planning shows that the selected Slice boundary, Domain/Aggregate
+ownership or shared-owner relation should materially change, stop dependent deep
+planning, surface the Finding, revalidate/update the shallow boundary result, and
+then resume under the updated context.
+
 ## High-Level Example
 
 ```text
@@ -56,7 +86,8 @@ No separate frontend/backend Slice is created.
 ### Direct Semantic Sources
 
 ```text
-selected Slice identity / Strategy meaning when present
+selected Slice identity + sufficient Strategy/boundary meaning
+(explicit Strategy or equivalent local boundary-discovery result)
 Primary Scenario
 Behavior Items + Scenario DATA
 must-hold / negative guarantees
@@ -130,19 +161,22 @@ Conditional:
 
 ## Resolution / Production Method
 
-1. Stabilize the useful Slice outcome and semantic obligations.
-2. Resolve which Domain elements/shared owners the Slice uses.
-3. Resolve only material dependencies/handoffs.
-4. Add Runtime Path only when runtime sequence/state/failure/async/transaction
+1. Confirm the minimum boundary-discovery gate is satisfied; if not, return to
+   `TM-SLICE-STRATEGY` or establish the equivalent shallow result locally.
+2. Stabilize the useful Slice outcome and semantic obligations.
+3. Resolve which Domain elements/shared owners the Slice uses, deepening only
+   materially touched Domain/Aggregate meaning.
+4. Resolve only material dependencies/handoffs.
+5. Add Runtime Path only when runtime sequence/state/failure/async/transaction
    meaning materially helps understanding or decision-making.
-5. Resolve named planned/probable Evolution Steps touching the Slice.
-6. For each material Evolution Step use normal Core Resolution:
+6. Resolve named planned/probable Evolution Steps touching the Slice.
+7. For each material Evolution Step use normal Core Resolution:
    - surface material Questions/Problems;
    - develop materially different Ideas where alternatives exist;
    - apply relevant Lenses/Evidence;
    - resolve material choices under normal authority;
    - project the selected Slice-specific consequence into `Implementation Outlook`.
-7. Hand sufficiently determined exact realization to Core `TM-EXACT-REALIZATION`.
+8. Hand sufficiently determined exact realization to Core `TM-EXACT-REALIZATION`.
 
 Do **not** create a hand-written `Codebase Integration Path` call-level mirror.
 
@@ -309,6 +343,7 @@ real size/review/update pressure.
 
 ```text
 one normal Slice → one Primary Scenario
+minimum boundary-discovery gate precedes detailed Slice planning
 Slice ≠ technical layer
 frontend/backend are not separate SDS Slice identities by default
 application layer theory ≠ mandatory Result schema
