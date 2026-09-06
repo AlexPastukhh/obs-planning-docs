@@ -1108,6 +1108,7 @@ test("published_state_requires_remote_tip_equal_to_the_committed_tip") {
     // Act / Assert
     assertThrows(PublicationEvidenceMismatch.self) {
         application.markPublished(
+            PublicationAttemptId("attempt-1"),
             CommitId("bbbb"),
             GitTreeId("tree-A"),
             publicationEvidence(remoteTip: "bbbb")
@@ -1123,6 +1124,7 @@ test("published_state_records_the_exact_proven_remote_tree") {
 
     // Act
     let published = application.markPublished(
+        PublicationAttemptId("attempt-1"),
         CommitId("aaaa"),
         GitTreeId("tree-A"),
         publicationEvidence(remoteTip: "aaaa", remoteTree: "tree-A")
