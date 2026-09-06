@@ -5,6 +5,9 @@ import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.Objects;
 import java.util.Set;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 
 import obs.rpkg.features.apply.domain.PublicationObservation;
@@ -21,8 +24,12 @@ public final class WorkAggregateTests {
         run("GitWorkspace owns only Git workspace facts and derives work branch", WorkAggregateTests::workspaceShape);
         run("ReplacementPackageState existence means Applied", WorkAggregateTests::packageStateShape);
         run("publication proof is independent evidence", WorkAggregateTests::publicationEvidence);
+        run("re-proving the same commit preserves publication evidence", WorkAggregateTests::sameCommitPreservesPublicationEvidence);
         run("exact archive identity is mandatory", WorkAggregateTests::exactArchiveRequired);
         run("one Work cannot have two unfinished package realizations", WorkAggregateTests::oneUnfinishedPackage);
+        run("state lookup fails closed when persisted identity disagrees with its key", WorkAggregateTests::stateLookupIdentityFence);
+        run("per-Work lock serializes independent repository instances", WorkAggregateTests::perWorkLockSerializesRepositories);
+        run("concurrent repository instances cannot create two unfinished packages", WorkAggregateTests::concurrentSavePreservesInvariant);
         run("new state namespace does not read schema-1 legacy files", WorkAggregateTests::noLegacyStateRead);
         System.out.println("RESULT passed=" + passed + " failed=" + failed);
         if (failed > 0) System.exit(1);
@@ -70,6 +77,20 @@ public final class WorkAggregateTests {
                 "exact confirmed tip not published");
     }
 
+
+    private static void sameCommitPreservesPublicationEvidence() {
+        ReplacementPackageState uncertain = new ReplacementPackageState(
+                new WorkId("work-3b"), new ReplacementPackageIdentity("pkg", "HASH"), null,
+                new PublicationObservation.NotRequested())
+                .committed("ABC")
+                .withPublication(new PublicationObservation.NotConfirmed());
+
+        ReplacementPackageState reproved = uncertain.committed("ABC");
+        eq(reproved, uncertain, "re-proving the same commit changed durable state");
+        ok(reproved.publication() instanceof PublicationObservation.NotConfirmed,
+                "re-proving the same commit erased publication evidence");
+    }
+
     private static void exactArchiveRequired() {
         throwsType(NullPointerException.class, () -> new ReplacementPackageIdentity("pkg", null));
         throwsType(IllegalArgumentException.class, () -> new ReplacementPackageIdentity("pkg", " "));
@@ -98,6 +119,98 @@ public final class WorkAggregateTests {
         } finally {
             deleteTree(root);
         }
+    }
+
+
+    private static void stateLookupIdentityFence() throws Exception {
+        Path root = Files.createTempDirectory("rpkg-state-key-fence-");
+        try {
+            FileReplacementPackageStateRepository repo = new FileReplacementPackageStateRepository(root);
+            WorkId work = new WorkId("work-identity");
+            ReplacementPackageState state = new ReplacementPackageState(
+                    work, new ReplacementPackageIdentity("pkg-identity", "HASH"), null,
+                    new PublicationObservation.NotRequested());
+            ok(repo.save(state).isSuccess(), "fixture state save failed");
+            Path persisted;
+            try (var files = Files.walk(root)) {
+                persisted = files.filter(Files::isRegularFile)
+                        .filter(path -> path.getFileName().toString().endsWith(".properties"))
+                        .findFirst().orElseThrow();
+            }
+
+            Files.writeString(persisted,
+                    "schemaVersion=2\nworkId=other-work\npackageId=pkg-identity\narchiveSha256=HASH\npublicationKind=NOT_REQUESTED\n");
+            throwsType(IllegalStateException.class, () -> repo.find(work, "pkg-identity"));
+
+            Files.writeString(persisted,
+                    "schemaVersion=2\nworkId=work-identity\npackageId=other-package\narchiveSha256=HASH\npublicationKind=NOT_REQUESTED\n");
+            throwsType(IllegalStateException.class, () -> repo.find(work, "pkg-identity"));
+        } finally {
+            deleteTree(root);
+        }
+    }
+
+    private static void perWorkLockSerializesRepositories() throws Exception {
+        Path root = Files.createTempDirectory("rpkg-work-lock-");
+        try {
+            FileReplacementPackageStateRepository first = new FileReplacementPackageStateRepository(root);
+            FileReplacementPackageStateRepository second = new FileReplacementPackageStateRepository(root);
+            WorkId work = new WorkId("work-lock");
+            CountDownLatch started = new CountDownLatch(1);
+            AtomicBoolean acquired = new AtomicBoolean(false);
+            Thread contender;
+            try (var ignored = first.lock(work)) {
+                contender = new Thread(() -> {
+                    started.countDown();
+                    try (var ignoredSecond = second.lock(work)) { acquired.set(true); }
+                }, "rpkg-work-lock-contender");
+                contender.start();
+                ok(started.await(2, TimeUnit.SECONDS), "contender did not start");
+                Thread.sleep(150);
+                ok(!acquired.get(), "independent repository instance entered the same Work boundary concurrently");
+            }
+            contender.join(2000);
+            ok(acquired.get(), "contender did not acquire Work lock after release");
+        } finally {
+            deleteTree(root);
+        }
+    }
+
+    private static void concurrentSavePreservesInvariant() throws Exception {
+        Path root = Files.createTempDirectory("rpkg-work-save-race-");
+        try {
+            FileReplacementPackageStateRepository first = new FileReplacementPackageStateRepository(root);
+            FileReplacementPackageStateRepository second = new FileReplacementPackageStateRepository(root);
+            WorkId work = new WorkId("work-race");
+            ReplacementPackageState p1 = new ReplacementPackageState(
+                    work, new ReplacementPackageIdentity("p1", "H1"), null,
+                    new PublicationObservation.NotRequested());
+            ReplacementPackageState p2 = new ReplacementPackageState(
+                    work, new ReplacementPackageIdentity("p2", "H2"), null,
+                    new PublicationObservation.NotRequested());
+            CountDownLatch start = new CountDownLatch(1);
+            @SuppressWarnings("unchecked")
+            obs.rpkg.foundation.result.OperationResult<obs.rpkg.features.apply.infrastructure.ReplacementPackageStateRepository.Failure>[] results =
+                    new obs.rpkg.foundation.result.OperationResult[2];
+            Thread a = new Thread(() -> { await(start); results[0] = first.save(p1); }, "rpkg-save-p1");
+            Thread b = new Thread(() -> { await(start); results[1] = second.save(p2); }, "rpkg-save-p2");
+            a.start();
+            b.start();
+            start.countDown();
+            a.join(3000);
+            b.join(3000);
+            ok(results[0] != null && results[1] != null, "concurrent saves did not finish");
+            int successes = (results[0].isSuccess() ? 1 : 0) + (results[1].isSuccess() ? 1 : 0);
+            eq(successes, 1, "concurrent saves created more than one unfinished package");
+            ok(first.findUnfinished(work).isPresent(), "winning unfinished package was not persisted");
+        } finally {
+            deleteTree(root);
+        }
+    }
+
+    private static void await(CountDownLatch latch) {
+        try { latch.await(); }
+        catch (InterruptedException e) { Thread.currentThread().interrupt(); throw new RuntimeException(e); }
     }
 
     private static void noLegacyStateRead() throws Exception {

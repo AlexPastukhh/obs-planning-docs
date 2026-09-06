@@ -38,76 +38,10 @@ public final class PublishAppliedCommit {
     public Result<ReplacementPackageState, PublishFailure> execute(
             String changeSetId,
             String packageId) {
-        ReplacementPackageState current;
-        Core.ChangeSet legacy;
         WorkId workId = new WorkId(changeSetId);
-        try {
-            Optional<ReplacementPackageState> maybe = states.find(workId, packageId);
-            if (maybe.isEmpty()) {
-                return failure(
-                        PublishFailureCode.PACKAGE_STATE_NOT_FOUND,
-                        OperationFailureDisposition.ACTION_REQUIRED,
-                        "No replacement-package state exists for this Work/package.",
-                        null);
-            }
-            current = maybe.get();
-            if (!current.isCommitted()) {
-                return failure(
-                        PublishFailureCode.COMMIT_REQUIRED,
-                        OperationFailureDisposition.ACTION_REQUIRED,
-                        "Commit Applied must succeed before Publish.",
-                        current);
-            }
-            if (current.isPublished()) return Result.success(current);
-
-            legacy = core.getChangeSet(changeSetId);
-            if (legacy == null || !packageId.equals(legacy.lastPackageId)) {
-                return failure(
-                        PublishFailureCode.PACKAGE_IDENTITY_MISMATCH,
-                        OperationFailureDisposition.ACTION_REQUIRED,
-                        "Durable ChangeSet no longer identifies this replacement package.",
-                        current);
-            }
-
-            if (current.publication() instanceof PublicationObservation.NotConfirmed) {
-                Result<ReplacementPackageState, PublishFailure> reconciled =
-                        confirmBeforeRetry(current, legacy);
-                if (reconciled.isFailure()) return reconciled;
-                current = reconciled.success().orElseThrow();
-                if (current.isPublished()) return Result.success(current);
-                // Confirmed absent / another known tip means a fresh push may now be attempted safely.
-            }
-
-            Core.PublishResult published;
-            try {
-                published = core.publishAppliedCommit(changeSetId);
-            } catch (Core.ObsException e) {
-                return resolveAfterPublishException(e, current, legacy);
-            }
-
-            Core.ChangeSet after = published.changeSet();
-            if (after == null
-                    || after.commitSha == null
-                    || !Objects.equals(after.commitSha, current.commitSha())
-                    || !Objects.equals(after.publishedTip, current.commitSha())) {
-                return failure(
-                        PublishFailureCode.STATE_DIVERGED,
-                        OperationFailureDisposition.ACTION_REQUIRED,
-                        "Publish mechanics returned success without the exact committed tip being proven published.",
-                        current);
-            }
-            ReplacementPackageState confirmed = current.withPublication(
-                    new PublicationObservation.ConfirmedTip(current.commitSha()));
-            try {
-                ReplacementPackageStateAccess.saveOrThrow(states, confirmed);
-            } catch (ReplacementPackageStateAccess.StatePersistenceException e) {
-                return failure(
-                        PublishFailureCode.STATE_PERSISTENCE_FAILED,
-                        OperationFailureDisposition.ACTION_REQUIRED,
-                        e.getMessage(),
-                        confirmed);
-            }
-            return Result.success(confirmed);
+        try (ReplacementPackageStateRepository.WorkLock ignored =
+                     ReplacementPackageStateAccess.lockOrThrow(states, workId)) {
+            return executeLocked(workId, packageId);
         } catch (ReplacementPackageStateAccess.StatePersistenceException e) {
             return failure(
                     PublishFailureCode.STATE_PERSISTENCE_FAILED,
@@ -123,36 +57,123 @@ public final class PublishAppliedCommit {
         }
     }
 
+    private Result<ReplacementPackageState, PublishFailure> executeLocked(
+            WorkId workId,
+            String packageId) {
+        Optional<ReplacementPackageState> maybe =
+                ReplacementPackageStateAccess.findOrThrow(states, workId, packageId);
+        if (maybe.isEmpty()) {
+            return failure(
+                    PublishFailureCode.PACKAGE_STATE_NOT_FOUND,
+                    OperationFailureDisposition.ACTION_REQUIRED,
+                    "No replacement-package state exists for this Work/package.",
+                    null);
+        }
+        ReplacementPackageState current = maybe.get();
+        if (!current.isCommitted()) {
+            return failure(
+                    PublishFailureCode.COMMIT_REQUIRED,
+                    OperationFailureDisposition.ACTION_REQUIRED,
+                    "Commit Applied must succeed before Publish.",
+                    current);
+        }
+        if (current.isPublished()) return Result.success(current);
+
+        Core.ChangeSet legacy = core.getChangeSet(workId.value());
+        if (legacy == null || !packageId.equals(legacy.lastPackageId)) {
+            return failure(
+                    PublishFailureCode.PACKAGE_IDENTITY_MISMATCH,
+                    OperationFailureDisposition.ACTION_REQUIRED,
+                    "Durable ChangeSet no longer identifies this replacement package.",
+                    current);
+        }
+
+        if (current.publication() instanceof PublicationObservation.NotConfirmed) {
+            Result<ReplacementPackageState, PublishFailure> reconciled =
+                    confirmBeforeRetry(current, legacy);
+            if (reconciled.isFailure()) return reconciled;
+            current = reconciled.success().orElseThrow();
+            if (current.isPublished()) return Result.success(current);
+        }
+
+        // Persist the uncertainty guard before entering mechanics that may perform an external push.
+        // If this write fails, no Publish side effect is allowed to begin.
+        ReplacementPackageState attempting =
+                current.withPublication(new PublicationObservation.NotConfirmed());
+        try {
+            ReplacementPackageStateAccess.saveOrThrow(states, attempting);
+        } catch (ReplacementPackageStateAccess.StatePersistenceException e) {
+            return failure(
+                    PublishFailureCode.STATE_PERSISTENCE_FAILED,
+                    OperationFailureDisposition.ACTION_REQUIRED,
+                    e.getMessage(),
+                    current);
+        }
+
+        Core.PublishResult published;
+        try {
+            published = core.publishAppliedCommit(workId.value());
+        } catch (Core.ObsException e) {
+            return resolveAfterPublishException(e, attempting, legacy);
+        }
+
+        Core.ChangeSet after = published.changeSet();
+        if (after == null
+                || after.commitSha == null
+                || !Objects.equals(after.commitSha, attempting.commitSha())
+                || !Objects.equals(after.publishedTip, attempting.commitSha())) {
+            return failure(
+                    PublishFailureCode.STATE_DIVERGED,
+                    OperationFailureDisposition.ACTION_REQUIRED,
+                    "Publish mechanics returned success without the exact committed tip being proven published.",
+                    attempting);
+        }
+
+        ReplacementPackageState confirmed = attempting.withPublication(
+                new PublicationObservation.ConfirmedTip(attempting.commitSha()));
+        try {
+            ReplacementPackageStateAccess.saveOrThrow(states, confirmed);
+        } catch (ReplacementPackageStateAccess.StatePersistenceException e) {
+            // Durable state is still the pre-side-effect NotConfirmed guard. Retry must confirm first.
+            return failure(
+                    PublishFailureCode.STATE_PERSISTENCE_FAILED,
+                    OperationFailureDisposition.ACTION_REQUIRED,
+                    e.getMessage(),
+                    attempting);
+        }
+        return Result.success(confirmed);
+    }
+
     private Result<ReplacementPackageState, PublishFailure> confirmBeforeRetry(
             ReplacementPackageState current,
             Core.ChangeSet legacy) {
         Result<PublicationObservation, PublicationObserver.Failure> observed = observe(legacy);
         if (observed.isFailure()) {
-            ReplacementPackageState uncertain = current.withPublication(new PublicationObservation.NotConfirmed());
-            saveBestEffort(uncertain);
+            // current is already durably NotConfirmed; do not invent a stronger transient state.
             return failure(
                     PublishFailureCode.PUBLICATION_CONFIRMATION_FAILED,
                     OperationFailureDisposition.UNCERTAIN,
                     observed.failure().orElseThrow().message(),
-                    uncertain);
+                    current);
         }
 
         ReplacementPackageState confirmed = current.withPublication(observed.success().orElseThrow());
         try {
             ReplacementPackageStateAccess.saveOrThrow(states, confirmed);
         } catch (ReplacementPackageStateAccess.StatePersistenceException e) {
+            // The observation happened, but durable continuity is still NotConfirmed.
             return failure(
                     PublishFailureCode.STATE_PERSISTENCE_FAILED,
                     OperationFailureDisposition.ACTION_REQUIRED,
                     e.getMessage(),
-                    confirmed);
+                    current);
         }
         return Result.success(confirmed);
     }
 
     private Result<ReplacementPackageState, PublishFailure> resolveAfterPublishException(
             Core.ObsException error,
-            ReplacementPackageState before,
+            ReplacementPackageState durableAttempting,
             Core.ChangeSet legacyBefore) {
         if (!Core.PUBLISH_FAILED.equals(error.code)
                 && !Core.PUBLICATION_UNCERTAIN.equals(error.code)
@@ -164,23 +185,23 @@ public final class PublishAppliedCommit {
                     code == PublishFailureCode.UNEXPECTED_LEGACY_FAILURE
                             ? OperationFailureDisposition.TERMINAL
                             : OperationFailureDisposition.ACTION_REQUIRED;
-            return failure(code, disposition, error.getMessage(), before);
+            return failure(code, disposition, error.getMessage(), durableAttempting);
         }
 
-        Core.ChangeSet after = core.getChangeSet(before.workId().value());
-        Result<PublicationObservation, PublicationObserver.Failure> observed = observe(after != null ? after : legacyBefore);
+        Core.ChangeSet after = core.getChangeSet(durableAttempting.workId().value());
+        Result<PublicationObservation, PublicationObserver.Failure> observed =
+                observe(after != null ? after : legacyBefore);
         if (observed.isFailure()) {
-            ReplacementPackageState uncertain = before.withPublication(new PublicationObservation.NotConfirmed());
-            saveBestEffort(uncertain);
+            // NotConfirmed was persisted before the side-effect boundary, so restart remains safe.
             return failure(
                     PublishFailureCode.PUBLICATION_CONFIRMATION_FAILED,
                     OperationFailureDisposition.UNCERTAIN,
                     observed.failure().orElseThrow().message(),
-                    uncertain);
+                    durableAttempting);
         }
 
         PublicationObservation observation = observed.success().orElseThrow();
-        ReplacementPackageState confirmed = before.withPublication(observation);
+        ReplacementPackageState confirmed = durableAttempting.withPublication(observation);
         try {
             ReplacementPackageStateAccess.saveOrThrow(states, confirmed);
         } catch (ReplacementPackageStateAccess.StatePersistenceException e) {
@@ -188,7 +209,7 @@ public final class PublishAppliedCommit {
                     PublishFailureCode.STATE_PERSISTENCE_FAILED,
                     OperationFailureDisposition.ACTION_REQUIRED,
                     e.getMessage(),
-                    confirmed);
+                    durableAttempting);
         }
 
         if (confirmed.isPublished()) {
@@ -224,10 +245,6 @@ public final class PublishAppliedCommit {
                     null));
         }
         return observer.observe(Path.of(state.worktree), state.branch, state.repositoryIdentity);
-    }
-
-    private void saveBestEffort(ReplacementPackageState state) {
-        try { states.save(state); } catch (RuntimeException ignored) {}
     }
 
     private static Result<ReplacementPackageState, PublishFailure> failure(

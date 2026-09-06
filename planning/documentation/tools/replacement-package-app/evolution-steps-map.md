@@ -94,7 +94,10 @@ Readiness / proof gate:
 - Apply never implicitly Commit/Publishes through the modular service;
 - Commit never Publishes;
 - Retry Publish confirms `NotConfirmed` before another push;
+- `NotConfirmed` is durable before any possible Publish push, so persistence failure cannot authorize a blind side effect/retry;
 - exact remote observation survives another operation/restart;
+- per-Work locking prevents concurrent new-model package transitions from violating the one-unfinished-package invariant;
+- persisted package-state lookup identity is fenced and corrupt state never becomes "absent";
 - old `ApplyExtent` / Resume production and tests are gone.
 
 ## EVO-RPKG-RETIRE-LEGACY-INTERACTION-SURFACE — Remove interaction controls from the work screen
@@ -158,7 +161,7 @@ Migration decision:
 Old persisted works are not imported by the new executable. The deployed old executable remains their owner. New package state starts in `work-state-v2`; schema-1 `changeSetId` remains only a transport alias for WorkId.
 
 Current increment proof:
-Aggregate model + package-state persistence are introduced and tested. Legacy Core runtime remains mechanics compatibility until the following cutover increment; it is not a target Aggregate authority.
+Aggregate model + package-state persistence are introduced and tested. The consistency correction adds same-commit evidence preservation, exact persisted-key fencing, per-Work cross-instance/process locking and a durable pre-Publish `NotConfirmed` guard. Legacy Core remains a **transitional current runtime authority** until the following cutover increment; it is retired as a target Aggregate owner but is not yet legacy-only at runtime.
 
 ## Existing Scenario-owned evolution
 

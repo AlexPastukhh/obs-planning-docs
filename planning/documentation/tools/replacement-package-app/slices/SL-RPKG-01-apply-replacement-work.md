@@ -37,13 +37,16 @@ State is not success/failure. `Result<T,E>` and `OperationResult<E>` represent t
 Before first package-file mutation, existing exact prior/intended recovery evidence remains required.
 
 ### SI-RPKG-PACKAGE-STATE-DURABLE
-After successful modular Apply/Commit/confirmation, write the corresponding `ReplacementPackageState` before a later independent operation relies on it.
+After successful modular Apply/Commit/confirmation, write the corresponding `ReplacementPackageState` before a later independent operation relies on it. Persisted state identity is fenced to exact WorkId/packageId and unreadable/corrupt state fails closed rather than becoming "absent".
+
+### SI-RPKG-WORK-OPERATION-LOCK
+Apply / Commit / Publish for one Work execute under the same per-Work operation lock; repository save re-enters the same boundary when enforcing the unique unfinished-package invariant.
 
 ### SI-RPKG-NO-GENERIC-RESUME
 No application/domain API accepts a desired Apply extent or generic Resume request. Retry is local to the operation being retried.
 
 ### SI-RPKG-PUBLISH-CONFIRM-BEFORE-RETRY
-`PublicationObservation.NotConfirmed` requires exact remote observation before another push.
+`PublicationObservation.NotConfirmed` requires exact remote observation before another push. Before a fresh Publish attempt crosses the possible-push boundary, `NotConfirmed` is persisted first; inability to persist that guard blocks the side effect.
 
 ### SI-RPKG-NO-LEGACY-PACKAGE-STATE-IMPORT
 New-model package state is stored in state-v2 and is never inferred from legacy Core ChangeSet persistence. Old works stay with the deployed old executable.
@@ -59,7 +62,9 @@ Required proof:
 - Retry Publish reconciles unconfirmed publication before another push;
 - state persists across repository/service re-instantiation;
 - same `packageId` with different proven archive content is rejected;
-- operation failure can return current durable package state without treating that state as failure.
+- operation failure can return current durable package state without treating that state as failure;
+- persistence failure before Publish side effect blocks push; persistence failure after push leaves durable `NotConfirmed`;
+- two independent state-repository instances cannot create two unfinished packages for one Work.
 
 ## Evolution Impact
 

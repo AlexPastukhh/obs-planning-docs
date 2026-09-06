@@ -53,8 +53,27 @@ public final class ApplyReplacementPackage {
         ReplacementPackageIdentity exactIdentity = new ReplacementPackageIdentity(
                 packageData.manifest().packageId(), packageData.archiveSha256());
 
+        try (ReplacementPackageStateRepository.WorkLock ignored =
+                     ReplacementPackageStateAccess.lockOrThrow(states, workId)) {
+            return executeLocked(request, workId, exactIdentity);
+        } catch (ReplacementPackageStateAccess.StatePersistenceException e) {
+            return Result.failure(new ApplyFailure(
+                    ApplyFailureCode.STATE_PERSISTENCE_FAILED,
+                    OperationFailureDisposition.ACTION_REQUIRED, e.getMessage()));
+        } catch (IllegalStateException e) {
+            return Result.failure(new ApplyFailure(
+                    ApplyFailureCode.STATE_DIVERGED,
+                    OperationFailureDisposition.ACTION_REQUIRED, e.getMessage()));
+        }
+    }
+
+    private Result<ReplacementPackageState, ApplyFailure> executeLocked(
+            Request request,
+            WorkId workId,
+            ReplacementPackageIdentity exactIdentity) {
         try {
-            Optional<ReplacementPackageState> existing = states.find(workId, exactIdentity.packageId());
+            Optional<ReplacementPackageState> existing =
+                    ReplacementPackageStateAccess.findOrThrow(states, workId, exactIdentity.packageId());
             if (existing.isPresent()) {
                 ReplacementPackageState current = existing.get();
                 if (!current.packageIdentity().sameExactArchive(exactIdentity)) {
@@ -66,7 +85,8 @@ public final class ApplyReplacementPackage {
                 return Result.success(current);
             }
 
-            Optional<ReplacementPackageState> unfinished = states.findUnfinished(workId);
+            Optional<ReplacementPackageState> unfinished =
+                    ReplacementPackageStateAccess.findUnfinishedOrThrow(states, workId);
             if (unfinished.isPresent()) {
                 return Result.failure(new ApplyFailure(
                         ApplyFailureCode.STATE_DIVERGED,
@@ -79,22 +99,11 @@ public final class ApplyReplacementPackage {
                     workId, exactIdentity, null, new PublicationObservation.NotRequested());
             ReplacementPackageStateAccess.saveOrThrow(states, state);
             return Result.success(state);
-        } catch (ReplacementPackageStateAccess.StatePersistenceException e) {
-            return Result.failure(new ApplyFailure(
-                    ApplyFailureCode.STATE_PERSISTENCE_FAILED,
-                    OperationFailureDisposition.ACTION_REQUIRED, e.getMessage()));
         } catch (Core.ObsException e) {
-            return Result.failure(mapFailure(e, safeCurrent(workId, exactIdentity.packageId())));
-        } catch (IllegalStateException e) {
-            return Result.failure(new ApplyFailure(
-                    ApplyFailureCode.STATE_DIVERGED,
-                    OperationFailureDisposition.ACTION_REQUIRED, e.getMessage()));
+            Optional<ReplacementPackageState> current =
+                    ReplacementPackageStateAccess.findOrThrow(states, workId, exactIdentity.packageId());
+            return Result.failure(mapFailure(e, current));
         }
-    }
-
-    private Optional<ReplacementPackageState> safeCurrent(WorkId workId, String packageId) {
-        try { return states.find(workId, packageId); }
-        catch (RuntimeException ignored) { return Optional.empty(); }
     }
 
     private static ApplyFailure mapFailure(

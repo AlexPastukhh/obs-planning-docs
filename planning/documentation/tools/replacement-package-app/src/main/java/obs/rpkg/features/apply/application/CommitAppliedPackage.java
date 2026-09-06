@@ -24,27 +24,42 @@ public final class CommitAppliedPackage {
 
     public Result<ReplacementPackageState, CommitAppliedFailure> execute(String changeSetId, String packageId) {
         WorkId workId = new WorkId(changeSetId);
-        try {
-            Optional<ReplacementPackageState> maybe = states.find(workId, packageId);
-            if (maybe.isEmpty()) {
-                return Result.failure(new CommitAppliedFailure(
-                        CommitAppliedFailureCode.PACKAGE_STATE_NOT_FOUND,
-                        OperationFailureDisposition.ACTION_REQUIRED,
-                        "No applied replacement-package state exists for this Work/package."));
-            }
-            ReplacementPackageState current = maybe.get();
-            if (current.isCommitted()) return Result.success(current);
-
-            Core.CommitResult committed = core.commitAppliedPackage(workId.value());
-            ReplacementPackageState next = current.committed(committed.commitSha());
-            ReplacementPackageStateAccess.saveOrThrow(states, next);
-            return Result.success(next);
+        try (ReplacementPackageStateRepository.WorkLock ignored =
+                     ReplacementPackageStateAccess.lockOrThrow(states, workId)) {
+            return executeLocked(workId, packageId);
         } catch (ReplacementPackageStateAccess.StatePersistenceException e) {
             return Result.failure(new CommitAppliedFailure(
                     CommitAppliedFailureCode.STATE_PERSISTENCE_FAILED,
                     OperationFailureDisposition.ACTION_REQUIRED, e.getMessage()));
+        } catch (IllegalStateException e) {
+            return Result.failure(new CommitAppliedFailure(
+                    CommitAppliedFailureCode.STATE_DIVERGED,
+                    OperationFailureDisposition.ACTION_REQUIRED, e.getMessage()));
+        }
+    }
+
+    private Result<ReplacementPackageState, CommitAppliedFailure> executeLocked(
+            WorkId workId,
+            String packageId) {
+        Optional<ReplacementPackageState> maybe =
+                ReplacementPackageStateAccess.findOrThrow(states, workId, packageId);
+        if (maybe.isEmpty()) {
+            return Result.failure(new CommitAppliedFailure(
+                    CommitAppliedFailureCode.PACKAGE_STATE_NOT_FOUND,
+                    OperationFailureDisposition.ACTION_REQUIRED,
+                    "No applied replacement-package state exists for this Work/package."));
+        }
+        ReplacementPackageState current = maybe.get();
+        if (current.isCommitted()) return Result.success(current);
+
+        try {
+            Core.CommitResult committed = core.commitAppliedPackage(workId.value());
+            ReplacementPackageState next = current.committed(committed.commitSha());
+            ReplacementPackageStateAccess.saveOrThrow(states, next);
+            return Result.success(next);
         } catch (Core.ObsException e) {
-            Optional<ReplacementPackageState> current = safeCurrent(workId, packageId);
+            ReplacementPackageState durableCurrent =
+                    ReplacementPackageStateAccess.findOrThrow(states, workId, packageId).orElse(current);
             CommitAppliedFailureCode code = Core.COMMIT_FAILED.equals(e.code)
                     ? CommitAppliedFailureCode.COMMIT_FAILED
                     : Core.ACTION_PACKAGE_MISMATCH.equals(e.code)
@@ -57,16 +72,8 @@ public final class CommitAppliedPackage {
                     : code == CommitAppliedFailureCode.UNEXPECTED_LEGACY_FAILURE
                             ? OperationFailureDisposition.TERMINAL
                             : OperationFailureDisposition.ACTION_REQUIRED;
-            return Result.failure(new CommitAppliedFailure(code, disposition, e.getMessage(), current.orElse(null)));
-        } catch (IllegalStateException e) {
             return Result.failure(new CommitAppliedFailure(
-                    CommitAppliedFailureCode.STATE_DIVERGED,
-                    OperationFailureDisposition.ACTION_REQUIRED, e.getMessage()));
+                    code, disposition, e.getMessage(), durableCurrent));
         }
-    }
-
-    private Optional<ReplacementPackageState> safeCurrent(WorkId workId, String packageId) {
-        try { return states.find(workId, packageId); }
-        catch (RuntimeException ignored) { return Optional.empty(); }
     }
 }

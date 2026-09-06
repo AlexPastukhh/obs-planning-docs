@@ -36,8 +36,11 @@ public record ReplacementPackageState(
         if (exactCommitSha == null || exactCommitSha.isBlank()) {
             throw new IllegalArgumentException("exactCommitSha is required");
         }
-        if (isCommitted() && !commitSha.equals(exactCommitSha)) {
-            throw new IllegalStateException("Replacement package is already bound to a different commit");
+        if (isCommitted()) {
+            if (!commitSha.equals(exactCommitSha)) {
+                throw new IllegalStateException("Replacement package is already bound to a different commit");
+            }
+            return this;
         }
         return new ReplacementPackageState(
                 workId, packageIdentity, exactCommitSha, new PublicationObservation.NotRequested());

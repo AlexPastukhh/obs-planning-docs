@@ -13,6 +13,6 @@ Behavior Items remain authoritative in Scenario owners. Domain owners implement 
 | [`Replacement Package State`](replacement-package-state.md) | Aggregate per exact package realization | TARGET / active modular state |
 | [`External Interaction`](external-interaction.md) | legacy Aggregate | CURRENT only where legacy owners still consume it |
 | [`Repository Snapshot`](repository-snapshot.md) | immutable Domain Object | CURRENT |
-| [`ChangeSet`](change-set.md) | retired target Aggregate / legacy tombstone | LEGACY ONLY |
+| [`ChangeSet`](change-set.md) | retired target Aggregate / transitional runtime record | CURRENT TRANSITION ONLY |
 
 Target architecture deliberately has no central Aggregate that owns Issue + workspace + package + review + publication + finalization together. `WorkId` correlates natural owners without becoming a state bucket itself.

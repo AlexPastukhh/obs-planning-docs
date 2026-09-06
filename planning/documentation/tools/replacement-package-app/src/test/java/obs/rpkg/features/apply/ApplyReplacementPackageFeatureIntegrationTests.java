@@ -1,5 +1,6 @@
 package obs.rpkg.features.apply;
 
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Objects;
@@ -12,6 +13,7 @@ import obs.rpkg.features.apply.application.CommitAppliedPackage;
 import obs.rpkg.features.apply.application.PublishAppliedCommit;
 import obs.rpkg.features.apply.domain.ApplyFailure;
 import obs.rpkg.features.apply.domain.ApplyFailureCode;
+import obs.rpkg.features.apply.domain.CommitAppliedFailureCode;
 import obs.rpkg.features.apply.domain.OperationFailureDisposition;
 import obs.rpkg.features.apply.domain.PublicationObservation;
 import obs.rpkg.features.apply.domain.PublishFailure;
@@ -36,9 +38,12 @@ public final class ApplyReplacementPackageFeatureIntegrationTests {
         run("Commit applied is a separate operation", ApplyReplacementPackageFeatureIntegrationTests::commitSeparate);
         run("Publish confirms exact remote tip", ApplyReplacementPackageFeatureIntegrationTests::publishConfirmed);
         run("missing publication confirmation is a Publish failure with durable NotConfirmed state", ApplyReplacementPackageFeatureIntegrationTests::publicationConfirmationFailure);
+        run("Publish side effect is blocked until NotConfirmed guard is durable", ApplyReplacementPackageFeatureIntegrationTests::publishGuardBeforeSideEffect);
+        run("failed final publication persistence leaves durable NotConfirmed for safe retry", ApplyReplacementPackageFeatureIntegrationTests::publishPersistenceFailureKeepsGuard);
         run("Retry Publish confirms before another push", ApplyReplacementPackageFeatureIntegrationTests::retryConfirmsBeforePush);
         run("publication confirmation is fenced to expected repository identity", ApplyReplacementPackageFeatureIntegrationTests::confirmationIdentityFence);
         run("new package state does not import legacy Core ChangeSet state", ApplyReplacementPackageFeatureIntegrationTests::noLegacyStateImport);
+        run("corrupt package state is not treated as absent", ApplyReplacementPackageFeatureIntegrationTests::corruptStateIsNotAbsent);
         run("OperationResult succeeds without success value", ApplyReplacementPackageFeatureIntegrationTests::operationResult);
         System.out.println("RESULT passed=" + passed + " failed=" + failed);
         if (failed > 0) System.exit(1);
@@ -186,6 +191,80 @@ public final class ApplyReplacementPackageFeatureIntegrationTests {
         }
     }
 
+    private static void publishGuardBeforeSideEffect() throws Exception {
+        ApplyFeatureTestSupport.Workspace w = ApplyFeatureTestSupport.workspace("feature-publish-guard", true);
+        try {
+            String cs = UUID.randomUUID().toString();
+            Core.ChangeSet workspace = w.core().startChangeSetWorkspace(
+                    w.target().id(), cs, "publish guard", "main").changeSet();
+            var pkg = ApplyFeatureTestSupport.packageFor(
+                    w, cs, "publish guard",
+                    List.of(ApplyFeatureTestSupport.replace("seed.txt", "seed", "guarded")));
+            var durable = new FileReplacementPackageStateRepository(w.stateRoot());
+            success(new ApplyReplacementPackage(w.core(), durable).execute(
+                    new ApplyReplacementPackage.Request(pkg.path(), w.repository(), cs)));
+            ReplacementPackageState committed =
+                    commitSuccess(new CommitAppliedPackage(w.core(), durable).execute(cs, pkg.packageId()));
+
+            FailingSaveRepository failing = new FailingSaveRepository(
+                    durable, state -> state.publication() instanceof PublicationObservation.NotConfirmed);
+            ApplyFeatureTestSupport.failIfAnotherPushIsAttempted(w);
+            PublishFailure failure = publishFailure(
+                    new PublishAppliedCommit(w.core(), failing, new GitPublicationObserver())
+                            .execute(cs, pkg.packageId()));
+
+            eq(failure.code(), PublishFailureCode.STATE_PERSISTENCE_FAILED, "publish guard failure code");
+            eq(ApplyFeatureTestSupport.remoteTip(w, workspace.branch), null,
+                    "Publish side effect occurred without durable NotConfirmed guard");
+            ReplacementPackageState reloaded = durable.find(new WorkId(cs), pkg.packageId()).orElseThrow();
+            eq(reloaded.commitSha(), committed.commitSha(), "guard failure lost commit");
+            ok(reloaded.publication() instanceof PublicationObservation.NotRequested,
+                    "failed guard write changed durable publication state");
+        } finally {
+            ApplyFeatureTestSupport.clearPublishHook(w);
+            ApplyFeatureTestSupport.deleteTree(w.root());
+        }
+    }
+
+    private static void publishPersistenceFailureKeepsGuard() throws Exception {
+        ApplyFeatureTestSupport.Workspace w = ApplyFeatureTestSupport.workspace("feature-publish-persist-failure", true);
+        try {
+            String cs = UUID.randomUUID().toString();
+            Core.ChangeSet workspace = w.core().startChangeSetWorkspace(
+                    w.target().id(), cs, "publish persist failure", "main").changeSet();
+            var pkg = ApplyFeatureTestSupport.packageFor(
+                    w, cs, "publish persist failure",
+                    List.of(ApplyFeatureTestSupport.replace("seed.txt", "seed", "published")));
+            var durable = new FileReplacementPackageStateRepository(w.stateRoot());
+            success(new ApplyReplacementPackage(w.core(), durable).execute(
+                    new ApplyReplacementPackage.Request(pkg.path(), w.repository(), cs)));
+            ReplacementPackageState committed =
+                    commitSuccess(new CommitAppliedPackage(w.core(), durable).execute(cs, pkg.packageId()));
+
+            FailingSaveRepository failing = new FailingSaveRepository(
+                    durable, state -> state.publication() instanceof PublicationObservation.ConfirmedTip);
+            PublishFailure failure = publishFailure(
+                    new PublishAppliedCommit(w.core(), failing, new GitPublicationObserver())
+                            .execute(cs, pkg.packageId()));
+
+            eq(failure.code(), PublishFailureCode.STATE_PERSISTENCE_FAILED, "final persistence failure code");
+            eq(ApplyFeatureTestSupport.remoteTip(w, workspace.branch), committed.commitSha(),
+                    "fixture Publish did not reach remote");
+            ReplacementPackageState guarded = durable.find(new WorkId(cs), pkg.packageId()).orElseThrow();
+            ok(guarded.publication() instanceof PublicationObservation.NotConfirmed,
+                    "durable NotConfirmed guard was lost after final persistence failure");
+
+            ApplyFeatureTestSupport.failIfAnotherPushIsAttempted(w);
+            ReplacementPackageState recovered = publishSuccess(
+                    new PublishAppliedCommit(w.core(), durable, new GitPublicationObserver())
+                            .execute(cs, pkg.packageId()));
+            ok(recovered.isPublished(), "Retry did not recover by confirmation");
+        } finally {
+            ApplyFeatureTestSupport.clearPublishHook(w);
+            ApplyFeatureTestSupport.deleteTree(w.root());
+        }
+    }
+
     private static void retryConfirmsBeforePush() throws Exception {
         ApplyFeatureTestSupport.Workspace w = ApplyFeatureTestSupport.workspace("feature-retry-confirm", true);
         try {
@@ -253,6 +332,37 @@ public final class ApplyReplacementPackageFeatureIntegrationTests {
         }
     }
 
+    private static void corruptStateIsNotAbsent() throws Exception {
+        ApplyFeatureTestSupport.Workspace w = ApplyFeatureTestSupport.workspace("feature-corrupt-state", true);
+        try {
+            String cs = UUID.randomUUID().toString();
+            w.core().startChangeSetWorkspace(w.target().id(), cs, "corrupt state", "main");
+            var pkg = ApplyFeatureTestSupport.packageFor(
+                    w, cs, "corrupt state",
+                    List.of(ApplyFeatureTestSupport.replace("seed.txt", "seed", "applied")));
+            var states = new FileReplacementPackageStateRepository(w.stateRoot());
+            success(new ApplyReplacementPackage(w.core(), states).execute(
+                    new ApplyReplacementPackage.Request(pkg.path(), w.repository(), cs)));
+
+            Path persisted;
+            try (var files = Files.walk(w.stateRoot().resolve("work-state-v2"))) {
+                persisted = files.filter(Files::isRegularFile)
+                        .filter(path -> path.getFileName().toString().endsWith(".properties"))
+                        .findFirst().orElseThrow();
+            }
+            Files.writeString(persisted, "schemaVersion=2\nworkId=" + cs + "\n");
+
+            var result = new CommitAppliedPackage(w.core(), states).execute(cs, pkg.packageId());
+            if (!(result instanceof Result.Failure<ReplacementPackageState, obs.rpkg.features.apply.domain.CommitAppliedFailure> failed)) {
+                throw new AssertionError("corrupt state was accepted");
+            }
+            eq(failed.error().code(), CommitAppliedFailureCode.STATE_PERSISTENCE_FAILED,
+                    "corrupt state was treated as absent/different semantic failure");
+        } finally {
+            ApplyFeatureTestSupport.deleteTree(w.root());
+        }
+    }
+
     private static void operationResult() {
         OperationResult<String> success = OperationResult.success();
         ok(success.isSuccess(), "success without value failed");
@@ -291,6 +401,43 @@ public final class ApplyReplacementPackageFeatureIntegrationTests {
     private static PublishFailure publishFailure(Result<ReplacementPackageState, PublishFailure> result) {
         if (result instanceof Result.Failure<ReplacementPackageState, PublishFailure> failure) return failure.error();
         throw new AssertionError("expected Publish failure");
+    }
+
+    private static final class FailingSaveRepository implements ReplacementPackageStateRepository {
+        private final ReplacementPackageStateRepository delegate;
+        private final java.util.function.Predicate<ReplacementPackageState> failWhen;
+        private boolean failed;
+
+        private FailingSaveRepository(
+                ReplacementPackageStateRepository delegate,
+                java.util.function.Predicate<ReplacementPackageState> failWhen) {
+            this.delegate = delegate;
+            this.failWhen = failWhen;
+        }
+
+        @Override
+        public java.util.Optional<ReplacementPackageState> find(WorkId workId, String packageId) {
+            return delegate.find(workId, packageId);
+        }
+
+        @Override
+        public java.util.Optional<ReplacementPackageState> findUnfinished(WorkId workId) {
+            return delegate.findUnfinished(workId);
+        }
+
+        @Override
+        public WorkLock lock(WorkId workId) {
+            return delegate.lock(workId);
+        }
+
+        @Override
+        public OperationResult<Failure> save(ReplacementPackageState state) {
+            if (!failed && failWhen.test(state)) {
+                failed = true;
+                return OperationResult.failure(new Failure("injected state persistence failure", null));
+            }
+            return delegate.save(state);
+        }
     }
 
     private interface Throwing { void run() throws Exception; }
