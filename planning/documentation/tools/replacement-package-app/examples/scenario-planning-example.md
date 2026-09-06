@@ -1,3 +1,11 @@
+# Practical Scenario Example — Build And Review Replacement Package
+
+Status: methodology example only; not a second Scenario authority.
+
+This example demonstrates a linear journey interrupted by a semantic decision whose columns continue separate paths and then converge. The product authority is the Builder Scenario owner.
+
+---
+
 # SCN-BLDR-BUILD-AND-REVIEW-REPLACEMENT-PACKAGE — Build And Review Replacement Package
 
 ## Identity

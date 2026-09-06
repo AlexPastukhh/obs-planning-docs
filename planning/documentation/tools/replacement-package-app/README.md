@@ -6,83 +6,93 @@ Scope: local consumer for replacement packages, repository-work realization/reco
 
 ## Documentation route
 
-This directory follows the local methodology defined by [`documentation-use-cases.md`](documentation-use-cases.md) and [`documentation-templates.md`](documentation-templates.md). Behavioral, implementation and proof authority are intentionally separate.
+This directory follows the local methodology defined by [`documentation-use-cases.md`](documentation-use-cases.md), [`documentation-templates.md`](documentation-templates.md), and the focused refinement [`documentation-feature-scenario-slice-aggregate-planning.md`](documentation-feature-scenario-slice-aggregate-planning.md).
 
 ```text
-Application Benefits / desired results
-→ Feature Planning
-   ├─ intent + principal Result
-   ├─ observable behavior
-   ├─ Behavior Requirements ↔ Feature Data
-   ├─ Feature Implementation Concerns
-   └─ Feature/Slice Boundary Check
-        ↓
-     Feature boundary ↔ Slice boundary hypothesis
-        ↕
-Scenario / real user journeys ↔ selected Screen model
-   └─ cross-Feature / cross-Screen Scenario Requirements
-→ Aggregate / Shared discovery when needed
-→ owner-local Slice / Aggregate / Shared Requirements Discovery
-   ├─ Correctness
-   ├─ Local Reasoning
-   └─ Evolution Fitness
-   across Production ↔ Proof
-→ production/test source + executed Evidence
+Application Benefit
+→ Feature owner
+   ├─ Intent + Principal Result
+   └─ Expected application behavior
+      ├─ compact Data
+      ├─ Main-path behavior rows
+      ├─ BR-* + compact logical statement beside each row
+      └─ decision table with one column per path / explicit convergence
+↕ composition / consistency
+Scenario owner
+   ├─ journey Main path
+   ├─ actor decisions / one column per path
+   └─ SR-* beside the journey behavior it constrains
+→ Slice Discovery + non-persistent Slice Planning when implementation planning is useful
+   ├─ whole-Slice UI / entry / app-service / Domain / Shared / cross-cutting map
+   ├─ Feature Step → candidate realization methods
+   └─ whole-Feature integration-test sketches
+→ separate non-persistent Aggregate Planning where Domain semantics need design
+   ├─ Domain classes + high-level state
+   ├─ method → local Domain unit tests
+   └─ Future / Evolution impact
+→ implementation + proof
+→ delete both working planning artifacts by default
+→ create/update separate durable Domain / Slice / Shared / Proof owners only when independently useful
 ```
 
-Feature owners are the primary behavioral authority. Scenarios compose those Features into real user/application journeys, summarize only the journey-level visible behavior/Results needed for understanding, verify input/result/context continuity and confirm that the composition closes the intended Application Benefit; they do not duplicate Feature internals. Scenario-first remains allowed but is not mandatory: Features, Scenarios and Screens are refined iteratively and must eventually be consistent. Tests/Evidence prove selected meaning; they do not create it. Slice independence means primarily locality of use-case change, not absence of dependencies.
+Feature owners are the primary behavioral authority. Scenarios compose those Features into real journeys and do not duplicate Feature internals. Tests/Evidence prove selected meaning; they do not create it.
 
-Known evolution uses one common vocabulary: `Introduction`, `Expansion`, `Refactoring`, `Forced Migration`, `Retirement`. Migration is a form of Evolution and belongs in canonical Evolution Step / Evolution Impact machinery rather than a competing roadmap.
+**Slice Discovery / Slice Planning and Aggregate Planning are both disposable working artifacts by default.** They exist to plan implementation and normally become unnecessary once the planned behavior is implemented and proven.
 
-**Migration boundary:** current Scenario/FI/BI/Domain/Slice/testing owners remain current product truth until separately reconciled to the target Feature/Requirement model. This methodology update does not silently rename, regroup or reinterpret those product owners.
+Their practical examples under [`examples/`](examples/) are retained only as methodology examples. A real work-item copy should normally be deleted after implementation rather than promoted into permanent architecture documentation.
+
+If a durable Domain, Slice, Shared, ADR or Production ↔ Proof owner is useful after implementation, create/update that owner separately for its own long-lived purpose. It is not this planning artifact kept alive indefinitely.
+
+The implementation-side Slice is entered through a simple application service with semantic methods/typed values. The target methodology does not require CommandBus/dispatcher or generic `execute(command)` application entry.
+
+Known evolution uses `Introduction`, `Expansion`, `Refactoring`, `Forced Migration`, `Retirement`.
+
+**Migration boundary:** current Scenario/FI/BI/Domain/Slice/testing owners remain current product truth until separately reconciled to the target Feature/Requirement model.
 
 ### Application behavior owners
 
+- [`features/README.md`](features/README.md) — target Feature catalog; current legacy FI/BI owners remain current truth until migration/promotion.
 - [`scenarios/README.md`](scenarios/README.md) — current / legacy current / planned future Scenario catalog.
 - [`scenarios/SCN-RPKG-COMPLETE-REPOSITORY-WORK.md`](scenarios/SCN-RPKG-COMPLETE-REPOSITORY-WORK.md) — current mixed migration truth.
-- [`scenarios/SCN-RPKG-PROVIDE-REPOSITORY-CONTEXT.md`](scenarios/SCN-RPKG-PROVIDE-REPOSITORY-CONTEXT.md) — current Snapshot/context behavior.
+- [`scenarios/SCN-RPKG-PROVIDE-REPOSITORY-CONTEXT.md`](scenarios/SCN-RPKG-PROVIDE-REPOSITORY-CONTEXT.md) — Snapshot/context Scenario in feature-centered form.
 - [`scenarios/SCN-RPKG-PROVIDE-CURRENT-CHANGE.md`](scenarios/SCN-RPKG-PROVIDE-CURRENT-CHANGE.md) — legacy current ReviewDiff handoff behavior.
-- [`scenarios/planned/SCN-RPKG-COMPLETE-REVIEWED-REPOSITORY-WORK.md`](scenarios/planned/SCN-RPKG-COMPLETE-REVIEWED-REPOSITORY-WORK.md) — selected future reviewed-result workflow; **not current implementation authority**.
-- [`screens.md`](screens.md) — selected current spatial/window model and Screen Behavior Items.
-- [`evolution-steps-map.md`](evolution-steps-map.md) — timing/dependency/readiness between canonical Scenario Evolution Steps.
+- [`scenarios/planned/SCN-RPKG-COMPLETE-REVIEWED-REPOSITORY-WORK.md`](scenarios/planned/SCN-RPKG-COMPLETE-REVIEWED-REPOSITORY-WORK.md) — selected future reviewed-result workflow; not current implementation authority.
+- [`examples/feature-planning-example.md`](examples/feature-planning-example.md) and [`examples/scenario-planning-example.md`](examples/scenario-planning-example.md) — practical Feature/Scenario methodology examples, not product authority.
+- [`examples/slice-discovery-planning-example.md`](examples/slice-discovery-planning-example.md) — practical example of **non-persistent** end-to-end Slice Discovery / Planning with Feature-level integration tests.
+- [`examples/aggregate-planning-example.md`](examples/aggregate-planning-example.md) — practical example of **non-persistent** Domain-only Aggregate Planning with method-local unit tests.
+- [`screens.md`](screens.md) — selected current spatial/window model.
+- [`evolution-steps-map.md`](evolution-steps-map.md) — rough timing/dependency/readiness between canonical Evolution Steps.
 
 ### Domain / implementation owners
 
-- [`domain/README.md`](domain/README.md) — Domain owner map.
-- [`domain/repository-target.md`](domain/repository-target.md)
-- [`domain/work-intent.md`](domain/work-intent.md)
-- [`domain/change-set.md`](domain/change-set.md)
-- [`domain/repository-snapshot.md`](domain/repository-snapshot.md)
-- [`domain/external-interaction.md`](domain/external-interaction.md)
-- [`slices.md`](slices.md) — current Slice portfolio/navigation.
-- [`slices/`](slices/) — focused Slice owners for `SL-RPKG-01..11`.
-- [`shared-implementation/chatgpt-handoff.md`](shared-implementation/chatgpt-handoff.md) — reusable exact ChatGPT handoff capability consumed by Snapshot and Current Change delivery.
+- [`domain/README.md`](domain/README.md) — current durable Domain owner map.
+- [`slices.md`](slices.md) and [`slices/`](slices/) — current durable Slice portfolio/owners.
+- [`shared-implementation/chatgpt-handoff.md`](shared-implementation/chatgpt-handoff.md) — reusable exact ChatGPT handoff capability.
+- Slice/Aggregate planning examples live under [`examples/`](examples/) and are explicitly **not** durable implementation owners.
 
 ### Proof / realization navigation
 
-- [`behavior-realization-map.md`](behavior-realization-map.md) — derived BI → Domain/Slice/proof coverage; not behavior authority.
+- [`behavior-realization-map.md`](behavior-realization-map.md) — derived current coverage; not behavior authority.
 - [`testing-plan.md`](testing-plan.md) — shared Test Strategy and proof-layer allocation.
-- [`MANUAL-ACCEPTANCE.md`](MANUAL-ACCEPTANCE.md) — current practical checklist/evidence owner. An executed evidence entry proves only the build/environment it actually exercised.
+- [`MANUAL-ACCEPTANCE.md`](MANUAL-ACCEPTANCE.md) — current practical checklist/evidence owner.
 
 ### Focused integration contracts
 
-- [`PACKAGE-PROTOCOL.md`](PACKAGE-PROTOCOL.md) — exact producer/consumer package + OBS-ACTION contract.
-- [`REPOSITORY-SNAPSHOT.md`](REPOSITORY-SNAPSHOT.md) — Snapshot artifact contract.
-- [`CHATGPT-BRIDGE.md`](CHATGPT-BRIDGE.md) — Java/extension/ChatGPT integration contract.
+- [`PACKAGE-PROTOCOL.md`](PACKAGE-PROTOCOL.md)
+- [`REPOSITORY-SNAPSHOT.md`](REPOSITORY-SNAPSHOT.md)
+- [`CHATGPT-BRIDGE.md`](CHATGPT-BRIDGE.md)
 
-Source/test code remains authority for exact realized mechanics. Documentation does not manually duplicate class/method traces.
+Source/test code remains authority for exact realized mechanics.
 
 ## Producer / consumer navigation
 
-Ordinary replacement-package production is outside this application owner and is entered through:
-
 [`../replacement-package-workflow.md`](../../replacement-package-workflow.md)
 → [`../../replacement-package-builder/README.md`](../../replacement-package-builder/README.md)
-→ current producer command/use-case/workflow
+→ Builder Feature/Scenario target
 → [`PACKAGE-PROTOCOL.md`](PACKAGE-PROTOCOL.md)
 → this application.
 
-The Builder target adds clean replay + semantic review **before** handoff. The consumer target later proves that its actual published Git tree equals that reviewed predicted tree. The producer still stops at the exact handoff boundary and never applies/commits/publishes consumer repository work.
+The Builder target reviews the exact package/result before handoff. The consumer target later proves that the published Git tree equals the reviewed predicted tree. The producer stops at the handoff boundary.
 
 ## Current Scenario set and migration boundary
 
@@ -94,13 +104,13 @@ Current/legacy-current:
 Planned future:
 - `SCN-RPKG-COMPLETE-REVIEWED-REPOSITORY-WORK`
 
-Current source/tests implement legacy `SL-RPKG-01..09`, current Git-backed `SL-RPKG-10` and `SL-RPKG-11`, and the target-mode Work Intent → workspace → Apply → Commit → Publish composition. Git-derived Current Change, consumer confirmation of Builder-reviewed result identity, one correct integration PR and target Finalize are selected future behavior, not current truth.
+Current source/tests still implement the existing Slice portfolio. The target Feature owners added here do not by themselves prove those Features are implemented.
 
 The current external `OBS-ACTION/1` surface remains intentionally narrow:
 - `create-work-intent`
 - `apply-package`
 
-Internal diagnostic/recovery actions such as Start workspace, Commit applied, Publish, Current Change operations, Finalize, Retry Push and Reopen are not silently promoted into extra serialized external commands.
+The target Feature model does not mechanically create external commands from every Feature or internal stage.
 
 ## Build / run
 
@@ -116,21 +126,15 @@ run-tests.cmd
 run-app.cmd
 ```
 
-`build.cmd` produces the application JAR. Current launcher/install mechanics remain source/operated-environment concerns.
-
 ## Authority boundary
 
-Target local-methodology ownership is:
-
 - app-level context owns Application Benefits / high-level responsibilities;
-- Feature owners/sections own coherent use-case behavior, Behavior Requirements, Feature Data and implementation concerns;
-- Scenario owners own real cross-Feature / cross-Screen journey composition, Result/context continuity, Benefit closure and Scenario Requirements; Feature internals remain Feature authority;
+- Feature owners own coherent use-case behavior and compact `BR-*`-qualified Main paths;
+- Scenario owners own real cross-Feature / cross-context composition, continuity, branches and Benefit closure;
 - Screen owner defines durable spatial/window meaning;
-- Domain/Aggregate owners define semantic identity/state/invariants/consistency;
-- Slice owners define end-to-end implementation of Feature boundaries; Shared owners define reusable non-end-to-end capabilities;
+- Domain/Aggregate owners define durable semantic identity/state/invariants/consistency;
+- Slice/application services realize Feature boundaries end-to-end; Shared owners define reusable non-end-to-end capabilities;
+- Slice Discovery / Slice Planning and Aggregate Planning are temporary/disposable by default and do not become durable owners merely because a planning file was retained;
 - owner-local Production/Proof Requirements define durable realization/proof constraints;
-- focused contracts define independent integration boundaries;
 - tests and Evidence prove selected meaning; they do not redefine it;
-- planned future owners must remain visibly planned until implementation + proof are reconciled and resulting behavior is promoted to current truth.
-
-Existing product documents keep their current legacy FI/BI/Item representation until separately migrated; that representation is compatibility state, not target methodology ontology.
+- future owners remain visibly future until implementation + proof are reconciled and promoted.

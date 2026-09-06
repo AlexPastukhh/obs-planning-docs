@@ -4,39 +4,47 @@ Status: active producer-side documentation entry
 
 ## Purpose
 
-Provide one navigation owner for replacement-package production while preserving the existing narrow owners for command entry, generic use case and detailed workflow.
+Provide one navigation owner for replacement-package production while preserving the existing narrow current owners and making the planned Feature/Scenario target explicit.
 
 ## Current authoritative producer owners
 
-- `../../commands/build-replacement-archive.command.md` — command entry.
-- `../../use-cases/UC-REPO-BUILD-REPLACEMENT-PACKAGE.md` — generic repository use case.
+- `../../commands/build-replacement-archive.command.md` — current command entry.
+- `../../use-cases/UC-REPO-BUILD-REPLACEMENT-PACKAGE.md` — current generic repository use case.
 - `../build-replacement-archive-workflow.md` — current detailed producer workflow.
-- `../tools/replacement-package-app/PACKAGE-PROTOCOL.md` — package/handoff contract owned at the consumer boundary.
+- `../tools/replacement-package-app/PACKAGE-PROTOCOL.md` — current package/handoff contract owned at the consumer boundary.
 
-Do not move or duplicate those files merely to make navigation prettier. This README is the single producer documentation entry and points to the existing owners.
+These remain current implementation truth until the planned Feature owners are realized and promoted.
 
-## Selected target behavior
+## Planned Feature owners
 
-- [`scenarios/SCN-BLDR-BUILD-AND-REVIEW-REPLACEMENT-PACKAGE.md`](scenarios/SCN-BLDR-BUILD-AND-REVIEW-REPLACEMENT-PACKAGE.md) — planned target Scenario.
+- [`features/README.md`](features/README.md) — planned Feature catalog.
+- [`features/F-BLDR-START-REPOSITORY-WORK.md`](features/F-BLDR-START-REPOSITORY-WORK.md)
+- [`features/F-BLDR-BUILD-REPLACEMENT-PACKAGE.md`](features/F-BLDR-BUILD-REPLACEMENT-PACKAGE.md)
+- [`features/F-BLDR-APPLY-PACKAGE-FOR-REVIEW.md`](features/F-BLDR-APPLY-PACKAGE-FOR-REVIEW.md)
+- [`features/F-BLDR-ADD-ISSUE-REVIEW-COMMENT.md`](features/F-BLDR-ADD-ISSUE-REVIEW-COMMENT.md)
+- [`features/planned/F-BLDR-EDIT-WORK-ISSUE.md`](features/planned/F-BLDR-EDIT-WORK-ISSUE.md) — future Introduction.
+
+Feature owners are the planned primary behavioral authority. The Scenario composes them and does not duplicate their internal validation/recovery behavior.
+
+## Selected target Scenario
+
+- [`scenarios/SCN-BLDR-BUILD-AND-REVIEW-REPLACEMENT-PACKAGE.md`](scenarios/SCN-BLDR-BUILD-AND-REVIEW-REPLACEMENT-PACKAGE.md)
 - [`behavior-realization-map.md`](behavior-realization-map.md) — derived current/target implementation coverage; not behavior authority.
 
 Target high-level flow:
 
 ```text
-Exact Build Context
-  ↓
-Develop Candidate
-  ↓
-Build Exact Package Pn
-  ↓
-Replay exact Pn from exact expected source in a fresh workspace
-  ↓
-Review latest delta + cumulative delta + full predicted result Tn
-  ├─ NEEDS_CORRECTION → new candidate → new ZIP/packageId → replay again
-  └─ APPROVABLE → hand off the exact reviewed package/result identity
-  ↓
-STOP
+Start Repository Work
+→ Build exact package
+→ Apply exact package for Review in isolated state
+→ semantic decision
+   ├─ NEEDS_CORRECTION → durable finding → correction → new packageId → fresh Review
+   └─ APPROVABLE → freeze the exact reviewed package
+→ exact handoff / URI
+→ STOP
 ```
+
+Pre-`APPROVABLE` correction keeps the same logical `changeSetId` and the same selected package `expectedSource`; every new ZIP receives a new `packageId`.
 
 ## Current capability coverage
 
@@ -45,17 +53,18 @@ STOP
 | exact readable source / fail-closed base acquisition | CURRENT capability |
 | deterministic package materialization + protocol validation | CURRENT capability |
 | exact ZIP/package handoff | CURRENT capability, but not yet review-bound |
-| clean replay of the exact handoff package | PLANNED TARGET |
-| review of latest + cumulative + full predicted result | PLANNED TARGET |
+| explicit Start Repository Work identity/Issue/branch Feature | PLANNED TARGET |
+| clean replay of exact package in isolated review state | PLANNED TARGET |
+| coherent predicted tree + latest/cumulative/full review result | PLANNED TARGET |
 | approval bound to exact package/result identity | PLANNED TARGET |
-| correction invalidates prior review and forces new package identity | PARTIAL protocol support; target review loop not yet owned |
+| correction comment + new package/review loop | PLANNED TARGET |
 
 ## Boundary
 
-The Builder is a producer. Even after the target replay/review loop is implemented, ordinary Builder completion is:
+The Builder is a producer. Ordinary completion remains:
 
 ```text
-exact APPROVABLE package + exact handoff identity → OBS-ACTION → stop
+exact APPROVABLE package + exact handoff identity → consumer → stop
 ```
 
-It does not apply files to the consumer repository, commit, publish, create PRs or finalize target-branch integration.
+It does not apply files to the consumer repository, create the consumer commit/publish result, integrate into the target branch or Finalize consumer work.

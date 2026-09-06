@@ -1779,3 +1779,52 @@ Logging starts only after explicit user instruction; no pre-start history is rec
 **Ownership result:** this package changes only the Replacement Package App local methodology authority/navigation (`README.md`, `documentation-use-cases.md`, `documentation-templates.md`) plus this scope log. Existing product Scenario/Feature/FI/Screen/Domain/Slice/testing/contracts/source remain outside this package and are to be reconciled separately after the methodology is accepted.
 
 **Target-state result:** the local methodology now states where Feature behavior, Scenario journey composition, implementation-aware Feature concerns, Evolution Kinds and migration planning belong, while retaining flexible recommended templates and stable `DOC-UC-01..14` identities.
+
+### LOG-RPKG-078 — Adopt Feature/Scenario owners with disposable Slice and Aggregate planning
+
+**Type:** PRE-APPLY REVIEW CORRECTION / LOCAL METHODOLOGY + PRODUCT OWNER MIGRATION / CROSS-SCOPE APPLIED TARGET  
+**ChangeSet:** `4e7fcebe-494b-4443-bcbc-39a5bbd5202e`  
+**ChangeSet Label:** `feature-scenario-aggregate-discovery-methodology`  
+**Package:** `5de952c1-8cf5-4a0a-987f-1d8c877b5b28`  
+**Source:** `github:AlexPastukhh/obs-planning-docs@d012656408da6e8aa72bcdb13800785c4965ec61` (`main`)
+
+**Pre-Apply correction / package continuity:**
+- continue the same still-open ChangeSet; no ReviewDiff for this work has been accepted as `APPROVABLE`;
+- preserve the original stable ChangeSet label `feature-scenario-aggregate-discovery-methodology`;
+- supersede the preliminary un-applied package `9c3cb96b-04d2-4c66-8704-196ad7295452`, which changed the stable ChangeSet label and omitted required registered-scope log transitions;
+- issue this new `packageId` because the ZIP contents changed;
+- keep exact V0.1 package semantics: full replacement bytes, exact base bytes for every replace operation, and fail-closed add/replace preconditions.
+
+**Selected methodology / documentation target:**
+- Feature is the primary behavioral authority under Application Benefit; Feature behavior uses compact Data + numbered Main path rows with `BR-*` and compact logical statements;
+- Feature/Scenario branches use one exact decision/question followed by one column per path, with explicit path continuation/convergence;
+- Scenario owns actor/journey composition, continuity, cross-Feature requirements, external/Screen context and Benefit closure without duplicating Feature internals;
+- implementation planning is split into two distinct working views:
+  - **Slice Discovery + non-persistent Slice Planning** shows the complete Feature realization from UI/entry through simple application service, Domain calls, repositories, Shared/cross-cutting capabilities and presentation, plus whole-Feature integration tests;
+  - **Aggregate Planning** shows Domain classes, high-level state/fields, semantic methods and literal Domain unit tests placed immediately after the methods they prove;
+- both planning artifacts are **non-persistent by default**: plan → implement → prove → delete; if durable Domain/Slice/Shared/ADR/Proof documentation is useful later, it is created or updated as a separate owner rather than preserving the planning file as authority;
+- Slice application entries are simple application services with semantic methods and typed values; no `CommandBus`, dispatcher or generic `execute(command)` application layer is required;
+- known future Features/extensions remain explicitly marked FUTURE and reference canonical Evolution Steps where selected instead of silently becoming current behavior.
+
+**Product/documentation migration included in this package:**
+- add Builder Feature owners for Start Work, Build, Review, Add Comment and future Edit Work Issue;
+- add App Feature owners for Apply, Finalize, Snapshot Export and Current Change inspection;
+- migrate the Builder Build/Review Scenario and App Repository Context/Snapshot Scenario to the selected Feature-centered form;
+- add practical Feature and Scenario examples;
+- add practical Slice Discovery/Planning and Aggregate Planning examples, explicitly retained as examples rather than durable product/implementation owners;
+- update Builder/App navigation to the new owner set and planning-artifact lifecycle.
+
+**Cross-scope ownership:**
+- this `SCOPE-REPLACEMENT-PACKAGE-APP` log is the canonical full log for the work;
+- `SCOPE-REUSABLE-DOCUMENTATION` participates through Builder documentation and receives reference-only `XREF-DOC-018`;
+- no unrelated registered scope is changed.
+
+**Target-State Result:** after successful Apply of this exact package:
+- the repository contains the selected Feature/Scenario owners and practical examples;
+- local methodology documents separate disposable Slice Planning from disposable Aggregate Planning and define their different test boundaries;
+- both planning examples are removable after implementation/proof and are not treated as long-lived Domain/Slice owners;
+- existing durable Domain/Slice/Shared/proof owners remain separate authority surfaces and may evolve later through their own use cases;
+- the two affected registered scope logs are coherent with this exact package;
+- no runtime source implementation, package-application code, commit or push is performed by package production itself.
+
+**APPLIED relation:** successful Apply of package `5de952c1-8cf5-4a0a-987f-1d8c877b5b28` realizes the target state above for still-open ChangeSet `4e7fcebe-494b-4443-bcbc-39a5bbd5202e`.

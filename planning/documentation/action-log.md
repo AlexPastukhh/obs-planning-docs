@@ -2529,3 +2529,12 @@ No `TM-EXACT-REALIZATION` workflow, repair authority, Domain/Slice/Test boundary
 - ordinary Exact Realization build/unit/integration execution remains Core Evidence without an automatic durable Evidence artifact requirement;
 - Test Proof Lens, conditional Test Strategy, optional Test Design, Prototype/Practical-Test pairing, retired Coverage Target and generic Pre-Update semantics are unchanged from package `52a30497-e5ab-497e-8c86-dfc4eb11e1a4`;
 - Simple Owner Bootstrap remains intentionally deferred to later independent work.
+
+### XREF-DOC-018 — Replacement Package Feature/Scenario and disposable Slice/Aggregate planning
+
+**Type:** CROSS-SCOPE REFERENCE  
+**Canonical Log:** `planning/documentation/tools/replacement-package-app/action-log.md`  
+**Entry:** `LOG-RPKG-078`  
+**ChangeSet:** `4e7fcebe-494b-4443-bcbc-39a5bbd5202e`  
+**Package:** `5de952c1-8cf5-4a0a-987f-1d8c877b5b28`  
+**Reason:** Builder Feature/Scenario/navigation files under `planning/documentation/replacement-package-builder/` participate in the same Feature-centered documentation migration as the Replacement Package App local methodology/product owners. Full rationale, non-persistent Slice/Aggregate planning semantics, Pre-Apply correction and APPLIED target-state relation are owned by the canonical Replacement Package App scope log.
