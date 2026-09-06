@@ -6,10 +6,17 @@ import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
-import obs.rpkg.features.apply.ApplyExtent;
-import obs.rpkg.features.apply.ApplyReplacementPackage;
+import obs.rpkg.features.apply.application.ApplyReplacementPackage;
+import obs.rpkg.features.apply.domain.ApplyExtent;
+import obs.rpkg.features.apply.domain.ApplyFailure;
+import obs.rpkg.features.apply.domain.ApplyFailureCode;
+import obs.rpkg.features.apply.domain.ApplyFailureDisposition;
+import obs.rpkg.features.apply.domain.ApplyProgress;
+import obs.rpkg.features.apply.domain.ApplyRequest;
+import obs.rpkg.features.apply.domain.ApplySuccess;
+import obs.rpkg.foundation.result.Result;
 
-/** Integration proof for the new Feature-local Apply orchestration over current Core mechanics. */
+/** Integration proof for the Feature-local Apply domain over current legacy mechanics. */
 public final class ApplyReplacementPackageFeatureIntegrationTests {
     private static int passed;
     private static int failed;
@@ -29,95 +36,195 @@ public final class ApplyReplacementPackageFeatureIntegrationTests {
     }
 
     private static void runTests() throws Exception {
-        test("Apply extent stops at AppliedUncommitted", () -> {
-            CoreTests.WorkspaceRepo w = CoreTests.workspaceRepo("feature-apply-only");
+        test("Apply returns typed APPLIED success", () -> {
+            CoreTests.WorkspaceRepo w = CoreTests.workspaceRepo("feature-domain-apply-only");
             String cs = UUID.randomUUID().toString();
-            Core.ChangeSet workspace = w.core().startChangeSetWorkspace(w.target().id(), cs, "feature apply only", "main").changeSet();
+            Core.ChangeSet workspace = w.core().startChangeSetWorkspace(w.target().id(), cs, "feature domain apply only", "main").changeSet();
             String base = workspace.publishedTip;
             CoreTests.PackageFixture p = CoreTests.makePackage(
-                    w.identity(), cs, "feature apply only",
+                    w.identity(), cs, "feature domain apply only",
                     List.of(CoreTests.op("seed.txt", "replace", "seed", "applied")));
 
-            ApplyReplacementPackage.Result result = service(w).execute(new ApplyReplacementPackage.Request(
-                    p.path(), w.repo(), cs, ApplyExtent.APPLY));
+            ApplySuccess success = success(service(w).execute(new ApplyRequest.Start(
+                    p.path(), w.repo(), cs, ApplyExtent.APPLY)));
 
-            eq(result.executionState(), "AppliedUncommitted", "Apply extent advanced too far");
-            eq(CoreTests.g(Path.of(workspace.worktree), "rev-parse", "HEAD").first(), base, "Apply extent created a commit");
-            eq(CoreTests.read(Path.of(workspace.worktree).resolve("seed.txt")), "applied", "Apply extent did not apply package bytes");
+            eq(success.requestedExtent(), ApplyExtent.APPLY, "requested extent");
+            eq(success.application().progress(), ApplyProgress.APPLIED, "typed Apply progress");
+            ok(!success.alreadySatisfied(), "first Apply reported already satisfied");
+            eq(CoreTests.g(Path.of(workspace.worktree), "rev-parse", "HEAD").first(), base, "Apply created a commit");
+            eq(CoreTests.read(Path.of(workspace.worktree).resolve("seed.txt")), "applied", "Apply did not apply package bytes");
         });
 
-        test("Apply+Commit stops at CommittedUnpublished", () -> {
-            CoreTests.WorkspaceRepo w = CoreTests.workspaceRepoWithRemote("feature-apply-commit");
+        test("Apply+Commit returns typed COMMITTED success", () -> {
+            CoreTests.WorkspaceRepo w = CoreTests.workspaceRepoWithRemote("feature-domain-apply-commit");
             String cs = UUID.randomUUID().toString();
-            Core.ChangeSet workspace = w.core().startChangeSetWorkspace(w.target().id(), cs, "feature apply commit", "main").changeSet();
+            Core.ChangeSet workspace = w.core().startChangeSetWorkspace(w.target().id(), cs, "feature domain apply commit", "main").changeSet();
             CoreTests.PackageFixture p = CoreTests.makePackage(
-                    w.identity(), cs, "feature apply commit",
+                    w.identity(), cs, "feature domain apply commit",
                     List.of(CoreTests.op("seed.txt", "replace", "seed", "committed")));
 
-            ApplyReplacementPackage.Result result = service(w).execute(new ApplyReplacementPackage.Request(
-                    p.path(), w.repo(), cs, ApplyExtent.APPLY_COMMIT));
+            ApplySuccess success = success(service(w).execute(new ApplyRequest.Start(
+                    p.path(), w.repo(), cs, ApplyExtent.APPLY_COMMIT)));
 
-            eq(result.executionState(), "CommittedUnpublished", "Apply+Commit did not stop before Publish");
-            ok(result.commitSha() != null, "Apply+Commit did not produce a commit SHA");
+            eq(success.application().progress(), ApplyProgress.COMMITTED, "typed Commit progress");
+            ok(success.application().commitSha() != null, "Commit SHA missing");
             eq(CoreTests.remoteTip(w.repo(), workspace.branch), null, "Apply+Commit published unexpectedly");
         });
 
-        test("Apply+Commit+Publish reaches exact remote Ready state", () -> {
-            CoreTests.WorkspaceRepo w = CoreTests.workspaceRepoWithRemote("feature-apply-publish");
+        test("Apply+Commit+Publish returns typed PUBLISHED success", () -> {
+            CoreTests.WorkspaceRepo w = CoreTests.workspaceRepoWithRemote("feature-domain-apply-publish");
             String cs = UUID.randomUUID().toString();
-            Core.ChangeSet workspace = w.core().startChangeSetWorkspace(w.target().id(), cs, "feature apply publish", "main").changeSet();
+            Core.ChangeSet workspace = w.core().startChangeSetWorkspace(w.target().id(), cs, "feature domain apply publish", "main").changeSet();
             CoreTests.PackageFixture p = CoreTests.makePackage(
-                    w.identity(), cs, "feature apply publish",
+                    w.identity(), cs, "feature domain apply publish",
                     List.of(CoreTests.op("seed.txt", "replace", "seed", "published")));
 
-            ApplyReplacementPackage.Result result = service(w).execute(new ApplyReplacementPackage.Request(
-                    p.path(), w.repo(), cs, ApplyExtent.APPLY_COMMIT_PUBLISH));
+            ApplySuccess success = success(service(w).execute(new ApplyRequest.Start(
+                    p.path(), w.repo(), cs, ApplyExtent.APPLY_COMMIT_PUBLISH)));
 
-            eq(result.executionState(), "Ready", "full Apply extent did not return to Ready");
-            ok(result.commitSha() != null, "full Apply extent lost commit SHA");
-            eq(result.publishedTip(), result.commitSha(), "published tip differs from exact commit");
-            eq(CoreTests.remoteTip(w.repo(), workspace.branch), result.commitSha(), "remote work branch differs from exact commit");
+            eq(success.application().progress(), ApplyProgress.PUBLISHED, "typed Publish progress");
+            eq(success.application().publishedTip(), success.application().commitSha(), "published tip differs from exact commit");
+            eq(CoreTests.remoteTip(w.repo(), workspace.branch), success.application().commitSha(), "remote work branch differs from exact commit");
         });
 
-        test("larger requested extent resumes after proven Apply without reapplying", () -> {
-            CoreTests.WorkspaceRepo w = CoreTests.workspaceRepoWithRemote("feature-apply-resume");
+        test("smaller requested extent after Publish is already satisfied without downgrade", () -> {
+            CoreTests.WorkspaceRepo w = CoreTests.workspaceRepoWithRemote("feature-domain-surpassed-extent");
             String cs = UUID.randomUUID().toString();
-            Core.ChangeSet workspace = w.core().startChangeSetWorkspace(w.target().id(), cs, "feature apply resume", "main").changeSet();
+            Core.ChangeSet workspace = w.core().startChangeSetWorkspace(w.target().id(), cs, "feature domain surpassed extent", "main").changeSet();
             CoreTests.PackageFixture p = CoreTests.makePackage(
-                    w.identity(), cs, "feature apply resume",
+                    w.identity(), cs, "feature domain surpassed extent",
+                    List.of(CoreTests.op("seed.txt", "replace", "seed", "published")));
+            ApplyReplacementPackage feature = service(w);
+
+            ApplySuccess published = success(feature.execute(new ApplyRequest.Start(
+                    p.path(), w.repo(), cs, ApplyExtent.APPLY_COMMIT_PUBLISH)));
+            String tip = published.application().publishedTip();
+            ApplySuccess lower = success(feature.execute(new ApplyRequest.Start(
+                    p.path(), w.repo(), cs, ApplyExtent.APPLY)));
+
+            ok(lower.alreadySatisfied(), "surpassed extent was not reported already satisfied");
+            eq(lower.requestedExtent(), ApplyExtent.APPLY, "requested extent changed");
+            eq(lower.application().progress(), ApplyProgress.PUBLISHED, "actual proven progress was downgraded");
+            eq(lower.application().publishedTip(), tip, "surpassed request changed published tip");
+            eq(CoreTests.g(Path.of(workspace.worktree), "rev-list", "--count", workspace.baseCommit + "..HEAD").first(), "1", "surpassed request created duplicate commit");
+        });
+
+        test("Resume continues proven Apply to Publish without archive", () -> {
+            CoreTests.WorkspaceRepo w = CoreTests.workspaceRepoWithRemote("feature-domain-resume-applied");
+            String cs = UUID.randomUUID().toString();
+            Core.ChangeSet workspace = w.core().startChangeSetWorkspace(w.target().id(), cs, "feature domain resume applied", "main").changeSet();
+            CoreTests.PackageFixture p = CoreTests.makePackage(
+                    w.identity(), cs, "feature domain resume applied",
                     List.of(CoreTests.op("seed.txt", "replace", "seed", "resume")));
             ApplyReplacementPackage feature = service(w);
 
-            ApplyReplacementPackage.Result first = feature.execute(new ApplyReplacementPackage.Request(
-                    p.path(), w.repo(), cs, ApplyExtent.APPLY));
-            eq(first.executionState(), "AppliedUncommitted", "resume fixture did not stop after Apply");
-            String appliedBytes = CoreTests.read(Path.of(workspace.worktree).resolve("seed.txt"));
+            ApplySuccess first = success(feature.execute(new ApplyRequest.Start(
+                    p.path(), w.repo(), cs, ApplyExtent.APPLY)));
+            eq(first.application().progress(), ApplyProgress.APPLIED, "resume fixture did not stop after Apply");
+            Files.delete(p.path());
 
-            ApplyReplacementPackage.Result resumed = feature.execute(new ApplyReplacementPackage.Request(
-                    p.path(), w.repo(), cs, ApplyExtent.APPLY_COMMIT_PUBLISH));
+            ApplySuccess resumed = success(feature.execute(new ApplyRequest.Resume(
+                    cs, p.packageId(), ApplyExtent.APPLY_COMMIT_PUBLISH)));
 
-            eq(resumed.executionState(), "Ready", "resume did not finish requested extent");
-            eq(CoreTests.read(Path.of(workspace.worktree).resolve("seed.txt")), appliedBytes, "resume changed already-proven applied bytes");
-            eq(CoreTests.g(Path.of(workspace.worktree), "rev-list", "--count", workspace.baseCommit + "..HEAD").first(), "1", "resume created duplicate commits");
+            eq(resumed.application().progress(), ApplyProgress.PUBLISHED, "Resume did not reach Publish");
+            eq(CoreTests.read(Path.of(workspace.worktree).resolve("seed.txt")), "resume", "Resume changed applied bytes");
+            eq(CoreTests.g(Path.of(workspace.worktree), "rev-list", "--count", workspace.baseCommit + "..HEAD").first(), "1", "Resume created duplicate commits");
         });
 
-        test("request/package ChangeSet mismatch fails before mutation", () -> {
-            CoreTests.WorkspaceRepo w = CoreTests.workspaceRepo("feature-apply-identity");
-            String packageCs = UUID.randomUUID().toString();
-            Core.ChangeSet workspace = w.core().startChangeSetWorkspace(w.target().id(), packageCs, "feature apply identity", "main").changeSet();
+        test("Resume continues proven Commit to Publish without archive", () -> {
+            CoreTests.WorkspaceRepo w = CoreTests.workspaceRepoWithRemote("feature-domain-resume-committed");
+            String cs = UUID.randomUUID().toString();
+            w.core().startChangeSetWorkspace(w.target().id(), cs, "feature domain resume committed", "main");
             CoreTests.PackageFixture p = CoreTests.makePackage(
-                    w.identity(), packageCs, "feature apply identity",
+                    w.identity(), cs, "feature domain resume committed",
+                    List.of(CoreTests.op("seed.txt", "replace", "seed", "committed")));
+            ApplyReplacementPackage feature = service(w);
+
+            ApplySuccess committed = success(feature.execute(new ApplyRequest.Start(
+                    p.path(), w.repo(), cs, ApplyExtent.APPLY_COMMIT)));
+            eq(committed.application().progress(), ApplyProgress.COMMITTED, "resume fixture did not stop after Commit");
+            Files.delete(p.path());
+
+            ApplySuccess resumed = success(feature.execute(new ApplyRequest.Resume(
+                    cs, p.packageId(), ApplyExtent.APPLY_COMMIT_PUBLISH)));
+
+            eq(resumed.application().progress(), ApplyProgress.PUBLISHED, "Committed Resume did not reach Publish");
+            eq(resumed.application().publishedTip(), committed.application().commitSha(), "Resume published a different commit");
+        });
+
+        test("request/package ChangeSet mismatch is a typed failure before mutation", () -> {
+            CoreTests.WorkspaceRepo w = CoreTests.workspaceRepo("feature-domain-identity-failure");
+            String packageCs = UUID.randomUUID().toString();
+            Core.ChangeSet workspace = w.core().startChangeSetWorkspace(w.target().id(), packageCs, "feature domain identity failure", "main").changeSet();
+            CoreTests.PackageFixture p = CoreTests.makePackage(
+                    w.identity(), packageCs, "feature domain identity failure",
                     List.of(CoreTests.op("seed.txt", "replace", "seed", "must-not-apply")));
 
-            expect(Core.ACTION_PACKAGE_MISMATCH, () -> service(w).execute(new ApplyReplacementPackage.Request(
+            ApplyFailure failure = failure(service(w).execute(new ApplyRequest.Start(
                     p.path(), w.repo(), UUID.randomUUID().toString(), ApplyExtent.APPLY)));
 
+            eq(failure.code(), ApplyFailureCode.PACKAGE_IDENTITY_MISMATCH, "identity failure code");
+            eq(failure.disposition(), ApplyFailureDisposition.ACTION_REQUIRED, "identity failure disposition");
             eq(CoreTests.read(Path.of(workspace.worktree).resolve("seed.txt")), "seed", "identity mismatch mutated worktree");
+        });
+
+        test("expected source mismatch is returned as typed failure", () -> {
+            CoreTests.WorkspaceRepo w = CoreTests.workspaceRepo("feature-domain-source-failure");
+            String cs = UUID.randomUUID().toString();
+            w.core().startChangeSetWorkspace(w.target().id(), cs, "feature domain source failure", "main");
+            CoreTests.PackageFixture p = CoreTests.makePackage(
+                    w.identity(), cs, "feature domain source failure",
+                    List.of(CoreTests.op("seed.txt", "replace", "wrong-base", "must-not-apply")));
+
+            Result<ApplySuccess, ApplyFailure> result = service(w).execute(new ApplyRequest.Start(
+                    p.path(), w.repo(), cs, ApplyExtent.APPLY));
+            ApplyFailure failure = failure(result);
+
+            ok(result.isFailure(), "source mismatch did not return Result.Failure");
+            eq(failure.code(), ApplyFailureCode.EXPECTED_SOURCE_CHANGED, "source mismatch typed code");
+            eq(failure.disposition(), ApplyFailureDisposition.ACTION_REQUIRED, "source mismatch disposition");
+        });
+
+        test("publication uncertainty is returned as typed uncertain failure", () -> {
+            CoreTests.WorkspaceRepo w = CoreTests.workspaceRepoWithRemote("feature-domain-publication-uncertain");
+            String cs = UUID.randomUUID().toString();
+            w.core().startChangeSetWorkspace(w.target().id(), cs, "feature domain publication uncertain", "main");
+            CoreTests.PackageFixture p = CoreTests.makePackage(
+                    w.identity(), cs, "feature domain publication uncertain",
+                    List.of(CoreTests.op("seed.txt", "replace", "seed", "uncertain")));
+            w.core().setAfterPublishAttemptHookForTests(() -> {
+                try {
+                    CoreTests.setFakeSshMode(w, "fail-all");
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            });
+            try {
+                ApplyFailure failure = failure(service(w).execute(new ApplyRequest.Start(
+                        p.path(), w.repo(), cs, ApplyExtent.APPLY_COMMIT_PUBLISH)));
+                eq(failure.code(), ApplyFailureCode.PUBLICATION_UNCERTAIN, "publication uncertainty code");
+                eq(failure.disposition(), ApplyFailureDisposition.UNCERTAIN, "publication uncertainty disposition");
+            } finally {
+                w.core().setAfterPublishAttemptHookForTests(null);
+                CoreTests.setFakeSshMode(w, "normal");
+            }
         });
     }
 
     private static ApplyReplacementPackage service(CoreTests.WorkspaceRepo w) {
         return new ApplyReplacementPackage(w.core());
+    }
+
+    private static ApplySuccess success(Result<ApplySuccess, ApplyFailure> result) {
+        if (result instanceof Result.Success<ApplySuccess, ApplyFailure> success) return success.value();
+        ApplyFailure failure = ((Result.Failure<ApplySuccess, ApplyFailure>) result).error();
+        throw new AssertionError("expected success, got " + failure.code() + ": " + failure.message());
+    }
+
+    private static ApplyFailure failure(Result<ApplySuccess, ApplyFailure> result) {
+        if (result instanceof Result.Failure<ApplySuccess, ApplyFailure> failure) return failure.error();
+        ApplySuccess success = ((Result.Success<ApplySuccess, ApplyFailure>) result).value();
+        throw new AssertionError("expected failure, got success " + success.application().progress());
     }
 
     private interface Throwing { void run() throws Exception; }
@@ -131,17 +238,6 @@ public final class ApplyReplacementPackageFeatureIntegrationTests {
             failed++;
             System.out.println("FAIL " + name + " :: " + failure);
             if (Boolean.getBoolean("obs.tests.stack")) failure.printStackTrace(System.out);
-        }
-    }
-
-    private static void expect(String code, Throwing body) throws Exception {
-        try {
-            body.run();
-            throw new AssertionError("expected " + code + ", got success");
-        } catch (Core.ObsException e) {
-            if (!Objects.equals(e.code, code)) {
-                throw new AssertionError("expected " + code + ", got [" + e.code + "] " + e.getMessage());
-            }
         }
     }
 
