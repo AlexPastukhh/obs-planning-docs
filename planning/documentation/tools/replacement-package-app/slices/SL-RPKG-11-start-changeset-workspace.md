@@ -13,7 +13,7 @@ Repository Target; WorkId; GitWorkspace; Work Intent correlation.
 ## Slice Implementation Items
 
 ### SI-RPKG-WORKSPACE-PINNED-SOURCE
-Verify the Repository Target origin identity, fetch/observe exact `origin/<targetBranch>`, persist that exact commit as immutable initial `baseCommit`, persist worktree, and create/verify the deterministic Work branch/worktree in the same Git common repository. Local target-branch position is not source authority.
+Capture exactly one effective origin fetch URL, verify its RepositoryIdentity, fetch exact `targetBranch` through that captured URL, persist the fetched commit as immutable initial `baseCommit`, then create/verify the deterministic Work branch/worktree in the same Git common repository. Local target-branch position and later re-resolution of mutable `origin` are not source authority.
 
 ### SI-RPKG-WORKSPACE-JOURNAL-BEFORE-GIT-MUTATION
 Persist exact workspace intent before branch/worktree mutation. Retry adopts only journal-owned deterministic partial effects and fails closed on unjournaled collisions. If `GitWorkspace` already exists, any leftover journal must match it exactly before deletion.

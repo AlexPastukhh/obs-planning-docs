@@ -51,6 +51,8 @@ public final class StartWorkWorkspace {
             saveOrThrow(started.workspace());
             mechanics.completeWorkspaceStart(started.workspace());
             return Result.success(new Outcome(started.workspace(), started.recovered()));
+        } catch (WorkOperationLock.LockException e) {
+            return Result.failure(new Failure("Cannot serialize Start Work Workspace: " + e.getMessage(), e));
         } catch (RuntimeException e) {
             return Result.failure(new Failure(e.getMessage(), e));
         }

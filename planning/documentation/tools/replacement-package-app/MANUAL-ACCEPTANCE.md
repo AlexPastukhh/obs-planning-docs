@@ -10,7 +10,7 @@ Register the intended repository, choose WorkId + explicit target branch and Sta
 
 ## Apply
 
-Apply one package with replace/add/delete and exact base bytes. Verify only the Work worktree changes, HEAD does not change, exact package identity is persisted, and a different archive with the same packageId fails closed. Replace the ZIP on disk after package capture in a controlled test and verify the captured bytes, not the later path contents, are applied. Simulate state persistence failure after file mutation and verify retry recovers through the package journal.
+Apply one package with replace/add/delete and exact base bytes. Verify only the Work worktree changes, HEAD does not change, package RepositoryIdentity matches the persisted GitWorkspace, exact package identity is persisted, and a different archive with the same packageId fails closed. For each action shape, force an applicability failure where current bytes already equal the intended result and verify exact retry still fails and does not create `ReplacementPackageState`; change a package path after that failed proof and verify the unproven journal does not restore it. Replace the ZIP on disk after package capture and verify the captured bytes are applied. Simulate state persistence failure after file mutation and verify retry recovers only from a schema-3 journal with proven applicability. A schema-1/2 package journal must fail closed in the new executable.
 
 ## Commit
 
@@ -18,7 +18,7 @@ Verify Commit creates/proves one exact package-only commit with correct parent a
 
 ## Publish / Retry Publish
 
-Verify remote absent/previous exact tip permits push with lease; exact intended remote tip is already success; unexpected tip blocks before push. Configure a foreign `remote.origin.pushurl` while leaving fetch origin correct and verify Publish fails before any push. Persist an earlier safe observation, move the remote, and verify a later Publish refreshes observation instead of reusing stale authorization. Force unavailable confirmation after a possible push and verify durable `NotConfirmed`; retry must observe before any further push. Force failure to persist pre-push `NotConfirmed` and prove no push occurs. Force failure to persist final `ConfirmedTip` and prove retry confirms existing remote state without repush.
+Verify remote absent/previous exact tip permits push with lease; exact intended remote tip is already success; unexpected tip blocks before push. Mutate `origin` immediately after fetch-URL verification and prove observation still uses the captured exact URL; mutate `pushurl` immediately after push-URL verification and prove the push still reaches only the captured destination. Configure a foreign `remote.origin.pushurl` before verification and verify Publish fails before any push. Persist an earlier safe observation, move the remote, and verify a later Publish refreshes observation instead of reusing stale authorization. Force unavailable confirmation after a possible push and verify durable `NotConfirmed`; retry must observe before any further push. Force failure to persist pre-push `NotConfirmed` and prove no push occurs. Force failure to persist final `ConfirmedTip` and prove retry confirms existing remote state without repush.
 
 ## Automatic OBS action
 

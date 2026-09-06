@@ -88,17 +88,17 @@ Worktree
 BaseCommit
 ```
 
-Work branch is derived deterministically as `changeset/<WorkId>` for schema-1 compatibility. `baseCommit` is pinned from a fresh fetch/observation of the verified `origin/<targetBranch>`; a stale local target branch is never source authority. Workspace intent is journaled before branch/worktree mutation; unjournaled deterministic collisions fail closed, and a leftover journal must agree exactly with an already-persisted `GitWorkspace` before it may be cleared.
+Work branch is derived deterministically as `changeset/<WorkId>` for schema-1 compatibility. `baseCommit` is pinned from a fresh fetch of one exact verified `origin/<targetBranch>` URL; the verified URL string is captured and passed directly to Git, so a later `origin` config change cannot redirect that fetch. A stale local target branch is never source authority. Workspace intent is journaled before branch/worktree mutation; unjournaled deterministic collisions fail closed, and a leftover journal must agree exactly with an already-persisted `GitWorkspace` before it may be cleared.
 
 ## Apply identity rule
 
 The package archive is read/validated/hashed once for one Apply invocation. Mutation consumes that captured `PackageData` payload. Reopening the mutable ZIP path later is forbidden as mutation authority.
 
-`ReplacementPackageIdentity = packageId + archiveSha256` must match the exact bytes whose payload is applied.
+`ReplacementPackageIdentity = packageId + archiveSha256` must match the exact bytes whose payload is applied. `PACKAGE.json.repositoryIdentity` must also equal the persisted `GitWorkspace.RepositoryTarget.repositoryIdentity`; this invariant belongs to Apply itself, not only to automatic target selection.
 
 ## Package recovery journal
 
-Before file mutation the target runtime durably records exact Work/package/archive/workspace identity, package `baseHead`, operations, and prior/intended bytes. The journal carries a canonical SHA-256 integrity digest over those durable fields/bytes; any mismatch fails closed. On Apply recovery its intended bytes must also still match the captured `PackageData` for the exact archive SHA, so journal metadata alone cannot rebind an archive to different bytes. The journal permits proof/recovery when file or Git side effects succeeded before final `ReplacementPackageState` persistence.
+Before file mutation the target runtime durably records exact Work/package/archive/workspace identity, package `baseHead`, operations, and prior/intended bytes in package-journal schema 3. A newly written journal starts with `applicabilityProven=false`: it is crash evidence but is not authority that the package was applicable. Before promotion, retry requires the Worktree to still equal the journal's captured prior state and may not restore bytes from the journal. Only after add/replace/delete applicability succeeds is the same journal durably promoted to `applicabilityProven=true`; only a proven journal may restore/reconcile partial effects or treat already-intended bytes as recovered Apply success. Therefore a failed add/delete/replace cannot become Applied merely because prior bytes happen to equal intended bytes on retry. The journal SHA-256 digest covers the applicability flag and all durable identity/byte fields, and recovery also requires intended bytes to match the captured `PackageData` for the exact archive SHA. Journal schemas 1/2 are intentionally fail-closed in this executable; the previous built executable remains owner of unfinished journals from those builds.
 
 ## Commit / Publish rules
 
@@ -110,14 +110,15 @@ Publish:
 - permits push only when remote is absent or exactly package journal `baseHead`;
 - rejects any other remote tip before push;
 - durably writes `NotConfirmed` before possible push;
-- verifies every effective `origin` push URL resolves to the same RepositoryIdentity as the observed/fetch target, then pushes the exact commit with force-with-lease tied to the freshly proven previous remote state;
+- captures one exact verified fetch URL for observation and, only if a push may occur, one exact verified push URL; `ls-remote`/`push` receive those URL strings directly rather than re-resolving the mutable `origin` alias;
+- the exact commit is pushed with force-with-lease tied to the freshly proven previous remote state;
 - observes again after possible push and persists exact evidence.
 
 `NotConfirmed` means intended publication is not currently proven; retry must observe before any further push.
 
 ## Work operation serialization
 
-Start workspace, Apply, Commit and Publish use one durable per-Work `WorkOperationLock` application boundary covering state read → filesystem/Git side effect → durable state write. Package-state persistence may re-enter the same lock for its local invariant check, but the package-state repository is not the semantic owner of Work serialization.
+Start workspace, Apply, Commit and Publish use one durable per-Work `WorkOperationLock` application boundary covering state read → filesystem/Git side effect → durable state write. The port is re-entrant for the same WorkId on the same thread because package-state persistence may re-enter it for a local invariant check; the package-state repository is not the semantic owner of Work serialization. Lock-acquisition failure is an operation-serialization failure, not evidence that Work state diverged.
 
 ## Result handoff
 

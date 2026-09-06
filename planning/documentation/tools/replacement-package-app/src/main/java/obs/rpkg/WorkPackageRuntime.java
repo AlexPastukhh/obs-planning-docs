@@ -19,6 +19,8 @@ public final class WorkPackageRuntime {
     private final Path stateRoot;
     private final GitClient git = new GitClient();
     private Runnable afterPushAttemptHook = () -> {};
+    private Runnable afterFetchUrlVerifiedHook = () -> {};
+    private Runnable afterPushUrlVerifiedHook = () -> {};
 
     public WorkPackageRuntime(Path appStateRoot) {
         if (appStateRoot == null) throw new IllegalArgumentException("appStateRoot is required");
@@ -96,10 +98,16 @@ public final class WorkPackageRuntime {
         verifyWorkspaceIdentity(workspace);
     }
 
-    public void verifyPublishDestination(GitWorkspace workspace) {
+    public String verifiedPublicationFetchUrl(GitWorkspace workspace) {
         Objects.requireNonNull(workspace, "workspace");
         verifyWorkspaceIdentity(workspace);
-        requireOriginIdentity(workspace.repositoryTarget().registeredPath(),
+        return verifiedOriginUrl(workspace.repositoryTarget().registeredPath(),
+                workspace.repositoryTarget().repositoryIdentity(), false);
+    }
+
+    public String verifiedPublicationPushUrl(GitWorkspace workspace) {
+        Objects.requireNonNull(workspace, "workspace");
+        return verifiedOriginUrl(workspace.repositoryTarget().registeredPath(),
                 workspace.repositoryTarget().repositoryIdentity(), true);
     }
 
@@ -107,6 +115,10 @@ public final class WorkPackageRuntime {
         Objects.requireNonNull(pkg, "pkg");
         Objects.requireNonNull(workspace, "workspace");
         WorkId workId = workspace.workId();
+        if (!same(pkg.manifest().repositoryIdentity(), workspace.repositoryTarget().repositoryIdentity())) {
+            throw new Core.ObsException(Core.REPOSITORY_MISMATCH,
+                    "Package repositoryIdentity differs from GitWorkspace RepositoryTarget.");
+        }
         if (!workId.value().equals(pkg.manifest().changeSetId())) {
             throw new Core.ObsException(Core.ACTION_PACKAGE_MISMATCH, "Package Work identity differs from GitWorkspace.");
         }
@@ -114,25 +126,39 @@ public final class WorkPackageRuntime {
         Path journalPath = packageJournalPath(workId, identity.packageId());
         PackageJournal journal;
         List<PackageStateApplier.Operation> operations = packageOperations(pkg, workspace.worktree());
+        boolean promoteApplicabilityProof;
 
         if (Files.exists(journalPath)) {
             journal = PackageJournal.read(journalPath);
             assertPackageJournal(journal, workspace, identity, pkg);
             JournalState state = journalState(journal);
-            if (state == JournalState.INTENDED) {
+            if (!journal.applicabilityProven()) {
+                if (!journalMatchesPrior(journal)) {
+                    throw new Core.ObsException(Core.STATE_DIVERGED,
+                            "Unproven package journal cannot authorize recovery because current bytes differ from its captured prior state.");
+                }
+                verifyWorkspaceAt(workspace, journal.baseHead(), false);
                 assertOnlyJournalPathsDirty(workspace.worktree(), journal);
-                return;
+                promoteApplicabilityProof = true;
+            } else {
+                if (state == JournalState.INTENDED) {
+                    assertOnlyJournalPathsDirty(workspace.worktree(), journal);
+                    return;
+                }
+                if (state == JournalState.MIXED) restorePrior(journal);
+                else if (state == JournalState.OTHER) {
+                    throw new Core.ObsException(Core.STATE_DIVERGED,
+                            "Worktree contains bytes outside prior/intended durable package journal state.");
+                }
+                verifyWorkspaceAt(workspace, journal.baseHead(), false);
+                assertOnlyJournalPathsDirty(workspace.worktree(), journal);
+                promoteApplicabilityProof = false;
             }
-            if (state == JournalState.MIXED) restorePrior(journal);
-            else if (state == JournalState.OTHER) {
-                throw new Core.ObsException(Core.STATE_DIVERGED, "Worktree contains bytes outside prior/intended durable package journal state.");
-            }
-            verifyWorkspaceAt(workspace, journal.baseHead(), false);
-            assertOnlyJournalPathsDirty(workspace.worktree(), journal);
         } else {
             String baseHead = verifyWorkspaceCleanAtCurrentBranchTip(workspace);
-            journal = createPackageJournal(pkg, workspace, baseHead);
+            journal = createPackageJournal(pkg, workspace, baseHead, false);
             journal.write(journalPath);
+            promoteApplicabilityProof = true;
         }
 
         PackageStateApplier.PreparedChange prepared;
@@ -142,6 +168,12 @@ public final class WorkPackageRuntime {
         } catch (Throwable t) {
             throw mapPackageStateFailure(t);
         }
+
+        if (promoteApplicabilityProof) {
+            journal = journal.withApplicabilityProven(true);
+            journal.write(journalPath);
+        }
+
         try (PackageStateApplier.AppliedChange applied = prepared.apply()) {
             assertOnlyJournalPathsDirty(workspace.worktree(), journal);
             if (journalState(journal) != JournalState.INTENDED) {
@@ -189,23 +221,27 @@ public final class WorkPackageRuntime {
         return loadPackageJournal(workspace, identity).baseHead();
     }
 
-    public void push(GitWorkspace workspace, ReplacementPackageIdentity identity, String commitSha, String expectedRemoteTip) {
+    public void push(GitWorkspace workspace, ReplacementPackageIdentity identity, String commitSha, String expectedRemoteTip, String exactPushUrl) {
         PackageJournal journal = loadPackageJournal(workspace, identity);
         if (expectedRemoteTip != null && !Objects.equals(journal.baseHead(), expectedRemoteTip)) {
             throw new Core.ObsException(Core.STATE_DIVERGED, "Publish lease tip differs from durable package baseHead.");
         }
         verifyExactPackageCommit(workspace, journal, commitSha);
         Path repository = workspace.repositoryTarget().registeredPath();
-        requireOriginIdentity(repository, workspace.repositoryTarget().repositoryIdentity(), true);
+        if (!same(repositoryIdentityFromUrl(exactPushUrl), workspace.repositoryTarget().repositoryIdentity())) {
+            throw new Core.ObsException(Core.REPOSITORY_MISMATCH, "Captured Publish URL no longer matches RepositoryTarget identity.");
+        }
         String remoteRef = "refs/heads/" + workspace.workBranch();
         String lease = "--force-with-lease=" + remoteRef + ":" + (expectedRemoteTip == null ? "" : expectedRemoteTip);
         GitClient.Result push = git.run(repository, Core.PUBLISH_FAILED, true, Map.of("GIT_TERMINAL_PROMPT", "0"),
-                "push", "--porcelain", lease, "origin", commitSha + ":" + remoteRef);
+                "push", "--porcelain", lease, exactPushUrl, commitSha + ":" + remoteRef);
         afterPushAttemptHook.run();
         if (push.exitCode() != 0) throw new Core.ObsException(Core.PUBLISH_FAILED, "Git push failed.\n--- git details ---\n" + push.failureDetails());
     }
 
     public void setAfterPushAttemptHookForTests(Runnable hook) { afterPushAttemptHook = hook == null ? () -> {} : hook; }
+    public void setAfterFetchUrlVerifiedHookForTests(Runnable hook) { afterFetchUrlVerifiedHook = hook == null ? () -> {} : hook; }
+    public void setAfterPushUrlVerifiedHookForTests(Runnable hook) { afterPushUrlVerifiedHook = hook == null ? () -> {} : hook; }
 
     private PackageJournal loadPackageJournal(GitWorkspace workspace, ReplacementPackageIdentity identity) {
         Path path = packageJournalPath(workspace.workId(), identity.packageId());
@@ -243,7 +279,7 @@ public final class WorkPackageRuntime {
         }
     }
 
-    private PackageJournal createPackageJournal(Core.PackageData pkg, GitWorkspace workspace, String baseHead) {
+    private PackageJournal createPackageJournal(Core.PackageData pkg, GitWorkspace workspace, String baseHead, boolean applicabilityProven) {
         List<JournalEntry> entries = new ArrayList<>();
         for (Core.Operation op : pkg.manifest().operations()) {
             Path target = Core.inside(workspace.worktree(), op.path());
@@ -256,7 +292,7 @@ public final class WorkPackageRuntime {
         return new PackageJournal(
                 workspace.workId().value(), pkg.manifest().packageId(), pkg.archiveSha256(),
                 workspace.repositoryTarget().repositoryIdentity(), workspace.workBranch(), workspace.worktree().toString(),
-                baseHead, List.copyOf(entries));
+                baseHead, applicabilityProven, List.copyOf(entries));
     }
 
     private List<PackageStateApplier.Operation> packageOperations(Core.PackageData pkg, Path root) {
@@ -279,7 +315,9 @@ public final class WorkPackageRuntime {
         String head = head(workspace.worktree());
         String tip = branchTip(workspace);
         if (!Objects.equals(head, tip)) throw new Core.ObsException(Core.STATE_DIVERGED, "Work worktree HEAD differs from deterministic work branch tip.");
-        String dirty = git.run(workspace.worktree(), Core.STATE_DIVERGED, "status", "--porcelain", "--untracked-files=all").joined();
+        GitClient.Result status = git.allow(workspace.worktree(), Core.SOURCE_STATE_UNVERIFIABLE, "status", "--porcelain", "--untracked-files=all");
+        if (status.exitCode() != 0) throw new Core.ObsException(Core.SOURCE_STATE_UNVERIFIABLE, "Cannot safely verify Work worktree source state before Apply.\n--- git details ---\n" + status.failureDetails());
+        String dirty = status.joined();
         if (!dirty.isBlank()) throw new Core.ObsException(Core.STATE_DIVERGED, "Work worktree is not clean before a new package Apply.");
         return head;
     }
@@ -452,7 +490,7 @@ public final class WorkPackageRuntime {
         if (anyPrior && anyIntended) return JournalState.MIXED;
         if (anyIntended) return JournalState.INTENDED;
         if (anyPrior) return JournalState.PRIOR;
-        return JournalState.INTENDED; // prior == intended for all entries: result is already satisfied.
+        return JournalState.INTENDED; // prior == intended for all entries; caller decides whether journal proof authorizes recovery.
     }
 
     private boolean matches(String path, boolean expectedExists, byte[] expectedBytes, PackageJournal journal) {
@@ -469,7 +507,14 @@ public final class WorkPackageRuntime {
                 else { if (target.getParent() != null) Files.createDirectories(target.getParent()); Files.write(target, e.priorBytes(), StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING); }
             } catch (IOException ex) { throw new Core.ObsException(Core.APPLY_ROLLBACK_UNVERIFIED, "Cannot restore durable prior package bytes for " + e.path() + ".", ex); }
         }
-        if (journalState(journal) != JournalState.PRIOR) throw new Core.ObsException(Core.APPLY_ROLLBACK_UNVERIFIED, "Durable prior package state could not be restored.");
+        if (!journalMatchesPrior(journal)) throw new Core.ObsException(Core.APPLY_ROLLBACK_UNVERIFIED, "Durable prior package state could not be restored.");
+    }
+
+    private boolean journalMatchesPrior(PackageJournal journal) {
+        for (JournalEntry e : journal.entries()) {
+            if (!matches(e.path(), e.priorExists(), e.priorBytes(), journal)) return false;
+        }
+        return true;
     }
 
     private void requireExpectedSource(Path repo, String path, byte[] expected, byte[] actual) {
@@ -500,10 +545,10 @@ public final class WorkPackageRuntime {
     }
     private void requireRepositoryReady(Path repo) { GitClient.Result r = git.allow(repo, Core.REPOSITORY_NOT_READY, "rev-parse", "--verify", "HEAD"); if (r.exitCode() != 0 || r.first().isBlank()) throw new Core.ObsException(Core.REPOSITORY_NOT_READY, "Repository has no commits."); }
     private String resolveAuthoritativeTargetTip(Path repo, String branch, String expectedRepositoryIdentity) {
-        requireOriginIdentity(repo, expectedRepositoryIdentity, false);
+        String fetchUrl = verifiedOriginUrl(repo, expectedRepositoryIdentity, false);
         String remoteRef = "refs/remotes/origin/" + branch;
         GitClient.Result fetch = git.run(repo, Core.REPOSITORY_NOT_READY, true, Map.of("GIT_TERMINAL_PROMPT", "0"),
-                "fetch", "--no-tags", "origin", "+refs/heads/" + branch + ":" + remoteRef);
+                "fetch", "--no-tags", fetchUrl, "+refs/heads/" + branch + ":" + remoteRef);
         if (fetch.exitCode() != 0) {
             throw new Core.ObsException(Core.REPOSITORY_NOT_READY,
                     "Cannot resolve authoritative origin/" + branch + ".\n--- git details ---\n" + fetch.failureDetails());
@@ -517,22 +562,23 @@ public final class WorkPackageRuntime {
         return resolved.first();
     }
 
-    private void requireOriginIdentity(Path repo, String expectedRepositoryIdentity, boolean push) {
+    private String verifiedOriginUrl(Path repo, String expectedRepositoryIdentity, boolean push) {
         GitClient.Result urls = push
                 ? git.allow(repo, Core.REPOSITORY_MISMATCH, "remote", "get-url", "--push", "--all", "origin")
                 : git.allow(repo, Core.REPOSITORY_MISMATCH, "remote", "get-url", "--all", "origin");
-        if (urls.exitCode() != 0 || urls.stdout().isEmpty()) {
+        if (urls.exitCode() != 0 || urls.stdout().size() != 1) {
             throw new Core.ObsException(Core.REPOSITORY_MISMATCH,
-                    "origin has no " + (push ? "push" : "fetch") + " URL to verify.");
+                    "origin must resolve to exactly one " + (push ? "push" : "fetch") + " URL.");
         }
-        for (String url : urls.stdout()) {
-            String actual = repositoryIdentityFromUrl(url.trim());
-            if (!same(actual, expectedRepositoryIdentity)) {
-                throw new Core.ObsException(Core.REPOSITORY_MISMATCH,
-                        "origin " + (push ? "push" : "fetch") + " URL resolves to " + actual
-                                + "; expected " + expectedRepositoryIdentity + ".");
-            }
+        String url = urls.stdout().get(0).trim();
+        String actual = repositoryIdentityFromUrl(url);
+        if (!same(actual, expectedRepositoryIdentity)) {
+            throw new Core.ObsException(Core.REPOSITORY_MISMATCH,
+                    "origin " + (push ? "push" : "fetch") + " URL resolves to " + actual
+                            + "; expected " + expectedRepositoryIdentity + ".");
         }
+        if (push) afterPushUrlVerifiedHook.run(); else afterFetchUrlVerifiedHook.run();
+        return url;
     }
     private void validateBranchName(Path repo, String branch) { if (git.allow(repo, Core.STATE_DIVERGED, "check-ref-format", "--branch", branch).exitCode() != 0) throw new Core.ObsException(Core.STATE_DIVERGED, "Invalid target branch name: " + branch); }
     private boolean gitRefExists(Path repo, String ref) { return git.allow(repo, Core.STATE_DIVERGED, "show-ref", "--verify", "--quiet", ref).exitCode() == 0; }
@@ -568,10 +614,23 @@ public final class WorkPackageRuntime {
         @Override public byte[] intendedBytes() { return intendedBytes == null ? null : intendedBytes.clone(); }
     }
 
-    private record PackageJournal(String workId, String packageId, String archiveSha256, String repositoryIdentity, String branch, String worktree, String baseHead, List<JournalEntry> entries) {
+    private record PackageJournal(
+            String workId,
+            String packageId,
+            String archiveSha256,
+            String repositoryIdentity,
+            String branch,
+            String worktree,
+            String baseHead,
+            boolean applicabilityProven,
+            List<JournalEntry> entries) {
+        PackageJournal withApplicabilityProven(boolean value) {
+            return new PackageJournal(workId,packageId,archiveSha256,repositoryIdentity,branch,worktree,baseHead,value,entries);
+        }
+
         void write(Path path) {
             Properties p = new Properties();
-            p.setProperty("schemaVersion","2");
+            p.setProperty("schemaVersion","3");
             p.setProperty("workId",workId);
             p.setProperty("packageId",packageId);
             p.setProperty("archiveSha256",archiveSha256);
@@ -579,6 +638,7 @@ public final class WorkPackageRuntime {
             p.setProperty("branch",branch);
             p.setProperty("worktree",worktree);
             p.setProperty("baseHead",baseHead);
+            p.setProperty("applicabilityProven",Boolean.toString(applicabilityProven));
             p.setProperty("entryCount",Integer.toString(entries.size()));
             Base64.Encoder enc = Base64.getEncoder();
             for (int i=0;i<entries.size();i++) {
@@ -591,13 +651,14 @@ public final class WorkPackageRuntime {
                 if(e.intendedExists()) p.setProperty(x+"intendedBase64",enc.encodeToString(e.intendedBytes()));
             }
             p.setProperty("journalSha256", journalSha256(this));
-            writeProperties(path,p,"OBS Package Apply Journal v2");
+            writeProperties(path,p,"OBS Package Apply Journal v3");
         }
 
         static PackageJournal read(Path path) {
             Properties p=readProperties(path);
-            if(!"2".equals(p.getProperty("schemaVersion"))) {
-                throw new Core.ObsException(Core.STATE_DIVERGED,"Unsupported package Apply journal schema.");
+            if(!"3".equals(p.getProperty("schemaVersion"))) {
+                throw new Core.ObsException(Core.STATE_DIVERGED,
+                        "Unsupported package Apply journal schema; previous executable remains owner of unfinished journal state.");
             }
             int n;
             try { n=Integer.parseInt(required(p,"entryCount")); }
@@ -617,10 +678,14 @@ public final class WorkPackageRuntime {
             } catch (IllegalArgumentException e) {
                 throw new Core.ObsException(Core.STATE_DIVERGED,"Package Apply journal payload encoding is invalid.",e);
             }
+            String provenRaw=required(p,"applicabilityProven");
+            if (!"true".equals(provenRaw) && !"false".equals(provenRaw)) {
+                throw new Core.ObsException(Core.STATE_DIVERGED,"Invalid package Apply journal applicabilityProven value.");
+            }
             PackageJournal journal = new PackageJournal(
                     required(p,"workId"),required(p,"packageId"),required(p,"archiveSha256"),
                     required(p,"repositoryIdentity"),required(p,"branch"),required(p,"worktree"),
-                    required(p,"baseHead"),List.copyOf(entries));
+                    required(p,"baseHead"),Boolean.parseBoolean(provenRaw),List.copyOf(entries));
             String persistedDigest = required(p,"journalSha256");
             String actualDigest = journalSha256(journal);
             if (!persistedDigest.equalsIgnoreCase(actualDigest)) {
@@ -641,6 +706,7 @@ public final class WorkPackageRuntime {
             digestString(md, journal.branch());
             digestString(md, journal.worktree());
             digestString(md, journal.baseHead());
+            digestInt(md, journal.applicabilityProven() ? 1 : 0);
             digestInt(md, journal.entries().size());
             for (JournalEntry e : journal.entries()) {
                 digestString(md, e.path());

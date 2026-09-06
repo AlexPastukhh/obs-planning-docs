@@ -30,6 +30,7 @@ public final class WorkAggregateTests {
         run("one Work cannot have two unfinished package realizations", WorkAggregateTests::oneUnfinishedPackage);
         run("state lookup fails closed when persisted identity disagrees with its key", WorkAggregateTests::stateLookupIdentityFence);
         run("per-Work lock serializes independent repository instances", WorkAggregateTests::perWorkLockSerializesRepositories);
+        run("per-Work lock is re-entrant on the same thread", WorkAggregateTests::perWorkLockIsReentrant);
         run("concurrent repository instances cannot create two unfinished packages", WorkAggregateTests::concurrentSavePreservesInvariant);
         run("new state namespace does not read schema-1 legacy files", WorkAggregateTests::noLegacyStateRead);
         System.out.println("RESULT passed=" + passed + " failed=" + failed);
@@ -172,6 +173,24 @@ public final class WorkAggregateTests {
             }
             contender.join(2000);
             ok(acquired.get(), "contender did not acquire Work lock after release");
+        } finally {
+            deleteTree(root);
+        }
+    }
+
+    private static void perWorkLockIsReentrant() throws Exception {
+        Path root = Files.createTempDirectory("rpkg-work-lock-reentrant-");
+        try {
+            FileWorkOperationLock locks = new FileWorkOperationLock(root);
+            WorkId work = new WorkId("work-lock-reentrant");
+            try (var outer = locks.lock(work)) {
+                try (var inner = locks.lock(work)) {
+                    ok(true, "re-entrant acquisition failed");
+                }
+                try (var again = locks.lock(work)) {
+                    ok(true, "outer lock was released by inner close");
+                }
+            }
         } finally {
             deleteTree(root);
         }

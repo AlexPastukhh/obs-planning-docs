@@ -17,33 +17,26 @@ public final class GitPublicationObserver implements PublicationObserver {
     public Result<PublicationObservation, Failure> observe(
             Path worktree,
             String workBranch,
+            String exactRemoteUrl,
             String expectedRepositoryIdentity) {
         if (worktree == null || workBranch == null || workBranch.isBlank()
+                || exactRemoteUrl == null || exactRemoteUrl.isBlank()
                 || expectedRepositoryIdentity == null || expectedRepositoryIdentity.isBlank()) {
             return Result.failure(new Failure(
-                    "Worktree, work branch and expected repository identity are required for publication confirmation",
+                    "Worktree, work branch, exact remote URL and expected repository identity are required for publication confirmation",
                     null));
         }
 
-        Result<List<String>, Failure> urls = git(worktree, "remote", "get-url", "--all", "origin");
-        if (urls.isFailure()) return Result.failure(urls.failure().orElseThrow());
-        List<String> originUrls = urls.success().orElseThrow();
-        if (originUrls.isEmpty()) {
-            return Result.failure(new Failure("Cannot confirm publication because origin has no fetch URL", null));
-        }
-        for (String url : originUrls) {
-            String actual = repositoryIdentity(url);
-            if (!expectedRepositoryIdentity.equalsIgnoreCase(actual)) {
-                return Result.failure(new Failure(
-                        "Publication confirmation origin is " + actual
-                                + "; expected " + expectedRepositoryIdentity + ".",
-                        null));
-            }
+        String actual = repositoryIdentity(exactRemoteUrl);
+        if (!expectedRepositoryIdentity.equalsIgnoreCase(actual)) {
+            return Result.failure(new Failure(
+                    "Publication confirmation URL is " + actual
+                            + "; expected " + expectedRepositoryIdentity + ".", null));
         }
 
         String exactRef = "refs/heads/" + workBranch;
         Result<List<String>, Failure> lookup = git(
-                worktree, "ls-remote", "--heads", "origin", exactRef);
+                worktree, "ls-remote", "--heads", exactRemoteUrl, exactRef);
         if (lookup.isFailure()) return Result.failure(lookup.failure().orElseThrow());
         List<String> lines = lookup.success().orElseThrow();
         if (lines.isEmpty()) return Result.success(new PublicationObservation.ConfirmedAbsent());

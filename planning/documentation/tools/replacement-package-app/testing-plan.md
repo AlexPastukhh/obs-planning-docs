@@ -13,7 +13,7 @@ Prove:
 - ReplacementPackageState publication semantics;
 - same-commit evidence preservation;
 - exact persisted-key fencing;
-- per-Work `WorkOperationLock` serialization across independent lock instances/processes;
+- per-Work `WorkOperationLock` serialization across independent lock instances/processes and same-thread re-entrancy;
 - one unfinished package under concurrency;
 - no legacy package-state import.
 
@@ -21,22 +21,23 @@ Prove:
 Prove active schema-1 consumer rules without legacy ChangeSet behavior: valid add/replace/delete payload shape, traversal/absolute-path rejection, case collisions, undeclared payload rejection, action payload requirements, ZIP-entry collisions and Work Intent identity consistency.
 
 ### PackageApplicabilityTests
-Prove file applicability at the target Apply boundary: exact add/replace/delete, Git-equivalent source acceptance, binary divergence fail-closed behavior and add-target absence.
+Prove file applicability at the target Apply boundary: exact add/replace/delete, Git-equivalent source acceptance, binary divergence fail-closed behavior, add-target absence, clean-filter unverifiable failure, and exact retries that cannot promote previously failed add/delete/replace into Applied state or restore externally changed bytes from an unproven journal.
 
 ### ApplyReplacementPackageFeatureIntegrationTests
 Prove end-to-end application-service boundaries with real Git where practical:
-- Start Workspace fetches/verifies the exact `origin/<targetBranch>` source, persists GitWorkspace and creates no Core.ChangeSet;
+- Start Workspace captures/verifies the exact target fetch URL, cannot be redirected by later origin mutation, persists GitWorkspace and creates no Core.ChangeSet;
 - package ZIP is captured once; later path replacement cannot change applied bytes/identity;
-- Apply state-write recovery via self-validating durable package journal, including integrity-digest corruption and intended bytes not bound to the captured archive;
+- Apply state-write recovery via schema-3 proven journal, independent digest-corruption and captured-payload-binding rejection, previous-journal-schema fail-closed behavior, and package RepositoryIdentity fencing;
 - Commit is separate and recovers exact existing commit after state-write failure;
 - Publish confirms exact remote tip without ChangeSet authority;
 - pre-push NotConfirmed persistence failure blocks push;
 - post-push final-state persistence failure leaves durable NotConfirmed;
 - uncertain Retry confirms before another push;
-- unexpected remote tip and foreign effective origin push URL fail before push;
+- unexpected remote tip and foreign effective origin push URL fail before push; captured exact fetch/push URLs cannot be redirected by later remote-config mutation;
 - every not-yet-published Publish invocation refreshes remote observation before any possible push;
 - sequential packages derive previous tip from package journal;
 - workspace creation recovers after state persistence failure and conflicting leftover journals fail closed;
+- Work lock acquisition failure is operation-local rather than false state divergence;
 - automatic OBS action composes Start → Apply → Commit → Publish and is idempotent.
 
 ### ApplyReceiptTests

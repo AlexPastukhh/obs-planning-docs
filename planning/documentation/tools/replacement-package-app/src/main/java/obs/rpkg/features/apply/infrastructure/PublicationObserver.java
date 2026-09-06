@@ -10,6 +10,7 @@ public interface PublicationObserver {
     Result<PublicationObservation, Failure> observe(
             Path worktree,
             String workBranch,
+            String exactRemoteUrl,
             String expectedRepositoryIdentity);
 
     record Failure(String message, Throwable cause) {

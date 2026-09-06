@@ -26,10 +26,10 @@ ConfirmedTip(sha)
 | Behavior step | Requirement |
 |---|---|
 | Require exact committed state | Resolve `GitWorkspace`, exact package state and durable package journal; derive the previous publication boundary from journal `baseHead`. |
-| Observe before any possible push | Every not-yet-published invocation performs a fresh exact remote observation; previously persisted `ConfirmedAbsent`/previous-tip evidence is not reusable push authorization. |
+| Observe before any possible push | Every not-yet-published invocation captures one exact verified fetch URL and performs fresh remote observation against that URL; previously persisted `ConfirmedAbsent`/previous-tip evidence is not reusable push authorization. |
 | Decide from observation | Exact intended tip → success; remote absent or exact package `baseHead` → push may be safe; any other tip → `REMOTE_BRANCH_DIVERGED`, no push. |
 | Persist uncertainty guard | Before mechanics may push, durably save `NotConfirmed`; persistence failure blocks the side effect. |
-| Fence destination + push with exact lease | Verify effective `origin` push URL(s) resolve to the same RepositoryIdentity as observation/source authority, then push only the exact package commit using the freshly observed previous tip/absence as lease authority. |
+| Fence destination + push with exact lease | If a push may occur, capture one exact verified push URL whose RepositoryIdentity matches observation/source authority, persist `NotConfirmed`, then push to that URL string directly. A later mutation of `origin`/`pushurl` cannot redirect the side effect. |
 | Reconcile after possible push | Observe exact remote branch again. Exact intended tip → success; unchanged previous/absent → retryable push failure; anything else → divergence. |
 | Persist stronger evidence | Confirmation is durable. If stronger evidence cannot be saved after possible push, durable `NotConfirmed` remains retry authority. |
 

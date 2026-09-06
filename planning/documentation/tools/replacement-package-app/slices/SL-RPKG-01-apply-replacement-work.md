@@ -21,16 +21,16 @@ The operations share durable `ReplacementPackageState`, `GitWorkspace`, package 
 The invocation validates/hashes the ZIP once and mutation consumes those captured bytes. A mutable archive path is never reread as later mutation authority.
 
 ### SI-RPKG-APPLY-JOURNAL-BEFORE-MUTATION
-Persist exact package/workspace/base plus prior/intended bytes before first package-file mutation. Journal identity includes archive SHA, and recovery verifies intended bytes still equal the captured exact package payload.
+Persist exact package/workspace/base plus prior/intended bytes before first package-file mutation. A schema-3 journal begins with `applicabilityProven=false`; it may not restore bytes and retry requires the captured prior state to remain exact. Only successful applicability proof promotes it to recovery authority. Digest integrity and captured-package byte binding are checked independently.
 
 ### SI-RPKG-PACKAGE-STATE-DURABLE
 Package state identity is fenced to exact WorkId/packageId. Corrupt/unreadable state fails closed.
 
 ### SI-RPKG-WORK-OPERATION-LOCK
-Start workspace / Apply / Commit / Publish for one Work serialize through a dedicated `WorkOperationLock` application port; package-state persistence is not the semantic lock owner.
+Start workspace / Apply / Commit / Publish for one Work serialize through a dedicated same-thread re-entrant `WorkOperationLock` application port; package-state persistence is not the semantic lock owner and lock failure is an operation failure, not state evidence.
 
 ### SI-RPKG-PUBLISH-CONFIRM-BEFORE-SIDE-EFFECT
-Every not-yet-published Publish invocation refreshes exact remote observation before a possible push; unexpected tip or foreign effective push destination fails before push. Durable `NotConfirmed` guards the possible-push boundary.
+Every not-yet-published Publish invocation observes through a captured exact verified fetch URL before a possible push; any possible push uses a separately captured exact verified push URL. Unexpected tip or foreign destination fails before push, and mutable remote aliases cannot redirect the network command. Durable `NotConfirmed` guards the possible-push boundary.
 
 ### SI-RPKG-NO-LEGACY-RUNTIME-AUTHORITY
 Target package realization does not read/write `Core.ChangeSet.executionState`, `lastPackageId`, `commitSha` or `publishedTip`. Old persisted works are not imported.

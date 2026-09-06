@@ -76,6 +76,10 @@ public final class CommitAppliedPackage {
                 return Result.failure(new CommitAppliedFailure(
                         code, disposition, e.getMessage(), current));
             }
+        } catch (WorkOperationLock.LockException e) {
+            return Result.failure(new CommitAppliedFailure(
+                    CommitAppliedFailureCode.OPERATION_SERIALIZATION_FAILED,
+                    OperationFailureDisposition.RETRYABLE, e.getMessage()));
         } catch (ReplacementPackageStateAccess.StatePersistenceException e) {
             return Result.failure(new CommitAppliedFailure(
                     CommitAppliedFailureCode.STATE_PERSISTENCE_FAILED,

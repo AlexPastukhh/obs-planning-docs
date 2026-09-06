@@ -51,7 +51,7 @@ public final class FileWorkOperationLock implements WorkOperationLock {
         } catch (IOException | RuntimeException e) {
             if (channel != null) try { channel.close(); } catch (IOException ignored) {}
             local.unlock();
-            throw new IllegalStateException("Cannot acquire Work operation lock for " + workId, e);
+            throw new WorkOperationLock.LockException("Cannot acquire Work operation lock for " + workId, e);
         }
     }
 

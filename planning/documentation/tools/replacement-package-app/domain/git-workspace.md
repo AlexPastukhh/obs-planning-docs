@@ -16,11 +16,11 @@ Own the durable Git execution facts for one Work: exact Repository Target, integ
 - package commit/publication, Issue details, review and Finalize state do not belong to this Aggregate;
 - one Work has at most one persisted GitWorkspace;
 - an existing workspace may be reused only when Repository Target and target branch match exactly;
-- initial `baseCommit` comes from a fresh verified `origin/<targetBranch>` fetch/observation, never merely from mutable local `refs/heads/<targetBranch>`.
+- initial `baseCommit` comes from a fresh fetch through one captured exact verified `origin/<targetBranch>` URL, never merely from mutable local `refs/heads/<targetBranch>` and never from re-resolving `origin` after verification.
 
 ## Runtime durability
 
-Workspace creation first verifies the origin fetch identity, resolves a fresh exact target-branch tip, then journals exact intent before branch/worktree mutation. If Git effects exist but final `GitWorkspace` persistence failed, repeating Start workspace reconciles only the journal-owned deterministic branch/worktree and then persists the same workspace. A leftover journal beside an already-persisted workspace must match that workspace exactly before cleanup.
+Workspace creation first captures one exact origin fetch URL and verifies its RepositoryIdentity, fetches the target branch through that exact URL, resolves the fetched commit, then journals exact intent before branch/worktree mutation. If Git effects exist but final `GitWorkspace` persistence failed, repeating Start workspace reconciles only the journal-owned deterministic branch/worktree and then persists the same workspace. A leftover journal beside an already-persisted workspace must match that workspace exactly before cleanup.
 
 ## Tests
 

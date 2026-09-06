@@ -119,15 +119,23 @@ public final class ApplyFeatureTestSupport {
     }
 
     public static PackageFixture packageWithId(Workspace workspace, String packageId, String workId, String label, List<Op> operations) throws Exception {
+        return packageWithIdAndRepositoryIdentity(workspace,packageId,workId,label,REPOSITORY_IDENTITY,operations);
+    }
+
+    public static PackageFixture packageForRepositoryIdentity(Workspace workspace,String workId,String label,String repositoryIdentity,List<Op> operations) throws Exception {
+        return packageWithIdAndRepositoryIdentity(workspace,UUID.randomUUID().toString(),workId,label,repositoryIdentity,operations);
+    }
+
+    private static PackageFixture packageWithIdAndRepositoryIdentity(Workspace workspace, String packageId, String workId, String label, String repositoryIdentity, List<Op> operations) throws Exception {
         Path zip = workspace.root().resolve("pkg-" + packageId + "-" + UUID.randomUUID() + ".zip");
         Map<String,Object> manifest = new LinkedHashMap<>();
         manifest.put("schemaVersion", 1);
         manifest.put("packageId", packageId);
         manifest.put("changeSetId", workId);
         manifest.put("changeSetLabel", label);
-        manifest.put("repositoryIdentity", REPOSITORY_IDENTITY);
+        manifest.put("repositoryIdentity", repositoryIdentity);
         Map<String,Object> intent = new LinkedHashMap<>();
-        intent.put("schemaVersion",1);intent.put("changeSetId",workId);intent.put("repositoryIdentity",REPOSITORY_IDENTITY);
+        intent.put("schemaVersion",1);intent.put("changeSetId",workId);intent.put("repositoryIdentity",repositoryIdentity);
         intent.put("title",label);intent.put("goal","Implement "+label);intent.put("why","Target runtime fixture");intent.put("acceptance",List.of("Exact package state is proven."));
         manifest.put("workIntent", intent);
         List<Object> manifestOps = new ArrayList<>();
@@ -194,6 +202,11 @@ public final class ApplyFeatureTestSupport {
         git(workspace.repository(),"remote","set-url","--push","origin","git@github.com:foreign/repo.git");
     }
 
+    public static Path newBareRemote(Workspace workspace,String name) throws Exception { Path bare=workspace.root().resolve(name);git(workspace.root(),"init","--bare",bare.toString());return bare; }
+    public static void setOriginUrlUnchecked(Workspace workspace,String url) { try{git(workspace.repository(),"remote","set-url","origin",url);}catch(Exception e){throw new RuntimeException(e);} }
+    public static void setPushUrlUnchecked(Workspace workspace,String url) { try{git(workspace.repository(),"remote","set-url","--push","origin",url);}catch(Exception e){throw new RuntimeException(e);} }
+    public static String bareRemoteTip(Path bare,String branch) throws Exception { Process p=new ProcessBuilder("git","--git-dir",bare.toString(),"rev-parse","--verify","refs/heads/"+branch).redirectErrorStream(true).start();String out=new String(p.getInputStream().readAllBytes(),StandardCharsets.UTF_8).strip();int code=p.waitFor();return code==0?out:null; }
+
     public static Path packageJournalPath(Workspace workspace,String workId,String packageId) {
         return workspace.stateRoot().resolve("work-state-v2").resolve("package-apply-journals")
                 .resolve("w-"+workId).resolve("p-"+packageId+".properties");
@@ -206,6 +219,13 @@ public final class ApplyFeatureTestSupport {
         p.setProperty("entry.0.intendedBase64",Base64.getEncoder().encodeToString(text.getBytes(StandardCharsets.UTF_8)));
         try(var out=Files.newOutputStream(journal,StandardOpenOption.TRUNCATE_EXISTING)){p.store(out,"corrupted test journal");}
         write(worktree.resolve("seed.txt"),text);
+    }
+
+    public static void setPackageJournalSchemaVersion(Workspace workspace,String workId,String packageId,String version) throws Exception {
+        Path journal=packageJournalPath(workspace,workId,packageId);Properties p=new Properties();
+        try(var in=Files.newInputStream(journal)){p.load(in);}
+        p.setProperty("schemaVersion",version);
+        try(var out=Files.newOutputStream(journal,StandardOpenOption.TRUNCATE_EXISTING)){p.store(out,"schema migration test");}
     }
 
     public static String read(Path path) throws IOException { return Files.readString(path,StandardCharsets.UTF_8); }

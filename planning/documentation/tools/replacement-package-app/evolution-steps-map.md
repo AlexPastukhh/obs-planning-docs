@@ -32,10 +32,11 @@ Result:
 - `PublicationObservation` is evidence, not operation result;
 - automatic `OBS-ACTION apply-package` composes Start → Apply → Commit → Publish without a generic Resume abstraction;
 - exact archive bytes are captured once for Apply;
-- package journals support Apply/Commit recovery, self-validate durable contents with an integrity digest, and bind recovery intended bytes back to captured exact package payload;
-- Start workspace pins `baseCommit` from a fresh verified `origin/<targetBranch>` source rather than stale local branch state;
-- Publish refreshes observation before every possible push, fences effective push URL identity, and uses durable `NotConfirmed` as write-ahead uncertainty guard;
-- Work mutation serialization is owned by a dedicated `WorkOperationLock` application port.
+- package-journal schema 3 separates crash evidence from applicability authority: only `applicabilityProven=true` may recover already-intended bytes; digest integrity and captured-package binding are independent proofs;
+- Start workspace pins `baseCommit` through a captured exact verified fetch URL rather than stale local branch state or a mutable remote alias;
+- Apply itself fences package RepositoryIdentity to the persisted GitWorkspace Repository Target;
+- Publish refreshes observation through a captured exact fetch URL, pushes only through a captured exact verified push URL, and uses durable `NotConfirmed` as write-ahead uncertainty guard;
+- Work mutation serialization is owned by a dedicated re-entrant `WorkOperationLock` application port with operation-local failure semantics.
 
 Proof gate:
 - Apply stops before Commit;
@@ -46,7 +47,9 @@ Proof gate:
 - unexpected remote tip or foreign effective push destination blocks before push;
 - no blind repush after unconfirmed publication;
 - sequential packages work without `publishedTip`/executionState owner;
-- target schema-1 protocol/applicability validation is owned by dedicated target suites rather than retired `CoreTests`.
+- target schema-1 protocol/applicability validation is owned by dedicated target suites rather than retired `CoreTests`;
+- failed applicability cannot become Applied on exact retry merely because current bytes equal intended bytes, and an unproven journal cannot restore changed Worktree bytes;
+- previous package-journal schemas fail closed in the new executable; unfinished work remains with the executable that created that journal.
 
 ## EVO-RPKG-RETIRE-CHANGESET-AGGREGATE
 

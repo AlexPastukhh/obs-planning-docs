@@ -83,6 +83,12 @@ public final class ApplyReplacementPackage {
                         OperationFailureDisposition.ACTION_REQUIRED,
                         "Start Work Workspace must succeed before Apply Package."));
             }
+            if (!workspace.get().repositoryTarget().repositoryIdentity().equalsIgnoreCase(packageData.manifest().repositoryIdentity())) {
+                return Result.failure(new ApplyFailure(
+                        ApplyFailureCode.REPOSITORY_MISMATCH,
+                        OperationFailureDisposition.ACTION_REQUIRED,
+                        "PACKAGE.json repositoryIdentity differs from the persisted GitWorkspace RepositoryTarget."));
+            }
 
             Optional<ReplacementPackageState> existing =
                     ReplacementPackageStateAccess.findOrThrow(states, workId, exactIdentity.packageId());
@@ -115,6 +121,10 @@ public final class ApplyReplacementPackage {
                     workId, exactIdentity, null, new PublicationObservation.NotRequested());
             ReplacementPackageStateAccess.saveOrThrow(states, state);
             return Result.success(state);
+        } catch (WorkOperationLock.LockException e) {
+            return Result.failure(new ApplyFailure(
+                    ApplyFailureCode.OPERATION_SERIALIZATION_FAILED,
+                    OperationFailureDisposition.RETRYABLE, e.getMessage()));
         } catch (ReplacementPackageStateAccess.StatePersistenceException e) {
             return Result.failure(new ApplyFailure(
                     ApplyFailureCode.STATE_PERSISTENCE_FAILED,
