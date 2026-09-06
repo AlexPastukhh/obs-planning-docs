@@ -8,8 +8,9 @@ xcopy /e /i /y "..\replacement-package-common\build\classes\*" "build\classes\" 
 call javac --release 21 -cp build\classes -d build\classes ^
   src\main\java\obs\rpkg\Core.java ^
   src\main\java\obs\rpkg\foundation\result\Result.java ^
+  src\main\java\obs\rpkg\foundation\result\OperationResult.java ^
   src\main\java\obs\rpkg\features\apply\domain\ApplyExtent.java ^
-  src\main\java\obs\rpkg\features\apply\domain\ApplyProgress.java ^
+  src\main\java\obs\rpkg\features\apply\domain\PublicationConfirmationState.java ^
   src\main\java\obs\rpkg\features\apply\domain\PackageApplication.java ^
   src\main\java\obs\rpkg\features\apply\domain\ApplyRequest.java ^
   src\main\java\obs\rpkg\features\apply\domain\ApplySuccess.java ^

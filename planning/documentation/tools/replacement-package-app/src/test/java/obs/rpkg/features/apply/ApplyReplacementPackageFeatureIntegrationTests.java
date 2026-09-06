@@ -11,9 +11,11 @@ import obs.rpkg.features.apply.domain.ApplyExtent;
 import obs.rpkg.features.apply.domain.ApplyFailure;
 import obs.rpkg.features.apply.domain.ApplyFailureCode;
 import obs.rpkg.features.apply.domain.ApplyFailureDisposition;
-import obs.rpkg.features.apply.domain.ApplyProgress;
 import obs.rpkg.features.apply.domain.ApplyRequest;
 import obs.rpkg.features.apply.domain.ApplySuccess;
+import obs.rpkg.features.apply.domain.PackageApplication;
+import obs.rpkg.features.apply.domain.PublicationConfirmationState;
+import obs.rpkg.foundation.result.OperationResult;
 import obs.rpkg.foundation.result.Result;
 
 /** Integration proof for the Feature-local Apply domain over current legacy mechanics. */
@@ -49,7 +51,9 @@ public final class ApplyReplacementPackageFeatureIntegrationTests {
                     p.path(), w.repo(), cs, ApplyExtent.APPLY)));
 
             eq(success.requestedExtent(), ApplyExtent.APPLY, "requested extent");
-            eq(success.application().progress(), ApplyProgress.APPLIED, "typed Apply progress");
+            ok(success.application().isApplied(), "Apply state is not proven");
+            ok(!success.application().isCommitted(), "Apply unexpectedly committed");
+            eq(success.application().publicationConfirmation(), PublicationConfirmationState.NOT_REQUESTED, "Apply unexpectedly requested publication confirmation");
             ok(!success.alreadySatisfied(), "first Apply reported already satisfied");
             eq(CoreTests.g(Path.of(workspace.worktree), "rev-parse", "HEAD").first(), base, "Apply created a commit");
             eq(CoreTests.read(Path.of(workspace.worktree).resolve("seed.txt")), "applied", "Apply did not apply package bytes");
@@ -66,7 +70,9 @@ public final class ApplyReplacementPackageFeatureIntegrationTests {
             ApplySuccess success = success(service(w).execute(new ApplyRequest.Start(
                     p.path(), w.repo(), cs, ApplyExtent.APPLY_COMMIT)));
 
-            eq(success.application().progress(), ApplyProgress.COMMITTED, "typed Commit progress");
+            ok(success.application().isCommitted(), "Commit state is not proven");
+            ok(!success.application().isPublished(), "Apply+Commit unexpectedly published");
+            eq(success.application().publicationConfirmation(), PublicationConfirmationState.NOT_REQUESTED, "Apply+Commit unexpectedly requested publication confirmation");
             ok(success.application().commitSha() != null, "Commit SHA missing");
             eq(CoreTests.remoteTip(w.repo(), workspace.branch), null, "Apply+Commit published unexpectedly");
         });
@@ -82,8 +88,9 @@ public final class ApplyReplacementPackageFeatureIntegrationTests {
             ApplySuccess success = success(service(w).execute(new ApplyRequest.Start(
                     p.path(), w.repo(), cs, ApplyExtent.APPLY_COMMIT_PUBLISH)));
 
-            eq(success.application().progress(), ApplyProgress.PUBLISHED, "typed Publish progress");
-            eq(success.application().publishedTip(), success.application().commitSha(), "published tip differs from exact commit");
+            ok(success.application().isPublished(), "Publish state is not proven");
+            eq(success.application().publicationConfirmation(), PublicationConfirmationState.CONFIRMED, "published state was not externally confirmed");
+            eq(success.application().lastConfirmedPublishedTip(), success.application().commitSha(), "published tip differs from exact commit");
             eq(CoreTests.remoteTip(w.repo(), workspace.branch), success.application().commitSha(), "remote work branch differs from exact commit");
         });
 
@@ -98,14 +105,15 @@ public final class ApplyReplacementPackageFeatureIntegrationTests {
 
             ApplySuccess published = success(feature.execute(new ApplyRequest.Start(
                     p.path(), w.repo(), cs, ApplyExtent.APPLY_COMMIT_PUBLISH)));
-            String tip = published.application().publishedTip();
+            String tip = published.application().lastConfirmedPublishedTip();
             ApplySuccess lower = success(feature.execute(new ApplyRequest.Start(
                     p.path(), w.repo(), cs, ApplyExtent.APPLY)));
 
             ok(lower.alreadySatisfied(), "surpassed extent was not reported already satisfied");
             eq(lower.requestedExtent(), ApplyExtent.APPLY, "requested extent changed");
-            eq(lower.application().progress(), ApplyProgress.PUBLISHED, "actual proven progress was downgraded");
-            eq(lower.application().publishedTip(), tip, "surpassed request changed published tip");
+            ok(lower.application().isPublished(), "actual proven published state was downgraded");
+            eq(lower.application().publicationConfirmation(), PublicationConfirmationState.CONFIRMED, "published confirmation was lost");
+            eq(lower.application().lastConfirmedPublishedTip(), tip, "surpassed request changed published tip");
             eq(CoreTests.g(Path.of(workspace.worktree), "rev-list", "--count", workspace.baseCommit + "..HEAD").first(), "1", "surpassed request created duplicate commit");
         });
 
@@ -120,13 +128,13 @@ public final class ApplyReplacementPackageFeatureIntegrationTests {
 
             ApplySuccess first = success(feature.execute(new ApplyRequest.Start(
                     p.path(), w.repo(), cs, ApplyExtent.APPLY)));
-            eq(first.application().progress(), ApplyProgress.APPLIED, "resume fixture did not stop after Apply");
+            ok(!first.application().isCommitted(), "resume fixture advanced past Apply");
             Files.delete(p.path());
 
             ApplySuccess resumed = success(feature.execute(new ApplyRequest.Resume(
                     cs, p.packageId(), ApplyExtent.APPLY_COMMIT_PUBLISH)));
 
-            eq(resumed.application().progress(), ApplyProgress.PUBLISHED, "Resume did not reach Publish");
+            ok(resumed.application().isPublished(), "Resume did not reach confirmed Publish");
             eq(CoreTests.read(Path.of(workspace.worktree).resolve("seed.txt")), "resume", "Resume changed applied bytes");
             eq(CoreTests.g(Path.of(workspace.worktree), "rev-list", "--count", workspace.baseCommit + "..HEAD").first(), "1", "Resume created duplicate commits");
         });
@@ -142,14 +150,15 @@ public final class ApplyReplacementPackageFeatureIntegrationTests {
 
             ApplySuccess committed = success(feature.execute(new ApplyRequest.Start(
                     p.path(), w.repo(), cs, ApplyExtent.APPLY_COMMIT)));
-            eq(committed.application().progress(), ApplyProgress.COMMITTED, "resume fixture did not stop after Commit");
+            ok(committed.application().isCommitted(), "resume fixture did not reach Commit");
+            ok(!committed.application().isPublished(), "resume fixture published unexpectedly");
             Files.delete(p.path());
 
             ApplySuccess resumed = success(feature.execute(new ApplyRequest.Resume(
                     cs, p.packageId(), ApplyExtent.APPLY_COMMIT_PUBLISH)));
 
-            eq(resumed.application().progress(), ApplyProgress.PUBLISHED, "Committed Resume did not reach Publish");
-            eq(resumed.application().publishedTip(), committed.application().commitSha(), "Resume published a different commit");
+            ok(resumed.application().isPublished(), "Committed Resume did not reach confirmed Publish");
+            eq(resumed.application().lastConfirmedPublishedTip(), committed.application().commitSha(), "Resume published a different commit");
         });
 
         test("request/package ChangeSet mismatch is a typed failure before mutation", () -> {
@@ -204,10 +213,94 @@ public final class ApplyReplacementPackageFeatureIntegrationTests {
                         p.path(), w.repo(), cs, ApplyExtent.APPLY_COMMIT_PUBLISH)));
                 eq(failure.code(), ApplyFailureCode.PUBLICATION_UNCERTAIN, "publication uncertainty code");
                 eq(failure.disposition(), ApplyFailureDisposition.UNCERTAIN, "publication uncertainty disposition");
+                PackageApplication current = failure.currentApplication().orElseThrow(() -> new AssertionError("publication uncertainty lost current PackageApplication"));
+                ok(current.isCommitted(), "uncertain publication lost proven commit");
+                ok(!current.isPublished(), "uncertain publication was reported published");
+                eq(current.publicationConfirmation(), PublicationConfirmationState.NOT_CONFIRMED, "uncertain publication did not retain confirmation state");
+                ok(current.commitSha() != null, "uncertain publication lost exact commit identity");
             } finally {
                 w.core().setAfterPublishAttemptHookForTests(null);
                 CoreTests.setFakeSshMode(w, "normal");
             }
+        });
+
+
+        test("lower requested extent may succeed while publication remains unconfirmed state", () -> {
+            CoreTests.WorkspaceRepo w = CoreTests.workspaceRepoWithRemote("feature-domain-uncertain-lower-extent");
+            String cs = UUID.randomUUID().toString();
+            w.core().startChangeSetWorkspace(w.target().id(), cs, "feature domain uncertain lower extent", "main");
+            CoreTests.PackageFixture p = CoreTests.makePackage(
+                    w.identity(), cs, "feature domain uncertain lower extent",
+                    List.of(CoreTests.op("seed.txt", "replace", "seed", "uncertain-lower")));
+            ApplyReplacementPackage feature = service(w);
+            w.core().setAfterPublishAttemptHookForTests(() -> {
+                try {
+                    CoreTests.setFakeSshMode(w, "fail-all");
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            });
+            try {
+                ApplyFailure uncertain = failure(feature.execute(new ApplyRequest.Start(
+                        p.path(), w.repo(), cs, ApplyExtent.APPLY_COMMIT_PUBLISH)));
+                eq(uncertain.code(), ApplyFailureCode.PUBLICATION_UNCERTAIN, "fixture did not become publication-uncertain");
+
+                ApplySuccess lower = success(feature.execute(new ApplyRequest.Resume(
+                        cs, p.packageId(), ApplyExtent.APPLY_COMMIT)));
+                ok(lower.alreadySatisfied(), "lower extent was not already satisfied");
+                ok(lower.application().isCommitted(), "lower extent lost proven commit");
+                ok(!lower.application().isPublished(), "lower extent invented publication success");
+                eq(lower.application().publicationConfirmation(), PublicationConfirmationState.NOT_CONFIRMED,
+                        "lower successful operation hid unresolved publication confirmation state");
+            } finally {
+                w.core().setAfterPublishAttemptHookForTests(null);
+                CoreTests.setFakeSshMode(w, "normal");
+            }
+        });
+
+        test("full Resume reconciles unconfirmed publication before another push", () -> {
+            CoreTests.WorkspaceRepo w = CoreTests.workspaceRepoWithRemote("feature-domain-uncertain-reconcile");
+            String cs = UUID.randomUUID().toString();
+            w.core().startChangeSetWorkspace(w.target().id(), cs, "feature domain uncertain reconcile", "main");
+            CoreTests.PackageFixture p = CoreTests.makePackage(
+                    w.identity(), cs, "feature domain uncertain reconcile",
+                    List.of(CoreTests.op("seed.txt", "replace", "seed", "uncertain-reconcile")));
+            ApplyReplacementPackage feature = service(w);
+            w.core().setAfterPublishAttemptHookForTests(() -> {
+                try {
+                    CoreTests.setFakeSshMode(w, "fail-all");
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            });
+            ApplyFailure uncertain;
+            try {
+                uncertain = failure(feature.execute(new ApplyRequest.Start(
+                        p.path(), w.repo(), cs, ApplyExtent.APPLY_COMMIT_PUBLISH)));
+            } finally {
+                w.core().setAfterPublishAttemptHookForTests(null);
+                CoreTests.setFakeSshMode(w, "normal");
+            }
+            String commit = uncertain.currentApplication().orElseThrow().commitSha();
+
+            ApplySuccess reconciled = success(feature.execute(new ApplyRequest.Resume(
+                    cs, p.packageId(), ApplyExtent.APPLY_COMMIT_PUBLISH)));
+
+            ok(reconciled.application().isPublished(), "Resume did not establish confirmed publication");
+            eq(reconciled.application().publicationConfirmation(), PublicationConfirmationState.CONFIRMED,
+                    "Resume did not turn external confirmation into domain state");
+            eq(reconciled.application().lastConfirmedPublishedTip(), commit, "Resume confirmed a different commit");
+        });
+
+        test("OperationResult models success without a success value", () -> {
+            OperationResult<String> success = OperationResult.success();
+            ok(success.isSuccess(), "OperationResult.success was not successful");
+            ok(success.failure().isEmpty(), "OperationResult.success carried an error");
+            eq(success.fold(() -> "done", error -> "failed:" + error), "done", "OperationResult success fold");
+
+            OperationResult<String> failed = OperationResult.failure("boom");
+            ok(failed.isFailure(), "OperationResult.failure was not failed");
+            eq(failed.failure().orElseThrow(), "boom", "OperationResult failure payload");
         });
     }
 
@@ -224,7 +317,7 @@ public final class ApplyReplacementPackageFeatureIntegrationTests {
     private static ApplyFailure failure(Result<ApplySuccess, ApplyFailure> result) {
         if (result instanceof Result.Failure<ApplySuccess, ApplyFailure> failure) return failure.error();
         ApplySuccess success = ((Result.Success<ApplySuccess, ApplyFailure>) result).value();
-        throw new AssertionError("expected failure, got success " + success.application().progress());
+        throw new AssertionError("expected failure, got success for application " + success.application().packageId());
     }
 
     private interface Throwing { void run() throws Exception; }
