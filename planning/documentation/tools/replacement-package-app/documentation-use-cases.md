@@ -34,18 +34,16 @@ APP-LEVEL CONTEXT
              ┌──────────────────────────────────────────┐
              ↓                                          │
 FEATURE PLANNING                                        │
-├─ intent / Benefit relation                            │
-├─ principal Result / Result family                     │
-├─ observable application behavior                      │
-├─ Behavior Requirements Discovery ↔ Feature Data       │
+├─ Intent / principal Result                            │
+├─ Expected application behavior                        │
+│  ├─ compact semantic Data beside behavior             │
+│  ├─ numbered Main-path behavior rows                  │
+│  ├─ stable BR-* + compact normative statement         │
+│  │  beside the owning row                             │
+│  └─ one exact decision/question                       │
+│     → one column per material path                    │
+│     → explicit convergence / terminal result          │
 ├─ Feature Implementation Concerns                      │
-│  ├─ feasibility / capability                          │
-│  ├─ implementation dependencies                       │
-│  ├─ candidate / rejected approaches                   │
-│  ├─ platform / external constraints                   │
-│  ├─ Aggregate / Shared signals                        │
-│  ├─ proof concerns                                    │
-│  └─ Feature/Slice boundary / module / branch notes    │
 ├─ relevant known Evolution Steps                       │
 └─ Feature/Slice Boundary Check                         │
              ↓                                          │
@@ -57,36 +55,46 @@ FEATURE PLANNING                                        │
              │                                          │
              ↓                                          │
 SCENARIO / USER-JOURNEY PLANNING ↔ SELECTED SCREEN      │
+├─ actor / interaction decisions when material          │
 ├─ real paths through Features / Screens / contexts     │
-├─ cross-Feature transitions and Data/context continuity│
-├─ Scenario Requirements                                │
-└─ E2E behavioral contract                              │
+├─ Feature Results / continuity                         │
+├─ journey decisions: one column per path               │
+├─ Scenario Requirements beside owning journey behavior │
+└─ Benefit closure                                      │
              │                                          │
              └── consistency findings may revise ───────┘
 
 ↓
-IMPLEMENTATION DISCOVERY
-├─ Aggregate Discovery when semantic state/invariants require it
-├─ Shared Capability Discovery when reusable non-end-to-end responsibility is real
-└─ selected Slice / Aggregate / Shared owner planning
+OPTIONAL WORKING IMPLEMENTATION PLANNING
+├─ Slice Discovery + non-persistent Slice Planning
+│  ├─ whole-Feature UI / entry / application-service / Domain /
+│  │  Shared / persistence / cross-cutting realization map
+│  ├─ Feature Step + BR-* → candidate realization calls
+│  └─ whole-Feature integration-test sketches
+└─ non-persistent Aggregate Planning when Domain design is needed
+   ├─ Domain classes + high-level state
+   ├─ candidate semantic method
+   │  → literal Domain unit tests immediately below
+   └─ future/evolution impact without inventing OPEN details
 
 ↓
+IMPLEMENTATION + PROOF
+↓
+working Slice/Aggregate plans are deleted by default when no longer useful
+
+↓ when durable owner-local constraints are independently useful
 OWNER-LOCAL REQUIREMENTS DISCOVERY
 ├─ Correct Realization        ↔ Correct Proof
 ├─ Local Reasoning            ↔ Proof Local Reasoning
 └─ Evolution Fitness          ↔ Proof Evolution Fitness
-
 ↓
-structured Production + Proof Requirements
+durable Production + Proof Requirements
 ↓
-TDD / Exact Realization
-↓
-production/test source
-↓
-executed automated/practical Evidence
+source/tests + executed automated/practical Evidence
 ↓
 narrow revalidation when Evidence challenges accepted meaning
 ```
+
 
 This is an authority and directed-discovery map, not a mandatory waterfall. Work may begin from a Feature, from a Scenario/journey, or from Screen/interaction pressure when that is the natural source of understanding. The resulting Feature, Scenario and Screen meanings must eventually become mutually consistent.
 
@@ -155,9 +163,19 @@ Feature = behavioral side
 Slice   = end-to-end implementation side
 ```
 
-Therefore Feature Planning establishes a **Slice boundary hypothesis** at the same time it selects the Feature boundary. There is no mandatory separate Slice Discovery phase.
+Therefore Feature Planning establishes a **Slice boundary hypothesis** at the same time it selects the Feature boundary.
+
+There is no mandatory additional methodology phase called Slice Discovery. When exact implementation planning is useful, **Slice Discovery + non-persistent Slice Planning** is one optional working activity under DOC-UC-03.
 
 The same boundary check is repeated later during Slice/implementation planning when stronger implementation Evidence exists.
+
+The public application entry for a Feature Slice is normally a **simple application service** with semantic methods and typed semantic arguments/results:
+
+```text
+service.semanticOperation(...)
+```
+
+Do not require a `CommandBus`, dispatcher, mediator, generic command handler, `execute(command)`, `dispatch(command)` or `*Command` DTO merely to invoke a Feature. Introduce a request/value object only when its fields form one meaningful semantic value.
 
 ### Slice independence
 
@@ -200,6 +218,22 @@ Only a genuinely distinct Feature boundary implies a new Slice.
 
 A **Behavior Requirement** is an implementation-independent must-hold statement about Feature behavior.
 
+Every durable normative Feature Behavior Requirement has a stable `BR-*` identity. The Feature owner is the sole canonical owner of its normative text. Downstream Slice/Aggregate/Proof planning references the `BR-*` identity; it does not copy the Requirement statement.
+
+Prefer the shortest unambiguous logical form, for example:
+
+```text
+A ∧ B ⇒ C
+state = X → operation → state = Y
+fix A → prove B → mutate C → prove D → Success
+retry(uncertain) ⇒ same identity
+A < C
+B < C
+order(A,B) = OPEN
+```
+
+If correctness depends on order, the order is itself normative. Do not silently make incidental implementation order required.
+
 It is not required to be atomic, unordered or independent. A Requirement may naturally be a:
 
 ```text
@@ -221,7 +255,11 @@ Related Requirements may remain grouped/ordered when that preserves meaning. The
 
 Semantic information/state needed, observed, produced or changed by Feature behavior.
 
-Feature Data is not automatically a DTO, class, database row, Aggregate, API payload or implementation field. Behavior Requirements Discovery and Feature Data Discovery are deliberately bidirectional: behavior reveals Data needs, and Data meaning reveals missing behavior.
+Feature Data is not automatically a DTO, class, database row, Aggregate, API payload or implementation field.
+
+In the preferred compact Feature representation, Data stays **inside `Expected application behavior` beside the behavior it informs**, usually as one small Data table before the Main path. Do not create a detached Data catalog merely because a template once had a `Feature Data` heading.
+
+Behavior and Data discovery remain bidirectional: behavior reveals Data needs, and Data meaning reveals missing behavior.
 
 ### Feature Implementation Concern
 
@@ -296,6 +334,33 @@ terminal user/application Result / Benefit closure
 
 Scenario may summarize the expected/visible behavior needed to understand one journey step, but it does not become a second authority for Feature internals. Full Feature-local validation, detailed branches/recovery, Behavior Requirements, Feature Data and Feature Implementation Concerns stay with the Feature owner unless they materially affect cross-Feature consistency. Repeating a Feature Result is intentional when that Result is the semantic interface with the surrounding journey.
 
+Actor/interaction-level journey truth belongs in Scenario when it is material to how Features are used. An actor may be a human user, ChatGPT/AI acting as the application user, an external system, or the application for a meaningful automatic transition.
+
+Scenario may own:
+
+```text
+actor
+→ command / instruction / selection
+→ Feature invocation
+→ visible Result
+→ actor decision / interpretation
+→ next Feature / external context
+```
+
+Actor identity is worth stating only when it changes input, decision, authority, continuity or interpretation.
+
+Canonical boundary:
+
+```text
+Scenario / actor
+= why and what the user/AI decides to pass/use/interpret
+
+Feature
+= what the application does with already-supplied input at its semantic application boundary
+```
+
+If the application merely consumes free-form wording or a choice, that wording/choice stays Scenario-owned rather than becoming invented structured Feature Data.
+
 A Scenario is not a mandatory chronological parent of every Feature. Valid planning patterns include:
 
 ```text
@@ -340,9 +405,23 @@ Do not create frontend/backend Slices merely because a Feature crosses UI and ba
 
 ### Aggregate / Domain owner
 
-An Aggregate owns coherent semantic identity, state, lifecycle, invariants and consistency. Aggregate Discovery asks what must remain semantically correct together; it is not a global upfront class model.
+An Aggregate owns coherent semantic identity, state, lifecycle, invariants and consistency.
 
-Feature Implementation Concerns, Feature Data and known Evolution Steps are explicit Sources for Aggregate Discovery because feasibility/state concerns may reveal identity/lifecycle/consistency boundaries.
+**Aggregate Planning** is the optional non-persistent working activity used to design that Domain realization before implementation. It is not the durable Domain owner itself.
+
+Aggregate Planning asks what must remain semantically correct together, which Domain class owns it, what high-level state/method boundary is needed, and what literal Domain unit tests prove that method's rules. It is not a global upfront class model.
+
+Feature Main-path Steps + attached `BR-*`, Feature implementation concerns, Scenario Requirements and known Evolution Steps are Sources for Aggregate Planning because they reveal identity/lifecycle/consistency boundaries.
+
+Default lifecycle:
+
+```text
+plan Domain realization
+→ implement + prove
+→ delete Aggregate Planning artifact when no longer useful
+```
+
+If durable Domain/architecture/proof documentation remains useful later, create or update that separate owner for its own purpose; do not promote the planning file by default.
 
 ### Shared Implementation Capability
 
@@ -560,93 +639,106 @@ Later Evidence may challenge Feature, Scenario, Screen, Slice, Aggregate, Shared
 
 ### Goal
 
-Keep one selected Scenario understandable as a real user/application journey through independently owned Features, Screens and external contexts; verify their composition closes an Application Benefit; own genuine cross-Feature / cross-Screen Scenario Requirements without duplicating Feature internals.
+Keep one selected Scenario understandable as a real user/application journey through independently owned Features, actors, Screens and external contexts; verify their composition closes an Application Benefit; own genuine cross-Feature / cross-Screen Scenario Requirements without duplicating Feature internals.
 
 ### Process
 
 1. Start from a selected/current or planned real journey that contributes to an Application Benefit.
-2. Record the Feature sequence/composition and, for each material journey step, only the useful subset of: input/starting context, journey-level expected/visible behavior, meaningful Result/resulting state, continuity handed to later Features, and Screen/external context.
-3. Keep detailed Feature-local behavior with the Feature owner. Scenario may repeat/summarize a Feature Result or visible effect when needed to understand composition, but should not restate the internal algorithm that produces it.
-4. Discover Scenario Requirements only for behavior that is genuinely cross-Feature/cross-Screen/cross-context.
-5. Check that Feature preconditions can actually arise, Feature Results are truthful, continuity Data/identity/context is preserved, and later Features consume the intended prior state.
-6. Check that the composed journey actually reaches the terminal Result / closes the intended Application Benefit.
-7. Check selected Screens/external contexts support the journey while Screen remains spatial/window authority.
-8. Route material Feature-local feasibility uncertainty into affected Feature Implementation Concerns; keep temporary Scenario-level uncertainty only while cross-Feature ownership is unresolved.
-9. If the journey exposes a missing/merged/split Feature or a poor Slice boundary, return to DOC-UC-13 and re-run the Feature/Slice Boundary Check.
-10. Define E2E proof intent from the Scenario; tests remain proof rather than Scenario authority.
-11. Use DOC-UC-07 when the Scenario/Screen design itself is still being explored and DOC-UC-09 for semantic readability.
+2. Record the Feature sequence/composition and only the journey-level meaning needed to connect it: actor/interaction decision when material, input/starting context, visible Feature behavior/Result, continuity handed to later Features, Screen/external context and terminal Benefit closure.
+3. Keep actor-owned wording, selection and interpretation in Scenario when the application merely consumes it. AI/ChatGPT may be the actor/user.
+4. Keep detailed Feature-local behavior with the Feature owner. Scenario may repeat/summarize a Feature Result or visible effect when needed for composition, but must not restate the Feature's validation/recovery algorithm or canonical `BR-*` text.
+5. For a material journey decision, state one exact question and represent one table column per path. Continue each path vertically until explicit convergence, re-entry, Success or Stop.
+6. Discover Scenario Requirements only for behavior genuinely cross-Feature/cross-Screen/cross-context. Put `SR-*` beside the journey behavior it constrains where practical rather than in a detached catalog.
+7. Check that Feature preconditions can arise, Feature Results are truthful, continuity identity/Data/context is preserved, and later Features consume the intended prior Result.
+8. Check that the journey reaches the terminal Result / closes the intended Application Benefit.
+9. Check selected Screens/external contexts support the journey while Screen remains spatial/window authority.
+10. If the journey exposes a missing/merged/split Feature or poor Slice boundary, return to DOC-UC-13 and re-run the Feature/Slice Boundary Check.
+11. Define E2E proof intent from the Scenario; tests remain proof rather than Scenario authority.
 
 ### Principles
 
 - Feature is the primary behavioral authority; Scenario is the journey composition/consistency owner.
-- Scenario-first is allowed but not mandatory.
-- Feature-first planning must eventually face real journey consistency and Benefit closure.
-- A composite convenience entry may span several Features/Slices without merging their semantic boundaries; record the exception explicitly when this intentionally contradicts a preferred boundary heuristic.
+- Scenario is not a mandatory parent/container of Features.
+- Scenario-first, Feature-first and iterative Feature ↔ Scenario ↔ Screen planning are all valid.
+- Actor ceremony is optional; record actor identity only when semantically useful.
+- Branch columns represent real journey paths, not a second semantic Item type.
 - `1 Scenario = 1 Screen` is not required.
-- Scenario form is proportional: a compact flow/table is enough when it preserves the journey; prose/process detail is allowed when composition would otherwise be unclear.
+- Scenario form is proportional: choose the smallest useful representation.
 
 ---
 
-## DOC-UC-02 — Discover and maintain Domain / Aggregate meaning
+## DOC-UC-02 — Perform non-persistent Aggregate Planning
 
 ### Goal
 
-Place semantic identity, state, lifecycle, invariants and consistency with the correct Domain/Aggregate owner rather than scattering them through Slices.
+Design only the Domain classes/state/method boundaries needed to realize selected semantic Feature behavior, with literal method-local Domain unit-test sketches, without turning the planning artifact into a permanent Domain owner.
 
 ### Process
 
-1. Start from selected Feature behavior, Behavior Requirements and Feature Data.
-2. Inspect relevant Feature Implementation Concerns, especially identity/state/consistency/retry/recovery findings and implementation dependencies.
-3. Inspect relevant Scenario Requirements and known Evolution Steps.
-4. Ask:
-   - what has stable semantic identity;
-   - which state dimensions/lifecycle transitions matter;
-   - which combinations are valid/impossible;
-   - what must remain correct/consistent together;
-   - which behavior is Domain/Aggregate meaning vs application/Slice coordination.
-5. Select or refine Aggregate/Domain boundary only to the depth the selected Feature/Slice materially needs.
-6. Perform owner-local Requirements Discovery through DOC-UC-14 for the selected Aggregate/Domain owner.
-7. If Aggregate evidence challenges the Feature/Slice boundary, return to the same Boundary Check rather than silently compensating in implementation.
+1. Start from exact Feature `Intent`, `Principal Result`, numbered Main-path Steps and the `BR-*` identities attached to those Steps. Inspect relevant Scenario Requirements and known Evolution Steps.
+2. Ask for each relevant Step:
+   - what semantic facts must be remembered, compared or changed;
+   - what must remain mutually consistent;
+   - what lifecycle/partial-state/retry rules are semantic rather than orchestration;
+   - whether the realization belongs to an Aggregate Root, child Entity, Value Object, other Domain Object, or does not belong in Domain at all.
+3. Keep application orchestration, Git/GitHub/filesystem/browser mechanics, UI and generic cross-cutting concerns out of Aggregate Planning; mark them Slice/Shared when relevant.
+4. For each selected Domain class, record only the useful high-level fields/state and typed candidate semantic methods.
+5. Put literal Domain unit tests **immediately after the candidate method they prove**. Tests call Domain objects directly, use concrete values and assertions, and name expected behavior/result rather than the tested class/method.
+6. Express invariant preservation through those literal assertions. Do not create a detached `Preserved invariants` prose catalog.
+7. Plan known future Features/extensions at the same Domain-design depth when their semantic behavior is selected, with an explicit `FUTURE` marker and canonical `EVO-*` identity where one exists.
+8. If future behavior depends on an OPEN product detail, keep only the already-selected semantic boundary and mark the concrete API/test `BLOCKED BY OPEN PRODUCT DETAIL`; do not invent the missing semantics.
+9. If Aggregate evidence challenges the Feature/Slice boundary, return to DOC-UC-13 rather than compensating silently.
+10. After the planned Domain behavior is implemented and proven, delete the Aggregate Planning artifact by default. Create/update a separate durable Domain/architecture/Production↔Proof owner only when it has its own continuing purpose.
+11. Use DOC-UC-14 later when durable owner-local Production/Proof Requirements are independently useful. Planning unit tests do not replace that pass.
 
 ### Principles
 
+- Feature `BR-*` remains semantic authority; Aggregate Planning references IDs instead of copying canonical Requirement text.
+- A Feature may use several Aggregates; one Feature = one Aggregate is not required.
+- One candidate Domain method may realize several Feature Steps; one Step may involve several Domain/non-Domain collaborators.
+- Domain owner answers the semantic rule; it does not own the whole technical execution method.
+- Aggregate Planning is non-persistent by default.
 - No global deep Domain model is required upfront.
-- One Aggregate per Requirement/Feature is not required.
-- Aggregate dependencies do not violate Slice independence.
-- Feature Implementation Concerns are discovery evidence, not automatic Domain truth.
 
 ---
 
-## DOC-UC-03 — Maintain Slice implementation and revalidate Feature/Slice boundary
+## DOC-UC-03 — Perform Slice Discovery / Planning and realize the Feature Slice
 
 ### Goal
 
-Realize one selected Feature as a coherent end-to-end Slice while keeping use-case changes locally understandable and locally changeable.
+Make one selected Feature's complete end-to-end realization understandable from UI/entry through simple application service, Domain/Shared/persistence/cross-cutting collaborators to the Feature Result; use that working plan to implement/prove the Slice, then discard it by default.
 
 ### Process
 
-1. Start from selected Feature behavior, Behavior Requirements, Feature Data, Feature Implementation Concerns, implementation dependencies and relevant Scenario/Screen constraints.
-2. Load relevant Domain/Aggregate and Shared Capability meaning.
-3. Re-run the four-group Feature/Slice Boundary Check with implementation evidence now available.
-4. Confirm one of:
-   - existing Slice unchanged in boundary;
-   - ordinary Slice change;
-   - new/changed Slice Module;
-   - new/changed Slice Branch;
-   - new Entry Adapter/Variant;
-   - Shared Capability extraction;
-   - merge/split/reframe of Feature/Slice requiring upstream revalidation.
-5. Perform owner-local Production ↔ Proof Requirements Discovery through DOC-UC-14.
-6. Realize through TDD where executable proof is credible.
-7. Record only durable owner requirements; exact class/method mechanics remain source authority.
-8. Feed Evidence back into narrow revalidation when assumptions fail.
+1. Start from selected Feature `Intent`, `Principal Result`, exact Main-path Steps, branch tables, attached `BR-*`, material Feature Implementation Concerns and relevant Scenario/Screen constraints.
+2. Re-run the four-group Feature/Slice Boundary Check with stronger implementation evidence. Reopen the Feature boundary upstream if evidence contradicts the hypothesis.
+3. For the **whole Feature**, list candidate classes/collaborators where material:
+   - UI Action/Dialog/ViewModel/Presenter;
+   - entry/handoff/URI adapter;
+   - simple application service;
+   - feature-local coordinator/mapper/result mapping;
+   - Domain Aggregate/Entity/Value Object calls;
+   - repositories/persistence;
+   - Shared Git/GitHub/filesystem/archive/browser capabilities;
+   - cross-cutting ID generation, clock, cancellation, serialization/locking, retry/reconciliation and diagnostics.
+4. Use a simple application-service public boundary with typed semantic arguments/results. Do not introduce CommandBus/dispatcher/mediator/generic `execute(command)` merely as ceremony.
+5. Walk the Feature Main path in exact order. For every Step, show candidate method calls and ownership/layer. A Domain call may appear because the Slice invokes it; do not duplicate its Domain unit tests here.
+6. For a branch, keep one exact Feature decision/question and show path-specific calls plus explicit convergence/re-entry/termination.
+7. End the Feature section with a small set of literal **Feature integration tests** that call the application-service boundary and cover whole meaningful Feature paths. Prefer real Domain/feature-local orchestration and fake/in-memory expensive process/network/browser boundaries.
+8. Integration-test assertions may be grouped by logical meaning such as Feature Result, exact external effect, forbidden side effect, continuity/recovery and branch convergence.
+9. Test names describe expected Feature behavior/result, not internal class/method names.
+10. Plan selected future Features/extensions at the same end-to-end depth with explicit `FUTURE` markers. If an exact future product detail is OPEN, do not invent concrete methods/tests beyond the selected semantic boundary.
+11. Implement and prove the selected Slice.
+12. Delete the Slice Discovery/Planning artifact by default once the planned implementation/proof is complete. Durable Slice/Shared/ADR/Production↔Proof documentation, if useful, is a separate owner with a separate long-lived purpose.
 
 ### Principles
 
+- Slice Discovery + Slice Planning is one optional working activity, not a mandatory new semantic phase.
+- Feature `BR-*` remains semantic authority; this plan references identities instead of copying Requirement text.
 - Slice independence means change locality, not dependency absence.
-- A material change to one use case should mainly touch its own Slice plus owners whose meaning genuinely changed.
+- Integration tests here prove Feature realization; Domain unit tests belong to Aggregate Planning/source tests.
+- Planning artifacts may be retained temporarily as examples/migration aids, but retention does not make them authoritative.
 - Do not create separate frontend/backend/database Slices by technical layer.
-- Module/branch/adapter is preferable to a new Slice when intent/result remain one and variation localizes well.
 
 ---
 
@@ -876,38 +968,58 @@ Turn selected behavior and production Requirements into convincing proof without
 
 ### Goal
 
-Define one coherent Feature behavior that contributes to an Application Benefit and establish enough implementation understanding to treat the Feature as a credible end-to-end Slice boundary hypothesis.
+Define one coherent Feature as the primary behavioral authority, using a compact step-centered representation, and establish enough implementation understanding to treat it as a credible end-to-end Slice boundary hypothesis.
 
 ### Process
 
-1. Start from relevant Application Benefit / task or from a Feature candidate discovered through Scenario/Screen work; use DOC-UC-07 when alternatives are still being explored.
-2. State the Feature intent and principal Result / Result family.
-3. Describe observable expected application behavior in application-language, including ordered steps, meaningful resulting state, branches/failures/retry/recovery. Semantically relevant technical ecosystem concepts are allowed when they are part of what the application must establish; exact code mechanics are not the default documentation level.
-4. Discover Behavior Requirements and Feature Data bidirectionally.
-5. Record material Feature Implementation Concerns: feasibility, dependencies, options, platform/external constraints, partial-state/recovery risks, proofability, Evolution Kind/Forced Migration pressure and Slice-shape observations.
-6. Use implementation-aware reasoning deeply enough to validate feasibility and the Feature/Slice boundary, but do not prematurely turn Feature Planning into class/method design.
-7. If material feasibility is unresolved, prototype/research enough to decide whether the behavior is credible; revise the planned behavior when capability reality contradicts it.
-8. Inspect relevant known Evolution Steps.
-9. Run the four-group Feature/Slice Boundary Check.
-10. Select the current Feature boundary and Slice boundary hypothesis, or mark the boundary explicitly unresolved when one material concern still blocks selection.
-11. Feed implementation concerns and dependencies downstream; do not rewrite them as Requirements unless downstream reasoning actually selects them.
+1. Start from relevant Application Benefit/task or a Feature candidate discovered through Scenario/Screen work; use DOC-UC-07 while alternatives remain unresolved.
+2. State one Feature `Intent` and one principal meaningful `Result` / Result family.
+3. Under `Expected application behavior`, record the smallest useful semantic Data representation, normally one compact Data table.
+4. Make the numbered **Main path** the primary Feature representation:
+
+```markdown
+| Behavior step | Requirement(s) |
+|---|---|
+| **1. <semantic behavior step>** | `BR-...` — <compact normative statement> |
+```
+
+One row is one semantic behavior step. A row may own one or several `BR-*`.
+5. Give every durable normative Behavior Requirement a stable `BR-*` identity. Keep canonical Requirement text only in the Feature owner, directly beside the behavior/branch it constrains where practical.
+6. Write Requirements maximally tersely and logically. Correctness-critical order is normative; explicitly mark partial order/OPEN order rather than silently fixing implementation convenience.
+7. For a material branch inside a Step:
+   - state one exact decision/question;
+   - use one table column per path/variant;
+   - continue ordered actions vertically inside each path;
+   - end with explicit convergence to a later Step, re-entry/retry, Success or Stop.
+   Do not introduce a separate persistent Behavior-Step/Branch semantic Item merely for planning.
+8. Keep actor/user/AI reasoning and free-form wording in Scenario when the application merely consumes that supplied input. Feature behavior starts at the semantic application boundary: what the application accepts, validates, establishes, changes and returns.
+9. Record only material Feature Implementation Concerns needed for feasibility, dependencies, recovery risk, proofability, Domain/Shared signals, known Evolution and Slice-boundary reasoning. They are discovery evidence, not normative behavior.
+10. Inspect relevant known Evolution Steps and run the four-group Feature/Slice Boundary Check:
+   - Intent / Principal Result;
+   - Semantic Entry;
+   - Realization Cohesion / Shared Structure;
+   - Development / Proof / Evolution Fitness.
+11. Prefer one Feature/Slice when intent + principal Result family are the same and variation localizes; prefer separate Features/Slices for distinct intent/result or little meaningful shared realization. Transport/button/URI/CLI/REST/handoff alone never defines the boundary.
+12. Select the Feature boundary + Slice boundary hypothesis, or mark the material unresolved detail OPEN.
+13. Feed `Feature + Step N + BR-*` identities downstream to DOC-UC-03 / DOC-UC-02. Downstream planning references the identities and does not reproduce canonical Requirement text.
 
 ### Principles
 
-- Feature Planning is behavioral planning informed by implementation reality, not exact code planning.
-- One intent/result may legitimately have multiple validation/failure/completion paths.
+- Feature Planning is behavioral authority informed by implementation reality, not class/method design.
+- Scenario is not a mandatory Feature parent.
+- Templates are adaptable examples, not schemas.
+- Feature/Slice boundary is a hypothesis that later implementation evidence may reopen.
 - New transport alone does not create a Feature.
 - Existing Feature/Slice extension is normal.
-- Do not split merely to make units smaller; do not merge when the result is pervasive branching and poor change locality.
-- Prefer boundaries that keep use-case change local across known evolution.
+- Do not split merely to make units smaller; do not merge into pervasive branching with poor change locality.
 
 ### Owners used by this process
 
 - app-level Benefit/context owner where present;
-- Feature owner/section selected by documentation representation;
+- the Feature owner itself;
 - relevant Scenario and Screen owners;
 - known Evolution Step owner/map;
-- existing Domain/Slice/Shared owners and source/test Evidence when needed for reality checks.
+- existing Domain/Slice/Shared owners and source/test Evidence for feasibility/boundary checks only.
 
 ---
 
@@ -917,14 +1029,16 @@ Define one coherent Feature behavior that contributes to an Application Benefit 
 
 Discover durable Production and Proof Requirements for one selected Slice/Aggregate/Shared owner without forcing atomic Item ontology or a rigid questionnaire.
 
+This is a later durable owner-local pass. Literal integration/unit tests sketched in non-persistent Slice/Aggregate Planning are **boundary/design evidence** and do not replace DOC-UC-14.
+
 ### Sources
 
 Always inspect the relevant subset of:
 
 ```text
 current behavioral meaning
-Behavior Requirements
-Feature Data
+Feature Step + referenced BR-* identities
+semantic Data in Expected application behavior
 Feature Implementation Concerns
 implementation dependencies
 Scenario / Screen Requirements
@@ -980,14 +1094,17 @@ Production and Proof discovery are intentionally bidirectional. Proof difficulty
 ## Non-duplication and ownership rules
 
 1. Application Benefits justify behavior; do not copy them into every downstream owner unless needed for local readability.
-2. Feature owns Feature behavior; Scenario owns real journey/composition; Screen owns spatial/window meaning; Aggregate owns semantic consistency; Slice owns Feature realization; Shared Capability owns reusable non-end-to-end implementation meaning; tests/Evidence prove rather than redefine.
-3. Feature Implementation Concerns are reusable discovery memory. Downstream discovery must inspect them rather than repeat feasibility work from zero.
-4. One concern may inform several downstream Requirements; it is not automatically copied verbatim into them.
-5. Requirements may be structured/related; do not atomize away algorithms, invariants or ordering merely to fit a list.
-6. Cross-owner dependencies are normal. Optimize change locality rather than dependency elimination.
-7. Selected Feature/Slice boundaries are hypotheses supported by current evidence and may be revalidated.
-8. Current product documents using legacy FI/BI/Item forms remain authoritative for their existing meaning until separately migrated.
-
+2. Feature owns canonical Feature behavior and `BR-*` text; Scenario owns real journey/actor composition; Screen owns spatial/window meaning; durable Aggregate owns semantic consistency; durable Slice owns realized Feature implementation; Shared Capability owns reusable non-end-to-end implementation meaning; tests/Evidence prove rather than redefine.
+3. Slice Discovery/Planning and Aggregate Planning are **working artifacts, non-persistent by default**. They may reference Feature Step + `BR-*`, but do not become semantic owners and should normally be deleted after implementation/proof.
+4. If durable Domain/Slice/Shared/ADR/Production↔Proof documentation remains useful after planning, create/update that separate owner for its own purpose; do not mechanically preserve/promote the planning file.
+5. Downstream planning never copies canonical `BR-*` text. Requirement identity is the trace key.
+6. Feature Implementation Concerns are reusable discovery memory, not automatic Requirements.
+7. One concern may inform several downstream Requirements; it is not automatically copied verbatim into them.
+8. Requirements may be structured/related; do not atomize away algorithms, invariants or ordering merely to fit a list.
+9. Cross-owner dependencies are normal. Optimize change locality rather than dependency elimination.
+10. Selected Feature/Slice boundaries are hypotheses supported by current evidence and may be revalidated.
+11. Future planning may be implementation-depth when semantic behavior is selected, but OPEN product details must remain blocked; downstream design must not invent them.
+12. Current product documents using legacy FI/BI/Item forms remain authoritative for their existing meaning until separately migrated.
 
 ### Stable Documentation Use Case identity compatibility
 
@@ -997,8 +1114,8 @@ Current lineage after this refactor:
 
 ```text
 DOC-UC-01  Scenario / journey composition and consistency
-DOC-UC-02  Domain / Aggregate discovery
-DOC-UC-03  Slice implementation
+DOC-UC-02  non-persistent Aggregate Planning
+DOC-UC-03  Slice Discovery / non-persistent Slice Planning + realization
 DOC-UC-04  Shared Implementation Capability
 DOC-UC-05  evolution-aware implementation architecture
 DOC-UC-06  current implementation inspection
@@ -1014,14 +1131,19 @@ DOC-UC-14  owner-local Production ↔ Proof Requirements Discovery
 
 ## Representation rules
 
-- Prefer the smallest form that preserves meaning.
-- Feature is the primary behavioral authority. Scenario references Features and owns composition/consistency; physical co-location is allowed only when that authority boundary remains unambiguous.
-- Separate owner files when responsibility, evolution, reuse or maintenance pressure makes them independently useful.
-- Tables are useful for coverage/navigation; prose/process forms are better when ordering/branching/invariants matter.
-- Free-form Feature Implementation Concerns are intentional; do not turn them into a rigid schema.
+- Prefer the smallest form that preserves selected meaning.
+- Feature is the primary behavioral authority. Prefer compact semantic Data + a two-column Main path (`Behavior step | Requirement(s)`) with stable `BR-*` beside the owning behavior.
+- For a material Feature/Scenario decision, use one exact question and one column per path; show path continuation and convergence explicitly.
+- Scenario references Features and owns actor/journey composition/continuity without duplicating Feature internals.
+- Actor fields are optional; use them only when actor identity/decision materially changes the journey.
+- Separate durable owner files when responsibility, evolution, reuse or maintenance pressure makes them independently useful.
+- Slice Discovery/Planning and Aggregate Planning are temporary working artifacts, not durable owners.
+- In Aggregate Planning, place literal Domain unit tests immediately after the candidate method they prove; no detached invariant catalog.
+- In Slice Planning, use whole-Feature integration tests through a simple application-service boundary; no Domain unit-test catalog.
+- Test names describe expected behavior/result rather than tested class/method names.
+- Future Features/extensions may be planned deeply when selected, but exact OPEN details remain blocked.
 - Evolution Step notation may vary as long as complete target meaning, Evolution Kinds and existing/new/changed/removed effects are clear where material.
 - Templates are **recommended forms/examples, not schemas**. Select, omit, combine or reshape sections according to the semantic meaning being preserved; do not copy every heading mechanically or manufacture `N/A`.
-- The underlying authority/boundary questions remain required where material even when the recommended presentation is adapted.
 
 ## Integration rule for existing Replacement Package App documentation
 
@@ -1031,13 +1153,13 @@ When a current Scenario/Domain/Slice/Screen/testing owner is next migrated:
 
 1. preserve its accepted current/planned behavior first;
 2. identify Feature boundaries with the four-group check instead of mechanically converting each old FI to a Feature;
-3. establish Feature owners as the primary behavioral authority, including meaningful ordered application behavior, Results, Behavior Requirements, Feature Data and Implementation Concerns;
-4. recompose Scenario owners around Feature sequence, journey-level expected/visible behavior where useful, Resulting state, continuity, Screen/external context and Benefit closure without copying Feature internals;
-5. convert Behavior Item meaning into Feature-local Behavior Requirements or genuine cross-Feature Scenario Requirements by meaning rather than 1:1 textual mapping;
-6. carry existing feasibility/realization dependencies into Feature Implementation Concerns where they belong;
-7. keep Domain/Aggregate semantic invariants with their owners;
-8. re-run Slice boundaries with implementation evidence, allowing module/branch/entry-adapter extension;
-9. convert durable implementation/test Items into Production/Proof Requirements by meaning, not prefix;
-10. preserve Evolution Steps, add/retain applicable Evolution Kinds, keep migration inside Step/Impact machinery and strengthen Steps toward complete target Feature/Scenario states where material;
+3. establish Feature owners as primary behavioral authority using compact semantic Data + numbered Main-path rows + stable `BR-*` beside owning behavior;
+4. recompose Scenario owners around Feature Results, actor decisions where material, continuity, Screen/external context and Benefit closure without copying Feature internals;
+5. convert old Behavior Item meaning into Feature-local `BR-*` or genuine cross-Feature `SR-*` by meaning rather than 1:1 textual mapping;
+6. keep Feature-local feasibility/realization concerns as implementation concerns rather than normative behavior;
+7. use DOC-UC-03 when exact end-to-end Slice planning is useful; treat its working artifact as disposable;
+8. use DOC-UC-02 when Domain class/state/method design is useful; keep method-local unit tests and treat the Aggregate plan as disposable;
+9. create/update durable Domain/Slice/Shared/Production↔Proof owners separately only when they retain independent long-lived purpose;
+10. preserve known Evolution Steps and mark future behavior explicitly; never concretize an OPEN future detail downstream;
 11. update derived maps/testing navigation only after semantic owners are reconciled;
 12. do not modify unrelated product owners merely for terminology consistency.

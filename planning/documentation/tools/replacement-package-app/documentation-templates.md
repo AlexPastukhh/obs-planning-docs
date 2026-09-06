@@ -13,76 +13,91 @@ Target semantic types are `Feature`, `Behavior Requirement`, `Scenario Requireme
 
 ## Template — Feature planning
 
-A Feature is the primary behavioral authority for its use-case boundary. Prefer an independently referenceable Feature owner/section; physical co-location with another document is acceptable only when Feature authority remains unambiguous and separate maintenance pressure does not justify another file.
+A Feature is the primary behavioral authority for its use-case boundary. Prefer an independently referenceable Feature owner/section. Keep normative `BR-*` text here; downstream planning references IDs only.
+
+Use the smallest form that preserves meaning. A compact target shape is:
 
 ```markdown
-### F-RPKG-<SEMANTIC-NAME> — <readable Feature name>
+# F-RPKG-<SEMANTIC-NAME> — <readable Feature name>
 
-Intent:
+## Intent
+
 <one application/user intent>
 
-Application Benefit / contribution:
-<why this Feature matters>
+## Principal Result
 
-Principal Result / Result family:
-<meaningful application/user result>
+<one meaningful Result / Result family>
 
-Behavior:
-<context / input>
-→ <ordered application-visible step>
-→ <meaningful semantic state/effect>
-→ <branch / validation / retry / recovery when material>
-→ <principal Result / resulting state>
+## Expected application behavior
 
-Behavior may name semantically relevant ecosystem concepts (branch, Issue, package, commit, PR, persisted work identity, external result) when they are part of what the application must establish; keep exact classes/methods/private code paths downstream.
+### Data
 
-#### Behavior Requirements
+| Kind | Data |
+|---|---|
+| Input | <semantic input/state> |
+| Result | <semantic result identity/state> |
 
-##### BR-RPKG-<SEMANTIC-NAME> — <readable requirement>
-Requirement:
-<rule / invariant / algorithm / protocol / state-machine fragment / contract>
+### Main path
 
-Reason:
-<why it must hold, when useful>
+| Behavior step | Requirement(s) |
+|---|---|
+| **1. <semantic behavior step>.** | `BR-RPKG-...` — `<compact normative statement>` |
+| **2. <semantic behavior step>.** | `BR-RPKG-...`, `BR-RPKG-...` — `<compact normative statements>` |
 
-#### Feature Data
-- `<semantic concept>` — <meaning / role>
+Decision after Step 2: **<one exact question>?**
 
-#### Feature Implementation Concerns
-- Feasibility: ...
-- Candidate / rejected approaches: ...
-- Implementation dependencies: ...
-- Platform / external constraints: ...
-- Partial-state / recovery concern: ...
-- Aggregate / Shared signals: ...
-- Proof concern: ...
-- Slice boundary observation: ...
-- Known Evolution / Evolution Kind / Forced Migration pressure: ...
+| Path A | Path B | Path C |
+|---|---|---|
+| <action A1> | <action B1> | <action C1> |
+| <action A2> | <action B2> | <action C2> |
+| → Step 3 | → Step 3 | Stop |
 
-Free form is preferred when a list/table would distort the reasoning.
+### Main path — continued
 
-#### Feature / Slice Boundary Check
+| Behavior step | Requirement(s) |
+|---|---|
+| **3. <common semantic behavior>.** | `BR-RPKG-...` — `<compact normative statement>` |
 
-1. Intent / principal Result:
-   <same vs distinct intent/result evidence>
-2. Semantic entry:
-   <new semantic invocation vs transport/adapter>
-3. Realization cohesion / shared structure:
-   <shared path, module/branch/adapter vs separate path>
-4. Development / proof / evolution fitness:
-   <change locality, proof locality, known Evolution Steps>
+## Feature Implementation Concerns
+
+<only material feasibility / dependency / recovery / proof / Domain / Shared /
+Evolution / Feature-Slice boundary reasoning>
+
+## Feature / Slice Boundary Decision
+
+Intent / Principal Result:
+<evidence>
+
+Semantic Entry:
+<semantic invocation vs transport/adapter>
+
+Realization Cohesion / Shared Structure:
+<shared path vs localized variation>
+
+Development / Proof / Evolution Fitness:
+<change locality, proof locality, known Evolution Steps>
 
 Boundary hypothesis:
-<one existing/new Feature ↔ one Slice; module/branch/adapter; or unresolved>
+<one Feature ↔ one Slice | module/branch/entry adapter | separate Feature | OPEN>
 ```
 
-A compact Feature may need only intent, Result, short behavior and one implementation/boundary note.
+Rules:
+
+- one Main-path row = one semantic behavior step;
+- the second column may contain one or several stable `BR-*`;
+- keep each canonical normative Requirement statement beside the behavior it constrains;
+- Data stays compactly inside `Expected application behavior`; do not create a detached Data catalog by default;
+- if order itself is required, state that order normatively;
+- one exact branch decision/question owns one column per path; paths may span several rows and explicitly converge;
+- do not create persistent `Behavior Step`, `BS-*`, branch Item or requirement-group ontology merely for discovery;
+- actor/user/AI wording or choice belongs in Scenario when the application simply consumes it;
+- exact classes/methods remain downstream.
 
 ---
 
 ## Template — Scenario / real user journey
 
-Use as much of this form as the journey needs. A compact process/table is often enough; use step sections when visible behavior, Result/continuity or Screen context needs explanation.
+Use only the fields that carry journey meaning. `Actor` and `Actor interaction / decision` are optional/recommended when actor identity or choice affects input, authority, interpretation or continuity.
 
 ```markdown
 # SCN-RPKG-<SEMANTIC-NAME> — <readable Scenario name>
@@ -90,62 +105,226 @@ Use as much of this form as the journey needs. A compact process/table is often 
 Status: <current | planned target | migration>
 
 ## Need / Application Benefit
-<what user/application need this journey satisfies>
+
+<what useful result this journey closes>
 
 ## Starting context
-<where the journey begins>
 
-## Journey
+<where the journey starts>
 
-### Step — <readable journey step>
+## Main journey
 
-Feature:
-`F-RPKG-<FEATURE-A>`
+| Journey step | Actor / interaction | Feature / visible behavior | Result / continuity | Requirement(s) |
+|---|---|---|---|---|
+| **1. <journey step>** | <human / ChatGPT / application / external system + material choice> | `F-RPKG-...` — <only visible behavior needed for composition> | <Feature Result + exact continuity> | `SR-RPKG-...` when genuinely cross-Feature |
+| **2. <journey step>** | <decision/interpretation if material> | `F-RPKG-...` | <Result / continuity> | — |
 
-Input / starting context:
-<what enters this Feature from the journey>
+Decision after Step 2: **<one exact journey question>?**
 
-Expected / visible behavior:
-<only the Feature behavior needed to understand this Scenario step; do not copy Feature internals>
+| Path A | Path B | Path C |
+|---|---|---|
+| <actor/Feature action A1> | <actor/Feature action B1> | <actor/Feature action C1> |
+| <action A2> | <action B2> | <action C2> |
+| → Step 3 | → Step 3 | Stop |
 
-Resulting state / Result:
-<what becomes true after this Feature; not limited to an outbound payload>
+### Main journey — continued
 
-Continuity to next step:
-<identity / Data / context relied on later>
-
-Screen / external context:
-<where the step happens>
-
-Scenario-specific conditions:
-<cross-Feature / cross-Screen / cross-context meaning only>
-
-### Step — <next Feature or external-context step>
-...
-
-Branches / retry / re-entry:
-- <journey-level branch only when useful>
-
-## Scenario Requirements
-
-### SR-RPKG-<SEMANTIC-NAME> — <readable cross-Feature requirement>
-Requirement:
-<cross-Feature / cross-Screen / context-continuity rule>
-
-Reason:
-<why journey correctness needs it>
+| Journey step | Actor / interaction | Feature / visible behavior | Result / continuity | Requirement(s) |
+|---|---|---|---|---|
+| **3. <common journey step>** | ... | `F-RPKG-...` | ... | `SR-RPKG-...` if needed |
 
 ## Terminal Result / Benefit closure
+
 <why the composed Features satisfy the intended Benefit>
 
 ## E2E Proof Intent
-<what must be proven end-to-end; exact tests remain downstream proof>
+
+<what journey truth must be proven end to end>
 
 ## Relevant Evolution Steps
+
 - `EVO-RPKG-...`
 ```
 
-Feature owners remain authoritative for detailed Feature behavior. Scenario may intentionally repeat a Feature Result or summarize visible behavior because Result/visible effect is the Feature's semantic interface with the journey; it should not reproduce the internal path that produces that Result.
+Boundary reminder:
+
+```text
+Scenario / actor
+= why and what the user/AI decides to pass/use/interpret
+
+Feature
+= what the application does with already-supplied input
+```
+
+Feature owners remain authoritative for Feature-local Data, branches, recovery and `BR-*`. Scenario may repeat a Feature Result or summarize visible behavior only to make composition/continuity understandable.
+
+---
+
+## Template — Slice Discovery + non-persistent Slice Planning
+
+This is a **working implementation-planning artifact**, not a durable Slice owner.
+
+````markdown
+# <Feature> — Slice Discovery + Non-Persistent Slice Planning
+
+Status: working implementation plan
+Persistence: non-persistent by default
+Semantic authority: Feature / Scenario owners
+
+## Whole-Slice candidate class map
+
+| Kind | Candidate class | Role |
+|---|---|---|
+| UI / entry | ... | ... |
+| Application service | ... | ... |
+| Feature-local | ... | ... |
+| Domain | ... | ... |
+| Repository / persistence | ... | ... |
+| Shared | ... | ... |
+| Cross-cutting | ... | ... |
+| Presentation | ... | ... |
+
+## Application-service entry
+
+```text
+SemanticFeatureService.semanticOperation(
+    <typed semantic arguments>
+) -> <typed Feature Result>
+```
+
+## Step-by-step realization
+
+| Feature Step / BR | Candidate realization calls | Layer / responsibility |
+|---|---|---|
+| **Step 1** — `BR-...` | `Entry.read()` → `Service.semanticOperation(...)` → ... | ... |
+| **Step 2** — `BR-...`, `BR-...` | ... | ... |
+
+## Feature integration tests
+
+```text
+test("<expected Feature behavior/result>") {
+    // Arrange
+    <real application service + real Domain where practical>
+    <fake/in-memory expensive external boundaries>
+
+    // Act
+    let result = service.semanticOperation(...)
+
+    // Assert — Feature Result
+    ...
+
+    // Assert — exact external effect
+    ...
+
+    // Assert — forbidden effect / continuity / recovery
+    ...
+}
+```
+
+## Future / Evolution planning
+
+Canonical Evolution: `EVO-...` when selected.
+
+- `FUTURE FEATURE` / `FUTURE EXTENSION`: ...
+- `BLOCKED BY OPEN PRODUCT DETAIL`: <what concrete method/test must not be invented>
+````
+
+Rules:
+
+- map the Feature end to end, including UI/entry, simple application service, Domain, persistence, Shared, cross-cutting and presentation where material;
+- show concrete candidate calls by Feature Step;
+- no `CommandBus`, dispatcher or generic `execute(command)` requirement;
+- Domain calls may appear, but Domain unit tests do not;
+- integration tests exercise the whole meaningful Feature path through the application-service boundary;
+- test names describe expected behavior/result, not internal methods;
+- after implementation/proof, delete the work-item planning artifact by default;
+- if durable Slice/Shared/ADR/Production↔Proof documentation is useful later, create/update that separate owner.
+
+---
+
+## Template — Aggregate Planning (non-persistent)
+
+This is a **working Domain-design artifact**, not the durable Aggregate owner.
+
+````markdown
+# <Domain class> — Aggregate Planning
+
+Status: working Domain plan
+Persistence: non-persistent by default
+Authority: Feature `BR-*`
+Scope: Domain classes only
+
+Kind: <Aggregate Root | child Entity | Value Object | Domain Object>
+
+## Responsibility
+
+<semantic identity / state / lifecycle / consistency>
+
+## High-level state / fields
+
+```text
+field: SemanticType
+...
+```
+
+## Candidate semantic methods and local unit tests
+
+### Method — `semanticMethod`
+
+```text
+semanticMethod(
+    input: SemanticType
+) -> ResultType
+```
+
+#### Unit tests for this method
+
+```text
+test("<expected Domain behavior/result>") {
+    // Arrange
+    ...
+
+    // Act
+    let result = domain.semanticMethod(...)
+
+    // Assert
+    ...
+}
+```
+
+### Method — `anotherSemanticMethod`
+
+```text
+anotherSemanticMethod(...) -> ResultType
+```
+
+#### Unit tests for this method
+
+```text
+test("<expected Domain behavior/result>") {
+    ...
+}
+```
+
+## Future / Evolution planning
+
+Canonical Evolution: `EVO-...` when selected.
+
+- `FUTURE FEATURE` / `FUTURE EXTENSION`: ...
+- `BLOCKED BY OPEN PRODUCT DETAIL`: <do not invent missing semantics>
+````
+
+Rules:
+
+- start from exact Feature Step + attached `BR-*`;
+- do not copy canonical Requirement text;
+- keep UI/application-service/Git/GitHub/filesystem/browser mechanics out;
+- put each literal Domain unit-test group immediately after the method it proves;
+- invariant preservation belongs in exact assertions rather than a detached `Preserved invariants` section;
+- test names describe expected Domain behavior/result, not class/method names;
+- future planning may be equally deep only where semantic behavior is selected;
+- after implementation/proof, delete the planning artifact by default;
+- durable Domain/architecture/Production↔Proof documentation, when useful, is a separate owner.
 
 ---
 
@@ -390,7 +569,7 @@ The map records rough planning relationships; it does not redefine the Step's qu
 
 ---
 
-## Template — Aggregate / Domain owner
+## Template — durable Aggregate / Domain owner
 
 ```markdown
 # <Aggregate / Domain Object>
@@ -439,9 +618,11 @@ Requirement:
 
 Do not force one Aggregate per Feature/Requirement.
 
+This durable owner is distinct from the non-persistent Aggregate Planning artifact above. Create/maintain it only when durable Domain meaning/requirements need an independent owner.
+
 ---
 
-## Template — Slice owner
+## Template — durable Slice owner
 
 ```markdown
 # SL-RPKG-<SEMANTIC-NAME> — <readable Slice name>
@@ -488,6 +669,8 @@ Requirement:
 ```
 
 A Slice may depend on Aggregate/Shared/external owners. Judge isolation by change locality, not dependency absence.
+
+This durable owner is distinct from non-persistent Slice Discovery/Planning. Do not keep a working Slice plan merely to satisfy this template.
 
 ---
 

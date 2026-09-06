@@ -1828,3 +1828,40 @@ Logging starts only after explicit user instruction; no pre-start history is rec
 - no runtime source implementation, package-application code, commit or push is performed by package production itself.
 
 **APPLIED relation:** successful Apply of package `5de952c1-8cf5-4a0a-987f-1d8c877b5b28` realizes the target state above for still-open ChangeSet `4e7fcebe-494b-4443-bcbc-39a5bbd5202e`.
+
+### LOG-RPKG-079 — Correct methodology ownership and block premature PR-specific planning
+
+**Type:** REVIEW DIFF / PRE-APPROVAL CORRECTION / LOCAL METHODOLOGY OWNERSHIP  
+**ChangeSet:** `4e7fcebe-494b-4443-bcbc-39a5bbd5202e`  
+**ChangeSet Label:** `feature-scenario-aggregate-discovery-methodology`  
+**Corrects Published Commit:** `b9e5702d68e0be478f6ab2f97c586496dbee479a`  
+**Corrects Package:** `5de952c1-8cf5-4a0a-987f-1d8c877b5b28`  
+**Correction Package:** `94c35ea0-cf8f-445a-ad32-41fbc8ec2075`
+
+**Review findings:**
+- selected Feature/Scenario/Slice/Aggregate planning rules were published primarily in a separate `documentation-feature-scenario-slice-aggregate-planning.md` companion even though the local methodology already has canonical process owner `documentation-use-cases.md` and subordinate form owner `documentation-templates.md`;
+- that companion also repeated concrete product Feature/Scenario/`BR-*` meaning already owned by product files, creating unnecessary competing authority;
+- practical Slice/Aggregate examples went beyond the current Finalize Feature's OPEN integration/PR mechanics by inventing PR-specific classes/methods/evidence/tests.
+
+**Selected correction:**
+- move the selected methodology rules into existing stable owners:
+  - `DOC-UC-01` owns actor/journey Scenario composition and column-per-path journey decisions;
+  - `DOC-UC-02` owns non-persistent Aggregate Planning, method-local Domain unit tests, future/OPEN handling and delete-after-proof lifecycle;
+  - `DOC-UC-03` owns Slice Discovery + non-persistent Slice Planning, whole-Slice collaborator mapping, simple application-service entry, Feature-step realization and whole-Feature integration tests;
+  - `DOC-UC-13` owns compact Feature Main-path rows, stable `BR-*`, branch-column representation and Feature/Slice boundary hypothesis;
+  - `DOC-UC-14` remains the later durable Production ↔ Proof Requirements Discovery pass and is not replaced by planning-test sketches;
+- update `documentation-templates.md` with matching compact Feature/Scenario forms plus explicit non-persistent Slice Planning and Aggregate Planning examples;
+- keep `README.md` as navigation/summary only, separate practical examples from product owners, and route methodology authority to `documentation-use-cases.md` + subordinate templates;
+- delete the standalone combined methodology companion rather than preserve a competing methodology/product owner;
+- keep practical Slice/Aggregate files under `examples/` as non-authoritative retained examples only;
+- preserve typed semantic IDs and simple application services; do not introduce CommandBus/dispatcher/generic `execute(command)` ceremony;
+- preserve the selected future integration-PR pressure from `EVO-RPKG-ADOPT-REVIEWED-RESULT-WORKFLOW`, but keep current implementation planning mechanism-neutral and mark PR-specific APIs/state/tests BLOCKED until exact Feature/Evolution semantics are selected.
+
+**Product behavior boundary:**
+- this correction does not change the Feature/Scenario product owners published by package `5de952c1-8cf5-4a0a-987f-1d8c877b5b28`;
+- no new Feature, Scenario, BR, integration mechanism or PR lifecycle semantics are selected here;
+- current Finalize OPEN details remain OPEN.
+
+**Target-State Result:** after successful Apply, methodology/process truth lives in the established canonical methodology owners, templates are subordinate adaptable forms, README is navigation, retained examples are explicitly non-authoritative/non-persistent, and no downstream planning surface invents PR-specific implementation semantics beyond currently selected behavior.
+
+**APPLIED relation:** successful Apply of correction package `94c35ea0-cf8f-445a-ad32-41fbc8ec2075` corrects the still-open ChangeSet `4e7fcebe-494b-4443-bcbc-39a5bbd5202e` after semantic review `NEEDS_CORRECTION`; ChangeSet identity/label/product intent remain unchanged.

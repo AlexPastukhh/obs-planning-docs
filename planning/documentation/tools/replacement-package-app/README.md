@@ -6,7 +6,9 @@ Scope: local consumer for replacement packages, repository-work realization/reco
 
 ## Documentation route
 
-This directory follows the local methodology defined by [`documentation-use-cases.md`](documentation-use-cases.md), [`documentation-templates.md`](documentation-templates.md), and the focused refinement [`documentation-feature-scenario-slice-aggregate-planning.md`](documentation-feature-scenario-slice-aggregate-planning.md).
+This directory follows the local methodology defined by [`documentation-use-cases.md`](documentation-use-cases.md) and its adaptable forms in [`documentation-templates.md`](documentation-templates.md).
+
+`documentation-use-cases.md` is the canonical process/methodology owner. `documentation-templates.md` is subordinate recommended form guidance. Practical files under [`examples/`](examples/) demonstrate the method but are not semantic or methodology authority.
 
 ```text
 Application Benefit
@@ -57,11 +59,17 @@ Known evolution uses `Introduction`, `Expansion`, `Refactoring`, `Forced Migrati
 - [`scenarios/SCN-RPKG-PROVIDE-REPOSITORY-CONTEXT.md`](scenarios/SCN-RPKG-PROVIDE-REPOSITORY-CONTEXT.md) — Snapshot/context Scenario in feature-centered form.
 - [`scenarios/SCN-RPKG-PROVIDE-CURRENT-CHANGE.md`](scenarios/SCN-RPKG-PROVIDE-CURRENT-CHANGE.md) — legacy current ReviewDiff handoff behavior.
 - [`scenarios/planned/SCN-RPKG-COMPLETE-REVIEWED-REPOSITORY-WORK.md`](scenarios/planned/SCN-RPKG-COMPLETE-REVIEWED-REPOSITORY-WORK.md) — selected future reviewed-result workflow; not current implementation authority.
-- [`examples/feature-planning-example.md`](examples/feature-planning-example.md) and [`examples/scenario-planning-example.md`](examples/scenario-planning-example.md) — practical Feature/Scenario methodology examples, not product authority.
-- [`examples/slice-discovery-planning-example.md`](examples/slice-discovery-planning-example.md) — practical example of **non-persistent** end-to-end Slice Discovery / Planning with Feature-level integration tests.
-- [`examples/aggregate-planning-example.md`](examples/aggregate-planning-example.md) — practical example of **non-persistent** Domain-only Aggregate Planning with method-local unit tests.
 - [`screens.md`](screens.md) — selected current spatial/window model.
 - [`evolution-steps-map.md`](evolution-steps-map.md) — rough timing/dependency/readiness between canonical Evolution Steps.
+
+### Practical methodology examples — non-authoritative
+
+- [`examples/feature-planning-example.md`](examples/feature-planning-example.md) — compact Feature/Main-path/`BR-*` example.
+- [`examples/scenario-planning-example.md`](examples/scenario-planning-example.md) — actor/journey/branch/continuity example.
+- [`examples/slice-discovery-planning-example.md`](examples/slice-discovery-planning-example.md) — **non-persistent** end-to-end Slice Discovery / Planning example with Feature-level integration tests.
+- [`examples/aggregate-planning-example.md`](examples/aggregate-planning-example.md) — **non-persistent** Domain-only Aggregate Planning example with method-local unit tests.
+
+These files demonstrate the methodology. They are not product, methodology, durable Slice or durable Domain authority.
 
 ### Domain / implementation owners
 

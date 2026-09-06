@@ -946,26 +946,31 @@ test("retry_after_one_proven_finalize_effect_performs_only_the_missing_effect") 
 
 Canonical selected Evolution: `EVO-RPKG-ADOPT-REVIEWED-RESULT-WORKFLOW`.
 
-- **SELECTED FUTURE EXTENSION — Ensure Integration PR:** the target workflow plans one correct/current integration PR for the exact reviewed published result.
-- Candidate future Slice classes: `IntegrationPullRequestCapability`, `IntegrationPullRequestPresenter`.
-- Candidate future method boundary: `IntegrationPullRequestCapability.ensureCurrent(sourceTip, sourceTree, targetBranch) -> IntegrationPullRequestEvidence`.
-- Exact PR number/state persistence, update-vs-recreate policy and merge mechanics remain **BLOCKED BY OPEN PRODUCT DETAIL**.
-- **FUTURE EXTENSION:** renewed review authority after post-review work-tree change must be supplied by a selected upstream flow; Finalize must continue to fail closed meanwhile.
-
-### Future Feature integration test — Ensure Integration PR
+- **SELECTED FUTURE PRESSURE — Ensure Integration PR:** the Evolution target says the reviewed-result workflow eventually establishes one correct/current integration PR.
+- The current `F-RPKG-FINALIZE-REPOSITORY-WORK` owner still leaves the exact integration mechanism and PR mechanics OPEN.
+- Therefore the implementable Slice boundary remains mechanism-neutral:
 
 ```text
-test("future_reviewed_work_has_one_current_integration_pr_for_the_exact_published_tip_and_target") {
+IntegrationCapability.integrateExactResult(
+    sourceTip: CommitId,
+    sourceTree: GitTreeId,
+    targetBranch: BranchName
+) -> IntegrationAttemptEvidence
+```
+
+- PR-specific classes, methods, persistence identity, update-vs-recreate policy, merge mechanics and PR-specific tests are **BLOCKED BY OPEN PRODUCT DETAIL** until the Feature/Evolution owner selects those exact semantics.
+- **FUTURE EXTENSION:** renewed review authority after post-review work-tree change must be supplied by a selected upstream flow; Finalize must continue to fail closed meanwhile.
+
+### Future integration-boundary test
+
+```text
+test("future_integration_uses_the_exact_reviewed_published_result_and_exact_target_without_assuming_transport") {
     // Arrange
     let env = finalizeFeatureEnvironment(
         publishedTip: "aaaa",
         publishedTree: "tree-A",
-        reviewAuthorityTree: "tree-A",
-        integrationMode: .pullRequest
+        reviewAuthorityTree: "tree-A"
     )
-    env.pullRequests.existing = [
-        pullRequest(id: 7, headTip: "old-tip", base: "main", state: .open)
-    ]
 
     // Act
     let result = env.service.finalize(
@@ -976,13 +981,13 @@ test("future_reviewed_work_has_one_current_integration_pr_for_the_exact_publishe
         CommentText("Finalized exact reviewed result")
     )
 
-    // Assert — future PR readiness
-    assertTrue(result.integrationPullRequestIsCurrent)
-    assertEqual(result.integrationPullRequest.headTip, CommitId("aaaa"))
-    assertEqual(result.integrationPullRequest.baseBranch, BranchName("main"))
+    // Assert — selected semantic boundary
+    assertEqual(env.integration.lastSourceTip, CommitId("aaaa"))
+    assertEqual(env.integration.lastSourceTree, GitTreeId("tree-A"))
+    assertEqual(env.integration.lastTargetBranch, BranchName("main"))
 
-    // Assert — one current PR for this integration intent
-    assertEqual(env.pullRequests.currentFor("work/cs-1", "main").count, 1)
+    // Assert — transport remains abstract
+    assertTrue(result.integrationEvidence.isConfirmed)
 }
 ```
 

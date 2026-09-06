@@ -1290,62 +1290,27 @@ test("finalization_completes_only_when_integration_and_final_comment_are_both_pr
 
 Canonical selected Evolution: `EVO-RPKG-ADOPT-REVIEWED-RESULT-WORKFLOW`.
 
-### SELECTED FUTURE EXTENSION — Ensure Integration PR
+### SELECTED FUTURE PRESSURE — Ensure Integration PR
 
-The canonical `EVO-RPKG-ADOPT-REVIEWED-RESULT-WORKFLOW` plans one correct/current integration PR.
+The Evolution target says the future reviewed-result workflow eventually has one correct/current integration PR.
 
-`IntegrationAttempt` may gain PR-specific semantic evidence:
+Current Domain planning does **not** add PR-specific state or methods because the current Finalize Feature leaves exact integration/PR mechanics OPEN.
 
-```text
-pullRequestId: PullRequestId
-headTip: CommitId
-baseBranch: BranchName
-mergeResultTree: GitTreeId
-```
-
-Candidate future Domain boundary:
+Keep the existing mechanism-neutral semantic boundary:
 
 ```text
-confirmCurrentIntegrationPullRequest(
-    evidence: IntegrationPullRequestEvidence
+confirmIntegration(
+    evidence: IntegrationEvidence
 ) -> WorkFinalization
 ```
 
-Selected invariant:
+Future PR evidence may satisfy that same boundary if its exact semantics are later selected. Reopen the Domain model only if the selected future Feature requires new semantic identity/state/lifecycle beyond the current exact integration proof.
 
-```text
-evidence.headTip == publishedTip
-∧ evidence.baseBranch == targetBranch
-∧ evidence.isCurrent == true
-```
+Status: **FUTURE / PR-SPECIFIC DOMAIN SURFACE BLOCKED BY OPEN PRODUCT DETAIL**.
 
-#### Future unit test for the planned PR boundary
+Do not introduce PR-specific IDs/evidence types, PR lifecycle state, PR-specific Domain methods or PR-specific unit tests until the Feature/Evolution owner selects those exact semantics.
 
-```text
-test("future_current_integration_pr_must_match_the_exact_published_tip_and_target_branch") {
-    // Arrange
-    let finalization = workFinalization(
-        publishedTip: "aaaa",
-        target: "main"
-    )
-    let wrong = IntegrationPullRequestEvidence(
-        pullRequestId: PullRequestId(7),
-        headTip: CommitId("bbbb"),
-        baseBranch: BranchName("main"),
-        isCurrent: true
-    )
-
-    // Act / Assert
-    assertThrows(IntegrationPullRequestEvidenceMismatch.self) {
-        finalization.confirmCurrentIntegrationPullRequest(wrong)
-    }
-}
-```
-
-Status: **FUTURE EXTENSION**. Exact PR persistence, update-vs-recreate policy and merge mechanics remain **BLOCKED BY OPEN PRODUCT DETAIL**.
-
-Current `WorkFinalization` remains mechanism-neutral until this extension is implemented: it owns proof that the exact reviewed published result was integrated into the exact target.
-
+Current `WorkFinalization` remains mechanism-neutral: it owns proof that the exact reviewed published result was integrated into the exact target.
 
 ---
 
