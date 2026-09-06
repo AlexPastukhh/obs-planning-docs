@@ -6,12 +6,13 @@
 
 ## Intent
 
-Realize exact package on exact recorded work branch up to exactly requested extent.
+Apply the exact replacement-package file result to the exact selected repository work without implicitly committing or publishing it.
 
-## Principal Result family
+## Principal Result
 
-`Applied` | `Applied + Committed` | `Applied + Committed + Published`  
-or `AppliedUncommitted` | `CommittedUnpublished` | `PublicationUncertain`.
+`Result<ReplacementPackageState, ApplyFailure>`
+
+Success means the concrete **Apply Package** operation succeeded. `ReplacementPackageState` is returned as the resulting durable state/value; it is not itself a success/failure classification.
 
 ## Expected application behavior
 
@@ -19,61 +20,51 @@ or `AppliedUncommitted` | `CommittedUnpublished` | `PublicationUncertain`.
 
 | Kind | Data |
 |---|---|
-| Invocation | exact package/archive + `packageId`, `repositoryIdentity`, `changeSetId`, `IssueRef`, `workBranch`, `targetBranch`, `expectedSource`, `ApplyExtent` |
-| Optional reviewed path | reviewed `GitTreeId` |
-| Established state | applied tree, commit SHA/tree, remote publication proof/uncertainty |
+| Input | exact package/archive, `packageId`, exact archive content identity, `repositoryIdentity`, `changeSetId`, exact repository/workspace context, expected source |
+| Result | durable `ReplacementPackageState` proving package-file Apply and preserving exact package identity |
+| Failure | typed `ApplyFailure` for the concrete Apply operation |
 
 ### Main path
 
 | Behavior step | Requirement(s) |
 |---|---|
-| **1. Verify exact invocation and applicability.** Require exact work/package identity; workspace at `expectedSource`; all replace/delete checks pass before mutation. | `BR-RPKG-APPLY-EXACT-INVOCATION` — `ApplyInvocation = (repositoryIdentity, changeSetId, IssueRef, workBranch, targetBranch, packageId, expectedSource)`; mutation requires exact equality with selected work/package.<br>`BR-RPKG-APPLY-EXPECTED-SOURCE-AND-APPLICABILITY` — `workspace.commit = expectedSource ∧ all replace/delete expected-base checks pass` before file mutation. |
-| **2. Apply package file result.** Apply exact package bytes and prove applied tree. | `BR-RPKG-APPLY-ORDERED-STAGES` — `Apply → Commit → Publish`; later stage success ⇒ all earlier required stages proven. |
+| **1. Verify exact package/work invocation and applicability before mutation.** | `BR-RPKG-APPLY-EXACT-INVOCATION` — repository work, ChangeSet and package identity must match exactly before mutation.<br>`BR-RPKG-APPLY-EXPECTED-SOURCE-AND-APPLICABILITY` — every replace/delete expected source must be proven applicable before the first package-file mutation. |
+| **2. Apply exact package bytes.** | `BR-RPKG-APPLY-EXACT-PACKAGE` — operations and full payload bytes from the validated package are repository-file mutation authority. |
+| **3. Persist resulting package state.** | `BR-RPKG-APPLY-DURABLE-STATE` — successful Apply records durable `ReplacementPackageState` with exact package identity before later independent operations rely on it. |
 
-Decision after Step 2: **Which `ApplyExtent` path was requested?**
+### Idempotent repeat
 
-| `Apply` | `Apply+Commit` | `Apply+Commit+Publish` |
-|---|---|---|
-| Stop at proven `Applied`. | → Step 3 Commit | → Step 3 Commit |
-| Success | After Commit, stop. | After Commit, continue to Publish decision/path. |
+The same exact archive may return the already-established Applied state without repeating file mutation. Same `packageId` with a different proven archive identity fails. A legacy-migrated package state whose old archive content identity cannot be proven is not rebound to a newly supplied ZIP by guess.
 
-### Main path — continued
+## Feature Implementation Concerns
 
-| Behavior step | Requirement(s) |
-|---|---|
-| **3. Commit exact applied work.** Create one commit containing intended package-applied paths only; prove commit/tree. | `BR-RPKG-APPLY-ORDERED-STAGES` — `Apply → Commit → Publish`; later stage success ⇒ all earlier required stages proven.<br>`BR-RPKG-APPLY-COMMIT-CONTAINS-ONLY-INTENDED-WORK` — `committed paths = intended package-applied work paths`; unrelated paths are not intentionally included. |
+`ReplacementPackageState` is shared continuity between the independent Apply, Commit and Publish operations. It records state/evidence, not operation success.
 
-Decision after Step 3: **Does this path require Publish?**
+The current giant `Core` remains a temporary mechanics adapter. New Feature APIs do not expose `Core.ChangeSet.executionState`, `ApplyExtent`, or a generic Resume operation.
 
-| `Apply+Commit` | `Apply+Commit+Publish` |
-|---|---|
-| Stop at proven `Applied + Committed`. | → Step 4 Publish |
-| Success | Continue |
+## Feature / Slice Boundary Decision
 
-### Main path — continued
+Apply Package has its own semantic entry and Result. Commit Applied and Publish are separately invokable application operations with their own Results and failure vocabularies.
 
-| Behavior step | Requirement(s) |
-|---|---|
-| **4. Publish or reconcile publication.** Push exact committed work-branch tip; report Published only after exact remote tip proof. | `BR-RPKG-APPLY-PUBLISHED-REMOTE-TIP` — `Published ⇔ remote(workBranch).tip = exact committed tip` proven.<br>`BR-RPKG-APPLY-PUBLICATION-UNCERTAINTY` — `push outcome uncertain ⇒ PublicationUncertain → reconcile exact remote workBranch before any push retry`. |
+Automatic `OBS-ACTION apply-package` may compose workspace → Apply → Commit → Publish as Scenario/entry-adapter convenience. That composition does not merge the operation contracts and does not create a generic `Resume-to-extent` Feature.
 
-Decision inside Step 4: **What publication result is proven?**
+Boundary hypothesis: `Apply Replacement Package`, `Commit Applied Package`, and `Publish Applied Commit` are separate Feature operations implemented inside the same replacement-package realization module/Slice while they continue to share one cohesive durable package state.
 
-| Exact remote tip proven | Proven not published | Publication uncertain | Conflicting remote state |
-|---|---|---|---|
-| Preserve exact remote-tip/tree proof. | Return `CommittedUnpublished`. | Return `PublicationUncertain`. | Fail/recovery. |
-| → Step 5 | Later continuation resumes Step 4. | Reconcile exact remote branch before any retry; remain in Step 4 until resolved. | Stop |
+## Evolution Impact
 
-### Main path — continued
+### EVO-RPKG-MODULARIZE-PACKAGE-REALIZATION
 
-| Behavior step | Requirement(s) |
-|---|---|
-| **5. Verify reviewed published result when applicable.** Builder-reviewed path requires published tree = reviewed predicted tree. | `BR-RPKG-APPLY-PUBLISHED-TREE-EQUALS-REVIEWED-TREE` — `Builder-reviewed path ∧ Published ⇒ tree(remote workBranch tip) = reviewed predictedTree`. |
-| **6. Return/resume from last proven state.** Return exact proven state; continuation starts after it; never repeat proven Apply or duplicate Commit. | `BR-RPKG-APPLY-LAST-PROVEN-RESULT` — `requested extent not completed ⇒ Result = last proven state`, including `AppliedUncommitted \| CommittedUnpublished \| PublicationUncertain`.<br>`BR-RPKG-APPLY-RESUME-WITHOUT-REPEATING-PROVEN-STAGES` — `resume(same changeSetId,packageId) ⇒ continue after last proven stage`; no repeated Apply/no duplicate commit.<br>`BR-RPKG-APPLY-REQUESTED-EXTENT` — `extent ∈ {Apply, Apply+Commit, Apply+Commit+Publish}`; execution stops exactly at selected extent. |
+Evolution Kinds for this owner:
+- Refactoring
+- Forced Migration
 
-Transport does not change these steps. Automatic Finalize is Scenario composition after Apply.
+[CHANGED] Remove `ApplyExtent` from this Feature contract.
 
-## Boundary decision
+[REMOVED] Remove `ApplyRequest.Resume`, generic `advance(...)`, requested-terminal-extent semantics and `alreadySatisfied` relative to an extent.
 
-Apply/Commit/Publish are steps of one Feature. Finalize remains separate.
+[CHANGED] Rename package continuity state from `PackageApplication` to `ReplacementPackageState`.
 
----
+[NEW] Exact publication evidence is represented independently by `PublicationObservation`.
+
+Forced Migration:
+Existing target-mode `Core` execution states remain readable through a temporary adapter while new operations write/read `ReplacementPackageState`. The adapter is compatibility mechanics, not the target Feature contract.

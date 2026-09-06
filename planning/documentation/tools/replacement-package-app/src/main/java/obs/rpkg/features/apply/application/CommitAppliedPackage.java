@@ -1,0 +1,85 @@
+package obs.rpkg.features.apply.application;
+
+import java.util.Objects;
+import java.util.Optional;
+
+import obs.rpkg.Core;
+import obs.rpkg.features.apply.domain.CommitAppliedFailure;
+import obs.rpkg.features.apply.domain.CommitAppliedFailureCode;
+import obs.rpkg.features.apply.domain.OperationFailureDisposition;
+import obs.rpkg.features.apply.domain.ReplacementPackageState;
+import obs.rpkg.features.apply.infrastructure.ReplacementPackageStateRepository;
+import obs.rpkg.foundation.result.Result;
+
+/** Application service for the concrete Commit Applied operation. */
+public final class CommitAppliedPackage {
+    private final Core core;
+    private final ReplacementPackageStateRepository states;
+
+    public CommitAppliedPackage(Core core, ReplacementPackageStateRepository states) {
+        this.core = Objects.requireNonNull(core, "core");
+        this.states = Objects.requireNonNull(states, "states");
+    }
+
+    public Result<ReplacementPackageState, CommitAppliedFailure> execute(
+            String changeSetId,
+            String packageId) {
+        try {
+            Optional<ReplacementPackageState> maybe =
+                    ReplacementPackageStateAccess.loadOrMigrate(core, states, changeSetId, packageId);
+            if (maybe.isEmpty()) {
+                return Result.failure(new CommitAppliedFailure(
+                        CommitAppliedFailureCode.PACKAGE_STATE_NOT_FOUND,
+                        OperationFailureDisposition.ACTION_REQUIRED,
+                        "No applied replacement-package state exists for this ChangeSet/package."));
+            }
+            ReplacementPackageState current = maybe.get();
+            if (!current.applied()) {
+                return Result.failure(new CommitAppliedFailure(
+                        CommitAppliedFailureCode.STATE_DIVERGED,
+                        OperationFailureDisposition.ACTION_REQUIRED,
+                        "Replacement package is not proven Applied.",
+                        current));
+            }
+            if (current.isCommitted()) return Result.success(current);
+
+            Core.CommitResult committed = core.commitAppliedPackage(changeSetId);
+            ReplacementPackageState next = current.committed(committed.commitSha());
+            ReplacementPackageStateAccess.saveOrThrow(states, next);
+            return Result.success(next);
+        } catch (ReplacementPackageStateAccess.StatePersistenceException e) {
+            return Result.failure(new CommitAppliedFailure(
+                    CommitAppliedFailureCode.STATE_PERSISTENCE_FAILED,
+                    OperationFailureDisposition.ACTION_REQUIRED,
+                    e.getMessage()));
+        } catch (Core.ObsException e) {
+            Optional<ReplacementPackageState> current = safeCurrent(changeSetId, packageId);
+            CommitAppliedFailureCode code =
+                    Core.COMMIT_FAILED.equals(e.code)
+                            ? CommitAppliedFailureCode.COMMIT_FAILED
+                            : Core.ACTION_PACKAGE_MISMATCH.equals(e.code)
+                                    ? CommitAppliedFailureCode.PACKAGE_IDENTITY_MISMATCH
+                                    : Core.STATE_DIVERGED.equals(e.code)
+                                            ? CommitAppliedFailureCode.STATE_DIVERGED
+                                            : CommitAppliedFailureCode.UNEXPECTED_LEGACY_FAILURE;
+            OperationFailureDisposition disposition =
+                    code == CommitAppliedFailureCode.COMMIT_FAILED
+                            ? OperationFailureDisposition.RETRYABLE
+                            : code == CommitAppliedFailureCode.UNEXPECTED_LEGACY_FAILURE
+                                    ? OperationFailureDisposition.TERMINAL
+                                    : OperationFailureDisposition.ACTION_REQUIRED;
+            return Result.failure(new CommitAppliedFailure(
+                    code, disposition, e.getMessage(), current.orElse(null)));
+        } catch (IllegalStateException e) {
+            return Result.failure(new CommitAppliedFailure(
+                    CommitAppliedFailureCode.STATE_DIVERGED,
+                    OperationFailureDisposition.ACTION_REQUIRED,
+                    e.getMessage()));
+        }
+    }
+
+    private Optional<ReplacementPackageState> safeCurrent(String changeSetId, String packageId) {
+        try { return states.find(changeSetId, packageId); }
+        catch (RuntimeException ignored) { return Optional.empty(); }
+    }
+}

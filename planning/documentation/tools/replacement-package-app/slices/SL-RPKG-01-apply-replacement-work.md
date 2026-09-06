@@ -1,73 +1,72 @@
-# SL-RPKG-01 — Apply Replacement Work
+# SL-RPKG-01 — Replacement Package Realization
 
 Status: active current Slice owner
 
 ## Result / Responsibility
 
-Realize one validated replacement package against the exact repository-work context. Current target-mode composition ensures Work Intent/workspace dependencies, applies exact package files, commits only proven package paths and publishes the exact ChangeSet branch with retry/recovery by persisted proof. Legacy Apply remains supported for already-existing legacy work.
+Realize one exact replacement package through explicit application operations:
 
-## Scenario behavior realized
+```text
+Apply Package
+Commit applied
+Publish
+Retry Publish
+```
 
-Feature Interaction context:
-- `FI-RPKG-RESOLVE-CURRENT-REPOSITORY-WORK`
-- `FI-RPKG-REALIZE-CURRENT-PACKAGE`
-- planned `FI-RPKG-REALIZE-REVIEWED-PACKAGE`
+The operations share one durable `ReplacementPackageState` but have independent operation Results. Automatic `OBS-ACTION apply-package` may compose Apply → Commit → Publish as an entry-adapter/Scenario convenience.
 
-Behavior Items realized:
-- `BI-RPKG-CURRENT-PREFLIGHT-BEFORE-MUTATION`
-- `BI-RPKG-CURRENT-APPLY-EXACT-PACKAGE`
-- `BI-RPKG-CURRENT-APPLY-EXACT-SOURCE`
-- `BI-RPKG-CURRENT-GIT-RETRY-RESUMES`
-- `BI-RPKG-CURRENT-PARTIAL-STATE-TRUTHFUL`
-- `BI-RPKG-CURRENT-PUBLICATION-UNCERTAIN-BLOCKS-NEXT`
-- `BI-RPKG-CURRENT-LEGACY-OWNERSHIP-PROTECTS-UNRELATED-WORK`
-- planned target Apply/Retry/Partial-state BIs referenced in [`../behavior-realization-map.md`](../behavior-realization-map.md)
+## Domain / state boundary
 
-## Domain / Shared capabilities used
+`ReplacementPackageState` owns durable facts for one ChangeSet/package:
+- exact package identity where available;
+- whether package-file Apply is proven;
+- exact package commit SHA when committed;
+- latest durable `PublicationObservation`.
 
-- Repository Target
-- Work Intent
-- Repository Work / ChangeSet
-- package contract in `PACKAGE-PROTOCOL.md`
+`PublicationObservation`:
+- `NotRequested`
+- `NotConfirmed`
+- `ConfirmedAbsent`
+- `ConfirmedTip(sha)`
+
+State is not success/failure. `Result<T,E>` and `OperationResult<E>` represent the outcome of concrete operations.
 
 ## Slice Implementation Items
 
-### SI-RPKG-APPLY-JOURNAL-BEFORE-MUTATION — Persist exact recovery evidence first
-Requirement:
-Before the first target-mode package-file mutation, persist exact package/base-head identity plus exact prior/intended package-path state sufficient to prove or recover the same operation.
+### SI-RPKG-APPLY-JOURNAL-BEFORE-MUTATION
+Before first package-file mutation, existing exact prior/intended recovery evidence remains required.
 
-Reason:
-Interruption must be recoverable without guessing whether individual file side effects occurred.
+### SI-RPKG-PACKAGE-STATE-DURABLE
+After successful modular Apply/Commit/confirmation, write the corresponding `ReplacementPackageState` before a later independent operation relies on it.
 
-Derived from:
-`BI-RPKG-CURRENT-GIT-RETRY-RESUMES`, `BI-RPKG-CURRENT-PARTIAL-STATE-TRUTHFUL`.
+### SI-RPKG-NO-GENERIC-RESUME
+No application/domain API accepts a desired Apply extent or generic Resume request. Retry is local to the operation being retried.
 
-### SI-RPKG-RETRY-BY-PROOF-NOT-RESTART — Resume from proven execution state
-Requirement:
-Retry must prove established workspace/file/commit/remote side effects and continue from the latest proven boundary instead of blindly re-running the whole operation.
+### SI-RPKG-PUBLISH-CONFIRM-BEFORE-RETRY
+`PublicationObservation.NotConfirmed` requires exact remote observation before another push.
 
-Reason:
-Apply, commit and push cross durable/externally visible boundaries.
+### SI-RPKG-LEGACY-STATE-ADAPTER-IS-TRANSITIONAL
+Already-running Core state may be projected into `ReplacementPackageState` only as compatibility migration. Once new state exists, later modular operations use the new state owner.
 
 ## Tests
 
-Primary current proof responsibility: repository/integration cases in `CoreTests` using real disposable Git repositories/remotes where file/index/commit/remote semantics matter.
+Feature integration tests live in the Feature package and use dedicated test support rather than `CoreTests` internals.
 
-### Test Items
-
-#### TST-RPKG-APPLY-NO-MUTATION-ON-PREFLIGHT-FAILURE
-Requirement:
-Negative applicability/identity/ownership tests must assert that repository state remains unchanged when failure is required before mutation.
-
-Reason:
-A thrown error alone does not prove the fail-closed boundary.
-
-#### TST-RPKG-APPLY-RECOVERY-PROVES-SIDE-EFFECTS
-Requirement:
-Crash/retry cases must establish both the persisted state and the real filesystem/Git/remote side effect used to justify resume.
+Required proof:
+- Apply stops after file application;
+- Commit stops after commit;
+- Publish proves exact remote tip;
+- Retry Publish reconciles unconfirmed publication before another push;
+- state persists across repository/service re-instantiation;
+- same `packageId` with different proven archive content is rejected;
+- operation failure can return current durable package state without treating that state as failure.
 
 ## Evolution Impact
 
-### EVO-RPKG-ADOPT-REVIEWED-RESULT-WORKFLOW
-Expansion:
-Consume Builder review identity with the exact package and preserve it through published result confirmation. Existing package realization mechanics should remain reusable rather than being reimplemented as a separate reviewed-package apply engine.
+### EVO-RPKG-MODULARIZE-PACKAGE-REALIZATION
+Refactoring / Forced Migration:
+remove `ApplyExtent`, `ApplyRequest.Resume`, advance-to-extent orchestration and `PackageApplication`; introduce the explicit operations and `ReplacementPackageState`.
+
+### EVO-RPKG-RETIRE-LEGACY-INTERACTION-SURFACE
+Screen impact:
+Retry Publish appears with Publish; generic external-interaction controls disappear from the selected Main Work Window. Finalize remains separately owned.

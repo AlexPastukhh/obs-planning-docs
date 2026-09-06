@@ -9,9 +9,21 @@ import java.nio.file.*;
 import java.util.*;
 import java.util.List;
 
+import obs.rpkg.features.apply.application.ApplyReplacementPackage;
+import obs.rpkg.features.apply.application.CommitAppliedPackage;
+import obs.rpkg.features.apply.application.PublishAppliedCommit;
+import obs.rpkg.features.apply.domain.ReplacementPackageState;
+import obs.rpkg.features.apply.infrastructure.FileReplacementPackageStateRepository;
+import obs.rpkg.features.apply.infrastructure.GitPublicationObserver;
+import obs.rpkg.features.apply.infrastructure.ReplacementPackageStateRepository;
+
 final class MainWindow extends JFrame {
     private static final long APPLY_ZIP_POLL_INTERVAL_MS=2000, APPLY_ZIP_POLL_MAX_MS=12000;
     private final Core core;
+    private final ReplacementPackageStateRepository replacementPackageStates;
+    private final ApplyReplacementPackage applyReplacementPackage;
+    private final CommitAppliedPackage commitAppliedPackageFeature;
+    private final PublishAppliedCommit publishAppliedCommitFeature;
     private ChatBridgeServer bridgeServer;
     private Core.RepositoryConfig selectedRepository;
     private Core.ChangeSet selectedChangeSet;
@@ -33,7 +45,12 @@ final class MainWindow extends JFrame {
     private final JButton reopenButton=new JButton("Reopen ChangeSet");
 
     MainWindow(Core core){
-        super("OBS Replacement Package App — Java 21");this.core=core;setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);setMinimumSize(new Dimension(1120,960));
+        super("OBS Replacement Package App — Java 21");this.core=core;
+        this.replacementPackageStates=FileReplacementPackageStateRepository.defaultRepository();
+        this.applyReplacementPackage=new ApplyReplacementPackage(core,replacementPackageStates);
+        this.commitAppliedPackageFeature=new CommitAppliedPackage(core,replacementPackageStates);
+        this.publishAppliedCommitFeature=new PublishAppliedCommit(core,replacementPackageStates,new GitPublicationObserver());
+        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);setMinimumSize(new Dimension(1120,960));
         for(JTextField f:new JTextField[]{repositoryIdentity,changeSetId,status,reviewState,bridgeState,chatDelivery,launcherState,operationState})f.setEditable(false);log.setEditable(false);diagnostics.setEditable(false);build();core.setChatBridgeEventSink(event->SwingUtilities.invokeLater(()->handleChatBridgeEvent(event)));startBridge();updateLauncherState();loadState();pack();setLocationRelativeTo(null);
         addWindowListener(new WindowAdapter(){@Override public void windowClosed(WindowEvent e){if(bridgeServer!=null)bridgeServer.close();}});
     }
@@ -43,25 +60,18 @@ final class MainWindow extends JFrame {
         root.add(row("Repository",repositories,button("Add repository",this::addRepository),button("Remove",this::removeRepository),button("Change location",this::changeRepositoryLocation),button("Export repository ZIP",this::exportRepositorySnapshot)));
         root.add(row("Repository identity",repositoryIdentity));
         root.add(row("ReviewDiff",handling));
-        root.add(row("Review send retry",reviewSendRetrySeconds,new JLabel("seconds")));
-        root.add(row("Review title ignores",reviewChatTitleIgnoredCharacters));
-        root.add(row("Chat bridge",bridgeState,button("Copy pairing token",this::copyBridgeToken)));
         root.add(row("Windows launcher",launcherState,button("Install / update",this::installWindowsLauncher),button("Open folder",this::openWindowsLauncherFolder),button("Copy path",this::copyWindowsLauncherPath)));
         root.add(row("Archive ZIP",archive,button("Browse",()->chooseFile(archive))));
         root.add(new JLabel("OBS-ACTION/1 (optional when ZIP is selected explicitly):"));root.add(new JScrollPane(action));
         root.add(row("",button("Run OBS Action",this::runObsAction),button("Apply Package",this::apply),button("Apply Package (wait for ZIP)",this::applyWithPolling)));
-        root.add(row("ChangeSet",changeSets,button("Start workspace",this::startChangeSetWorkspace),button("Commit applied",this::commitAppliedPackage),button("Publish",this::publishAppliedCommit)));
+        root.add(row("ChangeSet",changeSets,button("Start workspace",this::startChangeSetWorkspace),button("Commit applied",this::commitAppliedPackage),button("Publish",this::publishAppliedCommit),button("Retry Publish",this::retryPublication)));
         root.add(row("",allRepositories,showHistory));
         root.add(row("Status",status));root.add(row("ChangeSet ID",changeSetId));
         root.add(row("Review",reviewState));
         root.add(row("",button("Refresh Review",this::refreshReview),button("Copy ReviewDiff",this::copyReviewDiff),button("Open ReviewDiff",this::openReviewDiff)));
-        root.add(row("Review chat",reviewChats,button("Refresh chats",this::refreshChatList),button("Bind",this::bindReviewChat),button("Open",this::openBoundChat),button("Unbind",this::unbindReviewChat)));
-        root.add(row("Chat delivery",chatDelivery,button("Send current ReviewDiff",this::sendCurrentReviewToChat)));
-        root.add(row("Legacy Finalize message",commitMessage));
+        root.add(row("Finalize message",commitMessage));
         reopenButton.addActionListener(e->run("Reopen ChangeSet",this::reopenChangeSet));reopenButton.setVisible(false);
-        root.add(row("",button("Finalize",this::finalizeChangeSet),button("Retry Push",this::retryPush),reopenButton));
-        root.add(row("External interactions",interactions));
-        root.add(row("",button("Refresh interactions",this::refreshInteractions),button("Cancel interaction",this::cancelInteraction),button("Dismiss interaction",this::dismissInteraction)));
+        root.add(row("",button("Finalize",this::finalizeChangeSet),reopenButton));
         root.add(row("Operation",operationState));
         root.add(row("Output",button("Copy output",this::copyOutput),button("Technical diagnostics",this::showDiagnostics)));root.add(new JScrollPane(log));setContentPane(root);
         repositories.addActionListener(e->{if(!loading)repositoryChanged();});
@@ -239,6 +249,15 @@ final class MainWindow extends JFrame {
     private void apply(){
         saveHandling();saveReviewChatTitleIgnoredCharacters();
         Path zip=archive.getText().isBlank()?null:Path.of(archive.getText().trim());String actionText=action.getText(),currentId=selectedRepository==null?null:selectedRepository.id();
+        if((actionText==null||actionText.isBlank())&&zip!=null&&selectedChangeSet!=null&&selectedChangeSet.worktree!=null){
+            String cs=selectedChangeSet.changeSetId,repo=currentId,label=selectedChangeSet.changeSetLabel;Path repository=repoPath();
+            appendToOutput(cs,"INFO Applying replacement package files…");
+            runBackground("Apply Package",()->applyReplacementPackage.execute(new ApplyReplacementPackage.Request(zip,repository,cs)),result->{
+                if(result.isFailure()){var failure=result.failure().orElseThrow();appendToOutput(cs,"["+failure.code()+"] "+failure.message());core.recordOperationOutcome(cs,"FAILED",failure.code().name(),failure.message());reloadChangeSets(cs);notifyOperation("Apply Package failed",failure.message(),repo,true);return;}
+                ReplacementPackageState state=result.success().orElseThrow();appendToOutput(cs,"SUCCESS Package applied: "+state.packageIdentity().packageId()+". Commit applied is available.");core.recordOperationOutcome(cs,"SUCCESS",Core.SUCCESS,"Package files applied.");reloadChangeSets(cs);notifyOperation("Apply Package succeeded",label,repo,false);
+            },e->{trackedFailure("Apply Package",e,repo,cs);reloadChangeSets(cs);});
+            return;
+        }
         showOperation("INFO Preparing Apply Package…");
         runBackground("Prepare Apply Package",()->core.prepareApply(actionText,zip,currentId),prepared->continuePreparedApply(prepared,currentId),e->trackedFailure("Apply Package",e,currentId,null));
     }
@@ -298,8 +317,36 @@ final class MainWindow extends JFrame {
         else message="SUCCESS Package files are AppliedUncommitted; manual Commit applied remains available.";
         appendToOutput(cs,message);if(r.diagnostic()!=null&&!r.diagnostic().isBlank())appendToOutput(cs,"INFO "+r.diagnostic());if(r.attempt().handoffWarning!=null&&!r.attempt().handoffWarning.isBlank())appendToOutput(cs,"WARNING "+r.attempt().handoffWarning);reloadChangeSets(cs);notifyOperation(publishedReady?"Apply Package succeeded":"Apply stage succeeded",r.changeSet().changeSetLabel,target.id(),false);
     }
-    private void commitAppliedPackage(){if(selectedChangeSet==null)throw new Core.ObsException(Core.STATE_DIVERGED,"Select a ChangeSet first.");String cs=selectedChangeSet.changeSetId,repo=selectedRepository==null?null:selectedRepository.id(),label=selectedChangeSet.changeSetLabel;appendToOutput(cs,"INFO Committing applied package…");runBackground("Commit Applied Package",()->core.commitAppliedPackage(cs),r->{appendToOutput(cs,(r.alreadySatisfied()?"SUCCESS Package commit already satisfied/recovered: ":"SUCCESS Package committed locally: ")+r.commitSha());reloadChangeSets(cs);notifyOperation("Package commit ready",label,repo,false);},e->{trackedFailure("Commit Applied Package",e,repo,cs);reloadChangeSets(cs);});}
-    private void publishAppliedCommit(){if(selectedChangeSet==null)throw new Core.ObsException(Core.STATE_DIVERGED,"Select a ChangeSet first.");String cs=selectedChangeSet.changeSetId,repo=selectedRepository==null?null:selectedRepository.id(),label=selectedChangeSet.changeSetLabel;appendToOutput(cs,"INFO Publishing applied commit…");runBackground("Publish Applied Commit",()->core.publishAppliedCommit(cs),r->{appendToOutput(cs,(r.alreadySatisfied()?"SUCCESS Package commit already published/reconciled: ":"SUCCESS Package commit published: ")+r.commitSha());reloadChangeSets(cs);notifyOperation("Package publish ready",label,repo,false);},e->{trackedFailure("Publish Applied Commit",e,repo,cs);reloadChangeSets(cs);});}
+    private void commitAppliedPackage(){
+        if(selectedChangeSet==null)throw new Core.ObsException(Core.STATE_DIVERGED,"Select a ChangeSet first.");
+        String cs=selectedChangeSet.changeSetId,repo=selectedRepository==null?null:selectedRepository.id(),label=selectedChangeSet.changeSetLabel,packageId=selectedChangeSet.lastPackageId;
+        if(selectedChangeSet.worktree==null||packageId==null||packageId.isBlank()){
+            appendToOutput(cs,"INFO Committing applied legacy package…");runBackground("Commit Applied Package",()->core.commitAppliedPackage(cs),r->{appendToOutput(cs,(r.alreadySatisfied()?"SUCCESS Package commit already satisfied/recovered: ":"SUCCESS Package committed locally: ")+r.commitSha());reloadChangeSets(cs);notifyOperation("Package commit ready",label,repo,false);},e->{trackedFailure("Commit Applied Package",e,repo,cs);reloadChangeSets(cs);});return;
+        }
+        appendToOutput(cs,"INFO Committing applied package…");
+        runBackground("Commit Applied Package",()->commitAppliedPackageFeature.execute(cs,packageId),result->{
+            if(result.isFailure()){var failure=result.failure().orElseThrow();appendToOutput(cs,"["+failure.code()+"] "+failure.message());core.recordOperationOutcome(cs,"FAILED",failure.code().name(),failure.message());reloadChangeSets(cs);notifyOperation("Commit Applied failed",failure.message(),repo,true);return;}
+            ReplacementPackageState state=result.success().orElseThrow();appendToOutput(cs,"SUCCESS Package committed locally: "+state.commitSha());core.recordOperationOutcome(cs,"SUCCESS",Core.SUCCESS,"Package committed.");reloadChangeSets(cs);notifyOperation("Package commit ready",label,repo,false);
+        },e->{trackedFailure("Commit Applied Package",e,repo,cs);reloadChangeSets(cs);});
+    }
+
+    private void publishAppliedCommit(){publishAppliedCommit(false);}
+
+    private void publishAppliedCommit(boolean retry){
+        if(selectedChangeSet==null)throw new Core.ObsException(Core.STATE_DIVERGED,"Select a ChangeSet first.");
+        String cs=selectedChangeSet.changeSetId,repo=selectedRepository==null?null:selectedRepository.id(),label=selectedChangeSet.changeSetLabel,packageId=selectedChangeSet.lastPackageId;
+        if(selectedChangeSet.worktree==null||packageId==null||packageId.isBlank()){
+            if(retry){retryPush();return;}
+            throw new Core.ObsException(Core.STATE_DIVERGED,"Selected ChangeSet has no modular package publication state.");
+        }
+        appendToOutput(cs,retry?"INFO Retrying package publication; unresolved publication will be confirmed before another push…":"INFO Publishing applied commit…");
+        runBackground(retry?"Retry Publish":"Publish Applied Commit",()->publishAppliedCommitFeature.execute(cs,packageId),result->{
+            if(result.isFailure()){var failure=result.failure().orElseThrow();appendToOutput(cs,"["+failure.code()+"] "+failure.message());core.recordOperationOutcome(cs,failure.disposition()==obs.rpkg.features.apply.domain.OperationFailureDisposition.UNCERTAIN?"UNCERTAIN":"FAILED",failure.code().name(),failure.message());reloadChangeSets(cs);notifyOperation(retry?"Retry Publish needs attention":"Publish needs attention",failure.message(),repo,true);return;}
+            ReplacementPackageState state=result.success().orElseThrow();String tip=state.publication() instanceof obs.rpkg.features.apply.domain.PublicationObservation.ConfirmedTip confirmed?confirmed.commitSha():state.commitSha();appendToOutput(cs,"SUCCESS Package publication confirmed: "+tip);core.recordOperationOutcome(cs,"SUCCESS",Core.SUCCESS,"Package publication confirmed.");reloadChangeSets(cs);notifyOperation("Package publish ready",label,repo,false);
+        },e->{trackedFailure(retry?"Retry Publish":"Publish Applied Commit",e,repo,cs);reloadChangeSets(cs);});
+    }
+
+    private void retryPublication(){publishAppliedCommit(true);}
     private void refreshReview(){if(selectedChangeSet==null)throw new Core.ObsException(Core.STATE_DIVERGED,"Select a ChangeSet first.");String cs=selectedChangeSet.changeSetId,repo=selectedRepository==null?null:selectedRepository.id();appendToOutput(cs,"INFO Refreshing ReviewDiff…");runBackground("Refresh Review",()->core.refreshReview(cs),r->appendToOutput(cs,"SUCCESS ReviewDiff refreshed: "+r.diffPath()),e->trackedFailure("Refresh Review",e,repo,cs));}
     private Core.ReviewDiff requireCurrentReview(){if(selectedChangeSet==null)return null;String cs=selectedChangeSet.changeSetId;Core.ChangeSet current=core.getChangeSet(cs);Core.ReviewDiff review=current==null?null:core.currentReview(current);if(review!=null)return review;appendToOutput(cs,"ERROR No current ReviewDiff is available for the selected ChangeSet. Refresh Review first.");return null;}
     private void copyReviewDiff(){Core.ReviewDiff review=requireCurrentReview();if(review==null)return;String cs=selectedChangeSet.changeSetId;Core.Handoff h=core.copyReviewDiffToClipboard(review);if(h.warning()!=null&&!h.warning().isBlank()){appendToOutput(cs,"ERROR "+h.warning());return;}appendToOutput(cs,"SUCCESS ReviewDiff copied to clipboard.");}
