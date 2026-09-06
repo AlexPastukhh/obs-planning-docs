@@ -7,6 +7,8 @@ call ..\replacement-package-common\build.cmd || exit /b 1
 xcopy /e /i /y "..\replacement-package-common\build\classes\*" "build\classes\" >nul || exit /b 1
 call javac --release 21 -cp build\classes -d build\classes ^
   src\main\java\obs\rpkg\Core.java ^
+  src\main\java\obs\rpkg\features\apply\ApplyExtent.java ^
+  src\main\java\obs\rpkg\features\apply\ApplyReplacementPackage.java ^
   src\main\java\obs\rpkg\ReviewChatTitleMatcher.java ^
   src\main\java\obs\rpkg\ChatBridgeService.java ^
   src\main\java\obs\rpkg\ChatBridgeServer.java ^
@@ -21,6 +23,7 @@ call javac --release 21 -cp build\classes -d build\classes ^
   src\main\java\obs\rpkg\WindowsLauncherInstaller.java || exit /b 1
 call javac --release 21 -cp build\classes -d build\test-classes ^
   src\test\java\obs\rpkg\CoreTests.java ^
+  src\test\java\obs\rpkg\features\apply\ApplyReplacementPackageFeatureIntegrationTests.java ^
   src\test\java\obs\rpkg\ApplyReceiptTests.java ^
   src\test\java\obs\rpkg\ChatBridgeTests.java ^
   src\test\java\obs\rpkg\WindowsLauncherInstallerTests.java || exit /b 1
