@@ -30,7 +30,10 @@ Package state identity is fenced to exact WorkId/packageId. Corrupt/unreadable s
 Start workspace / Apply / Commit / Publish for one Work serialize through a dedicated same-thread re-entrant `WorkOperationLock` application port; package-state persistence is not the semantic lock owner and lock failure is an operation failure, not state evidence.
 
 ### SI-RPKG-PUBLISH-CONFIRM-BEFORE-SIDE-EFFECT
-Every not-yet-published Publish invocation observes through a captured exact verified fetch URL before a possible push; any possible push uses a separately captured exact verified push URL. Unexpected tip or foreign destination fails before push, and mutable remote aliases cannot redirect the network command. Durable `NotConfirmed` guards the possible-push boundary.
+Every not-yet-published Publish invocation observes through a verified isolated fetch transport endpoint before a possible push; any possible push uses a separately verified isolated push transport endpoint. Unexpected tip or foreign destination fails before push. Registered-repository remote aliases and Git `url.*.insteadOf` / `pushInsteadOf` rewrites are not consulted by the actual network command after endpoint capture. Durable `NotConfirmed` guards the possible-push boundary.
+
+### SI-RPKG-ISOLATED-GIT-TRANSPORT
+Shared implementation capability owns GitHub RepositoryIdentity normalization plus isolated fetch / remote observation / push execution. It snapshots only permitted transport/authentication config, excludes URL-rewrite rules from the network execution environment and moves Git objects across the isolation boundary only through local bundle/unbundle mechanics.
 
 ### SI-RPKG-NO-LEGACY-RUNTIME-AUTHORITY
 Target package realization does not read/write `Core.ChangeSet.executionState`, `lastPackageId`, `commitSha` or `publishedTip`. Old persisted works are not imported.

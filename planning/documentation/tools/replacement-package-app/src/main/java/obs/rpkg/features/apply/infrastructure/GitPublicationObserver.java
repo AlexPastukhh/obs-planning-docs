@@ -1,43 +1,36 @@
 package obs.rpkg.features.apply.infrastructure;
 
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Path;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
-import java.util.Map;
+import java.util.Objects;
 
+import obs.rpkg.GitTransport;
 import obs.rpkg.features.apply.domain.PublicationObservation;
 import obs.rpkg.foundation.result.Result;
 
-/** Exact remote work-branch observation independent of push command success/failure. */
+/** Exact remote work-branch observation through the isolated Git transport capability. */
 public final class GitPublicationObserver implements PublicationObserver {
+    private final GitTransport transport;
+
+    public GitPublicationObserver(GitTransport transport) {
+        this.transport = Objects.requireNonNull(transport, "transport");
+    }
+
     @Override
     public Result<PublicationObservation, Failure> observe(
-            Path worktree,
             String workBranch,
-            String exactRemoteUrl,
-            String expectedRepositoryIdentity) {
-        if (worktree == null || workBranch == null || workBranch.isBlank()
-                || exactRemoteUrl == null || exactRemoteUrl.isBlank()
-                || expectedRepositoryIdentity == null || expectedRepositoryIdentity.isBlank()) {
+            GitTransport.Endpoint endpoint) {
+        if (workBranch == null || workBranch.isBlank() || endpoint == null) {
             return Result.failure(new Failure(
-                    "Worktree, work branch, exact remote URL and expected repository identity are required for publication confirmation",
+                    "Work branch and verified Git transport endpoint are required for publication confirmation",
                     null));
         }
 
-        String actual = repositoryIdentity(exactRemoteUrl);
-        if (!expectedRepositoryIdentity.equalsIgnoreCase(actual)) {
-            return Result.failure(new Failure(
-                    "Publication confirmation URL is " + actual
-                            + "; expected " + expectedRepositoryIdentity + ".", null));
-        }
-
         String exactRef = "refs/heads/" + workBranch;
-        Result<List<String>, Failure> lookup = git(
-                worktree, "ls-remote", "--heads", exactRemoteUrl, exactRef);
-        if (lookup.isFailure()) return Result.failure(lookup.failure().orElseThrow());
+        Result<List<String>, GitTransport.Failure> lookup = transport.lsRemote(endpoint, exactRef);
+        if (lookup.isFailure()) {
+            GitTransport.Failure failure = lookup.failure().orElseThrow();
+            return Result.failure(new Failure(failure.message(), failure.cause()));
+        }
         List<String> lines = lookup.success().orElseThrow();
         if (lines.isEmpty()) return Result.success(new PublicationObservation.ConfirmedAbsent());
         if (lines.size() != 1) {
@@ -52,51 +45,5 @@ public final class GitPublicationObserver implements PublicationObserver {
                     null));
         }
         return Result.success(new PublicationObservation.ConfirmedTip(parts[0]));
-    }
-
-    private static Result<List<String>, Failure> git(Path worktree, String... args) {
-        List<String> command = new ArrayList<>();
-        command.add("git");
-        command.add("-C");
-        command.add(worktree.toString());
-        command.addAll(List.of(args));
-        ProcessBuilder pb = new ProcessBuilder(command);
-        pb.environment().putAll(Map.of("GIT_TERMINAL_PROMPT", "0"));
-        pb.redirectErrorStream(true);
-        try {
-            Process process = pb.start();
-            String output = new String(process.getInputStream().readAllBytes(), StandardCharsets.UTF_8);
-            int exit = process.waitFor();
-            if (exit != 0) {
-                return Result.failure(new Failure(
-                        "Cannot confirm remote work branch: " + output.strip(), null));
-            }
-            return Result.success(output.lines().filter(line -> !line.isBlank()).toList());
-        } catch (IOException e) {
-            return Result.failure(new Failure("Cannot execute Git publication confirmation", e));
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-            return Result.failure(new Failure("Publication confirmation interrupted", e));
-        }
-    }
-
-    private static String repositoryIdentity(String rawUrl) {
-        if (rawUrl == null || rawUrl.isBlank()) return "<unavailable>";
-        String url = rawUrl.trim();
-        String lower = url.toLowerCase(Locale.ROOT);
-        String path;
-        if (lower.startsWith("https://github.com/") || lower.startsWith("http://github.com/")) {
-            path = url.substring(url.indexOf("github.com/") + "github.com/".length());
-        } else if (lower.startsWith("ssh://git@github.com/")) {
-            path = url.substring("ssh://git@github.com/".length());
-        } else if (lower.startsWith("git@github.com:")) {
-            path = url.substring("git@github.com:".length());
-        } else {
-            return "<unverifiable>";
-        }
-        if (path.endsWith(".git")) path = path.substring(0, path.length() - 4);
-        path = path.replace('\\', '/');
-        if (!path.matches("[^/\\s]+/[^/\\s]+")) return "<unverifiable>";
-        return "github:" + path;
     }
 }

@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import obs.rpkg.Core;
 import obs.rpkg.WorkPackageRuntime;
+import obs.rpkg.GitTransport;
 import obs.rpkg.features.apply.domain.OperationFailureDisposition;
 import obs.rpkg.features.apply.domain.PublicationObservation;
 import obs.rpkg.features.apply.domain.PublishFailure;
@@ -69,17 +70,17 @@ public final class PublishAppliedCommit {
             GitWorkspace workspace,
             ReplacementPackageState current) {
         String previousTip;
-        String exactFetchUrl;
+        GitTransport.Endpoint fetchEndpoint;
         try {
             previousTip = mechanics.previousTip(workspace, current.packageIdentity());
             mechanics.verifyWorkspace(workspace);
-            exactFetchUrl = mechanics.verifiedPublicationFetchUrl(workspace);
+            fetchEndpoint = mechanics.verifiedPublicationFetchEndpoint(workspace);
         } catch (Core.ObsException e) {
             return failure(mapMechanicsCode(e), OperationFailureDisposition.ACTION_REQUIRED, e.getMessage(), current);
         }
 
         // Every invocation that is not already published refreshes remote evidence before any possible push.
-        Result<PublicationObservation, PublicationObserver.Failure> observed = observe(workspace, exactFetchUrl);
+        Result<PublicationObservation, PublicationObserver.Failure> observed = observe(workspace, fetchEndpoint);
         if (observed.isFailure()) return failure(PublishFailureCode.PUBLICATION_CONFIRMATION_FAILED,
                 OperationFailureDisposition.UNCERTAIN, observed.failure().orElseThrow().message(), current);
         Result<ReplacementPackageState, PublishFailure> persisted =
@@ -109,9 +110,9 @@ public final class PublishAppliedCommit {
                     "Publication is not reliably observed; no push is allowed.", current);
         }
 
-        String exactPushUrl;
+        GitTransport.Endpoint pushEndpoint;
         try {
-            exactPushUrl = mechanics.verifiedPublicationPushUrl(workspace);
+            pushEndpoint = mechanics.verifiedPublicationPushEndpoint(workspace);
         } catch (Core.ObsException e) {
             return failure(mapMechanicsCode(e), OperationFailureDisposition.ACTION_REQUIRED, e.getMessage(), current);
         }
@@ -126,21 +127,21 @@ public final class PublishAppliedCommit {
         }
 
         try {
-            mechanics.push(workspace, attempting.packageIdentity(), attempting.commitSha(), expectedLeaseTip, exactPushUrl);
+            mechanics.push(workspace, attempting.packageIdentity(), attempting.commitSha(), expectedLeaseTip, pushEndpoint);
         } catch (Core.ObsException pushFailure) {
-            return reconcileAfterPossiblePush(workspace, attempting, previousTip, exactFetchUrl, pushFailure);
+            return reconcileAfterPossiblePush(workspace, attempting, previousTip, fetchEndpoint, pushFailure);
         }
 
-        return reconcileAfterPossiblePush(workspace, attempting, previousTip, exactFetchUrl, null);
+        return reconcileAfterPossiblePush(workspace, attempting, previousTip, fetchEndpoint, null);
     }
 
     private Result<ReplacementPackageState, PublishFailure> reconcileAfterPossiblePush(
             GitWorkspace workspace,
             ReplacementPackageState durableAttempting,
             String previousTip,
-            String exactFetchUrl,
+            GitTransport.Endpoint fetchEndpoint,
             Core.ObsException pushFailure) {
-        Result<PublicationObservation, PublicationObserver.Failure> observed = observe(workspace, exactFetchUrl);
+        Result<PublicationObservation, PublicationObserver.Failure> observed = observe(workspace, fetchEndpoint);
         if (observed.isFailure()) {
             return failure(PublishFailureCode.PUBLICATION_CONFIRMATION_FAILED,
                     OperationFailureDisposition.UNCERTAIN,
@@ -183,16 +184,14 @@ public final class PublishAppliedCommit {
         }
     }
 
-    private Result<PublicationObservation, PublicationObserver.Failure> observe(GitWorkspace workspace, String exactFetchUrl) {
-        return observer.observe(
-                workspace.worktree(),
-                workspace.workBranch(),
-                exactFetchUrl,
-                workspace.repositoryTarget().repositoryIdentity());
+    private Result<PublicationObservation, PublicationObserver.Failure> observe(
+            GitWorkspace workspace,
+            GitTransport.Endpoint endpoint) {
+        return observer.observe(workspace.workBranch(), endpoint);
     }
 
     private static PublishFailureCode mapMechanicsCode(Core.ObsException e) {
-        if (Core.REPOSITORY_MISMATCH.equals(e.code)) return PublishFailureCode.STATE_DIVERGED;
+        if (Core.REPOSITORY_MISMATCH.equals(e.code)) return PublishFailureCode.REPOSITORY_MISMATCH;
         if (Core.REMOTE_BRANCH_DIVERGED.equals(e.code)) return PublishFailureCode.REMOTE_BRANCH_DIVERGED;
         if (Core.PUBLISH_FAILED.equals(e.code)) return PublishFailureCode.PUBLISH_FAILED;
         if (Core.STATE_DIVERGED.equals(e.code)) return PublishFailureCode.STATE_DIVERGED;

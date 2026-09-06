@@ -74,7 +74,7 @@ public final class ApplyFeatureTestSupport {
         StartWorkWorkspace start = new StartWorkWorkspace(mechanics, workspaces, workLocks);
         ApplyReplacementPackage apply = new ApplyReplacementPackage(core, workspaces, states, workLocks, mechanics);
         CommitAppliedPackage commit = new CommitAppliedPackage(workspaces, states, workLocks, mechanics);
-        PublishAppliedCommit publish = new PublishAppliedCommit(workspaces, states, workLocks, new GitPublicationObserver(), mechanics);
+        PublishAppliedCommit publish = new PublishAppliedCommit(workspaces, states, workLocks, new GitPublicationObserver(mechanics.transport()), mechanics);
         return new Workspace(root, repo, stateRoot, remote, core, target, states, workspaces, workLocks, mechanics, start, apply, commit, publish);
     }
 
@@ -205,6 +205,14 @@ public final class ApplyFeatureTestSupport {
     public static Path newBareRemote(Workspace workspace,String name) throws Exception { Path bare=workspace.root().resolve(name);git(workspace.root(),"init","--bare",bare.toString());return bare; }
     public static void setOriginUrlUnchecked(Workspace workspace,String url) { try{git(workspace.repository(),"remote","set-url","origin",url);}catch(Exception e){throw new RuntimeException(e);} }
     public static void setPushUrlUnchecked(Workspace workspace,String url) { try{git(workspace.repository(),"remote","set-url","--push","origin",url);}catch(Exception e){throw new RuntimeException(e);} }
+    public static void setInsteadOfRewriteUnchecked(Workspace workspace,Path destination) {
+        try { git(workspace.repository(),"config","url."+destination.toUri()+".insteadOf",SSH_ORIGIN); }
+        catch(Exception e){throw new RuntimeException(e);}
+    }
+    public static void setPushInsteadOfRewriteUnchecked(Workspace workspace,Path destination) {
+        try { git(workspace.repository(),"config","url."+destination.toUri()+".pushInsteadOf",SSH_ORIGIN); }
+        catch(Exception e){throw new RuntimeException(e);}
+    }
     public static String bareRemoteTip(Path bare,String branch) throws Exception { Process p=new ProcessBuilder("git","--git-dir",bare.toString(),"rev-parse","--verify","refs/heads/"+branch).redirectErrorStream(true).start();String out=new String(p.getInputStream().readAllBytes(),StandardCharsets.UTF_8).strip();int code=p.waitFor();return code==0?out:null; }
 
     public static Path packageJournalPath(Workspace workspace,String workId,String packageId) {

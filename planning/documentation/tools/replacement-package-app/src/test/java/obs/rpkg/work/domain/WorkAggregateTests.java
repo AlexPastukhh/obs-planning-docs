@@ -10,6 +10,8 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 
+import obs.rpkg.Core;
+import obs.rpkg.GitTransport;
 import obs.rpkg.features.apply.domain.PublicationObservation;
 import obs.rpkg.features.apply.domain.ReplacementPackageIdentity;
 import obs.rpkg.features.apply.domain.ReplacementPackageState;
@@ -23,6 +25,7 @@ public final class WorkAggregateTests {
     public static void main(String[] args) {
         run("WorkId is the only logical work correlation identity", WorkAggregateTests::workId);
         run("GitWorkspace owns only Git workspace facts and derives work branch", WorkAggregateTests::workspaceShape);
+        run("RepositoryIdentity normalization has one Git transport owner", WorkAggregateTests::repositoryIdentityNormalization);
         run("ReplacementPackageState existence means Applied", WorkAggregateTests::packageStateShape);
         run("publication proof is independent evidence", WorkAggregateTests::publicationEvidence);
         run("re-proving the same commit preserves publication evidence", WorkAggregateTests::sameCommitPreservesPublicationEvidence);
@@ -52,6 +55,14 @@ public final class WorkAggregateTests {
                 .map(c -> c.getName()).collect(Collectors.toSet());
         eq(components, Set.of("workId", "repositoryTarget", "targetBranch", "worktree", "baseCommit"),
                 "GitWorkspace acquired unrelated state");
+    }
+
+    private static void repositoryIdentityNormalization() {
+        eq(GitTransport.repositoryIdentityFromUrl("https://github.com/A/B.git"), "github:A/B", "https identity");
+        eq(GitTransport.repositoryIdentityFromUrl("https://github.com/A/B/"), "github:A/B", "trailing slash identity");
+        eq(GitTransport.repositoryIdentityFromUrl("git@github.com:A/B.git"), "github:A/B", "ssh scp identity");
+        eq(GitTransport.repositoryIdentityFromUrl("ssh://git@github.com/A/B.git"), "github:A/B", "ssh URI identity");
+        throwsType(Core.ObsException.class, () -> GitTransport.repositoryIdentityFromUrl("https://example.invalid/A/B.git"));
     }
 
     private static void packageStateShape() {

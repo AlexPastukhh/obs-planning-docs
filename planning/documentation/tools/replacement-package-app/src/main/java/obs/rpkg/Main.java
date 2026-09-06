@@ -99,7 +99,7 @@ public final class Main {
         var start=new StartWorkWorkspace(mechanics,workspaces,workLocks);
         var apply=new ApplyReplacementPackage(core,workspaces,states,workLocks,mechanics);
         var commit=new CommitAppliedPackage(workspaces,states,workLocks,mechanics);
-        var publish=new PublishAppliedCommit(workspaces,states,workLocks,new GitPublicationObserver(),mechanics);
+        var publish=new PublishAppliedCommit(workspaces,states,workLocks,new GitPublicationObserver(mechanics.transport()),mechanics);
         var automatic=new AutomaticPackageRealization(core,start,apply,commit,publish);
         return new Runtime(start,apply,commit,publish,automatic);
     }

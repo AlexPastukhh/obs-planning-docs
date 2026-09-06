@@ -59,7 +59,7 @@ final class MainWindow extends JFrame {
         this.startWorkspace = new StartWorkWorkspace(mechanics, workspaces, workLocks);
         this.apply = new ApplyReplacementPackage(core, workspaces, states, workLocks, mechanics);
         this.commit = new CommitAppliedPackage(workspaces, states, workLocks, mechanics);
-        this.publish = new PublishAppliedCommit(workspaces, states, workLocks, new GitPublicationObserver(), mechanics);
+        this.publish = new PublishAppliedCommit(workspaces, states, workLocks, new GitPublicationObserver(mechanics.transport()), mechanics);
         this.automatic = new AutomaticPackageRealization(core, startWorkspace, apply, commit, publish);
 
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);

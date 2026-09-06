@@ -33,10 +33,11 @@ Result:
 - automatic `OBS-ACTION apply-package` composes Start → Apply → Commit → Publish without a generic Resume abstraction;
 - exact archive bytes are captured once for Apply;
 - package-journal schema 3 separates crash evidence from applicability authority: only `applicabilityProven=true` may recover already-intended bytes; digest integrity and captured-package binding are independent proofs;
-- Start workspace pins `baseCommit` through a captured exact verified fetch URL rather than stale local branch state or a mutable remote alias;
+- Start workspace pins `baseCommit` through a verified isolated Git transport endpoint rather than stale local branch state, mutable remote aliases or later URL rewrites;
 - Apply itself fences package RepositoryIdentity to the persisted GitWorkspace Repository Target;
-- Publish refreshes observation through a captured exact fetch URL, pushes only through a captured exact verified push URL, and uses durable `NotConfirmed` as write-ahead uncertainty guard;
-- Work mutation serialization is owned by a dedicated re-entrant `WorkOperationLock` application port with operation-local failure semantics.
+- Publish refreshes observation and pushes through shared isolated Git transport endpoints that exclude post-capture `insteadOf` / `pushInsteadOf` rewrites, and uses durable `NotConfirmed` as write-ahead uncertainty guard;
+- Work mutation serialization is owned by a dedicated re-entrant `WorkOperationLock` application port with operation-local failure semantics;
+- one shared Git transport capability owns GitHub RepositoryIdentity normalization and actual remote endpoint execution.
 
 Proof gate:
 - Apply stops before Commit;
@@ -44,7 +45,7 @@ Proof gate:
 - exact same archive/package is idempotent;
 - archive path replacement after capture cannot change applied bytes/identity;
 - state persistence failure after Apply/Commit can recover exact established effects;
-- unexpected remote tip or foreign effective push destination blocks before push;
+- unexpected remote tip or foreign effective push destination blocks before push; post-verification `insteadOf` / `pushInsteadOf` mutation cannot redirect fetch, observation or push;
 - no blind repush after unconfirmed publication;
 - sequential packages work without `publishedTip`/executionState owner;
 - target schema-1 protocol/applicability validation is owned by dedicated target suites rather than retired `CoreTests`;

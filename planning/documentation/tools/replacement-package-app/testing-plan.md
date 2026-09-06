@@ -8,7 +8,7 @@ Tests prove selected behavior; they do not define it.
 
 ### WorkAggregateTests
 Prove:
-- WorkId/RepositoryTarget/GitWorkspace shapes;
+- WorkId/RepositoryTarget/GitWorkspace shapes and shared Git transport RepositoryIdentity normalization;
 - exact archive identity requirement;
 - ReplacementPackageState publication semantics;
 - same-commit evidence preservation;
@@ -25,7 +25,7 @@ Prove file applicability at the target Apply boundary: exact add/replace/delete,
 
 ### ApplyReplacementPackageFeatureIntegrationTests
 Prove end-to-end application-service boundaries with real Git where practical:
-- Start Workspace captures/verifies the exact target fetch URL, cannot be redirected by later origin mutation, persists GitWorkspace and creates no Core.ChangeSet;
+- Start Workspace captures/verifies the exact target transport endpoint, cannot be redirected by later origin or `insteadOf` mutation, persists GitWorkspace and creates no Core.ChangeSet;
 - package ZIP is captured once; later path replacement cannot change applied bytes/identity;
 - Apply state-write recovery via schema-3 proven journal, independent digest-corruption and captured-payload-binding rejection, previous-journal-schema fail-closed behavior, and package RepositoryIdentity fencing;
 - Commit is separate and recovers exact existing commit after state-write failure;
@@ -33,7 +33,7 @@ Prove end-to-end application-service boundaries with real Git where practical:
 - pre-push NotConfirmed persistence failure blocks push;
 - post-push final-state persistence failure leaves durable NotConfirmed;
 - uncertain Retry confirms before another push;
-- unexpected remote tip and foreign effective origin push URL fail before push; captured exact fetch/push URLs cannot be redirected by later remote-config mutation;
+- unexpected remote tip and foreign effective origin push URL fail before push; isolated fetch/observation/push endpoints cannot be redirected by later remote-alias, `insteadOf` or `pushInsteadOf` mutation; repository mismatch remains an operation failure rather than false state divergence;
 - every not-yet-published Publish invocation refreshes remote observation before any possible push;
 - sequential packages derive previous tip from package journal;
 - workspace creation recovers after state persistence failure and conflicting leftover journals fail closed;

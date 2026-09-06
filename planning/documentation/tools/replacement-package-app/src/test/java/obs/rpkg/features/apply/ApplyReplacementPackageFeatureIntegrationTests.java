@@ -33,6 +33,7 @@ public final class ApplyReplacementPackageFeatureIntegrationTests {
         run("Start Workspace persists GitWorkspace without Core.ChangeSet", ApplyReplacementPackageFeatureIntegrationTests::workspaceNoChangeSet);
         run("Start Workspace pins fresh authoritative origin target tip", ApplyReplacementPackageFeatureIntegrationTests::workspacePinsFreshOriginTip);
         run("Start Workspace uses captured verified fetch URL after origin config mutation", ApplyReplacementPackageFeatureIntegrationTests::workspaceUsesCapturedFetchUrl);
+        run("Start Workspace transport ignores insteadOf added after endpoint verification", ApplyReplacementPackageFeatureIntegrationTests::workspaceIgnoresRewriteAfterVerification);
         run("Apply uses one immutable captured archive snapshot", ApplyReplacementPackageFeatureIntegrationTests::immutableArchiveSnapshot);
         run("Apply recovery uses durable package journal after state-save failure", ApplyReplacementPackageFeatureIntegrationTests::applyRecoveryAfterStateFailure);
         run("Apply recovery rejects package journal integrity corruption", ApplyReplacementPackageFeatureIntegrationTests::applyRecoveryRejectsJournalIntegrityCorruption);
@@ -49,6 +50,8 @@ public final class ApplyReplacementPackageFeatureIntegrationTests {
         run("foreign origin pushurl is rejected before push", ApplyReplacementPackageFeatureIntegrationTests::foreignPushUrlBlocksPush);
         run("Publish uses captured verified fetch URL after origin config mutation", ApplyReplacementPackageFeatureIntegrationTests::publishUsesCapturedFetchUrl);
         run("Publish uses captured verified push URL after pushurl config mutation", ApplyReplacementPackageFeatureIntegrationTests::publishUsesCapturedPushUrl);
+        run("Publish observation ignores insteadOf added after endpoint verification", ApplyReplacementPackageFeatureIntegrationTests::publishObservationIgnoresRewriteAfterVerification);
+        run("Publish push ignores pushInsteadOf added after endpoint verification", ApplyReplacementPackageFeatureIntegrationTests::publishPushIgnoresRewriteAfterVerification);
         run("persisted safe observation is refreshed before a later push", ApplyReplacementPackageFeatureIntegrationTests::freshObservationBeforeLaterPush);
         run("sequential packages derive previous tip from package journal", ApplyReplacementPackageFeatureIntegrationTests::sequentialPackages);
         run("workspace journal recovers after GitWorkspace persistence failure", ApplyReplacementPackageFeatureIntegrationTests::workspaceRecoveryAfterPersistenceFailure);
@@ -93,6 +96,17 @@ public final class ApplyReplacementPackageFeatureIntegrationTests {
             ok(result.isFailure(),"Start accepted RepositoryTarget after origin identity changed");
             eq(ApplyFeatureTestSupport.git(w.repository(),"rev-parse","refs/remotes/origin/main"),remoteTip,
                     "Start re-resolved mutable origin instead of fetching captured verified URL");
+        } finally { w.mechanics().setAfterFetchUrlVerifiedHookForTests(null);ApplyFeatureTestSupport.deleteTree(w.root()); }
+    }
+
+    private static void workspaceIgnoresRewriteAfterVerification() throws Exception {
+        var w=ApplyFeatureTestSupport.workspace("workspace-rewrite-fence",false);
+        try {
+            String remoteTip=ApplyFeatureTestSupport.advanceRemoteMainKeepingLocalStale(w);
+            java.nio.file.Path foreign=ApplyFeatureTestSupport.newBareRemote(w,"foreign-rewrite-fetch.git");
+            w.mechanics().setAfterFetchUrlVerifiedHookForTests(() -> ApplyFeatureTestSupport.setInsteadOfRewriteUnchecked(w,foreign));
+            GitWorkspace ws=start(w,UUID.randomUUID().toString());
+            eq(ws.baseCommit(),remoteTip,"Git insteadOf redirected verified Start fetch endpoint");
         } finally { w.mechanics().setAfterFetchUrlVerifiedHookForTests(null);ApplyFeatureTestSupport.deleteTree(w.root()); }
     }
 
@@ -197,7 +211,7 @@ public final class ApplyReplacementPackageFeatureIntegrationTests {
             CommitAppliedPackage commit=new CommitAppliedPackage(w.workspaces(),w.states(),failing,w.mechanics());
             CommitAppliedFailure cf=commitFailure(commit.execute(id,pkg.packageId()));
             eq(cf.code(),CommitAppliedFailureCode.OPERATION_SERIALIZATION_FAILED,"Commit lock failure was classified as state divergence");
-            PublishAppliedCommit publish=new PublishAppliedCommit(w.workspaces(),w.states(),failing,new obs.rpkg.features.apply.infrastructure.GitPublicationObserver(),w.mechanics());
+            PublishAppliedCommit publish=new PublishAppliedCommit(w.workspaces(),w.states(),failing,new obs.rpkg.features.apply.infrastructure.GitPublicationObserver(w.mechanics().transport()),w.mechanics());
             PublishFailure pf=publishFailure(publish.execute(id,pkg.packageId()));
             eq(pf.code(),PublishFailureCode.OPERATION_SERIALIZATION_FAILED,"Publish lock failure was classified as state divergence");
         } finally { ApplyFeatureTestSupport.deleteTree(w.root()); }
@@ -242,7 +256,7 @@ public final class ApplyReplacementPackageFeatureIntegrationTests {
             success(w.apply().execute(new ApplyReplacementPackage.Request(pkg.path(),id)));commitSuccess(w.commit().execute(id,pkg.packageId()));
             FailingSaveRepository failing=new FailingSaveRepository(w.states(),state -> state.publication() instanceof PublicationObservation.NotConfirmed);
             AtomicInteger pushes=new AtomicInteger();w.mechanics().setAfterPushAttemptHookForTests(pushes::incrementAndGet);
-            PublishAppliedCommit publish=new PublishAppliedCommit(w.workspaces(),failing,w.workLocks(),new obs.rpkg.features.apply.infrastructure.GitPublicationObserver(),w.mechanics());
+            PublishAppliedCommit publish=new PublishAppliedCommit(w.workspaces(),failing,w.workLocks(),new obs.rpkg.features.apply.infrastructure.GitPublicationObserver(w.mechanics().transport()),w.mechanics());
             PublishFailure failure=publishFailure(publish.execute(id,pkg.packageId()));
             eq(failure.code(),PublishFailureCode.STATE_PERSISTENCE_FAILED,"guard failure code");
             eq(pushes.get(),0,"push occurred without durable NotConfirmed guard");
@@ -258,7 +272,7 @@ public final class ApplyReplacementPackageFeatureIntegrationTests {
             success(w.apply().execute(new ApplyReplacementPackage.Request(pkg.path(),id)));
             ReplacementPackageState committed=commitSuccess(w.commit().execute(id,pkg.packageId()));
             FailingSaveRepository failing=new FailingSaveRepository(w.states(),state -> state.publication() instanceof PublicationObservation.ConfirmedTip);
-            PublishAppliedCommit publish=new PublishAppliedCommit(w.workspaces(),failing,w.workLocks(),new obs.rpkg.features.apply.infrastructure.GitPublicationObserver(),w.mechanics());
+            PublishAppliedCommit publish=new PublishAppliedCommit(w.workspaces(),failing,w.workLocks(),new obs.rpkg.features.apply.infrastructure.GitPublicationObserver(w.mechanics().transport()),w.mechanics());
             PublishFailure failure=publishFailure(publish.execute(id,pkg.packageId()));
             eq(failure.code(),PublishFailureCode.STATE_PERSISTENCE_FAILED,"final persistence failure code");
             eq(ApplyFeatureTestSupport.remoteTip(w,ws.workBranch()),committed.commitSha(),"push did not reach remote");
@@ -312,7 +326,7 @@ public final class ApplyReplacementPackageFeatureIntegrationTests {
             ApplyFeatureTestSupport.setForeignPushUrl(w);
             ApplyFeatureTestSupport.failIfAnotherPushIsAttempted(w);
             PublishFailure failure=publishFailure(w.publish().execute(id,pkg.packageId()));
-            eq(failure.code(),PublishFailureCode.STATE_DIVERGED,"foreign pushurl was not fenced as repository divergence");
+            eq(failure.code(),PublishFailureCode.REPOSITORY_MISMATCH,"foreign pushurl was not classified as repository mismatch");
             eq(ApplyFeatureTestSupport.remoteTip(w,ws.workBranch()),null,"foreign pushurl case changed intended remote");
         } finally { ApplyFeatureTestSupport.clearPushHook(w);ApplyFeatureTestSupport.deleteTree(w.root()); }
     }
@@ -345,6 +359,38 @@ public final class ApplyReplacementPackageFeatureIntegrationTests {
             ok(published.isPublished(),"Publish did not confirm intended remote after captured push URL");
             eq(ApplyFeatureTestSupport.remoteTip(w,ws.workBranch()),committed.commitSha(),"captured push URL did not update intended remote");
             eq(ApplyFeatureTestSupport.bareRemoteTip(foreign,ws.workBranch()),null,"Publish re-resolved mutated pushurl and updated foreign remote");
+        } finally { w.mechanics().setAfterPushUrlVerifiedHookForTests(null);ApplyFeatureTestSupport.deleteTree(w.root()); }
+    }
+
+    private static void publishObservationIgnoresRewriteAfterVerification() throws Exception {
+        var w=ApplyFeatureTestSupport.workspace("publish-rewrite-observe",true);
+        try {
+            String id=UUID.randomUUID().toString();GitWorkspace ws=start(w,id);
+            var pkg=ApplyFeatureTestSupport.packageFor(w,id,"rewrite observe",List.of(ApplyFeatureTestSupport.replace("seed.txt","seed","ours")));
+            success(w.apply().execute(new ApplyReplacementPackage.Request(pkg.path(),id)));
+            ReplacementPackageState committed=commitSuccess(w.commit().execute(id,pkg.packageId()));
+            ApplyFeatureTestSupport.pushCommitExternally(w,ws.workBranch(),committed.commitSha());
+            java.nio.file.Path foreign=ApplyFeatureTestSupport.newBareRemote(w,"foreign-rewrite-observe.git");
+            w.mechanics().setAfterFetchUrlVerifiedHookForTests(() -> ApplyFeatureTestSupport.setInsteadOfRewriteUnchecked(w,foreign));
+            ReplacementPackageState published=publishSuccess(w.publish().execute(id,pkg.packageId()));
+            ok(published.isPublished(),"Git insteadOf redirected verified publication observation endpoint");
+            eq(ApplyFeatureTestSupport.bareRemoteTip(foreign,ws.workBranch()),null,"observation rewrite fixture unexpectedly changed foreign remote");
+        } finally { w.mechanics().setAfterFetchUrlVerifiedHookForTests(null);ApplyFeatureTestSupport.deleteTree(w.root()); }
+    }
+
+    private static void publishPushIgnoresRewriteAfterVerification() throws Exception {
+        var w=ApplyFeatureTestSupport.workspace("publish-rewrite-push",true);
+        try {
+            String id=UUID.randomUUID().toString();GitWorkspace ws=start(w,id);
+            var pkg=ApplyFeatureTestSupport.packageFor(w,id,"rewrite push",List.of(ApplyFeatureTestSupport.replace("seed.txt","seed","ours")));
+            success(w.apply().execute(new ApplyReplacementPackage.Request(pkg.path(),id)));
+            ReplacementPackageState committed=commitSuccess(w.commit().execute(id,pkg.packageId()));
+            java.nio.file.Path foreign=ApplyFeatureTestSupport.newBareRemote(w,"foreign-rewrite-push.git");
+            w.mechanics().setAfterPushUrlVerifiedHookForTests(() -> ApplyFeatureTestSupport.setPushInsteadOfRewriteUnchecked(w,foreign));
+            ReplacementPackageState published=publishSuccess(w.publish().execute(id,pkg.packageId()));
+            ok(published.isPublished(),"Git pushInsteadOf redirected verified Publish destination");
+            eq(ApplyFeatureTestSupport.remoteTip(w,ws.workBranch()),committed.commitSha(),"verified intended remote was not published");
+            eq(ApplyFeatureTestSupport.bareRemoteTip(foreign,ws.workBranch()),null,"pushInsteadOf redirected side effect to foreign remote");
         } finally { w.mechanics().setAfterPushUrlVerifiedHookForTests(null);ApplyFeatureTestSupport.deleteTree(w.root()); }
     }
 

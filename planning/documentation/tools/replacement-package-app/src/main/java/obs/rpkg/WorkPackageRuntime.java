@@ -18,12 +18,18 @@ import obs.rpkgcommon.PackageStateApplier;
 public final class WorkPackageRuntime {
     private final Path stateRoot;
     private final GitClient git = new GitClient();
+    private final GitTransport transport;
     private Runnable afterPushAttemptHook = () -> {};
     private Runnable afterFetchUrlVerifiedHook = () -> {};
     private Runnable afterPushUrlVerifiedHook = () -> {};
 
     public WorkPackageRuntime(Path appStateRoot) {
+        this(appStateRoot, new GitTransport(appStateRoot));
+    }
+
+    public WorkPackageRuntime(Path appStateRoot, GitTransport transport) {
         if (appStateRoot == null) throw new IllegalArgumentException("appStateRoot is required");
+        this.transport = Objects.requireNonNull(transport, "transport");
         this.stateRoot = appStateRoot.toAbsolutePath().normalize().resolve("work-state-v2");
         try {
             Files.createDirectories(workspaceJournalDirectory());
@@ -98,18 +104,26 @@ public final class WorkPackageRuntime {
         verifyWorkspaceIdentity(workspace);
     }
 
-    public String verifiedPublicationFetchUrl(GitWorkspace workspace) {
+    public GitTransport.Endpoint verifiedPublicationFetchEndpoint(GitWorkspace workspace) {
         Objects.requireNonNull(workspace, "workspace");
         verifyWorkspaceIdentity(workspace);
-        return verifiedOriginUrl(workspace.repositoryTarget().registeredPath(),
+        GitTransport.Endpoint endpoint = transport.captureOrigin(
+                workspace.repositoryTarget().registeredPath(),
                 workspace.repositoryTarget().repositoryIdentity(), false);
+        afterFetchUrlVerifiedHook.run();
+        return endpoint;
     }
 
-    public String verifiedPublicationPushUrl(GitWorkspace workspace) {
+    public GitTransport.Endpoint verifiedPublicationPushEndpoint(GitWorkspace workspace) {
         Objects.requireNonNull(workspace, "workspace");
-        return verifiedOriginUrl(workspace.repositoryTarget().registeredPath(),
+        GitTransport.Endpoint endpoint = transport.captureOrigin(
+                workspace.repositoryTarget().registeredPath(),
                 workspace.repositoryTarget().repositoryIdentity(), true);
+        afterPushUrlVerifiedHook.run();
+        return endpoint;
     }
+
+    public GitTransport transport() { return transport; }
 
     public void apply(Core.PackageData pkg, GitWorkspace workspace) {
         Objects.requireNonNull(pkg, "pkg");
@@ -221,22 +235,27 @@ public final class WorkPackageRuntime {
         return loadPackageJournal(workspace, identity).baseHead();
     }
 
-    public void push(GitWorkspace workspace, ReplacementPackageIdentity identity, String commitSha, String expectedRemoteTip, String exactPushUrl) {
+    public void push(
+            GitWorkspace workspace,
+            ReplacementPackageIdentity identity,
+            String commitSha,
+            String expectedRemoteTip,
+            GitTransport.Endpoint endpoint) {
         PackageJournal journal = loadPackageJournal(workspace, identity);
         if (expectedRemoteTip != null && !Objects.equals(journal.baseHead(), expectedRemoteTip)) {
             throw new Core.ObsException(Core.STATE_DIVERGED, "Publish lease tip differs from durable package baseHead.");
         }
         verifyExactPackageCommit(workspace, journal, commitSha);
-        Path repository = workspace.repositoryTarget().registeredPath();
-        if (!same(repositoryIdentityFromUrl(exactPushUrl), workspace.repositoryTarget().repositoryIdentity())) {
-            throw new Core.ObsException(Core.REPOSITORY_MISMATCH, "Captured Publish URL no longer matches RepositoryTarget identity.");
+        if (!same(endpoint.repositoryIdentity(), workspace.repositoryTarget().repositoryIdentity())) {
+            throw new Core.ObsException(Core.REPOSITORY_MISMATCH,
+                    "Captured Publish transport endpoint differs from RepositoryTarget identity.");
         }
         String remoteRef = "refs/heads/" + workspace.workBranch();
-        String lease = "--force-with-lease=" + remoteRef + ":" + (expectedRemoteTip == null ? "" : expectedRemoteTip);
-        GitClient.Result push = git.run(repository, Core.PUBLISH_FAILED, true, Map.of("GIT_TERMINAL_PROMPT", "0"),
-                "push", "--porcelain", lease, exactPushUrl, commitSha + ":" + remoteRef);
-        afterPushAttemptHook.run();
-        if (push.exitCode() != 0) throw new Core.ObsException(Core.PUBLISH_FAILED, "Git push failed.\n--- git details ---\n" + push.failureDetails());
+        try {
+            transport.push(workspace.worktree(), endpoint, commitSha, remoteRef, expectedRemoteTip);
+        } finally {
+            afterPushAttemptHook.run();
+        }
     }
 
     public void setAfterPushAttemptHookForTests(Runnable hook) { afterPushAttemptHook = hook == null ? () -> {} : hook; }
@@ -545,48 +564,16 @@ public final class WorkPackageRuntime {
     }
     private void requireRepositoryReady(Path repo) { GitClient.Result r = git.allow(repo, Core.REPOSITORY_NOT_READY, "rev-parse", "--verify", "HEAD"); if (r.exitCode() != 0 || r.first().isBlank()) throw new Core.ObsException(Core.REPOSITORY_NOT_READY, "Repository has no commits."); }
     private String resolveAuthoritativeTargetTip(Path repo, String branch, String expectedRepositoryIdentity) {
-        String fetchUrl = verifiedOriginUrl(repo, expectedRepositoryIdentity, false);
-        String remoteRef = "refs/remotes/origin/" + branch;
-        GitClient.Result fetch = git.run(repo, Core.REPOSITORY_NOT_READY, true, Map.of("GIT_TERMINAL_PROMPT", "0"),
-                "fetch", "--no-tags", fetchUrl, "+refs/heads/" + branch + ":" + remoteRef);
-        if (fetch.exitCode() != 0) {
-            throw new Core.ObsException(Core.REPOSITORY_NOT_READY,
-                    "Cannot resolve authoritative origin/" + branch + ".\n--- git details ---\n" + fetch.failureDetails());
-        }
-        GitClient.Result resolved = git.allow(repo, Core.REPOSITORY_NOT_READY,
-                "rev-parse", "--verify", remoteRef + "^{commit}");
-        if (resolved.exitCode() != 0 || resolved.first().isBlank()) {
-            throw new Core.ObsException(Core.REPOSITORY_NOT_READY,
-                    "Authoritative target branch does not resolve after fetch: origin/" + branch);
-        }
-        return resolved.first();
-    }
-
-    private String verifiedOriginUrl(Path repo, String expectedRepositoryIdentity, boolean push) {
-        GitClient.Result urls = push
-                ? git.allow(repo, Core.REPOSITORY_MISMATCH, "remote", "get-url", "--push", "--all", "origin")
-                : git.allow(repo, Core.REPOSITORY_MISMATCH, "remote", "get-url", "--all", "origin");
-        if (urls.exitCode() != 0 || urls.stdout().size() != 1) {
-            throw new Core.ObsException(Core.REPOSITORY_MISMATCH,
-                    "origin must resolve to exactly one " + (push ? "push" : "fetch") + " URL.");
-        }
-        String url = urls.stdout().get(0).trim();
-        String actual = repositoryIdentityFromUrl(url);
-        if (!same(actual, expectedRepositoryIdentity)) {
-            throw new Core.ObsException(Core.REPOSITORY_MISMATCH,
-                    "origin " + (push ? "push" : "fetch") + " URL resolves to " + actual
-                            + "; expected " + expectedRepositoryIdentity + ".");
-        }
-        if (push) afterPushUrlVerifiedHook.run(); else afterFetchUrlVerifiedHook.run();
-        return url;
+        GitTransport.Endpoint endpoint = transport.captureOrigin(repo, expectedRepositoryIdentity, false);
+        afterFetchUrlVerifiedHook.run();
+        return transport.fetchBranch(repo, endpoint, branch, "refs/remotes/origin/" + branch);
     }
     private void validateBranchName(Path repo, String branch) { if (git.allow(repo, Core.STATE_DIVERGED, "check-ref-format", "--branch", branch).exitCode() != 0) throw new Core.ObsException(Core.STATE_DIVERGED, "Invalid target branch name: " + branch); }
     private boolean gitRefExists(Path repo, String ref) { return git.allow(repo, Core.STATE_DIVERGED, "show-ref", "--verify", "--quiet", ref).exitCode() == 0; }
     private String head(Path worktree) { return git.run(worktree, Core.STATE_DIVERGED, "rev-parse", "HEAD").first(); }
     private String branchTip(GitWorkspace workspace) { return git.run(workspace.repositoryTarget().registeredPath(), Core.STATE_DIVERGED, "rev-parse", "--verify", "refs/heads/" + workspace.workBranch() + "^{commit}").first(); }
     private Path gitCommonDir(Path repo) { String s = git.run(repo, Core.STATE_DIVERGED, "rev-parse", "--git-common-dir").first(); Path p = Path.of(s); if (!p.isAbsolute()) p = repo.resolve(p); try { return p.toRealPath(); } catch (IOException e) { throw new Core.ObsException(Core.STATE_DIVERGED, "Cannot resolve Git common directory.", e); } }
-    private String repositoryIdentity(Path repo) { GitClient.Result r = git.allow(repo, Core.REPOSITORY_MISMATCH, "config", "--get", "remote.origin.url"); if (r.exitCode() != 0 || r.first().isBlank()) throw new Core.ObsException(Core.REPOSITORY_MISMATCH, "remote.origin.url is missing."); return repositoryIdentityFromUrl(r.first()); }
-    private static String repositoryIdentityFromUrl(String u) { Pattern[] ps = { Pattern.compile("^https?://github\\.com/([^/]+)/([^/]+?)(?:\\.git)?/?$", Pattern.CASE_INSENSITIVE), Pattern.compile("^git@github\\.com:([^/]+)/([^/]+?)(?:\\.git)?$", Pattern.CASE_INSENSITIVE), Pattern.compile("^ssh://git@github\\.com/([^/]+)/([^/]+?)(?:\\.git)?/?$", Pattern.CASE_INSENSITIVE) }; for (Pattern p : ps) { Matcher m = p.matcher(u); if (m.matches()) return "github:" + m.group(1) + "/" + m.group(2); } throw new Core.ObsException(Core.REPOSITORY_MISMATCH, "Unsupported origin for repositoryIdentity: " + u); }
+    private String repositoryIdentity(Path repo) { return transport.repositoryIdentity(repo); }
     private static boolean same(String a, String b) { return a != null && b != null && a.equalsIgnoreCase(b); }
     private static boolean samePath(Path a, Path b) { try { return a.toRealPath().equals(b.toRealPath()); } catch (IOException e) { return a.toAbsolutePath().normalize().equals(b.toAbsolutePath().normalize()); } }
     private static String workBranch(WorkId workId) { return "changeset/" + workId.value(); }

@@ -16,6 +16,7 @@ call javac --release 21 -cp build\classes -d build\classes ^
   src\main\java\obs\rpkg\work\application\port\WorkOperationLock.java ^
   src\main\java\obs\rpkg\work\infrastructure\FileGitWorkspaceRepository.java ^
   src\main\java\obs\rpkg\work\infrastructure\FileWorkOperationLock.java ^
+  src\main\java\obs\rpkg\GitTransport.java ^
   src\main\java\obs\rpkg\WorkPackageRuntime.java ^
   src\main\java\obs\rpkg\work\application\StartWorkWorkspace.java ^
   src\main\java\obs\rpkg\features\apply\domain\OperationFailureDisposition.java ^

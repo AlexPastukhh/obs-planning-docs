@@ -88,7 +88,7 @@ Worktree
 BaseCommit
 ```
 
-Work branch is derived deterministically as `changeset/<WorkId>` for schema-1 compatibility. `baseCommit` is pinned from a fresh fetch of one exact verified `origin/<targetBranch>` URL; the verified URL string is captured and passed directly to Git, so a later `origin` config change cannot redirect that fetch. A stale local target branch is never source authority. Workspace intent is journaled before branch/worktree mutation; unjournaled deterministic collisions fail closed, and a leftover journal must agree exactly with an already-persisted `GitWorkspace` before it may be cleared.
+Work branch is derived deterministically as `changeset/<WorkId>` for schema-1 compatibility. `baseCommit` is pinned from a fresh fetch through one verified Git transport endpoint for `origin/<targetBranch>`. Endpoint capture also snapshots only the transport/authentication config permitted for that operation. The network fetch runs in an isolated temporary bare repository with system/global rewrite config disabled and without registered-repository `url.*.insteadOf` rules; fetched objects cross back only through local bundle/unbundle. Therefore stale local branch state, later `origin` mutation, and later `insteadOf` mutation are not source authority. Workspace intent is journaled before branch/worktree mutation; unjournaled deterministic collisions fail closed, and a leftover journal must agree exactly with an already-persisted `GitWorkspace` before it may be cleared.
 
 ## Apply identity rule
 
@@ -110,8 +110,8 @@ Publish:
 - permits push only when remote is absent or exactly package journal `baseHead`;
 - rejects any other remote tip before push;
 - durably writes `NotConfirmed` before possible push;
-- captures one exact verified fetch URL for observation and, only if a push may occur, one exact verified push URL; `ls-remote`/`push` receive those URL strings directly rather than re-resolving the mutable `origin` alias;
-- the exact commit is pushed with force-with-lease tied to the freshly proven previous remote state;
+- captures one verified fetch transport endpoint for observation and, only if a push may occur, one verified push transport endpoint; `ls-remote`/`push` execute through isolated temporary Git transport state that excludes mutable `url.*.insteadOf` / `pushInsteadOf` rewrite rules from the registered repository, so neither remote aliases nor later URL-rewrite config can redirect the operation;
+- the exact commit is transferred into isolated transport state through a local bundle and pushed with force-with-lease tied to the freshly proven previous remote state; RepositoryIdentity normalization is owned by the shared Git transport capability;
 - observes again after possible push and persists exact evidence.
 
 `NotConfirmed` means intended publication is not currently proven; retry must observe before any further push.
