@@ -1,43 +1,36 @@
 # F-RPKG-PUBLISH-APPLIED-COMMIT — Publish Applied Commit
 
-## Identity
-
-`F-RPKG-PUBLISH-APPLIED-COMMIT`
-
 ## Intent
 
-Publish the exact committed replacement-package work-branch tip and establish a reliable observation of the external publication state.
+Publish the exact committed package work-branch tip and establish reliable durable evidence of the external publication state.
 
 ## Principal Result
 
 `Result<ReplacementPackageState, PublishFailure>`
 
-Success means the concrete Publish/Retry Publish operation established the required publication fact. Failure describes the failed operation; the returned/current `ReplacementPackageState` may still contain facts established by earlier operations.
+Operation Result says what happened in this invocation. `PublicationObservation` says what remote fact is currently proven.
 
 ## Publication evidence
-
-`PublicationObservation` is state/evidence, not an operation result:
 
 ```text
 NotRequested
 NotConfirmed
 ConfirmedAbsent
-ConfirmedTip(commitSha)
+ConfirmedTip(sha)
 ```
 
-`ConfirmedAbsent` means a reliable observation proved the remote work branch absent. `ConfirmedTip(sha)` means a reliable observation proved that exact current remote work-branch tip. `NotConfirmed` means no reliable confirmation is currently available after a publication attempt.
+`NotConfirmed` means publication of the intended commit is not currently proven; remote observation is required before any further push. It is also the conservative write-ahead guard persisted immediately before a possible push.
 
 ## Expected application behavior
 
-| Behavior step | Requirement(s) |
+| Behavior step | Requirement |
 |---|---|
-| **1. Require exact committed package state.** | `BR-RPKG-PUBLISH-REQUIRES-COMMIT` — Publish requires the exact package state and exact local package commit. |
-| **2. Reconcile before retry when confirmation is missing.** | `BR-RPKG-PUBLISH-CONFIRM-BEFORE-RETRY` — `NotConfirmed` requires exact remote observation before another push is allowed. |
-| **3. Persist uncertainty before the side-effect boundary.** | `BR-RPKG-PUBLISH-DURABLE-UNCERTAINTY-GUARD` — before mechanics may push, durable state is `NotConfirmed`; if that write fails, no push begins. |
-| **4. Push only when publication is proven absent/not-at-current-commit and retry is safe.** | `BR-RPKG-PUBLISH-NO-BLIND-RETRY` — no second push is attempted while the previous external effect remains unconfirmed. |
-| **5. Confirm external state after push.** | `BR-RPKG-PUBLISH-EXACT-REMOTE-TIP` — Published is true only when `ConfirmedTip(exactCommitSha)` is established. |
-| **6. Persist the observation.** | `BR-RPKG-PUBLISH-DURABLE-OBSERVATION` — reliable remote observations survive later calls; failure to persist stronger confirmation leaves the already-durable `NotConfirmed` guard as retry authority. |
+| Require exact committed state | Resolve `GitWorkspace`, exact package state and durable package journal; derive the previous publication boundary from journal `baseHead`. |
+| Observe before any possible push | `NotRequested` and `NotConfirmed` first perform exact remote observation. |
+| Decide from observation | Exact intended tip → success; remote absent or exact package `baseHead` → push may be safe; any other tip → `REMOTE_BRANCH_DIVERGED`, no push. |
+| Persist uncertainty guard | Before mechanics may push, durably save `NotConfirmed`; persistence failure blocks the side effect. |
+| Push with exact lease | Push only exact package commit to derived Work branch using the observed previous tip/absence as lease authority. |
+| Reconcile after possible push | Observe exact remote branch again. Exact intended tip → success; unchanged previous/absent → retryable push failure; anything else → divergence. |
+| Persist stronger evidence | Confirmation is durable. If stronger evidence cannot be saved after possible push, durable `NotConfirmed` remains retry authority. |
 
-A failed push with a successful **durably persisted** observation is a push failure with confirmed publication state. Inability to obtain a reliable observation is `PUBLICATION_CONFIRMATION_FAILED`; failure to persist a stronger observation is `STATE_PERSISTENCE_FAILED` and the durable state remains `NotConfirmed`.
-
-`Retry Publish` is the same Feature operation invoked after an earlier failure. It is a separate UI action because the user is explicitly retrying/reconciling Publish, but it does not introduce a generic package Resume abstraction.
+`Retry Publish` invokes the same Feature. It never blindly repushes an unconfirmed prior effect and never uses `Core.ChangeSet.publishedTip` or `PublicationUncertain` as authority.

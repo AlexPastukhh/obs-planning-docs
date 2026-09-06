@@ -5,6 +5,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 import obs.rpkg.Core;
+import obs.rpkg.WorkPackageRuntime;
 import obs.rpkg.features.apply.domain.ApplyFailure;
 import obs.rpkg.features.apply.domain.ApplyFailureCode;
 import obs.rpkg.features.apply.domain.OperationFailureDisposition;
@@ -13,23 +14,32 @@ import obs.rpkg.features.apply.domain.ReplacementPackageIdentity;
 import obs.rpkg.features.apply.domain.ReplacementPackageState;
 import obs.rpkg.features.apply.infrastructure.ReplacementPackageStateRepository;
 import obs.rpkg.foundation.result.Result;
+import obs.rpkg.work.application.port.GitWorkspaceRepository;
+import obs.rpkg.work.domain.GitWorkspace;
 import obs.rpkg.work.domain.WorkId;
 
 /** Application service for the concrete Apply Package operation. */
 public final class ApplyReplacementPackage {
-    private final Core core;
+    private final Core packageReader;
+    private final GitWorkspaceRepository workspaces;
     private final ReplacementPackageStateRepository states;
+    private final WorkPackageRuntime mechanics;
 
-    public ApplyReplacementPackage(Core core, ReplacementPackageStateRepository states) {
-        this.core = Objects.requireNonNull(core, "core");
+    public ApplyReplacementPackage(
+            Core packageReader,
+            GitWorkspaceRepository workspaces,
+            ReplacementPackageStateRepository states,
+            WorkPackageRuntime mechanics) {
+        this.packageReader = Objects.requireNonNull(packageReader, "packageReader");
+        this.workspaces = Objects.requireNonNull(workspaces, "workspaces");
         this.states = Objects.requireNonNull(states, "states");
+        this.mechanics = Objects.requireNonNull(mechanics, "mechanics");
     }
 
-    /** changeSetId remains the schema-1 wire name; application/domain converts it immediately to WorkId. */
-    public record Request(Path archive, Path repositoryRoot, String changeSetId) {
+    /** changeSetId remains the schema-1 wire name; it is converted immediately to WorkId. */
+    public record Request(Path archive, String changeSetId) {
         public Request {
             Objects.requireNonNull(archive, "archive");
-            Objects.requireNonNull(repositoryRoot, "repositoryRoot");
             if (changeSetId == null || changeSetId.isBlank()) throw new IllegalArgumentException("changeSetId is required");
         }
         WorkId workId() { return new WorkId(changeSetId); }
@@ -37,41 +47,39 @@ public final class ApplyReplacementPackage {
 
     public Result<ReplacementPackageState, ApplyFailure> execute(Request request) {
         Objects.requireNonNull(request, "request");
-        WorkId workId = request.workId();
-
         Core.PackageData packageData;
-        try { packageData = core.readPackage(request.archive()); }
-        catch (Core.ObsException e) { return Result.failure(mapFailure(e, Optional.empty())); }
+        try {
+            // Read and hash once. Mechanics receives these exact bytes; archive path is never re-read for mutation.
+            packageData = packageReader.readPackage(request.archive());
+        } catch (Core.ObsException e) {
+            return Result.failure(mapFailure(e, Optional.empty()));
+        }
+        return executePrepared(packageData, request.workId());
+    }
 
+    public Result<ReplacementPackageState, ApplyFailure> executePrepared(
+            Core.PackageData packageData,
+            WorkId workId) {
+        Objects.requireNonNull(packageData, "packageData");
+        Objects.requireNonNull(workId, "workId");
         if (!workId.value().equals(packageData.manifest().changeSetId())) {
             return Result.failure(new ApplyFailure(
                     ApplyFailureCode.PACKAGE_IDENTITY_MISMATCH,
                     OperationFailureDisposition.ACTION_REQUIRED,
                     "WorkId does not match PACKAGE.json changeSetId wire identity."));
         }
-
         ReplacementPackageIdentity exactIdentity = new ReplacementPackageIdentity(
                 packageData.manifest().packageId(), packageData.archiveSha256());
 
-        try (ReplacementPackageStateRepository.WorkLock ignored =
-                     ReplacementPackageStateAccess.lockOrThrow(states, workId)) {
-            return executeLocked(request, workId, exactIdentity);
-        } catch (ReplacementPackageStateAccess.StatePersistenceException e) {
-            return Result.failure(new ApplyFailure(
-                    ApplyFailureCode.STATE_PERSISTENCE_FAILED,
-                    OperationFailureDisposition.ACTION_REQUIRED, e.getMessage()));
-        } catch (IllegalStateException e) {
-            return Result.failure(new ApplyFailure(
-                    ApplyFailureCode.STATE_DIVERGED,
-                    OperationFailureDisposition.ACTION_REQUIRED, e.getMessage()));
-        }
-    }
+        try (ReplacementPackageStateRepository.WorkLock ignored = states.lock(workId)) {
+            Optional<GitWorkspace> workspace = workspaces.find(workId);
+            if (workspace.isEmpty()) {
+                return Result.failure(new ApplyFailure(
+                        ApplyFailureCode.REPOSITORY_NOT_READY,
+                        OperationFailureDisposition.ACTION_REQUIRED,
+                        "Start Work Workspace must succeed before Apply Package."));
+            }
 
-    private Result<ReplacementPackageState, ApplyFailure> executeLocked(
-            Request request,
-            WorkId workId,
-            ReplacementPackageIdentity exactIdentity) {
-        try {
             Optional<ReplacementPackageState> existing =
                     ReplacementPackageStateAccess.findOrThrow(states, workId, exactIdentity.packageId());
             if (existing.isPresent()) {
@@ -94,15 +102,23 @@ public final class ApplyReplacementPackage {
                         "Work already has a different unfinished replacement package.", unfinished.get()));
             }
 
-            core.applyPackage(request.archive(), request.repositoryRoot());
+            try {
+                mechanics.apply(packageData, workspace.get());
+            } catch (Core.ObsException e) {
+                return Result.failure(mapFailure(e, Optional.empty()));
+            }
             ReplacementPackageState state = new ReplacementPackageState(
                     workId, exactIdentity, null, new PublicationObservation.NotRequested());
             ReplacementPackageStateAccess.saveOrThrow(states, state);
             return Result.success(state);
-        } catch (Core.ObsException e) {
-            Optional<ReplacementPackageState> current =
-                    ReplacementPackageStateAccess.findOrThrow(states, workId, exactIdentity.packageId());
-            return Result.failure(mapFailure(e, current));
+        } catch (ReplacementPackageStateAccess.StatePersistenceException e) {
+            return Result.failure(new ApplyFailure(
+                    ApplyFailureCode.STATE_PERSISTENCE_FAILED,
+                    OperationFailureDisposition.ACTION_REQUIRED, e.getMessage()));
+        } catch (IllegalStateException e) {
+            return Result.failure(new ApplyFailure(
+                    ApplyFailureCode.STATE_DIVERGED,
+                    OperationFailureDisposition.ACTION_REQUIRED, e.getMessage()));
         }
     }
 

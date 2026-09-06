@@ -32,4 +32,4 @@ One semantic work stream must not fork into multiple external work records.
 
 ## Tests
 
-Current external Issue proof remains in `SL-RPKG-10`; Work-centered runtime cutover will rename application concepts without changing the exact-marker invariant.
+External Issue proof remains in `SL-RPKG-10`; the completed Work-centered runtime cutover retains the exact-marker invariant without introducing ChangeSet runtime authority.

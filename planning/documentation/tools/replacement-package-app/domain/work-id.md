@@ -1,6 +1,6 @@
 # WorkId
 
-Status: selected target shared identity Value Object
+Status: active current shared identity Value Object
 
 ## Responsibility / Meaning
 

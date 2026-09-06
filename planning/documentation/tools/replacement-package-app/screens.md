@@ -1,94 +1,40 @@
 # Replacement Package App — Screens
 
-Status: active selected current Screen owner
-
-Scope: durable spatial/window meaning for the Swing application. Feature/Scenario owners remain behavioral authority.
-
-## Screen Map
-
-```text
-Main Work Window
-├─ Repository / ChangeSet navigation
-├─ Archive / OBS-ACTION input
-├─ workspace + replacement-package operations
-│    ├─ Start workspace
-│    ├─ Apply Package
-│    ├─ Commit applied
-│    ├─ Publish
-│    └─ Retry Publish
-├─ Current Change diagnostic controls where still required
-├─ Finalize / Reopen
-├─ operation / outcome / diagnostics
-└─ opens Snapshot Dialog
-```
-
-The selected Main Work Window no longer exposes Review-chat delivery or generic External Interaction management.
+Status: active current target Screen owner
 
 ## Main Work Window
 
-Purpose:
-Expose one exact current repository/work context and explicit operations valid for that context.
+```text
+Main Work Window
+├─ Repository Target
+├─ Work ID
+├─ Target branch
+├─ Archive ZIP
+├─ Package ID
+├─ OBS-ACTION/1 input
+├─ Run OBS Action
+├─ Start workspace
+├─ Apply Package
+├─ Commit applied
+├─ Publish
+├─ Retry Publish
+└─ Operation / Output
+```
 
-### Replacement Package operation group
+The target screen is Work-centered. It has no ChangeSet selector, Review chat/delivery controls, generic External Interaction controls, legacy Current Change controls, legacy Finalize/Reopen controls, or `Resume package to extent` action.
 
-`Apply Package`, `Commit applied`, `Publish`, and `Retry Publish` are visually adjacent because they operate on one durable `ReplacementPackageState`, while remaining distinct operations.
+### Screen Behavior Items
 
-`Retry Publish` belongs beside `Publish`. It may reconcile a prior unconfirmed publication without performing another push when confirmation already proves the intended commit.
+**SBI-RPKG-WORK-CONTEXT-VISIBLE** — Repository Target, WorkId and target branch are visible before context-sensitive operations.
 
-There is no `Resume package to extent` control.
+**SBI-RPKG-NAVIGATION-DOES-NOT-RETARGET-IN-FLIGHT-OPERATION** — an operation captures its inputs before background execution; later UI changes do not retarget it.
 
-### Finalize
+**SBI-RPKG-PACKAGE-OPERATIONS-EXPLICIT** — Apply, Commit, Publish and Retry Publish remain distinct actions.
 
-Finalize remains a separate ChangeSet operation and remains visible. Its message field is `Finalize message`, not a signal that Finalize itself is legacy/removed.
+**SBI-RPKG-PUBLISH-RETRY-LOCAL** — Retry Publish belongs beside Publish and may resolve by confirmation without another push.
 
-Legacy publication-pending recovery may temporarily be adapted through the visible `Retry Publish` location while legacy lifecycle compatibility remains.
+**SBI-RPKG-AUTOMATIC-COMPOSITION-VISIBLE** — Run OBS Action is an entry composition, not a generic Resume/state-machine command.
 
-### Retired interaction surface
+Repository Snapshot remains a separately-owned CLI/capability and is not part of this Main Work Window.
 
-The Main Work Window does not expose:
-- Review chat selection/binding controls;
-- Chat delivery / Send current ReviewDiff;
-- generic External interactions controls;
-- interaction retry/title/bridge controls.
-
-Backend compatibility can remain while independently-owned Snapshot/legacy behavior still requires it. Hidden compatibility does not restore these controls as part of the selected work Screen.
-
-## Screen Behavior Items
-
-### SBI-RPKG-WORK-CONTEXT-VISIBLE
-The user can identify the exact Repository Target and logical ChangeSet before context-sensitive repository operations.
-
-### SBI-RPKG-NAVIGATION-DOES-NOT-RETARGET-IN-FLIGHT-OPERATION
-Changing visible navigation after operation context capture cannot retarget an in-flight repository operation.
-
-### SBI-RPKG-PACKAGE-OPERATIONS-EXPLICIT
-Apply, Commit and Publish are explicit independent operations. Screen presentation must not imply a generic Resume/advance-to-extent command.
-
-### SBI-RPKG-PUBLISH-RETRY-LOCAL
-Publication retry/reconciliation is presented with Publish, not with Finalize.
-
-### SBI-RPKG-RECOVERY-STATE-IS-VISIBLE
-A missing publication confirmation remains distinguishable from confirmed published/not-published facts.
-
-### SBI-RPKG-HISTORY-SELECTION-IS-READ-ONLY
-Selecting finalized history does not implicitly Reopen work.
-
-## Snapshot Dialog
-
-Snapshot remains separately owned. Its current export/handoff behavior is not redefined merely because generic interaction controls are removed from the Main Work Window.
-
-## Evolution Impact
-
-### EVO-RPKG-MODULARIZE-PACKAGE-REALIZATION
-Refactoring / Forced Migration:
-Expose explicit Apply / Commit / Publish / Retry Publish operations and remove any screen implication of `ApplyExtent`/Resume.
-
-### EVO-RPKG-RETIRE-LEGACY-INTERACTION-SURFACE
-Retirement / Forced Migration:
-Remove Review-chat delivery and generic interaction management from the selected Main Work Window; preserve Finalize; move publication retry beside Publish.
-
-### EVO-RPKG-DOWNGRADE-CURRENT-CHANGE-TO-DIAGNOSTIC
-Current Change controls may reduce further as the legacy approval authority retires.
-
-### EVO-RPKG-ADOPT-REVIEWED-RESULT-WORKFLOW
-Reviewed-result/PR/target Finalize surfaces evolve separately and must consume the modular package state rather than reintroduce the old orchestration model.
+Legacy Review/Finalize UI remains available only through the already-deployed old executable; it is not a compatibility requirement for the new target build.

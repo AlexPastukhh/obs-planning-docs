@@ -1,29 +1,25 @@
 # F-RPKG-COMMIT-APPLIED-PACKAGE — Commit Applied Package
 
-## Identity
-
-`F-RPKG-COMMIT-APPLIED-PACKAGE`
-
 ## Intent
 
-Create or prove the exact local Git commit for the replacement package that is already durably Applied.
+Create or prove the exact local Git commit for a durably Applied replacement package.
 
 ## Principal Result
 
 `Result<ReplacementPackageState, CommitAppliedFailure>`
 
-Success means this Commit Applied operation succeeded or its exact commit fact was already proven. The returned state carries the exact `commitSha`.
+Success returns the package state with exact `commitSha`. Commit is independent from Publish.
 
 ## Expected application behavior
 
-| Behavior step | Requirement(s) |
+| Behavior step | Requirement |
 |---|---|
-| **1. Load exact package state.** | `BR-RPKG-COMMIT-REQUIRES-APPLIED-PACKAGE` — Commit requires the exact Work/package state and proven Apply. |
-| **2. Commit only intended package work.** | `BR-RPKG-COMMIT-CONTAINS-ONLY-INTENDED-WORK` — committed paths equal the intended package-applied work; unrelated work is not intentionally included. |
-| **3. Persist exact commit fact.** | `BR-RPKG-COMMIT-DURABLE-IDENTITY` — successful Commit stores the exact commit SHA in `ReplacementPackageState`. |
-
-A repeated Commit Applied operation does not create a duplicate commit when the exact commit is already proven.
+| Load exact owners | Require the Work's persisted `GitWorkspace` and exact `ReplacementPackageState`. |
+| Re-prove package realization | Durable package journal must match WorkId, packageId, archive SHA, worktree, derived branch and exact intended file state. |
+| Commit only intended package paths | Unrelated staged/dirty work fails closed; commit carries exact Package-Id and schema-1 ChangeSet-Id/WorkId trailer. |
+| Recover exact commit | If commit creation succeeded before package-state persistence, retry proves exact branch HEAD, parent, trailers, changed paths and bytes, then reuses that commit. |
+| Persist commit fact | Exact commit SHA is stored in `ReplacementPackageState`; re-proving the same commit preserves publication evidence. |
 
 ## Boundary decision
 
-Commit Applied is not `ApplyExtent.APPLY_COMMIT` and is not a Resume branch. It is an independent operation over durable replacement-package state.
+Commit Applied does not Publish and does not dispatch from legacy `AppliedUncommitted/CommittedUnpublished` states. `Core.ChangeSet` is not runtime authority for this Feature.
