@@ -81,15 +81,13 @@ Behavior:
 1. Introduce `ReplacementPackageState` and its dedicated repository beside legacy `Core.ChangeSet`.
 2. New Apply writes exact package identity and Applied state into that repository.
 3. Commit Applied and Publish read/write the new state owner.
-4. When no new state exists yet for already-running work, a compatibility adapter may project legacy `Core.ChangeSet` into the new state. That projection must not become the target API.
-5. Once a new state exists, later operations use it as the durable Feature continuity owner; exact publication observations are persisted there and are not discarded on the next call.
-6. Automatic `OBS-ACTION apply-package` remains a convenience composition entry: ensure Work Intent/workspace then invoke/prove Apply → Commit → Publish semantics. Its internal compatibility implementation may still delegate to Core while mechanics are extracted.
-7. Manual screen actions use the explicit operation boundaries. There is no user/domain `Resume` action.
-8. After all supported active ChangeSets can be read through the new state and all operation entries use the new services, remove `ApplyExtent`, Resume/advance code and legacy package-state projection.
-9. Later extraction moves file/Git mechanics out of giant Core behind capabilities without changing the Feature Results.
+4. New package state does not project/import legacy `Core.ChangeSet`; old works remain owned by the deployed old executable.
+5. Automatic `OBS-ACTION apply-package` remains a convenience composition entry: ensure Work Intent/workspace then invoke Apply → Commit → Publish semantics.
+6. Manual screen actions use the explicit operation boundaries. There is no user/domain `Resume` action.
+7. Runtime cutover then stops creating/updating `Core.ChangeSet` for new-model work and moves Git mechanics behind narrow capabilities.
 
 Forced Migration:
-Historical legacy state may lack a durable archive hash that was never stored after its Apply journal was retired. The migration must fail closed rather than bind a newly supplied ZIP to such old state by `packageId` alone. Commit/Publish continuity can still migrate from already-proven legacy package/commit state where no new ZIP identity assertion is required.
+No legacy package state is imported by the new executable. Exact archive identity is mandatory for every new-model `ReplacementPackageState`.
 
 Readiness / proof gate:
 - no Feature integration test depends directly on `CoreTests` internals;
@@ -144,6 +142,23 @@ Operation / Output / diagnostics
 
 Migration:
 First remove the interaction-oriented controls from the selected Main Work Window and move publication retry beside Publish. Keep backend compatibility only for remaining separately-owned legacy/Snapshot use cases. Retire backend interaction machinery later only when no remaining owner consumes it.
+
+
+## EVO-RPKG-RETIRE-CHANGESET-AGGREGATE — Replace central state bucket with Work-centered owners
+
+Canonical Scenario step:
+[`EVO-RPKG-RETIRE-CHANGESET-AGGREGATE`](scenarios/SCN-RPKG-COMPLETE-REPOSITORY-WORK.md#evo-rpkg-retire-changeset-aggregate)
+
+Evolution Kinds: Refactoring / Introduction / Retirement / Forced Migration.
+
+Selected target:
+`WorkId` correlates `WorkIntent`, `GitWorkspace` and per-package `ReplacementPackageState`. Work branch is derived from WorkId; worktree remains persisted. Package commit/publication facts never return to a central Work bucket.
+
+Migration decision:
+Old persisted works are not imported by the new executable. The deployed old executable remains their owner. New package state starts in `work-state-v2`; schema-1 `changeSetId` remains only a transport alias for WorkId.
+
+Current increment proof:
+Aggregate model + package-state persistence are introduced and tested. Legacy Core runtime remains mechanics compatibility until the following cutover increment; it is not a target Aggregate authority.
 
 ## Existing Scenario-owned evolution
 

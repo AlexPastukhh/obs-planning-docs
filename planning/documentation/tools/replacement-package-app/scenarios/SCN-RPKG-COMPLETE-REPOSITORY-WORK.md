@@ -345,3 +345,44 @@ The current target-mode stop after published `Ready` is replaced by the planned 
 
 Related / Replacement Scenario:
 [`planned/SCN-RPKG-COMPLETE-REVIEWED-REPOSITORY-WORK.md`](planned/SCN-RPKG-COMPLETE-REVIEWED-REPOSITORY-WORK.md).
+
+<a id="evo-rpkg-retire-changeset-aggregate"></a>
+### EVO-RPKG-RETIRE-CHANGESET-AGGREGATE — Replace central ChangeSet Aggregate with Work-centered owners
+Intent: SELECTED / FORCED MIGRATION
+
+Evolution Kinds:
+- Refactoring
+- Introduction
+- Retirement
+- Forced Migration
+
+Resulting usable application state:
+One logical Work is identified by WorkId, has one Work Intent/managed Issue and one active Git workspace/work branch. Replacement packages have independently durable package realization state. No central Domain Aggregate owns all of those facts.
+
+Target owner state:
+- [NEW] `WorkId` — correlation identity;
+- [CHANGED] `Work Intent` — semantic Work owner keyed by WorkId;
+- [NEW] `GitWorkspace` — RepositoryTarget + targetBranch + persisted worktree + baseCommit, with work branch derived from WorkId;
+- [CHANGED] `ReplacementPackageState` — WorkId + exact package identity + optional commit + publication evidence; state existence proves Apply;
+- [REMOVED] target `ChangeSet` Aggregate and its package/review/operation/finalization bucket semantics.
+
+Migration:
+1. Introduce and prove the Work-centered Domain owners.
+2. New package state uses a new state-v2 namespace and never imports legacy ChangeSet package state.
+3. The already-deployed old EXE remains owner of old persisted works; the new EXE is not required to open/adopt them.
+4. Schema-1 `changeSetId` and `ChangeSet-Id` remain wire aliases for WorkId until a separate protocol evolution.
+5. Switch Start Workspace and automatic/manual Apply → Commit → Publish entries to WorkId/GitWorkspace/ReplacementPackageState owners.
+6. Stop creating/updating `Core.ChangeSet` for new-model work.
+7. Remove remaining Core ChangeSet runtime mechanics and legacy Scenario/Slice references only after the new executable passes full integration proof.
+
+Forced Migration constraints:
+- no dual-read/dual-write or lossy old-state projection is required;
+- no package state with unknown archive SHA is accepted in the new model;
+- worktree remains persisted and must be revalidated before sensitive Git operations;
+- at most one unfinished package realization exists per Work.
+
+Readiness / proof gate:
+- Domain tests prove exact target aggregate shapes and absence of progress-bucket fields;
+- state-v2 cannot read schema-1 legacy package state;
+- Feature integration proves legacy-only Core package state is not adopted;
+- full runtime cutover is a later implementation increment and must preserve current Apply/Commit/Publish safety proofs.

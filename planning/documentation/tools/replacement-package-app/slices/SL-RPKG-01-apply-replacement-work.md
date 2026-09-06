@@ -17,9 +17,9 @@ The operations share one durable `ReplacementPackageState` but have independent 
 
 ## Domain / state boundary
 
-`ReplacementPackageState` owns durable facts for one ChangeSet/package:
-- exact package identity where available;
-- whether package-file Apply is proven;
+`ReplacementPackageState` owns durable facts for one Work/package:
+- exact package identity (`packageId + archiveSha256`);
+- state existence itself proves package-file Apply;
 - exact package commit SHA when committed;
 - latest durable `PublicationObservation`.
 
@@ -45,8 +45,8 @@ No application/domain API accepts a desired Apply extent or generic Resume reque
 ### SI-RPKG-PUBLISH-CONFIRM-BEFORE-RETRY
 `PublicationObservation.NotConfirmed` requires exact remote observation before another push.
 
-### SI-RPKG-LEGACY-STATE-ADAPTER-IS-TRANSITIONAL
-Already-running Core state may be projected into `ReplacementPackageState` only as compatibility migration. Once new state exists, later modular operations use the new state owner.
+### SI-RPKG-NO-LEGACY-PACKAGE-STATE-IMPORT
+New-model package state is stored in state-v2 and is never inferred from legacy Core ChangeSet persistence. Old works stay with the deployed old executable.
 
 ## Tests
 

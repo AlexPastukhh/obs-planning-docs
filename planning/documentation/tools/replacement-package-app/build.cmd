@@ -9,6 +9,9 @@ call javac --release 21 -cp build\classes -d build\classes ^
   src\main\java\obs\rpkg\Core.java ^
   src\main\java\obs\rpkg\foundation\result\Result.java ^
   src\main\java\obs\rpkg\foundation\result\OperationResult.java ^
+  src\main\java\obs\rpkg\work\domain\WorkId.java ^
+  src\main\java\obs\rpkg\work\domain\RepositoryTarget.java ^
+  src\main\java\obs\rpkg\work\domain\GitWorkspace.java ^
   src\main\java\obs\rpkg\features\apply\domain\OperationFailureDisposition.java ^
   src\main\java\obs\rpkg\features\apply\domain\ReplacementPackageIdentity.java ^
   src\main\java\obs\rpkg\features\apply\domain\PublicationObservation.java ^
@@ -41,6 +44,7 @@ call javac --release 21 -cp build\classes -d build\classes ^
   src\main\java\obs\rpkg\WindowsLauncherInstaller.java || exit /b 1
 call javac --release 21 -cp build\classes -d build\test-classes ^
   src\test\java\obs\rpkg\CoreTests.java ^
+  src\test\java\obs\rpkg\work\domain\WorkAggregateTests.java ^
   src\test\java\obs\rpkg\ApplyFeatureTestSupport.java ^
   src\test\java\obs\rpkg\features\apply\ApplyReplacementPackageFeatureIntegrationTests.java ^
   src\test\java\obs\rpkg\ApplyReceiptTests.java ^

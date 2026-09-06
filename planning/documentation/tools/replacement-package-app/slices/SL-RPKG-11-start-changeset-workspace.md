@@ -1,10 +1,10 @@
-# SL-RPKG-11 — Start ChangeSet Workspace
+# SL-RPKG-11 — Start Work Workspace
 
 Status: active current Slice owner
 
 ## Result / Responsibility
 
-Ensure one isolated exact Git-backed workspace for a new target-mode ChangeSet, pinned to an exact target branch source and recoverable/idempotent through a durable workspace journal.
+Ensure one isolated exact Git-backed workspace for a new target-mode Work, pinned to an exact target branch source and recoverable/idempotent through a durable workspace journal.
 
 ## Scenario behavior realized
 
@@ -19,13 +19,13 @@ Behavior Items:
 
 ## Domain used
 
-Repository Target; Repository Work / ChangeSet; Work Intent reference.
+Repository Target; WorkId; selected target `GitWorkspace`; Work Intent.
 
 ## Slice Implementation Items
 
 ### SI-RPKG-WORKSPACE-PINNED-SOURCE
 Requirement:
-Workspace creation must resolve and persist exact `baseCommit/publishedTip` from the explicit target branch, then create/verify the deterministic ChangeSet branch/worktree in the same Git common repository.
+Workspace creation must resolve and persist exact `baseCommit` from the explicit target branch, persist the worktree, then create/verify the deterministic Work branch/worktree in the same Git common repository.
 
 ### SI-RPKG-WORKSPACE-JOURNAL-BEFORE-GIT-MUTATION
 Requirement:
@@ -37,4 +37,4 @@ Persist exact workspace intent before branch/worktree mutation so retry adopts o
 
 ## Evolution Impact
 
-Reviewed-result identity extends the ChangeSet after package publication; it does not require a second workspace owner if current pinned workspace semantics remain sufficient.
+`EVO-RPKG-RETIRE-CHANGESET-AGGREGATE`: GitWorkspace becomes the narrow owner of repository/worktree/base facts. Package publication/review/finalization state must not be added to it.

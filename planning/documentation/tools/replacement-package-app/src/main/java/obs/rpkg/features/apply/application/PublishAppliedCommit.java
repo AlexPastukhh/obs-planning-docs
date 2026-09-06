@@ -13,6 +13,7 @@ import obs.rpkg.features.apply.domain.ReplacementPackageState;
 import obs.rpkg.features.apply.infrastructure.PublicationObserver;
 import obs.rpkg.features.apply.infrastructure.ReplacementPackageStateRepository;
 import obs.rpkg.foundation.result.Result;
+import obs.rpkg.work.domain.WorkId;
 
 /**
  * Application service for Publish.
@@ -39,14 +40,14 @@ public final class PublishAppliedCommit {
             String packageId) {
         ReplacementPackageState current;
         Core.ChangeSet legacy;
+        WorkId workId = new WorkId(changeSetId);
         try {
-            Optional<ReplacementPackageState> maybe =
-                    ReplacementPackageStateAccess.loadOrMigrate(core, states, changeSetId, packageId);
+            Optional<ReplacementPackageState> maybe = states.find(workId, packageId);
             if (maybe.isEmpty()) {
                 return failure(
                         PublishFailureCode.PACKAGE_STATE_NOT_FOUND,
                         OperationFailureDisposition.ACTION_REQUIRED,
-                        "No replacement-package state exists for this ChangeSet/package.",
+                        "No replacement-package state exists for this Work/package.",
                         null);
             }
             current = maybe.get();
@@ -166,7 +167,7 @@ public final class PublishAppliedCommit {
             return failure(code, disposition, error.getMessage(), before);
         }
 
-        Core.ChangeSet after = core.getChangeSet(before.changeSetId());
+        Core.ChangeSet after = core.getChangeSet(before.workId().value());
         Result<PublicationObservation, PublicationObserver.Failure> observed = observe(after != null ? after : legacyBefore);
         if (observed.isFailure()) {
             ReplacementPackageState uncertain = before.withPublication(new PublicationObservation.NotConfirmed());

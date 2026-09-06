@@ -2,61 +2,49 @@ package obs.rpkg.features.apply.domain;
 
 import java.util.Objects;
 
+import obs.rpkg.work.domain.WorkId;
+
 /**
- * Durable facts known about one exact replacement package in one ChangeSet.
+ * Durable facts known about one exact replacement package in one Work.
  *
- * <p>Result/OperationResult describes the outcome of a concrete operation. This object describes
- * state that remains true for later independent Apply / Commit / Publish operations.</p>
+ * <p>The existence of this state is the proof that Apply succeeded for the exact package identity.
+ * Result/OperationResult remains the outcome of a concrete invocation.</p>
  */
 public record ReplacementPackageState(
-        String changeSetId,
+        WorkId workId,
         ReplacementPackageIdentity packageIdentity,
-        boolean applied,
         String commitSha,
         PublicationObservation publication) {
 
     public ReplacementPackageState {
-        if (changeSetId == null || changeSetId.isBlank()) {
-            throw new IllegalArgumentException("changeSetId is required");
-        }
+        Objects.requireNonNull(workId, "workId");
         Objects.requireNonNull(packageIdentity, "packageIdentity");
         Objects.requireNonNull(publication, "publication");
         if (commitSha != null && commitSha.isBlank()) commitSha = null;
-        if (commitSha != null && !applied) {
-            throw new IllegalArgumentException("Committed replacement package must already be applied");
-        }
         if (!(publication instanceof PublicationObservation.NotRequested) && commitSha == null) {
             throw new IllegalArgumentException("Publication state requires an exact commit");
         }
     }
 
-    public boolean isCommitted() {
-        return commitSha != null;
-    }
+    public boolean isCommitted() { return commitSha != null; }
 
     public boolean isPublished() {
         return isCommitted() && publication.confirmsTip(commitSha);
     }
 
     public ReplacementPackageState committed(String exactCommitSha) {
-        if (!applied) throw new IllegalStateException("Cannot commit a package that is not applied");
         if (exactCommitSha == null || exactCommitSha.isBlank()) {
             throw new IllegalArgumentException("exactCommitSha is required");
         }
+        if (isCommitted() && !commitSha.equals(exactCommitSha)) {
+            throw new IllegalStateException("Replacement package is already bound to a different commit");
+        }
         return new ReplacementPackageState(
-                changeSetId,
-                packageIdentity,
-                true,
-                exactCommitSha,
-                new PublicationObservation.NotRequested());
+                workId, packageIdentity, exactCommitSha, new PublicationObservation.NotRequested());
     }
 
     public ReplacementPackageState withPublication(PublicationObservation observation) {
         return new ReplacementPackageState(
-                changeSetId,
-                packageIdentity,
-                applied,
-                commitSha,
-                Objects.requireNonNull(observation, "observation"));
+                workId, packageIdentity, commitSha, Objects.requireNonNull(observation, "observation"));
     }
 }

@@ -23,6 +23,7 @@ import obs.rpkg.features.apply.infrastructure.PublicationObserver;
 import obs.rpkg.features.apply.infrastructure.ReplacementPackageStateRepository;
 import obs.rpkg.foundation.result.OperationResult;
 import obs.rpkg.foundation.result.Result;
+import obs.rpkg.work.domain.WorkId;
 
 /** Feature integration proof independent of CoreTests internals. */
 public final class ApplyReplacementPackageFeatureIntegrationTests {
@@ -37,6 +38,7 @@ public final class ApplyReplacementPackageFeatureIntegrationTests {
         run("missing publication confirmation is a Publish failure with durable NotConfirmed state", ApplyReplacementPackageFeatureIntegrationTests::publicationConfirmationFailure);
         run("Retry Publish confirms before another push", ApplyReplacementPackageFeatureIntegrationTests::retryConfirmsBeforePush);
         run("publication confirmation is fenced to expected repository identity", ApplyReplacementPackageFeatureIntegrationTests::confirmationIdentityFence);
+        run("new package state does not import legacy Core ChangeSet state", ApplyReplacementPackageFeatureIntegrationTests::noLegacyStateImport);
         run("OperationResult succeeds without success value", ApplyReplacementPackageFeatureIntegrationTests::operationResult);
         System.out.println("RESULT passed=" + passed + " failed=" + failed);
         if (failed > 0) System.exit(1);
@@ -57,7 +59,6 @@ public final class ApplyReplacementPackageFeatureIntegrationTests {
             ReplacementPackageState state = success(new ApplyReplacementPackage(w.core(), states)
                     .execute(new ApplyReplacementPackage.Request(pkg.path(), w.repository(), cs)));
 
-            ok(state.applied(), "Apply state not proven");
             ok(!state.isCommitted(), "Apply implicitly committed");
             ok(state.publication() instanceof PublicationObservation.NotRequested, "Apply touched publication state");
             eq(ApplyFeatureTestSupport.git(Path.of(workspace.worktree), "rev-parse", "HEAD"), baseHead, "Apply changed HEAD");
@@ -65,7 +66,7 @@ public final class ApplyReplacementPackageFeatureIntegrationTests {
 
             ReplacementPackageState reloaded =
                     new FileReplacementPackageStateRepository(w.stateRoot())
-                            .find(cs, pkg.packageId()).orElseThrow();
+                            .find(new WorkId(cs), pkg.packageId()).orElseThrow();
             eq(reloaded.packageIdentity().archiveSha256(), state.packageIdentity().archiveSha256(), "archive identity did not persist");
         } finally {
             ApplyFeatureTestSupport.deleteTree(w.root());
@@ -225,6 +226,28 @@ public final class ApplyReplacementPackageFeatureIntegrationTests {
                     "changeset/test",
                     "github:different/repository");
             ok(observed.isFailure(), "publication confirmation accepted a different repository identity");
+        } finally {
+            ApplyFeatureTestSupport.deleteTree(w.root());
+        }
+    }
+
+    private static void noLegacyStateImport() throws Exception {
+        ApplyFeatureTestSupport.Workspace w = ApplyFeatureTestSupport.workspace("feature-no-legacy-import", true);
+        try {
+            String cs = UUID.randomUUID().toString();
+            w.core().startChangeSetWorkspace(w.target().id(), cs, "legacy only", "main");
+            var pkg = ApplyFeatureTestSupport.packageFor(
+                    w, cs, "legacy only",
+                    List.of(ApplyFeatureTestSupport.replace("seed.txt", "seed", "legacy")));
+
+            // Mutate using legacy Core only. The new aggregate repository must not infer/import this state.
+            w.core().applyPackage(pkg.path(), w.repository());
+            var states = new FileReplacementPackageStateRepository(w.stateRoot());
+            ok(states.find(new WorkId(cs), pkg.packageId()).isEmpty(),
+                    "new state repository imported legacy Core ChangeSet state");
+
+            var commit = new CommitAppliedPackage(w.core(), states).execute(cs, pkg.packageId());
+            ok(commit.isFailure(), "Commit accepted legacy-only package state");
         } finally {
             ApplyFeatureTestSupport.deleteTree(w.root());
         }

@@ -20,7 +20,7 @@ Success means the concrete **Apply Package** operation succeeded. `ReplacementPa
 
 | Kind | Data |
 |---|---|
-| Input | exact package/archive, `packageId`, exact archive content identity, `repositoryIdentity`, `changeSetId`, exact repository/workspace context, expected source |
+| Input | exact package/archive, `packageId`, exact archive content identity, `repositoryIdentity`, WorkId (`changeSetId` wire alias), exact GitWorkspace context, expected source |
 | Result | durable `ReplacementPackageState` proving package-file Apply and preserving exact package identity |
 | Failure | typed `ApplyFailure` for the concrete Apply operation |
 
@@ -28,19 +28,19 @@ Success means the concrete **Apply Package** operation succeeded. `ReplacementPa
 
 | Behavior step | Requirement(s) |
 |---|---|
-| **1. Verify exact package/work invocation and applicability before mutation.** | `BR-RPKG-APPLY-EXACT-INVOCATION` — repository work, ChangeSet and package identity must match exactly before mutation.<br>`BR-RPKG-APPLY-EXPECTED-SOURCE-AND-APPLICABILITY` — every replace/delete expected source must be proven applicable before the first package-file mutation. |
+| **1. Verify exact package/work invocation and applicability before mutation.** | `BR-RPKG-APPLY-EXACT-INVOCATION` — repository WorkId and package identity must match exactly before mutation.<br>`BR-RPKG-APPLY-EXPECTED-SOURCE-AND-APPLICABILITY` — every replace/delete expected source must be proven applicable before the first package-file mutation. |
 | **2. Apply exact package bytes.** | `BR-RPKG-APPLY-EXACT-PACKAGE` — operations and full payload bytes from the validated package are repository-file mutation authority. |
 | **3. Persist resulting package state.** | `BR-RPKG-APPLY-DURABLE-STATE` — successful Apply records durable `ReplacementPackageState` with exact package identity before later independent operations rely on it. |
 
 ### Idempotent repeat
 
-The same exact archive may return the already-established Applied state without repeating file mutation. Same `packageId` with a different proven archive identity fails. A legacy-migrated package state whose old archive content identity cannot be proven is not rebound to a newly supplied ZIP by guess.
+The same exact archive may return the already-established Applied state without repeating file mutation. Same `packageId` with a different proven archive identity fails. The new executable does not import legacy package state; exact archive content identity is mandatory.
 
 ## Feature Implementation Concerns
 
 `ReplacementPackageState` is shared continuity between the independent Apply, Commit and Publish operations. It records state/evidence, not operation success.
 
-The current giant `Core` remains a temporary mechanics adapter. New Feature APIs do not expose `Core.ChangeSet.executionState`, `ApplyExtent`, or a generic Resume operation.
+The current giant `Core` remains a temporary Git/file mechanics adapter during runtime cutover. New Feature/domain state is WorkId-based and does not project legacy `Core.ChangeSet.executionState`.
 
 ## Feature / Slice Boundary Decision
 
@@ -67,4 +67,4 @@ Evolution Kinds for this owner:
 [NEW] Exact publication evidence is represented independently by `PublicationObservation`.
 
 Forced Migration:
-Existing target-mode `Core` execution states remain readable through a temporary adapter while new operations write/read `ReplacementPackageState`. The adapter is compatibility mechanics, not the target Feature contract.
+New package state is not migrated from old ChangeSet records. Old persisted works remain owned by the deployed old executable; new-model state requires exact archive identity.

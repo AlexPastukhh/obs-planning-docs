@@ -18,7 +18,7 @@ Success means this Commit Applied operation succeeded or its exact commit fact w
 
 | Behavior step | Requirement(s) |
 |---|---|
-| **1. Load exact package state.** | `BR-RPKG-COMMIT-REQUIRES-APPLIED-PACKAGE` — Commit requires the exact ChangeSet/package state and proven Apply. |
+| **1. Load exact package state.** | `BR-RPKG-COMMIT-REQUIRES-APPLIED-PACKAGE` — Commit requires the exact Work/package state and proven Apply. |
 | **2. Commit only intended package work.** | `BR-RPKG-COMMIT-CONTAINS-ONLY-INTENDED-WORK` — committed paths equal the intended package-applied work; unrelated work is not intentionally included. |
 | **3. Persist exact commit fact.** | `BR-RPKG-COMMIT-DURABLE-IDENTITY` — successful Commit stores the exact commit SHA in `ReplacementPackageState`. |
 

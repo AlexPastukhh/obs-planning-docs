@@ -75,3 +75,21 @@ When the canonical Evolution Step is implemented:
 ## Current integration state
 
 No step-specific Domain impact entries are populated by this methodology package. Later Scenario/Domain/Slice integration should derive them from canonical Scenario-owned Evolution Steps and actual Domain discovery rather than guessing owners/class boundaries in advance.
+
+## EVO-RPKG-RETIRE-CHANGESET-AGGREGATE — Split central ChangeSet state into natural owners
+Canonical Scenario step:
+[`SCN-RPKG-COMPLETE-REPOSITORY-WORK`](scenarios/SCN-RPKG-COMPLETE-REPOSITORY-WORK.md#evo-rpkg-retire-changeset-aggregate)
+
+Affected owners:
+- ChangeSet → Retirement
+- WorkId → Introduction
+- GitWorkspace → Introduction
+- Work Intent → Refactoring around WorkId correlation
+- Replacement Package State → Refactoring / Forced Migration
+
+Shared Domain transition:
+Current meaning: one `ChangeSet` bucket owns identity, workspace, package execution, publication, review and lifecycle facts.
+Future meaning: WorkId only correlates independently-owned WorkIntent, GitWorkspace and ReplacementPackageState facts; Finalize/review remain separately owned.
+
+Cross-owner compatibility / architecture decision:
+The new EXE does not import old persisted works. Existing deployed EXE remains owner of old ChangeSet records. Schema-1 `changeSetId` remains a transport alias for WorkId until protocol evolution.

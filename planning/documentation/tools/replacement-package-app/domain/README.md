@@ -1,26 +1,18 @@
 # Replacement Package App — Domain Owners
 
-Status: active Domain ownership map
+Status: active Domain ownership map during Work-centered migration
 
-Behavior Items remain authoritative in Scenario owners. Domain owners implement coherent groups of BI through stable semantic/consistency boundaries; there is deliberately not one Aggregate per BI.
+Behavior Items remain authoritative in Scenario owners. Domain owners implement the narrowest natural semantic/consistency boundary.
 
-| Owner | Kind | Current / planned role |
+| Owner | Kind | Current / target role |
 |---|---|---|
-| [`Repository Target`](repository-target.md) | shared multi-field Value Object owner | CURRENT |
-| [`Work Intent`](work-intent.md) | Aggregate | CURRENT |
-| [`Repository Work / ChangeSet`](change-set.md) | central Aggregate | CURRENT with selected planned expansion |
-| [`External Interaction`](external-interaction.md) | Aggregate | CURRENT |
+| [`Repository Target`](repository-target.md) | shared Value Object | CURRENT |
+| [`WorkId`](work-id.md) | shared identity Value Object | TARGET / introduced |
+| [`Work Intent`](work-intent.md) | Aggregate | CURRENT, correlated by WorkId |
+| [`Git Workspace`](git-workspace.md) | Aggregate | TARGET, runtime cutover pending |
+| [`Replacement Package State`](replacement-package-state.md) | Aggregate per exact package realization | TARGET / active modular state |
+| [`External Interaction`](external-interaction.md) | legacy Aggregate | CURRENT only where legacy owners still consume it |
 | [`Repository Snapshot`](repository-snapshot.md) | immutable Domain Object | CURRENT |
+| [`ChangeSet`](change-set.md) | retired target Aggregate / legacy tombstone | LEGACY ONLY |
 
-Legacy Path Ownership and legacy persisted Current Change remain current implementation concepts while legacy behavior exists. They do not need standalone permanent target owners merely for symmetry.
-
-Each owner separates:
-- current semantic responsibility/invariants;
-- authoritative BI identities it implements;
-- optional durable `DI-*` requirements;
-- local proof responsibility/Test Items only when useful;
-- `Evolution Impact` for canonical Scenario-owned Evolution Steps.
-
-Value Objects may be durable Domain owners when their complete semantic value is the long-lived boundary. A saved application/persistence reference to a Value Object does not turn that Value Object into an Entity.
-
-Planned semantics never silently replace current semantics before implementation/proof migration.
+Target architecture deliberately has no central Aggregate that owns Issue + workspace + package + review + publication + finalization together. `WorkId` correlates natural owners without becoming a state bucket itself.

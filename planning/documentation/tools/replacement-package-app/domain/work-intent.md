@@ -4,7 +4,9 @@ Status: active current Aggregate owner
 
 ## Responsibility
 
-Own the durable semantic work identity that must exist before target-mode repository execution. One exact `changeSetId` marker corresponds to one managed GitHub Issue carrying Title / Goal / Why / Acceptance and its verified Issue reference.
+Own the durable semantic identity of one Work: one exact WorkId corresponds to one managed GitHub Issue carrying Title / Goal / Why / Acceptance and its verified Issue reference.
+
+Schema-1 transport and the current managed Issue marker still call WorkId `changeSetId` / `ChangeSet-Id`; this is wire compatibility naming only.
 
 ## Behavior Items implemented
 
@@ -13,29 +15,21 @@ Own the durable semantic work identity that must exist before target-mode reposi
 
 ## Domain Concepts / Invariants
 
-- Work Intent may exist before a ChangeSet workspace is created;
-- the exact `ChangeSet-Id` marker is external identity authority;
+- Work Intent may exist before a GitWorkspace is created;
+- exact WorkId marker is external identity authority;
 - zero exact Issue matches may create, one is adopted/verified, multiple exact matches are conflict;
 - an uncertain create side effect is not permission to create another Issue blindly;
-- when a ChangeSet exists, its Issue reference must agree with the persisted Work Intent.
+- GitWorkspace and package states correlate through WorkId and do not copy Issue identity as their own authority.
 
 ## Domain Implementation Items
 
-### DI-RPKG-WORK-INTENT-EXACT-EXTERNAL-IDENTITY — Exact marker owns external identity
+### DI-RPKG-WORK-INTENT-EXACT-EXTERNAL-IDENTITY
 Requirement:
-Issue lookup/adoption/update/recovery must be keyed by the exact ChangeSet marker rather than title similarity, recency or UI state.
+Issue lookup/adoption/update/recovery must be keyed by exact WorkId marker rather than title similarity, recency or UI state.
 
 Reason:
 One semantic work stream must not fork into multiple external work records.
 
-Derived from:
-`BI-RPKG-WORK-INTENT-ONE-EXACT-ISSUE`.
-
 ## Tests
 
-Local Slice proof is owned primarily by [`../slices/SL-RPKG-10-manage-work-intent.md`](../slices/SL-RPKG-10-manage-work-intent.md), including durable create-journal recovery and duplicate-marker failure.
-
-## Evolution Impact
-
-### EVO-RPKG-ADOPT-REVIEWED-RESULT-WORKFLOW
-No forced migration. The planned Complete Reviewed Repository Work Scenario keeps Work Intent as its first FI and later FIs consume the same established identity.
+Current external Issue proof remains in `SL-RPKG-10`; Work-centered runtime cutover will rename application concepts without changing the exact-marker invariant.

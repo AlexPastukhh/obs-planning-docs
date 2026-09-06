@@ -1,27 +1,21 @@
 package obs.rpkg.features.apply.domain;
 
-/**
- * Identity of one replacement-package archive.
- *
- * <p>archiveSha256 is required for state created by the new module. It may be absent only for
- * state migrated from legacy Core persistence that never recorded durable package content identity.</p>
- */
+import java.util.Objects;
+
+/** Exact identity of one replacement-package archive. */
 public record ReplacementPackageIdentity(String packageId, String archiveSha256) {
     public ReplacementPackageIdentity {
-        if (packageId == null || packageId.isBlank()) {
-            throw new IllegalArgumentException("packageId is required");
-        }
-        if (archiveSha256 != null && archiveSha256.isBlank()) archiveSha256 = null;
-    }
-
-    public boolean hasExactArchiveIdentity() {
-        return archiveSha256 != null;
+        Objects.requireNonNull(packageId, "packageId");
+        packageId = packageId.trim();
+        if (packageId.isEmpty()) throw new IllegalArgumentException("packageId is required");
+        Objects.requireNonNull(archiveSha256, "archiveSha256");
+        archiveSha256 = archiveSha256.trim();
+        if (archiveSha256.isEmpty()) throw new IllegalArgumentException("archiveSha256 is required");
     }
 
     public boolean sameExactArchive(ReplacementPackageIdentity other) {
         return other != null
                 && packageId.equals(other.packageId)
-                && archiveSha256 != null
                 && archiveSha256.equals(other.archiveSha256);
     }
 }
