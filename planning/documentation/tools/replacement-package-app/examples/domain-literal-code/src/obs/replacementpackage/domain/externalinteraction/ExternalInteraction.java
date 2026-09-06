@@ -61,10 +61,10 @@ public final class ExternalInteraction {
     }
 
     public ExternalInteraction markFailedBeforeSend(DeliveryFailure failure) {
-        if (state == InteractionState.SENT || state == InteractionState.UNKNOWN_AFTER_SEND)
-            throw new InvalidInteractionTransition("post-send state cannot become pre-send failure");
+        if (state != InteractionState.READY && state != InteractionState.ATTACHED)
+            throw new InvalidInteractionTransition("pre-send failure requires a non-terminal pre-send state");
         return copy(InteractionState.FAILED_BEFORE_SEND, attachmentEvidence, Optional.empty(),
-                Optional.empty(), Optional.of(failure));
+                Optional.empty(), Optional.of(Objects.requireNonNull(failure)));
     }
 
     public ExternalInteraction markUnknownAfterSend(SendAttemptEvidence evidence) {
@@ -76,9 +76,9 @@ public final class ExternalInteraction {
     }
 
     public ExternalInteraction markCancelledBeforePossibleSend() {
-        if (state == InteractionState.SENT || state == InteractionState.UNKNOWN_AFTER_SEND)
-            throw new InvalidInteractionTransition("cannot cancel after possible send");
-        return copy(InteractionState.CANCELLED, Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty());
+        if (state != InteractionState.READY && state != InteractionState.ATTACHED)
+            throw new InvalidInteractionTransition("cancellation requires a non-terminal state before possible Send");
+        return copy(InteractionState.CANCELLED, attachmentEvidence, Optional.empty(), Optional.empty(), Optional.empty());
     }
 
     private void requireArtifactDestination(

@@ -55,6 +55,7 @@ Classification basis: own identity + lifecycle continuity + equality semantics. 
 - `PublicationAttemptEvidence.java`
 - `PublicationAttemptOutcome.java`
 - `PublicationAttemptResultEvidence.java`
+- `PublicationNotPublishedEvidence.java`
 
 ### `workfinalization/`
 - `IntegrationAttempt.java`
@@ -125,11 +126,11 @@ Notable multi-field Value Objects:
 
 - `WorkBranch`: identity = `BranchName`; `knownTip` can change without changing which recorded branch it is.
 - `IssueComment`: identity = `IssueCommentId`; body is state associated with that exact comment.
-- `PublicationAttempt`: identity = `PublicationAttemptId`; intended branch/tip/outcome/evidence are state of that exact external attempt.
+- `PublicationAttempt`: identity = `PublicationAttemptId`; intended branch/tip/outcome/evidence are state of that exact external attempt. Reconciliation updates the same identity; a new external retry uses a new ID only after uncertainty is resolved.
 
 ## Tests
 
-- 48 semantic test intentions.
+- 55 semantic test intentions.
 - Aggregate tests are physically in their Aggregate folder.
 - `RepositoryTargetTest.java` is beside `RepositoryTarget.java` in `shared/valueobjects/`.
 - `testing/` contains runner/assertion/fixture support only.

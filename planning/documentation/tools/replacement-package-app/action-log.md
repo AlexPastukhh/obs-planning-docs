@@ -1907,3 +1907,26 @@ Logging starts only after explicit user instruction; no pre-start history is rec
 **Authority boundary:** `documentation-use-cases.md` remains methodology authority; templates and examples are subordinate. Feature/Scenario/BR product meaning is unchanged.
 
 **APPLIED relation:** successful Apply of package `d074d7e2-9ad5-40cb-88e8-e118b86ab7ba` replaces the prior unapplied literal-layout candidate and becomes the reviewed candidate for this still-open ChangeSet.
+
+
+### LOG-RPKG-081 — Correct literal Domain invariants after published review
+
+**Type:** REVIEW DIFF / DOMAIN MODEL CORRECTION  
+**Reviewed Result:** `f79a772939b81155c774c70bd340a63c223b562d`  
+**Reviewed Package:** `d074d7e2-9ad5-40cb-88e8-e118b86ab7ba`  
+**Correction Base / Current Work Result:** `f79a772939b81155c774c70bd340a63c223b562d`  
+**Supersedes Unapplied Candidate:** `db8f6069-b91b-4081-be75-66e1d6fbcae6`  
+**ChangeSet:** `4e7fcebe-494b-4443-bcbc-39a5bbd5202e`  
+**Package:** `5c0c2059-3ee4-4779-94fa-0e335921986c`
+
+**Material findings and selected corrections:**
+- keep `RepositoryTarget` as the selected multi-field Value Object `(RepositoryIdentity, RegisteredRepositoryPath)`; align the durable Domain owner so any saved registration/navigation key is application/persistence state rather than Domain Entity identity, while same-origin clones at different paths remain distinct values;
+- `PackageReview` must reject a cumulative diff whose source is not exact `startBaseCommit`, not merely require all artifacts to end at the same predicted tree;
+- preserve `PublicationAttempt` Entity identity continuity: uncertain publication reconciliation updates the same `PublicationAttemptId`; a new retry ID is legal only after the prior attempt is proven not published;
+- `RepositoryWork` may attach its first exact Work Issue and idempotently accept the same `IssueRef`, but must reject a different confirmed Issue instead of replacing work identity;
+- `ExternalInteraction` terminal states cannot be rewritten for the same `InteractionId`, and cancellation after confirmed attachment preserves the already-proven attachment evidence;
+- correct DOC-UC-02 numbering introduced during the prior methodology edit.
+
+**Proof target:** literal Java remains compiled with `javac --release 21 -Xlint:all -Werror`; Aggregate Planning and executable source use the same semantic test-name set, expanded from 48 to 55 tests for the newly discovered invariants.
+
+**APPLIED relation:** successful Apply of package `5c0c2059-3ee4-4779-94fa-0e335921986c` corrects the published reviewed result `f79a772939b81155c774c70bd340a63c223b562d` in the same still-open ChangeSet and supersedes the unapplied full-base candidate `db8f6069-b91b-4081-be75-66e1d6fbcae6`; package `d074d7e2-9ad5-40cb-88e8-e118b86ab7ba` remains the already-published predecessor in the work-branch history.

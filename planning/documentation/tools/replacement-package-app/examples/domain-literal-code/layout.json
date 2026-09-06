@@ -63,7 +63,8 @@
         "PublicationEvidence",
         "PublicationAttemptEvidence",
         "PublicationAttemptOutcome",
-        "PublicationAttemptResultEvidence"
+        "PublicationAttemptResultEvidence",
+        "PublicationNotPublishedEvidence"
       ]
     },
     "workfinalization": {
@@ -148,7 +149,8 @@
     "SnapshotCaptureMismatch",
     "SnapshotNotPublishable",
     "UnsupportedSnapshotEntry",
-    "WorkBranchMismatch"
+    "WorkBranchMismatch",
+    "WorkIssueMismatch"
   ],
-  "testCount": 48
+  "testCount": 55
 }

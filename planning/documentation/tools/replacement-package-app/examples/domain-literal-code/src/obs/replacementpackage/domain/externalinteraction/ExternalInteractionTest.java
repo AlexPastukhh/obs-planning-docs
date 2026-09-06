@@ -21,6 +21,8 @@ public final class ExternalInteractionTest extends DomainTestSupport {
         runner.run("sent_state_is_terminal_only_after_send_evidence_for_the_frozen_delivery_attempt", test::sent_state_is_terminal_only_after_send_evidence_for_the_frozen_delivery_attempt);
         runner.run("pre_send_failure_does_not_become_sent_or_unknown_after_send", test::pre_send_failure_does_not_become_sent_or_unknown_after_send);
         runner.run("unknown_after_send_remains_distinct_from_confirmed_sent", test::unknown_after_send_remains_distinct_from_confirmed_sent);
+        runner.run("terminal_interaction_states_cannot_be_rewritten_for_the_same_interaction_identity", test::terminal_interaction_states_cannot_be_rewritten_for_the_same_interaction_identity);
+        runner.run("cancelling_after_confirmed_attachment_preserves_attachment_evidence_and_is_terminal", test::cancelling_after_confirmed_attachment_preserves_attachment_evidence_and_is_terminal);
         runner.run("pre_send_cancellation_is_terminal_without_implying_attachment_or_send", test::pre_send_cancellation_is_terminal_without_implying_attachment_or_send);
     }
 
@@ -61,6 +63,26 @@ public final class ExternalInteractionTest extends DomainTestSupport {
         equal(InteractionState.UNKNOWN_AFTER_SEND, x.state());
         isTrue(x.sendEvidence().isEmpty());
         isTrue(x.sendAttemptEvidence().isPresent());
+    }
+
+    private void terminal_interaction_states_cannot_be_rewritten_for_the_same_interaction_identity() {
+        ExternalInteraction failed = interaction().markFailedBeforeSend(new DeliveryFailure("browser unavailable"));
+        throwsType(InvalidInteractionTransition.class, failed::markCancelledBeforePossibleSend);
+        ExternalInteraction unknown = interaction()
+                .markAttached(new AttachmentEvidence(new ArtifactFingerprint("sha256:abc"), new ConversationKey("chat-7")))
+                .markUnknownAfterSend(new SendAttemptEvidence(new ArtifactFingerprint("sha256:abc"), new ConversationKey("chat-7")));
+        throwsType(InvalidInteractionTransition.class, unknown::markCancelledBeforePossibleSend);
+        throwsType(InvalidInteractionTransition.class, () -> unknown.markFailedBeforeSend(new DeliveryFailure("late")));
+    }
+
+    private void cancelling_after_confirmed_attachment_preserves_attachment_evidence_and_is_terminal() {
+        AttachmentEvidence attachment = new AttachmentEvidence(
+                new ArtifactFingerprint("sha256:abc"), new ConversationKey("chat-7"));
+        ExternalInteraction cancelled = interaction().markAttached(attachment).markCancelledBeforePossibleSend();
+        equal(InteractionState.CANCELLED, cancelled.state());
+        equal(attachment, cancelled.attachmentEvidence().orElseThrow());
+        throwsType(InvalidInteractionTransition.class, () ->
+                cancelled.markFailedBeforeSend(new DeliveryFailure("late")));
     }
 
     private void pre_send_cancellation_is_terminal_without_implying_attachment_or_send() {

@@ -78,16 +78,30 @@ public final class PackageApplication {
     public PackageApplication markPublicationUncertain(
             PublicationAttemptId attemptId,
             PublicationAttemptEvidence evidence) {
-        if (stage != ApplicationStage.COMMITTED && stage != ApplicationStage.PUBLICATION_UNCERTAIN)
-            throw new InvalidApplicationTransition("publication uncertainty requires a committed result");
+        if (stage != ApplicationStage.COMMITTED)
+            throw new InvalidApplicationTransition("a new publication attempt requires a committed result with no unresolved attempt");
         CommitId committed = commitId.orElseThrow();
         if (!evidence.intendedTip().equals(committed))
             throw new PublicationEvidenceMismatch("uncertain publication intended tip differs from committed tip");
+        ensureNewAttemptId(attemptId);
         ArrayList<PublicationAttempt> attempts = new ArrayList<>(publicationAttempts);
         attempts.add(new PublicationAttempt(
                 attemptId, evidence.remoteBranch(), evidence.intendedTip(),
                 PublicationAttemptOutcome.UNCERTAIN, evidence));
         return copy(ApplicationStage.PUBLICATION_UNCERTAIN, appliedTree, commitId, committedTree,
+                attempts, Optional.empty(), Optional.empty());
+    }
+
+    public PackageApplication markPublicationNotPublished(
+            PublicationAttemptId attemptId,
+            PublicationNotPublishedEvidence evidence) {
+        if (stage != ApplicationStage.PUBLICATION_UNCERTAIN)
+            throw new InvalidApplicationTransition("not-published reconciliation requires an unresolved publication attempt");
+        int index = existingAttemptIndex(attemptId);
+        PublicationAttempt current = publicationAttempts.get(index);
+        ArrayList<PublicationAttempt> attempts = new ArrayList<>(publicationAttempts);
+        attempts.set(index, current.confirmNotPublished(evidence));
+        return copy(ApplicationStage.COMMITTED, appliedTree, commitId, committedTree,
                 attempts, Optional.empty(), Optional.empty());
     }
 
@@ -107,11 +121,33 @@ public final class PackageApplication {
             throw new PublicationEvidenceMismatch("remote publication does not prove the exact committed result");
 
         ArrayList<PublicationAttempt> attempts = new ArrayList<>(publicationAttempts);
-        attempts.add(new PublicationAttempt(
-                attemptId, evidence.remoteBranch(), provenRemoteTip,
-                PublicationAttemptOutcome.PUBLISHED, evidence));
+        if (stage == ApplicationStage.PUBLICATION_UNCERTAIN) {
+            int index = existingAttemptIndex(attemptId);
+            PublicationAttempt current = attempts.get(index);
+            attempts.set(index, current.confirmPublished(evidence));
+        } else {
+            ensureNewAttemptId(attemptId);
+            attempts.add(new PublicationAttempt(
+                    attemptId, evidence.remoteBranch(), provenRemoteTip,
+                    PublicationAttemptOutcome.PUBLISHED, evidence));
+        }
         return copy(ApplicationStage.PUBLISHED, appliedTree, commitId, committedTree,
                 attempts, Optional.of(provenRemoteTip), Optional.of(provenRemoteTree));
+    }
+
+    private void ensureNewAttemptId(PublicationAttemptId attemptId) {
+        Objects.requireNonNull(attemptId);
+        if (publicationAttempts.stream().anyMatch(attempt -> attempt.attemptId().equals(attemptId)))
+            throw new InvalidApplicationTransition("publication attempt identity already exists");
+    }
+
+    private int existingAttemptIndex(PublicationAttemptId attemptId) {
+        Objects.requireNonNull(attemptId);
+        for (int i = 0; i < publicationAttempts.size(); i++) {
+            if (publicationAttempts.get(i).attemptId().equals(attemptId)) return i;
+        }
+        throw new InvalidApplicationTransition(
+                "unresolved publication attempt must be reconciled before a new attempt identity is used");
     }
 
     public ApplyProvenResult currentProvenResult() {

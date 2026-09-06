@@ -20,6 +20,9 @@ public final class PackageApplicationTest extends DomainTestSupport {
         runner.run("applied_state_records_the_exact_applied_tree_without_implying_commit_or_publish", test::applied_state_records_the_exact_applied_tree_without_implying_commit_or_publish);
         runner.run("commit_state_requires_a_previously_proven_applied_result", test::commit_state_requires_a_previously_proven_applied_result);
         runner.run("publication_uncertainty_is_preserved_as_a_distinct_proven_state", test::publication_uncertainty_is_preserved_as_a_distinct_proven_state);
+        runner.run("uncertain_publication_reconciliation_updates_the_same_attempt_identity_when_published", test::uncertain_publication_reconciliation_updates_the_same_attempt_identity_when_published);
+        runner.run("uncertain_publication_must_be_reconciled_before_a_new_attempt_identity_can_be_recorded", test::uncertain_publication_must_be_reconciled_before_a_new_attempt_identity_can_be_recorded);
+        runner.run("proven_not_published_reconciliation_returns_to_committed_without_losing_attempt_history", test::proven_not_published_reconciliation_returns_to_committed_without_losing_attempt_history);
         runner.run("published_state_requires_remote_tip_equal_to_the_committed_tip", test::published_state_requires_remote_tip_equal_to_the_committed_tip);
         runner.run("published_state_records_the_exact_proven_remote_tree", test::published_state_records_the_exact_proven_remote_tree);
         runner.run("committed_application_reports_committed_as_the_highest_proven_state_without_publication", test::committed_application_reports_committed_as_the_highest_proven_state_without_publication);
@@ -53,6 +56,43 @@ public final class PackageApplicationTest extends DomainTestSupport {
         equal(ApplicationStage.PUBLICATION_UNCERTAIN, app.currentProvenResult().state());
         equal(commit("aaaa"), app.commitId().orElseThrow());
         equal(1, app.publicationAttempts().size());
+    }
+
+    private void uncertain_publication_reconciliation_updates_the_same_attempt_identity_when_published() {
+        PublicationAttemptId id = new PublicationAttemptId("attempt-1");
+        PackageApplication uncertain = committedApplication().markPublicationUncertain(
+                id, new PublicationAttemptEvidence(remote(), commit("aaaa")));
+        PackageApplication published = uncertain.markPublished(
+                id, commit("aaaa"), tree("tree-A"),
+                new PublicationEvidence(remote(), commit("aaaa"), tree("tree-A")));
+        equal(1, published.publicationAttempts().size());
+        equal(id, published.publicationAttempts().get(0).attemptId());
+        equal(PublicationAttemptOutcome.PUBLISHED, published.publicationAttempts().get(0).outcome());
+    }
+
+    private void uncertain_publication_must_be_reconciled_before_a_new_attempt_identity_can_be_recorded() {
+        PackageApplication uncertain = committedApplication().markPublicationUncertain(
+                new PublicationAttemptId("attempt-1"),
+                new PublicationAttemptEvidence(remote(), commit("aaaa")));
+        throwsType(InvalidApplicationTransition.class, () -> uncertain.markPublished(
+                new PublicationAttemptId("attempt-2"), commit("aaaa"), tree("tree-A"),
+                new PublicationEvidence(remote(), commit("aaaa"), tree("tree-A"))));
+    }
+
+    private void proven_not_published_reconciliation_returns_to_committed_without_losing_attempt_history() {
+        PublicationAttemptId firstId = new PublicationAttemptId("attempt-1");
+        PackageApplication uncertain = committedApplication().markPublicationUncertain(
+                firstId, new PublicationAttemptEvidence(remote(), commit("aaaa")));
+        PackageApplication reconciled = uncertain.markPublicationNotPublished(
+                firstId, new PublicationNotPublishedEvidence(remote(), commit("aaaa"), Optional.of(commit("older"))));
+        equal(ApplicationStage.COMMITTED, reconciled.stage());
+        equal(1, reconciled.publicationAttempts().size());
+        equal(firstId, reconciled.publicationAttempts().get(0).attemptId());
+        equal(PublicationAttemptOutcome.NOT_PUBLISHED, reconciled.publicationAttempts().get(0).outcome());
+        PackageApplication retried = reconciled.markPublished(
+                new PublicationAttemptId("attempt-2"), commit("aaaa"), tree("tree-A"),
+                new PublicationEvidence(remote(), commit("aaaa"), tree("tree-A")));
+        equal(2, retried.publicationAttempts().size());
     }
 
     private void published_state_requires_remote_tip_equal_to_the_committed_tip() {

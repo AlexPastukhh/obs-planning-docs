@@ -79,7 +79,7 @@ These files demonstrate the methodology. They are not product, methodology, dura
 
 ### Domain / implementation owners
 
-- [`domain/README.md`](domain/README.md) — current durable Domain owner map.
+- [`domain/README.md`](domain/README.md) — current durable Domain owner map, including `RepositoryTarget` as the exact multi-field Value Object owner.
 - [`slices.md`](slices.md) and [`slices/`](slices/) — current durable Slice portfolio/owners.
 - [`shared-implementation/chatgpt-handoff.md`](shared-implementation/chatgpt-handoff.md) — reusable exact ChatGPT handoff capability.
 - Slice/Aggregate planning examples live under [`examples/`](examples/) and are explicitly **not** durable implementation owners.

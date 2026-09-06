@@ -18,6 +18,7 @@ public final class PackageReviewTest extends DomainTestSupport {
         PackageReviewTest test = new PackageReviewTest();
         runner.run("review_accepts_only_artifacts_that_end_at_the_same_predicted_tree", test::review_accepts_only_artifacts_that_end_at_the_same_predicted_tree);
         runner.run("review_rejects_latest_diff_from_a_source_other_than_expected_source", test::review_rejects_latest_diff_from_a_source_other_than_expected_source);
+        runner.run("review_rejects_cumulative_diff_from_a_source_other_than_start_work_base", test::review_rejects_cumulative_diff_from_a_source_other_than_start_work_base);
         runner.run("historical_review_identity_does_not_change_when_the_work_branch_moves_later", test::historical_review_identity_does_not_change_when_the_work_branch_moves_later);
     }
 
@@ -31,6 +32,10 @@ public final class PackageReviewTest extends DomainTestSupport {
 
     private void review_rejects_latest_diff_from_a_source_other_than_expected_source() {
         throwsType(ReviewArtifactMismatch.class, () -> review("tree-A", "2222", "0000", "1111"));
+    }
+
+    private void review_rejects_cumulative_diff_from_a_source_other_than_start_work_base() {
+        throwsType(ReviewArtifactMismatch.class, () -> review("tree-A", "1111", "9999", "1111"));
     }
 
     private void historical_review_identity_does_not_change_when_the_work_branch_moves_later() {

@@ -26,6 +26,7 @@ public final class RepositoryTargetTest extends DomainTestSupport {
         equal(repo(), target.repositoryIdentity());
         equal(new CanonicalPath("/repo"), target.registeredPath().canonicalPath());
         equal(target, new RepositoryTarget(repo(), new RegisteredRepositoryPath(new CanonicalPath("/repo"))));
+        notEqual(target, new RepositoryTarget(repo(), new RegisteredRepositoryPath(new CanonicalPath("/other-clone"))));
     }
 
     private void registered_repository_path_must_revalidate_to_the_same_canonical_location_before_local_use() {

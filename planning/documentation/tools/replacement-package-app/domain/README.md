@@ -6,7 +6,7 @@ Behavior Items remain authoritative in Scenario owners. Domain owners implement 
 
 | Owner | Kind | Current / planned role |
 |---|---|---|
-| [`Repository Target`](repository-target.md) | Domain Object / identity owner | CURRENT |
+| [`Repository Target`](repository-target.md) | shared multi-field Value Object owner | CURRENT |
 | [`Work Intent`](work-intent.md) | Aggregate | CURRENT |
 | [`Repository Work / ChangeSet`](change-set.md) | central Aggregate | CURRENT with selected planned expansion |
 | [`External Interaction`](external-interaction.md) | Aggregate | CURRENT |
@@ -20,5 +20,7 @@ Each owner separates:
 - optional durable `DI-*` requirements;
 - local proof responsibility/Test Items only when useful;
 - `Evolution Impact` for canonical Scenario-owned Evolution Steps.
+
+Value Objects may be durable Domain owners when their complete semantic value is the long-lived boundary. A saved application/persistence reference to a Value Object does not turn that Value Object into an Entity.
 
 Planned semantics never silently replace current semantics before implementation/proof migration.

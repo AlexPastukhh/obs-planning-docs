@@ -63,6 +63,8 @@ public final class PackageReview {
                 () -> new ReviewArtifactMismatch("cumulative diff does not end at a Git tree"));
         if (!latestDiff.fromCommit().equals(expectedSource))
             throw new ReviewArtifactMismatch("latest diff source does not equal expected source");
+        if (!cumulativeDiff.fromCommit().equals(startBaseCommit))
+            throw new ReviewArtifactMismatch("cumulative diff source does not equal Start Work base");
         if (!latestTree.equals(predictedTree)
                 || !cumulativeTree.equals(predictedTree)
                 || !fullResult.tree().equals(predictedTree))

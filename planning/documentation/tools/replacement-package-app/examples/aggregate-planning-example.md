@@ -218,6 +218,20 @@ test("confirmed_work_issue_reference_is_attached_without_changing_fixed_work_ide
 }
 ```
 
+```text
+test("confirmed_work_issue_identity_is_idempotent_and_rejects_a_different_issue") {
+    let attached = repositoryWork().attachConfirmedWorkIssue(issueRef(42))
+
+    // Same external identity is idempotent.
+    assertEqual(attached.attachConfirmedWorkIssue(issueRef(42)).issueRef, issueRef(42))
+
+    // A different Issue would fork one logical work identity.
+    assertThrows(WorkIssueMismatch.self) {
+        attached.attachConfirmedWorkIssue(issueRef(43))
+    }
+}
+```
+
 ### Method — `requireRecordedWorkBranch`
 
 ```text
@@ -778,6 +792,18 @@ test("review_rejects_latest_diff_from_a_source_other_than_expected_source") {
 ```
 
 ```text
+test("review_rejects_cumulative_diff_from_a_source_other_than_start_work_base") {
+    // Arrange
+    let cumulative = diff(from: "9999", toTree: "tree-A")
+
+    // Act / Assert
+    assertThrows(ReviewArtifactMismatch.self) {
+        validReviewBuilder(startBaseCommit: "0000", cumulativeDiff: cumulative).build()
+    }
+}
+```
+
+```text
 test("historical_review_identity_does_not_change_when_the_work_branch_moves_later") {
     // Arrange
     let review = validPackageReview(
@@ -845,11 +871,11 @@ Own proven Apply/Commit/Publish progress for one exact `(changeSetId, packageId)
 attemptId: PublicationAttemptId
 intendedRemoteBranch: RemoteBranchRef
 intendedTip: CommitId
-outcome: PublicationAttemptOutcome
-evidence: PublicationAttemptEvidence
+outcome: PublicationAttemptOutcome   # UNCERTAIN | NOT_PUBLISHED | PUBLISHED
+evidence: PublicationAttemptResultEvidence
 ```
 
-Represents one externally effectful publication attempt and its known/unknown outcome.
+Represents one externally effectful publication attempt and its known/unknown outcome. Reconciliation changes the state/evidence of the **same `PublicationAttemptId`**; a real retry uses a new ID only after the prior uncertain attempt is reconciled.
 
 ## High-level state / fields
 
@@ -968,6 +994,7 @@ test("commit_state_requires_a_previously_proven_applied_result") {
 
 ```text
 markPublicationUncertain(
+    attemptId: PublicationAttemptId,
     evidence: PublicationAttemptEvidence
 ) -> PackageApplication
 ```
@@ -981,6 +1008,7 @@ test("publication_uncertainty_is_preserved_as_a_distinct_proven_state") {
 
     // Act
     let uncertain = application.markPublicationUncertain(
+        PublicationAttemptId("attempt-1"),
         publicationAttemptEvidence(intendedTip: "aaaa")
     )
 
@@ -990,10 +1018,80 @@ test("publication_uncertainty_is_preserved_as_a_distinct_proven_state") {
 }
 ```
 
+### Method — publication-attempt reconciliation
+
+```text
+markPublicationNotPublished(
+    attemptId: PublicationAttemptId,
+    evidence: PublicationNotPublishedEvidence
+) -> PackageApplication
+```
+
+Reconciliation never creates a second Entity with the same identity. `UNCERTAIN → PUBLISHED` or `UNCERTAIN → NOT_PUBLISHED` preserves `PublicationAttemptId`. Only after `NOT_PUBLISHED` is proven may a later real push use a new attempt ID.
+
+#### Unit tests for publication-attempt continuity
+
+```text
+test("uncertain_publication_reconciliation_updates_the_same_attempt_identity_when_published") {
+    let uncertain = committedApplication().markPublicationUncertain(
+        PublicationAttemptId("attempt-1"),
+        publicationAttemptEvidence(intendedTip: "aaaa")
+    )
+
+    let published = uncertain.markPublished(
+        PublicationAttemptId("attempt-1"),
+        CommitId("aaaa"),
+        GitTreeId("tree-A"),
+        publicationEvidence(remoteTip: "aaaa", remoteTree: "tree-A")
+    )
+
+    assertEqual(published.publicationAttempts.count, 1)
+    assertEqual(published.publicationAttempts[0].attemptId, PublicationAttemptId("attempt-1"))
+    assertEqual(published.publicationAttempts[0].outcome, Published)
+}
+```
+
+```text
+test("uncertain_publication_must_be_reconciled_before_a_new_attempt_identity_can_be_recorded") {
+    let uncertain = committedApplication().markPublicationUncertain(
+        PublicationAttemptId("attempt-1"),
+        publicationAttemptEvidence(intendedTip: "aaaa")
+    )
+
+    assertThrows(InvalidApplicationTransition.self) {
+        uncertain.markPublished(
+            PublicationAttemptId("attempt-2"),
+            CommitId("aaaa"),
+            GitTreeId("tree-A"),
+            publicationEvidence(remoteTip: "aaaa", remoteTree: "tree-A")
+        )
+    }
+}
+```
+
+```text
+test("proven_not_published_reconciliation_returns_to_committed_without_losing_attempt_history") {
+    let uncertain = committedApplication().markPublicationUncertain(
+        PublicationAttemptId("attempt-1"),
+        publicationAttemptEvidence(intendedTip: "aaaa")
+    )
+
+    let reconciled = uncertain.markPublicationNotPublished(
+        PublicationAttemptId("attempt-1"),
+        publicationNotPublishedEvidence(observedRemoteTip: "older")
+    )
+
+    assertEqual(reconciled.stage, Committed)
+    assertEqual(reconciled.publicationAttempts[0].attemptId, PublicationAttemptId("attempt-1"))
+    assertEqual(reconciled.publicationAttempts[0].outcome, NotPublished)
+}
+```
+
 ### Method — `markPublished`
 
 ```text
 markPublished(
+    attemptId: PublicationAttemptId,
     provenRemoteTip: CommitId,
     provenRemoteTree: GitTreeId,
     evidence: PublicationEvidence
@@ -1762,6 +1860,30 @@ markCancelledBeforePossibleSend() -> ExternalInteraction
 ```
 
 #### Unit tests for this method
+
+```text
+test("terminal_interaction_states_cannot_be_rewritten_for_the_same_interaction_identity") {
+    let failed = externalInteraction().markFailedBeforeSend(.browserUnavailable)
+    assertThrows(InvalidInteractionTransition.self) { failed.markCancelledBeforePossibleSend() }
+
+    let unknown = attachedExternalInteraction().markUnknownAfterSend(sendAttemptEvidence())
+    assertThrows(InvalidInteractionTransition.self) { unknown.markCancelledBeforePossibleSend() }
+    assertThrows(InvalidInteractionTransition.self) { unknown.markFailedBeforeSend(.lateFailure) }
+}
+```
+
+```text
+test("cancelling_after_confirmed_attachment_preserves_attachment_evidence_and_is_terminal") {
+    let attached = attachedExternalInteraction()
+    let evidence = attached.attachmentEvidence
+
+    let cancelled = attached.markCancelledBeforePossibleSend()
+
+    assertEqual(cancelled.state, Cancelled)
+    assertEqual(cancelled.attachmentEvidence, evidence)
+    assertThrows(InvalidInteractionTransition.self) { cancelled.markFailedBeforeSend(.lateFailure) }
+}
+```
 
 ```text
 test("pre_send_cancellation_is_terminal_without_implying_attachment_or_send") {

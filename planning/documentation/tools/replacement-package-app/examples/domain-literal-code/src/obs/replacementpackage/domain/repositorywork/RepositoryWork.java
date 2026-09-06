@@ -60,9 +60,14 @@ public final class RepositoryWork {
     }
 
     public RepositoryWork attachConfirmedWorkIssue(IssueRef confirmedIssueRef) {
+        Objects.requireNonNull(confirmedIssueRef);
+        if (issueRef.isPresent()) {
+            if (!issueRef.orElseThrow().equals(confirmedIssueRef)) throw new WorkIssueMismatch();
+            return this;
+        }
         return new RepositoryWork(
                 changeSetId, repositoryIdentity, targetBranch, startBaseCommit, workBranch,
-                Optional.of(Objects.requireNonNull(confirmedIssueRef)), lifecycle, finalizationEvidence);
+                Optional.of(confirmedIssueRef), lifecycle, finalizationEvidence);
     }
 
     public RecordedWorkBranchValidation requireRecordedWorkBranch(BranchName branch) {

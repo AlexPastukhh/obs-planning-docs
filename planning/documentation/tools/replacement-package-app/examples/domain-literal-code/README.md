@@ -17,7 +17,7 @@ Examples in this tree:
 
 - `WorkBranch` is an Entity: `BranchName` identifies the same recorded work branch while `knownTip` can change.
 - `IssueComment` is an Entity: `IssueCommentId` identifies the same confirmed comment.
-- `PublicationAttempt` is an Entity: `PublicationAttemptId` identifies one external publication attempt.
+- `PublicationAttempt` is an Entity: `PublicationAttemptId` identifies one external publication attempt across uncertain → reconciled outcome state changes.
 - `PackageOperation` is a multi-field Value Object: path/action/base/replacement together define the operation; `PackagePath` is a uniqueness key, not an Entity identity.
 - `IntegrationAttempt` and `FinalIssueCommentAttempt` are multi-field Value Objects: no independent attempt identity is selected.
 - `RepositoryTarget` is a multi-field shared Value Object: repository identity + registered local path.
@@ -70,12 +70,12 @@ bash run-tests.sh
 Expected result:
 
 ```text
-RESULT passed=48 failed=0 total=48
+RESULT passed=55 failed=0 total=55
 ```
 
 ## Verified before packaging
 
 ```text
 javac --release 21 -Xlint:all -Werror
-RESULT passed=48 failed=0 total=48
+RESULT passed=55 failed=0 total=55
 ```

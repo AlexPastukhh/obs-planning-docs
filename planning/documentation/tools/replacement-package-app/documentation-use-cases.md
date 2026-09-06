@@ -688,7 +688,7 @@ Design only the Domain classes/state/method boundaries needed to realize selecte
    - an ID-valued field inside a type does not make that containing type an Entity unless that ID is the containing type's own continuity identity;
    - a collection/map uniqueness key does not by itself make an element an Entity;
    - prefer aggregate-local Value Objects when one Aggregate owns the meaning; use `shared/valueobjects/` only for intentionally cross-owner/domain-boundary semantic values.
-5. Keep application orchestration, Git/GitHub/filesystem/browser mechanics, UI and generic cross-cutting concerns out of Aggregate Planning; mark them Slice/Shared when relevant.
+4. Keep application orchestration, Git/GitHub/filesystem/browser mechanics, UI and generic cross-cutting concerns out of Aggregate Planning; mark them Slice/Shared when relevant.
 5. For each selected Domain class, record only the useful high-level fields/state and typed candidate semantic methods.
 6. Put literal Domain unit tests **immediately after the candidate method they prove**. Tests call Domain objects directly, use concrete values and assertions, and name expected behavior/result rather than the tested class/method.
 7. When Aggregate Planning becomes literal implementation/code, preserve the Aggregate boundary in the physical source layout:
