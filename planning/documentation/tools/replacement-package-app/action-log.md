@@ -1865,3 +1865,45 @@ Logging starts only after explicit user instruction; no pre-start history is rec
 **Target-State Result:** after successful Apply, methodology/process truth lives in the established canonical methodology owners, templates are subordinate adaptable forms, README is navigation, retained examples are explicitly non-authoritative/non-persistent, and no downstream planning surface invents PR-specific implementation semantics beyond currently selected behavior.
 
 **APPLIED relation:** successful Apply of correction package `94c35ea0-cf8f-445a-ad32-41fbc8ec2075` corrects the still-open ChangeSet `4e7fcebe-494b-4443-bcbc-39a5bbd5202e` after semantic review `NEEDS_CORRECTION`; ChangeSet identity/label/product intent remain unchanged.
+
+### LOG-RPKG-080 — Adopt identity-correct Aggregate/Entity/Value Object literal layout
+
+**Type:** POST-REVIEW SCOPE REFINEMENT / METHODOLOGY + EXECUTABLE EXAMPLE  
+**ChangeSet:** `4e7fcebe-494b-4443-bcbc-39a5bbd5202e`  
+**ChangeSet Label:** `feature-scenario-aggregate-discovery-methodology`  
+**Continues Published Review Result:** `5176a5c56c554bd818aa648f58a64bf3779f92e1`  
+**Supersedes Unapplied Candidate Package:** `be9aefae-313d-4b93-af41-e75af69401d5`  
+**Package:** `d074d7e2-9ad5-40cb-88e8-e118b86ab7ba`
+
+**Correction found during literal Domain recheck:**
+- Value Object classification must not depend on field count; multi-field semantic values are normal;
+- the prior unapplied literal candidate incorrectly described `PackageOperation`, `IntegrationAttempt` and `FinalIssueCommentAttempt` as child Entities;
+- the prior candidate also kept `RepositoryTarget` in a non-Aggregate Domain Object category even though its complete `(repositoryIdentity, registeredPath)` value defines it and it has no independent lifecycle;
+- Entity semantics should be explicit for the remaining child Entities rather than relying on record/full-state equality.
+
+**Selected classification:**
+- Aggregate Roots: `RepositoryWork`, `WorkIssue`, `ReplacementPackage`, `PackageReview`, `PackageApplication`, `WorkFinalization`, `SnapshotExport`, `ExternalInteraction`;
+- child Entities only where stable identity continuity exists: `WorkBranch`, `IssueComment`, `PublicationAttempt`;
+- `PackageOperation`, `IntegrationAttempt`, `FinalIssueCommentAttempt`, `RepositoryTarget` and the remaining semantic records/evidence/state values are Value Objects according to their owning/shared boundary;
+- `RepositoryTarget` moves to `shared/valueobjects/` as a multi-field Value Object and has structural equality;
+- `PackageOperation` is an aggregate-local multi-field Value Object; `PackagePath` is uniqueness/lookup key, not Entity identity;
+- `IntegrationAttempt` and `FinalIssueCommentAttempt` remain immutable multi-field attempt facts with no selected independent identity;
+- `WorkBranch`, `IssueComment` and `PublicationAttempt` literal implementations expose identity-based Entity equality;
+- `PublicationAttempt` evidence is a typed sealed evidence union rather than generic `Object`.
+
+**Methodology refinement:**
+- classify Domain types using own identity, lifecycle continuity and equality semantics;
+- explicitly state that Value Objects may have one or many fields, nested Value Objects, collections, validation and behavior;
+- an embedded/referenced `*Id` field or a uniqueness key does not automatically make the containing type an Entity;
+- physical literal layout remains owner-centered: one folder per Aggregate, local Value Objects beside the Aggregate, cross-owner/domain-boundary Value Objects under `shared/valueobjects/`, Domain errors under `errors/`, semantic tests beside what they prove;
+- no generic `non-Aggregate Domain Object` bucket is used by this example.
+
+**Executable proof:**
+- literal Java 21 example is compiled with `javac --release 21 -Xlint:all -Werror`;
+- all 48 existing Domain test intentions pass after reclassification;
+- test-name set remains exactly the same as Aggregate Planning; value-equality assertions were added inside existing tests rather than inventing new behavior;
+- compiled output is excluded from the package.
+
+**Authority boundary:** `documentation-use-cases.md` remains methodology authority; templates and examples are subordinate. Feature/Scenario/BR product meaning is unchanged.
+
+**APPLIED relation:** successful Apply of package `d074d7e2-9ad5-40cb-88e8-e118b86ab7ba` replaces the prior unapplied literal-layout candidate and becomes the reviewed candidate for this still-open ChangeSet.

@@ -680,16 +680,53 @@ Design only the Domain classes/state/method boundaries needed to realize selecte
    - what semantic facts must be remembered, compared or changed;
    - what must remain mutually consistent;
    - what lifecycle/partial-state/retry rules are semantic rather than orchestration;
-   - whether the realization belongs to an Aggregate Root, child Entity, Value Object, other Domain Object, or does not belong in Domain at all.
-3. Keep application orchestration, Git/GitHub/filesystem/browser mechanics, UI and generic cross-cutting concerns out of Aggregate Planning; mark them Slice/Shared when relevant.
-4. For each selected Domain class, record only the useful high-level fields/state and typed candidate semantic methods.
-5. Put literal Domain unit tests **immediately after the candidate method they prove**. Tests call Domain objects directly, use concrete values and assertions, and name expected behavior/result rather than the tested class/method.
-6. Express invariant preservation through those literal assertions. Do not create a detached `Preserved invariants` prose catalog.
-7. Plan known future Features/extensions at the same Domain-design depth when their semantic behavior is selected, with an explicit `FUTURE` marker and canonical `EVO-*` identity where one exists.
-8. If future behavior depends on an OPEN product detail, keep only the already-selected semantic boundary and mark the concrete API/test `BLOCKED BY OPEN PRODUCT DETAIL`; do not invent the missing semantics.
-9. If Aggregate evidence challenges the Feature/Slice boundary, return to DOC-UC-13 rather than compensating silently.
-10. After the planned Domain behavior is implemented and proven, delete the Aggregate Planning artifact by default. Create/update a separate durable Domain/architecture/Production↔Proof owner only when it has its own continuing purpose.
-11. Use DOC-UC-14 later when durable owner-local Production/Proof Requirements are independently useful. Planning unit tests do not replace that pass.
+   - whether the realization is an Aggregate Root, child Entity, aggregate-local Value Object, shared Value Object, or does not belong in Domain at all.
+3. Classify Domain types by semantic identity, never by field count:
+   - **Aggregate Root** — an Entity that defines one consistency/lifecycle boundary and is the external reference point for that Aggregate;
+   - **child Entity** — has stable identity whose continuity matters while its state changes inside the Aggregate;
+   - **Value Object** — has no independent identity; equality is determined by its complete semantic value. A Value Object may have one field or many fields, may compose other Value Objects/collections, and may contain validation/behavior;
+   - an ID-valued field inside a type does not make that containing type an Entity unless that ID is the containing type's own continuity identity;
+   - a collection/map uniqueness key does not by itself make an element an Entity;
+   - prefer aggregate-local Value Objects when one Aggregate owns the meaning; use `shared/valueobjects/` only for intentionally cross-owner/domain-boundary semantic values.
+5. Keep application orchestration, Git/GitHub/filesystem/browser mechanics, UI and generic cross-cutting concerns out of Aggregate Planning; mark them Slice/Shared when relevant.
+5. For each selected Domain class, record only the useful high-level fields/state and typed candidate semantic methods.
+6. Put literal Domain unit tests **immediately after the candidate method they prove**. Tests call Domain objects directly, use concrete values and assertions, and name expected behavior/result rather than the tested class/method.
+7. When Aggregate Planning becomes literal implementation/code, preserve the Aggregate boundary in the physical source layout:
+
+```text
+domain/
+├── errors/
+│   └── <DomainError>.java
+├── shared/
+│   ├── valueobjects/
+│   │   ├── <cross-owner Value Object>.java
+│   │   ├── <multi-field shared Value Object>.java
+│   │   └── <SharedValueObject>Test.java
+│   └── support/
+│       └── <non-domain helper when unavoidable>.java
+├── <aggregate-name>/
+│   ├── <AggregateRoot>.java
+│   ├── <ChildEntity>.java
+│   ├── <aggregate-local Value Object / enum / evidence>.java
+│   └── <AggregateRoot>Test.java
+└── <another-aggregate>/
+    └── ...
+```
+
+   - one Aggregate folder owns its Aggregate Root, child Entities, aggregate-local Value Objects/enums/evidence and executable Domain test file(s);
+   - do **not** split Roots and Entities into global `aggregates/` and `entities/` type folders;
+   - keep a Value Object inside its Aggregate folder when that Aggregate owns the meaning; move it to `shared/valueobjects/` only when the value is intentionally cross-owner/domain-boundary;
+   - a shared Value Object may be multi-field and may have its own adjacent semantic test;
+   - keep Domain exceptions/errors in `errors/`, outside any one Aggregate folder;
+   - keep each semantic Domain test beside the Aggregate/Entity/Value Object semantics it proves; a shared `testing/` folder may contain only runner/assertion/fixture support, never owner-specific test meaning;
+   - when a build system requires separate production/test source roots, mirror the same Aggregate-relative folder and package structure under both roots so the test remains semantically adjacent to its owner;
+   - literal code examples/handoff artifacts must use this same owner-centered layout rather than flattening all Domain types into one folder.
+8. Express invariant preservation through those literal assertions. Do not create a detached `Preserved invariants` prose catalog.
+9. Plan known future Features/extensions at the same Domain-design depth when their semantic behavior is selected, with an explicit `FUTURE` marker and canonical `EVO-*` identity where one exists.
+10. If future behavior depends on an OPEN product detail, keep only the already-selected semantic boundary and mark the concrete API/test `BLOCKED BY OPEN PRODUCT DETAIL`; do not invent the missing semantics.
+11. If Aggregate evidence challenges the Feature/Slice boundary, return to DOC-UC-13 rather than compensating silently.
+12. After the planned Domain behavior is implemented and proven, delete the Aggregate Planning artifact by default. Create/update a separate durable Domain/architecture/Production↔Proof owner only when it has its own continuing purpose.
+13. Use DOC-UC-14 later when durable owner-local Production/Proof Requirements are independently useful. Planning unit tests do not replace that pass.
 
 ### Principles
 
@@ -698,6 +735,11 @@ Design only the Domain classes/state/method boundaries needed to realize selecte
 - One candidate Domain method may realize several Feature Steps; one Step may involve several Domain/non-Domain collaborators.
 - Domain owner answers the semantic rule; it does not own the whole technical execution method.
 - Aggregate Planning is non-persistent by default.
+- Literal Domain source is organized by semantic owner/consistency boundary, not globally by technical type kind; Aggregate Root + child Entities + local Value Objects + their tests stay together.
+- Value Objects are classified by value semantics, not size: one field and ten fields are equally valid when the whole value defines equality and there is no independent identity/lifecycle.
+- Shared Value Objects are explicit and intentionally few: sharing requires an intentional cross-owner/domain-boundary semantic value, not convenience.
+- Domain errors are separate from Aggregate folders.
+- Literal Domain examples must be executable and use the same physical owner-centered layout recommended for implementation.
 - No global deep Domain model is required upfront.
 
 ---

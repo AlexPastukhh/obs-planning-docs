@@ -254,7 +254,13 @@ Persistence: non-persistent by default
 Authority: Feature `BR-*`
 Scope: Domain classes only
 
-Kind: <Aggregate Root | child Entity | Value Object | Domain Object>
+Kind: <Aggregate Root | child Entity | aggregate-local Value Object | shared Value Object>
+
+Classification check:
+- own stable identity whose continuity survives state change? → Entity / possibly Aggregate Root;
+- no independent identity and whole-value equality? → Value Object;
+- field count is irrelevant: a Value Object may contain multiple fields, nested values, collections and behavior;
+- a uniqueness key or referenced `*Id` field does not by itself create Entity identity.
 
 ## Responsibility
 
@@ -317,6 +323,7 @@ Canonical Evolution: `EVO-...` when selected.
 Rules:
 
 - start from exact Feature Step + attached `BR-*`;
+- classify Root/Entity/Value Object by identity + lifecycle + equality semantics, never by number of fields;
 - do not copy canonical Requirement text;
 - keep UI/application-service/Git/GitHub/filesystem/browser mechanics out;
 - put each literal Domain unit-test group immediately after the method it proves;
@@ -324,7 +331,8 @@ Rules:
 - test names describe expected Domain behavior/result, not class/method names;
 - future planning may be equally deep only where semantic behavior is selected;
 - after implementation/proof, delete the planning artifact by default;
-- durable Domain/architecture/Production↔Proof documentation, when useful, is a separate owner.
+- durable Domain/architecture/Production↔Proof documentation, when useful, is a separate owner;
+- when the plan becomes literal code, use the aggregate-centered physical layout from `Template — literal Domain implementation / code example layout`; tests remain beside the owner they prove.
 
 ---
 
@@ -566,6 +574,65 @@ Canonical Step owner:
 ```
 
 The map records rough planning relationships; it does not redefine the Step's qualitative behavior.
+
+---
+
+## Template — literal Domain implementation / code example layout
+
+Use this after Aggregate Planning when literal code is produced, or whenever a copy-ready Domain code example/handoff is supplied.
+
+```text
+domain/
+├── errors/
+│   ├── DomainViolation.java
+│   └── <SpecificDomainError>.java
+├── shared/
+│   ├── valueobjects/
+│   │   ├── <SharedId>.java
+│   │   └── <SharedEvidence>.java
+│   └── support/
+│       └── <non-domain helper>.java
+├── <aggregate-name>/
+│   ├── <AggregateRoot>.java
+│   ├── <ChildEntity>.java
+│   ├── <LocalValueObject>.java
+│   ├── <LocalState>.java
+│   └── <AggregateRoot>Test.java
+├── <another-aggregate>/
+│   └── ...
+└── testing/
+    ├── <test runner>.java
+    └── <assertion / fixture support>.java
+```
+
+Rules:
+
+- **one Aggregate = one owner folder** containing the Root, its child Entities, aggregate-local Value Objects/enums/evidence and tests for those semantics;
+- do not create global `aggregates/`, `entities/` or `valueobjects/` folders for owner-local types;
+- Value Objects may have one or many fields; multi-field composition does not make a Value Object an Entity;
+- an aggregate-local Value Object stays in its Aggregate folder; `shared/valueobjects/` contains intentionally cross-owner/domain-boundary semantic values and may include multi-field Value Objects;
+- `errors/` contains Domain errors/exceptions and is separate from all Aggregate folders;
+- semantic tests stay beside the Aggregate/Entity/Value Object they prove; `testing/` is support-only and must not become a detached semantic test catalog;
+- if the real build requires separate source roots, mirror this exact owner-relative folder/package structure under production and test roots;
+- a literal code example must provide the same file layout, exact source bytes and an executable test command; prose snippets alone are not a literal handoff;
+- compile/run the literal tests before handing off the artifact and report the exact pass/fail count;
+- OPEN/FUTURE product detail remains absent from literal production/test code until selected upstream.
+
+Example naming:
+
+```text
+repositorywork/
+├── RepositoryWork.java              # Aggregate Root
+├── WorkBranch.java                  # child Entity
+├── WorkBranchEvidence.java          # multi-field aggregate-local Value Object
+├── RepositoryWorkLifecycle.java
+└── RepositoryWorkTest.java
+
+shared/valueobjects/
+├── RepositoryTarget.java            # multi-field shared Value Object
+├── RegisteredRepositoryPath.java
+└── RepositoryTargetTest.java
+```
 
 ---
 

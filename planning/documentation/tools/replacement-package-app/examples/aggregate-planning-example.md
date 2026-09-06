@@ -44,6 +44,36 @@ Retain it only while it still coordinates unfinished implementation/migration or
 
 Do not mechanically convert this file into durable Domain documentation. If durable documentation is needed later, create/update the appropriate owner for that purpose.
 
+## Domain type classification rule
+
+Classification is semantic, not based on number of fields.
+
+```text
+Aggregate Root
+= Entity + consistency/lifecycle boundary + Aggregate external reference point
+
+child Entity
+= stable own identity whose continuity matters while state changes inside the Aggregate
+
+Value Object
+= no independent identity
++ equality by complete semantic value
++ replaced/compared as a whole
+```
+
+A Value Object may contain **one field or many fields**, nested Value Objects, collections, validation and behavior.
+
+A uniqueness key used by an Aggregate does not automatically make a child an Entity. A referenced `*Id` field also does not make the containing object an Entity unless that ID is the containing object's own continuity identity.
+
+Examples used below:
+
+- `WorkBranch` — child Entity (`BranchName` identity; `knownTip` may change);
+- `IssueComment` — child Entity (`IssueCommentId` identity);
+- `PublicationAttempt` — child Entity (`PublicationAttemptId` identity);
+- `PackageOperation` — aggregate-local multi-field Value Object;
+- `IntegrationAttempt` / `FinalIssueCommentAttempt` — aggregate-local multi-field Value Objects;
+- `RepositoryTarget` — shared multi-field Value Object (`RepositoryIdentity + RegisteredRepositoryPath`).
+
 ## Test rule
 
 Tests here are **Domain unit tests**.
@@ -496,11 +526,13 @@ Kind: **Aggregate Root**
 
 Own one exact immutable replacement package semantic model: identity, logical work, repository, expected source and a collision-free operation set.
 
-## Child Domain objects
+## Aggregate-local Value Objects
 
-### `PackageOperation` — child Entity
+### `PackageOperation` — multi-field Value Object
 
-Identity inside the package is `PackagePath`.
+`PackageOperation` has no independent identity/lifecycle. Its complete semantic value is `(path, action, expectedBase, replacement)`.
+
+`PackagePath` is the Aggregate's uniqueness/lookup key for the operation set; that uniqueness rule does **not** make `PackageOperation` an Entity.
 
 ```text
 path: PackagePath
@@ -612,6 +644,10 @@ test("replace_operation_contains_exact_expected_base_and_complete_replacement_by
     // Assert
     assertEqual(op.expectedBase, FileBytes("old\n"))
     assertEqual(op.replacement, FileBytes("new\n"))
+    assertEqual(
+        op,
+        PackageOperation.replace(PackagePath("a.txt"), FileBytes("old\n"), FileBytes("new\n"))
+    )
 }
 ```
 
@@ -1062,13 +1098,13 @@ Kind: **Aggregate Root**
 
 Own the two externally effectful completion obligations — exact integration and final Issue communication — including partial/uncertain recovery.
 
-## Child Domain objects
+## Aggregate-local Value Objects
 
-### `IntegrationAttempt` — child Entity
-Tracks exact intended source tip/tree, target and external outcome.
+### `IntegrationAttempt` — multi-field Value Object
+Tracks one recorded integration-attempt fact: intended exact source/target, outcome and optional confirmed evidence. No independent attempt identity is currently selected.
 
-### `FinalIssueCommentAttempt` — child Entity
-Tracks exact intended Issue/comment and external outcome.
+### `FinalIssueCommentAttempt` — multi-field Value Object
+Tracks one recorded final-comment-attempt fact: intended Issue/comment, outcome and optional confirmed evidence. No independent attempt identity is currently selected.
 
 ## High-level state / fields
 
@@ -1766,11 +1802,13 @@ Status: **FUTURE CANDIDATE**. Add transitions only if browser evidence can suppo
 
 # `RepositoryTarget`
 
-Kind: **Domain Object (non-Aggregate)**
+Kind: **shared multi-field Value Object**
 
 ## Responsibility
 
-Represent one registered repository identity + local path and require local path revalidation before local operations.
+Represent the complete semantic value `(repositoryIdentity, registeredPath)` and require local path revalidation before local operations.
+
+It has no independent identity or lifecycle. Two `RepositoryTarget` values with equal repository identity and equal registered path are the same Domain value.
 
 ## High-level state / fields
 
@@ -1803,6 +1841,13 @@ test("repository_target_keeps_repository_identity_separate_from_registered_local
     // Assert
     assertEqual(target.repositoryIdentity, RepositoryIdentity("github:acme/repo"))
     assertEqual(target.registeredPath, RegisteredRepositoryPath("C:/repo"))
+    assertEqual(
+        target,
+        RepositoryTarget(
+            RepositoryIdentity("github:acme/repo"),
+            RegisteredRepositoryPath("C:/repo")
+        )
+    )
 }
 ```
 
@@ -1811,7 +1856,7 @@ test("repository_target_keeps_repository_identity_separate_from_registered_local
 ```text
 requireCurrentLocalPath(
     observedCanonicalPath: CanonicalPath
-) -> RepositoryTargetPathValidation
+) -> bool
 ```
 
 #### Unit tests for this method
@@ -1836,7 +1881,7 @@ test("registered_repository_path_must_revalidate_to_the_same_canonical_location_
 
 ### FUTURE CANDIDATE — multiple registered worktrees/clones
 
-No product behavior currently permits one `RepositoryTarget` identity to silently choose among several local clones.
+No product behavior currently permits one `RepositoryTarget` value to silently choose among several registered local clones.
 
 If future repository-target Evolution introduces multiple registered locations, selection/precedence must be explicit.
 
@@ -1847,7 +1892,7 @@ Status: **FUTURE CANDIDATE / NOT SELECTED**.
 
 # Important Value Objects
 
-These remain typed semantic values where the type protects meaning. This is a high-level planning list, not a mandatory one-type-per-file rule.
+These remain typed semantic values where the type protects meaning. A Value Object may be single-field or multi-field; field count is not a category rule. This is a high-level planning list, not a mandatory one-type-per-file rule.
 
 ```text
 ChangeSetId
@@ -1858,6 +1903,7 @@ InteractionId
 PublicationAttemptId
 
 RepositoryIdentity
+RepositoryTarget
 RepositoryTargetRef
 RegisteredRepositoryPath
 CanonicalPath
@@ -1873,6 +1919,7 @@ ActorIssueText
 ManagedWorkIdentityText
 CommentText
 
+PackageOperation
 PackagePath
 FileBytes
 FileDigest
@@ -1893,6 +1940,8 @@ PublicationEvidence
 PublicationAttemptEvidence
 PublicationAttemptOutcome
 
+IntegrationAttempt
+FinalIssueCommentAttempt
 IntegrationEvidence
 IntegrationAttemptEvidence
 IssueCommentEvidence

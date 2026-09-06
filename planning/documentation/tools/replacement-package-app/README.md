@@ -32,6 +32,11 @@ Scenario owner
    ├─ Domain classes + high-level state
    ├─ method → local Domain unit tests
    └─ Future / Evolution impact
+→ literal Domain implementation/code example when Domain code is produced
+   ├─ errors/ — Domain errors only
+   ├─ shared/valueobjects/ — genuinely cross-owner Value Objects only
+   ├─ one folder per Aggregate — Root + child Entities + local Value Objects + tests
+   └─ tests adjacent to the Domain owner they prove
 → implementation + proof
 → delete both working planning artifacts by default
 → create/update separate durable Domain / Slice / Shared / Proof owners only when independently useful
@@ -68,8 +73,9 @@ Known evolution uses `Introduction`, `Expansion`, `Refactoring`, `Forced Migrati
 - [`examples/scenario-planning-example.md`](examples/scenario-planning-example.md) — actor/journey/branch/continuity example.
 - [`examples/slice-discovery-planning-example.md`](examples/slice-discovery-planning-example.md) — **non-persistent** end-to-end Slice Discovery / Planning example with Feature-level integration tests.
 - [`examples/aggregate-planning-example.md`](examples/aggregate-planning-example.md) — **non-persistent** Domain-only Aggregate Planning example with method-local unit tests.
+- [`examples/domain-literal-code/README.md`](examples/domain-literal-code/README.md) — executable Java 21 literal Domain code example using one folder per Aggregate, shared Value Objects separately, Domain errors separately and semantic tests beside their owner.
 
-These files demonstrate the methodology. They are not product, methodology, durable Slice or durable Domain authority.
+These files demonstrate the methodology. They are not product, methodology, durable Slice or durable Domain authority. The literal code example is executable proof of the recommended physical layout, not current application runtime source.
 
 ### Domain / implementation owners
 
@@ -77,6 +83,8 @@ These files demonstrate the methodology. They are not product, methodology, dura
 - [`slices.md`](slices.md) and [`slices/`](slices/) — current durable Slice portfolio/owners.
 - [`shared-implementation/chatgpt-handoff.md`](shared-implementation/chatgpt-handoff.md) — reusable exact ChatGPT handoff capability.
 - Slice/Aggregate planning examples live under [`examples/`](examples/) and are explicitly **not** durable implementation owners.
+- Literal Domain implementation examples also live under [`examples/`](examples/) and must mirror the recommended owner-centered source layout: errors separate, shared Value Objects separate, one folder per Aggregate with its Root/Entities/local Value Objects/tests together.
+- Value Object classification is semantic, not structural: a VO may contain multiple fields and behavior; it remains a VO when it has no independent identity/lifecycle and equality is the complete semantic value.
 
 ### Proof / realization navigation
 

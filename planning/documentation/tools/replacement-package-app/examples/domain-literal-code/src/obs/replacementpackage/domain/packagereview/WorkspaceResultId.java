@@ -1,0 +1,14 @@
+package obs.replacementpackage.domain.packagereview;
+
+import obs.replacementpackage.domain.shared.valueobjects.*;
+import obs.replacementpackage.domain.shared.support.DomainText;
+import obs.replacementpackage.domain.errors.*;
+import java.nio.charset.StandardCharsets;
+import java.util.*;
+import java.util.regex.Pattern;
+
+public record WorkspaceResultId(String value, GitTreeId tree) {
+        public WorkspaceResultId {
+            value = DomainText.text(value, "workspaceResultId"); Objects.requireNonNull(tree);
+        }
+    }

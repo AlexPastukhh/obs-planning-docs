@@ -1,0 +1,154 @@
+{
+  "classificationRule": {
+    "aggregateRoot": "entity that defines a consistency/lifecycle boundary; identity may be explicit or composite semantic identity",
+    "entity": "has stable identity that survives state change; equality/continuity is identity-based",
+    "valueObject": "has no independent identity; equality is determined by its complete semantic value; may contain one or many fields and behavior"
+  },
+  "aggregateFolders": {
+    "repositorywork": {
+      "root": "RepositoryWork",
+      "entities": [
+        "WorkBranch"
+      ],
+      "localValueObjects": [
+        "WorkBranchEvidence",
+        "RecordedWorkBranchValidation",
+        "RepositoryWorkLifecycle"
+      ]
+    },
+    "workissue": {
+      "root": "WorkIssue",
+      "entities": [
+        "IssueComment"
+      ],
+      "localValueObjects": [
+        "ManagedWorkIdentityText",
+        "ObservedIssue",
+        "WorkIssueIdentityValidation",
+        "IssueEditVerification",
+        "ActorIssueText",
+        "IssueTitle"
+      ]
+    },
+    "replacementpackage": {
+      "root": "ReplacementPackage",
+      "entities": [],
+      "localValueObjects": [
+        "PackageOperation",
+        "Action",
+        "PackagePath",
+        "FileBytes",
+        "FileDigest"
+      ]
+    },
+    "packagereview": {
+      "root": "PackageReview",
+      "entities": [],
+      "localValueObjects": [
+        "ReviewDecision",
+        "ReviewId",
+        "WorkspaceResultId"
+      ]
+    },
+    "packageapplication": {
+      "root": "PackageApplication",
+      "entities": [
+        "PublicationAttempt"
+      ],
+      "localValueObjects": [
+        "ApplyExtent",
+        "ApplicationStage",
+        "ApplyProvenResult",
+        "PublicationAttemptId",
+        "PublicationEvidence",
+        "PublicationAttemptEvidence",
+        "PublicationAttemptOutcome",
+        "PublicationAttemptResultEvidence"
+      ]
+    },
+    "workfinalization": {
+      "root": "WorkFinalization",
+      "entities": [],
+      "localValueObjects": [
+        "IntegrationAttempt",
+        "FinalIssueCommentAttempt",
+        "FinalizationState",
+        "IntegrationEvidence",
+        "IntegrationAttemptEvidence",
+        "IssueCommentEvidence",
+        "IssueCommentAttemptEvidence"
+      ]
+    },
+    "snapshotexport": {
+      "root": "SnapshotExport",
+      "entities": [],
+      "localValueObjects": [
+        "SnapshotExportState",
+        "SnapshotSource",
+        "LocalSnapshotSource",
+        "CommitSnapshotSource",
+        "SnapshotInventory",
+        "SnapshotSourceEntryType",
+        "ValidatedSnapshotOutputPath"
+      ]
+    },
+    "externalinteraction": {
+      "root": "ExternalInteraction",
+      "entities": [],
+      "localValueObjects": [
+        "InteractionId",
+        "InteractionState",
+        "ConversationKey",
+        "DeliveryMode",
+        "DeliveryFailure",
+        "AttachmentEvidence",
+        "SendEvidence",
+        "SendAttemptEvidence"
+      ]
+    }
+  },
+  "sharedValueObjects": [
+    "ArtifactFingerprint",
+    "AttemptOutcome",
+    "BranchName",
+    "CanonicalPath",
+    "CaptureFingerprint",
+    "ChangeSetId",
+    "CommentText",
+    "CommitId",
+    "DiffArtifact",
+    "FinalizationEvidence",
+    "GitTreeId",
+    "IssueCommentId",
+    "IssueRef",
+    "PackageId",
+    "RegisteredRepositoryPath",
+    "RemoteBranchRef",
+    "RepositoryIdentity",
+    "RepositoryTarget",
+    "RepositoryTargetRef",
+    "ReviewAuthority"
+  ],
+  "sharedValueObjectTests": [
+    "RepositoryTargetTest.java"
+  ],
+  "errors": [
+    "AttachmentEvidenceMismatch",
+    "DomainViolation",
+    "DuplicatePackagePath",
+    "FinalizationIncomplete",
+    "IntegrationEvidenceMismatch",
+    "InvalidApplicationTransition",
+    "InvalidInteractionTransition",
+    "InvalidPackageOperation",
+    "IssueCommentEvidenceMismatch",
+    "PublicationEvidenceMismatch",
+    "ReviewArtifactMismatch",
+    "SendEvidenceMismatch",
+    "SnapshotCaptureMismatch",
+    "SnapshotNotPublishable",
+    "UnsupportedSnapshotEntry",
+    "WorkBranchMismatch"
+  ],
+  "testCount": 48
+}
