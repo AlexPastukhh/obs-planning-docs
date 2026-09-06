@@ -13,7 +13,9 @@ call javac --release 21 -cp build\classes -d build\classes ^
   src\main\java\obs\rpkg\work\domain\RepositoryTarget.java ^
   src\main\java\obs\rpkg\work\domain\GitWorkspace.java ^
   src\main\java\obs\rpkg\work\application\port\GitWorkspaceRepository.java ^
+  src\main\java\obs\rpkg\work\application\port\WorkOperationLock.java ^
   src\main\java\obs\rpkg\work\infrastructure\FileGitWorkspaceRepository.java ^
+  src\main\java\obs\rpkg\work\infrastructure\FileWorkOperationLock.java ^
   src\main\java\obs\rpkg\WorkPackageRuntime.java ^
   src\main\java\obs\rpkg\work\application\StartWorkWorkspace.java ^
   src\main\java\obs\rpkg\features\apply\domain\OperationFailureDisposition.java ^
@@ -50,6 +52,8 @@ call javac --release 21 -cp build\classes -d build\classes ^
 call javac --release 21 -cp build\classes -d build\test-classes ^
   src\test\java\obs\rpkg\work\domain\WorkAggregateTests.java ^
   src\test\java\obs\rpkg\ApplyFeatureTestSupport.java ^
+  src\test\java\obs\rpkg\PackageProtocolTests.java ^
+  src\test\java\obs\rpkg\features\apply\PackageApplicabilityTests.java ^
   src\test\java\obs\rpkg\features\apply\ApplyReplacementPackageFeatureIntegrationTests.java ^
   src\test\java\obs\rpkg\ApplyReceiptTests.java ^
   src\test\java\obs\rpkg\WindowsLauncherInstallerTests.java || exit /b 1

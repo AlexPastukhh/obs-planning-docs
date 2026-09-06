@@ -30,16 +30,21 @@ public final class ApplyReplacementPackageFeatureIntegrationTests {
 
     public static void main(String[] args) {
         run("Start Workspace persists GitWorkspace without Core.ChangeSet", ApplyReplacementPackageFeatureIntegrationTests::workspaceNoChangeSet);
+        run("Start Workspace pins fresh authoritative origin target tip", ApplyReplacementPackageFeatureIntegrationTests::workspacePinsFreshOriginTip);
         run("Apply uses one immutable captured archive snapshot", ApplyReplacementPackageFeatureIntegrationTests::immutableArchiveSnapshot);
         run("Apply recovery uses durable package journal after state-save failure", ApplyReplacementPackageFeatureIntegrationTests::applyRecoveryAfterStateFailure);
+        run("Apply recovery rejects package journal bytes not bound to captured archive", ApplyReplacementPackageFeatureIntegrationTests::applyRecoveryRejectsCorruptJournalPayload);
         run("Commit is separate and recovers exact commit after state-save failure", ApplyReplacementPackageFeatureIntegrationTests::commitRecoveryAfterStateFailure);
         run("Publish confirms exact remote tip without ChangeSet authority", ApplyReplacementPackageFeatureIntegrationTests::publishConfirmed);
         run("Publish guard blocks push when NotConfirmed cannot persist", ApplyReplacementPackageFeatureIntegrationTests::publishGuardBlocksPush);
         run("failed final publication persistence leaves durable NotConfirmed", ApplyReplacementPackageFeatureIntegrationTests::publishFinalPersistenceFailure);
         run("uncertain Publish retry confirms before another push", ApplyReplacementPackageFeatureIntegrationTests::retryConfirmsBeforePush);
         run("unexpected remote tip is rejected before push", ApplyReplacementPackageFeatureIntegrationTests::unexpectedRemoteTipBlocksPush);
+        run("foreign origin pushurl is rejected before push", ApplyReplacementPackageFeatureIntegrationTests::foreignPushUrlBlocksPush);
+        run("persisted safe observation is refreshed before a later push", ApplyReplacementPackageFeatureIntegrationTests::freshObservationBeforeLaterPush);
         run("sequential packages derive previous tip from package journal", ApplyReplacementPackageFeatureIntegrationTests::sequentialPackages);
         run("workspace journal recovers after GitWorkspace persistence failure", ApplyReplacementPackageFeatureIntegrationTests::workspaceRecoveryAfterPersistenceFailure);
+        run("persisted GitWorkspace rejects conflicting leftover workspace journal", ApplyReplacementPackageFeatureIntegrationTests::persistedWorkspaceRejectsConflictingJournal);
         run("automatic OBS action composes Start Apply Commit Publish without ChangeSet", ApplyReplacementPackageFeatureIntegrationTests::automaticComposition);
         run("automatic OBS action is idempotent on same exact package", ApplyReplacementPackageFeatureIntegrationTests::automaticIdempotence);
         System.out.println("RESULT passed=" + passed + " failed=" + failed);
@@ -54,6 +59,17 @@ public final class ApplyReplacementPackageFeatureIntegrationTests {
             ok(w.core().getChangeSet(id)==null,"Start Work Workspace created legacy Core.ChangeSet");
             eq(w.workspaces().find(new WorkId(id)).orElseThrow(),ws,"GitWorkspace did not persist");
             eq(ws.workBranch(),"changeset/"+id,"derived branch");
+        } finally { ApplyFeatureTestSupport.deleteTree(w.root()); }
+    }
+
+    private static void workspacePinsFreshOriginTip() throws Exception {
+        var w=ApplyFeatureTestSupport.workspace("workspace-origin-source",false);
+        try {
+            String localBefore=ApplyFeatureTestSupport.git(w.repository(),"rev-parse","refs/heads/main");
+            String remoteTip=ApplyFeatureTestSupport.advanceRemoteMainKeepingLocalStale(w);
+            eq(ApplyFeatureTestSupport.git(w.repository(),"rev-parse","refs/heads/main"),localBefore,"fixture local main was not stale");
+            GitWorkspace ws=start(w,UUID.randomUUID().toString());
+            eq(ws.baseCommit(),remoteTip,"Start Workspace pinned stale local target branch instead of authoritative origin tip");
         } finally { ApplyFeatureTestSupport.deleteTree(w.root()); }
     }
 
@@ -76,13 +92,28 @@ public final class ApplyReplacementPackageFeatureIntegrationTests {
             String id=UUID.randomUUID().toString();GitWorkspace ws=start(w,id);
             var pkg=ApplyFeatureTestSupport.packageFor(w,id,"apply recovery",List.of(ApplyFeatureTestSupport.replace("seed.txt","seed","applied")));
             FailingSaveRepository failing=new FailingSaveRepository(w.states(),state -> !state.isCommitted());
-            ApplyReplacementPackage first=new ApplyReplacementPackage(w.core(),w.workspaces(),failing,w.mechanics());
+            ApplyReplacementPackage first=new ApplyReplacementPackage(w.core(),w.workspaces(),failing,w.workLocks(),w.mechanics());
             ApplyFailure failure=applyFailure(first.execute(new ApplyReplacementPackage.Request(pkg.path(),id)));
             eq(failure.code(),ApplyFailureCode.STATE_PERSISTENCE_FAILED,"apply persistence failure code");
             eq(ApplyFeatureTestSupport.read(ws.worktree().resolve("seed.txt")),"applied","file side effect did not occur before simulated state failure");
             ok(w.states().find(new WorkId(id),pkg.packageId()).isEmpty(),"failed Apply state unexpectedly persisted");
             ReplacementPackageState recovered=success(w.apply().execute(new ApplyReplacementPackage.Request(pkg.path(),id)));
             eq(recovered.packageIdentity().packageId(),pkg.packageId(),"Apply recovery did not persist exact package state");
+        } finally { ApplyFeatureTestSupport.deleteTree(w.root()); }
+    }
+
+    private static void applyRecoveryRejectsCorruptJournalPayload() throws Exception {
+        var w=ApplyFeatureTestSupport.workspace("apply-journal-integrity",false);
+        try {
+            String id=UUID.randomUUID().toString();GitWorkspace ws=start(w,id);
+            var pkg=ApplyFeatureTestSupport.packageFor(w,id,"journal integrity",List.of(ApplyFeatureTestSupport.replace("seed.txt","seed","intended")));
+            FailingSaveRepository failing=new FailingSaveRepository(w.states(),state -> !state.isCommitted());
+            ApplyReplacementPackage first=new ApplyReplacementPackage(w.core(),w.workspaces(),failing,w.workLocks(),w.mechanics());
+            ApplyFailure firstFailure=applyFailure(first.execute(new ApplyReplacementPackage.Request(pkg.path(),id)));
+            eq(firstFailure.code(),ApplyFailureCode.STATE_PERSISTENCE_FAILED,"fixture Apply persistence failure");
+            ApplyFeatureTestSupport.corruptJournalIntendedBytesAndWorktree(w,id,pkg.packageId(),ws.worktree(),"corrupt");
+            ApplyFailure retry=applyFailure(w.apply().execute(new ApplyReplacementPackage.Request(pkg.path(),id)));
+            eq(retry.code(),ApplyFailureCode.STATE_DIVERGED,"corrupt journal payload was accepted as exact archive recovery");
         } finally { ApplyFeatureTestSupport.deleteTree(w.root()); }
     }
 
@@ -93,7 +124,7 @@ public final class ApplyReplacementPackageFeatureIntegrationTests {
             var pkg=ApplyFeatureTestSupport.packageFor(w,id,"commit recovery",List.of(ApplyFeatureTestSupport.replace("seed.txt","seed","committed")));
             success(w.apply().execute(new ApplyReplacementPackage.Request(pkg.path(),id)));
             FailingSaveRepository failing=new FailingSaveRepository(w.states(),ReplacementPackageState::isCommitted);
-            CommitAppliedPackage first=new CommitAppliedPackage(w.workspaces(),failing,w.mechanics());
+            CommitAppliedPackage first=new CommitAppliedPackage(w.workspaces(),failing,w.workLocks(),w.mechanics());
             CommitAppliedFailure failure=commitFailure(first.execute(id,pkg.packageId()));
             eq(failure.code(),CommitAppliedFailureCode.STATE_PERSISTENCE_FAILED,"commit persistence failure code");
             String created=ApplyFeatureTestSupport.git(ws.worktree(),"rev-parse","HEAD");
@@ -125,7 +156,7 @@ public final class ApplyReplacementPackageFeatureIntegrationTests {
             success(w.apply().execute(new ApplyReplacementPackage.Request(pkg.path(),id)));commitSuccess(w.commit().execute(id,pkg.packageId()));
             FailingSaveRepository failing=new FailingSaveRepository(w.states(),state -> state.publication() instanceof PublicationObservation.NotConfirmed);
             AtomicInteger pushes=new AtomicInteger();w.mechanics().setAfterPushAttemptHookForTests(pushes::incrementAndGet);
-            PublishAppliedCommit publish=new PublishAppliedCommit(w.workspaces(),failing,new obs.rpkg.features.apply.infrastructure.GitPublicationObserver(),w.mechanics());
+            PublishAppliedCommit publish=new PublishAppliedCommit(w.workspaces(),failing,w.workLocks(),new obs.rpkg.features.apply.infrastructure.GitPublicationObserver(),w.mechanics());
             PublishFailure failure=publishFailure(publish.execute(id,pkg.packageId()));
             eq(failure.code(),PublishFailureCode.STATE_PERSISTENCE_FAILED,"guard failure code");
             eq(pushes.get(),0,"push occurred without durable NotConfirmed guard");
@@ -141,7 +172,7 @@ public final class ApplyReplacementPackageFeatureIntegrationTests {
             success(w.apply().execute(new ApplyReplacementPackage.Request(pkg.path(),id)));
             ReplacementPackageState committed=commitSuccess(w.commit().execute(id,pkg.packageId()));
             FailingSaveRepository failing=new FailingSaveRepository(w.states(),state -> state.publication() instanceof PublicationObservation.ConfirmedTip);
-            PublishAppliedCommit publish=new PublishAppliedCommit(w.workspaces(),failing,new obs.rpkg.features.apply.infrastructure.GitPublicationObserver(),w.mechanics());
+            PublishAppliedCommit publish=new PublishAppliedCommit(w.workspaces(),failing,w.workLocks(),new obs.rpkg.features.apply.infrastructure.GitPublicationObserver(),w.mechanics());
             PublishFailure failure=publishFailure(publish.execute(id,pkg.packageId()));
             eq(failure.code(),PublishFailureCode.STATE_PERSISTENCE_FAILED,"final persistence failure code");
             eq(ApplyFeatureTestSupport.remoteTip(w,ws.workBranch()),committed.commitSha(),"push did not reach remote");
@@ -186,6 +217,37 @@ public final class ApplyReplacementPackageFeatureIntegrationTests {
         } finally { ApplyFeatureTestSupport.clearPushHook(w);ApplyFeatureTestSupport.deleteTree(w.root()); }
     }
 
+    private static void foreignPushUrlBlocksPush() throws Exception {
+        var w=ApplyFeatureTestSupport.workspace("foreign-pushurl",true);
+        try {
+            String id=UUID.randomUUID().toString();GitWorkspace ws=start(w,id);
+            var pkg=ApplyFeatureTestSupport.packageFor(w,id,"foreign push",List.of(ApplyFeatureTestSupport.replace("seed.txt","seed","ours")));
+            success(w.apply().execute(new ApplyReplacementPackage.Request(pkg.path(),id)));commitSuccess(w.commit().execute(id,pkg.packageId()));
+            ApplyFeatureTestSupport.setForeignPushUrl(w);
+            ApplyFeatureTestSupport.failIfAnotherPushIsAttempted(w);
+            PublishFailure failure=publishFailure(w.publish().execute(id,pkg.packageId()));
+            eq(failure.code(),PublishFailureCode.STATE_DIVERGED,"foreign pushurl was not fenced as repository divergence");
+            eq(ApplyFeatureTestSupport.remoteTip(w,ws.workBranch()),null,"foreign pushurl case changed intended remote");
+        } finally { ApplyFeatureTestSupport.clearPushHook(w);ApplyFeatureTestSupport.deleteTree(w.root()); }
+    }
+
+    private static void freshObservationBeforeLaterPush() throws Exception {
+        var w=ApplyFeatureTestSupport.workspace("fresh-observation",true);
+        try {
+            String id=UUID.randomUUID().toString();GitWorkspace ws=start(w,id);
+            var pkg=ApplyFeatureTestSupport.packageFor(w,id,"fresh observation",List.of(ApplyFeatureTestSupport.replace("seed.txt","seed","ours")));
+            success(w.apply().execute(new ApplyReplacementPackage.Request(pkg.path(),id)));
+            ReplacementPackageState committed=commitSuccess(w.commit().execute(id,pkg.packageId()));
+            ReplacementPackageState staleSafe=committed.withPublication(new PublicationObservation.ConfirmedAbsent());
+            ok(w.states().save(staleSafe).isSuccess(),"fixture ConfirmedAbsent state save failed");
+            String unexpected=ApplyFeatureTestSupport.createUnexpectedRemoteTip(w,ws.workBranch());
+            ApplyFeatureTestSupport.failIfAnotherPushIsAttempted(w);
+            PublishFailure failure=publishFailure(w.publish().execute(id,pkg.packageId()));
+            eq(failure.code(),PublishFailureCode.REMOTE_BRANCH_DIVERGED,"Publish reused stale ConfirmedAbsent authorization");
+            eq(ApplyFeatureTestSupport.remoteTip(w,ws.workBranch()),unexpected,"fresh-observation case overwrote remote tip");
+        } finally { ApplyFeatureTestSupport.clearPushHook(w);ApplyFeatureTestSupport.deleteTree(w.root()); }
+    }
+
     private static void sequentialPackages() throws Exception {
         var w=ApplyFeatureTestSupport.workspace("sequential",true);
         try {
@@ -204,12 +266,23 @@ public final class ApplyReplacementPackageFeatureIntegrationTests {
         try {
             String id=UUID.randomUUID().toString();WorkId work=new WorkId(id);
             FailingWorkspaceRepository failing=new FailingWorkspaceRepository(w.workspaces());
-            StartWorkWorkspace first=new StartWorkWorkspace(w.mechanics(),failing,w.states());
+            StartWorkWorkspace first=new StartWorkWorkspace(w.mechanics(),failing,w.workLocks());
             var failure=first.execute(w.target(),work,"main");ok(failure.isFailure(),"fixture workspace persistence failure did not fail operation");
             ok(w.workspaces().find(work).isEmpty(),"GitWorkspace unexpectedly persisted");
             var recovered=w.start().execute(w.target(),work,"main");ok(recovered.isSuccess(),"workspace journal did not recover");
             ok(recovered.success().orElseThrow().workspace().worktree().toFile().isDirectory(),"recovered worktree missing");
             ok(w.core().getChangeSet(id)==null,"workspace recovery created Core.ChangeSet");
+        } finally { ApplyFeatureTestSupport.deleteTree(w.root()); }
+    }
+
+    private static void persistedWorkspaceRejectsConflictingJournal() throws Exception {
+        var w=ApplyFeatureTestSupport.workspace("workspace-journal-conflict",false);
+        try {
+            String id=UUID.randomUUID().toString();GitWorkspace ws=start(w,id);
+            java.nio.file.Path journal=w.stateRoot().resolve("work-state-v2").resolve("workspace-journals").resolve("w-"+id+".properties");
+            java.util.Properties p=new java.util.Properties();p.setProperty("schemaVersion","1");p.setProperty("workId",id);p.setProperty("repositoryIdentity",ws.repositoryTarget().repositoryIdentity());p.setProperty("repositoryPath",ws.repositoryTarget().registeredPath().toString());p.setProperty("targetBranch",ws.targetBranch());p.setProperty("worktree",ws.worktree().toString());p.setProperty("baseCommit","0000000000000000000000000000000000000000");
+            java.nio.file.Files.createDirectories(journal.getParent());try(var out=java.nio.file.Files.newOutputStream(journal)){p.store(out,"conflict");}
+            var repeated=w.start().execute(w.target(),new WorkId(id),"main");ok(repeated.isFailure(),"conflicting leftover workspace journal was silently deleted");ok(java.nio.file.Files.exists(journal),"conflicting journal was deleted instead of failing closed");
         } finally { ApplyFeatureTestSupport.deleteTree(w.root()); }
     }
 
@@ -250,7 +323,6 @@ public final class ApplyReplacementPackageFeatureIntegrationTests {
         FailingSaveRepository(ReplacementPackageStateRepository delegate,Predicate<ReplacementPackageState> fail){this.delegate=delegate;this.fail=fail;}
         @Override public java.util.Optional<ReplacementPackageState> find(WorkId w,String p){return delegate.find(w,p);}
         @Override public java.util.Optional<ReplacementPackageState> findUnfinished(WorkId w){return delegate.findUnfinished(w);}
-        @Override public WorkLock lock(WorkId w){return delegate.lock(w);}
         @Override public OperationResult<Failure> save(ReplacementPackageState state){if(!failed&&fail.test(state)){failed=true;return OperationResult.failure(new Failure("simulated state persistence failure",null));}return delegate.save(state);}
     }
     private static final class FailingWorkspaceRepository implements GitWorkspaceRepository {

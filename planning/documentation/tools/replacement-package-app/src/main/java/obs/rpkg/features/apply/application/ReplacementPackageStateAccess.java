@@ -11,15 +11,6 @@ import obs.rpkg.work.domain.WorkId;
 final class ReplacementPackageStateAccess {
     private ReplacementPackageStateAccess() {}
 
-    static ReplacementPackageStateRepository.WorkLock lockOrThrow(
-            ReplacementPackageStateRepository repository,
-            WorkId workId) {
-        try {
-            return repository.lock(workId);
-        } catch (RuntimeException e) {
-            throw new StatePersistenceException("Cannot acquire Work state lock", e);
-        }
-    }
 
     static Optional<ReplacementPackageState> findOrThrow(
             ReplacementPackageStateRepository repository,

@@ -14,6 +14,7 @@ import obs.rpkg.features.apply.infrastructure.PublicationObserver;
 import obs.rpkg.features.apply.infrastructure.ReplacementPackageStateRepository;
 import obs.rpkg.foundation.result.Result;
 import obs.rpkg.work.application.port.GitWorkspaceRepository;
+import obs.rpkg.work.application.port.WorkOperationLock;
 import obs.rpkg.work.domain.GitWorkspace;
 import obs.rpkg.work.domain.WorkId;
 
@@ -21,23 +22,26 @@ import obs.rpkg.work.domain.WorkId;
 public final class PublishAppliedCommit {
     private final GitWorkspaceRepository workspaces;
     private final ReplacementPackageStateRepository states;
+    private final WorkOperationLock workLocks;
     private final PublicationObserver observer;
     private final WorkPackageRuntime mechanics;
 
     public PublishAppliedCommit(
             GitWorkspaceRepository workspaces,
             ReplacementPackageStateRepository states,
+            WorkOperationLock workLocks,
             PublicationObserver observer,
             WorkPackageRuntime mechanics) {
         this.workspaces = Objects.requireNonNull(workspaces, "workspaces");
         this.states = Objects.requireNonNull(states, "states");
+        this.workLocks = Objects.requireNonNull(workLocks, "workLocks");
         this.observer = Objects.requireNonNull(observer, "observer");
         this.mechanics = Objects.requireNonNull(mechanics, "mechanics");
     }
 
     public Result<ReplacementPackageState, PublishFailure> execute(String changeSetId, String packageId) {
         WorkId workId = new WorkId(changeSetId);
-        try (ReplacementPackageStateRepository.WorkLock ignored = states.lock(workId)) {
+        try (WorkOperationLock.Lock ignored = workLocks.lock(workId)) {
             Optional<GitWorkspace> workspace = workspaces.find(workId);
             if (workspace.isEmpty()) return failure(PublishFailureCode.STATE_DIVERGED,
                     OperationFailureDisposition.ACTION_REQUIRED, "GitWorkspace is missing for this Work.", null);
@@ -65,20 +69,19 @@ public final class PublishAppliedCommit {
         try {
             previousTip = mechanics.previousTip(workspace, current.packageIdentity());
             mechanics.verifyWorkspace(workspace);
+            mechanics.verifyPublishDestination(workspace);
         } catch (Core.ObsException e) {
             return failure(mapMechanicsCode(e), OperationFailureDisposition.ACTION_REQUIRED, e.getMessage(), current);
         }
 
-        // Every possible push is preceded by a reliable remote observation.
-        if (current.publication() instanceof PublicationObservation.NotRequested
-                || current.publication() instanceof PublicationObservation.NotConfirmed) {
-            Result<PublicationObservation, PublicationObserver.Failure> observed = observe(workspace);
-            if (observed.isFailure()) return failure(PublishFailureCode.PUBLICATION_CONFIRMATION_FAILED,
-                    OperationFailureDisposition.UNCERTAIN, observed.failure().orElseThrow().message(), current);
-            Result<ReplacementPackageState, PublishFailure> persisted = persistObservation(current, observed.success().orElseThrow());
-            if (persisted.isFailure()) return persisted;
-            current = persisted.success().orElseThrow();
-        }
+        // Every invocation that is not already published refreshes remote evidence before any possible push.
+        Result<PublicationObservation, PublicationObserver.Failure> observed = observe(workspace);
+        if (observed.isFailure()) return failure(PublishFailureCode.PUBLICATION_CONFIRMATION_FAILED,
+                OperationFailureDisposition.UNCERTAIN, observed.failure().orElseThrow().message(), current);
+        Result<ReplacementPackageState, PublishFailure> persisted =
+                persistObservation(current, observed.success().orElseThrow());
+        if (persisted.isFailure()) return persisted;
+        current = persisted.success().orElseThrow();
 
         if (current.isPublished()) return Result.success(current);
 

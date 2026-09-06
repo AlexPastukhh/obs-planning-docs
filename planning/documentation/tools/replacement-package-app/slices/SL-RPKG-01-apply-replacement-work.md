@@ -21,16 +21,16 @@ The operations share durable `ReplacementPackageState`, `GitWorkspace`, package 
 The invocation validates/hashes the ZIP once and mutation consumes those captured bytes. A mutable archive path is never reread as later mutation authority.
 
 ### SI-RPKG-APPLY-JOURNAL-BEFORE-MUTATION
-Persist exact package/workspace/base plus prior/intended bytes before first package-file mutation. Journal identity includes archive SHA.
+Persist exact package/workspace/base plus prior/intended bytes before first package-file mutation. Journal identity includes archive SHA, and recovery verifies intended bytes still equal the captured exact package payload.
 
 ### SI-RPKG-PACKAGE-STATE-DURABLE
 Package state identity is fenced to exact WorkId/packageId. Corrupt/unreadable state fails closed.
 
 ### SI-RPKG-WORK-OPERATION-LOCK
-Start workspace / Apply / Commit / Publish for one Work serialize against competing new-runtime package mutations.
+Start workspace / Apply / Commit / Publish for one Work serialize through a dedicated `WorkOperationLock` application port; package-state persistence is not the semantic lock owner.
 
 ### SI-RPKG-PUBLISH-CONFIRM-BEFORE-SIDE-EFFECT
-Every possible Publish push follows exact remote observation; unexpected tip fails before push. Durable `NotConfirmed` guards the possible-push boundary.
+Every not-yet-published Publish invocation refreshes exact remote observation before a possible push; unexpected tip or foreign effective push destination fails before push. Durable `NotConfirmed` guards the possible-push boundary.
 
 ### SI-RPKG-NO-LEGACY-RUNTIME-AUTHORITY
 Target package realization does not read/write `Core.ChangeSet.executionState`, `lastPackageId`, `commitSha` or `publishedTip`. Old persisted works are not imported.

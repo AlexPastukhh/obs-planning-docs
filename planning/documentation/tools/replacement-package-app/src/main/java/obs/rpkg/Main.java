@@ -12,6 +12,7 @@ import obs.rpkg.features.apply.infrastructure.FileReplacementPackageStateReposit
 import obs.rpkg.features.apply.infrastructure.GitPublicationObserver;
 import obs.rpkg.work.application.StartWorkWorkspace;
 import obs.rpkg.work.infrastructure.FileGitWorkspaceRepository;
+import obs.rpkg.work.infrastructure.FileWorkOperationLock;
 import obs.rpkg.work.domain.WorkId;
 
 public final class Main {
@@ -91,13 +92,14 @@ public final class Main {
 
     private static Runtime runtime(Core core) {
         Path root=FileReplacementPackageStateRepository.defaultAppStateRoot();
-        var states=new FileReplacementPackageStateRepository(root);
+        var workLocks=new FileWorkOperationLock(root);
+        var states=new FileReplacementPackageStateRepository(root,workLocks);
         var workspaces=new FileGitWorkspaceRepository(root);
         var mechanics=new WorkPackageRuntime(root);
-        var start=new StartWorkWorkspace(mechanics,workspaces,states);
-        var apply=new ApplyReplacementPackage(core,workspaces,states,mechanics);
-        var commit=new CommitAppliedPackage(workspaces,states,mechanics);
-        var publish=new PublishAppliedCommit(workspaces,states,new GitPublicationObserver(),mechanics);
+        var start=new StartWorkWorkspace(mechanics,workspaces,workLocks);
+        var apply=new ApplyReplacementPackage(core,workspaces,states,workLocks,mechanics);
+        var commit=new CommitAppliedPackage(workspaces,states,workLocks,mechanics);
+        var publish=new PublishAppliedCommit(workspaces,states,workLocks,new GitPublicationObserver(),mechanics);
         var automatic=new AutomaticPackageRealization(core,start,apply,commit,publish);
         return new Runtime(start,apply,commit,publish,automatic);
     }

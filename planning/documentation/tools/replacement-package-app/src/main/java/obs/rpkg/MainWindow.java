@@ -22,11 +22,13 @@ import obs.rpkg.work.application.StartWorkWorkspace;
 import obs.rpkg.work.application.port.GitWorkspaceRepository;
 import obs.rpkg.work.domain.WorkId;
 import obs.rpkg.work.infrastructure.FileGitWorkspaceRepository;
+import obs.rpkg.work.infrastructure.FileWorkOperationLock;
 
 /** Target-only Work-centered UI. Legacy ChangeSet review/finalize surfaces are intentionally retired. */
 final class MainWindow extends JFrame {
     private final Core core;
     private final ReplacementPackageStateRepository states;
+    private final obs.rpkg.work.application.port.WorkOperationLock workLocks;
     private final GitWorkspaceRepository workspaces;
     private final WorkPackageRuntime mechanics;
     private final StartWorkWorkspace startWorkspace;
@@ -50,13 +52,14 @@ final class MainWindow extends JFrame {
         super("OBS Replacement Package App — Work runtime");
         this.core = Objects.requireNonNull(core, "core");
         Path stateRoot = FileReplacementPackageStateRepository.defaultAppStateRoot();
-        this.states = new FileReplacementPackageStateRepository(stateRoot);
+        this.workLocks = new FileWorkOperationLock(stateRoot);
+        this.states = new FileReplacementPackageStateRepository(stateRoot, workLocks);
         this.workspaces = new FileGitWorkspaceRepository(stateRoot);
         this.mechanics = new WorkPackageRuntime(stateRoot);
-        this.startWorkspace = new StartWorkWorkspace(mechanics, workspaces, states);
-        this.apply = new ApplyReplacementPackage(core, workspaces, states, mechanics);
-        this.commit = new CommitAppliedPackage(workspaces, states, mechanics);
-        this.publish = new PublishAppliedCommit(workspaces, states, new GitPublicationObserver(), mechanics);
+        this.startWorkspace = new StartWorkWorkspace(mechanics, workspaces, workLocks);
+        this.apply = new ApplyReplacementPackage(core, workspaces, states, workLocks, mechanics);
+        this.commit = new CommitAppliedPackage(workspaces, states, workLocks, mechanics);
+        this.publish = new PublishAppliedCommit(workspaces, states, workLocks, new GitPublicationObserver(), mechanics);
         this.automatic = new AutomaticPackageRealization(core, startWorkspace, apply, commit, publish);
 
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);

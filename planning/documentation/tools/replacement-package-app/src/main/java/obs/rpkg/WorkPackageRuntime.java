@@ -4,6 +4,7 @@ import java.io.*;
 import java.nio.ByteBuffer;
 import java.nio.charset.*;
 import java.nio.file.*;
+import java.security.*;
 import java.util.*;
 import java.util.regex.*;
 
@@ -50,7 +51,7 @@ public final class WorkPackageRuntime {
             journal = WorkspaceJournal.read(journalPath);
             assertWorkspaceJournalRequest(journal, target, workId, targetBranch);
         } else {
-            String base = resolveLocalBranchTip(repository, targetBranch);
+            String base = resolveAuthoritativeTargetTip(repository, targetBranch, identity);
             Path worktree = worktreePath(workId);
             String branch = workBranch(workId);
             if (gitRefExists(repository, "refs/heads/" + branch) || Files.exists(worktree, LinkOption.NOFOLLOW_LINKS)) {
@@ -72,13 +73,34 @@ public final class WorkPackageRuntime {
         return new WorkspaceStart(workspace, recovered);
     }
 
-    public void completeWorkspaceStart(WorkId workId) {
-        try { Files.deleteIfExists(workspaceJournalPath(workId)); }
+    public void completeWorkspaceStart(GitWorkspace workspace) {
+        Objects.requireNonNull(workspace, "workspace");
+        Path journalPath = workspaceJournalPath(workspace.workId());
+        if (Files.exists(journalPath)) {
+            WorkspaceJournal journal = WorkspaceJournal.read(journalPath);
+            if (!journal.workId().equals(workspace.workId().value())
+                    || !same(journal.repositoryIdentity(), workspace.repositoryTarget().repositoryIdentity())
+                    || !samePath(Path.of(journal.repositoryPath()), workspace.repositoryTarget().registeredPath())
+                    || !journal.targetBranch().equals(workspace.targetBranch())
+                    || !samePath(Path.of(journal.worktree()), workspace.worktree())
+                    || !journal.baseCommit().equals(workspace.baseCommit())) {
+                throw new Core.ObsException(Core.STATE_DIVERGED,
+                        "Leftover Work workspace journal disagrees with persisted GitWorkspace.");
+            }
+        }
+        try { Files.deleteIfExists(journalPath); }
         catch (IOException e) { throw new Core.ObsException(Core.STATE_DIVERGED, "Cannot clear durable Work workspace journal.", e); }
     }
 
     public void verifyWorkspace(GitWorkspace workspace) {
         verifyWorkspaceIdentity(workspace);
+    }
+
+    public void verifyPublishDestination(GitWorkspace workspace) {
+        Objects.requireNonNull(workspace, "workspace");
+        verifyWorkspaceIdentity(workspace);
+        requireOriginIdentity(workspace.repositoryTarget().registeredPath(),
+                workspace.repositoryTarget().repositoryIdentity(), true);
     }
 
     public void apply(Core.PackageData pkg, GitWorkspace workspace) {
@@ -174,6 +196,7 @@ public final class WorkPackageRuntime {
         }
         verifyExactPackageCommit(workspace, journal, commitSha);
         Path repository = workspace.repositoryTarget().registeredPath();
+        requireOriginIdentity(repository, workspace.repositoryTarget().repositoryIdentity(), true);
         String remoteRef = "refs/heads/" + workspace.workBranch();
         String lease = "--force-with-lease=" + remoteRef + ":" + (expectedRemoteTip == null ? "" : expectedRemoteTip);
         GitClient.Result push = git.run(repository, Core.PUBLISH_FAILED, true, Map.of("GIT_TERMINAL_PROMPT", "0"),
@@ -208,6 +231,13 @@ public final class WorkPackageRuntime {
                 Core.Operation op = pkg.manifest().operations().get(i);
                 if (!Objects.equals(e.path(), op.path()) || !Objects.equals(e.action(), op.action())) {
                     throw new Core.ObsException(Core.STATE_DIVERGED, "Durable package Apply journal operation differs from package at index " + i + ".");
+                }
+                boolean intendedExists = !"delete".equals(op.action());
+                byte[] intended = intendedExists ? pkg.replacement().get(op.path()) : null;
+                if (e.intendedExists() != intendedExists
+                        || !Arrays.equals(e.intendedBytes(), intended)) {
+                    throw new Core.ObsException(Core.STATE_DIVERGED,
+                            "Durable package Apply journal intended bytes are not bound to the captured package at index " + i + ".");
                 }
             }
         }
@@ -469,7 +499,41 @@ public final class WorkPackageRuntime {
         return Path.of(r.first()).toAbsolutePath().normalize();
     }
     private void requireRepositoryReady(Path repo) { GitClient.Result r = git.allow(repo, Core.REPOSITORY_NOT_READY, "rev-parse", "--verify", "HEAD"); if (r.exitCode() != 0 || r.first().isBlank()) throw new Core.ObsException(Core.REPOSITORY_NOT_READY, "Repository has no commits."); }
-    private String resolveLocalBranchTip(Path repo, String branch) { GitClient.Result r = git.allow(repo, Core.REPOSITORY_NOT_READY, "rev-parse", "--verify", "refs/heads/" + branch + "^{commit}"); if (r.exitCode() != 0 || r.first().isBlank()) throw new Core.ObsException(Core.REPOSITORY_NOT_READY, "Target branch does not resolve to a local commit: " + branch); return r.first(); }
+    private String resolveAuthoritativeTargetTip(Path repo, String branch, String expectedRepositoryIdentity) {
+        requireOriginIdentity(repo, expectedRepositoryIdentity, false);
+        String remoteRef = "refs/remotes/origin/" + branch;
+        GitClient.Result fetch = git.run(repo, Core.REPOSITORY_NOT_READY, true, Map.of("GIT_TERMINAL_PROMPT", "0"),
+                "fetch", "--no-tags", "origin", "+refs/heads/" + branch + ":" + remoteRef);
+        if (fetch.exitCode() != 0) {
+            throw new Core.ObsException(Core.REPOSITORY_NOT_READY,
+                    "Cannot resolve authoritative origin/" + branch + ".\n--- git details ---\n" + fetch.failureDetails());
+        }
+        GitClient.Result resolved = git.allow(repo, Core.REPOSITORY_NOT_READY,
+                "rev-parse", "--verify", remoteRef + "^{commit}");
+        if (resolved.exitCode() != 0 || resolved.first().isBlank()) {
+            throw new Core.ObsException(Core.REPOSITORY_NOT_READY,
+                    "Authoritative target branch does not resolve after fetch: origin/" + branch);
+        }
+        return resolved.first();
+    }
+
+    private void requireOriginIdentity(Path repo, String expectedRepositoryIdentity, boolean push) {
+        GitClient.Result urls = push
+                ? git.allow(repo, Core.REPOSITORY_MISMATCH, "remote", "get-url", "--push", "--all", "origin")
+                : git.allow(repo, Core.REPOSITORY_MISMATCH, "remote", "get-url", "--all", "origin");
+        if (urls.exitCode() != 0 || urls.stdout().isEmpty()) {
+            throw new Core.ObsException(Core.REPOSITORY_MISMATCH,
+                    "origin has no " + (push ? "push" : "fetch") + " URL to verify.");
+        }
+        for (String url : urls.stdout()) {
+            String actual = repositoryIdentityFromUrl(url.trim());
+            if (!same(actual, expectedRepositoryIdentity)) {
+                throw new Core.ObsException(Core.REPOSITORY_MISMATCH,
+                        "origin " + (push ? "push" : "fetch") + " URL resolves to " + actual
+                                + "; expected " + expectedRepositoryIdentity + ".");
+            }
+        }
+    }
     private void validateBranchName(Path repo, String branch) { if (git.allow(repo, Core.STATE_DIVERGED, "check-ref-format", "--branch", branch).exitCode() != 0) throw new Core.ObsException(Core.STATE_DIVERGED, "Invalid target branch name: " + branch); }
     private boolean gitRefExists(Path repo, String ref) { return git.allow(repo, Core.STATE_DIVERGED, "show-ref", "--verify", "--quiet", ref).exitCode() == 0; }
     private String head(Path worktree) { return git.run(worktree, Core.STATE_DIVERGED, "rev-parse", "HEAD").first(); }
@@ -506,16 +570,104 @@ public final class WorkPackageRuntime {
 
     private record PackageJournal(String workId, String packageId, String archiveSha256, String repositoryIdentity, String branch, String worktree, String baseHead, List<JournalEntry> entries) {
         void write(Path path) {
-            Properties p = new Properties(); p.setProperty("schemaVersion","1"); p.setProperty("workId",workId); p.setProperty("packageId",packageId); p.setProperty("archiveSha256",archiveSha256); p.setProperty("repositoryIdentity",repositoryIdentity); p.setProperty("branch",branch); p.setProperty("worktree",worktree); p.setProperty("baseHead",baseHead); p.setProperty("entryCount",Integer.toString(entries.size()));
+            Properties p = new Properties();
+            p.setProperty("schemaVersion","2");
+            p.setProperty("workId",workId);
+            p.setProperty("packageId",packageId);
+            p.setProperty("archiveSha256",archiveSha256);
+            p.setProperty("repositoryIdentity",repositoryIdentity);
+            p.setProperty("branch",branch);
+            p.setProperty("worktree",worktree);
+            p.setProperty("baseHead",baseHead);
+            p.setProperty("entryCount",Integer.toString(entries.size()));
             Base64.Encoder enc = Base64.getEncoder();
-            for (int i=0;i<entries.size();i++) { JournalEntry e=entries.get(i); String x="entry."+i+"."; p.setProperty(x+"path",e.path()); p.setProperty(x+"action",e.action()); p.setProperty(x+"priorExists",Boolean.toString(e.priorExists())); if(e.priorExists())p.setProperty(x+"priorBase64",enc.encodeToString(e.priorBytes())); p.setProperty(x+"intendedExists",Boolean.toString(e.intendedExists())); if(e.intendedExists())p.setProperty(x+"intendedBase64",enc.encodeToString(e.intendedBytes())); }
-            writeProperties(path,p,"OBS Package Apply Journal v1");
+            for (int i=0;i<entries.size();i++) {
+                JournalEntry e=entries.get(i); String x="entry."+i+".";
+                p.setProperty(x+"path",e.path());
+                p.setProperty(x+"action",e.action());
+                p.setProperty(x+"priorExists",Boolean.toString(e.priorExists()));
+                if(e.priorExists()) p.setProperty(x+"priorBase64",enc.encodeToString(e.priorBytes()));
+                p.setProperty(x+"intendedExists",Boolean.toString(e.intendedExists()));
+                if(e.intendedExists()) p.setProperty(x+"intendedBase64",enc.encodeToString(e.intendedBytes()));
+            }
+            p.setProperty("journalSha256", journalSha256(this));
+            writeProperties(path,p,"OBS Package Apply Journal v2");
         }
+
         static PackageJournal read(Path path) {
-            Properties p=readProperties(path); if(!"1".equals(p.getProperty("schemaVersion")))throw new Core.ObsException(Core.STATE_DIVERGED,"Unsupported package Apply journal schema."); int n=Integer.parseInt(required(p,"entryCount")); List<JournalEntry> entries=new ArrayList<>(); Base64.Decoder dec=Base64.getDecoder();
-            for(int i=0;i<n;i++){String x="entry."+i+".";boolean pe=Boolean.parseBoolean(required(p,x+"priorExists")),ie=Boolean.parseBoolean(required(p,x+"intendedExists"));byte[] pb=pe?dec.decode(required(p,x+"priorBase64")):null,ib=ie?dec.decode(required(p,x+"intendedBase64")):null;entries.add(new JournalEntry(required(p,x+"path"),required(p,x+"action"),pe,pb,ie,ib));}
-            return new PackageJournal(required(p,"workId"),required(p,"packageId"),required(p,"archiveSha256"),required(p,"repositoryIdentity"),required(p,"branch"),required(p,"worktree"),required(p,"baseHead"),List.copyOf(entries));
+            Properties p=readProperties(path);
+            if(!"2".equals(p.getProperty("schemaVersion"))) {
+                throw new Core.ObsException(Core.STATE_DIVERGED,"Unsupported package Apply journal schema.");
+            }
+            int n;
+            try { n=Integer.parseInt(required(p,"entryCount")); }
+            catch (NumberFormatException e) { throw new Core.ObsException(Core.STATE_DIVERGED,"Invalid package Apply journal entryCount.",e); }
+            if (n < 0 || n > 100000) throw new Core.ObsException(Core.STATE_DIVERGED,"Invalid package Apply journal entryCount.");
+            List<JournalEntry> entries=new ArrayList<>();
+            Base64.Decoder dec=Base64.getDecoder();
+            try {
+                for(int i=0;i<n;i++){
+                    String x="entry."+i+".";
+                    boolean pe=Boolean.parseBoolean(required(p,x+"priorExists"));
+                    boolean ie=Boolean.parseBoolean(required(p,x+"intendedExists"));
+                    byte[] pb=pe?dec.decode(required(p,x+"priorBase64")):null;
+                    byte[] ib=ie?dec.decode(required(p,x+"intendedBase64")):null;
+                    entries.add(new JournalEntry(required(p,x+"path"),required(p,x+"action"),pe,pb,ie,ib));
+                }
+            } catch (IllegalArgumentException e) {
+                throw new Core.ObsException(Core.STATE_DIVERGED,"Package Apply journal payload encoding is invalid.",e);
+            }
+            PackageJournal journal = new PackageJournal(
+                    required(p,"workId"),required(p,"packageId"),required(p,"archiveSha256"),
+                    required(p,"repositoryIdentity"),required(p,"branch"),required(p,"worktree"),
+                    required(p,"baseHead"),List.copyOf(entries));
+            String persistedDigest = required(p,"journalSha256");
+            String actualDigest = journalSha256(journal);
+            if (!persistedDigest.equalsIgnoreCase(actualDigest)) {
+                throw new Core.ObsException(Core.STATE_DIVERGED,
+                        "Package Apply journal integrity digest does not match its durable contents.");
+            }
+            return journal;
         }
+    }
+
+    private static String journalSha256(PackageJournal journal) {
+        try {
+            MessageDigest md = MessageDigest.getInstance("SHA-256");
+            digestString(md, journal.workId());
+            digestString(md, journal.packageId());
+            digestString(md, journal.archiveSha256());
+            digestString(md, journal.repositoryIdentity());
+            digestString(md, journal.branch());
+            digestString(md, journal.worktree());
+            digestString(md, journal.baseHead());
+            digestInt(md, journal.entries().size());
+            for (JournalEntry e : journal.entries()) {
+                digestString(md, e.path());
+                digestString(md, e.action());
+                digestInt(md, e.priorExists() ? 1 : 0);
+                digestBytes(md, e.priorBytes());
+                digestInt(md, e.intendedExists() ? 1 : 0);
+                digestBytes(md, e.intendedBytes());
+            }
+            return HexFormat.of().formatHex(md.digest());
+        } catch (NoSuchAlgorithmException impossible) {
+            throw new AssertionError(impossible);
+        }
+    }
+
+    private static void digestString(MessageDigest md, String value) {
+        digestBytes(md, value == null ? null : value.getBytes(StandardCharsets.UTF_8));
+    }
+    private static void digestBytes(MessageDigest md, byte[] value) {
+        if (value == null) { digestInt(md, -1); return; }
+        digestInt(md, value.length);
+        md.update(value);
+    }
+    private static void digestInt(MessageDigest md, int value) {
+        md.update(new byte[] {
+                (byte)(value >>> 24), (byte)(value >>> 16), (byte)(value >>> 8), (byte)value
+        });
     }
 
     private static void writeProperties(Path target, Properties p, String comment) {

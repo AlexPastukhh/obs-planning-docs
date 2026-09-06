@@ -19,11 +19,11 @@ Own durable facts for one exact replacement package realized within one Work. It
 - one Work may have many completed package states but at most one unfinished package realization;
 - re-proving the same exact commit is idempotent and preserves publication evidence;
 - persisted storage identity is fenced to exact `(WorkId, packageId)`;
-- Work-mutating package operations execute under one durable per-Work serialization boundary.
+- Work-mutating package operations execute under one durable per-Work `WorkOperationLock` application boundary; this Aggregate/repository does not own overall Work execution serialization.
 
 ## Durable side-effect rules
 
-- Apply journals prior/intended file bytes before mutation and persists this Aggregate only after exact intended bytes are established;
+- Apply journals prior/intended file bytes before mutation under a self-validating integrity digest, rebinds recovery bytes to the captured exact archive payload, and persists this Aggregate only after exact intended bytes are established;
 - Commit may recover an exact journal-proven Git commit if commit creation succeeded before package-state persistence;
 - before a Publish push can occur, `NotConfirmed` must be durable; if that write fails no push begins;
 - after a possible push, failure to persist stronger observation leaves durable `NotConfirmed` as retry authority.

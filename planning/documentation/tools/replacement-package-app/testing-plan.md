@@ -13,23 +13,30 @@ Prove:
 - ReplacementPackageState publication semantics;
 - same-commit evidence preservation;
 - exact persisted-key fencing;
-- per-Work lock serialization across independent repository instances;
+- per-Work `WorkOperationLock` serialization across independent lock instances/processes;
 - one unfinished package under concurrency;
 - no legacy package-state import.
 
+### PackageProtocolTests
+Prove active schema-1 consumer rules without legacy ChangeSet behavior: valid add/replace/delete payload shape, traversal/absolute-path rejection, case collisions, undeclared payload rejection, action payload requirements, ZIP-entry collisions and Work Intent identity consistency.
+
+### PackageApplicabilityTests
+Prove file applicability at the target Apply boundary: exact add/replace/delete, Git-equivalent source acceptance, binary divergence fail-closed behavior and add-target absence.
+
 ### ApplyReplacementPackageFeatureIntegrationTests
 Prove end-to-end application-service boundaries with real Git where practical:
-- Start Workspace persists GitWorkspace and creates no Core.ChangeSet;
+- Start Workspace fetches/verifies the exact `origin/<targetBranch>` source, persists GitWorkspace and creates no Core.ChangeSet;
 - package ZIP is captured once; later path replacement cannot change applied bytes/identity;
-- Apply state-write recovery via durable package journal;
+- Apply state-write recovery via self-validating durable package journal, including integrity-digest corruption and intended bytes not bound to the captured archive;
 - Commit is separate and recovers exact existing commit after state-write failure;
 - Publish confirms exact remote tip without ChangeSet authority;
 - pre-push NotConfirmed persistence failure blocks push;
 - post-push final-state persistence failure leaves durable NotConfirmed;
 - uncertain Retry confirms before another push;
-- unexpected remote tip fails before push;
+- unexpected remote tip and foreign effective origin push URL fail before push;
+- every not-yet-published Publish invocation refreshes remote observation before any possible push;
 - sequential packages derive previous tip from package journal;
-- workspace creation recovers after state persistence failure;
+- workspace creation recovers after state persistence failure and conflicting leftover journals fail closed;
 - automatic OBS action composes Start → Apply → Commit → Publish and is idempotent.
 
 ### ApplyReceiptTests
@@ -40,7 +47,7 @@ Keep launcher packaging mechanics proof while the launcher remains part of distr
 
 ## Legacy tests
 
-`CoreTests`, `ChatBridgeTests` and DOM bridge regressions belong to the previous legacy executable/source behavior and are intentionally removed from the target build gate. Their failure is not target regression unless a current target owner explicitly re-adopts that capability.
+`CoreTests`, `ChatBridgeTests` and DOM bridge regressions belong to the previous legacy executable/source behavior and are intentionally removed from the target build gate. Target-critical package protocol/applicability cases formerly living in `CoreTests` are re-owned by `PackageProtocolTests` and `PackageApplicabilityTests`; legacy UI/chat cases are not.
 
 ## Practical acceptance
 

@@ -14,6 +14,7 @@ import obs.rpkg.features.apply.domain.PublicationObservation;
 import obs.rpkg.features.apply.domain.ReplacementPackageIdentity;
 import obs.rpkg.features.apply.domain.ReplacementPackageState;
 import obs.rpkg.features.apply.infrastructure.FileReplacementPackageStateRepository;
+import obs.rpkg.work.infrastructure.FileWorkOperationLock;
 
 public final class WorkAggregateTests {
     private static int passed;
@@ -153,8 +154,8 @@ public final class WorkAggregateTests {
     private static void perWorkLockSerializesRepositories() throws Exception {
         Path root = Files.createTempDirectory("rpkg-work-lock-");
         try {
-            FileReplacementPackageStateRepository first = new FileReplacementPackageStateRepository(root);
-            FileReplacementPackageStateRepository second = new FileReplacementPackageStateRepository(root);
+            FileWorkOperationLock first = new FileWorkOperationLock(root);
+            FileWorkOperationLock second = new FileWorkOperationLock(root);
             WorkId work = new WorkId("work-lock");
             CountDownLatch started = new CountDownLatch(1);
             AtomicBoolean acquired = new AtomicBoolean(false);

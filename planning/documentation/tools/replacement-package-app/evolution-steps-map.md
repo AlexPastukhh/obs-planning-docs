@@ -32,8 +32,10 @@ Result:
 - `PublicationObservation` is evidence, not operation result;
 - automatic `OBS-ACTION apply-package` composes Start → Apply → Commit → Publish without a generic Resume abstraction;
 - exact archive bytes are captured once for Apply;
-- package journals support Apply/Commit recovery;
-- Publish observes before every possible push and uses durable `NotConfirmed` as write-ahead uncertainty guard.
+- package journals support Apply/Commit recovery, self-validate durable contents with an integrity digest, and bind recovery intended bytes back to captured exact package payload;
+- Start workspace pins `baseCommit` from a fresh verified `origin/<targetBranch>` source rather than stale local branch state;
+- Publish refreshes observation before every possible push, fences effective push URL identity, and uses durable `NotConfirmed` as write-ahead uncertainty guard;
+- Work mutation serialization is owned by a dedicated `WorkOperationLock` application port.
 
 Proof gate:
 - Apply stops before Commit;
@@ -41,9 +43,10 @@ Proof gate:
 - exact same archive/package is idempotent;
 - archive path replacement after capture cannot change applied bytes/identity;
 - state persistence failure after Apply/Commit can recover exact established effects;
-- unexpected remote tip blocks before push;
+- unexpected remote tip or foreign effective push destination blocks before push;
 - no blind repush after unconfirmed publication;
-- sequential packages work without `publishedTip`/executionState owner.
+- sequential packages work without `publishedTip`/executionState owner;
+- target schema-1 protocol/applicability validation is owned by dedicated target suites rather than retired `CoreTests`.
 
 ## EVO-RPKG-RETIRE-CHANGESET-AGGREGATE
 

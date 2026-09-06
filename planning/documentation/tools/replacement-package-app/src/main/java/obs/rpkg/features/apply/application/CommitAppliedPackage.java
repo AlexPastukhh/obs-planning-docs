@@ -12,6 +12,7 @@ import obs.rpkg.features.apply.domain.ReplacementPackageState;
 import obs.rpkg.features.apply.infrastructure.ReplacementPackageStateRepository;
 import obs.rpkg.foundation.result.Result;
 import obs.rpkg.work.application.port.GitWorkspaceRepository;
+import obs.rpkg.work.application.port.WorkOperationLock;
 import obs.rpkg.work.domain.GitWorkspace;
 import obs.rpkg.work.domain.WorkId;
 
@@ -19,20 +20,23 @@ import obs.rpkg.work.domain.WorkId;
 public final class CommitAppliedPackage {
     private final GitWorkspaceRepository workspaces;
     private final ReplacementPackageStateRepository states;
+    private final WorkOperationLock workLocks;
     private final WorkPackageRuntime mechanics;
 
     public CommitAppliedPackage(
             GitWorkspaceRepository workspaces,
             ReplacementPackageStateRepository states,
+            WorkOperationLock workLocks,
             WorkPackageRuntime mechanics) {
         this.workspaces = Objects.requireNonNull(workspaces, "workspaces");
         this.states = Objects.requireNonNull(states, "states");
+        this.workLocks = Objects.requireNonNull(workLocks, "workLocks");
         this.mechanics = Objects.requireNonNull(mechanics, "mechanics");
     }
 
     public Result<ReplacementPackageState, CommitAppliedFailure> execute(String changeSetId, String packageId) {
         WorkId workId = new WorkId(changeSetId);
-        try (ReplacementPackageStateRepository.WorkLock ignored = states.lock(workId)) {
+        try (WorkOperationLock.Lock ignored = workLocks.lock(workId)) {
             Optional<GitWorkspace> workspace = workspaces.find(workId);
             if (workspace.isEmpty()) {
                 return Result.failure(new CommitAppliedFailure(

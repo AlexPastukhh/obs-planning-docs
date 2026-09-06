@@ -18,7 +18,7 @@ Success means exact package bytes are established in the Work worktree and the e
 | Resolve exact Work workspace | Apply requires persisted `GitWorkspace` for the same WorkId. |
 | Enforce package continuity | Same `packageId` is idempotent only for the same exact archive SHA; a different unfinished package blocks a new Apply. |
 | Prove applicability before mutation | Replace/delete require exact expected source; add requires required absence; no undeclared payload is applied. |
-| Journal before mutation | Durable package journal captures exact package/workspace/base and prior/intended bytes before first file mutation. |
+| Journal before mutation | Durable package journal captures exact package/workspace/base and prior/intended bytes before first file mutation; recovery rebinds intended bytes to the captured exact `PackageData`, not merely to journal metadata. |
 | Persist exact state | After intended bytes are proven, persist `ReplacementPackageState(WorkId, packageIdentity, no commit, NotRequested)`. |
 
 If file effects completed but package-state persistence failed, repeating the exact package recovers from the durable package journal and persists the same state without rereading/reapplying different archive bytes.

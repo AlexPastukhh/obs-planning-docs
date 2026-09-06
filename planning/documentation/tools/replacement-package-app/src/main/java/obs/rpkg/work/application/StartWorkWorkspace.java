@@ -5,10 +5,10 @@ import java.util.Optional;
 
 import obs.rpkg.Core;
 import obs.rpkg.WorkPackageRuntime;
-import obs.rpkg.features.apply.infrastructure.ReplacementPackageStateRepository;
 import obs.rpkg.foundation.result.OperationResult;
 import obs.rpkg.foundation.result.Result;
 import obs.rpkg.work.application.port.GitWorkspaceRepository;
+import obs.rpkg.work.application.port.WorkOperationLock;
 import obs.rpkg.work.domain.GitWorkspace;
 import obs.rpkg.work.domain.WorkId;
 
@@ -16,12 +16,12 @@ import obs.rpkg.work.domain.WorkId;
 public final class StartWorkWorkspace {
     private final WorkPackageRuntime mechanics;
     private final GitWorkspaceRepository workspaces;
-    private final ReplacementPackageStateRepository workLocks;
+    private final WorkOperationLock workLocks;
 
     public StartWorkWorkspace(
             WorkPackageRuntime mechanics,
             GitWorkspaceRepository workspaces,
-            ReplacementPackageStateRepository workLocks) {
+            WorkOperationLock workLocks) {
         this.mechanics = Objects.requireNonNull(mechanics, "mechanics");
         this.workspaces = Objects.requireNonNull(workspaces, "workspaces");
         this.workLocks = Objects.requireNonNull(workLocks, "workLocks");
@@ -33,7 +33,7 @@ public final class StartWorkWorkspace {
             String targetBranch) {
         Objects.requireNonNull(repositoryTarget, "repositoryTarget");
         Objects.requireNonNull(workId, "workId");
-        try (ReplacementPackageStateRepository.WorkLock ignored = workLocks.lock(workId)) {
+        try (WorkOperationLock.Lock ignored = workLocks.lock(workId)) {
             Optional<GitWorkspace> existing = workspaces.find(workId);
             if (existing.isPresent()) {
                 GitWorkspace workspace = existing.get();
@@ -43,13 +43,13 @@ public final class StartWorkWorkspace {
                     return Result.failure(new Failure("Existing Work workspace differs from requested Repository Target/target branch.", null));
                 }
                 mechanics.verifyWorkspace(workspace);
-                mechanics.completeWorkspaceStart(workId);
+                mechanics.completeWorkspaceStart(workspace);
                 return Result.success(new Outcome(workspace, true));
             }
 
             WorkPackageRuntime.WorkspaceStart started = mechanics.startWorkspace(repositoryTarget, workId, targetBranch);
             saveOrThrow(started.workspace());
-            mechanics.completeWorkspaceStart(workId);
+            mechanics.completeWorkspaceStart(started.workspace());
             return Result.success(new Outcome(started.workspace(), started.recovered()));
         } catch (RuntimeException e) {
             return Result.failure(new Failure(e.getMessage(), e));

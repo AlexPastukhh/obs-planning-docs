@@ -6,7 +6,7 @@ Use a clean state-v2 root. Old persisted works are intentionally not imported; u
 
 ## Work workspace
 
-Register the intended repository, choose WorkId + explicit target branch and Start workspace. Verify one deterministic `changeset/<WorkId>` worktree is created, `GitWorkspace` is persisted with exact Repository Target/worktree/baseCommit, and repeating Start is already satisfied. Simulate workspace persistence failure after Git effects and verify retry reconciles the journal-owned workspace rather than creating another branch/worktree.
+Register the intended repository, choose WorkId + explicit target branch and Start workspace. First make local target branch stale behind `origin/<targetBranch>` and verify `baseCommit` pins the fresh verified origin tip, not local HEAD. Verify one deterministic `changeset/<WorkId>` worktree is created, `GitWorkspace` is persisted with exact Repository Target/worktree/baseCommit, and repeating Start is already satisfied. Simulate workspace persistence failure after Git effects and verify retry reconciles the journal-owned workspace rather than creating another branch/worktree; a conflicting leftover journal beside persisted workspace must fail closed.
 
 ## Apply
 
@@ -18,7 +18,7 @@ Verify Commit creates/proves one exact package-only commit with correct parent a
 
 ## Publish / Retry Publish
 
-Verify remote absent/previous exact tip permits push with lease; exact intended remote tip is already success; unexpected tip blocks before push. Force unavailable confirmation after a possible push and verify durable `NotConfirmed`; retry must observe before any further push. Force failure to persist pre-push `NotConfirmed` and prove no push occurs. Force failure to persist final `ConfirmedTip` and prove retry confirms existing remote state without repush.
+Verify remote absent/previous exact tip permits push with lease; exact intended remote tip is already success; unexpected tip blocks before push. Configure a foreign `remote.origin.pushurl` while leaving fetch origin correct and verify Publish fails before any push. Persist an earlier safe observation, move the remote, and verify a later Publish refreshes observation instead of reusing stale authorization. Force unavailable confirmation after a possible push and verify durable `NotConfirmed`; retry must observe before any further push. Force failure to persist pre-push `NotConfirmed` and prove no push occurs. Force failure to persist final `ConfirmedTip` and prove retry confirms existing remote state without repush.
 
 ## Automatic OBS action
 

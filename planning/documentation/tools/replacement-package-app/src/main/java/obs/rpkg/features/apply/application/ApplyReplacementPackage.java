@@ -15,6 +15,7 @@ import obs.rpkg.features.apply.domain.ReplacementPackageState;
 import obs.rpkg.features.apply.infrastructure.ReplacementPackageStateRepository;
 import obs.rpkg.foundation.result.Result;
 import obs.rpkg.work.application.port.GitWorkspaceRepository;
+import obs.rpkg.work.application.port.WorkOperationLock;
 import obs.rpkg.work.domain.GitWorkspace;
 import obs.rpkg.work.domain.WorkId;
 
@@ -23,16 +24,19 @@ public final class ApplyReplacementPackage {
     private final Core packageReader;
     private final GitWorkspaceRepository workspaces;
     private final ReplacementPackageStateRepository states;
+    private final WorkOperationLock workLocks;
     private final WorkPackageRuntime mechanics;
 
     public ApplyReplacementPackage(
             Core packageReader,
             GitWorkspaceRepository workspaces,
             ReplacementPackageStateRepository states,
+            WorkOperationLock workLocks,
             WorkPackageRuntime mechanics) {
         this.packageReader = Objects.requireNonNull(packageReader, "packageReader");
         this.workspaces = Objects.requireNonNull(workspaces, "workspaces");
         this.states = Objects.requireNonNull(states, "states");
+        this.workLocks = Objects.requireNonNull(workLocks, "workLocks");
         this.mechanics = Objects.requireNonNull(mechanics, "mechanics");
     }
 
@@ -71,7 +75,7 @@ public final class ApplyReplacementPackage {
         ReplacementPackageIdentity exactIdentity = new ReplacementPackageIdentity(
                 packageData.manifest().packageId(), packageData.archiveSha256());
 
-        try (ReplacementPackageStateRepository.WorkLock ignored = states.lock(workId)) {
+        try (WorkOperationLock.Lock ignored = workLocks.lock(workId)) {
             Optional<GitWorkspace> workspace = workspaces.find(workId);
             if (workspace.isEmpty()) {
                 return Result.failure(new ApplyFailure(

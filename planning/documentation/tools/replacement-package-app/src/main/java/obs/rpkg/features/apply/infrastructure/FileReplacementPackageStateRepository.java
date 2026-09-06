@@ -3,8 +3,6 @@ package obs.rpkg.features.apply.infrastructure;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.nio.channels.FileChannel;
-import java.nio.channels.FileLock;
 import java.nio.file.AtomicMoveNotSupportedException;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
@@ -12,41 +10,35 @@ import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.Properties;
 import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.locks.ReentrantLock;
 
 import obs.rpkg.features.apply.domain.PublicationObservation;
 import obs.rpkg.features.apply.domain.ReplacementPackageIdentity;
 import obs.rpkg.features.apply.domain.ReplacementPackageState;
 import obs.rpkg.foundation.result.OperationResult;
+import obs.rpkg.work.application.port.WorkOperationLock;
 import obs.rpkg.work.domain.WorkId;
+import obs.rpkg.work.infrastructure.FileWorkOperationLock;
 
 /** Dedicated durable owner for new-model replacement-package state. */
 public final class FileReplacementPackageStateRepository implements ReplacementPackageStateRepository {
-    private static final ConcurrentHashMap<Path, ReentrantLock> JVM_LOCKS = new ConcurrentHashMap<>();
-    private static final ThreadLocal<Map<Path, HeldLock>> HELD_LOCKS =
-            ThreadLocal.withInitial(HashMap::new);
-
     private final Path stateDirectory;
-    private final Path lockDirectory;
+    private final WorkOperationLock workLocks;
 
     public FileReplacementPackageStateRepository(Path appStateRoot) {
+        this(appStateRoot, new FileWorkOperationLock(appStateRoot));
+    }
+
+    public FileReplacementPackageStateRepository(Path appStateRoot, WorkOperationLock workLocks) {
         if (appStateRoot == null) throw new IllegalArgumentException("appStateRoot is required");
+        this.workLocks = java.util.Objects.requireNonNull(workLocks, "workLocks");
         Path v2 = appStateRoot.toAbsolutePath().normalize().resolve("work-state-v2");
         this.stateDirectory = v2.resolve("replacement-package-states");
-        this.lockDirectory = v2.resolve("work-locks");
-        try {
-            Files.createDirectories(stateDirectory);
-            Files.createDirectories(lockDirectory);
-        } catch (IOException e) {
-            throw new IllegalStateException("Cannot initialize replacement-package state repository", e);
-        }
+        try { Files.createDirectories(stateDirectory); }
+        catch (IOException e) { throw new IllegalStateException("Cannot initialize replacement-package state repository", e); }
     }
 
     public static FileReplacementPackageStateRepository defaultRepository() {
@@ -94,36 +86,9 @@ public final class FileReplacementPackageStateRepository implements ReplacementP
     }
 
     @Override
-    public WorkLock lock(WorkId workId) {
-        requireWorkId(workId);
-        Path path = lockPath(workId);
-        Map<Path, HeldLock> heldByThread = HELD_LOCKS.get();
-        HeldLock alreadyHeld = heldByThread.get(path);
-        if (alreadyHeld != null) {
-            alreadyHeld.depth++;
-            return new LockToken(path);
-        }
-
-        ReentrantLock local = JVM_LOCKS.computeIfAbsent(path, ignored -> new ReentrantLock(true));
-        local.lock();
-        FileChannel channel = null;
-        try {
-            Files.createDirectories(path.getParent());
-            channel = FileChannel.open(path, StandardOpenOption.CREATE, StandardOpenOption.WRITE);
-            FileLock fileLock = channel.lock();
-            heldByThread.put(path, new HeldLock(local, channel, fileLock));
-            return new LockToken(path);
-        } catch (IOException | RuntimeException e) {
-            if (channel != null) try { channel.close(); } catch (IOException ignored) {}
-            local.unlock();
-            throw new IllegalStateException("Cannot acquire replacement-package Work lock for " + workId, e);
-        }
-    }
-
-    @Override
     public OperationResult<Failure> save(ReplacementPackageState state) {
         if (state == null) return OperationResult.failure(new Failure("ReplacementPackageState is required", null));
-        try (WorkLock ignored = lock(state.workId())) {
+        try (WorkOperationLock.Lock ignored = workLocks.lock(state.workId())) {
             if (!state.isPublished()) {
                 Optional<ReplacementPackageState> existing = findUnfinished(state.workId());
                 if (existing.isPresent()
@@ -224,9 +189,6 @@ public final class FileReplacementPackageStateRepository implements ReplacementP
         return workDirectory(workId).resolve("p-" + packageId + ".properties");
     }
 
-    private Path lockPath(WorkId workId) {
-        return lockDirectory.resolve("w-" + workId.value() + ".lock").toAbsolutePath().normalize();
-    }
 
     private static void requireWorkId(WorkId workId) {
         if (workId == null) throw new IllegalArgumentException("workId is required");
@@ -248,41 +210,4 @@ public final class FileReplacementPackageStateRepository implements ReplacementP
         return value == null || value.isBlank() ? null : value;
     }
 
-    private static final class HeldLock {
-        private final ReentrantLock local;
-        private final FileChannel channel;
-        private final FileLock fileLock;
-        private int depth = 1;
-
-        private HeldLock(ReentrantLock local, FileChannel channel, FileLock fileLock) {
-            this.local = local;
-            this.channel = channel;
-            this.fileLock = fileLock;
-        }
-    }
-
-    private static final class LockToken implements WorkLock {
-        private final Path path;
-        private boolean closed;
-
-        private LockToken(Path path) {
-            this.path = path;
-        }
-
-        @Override
-        public void close() {
-            if (closed) return;
-            closed = true;
-            Map<Path, HeldLock> heldByThread = HELD_LOCKS.get();
-            HeldLock held = heldByThread.get(path);
-            if (held == null) return;
-            held.depth--;
-            if (held.depth > 0) return;
-            heldByThread.remove(path);
-            try { held.fileLock.release(); } catch (IOException ignored) {}
-            try { held.channel.close(); } catch (IOException ignored) {}
-            held.local.unlock();
-            if (heldByThread.isEmpty()) HELD_LOCKS.remove();
-        }
-    }
 }

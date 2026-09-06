@@ -15,7 +15,9 @@ import obs.rpkg.features.apply.infrastructure.GitPublicationObserver;
 import obs.rpkg.features.apply.infrastructure.ReplacementPackageStateRepository;
 import obs.rpkg.work.application.StartWorkWorkspace;
 import obs.rpkg.work.application.port.GitWorkspaceRepository;
+import obs.rpkg.work.application.port.WorkOperationLock;
 import obs.rpkg.work.infrastructure.FileGitWorkspaceRepository;
+import obs.rpkg.work.infrastructure.FileWorkOperationLock;
 
 /** Target-runtime feature-test support. No test setup creates Core.ChangeSet. */
 public final class ApplyFeatureTestSupport {
@@ -34,6 +36,7 @@ public final class ApplyFeatureTestSupport {
             Core.RepositoryConfig target,
             ReplacementPackageStateRepository states,
             GitWorkspaceRepository workspaces,
+            WorkOperationLock workLocks,
             WorkPackageRuntime mechanics,
             StartWorkWorkspace start,
             ApplyReplacementPackage apply,
@@ -56,25 +59,23 @@ public final class ApplyFeatureTestSupport {
         git(repo, "add", ".");
         git(repo, "commit", "-m", "base");
 
-        Path remote = null;
-        git(repo, "remote", "add", "origin", RAW_ORIGIN);
-        if (withRemote) {
-            remote = root.resolve("remote.git");
-            git(root, "init", "--bare", remote.toString());
-            git(repo, "remote", "set-url", "origin", SSH_ORIGIN);
-            configureFakeSsh(root, repo, remote);
-        }
+        Path remote = root.resolve("remote.git");
+        git(root, "init", "--bare", remote.toString());
+        git(repo, "remote", "add", "origin", SSH_ORIGIN);
+        configureFakeSsh(root, repo, remote);
+        git(repo, "push", "-u", "origin", "main:refs/heads/main");
 
         Core core = new Core(new StateStore(stateRoot), new FakeIssues());
         Core.RepositoryConfig target = core.registerRepository(name, repo);
-        ReplacementPackageStateRepository states = new FileReplacementPackageStateRepository(stateRoot);
+        WorkOperationLock workLocks = new FileWorkOperationLock(stateRoot);
+        ReplacementPackageStateRepository states = new FileReplacementPackageStateRepository(stateRoot, workLocks);
         GitWorkspaceRepository workspaces = new FileGitWorkspaceRepository(stateRoot);
         WorkPackageRuntime mechanics = new WorkPackageRuntime(stateRoot);
-        StartWorkWorkspace start = new StartWorkWorkspace(mechanics, workspaces, states);
-        ApplyReplacementPackage apply = new ApplyReplacementPackage(core, workspaces, states, mechanics);
-        CommitAppliedPackage commit = new CommitAppliedPackage(workspaces, states, mechanics);
-        PublishAppliedCommit publish = new PublishAppliedCommit(workspaces, states, new GitPublicationObserver(), mechanics);
-        return new Workspace(root, repo, stateRoot, remote, core, target, states, workspaces, mechanics, start, apply, commit, publish);
+        StartWorkWorkspace start = new StartWorkWorkspace(mechanics, workspaces, workLocks);
+        ApplyReplacementPackage apply = new ApplyReplacementPackage(core, workspaces, states, workLocks, mechanics);
+        CommitAppliedPackage commit = new CommitAppliedPackage(workspaces, states, workLocks, mechanics);
+        PublishAppliedCommit publish = new PublishAppliedCommit(workspaces, states, workLocks, new GitPublicationObserver(), mechanics);
+        return new Workspace(root, repo, stateRoot, remote, core, target, states, workspaces, workLocks, mechanics, start, apply, commit, publish);
     }
 
     private static final class FakeIssues implements Core.GitHubIssues {
@@ -177,6 +178,35 @@ public final class ApplyFeatureTestSupport {
         write(workspace.repository().resolve("external.txt"),"external");git(workspace.repository(),"add","external.txt");git(workspace.repository(),"commit","-m","external remote move");String commit=git(workspace.repository(),"rev-parse","HEAD");git(workspace.repository(),"push","origin",commit+":refs/heads/"+workBranch);return commit;
     }
     public static void pushCommitExternally(Workspace workspace, String workBranch, String commit) throws Exception { git(workspace.repository(),"push","origin",commit+":refs/heads/"+workBranch); }
+
+    public static String advanceRemoteMainKeepingLocalStale(Workspace workspace) throws Exception {
+        String localBase=git(workspace.repository(),"rev-parse","refs/heads/main");
+        write(workspace.repository().resolve("remote-source.txt"),"remote-source");
+        git(workspace.repository(),"add","remote-source.txt");
+        git(workspace.repository(),"commit","-m","advance remote source");
+        String remoteTip=git(workspace.repository(),"rev-parse","HEAD");
+        git(workspace.repository(),"push","origin","HEAD:refs/heads/main");
+        git(workspace.repository(),"reset","--hard",localBase);
+        return remoteTip;
+    }
+
+    public static void setForeignPushUrl(Workspace workspace) throws Exception {
+        git(workspace.repository(),"remote","set-url","--push","origin","git@github.com:foreign/repo.git");
+    }
+
+    public static Path packageJournalPath(Workspace workspace,String workId,String packageId) {
+        return workspace.stateRoot().resolve("work-state-v2").resolve("package-apply-journals")
+                .resolve("w-"+workId).resolve("p-"+packageId+".properties");
+    }
+
+    public static void corruptJournalIntendedBytesAndWorktree(Workspace workspace,String workId,String packageId,Path worktree,String text) throws Exception {
+        Path journal=packageJournalPath(workspace,workId,packageId);
+        Properties p=new Properties();
+        try(var in=Files.newInputStream(journal)){p.load(in);}
+        p.setProperty("entry.0.intendedBase64",Base64.getEncoder().encodeToString(text.getBytes(StandardCharsets.UTF_8)));
+        try(var out=Files.newOutputStream(journal,StandardOpenOption.TRUNCATE_EXISTING)){p.store(out,"corrupted test journal");}
+        write(worktree.resolve("seed.txt"),text);
+    }
 
     public static String read(Path path) throws IOException { return Files.readString(path,StandardCharsets.UTF_8); }
     public static void overwritePackage(PackageFixture fixture, Workspace workspace, String workId, String replacement) throws Exception {

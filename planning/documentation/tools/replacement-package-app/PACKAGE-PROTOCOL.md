@@ -88,7 +88,7 @@ Worktree
 BaseCommit
 ```
 
-Work branch is derived deterministically as `changeset/<WorkId>` for schema-1 compatibility. Workspace intent is journaled before branch/worktree mutation; unjournaled deterministic collisions fail closed.
+Work branch is derived deterministically as `changeset/<WorkId>` for schema-1 compatibility. `baseCommit` is pinned from a fresh fetch/observation of the verified `origin/<targetBranch>`; a stale local target branch is never source authority. Workspace intent is journaled before branch/worktree mutation; unjournaled deterministic collisions fail closed, and a leftover journal must agree exactly with an already-persisted `GitWorkspace` before it may be cleared.
 
 ## Apply identity rule
 
@@ -98,22 +98,26 @@ The package archive is read/validated/hashed once for one Apply invocation. Muta
 
 ## Package recovery journal
 
-Before file mutation the target runtime durably records exact Work/package/archive/workspace identity, package `baseHead`, operations, and prior/intended bytes. The journal permits proof/recovery when file or Git side effects succeeded before final `ReplacementPackageState` persistence.
+Before file mutation the target runtime durably records exact Work/package/archive/workspace identity, package `baseHead`, operations, and prior/intended bytes. The journal carries a canonical SHA-256 integrity digest over those durable fields/bytes; any mismatch fails closed. On Apply recovery its intended bytes must also still match the captured `PackageData` for the exact archive SHA, so journal metadata alone cannot rebind an archive to different bytes. The journal permits proof/recovery when file or Git side effects succeeded before final `ReplacementPackageState` persistence.
 
 ## Commit / Publish rules
 
 Commit is package-only and independent from Publish. Exact commit recovery proves parent, identity trailers, changed paths and intended bytes.
 
 Publish:
-- observes exact remote Work branch before every possible push;
+- refreshes exact remote Work-branch observation in every not-yet-published Publish invocation before any possible push;
 - succeeds immediately if exact intended commit is already remote;
 - permits push only when remote is absent or exactly package journal `baseHead`;
 - rejects any other remote tip before push;
 - durably writes `NotConfirmed` before possible push;
-- pushes exact commit with force-with-lease tied to the proven previous remote state;
+- verifies every effective `origin` push URL resolves to the same RepositoryIdentity as the observed/fetch target, then pushes the exact commit with force-with-lease tied to the freshly proven previous remote state;
 - observes again after possible push and persists exact evidence.
 
 `NotConfirmed` means intended publication is not currently proven; retry must observe before any further push.
+
+## Work operation serialization
+
+Start workspace, Apply, Commit and Publish use one durable per-Work `WorkOperationLock` application boundary covering state read → filesystem/Git side effect → durable state write. Package-state persistence may re-enter the same lock for its local invariant check, but the package-state repository is not the semantic owner of Work serialization.
 
 ## Result handoff
 
