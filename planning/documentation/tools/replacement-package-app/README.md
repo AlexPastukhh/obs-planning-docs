@@ -33,6 +33,32 @@ Separate current capability:
 
 Future reviewed-result/PR/Finalize planning remains planned and must be rebased onto WorkId/GitWorkspace/ReplacementPackageState before implementation.
 
+## Documentation methodology
+
+Root process authority:
+- [`documentation-use-cases.md`](documentation-use-cases.md) — shared terminology, process routing, cross-group rules and stable Documentation Use Case identities.
+
+Normative Documentation Use Case groups:
+- [`documentation-use-cases/application-modeling.md`](documentation-use-cases/application-modeling.md) — Scenario / Feature / Screen planning;
+- [`documentation-use-cases/implementation-discovery-and-proof.md`](documentation-use-cases/implementation-discovery-and-proof.md) — Domain/Slice/Shared discovery, implementation Requirements and proof;
+- [`documentation-use-cases/evolution-planning.md`](documentation-use-cases/evolution-planning.md) — Evolution Step planning;
+- [`documentation-use-cases/documentation-governance.md`](documentation-use-cases/documentation-governance.md) — readability, ownership and documentation-interface maintenance;
+- [`documentation-use-cases/ai-session-work.md`](documentation-use-cases/ai-session-work.md) — AI planning/proposal/finding/exact-realization/execution Use Cases.
+
+Reusable guidance:
+- [`methodology-guidance/reusable-guidance-model.md`](methodology-guidance/reusable-guidance-model.md);
+- [`methodology-guidance/reusable-ddd-domain-discovery.md`](methodology-guidance/reusable-ddd-domain-discovery.md);
+- [`methodology-guidance/reusable-vertical-slice-discovery.md`](methodology-guidance/reusable-vertical-slice-discovery.md);
+- [`methodology-guidance/reusable-programming-principles.md`](methodology-guidance/reusable-programming-principles.md).
+
+Detailed AI/session procedures:
+- [`session-methodology/README.md`](session-methodology/README.md).
+
+Recommended forms:
+- [`documentation-templates.md`](documentation-templates.md).
+
+Methodology navigation does not replace product semantic authority. Feature/Scenario/Domain/Slice/Shared owners remain authoritative for selected application meaning.
+
 ## Focused contracts
 
 - [`PACKAGE-PROTOCOL.md`](PACKAGE-PROTOCOL.md) — schema-1 package/action consumer contract;

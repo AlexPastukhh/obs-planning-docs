@@ -1,103 +1,63 @@
 # Replacement Package App — Documentation Templates
 
 Status: active recommended forms
-Authority: [`documentation-use-cases.md`](documentation-use-cases.md)
+Process authority: [`documentation-use-cases.md`](documentation-use-cases.md) + the relevant Documentation Use Case group/owner
 
 ## Template rule
 
-These forms are **recommended examples, not schemas**. Choose the smallest representation that preserves selected meaning. Use, omit, combine, reorder or reshape sections when another form is clearer; do not copy headings mechanically or write `N/A` merely to satisfy a template. The semantic authority/boundary questions still need answers where they are material.
+These forms are preferred ready-made models, not schemas and not product Requirements.
 
-Target semantic types are `Feature`, `Behavior Requirement`, `Scenario Requirement`, Production Requirement and Proof Requirement. Existing product owners may still use legacy `FI-*`, `BI-*`, `DI-*`, `SI-*` and `TST-*` labels until separately migrated; templates do not require bulk renaming.
+```text
+relevant form
+→ consult/evaluate
+→ use by default when it fits
+→ omit/combine/reshape when a clearer context-specific form is justified
+```
 
----
+Do not copy headings mechanically or manufacture `N/A`.
+
+Target semantic types include `Feature`, `Behavior Requirement`, `Scenario Requirement`, `Implementation Requirement` and optional `Proof Requirement (PFR)`. Existing product owners may keep legacy `FI-*`, `BI-*`, `DI-*`, `SI-*`, `PRD-*` and `TST-*` labels until separately migrated.
 
 ## Template — Feature planning
-
-A Feature is the primary behavioral authority for its use-case boundary. Prefer an independently referenceable Feature owner/section. Keep normative `BR-*` text here; downstream planning references IDs only.
-
-Use the smallest form that preserves meaning. A compact target shape is:
 
 ```markdown
 # F-RPKG-<SEMANTIC-NAME> — <readable Feature name>
 
 ## Intent
-
 <one application/user intent>
 
 ## Principal Result
-
 <one meaningful Result / Result family>
 
 ## Expected application behavior
 
 ### Data
-
 | Kind | Data |
 |---|---|
 | Input | <semantic input/state> |
 | Result | <semantic result identity/state> |
 
 ### Main path
-
 | Behavior step | Requirement(s) |
 |---|---|
-| **1. <semantic behavior step>.** | `BR-RPKG-...` — `<compact normative statement>` |
-| **2. <semantic behavior step>.** | `BR-RPKG-...`, `BR-RPKG-...` — `<compact normative statements>` |
+| **1. <semantic behavior step>.** | `BR-RPKG-...` — <compact normative statement> |
+| **2. <semantic behavior step>.** | `BR-RPKG-...` — <compact normative statement> |
 
 Decision after Step 2: **<one exact question>?**
 
-| Path A | Path B | Path C |
-|---|---|---|
-| <action A1> | <action B1> | <action C1> |
-| <action A2> | <action B2> | <action C2> |
-| → Step 3 | → Step 3 | Stop |
-
-### Main path — continued
-
-| Behavior step | Requirement(s) |
+| Path A | Path B |
 |---|---|
-| **3. <common semantic behavior>.** | `BR-RPKG-...` — `<compact normative statement>` |
+| <action A1> | <action B1> |
+| → Step 3 | Stop |
 
 ## Feature Implementation Concerns
-
-<only material feasibility / dependency / recovery / proof / Domain / Shared /
-Evolution / Feature-Slice boundary reasoning>
+<only material feasibility/dependency/recovery/proof/Domain/Shared/Evolution/boundary reasoning>
 
 ## Feature / Slice Boundary Decision
-
-Intent / Principal Result:
-<evidence>
-
-Semantic Entry:
-<semantic invocation vs transport/adapter>
-
-Realization Cohesion / Shared Structure:
-<shared path vs localized variation>
-
-Development / Proof / Evolution Fitness:
-<change locality, proof locality, known Evolution Steps>
-
-Boundary hypothesis:
-<one Feature ↔ one Slice | module/branch/entry adapter | separate Feature | OPEN>
+<reference the reusable Vertical Slice method; record only material evidence + selected hypothesis>
 ```
 
-Rules:
-
-- one Main-path row = one semantic behavior step;
-- the second column may contain one or several stable `BR-*`;
-- keep each canonical normative Requirement statement beside the behavior it constrains;
-- Data stays compactly inside `Expected application behavior`; do not create a detached Data catalog by default;
-- if order itself is required, state that order normatively;
-- one exact branch decision/question owns one column per path; paths may span several rows and explicitly converge;
-- do not create persistent `Behavior Step`, `BS-*`, branch Item or requirement-group ontology merely for discovery;
-- actor/user/AI wording or choice belongs in Scenario when the application simply consumes it;
-- exact classes/methods remain downstream.
-
----
-
 ## Template — Scenario / real user journey
-
-Use only the fields that carry journey meaning. `Actor` and `Actor interaction / decision` are optional/recommended when actor identity or choice affects input, authority, interpretation or continuity.
 
 ```markdown
 # SCN-RPKG-<SEMANTIC-NAME> — <readable Scenario name>
@@ -105,236 +65,108 @@ Use only the fields that carry journey meaning. `Actor` and `Actor interaction /
 Status: <current | planned target | migration>
 
 ## Need / Application Benefit
-
-<what useful result this journey closes>
+...
 
 ## Starting context
-
-<where the journey starts>
+...
 
 ## Main journey
-
 | Journey step | Actor / interaction | Feature / visible behavior | Result / continuity | Requirement(s) |
 |---|---|---|---|---|
-| **1. <journey step>** | <human / ChatGPT / application / external system + material choice> | `F-RPKG-...` — <only visible behavior needed for composition> | <Feature Result + exact continuity> | `SR-RPKG-...` when genuinely cross-Feature |
-| **2. <journey step>** | <decision/interpretation if material> | `F-RPKG-...` | <Result / continuity> | — |
-
-Decision after Step 2: **<one exact journey question>?**
-
-| Path A | Path B | Path C |
-|---|---|---|
-| <actor/Feature action A1> | <actor/Feature action B1> | <actor/Feature action C1> |
-| <action A2> | <action B2> | <action C2> |
-| → Step 3 | → Step 3 | Stop |
-
-### Main journey — continued
-
-| Journey step | Actor / interaction | Feature / visible behavior | Result / continuity | Requirement(s) |
-|---|---|---|---|---|
-| **3. <common journey step>** | ... | `F-RPKG-...` | ... | `SR-RPKG-...` if needed |
+| **1. ...** | ... | `F-RPKG-...` | ... | `SR-RPKG-...` when genuinely cross-Feature |
 
 ## Terminal Result / Benefit closure
-
-<why the composed Features satisfy the intended Benefit>
+...
 
 ## E2E Proof Intent
-
-<what journey truth must be proven end to end>
+...
 
 ## Relevant Evolution Steps
-
 - `EVO-RPKG-...`
 ```
 
-Boundary reminder:
+## Template — Screen owner
 
-```text
-Scenario / actor
-= why and what the user/AI decides to pass/use/interpret
+```markdown
+# Replacement Package App — Screens
 
-Feature
-= what the application does with already-supplied input
-```
+## Screen Map
+...
 
-Feature owners remain authoritative for Feature-local Data, branches, recovery and `BR-*`. Scenario may repeat a Feature Result or summarize visible behavior only to make composition/continuity understandable.
-
----
-
-## Template — Slice Discovery + non-persistent Slice Planning
-
-This is a **working implementation-planning artifact**, not a durable Slice owner.
-
-````markdown
-# <Feature> — Slice Discovery + Non-Persistent Slice Planning
-
-Status: working implementation plan
-Persistence: non-persistent by default
-Semantic authority: Feature / Scenario owners
-
-## Whole-Slice candidate class map
-
-| Kind | Candidate class | Role |
+## Scenario × Screen
+| Scenario | Screen/context | Role |
 |---|---|---|
-| UI / entry | ... | ... |
-| Application service | ... | ... |
-| Feature-local | ... | ... |
-| Domain | ... | ... |
-| Repository / persistence | ... | ... |
-| Shared | ... | ... |
-| Cross-cutting | ... | ... |
-| Presentation | ... | ... |
 
-## Application-service entry
-
-```text
-SemanticFeatureService.semanticOperation(
-    <typed semantic arguments>
-) -> <typed Feature Result>
-```
-
-## Step-by-step realization
-
-| Feature Step / BR | Candidate realization calls | Layer / responsibility |
+## Feature × Screen
+| Feature | Screen/context | Interaction role |
 |---|---|---|
-| **Step 1** — `BR-...` | `Entry.read()` → `Service.semanticOperation(...)` → ... | ... |
-| **Step 2** — `BR-...`, `BR-...` | ... | ... |
 
-## Feature integration tests
+## <Screen readable name>
+Responsibility:
+...
 
-```text
-test("<expected Feature behavior/result>") {
-    // Arrange
-    <real application service + real Domain where practical>
-    <fake/in-memory expensive external boundaries>
+Screen-owned behavior / UI constraints:
+- ...
 
-    // Act
-    let result = service.semanticOperation(...)
-
-    // Assert — Feature Result
-    ...
-
-    // Assert — exact external effect
-    ...
-
-    // Assert — forbidden effect / continuity / recovery
-    ...
-}
+## Evolution Impact
+- ...
 ```
 
-## Future / Evolution planning
+## Template — Feature Implementation Concern
 
-Canonical Evolution: `EVO-...` when selected.
+```markdown
+### Implementation Concern — <readable concern>
 
-- `FUTURE FEATURE` / `FUTURE EXTENSION`: ...
-- `BLOCKED BY OPEN PRODUCT DETAIL`: <what concrete method/test must not be invented>
-````
+Behavior / Requirement affected:
+...
 
-Rules:
+Question / risk:
+...
 
-- map the Feature end to end, including UI/entry, simple application service, Domain, persistence, Shared, cross-cutting and presentation where material;
-- show concrete candidate calls by Feature Step;
-- no `CommandBus`, dispatcher or generic `execute(command)` requirement;
-- Domain calls may appear, but Domain unit tests do not;
-- integration tests exercise the whole meaningful Feature path through the application-service boundary;
-- test names describe expected behavior/result, not internal methods;
-- after implementation/proof, delete the work-item planning artifact by default;
-- if durable Slice/Shared/ADR/Production↔Proof documentation is useful later, create/update that separate owner.
+Known capability / constraints:
+- ...
 
----
+Candidate approaches:
+- A — ...
+- B — ...
 
-## Template — Aggregate Planning (non-persistent)
+Evidence / prototype:
+- ...
 
-This is a **working Domain-design artifact**, not the durable Aggregate owner.
+Selected direction / current conclusion:
+...
 
-````markdown
-# <Domain class> — Aggregate Planning
+Boundary / durable-Requirement implications:
+...
 
-Status: working Domain plan
-Persistence: non-persistent by default
-Authority: Feature `BR-*`
-Scope: Domain classes only
-
-Kind: <Aggregate Root | child Entity | aggregate-local Value Object | shared Value Object>
-
-Classification check:
-- own stable identity whose continuity survives state change? → Entity / possibly Aggregate Root;
-- no independent identity and whole-value equality? → Value Object;
-- field count is irrelevant: a Value Object may contain multiple fields, nested values, collections and behavior;
-- a uniqueness key or referenced `*Id` field does not by itself create Entity identity.
-
-## Responsibility
-
-<semantic identity / state / lifecycle / consistency>
-
-## High-level state / fields
-
-```text
-field: SemanticType
+Downstream attention:
 ...
 ```
 
-## Candidate semantic methods and local unit tests
+A concern is not automatically an Implementation Requirement.
 
-### Method — `semanticMethod`
+## Template — Feature/Slice boundary decision note
 
-```text
-semanticMethod(
-    input: SemanticType
-) -> ResultType
+```markdown
+### Boundary decision — <candidate behavior>
+
+Reusable guidance:
+`methodology-guidance/reusable-vertical-slice-discovery.md`
+
+Material evidence:
+- Intent / Result: ...
+- Semantic entry: ...
+- Realization cohesion: ...
+- Development / proof / evolution fitness: ...
+
+Decision:
+<same Feature/Slice | module | branch | entry adapter | separate Feature/Slice>
+
+Revalidation trigger:
+...
 ```
 
-#### Unit tests for this method
-
-```text
-test("<expected Domain behavior/result>") {
-    // Arrange
-    ...
-
-    // Act
-    let result = domain.semanticMethod(...)
-
-    // Assert
-    ...
-}
-```
-
-### Method — `anotherSemanticMethod`
-
-```text
-anotherSemanticMethod(...) -> ResultType
-```
-
-#### Unit tests for this method
-
-```text
-test("<expected Domain behavior/result>") {
-    ...
-}
-```
-
-## Future / Evolution planning
-
-Canonical Evolution: `EVO-...` when selected.
-
-- `FUTURE FEATURE` / `FUTURE EXTENSION`: ...
-- `BLOCKED BY OPEN PRODUCT DETAIL`: <do not invent missing semantics>
-````
-
-Rules:
-
-- start from exact Feature Step + attached `BR-*`;
-- classify Root/Entity/Value Object by identity + lifecycle + equality semantics, never by number of fields;
-- do not copy canonical Requirement text;
-- keep UI/application-service/Git/GitHub/filesystem/browser mechanics out;
-- put each literal Domain unit-test group immediately after the method it proves;
-- invariant preservation belongs in exact assertions rather than a detached `Preserved invariants` section;
-- test names describe expected Domain behavior/result, not class/method names;
-- future planning may be equally deep only where semantic behavior is selected;
-- after implementation/proof, delete the planning artifact by default;
-- durable Domain/architecture/Production↔Proof documentation, when useful, is a separate owner;
-- when the plan becomes literal code, use the aggregate-centered physical layout from `Template — literal Domain implementation / code example layout`; tests remain beside the owner they prove.
-
----
+The full question library is owned by the reusable Vertical Slice guide.
 
 ## Template — behavioral / Screen design alternative
 
@@ -356,112 +188,215 @@ Reason selected/rejected:
 ...
 ```
 
-A design alternative is not a current runtime branch and is not automatically an Evolution Step.
-
----
-
-## Template — Feature Implementation Concern
-
-Use only for material implementation-aware uncertainty/decision memory.
-
-```markdown
-### Implementation Concern — <readable concern>
-
-Behavior / Requirement affected:
-<Feature / BR / SR reference>
-
-Question / risk:
-<what may make planned behavior/boundary difficult or invalid>
-
-Known capability / constraints:
-- ...
-
-Candidate approaches:
-- A — ...
-- B — ...
-
-Evidence / prototype:
-- ...
-
-Selected direction / current conclusion:
-<if selected>
-
-Implementation dependencies:
-- ...
-
-Boundary implications:
-<Aggregate / Shared / Slice module/branch/new Feature signal>
-
-Downstream attention:
-<what later Requirements Discovery must inspect>
-```
-
-The concern is not automatically a Production Requirement.
-
----
-
-## Template — Feature/Slice boundary decision note
-
-```markdown
-### Boundary decision — <candidate behavior>
-
-Intent / Result:
-<evidence>
-
-Semantic entry:
-<evidence>
-
-Realization cohesion:
-<evidence>
-
-Development / proof / evolution fitness:
-<change locality, testability, known Evolution Steps>
-
-Decision:
-<same Feature/Slice | extension module | branch | entry adapter | separate Feature/Slice>
-
-Revalidation trigger:
-<what later Evidence would justify reopening this decision>
-```
-
-These are signals, not a numeric score.
-
----
-
 ## Template — selected methodology exception
 
 ```markdown
 ### Selected exception — <name>
 
-Preferred principle:
-<what methodology normally favors>
+Recommended / default model:
+...
 
-Selected exception:
-<what is intentionally different>
+Selected alternative:
+...
 
-Reason:
-<why the exception is worth it>
+Why it is better in this context:
+...
 
-Boundaries preserved:
-<what must not be reinterpreted because of this convenience>
+Decision priorities:
+1. ...
+2. ...
 
-Downstream consequences / proof obligations:
+Complexity delta / trade-off:
+...
+
+Semantic / owner boundaries preserved:
+...
+
+Proof / Evolution consequences:
 - ...
 ```
 
-Example class: one convenience activation may compose two separate Features/Slices without merging their intents/results.
+The form records why a materially different solution is better here; it does not turn the recommended model into a Requirement.
 
----
+## Template — durable Slice owner
+
+```markdown
+# SL-RPKG-<SEMANTIC-NAME> — <readable Slice name>
+
+## Responsibility
+<end-to-end implementation responsibility>
+
+## Feature realized
+`F-RPKG-...`
+
+Relevant Behavior Requirements:
+- `BR-...` (reference only; do not copy canonical prose)
+
+## Domain owners used
+- ...
+
+## Shared Capability owners used
+- ...
+
+## Relevant discovery / decisions
+<only durable/useful references; do not preserve a working plan by default>
+
+## Implementation Requirements
+### IR-SLICE-<OWNER>-<REQUIREMENT>
+Requirement:
+...
+
+Reason:
+...
+
+Optional durable Decision / Question / Risk / Known Problem:
+...
+
+## Proof Requirements
+### PFR-<OWNER>-<REQUIREMENT>
+Requirement:
+...
+<omit this section when no durable non-obvious proof-realization constraint exists>
+
+## Evolution Impact
+...
+```
+
+## Template — durable Domain owner
+
+```markdown
+# <Domain owner>
+
+## Responsibility / Meaning
+...
+
+## Semantic Model
+Identity:
+...
+
+State / lifecycle:
+...
+
+Invariants / consistency boundary:
+...
+
+Semantic operations / rules:
+...
+
+## Behavior Requirements realized
+- `BR-...`
+
+## Relevant reusable guidance / durable decisions
+<optional provenance / rationale only when useful>
+
+Optional durable Question / Risk / Known Problem:
+...
+
+## Implementation Requirements
+### IR-DOMAIN-<OWNER>-<REQUIREMENT>
+Requirement:
+...
+
+## Proof Requirements
+### PFR-<OWNER>-<REQUIREMENT>
+Requirement:
+...
+<omit when not needed>
+
+## Evolution Impact
+...
+```
+
+Do not require a specific Java/package topology. The recommended generalized owner-centered model lives in `methodology-guidance/reusable-ddd-domain-discovery.md`.
+
+## Template — Shared Implementation Capability
+
+```markdown
+# <semantic Shared Capability name>
+
+## Responsibility
+...
+
+## Consumers
+- `SL-RPKG-...`
+
+## Contract / boundary
+...
+
+## Implementation Requirements
+### IR-SHARED-<OWNER>-<REQUIREMENT>
+...
+
+Optional durable Decision / Question / Risk / Known Problem:
+...
+
+## Proof Requirements
+### PFR-<OWNER>-<REQUIREMENT>
+...
+<omit when not needed>
+
+## Evolution Impact
+...
+```
+
+## Template — owner-local Requirements Discovery note
+
+Use only material headings. This is a decision-centered recommended form, not a six-section questionnaire.
+
+```markdown
+## Requirements Discovery
+
+Material problem:
+...
+
+Source / affected current authority:
+...
+
+Question:
+...
+
+Relevant reusable guidance:
+...
+
+Candidate(s):
+- ...
+
+Behavioral Necessity / Relevance:
+<which behavior/invariant/proof risk requires this; what breaks without it; ownership/complexity check>
+
+Selected decision:
+<selected direction | OPEN>
+
+Selected Implementation Requirements:
+- `IR-...` only when durable + selected
+
+Selected Proof Requirements:
+- `PFR-...` only for a durable non-obvious proof-realization constraint
+
+Risk / Known Problem / Trade-off:
+- ...
+
+Open questions:
+- ...
+
+Evolution consequence:
+...
+
+No durable Requirement:
+<state when the selected result is intentionally code/working-plan only>
+```
+
+The 3×2 Implementation/Proof reasoning lens is optional reusable structure, not mandatory output fields.
 
 ## Template — Evolution Step
 
-Early/shallow form is valid:
+Early form:
 
 ```markdown
 ### EVO-RPKG-<SEMANTIC-NAME> — <readable qualitative change>
 
 Application capability / journey / documentation-architecture change:
-<what becomes possible or changes>
+...
 
 Evolution Kinds:
 - <Introduction | Expansion | Refactoring | Forced Migration | Retirement>
@@ -475,58 +410,11 @@ Known tension / open boundary question:
 - ...
 ```
 
-When enough detail is known, prefer complete target meaning:
+Full target form may use `[EXISTING] / [NEW] / [CHANGED] / [REMOVED]` where useful.
 
-```markdown
-### EVO-RPKG-<SEMANTIC-NAME> — <readable qualitative change>
-
-Evolution Kinds:
-- <Introduction | Expansion | Refactoring | Forced Migration | Retirement>
-
-Resulting usable application/documentation state:
-<what is complete after this Step>
-
-#### Target Feature: F-RPKG-...
-Intent:
-[UNCHANGED] ...
-
-Result:
-[UNCHANGED] ...
-
-Behavior:
-[EXISTING] ...
-[CHANGED] ...
-[NEW] ...
-[REMOVED] ...
-
-Slice outlook:
-[UNCHANGED] ...
-[NEW] module / branch / entry adapter / separate Slice ...
-
-Migration:
-<semantic/product/architecture/documentation migration work intrinsic to this Step, when any>
-
-Forced Migration:
-<only when this Evolution Kind is real>
-
-#### Target Scenario
-<include when cross-Feature / cross-Screen composition changes>
-
-#### Owner impacts
-- Aggregate: ...
-- Shared: ...
-- Screen: ...
-- Proof: ...
-```
-
-Exact notation is flexible. Evolution Kinds are composable, not a single exclusive enum. `[EXISTING] / [NEW] / [CHANGED] / [REMOVED]` is target-state accounting, while Evolution Kinds describe the nature of the transition. The important rule is that a completed Step leaves a coherent usable application/documentation state and does not require the next Step merely for completeness. Migration is part of Evolution Step machinery rather than a competing roadmap.
-
----
-
-<a id="template-evolution-impact"></a>
 ## Template — Evolution Impact
 
-Use this owner-local form when one canonical Evolution Step materially changes an **existing** Aggregate, Slice, Shared Capability, Screen or proof owner. It is future delta, not a second current Requirement list and not a separate migration roadmap.
+<a id="template-evolution-impact"></a>
 
 ```markdown
 ## Evolution Impact
@@ -536,21 +424,14 @@ Use this owner-local form when one canonical Evolution Step materially changes a
 Evolution Kinds for this owner:
 - <Expansion | Refactoring | Forced Migration | Retirement>
 
-[EXISTING] <meaning that remains>
-[NEW] <new owner responsibility / module / branch / proof>
-[CHANGED] <changed owner meaning>
-[REMOVED] <meaning intentionally removed>
-
-Forced Migration:
-<what must move/replace because healthy additive evolution is not credible; only when real>
+[EXISTING] ...
+[NEW] ...
+[CHANGED] ...
+[REMOVED] ...
 
 Requirement consequences:
-<reference current/new Production or Proof Requirements when they are actually selected; do not duplicate them here>
+<reference owner IR/PFR only when actually selected>
 ```
-
-A newly introduced Feature/owner is normally represented as `Introduction` directly in the canonical Step target rather than through a fictitious impact on something that did not exist. When enough detail is known, prefer showing the complete target owner state rather than only an isolated delta.
-
----
 
 ## Template — Evolution Steps Map entry
 
@@ -570,263 +451,8 @@ Readiness / blocking evidence:
 - ...
 
 Canonical Step owner:
-<Feature/Scenario/evolution owner link>
-```
-
-The map records rough planning relationships; it does not redefine the Step's qualitative behavior.
-
----
-
-## Template — literal Domain implementation / code example layout
-
-Use this after Aggregate Planning when literal code is produced, or whenever a copy-ready Domain code example/handoff is supplied.
-
-```text
-domain/
-├── errors/
-│   ├── DomainViolation.java
-│   └── <SpecificDomainError>.java
-├── shared/
-│   ├── valueobjects/
-│   │   ├── <SharedId>.java
-│   │   └── <SharedEvidence>.java
-│   └── support/
-│       └── <non-domain helper>.java
-├── <aggregate-name>/
-│   ├── <AggregateRoot>.java
-│   ├── <ChildEntity>.java
-│   ├── <LocalValueObject>.java
-│   ├── <LocalState>.java
-│   └── <AggregateRoot>Test.java
-├── <another-aggregate>/
-│   └── ...
-└── testing/
-    ├── <test runner>.java
-    └── <assertion / fixture support>.java
-```
-
-Rules:
-
-- **one Aggregate = one owner folder** containing the Root, its child Entities, aggregate-local Value Objects/enums/evidence and tests for those semantics;
-- do not create global `aggregates/`, `entities/` or `valueobjects/` folders for owner-local types;
-- Value Objects may have one or many fields; multi-field composition does not make a Value Object an Entity;
-- an aggregate-local Value Object stays in its Aggregate folder; `shared/valueobjects/` contains intentionally cross-owner/domain-boundary semantic values and may include multi-field Value Objects;
-- `errors/` contains Domain errors/exceptions and is separate from all Aggregate folders;
-- semantic tests stay beside the Aggregate/Entity/Value Object they prove; `testing/` is support-only and must not become a detached semantic test catalog;
-- if the real build requires separate source roots, mirror this exact owner-relative folder/package structure under production and test roots;
-- a literal code example must provide the same file layout, exact source bytes and an executable test command; prose snippets alone are not a literal handoff;
-- compile/run the literal tests before handing off the artifact and report the exact pass/fail count;
-- OPEN/FUTURE product detail remains absent from literal production/test code until selected upstream.
-
-Example naming:
-
-```text
-repositorywork/
-├── RepositoryWork.java              # Aggregate Root
-├── WorkBranch.java                  # child Entity
-├── WorkBranchEvidence.java          # multi-field aggregate-local Value Object
-├── RepositoryWorkLifecycle.java
-└── RepositoryWorkTest.java
-
-shared/valueobjects/
-├── RepositoryTarget.java            # multi-field shared Value Object
-├── RegisteredRepositoryPath.java
-└── RepositoryTargetTest.java
-```
-
----
-
-## Template — durable Aggregate / Domain owner
-
-```markdown
-# <Aggregate / Domain Object>
-
-## Responsibility / Meaning
-<semantic identity/state/lifecycle/invariant responsibility>
-
-## Behavior / Data served
-- Feature / Behavior Requirement references
-- Feature Data concepts
-
-## Semantic model
-Identity:
-...
-
-State / lifecycle:
-...
-
-Invariants / consistency boundary:
-...
-
-Semantic operations / rules:
-...
-
-## Relevant upstream Implementation Concerns
-- ...
-
-## Production Requirements
-### PRD-RPKG-... — <readable requirement>
-Requirement:
-...
-
-Reason:
-...
-
-## Proof Requirements
-### PFR-RPKG-... — <readable proof requirement>
-Requirement:
-...
-
-## Evolution Impact
-### EVO-RPKG-...
-[EXISTING] ...
-[NEW/CHANGED/REMOVED] ...
-```
-
-Do not force one Aggregate per Feature/Requirement.
-
-This durable owner is distinct from the non-persistent Aggregate Planning artifact above. Create/maintain it only when durable Domain meaning/requirements need an independent owner.
-
----
-
-## Template — durable Slice owner
-
-```markdown
-# SL-RPKG-<SEMANTIC-NAME> — <readable Slice name>
-
-## Feature realized
-`F-RPKG-...`
-
-Intent / principal Result:
-...
-
-## End-to-end responsibility
-<semantic entry → application/domain/infrastructure path → meaningful Result>
-
-## Modules / Branches / Entry Adapters
-- [EXISTING] ...
-- [NEW] ...
-
-## Domain / Shared owners used
-- ...
-
-## Relevant Feature Implementation Concerns / dependencies
-- ...
-
-## Boundary recheck
-Intent / Result: ...
-Semantic entry: ...
-Realization cohesion: ...
-Development / proof / evolution fitness: ...
-Decision: ...
-
-## Production Requirements
-### PRD-RPKG-...
-Requirement:
-...
-
-## Proof Requirements
-### PFR-RPKG-...
-Requirement:
-...
-
-## Evolution Impact
-### EVO-RPKG-...
 ...
 ```
-
-A Slice may depend on Aggregate/Shared/external owners. Judge isolation by change locality, not dependency absence.
-
-This durable owner is distinct from non-persistent Slice Discovery/Planning. Do not keep a working Slice plan merely to satisfy this template.
-
----
-
-## Template — Shared Implementation Capability
-
-```markdown
-# <semantic Shared Capability name>
-
-## Responsibility
-<reusable non-end-to-end implementation meaning>
-
-## Consumers
-- `SL-RPKG-...`
-
-## Contract / boundary
-<input/output/result/failure semantics>
-
-## Production Requirements
-- ...
-
-## Proof Requirements
-- ...
-
-## Evolution Impact
-- ...
-```
-
----
-
-## Template — owner-local Requirements Discovery note
-
-Use headings only when the reasoning is material.
-
-```markdown
-## Requirements Discovery
-
-### Correct Realization
-<what production must satisfy>
-
-### Correct Proof
-<what convincingly proves it>
-
-### Maintainability / Local Reasoning
-<cohesion, semantic contracts, local changeability>
-
-### Proof Maintainability / Local Reasoning
-<readability, diagnostics, low incidental coupling>
-
-### Evolution Fitness
-<known Evolution Steps and current production implications>
-
-### Proof Evolution Fitness
-<how proof stays valid or must evolve>
-```
-
-The six headings are not mandatory form fields. Group-level questions are the authority; use a smaller form when enough.
-
----
-
-## Template — Screen owner
-
-```markdown
-# Replacement Package App — Screens
-
-## Screen Map
-<durable Screen/window topology>
-
-## Scenario × Screen
-| Scenario | Screen/context | Role |
-|---|---|---|
-
-## Feature × Screen
-| Feature | Screen/context | Interaction role |
-|---|---|---|
-
-## <Screen readable name>
-Responsibility:
-...
-
-Screen-owned behavior / UI constraints:
-- ...
-
-## Evolution Impact
-- ...
-```
-
-Screen is spatial/window authority, not a frontend Slice.
-
----
 
 ## Template — Test Strategy / Proof allocation
 
@@ -834,7 +460,7 @@ Screen is spatial/window authority, not a frontend Slice.
 # Replacement Package App — Test Strategy
 
 ## Cross-owner proof decisions
-<only decisions genuinely shared across owners>
+<only genuinely shared decisions>
 
 ## Proof allocation
 | Behavior / Requirement | Owner | Proof layer | Evidence |
@@ -843,10 +469,6 @@ Screen is spatial/window authority, not a frontend Slice.
 ## Shared Test Capabilities
 - ...
 ```
-
-Local tests normally stay with their owning Slice/Aggregate/Shared implementation.
-
----
 
 ## Template — Practical Acceptance plan and Evidence
 
@@ -877,16 +499,13 @@ PASS | FAIL | INCONCLUSIVE
 
 Planned acceptance is not Evidence until executed.
 
----
+## Delegated working forms
 
-## Recommended generated implementation-trace output
+Full exact Slice/Aggregate planning is not duplicated here.
 
-Generated traces are derived/disposable navigation, never semantic authority.
+Use:
+- `DOC-UC-02` / `DOC-UC-03` for Domain/Slice-specific discovery;
+- [`session-methodology/exact-implementation-planning.md`](session-methodology/exact-implementation-planning.md) for generic exact classes/methods/files/call/data/state/test/edit planning;
+- [`methodology-guidance/reusable-ddd-domain-discovery.md`](methodology-guidance/reusable-ddd-domain-discovery.md) for recommended Domain ownership/layout reasoning.
 
-```text
-Feature / Requirement
-→ Slice / Aggregate / Shared owner
-→ source symbols/files
-→ test/proof symbols/files
-→ last verified source identity
-```
+Generated implementation traces remain derived/disposable navigation, not semantic authority.
