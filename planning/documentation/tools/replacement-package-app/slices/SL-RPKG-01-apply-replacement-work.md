@@ -1,73 +1,43 @@
-# SL-RPKG-01 — Apply Replacement Work
+# SL-RPKG-01 — Replacement Package Realization
 
 Status: active current Slice owner
 
 ## Result / Responsibility
 
-Realize one validated replacement package against the exact repository-work context. Current target-mode composition ensures Work Intent/workspace dependencies, applies exact package files, commits only proven package paths and publishes the exact ChangeSet branch with retry/recovery by persisted proof. Legacy Apply remains supported for already-existing legacy work.
+Realize one exact replacement package through explicit application operations:
 
-## Scenario behavior realized
+```text
+Apply Package
+Commit applied
+Publish
+Retry Publish
+```
 
-Feature Interaction context:
-- `FI-RPKG-RESOLVE-CURRENT-REPOSITORY-WORK`
-- `FI-RPKG-REALIZE-CURRENT-PACKAGE`
-- planned `FI-RPKG-REALIZE-REVIEWED-PACKAGE`
-
-Behavior Items realized:
-- `BI-RPKG-CURRENT-PREFLIGHT-BEFORE-MUTATION`
-- `BI-RPKG-CURRENT-APPLY-EXACT-PACKAGE`
-- `BI-RPKG-CURRENT-APPLY-EXACT-SOURCE`
-- `BI-RPKG-CURRENT-GIT-RETRY-RESUMES`
-- `BI-RPKG-CURRENT-PARTIAL-STATE-TRUTHFUL`
-- `BI-RPKG-CURRENT-PUBLICATION-UNCERTAIN-BLOCKS-NEXT`
-- `BI-RPKG-CURRENT-LEGACY-OWNERSHIP-PROTECTS-UNRELATED-WORK`
-- planned target Apply/Retry/Partial-state BIs referenced in [`../behavior-realization-map.md`](../behavior-realization-map.md)
-
-## Domain / Shared capabilities used
-
-- Repository Target
-- Work Intent
-- Repository Work / ChangeSet
-- package contract in `PACKAGE-PROTOCOL.md`
+The operations share durable `ReplacementPackageState`, `GitWorkspace`, package journals and one per-Work serialization boundary, while retaining independent operation Results. Automatic `OBS-ACTION apply-package` composes Start workspace → Apply → Commit → Publish as Scenario/entry convenience.
 
 ## Slice Implementation Items
 
-### SI-RPKG-APPLY-JOURNAL-BEFORE-MUTATION — Persist exact recovery evidence first
-Requirement:
-Before the first target-mode package-file mutation, persist exact package/base-head identity plus exact prior/intended package-path state sufficient to prove or recover the same operation.
+### SI-RPKG-CAPTURE-PACKAGE-ONCE
+The invocation validates/hashes the ZIP once and mutation consumes those captured bytes. A mutable archive path is never reread as later mutation authority.
 
-Reason:
-Interruption must be recoverable without guessing whether individual file side effects occurred.
+### SI-RPKG-APPLY-JOURNAL-BEFORE-MUTATION
+Persist exact package/workspace/base plus prior/intended bytes before first package-file mutation. A schema-3 journal begins with `applicabilityProven=false`; it may not restore bytes and retry requires the captured prior state to remain exact. Only successful applicability proof promotes it to recovery authority. Digest integrity and captured-package byte binding are checked independently.
 
-Derived from:
-`BI-RPKG-CURRENT-GIT-RETRY-RESUMES`, `BI-RPKG-CURRENT-PARTIAL-STATE-TRUTHFUL`.
+### SI-RPKG-PACKAGE-STATE-DURABLE
+Package state identity is fenced to exact WorkId/packageId. Corrupt/unreadable state fails closed.
 
-### SI-RPKG-RETRY-BY-PROOF-NOT-RESTART — Resume from proven execution state
-Requirement:
-Retry must prove established workspace/file/commit/remote side effects and continue from the latest proven boundary instead of blindly re-running the whole operation.
+### SI-RPKG-WORK-OPERATION-LOCK
+Start workspace / Apply / Commit / Publish for one Work serialize through a dedicated same-thread re-entrant `WorkOperationLock` application port; package-state persistence is not the semantic lock owner and lock failure is an operation failure, not state evidence.
 
-Reason:
-Apply, commit and push cross durable/externally visible boundaries.
+### SI-RPKG-PUBLISH-CONFIRM-BEFORE-SIDE-EFFECT
+Every not-yet-published Publish invocation observes through a verified isolated fetch transport endpoint before a possible push; any possible push uses a separately verified isolated push transport endpoint. Unexpected tip or foreign destination fails before push. Registered-repository remote aliases and Git `url.*.insteadOf` / `pushInsteadOf` rewrites are not consulted by the actual network command after endpoint capture. Durable `NotConfirmed` guards the possible-push boundary.
+
+### SI-RPKG-ISOLATED-GIT-TRANSPORT
+Shared implementation capability owns GitHub RepositoryIdentity normalization plus isolated fetch / remote observation / push execution. It snapshots only permitted transport/authentication config, excludes URL-rewrite rules from the network execution environment and moves Git objects across the isolation boundary only through local bundle/unbundle mechanics.
+
+### SI-RPKG-NO-LEGACY-RUNTIME-AUTHORITY
+Target package realization does not read/write `Core.ChangeSet.executionState`, `lastPackageId`, `commitSha` or `publishedTip`. Old persisted works are not imported.
 
 ## Tests
 
-Primary current proof responsibility: repository/integration cases in `CoreTests` using real disposable Git repositories/remotes where file/index/commit/remote semantics matter.
-
-### Test Items
-
-#### TST-RPKG-APPLY-NO-MUTATION-ON-PREFLIGHT-FAILURE
-Requirement:
-Negative applicability/identity/ownership tests must assert that repository state remains unchanged when failure is required before mutation.
-
-Reason:
-A thrown error alone does not prove the fail-closed boundary.
-
-#### TST-RPKG-APPLY-RECOVERY-PROVES-SIDE-EFFECTS
-Requirement:
-Crash/retry cases must establish both the persisted state and the real filesystem/Git/remote side effect used to justify resume.
-
-## Evolution Impact
-
-### EVO-RPKG-ADOPT-REVIEWED-RESULT-WORKFLOW
-Expansion:
-Consume Builder review identity with the exact package and preserve it through published result confirmation. Existing package realization mechanics should remain reusable rather than being reimplemented as a separate reviewed-package apply engine.
+Target Feature/Scenario integration proves file-only Apply, separate/recoverable Commit, exact Publish, no blind retry, persistence failure fences, unexpected-tip rejection, sequential packages, workspace recovery, automatic composition and idempotence without creating `Core.ChangeSet`.

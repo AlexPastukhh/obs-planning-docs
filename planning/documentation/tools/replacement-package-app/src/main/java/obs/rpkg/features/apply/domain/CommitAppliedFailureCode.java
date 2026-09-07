@@ -1,0 +1,11 @@
+package obs.rpkg.features.apply.domain;
+
+public enum CommitAppliedFailureCode {
+    PACKAGE_STATE_NOT_FOUND,
+    PACKAGE_IDENTITY_MISMATCH,
+    COMMIT_FAILED,
+    STATE_DIVERGED,
+    STATE_PERSISTENCE_FAILED,
+    OPERATION_SERIALIZATION_FAILED,
+    UNEXPECTED_LEGACY_FAILURE
+}

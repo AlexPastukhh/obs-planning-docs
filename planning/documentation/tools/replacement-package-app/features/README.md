@@ -1,12 +1,15 @@
 # Replacement Package App — Features
 
-Status: target Feature catalog
+Status: current target Feature catalog
 
-Feature owners are the primary behavioral authority. Current legacy FI/BI owners remain current truth until separately reconciled/promoted.
-
+Replacement-package realization:
 - `F-RPKG-APPLY-REPLACEMENT-PACKAGE.md`
-- `F-RPKG-FINALIZE-REPOSITORY-WORK.md`
-- `F-RPKG-EXPORT-REPOSITORY-SNAPSHOT.md`
-- `F-RPKG-INSPECT-CURRENT-CHANGE.md`
+- `F-RPKG-COMMIT-APPLIED-PACKAGE.md`
+- `F-RPKG-PUBLISH-APPLIED-COMMIT.md`
 
-Scenario owners compose these Features; they do not duplicate Feature internals.
+Separate current capability:
+- `F-RPKG-EXPORT-REPOSITORY-SNAPSHOT.md`
+
+Legacy-source Feature documents for old Current Change/Finalize behavior are not current target runtime authority. The already-deployed old executable owns those old workflows.
+
+Scenario owners may compose Start workspace → Apply → Commit → Publish without merging operation Results or inventing a generic Resume-to-extent contract.

@@ -1,0 +1,17 @@
+package obs.rpkg.features.apply.domain;
+
+/** Feature-local failure vocabulary for the concrete Apply Package operation. */
+public enum ApplyFailureCode {
+    INVALID_PACKAGE,
+    PACKAGE_IDENTITY_MISMATCH,
+    PACKAGE_IDENTITY_UNVERIFIABLE,
+    REPOSITORY_MISMATCH,
+    EXPECTED_SOURCE_CHANGED,
+    EXPECTED_SOURCE_UNVERIFIABLE,
+    REPOSITORY_NOT_READY,
+    STATE_DIVERGED,
+    ROLLBACK_UNVERIFIED,
+    STATE_PERSISTENCE_FAILED,
+    OPERATION_SERIALIZATION_FAILED,
+    UNEXPECTED_LEGACY_FAILURE
+}

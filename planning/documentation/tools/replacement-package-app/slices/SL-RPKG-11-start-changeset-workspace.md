@@ -1,40 +1,26 @@
-# SL-RPKG-11 — Start ChangeSet Workspace
+# SL-RPKG-11 — Start Work Workspace
 
 Status: active current Slice owner
 
 ## Result / Responsibility
 
-Ensure one isolated exact Git-backed workspace for a new target-mode ChangeSet, pinned to an exact target branch source and recoverable/idempotent through a durable workspace journal.
-
-## Scenario behavior realized
-
-Supports:
-- `FI-RPKG-REALIZE-CURRENT-PACKAGE`
-- planned `FI-RPKG-REALIZE-REVIEWED-PACKAGE`
-
-Behavior Items:
-- supports `BI-RPKG-CURRENT-EXACT-REPOSITORY-TARGET`
-- supports `BI-RPKG-CURRENT-GIT-RETRY-RESUMES`
-- supports target exact-source/package realization BIs
+Ensure one isolated exact Git-backed `GitWorkspace` for WorkId, pinned to exact target branch source and recoverable/idempotent through a durable workspace journal.
 
 ## Domain used
 
-Repository Target; Repository Work / ChangeSet; Work Intent reference.
+Repository Target; WorkId; GitWorkspace; Work Intent correlation.
 
 ## Slice Implementation Items
 
 ### SI-RPKG-WORKSPACE-PINNED-SOURCE
-Requirement:
-Workspace creation must resolve and persist exact `baseCommit/publishedTip` from the explicit target branch, then create/verify the deterministic ChangeSet branch/worktree in the same Git common repository.
+Capture one verified origin fetch transport endpoint, snapshot permitted transport/authentication config, fetch exact `targetBranch` in isolated temporary Git state, import fetched objects through local bundle/unbundle, persist the fetched commit as immutable initial `baseCommit`, then create/verify the deterministic Work branch/worktree in the registered Git common repository. Local target-branch position, later re-resolution of mutable `origin`, and later Git URL rewrites are not source authority.
 
 ### SI-RPKG-WORKSPACE-JOURNAL-BEFORE-GIT-MUTATION
-Requirement:
-Persist exact workspace intent before branch/worktree mutation so retry adopts only journal-owned partial effects and fails closed on unjournaled deterministic collisions.
+Persist exact workspace intent before branch/worktree mutation. Retry adopts only journal-owned deterministic partial effects and fails closed on unjournaled collisions. If `GitWorkspace` already exists, any leftover journal must match it exactly before deletion.
+
+### SI-RPKG-WORKSPACE-OWNER-CUTOVER
+Persist `GitWorkspace` as runtime authority. Start workspace does not create or update `Core.ChangeSet`.
 
 ## Tests
 
-`CoreTests` for exact target-branch pinning, deterministic branch/worktree/common-repository verification, idempotency, journal recovery/collision behavior and migration guards. Swing source contracts cover the current diagnostic Start workspace control.
-
-## Evolution Impact
-
-Reviewed-result identity extends the ChangeSet after package publication; it does not require a second workspace owner if current pinned workspace semantics remain sufficient.
+Feature/Scenario integration proves stale-local/fresh-origin target-branch pinning, transport isolation from post-verification `insteadOf`, deterministic branch/worktree identity, durable `GitWorkspace`, no `Core.ChangeSet`, idempotence, recovery after Git effects but before final workspace-state persistence, and conflicting-journal rejection.

@@ -7,6 +7,37 @@ call ..\replacement-package-common\build.cmd || exit /b 1
 xcopy /e /i /y "..\replacement-package-common\build\classes\*" "build\classes\" >nul || exit /b 1
 call javac --release 21 -cp build\classes -d build\classes ^
   src\main\java\obs\rpkg\Core.java ^
+  src\main\java\obs\rpkg\foundation\result\Result.java ^
+  src\main\java\obs\rpkg\foundation\result\OperationResult.java ^
+  src\main\java\obs\rpkg\work\domain\WorkId.java ^
+  src\main\java\obs\rpkg\work\domain\RepositoryTarget.java ^
+  src\main\java\obs\rpkg\work\domain\GitWorkspace.java ^
+  src\main\java\obs\rpkg\work\application\port\GitWorkspaceRepository.java ^
+  src\main\java\obs\rpkg\work\application\port\WorkOperationLock.java ^
+  src\main\java\obs\rpkg\work\infrastructure\FileGitWorkspaceRepository.java ^
+  src\main\java\obs\rpkg\work\infrastructure\FileWorkOperationLock.java ^
+  src\main\java\obs\rpkg\GitTransport.java ^
+  src\main\java\obs\rpkg\WorkPackageRuntime.java ^
+  src\main\java\obs\rpkg\work\application\StartWorkWorkspace.java ^
+  src\main\java\obs\rpkg\features\apply\domain\OperationFailureDisposition.java ^
+  src\main\java\obs\rpkg\features\apply\domain\ReplacementPackageIdentity.java ^
+  src\main\java\obs\rpkg\features\apply\domain\PublicationObservation.java ^
+  src\main\java\obs\rpkg\features\apply\domain\ReplacementPackageState.java ^
+  src\main\java\obs\rpkg\features\apply\domain\ApplyFailureCode.java ^
+  src\main\java\obs\rpkg\features\apply\domain\ApplyFailure.java ^
+  src\main\java\obs\rpkg\features\apply\domain\CommitAppliedFailureCode.java ^
+  src\main\java\obs\rpkg\features\apply\domain\CommitAppliedFailure.java ^
+  src\main\java\obs\rpkg\features\apply\domain\PublishFailureCode.java ^
+  src\main\java\obs\rpkg\features\apply\domain\PublishFailure.java ^
+  src\main\java\obs\rpkg\features\apply\infrastructure\ReplacementPackageStateRepository.java ^
+  src\main\java\obs\rpkg\features\apply\infrastructure\FileReplacementPackageStateRepository.java ^
+  src\main\java\obs\rpkg\features\apply\infrastructure\PublicationObserver.java ^
+  src\main\java\obs\rpkg\features\apply\infrastructure\GitPublicationObserver.java ^
+  src\main\java\obs\rpkg\features\apply\application\ReplacementPackageStateAccess.java ^
+  src\main\java\obs\rpkg\features\apply\application\ApplyReplacementPackage.java ^
+  src\main\java\obs\rpkg\features\apply\application\CommitAppliedPackage.java ^
+  src\main\java\obs\rpkg\features\apply\application\PublishAppliedCommit.java ^
+  src\main\java\obs\rpkg\features\apply\application\AutomaticPackageRealization.java ^
   src\main\java\obs\rpkg\ReviewChatTitleMatcher.java ^
   src\main\java\obs\rpkg\ChatBridgeService.java ^
   src\main\java\obs\rpkg\ChatBridgeServer.java ^
@@ -20,9 +51,12 @@ call javac --release 21 -cp build\classes -d build\classes ^
   src\main\java\obs\rpkg\StateStore.java ^
   src\main\java\obs\rpkg\WindowsLauncherInstaller.java || exit /b 1
 call javac --release 21 -cp build\classes -d build\test-classes ^
-  src\test\java\obs\rpkg\CoreTests.java ^
+  src\test\java\obs\rpkg\work\domain\WorkAggregateTests.java ^
+  src\test\java\obs\rpkg\ApplyFeatureTestSupport.java ^
+  src\test\java\obs\rpkg\PackageProtocolTests.java ^
+  src\test\java\obs\rpkg\features\apply\PackageApplicabilityTests.java ^
+  src\test\java\obs\rpkg\features\apply\ApplyReplacementPackageFeatureIntegrationTests.java ^
   src\test\java\obs\rpkg\ApplyReceiptTests.java ^
-  src\test\java\obs\rpkg\ChatBridgeTests.java ^
   src\test\java\obs\rpkg\WindowsLauncherInstallerTests.java || exit /b 1
 call jar --create --file build\replacement-package-app.jar --main-class obs.rpkg.Main -C build\classes . || exit /b 1
 echo BUILD SUCCESS build\replacement-package-app.jar

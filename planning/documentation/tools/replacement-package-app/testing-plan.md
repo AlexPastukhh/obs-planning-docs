@@ -1,87 +1,55 @@
 # Replacement Package App — Test Strategy
 
-Status: active shared Test Strategy
-Scope: proof-layer allocation, non-duplication rules, shared test environment decisions and critical cross-owner proof boundaries. Canonical behavior remains in Scenario BI; local implementation proof belongs with Domain/Slice/shared implementation owners.
+Status: active target strategy
 
-## Proof authority rule
+Tests prove selected behavior; they do not define it.
 
-```text
-Scenario / Screen / Domain / Slice requirement
-→ selected property
-→ smallest credible proof boundary
-→ automated test and/or Practical Acceptance
-→ executed Evidence
-```
+## Target automated gates
 
-Tests prove required meaning; they do not create application semantics.
+### WorkAggregateTests
+Prove:
+- WorkId/RepositoryTarget/GitWorkspace shapes and shared Git transport RepositoryIdentity normalization;
+- exact archive identity requirement;
+- ReplacementPackageState publication semantics;
+- same-commit evidence preservation;
+- exact persisted-key fencing;
+- per-Work `WorkOperationLock` serialization across independent lock instances/processes and same-thread re-entrancy;
+- one unfinished package under concurrency;
+- no legacy package-state import.
 
-A failed/passing test run is Evidence only for the exact source/build/environment exercised. This file does not claim tests have passed merely because a responsibility is documented.
+### PackageProtocolTests
+Prove active schema-1 consumer rules without legacy ChangeSet behavior: valid add/replace/delete payload shape, traversal/absolute-path rejection, case collisions, undeclared payload rejection, action payload requirements, ZIP-entry collisions and Work Intent identity consistency.
 
-## Test-first default
+### PackageApplicabilityTests
+Prove file applicability at the target Apply boundary: exact add/replace/delete, Git-equivalent source acceptance, binary divergence fail-closed behavior, add-target absence, clean-filter unverifiable failure, and exact retries that cannot promote previously failed add/delete/replace into Applied state or restore externally changed bytes from an unproven journal.
 
-Once selected meaning and a credible executable proof boundary are known:
-1. express/identify the authoritative BI/invariant/DI/SI/Screen requirement;
-2. add or change the smallest failing proof that can credibly observe it;
-3. implement the production change;
-4. refactor while keeping the selected property proved.
+### ApplyReplacementPackageFeatureIntegrationTests
+Prove end-to-end application-service boundaries with real Git where practical:
+- Start Workspace captures/verifies the exact target transport endpoint, cannot be redirected by later origin or `insteadOf` mutation, persists GitWorkspace and creates no Core.ChangeSet;
+- package ZIP is captured once; later path replacement cannot change applied bytes/identity;
+- Apply state-write recovery via schema-3 proven journal, independent digest-corruption and captured-payload-binding rejection, previous-journal-schema fail-closed behavior, and package RepositoryIdentity fencing;
+- Commit is separate and recovers exact existing commit after state-write failure;
+- Publish confirms exact remote tip without ChangeSet authority;
+- pre-push NotConfirmed persistence failure blocks push;
+- post-push final-state persistence failure leaves durable NotConfirmed;
+- uncertain Retry confirms before another push;
+- unexpected remote tip and foreign effective origin push URL fail before push; isolated fetch/observation/push endpoints cannot be redirected by later remote-alias, `insteadOf` or `pushInsteadOf` mutation; repository mismatch remains an operation failure rather than false state divergence;
+- every not-yet-published Publish invocation refreshes remote observation before any possible push;
+- sequential packages derive previous tip from package journal;
+- workspace creation recovers after state persistence failure and conflicting leftover journals fail closed;
+- Work lock acquisition failure is operation-local rather than false state divergence;
+- automatic OBS action composes Start → Apply → Commit → Publish and is idempotent.
 
-Use experiments/prototypes only for genuinely unresolved feasibility/design/proof questions. Return to the test-first path after the uncertainty is resolved.
+### ApplyReceiptTests
+Prove schema-1 result formatting remains stable. `status: applied` is top-level handoff only after automatic publication proof.
 
-## Proof layers
+### WindowsLauncherInstallerTests
+Keep launcher packaging mechanics proof while the launcher remains part of distributable application operation.
 
-1. **Deterministic/component proof** — parsing, validation, pure projection/state/invariant/helper rules.
-2. **Repository/integration proof** — disposable real Git repositories, worktrees, indexes, filesystems, state stores and bare remotes when Git/file/durable-state semantics are the property.
-3. **Bridge/DOM proof** — Java bridge task truth and deterministic extension/adapter behavior that does not require claiming a live external browser session.
-4. **Practical Acceptance / Evidence** — real Swing/Windows/Edge/ChatGPT/GitHub authentication/network properties not established by deterministic automation.
+## Legacy tests
 
-`run-tests.cmd` remains the standard automated entry for the current implementation; exact test composition is source authority and may evolve.
+`CoreTests`, `ChatBridgeTests` and DOM bridge regressions belong to the previous legacy executable/source behavior and are intentionally removed from the target build gate. Target-critical package protocol/applicability cases formerly living in `CoreTests` are re-owned by `PackageProtocolTests` and `PackageApplicabilityTests`; legacy UI/chat cases are not.
 
-## Local proof ownership
+## Practical acceptance
 
-Focused owners now carry the detailed proof responsibilities:
-- Domain owners: semantic invariants/identity/consistency proof where independently useful.
-- [`slices/`](slices/) — orchestration, repository boundary, recovery, integration and local Test Items.
-- [`shared-implementation/chatgpt-handoff.md`](shared-implementation/chatgpt-handoff.md) — shared bridge/DOM proof quality.
-- [`screens.md`](screens.md) — current Screen BIs; automated source/UI contracts may support them, while real usability/layout stays practical.
-
-[`behavior-realization-map.md`](behavior-realization-map.md) is derived navigation from BI to those owners; it is not a second test specification.
-
-## Critical cross-owner guarantees
-
-Automated proof should continue to cover, at the smallest credible integration boundary:
-- invalid package/target/source/ownership/workspace preflight causes no repository mutation;
-- exact Git-backed execution is pinned to persisted Repository Target / branch / worktree / commit identities rather than mutable UI/current-checkout convenience;
-- uncertain external or remote side effects are reconciled before retry can repeat them;
-- target-mode package Apply mutates only the isolated ChangeSet workspace, Commit captures only intended package paths, and Publish cannot overwrite an unexpected remote tip;
-- legacy owned-path Finalize cannot capture unrelated repository work;
-- Current Change/Snapshot derivation does not perturb the real Git index;
-- Local Snapshot cannot publish a mixed moving-state artifact;
-- browser delivery cannot become repository authorization;
-- possible-Send uncertainty cannot be rewritten into false clean cancellation or blindly resent.
-
-## Planned reviewed-result proof
-
-The selected planned Scenario requires new proof before promotion to current:
-- Builder review identity is accepted only for the exact package/source/predicted-result tuple;
-- after consumer publication, actual Git tree identity equals the reviewed predicted result tree;
-- mismatch/uncertainty fails closed and preserves useful evidence;
-- equality proof avoids a redundant second semantic review;
-- exactly one correct/current integration PR represents the ChangeSet;
-- target movement that preserves reviewed result does not automatically stale approval;
-- content-changing reconciliation invalidates prior approval before Finalize;
-- finalized target work is closed to silent package continuation.
-
-These are proof obligations, not claims of current implementation or passing tests.
-
-## Shared environment / non-duplication rules
-
-- Prefer real disposable Git repositories/remotes when Git object/ref/index/worktree semantics are under test; mocking Git commands is not equivalent proof.
-- Do not restate every BI as a Test Item. Add a Test Item only for non-obvious proof quality such as no-mutation, durable restart, isolation, public-boundary observation or false-positive prevention.
-- Do not reproduce class/method call graphs in documentation; source/test code owns exact mechanics.
-- Do not create a Shared Test Capability merely because multiple suites use ordinary test utilities. Add one only when reusable test machinery has its own durable responsibility.
-
-## Practical boundary
-
-Real Swing responsiveness/layout, Windows notifications, installed Edge extension lifecycle, live ChatGPT conversation discovery/attachment/Send behavior, current DOM compatibility and live GitHub CLI auth/network behavior require Practical Acceptance and executed Evidence where they materially matter.
-
-Current operated checklist/evidence remains in [`MANUAL-ACCEPTANCE.md`](MANUAL-ACCEPTANCE.md) until a later acceptance-owner migration is justified.
+See `MANUAL-ACCEPTANCE.md` for real filesystem/Git/remote/UI checks. GitHub status checks are separate evidence and must not be inferred from local test success.
