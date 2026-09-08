@@ -1,3 +1,12 @@
+# Legacy Parallel-Work Scope Registry
+
+Status: legacy/provenance
+Original current path: `parallel-work-scope-registry.md`
+
+The fixed registered-scope coordination architecture is retired. Future branch-based coordination is intentionally not defined by this provenance file and requires its own current methodology/owner before use.
+
+## Preserved Former Content
+
 # Parallel Work Scope Registry
 
 Status: active project-specific canonical registry

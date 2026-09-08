@@ -5,7 +5,7 @@ Scope: AI/chat sessions that plan, develop or materially change repository docum
 
 ## Mandatory Rule
 
-Before material work, resolve the applicable semantic entry (Workspace/methodology Use Case, Application Scenario, or other specialized current owner) and follow its canonical owner route. Conversation memory, examples, generated projections, historical artifacts and implementation alone are not semantic authority.
+Before material work, select the relevant area through current README/navigation, resolve that area's applicable semantic entry/current owner, and follow its canonical owner route. Conversation memory, examples, generated projections, historical artifacts and implementation alone are not semantic authority.
 
 For material planning/development answers also follow the installed peer [`documentation/idtspe-methodology/active/ai-reviewability/README.md`](documentation/idtspe-methodology/active/ai-reviewability/README.md).
 
@@ -61,12 +61,12 @@ Start from:
 
 ```text
 planning/README.md
-relevant primary semantic registry
-  - Use-Case Registry for Workspace/methodology work
-  - Scenario Catalog for Application behavior
+→ relevant area
+→ follow that area's own current navigation
+→ canonical owner
 ```
 
-For material answer-seeking uncertainty use the shared Idea methodology. For an application, behavioral identity and detailed behavior belong directly to Scenario owners reached from its Scenario Catalog.
+Do not impose generic Documentation navigation types onto a specialized methodology/application area. When IDTSPE/SDS or another methodology is selected, its own current owners define its semantic route.
 
 When a current integrated plan already exists, treat it as the current working baseline and integrate new selected meaning into the real Scenario/UC/Domain/Slice owners rather than creating a transcript of planning answers.
 
@@ -118,13 +118,3 @@ historical record ≠ current ontology
 ## Authority
 
 This contract routes to canonical owners. If it conflicts with a linked canonical principle/workflow owner, the canonical owner wins and this contract must be corrected.
-
-## Registered Parallel-Work Scopes And Logs
-
-Before material mutation/package work, read `../parallel-work-scope-registry.md` when scope boundaries are relevant.
-
-- Use registered scopes; do not invent a new partition ad hoc.
-- When work touches several scopes, select one canonical affected scope log for the full record and update the other affected logs with references.
-- When logging is active, preserve material Idea Review, later material clarification and material ReviewDiff correction meaning in the target-state scope log through the next approved replacement package.
-- Logging never reconstructs work before the user's explicit logging-start boundary.
-- A replacement package must leave files and required scope logs/references coherent immediately after successful Apply.

@@ -68,7 +68,7 @@ ID | Use Case | Owner
 
 A registry does not duplicate Situation, Result, or Process bodies.
 
-At repository level, the root registry should expose the complete current Use-Case landscape and the owner location of every Use Case. During staged migration, explicit compatibility routes may temporarily preserve unresolved legacy families.
+A registry must cover every current Use Case in its declared functional scope and point to each canonical owner. It does not aggregate neighboring Session, repository, application, or specialized-methodology capabilities merely because they exist in the same repository. Structural README/navigation routes between scopes. During staged migration, explicit compatibility routes may temporarily preserve unresolved legacy entries inside the affected scope.
 
 ## README
 
@@ -195,7 +195,7 @@ Structural navigation and functional navigation are different:
 - README answers **what is here and what is it responsible for?**
 - Use-Case Registry answers **what meaningful results can I obtain and where does each Use Case live?**
 
-Neither should duplicate the other's semantic body.
+Neither should duplicate the other's semantic body. Cross-scope navigation starts from README/area navigation; each area owns its own current functional or methodology-specific navigation model.
 
 ## Progressive Complexity Principle
 

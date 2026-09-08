@@ -147,19 +147,6 @@
       "result": "reconciled current planning meaning plus a concrete reviewable repository realization/handoff surface to the selected depth; an ordered File Update Plan is included only when that separate capability is selected/useful, otherwise an explicit unresolved/deferred state is allowed."
     },
     {
-      "id": "UC-IDTSPE-REVIEW-CONSISTENCY",
-      "label": "Review IDTSPE Plan Consistency",
-      "description": "Review IDTSPE Plan Consistency",
-      "sources": [
-        "planning/use-case-registry.md"
-      ],
-      "instruction": "Resolve UC-IDTSPE-REVIEW-CONSISTENCY in the current canonical registry and follow its current owner route (documentation/idtspe-methodology/active/idtspe-core/shared/consistency-review-use-case.md). Preserve its boundaries and permission model; this Helper projection is invocation/navigation only.",
-      "target": "<Review IDTSPE Plan Consistency target>",
-      "manualInvocation": true,
-      "trigger": "",
-      "result": ""
-    },
-    {
       "id": "UC-PLAN-APP-CONCEPT",
       "label": "Plan / Review Application Concept",
       "description": "explore candidate own-Application contribution before/inside Application Definition",
@@ -588,19 +575,6 @@
       "commandId": "session.end"
     },
     {
-      "id": "UC-REPO-AUDIT-REVIEW",
-      "label": "Audit Review Coverage And Quality",
-      "description": "Audit Review Coverage And Quality",
-      "sources": [
-        "planning/use-case-registry.md"
-      ],
-      "instruction": "Resolve UC-REPO-AUDIT-REVIEW in the current canonical registry and follow its current owner route (documentation/review-audit-workflow.md). Preserve its boundaries and permission model; this Helper projection is invocation/navigation only.",
-      "target": "<Audit Review Coverage And Quality target>",
-      "manualInvocation": true,
-      "trigger": "",
-      "result": ""
-    },
-    {
       "id": "UC-REPO-BUILD-REPLACEMENT-PACKAGE",
       "label": "Build Replacement Package",
       "description": "One protocol-valid Replacement Package ZIP exists with a new package identity, the correct ChangeSet identity, exact required base/replacement payloads, and a short OBS-ACTION handoff.",
@@ -612,45 +586,6 @@
       "manualInvocation": true,
       "trigger": "An intended repository transition is sufficiently resolved to transport as a Replacement Package and exact current base state for every replace / delete operation is available.",
       "result": "One protocol-valid Replacement Package ZIP exists with a new package identity, the correct ChangeSet identity, exact required base/replacement payloads, and a short OBS-ACTION handoff."
-    },
-    {
-      "id": "UC-REPO-CRITICAL-REVIEW",
-      "label": "Critically Review A Claim / Plan / Diff",
-      "description": "Critically Review A Claim / Plan / Diff",
-      "sources": [
-        "planning/use-case-registry.md"
-      ],
-      "instruction": "Resolve UC-REPO-CRITICAL-REVIEW in the current canonical registry and follow its current owner route (shared Idea owners + selected target/current owners + documentation/review-diff-review-workflow.md when target is ReviewDiff). Preserve its boundaries and permission model; this Helper projection is invocation/navigation only.",
-      "target": "<Critically Review A Claim / Plan / Diff target>",
-      "manualInvocation": true,
-      "trigger": "",
-      "result": ""
-    },
-    {
-      "id": "UC-REPO-CURRENT-STATE",
-      "label": "Report Current Repository / Planning State",
-      "description": "Report Current Repository / Planning State",
-      "sources": [
-        "planning/use-case-registry.md"
-      ],
-      "instruction": "Resolve UC-REPO-CURRENT-STATE in the current canonical registry and follow its current owner route (this registry → documentation/status-reconciliation-workflow.md → selected current owners). Preserve its boundaries and permission model; this Helper projection is invocation/navigation only.",
-      "target": "<Report Current Repository / Planning State target>",
-      "manualInvocation": true,
-      "trigger": "",
-      "result": ""
-    },
-    {
-      "id": "UC-REPO-DEFINE-PARALLEL-SCOPES",
-      "label": "Define / Maintain Fixed Parallel-Work Scopes",
-      "description": "Define / Maintain Fixed Parallel-Work Scopes",
-      "sources": [
-        "planning/use-case-registry.md"
-      ],
-      "instruction": "Resolve UC-REPO-DEFINE-PARALLEL-SCOPES in the current canonical registry and follow its current owner route (../parallel-work-scope-registry.md + documentation/parallel-work-scope-and-action-log-workflow.md). Preserve its boundaries and permission model; this Helper projection is invocation/navigation only.",
-      "target": "<Define / Maintain Fixed Parallel-Work Scopes target>",
-      "manualInvocation": true,
-      "trigger": "",
-      "result": ""
     },
     {
       "id": "UC-REPO-MAINTAIN-PLANNING-COMMAND",
@@ -679,45 +614,6 @@
       "result": "A reusable prompt exists that performs its interaction/bootstrap job concisely while deferring semantic authority and permission to current repository owners/routes."
     },
     {
-      "id": "UC-REPO-ORIENT",
-      "label": "Orient In Repository And Resolve Work Route",
-      "description": "Orient In Repository And Resolve Work Route",
-      "sources": [
-        "planning/use-case-registry.md"
-      ],
-      "instruction": "Resolve UC-REPO-ORIENT in the current canonical registry and follow its current owner route (README.md → planning/README.md → registries). Preserve its boundaries and permission model; this Helper projection is invocation/navigation only.",
-      "target": "<Orient In Repository And Resolve Work Route target>",
-      "manualInvocation": true,
-      "trigger": "",
-      "result": ""
-    },
-    {
-      "id": "UC-REPO-PARALLEL-WORK",
-      "label": "Work In Registered Parallel Scope(s)",
-      "description": "Work In Registered Parallel Scope(s)",
-      "sources": [
-        "planning/use-case-registry.md"
-      ],
-      "instruction": "Resolve UC-REPO-PARALLEL-WORK in the current canonical registry and follow its current owner route (../parallel-work-scope-registry.md + documentation/parallel-work-scope-and-action-log-workflow.md). Preserve its boundaries and permission model; this Helper projection is invocation/navigation only.",
-      "target": "<Work In Registered Parallel Scope(s) target>",
-      "manualInvocation": true,
-      "trigger": "",
-      "result": ""
-    },
-    {
-      "id": "UC-REPO-PLAN-NEXT",
-      "label": "Plan The Next Concrete Step",
-      "description": "Plan The Next Concrete Step",
-      "sources": [
-        "planning/use-case-registry.md"
-      ],
-      "instruction": "Resolve UC-REPO-PLAN-NEXT in the current canonical registry and follow its current owner route (selected Use Case / Scenario / current owners). Preserve its boundaries and permission model; this Helper projection is invocation/navigation only.",
-      "target": "<Plan The Next Concrete Step target>",
-      "manualInvocation": true,
-      "trigger": "",
-      "result": ""
-    },
-    {
       "id": "UC-REPO-PLAN-UPDATE",
       "label": "Plan Repository Update",
       "description": "One concrete repository update plan exists with the affected current owners/paths, intended add / replace / delete operations, material ordering/dependencies, preservation boundaries, and verification.",
@@ -731,19 +627,6 @@
       "result": "One concrete repository update plan exists with the affected current owners/paths, intended add / replace / delete operations, material ordering/dependencies, preservation boundaries, and verification."
     },
     {
-      "id": "UC-REPO-REFINE-CURRENT-PLAN",
-      "label": "Refine The Current Plan",
-      "description": "Refine The Current Plan",
-      "sources": [
-        "planning/use-case-registry.md"
-      ],
-      "instruction": "Resolve UC-REPO-REFINE-CURRENT-PLAN in the current canonical registry and follow its current owner route (documentation/idtspe-methodology/active/idtspe-core/IDTSPE-DEFAULT-WORK-MODE.md + documentation/idtspe-methodology/active/idtspe-core/IDTSPE-SHELL.md). Preserve its boundaries and permission model; this Helper projection is invocation/navigation only.",
-      "target": "<Refine The Current Plan target>",
-      "manualInvocation": true,
-      "trigger": "",
-      "result": ""
-    },
-    {
       "id": "UC-REPO-REVIEW-DIFF",
       "label": "Review Repository ReviewDiff",
       "description": "The transition has a grounded semantic verdict — APPROVABLE, NEEDS CORRECTION, or BLOCKED BY MATERIAL DECISION — with material findings and the required correction direction when applicable.",
@@ -755,32 +638,6 @@
       "manualInvocation": true,
       "trigger": "A ReviewDiff representing a proposed/applied repository transition is selected for semantic review.",
       "result": "The transition has a grounded semantic verdict — APPROVABLE, NEEDS CORRECTION, or BLOCKED BY MATERIAL DECISION — with material findings and the required correction direction when applicable."
-    },
-    {
-      "id": "UC-REPO-REVIEW-PLANNING-FINDINGS",
-      "label": "Review Planning Findings / Q/R/P Completeness",
-      "description": "Review Planning Findings / Q/R/P Completeness",
-      "sources": [
-        "planning/use-case-registry.md"
-      ],
-      "instruction": "Resolve UC-REPO-REVIEW-PLANNING-FINDINGS in the current canonical registry and follow its current owner route (documentation/planning-findings-review-workflow.md + documentation/planning-concerns-and-decisions-model.md). Preserve its boundaries and permission model; this Helper projection is invocation/navigation only.",
-      "target": "<Review Planning Findings / Q/R/P Completeness target>",
-      "manualInvocation": true,
-      "trigger": "",
-      "result": ""
-    },
-    {
-      "id": "UC-REPO-USE-ARCHIVE-SOURCE",
-      "label": "Use An Explicit Archive As Read Source",
-      "description": "Use An Explicit Archive As Read Source",
-      "sources": [
-        "planning/use-case-registry.md"
-      ],
-      "instruction": "Resolve UC-REPO-USE-ARCHIVE-SOURCE in the current canonical registry and follow its current owner route (selected archive + applicable owners). Preserve its boundaries and permission model; this Helper projection is invocation/navigation only.",
-      "target": "<Use An Explicit Archive As Read Source target>",
-      "manualInvocation": true,
-      "trigger": "",
-      "result": ""
     },
     {
       "id": "UC-SESSION-CHECKPOINT",

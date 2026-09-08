@@ -246,7 +246,7 @@ domain-and-implementation
 → stable conceptual structure / variation boundaries / implementation decomposition / delivery / verification
 ```
 
-A physical folder is not automatically a registered parallel-work scope or semantic owner.
+A physical folder is organization only and does not automatically become a semantic owner.
 
 ### Root intake rule
 

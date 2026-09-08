@@ -1,6 +1,6 @@
 # Documentation
 
-Generic reusable methodology for repository documentation. The fundamental Documentation capabilities are independent of IDTSPE and other project methodologies.
+Generic reusable methodology for repository documentation. The fundamental Documentation capabilities are independent of IDTSPE and other project methodologies. The physical location of a specialized methodology under `planning/documentation/` does not make that methodology's semantic units part of generic Documentation methodology.
 
 ## Current Owners
 

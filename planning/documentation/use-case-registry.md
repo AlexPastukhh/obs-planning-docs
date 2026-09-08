@@ -1,6 +1,6 @@
 # Documentation Use-Case Registry
 
-## Fundamental Current Capabilities
+Status: active scoped functional registry
 
 ### Documentation Change / Review
 
@@ -20,11 +20,3 @@
 | `UC-DOC-MAINTAIN-EXAMPLE` | Maintain Documentation Example | [`use-cases/UC-DOC-MAINTAIN-EXAMPLE.md`](use-cases/UC-DOC-MAINTAIN-EXAMPLE.md) |
 | `UC-DOC-MAINTAIN-README` | Maintain README Navigation | [`use-cases/UC-DOC-MAINTAIN-README.md`](use-cases/UC-DOC-MAINTAIN-README.md) |
 | `UC-DOC-MAINTAIN-USE-CASE-REGISTRY` | Maintain Use-Case Registry | [`use-cases/UC-DOC-MAINTAIN-USE-CASE-REGISTRY.md`](use-cases/UC-DOC-MAINTAIN-USE-CASE-REGISTRY.md) |
-
-## Reconciliation Status
-
-The pre-fundamental `UC-DOC-*` capability identities have been reconciled. Current generic Documentation capabilities are the fundamental Use Cases above.
-
-Surviving non-Documentation capabilities were moved to the repository-wide registry; folded/retired capability identities are no longer current. Existing older supporting workflows/models/templates remain available only as supporting material pending explicit file-level decomposition, and do not regain UC authority merely because the files still exist.
-
-The exact pre-fundamental registry remains preserved at [`legacy/use-case-registry.pre-fundamental-uc.md`](legacy/use-case-registry.pre-fundamental-uc.md) as provenance only.

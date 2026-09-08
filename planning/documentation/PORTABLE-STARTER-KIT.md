@@ -1,7 +1,7 @@
 # Portable Planning Starter Kit
 
 Status: active reusable bootstrap guidance
-Scope: establish the minimum natural-navigation + semantic-owner architecture in another repository.
+Scope: establish the minimum natural-navigation + semantic-owner architecture in another repository without imposing specialized methodology ontology.
 
 ## Create First
 
@@ -9,32 +9,32 @@ Scope: establish the minimum natural-navigation + semantic-owner architecture in
 README.md
 planning/README.md
 planning/AI-WORKING-CONTRACT.md          # when AI/chat work is used
-planning/use-case-registry.md             # optional root cross-family UCs
+planning/use-case-registry.md             # optional repository-specific operational UCs
 planning/command-routing.md                # only when executable commands exist
 planning/commands/                         # only when commands exist
 ```
 
-For each substantial family/application:
+For each substantial generic Documentation/repository capability family:
 
 ```text
-use-case-registry.md                       # Workspace/methodology family
-scenarios/README.md                        # Application behavioral catalog
-actual principles/workflow/current owners
+README.md                                  # structural navigation when useful
+use-case-registry.md                       # scoped functional navigation
+actual Use-Case / Principles / Process / current owners
 ```
 
-Use the semantic registry that matches the work: Workspace/methodology capabilities use Use Cases; Application behavior uses Scenarios. Do not add an Application Use-Case alias merely for file-type symmetry.
+A specialized methodology/application owns its own semantic navigation. This generic Documentation starter kit does not prescribe another methodology's semantic types or ontology.
 
 ## Invariants
 
-- every independently useful supported Workspace/methodology capability is discoverable as a current Use Case;
-- Application behavioral identity is discoverable through its Scenario Catalog and Scenario owners;
-- every active canonical owner is reachable from its current semantic registry/owner route;
-- Use-Case Registry owns Workspace/methodology Use-Case identity; Scenario Catalog/Scenario owners own Application behavior;
-- commands are optional shortcuts;
+- every current Use-Case Registry covers all current Use Cases in its declared functional scope;
+- every registered Use Case points to one canonical owner;
+- neighboring scopes are reached structurally through README/navigation rather than copied into one global registry;
+- every active operational Documentation methodology/supporting owner is reachable from at least one current Use Case, except deliberate README/independent-Theory exceptions;
+- commands are optional shortcuts and do not become semantic authority;
 - README/index routes rather than duplicating owner bodies;
 - examples/projections are never authority;
-- bootstrap/setup guidance hands off to the current runtime owners once those owners exist.
-
+- specialized methodologies own their own navigation and semantic types;
+- bootstrap/setup guidance hands off to the current owners once those owners exist.
 
 ## External Reusable-Methodology Declaration
 
@@ -51,7 +51,3 @@ Reusable documentation entry:
 ```
 
 The local repository owns its project/current meaning. The linked repository owns reusable methodology.
-
-## Fixed Parallel-Work Scopes
-
-When parallel work is supported, create a mandatory root `parallel-work-scope-registry.md` (or equivalent root registry) and one `action-log.md` at every registered scope root. Establish the initial boundaries explicitly once; normal chats read them rather than repartitioning the repository ad hoc. Use `parallel-work-scope-and-action-log-workflow.md` for reusable semantics.

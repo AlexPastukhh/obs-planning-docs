@@ -1,7 +1,8 @@
 # Progressive Plan Refinement Workflow
 
-Status: active reusable owner
-Semantic entry: `UC-REPO-REFINE-CURRENT-PLAN`
+Status: active supporting workflow for IDTSPE-directed current-plan refinement
+Methodology authority: [`idtspe-methodology/active/idtspe-core/IDTSPE-DEFAULT-WORK-MODE.md`](idtspe-methodology/active/idtspe-core/IDTSPE-DEFAULT-WORK-MODE.md) + [`idtspe-methodology/active/idtspe-core/IDTSPE-SHELL.md`](idtspe-methodology/active/idtspe-core/IDTSPE-SHELL.md)
+This file is not a repository-level Use-Case owner.
 Shared Concern semantics: [`planning-concerns-and-decisions-model.md`](planning-concerns-and-decisions-model.md)
 
 ## Purpose

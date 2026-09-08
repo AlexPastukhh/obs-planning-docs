@@ -35,4 +35,4 @@ Status: active reusable nested responsibility map
 
 Do not create Planning Item, Planning Draft or Full Picture Matrix as intermediate mandatory owners. Do not turn whole-solution / cross-owner integration review into a separate mandatory artifact; perform that review through the actual affected owners.
 
-A workspace/folder is physical organization only. It does not become a registered parallel-work scope or receive its own `action-log.md` unless the project Scope Registry explicitly says so.
+A workspace/folder is physical organization only. It does not become a semantic owner merely because the folder exists.

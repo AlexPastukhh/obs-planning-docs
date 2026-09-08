@@ -1,7 +1,7 @@
 # OBS Command Routing
 
 Status: active project-specific root command-system router
-Scope: mandatory executable-command entry and shared command routing/global policy. Semantic repository meaning is discovered through README/navigation and the applicable primary semantic registry: Workspace/methodology Use-Case Registries, Application Scenario Catalogs or specialized semantic owners.
+Scope: mandatory executable-command entry and shared command routing/global policy. Semantic repository meaning is discovered through README/navigation and the selected area's own current semantic route.
 
 ## Authority
 
@@ -12,20 +12,20 @@ planning/command-routing.md
 planning/commands/*.command.md
   = one concrete command route each;
 
-planning/use-case-registry.md + local Use-Case Registries
-  = semantic independently useful Workspace/methodology capabilities; registry groups are navigation only;
+planning/use-case-registry.md + scoped Use-Case Registries
+  = independently useful Use Cases within each registry's declared functional scope; registry groups are navigation only;
 
-Application Scenario Catalogs + Scenario owners
-  = independently meaningful Application behavior;
+selected area/methodology semantic owners
+  = current meaning outside those Use-Case scopes according to that area's own navigation;
 
 workflow/template/project owners
-  = complete repeated process or current meaning;
+  = complete repeated process or current meaning when routed by the applicable owner;
 
 Planning Helper
   = projection only.
 ```
 
-A command may link to the applicable semantic entry (Workspace/methodology Use Case or Application Scenario), but never owns or replaces that semantic entry.
+A command may link to the applicable semantic entry/current owner defined by the selected area, but never owns or replaces that meaning.
 
 ## Command Resolution
 
@@ -35,7 +35,7 @@ A command may link to the applicable semantic entry (Workspace/methodology Use C
 3. Read that complete command definition.
 4. Follow its ownerFiles/read-mode requirements.
 5. Preserve its permission boundary.
-6. Use the related semantic entry (Workspace/methodology Use Case or Application Scenario) only for purpose/context/owner navigation; semantic-entry activation does not grant command permission.
+6. Use the related semantic entry/current owner only for purpose/context/owner navigation; semantic-entry activation does not grant command permission.
 ```
 
 Do not reconstruct commands from memory, helper output, examples or historical files when the command definition is readable.
@@ -104,7 +104,7 @@ No unresolved choice or fallback authorizes destructive actions, unrelated scope
 - `commandFamily` includes the canonical trigger exactly;
 - command files own output, active-context behavior, reads and permissions;
 - reusable workflows own algorithms instead of being copied into command bodies;
-- commands are optional shortcuts: repository semantic discovery must remain possible through README/navigation and the applicable current Use-Case Registry, Scenario Catalog or specialized semantic owner;
+- commands are optional shortcuts: repository semantic discovery must remain possible through README/navigation and the selected area's own current semantic route;
 - a retired/legacy compatibility command may preserve an old ID/alias for callers, but its `meaning`, `ownerFiles`, active-context behavior and expected output must route to current semantic/methodology authority. `palette:false` alone is not semantic retirement and must never keep an obsolete runtime alive.
 
 ## Permission Boundary

@@ -1,7 +1,7 @@
 # Review Coverage And Quality Audit Workflow
 
-Status: active reusable owner
-Semantic entry: `UC-REPO-AUDIT-REVIEW`
+Status: active reusable supporting Process
+Used by: `review_audit.recheck` / `перепроверь` and current review owners when explicit coverage/sufficiency auditing is useful.
 
 ## Result
 

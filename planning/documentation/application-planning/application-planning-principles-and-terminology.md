@@ -357,7 +357,7 @@ A Slice may use a product-facing feature label without introducing a mandatory F
 
 ## Recommended Project-Local Planning Zones
 
-When physical organization helps, use `solution-and-application/` for solution/concept/prototype/current behavior/spatial requirements and `domain-and-implementation/` for Domain/Slice implementation planning. Root Ideas/Requirements/Change-Axes may act as intake before promotion to a narrower owner. Folder placement does not itself create semantic ownership or a registered parallel-work scope. See [`requirements-and-change-context.md`](requirements-and-change-context.md).
+When physical organization helps, use `solution-and-application/` for solution/concept/prototype/current behavior/spatial requirements and `domain-and-implementation/` for Domain/Slice implementation planning. Root Ideas/Requirements/Change-Axes may act as intake before promotion to a narrower owner. Folder placement does not itself create semantic ownership. See [`requirements-and-change-context.md`](requirements-and-change-context.md).
 
 ## Reference Object Candidate
 

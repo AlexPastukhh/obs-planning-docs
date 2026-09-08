@@ -33,8 +33,6 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
     "Otherwise use fully readable current repository files.",
     "Request only the minimum fresh source/snapshot when exact touched base content cannot be read reliably.",
     "Never guess expected base content for replace/delete operations.",
-    "Resolve the project Scope Registry when present; every affected scope log/reference required for coherent post-Apply state is part of the package transition.",
-    "When logging is active, include material Idea Review/later clarification/prior ReviewDiff correction meaning and the APPLIED target-state relation; do not defer log correctness to a later package.",
     "Before reusing a changeSetId, verify that the ChangeSet is still open. Acceptance of its ReviewDiff as APPROVABLE finalizes/closes it for future package production.",
     "After an APPROVABLE ReviewDiff is accepted, every later replacement archive starts a new changeSetId + stable new changeSetLabel + new packageId, even when the later work is conceptually related or touches the same files.",
     "Produce one full replacement ZIP with PACKAGE.json, required base-files and replacement-files.",
