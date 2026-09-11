@@ -15,15 +15,15 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
     "slice ideas"
   ],
   "description": "legacy compatibility alias; Slice ideas alias routed into current Slice Target Modules",
-  "meaning": "Legacy alias for current Slice planning. Use TM-SLICE-STRATEGY when decomposition/portfolio/order is materially unresolved, otherwise reuse/plan the selected TM-IMPLEMENTATION-SLICE. Supplied ideas become normal IDTSPE material and architecture/testing implications route to current Lenses/Test Target Modules.",
-  "activeContextBehavior": "Use accepted Scenario/Behavior/Requirement and Domain Sources. Resolve strategy vs individual Slice from current state; do not let implementation convenience redefine upstream semantics.",
+  "meaning": "Legacy alias for current Slice planning. Supplied material enters the always-active IDTSPE Work Context as Source/Question/Proposal/Q-R-P material as appropriate. When Slice discovery is material, route to TM-IMPLEMENTATION-SLICE; otherwise continue Broad Discussion/current owner work. Do not recreate TM-SLICE-STRATEGY or an Ideas accumulator.",
+  "activeContextBehavior": "Re-evaluate current Use-Case composition and Slice applicability. Use accepted Feature/Scenario/Domain/Shared meaning as context; create/reuse a Slice Target only when TM-IMPLEMENTATION-SLICE Entry Point is material.",
   "traversalReadMode": "Reuse current reliable IDTSPE/SDS governance; refresh the selected Slice owner/module route when uncertain.",
   "ownerFiles": [
-    "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-SLICE-STRATEGY.md",
     "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-IMPLEMENTATION-SLICE.md",
+    "planning/documentation/idtspe-methodology/active/idtspe-core/shared/compose-current-work-use-case.md",
     "planning/documentation/idtspe-methodology/active/profiles/sds/shared/idtspe-command-surface-contract.md"
   ],
-  "expectedOutput": "Current Slice Strategy or Implementation Slice result with vertical-result/dependency/proof handoffs and material Q/R/P/Decisions; no legacy Slice-Ideas accumulator.",
+  "expectedOutput": "Current Broad Discussion or transient Slice Discovery result with material dependencies/proof/evolution handoffs; no legacy Slice Strategy/Ideas accumulator.",
   "permissionMode": "read-only-planning",
   "keyReminders": [
     "Legacy compatibility alias only; the canonical material-planning runtime is IDTSPE.",

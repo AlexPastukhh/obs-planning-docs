@@ -1,7 +1,7 @@
 # Plan Test Design
 
-Status: active project command definition
-Scope: one concrete OBS Planning command route. Reusable behavior remains in linked owner files.
+Status: legacy compatibility command definition
+Scope: historical invocation alias redirected to current IDTSPE/SDS authority; hidden from the primary palette.
 
 [PLANNING_COMMAND_DEFINITION]
 {
@@ -14,27 +14,29 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
     "спланируй тесты",
     "спланируй проверку поведения"
   ],
-  "description": "test design",
-  "meaning": "Run optional TM-TEST-DESIGN only when how to prove the selected property is independently non-trivial. Straightforward proof should go directly from accepted semantics to TM-EXACT-REALIZATION for exact test code.",
-  "activeContextBehavior": "Resolve or reuse the natural current IDTSPE Target/context; infer CREATE/REFINE/EXTEND/REVALIDATE/REPAIR from current state. Do not create a fake Target when the module/lens gate fails.",
+  "description": "legacy compatibility shortcut for natural-owner proof planning/evaluation",
+  "meaning": "Legacy Test Design shortcut. TM-TEST-DESIGN is retired. Use LENS-TEST-PROOF-EVIDENCE to evaluate the selected property/proof route; retain a transient proof plan only when how-to-prove is independently non-trivial, and route literal tests to TM-EXACT-REALIZATION. No standalone Test Design Target is created.",
+  "activeContextBehavior": "Treat this legacy trigger as explicit compatibility intent inside always-active IDTSPE. Re-evaluate current Use-Case composition and route only to the current owners listed here; preserve local applicability/materiality gates and do not revive the retired Target family.",
   "traversalReadMode": "Reuse current reliable IDTSPE/SDS governance; targeted refresh of the selected owner route when uncertain; full bootstrap only when no reliable sufficient governance context exists.",
   "ownerFiles": [
-    "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-TEST-DESIGN.md",
+    "planning/documentation/idtspe-methodology/active/idtspe-core/lenses/reusable/LENS-TEST-PROOF-EVIDENCE.md",
+    "planning/documentation/idtspe-methodology/active/idtspe-core/target-modules/TM-EXACT-REALIZATION.md",
+    "planning/documentation/idtspe-methodology/active/idtspe-core/shared/idtspe-command-surface-contract.md",
     "planning/documentation/idtspe-methodology/active/profiles/sds/shared/idtspe-command-surface-contract.md"
   ],
-  "expectedOutput": "RU-TDES-01: concise selected property-to-proof design (credible layer/operator + setup/action/observation + required assertions/signals) only when separate proof planning is actually useful.",
+  "expectedOutput": "A material proof evaluation/transient natural-owner proof plan, or direct Exact-test route when obvious; no Test Design Target.",
   "permissionMode": "read-only-planning",
   "keyReminders": [
-    "Do not create a Test Design Target for an obvious local test merely because the module exists.",
-    "LENS-TEST-PROOF-EVIDENCE owns Escape Risk, Refactor Fragility, assertion strength, wrong-layer/duplication and Evidence-freshness evaluation; retain those only when material rationale/findings matter.",
-    "Test Design is not exact test code and not executed Evidence; literal tests/build execution belong to Exact Realization under explicit authority.",
-    "This command is read-only planning and does not mutate repository files."
+    "Legacy compatibility alias only; do not expose as a primary methodology surface.",
+    "The historical Target family named by this command is retired and must not be recreated by invocation.",
+    "Current Use Cases compose methodology use; current owner/Lens/Target contracts decide specialized work and materiality.",
+    "This command is read-only planning/review and grants no implementation, test execution, repository mutation, commit or push permission."
   ],
   "userTarget": "<one Domain/Slice/etc proof target>",
-  "palette": true,
+  "palette": false,
   "helperPresentation": {
-    "whenToUse": "Use when the proof method itself is non-trivial: layer choice, failure injection, concurrency/distributed behavior, no-mutation observation, special environment/harness, or automated-vs-practical boundary needs an independent decision.",
-    "whatYouGet": "A concise selected property-to-proof design; if proof is straightforward, the module may be skipped in favor of Exact Realization.",
+    "whenToUse": "Only when using this historical command phrase/automation; prefer the current semantic owner or generic `idtspe` component dispatch for new work.",
+    "whatYouGet": "A material proof evaluation/transient natural-owner proof plan, or direct Exact-test route when obvious; no Test Design Target.",
     "navigation": {
       "viewId": "SDS",
       "viewLabel": "SDS — IDTSPE Profile",
@@ -53,11 +55,11 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
   "methodologyBinding": {
     "methodologyRuntime": "IDTSPE",
     "profile": "SDS",
-    "surfaceKind": "TARGET_MODULE",
-    "targetModuleId": "TM-TEST-DESIGN",
-    "lensId": null,
+    "surfaceKind": "LENS",
+    "targetModuleId": null,
+    "lensId": "LENS-TEST-PROOF-EVIDENCE",
     "parentSurface": null,
-    "hostTargetPolicy": "CREATE_OR_REUSE_TARGET"
+    "hostTargetPolicy": "RESOLVE_OR_REUSE_TARGET"
   }
 }
 [/PLANNING_COMMAND_DEFINITION]

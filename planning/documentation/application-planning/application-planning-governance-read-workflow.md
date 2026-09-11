@@ -13,30 +13,24 @@ Reuse current reliable governance; refresh only changed/uncertain owners; perfor
 ## Current Full Preflight
 
 ```text
-1. planning/AI-WORKING-CONTRACT.md
-2. planning/documentation/idtspe-methodology/active/idtspe-core/BOOTSTRAP-IDTSPE.md
-3. planning/documentation/idtspe-methodology/active/idtspe-core/IDTSPE-DEFAULT-WORK-MODE.md
-4. planning/documentation/idtspe-methodology/active/idtspe-core/target-modules/README.md
-5. planning/documentation/idtspe-methodology/active/idtspe-core/lenses/README.md
-6. planning/documentation/idtspe-methodology/active/profiles/sds/README.md
-7. planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/README.md
-8. planning/documentation/idtspe-methodology/active/profiles/sds/lenses/README.md
-9. planning/documentation/idtspe-methodology/active/profiles/sds/shared/directed-methodology-workflow-and-next-step-resolution.md
-10. planning/documentation/idtspe-methodology/active/profiles/sds/ARTIFACT-PLACEMENT-MAP.md
-11. task-specific supporting Application/Architecture/Testing knowledge only when material
+1. planning/README.md
+   → follow Primary Bootstrap (Session + Documentation + IDTSPE Core)
+2. planning/documentation/idtspe-methodology/active/profiles/sds/README.md
+   → follow Profile Bootstrap
+3. task-specific supporting Application/Architecture/Testing knowledge only when material
 ```
 
-Do not read every Target Module/Lens/template/example during bootstrap. Resolve concrete bodies proportionally after the Target/component is known.
+Do not independently reconstruct or duplicate either bootstrap read set here. Do not read every Target Module/Lens/template/example during bootstrap; resolve concrete bodies proportionally after the Target/component is known.
 
 ## Assimilation Boundary
 
 ```text
 optional Need / Solution Discovery
 → Application Definition
-→ optional Prototype
-→ Scenario
-→ Slice Strategy
-→ flexible Domain/Aggregate Modeling ↔ Slice realization
+→ Feature / Scenario / Screen as materially useful
+→ optional Prototype / Domain Discovery
+→ transient Slice Discovery (`TM-IMPLEMENTATION-SLICE`) when a bounded end-to-end realization is useful
+→ optional durable Domain / Slice / Shared owners when independent persistence value exists
 → Exact Realization / Evidence
 ```
 

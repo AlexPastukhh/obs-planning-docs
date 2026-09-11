@@ -16,13 +16,13 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
   ],
   "description": "domain discovery",
   "meaning": "Run TM-DOMAIN-DISCOVERY through the IDTSPE Shell for the selected target.",
-  "activeContextBehavior": "Resolve or reuse the natural current IDTSPE Target/context; infer CREATE/REFINE/EXTEND/REVALIDATE/REPAIR from current state. Do not create a fake Target when the module/lens gate fails.",
+  "activeContextBehavior": "Treat the explicit command as selected invocation intent inside always-active IDTSPE. Re-evaluate current Use-Case composition, resolve/reuse a natural Target/context only when useful, confirm the selected Target Module Entry Point/local applicability gate, and then resolve CREATE/REFINE/EXTEND/REVALIDATE/REPAIR from actual current Target state. Do not create a Target or Result Unit merely because the command exists.",
   "traversalReadMode": "Reuse current reliable IDTSPE/SDS governance; targeted refresh of the selected owner route when uncertain; full bootstrap only when no reliable sufficient governance context exists.",
   "ownerFiles": [
     "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-DOMAIN-DISCOVERY.md",
     "planning/documentation/idtspe-methodology/active/profiles/sds/shared/idtspe-command-surface-contract.md"
   ],
-  "expectedOutput": "Domain discovery map/candidates, material rules/invariants, Decisions/Q/R/P and promotion targets; may remain code-native/coordinator-based.",
+  "expectedOutput": "Transient Domain discovery findings/candidates, material rules/invariants/boundaries, proportional Core State and promotion handoffs; may validly end without a durable Domain owner.",
   "permissionMode": "read-only-planning",
   "keyReminders": [
     "SDS is an IDTSPE profile, not a second runtime.",
@@ -33,8 +33,8 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
   "userTarget": "<Domain candidate space>",
   "palette": true,
   "helperPresentation": {
-    "whenToUse": "Use when Scenario/DATA/Behavior evidence should be interpreted into domain concepts, responsibilities, rules or candidate boundaries.",
-    "whatYouGet": "Domain discovery map/candidates, material rules/invariants, Decisions/Q/R/P and promotion targets; may remain code-native/coordinator-based.",
+    "whenToUse": "Use when selected Feature behavior, current Domain facts, Slice/Shared implementation pressure, Evidence or Evolution suggests domain concepts, invariants, lifecycle, ownership or candidate boundaries should be discovered.",
+    "whatYouGet": "Transient Domain discovery findings/candidates and material promotion handoffs; a durable Domain owner is created only when independent semantic ownership becomes useful.",
     "navigation": {
       "viewId": "SDS",
       "viewLabel": "SDS — IDTSPE Profile",

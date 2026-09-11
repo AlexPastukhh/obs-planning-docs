@@ -14,20 +14,23 @@ Scope: generic manual invocation route for one selected current canonical Use Ca
     "вызови юзкейс",
     "invoke use case"
   ],
-  "description": "invoke one current canonical Use Case",
-  "meaning": "Invoke one selected current canonical Use Case through its exact current registry entry and owner route. This command is a thin invocation layer and never duplicates or overrides UC semantics.",
-  "activeContextBehavior": "Use the explicitly selected UC ID and current user target. Resolve that exact current canonical registry entry and follow its owner route; ask only when the UC identity or target is genuinely missing or ambiguous.",
+  "description": "invoke one current methodology Use Case",
+  "meaning": "Invoke one selected current methodology Use Case through the Methodology Use-Case Registry Map, its mapped scoped registry and current owner route. This command is a thin invocation layer and never duplicates or overrides Use-Case semantics.",
+  "activeContextBehavior": "Use the explicitly selected methodology UC ID and current user target. Resolve the ID through planning/documentation/use-case-registry-map.md and the mapped current scoped registry, then follow the current owner Process. If an explicitly requested project/area Use Case is outside this methodology map, use that area's own current registry/command route instead of pretending it is a mapped methodology UC.",
   "traversalReadMode": "Targeted/full according to the selected UC owner route and current target.",
   "ownerFiles": [
-    "planning/use-case-registry.md"
+    "planning/documentation/use-case-registry-map.md",
+    "planning/documentation/use-case-registry.md",
+    "planning/documentation/idtspe-methodology/active/idtspe-core/shared/idtspe-methodology-use-case-registry.md"
   ],
-  "expectedOutput": "The selected Use Case result for the current user target, using current owner semantics and preserving its permission boundary.",
+  "expectedOutput": "The selected current methodology Use-Case Result for the user target, with owner-route semantics and permission boundary preserved.",
   "permissionMode": "read-only-unless-selected-uc-route-explicitly-authorizes-more",
   "keyReminders": [
-    "The selected Use Case registry entry and current owner route are semantic authority; this generic command is invocation only.",
-    "Use the exact UC ID supplied by the generated Helper command row and resolve it in the current canonical registry before material work.",
-    "Do not infer repository mutation, archive, commit or push permission from UC activation; executable permission remains route-specific.",
-    "If a dedicated bespoke Planning Command already owns this UC invocation, use that command instead of this generic route."
+    "The Methodology Use-Case Registry Map plus its mapped current registry/owner is authority for Helper methodology UC invocation; this command is invocation only.",
+    "Use the exact UC ID supplied by the current Helper methodology Use-Case row and resolve it through the map before material work.",
+    "Do not project every project/area use-case-registry.md into the methodology catalog; project-local UCs keep their own scoped routes.",
+    "Use-Case activation never grants repository mutation, archive, commit or push permission by itself.",
+    "If a dedicated Planning Command owns a project-specific invocation, use that command and its current ownerFiles instead of this generic methodology-UC route."
   ],
   "userTarget": "<UC id + concrete target>",
   "palette": false,

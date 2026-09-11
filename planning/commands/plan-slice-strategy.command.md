@@ -1,7 +1,7 @@
 # Plan Slice Strategy
 
-Status: active project command definition
-Scope: one concrete OBS Planning command route. Reusable behavior remains in linked owner files.
+Status: legacy compatibility command definition
+Scope: historical invocation alias redirected to current IDTSPE/SDS authority; hidden from the primary palette.
 
 [PLANNING_COMMAND_DEFINITION]
 {
@@ -14,27 +14,28 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
     "спланируй стратегию слайсов",
     "план стратегии слайсов"
   ],
-  "description": "slice strategy",
-  "meaning": "Run TM-SLICE-STRATEGY through the IDTSPE Shell for the selected target.",
-  "activeContextBehavior": "Resolve or reuse the natural current IDTSPE Target/context; infer CREATE/REFINE/EXTEND/REVALIDATE/REPAIR from current state. Do not create a fake Target when the module/lens gate fails.",
+  "description": "legacy compatibility alias routed to current transient Slice Discovery",
+  "meaning": "Legacy Slice Strategy alias. TM-SLICE-STRATEGY is retired; route the request to TM-IMPLEMENTATION-SLICE for transient end-to-end Slice discovery/planning, using current Feature/Domain/Shared/Evolution/Lens coordination only when material. Do not recreate a portfolio/strategy Target family.",
+  "activeContextBehavior": "Treat this legacy trigger as explicit compatibility intent inside always-active IDTSPE. Re-evaluate current Use-Case composition and route only to the current owners listed here; preserve local applicability/materiality gates and do not revive the retired Target family.",
   "traversalReadMode": "Reuse current reliable IDTSPE/SDS governance; targeted refresh of the selected owner route when uncertain; full bootstrap only when no reliable sufficient governance context exists.",
   "ownerFiles": [
-    "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-SLICE-STRATEGY.md",
+    "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-IMPLEMENTATION-SLICE.md",
+    "planning/documentation/idtspe-methodology/active/profiles/sds/shared/directed-methodology-workflow-and-next-step-resolution.md",
     "planning/documentation/idtspe-methodology/active/profiles/sds/shared/idtspe-command-surface-contract.md"
   ],
-  "expectedOutput": "Slice Portfolio / Realization Map, broad/shallow Domain / Aggregate Realization Map, and Selected Slice semantic-owner register; may validly stay minimal when strategy reasoning is not material. RU-SSTRAT-03 does not create bounded Implementation Slice Targets.",
+  "expectedOutput": "Current transient Slice Discovery result using TM-IMPLEMENTATION-SLICE, or no Slice Target when its Entry Point is not material. No Slice Strategy Target.",
   "permissionMode": "read-only-planning",
   "keyReminders": [
-    "SDS is an IDTSPE profile, not a second runtime.",
-    "AI proposals are Ideas by default; they become Decisions only when actually selected.",
-    "Do not infer a dedicated file from Target identity; use Documentation / Representation and P-14 when persistence is material.",
-    "This command plans/reviews only; it does not edit repository files, implement, test, commit or push."
+    "Legacy compatibility alias only; do not expose as a primary methodology surface.",
+    "The historical Target family named by this command is retired and must not be recreated by invocation.",
+    "Current Use Cases compose methodology use; current owner/Lens/Target contracts decide specialized work and materiality.",
+    "This command is read-only planning/review and grants no implementation, test execution, repository mutation, commit or push permission."
   ],
   "userTarget": "<Slice implementation-strategy scope>",
-  "palette": true,
+  "palette": false,
   "helperPresentation": {
-    "whenToUse": "Use when Slice decomposition/order, broad Domain/Aggregate position, or selected Slice addressability is material rather than obvious.",
-    "whatYouGet": "Slice Portfolio / Realization Map, broad/shallow Domain / Aggregate Realization Map, and Selected Slice semantic-owner register; Target Formation remains responsible for any independently bounded Implementation Slice Target.",
+    "whenToUse": "Only when using this historical command phrase/automation; prefer the current semantic owner or generic `idtspe` component dispatch for new work.",
+    "whatYouGet": "Current transient Slice Discovery result using TM-IMPLEMENTATION-SLICE, or no Slice Target when its Entry Point is not material. No Slice Strategy Target.",
     "navigation": {
       "viewId": "SDS",
       "viewLabel": "SDS — IDTSPE Profile",
@@ -54,7 +55,7 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
     "methodologyRuntime": "IDTSPE",
     "profile": "SDS",
     "surfaceKind": "TARGET_MODULE",
-    "targetModuleId": "TM-SLICE-STRATEGY",
+    "targetModuleId": "TM-IMPLEMENTATION-SLICE",
     "lensId": null,
     "parentSurface": null,
     "hostTargetPolicy": "CREATE_OR_REUSE_TARGET"

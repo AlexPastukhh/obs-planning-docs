@@ -18,10 +18,11 @@ For material planning, use [`documentation/idtspe-methodology/active/idtspe-core
 
 ```text
 AI proposal → Idea by default
-material Q/R/P → current Target owner, with P0..P3 impact priority when useful
+material Q/R/P → current natural owner, with priority only when useful
 Decision → only after selection
-SDS work → IDTSPE Shell + one SDS Target Module + applicable Lenses
-material persistence → Documentation / Representation Lens before P-14
+IDTSPE → always active and proportional; zero/one/several Targets allowed
+SDS work → current IDTSPE Use-Case composition + only selected/applicable SDS components
+material persistence → Documentation / Representation rules before durable materialization
 ```
 
 Do not infer one-file-per-Target. Code/types/tests/schema/config or an existing discovery/strategy/owner section may be the correct durable representation.
@@ -30,45 +31,30 @@ The legacy shared Concern/Idea/Application/Architecture/Testing documents remain
 
 ## Hard Planning Root Invariant
 
-Planning never starts from a FIND/Q/R/P queue. The semantic root is:
+Planning does not start from a fixed FIND/Q/R/P queue, a mandatory Target sequence, or an SDS profile merely because one is installed. After bootstrap, the functional methodology root is the Methodology Use-Case Registry Map; IDTSPE composition then selects the smallest useful current structure and any applicable profile components.
 
 ```text
-Real-Life Situation / Need / Desired Result
-→ selected solution / responsibility
-→ Workspace Use Case or Application Scenario
-→ Domain / Rules
-→ Target Dependencies when material
+primary bootstrap current
+→ Methodology Use-Case Registry Map
+→ applicable Use Case Process
+→ Broad Discussion and/or material State/Target/component
+→ natural semantic owner
 → realization / verification when useful
 ```
 
-Planning Concerns/Q/R/P are a secondary lens attached to a concrete semantic owner/current planned state. Active Q/R/P keeps current unresolved/residual concerns; material retained concern/Decision trace may preserve answers/rationale after closure without making closed history an active queue. `Concern Group` groups Q/R/P that share one resolution surface. `Review Order` is derived from priority/dependency/blast-radius/timing, not a task queue. If no material active concern exists, continue the semantic UC/Scenario graph. Ordinary chat text controls scope/depth/lens; no persistent Focus/H0-H1-H2 control ontology is required. Canonical semantics: `documentation/planning-concerns-and-decisions-model.md`.
+Planning Concerns/Q/R/P remain secondary material attached to the actual current owner. AI should not invent a formal queue, fixed workflow level, or persistent control ontology when ordinary discussion is enough.
 
 ## Documentation Work
 
-Read and follow:
-
-```text
-planning/session/use-cases/UC-SESSION-USE-REPOSITORY-GUIDANCE.md
-planning/documentation/principles-and-terminology.md
-planning/documentation/use-case-registry.md
-```
-
-Then resolve the narrowest applicable current Documentation Use Case and owner.
+Use [`documentation/use-case-registry-map.md`](documentation/use-case-registry-map.md), then the generic Documentation registry and the narrowest applicable current Documentation Use Case. Former `UC-SESSION-*` compatibility routes are not current functional owners.
 
 ## Planning / Application Work
 
-Start from:
+When generic planning context is not reliable, bootstrap from [`README.md`](README.md). After bootstrap, start functional methodology navigation from [`documentation/use-case-registry-map.md`](documentation/use-case-registry-map.md), then follow the applicable Use Case Process and natural current owner. Profile READMEs are entered only when that profile is applicable.
 
-```text
-planning/README.md
-→ relevant area
-→ follow that area's own current navigation
-→ canonical owner
-```
+Do not impose generic Documentation navigation types onto a specialized methodology/application area. IDTSPE Core remains the generic always-active work model. When SDS or another profile is applicable, its own current owners define only the profile-specific semantic route.
 
-Do not impose generic Documentation navigation types onto a specialized methodology/application area. When IDTSPE/SDS or another methodology is selected, its own current owners define its semantic route.
-
-When a current integrated plan already exists, treat it as the current working baseline and integrate new selected meaning into the real Scenario/UC/Domain/Slice owners rather than creating a transcript of planning answers.
+When a current integrated plan already exists, treat it as the current working baseline and integrate new selected meaning into the natural current semantic owners rather than creating a transcript of planning answers.
 
 ## Directed Planning And Reviewability
 

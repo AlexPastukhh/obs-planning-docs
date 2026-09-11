@@ -13,26 +13,28 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
   "commandFamily": [
     "продолжи по методологии"
   ],
-  "description": "Resolve the current recommended next Target and invoke it through normal IDTSPE.",
-  "meaning": "Resolve the current recommended next Target and invoke it through normal IDTSPE.",
-  "activeContextBehavior": "Resolve or reuse the natural current IDTSPE Target/context; infer CREATE/REFINE/EXTEND/REVALIDATE/REPAIR from current state. Do not create a fake Target when the module/lens gate fails.",
+  "description": "Continue with the currently useful methodology action.",
+  "meaning": "Re-evaluate the current Use-Case set and `UC-IDTSPE-COMPOSE-CURRENT-WORK`, then perform the smallest useful ordinary in-scope methodology action. This may continue Broad Discussion, refine current State, invoke an applicable Target Module/Lens, or integrate/revalidate when triggered; it does not require a next Target.",
+  "activeContextBehavior": "Use current Work Context and current/re-evaluated Use-Case applicability. Do not invent a Target or invoke a component only to satisfy a fixed sequence; preserve USER steering and permission boundaries.",
   "traversalReadMode": "Reuse current reliable IDTSPE/SDS governance; targeted refresh of the selected owner route when uncertain; full bootstrap only when no reliable sufficient governance context exists.",
   "ownerFiles": [
-    "planning/documentation/idtspe-methodology/active/idtspe-core/IDTSPE-SHELL.md",
+    "planning/documentation/idtspe-methodology/active/idtspe-core/shared/compose-current-work-use-case.md",
+    "planning/documentation/idtspe-methodology/active/idtspe-core/shared/idtspe-methodology-use-case-registry.md",
     "planning/documentation/idtspe-methodology/active/idtspe-core/shared/idtspe-command-surface-contract.md"
   ],
-  "expectedOutput": "The next Target is invoked through IDTSPE with normal gates/permissions; no fake Target is created.",
+  "expectedOutput": "The smallest useful ordinary methodology action is performed under current permissions; optional Target/Unit/Lens/Checkpoint structure is introduced only when material.",
   "permissionMode": "read-only-planning",
   "keyReminders": [
-    "This is an IDTSPE orchestration/validator surface, not a Target Module.",
-    "Preserve the current Target/owner graph and normal permission boundaries.",
-    "Do not mutate repository files, implement, test, commit or push."
+    "IDTSPE is already active; this shortcut does not enable a mode.",
+    "Use Cases compose methodology use; Target Modules/Lenses own specialized work.",
+    "Broad Discussion or NO_ADDITIONAL_STRUCTURE is a valid proportional outcome.",
+    "Ordinary in-scope progression is not an approval gate; explicit mutation/commit/push permissions remain separate."
   ],
   "userTarget": "<current planning state>",
   "palette": true,
   "helperPresentation": {
-    "whenToUse": "Use when the current methodology route is clear and you want to execute the recommended next Target.",
-    "whatYouGet": "The next Target is invoked through IDTSPE with normal gates/permissions; no fake Target is created.",
+    "whenToUse": "Use when you want the methodology to continue from current context without naming a specific component.",
+    "whatYouGet": "Continuation through the current Use-Case-driven IDTSPE composition, without mandatory stage or Target progression.",
     "navigation": {
       "viewId": "IDTSPE",
       "viewLabel": "IDTSPE",

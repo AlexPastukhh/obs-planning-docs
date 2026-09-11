@@ -14,15 +14,15 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
     "спланируй сценарий",
     "план сценария приложения"
   ],
-  "description": "scenario planning",
-  "meaning": "Run TM-SCENARIO-PLANNING through the IDTSPE Shell for one Scenario: describe behavior/requirements, expose material uncertainty through Generic State, extract DATA/Behavior Items, and retain Development/Change Outlook.",
-  "activeContextBehavior": "Resolve or reuse the natural current IDTSPE Target/context; infer CREATE/REFINE/EXTEND/REVALIDATE/REPAIR from current state. Do not create a fake Target when the module/lens gate fails.",
+  "description": "Scenario journey composition across selected Feature results",
+  "meaning": "Run TM-SCENARIO-PLANNING for one actor-to-Benefit journey. Compose selected Feature results, actor/external linking actions, order/branch/convergence/re-entry, continuity, material Screen/external participation, sparse journey-level must-holds and optional E2E Proof Intent. Feature behavior and Feature semantic data remain TM-FEATURE authority.",
+  "activeContextBehavior": "Treat the explicit command as selected invocation intent inside always-active IDTSPE. Re-evaluate current Use-Case composition, resolve/reuse a natural Target/context only when useful, confirm the selected Target Module Entry Point/local applicability gate, and then resolve CREATE/REFINE/EXTEND/REVALIDATE/REPAIR from actual current Target state. Do not create a Target or Result Unit merely because the command exists.",
   "traversalReadMode": "Reuse current reliable IDTSPE/SDS governance; targeted refresh of the selected owner route when uncertain; full bootstrap only when no reliable sufficient governance context exists.",
   "ownerFiles": [
     "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-SCENARIO-PLANNING.md",
     "planning/documentation/idtspe-methodology/active/profiles/sds/shared/idtspe-command-surface-contract.md"
   ],
-  "expectedOutput": "One Scenario owner with Scenario Behavior/Requirements, Behavioral Decomposition (DATA + Behavior Items), Scenario Development/Change Outlook, and relevant Generic Q/R/P/Evidence/Decisions.",
+  "expectedOutput": "One Scenario Journey Composition (RU-SCEN-01): actor/context, participating Feature/result links, journey order/branches/re-entry, continuity, terminal Benefit, only material journey must-holds and optional E2E Proof Intent, plus proportional Core State.",
   "permissionMode": "read-only-planning",
   "keyReminders": [
     "SDS is an IDTSPE profile, not a second runtime.",
@@ -33,8 +33,8 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
   "userTarget": "<one Scenario>",
   "palette": true,
   "helperPresentation": {
-    "whenToUse": "Use when one concrete actor-visible Scenario needs full behavioral planning.",
-    "whatYouGet": "One Scenario owner with Behavior/Requirements, DATA + Behavior Items, Development/Change Outlook and relevant Generic planning state.",
+    "whenToUse": "Use when one actor-to-Benefit journey across selected Feature results needs independent composition, branching/continuity or whole-journey proof intent.",
+    "whatYouGet": "Scenario Journey Composition without duplicating Feature behavior/data authority: Feature links, journey graph, continuity, terminal Benefit and only material journey-level constraints/proof intent.",
     "navigation": {
       "viewId": "SDS",
       "viewLabel": "SDS — IDTSPE Profile",
