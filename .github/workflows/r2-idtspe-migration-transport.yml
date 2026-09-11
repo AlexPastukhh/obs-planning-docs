@@ -4,7 +4,7 @@ on:
     branches:
       - 'tmp/rpkg-methodology-r2-20260908'
     paths:
-      - '.migration-xz/READY'
+      - '.migration-v3/READY'
 permissions:
   contents: write
 jobs:
@@ -18,16 +18,26 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          cat .migration-xz/part-*.txt > /tmp/r2-payload.b64
+          cat .migration-v3/chunk-*.txt > /tmp/r2-payload.b64
           base64 -d /tmp/r2-payload.b64 > /tmp/r2-payload.tar.xz
-          echo 'b0647e973ecebc55e2f478d72e21685397f643b5f92dd6a78af415bf4685272e  /tmp/r2-payload.tar.xz' | sha256sum -c -
+          echo '9db287e896db3f56b109b5a95d424e69954789a96c60c8298f802d3101af2c3c  /tmp/r2-payload.tar.xz' | sha256sum -c -
           tar -xJf /tmp/r2-payload.tar.xz -C .
+      - name: Rebuild deterministic Planning Helper outputs
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd planning/documentation/tools/tampermonkey/chat-command-palette
+          npm run build
+      - name: Verify all remaining target hashes
+        shell: bash
+        run: |
+          set -euo pipefail
           sha256sum -c .migration-verify/remaining.sha256
       - name: Commit exact clean target tree to transport branch
         shell: bash
         run: |
           set -euo pipefail
-          rm -rf .migration-payload .migration-xz .migration-verify .github/workflows/r2-idtspe-migration-transport.yml
+          rm -rf .migration-payload .migration-xz .migration-v3 .migration-verify .github/workflows/r2-idtspe-migration-transport.yml
           git config user.name 'OpenAI Migration Transport'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add -A
