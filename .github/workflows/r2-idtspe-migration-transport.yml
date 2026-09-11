@@ -1,0 +1,36 @@
+name: R2 IDTSPE migration transport
+on:
+  push:
+    branches:
+      - 'tmp/rpkg-methodology-r2-20260908'
+    paths:
+      - '.migration-payload/READY'
+permissions:
+  contents: write
+jobs:
+  realize:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Decode exact target payload
+        shell: bash
+        run: |
+          set -euo pipefail
+          cat .migration-payload/chunk-*.txt > /tmp/r2-payload.b64
+          base64 -d /tmp/r2-payload.b64 > /tmp/r2-payload.tar.gz
+          echo '9f54673e14feaafb99621a432a17b347d248f6ce6cc92b9202ec162481cf5cc5  /tmp/r2-payload.tar.gz' | sha256sum -c -
+          tar -xzf /tmp/r2-payload.tar.gz -C .
+          sha256sum -c .migration-verify/remaining.sha256
+      - name: Commit exact clean target tree to transport branch
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf .migration-payload .migration-verify .github/workflows/r2-idtspe-migration-transport.yml
+          git config user.name 'OpenAI Migration Transport'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A
+          git diff --cached --quiet && { echo 'No changes'; exit 1; }
+          git commit -m 'Build exact R2 to IDTSPE/SDS migration target tree'
+          git push origin HEAD:tmp/rpkg-methodology-r2-20260908
