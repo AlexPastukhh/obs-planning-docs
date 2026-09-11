@@ -1,0 +1,34 @@
+name: Build exact application planning principles blob
+on:
+  push:
+    branches:
+      - 'tmp/checkpoint-118-rebuild'
+    paths:
+      - '.github/workflows/build-ap-principles-target.yml'
+permissions:
+  contents: write
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Insert compatibility boundary and verify exact target
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p = Path('planning/documentation/application-planning/application-planning-principles-and-terminology.md')
+          marker = '# Solution And Application Planning Principles And Terminology\n\n'
+          paragraph = '> **Compatibility vocabulary boundary.** This supporting file preserves older application-planning discovery/workspace heuristics. Terms such as `Scenario DATA`, `Behavior Items`, standalone `Requirement`, or `Slice Strategy` below do not define current SDS owner identities. Current authority is the active SDS Target/Lens registries: Feature owns behavior/semantic data, Scenario owns actor-to-Benefit journey composition, requirements stay with natural Feature/Domain/Slice/Shared owners, and Slice Strategy is not an active Target family. Use older terms only as supporting heuristics where they do not conflict with current owners.'
+          text = p.read_text()
+          if paragraph not in text:
+              assert text.startswith(marker)
+              text = marker + paragraph + '\n\n\n' + text[len(marker):]
+              p.write_text(text)
+          PY
+          echo 'fd3ac6e7066b1c0b1148afcb698dc602f8b7972dac892f76e2ab25bf13381dd4  planning/documentation/application-planning/application-planning-principles-and-terminology.md' | sha256sum -c -
+          git config user.name 'OpenAI Migration Builder'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add planning/documentation/application-planning/application-planning-principles-and-terminology.md
+          git commit -m 'Materialize exact application planning principles target blob'
+          git push origin HEAD:tmp/checkpoint-118-rebuild
