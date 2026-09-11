@@ -18,7 +18,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          cat .migration-v3/chunk-*.txt > /tmp/r2-payload.b64
+          cat .migration-v3/chunk-000.txt .migration-v3/chunk-001.txt .migration-v3/seg-*.txt > /tmp/r2-payload.b64
           base64 -d /tmp/r2-payload.b64 > /tmp/r2-payload.tar.xz
           echo '9db287e896db3f56b109b5a95d424e69954789a96c60c8298f802d3101af2c3c  /tmp/r2-payload.tar.xz' | sha256sum -c -
           tar -xJf /tmp/r2-payload.tar.xz -C .
