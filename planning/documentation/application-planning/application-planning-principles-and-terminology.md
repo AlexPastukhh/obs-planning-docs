@@ -1,5 +1,8 @@
 # Solution And Application Planning Principles And Terminology
 
+> **Compatibility vocabulary boundary.** This supporting file preserves older application-planning discovery/workspace heuristics. Terms such as `Scenario DATA`, `Behavior Items`, standalone `Requirement`, or `Slice Strategy` below do not define current SDS owner identities. Current authority is the active SDS Target/Lens registries: Feature owns behavior/semantic data, Scenario owns actor-to-Benefit journey composition, requirements stay with natural Feature/Domain/Slice/Shared owners, and Slice Strategy is not an active Target family. Use older terms only as supporting heuristics where they do not conflict with current owners.
+
+
 Status: active reusable canonical owner
 Scope: stable concepts/invariants for whole-solution/workflow planning, Application Concept/Prototype work, current Scenario/Screen requirements and optional Domain/Slice implementation planning. Generic Planning Concern/Q/R/P/Concern-Group/Decision trace semantics are owned by `../planning-concerns-and-decisions-model.md`.
 
