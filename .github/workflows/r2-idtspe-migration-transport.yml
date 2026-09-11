@@ -20,7 +20,7 @@ jobs:
           set -euo pipefail
           cat .migration-xz/part-*.txt > /tmp/r2-payload.b64
           base64 -d /tmp/r2-payload.b64 > /tmp/r2-payload.tar.xz
-          echo 'a6c2e122a925686d5c759230270377f437a794b2f1725e28234fb214028a0fc9  /tmp/r2-payload.tar.xz' | sha256sum -c -
+          echo 'b0647e973ecebc55e2f478d72e21685397f643b5f92dd6a78af415bf4685272e  /tmp/r2-payload.tar.xz' | sha256sum -c -
           tar -xJf /tmp/r2-payload.tar.xz -C .
           sha256sum -c .migration-verify/remaining.sha256
       - name: Commit exact clean target tree to transport branch
