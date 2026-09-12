@@ -32,7 +32,6 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
   ],
   "userTarget": "<workspace architecture question>",
   "palette": false,
-  "helperPresentation": null,
   "refinements": [],
   "methodologyBinding": null
 }

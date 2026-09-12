@@ -270,21 +270,22 @@ The full current source-selection/package algorithm remains in `build-replacemen
 ## 9A. Planning Helper Surfaces
 
 ```text
-Use Cases:
-  project independently useful current capabilities from canonical Use-Case Registries;
-
 Commands:
-  project accepted repository command definitions reachable from the root Command Routing and their immediate execution permissions;
+  one actionable semantic-command catalog;
+  current methodology Use Cases, Target Modules and Lenses are classifications/bindings inside it;
+  General/Tool direct commands coexist without becoming methodology owners.
+
+Scenarios:
+  project canonical working Scenario prose and semantic refs;
+  add derived command equivalents only at Helper runtime.
 
 Prompts:
-  project reusable helper-library insertion text without granting semantic authority.
+  project reusable helper-library insertion text without semantic authority.
 ```
 
-Only Commands request immediate execution.
+A current UC/TM/Lens projects to one stable semantic card (`uc:...`, `tm:...`, `lens:...`). A direct command may supply its body/aliases; focused aliases do not create duplicate primary semantic cards.
 
-A Use-Case insertion **activates semantic focus**, not command permission. The inserted body must let a new chat resolve the exact current registry entry and then follow that entry's current owner route instead of depending on a historical hard-coded owner list embedded in the Helper. Neighboring planning responsibilities are inputs/integration context unless the selected Use Case routes into them.
-
-Use-Case projection is a derived helper view. Canonical Use-Case Registries remain authority. Repository verification must check exact-case source paths and registry parity so every current canonical Use Case is projected, with no helper-only semantic UC appearing.
+Canonical Scenario source is command-free. Helper derives `Scenarios N` and per-step command equivalents by semantic ID/reference matching, with explicit General/Tool mappings only where no canonical methodology ID exists.
 
 ## 9B. Shared Use-Case Body Contract
 
@@ -355,75 +356,76 @@ do not expand permissions.
 
 One semantic definition generates both variants.
 
-## 9D. Duplicate Use-Case / Command Boundary
+## 9D. Semantic Command / Direct Command Boundary
 
 ```text
-command is the practical entry point:
-  Use Cases surface shows Open Commands;
-  no duplicate execution-like prompt;
+semantic capability (UC / TM / Lens)
+  → one primary Helper Command identity;
 
-command covers only one stage of a broader use case:
-  retain the broader Use Case context entry;
-  state the limited command relationship.
+direct planning/commands/*.command.md
+  → optional concrete invocation source / alias family for that identity;
+
+generic dispatcher
+  → fallback/current invocation route when no dedicated direct file exists.
 ```
 
-Current application:
+Direct command identity does not create a second UC/TM/Lens authority. Generic/generated semantic cards are projection-only and must not expose fake direct-file Edit/Save/Reload/Delete controls.
+
+## 9E. Body / Scenario Relationship
+
+Every semantic/general/tool Command card exposes:
 
 ```text
-Collect And Review Proposals From Selected Source
-  → Open Commands / `собери идеи`;
-
-Planning Meaning To Repository
-  → remains a broader Use Case;
-  → uses canonical Proposal review when material, not an item-reconciliation command.
+Run
+Body
+Scenarios N
 ```
 
-## 9E. Legacy Idea-Collection Boundary
+`Body` answers “what exact invocation will be delivered?” and includes semantic binding/provenance/source information. `Scenarios N` answers “in which canonical working Scenarios is this capability used as a derived command equivalent?”
 
-`Collect And Review Proposals From Selected Source` is linked to the accepted repository command definition:
-
-```text
-собери идеи
-English name: collect ideas
-```
-
-The Use Cases surface uses **Open Commands** rather than inserting a duplicate execution-like prompt. The command routes to the canonical Proposal lifecycle and does not recreate a Planning Item formation layer.
+Scenario prose owns usage/composition explanation; Helper does not maintain a parallel `When To Use` / `What You Get` prose layer. There is no required cross-view highlighting or persistent selection state.
 
 ## 9F. Semantic Inventory Source
-
-The helper Use-Case inventory is a projection of the current canonical Use-Case Registries. Do not maintain a second hand-written list here.
 
 Required invariant:
 
 ```text
-canonical registries
-→ semantic-projections.js
-→ tests verify exact projected UC set and exact-case source paths
+Methodology Use-Case Registry Map + mapped registries
+current Target Module registries/owners
+current Lens registries/owners
+canonical working Scenario owners
+  → generated repository projections
+  → semantic Commands / Scenarios runtime views
 ```
 
-Workspace/methodology semantic projection must follow the current canonical Use-Case Registries exactly. Application behavior remains owned by its Scenario Catalogs and is not projected as Workspace Use Cases merely for UI symmetry. New canonical Workspace UCs appear through parity checks, while ordinary discovery techniques are not projected as UCs merely because documentation names them.
+Do not maintain a second hand-written UC/TM/Lens/Scenario catalog in Helper code. Retired compatibility components are excluded from current semantic projection.
 
 ## 9G. Multi-Surface UI Contract
 
 ```text
-tabs:
-  Use Cases;
+top-level tabs:
   Commands;
+  Scenarios;
   Prompts;
 
+Commands classifications:
+  General;
+  Use Cases;
+  Target Modules;
+  Lenses;
+  Tools / Repository;
+
 search:
-  current surface only;
+  current top-level surface only;
 
-entry controls:
-  main button = Adaptive insert;
-  Full = Full insert;
-  Copy = Adaptive copy;
+primary Command controls:
+  Run;
+  Body;
+  Scenarios N;
 
-command-related Use Case:
-  Open Commands;
-
-command refinement:
-  optional and command-definition-owned; absent when `refinements` is empty.
+Scenario step projection:
+  canonical prose unchanged;
+  derived command equivalents may expose Run / Body / Open command.
 ```
 
 Preserve the draggable panel, `Alt+F2`, Dashboard toggle/launcher coordination, composer insertion, clipboard fallback and single-instance behavior.

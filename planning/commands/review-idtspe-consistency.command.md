@@ -33,36 +33,6 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
   ],
   "userTarget": "<current plan/scope>",
   "palette": true,
-  "helperPresentation": {
-    "whenToUse": "Use after material planning/evidence/coverage or when owner/Decision/QRP/placement consistency is in doubt.",
-    "whatYouGet": "Consistency findings, contradictions/stale Decisions/coverage gaps and concrete reopen/revalidation routes.",
-    "navigation": {
-      "viewId": "IDTSPE",
-      "viewLabel": "IDTSPE",
-      "sectionId": "core",
-      "sectionLabel": "IDTSPE Core",
-      "sectionOrder": 0,
-      "itemOrder": 4,
-      "kindLabel": "VALIDATOR",
-      "viewOrder": 0
-    },
-    "relatedNavigation": [
-      {
-        "viewId": "SDS",
-        "viewLabel": "SDS — IDTSPE Profile",
-        "sectionId": "08",
-        "sectionLabel": "08 Evidence & Coverage",
-        "sectionOrder": 8,
-        "itemOrder": 1000,
-        "kindLabel": "RELATED · IDTSPE VALIDATOR",
-        "badges": [
-          "RELATED"
-        ],
-        "related": true,
-        "viewOrder": 1
-      }
-    ]
-  },
   "refinements": [],
   "methodologyBinding": {
     "methodologyRuntime": "IDTSPE",

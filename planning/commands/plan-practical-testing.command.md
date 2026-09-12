@@ -32,24 +32,6 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
   ],
   "userTarget": "<one practical Evidence target>",
   "palette": true,
-  "helperPresentation": {
-    "whenToUse": "Use when the question/property genuinely requires observation of the real implemented system/environment; ordinary automated build/test Evidence inside Exact Realization is not enough or is not the inquiry.",
-    "whatYouGet": "A real-subject practical Evidence inquiry/results, explicitly distinct from Prototype Evidence and from ordinary automated test execution.",
-    "navigation": {
-      "viewId": "SDS",
-      "viewLabel": "SDS — IDTSPE Profile",
-      "sectionId": "08",
-      "sectionLabel": "08 Evidence & Coverage",
-      "sectionOrder": 8,
-      "itemOrder": 0,
-      "kindLabel": "IDTSPE TARGET",
-      "badges": [
-        "CONDITIONAL",
-        "IMPLEMENTED-EVIDENCE"
-      ],
-      "viewOrder": 1
-    }
-  },
   "refinements": [],
   "methodologyBinding": {
     "methodologyRuntime": "IDTSPE",

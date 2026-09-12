@@ -1,46 +1,124 @@
 # OBS Planning Helper — Developer / Build Entry
 
-Status: active modular Tampermonkey helper implementation
-Version: `0.34.0`
-Scope: local-first Planning Helper with GitHub-backed Planning Commands and Use Cases; reusable Prompts; explicit repository recovery/publish actions; editable durable catalog order; Favorites; and wide/resizable browser UI.
+Status: active modular Tampermonkey helper implementation  
+Version: `0.35.0`  
+Scope: local-first, GitHub-backed **semantic command projection** with canonical methodology working Scenarios, reusable Prompts, explicit repository recovery/publish actions, editable durable catalog order, Favorites and a wide/resizable browser UI.
 
 ## Read Order
 
-1. `planning/command-routing.md` — executable-command policy.
-2. `planning/commands/README.md` — Planning Command authority.
-3. `planning/documentation/use-case-registry-map.md` → only the scoped methodology Use-Case registries explicitly mapped there — methodology-use authority/projection root. Project/application Use-Case registries remain in their own scopes and are not automatically projected as global methodology UCs.
-4. `planning/helper-library/README.md` — Prompt / legacy helper insertion authority.
-5. `scenarios/README.md` — Planning Helper application behavior.
-6. `MANUAL-ACCEPTANCE.md` — browser/real-GitHub acceptance.
-7. focused `src/**` / `tests/**`.
+1. `planning/command-routing.md` — executable-command and projection policy.
+2. `planning/commands/README.md` — direct Planning Command authority.
+3. `planning/documentation/use-case-registry-map.md` and the current IDTSPE Target Module/Lens registries — semantic owners projected into Helper commands.
+4. `planning/documentation/idtspe-methodology/active/idtspe-core/shared/methodology-use-case-scenario-map.md` — canonical methodology working Scenarios; these Scenarios do not know about commands.
+5. `planning/helper-library/README.md` — Prompt / legacy helper insertion authority.
+6. `scenarios/README.md` — Planning Helper **application** behavior (`SCN-PH-*`), separate from methodology working Scenarios (`SCN-01..SCN-06`).
+7. `MANUAL-ACCEPTANCE.md` — browser/real-GitHub acceptance.
+8. focused `src/**` / `tests/**`.
 
-The userscript is a runtime/projection, not semantic authority. It must not contain a maintained hard-coded catalog of current Commands or Use Cases.
+The userscript is a runtime/projection, not semantic authority. It must not maintain a second copy of Use-Case, Target-Module, Lens or Scenario meaning.
+
+## Projection Model
+
+```text
+canonical methodology/repository owners
+  ├─ methodology Use Cases
+  ├─ Target Modules
+  ├─ Lenses
+  ├─ direct Planning Commands
+  └─ canonical working Scenarios
+          ↓ build-verified projections
+  seed/use-cases.json
+  seed/semantic-components.json
+  seed/scenarios.json
+  seed/commands.json
+          ↓ runtime composition
+  Semantic Command cards
+          ↓
+  Commands / Scenarios / Prompts UI
+```
+
+Use Cases, Target Modules and Lenses are **classifications of semantic Commands**, not peer runtime surfaces competing with Commands.
+
+A semantic component has one stable primary card identity:
+
+```text
+uc:UC-...
+tm:TM-...
+lens:LENS-...
+```
+
+Direct command files may provide the invocation body for that card, but the card identity remains semantic. Focused phrases and historical shortcuts are aliases/refinements, not duplicate primary cards.
+
+## Command Card Contract
+
+A primary command row exposes:
+
+```text
+<Action> · <Scope/Kind> · <Canonical ID>
+[Run] [Body] [Scenarios N]
+```
+
+Examples:
+
+```text
+План обновления · Core TM · TM-PRE-UPDATE-PLAN
+Исследовать Domain · SDS TM · TM-DOMAIN-DISCOVERY
+Domain Modeling / DDD · SDS Lens · LENS-DOMAIN-MODELING-DDD
+```
+
+- **Run** inserts the current canonical invocation body.
+- **Body** shows the exact adaptive invocation body, optional full-read body, semantic binding, provenance, permissions/sources and the direct source file when one exists.
+- **Scenarios N** lists canonical working Scenarios/steps where this capability is derived as a command equivalent.
+
+There is no cross-view highlighting/selection state. `Scenarios N` is a simple reverse index and navigation aid.
+
+Generated/generic semantic cards never pretend to be editable `planning/commands/*.command.md` files. Edit/Reload/Save/Delete actions are available only when the semantic card is backed by a real direct command definition.
+
+### Provenance
+
+Helper shows projection provenance separately from semantic meaning:
+
+- `DIRECT CURRENT` — a current direct `planning/commands/*.command.md` supplies the invocation;
+- `GENERIC CURRENT` — the semantic capability is current and uses a generic registry/dispatcher invocation;
+- `GENERATED` — reserved for an explicit convenience projection that is not itself a direct command definition.
+
+## Canonical Scenario Contract
+
+Canonical methodology working Scenarios live with methodology/repository owners. They contain explanatory prose and semantic owner references, **not command IDs, triggers, Helper labels or invocation bodies**.
+
+Helper derives command equivalents by matching Scenario semantic references to semantic command identities. The Scenario view renders canonical prose unchanged and adds only derived command-equivalent controls (`Run`, `Body`, `Open command`).
+
+`SCN-PH-*` files under this tool remain application-behavior owners for the Helper itself. They are not the methodology working Scenarios shown as `SCN-01..SCN-06`.
 
 ## Source / Cache Model
 
 ```text
 GitHub durable sources
   planning/commands/*.command.md
-  planning/documentation/use-case-registry-map.md
-    -> mapped current methodology Use-Case registries only
+  methodology Use-Case Registry Map + mapped registries
+  current Target Module registries/owners
+  current Lens registries/owners
+  canonical working Scenario owners
   planning/helper-library/prompts/*.prompt.md
   catalog-order.json
 
 build-verified GitHub projections
-  seed/commands.json     <- planning/commands/*.command.md
-  seed/use-cases.json    <- Registry Map -> mapped current methodology Use-Case registries only
+  seed/commands.json
+  seed/use-cases.json
+  seed/semantic-components.json
+  seed/scenarios.json
 
 browser local snapshot / RAM
-  = normal working copy/cache
+  = normal working cache
 
 explicit Hard Reload GitHub
   = authoritative repository -> local recovery for
-    Commands + Use Cases + catalog order
+    direct Commands + semantic components + working Scenarios + catalog order
 ```
 
-`seed/*.json` is repository-backed generated data, not independent semantic authority and not embedded as the live catalog in `chat-command-palette.user.js`. `npm run build:check` verifies that the generated catalogs still match their canonical GitHub sources.
+`seed/*.json` is generated repository data, never independent semantic authority and never the source of methodology prose. `npm run build:check` verifies projection freshness against canonical sources.
 
-Normal startup/search/tab switching/Insert/Copy/local edit/reorder/Favorite operations make no GitHub request. GitHub access occurs only after explicit repository actions.
+Normal startup/search/tab switching/Run/Body/local edit/reorder/Favorite operations make no GitHub request. GitHub access occurs only after explicit repository actions.
 
 ## Unified Local Snapshot
 
@@ -50,46 +128,53 @@ Persistent key:
 obsPlanningHelper:v2:localSnapshot
 ```
 
-Schema v5 keeps:
+Schema v6 keeps:
 
 ```text
 planningCommands[]
 useCases[] + useCaseCatalogSha
+semanticComponents[] + semanticComponentCatalogSha
+scenarios[] + scenarioCatalogSha
 helperItems[]
-catalogOrder { commands[], useCases[], prompts[] }
+catalogOrder { commands[], scenarios[], prompts[] }
 catalogOrderSha
 hiddenCommandIds[]
-hiddenUseCaseIds[]
+hiddenUseCaseIds[]      # compatibility state only
 favoriteCommandIds[]
-favoriteUseCaseIds[]
+favoriteUseCaseIds[]    # compatibility state only
 ```
 
-The snapshot is a browser working copy/cache. Losing it must not lose durable Command/Use-Case truth because those catalogs can be rebuilt from GitHub with `Hard Reload GitHub`.
+Semantic command Favorites use stable semantic card IDs. During migration, legacy direct-command favorite/order IDs are recognized so existing local preferences do not disappear; the next local reorder/favorite update writes semantic IDs.
 
-Favorites and local hides are local UI preferences. They reference stable IDs only and never copy semantic authority.
+The snapshot is a browser working cache. Losing it must not lose durable semantic truth because current projections can be rebuilt from GitHub with `Hard Reload GitHub`.
 
 ## Repository-Backed Catalogs
 
-### Planning Commands
+### Direct Planning Commands
 
 Canonical source: `planning/commands/*.command.md`.
 
-Commands may be created/edited locally as drafts. `Save GitHub` is explicit. `Reload` replaces one selected local command from GitHub. `Hard Reload GitHub` replaces the complete local command catalog.
+Direct commands may be created/edited locally as drafts. `Save GitHub` is explicit. `Reload` replaces one selected direct command from GitHub. Direct command IDs are invocation/source identities; they do not define the primary semantic card identity for UC/TM/Lens capabilities.
 
-A Command linked directly as a current UC's Related command is reused as that UC's manual invocation route. A UC without a bespoke route receives a generated thin invocation row through `use_case.invoke`; this generated row is not a repository command file and not semantic authority.
+### Semantic components
 
+`seed/semantic-components.json` projects current methodology Use Cases, Target Modules and Lenses from their authoritative registries/owners. Runtime creates **one primary command card per current semantic component**.
+
+Specific Lens cards are projected from the Lens Registry. The generic `примени линзу` dispatcher remains infrastructure and is not another primary Lens card. Lens operations (`ANALYZE/CHECK/REFINE/CHALLENGE`) and Target Module Result Units are selected by AI/context and do not become separate buttons.
 
 ### Use Cases
 
-Canonical methodology-use source: [`planning/documentation/use-case-registry-map.md`](../../../use-case-registry-map.md) and only the current scoped registries explicitly mapped there. The builder does **not** discover methodology Use Cases by scanning every file named `use-case-registry.md`. Build projection: `seed/use-cases.json`. Current S6 baseline projects 10 Generic Documentation + 6 IDTSPE Core methodology Use Cases; SDS defines no separate runtime methodology UCs.
+Canonical methodology-use source is [`planning/documentation/use-case-registry-map.md`](../../../use-case-registry-map.md) plus only current mapped methodology-use registries. `seed/use-cases.json` remains a compatibility/source projection used to build semantic UC invocation bodies; Use Cases themselves appear under the **Commands → Use Cases** classification, not as a top-level peer surface.
 
-The build follows the Registry Map, discovers every currently mapped methodology-use UC exactly once, verifies unique IDs/direct command mappings and regenerates the seed. Runtime treats that repository projection as recoverable local navigation. Use-Case Insert/Copy still resolves the exact current registry entry and owner route.
+### Working Scenarios
+
+`seed/scenarios.json` projects the canonical `SCN-01..SCN-06` owners. It stores canonical scenario prose + semantic references required for deterministic Helper projection. It does not store command-equivalent prose; command equivalents are computed from current semantic command identities at runtime.
 
 ### Prompts
 
 Prompt working content remains local-first and independently GitHub-backed through deterministic files in `planning/helper-library/prompts/*.prompt.md`.
 
-Hard Reload of Command/Use-Case catalogs does **not** overwrite local Prompt content.
+Hard Reload of direct/semantic/scenario catalogs does **not** overwrite local Prompt content.
 
 ## Catalog Order
 
@@ -99,25 +184,23 @@ Durable order source:
 planning/documentation/tools/tampermonkey/chat-command-palette/catalog-order.json
 ```
 
-It stores ordered stable IDs for Commands, Use Cases and Prompts. The UI exposes `↑` / `↓` for rows. Moving an item changes only local order. `Save order GitHub` explicitly persists the current order. Editing `catalog-order.json` directly in GitHub is also valid; `Hard Reload GitHub` adopts that order locally.
+It stores ordered stable IDs for Commands, Scenarios and Prompts. Command order uses semantic IDs for UC/TM/Lens cards and direct IDs only for General/Tool capabilities without a semantic owner ID. Unknown/new IDs append after configured IDs rather than disappearing.
 
-Unknown/new IDs not listed in an older order file append after configured IDs rather than disappearing.
-
-The preferred repository order starts with the canonical `idtspe` work/dispatch entry, then explicit Core orientation/orchestration, current SDS Target/Lens shortcuts, and the remaining repository/documentation capabilities. Hidden legacy compatibility commands are deliberately omitted from the preferred order; they remain valid repository definitions when compatibility is needed but do not occupy primary navigation. Unknown/new IDs still append rather than disappearing.
+The UI exposes `↑` / `↓`. Moving an item changes only local order. `Save order GitHub` explicitly persists `catalog-order.json`.
 
 ## GitHub Actions
 
 ### Check GitHub
 
-Reads repository inventory/current generated catalog files and reports local/GitHub counts plus known SHA changes for Planning Commands, Use Cases, Prompts/helper records and catalog order. No local mutation occurs.
+Reads repository inventory/current generated catalogs and reports local/GitHub status for direct command definitions, Use-Case source projection, semantic components, canonical working Scenarios, Prompts/helper records and catalog order. No local mutation occurs.
 
 ### Sync missing
 
-Adds only repository records/IDs absent locally. It does not overwrite same-path/same-ID local content. This is incremental acquisition, not authoritative freshness reconciliation.
+Adds repository records/IDs absent locally. It does not overwrite same-path/same-ID local content. This is incremental acquisition, not freshness reconciliation.
 
-### Reload one Command
+### Reload one direct Command
 
-`Reload` on a Planning Command GETs that exact command file and replaces the selected local command draft with verified remote content.
+`Reload` on a direct-backed semantic/general/tool card GETs that exact command file and replaces the selected local direct command draft with verified remote content.
 
 ### Hard Reload GitHub
 
@@ -126,10 +209,12 @@ Explicit authoritative recovery path:
 ```text
 fetch complete planning/commands catalog
 fetch seed/use-cases.json
+fetch seed/semantic-components.json
+fetch seed/scenarios.json
 fetch catalog-order.json
 validate all catalogs
-replace local Commands + Use Cases + order
-clear local Command/Use-Case hide tombstones
+replace local direct-command + semantic + scenario projections and order
+clear local command/source hide tombstones
 preserve Prompts and Favorites
 ```
 
@@ -137,80 +222,50 @@ The confirmation warns that unsaved local command drafts are lost. No implicit/b
 
 ### Save GitHub / Save order GitHub
 
-Per-row Command/Prompt save uses optimistic SHA update plus exact read-back verification. Conflicts never overwrite automatically. `Save order GitHub` persists only `catalog-order.json`; it changes presentation order, not semantic meaning.
+Per-row direct Command/Prompt save uses optimistic SHA update plus exact read-back verification. Conflicts never overwrite automatically. `Save order GitHub` persists only `catalog-order.json`; it changes presentation order, not semantic meaning.
 
-Repository delete remains unsupported. Local Delete/hide makes zero GitHub writes.
+Repository delete remains unsupported. Local delete/hide makes zero GitHub writes.
 
-## UI Layout
+## Commands Navigation
 
-Desktop default is a wide panel (about 980px). The panel is resizable, persists `left/top/width/height`, clamps itself to the viewport, uses a wide content column with compact actions on desktop, and switches to one-column rows with wrapped actions on narrow screens.
+The Commands surface derives navigation from semantic identity:
 
-The same entity may appear in `★ Favorites` and its normal catalog position. Favorites are projections, not duplicate records.
+```text
+General
+Use Cases
+  Documentation
+  Core
+Target Modules
+  IDTSPE Core
+  Profile · SDS
+Lenses
+  IDTSPE Core
+  Profile · SDS
+Tools / Repository
+```
 
-## Safety Boundary
+`src/methodology-navigation.js` owns only this projection logic. It derives grouping from `semanticKind`, `semanticScope` and tool/general classification. `helperPresentation.navigation` is compatibility-only input for old cached records and is not a current semantic source.
 
-- normal browse/edit/reorder/insert/copy is local-only;
+The generic `idtspe` dispatcher remains available for expert/direct invocation (`idtspe tm …`, `idtspe lens …`), but the primary catalog is built from current semantic owners rather than requiring users to know dispatcher syntax.
+
+## Command Invocation Side Effects
+
+Runtime-only invocation side effects remain separate from command semantics. Ordinary `Run` / `Copy body` preserves canonical command bytes and performs no side effect.
+
+For commands supporting `capture-chat-context`, Helper may expose an explicit one-shot **Bind + Run** action. It creates a fresh invocation token and appends the separate `[PLANNING_COMMAND_SIDE_EFFECT]` block only for that invocation. There is no sticky bind toggle; rendering, Body inspection, Reload and Hard Reload never execute effects. A side-effect failure aborts only that requested bind delivery action.
+
+For `replacement_archive.create` (`давай архив`), the token captures the current ordinary `chatgpt.com/c/<conversation>` identity/title/time into this tab's `sessionStorage`, is required only by that invocation's `OBS-ACTION/1`, has `carryForward: false`, and constitutes explicit authority to bind/rebind that ChangeSet Review chat. Ordinary `Run` remains non-binding.
+
+## UI Layout / Safety Boundary
+
+Desktop default is a wide panel (about 980px). The panel is resizable, persists `left/top/width/height`, clamps to the viewport and switches to one-column rows on narrow screens.
+
+- normal browse/Run/Body/reorder/local edit is local-only;
 - all repository reads/writes are explicit UI actions;
-- Hard Reload is destructive only to the local Command/Use-Case cache/order and requires confirmation;
+- Hard Reload is destructive only to the local GitHub-backed catalog cache/order and requires confirmation;
 - local Prompt content is excluded from Hard Reload;
-- GitHub writes use deterministic paths and optimistic concurrency;
 - generated seeds/userscript never become canonical semantic authority;
 - no Helper action implies repository commit/push.
-
-
-## IDTSPE / SDS Methodology Views
-
-Current methodology commands carry two GitHub-backed metadata layers: `methodologyBinding` is the stable IDTSPE runtime/profile/Target-Module-or-Lens binding, while `helperPresentation.navigation` owns mutable view/tab/section/order/badge/related rendering. The userscript runtime is generic and does not maintain current command IDs **or a hard-coded list of methodology views**. `methodologyViewDefinitions(entries)` derives the visible methodology view IDs, labels and order from current command metadata; `All commands` is the only generic Helper-owned fallback view.
-
-
-The Commands surface now has helper-owned navigation views in addition to the ordinary `All commands` view:
-
-```text
-IDTSPE
-  11 primary methodology surfaces
-  canonical `idtspe` work/dispatch + Core orientation/orchestration
-  2 generic Core Target Modules
-  generic Lens operations + stable Core Lens shortcuts
-
-SDS — IDTSPE Profile
-  19 primary methodology surfaces
-  1 SDS bootstrap
-  7 direct current SDS Target Module invocations
-  8 focused Target invocations
-  3 direct SDS/profile Lens checks
-  additional active SDS Target Modules/Lenses remain reachable through generic `idtspe` registry dispatch without one command row per component
-  Consistency Review may appear as a RELATED action without duplicating command identity
-
-TOTAL
-  30 primary methodology surfaces
-```
-
-Projection source: `src/methodology-navigation.js`. Command semantics remain in `planning/commands/*.command.md` and the installed IDTSPE/SDS methodology owners; the Helper view does not become a semantic authority.
-
-### Direct `idtspe` discoverability
-
-`idtspe` is the preferred direct entry when the user already knows the semantic component:
-
-```text
-idtspe
-idtspe scenario <context>
-idtspe slice <context>
-idtspe tm domain <context>
-idtspe lens ddd <context>
-idtspe l5 <context>
-idtspe TM-* <context>
-idtspe LENS-* <context>
-```
-
-Exact semantic IDs and short aliases are owned by the current Target Module/Lens registries, not by Helper UI code. The Helper therefore does **not** manufacture 31 extra alias command rows. `Info` on the canonical `idtspe` row explains the dispatcher; registry READMEs remain the complete alias catalog. Ambiguous aliases are never guessed.
-
-New IDTSPE command definitions may expose optional `helperPresentation.whenToUse` / `helperPresentation.whatYouGet`. The `Info` action shows this material without inserting/invoking the command. Older commands without the metadata remain valid.
-
-## Command invocation side effects
-
-Planning Command bodies remain GitHub-backed canonical projections. Runtime-only behavior is separate: a command ID may expose one or more asynchronous side effects, but ordinary Insert/Full/Copy runs with no side effect and preserves the canonical bytes. Helper renders explicit one-shot `Bind + Insert`, `Bind + Copy` and, when available, `Bind + Full` actions only for commands that support `capture-chat-context`; there is no sticky bind toggle and Reload/Hard Reload/rendering never executes an effect. A configured effect failure aborts that bind action before copy/insertion.
-
-For `replacement_archive.create` (`давай архив`), every explicit Bind action creates a fresh UUID v4, captures the current ordinary `chatgpt.com/c/<conversation>` identity/title/time into this tab's `sessionStorage` under `obsPlanningHelper:chatContextCaptures:v1`, and appends a separate `[PLANNING_COMMAND_SIDE_EFFECT]` block after the complete unchanged command. The block requires the exact `chatContextToken` in **this invocation's** `OBS-ACTION/1`, declares `scope: this-invocation-only` and `carryForward: false`, so later ordinary archive commands omit the token. Captures remain in the tab session in this revision; repeated Bind actions create distinct tokens even when they capture the same conversation. Semantically, choosing `Bind + ...` is explicit authority for Replacement Package App to bind **or rebind** that ChangeSet to the captured conversation as soon as the token resolves; ordinary Insert/Full/Copy grants no such authority. Replacement Package App/extension resolves the token asynchronously only after the resulting action reaches Apply.
 
 ## Build / Verify
 
@@ -220,4 +275,4 @@ npm run build
 npm run verify
 ```
 
-`verify` proves current mapped methodology-UC/Command parity, manual methodology-UC invokability, command/IDTSPE alias validity, compatibility-route safety, local/repository boundaries, generated-script freshness and Helper product-Scenario traceability.
+`verify` proves current semantic projection parity, command/alias validity, Scenario projection/reverse-index behavior, compatibility-route safety, local/repository boundaries, generated-script freshness and Helper application-Scenario traceability.

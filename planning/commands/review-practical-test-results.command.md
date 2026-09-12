@@ -31,21 +31,6 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
   ],
   "userTarget": "<practical test with actual Evidence>",
   "palette": true,
-  "helperPresentation": {
-    "whenToUse": "Use when the real implemented subject has produced actual observations/data that should update the same TM-PRACTICAL-TEST Target.",
-    "whatYouGet": "Implemented Evidence interpretation for acceptance and/or learning, limitations/confounders, residual questions and revalidation/follow-up.",
-    "navigation": {
-      "viewId": "SDS",
-      "viewLabel": "SDS — IDTSPE Profile",
-      "sectionId": "08",
-      "sectionLabel": "08 Evidence & Coverage",
-      "sectionOrder": 8,
-      "itemOrder": 1,
-      "kindLabel": "IDTSPE TARGET · FOCUSED",
-      "parentId": "practical_testing.plan",
-      "viewOrder": 1
-    }
-  },
   "refinements": [],
   "methodologyBinding": {
     "methodologyRuntime": "IDTSPE",

@@ -31,21 +31,6 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
   ],
   "userTarget": "<Application concept focus>",
   "palette": true,
-  "helperPresentation": {
-    "whenToUse": "Use when Application Definition exists/needed and the immediate stable intent is concept/solution shape rather than the full umbrella.",
-    "whatYouGet": "Concept-focused Application Definition refinement with selected concept, alternatives and material Q/R/P.",
-    "navigation": {
-      "viewId": "SDS",
-      "viewLabel": "SDS — IDTSPE Profile",
-      "sectionId": "01",
-      "sectionLabel": "01 Application",
-      "sectionOrder": 1,
-      "itemOrder": 1,
-      "kindLabel": "IDTSPE TARGET · FOCUSED",
-      "parentId": "tmcmd.application.definition",
-      "viewOrder": 1
-    }
-  },
   "refinements": [],
   "methodologyBinding": {
     "methodologyRuntime": "IDTSPE",

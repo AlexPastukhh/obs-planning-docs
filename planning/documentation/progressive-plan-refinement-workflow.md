@@ -1,13 +1,14 @@
 # Progressive Plan Refinement Workflow
 
-Status: active supporting workflow for IDTSPE-directed current-plan refinement
-Methodology authority: [`idtspe-methodology/active/idtspe-core/IDTSPE-DEFAULT-WORK-MODE.md`](idtspe-methodology/active/idtspe-core/IDTSPE-DEFAULT-WORK-MODE.md) + [`idtspe-methodology/active/idtspe-core/IDTSPE-SHELL.md`](idtspe-methodology/active/idtspe-core/IDTSPE-SHELL.md)
+Status: compatibility / provenance-only workflow; not current runtime authority
+Current runtime owners: [`use-case-registry-map.md`](use-case-registry-map.md) → applicable current Use Case, especially [`idtspe-methodology/active/idtspe-core/shared/compose-current-work-use-case.md`](idtspe-methodology/active/idtspe-core/shared/compose-current-work-use-case.md), plus selected Target/Lens/profile owners.
+Historical note: this file preserves the older accumulating `Current Plan` refinement presentation and must not be used as a competing runtime route.
 This file is not a repository-level Use-Case owner.
 Shared Q/R/P semantics: [`idtspe-methodology/active/idtspe-core/shared/qrp-lifecycle-and-review-contract.md`](idtspe-methodology/active/idtspe-core/shared/qrp-lifecycle-and-review-contract.md)
 
 ## Purpose
 
-Integrate clarification/review/change into one accumulating Current Plan without turning Q/R/P or chat-control metadata into the planning root.
+Preserve the older progressive-refinement presentation for provenance/compatibility. Current work is Use-Case-driven and proportional; no universal accumulating `Current Plan` is required. Use the current owners above for new work.
 
 ## Primary Traversal
 

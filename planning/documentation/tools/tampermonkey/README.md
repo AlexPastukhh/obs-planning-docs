@@ -8,10 +8,10 @@ Scope: tracked Tampermonkey scripts used by the OBS planning system, including r
 
 ```text
 planning/documentation/tools/tampermonkey/chat-command-palette.user.js
-  generated install artifact for the modular Commands / Use Cases / Prompts helper;
+  generated install artifact for the modular Commands / Scenarios / Prompts helper;
   source/build/tests live under `chat-command-palette/`;
   planning-command definitions live under `planning/commands/`;
-  real Planning Commands use one editable Commands surface with local draft state, Prompts use the helper library, and explicit GitHub actions are user-triggered;
+  current methodology UCs/TMs/Lenses project into one semantic Commands surface; direct-backed rows remain editable command drafts, canonical working Scenarios are separately inspectable, Prompts use the helper library, and explicit GitHub actions are user-triggered;
   its floating Planning launcher hides while Dashboard is open;
   Alt+F2 and Tools -> Commands remain available.
 
@@ -369,61 +369,23 @@ The reusable Command Palette provides:
 - normal insertion/copy/import is RAM-first and performs no repository read/write; explicit Check GitHub / Sync missing / Reload GitHub / Save GitHub operate only on bounded command/helper-library paths and never run local Git, commit or push.
 ```
 
-## 9A. Commands / Use Cases / Prompts
+## 9A. Commands / Scenarios / Prompts
 
-The reusable planning helper has three current catalog surfaces:
+The reusable Planning Helper has three top-level surfaces:
 
 ```text
-Use Cases
 Commands
+Scenarios
 Prompts
 ```
 
-Authority:
+`Commands` is the only actionable semantic-command catalog. It classifies current capabilities as General, Use Cases, Target Modules, Lenses and Tools/Repository. Current UCs/TMs/Lenses project to one stable semantic card each; direct command files may supply invocation bodies/aliases without becoming a second semantic owner.
 
-```text
-Use Cases → current canonical Use-Case Registries;
-Commands  → root Command Routing → direct repository command definitions;
-Prompts   → helper prompt library as non-authoritative reusable insertion text.
-```
+A primary Command card exposes `Run`, `Body` and `Scenarios N`. `Body` shows the exact invocation/provenance/source route. `Scenarios N` shows canonical working Scenarios where the same semantic capability is derived as a command equivalent.
 
-Controls:
+`Scenarios` renders canonical working Scenario prose plus derived command equivalents. Canonical Scenario owners do not contain command IDs/triggers/Helper labels. `Prompts` remains non-authoritative reusable insertion text.
 
-```text
-main row:
-  Adaptive insert;
-
-Full:
-  mandatory complete entry/owner reread;
-
-Copy:
-  Adaptive body copy;
-
-Open Commands:
-  redirect a command-related Use Case without duplicate execution;
-
-Refinement:
-  shown only when the selected direct command definition currently declares one.
-```
-
-Projected Use Cases:
-
-```text
-Understand Current Workflow And Reality
-Collect And Review Proposals From Selected Source → Commands
-Plan / Review Whole Solution Or Workflow
-Research Existing Solutions And Alternative Workflows
-Draft Detailed Scenario
-Draft Or Review Domain
-Plan Implementation Slice
-Review Scenario/Domain/Slice Consistency
-Repository Documentation Change And Reference Review
-Planning Meaning To Repository
-```
-
-`Collect And Review Proposals From Selected Source` opens the accepted `собери идеи / collect ideas` command. Retired Planning Item formation/reconciliation routes and the item-owned Structured User Message Composer are not projected as active Use Cases.
-
-Chat/AI/Work-State remains unprojected as accepted. Current Linked Notes behavior is owned by its Scenario Catalog/Scenario owners and is not projected into the Planning Helper Workspace Use-Case surface merely because the application implements it.
+Generic `idtspe` / `примени линзу` dispatch remains implementation infrastructure; specific current TM/Lens cards are generated from registries. Result Units and Lens operation variants are selected by AI/context and are not separate primary buttons.
 
 ## 9B. Responsive Command Insertion And Diagnostics
 

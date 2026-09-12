@@ -33,24 +33,6 @@ Scope: historical invocation alias redirected to current IDTSPE/SDS authority; h
   ],
   "userTarget": "<Slice owner>",
   "palette": false,
-  "helperPresentation": {
-    "whenToUse": "Only when using this historical command phrase/automation; prefer the current semantic owner or generic `idtspe` component dispatch for new work.",
-    "whatYouGet": "Slice-focused proof finding/plan at the natural owner, optionally followed by Exact test realization; no Test Design Target.",
-    "navigation": {
-      "viewId": "SDS",
-      "viewLabel": "SDS — IDTSPE Profile",
-      "sectionId": "07",
-      "sectionLabel": "07 Slice Realization",
-      "sectionOrder": 7,
-      "itemOrder": 2,
-      "kindLabel": "IDTSPE TARGET · FOCUSED",
-      "parentId": "application_slice.plan",
-      "viewOrder": 1,
-      "badges": [
-        "CONDITIONAL"
-      ]
-    }
-  },
   "refinements": [],
   "methodologyBinding": {
     "methodologyRuntime": "IDTSPE",

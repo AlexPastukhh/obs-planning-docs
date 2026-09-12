@@ -31,21 +31,6 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
   ],
   "userTarget": "<Application behavior space / Scenario boundary candidates>",
   "palette": true,
-  "helperPresentation": {
-    "whenToUse": "Use when independently meaningful Scenario boundaries are unclear, incomplete or need consolidation before/while forming Scenario Targets.",
-    "whatYouGet": "Scenario boundary candidates and selected/reused Scenario Planning targets; no separate discovery semantic owner.",
-    "navigation": {
-      "viewId": "SDS",
-      "viewLabel": "SDS — IDTSPE Profile",
-      "sectionId": "02",
-      "sectionLabel": "02 Scenarios & Interaction",
-      "sectionOrder": 2,
-      "itemOrder": 0,
-      "kindLabel": "IDTSPE TARGET · FOCUSED",
-      "parentId": "tmcmd.scenario.plan",
-      "viewOrder": 1
-    }
-  },
   "refinements": [],
   "methodologyBinding": {
     "methodologyRuntime": "IDTSPE",

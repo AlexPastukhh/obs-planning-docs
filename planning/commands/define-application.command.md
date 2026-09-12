@@ -14,7 +14,7 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
     "определи приложение"
   ],
   "description": "application definition",
-  "meaning": "Run TM-APPLICATION-DEFINITION through the IDTSPE Shell for the selected target.",
+  "meaning": "Run TM-APPLICATION-DEFINITION through current Use-Case-driven IDTSPE composition and the selected Target Module entry point for the selected target.",
   "activeContextBehavior": "Treat the explicit command as selected invocation intent inside always-active IDTSPE. Re-evaluate current Use-Case composition, resolve/reuse a natural Target/context only when useful, confirm the selected Target Module Entry Point/local applicability gate, and then resolve CREATE/REFINE/EXTEND/REVALIDATE/REPAIR from actual current Target state. Do not create a Target or Result Unit merely because the command exists.",
   "traversalReadMode": "Reuse current reliable IDTSPE/SDS governance; targeted refresh of the selected owner route when uncertain; full bootstrap only when no reliable sufficient governance context exists.",
   "ownerFiles": [
@@ -31,20 +31,6 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
   ],
   "userTarget": "<one Application Definition>",
   "palette": true,
-  "helperPresentation": {
-    "whenToUse": "Use when the product/application need, concept, responsibility or boundary should be established or revalidated.",
-    "whatYouGet": "Application Definition with need/value/scope, selected responsibility, material alternatives, Q/R/P and Decisions.",
-    "navigation": {
-      "viewId": "SDS",
-      "viewLabel": "SDS — IDTSPE Profile",
-      "sectionId": "01",
-      "sectionLabel": "01 Application",
-      "sectionOrder": 1,
-      "itemOrder": 0,
-      "kindLabel": "IDTSPE TARGET",
-      "viewOrder": 1
-    }
-  },
   "refinements": [],
   "methodologyBinding": {
     "methodologyRuntime": "IDTSPE",

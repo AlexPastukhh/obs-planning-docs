@@ -33,24 +33,6 @@ Scope: historical invocation alias redirected to current IDTSPE/SDS authority; h
   ],
   "userTarget": "<one exceptional shared must-hold candidate>",
   "palette": false,
-  "helperPresentation": {
-    "whenToUse": "Only when using this historical command phrase/automation; prefer the current semantic owner or generic `idtspe` component dispatch for new work.",
-    "whatYouGet": "Owner-local IR/PFR disposition and, only when independently justified, a Shared Capability binding. No standalone Requirement Target.",
-    "navigation": {
-      "viewId": "SDS",
-      "viewLabel": "SDS — IDTSPE Profile",
-      "sectionId": "02",
-      "sectionLabel": "02 Scenarios & Interaction",
-      "sectionOrder": 2,
-      "itemOrder": 4,
-      "kindLabel": "IDTSPE TARGET",
-      "badges": [
-        "CONDITIONAL",
-        "EXCEPTIONAL"
-      ],
-      "viewOrder": 1
-    }
-  },
   "refinements": [],
   "methodologyBinding": {
     "methodologyRuntime": "IDTSPE",

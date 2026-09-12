@@ -31,21 +31,6 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
   ],
   "userTarget": "<existing Slice>",
   "palette": true,
-  "helperPresentation": {
-    "whenToUse": "Use when an existing bounded Slice Discovery needs deeper entry/result, end-to-end realization, integration-proof or evolution/open-pressure detail.",
-    "whatYouGet": "A deeper current RU-SLICE-02..05 projection for the same Slice Discovery, with no separate Runtime Path or Slice Strategy authority.",
-    "navigation": {
-      "viewId": "SDS",
-      "viewLabel": "SDS — IDTSPE Profile",
-      "sectionId": "07",
-      "sectionLabel": "07 Slice Realization",
-      "sectionOrder": 7,
-      "itemOrder": 1,
-      "kindLabel": "IDTSPE TARGET · FOCUSED",
-      "parentId": "application_slice.plan",
-      "viewOrder": 1
-    }
-  },
   "refinements": [],
   "methodologyBinding": {
     "methodologyRuntime": "IDTSPE",

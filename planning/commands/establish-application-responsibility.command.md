@@ -31,21 +31,6 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
   ],
   "userTarget": "<Application responsibility boundary>",
   "palette": true,
-  "helperPresentation": {
-    "whenToUse": "Use when the immediate question is what the Application itself should own versus external/manual/system responsibilities.",
-    "whatYouGet": "Responsibility-boundary refinement of the same Application Definition Target.",
-    "navigation": {
-      "viewId": "SDS",
-      "viewLabel": "SDS — IDTSPE Profile",
-      "sectionId": "01",
-      "sectionLabel": "01 Application",
-      "sectionOrder": 1,
-      "itemOrder": 2,
-      "kindLabel": "IDTSPE TARGET · FOCUSED",
-      "parentId": "tmcmd.application.definition",
-      "viewOrder": 1
-    }
-  },
   "refinements": [],
   "methodologyBinding": {
     "methodologyRuntime": "IDTSPE",

@@ -1,13 +1,13 @@
 # SCN-PH-CHECK-REPOSITORY — Inspect Local And Repository Inventory
 
 Status: active current behavior owner
-Scope: canonical detailed application behavior owner for explicit non-mutating local↔GitHub inventory review.
+Scope: explicit non-mutating local↔GitHub inventory review.
 
 **Trigger/input:** explicit `Check GitHub`.
 
-**Successful result:** the user sees local/GitHub counts and missing/changed evidence for Planning Commands, Use Cases, Prompts/helper records and durable catalog order, without local mutation.
+**Successful result:** the user sees local/GitHub counts and missing/changed evidence for direct Planning Commands, Use-Case source projection, semantic components, canonical working Scenarios, Prompts/helper records and durable catalog order, without local mutation.
 
-**Boundary:** same path/ID means inventory overlap only. It does not prove equal content unless SHA/content evidence establishes that separately. The action remains explicit and does not publish or reconcile local state.
+**Boundary:** same path/ID means inventory overlap only. It does not prove equal content without SHA/content evidence. The action never publishes or reconciles local state.
 
 **Traceability:**
 

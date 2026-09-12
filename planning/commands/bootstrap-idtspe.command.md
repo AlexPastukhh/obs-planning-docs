@@ -33,20 +33,6 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
   ],
   "userTarget": "<IDTSPE governance / no Target required>",
   "palette": true,
-  "helperPresentation": {
-    "whenToUse": "When the generic planning environment through IDTSPE Core is not current or must be reconstructed from zero context.",
-    "whatYouGet": "Primary bootstrap current through IDTSPE Core, with Session/Documentation/Core boundaries understood and no profile selected by bootstrap.",
-    "navigation": {
-      "viewId": "IDTSPE",
-      "viewLabel": "IDTSPE",
-      "sectionId": "core",
-      "sectionLabel": "IDTSPE Core",
-      "sectionOrder": 0,
-      "itemOrder": 0,
-      "kindLabel": "BOOTSTRAP",
-      "viewOrder": 0
-    }
-  },
   "refinements": [],
   "methodologyBinding": {
     "methodologyRuntime": "IDTSPE",

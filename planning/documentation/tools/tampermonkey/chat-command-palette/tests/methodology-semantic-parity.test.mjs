@@ -41,7 +41,7 @@ test('Slice primary commands use current RU-SLICE surface',()=>{
 test('Screen primary command composes Feature and Scenario journey spatial meaning',()=>{
   const text=commandText('tmcmd.screen');
   assert.match(text,/Feature/);
-  assert.match(text,/Scenario journey/i);
+  assert.match(text,/Feature\/Scenario participation/i);
   assert.doesNotMatch(text,/Scenario behavior requires/i);
 });
 

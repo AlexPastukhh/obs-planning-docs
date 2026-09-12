@@ -31,23 +31,6 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
   ],
   "userTarget": "<target/result>",
   "palette": true,
-  "helperPresentation": {
-    "whenToUse": "Use when you want an explicit decision whether material meaning should persist and in what representation.",
-    "whatYouGet": "NO_PERSISTENCE / IMPLEMENTATION_NATIVE / existing owner / consolidated artifact / justified split / generated-derived decision, then P-14 placement.",
-    "navigation": {
-      "viewId": "IDTSPE",
-      "viewLabel": "IDTSPE",
-      "sectionId": "lens-operations",
-      "sectionLabel": "Lens Operations",
-      "sectionOrder": 1,
-      "itemOrder": 2,
-      "kindLabel": "IDTSPE LENS",
-      "badges": [
-        "REQUIRED CORE · EXPLICIT CHECK"
-      ],
-      "viewOrder": 0
-    }
-  },
   "refinements": [],
   "methodologyBinding": {
     "methodologyRuntime": "IDTSPE",

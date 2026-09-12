@@ -3,7 +3,7 @@
 Status: active practical example
 Scope: demonstrate the current `план файл-обновление` output shape without owning methodology.
 
-Canonical owners: [`../../use-cases/UC-REPO-PLAN-UPDATE.md`](../../use-cases/UC-REPO-PLAN-UPDATE.md), [`../../commands/plan-file-update.command.md`](../../commands/plan-file-update.command.md).
+Canonical owners: [`../../use-cases/UC-REPO-PLAN-UPDATE.md`](../../use-cases/UC-REPO-PLAN-UPDATE.md), [`../../commands/plan-pre-update.command.md`](../../commands/plan-pre-update.command.md).
 
 ## План файл-обновление
 
@@ -13,7 +13,7 @@ Canonical owners: [`../../use-cases/UC-REPO-PLAN-UPDATE.md`](../../use-cases/UC-
 
 | Field | Value |
 |---|---|
-| Canonical command | `план файл-обновление` |
+| Canonical command | `составь предапдейт план` (`план файл-обновление` is an alias) |
 | English name | `plan file update` |
 | Permission mode | `plan-only` |
 

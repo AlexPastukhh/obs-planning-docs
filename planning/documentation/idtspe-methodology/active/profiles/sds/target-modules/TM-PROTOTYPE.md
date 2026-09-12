@@ -112,6 +112,29 @@ Do not create `N/A` placeholders. Re-evaluate a previously omitted Unit only whe
 
 The shared method's full inquiry fields are guidance, not mandatory duplicated Result fields.
 
+
+### Explicit Unit Checkpoint Placement
+
+Each material Unit below inherits the generic [`Unit Applicability Envelope`](../../../idtspe-core/shared/idtspe-unit-and-target-step-result-model.md#5b-unit-applicability-envelope--opening--in-unit--closing-checkpoints). Opening/Closing are mandatory logical applicability boundaries; registries may also be checked during Unit work whenever new material pressure appears.
+
+#### `RU-PROTO-01` processing envelope
+
+1. **Opening Unit Checkpoint — `RU-PROTO-01`** — resolve/reuse current applicable Core + active-profile Lens registry candidates and any Unit-triggered supporting registry pressure before material work.
+2. **Unit Work — `RU-PROTO-01`** — produce/refine only the material meaning owned by this Result Unit; run additional applicability checks immediately when the Analysis Surface changes materially.
+3. **Closing Unit Checkpoint — `RU-PROTO-01`** — evaluate the actual candidate Unit result, disposition material Findings/owner consequences, and reopen/refine narrowly when needed before treating the Unit as current-for-handoff.
+
+#### `RU-PROTO-02` processing envelope
+
+1. **Opening Unit Checkpoint — `RU-PROTO-02`** — resolve/reuse current applicable Core + active-profile Lens registry candidates and any Unit-triggered supporting registry pressure before material work.
+2. **Unit Work — `RU-PROTO-02`** — produce/refine only the material meaning owned by this Result Unit; run additional applicability checks immediately when the Analysis Surface changes materially.
+3. **Closing Unit Checkpoint — `RU-PROTO-02`** — evaluate the actual candidate Unit result, disposition material Findings/owner consequences, and reopen/refine narrowly when needed before treating the Unit as current-for-handoff.
+
+#### `RU-PROTO-03` processing envelope
+
+1. **Opening Unit Checkpoint — `RU-PROTO-03`** — resolve/reuse current applicable Core + active-profile Lens registry candidates and any Unit-triggered supporting registry pressure before material work.
+2. **Unit Work — `RU-PROTO-03`** — produce/refine only the material meaning owned by this Result Unit; run additional applicability checks immediately when the Analysis Surface changes materially.
+3. **Closing Unit Checkpoint — `RU-PROTO-03`** — evaluate the actual candidate Unit result, disposition material Findings/owner consequences, and reopen/refine narrowly when needed before treating the Unit as current-for-handoff.
+
 ## Artifact / File Contract
 
 ```text

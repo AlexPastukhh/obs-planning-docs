@@ -202,7 +202,7 @@
     {
       "id": "UC-IDTSPE-MAINTAIN-TARGET-MODULE",
       "label": "Create / Review / Integrate Target Module",
-      "description": "``text one Target Module owner catalog entry stable Entry Point integration map Target Step-Result Contract / Result Units Resolution / Production Method output schema/projection when useful validators provenance mapping command/Tampermonkey readiness route ` If reuse already covers the need: `text no new module → integrate/reuse existing one `` ---",
+      "description": "``text one Target Module owner catalog entry stable Entry Point integration map Target Step-Result Contract / Result Units explicit per-Unit Opening / Closing Applicability Checkpoints Resolution / Production Method output schema/projection when useful validators provenance mapping command/Tampermonkey readiness route ` If reuse already covers the need: `text no new module → integrate/reuse existing one `` ---",
       "sources": [
         "planning/documentation/use-case-registry-map.md",
         "planning/documentation/idtspe-methodology/active/idtspe-core/shared/idtspe-methodology-use-case-registry.md"
@@ -211,7 +211,7 @@
       "target": "<Create / Review / Integrate Target Module target>",
       "manualInvocation": true,
       "trigger": "Use when: ``text a recurring Target class has no reusable contract an existing UC/workflow/template family should become IDTSPE-addressable a Target Module is incomplete/stale/overlapping several modules need composition/entry-point reconciliation `` ---",
-      "result": "``text one Target Module owner catalog entry stable Entry Point integration map Target Step-Result Contract / Result Units Resolution / Production Method output schema/projection when useful validators provenance mapping command/Tampermonkey readiness route ` If reuse already covers the need: `text no new module → integrate/reuse existing one `` ---"
+      "result": "``text one Target Module owner catalog entry stable Entry Point integration map Target Step-Result Contract / Result Units explicit per-Unit Opening / Closing Applicability Checkpoints Resolution / Production Method output schema/projection when useful validators provenance mapping command/Tampermonkey readiness route ` If reuse already covers the need: `text no new module → integrate/reuse existing one `` ---"
     },
     {
       "id": "UC-IDTSPE-REVALIDATE-CURRENT-WORK",

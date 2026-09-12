@@ -2,101 +2,86 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
-import { createRequire } from 'node:module';
+import {createRequire} from 'node:module';
 const require=createRequire(import.meta.url);
-const nav=require('../src/methodology-navigation.js');
-const seed=JSON.parse(fs.readFileSync(path.join(import.meta.dirname,'..','seed','commands.json'),'utf8'));
-const entries=seed.items;
-const repoRoot=path.resolve(import.meta.dirname,'../../../../../..');
+const codec=require('../src/command-definition-codec.js');
+const catalog=require('../src/command-catalog.js');
+const helper=require('../src/helper-library-codec.js');
+const body=require('../src/command-body.js');
+const semantic=require('../src/semantic-projections.js');
+const navigation=require('../src/methodology-navigation.js');
+const repositoryCatalog=require('../src/repository-catalog-service.js');
+globalThis.ObsPlanningHelper=Object.assign({},codec,catalog,helper,body,semantic,navigation,repositoryCatalog);
+const state=require('../src/planning-helper-state.js');
+Object.assign(globalThis.ObsPlanningHelper,state);
+const runtime=require('../src/planning-helper-runtime.js');
 
-test('methodology navigation exposes accepted primary counts from repository command metadata',()=>{
-  assert.equal(nav.methodologyPrimaryIds(entries,'IDTSPE').length,11);
-  assert.equal(nav.methodologyPrimaryIds(entries,'SDS').length,19);
-  assert.equal(new Set([...nav.methodologyPrimaryIds(entries,'IDTSPE'),...nav.methodologyPrimaryIds(entries,'SDS')]).size,30);
+const moduleRoot=path.resolve(import.meta.dirname,'..');
+const repoRoot=path.resolve(moduleRoot,'../../../../..');
+const commands=JSON.parse(fs.readFileSync(path.join(moduleRoot,'seed','commands.json'),'utf8')).items;
+const useCases=JSON.parse(fs.readFileSync(path.join(moduleRoot,'seed','use-cases.json'),'utf8')).items;
+const components=JSON.parse(fs.readFileSync(path.join(moduleRoot,'seed','semantic-components.json'),'utf8')).items;
+const scenarios=JSON.parse(fs.readFileSync(path.join(moduleRoot,'seed','scenarios.json'),'utf8')).items;
+const order=JSON.parse(fs.readFileSync(path.join(moduleRoot,'catalog-order.json'),'utf8'));
+const snapshot=state.normalizePlanningHelperLocalSnapshot({
+  schemaVersion:state.LOCAL_SNAPSHOT_SCHEMA_VERSION,
+  planningCommands:commands.map((definition)=>state.normalizeCommandRecord({definition,repositoryKnown:true})),
+  helperItems:[],useCases,semanticComponents:components,scenarios,catalogOrder:order
 });
+const memory=runtime.materializeSnapshot(snapshot);
+const entries=memory.commandEntries;
 
-test('SDS related consistency link reuses Core command identity without increasing primary count',()=>{
-  assert.deepEqual(nav.methodologyRelatedIds(entries,'SDS'),['idtspe.review_consistency']);
-  assert.equal(nav.methodologyPrimaryIds(entries,'SDS').includes('idtspe.review_consistency'),false);
-});
-
-test('documentation representation is Core while direct SDS lens section contains WEUC and Simplicity only',()=>{
-  assert.equal(nav.methodologyPrimaryIds(entries,'IDTSPE').includes('lenscmd.documentation.representation.check'),true);
-  const sds=nav.buildMethodologyViewGroups(entries,'SDS').find((section)=>section.id==='lens');
-  assert.deepEqual(sds.entries.filter((entry)=>!entry.__methodologyNav.related).map((entry)=>entry.id),['lenscmd.weuc.check','lenscmd.simplicity.check','test_coverage.review']);
-});
-
-test('runtime navigation module is generic and contains no maintained methodology command identities',()=>{
-  const source=fs.readFileSync(path.join(import.meta.dirname,'..','src','methodology-navigation.js'),'utf8');
-  for(const identity of ['application_domain.plan','idtspe.bootstrap','lenscmd.weuc.check','tmcmd.crosscut'])assert.doesNotMatch(source,new RegExp(identity.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')));
-  assert.match(source,/helperPresentation/);
-});
-
-
-
-test('Helper methodology view controls are derived from repository navigation metadata rather than hard-coded view identities',()=>{
-  assert.deepEqual(nav.methodologyViewDefinitions(entries).map(({id,label})=>({id,label})),[
-    {id:'IDTSPE',label:'IDTSPE'},
-    {id:'SDS',label:'SDS — IDTSPE Profile'}
+test('command navigation is derived from semantic identity and exposes UC/TM/Lens as classifications',()=>{
+  const views=navigation.methodologyViewDefinitions(entries).map(({id,label})=>({id,label}));
+  assert.deepEqual(views,[
+    {id:'GENERAL',label:'General'},
+    {id:'USE_CASES',label:'Use Cases'},
+    {id:'TARGET_MODULES',label:'Target Modules'},
+    {id:'LENSES',label:'Lenses'},
+    {id:'TOOLS',label:'Tools / Repository'}
   ]);
-  const ui=fs.readFileSync(path.join(import.meta.dirname,'..','src','planning-helper-ui.js'),'utf8');
-  assert.match(ui,/methodologyViewDefinitions/);
-  assert.match(ui,/view\.id/);
-  assert.match(ui,/view\.label/);
-  assert.doesNotMatch(ui,/data-command-view="IDTSPE"/);
-  assert.doesNotMatch(ui,/data-command-view="SDS"/);
-  assert.doesNotMatch(ui,/SDS — IDTSPE Profile/);
-  assert.doesNotMatch(ui,/METHODOLOGY_VIEW_IDS\?\.IDTSPE/);
+  assert.equal(navigation.methodologyPrimaryIds(entries,'USE_CASES').length,16);
+  assert.equal(navigation.methodologyPrimaryIds(entries,'TARGET_MODULES').length,15);
+  assert.equal(navigation.methodologyPrimaryIds(entries,'LENSES').length,18);
 });
 
-test('all current primary methodology surfaces carry stable IDTSPE binding separate from helper navigation',()=>{
-  const primary=[...nav.methodologyPrimaryIds(entries,'IDTSPE'),...nav.methodologyPrimaryIds(entries,'SDS')];
-  const byId=new Map(entries.map((entry)=>[entry.id,entry]));
-  assert.equal(primary.length,30);
-  for(const id of primary){const binding=byId.get(id)?.methodologyBinding;assert.ok(binding,`${id}: missing methodologyBinding`);assert.equal(binding.methodologyRuntime,'IDTSPE',id);}
-  const canonical=primary.map((id)=>byId.get(id)).filter((entry)=>entry.methodologyBinding.surfaceKind==='TARGET_MODULE');
-  assert.equal(canonical.length,9);
-  assert.equal(new Set(canonical.map((entry)=>entry.methodologyBinding.targetModuleId)).size,9);
-  assert.deepEqual(canonical.filter((entry)=>entry.methodologyBinding.profile===null).map((entry)=>entry.id).sort(),['tmcmd.exact.realization','tmcmd.pre.update']);
-  const focused=primary.map((id)=>byId.get(id)).filter((entry)=>entry.methodologyBinding.surfaceKind==='TARGET_MODULE_FOCUSED');
-  assert.equal(focused.length,8);
-  assert.ok(focused.every((entry)=>entry.methodologyBinding.parentSurface));
-  const lenses=primary.map((id)=>byId.get(id)).filter((entry)=>entry.methodologyBinding.surfaceKind==='LENS');
-  assert.equal(lenses.length,5);
-  assert.ok(lenses.every((entry)=>entry.methodologyBinding.lensId&&entry.methodologyBinding.hostTargetPolicy==='RESOLVE_OR_REUSE_TARGET'));
-});
-
-
-test('generic Lens operations are Core orchestration surfaces and do not pretend to own a fixed Lens',()=>{
-  const byId=new Map(entries.map((entry)=>[entry.id,entry]));
-  for(const id of ['idtspe.lenses.select','idtspe.lens.apply']){
-    const entry=byId.get(id);assert.ok(entry,id);
-    assert.equal(entry.methodologyBinding?.surfaceKind,'ORCHESTRATION',id);
-    assert.equal(entry.methodologyBinding?.lensId,null,id);
-    assert.equal(entry.helperPresentation?.navigation?.sectionId,'lens-operations',id);
+test('every current semantic component projects to exactly one primary command card',()=>{
+  for(const component of components){
+    const id=semantic.semanticCardId(component),matches=entries.filter((entry)=>entry.id===id);
+    assert.equal(matches.length,1,component.id);
+    assert.equal(matches[0].canonicalId,component.id,component.id);
+    assert.match(matches[0].label,new RegExp(component.id.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')));
+    assert.ok(['DIRECT CURRENT','GENERIC CURRENT'].includes(matches[0].stateLabel),component.id);
   }
-  assert.equal(byId.get('idtspe.lenses.select').methodologyBinding?.hostTargetPolicy,'CREATE_OR_REUSE_TARGET');
-  assert.equal(byId.get('idtspe.lens.apply').methodologyBinding?.hostTargetPolicy,'RESOLVE_OR_REUSE_TARGET');
-  assert.deepEqual(nav.methodologyPrimaryIds(entries,'IDTSPE').slice(5),[
-    'tmcmd.pre.update','tmcmd.exact.realization','idtspe.lenses.select','idtspe.lens.apply','lenscmd.documentation.representation.check','lenscmd.linked-notes.justify'
-  ]);
 });
 
-test('preferred All commands order starts with idtspe and omits hidden legacy compatibility routes',()=>{
-  const order=JSON.parse(fs.readFileSync(path.join(import.meta.dirname,'..','catalog-order.json'),'utf8'));
-  assert.deepEqual(order.commands.slice(0,2),['idtspe.work','idtspe.bootstrap']);
+test('Core and SDS semantic sections come from scope/profile instead of helperPresentation navigation',()=>{
+  const tm=navigation.buildMethodologyViewGroups(entries,'TARGET_MODULES');
+  assert.deepEqual(tm.map((section)=>section.label),['IDTSPE Core','Profile · SDS']);
+  const lenses=navigation.buildMethodologyViewGroups(entries,'LENSES');
+  assert.deepEqual(lenses.map((section)=>section.label),['IDTSPE Core','Profile · SDS']);
+  const source=fs.readFileSync(path.join(moduleRoot,'src','methodology-navigation.js'),'utf8');
+  assert.match(source,/semanticKind/);
+  assert.match(source,/semanticScope/);
+  assert.match(source,/Compatibility fallbacks are read-only/);
+});
+
+test('generic Lens dispatcher stays infrastructure while concrete registered Lenses are primary cards',()=>{
+  assert.equal(entries.some((entry)=>entry.id==='idtspe.lens.apply'),false);
+  assert.equal(entries.some((entry)=>entry.id==='idtspe.lenses.select'),true);
+  assert.equal(navigation.methodologyPrimaryIds(entries,'LENSES').every((id)=>id.startsWith('lens:LENS-')),true);
+  const ddd=entries.find((entry)=>entry.id==='lens:LENS-DOMAIN-MODELING-DDD');
+  assert.ok(ddd);
+  assert.match(ddd.label,/SDS Lens · LENS-DOMAIN-MODELING-DDD/);
+});
+
+test('preferred command order uses stable semantic IDs and contains one Pre-Update identity',()=>{
   assert.equal(new Set(order.commands).size,order.commands.length);
-  const byId=new Map(entries.map((entry)=>[entry.id,entry]));
-  for(const id of order.commands)assert.ok(byId.has(id),`preferred order references unknown command ${id}`);
-  for(const id of [
-    'architecture_weuc.discover','tmcmd.weuc.interpret','tmcmd.weuc.paths','tmcmd.weuc.refresh','tmcmd.weuc.architecture-position',
-    'tmcmd.slice.frontend',
-    'ideas.collect','ideas.collect.application','ideas.collect.application.modular','ideas.collect.scenario','ideas.collect.domain','ideas.collect.slice',
-    'application_sds.mini','application_sds.modular','application_sds.full'
-  ]){
-    assert.equal(order.commands.includes(id),false,`${id}: hidden legacy route must not occupy preferred order`);
-    assert.equal(byId.get(id)?.palette,false,`${id}: compatibility route must stay hidden`);
-  }
+  const ids=new Set(entries.map((entry)=>entry.id));
+  for(const id of order.commands)assert.ok(ids.has(id),`preferred order references unknown command ${id}`);
+  assert.equal(order.commands.filter((id)=>id==='tm:TM-PRE-UPDATE-PLAN').length,1);
+  assert.equal(order.commands.includes('file_update.plan'),false);
+  assert.equal(entries.filter((entry)=>entry.canonicalId==='TM-PRE-UPDATE-PLAN').length,1);
 });
 
 test('integration workspace is provenance-only and contains no superseded current-navigation plans',()=>{
@@ -107,4 +92,3 @@ test('integration workspace is provenance-only and contains no superseded curren
   assert.match(readme,/Git history/);
   assert.match(readme,/not.*current methodology/i);
 });
-

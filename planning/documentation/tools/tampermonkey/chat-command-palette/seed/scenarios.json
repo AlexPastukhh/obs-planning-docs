@@ -1,0 +1,273 @@
+{
+  "schemaVersion": 1,
+  "kind": "scenario-seed",
+  "generatedFrom": "planning/documentation/idtspe-methodology/active/idtspe-core/shared/methodology-use-case-scenario-map.md",
+  "items": [
+    {
+      "id": "SCN-01",
+      "type": "ROOT",
+      "title": "Я пришёл с задачей — постепенно разберём её от общего смысла до Exact",
+      "entryRoute": "USER request -> Methodology Use-Case Registry Map -> relevant scoped registry -> selected Use Case(s)",
+      "assumptions": [],
+      "steps": [
+        {
+          "id": "SCN-01-S1",
+          "title": "Establish the smallest useful composition",
+          "semanticRefs": [
+            "UC-DOC-USE-REPOSITORY-GUIDANCE",
+            "UC-IDTSPE-COMPOSE-CURRENT-WORK"
+          ],
+          "canonicalText": "### Step `SCN-01-S1` — establish the smallest useful composition\n\n**Trigger / Situation:** The USER brings a new concern; its useful planning depth is not known yet.  \n**AI Action:** Route normally through the Use-Case Registry Map and compose the smallest useful current IDTSPE work.  \n**Why This Step:** The methodology is always available but does not require structural ceremony when Broad Discussion is sufficient.  \n**Method / Mechanics:** Resolve applicable Use Cases, keep only material state/components, and explicitly allow `Broad Discussion only` when no Target/Lens/persistence is useful yet.  \n**Possible Result:** A bounded concern and a useful next question, with no unnecessary Target.  \n**Derived From / Owners:** `UC-DOC-USE-REPOSITORY-GUIDANCE`, `UC-IDTSPE-COMPOSE-CURRENT-WORK`."
+        },
+        {
+          "id": "SCN-01-S2",
+          "title": "Deepen meaning only when pressure appears",
+          "semanticRefs": [
+            "UC-IDTSPE-COMPOSE-CURRENT-WORK",
+            "planning/documentation/idtspe-methodology/active/profiles/sds/shared/directed-methodology-workflow-and-next-step-resolution.md"
+          ],
+          "canonicalText": "### Step `SCN-01-S2` — deepen meaning only when pressure appears\n\n**Trigger / Situation:** A bounded behavior, owner, constraint, uncertainty, dependency, or proof concern becomes independently useful.  \n**AI Action:** Form/reuse only the needed Target/State surface and consult the relevant Target Module/Lens/profile registry.  \n**Why This Step:** Structure is justified by a useful result, not by elapsed time or a fixed phase sequence.  \n**Method / Mechanics:** Progress proportionally through useful SDS planning depth: `PL-L0` behavior/owner meaning, `PL-L1` durable implementation/proof constraints, `PL-L2` implementation architecture/responsibility, `PL-L3` transient exact reasoning, `PL-L4` literal realization. Levels may overlap, be skipped, or reopen narrowly. When useful, AI may expose the smallest next methodology action without executing it; when continuation is requested, it performs the smallest useful ordinary action after re-evaluating current composition.  \n**Possible Result:** One or more bounded semantic results at the depth needed now.  \n**Derived From / Owners:** `UC-IDTSPE-COMPOSE-CURRENT-WORK`, `planning/documentation/idtspe-methodology/active/profiles/sds/shared/directed-methodology-workflow-and-next-step-resolution.md`."
+        },
+        {
+          "id": "SCN-01-S3",
+          "title": "Evaluate material surfaces",
+          "semanticRefs": [
+            "planning/documentation/idtspe-methodology/active/idtspe-core/shared/idtspe-unit-and-target-step-result-model.md",
+            "planning/documentation/idtspe-methodology/active/idtspe-core/lenses/README.md"
+          ],
+          "canonicalText": "### Step `SCN-01-S3` — evaluate material surfaces\n\n**Trigger / Situation:** A material Result Unit / decision surface exists.  \n**AI Action:** Use the applicable Lens registry checkpoint(s) and selected evaluators proportionally.  \n**Why This Step:** Cross-cutting concerns should challenge the actual current surface without becoming another semantic owner.  \n**Method / Mechanics:** Use the Result Unit Opening/In-Unit/Closing applicability envelope; select zero or more additional Lenses as material and route Findings through current Core disposition.  \n**Possible Result:** Current result meaning with material findings resolved/routed, or an explicit no-additional-lens outcome.  \n**Derived From / Owners:** `planning/documentation/idtspe-methodology/active/idtspe-core/shared/idtspe-unit-and-target-step-result-model.md`, `planning/documentation/idtspe-methodology/active/idtspe-core/lenses/README.md`."
+        },
+        {
+          "id": "SCN-01-S4",
+          "title": "Realize exactly when meaning is sufficient",
+          "semanticRefs": [
+            "TM-PRE-UPDATE-PLAN",
+            "TM-EXACT-REALIZATION"
+          ],
+          "canonicalText": "### Step `SCN-01-S4` — realize exactly when meaning is sufficient\n\n**Trigger / Situation:** The selected meaning is sufficiently determined for a literal/integrable result.  \n**AI Action:** Enter Exact Realization directly, or first produce an optional separately reviewable Pre-Update Plan when that has independent value.  \n**Why This Step:** Exact work should not wait for a ceremonial pre-update phase, while risky/material mutation may benefit from a reviewable intended-change boundary.  \n**Method / Mechanics:** Preserve accepted meaning, use transient exact reasoning as needed, respect mutation authority, and verify/repair only under the applicable host authority.  \n**Possible Result:** A directly integrable literal result, or an optional reviewed intended-change plan followed by that result.  \n**Derived From / Owners:** `TM-PRE-UPDATE-PLAN`, `TM-EXACT-REALIZATION`."
+        },
+        {
+          "id": "SCN-01-S5",
+          "title": "Revalidate only affected meaning",
+          "semanticRefs": [
+            "UC-IDTSPE-REVALIDATE-CURRENT-WORK",
+            "planning/documentation/idtspe-methodology/active/idtspe-core/shared/consistency-review-use-case.md"
+          ],
+          "canonicalText": "### Step `SCN-01-S5` — revalidate only affected meaning\n\n**Trigger / Situation:** New Evidence/Finding/upstream change invalidates or materially challenges accepted meaning.  \n**AI Action:** Revalidate from the earliest affected owner instead of restarting the whole scenario.  \n**Why This Step:** Unaffected Decisions/results should remain usable.  \n**Method / Mechanics:** Reopen the smallest affected surface, perform consistency review only where plausible cross-owner drift exists, and integrate whole-state meaning only when useful.  \n**Possible Result:** Narrowly revised current work with unaffected meaning preserved.  \n**Derived From / Owners:** `UC-IDTSPE-REVALIDATE-CURRENT-WORK`, `planning/documentation/idtspe-methodology/active/idtspe-core/shared/consistency-review-use-case.md`."
+        }
+      ],
+      "canonicalIntro": "## 5. `SCN-01` ROOT — Я пришёл с задачей — постепенно разберём её от общего смысла до Exact\n\n**Type:** ROOT  \n**Normal entry:** USER request → Methodology Use-Case Registry Map → relevant scoped registry → selected Use Case(s).  \n**Purpose:** demonstrate the default philosophy: start lightweight and deepen only where additional resolution is useful.",
+      "source": "planning/documentation/idtspe-methodology/active/idtspe-core/shared/methodology-use-case-scenario-map.md"
+    },
+    {
+      "id": "SCN-02",
+      "type": "FOCUSED",
+      "title": "Я хочу спланировать конкретное изменение или новую функциональность в приложении",
+      "entryRoute": "Starts after normal Use-Case routing; SDS is applicable",
+      "assumptions": [
+        "UC-IDTSPE-COMPOSE-CURRENT-WORK already governs composition"
+      ],
+      "steps": [
+        {
+          "id": "SCN-02-S1",
+          "title": "Select material application semantic owners",
+          "semanticRefs": [
+            "TM-APPLICATION-DEFINITION",
+            "TM-FEATURE",
+            "TM-SCENARIO-PLANNING",
+            "TM-SCREEN"
+          ],
+          "canonicalText": "### Step `SCN-02-S1` — select only the semantic owners the change actually needs\n\n**Trigger / Situation:** The application change needs product/behavior/spatial meaning.  \n**AI Action:** Use Application / Feature / Scenario / Screen Target Modules only for material perspectives.  \n**Why This Step:** These are peer semantic owners, not mandatory sequential stages.  \n**Method / Mechanics:** Start from whichever perspective is currently informative; co-form/revalidate peers as pressure appears.  \n**Possible Result:** Bounded application/feature/journey/screen meaning without duplicate authority.  \n**Derived From / Owners:** `TM-APPLICATION-DEFINITION`, `TM-FEATURE`, `TM-SCENARIO-PLANNING`, `TM-SCREEN`."
+        },
+        {
+          "id": "SCN-02-S2",
+          "title": "Discover Domain meaning when needed",
+          "semanticRefs": [
+            "TM-DOMAIN-DISCOVERY",
+            "LENS-DOMAIN-MODELING-DDD",
+            "TM-DOMAIN-OWNER"
+          ],
+          "canonicalText": "### Step `SCN-02-S2` — discover Domain meaning when implementation semantics require it\n\n**Trigger / Situation:** Identity/state/lifecycle/invariant/consistency ownership becomes material.  \n**AI Action:** Use Domain Discovery and DDD evaluation; promote durable meaning to Domain Owner only when justified.  \n**Why This Step:** Aggregate/Entity/Value Object discovery is part of Domain discovery and does not need another Target family.  \n**Method / Mechanics:** Discover bounded candidates transiently; evaluate ownership/consistency; create/reuse durable Domain owner only for stable semantic responsibility.  \n**Possible Result:** Zero/one/several durable Domain owners backed by bounded discovery.  \n**Derived From / Owners:** `TM-DOMAIN-DISCOVERY`, `LENS-DOMAIN-MODELING-DDD`, `TM-DOMAIN-OWNER`."
+        },
+        {
+          "id": "SCN-02-S3",
+          "title": "Discover implementation Slice candidates one at a time",
+          "semanticRefs": [
+            "TM-IMPLEMENTATION-SLICE",
+            "LENS-SLICE-VERTICALITY-INTEGRATION",
+            "TM-SLICE-OWNER"
+          ],
+          "canonicalText": "### Step `SCN-02-S3` — discover implementation Slice candidates one at a time\n\n**Trigger / Situation:** End-to-end implementation responsibility/boundary becomes useful.  \n**AI Action:** Use the Slice Discovery module for one bounded candidate per invocation; use Verticality/Integration evaluation as material.  \n**Why This Step:** Multiple Slice candidates do not require a portfolio/strategy Target Module.  \n**Method / Mechanics:** Repeat the same Slice Discovery module for additional candidates; form a durable Slice Owner only for selected stable responsibility.  \n**Possible Result:** One or more transient Slice candidates and zero/one durable owner per selected responsibility.  \n**Derived From / Owners:** `TM-IMPLEMENTATION-SLICE`, `LENS-SLICE-VERTICALITY-INTEGRATION`, `TM-SLICE-OWNER`."
+        },
+        {
+          "id": "SCN-02-S4",
+          "title": "Simplify and prove proportionally",
+          "semanticRefs": [
+            "LENS-SIMPLICITY-IMPLEMENTATION-ECONOMY",
+            "LENS-DEPENDENCY-CHANGE-IMPACT",
+            "LENS-TEST-PROOF-EVIDENCE",
+            "TM-PRACTICAL-TEST"
+          ],
+          "canonicalText": "### Step `SCN-02-S4` — simplify and prove proportionally\n\n**Trigger / Situation:** Complexity, proof, change impact or practical evidence becomes material.  \n**AI Action:** Apply only relevant Core/SDS Lenses and proof/evidence owners while planning continues.  \n**Why This Step:** Verification is not a late mandatory phase; it constrains meaning whenever useful.  \n**Method / Mechanics:** Use Unit applicability checkpoints and selected Lens/Target owners without forcing every evaluator.  \n**Possible Result:** Simpler, reviewable meaning with material proof/risk constraints integrated.  \n**Derived From / Owners:** `LENS-SIMPLICITY-IMPLEMENTATION-ECONOMY`, `LENS-DEPENDENCY-CHANGE-IMPACT`, `LENS-TEST-PROOF-EVIDENCE`, `TM-PRACTICAL-TEST`."
+        }
+      ],
+      "canonicalIntro": "## 6. `SCN-02` FOCUSED — Я хочу спланировать конкретное изменение или новую функциональность в приложении\n\n**Type:** FOCUSED  \n**Entry assumption:** normal Use-Case routing has already selected current IDTSPE composition and SDS is applicable. This scenario does not redefine that entry route.",
+      "source": "planning/documentation/idtspe-methodology/active/idtspe-core/shared/methodology-use-case-scenario-map.md"
+    },
+    {
+      "id": "SCN-03",
+      "type": "FOCUSED",
+      "title": "У меня уже есть план или решение — хочу критически его проверить",
+      "entryRoute": "Starts with an existing current Analysis Surface after normal routing",
+      "assumptions": [],
+      "steps": [
+        {
+          "id": "SCN-03-S1",
+          "title": "Challenge the actual current surface",
+          "semanticRefs": [
+            "LENS-NEED-VALUE-SCOPE",
+            "LENS-AUTHORITY-SOT-REUSE",
+            "LENS-UNCERTAINTY-ASSUMPTION-REVERSIBILITY",
+            "LENS-DEPENDENCY-CHANGE-IMPACT",
+            "planning/documentation/review-diff-review-workflow.md"
+          ],
+          "canonicalText": "### Step `SCN-03-S1` — challenge the actual current surface\n\n**Trigger / Situation:** The USER wants a critical review rather than a new plan from scratch.  \n**AI Action:** Review the current meaning, identify material claims/risks/gaps and route them to their current owners.  \n**Why This Step:** Review should produce Findings, not a parallel semantic plan.  \n**Method / Mechanics:** Check need/scope, authority/SOT, uncertainty/reversibility, dependency/change impact and other plausible Lenses only where their surfaces exist.  \n**Possible Result:** A bounded set of Findings with owner destinations.  \n**Derived From / Owners:** `LENS-NEED-VALUE-SCOPE`, `LENS-AUTHORITY-SOT-REUSE`, `LENS-UNCERTAINTY-ASSUMPTION-REVERSIBILITY`, `LENS-DEPENDENCY-CHANGE-IMPACT`, `planning/documentation/review-diff-review-workflow.md`."
+        },
+        {
+          "id": "SCN-03-S2",
+          "title": "Repair/revalidate narrowly",
+          "semanticRefs": [
+            "UC-IDTSPE-REVALIDATE-CURRENT-WORK",
+            "planning/documentation/idtspe-methodology/active/idtspe-core/shared/consistency-review-use-case.md"
+          ],
+          "canonicalText": "### Step `SCN-03-S2` — repair/revalidate narrowly\n\n**Trigger / Situation:** Review Findings invalidate accepted meaning or reveal cross-owner drift.  \n**AI Action:** Revalidate only affected owners and use consistency review only where plausible.  \n**Why This Step:** A review finding should not force a total restart.  \n**Method / Mechanics:** Find earliest affected owner, resolve the Finding, revise/reopen dependent units, preserve unaffected meaning.  \n**Possible Result:** Corrected current work and explicit remaining uncertainty.  \n**Derived From / Owners:** `UC-IDTSPE-REVALIDATE-CURRENT-WORK`, `planning/documentation/idtspe-methodology/active/idtspe-core/shared/consistency-review-use-case.md`."
+        },
+        {
+          "id": "SCN-03-S3",
+          "title": "Audit review coverage when requested",
+          "semanticRefs": [
+            "planning/documentation/review-audit-workflow.md"
+          ],
+          "canonicalText": "### Step `SCN-03-S3` — audit the review itself when requested\n\n**Trigger / Situation:** The USER asks whether the previous review was sufficiently broad/deep or what it missed.  \n**AI Action:** Audit review coverage/quality/delta without pretending this is another revalidation pass.  \n**Why This Step:** Review audit and semantic revalidation answer different questions.  \n**Method / Mechanics:** Inspect coverage/evidence/omissions of the prior review and route any newly discovered substantive Finding normally.  \n**Possible Result:** Coverage assessment plus newly surfaced Findings, if any.  \n**Derived From / Owners:** `planning/documentation/review-audit-workflow.md`."
+        }
+      ],
+      "canonicalIntro": "## 7. `SCN-03` FOCUSED — У меня уже есть план или решение — хочу критически его проверить\n\n**Type:** FOCUSED  \n**Entry assumption:** an existing plan/decision/result is the current Analysis Surface; normal routing still governs applicability.",
+      "source": "planning/documentation/idtspe-methodology/active/idtspe-core/shared/methodology-use-case-scenario-map.md"
+    },
+    {
+      "id": "SCN-04",
+      "type": "FOCUSED",
+      "title": "Решения готовы — хочу перейти к точной реализации",
+      "entryRoute": "Starts after accepted meaning is sufficiently determined",
+      "assumptions": [
+        "Mutation authority remains owned by the active host/session contract"
+      ],
+      "steps": [
+        {
+          "id": "SCN-04-S1",
+          "title": "Optionally review the intended update",
+          "semanticRefs": [
+            "TM-PRE-UPDATE-PLAN"
+          ],
+          "canonicalText": "### Step `SCN-04-S1` — decide whether a separately reviewable update plan is useful\n\n**Trigger / Situation:** Exact mutation is near; the change may be broad/risky enough that reviewing intended changes first has value.  \n**AI Action:** Use the optional Core Pre-Update Target only when its result is independently useful.  \n**Why This Step:** A reviewable intended-change boundary can reduce accidental mutation without becoming a mandatory phase.  \n**Method / Mechanics:** Produce one `RU-PUPDATE-01`, using its Unit applicability checkpoints and current destination facts only as needed.  \n**Possible Result:** A concrete non-mutating intended-change plan, or an explicit decision to proceed directly to Exact.  \n**Derived From / Owners:** `TM-PRE-UPDATE-PLAN`."
+        },
+        {
+          "id": "SCN-04-S2",
+          "title": "Realize the accepted meaning literally",
+          "semanticRefs": [
+            "TM-EXACT-REALIZATION"
+          ],
+          "canonicalText": "### Step `SCN-04-S2` — realize the accepted meaning literally\n\n**Trigger / Situation:** Exact/literal output is requested and host authority permits the applicable realization actions.  \n**AI Action:** Use Exact Realization; plan transient details internally as needed.  \n**Why This Step:** Literal integration belongs to Exact, not to a persistent planning shell.  \n**Method / Mechanics:** Preserve accepted meaning, produce the directly integrable result, verify/repair within authority, and surface conflicts as Findings/Revalidation rather than silently redesigning.  \n**Possible Result:** Exact code/config/docs/package result and supporting Evidence where executed.  \n**Derived From / Owners:** `TM-EXACT-REALIZATION`."
+        },
+        {
+          "id": "SCN-04-S3",
+          "title": "Revalidate material contradiction only",
+          "semanticRefs": [
+            "UC-IDTSPE-REVALIDATE-CURRENT-WORK"
+          ],
+          "canonicalText": "### Step `SCN-04-S3` — revalidate only when exact work exposes material contradiction\n\n**Trigger / Situation:** Exact work or verification exposes a material conflict with accepted meaning.  \n**AI Action:** Revalidate the affected semantic owner before continuing conflicting realization.  \n**Why This Step:** Mutation pressure does not grant authority to silently change semantics.  \n**Method / Mechanics:** Route the Finding upstream, preserve unaffected exact work where safe, then resume after accepted resolution.  \n**Possible Result:** Corrected semantic basis and resumed exact work.  \n**Derived From / Owners:** `UC-IDTSPE-REVALIDATE-CURRENT-WORK`."
+        }
+      ],
+      "canonicalIntro": "## 8. `SCN-04` FOCUSED — Решения готовы — хочу перейти к точной реализации\n\n**Type:** FOCUSED  \n**Entry assumption:** accepted semantic meaning is sufficiently determined; this scenario starts after normal routing and does not manufacture implementation permission.",
+      "source": "planning/documentation/idtspe-methodology/active/idtspe-core/shared/methodology-use-case-scenario-map.md"
+    },
+    {
+      "id": "SCN-05",
+      "type": "MAINTENANCE",
+      "title": "Я меняю саму методологию или документацию",
+      "entryRoute": "Documentation Use-Case routing; IDTSPE maintenance UC only for the component type being changed",
+      "assumptions": [],
+      "steps": [
+        {
+          "id": "SCN-05-S1",
+          "title": "Resolve the documentation capability/owner change",
+          "semanticRefs": [
+            "UC-DOC-PLAN-DOCUMENTATION-CHANGE",
+            "UC-IDTSPE-MAINTAIN-TARGET-MODULE"
+          ],
+          "canonicalText": "### Step `SCN-05-S1` — resolve the documentation capability/owner change\n\n**Trigger / Situation:** A methodology/documentation capability, owner boundary, route or contract needs material change.  \n**AI Action:** Use the Documentation change Use Case and, when an IDTSPE component contract itself changes, the corresponding IDTSPE maintenance Use Case.  \n**Why This Step:** Documentation maintenance and planning semantics must not collapse into one owner.  \n**Method / Mechanics:** Resolve current owner(s), intended semantic delta, dependencies and exact realization readiness before mutation.  \n**Possible Result:** A bounded documentation/methodology change ready for realization.  \n**Derived From / Owners:** `UC-DOC-PLAN-DOCUMENTATION-CHANGE`, `UC-IDTSPE-MAINTAIN-TARGET-MODULE`."
+        },
+        {
+          "id": "SCN-05-S2",
+          "title": "Refresh only affected derived projections/examples",
+          "semanticRefs": [
+            "UC-DOC-PLAN-DOCUMENTATION-CHANGE",
+            "planning/command-routing.md",
+            "planning/documentation/idtspe-methodology/active/idtspe-core/shared/methodology-use-case-scenario-map.md"
+          ],
+          "canonicalText": "### Step `SCN-05-S2` — refresh only affected derived projections/examples\n\n**Trigger / Situation:** The semantic change affects registry/navigation/command/scenario/Helper projection meaning.  \n**AI Action:** Revalidate affected downstream projections without creating a Helper-specific methodology Use Case.  \n**Why This Step:** Derived surfaces must stay fresh but cannot become semantic authority.  \n**Method / Mechanics:** Update only affected registries/navigation, command routes, generated catalogs, canonical scenarios, Helper projection and tests; rerun scenario examples that reference changed owners.  \n**Possible Result:** Consistent semantic owner + current projections with no duplicate explanation layer.  \n**Derived From / Owners:** `UC-DOC-PLAN-DOCUMENTATION-CHANGE`, `planning/command-routing.md`, `planning/documentation/idtspe-methodology/active/idtspe-core/shared/methodology-use-case-scenario-map.md`."
+        },
+        {
+          "id": "SCN-05-S3",
+          "title": "Review the resulting documentation",
+          "semanticRefs": [
+            "UC-DOC-REVIEW-DOCUMENTATION"
+          ],
+          "canonicalText": "### Step `SCN-05-S3` — review the resulting documentation\n\n**Trigger / Situation:** The change is represented and needs documentation-quality/ownership validation.  \n**AI Action:** Review current documentation for stale routes, duplicate authority, orphaned files and projection drift.  \n**Why This Step:** Exact edits can be mechanically correct while semantically duplicative.  \n**Method / Mechanics:** Route Findings to real owners and revalidate only affected examples/projections.  \n**Possible Result:** Current maintainable documentation with narrow remaining findings, if any.  \n**Derived From / Owners:** `UC-DOC-REVIEW-DOCUMENTATION`."
+        }
+      ],
+      "canonicalIntro": "## 9. `SCN-05` MAINTENANCE — Я меняю саму методологию или документацию\n\n**Type:** FOCUSED / MAINTENANCE  \n**Entry assumption:** the work subject is repository methodology/documentation itself.",
+      "source": "planning/documentation/idtspe-methodology/active/idtspe-core/shared/methodology-use-case-scenario-map.md"
+    },
+    {
+      "id": "SCN-06",
+      "type": "TOOL_REPOSITORY",
+      "title": "Изменение готово — хочу собрать и проверить replacement package",
+      "entryRoute": "Tool/repository continuation after semantic/exact work",
+      "assumptions": [
+        "Selected source snapshot/branch is explicit",
+        "Package production does not authorize apply/commit/push/promotion"
+      ],
+      "steps": [
+        {
+          "id": "SCN-06-S1",
+          "title": "Optionally review the intended file transition",
+          "semanticRefs": [
+            "TM-PRE-UPDATE-PLAN"
+          ],
+          "canonicalText": "### Step `SCN-06-S1` — optionally review the intended file transition\n\n**Trigger / Situation:** The repository delta is material enough that a separate intended-change plan would improve review.  \n**AI Action:** Optionally use the Core Pre-Update Target; skip it for an obvious already-reviewed transition.  \n**Why This Step:** Repository packaging should not force another planning ceremony.  \n**Method / Mechanics:** Bound add/replace/delete intent and preservation/verification without mutation.  \n**Possible Result:** Optional reviewed intended-change plan.  \n**Derived From / Owners:** `TM-PRE-UPDATE-PLAN`."
+        },
+        {
+          "id": "SCN-06-S2",
+          "title": "Produce a replacement package without applying it",
+          "semanticRefs": [
+            "planning/use-cases/UC-REPO-BUILD-REPLACEMENT-PACKAGE.md",
+            "planning/documentation/build-replacement-archive-workflow.md"
+          ],
+          "canonicalText": "### Step `SCN-06-S2` — produce a replacement package without applying it\n\n**Trigger / Situation:** The USER explicitly requests a replacement package/archive from the selected source snapshot.  \n**AI Action:** Build the package according to the repository package protocol, include exact base/replacement bytes, validate the manifest/payload, and stop.  \n**Why This Step:** Package production and package application are different authorities.  \n**Method / Mechanics:** Use the current package producer owner; do not apply/commit/push.  \n**Possible Result:** Valid replacement package + machine-readable apply instruction.  \n**Derived From / Owners:** `planning/use-cases/UC-REPO-BUILD-REPLACEMENT-PACKAGE.md`, `planning/documentation/build-replacement-archive-workflow.md`."
+        },
+        {
+          "id": "SCN-06-S3",
+          "title": "Verify applied result separately when authorized",
+          "semanticRefs": [
+            "planning/documentation/review-diff-review-workflow.md",
+            "planning/documentation/idtspe-methodology/active/idtspe-core/shared/consistency-review-use-case.md"
+          ],
+          "canonicalText": "### Step `SCN-06-S3` — verify applied result separately when/if another authority applies it\n\n**Trigger / Situation:** A package has later been applied in an authorized target workspace.  \n**AI Action:** Review/consistency-check the resulting current state as appropriate; do not infer promotion-to-main permission.  \n**Why This Step:** A valid package or successful apply does not itself authorize promotion.  \n**Method / Mechanics:** Verify exact delta and semantic consistency; route findings normally.  \n**Possible Result:** Verified target state or bounded Findings; promotion remains a separate explicit authorization.  \n**Derived From / Owners:** `planning/documentation/review-diff-review-workflow.md`, `planning/documentation/idtspe-methodology/active/idtspe-core/shared/consistency-review-use-case.md`."
+        }
+      ],
+      "canonicalIntro": "## 10. `SCN-06` TOOL / REPOSITORY — Изменение готово — хочу собрать и проверить replacement package\n\n**Type:** TOOL / REPOSITORY continuation  \n**Entry assumption:** semantic/exact changes already exist in a selected working snapshot/branch. This is not a mandatory IDTSPE stage.",
+      "source": "planning/documentation/idtspe-methodology/active/idtspe-core/shared/methodology-use-case-scenario-map.md"
+    }
+  ]
+}

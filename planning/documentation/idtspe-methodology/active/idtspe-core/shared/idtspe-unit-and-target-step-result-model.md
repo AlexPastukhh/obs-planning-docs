@@ -442,6 +442,86 @@ Target-specific Result Units follow the same rule, but their applicability/mater
 
 Do not create a placeholder Unit only to record `N/A`. Absence is a first-class valid projection when the omission rule is satisfied.
 
+## 5B. Unit Applicability Envelope — Opening / In-Unit / Closing Checkpoints
+
+Every **material Target Step Result Unit** is processed inside a lightweight applicability envelope. The envelope is a responsibility boundary around Unit work, not a new Result Unit, State Unit, phase, persisted status or execution log.
+
+```text
+current Work Context + Target + accepted State
+→ Opening Unit Checkpoint — <RU-ID>
+→ Unit Work — <RU-ID>
+   ↕ In-Unit Applicability Check whenever material
+→ candidate Unit result
+→ Closing Unit Checkpoint — <RU-ID>
+→ current Unit result / narrow re-entry when needed
+```
+
+### Opening Unit Checkpoint
+
+Before materially working one Result Unit:
+
+```text
+current Unit Analysis Surface
+→ logically check Core Lens Registry applicability
+→ logically check active-profile Lens Registry applicability when a profile is active
+→ reuse trustworthy current registry summaries when nothing material changed
+→ open/apply only plausible Lenses at useful depth
+→ consult other component registries only when this Unit exposes a material trigger for them
+```
+
+`Opening Unit Checkpoint` is mandatory for a material Unit. A valid result is `NO_ADDITIONAL_LENS` / no new supporting component. Mandatory checkpoint does **not** mean mandatory full-file reread, exhaustive registry traversal, Lens execution or Finding creation.
+
+### In-Unit Applicability Check
+
+Opening and Closing checkpoints are minimum boundaries, not the only moments when registries may be consulted. During Unit work, re-evaluate applicability immediately when new Evidence, Finding pressure, ownership/dependency change, representation pressure, profile change or another material Analysis-Surface change makes another evaluator/supporting component plausibly useful.
+
+```text
+Opening/Closing checkpoint
+≠ exclusive registry-consultation window
+```
+
+Do not wait for Closing merely to preserve ceremony when a material issue is already visible.
+
+### Closing Unit Checkpoint
+
+After a candidate Unit result exists, evaluate the **actual resulting Unit surface** before treating it as current-for-handoff:
+
+```text
+candidate Unit result
+→ recheck Core Lens Registry applicability
+→ recheck active-profile Lens Registry applicability when active
+→ apply newly material checks at useful depth
+→ disposition material Findings through normal Core ownership/lifecycle
+→ resolve newly material owner / Target / revalidation / representation consequences
+→ current Unit result
+```
+
+A Closing checkpoint may reopen/refine the same Unit or route upstream/downstream work and then run again. It is not a one-way approval gate.
+
+### Registry Read Economy
+
+```text
+mandatory logical checkpoint
+≠ mandatory physical reread
+≠ mandatory Lens selection
+≠ mandatory Finding
+≠ mandatory deeper methodology
+```
+
+Unchanged registry metadata/current summaries may be reused while trustworthy. Reread concrete owners when applicability, authority, content freshness or conflict cannot be reconstructed safely.
+
+### Target Module Projection Rule
+
+The generic algorithm above has one owner here. Every concrete Target Module must still make the envelope **explicit per material Result Unit** by naming:
+
+```text
+Opening Unit Checkpoint — RU-...
+Unit Work — RU-...
+Closing Unit Checkpoint — RU-...
+```
+
+A module may add primary/frequent Lens candidates or local triggers for that Unit, but must not copy/redefine this generic algorithm. This explicit placement makes Unit processing reviewable without turning checkpoints into extra Result Units.
+
 ## 6. Lens / Finding Boundary
 
 This Unit model defines what Core State Units and Target Result Units are available to be addressed; it does **not** define Lens operations or Lens applicability.

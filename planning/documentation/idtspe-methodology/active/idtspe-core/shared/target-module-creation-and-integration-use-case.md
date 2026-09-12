@@ -79,28 +79,29 @@ Material alternatives may use Planning Branches.
 3. decide module boundary
 4. define single Entry Point
 5. define Result Units only where independent processing/addressability is useful
-6. explain each important/non-obvious Unit and its fields
-7. define the reusable Resolution / Production Method
-8. map the module to current IDTSPE integration points
-9. define Target Formation contributions
-10. define Source Contract archetype
-11. identify reusable theory/reference knowledge that materially supports this Target family, when any
-12. keep useful references/provenance and add consumer-specific interpretation when raw theory is too broad
-13. define RQ/question-generation pack
-14. define Proposal/pattern discovery aids
-15. define Lens Profile: reuse Lens Library first; keep only genuinely local Lens prompts; add applicability gates
-16. define recurring Q/R/P discovery hints only when target-specific
-17. define Decision surfaces
-18. define semantic output/projection schema when useful
-19. define Internal Object Contracts / supporting module composition
-20. for every proposed Supporting Target Module, prove it can also be a coherent standalone recurring Target family; otherwise use a Result Unit / Internal Object Contract / shared Result-Unit method
-21. define validators against Result Units/boundaries
-22. define downstream Unit/output → Source handoff
-23. define revalidation prompts
-24. define representation guidance / current Artifact contract
-25. map current repository UCs/workflows/templates/commands
-26. create at least one worked acceptance example showing Result + State Units
-27. run module consistency/readiness review
+6. define explicit Opening / Closing Unit Checkpoint placement for every material Result Unit, inheriting the generic Unit Applicability Envelope; keep In-Unit Applicability Checks available whenever material
+7. explain each important/non-obvious Unit and its fields
+8. define the reusable Resolution / Production Method
+9. map the module to current IDTSPE integration points
+10. define Target Formation contributions
+11. define Source Contract archetype
+12. identify reusable theory/reference knowledge that materially supports this Target family, when any
+13. keep useful references/provenance and add consumer-specific interpretation when raw theory is too broad
+14. define RQ/question-generation pack
+15. define Proposal/pattern discovery aids
+16. define Lens Profile: reuse Lens Library first; keep only genuinely local Lens prompts; add applicability gates
+17. define recurring Q/R/P discovery hints only when target-specific
+18. define Decision surfaces
+19. define semantic output/projection schema when useful
+20. define Internal Object Contracts / supporting module composition
+21. for every proposed Supporting Target Module, prove it can also be a coherent standalone recurring Target family; otherwise use a Result Unit / Internal Object Contract / shared Result-Unit method
+22. define validators against Result Units/boundaries
+23. define downstream Unit/output → Source handoff
+24. define revalidation prompts
+25. define representation guidance / current Artifact contract
+26. map current repository UCs/workflows/templates/commands
+27. create at least one worked acceptance example showing Result + State Units
+28. run module consistency/readiness review
 ```
 
 ---
@@ -113,6 +114,7 @@ one Target Module owner
 + stable Entry Point
 + integration map
 + Target Step-Result Contract / Result Units
++ explicit per-Unit Opening / Closing Applicability Checkpoints
 + Resolution / Production Method
 + output schema/projection when useful
 + validators

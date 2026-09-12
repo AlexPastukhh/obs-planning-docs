@@ -33,23 +33,6 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
   ],
   "userTarget": "<one durable Domain responsibility, when independently useful>",
   "palette": true,
-  "helperPresentation": {
-    "whenToUse": "Use when discovered/current Domain meaning now needs an independently durable semantic owner for responsibility, identity/state/lifecycle/invariants/operations and revalidation.",
-    "whatYouGet": "A durable Domain semantic contract, plus only material owner-local implementation/proof-realization requirements; transient discovery stays Source, not authority.",
-    "navigation": {
-      "viewId": "SDS",
-      "viewLabel": "SDS — IDTSPE Profile",
-      "sectionId": "04",
-      "sectionLabel": "04 Domain",
-      "sectionOrder": 4,
-      "itemOrder": 1,
-      "kindLabel": "IDTSPE TARGET",
-      "badges": [
-        "PRIMARY OPTIONAL"
-      ],
-      "viewOrder": 1
-    }
-  },
   "refinements": [],
   "methodologyBinding": {
     "methodologyRuntime": "IDTSPE",

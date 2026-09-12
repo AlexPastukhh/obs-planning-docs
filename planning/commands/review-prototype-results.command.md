@@ -31,21 +31,6 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
   ],
   "userTarget": "<prototype subject with actual Evidence>",
   "palette": true,
-  "helperPresentation": {
-    "whenToUse": "Use after a prototype/experiment produced actual Evidence that should update the same Prototype Target.",
-    "whatYouGet": "Prototype Results / Evidence interpretation, limitations, residual uncertainty and revalidation/follow-up.",
-    "navigation": {
-      "viewId": "SDS",
-      "viewLabel": "SDS — IDTSPE Profile",
-      "sectionId": "01",
-      "sectionLabel": "01 Application",
-      "sectionOrder": 1,
-      "itemOrder": 4,
-      "kindLabel": "IDTSPE TARGET · FOCUSED",
-      "parentId": "application_prototype.plan",
-      "viewOrder": 1
-    }
-  },
   "refinements": [],
   "methodologyBinding": {
     "methodologyRuntime": "IDTSPE",

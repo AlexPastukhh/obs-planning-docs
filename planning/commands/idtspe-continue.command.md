@@ -32,20 +32,6 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
   ],
   "userTarget": "<current planning state>",
   "palette": true,
-  "helperPresentation": {
-    "whenToUse": "Use when you want the methodology to continue from current context without naming a specific component.",
-    "whatYouGet": "Continuation through the current Use-Case-driven IDTSPE composition, without mandatory stage or Target progression.",
-    "navigation": {
-      "viewId": "IDTSPE",
-      "viewLabel": "IDTSPE",
-      "sectionId": "core",
-      "sectionLabel": "IDTSPE Core",
-      "sectionOrder": 0,
-      "itemOrder": 3,
-      "kindLabel": "ORCHESTRATION",
-      "viewOrder": 0
-    }
-  },
   "refinements": [],
   "methodologyBinding": {
     "methodologyRuntime": "IDTSPE",
