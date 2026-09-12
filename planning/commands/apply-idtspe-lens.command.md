@@ -34,7 +34,7 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
     "This command is read-only planning; it does not mutate repository files, commit or push."
   ],
   "userTarget": "<lens> к <target/context>",
-  "palette": true,
+  "palette": false,
   "refinements": [],
   "methodologyBinding": {
     "methodologyRuntime": "IDTSPE",

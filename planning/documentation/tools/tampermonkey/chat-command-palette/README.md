@@ -248,7 +248,7 @@ Tools / Repository
 
 `src/methodology-navigation.js` owns only this projection logic. It derives grouping from `semanticKind`, `semanticScope` and tool/general classification. `helperPresentation.navigation` is compatibility-only input for old cached records and is not a current semantic source.
 
-The generic `idtspe` dispatcher remains available for expert/direct invocation (`idtspe tm …`, `idtspe lens …`), but the primary catalog is built from current semantic owners rather than requiring users to know dispatcher syntax.
+The generic `idtspe` and `примени линзу` dispatchers remain registered for expert/direct invocation but use `palette: false`; the primary catalog is built from current semantic owners rather than a second Helper-only hidden-command list.
 
 ## Command Invocation Side Effects
 

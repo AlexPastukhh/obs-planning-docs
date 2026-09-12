@@ -90,6 +90,7 @@ test('tool/repository scenario is repository-owned and archive read-source remai
   const archiveSource=m.commandEntries.find((entry)=>entry.id==='archive_source.use');
   assert.ok(archiveSource);
   assert.deepEqual(archiveSource.scenarioUses.map((use)=>use.stepId),['SCN-06-S1A']);
+  assert.deepEqual(archiveSource.scenarioRefs,['planning/command-routing.md#archive-read-source-boundary']);
   const packageProducer=m.commandEntries.find((entry)=>entry.id==='replacement_archive.create');
   assert.ok(packageProducer);
   assert.equal(packageProducer.scenarioUses.some((use)=>use.stepId==='SCN-06-S1A'),false);
@@ -117,10 +118,12 @@ test('Exact scenario exposes Representation only as a conditional semantic Lens 
   ]);
 });
 
-test('bare idtspe remains a direct convenience route but not a second primary Helper card',()=>{
+test('bare idtspe and generic Lens apply remain registered infrastructure with palette false',()=>{
   const m=memory();
-  assert.ok(commands.some((command)=>command.id==='idtspe.work'&&command.palette===true));
+  assert.ok(commands.some((command)=>command.id==='idtspe.work'&&command.palette===false));
+  assert.ok(commands.some((command)=>command.id==='idtspe.lens.apply'&&command.palette===false));
   assert.equal(m.commandEntries.some((entry)=>entry.id==='idtspe.work'),false);
+  assert.equal(m.commandEntries.some((entry)=>entry.id==='idtspe.lens.apply'),false);
   assert.ok(m.commandEntries.some((entry)=>entry.id==='uc:UC-IDTSPE-COMPOSE-CURRENT-WORK'));
 });
 

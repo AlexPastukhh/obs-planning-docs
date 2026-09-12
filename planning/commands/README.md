@@ -92,7 +92,7 @@ IDTSPE is always active; command invocation does not enable it. A direct Target 
 
 Planning Helper methodology Use Cases are projected only from [`../documentation/use-case-registry-map.md`](../documentation/use-case-registry-map.md) and the current scoped registries it maps. Filesystem presence of another `use-case-registry.md` does not make its entries global methodology-use UCs.
 
-Generic Lens operations are repository commands `idtspe.lenses.select` (`подбери линзы`) and `idtspe.lens.apply` (`примени линзу`). They are orchestration/dispatch surfaces over `TF-06A` + the registered Lens owners, not new Lens semantic authorities and not one-command-per-Lens expansion.
+Generic Lens operations are repository commands `idtspe.lenses.select` (`подбери линзы`) and `idtspe.lens.apply` (`примени линзу`). They are orchestration/dispatch surfaces over `TF-06A` + the registered Lens owners, not new Lens semantic authorities and not one-command-per-Lens expansion. The generic apply dispatcher and bare `idtspe` work dispatcher remain registered but use `palette: false`; Helper visibility follows the command contract instead of a separate hidden-infrastructure list.
 
 The six retired `collect-ideas*` command IDs remain hidden compatibility aliases only. They must route their supplied material into the current IDTSPE/SDS Target/owner model and must not retain the old collect-Ideas shell, Current Plan runtime, Idea Review owners or old SDS physical-profile owners. Hiding an old command from the palette is not enough if its owner route still revives obsolete semantics.
 

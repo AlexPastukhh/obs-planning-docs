@@ -33,7 +33,7 @@
         "This command is read-only planning; it does not mutate repository files, commit or push."
       ],
       "userTarget": "<lens> к <target/context>",
-      "palette": true,
+      "palette": false,
       "helperPresentation": null,
       "methodologyBinding": {
         "methodologyRuntime": "IDTSPE",
@@ -2743,7 +2743,7 @@
         "This command plans/reviews only; it does not edit repository files, implement, test, commit or push."
       ],
       "userTarget": "<optional TM/LENS selector + target/context, or current planning work>",
-      "palette": true,
+      "palette": false,
       "helperPresentation": null,
       "methodologyBinding": {
         "methodologyRuntime": "IDTSPE",

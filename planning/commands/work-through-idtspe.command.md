@@ -38,7 +38,7 @@ Scope: generic IDTSPE work-mode and installed-component dispatcher.
     "This command plans/reviews only; it does not edit repository files, implement, test, commit or push."
   ],
   "userTarget": "<optional TM/LENS selector + target/context, or current planning work>",
-  "palette": true,
+  "palette": false,
   "refinements": [],
   "methodologyBinding": {
     "methodologyRuntime": "IDTSPE",
