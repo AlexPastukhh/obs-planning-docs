@@ -3,8 +3,8 @@
 Status: active reusable workflow
 Scope: plan/review coherent Workspace Architecture evolution when several related architecture decisions/risks must move together.
 
-Generic Idea/Variant semantics: [`../idea-planning-principles-and-terminology.md`](../idea-planning-principles-and-terminology.md)
-Shared Planning Concern / generic Decision trace semantics: [`../planning-concerns-and-decisions-model.md`](../planning-concerns-and-decisions-model.md)
+Generic Proposal/Decision semantics: [`../idtspe-methodology/active/idtspe-core/shared/proposal-and-decision-lifecycle-contract.md`](../idtspe-methodology/active/idtspe-core/shared/proposal-and-decision-lifecycle-contract.md)
+Shared Q/R/P lifecycle semantics: [`../idtspe-methodology/active/idtspe-core/shared/qrp-lifecycle-and-review-contract.md`](../idtspe-methodology/active/idtspe-core/shared/qrp-lifecycle-and-review-contract.md)
 
 ## 1. When To Use
 
@@ -29,7 +29,7 @@ State what important work is currently too expensive/risky/opaque and which cons
 
 ## 4. Form Integrated Evolution Alternatives
 
-When alternatives are material, use generic `Idea Variants` whose Proposed Answers are coherent target architectures rather than isolated local mechanisms. Do not create a separate Evolution-Variant or Architecture-Variant type.
+When alternatives are material, use separate generic `Proposal` candidates whose Proposed Answers are coherent target architectures rather than isolated local mechanisms. Do not create a separate Evolution-Variant or Architecture-Variant type.
 
 ## 5. Evaluate Important Paths
 
@@ -37,7 +37,7 @@ For each candidate inspect representative current/future Workspace UCs, contextu
 
 ## 6. Select Target Architecture
 
-When Idea Variants were used, identify one `Current Selected Variant` and integrate that selected meaning into the target architecture. Record selected responsibility/boundary changes, Architecture Intent, intentionally deferred complexity and transition constraints/order.
+When Proposal candidates were used, identify one `Selected Proposal / Decision` and integrate that selected meaning into the target architecture. Record selected responsibility/boundary changes, Architecture Intent, intentionally deferred complexity and transition constraints/order.
 
 ## 7. Route Realization Downstream
 
@@ -48,6 +48,6 @@ Architecture Evolution stops before detailed implementation task/Slice planning.
 Later justified evolution does not prove an earlier simpler architecture was wrong. Record what new evidence/pressure now pays for the change.
 ## Concern / Decision Integration
 
-When evolution is driven by several related Questions/Risks/Problems, group them by shared resolution surface rather than turning each into an independent architecture project. Preserve member Priority/Concern Category/Status, AI Comment/user-owned unknowns, selected Decision relations and residual Risks/Problems through the shared Concern model.
+When evolution is driven by several related Questions/Risks/Problems, group them by shared resolution surface rather than turning each into an independent architecture project. Preserve member Priority/Review Category/Status, AI-review/user-owned unknowns, selected Decision relations and residual Risks/Problems through the Core Q/R/P lifecycle contract.
 
-One coherent evolution may address several Concern Groups/Decisions; trace relations are many-to-many when materially useful.
+One coherent evolution may address several Q/R/P Groups/Decisions; trace relations are many-to-many when materially useful.

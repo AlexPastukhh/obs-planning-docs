@@ -46,7 +46,7 @@ Record exact messages, files or checked facts. Do not silently choose an old arc
 
 ### Stage 2 — Review Ideas / Current Meaning When Material
 
-Use the shared Idea methodology for answer-seeking work. Preserve facts, constraints and decisions as their own meanings; one incoming fragment does not imply one new Idea.
+Use the canonical Proposal lifecycle for answer-seeking candidate work. Preserve facts, constraints and Decisions as their own meanings; one incoming fragment does not imply one new Proposal.
 
 ### Stage 3 — Reconcile Current Owners
 
@@ -130,7 +130,7 @@ It does not own direct documentation editing that starts without solution planni
 
 ```text
 current-context.md
-../../documentation/idea-review-and-planning-workflow.md
+../../documentation/idtspe-methodology/active/idtspe-core/shared/proposal-and-decision-lifecycle-contract.md
 ../../documentation/workspace-planning/workspace-planning-principles-and-terminology.md
 ../../documentation/workspace-planning/use-case-registry.md
 ../../documentation/application-planning/solution-and-scenario-planning-workflow.md

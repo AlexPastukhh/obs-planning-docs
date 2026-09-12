@@ -4,7 +4,7 @@
 
 
 Status: active reusable canonical owner
-Scope: cross-cutting application-planning semantics for Requirements, expected stability, Future Scenario Ideas, application-specific Change-Axis evidence/placement and early implementation-scoped Ideas used across solution/application and domain/implementation planning. Generic Workspace Change Pressure / Change Axis semantics are owned by sibling Architecture Planning.
+Scope: cross-cutting application-planning semantics for Requirements, expected stability, Future Scenario Proposals, application-specific Change-Axis evidence/placement and early implementation-scoped Proposals used across solution/application and domain/implementation planning. Generic Workspace Change Pressure / Change Axis semantics are owned by sibling Architecture Planning.
 
 ## 1. Purpose
 
@@ -23,8 +23,8 @@ Requirement
 Change Axis
 = generic evidence-backed Workspace variability/pressure concept owned by sibling Architecture Planning; application planning contributes Scenario/Requirement/prototype evidence and records application impact
 
-implementation-scoped Idea
-= an ordinary Idea about a possible implementation route
+implementation-scoped Proposal
+= an ordinary Proposal about a possible implementation route
   that is not current implementation truth until selected and integrated
 ```
 
@@ -122,11 +122,11 @@ prototype observation
 → promote selected meaning to its real canonical owner
 ```
 
-Do not promote every prototype observation into a Requirement. A useful prototype finding may instead become a Scenario boundary, DATA item, Behavior Item, Screen hypothesis, Change Axis, Idea or rejected assumption.
+Do not promote every prototype observation into a Requirement. A useful prototype finding may instead become a Scenario boundary, DATA item, Behavior Item, Screen hypothesis, Change Axis, Proposal or rejected assumption.
 
-## 5. Future Scenario Ideas
+## 5. Future Scenario Proposals
 
-A `Future Scenario Idea` is an Idea about behavior the application might later need. It is not a current Scenario and not a Requirement merely because it is plausible.
+A `Future Scenario Proposal` is a Proposal about behavior the application might later need. It is not a current Scenario and not a Requirement merely because it is plausible.
 
 Classify future meaning honestly:
 
@@ -141,7 +141,7 @@ Speculative Possibility
 → plausible thought with weak/no decision-grade evidence
 ```
 
-Future Scenario Ideas are useful inputs to Change-Axis reasoning but must not silently expand current scope.
+Future Scenario Proposals are useful inputs to Change-Axis reasoning but must not silently expand current scope.
 
 ## 6. Change Axis
 
@@ -153,7 +153,7 @@ Application Planning contributes evidence such as:
 current / candidate Requirements
 Scenarios / Behavior Items
 prototype findings
-Future Scenario Ideas
+Future Scenario Proposals
 selected/plausible application Extensions
 provider/integration constraints
 observed application change history
@@ -174,9 +174,9 @@ Change Axis
 
 Domain/Slice planning consumes high-confidence material change pressure through the Architecture Planning contract while rejecting abstractions justified only by speculation.
 
-## 7. Implementation-Scoped Ideas
+## 7. Implementation-Scoped Proposals
 
-Do not create a separate `Implementation Idea` ontology. Use the generic reusable `Idea` concept with implementation scope/placement.
+Do not create a separate `Implementation Proposal` ontology. Use the generic Core `Proposal` concept with implementation scope/placement.
 
 Examples:
 
@@ -193,7 +193,7 @@ Before selection these are candidate answers, not architecture truth.
 Recommended lightweight metadata when useful:
 
 ```text
-Idea ID
+Proposal ID
 Scope: implementation
 Related Requirement / Scenario / Change Axis / Domain / Slice
 Status: raw / candidate / promoted / rejected
@@ -204,13 +204,13 @@ Current promoted owner when applicable
 Promotion rule:
 
 ```text
-early implementation-scoped Idea
+early implementation-scoped Proposal
 → reviewed during Domain/Slice work
 → rejected
 or
 → selected meaning integrated into Domain / Slice Strategy / Slice / other real owner
-→ original Idea may retain provenance/status/link
-→ promoted Idea is no longer a second current implementation owner
+→ original Proposal may retain provenance/status/link
+→ selected Proposal is no longer a second current implementation owner
 ```
 
 ## 8. Recommended Two-Zone Project-Local Topology
@@ -253,7 +253,7 @@ A physical folder is organization only and does not automatically become a seman
 
 ### Root intake rule
 
-Root `ideas/`, `implementation-ideas/`, `requirements/` and `change-axes/` may temporarily hold meaning before its narrowest owner is known. Once meaning is understood and promoted, the structured canonical owner wins; the root intake record may retain provenance/link/status but must not remain a competing current truth.
+Legacy root `ideas/`, `implementation-ideas/`, `requirements/` and `change-axes/` may temporarily hold meaning before its narrowest owner is known. Once meaning is understood and promoted, the structured canonical owner wins; the root intake record may retain provenance/link/status but must not remain a competing current truth.
 
 ## 9. Cross-Zone Contract
 

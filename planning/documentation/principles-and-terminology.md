@@ -154,8 +154,8 @@ Selected Use Case owner
        │
        │ selected Process may route further
        ▼
-Methodology Registry Directory / supporting router
-(component-registry family candidates)
+Supporting router / component registry when defined by the selected Process
+(component-family/candidate routing)
        │
        ▼
 Concrete component registry
@@ -176,7 +176,7 @@ Ownership boundaries:
 - **Use-Case Registry Map** — which functional Use-Case scopes are plausible;
 - **Use-Case Registry** — which independently useful capabilities in that scope are plausible;
 - **Use Case Process** — what actions are required to obtain its Result and which supporting owners it reaches;
-- **Methodology Registry Directory** — which specialized registry family may help an already-selected Process;
+- **supporting router / component registry** — optional downstream routing defined/reached by the selected Process; a specialized methodology may provide a directory/index for this purpose;
 - **component registry** — which concrete components are plausible;
 - **component owner** — specialized applicability/materiality and specialized work.
 

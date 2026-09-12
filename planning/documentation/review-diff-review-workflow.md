@@ -6,9 +6,9 @@ Scope: truth-seeking semantic review of a repository ReviewDiff after changes ar
 Use with:
 
 ```text
-planning/documentation/idea-planning-principles-and-terminology.md
-planning/documentation/idea-review-and-planning-workflow.md
-planning/documentation/planning-concerns-and-decisions-model.md
+planning/documentation/idtspe-methodology/active/idtspe-core/shared/proposal-and-decision-lifecycle-contract.md
+planning/documentation/idtspe-methodology/active/idtspe-core/shared/qrp-lifecycle-and-review-contract.md
+planning/documentation/idtspe-methodology/active/ai-reviewability/README.md
 selected current semantic/documentation/application owners affected by the diff
 ```
 
@@ -37,9 +37,9 @@ Before concluding:
 
 If the diff or required owners are incomplete, report the missing evidence instead of guessing.
 
-## 3. Finding And Idea Boundary
+## 3. Finding And Proposal Boundary
 
-Do not manufacture an Idea for every typo or mechanical defect.
+Do not manufacture a Proposal for every typo or mechanical defect.
 
 ```text
 confirmed mechanical defect
@@ -47,18 +47,18 @@ confirmed mechanical defect
 → direct corrective recommendation when one route is clearly justified;
 
 material answer-seeking uncertainty / alternative correction
-→ ordinary Idea / Idea Variants
-→ shared Standard Idea Review;
+→ ordinary Proposal candidate(s)
+→ canonical Proposal Candidate Review;
 
 unresolved product / architecture / ownership choice
 → explicit user-decision candidate only when evidence cannot justify one route safely.
 ```
 
-A confirmed problem is not itself automatically an Idea. A proposed semantic correction can be an Idea and is reviewed with the same methodology used by `собери идеи`.
+A confirmed problem is not itself automatically a Proposal. A proposed semantic correction can be a Proposal and is reviewed through the canonical Proposal lifecycle; the legacy `собери идеи` alias routes to the same current semantics.
 
-## 4. Standard Review For Material Corrective Ideas
+## 4. Candidate Review For Material Corrective Proposals
 
-For each material corrective Idea, apply the shared checks proportionally:
+For each material corrective Proposal, apply the canonical candidate-review checks proportionally:
 
 ```text
 Source / Status
@@ -66,7 +66,7 @@ Problem / Need
 Proposed Answer
 Relevance / Expected Effect
 Necessity / Better-Route
-Possible Idea Refinements
+Possible Proposal Refinements
 Local Consistency
 Integrated Consistency
 Current Conclusion
@@ -90,7 +90,7 @@ Current Plan
 
 `Current Plan` is an output baseline, not an application approval state and not proof that selected corrections have already been applied.
 
-A confirmed defect with one clearly selected correction belongs in `Confirmed Findings` + `Current Conclusions`. It does **not** stay in active `Planning Concerns / Q/R/P` merely because the correction has not yet been applied; material retained Decision/Concern trace is separate.
+A confirmed defect with one clearly selected correction belongs in `Confirmed Findings` + `Current Conclusions`. It does **not** stay in active `Q/R/P` merely because the correction has not yet been applied; material retained Decision/Q-R-P trace is separate.
 
 Material local findings propagate only as far as needed:
 
@@ -98,7 +98,7 @@ Material local findings propagate only as far as needed:
 changed line/file finding
 → affected owner / Use Case / Scenario
 → Current Conclusion / selected correction when resolved
-→ shared Planning Concern/Concern Group state only when active/residual relative to Current Plan; retain material answer/Decision trace when useful
+→ shared Q/R/P / Q/R/P-Group state only when active/residual relative to Current Plan; retain material answer/Decision trace when useful
 → whole-change conclusion when broader
 ```
 
@@ -116,17 +116,17 @@ Ask the user only when a material choice remains unresolved after owner/evidence
 When alternatives are material:
 
 ```text
-Idea Variants
-→ Current Selected Variant when one route is justified/selected
+materially different Proposals / refinements
+→ selected Proposal meaning when one route is justified/selected
 → selected route becomes Current Plan
 → only still-active concerns/alternatives remain in active Q/R/P; selected material decisions may retain trace
 ```
 
-## 6. Planning Concerns / Q/R/P
+## 6. Q/R/P
 
-Use [`planning-concerns-and-decisions-model.md`](planning-concerns-and-decisions-model.md). ReviewDiff does not own a separate concern lifecycle.
+Use [`idtspe-methodology/active/idtspe-core/shared/qrp-lifecycle-and-review-contract.md`](idtspe-methodology/active/idtspe-core/shared/qrp-lifecycle-and-review-contract.md). ReviewDiff does not own a separate Q/R/P lifecycle.
 
-Valid active concerns include:
+Valid active Q/R/P includes:
 
 ```text
 evidence needed before a selected correction can be judged safe
@@ -136,9 +136,9 @@ unresolved owner conflict
 material Problem intentionally deferred / accepted limitation
 ```
 
-When several findings are substantially one resolution surface, group them into one Concern Group rather than listing Question/Risk/Problem as independent concerns. Preserve each member's Type/Priority/Concern Category/Status.
+When several findings are substantially one resolution surface, group them into one Q/R/P Group rather than listing Question/Risk/Problem as independent concerns. Preserve each member's Type/Priority/Review Category/Status.
 
-For material AI-produced concerns/groups include a useful AI Comment: distinguish checked implications/options from user-owned unknowns; recommend only when evidence is sufficient; do not mark a Decision selected until it is actually selected.
+For material AI-produced Q/R/P/groups include useful AI review: distinguish checked implications/options from user-owned unknowns; recommend only when evidence is sufficient; do not mark a Decision selected until it is actually selected.
 
 Not active Q/R/P:
 
@@ -152,9 +152,9 @@ reasoning note with no current adverse effect
 
 However material answer/rationale/Decision relation may remain in retained trace, and a residual Risk/Problem remains active even after the related Question is answered.
 
-Related Ideas reference the canonical Concern/Group ID/location. Do not recreate the old full same-ID Idea mirror.
+Related Proposals reference the canonical Q/R/P or Group ID/location. Do not recreate the old full same-ID Proposal mirror.
 
-If the current review area maintains durable/distributed concerns, update its Area Concern Register status/storage/Decision refs consistently. If empty: `No material unresolved issues identified.`
+If the current review area maintains durable/distributed concerns, update its Q/R/P register/index status/storage/Decision refs consistently. If empty: `No material unresolved issues identified.`
 
 ## 7. Potential Simplifications / Better Routes
 
@@ -170,7 +170,7 @@ Why Potentially Better
 Status
 ```
 
-Reference Related Idea IDs when applicable. Once selected, move the route into Current Conclusions / Current Plan and remove it from this section.
+Reference Related Proposal IDs when applicable. Once selected, move the route into Current Conclusions / Current Plan and remove it from this section.
 
 ## 7.1 Architecture Work-Cost Regression Check — When Material
 
@@ -200,15 +200,15 @@ For a non-trivial ReviewDiff review, produce a compact reviewable structure:
 ```text
 Checked Scope / Owners
 Confirmed Findings
-Corrective Ideas / Idea Variants when material
+Corrective Proposals / refinements / competing Proposals when material
 Current Conclusions / Current Plan
-Planning Concerns / Q/R/P + Concern Groups when material
-Retained Decision/Concern trace when material
+Q/R/P + Q/R/P Groups when material
+Retained Decision/Q-R-P trace when material
 Potential Simplifications / Better Routes when material
 ReviewDiff Verdict
 ```
 
-Material Idea-derived concerns keep Related Idea provenance when useful, but one Concern/Group has one detailed storage location and affected Ideas reference its ID/location.
+Material Proposal-derived concerns keep Related Proposal provenance when useful, but one Q/R/P item/group has one detailed storage location and affected Proposals reference its ID/location.
 
 Allowed whole-diff verdicts:
 
@@ -239,11 +239,11 @@ BLOCKED BY MATERIAL DECISION
 
 - Do not treat successful Apply, fingerprint equality or a persisted currentReview as semantic approval.
 - Do not require an AI approval flag in application state merely to use this methodology.
-- Do not create a parallel ReviewDiff-specific Idea ontology.
+- Do not create a parallel ReviewDiff-specific Proposal ontology.
 - Do not rewrite historical provenance just to remove old wording.
 - Do not silently promote implementation details into accepted architecture.
 - Do not approve a diff while a material unapplied correction or unresolved correctness/ownership issue remains hidden.
-- Do not use active Q/R/P as a log of selected corrections or completed reasoning; preserve only material retained Concern/Decision trace under the shared model.
+- Do not use active Q/R/P as a log of selected corrections or completed reasoning; preserve only material retained Q/R/P/Decision trace under the Core owners.
 
 ## 10. Scope-Log Handoff When Logging Is Active
 

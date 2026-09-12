@@ -1,6 +1,6 @@
 # SDS Artifact Placement Map — Owner / Representation Guidance
 
-Status: S4 proposed synchronized profile placement guidance
+Status: active SDS profile placement guidance
 
 This file projects selected SDS semantic owners into possible physical representation. It is **not** a mandatory scaffold.
 

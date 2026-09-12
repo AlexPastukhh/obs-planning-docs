@@ -1,7 +1,7 @@
 # Practical Example — Accumulating UCDS `собери идеи`
 
 Status: current demonstration only
-Scope: compact example of the current `собери идеи` output contract using Key Points, Review Priority, an accumulating current plan and Mini UCDS. Canonical rules remain in the Idea, shared Planning Concern/Decision, Workspace Planning and AI reviewability owners.
+Scope: compact example of the current `собери идеи` output contract using Key Points, Review Priority, an accumulating current plan and Mini UCDS. The command name is compatibility vocabulary; canonical candidate semantics are Proposal/Decision, Q/R/P semantics are Core-owned, and review presentation is owned by AI Reviewability.
 
 ## Example Source
 
@@ -33,13 +33,13 @@ UC-DOC-REVIEW-EXAMPLES
 → target change is a narrow example-coverage refinement
 ```
 
-## Planning Concerns / Q/R/P
+## Q/R/P
 
 No material unresolved issues identified.
 
-## Cross-Cutting Ideas
+## Cross-Cutting Proposals
 
-### IDEA-EXAMPLE-01 — Keep stale-example correction narrow
+### Proposal P-EXAMPLE-01 — Keep stale-example correction narrow
 
 **Problem / Need:** an example can remain plausible while demonstrating retired terminology.
 
@@ -61,9 +61,9 @@ Current reusable owners already state that examples demonstrate but do not own s
 
 Make stale-example review identify the canonical owner, stale demonstrated meaning and narrow correction surface.
 
-### Related Ideas
+### Related Proposals
 
-- `IDEA-EXAMPLE-01` — local impact: strengthen stale-example review/correction clarity.
+- `P-EXAMPLE-01` — local impact: strengthen stale-example review/correction clarity.
 
 ### Planning State
 
@@ -98,10 +98,10 @@ stale-example finding
 
 ### Preliminary Integration / Carry-Forward
 
-The reviewed Ideas imply a narrow future correction surface: the stale example and any navigation entry that presents the stale terminology. This is **preliminary semantic integration**, not an exact file-update plan.
+The reviewed Proposals imply a narrow future correction surface: the stale example and any navigation entry that presents the stale terminology. This is **preliminary semantic integration**, not an exact file-update plan.
 
 ```text
-selected Idea
+selected Proposal
 → UC-DOC-REVIEW-EXAMPLES target meaning updated
 → likely narrow example/navigation correction downstream
 → exact files/actions not selected yet
@@ -110,8 +110,8 @@ selected Idea
 ## Continuation
 
 ```text
-собери идеи
-→ stops here after semantic integration
+собери идеи (compatibility command alias)
+→ routes current candidate meaning through Proposal semantics and stops here after semantic integration
 
 пред-апдейт / план файл-обновление
 → would choose exact example/navigation files, actions and checks

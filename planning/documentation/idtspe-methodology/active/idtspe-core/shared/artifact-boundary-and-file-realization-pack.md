@@ -1,7 +1,7 @@
 # Artifact Boundary Discovery And File Realization Pack
 
-Status: active conditional deep artifact/file methodology pack  
-Purpose: deepen a non-trivial Documentation / Representation decision: compare implementation-native/existing-owner/consolidated/split/generated representations, plan physical reorganization when needed, and validate the resulting repository representation.  
+Status: active conditional deep artifact/file methodology pack
+Purpose: deepen a non-trivial Documentation / Representation decision: compare implementation-native/existing-owner/consolidated/split/generated representations, plan physical reorganization when needed, and validate the resulting repository representation.
 Repository mutation: none.
 
 ---
@@ -906,7 +906,7 @@ A large distributed project with many active durable concerns:
 ```text
 local concern bodies remain beside owners
 +
-Area Concern Register / generated index
+Q/R/P register / generated index
 ```
 
 only when navigation/review value justifies it.

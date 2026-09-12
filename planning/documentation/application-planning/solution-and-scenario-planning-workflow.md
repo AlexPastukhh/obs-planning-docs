@@ -20,7 +20,7 @@ source / current context
 → classify materially relevant existing routes as viable / rejected / needs evidence
 → formulate candidate slot fills / whole Solution / Workflow Variants
 → review Application Concept candidate(s) when own software may be useful
-→ use shared Idea Review/Deep Planning for answer-seeking uncertainty
+→ use canonical Proposal candidate review for answer-seeking uncertainty
 → evaluate local + integrated/combination quality
 → compare Application Concept against viable existing alternatives while custom-vs-existing remains open
 → select current whole-solution responsibility
@@ -92,11 +92,11 @@ selected/current Application Concept
    → Prototype Screens
    → candidate Requirements
    → candidate Scenario DATA / Behavior
-   → Future Scenario Ideas / Change Axes when material
+   → Future Scenario Proposals / Change Axes when material
 → discover independently meaningful current Scenarios
 → validate / split / merge Application Scenarios from prototype/discovered Scenario coverage
 → create detailed Scenario Draft workspaces
-   + shared/local Ideas
+   + shared/local Proposals
    + Scenario DATA
    + Behavior Items
    + Scenario visual material
@@ -163,7 +163,7 @@ Technical requirements/implementation constraints remain Requirements/constraint
 During discovery also preserve, when genuinely supported:
 
 ```text
-Future Scenario Ideas
+Future Scenario Proposals
 → not current Scenario truth
 
 Change Axes
@@ -215,7 +215,7 @@ Candidate Scenarios may come from the selected Concept, be explored by Prototype
 
 A Requirement is a must-hold condition/property/constraint, not a Scenario identity. Prototype/Scenario/Screen work may discover Requirements and route them to their narrowest canonical owner.
 
-Use [`requirements-and-change-context.md`](requirements-and-change-context.md) for status, stability, placement, Change Axes and implementation-scoped Ideas.
+Use [`requirements-and-change-context.md`](requirements-and-change-context.md) for status, stability, placement, Change Axes and implementation-scoped Proposals.
 
 ## Detailed Scenario Work
 
@@ -226,13 +226,13 @@ Detailed owner state follows:
 ```text
 semantic body
 → Current Decisions
-→ Area Concern Register when material
-→ Planning Concerns / Q/R/P + Concern Groups relative to Current Draft Plan
+→ optional Q/R/P register/index when material
+→ Q/R/P + Q/R/P Groups relative to Current Draft Plan
 → retained Concern/Decision trace when material
 → Potential Better Routes when material
 ```
 
-Use the shared `../planning-concerns-and-decisions-model.md` for generic concern/group/priority/category/AI-comment/Decision-retention semantics. Use scoped Idea work only when a real answer-seeking question deserves it. Link relevant Requirements rather than copying or turning them into flow steps mechanically.
+Use Core `../idtspe-methodology/active/idtspe-core/shared/qrp-lifecycle-and-review-contract.md` for Q/R/P lifecycle/grouping and `../idtspe-methodology/active/idtspe-core/shared/proposal-and-decision-lifecycle-contract.md` for candidate/Decision semantics. Use scoped Proposal review only when a real answer-seeking candidate exists. Link relevant Requirements rather than copying or turning them into flow steps mechanically.
 
 ## Variant Work
 
@@ -253,7 +253,7 @@ compare as semantic peers
 
 The first Variant need not be physically moved under `variants/`. Variant-local supporting material records only real differences; unchanged meaning stays shared/parent-owned.
 
-Runtime branches and local Idea Variants are not whole Scenario Variants.
+Runtime branches and local Proposal alternatives are not whole Scenario Variants.
 
 ## Screen Planning
 
@@ -312,7 +312,7 @@ Tests are evidence, not semantic authority.
 ## Integration Loop
 
 ```text
-local Idea / Prototype finding / Scenario / Screen / Requirement / Domain / Slice conclusion
+local Proposal / Prototype finding / Scenario / Screen / Requirement / Domain / Slice conclusion
 → identify affected owners
 → integrate/review into whole application/workflow
 → review neighboring current owners

@@ -38,7 +38,7 @@ prototype evidence when still decision-relevant
 Change Axes / Change Pressure with evidence/confidence
 Domain verification meaning when present
 application-realization findings when present
-implementation-scoped Ideas
+implementation-scoped Proposals
 technical/integration/operational constraints
 existing implementation state when extending an application
 ```
@@ -132,7 +132,7 @@ Integrated implementation plan
 owner-local implementation detail when materially useful; independently substantial subproblems use normal Local Target Formation
 migration/integration concerns when material
 Change Axes considered
-implementation-scoped Ideas promoted/rejected
+implementation-scoped Proposals promoted/rejected
 verification target/evidence
 ```
 

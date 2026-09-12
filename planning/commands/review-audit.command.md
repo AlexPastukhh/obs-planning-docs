@@ -22,7 +22,7 @@ Scope: one concrete OBS Planning command route. Reusable review-audit behavior r
   "traversalReadMode": "Incremental targeted/full by requested claim, prior coverage, freshness, risk, dependency impact and unresolved gaps.",
   "ownerFiles": [
     "planning/documentation/review-audit-workflow.md",
-    "planning/documentation/ai-reviewability-and-directed-planning-principles.md"
+    "planning/documentation/idtspe-methodology/active/ai-reviewability/README.md"
   ],
   "expectedOutput": "Checked files/semantic units + Not Checked/Partial + Review Quality/Sufficiency + Material Findings/Corrections + Review Delta vs prior relevant review + Next Useful Checks.",
   "permissionMode": "read-only",

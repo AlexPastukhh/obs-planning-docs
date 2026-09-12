@@ -64,11 +64,11 @@ supported / rejected / inconclusive
 ### Scenario DATA / Behavior
 <What provisional meaning should be promoted/reviewed in Scenario/shared Scenario owners.>
 
-## Future Scenario Ideas / Change Axes
+## Future Scenario Proposals / Change Axes
 <Preserve justified evolution context and confidence. Do not convert it into current Requirements automatically.>
 
-## Implementation-Scoped Ideas
-<Which generic Ideas were created/refined/promoted/rejected. Selected implementation meaning must live in its Domain/Slice/other owner.>
+## Implementation-Scoped Proposals
+<Which Proposals were created/refined/selected/rejected/deferred. Selected implementation meaning must live in its Domain/Slice/other owner.>
 
 ## Affected Planning Owners
 
@@ -93,7 +93,7 @@ Requirements
 DATA / Behavior
 → Scenario/shared Scenario owner
 
-Change Axes / Future Scenario Ideas
+Change Axes / Future Scenario Proposals
 → cross-cutting change context
 ```
 
@@ -108,7 +108,7 @@ Prototype artifacts do not remain a hidden second authority after selected meani
 ## Current Decisions
 <Selected evidence-backed conclusions; use shared Decision trace fields when material and integrate selected semantic meaning into its real owner.>
 
-## Planning Concerns / Q/R/P
-<Use the shared Concern model. An experiment may answer a Question while leaving a residual Risk/Problem active; retain material answer/Decision trace when useful. AI Comment must distinguish evidence from user-owned preference. If none: `No material unresolved issues identified.`>
+## Q/R/P
+<Use the Core Q/R/P lifecycle contract. An experiment may answer a Question while leaving a residual Risk/Problem active; retain material answer/Decision trace when useful. AI review must distinguish evidence from user-owned preference. If none: `No material unresolved issues identified.`>
 
 This template does not authorize repository edits, archive creation, commit or push.

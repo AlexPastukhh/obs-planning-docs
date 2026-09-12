@@ -6,22 +6,22 @@ Status: active reusable-family semantic registry
 
 **Status:** active
 **Purpose:** determine whether a useful Workspace result needs a new Use Case and, when justified, establish one coherent target UC contract and owner route.
-**Trigger / accepted input:** a Need, Idea, Extension or observed Workspace result is not clearly owned by a current Workspace Use Case.
+**Trigger / accepted input:** a Need, Proposal, Extension or observed Workspace result is not clearly owned by a current Workspace Use Case.
 **Result / end state:** either an existing UC is confirmed as the correct owner and work hands off to `UC-PLAN-WORKSPACE-CHANGE-UC`, or one justified new Target UC contract + graph placement is established, with Step-2 semantic meaning and Step-3 vertical realization/file surface included only when those depths are selected and reviewed.
 **Boundaries:** files, workflow steps, commands, models/templates or implementation modules do not become UCs merely because they are addressable; this UC does not itself mutate repository state.
 **Topology / optionality:** independently activatable; Step 1/2/3 are proportional depths inside this UC plan.
 **Owner route:** [`establish-workspace-use-case-workflow.md`](establish-workspace-use-case-workflow.md) + [`workspace-planning-principles-and-terminology.md`](workspace-planning-principles-and-terminology.md)
 **Required supporting reads:** Architecture Planning only when Step 3 exposes material path/architecture pressure.
-**Related command:** none required; `собери идеи` may route here when selected Ideas reveal a candidate new Workspace capability.
+**Related command:** none required; `собери идеи` may route here when selected Proposals reveal a candidate new Workspace capability.
 **Dependencies / handoffs:** may hand off to `UC-PLAN-WORKSPACE-CHANGE-UC` when current coverage exists and to `UC-PLAN-WORKSPACE-REVIEW-TOPOLOGY` when several UC boundaries/relations require integrated review.
 
 ## `UC-PLAN-WORKSPACE-CHANGE-UC` — Review / Change Workspace Use Case
 
 **Status:** active
 **Purpose:** integrate all currently selected change meaning for one existing Workspace UC into one coherent Target UC and realization plan.
-**Trigger / accepted input:** Ideas, requirements, evidence, corrections or change pressure materially affect a current Workspace Use Case.
+**Trigger / accepted input:** Proposals, requirements, evidence, corrections or change pressure materially affect a current Workspace Use Case.
 **Result / end state:** the current UC is intentionally unchanged, or one integrated Target UC plan is established to the selected planning depth: Target UC meaning at Step 1, plus Step-2 semantic rules and Step-3 vertical realization/file surface only when those depths are selected and reviewed.
-**Boundaries:** several Ideas affecting one UC do not become several competing UC plans; implementation mechanisms do not redefine unresolved UC/Domain meaning; no repository mutation permission is implied.
+**Boundaries:** several Proposals affecting one UC do not become several competing UC plans; implementation mechanisms do not redefine unresolved UC/Domain meaning; no repository mutation permission is implied.
 **Topology / optionality:** independently activatable; Step 1/2/3 are proportional depths inside this UC plan.
 **Owner route:** [`review-change-workspace-use-case-workflow.md`](review-change-workspace-use-case-workflow.md) + [`workspace-planning-principles-and-terminology.md`](workspace-planning-principles-and-terminology.md)
 **Required supporting reads:** current UC registry/workflow/semantic owners; Architecture Planning proportionally for Step 3.
@@ -32,13 +32,13 @@ Status: active reusable-family semantic registry
 
 **Status:** active proportional
 **Purpose:** produce a coherent graph/boundary model when several Workspace Use Cases must be reviewed together.
-**Trigger / accepted input:** overlap, split/merge/extraction pressure, changed dependencies/handoffs, or a cross-cutting Idea that creates a material boundary/relationship question affects several UCs and makes coherent topology review independently useful.
+**Trigger / accepted input:** overlap, split/merge/extraction pressure, changed dependencies/handoffs, or a cross-cutting Proposal that creates a material boundary/relationship question affects several UCs and makes coherent topology review independently useful.
 **Result / end state:** coherent selected UC boundaries + semantic relationships + one local Target UC projection for every affected UC, with Step-2/Step-3 meaning and cross-UC/cross-Slice architecture findings included only to the selected/reviewed depth.
-**Boundaries:** topology is a graph when that is more accurate than a tree; a cross-cutting Idea is not itself a UC relationship; file dependency is not automatically UC dependency.
+**Boundaries:** topology is a graph when that is more accurate than a tree; a cross-cutting Proposal is not itself a UC relationship; file dependency is not automatically UC dependency.
 **Topology / optionality:** activate only when the multi-UC topology result is independently useful; ordinary one-UC changes remain in the single-UC workflows.
 **Owner route:** [`review-workspace-use-case-topology-workflow.md`](review-workspace-use-case-topology-workflow.md) + [`workspace-planning-principles-and-terminology.md`](workspace-planning-principles-and-terminology.md)
 **Required supporting reads:** affected UC registries/owners; Architecture Planning proportionally when combined realization changes architecture.
-**Related command:** none required; `собери идеи` may route here when one reviewed source raises an independently useful multi-UC boundary/relationship/topology question, not merely because one Idea affects several otherwise independent UCs.
+**Related command:** none required; `собери идеи` may route here when one reviewed source raises an independently useful multi-UC boundary/relationship/topology question, not merely because one Proposal affects several otherwise independent UCs.
 **Dependencies / handoffs:** resulting local UC plans use the Establish/Change workflows as applicable; unresolved architecture decisions route to sibling Architecture Planning rather than being hidden in file planning.
 
 ## Current Shared Contract Across Workspace Planning UCs
@@ -47,9 +47,9 @@ All three Workspace Planning UCs use these selected rules:
 
 - Real-Life Basis is `known | partial | unknown`; do not invent Need;
 - reuse an existing UC whenever its useful result already owns the Need, or reuse/extraction is currently useful/clearly justified;
-- Planning Concerns/Q/R/P follow the shared `../planning-concerns-and-decisions-model.md`: active/residual concerns attach only to a concrete UC/current planned state; related concerns sharing one resolution surface are grouped;
-- Concern Priority reuses Review Priority semantics and is separate from Concern Category/status; AI Comment does not invent user-owned Need/preferences/risk tolerance;
-- one logical Concern/Group has one detailed storage location plus an Area Concern Register when material; retained trace is preserved only when useful;
+- Planning Q/R/P follows Core `../idtspe-methodology/active/idtspe-core/shared/qrp-lifecycle-and-review-contract.md`: active/residual concerns attach only to a concrete UC/current planned state; related concerns sharing one resolution surface are grouped;
+- Q/R/P Priority reuses Review Priority semantics and is separate from Review Category/status; AI review does not invent user-owned Need/preferences/risk tolerance;
+- one logical Q/R/P item/group has one detailed representation plus an optional register/index when material; retained trace is preserved only when useful;
 - `Review Order` is a derived lens over attached concerns;
 - Step 3 records **Target Dependencies** before exact file realization when material;
 - ordinary chat text controls depth/lens/redirection; no extra Focus-state ontology is required.

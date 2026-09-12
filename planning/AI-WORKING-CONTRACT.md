@@ -9,7 +9,7 @@ Before material work, select the relevant area through current README/navigation
 
 For material planning/development answers also follow the installed peer [`documentation/idtspe-methodology/active/ai-reviewability/README.md`](documentation/idtspe-methodology/active/ai-reviewability/README.md).
 
-For material Planning Concerns also follow `documentation/planning-concerns-and-decisions-model.md`. AI should provide a useful `AI Comment` when material, but must not silently invent user-owned Needs/preferences/feelings/business priority/risk tolerance in order to close a concern. `Recommendation` is optional and evidence-bound; `Decision` exists only after the choice is actually selected.
+For material Q/R/P follow `documentation/idtspe-methodology/active/idtspe-core/shared/qrp-lifecycle-and-review-contract.md`; for material candidate/selection meaning follow `documentation/idtspe-methodology/active/idtspe-core/shared/proposal-and-decision-lifecycle-contract.md`. AI review presentation follows the installed peer `documentation/idtspe-methodology/active/ai-reviewability/README.md`. Do not invent user-owned Needs/preferences/feelings/business priority/risk tolerance to close a Q/R/P item or select a Decision.
 
 
 ## Current IDTSPE Working Rule
@@ -17,7 +17,7 @@ For material Planning Concerns also follow `documentation/planning-concerns-and-
 For material planning, use [`documentation/idtspe-methodology/active/idtspe-core/IDTSPE-DEFAULT-WORK-MODE.md`](documentation/idtspe-methodology/active/idtspe-core/IDTSPE-DEFAULT-WORK-MODE.md) unless a narrower current owner route explicitly supersedes it.
 
 ```text
-AI proposal → Idea by default
+AI-proposed material candidate → Proposal by default; remains unselected until normal authority selects it
 material Q/R/P → current natural owner, with priority only when useful
 Decision → only after selection
 IDTSPE → always active and proportional; zero/one/several Targets allowed
@@ -42,7 +42,7 @@ primary bootstrap current
 → realization / verification when useful
 ```
 
-Planning Concerns/Q/R/P remain secondary material attached to the actual current owner. AI should not invent a formal queue, fixed workflow level, or persistent control ontology when ordinary discussion is enough.
+Q/R/P remains secondary material attached to the actual current owner. AI should not invent a formal queue, fixed workflow level, or persistent control ontology when ordinary discussion is enough.
 
 ## Documentation Work
 
@@ -82,7 +82,7 @@ planning/use-case-registry.md
 → planning/use-cases/UC-REPO-REVIEW-DIFF.md
 → planning/documentation/review-diff-review-workflow.md
 → affected current owners
-→ shared Idea methodology for material corrective alternatives
+→ canonical Proposal review for material corrective alternatives
 ```
 
 Do not imply semantic approval or Finalize while material correctness/ownership issues remain unresolved.
@@ -94,8 +94,8 @@ Implementation must follow current selected planning meaning. If implementation 
 ## No Silent Promotion
 
 ```text
-Idea ≠ decision
-implementation idea ≠ selected architecture
+Proposal ≠ Decision
+implementation proposal ≠ selected architecture
 example ≠ authority
 projection ≠ canonical state
 historical record ≠ current ontology

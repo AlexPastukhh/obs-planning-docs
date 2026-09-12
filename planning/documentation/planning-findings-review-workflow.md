@@ -1,15 +1,15 @@
 # Planning Findings / Q/R/P Completeness Review Workflow
 
 Status: active supporting workflow for planning-concern review
-Current semantic authority: [`planning-concerns-and-decisions-model.md`](planning-concerns-and-decisions-model.md) plus the selected methodology/Target owner.
+Current semantic authority: [`idtspe-methodology/active/idtspe-core/shared/qrp-lifecycle-and-review-contract.md`](idtspe-methodology/active/idtspe-core/shared/qrp-lifecycle-and-review-contract.md) plus the selected methodology/Target owner.
 This file is not a repository-level Use-Case owner.
-Shared Concern semantics: [`planning-concerns-and-decisions-model.md`](planning-concerns-and-decisions-model.md)
+Shared Q/R/P semantics: [`idtspe-methodology/active/idtspe-core/shared/qrp-lifecycle-and-review-contract.md`](idtspe-methodology/active/idtspe-core/shared/qrp-lifecycle-and-review-contract.md)
 
 ## Purpose
 
-Find missing, duplicate, stale, incorrectly separated/grouped or invalid material Planning Concerns relative to the current semantic plan without making Q/R/P the planning queue.
+Find missing, duplicate, stale, incorrectly separated/grouped or invalid material Q/R/P relative to the current semantic plan without making Q/R/P the planning queue.
 
-This workflow reviews completeness/quality of the current concern surface. It does not own the generic Question/Risk/Problem/Concern Group/Decision ontology.
+This workflow reviews completeness/quality of the current concern surface. It does not own the generic Question/Risk/Problem/Q/R/P Group/Decision ontology.
 
 ## Owner-Attachment Gate
 
@@ -36,7 +36,7 @@ For every related cluster ask:
 Would one answer / evidence set / selected Decision materially resolve or change several of these Q/R/P?
 ```
 
-If yes, prefer one Concern Group with linked member concerns instead of presenting each as an unrelated planning concern. Keep member Type/Priority/Concern Category/Status distinct.
+If yes, prefer one Q/R/P Group with linked member concerns instead of presenting each as an unrelated planning concern. Keep member Type/Priority/Review Category/Status distinct.
 
 Also detect the opposite error: two concerns in the same topical area should remain separate when they require independent resolutions.
 
@@ -48,7 +48,7 @@ For each material active concern/group verify proportionally:
 Priority
 → P0/Critical | P1/High | P2/Normal | P3/Low using shared Review Priority semantics
 
-Concern Category
+Review Category
 → appropriate primary review/filter lens; not owner routing
 
 Status
@@ -91,7 +91,7 @@ material answer/rationale/Decision relation
 
 Do not lose a residual Risk/Problem merely because a related Question was answered. Do not retain trivial closed investigative findings forever.
 
-## Area Concern Register / Storage Check
+## Q/R/P Register / Storage Check
 
 When material concerns are physically distributed, verify that the area has one logical Concern Register and that each Concern/Group has one primary detailed storage location.
 
@@ -101,7 +101,7 @@ Check:
 register ID/title/owner/stored-at/priority/category/status
 → points to current detail
 
-Idea / affected-owner references
+Proposal / affected-owner references
 → link the same Concern/Group
 → do not maintain duplicate full bodies merely for discoverability
 ```
@@ -117,7 +117,7 @@ Manual-first over the registered/current semantic graph. Broaden discovery only 
 When several attached concerns are material in the current semantic scope, derive review order from:
 
 ```text
-Concern Priority
+Q/R/P Priority
 + dependency / blocking
 + affected-owner / blast radius
 + timing / Review Currency
@@ -129,7 +129,7 @@ Do not use a global Q/R/P order to select an unrelated planning unit. Review Ord
 
 Silence is not closure. Close only by explicit authority, unambiguous integrated later evidence, removal of the premise through selected plan change, or checked evidence that the concern is obsolete/invalid.
 
-When closure occurs, update active projection, retained trace when material, Area Concern Register and Decision relations consistently.
+When closure occurs, update active projection, retained trace when material, Q/R/P Register and Decision relations consistently.
 
 ## Exit
 
@@ -142,7 +142,7 @@ duplicate/stale/obsolete concerns
 priority/category/status corrections
 missing AI Comment boundary / unsupported Recommendation→Decision promotion
 residual/retained-trace corrections
-Area Concern Register / storage-reference corrections
+Q/R/P Register / storage-reference corrections
 ```
 
 A valid result is `no material concern-surface correction found`.

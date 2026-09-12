@@ -31,9 +31,9 @@ Scope: working-context governance shortcut; semantic authority remains in linked
   "expectedOutput": "Established development governance route: selected planning Workspace Use Case and/or application Scenario/current owner plus documentation owner when docs are affected; no mutation permission implied.",
   "permissionMode": "read-only",
   "keyReminders": [
-    "Develop from current selected planning meaning, not an unreviewed Idea or conversational assumption.",
+    "Develop from current selected planning meaning, not an unreviewed Proposal or conversational assumption.",
     "Resolve the current Use Case / Application Scenario / semantic owner before materially changing behavior.",
-    "Implementation Idea is not selected architecture.",
+    "Implementation Proposal is not selected architecture.",
     "Documentation changed during development must follow reusable documentation principles.",
     "Code does not silently create a second documentation owner.",
     "This command establishes working rules only; actual edits require the applicable authorization."

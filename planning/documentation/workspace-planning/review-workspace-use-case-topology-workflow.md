@@ -12,7 +12,7 @@ Recommended integrated shape: [`WORKSPACE-USE-CASE-PLANNING-TEMPLATE.md`](WORKSP
 
 Read every affected current UC and its owners. Identify the common cross-cutting concern, overlap, split/merge/extraction pressure or changed relationship that makes multi-UC review independently useful.
 
-Keep a cross-cutting Idea as one Idea; affected UCs reference it and state only local impact.
+Keep a cross-cutting Proposal as one Proposal; affected UCs reference it and state only local impact.
 
 ## 2. Step 1 — UC Boundaries / Graph
 
@@ -64,8 +64,8 @@ Return:
 
 ```text
 Current Plan Snapshot
-Current Planning Concerns / Q/R/P + Concern Groups
-compact cross-cutting Ideas when present
+Current Q/R/P + Q/R/P Groups
+compact cross-cutting Proposals when present
 one full block per affected UC
 Resolved UC Graph
 cross-UC / cross-Slice architecture findings

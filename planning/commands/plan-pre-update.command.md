@@ -17,7 +17,7 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
     "pre-update plan"
   ],
   "description": "Produce a concrete read-only plan of the intended update before actual mutation.",
-  "meaning": "Run generic Core TM-PRE-UPDATE-PLAN. Use current accepted prior meaning, current context and only the current destination facts the update actually depends on. Resolve material Questions/Risks/Problems/Ideas/Evidence/Decisions through ordinary IDTSPE state when needed, then return one concrete RU-PUPDATE-01 Pre-Update Plan. Do not reopen settled design or create a QRPE form when no real choice/uncertainty exists.",
+  "meaning": "Run generic Core TM-PRE-UPDATE-PLAN. Use current accepted prior meaning, current context and only the current destination facts the update actually depends on. Resolve material Questions/Risks/Problems/Proposals/Evidence/Decisions through ordinary IDTSPE state when needed, then return one concrete RU-PUPDATE-01 Pre-Update Plan. Do not reopen settled design or create a QRPE form when no real choice/uncertainty exists.",
   "activeContextBehavior": "Create or reuse the natural bounded Pre-Update Plan Target only when reviewing the intended changes before mutation is independently useful. Skip the module for a tiny/obvious change when the user asks for direct realization. The result may hand off to TM-EXACT-REALIZATION but does not authorize repository/destination mutation.",
   "traversalReadMode": "Reuse current reliable IDTSPE governance and accepted prior context; inspect only the exact current code/files/configuration/owner state the update plan materially depends on. Surface a real missing-source Question instead of guessing current state.",
   "ownerFiles": [
@@ -28,7 +28,7 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
   "permissionMode": "read-only-planning",
   "keyReminders": [
     "Use accepted previous meaning/current context as the basis; do not redesign it without a material new conflict.",
-    "Use ordinary Q/R/P/Evidence + Ideas/Decisions only where they help resolve a real consequential choice; do not dump a mandatory QRPE form.",
+    "Use ordinary Q/R/P/Evidence + Proposals/Decisions only where they help resolve a real consequential choice; do not dump a mandatory QRPE form.",
     "Inspect current destination state only as needed for a concrete safe plan and never guess consequential missing source facts.",
     "The plan does not mutate files, execute tests, commit or push; actual update authority belongs to the later host/Exact Realization workflow.",
     "Skip this Target when the change is trivial and the user explicitly wants direct realization."

@@ -88,10 +88,10 @@ explicit user statement / checked source fact
   → may be treated as confirmed;
 
 unresolved material choice
-  → keep explicit as question / alternative / Idea Variant;
+  → keep explicit as Question / alternative Proposal;
 
-Current Selected Variant
-  → use when one current meaning is selected;
+selected Proposal / Decision
+  → use when one current meaning is actually selected;
 
 fallback
   → use only when genuinely a fallback,

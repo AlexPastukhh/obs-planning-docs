@@ -1,8 +1,8 @@
 # Architecture Decision
 
 Status: reusable recommended template
-Generic Idea/Variant semantics: [`../../idea-planning-principles-and-terminology.md`](../../idea-planning-principles-and-terminology.md)
-Shared Planning Concern / Decision trace semantics: [`../../planning-concerns-and-decisions-model.md`](../../planning-concerns-and-decisions-model.md)
+Generic Proposal/Decision semantics: [`../../idtspe-methodology/active/idtspe-core/shared/proposal-and-decision-lifecycle-contract.md`](../../idtspe-methodology/active/idtspe-core/shared/proposal-and-decision-lifecycle-contract.md)
+Q/R/P lifecycle semantics: [`../../idtspe-methodology/active/idtspe-core/shared/qrp-lifecycle-and-review-contract.md`](../../idtspe-methodology/active/idtspe-core/shared/qrp-lifecycle-and-review-contract.md)
 
 ## Target / Current Baseline
 
@@ -28,12 +28,12 @@ Affected Workspace / Runtime paths:
 Important UCs largely unaffected:
 ```
 
-## Candidate Idea Variants
+## Candidate Proposals
 
-Use generic Idea Variants only when materially different architecture answers exist. For each material candidate:
+Use generic Proposal candidates only when materially different architecture answers exist. For each material candidate:
 
 ```text
-Idea Variant / answer:
+Proposal / answer:
 Current correctness:
 Complexity introduced:
 Current/other/future UC effects:
@@ -46,11 +46,11 @@ Architectural Tax:
 Payoff:
 ```
 
-## Driving Planning Concerns / Concern Groups — When Material
+## Driving Q/R/P / Q/R/P Groups — When Material
 
 ```text
-Concern / Group IDs:
-Priority / Concern Category / Status:
+Q/R/P / Group IDs:
+Priority / Review Category / Status:
 Shared resolution surface:
 AI Comment:
 User-owned unknown / minimum useful question when applicable:
@@ -59,7 +59,7 @@ Recommendation when justified:
 
 Do not turn a technical recommendation into a selected Decision until the applicable authority/context has actually selected it.
 
-## Current Selected Variant
+## Selected Proposal / Decision
 
 ```text
 Selected:
@@ -67,9 +67,9 @@ Architecture Intent:
 Why it pays for itself now:
 Driving WEUC instance IDs / evidence:
 Affected owners / paths:
-Addresses Concerns — when useful:
-Introduced / Exposed Concerns — when useful:
-Residual concerns / accepted risks — when material:
+Addresses Q/R/P — when useful:
+Introduced / Exposed Q/R/P — when useful:
+Residual Q/R/P / accepted risks — when material:
 ```
 
 ## Rejected Complexity

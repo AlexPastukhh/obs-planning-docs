@@ -42,13 +42,13 @@ States distinguish: planned proof | implemented test | executed evidence.
 - wrong-layer/duplicated:
 - next useful checks:
 
-## Planning Concerns / Q/R/P — When Material
+## Q/R/P — When Material
 - Concern / Group ID:
-- Priority / Concern Category / Status:
+- Priority / Review Category / Status:
 - Owner / affected meaning:
 - AI Comment:
 - Recommendation / Decision refs / residual state — when applicable:
-- Stored At / Area Concern Register — when applicable:
+- Stored At / Q/R/P register/index — when applicable:
 
 ```
 

@@ -17,7 +17,7 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
   ],
   "description": "legacy compatibility alias; Application ideas alias routed into current IDTSPE/SDS planning",
   "meaning": "Legacy alias for working through current IDTSPE/SDS against the selected Application planning context. Resolve the narrowest applicable SDS Target Module (Application Definition, Scenario, Domain, Slice, Testing or another real owner) and continue that Target; never accumulate a separate whole-Application Current Plan runtime.",
-  "activeContextBehavior": "Reuse the selected Application and its current semantic owners. Route each material item to the narrowest natural current Target/module; preserve cross-layer findings as ordinary handoffs/Ideas rather than traversing every SDS layer automatically.",
+  "activeContextBehavior": "Reuse the selected Application and its current semantic owners. Route each material item to the narrowest natural current Target/module; preserve cross-layer findings as ordinary handoffs/Proposals rather than traversing every SDS layer automatically.",
   "traversalReadMode": "Reuse current reliable IDTSPE/SDS governance; targeted refresh of the affected Application/module owner route when uncertain; full bootstrap only when no reliable sufficient governance context exists.",
   "ownerFiles": [
     "planning/documentation/idtspe-methodology/active/idtspe-core/IDTSPE-DEFAULT-WORK-MODE.md",
@@ -29,7 +29,7 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
   "keyReminders": [
     "Legacy compatibility alias only; the canonical material-planning runtime is IDTSPE.",
     "Do not execute or revive the former collect-ideas shell, Current Plan runtime, Idea Review runtime or old SDS profile runtime.",
-    "Treat supplied material as normal Sources/Ideas/Q/R/P for the resolved current IDTSPE Target and route through the applicable SDS Target Module when one is clear.",
+    "Treat supplied material as normal Sources/Proposals/Q/R/P for the resolved current IDTSPE Target and route through the applicable SDS Target Module when one is clear.",
     "No repository mutation, archive, commit or push."
   ],
   "userTarget": "<selected source/current planning target>",

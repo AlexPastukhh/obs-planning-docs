@@ -15,7 +15,7 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
     "scenario ideas"
   ],
   "description": "legacy compatibility alias; Scenario ideas routed into current Scenario Planning",
-  "meaning": "Legacy alias for current Scenario planning. Reuse/resolve the natural Scenario context; use TM-SCENARIO-PLANNING for a selected Scenario and normal Target Formation when another Scenario boundary is discovered. Treat supplied ideas as normal IDTSPE material; do not run the former collect-ideas shell.",
+  "meaning": "Legacy alias for current Scenario planning. Reuse/resolve the natural Scenario context; use TM-SCENARIO-PLANNING for a selected Scenario and normal Target Formation when another Scenario boundary is discovered. Treat supplied legacy-idea/candidate material as normal IDTSPE Proposal/Q/R/P material; do not run the former collect-ideas shell.",
   "activeContextBehavior": "Use the selected/current Scenario when clear; otherwise resolve the Scenario boundary through Target Formation. Keep Domain/Slice implications as downstream handoffs unless the user expands the Target.",
   "traversalReadMode": "Reuse current reliable IDTSPE/SDS governance; refresh the selected Scenario owner/module route when uncertain.",
   "ownerFiles": [
@@ -27,7 +27,7 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
   "keyReminders": [
     "Legacy compatibility alias only; the canonical material-planning runtime is IDTSPE.",
     "Do not execute or revive the former collect-ideas shell, Current Plan runtime, Idea Review runtime or old SDS profile runtime.",
-    "Treat supplied material as normal Sources/Ideas/Q/R/P for the resolved current IDTSPE Target and route through the applicable SDS Target Module when one is clear.",
+    "Treat supplied material as normal Sources/Proposals/Q/R/P for the resolved current IDTSPE Target and route through the applicable SDS Target Module when one is clear.",
     "No repository mutation, archive, commit or push."
   ],
   "userTarget": "<selected source/current planning target>",

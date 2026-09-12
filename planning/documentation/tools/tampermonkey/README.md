@@ -346,7 +346,7 @@ The reusable Command Palette provides:
 - one repository command definition generates both insertion variants, so command semantics and reminders cannot drift;
 - one `bootstrap reusable documentation principles · бутстреп документации` row with adaptive, `Full` and `Copy`; legacy `режим документации` / `прочитай принципы документации` wording remains aliases of the same stable command ID;
 - a canonical `plan command · спланируй команду` row with adaptive, `Full` and `Copy`;
-- a read-only `collect ideas · собери идеи` row with adaptive, `Full` and `Copy`, whose command route uses the generic Idea methodology and preserves read-only repository permissions;
+- a read-only `collect ideas · собери идеи` row with adaptive, `Full` and `Copy`, whose command route uses the canonical Proposal lifecycle and preserves read-only repository permissions;
 - no creation-wording command IDs, labels or aliases for the plan-command route;
 
 ```text
@@ -410,7 +410,7 @@ Projected Use Cases:
 
 ```text
 Understand Current Workflow And Reality
-Collect And Review Ideas From Selected Source → Commands
+Collect And Review Proposals From Selected Source → Commands
 Plan / Review Whole Solution Or Workflow
 Research Existing Solutions And Alternative Workflows
 Draft Detailed Scenario
@@ -421,7 +421,7 @@ Repository Documentation Change And Reference Review
 Planning Meaning To Repository
 ```
 
-`Collect And Review Ideas From Selected Source` opens the accepted `собери идеи / collect ideas` command. Retired Planning Item formation/reconciliation routes and the item-owned Structured User Message Composer are not projected as active Use Cases.
+`Collect And Review Proposals From Selected Source` opens the accepted `собери идеи / collect ideas` command. Retired Planning Item formation/reconciliation routes and the item-owned Structured User Message Composer are not projected as active Use Cases.
 
 Chat/AI/Work-State remains unprojected as accepted. Current Linked Notes behavior is owned by its Scenario Catalog/Scenario owners and is not projected into the Planning Helper Workspace Use-Case surface merely because the application implements it.
 
@@ -514,7 +514,7 @@ Before enabling or adapting the reusable helper for another project, verify:
 - Reconciliation resolves contract columns by exact header names; fuzzy display matching cannot confuse `Session` with `Session #` or `#` with another column.
 - Do not treat the Planning Helper runtime, cache or generated artifact as Use-Case or command authority.
 - Do not let Use-Case activation execute commands or grant permissions.
-- Project `собери идеи` only from its accepted repository command definition and generic Idea owner route.
+- Project `собери идеи` only from its accepted repository command definition and canonical Proposal owner route.
 - Do not add project-only command semantics outside the Command-Routing-reachable `planning/commands/*.command.md` registry.
 - Do not reintroduce retired Planning Item formation/reconciliation projections. Preserve semantic Use-Case boundaries, keep broader workflows distinct from commands, and do not treat historical ITEM-* registers as current command targets.
 - Do not duplicate archive command-format rules inside the helper refinement body.

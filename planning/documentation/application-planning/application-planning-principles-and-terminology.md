@@ -4,25 +4,25 @@
 
 
 Status: active reusable canonical owner
-Scope: stable concepts/invariants for whole-solution/workflow planning, Application Concept/Prototype work, current Scenario/Screen requirements and optional Domain/Slice implementation planning. Generic Planning Concern/Q/R/P/Concern-Group/Decision trace semantics are owned by `../planning-concerns-and-decisions-model.md`.
+Scope: stable concepts/invariants for whole-solution/workflow planning, Application Concept/Prototype work, current Scenario/Screen requirements and optional Domain/Slice implementation planning. Generic Q/R/P lifecycle is owned by Core `../idtspe-methodology/active/idtspe-core/shared/qrp-lifecycle-and-review-contract.md`; Proposal/Decision lifecycle is owned by `../idtspe-methodology/active/idtspe-core/shared/proposal-and-decision-lifecycle-contract.md`.
 
 ## Evidence And Decision States
 
-Keep explicit user statements/checked facts, inference, questions, decision candidates, decisions and evidence distinct. Idea, risk, implementation thought, prototype and generated explanation do not silently become accepted architecture/current truth.
+Keep explicit user statements/checked facts, inference, questions, decision candidates, decisions and evidence distinct. Proposal, risk, implementation thought, prototype and generated explanation do not silently become accepted architecture/current truth.
 
 ## Whole-Solution First
 
 Equal solution candidates include existing tools, manual process, process change, automation, integrations, no-change, custom application and hybrids.
 
 ```text
-Problem / Question / Idea
+Problem / Question / Proposal
 → Need / Desired Result
 → Current Reality when useful
 → real-world problem-resolution Workflow Variant(s) when sequence/context matters
 → existing solutions / alternatives
 → candidate fills / whole Solution / Workflow Variants
 → Application Concept candidate(s) when own software may be useful
-→ scoped Idea work where material
+→ scoped Proposal review where material
 → repeated whole-solution integration evaluation
 → selected solution responsibility
 ```
@@ -193,14 +193,14 @@ Use one canonical owner and link consumers. Shared/application Requirements may 
 
 Canonical semantics: [`requirements-and-change-context.md`](requirements-and-change-context.md).
 
-## Future Scenario Ideas / Change Axes
+## Future Scenario Proposals / Change Axes
 
-A `Future Scenario Idea` is an ordinary Idea about behavior that may matter later. It is not current Scenario/Requirement truth until selected.
+A `Future Scenario Proposal` is an ordinary Proposal about behavior that may matter later. It is not current Scenario/Requirement truth until selected.
 
 Generic Workspace Change Pressure / `Change Axis` semantics are owned by sibling [`../architecture-planning/workspace-use-cases-and-change-pressure.md`](../architecture-planning/workspace-use-cases-and-change-pressure.md). Application Planning contributes evidence from Requirements, Scenarios/Behavior, prototype findings and expected application Extensions.
 
 ```text
-Future Scenario Idea / Extension evidence
+Future Scenario Proposal / Extension evidence
 → may contribute to Change Pressure / Change Axis
 
 Change Axis
@@ -213,9 +213,9 @@ Change Axis
 
 Current selected behavior/Requirements outrank speculative future flexibility.
 
-## Implementation-Scoped Ideas
+## Implementation-Scoped Proposals
 
-Implementation thoughts that appear during solution/concept/prototype/Scenario work remain ordinary generic `Idea` objects with implementation scope/placement. Do not create a separate `Implementation Idea` ontology. When selected during Domain/Slice work, integrate the meaning into the real Domain/Slice owner and keep only provenance/status in the originating Idea.
+Implementation answer candidates that appear during solution/concept/prototype/Scenario work remain ordinary generic `Proposal` candidates with implementation scope/placement. Do not create a separate `Implementation Proposal` ontology. When selected during Domain/Slice work, integrate the meaning into the real Domain/Slice owner and retain Proposal provenance only when useful.
 
 ## Prototype Planning
 
@@ -228,7 +228,7 @@ Application Concept / responsibility
    → Prototype Screens
    → candidate Requirements
    → candidate Scenario DATA / Behavior
-   → Future Scenario Ideas / Change Axes when material
+   → Future Scenario Proposals / Change Axes when material
 → Scenario Discovery
 → current detailed Scenario / Screen owners
 ```
@@ -257,12 +257,12 @@ Outcomes / Acceptance
 Scenario DATA references
 Behavior Item references
 Related Requirements
-Relevant Change Axes / Future Scenario Ideas when material
+Relevant Change Axes / Future Scenario Proposals when material
 Visual / Screen references
 Current Decisions
-Area Concern Register when material
-Planning Concerns / Q/R/P + Concern Groups relative to Current Draft Plan
-Retained Concern/Decision trace when material
+optional Q/R/P register/index when material
+Q/R/P + Q/R/P Groups relative to Current Draft Plan
+Retained Q/R/P/Decision trace when material
 Potential Simplifications / Better Routes when material
 ```
 
@@ -274,24 +274,24 @@ Main Flow may proportionally add Surface/Screen, DATA/information, Actor Underst
 
 The current draft is the selected semantic owner/Variant for one detailed planning unit.
 
-`Current Draft Plan` is not a file/entity/stage. It is the relevant selected baseline named inside a detailed draft's active/residual Planning Concern/Q/R/P or unselected Better Route.
+`Current Draft Plan` is not a file/entity/stage. It is the relevant selected baseline named inside a detailed draft's active/residual Q/R/P or unselected Better Route.
 
 ```text
 Current Draft
 = baseline
 
-Planning Concern / Q/R/P
-= material active/residual Question/Risk/Problem delta to baseline; related concerns may form one Concern Group
+Q/R/P
+= material active/residual Question/Risk/Problem delta to baseline; related items may form one Q/R/P Group
 
 Potential Better Route
 = material unselected candidate change to baseline
 ```
 
-Answered/resolved/eliminated items leave active Q/R/P, while material retained answer/rationale/Decision trace may remain and residual Risk/Problem stays active. Selected routes leave Better Routes and are integrated into the semantic body. Area Concern Register/storage, Priority/Concern Category/Status and AI Comment/Recommendation/Decision boundaries follow the shared Concern owner.
+Answered/resolved/eliminated items leave active Q/R/P, while material retained answer/rationale/Decision trace may remain and residual Risk/Problem stays active. Selected routes leave Better Routes and are integrated into the semantic body. Q/R/P register/placement, Priority/Review Category/Status and AI-review/Recommendation/Decision boundaries follow the Core Q/R/P, AI Reviewability and Proposal/Decision owners.
 
 ## Current Decision
 
-A Current Decision records a material selected choice that is already integrated into current semantic meaning. It is not a candidate and it is not a replacement for the semantic body. Generic trace fields such as `Addresses Concerns`, `Introduced / Exposed Concerns`, `Affected Owners` and `Reconsider When` are optional/proportional and owned by the shared Concern/Decision model.
+A Current Decision records a material selected choice that is already integrated into current semantic meaning. It is not a candidate and it is not a replacement for the semantic body. Generic trace fields such as `Addresses Q/R/P`, `Introduced / Exposed Q/R/P`, `Affected Owners` and `Reconsider When` are optional/proportional and owned by the Core Proposal/Decision and Q/R/P contracts.
 
 ## Scenario DATA
 
@@ -326,7 +326,7 @@ A Planning Unit Variant is an integrated alternative design of a Prototype, Scen
 ```text
 Planning Unit Variant
 ≠ runtime Branch
-≠ Idea Variant
+≠ Proposal alternative/refinement
 ≠ small technical alternative
 ≠ document revision/version history
 ```
@@ -360,7 +360,7 @@ A Slice may use a product-facing feature label without introducing a mandatory F
 
 ## Recommended Project-Local Planning Zones
 
-When physical organization helps, use `solution-and-application/` for solution/concept/prototype/current behavior/spatial requirements and `domain-and-implementation/` for Domain/Slice implementation planning. Root Ideas/Requirements/Change-Axes may act as intake before promotion to a narrower owner. Folder placement does not itself create semantic ownership. See [`requirements-and-change-context.md`](requirements-and-change-context.md).
+When physical organization helps, use `solution-and-application/` for solution/concept/prototype/current behavior/spatial requirements and `domain-and-implementation/` for Domain/Slice implementation planning. Legacy root proposal/Requirements/Change-Axis intake may act as intake before promotion to a narrower owner. Folder placement does not itself create semantic ownership. See [`requirements-and-change-context.md`](requirements-and-change-context.md).
 
 ## Reference Object Candidate
 

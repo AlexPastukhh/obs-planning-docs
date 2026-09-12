@@ -4,8 +4,8 @@ Status: active reusable workflow
 Scope: plan/review one material Architecture Decision as a testable current hypothesis about important Workspace/runtime paths.
 
 Recommended shape: [`templates/ARCHITECTURE-DECISION-TEMPLATE.md`](templates/ARCHITECTURE-DECISION-TEMPLATE.md)
-Generic Idea/Variant semantics: [`../idea-planning-principles-and-terminology.md`](../idea-planning-principles-and-terminology.md)
-Shared Planning Concern / generic Decision trace semantics: [`../planning-concerns-and-decisions-model.md`](../planning-concerns-and-decisions-model.md)
+Generic Proposal/Decision semantics: [`../idtspe-methodology/active/idtspe-core/shared/proposal-and-decision-lifecycle-contract.md`](../idtspe-methodology/active/idtspe-core/shared/proposal-and-decision-lifecycle-contract.md)
+Shared Q/R/P lifecycle semantics: [`../idtspe-methodology/active/idtspe-core/shared/qrp-lifecycle-and-review-contract.md`](../idtspe-methodology/active/idtspe-core/shared/qrp-lifecycle-and-review-contract.md)
 
 ## 1. Establish Trigger And Current Baseline
 
@@ -27,9 +27,9 @@ representative affected Workspace / Runtime paths
 
 Also identify important UCs largely unaffected so one future case does not dominate the decision.
 
-## 3. Form Candidate Idea Variants
+## 3. Form Candidate Proposals
 
-When alternatives are material, represent materially different architecture answers as generic `Idea Variants` under the scoped Architecture Decision concern. Do not create a separate Architecture-Variant ontology. Small implementation alternatives can remain ordinary Ideas or local implementation choices.
+When alternatives are material, represent materially different architecture answers as separate generic `Proposal` candidates under the scoped Architecture Decision concern. Do not create a separate Architecture-Variant ontology. Small implementation alternatives can remain ordinary Proposals or local implementation choices.
 
 ## 4. Evaluate Each Candidate
 
@@ -80,7 +80,7 @@ Use DRY, composition/inheritance, Port/interface, dependency stability, state ow
 Record:
 
 ```text
-Current Selected Variant
+Selected Proposal / Decision
 Architecture Intent
 Why it pays for itself now
 Affected owners / paths
@@ -93,11 +93,11 @@ Selected meaning belongs in the narrowest real semantic/architecture owner; the 
 
 ## Concern / Decision Trace — When Material
 
-Architecture choice remains owned here or in the narrower semantic owner according to Decision Scope. Use the shared Planning Concern model for supporting Q/R/P:
+Architecture choice remains owned here or in the narrower semantic owner according to Decision Scope. Use the Core Q/R/P lifecycle contract for supporting Q/R/P:
 
 ```text
-Architecture Concern / Concern Group
-→ Priority + Concern Category + Status
+Architecture Q/R/P / Q/R/P Group
+→ Priority + Review Category + Status
 → AI Comment / optional Recommendation
 → selected Architecture Decision only when actually chosen
 → Addresses Concerns / Introduced-Exposed Concerns when useful

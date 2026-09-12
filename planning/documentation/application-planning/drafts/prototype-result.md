@@ -46,6 +46,6 @@ not provided
 not provided
 ```
 
-## Planning Concerns / Q/R/P
+## Q/R/P
 
 `not reviewed / not provided`

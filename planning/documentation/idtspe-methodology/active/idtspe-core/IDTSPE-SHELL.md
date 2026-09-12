@@ -1,6 +1,6 @@
 # IDTSPE Shell — Generic Planning Runtime / Composition Contract
 
-Status: active generic methodology owner  
+Status: active generic methodology owner
 Purpose: define the generic technical IDTSPE runtime/composition contract used inside an always-active **IDTSPE Work Context**. A Work Context may remain Broad Discussion with zero Targets, or coordinate one or several bounded Targets with typed Sources, Core State Units, reusable Lenses, Target Step Result projection, validation, persistence and revalidation without hard-coding any domain/application module.
 
 ## Core Formula
@@ -56,17 +56,13 @@ Use-Case Registry applicability
 
 Do not invoke all ports as a completion checklist. A port may remain unused in a valid work pass. Canonical rule: [`shared/contextual-methodology-application-contract.md`](shared/contextual-methodology-application-contract.md).
 
-## Three Durable Decision Types
+## Decision Type Reference
 
-```text
-Target-Scope Decision
-Question-Set Decision
-Answer Decision
-```
+The Shell does not define Decision types. Canonical Target-formation/Resolution-slot mapping owns the three durable Decision roles currently used by Core:
 
-There is no Lens Decision, Source Decision or Revalidation Decision type merely because those mechanisms exist.
+[`shared/resolution-slot-and-target-formation-resolution-set.md`](shared/resolution-slot-and-target-formation-resolution-set.md)
 
-A material choice inside Source/Lens composition maps to one of the three normal Decision types when a durable Decision is actually needed.
+Proposal selection/Decision trace semantics are owned separately by [`shared/proposal-and-decision-lifecycle-contract.md`](shared/proposal-and-decision-lifecycle-contract.md).
 
 ## Shell Ports
 
@@ -147,32 +143,17 @@ Question examples are non-exhaustive and are not automatic user questions. A Tar
 
 ### P-06 Lens Port
 
-Resolves reusable evaluation perspectives through the proportional **Lens Applicability Scan**:
+Technical Shell bridge for the contextual `TF-06A LENS_SET`.
 
 ```text
-Required Core Pack
-+ active Target Module Lens Profile when a reusable module is used
-+ registered Core/profile Lens candidates whose applicability gates are plausible
-+ explicitly requested Lens
-+ exceptional local-only Lens
-↓
-TF-06A LENS_SET
+active Use-Case composition / Target context
+→ canonical Lens Applicability Scan
+→ TF-06A LENS_SET
+→ selected Lens owner(s)
+→ Finding Candidate only when material semantic disposition is needed
 ```
 
-Required Core Pack:
-
-```text
-L1 Need / Value / Scope
-L2 Authority / Source-of-Truth / Reuse
-L3 Uncertainty / Assumption / Reversibility
-Documentation / Representation / Artifact Boundary at materialization
-```
-
-A Local Target Contract uses the same Lens Port without inventing a Target Module. Registry summaries/gates are enough for the scan; read full Lens bodies and referenced Knowledge Basis only for selected/plausibly applicable candidates.
-
-Finding handling is generic Core behavior: [`shared/finding-disposition-contract.md`](shared/finding-disposition-contract.md).
-
-Lenses run inside IDTSPE work through an Analysis Surface and reusable operations. They may contribute explanatory Broad Discussion/Key Points without State mutation; only material meaning needing State/lifecycle/owner disposition surfaces as a Finding Candidate, which Core Finding Disposition resolves. A Lens may lead to an already-declared Result Unit changing only after normal authority/resolution, and it never defines Unit kinds or becomes semantic authority.
+The Shell does **not** redefine Lens activation classes, Required Core inventory, registry scan algorithm, Analysis Surface or Lens operations. Canonical Lens selection/execution semantics are owned by [`lenses/LENS-MODEL.md`](lenses/LENS-MODEL.md); finding consequences are owned by [`shared/finding-disposition-contract.md`](shared/finding-disposition-contract.md).
 
 ### P-07 Proposal / Alternative Port
 
@@ -194,7 +175,7 @@ A Planning Branch is not one Proposal; it is an alternative downstream planning 
 
 Carries material unresolved `Question`, `Risk` and `Problem` meaning attached to the real planning subject/Proposal/Decision/Result relation it concerns. Q/R/P is not a parallel semantic-root model.
 
-Optional impact priority and related-Q/R/P grouping are owned by [`shared/qrp-priority-and-related-groups.md`](shared/qrp-priority-and-related-groups.md). Proposal/Decision context relations are owned by the Proposal/Decision lifecycle contract.
+Canonical Q/R/P semantics, lifecycle, priority/category/grouping and retention are owned by [`shared/qrp-lifecycle-and-review-contract.md`](shared/qrp-lifecycle-and-review-contract.md). Proposal/Decision context relations are owned by the Proposal/Decision lifecycle contract.
 
 ### P-10 Decision Port
 
@@ -265,34 +246,23 @@ Handoff/topology relation and Source authority remain distinct.
 
 ### P-14 Persistence / Artifact Port
 
-Resolves `TF-10 PERSISTENCE_ADDRESSABILITY` through the lightweight [`Artifact Placement And IDTSPE Response Contract`](shared/artifact-placement-and-idtspe-response-contract.md):
+Technical Shell bridge for `TF-10 PERSISTENCE_ADDRESSABILITY`.
 
 ```text
-for each material IDTSPE Unit/content item that may need to survive:
-  semantic owner?
-  applicable AP-* Target Module proposal(s)?
-  applicable AG-* Lens guidance?
-  Documentation / Representation result?
-    no persistence | implementation-native | existing owner section | registry/strategy | dedicated owner | companion | generated/global
-  exact/logical/code/generated destination?
-  create/update/reuse/embed/generate/no-action?
-  unresolved persistence/placement?
-  resolver / material placement Decision?
+material retained meaning
+→ Documentation / Representation decision
+→ P-14 / TF-10 placement resolution
+→ no persistence | implementation-native | existing owner | dedicated/supporting/generated representation
 ```
 
-Broad Discussion turns do not require an `Artifact Placement View`. At an Integration Checkpoint or persistence-sensitive structured pass, distinguish semantic retention from physical placement: when placement is material/changed/unresolved expose the Artifact Placement View; when established placement is simply inherited, a compact unchanged/inherited statement is enough.
+The Shell does not redefine ArtifactPlacementItem fields, AP/AG schemas, precedence, representation statuses or placement workflow. Canonical persistence/placement semantics are owned by [`shared/artifact-placement-and-idtspe-response-contract.md`](shared/artifact-placement-and-idtspe-response-contract.md).
+
+Broad Discussion does not require a placement view. A checkpoint/persistence-sensitive pass exposes placement only when material/changed/unresolved.
 
 ```text
-semantic retention
-≠ physical persistence
-
-Artifact Placement View
-≠ file mutation
+semantic retention ≠ physical persistence
+Artifact Placement View ≠ file mutation
 ```
-
-The required Documentation / Representation Lens runs before final P-14 placement whenever material output may persist. When representation/topology change is non-trivial, P-14 escalates to the deeper `Artifact / File Realization Pack`.
-
-Semantic owner ≠ artifact/file boundary.
 
 ### P-15 Evidence / Revalidation Port
 

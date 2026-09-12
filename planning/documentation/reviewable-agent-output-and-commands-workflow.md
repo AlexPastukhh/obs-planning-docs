@@ -4,7 +4,7 @@ Status: active reusable documentation-layer workflow
 Doc version: v0.11.0-reviewability-separated
 Scope: response-level command behavior, truthful source reporting, returned user-edited file revision, and legacy/reviewable package routes that explicitly opt into user-facing PowerShell Git stages.
 
-Current cross-cutting AI answer reviewability and directed-planning semantics are owned by [`ai-reviewability-and-directed-planning-principles.md`](ai-reviewability-and-directed-planning-principles.md). The former Level 1/2/3 answer model and `обс`-as-quality-mechanism are retired.
+Current cross-cutting AI answer reviewability and directed-planning semantics are owned by [`idtspe-methodology/active/ai-reviewability/README.md`](idtspe-methodology/active/ai-reviewability/README.md). The former Level 1/2/3 answer model and `обс`-as-quality-mechanism are retired.
 
 ## 1. Response-Level Commands
 

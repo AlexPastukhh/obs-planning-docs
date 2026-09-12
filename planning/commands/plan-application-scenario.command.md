@@ -26,7 +26,7 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
   "permissionMode": "read-only-planning",
   "keyReminders": [
     "SDS is an IDTSPE profile, not a second runtime.",
-    "AI proposals are Ideas by default; they become Decisions only when actually selected.",
+    "AI-proposed material candidates are Proposals by default; they become Decisions/current owner meaning only when actually selected.",
     "Do not infer a dedicated file from Target identity; use Documentation / Representation and P-14 when persistence is material.",
     "This command plans/reviews only; it does not edit repository files, implement, test, commit or push."
   ],

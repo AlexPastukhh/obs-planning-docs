@@ -20,7 +20,7 @@ Blank sections are not requirements. Use only supported meaning and keep rough e
 | Related Need / Desired Result | <real-world Need/result owner or statement> |
 | Related Workflow Variant(s) | <links when applicable> |
 | Open Solution Slot(s) covered | <links/IDs when applicable> |
-| Related Ideas / decisions | <when useful> |
+| Related Proposals / decisions | <when useful> |
 
 ## Real-World Coverage
 
@@ -148,11 +148,11 @@ interaction/workflow prototype
 Do not create Prototype work merely because the methodology supports it.
 
 
-## Planning Concerns / Q/R/P — When Material
+## Q/R/P — When Material
 
-Use `../../planning-concerns-and-decisions-model.md`. Group related Q/R/P when they share one resolution surface; keep member Priority/Concern Category/Status. AI Comment may recommend only when evidence is sufficient and must not invent user-owned Needs/preferences. Related Ideas reference the one canonical Concern/Group storage location instead of mirroring full bodies.
+Use `../../idtspe-methodology/active/idtspe-core/shared/qrp-lifecycle-and-review-contract.md`. Group related Q/R/P when they share one resolution surface; keep member Priority/Review Category/Status. AI review may recommend only when evidence is sufficient and must not invent user-owned Needs/preferences. Related Proposals reference the one canonical Q/R/P item/group representation instead of mirroring full bodies.
 
-If material concerns are durable/distributed, keep/update the Area Concern Register chosen by the current profile. If none: `No material unresolved issues identified.`
+If material concerns are durable/distributed, keep/update the Q/R/P register/index selected through representation rules. If none: `No material unresolved issues identified.`
 
 ## Potential Simplifications / Better Routes — When Material
 

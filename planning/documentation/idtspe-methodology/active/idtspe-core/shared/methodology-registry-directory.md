@@ -25,7 +25,6 @@ A directory match means "scan this registry", not "apply every entry".
 
 | Registry / family | Responsibility / question answered | Check when | Routes to | Owner | Recheck when |
 |---|---|---|---|---|---|
-| IDTSPE Use-Case Registry | which IDTSPE methodology-use capabilities apply | always logically; especially at entry/material context change | current IDTSPE Use Cases | [`idtspe-methodology-use-case-registry.md`](idtspe-methodology-use-case-registry.md) | situation/useful result changes |
 | Core Target Module Registry | is there a reusable generic Target production contract for the bounded result | a Target/bounded result is useful and may match a recurring generic family | Core Target Modules | [`../target-modules/README.md`](../target-modules/README.md) | Target purpose/result changes |
 | Core Lens Registry | which generic evaluation perspectives are plausibly applicable | current material may benefit from evaluation/challenge/refinement | Core Lenses | [`../lenses/README.md`](../lenses/README.md) | Analysis Surface/Decision/Evidence changes |
 | Installed Profile Registry | which profile supplies specialized Target/Lens/knowledge components | domain/profile-specific planning semantics are materially relevant | profile bootstrap/registry directory | [`../../profiles/README.md`](../../profiles/README.md) | active domain/scope changes |

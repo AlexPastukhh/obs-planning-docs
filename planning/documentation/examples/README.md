@@ -24,10 +24,10 @@ planning/areas/*
 | `PLAN-COMMAND-VALID-EXECUTION-EXAMPLE.md` | Command-planning execution | `UC-REPO-MAINTAIN-PLANNING-COMMAND` + `command-planning-workflow.md` | current |
 | `ARCHIVE-SOURCE-VS-OUTPUT-PACKAGE-EXAMPLE.md` | Archive read-source vs output-package source selection | `reviewable-agent-output-and-commands-workflow.md`, root Command Routing | current |
 | `PLAN-FILE-UPDATE-COMMAND-EXAMPLE.md` | File-update planning | `UC-REPO-PLAN-UPDATE` + direct Pre-Update command | current |
-| `REVIEW-DIFF-PRACTICAL-EXAMPLE.md` | Semantic ReviewDiff review | `review-diff-review-workflow.md` + shared Idea owners | current |
+| `REVIEW-DIFF-PRACTICAL-EXAMPLE.md` | Semantic ReviewDiff review | `review-diff-review-workflow.md` + Core Proposal/Q-R-P owners | current |
 | `CRITICAL-REVIEW-COMMAND-EXAMPLE.md` | Critical review | root Command Routing and reviewable-output owner | current |
 | `CURRENT-PLANNING-STATE-RESPONSE-EXAMPLE.md` | Current-state response | root Command Routing and relevant state owners | current |
-| `AI-REVIEWABILITY-KEY-POINTS-EXAMPLE.md` | AI Key Points / Review Priority output | `ai-reviewability-and-directed-planning-principles.md` | current |
+| `AI-REVIEWABILITY-KEY-POINTS-EXAMPLE.md` | AI Key Points / Review Priority output | `idtspe-methodology/active/ai-reviewability/README.md` | current |
 | `STATUS-RECONCILIATION-SCENARIO-PROJECT-EXAMPLE.md` | Status reconciliation | relevant status owners | current |
 | `SOURCE-USAGE-CASCADE-GENERIC-EXAMPLE.md` | Source-usage cascade | relevant cascade owners | current |
 
@@ -53,6 +53,6 @@ Do not copy their routes/state as active configuration for another project.
 - Do not move archive source-selection rules out of the owner workflow into this index.
 ```
 
-## Idea Review
+## Legacy Idea / Proposal Review
 
 - [`COLLECT-IDEAS-PRACTICAL-EXAMPLE.md`](COLLECT-IDEAS-PRACTICAL-EXAMPLE.md) — full practical demonstration of `собери идеи`; example only, not methodology authority.

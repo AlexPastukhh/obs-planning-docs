@@ -1,6 +1,6 @@
 # IDTSPE Unit And Target Step Result Model
 
-Status: active generic methodology owner  
+Status: active generic methodology owner
 Purpose: define what one bounded IDTSPE work step produces, how target-specific result meaning differs from generic planning state, and the common Unit/addressability vocabulary used by Target Modules, Lenses, validation and persistence.
 
 ---
@@ -247,6 +247,11 @@ validation/readiness finding when independently useful
 
 Existing names remain the normal prose vocabulary. Do not force labels such as `Risk Unit` when `Risk` is already unambiguous.
 
+Canonical cross-cutting lifecycle owners:
+
+- [`qrp-lifecycle-and-review-contract.md`](qrp-lifecycle-and-review-contract.md) — Question/Risk/Problem semantics, lifecycle, grouping and retention;
+- [`proposal-and-decision-lifecycle-contract.md`](proposal-and-decision-lifecycle-contract.md) — Proposal candidate/selection and Decision trace lifecycle.
+
 ### Proposal / Decision lifecycle relation
 
 `Proposal` and `Decision` are Core State Unit kinds, but their candidate/selection lifecycle is not defined by this Unit model. Canonical Proposal drivers/relations, Candidate Bundles, review outcomes, Proposal → Decision selection, rationale/alternative retention and revalidation semantics are owned by [`proposal-and-decision-lifecycle-contract.md`](proposal-and-decision-lifecycle-contract.md).
@@ -321,7 +326,8 @@ Methodology Usage State
   Current Work Concern — when retaining it helps orientation/re-entry
   Active Use Cases — only the material current set
   Relevant Registry Traversals — registry + purpose + selected entries/outcome
-  Applied Components — component + operation/purpose + applied-to surface
+  Applied Components — Target Modules / Lenses / reusable guidance + operation/purpose + applied-to surface
+  Material Guards / Validators / Rules / Packs — only when their activation affects continuation/review
   Contextual Adaptations / deferred recommendations — when later work must know them
   Recheck Triggers / Re-entry — when future context may change applicability
 ```

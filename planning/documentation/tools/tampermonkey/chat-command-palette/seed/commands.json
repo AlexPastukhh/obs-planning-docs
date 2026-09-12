@@ -23,7 +23,7 @@
         "planning/documentation/idtspe-methodology/active/idtspe-core/shared/resolution-slot-and-target-formation-resolution-set.md",
         "planning/documentation/idtspe-methodology/active/idtspe-core/shared/idtspe-command-surface-contract.md"
       ],
-      "expectedOutput": "Selected Lens applicability/disposition plus explanatory analysis and material Finding Candidates. Core Finding Disposition resolves any Evidence/Idea/Q-R-P/Decision/owner/revalidation consequences; Lens-owned supporting-artifact guidance remains separate from semantic ownership.",
+      "expectedOutput": "Selected Lens applicability/disposition plus explanatory analysis and material Finding Candidates. Core Finding Disposition resolves any Evidence/Proposal/Q-R-P/Decision/owner/revalidation consequences; Lens-owned supporting-artifact guidance remains separate from semantic ownership.",
       "permissionMode": "read-only-planning",
       "keyReminders": [
         "This is a dispatcher to the selected registered Lens; command text never becomes Lens authority.",
@@ -140,7 +140,7 @@
       "permissionMode": "read-only-planning",
       "keyReminders": [
         "SDS is an IDTSPE profile, not a second runtime.",
-        "AI proposals are Ideas by default; they become Decisions only when actually selected.",
+        "AI-proposed material candidates are Proposals by default; they become Decisions/current owner meaning only when actually selected.",
         "Do not infer a dedicated file from Target identity; use Documentation / Representation and P-14 when persistence is material.",
         "Bootstrap is governance orientation only: no Target Formation, invocation-mode selection or Target execution.",
         "This command plans/reviews only; it does not edit repository files, implement, test, commit or push."
@@ -443,7 +443,7 @@
       ],
       "description": "legacy compatibility alias; Application ideas alias routed into current IDTSPE/SDS planning",
       "meaning": "Legacy alias for working through current IDTSPE/SDS against the selected Application planning context. Resolve the narrowest applicable SDS Target Module (Application Definition, Scenario, Domain, Slice, Testing or another real owner) and continue that Target; never accumulate a separate whole-Application Current Plan runtime.",
-      "activeContextBehavior": "Reuse the selected Application and its current semantic owners. Route each material item to the narrowest natural current Target/module; preserve cross-layer findings as ordinary handoffs/Ideas rather than traversing every SDS layer automatically.",
+      "activeContextBehavior": "Reuse the selected Application and its current semantic owners. Route each material item to the narrowest natural current Target/module; preserve cross-layer findings as ordinary handoffs/Proposals rather than traversing every SDS layer automatically.",
       "traversalReadMode": "Reuse current reliable IDTSPE/SDS governance; targeted refresh of the affected Application/module owner route when uncertain; full bootstrap only when no reliable sufficient governance context exists.",
       "ownerFiles": [
         "planning/documentation/idtspe-methodology/active/idtspe-core/IDTSPE-DEFAULT-WORK-MODE.md",
@@ -455,7 +455,7 @@
       "keyReminders": [
         "Legacy compatibility alias only; the canonical material-planning runtime is IDTSPE.",
         "Do not execute or revive the former collect-ideas shell, Current Plan runtime, Idea Review runtime or old SDS profile runtime.",
-        "Treat supplied material as normal Sources/Ideas/Q/R/P for the resolved current IDTSPE Target and route through the applicable SDS Target Module when one is clear.",
+        "Treat supplied material as normal Sources/Proposals/Q/R/P for the resolved current IDTSPE Target and route through the applicable SDS Target Module when one is clear.",
         "No repository mutation, archive, commit or push."
       ],
       "userTarget": "<selected source/current planning target>",
@@ -475,7 +475,7 @@
         "domain ideas"
       ],
       "description": "legacy compatibility alias; supplied Domain ideas route into current transient discovery and/or durable Domain owner as justified",
-      "meaning": "Legacy alias for current Domain work. Treat supplied ideas as normal IDTSPE material. Use TM-DOMAIN-DISCOVERY for transient discovery; promote relevant meaning to TM-DOMAIN-OWNER only when independent durable Domain ownership becomes useful. Do not revive an Ideas accumulator or unified shallow/deep Domain Target family.",
+      "meaning": "Legacy alias for current Domain work. Treat supplied legacy-idea/candidate material as normal IDTSPE Proposal/Q/R/P material. Use TM-DOMAIN-DISCOVERY for transient discovery; promote relevant meaning to TM-DOMAIN-OWNER only when independent durable Domain ownership becomes useful. Do not revive an Ideas accumulator or unified shallow/deep Domain Target family.",
       "activeContextBehavior": "Use selected Feature behavior, current Domain facts, Slice/Shared pressures, Evidence/Evolution and existing Domain representation as relevant. Resolve discovery versus durable-owner need from the current situation; stop before unrelated Slice planning unless the user expands the work.",
       "traversalReadMode": "Reuse current reliable IDTSPE/SDS governance; refresh the selected Domain owner/module route when uncertain.",
       "ownerFiles": [
@@ -488,7 +488,7 @@
       "keyReminders": [
         "Legacy compatibility alias only; the canonical material-planning runtime is IDTSPE.",
         "Do not execute or revive the former collect-ideas shell, Current Plan runtime, Idea Review runtime or old SDS profile runtime.",
-        "Treat supplied material as normal Sources/Ideas/Q/R/P for the resolved current IDTSPE Target and route through the applicable SDS Target Module when one is clear.",
+        "Treat supplied material as normal Sources/Proposals/Q/R/P for the resolved current IDTSPE Target and route through the applicable SDS Target Module when one is clear.",
         "No repository mutation, archive, commit or push."
       ],
       "userTarget": "<selected source/current planning target>",
@@ -509,7 +509,7 @@
       ],
       "description": "legacy compatibility alias routed into current IDTSPE work mode",
       "meaning": "Legacy alias for supplying material to the always-active IDTSPE Work Context. Treat the input as Source/Question/Proposal/Q-R-P material as appropriate, re-evaluate `UC-IDTSPE-COMPOSE-CURRENT-WORK`, and remain in Broad Discussion unless a Target/Target Module/Lens becomes materially useful. This alias never starts the former collect-ideas/Current-Plan runtime and never enables IDTSPE.",
-      "activeContextBehavior": "Reuse current Work Context when possible. If no Target is useful, continue Broad Discussion; if a bounded Target becomes useful, normal Target Formation may create one. Do not manufacture an Idea-owned or collect-ideas-owned planning unit.",
+      "activeContextBehavior": "Reuse current Work Context when possible. If no Target is useful, continue Broad Discussion; if a bounded Target becomes useful, normal Target Formation may create one. Do not manufacture an Idea-owned or collect-ideas-owned planning unit; legacy Idea means current Proposal compatibility only.",
       "traversalReadMode": "Reuse current reliable IDTSPE governance; refresh the selected owner/module route only when uncertain; full bootstrap only when no reliable sufficient governance context exists.",
       "ownerFiles": [
         "planning/documentation/idtspe-methodology/active/idtspe-core/shared/compose-current-work-use-case.md",
@@ -521,7 +521,7 @@
       "keyReminders": [
         "Legacy compatibility alias only; the canonical material-planning runtime is IDTSPE.",
         "Do not execute or revive the former collect-ideas shell, Current Plan runtime, Idea Review runtime or old SDS profile runtime.",
-        "Treat supplied material as normal Sources/Ideas/Q/R/P for the resolved current IDTSPE Target and route through the applicable SDS Target Module when one is clear.",
+        "Treat supplied material as normal Sources/Proposals/Q/R/P for the resolved current IDTSPE Target and route through the applicable SDS Target Module when one is clear.",
         "No repository mutation, archive, commit or push."
       ],
       "userTarget": "<source/discussion to collect Ideas from>",
@@ -557,7 +557,7 @@
       "keyReminders": [
         "Legacy compatibility alias only; the canonical material-planning runtime is IDTSPE.",
         "Do not execute or revive the former collect-ideas shell, Current Plan runtime, Idea Review runtime or old SDS profile runtime.",
-        "Treat supplied material as normal Sources/Ideas/Q/R/P for the resolved current IDTSPE Target and route through the applicable SDS Target Module when one is clear.",
+        "Treat supplied material as normal Sources/Proposals/Q/R/P for the resolved current IDTSPE Target and route through the applicable SDS Target Module when one is clear.",
         "No repository mutation, archive, commit or push."
       ],
       "userTarget": "<selected source/current planning target>",
@@ -577,7 +577,7 @@
         "scenario ideas"
       ],
       "description": "legacy compatibility alias; Scenario ideas routed into current Scenario Planning",
-      "meaning": "Legacy alias for current Scenario planning. Reuse/resolve the natural Scenario context; use TM-SCENARIO-PLANNING for a selected Scenario and normal Target Formation when another Scenario boundary is discovered. Treat supplied ideas as normal IDTSPE material; do not run the former collect-ideas shell.",
+      "meaning": "Legacy alias for current Scenario planning. Reuse/resolve the natural Scenario context; use TM-SCENARIO-PLANNING for a selected Scenario and normal Target Formation when another Scenario boundary is discovered. Treat supplied legacy-idea/candidate material as normal IDTSPE Proposal/Q/R/P material; do not run the former collect-ideas shell.",
       "activeContextBehavior": "Use the selected/current Scenario when clear; otherwise resolve the Scenario boundary through Target Formation. Keep Domain/Slice implications as downstream handoffs unless the user expands the Target.",
       "traversalReadMode": "Reuse current reliable IDTSPE/SDS governance; refresh the selected Scenario owner/module route when uncertain.",
       "ownerFiles": [
@@ -589,7 +589,7 @@
       "keyReminders": [
         "Legacy compatibility alias only; the canonical material-planning runtime is IDTSPE.",
         "Do not execute or revive the former collect-ideas shell, Current Plan runtime, Idea Review runtime or old SDS profile runtime.",
-        "Treat supplied material as normal Sources/Ideas/Q/R/P for the resolved current IDTSPE Target and route through the applicable SDS Target Module when one is clear.",
+        "Treat supplied material as normal Sources/Proposals/Q/R/P for the resolved current IDTSPE Target and route through the applicable SDS Target Module when one is clear.",
         "No repository mutation, archive, commit or push."
       ],
       "userTarget": "<selected source/current planning target>",
@@ -622,7 +622,7 @@
       "keyReminders": [
         "Legacy compatibility alias only; the canonical material-planning runtime is IDTSPE.",
         "Do not execute or revive the former collect-ideas shell, Current Plan runtime, Idea Review runtime or old SDS profile runtime.",
-        "Treat supplied material as normal Sources/Ideas/Q/R/P for the resolved current IDTSPE Target and route through the applicable SDS Target Module when one is clear.",
+        "Treat supplied material as normal Sources/Proposals/Q/R/P for the resolved current IDTSPE Target and route through the applicable SDS Target Module when one is clear.",
         "No repository mutation, archive, commit or push."
       ],
       "userTarget": "<selected source/current planning target>",
@@ -647,20 +647,19 @@
       "activeContextBehavior": "Use the provided target; ask only if the target is missing.",
       "traversalReadMode": "Targeted/full by risk and evidence needs.",
       "ownerFiles": [
-        "planning/documentation/planning-concerns-and-decisions-model.md",
-        "planning/documentation/idea-planning-principles-and-terminology.md",
-        "planning/documentation/idea-review-and-planning-workflow.md",
+        "planning/documentation/idtspe-methodology/active/ai-reviewability/README.md",
+        "planning/documentation/idtspe-methodology/active/idtspe-core/shared/proposal-and-decision-lifecycle-contract.md",
+        "planning/documentation/idtspe-methodology/active/idtspe-core/shared/qrp-lifecycle-and-review-contract.md",
         "planning/documentation/review-diff-review-workflow.md"
       ],
-      "expectedOutput": "Truth-seeking verdict grounded in checked owners/evidence; material corrective Ideas use shared Idea review; material Planning Concerns use shared Concern/Decision semantics; ReviewDiff targets use the ReviewDiff semantic-review workflow.",
+      "expectedOutput": "Truth-seeking verdict grounded in checked owners/evidence; material corrective candidate answers are Proposals under the canonical Proposal lifecycle; material Q/R/P uses the Core Q/R/P contract; ReviewDiff targets use the ReviewDiff semantic-review workflow.",
       "permissionMode": "read-only",
       "keyReminders": [
         "Treat target as hypothesis, not accepted truth.",
-        "Use shared Idea review for material answer-seeking corrective alternatives; do not manufacture Ideas for mechanical findings.",
+        "Use Proposal candidate review for material answer-seeking corrective alternatives; do not manufacture Proposals for mechanical findings.",
         "When the target is a ReviewDiff, distinguish technical integrity from semantic correctness and follow the ReviewDiff semantic-review workflow.",
-        "Surface material Planning Concerns through the shared model and ask the user only for genuinely unresolved user-owned choices; AI Comment may recommend technical/logical routes when justified but must not invent preferences or mark them selected.",
-        "Do not edit files, create archives, commit or push.",
-        "Surface material Planning Concerns through the shared model: group one-resolution-surface Q/R/P, state priority/category/status when useful, add AI Comment without inventing user-owned preferences, recommend only when justified, and keep Decision separate until selected."
+        "Surface material Q/R/P through the Core contract; AI review may recommend technical/logical routes when justified but must not invent user-owned preferences or mark them selected.",
+        "Do not edit files, create archives, commit or push."
       ],
       "userTarget": "<what should be critically reviewed>",
       "palette": true,
@@ -722,7 +721,7 @@
       "permissionMode": "read-only-planning",
       "keyReminders": [
         "SDS is an IDTSPE profile, not a second runtime.",
-        "AI proposals are Ideas by default; they become Decisions only when actually selected.",
+        "AI-proposed material candidates are Proposals by default; they become Decisions/current owner meaning only when actually selected.",
         "Do not infer a dedicated file from Target identity; use Documentation / Representation and P-14 when persistence is material.",
         "This command plans/reviews only; it does not edit repository files, implement, test, commit or push."
       ],
@@ -775,7 +774,7 @@
       "permissionMode": "read-only-planning",
       "keyReminders": [
         "SDS is an IDTSPE profile, not a second runtime.",
-        "AI proposals are Ideas by default; they become Decisions only when actually selected.",
+        "AI-proposed material candidates are Proposals by default; they become Decisions/current owner meaning only when actually selected.",
         "Do not infer a dedicated file from Target identity; use Documentation / Representation and P-14 when persistence is material.",
         "This command plans/reviews only; it does not edit repository files, implement, test, commit or push."
       ],
@@ -833,9 +832,9 @@
       "expectedOutput": "Established development governance route: selected planning Workspace Use Case and/or application Scenario/current owner plus documentation owner when docs are affected; no mutation permission implied.",
       "permissionMode": "read-only",
       "keyReminders": [
-        "Develop from current selected planning meaning, not an unreviewed Idea or conversational assumption.",
+        "Develop from current selected planning meaning, not an unreviewed Proposal or conversational assumption.",
         "Resolve the current Use Case / Application Scenario / semantic owner before materially changing behavior.",
-        "Implementation Idea is not selected architecture.",
+        "Implementation Proposal is not selected architecture.",
         "Documentation changed during development must follow reusable documentation principles.",
         "Code does not silently create a second documentation owner.",
         "This command establishes working rules only; actual edits require the applicable authorization."
@@ -867,7 +866,7 @@
       "permissionMode": "read-only-planning",
       "keyReminders": [
         "SDS is an IDTSPE profile, not a second runtime.",
-        "AI proposals are Ideas by default; they become Decisions only when actually selected.",
+        "AI-proposed material candidates are Proposals by default; they become Decisions/current owner meaning only when actually selected.",
         "Do not infer a dedicated file from Target identity; use Documentation / Representation and P-14 when persistence is material.",
         "This command plans/reviews only; it does not edit repository files, implement, test, commit or push."
       ],
@@ -922,7 +921,7 @@
       "permissionMode": "read-only-planning",
       "keyReminders": [
         "SDS is an IDTSPE profile, not a second runtime.",
-        "AI proposals are Ideas by default; they become Decisions only when actually selected.",
+        "AI-proposed material candidates are Proposals by default; they become Decisions/current owner meaning only when actually selected.",
         "Do not infer a dedicated file from Target identity; use Documentation / Representation and P-14 when persistence is material.",
         "This command plans/reviews only; it does not edit repository files, implement, test, commit or push."
       ],
@@ -1083,7 +1082,7 @@
       "permissionMode": "read-only-planning",
       "keyReminders": [
         "SDS is an IDTSPE profile, not a second runtime.",
-        "AI proposals are Ideas by default; they become Decisions only when actually selected.",
+        "AI-proposed material candidates are Proposals by default; they become Decisions/current owner meaning only when actually selected.",
         "Do not infer a dedicated file from Target identity; use Documentation / Representation and P-14 when persistence is material.",
         "This command plans/reviews only; it does not edit repository files, implement, test, commit or push."
       ],
@@ -1311,7 +1310,7 @@
       "permissionMode": "read-only-planning",
       "keyReminders": [
         "SDS is an IDTSPE profile, not a second runtime.",
-        "AI proposals are Ideas by default; they become Decisions only when actually selected.",
+        "AI-proposed material candidates are Proposals by default; they become Decisions/current owner meaning only when actually selected.",
         "Do not infer a dedicated file from Target identity; use Documentation / Representation and P-14 when persistence is material.",
         "This command plans/reviews only; it does not edit repository files, implement, test, commit or push."
       ],
@@ -1366,7 +1365,7 @@
       "permissionMode": "read-only-planning",
       "keyReminders": [
         "SDS is an IDTSPE profile, not a second runtime.",
-        "AI proposals are Ideas by default; they become Decisions only when actually selected.",
+        "AI-proposed material candidates are Proposals by default; they become Decisions/current owner meaning only when actually selected.",
         "Do not infer a dedicated file from Target identity; use Documentation / Representation and P-14 when persistence is material.",
         "This command plans/reviews only; it does not edit repository files, implement, test, commit or push."
       ],
@@ -1420,7 +1419,7 @@
       "permissionMode": "read-only-planning",
       "keyReminders": [
         "SDS is an IDTSPE profile, not a second runtime.",
-        "AI proposals are Ideas by default; they become Decisions only when actually selected.",
+        "AI-proposed material candidates are Proposals by default; they become Decisions/current owner meaning only when actually selected.",
         "Do not infer a dedicated file from Target identity; use Documentation / Representation and P-14 when persistence is material.",
         "This command plans/reviews only; it does not edit repository files, implement, test, commit or push."
       ],
@@ -1661,7 +1660,7 @@
       "permissionMode": "read-only-planning",
       "keyReminders": [
         "SDS is an IDTSPE profile, not a second runtime.",
-        "AI proposals are Ideas by default; they become Decisions only when actually selected.",
+        "AI-proposed material candidates are Proposals by default; they become Decisions/current owner meaning only when actually selected.",
         "Do not infer a dedicated file from Target identity; use Documentation / Representation and P-14 when persistence is material.",
         "This command plans/reviews only; it does not edit repository files, implement, test, commit or push."
       ],
@@ -1825,7 +1824,7 @@
       "permissionMode": "read-only-planning",
       "keyReminders": [
         "SDS is an IDTSPE profile, not a second runtime.",
-        "AI proposals are Ideas by default; they become Decisions only when actually selected.",
+        "AI-proposed material candidates are Proposals by default; they become Decisions/current owner meaning only when actually selected.",
         "Do not infer a dedicated file from Target identity; use Documentation / Representation and P-14 when persistence is material.",
         "This command plans/reviews only; it does not edit repository files, implement, test, commit or push."
       ],
@@ -1873,7 +1872,7 @@
         "pre-update plan"
       ],
       "description": "Produce a concrete read-only plan of the intended update before actual mutation.",
-      "meaning": "Run generic Core TM-PRE-UPDATE-PLAN. Use current accepted prior meaning, current context and only the current destination facts the update actually depends on. Resolve material Questions/Risks/Problems/Ideas/Evidence/Decisions through ordinary IDTSPE state when needed, then return one concrete RU-PUPDATE-01 Pre-Update Plan. Do not reopen settled design or create a QRPE form when no real choice/uncertainty exists.",
+      "meaning": "Run generic Core TM-PRE-UPDATE-PLAN. Use current accepted prior meaning, current context and only the current destination facts the update actually depends on. Resolve material Questions/Risks/Problems/Proposals/Evidence/Decisions through ordinary IDTSPE state when needed, then return one concrete RU-PUPDATE-01 Pre-Update Plan. Do not reopen settled design or create a QRPE form when no real choice/uncertainty exists.",
       "activeContextBehavior": "Create or reuse the natural bounded Pre-Update Plan Target only when reviewing the intended changes before mutation is independently useful. Skip the module for a tiny/obvious change when the user asks for direct realization. The result may hand off to TM-EXACT-REALIZATION but does not authorize repository/destination mutation.",
       "traversalReadMode": "Reuse current reliable IDTSPE governance and accepted prior context; inspect only the exact current code/files/configuration/owner state the update plan materially depends on. Surface a real missing-source Question instead of guessing current state.",
       "ownerFiles": [
@@ -1884,7 +1883,7 @@
       "permissionMode": "read-only-planning",
       "keyReminders": [
         "Use accepted previous meaning/current context as the basis; do not redesign it without a material new conflict.",
-        "Use ordinary Q/R/P/Evidence + Ideas/Decisions only where they help resolve a real consequential choice; do not dump a mandatory QRPE form.",
+        "Use ordinary Q/R/P/Evidence + Proposals/Decisions only where they help resolve a real consequential choice; do not dump a mandatory QRPE form.",
         "Inspect current destination state only as needed for a concrete safe plan and never guess consequential missing source facts.",
         "The plan does not mutate files, execute tests, commit or push; actual update authority belongs to the later host/Exact Realization workflow.",
         "Skip this Target when the change is trivial and the user explicitly wants direct realization."
@@ -1938,7 +1937,7 @@
       "permissionMode": "read-only-planning",
       "keyReminders": [
         "SDS is an IDTSPE profile, not a second runtime.",
-        "AI proposals are Ideas by default; they become Decisions only when actually selected.",
+        "AI-proposed material candidates are Proposals by default; they become Decisions/current owner meaning only when actually selected.",
         "Do not infer a dedicated file from Target identity; use Documentation / Representation and P-14 when persistence is material.",
         "This command plans/reviews only; it does not edit repository files, implement, test, commit or push."
       ],
@@ -2051,7 +2050,7 @@
       "permissionMode": "read-only-planning",
       "keyReminders": [
         "SDS is an IDTSPE profile, not a second runtime.",
-        "AI proposals are Ideas by default; they become Decisions only when actually selected.",
+        "AI-proposed material candidates are Proposals by default; they become Decisions/current owner meaning only when actually selected.",
         "Do not infer a dedicated file from Target identity; use Documentation / Representation and P-14 when persistence is material.",
         "This command plans/reviews only; it does not edit repository files, implement, test, commit or push."
       ],
@@ -2434,7 +2433,7 @@
       "permissionMode": "read-only-planning",
       "keyReminders": [
         "SDS is an IDTSPE profile, not a second runtime.",
-        "AI proposals are Ideas by default; they become Decisions only when actually selected.",
+        "AI-proposed material candidates are Proposals by default; they become Decisions/current owner meaning only when actually selected.",
         "Do not infer a dedicated file from Target identity; use Documentation / Representation and P-14 when persistence is material.",
         "This command plans/reviews only; it does not edit repository files, implement, test, commit or push."
       ],
@@ -2586,7 +2585,7 @@
       "activeContextBehavior": "If explicitly invoked for compatibility, recheck the selected current target using the current reviewability principles; do not treat this shortcut as a separate current planning capability.",
       "traversalReadMode": "Targeted/full by risk and current owner uncertainty.",
       "ownerFiles": [
-        "planning/documentation/ai-reviewability-and-directed-planning-principles.md"
+        "planning/documentation/idtspe-methodology/active/ai-reviewability/README.md"
       ],
       "expectedOutput": "Corrected current answer/review only when material new findings exist; otherwise a compact confirmation that no material omission was found.",
       "permissionMode": "read-only",
@@ -2750,7 +2749,7 @@
       "traversalReadMode": "Incremental targeted/full by requested claim, prior coverage, freshness, risk, dependency impact and unresolved gaps.",
       "ownerFiles": [
         "planning/documentation/review-audit-workflow.md",
-        "planning/documentation/ai-reviewability-and-directed-planning-principles.md"
+        "planning/documentation/idtspe-methodology/active/ai-reviewability/README.md"
       ],
       "expectedOutput": "Checked files/semantic units + Not Checked/Partial + Review Quality/Sufficiency + Material Findings/Corrections + Review Delta vs prior relevant review + Next Useful Checks.",
       "permissionMode": "read-only",
@@ -2893,7 +2892,7 @@
       "permissionMode": "read-only-planning",
       "keyReminders": [
         "SDS is an IDTSPE profile, not a second runtime.",
-        "AI proposals are Ideas by default; they become Decisions only when actually selected.",
+        "AI-proposed material candidates are Proposals by default; they become Decisions/current owner meaning only when actually selected.",
         "Do not infer a dedicated file from Target identity; use Documentation / Representation and P-14 when persistence is material.",
         "This command plans/reviews only; it does not edit repository files, implement, test, commit or push."
       ],
@@ -2947,7 +2946,7 @@
       "permissionMode": "read-only-planning",
       "keyReminders": [
         "SDS is an IDTSPE profile, not a second runtime.",
-        "AI proposals are Ideas by default; they become Decisions only when actually selected.",
+        "AI-proposed material candidates are Proposals by default; they become Decisions/current owner meaning only when actually selected.",
         "Do not infer a dedicated file from Target identity; use Documentation / Representation and P-14 when persistence is material.",
         "This command plans/reviews only; it does not edit repository files, implement, test, commit or push."
       ],

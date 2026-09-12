@@ -637,20 +637,8 @@ Depends On:
 Do not silently pick one file merely to make the response look complete.
 
 
-## Methodology Direction View
+## Methodology Continuation Boundary
 
-Artifact placement is paired with a methodology continuation projection owned by `directed-methodology-workflow-and-next-step-resolution.md`.
+This contract ends at persistence/representation. Methodology continuation/next-target guidance is not artifact-placement authority.
 
-When a checkpoint/handoff-sensitive structured response needs Methodology Direction, include proportionally:
-
-```text
-Current Target / invocation mode
-Exit Gate status
-Recommended next Target/action
-Why it is now ready
-Conditional next Targets and activation conditions
-Repeat-current trigger
-Backward-reopen trigger
-```
-
-This projection does not authorize file mutation or automatic execution of the next Target.
+Generic handoff/Methodology Direction is exposed through Shell `P-13` and the active Use-Case/profile readiness owners. Current SDS readiness owner: [`../../profiles/sds/shared/directed-methodology-workflow-and-next-step-resolution.md`](../../profiles/sds/shared/directed-methodology-workflow-and-next-step-resolution.md).

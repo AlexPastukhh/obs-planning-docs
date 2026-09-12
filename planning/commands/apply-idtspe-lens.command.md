@@ -24,7 +24,7 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
     "planning/documentation/idtspe-methodology/active/idtspe-core/shared/resolution-slot-and-target-formation-resolution-set.md",
     "planning/documentation/idtspe-methodology/active/idtspe-core/shared/idtspe-command-surface-contract.md"
   ],
-  "expectedOutput": "Selected Lens applicability/disposition plus explanatory analysis and material Finding Candidates. Core Finding Disposition resolves any Evidence/Idea/Q-R-P/Decision/owner/revalidation consequences; Lens-owned supporting-artifact guidance remains separate from semantic ownership.",
+  "expectedOutput": "Selected Lens applicability/disposition plus explanatory analysis and material Finding Candidates. Core Finding Disposition resolves any Evidence/Proposal/Q-R-P/Decision/owner/revalidation consequences; Lens-owned supporting-artifact guidance remains separate from semantic ownership.",
   "permissionMode": "read-only-planning",
   "keyReminders": [
     "This is a dispatcher to the selected registered Lens; command text never becomes Lens authority.",

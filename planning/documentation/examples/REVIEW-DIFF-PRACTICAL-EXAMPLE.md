@@ -3,7 +3,7 @@
 Status: active practical example
 Scope: demonstrate current semantic ReviewDiff output without owning methodology or transport/application mechanics.
 
-Canonical owner: [`../review-diff-review-workflow.md`](../review-diff-review-workflow.md). Shared Planning Concern/Decision semantics live in [`../planning-concerns-and-decisions-model.md`](../planning-concerns-and-decisions-model.md); shared Idea semantics remain in the canonical Idea owners.
+Canonical owner: [`../review-diff-review-workflow.md`](../review-diff-review-workflow.md). Q/R/P semantics live in Core [`../idtspe-methodology/active/idtspe-core/shared/qrp-lifecycle-and-review-contract.md`](../idtspe-methodology/active/idtspe-core/shared/qrp-lifecycle-and-review-contract.md); Proposal/Decision semantics live in [`../idtspe-methodology/active/idtspe-core/shared/proposal-and-decision-lifecycle-contract.md`](../idtspe-methodology/active/idtspe-core/shared/proposal-and-decision-lifecycle-contract.md).
 
 ## Case A — Confirmed correction selected, but not yet present in reviewed transition
 
@@ -12,7 +12,7 @@ Canonical owner: [`../review-diff-review-workflow.md`](../review-diff-review-wor
 - selected ReviewDiff for one reusable documentation ChangeSet;
 - current reusable scope/log workflow;
 - current Scope Registry and scope action log;
-- shared Idea review owners.
+- Core Proposal/Q-R-P owners.
 
 ### Confirmed Findings
 
@@ -20,7 +20,7 @@ Canonical owner: [`../review-diff-review-workflow.md`](../review-diff-review-wor
 
 The reviewed transition requires `CROSS-SCOPE REFERENCE` records to identify a canonical log entry, but the reusable workflow does not yet state that Entry IDs are stable/non-reusable/non-renumberable or define minimum semantic anchors for the supported record kinds.
 
-### Corrective Ideas
+### Corrective Proposals
 
 #### IDEA-RD-1 — Define stable identity inside the existing scope/log workflow
 
@@ -53,7 +53,7 @@ Selected correction
 
 The correction is selected into Current Plan, but it is not yet present in the reviewed transition.
 
-### Planning Concerns / Q/R/P
+### Q/R/P
 
 No material unresolved issues identified.
 
@@ -91,7 +91,7 @@ Current Plan
 No additional corrective route is selected.
 ```
 
-### Planning Concerns / Q/R/P
+### Q/R/P
 
 No material unresolved issues identified.
 

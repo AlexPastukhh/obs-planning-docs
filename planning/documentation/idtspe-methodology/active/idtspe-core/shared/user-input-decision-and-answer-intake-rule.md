@@ -1,7 +1,7 @@
 # User Input Decision And Answer Intake Rule
 
-Status: active generic methodology Rule  
-Module type: `Rule`  
+Status: active generic methodology Rule
+Module type: `Rule`
 Purpose: let one user message simultaneously invoke a workflow, provide Sources, answer Resolution Questions, and accept/modify material Decisions.
 
 ---
@@ -370,6 +370,52 @@ unresolved material user-owned choice
 ```
 
 ---
+
+# 10A. User Question Policy
+
+Do not turn every reusable prompt, Resolution Question or Lens prompt into a USER interview question. Ask the USER only when at least one of these is true:
+
+```text
+A. an explicit saved USER Decision / Question Gate preset requires the question;
+
+B. a material USER-only fact is missing and cannot be resolved from current Sources/Evidence;
+
+C. a material choice belongs to USER authority and remains unresolved after intake;
+
+D. the USER explicitly asked to be questioned/interviewed.
+```
+
+Otherwise continue from available Sources, state material assumptions/unknowns, and surface only the unresolved Decision/question that actually blocks or materially changes the result.
+
+Keep these meanings distinct:
+
+```text
+Resolution Question / RQ
+= planning subject/prompt used to construct or resolve a Target; not automatically USER-facing
+
+Lens prompt
+= reusable internal evaluation question; not automatically State or USER-facing
+
+Q/R/P Question
+= material addressable unresolved Question State when lifecycle/addressability is useful
+
+USER question / Decision Gate
+= interaction step used only when USER information/authority is actually required
+```
+
+# 10B. User Decision Gate Presentation
+
+`User Decision Gate` is an interaction Guard/Rule pattern, not a new semantic State/Decision type. When it fires, expose proportionally:
+
+```text
+decision subject
+real candidate choices when several exist
+AI recommendation when justified
+decisive Evidence / Q/R/P
+minimum USER question needed for selection
+```
+
+One explicit USER response may select several clearly enumerated Decisions when each selected meaning is visible and independently amendable/rejectable. Do not hide unrelated material choices behind one vague confirmation.
 
 # 11. Relation To Question Presets
 

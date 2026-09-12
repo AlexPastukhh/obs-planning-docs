@@ -1,7 +1,7 @@
 # Proposal And Decision Lifecycle Contract
 
-Status: active generic IDTSPE Core owner  
-Purpose: define the canonical candidate-to-selection semantics for material Proposals and Decisions without coupling that lifecycle to any one conversation surface, Target Module, Lens, or persistence representation.
+Status: active generic IDTSPE Core owner
+Purpose: define the canonical candidate-to-selection semantics for material Proposals and Decisions without coupling that lifecycle to any one conversation surface, Target Module, Lens, compatibility vocabulary or persistence representation.
 
 ## 1. Ownership Boundary
 
@@ -16,18 +16,41 @@ User-input intake
 = how natural-language USER input is classified into Source / Proposal / Decision / answer meaning
 
 Target Module
-= reusable Proposal/variant discovery aids for one Target family
+= reusable Proposal discovery aids for one Target family
 
 Lens / Finding Disposition
 = may surface candidate meaning; does not select it
+
+Q/R/P lifecycle
+= separate Core owner; Q/R/P may drive, constrain or be exposed by Proposals/Decisions
 
 Session Runtime
 = interaction/authorization boundary for actual mutation
 ```
 
-A Proposal is candidate Core State. It is not accepted product/methodology authority merely because it was suggested, formalized, analyzed, or recommended.
+A Proposal is candidate Core State. It is not accepted product/methodology authority merely because it was suggested, formalized, analyzed, recommended or selected by an AI-only heuristic.
 
-## 2. Proposal Identity And Drivers
+## 2. Legacy Idea Compatibility
+
+`Idea` is the **legacy methodology term for the current IDTSPE Proposal concept**, not a second current candidate ontology.
+
+```text
+legacy Idea
+→ current Proposal
+
+legacy Idea Review / Idea Variant / Current Selected Variant
+→ interpret through this Proposal / Decision lifecycle
+```
+
+Compatibility rules:
+
+- ordinary natural-language use of the word “idea” is fine;
+- a legacy command/file may still say `Idea` for historical/user-facing compatibility;
+- current formal methodology must not create a separate Idea State kind, Idea lifecycle, Idea Decision type or Idea-owned Current Plan;
+- selected legacy Idea meaning becomes authoritative only through the same Decision / Target Result / natural-owner path as any Proposal;
+- a historical `IDEA-*` identity may be retained as provenance/compatibility identity when migration value exists, without making `Idea` a current semantic type.
+
+## 3. Proposal Identity And Drivers
 
 A material formal Proposal is an explicit candidate answer/solution/approach that preserves the decision driver it addresses.
 
@@ -42,9 +65,25 @@ For approval-relevant formal Proposals, the motivating Question and/or Problem m
 
 The Target Goal / Desired Outcome is Target/scope context; this contract does not introduce a separate Generic Goal State Unit.
 
-A lightweight conversational AI Proposal may remain informal when formal addressability/lifecycle adds no value. If formalized, it becomes the same candidate Proposal role and remains unselected.
+A lightweight conversational AI proposal may remain informal when formal addressability/lifecycle adds no value. If formalized, it becomes the same candidate Proposal role and remains unselected.
 
-## 3. Proposal Space And Relations
+Source material is not automatically a Proposal. Facts, constraints, accepted Decisions, Questions, corrections, Evidence and provenance keep their own meaning unless an actual candidate answer is present.
+
+## 4. Proposal Identity, Refinement And Alternative Proposals
+
+Do not create a second `Proposal Variant` ontology merely to preserve the former Idea-Variant shape.
+
+```text
+same candidate identity
++ clarification / narrowing / strengthening / simplification / bounded amendment
+→ refine or REVISE the same Proposal
+
+materially different answer that could be selected independently
+→ another Proposal
+→ relate through competes-with / complements / requires / conflicts-with when useful
+```
+
+A fallback remains an unselected/conditional Proposal unless explicitly selected. Calling something a fallback does not make it the current Decision.
 
 One driver may have zero, one or many candidate Proposals. Preserve real alternatives rather than flattening them into one answer.
 
@@ -58,28 +97,63 @@ Proposal ↔ conflicts-with ↔ Proposal
 Proposal → part-of-candidate-bundle → Candidate Bundle / Option Group
 ```
 
-A Candidate Bundle / Option Group groups compatible Proposals for comparison. It is a projection by default, not a new mandatory State Unit, semantic owner, Target, or Planning Branch.
+A Candidate Bundle / Option Group groups compatible Proposals for comparison. It is a projection by default, not a new mandatory State Unit, semantic owner, Target or Planning Branch.
 
 Use a Planning Branch only when an alternative needs a materially deep downstream counterfactual planning network.
 
-## 4. Candidate Review
+Several merely related Proposals do not require a named group. Use ordinary relations/review grouping unless a compatible candidate bundle actually represents one selectable approach.
 
-AI may autonomously inspect, compare, challenge, refine and recommend candidate Proposals inside the authorized work scope. Review should expose proportionally what is useful for the current decision, such as:
+## 5. Candidate Review
+
+AI may autonomously inspect, compare, challenge, refine and recommend candidate Proposals inside the authorized work scope.
+
+For a material Proposal under review, perform the useful checks proportionally. The check is required when the corresponding question is material; empty output is not required when no issue is found.
+
+```text
+Driver / Need fit
+  does the Proposal actually answer the Goal / Question / Problem?
+
+Necessity / Better Route
+  can it be omitted?
+  can the underlying problem be removed/avoided?
+  does an existing mechanism already cover the need?
+  is a smaller/simpler route sufficient?
+
+Refinement
+  can the same candidate be clarified, narrowed, simplified, strengthened,
+  split/combined or made conditional without becoming a different answer?
+
+Local consistency
+  is the candidate internally coherent for its scoped owner/driver?
+
+Integrated consistency
+  does it fit affected upstream/downstream/current owners and accepted meaning?
+
+Combination evaluation
+  when several Proposals are meant to coexist, does their combination remain coherent?
+```
+
+Review should expose proportionally what is useful for the current decision, such as:
 
 ```text
 what is proposed
 driver / problem being addressed
+source/provenance when useful
 affected current owner/authority
+expected effect / benefit
 material benefits / downsides / risks
+constraints / must-preserve meaning
+important unknowns / assumptions
 durable Requirement / Decision / owner consequence when any
 proof consequence
 known Evolution consequence
 what remains unchanged
 AI recommendation when useful
 what that recommendation sacrifices
+reconsider trigger when useful
 ```
 
-Do not manufacture competing alternatives merely for symmetry. When several real options remain, make the situational decision priorities visible when that materially helps review, together with the AI recommendation and what that recommendation sacrifices.
+Do not manufacture competing alternatives or objections merely for symmetry. When several real options remain, make the situational decision priorities visible when that materially helps review.
 
 Complexity or other comparison dimensions are review aids, not mandatory Proposal schema fields unless a consuming owner explicitly requires them. When a compact complexity comparison helps, it may use:
 
@@ -90,7 +164,7 @@ Complexity consequence: <relevant semantic / ownership / structural / state / co
 
 Do not equate fewer classes/lines with lower total system complexity.
 
-## 5. Selection Outcomes
+## 6. Selection Outcomes
 
 Material Proposal review may lead to:
 
@@ -114,9 +188,29 @@ USER amendment
 → preserve unrelated accepted meaning
 ```
 
-An AI recommendation is not selection. A Lens Finding, Evidence item, validator result, or Finding Disposition is not selection by itself.
+An AI recommendation is not selection. A Lens Finding, Evidence item, validator result or Finding Disposition is not selection by itself.
 
-## 6. Decision Formation And Trace
+## 7. Answer / Recommendation / Proposal / Decision Boundary
+
+Keep these meanings distinct:
+
+```text
+Answer / Evidence
+= factual or interpretive resolution of a Question/evidence gap
+
+Proposal
+= candidate answer/solution/approach that may be selected
+
+Recommendation
+= AI/other recommendation for a Proposal/route; not selection
+
+Decision
+= actually selected material meaning under the applicable authority
+```
+
+A Question can be answered while a separate Decision is still needed. A recommendation can be strong without being selected. A Proposal can remain viable without being recommended.
+
+## 8. Decision Formation And Trace
 
 Accepted material meaning becomes authoritative only through the normal Decision / Target Result / natural-owner path.
 
@@ -126,7 +220,7 @@ A material Decision may retain useful trace:
 Decision
 
 Addresses
-  Target Goal context / Question / Problem / Q-R-P when useful
+  Target Goal context / Question / Problem / Q/R/P when useful
 
 Selected
   Proposal / compatible Proposal set / Candidate Bundle when useful
@@ -134,18 +228,29 @@ Selected
 Rationale / Why
   optional concise selection reasoning
 
-Evidence / Risk / Problem / alternative references
+Integrated Into
+  natural semantic owner / Result meaning when useful
+
+Affected Owners
+  owners requiring review/revalidation; not silent rewrite authority
+
+Evidence / Q/R/P / alternative references
   only when useful
 
 Exposes
   newly material Question / Risk / Problem when the selection reveals one
+
+Reconsider When
+  concrete revalidation trigger when useful
 ```
+
+Relations are many-to-many: one Decision may address several Q/R/P; one Q/R/P group may require several Decisions; one Decision may expose new Q/R/P.
 
 `Rationale / Why` is not Evidence. Evidence is independently sourced/supporting meaning; rationale explains why available meaning led to the selection.
 
 Decision trace is explanatory/revalidation metadata, not a new Decision type.
 
-## 7. Retention
+## 9. Retention
 
 Accepted material Decisions are retained in integrated semantic state by default when later work, review, handoff or revalidation benefits from knowing what was selected.
 
@@ -169,7 +274,9 @@ If a new material Decision lacks a rationale that would help future review/reval
 
 Semantic retention does not imply a dedicated file. Physical persistence is resolved separately by Representation / P-14.
 
-## 8. Durable Decision Protection Under Proposal Review
+A useful Proposal discovered outside the current Target does not require a global Idea/Future-Idea ontology or mandatory inbox. When retaining it has independent continuation/review value, keep it as ordinary Proposal State with enough context to recover its driver/provenance and let Documentation / Representation choose a natural owner, existing register/inbox, another selected owner, or no physical persistence. A register is navigation/retention infrastructure only; it does not select the Proposal or make it backlog/product authority.
+
+## 10. Durable Decision Protection Under Proposal Review
 
 A code-only/transient Decision does not need durable documentation merely because it existed during planning. But when an existing **durable** Decision preserves material risk, Question/Problem, trade-off, trust/support assumption, reconsideration trigger or cross-owner maintenance reasoning, a Proposal that would replace, materially reinterpret or remove it must make visible:
 
@@ -180,7 +287,7 @@ A code-only/transient Decision does not need durable documentation merely becaus
 
 Do not silently erase durable Decision rationale through lower-level realization.
 
-## 9. Revalidation
+## 11. Revalidation
 
 Re-evaluate affected Proposal/Decision meaning when material inputs change, including:
 
@@ -192,7 +299,7 @@ Re-evaluate affected Proposal/Decision meaning when material inputs change, incl
 
 Preserve unaffected accepted meaning. Do not reopen the entire decision space merely because one dependent item changed.
 
-## 10. Interaction And Mutation Boundary
+## 12. Interaction And Mutation Boundary
 
 This contract owns candidate/selection semantics, not repository/application mutation authorization.
 
@@ -203,13 +310,17 @@ accepted Proposal/Decision meaning
 
 Actual mutation follows the ambient Session proposal-first/authorization rules and the applicable repository/application authority contract.
 
-## 11. Key Invariants
+## 13. Key Invariants
 
 ```text
+legacy Idea = current Proposal compatibility meaning, not a second ontology
 AI Proposal ≠ accepted Decision
 formal Proposal ≠ authority
 Finding ≠ selection
+candidate refinement ≠ automatically a new Proposal
+materially different selectable answer → separate Proposal
 Candidate Bundle ≠ Planning Branch
+fallback ≠ current Decision unless selected
 Rationale ≠ Evidence
 selected meaning ≠ automatic persistence
 accepted semantic change ≠ automatic repository mutation

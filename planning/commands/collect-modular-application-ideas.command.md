@@ -31,7 +31,7 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
   "keyReminders": [
     "Legacy compatibility alias only; the canonical material-planning runtime is IDTSPE.",
     "Do not execute or revive the former collect-ideas shell, Current Plan runtime, Idea Review runtime or old SDS profile runtime.",
-    "Treat supplied material as normal Sources/Ideas/Q/R/P for the resolved current IDTSPE Target and route through the applicable SDS Target Module when one is clear.",
+    "Treat supplied material as normal Sources/Proposals/Q/R/P for the resolved current IDTSPE Target and route through the applicable SDS Target Module when one is clear.",
     "No repository mutation, archive, commit or push."
   ],
   "userTarget": "<selected source/current planning target>",

@@ -40,7 +40,7 @@ owner-local implementation requirements when relevant
 Domain Discovery evidence/candidates/Variants when available
 prototype evidence when relevant
 material Change Axes / Change Pressure from Architecture Planning
-relevant implementation-scoped Ideas
+relevant implementation-scoped Proposals
 existing Domain/current implementation evidence when reviewing an existing system
 ```
 
@@ -170,7 +170,7 @@ Persistence is stress input, not Domain authority.
 
 ## 8. Select And Integrate
 
-Selected Domain meaning belongs in the Domain owner/template, with material rationale in Current Decisions when useful. Implementation-scoped Ideas promoted into Domain are no longer separate current implementation authority.
+Selected Domain meaning belongs in the Domain owner/template, with material rationale in Current Decisions when useful. Implementation-scoped Proposals selected into Domain are no longer separate current implementation authority.
 
 If Domain planning exposes an upstream Feature/current-owner problem, return an explicit finding rather than silently changing upstream meaning.
 

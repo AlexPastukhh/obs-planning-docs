@@ -1,6 +1,6 @@
 # IDTSPE Core Map — Use-Case-Driven Proportional Runtime
 
-Status: active generic methodology map  
+Status: active generic methodology map
 Role: compact **conceptual/dependency projection** over canonical Core owners. This map helps orientation; it does not redefine the normative contracts linked below.
 
 ## 1. Functional Entry And Runtime Composition
@@ -63,7 +63,7 @@ IDTSPE Work Context
 └─ physical representation only when useful
 ```
 
-Canonical owner: [`shared/idtspe-unit-and-target-step-result-model.md`](shared/idtspe-unit-and-target-step-result-model.md).  
+Canonical owner: [`shared/idtspe-unit-and-target-step-result-model.md`](shared/idtspe-unit-and-target-step-result-model.md).
 Broad Discussion / checkpoint interaction owner: [`shared/broad-discussion-and-integration-checkpoint-model.md`](shared/broad-discussion-and-integration-checkpoint-model.md).
 
 ## 4. Registry Navigation
@@ -95,7 +95,7 @@ bounded responsibility/result becomes useful
    OR Local Target Contract
 ```
 
-Canonical mechanics: [`shared/resolution-slot-and-target-formation-resolution-set.md`](shared/resolution-slot-and-target-formation-resolution-set.md).  
+Canonical mechanics: [`shared/resolution-slot-and-target-formation-resolution-set.md`](shared/resolution-slot-and-target-formation-resolution-set.md).
 Target Module semantics: [`shared/target-module-model.md`](shared/target-module-model.md).
 
 ## 6. Lens System / Findings
@@ -109,7 +109,7 @@ Use-Case/component routing
 → Core Finding Disposition when semantic consequence is material
 ```
 
-Canonical Lens owner: [`lenses/LENS-MODEL.md`](lenses/LENS-MODEL.md).  
+Canonical Lens owner: [`lenses/LENS-MODEL.md`](lenses/LENS-MODEL.md).
 Finding lifecycle owner: [`shared/finding-disposition-contract.md`](shared/finding-disposition-contract.md).
 
 ## 7. Proposal / Q-R-P / Decision / Evidence
@@ -122,8 +122,8 @@ material driver
 → Decision / natural-owner authority when accepted
 ```
 
-Canonical candidate/selection semantics: [`shared/proposal-and-decision-lifecycle-contract.md`](shared/proposal-and-decision-lifecycle-contract.md).  
-Optional Q/R/P priority/grouping: [`shared/qrp-priority-and-related-groups.md`](shared/qrp-priority-and-related-groups.md).  
+Canonical candidate/selection semantics: [`shared/proposal-and-decision-lifecycle-contract.md`](shared/proposal-and-decision-lifecycle-contract.md).
+Canonical Q/R/P lifecycle/review contract: [`shared/qrp-lifecycle-and-review-contract.md`](shared/qrp-lifecycle-and-review-contract.md).
 State kind/addressability semantics remain in the Unit model.
 
 ## 8. Integration / Revalidation

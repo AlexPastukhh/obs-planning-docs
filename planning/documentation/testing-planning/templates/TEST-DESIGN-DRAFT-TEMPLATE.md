@@ -12,6 +12,6 @@ Status: draft
 ## Paired Cross-Side Proof — When Material
 ## What Not To Test Here
 ## Current Decisions
-<Use the shared `../../planning-concerns-and-decisions-model.md` generic Decision trace when material; selected Testing meaning stays integrated in the Testing owner.>
-## Planning Concerns / Q/R/P
-<Use the shared `../../planning-concerns-and-decisions-model.md`: owner/current-plan attachment, grouping by shared resolution surface, Priority + Concern Category + Status when material, AI Comment without inventing user/product preference, optional Recommendation, selected Decision refs, residual/retained lifecycle and Area Concern Register when useful.>
+<Use the canonical `../../idtspe-methodology/active/idtspe-core/shared/proposal-and-decision-lifecycle-contract.md` when material; selected Testing meaning stays integrated in the Testing owner.>
+## Q/R/P
+<Use the shared `../../idtspe-methodology/active/idtspe-core/shared/qrp-lifecycle-and-review-contract.md`: owner/current-plan attachment, grouping by shared resolution surface, Priority + Review Category + Status when material, AI Comment without inventing user/product preference, optional Recommendation, selected Decision refs, residual/retained lifecycle and an optional Q/R/P navigation index when useful.>

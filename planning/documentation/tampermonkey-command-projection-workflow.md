@@ -370,24 +370,24 @@ command covers only one stage of a broader use case:
 Current application:
 
 ```text
-Collect And Review Ideas From Selected Source
+Collect And Review Proposals From Selected Source
   → Open Commands / `собери идеи`;
 
 Planning Meaning To Repository
   → remains a broader Use Case;
-  → uses generic Idea review when material, not an item-reconciliation command.
+  → uses canonical Proposal review when material, not an item-reconciliation command.
 ```
 
-## 9E. Idea-Collection Boundary
+## 9E. Legacy Idea-Collection Boundary
 
-`Collect And Review Ideas From Selected Source` is linked to the accepted repository command definition:
+`Collect And Review Proposals From Selected Source` is linked to the accepted repository command definition:
 
 ```text
 собери идеи
 English name: collect ideas
 ```
 
-The Use Cases surface uses **Open Commands** rather than inserting a duplicate execution-like prompt. The command routes to the generic Idea methodology and does not recreate a Planning Item formation layer.
+The Use Cases surface uses **Open Commands** rather than inserting a duplicate execution-like prompt. The command routes to the canonical Proposal lifecycle and does not recreate a Planning Item formation layer.
 
 ## 9F. Semantic Inventory Source
 

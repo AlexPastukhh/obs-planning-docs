@@ -9,7 +9,7 @@ Purpose: plan the minimum prototype/experiment needed to reduce a material uncer
 Canonical workflow: [`../prototype-planning-workflow.md`](../prototype-planning-workflow.md)
 Cross-cutting context: [`../requirements-and-change-context.md`](../requirements-and-change-context.md)
 
-Blank sections are not requirements. A small feasibility spike may remain embedded in Application Concept/Idea work; use a separate file when evidence/setup/lifecycle deserves independent addressability.
+Blank sections are not requirements. A small feasibility spike may remain embedded in Application Concept/Proposal work; use a separate file when evidence/setup/lifecycle deserves independent addressability.
 
 ## Prototype Identity
 
@@ -21,7 +21,7 @@ Blank sections are not requirements. A small feasibility spike may remain embedd
 | Status | proposed / ready / running / completed / cancelled |
 | Related Application Concept / decision | <link> |
 | Related Application responsibility / Scenarios | <when applicable> |
-| Related Ideas / Requirements | <when applicable> |
+| Related Proposals / Requirements | <when applicable> |
 
 ## Question / Hypothesis
 
@@ -114,11 +114,11 @@ Prototype Screen identity is provisional and does not create canonical Screen au
 ### Candidate Scenario DATA / Behavior
 <What information/rules appear necessary; do not promote implementation schemas mechanically.>
 
-### Future Scenario Ideas / Change Axes — When Material
-<Only evidence-backed likely evolution or clearly marked speculative Ideas. A Change Axis does not mandate generalization.>
+### Future Scenario Proposals / Change Axes — When Material
+<Only evidence-backed likely evolution or clearly marked speculative Proposals. A Change Axis does not mandate generalization.>
 
-### Implementation-Scoped Ideas — When Material
-<Link ordinary generic Ideas about possible implementation routes. They are not architecture truth.>
+### Implementation-Scoped Proposals — When Material
+<Link ordinary Proposals about possible implementation routes. They are not architecture truth.>
 
 ## Execution / Evidence
 
@@ -161,11 +161,11 @@ throwaway / evolutionary / non-code / not applicable
 ## Current Decisions
 <Selected prototype-plan choices when material; use the shared generic Decision trace fields only as useful.>
 
-## Area Concern Register — When Material
+## Q/R/P Register / Index — When Material
 <Inline/link the prototype-area register if material concerns need durable addressability.>
 
-## Planning Concerns / Q/R/P
-<Use the shared Concern model: Type/Priority/Concern Category/Status, grouping by shared resolution surface, AI Comment, optional Recommendation, selected Decision refs/residual state when material. Do not infer user preference from a technical prototype result. If none: `No material unresolved issues identified.`>
+## Q/R/P
+<Use the Core Q/R/P lifecycle contract: Type/Priority/Review Category/Status, grouping by shared resolution surface, AI review, optional Recommendation, selected Decision refs/residual state when material. Do not infer user preference from a technical prototype result. If none: `No material unresolved issues identified.`>
 
 ## Potential Simplifications / Better Routes — When Material
 <Only unselected changes to this prototype plan.>

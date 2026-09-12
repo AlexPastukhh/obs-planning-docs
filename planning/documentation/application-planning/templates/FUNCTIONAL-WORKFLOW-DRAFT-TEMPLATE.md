@@ -23,7 +23,7 @@ A Functional Workflow is not automatically:
 | Title | <title> |
 | Parent current planning owner | <reference> |
 | Status | candidate / active / validated / rejected / deferred |
-| Related criteria / Ideas / decisions | <links> |
+| Related criteria / Proposals / Decisions | <links> |
 
 ## 2. Valuable Outcome
 
@@ -55,29 +55,29 @@ A Functional Workflow is not automatically:
 
 <Observable result.>
 
-#### Local Planning Concerns / Q/R/P — Optional
+#### Local Q/R/P — Optional
 
-<Use the shared Concern model for applicable material concerns; group by one resolution surface when related.>
+<Use the Core Q/R/P lifecycle contract for applicable material concerns; group by one resolution surface when related.>
 
 #### Decisions — Optional
 
-<Selected local Decisions only; Recommendation remains separate. Use generic Decision trace fields when material.>
+<Selected local Decisions only; Recommendation remains separate. Use Proposal/Decision lifecycle (`../../idtspe-methodology/active/idtspe-core/shared/proposal-and-decision-lifecycle-contract.md`) fields when material.>
 
 #### What Must Be Tested — Optional
 
 <Uncertainty and evidence need.>
 
-#### Implementation Ideas — Optional
+#### Implementation Proposals — Optional
 
-| Idea / ID | Thought | Source | Status | Test needed |
+| Proposal / ID | Candidate | Source | Status | Test needed |
 |---|---|---|---|---|
 | <link> | <idea> | user / AI / checked source | open alternative | <test> |
 
-Material unresolved implementation questions may use scoped Idea review/deep planning. They do not become accepted workflow meaning until selected and integrated.
+Material unresolved implementation questions may use Proposal candidate review. They do not become accepted workflow meaning until selected and integrated.
 
 #### Requirement / Change Context Findings — Optional
 
-<Record candidate/shared Requirements or evidence-backed likely Change Axes discovered here when they materially affect later application/domain/implementation planning. A Change Axis is not a Requirement to generalize now. Early implementation thoughts remain generic Ideas until selected.>
+<Record candidate/shared Requirements or evidence-backed likely Change Axes discovered here when they materially affect later application/domain/implementation planning. A Change Axis is not a Requirement to generalize now. Early implementation candidates remain Proposals until selected.>
 
 ---
 
@@ -151,15 +151,15 @@ A `viable` alternative remains part of whole-solution/Application Concept compar
 |---|---|---|---|---|
 | T-01 | <question> | <test> | proposed / supported / rejected / inconclusive | <decision> |
 
-## 12. Planning Concerns / Q/R/P — When Material
+## 12. Q/R/P — When Material
 
-Use the shared `../../planning-concerns-and-decisions-model.md`; do not maintain a workflow-specific issue ontology.
+Use the shared `../../idtspe-methodology/active/idtspe-core/shared/qrp-lifecycle-and-review-contract.md`; do not maintain a workflow-specific issue ontology.
 
 ```markdown
 ### CG/Q/R/P-FW-<ID> — <title>
 **Type:** Question / Risk / Problem <!-- member only -->
 **Priority:** P0/Critical | P1/High | P2/Normal | P3/Low
-**Concern Category:** <primary category>
+**Review Category:** <primary category>
 **Status:** <current status>
 **Owner / affected meaning:** <workflow/Scenario/other owner>
 **Current Plan:** <selected Workflow baseline>
@@ -170,7 +170,7 @@ Use the shared `../../planning-concerns-and-decisions-model.md`; do not maintain
 **Stored At:** <when routed elsewhere>
 ```
 
-Related Ideas reference the canonical Concern/Group location rather than full mirrors. If none: `No material unresolved issues identified.`
+Related Proposals reference the canonical Concern/Group location rather than full mirrors. If none: `No material unresolved issues identified.`
 
 ## 13. Decisions
 

@@ -16,7 +16,7 @@ Scope: legacy compatibility command alias. Current planning behavior is owned by
   ],
   "description": "legacy compatibility alias routed into current IDTSPE work mode",
   "meaning": "Legacy alias for supplying material to the always-active IDTSPE Work Context. Treat the input as Source/Question/Proposal/Q-R-P material as appropriate, re-evaluate `UC-IDTSPE-COMPOSE-CURRENT-WORK`, and remain in Broad Discussion unless a Target/Target Module/Lens becomes materially useful. This alias never starts the former collect-ideas/Current-Plan runtime and never enables IDTSPE.",
-  "activeContextBehavior": "Reuse current Work Context when possible. If no Target is useful, continue Broad Discussion; if a bounded Target becomes useful, normal Target Formation may create one. Do not manufacture an Idea-owned or collect-ideas-owned planning unit.",
+  "activeContextBehavior": "Reuse current Work Context when possible. If no Target is useful, continue Broad Discussion; if a bounded Target becomes useful, normal Target Formation may create one. Do not manufacture an Idea-owned or collect-ideas-owned planning unit; legacy Idea means current Proposal compatibility only.",
   "traversalReadMode": "Reuse current reliable IDTSPE governance; refresh the selected owner/module route only when uncertain; full bootstrap only when no reliable sufficient governance context exists.",
   "ownerFiles": [
     "planning/documentation/idtspe-methodology/active/idtspe-core/shared/compose-current-work-use-case.md",
@@ -28,7 +28,7 @@ Scope: legacy compatibility command alias. Current planning behavior is owned by
   "keyReminders": [
     "Legacy compatibility alias only; the canonical material-planning runtime is IDTSPE.",
     "Do not execute or revive the former collect-ideas shell, Current Plan runtime, Idea Review runtime or old SDS profile runtime.",
-    "Treat supplied material as normal Sources/Ideas/Q/R/P for the resolved current IDTSPE Target and route through the applicable SDS Target Module when one is clear.",
+    "Treat supplied material as normal Sources/Proposals/Q/R/P for the resolved current IDTSPE Target and route through the applicable SDS Target Module when one is clear.",
     "No repository mutation, archive, commit or push."
   ],
   "userTarget": "<source/discussion to collect Ideas from>",

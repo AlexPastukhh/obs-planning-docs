@@ -1,6 +1,6 @@
 # Requirement Ownership And Natural-Owner Rule
 
-Status: S4 proposed synchronized SDS requirement contract
+Status: active SDS requirement ownership contract
 
 ## Core Rule
 

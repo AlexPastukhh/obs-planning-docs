@@ -3,7 +3,7 @@
 Status: active supporting workflow for IDTSPE-directed current-plan refinement
 Methodology authority: [`idtspe-methodology/active/idtspe-core/IDTSPE-DEFAULT-WORK-MODE.md`](idtspe-methodology/active/idtspe-core/IDTSPE-DEFAULT-WORK-MODE.md) + [`idtspe-methodology/active/idtspe-core/IDTSPE-SHELL.md`](idtspe-methodology/active/idtspe-core/IDTSPE-SHELL.md)
 This file is not a repository-level Use-Case owner.
-Shared Concern semantics: [`planning-concerns-and-decisions-model.md`](planning-concerns-and-decisions-model.md)
+Shared Q/R/P semantics: [`idtspe-methodology/active/idtspe-core/shared/qrp-lifecycle-and-review-contract.md`](idtspe-methodology/active/idtspe-core/shared/qrp-lifecycle-and-review-contract.md)
 
 ## Purpose
 
@@ -27,8 +27,8 @@ Real-Life Basis may be `known | partial | unknown`; do not invent a formal Need/
 
 - Real-Life;
 - UC / Scenario;
-- Planning Concerns / Q/R/P (owner-attached active/residual state plus retained trace when material);
-- Concern Group (shared resolution surface when several Q/R/P are causally coupled);
+- Q/R/P (owner-attached active/residual state plus retained trace when material);
+- Q/R/P Group (shared resolution surface when several Q/R/P are causally coupled);
 - Review Order (derived priority/dependency/blast-radius ordering of attached concerns);
 - Realization / Evolution.
 
@@ -37,13 +37,13 @@ Ordinary chat text controls current scope/depth/lens/redirection. No persistent 
 ## Concern Admission
 
 ```text
-candidate concern
+candidate Q/R/P
 → concrete affected semantic owner?
 → concrete Current/Target planned meaning?
 → material Question/Risk/Problem after cheap check?
 ```
 
-If no: integrate the obvious consequence, or keep as Idea/observation/evidence/context rather than an active concern.
+If no: integrate the obvious consequence, or keep as Proposal/observation/Evidence/context rather than an active concern.
 
 If several admitted concerns substantially share one answer/evidence/decision surface, group them rather than creating independent pseudo-problems.
 
@@ -67,7 +67,7 @@ integrate selected meaning into real semantic owner
 → update Review Currency only where material
 → update active/residual concern lifecycle with valid closure basis
 → preserve only material retained answer/rationale/decision trace
-→ update Area Concern Register routing/status when material
+→ update Q/R/P Register routing/status when material
 → recompute Review Order only if its basis changed
 ```
 
@@ -85,8 +85,8 @@ larger/modular/full area
 → register may live at area root while detailed concerns remain next to Scenario/Domain/Slice/Workspace owners
 ```
 
-One logical Concern/Group has one primary detailed storage location; Ideas/other owners reference it instead of mirroring full bodies.
+One logical Concern/Group has one primary detailed storage location; other owners reference it instead of mirroring full bodies.
 
 ## Exit
 
-Return current owner(s), selected meaning, truthful reviewed/partial/unchecked state, current Area Concern Register/active-residual Q/R/P/retained trace when material, and next semantic planning unit/realization handoff.
+Return current owner(s), selected meaning, truthful reviewed/partial/unchecked state, current Q/R/P Register/active-residual Q/R/P/retained trace when material, and next semantic planning unit/realization handoff.

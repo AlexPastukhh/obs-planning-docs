@@ -1,6 +1,6 @@
 # IDTSPE Core
 
-Status: active canonical generic methodology package  
+Status: active canonical generic methodology package
 Scope: always-active proportional planning/resolution work model independent of SDS/Application-specific semantics.
 
 ## Boundary
@@ -73,7 +73,7 @@ Use [`IDTSPE-CORE-MAP.md`](IDTSPE-CORE-MAP.md) for a compact topology view; use 
 - [`shared/idtspe-unit-and-target-step-result-model.md`](shared/idtspe-unit-and-target-step-result-model.md) — Core State / Target Step Result / Unit applicability-materiality-omission.
 - [`shared/broad-discussion-and-integration-checkpoint-model.md`](shared/broad-discussion-and-integration-checkpoint-model.md) — Broad Discussion and checkpoint interaction/projection semantics.
 - [`shared/proposal-and-decision-lifecycle-contract.md`](shared/proposal-and-decision-lifecycle-contract.md) — Proposal candidate space, selection, Decision trace/retention/revalidation.
-- [`shared/qrp-priority-and-related-groups.md`](shared/qrp-priority-and-related-groups.md) — optional Q/R/P priority/grouping mechanics.
+- [`shared/qrp-lifecycle-and-review-contract.md`](shared/qrp-lifecycle-and-review-contract.md) — Q/R/P lifecycle, priority/category/grouping and retention.
 - [`shared/target-module-model.md`](shared/target-module-model.md) — reusable Target Module contract.
 - [`lenses/LENS-MODEL.md`](lenses/LENS-MODEL.md) + [`lenses/README.md`](lenses/README.md) — reusable Lens contract and registry.
 - [`shared/finding-disposition-contract.md`](shared/finding-disposition-contract.md) — producer → Finding Candidate → owner/State/lifecycle disposition.
@@ -81,7 +81,7 @@ Use [`IDTSPE-CORE-MAP.md`](IDTSPE-CORE-MAP.md) for a compact topology view; use 
 - [`shared/artifact-placement-and-idtspe-response-contract.md`](shared/artifact-placement-and-idtspe-response-contract.md) — physical representation/placement interface and P-14 response contract.
 - [`shared/knowledge-basis-contract.md`](shared/knowledge-basis-contract.md) — reusable knowledge/theory boundary.
 - [`shared/resolution-slot-and-target-formation-resolution-set.md`](shared/resolution-slot-and-target-formation-resolution-set.md) — Target Formation/resolution mechanics.
-- [`../PLANNING-GOVERNANCE.md`](../PLANNING-GOVERNANCE.md) — authority/governance rules.
+- [`shared/user-input-decision-and-answer-intake-rule.md`](shared/user-input-decision-and-answer-intake-rule.md) — USER input classification, question policy and conditional Decision Gate interaction.
 
 ## Profile Rule
 

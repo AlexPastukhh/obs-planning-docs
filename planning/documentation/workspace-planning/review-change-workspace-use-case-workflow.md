@@ -12,18 +12,18 @@ Recommended integrated shape: [`WORKSPACE-USE-CASE-PLANNING-TEMPLATE.md`](WORKSP
 
 Resolve the current UC contract and all canonical/supporting owners. Summarize current state at high level and link those owners. Do not duplicate complete current file bodies merely to make the plan self-contained.
 
-## 2. Related Ideas / Inputs
+## 2. Related Proposals / Inputs
 
-Gather every selected local Idea/input affecting this UC. Reference each cross-cutting Idea once and state only its UC-specific impact here.
+Gather every selected local Proposal/input affecting this UC. Reference each cross-cutting Proposal once and state only its UC-specific impact here.
 
 Invariant:
 
 ```text
-several Ideas affecting one UC
+several Proposals affecting one UC
 → one integrated Target UC
 ```
 
-State `Planned Change — High Level` before detailed Step review so the complete intended UC change is understandable without reading every local Idea/finding.
+State `Planned Change — High Level` before detailed Step review so the complete intended UC change is understandable without reading every local Proposal/finding.
 
 ## 3. Step 1 — Target UC
 
@@ -104,10 +104,10 @@ When several UC boundaries/relations are materially affected, use `UC-PLAN-WORKS
 
 ## 9. Exit
 
-Return the selected planning depth plus the current Area Concern Register and only material active/residual Planning Concerns/Q/R/P relative to the Current Plan, with retained trace when useful. Planning is read-only unless a separate mutation/package route is explicitly invoked.
+Return the selected planning depth plus the current optional Q/R/P register/index and only material active/residual Q/R/P relative to the Current Plan, with retained trace when useful. Planning is read-only unless a separate mutation/package route is explicitly invoked.
 
 ## Current Entry / Reuse / Dependency Rules
 
 Start from Real-Life Basis + the candidate/current useful result. Reuse the existing UC when it already owns the Need/result. A separate UC is justified when its result is independently useful/reusable, not merely because a check repeats.
 
-Only after the semantic owner is grounded may a material Planning Concern become active under the shared Concern model; group related Q/R/P by shared resolution surface, preserve residual state/retained trace, and do not invent user-owned preferences in AI Comment. Step 3 identifies Target Dependencies before selecting exact Linked Notes/file realization when material.
+Only after the semantic owner is grounded may a material Q/R/P item become active under the Core Q/R/P contract; group related Q/R/P by shared resolution surface, preserve residual state/retained trace, and do not invent user-owned preferences in AI review. Step 3 identifies Target Dependencies before selecting exact Linked Notes/file realization when material.

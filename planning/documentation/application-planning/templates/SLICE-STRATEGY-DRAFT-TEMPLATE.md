@@ -36,8 +36,8 @@ Blank sections are not requirements. Skip this artifact whenever the coordinatio
 ### Change Axes / Change Pressure
 <Only evidence-backed expected variation/pressure that should influence coupling/boundary evaluation.>
 
-### Relevant Implementation-Scoped Ideas
-<Link candidate Ideas; they are not selected implementation truth merely because they are listed.>
+### Relevant Implementation-Scoped Proposals
+<Link candidate Proposals; they are not selected implementation truth merely because they are listed.>
 
 ## Decomposition Goals
 
@@ -56,7 +56,7 @@ Blank sections are not requirements. Skip this artifact whenever the coordinatio
 
 ## Alternative Decomposition — When Material
 
-<Describe only a genuinely different integrated slicing route. Use normal Idea/Variant reasoning when a real choice exists.>
+<Describe only a genuinely different integrated slicing route. Use normal Proposal/Decision reasoning when a real choice exists.>
 
 ## Change-Axis / Coupling Review
 
@@ -81,13 +81,13 @@ Architecture/Slice planning recommends implementation sequence; it does not rede
 <Derived decomposition/order coordination and why it is useful.>
 
 ## Current Decisions
-<Use the shared Planning Concern/Decision trace contract when material.>
+<Use the canonical Proposal/Decision lifecycle contract when material.>
 
-## Area Concern Register — When Material
-<Inline/link the current strategy-area register when durable concerns exist.>
+## Q/R/P Index — When Material
+<Inline/link a lightweight index only when distributed durable Q/R/P needs navigation; natural owners remain authoritative.>
 
-## Planning Concerns / Q/R/P
-<Use the shared Concern model. Keep product-priority/user-owned unknowns explicit; AI may recommend technical implementation sequence only from sufficient architecture/dependency evidence. Group related Q/R/P by shared resolution surface and keep member Priority/Concern Category/Status.>
+## Q/R/P
+<Use the canonical Q/R/P lifecycle contract. Keep product-priority/user-owned unknowns explicit; AI may recommend technical implementation sequence only from sufficient architecture/dependency evidence. Group related Q/R/P by shared resolution surface and keep member Priority / Review Category / Status only when useful.>
 
 If none: `No material unresolved issues identified.`
 

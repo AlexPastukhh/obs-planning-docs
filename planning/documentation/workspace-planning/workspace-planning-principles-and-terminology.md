@@ -5,7 +5,7 @@ Scope: plan changes to evolving Workspaces through useful Workspace Use Cases, e
 
 Canonical generic UC identity/registry semantics: [`../principles-and-terminology.md`](../principles-and-terminology.md)
 Generic Architecture Lens: [`../architecture-planning/README.md`](../architecture-planning/README.md)
-AI reviewability/direction: [`../ai-reviewability-and-directed-planning-principles.md`](../ai-reviewability-and-directed-planning-principles.md)
+AI reviewability/direction: [`../idtspe-methodology/active/ai-reviewability/README.md`](../idtspe-methodology/active/ai-reviewability/README.md)
 Recommended integrated shape: [`WORKSPACE-USE-CASE-PLANNING-TEMPLATE.md`](WORKSPACE-USE-CASE-PLANNING-TEMPLATE.md)
 
 ## 1. UCDS Pattern
@@ -57,7 +57,7 @@ Mini UCDS
 → compact composed plan, often one file
 
 Modular UCDS
-→ the same current plan split into UC/shared-Idea/rule/realization/order owners as growth makes review/navigation cheaper
+→ the same current plan split into UC/shared-Proposal/rule/realization/order owners as growth makes review/navigation cheaper
 ```
 
 Mini→Modular is structural growth, not weaker/stronger semantic correctness and not a new planning stage. Do not create an append-only command-result ledger or a second competing current plan.
@@ -70,7 +70,7 @@ A material Workspace structure/semantic owner should be justified by a useful Wo
 
 ```text
 Need / source / discussion
-→ Ideas when answer-seeking change proposals exist
+→ Proposals when answer-seeking change candidates exist
 → affected existing Workspace UC or justified candidate new UC
 → target semantic meaning
 → architecture/path review proportionally
@@ -95,9 +95,9 @@ Step 1 should be sufficiently correct by UC responsibility before Step 2 normall
 
 If Step 3 repeatedly causes Step 1/2 redesign, review stage completion/order/boundaries. Genuine new evidence/infeasibility returns upstream as an explicit finding.
 
-## 5. Primary Planning Unit And Shared Ideas
+## 5. Primary Planning Unit And Shared Proposals
 
-The primary integrated planning unit is the affected/new Workspace UC, not an Idea and not a file. Several Ideas may converge into one Target UC. One Idea may affect several UCs and remains one Idea; shared Ideas are defined once and referenced with local impact from each UC.
+The primary integrated planning unit is the affected/new Workspace UC, not a Proposal and not a file. Several Proposals may converge into one Target UC. One Proposal may affect several UCs and remains one Proposal candidate until selected; shared candidate meaning is defined once and referenced with local impact from each UC.
 
 ## 6. Current / Target / Transition
 
@@ -190,6 +190,6 @@ Real-Life Situation / Need / Desired Result
 → Vertical Realization / verification when useful
 ```
 
-Planning Concerns/Q/R/P use the shared `../planning-concerns-and-decisions-model.md`. Active/residual concerns attach to a concrete semantic owner/current planned state; related Q/R/P sharing one resolution surface form a Concern Group. Concern Priority reuses Review Priority semantics and stays distinct from Concern Category/Review Order. AI Comment must not invent user-owned Need/preferences/risk tolerance. `Review Order` is derived, never a queue. Real-Life Basis may be `known | partial | unknown`; formal RLUC is proportional.
+Planning Q/R/P uses Core `../idtspe-methodology/active/idtspe-core/shared/qrp-lifecycle-and-review-contract.md`. Active/residual concerns attach to a concrete semantic owner/current planned state; related Q/R/P sharing one resolution surface form a Q/R/P Group. Q/R/P Priority reuses Review Priority semantics and stays distinct from Review Category/Review Order. AI review must not invent user-owned Need/preferences/risk tolerance. `Review Order` is derived, never a queue. Real-Life Basis may be `known | partial | unknown`; formal RLUC is proportional.
 
 Reuse-first: if an existing UC already owns the useful result, reuse it; extract a supporting UC when it has an independently useful reusable result, distinct trigger/result and meaningful consumers. Do not create a new UC for a trivial repeated check, but do not collapse an independently useful capability merely to reduce count.

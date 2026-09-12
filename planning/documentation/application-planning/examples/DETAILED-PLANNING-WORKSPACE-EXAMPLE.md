@@ -3,7 +3,7 @@
 > **Compatibility vocabulary boundary.** This supporting file preserves older application-planning discovery/workspace heuristics. Terms such as `Scenario DATA`, `Behavior Items`, standalone `Requirement`, or `Slice Strategy` below do not define current SDS owner identities. Current authority is the active SDS Target/Lens registries: Feature owns behavior/semantic data, Scenario owns actor-to-Benefit journey composition, requirements stay with natural Feature/Domain/Slice/Shared owners, and Slice Strategy is not an active Target family. Use older terms only as supporting heuristics where they do not conflict with current owners.
 
 
-Status: current reusable practical example
+Status: compatibility/supporting practical example; not current SDS semantic authority
 Scope: demonstrate how whole-solution/Application Concept planning becomes Prototype Scenarios/Screens, Requirements/change context, canonical Scenario/Screen owners, Domain work, Slice Strategy, Implementation Slices, verification and integration review.
 
 Methodology owner: [`../detailed-planning/README.md`](../detailed-planning/README.md)
@@ -488,7 +488,7 @@ no
 
 This is not preserved as a risk forever once one route is selected.
 
-## 12. Scoped Idea Work
+## 12. Scoped Proposal Work — Legacy `ideas/` Workspace Path
 
 Because the ordering question requires real answer-seeking work:
 
@@ -498,16 +498,16 @@ SCN-SCHEDULE-VISIT/
     └── assignment-vs-slot-order.md
 ```
 
-Idea Variants:
+Proposal candidates:
 
 ```text
-Idea Variant A
+Proposal A
 → final technician first, exact slot second
 
-Idea Variant B
+Proposal B
 → customer feasible window first, technician second
 
-Idea Variant C
+Proposal C
 → provisional technician + customer slot + final confirmation
 ```
 
@@ -515,7 +515,7 @@ Local evaluation prefers B/C over A, but integrated evaluation checks dispatcher
 
 ## 13. Whole Scenario Variant Appears
 
-The Idea work reveals not merely one local field change but two integrated Scenario designs.
+The Proposal review reveals not merely one local field change but two integrated Scenario designs.
 
 ### Existing root design
 
@@ -568,7 +568,7 @@ Integrated review selects VAR-B.
 Workspace navigation becomes conceptually:
 
 ```text
-Current Selected Variant:
+Selected Scenario design:
 VAR-B
 
 VAR-A:
@@ -580,7 +580,7 @@ selected
 
 The first Variant does not need to be physically moved into `variants/VAR-A/`. Status/navigation makes the semantic peer relationship explicit.
 
-The answered Question/selected route leaves active Q/R/P, but any material residual Risk/Problem would remain active and the material Decision trace may be retained. In this example no residual risk remains, so the active concern projection is empty after selection.
+The answered Question/selected route leaves active Q/R/P, but any material residual Risk/Problem would remain active and the material Decision trace may be retained. In this example no residual risk remains, so the active Q/R/P projection is empty after selection.
 
 Current Decision (shared Decision-trace semantics):
 

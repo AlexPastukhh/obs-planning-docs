@@ -28,7 +28,7 @@ Prototype Scenarios
 Prototype Screens
 candidate Requirements
 candidate Scenario DATA / Behavior
-Future Scenario Ideas / Change Axes
+Future Scenario Proposals / Change Axes
 ↓
 review / observe / simplify / invalidate
 ↓
@@ -190,9 +190,9 @@ Prototype findings may become:
 ```text
 candidate Requirement
 confirmed Requirement
-Future Scenario Idea
+Future Scenario Proposal
 Change Axis
-implementation-scoped Idea
+implementation-scoped Proposal
 ordinary question/risk/problem
 ```
 
@@ -217,11 +217,11 @@ candidate Requirements
 candidate DATA / Behavior
 → promote to Scenario/shared Scenario owners
 
-Future Scenario Ideas / Change Axes
+Future Scenario Proposals / Change Axes
 → preserve as non-current evolution context when justified
 
-implementation-scoped Ideas
-→ remain Ideas until Domain/Slice planning selects or rejects them
+implementation-scoped Proposals
+→ remain Proposals until Domain/Slice planning selects/rejects/refines them
 ```
 
 Prototype output is evidence/input. It must not remain a hidden second behavioral or spatial authority after canonical owners exist.
