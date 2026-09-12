@@ -9,7 +9,7 @@ Every concrete Target may have generic Core State Units:
 ```text
 Sources
 Questions
-Ideas
+Proposals
 Q/R/P
 Planning Branch state
 Decisions
@@ -38,11 +38,11 @@ The Step-Result contract is a semantic integration contract, not a requirement t
 Broad Discussion
 → may span many messages
 → uses Key Points to structure material logical discussion parts
-→ may carry explicit material Ideas + related Q/R/P/Evidence inline
+→ may carry explicit material Proposals + related Q/R/P/Evidence inline
 → does not require a per-response Intake Summary or block-owner record
 
 Integration Checkpoint
-→ periodically reconciles accumulated discussion/current Sources
+→ situationally reconciles accumulated discussion/current Sources when a coherent whole-state view is useful
 → renders coherent applicable Generic State
 → renders complete applicable Target Result Units
 → applies relevant Lens/consistency checks
@@ -74,7 +74,7 @@ Resolution / Production Method
     Question candidates
     Problem candidates
     Target Goal / Desired Outcome from Target context
-  Idea/pattern aids
+  Proposal/pattern aids
   branch/escalation triggers
   Internal Object Contracts/shared methods when useful
 
@@ -155,9 +155,9 @@ Target Goal / Desired Outcome from the Target contract/context
 ≠ fixed sequence
 ```
 
-The current Target may add, remove, split, merge or reopen Questions through normal Core question-set resolution, and may surface/refine material Problems through existing P-09 Problem semantics. When a Module is active, its Target Goal plus Question/Problem candidates are the ordinary starting driver set for Idea discovery, but Questions/Problems discovered from Sources, previous steps/checkpoints, Broad Discussion, user/AI input or dispositioned findings are accepted on equal Core semantic footing and are not second-class simply because they were not predeclared in the Module. An independently useful new Goal goes through normal scope/Target Formation rather than becoming a Generic State Unit by implication.
+The current Target may add, remove, split, merge or reopen Questions through normal Core question-set resolution, and may surface/refine material Problems through existing P-09 Problem semantics. When a Module is active, its Target Goal plus Question/Problem candidates are the ordinary starting driver set for Proposal discovery, but Questions/Problems discovered from Sources, previous steps/checkpoints, Broad Discussion, user/AI input or dispositioned findings are accepted on equal Core semantic footing and are not second-class simply because they were not predeclared in the Module. An independently useful new Goal goes through normal scope/Target Formation rather than becoming a Generic State Unit by implication.
 
-Concrete Questions are Core State Units; material Problems use the existing P-09 Problem meaning. Every material Idea explicitly records which Target Goal/Question/Problem it addresses.
+Concrete Questions are Core State Units; material Problems use the existing P-09 Problem meaning. Every material Proposal explicitly records which Target Goal/Question/Problem it addresses.
 
 ## Result Unit / Field Explanation Rule
 

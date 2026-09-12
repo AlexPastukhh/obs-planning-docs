@@ -17,7 +17,7 @@ Check every material choice. If no material unknown can change the answer, resol
 ## Target Inputs / Evidence
 
 ```text
-candidate Target / RQ / Idea / Branch
+candidate Target / RQ / Proposal / Branch
 available Evidence
 assumptions
 constraints

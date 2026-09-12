@@ -1,12 +1,12 @@
 # Domain Planning Workflow
 
-Status: active reusable workflow
+Status: active supporting workflow; canonical durable Domain semantics are owned by SDS `TM-DOMAIN-OWNER`
 Scope: compare/refine/select/review an optional current Domain owner from discovered semantic evidence, current application behavior, requirements and justified expected change without over-generalizing for speculative futures.
 
 Discovery workflow: [`domain-discovery-workflow.md`](domain-discovery-workflow.md)
 Canonical application change context: [`requirements-and-change-context.md`](requirements-and-change-context.md)
 Generic Architecture Lens / Change Axes: [`../architecture-planning/README.md`](../architecture-planning/README.md)
-Supporting prose shape when representation pressure justifies it: [`templates/DOMAIN-DRAFT-TEMPLATE.md`](templates/DOMAIN-DRAFT-TEMPLATE.md). Canonical semantic contract: [`../idtspe-methodology/active/profiles/sds/target-modules/TM-DOMAIN-DISCOVERY.md`](../idtspe-methodology/active/profiles/sds/target-modules/TM-DOMAIN-DISCOVERY.md)
+Supporting prose shape when representation pressure justifies it: [`templates/DOMAIN-DRAFT-TEMPLATE.md`](templates/DOMAIN-DRAFT-TEMPLATE.md). Canonical durable semantic contract: [`../idtspe-methodology/active/profiles/sds/target-modules/TM-DOMAIN-OWNER.md`](../idtspe-methodology/active/profiles/sds/target-modules/TM-DOMAIN-OWNER.md). Transient candidate discovery is owned by [`TM-DOMAIN-DISCOVERY`](../idtspe-methodology/active/profiles/sds/target-modules/TM-DOMAIN-DISCOVERY.md)
 Shared draft-state contract: [`detailed-planning/README.md`](detailed-planning/README.md)
 
 ## 1. Purpose
@@ -33,10 +33,10 @@ Read proportionally:
 
 ```text
 selected Application Concept / responsibility
-current Application Scenarios
-current detailed Scenarios
-Scenario DATA / Behavior Items
-confirmed Requirements
+selected Feature behavior / BR-*
+current Scenario journey compositions when relevant
+selected Slice/Shared consumer pressure
+owner-local implementation requirements when relevant
 Domain Discovery evidence/candidates/Variants when available
 prototype evidence when relevant
 material Change Axes / Change Pressure from Architecture Planning
@@ -44,7 +44,7 @@ relevant implementation-scoped Ideas
 existing Domain/current implementation evidence when reviewing an existing system
 ```
 
-Current Requirements and selected Scenario meaning outrank speculative future possibilities.
+Current selected Feature behavior and current natural-owner requirements outrank speculative future possibilities; Scenario journey meaning is additional composition input where relevant.
 
 ## 3. Review Semantic Core / Candidates
 
@@ -120,7 +120,7 @@ An axis elsewhere does not justify abstraction here.
 
 ## 6. Compare Integrated Domain Variants
 
-A Domain Variant is one coherent integrated semantic model, not one small implementation alternative. Compare material Variants against current Scenario/Requirement correctness, semantic clarity, invariant enforceability and justified likely evolution.
+A Domain Variant is one coherent integrated semantic model, not one small implementation alternative. Compare material Variants against current Feature/current-owner correctness, semantic clarity, invariant enforceability and justified likely evolution.
 
 ## 7. Stress Checks
 
@@ -128,7 +128,7 @@ A Domain Variant is one coherent integrated semantic model, not one small implem
 
 ```text
 Can required current behavior be expressed simply?
-Are Scenario/Requirement rules contradicted?
+Are selected Feature behavior or current natural-owner constraints contradicted?
 Is important user-visible meaning missing?
 Did Domain planning invent behavior?
 ```
@@ -155,7 +155,7 @@ Would a small boundary now materially reduce evidence-backed future cost?
 ### Premature-Generalization Check
 
 ```text
-No current Requirement/Scenario need
+No current Feature/natural-owner need
 + no material Change Axis crossing here
 → remove/simplify unsupported abstraction.
 ```
@@ -172,7 +172,7 @@ Persistence is stress input, not Domain authority.
 
 Selected Domain meaning belongs in the Domain owner/template, with material rationale in Current Decisions when useful. Implementation-scoped Ideas promoted into Domain are no longer separate current implementation authority.
 
-If Domain planning exposes an upstream Requirement/Scenario problem, return an explicit finding rather than silently changing upstream meaning.
+If Domain planning exposes an upstream Feature/current-owner problem, return an explicit finding rather than silently changing upstream meaning.
 
 ## 9. Domain Verification Meaning
 
@@ -206,7 +206,7 @@ Value Object boundaries when justified
 selected/split/merged/rejected Aggregate boundaries when justified
 lifecycle/rules/invariants when needed
 explicit policy/variation where materially useful
-traceability to current Scenarios/Requirements
+traceability to selected Feature BRs and current natural-owner constraints
 justified Change-Axis reasoning
 selected current Variant when alternatives exist
 proportional Domain verification meaning
@@ -214,7 +214,7 @@ no unsupported future abstractions
 current draft state / decisions / findings
 ```
 
-A valid result may also be: `no separate Domain owner is justified; keep meaning in existing Scenario/Requirement owners`.
+A valid result may also be: `no separate durable Domain owner is justified; keep meaning in existing natural semantic owners and/or transient discovery`.
 
 ## Consume Realization Evidence Without Authority Reversal
 

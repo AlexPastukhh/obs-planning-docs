@@ -24,6 +24,8 @@ Replacement Package App
 
 This file is navigation only. It does not own Builder behavior, package schema, consumer behavior, Domain semantics, implementation mechanics or proof requirements.
 
+Detailed app-specific/external realization composition: [`replacement-package-realization-composition.md`](replacement-package-realization-composition.md). It composes current IDTSPE Exact/Revalidation mechanics with Builder review and App realization while preserving each product owner boundary.
+
 ## Current vs target boundary
 
 **Current producer boundary:** exact readable source → replacement ZIP → OBS-ACTION → stop.

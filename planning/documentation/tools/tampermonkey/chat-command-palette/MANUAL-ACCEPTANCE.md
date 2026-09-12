@@ -78,14 +78,15 @@ Canonical application semantics: [`scenarios/README.md`](scenarios/README.md). A
 
 ## Registry-driven parity / no-hardcode
 
-- Confirm `seed/use-cases.json` exactly projects every current canonical Use-Case registry under `planning/**`, while legacy/historical compatibility indexes are not projected as current UCs.
+- Confirm `seed/use-cases.json` exactly projects the methodology Use Cases reachable from `planning/documentation/use-case-registry-map.md` and its explicitly mapped current scoped registries only. Confirm project/application registries such as `planning/documentation/application-planning/use-case-registry.md` are not promoted into the methodology-use catalog merely because they exist.
 - Confirm `seed/commands.json` exactly projects current `planning/commands/*.command.md`.
-- Search generated `chat-command-palette.user.js` for representative current IDs (`UC-PLAN-DOMAIN`, `application_domain.plan`) and confirm they are absent as maintained catalog data.
+- Search generated `chat-command-palette.user.js` for representative catalog identities (`UC-IDTSPE-COMPOSE-CURRENT-WORK`, `UC-PLAN-DOMAIN`, `application_domain.plan`) and confirm they are absent as maintained embedded catalog data; current identities belong to generated seeds/repository definitions, not runtime source.
 
-## Universal order acceptance
+## Contextual composition acceptance
 
-- After Hard Reload confirm the repository default semantic route is approximately: current reality / whole solution → Application responsibility/prototype → Scenario Discovery/Scenario → Domain Discovery/Domain → realization stress-check → Slice Strategy/Slice → internal Workspace Use Cases → contextual WEUC Instances → architecture path/pressure/decision/evolution → Testing → remaining capabilities.
-- Confirm existing `собери идеи` and Mini/Modular/Full SDS controls stay before the route as orchestration/profile controls; no new collect-ideas variants are introduced by this Helper change.
+- After Hard Reload confirm the Helper does **not** present a fixed universal planning order. IDTSPE is already the always-active proportional work model; the current Methodology Use-Case Registry Map and selected Use-Case Process determine which registries/components are worth consulting for the present situation.
+- Confirm Broad Discussion can remain sufficient without forcing a Target, Target Module, Lens or Checkpoint. When a specialized component is useful, generic `idtspe` registry dispatch and current component aliases remain available without manufacturing one shortcut row per component.
+- Confirm legacy orchestration/profile shortcuts do not become a second runtime authority merely because a command file is still retained for compatibility.
 
 ## Planning-methodology route acceptance
 
@@ -97,10 +98,10 @@ Canonical application semantics: [`scenarios/README.md`](scenarios/README.md). A
 ## IDTSPE / SDS Methodology Navigation
 
 - [ ] Methodology view buttons/labels/order are derived from current command metadata; the UI source does not maintain a separate hard-coded IDTSPE/SDS view list.
-- [ ] Commands → `IDTSPE` shows exactly 9 primary methodology rows.
-- [ ] Commands → `SDS — IDTSPE Profile` shows exactly 32 primary methodology rows; the related Consistency validator is visibly marked RELATED and does not count as a new primary surface.
+- [ ] Commands → `IDTSPE` shows exactly 11 primary methodology rows.
+- [ ] Commands → `SDS — IDTSPE Profile` shows exactly 19 primary methodology rows. Additional active SDS components remain reachable through generic current registry dispatch; shortcut count is not ontology count.
 - [ ] Focused SDS rows are visually nested under their canonical Target Module row where configured.
-- [ ] Prototype/Screen/WEUC/Domain/Slice Strategy/Test Strategy/Requirement/Frontend/Cross-Cutting/Practical Test badges expose their conditional/optional/cross-cutting status without hiding commands.
+- [ ] Prototype/Screen/Domain/Slice/Practical-Test and Lens shortcut badges expose relevant conditional/focused status. Retired Slice Strategy/Test Strategy/Requirement/Cross-Cutting command identities, when retained, are hidden compatibility routes and do not appear as primary methodology rows.
 - [ ] IDTSPE contains a separate metadata-driven `Lens Operations` section with `подбери линзы`, `примени линзу`, Documentation / Representation and Linked Notes rows.
 - [ ] `подбери линзы` returns an applicability/disposition view without pretending to run all Lens bodies.
 - [ ] `примени линзу` can dispatch to any registered applicable Core/SDS Lens while preserving the natural host Target.

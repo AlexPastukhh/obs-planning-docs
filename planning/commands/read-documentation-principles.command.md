@@ -1,7 +1,7 @@
 # Bootstrap Reusable Documentation Principles
 
 Status: active project command definition
-Scope: thin read-only shortcut for using current Documentation guidance in the active Session; semantic authority remains in the current Session/Documentation owners.
+Scope: thin read-only shortcut for current methodology/documentation guidance; semantic authority remains in the mapped Documentation/IDTSPE/profile owners.
 
 [PLANNING_COMMAND_DEFINITION]
 {
@@ -24,23 +24,23 @@ Scope: thin read-only shortcut for using current Documentation guidance in the a
     "docs principles"
   ],
   "description": "read current documentation guidance",
-  "meaning": "Use current Documentation principles and the current Documentation Use-Case registry as repository guidance for the active Session without recreating the retired UC-DOC-ORIENT/bootstrap runtime.",
-  "activeContextBehavior": "When an active documentation target is clear, use Session guidance to resolve the relevant current Documentation Use Case and owners. If no task is active, read the current Documentation principles/registry and stop without inventing a target.",
-  "traversalReadMode": "Targeted current guidance: Session repository-guidance owner plus current Documentation principles and Use-Case registry; do not traverse the retired bootstrap/responsibility-map chain by default.",
+  "meaning": "Use current Documentation principles plus the Methodology Use-Case Registry Map to resolve relevant repository methodology guidance. This is a thin read-only shortcut; it does not create a separate Session/documentation runtime and does not enable IDTSPE.",
+  "activeContextBehavior": "Resolve the current methodology-use situation through UC-DOC-USE-REPOSITORY-GUIDANCE and the registry map. Read only the relevant current Documentation/IDTSPE/profile owners. With no concrete task, perform a compact guidance orientation and stop without inventing a Target.",
+  "traversalReadMode": "Targeted current guidance: Methodology Use-Case Registry Map + UC-DOC-USE-REPOSITORY-GUIDANCE + current Documentation principles; follow additional registries/owners only when their applicability is material.",
   "ownerFiles": [
-    "planning/session/use-cases/UC-SESSION-USE-REPOSITORY-GUIDANCE.md",
-    "planning/documentation/principles-and-terminology.md",
-    "planning/documentation/use-case-registry.md"
+    "planning/documentation/use-case-registry-map.md",
+    "planning/documentation/use-cases/UC-DOC-USE-REPOSITORY-GUIDANCE.md",
+    "planning/documentation/principles-and-terminology.md"
   ],
-  "expectedOutput": "Compact read-only Documentation guidance orientation: relevant current Documentation Use Case/owners when applicable, current principles/registry guidance, material applicability notes or unresolved ownership questions, and the preserved permission boundary; no repository mutation.",
+  "expectedOutput": "Compact read-only methodology guidance orientation: current applicable methodology Use Case(s), relevant owners/registries, contextual applicability/adaptation notes and any unresolved authority question; no forced Target and no repository mutation.",
   "permissionMode": "read-only",
   "keyReminders": [
-    "This alias is a thin invocation shortcut, not a separate Documentation orientation Use Case.",
-    "Use UC-SESSION-USE-REPOSITORY-GUIDANCE for Session-level guidance selection and the current Documentation P&T/registry for Documentation meaning/navigation.",
-    "Resolve the applicable current Documentation Use Case and canonical owner when one is needed; do not revive the retired pre-fundamental UC-DOC-ORIENT route.",
-    "README/index navigation, commands, examples, helper projections and implementation do not override canonical semantic owners.",
-    "If no active task exists, read the current guidance and stop instead of inventing a target.",
-    "This command is read-only and does not authorize file edits, archive creation, commit or push."
+    "This command is a thin shortcut to current methodology-use navigation, not a separate bootstrap mode or Session planning owner.",
+    "Start from UC-DOC-USE-REPOSITORY-GUIDANCE and the Methodology Use-Case Registry Map; IDTSPE remains always active and proportionally composed.",
+    "Recommended guidance is not automatically selected/executed: apply as-is, adapt, defer or omit according to current context and owner contracts.",
+    "README/index navigation, commands, examples and Helper projections do not override canonical methodology/semantic owners.",
+    "If no active task exists, orient to current guidance and stop instead of inventing a Target.",
+    "Read-only: no file edits, archive, commit or push."
   ],
   "userTarget": "<documentation work in this session or none yet>",
   "palette": true,

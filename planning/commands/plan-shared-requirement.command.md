@@ -1,7 +1,7 @@
 # Plan Shared Requirement
 
-Status: active project command definition
-Scope: one concrete OBS Planning command route. Reusable behavior remains in linked owner files.
+Status: legacy compatibility command definition
+Scope: historical invocation alias redirected to current IDTSPE/SDS authority; hidden from the primary palette.
 
 [PLANNING_COMMAND_DEFINITION]
 {
@@ -13,27 +13,29 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
   "commandFamily": [
     "спланируй общее требование"
   ],
-  "description": "requirement",
-  "meaning": "Run TM-REQUIREMENT through the IDTSPE Shell for the selected target.",
-  "activeContextBehavior": "Resolve or reuse the natural current IDTSPE Target/context; infer CREATE/REFINE/EXTEND/REVALIDATE/REPAIR from current state. Do not create a fake Target when the module/lens gate fails.",
+  "description": "legacy compatibility alias for owner-local implementation-requirement discovery",
+  "meaning": "Legacy alias for requirement planning. TM-REQUIREMENT is retired: evaluate whether material implementation constraints need to become/change/retire owner-local IR/PFR through LENS-IMPLEMENTATION-REQUIREMENTS-DISCOVERY and the requirement-ownership rule. A Shared Capability is introduced only if reusable multi-consumer implementation responsibility independently passes its existence gate.",
+  "activeContextBehavior": "Treat this legacy trigger as explicit compatibility intent inside always-active IDTSPE. Re-evaluate current Use-Case composition and route only to the current owners listed here; preserve local applicability/materiality gates and do not revive the retired Target family.",
   "traversalReadMode": "Reuse current reliable IDTSPE/SDS governance; targeted refresh of the selected owner route when uncertain; full bootstrap only when no reliable sufficient governance context exists.",
   "ownerFiles": [
-    "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-REQUIREMENT.md",
+    "planning/documentation/idtspe-methodology/active/profiles/sds/lenses/reusable/LENS-IMPLEMENTATION-REQUIREMENTS-DISCOVERY.md",
+    "planning/documentation/idtspe-methodology/active/profiles/sds/shared/requirement-ownership-and-exception-rule.md",
+    "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-SHARED-IMPLEMENTATION-CAPABILITY.md",
     "planning/documentation/idtspe-methodology/active/profiles/sds/shared/idtspe-command-surface-contract.md"
   ],
-  "expectedOutput": "Standalone Requirement only when justified; otherwise a routed result back to the natural owner.",
+  "expectedOutput": "Owner-local IR/PFR disposition and, only when independently justified, a Shared Capability binding. No standalone Requirement Target.",
   "permissionMode": "read-only-planning",
   "keyReminders": [
-    "SDS is an IDTSPE profile, not a second runtime.",
-    "AI proposals are Ideas by default; they become Decisions only when actually selected.",
-    "Do not infer a dedicated file from Target identity; use Documentation / Representation and P-14 when persistence is material.",
-    "This command plans/reviews only; it does not edit repository files, implement, test, commit or push."
+    "Legacy compatibility alias only; do not expose as a primary methodology surface.",
+    "The historical Target family named by this command is retired and must not be recreated by invocation.",
+    "Current Use Cases compose methodology use; current owner/Lens/Target contracts decide specialized work and materiality.",
+    "This command is read-only planning/review and grants no implementation, test execution, repository mutation, commit or push permission."
   ],
   "userTarget": "<one exceptional shared must-hold candidate>",
-  "palette": true,
+  "palette": false,
   "helperPresentation": {
-    "whenToUse": "Use when a must-hold rule genuinely crosses natural Scenario/Domain/Slice owners and may need a standalone shared owner.",
-    "whatYouGet": "Standalone Requirement only when justified; otherwise a routed result back to the natural owner.",
+    "whenToUse": "Only when using this historical command phrase/automation; prefer the current semantic owner or generic `idtspe` component dispatch for new work.",
+    "whatYouGet": "Owner-local IR/PFR disposition and, only when independently justified, a Shared Capability binding. No standalone Requirement Target.",
     "navigation": {
       "viewId": "SDS",
       "viewLabel": "SDS — IDTSPE Profile",
@@ -53,11 +55,11 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
   "methodologyBinding": {
     "methodologyRuntime": "IDTSPE",
     "profile": "SDS",
-    "surfaceKind": "TARGET_MODULE",
-    "targetModuleId": "TM-REQUIREMENT",
-    "lensId": null,
+    "surfaceKind": "LENS",
+    "targetModuleId": null,
+    "lensId": "LENS-IMPLEMENTATION-REQUIREMENTS-DISCOVERY",
     "parentSurface": null,
-    "hostTargetPolicy": "CREATE_OR_REUSE_TARGET"
+    "hostTargetPolicy": "RESOLVE_OR_REUSE_TARGET"
   }
 }
 [/PLANNING_COMMAND_DEFINITION]

@@ -9,7 +9,7 @@ Determine whether a responsibility is genuinely shared and how consumers integra
 
 ## Applicability Gate
 
-Primary for Cross-Cutting Concern; useful whenever the same implementation responsibility appears across several Slices/Scenarios.
+Reusable when the same implementation responsibility appears across several consumers and genuine shared ownership is uncertain. It does not imply a dedicated Cross-Cutting Target family.
 
 ## Target Inputs / Evidence
 
@@ -54,15 +54,15 @@ A shared concern may reference/consume Domain identity, events or selected seman
 
 ## Evolution Ownership
 
-When the shared concern itself must change, the Cross-Cutting semantic owner owns that Evolution Step. Consumer Slice Evolution Steps may reference the shared step and describe local impact, but do not duplicate/re-own the shared change.
+When selected future Shared capability meaning changes, `TM-EVOLUTION-STEP` owns that future target state. Current Shared/Slice owners reference the Step and keep only current meaning/local impact; they do not duplicate a second evolution roadmap.
 
 ## Findings / Outputs
 
-sharedness, canonical owner, applicability matrix, local integration contract, exceptions/bypass, shared mechanism Ideas and Q/R/P.
+sharedness, canonical owner, applicability matrix, local integration contract, exceptions/bypass, shared mechanism Proposals and Q/R/P.
 
 ## Typical Consumers
 
-Cross-Cutting Concern, Slice, Test Strategy and architecture/evolution evaluation where shared ownership is material.
+Shared Capability, Slice, architecture/evolution and proof-coordination evaluation where shared ownership is material.
 
 ## Artifact / File Implications
 
@@ -78,9 +78,9 @@ WHEN: Lens surfaces a Finding Candidate that shared canonical responsibility may
 GUIDANCE: ROUTE_REQUIRED
 PERSISTENCE_GUIDANCE: REQUIRED
 PLACEMENT_DIRECTIVE: ROUTE
-SEMANTIC_OWNER: resolved Cross-Cutting/shared Target after Core Finding Disposition / Target Formation
+SEMANTIC_OWNER: resolved Shared Implementation Capability or other natural owner after Core Finding Disposition / Target Formation
 REPRESENTATION: NEW_OR_EXISTING_CANONICAL_ARTIFACT
-FILE_OR_ARTIFACT: <shared-concern-owner>
+FILE_OR_ARTIFACT: <shared-capability-or-natural-owner>
 CONTENT: shared guarantee/mechanism/applicability; consumer artifacts keep local refs
 GUIDANCE_SOURCE: LENS
 RESOLVER: P-14 / TF-10
@@ -105,7 +105,7 @@ RESOLVER: P-14 / TF-10
 
 Shell placement semantics: [`artifact-placement-and-idtspe-response-contract.md`](../../shared/artifact-placement-and-idtspe-response-contract.md).
 
-When the Lens surfaces a strong sharedness finding and Core Finding Disposition / Target Formation confirms genuine shared ownership, **REQUIRED** one canonical shared concern artifact/owner is preferred over duplicated consumer copies.
+When the Lens surfaces a strong sharedness finding and Core Finding Disposition / Target Formation confirms genuine shared ownership, **REQUIRED** one canonical natural shared owner/representation is preferred over duplicated equal-authority consumer copies when genuine shared ownership is selected.
 
 Consumer artifacts store only local integration obligations + references.
 
@@ -113,7 +113,7 @@ If sharedness is not established, keep content local and do not manufacture a co
 
 ## Guards
 
-Generic Q/R/P Concern ≠ implementation Cross-Cutting Concern.
+Generic Q/R/P Concern ≠ Shared Implementation Capability.
 
 ## Composition
 
@@ -213,4 +213,4 @@ Cross-cutting implementation facts are Target Inputs; the sharedness/ownership t
 
 ## Provenance
 
-Pre-Lens Cross-Cutting specialized lenses.
+Pre-Lens shared/cross-cutting specialized evaluation.

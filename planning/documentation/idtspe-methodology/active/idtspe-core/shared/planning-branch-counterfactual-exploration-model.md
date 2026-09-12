@@ -2,13 +2,13 @@
 
 Status: active generic IDTSPE model  
 Scope: reusable by any IDTSPE Target, SDS or non-SDS.  
-Purpose: explore one or more candidate Ideas **as if selected**, continue downstream planning far enough to expose material consequences, and use those consequences to evaluate the root Ideas.
+Purpose: explore one or more candidate Proposals **as if selected**, continue downstream planning far enough to expose material consequences, and use those consequences to evaluate the root Proposals.
 
 ---
 
 # 1. Core Concept
 
-Sometimes an Idea cannot be evaluated at the current Target depth.
+Sometimes an Proposal cannot be evaluated at the current Target depth.
 
 Example:
 
@@ -16,13 +16,13 @@ Example:
 RQ:
   which solution route should we choose?
 
-Idea A:
+Proposal A:
   existing tool
 
-Idea B:
+Proposal B:
   custom application
 
-Idea C:
+Proposal C:
   process change
 ```
 
@@ -56,7 +56,7 @@ SELECTED
 A branch temporarily assumes:
 
 ```text
-"what if Idea X were selected?"
+"what if Proposal X were selected?"
 ```
 
 This grants permission to derive downstream **branch-scoped planning state**.
@@ -94,7 +94,7 @@ Every branch starts from a material unresolved choice.
 ```text
 Root Target
 Root RQ / Decision Point
-Root Idea
+Root Proposal
 ```
 
 Example:
@@ -106,7 +106,7 @@ Root Target:
 Root RQ:
   best route for low-friction capture?
 
-Root Idea:
+Root Proposal:
   own lightweight software
 ```
 
@@ -127,7 +127,7 @@ Branch ID
 
 Root Target
 Root RQ / Decision Point
-Root Idea
+Root Proposal
 
 Status:
   CANDIDATE
@@ -140,7 +140,7 @@ Status:
   CLOSED
 
 Assumption:
-  root Idea is ASSUMED_FOR_BRANCH
+  root Proposal is ASSUMED_FOR_BRANCH
 
 Exploration Objective:
   what uncertainty/comparison this branch should resolve
@@ -176,7 +176,7 @@ constraints
 current reality
 ```
 
-The root Idea enters the branch as:
+The root Proposal enters the branch as:
 
 ```text
 BRANCH_ASSUMPTION_SOURCE
@@ -294,11 +294,11 @@ P:
   candidate integration has no offline path
 ```
 
-These contribute to root Idea evaluation.
+These contribute to root Proposal evaluation.
 
 They do not automatically pollute canonical current planning if the branch is later rejected.
 
-Retain enough trace to explain why the root Idea was weakened/rejected.
+Retain enough trace to explain why the root Proposal was weakened/rejected.
 
 ---
 
@@ -307,7 +307,7 @@ Retain enough trace to explain why the root Idea was weakened/rejected.
 A branch may instantiate ordinary IDTSPE Targets:
 
 ```text
-Root Idea
+Root Proposal
 ↓ ASSUMED_FOR_BRANCH
 
 Target A
@@ -334,7 +334,7 @@ The branch may discover:
 new Target Type/form
 new Sources
 new Target Relations
-new branch-local Ideas
+new branch-local Proposals
 nested branch
 ```
 
@@ -347,7 +347,7 @@ Allowed, but bounded.
 Example:
 
 ```text
-Root Idea:
+Root Proposal:
   custom application
 
 Branch-local RQ:
@@ -379,7 +379,7 @@ material differentiator becomes clear
 required Evidence is unavailable
 
 branch reaches a common downstream state
-where further planning would not distinguish root Ideas
+where further planning would not distinguish root Proposals
 
 cost/risk profile is sufficiently characterized
 
@@ -396,7 +396,7 @@ Every explored branch should return a normalized summary to the root decision.
 BRANCH SUMMARY
 
 Branch ID
-Root Idea
+Root Proposal
 
 Need / Outcome Fit
 Coverage
@@ -442,18 +442,18 @@ Use proportional depth.
 
 ---
 
-# 14. Root Idea Evaluation From Branches
+# 14. Root Proposal Evaluation From Branches
 
 At the root:
 
 ```text
-Idea A
+Proposal A
 → Branch A Summary
 
-Idea B
+Proposal B
 → Branch B Summary
 
-Idea C
+Proposal C
 → Branch C Summary
 ```
 
@@ -472,7 +472,7 @@ Only now:
 
 ```text
 Answer Decision
-→ select one Idea
+→ select one Proposal
 ```
 
 or:
@@ -488,11 +488,11 @@ split scope
 
 # 15. Selecting A Branch Root
 
-If root Idea B is selected:
+If root Proposal B is selected:
 
 ```text
 Root Decision:
-  Idea B
+  Proposal B
   SELECTED
 ```
 
@@ -539,7 +539,7 @@ Only then integrate into canonical planning.
 
 # 17. Rejected Branches
 
-When a root Idea is rejected:
+When a root Proposal is rejected:
 
 ```text
 branch remains non-canonical
@@ -548,7 +548,7 @@ branch remains non-canonical
 Retain proportionally:
 
 ```text
-root Idea
+root Proposal
 key branch findings
 Evidence
 main Q/R/P
@@ -651,7 +651,7 @@ actual Evidence distinguished from projections?
 Checks after root selection:
 
 ```text
-root Idea actually selected?
+root Proposal actually selected?
 branch-local Decisions reviewed?
 canonical Sources revalidated?
 conflicts/duplicates resolved?
@@ -669,7 +669,7 @@ Ask:
 
 ```text
 Would downstream exploration materially improve
-the current Idea/Decision comparison?
+the current Proposal/Decision comparison?
 ```
 
 Open branches when:
@@ -682,7 +682,7 @@ downstream consequences differ materially
 exploration cost is justified
 ```
 
-Do not branch merely because several Ideas exist.
+Do not branch merely because several Proposals exist.
 
 ---
 
@@ -694,7 +694,7 @@ Root RQ:
 how should extensions be integrated?
 ```
 
-Ideas:
+Proposals:
 
 ```text
 A static registry
@@ -731,7 +731,7 @@ Root RQ:
 how should a user preserve material during reading?
 ```
 
-Ideas:
+Proposals:
 
 ```text
 A existing clipping tool
@@ -757,9 +757,9 @@ The root Solution Decision gets better evidence.
 
 ---
 
-# 26. Relation To Carry-Over Ideas
+# 26. Relation To Carry-Over Proposals
 
-A carry-over Idea is ordinary Generic Idea State retained for later use. If durable
+A carry-over Proposal is ordinary Generic Proposal State retained for later use. If durable
 representation is useful, Documentation / Representation may keep it in the current natural
 owner, an existing project register/inbox, another profile-selected owner, or no separate
 artifact when ephemeral.
@@ -767,7 +767,7 @@ artifact when ephemeral.
 A Planning Branch is different:
 
 ```text
-Carry-Over Idea
+Carry-Over Proposal
 = preserve for later Target
 
 Planning Branch
@@ -776,7 +776,7 @@ Planning Branch
   to a current unresolved Decision
 ```
 
-An Inbox/carry-over Idea can later become a Branch Root.
+An Inbox/carry-over Proposal can later become a Branch Root.
 
 ---
 
@@ -801,7 +801,7 @@ They are just branch-scoped until promotion.
 # 28. Key Formula
 
 ```text
-Idea
+Proposal
 ↓
 Branching Opportunity Check
 ↓ if useful
@@ -815,7 +815,7 @@ branch-local Decisions / Q/R/P / Evidence / projections
 ↓
 Branch Summary
 ↓
-root Idea comparison
+root Proposal comparison
 ↓
 actual Answer Decision
 ↓

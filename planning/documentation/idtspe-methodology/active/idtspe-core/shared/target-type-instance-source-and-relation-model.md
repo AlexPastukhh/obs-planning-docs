@@ -21,7 +21,7 @@ TM-IMPLEMENTATION-SLICE
 
 A one-off Target form created through Target Formation when no reusable Target Module fits well enough.
 
-It is a **first-class IDTSPE route**, not an error/fallback that requires inventing a module. It receives the same Scope/Source/Question/Lens/Idea/Decision/Artifact/Handoff lifecycle as a module-backed Target. `TF-06A` may scan/apply any registered Lens whose applicability gate fits the local Target.
+It is a **first-class IDTSPE route**, not an error/fallback that requires inventing a module. It receives the same Scope/Source/Question/Lens/Proposal/Decision/Artifact/Handoff lifecycle as a module-backed Target. `TF-06A` may scan/apply any registered Lens whose applicability gate fits the local Target.
 
 It may later be promoted into a Target Module only if repetition justifies reuse.
 
@@ -72,7 +72,7 @@ one Target
 ≠ one file
 ```
 
-Target Module/Local Target Contract defines the target-specific Result Unit kinds. Generic Questions/Ideas/Q/R/P/Decisions/Evidence around the Target are Core State Units, not extra Target result fields by default.
+Target Module/Local Target Contract defines the target-specific Result Unit kinds. Generic Questions/Proposals/Q/R/P/Decisions/Evidence around the Target are Core State Units, not extra Target result fields by default.
 
 A Result Unit may be the precise downstream Source when another Target depends only on that accepted meaning. Source authority remains explicit.
 

@@ -1,7 +1,7 @@
-# Q/R/P Priority, Related Groups, Idea Context And Decision Trace
+# Q/R/P Priority, Related Groups, Proposal Context And Decision Trace
 
 Status: active IDTSPE Core extension of existing `P-09 Q/R/P` and `P-10 Decision` ports  
-Scope: add lightweight prioritization, contextual Idea/Q-R-P relationships and Decision trace/rationale without creating a second Concern runtime.
+Scope: add lightweight prioritization, contextual Proposal/Q-R-P relationships and Decision trace/rationale without creating a second Concern runtime.
 
 ## 1. Existing Q/R/P Remains The Model
 
@@ -67,13 +67,13 @@ A QRP Group is a **navigation/review projection**, not a new Target, not a separ
 
 Do not group unrelated items merely because they are in the same Target.
 
-## 4. Idea / Q-R-P Context
+## 4. Proposal / Q-R-P Context
 
-Q/R/P/Evidence should be related to the planning meaning they actually concern when that relation helps reasoning/review. They may attach to the Target, Goal/Desired Outcome, Question/Problem, one Idea, several Ideas/Candidate Bundle, Result Unit/field, relation/boundary or Decision.
+Q/R/P/Evidence should be related to the planning meaning they actually concern when that relation helps reasoning/review. They may attach to the Target, Goal/Desired Outcome, Question/Problem, one Proposal, several Proposals/Candidate Bundle, Result Unit/field, relation/boundary or Decision.
 
-A material Idea normally `addresses` the current Target Goal / a Question / a Problem and may compete/complement/require/conflict with other Ideas. The Target Goal is Target/scope context rather than a new Generic State Unit. Candidate Bundles are lightweight grouping projections, not a new Q/R/P root or mandatory State Unit.
+A material Proposal normally `addresses` the current Target Goal / a Question / a Problem and may compete/complement/require/conflict with other Proposals. The Target Goal is Target/scope context rather than a new Generic State Unit. Candidate Bundles are lightweight grouping projections, not a new Q/R/P root or mandatory State Unit.
 
-Canonical interaction/Idea relation owner: [`broad-discussion-and-integration-checkpoint-model.md`](broad-discussion-and-integration-checkpoint-model.md).
+Canonical interaction/Proposal relation owner: [`broad-discussion-and-integration-checkpoint-model.md`](broad-discussion-and-integration-checkpoint-model.md).
 
 ## 5. Decision Trace — Addresses / Selected / Rationale / Exposes
 
@@ -97,7 +97,7 @@ Exposes:
 
 `Addresses` means the Decision answers, resolves, mitigates or otherwise materially handles the referenced Target Goal context / Question / Problem / Q-R-P. It does **not** imply every referenced Risk disappeared completely.
 
-`Selected` links the accepted Decision to the Idea(s)/Candidate Bundle selected when that trace helps understanding. `Rationale / Why` is optional selection reasoning and is distinct from Evidence. `Exposes` means the Decision creates, reveals or makes material a Question/Risk/Problem that now deserves attention.
+`Selected` links the accepted Decision to the Proposal(s)/Candidate Bundle selected when that trace helps understanding. `Rationale / Why` is optional selection reasoning and is distinct from Evidence. `Exposes` means the Decision creates, reveals or makes material a Question/Risk/Problem that now deserves attention.
 
 This allows repeated IDTSPE work to distinguish:
 
@@ -146,3 +146,16 @@ Addresses:
 Exposes:
   R-09 — external provider idempotency is not guaranteed
 ```
+
+
+## 7. Durable Decision Protection Under Proposal Review
+
+A code-only Decision does not need durable documentation merely because it existed during planning.
+
+When an existing durable Decision preserves material risk, question/problem, trade-off, trust/support assumption, reconsideration trigger or cross-owner maintenance reasoning, a Proposal that would replace/materially reinterpret/remove it must show:
+- what becomes obsolete;
+- what remains materially relevant;
+- residual risk/problem;
+- affected downstream meaning.
+
+Do not silently erase durable Decision rationale through lower-level realization.

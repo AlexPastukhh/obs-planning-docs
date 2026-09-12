@@ -10,7 +10,7 @@ Evaluate structural dependency topology and concrete impact surface created by a
 
 ## Applicability Gate
 
-Activate when a Target/Idea changes a structured system with meaningful dependency/consumer/change relations:
+Activate when a Target/Proposal changes a structured system with meaningful dependency/consumer/change relations:
 
 ```text
 repository/documentation
@@ -72,7 +72,7 @@ DRY/SRP/OCP/cohesion/coupling/DIP are risk detectors, not laws:
 ```text
 observe structural problem
 → surface a Finding Candidate carrying an optional structural-pattern proposal
-→ Core Finding Disposition resolves whether accepted meaning becomes/refines Idea / Q/R/P / Decision input or another State/lifecycle consequence
+→ Core Finding Disposition resolves whether accepted meaning becomes/refines Proposal / Q/R/P / Decision input or another State/lifecycle consequence
 → re-evaluate the accepted candidate through L4 when needed
 → add L5 when recurring Workspace work/evolution matters
 ```

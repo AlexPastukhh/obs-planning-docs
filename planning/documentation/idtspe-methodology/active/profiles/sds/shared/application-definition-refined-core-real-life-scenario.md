@@ -22,7 +22,7 @@ It is not yet detailed Application Scenario planning.
 Refined Core Real-Life Scenario
 ≠ Application Scenario
 ≠ Screen flow
-≠ Behavior Item decomposition
+≠ Feature behavior decomposition
 ≠ implementation flow
 ```
 
@@ -246,7 +246,7 @@ It may also be referenced anywhere the **fundamental real-life Need/path** matte
 ```text
 core real-life scenarios clearly express why the Application exists
 real-world result is not replaced by a software feature/result
-Application role is visible but not over-detailed into Application Scenario behavior
+Application role is visible but not over-detailed into Feature behavior or Scenario journey composition
 realistic existing-product/manual/hybrid routes can be compared in the same real-life terms
 secondary scenarios are visibly secondary
 market/reference findings influence route comparison rather than merely producing a competitor list

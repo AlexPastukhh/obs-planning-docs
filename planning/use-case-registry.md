@@ -15,6 +15,6 @@ Groups are navigation only. Detailed `Situation`, `Result`, and `Process` meanin
 | `UC-REPO-MAINTAIN-PLANNING-COMMAND` | Maintain Planning Command | [`use-cases/UC-REPO-MAINTAIN-PLANNING-COMMAND.md`](use-cases/UC-REPO-MAINTAIN-PLANNING-COMMAND.md) |
 | `UC-REPO-MAINTAIN-PROMPT` | Maintain Reusable Prompt | [`use-cases/UC-REPO-MAINTAIN-PROMPT.md`](use-cases/UC-REPO-MAINTAIN-PROMPT.md) |
 
-Session capabilities are discovered through [`session/`](session/) and its scoped registry. Generic Documentation capabilities are discovered through [`documentation/`](documentation/) and its scoped registry. IDTSPE/SDS and other specialized areas own their own current semantic navigation and are not aggregated here.
+Session ambient interaction rules are established through [`session/README.md`](session/README.md); Session currently owns no methodology-use UC family. Generic Documentation capabilities are discovered through [`documentation/`](documentation/) and its scoped registry. IDTSPE/SDS and other specialized areas own their own current semantic navigation and are not aggregated here.
 
 The exact pre-fundamental repository registry remains at [`legacy/use-case-registry.pre-fundamental-uc.md`](legacy/use-case-registry.pre-fundamental-uc.md) as provenance only.

@@ -58,7 +58,6 @@ Core mechanics cannot be redefined by SDS. A Lens evaluates/discovers; it does n
 Start at:
 
 - [`active/idtspe-core/README.md`](active/idtspe-core/README.md)
-- [`active/idtspe-core/BOOTSTRAP-IDTSPE.md`](active/idtspe-core/BOOTSTRAP-IDTSPE.md)
 - [`active/idtspe-core/IDTSPE-SHELL.md`](active/idtspe-core/IDTSPE-SHELL.md)
 - [`active/idtspe-core/target-modules/README.md`](active/idtspe-core/target-modules/README.md)
 - [`active/idtspe-core/lenses/README.md`](active/idtspe-core/lenses/README.md)
@@ -72,31 +71,12 @@ Generic optional Need / real-life solution discovery is [`active/idtspe-core/sha
 Current SDS entry:
 
 - [`active/profiles/sds/README.md`](active/profiles/sds/README.md)
-- [`active/profiles/sds/BOOTSTRAP-SDS.md`](active/profiles/sds/BOOTSTRAP-SDS.md)
 - [`active/profiles/sds/target-modules/README.md`](active/profiles/sds/target-modules/README.md)
 - [`active/profiles/sds/lenses/README.md`](active/profiles/sds/lenses/README.md)
 - [`active/profiles/sds/shared/directed-methodology-workflow-and-next-step-resolution.md`](active/profiles/sds/shared/directed-methodology-workflow-and-next-step-resolution.md)
 - [`active/profiles/sds/ARTIFACT-PLACEMENT-MAP.md`](active/profiles/sds/ARTIFACT-PLACEMENT-MAP.md)
 
-SDS currently installs 12 Target Modules and 6 SDS-specific Lenses over generic Core.
-
-### SDS direction
-
-```text
-optional generic Need / real-life solution discovery
-→ Application Definition
-→ optional Prototype Evidence
-→ Application Scenarios (+ Scenario-local planned change/new Scenario candidates)
-→ optional Screen projection
-→ optional Slice Strategy
-→ flexible Slice / Aggregate realization
-→ Exact Realization / Evidence
-→ selective explicit revalidation
-```
-
-This is a preferred semantic direction, not a rigid waterfall. Downstream work may challenge upstream meaning only through Finding Disposition and explicit owner revalidation; it does not silently rewrite upstream truth.
-
-SDS has no permanent `TM-WEUC`, no separate `TM-FRONTEND-SLICE`, and no separate `TM-DOMAIN-DRAFT`. Workspace Architecture Planning is a sibling reusable Direction under [`../architecture-planning/`](../architecture-planning/), while L5 inside SDS is the Evolution / Change Isolation evaluation perspective.
+Current SDS inventory, semantic direction and owner topology are owned by [`active/profiles/sds/README.md`](active/profiles/sds/README.md) plus its Target Module/Lens registries. This workspace README intentionally does not duplicate profile cardinalities or workflow topology.
 
 ## Representation
 

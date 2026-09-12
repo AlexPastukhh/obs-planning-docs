@@ -1,5 +1,8 @@
 # Detailed Planning Workspace Example — FixFlow Service Requests
 
+> **Compatibility vocabulary boundary.** This supporting file preserves older application-planning discovery/workspace heuristics. Terms such as `Scenario DATA`, `Behavior Items`, standalone `Requirement`, or `Slice Strategy` below do not define current SDS owner identities. Current authority is the active SDS Target/Lens registries: Feature owns behavior/semantic data, Scenario owns actor-to-Benefit journey composition, requirements stay with natural Feature/Domain/Slice/Shared owners, and Slice Strategy is not an active Target family. Use older terms only as supporting heuristics where they do not conflict with current owners.
+
+
 Status: current reusable practical example
 Scope: demonstrate how whole-solution/Application Concept planning becomes Prototype Scenarios/Screens, Requirements/change context, canonical Scenario/Screen owners, Domain work, Slice Strategy, Implementation Slices, verification and integration review.
 
@@ -941,11 +944,12 @@ Problem / Need
    → Visual
    → integrated Variants when real alternatives appear
 → reciprocal Scenario ↔ Screen coverage
-→ Domain when conceptual ownership helps
-   → stable semantics + justified evolution stress check
-→ Slice Strategy when decomposition/order matters
-→ vertical Implementation Slices
-→ verification evidence
+→ Domain Discovery when conceptual pressure warrants it
+   → optional durable Domain Owner when independent semantic ownership is useful
+→ optional derived Slice coordination view when decomposition/order itself has coordination value
+→ transient vertical Slice Discovery (`TM-IMPLEMENTATION-SLICE`)
+   → optional durable Slice Owner only when independent persistence value exists
+→ proof route / Exact Realization / executed Evidence as material
 → cross-file dependency / Reference Object Candidate review
 → repeated integration review
    → Application Concept / real-world workflow / Whole Solution when material

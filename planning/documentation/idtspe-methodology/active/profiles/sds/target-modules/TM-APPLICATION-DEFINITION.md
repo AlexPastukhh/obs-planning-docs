@@ -18,6 +18,8 @@ what application/contribution we are building
 
 Concept, responsibility boundary, proportional existing-solution research, optional refined core real-life scenario and proportional feasibility are aspects of one Application Definition Target.
 
+Use this Target conditionally when the own-Application contribution, responsibility boundary or feasibility is materially unsettled or challenged. Reuse/skip it when trusted current Application meaning is already sufficient and unchanged.
+
 
 
 ## High-Level Example — Self-Contained Walkthrough
@@ -94,13 +96,13 @@ optional Refined Core Real-Life Scenario
 material feasibility findings
 ```
 
-This becomes a Source for Prototype and Scenario Planning.
+This becomes a Source for Feature/Scenario/Screen planning and optional Prototype work.
 
 ### Boundary / Lesson
 
 This module does not define detailed Application Scenarios, Screens, Domain objects or implementation calls.
 
-A competitor feature is Evidence/Idea material, not automatically a Requirement for our application.
+A competitor feature is Evidence/Proposal material, not automatically selected Feature behavior or a Requirement for our application.
 
 ## Upstream Source Contract
 
@@ -127,7 +129,7 @@ existing-solution / market / reference research
 actual product docs/demos/reviews when relevant
 Prototype Evidence when available
 current application/workspace Evidence when reviewing an existing product
-later Scenario/DATA/Behavior/Domain/Slice Evidence for revalidation
+later Feature/Scenario/Screen/Domain/Slice/Shared implementation Evidence for revalidation
 ```
 
 ### Constraint / Planning-State Sources
@@ -212,12 +214,12 @@ Frequent conditional Lens(es):
 
 ## Resolution / Production Method
 
-This module uses the existing `Upstream Source Contract`, `Question Set Examples`, `Lens Profile`, Knowledge Basis and any module-specific Idea/branch/pattern aids to produce/refine the declared Result Units. Concrete Questions, Ideas, Q/R/P, Decisions and Evidence remain Core State Units.
+This module uses the existing `Upstream Source Contract`, `Question Set Examples`, `Lens Profile`, Knowledge Basis and any module-specific Proposal/branch/pattern aids to produce/refine the declared Result Units. Concrete Questions, Proposals, Q/R/P, Decisions and Evidence remain Core State Units.
 
 Default reusable production path:
 
 ```text
-stabilize selected real-world contribution → research existing solutions/references proportionally → refine core real-life scenario position → define Application Concept and responsibility boundary → test realization feasibility → resolve material alternatives through normal Idea/Branch/Decision state
+stabilize selected real-world contribution → research existing solutions/references proportionally → refine core real-life scenario position → define Application Concept and responsibility boundary → test realization feasibility → resolve material alternatives through normal Proposal/Branch/Decision state
 ```
 
 Material alternative comparisons are Resolution/Production state until selected; they are not a separate Result Unit by default.
@@ -239,6 +241,21 @@ The possible result surface is proportional/sparse. Generic IDTSPE State is not 
 | `RU-APP-05` | Responsibility Boundary | Responsibility Boundary |
 | `RU-APP-06` | Realization Feasibility | Realization Feasibility |
 
+### Result Unit Applicability / Materiality
+
+Declared Result Units are a possible semantic surface, not a mandatory form. Apply the Core [`Unit Applicability / Materiality / Omission Contract`](../../../idtspe-core/shared/idtspe-unit-and-target-step-result-model.md#5a-unit-applicability--materiality--omission-contract).
+
+| Result Unit | Make explicit when | Omit / keep sparse when |
+|---|---|---|
+| `RU-APP-01` | when an own-Application contribution/identity must be distinguished from existing solutions or surrounding responsibility | omit only if the module itself is not needed; otherwise keep the minimum identity/contribution needed to anchor the definition |
+| `RU-APP-02` | when build/buy/adapt/integrate/reference position can change the selected contribution or feasibility | omit when trusted existing-solution context is already sufficient and adds no decision value |
+| `RU-APP-03` | when concrete real-life paths are needed to test the Application concept/boundary | omit detailed/refined scenarios when a small path inventory already establishes the necessary context |
+| `RU-APP-04` | when a coherent own-Application concept is being selected/refined | omit only when no Application Definition Target is justified |
+| `RU-APP-05` | when inside/outside responsibility is material to feasibility, ownership or downstream planning | keep implicit only when the boundary is already unambiguous from accepted owner meaning |
+| `RU-APP-06` | when feasibility can change the concept, responsibility boundary or build/adapt/integrate position | omit when feasibility is routine/trusted and cannot materially change the selected concept |
+
+Do not create `N/A` placeholders. Re-evaluate a previously omitted Unit only when its trigger/materiality changes.
+
 Only applicable/material Result Units are projected for one concrete Target step. Result Unit identity does not imply a separate Target or file.
 
 
@@ -255,7 +272,7 @@ Only applicable/material Result Units are projected for one concrete Target step
 
 **Existing Solution / Substitute Findings** — material alternatives and what Need/result they already cover.
 
-**Reference Applications / Patterns** — useful products/flows explicitly marked as Evidence/Ideas rather than requirements.
+**Reference Applications / Patterns** — useful products/flows explicitly marked as Evidence/Proposals rather than requirements.
 
 **Build / Buy / Adapt / Integrate Position** — why custom Application planning continues, or why the current result should challenge Step-02 when another route is sufficient. Actual Step-02 revalidation/reopen is a Core Finding Disposition consequence.
 
@@ -297,7 +314,7 @@ why selected
 Evidence/references
 ```
 
-This is **not** the detailed Application Scenario phase: no full DATA/Behavior/Screen decomposition is required here.
+This is **not** the detailed Application Scenario phase: no detailed Feature behavior, Scenario journey or Screen decomposition is required here.
 
 Source precedence:
 
@@ -344,7 +361,7 @@ otherwise
 
 **Feasibility Conclusion** — supports/narrows/broadens/challenges current definition.
 
-Detailed call-level implementation belongs to Slice planning.
+Detailed whole-Slice discovery belongs to `TM-IMPLEMENTATION-SLICE`; exact call-level realization belongs to Core Exact.
 
 ### Alternatives / Comparison
 
@@ -409,7 +426,7 @@ Shell placement semantics: [`artifact-placement-and-idtspe-response-contract.md`
 
 **REQUIRED** — an accepted Application Definition used downstream must have one canonical persistent artifact owner (existing or new). Its concept, responsibility boundary, build/buy/adapt/integrate position and current core-real-life-scenario inventory must not exist only in chat history.
 
-**PREFERRED** — substantial market/reference research may use a supporting Evidence artifact when it is too large/volatile for the canonical Application Definition. Research observations surface Finding Candidates; Core Finding Disposition may resolve accepted material as Evidence/Ideas or another appropriate State, but never as a second application-semantic owner merely because it came from reference research.
+**PREFERRED** — substantial market/reference research may use a supporting Evidence artifact when it is too large/volatile for the canonical Application Definition. Research observations surface Finding Candidates; Core Finding Disposition may resolve accepted material as Evidence/Proposals or another appropriate State, but never as a second application-semantic owner merely because it came from reference research.
 
 **OPTIONAL separate artifact** — a Refined Core Real-Life Scenario may be embedded in the Application Definition or receive separate addressability when it is reused/reviewed independently by Prototype/Scenario Planning.
 
@@ -427,17 +444,18 @@ core real-life scenarios explain why the Application exists
 secondary scenarios remain visibly secondary
 refined real-life scenario, when present, is not an Application Scenario
 concept + responsibility + feasibility form one coherent owner
-references seed Evidence/Ideas rather than requirements
+references seed Evidence/Proposals rather than requirements
 later Evidence may challenge the same Application Definition; Core Finding Disposition may select revalidation/reopen
 ```
 
 ## Handoff
 
 ```text
-TM-PROTOTYPE
+TM-FEATURE
 TM-SCENARIO-PLANNING
-TM-SCREEN when application-wide journey/spatial context is useful
-TM-SLICE-STRATEGY through Scenario/Domain lineage
+TM-SCREEN when application-wide spatial context is useful
+TM-PROTOTYPE when empirical pre-commit inquiry is useful
+TM-DOMAIN-DISCOVERY / TM-IMPLEMENTATION-SLICE when later implementation ownership requires bounded discovery
 ```
 
-Material architecture/change questions use L4/L5/L6 inside the current Target. When the problem has independently useful output and choice/revalidation depth, surface a Target Formation candidate; Target Formation decides reuse/handoff/new bounded Target.
+Material architecture/change questions may use the Core/SDS Lens aliases L4/L5/L6 inside the current Target; these Lens aliases are not `PL-L*` planning-depth identities. When the problem has independently useful output and choice/revalidation depth, surface a Target Formation candidate; Target Formation decides reuse/handoff/new bounded Target.

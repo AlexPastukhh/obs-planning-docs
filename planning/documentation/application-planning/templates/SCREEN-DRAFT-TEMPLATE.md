@@ -1,83 +1,51 @@
-# Screen Draft Template
+# Screen / Spatial Supporting Template
 
-Status: active reusable recommended template
-Purpose: plan one application Screen/surface as a spatial/visual owner without duplicating Scenario behavior.
+Status: active supporting template; canonical semantic contract is SDS `TM-SCREEN`.
 
-Detailed workspace contract: [`../detailed-planning/README.md`](../detailed-planning/README.md)
+Purpose: represent one application Screen/surface or a small Screen set as spatial/navigation composition without duplicating Feature behavior or Scenario journey meaning.
 
-## Workspace Shape
+Canonical owner:
+`../../idtspe-methodology/active/profiles/sds/target-modules/TM-SCREEN.md`
 
-```text
-SCR-X/
-├── README.md
-├── screen.md
-├── ideas/
-└── visual/
-```
+## RU-SCREEN-01 — Screen Map
 
-Do not create Screen-local `data/` or `behavior/` folders. Screen planning owns spatial/visual boundaries; Scenario/shared Scenario owners retain DATA and behavior truth.
-
-## Screen
-
-| Field | Value |
-|---|---|
-| Screen ID | <stable ID> |
-| Title | <title> |
-| Status | preliminary / reviewed / accepted-current / needs-review |
-| Spatial responsibility | <what application surface/space this owner defines> |
-| Related Scenarios | <Scenario links> |
-| Prototype origin/evidence | <PSCR/Prototype result when useful> |
-| Related spatial/visual Requirements | <links when material> |
-| Related Screens | <when useful> |
-
-### Spatial Boundaries
-<What belongs inside/outside this Screen.>
-
-### Zones / Regions
-<Major spatial areas and their purpose. Do not turn every small region into a new owner automatically.>
-
-### Scenario Coverage
-
-| Scenario | Screen Role | Zones / Visual States Used |
-|---|---|---|
-| <SCN-X> | entry / primary / supporting / result / other | <zones/states> |
-
-Every material Screen → Scenario relation must also be discoverable from the Scenario owner's Screens Used / flow references. This does not transfer behavioral authority to the Screen.
-
-### Spatial / Visual Requirements
-<Selected layout hierarchy, placement, visibility/arrangement rules and other spatial meaning. These are Screen requirements; behavioral conditions/transitions remain Scenario/Behavior truth.>
-
-### Visual States
-<Material visual/layout states. Behavioral transitions remain owned by Scenarios.>
-
-### Visual References
-<Link wireframes, mockups, annotated screenshots, spatial maps and other `visual/` owners.>
-
-## Cross-File Dependencies / Reference Object Candidates — When Material
-
-| Source Owner | Meaning Used Here | Use Here | Usage Mode | RO Candidate | Materialized RO |
-|---|---|---|---|---|---|
-| <owner> | <canonical fragment/reference> | <Screen use> | semantic link / paraphrase / exact-literal candidate | yes / no | no / existing `ro_*` |
-
-Do not turn ordinary Scenario → Screen semantic relations into Reference Objects. A consumer-side candidate note does not redefine the source meaning.
-
-## Current Decisions
-<Use the shared Planning Concern/Decision trace contract when material; selected spatial meaning remains integrated into the Screen owner.>
-
-## Area Concern Register — When Material
-<Inline/link the current Screen-area register when useful.>
-
-## Planning Concerns / Q/R/P
-<Use the shared Concern model: group one-resolution-surface concerns, preserve Priority/Concern Category/Status, use AI Comment without inventing user UX preference, and reference Related Ideas instead of mirroring full concern bodies.>
-
-## Potential Simplifications / Better Routes — When Material
-<Only unselected changes to the current Screen/spatial draft.>
-
-## Boundary Rule
+Use when cross-Screen inventory/routes/participation/global spatial constraints are material.
 
 ```text
-Scenario → behavior / actor understanding / result / acceptance
-Screen   → spatial composition / zones / visual states
+Screen / surface
+  purpose
+  participating Features
+  Scenario journey role(s)
+  routes / transitions / re-entry
+  global spatial constraints
 ```
 
-If a visual artifact implies a behavioral rule, ensure that behavioral truth is owned/referenced from the appropriate Scenario/Behavior owner rather than remaining accidental Screen-only truth. Frontend Slice plans own implementation mechanisms that realize selected Screen requirements; they do not redefine this spatial authority.
+## RU-SCREEN-02 — Screen Draft Set
+
+Use only for Screens/zones that need independent spatial detail:
+
+```text
+Screen ID / name
+purpose / Scenario role(s)
+zones / hierarchy
+Feature presence / actions / results visible here
+context visible/input/editable here
+entry / exit / route relations
+screen-specific accessibility/platform/spatial constraints
+```
+
+Do not copy canonical Feature behavior into Screen drafts. Reference Feature/`BR-*` identities when addressability helps. Scenario references describe journey participation, not behavioral ownership.
+
+## Ownership Boundary
+
+```text
+Feature  → behavior / principal result
+Scenario → actor-to-Benefit journey composition
+Screen   → spatial/navigation composition, Feature presence and screen-specific constraints
+```
+
+Changing where a Feature is exposed usually changes Screen composition, not Feature behavior identity.
+
+## Representation
+
+A dedicated Screen file/folder is optional. Use Core Representation/Addressability rules and omit any structure that adds no material review/handoff value.

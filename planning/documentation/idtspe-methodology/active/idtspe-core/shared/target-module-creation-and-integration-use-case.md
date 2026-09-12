@@ -5,7 +5,7 @@ Purpose: establish or change one reusable Target Module and integrate it into ge
 
 ---
 
-# 1. Trigger
+## Situation
 
 Use when:
 
@@ -18,7 +18,7 @@ several modules need composition/entry-point reconciliation
 
 ---
 
-# 2. Inputs
+## Inputs
 
 Read proportionally:
 
@@ -38,7 +38,7 @@ Do not create a new module solely because a file/category exists.
 
 ---
 
-# 3. Full IDTSPE For The Module Itself
+## Full IDTSPE For The Module Itself
 
 Creating a module is itself ordinary IDTSPE planning.
 
@@ -71,7 +71,7 @@ Material alternatives may use Planning Branches.
 
 ---
 
-# 4. Algorithm
+## Process
 
 ```text
 1. establish the recurring useful Target Step Result
@@ -87,7 +87,7 @@ Material alternatives may use Planning Branches.
 11. identify reusable theory/reference knowledge that materially supports this Target family, when any
 12. keep useful references/provenance and add consumer-specific interpretation when raw theory is too broad
 13. define RQ/question-generation pack
-14. define Idea/pattern discovery aids
+14. define Proposal/pattern discovery aids
 15. define Lens Profile: reuse Lens Library first; keep only genuinely local Lens prompts; add applicability gates
 16. define recurring Q/R/P discovery hints only when target-specific
 17. define Decision surfaces
@@ -105,7 +105,7 @@ Material alternatives may use Planning Branches.
 
 ---
 
-# 5. Result
+## Result
 
 ```text
 one Target Module owner
@@ -129,7 +129,7 @@ no new module
 
 ---
 
-# 6. Boundaries
+## Boundaries
 
 Do not:
 
@@ -147,7 +147,7 @@ force supporting modules into separate Target Instances
 
 ---
 
-# 7. Integration Into IDTSPE
+## Integration Into IDTSPE
 
 A module may enter at different points:
 
@@ -158,7 +158,7 @@ TF-04 Source Contract aid
 Target Module Knowledge Basis via shared Knowledge Basis Contract
 TF-06 Question Set
 TF-06A Lens Set contribution / Lens Profile
-TF-07 Idea Space
+TF-07 Proposal Space
 TF-08 Branch/Comparison policy
 Output Projection
 Validator pack
@@ -169,7 +169,7 @@ This flexibility is part of the contract.
 
 ---
 
-# 8. Command / Tampermonkey Handoff
+## Command / Tampermonkey Handoff
 
 After module semantics are accepted and methodology-integrated:
 
@@ -188,7 +188,7 @@ The UI should invoke useful module/target intents, not expose every internal hel
 
 ---
 
-# 9. Revalidation
+## Revalidation
 
 Revisit a Target Module when:
 

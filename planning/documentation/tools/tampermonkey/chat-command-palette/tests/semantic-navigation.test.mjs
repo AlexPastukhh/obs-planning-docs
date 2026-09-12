@@ -11,21 +11,45 @@ const semantic=require('../src/semantic-projections.js');
 const codec=require('../src/command-definition-codec.js');
 const useCases=semantic.normalizeUseCaseDefinitions(JSON.parse(fs.readFileSync(path.join(moduleRoot,'seed/use-cases.json'),'utf8')).items);
 const read=(rel)=>fs.readFileSync(path.join(repoRoot,rel),'utf8');
-function walk(dir,result=[]){for(const entry of fs.readdirSync(dir,{withFileTypes:true})){const p=path.join(dir,entry.name);if(entry.isDirectory())walk(p,result);else if(entry.isFile()&&entry.name.toLowerCase()==='use-case-registry.md')result.push(p)}return result}
-function canonicalUcIds(){const ids=[];for(const file of walk(path.join(repoRoot,'planning'))){const lines=fs.readFileSync(file,'utf8').split(/\r?\n/),status=String(lines.find((line)=>/^Status:/i.test(line))||'').toLowerCase();if(status.includes('legacy')||status.includes('historical')||status.includes('compatibility'))continue;for(const line of lines){let m=line.match(/^#{2,3} `((?:UC-[A-Z0-9-]+))` — /);if(!m)m=line.match(/^\| `((?:UC-[A-Z0-9-]+))` \|/);if(m&&!ids.includes(m[1]))ids.push(m[1])}}return ids}
+function mappedMethodologyRegistryPaths(){
+  const mapRel='planning/documentation/use-case-registry-map.md';
+  const lines=read(mapRel).split(/\r?\n/);
+  let active=false;const out=[];
+  for(const line of lines){
+    if(/^##\s+Registry Map\s*$/i.test(line.trim())){active=true;continue}
+    if(active&&/^##\s+/.test(line.trim()))break;
+    if(!active)continue;
+    for(const m of line.matchAll(/\[[^\]]+\]\(([^)#]+)(?:#[^)]+)?\)/g)){
+      const rel=path.posix.normalize(path.posix.join(path.posix.dirname(mapRel),m[1]));
+      if(!out.includes(rel))out.push(rel);
+    }
+  }
+  return out;
+}
+function canonicalMethodologyUcIds(){
+  const ids=[];
+  for(const rel of mappedMethodologyRegistryPaths()){
+    for(const line of read(rel).split(/\r?\n/)){
+      let m=line.match(/^#{2,3} `((?:UC-[A-Z0-9-]+))` — /);
+      if(!m)m=line.match(/^\| `((?:UC-[A-Z0-9-]+))` \|/);
+      if(m&&!ids.includes(m[1]))ids.push(m[1]);
+    }
+  }
+  return ids;
+}
 function exactCaseExists(rel){let current=repoRoot;for(const segment of rel.split('/')){if(!fs.existsSync(current))return false;const names=fs.readdirSync(current);if(!names.includes(segment))return false;current=path.join(current,segment)}return fs.existsSync(current)}
 
-test('generated Use-Case seed contains every current canonical UC exactly once',()=>{const expected=canonicalUcIds(),actual=useCases.map((u)=>u.id);assert.equal(new Set(actual).size,actual.length);assert.deepEqual([...actual].sort(),[...expected].sort());assert.equal(actual.length,expected.length);assert.ok(!actual.some((id)=>id.startsWith('UC-RPKG-')),'legacy Replacement Package App capability IDs must not be projected as current UCs')});
+test('generated Use-Case seed contains exactly the current methodology Use Cases mapped by Registry Map',()=>{const expected=canonicalMethodologyUcIds(),actual=useCases.map((u)=>u.id);assert.equal(new Set(actual).size,actual.length);assert.deepEqual([...actual].sort(),[...expected].sort());assert.equal(actual.length,16);assert.equal(actual.filter((id)=>id.startsWith('UC-DOC-')).length,10);assert.equal(actual.filter((id)=>id.startsWith('UC-IDTSPE-')).length,6);for(const id of actual)assert.ok(id.startsWith('UC-DOC-')||id.startsWith('UC-IDTSPE-'),`${id}: project/profile planning UC leaked into methodology projection`)});
 
 test('all generated semantic source paths exist with exact repository casing',()=>{for(const definition of useCases)for(const source of definition.sources||[])assert.ok(exactCaseExists(source),`${definition.id}: missing/exact-case-invalid source ${source}`)});
 
 
-test('Use-Case semantic bodies remain thin owner-route projections with explicit permission boundary',()=>{const domain=useCases.find((u)=>u.id==='UC-PLAN-DOMAIN');assert.ok(domain);for(const mode of ['adaptive','full']){const body=semantic.buildSemanticBody('use_case',domain,mode);assert.match(body,/\[PLANNING_USE_CASE\]/);assert.match(body,/use_case_id:\n  UC-PLAN-DOMAIN/);assert.match(body,/route_resolution:/);assert.match(body,/current owner route/);assert.match(body,/Semantic planning\/read context only/)}assert.match(semantic.buildSemanticBody('use_case',domain,'full'),/Full use_case reading is required/)});
+test('methodology Use-Case semantic bodies remain thin owner-route projections with explicit permission boundary',()=>{const uc=useCases.find((u)=>u.id==='UC-IDTSPE-COMPOSE-CURRENT-WORK');assert.ok(uc);assert.ok(uc.sources.includes('planning/documentation/use-case-registry-map.md'));assert.ok(uc.sources.includes('planning/documentation/idtspe-methodology/active/idtspe-core/shared/idtspe-methodology-use-case-registry.md'));for(const mode of ['adaptive','full']){const body=semantic.buildSemanticBody('use_case',uc,mode);assert.match(body,/\[PLANNING_USE_CASE\]/);assert.match(body,/use_case_id:\n  UC-IDTSPE-COMPOSE-CURRENT-WORK/);assert.match(body,/route_resolution:/);assert.match(body,/current owner route/);assert.match(body,/methodology-use/i);assert.match(body,/read context only/i)}assert.match(semantic.buildSemanticBody('use_case',uc,'full'),/Full use_case reading is required/)});
 
 
-test('current scoped Use Cases and standalone command routes remain independently discoverable',()=>{for(const id of ['UC-REPO-PLAN-UPDATE','UC-REPO-BUILD-REPLACEMENT-PACKAGE','UC-REPO-REVIEW-DIFF','UC-PLAN-ARCH-WORKSPACE-USES','UC-PLAN-DOMAIN','UC-PLAN-SLICE','UC-PLAN-TEST-PLAN','UC-PLAN-ORIENT'])assert.ok(useCases.some((u)=>u.id===id),id);for(const retired of ['UC-REPO-ORIENT','UC-REPO-CURRENT-STATE','UC-REPO-PLAN-NEXT','UC-REPO-REFINE-CURRENT-PLAN','UC-REPO-AUDIT-REVIEW','UC-REPO-CRITICAL-REVIEW','UC-REPO-REVIEW-PLANNING-FINDINGS','UC-REPO-DEFINE-PARALLEL-SCOPES','UC-REPO-PARALLEL-WORK','UC-REPO-USE-ARCHIVE-SOURCE'])assert.ok(!useCases.some((u)=>u.id===retired),retired);for(const file of ['review-audit.command.md','discover-workspace-use-cases.command.md','plan-domain.command.md','plan-application-slice.command.md','plan-practical-testing.command.md','bootstrap-application-sds-planning.command.md'])assert.ok(fs.existsSync(path.join(repoRoot,'planning/commands',file)),file);const audit=codec.parseCommandDefinitionDocument(read('planning/commands/review-audit.command.md'));assert.equal(audit.id,'review_audit.recheck');assert.ok(audit.ownerFiles.includes('planning/documentation/review-audit-workflow.md'));assert.doesNotMatch(audit.meaning,/UC-REPO-AUDIT-REVIEW/)});
+test('methodology Use Cases and standalone project/domain command routes remain independently discoverable',()=>{for(const id of ['UC-DOC-USE-REPOSITORY-GUIDANCE','UC-DOC-PLAN-DOCUMENTATION-CHANGE','UC-IDTSPE-COMPOSE-CURRENT-WORK','UC-IDTSPE-INTEGRATE-CURRENT-WORK','UC-IDTSPE-REVALIDATE-CURRENT-WORK'])assert.ok(useCases.some((u)=>u.id===id),id);for(const projectUc of ['UC-REPO-PLAN-UPDATE','UC-REPO-BUILD-REPLACEMENT-PACKAGE','UC-PLAN-ARCH-WORKSPACE-USES','UC-PLAN-DOMAIN','UC-PLAN-SLICE','UC-PLAN-TEST-PLAN'])assert.ok(!useCases.some((u)=>u.id===projectUc),`${projectUc}: project/application UC must not be projected as methodology-use UC`);for(const file of ['review-audit.command.md','discover-workspace-use-cases.command.md','plan-domain.command.md','plan-application-slice.command.md','plan-practical-testing.command.md','bootstrap-application-sds-planning.command.md','build-replacement-archive.command.md'])assert.ok(fs.existsSync(path.join(repoRoot,'planning/commands',file)),file);const audit=codec.parseCommandDefinitionDocument(read('planning/commands/review-audit.command.md'));assert.equal(audit.id,'review_audit.recheck');assert.ok(audit.ownerFiles.includes('planning/documentation/review-audit-workflow.md'));assert.doesNotMatch(audit.meaning,/UC-REPO-AUDIT-REVIEW/)});
 
-test('Application Realization projection is generic while its owner carries runtime/architecture handoff semantics',()=>{const realization=useCases.find((u)=>u.id==='UC-PLAN-REALIZATION');assert.ok(realization);assert.equal(realization.label,'Review / Compare High-Level Application Realization');assert.match(realization.instruction,/current canonical registry/);assert.doesNotMatch(realization.instruction,/hardcoded|pre-Domain comparative evidence/);const owner=read('planning/documentation/application-planning/application-realization-workflow.md');assert.match(owner,/Architecture Cost Handoff/);assert.match(owner,/runtime/i)});
+test('project-specific Application Realization stays outside methodology Use-Case projection while its standalone owner/command remain reachable',()=>{assert.equal(useCases.some((u)=>u.id==='UC-PLAN-REALIZATION'),false);const command=codec.parseCommandDefinitionDocument(read('planning/commands/review-application-realization.command.md'));assert.equal(command.id,'application_realization.review');assert.ok(command.ownerFiles.includes('planning/documentation/application-planning/application-realization-workflow.md'));const owner=read('planning/documentation/application-planning/application-realization-workflow.md');assert.match(owner,/Architecture Cost Handoff/);assert.match(owner,/runtime/i)});
 
 
 
@@ -47,7 +71,7 @@ test('IDTSPE and SDS bootstrap commands load governance without forming or execu
 
 test('Architecture and Testing remain reachable through their current semantic owners without Direction registries',()=>{assert.ok(fs.existsSync(path.join(repoRoot,'planning/documentation/architecture-planning/use-case-registry.md')));assert.ok(fs.existsSync(path.join(repoRoot,'planning/documentation/testing-planning/use-case-registry.md')));assert.equal(fs.existsSync(path.join(repoRoot,'planning/direction-registry.md')),false)});
 
-test('Test Strategy stays lightweight and conditional instead of mirroring test code',()=>{const owner=read('planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-TEST-STRATEGY.md');assert.match(owner,/shared proof strategy/i);assert.match(owner,/Do not mirror every concrete test class\/helper/i);assert.match(owner,/one compact|one `RU-TSTRAT-01`|RU-TSTRAT-01/i);const command=codec.parseCommandDefinitionDocument(read('planning/commands/plan-testing-strategy.command.md'));assert.match(command.expectedOutput,/compact Shared Proof Strategy/i);assert.match(command.helperPresentation.whatYouGet,/small shared proof strategy/i)});
+test('retired Test Strategy shortcut routes to current proof owners without restoring a durable Test Strategy Target',()=>{const owner=read('planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-TEST-STRATEGY.md');assert.match(owner,/RETIRED/i);assert.match(owner,/LENS-TEST-PROOF-EVIDENCE/);assert.match(owner,/transient coordination/);assert.match(owner,/No active Test Strategy Result Units remain/i);const command=codec.parseCommandDefinitionDocument(read('planning/commands/plan-testing-strategy.command.md'));assert.equal(command.palette,false);assert.match(command.meaning,/TM-TEST-STRATEGY is retired/i);assert.match(command.meaning,/LENS-TEST-PROOF-EVIDENCE/);assert.doesNotMatch(command.expectedOutput,/durable .*Test Strategy|RU-TSTRAT/i)});
 
 
 
@@ -83,7 +107,7 @@ test('all reusable Lenses separate Target Inputs from explicit Knowledge Basis',
     'planning/documentation/idtspe-methodology/active/profiles/sds/lenses/reusable'
   ];
   const files=roots.flatMap((rel)=>fs.readdirSync(path.join(repoRoot,rel)).filter((name)=>/^LENS-.*\.md$/.test(name)).map((name)=>`${rel}/${name}`));
-  assert.equal(files.length,17);
+  assert.equal(files.length,18);
   for(const rel of files){const text=read(rel);assert.equal((text.match(/^## Knowledge Basis$/gm)||[]).length,1,rel);assert.match(text,/^## Artifact \/ File Implications$/m,rel);}
   const proof=read('planning/documentation/idtspe-methodology/active/idtspe-core/lenses/reusable/LENS-TEST-PROOF-EVIDENCE.md');
   assert.match(proof,/Testing Knowledge Basis/);assert.match(proof,/theoretical-modules\/testing\/README\.md/);
@@ -97,12 +121,12 @@ test('artifact guidance ownership keeps Target-result AP separate from Lens-prod
   const coreTmDir=path.join(repoRoot,'planning/documentation/idtspe-methodology/active/idtspe-core/target-modules');
   const coreAp=fs.readdirSync(coreTmDir).filter((n)=>/^TM-.*\.md$/.test(n)).flatMap((n)=>[...fs.readFileSync(path.join(coreTmDir,n),'utf8').matchAll(/^ID: (AP-[A-Z0-9-]+)$/gm)].map((m)=>m[1]));
   const ag=lensRoots.flatMap(markdown).flatMap((f)=>[...fs.readFileSync(f,'utf8').matchAll(/^ID: (AG-[A-Z0-9-]+)$/gm)].map((m)=>m[1]));
-  assert.equal(ap.length,25);assert.equal(new Set(ap).size,25);assert.deepEqual(coreAp,['AP-PUPDATE-01']);assert.equal(ap.length+coreAp.length,26);assert.equal(ag.length,22);assert.equal(new Set(ag).size,22);
+  assert.equal(ap.length,8);assert.equal(new Set(ap).size,8);assert.deepEqual(coreAp,['AP-PUPDATE-01']);assert.equal(ap.length+coreAp.length,9);assert.equal(ag.length,22);assert.equal(new Set(ag).size,22);
   for(const retired of ['AP-DOM-02','AP-SLICE-03','AP-FE-03','AP-WEUC-01','AP-WEUC-02','AG-L5-02'])assert.ok(!ap.includes(retired)&&!ag.includes(retired),retired);
   for(const retiredFile of ['TM-DOMAIN-DRAFT.md','TM-FRONTEND-SLICE.md','TM-WEUC.md'])assert.equal(fs.existsSync(path.join(tmDir,retiredFile)),false,retiredFile);
-  const l5=read('planning/documentation/idtspe-methodology/active/profiles/sds/lenses/frequent/LENS-WORKSPACE-EVOLUTION-ARCHITECTURE.md');assert.doesNotMatch(l5,/ID: AG-L5-02/);assert.match(l5,/physically separate `<owner>\.evolution\.md`/);
-  const domain=read('planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-DOMAIN-DISCOVERY.md');assert.match(domain,/Domain \/ Aggregate Modeling/);assert.match(domain,/SUPPORTING \/ SHALLOW/);assert.match(domain,/RU-DOM-01/);
-  const slice=read('planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-IMPLEMENTATION-SLICE.md');assert.match(slice,/RU-SLICE-04.*Evolution Steps/);assert.match(slice,/Codebase Integration Path is not a Result Unit/);assert.match(slice,/Implementation Outlook/);
+  const l5=read('planning/documentation/idtspe-methodology/active/profiles/sds/lenses/frequent/LENS-WORKSPACE-EVOLUTION-ARCHITECTURE.md');assert.doesNotMatch(l5,/ID: AG-L5-02/);assert.match(l5,/`NONE_DIRECT` by default/);assert.match(l5,/natural-owner.*meaning|natural owner.*meaning/i);
+  const domain=read('planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-DOMAIN-DISCOVERY.md');assert.match(domain,/Transient Domain Discovery/);assert.match(domain,/Source.*not durable Domain authority/i);assert.match(domain,/RU-DOM-01/);
+  const slice=read('planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-IMPLEMENTATION-SLICE.md');assert.match(slice,/RU-SLICE-04.*Feature Integration Proof/);assert.match(slice,/RU-SLICE-05.*Evolution \/ OPEN Slice Pressure/);assert.match(slice,/working\/non-persistent by default/i);assert.match(slice,/working discovery does not become a shadow class\/call registry/i);
 });
 
 test('generic Lens commands expose applicability scan and selected-Lens dispatch without fixed Lens ownership',()=>{
@@ -142,7 +166,7 @@ test('idtspe is one registry-driven dispatcher for ordinary work, Target Modules
   const sdsTm=read('planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/README.md');
   const coreLens=read('planning/documentation/idtspe-methodology/active/idtspe-core/lenses/README.md');
   const sdsLens=read('planning/documentation/idtspe-methodology/active/profiles/sds/lenses/README.md');
-  for(const alias of ['application','scenario','domain','slice-strategy','slice','crosscut'])assert.match(sdsTm,new RegExp('`'+alias+'`'));
+  for(const alias of ['application','scenario','domain','slice','shared','evolution-step','evolution-map','practical-test'])assert.match(sdsTm,new RegExp('`'+alias+'`'));const activeTm=sdsTm.split('## Retired / Subsumed Baseline Modules')[0];for(const retired of ['slice-strategy','crosscut'])assert.doesNotMatch(activeTm,new RegExp('`'+retired+'`'));
   for(const alias of ['representation','dependency','test-proof','ddd','ui','l5','simplicity'])assert.match(coreLens+sdsLens,new RegExp('\\b'+alias.replace('-','\\-')+'\\b'));
 });
 
@@ -160,10 +184,11 @@ test('all installed idtspe Target Module and Lens aliases are globally unique an
 
   const sdsTm=read('planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/README.md');
   for(const line of sdsTm.split(/\r?\n/)){
-    const m=line.match(/^\| \[`(TM-[A-Z0-9-]+)`\]\([^)]*\) \| `([a-z0-9-]+)` \|/);
-    if(m)add(m[2],m[1],'SDS Target Module registry');
+    const m=line.match(/^\| \[`(TM-[A-Z0-9-]+)`\]\([^)]*\) \| (.+?) \|/);
+    if(!m)continue;
+    for(const a of m[2].matchAll(/`([a-z0-9-]+)`/g))add(a[1],m[1],'SDS Target Module registry');
   }
-  assert.equal(aliases.filter((x)=>x.source==='SDS Target Module registry').length,12);
+  assert.equal(aliases.filter((x)=>x.source==='SDS Target Module registry').length,14);
 
   const coreTm=read('planning/documentation/idtspe-methodology/active/idtspe-core/target-modules/README.md');
   for(const m of coreTm.matchAll(/^idtspe ([a-z0-9-]+) <scope>\n→ (TM-[A-Z0-9-]+)$/gm))add(m[1],m[2],'Core Target Module registry');
@@ -174,12 +199,12 @@ test('all installed idtspe Target Module and Lens aliases are globally unique an
     ['SDS Lens registry','planning/documentation/idtspe-methodology/active/profiles/sds/lenses/README.md']
   ]){
     for(const line of read(rel).split(/\r?\n/)){
-      const m=line.match(/^([a-z0-9-]+)\s+→\s+(LENS-[A-Z0-9-]+)$/);
+      const m=line.match(/^([a-z0-9-]+)\s+→\s+(LENS-[A-Z0-9-]+)(?:\s+#.*)?$/);
       if(m)add(m[1],m[2],source);
     }
   }
   assert.equal(aliases.filter((x)=>x.source==='Core Lens registry').length,11);
-  assert.equal(aliases.filter((x)=>x.source==='SDS Lens registry').length,6);
+  assert.equal(aliases.filter((x)=>x.source==='SDS Lens registry').length,8);
 
   const byAlias=new Map();
   for(const item of aliases){
@@ -187,7 +212,7 @@ test('all installed idtspe Target Module and Lens aliases are globally unique an
     assert.equal(prior,undefined,`idtspe alias collision: ${item.alias} -> ${prior?.id} / ${item.id}`);
     byAlias.set(item.alias,item);
   }
-  assert.equal(byAlias.size,31);
+  assert.equal(byAlias.size,35);
 
   for(const [alias,id] of [
     ['scenario','TM-SCENARIO-PLANNING'],
@@ -197,4 +222,31 @@ test('all installed idtspe Target Module and Lens aliases are globally unique an
     ['l5','LENS-WORKSPACE-EVOLUTION-ARCHITECTURE'],
     ['representation','LENS-ARTIFACT-BOUNDARY-ADDRESSABILITY']
   ])assert.equal(byAlias.get(alias)?.id,id,alias);
+});
+
+test('README-owned bootstrap hierarchy keeps primary bootstrap generic and profile bootstrap incremental',()=>{
+  const planning=read('planning/README.md');
+  const session=read('planning/session/README.md');
+  const documentation=read('planning/documentation/README.md');
+  const core=read('planning/documentation/idtspe-methodology/active/idtspe-core/README.md');
+  const sds=read('planning/documentation/idtspe-methodology/active/profiles/sds/README.md');
+  const oldCoreBootstrap=read('planning/documentation/idtspe-methodology/active/idtspe-core/BOOTSTRAP-IDTSPE.md');
+  const oldSdsBootstrap=read('planning/documentation/idtspe-methodology/active/profiles/sds/BOOTSTRAP-SDS.md');
+  assert.match(planning,/## Primary Bootstrap/);
+  assert.match(planning,/session\/README\.md[\s\S]*AI-WORKING-CONTRACT\.md[\s\S]*documentation\/README\.md[\s\S]*idtspe-core\/README\.md/);
+  assert.match(planning,/intentionally stops before any profile/i);
+  assert.doesNotMatch(planning,/profiles\/sds\/README\.md/);
+  assert.match(session,/## Bootstrap/);assert.match(session,/principles-and-terminology\.md/);assert.match(session,/session-runtime-contract\.md/);
+  assert.match(documentation,/## Bootstrap/);assert.match(documentation,/use-case-registry-map\.md/);
+  assert.match(core,/## Bootstrap/);assert.match(core,/planning\/README\.md/);assert.match(core,/Primary bootstrap stops before profile bootstrap/);
+  assert.match(sds,/## Profile Bootstrap/);assert.match(sds,/incremental/i);assert.match(sds,/planning\/README\.md/);
+  assert.doesNotMatch(sds,/session\/principles-and-terminology|session-runtime-contract/);
+  assert.match(oldCoreBootstrap,/compatibility only/i);assert.match(oldCoreBootstrap,/planning\/README\.md/);
+  assert.match(oldSdsBootstrap,/compatibility only/i);assert.match(oldSdsBootstrap,/README\.md/);
+  const coreCmd=codec.parseCommandDefinitionDocument(read('planning/commands/bootstrap-idtspe.command.md'));
+  const sdsCmd=codec.parseCommandDefinitionDocument(read('planning/commands/bootstrap-application-sds-planning.command.md'));
+  assert.ok(coreCmd.ownerFiles.includes('planning/README.md'));
+  assert.ok(!coreCmd.ownerFiles.some((x)=>x.endsWith('/BOOTSTRAP-IDTSPE.md')));
+  assert.ok(sdsCmd.ownerFiles.includes('planning/documentation/idtspe-methodology/active/profiles/sds/README.md'));
+  assert.ok(!sdsCmd.ownerFiles.some((x)=>x.endsWith('/BOOTSTRAP-SDS.md')));
 });

@@ -1,25 +1,29 @@
 # IDTSPE Shell — Generic Planning Runtime / Composition Contract
 
 Status: active generic methodology owner  
-Purpose: define the generic IDTSPE runtime/composition contract that coordinates one concrete Target, typed Sources, Core State Units, reusable Lenses, Target Step Result projection, validation, persistence and revalidation without hard-coding any domain/application module.
+Purpose: define the generic technical IDTSPE runtime/composition contract used inside an always-active **IDTSPE Work Context**. A Work Context may remain Broad Discussion with zero Targets, or coordinate one or several bounded Targets with typed Sources, Core State Units, reusable Lenses, Target Step Result projection, validation, persistence and revalidation without hard-coding any domain/application module.
 
 ## Core Formula
 
 ```text
-Trigger / Invocation
-+ Target Formation Resolution Set
-+ Target Module or Local Target Contract
-+ typed Sources
-+ Broad Discussion / Key Points when working conversationally
-+ IDTSPE State Units
-+ selected/applicable Lenses
-+ Target Step Result Units
-+ Validators / Guards
-+ current Artifact Placement
-+ Handoff
-+ Evidence / Revalidation lifecycle
-= one bounded IDTSPE work step
+IDTSPE Work Context
++ current Use-Case composition
++ Broad Discussion / Key Points
++ zero or more material IDTSPE State Units
++ zero or more bounded Targets
+  each Target when present:
+    Target Formation Resolution Set
+    + Target Module or Local Target Contract
+    + typed Sources
+    + selected/applicable Lenses
+    + applicable/material Target Step Result Units
+    + Validators / Guards
+    + Artifact Placement when material
++ Handoff / Evidence / Revalidation when material
+= current proportional IDTSPE work
 ```
+
+A Target-specific shell pass still operates on one primary bounded Target at a time, but the **work context itself does not require a Target** and may retain relations among several Targets when that is the real current situation. Functional composition is owned by [`shared/compose-current-work-use-case.md`](shared/compose-current-work-use-case.md); this Shell owns the generic technical mechanics once those mechanisms are needed.
 
 Canonical working-conversation / checkpoint model: [`shared/broad-discussion-and-integration-checkpoint-model.md`](shared/broad-discussion-and-integration-checkpoint-model.md).
 
@@ -31,12 +35,26 @@ IDTSPE Unit
 │  defined by Target Module / Local Target Contract
 └─ IDTSPE State Unit
    Core-defined generic planning kind:
-   Source / Question / Idea / Q-R-P / Decision / Evidence / ...
+   Source / Question / Proposal / Q-R-P / Decision / Evidence / Methodology Usage State / ...
 ```
 
 The current `P-01..P-15` labels remain stable **technical runtime navigation**. They are not a second semantic ontology above the Unit/Target models.
 
 The shell owns **planning mechanics**. It does not own current product/domain/application semantics.
+
+## Work-Context Proportionality
+
+The Shell is subordinate to the Use-Case/contextual-application layer:
+
+```text
+Use-Case Registry applicability
+→ UC-IDTSPE-COMPOSE-CURRENT-WORK
+→ component/registry applicability
+→ local Unit materiality
+→ Shell ports used only where the selected composition needs them
+```
+
+Do not invoke all ports as a completion checklist. A port may remain unused in a valid work pass. Canonical rule: [`shared/contextual-methodology-application-contract.md`](shared/contextual-methodology-application-contract.md).
 
 ## Three Durable Decision Types
 
@@ -54,19 +72,22 @@ A material choice inside Source/Lens composition maps to one of the three normal
 
 ### P-01 Invocation Port
 
-Input:
+Input, proportionally:
 ```text
-Trigger
-requested operation/mode
-current planning context
-invocation mode: CREATE | REFINE | EXTEND | REVALIDATE | REPAIR
+current USER situation / Work Concern
+active methodology Use Case(s)
+current IDTSPE Work Context
+requested operation/mode when explicit
+invocation mode for a Target-specific pass: CREATE | REFINE | EXTEND | REVALIDATE | REPAIR
 current Target artifact(s) when they exist
 permission boundary
 ```
 
-Output: next bounded Target candidate / orchestration route plus current invocation mode. Reusing the same Target with `REFINE`/`REVALIDATE` is normal when durable owner representations already exist.
+Output: the next technical Shell route for the composition selected by the active Use Case. It may be **no Target-specific route** when Broad Discussion remains sufficient. Reusing the same Target with `REFINE`/`REVALIDATE` is normal when durable owner representations already exist.
 
 ### P-02 Target Port
+
+This port is **conditional**. Use it only when Target Formation determines that a bounded Target/result responsibility is useful.
 
 Connects:
 ```text
@@ -74,7 +95,7 @@ Target Instance
 ↔ Target Module / Target Type / local Target Contract
 ```
 
-Resolved through `TF-01 PURPOSE_OUTPUT`, `TF-02 TARGET_TYPE_FORM`, `TF-03 TARGET_SCOPE`.
+Resolved through `TF-01 PURPOSE_OUTPUT`, `TF-02 TARGET_TYPE_FORM`, `TF-03 TARGET_SCOPE`. `NO_TARGET_NEEDED_YET` is a normal Work-Context outcome; it is not an error or a reason to invent a placeholder Target.
 
 ### P-03 Source Port
 
@@ -120,9 +141,9 @@ Questions created/refined through Core Finding Disposition when material finding
 current unresolved Q/R/P questions when relevant
 ```
 
-into one selected `Question Set` through `TF-06 QUESTION_SET`. Goals/Desired Outcomes and Problems may drive the Idea/Decision space without being retyped as Questions merely to pass through P-05.
+into one selected `Question Set` through `TF-06 QUESTION_SET`. Goals/Desired Outcomes and Problems may drive the Proposal/Decision space without being retyped as Questions merely to pass through P-05.
 
-Question examples are non-exhaustive and are not automatic user questions. A Target Module may also provide Problem driver candidates; the Target Goal / Desired Outcome comes from the Target contract/context. These are the ordinary starting driver set for Idea discovery, but current Sources/situation, previous work/checkpoints, Broad Discussion, user/AI input and dispositioned findings may add drivers on equal Core semantic footing. Problem drivers use the existing P-09 Problem meaning rather than being retyped as Questions.
+Question examples are non-exhaustive and are not automatic user questions. A Target Module may also provide Problem driver candidates; the Target Goal / Desired Outcome comes from the Target contract/context. These are the ordinary starting driver set for Proposal discovery, but current Sources/situation, previous work/checkpoints, Broad Discussion, user/AI input and dispositioned findings may add drivers on equal Core semantic footing. Problem drivers use the existing P-09 Problem meaning rather than being retyped as Questions.
 
 ### P-06 Lens Port
 
@@ -153,7 +174,7 @@ Finding handling is generic Core behavior: [`shared/finding-disposition-contract
 
 Lenses run inside IDTSPE work through an Analysis Surface and reusable operations. They may contribute explanatory Broad Discussion/Key Points without State mutation; only material meaning needing State/lifecycle/owner disposition surfaces as a Finding Candidate, which Core Finding Disposition resolves. A Lens may lead to an already-declared Result Unit changing only after normal authority/resolution, and it never defines Unit kinds or becomes semantic authority.
 
-### P-07 Idea / Alternative Port
+### P-07 Proposal / Alternative Port
 
 Connects materially different answer candidates from:
 ```text
@@ -161,12 +182,12 @@ user input
 Sources
 AI proposals
 Target Module pattern aids
-accepted/dispositioned Idea / alternative input derived from Lens, research or prototype observations
+accepted/dispositioned Proposal / alternative input derived from Lens, research or prototype observations
 ```
 
-Material Lens/research/prototype observations that need semantic State/lifecycle disposition first surface as Finding Candidates. Core Finding Disposition decides whether accepted meaning creates/refines Idea/alternative State or another lifecycle consequence; only then does `TF-07 IDEA_SPACE` resolve materially different answer candidates.
+Material Lens/research/prototype observations that need semantic State/lifecycle disposition first surface as Finding Candidates. Core Finding Disposition decides whether accepted meaning creates/refines Proposal/alternative State or another lifecycle consequence; only then does `TF-07 PROPOSAL_SPACE` resolve materially different answer candidates.
 
-AI proposal remains an unselected Idea until accepted. Every material Idea is explicitly surfaced and carries `Addresses → current Target Goal / Question / Problem`; a missing driver is an unresolved planning gap, not a free-floating material Idea. Ideas may `compete-with`, `complement`, `require`, `conflict-with` or compose through a lightweight Candidate Bundle / Option Group. Candidate bundles are grouping/comparison projections by default, not new required State Units or Planning Branches. Material Ideas/relations may first live inline in Broad Discussion; no per-response Intake Summary is required as long as their explicit identity/driver relation is clear for the next Integration Checkpoint.
+An AI Proposal remains unselected. When material addressability/lifecycle/review is useful, its candidate meaning may be represented as a formal IDTSPE Proposal; neither the lightweight nor formal form is accepted merely because AI proposed it. Every material formal Proposal is explicitly surfaced and preserves the existing `Addresses → current Target Goal / Question / Problem` driver relation. For approval-relevant formal Proposals, the motivating Question and/or Problem must be visible explicitly (inline or by reference) rather than hidden in prose; a missing driver is an unresolved planning gap, not a free-floating material Proposal. Proposals may `compete-with`, `complement`, `require`, `conflict-with` or compose through a lightweight Candidate Bundle / Option Group. Candidate bundles are grouping/comparison projections by default, not new required State Units or Planning Branches. Material Proposals/relations may first live inline in Broad Discussion; no per-response Intake Summary is required as long as their explicit identity/driver relation is clear for the next Integration Checkpoint.
 
 ### P-08 Branch Port
 
@@ -174,7 +195,7 @@ Connects optional counterfactual planning networks when shallow comparison is in
 
 Resolved through `TF-08 BRANCH_POLICY`.
 
-A Planning Branch is not one Idea; it is an alternative downstream planning network from a shared Fork State.
+A Planning Branch is not one Proposal; it is an alternative downstream planning network from a shared Fork State.
 
 ### P-09 Q/R/P Port
 
@@ -185,9 +206,9 @@ Risk
 Problem
 ```
 
-attached to the real planning subject/Decision/Idea/Result relation they concern. Q/R/P may be contextual to one Idea or candidate bundle rather than only Target-wide. Q/R/P is not a parallel semantic-root model.
+attached to the real planning subject/Decision/Proposal/Result relation they concern. Q/R/P may be contextual to one Proposal or candidate bundle rather than only Target-wide. Q/R/P is not a parallel semantic-root model.
 
-Optional review/trace mechanics are owned by [`shared/qrp-priority-groups-and-decision-trace.md`](shared/qrp-priority-groups-and-decision-trace.md): impact priority, related Q/R/P grouping, contextual Idea/Q-R-P relations, and Decision `Addresses` / `Selected` / optional `Rationale / Why` / `Exposes` links. These extend existing P-09; they do not create a second Concern runtime.
+Optional review/trace mechanics are owned by [`shared/qrp-priority-groups-and-decision-trace.md`](shared/qrp-priority-groups-and-decision-trace.md): impact priority, related Q/R/P grouping, contextual Proposal/Q-R-P relations, and Decision `Addresses` / `Selected` / optional `Rationale / Why` / `Exposes` links. These extend existing P-09; they do not create a second Concern runtime.
 
 ### P-10 Decision Port
 
@@ -202,7 +223,7 @@ Accepted material Decisions are retained in integrated semantic state by default
 
 ```text
 Addresses: <Goal / Question / Problem / Q/R/P IDs or group>
-Selected:  <Idea(s) / Candidate Bundle>
+Selected:  <Proposal(s) / Candidate Bundle>
 Rationale / Why: <optional selection reasoning>
 Exposes:   <newly revealed/created Q/R/P IDs>
 ```
@@ -222,7 +243,7 @@ Target Step Result
 ≠ generic IDTSPE State Units
 ```
 
-Generic Questions/Ideas/QRP/Branches/Decisions/Evidence/Revalidation remain Core State Units and are not duplicated merely as module result fields.
+Generic Questions/Proposals/QRP/Branches/Decisions/Evidence/Revalidation remain Core State Units and are not duplicated merely as module result fields.
 
 Existing `Target-specific output`, `Output Schema` and `Target-specific Output Template` wording is migration-compatible technical projection vocabulary; the canonical semantic model is the Step Result / Result Unit contract. A full Target integration pass may serve as an Integration Checkpoint: it reconciles accumulated Broad Discussion/current State into the coherent applicable Generic State + Target Result without ending discussion or implying physical persistence.
 
@@ -241,13 +262,13 @@ Validation may surface Finding Candidates. Generic Core Finding Disposition reso
 
 ### P-13 Handoff / Methodology Direction Port
 
-Resolves `TF-09 HANDOFF` through the **active profile/family's Next-Step Resolver**. The Shell owns the port and required response shape; it does not own one universal Scenario/Domain/Slice chronology.
+Resolves `TF-09 HANDOFF` through the **current Use-Case composition plus the active profile/family semantic readiness guidance**. The Shell owns the generic handoff port and response shape; it does not own one universal Scenario/Domain/Slice chronology and does not delegate runtime orchestration to a profile resolver.
 
 ```text
 accepted Target output
 → typed downstream Source(s)
-→ active profile/family readiness resolver
-→ methodology readiness / next likely Target
+→ active profile/family semantic composition/readiness guidance
+→ methodology readiness / next likely Target or no additional Target
 ```
 
 Current installed SDS example: [`../profiles/sds/shared/directed-methodology-workflow-and-next-step-resolution.md`](../profiles/sds/shared/directed-methodology-workflow-and-next-step-resolution.md).
@@ -311,12 +332,12 @@ Revalidation is lifecycle, not a peer Lens.
 
 ## Integration Checkpoint Response Projection
 
-Ordinary Broad Discussion is allowed to remain conversational and does not reproduce this whole projection. Material logical parts use Key Points proportionally, and material Ideas remain explicit with their driver relation; no mandatory block-owner or per-response Intake Summary is required. When a full Integration Checkpoint is requested/appropriate, the assistant should render proportionally:
+Ordinary Broad Discussion is allowed to remain conversational and does not reproduce this whole projection. Material logical parts use Key Points proportionally, and material Proposals remain explicit with their driver relation; no mandatory block-owner or per-response Intake Summary is required. When `UC-IDTSPE-INTEGRATE-CURRENT-WORK` determines that a full Integration Checkpoint is useful/requested, the assistant should render proportionally:
 
 ```text
 optional Broad Discussion Summary / material explanatory Key Points
 Current Target / Scope / Sources + Target Goal / Desired Outcome context
-coherent material Generic State through existing Core kinds, including explicit Idea→driver relations and unresolved Idea alternatives/bundles
+coherent material Generic State through existing Core kinds, including explicit Proposal→driver relations and unresolved Proposal alternatives/bundles
 accepted Decisions + retention/rationale choices when material
 Target-specific Result Units — complete applicable current projection
 Lens / consistency review + material Finding Candidates/disposition consequences
@@ -325,7 +346,7 @@ Handoff / downstream Sources / recommended discussion focus
 Residual Q/R/P / revalidation signals
 ```
 
-If explanatory Broad Discussion inside the checkpoint surfaces new material Idea/Question/Problem/Evidence/Decision meaning, integrate it into that same checkpoint or mark it explicitly as post-checkpoint exploration; do not leave it as unintegrated prose while presenting the checkpoint as the coherent whole.
+If explanatory Broad Discussion inside the checkpoint surfaces new material Proposal/Question/Problem/Evidence/Decision meaning, integrate it into that same checkpoint or mark it explicitly as post-checkpoint exploration; do not leave it as unintegrated prose while presenting the checkpoint as the coherent whole.
 
 `Artifact Placement View` maps current-instance content to semantic owner + **guidance source IDs (AP-*/AG-*)** + persistence + physical representation/destination + resolver.
 
@@ -372,7 +393,7 @@ Lenses are applied to **material choice surfaces**, not mechanically to every pa
 ```text
 Target/Scope choice
 Question-Set choice
-Idea/Branch comparison
+Proposal/Branch comparison
 Answer Decision
 revalidation challenge
 ```
@@ -390,7 +411,7 @@ SOURCES
 KNOWLEDGE_BASIS
 RELATIONS
 QUESTIONS
-IDEAS
+PROPOSALS
 BRANCHING
 LENSES_PATTERNS
 OUTPUT
@@ -449,7 +470,7 @@ No special planning engine is required for architecture, algorithms, frontend st
 
 Generic IDTSPE State does **not** require a profile-global planning-state tree.
 
-Loose/carry-over Ideas remain ordinary Generic Idea State. Their durable representation,
+Loose/carry-over Proposals remain ordinary Generic Proposal State. Their durable representation,
 when useful, is selected through Documentation / Representation + P-14 / TF-10 and may be:
 
 ```text
@@ -472,7 +493,7 @@ Target form/scope resolved
 Sources sufficient and authoritative
 Question Set sufficient
 Lens Set resolved and material findings handled
-Idea/Branch space sufficient
+Proposal/Branch space sufficient
 blocking Q/R/P resolved/deferred explicitly
 material Decisions accepted under correct authority
 Target Step Result projected proportionally into declared Result Units
@@ -502,38 +523,41 @@ P-02 Target:
 
 P-03 Sources:
   Application Definition
-  Refined Core Real-Life Scenario
-  Prototype Evidence
+  selected Feature behavior/semantic data
+  relevant Screen context when known
+  Prototype Evidence when relevant
 
 P-06 Lenses:
-  L1-L3
-  Scenario Boundary/Behavior
+  applicable Core Lens Pack
+  journey/continuity checks
   UI/Spatial when Screen relations matter
 
 P-05 Questions:
-  what starts capture?
-  what information is required?
-  what is observable success/failure?
+  who/what starts the journey?
+  which Feature/context actions participate and in what order?
+  where do branches/convergence/re-entry occur?
+  what terminal Benefit/result closes the journey?
 
-P-07 Ideas:
-  one-step save
-  save + optional note
-  save + forced organization
+P-07 Proposals:
+  direct capture → confirmation
+  capture → optional note → confirmation
+  capture → recoverable failure → retry/re-entry
 
 P-10 Decisions:
-  select behavior/result
+  select journey composition / branch meaning
 
 P-11 Output:
-  Scenario
-  internal DATA
-  internal Behavior Items
-  Acceptance meaning
+  Scenario journey composition
+  actor/external participation
+  Feature/Screen participation
+  branch/convergence/re-entry
+  terminal Benefit + journey must-hold meaning
 
 P-13 Handoff:
-  Domain Discovery
+  Feature revalidation when behavior is unresolved
   Screen
-  Slice planning
-  Test Design
+  Slice Discovery
+  natural-owner proof planning when useful
 ```
 
 The shell mechanics stay generic; Scenario meaning comes from the Target Module and current Sources.
@@ -591,14 +615,14 @@ L4 surfaces that observation as a Finding Candidate. Core Finding Disposition ma
 
 ```text
 Risk
-new Idea
+new Proposal
 migration Question
 architecture Answer-Decision input
 ```
 
 but L4 does not create that State or own the API semantics.
 
-### Example 5 — Loose Idea vs Accepted Future Meaning
+### Example 5 — Loose Proposal vs Accepted Future Meaning
 
 During any Target:
 
@@ -606,7 +630,7 @@ During any Target:
 "maybe support offline capture later"
 ```
 
-remains Generic Idea State until it has enough accepted basis to affect current planning. If later accepted as Scenario-local future/change meaning, it may appear in that Scenario's future/change Result Unit and project downstream into Strategy/Slice Evolution Steps.
+remains Generic Proposal State until it has enough accepted basis to affect current planning. If later accepted as Scenario-local future/change meaning, it may appear in that Scenario's future/change Result Unit and project downstream into Strategy/Slice Evolution Steps.
 
 ## Example Reading Standard
 
@@ -626,4 +650,3 @@ Scenario future/change meaning
 ```
 
 No permanent global evolution Target or global architecture file is required by Core.
-

@@ -369,8 +369,8 @@ Material gaps become Finding Candidates. Core Finding Disposition resolves the r
 TM-EXACT-REALIZATION
   → simple missing/incorrect exact test implementation
 
-TM-TEST-DESIGN
-  → proof method itself is independently non-trivial
+natural semantic owner / transient proof design
+  → proof method itself is independently non-trivial and must be reasoned with the owner before literal realization
 
 TM-PRACTICAL-TEST
   → real operated/environment Evidence is required
@@ -411,7 +411,7 @@ WHEN: selected proof design must survive for later realization/review
 GUIDANCE: PROFILE_DEFAULT
 PERSISTENCE_GUIDANCE: PREFERRED
 PLACEMENT_DIRECTIVE: PLACE
-SEMANTIC_OWNER: resolved proof-planning owner; Test Design/Strategy or nearest existing owner when already selected
+SEMANTIC_OWNER: nearest natural semantic/implementation owner or scoped Core Decision/supporting owner when independently cross-owner
 REPRESENTATION: EMBED_OR_EXISTING_ARTIFACT
 CONTENT: property-to-proof design; layer; setup/action/observation; required assertions/signals
 GUIDANCE_SOURCE: LENS
@@ -448,7 +448,7 @@ GUIDANCE_SOURCE: LENS
 RESOLVER: P-14 / TF-10
 ```
 
-Planned proof that must survive for later implementation may live in the selected Test Design/Strategy owner or the nearest existing owner when local embedding is enough.
+Planned proof that must survive for later implementation should live with the nearest natural owner or a scoped explicitly selected cross-owner Decision/supporting owner when independent coordination value exists. No generic Test Design/Strategy Target is assumed.
 
 Actual test files/run artifacts remain Evidence Sources/supporting representation, not product-semantic authority. Mere existence or successful execution of automated/practical Evidence does **not** by itself require a second durable Evidence document/reference; retain/persist it only when continuing review, revalidation, traceability, Decision support or another material downstream use warrants that survival.
 

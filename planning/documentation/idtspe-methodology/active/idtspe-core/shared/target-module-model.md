@@ -7,7 +7,7 @@ Purpose: define a reusable module that can shape one IDTSPE Target or contribute
 
 # 1. Core Definition
 
-A `Target Module` is a reusable planning-methodology contract for a recurring class of planning work.
+A `Target Module` is a reusable **IDTSPE methodology component** for a recurring class of bounded Target production. It extends the generic Documentation component vocabulary; it does not replace a Use Case.
 
 It may provide:
 
@@ -17,7 +17,7 @@ Scope archetype + boundary prompts
 Source Contract candidates
 Knowledge Basis / theory references when useful
 Resolution Questions / Question-set preset
-Idea / Variant discovery prompts
+Proposal / Variant discovery prompts
 Lens Profile / reusable Lens references / local pattern aids
 Q/R/P prompts
 Decision surfaces
@@ -43,6 +43,8 @@ Local Target Contract
 ```
 
 A material IDTSPE Target does **not** require a pre-existing Target Module. Reusable modules are preferred when a recurring contract genuinely fits; otherwise Target Formation creates a bounded Local Target Contract and the same Shell/Lens lifecycle continues.
+
+A Use-Case Process/registry may nominate a Target Module, but the Module's `Entry Point / trigger / applicability` is the final local gate for whether this Module should be used for the current Target. Registry selection never bypasses that gate.
 
 
 ## Target Step Result Contract
@@ -71,10 +73,12 @@ Defines proportionally:
 what useful Step Result this Target family aims to produce
 which Target Step Result Units may compose it
 what each Result Unit means / why it exists
+Applicability / Materiality / Omission semantics for optional Result Units/field families
 possible fields/substructure
 relations among Result Units
-validation/completeness meaning
-typical consumers/handoff
+typical inputs and consumers/handoff
+validation/completeness meaning that distinguishes missing material meaning from legitimate omission
+revalidation/retention conditions when useful
 representation guidance
 ```
 
@@ -100,7 +104,7 @@ Decision-driver candidates
   Question candidates
   Problem candidates
   Target Goal / Desired Outcome comes from the Target contract/context
-Idea / Variant discovery aids
+Proposal / Variant discovery aids
 branch triggers
 candidate answer shapes/pattern aids
 Internal Object Contracts
@@ -110,29 +114,32 @@ validators
 handoff/revalidation prompts
 ```
 
-The current Target Goal / Desired Outcome is Target/scope context, not a new Generic State Unit introduced by the Module. Concrete Questions/Ideas/Q/R/P/Decisions/Evidence remain generic IDTSPE State meaning; a material Problem driver uses the existing P-09 Problem meaning. The Module provides reusable driver candidates/prompts/methods; it does not duplicate the Core lifecycle inside its result schema. When a reusable Module is active, its Target Goal plus Question/Problem candidates are the ordinary starting driver set for Idea discovery. They are not an exclusive gate: Sources, previous work/checkpoints, Broad Discussion, user/AI input or dispositioned Lens findings may add drivers/Ideas, and those inputs have equal Core semantics once accepted into the current work. Material Ideas are explicit and carry `Addresses → Target Goal / Question / Problem`. An Integration Checkpoint reconciles all of these rather than treating Module presets as the only legitimate drivers.
+The current Target Goal / Desired Outcome is Target/scope context, not a new Generic State Unit introduced by the Module. Concrete Questions/Proposals/Q/R/P/Decisions/Evidence remain generic IDTSPE State meaning; a material Problem driver uses the existing P-09 Problem meaning. The Module provides reusable driver candidates/prompts/methods; it does not duplicate the Core lifecycle inside its result schema. When a reusable Module is active, its Target Goal plus Question/Problem candidates are the ordinary starting driver set for Proposal discovery. They are not an exclusive gate: Sources, previous work/checkpoints, Broad Discussion, user/AI input or dispositioned Lens findings may add drivers/Proposals, and those inputs have equal Core semantics once accepted into the current work. Material Proposals are explicit and carry `Addresses → Target Goal / Question / Problem`. An Integration Checkpoint reconciles all of these rather than treating Module presets as the only legitimate drivers.
 
 Canonical Unit/result semantics: [`idtspe-unit-and-target-step-result-model.md`](idtspe-unit-and-target-step-result-model.md).
 
 
 ---
 
-# 2. Why It Is A Separate Entity
+# 2. Relationship To Documentation Use Cases And Other Component Types
 
-Existing reusable planning often mixes:
+Generic Documentation methodology defines `Use Case`, `Process`, `Principles & Terminology`, `Template`, `Example`, `Theory` and registry semantics. IDTSPE adds `Target Module` as a **compositional specialized component**.
 
 ```text
-Use Case
-Workflow
-Template
-Principles
-Pattern library
-Validation checklist
+Use Case Process
+→ decides when a recurring Target-production method is useful
+→ scans Target Module Registry
+→ selects a Target Module when applicable
+
+Target Module
+→ owns specialized Target production contract
+→ may reference/combine Processes, principles, theory, templates, examples, patterns and validators
+→ does not become the functional Use-Case owner
 ```
 
-A Target Module gives IDTSPE one integration surface over those reusable sources.
+A Target Module exists because packaging these reusable concerns around one Target Step-Result family provides coherent reuse. It does not justify duplicating the Use Case that routes to it.
 
-The original repository owners remain Sources/candidates until consistency-integrated.
+The original repository methodology/theory owners remain referenced authorities/Knowledge Basis according to their own role; current project facts/accepted meaning remain current Sources/owners rather than becoming true merely because the Module mentions them.
 
 ---
 
@@ -162,8 +169,8 @@ TM-IP-04 RELATIONS
 TM-IP-05 QUESTIONS
   RQ candidates/presets for TF-06 QUESTION_SET
 
-TM-IP-06 IDEAS
-  Idea/Variant discovery aids for TF-07 IDEA_SPACE
+TM-IP-06 PROPOSALS
+  Proposal/Variant discovery aids for TF-07 PROPOSAL_SPACE
 
 TM-IP-07 BRANCHING
   branch triggers / comparison dimensions for TF-08 BRANCH_POLICY
@@ -307,7 +314,7 @@ Resolution Questions
   required/proportional/optional
   question-generation rules
 
-Idea / Variant Discovery
+Proposal / Variant Discovery
   candidate-answer categories
   pattern prompts
   anti-bias / no-solution-smuggling rules
@@ -333,8 +340,10 @@ Decision Surfaces
 Target Step-Result Contract
   Step Result family
   Result Units + their purpose/boundary
+  per-Unit/field Applicability / Materiality / Omission rules where conditional
   possible semantic fields / addressable substructure
   mapping from selected answers/Decisions into current Result Units
+  typical consumers + revalidation/retention conditions when useful
 
 Output Schema / Template — compatibility/technical projection
   optional concrete projection shape for the Step-Result Contract
@@ -502,7 +511,7 @@ Adapter
 Vertical Slice
 ```
 
-These are Idea-generation aids.
+These are Proposal-generation aids.
 
 Invariant:
 
@@ -559,7 +568,7 @@ LENS-VERIFIABILITY-OBSERVABILITY-OPERABILITY
 LENS-QUALITY-RISK-MATERIALITY
 ```
 
-Lens operations may contribute explanatory Broad Discussion/Key Points without creating State. When they surface a material semantic consequence needing ownership/State/lifecycle disposition, that meaning becomes a Finding Candidate; Core Finding Disposition resolves it into normal generic Ideas / Evidence / Q/R/P / Decision inputs / revalidation or another owner as appropriate.
+Lens operations may contribute explanatory Broad Discussion/Key Points without creating State. When they surface a material semantic consequence needing ownership/State/lifecycle disposition, that meaning becomes a Finding Candidate; Core Finding Disposition resolves it into normal generic Proposals / Evidence / Q/R/P / Decision inputs / revalidation or another owner as appropriate.
 
 ```text
 Lens ≠ Target Module
@@ -575,9 +584,9 @@ A Target Module defines a Target Step-Result Contract and may additionally conta
 Example:
 
 ```text
-TM-SCENARIO-PLANNING
+TM-FEATURE
   Internal Object Contract:
-    Behavior Item schema
+    BR-* Behavior Requirement item schema
 ```
 
 The schema is where accepted answers/Decisions are integrated into declared Result Units while Scenario planning retains methodology ownership.
@@ -602,15 +611,16 @@ A Target Module may contain **internal object contracts** for addressable meanin
 Example:
 
 ```text
-TM-SCENARIO-PLANNING
+TM-FEATURE
 
-Internal Object Contracts:
-  Scenario DATA
-  Behavior Item
+Internal Object Contracts when useful:
+  Feature semantic-data item
+  BR-* Behavior Requirement item
 
 Supporting external modules:
-  TM-SCREEN — conditional
-  TM-REQUIREMENT — exceptional shared/multi-owner must-hold owner only
+  TM-SCREEN — conditional profile-defined supporting owner when spatial/navigation composition is material
+
+Requirement meaning remains owner-local; no standalone generic Requirement Target is implied by an addressable Requirement item.
 ```
 
 Important:
@@ -622,17 +632,15 @@ addressable object
 ≠ separate Target Instance
 ```
 
-`Scenario DATA` and `Behavior Item` are internal Scenario-planning object contracts. They may be represented by dedicated files or registries for addressability, but their discovery/questions/schema/validation are owned by `TM-SCENARIO-PLANNING`.
+Feature semantic-data and BR-* item contracts remain inside the Feature owner's planning responsibility even when represented with stable IDs or a dedicated owner artifact. Physical addressability does not create a separate DATA/Behavior Target.
 
-If DATA/Behavior decomposition exposes a new independently meaningful Need/result:
+If Feature behavior/data discovery exposes a new independently meaningful owner/result:
 
 ```text
-surface Scenario-scope Finding Candidate
-→ Core Finding Disposition may select Scenario-scope revalidation/reopen
-→ Target Formation may split/merge Scenario Target if justified
+surface owner/boundary Finding Candidate
+→ Core Finding Disposition selects revalidation/Target-Formation consequence
+→ Target Formation may split/merge the bounded Target only when independently useful
 ```
-
-Do not solve that by inventing a `DATA Target` or `Behavior Target`.
 
 A genuinely separate semantic owner such as Requirement or Screen may still have its own supporting Target Module because its authority is not owned by Scenario.
 
@@ -671,7 +679,7 @@ Knowledge Basis, when useful, remains distinct from current Target Sources and d
 theory/reference provenance is retained at an economical granularity when material
 applied interpretation is present when raw theory alone does not explain how it should guide this Target family
 RQ candidates are distinguishable from user questions
-Idea/pattern prompts do not auto-select answers
+Proposal/pattern prompts do not auto-select answers
 specialized Lenses have applicability gates
 output schema has one semantic authority story
 submodule composition is explicit
@@ -694,7 +702,7 @@ Target Instance
 full IDTSPE
   Scope
   Questions
-  Ideas
+  Proposals
   Q/R/P
   Branches when needed
   Decisions
@@ -755,4 +763,4 @@ RESOLVER: P-14 / TF-10
 
 `PERSISTENCE_GUIDANCE` and `PLACEMENT_DIRECTIVE` are the canonical machine-readable policy fields; `GUIDANCE` is only a descriptive qualifier. `FILE_OR_ARTIFACT` states which canonical/supporting/register file or logical artifact pattern the module proposes. `CONTENT` says which part of the **Target result itself** belongs there. These are profile-level defaults/requirements; the active-profile materialization tree groups these source records by possible representation/destination without becoming semantic authority.
 
-Target Module AP guidance must not duplicate a separate Lens finding merely because that finding may be persisted next to the Target. Example: `TM-TEST-STRATEGY` may propose a small `TEST-STRATEGY.md` for independently useful shared proof-layer/environment/harness policy, but concrete test class/helper topology remains implementation-native Exact Realization/code authority rather than a required shadow registry; a Domain/other Target must not create a second evolution authority merely because a Lens found future pressure. Accepted evolution meaning belongs to the natural Target owner defined by the active profile; any same-owner companion materialization remains Documentation / Representation + P-14 / TF-10 responsibility.
+Target Module AP guidance must not duplicate a separate Lens finding merely because that finding may be persisted next to the Target. If independently useful cross-owner proof coordination ever justifies a durable supporting artifact, its semantic owner must be established explicitly rather than assumed to be a generic Test Strategy Target; concrete test class/helper topology remains implementation-native Exact Realization/code authority rather than a required shadow registry. A Domain/other Target must not create a second evolution authority merely because a Lens found future pressure. Accepted evolution meaning belongs to the natural Target owner defined by the active profile; any same-owner companion materialization remains Documentation / Representation + P-14 / TF-10 responsibility.

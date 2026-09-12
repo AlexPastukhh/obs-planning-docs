@@ -98,6 +98,18 @@ A Prototype shape does not become canonical product/UI/architecture meaning mere
 | `RU-PROTO-02` | Prototype Subject / Observation Plan — minimum credible prototype, material real-vs-simulated boundary and proportional collection plan |
 | `RU-PROTO-03` | Prototype Results / Interpretation — actual Evidence refs, material limitations and interpretation relative to the inquiry |
 
+### Result Unit Applicability / Materiality
+
+Declared Result Units are a possible semantic surface, not a mandatory form. Apply the Core [`Unit Applicability / Materiality / Omission Contract`](../../../idtspe-core/shared/idtspe-unit-and-target-step-result-model.md#5a-unit-applicability--materiality--omission-contract).
+
+| Result Unit | Make explicit when | Omit / keep sparse when |
+|---|---|---|
+| `RU-PROTO-01` | when a concrete uncertainty/property justifies an empirical pre-commit inquiry | omit the whole Prototype Target when no such uncertainty exists |
+| `RU-PROTO-02` | when the minimum credible subject/observation boundary must be selected before running the inquiry | omit non-material instrumentation/procedure detail |
+| `RU-PROTO-03` | when the prototype actually produced observations worth interpreting | before execution keep only Evidence Need/plan; do not invent results |
+
+Do not create `N/A` placeholders. Re-evaluate a previously omitted Unit only when its trigger/materiality changes.
+
 The shared method's full inquiry fields are guidance, not mandatory duplicated Result fields.
 
 ## Artifact / File Contract
@@ -136,13 +148,13 @@ RESOLVER: P-14 / TF-10
 ARTIFACT_PROPOSAL
 ID: AP-PROT-03
 CONTENT_KIND: PREMATURE_IDEA
-WHEN: experiment produces an unselected product/UI/technical Idea
+WHEN: experiment produces an unselected product/UI/technical Proposal
 GUIDANCE: OPTIONAL
 PERSISTENCE_GUIDANCE: OPTIONAL
 PLACEMENT_DIRECTIVE: ROUTE
 SEMANTIC_OWNER: UNRESOLVED until selected by natural owner
 REPRESENTATION: EXISTING_IDEA_STATE_OR_REGISTER
-CONTENT: unselected Idea with Prototype provenance; not Prototype truth
+CONTENT: unselected proposal with Prototype provenance; formalize as IDTSPE Proposal only when addressable lifecycle/review is useful
 GUIDANCE_SOURCE: TARGET_MODULE
 RESOLVER: P-14 / TF-10
 ```

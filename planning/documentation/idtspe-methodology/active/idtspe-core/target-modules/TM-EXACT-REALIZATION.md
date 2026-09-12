@@ -57,7 +57,7 @@ Depending on the active profile/subject:
 accepted Target Result Units / Decisions that define what must become real
 accepted `RU-PUPDATE-01 Pre-Update Plan` when the user chose a reviewed pre-update plan first
 accepted Scenario / Domain / Slice / Screen / Requirement / architecture meaning when applicable
-selected Test Design / proof obligations when tests are in scope
+selected natural-owner proof intent/obligations and approved transient proof design when tests are in scope
 selected configuration/schema/workflow/documentation meaning for non-code realization
 ```
 
@@ -109,7 +109,7 @@ repair appears to require changes outside the current Target scope
 selected destination/environment cannot provide the intended verification Evidence
 ```
 
-Concrete Questions/Problems/Ideas/Q/R/P/Decisions/Evidence remain generic Core State. The module supplies recurring discovery prompts, not a second state runtime.
+Concrete Questions/Problems/Proposals/Q/R/P/Decisions/Evidence remain generic Core State. The module supplies recurring discovery prompts, not a second state runtime.
 
 ## Target Step-Result Contract
 
@@ -119,7 +119,17 @@ Concrete Questions/Problems/Ideas/Q/R/P/Decisions/Evidence remain generic Core S
 |---|---|
 | `RU-REAL-01` | Exact Realization — the current complete directly integrable candidate result for the selected bounded scope |
 
-Only one Target-specific Result Unit is required. Verification, build/test observations, repair reasoning, Problems, Ideas, Decisions and Findings remain generic Core State/Evidence around the evolving exact result.
+### Result Unit Applicability / Materiality
+
+Apply the Core [`Unit Applicability / Materiality / Omission Contract`](../shared/idtspe-unit-and-target-step-result-model.md#5a-unit-applicability--materiality--omission-contract).
+
+| Result Unit | Make explicit when | Omit / keep sparse when |
+|---|---|---|
+| `RU-REAL-01` | when current accepted meaning is sufficient to produce one exact directly-integrable candidate for the bounded scope | do not instantiate Exact merely to force literal output while upstream meaning/readiness is still materially unresolved |
+
+No `N/A` placeholder is required.
+
+Only one Target-specific Result Unit is required. Verification, build/test observations, repair reasoning, Problems, Proposals, Decisions and Findings remain generic Core State/Evidence around the evolving exact result.
 
 ### RU-REAL-01 — Exact Realization
 
@@ -148,6 +158,42 @@ Exact Realization v1
 The old candidate may remain in conversation/review history when useful, but the current result is the exact version now intended for the next review/integration/apply action.
 
 ## Resolution / Production Method
+
+### Internal exact planning before the literal Result
+
+When `RU-REAL-01` cannot be produced responsibly in one direct pass, use a transient **exact implementation working plan** inside this Target.
+
+This is production reasoning around the Result, not another Result Unit and not `TM-PRE-UPDATE-PLAN`.
+
+Its proportional working content may include:
+
+```text
+approved upstream authority / selected approach
+significant modules/classes and responsibilities
+inputs / outputs / side effects / dependencies
+exact state/data flow
+failure / retry / uncertainty flow
+file add/replace/delete/move intent
+candidate methods/signatures
+literal call flow when useful
+exact tests/proof
+reusable guidance used during planning — optional working provenance when materially useful
+open literal details
+risks / Known Problems
+backward-consistency notes
+expected literal result
+```
+
+The working plan is:
+- non-persistent by default;
+- not semantic authority;
+- disposable/reconcilable after realization;
+- allowed to omit irrelevant detail;
+- allowed to become literal enough to directly produce `RU-REAL-01`.
+
+Durable meaning discovered during this internal exact planning remains Proposal/Decision/natural-owner work until approved; it must not be smuggled into the literal result.
+
+IDTSPE Use-Case composition and Core contracts own methodology depth/readiness, proposal/approval and forward-consistency/revalidation routing. Thin Session Runtime owns only USER↔AI interaction mechanics. This Target consumes those rules rather than redefining them.
 
 ### 1. Resolve exact realization scope
 
@@ -277,7 +323,7 @@ For a complex problem, an explicit decision loop is often useful but not mandato
 ```text
 Problem
 → Evidence
-→ Ideas A/B/C
+→ Proposals A/B/C
 → related Q/R/P
 → Decision
 → updated RU-REAL-01
@@ -295,6 +341,8 @@ updated RU-REAL-01
 → retry Integration Attempt when useful/authorized
 ```
 
+If newly accepted upstream meaning changes an assumption used by the current `RU-REAL-01`, the affected literal candidate is no longer current-for-execution until revalidated/rebuilt. Reuse only the parts that still satisfy the updated accepted meaning.
+
 After successful checks the user may ask to inspect the final exact result again. This is a normal workflow because the verified/repaired candidate may differ from the candidate reviewed before execution.
 
 ### 9. Handoff / apply
@@ -302,6 +350,8 @@ After successful checks the user may ask to inspect the final exact result again
 The current accepted `RU-REAL-01` can be handed to the intended destination/application mechanism according to explicit authority.
 
 Exact Realization does not imply Git commit/push, deployment, production release or any unrelated external side effect. Those require their own explicit authority/host workflow when applicable.
+
+When a coherent final-literal review/integration state is useful after proof, `UC-IDTSPE-INTEGRATE-CURRENT-WORK` may invoke the Core Integration Checkpoint. This Target does not own a second checkpoint lifecycle, and no checkpoint is required merely because Exact Realization completed.
 
 ## Code-First Default Walkthrough — Self-Contained
 
@@ -416,10 +466,10 @@ Problem:
 Evidence:
   integration test fails when legacy record has no SourceContext
 
-Idea A:
+Proposal A:
   migrate persisted data / make representation non-null
 
-Idea B:
+Proposal B:
   introduce explicit legacy-state handling outside CaptureItem
 
 Risk:

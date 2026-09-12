@@ -112,7 +112,7 @@ Useful State/lifecycle outcomes include:
 ```text
 open/refine Question
 open/refine Risk or Problem
-open/refine Idea / Planning Branch
+open/refine Proposal / Planning Branch
 attach Evidence / open Evidence Need
 supply Decision input
 challenge accepted Decision/state
@@ -123,6 +123,9 @@ mark duplicate / non-material / already represented
 ```
 
 The exact disposition uses current Core lifecycle rules; this contract does not create a second lifecycle.
+
+
+When disposition indicates an actual change, the finding may create/refine a formal Proposal or supply Proposal input. A realization-only finding still does not authorize mutation by itself; the actual change follows the Session proposal-first/approval boundary. The Finding Candidate remains transient unless another Core/owner state is justified.
 
 ---
 
@@ -208,6 +211,24 @@ Suggested lifecycle consequence — optional hint
 
 Do not require all fields when the disposition is obvious.
 
+A Session/review producer may additionally attach transient R2-compatible hints such as:
+
+```text
+Classification: RF-REALIZATION-ONLY | RF-POSSIBLE-NEW-IR | RF-POSSIBLE-IR-CHANGE | RF-RECONSIDER-IR-SET | RF-POSSIBLE-BEHAVIOR-IMPACT
+Discovered at depth/group: ...
+Most-upstream affected meaning/depth: ...
+Affected depths/groups: ...
+Upstream revalidation: NONE | POSSIBLE | REQUIRED
+Downstream consequence if accepted: NONE | REVALIDATE ... | INVALIDATE ...
+Complexity delta: REDUCES | ROUGHLY-NEUTRAL | ADDS
+Requirement change proposed: YES | NO | POSSIBLE
+USER confirmation required for actual change: YES
+```
+
+These are review/routing hints only. They do not create a new Finding State kind, a Requirement owner, or a planning-level state machine. Core disposition still resolves the real natural owner and lifecycle consequence.
+
+A producer may also suggest the transient routing outcome `NO-DOC-CHANGE`, `NO-REQUIREMENT-CHANGE`, `MODIFY-EXISTING`, `SIMPLIFY-SET`, `NEW-REQUIREMENT` or `UPSTREAM-REVALIDATION`; the destination owner defines what the resulting durable change actually means.
+
 Example:
 
 ```text
@@ -247,7 +268,7 @@ independent durable validation/readiness finding is useful
 
 otherwise
 → disposition directly into the appropriate existing
-  Question / Risk / Idea / Evidence / Decision input /
+  Question / Risk / Proposal / Evidence / Decision input /
   Revalidation / handoff / etc.
 ```
 

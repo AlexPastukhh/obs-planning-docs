@@ -8,7 +8,7 @@ Activation: `FREQUENT_CONDITIONAL`
 
 Ask whether correctness/failure/state can be credibly proved, observed, diagnosed and operated at acceptable cost before accepting a realization/architecture/result.
 
-Broader than Test Design.
+Broader than test/proof design: it also covers observability, diagnosis, operation and recovery.
 
 ## Applicability Gate
 
@@ -64,7 +64,7 @@ Decision rationale
 
 ## Typical Consumers
 
-Slice, Frontend, Cross-Cutting, Architecture/WEUC, Test Strategy/Design, Practical Test and critical tooling decisions.
+Feature/Slice/Domain/Shared/Scenario/Screen work, Architecture/WEUC decisions, Exact Realization, Practical Test and critical tooling decisions.
 
 ## Artifact / File Implications
 
@@ -181,7 +181,7 @@ Mode: `INLINE`
 **Embedded Principles / Rules / Theory:**
 
 - A selected result should be provable/observable/diagnosable/operable at the boundary where correctness and failure matter.
-- Testability is broader than Test Design and may require seams, telemetry or operational mechanisms.
+- Testability is broader than test/proof design and may require seams, telemetry, diagnostic context or operational mechanisms.
 
 **Referenced Knowledge Owners:**
 

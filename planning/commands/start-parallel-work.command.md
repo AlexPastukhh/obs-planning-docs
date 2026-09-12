@@ -16,16 +16,20 @@ Scope: retired fixed parallel-work-scope invocation. No current branch-based coo
     "parallel workspace"
   ],
   "description": "legacy compatibility command for retired fixed parallel-work scopes",
-  "meaning": "The former fixed Scope Registry/action-log coordination model is retired. Do not route current work through it and do not invent a branch workflow here; use the current ordinary work route until branch-based coordination has its own accepted owner.",
-  "activeContextBehavior": "Explain the retirement boundary and continue only through current non-legacy owners selected for the actual work.",
+  "meaning": "Legacy fixed-parallel-scope trigger. The old Scope Registry/action-log architecture is retired. If the current work genuinely benefits from parallel lines, route through UC-IDTSPE-COMPOSE-CURRENT-WORK and current Work Context using multiple Targets and/or a Planning Branch only when their independent lifecycle/comparison value is material; otherwise continue one ordinary work line.",
+  "activeContextBehavior": "Do not resurrect fixed registered scopes or legacy action logs. Re-evaluate current Use-Case composition; introduce multiple Targets/Planning Branch state only when the current Core applicability/materiality contracts justify them.",
   "traversalReadMode": "Current navigation only; legacy provenance may be read only when historical analysis is explicitly requested.",
-  "ownerFiles": [],
-  "expectedOutput": "A concise retirement/route clarification; no fixed-scope selection and no invented branch semantics.",
+  "ownerFiles": [
+    "planning/documentation/idtspe-methodology/active/idtspe-core/shared/compose-current-work-use-case.md",
+    "planning/documentation/idtspe-methodology/active/idtspe-core/IDTSPE-SHELL.md",
+    "planning/documentation/idtspe-methodology/active/idtspe-core/shared/idtspe-unit-and-target-step-result-model.md"
+  ],
+  "expectedOutput": "A current proportional work composition: one line when sufficient, or explicit multi-Target/Planning-Branch structure when independently useful. No fixed Scope Registry/action-log runtime.",
   "permissionMode": "read-only",
   "keyReminders": [
-    "Fixed registered parallel-work scopes are legacy.",
-    "Do not treat legacy scope/action-log files as current authority.",
-    "Do not infer branch lifecycle, naming, merge, publish or isolation rules before a current branch-work owner exists.",
+    "Legacy compatibility alias only; fixed parallel-work scopes/action logs are retired.",
+    "Multiple Targets or a Planning Branch are optional current IDTSPE structures, not a replacement fixed-scope runtime.",
+    "Apply their local materiality gates; do not create parallel structure merely because this alias was used.",
     "This compatibility command grants no edit, archive, commit or push permission."
   ],
   "userTarget": "<parallel workstream target>",

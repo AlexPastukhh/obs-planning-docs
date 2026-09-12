@@ -1,8 +1,8 @@
 # Testing Planning
 
-Status: active reusable planning family
+Status: active project-local/supporting proof-planning family; **not** SDS Target-family authority
 
-Purpose: plan and review how selected behavior/correctness is proved without transferring semantic authority from Scenario, Requirement, Domain or Slice owners.
+Purpose: provide project-local proof coordination/design guidance without transferring semantic authority from Feature, Scenario, Domain, Slice, Shared or other natural owners. Generic methodology proof evaluation is owned by Core `LENS-TEST-PROOF-EVIDENCE`; literal test realization belongs to Exact/code; `TM-PRACTICAL-TEST` is used only when evidence requires the real implemented subject/environment.
 
 ## Read Order
 
@@ -13,7 +13,7 @@ use-case-registry.md
 → selected workflow/template
 ```
 
-Four independently useful capabilities are supported: shared Testing Strategy, behavior-specific Test Design, Practical Testing / Acceptance Plan, and Current Test Coverage/Evidence Review. Test layers are techniques/responsibility zones inside these capabilities, not separate Use Cases.
+This supporting area may retain project-local Testing Strategy/Test Design coordination capabilities where independently useful. They are **not** baseline IDTSPE/SDS Targets. Current generic routing is natural-owner proof need → Core Test-Proof Lens → transient owner-local proof planning when non-trivial → Exact literal tests; Practical Test is a separate real-subject Evidence capability. Test layers are techniques/responsibility zones, not semantic owners.
 
 ## Supporting Guidance
 

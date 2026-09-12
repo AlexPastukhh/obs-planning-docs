@@ -2,139 +2,254 @@
 
 Status: active compact semantic example
 
-This replaces the former numbered-phase research-capture tree. It demonstrates
-current direction without making one physical project tree authoritative.
+This is a current **orientation example**, not a mandatory phase sequence and not a prescribed project file tree. Runtime composition still starts from the Methodology Use-Case Registry Map and applicable IDTSPE Use Cases.
 
-## 1. Optional Generic Need / Solution Discovery
+## 1. Start Lightweight
 
 ```text
-Need:
+USER concern:
   preserve useful research material without losing reading context
 
-Routes considered:
-  bookmarks
-  existing read-later/notes tools
-  manual copy
-  small own capture application
-
-Selected own-software contribution:
-  very fast capture now + later review/triage
+UC-IDTSPE-COMPOSE-CURRENT-WORK
+→ Broad Discussion is initially sufficient
 ```
 
-## 2. Application Definition
+No Target, Lens or Checkpoint is created merely because SDS is installed.
+
+## 2. Application Definition — only when the own-software boundary is material
+
+Existing alternatives are compared only as far as needed:
 
 ```text
-Application contribution:
-  capture selected research material/context quickly;
-  keep later review separate
-
-Outside:
-  replace the browser/reader
-  become a universal knowledge-management system
+bookmarks
+read-later / notes tools
+manual copy
+small own capture application
 ```
 
-A Prototype may test whether capture can actually be low-friction enough.
-
-## 3. Scenarios
+Suppose the selected own-software contribution is:
 
 ```text
-SCN-CAPTURE
-  current: capture selected material + source context → truthful result
-  future/change: additional source types may be added
-
-SCN-REVIEW
-  current: review captured items later
-  future/change: richer triage may be added
+very fast temporary capture
++ later review/triage
 ```
 
-If a future independently meaningful “share captured item” result becomes real,
-it becomes a new Scenario candidate rather than being forced into `SCN-CAPTURE`.
+`TM-APPLICATION-DEFINITION` owns that application contribution/boundary. A Prototype may be used if low-friction capture is still an empirical uncertainty.
 
-## 4. Screen — conditional
+## 3. Feature Owners — primary behavior authority
+
+Two independently useful application capabilities emerge:
+
+```text
+FEAT-CAPTURE-ITEM
+  Principal Result:
+    selected material + source context is durably accepted
+    and the application returns a truthful success/failure result
+
+  BR-CAP-01:
+    success is returned only after durable acceptance
+
+FEAT-REVIEW-ITEM
+  Principal Result:
+    a previously captured item can be reviewed and triaged
+
+  BR-REV-01:
+    review operates on the currently stored captured-item meaning
+```
+
+Feature behavior and behavior-facing semantic data stay with the Feature owners.
+
+## 4. Scenario — journey composition, not behavior ownership
+
+A Scenario becomes useful when the actor-to-benefit journey across Feature results needs independent composition:
+
+```text
+SCN-CAPTURE-THEN-REVIEW
+
+Actor/context:
+  researcher notices useful material while reading
+
+Journey:
+  FEAT-CAPTURE-ITEM result
+  → actor continues reading
+  → later returns
+  → FEAT-REVIEW-ITEM result
+
+Continuity:
+  captured item identity + source context survive between Feature results
+
+Terminal Benefit:
+  useful material is preserved without interrupting reading
+  and can be intentionally reviewed later
+```
+
+The Scenario references Feature results; it does not copy or redefine their BRs.
+
+## 5. Screen — only when spatial/navigation composition matters
 
 ```text
 SCREEN-CAPTURE
-  capture action + current source context
+  exposes FEAT-CAPTURE-ITEM
+  shows selected source context and truthful result
 
 SCREEN-REVIEW
-  captured-item list/detail
+  exposes FEAT-REVIEW-ITEM
+  supports list/detail/re-entry
 ```
 
-Screen owns spatial availability, not frontend implementation.
+Screen owns spatial/navigation meaning, not Feature behavior or frontend class topology.
 
-## 5. Slice Strategy
+## 6. Domain discovery → durable Domain owner only when justified
 
-```text
-SL-CAPTURE
-  Primary Scenario: SCN-CAPTURE
-  Useful result: one item captured with truthful result
-  May Change: more source types
-  Uses CaptureItem / SourceContext
-
-SL-REVIEW
-  Primary Scenario: SCN-REVIEW
-  Useful result: captured items can be reviewed
-  May Change: richer triage
-  Uses CaptureItem
-```
-
-Derived Domain view:
+Capture behavior exposes a semantic concept:
 
 ```text
 CaptureItem
-  used by SL-CAPTURE + SL-REVIEW
+  stable identity
+  durable content
+  source context
+  accepted/reviewed lifecycle pressure
 ```
 
-The canonical Strategy layout remains Slice-centric.
-
-## 6. Domain / Aggregate Modeling
-
-Shallow Strategy use may be sufficient at first.
-
-If `CaptureItem` has independently material state/invariant questions, deepen the
-same Domain/Aggregate Modeling family:
+If the meaning is still exploratory:
 
 ```text
-identity
-accepted/rejected state
-invariant: accepted item has durable content + source context
+TM-DOMAIN-DISCOVERY
+→ working candidates / invariants / boundary questions
 ```
 
-Code/types/tests may be the durable Domain representation.
-
-## 7. Slice / Aggregate Realization Loop
-
-Possible order:
+If that responsibility becomes independently durable/useful:
 
 ```text
-deepen CaptureItem enough
-↔ plan SL-CAPTURE
-↔ plan SL-REVIEW
+TM-DOMAIN-OWNER
+  RU-DOWN-01 Domain Semantic Contract
+  RU-DOWN-02 Domain Implementation Requirements — only if material
 ```
 
-There is no required all-Domain-first or all-Slices-first order.
+No durable Domain owner is created merely because a noun/class exists.
 
-## 8. Slice Evolution
+## 7. Slice discovery → optional durable Slice owner
+
+When `FEAT-CAPTURE-ITEM` needs concrete end-to-end realization reasoning:
 
 ```text
-SL-CAPTURE / Add PDF source
-  Slice Change: PDF becomes another capture source
-  Domain Changes: SourceContext represents PDF source meaning
-  Implementation Outlook:
-    reuse/localize source variation;
-    do not change SL-REVIEW merely because source acquisition changed.
+TM-IMPLEMENTATION-SLICE
+  RU-SLICE-01 Whole-Slice Responsibility / Candidate Structure
+  RU-SLICE-02 Semantic Application Entry / Result Boundary
+  RU-SLICE-03 Step-by-Step End-to-End Realization
+  RU-SLICE-04 Feature Integration Proof
+  RU-SLICE-05 Evolution / OPEN Slice Pressure — only when material
 ```
 
-L5 evaluates the isolation claim; Simplicity challenges speculative abstraction.
-
-## 9. Exact Realization / Evidence
+Example working path:
 
 ```text
-sufficiently resolved Slice
+capture request
+→ semantic application entry
+→ CaptureItem validation/creation
+→ persistence
+→ truthful result mapping
+```
+
+If the selected end-to-end responsibility needs durable ownership:
+
+```text
+TM-SLICE-OWNER
+→ durable Slice responsibility/boundary
+→ owner-local IR-SLICE-* only when materially needed
+```
+
+There is no separate Slice Strategy Target. Cross-Slice coverage/order/use maps are derived/supporting coordination views when useful.
+
+## 8. Shared capability — only under real reuse pressure
+
+Suppose both Capture and Review need the same coherent non-end-to-end audit context mechanism.
+
+Do not extract it merely because code can be shared. `TM-SHARED-IMPLEMENTATION-CAPABILITY` is considered only when its consumer/evolution gate is satisfied and the responsibility is genuinely reusable.
+
+If the candidate instead owns Aggregate state/invariants/lifecycle/policy, it belongs to Domain.
+
+## 9. Evolution
+
+A selected future change is represented through Evolution:
+
+```text
+Evolution Step:
+  Add PDF source support
+
+Affected:
+  FEAT-CAPTURE-ITEM
+  CaptureItem / SourceContext meaning
+  capture Slice responsibility
+
+Current prepare-now question:
+  is a small source-variation seam justified now,
+  or should the change be deferred?
+```
+
+`LENS-WORKSPACE-EVOLUTION-ARCHITECTURE` evaluates change isolation / prepare-now-vs-defer pressure. The future Step is not silently copied into each current owner as a second roadmap.
+
+## 10. Exact Realization / Evidence
+
+When accepted meaning is sufficient:
+
+```text
+current Feature + relevant Domain/Slice/Screen/Scenario sources
 → TM-EXACT-REALIZATION
-→ exact code/tests
-→ Practical Evidence / proof review
-→ narrow revalidation only if actual Evidence challenges accepted meaning
+→ literal code/tests/config/result
+→ actual build/test Evidence under authorization
 ```
 
-Physical owner/file layouts are examples only; see `../ARTIFACT-PLACEMENT-MAP.md`.
+If proof design is materially non-trivial:
+
+```text
+LENS-TEST-PROOF-EVIDENCE
+→ natural owner-local proof planning
+→ TM-EXACT-REALIZATION
+```
+
+If the question requires the **real implemented subject/environment**:
+
+```text
+TM-PRACTICAL-TEST
+→ actual practical Evidence
+```
+
+## 11. What this example demonstrates
+
+```text
+IDTSPE always active
+≠ full ceremony always active
+
+Feature
+= primary behavior owner
+
+Scenario
+= journey composition
+
+Screen
+= spatial/navigation composition
+
+Domain Discovery
+= transient exploration
+
+Domain Owner
+= optional durable semantic responsibility
+
+Implementation Slice
+= transient end-to-end realization discovery
+
+Slice Owner
+= optional durable end-to-end implementation responsibility
+
+Shared
+= reusable non-end-to-end implementation responsibility under real consumer pressure
+
+Evolution
+= selected future target-state/change reasoning
+
+Exact / Evidence
+= literal realization + what actually happened
+```
+
+Physical owner/file placement is proportional; see [`../ARTIFACT-PLACEMENT-MAP.md`](../ARTIFACT-PLACEMENT-MAP.md).

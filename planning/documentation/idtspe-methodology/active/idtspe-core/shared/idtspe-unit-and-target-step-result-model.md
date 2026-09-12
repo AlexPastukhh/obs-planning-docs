@@ -20,7 +20,7 @@ IDTSPE Step Output
 └─ material IDTSPE State Units
 ```
 
-`IDTSPE Step Output` is an explanatory umbrella for material semantic output of one work/integration pass. It is **not** a new semantic owner and does not imply one persisted record. Ordinary Broad Discussion may surround or occur between these outputs without becoming Units; Key Points structure material discussion parts, while material Ideas remain explicit with `Addresses → Target Goal / Question / Problem`. No per-response Intake Summary or block-owner record is required. An Integration Checkpoint is the normal pass that reconciles accumulated discussion into the current Unit/Target Result state.
+`IDTSPE Step Output` is an explanatory umbrella for material semantic output of one work/integration pass. It is **not** a new semantic owner and does not imply one persisted record. Ordinary Broad Discussion may surround or occur between these outputs without becoming Units; Key Points structure material discussion parts, while material Proposals remain explicit with `Addresses → Target Goal / Question / Problem`. No per-response Intake Summary or block-owner record is required. An Integration Checkpoint is the normal pass that reconciles accumulated discussion into the current Unit/Target Result state.
 
 The two Unit roles are distinct:
 
@@ -233,12 +233,13 @@ Core owns the generic State Unit kinds. Typical kinds include:
 ```text
 Source
 Question
-Idea
+Proposal
 Question / Risk / Problem (Q/R/P)
 Decision
 Evidence / Evidence Need
 Planning Branch state/reference
 Revalidation Signal
+Methodology Usage State when methodology selection/application/recheck meaning is useful to retain
 Target Relation / Handoff item when independently useful
 persistence/representation state when materially useful
 validation/readiness finding when independently useful
@@ -246,9 +247,11 @@ validation/readiness finding when independently useful
 
 Existing names remain the normal prose vocabulary. Do not force labels such as `Risk Unit` when `Risk` is already unambiguous.
 
-### Idea decision-context relations
+### Proposal decision-context relations
 
-A material `Idea` is a candidate response/solution, not every thought in discussion. When surfaced as a material IDTSPE Idea, its driver relation is explicit. `Goal / Desired Outcome` normally means the current Target/scope goal context rather than a separate Generic State Unit:
+A material `Proposal` is a candidate response/solution/approach, not every thought in discussion. It is the canonical formal Core candidate role; do not invent a second candidate ontology alongside it.
+
+When surfaced as a material IDTSPE Proposal, its existing driver relation remains explicit. `Goal / Desired Outcome` normally means the current Target/scope goal context rather than a separate Generic State Unit:
 
 ```text
 current Target Goal / Desired Outcome context
@@ -256,9 +259,26 @@ Question
 Problem (existing P-09 Problem meaning)
 ```
 
-Useful lightweight Idea relations include `addresses`, `competes-with`, `complements`, `requires`, `conflicts-with` and `part-of-candidate-bundle`. A Candidate Bundle / Option Group is a grouping/comparison projection over compatible Ideas by default, not a new mandatory State Unit. Use a Planning Branch only for a materially deep alternative downstream planning network.
+For an approval-relevant formal Proposal, the motivating **Question and/or Problem** must be visible explicitly. Reuse an existing addressable Question/Problem when one exists; otherwise an inline statement is sufficient when separate Q/P lifecycle/addressability would add no value. Goal/Desired Outcome remains useful context and does not require a duplicate Goal State Unit.
 
-The driver/Idea/Q-R-P/Evidence relationships may first appear inline in Broad Discussion and are normalized in the next Integration Checkpoint when material. If Broad Discussion reveals an independently useful new Goal rather than merely refining the current Target Goal, normal scope/Target Formation resolves it.
+Useful lightweight Proposal relations include `addresses`, `competes-with`, `complements`, `requires`, `conflicts-with` and `part-of-candidate-bundle`. A Candidate Bundle / Option Group is a grouping/comparison projection over compatible Proposals by default, not a new mandatory State Unit. Use a Planning Branch only for a materially deep alternative downstream planning network.
+
+The driver/Proposal/Q-R-P/Evidence relationships may first appear inline in Broad Discussion and are normalized in the next Integration Checkpoint when material. If Broad Discussion reveals an independently useful new Goal rather than merely refining the current Target Goal, normal scope/Target Formation resolves it.
+
+Formal Proposal review outcomes are working lifecycle outcomes:
+
+```text
+APPROVE
+REJECT
+REVISE
+DEFER
+```
+
+They do not require mandatory persisted status metadata on every Proposal. Partial approval remains partial: only explicitly accepted Proposal meaning may flow into Decision/Target/natural-owner authority.
+
+A USER amendment to a Proposal triggers targeted re-evaluation of affected reasoning, owners, requirements/decisions, risks/problems, proof and known Evolution consequences. Unaffected accepted meaning is not reopened merely because one part changed.
+
+A formal Proposal itself is candidate Core State, not current product/methodology authority. Accepted meaning becomes authoritative only through the normal Decision / Target Result / natural-owner path.
 
 Canonical interaction owner: [`broad-discussion-and-integration-checkpoint-model.md`](broad-discussion-and-integration-checkpoint-model.md).
 
@@ -308,9 +328,44 @@ Field:
   failurePropagation responsibility
 ```
 
+### Methodology Usage State
+
+`Methodology Usage State` is an optional generic State Unit for retaining **material facts about how the methodology is currently being used** when those facts help continuation, review or revalidation.
+
+Use proportionally:
+
+```text
+Methodology Usage State
+  Current Work Concern — when retaining it helps orientation/re-entry
+  Active Use Cases — only the material current set
+  Relevant Registry Traversals — registry + purpose + selected entries/outcome
+  Applied Components — component + operation/purpose + applied-to surface
+  Contextual Adaptations / deferred recommendations — when later work must know them
+  Recheck Triggers / Re-entry — when future context may change applicability
+```
+
+Example:
+
+```text
+Methodology Usage State:
+  Active Use Case: UC-IDTSPE-COMPOSE-CURRENT-WORK
+  Registry: SDS Programming Principles
+  Relevant entries:
+    RG-PRG-RESOURCE-MANAGEMENT
+    RG-PRG-TIMEOUT-CANCELLATION-BOUNDS
+  Applied through:
+    Slice Target Production + VOO/Quality perspective
+  Recheck:
+    if cancellation/effect ownership changes
+```
+
+This is **not an execution log**. Do not record every file read, command, tool call, non-applicable registry row or transient reasoning step.
+
+`Current Work Concern` may exist only as conversational/work-context meaning. Promote it into explicit Methodology Usage State only when addressability/continuation/revalidation value is material.
+
 ### Decision retained context
 
-Accepted material Decisions are retained in integrated semantic state by default. A Decision may reference the current Target Goal context / Question / Problem / Q-R-P it addresses, the selected Idea(s)/Candidate Bundle when useful, and optional `Rationale / Why`. Rationale explains selection logic and is distinct from Evidence. Retention/prompt rules are owned by [`broad-discussion-and-integration-checkpoint-model.md`](broad-discussion-and-integration-checkpoint-model.md) and [`user-input-decision-and-answer-intake-rule.md`](user-input-decision-and-answer-intake-rule.md).
+Accepted material Decisions are retained in integrated semantic state by default. A Decision may reference the current Target Goal context / Question / Problem / Q-R-P it addresses, the selected Proposal(s)/Candidate Bundle when useful, and optional `Rationale / Why`. Rationale explains selection logic and is distinct from Evidence. Retention/prompt rules are owned by [`broad-discussion-and-integration-checkpoint-model.md`](broad-discussion-and-integration-checkpoint-model.md) and [`user-input-decision-and-answer-intake-rule.md`](user-input-decision-and-answer-intake-rule.md).
 
 ---
 
@@ -330,7 +385,7 @@ Lens
 → does not define either Unit kind
 ```
 
-A Lens may discover content that causes the runtime to open/populate a new `Risk`, `Question`, `Idea`, `Evidence Need`, etc., but:
+A Lens may discover content that causes the runtime to open/populate a new `Risk`, `Question`, `Proposal`, `Evidence Need`, etc., but:
 
 ```text
 Core
@@ -358,6 +413,46 @@ keep the meaning in generic State Units
 not to create a Lens-owned result field silently.
 
 ---
+
+## 5A. Unit Applicability / Materiality / Omission Contract
+
+Every Unit kind/definition must make it possible to answer three different questions:
+
+```text
+Applicability
+→ can this Unit kind/Result Unit meaning apply to the current situation/Target?
+
+Materiality
+→ would making this meaning explicit now improve resolution, lifecycle, validation, continuation, handoff or consumer use?
+
+Omission
+→ when is it correct to leave the Unit absent/unpopulated for now?
+```
+
+These checks are situational and may be expressed by a concise rule rather than a mandatory schema block. The owner should also make typical inputs/consumers and revalidation/retention conditions clear when they materially affect use.
+
+Generic Core State examples:
+
+| State Unit kind | Introduce / make explicit when | Normally omit / keep implicit when |
+|---|---|---|
+| `Source` | authority/provenance affects resolution, conflict handling or future revalidation | the source is obvious, transient or adds no independent authority value |
+| `Question` | an unresolved question benefits from explicit resolution/addressability | already answered or trivial enough to remain Broad Discussion |
+| `Proposal` | a material candidate approach/meaning needs comparison, review, acceptance or lifecycle | every fleeting AI idea or obvious local implementation choice |
+| `Risk / Problem` | downside/problem can change decision, proof, ownership, scope or revalidation | generic hypothetical concern has no current consequence |
+| `Decision` | selected/rejected material meaning or rationale must constrain later work or survive review/handoff | no real choice was made or the fact is already owned unambiguously as Target result |
+| `Evidence / Evidence Need` | empirical/source support has independent resolution, proof or revalidation value | ordinary explanatory support does not need lifecycle/addressability |
+| `Planning Branch` | alternative/counterfactual reasoning must remain separately comparable or resumable | one path is already sufficient and alternatives add no decision value |
+| `Revalidation Signal` | a concrete condition/change may make current accepted/working meaning stale | vague “things may change” reminders |
+| `Methodology Usage State` | methodology selection/application/adaptation/recheck context matters for continuation, audit or revalidation | routine registry/file reads whose result is obvious and stable |
+| `Target Relation / Handoff` | cross-Target dependency/ownership/continuation meaning must remain addressable | relationship is local, transient or already explicit in the consuming Result Unit |
+| representation/persistence state | physical placement/materialization choice has independent review/revalidation value | representation follows directly from current owner contract with no ambiguity |
+| validation/readiness finding | a material validation result must survive beyond the immediate evaluation | no material finding exists or it is already disposed into another owned Unit |
+
+These are defaults, not a closed ontology-specific checklist. The current Use Case and local owner still judge usefulness against context.
+
+Target-specific Result Units follow the same rule, but their applicability/materiality/omission semantics are owned by the Target Module/Local Contract.
+
+Do not create a placeholder Unit only to record `N/A`. Absence is a first-class valid projection when the omission rule is satisfied.
 
 ## 6. Lens Analysis / Finding Boundary
 
@@ -473,10 +568,12 @@ The Step-Result Contract should explain proportionally:
 what useful Step Result this family aims to produce
 which Result Units may compose it
 what each Unit means and why it exists
+Applicability / Materiality / Omission semantics for each materially optional Unit/field family
 possible fields/substructure
 relations among Units
-validation/completeness meaning
-typical consumers/handoff
+typical inputs and consumers/handoff
+validation/completeness meaning that distinguishes "not applicable" from "missing material meaning"
+retention/revalidation conditions when useful
 representation guidance
 ```
 
@@ -485,7 +582,7 @@ The Resolution / Production Method may supply:
 ```text
 Source archetype
 Question candidates
-Idea/pattern discovery aids
+Proposal/pattern discovery aids
 branch triggers
 candidate answer shapes
 Internal Object Contracts
@@ -493,7 +590,7 @@ shared Result-Unit methods
 Decision surfaces
 ```
 
-Concrete Questions/Ideas/Q/R/P/Decisions remain generic State Units. The Module contributes reusable ways to discover/resolve them; it does not duplicate their Core lifecycle inside the Result schema.
+Concrete Questions/Proposals/Q/R/P/Decisions remain generic State Units. The Module contributes reusable ways to discover/resolve them; it does not duplicate their Core lifecycle inside the Result schema.
 
 ---
 
@@ -510,10 +607,14 @@ Concrete Target Step Result
 
 A declared Result Unit/field does **not** mean:
 - it must be asked;
+- it must be introduced before its applicability/materiality is established;
 - it must be resolved;
 - it must be persisted;
 - it must be equally detailed;
-- its absence automatically creates Q/R/P.
+- its absence automatically creates Q/R/P;
+- `N/A` placeholders are required to prove it was considered.
+
+The Target Module/Local Contract should expose enough trigger/materiality/consumer meaning that the active Use Case/production method can decide whether the Unit is useful **in this situation**. A concrete result may legitimately contain only one of several possible Result Units.
 
 Existing `Output Schema` / `Target-specific Output Template` terminology remains a compatibility/technical projection vocabulary. The semantic owner is the Step-Result Contract; a template is one way to project it.
 
@@ -533,14 +634,15 @@ Internal Object Contract
 Example:
 
 ```text
-TM-SCENARIO-PLANNING
+TM-FEATURE
 
-Result Unit:
-  Behavioral Decomposition
+Result Units:
+  Semantic Data
+  Feature Behavior
 
-Internal Object Contracts:
-  Scenario DATA
-  Behavior Item
+Internal Object Contracts when addressability is useful:
+  Feature semantic-data item
+  BR-* Behavior Requirement item
 ```
 
 An Internal Object Contract may define several addressable objects inside one Result Unit.
@@ -621,7 +723,7 @@ Decision D-21
 Risk R-17
 → persist while unresolved when downstream work needs it
 
-rejected Idea I-02
+rejected Proposal I-02
 → EPHEMERAL
 ```
 
@@ -681,7 +783,7 @@ Sources:
 Question:
   which existing owner should orchestrate capture?
 
-Idea:
+Proposal:
   reuse CaptureApplicationService
 
 Risk:
@@ -691,16 +793,17 @@ Risk:
 Target Step Result:
 
 ```text
-RU-SLICE-01 Outcome / semantic obligations / proof intent
-RU-SLICE-02 Uses / Ownership Boundary
-RU-SLICE-03 Runtime Path — optional
-RU-SLICE-04 Evolution Steps
+RU-SLICE-01 Whole-Slice Responsibility / Candidate Structure
+RU-SLICE-02 Semantic Application Entry / Result Boundary
+RU-SLICE-03 Step-by-Step End-to-End Realization
+RU-SLICE-04 Feature Integration Proof
+RU-SLICE-05 Evolution / OPEN Slice Pressure — only when material
 ```
 
-Slice Integration Lens Analysis Surface:
+Slice Verticality / Integration Lens Analysis Surface:
 
 ```text
-Primary Result Units:
+Primary Result Units when material:
   RU-SLICE-01
   RU-SLICE-02
   RU-SLICE-03
@@ -713,7 +816,10 @@ Relevant State:
   Questions / Risks / Decisions / Evidence / Revalidation
 
 Context:
-  Scenario / Domain / Screen / current code
+  selected Feature + BR-*
+  relevant Scenario journey / Screen constraints
+  Domain / Shared owners
+  current code/tests
 ```
 
 Lens operation:
@@ -726,13 +832,14 @@ Finding Candidate:
 
 ```text
 Meaning:
-  repository failure has no explicit truthful return path
+  repository failure has no explicit truthful semantic result path
 
 Affected:
-  RU-SLICE-04.failurePropagation
+  RU-SLICE-02 semantic result boundary
+  RU-SLICE-03 end-to-end realization
 
 Related accepted meaning:
-  RU-SLICE-01 forbids false success
+  selected Feature BR forbids false success
 ```
 
 Core Finding Disposition may resolve:
@@ -752,13 +859,19 @@ Decision D-21:
   ApplicationService maps repository result
 ```
 
-RU-SLICE-04 is then updated:
+The relevant Slice Result Units are then refined:
 
 ```text
-Repository.save(...)
-→ ApplicationService.mapResult(...)
-→ Controller.toResponse(...)
-→ UI success/failure state
+RU-SLICE-02:
+  semantic result explicitly distinguishes durable success from persistence failure
+
+RU-SLICE-03:
+  Repository.save(...)
+  → ApplicationService.mapResult(...)
+  → adapter/UI truthful success/failure projection
+
+RU-SLICE-04:
+  integration proof asserts that persistence failure cannot surface as success
 ```
 
 The Lens surfaced a finding. Core disposition/lifecycle resolved what to do with it. The Target Module continued to own the Result Unit.
@@ -782,18 +895,21 @@ Core
 → State/lifecycle/ownership resolution
 ```
 
-Installed SDS profile conformance is literal after the SDS migration:
+Installed SDS profile conformance is checked against the **current registries**, not frozen counts in this semantic model:
 
 ```text
-12 / 12 SDS Target Modules
+every active SDS Target Module registry row
 → Resolution / Production Method
 → Target Step-Result Contract
+→ local Result Unit applicability/materiality guidance
 
-6 / 6 SDS-specific reusable Lenses
+every current SDS Lens registry row
 → Analysis Surface
 → Supported Operations
 → Typical Findings / Finding Contract
 ```
+
+Current snapshot counts and registry/file parity are reported by [`active-methodology-mechanical-consistency-check.md`](active-methodology-mechanical-consistency-check.md).
 
 Any reusable Lens body outside that literal SDS conformance remains readable through the generic compatibility interpretation until it is materially revised:
 

@@ -1,13 +1,13 @@
-# Slice Strategy Draft Template
+# Slice Coordination Draft Template — Legacy Filename
 
-Status: active reusable recommended template
-Purpose: plan/review decomposition and delivery order for Implementation Slices before planning individual Slices in detail.
+Status: compatibility/supporting template; **non-authoritative** and not a Target/Result-family template
+Purpose: optionally represent a derived decomposition/order/coverage coordination view when that view has independent coordination value. It does not restore `TM-SLICE-STRATEGY`, does not gate Slice Discovery, and may be omitted completely.
 
 Canonical workflow: [`../slice-planning-workflow.md`](../slice-planning-workflow.md)
 Cross-cutting context: [`../requirements-and-change-context.md`](../requirements-and-change-context.md)
 Application Realization workflow: [`../application-realization-workflow.md`](../application-realization-workflow.md)
 
-Blank sections are not requirements. Skip explicit strategy artifacts for trivial work that does not benefit from decomposition planning.
+Blank sections are not requirements. Skip this artifact whenever the coordination view adds no material value. Current Slice semantics remain in Feature + `TM-IMPLEMENTATION-SLICE` and, when justified, `TM-SLICE-OWNER`.
 
 ## Strategy Identity
 
@@ -76,9 +76,9 @@ Blank sections are not requirements. Skip explicit strategy artifacts for trivia
 
 Architecture/Slice planning recommends implementation sequence; it does not redefine product priority or pull a whole lower-priority feature forward without sufficient evidence.
 
-## Current Selected Strategy
+## Current Derived Coordination View
 
-<Selected decomposition/order and why.>
+<Derived decomposition/order coordination and why it is useful.>
 
 ## Current Decisions
 <Use the shared Planning Concern/Decision trace contract when material.>
@@ -92,17 +92,20 @@ Architecture/Slice planning recommends implementation sequence; it does not rede
 If none: `No material unresolved issues identified.`
 
 ## Potential Simplifications / Better Routes — When Material
-<Only unselected changes to the current Slice Strategy.>
+<Only material unselected changes to this derived coordination view.>
 
 ## Boundaries
 
 ```text
-Slice Strategy
-→ decomposition/order authority
+Derived Slice coordination view
+→ non-authoritative decomposition/order support only
 
-Individual Slice
-→ one selected implementation increment authority
+TM-IMPLEMENTATION-SLICE
+→ one selected transient end-to-end realization discovery
 
-Scenario / Screen / Requirement / Domain
-→ upstream semantic authority
+optional TM-SLICE-OWNER
+→ durable Slice responsibility when independently useful
+
+Feature / Scenario / Screen / Domain / Shared
+→ their own upstream/peer semantic authority
 ```

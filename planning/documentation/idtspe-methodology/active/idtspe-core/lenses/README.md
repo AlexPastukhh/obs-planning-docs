@@ -3,9 +3,25 @@
 Status: active generic Lens registry + installed-profile index  
 Model: [`LENS-MODEL.md`](LENS-MODEL.md)
 
+## Registry Scan Guide
+
+The Lens Registry is normally reached from an applicable Use-Case Process (especially `UC-IDTSPE-COMPOSE-CURRENT-WORK`) when current meaning may benefit from evaluation/check/refinement/challenge.
+
+```text
+current Work Context / Target / State surface
+→ scan registry applicability summaries
+→ include required Core perspectives whose material surface exists
+→ include only plausible conditional/profile candidates
+→ open concrete Lens body
+→ confirm its local Applicability Gate + supported operation
+→ execute Lens
+```
+
+A registry scan may select **zero additional Lenses**. Selecting a row does not itself execute the Lens or create a Finding. Recheck only when the Lens's Analysis Surface, relevant Decisions/Evidence, active Target/profile or declared revalidation conditions change materially.
+
 ## 1. Required Core Lenses
 
-Every material IDTSPE uses the required Core Pack proportionally. L1–L3 check material choice surfaces; the Documentation / Representation Lens is a required **materialization-stage** check when an iteration has material output. Any required check may resolve with no material finding.
+The required Core Pack is part of every material IDTSPE lifecycle **when its corresponding material surface exists**, but it is not rerun ceremonially on every conversational turn. L1–L3 check material choice surfaces; the Documentation / Representation Lens is a required materialization-stage check when material output may persist. Any required check may resolve with no material finding.
 
 | Lens | Role / applicability summary | Current KB representation |
 |---|---|---|
@@ -73,18 +89,7 @@ Use `idtspe lens <alias> <target>` when explicit Lens selection is intended.
 
 Profile registry: [`../../profiles/sds/lenses/README.md`](../../profiles/sds/lenses/README.md)
 
-Current SDS-specific pack (**6**):
-
-```text
-Application Boundary / Feasibility
-Domain Modeling / DDD
-UI / Spatial / Frontend Realization
-Slice Verticality / Integration
-Evolution / Change Isolation — planned/probable future-change interaction/isolation
-Simplicity / Implementation Economy — current structural economy + understanding/discoverability/work-context cost
-```
-
-The Evolution / Change Isolation Lens is SDS-profile specific because its current Analysis Surface and heuristics are tailored to SDS Scenario/Strategy/Slice/Cross-Cutting evolution projections. It does not consume or require a permanent SDS Workspace Evolution/global-architecture owner.
+The SDS profile registry owns its current Lens inventory, names and attachment policy. Core indexes the profile registry but does not duplicate the current profile Lens count/list or encode SDS-specific Analysis Surface assumptions here.
 
 ## 5. Composition / Applicability Scan Rule
 
@@ -138,7 +143,7 @@ Typical Findings / Finding Contract
 
 A Lens may contribute explanatory Broad Discussion/Key Points with no finding. When Lens analysis surfaces material meaning that needs ownership/State/lifecycle disposition, it becomes a Finding Candidate and Core Finding Disposition resolves its destination. `REOPEN`, Result Unit update after resolution, cross-owner handoff and Target Formation are Core consequences rather than Lens operations.
 
-The 6 SDS-specific Lens bodies conform literally after the Scenario Target migration. Existing generic Core Lens bodies remain migration-compatible until a separate literal Core-Lens conformance pass is useful.
+Materially revised SDS Lens bodies are required to conform literally to the Analysis Surface / Supported Operations / Finding Contract shell. Existing generic Core Lens bodies remain migration-compatible until a separate literal Core-Lens conformance pass is useful.
 
 ## 7. Maintenance
 

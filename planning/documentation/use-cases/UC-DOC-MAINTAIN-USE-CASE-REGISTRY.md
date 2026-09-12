@@ -12,10 +12,13 @@ The registry for the selected scope lists every current Use Case and its canonic
 
 1. Determine the registry scope.
 2. Include one row for every current Use Case in that scope.
-3. Use the minimal row contract:
+3. For a runtime-selectable current registry, use the compact routing row contract:
    - `ID`
    - `Use Case`
+   - `Situation summary`
+   - `Result summary`
    - `Owner`
+   Keep summaries short and defer the complete `Situation / Result / Process` to the owner. Legacy/provenance registries may retain the smaller identity/owner shape when they are not used for runtime selection.
 4. Use group headings only for navigation/readability.
 5. Do not use navigation-group identities as additional semantic capability owners.
 6. Do not duplicate Situation, Result, Process, permissions, or detailed methodology bodies in registry rows.

@@ -23,6 +23,15 @@ repository command definitions / helper
 
 A profile may extend this surface, but a generic Core command must not depend semantically on an SDS-specific command-surface owner merely because SDS is currently installed.
 
+## Ambient Session Inheritance
+
+All command surfaces execute under the thin Session interaction contract once that contract has been established at session bootstrap or context restoration:
+
+- [`planning/session/principles-and-terminology.md`](../../../../../session/principles-and-terminology.md)
+- [`planning/session/session-runtime-contract.md`](../../../../../session/session-runtime-contract.md)
+
+This is **inheritance, not routing**. A command routes directly to its current semantic owner; it must not insert `Session → IDTSPE/profile owner` as an obligatory semantic hop merely to obtain progress, steering or authorization behavior. Session is reloaded only when the interaction context/rules cannot be reconstructed safely.
+
 ## Generic Core Surface Inventory — 11
 
 ```text
@@ -30,8 +39,8 @@ idtspe.bootstrap
 → бутстреп idtspe
 
 idtspe.work
-→ idtspe [optional TM/LENS selector + context]
-→ aliases: работай через idtspe / режим idtspe
+→ compatibility/navigation shortcut: refresh/reaffirm/apply the current Use-Case-driven proportional IDTSPE composition
+→ `idtspe [optional TM/LENS selector + context]` may still dispatch an explicitly selected component
 
 idtspe.next
 → что дальше по методологии
@@ -67,18 +76,21 @@ These are **11 generic Core methodology surfaces**. Installed profiles contribut
 
 ## Bootstrap / Work Boundary
 
-`idtspe.bootstrap` is governance orientation only and has `hostTargetPolicy=NONE`.
+`idtspe.bootstrap` is the helper surface for the primary bootstrap owned by `planning/README.md`; it is governance orientation only, stops before profile bootstrap, and has `hostTargetPolicy=NONE`.
 
-`idtspe.work` is also the generic installed-component dispatcher. Bare `idtspe` enters ordinary material planning; `idtspe <TM-ID|LENS-ID|registry alias> <context>` resolves the component through current registries and then uses normal Target Formation/Lens execution. It supports multi-turn Broad Discussion as the normal exploratory mode and periodic Integration Checkpoints when the user asks to see the integrated whole or a full Target invocation is used for that purpose; the checkpoint is not a new command/lifecycle/Target kind.
+IDTSPE is already active; `idtspe.work` does **not** enable a mode. It is a compatibility/navigation shortcut that refreshes or explicitly reapplies the current Use-Case-driven proportional composition. Bare `idtspe` means continue ordinary work under that composition. `idtspe <TM-ID|LENS-ID|registry alias> <context>` may explicitly request a registered component, but the component still passes normal Use-Case/context routing and its local applicability gate. Broad Discussion may remain sufficient indefinitely; Integration Checkpoints are situational and invoked through the current IDTSPE Use Cases when a coherent whole-state view is useful.
 
 Bootstrap must not silently select a Target, infer a Target invocation mode or execute Target work.
+
+
+`idtspe.next` and `idtspe.continue` are explicit navigation/convenience surfaces, not approval gates between natural AI work steps. Thin Session Runtime allows automatic progression through ordinary in-scope interaction steps, while IDTSPE Use Cases own methodology composition.
 
 
 ## Generic Component Dispatch
 
 ```text
 idtspe
-→ ordinary work
+→ continue always-active proportional IDTSPE work
 
 idtspe TM-* <context>
 idtspe tm <alias> <context>
@@ -100,12 +112,12 @@ Resolution order is exact semantic ID first, then explicit namespace alias, then
 
 ```text
 current request + accepted prior meaning + necessary current-state facts
-→ ordinary IDTSPE Q/R/P/Evidence + Ideas/Decision only when a real choice/uncertainty exists
+→ ordinary IDTSPE Q/R/P/Evidence + formal Proposal/Decision only when a real choice/uncertainty exists
 → RU-PUPDATE-01 Pre-Update Plan
 → stop before mutation
 ```
 
-The Target is optional. It is useful when the user wants to review intended changes before actual update; a tiny/obvious change may go directly to Exact Realization. The command is read-only planning and never grants mutation/test/commit/push authority.
+The Target is optional. It is useful when the user wants a concrete reviewable plan before actual update; it is not the generic detailed-planning level for Exact Realization. Exact may perform transient internal exact planning without creating this Target. A tiny/obvious change may go directly to Exact Realization. The command is read-only planning and never grants mutation/test/commit/push authority.
 
 ## Exact Realization Surface
 
@@ -128,7 +140,7 @@ commit / push / deploy / release
 → never implied
 ```
 
-A material semantic/architectural/out-of-scope problem crosses normal Finding Disposition/revalidation rather than being silently fixed during implementation.
+A material semantic/architectural/out-of-scope problem crosses normal Finding Disposition/revalidation rather than being silently fixed during implementation. If a final-literal review/integration checkpoint is useful, `UC-IDTSPE-INTEGRATE-CURRENT-WORK` composes the Core Integration Checkpoint; there is no separate Session State/Checkpoint lifecycle.
 
 ## Generic Lens Operations
 

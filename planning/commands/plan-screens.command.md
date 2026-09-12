@@ -15,13 +15,13 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
   ],
   "description": "screen",
   "meaning": "Run TM-SCREEN through the IDTSPE Shell for the selected target.",
-  "activeContextBehavior": "Resolve or reuse the natural current IDTSPE Target/context; infer CREATE/REFINE/EXTEND/REVALIDATE/REPAIR from current state. Do not create a fake Target when the module/lens gate fails.",
+  "activeContextBehavior": "Treat the explicit command as selected invocation intent inside always-active IDTSPE. Re-evaluate current Use-Case composition, resolve/reuse a natural Target/context only when useful, confirm the selected Target Module Entry Point/local applicability gate, and then resolve CREATE/REFINE/EXTEND/REVALIDATE/REPAIR from actual current Target state. Do not create a Target or Result Unit merely because the command exists.",
   "traversalReadMode": "Reuse current reliable IDTSPE/SDS governance; targeted refresh of the selected owner route when uncertain; full bootstrap only when no reliable sufficient governance context exists.",
   "ownerFiles": [
     "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-SCREEN.md",
     "planning/documentation/idtspe-methodology/active/profiles/sds/shared/idtspe-command-surface-contract.md"
   ],
-  "expectedOutput": "Screen map, Scenario×Screen mapping, availability/routes/responsibilities; may validly conclude Screen Target is not justified.",
+  "expectedOutput": "Screen/Spatial Model: material Screen inventory/purpose, Feature/Scenario participation, routes/transitions/global spatial constraints and only independently useful Screen/zone draft detail; may validly conclude no Screen Target is justified.",
   "permissionMode": "read-only-planning",
   "keyReminders": [
     "SDS is an IDTSPE profile, not a second runtime.",
@@ -32,8 +32,8 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
   "userTarget": "<Screen map / screen-system scope>",
   "palette": true,
   "helperPresentation": {
-    "whenToUse": "Use when Scenario behavior requires explicit screen/window/spatial planning.",
-    "whatYouGet": "Screen map, Scenario×Screen mapping, availability/routes/responsibilities; may validly conclude Screen Target is not justified.",
+    "whenToUse": "Use when selected Features and Scenario journeys require explicit screen/surface, spatial-zone, availability/visibility or route/transition planning.",
+    "whatYouGet": "A Screen/Spatial Model that places Feature participation and Scenario journey roles without redefining Feature behavior.",
     "navigation": {
       "viewId": "SDS",
       "viewLabel": "SDS — IDTSPE Profile",

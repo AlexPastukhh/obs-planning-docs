@@ -10,7 +10,7 @@ current discrepancy rules
 current workflow Evidence
 ```
 
-Ideas:
+Candidate Proposals:
 ```text
 manual spreadsheet
 Power Query/rules
@@ -23,7 +23,7 @@ Material comparison:
 BRANCH-COMP-OPS-DETECT
 ```
 
-Selected route:
+Selected route / Decision:
 ```text
 Power Query/rules
 ```

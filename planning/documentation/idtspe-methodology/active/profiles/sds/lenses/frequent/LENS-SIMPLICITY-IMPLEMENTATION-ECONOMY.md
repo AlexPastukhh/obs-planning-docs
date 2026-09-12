@@ -25,7 +25,7 @@ The Lens is not “minimize file count” or “remove abstractions by default�
 
 ## Applicability Gate
 
-Activate when a Domain/Slice/Test/UI/Cross-Cutting/architecture candidate contains material structural choice, especially when one or more of these are present:
+Activate when a Domain/Slice/proof/UI/Shared/architecture candidate contains material structural choice, especially when one or more of these are present:
 
 ```text
 several abstraction layers / wrappers / interfaces
@@ -52,12 +52,12 @@ Also activate when a reviewer/agent has the concrete question:
 
 ```text
 current Target + accepted semantic owners
-candidate Ideas / implementation plan / test design
+candidate Proposals / implementation plan / transient proof design
 current implementation/workspace when available
 accepted current architecture Decisions from natural owners
 relevant Scenario future/change meaning
 Strategy May Change / planned future Slice meaning
-Slice/Cross-Cutting Evolution Steps + resolved Implementation Outlooks
+relevant selected Evolution Steps + current Slice/Shared implementation outlook
 relevant <owner>.evolution.md representation only when already justified
 L4 dependency/change surface
 L5 Evolution / Change Isolation findings
@@ -73,17 +73,17 @@ Accepted owner-local evolution meaning is constraint/evidence for simplification
 
 ### Primary Result Units / Semantic Selectors
 
-- semantic selectors over selected Domain/Slice/Test/UI/Cross-Cutting/architecture Result Units whose implementation cost/complexity is material
+- semantic selectors over selected Domain/Slice/proof/UI/Shared/architecture Result Units whose implementation cost/complexity is material
 
 ### Conditional Result Units / Semantic Selectors
 
-- `RU-DOM-01`, `RU-SLICE-*`, `RU-XC-*`, `RU-TDES-*`, `RU-TSTRAT-*` as applicable
+- current Domain Discovery/Owner, Slice Discovery/Owner, Shared Capability and natural-owner proof semantics as applicable
 
 ### Relevant State Units
 
 ```text
 Questions
-Ideas / Planning Branches when comparison is material
+Proposals / Planning Branches when comparison is material
 Q/R/P
 Decisions
 Evidence / Evidence Needs
@@ -309,7 +309,7 @@ shared abstractions used by only one Slice
 
 ## Testing Use
 
-For Test Strategy/Test Design, simplify proof as well as production design:
+For non-trivial proof design/cross-owner proof coordination, simplify proof as well as production design:
 
 ```text
 Is the cheapest credible proof layer being used?
@@ -380,13 +380,11 @@ This Lens does not define new Result Units or target-result fields. If repeated 
 ## Typical Consumers
 
 ```text
-TM-DOMAIN-DISCOVERY / Domain-Aggregate Modeling
-TM-SLICE-STRATEGY
-TM-IMPLEMENTATION-SLICE
+TM-DOMAIN-DISCOVERY / TM-DOMAIN-OWNER
+TM-IMPLEMENTATION-SLICE / TM-SLICE-OWNER
 UI-heavy TM-IMPLEMENTATION-SLICE / Local Target when independently substantial
-TM-CROSS-CUTTING-CONCERN
-TM-TEST-STRATEGY
-TM-TEST-DESIGN
+TM-SHARED-IMPLEMENTATION-CAPABILITY
+Core LENS-TEST-PROOF-EVIDENCE + natural-owner transient proof planning
 bounded architecture Local Target when independently material
 ```
 

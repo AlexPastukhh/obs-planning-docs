@@ -1,5 +1,8 @@
 # Merge Part 1 — WEUC Work-Cost + Simplicity Lens Consistency Audit
 
+> **Status: HISTORICAL CHECKPOINT / NON-AUTHORITATIVE.** This audit records an earlier assembled-methodology state. Counts, routes, Target/Lens identities and examples below may be superseded. For the current assembled-methodology consistency result, use [`POST-PASS12-CONSISTENCY-AUDIT.md`](POST-PASS12-CONSISTENCY-AUDIT.md) and then follow current registries/semantic owners.
+
+
 Status: **PASS — historical Part-1 checkpoint; subsequent Q/R/P/Theoretical/AI decisions are owned by `MERGE-PART2-QRP-THEORY-AI-CONSISTENCY-AUDIT.md`**
 
 ## Fixed Decisions

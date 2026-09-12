@@ -785,20 +785,20 @@ No need to replay semantic IDTSPE unless the physical review exposes a real sema
 
 ---
 
-# 15. Example — Scenario DATA In Full SDS
+# 15. Example — Feature Semantic Data In Full SDS
 
 Preset says:
 
 ```text
-Full may give Scenario DATA independent addressability
+Full may give Feature semantic data independent addressability
 ```
 
 Concrete discovery asks:
 
 ```text
-Is DATA reused by several Behavior Items/Requirements/Screens?
+Is Feature semantic data reused by several BR-* items/Screens/Domain or Slice planning?
 Does it need stable IDs?
-Will other Scenarios/Domain Discovery reference it?
+Will Scenarios/Domain Discovery/Slice Discovery reference it?
 Does it change/review independently?
 Would a separate file reduce Scenario working-context load?
 ```
@@ -807,14 +807,14 @@ Case A:
 
 ```text
 4 tiny data items
-used only by one Scenario
-always reviewed with Scenario
+used only by one Feature
+always reviewed with that Feature
 ```
 
 Decision:
 
 ```text
-keep DATA section inside Scenario owner
+keep semantic-data section inside Feature owner
 ```
 
 even in Full, unless current repository profile contract intentionally requires a stable DATA owner for other reasons.
@@ -822,15 +822,15 @@ even in Full, unless current repository profile contract intentionally requires 
 Case B:
 
 ```text
-25 independently referenced DATA items
-Behavior/Requirements/Screen/Domain Discovery all link to them
+25 independently referenced semantic-data items
+BR-* items/Scenario/Screen/Domain Discovery all link to them
 stable IDs required
 ```
 
 Decision:
 
 ```text
-dedicated Scenario DATA artifact/register is justified
+dedicated Feature semantic-data representation/register inside the Feature semantic owner is justified
 ```
 
 ---
@@ -989,7 +989,7 @@ change one Requirement
 But another case:
 
 ```text
-Scenario and its four tiny Behavior Items always change together
+Feature and its four tiny BR-* behavior items always change together
 ```
 
 Split would cause:

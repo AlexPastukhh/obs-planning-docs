@@ -12,6 +12,9 @@
   function allNavigationRows(entries){
     const rows=[];
     for(const entry of entries||[]){
+      // `palette:false` means compatibility-only: keep the command resolvable by ID/alias,
+      // but never surface it as primary/related methodology navigation.
+      if(entry?.palette===false)continue;
       const primary=primaryNavigation(entry);if(primary)rows.push({entry,nav:primary,related:false});
       for(const nav of relatedNavigation(entry))rows.push({entry,nav:{...nav,related:true},related:true});
     }

@@ -33,13 +33,13 @@ later Scenario/Domain/Slice Evidence
 
 ### Conditional Result Units / Semantic Selectors
 
-- `TM-SCENARIO-PLANNING`: `RU-SCEN-01` when Application-boundary findings materially challenge one Scenario Need/result boundary or behavior
+- `TM-SCENARIO-PLANNING`: `RU-SCEN-01` when Application-boundary findings materially challenge one Scenario journey boundary/composition
 
 ### Relevant State Units
 
 ```text
 Questions
-Ideas / Planning Branches when comparison is material
+Proposals / Planning Branches when comparison is material
 Q/R/P
 Decisions
 Evidence / Evidence Needs
@@ -83,7 +83,7 @@ What should be borrowed or avoided?
 
 For serious external/commercial products, market/competitor/user/adoption/pricing Evidence is included only when decision-relevant.
 
-Reference products are Evidence/Idea generators, not authority.
+Reference products are Evidence/Proposal sources, not authority.
 
 Deep guide: `../../shared/application-definition-existing-solutions-market-reference-research.md`.
 
@@ -271,7 +271,7 @@ Core Finding Disposition decides whether accepted meaning becomes/refines Applic
 
 The Lens does not design final Screens, Scenarios or architecture.
 
-Existing products provide Evidence/Ideas, not authority over our product semantics.
+Existing products provide Evidence/Proposal pressure, not authority over our product semantics.
 
 ## Knowledge Basis
 

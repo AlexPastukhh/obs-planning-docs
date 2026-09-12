@@ -38,7 +38,7 @@ A new Use Case is justified by a distinct useful result, not by a new file, comm
 
 **Process** describes how the Use Case reaches its Result.
 
-`Process` is the canonical documentation term. `Workflow` may be used as ordinary prose or as a situation-specific Session term, but it is not a second reusable documentation file type beside Process.
+`Process` is the canonical documentation term. `Workflow` may be used as ordinary prose, but it is not a second reusable documentation file type beside Process and does not imply a separate Session-owned methodology workflow.
 
 Process stays inline in the Use Case by default.
 
@@ -60,15 +60,56 @@ It groups Use Cases for readability and records where every current Use Case is 
 
 A group heading is navigation only. It is not a capability owner or additional ontology layer.
 
-The minimal registry contract is:
+For a runtime-selectable registry, the compact routing contract is:
 
 ```text
-ID | Use Case | Owner
+ID | Use Case | Situation summary | Result summary | Owner
 ```
 
-A registry does not duplicate Situation, Result, or Process bodies.
+`Situation summary` and `Result summary` are routing metadata, not duplicate Use-Case bodies. They should be just detailed enough to decide whether the owner needs to be opened. The owner remains authoritative for complete `Situation / Result / Process`.
+
+A provenance-only/legacy registry may retain a smaller `ID | Use Case | Owner` shape when no runtime applicability scan depends on it.
 
 A registry must cover every current Use Case in its declared functional scope and point to each canonical owner. It does not aggregate neighboring Session, repository, application, or specialized-methodology capabilities merely because they exist in the same repository. Structural README/navigation routes between scopes. During staged migration, explicit compatibility routes may temporarily preserve unresolved legacy entries inside the affected scope.
+
+## Use-Case Applicability Scan
+
+A **Use-Case Applicability Scan** is the lightweight functional-entry check that determines which Use Cases are relevant to the current situation.
+
+```text
+current situation
+→ Use-Case Registry Map
+→ scoped Use-Case Registry row summaries
+→ zero or more relevant Use Cases
+→ read/follow only those Use-Case owners
+```
+
+The scan is logically repeated when the situation changes materially. It does not require rereading unchanged files on every conversational turn. Loaded registry metadata may be reused while current and trustworthy.
+
+A Use-Case Applicability Scan chooses **ways of using the methodology/documentation system**. It must not duplicate the specialized planning/design/evaluation work of a methodology component reached by the selected Process.
+
+A Use Case may compose several supporting methodology components. The existence of a component does not make it applicable, and applicability does not imply maximal use.
+
+## Contextual Guidance Principle
+
+Repository methodology is applied to the actual situation rather than executed as a ceremonial maximum.
+
+```text
+recommended ≠ selected
+selected ≠ automatically executed
+available ≠ applicable
+applicable ≠ every optional detail must be produced
+```
+
+A Use-Case Process may therefore select, adapt, defer, use only as inspiration/theory, or reject a recommendation when the recommendation's own authority/boundary allows contextual interpretation. Normative authority/permission rules remain binding where they actually apply.
+
+The same principle applies recursively to supporting methodology components: registry entries are screened before detail is loaded; component applicability is checked before use; optional units/fields are materialized only when useful.
+
+## Use-Case Registry Map
+
+A **Use-Case Registry Map** is a structural-functional map of scoped Use-Case Registries. It exists so a methodology environment with generic and specialized scopes can keep each registry locally owned while still providing one lightweight entry check.
+
+The map contains registry-scope routing metadata, not Use-Case bodies and not specialized methodology-component entries.
 
 ## README
 

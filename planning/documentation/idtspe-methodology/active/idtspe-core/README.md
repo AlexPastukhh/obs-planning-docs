@@ -1,117 +1,173 @@
 # IDTSPE Core
 
 Status: active canonical generic methodology package  
-Scope: reusable planning runtime independent of SDS/Application-specific Target Modules.
+Scope: always-active, proportional planning/resolution work model independent of SDS/Application-specific semantics.
 
 ## Boundary
 
 ```text
+Documentation methodology
+= Use Case / Process / Principles & Terminology / Registry / Template / Example semantics
+  and the functional rules for using methodology/documentation
+
+Session (`planning/session/`)
+= thin generic USER↔AI interaction runtime only
+  work-step visibility / automatic progression / steering / AI Proposal / real gates
+
 IDTSPE Core
-= how a bounded planning Target is formed, evaluated, decided, persisted and revalidated
+= always-active planning/resolution work context
+  Broad Discussion / Core State / Targets / Target Modules / Lenses /
+  Proposal-QRP-Decision-Evidence-Finding / Integration / Revalidation / Representation
 
 SDS Profile
-= one installed family of concrete Target Modules, profile-specific Lenses,
-  directed workflow and artifact conventions built on IDTSPE Core
+= specialized Target Modules, Lenses, registries, knowledge, owner topology and planning semantics
 ```
 
-IDTSPE Core must remain usable when another profile/family is added later. It therefore does not define Scenario, Domain, Slice, Screen, Application or SDS-specific Workspace Evolution semantics.
+IDTSPE is not an opt-in planning mode. It remains lightweight by applying the [`Contextual Methodology Application Contract`](shared/contextual-methodology-application-contract.md): Broad Discussion with no Target/State/Lens/Checkpoint is a valid IDTSPE projection when deeper structure has no current value.
 
-## Start Here
+## Bootstrap
 
-1. [`BOOTSTRAP-IDTSPE.md`](BOOTSTRAP-IDTSPE.md) — whole-methodology/core bootstrap contract.
-2. [`IDTSPE-CORE-MAP.md`](IDTSPE-CORE-MAP.md) — generic owner/dependency map.
-3. [`shared/idtspe-unit-and-target-step-result-model.md`](shared/idtspe-unit-and-target-step-result-model.md) — canonical Target Step Result + IDTSPE Unit model.
-4. [`shared/broad-discussion-and-integration-checkpoint-model.md`](shared/broad-discussion-and-integration-checkpoint-model.md) — normal Broad Discussion ↔ Integration Checkpoint working model, Idea relations and semantic-retention boundary.
+The canonical Core bootstrap entry is this `README.md`. When entering Core directly and the generic planning bootstrap is not already reliable, first bootstrap from [`planning/README.md`](../../../../README.md), then return here.
 
-5. [`shared/finding-disposition-contract.md`](shared/finding-disposition-contract.md) — generic producer → finding → ownership/State/lifecycle disposition bridge.
-6. [`IDTSPE-SHELL.md`](IDTSPE-SHELL.md) — generic runtime/composition contract; current 15 port IDs remain stable technical navigation.
-7. [`IDTSPE-DEFAULT-WORK-MODE.md`](IDTSPE-DEFAULT-WORK-MODE.md) — optional default operating mode for material AI planning.
-8. [`../PLANNING-GOVERNANCE.md`](../PLANNING-GOVERNANCE.md) — authority/interaction rules.
-9. [`target-modules/README.md`](target-modules/README.md) — Target Module framework, generic Core `TM-PRE-UPDATE-PLAN` + `TM-EXACT-REALIZATION`, and installed-family boundary.
-10. [`shared/knowledge-basis-contract.md`](shared/knowledge-basis-contract.md) — shared Knowledge Basis contract used by Target Modules and Lenses.
-11. [`lenses/README.md`](lenses/README.md) — generic Lens registry plus installed profile Lens references.
-12. [`shared/idtspe-command-surface-contract.md`](shared/idtspe-command-surface-contract.md) — generic Core command/navigation surface and host-target policies.
-13. [`lenses/required/LENS-ARTIFACT-BOUNDARY-ADDRESSABILITY.md`](lenses/required/LENS-ARTIFACT-BOUNDARY-ADDRESSABILITY.md) — fundamental Documentation / Representation policy and worked materialization topologies.
-14. [`../profiles/README.md`](../profiles/README.md) — installed planning profiles/families.
+For the Core portion, read in order:
 
-Material Broad Discussion uses Key Points to structure material logical parts; material Ideas are explicit and carry `Addresses → current Target Goal / Question / Problem`. No mandatory block-owner or per-response Intake Summary is required. When a Target Module is active, its Target Goal plus Question/Problem candidates are the ordinary starting driver set, not an exclusive intake gate.
+1. this `README.md`;
+2. [`IDTSPE-CORE-MAP.md`](IDTSPE-CORE-MAP.md);
+3. [`IDTSPE-DEFAULT-WORK-MODE.md`](IDTSPE-DEFAULT-WORK-MODE.md);
+4. [`shared/idtspe-methodology-use-case-registry.md`](shared/idtspe-methodology-use-case-registry.md);
+5. [`shared/compose-current-work-use-case.md`](shared/compose-current-work-use-case.md);
+6. [`shared/contextual-methodology-application-contract.md`](shared/contextual-methodology-application-contract.md);
+7. [`shared/methodology-registry-directory.md`](shared/methodology-registry-directory.md);
+8. [`IDTSPE-SHELL.md`](IDTSPE-SHELL.md);
+9. [`shared/idtspe-unit-and-target-step-result-model.md`](shared/idtspe-unit-and-target-step-result-model.md);
+10. [`shared/target-module-model.md`](shared/target-module-model.md);
+11. [`lenses/LENS-MODEL.md`](lenses/LENS-MODEL.md) and [`lenses/README.md`](lenses/README.md);
+12. [`shared/finding-disposition-contract.md`](shared/finding-disposition-contract.md);
+13. [`shared/artifact-placement-and-idtspe-response-contract.md`](shared/artifact-placement-and-idtspe-response-contract.md);
+14. [`shared/idtspe-command-surface-contract.md`](shared/idtspe-command-surface-contract.md).
 
-## Generic Core Owners
+Other Core contracts, examples, specific Target Modules, specific Lenses, theory and profiles remain lazy/conditional reads reached from Use Cases, registries and current applicability. Primary bootstrap stops before profile bootstrap.
 
-`shared/` contains reusable concepts that are not owned by any one profile:
+## Functional Entry
+
+Methodology work starts from Use Cases, not from an MWS or component registry:
 
 ```text
-Target Formation / Resolution Slots
-Target / Source / Relation model
-Target Step Result + IDTSPE Unit model
-Broad Discussion / Key Points / Integration Checkpoint working model
-Idea driver/alternative/bundle relations + semantic retention
-Finding Disposition / producer → Core state-lifecycle bridge
-Target Module model + maintenance UC
-shared Target Module/Lens Knowledge Basis contract
-Lens model + maintenance UC
-Planning Branches
-Decision intake / persistence / revalidation
-Q/R/P priority / related groups / Decision Addresses-Exposes trace
-Documentation / Representation + Artifact Placement / file realization
-Practical Evidence
-Consistency Review
-command-helper presentation contract
-generic `TM-PRE-UPDATE-PLAN` for optional concrete pre-mutation change plans
-generic `TM-EXACT-REALIZATION` for exact directly integrable results; code realization is the default archetype
+current situation
+→ Documentation Methodology Use-Case Registry Map
+→ applicable Documentation + IDTSPE Use Cases
+→ Use-Case Process
+→ methodology registry/component when the Process needs one
+→ component-local applicability/materiality
 ```
 
+Start with:
+
+1. [`../../../../documentation/use-case-registry-map.md`](../../../../documentation/use-case-registry-map.md) — cross-scope Use-Case functional entry.
+2. [`shared/idtspe-methodology-use-case-registry.md`](shared/idtspe-methodology-use-case-registry.md) — current IDTSPE methodology-use capabilities.
+3. [`shared/compose-current-work-use-case.md`](shared/compose-current-work-use-case.md) — default continuously relevant IDTSPE work-composition UC.
+4. [`shared/contextual-methodology-application-contract.md`](shared/contextual-methodology-application-contract.md) — proportionality / situational application invariant.
+5. [`shared/methodology-registry-directory.md`](shared/methodology-registry-directory.md) — supporting registry-family router used *from* Use-Case Processes.
+6. [`shared/methodology-use-case-scenario-map.md`](shared/methodology-use-case-scenario-map.md) — design/evaluation/orientation examples; **not runtime authority**.
+
+## Core Technical Owners
+
+- [`IDTSPE-CORE-MAP.md`](IDTSPE-CORE-MAP.md) — current owner/dependency map.
+- [`IDTSPE-SHELL.md`](IDTSPE-SHELL.md) — generic technical runtime/composition contract; stable `P-01..P-15` port navigation.
+- [`IDTSPE-DEFAULT-WORK-MODE.md`](IDTSPE-DEFAULT-WORK-MODE.md) — compatibility owner explaining that IDTSPE is already active and how `idtspe.work` now means explicit refresh/application, not enablement.
+- [`shared/idtspe-unit-and-target-step-result-model.md`](shared/idtspe-unit-and-target-step-result-model.md) — Core State + Target Step Result Unit model, including applicability/materiality/omission.
+- [`shared/broad-discussion-and-integration-checkpoint-model.md`](shared/broad-discussion-and-integration-checkpoint-model.md) — Broad Discussion ↔ situational Integration Checkpoint model.
+- [`shared/finding-disposition-contract.md`](shared/finding-disposition-contract.md) — producer → Finding Candidate → owner/State/lifecycle disposition.
+- [`shared/resolution-slot-and-target-formation-resolution-set.md`](shared/resolution-slot-and-target-formation-resolution-set.md) — Target Formation resolution mechanics.
+- [`shared/target-module-model.md`](shared/target-module-model.md) — Target Module contract.
+- [`shared/knowledge-basis-contract.md`](shared/knowledge-basis-contract.md) — reusable theory/knowledge boundary.
+- [`lenses/LENS-MODEL.md`](lenses/LENS-MODEL.md) + [`lenses/README.md`](lenses/README.md) — Lens model and registry.
+- [`target-modules/README.md`](target-modules/README.md) — generic Core Target Module registry.
+- [`lenses/required/LENS-ARTIFACT-BOUNDARY-ADDRESSABILITY.md`](lenses/required/LENS-ARTIFACT-BOUNDARY-ADDRESSABILITY.md) — representation/materialization policy.
+- [`shared/artifact-placement-and-idtspe-response-contract.md`](shared/artifact-placement-and-idtspe-response-contract.md) — placement/response contract.
+- [`../PLANNING-GOVERNANCE.md`](../PLANNING-GOVERNANCE.md) — authority/governance rules.
+
+## IDTSPE Work Context
+
+The current work context may contain **zero, one or several Targets**.
+
+```text
+IDTSPE Work Context
+├─ current Work Concern / useful USER result
+├─ Broad Discussion / Key Points
+├─ zero or more material Core State Units
+├─ zero or more bounded Targets
+│  └─ applicable Target Result Units
+├─ selected/applicable methodology components
+├─ optional Methodology Usage State
+└─ revalidation / representation / continuation state when useful
+```
+
+A bounded Target is created/reused only when explicit target responsibility/result/scope provides independent value. This removes the old assumption that every IDTSPE work pass starts with one concrete Target.
 
 ## Target Step Result / Unit Boundary
 
 ```text
-Target
-→ bounded planning/resolution responsibility
+Target Step Result Unit
+= target-specific meaning defined by Target Module / Local Target Contract
 
-Target Step Result
-→ target-specific output wanted from the current bounded IDTSPE work step
-
-IDTSPE Unit
-├─ Target Step Result Unit — defined by Target Module / Local Target Contract
-└─ IDTSPE State Unit — generic Core kind such as Question / Idea / QRP / Decision / Evidence
+IDTSPE State Unit
+= generic planning/resolution state defined by Core
 ```
 
-State Units can themselves be useful output of a pass. One Target does not imply one Result Unit or one file.
+Both use sparse/material projection. A possible Unit/field is not a completion checklist.
 
-Lenses operate **inside** IDTSPE over an Analysis Surface through reusable operations `ANALYZE / CHECK / REFINE / CHALLENGE`. They may contribute Broad Discussion analysis/Key Points without creating State; only material newly surfaced meaning that needs ownership/State/lifecycle disposition becomes a Finding Candidate. Generic Core Finding Disposition resolves those consequences; normal authority/resolution may later update already-declared Result Units. Lenses do not define Unit kinds or become routing/semantic authority.
+Core State now includes an optional `Methodology Usage State` kind for material facts such as active Use Cases, meaningful registry selections, component operation/scope, contextual adaptations and recheck/re-entry conditions. It is not an action/file-read log.
 
-Canonical Unit owner: [`shared/idtspe-unit-and-target-step-result-model.md`](shared/idtspe-unit-and-target-step-result-model.md).  
-Canonical finding-disposition owner: [`shared/finding-disposition-contract.md`](shared/finding-disposition-contract.md).
+## Broad Discussion / Integration
 
+- **Broad Discussion** is the normal low-ceremony working surface and may span many turns with no Target or formal State when that is sufficient.
+- **Key Points** structure material logical discussion for reviewability; they are not Units.
+- **IDTSPE Integration Checkpoint** is a **situational** whole-state integration operation invoked when a coherent current view is useful. It is not periodic by timer/message count and does not imply approval/persistence/completion.
+- accepted material Decisions are retained when revalidation/continuation benefits from them; optional rationale/rejected-alternative retention remains proportional.
 
-## Broad Discussion / Integration Checkpoint Boundary
+## Lens Boundary
 
-Normal IDTSPE work does not require a full Unit/template dump in every conversational turn.
+Lenses operate over an Analysis Surface through `ANALYZE / CHECK / REFINE / CHALLENGE` as supported by the concrete Lens.
 
-- **Broad Discussion** is the exploratory multi-turn workspace. Material Ideas may appear inline with related Q/R/P/Evidence and remain related to the Goal/Question/Problem they address.
-- **Key Points** are the peer reviewability structure of logical discussion parts; they are not Units.
-- **Integration Checkpoint** is a periodic whole-state integration pass that reconciles accumulated discussion into current Generic State + applicable Target Result Units, applies relevant Lens/consistency checks and preserves unresolved alternatives.
-- accepted material Decisions are retained semantically by default; optional `Rationale / Why` and material rejected alternatives are retention choices discussed with the user.
-- semantic retention at a checkpoint is distinct from physical file/artifact persistence.
+```text
+Use Case / registry routing
+→ decides whether a Lens should be considered
 
-Canonical owner: [`shared/broad-discussion-and-integration-checkpoint-model.md`](shared/broad-discussion-and-integration-checkpoint-model.md).
+Lens Applicability Gate
+→ confirms local applicability
 
-## Installed Profile Rule
+Lens
+→ performs specialized evaluation
+→ explanatory Key Points OR Finding Candidate
+
+Core Finding Disposition
+→ owns State/lifecycle/owner consequence
+```
+
+No Lens owns the question "should IDTSPE methodology be used?"; IDTSPE is always active and its Use Cases/contextual application contract govern proportionality.
+
+## Profile Rule
 
 A profile may contribute:
 
 ```text
 Target Modules
-profile-specific reusable Lenses
-workflow/readiness graph
-profile artifact/tree conventions
-profile command surfaces
-worked examples
+profile-specific Lenses
+profile registry directory
+principle/knowledge registries
+planning depth/readiness semantics
+artifact/tree conventions
+examples
 ```
 
-A profile cannot redefine the generic IDTSPE Shell or generic Lens/Target mechanics locally. If it needs a different generic rule, that change is resolved at IDTSPE Core ownership first.
+A profile does not need profile-specific Use Cases unless it introduces a distinct independently useful way of **using profile methodology documentation**. The current SDS profile needs none; generic IDTSPE Use Cases compose its components.
+
+## Methodology Use-Case Scenario Map
+
+The former runtime MWS role is retired. [`shared/methodology-use-case-scenario-map.md`](shared/methodology-use-case-scenario-map.md) is used to design/evaluate Use Cases and give AI a high-level picture of realistic methodology use. It cannot override current Use Cases/components.
 
 ## Adjacent Packages
 
-- [`../ai-reviewability/README.md`](../ai-reviewability/README.md) — independent peer concern for Key Points/review projection.
-- [`../theoretical-modules/README.md`](../theoretical-modules/README.md) — raw temporary theory registry. Core may discover these packages without treating them as Target/Lens authority.
+- [`../ai-reviewability/README.md`](../ai-reviewability/README.md) — peer Key Points/review projection concern.
+- [`../theoretical-modules/README.md`](../theoretical-modules/README.md) — independent reusable theory registry; raw bodies are loaded lazily.

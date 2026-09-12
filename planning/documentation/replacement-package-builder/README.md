@@ -68,3 +68,7 @@ exact APPROVABLE package + exact handoff identity → consumer → stop
 ```
 
 It does not apply files to the consumer repository, create the consumer commit/publish result, integrate into the target branch or Finalize consumer work.
+## Consumer composition
+
+For the app-specific transition from an exact Builder-reviewed tuple to current Replacement Package App realization, use [`../replacement-package-realization-composition.md`](../replacement-package-realization-composition.md). Builder still stops at exact handoff; the composition guide does not make Builder responsible for consumer Apply/Commit/Publish or future reviewed-result verification.
+

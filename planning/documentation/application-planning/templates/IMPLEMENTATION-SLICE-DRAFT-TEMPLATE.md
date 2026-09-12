@@ -2,50 +2,67 @@
 
 Status: active supporting template; canonical semantic contract is `TM-IMPLEMENTATION-SLICE`.
 
-Use only when a human-readable Slice artifact is useful under Documentation / Representation. This template does not create a separate frontend/backend planning family or mirror exact code topology.
+Use only when a human-readable transient Slice Discovery representation is useful under Documentation / Representation. This template does not create a separate frontend/backend planning family, a Slice Strategy Target, or a durable Slice owner automatically.
 
 Canonical owners:
 
 - `../../idtspe-methodology/active/profiles/sds/target-modules/TM-IMPLEMENTATION-SLICE.md`
+- `../../idtspe-methodology/active/profiles/sds/target-modules/TM-SLICE-OWNER.md` when durable Slice responsibility is independently justified
 - `../../idtspe-methodology/active/profiles/sds/ARTIFACT-PLACEMENT-MAP.md`
 
-## Suggested Shape
+## Suggested Current Shape
 
 ```text
-# <Slice ID / useful result>
+# <Slice ID / useful end-to-end result>
 
-Primary Scenario
+Feature / BR-* source
 
-RU-SLICE-01 — Outcome / semantic obligations / proof intent
+RU-SLICE-01 — Whole-Slice Responsibility / Candidate Structure
+  <what one end-to-end realization is responsible for; candidate structure only as useful>
 
-RU-SLICE-02 — Domain Elements Used / Cross-Cutting local obligations / material dependencies
+RU-SLICE-02 — Semantic Application Entry / Result Boundary
+  <where application semantics enter this Slice and what semantic result leaves it>
 
-RU-SLICE-03 — Runtime Path [only when runtime semantics are material]
+RU-SLICE-03 — Step-by-Step End-to-End Realization
+  <material UI/application/domain/shared/persistence/external/effect/recovery path>
 
-RU-SLICE-04 — Evolution Steps
+RU-SLICE-04 — Feature Integration Proof
+  <what must be observed to show the selected Feature behavior is integrated end-to-end>
+
+RU-SLICE-05 — Evolution / OPEN Slice Pressure
+  <only known selected evolution or unresolved pressure that materially affects the Slice>
 ```
 
-### Evolution Step
+All Result Units are sparse. Omit a Unit or internal detail when it is not material; do not write `N/A` merely because the template shows the possible surface.
 
-Prefer named headings. Include only material fields:
+## Ownership Boundary
 
 ```text
-Behavioral Source / Future Meaning
-Slice Change
-Domain Changes
-Implementation Outlook
-Proof Impact [when material]
-Depends on / After [only genuine dependency]
-Cross-Cutting Impact [reference/local obligation only]
+Feature
+→ behavior / BR-* authority
+
+TM-IMPLEMENTATION-SLICE
+→ transient whole-Slice discovery
+
+optional TM-SLICE-OWNER
+→ durable end-to-end Slice responsibility + owner-local IR-SLICE-*
+
+Domain / Shared
+→ their own semantic/implementation responsibility
 ```
 
-`Implementation Outlook` stores the selected Slice-specific consequence of Resolution. Generic Questions/Ideas/QRP/Decisions/Evidence remain Core State.
+A material finding against Feature/Domain/Shared meaning returns through Core Finding/Proposal/revalidation mechanics. Slice planning does not silently rewrite upstream owners.
+
+## Proof Boundary
+
+`RU-SLICE-04` states integration-proof intent/meaning for the Slice result. Non-trivial proof allocation is evaluated through Core `LENS-TEST-PROOF-EVIDENCE`; literal tests belong to Exact/code. `TM-PRACTICAL-TEST` is used only when evidence requires the real implemented subject/environment.
 
 ## Representation
 
 ```text
-semantic Slice owner
+transient Slice Discovery
 ≠ dedicated Markdown file
+≠ durable Slice owner
 ```
 
-A small Slice may stay inline in `SLICE-STRATEGY.md`. A dedicated Slice file is promoted only under real size/review/reuse/lifecycle pressure. Exact classes/methods/call graphs remain code authority. Frontend/backend-specific reasoning stays inside the vertical Slice/UI Lens by default; independently substantial local design may use normal Target Formation.
+A small Slice may remain in current Work Context/Checkpoint representation. Persist this supporting file only when review/handoff/addressability value justifies it. Exact classes/methods/call graphs remain code authority.

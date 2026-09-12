@@ -265,23 +265,25 @@ Can this material stay naturally in an existing owner or coordinator?
 Examples:
 
 ```text
-SLICE-STRATEGY.md
+IMPLEMENTATION-PLANNING.md
   ## SL-CAPTURE
-    purpose
+    purpose / current working Slice concern
     small Decision set
     small QRP set
     implementation notes
-    test notes
+    proof notes
 ```
 
-may be enough even after separate IDTSPE invocations for:
+may be enough as one **supporting coordination representation** even after separate IDTSPE invocations for:
 
 ```text
 TM-IMPLEMENTATION-SLICE / SL-CAPTURE
-TM-TEST-DESIGN / SL-CAPTURE
-WEUC Lens / SL-CAPTURE
+natural-owner proof-planning pass / SL-CAPTURE
+Evolution Lens / SL-CAPTURE
 Simplicity Lens / SL-CAPTURE
 ```
+
+The supporting file does not become a Slice Strategy semantic owner. Selected durable Slice responsibility, if one is useful, remains with `TM-SLICE-OWNER`; transient discovery remains working Source by default.
 
 Those iterations do not imply four files. Their material findings do not choose a semantic destination themselves: Core Finding Disposition resolves the owner/lifecycle consequence. When the current owner remains appropriate, Documentation / Representation may keep the accepted meaning consolidated there unless independent separation is justified.
 
@@ -337,7 +339,7 @@ SL-CAPTURE.md
 ├── Useful Vertical Result
 ├── Important Behavior / DATA obligations
 ├── Implementation Plan
-├── Test Design
+├── Transient proof design / supporting proof-policy note when independently useful
 ├── Evolution considerations
 ├── Q/R/P
 └── Decisions
@@ -352,7 +354,7 @@ SL-CAPTURE.frontend.md
 SL-CAPTURE.parts/...
 ```
 
-just because Test Design, evolution evaluation, UI realization or local part reasoning was considered.
+just because proof design, evolution evaluation, UI realization or local part reasoning was considered.
 
 Split only when the subsection gains independent value such as:
 
@@ -374,27 +376,30 @@ Examples:
 ```text
 SCENARIO-CATALOG.md
 DOMAIN-DISCOVERY.md
-SLICE-STRATEGY.md
-TEST-STRATEGY.md
+SLICE-COORDINATION.md
+PROOF-POLICY.md
 SDS-EVOLUTION-MAP.md
 cross-owner architecture/evolution artifact only when independently justified
 responsibility maps / registries
 ```
 
+Names such as `SLICE-COORDINATION.md` or `PROOF-POLICY.md` are illustrative supporting representations, not Target-family identities. Their semantic owner must be explicit and current.
+
 A coordinator may contain the complete planning residue for several small logical owners.
 
-A Test Strategy is a useful boundary example: code is canonical for concrete test classes/suites/setups/fixtures/helpers, while a small `TEST-STRATEGY.md` may be justified when several owners need one shared proof-layer, non-duplication, environment or harness policy that is not otherwise obvious. Do not persist a hand-maintained class/helper inventory merely to mirror code. A generated/reference topology view is acceptable only when the cross-owner relation is independently large/reused and the representation has value beyond shadowing implementation.
+Cross-owner proof policy is a useful boundary example: code is canonical for concrete test classes/suites/setups/fixtures/helpers, while a small supporting proof-policy artifact may be justified when several owners need one shared proof-layer, non-duplication, environment or harness policy that is not otherwise obvious. Such a representation needs an explicitly selected semantic owner (for example a scoped Decision/supporting architecture owner); it does not imply a generic Test Strategy Target. Do not persist a hand-maintained class/helper inventory merely to mirror code. A generated/reference topology view is acceptable only when the cross-owner relation is independently large/reused and the representation has value beyond shadowing implementation.
 
 Therefore:
 
 ```text
-several Domain Targets
-→ may remain sections in DOMAIN-DISCOVERY.md + code
+several transient Domain discoveries
+→ may remain sections in DOMAIN-DISCOVERY.md + code/current owners
 
-several Slice Targets
-→ may remain sections in SLICE-STRATEGY.md
+several Slice working plans / owner references
+→ may remain sections in one supporting coordination artifact when that view has independent value
+→ selected durable Slice authority still remains in the natural Slice owner(s)
 
-one complex Domain/Slice
+one complex Domain/Slice owner
 → may be promoted to its own artifact while peers stay consolidated
 ```
 
@@ -418,7 +423,7 @@ SPECIALIZED_COMPANION_ARTIFACT
 GLOBAL_OR_CROSS_OWNER_ARTIFACT
 ```
 
-This is a **pressure-driven evolution**, not a mandatory staircase. Scenario artifacts often deserve independent persistence earlier than Domain implementation details because Scenario behavior is product/behavioral authority and is poorly replaced by code.
+This is a **pressure-driven evolution**, not a mandatory staircase. Feature/Scenario artifacts may deserve independent persistence earlier than Domain implementation details when behavioral/journey meaning must remain human-readable; Feature owns behavior while Scenario owns journey composition.
 
 ## Part 10 — Audience / Read Path
 
@@ -503,7 +508,7 @@ Lens:
   EXISTING_OWNER_SECTION
 
 P-14:
-  SLICE-STRATEGY.md#SL-CAPTURE
+  IMPLEMENTATION-PLANNING.md#SL-CAPTURE
 ```
 
 ```text

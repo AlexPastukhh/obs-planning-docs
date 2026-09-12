@@ -1,7 +1,7 @@
 # Testing Knowledge Basis — Proof Theory And Detailed Mechanics
 
 Status: active reusable theoretical Knowledge Basis  
-Consumers: `LENS-TEST-PROOF-EVIDENCE`, `TM-TEST-STRATEGY`, `TM-TEST-DESIGN`, Exact Realization when deeper test mechanics are materially unresolved
+Consumers: `LENS-TEST-PROOF-EVIDENCE`, natural owner-local proof planning, `TM-EXACT-REALIZATION`, and `TM-PRACTICAL-TEST` when real-subject evidence is required
 
 ## Purpose
 
@@ -14,8 +14,9 @@ Testing Knowledge Basis
 LENS-TEST-PROOF-EVIDENCE
 → evaluates one proposed or actual proof using that knowledge
 
-Test Strategy / Test Design
-→ own only independently useful selected planning results
+Natural owner-local proof planning
+→ may retain only independently useful proof intent/coordination
+→ does not create a baseline Test Design/Test Strategy Target
 
 TM-EXACT-REALIZATION
 → owns literal test code + authorized execution/repair
@@ -75,8 +76,9 @@ Current processed operational authority is:
 
 ```text
 LENS-TEST-PROOF-EVIDENCE
-+ current Test Target Modules
++ natural semantic/implementation owner
 + Core Exact Realization / Evidence semantics
++ TM-PRACTICAL-TEST only when real implemented subject/environment evidence is materially required
 ```
 
 Do not mechanically load every theory file for ordinary test work. Read only the detail needed for the material proof question.

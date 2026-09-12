@@ -19,7 +19,7 @@ Tampermonkey Planning Helper
   = projection/editor/runtime for real Planning Commands and local drafts, not command meaning authority.
 ```
 
-Read `planning/command-routing.md` for explicit command routing, then resolve the selected direct definition and its `ownerFiles`. Use semantic registries for capability discovery/context.
+Read `planning/command-routing.md` for explicit command routing, then resolve the selected direct definition and its `ownerFiles`. For methodology-use navigation, start from `planning/documentation/use-case-registry-map.md`; component registries are consulted from current Use-Case Processes or explicit component invocation context.
 
 ## Discovery
 
@@ -75,13 +75,17 @@ The JSON is intentionally strict so repository writes, build-time validation and
 - `ownerFiles` and `keyReminders` are arrays of strings.
 - `palette` is boolean. `false` keeps a registered command out of the normal palette without making it unregistered.
 - optional `helperPresentation` carries `When To Use` / `What You Get` copy for Helper details; new IDTSPE canonical/focused surfaces provide it, while older commands remain valid without it.
-- one high-level command may orchestrate several existing UCs/Scenario owners when that gives a useful stable invocation surface. This never creates a semantic UC or lets the command own their algorithms.
+- one high-level command may orchestrate several existing project capabilities or methodology components when that gives a useful stable invocation surface. This never creates a Use Case, Target Module, Lens or semantic owner and never lets the command own their algorithms.
 - refinements contain only compact owner-read instructions; they do not duplicate owner algorithms.
 - result-producing commands may depend on reusable governance through `ownerFiles` / their semantic owner route; the shared command router reuses current governance, refreshes affected owners proportionally, and performs a full internal preflight only when no reliable sufficient governance context exists. A source snapshot/commit/branch change alone does not force a full reread.
 
 ## Current IDTSPE/SDS Projection
 
 Current methodology command-surface ownership is layered: generic Core surfaces are owned by [`idtspe-core/shared/idtspe-command-surface-contract.md`](../documentation/idtspe-methodology/active/idtspe-core/shared/idtspe-command-surface-contract.md), while SDS-specific surfaces extend them through [`profiles/sds/shared/idtspe-command-surface-contract.md`](../documentation/idtspe-methodology/active/profiles/sds/shared/idtspe-command-surface-contract.md). Repository IDs/aliases may reuse existing commands; methodology identity is not inferred from filenames.
+
+IDTSPE is always active; command invocation does not enable it. A direct Target Module/Lens command expresses USER intent and provides strong selection context, but current Use-Case composition and the selected component's local applicability/materiality gate still determine whether a Target/Unit/Lens application is useful. Hidden legacy aliases may remain for compatibility, but they must route only to current owners and must not preserve retired Target families.
+
+Planning Helper methodology Use Cases are projected only from [`../documentation/use-case-registry-map.md`](../documentation/use-case-registry-map.md) and the current scoped registries it maps. Filesystem presence of another `use-case-registry.md` does not make its entries global methodology-use UCs.
 
 Generic Lens operations are repository commands `idtspe.lenses.select` (`подбери линзы`) and `idtspe.lens.apply` (`примени линзу`). They are orchestration/dispatch surfaces over `TF-06A` + the registered Lens owners, not new Lens semantic authorities and not one-command-per-Lens expansion.
 

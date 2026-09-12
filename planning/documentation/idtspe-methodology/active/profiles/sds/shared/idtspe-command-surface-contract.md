@@ -1,81 +1,113 @@
 # SDS Profile Command Surface Extension
 
-Status: active SDS command/routing contract
+Status: current S6 invocation / compatibility contract
 
 ## Purpose
 
-SDS extends generic IDTSPE routing without introducing a second runtime or a second semantic naming system. Generic IDTSPE Core surfaces are owned separately by the Core command-surface contract; this file only adds profile routing/compatibility rules.
+SDS extends generic IDTSPE invocation routing without creating a second runtime, a second Use-Case root or a competing semantic naming system. **Generic IDTSPE Core surfaces are owned separately** by [`../../../idtspe-core/shared/idtspe-command-surface-contract.md`](../../../idtspe-core/shared/idtspe-command-surface-contract.md); this file owns only the SDS profile extension.
+
+SDS commands inherit the Core command-surface rule that the thin Session interaction contract is ambient after bootstrap/context restoration; they do not route through Session before reaching an SDS owner.
+
+Profile bootstrap owner: [`../README.md`](../README.md). It is incremental over the primary `planning/README.md` bootstrap; the SDS command surface must not duplicate the profile read set.
 
 ```text
-Target Module registry / Lens registry
-= semantic component identity + short `idtspe` aliases
+Methodology Use-Case Process
+→ current IDTSPE Work Context
+→ SDS Target Module / Lens registry when relevant
+→ local applicability/materiality gate
+→ selected SDS owner
 
 planning/commands/*.command.md
-= repository invocation/compatibility routes
+= optional repository invocation / compatibility projection
 
-Helper generated catalog
-= projection only
+Planning Helper
+= projection/navigation only
 ```
+
+A command can express explicit USER invocation intent, but it cannot make a Target, Lens or Result Unit applicable merely by existing.
 
 ## Preferred Direct Surface
 
 ```text
 idtspe
-→ ordinary IDTSPE work
-
 idtspe <TM-ID> <context>
-idtspe tm <Target Module alias> <context>
-→ registered Target Module
-
+idtspe tm <Target alias> <context>
 idtspe <LENS-ID> <context>
 idtspe lens <Lens alias> <context>
-→ registered Lens
 ```
 
-A unique bare alias may resolve directly. Ambiguous/unknown selectors are never guessed.
-Canonical semantic identities are `TM-*` and `LENS-*`; short aliases live in the current registries. Repository command IDs (`application_slice.plan`, etc.) and historical `tmcmd.*`/`tm.*` names are implementation/compatibility details, not user semantic ontology.
+Bare `idtspe` **does not enable a mode**. IDTSPE is already active; the invocation asks the current Use-Case-driven composition to refresh/reaffirm the smallest useful next methodology action. Broad Discussion with no Target/Lens/Checkpoint is a valid result. Unknown or ambiguous selectors are never guessed.
+
+## Current Semantic Registry Boundary
+
+Target authority: [`../target-modules/README.md`](../target-modules/README.md).  
+Lens authority: [`../lenses/README.md`](../lenses/README.md).
+
+Retired semantic Target IDs are not current owners:
+
+```text
+TM-REQUIREMENT
+TM-SLICE-STRATEGY
+TM-CROSS-CUTTING-CONCERN
+TM-TEST-DESIGN
+TM-TEST-STRATEGY
+```
+
+S6 resolves command aliases that still use those historical phrases as **hidden compatibility routes**. They may preserve a familiar trigger, but their current `meaning`, `ownerFiles`, output and methodology binding must resolve only to current owners. `palette:false` hides the alias from primary navigation; it is not sufficient if the route itself still revives a retired owner.
+
+Examples:
+
+```text
+"slice strategy"
+→ compatibility alias
+→ TM-IMPLEMENTATION-SLICE when transient Slice discovery is materially useful
+
+"test strategy"
+→ compatibility alias
+→ LENS-TEST-PROOF-EVIDENCE + natural owner-local proof planning
+→ no Test Strategy Target
+
+"shared requirement"
+→ compatibility alias
+→ Implementation Requirements Discovery + requirement ownership rule
+→ no standalone Requirement Target
+```
 
 ## Runtime Invariant
 
 ```text
-user invocation
-→ resolve current semantic component
-→ normal Target Formation / Target invocation / Lens applicability
-→ IDTSPE Core owns State / Resolution / Finding Disposition / lifecycle
+USER invocation
+→ logically re-evaluate current methodology Use Cases
+→ UC-IDTSPE-COMPOSE-CURRENT-WORK / other applicable current UC
+→ resolve current SDS registry/component only when useful
+→ confirm component-local applicability/materiality
+→ selected SDS owner performs its specialized work
 ```
 
-Invocation mode (`CREATE / REFINE / EXTEND / REVALIDATE / REPAIR`) is separate from command identity.
-
-## Installed SDS Components
-
-Canonical Target Modules: [`../target-modules/README.md`](../target-modules/README.md) — 12.
-Canonical SDS-specific Lenses: [`../lenses/README.md`](../lenses/README.md) — 6.
-
-Retired `TM-DOMAIN-DRAFT`, `TM-WEUC` and `TM-FRONTEND-SLICE` are not surfaces. Compatibility commands may preserve old phrases only by routing to current owners.
+Command identity never changes semantic-owner authority. A command does not bypass the Use-Case-driven work context; explicit selection merely supplies strong invocation context to that composition.
 
 ## Specialized Commands
 
-Dedicated repository commands remain useful for stable recurring intents (for example Scenario planning, Slice planning, proof design, documentation representation, consistency review). They are shortcuts to registered semantic owners, not additional methodology identities.
+Dedicated repository commands may remain useful for stable recurring intents, including project/application-specific capabilities that are not methodology Use Cases. They are optional shortcuts to current semantic owners/capabilities. A new Target Module or Lens does not automatically require a command, and a command does not create a new Use Case.
 
-A new Target Module/Lens does not automatically require a new command. The generic `idtspe` dispatcher is the fallback route for every installed component.
+The S6 item-by-item cleanup also distinguishes **methodology Use-Case projection** from other project-local Use Cases: Planning Helper's methodology Use-Case catalog is derived from the repository [`../../../../../use-case-registry-map.md`](../../../../../use-case-registry-map.md), not from filesystem discovery of every file named `use-case-registry.md`.
 
-## Compatibility
+## Compatibility Representation Modes
 
-Legacy Mini/Modular/Full SDS commands are representation preferences only:
+Legacy Mini/Modular/Full SDS names, where retained, are hidden representation preferences only:
 
 ```text
-mini SDS    → LIGHT placement preference
-modular SDS → MIXED / ASYMMETRIC placement preference
-full SDS    → COMPLEX placement preference
+mini SDS    → LIGHT
+modular SDS → MIXED / ASYMMETRIC
+full SDS    → COMPLEX
 ```
 
-They do not select different semantic profiles, Domain Draft/frontend/WEUC runtimes or fixed file trees.
+They do not select different semantic profiles or fixed file trees.
 
-## Counts / Mechanical Inventory
+## Semantic Composition / Representation
 
-Command counts are derived from repository command metadata (`methodologyBinding`, palette/compatibility state and generated helper catalog) and verified mechanically. This contract does not manually maintain a total surface arithmetic that can drift from command definitions.
+Profile semantic composition/readiness guidance:
+[`directed-methodology-workflow-and-next-step-resolution.md`](directed-methodology-workflow-and-next-step-resolution.md).
 
-## Next-Step / Representation
-
-Semantic direction: [`directed-methodology-workflow-and-next-step-resolution.md`](directed-methodology-workflow-and-next-step-resolution.md).
-Owner/file examples: [`../ARTIFACT-PLACEMENT-MAP.md`](../ARTIFACT-PLACEMENT-MAP.md).
+Representation:
+[`../ARTIFACT-PLACEMENT-MAP.md`](../ARTIFACT-PLACEMENT-MAP.md).

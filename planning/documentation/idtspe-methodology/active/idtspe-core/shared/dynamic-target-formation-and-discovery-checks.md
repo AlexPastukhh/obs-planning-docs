@@ -28,13 +28,13 @@ FORMATION CORE
 LATER WORK-ORCHESTRATION / RESOLUTION COMPATIBILITY SLOTS
   TF-06 QUESTION_SET
   TF-06A LENS_SET
-  TF-07 IDEA_SPACE
+  TF-07 PROPOSAL_SPACE
   TF-08 BRANCH_POLICY
   TF-09 HANDOFF
   TF-10 PERSISTENCE_ADDRESSABILITY
 ```
 
-This grouping is explanatory only: it does not renumber/remove the current slots. It prevents the reader from inferring that Questions, Lens work, Idea discovery, handoff and persistence are all part of *forming the Target identity*.
+This grouping is explanatory only: it does not renumber/remove the current slots. It prevents the reader from inferring that Questions, Lens work, Proposal discovery, handoff and persistence are all part of *forming the Target identity*.
 
 ## Formation Outcomes
 
@@ -127,7 +127,7 @@ applicable L4/L5/L6/Quality
 genuinely local Lens only when needed
 ```
 
-### TF-07 IDEA_SPACE
+### TF-07 PROPOSAL_SPACE
 
 Discover materially different answer candidates.
 
@@ -221,7 +221,7 @@ one obvious small Useful Vertical Result
 Target Formation can conclude:
 
 ```text
-TM-SLICE-STRATEGY not needed
+separate Slice Strategy Target not needed
 → directly form TM-IMPLEMENTATION-SLICE
 ```
 

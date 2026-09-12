@@ -1,71 +1,95 @@
 # SDS Target Module Catalog
 
-Status: active SDS Target Module registry
+Status: active synchronized SDS Target registry
 
-SDS Target Modules are reusable contracts for recurring Target/result families.
-Generic Questions / Ideas / Q-R-P / Decisions / Evidence / Revalidation remain
-IDTSPE Core State and are not duplicated as SDS Result Units.
+SDS Target Modules own recurring SDS Target/result families. Generic Questions / formal Proposals / Q-R-P / Decisions / Evidence / Findings / Revalidation remain IDTSPE Core State.
 
-## Active SDS Target Modules — 12
+## Registry Scan Guide
 
-| Module ID | `idtspe` alias | Role / Result |
+Reach this registry from an applicable IDTSPE Use-Case Process (normally `UC-IDTSPE-COMPOSE-CURRENT-WORK`) when a recurring bounded SDS Target method may be useful.
+
+```text
+current Work Context / concern
+→ scan Role / Result summaries
+→ choose zero or more plausible Target Modules
+→ open module body
+→ confirm its Entry Point / local applicability gate
+→ instantiate only material Result Units
+```
+
+`NO_REUSABLE_TARGET_MODULE` is a valid outcome. Registry selection does not itself create a Target. Recheck when the work concern, active Target/profile, accepted upstream meaning or module-specific materiality changes. Result Units and fields remain sparse: declared possibility does not make them mandatory.
+
+## Active SDS Target Modules
+
+| Module ID | Alias | Role / Result |
 |---|---|---|
-| [`TM-APPLICATION-DEFINITION`](TM-APPLICATION-DEFINITION.md) | `application` | selected own-Application contribution/concept/boundary/feasibility |
-| [`TM-PROTOTYPE`](TM-PROTOTYPE.md) | `prototype` | bounded practical Prototype Evidence |
-| [`TM-SCENARIO-PLANNING`](TM-SCENARIO-PLANNING.md) | `scenario` | one independently meaningful Application Scenario |
-| [`TM-REQUIREMENT`](TM-REQUIREMENT.md) | `requirement` | exceptional canonical shared must-hold condition |
-| [`TM-SCREEN`](TM-SCREEN.md) | `screen` | conditional Screen/window spatial model |
-| [`TM-DOMAIN-DISCOVERY`](TM-DOMAIN-DISCOVERY.md) | `domain` | Domain / Aggregate Modeling; supporting/shallow or bounded/deep |
-| [`TM-SLICE-STRATEGY`](TM-SLICE-STRATEGY.md) | `slice-strategy` | vertical Slice portfolio + Slice→Domain map + owner bridge |
-| [`TM-IMPLEMENTATION-SLICE`](TM-IMPLEMENTATION-SLICE.md) | `slice` | one vertical Slice plan incl. owner-local Evolution Steps |
-| [`TM-CROSS-CUTTING-CONCERN`](TM-CROSS-CUTTING-CONCERN.md) | `crosscut` | one genuine shared non-vertical implementation responsibility |
-| [`TM-TEST-STRATEGY`](TM-TEST-STRATEGY.md) | `test-strategy` | shared proof strategy only under real cross-owner coordination pressure |
-| [`TM-TEST-DESIGN`](TM-TEST-DESIGN.md) | `test-design` | independently non-trivial proof design |
-| [`TM-PRACTICAL-TEST`](TM-PRACTICAL-TEST.md) | `practical-test` | practical Evidence over an implemented subject |
+| [`TM-APPLICATION-DEFINITION`](TM-APPLICATION-DEFINITION.md) | `application` | conditional own-Application contribution / boundary / feasibility |
+| [`TM-FEATURE`](TM-FEATURE.md) | `feature` | primary Feature behavior + Feature/Slice boundary owner |
+| [`TM-PROTOTYPE`](TM-PROTOTYPE.md) | `prototype` | transient empirical pre-commit inquiry |
+| [`TM-SCENARIO-PLANNING`](TM-SCENARIO-PLANNING.md) | `scenario` | Scenario journey composition; compatibility ID/path retained |
+| [`TM-SCREEN`](TM-SCREEN.md) | `screen` | Screen/spatial/navigation composition |
+| [`TM-DOMAIN-DISCOVERY`](TM-DOMAIN-DISCOVERY.md) | `domain-discovery` / `domain` | transient bounded Domain discovery |
+| [`TM-DOMAIN-OWNER`](TM-DOMAIN-OWNER.md) | `domain-owner` | durable Domain semantic contract + Domain IR |
+| [`TM-IMPLEMENTATION-SLICE`](TM-IMPLEMENTATION-SLICE.md) | `slice` | compatibility ID for transient Slice Discovery |
+| [`TM-SLICE-OWNER`](TM-SLICE-OWNER.md) | `slice-owner` | durable end-to-end Slice responsibility + Slice IR |
+| [`TM-SHARED-IMPLEMENTATION-CAPABILITY`](TM-SHARED-IMPLEMENTATION-CAPABILITY.md) | `shared` | durable reusable non-end-to-end implementation capability |
+| [`TM-EVOLUTION-STEP`](TM-EVOLUTION-STEP.md) | `evolution-step` | one coherent qualitative future transition / target state |
+| [`TM-EVOLUTION-STEPS-MAP`](TM-EVOLUTION-STEPS-MAP.md) | `evolution-map` | registry/routing/prerequisite/readiness map for Steps |
+| [`TM-PRACTICAL-TEST`](TM-PRACTICAL-TEST.md) | `practical-test` | implemented real-subject practical Evidence |
 
-These aliases are navigation conveniences for the generic `idtspe` dispatcher.
-Canonical semantic identity remains the `TM-*` ID. Repository command IDs and
-historical `tmcmd.*`/`tm.*` names are implementation/compatibility details and
-must not become a second user-facing ontology.
+## Retired / Subsumed Baseline Modules
 
-Examples:
+| Old module | Final disposition |
+|---|---|
+| `TM-REQUIREMENT` | RETIRE — durable requirements stay in exactly one natural owner |
+| `TM-SLICE-STRATEGY` | RETIRE — portfolio/coverage/Domain-use/owner-bridge meaning becomes workflow/Lens/derived coordination |
+| `TM-CROSS-CUTTING-CONCERN` | RETIRE — unified into `TM-SHARED-IMPLEMENTATION-CAPABILITY` |
+| `TM-TEST-DESIGN` | RETIRE — non-trivial proof design is transient natural-owner planning evaluated by Core Test Proof Lens |
+| `TM-TEST-STRATEGY` | RETIRE — cross-owner proof coordination is transient/Decision/supporting representation unless future independent owner pressure passes a new Target gate |
 
-```text
-idtspe TM-SCREEN checkout
-idtspe screen checkout
-idtspe tm domain Payment
-idtspe slice SL-PAYMENT
-```
+Retirement removes baseline Target-family authority, not useful semantic guidance. Old semantics are explicitly moved/subsumed in the S4 regression ledger.
 
-## Retired / Consolidated SDS Modules
+## Inherited Generic Core Target Modules
 
-- `TM-DOMAIN-DRAFT` → consolidated into `TM-DOMAIN-DISCOVERY`, semantic family Domain / Aggregate Modeling.
-- `TM-WEUC` → retired. Future/change meaning lives with Scenario/Slice/Cross-Cutting owners and is evaluated through L5 Evolution / Change Isolation.
-- `TM-FRONTEND-SLICE` → retired. Frontend/backend are not separate SDS Slice families by default.
+- Core `TM-PRE-UPDATE-PLAN` — optional reviewable plan before mutation when that result is useful.
+- Core `TM-EXACT-REALIZATION` — exact directly-integrable/literal result; may use transient internal exact planning.
 
-Compatibility commands may route old phrases to current owners; they do not keep retired Target families active.
+Pre-Update is not a mandatory predecessor of Exact.
 
-## Inherited Generic Core Modules
-
-SDS reuses [`TM-PRE-UPDATE-PLAN`](../../../idtspe-core/target-modules/TM-PRE-UPDATE-PLAN.md) and [`TM-EXACT-REALIZATION`](../../../idtspe-core/target-modules/TM-EXACT-REALIZATION.md).
-
-Literal code/config/test realization belongs to Exact Realization. SDS semantic Target Modules must not maintain hand-written mirrors of exact code call topology.
-
-## Domain Modeling
-
-`TM-DOMAIN-DISCOVERY` keeps its compatibility ID/path but owns one recurring Domain/Aggregate Modeling family. It may be SUPPORTING/shallow inside Slice Strategy without a child Target or PRIMARY/bounded for one independently material modeling problem. State matrices, impossible states, invariants and Aggregate boundary discovery are Resolution techniques, not mandatory separate Result Units.
-
-## Slice
-
-One normal Slice has exactly one Primary Scenario, delivers one independently useful/checkable vertical result, may cross whatever technical responsibilities are required, and is not split into frontend/backend/database Slices merely because those layers exist.
-
-## Proof
+## Feature / Scenario / Screen
 
 ```text
-obvious proof → Exact Realization
-non-trivial proof design → optional TM-TEST-DESIGN
-shared cross-owner proof policy → conditional TM-TEST-STRATEGY
-real implemented Evidence → TM-PRACTICAL-TEST
+TM-FEATURE
+  behavior / semantic Feature Data / BR-* / implementation concerns / Feature-Slice boundary
+
+TM-SCENARIO-PLANNING
+  journey composition / continuity / terminal Benefit / sparse journey must-holds / optional E2E proof intent
+
+TM-SCREEN
+  spatial/navigation composition / Feature presence / routes / Screen-specific constraints
 ```
 
-Cross-module direction belongs to [`../shared/directed-methodology-workflow-and-next-step-resolution.md`](../shared/directed-methodology-workflow-and-next-step-resolution.md). Representation examples belong to [`../ARTIFACT-PLACEMENT-MAP.md`](../ARTIFACT-PLACEMENT-MAP.md).
+These are peer owners and may be formed/revalidated together.
+
+## Domain / Slice / Shared
+
+```text
+TM-DOMAIN-DISCOVERY      transient → zero/one/several TM-DOMAIN-OWNER
+TM-IMPLEMENTATION-SLICE  transient → zero/one TM-SLICE-OWNER for one selected durable responsibility
+TM-SHARED-IMPLEMENTATION-CAPABILITY durable only under genuine shared-consumer pressure
+```
+
+Discovery is not persistence and does not become authority merely because a working artifact exists.
+
+## Requirements / Proof
+
+```text
+Feature behavior → BR-*
+Scenario journey must-hold → Scenario-owned, no mandatory SR-* family
+Domain / Slice / Shared implementation constraint → owner-local IR-*
+rare durable proof-realization HOW constraint → owner-local PFR-*
+```
+
+Proof design normally remains transient. Literal tests are Exact/code. Executed checks become Evidence only when actually run against the stated subject/state/environment.
+
+Cross-module semantic relationships/readiness guidance lives in [`../shared/directed-methodology-workflow-and-next-step-resolution.md`](../shared/directed-methodology-workflow-and-next-step-resolution.md). Runtime composition remains Use-Case-driven.

@@ -15,7 +15,7 @@ current request
 + accepted prior meaning / Decisions / principles
 + relevant current destination state
 ↓
-ordinary IDTSPE Questions / Risks / Problems / Ideas / Evidence only where useful
+ordinary IDTSPE Questions / Risks / Problems / Proposals / Evidence only where useful
 ↓
 RU-PUPDATE-01 Pre-Update Plan
 ↓ optional
@@ -60,7 +60,7 @@ Use ordinary Core State automatically when it helps resolve the plan:
 current context / accepted meaning
 → Question when something consequential is unknown
 → Risk / Problem when a material failure mode or contradiction exists
-→ candidate Ideas/options only when a real choice exists
+→ candidate Proposals/options only when a real choice exists
 → Evidence/current-state facts
 → Decision when a choice is actually selected
 → Pre-Update Plan
@@ -88,10 +88,10 @@ Question:
 Evidence:
   current service owns it outside the adapter
 
-Idea A:
+Proposal A:
   replace adapter implementation only
 
-Idea B:
+Proposal B:
   move transaction ownership into adapter
 
 Risk B:
@@ -108,7 +108,7 @@ Pre-Update Plan:
   build/test
 ```
 
-Generic Questions/Ideas/Q/R/P/Decisions/Evidence remain Core State. Do not create Target-specific copies of them.
+Generic Questions/Proposals/Q/R/P/Decisions/Evidence remain Core State. Do not create Target-specific copies of them.
 
 ## Target Step-Result Contract
 
@@ -117,6 +117,16 @@ Generic Questions/Ideas/Q/R/P/Decisions/Evidence remain Core State. Do not creat
 | Result Unit | Meaning |
 |---|---|
 | `RU-PUPDATE-01` | Pre-Update Plan — concrete planned changes derived from current accepted meaning/current state, sufficient for review before actual update |
+
+### Result Unit Applicability / Materiality
+
+Apply the Core [`Unit Applicability / Materiality / Omission Contract`](../shared/idtspe-unit-and-target-step-result-model.md#5a-unit-applicability--materiality--omission-contract).
+
+| Result Unit | Make explicit when | Omit / keep sparse when |
+|---|---|---|
+| `RU-PUPDATE-01` | when a separate concrete reviewable intended-change plan has independent value before mutation | omit the entire Target when direct Exact/current authorized work is sufficiently clear |
+
+No `N/A` placeholder is required.
 
 Typical proportional content:
 
@@ -145,7 +155,7 @@ Read the files/code/configuration/current owner state the update plan truly depe
 
 ### 3. Resolve consequential choices proportionally
 
-Apply ordinary Q/R/P/Evidence + Ideas/Decision only where a real choice, uncertainty or risk affects the plan.
+Apply ordinary Q/R/P/Evidence + Proposals/Decision only where a real choice, uncertainty or risk affects the plan.
 
 ### 4. Produce the concrete plan
 
@@ -209,6 +219,11 @@ Exact Realization:
 ```
 
 A Pre-Update Plan may hand off to Exact Realization, but neither Target is mandatory merely because the other exists.
+
+
+The generic exact-planning procedure used while developing an Exact Realization does **not** automatically instantiate `TM-PRE-UPDATE-PLAN`.
+
+Use this Target only when its own result is useful: a concrete reviewable plan of intended changes before update. Exact Realization may perform deeper transient implementation planning internally without producing `RU-PUPDATE-01`.
 
 ## Artifact / File Contract
 

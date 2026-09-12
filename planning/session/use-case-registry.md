@@ -1,8 +1,14 @@
-# Session Use-Case Registry
+# Session Use-Case Registry — Compatibility Routes
 
-| ID | Use Case | Owner |
+Status: **no current Session-owned methodology Use Cases**.
+
+The former Session Use Cases mixed generic USER↔AI interaction with methodology-navigation/planning responsibilities. Current ownership is split cleanly:
+
+| Former ID | Current disposition | Current owner |
 |---|---|---|
-| `UC-SESSION-ESTABLISH-WORKFLOW` | Establish / Adjust Session Workflow | [`use-cases/UC-SESSION-ESTABLISH-WORKFLOW.md`](use-cases/UC-SESSION-ESTABLISH-WORKFLOW.md) |
-| `UC-SESSION-USE-REPOSITORY-GUIDANCE` | Use Repository Guidance In Current Session | [`use-cases/UC-SESSION-USE-REPOSITORY-GUIDANCE.md`](use-cases/UC-SESSION-USE-REPOSITORY-GUIDANCE.md) |
-| `UC-SESSION-MAINTAIN-STATE` | Maintain Session State | [`use-cases/UC-SESSION-MAINTAIN-STATE.md`](use-cases/UC-SESSION-MAINTAIN-STATE.md) |
-| `UC-SESSION-CHECKPOINT` | Integrate Current Session Checkpoint | [`use-cases/UC-SESSION-CHECKPOINT.md`](use-cases/UC-SESSION-CHECKPOINT.md) |
+| `UC-SESSION-ESTABLISH-WORKFLOW` | SUPERSEDED — generic work-step/steering semantics stay in Session Runtime; methodology composition moves to IDTSPE | [`session-runtime-contract.md`](session-runtime-contract.md) + [`../documentation/idtspe-methodology/active/idtspe-core/shared/compose-current-work-use-case.md`](../documentation/idtspe-methodology/active/idtspe-core/shared/compose-current-work-use-case.md) |
+| `UC-SESSION-USE-REPOSITORY-GUIDANCE` | SUPERSEDED by generic Documentation methodology-use UC | [`../documentation/use-cases/UC-DOC-USE-REPOSITORY-GUIDANCE.md`](../documentation/use-cases/UC-DOC-USE-REPOSITORY-GUIDANCE.md) |
+| `UC-SESSION-MAINTAIN-STATE` | SUPERSEDED by IDTSPE proportional work-state UC | [`../documentation/idtspe-methodology/active/idtspe-core/shared/maintain-current-work-state-use-case.md`](../documentation/idtspe-methodology/active/idtspe-core/shared/maintain-current-work-state-use-case.md) |
+| `UC-SESSION-CHECKPOINT` | SUPERSEDED by IDTSPE Integration UC | [`../documentation/idtspe-methodology/active/idtspe-core/shared/integrate-current-work-use-case.md`](../documentation/idtspe-methodology/active/idtspe-core/shared/integrate-current-work-use-case.md) |
+
+Current methodology Use Cases are discovered through [`../documentation/use-case-registry-map.md`](../documentation/use-case-registry-map.md).

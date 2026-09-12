@@ -1,5 +1,8 @@
 # Documentation / Representation / Materialization Consistency Audit
 
+> **Status: HISTORICAL CHECKPOINT / NON-AUTHORITATIVE.** This audit records an earlier assembled-methodology state. Counts, routes, Target/Lens identities and examples below may be superseded. For the current assembled-methodology consistency result, use [`POST-PASS12-CONSISTENCY-AUDIT.md`](POST-PASS12-CONSISTENCY-AUDIT.md) and then follow current registries/semantic owners.
+
+
 Status: **PASS — regenerated after owner/file topology simplification**
 
 ## Fundamental Boundary

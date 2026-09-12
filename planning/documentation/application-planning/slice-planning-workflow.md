@@ -1,7 +1,7 @@
 # Slice Planning Workflow
 
-Status: active reusable workflow
-Scope: distinguish implementation Slice Strategy (decomposition/order) from planning one selected separately deliverable/checkable Implementation Slice.
+Status: active supporting/compatibility workflow; **not** current SDS Target-family authority
+Scope: preserve useful decomposition/order heuristics plus one-Slice planning guidance. The former Slice Strategy may exist only as a derived supporting coordination view; the current SDS Slice route is `TM-IMPLEMENTATION-SLICE` (transient discovery) → optional `TM-SLICE-OWNER` (durable responsibility).
 
 Canonical cross-cutting context: [`requirements-and-change-context.md`](requirements-and-change-context.md)
 Recommended shapes:
@@ -9,25 +9,29 @@ Recommended shapes:
 - [`templates/SLICE-STRATEGY-DRAFT-TEMPLATE.md`](templates/SLICE-STRATEGY-DRAFT-TEMPLATE.md)
 - [`templates/IMPLEMENTATION-SLICE-DRAFT-TEMPLATE.md`](templates/IMPLEMENTATION-SLICE-DRAFT-TEMPLATE.md)
 
-## 1. Two Planning Results
+## 1. Current Ownership Boundary
 
 ```text
-UC-PLAN-SLICE-STRATEGY
-→ choose/review a decomposition and delivery order
+optional derived decomposition/order coordination
+→ supporting view only; no Target/Result-family authority
 
-UC-PLAN-SLICE
-→ plan/review one selected Slice
+one concrete whole-Slice discovery
+→ TM-IMPLEMENTATION-SLICE / RU-SLICE-01..05
+
+independently durable Slice responsibility
+→ optional TM-SLICE-OWNER
 ```
 
-These are distinct outcomes. A project may skip explicit Slice Strategy when work is too small/simple to benefit from a decomposition artifact.
+A project may use these decomposition/order heuristics when they reduce coordination cost, but no `TM-SLICE-STRATEGY` Target is formed. The coordination view is omitted entirely when it adds no independent value.
 
 ## 2. Slice Strategy Inputs
 
 Read proportionally:
 
 ```text
-current Scenarios / Behavior Items
-confirmed Requirements
+selected Feature behavior / BR-*
+Scenario journey composition when relevant
+current natural-owner requirements
 canonical Screens where frontend spatial work matters
 Domain owners/invariants when present
 prototype evidence when still decision-relevant
@@ -48,14 +52,14 @@ Evaluate candidate decompositions against:
 ```text
 earliest useful result
 end-to-end checkability
-Scenario/Requirement coverage
+Feature behavior / journey coverage
 dependency order
 risk/uncertainty reduction
 learning/prototype opportunity
 integration/migration constraints
 likely change pressure
 ability to defer unnecessary infrastructure
-implementation sequence vs product/Scenario priority when they differ materially
+implementation sequence vs product/Feature priority when they differ materially
 ```
 
 Do not assume a horizontal sequence such as `generic backend framework → generic domain engine → frontend` is good slicing merely because it separates technical layers.
@@ -64,12 +68,12 @@ A foundation Slice is justified when it has a real delivery/risk/dependency reas
 
 ### Product Priority Vs Implementation Sequence — When Material
 
-Product/Scenario priority says **what should matter sooner**. Slice Strategy may recommend a different technical order when a prerequisite/seam/foundation materially lowers the cost or risk of delivering the priority result and likely subsequent work. It does not redefine product priority.
+Product/Feature priority says **what should matter sooner**. Slice Strategy may recommend a different technical order when a prerequisite/seam/foundation materially lowers the cost or risk of delivering the priority result and likely subsequent work. It does not redefine product priority.
 
 When the orders differ, make the recommendation explicit:
 
 ```text
-Product / Scenario priority
+Product / Feature priority
 Implementation sequence recommendation
 Why they differ
 Minimum prerequisite work actually needed
@@ -89,7 +93,7 @@ For each candidate Slice state:
 ```text
 Slice ID / label
 Deliverable/checkable result
-Covered Scenarios / Behavior / Requirements
+Covered Feature behavior / journey needs / natural-owner constraints
 Relevant Domain meaning
 Dependencies
 Main uncertainty/risk reduced
@@ -119,8 +123,8 @@ After a Slice is selected, plan its integrated delivery:
 
 ```text
 Deliverable result
-Covered Scenarios / Behavior Items
-Requirements implemented / constraining implementation
+Covered Feature behavior / BR-*
+Natural-owner requirements constraining implementation
 Relevant Domain meaning / verification contract
 Vertical boundary
 Dependencies / handoffs
@@ -169,14 +173,14 @@ The current Slice semantic owner remains integrated authority. SDS does not pres
 ## 7. Requirement And Owner Boundary
 
 ```text
-Scenario / Screen / Requirement / Domain
+Feature / Scenario / Screen / Domain / Shared
 → define selected meaning the Slice must realize
 
 Slice
 → implementation/delivery plan
 ```
 
-A Slice may discover that an upstream Requirement/Scenario/Domain choice is inconsistent, expensive or impossible. Return that as an explicit finding/review need. Do not redefine upstream meaning for implementation convenience.
+A Slice may discover that an upstream Feature/Scenario/Domain/Shared choice is inconsistent, expensive or impossible. Return that as an explicit finding/review need. Do not redefine upstream meaning for implementation convenience.
 
 ## 7.1 Shared / Cross-Cutting Applicability Vs Ownership
 
@@ -222,9 +226,9 @@ Implementation/review should compare actual realization to the selected Slice re
 Derive verification from semantic owners:
 
 ```text
-Scenario Acceptance
-+ Behavior Items
-+ Requirements
+Feature behavior / BR-*
++ Scenario journey needs when relevant
++ natural-owner requirements
 + Domain invariants when present
 + Slice deliverable target
 + positive outcomes
@@ -236,23 +240,23 @@ Tests are evidence, not semantic authority.
 
 ## 9. Exit Criteria
 
-Slice Strategy is ready when decomposition/order is understandable and justified enough to select the next Slice.
+A derived Slice coordination view is useful only when decomposition/order is understandable enough to reduce real coordination cost; it is never a readiness gate for forming a Slice Discovery Target.
 
 One Slice plan is ready when its vertical result, semantic coverage, dependencies, implementation boundary and verification target are clear enough for implementation without inventing product behavior during coding.
 
-## Behavior Coverage / Test Coverage Boundary
+## Feature Behavior Coverage / Proof Coverage Boundary
 
 Keep these distinct:
 
 ```text
 Scope → what delivery increment is included
-Behavior Coverage → which selected behavior this Slice implements
+Feature Behavior Coverage → which selected Feature behavior / BR-* this Slice realizes
 Test Coverage → how selected behavior/outcomes are proved
 ```
 
 For non-trivial work, record material related behavior that is **not** implemented by this Slice, its owner/destination and reason. This protects vertical Slice boundaries from scope creep.
 
-When verification is material, build or route a Behavior-to-Test Trace through `../testing-planning/test-design-workflow.md`. A vague `covered by integration tests` statement is not a proof plan.
+When proof allocation is material, apply Core `LENS-TEST-PROOF-EVIDENCE`; keep non-trivial proof planning transient with the natural owner and route literal tests through Exact Realization. A vague `covered by integration tests` statement is not sufficient Evidence.
 
 ## Target Dependencies / Practical Acceptance Handoff
 

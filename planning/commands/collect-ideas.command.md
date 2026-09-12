@@ -15,15 +15,15 @@ Scope: legacy compatibility command alias. Current planning behavior is owned by
     "collect ideas"
   ],
   "description": "legacy compatibility alias routed into current IDTSPE work mode",
-  "meaning": "Legacy alias of current IDTSPE material planning. Resolve or reuse the natural current IDTSPE Target/context, ingest the supplied material as Sources/Ideas/Q/R/P as appropriate, and continue through `idtspe.work`; when an SDS Target Module is clearly applicable, invoke that module through the same IDTSPE Shell. This alias never starts the former collect-ideas/Current-Plan runtime.",
-  "activeContextBehavior": "Resolve/reuse the natural current Target and current semantic owner. If no grounded Target exists, perform ordinary Target Formation before planning; do not manufacture an Idea-owned or collect-ideas-owned planning unit.",
+  "meaning": "Legacy alias for supplying material to the always-active IDTSPE Work Context. Treat the input as Source/Question/Proposal/Q-R-P material as appropriate, re-evaluate `UC-IDTSPE-COMPOSE-CURRENT-WORK`, and remain in Broad Discussion unless a Target/Target Module/Lens becomes materially useful. This alias never starts the former collect-ideas/Current-Plan runtime and never enables IDTSPE.",
+  "activeContextBehavior": "Reuse current Work Context when possible. If no Target is useful, continue Broad Discussion; if a bounded Target becomes useful, normal Target Formation may create one. Do not manufacture an Idea-owned or collect-ideas-owned planning unit.",
   "traversalReadMode": "Reuse current reliable IDTSPE governance; refresh the selected owner/module route only when uncertain; full bootstrap only when no reliable sufficient governance context exists.",
   "ownerFiles": [
-    "planning/documentation/idtspe-methodology/active/idtspe-core/IDTSPE-DEFAULT-WORK-MODE.md",
-    "planning/documentation/idtspe-methodology/active/idtspe-core/IDTSPE-SHELL.md",
-    "planning/documentation/idtspe-methodology/active/profiles/sds/shared/idtspe-command-surface-contract.md"
+    "planning/documentation/idtspe-methodology/active/idtspe-core/shared/compose-current-work-use-case.md",
+    "planning/documentation/idtspe-methodology/active/idtspe-core/shared/idtspe-unit-and-target-step-result-model.md",
+    "planning/documentation/idtspe-methodology/active/idtspe-core/shared/idtspe-command-surface-contract.md"
   ],
-  "expectedOutput": "Normal IDTSPE result for the resolved Target: Key Points + Questions/Ideas/Q/R/P/Decisions as material + natural owner/materialization handoff + next methodology action. No legacy Current Plan or collect-ideas ledger.",
+  "expectedOutput": "The smallest useful IDTSPE response to the supplied material: Broad Discussion/Key Points and material State/Target consequences only when useful. No legacy Current Plan or collect-ideas ledger.",
   "permissionMode": "read-only-planning",
   "keyReminders": [
     "Legacy compatibility alias only; the canonical material-planning runtime is IDTSPE.",

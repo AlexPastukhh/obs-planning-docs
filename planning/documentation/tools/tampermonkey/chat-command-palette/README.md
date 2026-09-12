@@ -8,7 +8,7 @@ Scope: local-first Planning Helper with GitHub-backed Planning Commands and Use 
 
 1. `planning/command-routing.md` — executable-command policy.
 2. `planning/commands/README.md` — Planning Command authority.
-3. current canonical Use-Case registries under `planning/**` (registry filename is matched case-insensitively; legacy/historical compatibility indexes are excluded) — Workspace/methodology Use-Case authority.
+3. `planning/documentation/use-case-registry-map.md` → only the scoped methodology Use-Case registries explicitly mapped there — methodology-use authority/projection root. Project/application Use-Case registries remain in their own scopes and are not automatically projected as global methodology UCs.
 4. `planning/helper-library/README.md` — Prompt / legacy helper insertion authority.
 5. `scenarios/README.md` — Planning Helper application behavior.
 6. `MANUAL-ACCEPTANCE.md` — browser/real-GitHub acceptance.
@@ -21,13 +21,14 @@ The userscript is a runtime/projection, not semantic authority. It must not cont
 ```text
 GitHub durable sources
   planning/commands/*.command.md
-  current canonical Use-Case registries under planning/**
+  planning/documentation/use-case-registry-map.md
+    -> mapped current methodology Use-Case registries only
   planning/helper-library/prompts/*.prompt.md
   catalog-order.json
 
 build-verified GitHub projections
   seed/commands.json     <- planning/commands/*.command.md
-  seed/use-cases.json    <- every current canonical Use-Case registry under planning/**
+  seed/use-cases.json    <- Registry Map -> mapped current methodology Use-Case registries only
 
 browser local snapshot / RAM
   = normal working copy/cache
@@ -80,9 +81,9 @@ A Command linked directly as a current UC's Related command is reused as that UC
 
 ### Use Cases
 
-Canonical source: all current canonical Use-Case registries under `planning/**`; registry filenames are matched case-insensitively and legacy/historical compatibility indexes are excluded. Build projection: `seed/use-cases.json`.
+Canonical methodology-use source: [`planning/documentation/use-case-registry-map.md`](../../../use-case-registry-map.md) and only the current scoped registries explicitly mapped there. The builder does **not** discover methodology Use Cases by scanning every file named `use-case-registry.md`. Build projection: `seed/use-cases.json`. Current S6 baseline projects 10 Generic Documentation + 6 IDTSPE Core methodology Use Cases; SDS defines no separate runtime methodology UCs.
 
-The build discovers every current canonical UC, verifies unique IDs/direct command mappings and regenerates the seed. Runtime treats that repository projection as recoverable local navigation. Use-Case Insert/Copy still resolves the exact current registry entry and owner route.
+The build follows the Registry Map, discovers every currently mapped methodology-use UC exactly once, verifies unique IDs/direct command mappings and regenerates the seed. Runtime treats that repository projection as recoverable local navigation. Use-Case Insert/Copy still resolves the exact current registry entry and owner route.
 
 ### Prompts
 
@@ -172,15 +173,16 @@ IDTSPE
   generic Lens operations + stable Core Lens shortcuts
 
 SDS — IDTSPE Profile
-  26 primary methodology surfaces
+  19 primary methodology surfaces
   1 SDS bootstrap
-  12 canonical SDS Target Module invocations
-  10 focused Target invocations
-  3 direct SDS Lens checks
+  7 direct current SDS Target Module invocations
+  8 focused Target invocations
+  3 direct SDS/profile Lens checks
+  additional active SDS Target Modules/Lenses remain reachable through generic `idtspe` registry dispatch without one command row per component
   Consistency Review may appear as a RELATED action without duplicating command identity
 
 TOTAL
-  37 primary methodology surfaces
+  30 primary methodology surfaces
 ```
 
 Projection source: `src/methodology-navigation.js`. Command semantics remain in `planning/commands/*.command.md` and the installed IDTSPE/SDS methodology owners; the Helper view does not become a semantic authority.
@@ -218,4 +220,4 @@ npm run build
 npm run verify
 ```
 
-`verify` proves current UC/Command parity, manual UC invokability, command alias validity, local/repository boundaries, generated-script freshness and Scenario traceability.
+`verify` proves current mapped methodology-UC/Command parity, manual methodology-UC invokability, command/IDTSPE alias validity, compatibility-route safety, local/repository boundaries, generated-script freshness and Helper product-Scenario traceability.

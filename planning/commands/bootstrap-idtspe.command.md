@@ -14,15 +14,15 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
     "бутстреп idtspe",
     "bootstrap idtspe"
   ],
-  "description": "Load generic IDTSPE Core orientation.",
-  "meaning": "Establish or refresh generic IDTSPE Core governance and installed profile indexes without selecting a concrete Target.",
-  "activeContextBehavior": "Load or refresh IDTSPE governance only. If a current Target/context already exists, report or reuse it for orientation without changing it. If no Target exists, stop ready for later planning. Do not perform Target Formation, select a Target, infer CREATE/REFINE/EXTEND/REVALIDATE/REPAIR, or execute Target work.",
-  "traversalReadMode": "Reuse current reliable IDTSPE/SDS governance; targeted refresh of the selected owner route when uncertain; full bootstrap only when no reliable sufficient governance context exists.",
+  "description": "Load the primary planning bootstrap through IDTSPE Core, excluding profiles.",
+  "meaning": "Establish or refresh the primary planning environment from planning/README.md: Session ambient rules, repository working contract, generic Documentation navigation and IDTSPE Core. Stop before profile bootstrap and do not select a concrete Target.",
+  "activeContextBehavior": "Load or refresh the primary generic governance bootstrap only. If a current Target/context already exists, report or reuse it for orientation without changing it. If no Target exists, stop ready for later planning. Do not perform Target Formation, select a Target, infer CREATE/REFINE/EXTEND/REVALIDATE/REPAIR, or execute Target work.",
+  "traversalReadMode": "Reuse a current reliable primary bootstrap; otherwise read planning/README.md and follow its child README read sets. Do not bootstrap an installed profile unless it is separately applicable.",
   "ownerFiles": [
-    "planning/documentation/idtspe-methodology/active/idtspe-core/BOOTSTRAP-IDTSPE.md",
+    "planning/README.md",
     "planning/documentation/idtspe-methodology/active/idtspe-core/shared/idtspe-command-surface-contract.md"
   ],
-  "expectedOutput": "Compact IDTSPE governance assimilation, installed profiles, permission boundary and current Target context when any.",
+  "expectedOutput": "Primary bootstrap current through IDTSPE Core, with Session/Documentation/Core boundaries understood and no profile selected by bootstrap.",
   "permissionMode": "read-only-planning",
   "keyReminders": [
     "SDS is an IDTSPE profile, not a second runtime.",
@@ -34,8 +34,8 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
   "userTarget": "<IDTSPE governance / no Target required>",
   "palette": true,
   "helperPresentation": {
-    "whenToUse": "When IDTSPE governance is not current or you want explicit orientation before planning.",
-    "whatYouGet": "Compact IDTSPE governance assimilation, installed profiles, permission boundary and current Target context when any.",
+    "whenToUse": "When the generic planning environment through IDTSPE Core is not current or must be reconstructed from zero context.",
+    "whatYouGet": "Primary bootstrap current through IDTSPE Core, with Session/Documentation/Core boundaries understood and no profile selected by bootstrap.",
     "navigation": {
       "viewId": "IDTSPE",
       "viewLabel": "IDTSPE",

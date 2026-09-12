@@ -3,7 +3,7 @@
 Status: active methodology Use Case  
 Purpose: create, extract, merge, split or revise one reusable IDTSPE Lens/Lens Pack without turning it into a Target Module or project semantic authority.
 
-## Trigger
+## Situation
 
 Use when:
 ```text
@@ -28,7 +28,7 @@ Artifact/Test/Practical packs
 real repeated planning cases
 ```
 
-## Algorithm
+## Process
 
 ```text
 1. identify the reusable evaluation perspective

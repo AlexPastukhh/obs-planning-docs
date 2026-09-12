@@ -58,7 +58,7 @@ Core Finding Disposition selects any owner/revalidation consequence.
 
 ## Typical Consumers
 
-Prototype, implemented practical Evidence, Test Design, and Application/Scenario/Screen/Slice evidence planning when practical observation matters.
+Prototype, implemented practical Evidence, and Application/Feature/Scenario/Screen/Domain/Slice/Shared proof planning when practical observation matters.
 
 ## Artifact / File Implications
 

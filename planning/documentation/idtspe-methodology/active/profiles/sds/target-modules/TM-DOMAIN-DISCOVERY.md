@@ -1,288 +1,193 @@
-# TM-DOMAIN-DISCOVERY — Domain / Aggregate Modeling
+# TM-DOMAIN-DISCOVERY — Transient Domain Discovery
 
-Compatibility ID: `TM-DOMAIN-DISCOVERY`  
-Entry Point: `tm.domain.discovery`  
-Role: primary/optional **and supporting** Target Module
+Entry Point: `tm.domain_discovery`  
+Role: transient/non-persistent implementation discovery Target Module
 
 ## Purpose
 
-Produce the smallest useful selected Domain/Aggregate model for the current
-behavioral problem without forcing a persistent Domain-planning layer or a
-Discovery→Draft waterfall.
+Produce a bounded working Domain plan when semantic state, identity, lifecycle, invariant or consistency ownership is unclear enough that concrete exploration is useful.
 
-This one Target family replaces the former `TM-DOMAIN-DISCOVERY` +
-`TM-DOMAIN-DRAFT` split.
+This Target is a **Source**, not durable Domain authority. One discovery may yield zero, one or several durable Domain owners. It is not one Target per Aggregate.
 
-Normal modes:
+Concrete candidate classes, types, methods, signatures, persistence seams and literal unit-test candidates are allowed because this is working implementation discovery.
 
-```text
-SUPPORTING / SHALLOW
-  help Slice Strategy discover candidate Aggregate/domain boundaries and useful
-  semantic operations without forming a child Target
+## Activation / Scope Gate
 
-PRIMARY / BOUNDED DEEP
-  resolve one independently material Domain/Aggregate modeling problem
-```
+Use when a Feature/Slice/current implementation reaches material Domain questions that cannot be resolved proportionally by a lighter Lens check.
 
-A valid result may conclude that no distinct Domain model/owner is useful.
-
-## High-Level Example — Self-Contained Walkthrough
-
-### Situation
-
-Scenario behavior repeatedly uses captured item, source context, accepted/rejected
-state and later review. Several Slices may use the same concepts.
-
-### Shallow Strategy use
-
-Enough meaning may be:
-
-```text
-SL-CAPTURE
-  Uses → CaptureItem
-    needs: create valid item; preserve capture invariant
-  Uses → SourceContext
-    needs: represent semantic source context
-
-SL-REVIEW
-  Uses → CaptureItem
-    needs: expose reviewable state
-```
-
-No dedicated Domain Target/file is required merely to obtain this map.
-
-### Deep bounded use
-
-When `CaptureItem` itself has material state/rule choices, Resolution may inspect:
-
-```text
-identity
-state/condition dimensions
-valid/impossible combinations
-invariants vs policies
-lifecycle/transitions
-what must remain consistent together
-Aggregate/root boundary
-Domain-owned behavior vs application/external coordination
-useful semantic/public Domain operations
-```
-
-A state/condition matrix is a reasoning aid, not a required artifact.
-
-### Result
-
-Selected meaning may be:
-
-```text
-CaptureItem
-  stable identity
-  invariant: accepted item always has durable content + source context
-  lifecycle: captured → accepted/rejected
-  public semantic operations: accept(...), reject(...)
-  outside: destination transfer orchestration
-```
-
-or simply:
-
-```text
-no distinct Domain owner needed
-```
-
-## Upstream Source Contract
-
-### Direct Semantic Sources
-
-```text
-selected Scenario behavior / Requirements
-Scenario DATA / Behavior Items
-must-hold conditions / negative guarantees
-Slice Strategy scope / Slice→Domain use needs when used supportingly
-```
-
-### Evidence / Current-State Sources
-
-```text
-existing Domain/current implementation Evidence
-Prototype/Practical Evidence when relevant
-external contracts/constraints
-```
-
-### Planning-State Sources
-
-```text
-accepted Decisions
-material Q/R/P
-accepted/planned evolution pressure when it can change the model
-```
-
-Source list is an archetype only; current `TF-04 SOURCE_SET` remains authority.
-
-## Knowledge Basis
-
-Shared contract: [`knowledge-basis-contract.md`](../../../idtspe-core/shared/knowledge-basis-contract.md)
-
-Mode: `INLINE`
-
-Principles:
-
-- model semantic responsibility, not nouns/tables/classes by name alone;
-- ask what identity/state/invariants must remain correct together;
-- distinguish invariants from configurable/current policy;
-- distinguish Domain-owned behavior from application/external/presentation/shared coordination;
-- DDD patterns are candidate reasoning aids, not mandatory result shapes;
-- implementation-native code/types/tests may be the best durable Domain representation.
-
-Reusable detailed evaluation knowledge belongs to
-[`LENS-DOMAIN-MODELING-DDD`](../lenses/reusable/LENS-DOMAIN-MODELING-DDD.md).
-
-## Question Set Examples — Non-Exhaustive
-
-```text
-What has stable semantic identity?
-Which state/condition dimensions matter?
-Which combinations are valid or impossible?
-Which rules are invariants vs policies?
-Which transitions/lifecycle changes are meaningful?
-What must remain correct/consistent together?
-Which Aggregate/root boundary is justified, if any?
-Which behavior belongs to the Domain vs application/external coordination?
-Which semantic/public Domain operations are useful?
-Which Scenarios/Slices use this meaning?
-Is a distinct Domain model/owner useful at all?
-```
+Do not create Domain discovery merely because implementation contains data or classes.
 
 ## Lens Profile
 
-Required Core Pack applies.
+Required primary lens: `LENS-DOMAIN-MODELING-DDD`.
 
-Primary:
-- [`LENS-DOMAIN-MODELING-DDD`](../lenses/reusable/LENS-DOMAIN-MODELING-DDD.md)
+Compose with Evolution, Implementation Requirements Discovery or other thematic Lenses when those concerns are material; use selected [`RG-PRG-*`](../shared/programming-principles/README.md) knowledge through the natural evaluator rather than a Programming Principles Lens.
 
-Conditional:
-- [`LENS-DEPENDENCY-CHANGE-IMPACT`](../../../idtspe-core/lenses/frequent/LENS-DEPENDENCY-CHANGE-IMPACT.md)
-- [`LENS-WORKSPACE-EVOLUTION-ARCHITECTURE`](../lenses/frequent/LENS-WORKSPACE-EVOLUTION-ARCHITECTURE.md) — semantic role: Evolution / Change Isolation
-- [`LENS-SIMPLICITY-IMPLEMENTATION-ECONOMY`](../lenses/frequent/LENS-SIMPLICITY-IMPLEMENTATION-ECONOMY.md)
-- [`LENS-VERIFIABILITY-OBSERVABILITY-OPERABILITY`](../../../idtspe-core/lenses/frequent/LENS-VERIFIABILITY-OBSERVABILITY-OPERABILITY.md)
-- [`LENS-QUALITY-RISK-MATERIALITY`](../../../idtspe-core/lenses/frequent/LENS-QUALITY-RISK-MATERIALITY.md)
-
-## Resolution / Production Method
-
-Use only the modeling depth needed.
-
-Reusable production path:
+## Production Method
 
 ```text
-behavior/DATA/must-hold Evidence
-→ candidate identity
-→ material state/condition dimensions
-→ state/condition matrix when useful
-→ valid/impossible combinations
-→ invariants/policies
-→ transitions/lifecycle
-→ what must remain consistent together
-→ Aggregate/root boundary
-→ Domain-owned vs application/external coordination
-→ useful semantic/public operations
-→ simplicity challenge
-→ selected sparse model
+material semantic ownership question
+→ classify Domain vs orchestration/infrastructure
+→ discover identity/state/lifecycle/consistency
+→ sketch candidate realization concretely enough to test the model
+→ define Domain unit proof candidates
+→ inspect known Evolution / OPEN pressure
+→ proposal to zero/one/several durable natural owners
+→ discard working discovery by default after selected meaning is materialized
 ```
 
-Concrete Questions, Ideas, Q/R/P, Decisions and Evidence remain Core State.
-Individual alternatives stay Ideas/Branches until selected.
-
-Supporting use projects only enough selected modeling meaning back to the host
-Target; it does not force a separate child Target or file.
+Discovery may loop with Slice Discovery. Neither is a mandatory stage before the other.
 
 ## Target Step-Result Contract
 
-**Target Step Result:** `Domain / Aggregate Modeling Result`
+**Target Step Result:** `Domain Discovery Working Plan`
 
-### RU-DOM-01 — Selected Domain / Aggregate Model
+| Result Unit | Meaning |
+|---|---|
+| `RU-DOM-01` | Ownership / Classification |
+| `RU-DOM-02` | Semantic State / Lifecycle / Consistency |
+| `RU-DOM-03` | Candidate Realization + Domain Unit Proof |
+| `RU-DOM-04` | Evolution / OPEN Domain Pressure |
 
-Sparse/proportional meaning may include:
+### Result Unit Applicability / Materiality
+
+Declared Result Units are a possible semantic surface, not a mandatory form. Apply the Core [`Unit Applicability / Materiality / Omission Contract`](../../../idtspe-core/shared/idtspe-unit-and-target-step-result-model.md#5a-unit-applicability--materiality--omission-contract).
+
+| Result Unit | Make explicit when | Omit / keep sparse when |
+|---|---|---|
+| `RU-DOM-01` | when semantic ownership/classification is uncertain enough to justify bounded Domain discovery | omit the entire discovery Target when shallow Lens reasoning is sufficient |
+| `RU-DOM-02` | when state/lifecycle/invariant/consistency meaning affects owner selection or correctness | omit categories that have no selected semantic pressure |
+| `RU-DOM-03` | when concrete candidate realization/proof helps discriminate Domain alternatives | omit implementation-shaped detail when semantic ownership can be resolved without it |
+| `RU-DOM-04` | when selected Evolution or unresolved Domain pressure can change the current candidate | omit speculative future pressure and already-resolved questions |
+
+Do not create `N/A` placeholders. Re-evaluate a previously omitted Unit only when its trigger/materiality changes.
+
+### RU-DOM-01 — Ownership / Classification
+
+Capture candidate semantic owners and classification decisions proportionally:
+
+- what is Domain meaning vs application orchestration/infrastructure;
+- candidate Entity/Value Object/Aggregate/Domain Service/Policy responsibilities;
+- one coherent ownership/consistency boundary vs several owners;
+- explicit `no Domain owner` outcome when correct.
+
+### RU-DOM-02 — Semantic State / Lifecycle / Consistency
+
+Explore:
+
+- identity and equality semantics;
+- states and valid transitions;
+- invariants / immediate vs eventual consistency;
+- semantic operations;
+- failure/result semantics when material;
+- persistence/concurrency semantics only to the degree they affect Domain meaning.
+
+### RU-DOM-03 — Candidate Realization + Domain Unit Proof
+
+Working detail may include:
 
 ```text
-Domain/Aggregate identity / purpose / boundary
-stable semantic concepts/relationships
-identity/lifecycle/state meaning
-state/condition matrix conclusions when material
-impossible states/combinations
-invariants/policies
-Value semantics
-Aggregate/root/consistency boundary
-Domain-owned semantic/public operations
-external/application coordination boundary
-Scenario/Slice use relations
-verification meaning when non-trivial
-rejected premature generalizations when useful
-explicit no-distinct-Domain result
+candidate types/classes
+methods / signatures
+state representation
+repository/persistence seam
+atomicity/concurrency mechanism candidate
+literal unit-test cases and expected semantic result
+alternatives / trade-offs
 ```
 
-The RU stores selected target-specific meaning. It does not reproduce the generic
-Question/Idea/Decision history used to resolve it.
+These details are not durable authority merely because they were useful during discovery.
 
-In supporting/shallow mode only the relevant subset is projected, for example a
-candidate Aggregate + semantic behavior/rule/action needed by a Slice.
+### RU-DOM-04 — Evolution / OPEN Domain Pressure
+
+Record known Step pressure, unresolved ownership/model questions and which future evidence could discriminate alternatives. Do not turn hypothetical future change into current implementation requirements.
+
+## Upstream Source Contract
+
+Use proportionally:
+- selected Feature behavior / `BR-*`;
+- Scenario journey constraints only where Domain meaning depends on them;
+- Feature Implementation Concerns;
+- current Slice discovery/owner question;
+- current implementation/types/tests/Evidence;
+- known selected Evolution Steps;
+- accepted Proposal/Decision context.
+
+Source Discovery is evidence-driven. Do not build a global Domain model merely because source exists.
+
+## Knowledge Basis
+
+Primary reusable guidance is owned by `LENS-DOMAIN-MODELING-DDD` and the reusable DDD guidance corpus. The Target does not duplicate the full DDD question catalog.
 
 ## Representation / Artifact Contract
 
-Accepted Domain meaning must be recoverable/durable enough for downstream work,
-but that does **not** imply a Domain Markdown file.
-
-Default durable representation after implementation may be:
+Working Domain Discovery is transient/non-persistent by default.
 
 ```text
-code / types / executable invariants / tests
+working discovery
+→ zero owners: discard after result is clear
+→ one/several durable owners: move selected durable semantic meaning into TM-DOMAIN-OWNER
+→ exact literal realization: Core Exact/code/tests
 ```
 
-A human-readable Domain artifact is optional and justified only by independent
-review/reuse/complexity pressure.
-
-```text
-ARTIFACT_PROPOSAL
-ID: AP-DOM-01
-CONTENT_KIND: DOMAIN_MODELING_RESULT
-WHEN: selected non-code Domain meaning has independent continuing review/reuse value
-GUIDANCE: OPTIONAL
-PERSISTENCE_GUIDANCE: OPTIONAL
-PLACEMENT_DIRECTIVE: PLACE_OR_NONE
-SEMANTIC_OWNER: current Domain Modeling Target / natural implementation owner
-REPRESENTATION: IMPLEMENTATION_NATIVE_OR_EXISTING_OWNER_OR_DEDICATED_ARTIFACT
-FILE_OR_ARTIFACT: implementation code/types/tests and/or <domain-model-owner>
-CONTENT: only selected semantic meaning not adequately represented implementation-natively
-GUIDANCE_SOURCE: TARGET_MODULE
-RESOLVER: P-14 / TF-10
-```
-
-Do not create a `.evolution.md` Domain companion by default. Future Domain pressure
-is derived from Slices using the object and their owner-local Evolution Steps.
+Persistence of the working plan for handoff/review does not make it Domain authority.
 
 ## Domain Evolution Query
 
-```text
-Strategy RU-SSTRAT-02
-→ find Slices that use the affected Domain object
-→ inspect those Slice Evolution Steps
-→ apply L5 Evolution / Change Isolation for cross-Slice interaction
-```
+Use `RU-DOM-04` for current discovery pressure such as:
+- which known Step changes identity/state/invariant/lifecycle/ownership;
+- whether current candidate boundary would force avoidable migration;
+- what remains OPEN.
 
-A separate canonical Domain evolution map is not required.
-
-## Handoff
-
-- supporting Strategy use → return only the required shallow model;
-- deep selected Domain meaning → `TM-IMPLEMENTATION-SLICE` / consumers;
-- literal code/types/tests → Core `TM-EXACT-REALIZATION`;
-- independently non-trivial proof design → optional `TM-TEST-DESIGN`.
+Selected future target meaning itself belongs to `TM-EVOLUTION-STEP`. The Evolution Lens evaluates change isolation.
 
 ## Validators
 
 ```text
-model traces to accepted behavior/DATA/must-hold meaning
-identity/state/invariant claims have evidence/rationale
-Aggregate boundary follows consistency meaning, not naming convention
-application/external coordination is not silently absorbed into Domain
-no-Domain result remains valid
-selected result is proportional
-representation does not create a stale shadow of current code
+Domain vs orchestration/infrastructure ownership is explicit
+zero/one/several durable owner outcome is allowed
+identity/equality/state/lifecycle/invariant/consistency meaning is coherent
+persistence/concurrency details are included only where semantic or useful to candidate realization
+candidate realization is concrete enough to test the model
+Domain unit proof targets semantic rules rather than private structure
+durable IR/PFR candidates are routed to natural durable owner
+working plan is not retained as competing durable authority
+```
+
+## Handoff / Revalidation
+
+```text
+selected Domain meaning
+→ TM-DOMAIN-OWNER when durable ownership exists
+→ TM-IMPLEMENTATION-SLICE / TM-SLICE-OWNER as consumer context
+→ Core Exact for literal realization
+
+Domain discovery contradicts Feature/Slice/Shared assumptions
+→ Finding → natural upstream owner revalidation
+```
+
+## Durable Handoff
+
+```text
+selected durable semantic contract
+→ TM-DOMAIN-OWNER / RU-DOWN-01
+
+selected durable owner-local implementation constraint
+→ TM-DOMAIN-OWNER / RU-DOWN-02
+
+unselected/uncertain candidate
+→ Proposal / Finding / OPEN as appropriate
+```
+
+The discovery plan is normally disposable after the durable owner/code/tests carry current authority.
+
+## Guards
+
+```text
+Domain Discovery ≠ durable Domain owner
+Domain Discovery ≠ one Target per Aggregate
+candidate type/method ≠ accepted implementation
+working test candidate ≠ Requirement authority
+no Domain owner is a valid result
+zero/one/many durable Domain owners may follow
 ```

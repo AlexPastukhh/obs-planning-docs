@@ -1,7 +1,7 @@
 # Plan Cross-cutting Responsibility
 
-Status: active project command definition
-Scope: one concrete OBS Planning command route. Reusable behavior remains in linked owner files.
+Status: legacy compatibility command definition
+Scope: historical invocation alias redirected to current IDTSPE/SDS authority; hidden from the primary palette.
 
 [PLANNING_COMMAND_DEFINITION]
 {
@@ -13,27 +13,28 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
   "commandFamily": [
     "спланируй сквозную ответственность"
   ],
-  "description": "cross cutting concern",
-  "meaning": "Run TM-CROSS-CUTTING-CONCERN through the IDTSPE Shell for the selected target.",
-  "activeContextBehavior": "Resolve or reuse the natural current IDTSPE Target/context; infer CREATE/REFINE/EXTEND/REVALIDATE/REPAIR from current state. Do not create a fake Target when the module/lens gate fails.",
+  "description": "legacy compatibility alias for Shared Implementation Capability / sharedness evaluation",
+  "meaning": "Legacy alias for current shared/cross-cutting planning. Route genuine reusable multi-consumer implementation responsibility to TM-SHARED-IMPLEMENTATION-CAPABILITY after its existence gate; otherwise keep the concern in its natural owner and use the Core Shared/Cross-Cutting Lens when evaluation is useful. TM-CROSS-CUTTING-CONCERN is retired.",
+  "activeContextBehavior": "Treat this legacy trigger as explicit compatibility intent inside always-active IDTSPE. Re-evaluate current Use-Case composition and route only to the current owners listed here; preserve local applicability/materiality gates and do not revive the retired Target family.",
   "traversalReadMode": "Reuse current reliable IDTSPE/SDS governance; targeted refresh of the selected owner route when uncertain; full bootstrap only when no reliable sufficient governance context exists.",
   "ownerFiles": [
-    "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-CROSS-CUTTING-CONCERN.md",
+    "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-SHARED-IMPLEMENTATION-CAPABILITY.md",
+    "planning/documentation/idtspe-methodology/active/idtspe-core/lenses/reusable/LENS-SHARED-CROSS-CUTTING-RESPONSIBILITY.md",
     "planning/documentation/idtspe-methodology/active/profiles/sds/shared/idtspe-command-surface-contract.md"
   ],
-  "expectedOutput": "Cross-Cutting owner/consumer obligations when justified, otherwise a local/reuse route; distinct from Q/R/P Concern groups.",
+  "expectedOutput": "A current Shared Capability result only when genuine shared-consumer pressure justifies it; otherwise a natural-owner/local result. No retired Cross-Cutting Target is created.",
   "permissionMode": "read-only-planning",
   "keyReminders": [
-    "SDS is an IDTSPE profile, not a second runtime.",
-    "AI proposals are Ideas by default; they become Decisions only when actually selected.",
-    "Do not infer a dedicated file from Target identity; use Documentation / Representation and P-14 when persistence is material.",
-    "This command plans/reviews only; it does not edit repository files, implement, test, commit or push."
+    "Legacy compatibility alias only; do not expose as a primary methodology surface.",
+    "The historical Target family named by this command is retired and must not be recreated by invocation.",
+    "Current Use Cases compose methodology use; current owner/Lens/Target contracts decide specialized work and materiality.",
+    "This command is read-only planning/review and grants no implementation, test execution, repository mutation, commit or push permission."
   ],
   "userTarget": "<one shared non-vertical responsibility>",
-  "palette": true,
+  "palette": false,
   "helperPresentation": {
-    "whenToUse": "Use when a genuine shared implementation responsibility spans consumers and should not be duplicated locally.",
-    "whatYouGet": "Cross-Cutting owner/consumer obligations when justified, otherwise a local/reuse route; distinct from Q/R/P Concern groups.",
+    "whenToUse": "Only when using this historical command phrase/automation; prefer the current semantic owner or generic `idtspe` component dispatch for new work.",
+    "whatYouGet": "A current Shared Capability result only when genuine shared-consumer pressure justifies it; otherwise a natural-owner/local result. No retired Cross-Cutting Target is created.",
     "navigation": {
       "viewId": "SDS",
       "viewLabel": "SDS — IDTSPE Profile",
@@ -53,7 +54,7 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
     "methodologyRuntime": "IDTSPE",
     "profile": "SDS",
     "surfaceKind": "TARGET_MODULE",
-    "targetModuleId": "TM-CROSS-CUTTING-CONCERN",
+    "targetModuleId": "TM-SHARED-IMPLEMENTATION-CAPABILITY",
     "lensId": null,
     "parentSurface": null,
     "hostTargetPolicy": "CREATE_OR_REUSE_TARGET"

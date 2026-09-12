@@ -11,6 +11,7 @@ const outputPath=path.resolve(moduleRoot,'..','chat-command-palette.user.js');
 const seedDir=path.join(moduleRoot,'seed');
 const commandSeedPath=path.join(seedDir,'commands.json');
 const useCaseSeedPath=path.join(seedDir,'use-cases.json');
+const useCaseRegistryMapPath='planning/documentation/use-case-registry-map.md';
 const check=process.argv.includes('--check');
 const codec=require('./src/command-definition-codec.js');
 const catalog=require('./src/command-catalog.js');
@@ -25,7 +26,6 @@ function readCommands(){
   for(const definition of definitions)for(const owner of catalog.commandReferencePaths(definition))if(!fs.existsSync(path.join(repoRoot,owner)))throw new Error(`Missing owner/refinement path for ${definition.id}: ${owner}`);
   return definitions.map(catalog.stripRuntimeCommandMetadata);
 }
-function walk(dir,result=[]){for(const entry of fs.readdirSync(dir,{withFileTypes:true})){const p=path.join(dir,entry.name);if(entry.isDirectory())walk(p,result);else if(entry.isFile()&&entry.name.toLowerCase()==='use-case-registry.md')result.push(p);}return result;}
 function splitRow(line){return line.trim().replace(/^\|/,'').replace(/\|$/,'').split('|').map((v)=>v.trim());}
 function cleanCell(v){return String(v||'').replace(/`/g,'').trim();}
 function plainCell(v){return cleanCell(String(v||'').replace(/\[([^\]]+)\]\([^)]+\)/g,'$1'));}
@@ -39,27 +39,38 @@ function projectedItem(raw,rel,commands){
   const label=plainCell(raw.name||raw['use case']);if(!label)return null;
   const ownerCell=raw.owner||raw['owner / current route']||raw['owner route']||raw['main owner']||'',ownerInfo=readUseCaseOwner(rel,ownerCell);
   const purpose=cleanCell(raw.purpose),trigger=compactMarkdown(raw['trigger / input']||raw['trigger / accepted input'])||ownerInfo?.situation||'',result=compactMarkdown(raw['result / end state']||raw.result)||ownerInfo?.result||'';
-  const owner=ownerInfo?.path||plainCell(ownerCell),related=raw['related command']||'',commandId=commandIdForCell(related,commands),instruction=`Resolve ${id} in the current canonical registry and follow its current owner route${owner?` (${owner})`:''}. Preserve its boundaries and permission model; this Helper projection is invocation/navigation only.`;
-  const item={id,label,description:purpose||result||label,sources:[rel],instruction,target:`<${label} target>`,manualInvocation:true,trigger,result};if(commandId)item.commandId=commandId;return semantic.normalizeUseCaseDefinition(item);
+  const owner=ownerInfo?.path||plainCell(ownerCell),related=raw['related command']||'',commandId=commandIdForCell(related,commands);
+  const item={id,label,description:purpose||result||label,sources:[useCaseRegistryMapPath,rel],instruction:`Resolve ${id} through ${useCaseRegistryMapPath}, then the mapped scoped registry and current owner route${owner?` (${owner})`:''}. Preserve its methodology-use boundary and permission model; this Helper projection is invocation/navigation only.`,target:`<${label} target>`,manualInvocation:true,trigger,result};if(commandId)item.commandId=commandId;return semantic.normalizeUseCaseDefinition(item);
+}
+function readMappedUseCaseRegistryPaths(){
+  const mapAbs=path.join(repoRoot,useCaseRegistryMapPath);if(!fs.existsSync(mapAbs))throw new Error(`Missing methodology Use-Case Registry Map: ${useCaseRegistryMapPath}`);
+  const lines=fs.readFileSync(mapAbs,'utf8').split(/\r?\n/);let inRegistryMap=false;const out=[];
+  for(const line of lines){
+    if(/^##\s+Registry Map\s*$/i.test(line.trim())){inRegistryMap=true;continue;}
+    if(inRegistryMap&&/^##\s+/.test(line.trim()))break;
+    if(!inRegistryMap)continue;
+    for(const target of markdownLinkTargets(line)){const rel=resolveRegistryTarget(useCaseRegistryMapPath,target);if(!rel||!rel.toLowerCase().endsWith('.md'))continue;if(!fs.existsSync(path.join(repoRoot,rel)))throw new Error(`Mapped Use-Case Registry is missing: ${rel}`);if(!out.includes(rel))out.push(rel);}
+  }
+  if(!out.length)throw new Error(`No scoped Use-Case registries mapped by ${useCaseRegistryMapPath}`);return out;
 }
 function readCanonicalUseCases(commands){
-  const byId=new Map(),rootRegistry='planning/use-case-registry.md';
-  function add(item,rel){if(!item)return;const previous=byId.get(item.id);if(!previous){byId.set(item.id,{item,rel});return;}const same=previous.item.label===item.label&&previous.item.trigger===item.trigger&&previous.item.result===item.result;if(!same)throw new Error(`Conflicting canonical Use-Case ${item.id} discovered in ${previous.rel} and ${rel}.`);if(previous.rel===rootRegistry&&rel!==rootRegistry)byId.set(item.id,{item,rel});else if(previous.rel!==rootRegistry&&rel!==rootRegistry&&previous.rel!==rel)throw new Error(`Duplicate non-root canonical Use-Case ${item.id} discovered in ${previous.rel} and ${rel}.`);}
-  for(const file of walk(path.join(repoRoot,'planning')).sort()){
-    const rel=path.relative(repoRoot,file).replaceAll(path.sep,'/'),lines=fs.readFileSync(file,'utf8').split(/\r?\n/),status=cleanCell(lines.find((line)=>/^Status:/i.test(line))||'').toLowerCase();if(status.includes('legacy')||status.includes('historical')||status.includes('compatibility'))continue;let headers=null;
+  const byId=new Map();
+  function add(item,rel){if(!item)return;const previous=byId.get(item.id);if(previous)throw new Error(`Duplicate mapped Use-Case ${item.id} discovered in ${previous.rel} and ${rel}.`);byId.set(item.id,{item,rel});}
+  for(const rel of readMappedUseCaseRegistryPaths()){
+    const file=path.join(repoRoot,rel),lines=fs.readFileSync(file,'utf8').split(/\r?\n/),status=cleanCell(lines.find((line)=>/^Status:/i.test(line))||'').toLowerCase();if(status.includes('legacy')||status.includes('historical')||status.includes('compatibility'))throw new Error(`Registry Map points to non-current Use-Case registry: ${rel}`);let headers=null;
     for(const line of lines){if(/^\|\s*ID\s*\|/i.test(line)){headers=splitRow(line).map((x)=>cleanCell(x).toLowerCase());continue;}if(!headers||!/^\|\s*`UC-[A-Z0-9-]+`\s*\|/.test(line))continue;const cells=splitRow(line),row={};headers.forEach((h,i)=>row[h]=cells[i]||'');add(projectedItem(row,rel,commands),rel);}
     let section=null;const flush=()=>{if(section){add(projectedItem(section,rel,commands),rel);section=null;}};
     for(const line of lines){const h=line.match(/^##\s+`(UC-[A-Z0-9-]+)`\s+—\s+(.+)$/);if(h){flush();section={id:h[1],name:h[2]};continue;}if(!section)continue;const field=line.match(/^\*\*([^*]+):\*\*\s*(.*)$/);if(field)section[cleanCell(field[1]).toLowerCase()]=field[2];}
     flush();
   }
-  const definitions=semantic.normalizeUseCaseDefinitions([...byId.values()].map((entry)=>entry.item));if(!definitions.length)throw new Error('No canonical Use Cases discovered.');return definitions.sort((a,b)=>a.id.localeCompare(b.id));
+  const definitions=semantic.normalizeUseCaseDefinitions([...byId.values()].map((entry)=>entry.item));if(!definitions.length)throw new Error('No mapped methodology Use Cases discovered.');return definitions.sort((a,b)=>a.id.localeCompare(b.id));
 }
-function seedText(kind,items){const generatedFrom=kind==='planning-command-seed'?'planning/commands/*.command.md':'all current canonical Use-Case registries under planning/** (case-insensitive filename; legacy/historical compatibility indexes excluded; root aggregation may repeat scoped entries)';return JSON.stringify({schemaVersion:1,kind,generatedFrom,items},null,2)+'\n';}
+function seedText(kind,items){const generatedFrom=kind==='planning-command-seed'?'planning/commands/*.command.md':`${useCaseRegistryMapPath} -> mapped current scoped methodology Use-Case registries only`;return JSON.stringify({schemaVersion:1,kind,generatedFrom,items},null,2)+'\n';}
 function ensureSeed(pathname,expected){if(check){const actual=fs.existsSync(pathname)?fs.readFileSync(pathname,'utf8'):'';if(actual!==expected)throw new Error(`Generated seed catalog is stale: ${path.relative(repoRoot,pathname)}`);return;}fs.mkdirSync(path.dirname(pathname),{recursive:true});fs.writeFileSync(pathname,expected,'utf8');}
 function build(){
   const definitions=readCommands(),useCases=readCanonicalUseCases(definitions);
   ensureSeed(commandSeedPath,seedText('planning-command-seed',definitions));ensureSeed(useCaseSeedPath,seedText('use-case-seed',useCases));
-  const header=`// ==UserScript==\n// @name         Reusable Chat Planning Helper\n// @namespace    https://github.com/AlexPastukhh/obs/reusable-docs\n// @version      ${pkg.version}-repository-command-registry\n// @description  RAM-first OBS Planning Helper with GitHub-backed Commands, Use Cases, prompts and explicit repository actions.\n// @author       Reusable docs layer\n// @match        https://chatgpt.com/*\n// @match        https://chat.openai.com/*\n// @run-at       document-idle\n// @grant        GM_getValue\n// @grant        GM_setValue\n// @grant        GM_xmlhttpRequest\n// @connect      api.github.com\n// ==/UserScript==\n\n// GENERATED FILE — DO NOT EDIT MANUALLY.\n// Runtime source: planning/documentation/tools/tampermonkey/chat-command-palette/src/**\n// GitHub command authority: planning/commands/*.command.md\n// GitHub Use-Case authority: current canonical Use-Case registries under planning/** (case-insensitive filename; legacy/historical compatibility indexes excluded).\n// seed/use-cases.json is the build-verified GitHub-backed Use-Case projection used for explicit Hard Reload.\n// GitHub UI-order source: planning/documentation/tools/tampermonkey/chat-command-palette/catalog-order.json\n// Local snapshot is the working cache; current Command/Use-Case catalogs are not embedded in this userscript.\n// Build: node planning/documentation/tools/tampermonkey/chat-command-palette/build-chat-command-palette.mjs\n\n`;
+  const header=`// ==UserScript==\n// @name         Reusable Chat Planning Helper\n// @namespace    https://github.com/AlexPastukhh/obs/reusable-docs\n// @version      ${pkg.version}-repository-command-registry\n// @description  RAM-first OBS Planning Helper with GitHub-backed Commands, Use Cases, prompts and explicit repository actions.\n// @author       Reusable docs layer\n// @match        https://chatgpt.com/*\n// @match        https://chat.openai.com/*\n// @run-at       document-idle\n// @grant        GM_getValue\n// @grant        GM_setValue\n// @grant        GM_xmlhttpRequest\n// @connect      api.github.com\n// ==/UserScript==\n\n// GENERATED FILE — DO NOT EDIT MANUALLY.\n// Runtime source: planning/documentation/tools/tampermonkey/chat-command-palette/src/**\n// GitHub command authority: planning/commands/*.command.md\n// GitHub Use-Case projection root: planning/documentation/use-case-registry-map.md -> mapped current scoped methodology Use-Case registries only.\n// seed/use-cases.json is the build-verified GitHub-backed Use-Case projection used for explicit Hard Reload.\n// GitHub UI-order source: planning/documentation/tools/tampermonkey/chat-command-palette/catalog-order.json\n// Local snapshot is the working cache; current Command/Use-Case catalogs are not embedded in this userscript.\n// Build: node planning/documentation/tools/tampermonkey/chat-command-palette/build-chat-command-palette.mjs\n\n`;
   const modules=sourceFiles.map((relative)=>fs.readFileSync(path.join(moduleRoot,relative),'utf8').trimEnd()).join('\n\n');
   const bootstrap=`\n\n(function(){\n  'use strict';\n  const api=globalThis.ObsPlanningHelper;if(!api||typeof api.startPlanningHelper!=='function')throw new Error('OBS Planning Helper runtime was not built correctly.');api.startPlanningHelper().catch((error)=>console.error('[OBS Planning Helper startup]',error));\n})();\n`;
   return header+modules+bootstrap;

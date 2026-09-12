@@ -40,7 +40,7 @@ Integration Checkpoint
 → if existing placement is simply inherited/unchanged, a compact unchanged/inherited statement is enough
 ```
 
-Logical/semantic retention of a Decision/Idea/Result Unit does not by itself create a file. Documentation / Representation + P-14 remain the physical representation boundary.
+Logical/semantic retention of a Decision/Proposal/Result Unit does not by itself create a file. Formal Proposal is Core candidate State; any `ARTIFACT_PROPOSAL` placement guidance is a separate representation concern. Documentation / Representation + P-14 remain the physical representation boundary.
 
 ## 2. Semantic Owner vs Artifact Owner
 
@@ -60,11 +60,14 @@ Projection
 Examples:
 
 ```text
-SCN-CAPTURE
-  semantic owner of Scenario DATA/Behavior
+FEAT-CAPTURE
+  semantic owner of capture Feature behavior / semantic data
 
-scenarios/SCN-CAPTURE.md
+features/FEAT-CAPTURE.md
   possible artifact owner containing that meaning
+
+SCN-CAPTURE
+  semantic owner of capture journey composition
 
 scenario-registry.md
   navigation projection/register unless explicitly selected otherwise
@@ -194,7 +197,7 @@ Target Step Result Unit
 → target-specific result meaning
 
 IDTSPE State Unit
-→ Question / Idea / Q/R/P / Decision / Evidence / Revalidation state
+→ Question / Proposal / Q/R/P / Decision / Evidence / Revalidation state
   when that planning state materially needs to survive
 ```
 
@@ -207,7 +210,7 @@ Result Unit: Integration Path
 Decision: selected orchestration owner
 → persist only when rationale/revalidation value is material
 
-rejected Idea
+rejected Proposal
 → EPHEMERAL
 
 Evidence record supporting an accepted Decision
@@ -412,7 +415,7 @@ When a full Integration Checkpoint or persistence-sensitive structured pass is b
 ```text
 1. optional Broad Discussion Summary / material explanatory Key Points
 2. Current Target / Scope / Sources + current Target Goal / Desired Outcome context
-3. coherent material Generic State through existing Core kinds, including explicit Idea → Target Goal/Question/Problem `Addresses` relations and unresolved alternatives
+3. coherent material Generic State through existing Core kinds, including explicit Proposal → Target Goal/Question/Problem `Addresses` relations and unresolved alternatives
 4. accepted Decisions + optional rationale/alternative-retention choices when material
 5. Target Step Result — applicable current Result Units
 6. relevant Lens/consistency review + material Finding Candidates/disposition consequences
@@ -421,7 +424,7 @@ When a full Integration Checkpoint or persistence-sensitive structured pass is b
 9. Residual Q/R/P / revalidation signals
 ```
 
-The exact prose format can vary. Broad Discussion turns are exempt from the full checkpoint view; material Key Points remain proportional review structure, but no block-owner or per-response Intake Summary is mandatory. A checkpoint Broad Discussion Summary is optional retrospective prose and must not substitute for structured material Ideas/relations. In a checkpoint, do not confuse semantic retention with physical placement: show an Artifact Placement View when placement is material/changed/unresolved; when existing placement is inherited and no physical change is under consideration, a compact `placement unchanged/inherited` statement is sufficient.
+The exact prose format can vary. Broad Discussion turns are exempt from the full checkpoint view; material Key Points remain proportional review structure, but no block-owner or per-response Intake Summary is mandatory. A checkpoint Broad Discussion Summary is optional retrospective prose and must not substitute for structured material Proposals/relations. In a checkpoint, do not confuse semantic retention with physical placement: show an Artifact Placement View when placement is material/changed/unresolved; when existing placement is inherited and no physical change is under consideration, a compact `placement unchanged/inherited` statement is sufficient.
 
 ## 6. Artifact Placement View — Compact Rendering
 
@@ -429,8 +432,8 @@ Recommended compact table:
 
 | Content | Placement status | Semantic owner | Persistence | Representation / destination | Action | Guidance source(s) | Why / unresolved |
 |---|---|---|---|---|---|---|---|
-| Scenario DATA + Behavior | RESOLVED | `SCN-CAPTURE` | REQUIRED | embed in `<scenario-owner-artifact>` | UPDATE | `AP-SCN-02` | Scenario owns them internally |
-| Screen/window Idea | UNRESOLVED_PLACEMENT | UNRESOLVED_OWNER | PREFERRED | existing Generic Idea State/register or `NONE` when ephemeral | UNRESOLVED | `AP-SCN-03` | unselected Idea; no mandatory global idea tree |
+| Feature semantic data + behavior | RESOLVED | `FEAT-CAPTURE` | REQUIRED | embed in `<feature-owner-artifact>` | UPDATE | Feature owner | Feature owns behavior/data |
+| Screen/window Proposal | UNRESOLVED_PLACEMENT | UNRESOLVED_OWNER | PREFERRED | existing Generic Proposal State representation or `NONE` when ephemeral | UNRESOLVED | `AP-SCN-03` | unselected Proposal; no mandatory global Proposal tree |
 | Offline Slice evolution path | RESOLVED | `SL-CAP-01` owner-local evolution meaning | PREFERRED | embedded Slice owner or `<slice-owner>.evolution.md` | UNRESOLVED | Slice owner + Documentation / Representation | split only if representation pressure is material |
 | Benchmark scratch numbers | UNRESOLVED_PERSISTENCE | unresolved | UNRESOLVED | UNRESOLVED | NONE | `AG-L3-01` may flag Evidence value; no placement proposal yet | decide whether they become Decision Evidence |
 
@@ -519,28 +522,42 @@ Then Artifact Boundary/Addressability is an ordinary material Answer Decision in
 Situation:
 
 ```text
-SCN-CAPTURE is being drafted.
+SCN-CAPTURE is being drafted from selected Feature meaning.
 ```
 
 IDTSPE discovers:
 
 ```text
-Scenario DATA:
-  Selected Material
-  Source Context
+Feature FEAT-CAPTURE already owns:
+  semantic data: Selected Material / Source Context
+  behavior: accept capture / report durable success-failure
 
-Behavior:
-  accept capture
-  report durable success/failure
+Scenario SCN-CAPTURE owns:
+  actor/external participation
+  FEAT-CAPTURE invocation order
+  retry/re-entry branch
+  terminal Benefit closure
 
-Idea:
+Proposal:
   maybe use a floating capture window later
 ```
 
 Artifact Placement View:
 
 ```text
-Scenario DATA + Behavior
+Feature semantic data + behavior
+  Semantic Owner:
+    FEAT-CAPTURE
+  Persistence:
+    REQUIRED
+  Representation:
+    EMBED_CURRENT_OWNER
+  Destination:
+    <FEAT-CAPTURE canonical artifact>
+  Action:
+    UPDATE
+
+Scenario journey composition
   Semantic Owner:
     SCN-CAPTURE
   Persistence:
@@ -552,7 +569,7 @@ Scenario DATA + Behavior
   Action:
     UPDATE
 
-Floating-window Idea
+Floating-window Proposal
   Semantic Owner:
     UNRESOLVED_OWNER
   Persistence:
@@ -560,12 +577,12 @@ Floating-window Idea
   Representation:
     UNRESOLVED
   Destination:
-    existing Generic Idea State/register or NONE when ephemeral
+    existing Generic Proposal State representation or NONE when ephemeral
   Action:
     UNRESOLVED
 ```
 
-If the Idea is worth retaining, P-14 / TF-10 selects a proportionate Generic Idea representation without making it Screen authority or inventing a mandatory global register.
+If the Proposal is worth retaining, P-14 / TF-10 selects a proportionate Generic Proposal representation without making it Screen authority or inventing a mandatory global register.
 
 ## 11. High-Level Example — Unknown Placement
 

@@ -1,5 +1,8 @@
 # Solution And Scenario Planning Workflow
 
+> **Compatibility vocabulary boundary.** This supporting file preserves older application-planning discovery/workspace heuristics. Terms such as `Scenario DATA`, `Behavior Items`, standalone `Requirement`, or `Slice Strategy` below do not define current SDS owner identities. Current authority is the active SDS Target/Lens registries: Feature owns behavior/semantic data, Scenario owns actor-to-Benefit journey composition, requirements stay with natural Feature/Domain/Slice/Shared owners, and Slice Strategy is not an active Target family. Use older terms only as supporting heuristics where they do not conflict with current owners.
+
+
 Status: active reusable workflow
 Scope: repeated whole-solution planning and, when own Application responsibility exists, progressive Concept → Prototype → Scenario/Screen → optional Domain/Slice planning.
 

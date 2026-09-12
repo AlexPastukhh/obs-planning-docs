@@ -6,16 +6,16 @@ Status: active reusable nested responsibility map
 |---|---|
 | Core planning concepts/invariants | `application-planning-principles-and-terminology.md` |
 | Full Solution/Application SDS governance bootstrap + proportional command preflight refresh | `application-planning-governance-read-workflow.md` |
-| Repeated whole-solution → application behavior process | `solution-and-scenario-planning-workflow.md` |
-| Requirement / application change-context / early implementation-Idea semantics | `requirements-and-change-context.md` |
+| Older whole-solution / Scenario supporting heuristics | `solution-and-scenario-planning-workflow.md`; current behavior authority remains `TM-FEATURE`, current journey authority `TM-SCENARIO-PLANNING` |
+| Supporting requirement/change-context heuristics | `requirements-and-change-context.md`; durable requirements are owned by current Feature/Domain/Slice/Shared natural owners |
 | Generic Workspace Architecture Work-Cost / Workspace UC/WEUC / Change Pressure / Change Axis semantics | sibling `../architecture-planning/workspace-use-cases-and-change-pressure.md` + Architecture UCs |
-| Testing Strategy / Test Design / Practical Test Plan / Coverage semantics | sibling `../testing-planning/` owners |
+| Project-local proof coordination/design guidance | sibling `../testing-planning/` supporting owners; generic proof evaluation is Core `LENS-TEST-PROOF-EVIDENCE`, literal proof is Exact, real-subject Evidence may use `TM-PRACTICAL-TEST` |
 | Interaction/workflow Prototype planning | `prototype-planning-workflow.md` |
 | Shared detailed planning/workspace/Variant/draft-state/reference-candidate contract | `detailed-planning/README.md` |
 | Domain evidence/candidate discovery algorithm | `domain-discovery-workflow.md` |
 | Current Domain selection/review algorithm | `domain-planning-workflow.md` |
 | High-level application realization/stress algorithm | `application-realization-workflow.md` |
-| Slice Strategy + one-Slice planning algorithm | `slice-planning-workflow.md` |
+| Slice decomposition/order heuristics + one-Slice supporting workflow | `slice-planning-workflow.md`; no Slice Strategy Target; current Slice owner route is `TM-IMPLEMENTATION-SLICE` → optional `TM-SLICE-OWNER` |
 | Semantic planning Use Cases | `use-case-registry.md` |
 | Current reality recommended shape | `templates/CURRENT-WORKFLOW-AND-PROBLEM-ANALYSIS-DRAFT-TEMPLATE.md` |
 | Real-world / functional workflow recommended shape | `templates/FUNCTIONAL-WORKFLOW-DRAFT-TEMPLATE.md` |
@@ -24,7 +24,7 @@ Status: active reusable nested responsibility map
 | Detailed Scenario shape | `templates/SCENARIO-DRAFT-TEMPLATE.md` |
 | Screen spatial/visual shape | `templates/SCREEN-DRAFT-TEMPLATE.md` |
 | Optional human-readable Domain/Aggregate model shape | `templates/DOMAIN-DRAFT-TEMPLATE.md` (legacy filename; supporting only) |
-| Slice Strategy shape | `templates/SLICE-STRATEGY-DRAFT-TEMPLATE.md` |
+| Optional derived Slice coordination shape | `templates/SLICE-STRATEGY-DRAFT-TEMPLATE.md` (legacy filename; supporting/non-authoritative only) |
 | Optional human-readable Implementation Slice shape | `templates/IMPLEMENTATION-SLICE-DRAFT-TEMPLATE.md` (supporting; canonical TM owns semantics) |
 | Generic Planning Concern / Q/R/P / Concern Group / Decision trace semantics | parent `../planning-concerns-and-decisions-model.md` |
 | Generic Idea semantics/review | parent reusable Idea owners; Ideas reference shared Concerns rather than owning generic Q/R/P lifecycle |

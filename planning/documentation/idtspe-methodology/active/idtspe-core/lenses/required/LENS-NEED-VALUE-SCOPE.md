@@ -19,7 +19,7 @@ Trigger
 Need / Current Reality
 accepted upstream Decisions
 current Target/Scope
-candidate Target/RQ/Idea
+candidate Target/RQ/Proposal
 user-world result
 ```
 
@@ -50,10 +50,10 @@ Is it already answered by trusted Sources/Decisions?
 Is it implementation detail too early for this Target?
 ```
 
-## At Idea / Branch Evaluation
+## At Proposal / Branch Evaluation
 
 ```text
-What expected effect on the Need does this Idea produce?
+What expected effect on the Need does this Proposal produce?
 Is there a simpler/better route?
 Does it merely make implementation convenient?
 What opportunity cost/responsibility creep appears?
@@ -152,7 +152,7 @@ Need:
   user must be able to durably preserve selected material
 
 Repository:
-  only one possible implementation Idea
+  only one possible implementation Proposal
 ```
 
 The finding may therefore, after Core disposition/normal resolution, reframe the Target around the useful result or leave the repository as a later implementation Decision concern.

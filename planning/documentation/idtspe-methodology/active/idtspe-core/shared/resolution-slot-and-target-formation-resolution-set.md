@@ -206,7 +206,7 @@ Example:
 Question State Unit:
   Which service owns orchestration?
 
-Idea State Units:
+Proposal State Units:
   reuse ApplicationService
   add CaptureFacade
 
@@ -385,14 +385,14 @@ Rule:
   Lens Prompt is not automatically a user question.
 
 
-TF-07 IDEA_SPACE
+TF-07 PROPOSAL_SPACE
 
 Prompt:
-  Какие materially different Ideas / variants / routes
+  Какие materially different Proposals / variants / routes
   нужно рассмотреть для выбранных вопросов?
 
 Value:
-  sufficient candidate Idea space
+  sufficient candidate Proposal space
   + provenance
 
 
@@ -400,7 +400,7 @@ TF-08 BRANCH_POLICY
 
 Prompt:
   Достаточно ли сравнения на текущей глубине,
-  или нужно прожить одну/несколько Ideas downstream
+  или нужно прожить одну/несколько Proposals downstream
   через Planning Branch?
 
 Value:
@@ -486,7 +486,7 @@ Scope discovery
 → reveals missing Source
 → Source changes Target Type
 → new Target Type changes Question Set
-→ Idea reveals need for Branch
+→ Proposal reveals need for Branch
 → Branch reveals new Source
 → Handoff changes Scope
 ```
@@ -510,7 +510,7 @@ TF-04 Source Set changes materially
 → may reopen TF-06 Question Set
 → may reopen TF-06A Lens Set
 
-TF-07 Idea Space exposes two independent outputs
+TF-07 Proposal Space exposes two independent outputs
 → may reopen TF-02 Target Type/Form
 → split into sibling Targets
 
@@ -553,7 +553,7 @@ TF-06A LENS_SET
   ACCEPTED
   Core L1-L3 + profile Lenses; frequent gates resolved
 
-TF-07 IDEA_SPACE
+TF-07 PROPOSAL_SPACE
   ACTIVE
 
 TF-08 BRANCH_POLICY
@@ -599,7 +599,7 @@ Resolution Slot
 ---
 
 # 13. Relation To Lenses
-A Lens may surface Finding Candidates that help resolve ordinary slots, while `TF-06A LENS_SET` resolves **which Lens perspectives are active**. Core Finding Disposition determines whether a material finding becomes/refines Evidence, an Idea, Q/R/P, a Decision input, revalidation state or another owner.
+A Lens may surface Finding Candidates that help resolve ordinary slots, while `TF-06A LENS_SET` resolves **which Lens perspectives are active**. Core Finding Disposition determines whether a material finding becomes/refines Evidence, an Proposal, Q/R/P, a Decision input, revalidation state or another owner.
 
 ```text
 L1 Need / Value / Scope
@@ -673,8 +673,8 @@ Examples:
 User Authority Guard
   prevents AI from ACCEPTING a user-owned slot
 
-AI Idea Is Proposal Guard
-  prevents TF-07 Idea from becoming Decision silently
+AI Proposal Is Unselected Guard
+  prevents TF-07 Proposal from becoming Decision silently; lightweight AI Proposal likewise never implies selection
 
 Branch Non-Promotion Guard
   prevents branch-local slot values from becoming canonical
@@ -707,7 +707,7 @@ TF-03 TARGET_SCOPE
 TF-04 SOURCE_SET
 TF-06 QUESTION_SET
 TF-06A LENS_SET — when user explicitly requires/excludes a Lens perspective or supplies material applicability context
-TF-07 IDEA_SPACE
+TF-07 PROPOSAL_SPACE
 TF-08 BRANCH_POLICY
 ```
 
@@ -768,7 +768,7 @@ Target Formation uses one Resolution Set instead of duplicated check/decision me
 
 ```text
 Lens Set is a composition slot
-Lens output is a Finding Candidate; Core Finding Disposition may resolve it into Evidence / Idea / Q/R/P / Decision input / revalidation / another owner
+Lens output is a Finding Candidate; Core Finding Disposition may resolve it into Evidence / Proposal / Q/R/P / Decision input / revalidation / another owner
 Lens file is reusable methodology owner
 ```
 

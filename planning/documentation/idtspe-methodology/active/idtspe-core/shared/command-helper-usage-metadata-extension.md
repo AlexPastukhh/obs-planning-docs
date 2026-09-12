@@ -61,7 +61,7 @@ What situation makes this command the right next action?
 Good examples:
 
 ```text
-Use after one Domain owner is selected and you need its isolated business-rule proof plan before Slice Strategy.
+Use after one Domain owner is selected and its isolated business-rule proof needs focused planning before or alongside Slice/Exact realization.
 
 Use when a Slice semantic contract exists and you need to plan the integration proof of its orchestration, including a TDD-first route.
 
@@ -85,7 +85,7 @@ What concrete planning result / owner / decision state will exist after a succes
 Example:
 
 ```text
-A Test Design for the selected Domain owner: proof properties, default unit-test allocation, setup/action/assertions, escape/refactor risks and Artifact Placement / next-step guidance.
+Owner-local proof guidance for the selected Domain owner: proof properties, suitable proof layer, setup/action/assertions, escape/refactor risks and next methodology action; no standalone Test Design Target.
 ```
 
 This is intentionally shorter and more user-facing than the full `expectedOutput` contract.
@@ -223,13 +223,13 @@ Command:
   спланируй тесты домена <owner>
 
 Route:
-  TM-TEST-DESIGN
+  selected Domain owner + natural-owner proof planning; TM-EXACT-REALIZATION only when literal test realization is requested
 
 When To Use:
-  selected Domain owner has stable enough semantics and its isolated business/domain proof should be planned, normally before Slice Strategy.
+  selected Domain owner has stable enough semantics and its isolated domain proof needs focused planning/review.
 
 What You Get:
-  per-Domain Test Design with unit-test-oriented proof allocation, assertions/risks, placement and methodology next step.
+  owner-local proof intent/design guidance with unit-test-oriented proof allocation, assertions/risks and the next methodology action; no generic Test Design Target is implied.
 ```
 
 ## Implementation Extension Points

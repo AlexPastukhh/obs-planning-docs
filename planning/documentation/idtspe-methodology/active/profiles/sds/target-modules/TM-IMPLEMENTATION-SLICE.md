@@ -1,329 +1,201 @@
-# TM-IMPLEMENTATION-SLICE — One Vertical Implementation Slice
+# TM-IMPLEMENTATION-SLICE — Slice Discovery / Non-Persistent Slice Planning
 
-Entry Point: `tm.slice.plan`  
-Role: primary Target Module  
-Target form: one vertical Slice
+Entry Point: `tm.implementation_slice`  
+Role: transient whole-Slice implementation discovery Target Module
 
 ## Purpose
 
-Plan one independently useful/checkable implementation increment for exactly one
-Primary Scenario at enough semantic/realization depth to support exact
-implementation without maintaining a stale parallel code map.
+Produce a concrete working end-to-end realization plan for a selected Feature when detailed implementation discovery is useful.
 
-A Slice may require any technical responsibilities necessary for its useful
-result. Frontend/backend/server/Domain/persistence are not mandatory SDS Result
-Units and are not separate Slice identities by default.
+This Target is transient. It may contain concrete classes, methods, calls, signatures, adapters, persistence/external boundaries and literal integration-test candidates. Selected durable responsibility is later owned by `TM-SLICE-OWNER`; volatile class/call topology does not become durable owner truth by default.
 
-Application-development theory may be supplied through Knowledge Basis/Lenses when
-useful; the Target contract itself stays semantic.
+## Activation / Scope Gate
 
-## High-Level Example
+Use when Feature meaning is sufficiently selected but exact end-to-end realization is not yet clear enough for safe implementation/Exact work.
 
-```text
-SL-CANCEL-ORDER
-Primary Scenario: SCN-CANCEL-ORDER
-Useful result:
-  actor cancels a cancellable order and receives a truthful result
-```
-
-Possible selected meaning:
-
-```text
-Domain Elements Used:
-  Order
-    cancel(...)
-    canCancel(...)
-
-Cross-Cutting local obligation:
-  XC-AUDIT receives cancellation actor/context
-
-Runtime Path — only if material:
-  request → application coordination → Order cancellation → persistence/result
-
-Evolution Step:
-  Add cancellation reason categories
-  Slice Change: reason becomes required for selected categories
-  Domain Changes: Order cancellation semantics accept selected reason meaning
-  Implementation Outlook:
-    keep reason policy near cancellation behavior;
-    do not build a generic workflow engine.
-```
-
-No separate frontend/backend Slice is created.
-
-## Upstream Source Contract
-
-### Direct Semantic Sources
-
-```text
-selected Slice identity / Strategy meaning when present
-Primary Scenario
-Behavior Items + Scenario DATA
-must-hold / negative guarantees
-Screen meaning when UI/spatial obligations exist
-current/selected Domain meaning
-Cross-Cutting owners
-Scenario RU-SCEN-03 / Strategy May Change / planned Slice meaning
-```
-
-### Evidence / Current-State Sources
-
-```text
-current code / implementation
-current dependency/integration facts
-Prototype / Practical Evidence when relevant
-```
-
-### Planning-State Sources
-
-```text
-accepted Decisions
-material Q/R/P
-external/compatibility constraints
-quality/risk/proof constraints
-```
-
-## Knowledge Basis
-
-Reusable implementation/application theory may be used when material, but it does
-not define a mandatory layer chain.
-
-Principles:
-
-- preserve one useful vertical result;
-- exact current code topology remains code authority;
-- use explicit seams/contracts only when a real boundary/evolution need pays for them;
-- Runtime Path is optional and explains semantic runtime behavior, not classes/methods for their own sake;
-- future implementation meaning is resolved as owner-local Evolution Steps.
-
-## Question Set Examples — Non-Exhaustive
-
-```text
-What exactly becomes useful/checkable after this Slice?
-Which behavior/DATA/must-hold obligations must it realize?
-Which Domain elements/semantic operations does it use?
-Which Cross-Cutting guarantees apply and what remains local?
-Which external/dependency/handoff relations are materially important?
-Is runtime sequence/state/failure/async meaning non-obvious enough to record?
-Which accepted/planned future changes touch this Slice?
-For each material Evolution Step, what implementation meaning should be resolved now vs deferred?
-What proof is obvious vs independently non-trivial?
-```
+Do not create a Slice discovery plan merely to restate Feature behavior.
 
 ## Lens Profile
 
-Required Core Pack applies.
+Required primary lens: `LENS-SLICE-VERTICALITY-INTEGRATION`.
 
-Primary:
-- [`LENS-SLICE-VERTICALITY-INTEGRATION`](../lenses/reusable/LENS-SLICE-VERTICALITY-INTEGRATION.md)
+Conditional Lenses include DDD, Evolution, Implementation Requirements Discovery, UI/spatial and quality/verifiability perspectives; selected [`RG-PRG-*`](../shared/programming-principles/README.md) knowledge may support their evaluation when material.
 
-Conditional:
-- [`LENS-DOMAIN-MODELING-DDD`](../lenses/reusable/LENS-DOMAIN-MODELING-DDD.md)
-- [`LENS-UI-SPATIAL-FRONTEND-REALIZATION`](../lenses/reusable/LENS-UI-SPATIAL-FRONTEND-REALIZATION.md) for UI-heavy Slice meaning
-- L4 Dependency / Change Impact
-- L5 Evolution / Change Isolation
-- Simplicity / Implementation Economy
-- L6 Verifiability / Observability / Operability
-- Quality / Risk Materiality
-- Shared / Cross-Cutting Responsibility
-- Test Proof / Evidence when proof is material
+## Production Method
 
-## Resolution / Production Method
+```text
+selected Feature
+→ re-check Feature/Slice boundary with stronger implementation evidence
+→ define whole-Slice responsibility / candidate structure
+→ establish semantic application entry/result boundary
+→ walk realization end to end
+→ discover Domain / Shared dependencies and effect/recovery seams
+→ design whole-Feature integration proof
+→ record known Evolution / OPEN pressure
+→ proposal to durable Slice/Domain/Shared owners as warranted
+→ implementation / Exact
+→ discard working discovery by default when current authority lives naturally elsewhere
+```
 
-1. Stabilize the useful Slice outcome and semantic obligations.
-2. Resolve which Domain elements/shared owners the Slice uses.
-3. Resolve only material dependencies/handoffs.
-4. Add Runtime Path only when runtime sequence/state/failure/async/transaction
-   meaning materially helps understanding or decision-making.
-5. Resolve named planned/probable Evolution Steps touching the Slice.
-6. For each material Evolution Step use normal Core Resolution:
-   - surface material Questions/Problems;
-   - develop materially different Ideas where alternatives exist;
-   - apply relevant Lenses/Evidence;
-   - resolve material choices under normal authority;
-   - project the selected Slice-specific consequence into `Implementation Outlook`.
-7. Hand sufficiently determined exact realization to Core `TM-EXACT-REALIZATION`.
-
-Do **not** create a hand-written `Codebase Integration Path` call-level mirror.
-
-Local implementation subproblems remain ordinary Core State/Resolution. When one
-becomes independently substantial, normal Target Formation may form/reuse a Local
-Target Contract. This does not split the product Slice into technical-layer Slices.
+Slice and Domain discovery may alternate as evidence demands.
 
 ## Target Step-Result Contract
 
-**Target Step Result:** `Implementation Slice Plan`
+**Target Step Result:** `Slice Discovery Working Plan`
 
 | Result Unit | Meaning |
 |---|---|
-| `RU-SLICE-01` | Outcome / semantic obligations / proof intent |
-| `RU-SLICE-02` | Domain Elements Used + Cross-Cutting/local shared obligations + material dependencies/handoffs |
-| `RU-SLICE-03` | Runtime Path — optional |
-| `RU-SLICE-04` | Evolution Steps |
+| `RU-SLICE-01` | Whole-Slice Responsibility / Candidate Structure |
+| `RU-SLICE-02` | Semantic Application Entry / Result Boundary |
+| `RU-SLICE-03` | Step-by-Step End-to-End Realization |
+| `RU-SLICE-04` | Feature Integration Proof |
+| `RU-SLICE-05` | Evolution / OPEN Slice Pressure |
 
-### RU-SLICE-01 — Outcome / Obligations / Proof Intent
+### Result Unit Applicability / Materiality
 
-Record proportionally:
+Declared Result Units are a possible semantic surface, not a mandatory form. Apply the Core [`Unit Applicability / Materiality / Omission Contract`](../../../idtspe-core/shared/idtspe-unit-and-target-step-result-model.md#5a-unit-applicability--materiality--omission-contract).
 
-```text
-Slice ID
-Primary Scenario
-Useful Vertical Result
-Behavior/DATA obligations
-must-hold / negative guarantees
-Screen obligations when material
-proof intent / verification obligation
-```
+| Result Unit | Make explicit when | Omit / keep sparse when |
+|---|---|---|
+| `RU-SLICE-01` | when whole-Slice responsibility/candidate structure is needed to reason end-to-end | omit the whole discovery Target when current implementation path is already sufficiently clear |
+| `RU-SLICE-02` | when semantic application entry/result boundaries are material to integration/ownership/proof | omit adapter/transport detail that does not alter semantic entry/result meaning |
+| `RU-SLICE-03` | when concrete end-to-end realization detail is needed to resolve dependencies/effects/failure/proof | stop at the minimum detail that discriminates decisions; do not build a shadow class/call registry |
+| `RU-SLICE-04` | when whole-Feature integration proof needs explicit planning to validate the selected Slice | omit trivial proof mechanics already implied by the accepted boundary |
+| `RU-SLICE-05` | when selected Evolution or unresolved Slice pressure can affect current boundary/realization | omit speculative future change or questions with no current consequence |
 
-Proof routing:
+Do not create `N/A` placeholders. Re-evaluate a previously omitted Unit only when its trigger/materiality changes.
 
-```text
-obvious proof
-→ Exact Realization can produce exact production/test code
+### RU-SLICE-01 — Whole-Slice Responsibility / Candidate Structure
 
-independently non-trivial proof design
-→ optional TM-TEST-DESIGN
-```
+Capture the Feature-local end-to-end responsibility and enough candidate structure to reason about locality. Evaluate module/branch/entry-adapter/shared-extraction alternatives using the Vertical Slice Lens.
 
-### RU-SLICE-02 — Uses / Ownership Boundary
+### RU-SLICE-02 — Semantic Application Entry / Result Boundary
 
-Record only material relations:
+Prefer explicit semantic typed entry/result boundaries. A button, route, endpoint or CLI adapter is not automatically a distinct semantic application operation.
 
-```text
-Domain Elements Used
-  + semantic Domain operations/rules used
-Cross-Cutting local obligations + canonical owner refs
-external/dependency/handoff relations
-implemented/delegated/later/outside meaning when useful
-```
+### RU-SLICE-03 — Step-by-Step End-to-End Realization
 
-Do not manufacture interfaces/contracts merely for completeness. Stable
-contracts/seams are justified by real semantic/shared/external/compatibility/
-consistency/independent-evolution pressure.
-
-### RU-SLICE-03 — Runtime Path — Optional
-
-Use when runtime flow itself carries important meaning such as:
+Concrete plan may include:
 
 ```text
-state transition
-sync/async boundary
-retry/failure/recovery
-transaction/consistency boundary
-externally observable order
-material coordination
+entry adapter
+application orchestration
+Domain owners used
+Shared capabilities used
+repositories/persistence
+external side effects
+effect fencing / uncertainty / retry / recovery
+result mapping/presentation
+candidate classes / methods / calls / signatures
 ```
 
-Describe semantic/runtime responsibilities. Omit when obvious. Do not turn this
-into an internal class/method call graph.
+Keep Feature-specific policy local. Extract Shared capability only for coherent reusable non-end-to-end responsibility.
 
-### RU-SLICE-04 — Evolution Steps
+### RU-SLICE-04 — Feature Integration Proof
 
-Named planned/probable application-evolution increments touching this Slice.
+Define whole-Feature proof through the semantic application boundary. Keep real Domain behavior real where useful; fake expensive/incidental external mechanics proportionally. Assert meaningful Feature result, important effects and forbidden effects rather than private call sequence.
 
-Prefer **named headings**. Do not number/order steps unless order/dependency itself
-is meaningful.
+### RU-SLICE-05 — Evolution / OPEN Slice Pressure
 
-Sparse step shape:
+Record known Evolution Steps and unresolved realization/boundary pressure. Known evolution is evidence; speculative future behavior is not current scope.
+
+## Upstream Source Contract
+
+Use proportionally:
+- selected Feature + `BR-*`;
+- Scenario journey continuity/E2E pressure where relevant;
+- Screen spatial/UI constraints where relevant;
+- selected/working Domain owners;
+- selected Shared capabilities/bindings;
+- Feature Implementation Concerns;
+- current code/tests/Evidence;
+- known Evolution Steps;
+- accepted Proposal/Decision context.
+
+## Knowledge Basis
+
+`LENS-SLICE-VERTICALITY-INTEGRATION` owns the reusable Feature/Slice/end-to-end discovery method. DDD and IR Discovery Lenses plus selected [`RG-PRG-*`](../shared/programming-principles/README.md) knowledge are composed only when material.
+
+## Behavioral Coverage / Old Strategy Semantics
+
+This Target discovers **one** bounded Slice candidate. Cross-Slice portfolio coverage is a workflow/Lens projection.
+
+Still enforce both directions:
 
 ```text
-### <Evolution Step Name>
+material accepted Feature behavior
+→ selected Slice responsibility OR explicit deferred/outside position
 
-Behavioral Source / Future Meaning
-  Scenario RU-SCEN-03 / Strategy May Change / accepted future behavior ref
-
-Slice Change
-  what behavior/responsibility changes in this Slice
-
-Domain Changes
-  changes expected in Domain objects/operations used by this Slice
-
-Implementation Outlook
-  resolved target-specific implementation consequences from this Step's normal
-  Core Resolution, for example:
-    planned seam/port/variation boundary
-    placement of changeable behavior
-    support for multiple types/variants
-    current preparation needed
-    reuse/extend/defer direction
-    intentionally rejected abstraction/framework
-    explicitly nothing special needed
-
-Proof Impact
-  only when proof responsibility materially changes
-
-Depends on / After
-  another named Evolution Step only when a real dependency exists
-
-Cross-Cutting Impact
-  local obligation/reference only;
-  actual shared concern change belongs to the Cross-Cutting owner's Evolution Step
+candidate Slice behavior/result claim
+→ grounded in accepted Feature behavior/result
 ```
 
-`Implementation Outlook` is **not** a Lens output and not a Generic Decision
-register. It stores the selected target-specific consequence after Resolution.
-A Generic Decision may be referenced for traceability when useful, but the Outlook
-must contain the selected consequence itself rather than only a Decision ID.
-
-A current implementation may intentionally include a seam/port with only one
-current variant when the resolved known Evolution Step justifies that preparation.
-Conversely, accepted future meaning may resolve to “do not prepare now”.
-
-## Domain Evolution Query
-
-To understand future pressure on a Domain object:
-
-```text
-Strategy RU-SSTRAT-02
-→ find Slices using it
-→ inspect those Slice owners' Evolution Steps
-→ evaluate interaction with L5 Evolution / Change Isolation
-```
-
-No separate canonical Domain evolution map is required.
+Do not invent behavior in implementation planning.
 
 ## Representation / Artifact Contract
 
+This Target is working/non-persistent by default.
+
+Its temporary result may be conversational or a working implementation plan. Selected durable responsibility moves into `TM-SLICE-OWNER`; exact classes/methods/files/tests go to Core Exact/code.
+
+If retained for review/handoff, mark it as working Source, not current durable Slice authority.
+
+## Validators
+
 ```text
-ARTIFACT_PROPOSAL
-ID: AP-SLICE-01
-CONTENT_KIND: IMPLEMENTATION_SLICE_PLAN
-WHEN: selected Slice meaning is used for realization/review
-GUIDANCE: REQUIRED_IF_TARGET_EXISTS
-PERSISTENCE_GUIDANCE: PREFERRED
-PLACEMENT_DIRECTIVE: PLACE_OR_EMBED
-SEMANTIC_OWNER: current Slice owner
-REPRESENTATION: INLINE_OWNER_SLOT_OR_DEDICATED_SLICE_ARTIFACT_OR_IMPLEMENTATION_NATIVE_RESIDUE
-FILE_OR_ARTIFACT: <slice-owner>
-CONTENT: applicable RU-SLICE-01..04
-GUIDANCE_SOURCE: TARGET_MODULE
-RESOLVER: P-14 / TF-10
+one whole meaningful Feature path is understandable end to end
+semantic entry/result boundary is explicit
+Domain/Shared dependencies retain their own authority
+side effects/failure/retry/uncertainty are understood where material
+technical layers are not treated as independent Slices by default
+RU-SLICE-04 proof exercises meaningful Feature boundary
+RU-SLICE-05 future pressure routes to Evolution Step when selected
+durable IR/PFR candidates move to TM-SLICE-OWNER
+working discovery does not become a shadow class/call registry
 ```
 
-Small Slice owners may remain inline in `SLICE-STRATEGY.md`. Dedicated files are
-pressure-driven. Evolution normally stays in the same owner; a physically separate
-`<owner>.evolution.md` is only a representation split of that same owner under
-real size/review/update pressure.
-
-## Validators / Guards
+## Handoff / Revalidation
 
 ```text
-one normal Slice → one Primary Scenario
-Slice ≠ technical layer
-frontend/backend are not separate SDS Slice identities by default
-application layer theory ≠ mandatory Result schema
-Runtime Path is optional
-Codebase Integration Path is not a Result Unit
-Generic Decisions remain Generic State
-Cross-Cutting evolution stays with Cross-Cutting owner
-exact code/test implementation belongs to Exact Realization
+selected durable responsibility
+→ TM-SLICE-OWNER
+
+shared reusable responsibility discovered
+→ TM-SHARED-IMPLEMENTATION-CAPABILITY gate
+
+Domain semantics unclear
+→ TM-DOMAIN-DISCOVERY / TM-DOMAIN-OWNER
+
+literal implementation ready
+→ Core TM-EXACT-REALIZATION
+
+stronger Evidence contradicts Feature/Slice boundary
+→ Finding → Feature/owner revalidation
 ```
 
-## Handoff
+## Durable Handoff
 
 ```text
-TM-IMPLEMENTATION-SLICE
-→ TM-TEST-DESIGN only when proof design is independently non-trivial
-→ TM-EXACT-REALIZATION for exact code/config/tests
-→ Practical Evidence / revalidation as useful
+selected durable Slice responsibility / boundary contract
+→ TM-SLICE-OWNER / RU-SOWN-01
+
+selected durable Slice implementation constraints
+→ TM-SLICE-OWNER / RU-SOWN-02
+
+reusable non-end-to-end responsibility with genuine consumers
+→ TM-SHARED-IMPLEMENTATION-CAPABILITY
+
+semantic Domain meaning
+→ TM-DOMAIN-OWNER (possibly via Domain Discovery)
+```
+
+## Guards
+
+```text
+Slice Discovery ≠ durable Slice owner
+Slice ≠ frontend/backend/database layer
+Slice dependency ≠ loss of Slice independence
+concrete working topology ≠ durable contract by default
+Feature behavior remains owned by Feature
+one Requirement ≠ one test
 ```

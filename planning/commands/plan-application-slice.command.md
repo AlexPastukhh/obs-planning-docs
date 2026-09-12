@@ -15,14 +15,14 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
     "план слайса приложения"
   ],
   "description": "implementation slice",
-  "meaning": "Run TM-IMPLEMENTATION-SLICE through the IDTSPE Shell; normal Target Formation decides reuse/handoff/new bounded Target formation and may reuse RU-SSTRAT-03 semantic identity/addressability when TM-IMPLEMENTATION-SLICE is selected.",
-  "activeContextBehavior": "Resolve or reuse the natural current IDTSPE Target/context; infer CREATE/REFINE/EXTEND/REVALIDATE/REPAIR from current state. Do not create a fake Target when the module/lens gate fails.",
+  "meaning": "Run TM-IMPLEMENTATION-SLICE for transient whole-Slice implementation discovery. Resolve one bounded end-to-end realization from selected Feature behavior through semantic application entry/result, concrete step-by-step realization, material Domain/Shared/effect/recovery relations, integration proof and Evolution/OPEN pressure. Promote to TM-SLICE-OWNER only when durable Slice responsibility is independently useful.",
+  "activeContextBehavior": "Treat the explicit command as selected invocation intent inside always-active IDTSPE. Re-evaluate current Use-Case composition, resolve/reuse a natural Target/context only when useful, confirm the selected Target Module Entry Point/local applicability gate, and then resolve CREATE/REFINE/EXTEND/REVALIDATE/REPAIR from actual current Target state. Do not create a Target or Result Unit merely because the command exists.",
   "traversalReadMode": "Reuse current reliable IDTSPE/SDS governance; targeted refresh of the selected owner route when uncertain; full bootstrap only when no reliable sufficient governance context exists.",
   "ownerFiles": [
     "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-IMPLEMENTATION-SLICE.md",
     "planning/documentation/idtspe-methodology/active/profiles/sds/shared/idtspe-command-surface-contract.md"
   ],
-  "expectedOutput": "Slice outcome/obligations/proof intent, material Domain/Cross-Cutting/dependency use boundary, optional Runtime Path and owner-local Evolution Steps; material Strategy/Domain mismatch surfaces a Finding Candidate for Core disposition.",
+  "expectedOutput": "Applicable projection: RU-SLICE-01 Whole-Slice Responsibility / Candidate Structure; RU-SLICE-02 Semantic Application Entry / Result Boundary; RU-SLICE-03 Step-by-Step End-to-End Realization; RU-SLICE-04 Feature Integration Proof; RU-SLICE-05 Evolution / OPEN Slice Pressure. Zero/one durable Slice Owner handoff only when justified.",
   "permissionMode": "read-only-planning",
   "keyReminders": [
     "SDS is an IDTSPE profile, not a second runtime.",
@@ -33,8 +33,8 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
   "userTarget": "<one implementation Slice>",
   "palette": true,
   "helperPresentation": {
-    "whenToUse": "Use when one selected Slice needs independently bounded realization planning; Target Formation must select/reuse/form that bounded Target rather than treating the Strategy owner register as creation authority.",
-    "whatYouGet": "Slice outcome/obligations/proof intent, material Uses/ownership boundary, optional Runtime Path and owner-local Evolution Steps; accepted upstream changes occur only after Core Finding Disposition.",
+    "whenToUse": "Use when one selected Feature/result needs a bounded end-to-end implementation Slice discovery. This is transient discovery, not a Slice Strategy portfolio Target.",
+    "whatYouGet": "Current RU-SLICE-01..05 projection at material depth, with Domain/Shared/proof/evolution handoffs and optional promotion to a durable Slice Owner.",
     "navigation": {
       "viewId": "SDS",
       "viewLabel": "SDS — IDTSPE Profile",

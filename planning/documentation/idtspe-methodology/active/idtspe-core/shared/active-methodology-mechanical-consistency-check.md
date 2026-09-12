@@ -1,29 +1,57 @@
 # Active Methodology Mechanical Consistency Check
 
-Status: **PASS — regenerated for current active topology**
+Status: **current post-Pass12 snapshot; mechanical facts only**
+
+This file reports observed registry/projection parity. Semantic authority remains in the owning registries/contracts.
 
 ```text
-installed_target_modules_14
-  = 2 Core + 12 SDS
+active_core_target_modules = 2
+active_sds_target_modules  = 13
+installed_active_target_modules = 15
 
-installed_reusable_lenses_17
-  = 11 Core + 6 SDS
+retired_sds_target_compatibility_stubs = 5
+  (excluded from the active SDS registry)
 
-sds_methodology_invocation_surfaces_37
+core_lenses = 11
+sds_lenses  = 7
+installed_lenses = 18
 
-artifact_placement_source_records_48
-  = 26 AP (25 SDS + 1 Core) + 22 AG
+methodology_use_cases = 16
+  = 10 Documentation + 6 IDTSPE + 0 SDS-runtime
+
+planning_command_definitions = 74
+  = 48 primary + 26 hidden compatibility
 ```
 
 Checks:
 
-- SDS Target Module registry/file count: **12 / 12 PASS**
-- SDS Lens registry/file count: **6 / 6 PASS**
-- AP IDs unique: **26 / 26 PASS**
-- AG IDs unique: **22 / 22 PASS**
-- retired Target files absent from active SDS catalog: **PASS**
-- numbered SDS workflow files removed; one directed workflow remains: **PASS**
-- Full/Instance/Physical SDS maps removed; README/workflow/placement responsibilities separated: **PASS**
+- Core Target Module registry/file parity: **2 / 2 PASS**
+- SDS **active registry rows** resolve to active Target Module files: **13 / 13 PASS**
+- retired SDS Target compatibility files are absent from the active registry: **5 / 5 PASS**
+- Core Lens registry/file parity: **11 / 11 PASS**
+- SDS Lens registry/file parity: **7 / 7 PASS**
+- Methodology Use-Case Registry Map projects only current Documentation/IDTSPE runtime UCs: **16 PASS**
+- SDS runtime methodology-use UC count: **0 PASS**
+- current Planning Helper command definitions parse and generated projections are verified by the palette test suite: **PASS**
+- numbered SDS workflow files remain retired; one semantic composition/readiness guide remains: **PASS**
+- Full/Instance/Physical SDS maps remain retired; README/registry/workflow/placement responsibilities stay separated: **PASS**
 
-This file reports mechanical current-state facts only; it is not semantic
-methodology authority.
+## Anti-Drift Rule
+
+Do not copy these counts into semantic contracts unless the number itself has methodological meaning.
+
+Prefer:
+
+```text
+current registry rows
+→ resolve owner files
+→ verify required contract sections
+```
+
+over:
+
+```text
+hard-coded N / N
+```
+
+because active module/Lens counts may legitimately change while the contract remains the same.

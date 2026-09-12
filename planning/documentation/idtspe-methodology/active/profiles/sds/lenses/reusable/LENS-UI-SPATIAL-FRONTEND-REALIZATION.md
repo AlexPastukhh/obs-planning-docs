@@ -13,7 +13,7 @@ Primary for Screen; supporting for UI-heavy Implementation Slice and other Targe
 
 ## Target Inputs / Evidence
 
-Scenario/Behavior, Scenario DATA, Screen Map/Drafts, must-hold conditions, Prototype/usability Evidence, current frontend and platform/design-system constraints.
+Feature behavior/Data, Scenario journey composition, Screen Map/Drafts, Screen/journey must-holds, Prototype/usability Evidence, current frontend and platform/design-system constraints.
 
 
 
@@ -25,14 +25,14 @@ Scenario/Behavior, Scenario DATA, Screen Map/Drafts, must-hold conditions, Proto
 
 ### Conditional Result Units / Semantic Selectors
 
-- UI-heavy `TM-IMPLEMENTATION-SLICE`: `RU-SLICE-01..RU-SLICE-03`
-- `TM-IMPLEMENTATION-SLICE / RU-SLICE-04` when an Evolution Step materially changes UI/frontend realization
+- UI-heavy `TM-IMPLEMENTATION-SLICE`: `RU-SLICE-01..RU-SLICE-04`
+- `TM-IMPLEMENTATION-SLICE / RU-SLICE-05` when an Evolution Step materially changes UI/frontend realization
 
 ### Relevant State Units
 
 ```text
 Questions
-Ideas / Planning Branches when comparison is material
+Proposals / Planning Branches when comparison is material
 Q/R/P
 Decisions
 Evidence / Evidence Needs
@@ -41,7 +41,7 @@ Revalidation state
 
 ### Context
 
-- Scenario behavior/DATA
+- Feature behavior/Data + Scenario journey composition
 - selected Screen meaning
 - shared frontend concerns
 - current frontend implementation/workspace
@@ -100,9 +100,9 @@ Prefer cohesive responsibility/change-path boundaries rather than arbitrary comp
 
 Apply shared visual/accessibility requirements without letting implementation own Screen semantics.
 
-## Frontend Architecture Pattern Aids — Ideas, Not Presets
+## Frontend Architecture Pattern Aids — Candidate Patterns, Not Presets
 
-Evidence from Enman/current practice may seed Ideas such as:
+Evidence from current practice may seed candidate patterns such as:
 
 ```text
 feature-oriented organization
@@ -121,7 +121,7 @@ Examples for L4/L5: moving behavior, changing DATA presentation/navigation/valid
 
 ## Typical Findings
 
-placement, state ownership, navigation, synchronization, component responsibility, async/failure behavior, architecture pattern Ideas and Q/R/P.
+placement, state ownership, navigation, synchronization, component responsibility, async/failure behavior, architecture pattern candidates/Proposals and Q/R/P.
 
 
 
@@ -156,7 +156,7 @@ Future UI/frontend change is evaluated through the owner-local Evolution Step + 
 
 ## Guards
 
-Screen owns spatial meaning; Scenario/Behavior owns behavior; Scenario DATA owns information meaning; frontend realizes them.
+Screen owns spatial meaning; Feature owns behavior and Feature semantic Data; Scenario owns journey composition; frontend realizes those selected meanings.
 
 ## Composition
 
@@ -197,7 +197,7 @@ Frontend:
 
 ### Walkthrough
 
-Frontend architecture Ideas:
+Frontend architecture candidate patterns:
 
 ```text
 A:
@@ -241,11 +241,11 @@ component/feature boundaries
 server integration boundary
 ```
 
-Core Finding Disposition decides whether accepted meaning becomes/refines local Idea/Q/R/P/Answer-Decision input or belongs to another owner.
+Core Finding Disposition decides whether accepted meaning becomes/refines local Proposal/Q/R/P/Answer-Decision input or belongs to another owner.
 
 ### Boundary / Lesson
 
-Moving capture to another Screen should not change Scenario behavior identity.
+Moving a Feature to another Screen should not change Feature behavior identity; it may change Screen composition and Scenario navigation participation.
 
 Enman-like feature/API/gateway patterns are options, not required architecture.
 
@@ -255,7 +255,7 @@ Mode: `INLINE`
 
 **Embedded Principles / Rules / Theory:**
 
-- UI spatial/window/component choices realize selected Scenario behavior and DATA; they do not redefine it.
+- UI spatial/window/component choices realize selected Feature behavior/Data and Scenario journey participation; they do not redefine those owners.
 - State/data-flow/navigation boundaries should remain understandable, reversible and aligned with the parent useful result.
 
 **Referenced Knowledge Owners:**

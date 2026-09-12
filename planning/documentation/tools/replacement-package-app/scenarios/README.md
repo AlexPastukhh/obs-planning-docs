@@ -13,3 +13,7 @@ Status: active Scenario navigation
 ## Planned future owner
 
 [`planned/SCN-RPKG-COMPLETE-REVIEWED-REPOSITORY-WORK.md`](planned/SCN-RPKG-COMPLETE-REVIEWED-REPOSITORY-WORK.md) remains future planning for reviewed-result/PR/Finalize. Any old ChangeSet execution-state wording in that plan is superseded by the current WorkId/GitWorkspace/ReplacementPackageState ownership and must be rebased before implementation.
+## Cross-tool realization composition
+
+For Builder-reviewed package → exact handoff → current App realization, use [`../../../replacement-package-realization-composition.md`](../../../replacement-package-realization-composition.md). The composition guide is not Scenario behavior authority; this catalog remains the source of current/planned App Scenario status.
+

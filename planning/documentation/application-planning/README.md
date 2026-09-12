@@ -24,15 +24,18 @@ Useful supporting owners here include current-reality review, whole-solution com
 
 ```text
 optional Need / Solution Discovery
-→ TM-APPLICATION-DEFINITION
+→ TM-APPLICATION-DEFINITION when an own-Application boundary is material
 → optional TM-PROTOTYPE
-→ TM-SCENARIO-PLANNING
-→ TM-SLICE-STRATEGY
-→ flexible Domain/Aggregate Modeling ↔ Implementation Slice realization
-→ Exact Realization / Evidence
+→ TM-FEATURE as primary behavior owner
+→ TM-SCENARIO-PLANNING when actor-to-Benefit journey composition is independently useful
+→ TM-SCREEN when spatial/navigation composition is independently useful
+→ TM-DOMAIN-DISCOVERY → optional TM-DOMAIN-OWNER
+↔ TM-IMPLEMENTATION-SLICE → optional TM-SLICE-OWNER
+→ TM-SHARED-IMPLEMENTATION-CAPABILITY only under genuine reuse pressure
+→ Exact Realization / Evidence; Practical Test only when a real implemented subject/environment is required
 ```
 
-Screens, standalone Requirements, Cross-Cutting concerns and proof Targets are conditional as defined by the current Target Module registry.
+Screens are conditional as defined by the current Target Module registry. There is no standalone Requirement, Cross-Cutting, Test Design or Test Strategy baseline Target: durable requirements stay in their natural Feature/Domain/Slice/Shared owner, shared implementation responsibility uses `TM-SHARED-IMPLEMENTATION-CAPABILITY`, and proof routes through the Core Test-Proof Lens / Exact / Practical Test as applicable.
 
 ## Representation
 

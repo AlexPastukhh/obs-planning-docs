@@ -56,8 +56,8 @@ Build/compile/unit/integration/E2E checks performed while realizing code remain 
 ## Upstream Source Contract
 
 ```text
-intended/actual implemented Application / Scenario / Slice / Screen / Cross-Cutting subject
-selected property/Requirement/invariant or Test Design when acceptance is the purpose
+intended/actual implemented Application / Feature / Scenario / Screen / Domain / Slice / Shared Capability subject
+selected property/owner Requirement/invariant or transient proof design when acceptance is the purpose
 residual Q/R/P / Prototype question requiring the real implementation
 actual implemented version/build before Evidence collection
 representative users/operators/data/environments
@@ -96,7 +96,7 @@ establish what real implemented subject/property must be accepted or learned fro
 → send material consequences through Core Finding Disposition / Decision Revalidation
 ```
 
-Existing telemetry/logging is Evidence Source. This Target does not own permanent observability architecture; missing observability becomes a Finding Candidate for implementation/Cross-Cutting/Exact Realization work when warranted.
+Existing telemetry/logging is Evidence Source. This Target does not own permanent observability architecture; missing observability becomes a Finding Candidate for the natural Slice/Shared/implementation owner or Exact Realization when warranted.
 
 ## Target Step-Result Contract
 
@@ -107,6 +107,18 @@ Existing telemetry/logging is Evidence Source. This Target does not own permanen
 | `RU-PTEST-01` | Evidence Intent / Real Subject — what real implementation/property will be observed and why real Evidence is needed |
 | `RU-PTEST-02` | Observation / Data Collection Plan — proportional planned observation against the intended/actual real subject |
 | `RU-PTEST-03` | Evidence Results / Interpretation — actual real-subject Evidence refs, material limitations and acceptance/learning interpretation |
+
+### Result Unit Applicability / Materiality
+
+Declared Result Units are a possible semantic surface, not a mandatory form. Apply the Core [`Unit Applicability / Materiality / Omission Contract`](../../../idtspe-core/shared/idtspe-unit-and-target-step-result-model.md#5a-unit-applicability--materiality--omission-contract).
+
+| Result Unit | Make explicit when | Omit / keep sparse when |
+|---|---|---|
+| `RU-PTEST-01` | when a property requires observation against a real implemented subject/environment | omit the Practical Test Target when simulated/unit/integration Evidence is already sufficient |
+| `RU-PTEST-02` | when planned real-subject observation/data collection must be explicit for credibility | omit incidental procedure detail that cannot affect Evidence interpretation |
+| `RU-PTEST-03` | when the practical test has actually produced Evidence worth interpreting | before execution keep Evidence Need/plan only; never prefill results |
+
+Do not create `N/A` placeholders. Re-evaluate a previously omitted Unit only when its trigger/materiality changes.
 
 `RU-PTEST-03` is absent until real implemented Evidence has actually been collected.
 
@@ -164,14 +176,14 @@ TM-PRACTICAL-TEST ≠ permanent telemetry/logging owner
 ```text
 Evidence Results / Interpretation
 → Core Finding Disposition / Decision Revalidation
-→ natural Scenario/Screen/Slice/Application/Cross-Cutting/other owner when warranted
+→ natural Application/Feature/Scenario/Screen/Domain/Slice/Shared/other owner when warranted
 
 simple missing automated proof
 → TM-EXACT-REALIZATION
 
 non-trivial proof-design problem
-→ optional TM-TEST-DESIGN
+→ Core LENS-TEST-PROOF-EVIDENCE + transient natural-owner proof planning / Exact handoff
 
 missing durable observability
-→ implementation / Cross-Cutting / Exact Realization candidate through normal disposition
+→ natural Slice/Shared implementation owner or Exact Realization candidate through normal disposition
 ```

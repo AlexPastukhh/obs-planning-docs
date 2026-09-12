@@ -13,20 +13,23 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
   "commandFamily": [
     "проверь консистентность плана"
   ],
-  "description": "Run the IDTSPE Consistency Review Use Case/validator, not a Target Module.",
-  "meaning": "Run the IDTSPE Consistency Review Use Case/validator, not a Target Module.",
-  "activeContextBehavior": "Resolve or reuse the natural current IDTSPE Target/context; infer CREATE/REFINE/EXTEND/REVALIDATE/REPAIR from current state. Do not create a fake Target when the module/lens gate fails.",
+  "description": "Run the current IDTSPE consistency-review supporting process in the active Work Context.",
+  "meaning": "Invoke the Core consistency-review supporting process as an explicit review action. It is not a Target Module and not a separate runtime Use Case; current Use Cases (especially revalidation/integration as applicable) own why/when the review is composed.",
+  "activeContextBehavior": "Use the current Work Context and applicable IDTSPE Use Case. Review only material current meaning/owners; create no fake Target. Route contradictions, stale Decisions and coverage gaps through Finding/Revalidation semantics.",
   "traversalReadMode": "Reuse current reliable IDTSPE/SDS governance; targeted refresh of the selected owner route when uncertain; full bootstrap only when no reliable sufficient governance context exists.",
   "ownerFiles": [
     "planning/documentation/idtspe-methodology/active/idtspe-core/shared/consistency-review-use-case.md",
+    "planning/documentation/idtspe-methodology/active/idtspe-core/shared/revalidate-current-work-use-case.md",
+    "planning/documentation/idtspe-methodology/active/idtspe-core/shared/idtspe-methodology-use-case-registry.md",
     "planning/documentation/idtspe-methodology/active/idtspe-core/shared/idtspe-command-surface-contract.md"
   ],
-  "expectedOutput": "Consistency findings, contradictions/stale Decisions/coverage gaps and concrete reopen/revalidation routes.",
+  "expectedOutput": "Material consistency findings plus precise affected-owner/revalidation routes; no separate Consistency-Review Target or runtime Use Case is created.",
   "permissionMode": "read-only-planning",
   "keyReminders": [
-    "This is an IDTSPE orchestration/validator surface, not a Target Module.",
-    "Preserve the current Target/owner graph and normal permission boundaries.",
-    "Do not mutate repository files, implement, test, commit or push."
+    "Consistency review is a supporting Core process, not an independent runtime Use Case or Target Module.",
+    "Review only material current state and preserve unaffected accepted meaning.",
+    "Findings do not silently mutate natural owners; use Core Finding Disposition/Revalidation.",
+    "This command is read-only planning/review and grants no repository mutation."
   ],
   "userTarget": "<current plan/scope>",
   "palette": true,

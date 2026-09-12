@@ -68,7 +68,7 @@ Re-open Level
   UPSTREAM
 
 Fallback / Saved Alternatives
-  Idea refs
+  Proposal refs
   Branch refs
 
 Related WEUC

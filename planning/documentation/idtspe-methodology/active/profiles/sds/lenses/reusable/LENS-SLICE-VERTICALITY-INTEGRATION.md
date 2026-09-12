@@ -1,227 +1,270 @@
-# LENS-SLICE-VERTICALITY-INTEGRATION — Slice Verticality / Result / Integration
+# LENS-SLICE-VERTICALITY-INTEGRATION — Vertical Slice / Integration
 
-Lens ID: `LENS-SLICE-VERTICALITY-INTEGRATION`  
-Activation: `TARGET_PROFILE_REUSABLE`
+Role: reusable thematic Slice-boundary and end-to-end integration lens  
+Primary use: Feature boundary formation, transient Slice Discovery, durable Slice owner review
 
 ## Purpose
 
-Keep Slice planning centered on one bounded useful/checkable vertical result, preserve Scenario semantics through decomposition, and keep Strategy/Slice realization relations coherent without turning technical layers into Slices.
+Own the reusable Feature/Slice Boundary Method and end-to-end realization questions. Optimize for locality of responsibility/change and coherent Feature proof, not dependency absence or technical-layer isolation.
 
-## Applicability Gate
-
-Primary for `TM-SLICE-STRATEGY` and `TM-IMPLEMENTATION-SLICE`; supporting for related Cross-Cutting/UI realization questions.
-
-## Target Inputs / Evidence
-
-Scenario Behavior / Requirements, Behavior Items, Scenario DATA, must-hold conditions, Screen meaning when relevant, Domain/Aggregate position, current code/implementation and material dependency/change Evidence.
+The same method is used at two evidence depths:
 
 ## Analysis Surface
 
-### Primary Result Units / Semantic Selectors
-
-- `TM-SLICE-STRATEGY`: `RU-SSTRAT-01..RU-SSTRAT-03`
-- `TM-IMPLEMENTATION-SLICE`: `RU-SLICE-01..RU-SLICE-04`
-
-### Conditional Result Units / Semantic Selectors
-
-- Cross-Cutting/UI result meaning when this Lens is used in supporting mode
-
-### Relevant State Units
-
-```text
-Questions
-Ideas / Planning Branches when comparison is material
-Q/R/P
-Decisions
-Evidence / Evidence Needs
-Revalidation state
-```
+**Primary:** Feature/Slice boundary meaning, transient Slice Discovery results, durable Slice-owner responsibility and whole-path realization/proof surfaces.  
+**Conditional:** Feature BR, Scenario/Screen participation, Domain/Shared dependencies, side effects/failure/recovery, accepted Decisions/Evidence, selected Evolution and relevant `RG-PRG-*` knowledge entries.  
+**Context:** active Work Context/Target and current evidence depth.
 
 ## Supported Operations
 
 ```text
-ANALYZE
-CHECK
-REFINE
-CHALLENGE
+ANALYZE   — discover/evaluate coherent vertical responsibility and end-to-end path
+CHECK     — test boundary, dependency, proof, behavior coverage and change locality
+REFINE    — improve candidate/current Slice structure without taking owner authority
+CHALLENGE — surface a Finding Candidate when the selected boundary/realization is materially incoherent
 ```
 
-`REOPEN`, State-Unit creation/refinement, cross-owner handoff and Result Unit mutation after resolution remain Core Finding-Disposition/lifecycle consequences.
+Registry selection is not execution; use the lighter or stronger evidence depth only when that surface is material.
 
-## Useful Vertical Result Integrity
-
-Normal Slice:
 
 ```text
-one Primary Scenario
-+ one bounded useful/checkable result
-+ one or more grounded Behavior Items
-= legitimate vertical Slice candidate
+Feature formation
+→ lighter implementation-aware boundary selection
+
+Slice Discovery / durable owner review
+→ stronger concrete end-to-end evidence
 ```
 
-Reject horizontal-only decomposition such as database/backend/frontend phases unless an exceptional prerequisite is itself independently useful/checkable and is explicitly justified as such.
+## Boundary Method — Four Signal Groups
 
-`Behavior Item ≠ Slice`. Several Behavior Items may be realized by one useful vertical Slice.
+The method is signal-based, not numeric.
 
-`INITIAL_VERTICAL` / `EXTENDING_VERTICAL` may be useful descriptive language but are not required classification enums.
+### Group 1 — Intent / Principal Result
 
-## Behavioral Coverage
+Ask:
+- What application/user intent does this behavior serve?
+- Is the intent distinct from an existing Feature?
+- What is the principal meaningful Result/result family?
+- Is this fundamentally a different Result or the same Result reached another way?
 
-Check both directions:
+Signals:
 
 ```text
-material current Behavior Item
-→ selected Slice
-  OR explicit deferred/outside position
+same intent + same principal Result family
+→ strong signal for one Feature/Slice
+
+distinct intent and/or fundamentally distinct Result
+→ strong signal for separate Features/Slices
 ```
 
-and:
+### Group 2 — Semantic Entry
+
+Ask whether this is a genuinely distinct semantic application invocation or merely another transport/input/entry adapter to an existing semantic operation.
+
+A button, URI, CLI option, REST endpoint, manual handoff or automatic trigger does not automatically create a Feature.
+
+### Group 3 — Realization Cohesion / Shared Structure
+
+Ask:
+- how much end-to-end realization is genuinely shared?
+- can variation localize as Slice Module / Slice Branch / Entry Adapter?
+- would splitting duplicate substantial behavior/orchestration/lifecycle/result handling?
+- would merging spread variant-specific branching through most of the path?
+- are shared parts real use-case realization or only generic infrastructure?
+
+### Group 4 — Development / Proof / Evolution Fitness
+
+Ask:
+- which boundary is easier to understand/change locally?
+- can most change remain within the Slice when the use case changes?
+- would unrelated Slices need edits because responsibility is smeared?
+- which boundary gives clearer local proof?
+- would splitting duplicate meaningful E2E proof?
+- would merging make proof excessively conditional?
+- what do selected known Evolution Steps suggest?
+
+## Candidate Boundary Shapes
 
 ```text
-selected Slice behavior
-→ grounded in Scenario behavior
+same Feature / same Slice
+same Feature + Slice Module
+same Feature + Slice Branch
+same Feature + Entry Adapter / Entry Variant
+separate Feature / separate Slice
+extract Shared Implementation Capability
+OPEN — insufficient Evidence
 ```
 
-A missing Behavior Item is a decomposition gap. A Slice that invents product behavior is not a valid implementation shortcut.
+For a material choice consider when it is useful, warning signs, proof implications, evolution implications and typical overuse.
 
-## Slice / Aggregate Independence
+## End-to-End Realization Discovery
 
-Vertical Slice boundaries and Domain/Aggregate boundaries are different axes.
+Ask:
+- What is the semantic application entry?
+- What typed semantic arguments/results cross it?
+- Which UI/entry adapter invokes it?
+- Which Feature-local orchestration belongs in the Slice?
+- Which Domain owners are invoked?
+- Which repositories/persistence owners are used?
+- Which Shared capabilities are real dependencies?
+- Which external side effects occur?
+- Where can partial failure/uncertainty exist?
+- Where does the meaningful Feature Result become true?
+- What presentation/result mapping is needed?
+
+Reusable candidates:
+- one Slice should make one Feature's complete meaningful path understandable end to end;
+- prefer a simple semantic application-service boundary;
+- do not split frontend/backend/database into separate Slices merely by layer;
+- keep use-case-specific policy in the Slice;
+- extract Shared capability only for genuinely reusable non-end-to-end meaning.
+
+## Application Service / Dependency Direction
+
+Ask whether public Slice boundaries use semantic typed inputs/results; whether dispatcher/mediator ceremony solves a real need; whether infrastructure can be replaced at a semantic seam when proof/evolution requires it; and whether dependency direction keeps use-case policy independent of incidental mechanism.
+
+Prefer semantic operations over generic dispatch unless generic dispatch is an actual selected capability. Do not create an interface for every class without a boundary reason.
+
+## Side Effects / Failure / Recovery / Retry
+
+Ask:
+- which effects are local/reversible?
+- which external effects may be uncertain?
+- what must be persisted before irreversible/uncertain effect?
+- how does retry avoid duplicate effects?
+- what observation reconciles uncertainty?
+- what state proves an effect already happened?
+
+Reusable candidates:
+- fence external effects with enough authority/evidence to avoid stale/foreign action;
+- represent uncertainty explicitly when an effect may have happened but is unproven;
+- reconcile before repeating uncertain non-idempotent effects;
+- prefer exact semantic identity/evidence over generic progress flags.
+
+Candidate mechanisms: idempotent operation, idempotency key, write-ahead uncertainty state, expected-version/lease, reconciliation/observation, compensation, transactional local mutation, durable journal.
+
+## Change Locality / Shared Extraction
+
+Ask whether several Slices change because the same reusable responsibility is duplicated, whether that responsibility has coherent reusable meaning, and whether extraction reduces coupling or creates a central god capability.
+
+Optimize Slice independence for locality of responsibility/change, not dependency absence. Extract `TM-SHARED-IMPLEMENTATION-CAPABILITY` only when genuine shared meaning and consumer need exist.
+
+## Proof Boundary
+
+Ask:
+- what whole-Feature path should integration proof exercise?
+- which expensive external boundaries may be fake/in-memory?
+- which real Domain behavior should remain real?
+- what forbidden effect must be asserted?
+- which recovery/retry path is correctness-critical?
+- what branch convergence must be proven?
+
+Feature integration proof should enter through the semantic application boundary and assert meaningful Feature result, important effects and forbidden effects rather than private call sequence.
+
+## Evolution Fitness
 
 ```text
-one Slice
-→ may use several Aggregates/domain concepts
-
-one Aggregate/domain concept
-→ may be used by several Slices
+known selected Step
+→ ask whether the Slice can evolve locally
+→ prefer module/branch/adapter/shared extraction when healthy and actually needed
+→ Forced Migration only when current structure cannot reasonably reach the target
 ```
 
-Reject `one Slice = one Aggregate` as an automatic rule.
+Known change is evidence, not current future-scope implementation.
 
-The canonical planning relation is `Slice → Uses → Aggregate/domain concept`. Generated inverse views need not be persisted as duplicate authority.
+## Two Evidence Depths
 
-## DATA / Screen / Cross-Cutting Relations
+### During Feature formation
 
-Map only relations useful to implementation planning:
+Use mainly intent/result boundary, semantic-entry vs transport distinction, rough realization cohesion, likely module/branch/adapter shape, Shared signal, proof/change-locality signal and known Evolution pressure. Do not force exact class/method mapping.
 
-- DATA used/produced/changed when material;
-- related Screen meaning without taking Screen topology ownership;
-- shared Cross-Cutting applicability without transferring canonical ownership.
+### During Slice Discovery / owner review
 
-Frontend realization stays within the normal vertical Slice when it is feature-local.
+Walk the whole concrete path and repeat the same method with stronger evidence. The outcome may confirm, module, branch, split, merge or reframe the Feature/Slice boundary through normal Proposal/revalidation.
 
-## Dependency vs Source
+## Output / Disposition
 
-A technical dependency/order constraint is not automatically a semantic Source.
-
-Check that implementation sequence reflects real dependency, value/risk/learning or readiness rather than arbitrary technical layer order.
-
-## Strategy Owner Slots
-
-For `TM-SLICE-STRATEGY`, verify that each selected Slice has stable semantic owner identity/addressability.
-
-The owner may be inline, linked or separately materialized. Semantic Slice identity does not imply one file per Slice.
-
-`RU-SSTRAT-03 Realization Owner Bridge` coordinates Slice/Cross-Cutting semantic identity/addressability and representation/Target links only. It does not create a bounded `TM-IMPLEMENTATION-SLICE` Target; normal Target Formation remains authoritative when independently bounded implementation planning is material.
-
-## Runtime Path Proportionality
-
-`RU-SLICE-03 Runtime Path` is optional. Keep it only when runtime sequence/state/failure/async/transaction/coordination meaning materially affects understanding or a decision.
-
-Do not use it as a class/method inventory, and do not maintain a separate `Codebase Integration Path` Result Unit. Exact current code topology remains code/Exact Realization authority.
-
-## Evolution Integrity
-
-For `RU-SLICE-04 Evolution Steps` check:
-
-- named future increment is grounded in accepted Scenario/Strategy future meaning;
-- the Step belongs to this Slice rather than a shared Cross-Cutting owner;
-- Domain changes name only affected Domain objects/operations;
-- `Implementation Outlook` contains resolved target-specific consequences, not a duplicate Decision/Idea log;
-- another Step is referenced as `Depends on / After` only for a real dependency;
-- prepared seams/ports pay for accepted/planned variation rather than imagined futures.
-
-Cross-Cutting shared change remains in the Cross-Cutting owner's own Evolution Step; a Slice stores only local impact/reference.
-
-## Typical Findings
-
-Typical Finding Candidates include:
-
-```text
-fake horizontal Slice
-Behavior coverage gap
-Slice invents unowned product behavior
-unhelpful one-Behavior-item-per-Slice atomization
-one-Slice-one-Aggregate coupling assumption
-missing Slice owner addressability
-shared concern hidden inside a vertical Slice
-dependency mistaken for Source
-future pressure prematurely converted into architecture/Slice
-Strategy and detailed Slice realization no longer agree
-```
-
-## Finding Contract
-
-A material finding may expose proportionally:
-
-```text
-Meaning
-Affected Unit(s) / relations — when known
-Evidence / rationale
-Materiality hint — optional
-Likely semantic owner — optional hint
-Suggested lifecycle consequence — optional hint
-```
-
-Core [`Finding Disposition`](../../../../idtspe-core/shared/finding-disposition-contract.md) resolves actual State/lifecycle/owner consequences.
-
-This Lens does not define new Result Units or mutate accepted owners directly.
-
-## Typical Consumers
-
-Slice Implementation Strategy, Implementation Slice, related Screen/Cross-Cutting/UI realization planning.
-
-## Artifact / File Implications
-
-`NONE_DIRECT / NO_DISTINCT_SUPPORTING_ARTIFACT`.
-
-`TM-SLICE-STRATEGY` owns the Slice portfolio/domain relation/semantic-owner-register representation through its own Artifact Proposals. When Target Formation selects/reuses a bounded `TM-IMPLEMENTATION-SLICE` Target, that Target owns detailed Slice planning meaning. This Lens evaluates integrity and must not create or duplicate either owner.
-
-Generated inverse relation maps and code-realization mirrors should not be persisted merely for convenience when they can be derived reliably.
+The Lens may KEEP, REFINE, CHALLENGE or leave OPEN a boundary, surface Shared/Domain pressure or produce Finding/Proposal pressure. It does not directly mutate accepted Feature/Slice owner meaning.
 
 ## Guards
 
 ```text
-Slice cannot redefine Scenario truth for implementation convenience
-Behavior Item ≠ Slice
-Slice ≠ technical layer
-Slice ≠ Aggregate
-shared concern applicability ≠ Slice ownership
-semantic Slice owner ≠ mandatory Slice file
-planned relation map ≠ authoritative current code mirror
-Runtime Path ≠ mandatory code call map
-Slice Evolution Step ≠ Cross-Cutting evolution owner
+vertical Slice ≠ technical layer
+Slice independence ≠ zero dependencies
+entry adapter ≠ new Feature automatically
+shared code ≠ Shared Capability automatically
+proof ≠ private call-sequence lock-in
+Lens decision pressure ≠ direct owner mutation
 ```
 
-## Composition
+## Reusable Guidance Semantics
 
-Dependency/change and quality/observability Lenses may join when material. DDD Lens evaluates broad/shallow Domain/Aggregate boundaries in Slice Strategy. UI Lens may join detailed Slice work when spatial/frontend realization is materially in scope.
+This Lens follows `../../shared/reusable-guidance-model.md`: reusable questions / `RG-*` / `RR-*` / `RRC-*` / patterns are discovery guidance only; selected owner-local `IR-*` meaning is independently approved and never live-inherits later reusable-guidance edits.
 
-## Escalation / Revalidation
+## Behavioral Coverage
 
-Detailed Slice planning or implementation Evidence may challenge Strategy decomposition or Domain/Aggregate relations.
+Preserve the old Strategy bidirectional check without a Strategy Target:
 
-Surface the narrow Finding Candidate; Core Finding Disposition decides the actual State/owner/lifecycle consequence, including whether `RU-SSTRAT-01`, `RU-SSTRAT-02`, a Slice owner, Scenario owner or another semantic owner receives bounded revalidation.
+```text
+material accepted Feature behavior
+→ selected Slice responsibility OR explicit deferred/outside position
+
+selected Slice behavior/result claim
+→ grounded in accepted Feature behavior/result
+```
+
+A coverage gap is a Finding; implementation planning must not invent product behavior.
+
+## Owner / Addressability Bridge
+
+Each durable Slice/Shared owner keeps semantic identity independent of file topology.
+
+The profile may maintain a derived/working relation view:
+
+```text
+Feature/BR → Slice
+Slice → Domain owner
+Slice IR → Shared binding
+owner identity → current representation
+```
+
+This is coordination/navigation, not a semantic Result owner.
+
+## Finding Contract
+
+Material findings may include:
+- wrong Feature/Slice boundary;
+- horizontal-only decomposition;
+- missing behavior coverage;
+- ungrounded Slice claim;
+- poor change locality;
+- misplaced Domain/Shared responsibility;
+- side-effect/retry/uncertainty weakness;
+- proof boundary weakness;
+- Evolution pressure.
+
+Route them through Core Finding Disposition to the natural owner.
+
+## Typical Consumers
+
+Feature formation, Slice Discovery, durable Slice owner, Shared extraction/classification, Domain interaction review, Evolution review and implementation/proof planning.
 
 ## Knowledge Basis
 
-No separate external Knowledge Basis is required for normal use.
+Primary reusable theory bridge:
 
-Core operational principles are:
+- [`../../shared/reusable-guidance-model.md`](../../shared/reusable-guidance-model.md) for contextual use of reusable guidance;
+- [`../../../../../../tools/replacement-package-app/methodology-guidance/reusable-vertical-slice-discovery.md`](../../../../../../tools/replacement-package-app/methodology-guidance/reusable-vertical-slice-discovery.md) as the R2 Vertical Slice source corpus retained for migration provenance/coverage;
+- [`../../shared/programming-principles/README.md`](../../shared/programming-principles/README.md) for selective principle drill-down when boundary, state, failure, dependency or execution triggers are material.
 
-- useful/checkable behavior shapes Slices;
-- implementation decomposition must remain grounded in Scenario meaning;
-- Slice and Aggregate boundaries are independent;
-- representation follows semantic ownership rather than one-file-per-entity convention.
+Accepted Feature/Domain/Shared/Evolution meaning and current implementation evidence are Analysis Surface/Target Inputs, not Knowledge Basis.
 
-Current code/domain/scenario facts are Inputs; this Lens owns only the verticality/integration evaluation perspective.
+## Artifact / File Implications
+
+`NONE_DIRECT` by default.
+
+Working Slice Discovery is non-persistent by default. Durable Slice/Shared owner representation is resolved by the Core Artifact Boundary Lens. A cross-Slice coverage/map view may be generated/embedded when independently useful but remains derived.
+
+## Composition / Escalation
+
+Compose with DDD for semantic Domain ownership, IR Discovery for durable constraints, Programming Principles knowledge for generic implementation quality, UI/spatial for frontend realization, Evolution for known change, Simplicity for cost and Test Proof for proof quality.

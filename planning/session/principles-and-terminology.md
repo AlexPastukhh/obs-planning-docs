@@ -1,184 +1,96 @@
-# Session Principles & Terminology
+# Session Interaction Principles & Terminology
 
-This file defines generic active-session vocabulary and stable rules.
+This file defines stable **generic USER↔AI interaction** semantics. Planning/methodology semantics are owned by Documentation + IDTSPE Core and active profiles.
+
+## Ambient Interaction Contract
+
+The **ambient interaction contract** is the small set of Session rules that governs USER↔AI interaction across the current working context once loaded at session bootstrap or context restoration.
+
+It is inherited by commands and methodology work; it is not a semantic owner and is not a mandatory navigation hop. Commands route directly to their current semantic owners while remaining subject to these interaction rules.
 
 ## Session
 
-A **Session** is the current bounded interactive work context in which participants discuss, plan, decide, research, review, produce results, or coordinate actions.
+A **Session** is the current bounded interactive context between USER and AI.
 
-A Session does not imply a particular planning methodology.
+A Session is not a planning ontology and does not imply a second `Session State`, `Session Workflow`, or `Session Checkpoint` beside the active methodology.
 
-## Session Concern
+## Work Step
 
-A **Session Concern** is what the Session is currently substantively working on.
+A **work step** is a temporal/action segment selected by AI inside work the USER already requested.
 
-It may have a broader parent concern and a narrower current concern when that helps orientation.
-
-A Session Concern is not automatically:
-
-- a repository scope;
-- a file;
-- a methodology Target;
-- a persisted folder.
-
-Those may represent or support the concern when useful.
-
-## Session Workflow
-
-A **Session Workflow** is the situation-specific way the current work is being conducted.
-
-It may include, proportionally:
-
-- Broad Discussion;
-- planning;
-- research;
-- reading repository documentation;
-- applying a reusable methodology;
-- asking or resolving questions;
-- making decisions;
-- producing artifacts;
-- subplanning;
-- Checkpoints;
-- persistence;
-- operational actions.
-
-The workflow is not required to instantiate a saved Process exactly.
-
-### Situation-First Principle
+It answers proportionally:
 
 ```text
-Situation
-→ Session Concern
-→ situational Session Workflow
-→ relevant repository guidance when useful
-→ contextual adaptation
+what meaningful thing is AI doing now?
+what useful result should this step establish?
+what was established?
+what remains unresolved?
+what is the next natural step?
 ```
 
-The situation owns the Session Workflow.
+A work step is not a planning level, Target, State Unit or Checkpoint.
 
-Repository documentation informs the workflow. It does not dictate it automatically.
+For substantial work, numbered steps are useful. Completing an ordinary step does not create an approval gate; AI continues automatically while the next step remains inside the authorized task and no real gate exists.
 
-## Session State
+## Progress Update
 
-**Session State** is working meaning that is useful to preserve so the work can be continued, reviewed, handed off, or resumed.
+A **progress update** is a transient interaction signal used during a long-running step so the USER can see meaningful partial progress and redirect when useful.
 
-Session State is intentionally free-form.
+It is not semantic State, Evidence, a Checkpoint, a Proposal, or an approval request.
 
-It may contain:
+Do not narrate every tool call/file read. Report meaningful methodology/work progress only.
 
-- a plan or subplan;
-- scope/current concern;
-- questions;
-- ideas;
-- risks/problems;
-- decisions;
-- evidence/research;
-- findings;
-- references;
-- Checkpoints;
-- local methods/contracts;
-- results from a selected methodology;
-- any other working meaning that is useful to retain.
+## USER Steering
 
-When a methodology is selected, its own semantic units may be stored as Session State without losing their methodology-specific meaning.
+The USER may redirect, amend, narrow, broaden, stop, change desired depth, answer several open items together, or select/reject/defer material choices within their authority.
 
-### State Unit
+AI re-evaluates affected methodology work rather than forcing an earlier path after the situation changed.
 
-A **State Unit** is any coherent piece of Session State that is useful to retain or work with.
+## AI Proposal
 
-A State Unit may exist in the current working context before persistence. Persistence is a situational representation/continuation action, not what makes the meaning Session State.
+An **AI Proposal** is the lightweight conversational surface used to make an intended AI change/action explicit before execution when proposal-first visibility is useful or required.
 
-A State Unit does not require one file.
+An AI Proposal is not automatically a formal IDTSPE Proposal State Unit and is never accepted merely because AI proposed it.
 
-One file may contain many units, and one substantial unit may use several files.
+When material candidate meaning needs addressability/lifecycle/review, IDTSPE Core may represent/promote that meaning as a formal `Proposal` State Unit.
 
-### Representation Freedom
+## Real Gate
 
-Session State representation follows the working need.
+A **real gate** is a condition that requires USER input/approval before AI may continue the affected branch.
 
-A simple concern may use one file.
+Typical real gates include:
 
-A larger concern may split into several files or nested folders. A substantial point in a broader plan may receive its own subplan/folder.
+- a material USER-owned semantic choice that cannot be resolved from existing authority;
+- required authorization before repository/file/application/methodology mutation;
+- a newly discovered branch outside the USER-authorized task scope;
+- an explicit USER-requested stop/review/approval boundary.
 
-Do not impose one-file-per-question, one-file-per-decision, or one-file-per-methodology-unit rules.
+These are **not** gates by themselves:
 
-## Guidance Orientation
+- starting the next ordinary work step;
+- moving between planning depths;
+- creating a Target or State Unit when the current Use Case/component contract makes it appropriate;
+- performing a situational Integration Checkpoint when it is already inside authorized planning work;
+- scanning a registry or applying an already-authorized methodology component.
 
-**Guidance Orientation** is the set of repository documentation currently being treated as useful reusable guidance for the Session.
+## Authorization Boundary
 
-It may include:
+The USER's instruction authorizes the ordinary analysis/planning work needed to satisfy that instruction, including natural internal work-step progression.
 
-- Use Cases;
-- Processes;
-- Principles & Terminology;
-- methodologies/profiles;
-- templates/examples;
-- theory/knowledge;
-- other relevant semantic owners.
+Actual mutation must stay inside the authorized mutation scope. A methodology recommendation never grants mutation permission by itself.
 
-Several owners may be relevant at the same time.
+## Relationship To IDTSPE
 
-A selected orientation is a working choice, not automatic authority over the Session Workflow.
-
-## Guidance Recommendation
-
-A **Guidance Recommendation** is meaning from a selected/relevant documentation owner that may help the current step.
+IDTSPE is the always-active planning/resolution shell in this methodology environment, but it is proportional:
 
 ```text
-recommended
-≠ selected
-
-selected
-≠ automatically executed
+IDTSPE active
+≠ Target required
+≠ State Unit required
+≠ Lens required
+≠ Target Module required
+≠ Checkpoint required
+≠ persistence required
 ```
 
-A participant may apply, contextualize, defer, reject, or use a recommendation only as inspiration.
-
-## Session Concerns & Guidance Usage
-
-**Session Concerns & Guidance Usage** is an optional observable section in a chat response.
-
-Its purpose is to make the current work orientation visible without requiring the reader to reconstruct it from the whole conversation.
-
-It may show proportionally:
-
-- current Session Concern;
-- Guidance Orientation;
-- what selected documentation recommends now;
-- contextual applicability assessment;
-- selected/contextual guidance;
-- Session State proposals;
-- Session Workflow/action options;
-- questions or decisions requiring attention.
-
-The section may be omitted when no useful session-level information would be added.
-
-It may be one or two lines when orientation is stable.
-
-It is not a semantic owner and it is not a mandatory response schema.
-
-## Broad Discussion
-
-**Broad Discussion** is ordinary conversational reasoning, exploration, argument, clarification, brainstorming, or critique.
-
-Material meaning may remain only in discussion until it is useful to integrate into Session State.
-
-Broad Discussion is not automatically persisted state.
-
-## Checkpoint
-
-A **Checkpoint** is a coherent Session State snapshot/representation produced when material current work is integrated.
-
-A Checkpoint may record accepted/current meaning, unresolved items, state structure, and useful continuation points.
-
-**Checkpoint Integration** is the action/process that produces or updates a Checkpoint.
-
-Checkpoint is Session State. It is not a second persistence ontology.
-
-## Persistence Boundary
-
-Session semantics do not prescribe a transport.
-
-GitHub, a separate Session State repository, a replacement package, another storage system, or no persistence at all may be used according to the situation.
-
-Transport and synchronization do not own Session meaning.
+The active IDTSPE Use Cases and component applicability/materiality contracts decide what structure is useful now.

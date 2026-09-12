@@ -21,4 +21,4 @@ One concrete repository update plan exists with the affected current owners/path
 
 - [`../commands/plan-file-update.command.md`](../commands/plan-file-update.command.md) — current explicit Pre-Update command route.
 
-IDTSPE Core `TM-PRE-UPDATE-PLAN` may be used as a methodology-specific way to perform pre-update planning when IDTSPE is selected; it does not own this repository capability.
+Within the always-active IDTSPE work context, Core `TM-PRE-UPDATE-PLAN` is the reusable methodology component for a separately useful Pre-Update result; this repository Use Case supplies repository-specific file-transition semantics and does not create a competing planning runtime.

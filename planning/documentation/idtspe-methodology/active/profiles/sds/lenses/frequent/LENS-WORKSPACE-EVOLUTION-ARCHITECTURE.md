@@ -1,285 +1,177 @@
-# LENS-WORKSPACE-EVOLUTION-ARCHITECTURE — Evolution / Change Isolation
+# LENS-WORKSPACE-EVOLUTION-ARCHITECTURE — Evolution Impact / Change Isolation
 
-Compatibility Lens ID/path: `LENS-WORKSPACE-EVOLUTION-ARCHITECTURE`  
-Legacy short alias: `L5`  
-Semantic name: **Evolution / Change Isolation**  
-Activation: `FREQUENT_CONDITIONAL`
+Role: reusable all-Target Evolution lens  
+Applicability: when known selected Evolution may materially change the current owner/boundary/realization decision
 
 ## Purpose
 
-Evaluate accepted/planned/probable future changes and owner-local Evolution Steps
-against the current Target/implementation so related evolution remains feasible
-and unrelated change directions do not become accidentally coupled.
+Evaluate whether current selected meaning can evolve through known Steps with coherent, localized change and without avoidable migration or premature implementation of future behavior.
 
-This Lens no longer consumes or owns a canonical Workspace Evolution Map and does
-not own a Current Global Architecture Position.
-
-## Applicability Gate
-
-Activate when:
-
-- Scenario `RU-SCEN-03` materially affects current design;
-- Strategy has material `May Change / Extend` or planned future Slices;
-- Slice/Cross-Cutting Evolution Steps exist;
-- a candidate introduces/prepares a seam/port/variation mechanism for future use;
-- future changes may collide through shared Domain/Cross-Cutting/dependency surfaces;
-- an accepted future assumption may have become stale.
-
-Do not activate merely because any software may change someday.
-
-## Target Inputs / Evidence
-
-Use proportionally:
-
-```text
-Scenario RU-SCEN-03
-Strategy RU-SSTRAT-01 May Change / planned future Slice
-Strategy RU-SSTRAT-02 Slice → Domain use
-Strategy RU-SSTRAT-03 owner bridge
-Slice RU-SLICE-04 Evolution Steps
-Cross-Cutting RU-XC-05 Evolution Steps
-current implementation / code Evidence
-accepted Decisions
-L4 current dependency/change findings
-L6 proof/operation findings when relevant
-```
+This Lens does not own Evolution plans. `TM-EVOLUTION-STEPS-MAP` routes to `TM-EVOLUTION-STEP`; natural Target owners own their current durable meaning.
 
 ## Analysis Surface
 
-Primary:
-- material owner-local future-change projections/Evolution Steps;
-- candidate Ideas/Decisions whose current structure is justified by future change.
-
-Conditional:
-- Slice→Domain map;
-- Cross-Cutting applicability;
-- current implementation dependency/change surface.
-
-Relevant Core State:
-Questions, Ideas/Branches, Q/R/P, Decisions, Evidence, Revalidation.
+**Primary:** current Target/Result Unit choices whose owner boundary, realization or compatibility may be affected by selected known Evolution.  
+**Conditional:** relevant Evolution Step target states, Steps Map relations, owner/dependency relations, current implementation/Evidence and accepted Decisions.  
+**Context:** active Use Case/Target/profile and current Entry State.
 
 ## Supported Operations
 
 ```text
-ANALYZE
-CHECK
-REFINE
-CHALLENGE
+ANALYZE   — trace known Evolution pressure and change locality
+CHECK     — test current choice against Entry/Target-State and migration constraints
+REFINE    — improve a current owner/boundary/seam choice without changing semantic authority
+CHALLENGE — surface a Finding Candidate when the current choice is materially inconsistent or needlessly migration-prone
 ```
 
-Lens operations remain evaluation/discovery. Target result mutation and lifecycle
-consequences remain Core Finding Disposition/Resolution responsibilities.
+Registry selection is not execution; confirm this Analysis Surface is material before applying the Lens.
 
-## Operational Evaluation
+## Inputs
 
-For each material future change / Evolution Step ask:
+- current Target / Result Unit under review;
+- Steps Map registry/routing;
+- relevant selected Evolution Step target states;
+- actual current implementation/Evidence when realization pressure matters;
+- known owner/dependency boundaries.
 
-1. What accepted future behavior/change is this based on?
-2. Which current semantic owners legitimately need to change?
-3. Which Domain objects/operations used by this Slice are involved?
-4. Which other Slices use those same Domain objects?
-5. Would this change force unrelated Slice changes? Why?
-6. Which Cross-Cutting owners are involved, and which shared changes belong there?
-7. Does this Step truly depend on another named Evolution Step?
-8. Can independent future changes remain independent?
-9. Is a seam/port/type-variation boundary needed now?
-10. If such a seam already exists, does this planned change actually reuse it?
-11. Is preparation needed now, or is future change cheap enough to defer?
-12. Does an abstraction support accepted/planned variants or only an imagined future?
+## Operational Evaluation Contract
 
-## Change Isolation Test
-
-For suspicious coupling ask:
-
-> If future change X happens, why must owner Y change?
-
-A valid reason should be semantic/architectural, not accidental code placement.
-
-### Domain pressure query
+### 1. Lazy relevance scan
 
 ```text
-affected Domain object
-→ Strategy RU-SSTRAT-02 finds all Slices using it
-→ inspect those Slice Evolution Steps
-→ compare expected changes
+current Target concern
+→ inspect Steps Map for materially relevant selected Steps
+→ if none: record no material known-Evolution pressure and stop
+→ if relevant: load only those Step target states
 ```
 
-This makes Domain future pressure derivable without a second canonical Domain
-Evolution Map.
+### 2. Entry/target-state consistency
 
-## Prepared Seam / Port Check
+For each relevant Step ask:
 
-A prepared seam may be justified even with one current implementation variant when
-an accepted/planned Evolution Step resolves that preparation as useful.
+- what does the Step expect already to exist at Entry State?
+- does current planning create, preserve or contradict that prerequisite?
+- is predecessor-created meaning correctly treated as existing in the later Step?
+- is a planned predecessor being mistaken for realized readiness?
 
-Check:
+### 3. Change isolation
+
+Ask:
+
+- which natural owners change in the Step?
+- can the transition remain local to those owners plus explicit bindings?
+- would current design force unrelated owners to change?
+- can Expansion / local Refactoring reach the target coherently?
+- is a Forced Migration genuinely necessary or only caused by avoidable current coupling?
+
+### 4. Current-scope discipline
+
+Known Evolution is design evidence, not permission to implement future behavior now.
+
+Prefer the simplest current design that preserves a healthy path to selected known change. Reject speculative generic seams unsupported by current or selected Evolution need.
+
+### 5. Impact disposition
+
+Lens output may be:
 
 ```text
-which named future Step it serves
-how that Step is expected to use it
-what current complexity/tax it adds
-whether the same future change is already cheap without it
-what should remain on the current/simple side of the seam
+KEEP current choice
+REFINE owner/boundary/contract
+CHALLENGE current choice through Proposal
+OPEN — insufficient Evidence
+Finding Candidate for another natural owner
 ```
 
-Reject speculative frameworks that have no accepted/planned user.
+There is no generic `TM-EVOLUTION-IMPACT`. Material impact is written where the natural owner/result needs it or returned through Proposal/Finding revalidation.
 
-## Prepare Now vs Defer
+## Questions
 
-Possible valid conclusions include:
-
-```text
-prepare a narrow seam now
-reuse an existing seam
-keep variation local to one owner
-move shared change to Cross-Cutting owner
-change Domain boundary
-explicitly defer preparation
-nothing special is needed
-```
-
-These are Lens findings/evaluation conclusions until normal Resolution accepts a
-Target-specific consequence.
-
-## Resolution Boundary / Implementation Outlook
-
-The Lens does **not** write:
-
-```text
-Evolution Step
-Implementation Outlook
-Generic Decision
-Workspace Evolution Map
-```
-
-Typical flow:
-
-```text
-Evolution Step / future-change driver
-→ material Question/Problem
-→ Ideas where alternatives exist
-→ L5 + L4 + Simplicity + Evidence evaluation
-→ Core Decision/derivation/direct accepted answer as appropriate
-→ Target Step Result projection
-→ Implementation Outlook
-```
-
-`Implementation Outlook` is resolved target-specific meaning owned by the Slice or
-Cross-Cutting Step, not Lens output.
-
-## Workspace-Wide Architecture
-
-A genuinely workspace-wide architecture question does not require a permanent
-WEUC Target.
-
-```text
-Finding Candidate
-→ Core Finding Disposition
-→ keep local Decision with natural owner
-  OR
-→ Target Formation creates/reuses a bounded Local Target Contract when the
-   cross-owner architecture problem has independent useful/revalidatable depth
-```
-
-Documentation / Representation may persist a compact cross-owner artifact if that
-meaning genuinely needs shared human-readable addressability. No global file is
-created merely because the question is architectural.
-
-## Typical Findings
-
-```text
-change-axis leakage
-accidental cross-Slice coupling
-shared Domain change with multi-Slice blast radius
-misplaced Cross-Cutting evolution
-missing variation point
-unjustified prepared seam
-premature abstraction
-real Evolution Step dependency
-stale future assumption / revalidation signal
-prepare-now vs defer conclusion
-```
-
-## Finding Contract
-
-A material finding may expose:
-
-```text
-future change / Step
-current affected owners
-Evidence / rationale
-change-isolation problem or opportunity
-candidate consequence / likely owner hint
-revalidation signal when relevant
-```
-
-Core Finding Disposition resolves accepted State/owner/lifecycle consequences.
-
-## Artifact / File Implications
-
-`NONE_DIRECT / NO_DISTINCT_SUPPORTING_ARTIFACT`.
-
-Evolution meaning is represented by its natural owner:
-
-```text
-Scenario future/change meaning
-Slice Evolution Steps
-Cross-Cutting Evolution Steps
-```
-
-A physically separate `<owner>.evolution.md` is a Documentation / Representation
-choice for the same owner under real pressure, not Lens-owned semantics.
-
-## Composition
-
-```text
-L4 → current dependency/change surface
-L5 → planned/probable future change interaction/isolation
-Simplicity → minimum sufficient current structure
-L6 → proof/observation/diagnosis/operation
-```
+- Which selected Steps are actually relevant to this Target?
+- What prerequisite meaning must already be realized?
+- Which owner should absorb the change?
+- Does the current boundary localize the known transition?
+- Would a module/branch/adapter/Shared extraction help for a real known need?
+- Is current abstraction supported by current/selected future evidence?
+- Does any `requires` cycle reveal a bad Step decomposition?
 
 ## Guards
 
 ```text
-future possibility alone ≠ architecture justification
-Lens finding ≠ Decision
-Lens ≠ evolution semantic owner
-no mandatory global evolution map
-no mandatory global architecture owner
-prepared seam must pay for accepted/planned evolution
+known future ≠ current behavior
+Evolution Lens ≠ Evolution owner
+impact analysis ≠ generic impact artifact requirement
+planned Step ≠ realized state
+no material relevant Step → stop proportionally
 ```
 
-## High-Level Example
+## Prepared Seam / Port Check
 
-Scenario says additional capture sources are planned.
+A seam/port/type-variation boundary may be justified by a selected known Evolution Step even with one current implementation variant.
 
-Strategy shows:
+Check:
+- which named Step it serves;
+- how that Step is expected to use it;
+- current complexity/tax;
+- whether future change is already cheap without it;
+- what remains on the current/simple side.
+
+Reject speculative frameworks with no current/selected-future consumer.
+
+## Prepare Now vs Defer
+
+Valid conclusions include:
+- prepare a narrow seam now;
+- reuse an existing seam;
+- keep variation local;
+- extract/reuse a Shared Capability;
+- change Domain/Slice boundary;
+- explicitly defer;
+- nothing special required.
+
+These are Lens findings until natural owner meaning is selected.
+
+## Resolution Boundary / Implementation Outlook
+
+The Lens does not write the Evolution Step, a generic Impact owner or a second architecture roadmap.
 
 ```text
-SL-CAPTURE
-  Uses CaptureItem
-  Uses SourceContext
-
-SL-REVIEW
-  Uses CaptureItem
+Step / current owner question
+→ Lens evaluation
+→ Finding / Proposal / Decision when material
+→ natural owner current consequence
 ```
 
-Candidate A puts source-specific branching inside `CaptureItem` everywhere.
-Candidate B keeps source acquisition/normalization near `SL-CAPTURE` while
-preserving stable `CaptureItem` meaning.
+Current implementation outlook belongs to the affected owner or transient working plan; future target state remains in the Evolution Step.
 
-L5 asks whether adding PDF capture should force `SL-REVIEW` or unrelated
-`CaptureItem` behavior to change. If not, it surfaces change-leakage pressure and
-a narrow local variation-boundary candidate. Simplicity then challenges whether a
-new abstraction is actually needed now. The accepted result may be a small seam,
-reuse of an existing boundary, or explicit defer/no-preparation.
+## Finding Contract
+
+Material findings should identify:
+- relevant Step / future pressure;
+- current affected owner(s);
+- current Evidence/rationale;
+- isolation/migration/seam problem;
+- likely natural-owner consequence;
+- revalidation signal.
+
+Core Finding Disposition resolves lifecycle/owner consequences.
 
 ## Knowledge Basis
 
-Reusable theory:
+Use knowledge selectively; these are theory/guidance dependencies, not current Target Sources or evidence:
 
-- change isolation follows accepted/planned change axes, not generic “future-proofing”;
-- shared semantic ownership and current dependencies remain separate evaluation dimensions;
-- prepare-now/defer decisions are evidence/plan dependent;
-- evolution assumptions are revalidated when actual Evidence changes them.
+- [`../../shared/programming-principles/README.md`](../../shared/programming-principles/README.md) for trigger-first principle selection rather than loading the whole corpus;
+- [`../../shared/programming-principles/guidance/design-and-structure.md`](../../shared/programming-principles/guidance/design-and-structure.md), especially `RG-PRG-KISS-YAGNI-EVOLUTION`, for prepare-now vs defer pressure;
+- [`../../shared/programming-principles/guidance/interfaces-boundaries-and-evolution.md`](../../shared/programming-principles/guidance/interfaces-boundaries-and-evolution.md), especially compatibility/versioning/migration guidance when transition shape is material;
+- [`../../../../../../tools/replacement-package-app/documentation-use-cases/evolution-planning.md`](../../../../../../tools/replacement-package-app/documentation-use-cases/evolution-planning.md) as R2 migration provenance/coverage input only, not as current IDTSPE/SDS authority.
+
+The Steps Map, selected Evolution Steps, implementation state and Evidence remain **Target Inputs/Evidence**, not Knowledge Basis.
+
+## Artifact / File Implications
+
+`NONE_DIRECT` by default.
+
+Persist only natural-owner/Step/Decision meaning that independently needs addressability. Do not create a Lens-output evolution document merely because analysis occurred.
+
+## Composition
+
+Compose with dependency/change impact, simplicity/economy, DDD, Vertical Slice, Programming Principles knowledge, IR Discovery and proof/operability Lenses as the current problem requires.

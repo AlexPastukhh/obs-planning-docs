@@ -11,7 +11,7 @@ Lens
   and/or Target Step Result Units
 ```
 
-A Lens may contribute explanatory Broad Discussion analysis and Key Points without creating any Unit. It may also discover materially actionable meaning concerning Evidence needs, Idea refinements, Q/R/P, comparison dimensions, Decision inputs, revalidation signals and supporting-artifact guidance. Only meaning that needs ownership/State/lifecycle disposition crosses the Finding Candidate boundary; Generic Core Finding Disposition resolves that destination. The Lens does not define Unit kinds or own disposition.
+A Lens may contribute explanatory Broad Discussion analysis and Key Points without creating any Unit. It may also discover materially actionable meaning concerning Evidence needs, Proposal refinements, Q/R/P, comparison dimensions, Decision inputs, revalidation signals and supporting-artifact guidance. Only meaning that needs ownership/State/lifecycle disposition crosses the Finding Candidate boundary; Generic Core Finding Disposition resolves that destination. The Lens does not define Unit kinds or own disposition.
 
 ```text
 Lens ≠ Target Module
@@ -31,6 +31,25 @@ Operational Evaluation Contract
 +
 Knowledge Basis
 ```
+
+## 1A. Relationship To Use Cases / Contextual Composition
+
+A Lens is a specialized methodology component reached from a Documentation/IDTSPE Use-Case Process or another canonical component route. It is **not** a functional Use Case and does not decide whether IDTSPE itself is active.
+
+```text
+Use-Case Process / methodology registry routing
+→ decides whether the Lens Registry should be consulted
+→ selects plausibly relevant Lens entry
+
+concrete Lens Applicability Gate
+→ confirms local applicability
+
+Lens Operational Evaluation Contract
+→ owns how to analyze/check/refine/challenge the selected surface
+```
+
+The fundamental situational question "how much methodology is useful now?" belongs to [`../shared/contextual-methodology-application-contract.md`](../shared/contextual-methodology-application-contract.md) + `UC-IDTSPE-COMPOSE-CURRENT-WORK`, not to a recursive meta-Lens.
+
 
 The Operational Evaluation Contract owns **how and when to look**. The Knowledge Basis explains **which principles/rules/theory/pattern knowledge make that evaluation credible**.
 
@@ -53,6 +72,10 @@ Knowledge Basis
 A Target Module may say **that** a Lens is required/conditional for its Target family. The Lens owns **what applying that perspective means**.
 
 If a local Lens becomes useful in a second Target family, review it for extraction.
+
+## Registry Selection Boundary
+
+A registry row is only lightweight routing metadata. Selecting a Lens row does not execute the Lens and does not force a Finding. Read/execute the concrete Lens body only when the active Use-Case Process and the Lens's own applicability gate make it relevant. `NO_MATERIAL_LENS` is a normal proportional outcome.
 
 ## 3. Activation Classes
 
@@ -418,11 +441,11 @@ Need grounding
 → Target / Scope
 → Source Contract
 → RQ / Question-Set Decision
-→ Ideas / Branches
+→ Proposals / Branches
 → Lens evaluation + Evidence
 → material implications surface as Finding Candidates
 → Core Finding Disposition
-→ accepted/refined State such as Idea / Q/R/P / Evidence / Answer Decision when warranted
+→ accepted/refined State such as Proposal / Q/R/P / Evidence / Answer Decision when warranted
 → Target projection
 → revalidation readiness
 ```
@@ -430,7 +453,7 @@ Need grounding
 Typical use:
 
 ```text
-L1–L3 → core checks across Target/Scope, RQ and Idea choice
+L1–L3 → core checks across Target/Scope, RQ and Proposal choice
 Documentation / Representation → required check when material output may persist
 L4 → structured dependency/change impact is material
 L5 → Workspace evolution/WEUC/architecture pressure/work-cost is material
@@ -476,12 +499,13 @@ supporting representation intrinsic to the Target result
 Example:
 
 ```text
-TM-TEST-STRATEGY
-→ optional TEST-STRATEGY.md when shared cross-owner proof policy is independently useful
+independently useful cross-owner proof coordination
+→ establish its natural semantic owner first
+→ optionally persist a small supporting proof-policy artifact when justified
 
 Concrete test class / setup / fixture / harness / helper topology remains code authority under
 TM-EXACT-REALIZATION. A generated/reference topology view is exceptional supporting representation,
-not an intrinsic Test Strategy result and not a hand-maintained shadow of code.
+not a generic Test Strategy Target result and not a hand-maintained shadow of code.
 ```
 
 ### Lens AG-* owns supporting / artifact-placement guidance for Lens findings
@@ -618,17 +642,17 @@ Lens Prompt ≠ RQ ≠ Q/R/P Question ≠ User Question
 
 ## 18. High-Level Composition Example
 
-Suppose a Scenario Target uses `TM-SCENARIO-PLANNING`. Required Core Lenses are checked, while Scenario boundary/behavior/decomposition checks run as the Target Module's own Evaluation rather than through a Scenario-specific Lens. The Lens Applicability Scan may additionally select Quality/Risk, Practical Evidence, L4 or another registered Lens when Scope/Sources/Evidence make it material; UI/DDD/Slice/Evolution/Test Lenses are not attached merely because those concerns are downstream consumers.
+Suppose a Scenario Target uses `TM-SCENARIO-PLANNING`. Required Core Lenses are checked when their corresponding material surfaces exist, while Scenario journey-composition work remains owned by the Target Module itself. Feature behavior remains Feature authority; the Scenario may only reference participating Feature results and compose actor/external links, order/branch/convergence, continuity and terminal Benefit. The Lens Applicability Scan may additionally select Quality/Risk, Practical Evidence, UI, Vertical Slice, Evolution, Test Proof or another registered Lens when the current Analysis Surface makes that perspective material. No Lens is attached merely because its topic could become relevant downstream.
 
 
 ## Migration Compatibility
 
-The new Lens contract separates `Analysis Surface + Lens operations + Findings` from Core Finding Disposition.
+The Lens contract separates `Analysis Surface + Lens operations + Findings` from Core Finding Disposition.
 
-Current conformance state after the SDS profile migration:
+Current conformance is **registry-driven rather than count-driven**:
 
 ```text
-all 6 SDS-specific reusable Lenses
+every Lens currently listed in the SDS Lens Registry
 → explicit Analysis Surface
 → explicit Supported Operations
 → explicit Finding Contract
@@ -637,6 +661,8 @@ Core generic Lens bodies
 → remain readable through their current Target Inputs / prompts / findings
   until a separate literal Core-Lens conformance pass is useful
 ```
+
+Mechanical registry/file parity and snapshot counts belong to [`../shared/active-methodology-mechanical-consistency-check.md`](../shared/active-methodology-mechanical-consistency-check.md), not to this semantic contract.
 
 Compatibility interpretation for any reusable Lens body not yet rewritten literally:
 

@@ -16,7 +16,7 @@
 // GENERATED FILE — DO NOT EDIT MANUALLY.
 // Runtime source: planning/documentation/tools/tampermonkey/chat-command-palette/src/**
 // GitHub command authority: planning/commands/*.command.md
-// GitHub Use-Case authority: current canonical Use-Case registries under planning/** (case-insensitive filename; legacy/historical compatibility indexes excluded).
+// GitHub Use-Case projection root: planning/documentation/use-case-registry-map.md -> mapped current scoped methodology Use-Case registries only.
 // seed/use-cases.json is the build-verified GitHub-backed Use-Case projection used for explicit Hard Reload.
 // GitHub UI-order source: planning/documentation/tools/tampermonkey/chat-command-palette/catalog-order.json
 // Local snapshot is the working cache; current Command/Use-Case catalogs are not embedded in this userscript.
@@ -552,11 +552,11 @@
   function buildSemanticBody(kind,definition,mode){
     const normalized=kind==='use_case'?normalizeUseCaseDefinition(definition):definition,marker=kind==='use_case'?'PLANNING_USE_CASE':'PLANNING_SEMANTIC_ENTRY',idField=kind==='use_case'?'use_case_id':`${kind}_id`;
     const lines=[`[${marker}]`,`${idField}:`,`  ${normalized.id}`,'',`${kind}:`,`  ${normalized.label}`,'','mode:',`  ${mode}`];
-    if(kind==='use_case')lines.push('','semantic_owner:','  Work in this Use Case as the current semantic planning unit. Neighboring responsibilities are inputs/integration context unless the selected owner route explicitly requires them.');
+    if(kind==='use_case')lines.push('','semantic_owner:','  Use this Use Case as the current functional methodology-use guide: decide which methodology/documentation actions and components are relevant to the current situation, then follow the selected owner route. The Use Case does not replace specialized Target Module, Lens, profile or repository semantics.');
     lines.push('','source_of_truth:',...(normalized.sources||[]).map((s)=>`  - \`${s}\``));
     if(kind==='use_case')lines.push('','route_resolution:','  Resolve this exact current Use-Case entry. Follow its current owner route and then the current owner links/read-order to every principle, workflow, template and integration rule materially defining this Use Case. Do not treat this Helper body as a frozen list of all future owner paths.');
     lines.push('','read_rule:',...readRule(mode,kind).map((x)=>`  ${x}`),'','instruction:',`  ${normalized.instruction}`);
-    if(kind==='use_case')lines.push('','permission:','  Semantic planning/read context only. Use-Case activation does not grant executable-command, repository-mutation, archive, commit or push permission.');
+    if(kind==='use_case')lines.push('','permission:','  Methodology-navigation/read context only. Use-Case activation does not grant executable-command, repository-mutation, archive, commit or push permission and does not itself perform specialized Target/Lens work.');
     lines.push('','user_target:',`  ${normalized.target}`,`[/${marker}]`);return lines.join('\n');
   }
   function buildSemanticEntries(useCases=[]){const definitions=normalizeUseCaseDefinitions(useCases);return{[SURFACES.USE_CASES]:definitions.map((d)=>({...d,adaptiveBody:buildSemanticBody('use_case',d,MODE.ADAPTIVE),fullBody:buildSemanticBody('use_case',d,MODE.FULL)}))};}
@@ -1126,6 +1126,9 @@
   function allNavigationRows(entries){
     const rows=[];
     for(const entry of entries||[]){
+      // `palette:false` means compatibility-only: keep the command resolvable by ID/alias,
+      // but never surface it as primary/related methodology navigation.
+      if(entry?.palette===false)continue;
       const primary=primaryNavigation(entry);if(primary)rows.push({entry,nav:primary,related:false});
       for(const nav of relatedNavigation(entry))rows.push({entry,nav:{...nav,related:true},related:true});
     }

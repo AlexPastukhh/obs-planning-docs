@@ -14,15 +14,16 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
     "спланируй домен",
     "план домена приложения"
   ],
-  "description": "focused Domain / Aggregate Modeling",
-  "meaning": "Run a bounded/deep Domain / Aggregate Modeling focus through TM-DOMAIN-DISCOVERY; this is the same recurring Target family as shallow/supporting Domain modeling, not a separate Domain Draft Target.",
-  "activeContextBehavior": "Resolve or reuse the natural current IDTSPE Target/context; infer CREATE/REFINE/EXTEND/REVALIDATE/REPAIR from current state. Do not create a fake Target when the module/lens gate fails.",
+  "description": "establish or revalidate one durable Domain semantic owner",
+  "meaning": "Run TM-DOMAIN-OWNER when one coherent Domain responsibility has independent durable ownership/review/revalidation value. TM-DOMAIN-DISCOVERY may supply transient Source material, but discovery does not become durable authority merely because it was performed.",
+  "activeContextBehavior": "Treat the explicit command as selected invocation intent inside always-active IDTSPE. Re-evaluate current Use-Case composition, resolve/reuse a natural Target/context only when useful, confirm the selected Target Module Entry Point/local applicability gate, and then resolve CREATE/REFINE/EXTEND/REVALIDATE/REPAIR from actual current Target state. Do not create a Target or Result Unit merely because the command exists.",
   "traversalReadMode": "Reuse current reliable IDTSPE/SDS governance; targeted refresh of the selected owner route when uncertain; full bootstrap only when no reliable sufficient governance context exists.",
   "ownerFiles": [
-    "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-DOMAIN-DISCOVERY.md",
+    "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-DOMAIN-OWNER.md",
+    "planning/documentation/idtspe-methodology/active/profiles/sds/lenses/reusable/LENS-DOMAIN-MODELING-DDD.md",
     "planning/documentation/idtspe-methodology/active/profiles/sds/shared/idtspe-command-surface-contract.md"
   ],
-  "expectedOutput": "Selected Domain / Aggregate Model at the depth justified by the current problem; dedicated prose artifact remains optional.",
+  "expectedOutput": "Durable Domain Owner Contract: RU-DOWN-01 Domain Semantic Contract and, only when material, RU-DOWN-02 owner-local IR-DOMAIN-*/PFR-* constraints; representation may remain implementation-native.",
   "permissionMode": "read-only-planning",
   "keyReminders": [
     "SDS is an IDTSPE profile, not a second runtime.",
@@ -30,11 +31,11 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
     "Do not infer a dedicated file from Target identity; use Documentation / Representation and P-14 when persistence is material.",
     "This command plans/reviews only; it does not edit repository files, implement, test, commit or push."
   ],
-  "userTarget": "<one bounded Domain / Aggregate modeling problem>",
+  "userTarget": "<one durable Domain responsibility, when independently useful>",
   "palette": true,
   "helperPresentation": {
-    "whenToUse": "Use when one Domain/Aggregate problem needs independently deep modeling/revalidation rather than only shallow Strategy support.",
-    "whatYouGet": "Selected Domain / Aggregate Model at the depth justified by the current problem; dedicated prose artifact remains optional.",
+    "whenToUse": "Use when discovered/current Domain meaning now needs an independently durable semantic owner for responsibility, identity/state/lifecycle/invariants/operations and revalidation.",
+    "whatYouGet": "A durable Domain semantic contract, plus only material owner-local implementation/proof-realization requirements; transient discovery stays Source, not authority.",
     "navigation": {
       "viewId": "SDS",
       "viewLabel": "SDS — IDTSPE Profile",
@@ -54,7 +55,7 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
     "methodologyRuntime": "IDTSPE",
     "profile": "SDS",
     "surfaceKind": "TARGET_MODULE_FOCUSED",
-    "targetModuleId": "TM-DOMAIN-DISCOVERY",
+    "targetModuleId": "TM-DOMAIN-OWNER",
     "lensId": null,
     "parentSurface": "application_domain.discover",
     "hostTargetPolicy": "CREATE_OR_REUSE_TARGET"

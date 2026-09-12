@@ -100,7 +100,7 @@ NEGATIVE REFERENCE
 TECHNICAL/INTEGRATION REFERENCE
 ```
 
-Reference products are Evidence and Idea generators, not semantic authority for our product.
+Reference products are Evidence and Proposal/candidate generators, not semantic authority for our product.
 
 ## What To Extract
 
@@ -126,13 +126,13 @@ Research may produce:
 
 ```text
 new Sources/Evidence
-Application Concept Ideas
-responsibility-boundary Ideas
+Application Concept Proposals
+responsibility-boundary Proposals
 build/buy/adapt/integrate alternatives
 Prototype questions
-Scenario/Screen Future Ideas
+Feature/Scenario/Screen future Proposal pressure
 new Q/R/P
 Step-02 challenge / revalidation triggers
 ```
 
-It does not automatically create accepted Features/Scenarios/Screens.
+It does not automatically create accepted Application/Feature/Scenario/Screen meaning; selected durable meaning still goes through the natural owner and normal Proposal/Decision flow.

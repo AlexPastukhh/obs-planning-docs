@@ -1,7 +1,7 @@
 # Plan Testing Strategy
 
-Status: active project command definition
-Scope: one concrete OBS Planning command route. Reusable behavior remains in linked owner files.
+Status: legacy compatibility command definition
+Scope: historical invocation alias redirected to current IDTSPE/SDS authority; hidden from the primary palette.
 
 [PLANNING_COMMAND_DEFINITION]
 {
@@ -14,27 +14,29 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
     "спланируй стратегию тестирования",
     "стратегия тестирования"
   ],
-  "description": "test strategy",
-  "meaning": "Run conditional TM-TEST-STRATEGY only when several semantic owners/Slices genuinely need one shared proof-layer/non-duplication/environment/harness strategy. Skip it when proof is local/obvious.",
-  "activeContextBehavior": "Resolve or reuse the natural current IDTSPE Target/context; infer CREATE/REFINE/EXTEND/REVALIDATE/REPAIR from current state. Do not create a fake Target when the module/lens gate fails.",
+  "description": "legacy compatibility shortcut for conditional cross-owner proof coordination",
+  "meaning": "Legacy Test Strategy shortcut. TM-TEST-STRATEGY is retired. Start with LENS-TEST-PROOF-EVIDENCE; keep proof local when possible. If several owners genuinely need shared proof coordination, represent it transiently through current Proposal/Decision/supporting guidance, or form TM-SHARED-IMPLEMENTATION-CAPABILITY only when a reusable implementation responsibility independently passes its existence gate.",
+  "activeContextBehavior": "Treat this legacy trigger as explicit compatibility intent inside always-active IDTSPE. Re-evaluate current Use-Case composition and route only to the current owners listed here; preserve local applicability/materiality gates and do not revive the retired Target family.",
   "traversalReadMode": "Reuse current reliable IDTSPE/SDS governance; targeted refresh of the selected owner route when uncertain; full bootstrap only when no reliable sufficient governance context exists.",
   "ownerFiles": [
-    "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-TEST-STRATEGY.md",
+    "planning/documentation/idtspe-methodology/active/idtspe-core/lenses/reusable/LENS-TEST-PROOF-EVIDENCE.md",
+    "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-SHARED-IMPLEMENTATION-CAPABILITY.md",
+    "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-SCENARIO-PLANNING.md",
     "planning/documentation/idtspe-methodology/active/profiles/sds/shared/idtspe-command-surface-contract.md"
   ],
-  "expectedOutput": "One compact Shared Proof Strategy or a valid no-Strategy result routing proof locally; concrete test classes/helpers remain code authority and no class-level test-realization registry is required.",
+  "expectedOutput": "Local proof route by default; only material transient cross-owner proof coordination or a separately justified Shared Capability. No Test Strategy Target.",
   "permissionMode": "read-only-planning",
   "keyReminders": [
-    "Use this Target only for independently useful shared testing responsibility/policy across several proofs; ordinary local proof does not require Strategy.",
-    "Testing Knowledge Basis owns reusable mechanics and LENS-TEST-PROOF-EVIDENCE owns proof-quality evaluation; do not copy them into the Strategy result.",
-    "Keep concrete test classes/fixtures/helpers as code authority; reference shared infrastructure only when the cross-owner relation is materially useful.",
-    "This command is read-only planning; literal test code/execution belongs to Exact Realization under its authority boundary."
+    "Legacy compatibility alias only; do not expose as a primary methodology surface.",
+    "The historical Target family named by this command is retired and must not be recreated by invocation.",
+    "Current Use Cases compose methodology use; current owner/Lens/Target contracts decide specialized work and materiality.",
+    "This command is read-only planning/review and grants no implementation, test execution, repository mutation, commit or push permission."
   ],
   "userTarget": "<one shared testing strategy>",
-  "palette": true,
+  "palette": false,
   "helperPresentation": {
-    "whenToUse": "Use only when multiple Slices/semantic owners need a shared proof policy, shared environment/harness decision, non-duplication boundary or selected critical E2E/Practical paths.",
-    "whatYouGet": "A small shared proof strategy, or an explicit conclusion that local proof/Exact Realization is sufficient.",
+    "whenToUse": "Only when using this historical command phrase/automation; prefer the current semantic owner or generic `idtspe` component dispatch for new work.",
+    "whatYouGet": "Local proof route by default; only material transient cross-owner proof coordination or a separately justified Shared Capability. No Test Strategy Target.",
     "navigation": {
       "viewId": "SDS",
       "viewLabel": "SDS — IDTSPE Profile",
@@ -53,11 +55,11 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
   "methodologyBinding": {
     "methodologyRuntime": "IDTSPE",
     "profile": "SDS",
-    "surfaceKind": "TARGET_MODULE",
-    "targetModuleId": "TM-TEST-STRATEGY",
+    "surfaceKind": "ORCHESTRATION",
+    "targetModuleId": null,
     "lensId": null,
     "parentSurface": null,
-    "hostTargetPolicy": "CREATE_OR_REUSE_TARGET"
+    "hostTargetPolicy": "RESOLVE_OR_REUSE_TARGET"
   }
 }
 [/PLANNING_COMMAND_DEFINITION]

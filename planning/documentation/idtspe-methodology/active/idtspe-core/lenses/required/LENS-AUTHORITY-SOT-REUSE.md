@@ -42,10 +42,10 @@ Would asking it again duplicate upstream planning?
 Which owner should answer it if unresolved?
 ```
 
-## At Idea Evaluation
+## At Proposal Evaluation
 
 ```text
-Does this Idea steal another owner's responsibility?
+Does this Proposal steal another owner's responsibility?
 Does it duplicate truth?
 Is implementation being mistaken for semantic authority?
 ```
