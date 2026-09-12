@@ -13,8 +13,8 @@ The current work has a situation-appropriate methodology orientation: applicable
 ## Process
 
 1. Start from the actual current situation and the useful result the USER is seeking; reuse already-known facts/constraints rather than manufacturing confirmation steps.
-2. Logically check the [`Methodology Use-Case Registry Map`](../use-case-registry-map.md), then scan the applicable scoped Use-Case Registry/Registries using their Situation/Result summaries.
-3. Open only the selected Use-Case owners and follow their Process. Several Use Cases may compose when their independently useful Results are all needed.
+2. Logically check the [`Methodology Use-Case Registry Map`](../use-case-registry-map.md), then scan the applicable scoped Use-Case Registry/Registries using their Situation/Result summaries. If this Use Case was itself selected by the same current applicability scan, this check refreshes orientation and discovers **additional** applicable capabilities; it does not recursively invoke this Use Case again while its current Situation/Result remain valid.
+3. Open only newly selected or insufficiently-known Use-Case owners and follow their Process. Reuse the current Process for already-active Use Cases while their authority/context remains trustworthy. Several Use Cases may compose when their independently useful Results are all needed.
 4. Reuse methodology material already current in context when trustworthy. Reread an owner when its authority/content may be stale or when the selected Process requires detail not currently known.
 5. Prefer semantic owners and registries over random browsing. Use README for structural navigation, Use-Case Registry for functional navigation, and specialized registries only when a selected Process routes to them.
 6. For each material recommendation, decide proportionally whether it is:
@@ -35,6 +35,9 @@ The current work has a situation-appropriate methodology orientation: applicable
 9. Load detail lazily. A registry match justifies opening the relevant entry/body; it does not justify opening every sibling component.
 10. Preserve methodology-use state only when continuation/review/revalidation benefits from it. Do not create an execution log of every file read.
 11. Re-evaluate the Use-Case Registry Map when a material recheck trigger occurs.
+
+
+This Use Case is not a mandatory wrapper around every IDTSPE operation. Presence of the Documentation scope in the Registry Map or a scan of this registry does not select this row automatically.
 
 ## Contextual Guidance Invariant
 

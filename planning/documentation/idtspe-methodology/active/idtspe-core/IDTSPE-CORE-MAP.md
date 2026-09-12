@@ -1,6 +1,7 @@
 # IDTSPE Core Map — Use-Case-Driven Proportional Runtime
 
-Status: active generic methodology map
+Status: active generic methodology map  
+Role: compact **conceptual/dependency projection** over canonical Core owners. This map helps orientation; it does not redefine the normative contracts linked below.
 
 ## 1. Functional Entry And Runtime Composition
 
@@ -26,16 +27,16 @@ smallest useful IDTSPE projection
 └─ targeted Revalidation
 ```
 
-Generic USER↔AI interaction remains in [`../../../../session/session-runtime-contract.md`](../../../../session/session-runtime-contract.md); it does not own planning State/Checkpoint/orchestration semantics.
+Canonical routing ownership: Documentation [`principles-and-terminology.md`](../../../../documentation/principles-and-terminology.md), [`use-case-registry-map.md`](../../../../documentation/use-case-registry-map.md), and Core [`shared/compose-current-work-use-case.md`](shared/compose-current-work-use-case.md).
 
 ## 2. Ownership Layers
 
 ```text
 Documentation methodology
-→ defines Use Case / Process / Registry / Principles / Template / Example meaning
+→ functional/routing type semantics
 
 IDTSPE Use Cases
-→ compose use of methodology components for the current situation
+→ compose methodology use for the current situation
 
 IDTSPE Core components
 → own generic planning/resolution mechanics
@@ -47,85 +48,97 @@ Target/result semantic owners
 → own selected concrete meaning
 ```
 
-Use Cases may reference Target Modules/Lenses/registries the same way they reference Processes/Principles/Templates/Examples: as reachable methodology components. They do not restate the components' specialized content.
+The map only shows these dependencies. Each linked owner remains authoritative for its own semantics.
 
-## 3. Work Context And Sparse State
+## 3. Work Context / State
 
 ```text
 IDTSPE Work Context
-├─ current Work Concern (context; State only when retention is useful)
+├─ current Work Concern
 ├─ Broad Discussion / Key Points
-├─ Core State Units when material
-├─ Target Result Units when a Target exists and units are material
-├─ Methodology Usage State when later continuation/revalidation benefits from it
+├─ material Core State Units
+├─ zero/one/several Targets
+│  └─ material Target Result Units
+├─ Methodology Usage State when continuation/revalidation value exists
 └─ physical representation only when useful
 ```
 
-Every State/Result Unit follows an applicability/materiality/omission rule. Missing optional meaning is not automatically a gap.
+Canonical owner: [`shared/idtspe-unit-and-target-step-result-model.md`](shared/idtspe-unit-and-target-step-result-model.md).  
+Broad Discussion / checkpoint interaction owner: [`shared/broad-discussion-and-integration-checkpoint-model.md`](shared/broad-discussion-and-integration-checkpoint-model.md).
 
 ## 4. Registry Navigation
 
 ```text
-Use Case Process
-→ IDTSPE Methodology Registry Directory
-→ relevant registry family only
+selected Use Case Process
+→ IDTSPE Methodology Registry Directory when specialized discovery is needed
+→ relevant registry family
 → concrete registry scan
-→ matching entry/body only
-→ component-local applicability check
-→ specialized work
+→ matched component owner
+→ component-local applicability/materiality
 ```
 
-The directory is supporting routing metadata, not a second root workflow.
+Canonical owner: [`shared/methodology-registry-directory.md`](shared/methodology-registry-directory.md). Generic `scan ≠ select ≠ execute` semantics belong to Documentation Principles & Terminology.
 
-## 5. Target Formation
-
-Target Formation remains reusable Core mechanics. It is invoked when a bounded Target would add useful responsibility/result/addressability.
+## 5. Target Formation / Target Modules
 
 ```text
 Broad Discussion
-→ no bounded owner/result needed
+→ bounded result/owner not independently useful
 → no Target
 
 OR
 
-material bounded result emerges
+bounded responsibility/result becomes useful
 → Target Formation
-→ reuse existing Target / form new Target / Local Contract / Target Module route
+→ existing Target / new Target
+→ reusable Target Module when a recurring contract fits
+   OR Local Target Contract
 ```
 
-No Target is a valid IDTSPE state.
+Canonical mechanics: [`shared/resolution-slot-and-target-formation-resolution-set.md`](shared/resolution-slot-and-target-formation-resolution-set.md).  
+Target Module semantics: [`shared/target-module-model.md`](shared/target-module-model.md).
 
-## 6. Lens System
+## 6. Lens System / Findings
 
-Core Lens registry owns generic perspective inventory/applicability summaries; concrete Lens owns its Analysis Surface/operations/findings/Knowledge Basis.
+```text
+Use-Case/component routing
+→ Lens registry scan when evaluation perspective may help
+→ concrete Lens applicability gate
+→ Lens operation over Analysis Surface
+→ explanatory analysis or Finding Candidate
+→ Core Finding Disposition when semantic consequence is material
+```
 
-Required/frequent Lens semantics remain proportional. "Required" means a material lifecycle must satisfy the perspective when applicable to that lifecycle point; it does not require manufacturing a Finding or visibly running every Lens on every turn.
-
-Programming Principles are **not** one SDS mega-Lens. SDS provides a compact principle registry + addressable theory blocks; natural existing Lenses/Target Production apply selected entries.
+Canonical Lens owner: [`lenses/LENS-MODEL.md`](lenses/LENS-MODEL.md).  
+Finding lifecycle owner: [`shared/finding-disposition-contract.md`](shared/finding-disposition-contract.md).
 
 ## 7. Proposal / Q-R-P / Decision / Evidence
 
-Formal `Proposal` is the Core candidate role. A lightweight AI Proposal may remain conversational until formal addressability/lifecycle helps.
-
-Accepted meaning uses normal Decision/Target/natural-owner authority. Findings do not bypass this path.
-
-## 8. Integration And Revalidation
-
 ```text
-local Broad Discussion continues
-↓ when whole-state view becomes useful
-UC-IDTSPE-INTEGRATE-CURRENT-WORK
-→ IDTSPE Integration Checkpoint
-
-Finding / Evidence / accepted change / redirect
-↓
-UC-IDTSPE-REVALIDATE-CURRENT-WORK
-→ narrow affected-owner/component scan
-→ preserve unaffected accepted meaning
-→ resume from narrowest useful point
+material driver
+→ candidate Proposal space
+→ review / comparison
+→ exact selection or unresolved/deferred state
+→ Decision / natural-owner authority when accepted
 ```
 
-Consistency review is a reusable Process inside integration/revalidation, not a separate runtime ontology.
+Canonical candidate/selection semantics: [`shared/proposal-and-decision-lifecycle-contract.md`](shared/proposal-and-decision-lifecycle-contract.md).  
+Optional Q/R/P priority/grouping: [`shared/qrp-priority-and-related-groups.md`](shared/qrp-priority-and-related-groups.md).  
+State kind/addressability semantics remain in the Unit model.
+
+## 8. Integration / Revalidation
+
+```text
+current meaning becomes distributed / review-handoff needs a coherent whole
+→ UC-IDTSPE-INTEGRATE-CURRENT-WORK
+→ Integration Checkpoint projection
+
+Finding / Evidence / accepted upstream change / redirect
+→ UC-IDTSPE-REVALIDATE-CURRENT-WORK
+→ narrow affected-owner/component re-entry
+```
+
+Canonical Processes: [`shared/integrate-current-work-use-case.md`](shared/integrate-current-work-use-case.md) and [`shared/revalidate-current-work-use-case.md`](shared/revalidate-current-work-use-case.md).
 
 ## 9. Exact / Pre-Update
 
@@ -135,30 +148,33 @@ separate reviewable mutation plan useful
 
 literal/directly-integrable result useful and upstream meaning sufficient
 → TM-EXACT-REALIZATION
-→ transient exact planning as needed
-→ RU-REAL-01
 ```
 
-Planning depth is profile/methodology guidance, not a USER gate or Session state machine.
+These are Target Module routes, not mandatory planning phases or USER gates.
 
 ## 10. Representation
 
-Semantic retention and physical placement remain separate. Artifact/Representation Lens + placement contract determine when/how state/result should materialize.
+```text
+selected semantic meaning
+→ representation/persistence question becomes material
+→ Documentation / Representation evaluation
+→ P-14 / TF-10 placement resolution
+```
 
-A Methodology Usage State record may describe meaningful methodology selections/recheck triggers but never requires a file-per-scan or execution log.
+Canonical generic interface: [`shared/artifact-placement-and-idtspe-response-contract.md`](shared/artifact-placement-and-idtspe-response-contract.md). A semantic Unit/owner never implies one dedicated file by itself.
 
 ## 11. Profile Boundary
 
-Core sees installed profiles through the profile registry and delegates to the selected profile directory.
+Core sees installed profiles through the profile registry and delegates specialized discovery to the selected profile directory. Profile components own profile semantics; Core continues to own generic planning/resolution mechanics.
 
-Current SDS profile contributes specialized Target/Lens/knowledge registries but no distinct runtime Use Cases.
+Current SDS profile contributes specialized Target/Lens/knowledge registries but no separate runtime Use Cases.
 
 ## 12. Scenario Map Boundary
 
-Methodology Use-Case Scenario Map is design/evaluation/orientation material:
+The Methodology Use-Case Scenario Map is design/evaluation/orientation material:
 
 ```text
 scenario → decompose through current UCs → find gaps/duplication → improve methodology
 ```
 
-It never owns runtime `when/why` routing when a Use Case/component contract already owns that decision.
+It never owns runtime `when/why` routing when a current Use Case/component contract already owns that decision.

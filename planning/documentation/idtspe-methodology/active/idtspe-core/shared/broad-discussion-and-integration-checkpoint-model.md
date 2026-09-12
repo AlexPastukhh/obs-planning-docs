@@ -1,7 +1,7 @@
 # Broad Discussion And Integration Checkpoint Model
 
 Status: active generic methodology owner  
-Purpose: define how ordinary multi-turn planning discussion, IDTSPE Proposals/Q-R-P/Evidence/Decisions, Target Result Units, Lenses and persistence interact without forcing a full structured state dump in every reply.
+Purpose: define the conversational/integration **interaction projection** for Broad Discussion and Integration Checkpoints without becoming the owner of Proposal/Decision lifecycle, Integration Use-Case Process, Lens semantics or physical placement policy.
 
 ---
 
@@ -96,139 +96,31 @@ Neither is automatically persisted semantic state.
 
 ---
 
-## 3. Proposals Inside Broad Discussion
+## 3. Proposals / Decisions Inside Broad Discussion
 
-An IDTSPE `Proposal` is a candidate answer/solution/approach, not every thought in prose.
+Canonical Proposal identity, driver relations, candidate bundles, review/selection outcomes, Decision trace/retention and revalidation semantics are owned by [`proposal-and-decision-lifecycle-contract.md`](proposal-and-decision-lifecycle-contract.md).
 
-Every material Proposal must be surfaced explicitly as an `Proposal` candidate and must carry an explicit `Addresses` relation to one or more decision drivers:
-
-```text
-current Target Goal / Desired Outcome context
-Question
-Problem
-```
-
-`Goal / Desired Outcome` here normally means the current Target/scope goal context; it is **not introduced as a new Generic State Unit kind** by this model. If Broad Discussion discovers an independently useful new goal that is not merely a refinement of the current Target goal, normal scope/Target Formation decides whether the current Target changes or another Target is needed.
-
-When a reusable Target Module is active, its Target Goal plus reusable Question/Problem driver candidates are the ordinary **starting driver set** for Proposal discovery, but they are not an exclusive gate. A material driver or Proposal may also come from:
-
-- the current situation or Sources;
-- a previous Target/checkpoint;
-- prior implementation or Evidence;
-- Broad Discussion itself;
-- explicit user input;
-- AI analysis/proposal;
-- a Lens Finding after normal Core Finding Disposition when disposition creates/refines that State.
-
-After intake into the planning work, these origins do not create different classes or lower-priority Questions/Problems/Proposals: external/new drivers are accepted on equal Core semantic footing with Module-supplied candidates and are integrated under the normal authority rules.
-
-If a proposed material Proposal has no resolvable Target Goal/Question/Problem driver, surface that missing driver as an unresolved planning gap instead of carrying a free-floating material Proposal.
-
-During Broad Discussion, material Proposals may remain inline with related Q/R/P/Evidence rather than forcing a full Generic State rendering. Their explicit Proposal identity and `Addresses` relation must still be clear from the discussion itself so the next Integration Checkpoint can integrate them without reconstructing hidden semantics.
-
-AI proposals remain unselected AI Proposals. When material candidate-state handling is useful, their candidate meaning may be represented as formal IDTSPE Proposals; neither form is accepted until selected under normal authority rules.
-
----
-
-## 4. Proposal Space And Relations
-
-One Target Goal/Question/Problem may have one or many candidate Proposals.
-
-Do not flatten a real alternative space into one prose answer merely because a checkpoint is being produced.
-
-Useful Proposal relations include:
+This interaction model owns only how that meaning may remain conversationally visible before the next integration pass:
 
 ```text
-Proposal → addresses → Target Goal / Question / Problem
-Proposal ↔ competes-with ↔ Proposal
-Proposal ↔ complements ↔ Proposal
-Proposal → requires → Proposal
-Proposal ↔ conflicts-with ↔ Proposal
-Proposal → part-of-candidate-bundle → Candidate Bundle / Option Group
+lightweight AI Proposal
+→ may remain conversational when formal lifecycle/addressability adds no value
+
+material formal Proposal
+→ identity + driver relation must be explicit enough to survive into integration
+
+Q/R/P/Evidence
+→ may remain inline with the Proposal/decision surface they concern
+
+accepted Decision / unresolved alternative
+→ may be discussed conversationally without requiring a full State rendering each turn
 ```
 
-These names are lightweight semantic relation vocabulary, not a mandatory database schema.
+Do not hide a material formal Proposal as an unlabeled implication in prose. Conversely, do not formalize every passing idea merely because discussion is exploratory.
 
-When competition/composition is material to understanding the option space, the checkpoint should show those relations instead of presenting the Proposals as an unrelated flat list.
+Broad Discussion may expose material Proposal relations/bundles by reference when they help review, but their semantics remain owned by the Proposal/Decision lifecycle contract.
 
-### Candidate Bundle / Option Group
-
-Several compatible Proposals may compose one candidate approach while another group composes a competing approach.
-
-Example meaning:
-
-```text
-Question Q1
-
-Candidate Bundle A
-  I1
-  I2
-
-Candidate Bundle B
-  I3
-  I4
-  I5
-
-A competes with B
-```
-
-A Candidate Bundle / Option Group is initially a lightweight grouping/comparison projection over Proposals. It is **not a new required Generic State Unit** and does not receive an independent lifecycle/persistence requirement merely because grouping is useful.
-
-Use a Planning Branch only when an alternative needs its own materially deep downstream counterfactual planning network. A lightweight Proposal bundle is not automatically a Planning Branch.
-
-
-### Proposal Review / Approval Enrichment
-
-The existing Proposal candidate space remains the base contract. R2 adds review/approval behavior without replacing that structure.
-
-AI may autonomously inspect, analyze, compare, classify findings and prepare/refine Proposals. Actual repository/application/documentation/methodology mutation waits for USER confirmation.
-
-A material Proposal should expose, proportionally:
-
-```text
-what is proposed
-the Question/Problem it responds to
-affected current authority / owner
-durable Requirement / Decision consequence when any
-material risks/problems/trade-offs
-proof consequence
-known Evolution consequence
-what remains unchanged
-```
-
-The USER controls review depth. AI should narrow technical/design alternatives through available analysis/Lenses before asking the USER to choose.
-
-Where several real competing Proposals exist, compare them using the existing Proposal relations/bundles and show meaningful benefits, downsides, proof/Evolution consequences and AI recommendation. Do not manufacture alternatives merely for symmetry.
-
-Complexity consequence is review guidance, not a required new Proposal schema field. When useful, summarize it as:
-
-```text
-Complexity delta: REDUCES | ROUGHLY-NEUTRAL | ADDS
-Complexity consequence: ...
-```
-
-Consider only relevant dimensions such as semantic/ownership/structural/state/coupling/maintenance/proof/operational/migration/evolution/cognitive complexity. Do not equate fewer classes/lines with lower total system complexity.
-
-For real competing options, make the situational decision basis visible:
-
-```text
-Decision priorities for this situation:
-1. ...
-2. ...
-
-AI recommendation: ...
-What the recommendation sacrifices: ...
-```
-
-This remains proportional review guidance, not mandatory persisted Proposal schema.
-
-If the USER amends part of a Proposal, re-evaluate the affected part and dependent meaning rather than treating the whole Proposal as accepted or reopening unrelated accepted work.
-
-A narrow/obvious/editorial change may use a lightweight AI Proposal instead of formal Proposal State, but the actual mutation still waits for required USER confirmation.
-
----
-
-## 5. Contextual Q/R/P/Evidence
+## 4. Contextual Q/R/P/Evidence
 
 Q/R/P/Evidence should stay attached to the planning meaning they actually concern instead of becoming one undifferentiated Target-wide list.
 
@@ -249,69 +141,25 @@ A Question may simultaneously be a decision driver for several Proposals and a Q
 
 ---
 
-## 6. Integration Checkpoint
+## 5. Integration Checkpoint Interaction Boundary
 
-An **Integration Checkpoint** is a **situational IDTSPE integration pass** invoked through `UC-IDTSPE-INTEGRATE-CURRENT-WORK` when a coherent whole-state view is useful. It reconciles accumulated discussion and planning state into the current Work Context, including applicable Target results for whichever Targets are material. Elapsed time/message count alone is not a trigger.
+An **Integration Checkpoint** is the coherent whole-state integration result produced through [`UC-IDTSPE-INTEGRATE-CURRENT-WORK`](integrate-current-work-use-case.md). That Use Case owns **Situation / Result / Process** for when and how integration is performed.
 
-It is an interaction/integration operation, not a new semantic entity.
-
-An Integration Checkpoint is **not**:
+This model owns only the conversational/projection boundary:
 
 ```text
-a completion state
-a user-approval gate
-a lifecycle status
-a new Unit kind
-a separate Target
-a file or commit
-a command that must exist separately
-a requirement to end Broad Discussion
-a guarantee of physical persistence
+Broad Discussion
+→ may continue for many turns
+
+Integration Checkpoint
+→ presents the current integrated whole when the Integration Use Case applies
+→ does not end Broad Discussion
+→ does not imply approval, persistence or completion
 ```
 
-### Applicability / Trigger
+A checkpoint may contain explanatory Broad Discussion. If that explanation surfaces a **new material Proposal / Question / Problem / Evidence / Decision consequence**, integrate it into the same checkpoint state/result or mark it explicitly as post-checkpoint exploration. Do not leave newly material semantics hidden only in explanatory prose while still presenting the checkpoint as the coherent integrated whole.
 
-Invoke a checkpoint when integration provides independent value, for example when accepted/current meaning is distributed, a multi-owner change/revalidation needs a coherent view, handoff/resume would otherwise be unreliable, a downstream transition needs a boundary-readiness view, or the USER explicitly asks for one.
-
-Do not schedule checkpoints by turn count or merely because IDTSPE is active. `NO_CHECKPOINT_NEEDED` is a valid result of `UC-IDTSPE-COMPOSE-CURRENT-WORK`.
-
-### Checkpoint work
-
-Perform proportionally:
-
-**Collect**  
-Collect material planning meaning accumulated since the previous checkpoint or from Sources/current owner state.
-
-**Relate**  
-Relate current Target Goal context and material Question/Problem drivers to Proposals/candidate bundles and their material Q/R/P/Evidence/Decisions.
-
-**Integrate**  
-Update the complete applicable Generic IDTSPE State and the applicable Target Result Units for material current Targets. Generic State uses the existing Core kinds (`Sources / Questions / Proposals / Q-R-P / Decisions / Evidence / Methodology Usage State / Revalidation ...`); Target Goal/Desired Outcome remains Target/scope context unless normal Target Formation changes that context. Preserve unresolved alternatives instead of silently collapsing them.
-
-**Check**  
-Apply the relevant Lens checks/analysis and Target/Core consistency/validation needed to judge whether the integrated whole actually satisfies the Target Goal/contract.
-
-The checkpoint exists to answer, in human terms:
-
-> Given everything we have discussed and decided, what do we actually have now, does it fit together, and what still needs work?
-
-A full Target Module invocation may contribute the Target-specific portion of an Integration Checkpoint when the Integration Use Case is active. Repeated invocation is normal and usually refines/revalidates the same Target rather than creating a new one.
-
-### Meaning surfaced while explaining a checkpoint
-
-A checkpoint may contain explanatory Broad Discussion. If that explanation itself surfaces a **new material Proposal / Question / Problem / Evidence / Decision consequence**, do one of two things before treating the checkpoint as the current integrated view:
-
-```text
-integrate the new material meaning into this same checkpoint state/result
-OR
-mark it explicitly as post-checkpoint exploration to be integrated later
-```
-
-Do not leave newly material semantics hidden only in checkpoint prose while still presenting the checkpoint as the coherent integrated whole.
-
----
-
-## 7. Checkpoint Response Projection
+## 6. Checkpoint Response Projection
 
 A checkpoint response shows the integrated whole proportionally. A practical rendering may contain:
 
@@ -332,58 +180,15 @@ A checkpoint may leave material alternatives unresolved. Integration is not forc
 
 ---
 
-## 8. Decision Retention, Rationale And Alternatives
+## 7. Decision / Alternative Projection
 
-Accepted material Decisions are retained in integrated semantic state by default because later work and revalidation need to know what was selected.
+Decision trace, rationale semantics, selected/non-selected alternative retention and revalidation are owned by [`proposal-and-decision-lifecycle-contract.md`](proposal-and-decision-lifecycle-contract.md).
 
-A material Decision may carry:
+At the interaction/projection level, a checkpoint should expose enough of that retained meaning to make the integrated state understandable without duplicating it in Broad Discussion as a competing second copy. Optional rationale/alternative-retention questions may be batched and remain non-blocking unless the missing meaning itself prevents material resolution.
 
-```text
-Addresses
-  Target Goal / Question / Problem / Q-R-P when useful
+Semantic retention does not require a file; physical representation remains a separate concern.
 
-Selected
-  Proposal / compatible set or Candidate Bundle when useful
-
-Decision
-  accepted meaning
-
-Rationale / Why
-  optional concise reason the selection was made
-
-Evidence / Risk / Problem / alternative references
-  only when useful
-```
-
-`Rationale / Why` is **not Evidence**. Evidence is an independently sourced/supporting State item; rationale explains the selection logic/trade-off that connects available meaning to the Decision.
-
-Rationale is optional. Do not require ceremony for an obvious/trivial choice. At an Integration Checkpoint, when a newly accepted material Decision has no retained rationale, ask the user whether a short rationale should be retained. Treat this as an optional retention choice unless the rationale itself is required to resolve a material ambiguity.
-
-After a material selection:
-
-```text
-accepted Decision
-→ retain by default
-
-selected Proposal(s) / bundle needed to understand the Decision
-→ retain enough semantic trace to understand the selection
-
-material non-selected / deferred / rejected / superseded alternatives
-→ ask the user whether to retain them and, when relevant, why they were not selected
-
-trivial transient alternatives
-→ may remain conversational unless the user wants exploration history
-```
-
-When an alternative is likely to recur, or its non-selection/rejection reason prevents predictable future rework, recommend retaining it.
-
-Batch these retention questions when possible; do not create a confirmation turn for every tiny Decision.
-
-Semantic retention does not itself require a file. Physical representation is resolved separately through Documentation / Representation and P-14.
-
----
-
-## 9. Lens Contribution To Discussion And Checkpoints
+## 8. Lens Contribution To Discussion And Checkpoints
 
 A Lens may contribute useful explanatory analysis and Key Points directly to Broad Discussion.
 
@@ -410,7 +215,7 @@ A checkpoint may use Lens discussion to explain why the integrated result looks 
 
 ---
 
-## 10. Logical/Semantic Retention vs Physical Persistence
+## 9. Logical/Semantic Retention vs Physical Persistence
 
 Keep three layers distinct:
 
@@ -433,7 +238,7 @@ A Unit becoming material/addressable does not imply one file per Unit. A checkpo
 
 ---
 
-## 11. Working Invariant
+## 10. Working Invariant
 
 ```text
 Broad Discussion carries exploration.

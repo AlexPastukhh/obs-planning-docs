@@ -4,7 +4,7 @@ Status: active supporting routing index
 
 Purpose: let a selected IDTSPE Use-Case Process decide **which methodology-component registry may be worth scanning** without hard-coding every component into the Use Case or Methodology Use-Case Scenario Map.
 
-This directory is **not** the root functional router. Use Cases are selected first through the Documentation [`Methodology Use-Case Registry Map`](../../../../use-case-registry-map.md).
+This directory is **not** the root functional router. Use Cases are selected first through the Documentation [`Methodology Use-Case Registry Map`](../../../../use-case-registry-map.md). The generic ownership/handoff chain is canonical in Documentation [`principles-and-terminology.md`](../../../../principles-and-terminology.md); this file owns only the directory-specific span after a Use Case Process has decided specialized registry discovery may help.
 
 ## Directory Contract
 
@@ -52,21 +52,16 @@ Current SDS local directory: [`../../profiles/sds/shared/methodology-registry-di
 
 ## Boundary
 
+This directory owns only the supporting span below an already-selected Use Case Process:
+
 ```text
-Use-Case Registry Map
-= which functional methodology-use capabilities apply
-
-Use Case Process
-= what methodology/documentation actions to perform
-
-Methodology Registry Directory
-= which specialized registry family may help that Process now
-
-Concrete Registry
-= which entries/components are plausible
-
-Concrete Component
-= how to perform specialized work
+selected Use Case Process
+→ Methodology Registry Directory
+   which specialized registry family may help now
+→ Concrete Registry
+   which entries/components are plausible
+→ Concrete Component
+   local applicability/materiality + specialized work
 ```
 
-The directory does not create Targets, Findings, Decisions or Result Units and does not become a workflow engine.
+The upstream `Registry Map → scoped Use-Case Registry → Use Case owner` chain is defined by Documentation owners and is not redefined here. The directory does not create Targets, Findings, Decisions or Result Units and does not become a workflow engine.

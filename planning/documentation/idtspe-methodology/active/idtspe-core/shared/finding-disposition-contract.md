@@ -278,71 +278,19 @@ If repeated use later proves that undispositioned findings need their own indepe
 
 ## 8. Lens Boundary
 
-A Lens defines:
+Lens applicability, Analysis Surface, supported operations (`ANALYZE / CHECK / REFINE / CHALLENGE`) and Typical Findings are owned by [`../lenses/LENS-MODEL.md`](../lenses/LENS-MODEL.md) and each concrete Lens. This contract begins only when newly surfaced meaning needs Core ownership/State/lifecycle disposition.
 
 ```text
-perspective
-Analysis Surface
-supported Lens operations
-criteria / questions / guards
-Typical Findings / Finding Contract
-Knowledge Basis
+Lens explanatory analysis / Key Points
+→ may remain discussion only
+
+material newly surfaced semantic consequence
+→ Finding Candidate
+→ this Finding Disposition contract
+→ State / owner / lifecycle consequence
 ```
 
-Generic Lens operations are:
-
-```text
-ANALYZE
-CHECK
-REFINE
-CHALLENGE
-```
-
-They mean:
-
-```text
-ANALYZE
-→ inspect the Analysis Surface through this perspective
-
-CHECK
-→ evaluate current meaning against Lens criteria/guards
-
-REFINE
-→ identify/propose more precise or missing meaning
-  where the semantic destination is already understood
-
-CHALLENGE
-→ search for reasons selected/accepted meaning
-  may be wrong, weak, stale or unsupported
-```
-
-The following are **Core disposition/lifecycle consequences**, not Lens methods:
-
-```text
-open/refine State Unit
-REOPEN
-update Result Unit after resolution
-handoff to another owner
-Target Formation
-```
-
-Therefore:
-
-```text
-Lens REFINE
-≠ direct mutation of accepted Result Unit
-
-Lens CHALLENGE
-≠ REOPEN
-
-Lens CHECK
-≠ lifecycle transition
-
-Lens
-≠ routing authority
-```
-
----
+Therefore a Lens may suggest affected meaning or likely owner, but it does not own `REOPEN`, Target Formation, State-Unit routing, handoff authority or direct Result-Unit mutation. Those are disposition/lifecycle consequences after the Lens boundary.
 
 ## 9. Validator / Evidence / User Boundary
 

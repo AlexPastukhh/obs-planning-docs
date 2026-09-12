@@ -20,7 +20,7 @@ IDTSPE Step Output
 └─ material IDTSPE State Units
 ```
 
-`IDTSPE Step Output` is an explanatory umbrella for material semantic output of one work/integration pass. It is **not** a new semantic owner and does not imply one persisted record. Ordinary Broad Discussion may surround or occur between these outputs without becoming Units; Key Points structure material discussion parts, while material Proposals remain explicit with `Addresses → Target Goal / Question / Problem`. No per-response Intake Summary or block-owner record is required. An Integration Checkpoint is the normal pass that reconciles accumulated discussion into the current Unit/Target Result state.
+`IDTSPE Step Output` is an explanatory umbrella for material semantic output of one work/integration pass. It is **not** a new semantic owner and does not imply one persisted record. Ordinary Broad Discussion may surround or occur between these outputs without becoming Units. Proposal/Decision lifecycle rules are owned separately by [`proposal-and-decision-lifecycle-contract.md`](proposal-and-decision-lifecycle-contract.md); Broad Discussion/checkpoint projection is owned by [`broad-discussion-and-integration-checkpoint-model.md`](broad-discussion-and-integration-checkpoint-model.md).
 
 The two Unit roles are distinct:
 
@@ -247,40 +247,22 @@ validation/readiness finding when independently useful
 
 Existing names remain the normal prose vocabulary. Do not force labels such as `Risk Unit` when `Risk` is already unambiguous.
 
-### Proposal decision-context relations
+### Proposal / Decision lifecycle relation
 
-A material `Proposal` is a candidate response/solution/approach, not every thought in discussion. It is the canonical formal Core candidate role; do not invent a second candidate ontology alongside it.
+`Proposal` and `Decision` are Core State Unit kinds, but their candidate/selection lifecycle is not defined by this Unit model. Canonical Proposal drivers/relations, Candidate Bundles, review outcomes, Proposal → Decision selection, rationale/alternative retention and revalidation semantics are owned by [`proposal-and-decision-lifecycle-contract.md`](proposal-and-decision-lifecycle-contract.md).
 
-When surfaced as a material IDTSPE Proposal, its existing driver relation remains explicit. `Goal / Desired Outcome` normally means the current Target/scope goal context rather than a separate Generic State Unit:
-
-```text
-current Target Goal / Desired Outcome context
-Question
-Problem (existing P-09 Problem meaning)
-```
-
-For an approval-relevant formal Proposal, the motivating **Question and/or Problem** must be visible explicitly. Reuse an existing addressable Question/Problem when one exists; otherwise an inline statement is sufficient when separate Q/P lifecycle/addressability would add no value. Goal/Desired Outcome remains useful context and does not require a duplicate Goal State Unit.
-
-Useful lightweight Proposal relations include `addresses`, `competes-with`, `complements`, `requires`, `conflicts-with` and `part-of-candidate-bundle`. A Candidate Bundle / Option Group is a grouping/comparison projection over compatible Proposals by default, not a new mandatory State Unit. Use a Planning Branch only for a materially deep alternative downstream planning network.
-
-The driver/Proposal/Q-R-P/Evidence relationships may first appear inline in Broad Discussion and are normalized in the next Integration Checkpoint when material. If Broad Discussion reveals an independently useful new Goal rather than merely refining the current Target Goal, normal scope/Target Formation resolves it.
-
-Formal Proposal review outcomes are working lifecycle outcomes:
+This model owns only the Unit/addressability boundary:
 
 ```text
-APPROVE
-REJECT
-REVISE
-DEFER
+material candidate meaning needs Core lifecycle/addressability
+→ Proposal State Unit may be explicit
+
+accepted material selection needs Core lifecycle/addressability
+→ Decision State Unit may be explicit
+
+formal Proposal / Decision Unit exists
+≠ separate file required
 ```
-
-They do not require mandatory persisted status metadata on every Proposal. Partial approval remains partial: only explicitly accepted Proposal meaning may flow into Decision/Target/natural-owner authority.
-
-A USER amendment to a Proposal triggers targeted re-evaluation of affected reasoning, owners, requirements/decisions, risks/problems, proof and known Evolution consequences. Unaffected accepted meaning is not reopened merely because one part changed.
-
-A formal Proposal itself is candidate Core State, not current product/methodology authority. Accepted meaning becomes authoritative only through the normal Decision / Target Result / natural-owner path.
-
-Canonical interaction owner: [`broad-discussion-and-integration-checkpoint-model.md`](broad-discussion-and-integration-checkpoint-model.md).
 
 The umbrella `IDTSPE State Unit` exists for:
 - addressability;
@@ -365,7 +347,7 @@ This is **not an execution log**. Do not record every file read, command, tool c
 
 ### Decision retained context
 
-Accepted material Decisions are retained in integrated semantic state by default. A Decision may reference the current Target Goal context / Question / Problem / Q-R-P it addresses, the selected Proposal(s)/Candidate Bundle when useful, and optional `Rationale / Why`. Rationale explains selection logic and is distinct from Evidence. Retention/prompt rules are owned by [`broad-discussion-and-integration-checkpoint-model.md`](broad-discussion-and-integration-checkpoint-model.md) and [`user-input-decision-and-answer-intake-rule.md`](user-input-decision-and-answer-intake-rule.md).
+This model recognizes `Decision` as a Core State Unit. What Decision trace/rationale/alternative context should be retained is owned by [`proposal-and-decision-lifecycle-contract.md`](proposal-and-decision-lifecycle-contract.md); interaction-specific intake is owned by [`user-input-decision-and-answer-intake-rule.md`](user-input-decision-and-answer-intake-rule.md).
 
 ---
 
@@ -454,95 +436,27 @@ Target-specific Result Units follow the same rule, but their applicability/mater
 
 Do not create a placeholder Unit only to record `N/A`. Absence is a first-class valid projection when the omission rule is satisfied.
 
-## 6. Lens Analysis / Finding Boundary
+## 6. Lens / Finding Boundary
 
-A Lens should describe **what it meaningfully inspects** separately from **how the perspective is invoked**.
+This Unit model defines what Core State Units and Target Result Units are available to be addressed; it does **not** define Lens operations or Lens applicability.
 
-Use proportionally:
+Canonical owners:
 
-```text
-Analysis Surface
-  Primary Result Units / semantic selectors
-  Conditional Result Units
-  Relevant State Units
-  Context
+- [`../lenses/LENS-MODEL.md`](../lenses/LENS-MODEL.md) — Lens Analysis Surface, supported operations, applicability and Typical Findings contract;
+- [`finding-disposition-contract.md`](finding-disposition-contract.md) — Finding Candidate → Core ownership/State/lifecycle disposition.
 
-Supported Operations
-  ANALYZE
-  CHECK
-  REFINE
-  CHALLENGE
-
-Typical Findings / Finding Contract
-```
-
-### Analysis Surface
-
-The Analysis Surface is a Lens property.
+Unit-side invariant:
 
 ```text
-Context
-→ supporting material the Lens may consult
+Lens analysis may inspect existing State / Result Units
+→ explanatory analysis may remain discussion only
+→ material newly surfaced meaning may become a Finding Candidate
+→ only normal Core authority/disposition may create/refine State or update an existing Result Unit
 
-Primary / Conditional Result Units
-→ target-specific result meaning the Lens deliberately analyzes
-
-Relevant State Units
-→ Questions / Risks / Decisions / Evidence / etc.
-   that materially affect the evaluation
+Lens
+≠ Unit-kind owner
+≠ permission to invent a target-result field
 ```
-
-Context availability does not imply auditing all context.
-
-### Lens operations
-
-```text
-ANALYZE
-→ inspect the surface through the Lens perspective
-
-CHECK
-→ evaluate against Lens criteria/guards
-
-REFINE
-→ identify/propose a more precise or missing meaning
-  where the semantic destination is already understood
-
-CHALLENGE
-→ seek reasons selected/accepted meaning may be wrong,
-  weak, stale or unsupported
-```
-
-A Lens may support only the operations that make sense for that perspective.
-
-### Finding boundary
-
-A Lens operation may contribute explanatory analysis/Key Points that remain Broad Discussion only. A materially newly surfaced observation crosses into a `Finding Candidate` only when ownership/State/lifecycle disposition is needed.
-
-The Lens does **not** own generic routing/lifecycle consequences such as:
-
-```text
-open/refine Question or Risk
-REOPEN
-update Result Unit after resolution
-handoff to another Target
-Target Formation
-```
-
-Those are handled by the generic Core [`Finding Disposition Contract`](finding-disposition-contract.md).
-
-Canonical path:
-
-```text
-Lens operation
-→ explanatory analysis / Key Points when useful
-→ Finding Candidate only for material semantic consequence needing disposition
-→ Core Finding Disposition
-→ State/lifecycle/ownership resolution
-→ normal authority/resolution
-→ existing Result Unit update when warranted
-```
-
-This replaces the earlier Lens-operation vocabulary that mixed `ROUTE`, `REOPEN` and `AFFECT / UPDATE AFTER RESOLUTION` into the Lens itself.
 
 ## 7. Target Module Step-Result Contract
 
@@ -704,42 +618,7 @@ Unit identity
 ≠ file identity
 ```
 
-Both Result Units and State Units can be persisted independently when useful.
-
-Example:
-
-```text
-Result Unit:
-  Slice Outcome Definition
-→ current Slice planning owner
-
-Result Unit:
-  Evolution Steps
-→ same Slice semantic owner
-
-Decision D-21
-→ durable rationale in current owner when revalidation value is material
-
-Risk R-17
-→ persist while unresolved when downstream work needs it
-
-rejected Proposal I-02
-→ EPHEMERAL
-```
-
-The current canonical persistence path remains:
-
-```text
-Documentation / Representation Lens when material
-→ P-14 / TF-10
-→ Artifact Placement View
-```
-
-until that representation subsystem is changed by a separate accepted Core transition.
-
-This model does not itself force a Markdown file or one-file-per-Target.
-
----
+This model establishes that State/Result Unit addressability does not imply one file per Unit or Target. Whether selected meaning should persist, and how it is represented/placed, is owned by the canonical Representation / P-14 path in [`artifact-placement-and-idtspe-response-contract.md`](artifact-placement-and-idtspe-response-contract.md). Proposal/Decision retention policy is owned by [`proposal-and-decision-lifecycle-contract.md`](proposal-and-decision-lifecycle-contract.md).
 
 ## 12. Downstream Source Boundary
 
@@ -878,61 +757,25 @@ The Lens surfaced a finding. Core disposition/lifecycle resolved what to do with
 
 ## 14. Migration Compatibility
 
-The canonical generic model is now:
+The canonical ownership split is:
 
 ```text
 Target Module / Local Target Contract
-→ explicit/implicit Target Step-Result Contract
-→ target-specific Result Units
+→ target-specific Target Step-Result Contract + Result Units
 
-Lens
-→ Analysis Surface
-→ supported operations: ANALYZE / CHECK / REFINE / CHALLENGE
-→ Finding Candidate
+Core Unit model
+→ generic State Unit kinds + Unit applicability/materiality/addressability
 
-Core
-→ Finding Disposition
-→ State/lifecycle/ownership resolution
+Lens Model
+→ Lens Analysis Surface / operations / Typical Findings
+
+Finding Disposition
+→ Finding Candidate → State/lifecycle/ownership consequence
 ```
 
-Installed SDS profile conformance is checked against the **current registries**, not frozen counts in this semantic model:
+Installed profile conformance is checked against current registries rather than frozen counts in this semantic model. Current mechanical registry/file parity is reported by [`active-methodology-mechanical-consistency-check.md`](active-methodology-mechanical-consistency-check.md).
 
-```text
-every active SDS Target Module registry row
-→ Resolution / Production Method
-→ Target Step-Result Contract
-→ local Result Unit applicability/materiality guidance
-
-every current SDS Lens registry row
-→ Analysis Surface
-→ Supported Operations
-→ Typical Findings / Finding Contract
-```
-
-Current snapshot counts and registry/file parity are reported by [`active-methodology-mechanical-consistency-check.md`](active-methodology-mechanical-consistency-check.md).
-
-Any reusable Lens body outside that literal SDS conformance remains readable through the generic compatibility interpretation until it is materially revised:
-
-```text
-Target Inputs / Evidence
-→ Context + current analysis subject
-
-Prompts / Evaluation Workflow
-→ infer Analysis Surface from Lens purpose
-
-Findings / Outputs
-→ Finding Candidates
-
-accepted finding that changes Target meaning
-→ Core Finding Disposition
-→ normal resolution
-→ existing Result Unit update when warranted
-
-Artifact / File Implications
-→ current P-14 / TF-10 guidance
-```
-
-Compatibility does not restore Lens-owned routing, reopen or post-resolution update methods.
+Older reusable Lens bodies that predate the literal current Lens contract remain interpreted through [`../lenses/LENS-MODEL.md`](../lenses/LENS-MODEL.md) until materially revised. This compatibility rule does not make the Unit model a second Lens owner.
 
 ## 15. Key Invariants
 
@@ -944,18 +787,16 @@ one Target
 State Unit
 ≠ lesser/temporary by definition
 
-Target Module
-→ defines Result Units
+Target Module / Local Target Contract
+→ defines target-specific Result Units
 
-Core
-→ defines generic State Unit kinds
+Core Unit model
+→ defines generic State Unit kinds and Unit materiality/addressability
 
 Lens
-→ declares Analysis Surface + supported ANALYZE/CHECK/REFINE/CHALLENGE operations
-→ surfaces Finding Candidates
-→ does not define Unit kinds or own Finding Disposition
+→ may analyze Units but does not define their kinds
 
-Lens finding
+Finding Candidate
 ≠ accepted semantic meaning automatically
 
 Result Unit addressability

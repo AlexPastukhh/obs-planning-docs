@@ -10,16 +10,17 @@ Prerequisite: the primary bootstrap from [`planning/README.md`](../README.md) es
 
 ```text
 current situation
-→ logically scan this map
+→ logically scan this map for plausible Use-Case scopes
 → scan the relevant scoped Use-Case Registry/Registries
 → select zero or more applicable Use Cases
-→ follow their Process
-→ let those Processes route to methodology components / registries / owners
+→ hand off to their canonical Use-Case owners
 ```
 
 This check is **always logically active** during methodology-guided work. "Always" does not mean rereading unchanged files after every message. Reuse current registry metadata while trustworthy and reread only when the methodology/repository changed, the active profile/scope changed, or current authority cannot be reconstructed safely.
 
-A Use-Case Registry is the functional entry point. A methodology component registry such as a Target Module Registry or Lens Registry is consulted **from a selected Use Case Process**, not as a competing root workflow.
+This map owns only cross-scope applicability/routing metadata. Downstream Process/component routing is owned by the selected Use Case and the supporting owners it explicitly reaches. The generic ownership/handoff chain and `scan ≠ select ≠ execute` semantics are defined in [`principles-and-terminology.md`](principles-and-terminology.md).
+
+A methodology component registry such as a Target Module Registry or Lens Registry is therefore consulted from a selected Use Case Process, not as a competing root workflow.
 
 ## Session Boundary
 

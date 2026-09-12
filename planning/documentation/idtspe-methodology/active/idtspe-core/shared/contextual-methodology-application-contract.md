@@ -61,33 +61,20 @@ Broad Discussion clarifies concern
 → continue Broad Discussion
 ```
 
-## 3. Recommendation Semantics
+## 3. Inherited Contextual Guidance Semantics
 
-Preserve the former Session Guidance Recommendation meaning at IDTSPE methodology-use level:
+Generic recommendation/selection semantics are owned by Documentation [`principles-and-terminology.md`](../../../../principles-and-terminology.md) → `Contextual Guidance Principle` / `Registry Scan`. IDTSPE inherits that contract rather than redefining it here.
+
+IDTSPE specializes the generic rule through the four applicability layers above:
 
 ```text
-recommended
-≠ selected
-
-selected
-≠ automatically executed
-
-available
-≠ applicable
-
-applicable
-≠ exhaustive completion
+Use-Case relevance
+→ registry/component relevance
+→ component applicability
+→ Unit/field materiality
 ```
 
-For a material recommendation, the active Use-Case Process may determine that it is:
-
-- applicable as-is;
-- useful with contextual adaptation;
-- useful as theory/inspiration only;
-- deferred until a clear recheck trigger;
-- not useful now.
-
-A binding authority/permission rule is not optional merely because other methodology guidance is contextual. Contextual application changes **how much supporting methodology is useful**, not who has authority to approve destructive/external effects or accepted semantic decisions.
+A binding authority/permission rule remains binding where it applies. Contextual application changes **how much supporting methodology is useful**, not who has authority to approve destructive/external effects or accepted semantic decisions.
 
 ## 4. Why This Is Not A Lens
 

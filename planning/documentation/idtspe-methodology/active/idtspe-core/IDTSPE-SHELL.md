@@ -176,18 +176,11 @@ Lenses run inside IDTSPE work through an Analysis Surface and reusable operation
 
 ### P-07 Proposal / Alternative Port
 
-Connects materially different answer candidates from:
-```text
-user input
-Sources
-AI proposals
-Target Module pattern aids
-accepted/dispositioned Proposal / alternative input derived from Lens, research or prototype observations
-```
+Connects materially different answer candidates from USER input, Sources, AI proposals, Target Module discovery aids, and accepted/dispositioned candidate input from research/Lenses/prototypes.
 
-Material Lens/research/prototype observations that need semantic State/lifecycle disposition first surface as Finding Candidates. Core Finding Disposition decides whether accepted meaning creates/refines Proposal/alternative State or another lifecycle consequence; only then does `TF-07 PROPOSAL_SPACE` resolve materially different answer candidates.
+`TF-07 PROPOSAL_SPACE` is the technical resolution slot for the current candidate space. Canonical Proposal identity, driver relations, candidate bundles, review/selection outcomes and Proposal → Decision semantics are owned by [`shared/proposal-and-decision-lifecycle-contract.md`](shared/proposal-and-decision-lifecycle-contract.md).
 
-An AI Proposal remains unselected. When material addressability/lifecycle/review is useful, its candidate meaning may be represented as a formal IDTSPE Proposal; neither the lightweight nor formal form is accepted merely because AI proposed it. Every material formal Proposal is explicitly surfaced and preserves the existing `Addresses → current Target Goal / Question / Problem` driver relation. For approval-relevant formal Proposals, the motivating Question and/or Problem must be visible explicitly (inline or by reference) rather than hidden in prose; a missing driver is an unresolved planning gap, not a free-floating material Proposal. Proposals may `compete-with`, `complement`, `require`, `conflict-with` or compose through a lightweight Candidate Bundle / Option Group. Candidate bundles are grouping/comparison projections by default, not new required State Units or Planning Branches. Material Proposals/relations may first live inline in Broad Discussion; no per-response Intake Summary is required as long as their explicit identity/driver relation is clear for the next Integration Checkpoint.
+Finding producers do not bypass that lifecycle: materially new semantic consequences first cross [`shared/finding-disposition-contract.md`](shared/finding-disposition-contract.md) when ownership/State/lifecycle disposition is needed.
 
 ### P-08 Branch Port
 
@@ -199,36 +192,20 @@ A Planning Branch is not one Proposal; it is an alternative downstream planning 
 
 ### P-09 Q/R/P Port
 
-Carries material unresolved:
-```text
-Question
-Risk
-Problem
-```
+Carries material unresolved `Question`, `Risk` and `Problem` meaning attached to the real planning subject/Proposal/Decision/Result relation it concerns. Q/R/P is not a parallel semantic-root model.
 
-attached to the real planning subject/Decision/Proposal/Result relation they concern. Q/R/P may be contextual to one Proposal or candidate bundle rather than only Target-wide. Q/R/P is not a parallel semantic-root model.
-
-Optional review/trace mechanics are owned by [`shared/qrp-priority-groups-and-decision-trace.md`](shared/qrp-priority-groups-and-decision-trace.md): impact priority, related Q/R/P grouping, contextual Proposal/Q-R-P relations, and Decision `Addresses` / `Selected` / optional `Rationale / Why` / `Exposes` links. These extend existing P-09; they do not create a second Concern runtime.
+Optional impact priority and related-Q/R/P grouping are owned by [`shared/qrp-priority-and-related-groups.md`](shared/qrp-priority-and-related-groups.md). Proposal/Decision context relations are owned by the Proposal/Decision lifecycle contract.
 
 ### P-10 Decision Port
 
-Turns selected material answers into the three durable Decision types while preserving user authority rules.
+Turns selected material answers into the three normal durable Decision types while preserving authority rules.
 
 ```text
 AI proposal
 ≠ accepted Decision
 ```
 
-Accepted material Decisions are retained in integrated semantic state by default. When useful, a Decision may declare:
-
-```text
-Addresses: <Goal / Question / Problem / Q/R/P IDs or group>
-Selected:  <Proposal(s) / Candidate Bundle>
-Rationale / Why: <optional selection reasoning>
-Exposes:   <newly revealed/created Q/R/P IDs>
-```
-
-`Rationale / Why` is optional and distinct from Evidence. At an Integration Checkpoint, ask whether a short rationale should be retained when a new material Decision has none; ask separately whether material non-selected/deferred/rejected/superseded alternatives should be retained. Batch these optional retention choices when practical. The trace is explanatory/revalidation metadata, not a new Decision type.
+Canonical selection, Decision trace (`Addresses` / `Selected` / optional `Rationale / Why` / `Exposes`), alternative retention and revalidation semantics are owned by [`shared/proposal-and-decision-lifecycle-contract.md`](shared/proposal-and-decision-lifecycle-contract.md). This port only connects that accepted Decision meaning into the Shell lifecycle.
 
 ### P-11 Target Step Result Projection Port
 
@@ -330,42 +307,15 @@ actual Evidence
 
 Revalidation is lifecycle, not a peer Lens.
 
-## Integration Checkpoint Response Projection
+## Integration Checkpoint / Representation Handoff
 
-Ordinary Broad Discussion is allowed to remain conversational and does not reproduce this whole projection. Material logical parts use Key Points proportionally, and material Proposals remain explicit with their driver relation; no mandatory block-owner or per-response Intake Summary is required. When `UC-IDTSPE-INTEGRATE-CURRENT-WORK` determines that a full Integration Checkpoint is useful/requested, the assistant should render proportionally:
+The Shell does not own a second checkpoint Process or response template. Canonical owners are:
 
-```text
-optional Broad Discussion Summary / material explanatory Key Points
-Current Target / Scope / Sources + Target Goal / Desired Outcome context
-coherent material Generic State through existing Core kinds, including explicit Proposal→driver relations and unresolved Proposal alternatives/bundles
-accepted Decisions + retention/rationale choices when material
-Target-specific Result Units — complete applicable current projection
-Lens / consistency review + material Finding Candidates/disposition consequences
-semantic retention + Artifact Placement when physical persistence is material
-Handoff / downstream Sources / recommended discussion focus
-Residual Q/R/P / revalidation signals
-```
+- [`shared/integrate-current-work-use-case.md`](shared/integrate-current-work-use-case.md) — checkpoint Situation / Result / Process;
+- [`shared/broad-discussion-and-integration-checkpoint-model.md`](shared/broad-discussion-and-integration-checkpoint-model.md) — conversational/checkpoint projection semantics;
+- [`shared/artifact-placement-and-idtspe-response-contract.md`](shared/artifact-placement-and-idtspe-response-contract.md) — persistence-sensitive Artifact Placement subview.
 
-If explanatory Broad Discussion inside the checkpoint surfaces new material Proposal/Question/Problem/Evidence/Decision meaning, integrate it into that same checkpoint or mark it explicitly as post-checkpoint exploration; do not leave it as unintegrated prose while presenting the checkpoint as the coherent whole.
-
-`Artifact Placement View` maps current-instance content to semantic owner + **guidance source IDs (AP-*/AG-*)** + persistence + physical representation/destination + resolver.
-
-It explicitly permits:
-
-```text
-Persistence: UNRESOLVED
-```
-
-and:
-
-```text
-Persistence: REQUIRED | PREFERRED
-Destination: UNRESOLVED
-```
-
-when the methodology has not yet established whether/where the content should be stored.
-
-Generic contract: [`shared/artifact-placement-and-idtspe-response-contract.md`](shared/artifact-placement-and-idtspe-response-contract.md). Profile-specific AP/AG materialization projections and response examples are supplied by the active profile; current SDS projection is [`../profiles/sds/ARTIFACT-PLACEMENT-MAP.md`](../profiles/sds/ARTIFACT-PLACEMENT-MAP.md) and [`../profiles/sds/examples/IDTSPE-RESPONSE-EXAMPLE.md`](../profiles/sds/examples/IDTSPE-RESPONSE-EXAMPLE.md).
+Shell ports provide the technical State/Target/Lens/representation inputs those owners compose. They do not redefine the full checkpoint projection.
 
 ## Repeated Invocation / Persistent Owner Rule
 

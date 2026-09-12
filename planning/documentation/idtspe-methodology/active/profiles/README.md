@@ -14,6 +14,17 @@ A profile packages concrete Target Modules, profile-specific Lenses, semantic gu
 
 Every profile bootstrap is incremental. It assumes the primary bootstrap from [`planning/README.md`](../../../../README.md) has already established Session, Documentation and IDTSPE Core. A profile `README.md` owns its own profile read set; installed-profile navigation does not duplicate it here.
 
+## Profile Applicability Gate
+
+```text
+installed profile
+≠ applicable/active profile
+```
+
+A profile becomes relevant when the current Work Concern needs specialized semantics/components inside that profile's declared scope. Profile relevance does not itself create a Target or select every profile registry/component. Incremental profile bootstrap is needed only when that profile context is not already reliable.
+
+If no installed profile is materially relevant, remain in generic IDTSPE Core. For the current installation, software/Application behavior, implementation ownership, realization or software-specific evaluation pressure makes SDS plausibly relevant.
+
 ## Rule
 
 ```text

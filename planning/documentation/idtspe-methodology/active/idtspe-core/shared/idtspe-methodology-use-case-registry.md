@@ -29,7 +29,7 @@ The following Core mechanics may be invoked by the Use Cases above but do not re
 - Target Formation;
 - Lens Applicability Scan / Lens operations;
 - Finding Disposition;
-- Proposal/Q-R-P/Decision lifecycle;
+- Proposal/Decision lifecycle ([`proposal-and-decision-lifecycle-contract.md`](proposal-and-decision-lifecycle-contract.md)) and optional Q/R/P grouping/priority;
 - consistency review;
 - registry traversal;
 - Broad Discussion / Key Points;

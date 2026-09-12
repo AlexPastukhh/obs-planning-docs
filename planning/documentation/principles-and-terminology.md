@@ -111,6 +111,77 @@ A **Use-Case Registry Map** is a structural-functional map of scoped Use-Case Re
 
 The map contains registry-scope routing metadata, not Use-Case bodies and not specialized methodology-component entries.
 
+## Registry Scan
+
+A **Registry Scan** is a lightweight candidate-discovery operation over the routing/applicability metadata of a registry.
+
+A scan may produce zero, one or several candidates. It does not by itself execute an entry, instantiate a Target/Lens/State/result, or justify loading sibling entries. The selected owner/component performs the next local applicability/materiality check.
+
+```text
+registry scanned
+≠ every row selected
+
+row matched
+≠ owner/component executed
+
+component selected
+≠ local applicability passed
+
+local applicability passed
+≠ every optional Unit/field produced
+```
+
+This term applies to Use-Case Registries and specialized methodology-component registries. The metadata and next authority differ by registry type, but the scan/selection boundary remains the same.
+
+## Functional Routing Ownership Chain
+
+The methodology uses one semantic handoff chain so each routing decision has one owner:
+
+```text
+current situation
+       │
+       ▼
+Use-Case Registry Map
+(scope candidates)
+       │
+       ▼
+Scoped Use-Case Registry
+(Use-Case candidates)
+       │
+       ▼
+Selected Use Case owner
+(Situation / Result / Process authority)
+       │
+       │ selected Process may route further
+       ▼
+Methodology Registry Directory / supporting router
+(component-registry family candidates)
+       │
+       ▼
+Concrete component registry
+(component candidates)
+       │
+       ▼
+Concrete component owner
+(local applicability + specialized semantics)
+       │
+       ▼
+natural semantic result / owner
+```
+
+The chain describes **ownership and handoff responsibility**, not a mandatory runtime sequence. A selected Process may skip layers when it already knows the required owner/component, and a scan may validly select nothing additional.
+
+Ownership boundaries:
+
+- **Use-Case Registry Map** — which functional Use-Case scopes are plausible;
+- **Use-Case Registry** — which independently useful capabilities in that scope are plausible;
+- **Use Case Process** — what actions are required to obtain its Result and which supporting owners it reaches;
+- **Methodology Registry Directory** — which specialized registry family may help an already-selected Process;
+- **component registry** — which concrete components are plausible;
+- **component owner** — specialized applicability/materiality and specialized work.
+
+No layer becomes authority for downstream semantics merely because it routes to the downstream owner. Re-entry to a higher routing level is justified by a material situation/scope/authority change or stale orientation, not by every component operation or conversational turn.
+
 ## README
 
 A **README** is a structural responsibility map.

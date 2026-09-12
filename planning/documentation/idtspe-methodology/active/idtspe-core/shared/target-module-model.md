@@ -114,9 +114,11 @@ validators
 handoff/revalidation prompts
 ```
 
-The current Target Goal / Desired Outcome is Target/scope context, not a new Generic State Unit introduced by the Module. Concrete Questions/Proposals/Q/R/P/Decisions/Evidence remain generic IDTSPE State meaning; a material Problem driver uses the existing P-09 Problem meaning. The Module provides reusable driver candidates/prompts/methods; it does not duplicate the Core lifecycle inside its result schema. When a reusable Module is active, its Target Goal plus Question/Problem candidates are the ordinary starting driver set for Proposal discovery. They are not an exclusive gate: Sources, previous work/checkpoints, Broad Discussion, user/AI input or dispositioned Lens findings may add drivers/Proposals, and those inputs have equal Core semantics once accepted into the current work. Material Proposals are explicit and carry `Addresses → Target Goal / Question / Problem`. An Integration Checkpoint reconciles all of these rather than treating Module presets as the only legitimate drivers.
+The current Target Goal / Desired Outcome is Target/scope context, not a new Generic State Unit introduced by the Module. Concrete Questions/Proposals/Q/R/P/Decisions/Evidence remain generic IDTSPE State meaning. The Module contributes reusable driver candidates/prompts/methods and Proposal/Variant discovery aids; it does not duplicate their Core lifecycle inside its result schema. Sources, previous work/checkpoints, Broad Discussion, user/AI input or dispositioned Findings may add drivers/candidates beyond Module presets.
 
-Canonical Unit/result semantics: [`idtspe-unit-and-target-step-result-model.md`](idtspe-unit-and-target-step-result-model.md).
+Canonical owners:
+- Unit/result semantics: [`idtspe-unit-and-target-step-result-model.md`](idtspe-unit-and-target-step-result-model.md);
+- Proposal/Decision candidate-selection lifecycle: [`proposal-and-decision-lifecycle-contract.md`](proposal-and-decision-lifecycle-contract.md).
 
 
 ---
@@ -368,29 +370,11 @@ Revalidation
   material watch/reopen prompts
 
 Artifact / File Contract
-  structured ARTIFACT_PROPOSAL records:
-    ID
-    CONTENT_KIND
-    WHEN
-    GUIDANCE
-    PERSISTENCE_GUIDANCE
-    PLACEMENT_DIRECTIVE
-    SEMANTIC_OWNER
-    REPRESENTATION
-    FILE_OR_ARTIFACT
-    CONTENT
-    GUIDANCE_SOURCE: TARGET_MODULE
-    RESOLVER: P-14 / TF-10
-
-  explicit REQUIRED / PREFERRED / OPTIONAL persistence rules
-  default representation forms/patterns
-  separate-artifact triggers
-  content that should remain embedded
-  content routed to another canonical artifact
-  unresolved placement is allowed and must be rendered through P-14
-
-  exact repository paths are only required when a global/profile owner exists;
-  otherwise use logical artifact patterns and let TF-10 / Artifact Pack resolve placement
+  Target-Module-local persistence/representation guidance for its own Target result
+  conforms to the canonical `ARTIFACT_PROPOSAL` interface owned by
+  `artifact-placement-and-idtspe-response-contract.md`
+  states Module-local conditions/preferences/requirements without redefining P-14/TF-10
+  unresolved placement remains valid and is resolved by the canonical placement contract
 
 Repository Provenance
   current UC/workflow/template owners from which the module is derived
@@ -742,25 +726,8 @@ New or materially revised Modules should make independently processable Result U
 
 ## Artifact / File Proposal Integration Point
 
-Every Target Module must expose structured `ARTIFACT_PROPOSAL` records under `## Artifact / File Contract`.
+Every Target Module must expose an `## Artifact / File Contract` that explains, for the Module's own Target result, what meaning should normally survive, what should remain embedded, when a separate representation may be useful, and what should be routed elsewhere.
 
-Required source fields:
+The generic structured `ARTIFACT_PROPOSAL` field set, precedence, persistence policy and `P-14 / TF-10` resolution semantics are **not** owned here. They are canonical in [`artifact-placement-and-idtspe-response-contract.md`](artifact-placement-and-idtspe-response-contract.md). A Module conforms to that interface instead of redefining it.
 
-```text
-ID
-CONTENT_KIND
-WHEN
-GUIDANCE
-PERSISTENCE_GUIDANCE
-PLACEMENT_DIRECTIVE
-SEMANTIC_OWNER
-REPRESENTATION
-FILE_OR_ARTIFACT
-CONTENT
-GUIDANCE_SOURCE: TARGET_MODULE
-RESOLVER: P-14 / TF-10
-```
-
-`PERSISTENCE_GUIDANCE` and `PLACEMENT_DIRECTIVE` are the canonical machine-readable policy fields; `GUIDANCE` is only a descriptive qualifier. `FILE_OR_ARTIFACT` states which canonical/supporting/register file or logical artifact pattern the module proposes. `CONTENT` says which part of the **Target result itself** belongs there. These are profile-level defaults/requirements; the active-profile materialization tree groups these source records by possible representation/destination without becoming semantic authority.
-
-Target Module AP guidance must not duplicate a separate Lens finding merely because that finding may be persisted next to the Target. If independently useful cross-owner proof coordination ever justifies a durable supporting artifact, its semantic owner must be established explicitly rather than assumed to be a generic Test Strategy Target; concrete test class/helper topology remains implementation-native Exact Realization/code authority rather than a required shadow registry. A Domain/other Target must not create a second evolution authority merely because a Lens found future pressure. Accepted evolution meaning belongs to the natural Target owner defined by the active profile; any same-owner companion materialization remains Documentation / Representation + P-14 / TF-10 responsibility.
+Target Module guidance owns only Target-result-side intent. It must not duplicate Lens-supporting guidance, invent a new semantic owner through placement, or require a hand-maintained shadow of implementation-native code/test topology.

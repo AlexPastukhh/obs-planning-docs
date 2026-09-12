@@ -1,4 +1,4 @@
-# Artifact Placement And IDTSPE Response Contract
+# Artifact Placement And Persistence-Sensitive Response Contract
 
 Status: active generic methodology owner
 
@@ -77,7 +77,24 @@ A separate file does not automatically create a separate semantic owner.
 
 If planning discovers that content may need a **new semantic owner/Target**, do not solve that through `NEW_CANONICAL_ARTIFACT`. Surface an ownership Finding Candidate; Core Finding Disposition selects ownership/Target-Formation resolution when warranted. Only after the semantic owner is resolved may P-14 create/select its artifact owner.
 
-## 2A. Current Artifact Context
+## 2A. Representation Cardinality / Promotion Invariant
+
+Semantic ownership and physical file topology are independent:
+
+```text
+one Target ≠ one file
+one semantic owner ≠ one file
+one file ≠ one semantic owner
+working artifact persisted ≠ durable semantic authority
+derived/generated view ≠ semantic owner
+implementation-native representation = valid durable representation when the important meaning remains discoverable/stable
+```
+
+Several small semantic owners may share one artifact when identities/boundaries remain clear. One substantial owner may use several representations when independent review/use/lifecycle pressure justifies them. Promotion from embedded → dedicated representation, or demotion/merge in the opposite direction, is reversible when independent size/review/reuse/lifecycle pressure changes.
+
+Do not create Markdown solely because methodology meaning is material; representation is selected by the current semantic owner + Documentation/Representation + P-14/TF-10.
+
+## 2B. Current Artifact Context
 
 Before proposing new placement in a persistence-sensitive checkpoint/pass, expose the current artifact state relevant to the Target:
 
@@ -408,23 +425,24 @@ new addressable DATA concept
 architecture rationale
 ```
 
-## 5. Integration Checkpoint / Persistence-Sensitive Response View
+## 5. Checkpoint / Response Integration Boundary
 
-When a full Integration Checkpoint or persistence-sensitive structured pass is being rendered, expose proportionally:
+This contract does **not** own the full Integration Checkpoint Process or its complete response projection. Canonical owners are:
+
+- [`integrate-current-work-use-case.md`](integrate-current-work-use-case.md) — checkpoint Situation / Result / Process;
+- [`broad-discussion-and-integration-checkpoint-model.md`](broad-discussion-and-integration-checkpoint-model.md) — conversational/checkpoint projection semantics.
+
+This contract contributes only the persistence-sensitive subview when physical representation is material:
 
 ```text
-1. optional Broad Discussion Summary / material explanatory Key Points
-2. Current Target / Scope / Sources + current Target Goal / Desired Outcome context
-3. coherent material Generic State through existing Core kinds, including explicit Proposal → Target Goal/Question/Problem `Addresses` relations and unresolved alternatives
-4. accepted Decisions + optional rationale/alternative-retention choices when material
-5. Target Step Result — applicable current Result Units
-6. relevant Lens/consistency review + material Finding Candidates/disposition consequences
-7. semantic retention + Artifact Placement View when physical persistence is material; otherwise inherited/unchanged/no-action may be stated compactly
-8. Handoff / next Sources / recommended discussion focus
-9. Residual Q/R/P / revalidation signals
+current integrated semantic meaning
+→ what should survive physically?
+→ who semantically owns it?
+→ which representation/destination/action is appropriate?
+→ Artifact Placement View / unresolved placement state
 ```
 
-The exact prose format can vary. Broad Discussion turns are exempt from the full checkpoint view; material Key Points remain proportional review structure, but no block-owner or per-response Intake Summary is mandatory. A checkpoint Broad Discussion Summary is optional retrospective prose and must not substitute for structured material Proposals/relations. In a checkpoint, do not confuse semantic retention with physical placement: show an Artifact Placement View when placement is material/changed/unresolved; when existing placement is inherited and no physical change is under consideration, a compact `placement unchanged/inherited` statement is sufficient.
+If placement is inherited/unchanged and no physical representation decision is material, a compact `placement unchanged/inherited` statement is sufficient. Broad Discussion does not require a placement rendering on every turn.
 
 ## 6. Artifact Placement View — Compact Rendering
 

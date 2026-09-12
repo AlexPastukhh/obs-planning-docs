@@ -31,9 +31,9 @@ Prototype may precede commitment when empirical inquiry is useful. Practical Tes
 
 This direction is orientation, not a phase sequence.
 
-## 2. Application Definition Gate
+## 2. Application Definition Readiness
 
-Use `TM-APPLICATION-DEFINITION` when materially unsettled: custom contribution justification, own Application contribution, responsibility boundary, core real-life paths, or feasibility able to change the concept/boundary. Reuse/skip it when trusted current Application meaning is sufficient and unchanged.
+Application Definition is the conditional upstream owner when own-Application contribution/boundary/feasibility can materially change what downstream behavior should mean. The exact activation/skip gate is owned by [`../target-modules/TM-APPLICATION-DEFINITION.md`](../target-modules/TM-APPLICATION-DEFINITION.md); this guide only records its place in the cross-owner dependency direction.
 
 ## 3. Feature ↔ Scenario ↔ Screen Peer Formation
 
@@ -49,7 +49,7 @@ Valid entry orders include Feature-first, Scenario-first, Screen-pressure-first 
 
 ## 4. Feature / Slice Boundary
 
-When Feature/Slice boundary quality is material, route through the SDS Lens Registry to `LENS-SLICE-VERTICALITY-INTEGRATION`. Use light evidence during Feature formation and stronger concrete evidence during Slice Discovery/owner review. The Lens evaluates four signal groups: Intent/Principal Result; Semantic Entry; Realization Cohesion/Shared Structure; Development/Proof/Evolution Fitness. Selected boundary meaning remains owner meaning.
+When Feature/Slice boundary quality is material, route through the SDS Lens Registry to `LENS-SLICE-VERTICALITY-INTEGRATION`. This guide owns only the **cross-owner readiness relation**: Feature formation may use lighter implementation-aware evidence, while Slice Discovery/owner review may use stronger concrete end-to-end evidence. The Lens body owns the actual boundary method, signal groups and evaluation semantics. Selected boundary meaning remains with the natural owner.
 
 ## 5. Domain Discovery / Durable Domain
 
@@ -83,11 +83,13 @@ Behavior coverage, Slice↔Domain use, grouping/order and owner-addressability v
 
 ## 8. Shared Implementation Capability
 
-Consider Shared extraction only for coherent reusable non-end-to-end responsibility. Default evidence is 2+ concrete selected Slice consumers. One-current-consumer is exceptional and requires a selected known Evolution Step that establishes another concrete consumer plus a seam justified now. Durable consumption traces from Slice IR to Shared consumer binding. If a candidate owns Aggregate state/invariants/lifecycle/Domain policy, route toward Domain instead.
+Shared is the durable owner for coherent reusable **non-end-to-end** implementation responsibility consumed by Slices. Formation/retention criteria, including concrete-consumer pressure and the known-Evolution exception, are owned by [`../target-modules/TM-SHARED-IMPLEMENTATION-CAPABILITY.md`](../target-modules/TM-SHARED-IMPLEMENTATION-CAPABILITY.md).
+
+This guide owns only the relationship rule: if the candidate is actually end-to-end Slice policy keep it Slice-local; if it owns Domain state/invariants/lifecycle/policy, route toward Domain; otherwise consult the Shared Target Module gate rather than duplicating that gate here.
 
 ## 9. Implementation Requirements
 
-When durable implementation/proof constraint pressure is material, apply `LENS-IMPLEMENTATION-REQUIREMENTS-DISCOVERY` through normal Lens routing. Possible outcomes include owner-local IR/PFR, Decision/Risk/Question/Known Problem, code/working-plan choice, or no durable output. Zero Requirements is valid; existing IR/PFR may be refined, merged, weakened, strengthened, retired or reopened. There is no baseline `TM-REQUIREMENT`.
+When implementation/proof reasoning may need durable owner-local must-hold meaning, route through `LENS-IMPLEMENTATION-REQUIREMENTS-DISCOVERY` and the natural Requirement owner. Exact Requirement families, discovery outcomes, exception rules and zero-output semantics are owned by [`requirement-ownership-and-exception-rule.md`](requirement-ownership-and-exception-rule.md) plus the concrete Lens; this guide only records where that concern participates in SDS readiness. There is no baseline `TM-REQUIREMENT`.
 
 ## 10. Programming Principles
 
@@ -101,21 +103,21 @@ Testing is not a later phase. Domain semantics normally use focused Domain proof
 
 Lazily scan `TM-EVOLUTION-STEPS-MAP`, then open only relevant selected Steps. Use `LENS-WORKSPACE-EVOLUTION-ARCHITECTURE` when change isolation, prepare-now-vs-defer or avoidable Forced Migration is material. No generic Evolution Impact Target/RU is created; impact remains with natural owners or transient evaluation.
 
-## 13. Exact Realization / Depth
+## 13. Exact Realization / Recommended Planning Depth
 
 Enter Core `TM-EXACT-REALIZATION` when accepted upstream meaning is sufficient for literal/directly-integrable work. `TM-PRE-UPDATE-PLAN` is optional when a separate reviewable intended-change result is useful; it is not a mandatory level.
 
-Recommended depth remains non-exclusive guidance:
+The SDS depth ladder is profile guidance for reasoning/readiness. It is not a one-active-level state machine, phase sequence or approval ladder; several levels may participate together.
 
-```text
-PL-L0  behavior and semantic ownership
-PL-L1  owner-local implementation/proof constraints
-PL-L2  implementation responsibility/boundary/relations
-PL-L3  transient exact realization planning
-PL-L4  literal directly-integrable result
-```
+| Level | Recommended meaning | Typical SDS participation |
+|---|---|---|
+| `PL-L0-BEHAVIOR-AND-OWNER` | application/behavioral meaning and semantic ownership | Application Definition when needed; Feature ↔ Scenario ↔ Screen; Domain semantic-owner questions |
+| `PL-L1-IMPLEMENTATION-REQUIREMENTS` | durable implementation/proof constraints | owner-local `IR-*`; rare owner-local `PFR-*`; Feature implementation concerns as inputs |
+| `PL-L2-IMPLEMENTATION-ARCHITECTURE` | implementation responsibility/boundary/relations | Domain/Slice/Shared owners, dependencies/change locality, proof boundary |
+| `PL-L3-EXACT-IMPLEMENTATION-PLAN` | transient exact working plan | Core `TM-EXACT-REALIZATION` internal production reasoning |
+| `PL-L4-LITERAL-CODE-AND-PACKAGE` | literal directly-integrable result | Core `RU-REAL-01`; package/app materialization where applicable |
 
-The active IDTSPE Use Case decides whether any deeper component is useful now. Ordinary depth movement is not a USER gate.
+Ordinary depth movement is not a USER gate. Core Lens aliases such as historical `L1/L2/L3` are unrelated to this profile planning-depth vocabulary.
 
 ## 14. Semantic Readiness Questions
 

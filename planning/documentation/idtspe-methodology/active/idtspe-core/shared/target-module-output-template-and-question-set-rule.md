@@ -157,7 +157,7 @@ Target Goal / Desired Outcome from the Target contract/context
 
 The current Target may add, remove, split, merge or reopen Questions through normal Core question-set resolution, and may surface/refine material Problems through existing P-09 Problem semantics. When a Module is active, its Target Goal plus Question/Problem candidates are the ordinary starting driver set for Proposal discovery, but Questions/Problems discovered from Sources, previous steps/checkpoints, Broad Discussion, user/AI input or dispositioned findings are accepted on equal Core semantic footing and are not second-class simply because they were not predeclared in the Module. An independently useful new Goal goes through normal scope/Target Formation rather than becoming a Generic State Unit by implication.
 
-Concrete Questions are Core State Units; material Problems use the existing P-09 Problem meaning. Every material Proposal explicitly records which Target Goal/Question/Problem it addresses.
+Concrete Questions are Core State Units; material Problems use the existing P-09 Problem meaning. Proposal driver/`Addresses` semantics are owned by [`proposal-and-decision-lifecycle-contract.md`](proposal-and-decision-lifecycle-contract.md); this rule only says that Module-supplied driver candidates are non-exhaustive inputs to that Core lifecycle.
 
 ## Result Unit / Field Explanation Rule
 

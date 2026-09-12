@@ -417,54 +417,28 @@ for unresolved AI proposals
 
 # 13. Broad Discussion Material Intake
 
-Broad Discussion may introduce material decision drivers, Proposals and related State meaning without forcing a full IDTSPE State dump or mini-checkpoint in that turn.
+This rule owns **classification/intake from USER language**, not Proposal/Decision lifecycle semantics. Canonical Proposal drivers/relations, selection outcomes, Decision trace/retention and revalidation are owned by [`proposal-and-decision-lifecycle-contract.md`](proposal-and-decision-lifecycle-contract.md).
 
-For material Proposals, preserve the meaning explicitly in the discussion:
-
-```text
-Proposal <identity/label>
-Addresses → current Target Goal / Desired Outcome | Question | Problem
-
-material Proposal relations when they actually exist
-  competes-with
-  complements
-  requires
-  conflicts-with
-  part-of-candidate-bundle
-
-related Q/R/P/Evidence when material
-```
-
-The current Target Goal / Desired Outcome is Target/scope context rather than a new Generic State Unit introduced by this intake rule. A material Problem driver uses the existing P-09 Problem meaning.
-
-A material Proposal is not left as an unlabeled implication in prose or in a later Broad Discussion Summary. If its Target Goal/Question/Problem driver cannot yet be identified, record that missing driver as an unresolved planning gap instead of carrying a free-floating material Proposal.
-
-When an active Target Module supplies reusable Question/Problem candidates, together with its current Target Goal, those are the ordinary starting driver set. They are not an exclusive intake gate: drivers/Proposals from the user, AI, current situation/Sources, previous work/checkpoints, Broad Discussion or dispositioned findings receive the same Core semantics once accepted into the current work. AI Proposals and formal Proposals derived from AI remain unselected until actual authority selects them. A lightweight AI Proposal need not be formalized merely because it exists.
-
-No mandatory `Broad Discussion Intake Summary` or block-owner/semantic-anchor record is required after each message. Conversation context plus explicit IDTSPE Proposals/Q-R-P/Evidence carry the exploration; the next Integration Checkpoint normalizes the material whole into current Generic State + Target Result.
-
-Canonical owner: [`broad-discussion-and-integration-checkpoint-model.md`](broad-discussion-and-integration-checkpoint-model.md).
-
-# 14. Decision Retention / Rationale Intake At Checkpoints
-
-At an Integration Checkpoint:
+During Broad Discussion, preserve enough explicit meaning to classify material input correctly without forcing a full State dump:
 
 ```text
-accepted material Decision
-→ retain in semantic planning state by default
+USER fact / observation
+→ Source or other current-context meaning
 
-Rationale / Why
-→ optional
-→ distinct from Evidence
-→ ask the user whether a concise rationale should be retained when a new material Decision has none
+USER suggestion without clear selection
+→ Proposal candidate
 
-material non-selected / deferred / rejected / superseded alternatives
-→ ask whether to retain the alternatives and, when relevant, why they were not selected
+USER explicit material selection
+→ accepted Decision input
 
-trivial transient alternatives
-→ may remain conversational unless the user wants the exploration history
+ambiguous material selection language
+→ UNRESOLVED_DECISION rather than silent acceptance
 ```
 
-Do not make an optional rationale/alternative-retention question blocking unless the missing rationale itself is needed to resolve a material ambiguity. Batch retention questions when practical rather than creating a confirmation turn for every small choice.
+If a material formal Proposal is opened, preserve the Proposal identity and its driver reference required by the canonical lifecycle. Do not invent a separate `Broad Discussion Intake Summary` merely to log the turn. The next Integration Checkpoint may normalize material current meaning into Core State + Target Result.
 
-If the user already supplied a rationale or explicitly said whether to keep alternatives, reuse that input and do not re-ask it.
+# 14. Decision Retention Intake Handoff
+
+If the USER already supplies rationale, alternative-retention preference, amendment or explicit acceptance/rejection meaning, capture that input and pass it to the canonical Proposal/Decision lifecycle. Do not re-ask it at a checkpoint.
+
+This rule does not decide **whether** rationale or non-selected alternatives should be retained; it only prevents loss/duplication of retention-related USER input.

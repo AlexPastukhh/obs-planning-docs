@@ -7,23 +7,18 @@ This file projects selected SDS semantic owners into possible physical represent
 Canonical generic policy:
 [`../../idtspe-core/lenses/required/LENS-ARTIFACT-BOUNDARY-ADDRESSABILITY.md`](../../idtspe-core/lenses/required/LENS-ARTIFACT-BOUNDARY-ADDRESSABILITY.md).
 
-## Fundamental Rule
+## Profile Projection Boundary
+
+Generic semantic-owner/artifact-owner separation, representation cardinality, promotion/demotion and P-14/TF-10 placement semantics are owned by Core [`artifact-placement-and-idtspe-response-contract.md`](../../idtspe-core/shared/artifact-placement-and-idtspe-response-contract.md) and the required Documentation / Representation Lens.
+
+This SDS map owns only the **profile-specific projection**:
 
 ```text
-semantic owner
-≠ Target invocation
-≠ Markdown file
+selected SDS semantic-owner type
+→ plausible SDS representation forms / profile-specific defaults
 ```
 
-Valid forms include:
-- implementation-native;
-- embedded section in an existing durable owner;
-- several small owners in one file;
-- one dedicated owner file;
-- hybrid semantic prose + implementation-native detail;
-- generated/derived navigation view.
-
-Representation promotion/demotion is reversible when independent size/review/reuse/lifecycle pressure changes.
+It does not create semantic owners, require one-file-per-owner topology, or override current Target Module/Lens artifact guidance.
 
 ## Working vs Durable
 
@@ -181,13 +176,11 @@ tests/
 
 Even here, exact class/helper/test topology remains implementation-native unless independently semantic.
 
-## Guards
+## Profile Guards
 
 ```text
-one Target ≠ one file
-one owner ≠ one file
-one file ≠ one owner
-working plan persisted ≠ durable authority
-derived portfolio/map ≠ semantic owner
-implementation-native ≠ undocumented when important semantic residue is invisible
+Domain/Slice discovery artifact persisted ≠ durable Domain/Slice authority
+retired Slice Strategy view ≠ restored semantic owner
+SDS representation example ≠ required repository tree
+profile projection ≠ Core placement authority
 ```

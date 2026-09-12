@@ -434,176 +434,59 @@ both
 
 A Local Target Contract may select any registered Core/profile Lens whose applicability gate is satisfied. It does not need a fake Target Module merely to gain access to reusable Lenses.
 
-## 9. Generic Choice Lifecycle
+## 9. Choice-Lifecycle Participation
+
+The Lens model does not own the generic Target/Proposal/Decision lifecycle. Canonical candidate/selection semantics are in [`../shared/proposal-and-decision-lifecycle-contract.md`](../shared/proposal-and-decision-lifecycle-contract.md); Target Formation and Shell resolution remain owned by their Core contracts.
+
+Lens-local participation is only:
 
 ```text
-Need grounding
-→ Target / Scope
-→ Source Contract
-→ RQ / Question-Set Decision
-→ Proposals / Branches
-→ Lens evaluation + Evidence
-→ material implications surface as Finding Candidates
-→ Core Finding Disposition
-→ accepted/refined State such as Proposal / Q/R/P / Evidence / Answer Decision when warranted
-→ Target projection
-→ revalidation readiness
+current Analysis Surface / candidate choice
+→ Lens evaluation
+→ explanatory analysis OR material Finding Candidate
+→ Core Finding Disposition when needed
+→ normal Core/owner resolution outside the Lens
 ```
 
-Typical use:
+Typical Lens packs may attach at different choice surfaces, but that attachment does not make the Lens owner of the surrounding lifecycle.
 
-```text
-L1–L3 → core checks across Target/Scope, RQ and Proposal choice
-Documentation / Representation → required check when material output may persist
-L4 → structured dependency/change impact is material
-L5 → Workspace evolution/WEUC/architecture pressure/work-cost is material
-Simplicity → candidate structure may contain avoidable abstractions/steps/entities
-Linked Notes Usage → material cross-owner navigation/backlink/query need is proposed
-L6 → proof/observation/diagnosis/operation is material
-Target-profile Lens Packs → selected Target family or independently applicable context
-```
+## 10. Finding → Disposition Boundary
 
-## 10. Finding → Disposition / Resolution / Target Formation
-
-```text
-Lens operation
-→ Finding Candidate
-→ Core Finding Disposition
-   materiality / affected meaning / semantic owner / State-lifecycle consequence
-→ normal State/Decision resolution when material
-→ existing Result Unit update only where the Target contract owns that accepted meaning
-```
-
-When a finding exposes independently substantial unresolved work, disposition may surface a **Target Formation candidate**. Target Formation then decides whether to reuse an existing Target, hand off to an existing owner, or form a bounded child/local Target.
+A Lens stops at explanatory analysis or a Finding Candidate. Canonical ownership/State/lifecycle disposition, handoff and Target Formation consequences are owned by [`../shared/finding-disposition-contract.md`](../shared/finding-disposition-contract.md).
 
 ```text
 Lens activation ≠ new Target Instance
-Lens finding ≠ new Target automatically
-Target Formation candidate ≠ automatic child Target
+Lens finding ≠ accepted Decision
+Lens finding ≠ Result Unit mutation
+Finding Candidate ≠ automatic child Target
 ```
 
 ## 11. Artifact / File Ownership Boundary
 
-A separate file does not determine whether a Target Module or Lens should propose it. The **meaning being persisted** determines guidance ownership.
+A Lens may contribute **supporting representation guidance for findings produced by that perspective**, but it does not own the generic placement schema or final destination resolution. Canonical `ARTIFACT_GUIDANCE`, placement-status, precedence and P-14 / TF-10 semantics are owned by [`../shared/artifact-placement-and-idtspe-response-contract.md`](../shared/artifact-placement-and-idtspe-response-contract.md).
 
-### Target Module AP-* owns representation of Target output
-
-A Target Module may propose:
+Lens-local responsibility is limited to:
 
 ```text
-canonical Target result owner
-target-result registry/coordinator
-supporting representation intrinsic to the Target result
+should this perspective suggest a distinct supporting representation at all?
+what finding/supporting meaning would that representation carry?
+under what Lens-local condition is the suggestion relevant?
 ```
 
-Example:
+A valid Lens outcome is `NONE / NO_DISTINCT_SUPPORTING_ARTIFACT`. A Lens never creates semantic authority, overrides an existing Target/owner, or duplicates a Target Module's canonical result representation merely to restate where accepted Target meaning belongs.
+
+If a Lens needs structured artifact guidance, it conforms to the canonical `ARTIFACT_GUIDANCE` interface owned by the placement contract instead of redefining that interface here.
+
+Example boundary:
 
 ```text
-independently useful cross-owner proof coordination
-→ establish its natural semantic owner first
-→ optionally persist a small supporting proof-policy artifact when justified
-
-Concrete test class / setup / fixture / harness / helper topology remains code authority under
-TM-EXACT-REALIZATION. A generated/reference topology view is exceptional supporting representation,
-not a generic Test Strategy Target result and not a hand-maintained shadow of code.
+Evolution Lens finds future change pressure
+→ Finding Candidate / accepted owner meaning first
+→ Lens may suggest a companion/supporting projection when independent addressability helps
+→ Documentation / Representation + P-14 decide whether/how it persists
 ```
 
-### Lens AG-* owns supporting / artifact-placement guidance for Lens findings
-
-A Lens may propose:
-
-```text
-supporting artifact for a finding produced by that perspective
-likely existing/global semantic-owner hint plus unresolved/route placement guidance
-evidence/supporting map that remains non-authoritative
-```
-
-It must **not** duplicate the Target Module's AP merely to say “put the accepted Target result back into its Target owner”.
-
-A reusable Lens must contain exactly one `## Artifact / File Implications` section, but it may contain **zero or more** structured `ARTIFACT_GUIDANCE` records.
-
-Valid no-record case:
-
-```text
-Artifact / File Implications:
-  NONE / NO_DISTINCT_SUPPORTING_ARTIFACT
-
-Reason:
-  Core Finding Disposition resolves the semantic owner;
-  when the current Target owns accepted meaning, its Target Module/local contract already owns representation and no distinct Lens supporting artifact is needed.
-```
-
-When structured guidance exists, source fields remain:
-
-```text
-ID
-CONTENT_KIND
-WHEN
-GUIDANCE
-PERSISTENCE_GUIDANCE
-PLACEMENT_DIRECTIVE
-SEMANTIC_OWNER
-REPRESENTATION
-FILE_OR_ARTIFACT
-CONTENT
-GUIDANCE_SOURCE: LENS
-RESOLVER: P-14 / TF-10
-```
-
-A Lens cannot create semantic authority; P-14/TF-10 resolves actual persistence/placement after the Documentation / Representation check.
-
-## 12. Literal Example — Domain Evolution Companion Is Lens Guidance
-
-```text
-Current Target:
-  CaptureItem Domain owner
-
-Domain / Aggregate Modeling Target owns:
-  what CaptureItem means now
-  invariants / state / consistency / relationships
-  representation of that current Domain result
-
-L5 Evolution / Change Isolation Lens surfaces:
-  a future-evolution Finding Candidate carrying
-  + offline-synchronization path proposal
-  + change-isolation concern
-  + transition-trigger context
-→ Core Finding Disposition
-→ accepted local evolution meaning when CaptureItem/current Domain Target is resolved as owner
-→ accepted target-specific evolution meaning remains with the natural owner
-→ Documentation / Representation + P-14 / TF-10 decide no persistence vs embedded section vs same-owner companion when pressure justifies it
-```
-
-```text
-CaptureItem.evolution.md
-= selected/materialized supporting representation of accepted local evolution meaning
-≠ direct L5 output
-≠ Domain Target output
-≠ another Domain semantic owner
-≠ automatic Artifact Proposal requirement of the Domain Target
-```
-
-## 13. Literal Example — Slice Evolution Companion Is Lens Guidance
-
-```text
-SL-CAP-01
-= current Slice owner
-
-L5 discovers:
-  credible future PDF/offline extension paths
-  + prepared seams
-  + revalidation triggers
-
-→ Finding Candidate
-→ Core Finding Disposition
-→ accepted local evolution meaning when the Slice/current Target is resolved as owner
-→ accepted Slice Evolution Step remains with the Slice owner
-→ Documentation / Representation + P-14 / TF-10 decide whether same-owner split representation is useful
-```
-
-An evolution companion, when used, is only a selected materialization of evolution meaning already owned by the natural Target. It is not direct Lens output. For SDS, Slice Evolution Steps are intrinsic Slice result meaning while exact code topology remains implementation authority.
-
-## 14. Evolution / Architecture Boundary
+## 12. Evolution / Architecture Boundary
 
 ```text
 L5 Evolution / Change Isolation
@@ -615,7 +498,7 @@ L5 Evolution / Change Isolation
 
 A Lens does not own a global evolution map, current global architecture position or target-local evolution artifact. Representation follows the natural owner after accepted meaning exists.
 
-## 15. Linked Notes Boundary
+## 13. Linked Notes Boundary
 
 Linked Notes are evaluated as a **usage/navigation capability**, not as a file family.
 
@@ -630,17 +513,17 @@ existing canonical owners / stable IDs / relations
 
 The Lens must not create `notes/` or `linked-notes/` trees or route semantic ownership itself.
 
-## 16. Revalidation Is Not A Peer Lens
+## 14. Revalidation Is Not A Peer Lens
 
 Revalidation is a Decision lifecycle mechanism. L3 may surface Finding Candidates carrying revalidation-signal meaning; Core Finding Disposition decides whether accepted revalidation State is created/refined. Uncertainty/Reversibility ≠ Revalidation.
 
-## 17. User Questions
+## 15. User Questions
 
 ```text
 Lens Prompt ≠ RQ ≠ Q/R/P Question ≠ User Question
 ```
 
-## 18. High-Level Composition Example
+## 16. High-Level Composition Example
 
 Suppose a Scenario Target uses `TM-SCENARIO-PLANNING`. Required Core Lenses are checked when their corresponding material surfaces exist, while Scenario journey-composition work remains owned by the Target Module itself. Feature behavior remains Feature authority; the Scenario may only reference participating Feature results and compose actor/external links, order/branch/convergence, continuity and terminal Benefit. The Lens Applicability Scan may additionally select Quality/Risk, Practical Evidence, UI, Vertical Slice, Evolution, Test Proof or another registered Lens when the current Analysis Surface makes that perspective material. No Lens is attached merely because its topic could become relevant downstream.
 
@@ -687,7 +570,7 @@ Artifact / File Implications
 
 New or materially revised Lens files should make Analysis Surface, supported operations and Finding Contract explicit.
 
-## 19. Maintenance
+## 17. Maintenance
 
 Creation/review/promotion of a reusable Lens is owned by [`../shared/lens-creation-and-integration-use-case.md`](../shared/lens-creation-and-integration-use-case.md).
 
