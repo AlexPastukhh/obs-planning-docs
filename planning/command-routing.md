@@ -114,6 +114,20 @@ No unresolved choice or fallback authorizes destructive actions, unrelated scope
 
 Command permission is explicit and local to the selected command. Semantic-entry activation never expands it. No command implies Git commit/push unless its direct definition explicitly owns that behavior.
 
+## Archive Read-Source Boundary
+
+An explicitly selected archive may be used as a **read-source snapshot** for the current invocation. This source-selection boundary is distinct from replacement-package production and application.
+
+```text
+USER explicitly selects archive as source
+  → verify/select that archive for current read context
+  → state identity/freshness limits when material
+  → answer/review/plan from that source
+  → do not infer package production or application
+```
+
+An archive from an earlier message is not automatically current. `archive read-source` does not imply `build replacement package`, and a produced replacement package does not automatically become the next read source.
+
 ## Planning Helper Boundary
 
 The Helper is a **semantic command projection**, not a semantic owner. Its primary command catalog combines current methodology Use Cases, Target Modules and Lenses with General/Tool direct commands. Methodology Use Cases start from `planning/documentation/use-case-registry-map.md` and only the current scoped registries mapped there; Target Modules/Lenses come from their current registries/owners. Project/area Use Cases remain reachable through their own declared routes unless explicitly projected.

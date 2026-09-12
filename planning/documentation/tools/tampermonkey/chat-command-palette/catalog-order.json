@@ -2,7 +2,6 @@
   "schemaVersion": 1,
   "kind": "planning-helper-catalog-order",
   "commands": [
-    "idtspe.work",
     "review_audit.recheck",
     "idtspe.bootstrap",
     "application_sds.bootstrap",

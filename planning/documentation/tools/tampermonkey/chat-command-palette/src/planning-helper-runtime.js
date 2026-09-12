@@ -23,11 +23,11 @@
     'idtspe.review_consistency':{actionLabel:'Проверить consistency текущей работы',tail:'General · Consistency Review',scenarioRefs:['planning/documentation/idtspe-methodology/active/idtspe-core/shared/consistency-review-use-case.md']},
     'idtspe.lenses.select':{actionLabel:'Подобрать применимые Lenses',tail:'Core Lens Registry · TF-06A LENS_SET',scenarioRefs:['planning/documentation/idtspe-methodology/active/idtspe-core/lenses/README.md','planning/documentation/idtspe-methodology/active/idtspe-core/shared/idtspe-unit-and-target-step-result-model.md']},
     'replacement_archive.create':{actionLabel:'Собрать Replacement Package',tail:'Tool · UC-REPO-BUILD-REPLACEMENT-PACKAGE',category:'TOOL',scenarioRefs:['planning/use-cases/UC-REPO-BUILD-REPLACEMENT-PACKAGE.md','planning/documentation/build-replacement-archive-workflow.md']},
-    'archive_source.use':{actionLabel:'Использовать выбранный archive как source',tail:'Tool · Archive Source',category:'TOOL'},
+    'archive_source.use':{actionLabel:'Использовать выбранный archive как source',tail:'Tool · Archive Source',category:'TOOL',scenarioStepIds:['SCN-06-S1A']},
     'command.plan':{actionLabel:'Спланировать command route',tail:'General · Command Route',scenarioRefs:['planning/command-routing.md']}
   });
-  const HIDDEN_INFRASTRUCTURE_COMMANDS=new Set(['idtspe.lens.apply']);
-  function directPresentation(entry){const meta=DIRECT_PRESENTATION[entry.id]||{};const actionLabel=meta.actionLabel||entry.command||entry.label||entry.id,tail=meta.tail||`General · ${entry.englishName||entry.id}`;return{actionLabel,label:`${actionLabel} · ${tail}`,commandCategory:meta.category||'GENERAL',scenarioRefs:[...(meta.scenarioRefs||[])]};}
+  const HIDDEN_INFRASTRUCTURE_COMMANDS=new Set(['idtspe.lens.apply','idtspe.work']);
+  function directPresentation(entry){const meta=DIRECT_PRESENTATION[entry.id]||{};const actionLabel=meta.actionLabel||entry.command||entry.label||entry.id,tail=meta.tail||`General · ${entry.englishName||entry.id}`;return{actionLabel,label:`${actionLabel} · ${tail}`,commandCategory:meta.category||'GENERAL',scenarioRefs:[...(meta.scenarioRefs||[])],scenarioStepIds:[...(meta.scenarioStepIds||[])]};}
   function componentBody(component,useCase,mode){if(component.kind==='USE_CASE'&&useCase)return deps.buildSemanticBody('use_case',useCase,mode);return deps.buildSemanticBody(component.kind==='TARGET_MODULE'?'target_module':'lens',component,mode);}
 
   function materializeSnapshot(snapshot){

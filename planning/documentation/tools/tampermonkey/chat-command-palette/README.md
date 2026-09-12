@@ -9,7 +9,7 @@ Scope: local-first, GitHub-backed **semantic command projection** with canonical
 1. `planning/command-routing.md` — executable-command and projection policy.
 2. `planning/commands/README.md` — direct Planning Command authority.
 3. `planning/documentation/use-case-registry-map.md` and the current IDTSPE Target Module/Lens registries — semantic owners projected into Helper commands.
-4. `planning/documentation/idtspe-methodology/active/idtspe-core/shared/methodology-use-case-scenario-map.md` — canonical methodology working Scenarios; these Scenarios do not know about commands.
+4. canonical working Scenario owners — methodology `SCN-01..SCN-05` in `planning/documentation/idtspe-methodology/active/idtspe-core/shared/methodology-use-case-scenario-map.md`, repository/tool `SCN-06` in `planning/documentation/replacement-package-builder/scenarios/SCN-BLDR-BUILD-AND-REVIEW-REPLACEMENT-PACKAGE.md`; these Scenarios do not know about commands.
 5. `planning/helper-library/README.md` — Prompt / legacy helper insertion authority.
 6. `scenarios/README.md` — Planning Helper **application** behavior (`SCN-PH-*`), separate from methodology working Scenarios (`SCN-01..SCN-06`).
 7. `MANUAL-ACCEPTANCE.md` — browser/real-GitHub acceptance.
@@ -162,13 +162,15 @@ Direct commands may be created/edited locally as drafts. `Save GitHub` is explic
 
 Specific Lens cards are projected from the Lens Registry. The generic `примени линзу` dispatcher remains infrastructure and is not another primary Lens card. Lens operations (`ANALYZE/CHECK/REFINE/CHALLENGE`) and Target Module Result Units are selected by AI/context and do not become separate buttons.
 
+The bare `idtspe` direct command remains a current convenience/dispatcher route but is likewise not a second primary Helper card beside `UC-IDTSPE-COMPOSE-CURRENT-WORK`.
+
 ### Use Cases
 
 Canonical methodology-use source is [`planning/documentation/use-case-registry-map.md`](../../../use-case-registry-map.md) plus only current mapped methodology-use registries. `seed/use-cases.json` remains a compatibility/source projection used to build semantic UC invocation bodies; Use Cases themselves appear under the **Commands → Use Cases** classification, not as a top-level peer surface.
 
 ### Working Scenarios
 
-`seed/scenarios.json` projects the canonical `SCN-01..SCN-06` owners. It stores canonical scenario prose + semantic references required for deterministic Helper projection. It does not store command-equivalent prose; command equivalents are computed from current semantic command identities at runtime.
+`seed/scenarios.json` aggregates canonical `SCN-01..SCN-06` from their current owners: methodology `SCN-01..SCN-05` from the Core methodology scenario map and repository/tool `SCN-06` from the replacement-package Builder scenario owner. It stores canonical scenario prose + semantic references required for deterministic Helper projection. It does not store command-equivalent prose; command equivalents are computed from current semantic command identities at runtime.
 
 ### Prompts
 

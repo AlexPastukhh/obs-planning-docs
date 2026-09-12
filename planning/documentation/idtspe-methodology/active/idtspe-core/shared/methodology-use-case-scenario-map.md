@@ -123,6 +123,15 @@ A root scenario begins from the ordinary functional entry route. A focused scena
 **Possible Result:** Current result meaning with material findings resolved/routed, or an explicit no-additional-lens outcome.  
 **Derived From / Owners:** `planning/documentation/idtspe-methodology/active/idtspe-core/shared/idtspe-unit-and-target-step-result-model.md`, `planning/documentation/idtspe-methodology/active/idtspe-core/lenses/README.md`.
 
+### Step `SCN-01-S3R` — challenge current meaning when independent review is useful
+
+**Trigger / Situation:** Current meaning is material enough that an independent critical challenge would improve confidence before deeper commitment or realization.  
+**AI Action:** Critically review the actual current Analysis Surface without manufacturing a mandatory review phase.  
+**Why This Step:** Important decisions may benefit from adversarial checking, but review remains proportional and may be skipped when it adds no independent value.  
+**Method / Mechanics:** Review current meaning/findings through the current review owner and applicable Lenses; route material Findings to their semantic owners rather than letting the Scenario own corrective rules.  
+**Possible Result:** Confirmed current meaning, bounded Findings, or focused revalidation pressure.  
+**Derived From / Owners:** `planning/documentation/review-diff-review-workflow.md`.
+
 ### Step `SCN-01-S4` — realize exactly when meaning is sufficient
 
 **Trigger / Situation:** The selected meaning is sufficiently determined for a literal/integrable result.  
@@ -152,6 +161,7 @@ A root scenario begins from the ordinary functional entry route. A focused scena
     {"id":"SCN-01-S1","title":"Establish the smallest useful composition","semanticRefs":["UC-DOC-USE-REPOSITORY-GUIDANCE","UC-IDTSPE-COMPOSE-CURRENT-WORK"]},
     {"id":"SCN-01-S2","title":"Deepen meaning only when pressure appears","semanticRefs":["UC-IDTSPE-COMPOSE-CURRENT-WORK","planning/documentation/idtspe-methodology/active/profiles/sds/shared/directed-methodology-workflow-and-next-step-resolution.md"]},
     {"id":"SCN-01-S3","title":"Evaluate material surfaces","semanticRefs":["planning/documentation/idtspe-methodology/active/idtspe-core/shared/idtspe-unit-and-target-step-result-model.md","planning/documentation/idtspe-methodology/active/idtspe-core/lenses/README.md"]},
+    {"id":"SCN-01-S3R","title":"Challenge current meaning when independent review is useful","semanticRefs":["planning/documentation/review-diff-review-workflow.md"]},
     {"id":"SCN-01-S4","title":"Realize exactly when meaning is sufficient","semanticRefs":["TM-PRE-UPDATE-PLAN","TM-EXACT-REALIZATION"]},
     {"id":"SCN-01-S5","title":"Revalidate only affected meaning","semanticRefs":["UC-IDTSPE-REVALIDATE-CURRENT-WORK","planning/documentation/idtspe-methodology/active/idtspe-core/shared/consistency-review-use-case.md"]}
   ]
@@ -267,6 +277,15 @@ A root scenario begins from the ordinary functional entry route. A focused scena
 **Possible Result:** A concrete non-mutating intended-change plan, or an explicit decision to proceed directly to Exact.  
 **Derived From / Owners:** `TM-PRE-UPDATE-PLAN`.
 
+### Step `SCN-04-S1R` — resolve representation only when persistence is material
+
+**Trigger / Situation:** Exact realization raises a material question about whether meaning should persist and where it belongs.  
+**AI Action:** Apply the Documentation / Representation Lens only when the persistence/artifact boundary is independently useful.  
+**Why This Step:** Exact work should not create unnecessary documents, but material durable meaning still needs an explicit representation decision.  
+**Method / Mechanics:** Evaluate `NO_PERSISTENCE`, implementation-native representation, reuse of an existing owner, consolidation, or a justified new/split artifact; do not let the Scenario own persistence semantics.  
+**Possible Result:** A bounded representation decision feeding Exact without creating a mandatory documentation phase.  
+**Derived From / Owners:** `LENS-ARTIFACT-BOUNDARY-ADDRESSABILITY`.
+
 ### Step `SCN-04-S2` — realize the accepted meaning literally
 
 **Trigger / Situation:** Exact/literal output is requested and host authority permits the applicable realization actions.  
@@ -286,7 +305,7 @@ A root scenario begins from the ordinary functional entry route. A focused scena
 **Derived From / Owners:** `UC-IDTSPE-REVALIDATE-CURRENT-WORK`.
 
 [METHODOLOGY_SCENARIO]
-{"id":"SCN-04","type":"FOCUSED","title":"Решения готовы — хочу перейти к точной реализации","entryRoute":"Starts after accepted meaning is sufficiently determined","assumptions":["Mutation authority remains owned by the active host/session contract"],"steps":[{"id":"SCN-04-S1","title":"Optionally review the intended update","semanticRefs":["TM-PRE-UPDATE-PLAN"]},{"id":"SCN-04-S2","title":"Realize the accepted meaning literally","semanticRefs":["TM-EXACT-REALIZATION"]},{"id":"SCN-04-S3","title":"Revalidate material contradiction only","semanticRefs":["UC-IDTSPE-REVALIDATE-CURRENT-WORK"]}]}
+{"id":"SCN-04","type":"FOCUSED","title":"Решения готовы — хочу перейти к точной реализации","entryRoute":"Starts after accepted meaning is sufficiently determined","assumptions":["Mutation authority remains owned by the active host/session contract"],"steps":[{"id":"SCN-04-S1","title":"Optionally review the intended update","semanticRefs":["TM-PRE-UPDATE-PLAN"]},{"id":"SCN-04-S1R","title":"Resolve representation only when persistence is material","semanticRefs":["LENS-ARTIFACT-BOUNDARY-ADDRESSABILITY"]},{"id":"SCN-04-S2","title":"Realize the accepted meaning literally","semanticRefs":["TM-EXACT-REALIZATION"]},{"id":"SCN-04-S3","title":"Revalidate material contradiction only","semanticRefs":["UC-IDTSPE-REVALIDATE-CURRENT-WORK"]}]}
 [/METHODOLOGY_SCENARIO]
 
 ## 9. `SCN-05` MAINTENANCE — Я меняю саму методологию или документацию
@@ -325,43 +344,7 @@ A root scenario begins from the ordinary functional entry route. A focused scena
 {"id":"SCN-05","type":"MAINTENANCE","title":"Я меняю саму методологию или документацию","entryRoute":"Documentation Use-Case routing; IDTSPE maintenance UC only for the component type being changed","assumptions":[],"steps":[{"id":"SCN-05-S1","title":"Resolve the documentation capability/owner change","semanticRefs":["UC-DOC-PLAN-DOCUMENTATION-CHANGE","UC-IDTSPE-MAINTAIN-TARGET-MODULE"]},{"id":"SCN-05-S2","title":"Refresh only affected derived projections/examples","semanticRefs":["UC-DOC-PLAN-DOCUMENTATION-CHANGE","planning/command-routing.md","planning/documentation/idtspe-methodology/active/idtspe-core/shared/methodology-use-case-scenario-map.md"]},{"id":"SCN-05-S3","title":"Review the resulting documentation","semanticRefs":["UC-DOC-REVIEW-DOCUMENTATION"]}]}
 [/METHODOLOGY_SCENARIO]
 
-## 10. `SCN-06` TOOL / REPOSITORY — Изменение готово — хочу собрать и проверить replacement package
-
-**Type:** TOOL / REPOSITORY continuation  
-**Entry assumption:** semantic/exact changes already exist in a selected working snapshot/branch. This is not a mandatory IDTSPE stage.
-
-### Step `SCN-06-S1` — optionally review the intended file transition
-
-**Trigger / Situation:** The repository delta is material enough that a separate intended-change plan would improve review.  
-**AI Action:** Optionally use the Core Pre-Update Target; skip it for an obvious already-reviewed transition.  
-**Why This Step:** Repository packaging should not force another planning ceremony.  
-**Method / Mechanics:** Bound add/replace/delete intent and preservation/verification without mutation.  
-**Possible Result:** Optional reviewed intended-change plan.  
-**Derived From / Owners:** `TM-PRE-UPDATE-PLAN`.
-
-### Step `SCN-06-S2` — produce a replacement package without applying it
-
-**Trigger / Situation:** The USER explicitly requests a replacement package/archive from the selected source snapshot.  
-**AI Action:** Build the package according to the repository package protocol, include exact base/replacement bytes, validate the manifest/payload, and stop.  
-**Why This Step:** Package production and package application are different authorities.  
-**Method / Mechanics:** Use the current package producer owner; do not apply/commit/push.  
-**Possible Result:** Valid replacement package + machine-readable apply instruction.  
-**Derived From / Owners:** `planning/use-cases/UC-REPO-BUILD-REPLACEMENT-PACKAGE.md`, `planning/documentation/build-replacement-archive-workflow.md`.
-
-### Step `SCN-06-S3` — verify applied result separately when/if another authority applies it
-
-**Trigger / Situation:** A package has later been applied in an authorized target workspace.  
-**AI Action:** Review/consistency-check the resulting current state as appropriate; do not infer promotion-to-main permission.  
-**Why This Step:** A valid package or successful apply does not itself authorize promotion.  
-**Method / Mechanics:** Verify exact delta and semantic consistency; route findings normally.  
-**Possible Result:** Verified target state or bounded Findings; promotion remains a separate explicit authorization.  
-**Derived From / Owners:** `planning/documentation/review-diff-review-workflow.md`, `planning/documentation/idtspe-methodology/active/idtspe-core/shared/consistency-review-use-case.md`.
-
-[METHODOLOGY_SCENARIO]
-{"id":"SCN-06","type":"TOOL_REPOSITORY","title":"Изменение готово — хочу собрать и проверить replacement package","entryRoute":"Tool/repository continuation after semantic/exact work","assumptions":["Selected source snapshot/branch is explicit","Package production does not authorize apply/commit/push/promotion"],"steps":[{"id":"SCN-06-S1","title":"Optionally review the intended file transition","semanticRefs":["TM-PRE-UPDATE-PLAN"]},{"id":"SCN-06-S2","title":"Produce a replacement package without applying it","semanticRefs":["planning/use-cases/UC-REPO-BUILD-REPLACEMENT-PACKAGE.md","planning/documentation/build-replacement-archive-workflow.md"]},{"id":"SCN-06-S3","title":"Verify applied result separately when authorized","semanticRefs":["planning/documentation/review-diff-review-workflow.md","planning/documentation/idtspe-methodology/active/idtspe-core/shared/consistency-review-use-case.md"]}]}
-[/METHODOLOGY_SCENARIO]
-
-## 11. SDS-Specific Use-Case Test
+## 10. SDS-Specific Use-Case Test
 
 Current conclusion: no separate SDS methodology-use Use Case is justified.
 

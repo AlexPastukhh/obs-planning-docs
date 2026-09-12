@@ -14,7 +14,10 @@ const useCaseSeedPath=path.join(seedDir,'use-cases.json');
 const semanticComponentSeedPath=path.join(seedDir,'semantic-components.json');
 const scenarioSeedPath=path.join(seedDir,'scenarios.json');
 const useCaseRegistryMapPath='planning/documentation/use-case-registry-map.md';
-const scenarioSourcePath='planning/documentation/idtspe-methodology/active/idtspe-core/shared/methodology-use-case-scenario-map.md';
+const scenarioSourcePaths=[
+  'planning/documentation/idtspe-methodology/active/idtspe-core/shared/methodology-use-case-scenario-map.md',
+  'planning/documentation/replacement-package-builder/scenarios/SCN-BLDR-BUILD-AND-REVIEW-REPLACEMENT-PACKAGE.md'
+];
 const coreTargetRegistryPath='planning/documentation/idtspe-methodology/active/idtspe-core/target-modules/README.md';
 const sdsTargetRegistryPath='planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/README.md';
 const coreLensRegistryPath='planning/documentation/idtspe-methodology/active/idtspe-core/lenses/README.md';
@@ -142,18 +145,21 @@ function readCanonicalSemanticComponents(commands,useCases){
   return semantic.normalizeSemanticComponents(all).sort((a,b)=>a.kind.localeCompare(b.kind)||a.scope.localeCompare(b.scope)||a.id.localeCompare(b.id));
 }
 function readCanonicalScenarios(){
-  const text=fs.readFileSync(path.join(repoRoot,scenarioSourcePath),'utf8'),items=[],presentation=new Map();
-  for(const section of text.matchAll(/^##\s+\d+\.\s+`(SCN-[A-Z0-9-]+)`[^\n]*\n([\s\S]*?)(?=^##\s+\d+\.\s+`SCN-|(?![\s\S]))/gm)){
-    const scenarioId=section[1],sectionText=section[0],firstStep=sectionText.search(/^### Step /m),marker=sectionText.search(/^\[METHODOLOGY_SCENARIO\]/m),introEnd=firstStep>=0?firstStep:(marker>=0?marker:sectionText.length),canonicalIntro=sectionText.slice(0,introEnd).trim(),steps=new Map();
-    for(const step of sectionText.matchAll(/^### Step `([^`]+)`[^\n]*\n[\s\S]*?(?=^### Step |^\[METHODOLOGY_SCENARIO\]|(?![\s\S]))/gm))steps.set(step[1],step[0].trim());
-    presentation.set(scenarioId,{canonicalIntro,steps});
+  const items=[],seen=new Set();
+  for(const scenarioSourcePath of scenarioSourcePaths){
+    const text=fs.readFileSync(path.join(repoRoot,scenarioSourcePath),'utf8'),presentation=new Map();
+    for(const section of text.matchAll(/^##\s+(?:\d+\.\s+)?`(SCN-[A-Z0-9-]+)`[^\n]*\n([\s\S]*?)(?=^##\s+(?:\d+\.\s+)?`SCN-|(?![\s\S]))/gm)){
+      const scenarioId=section[1],sectionText=section[0],firstStep=sectionText.search(/^### Step /m),marker=sectionText.search(/^\[(?:METHODOLOGY_SCENARIO|WORKING_SCENARIO)\]/m),introEnd=firstStep>=0?firstStep:(marker>=0?marker:sectionText.length),canonicalIntro=sectionText.slice(0,introEnd).trim(),steps=new Map();
+      for(const step of sectionText.matchAll(/^### Step `([^`]+)`[^\n]*\n[\s\S]*?(?=^### Step |^\[(?:METHODOLOGY_SCENARIO|WORKING_SCENARIO)\]|(?![\s\S]))/gm))steps.set(step[1],step[0].trim());
+      presentation.set(scenarioId,{canonicalIntro,steps});
+    }
+    for(const marker of ['METHODOLOGY_SCENARIO','WORKING_SCENARIO'])for(const match of text.matchAll(new RegExp(`\\[${marker}\\]\\s*([\\s\\S]*?)\\s*\\[\\/${marker}\\]`,'g'))){
+      const item=JSON.parse(match[1]);if(seen.has(item.id))throw new Error(`Duplicate canonical working Scenario id: ${item.id}`);seen.add(item.id);const view=presentation.get(item.id);item.source=scenarioSourcePath;item.canonicalIntro=view?.canonicalIntro||'';item.steps=(item.steps||[]).map((step)=>({...step,canonicalText:view?.steps.get(step.id)||''}));items.push(item);
+    }
   }
-  for(const match of text.matchAll(/\[METHODOLOGY_SCENARIO\]\s*([\s\S]*?)\s*\[\/METHODOLOGY_SCENARIO\]/g)){
-    const item=JSON.parse(match[1]),view=presentation.get(item.id);item.source=scenarioSourcePath;item.canonicalIntro=view?.canonicalIntro||'';item.steps=(item.steps||[]).map((step)=>({...step,canonicalText:view?.steps.get(step.id)||''}));items.push(item);
-  }
-  const scenarios=semantic.normalizeScenarios(items);if(!scenarios.length)throw new Error(`No canonical methodology scenarios found in ${scenarioSourcePath}.`);for(const scenario of scenarios){if(!scenario.canonicalIntro)throw new Error(`Canonical scenario intro was not projected: ${scenario.id}`);for(const step of scenario.steps)if(!step.canonicalText)throw new Error(`Canonical scenario step prose was not projected: ${step.id}`);}return scenarios.sort((a,b)=>a.id.localeCompare(b.id));
+  const scenarios=semantic.normalizeScenarios(items);if(!scenarios.length)throw new Error(`No canonical working Scenarios found in ${scenarioSourcePaths.join(', ')}.`);for(const scenario of scenarios){if(!scenario.canonicalIntro)throw new Error(`Canonical scenario intro was not projected: ${scenario.id}`);for(const step of scenario.steps)if(!step.canonicalText)throw new Error(`Canonical scenario step prose was not projected: ${step.id}`);}return scenarios.sort((a,b)=>a.id.localeCompare(b.id));
 }
-function seedText(kind,items){const generatedFrom=kind==='planning-command-seed'?'planning/commands/*.command.md':kind==='use-case-seed'?`${useCaseRegistryMapPath} -> mapped current scoped methodology Use-Case registries only`:kind==='semantic-component-seed'?`${useCaseRegistryMapPath} + current Core/SDS Target Module and Lens registries`:scenarioSourcePath;return JSON.stringify({schemaVersion:1,kind,generatedFrom,items},null,2)+'\n';}
+function seedText(kind,items){const generatedFrom=kind==='planning-command-seed'?'planning/commands/*.command.md':kind==='use-case-seed'?`${useCaseRegistryMapPath} -> mapped current scoped methodology Use-Case registries only`:kind==='semantic-component-seed'?`${useCaseRegistryMapPath} + current Core/SDS Target Module and Lens registries`:scenarioSourcePaths.join(' + ');return JSON.stringify({schemaVersion:1,kind,generatedFrom,items},null,2)+'\n';}
 function ensureSeed(pathname,expected){if(check){const actual=fs.existsSync(pathname)?fs.readFileSync(pathname,'utf8'):'';if(actual!==expected)throw new Error(`Generated seed catalog is stale: ${path.relative(repoRoot,pathname)}`);return;}fs.mkdirSync(path.dirname(pathname),{recursive:true});fs.writeFileSync(pathname,expected,'utf8');}
 function build(){
   const definitions=readCommands(),useCases=readCanonicalUseCases(definitions),semanticComponents=readCanonicalSemanticComponents(definitions,useCases),scenarios=readCanonicalScenarios();

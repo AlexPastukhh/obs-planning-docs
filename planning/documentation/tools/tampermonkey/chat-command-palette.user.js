@@ -598,9 +598,9 @@
   function componentMatchDefinition(component,definition){const c=component,d=definition||{},binding=d.methodologyBinding||{};if(c.kind===SEMANTIC_KINDS.USE_CASE)return Boolean(c.commandId)&&d.id===c.commandId;if(c.kind===SEMANTIC_KINDS.TARGET_MODULE)return binding.targetModuleId===c.id;if(c.kind===SEMANTIC_KINDS.LENS)return binding.lensId===c.id;return false;}
   function chooseDirectDefinition(component,definitions){const matches=(definitions||[]).filter((d)=>d.palette!==false&&componentMatchDefinition(component,d));if(!matches.length)return null;if(component.commandId){const exact=matches.find((d)=>d.id===component.commandId);if(exact)return exact;}if(component.kind===SEMANTIC_KINDS.TARGET_MODULE){const primary=matches.filter((d)=>d.methodologyBinding?.surfaceKind==='TARGET_MODULE');if(primary.length===1)return primary[0];if(primary.length>1)return primary.find((d)=>!String(d.description||'').toLowerCase().includes('legacy'))||primary[0];}if(matches.length===1)return matches[0];return null;}
   function entryRefs(entry){return new Set([entry.canonicalId,...(entry.scenarioRefs||[])].filter(Boolean));}
-  function scenarioUsesForEntry(entry,scenarios){const refs=entryRefs(entry),uses=[];for(const scenario of scenarios||[])for(const step of scenario.steps||[])if((step.semanticRefs||[]).some((ref)=>refs.has(ref)))uses.push({scenarioId:scenario.id,scenarioTitle:scenario.title,stepId:step.id,stepTitle:step.title});return uses;}
+  function scenarioUsesForEntry(entry,scenarios){const refs=entryRefs(entry),stepIds=new Set(entry.scenarioStepIds||[]),uses=[];for(const scenario of scenarios||[])for(const step of scenario.steps||[])if(stepIds.has(step.id)||(step.semanticRefs||[]).some((ref)=>refs.has(ref)))uses.push({scenarioId:scenario.id,scenarioTitle:scenario.title,stepId:step.id,stepTitle:step.title});return uses;}
   function attachScenarioUses(entries,scenarios){return(entries||[]).map((entry)=>({...entry,scenarioUses:scenarioUsesForEntry(entry,scenarios)}));}
-  function commandEquivalentsForScenarioStep(entries,step){const refs=new Set(step?.semanticRefs||[]);return(entries||[]).filter((entry)=>[...entryRefs(entry)].some((ref)=>refs.has(ref)));}
+  function commandEquivalentsForScenarioStep(entries,step){const refs=new Set(step?.semanticRefs||[]),stepId=String(step?.id||'');return(entries||[]).filter((entry)=>(entry.scenarioStepIds||[]).includes(stepId)||[...entryRefs(entry)].some((ref)=>refs.has(ref)));}
 
   return{SURFACES,MODE,SEMANTIC_KINDS,SEMANTIC_PROVENANCE:PROVENANCE,normalizeUseCaseDefinition,normalizeUseCaseDefinitions,normalizeSemanticComponent,normalizeSemanticComponents,normalizeScenario,normalizeScenarios,buildSemanticBody,buildSemanticEntries,semanticCardId,kindLabel,fullSemanticLabel,chooseDirectDefinition,scenarioUsesForEntry,attachScenarioUses,commandEquivalentsForScenarioStep};
 });
@@ -1452,11 +1452,11 @@
     'idtspe.review_consistency':{actionLabel:'Проверить consistency текущей работы',tail:'General · Consistency Review',scenarioRefs:['planning/documentation/idtspe-methodology/active/idtspe-core/shared/consistency-review-use-case.md']},
     'idtspe.lenses.select':{actionLabel:'Подобрать применимые Lenses',tail:'Core Lens Registry · TF-06A LENS_SET',scenarioRefs:['planning/documentation/idtspe-methodology/active/idtspe-core/lenses/README.md','planning/documentation/idtspe-methodology/active/idtspe-core/shared/idtspe-unit-and-target-step-result-model.md']},
     'replacement_archive.create':{actionLabel:'Собрать Replacement Package',tail:'Tool · UC-REPO-BUILD-REPLACEMENT-PACKAGE',category:'TOOL',scenarioRefs:['planning/use-cases/UC-REPO-BUILD-REPLACEMENT-PACKAGE.md','planning/documentation/build-replacement-archive-workflow.md']},
-    'archive_source.use':{actionLabel:'Использовать выбранный archive как source',tail:'Tool · Archive Source',category:'TOOL'},
+    'archive_source.use':{actionLabel:'Использовать выбранный archive как source',tail:'Tool · Archive Source',category:'TOOL',scenarioStepIds:['SCN-06-S1A']},
     'command.plan':{actionLabel:'Спланировать command route',tail:'General · Command Route',scenarioRefs:['planning/command-routing.md']}
   });
-  const HIDDEN_INFRASTRUCTURE_COMMANDS=new Set(['idtspe.lens.apply']);
-  function directPresentation(entry){const meta=DIRECT_PRESENTATION[entry.id]||{};const actionLabel=meta.actionLabel||entry.command||entry.label||entry.id,tail=meta.tail||`General · ${entry.englishName||entry.id}`;return{actionLabel,label:`${actionLabel} · ${tail}`,commandCategory:meta.category||'GENERAL',scenarioRefs:[...(meta.scenarioRefs||[])]};}
+  const HIDDEN_INFRASTRUCTURE_COMMANDS=new Set(['idtspe.lens.apply','idtspe.work']);
+  function directPresentation(entry){const meta=DIRECT_PRESENTATION[entry.id]||{};const actionLabel=meta.actionLabel||entry.command||entry.label||entry.id,tail=meta.tail||`General · ${entry.englishName||entry.id}`;return{actionLabel,label:`${actionLabel} · ${tail}`,commandCategory:meta.category||'GENERAL',scenarioRefs:[...(meta.scenarioRefs||[])],scenarioStepIds:[...(meta.scenarioStepIds||[])]};}
   function componentBody(component,useCase,mode){if(component.kind==='USE_CASE'&&useCase)return deps.buildSemanticBody('use_case',useCase,mode);return deps.buildSemanticBody(component.kind==='TARGET_MODULE'?'target_module':'lens',component,mode);}
 
   function materializeSnapshot(snapshot){

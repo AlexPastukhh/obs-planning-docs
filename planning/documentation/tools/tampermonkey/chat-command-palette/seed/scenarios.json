@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "kind": "scenario-seed",
-  "generatedFrom": "planning/documentation/idtspe-methodology/active/idtspe-core/shared/methodology-use-case-scenario-map.md",
+  "generatedFrom": "planning/documentation/idtspe-methodology/active/idtspe-core/shared/methodology-use-case-scenario-map.md + planning/documentation/replacement-package-builder/scenarios/SCN-BLDR-BUILD-AND-REVIEW-REPLACEMENT-PACKAGE.md",
   "items": [
     {
       "id": "SCN-01",
@@ -36,6 +36,14 @@
             "planning/documentation/idtspe-methodology/active/idtspe-core/lenses/README.md"
           ],
           "canonicalText": "### Step `SCN-01-S3` — evaluate material surfaces\n\n**Trigger / Situation:** A material Result Unit / decision surface exists.  \n**AI Action:** Use the applicable Lens registry checkpoint(s) and selected evaluators proportionally.  \n**Why This Step:** Cross-cutting concerns should challenge the actual current surface without becoming another semantic owner.  \n**Method / Mechanics:** Use the Result Unit Opening/In-Unit/Closing applicability envelope; select zero or more additional Lenses as material and route Findings through current Core disposition.  \n**Possible Result:** Current result meaning with material findings resolved/routed, or an explicit no-additional-lens outcome.  \n**Derived From / Owners:** `planning/documentation/idtspe-methodology/active/idtspe-core/shared/idtspe-unit-and-target-step-result-model.md`, `planning/documentation/idtspe-methodology/active/idtspe-core/lenses/README.md`."
+        },
+        {
+          "id": "SCN-01-S3R",
+          "title": "Challenge current meaning when independent review is useful",
+          "semanticRefs": [
+            "planning/documentation/review-diff-review-workflow.md"
+          ],
+          "canonicalText": "### Step `SCN-01-S3R` — challenge current meaning when independent review is useful\n\n**Trigger / Situation:** Current meaning is material enough that an independent critical challenge would improve confidence before deeper commitment or realization.  \n**AI Action:** Critically review the actual current Analysis Surface without manufacturing a mandatory review phase.  \n**Why This Step:** Important decisions may benefit from adversarial checking, but review remains proportional and may be skipped when it adds no independent value.  \n**Method / Mechanics:** Review current meaning/findings through the current review owner and applicable Lenses; route material Findings to their semantic owners rather than letting the Scenario own corrective rules.  \n**Possible Result:** Confirmed current meaning, bounded Findings, or focused revalidation pressure.  \n**Derived From / Owners:** `planning/documentation/review-diff-review-workflow.md`."
         },
         {
           "id": "SCN-01-S4",
@@ -172,6 +180,14 @@
           "canonicalText": "### Step `SCN-04-S1` — decide whether a separately reviewable update plan is useful\n\n**Trigger / Situation:** Exact mutation is near; the change may be broad/risky enough that reviewing intended changes first has value.  \n**AI Action:** Use the optional Core Pre-Update Target only when its result is independently useful.  \n**Why This Step:** A reviewable intended-change boundary can reduce accidental mutation without becoming a mandatory phase.  \n**Method / Mechanics:** Produce one `RU-PUPDATE-01`, using its Unit applicability checkpoints and current destination facts only as needed.  \n**Possible Result:** A concrete non-mutating intended-change plan, or an explicit decision to proceed directly to Exact.  \n**Derived From / Owners:** `TM-PRE-UPDATE-PLAN`."
         },
         {
+          "id": "SCN-04-S1R",
+          "title": "Resolve representation only when persistence is material",
+          "semanticRefs": [
+            "LENS-ARTIFACT-BOUNDARY-ADDRESSABILITY"
+          ],
+          "canonicalText": "### Step `SCN-04-S1R` — resolve representation only when persistence is material\n\n**Trigger / Situation:** Exact realization raises a material question about whether meaning should persist and where it belongs.  \n**AI Action:** Apply the Documentation / Representation Lens only when the persistence/artifact boundary is independently useful.  \n**Why This Step:** Exact work should not create unnecessary documents, but material durable meaning still needs an explicit representation decision.  \n**Method / Mechanics:** Evaluate `NO_PERSISTENCE`, implementation-native representation, reuse of an existing owner, consolidation, or a justified new/split artifact; do not let the Scenario own persistence semantics.  \n**Possible Result:** A bounded representation decision feeding Exact without creating a mandatory documentation phase.  \n**Derived From / Owners:** `LENS-ARTIFACT-BOUNDARY-ADDRESSABILITY`."
+        },
+        {
           "id": "SCN-04-S2",
           "title": "Realize the accepted meaning literally",
           "semanticRefs": [
@@ -248,6 +264,14 @@
           "canonicalText": "### Step `SCN-06-S1` — optionally review the intended file transition\n\n**Trigger / Situation:** The repository delta is material enough that a separate intended-change plan would improve review.  \n**AI Action:** Optionally use the Core Pre-Update Target; skip it for an obvious already-reviewed transition.  \n**Why This Step:** Repository packaging should not force another planning ceremony.  \n**Method / Mechanics:** Bound add/replace/delete intent and preservation/verification without mutation.  \n**Possible Result:** Optional reviewed intended-change plan.  \n**Derived From / Owners:** `TM-PRE-UPDATE-PLAN`."
         },
         {
+          "id": "SCN-06-S1A",
+          "title": "Use an explicitly selected archive as read source when requested",
+          "semanticRefs": [
+            "planning/command-routing.md#archive-read-source-boundary"
+          ],
+          "canonicalText": "### Step `SCN-06-S1A` — use an explicitly selected archive as read source when requested\n\n**Trigger / Situation:** The USER explicitly selects an archive/snapshot as the source to read for the current review/planning/package work.  \n**AI Action:** Use that selected archive as the bounded read-source snapshot after checking identity/freshness limits relevant to the task.  \n**Why This Step:** Archive source selection is useful when the USER supplies a concrete snapshot, but it must not become an automatic continuation of package production.  \n**Method / Mechanics:** Apply the archive read-source boundary only for the explicit selection; do not infer that an earlier archive is current, and do not infer package production/application from this source-selection step.  \n**Possible Result:** A bounded current read source for the requested work.  \n**Derived From / Owners:** `planning/command-routing.md#archive-read-source-boundary`."
+        },
+        {
           "id": "SCN-06-S2",
           "title": "Produce a replacement package without applying it",
           "semanticRefs": [
@@ -266,8 +290,8 @@
           "canonicalText": "### Step `SCN-06-S3` — verify applied result separately when/if another authority applies it\n\n**Trigger / Situation:** A package has later been applied in an authorized target workspace.  \n**AI Action:** Review/consistency-check the resulting current state as appropriate; do not infer promotion-to-main permission.  \n**Why This Step:** A valid package or successful apply does not itself authorize promotion.  \n**Method / Mechanics:** Verify exact delta and semantic consistency; route findings normally.  \n**Possible Result:** Verified target state or bounded Findings; promotion remains a separate explicit authorization.  \n**Derived From / Owners:** `planning/documentation/review-diff-review-workflow.md`, `planning/documentation/idtspe-methodology/active/idtspe-core/shared/consistency-review-use-case.md`."
         }
       ],
-      "canonicalIntro": "## 10. `SCN-06` TOOL / REPOSITORY — Изменение готово — хочу собрать и проверить replacement package\n\n**Type:** TOOL / REPOSITORY continuation  \n**Entry assumption:** semantic/exact changes already exist in a selected working snapshot/branch. This is not a mandatory IDTSPE stage.",
-      "source": "planning/documentation/idtspe-methodology/active/idtspe-core/shared/methodology-use-case-scenario-map.md"
+      "canonicalIntro": "## `SCN-06` TOOL / REPOSITORY — Изменение готово — хочу собрать и проверить replacement package\n\n**Type:** TOOL / REPOSITORY continuation  \n**Entry assumption:** semantic/exact changes already exist in a selected working snapshot/branch. This is not a mandatory IDTSPE stage. This presentation Scenario is owned here with the replacement-package workflow rather than by IDTSPE Core.",
+      "source": "planning/documentation/replacement-package-builder/scenarios/SCN-BLDR-BUILD-AND-REVIEW-REPLACEMENT-PACKAGE.md"
     }
   ]
 }

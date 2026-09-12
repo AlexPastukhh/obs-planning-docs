@@ -35,16 +35,18 @@ function memory(){
 
 function equivalentIds(step){return (step.commandEquivalents||[]).map((entry)=>entry.id).sort();}
 
-test('canonical working scenarios remain command-free semantic examples',()=>{
-  const sourcePath=path.join(repoRoot,'planning/documentation/idtspe-methodology/active/idtspe-core/shared/methodology-use-case-scenario-map.md');
-  const source=fs.readFileSync(sourcePath,'utf8');
-  const detailed=source.slice(source.indexOf('## 5. `SCN-01`'));
-  for(const command of commands){
-    if(!command.id)continue;
-    assert.equal(detailed.includes(command.id),false,`canonical scenario text contains direct command id ${command.id}`);
+test('canonical working scenarios remain command-free semantic examples across methodology and repository owners',()=>{
+  const sourcePaths=[...new Set(scenarios.map((scenario)=>scenario.source))];
+  assert.ok(sourcePaths.length>=2,'working Scenarios should aggregate more than one canonical owner source');
+  for(const relative of sourcePaths){
+    const source=fs.readFileSync(path.join(repoRoot,relative),'utf8');
+    for(const command of commands){
+      if(!command.id)continue;
+      assert.equal(source.includes(command.id),false,`${relative} contains direct command id ${command.id}`);
+    }
+    assert.doesNotMatch(source,/planning\/commands\/[^\s`]+\.command\.md/);
+    assert.doesNotMatch(source,/\[(?:Run|Body|Scenarios(?:\s+\d+)?)\]/);
   }
-  assert.doesNotMatch(detailed,/planning\/commands\/[^\s`]+\.command\.md/);
-  assert.doesNotMatch(detailed,/\[(?:Run|Body|Scenarios(?:\s+\d+)?)\]/);
   for(const scenario of scenarios){
     for(const step of scenario.steps){
       for(const ref of step.semanticRefs){
@@ -64,6 +66,9 @@ test('scenario-to-command projection is precise and keeps show-next distinct fro
   assert.deepEqual(equivalentIds(scn01.steps.find((step)=>step.id==='SCN-01-S3')),[
     'idtspe.lenses.select'
   ]);
+  assert.deepEqual(equivalentIds(scn01.steps.find((step)=>step.id==='SCN-01-S3R')),[
+    'critical_review.apply'
+  ]);
   const next=m.commandEntries.find((entry)=>entry.id==='idtspe.next');
   const cont=m.commandEntries.find((entry)=>entry.id==='idtspe.continue');
   assert.equal(next.scenarioUses.length,1);
@@ -74,15 +79,20 @@ test('scenario-to-command projection is precise and keeps show-next distinct fro
   assert.match(cont.definition.meaning,/perform|continue|ordinary action/i);
 });
 
-test('tool/repository scenario mappings do not create an automatic archive-source chain',()=>{
+test('tool/repository scenario is repository-owned and archive read-source remains an explicit conditional branch',()=>{
   const m=memory();
   const scn06=m.scenarioEntries.find((scenario)=>scenario.id==='SCN-06');
   assert.ok(scn06);
+  assert.equal(scn06.source,'planning/documentation/replacement-package-builder/scenarios/SCN-BLDR-BUILD-AND-REVIEW-REPLACEMENT-PACKAGE.md');
+  assert.deepEqual(equivalentIds(scn06.steps.find((step)=>step.id==='SCN-06-S1A')),['archive_source.use']);
   assert.deepEqual(equivalentIds(scn06.steps.find((step)=>step.id==='SCN-06-S2')),['replacement_archive.create']);
   assert.deepEqual(equivalentIds(scn06.steps.find((step)=>step.id==='SCN-06-S3')),['critical_review.apply','idtspe.review_consistency']);
   const archiveSource=m.commandEntries.find((entry)=>entry.id==='archive_source.use');
   assert.ok(archiveSource);
-  assert.deepEqual(archiveSource.scenarioUses,[]);
+  assert.deepEqual(archiveSource.scenarioUses.map((use)=>use.stepId),['SCN-06-S1A']);
+  const packageProducer=m.commandEntries.find((entry)=>entry.id==='replacement_archive.create');
+  assert.ok(packageProducer);
+  assert.equal(packageProducer.scenarioUses.some((use)=>use.stepId==='SCN-06-S1A'),false);
 });
 
 test('Scenarios 0 is valid and every reverse use resolves to an actual projected step',()=>{
@@ -96,6 +106,22 @@ test('Scenarios 0 is valid and every reverse use resolves to an actual projected
       assert.ok((step.commandEquivalents||[]).some((candidate)=>candidate.id===entry.id),`${entry.id}: reverse index is not symmetric at ${use.stepId}`);
     }
   }
+});
+
+
+test('Exact scenario exposes Representation only as a conditional semantic Lens step',()=>{
+  const m=memory(),scn04=m.scenarioEntries.find((scenario)=>scenario.id==='SCN-04');
+  assert.ok(scn04);
+  assert.deepEqual(equivalentIds(scn04.steps.find((step)=>step.id==='SCN-04-S1R')),[
+    'lens:LENS-ARTIFACT-BOUNDARY-ADDRESSABILITY'
+  ]);
+});
+
+test('bare idtspe remains a direct convenience route but not a second primary Helper card',()=>{
+  const m=memory();
+  assert.ok(commands.some((command)=>command.id==='idtspe.work'&&command.palette===true));
+  assert.equal(m.commandEntries.some((entry)=>entry.id==='idtspe.work'),false);
+  assert.ok(m.commandEntries.some((entry)=>entry.id==='uc:UC-IDTSPE-COMPOSE-CURRENT-WORK'));
 });
 
 test('Pre-Update is one Core TM semantic card with old phrases as aliases, not duplicate primary commands',()=>{
