@@ -35,20 +35,6 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
   ],
   "userTarget": "<code or other exact directly integrable realization scope>",
   "palette": true,
-  "helperPresentation": {
-    "whenToUse": "Use when upstream meaning is sufficiently determined and you want the literal exact result that could be integrated now; for code, this is the default implementation route and can optionally continue into explicitly authorized build/test/minor-repair work.",
-    "whatYouGet": "Exact current directly integrable realization, code-first by default, with optional review → authorized integration/verification → bounded repair → final exact review loop.",
-    "navigation": {
-      "viewId": "IDTSPE",
-      "viewLabel": "IDTSPE",
-      "sectionId": "core",
-      "sectionLabel": "IDTSPE Core",
-      "sectionOrder": 0,
-      "itemOrder": 6,
-      "kindLabel": "IDTSPE TARGET",
-      "viewOrder": 0
-    }
-  },
   "refinements": [],
   "methodologyBinding": {
     "methodologyRuntime": "IDTSPE",

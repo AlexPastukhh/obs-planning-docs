@@ -31,23 +31,6 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
   ],
   "userTarget": "<selected semantic/Evidence coverage scope>",
   "palette": true,
-  "helperPresentation": {
-    "whenToUse": "Use when you want to check whether current actual tests/Evidence really prove current semantic obligations, including freshness, assertion strength, false-confidence Escape Risk and refactor fragility.",
-    "whatYouGet": "A Test Proof Lens coverage review and material Findings without creating a separate coverage owner/Target.",
-    "navigation": {
-      "viewId": "SDS",
-      "viewLabel": "SDS — IDTSPE Profile",
-      "sectionId": "lens",
-      "sectionLabel": "IDTSPE Lens Checks — SDS",
-      "sectionOrder": 9,
-      "itemOrder": 2,
-      "kindLabel": "IDTSPE LENS",
-      "viewOrder": 1,
-      "badges": [
-        "DIRECT LENS REVIEW"
-      ]
-    }
-  },
   "refinements": [],
   "methodologyBinding": {
     "methodologyRuntime": "IDTSPE",

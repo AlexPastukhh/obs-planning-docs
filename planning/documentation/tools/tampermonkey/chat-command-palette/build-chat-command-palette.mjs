@@ -11,7 +11,17 @@ const outputPath=path.resolve(moduleRoot,'..','chat-command-palette.user.js');
 const seedDir=path.join(moduleRoot,'seed');
 const commandSeedPath=path.join(seedDir,'commands.json');
 const useCaseSeedPath=path.join(seedDir,'use-cases.json');
+const semanticComponentSeedPath=path.join(seedDir,'semantic-components.json');
+const scenarioSeedPath=path.join(seedDir,'scenarios.json');
 const useCaseRegistryMapPath='planning/documentation/use-case-registry-map.md';
+const scenarioSourcePaths=[
+  'planning/documentation/idtspe-methodology/active/idtspe-core/shared/methodology-use-case-scenario-map.md',
+  'planning/documentation/replacement-package-builder/scenarios/SCN-BLDR-BUILD-AND-REVIEW-REPLACEMENT-PACKAGE.md'
+];
+const coreTargetRegistryPath='planning/documentation/idtspe-methodology/active/idtspe-core/target-modules/README.md';
+const sdsTargetRegistryPath='planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/README.md';
+const coreLensRegistryPath='planning/documentation/idtspe-methodology/active/idtspe-core/lenses/README.md';
+const sdsLensRegistryPath='planning/documentation/idtspe-methodology/active/profiles/sds/lenses/README.md';
 const check=process.argv.includes('--check');
 const codec=require('./src/command-definition-codec.js');
 const catalog=require('./src/command-catalog.js');
@@ -65,17 +75,104 @@ function readCanonicalUseCases(commands){
   }
   const definitions=semantic.normalizeUseCaseDefinitions([...byId.values()].map((entry)=>entry.item));if(!definitions.length)throw new Error('No mapped methodology Use Cases discovered.');return definitions.sort((a,b)=>a.id.localeCompare(b.id));
 }
-function seedText(kind,items){const generatedFrom=kind==='planning-command-seed'?'planning/commands/*.command.md':`${useCaseRegistryMapPath} -> mapped current scoped methodology Use-Case registries only`;return JSON.stringify({schemaVersion:1,kind,generatedFrom,items},null,2)+'\n';}
+
+const UC_COMMAND_IDS=Object.freeze({'UC-IDTSPE-COMPOSE-CURRENT-WORK':'plan.now'});
+const ACTION_LABELS=Object.freeze({
+  'UC-IDTSPE-COMPOSE-CURRENT-WORK':'Компоновать текущую работу',
+  'UC-IDTSPE-INTEGRATE-CURRENT-WORK':'Интегрировать текущую работу',
+  'UC-IDTSPE-REVALIDATE-CURRENT-WORK':'Перевалидировать текущую работу',
+  'UC-DOC-PLAN-DOCUMENTATION-CHANGE':'Спланировать изменение документации',
+  'UC-DOC-REVIEW-DOCUMENTATION':'Проверить документацию',
+  'TM-PRE-UPDATE-PLAN':'План обновления',
+  'TM-EXACT-REALIZATION':'Точная реализация',
+  'TM-APPLICATION-DEFINITION':'Определить приложение',
+  'TM-FEATURE':'Спланировать Feature',
+  'TM-PROTOTYPE':'Спланировать Prototype',
+  'TM-SCENARIO-PLANNING':'Спланировать Scenario',
+  'TM-SCREEN':'Спланировать Screen',
+  'TM-DOMAIN-DISCOVERY':'Исследовать Domain',
+  'TM-DOMAIN-OWNER':'Сформировать Domain Owner',
+  'TM-IMPLEMENTATION-SLICE':'Исследовать Implementation Slice',
+  'TM-SLICE-OWNER':'Сформировать Slice Owner',
+  'TM-SHARED-IMPLEMENTATION-CAPABILITY':'Спланировать Shared Capability',
+  'TM-EVOLUTION-STEP':'Спланировать Evolution Step',
+  'TM-EVOLUTION-STEPS-MAP':'Спланировать Evolution Map',
+  'TM-PRACTICAL-TEST':'Спланировать Practical Test',
+  'LENS-NEED-VALUE-SCOPE':'Need / Value / Scope',
+  'LENS-AUTHORITY-SOT-REUSE':'Authority / Source of Truth / Reuse',
+  'LENS-UNCERTAINTY-ASSUMPTION-REVERSIBILITY':'Uncertainty / Assumptions / Reversibility',
+  'LENS-ARTIFACT-BOUNDARY-ADDRESSABILITY':'Documentation / Representation',
+  'LENS-DEPENDENCY-CHANGE-IMPACT':'Dependency / Change Impact',
+  'LENS-VERIFIABILITY-OBSERVABILITY-OPERABILITY':'Verifiability / Observability / Operability',
+  'LENS-QUALITY-RISK-MATERIALITY':'Quality / Risk / Materiality',
+  'LENS-SIMPLICITY-IMPLEMENTATION-ECONOMY':'Simplicity / Implementation Economy',
+  'LENS-DOMAIN-MODELING-DDD':'Domain Modeling / DDD',
+  'LENS-SLICE-VERTICALITY-INTEGRATION':'Slice Verticality / Integration'
+});
+function headingTitle(rel,id){const text=fs.readFileSync(path.join(repoRoot,rel),'utf8'),first=text.split(/\r?\n/).find((line)=>line.startsWith('# '))||id;return first.replace(/^#\s+/,'').replace(new RegExp(`^${id.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')}\\s*[—-]\\s*`),'').trim()||id;}
+function relativeFromRegistry(registryPath,target){return resolveRegistryTarget(registryPath,target);}
+function registryAliases(text,prefix){const map=new Map();for(const m of text.matchAll(/^\s*([^\s#][^→\n]*?)\s*→\s*(`?(?:TM|LENS)-[A-Z0-9-]+`?)/gm)){const id=cleanCell(m[2]),alias=cleanCell(m[1]).split(/\s+/)[0];if(id.startsWith(prefix)&&alias&&!map.has(id))map.set(id,alias);}return map;}
+function currentTargetRows(registryPath,scope){
+  const text=fs.readFileSync(path.join(repoRoot,registryPath),'utf8');let body=text;
+  if(scope==='Core')body=(text.split('## Installed Generic Core Target Modules')[1]||'').split('## Generic `idtspe` Invocation Aliases')[0]||'';
+  else body=(text.split('## Active SDS Target Modules')[1]||'').split('## Retired / Subsumed Baseline Modules')[0]||'';
+  const rows=[],seen=new Set();
+  for(const m of body.matchAll(/\[`(TM-[A-Z0-9-]+)`\]\(([^)]+)\)(?:\s*\|\s*([^|\n]+)\s*\|\s*([^\n|]+)|\s*—\s*([^\n]+))/g)){
+    const id=m[1];if(seen.has(id))continue;const rel=relativeFromRegistry(registryPath,m[2]);if(!rel||!fs.existsSync(path.join(repoRoot,rel)))continue;seen.add(id);
+    const aliasCell=cleanCell(m[3]||''),alias=(aliasCell.match(/`([^`]+)`/)||[])[1]||'';const description=compactMarkdown(m[4]||m[5]||headingTitle(rel,id));
+    rows.push({id,kind:'TARGET_MODULE',scope,label:headingTitle(rel,id),actionLabel:ACTION_LABELS[id]||headingTitle(rel,id),description,sources:[registryPath,rel],aliases:alias?[alias]:[],invocation:`idtspe tm ${alias||id} <target>`,target:`<${ACTION_LABELS[id]||headingTitle(rel,id)} target>`});
+  }
+  if(scope==='Core'){
+    // Core list is prose bullets rather than a table; ensure both current modules are captured.
+    for(const id of ['TM-PRE-UPDATE-PLAN','TM-EXACT-REALIZATION'])if(!seen.has(id)){const match=body.match(new RegExp('\\[`'+id+'`\\]\\(([^)]+)\\)'));if(match){const rel=relativeFromRegistry(registryPath,match[1]),alias=id==='TM-PRE-UPDATE-PLAN'?'pre-update':'exact';rows.push({id,kind:'TARGET_MODULE',scope,label:headingTitle(rel,id),actionLabel:ACTION_LABELS[id]||headingTitle(rel,id),description:headingTitle(rel,id),sources:[registryPath,rel],aliases:[alias],invocation:`idtspe tm ${alias} <target>`,target:`<${ACTION_LABELS[id]||headingTitle(rel,id)} target>`});}}
+  }
+  return rows;
+}
+function currentLensRows(registryPath,scope){
+  const text=fs.readFileSync(path.join(repoRoot,registryPath),'utf8'),aliases=registryAliases(text,'LENS-');let body=text;
+  if(scope==='SDS')body=(text.split('## SDS-Specific Lens Registry')[1]||'').split('## Generic `idtspe` SDS Lens Aliases')[0]||'';
+  else body=text.split('## 3A. Generic `idtspe` Lens Aliases')[0]||text;
+  const rows=[],seen=new Set();
+  for(const m of body.matchAll(/\[`(LENS-[A-Z0-9-]+)`\]\(([^)]+)\)\s*\|\s*([^\n|]+)/g)){
+    const id=m[1];if(seen.has(id))continue;const rel=relativeFromRegistry(registryPath,m[2]);if(!rel||!fs.existsSync(path.join(repoRoot,rel)))continue;seen.add(id);const alias=aliases.get(id)||'';
+    rows.push({id,kind:'LENS',scope,label:headingTitle(rel,id),actionLabel:ACTION_LABELS[id]||headingTitle(rel,id),description:compactMarkdown(m[3])||headingTitle(rel,id),sources:[registryPath,rel],aliases:alias?[alias]:[],invocation:`idtspe lens ${alias||id} <target/context>`,target:`<${ACTION_LABELS[id]||headingTitle(rel,id)} analysis surface>`});
+  }
+  return rows;
+}
+function readCanonicalSemanticComponents(commands,useCases){
+  const ucComponents=useCases.map((uc)=>({id:uc.id,kind:'USE_CASE',scope:uc.id.startsWith('UC-DOC-')?'Documentation':'Core',label:uc.label,actionLabel:ACTION_LABELS[uc.id]||uc.label,description:uc.description,sources:uc.sources,aliases:[],commandId:UC_COMMAND_IDS[uc.id]||uc.commandId||'',invocation:'',target:uc.target}));
+  const all=[...ucComponents,...currentTargetRows(coreTargetRegistryPath,'Core'),...currentTargetRows(sdsTargetRegistryPath,'SDS'),...currentLensRows(coreLensRegistryPath,'Core'),...currentLensRows(sdsLensRegistryPath,'SDS')];
+  return semantic.normalizeSemanticComponents(all).sort((a,b)=>a.kind.localeCompare(b.kind)||a.scope.localeCompare(b.scope)||a.id.localeCompare(b.id));
+}
+function readCanonicalScenarios(){
+  const items=[],seen=new Set();
+  for(const scenarioSourcePath of scenarioSourcePaths){
+    const text=fs.readFileSync(path.join(repoRoot,scenarioSourcePath),'utf8'),presentation=new Map();
+    for(const section of text.matchAll(/^##\s+(?:\d+\.\s+)?`(SCN-[A-Z0-9-]+)`[^\n]*\n([\s\S]*?)(?=^##\s+(?:\d+\.\s+)?`SCN-|(?![\s\S]))/gm)){
+      const scenarioId=section[1],sectionText=section[0],firstStep=sectionText.search(/^### Step /m),marker=sectionText.search(/^\[(?:METHODOLOGY_SCENARIO|WORKING_SCENARIO)\]/m),introEnd=firstStep>=0?firstStep:(marker>=0?marker:sectionText.length),canonicalIntro=sectionText.slice(0,introEnd).trim(),steps=new Map();
+      for(const step of sectionText.matchAll(/^### Step `([^`]+)`[^\n]*\n[\s\S]*?(?=^### Step |^\[(?:METHODOLOGY_SCENARIO|WORKING_SCENARIO)\]|(?![\s\S]))/gm))steps.set(step[1],step[0].trim());
+      presentation.set(scenarioId,{canonicalIntro,steps});
+    }
+    for(const marker of ['METHODOLOGY_SCENARIO','WORKING_SCENARIO'])for(const match of text.matchAll(new RegExp(`\\[${marker}\\]\\s*([\\s\\S]*?)\\s*\\[\\/${marker}\\]`,'g'))){
+      const item=JSON.parse(match[1]);if(seen.has(item.id))throw new Error(`Duplicate canonical working Scenario id: ${item.id}`);seen.add(item.id);const view=presentation.get(item.id);item.source=scenarioSourcePath;item.canonicalIntro=view?.canonicalIntro||'';item.steps=(item.steps||[]).map((step)=>({...step,canonicalText:view?.steps.get(step.id)||''}));items.push(item);
+    }
+  }
+  const scenarios=semantic.normalizeScenarios(items);if(!scenarios.length)throw new Error(`No canonical working Scenarios found in ${scenarioSourcePaths.join(', ')}.`);for(const scenario of scenarios){if(!scenario.canonicalIntro)throw new Error(`Canonical scenario intro was not projected: ${scenario.id}`);for(const step of scenario.steps)if(!step.canonicalText)throw new Error(`Canonical scenario step prose was not projected: ${step.id}`);}return scenarios.sort((a,b)=>a.id.localeCompare(b.id));
+}
+function seedText(kind,items){const generatedFrom=kind==='planning-command-seed'?'planning/commands/*.command.md':kind==='use-case-seed'?`${useCaseRegistryMapPath} -> mapped current scoped methodology Use-Case registries only`:kind==='semantic-component-seed'?`${useCaseRegistryMapPath} + current Core/SDS Target Module and Lens registries`:scenarioSourcePaths.join(' + ');return JSON.stringify({schemaVersion:1,kind,generatedFrom,items},null,2)+'\n';}
 function ensureSeed(pathname,expected){if(check){const actual=fs.existsSync(pathname)?fs.readFileSync(pathname,'utf8'):'';if(actual!==expected)throw new Error(`Generated seed catalog is stale: ${path.relative(repoRoot,pathname)}`);return;}fs.mkdirSync(path.dirname(pathname),{recursive:true});fs.writeFileSync(pathname,expected,'utf8');}
 function build(){
-  const definitions=readCommands(),useCases=readCanonicalUseCases(definitions);
-  ensureSeed(commandSeedPath,seedText('planning-command-seed',definitions));ensureSeed(useCaseSeedPath,seedText('use-case-seed',useCases));
-  const header=`// ==UserScript==\n// @name         Reusable Chat Planning Helper\n// @namespace    https://github.com/AlexPastukhh/obs/reusable-docs\n// @version      ${pkg.version}-repository-command-registry\n// @description  RAM-first OBS Planning Helper with GitHub-backed Commands, Use Cases, prompts and explicit repository actions.\n// @author       Reusable docs layer\n// @match        https://chatgpt.com/*\n// @match        https://chat.openai.com/*\n// @run-at       document-idle\n// @grant        GM_getValue\n// @grant        GM_setValue\n// @grant        GM_xmlhttpRequest\n// @connect      api.github.com\n// ==/UserScript==\n\n// GENERATED FILE — DO NOT EDIT MANUALLY.\n// Runtime source: planning/documentation/tools/tampermonkey/chat-command-palette/src/**\n// GitHub command authority: planning/commands/*.command.md\n// GitHub Use-Case projection root: planning/documentation/use-case-registry-map.md -> mapped current scoped methodology Use-Case registries only.\n// seed/use-cases.json is the build-verified GitHub-backed Use-Case projection used for explicit Hard Reload.\n// GitHub UI-order source: planning/documentation/tools/tampermonkey/chat-command-palette/catalog-order.json\n// Local snapshot is the working cache; current Command/Use-Case catalogs are not embedded in this userscript.\n// Build: node planning/documentation/tools/tampermonkey/chat-command-palette/build-chat-command-palette.mjs\n\n`;
+  const definitions=readCommands(),useCases=readCanonicalUseCases(definitions),semanticComponents=readCanonicalSemanticComponents(definitions,useCases),scenarios=readCanonicalScenarios();
+  ensureSeed(commandSeedPath,seedText('planning-command-seed',definitions));
+  ensureSeed(useCaseSeedPath,seedText('use-case-seed',useCases));
+  ensureSeed(semanticComponentSeedPath,seedText('semantic-component-seed',semanticComponents));
+  ensureSeed(scenarioSeedPath,seedText('scenario-seed',scenarios));
+  const header=`// ==UserScript==\n// @name         Reusable Chat Planning Helper\n// @namespace    https://github.com/AlexPastukhh/obs/reusable-docs\n// @version      ${pkg.version}-repository-command-registry\n// @description  RAM-first OBS Planning Helper with semantic Commands, canonical Scenarios, prompts and explicit repository actions.\n// @author       Reusable docs layer\n// @match        https://chatgpt.com/*\n// @match        https://chat.openai.com/*\n// @run-at       document-idle\n// @grant        GM_getValue\n// @grant        GM_setValue\n// @grant        GM_xmlhttpRequest\n// @connect      api.github.com\n// ==/UserScript==\n\n// GENERATED FILE — DO NOT EDIT MANUALLY.\n// Runtime source: planning/documentation/tools/tampermonkey/chat-command-palette/src/**\n// GitHub command authority: planning/commands/*.command.md\n// GitHub Use-Case projection root: planning/documentation/use-case-registry-map.md -> mapped current scoped methodology Use-Case registries only.\n// seed/use-cases.json is the build-verified GitHub-backed Use-Case projection used for explicit Hard Reload.\n// GitHub UI-order source: planning/documentation/tools/tampermonkey/chat-command-palette/catalog-order.json\n// Local snapshot is the working cache; current command/semantic/scenario catalogs are not embedded in this userscript.\n// Build: node planning/documentation/tools/tampermonkey/chat-command-palette/build-chat-command-palette.mjs\n\n`;
   const modules=sourceFiles.map((relative)=>fs.readFileSync(path.join(moduleRoot,relative),'utf8').trimEnd()).join('\n\n');
   const bootstrap=`\n\n(function(){\n  'use strict';\n  const api=globalThis.ObsPlanningHelper;if(!api||typeof api.startPlanningHelper!=='function')throw new Error('OBS Planning Helper runtime was not built correctly.');api.startPlanningHelper().catch((error)=>console.error('[OBS Planning Helper startup]',error));\n})();\n`;
   return header+modules+bootstrap;
 }
 
 const expected=build();
-if(check){const current=fs.existsSync(outputPath)?fs.readFileSync(outputPath,'utf8'):'';if(current!==expected)throw new Error('Generated Planning Helper userscript is stale.');console.log('Generated userscript and GitHub-backed Command/Use-Case catalogs match current sources.');}
-else{fs.writeFileSync(outputPath,expected,'utf8');console.log(`Built ${path.relative(repoRoot,outputPath)} and GitHub-backed Command/Use-Case catalogs.`);}
+if(check){const current=fs.existsSync(outputPath)?fs.readFileSync(outputPath,'utf8'):'';if(current!==expected)throw new Error('Generated Planning Helper userscript is stale.');console.log('Generated userscript and GitHub-backed Command/Semantic/Scenario catalogs match current sources.');}
+else{fs.writeFileSync(outputPath,expected,'utf8');console.log(`Built ${path.relative(repoRoot,outputPath)} and GitHub-backed Command/Semantic/Scenario catalogs.`);}

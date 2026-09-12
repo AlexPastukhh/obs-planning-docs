@@ -82,6 +82,20 @@ revalidation/retention conditions when useful
 representation guidance
 ```
 
+### Per-Unit Applicability Envelope
+
+Every material Result Unit declared by a concrete Target Module inherits the generic [`Unit Applicability Envelope`](idtspe-unit-and-target-step-result-model.md#5b-unit-applicability-envelope--opening--in-unit--closing-checkpoints).
+
+The module must make placement explicit for each material Unit:
+
+```text
+Opening Unit Checkpoint — RU-...
+→ Unit Work — RU-...
+→ Closing Unit Checkpoint — RU-...
+```
+
+The module may name primary/frequent Lens candidates or Unit-specific registry triggers, but Core owns checkpoint semantics. In-Unit Applicability Checks remain allowed whenever material; Opening/Closing are mandatory minimum boundaries, not exclusive evaluation windows.
+
 "One result family" does not mean:
 
 ```text

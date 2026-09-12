@@ -1,0 +1,827 @@
+{
+  "schemaVersion": 1,
+  "kind": "semantic-component-seed",
+  "generatedFrom": "planning/documentation/use-case-registry-map.md + current Core/SDS Target Module and Lens registries",
+  "items": [
+    {
+      "id": "LENS-ARTIFACT-BOUNDARY-ADDRESSABILITY",
+      "kind": "LENS",
+      "scope": "Core",
+      "label": "Documentation / Representation / Artifact Boundary",
+      "actionLabel": "Documentation / Representation",
+      "description": "Documentation / Representation — persist or not; code vs prose; existing owner vs dedicated artifact; consolidate vs split; handoff to P-14; direct surface lenscmd.documentation.representation.check",
+      "sources": [
+        "planning/documentation/idtspe-methodology/active/idtspe-core/lenses/README.md",
+        "planning/documentation/idtspe-methodology/active/idtspe-core/lenses/required/LENS-ARTIFACT-BOUNDARY-ADDRESSABILITY.md"
+      ],
+      "aliases": [
+        "representation"
+      ],
+      "commandId": "",
+      "invocation": "idtspe lens representation <target/context>",
+      "target": "<Documentation / Representation analysis surface>"
+    },
+    {
+      "id": "LENS-AUTHORITY-SOT-REUSE",
+      "kind": "LENS",
+      "scope": "Core",
+      "label": "Authority / Source-of-Truth / Reuse",
+      "actionLabel": "Authority / Source of Truth / Reuse",
+      "description": "L2 — canonical owner/Source/reuse/no duplicate truth",
+      "sources": [
+        "planning/documentation/idtspe-methodology/active/idtspe-core/lenses/README.md",
+        "planning/documentation/idtspe-methodology/active/idtspe-core/lenses/required/LENS-AUTHORITY-SOT-REUSE.md"
+      ],
+      "aliases": [
+        "authority"
+      ],
+      "commandId": "",
+      "invocation": "idtspe lens authority <target/context>",
+      "target": "<Authority / Source of Truth / Reuse analysis surface>"
+    },
+    {
+      "id": "LENS-DEPENDENCY-CHANGE-IMPACT",
+      "kind": "LENS",
+      "scope": "Core",
+      "label": "Dependency / Change Surface / Blast Radius",
+      "actionLabel": "Dependency / Change Impact",
+      "description": "L4 — dependency/change surface/consumers/blast radius",
+      "sources": [
+        "planning/documentation/idtspe-methodology/active/idtspe-core/lenses/README.md",
+        "planning/documentation/idtspe-methodology/active/idtspe-core/lenses/frequent/LENS-DEPENDENCY-CHANGE-IMPACT.md"
+      ],
+      "aliases": [
+        "dependency"
+      ],
+      "commandId": "",
+      "invocation": "idtspe lens dependency <target/context>",
+      "target": "<Dependency / Change Impact analysis surface>"
+    },
+    {
+      "id": "LENS-LINKED-NOTES-USAGE-JUSTIFICATION",
+      "kind": "LENS",
+      "scope": "Core",
+      "label": "Linked Notes Possible Usage / Justification",
+      "actionLabel": "Linked Notes Possible Usage / Justification",
+      "description": "justify linked-note/backlink/query behavior without creating notes storage or duplicate semantic authority; direct surface lenscmd.linked-notes.justify",
+      "sources": [
+        "planning/documentation/idtspe-methodology/active/idtspe-core/lenses/README.md",
+        "planning/documentation/idtspe-methodology/active/idtspe-core/lenses/reusable/LENS-LINKED-NOTES-USAGE-JUSTIFICATION.md"
+      ],
+      "aliases": [
+        "linked-notes"
+      ],
+      "commandId": "",
+      "invocation": "idtspe lens linked-notes <target/context>",
+      "target": "<Linked Notes Possible Usage / Justification analysis surface>"
+    },
+    {
+      "id": "LENS-NEED-VALUE-SCOPE",
+      "kind": "LENS",
+      "scope": "Core",
+      "label": "Need / Value / Scope",
+      "actionLabel": "Need / Value / Scope",
+      "description": "L1 — Need/value/right bounded Target",
+      "sources": [
+        "planning/documentation/idtspe-methodology/active/idtspe-core/lenses/README.md",
+        "planning/documentation/idtspe-methodology/active/idtspe-core/lenses/required/LENS-NEED-VALUE-SCOPE.md"
+      ],
+      "aliases": [
+        "need"
+      ],
+      "commandId": "",
+      "invocation": "idtspe lens need <target/context>",
+      "target": "<Need / Value / Scope analysis surface>"
+    },
+    {
+      "id": "LENS-PRACTICAL-EVIDENCE",
+      "kind": "LENS",
+      "scope": "Core",
+      "label": "Prototype / Implemented Practical Evidence",
+      "actionLabel": "Prototype / Implemented Practical Evidence",
+      "description": "minimum practical experiment / observed Evidence",
+      "sources": [
+        "planning/documentation/idtspe-methodology/active/idtspe-core/lenses/README.md",
+        "planning/documentation/idtspe-methodology/active/idtspe-core/lenses/reusable/LENS-PRACTICAL-EVIDENCE.md"
+      ],
+      "aliases": [
+        "practical-evidence"
+      ],
+      "commandId": "",
+      "invocation": "idtspe lens practical-evidence <target/context>",
+      "target": "<Prototype / Implemented Practical Evidence analysis surface>"
+    },
+    {
+      "id": "LENS-QUALITY-RISK-MATERIALITY",
+      "kind": "LENS",
+      "scope": "Core",
+      "label": "Cross-Cutting Quality / Risk Materiality",
+      "actionLabel": "Quality / Risk / Materiality",
+      "description": "material quality/risk categories",
+      "sources": [
+        "planning/documentation/idtspe-methodology/active/idtspe-core/lenses/README.md",
+        "planning/documentation/idtspe-methodology/active/idtspe-core/lenses/frequent/LENS-QUALITY-RISK-MATERIALITY.md"
+      ],
+      "aliases": [
+        "quality-risk"
+      ],
+      "commandId": "",
+      "invocation": "idtspe lens quality-risk <target/context>",
+      "target": "<Quality / Risk / Materiality analysis surface>"
+    },
+    {
+      "id": "LENS-SHARED-CROSS-CUTTING-RESPONSIBILITY",
+      "kind": "LENS",
+      "scope": "Core",
+      "label": "Shared / Cross-Cutting Ownership",
+      "actionLabel": "Shared / Cross-Cutting Ownership",
+      "description": "shared ownership / applicability / local integration",
+      "sources": [
+        "planning/documentation/idtspe-methodology/active/idtspe-core/lenses/README.md",
+        "planning/documentation/idtspe-methodology/active/idtspe-core/lenses/reusable/LENS-SHARED-CROSS-CUTTING-RESPONSIBILITY.md"
+      ],
+      "aliases": [
+        "shared-crosscut"
+      ],
+      "commandId": "",
+      "invocation": "idtspe lens shared-crosscut <target/context>",
+      "target": "<Shared / Cross-Cutting Ownership analysis surface>"
+    },
+    {
+      "id": "LENS-TEST-PROOF-EVIDENCE",
+      "kind": "LENS",
+      "scope": "Core",
+      "label": "Test Proof / Evidence Quality",
+      "actionLabel": "Test Proof / Evidence Quality",
+      "description": "proof-layer/evidence quality",
+      "sources": [
+        "planning/documentation/idtspe-methodology/active/idtspe-core/lenses/README.md",
+        "planning/documentation/idtspe-methodology/active/idtspe-core/lenses/reusable/LENS-TEST-PROOF-EVIDENCE.md"
+      ],
+      "aliases": [
+        "test-proof"
+      ],
+      "commandId": "",
+      "invocation": "idtspe lens test-proof <target/context>",
+      "target": "<Test Proof / Evidence Quality analysis surface>"
+    },
+    {
+      "id": "LENS-UNCERTAINTY-ASSUMPTION-REVERSIBILITY",
+      "kind": "LENS",
+      "scope": "Core",
+      "label": "Uncertainty / Assumption / Reversibility",
+      "actionLabel": "Uncertainty / Assumptions / Reversibility",
+      "description": "L3 — assumptions/Evidence/reversibility/cost of being wrong",
+      "sources": [
+        "planning/documentation/idtspe-methodology/active/idtspe-core/lenses/README.md",
+        "planning/documentation/idtspe-methodology/active/idtspe-core/lenses/required/LENS-UNCERTAINTY-ASSUMPTION-REVERSIBILITY.md"
+      ],
+      "aliases": [
+        "uncertainty"
+      ],
+      "commandId": "",
+      "invocation": "idtspe lens uncertainty <target/context>",
+      "target": "<Uncertainty / Assumptions / Reversibility analysis surface>"
+    },
+    {
+      "id": "LENS-VERIFIABILITY-OBSERVABILITY-OPERABILITY",
+      "kind": "LENS",
+      "scope": "Core",
+      "label": "Proof / Observation / Diagnosis / Operation",
+      "actionLabel": "Verifiability / Observability / Operability",
+      "description": "L6 — proof/observation/diagnosis/operation",
+      "sources": [
+        "planning/documentation/idtspe-methodology/active/idtspe-core/lenses/README.md",
+        "planning/documentation/idtspe-methodology/active/idtspe-core/lenses/frequent/LENS-VERIFIABILITY-OBSERVABILITY-OPERABILITY.md"
+      ],
+      "aliases": [
+        "operability"
+      ],
+      "commandId": "",
+      "invocation": "idtspe lens operability <target/context>",
+      "target": "<Verifiability / Observability / Operability analysis surface>"
+    },
+    {
+      "id": "LENS-APPLICATION-BOUNDARY-FEASIBILITY",
+      "kind": "LENS",
+      "scope": "SDS",
+      "label": "Application Definition / Alternatives / Core Real-Life Route / Feasibility",
+      "actionLabel": "Application Definition / Alternatives / Core Real-Life Route / Feasibility",
+      "description": "own-Application contribution/boundary/feasibility is unsettled",
+      "sources": [
+        "planning/documentation/idtspe-methodology/active/profiles/sds/lenses/README.md",
+        "planning/documentation/idtspe-methodology/active/profiles/sds/lenses/reusable/LENS-APPLICATION-BOUNDARY-FEASIBILITY.md"
+      ],
+      "aliases": [
+        "application-boundary"
+      ],
+      "commandId": "",
+      "invocation": "idtspe lens application-boundary <target/context>",
+      "target": "<Application Definition / Alternatives / Core Real-Life Route / Feasibility analysis surface>"
+    },
+    {
+      "id": "LENS-DOMAIN-MODELING-DDD",
+      "kind": "LENS",
+      "scope": "SDS",
+      "label": "Domain Modeling / DDD",
+      "actionLabel": "Domain Modeling / DDD",
+      "description": "Domain identity/state/lifecycle/consistency/ownership questions are material",
+      "sources": [
+        "planning/documentation/idtspe-methodology/active/profiles/sds/lenses/README.md",
+        "planning/documentation/idtspe-methodology/active/profiles/sds/lenses/reusable/LENS-DOMAIN-MODELING-DDD.md"
+      ],
+      "aliases": [
+        "ddd"
+      ],
+      "commandId": "",
+      "invocation": "idtspe lens ddd <target/context>",
+      "target": "<Domain Modeling / DDD analysis surface>"
+    },
+    {
+      "id": "LENS-IMPLEMENTATION-REQUIREMENTS-DISCOVERY",
+      "kind": "LENS",
+      "scope": "SDS",
+      "label": "Owner-Local Implementation Requirements Discovery",
+      "actionLabel": "Owner-Local Implementation Requirements Discovery",
+      "description": "reasoning may need to become/change/retire durable owner-local IR/PFR meaning",
+      "sources": [
+        "planning/documentation/idtspe-methodology/active/profiles/sds/lenses/README.md",
+        "planning/documentation/idtspe-methodology/active/profiles/sds/lenses/reusable/LENS-IMPLEMENTATION-REQUIREMENTS-DISCOVERY.md"
+      ],
+      "aliases": [
+        "implementation-requirements"
+      ],
+      "commandId": "",
+      "invocation": "idtspe lens implementation-requirements <target/context>",
+      "target": "<Owner-Local Implementation Requirements Discovery analysis surface>"
+    },
+    {
+      "id": "LENS-SIMPLICITY-IMPLEMENTATION-ECONOMY",
+      "kind": "LENS",
+      "scope": "SDS",
+      "label": "Simplicity / Implementation Economy / Evolution-Safe Simplification",
+      "actionLabel": "Simplicity / Implementation Economy",
+      "description": "complexity/implementation economy/evolution-safe simplification is material",
+      "sources": [
+        "planning/documentation/idtspe-methodology/active/profiles/sds/lenses/README.md",
+        "planning/documentation/idtspe-methodology/active/profiles/sds/lenses/frequent/LENS-SIMPLICITY-IMPLEMENTATION-ECONOMY.md"
+      ],
+      "aliases": [
+        "simplicity"
+      ],
+      "commandId": "",
+      "invocation": "idtspe lens simplicity <target/context>",
+      "target": "<Simplicity / Implementation Economy analysis surface>"
+    },
+    {
+      "id": "LENS-SLICE-VERTICALITY-INTEGRATION",
+      "kind": "LENS",
+      "scope": "SDS",
+      "label": "Vertical Slice / Integration",
+      "actionLabel": "Slice Verticality / Integration",
+      "description": "Feature/Slice boundary, end-to-end realization, behavior coverage or change locality is material",
+      "sources": [
+        "planning/documentation/idtspe-methodology/active/profiles/sds/lenses/README.md",
+        "planning/documentation/idtspe-methodology/active/profiles/sds/lenses/reusable/LENS-SLICE-VERTICALITY-INTEGRATION.md"
+      ],
+      "aliases": [
+        "verticality"
+      ],
+      "commandId": "",
+      "invocation": "idtspe lens verticality <target/context>",
+      "target": "<Slice Verticality / Integration analysis surface>"
+    },
+    {
+      "id": "LENS-UI-SPATIAL-FRONTEND-REALIZATION",
+      "kind": "LENS",
+      "scope": "SDS",
+      "label": "Screen / UI / Frontend Realization",
+      "actionLabel": "Screen / UI / Frontend Realization",
+      "description": "Screen/spatial/UI/frontend realization questions are material",
+      "sources": [
+        "planning/documentation/idtspe-methodology/active/profiles/sds/lenses/README.md",
+        "planning/documentation/idtspe-methodology/active/profiles/sds/lenses/reusable/LENS-UI-SPATIAL-FRONTEND-REALIZATION.md"
+      ],
+      "aliases": [
+        "ui"
+      ],
+      "commandId": "",
+      "invocation": "idtspe lens ui <target/context>",
+      "target": "<Screen / UI / Frontend Realization analysis surface>"
+    },
+    {
+      "id": "LENS-WORKSPACE-EVOLUTION-ARCHITECTURE",
+      "kind": "LENS",
+      "scope": "SDS",
+      "label": "Evolution Impact / Change Isolation",
+      "actionLabel": "Evolution Impact / Change Isolation",
+      "description": "known Evolution/change-isolation/prepare-now-vs-defer pressure is material",
+      "sources": [
+        "planning/documentation/idtspe-methodology/active/profiles/sds/lenses/README.md",
+        "planning/documentation/idtspe-methodology/active/profiles/sds/lenses/frequent/LENS-WORKSPACE-EVOLUTION-ARCHITECTURE.md"
+      ],
+      "aliases": [
+        "evolution"
+      ],
+      "commandId": "",
+      "invocation": "idtspe lens evolution <target/context>",
+      "target": "<Evolution Impact / Change Isolation analysis surface>"
+    },
+    {
+      "id": "TM-EXACT-REALIZATION",
+      "kind": "TARGET_MODULE",
+      "scope": "Core",
+      "label": "Exact Realization / Integration",
+      "actionLabel": "Точная реализация",
+      "description": "produce one exact directly integrable realization; codebase realization is the primary/default archetype, with optional transient internal detailed exact planning and explicitly authorized integration/verification/repair.",
+      "sources": [
+        "planning/documentation/idtspe-methodology/active/idtspe-core/target-modules/README.md",
+        "planning/documentation/idtspe-methodology/active/idtspe-core/target-modules/TM-EXACT-REALIZATION.md"
+      ],
+      "aliases": [],
+      "commandId": "",
+      "invocation": "idtspe tm TM-EXACT-REALIZATION <target>",
+      "target": "<Точная реализация target>"
+    },
+    {
+      "id": "TM-PRE-UPDATE-PLAN",
+      "kind": "TARGET_MODULE",
+      "scope": "Core",
+      "label": "Pre-Update Plan",
+      "actionLabel": "План обновления",
+      "description": "optional concrete reviewable plan of intended changes before actual mutation; one RU-PUPDATE-01.",
+      "sources": [
+        "planning/documentation/idtspe-methodology/active/idtspe-core/target-modules/README.md",
+        "planning/documentation/idtspe-methodology/active/idtspe-core/target-modules/TM-PRE-UPDATE-PLAN.md"
+      ],
+      "aliases": [],
+      "commandId": "",
+      "invocation": "idtspe tm TM-PRE-UPDATE-PLAN <target>",
+      "target": "<План обновления target>"
+    },
+    {
+      "id": "TM-APPLICATION-DEFINITION",
+      "kind": "TARGET_MODULE",
+      "scope": "SDS",
+      "label": "Application Definition",
+      "actionLabel": "Определить приложение",
+      "description": "conditional own-Application contribution / boundary / feasibility",
+      "sources": [
+        "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/README.md",
+        "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-APPLICATION-DEFINITION.md"
+      ],
+      "aliases": [],
+      "commandId": "",
+      "invocation": "idtspe tm TM-APPLICATION-DEFINITION <target>",
+      "target": "<Определить приложение target>"
+    },
+    {
+      "id": "TM-DOMAIN-DISCOVERY",
+      "kind": "TARGET_MODULE",
+      "scope": "SDS",
+      "label": "Transient Domain Discovery",
+      "actionLabel": "Исследовать Domain",
+      "description": "transient bounded Domain discovery",
+      "sources": [
+        "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/README.md",
+        "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-DOMAIN-DISCOVERY.md"
+      ],
+      "aliases": [],
+      "commandId": "",
+      "invocation": "idtspe tm TM-DOMAIN-DISCOVERY <target>",
+      "target": "<Исследовать Domain target>"
+    },
+    {
+      "id": "TM-DOMAIN-OWNER",
+      "kind": "TARGET_MODULE",
+      "scope": "SDS",
+      "label": "Durable Domain Semantic Owner",
+      "actionLabel": "Сформировать Domain Owner",
+      "description": "durable Domain semantic contract + Domain IR",
+      "sources": [
+        "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/README.md",
+        "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-DOMAIN-OWNER.md"
+      ],
+      "aliases": [],
+      "commandId": "",
+      "invocation": "idtspe tm TM-DOMAIN-OWNER <target>",
+      "target": "<Сформировать Domain Owner target>"
+    },
+    {
+      "id": "TM-EVOLUTION-STEP",
+      "kind": "TARGET_MODULE",
+      "scope": "SDS",
+      "label": "Evolution Step",
+      "actionLabel": "Спланировать Evolution Step",
+      "description": "one coherent qualitative future transition / target state",
+      "sources": [
+        "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/README.md",
+        "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-EVOLUTION-STEP.md"
+      ],
+      "aliases": [],
+      "commandId": "",
+      "invocation": "idtspe tm TM-EVOLUTION-STEP <target>",
+      "target": "<Спланировать Evolution Step target>"
+    },
+    {
+      "id": "TM-EVOLUTION-STEPS-MAP",
+      "kind": "TARGET_MODULE",
+      "scope": "SDS",
+      "label": "Evolution Steps Map",
+      "actionLabel": "Спланировать Evolution Map",
+      "description": "registry/routing/prerequisite/readiness map for Steps",
+      "sources": [
+        "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/README.md",
+        "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-EVOLUTION-STEPS-MAP.md"
+      ],
+      "aliases": [],
+      "commandId": "",
+      "invocation": "idtspe tm TM-EVOLUTION-STEPS-MAP <target>",
+      "target": "<Спланировать Evolution Map target>"
+    },
+    {
+      "id": "TM-FEATURE",
+      "kind": "TARGET_MODULE",
+      "scope": "SDS",
+      "label": "Feature Behavioral Owner",
+      "actionLabel": "Спланировать Feature",
+      "description": "primary Feature behavior + Feature/Slice boundary owner",
+      "sources": [
+        "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/README.md",
+        "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-FEATURE.md"
+      ],
+      "aliases": [],
+      "commandId": "",
+      "invocation": "idtspe tm TM-FEATURE <target>",
+      "target": "<Спланировать Feature target>"
+    },
+    {
+      "id": "TM-IMPLEMENTATION-SLICE",
+      "kind": "TARGET_MODULE",
+      "scope": "SDS",
+      "label": "Slice Discovery / Non-Persistent Slice Planning",
+      "actionLabel": "Исследовать Implementation Slice",
+      "description": "compatibility ID for transient Slice Discovery",
+      "sources": [
+        "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/README.md",
+        "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-IMPLEMENTATION-SLICE.md"
+      ],
+      "aliases": [],
+      "commandId": "",
+      "invocation": "idtspe tm TM-IMPLEMENTATION-SLICE <target>",
+      "target": "<Исследовать Implementation Slice target>"
+    },
+    {
+      "id": "TM-PRACTICAL-TEST",
+      "kind": "TARGET_MODULE",
+      "scope": "SDS",
+      "label": "Implemented Practical Evidence / Acceptance",
+      "actionLabel": "Спланировать Practical Test",
+      "description": "implemented real-subject practical Evidence",
+      "sources": [
+        "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/README.md",
+        "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-PRACTICAL-TEST.md"
+      ],
+      "aliases": [],
+      "commandId": "",
+      "invocation": "idtspe tm TM-PRACTICAL-TEST <target>",
+      "target": "<Спланировать Practical Test target>"
+    },
+    {
+      "id": "TM-PROTOTYPE",
+      "kind": "TARGET_MODULE",
+      "scope": "SDS",
+      "label": "Prototype / Experiment",
+      "actionLabel": "Спланировать Prototype",
+      "description": "transient empirical pre-commit inquiry",
+      "sources": [
+        "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/README.md",
+        "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-PROTOTYPE.md"
+      ],
+      "aliases": [],
+      "commandId": "",
+      "invocation": "idtspe tm TM-PROTOTYPE <target>",
+      "target": "<Спланировать Prototype target>"
+    },
+    {
+      "id": "TM-SCENARIO-PLANNING",
+      "kind": "TARGET_MODULE",
+      "scope": "SDS",
+      "label": "Scenario Journey Composition",
+      "actionLabel": "Спланировать Scenario",
+      "description": "Scenario journey composition; compatibility ID/path retained",
+      "sources": [
+        "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/README.md",
+        "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-SCENARIO-PLANNING.md"
+      ],
+      "aliases": [],
+      "commandId": "",
+      "invocation": "idtspe tm TM-SCENARIO-PLANNING <target>",
+      "target": "<Спланировать Scenario target>"
+    },
+    {
+      "id": "TM-SCREEN",
+      "kind": "TARGET_MODULE",
+      "scope": "SDS",
+      "label": "Screen / Spatial Owner",
+      "actionLabel": "Спланировать Screen",
+      "description": "Screen/spatial/navigation composition",
+      "sources": [
+        "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/README.md",
+        "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-SCREEN.md"
+      ],
+      "aliases": [],
+      "commandId": "",
+      "invocation": "idtspe tm TM-SCREEN <target>",
+      "target": "<Спланировать Screen target>"
+    },
+    {
+      "id": "TM-SHARED-IMPLEMENTATION-CAPABILITY",
+      "kind": "TARGET_MODULE",
+      "scope": "SDS",
+      "label": "Durable Shared Implementation Capability",
+      "actionLabel": "Спланировать Shared Capability",
+      "description": "durable reusable non-end-to-end implementation capability",
+      "sources": [
+        "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/README.md",
+        "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-SHARED-IMPLEMENTATION-CAPABILITY.md"
+      ],
+      "aliases": [],
+      "commandId": "",
+      "invocation": "idtspe tm TM-SHARED-IMPLEMENTATION-CAPABILITY <target>",
+      "target": "<Спланировать Shared Capability target>"
+    },
+    {
+      "id": "TM-SLICE-OWNER",
+      "kind": "TARGET_MODULE",
+      "scope": "SDS",
+      "label": "Durable End-to-End Slice Owner",
+      "actionLabel": "Сформировать Slice Owner",
+      "description": "durable end-to-end Slice responsibility + Slice IR",
+      "sources": [
+        "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/README.md",
+        "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-SLICE-OWNER.md"
+      ],
+      "aliases": [],
+      "commandId": "",
+      "invocation": "idtspe tm TM-SLICE-OWNER <target>",
+      "target": "<Сформировать Slice Owner target>"
+    },
+    {
+      "id": "UC-IDTSPE-COMPOSE-CURRENT-WORK",
+      "kind": "USE_CASE",
+      "scope": "Core",
+      "label": "Compose Current IDTSPE Work",
+      "actionLabel": "Компоновать текущую работу",
+      "description": "The current work has the **smallest useful IDTSPE composition** for the situation, with relevant methodology components selected or explicitly left unnecessary for now, and with useful recheck/next-action conditions clear. A valid Result may be only: ``text continue Broad Discussion; no Target / Lens / Target Module / Checkpoint / persisted State is useful yet. ``",
+      "sources": [
+        "planning/documentation/use-case-registry-map.md",
+        "planning/documentation/idtspe-methodology/active/idtspe-core/shared/idtspe-methodology-use-case-registry.md"
+      ],
+      "aliases": [],
+      "commandId": "plan.now",
+      "invocation": "",
+      "target": "<Compose Current IDTSPE Work target>"
+    },
+    {
+      "id": "UC-IDTSPE-INTEGRATE-CURRENT-WORK",
+      "kind": "USE_CASE",
+      "scope": "Core",
+      "label": "Integrate Current IDTSPE Work",
+      "actionLabel": "Интегрировать текущую работу",
+      "description": "An **IDTSPE Integration Checkpoint** reconciles material Broad Discussion into current Core State + applicable Target Result meaning, preserves unresolved/revalidation state, and makes the useful next/re-entry point clear without manufacturing completion or approval.",
+      "sources": [
+        "planning/documentation/use-case-registry-map.md",
+        "planning/documentation/idtspe-methodology/active/idtspe-core/shared/idtspe-methodology-use-case-registry.md"
+      ],
+      "aliases": [],
+      "commandId": "",
+      "invocation": "",
+      "target": "<Integrate Current IDTSPE Work target>"
+    },
+    {
+      "id": "UC-IDTSPE-MAINTAIN-CURRENT-WORK-STATE",
+      "kind": "USE_CASE",
+      "scope": "Core",
+      "label": "Maintain Current IDTSPE Work State",
+      "actionLabel": "Maintain Current IDTSPE Work State",
+      "description": "The smallest useful set of current IDTSPE State Units and Target Result meaning is represented coherently, with stale/invalidated meaning distinguishable and without serializing the whole conversation or every possible Unit/field.",
+      "sources": [
+        "planning/documentation/use-case-registry-map.md",
+        "planning/documentation/idtspe-methodology/active/idtspe-core/shared/idtspe-methodology-use-case-registry.md"
+      ],
+      "aliases": [],
+      "commandId": "",
+      "invocation": "",
+      "target": "<Maintain Current IDTSPE Work State target>"
+    },
+    {
+      "id": "UC-IDTSPE-MAINTAIN-LENS",
+      "kind": "USE_CASE",
+      "scope": "Core",
+      "label": "Create / Review / Integrate Reusable Lens",
+      "actionLabel": "Create / Review / Integrate Reusable Lens",
+      "description": "``text one canonical Lens/Lens Pack owner registry entry / applicability summary activation class/gate Operational Evaluation Contract explicit Analysis Surface / supported operations / Finding Contract Knowledge Basis / theory-reference links when useful consumer/profile mapping migrated duplicate knowledge/guidance consistency checks ``",
+      "sources": [
+        "planning/documentation/use-case-registry-map.md",
+        "planning/documentation/idtspe-methodology/active/idtspe-core/shared/idtspe-methodology-use-case-registry.md"
+      ],
+      "aliases": [],
+      "commandId": "",
+      "invocation": "",
+      "target": "<Create / Review / Integrate Reusable Lens target>"
+    },
+    {
+      "id": "UC-IDTSPE-MAINTAIN-TARGET-MODULE",
+      "kind": "USE_CASE",
+      "scope": "Core",
+      "label": "Create / Review / Integrate Target Module",
+      "actionLabel": "Create / Review / Integrate Target Module",
+      "description": "``text one Target Module owner catalog entry stable Entry Point integration map Target Step-Result Contract / Result Units explicit per-Unit Opening / Closing Applicability Checkpoints Resolution / Production Method output schema/projection when useful validators provenance mapping command/Tampermonkey readiness route ` If reuse already covers the need: `text no new module → integrate/reuse existing one `` ---",
+      "sources": [
+        "planning/documentation/use-case-registry-map.md",
+        "planning/documentation/idtspe-methodology/active/idtspe-core/shared/idtspe-methodology-use-case-registry.md"
+      ],
+      "aliases": [],
+      "commandId": "",
+      "invocation": "",
+      "target": "<Create / Review / Integrate Target Module target>"
+    },
+    {
+      "id": "UC-IDTSPE-REVALIDATE-CURRENT-WORK",
+      "kind": "USE_CASE",
+      "scope": "Core",
+      "label": "Revalidate Current IDTSPE Work",
+      "actionLabel": "Перевалидировать текущую работу",
+      "description": "The narrowest affected meaning and methodology-use surface are rechecked; stale/dependent work is invalidated/reopened only where warranted; unaffected accepted meaning remains stable; and a precise re-entry/next methodology route is known.",
+      "sources": [
+        "planning/documentation/use-case-registry-map.md",
+        "planning/documentation/idtspe-methodology/active/idtspe-core/shared/idtspe-methodology-use-case-registry.md"
+      ],
+      "aliases": [],
+      "commandId": "",
+      "invocation": "",
+      "target": "<Revalidate Current IDTSPE Work target>"
+    },
+    {
+      "id": "UC-DOC-MAINTAIN-EXAMPLE",
+      "kind": "USE_CASE",
+      "scope": "Documentation",
+      "label": "Maintain Documentation Example",
+      "actionLabel": "Maintain Documentation Example",
+      "description": "A current non-authoritative example demonstrates the intended result/process/shape/behavior and is reachable from the semantic owner it illustrates.",
+      "sources": [
+        "planning/documentation/use-case-registry-map.md",
+        "planning/documentation/use-case-registry.md"
+      ],
+      "aliases": [],
+      "commandId": "",
+      "invocation": "",
+      "target": "<Maintain Documentation Example target>"
+    },
+    {
+      "id": "UC-DOC-MAINTAIN-PRINCIPLES-TERMINOLOGY",
+      "kind": "USE_CASE",
+      "scope": "Documentation",
+      "label": "Maintain Principles & Terminology",
+      "actionLabel": "Maintain Principles & Terminology",
+      "description": "The area has one coherent term-centered owner for the needed vocabulary and stable semantic rules, with duplicated or misplaced meaning routed back to that owner.",
+      "sources": [
+        "planning/documentation/use-case-registry-map.md",
+        "planning/documentation/use-case-registry.md"
+      ],
+      "aliases": [],
+      "commandId": "",
+      "invocation": "",
+      "target": "<Maintain Principles & Terminology target>"
+    },
+    {
+      "id": "UC-DOC-MAINTAIN-PROCESS",
+      "kind": "USE_CASE",
+      "scope": "Documentation",
+      "label": "Maintain Reusable Process",
+      "actionLabel": "Maintain Reusable Process",
+      "description": "The reusable Process is represented at the smallest useful scope, remains reachable from the Use Cases that need it, and does not become a competing owner of shared terminology or result meaning.",
+      "sources": [
+        "planning/documentation/use-case-registry-map.md",
+        "planning/documentation/use-case-registry.md"
+      ],
+      "aliases": [],
+      "commandId": "",
+      "invocation": "",
+      "target": "<Maintain Reusable Process target>"
+    },
+    {
+      "id": "UC-DOC-MAINTAIN-README",
+      "kind": "USE_CASE",
+      "scope": "Documentation",
+      "label": "Maintain README Navigation",
+      "actionLabel": "Maintain README Navigation",
+      "description": "The README accurately maps the current area and direct-child responsibilities, with natural next navigation and without becoming a second owner of Use-Case/Process/Principles meaning.",
+      "sources": [
+        "planning/documentation/use-case-registry-map.md",
+        "planning/documentation/use-case-registry.md"
+      ],
+      "aliases": [],
+      "commandId": "",
+      "invocation": "",
+      "target": "<Maintain README Navigation target>"
+    },
+    {
+      "id": "UC-DOC-MAINTAIN-TEMPLATE",
+      "kind": "USE_CASE",
+      "scope": "Documentation",
+      "label": "Maintain Documentation Template",
+      "actionLabel": "Maintain Documentation Template",
+      "description": "A shape-only current template exists where useful, remains reachable from the Use Case/Process that uses it, and contains no semantic decision logic that belongs in another owner.",
+      "sources": [
+        "planning/documentation/use-case-registry-map.md",
+        "planning/documentation/use-case-registry.md"
+      ],
+      "aliases": [],
+      "commandId": "",
+      "invocation": "",
+      "target": "<Maintain Documentation Template target>"
+    },
+    {
+      "id": "UC-DOC-MAINTAIN-USE-CASE",
+      "kind": "USE_CASE",
+      "scope": "Documentation",
+      "label": "Establish / Change Repository Use Case",
+      "actionLabel": "Establish / Change Repository Use Case",
+      "description": "The capability is represented by the smallest correct current Use-Case set, every surviving Use Case has Situation, Result, and Process, and the applicable Use-Case Registry points to the canonical owner of each Use Case.",
+      "sources": [
+        "planning/documentation/use-case-registry-map.md",
+        "planning/documentation/use-case-registry.md"
+      ],
+      "aliases": [],
+      "commandId": "",
+      "invocation": "",
+      "target": "<Establish / Change Repository Use Case target>"
+    },
+    {
+      "id": "UC-DOC-MAINTAIN-USE-CASE-REGISTRY",
+      "kind": "USE_CASE",
+      "scope": "Documentation",
+      "label": "Maintain Use-Case Registry",
+      "actionLabel": "Maintain Use-Case Registry",
+      "description": "The registry for the selected scope lists every current Use Case and its canonical owner, with navigation-only grouping and without duplicating Use-Case bodies.",
+      "sources": [
+        "planning/documentation/use-case-registry-map.md",
+        "planning/documentation/use-case-registry.md"
+      ],
+      "aliases": [],
+      "commandId": "",
+      "invocation": "",
+      "target": "<Maintain Use-Case Registry target>"
+    },
+    {
+      "id": "UC-DOC-PLAN-DOCUMENTATION-CHANGE",
+      "kind": "USE_CASE",
+      "scope": "Documentation",
+      "label": "Plan Repository Documentation Change",
+      "actionLabel": "Спланировать изменение документации",
+      "description": "The target documentation meaning is resolved to the needed depth, affected Use Cases and semantic owners are clear, and the change is ready for exact repository realization without implementation having to invent semantic decisions.",
+      "sources": [
+        "planning/documentation/use-case-registry-map.md",
+        "planning/documentation/use-case-registry.md"
+      ],
+      "aliases": [],
+      "commandId": "",
+      "invocation": "",
+      "target": "<Plan Repository Documentation Change target>"
+    },
+    {
+      "id": "UC-DOC-REVIEW-DOCUMENTATION",
+      "kind": "USE_CASE",
+      "scope": "Documentation",
+      "label": "Review Repository Documentation",
+      "actionLabel": "Проверить документацию",
+      "description": "Material documentation findings are tied to their real semantic owners, verified and unverified areas are distinguished, and each required correction has a narrow current repair/change route without the review itself becoming new semantic authority.",
+      "sources": [
+        "planning/documentation/use-case-registry-map.md",
+        "planning/documentation/use-case-registry.md"
+      ],
+      "aliases": [],
+      "commandId": "",
+      "invocation": "",
+      "target": "<Review Repository Documentation target>"
+    },
+    {
+      "id": "UC-DOC-USE-REPOSITORY-GUIDANCE",
+      "kind": "USE_CASE",
+      "scope": "Documentation",
+      "label": "Use Repository Methodology / Guidance",
+      "actionLabel": "Use Repository Methodology / Guidance",
+      "description": "The current work has a situation-appropriate methodology orientation: applicable Use Cases and semantic owners are known, required documentation actions are clear, only useful detail is loaded, and contextual adaptations/deferments are explicit when material.",
+      "sources": [
+        "planning/documentation/use-case-registry-map.md",
+        "planning/documentation/use-case-registry.md"
+      ],
+      "aliases": [],
+      "commandId": "",
+      "invocation": "",
+      "target": "<Use Repository Methodology / Guidance target>"
+    }
+  ]
+}

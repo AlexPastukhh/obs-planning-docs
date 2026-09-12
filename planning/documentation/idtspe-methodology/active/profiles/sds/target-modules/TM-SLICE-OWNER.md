@@ -47,6 +47,23 @@ Declared Result Units are a possible semantic surface, not a mandatory form. App
 
 Do not create `N/A` placeholders. Re-evaluate a previously omitted Unit only when its trigger/materiality changes.
 
+
+### Explicit Unit Checkpoint Placement
+
+Each material Unit below inherits the generic [`Unit Applicability Envelope`](../../../idtspe-core/shared/idtspe-unit-and-target-step-result-model.md#5b-unit-applicability-envelope--opening--in-unit--closing-checkpoints). Opening/Closing are mandatory logical applicability boundaries; registries may also be checked during Unit work whenever new material pressure appears.
+
+#### `RU-SOWN-01` processing envelope
+
+1. **Opening Unit Checkpoint — `RU-SOWN-01`** — resolve/reuse current applicable Core + active-profile Lens registry candidates and any Unit-triggered supporting registry pressure before material work.
+2. **Unit Work — `RU-SOWN-01`** — produce/refine only the material meaning owned by this Result Unit; run additional applicability checks immediately when the Analysis Surface changes materially.
+3. **Closing Unit Checkpoint — `RU-SOWN-01`** — evaluate the actual candidate Unit result, disposition material Findings/owner consequences, and reopen/refine narrowly when needed before treating the Unit as current-for-handoff.
+
+#### `RU-SOWN-02` processing envelope
+
+1. **Opening Unit Checkpoint — `RU-SOWN-02`** — resolve/reuse current applicable Core + active-profile Lens registry candidates and any Unit-triggered supporting registry pressure before material work.
+2. **Unit Work — `RU-SOWN-02`** — produce/refine only the material meaning owned by this Result Unit; run additional applicability checks immediately when the Analysis Surface changes materially.
+3. **Closing Unit Checkpoint — `RU-SOWN-02`** — evaluate the actual candidate Unit result, disposition material Findings/owner consequences, and reopen/refine narrowly when needed before treating the Unit as current-for-handoff.
+
 ### RU-SOWN-01 — Slice Responsibility / Boundary Contract
 
 Own proportionally:

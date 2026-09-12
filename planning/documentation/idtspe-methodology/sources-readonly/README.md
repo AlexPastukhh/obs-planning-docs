@@ -18,7 +18,9 @@ read source
 
 The previous full scenario workbook is intentionally frozen here.
 
-## Files
+## Representative Files
+
+The directory contents are the actual provenance inventory. The examples below are intentionally non-exhaustive so this README does not become a second manually synchronized file registry.
 
 - `expanded-sds-dependency-file-and-graph-plan.md`
 - `idea-review-sds-idea-driven-target-planning.md`

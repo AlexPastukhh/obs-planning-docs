@@ -31,20 +31,6 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
   ],
   "userTarget": "<target/result>",
   "palette": true,
-  "helperPresentation": {
-    "whenToUse": "Use when a Target/solution may contain unnecessary abstractions, hops, files, test layers or work.",
-    "whatYouGet": "REMOVE/MERGE/INLINE/REUSE/DEFER/MOVE candidates and retained-complexity rationale in the natural owner.",
-    "navigation": {
-      "viewId": "SDS",
-      "viewLabel": "SDS — IDTSPE Profile",
-      "sectionId": "lens",
-      "sectionLabel": "IDTSPE Lens Checks — SDS",
-      "sectionOrder": 9,
-      "itemOrder": 1,
-      "kindLabel": "IDTSPE LENS",
-      "viewOrder": 1
-    }
-  },
   "refinements": [],
   "methodologyBinding": {
     "methodologyRuntime": "IDTSPE",

@@ -36,20 +36,6 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
   ],
   "userTarget": "<target/context>",
   "palette": true,
-  "helperPresentation": {
-    "whenToUse": "Use when you want to review which registered perspectives are actually worth applying to the current Target/context, including Lenses normally attached by other modules.",
-    "whatYouGet": "A proportional Lens Applicability View and resolved TF-06A Lens Set without running every Lens as a ritual.",
-    "navigation": {
-      "viewId": "IDTSPE",
-      "viewLabel": "IDTSPE",
-      "sectionId": "lens-operations",
-      "sectionLabel": "Lens Operations",
-      "sectionOrder": 1,
-      "itemOrder": 0,
-      "kindLabel": "LENS OPERATION",
-      "viewOrder": 0
-    }
-  },
   "refinements": [],
   "methodologyBinding": {
     "methodologyRuntime": "IDTSPE",

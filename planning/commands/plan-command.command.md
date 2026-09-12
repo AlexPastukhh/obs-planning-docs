@@ -26,13 +26,13 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
     "planning/documentation/COMMAND-ROUTING-TEMPLATE.md",
     "planning/use-cases/UC-REPO-PLAN-UPDATE.md"
   ],
-  "expectedOutput": "Command family/type/English name/owner/registry/example/projection plan followed by План файл-обновление.",
+  "expectedOutput": "A command family/type/name/owner/registry/example/projection plan; hand off to TM-PRE-UPDATE-PLAN only when a separately reviewable concrete repository transition is actually useful.",
   "permissionMode": "plan-only",
   "keyReminders": [
     "Plan a command route only.",
     "Use UC-REPO-MAINTAIN-PLANNING-COMMAND as the semantic capability and keep detailed algorithms in its supporting owners.",
-    "When a concrete repository transition must be planned, hand off through UC-REPO-PLAN-UPDATE rather than reviving the retired Documentation pre-update/bootstrap UC routes.",
-    "Tampermonkey is projection, not source of truth.",
+    "A Pre-Update handoff is conditional: use UC-REPO-PLAN-UPDATE / TM-PRE-UPDATE-PLAN only when a concrete repository transition benefits from a separate reviewable pre-mutation result.",
+    "Planning Helper is a projection, not source of truth.",
     "Do not edit files, create an archive, commit or push."
   ],
   "userTarget": "<what command route should be planned>",

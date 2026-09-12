@@ -17,10 +17,13 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
     "use archive"
   ],
   "description": "archive source",
-  "meaning": "Treat an explicitly selected archive as the read-source snapshot.",
+  "meaning": "Treat only an explicitly selected archive as the read-source snapshot. This is a source-selection/read boundary, not replacement-package production or application.",
   "activeContextBehavior": "Use only the archive explicitly selected for this invocation and state identity/freshness limits.",
   "traversalReadMode": "Archive read-source mode; targeted/full depending on question.",
-  "ownerFiles": [],
+  "ownerFiles": [
+    "planning/command-routing.md",
+    "planning/documentation/build-replacement-archive-workflow.md"
+  ],
   "expectedOutput": "Answer/review/plan from the selected archive; no replacement package unless separately requested.",
   "permissionMode": "read-only",
   "keyReminders": [

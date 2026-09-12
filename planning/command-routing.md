@@ -70,14 +70,14 @@ Canonical reusable algorithm: `planning/documentation/command-routing-workflow.m
 The current material-planning command surface is defined by [`planning/documentation/idtspe-methodology/active/profiles/sds/shared/idtspe-command-surface-contract.md`](documentation/idtspe-methodology/active/profiles/sds/shared/idtspe-command-surface-contract.md).
 
 ```text
-IDTSPE Core surfaces
-+ SDS Target Module/focused surfaces
-+ explicit Lens surfaces
-+ orchestration/validator surfaces
-= invocation projection only
+current methodology Use Cases
++ current Target Modules
++ current Lenses
++ General / Tool direct commands
+= semantic Command projection only
 ```
 
-Generic Core command semantics/host-target policies are owned by the Core command-surface contract; profile contracts extend rather than redefine them. IDTSPE is already active. The canonical direct `idtspe` trigger is therefore a convenience request to refresh/reaffirm current Use-Case-driven composition, while `idtspe <TM-ID|LENS-ID|registry alias> <context>` supplies explicit selection context and still passes current Use-Case/context plus component-local applicability/materiality. Repository command IDs/legacy tmcmd keys remain implementation/compatibility details. SDS commands stay inside the same IDTSPE Work Context. `idtspe.lenses.select` resolves the contextual `TF-06A LENS_SET`; `idtspe.lens.apply` dispatches to one selected registered Lens without becoming that Lens authority. Fixed Lens shortcuts reuse/create a natural host Target only when material and never create a Lens-owned Target. A Local Target Contract may use the same Lens registry when no reusable Target Module fits. The Planning Helper methodology views are navigation projections only.
+Generic Core command semantics/host-target policies are owned by the Core command-surface contract; profile contracts extend rather than redefine them. IDTSPE is already active. The canonical direct `idtspe` trigger is therefore a convenience request to refresh/reaffirm current Use-Case-driven composition, while `idtspe <TM-ID|LENS-ID|registry alias> <context>` supplies explicit selection context and still passes current Use-Case/context plus component-local applicability/materiality. Repository command IDs/legacy tmcmd keys remain implementation/compatibility details. SDS commands stay inside the same IDTSPE Work Context. `idtspe.lenses.select` resolves the contextual `TF-06A LENS_SET`; `idtspe.lens.apply` dispatches to one selected registered Lens without becoming that Lens authority. Fixed Lens shortcuts reuse/create a natural host Target only when material and never create a Lens-owned Target. A Local Target Contract may use the same Lens registry when no reusable Target Module fits. The Planning Helper command classifications are navigation projections only. One current UC/TM/Lens capability projects to one primary semantic Command card; direct/focused aliases do not create peer semantic owners.
 
 ## Explicit-Meaning Rule
 
@@ -114,6 +114,26 @@ No unresolved choice or fallback authorizes destructive actions, unrelated scope
 
 Command permission is explicit and local to the selected command. Semantic-entry activation never expands it. No command implies Git commit/push unless its direct definition explicitly owns that behavior.
 
+## Archive Read-Source Boundary
+
+An explicitly selected archive may be used as a **read-source snapshot** for the current invocation. This source-selection boundary is distinct from replacement-package production and application.
+
+```text
+USER explicitly selects archive as source
+  → verify/select that archive for current read context
+  → state identity/freshness limits when material
+  → answer/review/plan from that source
+  → do not infer package production or application
+```
+
+An archive from an earlier message is not automatically current. `archive read-source` does not imply `build replacement package`, and a produced replacement package does not automatically become the next read source.
+
 ## Planning Helper Boundary
 
-The Helper projects commands from direct definitions. Its **methodology Use Cases** projection starts from `planning/documentation/use-case-registry-map.md` and only the current scoped registries mapped there; it does not infer methodology UCs from every similarly named registry in the repository. Project/area Use Cases remain reachable through their own current semantic routes and dedicated commands where applicable. Generated Helper artifacts never become command or semantic authority.
+The Helper is a **semantic command projection**, not a semantic owner. Its primary command catalog combines current methodology Use Cases, Target Modules and Lenses with General/Tool direct commands. Methodology Use Cases start from `planning/documentation/use-case-registry-map.md` and only the current scoped registries mapped there; Target Modules/Lenses come from their current registries/owners. Project/area Use Cases remain reachable through their own declared routes unless explicitly projected.
+
+Canonical working Scenarios are presentation/integration examples owned outside the Helper. They contain semantic owner references, not command IDs/triggers. Helper derives command equivalents and the reverse `Scenarios N` index from those semantic references; Helper must not maintain separate `When To Use` / `What You Get` semantic prose.
+
+Projection freshness is a downstream maintenance consequence: when a current UC/TM/Lens owner, direct invocation route, canonical Scenario semantic reference, alias/provenance or projected source changes materially, regenerate/revalidate the affected Helper projection. This does **not** create a separate methodology Use Case for Helper maintenance.
+
+Generated Helper artifacts, semantic card labels, scenario-command mappings and UI groupings never become command or methodology authority.

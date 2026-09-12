@@ -31,20 +31,6 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
   ],
   "userTarget": "<target/result>",
   "palette": true,
-  "helperPresentation": {
-    "whenToUse": "Use when several existing owners may benefit from backlinks/query/traversal and you want to prove that Linked Notes is worth it.",
-    "whatYouGet": "JUSTIFIED / NOT_JUSTIFIED / route-to-reference-object with the concrete navigation job; no notes storage tree.",
-    "navigation": {
-      "viewId": "IDTSPE",
-      "viewLabel": "IDTSPE",
-      "sectionId": "lens-operations",
-      "sectionLabel": "Lens Operations",
-      "sectionOrder": 1,
-      "itemOrder": 3,
-      "kindLabel": "IDTSPE LENS",
-      "viewOrder": 0
-    }
-  },
   "refinements": [],
   "methodologyBinding": {
     "methodologyRuntime": "IDTSPE",

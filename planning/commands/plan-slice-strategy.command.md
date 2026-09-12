@@ -33,23 +33,6 @@ Scope: historical invocation alias redirected to current IDTSPE/SDS authority; h
   ],
   "userTarget": "<Slice implementation-strategy scope>",
   "palette": false,
-  "helperPresentation": {
-    "whenToUse": "Only when using this historical command phrase/automation; prefer the current semantic owner or generic `idtspe` component dispatch for new work.",
-    "whatYouGet": "Current transient Slice Discovery result using TM-IMPLEMENTATION-SLICE, or no Slice Target when its Entry Point is not material. No Slice Strategy Target.",
-    "navigation": {
-      "viewId": "SDS",
-      "viewLabel": "SDS — IDTSPE Profile",
-      "sectionId": "06",
-      "sectionLabel": "06 Slice Portfolio",
-      "sectionOrder": 6,
-      "itemOrder": 0,
-      "kindLabel": "IDTSPE TARGET",
-      "badges": [
-        "OPTIONAL WHEN DECOMPOSITION IS OBVIOUS"
-      ],
-      "viewOrder": 1
-    }
-  },
   "refinements": [],
   "methodologyBinding": {
     "methodologyRuntime": "IDTSPE",

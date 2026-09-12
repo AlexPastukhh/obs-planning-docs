@@ -31,21 +31,6 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
   ],
   "userTarget": "<one selected Screen>",
   "palette": true,
-  "helperPresentation": {
-    "whenToUse": "Use when one independently addressable Screen needs focused spatial/responsibility planning.",
-    "whatYouGet": "One Screen Draft scope within the same Screen Target family.",
-    "navigation": {
-      "viewId": "SDS",
-      "viewLabel": "SDS — IDTSPE Profile",
-      "sectionId": "02",
-      "sectionLabel": "02 Scenarios & Interaction",
-      "sectionOrder": 2,
-      "itemOrder": 3,
-      "kindLabel": "IDTSPE TARGET · FOCUSED",
-      "parentId": "tmcmd.screen",
-      "viewOrder": 1
-    }
-  },
   "refinements": [],
   "methodologyBinding": {
     "methodologyRuntime": "IDTSPE",

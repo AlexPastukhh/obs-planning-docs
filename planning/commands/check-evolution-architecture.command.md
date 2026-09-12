@@ -31,20 +31,6 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
   ],
   "userTarget": "<target/result>",
   "palette": true,
-  "helperPresentation": {
-    "whenToUse": "Use when a selected Target needs explicit planned/probable evolution and change-isolation review.",
-    "whatYouGet": "Evolution / Change-Isolation findings routed through Core Finding Disposition to the natural owner; independently material workspace-architecture work routes to normal Architecture Planning / Target Formation.",
-    "navigation": {
-      "viewId": "SDS",
-      "viewLabel": "SDS — IDTSPE Profile",
-      "sectionId": "lens",
-      "sectionLabel": "IDTSPE Lens Checks — SDS",
-      "sectionOrder": 9,
-      "itemOrder": 0,
-      "kindLabel": "IDTSPE LENS",
-      "viewOrder": 1
-    }
-  },
   "refinements": [],
   "methodologyBinding": {
     "methodologyRuntime": "IDTSPE",

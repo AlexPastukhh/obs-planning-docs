@@ -32,20 +32,6 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
   ],
   "userTarget": "<one Scenario>",
   "palette": true,
-  "helperPresentation": {
-    "whenToUse": "Use when one actor-to-Benefit journey across selected Feature results needs independent composition, branching/continuity or whole-journey proof intent.",
-    "whatYouGet": "Scenario Journey Composition without duplicating Feature behavior/data authority: Feature links, journey graph, continuity, terminal Benefit and only material journey-level constraints/proof intent.",
-    "navigation": {
-      "viewId": "SDS",
-      "viewLabel": "SDS — IDTSPE Profile",
-      "sectionId": "02",
-      "sectionLabel": "02 Scenarios & Interaction",
-      "sectionOrder": 2,
-      "itemOrder": 1,
-      "kindLabel": "IDTSPE TARGET",
-      "viewOrder": 1
-    }
-  },
   "refinements": [],
   "methodologyBinding": {
     "methodologyRuntime": "IDTSPE",

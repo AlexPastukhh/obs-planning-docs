@@ -34,23 +34,6 @@ Scope: historical invocation alias redirected to current IDTSPE/SDS authority; h
   ],
   "userTarget": "<one Domain/Slice/etc proof target>",
   "palette": false,
-  "helperPresentation": {
-    "whenToUse": "Only when using this historical command phrase/automation; prefer the current semantic owner or generic `idtspe` component dispatch for new work.",
-    "whatYouGet": "A material proof evaluation/transient natural-owner proof plan, or direct Exact-test route when obvious; no Test Design Target.",
-    "navigation": {
-      "viewId": "SDS",
-      "viewLabel": "SDS — IDTSPE Profile",
-      "sectionId": "05",
-      "sectionLabel": "05 Proof Design",
-      "sectionOrder": 5,
-      "itemOrder": 0,
-      "kindLabel": "IDTSPE TARGET",
-      "viewOrder": 1,
-      "badges": [
-        "CONDITIONAL"
-      ]
-    }
-  },
   "refinements": [],
   "methodologyBinding": {
     "methodologyRuntime": "IDTSPE",

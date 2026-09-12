@@ -54,10 +54,6 @@ Every command file contains exactly one marker block:
   "keyReminders": ["..."],
   "userTarget": "<placeholder>",
   "palette": true,
-  "helperPresentation": {
-    "whenToUse": "...",
-    "whatYouGet": "..."
-  },
   "refinements": []
 }
 [/PLANNING_COMMAND_DEFINITION]
@@ -74,10 +70,19 @@ The JSON is intentionally strict so repository writes, build-time validation and
 - IDs, canonical commands and aliases are unique across the complete catalog.
 - `ownerFiles` and `keyReminders` are arrays of strings.
 - `palette` is boolean. `false` keeps a registered command out of the normal palette without making it unregistered.
-- optional `helperPresentation` carries `When To Use` / `What You Get` copy for Helper details; new IDTSPE canonical/focused surfaces provide it, while older commands remain valid without it.
+- current command semantics do **not** maintain Helper-only `When To Use` / `What You Get` prose. Invocation context is explained by canonical Scenarios and semantic owners; old cached definitions containing `helperPresentation` remain parser-compatible only.
 - one high-level command may orchestrate several existing project capabilities or methodology components when that gives a useful stable invocation surface. This never creates a Use Case, Target Module, Lens or semantic owner and never lets the command own their algorithms.
 - refinements contain only compact owner-read instructions; they do not duplicate owner algorithms.
 - result-producing commands may depend on reusable governance through `ownerFiles` / their semantic owner route; the shared command router reuses current governance, refreshes affected owners proportionally, and performs a full internal preflight only when no reliable sufficient governance context exists. A source snapshot/commit/branch change alone does not force a full reread.
+
+
+## Planning Helper Semantic Projection
+
+The Planning Helper does not render one primary row per direct command file. Current methodology Use Cases, Target Modules and Lenses project to one stable semantic Command identity (`uc:...`, `tm:...`, `lens:...`). A direct command definition may supply that card's invocation body/aliases, while focused aliases remain refinements rather than duplicate primary cards.
+
+Every primary command card exposes `Run`, `Body` and `Scenarios N`. `Body` exposes the actual invocation plus provenance/source information; `Scenarios N` is a derived reverse index into canonical working Scenarios. Canonical Scenarios contain semantic owner references and never contain command IDs/triggers/Helper labels.
+
+`helperPresentation.navigation` and `helperPresentation.whenToUse/whatYouGet` are legacy-cache compatibility only. Current Helper navigation derives from semantic kind/scope/registry membership, and usage explanation comes from canonical Scenario prose.
 
 ## Current IDTSPE/SDS Projection
 
@@ -87,7 +92,7 @@ IDTSPE is always active; command invocation does not enable it. A direct Target 
 
 Planning Helper methodology Use Cases are projected only from [`../documentation/use-case-registry-map.md`](../documentation/use-case-registry-map.md) and the current scoped registries it maps. Filesystem presence of another `use-case-registry.md` does not make its entries global methodology-use UCs.
 
-Generic Lens operations are repository commands `idtspe.lenses.select` (`подбери линзы`) and `idtspe.lens.apply` (`примени линзу`). They are orchestration/dispatch surfaces over `TF-06A` + the registered Lens owners, not new Lens semantic authorities and not one-command-per-Lens expansion.
+Generic Lens operations are repository commands `idtspe.lenses.select` (`подбери линзы`) and `idtspe.lens.apply` (`примени линзу`). They are orchestration/dispatch surfaces over `TF-06A` + the registered Lens owners, not new Lens semantic authorities and not one-command-per-Lens expansion. The generic apply dispatcher and bare `idtspe` work dispatcher remain registered but use `palette: false`; Helper visibility follows the command contract instead of a separate hidden-infrastructure list.
 
 The six retired `collect-ideas*` command IDs remain hidden compatibility aliases only. They must route their supplied material into the current IDTSPE/SDS Target/owner model and must not retain the old collect-Ideas shell, Current Plan runtime, Idea Review owners or old SDS physical-profile owners. Hiding an old command from the palette is not enough if its owner route still revives obsolete semantics.
 

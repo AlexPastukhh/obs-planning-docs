@@ -38,21 +38,7 @@ Scope: generic IDTSPE work-mode and installed-component dispatcher.
     "This command plans/reviews only; it does not edit repository files, implement, test, commit or push."
   ],
   "userTarget": "<optional TM/LENS selector + target/context, or current planning work>",
-  "palette": true,
-  "helperPresentation": {
-    "whenToUse": "Use when you want to explicitly reaffirm current IDTSPE composition or directly name a known Target Module/Lens. Ordinary methodology-guided work already uses IDTSPE without this command.",
-    "whatYouGet": "A registry-driven convenience route that preserves Use-Case-first, proportional IDTSPE behavior.",
-    "navigation": {
-      "viewId": "IDTSPE",
-      "viewLabel": "IDTSPE",
-      "sectionId": "core",
-      "sectionLabel": "IDTSPE Core",
-      "sectionOrder": 0,
-      "itemOrder": 1,
-      "kindLabel": "WORK / DISPATCH",
-      "viewOrder": 0
-    }
-  },
+  "palette": false,
   "refinements": [],
   "methodologyBinding": {
     "methodologyRuntime": "IDTSPE",

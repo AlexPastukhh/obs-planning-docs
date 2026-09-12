@@ -131,6 +131,17 @@ No `N/A` placeholder is required.
 
 Only one Target-specific Result Unit is required. Verification, build/test observations, repair reasoning, Problems, Proposals, Decisions and Findings remain generic Core State/Evidence around the evolving exact result.
 
+
+### Explicit Unit Checkpoint Placement
+
+Each material Unit below inherits the generic [`Unit Applicability Envelope`](../shared/idtspe-unit-and-target-step-result-model.md#5b-unit-applicability-envelope--opening--in-unit--closing-checkpoints). Opening/Closing are mandatory logical applicability boundaries; registries may also be checked during Unit work whenever new material pressure appears.
+
+#### `RU-REAL-01` processing envelope
+
+1. **Opening Unit Checkpoint — `RU-REAL-01`** — resolve/reuse current applicable Core + active-profile Lens registry candidates and any Unit-triggered supporting registry pressure before material work.
+2. **Unit Work — `RU-REAL-01`** — produce/refine only the material meaning owned by this Result Unit; run additional applicability checks immediately when the Analysis Surface changes materially.
+3. **Closing Unit Checkpoint — `RU-REAL-01`** — evaluate the actual candidate Unit result, disposition material Findings/owner consequences, and reopen/refine narrowly when needed before treating the Unit as current-for-handoff.
+
 ### RU-REAL-01 — Exact Realization
 
 The Result Unit contains enough exact representation to attempt direct integration without another material design pass.

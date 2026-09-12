@@ -34,21 +34,7 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
     "This command is read-only planning; it does not mutate repository files, commit or push."
   ],
   "userTarget": "<lens> к <target/context>",
-  "palette": true,
-  "helperPresentation": {
-    "whenToUse": "Use when you already know which registered Lens perspective you want to apply, including a Lens normally reached through another Target Module.",
-    "whatYouGet": "Material analysis/findings from that Lens inside the resolved IDTSPE Target context, with its Knowledge Basis loaded proportionally and material Finding Candidates crossing Core Finding Disposition before owner/State/lifecycle consequences.",
-    "navigation": {
-      "viewId": "IDTSPE",
-      "viewLabel": "IDTSPE",
-      "sectionId": "lens-operations",
-      "sectionLabel": "Lens Operations",
-      "sectionOrder": 1,
-      "itemOrder": 1,
-      "kindLabel": "LENS OPERATION",
-      "viewOrder": 0
-    }
-  },
+  "palette": false,
   "refinements": [],
   "methodologyBinding": {
     "methodologyRuntime": "IDTSPE",

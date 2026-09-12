@@ -33,22 +33,8 @@
         "This command is read-only planning; it does not mutate repository files, commit or push."
       ],
       "userTarget": "<lens> к <target/context>",
-      "palette": true,
-      "helperPresentation": {
-        "whenToUse": "Use when you already know which registered Lens perspective you want to apply, including a Lens normally reached through another Target Module.",
-        "whatYouGet": "Material analysis/findings from that Lens inside the resolved IDTSPE Target context, with its Knowledge Basis loaded proportionally and material Finding Candidates crossing Core Finding Disposition before owner/State/lifecycle consequences.",
-        "navigation": {
-          "viewId": "IDTSPE",
-          "viewLabel": "IDTSPE",
-          "viewOrder": 0,
-          "sectionId": "lens-operations",
-          "sectionLabel": "Lens Operations",
-          "sectionOrder": 1,
-          "itemOrder": 1,
-          "kindLabel": "LENS OPERATION",
-          "badges": []
-        }
-      },
+      "palette": false,
+      "helperPresentation": null,
       "methodologyBinding": {
         "methodologyRuntime": "IDTSPE",
         "profile": null,
@@ -90,23 +76,7 @@
       ],
       "userTarget": "<SDS profile governance / no Target required>",
       "palette": true,
-      "helperPresentation": {
-        "whenToUse": "When SDS profile governance is not current or you want explicit orientation before Application/Scenario/Domain/Slice planning.",
-        "whatYouGet": "Compact SDS profile assimilation with current/next owner context when any; no task-specific Target is invented.",
-        "navigation": {
-          "viewId": "SDS",
-          "viewLabel": "SDS — IDTSPE Profile",
-          "viewOrder": 1,
-          "sectionId": "00",
-          "sectionLabel": "00 Bootstrap",
-          "sectionOrder": 0,
-          "itemOrder": 0,
-          "kindLabel": "BOOTSTRAP",
-          "badges": [
-            "SDS PROFILE"
-          ]
-        }
-      },
+      "helperPresentation": null,
       "methodologyBinding": {
         "methodologyRuntime": "IDTSPE",
         "profile": "SDS",
@@ -147,21 +117,7 @@
       ],
       "userTarget": "<IDTSPE governance / no Target required>",
       "palette": true,
-      "helperPresentation": {
-        "whenToUse": "When the generic planning environment through IDTSPE Core is not current or must be reconstructed from zero context.",
-        "whatYouGet": "Primary bootstrap current through IDTSPE Core, with Session/Documentation/Core boundaries understood and no profile selected by bootstrap.",
-        "navigation": {
-          "viewId": "IDTSPE",
-          "viewLabel": "IDTSPE",
-          "viewOrder": 0,
-          "sectionId": "core",
-          "sectionLabel": "IDTSPE Core",
-          "sectionOrder": 0,
-          "itemOrder": 0,
-          "kindLabel": "BOOTSTRAP",
-          "badges": []
-        }
-      },
+      "helperPresentation": null,
       "methodologyBinding": {
         "methodologyRuntime": "IDTSPE",
         "profile": null,
@@ -243,23 +199,7 @@
       ],
       "userTarget": "<target/result>",
       "palette": true,
-      "helperPresentation": {
-        "whenToUse": "Use when you want an explicit decision whether material meaning should persist and in what representation.",
-        "whatYouGet": "NO_PERSISTENCE / IMPLEMENTATION_NATIVE / existing owner / consolidated artifact / justified split / generated-derived decision, then P-14 placement.",
-        "navigation": {
-          "viewId": "IDTSPE",
-          "viewLabel": "IDTSPE",
-          "viewOrder": 0,
-          "sectionId": "lens-operations",
-          "sectionLabel": "Lens Operations",
-          "sectionOrder": 1,
-          "itemOrder": 2,
-          "kindLabel": "IDTSPE LENS",
-          "badges": [
-            "REQUIRED CORE · EXPLICIT CHECK"
-          ]
-        }
-      },
+      "helperPresentation": null,
       "methodologyBinding": {
         "methodologyRuntime": "IDTSPE",
         "profile": null,
@@ -298,21 +238,7 @@
       ],
       "userTarget": "<target/result>",
       "palette": true,
-      "helperPresentation": {
-        "whenToUse": "Use when a selected Target needs explicit planned/probable evolution and change-isolation review.",
-        "whatYouGet": "Evolution / Change-Isolation findings routed through Core Finding Disposition to the natural owner; independently material workspace-architecture work routes to normal Architecture Planning / Target Formation.",
-        "navigation": {
-          "viewId": "SDS",
-          "viewLabel": "SDS — IDTSPE Profile",
-          "viewOrder": 1,
-          "sectionId": "lens",
-          "sectionLabel": "IDTSPE Lens Checks — SDS",
-          "sectionOrder": 9,
-          "itemOrder": 0,
-          "kindLabel": "IDTSPE LENS",
-          "badges": []
-        }
-      },
+      "helperPresentation": null,
       "methodologyBinding": {
         "methodologyRuntime": "IDTSPE",
         "profile": "SDS",
@@ -351,21 +277,7 @@
       ],
       "userTarget": "<target/result>",
       "palette": true,
-      "helperPresentation": {
-        "whenToUse": "Use when several existing owners may benefit from backlinks/query/traversal and you want to prove that Linked Notes is worth it.",
-        "whatYouGet": "JUSTIFIED / NOT_JUSTIFIED / route-to-reference-object with the concrete navigation job; no notes storage tree.",
-        "navigation": {
-          "viewId": "IDTSPE",
-          "viewLabel": "IDTSPE",
-          "viewOrder": 0,
-          "sectionId": "lens-operations",
-          "sectionLabel": "Lens Operations",
-          "sectionOrder": 1,
-          "itemOrder": 3,
-          "kindLabel": "IDTSPE LENS",
-          "badges": []
-        }
-      },
+      "helperPresentation": null,
       "methodologyBinding": {
         "methodologyRuntime": "IDTSPE",
         "profile": null,
@@ -404,21 +316,7 @@
       ],
       "userTarget": "<target/result>",
       "palette": true,
-      "helperPresentation": {
-        "whenToUse": "Use when a Target/solution may contain unnecessary abstractions, hops, files, test layers or work.",
-        "whatYouGet": "REMOVE/MERGE/INLINE/REUSE/DEFER/MOVE candidates and retained-complexity rationale in the natural owner.",
-        "navigation": {
-          "viewId": "SDS",
-          "viewLabel": "SDS — IDTSPE Profile",
-          "viewOrder": 1,
-          "sectionId": "lens",
-          "sectionLabel": "IDTSPE Lens Checks — SDS",
-          "sectionOrder": 9,
-          "itemOrder": 1,
-          "kindLabel": "IDTSPE LENS",
-          "badges": []
-        }
-      },
+      "helperPresentation": null,
       "methodologyBinding": {
         "methodologyRuntime": "IDTSPE",
         "profile": "SDS",
@@ -710,7 +608,7 @@
         "определи приложение"
       ],
       "description": "application definition",
-      "meaning": "Run TM-APPLICATION-DEFINITION through the IDTSPE Shell for the selected target.",
+      "meaning": "Run TM-APPLICATION-DEFINITION through current Use-Case-driven IDTSPE composition and the selected Target Module entry point for the selected target.",
       "activeContextBehavior": "Treat the explicit command as selected invocation intent inside always-active IDTSPE. Re-evaluate current Use-Case composition, resolve/reuse a natural Target/context only when useful, confirm the selected Target Module Entry Point/local applicability gate, and then resolve CREATE/REFINE/EXTEND/REVALIDATE/REPAIR from actual current Target state. Do not create a Target or Result Unit merely because the command exists.",
       "traversalReadMode": "Reuse current reliable IDTSPE/SDS governance; targeted refresh of the selected owner route when uncertain; full bootstrap only when no reliable sufficient governance context exists.",
       "ownerFiles": [
@@ -727,21 +625,7 @@
       ],
       "userTarget": "<one Application Definition>",
       "palette": true,
-      "helperPresentation": {
-        "whenToUse": "Use when the product/application need, concept, responsibility or boundary should be established or revalidated.",
-        "whatYouGet": "Application Definition with need/value/scope, selected responsibility, material alternatives, Q/R/P and Decisions.",
-        "navigation": {
-          "viewId": "SDS",
-          "viewLabel": "SDS — IDTSPE Profile",
-          "viewOrder": 1,
-          "sectionId": "01",
-          "sectionLabel": "01 Application",
-          "sectionOrder": 1,
-          "itemOrder": 0,
-          "kindLabel": "IDTSPE TARGET",
-          "badges": []
-        }
-      },
+      "helperPresentation": null,
       "methodologyBinding": {
         "methodologyRuntime": "IDTSPE",
         "profile": "SDS",
@@ -780,22 +664,7 @@
       ],
       "userTarget": "<existing Slice>",
       "palette": true,
-      "helperPresentation": {
-        "whenToUse": "Use when an existing bounded Slice Discovery needs deeper entry/result, end-to-end realization, integration-proof or evolution/open-pressure detail.",
-        "whatYouGet": "A deeper current RU-SLICE-02..05 projection for the same Slice Discovery, with no separate Runtime Path or Slice Strategy authority.",
-        "navigation": {
-          "viewId": "SDS",
-          "viewLabel": "SDS — IDTSPE Profile",
-          "viewOrder": 1,
-          "sectionId": "07",
-          "sectionLabel": "07 Slice Realization",
-          "sectionOrder": 7,
-          "itemOrder": 1,
-          "kindLabel": "IDTSPE TARGET · FOCUSED",
-          "badges": [],
-          "parentId": "application_slice.plan"
-        }
-      },
+      "helperPresentation": null,
       "methodologyBinding": {
         "methodologyRuntime": "IDTSPE",
         "profile": "SDS",
@@ -872,22 +741,7 @@
       ],
       "userTarget": "<Application behavior space / Scenario boundary candidates>",
       "palette": true,
-      "helperPresentation": {
-        "whenToUse": "Use when independently meaningful Scenario boundaries are unclear, incomplete or need consolidation before/while forming Scenario Targets.",
-        "whatYouGet": "Scenario boundary candidates and selected/reused Scenario Planning targets; no separate discovery semantic owner.",
-        "navigation": {
-          "viewId": "SDS",
-          "viewLabel": "SDS — IDTSPE Profile",
-          "viewOrder": 1,
-          "sectionId": "02",
-          "sectionLabel": "02 Scenarios & Interaction",
-          "sectionOrder": 2,
-          "itemOrder": 0,
-          "kindLabel": "IDTSPE TARGET · FOCUSED",
-          "badges": [],
-          "parentId": "tmcmd.scenario.plan"
-        }
-      },
+      "helperPresentation": null,
       "methodologyBinding": {
         "methodologyRuntime": "IDTSPE",
         "profile": "SDS",
@@ -910,7 +764,7 @@
         "исследуй домен приложения"
       ],
       "description": "domain discovery",
-      "meaning": "Run TM-DOMAIN-DISCOVERY through the IDTSPE Shell for the selected target.",
+      "meaning": "Run TM-DOMAIN-DISCOVERY through current Use-Case-driven IDTSPE composition and the selected Target Module entry point for the selected target.",
       "activeContextBehavior": "Treat the explicit command as selected invocation intent inside always-active IDTSPE. Re-evaluate current Use-Case composition, resolve/reuse a natural Target/context only when useful, confirm the selected Target Module Entry Point/local applicability gate, and then resolve CREATE/REFINE/EXTEND/REVALIDATE/REPAIR from actual current Target state. Do not create a Target or Result Unit merely because the command exists.",
       "traversalReadMode": "Reuse current reliable IDTSPE/SDS governance; targeted refresh of the selected owner route when uncertain; full bootstrap only when no reliable sufficient governance context exists.",
       "ownerFiles": [
@@ -927,23 +781,7 @@
       ],
       "userTarget": "<Domain candidate space>",
       "palette": true,
-      "helperPresentation": {
-        "whenToUse": "Use when selected Feature behavior, current Domain facts, Slice/Shared implementation pressure, Evidence or Evolution suggests domain concepts, invariants, lifecycle, ownership or candidate boundaries should be discovered.",
-        "whatYouGet": "Transient Domain discovery findings/candidates and material promotion handoffs; a durable Domain owner is created only when independent semantic ownership becomes useful.",
-        "navigation": {
-          "viewId": "SDS",
-          "viewLabel": "SDS — IDTSPE Profile",
-          "viewOrder": 1,
-          "sectionId": "04",
-          "sectionLabel": "04 Domain",
-          "sectionOrder": 4,
-          "itemOrder": 0,
-          "kindLabel": "IDTSPE TARGET",
-          "badges": [
-            "PRIMARY OPTIONAL"
-          ]
-        }
-      },
+      "helperPresentation": null,
       "methodologyBinding": {
         "methodologyRuntime": "IDTSPE",
         "profile": "SDS",
@@ -1088,22 +926,7 @@
       ],
       "userTarget": "<Application responsibility boundary>",
       "palette": true,
-      "helperPresentation": {
-        "whenToUse": "Use when the immediate question is what the Application itself should own versus external/manual/system responsibilities.",
-        "whatYouGet": "Responsibility-boundary refinement of the same Application Definition Target.",
-        "navigation": {
-          "viewId": "SDS",
-          "viewLabel": "SDS — IDTSPE Profile",
-          "viewOrder": 1,
-          "sectionId": "01",
-          "sectionLabel": "01 Application",
-          "sectionOrder": 1,
-          "itemOrder": 2,
-          "kindLabel": "IDTSPE TARGET · FOCUSED",
-          "badges": [],
-          "parentId": "tmcmd.application.definition"
-        }
-      },
+      "helperPresentation": null,
       "methodologyBinding": {
         "methodologyRuntime": "IDTSPE",
         "profile": "SDS",
@@ -1143,21 +966,7 @@
       ],
       "userTarget": "<current planning state>",
       "palette": true,
-      "helperPresentation": {
-        "whenToUse": "Use when you want the methodology to continue from current context without naming a specific component.",
-        "whatYouGet": "Continuation through the current Use-Case-driven IDTSPE composition, without mandatory stage or Target progression.",
-        "navigation": {
-          "viewId": "IDTSPE",
-          "viewLabel": "IDTSPE",
-          "viewOrder": 0,
-          "sectionId": "core",
-          "sectionLabel": "IDTSPE Core",
-          "sectionOrder": 0,
-          "itemOrder": 3,
-          "kindLabel": "ORCHESTRATION",
-          "badges": []
-        }
-      },
+      "helperPresentation": null,
       "methodologyBinding": {
         "methodologyRuntime": "IDTSPE",
         "profile": null,
@@ -1197,21 +1006,7 @@
       ],
       "userTarget": "<current planning state>",
       "palette": true,
-      "helperPresentation": {
-        "whenToUse": "Use when you want an explicit explanation of what methodology action, if any, is useful next.",
-        "whatYouGet": "A non-executing recommendation grounded in current Use Cases and proportional IDTSPE composition.",
-        "navigation": {
-          "viewId": "IDTSPE",
-          "viewLabel": "IDTSPE",
-          "viewOrder": 0,
-          "sectionId": "core",
-          "sectionLabel": "IDTSPE Core",
-          "sectionOrder": 0,
-          "itemOrder": 2,
-          "kindLabel": "ORCHESTRATION",
-          "badges": []
-        }
-      },
+      "helperPresentation": null,
       "methodologyBinding": {
         "methodologyRuntime": "IDTSPE",
         "profile": null,
@@ -1316,22 +1111,7 @@
       ],
       "userTarget": "<Application concept focus>",
       "palette": true,
-      "helperPresentation": {
-        "whenToUse": "Use when Application Definition exists/needed and the immediate stable intent is concept/solution shape rather than the full umbrella.",
-        "whatYouGet": "Concept-focused Application Definition refinement with selected concept, alternatives and material Q/R/P.",
-        "navigation": {
-          "viewId": "SDS",
-          "viewLabel": "SDS — IDTSPE Profile",
-          "viewOrder": 1,
-          "sectionId": "01",
-          "sectionLabel": "01 Application",
-          "sectionOrder": 1,
-          "itemOrder": 1,
-          "kindLabel": "IDTSPE TARGET · FOCUSED",
-          "badges": [],
-          "parentId": "tmcmd.application.definition"
-        }
-      },
+      "helperPresentation": null,
       "methodologyBinding": {
         "methodologyRuntime": "IDTSPE",
         "profile": "SDS",
@@ -1371,21 +1151,7 @@
       ],
       "userTarget": "<one Scenario>",
       "palette": true,
-      "helperPresentation": {
-        "whenToUse": "Use when one actor-to-Benefit journey across selected Feature results needs independent composition, branching/continuity or whole-journey proof intent.",
-        "whatYouGet": "Scenario Journey Composition without duplicating Feature behavior/data authority: Feature links, journey graph, continuity, terminal Benefit and only material journey-level constraints/proof intent.",
-        "navigation": {
-          "viewId": "SDS",
-          "viewLabel": "SDS — IDTSPE Profile",
-          "viewOrder": 1,
-          "sectionId": "02",
-          "sectionLabel": "02 Scenarios & Interaction",
-          "sectionOrder": 2,
-          "itemOrder": 1,
-          "kindLabel": "IDTSPE TARGET",
-          "badges": []
-        }
-      },
+      "helperPresentation": null,
       "methodologyBinding": {
         "methodologyRuntime": "IDTSPE",
         "profile": "SDS",
@@ -1425,21 +1191,7 @@
       ],
       "userTarget": "<one implementation Slice>",
       "palette": true,
-      "helperPresentation": {
-        "whenToUse": "Use when one selected Feature/result needs a bounded end-to-end implementation Slice discovery. This is transient discovery, not a Slice Strategy portfolio Target.",
-        "whatYouGet": "Current RU-SLICE-01..05 projection at material depth, with Domain/Shared/proof/evolution handoffs and optional promotion to a durable Slice Owner.",
-        "navigation": {
-          "viewId": "SDS",
-          "viewLabel": "SDS — IDTSPE Profile",
-          "viewOrder": 1,
-          "sectionId": "07",
-          "sectionLabel": "07 Slice Realization",
-          "sectionOrder": 7,
-          "itemOrder": 0,
-          "kindLabel": "IDTSPE TARGET",
-          "badges": []
-        }
-      },
+      "helperPresentation": null,
       "methodologyBinding": {
         "methodologyRuntime": "IDTSPE",
         "profile": "SDS",
@@ -1508,13 +1260,13 @@
         "planning/documentation/COMMAND-ROUTING-TEMPLATE.md",
         "planning/use-cases/UC-REPO-PLAN-UPDATE.md"
       ],
-      "expectedOutput": "Command family/type/English name/owner/registry/example/projection plan followed by План файл-обновление.",
+      "expectedOutput": "A command family/type/name/owner/registry/example/projection plan; hand off to TM-PRE-UPDATE-PLAN only when a separately reviewable concrete repository transition is actually useful.",
       "permissionMode": "plan-only",
       "keyReminders": [
         "Plan a command route only.",
         "Use UC-REPO-MAINTAIN-PLANNING-COMMAND as the semantic capability and keep detailed algorithms in its supporting owners.",
-        "When a concrete repository transition must be planned, hand off through UC-REPO-PLAN-UPDATE rather than reviving the retired Documentation pre-update/bootstrap UC routes.",
-        "Tampermonkey is projection, not source of truth.",
+        "A Pre-Update handoff is conditional: use UC-REPO-PLAN-UPDATE / TM-PRE-UPDATE-PLAN only when a concrete repository transition benefits from a separate reviewable pre-mutation result.",
+        "Planning Helper is a projection, not source of truth.",
         "Do not edit files, create an archive, commit or push."
       ],
       "userTarget": "<what command route should be planned>",
@@ -1551,23 +1303,7 @@
       ],
       "userTarget": "<one shared non-vertical responsibility>",
       "palette": false,
-      "helperPresentation": {
-        "whenToUse": "Only when using this historical command phrase/automation; prefer the current semantic owner or generic `idtspe` component dispatch for new work.",
-        "whatYouGet": "A current Shared Capability result only when genuine shared-consumer pressure justifies it; otherwise a natural-owner/local result. No retired Cross-Cutting Target is created.",
-        "navigation": {
-          "viewId": "SDS",
-          "viewLabel": "SDS — IDTSPE Profile",
-          "viewOrder": 1,
-          "sectionId": "07",
-          "sectionLabel": "07 Slice Realization",
-          "sectionOrder": 7,
-          "itemOrder": 4,
-          "kindLabel": "IDTSPE TARGET",
-          "badges": [
-            "CONDITIONAL"
-          ]
-        }
-      },
+      "helperPresentation": null,
       "methodologyBinding": {
         "methodologyRuntime": "IDTSPE",
         "profile": "SDS",
@@ -1608,24 +1344,7 @@
       ],
       "userTarget": "<Domain owner>",
       "palette": false,
-      "helperPresentation": {
-        "whenToUse": "Only when using this historical command phrase/automation; prefer the current semantic owner or generic `idtspe` component dispatch for new work.",
-        "whatYouGet": "Domain-focused proof finding/plan at the natural owner, optionally followed by Exact test realization; no Test Design Target.",
-        "navigation": {
-          "viewId": "SDS",
-          "viewLabel": "SDS — IDTSPE Profile",
-          "viewOrder": 1,
-          "sectionId": "05",
-          "sectionLabel": "05 Proof Design",
-          "sectionOrder": 5,
-          "itemOrder": 1,
-          "kindLabel": "IDTSPE TARGET · FOCUSED",
-          "badges": [
-            "CONDITIONAL"
-          ],
-          "parentId": "test_design.plan"
-        }
-      },
+      "helperPresentation": null,
       "methodologyBinding": {
         "methodologyRuntime": "IDTSPE",
         "profile": "SDS",
@@ -1666,23 +1385,7 @@
       ],
       "userTarget": "<one durable Domain responsibility, when independently useful>",
       "palette": true,
-      "helperPresentation": {
-        "whenToUse": "Use when discovered/current Domain meaning now needs an independently durable semantic owner for responsibility, identity/state/lifecycle/invariants/operations and revalidation.",
-        "whatYouGet": "A durable Domain semantic contract, plus only material owner-local implementation/proof-realization requirements; transient discovery stays Source, not authority.",
-        "navigation": {
-          "viewId": "SDS",
-          "viewLabel": "SDS — IDTSPE Profile",
-          "viewOrder": 1,
-          "sectionId": "04",
-          "sectionLabel": "04 Domain",
-          "sectionOrder": 4,
-          "itemOrder": 1,
-          "kindLabel": "IDTSPE TARGET",
-          "badges": [
-            "PRIMARY OPTIONAL"
-          ]
-        }
-      },
+      "helperPresentation": null,
       "methodologyBinding": {
         "methodologyRuntime": "IDTSPE",
         "profile": "SDS",
@@ -1692,48 +1395,6 @@
         "parentSurface": "application_domain.discover",
         "hostTargetPolicy": "CREATE_OR_REUSE_TARGET"
       },
-      "refinements": []
-    },
-    {
-      "schemaVersion": 1,
-      "id": "file_update.plan",
-      "file": "plan-file-update.command.md",
-      "command": "план файл-обновление",
-      "englishName": "plan file update",
-      "commandFamily": [
-        "план файл-обновление",
-        "пред-апдейт",
-        "спланируй обновление файлов",
-        "спланируй архив",
-        "plan file update",
-        "archive plan",
-        "pre-update",
-        "спланируй изменения файлов"
-      ],
-      "description": "Pre-Update / concrete file plan",
-      "meaning": "Repository-file phrasing for a reviewable Pre-Update result. Within the always-active IDTSPE work context, use current selected semantic meaning and TM-PRE-UPDATE-PLAN when a separate concrete update plan is useful; resolve exact affected owners/files/actions/dependencies/preservation/verification without reopening settled design or creating a legacy Current Plan/Idea shell.",
-      "activeContextBehavior": "Re-evaluate current Use-Case composition and reuse current selected meaning. Create/reuse a bounded Pre-Update Target only when reviewing the intended repository/file transition before mutation is independently useful; skip ceremonial planning for a tiny obvious change when direct authorized realization is requested. This command never authorizes mutation.",
-      "traversalReadMode": "Reuse/targeted/full by update risk.",
-      "ownerFiles": [
-        "planning/documentation/idtspe-methodology/active/idtspe-core/target-modules/TM-PRE-UPDATE-PLAN.md",
-        "planning/use-cases/UC-REPO-PLAN-UPDATE.md",
-        "planning/documentation/idtspe-methodology/active/idtspe-core/shared/idtspe-unit-and-target-step-result-model.md",
-        "planning/documentation/idtspe-methodology/active/idtspe-core/shared/idtspe-command-surface-contract.md"
-      ],
-      "expectedOutput": "When material, one RU-PUPDATE-01/repository Pre-Update Plan with intended add/replace/delete changes, exact affected paths/owners where known, preservation boundary, material dependencies/order, verification and unresolved issues that genuinely remain; otherwise an explicit no-separate-plan-needed result.",
-      "permissionMode": "plan-only",
-      "keyReminders": [
-        "`план файл-обновление` is a repository-specific phrasing of current Pre-Update planning; it does not create a second planning ontology.",
-        "IDTSPE is already active; use TM-PRE-UPDATE-PLAN only when a separately reviewable pre-mutation result is useful.",
-        "Start from current accepted/selected semantic meaning and do not reopen settled design without a material conflict.",
-        "Questions/Proposals/Risks/Problems/Evidence/Decisions remain ordinary sparse IDTSPE State Units, not an Idea/Current-Plan form that must be filled.",
-        "Resolve exact affected paths/actions and preservation/verification only to the depth needed for a safe reviewable plan.",
-        "Pre-Update is optional and does not authorize repository mutation, archive creation, commit or push."
-      ],
-      "userTarget": "<what update/archive should be planned>",
-      "palette": true,
-      "helperPresentation": null,
-      "methodologyBinding": null,
       "refinements": []
     },
     {
@@ -1830,24 +1491,7 @@
       ],
       "userTarget": "<one practical Evidence target>",
       "palette": true,
-      "helperPresentation": {
-        "whenToUse": "Use when the question/property genuinely requires observation of the real implemented system/environment; ordinary automated build/test Evidence inside Exact Realization is not enough or is not the inquiry.",
-        "whatYouGet": "A real-subject practical Evidence inquiry/results, explicitly distinct from Prototype Evidence and from ordinary automated test execution.",
-        "navigation": {
-          "viewId": "SDS",
-          "viewLabel": "SDS — IDTSPE Profile",
-          "viewOrder": 1,
-          "sectionId": "08",
-          "sectionLabel": "08 Evidence & Coverage",
-          "sectionOrder": 8,
-          "itemOrder": 0,
-          "kindLabel": "IDTSPE TARGET",
-          "badges": [
-            "CONDITIONAL",
-            "IMPLEMENTED-EVIDENCE"
-          ]
-        }
-      },
+      "helperPresentation": null,
       "methodologyBinding": {
         "methodologyRuntime": "IDTSPE",
         "profile": "SDS",
@@ -1869,42 +1513,37 @@
         "составь предапдейт план",
         "предапдейт план",
         "сначала план обновления",
-        "pre-update plan"
+        "план файл-обновление",
+        "пред-апдейт",
+        "спланируй обновление файлов",
+        "спланируй изменения файлов",
+        "pre-update plan",
+        "plan file update",
+        "pre-update"
       ],
-      "description": "Produce a concrete read-only plan of the intended update before actual mutation.",
-      "meaning": "Run generic Core TM-PRE-UPDATE-PLAN. Use current accepted prior meaning, current context and only the current destination facts the update actually depends on. Resolve material Questions/Risks/Problems/Proposals/Evidence/Decisions through ordinary IDTSPE state when needed, then return one concrete RU-PUPDATE-01 Pre-Update Plan. Do not reopen settled design or create a QRPE form when no real choice/uncertainty exists.",
+      "description": "Concrete reviewable update plan before mutation",
+      "meaning": "Run generic Core TM-PRE-UPDATE-PLAN. Produce one optional, separately reviewable RU-PUPDATE-01 from current accepted meaning and the current destination facts the intended change actually depends on. The Unit inherits mandatory Opening/In-Unit/Closing applicability checkpoints, including Core Lens Registry and active-profile Lens Registry applicability at the Unit boundaries. Do not turn the result into a mandatory stage, Current Plan/Idea shell, mutation permission, or a second repository-planning ontology.",
       "activeContextBehavior": "Create or reuse the natural bounded Pre-Update Plan Target only when reviewing the intended changes before mutation is independently useful. Skip the module for a tiny/obvious change when the user asks for direct realization. The result may hand off to TM-EXACT-REALIZATION but does not authorize repository/destination mutation.",
       "traversalReadMode": "Reuse current reliable IDTSPE governance and accepted prior context; inspect only the exact current code/files/configuration/owner state the update plan materially depends on. Surface a real missing-source Question instead of guessing current state.",
       "ownerFiles": [
         "planning/documentation/idtspe-methodology/active/idtspe-core/target-modules/TM-PRE-UPDATE-PLAN.md",
+        "planning/use-cases/UC-REPO-PLAN-UPDATE.md",
+        "planning/documentation/idtspe-methodology/active/idtspe-core/shared/idtspe-unit-and-target-step-result-model.md",
         "planning/documentation/idtspe-methodology/active/idtspe-core/shared/idtspe-command-surface-contract.md"
       ],
-      "expectedOutput": "RU-PUPDATE-01 Pre-Update Plan: concrete intended changes, preserve boundary, material order/dependencies and post-update verification, with unresolved material issues only when they actually remain.",
+      "expectedOutput": "RU-PUPDATE-01 Pre-Update Plan: concrete intended changes, preserve boundary, material dependencies/order and verification, after proportional registry/Lens applicability checks; unresolved material issues only when they actually remain.",
       "permissionMode": "read-only-planning",
       "keyReminders": [
         "Use accepted previous meaning/current context as the basis; do not redesign it without a material new conflict.",
+        "Apply the generic Result Unit Opening/In-Unit/Closing applicability envelope; a checkpoint may reuse current registry metadata and does not mean executing every Lens.",
         "Use ordinary Q/R/P/Evidence + Proposals/Decisions only where they help resolve a real consequential choice; do not dump a mandatory QRPE form.",
         "Inspect current destination state only as needed for a concrete safe plan and never guess consequential missing source facts.",
-        "The plan does not mutate files, execute tests, commit or push; actual update authority belongs to the later host/Exact Realization workflow.",
-        "Skip this Target when the change is trivial and the user explicitly wants direct realization."
+        "The plan does not mutate files, execute tests, create a replacement package, commit or push; actual mutation authority belongs to the later host/Exact workflow.",
+        "Skip this Target when the change is trivial/obvious and the user explicitly wants direct realization."
       ],
       "userTarget": "<update scope>",
       "palette": true,
-      "helperPresentation": {
-        "whenToUse": "Use when you want to review exactly what will change before code/files/configuration are actually updated.",
-        "whatYouGet": "A concise concrete pre-update plan derived from accepted context/current state, including preserve boundaries and verification without another design pass unless a real issue requires it.",
-        "navigation": {
-          "viewId": "IDTSPE",
-          "viewLabel": "IDTSPE",
-          "viewOrder": 0,
-          "sectionId": "core",
-          "sectionLabel": "IDTSPE Core",
-          "sectionOrder": 0,
-          "itemOrder": 5,
-          "kindLabel": "IDTSPE TARGET",
-          "badges": []
-        }
-      },
+      "helperPresentation": null,
       "methodologyBinding": {
         "methodologyRuntime": "IDTSPE",
         "profile": null,
@@ -1926,7 +1565,7 @@
         "спланируй экраны"
       ],
       "description": "screen",
-      "meaning": "Run TM-SCREEN through the IDTSPE Shell for the selected target.",
+      "meaning": "Run TM-SCREEN through current Use-Case-driven IDTSPE composition and the selected Target Module entry point for the selected target.",
       "activeContextBehavior": "Treat the explicit command as selected invocation intent inside always-active IDTSPE. Re-evaluate current Use-Case composition, resolve/reuse a natural Target/context only when useful, confirm the selected Target Module Entry Point/local applicability gate, and then resolve CREATE/REFINE/EXTEND/REVALIDATE/REPAIR from actual current Target state. Do not create a Target or Result Unit merely because the command exists.",
       "traversalReadMode": "Reuse current reliable IDTSPE/SDS governance; targeted refresh of the selected owner route when uncertain; full bootstrap only when no reliable sufficient governance context exists.",
       "ownerFiles": [
@@ -1943,23 +1582,7 @@
       ],
       "userTarget": "<Screen map / screen-system scope>",
       "palette": true,
-      "helperPresentation": {
-        "whenToUse": "Use when selected Features and Scenario journeys require explicit screen/surface, spatial-zone, availability/visibility or route/transition planning.",
-        "whatYouGet": "A Screen/Spatial Model that places Feature participation and Scenario journey roles without redefining Feature behavior.",
-        "navigation": {
-          "viewId": "SDS",
-          "viewLabel": "SDS — IDTSPE Profile",
-          "viewOrder": 1,
-          "sectionId": "02",
-          "sectionLabel": "02 Scenarios & Interaction",
-          "sectionOrder": 2,
-          "itemOrder": 2,
-          "kindLabel": "IDTSPE TARGET",
-          "badges": [
-            "CONDITIONAL"
-          ]
-        }
-      },
+      "helperPresentation": null,
       "methodologyBinding": {
         "methodologyRuntime": "IDTSPE",
         "profile": "SDS",
@@ -2000,24 +1623,7 @@
       ],
       "userTarget": "<one exceptional shared must-hold candidate>",
       "palette": false,
-      "helperPresentation": {
-        "whenToUse": "Only when using this historical command phrase/automation; prefer the current semantic owner or generic `idtspe` component dispatch for new work.",
-        "whatYouGet": "Owner-local IR/PFR disposition and, only when independently justified, a Shared Capability binding. No standalone Requirement Target.",
-        "navigation": {
-          "viewId": "SDS",
-          "viewLabel": "SDS — IDTSPE Profile",
-          "viewOrder": 1,
-          "sectionId": "02",
-          "sectionLabel": "02 Scenarios & Interaction",
-          "sectionOrder": 2,
-          "itemOrder": 4,
-          "kindLabel": "IDTSPE TARGET",
-          "badges": [
-            "CONDITIONAL",
-            "EXCEPTIONAL"
-          ]
-        }
-      },
+      "helperPresentation": null,
       "methodologyBinding": {
         "methodologyRuntime": "IDTSPE",
         "profile": "SDS",
@@ -2056,22 +1662,7 @@
       ],
       "userTarget": "<one selected Screen>",
       "palette": true,
-      "helperPresentation": {
-        "whenToUse": "Use when one independently addressable Screen needs focused spatial/responsibility planning.",
-        "whatYouGet": "One Screen Draft scope within the same Screen Target family.",
-        "navigation": {
-          "viewId": "SDS",
-          "viewLabel": "SDS — IDTSPE Profile",
-          "viewOrder": 1,
-          "sectionId": "02",
-          "sectionLabel": "02 Scenarios & Interaction",
-          "sectionOrder": 2,
-          "itemOrder": 3,
-          "kindLabel": "IDTSPE TARGET · FOCUSED",
-          "badges": [],
-          "parentId": "tmcmd.screen"
-        }
-      },
+      "helperPresentation": null,
       "methodologyBinding": {
         "methodologyRuntime": "IDTSPE",
         "profile": "SDS",
@@ -2112,23 +1703,7 @@
       ],
       "userTarget": "<Slice implementation-strategy scope>",
       "palette": false,
-      "helperPresentation": {
-        "whenToUse": "Only when using this historical command phrase/automation; prefer the current semantic owner or generic `idtspe` component dispatch for new work.",
-        "whatYouGet": "Current transient Slice Discovery result using TM-IMPLEMENTATION-SLICE, or no Slice Target when its Entry Point is not material. No Slice Strategy Target.",
-        "navigation": {
-          "viewId": "SDS",
-          "viewLabel": "SDS — IDTSPE Profile",
-          "viewOrder": 1,
-          "sectionId": "06",
-          "sectionLabel": "06 Slice Portfolio",
-          "sectionOrder": 6,
-          "itemOrder": 0,
-          "kindLabel": "IDTSPE TARGET",
-          "badges": [
-            "OPTIONAL WHEN DECOMPOSITION IS OBVIOUS"
-          ]
-        }
-      },
+      "helperPresentation": null,
       "methodologyBinding": {
         "methodologyRuntime": "IDTSPE",
         "profile": "SDS",
@@ -2169,24 +1744,7 @@
       ],
       "userTarget": "<Slice owner>",
       "palette": false,
-      "helperPresentation": {
-        "whenToUse": "Only when using this historical command phrase/automation; prefer the current semantic owner or generic `idtspe` component dispatch for new work.",
-        "whatYouGet": "Slice-focused proof finding/plan at the natural owner, optionally followed by Exact test realization; no Test Design Target.",
-        "navigation": {
-          "viewId": "SDS",
-          "viewLabel": "SDS — IDTSPE Profile",
-          "viewOrder": 1,
-          "sectionId": "07",
-          "sectionLabel": "07 Slice Realization",
-          "sectionOrder": 7,
-          "itemOrder": 2,
-          "kindLabel": "IDTSPE TARGET · FOCUSED",
-          "badges": [
-            "CONDITIONAL"
-          ],
-          "parentId": "application_slice.plan"
-        }
-      },
+      "helperPresentation": null,
       "methodologyBinding": {
         "methodologyRuntime": "IDTSPE",
         "profile": "SDS",
@@ -2261,23 +1819,7 @@
       ],
       "userTarget": "<one Domain/Slice/etc proof target>",
       "palette": false,
-      "helperPresentation": {
-        "whenToUse": "Only when using this historical command phrase/automation; prefer the current semantic owner or generic `idtspe` component dispatch for new work.",
-        "whatYouGet": "A material proof evaluation/transient natural-owner proof plan, or direct Exact-test route when obvious; no Test Design Target.",
-        "navigation": {
-          "viewId": "SDS",
-          "viewLabel": "SDS — IDTSPE Profile",
-          "viewOrder": 1,
-          "sectionId": "05",
-          "sectionLabel": "05 Proof Design",
-          "sectionOrder": 5,
-          "itemOrder": 0,
-          "kindLabel": "IDTSPE TARGET",
-          "badges": [
-            "CONDITIONAL"
-          ]
-        }
-      },
+      "helperPresentation": null,
       "methodologyBinding": {
         "methodologyRuntime": "IDTSPE",
         "profile": "SDS",
@@ -2319,23 +1861,7 @@
       ],
       "userTarget": "<one shared testing strategy>",
       "palette": false,
-      "helperPresentation": {
-        "whenToUse": "Only when using this historical command phrase/automation; prefer the current semantic owner or generic `idtspe` component dispatch for new work.",
-        "whatYouGet": "Local proof route by default; only material transient cross-owner proof coordination or a separately justified Shared Capability. No Test Strategy Target.",
-        "navigation": {
-          "viewId": "SDS",
-          "viewLabel": "SDS — IDTSPE Profile",
-          "viewOrder": 1,
-          "sectionId": "06",
-          "sectionLabel": "06 Slice Portfolio",
-          "sectionOrder": 6,
-          "itemOrder": 1,
-          "kindLabel": "IDTSPE TARGET",
-          "badges": [
-            "CONDITIONAL"
-          ]
-        }
-      },
+      "helperPresentation": null,
       "methodologyBinding": {
         "methodologyRuntime": "IDTSPE",
         "profile": "SDS",
@@ -2422,7 +1948,7 @@
         "прототип приложения"
       ],
       "description": "prototype practical evidence",
-      "meaning": "Run TM-PROTOTYPE through the IDTSPE Shell to plan or review one bounded pre-implementation prototype/experiment and its practical Evidence.",
+      "meaning": "Run TM-PROTOTYPE through current Use-Case-driven IDTSPE composition and the selected Target Module entry point to plan or review one bounded pre-implementation prototype/experiment and its practical Evidence.",
       "activeContextBehavior": "Treat the explicit command as selected invocation intent inside always-active IDTSPE. Re-evaluate current Use-Case composition, resolve/reuse a natural Target/context only when useful, confirm the selected Target Module Entry Point/local applicability gate, and then resolve CREATE/REFINE/EXTEND/REVALIDATE/REPAIR from actual current Target state. Do not create a Target or Result Unit merely because the command exists.",
       "traversalReadMode": "Reuse current reliable IDTSPE/SDS governance; targeted refresh of the selected owner route when uncertain; full bootstrap only when no reliable sufficient governance context exists.",
       "ownerFiles": [
@@ -2439,24 +1965,7 @@
       ],
       "userTarget": "<one bounded uncertainty / prototype subject>",
       "palette": true,
-      "helperPresentation": {
-        "whenToUse": "Use when material uncertainty is best reduced before full implementation through a prototype, experiment, mock, simulation, spike or partial implementation.",
-        "whatYouGet": "Prototype Intent / Questions, Prototype Plan, and—when run—Prototype Results / Evidence with limitations and revalidation handoff.",
-        "navigation": {
-          "viewId": "SDS",
-          "viewLabel": "SDS — IDTSPE Profile",
-          "viewOrder": 1,
-          "sectionId": "01",
-          "sectionLabel": "01 Application",
-          "sectionOrder": 1,
-          "itemOrder": 3,
-          "kindLabel": "IDTSPE TARGET",
-          "badges": [
-            "CONDITIONAL",
-            "EVIDENCE-DRIVEN"
-          ]
-        }
-      },
+      "helperPresentation": null,
       "methodologyBinding": {
         "methodologyRuntime": "IDTSPE",
         "profile": "SDS",
@@ -2543,21 +2052,7 @@
       ],
       "userTarget": "<code or other exact directly integrable realization scope>",
       "palette": true,
-      "helperPresentation": {
-        "whenToUse": "Use when upstream meaning is sufficiently determined and you want the literal exact result that could be integrated now; for code, this is the default implementation route and can optionally continue into explicitly authorized build/test/minor-repair work.",
-        "whatYouGet": "Exact current directly integrable realization, code-first by default, with optional review → authorized integration/verification → bounded repair → final exact review loop.",
-        "navigation": {
-          "viewId": "IDTSPE",
-          "viewLabel": "IDTSPE",
-          "viewOrder": 0,
-          "sectionId": "core",
-          "sectionLabel": "IDTSPE Core",
-          "sectionOrder": 0,
-          "itemOrder": 6,
-          "kindLabel": "IDTSPE TARGET",
-          "badges": []
-        }
-      },
+      "helperPresentation": null,
       "methodologyBinding": {
         "methodologyRuntime": "IDTSPE",
         "profile": null,
@@ -2829,37 +2324,7 @@
       ],
       "userTarget": "<current plan/scope>",
       "palette": true,
-      "helperPresentation": {
-        "whenToUse": "Use after material planning/evidence/coverage or when owner/Decision/QRP/placement consistency is in doubt.",
-        "whatYouGet": "Consistency findings, contradictions/stale Decisions/coverage gaps and concrete reopen/revalidation routes.",
-        "navigation": {
-          "viewId": "IDTSPE",
-          "viewLabel": "IDTSPE",
-          "viewOrder": 0,
-          "sectionId": "core",
-          "sectionLabel": "IDTSPE Core",
-          "sectionOrder": 0,
-          "itemOrder": 4,
-          "kindLabel": "VALIDATOR",
-          "badges": []
-        },
-        "relatedNavigation": [
-          {
-            "viewId": "SDS",
-            "viewLabel": "SDS — IDTSPE Profile",
-            "viewOrder": 1,
-            "sectionId": "08",
-            "sectionLabel": "08 Evidence & Coverage",
-            "sectionOrder": 8,
-            "itemOrder": 1000,
-            "kindLabel": "RELATED · IDTSPE VALIDATOR",
-            "badges": [
-              "RELATED"
-            ],
-            "related": true
-          }
-        ]
-      },
+      "helperPresentation": null,
       "methodologyBinding": {
         "methodologyRuntime": "IDTSPE",
         "profile": null,
@@ -2898,22 +2363,7 @@
       ],
       "userTarget": "<practical test with actual Evidence>",
       "palette": true,
-      "helperPresentation": {
-        "whenToUse": "Use when the real implemented subject has produced actual observations/data that should update the same TM-PRACTICAL-TEST Target.",
-        "whatYouGet": "Implemented Evidence interpretation for acceptance and/or learning, limitations/confounders, residual questions and revalidation/follow-up.",
-        "navigation": {
-          "viewId": "SDS",
-          "viewLabel": "SDS — IDTSPE Profile",
-          "viewOrder": 1,
-          "sectionId": "08",
-          "sectionLabel": "08 Evidence & Coverage",
-          "sectionOrder": 8,
-          "itemOrder": 1,
-          "kindLabel": "IDTSPE TARGET · FOCUSED",
-          "badges": [],
-          "parentId": "practical_testing.plan"
-        }
-      },
+      "helperPresentation": null,
       "methodologyBinding": {
         "methodologyRuntime": "IDTSPE",
         "profile": "SDS",
@@ -2952,22 +2402,7 @@
       ],
       "userTarget": "<prototype subject with actual Evidence>",
       "palette": true,
-      "helperPresentation": {
-        "whenToUse": "Use after a prototype/experiment produced actual Evidence that should update the same Prototype Target.",
-        "whatYouGet": "Prototype Results / Evidence interpretation, limitations, residual uncertainty and revalidation/follow-up.",
-        "navigation": {
-          "viewId": "SDS",
-          "viewLabel": "SDS — IDTSPE Profile",
-          "viewOrder": 1,
-          "sectionId": "01",
-          "sectionLabel": "01 Application",
-          "sectionOrder": 1,
-          "itemOrder": 4,
-          "kindLabel": "IDTSPE TARGET · FOCUSED",
-          "badges": [],
-          "parentId": "application_prototype.plan"
-        }
-      },
+      "helperPresentation": null,
       "methodologyBinding": {
         "methodologyRuntime": "IDTSPE",
         "profile": "SDS",
@@ -3006,23 +2441,7 @@
       ],
       "userTarget": "<selected semantic/Evidence coverage scope>",
       "palette": true,
-      "helperPresentation": {
-        "whenToUse": "Use when you want to check whether current actual tests/Evidence really prove current semantic obligations, including freshness, assertion strength, false-confidence Escape Risk and refactor fragility.",
-        "whatYouGet": "A Test Proof Lens coverage review and material Findings without creating a separate coverage owner/Target.",
-        "navigation": {
-          "viewId": "SDS",
-          "viewLabel": "SDS — IDTSPE Profile",
-          "viewOrder": 1,
-          "sectionId": "lens",
-          "sectionLabel": "IDTSPE Lens Checks — SDS",
-          "sectionOrder": 9,
-          "itemOrder": 2,
-          "kindLabel": "IDTSPE LENS",
-          "badges": [
-            "DIRECT LENS REVIEW"
-          ]
-        }
-      },
+      "helperPresentation": null,
       "methodologyBinding": {
         "methodologyRuntime": "IDTSPE",
         "profile": "SDS",
@@ -3066,21 +2485,7 @@
       ],
       "userTarget": "<target/context>",
       "palette": true,
-      "helperPresentation": {
-        "whenToUse": "Use when you want to review which registered perspectives are actually worth applying to the current Target/context, including Lenses normally attached by other modules.",
-        "whatYouGet": "A proportional Lens Applicability View and resolved TF-06A Lens Set without running every Lens as a ritual.",
-        "navigation": {
-          "viewId": "IDTSPE",
-          "viewLabel": "IDTSPE",
-          "viewOrder": 0,
-          "sectionId": "lens-operations",
-          "sectionLabel": "Lens Operations",
-          "sectionOrder": 1,
-          "itemOrder": 0,
-          "kindLabel": "LENS OPERATION",
-          "badges": []
-        }
-      },
+      "helperPresentation": null,
       "methodologyBinding": {
         "methodologyRuntime": "IDTSPE",
         "profile": null,
@@ -3174,10 +2579,13 @@
         "use archive"
       ],
       "description": "archive source",
-      "meaning": "Treat an explicitly selected archive as the read-source snapshot.",
+      "meaning": "Treat only an explicitly selected archive as the read-source snapshot. This is a source-selection/read boundary, not replacement-package production or application.",
       "activeContextBehavior": "Use only the archive explicitly selected for this invocation and state identity/freshness limits.",
       "traversalReadMode": "Archive read-source mode; targeted/full depending on question.",
-      "ownerFiles": [],
+      "ownerFiles": [
+        "planning/command-routing.md",
+        "planning/documentation/build-replacement-archive-workflow.md"
+      ],
       "expectedOutput": "Answer/review/plan from the selected archive; no replacement package unless separately requested.",
       "permissionMode": "read-only",
       "keyReminders": [
@@ -3335,22 +2743,8 @@
         "This command plans/reviews only; it does not edit repository files, implement, test, commit or push."
       ],
       "userTarget": "<optional TM/LENS selector + target/context, or current planning work>",
-      "palette": true,
-      "helperPresentation": {
-        "whenToUse": "Use when you want to explicitly reaffirm current IDTSPE composition or directly name a known Target Module/Lens. Ordinary methodology-guided work already uses IDTSPE without this command.",
-        "whatYouGet": "A registry-driven convenience route that preserves Use-Case-first, proportional IDTSPE behavior.",
-        "navigation": {
-          "viewId": "IDTSPE",
-          "viewLabel": "IDTSPE",
-          "viewOrder": 0,
-          "sectionId": "core",
-          "sectionLabel": "IDTSPE Core",
-          "sectionOrder": 0,
-          "itemOrder": 1,
-          "kindLabel": "WORK / DISPATCH",
-          "badges": []
-        }
-      },
+      "palette": false,
+      "helperPresentation": null,
       "methodologyBinding": {
         "methodologyRuntime": "IDTSPE",
         "profile": null,

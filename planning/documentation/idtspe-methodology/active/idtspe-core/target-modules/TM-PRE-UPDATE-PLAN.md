@@ -143,6 +143,17 @@ Open material issue only when unresolved and consequential
 
 These are useful content prompts, not mandatory form fields. A tiny plan may be a few bullets.
 
+
+### Explicit Unit Checkpoint Placement
+
+Each material Unit below inherits the generic [`Unit Applicability Envelope`](../shared/idtspe-unit-and-target-step-result-model.md#5b-unit-applicability-envelope--opening--in-unit--closing-checkpoints). Opening/Closing are mandatory logical applicability boundaries; registries may also be checked during Unit work whenever new material pressure appears. For `RU-PUPDATE-01`, both boundaries explicitly scan/reuse the Core Lens Registry and any active-profile Lens Registry; frequent Lens candidates remain those named in this module's Lens Profile.
+
+#### `RU-PUPDATE-01` processing envelope
+
+1. **Opening Unit Checkpoint — `RU-PUPDATE-01`** — resolve/reuse current applicable Core + active-profile Lens registry candidates and any Unit-triggered supporting registry pressure before material work.
+2. **Unit Work — `RU-PUPDATE-01`** — produce/refine only the material meaning owned by this Result Unit; run additional applicability checks immediately when the Analysis Surface changes materially.
+3. **Closing Unit Checkpoint — `RU-PUPDATE-01`** — evaluate the actual candidate Unit result, disposition material Findings/owner consequences, and reopen/refine narrowly when needed before treating the Unit as current-for-handoff.
+
 ## Resolution / Production Method
 
 ### 1. Resolve the real update boundary

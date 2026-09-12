@@ -34,23 +34,6 @@ Scope: historical invocation alias redirected to current IDTSPE/SDS authority; h
   ],
   "userTarget": "<one shared testing strategy>",
   "palette": false,
-  "helperPresentation": {
-    "whenToUse": "Only when using this historical command phrase/automation; prefer the current semantic owner or generic `idtspe` component dispatch for new work.",
-    "whatYouGet": "Local proof route by default; only material transient cross-owner proof coordination or a separately justified Shared Capability. No Test Strategy Target.",
-    "navigation": {
-      "viewId": "SDS",
-      "viewLabel": "SDS — IDTSPE Profile",
-      "sectionId": "06",
-      "sectionLabel": "06 Slice Portfolio",
-      "sectionOrder": 6,
-      "itemOrder": 1,
-      "kindLabel": "IDTSPE TARGET",
-      "badges": [
-        "CONDITIONAL"
-      ],
-      "viewOrder": 1
-    }
-  },
   "refinements": [],
   "methodologyBinding": {
     "methodologyRuntime": "IDTSPE",
