@@ -29,7 +29,7 @@ exact package commit publication proven
 STOP at current target boundary
 ```
 
-Automatic `OBS-ACTION apply-package` is the current full entry composition of these interactions. It does not expose or dispatch through an internal stage enum. The Apply Feature owns the meaning and boundaries of its Apply/Commit/Publish modules; this Scenario owns the wider Work journey and does not duplicate those module contracts.
+Automatic `OBS-ACTION apply-package` is the current full entry composition of these interactions. The handoff application entry itself belongs to `F-RPKG-APPLY-REPLACEMENT-PACKAGE`; this Scenario owns the wider Work journey and prerequisite interactions and does not duplicate the Feature's entry/module contracts or dispatch through an internal stage enum.
 
 ## FI-RPKG-RESOLVE-CURRENT-REPOSITORY-WORK
 
@@ -93,8 +93,9 @@ Success of current automatic package realization means the exact package commit 
 
 ## Evolution Steps
 
-Current and future evolution authority is centralized in `../evolution-steps-map.md`. In particular:
-- current one-Feature/three-module realization is the implemented result of `EVO-RPKG-MODULARIZE-PACKAGE-REALIZATION`;
-- parameterized handoff extent is planned by `EVO-RPKG-PARAMETERIZE-APPLY-HANDOFF`;
-- reviewed-result/Finalize adoption, including any future automatic Apply→Finalize composition, is planned by `EVO-RPKG-ADOPT-REVIEWED-RESULT-WORKFLOW`;
-- URI entry is planned separately by `EVO-RPKG-ADD-APPLY-URI-ENTRY`.
+Evolution registry/readiness authority is `../evolution-steps-map.md`; substantial future target states are owned by dedicated Step artifacts. In particular:
+- current one-Feature/three-module realization is implemented lineage;
+- requested extent is planned by `../evolution-steps/EVO-RPKG-PARAMETERIZE-APPLY-HANDOFF.md`;
+- independently usable Work Finalization is planned by `../evolution-steps/EVO-RPKG-INTRODUCE-WORK-FINALIZATION.md`;
+- intentional automatic Apply→Finalize composition is planned separately by `../evolution-steps/EVO-RPKG-ENABLE-AUTOMATIC-FINALIZATION.md`;
+- URI entry that preserves the complete parameterized command is planned by `../evolution-steps/EVO-RPKG-ADD-APPLY-URI-ENTRY.md`.

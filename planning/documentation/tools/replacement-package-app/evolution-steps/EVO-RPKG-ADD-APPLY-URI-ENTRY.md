@@ -1,3 +1,29 @@
+# EVO-RPKG-ADD-APPLY-URI-ENTRY — Add Apply URI Entry
+
+Status: PLANNED
+Evolution Kinds: Expansion
+
+## Evolution Intent
+
+Add URI as a second application entry representation for the same fully parameterized Apply command, preserving identical Apply extent and Finalize selection semantics.
+
+## Requires
+
+- `EVO-RPKG-ENABLE-AUTOMATIC-FINALIZATION`.
+
+## Expected Entry State
+
+- the handoff entry already resolves to one stable `PackageApplicationRequest`;
+- that request carries all selected Apply modularity and automatic-Finalize semantics;
+- Apply Feature owns entry consumption and command behavior.
+
+## Target Owner Promotion Set
+
+- **REPLACE** `../features/F-RPKG-APPLY-REPLACEMENT-PACKAGE.md` with the Target Feature body below after realization/revalidation.
+- **REVALIDATE/REPLACE AS MATERIAL** URI/protocol/screen/installation/proof owners required for a usable URI entry.
+
+## Target Feature — F-RPKG-APPLY-REPLACEMENT-PACKAGE
+
 # F-RPKG-APPLY-REPLACEMENT-PACKAGE — Apply Replacement Package
 
 Status: active current Feature owner
@@ -6,15 +32,28 @@ Status: active current Feature owner
 
 Realize one exact validated replacement package for one Work through explicit, recoverable Apply, Commit and Publish modules.
 
-The modules keep separate operation Results and stopping boundaries, while sharing the same `GitWorkspace`, `ReplacementPackageState`, package journal and per-Work serialization boundary. In the current executable, manual UI/CLI entries may invoke modules separately, while automatic `OBS-ACTION apply-package` composes all three modules after workspace establishment.
+The modules keep separate operation Results and stopping boundaries, while sharing the same `GitWorkspace`, `ReplacementPackageState`, package journal and per-Work serialization boundary.
 
 ## Semantic Entry
 
-The current external application entry for this Feature is the supported `OBS-ACTION/1` handoff with `action: apply-package`. The Feature owns accepting/reading that handoff as its application command and resolving the requested package-application invocation. `PACKAGE-PROTOCOL.md` owns the wire grammar and field contract; this Feature owns the behavior selected by the resolved command.
+The Feature accepts/reads either the supported handoff representation or the supported application URI representation. Both are entry adapters of this same Feature and must resolve to the same semantic `PackageApplicationRequest`. `PACKAGE-PROTOCOL.md` and the URI representation contract own their wire grammars; this Feature owns resolution into and execution of the semantic command.
 
-The current executable supports handoff entry only. URI entry is not current behavior. The current handoff selects the fixed full realization path after wider Work prerequisites are established: Apply → Commit → Publish. Future requested extent, automatic Finalize selection and URI entry are owned by dedicated Evolution Steps until realized.
+## Application Command
 
-Work Intent and GitWorkspace keep their own natural ownership. The entry composition may ensure those prerequisites before the first Apply module without moving their state semantics into this Feature.
+`PackageApplicationRequest` carries exact Work/package/repository inputs plus:
+
+```text
+ApplyExtent = APPLY | APPLY_COMMIT | APPLY_COMMIT_PUBLISH
+FinalizeMode = NONE | AUTOMATIC
+```
+
+For semantically equivalent inputs:
+
+```text
+resolve(handoff) == resolve(uri)
+```
+
+The selected entry representation must not change Apply extent, Finalize selection, identity, validation, recovery or Result semantics. The Feature executes the request exactly as defined by the post-automatic-finalization Feature contract.
 
 ## Principal Result
 
@@ -104,16 +143,29 @@ ConfirmedTip(sha)
 
 Apply, Commit and Publish are explicit module/operation boundaries of one replacement-package Apply Feature. Separate operation Results and explicit stop points do not make them separate product Features.
 
-The current automatic `OBS-ACTION apply-package` route composes Start workspace → Apply → Commit → Publish. Current manual module entries remain valid and do not imply a generic Resume abstraction.
+### Entry ownership
 
-### Current command scope
-
-The current target command has no `ApplyExtent` and does not automatically invoke the future Finalize Feature. Planned command parameterization is owned by `../evolution-steps/EVO-RPKG-PARAMETERIZE-APPLY-HANDOFF.md` until implemented; this current Feature owner must not present those future semantics as existing behavior.
+The Feature owns accepting/reading each supported application entry representation and resolving it into the package-application command whose behavior it executes. Protocol/transport owners define representation grammar; they do not own Apply behavior.
 
 ### Finalize remains separate
 
-`F-RPKG-FINALIZE-REPOSITORY-WORK` has different eligibility, effects and terminal Result. Future `EVO-RPKG-ENABLE-AUTOMATIC-FINALIZATION` may allow this Apply Feature's semantic entry to invoke Finalize intentionally, but that does not transfer Finalize behavior or ownership into this Feature.
+`F-RPKG-FINALIZE-REPOSITORY-WORK` has different eligibility, effects and terminal Result. Invoking that Feature from this Feature does not transfer Finalize behavior or ownership here and creates no reverse dependency from Finalize to Apply.
+
+### Entry variants do not create alternate workflows
+
+Handoff and URI are entry variants of the same Feature. URI adds no Feature, module, lifecycle state or parallel realization path. Malformed/incomplete/unsupported URI input fails before repository effects.
 
 ### No legacy runtime authority
 
 No module dispatches from `Core.ChangeSet.executionState` or uses legacy package lifecycle buckets as authority.
+
+
+## Transition Obligations
+
+- handoff remains supported unless a separate selected retirement Step says otherwise;
+- URI registration/dispatch must fail closed for unsupported/malformed input before repository effects;
+- URI transport encoding must preserve the exact semantic request rather than introducing URI-only defaults or behavior.
+
+## Realization / Promotion Gate
+
+The Step may become `IMPLEMENTED` only when URI and handoff entries resolve to the same semantic request for equivalent inputs, the application remains coherent/usable through both entries, required platform registration/proof exists, and the target Feature body is ready for wholesale canonical promotion.

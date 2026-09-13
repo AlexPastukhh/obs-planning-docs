@@ -43,5 +43,5 @@ Local Domain proof should cover structural equality, same-origin/different-path 
 
 ## Evolution Impact
 
-### EVO-RPKG-ADOPT-REVIEWED-RESULT-WORKFLOW
+### EVO-RPKG-INTRODUCE-WORK-FINALIZATION
 The reviewed-result workflow continues to capture and use one exact `RepositoryTarget` value. No selected target requires turning this Value Object into an Entity/Aggregate.

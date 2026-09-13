@@ -1,3 +1,30 @@
+# EVO-RPKG-PARAMETERIZE-APPLY-HANDOFF — Parameterize Apply Handoff
+
+Status: PLANNED
+Evolution Kinds: Expansion / Refactoring
+
+## Evolution Intent
+
+Change the current fixed full-realization handoff into a parameterized Apply invocation that can stop at an existing Apply Feature module boundary without reintroducing a lifecycle state machine.
+
+## Requires
+
+None beyond the current one-Feature/three-module Apply baseline.
+
+## Expected Entry State
+
+- `F-RPKG-APPLY-REPLACEMENT-PACKAGE` is the current owner of Apply/Commit/Publish module semantics.
+- current `OBS-ACTION/1 apply-package` is read by the Apply Feature and always selects the full Apply → Commit → Publish path;
+- manual UI/CLI module entries may already stop at Apply or Commit;
+- no current `ApplyExtent` exists.
+
+## Target Owner Promotion Set
+
+- **REPLACE** `../features/F-RPKG-APPLY-REPLACEMENT-PACKAGE.md` with the Target Feature body below after realization/revalidation.
+- **REVALIDATE/REPLACE AS MATERIAL** `../PACKAGE-PROTOCOL.md`, `../APPLY-RESULT.md`, `../screens.md` and proof/acceptance owners so their current contracts match the target Feature.
+
+## Target Feature — F-RPKG-APPLY-REPLACEMENT-PACKAGE
+
 # F-RPKG-APPLY-REPLACEMENT-PACKAGE — Apply Replacement Package
 
 Status: active current Feature owner
@@ -6,15 +33,36 @@ Status: active current Feature owner
 
 Realize one exact validated replacement package for one Work through explicit, recoverable Apply, Commit and Publish modules.
 
-The modules keep separate operation Results and stopping boundaries, while sharing the same `GitWorkspace`, `ReplacementPackageState`, package journal and per-Work serialization boundary. In the current executable, manual UI/CLI entries may invoke modules separately, while automatic `OBS-ACTION apply-package` composes all three modules after workspace establishment.
+The modules keep separate operation Results and stopping boundaries, while sharing the same `GitWorkspace`, `ReplacementPackageState`, package journal and per-Work serialization boundary.
 
 ## Semantic Entry
 
-The current external application entry for this Feature is the supported `OBS-ACTION/1` handoff with `action: apply-package`. The Feature owns accepting/reading that handoff as its application command and resolving the requested package-application invocation. `PACKAGE-PROTOCOL.md` owns the wire grammar and field contract; this Feature owns the behavior selected by the resolved command.
+The Feature accepts/reads the supported `OBS-ACTION/1` handoff with `action: apply-package`. `PACKAGE-PROTOCOL.md` owns its wire grammar. The resolved command carries a requested `ApplyExtent`; the Feature owns interpreting that selection and executing exactly to the selected module boundary. URI entry and automatic Finalize are not part of this target state.
 
-The current executable supports handoff entry only. URI entry is not current behavior. The current handoff selects the fixed full realization path after wider Work prerequisites are established: Apply → Commit → Publish. Future requested extent, automatic Finalize selection and URI entry are owned by dedicated Evolution Steps until realized.
+## Application Command
 
-Work Intent and GitWorkspace keep their own natural ownership. The entry composition may ensure those prerequisites before the first Apply module without moving their state semantics into this Feature.
+`PackageApplicationRequest` carries the exact current Work/package/repository inputs plus `ApplyExtent`.
+
+Supported extent semantics:
+
+```text
+APPLY
+→ Apply
+→ stop
+
+APPLY_COMMIT
+→ Apply
+→ Commit
+→ stop
+
+APPLY_COMMIT_PUBLISH
+→ Apply
+→ Commit
+→ Publish
+→ stop
+```
+
+`ApplyExtent` is invocation selection, not durable lifecycle state. Unsupported or malformed extent fails before repository execution. Automatic Finalize is not selected by this command version.
 
 ## Principal Result
 
@@ -104,16 +152,29 @@ ConfirmedTip(sha)
 
 Apply, Commit and Publish are explicit module/operation boundaries of one replacement-package Apply Feature. Separate operation Results and explicit stop points do not make them separate product Features.
 
-The current automatic `OBS-ACTION apply-package` route composes Start workspace → Apply → Commit → Publish. Current manual module entries remain valid and do not imply a generic Resume abstraction.
+### Entry ownership
 
-### Current command scope
-
-The current target command has no `ApplyExtent` and does not automatically invoke the future Finalize Feature. Planned command parameterization is owned by `../evolution-steps/EVO-RPKG-PARAMETERIZE-APPLY-HANDOFF.md` until implemented; this current Feature owner must not present those future semantics as existing behavior.
+The Feature owns accepting/reading each supported application entry representation and resolving it into the package-application command whose behavior it executes. Protocol/transport owners define representation grammar; they do not own Apply behavior.
 
 ### Finalize remains separate
 
-`F-RPKG-FINALIZE-REPOSITORY-WORK` has different eligibility, effects and terminal Result. Future `EVO-RPKG-ENABLE-AUTOMATIC-FINALIZATION` may allow this Apply Feature's semantic entry to invoke Finalize intentionally, but that does not transfer Finalize behavior or ownership into this Feature.
+`F-RPKG-FINALIZE-REPOSITORY-WORK` has different eligibility, effects and terminal Result. Invoking that Feature from this Feature does not transfer Finalize behavior or ownership here and creates no reverse dependency from Finalize to Apply.
+
+### Requested extent is an invocation boundary
+
+The requested extent is an explicit stopping boundary for this invocation. It does not create `Ready` / `AppliedUncommitted` / `CommittedUnpublished` public lifecycle states and does not introduce a generic Resume abstraction.
 
 ### No legacy runtime authority
 
 No module dispatches from `Core.ChangeSet.executionState` or uses legacy package lifecycle buckets as authority.
+
+
+## Transition Obligations
+
+- preserve current package/workspace durable-state semantics and module recovery behavior;
+- do not introduce a generic `Resume` or public execution-state enum;
+- current handoff callers without the new extent representation require an explicit compatibility/default decision before implementation rather than an inferred behavior.
+
+## Realization / Promotion Gate
+
+The Step may become `IMPLEMENTED` only after the target Feature and every materially affected representation/proof owner are realized and revalidated together, the application is coherent/usable for every selected extent, and the target Feature body can replace the current canonical Feature owner without additional semantic reconstruction.

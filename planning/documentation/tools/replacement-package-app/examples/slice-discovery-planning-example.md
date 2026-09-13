@@ -754,7 +754,7 @@ test("reviewed_path_rejects_published_result_whose_tree_differs_from_builder_rev
 
 ## Future / Evolution planning
 
-Canonical selected Evolution: `EVO-RPKG-ADOPT-REVIEWED-RESULT-WORKFLOW`.
+Canonical selected Evolution: `EVO-RPKG-INTRODUCE-WORK-FINALIZATION`.
 
 - **FUTURE EXTENSION — Confirm Reviewed Published Revision:** Step 5 becomes an explicit planned capability proving `publishedTree == reviewedTree` and correct execution identity. It remains part of Apply/continuation semantics, not a new command-dispatch workflow.
 - **FUTURE / OPEN:** if approval attribution becomes durable, exact owner/state (`ReviewAuthority` or equivalent) must be selected before persistence is added.
@@ -944,10 +944,10 @@ test("retry_after_one_proven_finalize_effect_performs_only_the_missing_effect") 
 
 ## Future / Evolution planning
 
-Canonical selected Evolution: `EVO-RPKG-ADOPT-REVIEWED-RESULT-WORKFLOW`.
+Canonical selected Evolution: `EVO-RPKG-INTRODUCE-WORK-FINALIZATION`.
 
 - **SELECTED FUTURE PRESSURE — Ensure Integration PR:** the Evolution target says the reviewed-result workflow eventually establishes one correct/current integration PR.
-- The current `F-RPKG-FINALIZE-REPOSITORY-WORK` owner still leaves the exact integration mechanism and PR mechanics OPEN.
+- The selected future Finalize target in `EVO-RPKG-INTRODUCE-WORK-FINALIZATION` still leaves the exact integration mechanism and PR mechanics OPEN.
 - Therefore the implementable Slice boundary remains mechanism-neutral:
 
 ```text
