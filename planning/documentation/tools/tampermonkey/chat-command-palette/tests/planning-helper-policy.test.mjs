@@ -24,3 +24,9 @@ test('UI inventory/conflict messaging distinguishes remote failure from verified
 test('repository source changes clear old-source evidence before new settings become active',()=>{const runtime=read('src/planning-helper-runtime.js');const start=runtime.indexOf('async function saveSettings(settings,token)'),end=runtime.indexOf('const ui=deps.createPlanningHelperUi',start),body=runtime.slice(start,end);const clear=body.indexOf('persist(clearRepositoryEvidence(snapshot))'),token=body.indexOf('saveGitHubToken(token)'),settings=body.indexOf('saveRepositorySettings(candidate)');assert.ok(clear>=0&&token>clear&&settings>token)});
 
 test('generated userscript contains runtime but no maintained current Command/UC catalog identities',()=>{const userscript=fs.readFileSync(path.resolve(root,'../chat-command-palette.user.js'),'utf8'),semantic=read('src/semantic-projections.js'),useCaseSeed=JSON.parse(read('seed/use-cases.json'));assert.ok(useCaseSeed.items.length>0);assert.ok(!useCaseSeed.items.some((item)=>String(item.id||'').startsWith('UC-RPKG-')));for(const identity of ['UC-PLAN-DOMAIN','application_domain.plan','DIR-PLAN-SOLUTION']){assert.doesNotMatch(semantic,new RegExp(identity.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')));assert.doesNotMatch(userscript,new RegExp(identity.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')))}assert.match(semantic,/normalizeUseCaseDefinitions/);assert.doesNotMatch(semantic,/normalizeDirectionDefinitions|directionId|directionIds/);assert.match(semantic,/route_resolution/)});
+
+
+test('command-maintenance helper command is projected as Tools / Repository',()=>{
+  const runtime=read('src/planning-helper-runtime.js');
+  assert.match(runtime,/'helper\.command\.add':\{actionLabel:'Добавить команду в Helper',tail:'Tool · Planning Command',category:'TOOL'/);
+});

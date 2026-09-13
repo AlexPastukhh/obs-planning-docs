@@ -5,6 +5,54 @@
   "items": [
     {
       "schemaVersion": 1,
+      "id": "helper.command.add",
+      "file": "add-command-to-helper.command.md",
+      "command": "добавь команду в хелпер",
+      "englishName": "add command to planning helper",
+      "commandFamily": [
+        "добавь команду в хелпер",
+        "создай команду в хелпере",
+        "add command to helper"
+      ],
+      "description": "Create or update one real Planning Command and synchronize its Planning Helper projection.",
+      "meaning": "Create or update one current direct Planning Command through UC-REPO-MAINTAIN-PLANNING-COMMAND, then synchronize only the affected Planning Helper projection and generated artifacts. The direct planning/commands/*.command.md definition remains command authority; Planning Helper remains a projection.",
+      "activeContextBehavior": "Use the command intent already supplied in the current conversation. Ask only when the intended trigger, semantic capability, owner route or permission boundary is materially unresolved and cannot be derived from current authority. If the required semantic capability does not yet exist, establish/route that semantic work to its proper owner before creating the command.",
+      "traversalReadMode": "Scan planning/use-case-registry.md and follow UC-REPO-MAINTAIN-PLANNING-COMMAND, the command registry/routing workflow and the Helper projection workflow. Inspect Helper README, build/runtime projection and relevant tests only to the depth needed for this command. Compare the complete current command catalog for ID/canonical-trigger/alias collisions before writing.",
+      "ownerFiles": [
+        "planning/use-case-registry.md",
+        "planning/use-cases/UC-REPO-MAINTAIN-PLANNING-COMMAND.md",
+        "planning/command-routing.md",
+        "planning/commands/README.md",
+        "planning/documentation/command-planning-workflow.md",
+        "planning/documentation/command-routing-workflow.md",
+        "planning/documentation/tampermonkey-command-projection-workflow.md",
+        "planning/documentation/tools/tampermonkey/chat-command-palette/README.md",
+        "planning/documentation/tools/tampermonkey/chat-command-palette/build-chat-command-palette.mjs",
+        "planning/documentation/tools/tampermonkey/chat-command-palette/package.json"
+      ],
+      "expectedOutput": "One valid current direct Planning Command with the correct semantic owner route, aliases, permissions and output contract; only the affected Planning Helper projection/runtime classification is changed where needed, generated artifacts are rebuilt rather than hand-edited, and catalog/build/test/verify checks pass.",
+      "permissionMode": "bounded-repository-write-no-commit-push",
+      "keyReminders": [
+        "The real command authority is planning/commands/*.command.md; Planning Helper must not become a second command authority.",
+        "Resolve the semantic capability and owner route before creating the command; do not invent reusable semantics inside the command body.",
+        "Create or update exactly one direct command definition for one command identity per invocation.",
+        "Check IDs, canonical triggers and aliases against the complete current command catalog.",
+        "Do not add Helper-only When To Use / What You Get semantic prose.",
+        "Normally change the direct command and let the Helper build regenerate seed/commands.json and the generated userscript.",
+        "Do not hand-edit generated seed files or the generated userscript.",
+        "Update catalog-order.json only when an explicit durable presentation position is useful.",
+        "Edit Planning Helper runtime/build source only when the command needs projection behavior the existing model cannot derive, such as Tools / Repository classification.",
+        "After changes run the Planning Helper build, tests, build:check and verify.",
+        "Do not create a replacement package, commit or push unless separately requested."
+      ],
+      "userTarget": "<new or changed command trigger, intended meaning and relevant context>",
+      "palette": true,
+      "helperPresentation": null,
+      "methodologyBinding": null,
+      "refinements": []
+    },
+    {
+      "schemaVersion": 1,
       "id": "idtspe.lens.apply",
       "file": "apply-idtspe-lens.command.md",
       "command": "примени линзу",
@@ -1020,6 +1068,54 @@
     },
     {
       "schemaVersion": 1,
+      "id": "idtspe.proposal",
+      "file": "idtspe-proposal.command.md",
+      "command": "idtspe пропозал",
+      "englishName": "IDTSPE proposal-driven work",
+      "commandFamily": [
+        "idtspe пропозал",
+        "idtspe proposal",
+        "idtspe proposals",
+        "idtspe пропозалы"
+      ],
+      "description": "Work through the current IDTSPE context with canonical Proposal/Q-R-P/Decision lifecycle under USER-gated interaction.",
+      "meaning": "Apply the Session USER-gated proposal-driven interaction policy and compose the current IDTSPE Work Context through canonical Core Proposal/Decision and Q/R/P lifecycle semantics. Material candidate Unit/Target/owner meaning remains Proposal until selected through the canonical lifecycle; material unresolved Question/Risk/Problem meaning remains governed by the Q/R/P owner. This command creates no parallel Proposal, Decision or Q/R/P semantics.",
+      "activeContextBehavior": "Use the current Work Context and re-evaluate UC-IDTSPE-COMPOSE-CURRENT-WORK proportionally. Express material candidate meaning as formal IDTSPE Proposal State only when lifecycle/addressability/review is useful, link material Q/R/P through their canonical owner, perform proportional candidate review, and wait for USER selection at material gates. Selected meaning may then flow to Decision / Target Result / natural-owner state under normal authority.",
+      "traversalReadMode": "Reuse current reliable Core governance. Otherwise read the current composition/state model plus canonical Proposal/Decision and Q/R/P lifecycle owners, and the Session USER-gated interaction owner. Load profile/Target/Lens detail only when the current composition makes it applicable.",
+      "ownerFiles": [
+        "planning/documentation/idtspe-methodology/active/idtspe-core/shared/compose-current-work-use-case.md",
+        "planning/documentation/idtspe-methodology/active/idtspe-core/shared/maintain-current-work-state-use-case.md",
+        "planning/documentation/idtspe-methodology/active/idtspe-core/shared/idtspe-unit-and-target-step-result-model.md",
+        "planning/documentation/idtspe-methodology/active/idtspe-core/shared/proposal-and-decision-lifecycle-contract.md",
+        "planning/documentation/idtspe-methodology/active/idtspe-core/shared/qrp-lifecycle-and-review-contract.md",
+        "planning/session/principles-and-terminology.md",
+        "planning/session/session-runtime-contract.md"
+      ],
+      "expectedOutput": "Current useful IDTSPE work is USER-gated and represented canonically: material candidate meaning remains Proposal, relevant Q/R/P remains linked through its lifecycle, proportional candidate review is performed when useful, and only USER-selected/otherwise-authoritatively selected meaning becomes Decision / Target Result / natural-owner state.",
+      "permissionMode": "read-only-planning-unless-separately-authorized",
+      "keyReminders": [
+        "The Session policy owns when AI must stop for USER input; IDTSPE Core owns formal Proposal/Q/R/P/Decision semantics.",
+        "AI recommendation is not selection; Proposal becomes Decision/current owner meaning only through normal authority.",
+        "Do not manufacture formal Proposal State for trivial/local candidate text that does not benefit from lifecycle/addressability/review.",
+        "Q/R/P remains secondary material attached to the actual current owner and uses the canonical Q/R/P lifecycle.",
+        "This command does not itself grant repository/file/application mutation, commit or push permission."
+      ],
+      "userTarget": "<current IDTSPE work context / target / candidate meaning>",
+      "palette": true,
+      "helperPresentation": null,
+      "methodologyBinding": {
+        "methodologyRuntime": "IDTSPE",
+        "profile": null,
+        "surfaceKind": "ORCHESTRATION",
+        "targetModuleId": null,
+        "lensId": null,
+        "parentSurface": null,
+        "hostTargetPolicy": "NONE"
+      },
+      "refinements": []
+    },
+    {
+      "schemaVersion": 1,
       "id": "tmcmd.weuc.interpret",
       "file": "interpret-workspace-evolution.command.md",
       "command": "интерпретируй план с точки зрения эволюции воркспейса",
@@ -1933,6 +2029,41 @@
       ],
       "userTarget": "<Workspace architecture/evolution path problem>",
       "palette": false,
+      "helperPresentation": null,
+      "methodologyBinding": null,
+      "refinements": []
+    },
+    {
+      "schemaVersion": 1,
+      "id": "session.proposal_driven",
+      "file": "proposal-driven.command.md",
+      "command": "пропозал",
+      "englishName": "proposal-driven interaction",
+      "commandFamily": [
+        "пропозал",
+        "работай через пропозалы",
+        "proposal-driven",
+        "proposal driven"
+      ],
+      "description": "Enable strict USER-gated proposal-driven interaction for the current task.",
+      "meaning": "Apply the canonical Session USER-gated proposal-driven interaction policy to the current task. AI may do only proportionate low-cost read-only investigation needed to frame the next useful AI Proposal, then must stop at material interaction boundaries for USER selection. This command changes interaction gating only and does not create formal IDTSPE Proposal semantics.",
+      "activeContextBehavior": "Apply the stricter gating policy to the current task from this invocation onward until the USER explicitly cancels or weakens it, or the task ends. Preserve already accepted task meaning and permissions; do not reinterpret prior AI suggestions as approved Proposals.",
+      "traversalReadMode": "Reuse the ambient Session contract when current; otherwise read the Session principles/runtime sections defining AI Proposal, Real Gate, Authorization Boundary and USER-gated proposal-driven interaction. Do not traverse IDTSPE Proposal owners merely because this interaction mode is active.",
+      "ownerFiles": [
+        "planning/session/principles-and-terminology.md",
+        "planning/session/session-runtime-contract.md"
+      ],
+      "expectedOutput": "The current task is explicitly USER-gated: cheap Proposal-framing research may proceed autonomously, while each material decision/clarification/direction/costly work/artifact/mutation boundary is surfaced as an AI Proposal and only the selected Proposal scope proceeds.",
+      "permissionMode": "interaction-policy-only-no-mutation-grant",
+      "keyReminders": [
+        "This is a Session interaction policy, not a second planning runtime and not a formal IDTSPE Proposal mode.",
+        "Do not gate trivial mechanical substeps; gate material boundaries defined by the Session owner.",
+        "Show alternatives only when materially distinct alternatives are genuinely useful.",
+        "Approval authorizes only the selected Proposal scope; the next material boundary requires a new Proposal.",
+        "The command itself grants no repository/file/application mutation, commit or push permission."
+      ],
+      "userTarget": "<current task whose interaction should be USER-gated>",
+      "palette": true,
       "helperPresentation": null,
       "methodologyBinding": null,
       "refinements": []

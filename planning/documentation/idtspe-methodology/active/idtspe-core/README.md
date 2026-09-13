@@ -29,7 +29,11 @@ IDTSPE is not an opt-in mode. The canonical proportionality owner is [`shared/co
 
 This `README.md` is the canonical Core bootstrap entry. If the generic planning bootstrap is not already reliable, first bootstrap from [`planning/README.md`](../../../../README.md), then return here.
 
-For the Core portion, read in order:
+### Bootstrap Spine — Required From Cold / Unreliable Core Context
+
+Core bootstrap establishes enough **routing, proportionality and ownership orientation** to choose the next correct owner. It does not preload every Core mechanic.
+
+Read in order:
 
 1. this `README.md`;
 2. [`IDTSPE-CORE-MAP.md`](IDTSPE-CORE-MAP.md) — compact conceptual/dependency map, not a competing semantic owner;
@@ -37,15 +41,25 @@ For the Core portion, read in order:
 4. [`shared/idtspe-methodology-use-case-registry.md`](shared/idtspe-methodology-use-case-registry.md);
 5. [`shared/compose-current-work-use-case.md`](shared/compose-current-work-use-case.md);
 6. [`shared/contextual-methodology-application-contract.md`](shared/contextual-methodology-application-contract.md);
-7. [`shared/methodology-registry-directory.md`](shared/methodology-registry-directory.md);
-8. [`IDTSPE-SHELL.md`](IDTSPE-SHELL.md);
-9. [`shared/idtspe-unit-and-target-step-result-model.md`](shared/idtspe-unit-and-target-step-result-model.md);
-10. [`shared/target-module-model.md`](shared/target-module-model.md);
-11. [`lenses/LENS-MODEL.md`](lenses/LENS-MODEL.md) and [`lenses/README.md`](lenses/README.md);
-12. [`shared/proposal-and-decision-lifecycle-contract.md`](shared/proposal-and-decision-lifecycle-contract.md);
-13. [`shared/finding-disposition-contract.md`](shared/finding-disposition-contract.md);
-14. [`shared/artifact-placement-and-idtspe-response-contract.md`](shared/artifact-placement-and-idtspe-response-contract.md);
-15. [`shared/idtspe-command-surface-contract.md`](shared/idtspe-command-surface-contract.md).
+7. [`shared/methodology-registry-directory.md`](shared/methodology-registry-directory.md).
+
+After this spine is current, Core bootstrap is sufficient for ordinary routing/composition. Reuse it while trustworthy. Do not read deeper Core owners merely to claim that bootstrap completed.
+
+### Conditional Deep Reads — Required Only When The Current Composition Needs Them
+
+Open the narrowest canonical owner when its mechanism becomes material:
+
+- explicit Core State / Target Result / Unit applicability → [`shared/idtspe-unit-and-target-step-result-model.md`](shared/idtspe-unit-and-target-step-result-model.md);
+- Target Formation → [`shared/resolution-slot-and-target-formation-resolution-set.md`](shared/resolution-slot-and-target-formation-resolution-set.md);
+- reusable Target Module → [`shared/target-module-model.md`](shared/target-module-model.md) plus the selected Target Module registry/owner;
+- Lens selection/application → [`lenses/README.md`](lenses/README.md) and [`lenses/LENS-MODEL.md`](lenses/LENS-MODEL.md), then only selected Lens bodies;
+- material candidate/selection meaning → [`shared/proposal-and-decision-lifecycle-contract.md`](shared/proposal-and-decision-lifecycle-contract.md);
+- material Question/Risk/Problem lifecycle → [`shared/qrp-lifecycle-and-review-contract.md`](shared/qrp-lifecycle-and-review-contract.md);
+- material Lens/review finding consequence → [`shared/finding-disposition-contract.md`](shared/finding-disposition-contract.md);
+- exact Shell port/TF mechanics → [`IDTSPE-SHELL.md`](IDTSPE-SHELL.md);
+- representation/persistence/materialization boundary → [`shared/artifact-placement-and-idtspe-response-contract.md`](shared/artifact-placement-and-idtspe-response-contract.md);
+- direct IDTSPE command-surface semantics → [`shared/idtspe-command-surface-contract.md`](shared/idtspe-command-surface-contract.md);
+- integration/revalidation → the selected Integration/Revalidation Use-Case owner from the Core Use-Case Registry.
 
 Other Core contracts, examples, specific Target Modules/Lenses, theory and profiles remain lazy/conditional reads reached from Use Cases, registries and current applicability. Primary bootstrap stops before profile bootstrap.
 

@@ -24,10 +24,15 @@ A natural-language USER request is sufficient.
 
 ```text
 USER request
-→ methodology Use-Case applicability scan
-→ always-active IDTSPE proportional composition
+→ select the relevant current area / semantic-entry route through README/navigation
+→ methodology-use work: Methodology Use-Case Registry Map + scoped registry
+→ repository-specific operation: planning/use-case-registry.md
+→ specialized area work: that area's current functional navigation
+→ always-active IDTSPE proportional composition where planning/resolution work is material
 → ordinary work
 ```
+
+This is a routing choice, not a requirement to traverse every branch. Open only the branch whose Situation/scope plausibly matches the request, and reuse a current trustworthy route instead of rereading unchanged navigation.
 
 Helper commands/prompts may provide shortcuts, but are optional projections and do not change semantic ownership.
 
@@ -77,6 +82,26 @@ Preserve unaffected accepted meaning; do not restart the whole methodology merel
 AI may inspect, research, analyze, compare, classify findings and prepare proposals autonomously inside the requested work.
 
 Before an actual repository/application/documentation/methodology mutation, surface the intended change when the USER has not already authorized that exact mutation scope. Formal IDTSPE Proposal state is used only when candidate meaning benefits from Core addressability/lifecycle/review.
+
+## 6A. USER-Gated Proposal-Driven Interaction
+
+When the USER explicitly requests proposal-driven gating (for example through the direct `пропозал` command or equivalent natural language), apply the canonical USER-gated proposal-driven interaction policy from [`principles-and-terminology.md`](principles-and-terminology.md) to the current task.
+
+```text
+cheap read-only investigation needed to frame the next Proposal
+→ allowed autonomously
+
+important decision / meaning-changing clarification / materially different approach
+substantial or expensive work batch / large read-search-test-build-tool batch
+artifact creation or change / mutation outside already approved exact scope
+→ AI Proposal
+→ USER approve/select/revise/reject/defer as applicable
+→ execute only the selected Proposal scope
+```
+
+Do not manufacture alternatives or approval requests for trivial mechanical substeps. The policy changes interaction gating only; IDTSPE still owns formal `Proposal`, Q/R/P, `Decision`, Target and Result semantics.
+
+The stricter policy remains active for the current task until the USER explicitly cancels or weakens it, or the task ends.
 
 ## 7. Work Steps vs Planning Depth
 

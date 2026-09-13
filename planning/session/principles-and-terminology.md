@@ -54,6 +54,18 @@ An AI Proposal is not automatically a formal IDTSPE Proposal State Unit and is n
 
 When material candidate meaning needs addressability/lifecycle/review, IDTSPE Core may represent/promote that meaning as a formal `Proposal` State Unit.
 
+## USER-Gated Proposal-Driven Interaction
+
+**USER-gated proposal-driven interaction** is an explicitly USER-selected interaction policy for the current task. It strengthens the normal real-gate policy without creating a second planning runtime or changing IDTSPE semantic ownership.
+
+While active, AI may autonomously perform only proportionate low-cost read-only investigation needed to prepare the next useful AI Proposal. Before crossing a material interaction boundary, AI surfaces an AI Proposal and waits for USER selection/revision/rejection. Material boundaries include important decisions, meaning-changing clarification, materially different approaches, substantial or expensive work batches, artifact creation/change, and mutation not already approved for that exact scope.
+
+Alternatives are shown only when materially distinct alternatives actually exist. USER approval authorizes only the Proposal scope that was selected; a later material boundary requires another Proposal. Ordinary tiny/mechanical substeps inside an approved Proposal do not each become gates.
+
+This interaction policy does **not** turn every conversational AI Proposal into a formal IDTSPE `Proposal` State Unit. Formal Proposal/Q/R/P/Decision semantics remain owned by IDTSPE Core when their lifecycle/addressability is useful.
+
+The policy remains active for the current task until the USER explicitly cancels or weakens it, or the task ends.
+
 ## Real Gate
 
 A **real gate** is a condition that requires USER input/approval before AI may continue the affected branch.

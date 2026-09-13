@@ -250,3 +250,45 @@ test('README-owned bootstrap hierarchy keeps primary bootstrap generic and profi
   assert.ok(sdsCmd.ownerFiles.includes('planning/documentation/idtspe-methodology/active/profiles/sds/README.md'));
   assert.ok(!sdsCmd.ownerFiles.some((x)=>x.endsWith('/BOOTSTRAP-SDS.md')));
 });
+
+
+test('clean-chat routing exposes repository-operational and methodology roots without forcing one global registry',()=>{
+  const planning=read('planning/README.md');
+  const session=read('planning/session/session-runtime-contract.md');
+  const repoRegistry=read('planning/use-case-registry.md');
+  assert.match(planning,/repository-specific operational work[\s\S]*planning\/use-case-registry\.md/i);
+  assert.match(planning,/methodology \/ guidance use[\s\S]*documentation\/use-case-registry-map\.md/i);
+  assert.match(session,/repository-specific operation: planning\/use-case-registry\.md/i);
+  assert.match(session,/methodology-use work: Methodology Use-Case Registry Map/i);
+  assert.match(repoRegistry,/Situation summary/);
+  assert.match(repoRegistry,/Result summary/);
+  assert.match(repoRegistry,/UC-REPO-MAINTAIN-PLANNING-COMMAND/);
+});
+
+test('proposal-driven commands remain thin routes to Session and canonical IDTSPE owners',()=>{
+  const generic=codec.parseCommandDefinitionDocument(read('planning/commands/proposal-driven.command.md'));
+  assert.equal(generic.id,'session.proposal_driven');
+  assert.ok(generic.ownerFiles.includes('planning/session/session-runtime-contract.md'));
+  assert.ok(!generic.ownerFiles.some((x)=>x.includes('proposal-and-decision-lifecycle-contract.md')));
+  assert.match(generic.permissionMode,/no-mutation-grant/);
+
+  const idtspe=codec.parseCommandDefinitionDocument(read('planning/commands/idtspe-proposal.command.md'));
+  assert.equal(idtspe.id,'idtspe.proposal');
+  assert.equal(idtspe.methodologyBinding?.surfaceKind,'ORCHESTRATION');
+  assert.ok(idtspe.ownerFiles.includes('planning/session/session-runtime-contract.md'));
+  assert.ok(idtspe.ownerFiles.includes('planning/documentation/idtspe-methodology/active/idtspe-core/shared/proposal-and-decision-lifecycle-contract.md'));
+  assert.ok(idtspe.ownerFiles.includes('planning/documentation/idtspe-methodology/active/idtspe-core/shared/qrp-lifecycle-and-review-contract.md'));
+});
+
+
+test('Core cold bootstrap is a routing/proportionality spine and keeps deep mechanics lazy',()=>{
+  const core=read('planning/documentation/idtspe-methodology/active/idtspe-core/README.md');
+  const bootstrap=core.slice(core.indexOf('## Bootstrap'),core.indexOf('## Functional Entry'));
+  assert.match(bootstrap,/Bootstrap Spine — Required From Cold \/ Unreliable Core Context/);
+  assert.match(bootstrap,/After this spine is current, Core bootstrap is sufficient/);
+  assert.match(bootstrap,/Conditional Deep Reads — Required Only When The Current Composition Needs Them/);
+  for(const owner of ['idtspe-unit-and-target-step-result-model.md','target-module-model.md','LENS-MODEL.md','proposal-and-decision-lifecycle-contract.md','finding-disposition-contract.md','artifact-placement-and-idtspe-response-contract.md']){
+    assert.match(bootstrap,new RegExp(owner.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')));
+  }
+  assert.match(bootstrap,/Do not read deeper Core owners merely to claim that bootstrap completed/);
+});

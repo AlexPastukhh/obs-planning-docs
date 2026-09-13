@@ -33,7 +33,26 @@ Bootstrap establishes methodology knowledge only. It does not create a Target, S
 
 ## Semantic Navigation
 
-README navigation is structural/bootstrap navigation. After primary bootstrap, methodology-use work starts from [`documentation/use-case-registry-map.md`](documentation/use-case-registry-map.md). Select the relevant scope, then follow the selected Use Case Process and current semantic owner. A Use-Case Registry covers the Use Cases in its declared functional scope; it is not a repository-wide aggregation layer for neighboring Session, Documentation, IDTSPE/SDS, application, or other semantic systems.
+README navigation is structural/bootstrap navigation. After primary bootstrap, choose the **narrowest current functional route that matches the actual request**; do not force every task through one global registry.
+
+```text
+repository-specific operational work
+→ planning/use-case-registry.md
+→ selected UC-REPO-* owner
+
+methodology / guidance use
+→ planning/documentation/use-case-registry-map.md
+→ scoped methodology Use-Case Registry
+→ selected Use Case owner
+
+specialized application / architecture / testing / tool area
+→ that area's current README/navigation
+→ its current functional owner
+```
+
+IDTSPE remains the proportional planning/resolution model across material work, but its always-active status does not replace these semantic-entry routes. Scan compact Situation/Result routing metadata first where available, open only plausible owners, and reuse current trustworthy routing context.
+
+A Use-Case Registry covers the Use Cases in its declared functional scope; it is not a repository-wide aggregation layer for neighboring Session, Documentation, IDTSPE/SDS, application, or other semantic systems.
 
 ## Migration / Provenance
 
