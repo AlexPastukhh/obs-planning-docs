@@ -56,6 +56,29 @@ unresolved product / architecture / ownership choice
 
 A confirmed problem is not itself automatically a Proposal. A proposed semantic correction can be a Proposal and is reviewed through the canonical Proposal lifecycle; the legacy `собери идеи` alias routes to the same current semantics.
 
+### 3A. Finding Resolution Escalation
+
+For each material finding, use the Core [`Finding Disposition Contract`](idtspe-methodology/active/idtspe-core/shared/finding-disposition-contract.md) to expose `Resolution Escalation` when it helps distinguish a deterministic/local correction from a current-owner or upstream semantic decision. Keep this separate from `Review Priority`: priority is blast radius if wrong; escalation is how far semantic authority must move.
+
+```text
+RE-0 DETERMINISTIC-CORRECTION
+→ current accepted meaning already determines the correction
+
+RE-1 LOCAL-REALIZATION-CHOICE
+→ local implementation/detail choice; accepted architecture/behavior/Requirement meaning stays true
+
+RE-2 CURRENT-OWNER-SEMANTIC-CHANGE
+→ current natural owner needs a new/revised Decision/Requirement/boundary
+
+RE-3 UPSTREAM-REVALIDATION
+→ upstream meaning may be implicated; revalidate earliest affected owner before choosing a workaround
+
+RE-4 UPSTREAM-SEMANTIC-CHANGE
+→ actual upstream accepted meaning must change before dependent work can safely proceed
+```
+
+Under USER-gated proposal-driven interaction, the next corrective action may still be shown as an interaction AI Proposal for any category. Do not convert an obvious `RE-0` finding into a formal IDTSPE Proposal State merely to create ceremony. Formal Proposal State remains for material candidate semantic meaning where lifecycle/addressability/review is useful.
+
 ## 4. Candidate Review For Material Corrective Proposals
 
 For each material corrective Proposal, apply the canonical candidate-review checks proportionally:
@@ -231,6 +254,24 @@ NEEDS CORRECTION
 
 BLOCKED BY MATERIAL DECISION
   → a material choice/evidence/authority gap prevents safe selection of the correction/current route.
+```
+
+Resolution-escalation guidance for the aggregate verdict:
+
+```text
+RE-0 / RE-1 with a known but unapplied correction
+→ NEEDS CORRECTION, not BLOCKED merely because USER-gated interaction still requires approval to execute it
+
+RE-2 / RE-4 with unresolved required selection
+→ BLOCKED BY MATERIAL DECISION
+
+RE-3
+→ revalidate the earliest affected upstream owner
+→ BLOCKED only while evidence/authority prevents a safe current route
+→ if revalidation resolves one deterministic route, use NEEDS CORRECTION until applied
+
+selected RE-2 / RE-4 route not yet applied
+→ NEEDS CORRECTION
 ```
 
 `APPROVABLE` is a semantic review conclusion only. It does not execute or authorize Replacement Package App Finalize, Git staging, commit or push; those remain explicit user/application actions under their own permissions.

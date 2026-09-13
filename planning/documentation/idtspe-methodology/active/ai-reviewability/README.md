@@ -53,6 +53,19 @@ Q/R/P may reuse the compact aliases `P0 / Critical`, `P1 / High`, `P2 / Normal`,
 
 Do not raise priority merely because a topic is complex or speculative.
 
+### Review Priority vs Finding Resolution Escalation
+
+Do not use `Review Priority` to encode how much semantic/user authority a correction needs. Core Finding Disposition owns the independent `Resolution Escalation` projection (`RE-0 ... RE-4`): deterministic correction, local realization choice, current-owner semantic change, upstream revalidation, or upstream semantic change.
+
+```text
+Review Priority = blast radius / cost if wrong
+Resolution Escalation = semantic authority distance required to resolve
+```
+
+A finding can therefore be `High + RE-0` or `Normal + RE-4`. Human review should show both dimensions when the distinction is material.
+
+Canonical escalation owner: [`../idtspe-core/shared/finding-disposition-contract.md`](../idtspe-core/shared/finding-disposition-contract.md).
+
 ## Broad Discussion Specialization
 
 In IDTSPE Broad Discussion, Key Points are the normal way to structure **material logical parts** of conversational prose.

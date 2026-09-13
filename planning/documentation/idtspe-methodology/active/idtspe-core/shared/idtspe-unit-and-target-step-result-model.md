@@ -252,6 +252,8 @@ Canonical cross-cutting lifecycle owners:
 - [`qrp-lifecycle-and-review-contract.md`](qrp-lifecycle-and-review-contract.md) — Question/Risk/Problem semantics, lifecycle, grouping and retention;
 - [`proposal-and-decision-lifecycle-contract.md`](proposal-and-decision-lifecycle-contract.md) — Proposal candidate/selection and Decision trace lifecycle.
 
+Finding `Resolution Escalation` (`RE-0 ... RE-4`) is a transient review/routing projection owned by [`finding-disposition-contract.md`](finding-disposition-contract.md), **not** another IDTSPE State Unit kind. A Finding may still disposition into an existing Question, Risk/Problem, Proposal, Decision input, Evidence, Revalidation Signal or independently useful validation/readiness finding according to normal materiality.
+
 ### Proposal / Decision lifecycle relation
 
 `Proposal` and `Decision` are Core State Unit kinds, but their candidate/selection lifecycle is not defined by this Unit model. Canonical Proposal drivers/relations, Candidate Bundles, review outcomes, Proposal → Decision selection, rationale/alternative retention and revalidation semantics are owned by [`proposal-and-decision-lifecycle-contract.md`](proposal-and-decision-lifecycle-contract.md).

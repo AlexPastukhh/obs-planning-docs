@@ -255,6 +255,92 @@ Core may disposition it as an existing/new Question, Risk, Decision input or ano
 
 ---
 
+## 6A. Resolution Escalation Projection
+
+When a material Finding is surfaced for review, expose **how far semantic resolution must escalate** when that distinction helps the USER understand whether the correction is deterministic, local, owner-semantic, or upstream-affecting.
+
+`Resolution Escalation` is a derived Finding-disposition/review projection. It is **not** a new State Unit, lifecycle, planning level, approval state, priority scale or semantic owner. It complements — and must not be collapsed into — AI Reviewability `Review Priority`.
+
+```text
+Review Priority
+= cost / blast radius if the finding is handled incorrectly
+
+Resolution Escalation
+= semantic distance / authority change required to resolve the finding correctly
+```
+
+Therefore `Critical + RE-0` and `Normal + RE-4` are both valid when supported by the actual owner/dependency structure.
+
+Use the smallest category that fits the checked current owners:
+
+| Resolution Escalation | Meaning | Durable semantic change | USER review expectation |
+|---|---|---|---|
+| `RE-0 DETERMINISTIC-CORRECTION` | a confirmed defect has one correction clearly implied by current accepted meaning/contracts | none; accepted Decision/Requirement/owner meaning remains unchanged | correction can be presented compactly; no new semantic choice to decide |
+| `RE-1 LOCAL-REALIZATION-CHOICE` | one or more realization/detail routes fit the same accepted current-owner meaning | no accepted architecture/behavior/Requirement/owner-boundary change; a local detail may vary | focused review only when local trade-off matters; AI may recommend a route |
+| `RE-2 CURRENT-OWNER-SEMANTIC-CHANGE` | safe resolution requires new/revised selected meaning at the current natural owner | current-owner Decision, durable must-hold/Requirement when the active profile defines one, boundary, or equivalent owner result changes | USER reviews/selects the current-owner Proposal when selection authority is USER-owned |
+| `RE-3 UPSTREAM-REVALIDATION` | current work exposes evidence that an upstream owner/Decision/Requirement may be implicated, but an upstream semantic change is not yet established | unknown until the earliest affected upstream owner is revalidated | USER is shown the upstream exposure; revalidation/evidence comes before selecting a downstream workaround |
+| `RE-4 UPSTREAM-SEMANTIC-CHANGE` | safe resolution requires an actual new/revised/replaced upstream Decision/Requirement/owner meaning | upstream accepted meaning changes; affected downstream work must consume the new result | USER reviews/selects at the upstream decision surface before dependent work proceeds |
+
+### Decision-Surface Test
+
+Do not classify by vocabulary such as “architecture” alone. A detail at architecture depth is not automatically an architecture Decision. Ask in order:
+
+```text
+Can the correction be made while all accepted owner Decisions, durable must-holds/Requirements
+and owner boundaries remain true?
+  yes, one route is already implied → RE-0
+  yes, several implementation/detail routes may fit → RE-1
+
+Must selected meaning at the current natural owner change or be newly selected?
+  yes → RE-2
+
+Does the finding instead challenge a dependency/assumption owned upstream?
+  possible / not yet resolved → RE-3
+  actual upstream selected meaning must change → RE-4
+```
+
+The **most-upstream affected owner** controls escalation. Do not hide `RE-3` / `RE-4` by compensating in a downstream implementation detail. Revalidate through `UC-IDTSPE-REVALIDATE-CURRENT-WORK` and preserve unaffected accepted meaning.
+
+### Proposal / Decision Boundary
+
+Interaction gating and formal Core State remain distinct:
+
+```text
+material corrective action under USER-gated proposal-driven interaction
+→ may be surfaced as an interaction AI Proposal at any RE category
+
+formal IDTSPE Proposal State
+→ use only when candidate semantic meaning benefits from lifecycle/addressability/review
+→ normally material for RE-2 / RE-4
+→ may be useful for RE-1 / RE-3 when real alternatives or independently reviewable candidate meaning exist
+→ do not manufacture it for an obvious RE-0 correction
+```
+
+`Recommendation ≠ Decision`. A deterministic correction may be recommended without inventing a selectable architecture/product choice.
+
+### Profile / Depth Specialization
+
+Core does not define a universal numeric architecture/Requirement depth. A profile or Target owner may supply depth vocabulary and specialized durable semantics. When SDS is active, for example, `Most-upstream affected meaning/depth` may use the SDS `PL-L0 ... PL-L4` guidance and Requirement impact is resolved through the SDS natural-owner Requirement contract. The generic `RE-*` category still belongs here.
+
+Useful transient review fields when material:
+
+```text
+Review Priority: Critical | High | Normal | Low
+Resolution Escalation: RE-0 | RE-1 | RE-2 | RE-3 | RE-4
+Review Category: <architecture / engineering / product / ... when useful>
+Current semantic owner / affected meaning: ...
+Most-upstream affected owner / depth: ...
+Decision / Requirement impact: NONE | LOCAL-DETAIL | CURRENT-OWNER | UPSTREAM
+Upstream revalidation: NONE | POSSIBLE | REQUIRED
+Proposed correction / Proposal status: ...
+Downstream consequence if accepted: NONE | REVALIDATE ... | INVALIDATE ...
+USER review: <compact statement of what the USER actually needs to inspect/select>
+```
+
+These fields are a projection over existing Finding, Proposal/Decision, Q/R/P and Revalidation semantics. Do not persist all of them by default.
+
+---
+
 ## 7. Finding Candidate vs State Unit
 
 Do not add a mandatory first-class `Finding` State Unit merely because this bridge exists.

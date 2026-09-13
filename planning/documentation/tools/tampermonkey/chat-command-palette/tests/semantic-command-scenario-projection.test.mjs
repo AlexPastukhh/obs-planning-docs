@@ -77,6 +77,30 @@ test('scenario-to-command projection is precise and keeps show-next distinct fro
   assert.equal(cont.scenarioUses[0].stepId,'SCN-01-S2');
   assert.match(next.definition.meaning,/show|next|propos/i);
   assert.match(cont.definition.meaning,/perform|continue|ordinary action/i);
+  assert.deepEqual(equivalentIds(scn01.steps.find((step)=>step.id==='SCN-01-S3F')),['idtspe.findings.review']);
+});
+
+test('critical-review scenario separates challenge, finding disposition, semantic proposal and revalidation',()=>{
+  const m=memory(),scn03=m.scenarioEntries.find((scenario)=>scenario.id==='SCN-03');
+  assert.ok(scn03);
+  assert.deepEqual(equivalentIds(scn03.steps.find((step)=>step.id==='SCN-03-S1')),['critical_review.apply','lens:LENS-AUTHORITY-SOT-REUSE','lens:LENS-DEPENDENCY-CHANGE-IMPACT','lens:LENS-NEED-VALUE-SCOPE','lens:LENS-UNCERTAINTY-ASSUMPTION-REVERSIBILITY']);
+  assert.deepEqual(equivalentIds(scn03.steps.find((step)=>step.id==='SCN-03-S1D')),['idtspe.findings.review']);
+  assert.deepEqual(equivalentIds(scn03.steps.find((step)=>step.id==='SCN-03-S1P')),['idtspe.proposal']);
+  assert.deepEqual(equivalentIds(scn03.steps.find((step)=>step.id==='SCN-03-S2')),['idtspe.review_consistency','uc:UC-IDTSPE-REVALIDATE-CURRENT-WORK']);
+  assert.deepEqual(equivalentIds(scn03.steps.find((step)=>step.id==='SCN-03-S3')),['review_audit.recheck']);
+});
+
+test('finding-escalation scenario keeps deterministic repair command-free and separates RE-3 revalidation from RE-4 selection',()=>{
+  const m=memory(),scn07=m.scenarioEntries.find((scenario)=>scenario.id==='SCN-07');
+  assert.ok(scn07);
+  assert.deepEqual(equivalentIds(scn07.steps.find((step)=>step.id==='SCN-07-S1')),['idtspe.findings.review']);
+  assert.deepEqual(equivalentIds(scn07.steps.find((step)=>step.id==='SCN-07-S2')),[]);
+  assert.deepEqual(equivalentIds(scn07.steps.find((step)=>step.id==='SCN-07-S3')),['idtspe.proposal']);
+  assert.deepEqual(equivalentIds(scn07.steps.find((step)=>step.id==='SCN-07-S4')),['uc:UC-IDTSPE-REVALIDATE-CURRENT-WORK']);
+  assert.deepEqual(equivalentIds(scn07.steps.find((step)=>step.id==='SCN-07-S4P')),['idtspe.proposal']);
+  assert.deepEqual(equivalentIds(scn07.steps.find((step)=>step.id==='SCN-07-S5')),['lens:LENS-IMPLEMENTATION-REQUIREMENTS-DISCOVERY']);
+  assert.match(scn07.steps.find((step)=>step.id==='SCN-07-S1').canonicalText,/RE-0\.\.RE-4|RE-0.*RE-4/s);
+  assert.equal(equivalentIds(scn07.steps.find((step)=>step.id==='SCN-07-S2')).includes('session.proposal_driven'),false);
 });
 
 test('tool/repository scenario is repository-owned and archive read-source remains an explicit conditional branch',()=>{

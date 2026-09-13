@@ -78,9 +78,9 @@ test('retired Test Strategy shortcut routes to current proof owners without rest
 test('generic IDTSPE command surfaces depend on Core command-surface authority rather than SDS profile authority',()=>{
   const coreOwner='planning/documentation/idtspe-methodology/active/idtspe-core/shared/idtspe-command-surface-contract.md';
   const sdsOwner='planning/documentation/idtspe-methodology/active/profiles/sds/shared/idtspe-command-surface-contract.md';
-  const files=['bootstrap-idtspe.command.md','work-through-idtspe.command.md','idtspe-next.command.md','idtspe-continue.command.md','review-idtspe-consistency.command.md','plan-pre-update.command.md','realize-exact-result.command.md','select-idtspe-lenses.command.md','apply-idtspe-lens.command.md','check-documentation-representation.command.md','check-linked-notes-justification.command.md'];
+  const files=['bootstrap-idtspe.command.md','work-through-idtspe.command.md','idtspe-next.command.md','idtspe-continue.command.md','review-idtspe-consistency.command.md','idtspe-proposal.command.md','review-idtspe-findings.command.md','plan-pre-update.command.md','realize-exact-result.command.md','select-idtspe-lenses.command.md','apply-idtspe-lens.command.md','check-documentation-representation.command.md','check-linked-notes-justification.command.md'];
   for(const file of files){const command=codec.parseCommandDefinitionDocument(read(`planning/commands/${file}`));assert.ok(command.ownerFiles.includes(coreOwner),`${command.id}: missing Core command-surface owner`);assert.ok(!command.ownerFiles.includes(sdsOwner),`${command.id}: generic Core surface depends on SDS command owner`);}
-  const core=read(coreOwner);assert.match(core,/Generic Core Surface Inventory — 11/);assert.match(core,/CREATE_OR_REUSE_TARGET/);assert.match(core,/RESOLVE_OR_REUSE_TARGET/);
+  const core=read(coreOwner);assert.match(core,/Generic Core Surface Inventory — 13/);assert.match(core,/CREATE_OR_REUSE_TARGET/);assert.match(core,/RESOLVE_OR_REUSE_TARGET/);
   const sds=read(sdsOwner);assert.match(sds,/SDS Profile Command Surface Extension/);assert.match(sds,/generic IDTSPE Core surfaces are owned separately/i);
 });
 
@@ -291,4 +291,23 @@ test('Core cold bootstrap is a routing/proportionality spine and keeps deep mech
     assert.match(bootstrap,new RegExp(owner.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')));
   }
   assert.match(bootstrap,/Do not read deeper Core owners merely to claim that bootstrap completed/);
+});
+
+
+test('Finding review surface separates impact priority from semantic resolution escalation',()=>{
+  const command=codec.parseCommandDefinitionDocument(read('planning/commands/review-idtspe-findings.command.md'));
+  assert.equal(command.id,'idtspe.findings.review');
+  assert.equal(command.methodologyBinding?.profile,null);
+  assert.equal(command.methodologyBinding?.surfaceKind,'ORCHESTRATION');
+  assert.ok(command.ownerFiles.includes('planning/documentation/idtspe-methodology/active/idtspe-core/shared/finding-disposition-contract.md'));
+  assert.ok(!command.ownerFiles.some((x)=>x.includes('/profiles/sds/')), 'generic Finding review surface must not hard-depend on SDS');
+  const finding=read('planning/documentation/idtspe-methodology/active/idtspe-core/shared/finding-disposition-contract.md');
+  for(const token of ['RE-0 DETERMINISTIC-CORRECTION','RE-1 LOCAL-REALIZATION-CHOICE','RE-2 CURRENT-OWNER-SEMANTIC-CHANGE','RE-3 UPSTREAM-REVALIDATION','RE-4 UPSTREAM-SEMANTIC-CHANGE'])assert.match(finding,new RegExp(token));
+  assert.match(finding,/Review Priority[\s\S]*cost \/ blast radius[\s\S]*Resolution Escalation[\s\S]*semantic distance \/ authority change required/);
+  assert.match(finding,/A detail at architecture depth is not automatically an architecture Decision/);
+  const unit=read('planning/documentation/idtspe-methodology/active/idtspe-core/shared/idtspe-unit-and-target-step-result-model.md');
+  assert.match(unit,/Resolution Escalation.*not.*State Unit/is);
+  const review=read('planning/documentation/review-diff-review-workflow.md');
+  assert.match(review,/RE-0 \/ RE-1 with a known but unapplied correction[\s\S]*NEEDS CORRECTION/);
+  assert.match(review,/RE-2 \/ RE-4 with unresolved required selection[\s\S]*BLOCKED BY MATERIAL DECISION/);
 });

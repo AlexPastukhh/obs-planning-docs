@@ -9,9 +9,9 @@ Scope: local-first, GitHub-backed **semantic command projection** with canonical
 1. `planning/command-routing.md` — executable-command and projection policy.
 2. `planning/commands/README.md` — direct Planning Command authority.
 3. `planning/documentation/use-case-registry-map.md` and the current IDTSPE Target Module/Lens registries — semantic owners projected into Helper commands.
-4. canonical working Scenario owners — methodology `SCN-01..SCN-05` in `planning/documentation/idtspe-methodology/active/idtspe-core/shared/methodology-use-case-scenario-map.md`, repository/tool `SCN-06` in `planning/documentation/replacement-package-builder/scenarios/SCN-BLDR-BUILD-AND-REVIEW-REPLACEMENT-PACKAGE.md`; these Scenarios do not know about commands.
+4. canonical working Scenario owners — methodology `SCN-*` in `planning/documentation/idtspe-methodology/active/idtspe-core/shared/methodology-use-case-scenario-map.md`, with repository/tool Scenarios owned by their canonical area (for example replacement-package Builder `SCN-06`); these Scenarios do not know about commands.
 5. `planning/helper-library/README.md` — Prompt / legacy helper insertion authority.
-6. `scenarios/README.md` — Planning Helper **application** behavior (`SCN-PH-*`), separate from methodology working Scenarios (`SCN-01..SCN-06`).
+6. `scenarios/README.md` — Planning Helper **application** behavior (`SCN-PH-*`), separate from methodology working Scenarios (`SCN-*`).
 7. `MANUAL-ACCEPTANCE.md` — browser/real-GitHub acceptance.
 8. focused `src/**` / `tests/**`.
 
@@ -88,7 +88,7 @@ Canonical methodology working Scenarios live with methodology/repository owners.
 
 Helper derives command equivalents by matching Scenario semantic references to semantic command identities. The Scenario view renders canonical prose unchanged and adds only derived command-equivalent controls (`Run`, `Body`, `Open command`).
 
-`SCN-PH-*` files under this tool remain application-behavior owners for the Helper itself. They are not the methodology working Scenarios shown as `SCN-01..SCN-06`.
+`SCN-PH-*` files under this tool remain application-behavior owners for the Helper itself. They are not the methodology working Scenarios shown as `SCN-*`.
 
 ## Source / Cache Model
 
@@ -170,7 +170,7 @@ Canonical methodology-use source is [`planning/documentation/use-case-registry-m
 
 ### Working Scenarios
 
-`seed/scenarios.json` aggregates canonical `SCN-01..SCN-06` from their current owners: methodology `SCN-01..SCN-05` from the Core methodology scenario map and repository/tool `SCN-06` from the replacement-package Builder scenario owner. It stores canonical scenario prose + semantic references required for deterministic Helper projection. It does not store command-equivalent prose; command equivalents are computed from current semantic command identities at runtime.
+`seed/scenarios.json` aggregates canonical `SCN-*` from their current owners: methodology scenarios from the Core methodology scenario map and repository/tool scenarios from their canonical repository owners (for example replacement-package Builder `SCN-06`). It stores canonical scenario prose + semantic references required for deterministic Helper projection. It does not store command-equivalent prose; command equivalents are computed from current semantic command identities at runtime.
 
 ### Prompts
 

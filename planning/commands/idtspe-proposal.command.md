@@ -21,6 +21,7 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
   "activeContextBehavior": "Use the current Work Context and re-evaluate UC-IDTSPE-COMPOSE-CURRENT-WORK proportionally. Express material candidate meaning as formal IDTSPE Proposal State only when lifecycle/addressability/review is useful, link material Q/R/P through their canonical owner, perform proportional candidate review, and wait for USER selection at material gates. Selected meaning may then flow to Decision / Target Result / natural-owner state under normal authority.",
   "traversalReadMode": "Reuse current reliable Core governance. Otherwise read the current composition/state model plus canonical Proposal/Decision and Q/R/P lifecycle owners, and the Session USER-gated interaction owner. Load profile/Target/Lens detail only when the current composition makes it applicable.",
   "ownerFiles": [
+    "planning/documentation/idtspe-methodology/active/idtspe-core/shared/idtspe-command-surface-contract.md",
     "planning/documentation/idtspe-methodology/active/idtspe-core/shared/compose-current-work-use-case.md",
     "planning/documentation/idtspe-methodology/active/idtspe-core/shared/maintain-current-work-state-use-case.md",
     "planning/documentation/idtspe-methodology/active/idtspe-core/shared/idtspe-unit-and-target-step-result-model.md",

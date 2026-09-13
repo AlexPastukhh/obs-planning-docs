@@ -27,6 +27,7 @@
     'command.plan':{actionLabel:'Спланировать command route',tail:'General · Command Route',scenarioRefs:['planning/command-routing.md']},
     'session.proposal_driven':{actionLabel:'Включить proposal-driven gating',tail:'General · Session Interaction',scenarioRefs:['planning/session/session-runtime-contract.md']},
     'idtspe.proposal':{actionLabel:'Работать через IDTSPE Proposals',tail:'General · IDTSPE Proposal Lifecycle',scenarioRefs:['planning/documentation/idtspe-methodology/active/idtspe-core/shared/proposal-and-decision-lifecycle-contract.md']},
+    'idtspe.findings.review':{actionLabel:'Разобрать файндинги',tail:'General · Finding Disposition',scenarioRefs:['planning/documentation/idtspe-methodology/active/idtspe-core/shared/finding-disposition-contract.md#resolution-escalation']},
     'helper.command.add':{actionLabel:'Добавить команду в Helper',tail:'Tool · Planning Command',category:'TOOL',scenarioRefs:['planning/use-cases/UC-REPO-MAINTAIN-PLANNING-COMMAND.md','planning/documentation/tampermonkey-command-projection-workflow.md']}
   });
   function directPresentation(entry){const meta=DIRECT_PRESENTATION[entry.id]||{};const actionLabel=meta.actionLabel||entry.command||entry.label||entry.id,tail=meta.tail||`General · ${entry.englishName||entry.id}`;return{actionLabel,label:`${actionLabel} · ${tail}`,commandCategory:meta.category||'GENERAL',scenarioRefs:[...(meta.scenarioRefs||[])]};}

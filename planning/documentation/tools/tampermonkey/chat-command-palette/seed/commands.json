@@ -1083,6 +1083,7 @@
       "activeContextBehavior": "Use the current Work Context and re-evaluate UC-IDTSPE-COMPOSE-CURRENT-WORK proportionally. Express material candidate meaning as formal IDTSPE Proposal State only when lifecycle/addressability/review is useful, link material Q/R/P through their canonical owner, perform proportional candidate review, and wait for USER selection at material gates. Selected meaning may then flow to Decision / Target Result / natural-owner state under normal authority.",
       "traversalReadMode": "Reuse current reliable Core governance. Otherwise read the current composition/state model plus canonical Proposal/Decision and Q/R/P lifecycle owners, and the Session USER-gated interaction owner. Load profile/Target/Lens detail only when the current composition makes it applicable.",
       "ownerFiles": [
+        "planning/documentation/idtspe-methodology/active/idtspe-core/shared/idtspe-command-surface-contract.md",
         "planning/documentation/idtspe-methodology/active/idtspe-core/shared/compose-current-work-use-case.md",
         "planning/documentation/idtspe-methodology/active/idtspe-core/shared/maintain-current-work-state-use-case.md",
         "planning/documentation/idtspe-methodology/active/idtspe-core/shared/idtspe-unit-and-target-step-result-model.md",
@@ -2464,6 +2465,55 @@
         "lensId": null,
         "parentSurface": null,
         "hostTargetPolicy": "RESOLVE_OR_REUSE_TARGET"
+      },
+      "refinements": []
+    },
+    {
+      "schemaVersion": 1,
+      "id": "idtspe.findings.review",
+      "file": "review-idtspe-findings.command.md",
+      "command": "разбери файндинги",
+      "englishName": "review and disposition IDTSPE findings",
+      "commandFamily": [
+        "разбери файндинги",
+        "классифицируй файндинги",
+        "review findings",
+        "idtspe findings"
+      ],
+      "description": "Classify material findings by impact and semantic resolution escalation, then route them to the correct owner/lifecycle.",
+      "meaning": "Review one or more current Finding Candidates through canonical IDTSPE Finding Disposition. Keep Review Priority (blast radius) separate from Resolution Escalation (RE-0 deterministic correction through RE-4 upstream semantic change), identify the earliest affected semantic owner, and show exactly what USER review/selection is actually required without creating a parallel Finding lifecycle.",
+      "activeContextBehavior": "Use current checked owners/Evidence and classify only material findings. Prefer the smallest justified Resolution Escalation. For RE-0/RE-1 show deterministic/local correction meaning without inventing a new architecture/product choice; for RE-2 route candidate semantic change to the current natural owner; for RE-3 revalidate the earliest affected upstream owner; for RE-4 surface the upstream Proposal/Decision/Requirement change before dependent work. Preserve unaffected accepted meaning.",
+      "traversalReadMode": "Reuse current reliable Core governance. Read Finding Disposition, AI Reviewability, Proposal/Decision, Q/R/P and Revalidation owners as needed. Load the active profile's depth/Requirement/owner contracts only when a finding actually depends on profile-specific semantics; do not hard-code SDS into the generic Core surface.",
+      "ownerFiles": [
+        "planning/documentation/idtspe-methodology/active/idtspe-core/shared/idtspe-command-surface-contract.md",
+        "planning/documentation/idtspe-methodology/active/idtspe-core/shared/finding-disposition-contract.md",
+        "planning/documentation/idtspe-methodology/active/ai-reviewability/README.md",
+        "planning/documentation/idtspe-methodology/active/idtspe-core/shared/proposal-and-decision-lifecycle-contract.md",
+        "planning/documentation/idtspe-methodology/active/idtspe-core/shared/qrp-lifecycle-and-review-contract.md",
+        "planning/documentation/idtspe-methodology/active/idtspe-core/shared/revalidate-current-work-use-case.md",
+        "planning/documentation/idtspe-methodology/active/idtspe-core/shared/idtspe-unit-and-target-step-result-model.md"
+      ],
+      "expectedOutput": "A compact material-finding review: each finding has checked affected/current owner, Review Priority when useful, Resolution Escalation RE-0..RE-4, most-upstream affected owner/depth, Decision/Requirement impact when applicable, upstream-revalidation consequence, corrective Proposal/route status, downstream consequence, and a plain USER-review statement. Deterministic/local findings are not presented as unresolved architecture decisions; upstream-impact findings are made explicit before downstream correction.",
+      "permissionMode": "read-only-planning",
+      "keyReminders": [
+        "Review Priority is blast radius if wrong; Resolution Escalation is semantic authority distance. Do not collapse them.",
+        "RE-0 means current accepted meaning already determines one correction; do not manufacture a new semantic Decision.",
+        "A detail at architecture depth is not automatically an architecture Decision. Escalate only when accepted owner meaning itself must change or be revalidated.",
+        "Under proposal-driven interaction an AI Proposal may gate the next material action at any RE category, but formal IDTSPE Proposal State is created only when candidate semantic meaning benefits from lifecycle/addressability/review.",
+        "When an active profile defines Requirement/depth semantics, use that profile owner only after the generic Finding disposition identifies it as applicable.",
+        "Do not mutate files/application state, commit or push. This command reviews/routes findings only."
+      ],
+      "userTarget": "<findings / review result / current work context to classify and disposition>",
+      "palette": true,
+      "helperPresentation": null,
+      "methodologyBinding": {
+        "methodologyRuntime": "IDTSPE",
+        "profile": null,
+        "surfaceKind": "ORCHESTRATION",
+        "targetModuleId": null,
+        "lensId": null,
+        "parentSurface": null,
+        "hostTargetPolicy": "NONE"
       },
       "refinements": []
     },
