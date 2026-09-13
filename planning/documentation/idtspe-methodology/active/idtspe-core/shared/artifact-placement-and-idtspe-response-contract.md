@@ -196,8 +196,8 @@ Do not invent an exact repository path when the current workspace/profile does n
 <scenario-owner-artifact-or-section>
 <domain-discovery-owner>#CaptureItem
 <domain-owner-artifact>
-<slice-owner>#Evolution
-<slice-owner>.evolution.md
+<future-transition-owner-artifact-or-section>
+<profile-approved-evolution-companion-artifact>
 <implementation-symbol-or-test>
 <cross-owner-architecture-artifact-if-justified>
 ```
@@ -264,10 +264,10 @@ Content:
   future CaptureItem synchronization plan
 
 Guidance Sources:
-  natural owner evolution meaning + Documentation / Representation decision
+  active-profile future-transition semantic owner + Documentation / Representation decision
 
 Resolved Placement:
-  CaptureItem.evolution.md
+  <future-transition-owner-artifact-or-section>
 ```
 
 ### Guidance Precedence
@@ -452,7 +452,7 @@ Recommended compact table:
 |---|---|---|---|---|---|---|---|
 | Feature semantic data + behavior | RESOLVED | `FEAT-CAPTURE` | REQUIRED | embed in `<feature-owner-artifact>` | UPDATE | Feature owner | Feature owns behavior/data |
 | Screen/window Proposal | UNRESOLVED_PLACEMENT | UNRESOLVED_OWNER | PREFERRED | existing Generic Proposal State representation or `NONE` when ephemeral | UNRESOLVED | `AP-SCN-03` | unselected Proposal; no mandatory global Proposal tree |
-| Offline Slice evolution path | RESOLVED | `SL-CAP-01` owner-local evolution meaning | PREFERRED | embedded Slice owner or `<slice-owner>.evolution.md` | UNRESOLVED | Slice owner + Documentation / Representation | split only if representation pressure is material |
+| Offline Slice evolution path | UNRESOLVED_PLACEMENT | applicable future-transition semantic owner (SDS: `TM-EVOLUTION-STEP`) | PREFERRED | `<future-transition-owner-artifact-or-section>` | UNRESOLVED | active profile evolution owner + Documentation / Representation | resolve embed/dedicated representation inside the actual future-transition owner; do not copy unrealized state into a current owner |
 | Benchmark scratch numbers | UNRESOLVED_PERSISTENCE | unresolved | UNRESOLVED | UNRESOLVED | NONE | `AG-L3-01` may flag Evidence value; no placement proposal yet | decide whether they become Decision Evidence |
 
 For larger plans, use one `ArtifactPlacementItem` block per unit.
@@ -610,16 +610,14 @@ During Domain/Aggregate planning an evolution concern appears:
 Offline capture may eventually require synchronization state.
 ```
 
-The team accepts that the concern must survive, but has not decided whether the natural owner should keep it embedded or split representation:
+First resolve the **semantic owner of the future meaning** through the active profile before choosing its representation. For SDS, materially planned unrealized target state belongs to the applicable `TM-EVOLUTION-STEP`; the current Domain owner remains realized/current truth. A profile that explicitly defines owner-local future authority may instead permit an owner-local section/companion.
+
+Suppose semantic ownership is resolved but the representation shape is not. Correct rendering:
 
 ```text
-CaptureItem owner / Evolution section
-CaptureItem.evolution.md
-```
+Semantic Owner:
+  <resolved future-transition semantic owner>
 
-Correct rendering:
-
-```text
 Persistence:
   REQUIRED
 
@@ -630,11 +628,11 @@ Destination:
   UNRESOLVED
 
 Depends On:
-  whether this is local Domain evolution
-  or application-wide Workspace evolution
+  whether representation pressure justifies embedding in an existing artifact/registry
+  or a dedicated/companion artifact allowed for that resolved semantic owner
 ```
 
-Do not silently pick one file merely to make the response look complete.
+Do not silently place future meaning into a current natural-owner artifact merely because an owner-local evolution section/file would be physically convenient, and do not silently pick one file merely to make the response look complete.
 
 
 ## Methodology Continuation Boundary
