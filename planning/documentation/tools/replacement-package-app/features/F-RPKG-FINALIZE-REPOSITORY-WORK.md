@@ -1,5 +1,7 @@
 # F-RPKG-FINALIZE-REPOSITORY-WORK — Finalize Repository Work
 
+Status: planned future Feature owner
+
 ## Identity
 
 `F-RPKG-FINALIZE-REPOSITORY-WORK`
@@ -74,6 +76,8 @@ OPEN target detail — replacement review authority after the published work tre
 
 ## Boundary decision
 
-Separate from Apply: Apply may stop after Publish; Finalize has different eligibility, effects and terminal Result.
+Finalize is a separate independently callable Feature with its own eligibility, effects, recovery/reconciliation and terminal Result. Its contract does not depend on which caller invoked it and does not need to know about Apply, handoff/URI representation, or automatic/manual invocation policy.
+
+Future evolution may allow another Feature or entry path to invoke Finalize after proving the required input. Such orchestration does not create a reverse dependency from Finalize to its caller and does not move Finalize behavior into that caller.
 
 ---

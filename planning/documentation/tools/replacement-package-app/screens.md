@@ -29,11 +29,11 @@ The target screen is Work-centered. It has no ChangeSet selector, Review chat/de
 
 **SBI-RPKG-NAVIGATION-DOES-NOT-RETARGET-IN-FLIGHT-OPERATION** — an operation captures its inputs before background execution; later UI changes do not retarget it.
 
-**SBI-RPKG-PACKAGE-OPERATIONS-EXPLICIT** — Apply, Commit, Publish and Retry Publish remain distinct actions.
+**SBI-RPKG-PACKAGE-OPERATIONS-EXPLICIT** — Apply, Commit, Publish and Retry Publish remain distinct module actions of one Apply Feature.
 
 **SBI-RPKG-PUBLISH-RETRY-LOCAL** — Retry Publish belongs beside Publish and may resolve by confirmation without another push.
 
-**SBI-RPKG-AUTOMATIC-COMPOSITION-VISIBLE** — Run OBS Action is an entry composition, not a generic Resume/state-machine command.
+**SBI-RPKG-AUTOMATIC-COMPOSITION-VISIBLE** — Run OBS Action is the current full entry composition across the same Apply Feature modules, not a generic Resume/state-machine command. Planned requested extent and URI entry remain future evolution until implemented.
 
 Repository Snapshot remains a separately-owned CLI/capability and is not part of this Main Work Window.
 

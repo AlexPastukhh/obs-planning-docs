@@ -13,12 +13,13 @@ WorkId
 OBS apply-package
 → ensure Work Intent
 → ensure GitWorkspace
-→ Apply Package
-→ Commit applied
-→ Publish / Retry Publish
+→ F-RPKG-APPLY-REPLACEMENT-PACKAGE
+     ├─ Apply
+     ├─ Commit
+     └─ Publish / Retry Publish
 ```
 
-There is no target central ChangeSet Aggregate or package execution-state machine.
+There is no target central ChangeSet Aggregate or package execution-state machine. Apply, Commit and Publish are current module/operation boundaries of one Apply Feature.
 
 ## EVO-RPKG-MODULARIZE-PACKAGE-REALIZATION
 
@@ -27,10 +28,10 @@ Evolution Kinds: Refactoring / Introduction / Forced Migration
 Status: IMPLEMENTED for current target executable.
 
 Result:
-- Apply, Commit and Publish are independent Feature operations with independent Results;
+- Apply, Commit and Publish are explicit modules/operations of one `F-RPKG-APPLY-REPLACEMENT-PACKAGE` Feature, with independent operation Results and explicit stopping boundaries;
 - `ReplacementPackageState` is shared durable package continuity;
 - `PublicationObservation` is evidence, not operation result;
-- automatic `OBS-ACTION apply-package` composes Start → Apply → Commit → Publish without a generic Resume abstraction;
+- current automatic `OBS-ACTION apply-package` composes Start → Apply → Commit → Publish without a generic Resume abstraction;
 - exact archive bytes are captured once for Apply;
 - package-journal schema 3 separates crash evidence from applicability authority: only `applicabilityProven=true` may recover already-intended bytes; digest integrity and captured-package binding are independent proofs;
 - Start workspace pins `baseCommit` through a verified isolated Git transport endpoint rather than stale local branch state, mutable remote aliases or later URL rewrites;
@@ -86,6 +87,72 @@ Target Main Work Window contains Repository Target, WorkId, target branch, archi
 
 The old built executable remains the owner of retired legacy UI behavior.
 
+## EVO-RPKG-PARAMETERIZE-APPLY-HANDOFF
+
+Evolution Kinds: Expansion / Refactoring
+
+Status: PLANNED
+
+Expected Entry State:
+- one current `F-RPKG-APPLY-REPLACEMENT-PACKAGE` owns Apply/Commit/Publish module semantics;
+- manual UI/CLI entries can stop at existing module boundaries;
+- current `OBS-ACTION apply-package` always performs full Start → Apply → Commit → Publish composition;
+- the current command has no `ApplyExtent` field.
+
+Target State:
+- the semantic package-application command carries a requested `ApplyExtent`;
+- supported extent boundaries correspond to existing module boundaries: Apply; Apply+Commit; Apply+Commit+Publish;
+- the Apply Feature reads the requested extent and stops exactly at that boundary;
+- `ApplyExtent` is invocation selection, not durable lifecycle state and not a replacement for `ReplacementPackageState` / operation Results;
+- invalid or unsupported extent input fails before repository execution;
+- current manual module behavior remains semantically aligned with the same modules.
+
+Affected owners on realization:
+- `features/F-RPKG-APPLY-REPLACEMENT-PACKAGE.md`;
+- `PACKAGE-PROTOCOL.md`;
+- `APPLY-RESULT.md` as needed for truthful partial-extent result handoff;
+- `screens.md`;
+- target automated/manual acceptance.
+
+## EVO-RPKG-ADOPT-REVIEWED-RESULT-WORKFLOW
+
+Evolution Kinds: Expansion / Introduction
+
+Status: PLANNED
+
+Expected Entry State:
+- current package realization stops after exact work-branch publication proof;
+- `F-RPKG-FINALIZE-REPOSITORY-WORK` remains future and independently callable by semantic input;
+- no target Finalize behavior depends on legacy ChangeSet execution states.
+
+Target State:
+- reviewed-result authority is rebased onto WorkId/GitWorkspace/ReplacementPackageState and exact published tree identity;
+- independent `F-RPKG-FINALIZE-REPOSITORY-WORK` becomes executable only after its own eligibility is proven;
+- the package-application semantic command may carry a `FinalizeMode` selection;
+- when `FinalizeMode` requests automatic Finalize, `F-RPKG-APPLY-REPLACEMENT-PACKAGE` may intentionally invoke the independent Finalize Feature after all required Finalize prerequisites are proven;
+- this is intentional one-way cross-Feature composition owned by the Apply Feature's semantic entry: Finalize keeps its own behavior, eligibility, Result and recovery, and has no dependency on Apply or on how it was invoked;
+- incompatible `ApplyExtent` / `FinalizeMode` combinations fail before repository execution rather than silently extending the requested extent;
+- manual/direct Finalize entry remains possible independently of Apply.
+
+OPEN target details remain owned by Finalize/review planning: review-authority mechanism, integration mechanism/order, Issue closure and exact final-comment generation.
+
+## EVO-RPKG-ADD-APPLY-URI-ENTRY
+
+Evolution Kinds: Expansion
+
+Status: PLANNED
+
+Prerequisite entry state:
+- one stable semantic package-application command exists and is already consumed by `F-RPKG-APPLY-REPLACEMENT-PACKAGE`;
+- handoff representation preserves all current semantic selections, including requested Apply extent and Finalize selection when those evolutions are implemented.
+
+Target State:
+- URI is an additional accepted entry representation of the same semantic package-application command;
+- handoff and URI resolve to the same semantic request, including exact Work/package/repository inputs and the same modularity/finalization selections;
+- URI adds no Feature, module, lifecycle state or alternate realization workflow;
+- malformed, incomplete or unsupported-version URI input fails before repository execution;
+- transport-specific URI encoding remains separate from Feature behavior after command resolution.
+
 ## Future reviewed-result / PR / Finalize evolution
 
-The planned reviewed-result Scenario remains future. Before implementation, rebase it onto the current Work-centered owners. Do not reintroduce ChangeSet execution states, package `Resume`, or a central lifecycle bucket merely to host reviewed-result/PR/approval facts.
+The planned reviewed-result Scenario remains future. Before implementation, use `EVO-RPKG-ADOPT-REVIEWED-RESULT-WORKFLOW` as the evolution owner and revalidate all affected current owners. Do not reintroduce ChangeSet execution states, package `Resume`, or a central lifecycle bucket merely to host reviewed-result/PR/approval facts.

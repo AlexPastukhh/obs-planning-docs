@@ -8,7 +8,7 @@ Feature Interaction and Slice decompositions are intentionally not 1:1.
 
 | Slice | Current responsibility |
 |---|---|
-| [`SL-RPKG-01`](slices/SL-RPKG-01-apply-replacement-work.md) | Work-centered replacement-package realization: Apply, Commit applied, Publish/Retry Publish plus automatic composition. |
+| [`SL-RPKG-01`](slices/SL-RPKG-01-apply-replacement-work.md) | Work-centered replacement-package realization through one Apply Feature with Apply, Commit and Publish/Retry modules plus current automatic full composition. |
 | [`SL-RPKG-04`](slices/SL-RPKG-04-export-repository-snapshot.md) | Produce exact Local/Committed Repository Snapshot as a separate capability. |
 | [`SL-RPKG-09`](slices/SL-RPKG-09-notify-operation-outcomes.md) | Operation/outcome presentation where still consumed; no mutation authority. |
 | [`SL-RPKG-10`](slices/SL-RPKG-10-manage-work-intent.md) | Ensure durable exact GitHub Issue Work Intent. |
@@ -20,4 +20,4 @@ Legacy Current Change/Review delivery, ChangeSet navigation, External Interactio
 
 ## Source boundary
 
-`Result<T,E>` / `OperationResult<E>` describe operation outcomes. `GitWorkspace`, `ReplacementPackageState` and `PublicationObservation` describe durable facts. There is no target `ApplyExtent`, generic Resume operation or ChangeSet execution-state machine.
+`Result<T,E>` / `OperationResult<E>` describe operation outcomes. `GitWorkspace`, `ReplacementPackageState` and `PublicationObservation` describe durable facts. The current executable has no `ApplyExtent`, generic Resume operation or ChangeSet execution-state machine. Planned command parameterization and URI entry are evolution targets, not current behavior.

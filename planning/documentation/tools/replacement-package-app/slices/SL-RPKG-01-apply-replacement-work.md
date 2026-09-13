@@ -4,16 +4,16 @@ Status: active current Slice owner
 
 ## Result / Responsibility
 
-Realize one exact replacement package through explicit application operations:
+Realize one exact replacement package through one current Apply Feature with explicit module/operation boundaries:
 
 ```text
-Apply Package
-Commit applied
-Publish
-Retry Publish
+F-RPKG-APPLY-REPLACEMENT-PACKAGE
+├─ Apply
+├─ Commit applied
+└─ Publish / Retry Publish
 ```
 
-The operations share durable `ReplacementPackageState`, `GitWorkspace`, package journals and one per-Work serialization boundary, while retaining independent operation Results. Automatic `OBS-ACTION apply-package` composes Start workspace → Apply → Commit → Publish as Scenario/entry convenience.
+The modules share durable `ReplacementPackageState`, `GitWorkspace`, package journals and one per-Work serialization boundary, while retaining independent operation Results. Current automatic `OBS-ACTION apply-package` composes Start workspace → Apply → Commit → Publish as entry convenience; manual UI/CLI entries may stop at module boundaries.
 
 ## Slice Implementation Items
 
@@ -25,6 +25,9 @@ Persist exact package/workspace/base plus prior/intended bytes before first pack
 
 ### SI-RPKG-PACKAGE-STATE-DURABLE
 Package state identity is fenced to exact WorkId/packageId. Corrupt/unreadable state fails closed.
+
+### SI-RPKG-EXPLICIT-MODULE-BOUNDARIES
+Apply stops before Commit; Commit stops before Publish; Retry Publish re-enters the Publish module and confirms remote state before another possible push. These boundaries are internal module/operation boundaries of one Apply Feature, not separate Feature identities.
 
 ### SI-RPKG-WORK-OPERATION-LOCK
 Start workspace / Apply / Commit / Publish for one Work serialize through a dedicated same-thread re-entrant `WorkOperationLock` application port; package-state persistence is not the semantic lock owner and lock failure is an operation failure, not state evidence.
@@ -38,6 +41,10 @@ Shared implementation capability owns GitHub RepositoryIdentity normalization pl
 ### SI-RPKG-NO-LEGACY-RUNTIME-AUTHORITY
 Target package realization does not read/write `Core.ChangeSet.executionState`, `lastPackageId`, `commitSha` or `publishedTip`. Old persisted works are not imported.
 
+## Current / future boundary
+
+Current automatic handoff always performs the full Start → Apply → Commit → Publish composition. Requested stopping extent, automatic Finalize selection and URI entry remain planned evolution owned by `../evolution-steps-map.md` until implemented.
+
 ## Tests
 
-Target Feature/Scenario integration proves file-only Apply, separate/recoverable Commit, exact Publish, no blind retry, persistence failure fences, unexpected-tip rejection, sequential packages, workspace recovery, automatic composition and idempotence without creating `Core.ChangeSet`.
+Target Feature/Scenario integration proves file Apply, separate/recoverable module boundaries for Commit and Publish, no blind retry, persistence failure fences, unexpected-tip rejection, sequential packages, workspace recovery, current automatic full composition and idempotence without creating `Core.ChangeSet`.

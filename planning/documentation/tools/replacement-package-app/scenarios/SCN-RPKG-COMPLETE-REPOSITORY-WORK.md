@@ -4,7 +4,7 @@ Status: active current Scenario owner
 
 ## Application Benefit / Desired Result
 
-One exact logical Work is bound to the intended repository, has durable semantic intent and Git workspace identity, and realizes replacement packages safely through explicit Apply, Commit and Publish operations. Interruption/retry preserves already-proven facts without generic Resume state or blind external side effects.
+One exact logical Work is bound to the intended repository, has durable semantic intent and Git workspace identity, and realizes replacement packages safely through the current Apply Feature. Interruption/retry preserves already-proven facts without generic Resume state or blind external side effects.
 
 Old persisted ChangeSet work is intentionally outside this executable; the already-deployed previous build remains its owner.
 
@@ -18,7 +18,9 @@ FI-RPKG-ESTABLISH-CURRENT-WORK-INTENT
 FI-RPKG-ENSURE-WORKSPACE
     ↓
 FI-RPKG-REALIZE-CURRENT-PACKAGE
-    ├─ Apply Package
+    ↓
+F-RPKG-APPLY-REPLACEMENT-PACKAGE
+    ├─ Apply
     ├─ Commit applied
     └─ Publish / Retry Publish
     ↓
@@ -27,7 +29,7 @@ exact package commit publication proven
 STOP at current target boundary
 ```
 
-Automatic `OBS-ACTION apply-package` is an entry composition of these interactions. It does not expose or dispatch through an internal stage enum.
+Automatic `OBS-ACTION apply-package` is the current full entry composition of these interactions. It does not expose or dispatch through an internal stage enum. The Apply Feature owns the meaning and boundaries of its Apply/Commit/Publish modules; this Scenario owns the wider Work journey and does not duplicate those module contracts.
 
 ## FI-RPKG-RESOLVE-CURRENT-REPOSITORY-WORK
 
@@ -65,36 +67,9 @@ Requirements:
 
 ## FI-RPKG-REALIZE-CURRENT-PACKAGE
 
-### Apply Package
+Invoke `F-RPKG-APPLY-REPLACEMENT-PACKAGE` for the exact Work/package. The Feature owner defines the current Apply, Commit and Publish/Retry module contracts, their independent operation Results and their recovery boundaries.
 
-- read/validate/hash the ZIP once for the invocation;
-- use captured package bytes as mutation authority; do not reopen a mutable archive path for Apply;
-- require exact persisted GitWorkspace;
-- require exact applicability for every add/replace/delete;
-- journal package identity, baseHead and prior/intended bytes before mutation;
-- persist exact `ReplacementPackageState` only after intended file state is proven;
-- Apply stops before Commit.
-
-### Commit applied
-
-- require exact GitWorkspace + package state + package journal;
-- commit only intended package paths;
-- record exact identity trailers;
-- if Git commit exists but state persistence failed, retry proves exact commit parent/trailers/paths/bytes and reuses it;
-- persist commit SHA in ReplacementPackageState;
-- Commit stops before Publish.
-
-### Publish / Retry Publish
-
-- obtain reliable exact remote work-branch observation before every possible push;
-- exact intended commit already remote → success without push;
-- absent or exact package journal baseHead → push may be safe;
-- unexpected remote tip → `REMOTE_BRANCH_DIVERGED`, no push;
-- persist `NotConfirmed` before possible push;
-- push exact commit with force-with-lease tied to the observed safe previous state;
-- after possible push, observe again and persist exact evidence;
-- missing confirmation is failure of confirmation, not “confirmed absent”;
-- Retry Publish is the same Feature operation and confirms before another push.
+Current automatic `OBS-ACTION apply-package` invokes the complete Apply → Commit → Publish path after workspace establishment. Manual UI/CLI entries may invoke the same modules separately. Requested extent and automatic Finalize selection are not current command semantics; they remain planned evolution.
 
 ## Durable state semantics
 
@@ -106,7 +81,7 @@ Package/workspace journals own recovery evidence for side effects that may outli
 
 `Result<T,E>` / `OperationResult<E>` own concrete invocation outcome.
 
-No target operation uses `Ready`, `AppliedUncommitted`, `CommittedUnpublished`, `PublicationUncertain`, `ApplyExtent` or generic Resume as public/domain state.
+No current target operation uses `Ready`, `AppliedUncommitted`, `CommittedUnpublished`, `PublicationUncertain`, `ApplyExtent` or generic Resume as public/domain state.
 
 ## Cross-package invariant
 
@@ -114,19 +89,12 @@ One Work may have many completed package realizations but at most one unfinished
 
 ## Current Scenario result
 
-Success of automatic package realization means the exact package commit is durably proven published on the derived Work branch. The current Scenario stops there. Reviewed-result confirmation, integration PR and target Finalize remain future behavior and must consume Work-centered owners rather than restore a ChangeSet state bucket.
+Success of current automatic package realization means the exact package commit is durably proven published on the derived Work branch. The current Scenario stops there. Reviewed-result confirmation, integration PR and target Finalize remain future behavior and must consume Work-centered owners rather than restore a ChangeSet state bucket.
 
 ## Evolution Steps
 
-### EVO-RPKG-RETIRE-CHANGESET-AGGREGATE
-Intent: IMPLEMENTED FOR TARGET EXECUTABLE PATHS
-
-- WorkId/GitWorkspace/ReplacementPackageState are current owners;
-- Start/Apply/Commit/Publish/automatic entry do not use Core.ChangeSet authority;
-- old persisted works are not imported;
-- remaining `Core.ChangeSet` source is retired unreachable legacy code pending mechanical deletion.
-
-### EVO-RPKG-ADOPT-REVIEWED-RESULT-WORKFLOW
-Intent: PLANNED
-
-Future reviewed-result/PR/Finalize planning must be rebased onto WorkId/GitWorkspace/ReplacementPackageState. Any older planned wording using ChangeSet execution states is superseded.
+Current and future evolution authority is centralized in `../evolution-steps-map.md`. In particular:
+- current one-Feature/three-module realization is the implemented result of `EVO-RPKG-MODULARIZE-PACKAGE-REALIZATION`;
+- parameterized handoff extent is planned by `EVO-RPKG-PARAMETERIZE-APPLY-HANDOFF`;
+- reviewed-result/Finalize adoption, including any future automatic Apply→Finalize composition, is planned by `EVO-RPKG-ADOPT-REVIEWED-RESULT-WORKFLOW`;
+- URI entry is planned separately by `EVO-RPKG-ADD-APPLY-URI-ENTRY`.
