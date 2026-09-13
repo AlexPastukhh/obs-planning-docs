@@ -2,43 +2,61 @@
 
 Status: active worked response projection; not a universal response template
 
-This example shows one **situational Integration Checkpoint** after transient Slice Discovery. Generic response/checkpoint mechanics remain owned by IDTSPE Core.
+This example shows one **situational Integration Checkpoint** during an unrealized Evolution Step after transient Slice Discovery. Generic response/checkpoint mechanics remain owned by IDTSPE Core.
 
 ## Situation / Current Work Context
 
-The selected Feature requires truthful failure handling, and concrete realization has become detailed enough that distributed working meaning is worth integrating.
+The current implementation already supports capture, but a selected future Step changes source handling and truthful failure behavior enough that future Slice/Domain meaning needs review.
 
 ```text
-Feature:
+Current realized Feature owner:
   FEAT-CAPTURE-ITEM
 
-Material BR:
+Current material BR:
   BR-CAP-01 — success is exposed only after durable acceptance
 
-Current Target:
-  SL-CAPTURE-DISCOVERY
+Current realized Domain owner:
+  CaptureItem
 
-Module:
+Current Evolution Step:
+  EVO-SOURCE-VARIANTS
+
+Current working Target:
+  EVO-SOURCE-VARIANTS / Slice discovery support
+
+Supporting Module:
   TM-IMPLEMENTATION-SLICE
-
-Relevant Scenario source:
-  SCN-CAPTURE-THEN-REVIEW
-
-Relevant Domain source:
-  CaptureItem durable owner
 ```
 
-## Current Target Step Result
+The current owners remain current truth. Future changes below are Step-owned until realization/materialization.
+
+## Evolution Step Target State — relevant projection
+
+```text
+Expected Entry State:
+  current FEAT-CAPTURE-ITEM + CaptureItem + current capture Slice implementation
+
+Selected future route:
+  explicit source-variant boundary
+
+Target Feature Body:
+  FEAT-CAPTURE-ITEM
+  BR-CAP-01 remains
+  future source variant behavior added where material
+
+Target Domain Body:
+  CaptureItem / SourceContext post-Step semantics
+
+Target Slice Body:
+  durable post-Step capture responsibility/boundary
+```
+
+## Supporting Slice Discovery Result
 
 ```text
 RU-SLICE-01 — Whole-Slice Responsibility / Candidate Structure
-  responsibility:
-    realize FEAT-CAPTURE-ITEM end to end
-  candidate structure:
-    capture adapter
-    CaptureApplicationService
-    CaptureItem Domain owner
-    persistence boundary
+  future responsibility:
+    realize post-Step FEAT-CAPTURE-ITEM end to end
 
 RU-SLICE-02 — Semantic Application Entry / Result Boundary
   entry:
@@ -59,49 +77,46 @@ RU-SLICE-04 — Feature Integration Proof
   prove through the semantic application boundary that:
     successful durable acceptance → success
     persistence failure → never success
-    forbidden mutation/result states do not escape
-
-RU-SLICE-05 — Evolution / OPEN Slice Pressure
-  selected Evolution Step:
-    add another source type
-  current implication:
-    preserve one local source-variation seam only if justified now
+    source variants preserve truthful result semantics
 ```
 
-Only material Units are present. If Evolution had no current consequence, `RU-SLICE-05` would simply be absent.
+Transient Slice Discovery helps construct/refine the Target Slice Body. It is not another durable Slice authority.
 
 ## Material Core State
 
 ```text
 Decision:
-  CaptureApplicationService owns mapping from repository outcome
-  to the semantic capture result.
+  future CaptureApplicationService owns mapping from repository outcome
+  to the semantic capture result
 
 Risk:
-  repository failure could otherwise be reported as success.
+  repository/source-specific failure could otherwise be reported as success
+
+Uncertainty:
+  one source adapter API is documented but not yet exercised against the real environment
+  confidence basis: vendor docs only
 
 Methodology Usage State — retained only because this checkpoint is a handoff/review point:
   Active UC: UC-IDTSPE-INTEGRATE-CURRENT-WORK
+  Relevant Step: EVO-SOURCE-VARIANTS
   Applied Lenses:
     LENS-SLICE-VERTICALITY-INTEGRATION / CHECK
     LENS-QUALITY-RISK-MATERIALITY / CHECK
-  Recheck:
-    if persistence/result semantics or the selected Evolution Step changes
 ```
 
-There is no log of every registry/file read.
+Selection and uncertainty stay distinct: the route may be selected while implementation Evidence remains incomplete.
 
 ## Lens Findings / Disposition
 
 ```text
 Slice Verticality / Integration:
-  current responsibility still forms one coherent end-to-end Feature path
+  target responsibility still forms one coherent end-to-end Feature path
 
 Quality / Risk:
   truthful failure projection is material and must survive realization
 
 Evolution:
-  no generic plugin framework justified by the selected future source variant
+  no generic plugin framework justified by the concrete selected Step
 ```
 
 A Lens observation becomes accepted State/result meaning only through normal Core Finding Disposition/Resolution.
@@ -112,30 +127,28 @@ A Lens observation becomes accepted State/result meaning only through normal Cor
 transient Slice Discovery working plan
 → may remain conversational/non-persistent
 
-selected durable end-to-end responsibility
-→ TM-SLICE-OWNER when independent durable ownership is useful
+Target Slice / Feature / Domain Bodies
+→ represented with the Evolution Step
+→ not copied into current owner artifacts before realization
 
 exact classes/methods/files/tests
 → implementation-native / TM-EXACT-REALIZATION
 ```
 
-No `SLICE-STRATEGY.md` or mandatory dedicated Slice file is implied.
+No `SLICE-STRATEGY.md`, current-owner rewrite or mandatory dedicated Slice file is implied.
 
-See [`../ARTIFACT-PLACEMENT-MAP.md`](../ARTIFACT-PLACEMENT-MAP.md).
-
-## Next Direction
+## Realization / Materialization Direction
 
 ```text
-accepted meaning sufficient + proof route obvious
+selected Step meaning sufficient
 → TM-EXACT-REALIZATION
-
-proof choice/coverage materially non-trivial
-→ LENS-TEST-PROOF-EVIDENCE
-→ transient natural-owner proof planning as needed
-→ TM-EXACT-REALIZATION
-
-real implemented environment must be observed
-→ TM-PRACTICAL-TEST after the real subject exists
+→ authorized integration/proof Evidence
+→ reconcile any material mismatch
+→ Target Owner Materialization:
+     REPLACE affected current Feature/Domain/Slice bodies
+     only with the actually realized/proven post-Step meaning
 ```
 
-The checkpoint itself does not force the next Target or implementation action.
+Physical representation changes then follow Documentation / Representation + P-14.
+
+The checkpoint itself does not force implementation action or claim that selected future meaning is already current truth.

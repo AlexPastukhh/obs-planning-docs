@@ -9,6 +9,12 @@ Own one coherent durable Domain responsibility. Do not create one Target for eve
 
 Transient `TM-DOMAIN-DISCOVERY` may be a Source, but never remains authority merely because it discovered the model.
 
+## Temporal Authority / Evolution-Step Hosting
+
+A canonical Domain owner describes the Domain semantics that are currently realized. If Domain meaning is being created/changed for an unrealized future state, use this module as supporting methodology inside `TM-EVOLUTION-STEP` and produce a **Target Domain Body**.
+
+Future `IR-DOMAIN-*` / owner-local `PFR-*` remain inside that Target Domain Body. Selection alone does not replace the current Domain owner. After realization + required proof/revalidation, Target Owner Materialization may `CREATE`, `REPLACE` or `RETIRE` the current Domain owner.
+
 ## Source Contract
 
 Possible sources:
@@ -108,7 +114,7 @@ Domain unit proof belongs with the Domain realization and proves semantic rules/
 
 ## Evolution
 
-Relevant selected Evolution Steps are Sources for revalidation. Future target Domain state belongs inside the Step target state; current Domain owner remains current authority until realization/promotion changes it.
+Relevant selected Evolution Steps are Sources for revalidation. Future target Domain state belongs inside the Step Target Domain Body; current Domain owner remains current authority until realization and Target Owner Materialization change it. Physical representation promotion/demotion remains a separate P-14 concern.
 
 ## Validators / Handoff
 

@@ -10,6 +10,12 @@ Own one coherent actor-to-benefit journey composition across Feature results, Sc
 
 Scenario does **not** own Feature behavior, Feature semantic data, implementation Slice topology, Domain semantics or target-state implementation requirements.
 
+## Temporal Authority / Evolution-Step Hosting
+
+A canonical Scenario owner describes the realized/current journey composition. For a journey that is only planned, changed or newly introduced in an unrealized future state, use this module inside `TM-EVOLUTION-STEP` to produce a **Target Scenario Body**.
+
+Selected future journey meaning remains Step-owned until realization/materialization. Current Scenario owners may reference relevant Steps for navigation/revalidation but do not carry a second future roadmap.
+
 ## Owned Meaning
 
 A Scenario may own proportionally:

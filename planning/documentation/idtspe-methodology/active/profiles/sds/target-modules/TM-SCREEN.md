@@ -16,6 +16,12 @@ Own application spatial and navigation composition when it is independently usef
 
 Screen does not own Feature behavior, Domain meaning or implementation topology.
 
+## Temporal Authority / Evolution-Step Hosting
+
+A canonical Screen owner describes realized/current spatial/navigation truth. Planned but unrealized Screen changes are expressed as a **Target Screen Body** inside `TM-EVOLUTION-STEP` using this same module contract.
+
+Selection of a future Screen body does not rewrite the current Screen Map/Drafts. Materialization follows actual realization + required proof/revalidation.
+
 ## Source Contract
 
 Typical sources:

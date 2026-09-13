@@ -91,7 +91,12 @@ When the USER explicitly requests proposal-driven gating (for example through th
 cheap read-only investigation needed to frame the next Proposal
 → allowed autonomously
 
-important decision / meaning-changing clarification / materially different approach
+Proposal grounding insufficient because material USER-only information/choice is missing
+→ ask minimum useful USER question directly
+→ intake USER answer
+→ frame/refine the Proposal
+
+important decision / materially different approach
 substantial or expensive work batch / large read-search-test-build-tool batch
 artifact creation or change / mutation outside already approved exact scope
 → AI Proposal
@@ -99,7 +104,7 @@ artifact creation or change / mutation outside already approved exact scope
 → execute only the selected Proposal scope
 ```
 
-Do not manufacture alternatives or approval requests for trivial mechanical substeps. The policy changes interaction gating only; IDTSPE still owns formal `Proposal`, Q/R/P, `Decision`, Target and Result semantics.
+A grounding clarification is a real USER gate when required, but it is not a Proposal wrapper. Do not manufacture questions, alternatives or approval requests when trustworthy Sources/current USER input are already sufficient. The policy changes interaction gating only; IDTSPE still owns formal `Proposal`, Q/R/P, `Decision`, Target and Result semantics.
 
 The stricter policy remains active for the current task until the USER explicitly cancels or weakens it, or the task ends.
 

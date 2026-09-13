@@ -11,7 +11,7 @@ Use when current implementation/proof reasoning may need to become, change, move
 
 ## Analysis Surface
 
-**Primary:** a material implementation/proof concern plus the relevant natural Domain/Slice/Shared owner and existing owner-local IR/PFR set.  
+**Primary:** a material implementation/proof concern plus the relevant natural Domain/Slice/Shared owner family, its current realized IR/PFR set and/or the active Evolution Step Target Body when future state is being planned.  
 **Conditional:** Feature behavior, Scenario must-holds, selected Evolution, thematic Lens findings, selected `RG/RR/RRC` guidance, accepted Decisions/Risks/Questions and proof Evidence.  
 **Context:** current Work Context/Target and requirement-ownership rules.
 
@@ -28,15 +28,30 @@ A valid result is `NO_DURABLE_REQUIREMENT_CHANGE`.
 
 ## Natural owner rule
 
-Selected durable implementation requirements live only with their natural owner:
+Selected durable implementation requirements live only with their natural owner **family/state**:
 
 ```text
-TM-SLICE-OWNER  → IR-SLICE-*  / optional owner-local PFR-*
-TM-DOMAIN-OWNER → IR-DOMAIN-* / optional owner-local PFR-*
-TM-SHARED-IMPLEMENTATION-CAPABILITY → IR-SHARED-*
+current or Target Slice Body  → IR-SLICE-*  / optional owner-local PFR-*
+current or Target Domain Body → IR-DOMAIN-* / optional owner-local PFR-*
+current or Target Shared Body → IR-SHARED-*
 ```
 
 A transient Slice/Domain discovery plan may discover candidates but is never durable authority. No standalone Requirement Target is needed.
+
+### Temporal host
+
+The natural **owner family** does not imply that selected future Requirement text belongs in the current owner immediately.
+
+```text
+current realized owner review
+→ selected IR/PFR may refine current owner only when the correction/current meaning is actually realized
+
+unrealized future planning
+→ selected IR/PFR belongs to the corresponding Target Domain / Slice / Shared Body inside TM-EVOLUTION-STEP
+→ current owner remains unchanged until Target Owner Materialization
+```
+
+The Lens discovers/classifies Requirement meaning; `TM-EVOLUTION-STEP` owns unrealized target-state hosting.
 
 ## Requirement meaning
 
@@ -67,8 +82,10 @@ material implementation/proof concern
 → classify natural owner
 → compare with existing owner Requirements
 → KEEP / ADD NEW / REFINE / WEAKEN / STRENGTHEN / MERGE / REPLACE DECISION / RETIRE / MOVE / REOPEN / ACCEPT RISK
-→ if selected, write independently approved local IR/PFR text in natural owner
-→ prove through natural proof boundary
+→ if selected, write independently approved local IR/PFR text in the natural owner **state being represented**:
+   current owner for realized/current truth, or the corresponding Evolution Step Target Body for unrealized future state
+→ prove through the natural proof boundary
+→ materialize future Requirement authority only after the Step is actually realized
 ↺ implementation/proof findings may reopen discovery
 ```
 

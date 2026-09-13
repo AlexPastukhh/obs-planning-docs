@@ -147,15 +147,16 @@ One row is one semantic behavior step. A row may own one or several `BR-*`.
 - For a material Feature/Scenario decision, use one exact question and one column per path; show path continuation and convergence explicitly.
 - Scenario references Features and owns actor/journey composition/continuity without duplicating Feature internals.
 - Actor fields are optional; use them only when actor identity/decision materially changes the journey.
-- Future Features/extensions may be planned deeply when selected, but exact OPEN details remain blocked.
+- When SDS is active, materially planned but unrealized Feature/extension target state is hosted by the applicable `TM-EVOLUTION-STEP`; current Feature authority remains realized truth. Exact OPEN details remain blocked.
 
 ## Post-realization Feature Implementation Concern reconciliation
 
 Feature Implementation Concerns are discovery memory, not a historical log and not automatically Requirements. After implementation + proof, reconcile each material concern:
 
 ```text
-still OPEN and capable of changing Feature/boundary/implementation?
-→ KEEP-AS-CURRENT-CONCERN
+still OPEN and materially about a future change to Feature/boundary/implementation?
+→ when SDS is active, route to the applicable Evolution Step / Proposal / Q-R-P state
+→ do not retain an unrealized roadmap as current Feature-owner truth
 
 produced/changed durable BR/IR/PFR/Decision/Risk/Known Problem?
 → PROMOTE/ROUTE-DURABLE-MEANING

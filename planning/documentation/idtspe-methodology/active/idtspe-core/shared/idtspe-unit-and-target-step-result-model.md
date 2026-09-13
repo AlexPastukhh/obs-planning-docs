@@ -181,9 +181,10 @@ Result Unit:
     preserve material Domain/shared/dependency responsibility relations
 
 Result Unit:
-  Evolution Steps
+  Future-State / Evolution Handoff
   Purpose:
-    preserve resolved target-specific meaning for accepted/planned changes touching the Slice
+    preserve only the target-specific handoff/reference required by the active profile's future-state semantic owner;
+    do not assume owner-local Evolution authority
 
 Field group inside Result Unit:
   Slice Outcome Definition.verificationObligations
@@ -316,6 +317,8 @@ Result Unit:
 Field:
   failurePropagation responsibility
 ```
+
+This generic example assumes the selected meaning belongs to the **current Target state being resolved**. A profile may impose a temporal-host boundary. For example, under SDS an accepted change that is still unrealized is integrated into the applicable Evolution Step Target Body first; it does not rewrite the current natural owner until realization/materialization.
 
 ### Methodology Usage State
 

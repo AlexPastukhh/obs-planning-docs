@@ -18,7 +18,7 @@ Scope: one concrete OBS Planning command route. Reusable semantics remain in lin
   ],
   "description": "Classify material findings by impact and semantic resolution escalation, then route them to the correct owner/lifecycle.",
   "meaning": "Review one or more current Finding Candidates through canonical IDTSPE Finding Disposition. Keep Review Priority (blast radius) separate from Resolution Escalation (RE-0 deterministic correction through RE-4 upstream semantic change), identify the earliest affected semantic owner, and show exactly what USER review/selection is actually required without creating a parallel Finding lifecycle.",
-  "activeContextBehavior": "Use current checked owners/Evidence and classify only material findings. Prefer the smallest justified Resolution Escalation. For RE-0/RE-1 show deterministic/local correction meaning without inventing a new architecture/product choice; for RE-2 route candidate semantic change to the current natural owner; for RE-3 revalidate the earliest affected upstream owner; for RE-4 surface the upstream Proposal/Decision/Requirement change before dependent work. Preserve unaffected accepted meaning.",
+  "activeContextBehavior": "Use current checked owners/Evidence and classify only material findings. Prefer the smallest justified Resolution Escalation. For RE-0/RE-1 show deterministic/local correction meaning without inventing a new architecture/product choice; for RE-2/RE-4 identify the correct semantic decision surface, but do not confuse selection with current-owner mutation. Under SDS, a selected correction that is still unrealized is integrated into the applicable Evolution Step Target Body until realization/materialization. For RE-3 revalidate the earliest affected upstream owner. Preserve unaffected accepted meaning.",
   "traversalReadMode": "Reuse current reliable Core governance. Read Finding Disposition, AI Reviewability, Proposal/Decision, Q/R/P and Revalidation owners as needed. Load the active profile's depth/Requirement/owner contracts only when a finding actually depends on profile-specific semantics; do not hard-code SDS into the generic Core surface.",
   "ownerFiles": [
     "planning/documentation/idtspe-methodology/active/idtspe-core/shared/idtspe-command-surface-contract.md",
@@ -36,7 +36,8 @@ Scope: one concrete OBS Planning command route. Reusable semantics remain in lin
     "RE-0 means current accepted meaning already determines one correction; do not manufacture a new semantic Decision.",
     "A detail at architecture depth is not automatically an architecture Decision. Escalate only when accepted owner meaning itself must change or be revalidated.",
     "Under proposal-driven interaction an AI Proposal may gate the next material action at any RE category, but formal IDTSPE Proposal State is created only when candidate semantic meaning benefits from lifecycle/addressability/review.",
-    "When an active profile defines Requirement/depth semantics, use that profile owner only after the generic Finding disposition identifies it as applicable.",
+    "When an active profile defines Requirement/depth/temporal-host semantics, use that profile owner only after the generic Finding disposition identifies it as applicable.",
+    "Resolution escalation identifies the semantic decision distance; it does not by itself mean current-owner state changes before the selected correction is realized.",
     "Do not mutate files/application state, commit or push. This command reviews/routes findings only."
   ],
   "userTarget": "<findings / review result / current work context to classify and disposition>",

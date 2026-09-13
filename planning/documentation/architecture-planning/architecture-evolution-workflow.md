@@ -39,6 +39,21 @@ For each candidate inspect representative current/future Workspace UCs, contextu
 
 When Proposal candidates were used, identify one `Selected Proposal / Decision` and integrate that selected meaning into the target architecture. Record selected responsibility/boundary changes, Architecture Intent, intentionally deferred complexity and transition constraints/order.
 
+## 6A. SDS Future-State Handoff — When Applicable
+
+Architecture Planning may own the comparison/Decision surface for a coherent architecture change, but it must not become a parallel future-product roadmap when SDS owns the application target state.
+
+When the selected architecture meaning describes a **future unrealized SDS software state**:
+
+```text
+selected Architecture Decision / target architecture
+→ integrate as Decision/Source into the applicable TM-EVOLUTION-STEP
+→ update the affected Target Domain / Slice / Shared / Application Bodies there
+→ keep current natural owners as realized truth until implementation/materialization
+```
+
+If the architecture work instead documents the already-realized current Workspace architecture, current architecture state remains current truth. Representation/persistence is resolved separately.
+
 ## 7. Route Realization Downstream
 
 Architecture Evolution stops before detailed implementation task/Slice planning. Route realization to the appropriate Workspace-specific responsibility (for example Application Realization/Slice Planning or documentation-maintenance work).

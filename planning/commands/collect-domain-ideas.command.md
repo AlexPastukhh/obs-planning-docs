@@ -14,8 +14,8 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
     "собери идеи домена",
     "domain ideas"
   ],
-  "description": "legacy compatibility alias; supplied Domain ideas route into current transient discovery and/or durable Domain owner as justified",
-  "meaning": "Legacy alias for current Domain work. Treat supplied legacy-idea/candidate material as normal IDTSPE Proposal/Q/R/P material. Use TM-DOMAIN-DISCOVERY for transient discovery; promote relevant meaning to TM-DOMAIN-OWNER only when independent durable Domain ownership becomes useful. Do not revive an Ideas accumulator or unified shallow/deep Domain Target family.",
+  "description": "legacy compatibility alias; supplied Domain ideas route into transient discovery and then to the correct current or future Domain planning destination",
+  "meaning": "Legacy alias for Domain work. Treat supplied legacy-idea/candidate material as normal IDTSPE Proposal/Q/R/P material. Use TM-DOMAIN-DISCOVERY for transient discovery. For unrealized future state, selected durable Domain meaning belongs to a Target Domain Body in TM-EVOLUTION-STEP; direct TM-DOMAIN-OWNER authority describes realized/current truth. Do not revive an Ideas accumulator or unified shallow/deep Domain Target family.",
   "activeContextBehavior": "Use selected Feature behavior, current Domain facts, Slice/Shared pressures, Evidence/Evolution and existing Domain representation as relevant. Resolve discovery versus durable-owner need from the current situation; stop before unrelated Slice planning unless the user expands the work.",
   "traversalReadMode": "Reuse current reliable IDTSPE/SDS governance; refresh the selected Domain owner/module route when uncertain.",
   "ownerFiles": [
@@ -23,7 +23,7 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
     "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-DOMAIN-OWNER.md",
     "planning/documentation/idtspe-methodology/active/profiles/sds/shared/idtspe-command-surface-contract.md"
   ],
-  "expectedOutput": "Current transient Domain discovery and/or durable Domain Owner result only when independently justified, with proportional Core State and handoffs; no legacy Domain-Ideas accumulator or shallow/deep family split.",
+  "expectedOutput": "Transient Domain discovery plus the correct temporal handoff: Evolution Step Target Domain Body for selected-but-unrealized meaning, or current Domain-owner revalidation for realized truth. No legacy Domain-Ideas accumulator or shallow/deep family split.",
   "permissionMode": "read-only-planning",
   "keyReminders": [
     "Legacy compatibility alias only; the canonical material-planning runtime is IDTSPE.",

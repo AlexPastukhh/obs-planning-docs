@@ -506,7 +506,7 @@ Output:
   Useful Vertical Result / obligations
   material Uses / ownership boundary
   optional Runtime Path
-  owner-local Evolution Steps when material
+  future-state/evolution handoff according to the active profile; no generic owner-local future authority is implied
 ```
 
 If L5 exposes a genuinely independent architecture problem, it surfaces a Finding Candidate. Core Finding Disposition may surface a Target Formation candidate; Target Formation then decides whether to reuse an existing owner, hand off/reference one, or form a bounded child/local Target. Any newly formed Target uses the same IDTSPE Shell; no separate architecture planning engine is introduced.
@@ -550,7 +550,7 @@ During any Target:
 "maybe support offline capture later"
 ```
 
-remains Generic Proposal State until it has enough accepted basis to affect current planning. If later accepted as Scenario-local future/change meaning, it may appear in that Scenario's future/change Result Unit and project downstream into Strategy/Slice Evolution Steps.
+remains Generic Proposal State until it has enough basis to justify a concrete planning destination. Acceptance does not universally mean "write into the current owner": the active profile decides the temporal semantic owner. Under current SDS, materially planned but unrealized target state belongs to an Evolution Step, while current natural owners remain realized truth.
 
 ## Example Reading Standard
 
@@ -560,13 +560,13 @@ See [`HIGH-LEVEL-EXAMPLE-GUIDE.md`](HIGH-LEVEL-EXAMPLE-GUIDE.md) for the rule th
 ## Evolution / Architecture Attachment Example
 
 ```text
-Scenario future/change meaning
-→ Strategy projection / owner-local Evolution Step
-→ L5 Evolution / Change Isolation when material
+future/change pressure
+→ active profile resolves the future-state semantic owner
+→ Evolution / Change Isolation when material
 → Finding Candidate(s)
-→ Core Finding Disposition
-→ accepted local Decision/meaning or Target Formation for an independently material cross-owner architecture problem
-→ Documentation / Representation chooses persistence only when useful
+→ Core Finding Disposition / Proposal / Decision as appropriate
+→ future or current semantic consequence routed according to that profile's temporal authority boundary
+→ Documentation / Representation chooses persistence only after semantic ownership is resolved
 ```
 
-No permanent global evolution Target or global architecture file is required by Core.
+Core does not require one universal global evolution Target or owner-local evolution section. Profiles may define a dedicated future-transition owner; current SDS uses `TM-EVOLUTION-STEP`.

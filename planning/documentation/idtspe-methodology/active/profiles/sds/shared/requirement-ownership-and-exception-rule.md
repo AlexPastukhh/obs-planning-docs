@@ -15,6 +15,24 @@ Requirement
 
 There is no baseline `TM-REQUIREMENT`.
 
+## Temporal Authority — Current vs Future Requirements
+
+Requirement ownership is resolved against the **owner state being represented**.
+
+```text
+current realized owner
+→ current owner-local BR/IR/PFR authority
+
+selected but unrealized future owner meaning
+→ corresponding Target Owner Body inside TM-EVOLUTION-STEP
+→ future BR/IR/PFR lives inside that body
+→ current owner Requirement set remains unchanged until realization/materialization
+```
+
+This does not create a future Requirement type. `BR-*`, `IR-*` and `PFR-*` keep their normal family/owner semantics; only their temporal host differs.
+
+A selected requirement change intended to correct an already-implemented system is still **future desired state** until the correction is actually realized. Selection alone does not make the current implementation conform or rewrite current-owner truth.
+
 ## Requirement Families
 
 ### Feature Behavior Requirement — `BR-*`
@@ -138,10 +156,12 @@ If no natural durable owner exists, use Core Proposal/Decision/Question/Risk rea
 ## Consumer / Revalidation
 
 When owner Requirement meaning changes:
+- if the changed meaning is still unrealized, place it in the corresponding Evolution Step Target Body rather than overwriting current truth;
 - identify material consumers;
 - revalidate dependent owner-local obligations/bindings/proof;
 - do not assume copied text is synchronized;
-- preserve stable identity where meaning is refined rather than replaced.
+- preserve stable identity where meaning is refined rather than replaced;
+- materialize the new current Requirement only when the represented owner state is actually realized.
 
 ## Guards
 

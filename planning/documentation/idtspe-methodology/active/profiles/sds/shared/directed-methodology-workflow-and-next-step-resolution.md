@@ -5,7 +5,7 @@ Compatibility path: `directed-methodology-workflow-and-next-step-resolution.md`
 
 ## Purpose
 
-Preserve the useful SDS relationships formerly expressed as a directed workflow/next-step resolver **without owning runtime Use-Case selection or work-step orchestration**.
+Preserve SDS cross-component semantic/readiness relationships **without owning runtime Use-Case selection, work-step orchestration or a mandatory planning-level sequence**.
 
 Use this file only after an applicable IDTSPE Use-Case Process (normally `UC-IDTSPE-COMPOSE-CURRENT-WORK`, `INTEGRATE` or `REVALIDATE`) determines that cross-owner SDS semantic direction/readiness is material.
 
@@ -13,31 +13,68 @@ Use this file only after an applicable IDTSPE Use-Case Process (normally `UC-IDT
 Use Case owns: why/when methodology is consulted and composed
 SDS registries own: which concrete profile component is plausibly relevant
 Target Module / Lens owns: specialized production/evaluation
-this guide owns: cross-component semantic relationships and readiness guidance
+TM-EVOLUTION-STEP owns: unrealized SDS target-state planning when state is expected to change
+this guide owns: cross-component temporal/semantic relationships and readiness guidance
 ```
 
-## 1. Preferred Semantic Direction
+## 1. Temporal Authority First
+
+Before deciding which SDS component should produce meaning, classify whether the subject is current-realized truth or future-unrealized target state.
 
 ```text
-optional Need / real-life solution discovery
-→ conditional Application Definition
-→ Feature ↔ Scenario ↔ Screen
-→ Domain / Slice / Shared implementation discovery + durable owner formation when useful
-→ Exact Realization when accepted meaning is sufficient
-→ Evidence / focused revalidation
+already realized / implemented owner truth
+→ work directly with the current natural owner when review/revalidation is needed
+
+material desired state is not yet realized
+→ host that future state in TM-EVOLUTION-STEP
+→ apply natural-owner Target Modules as supporting production methods inside the Step
 ```
 
-Prototype may precede commitment when empirical inquiry is useful. Practical Test may follow executable realization when real-subject/environment observation is necessary. Evolution Steps may influence any applicable owner. Findings/revalidation move to the most-upstream affected owner rather than being compensated downstream.
+A selected Proposal/Decision about future state does not by itself update the canonical current owner.
 
-This direction is orientation, not a phase sequence.
+For greenfield work, absence is a valid current Entry State. Planning the first Feature/Domain/Slice/etc therefore still uses an Evolution Step when the planned meaning is not yet implemented.
 
-## 2. Application Definition Readiness
+## 2. Preferred Semantic Direction
 
-Application Definition is the conditional upstream owner when own-Application contribution/boundary/feasibility can materially change what downstream behavior should mean. The exact activation/skip gate is owned by [`../target-modules/TM-APPLICATION-DEFINITION.md`](../target-modules/TM-APPLICATION-DEFINITION.md); this guide only records its place in the cross-owner dependency direction.
+For unrealized software change, the normal orientation is:
 
-## 3. Feature ↔ Scenario ↔ Screen Peer Formation
+```text
+current realized owners / implementation / Evidence
+→ Evolution Step
+→ proportionate future-state production:
+     Application Definition when needed
+     Feature ↔ Scenario ↔ Screen target bodies
+     Domain / Slice / Shared discovery
+     Domain / Slice / Shared target bodies
+     future owner-local Requirements
+→ Exact Realization when selected meaning is sufficient
+→ implementation / build / test / Evidence as authorized
+→ targeted revalidation
+→ Target Owner Materialization
+→ updated current natural owners
+```
 
-These are peer owners:
+Prototype may precede commitment when empirical inquiry is useful. Architecture Planning may contribute Decisions/Evidence/alternatives. Practical Test may follow executable realization when real-subject/environment observation is necessary.
+
+This direction is orientation, not a phase sequence. Several planning depths/modules may participate together; work may reopen upstream meaning when Evidence requires it.
+
+## 3. Application Definition
+
+Application Definition is the conditional upstream semantic form when own-Application contribution/boundary/feasibility can materially change downstream meaning.
+
+```text
+review already-realized application contribution
+→ direct current-owner revalidation is valid
+
+plan a new/changed unrealized application contribution
+→ Target Application Body inside the active Evolution Step
+```
+
+The exact activation/skip gate remains owned by [`../target-modules/TM-APPLICATION-DEFINITION.md`](../target-modules/TM-APPLICATION-DEFINITION.md).
+
+## 4. Feature ↔ Scenario ↔ Screen Peer Formation
+
+These are peer semantic owner families:
 
 ```text
 Feature  = primary behavior + semantic Feature Data + BR-*
@@ -45,109 +82,157 @@ Scenario = journey composition / linking / continuity / terminal Benefit
 Screen   = spatial/navigation composition / Feature presence / routes
 ```
 
-Valid entry orders include Feature-first, Scenario-first, Screen-pressure-first and iterative co-formation. A peer finding proposes/revalidates another owner; it never silently edits it.
+When planning future state, their complete post-Step forms are peer **Target Bodies inside the Step**. A finding in one proposes/revalidates another body; it never silently edits another.
 
-## 4. Feature / Slice Boundary
+When reviewing implemented current truth, the existing current owners remain the direct authorities.
 
-When Feature/Slice boundary quality is material, route through the SDS Lens Registry to `LENS-SLICE-VERTICALITY-INTEGRATION`. This guide owns only the **cross-owner readiness relation**: Feature formation may use lighter implementation-aware evidence, while Slice Discovery/owner review may use stronger concrete end-to-end evidence. The Lens body owns the actual boundary method, signal groups and evaluation semantics. Selected boundary meaning remains with the natural owner.
+## 5. Feature / Slice Boundary
 
-## 5. Domain Discovery / Durable Domain
+When Feature/Slice boundary quality is material, route through the SDS Lens Registry to `LENS-SLICE-VERTICALITY-INTEGRATION`.
+
+For future planning, selected boundary meaning is written into the relevant Step Target Feature/Slice Body; it does not become a current Slice owner before implementation. For current-state revalidation, boundary findings route to the current natural owner.
+
+## 6. Domain Discovery / Domain Target Body
 
 When semantic state/identity/lifecycle/invariant/consistency ownership is materially unclear:
 
 ```text
-current Feature/Slice pressure
+future Feature/Slice pressure inside Step
 → relevant DDD evaluation
-→ optional TM-DOMAIN-DISCOVERY when bounded working discovery is independently useful
-→ zero / one / several durable TM-DOMAIN-OWNER owners
+→ optional TM-DOMAIN-DISCOVERY
+→ zero / one / several Target Domain Bodies inside that Step
 ```
 
-Discovery is non-persistent by default and may still reason concretely about classes/methods/persistence seams/unit-proof candidates. `no durable Domain owner` is a valid result.
+For an already-realized Domain, direct `TM-DOMAIN-OWNER` review/revalidation remains valid.
 
-## 6. Slice Discovery / Durable Slice
+Discovery is non-persistent by default and may reason concretely about classes/methods/persistence seams/unit-proof candidates. `no Domain owner/body` is a valid result.
 
-When a selected Feature benefits from concrete whole-path implementation reasoning:
+## 7. Slice Discovery / Slice Target Body
+
+When a future Feature benefits from concrete whole-path implementation reasoning:
 
 ```text
-Feature + BR-* + relevant Scenario/Screen
+Target Feature Body + relevant Scenario/Screen target/current sources
 → TM-IMPLEMENTATION-SLICE
 → whole-slice responsibility / entry-result / Domain+Shared dependencies / effects / failure-recovery / proof
-→ optional selected TM-SLICE-OWNER when durable responsibility is useful
+→ optional Target Slice Body inside the Evolution Step when durable post-Step responsibility is useful
 ```
 
-Do not split Slices by frontend/backend/database technical layer alone. `TM-IMPLEMENTATION-SLICE` is transient Slice Discovery, not a durable Strategy owner.
+Do not split Slices by frontend/backend/database technical layer alone. `TM-IMPLEMENTATION-SLICE` is transient discovery, not a durable Strategy owner.
 
-## 7. Cross-Slice Coordination
+A current `TM-SLICE-OWNER` is created/replaced/retired only when the corresponding responsibility is actually realized and materialized.
+
+## 8. Cross-Slice Coordination
 
 Behavior coverage, Slice↔Domain use, grouping/order and owner-addressability views are derived/working coordination, not another semantic owner. Use Vertical Slice/dependency/evolution/representation evaluation as applicable. No `TM-SLICE-STRATEGY` exists.
 
-## 8. Shared Implementation Capability
+## 9. Shared Implementation Capability
 
-Shared is the durable owner for coherent reusable **non-end-to-end** implementation responsibility consumed by Slices. Formation/retention criteria, including concrete-consumer pressure and the known-Evolution exception, are owned by [`../target-modules/TM-SHARED-IMPLEMENTATION-CAPABILITY.md`](../target-modules/TM-SHARED-IMPLEMENTATION-CAPABILITY.md).
+Shared is the natural owner family for coherent reusable **non-end-to-end** implementation responsibility consumed by Slices.
 
-This guide owns only the relationship rule: if the candidate is actually end-to-end Slice policy keep it Slice-local; if it owns Domain state/invariants/lifecycle/policy, route toward Domain; otherwise consult the Shared Target Module gate rather than duplicating that gate here.
+Temporal boundary:
 
-## 9. Implementation Requirements
+```text
+current Shared owner
+→ only current realized capability/consumer truth
 
-When implementation/proof reasoning may need durable owner-local must-hold meaning, route through `LENS-IMPLEMENTATION-REQUIREMENTS-DISCOVERY` and the natural Requirement owner. Exact Requirement families, discovery outcomes, exception rules and zero-output semantics are owned by [`requirement-ownership-and-exception-rule.md`](requirement-ownership-and-exception-rule.md) plus the concrete Lens; this guide only records where that concern participates in SDS readiness. There is no baseline `TM-REQUIREMENT`.
+future capability / future consumer binding
+→ Target Shared Body in the relevant Evolution Step
+```
 
-## 10. Programming Principles
+A future consumer may justify a prepare-now Decision or a future Target Shared Body, but it does not count as an already-realized current consumer merely because the Step is selected.
 
-Generic engineering-principle reasoning is reusable knowledge, **not a Lens family**. When plausible, scan [`programming-principles/README.md`](programming-principles/README.md), select only material `RG-PRG-*` entries, then apply them through natural SDS/Core evaluators or Target Production. Do not execute all 22 groups as a mandatory checklist.
+Formation/retention criteria remain owned by [`../target-modules/TM-SHARED-IMPLEMENTATION-CAPABILITY.md`](../target-modules/TM-SHARED-IMPLEMENTATION-CAPABILITY.md).
 
-## 11. Proof / Evidence
+## 10. Implementation Requirements
 
-Testing is not a later phase. Domain semantics normally use focused Domain proof; Feature realized by Slice uses whole-Slice/Feature integration proof; Shared uses consumer integration plus focused local proof where useful; Scenario may own optional E2E proof intent; real implementation/environment observation may invoke `TM-PRACTICAL-TEST`. Core `LENS-TEST-PROOF-EVIDENCE` evaluates non-trivial proof choice/coverage. There is no baseline Test Design/Test Strategy Target.
+When implementation/proof reasoning may need durable owner-local must-hold meaning, route through `LENS-IMPLEMENTATION-REQUIREMENTS-DISCOVERY` and the natural Requirement owner family.
 
-## 12. Evolution
+Temporal placement follows the represented state:
 
-Lazily scan `TM-EVOLUTION-STEPS-MAP`, then open only relevant selected Steps. Use `LENS-WORKSPACE-EVOLUTION-ARCHITECTURE` when change isolation, prepare-now-vs-defer or avoidable Forced Migration is material. No generic Evolution Impact Target/RU is created; impact remains with natural owners or transient evaluation.
+```text
+current realized owner Requirement
+→ canonical current owner
 
-## 13. Exact Realization / Recommended Planning Depth
+future BR/IR/PFR selected for an unrealized post-Step state
+→ corresponding Target Owner Body inside the Evolution Step
+→ current owner only after materialization
+```
 
-Enter Core `TM-EXACT-REALIZATION` when accepted upstream meaning is sufficient for literal/directly-integrable work. `TM-PRE-UPDATE-PLAN` is optional when a separate reviewable intended-change result is useful; it is not a mandatory level.
+Exact Requirement families, discovery outcomes, exception rules and zero-output semantics are owned by [`requirement-ownership-and-exception-rule.md`](requirement-ownership-and-exception-rule.md). There is no baseline `TM-REQUIREMENT`.
+
+## 11. Programming Principles
+
+Generic engineering-principle reasoning is reusable knowledge, **not a Lens family**. When plausible, scan [`programming-principles/README.md`](programming-principles/README.md), select only material `RG-PRG-*` entries, then apply them through natural SDS/Core evaluators or Target Production. Do not execute all groups as a mandatory checklist.
+
+Reusable guidance never becomes current or future Requirement authority by live inheritance; selected local meaning must be represented in the appropriate current owner or Step Target Body.
+
+## 12. Proof / Evidence
+
+Testing is not a later semantic phase. Future planning records proof obligations in the relevant Step Target Bodies / transition obligations; literal tests remain Exact/code.
+
+After implementation, executed checks provide Evidence for what was actually realized. That Evidence is part of the gate before Target Owner Materialization when it can materially distinguish success from an incorrect/partial realization.
+
+There is no baseline Test Design/Test Strategy Target.
+
+## 13. Evolution / Alternatives / Uncertainty
+
+Lazily scan `TM-EVOLUTION-STEPS-MAP`, then open only relevant concrete Steps.
+
+A Step may be candidate, selected, conditional or represented by alternative Proposal/Planning Branch routes. Vague future ideas need not become Steps.
+
+Use `LENS-WORKSPACE-EVOLUTION-ARCHITECTURE` when change isolation, prepare-now-vs-defer or avoidable Forced Migration is material. Use Core uncertainty/evidence semantics for confidence basis rather than inventing numeric certainty or a Step-specific confidence lifecycle.
+
+No generic Evolution Impact Target/RU is created.
+
+## 14. Exact Realization / Recommended Planning Depth
+
+Enter Core `TM-EXACT-REALIZATION` when selected upstream Step/current meaning is sufficient for literal/directly-integrable work. `TM-PRE-UPDATE-PLAN` is optional when a separate reviewable intended-change result is useful; it is not a mandatory level.
 
 The SDS depth ladder is profile guidance for reasoning/readiness. It is not a one-active-level state machine, phase sequence or approval ladder; several levels may participate together.
 
 | Level | Recommended meaning | Typical SDS participation |
 |---|---|---|
-| `PL-L0-BEHAVIOR-AND-OWNER` | application/behavioral meaning and semantic ownership | Application Definition when needed; Feature ↔ Scenario ↔ Screen; Domain semantic-owner questions |
-| `PL-L1-IMPLEMENTATION-REQUIREMENTS` | durable implementation/proof constraints | owner-local `IR-*`; rare owner-local `PFR-*`; Feature implementation concerns as inputs |
-| `PL-L2-IMPLEMENTATION-ARCHITECTURE` | implementation responsibility/boundary/relations | Domain/Slice/Shared owners, dependencies/change locality, proof boundary |
+| `PL-L0-BEHAVIOR-AND-OWNER` | application/behavioral meaning and semantic ownership | Application/Feature/Scenario/Screen/Domain semantic questions; future meaning hosted in Step bodies |
+| `PL-L1-IMPLEMENTATION-REQUIREMENTS` | durable implementation/proof constraints | future owner-local `IR-*`/rare `PFR-*` inside target bodies or current-owner revalidation |
+| `PL-L2-IMPLEMENTATION-ARCHITECTURE` | implementation responsibility/boundary/relations | Domain/Slice/Shared target bodies, dependencies/change locality, proof boundary |
 | `PL-L3-EXACT-IMPLEMENTATION-PLAN` | transient exact working plan | Core `TM-EXACT-REALIZATION` internal production reasoning |
 | `PL-L4-LITERAL-CODE-AND-PACKAGE` | literal directly-integrable result | Core `RU-REAL-01`; package/app materialization where applicable |
 
-Ordinary depth movement is not a USER gate. Core Lens aliases such as historical `L1/L2/L3` are unrelated to this profile planning-depth vocabulary.
+Ordinary depth movement is not a USER gate and is not automatically orchestrated by this guide. The USER/current methodology composition chooses the useful depth/work concern.
 
-## 14. Semantic Readiness Questions
+## 15. Semantic Readiness Questions
 
-When this guide is consulted, ask only questions material to the current owner relationship:
+When this guide is consulted, ask only questions material to the current owner/Step relationship:
 
-1. Is an unresolved upstream semantic choice blocking several downstream decisions?
-2. Are Feature/Scenario/Screen peers inconsistent, or merely expressing different responsibilities?
-3. Is implementation-boundary uncertainty better evaluated before creating another durable owner?
-4. Would transient Domain/Slice discovery add bounded working value, or is current meaning already sufficient?
-5. Does a candidate durable Domain/Slice/Shared owner have independently useful responsibility?
-6. Is known Evolution concrete enough to affect current work, or merely speculative?
-7. Are remaining unknowns local enough that Exact Realization can resolve them safely?
-8. Did Evidence/Finding/change invalidate only a bounded downstream surface, or an upstream owner meaning?
+1. Is the subject current realized truth or unrealized target state?
+2. If unrealized, which Evolution Step owns the transition and which target bodies are materially affected?
+3. Is an unresolved upstream semantic choice blocking trustworthy downstream planning/Exact work?
+4. Are Feature/Scenario/Screen peer bodies inconsistent, or merely expressing different responsibilities?
+5. Would transient Domain/Slice discovery add bounded value, or is the future/current meaning already sufficient?
+6. Does a candidate Domain/Slice/Shared body represent independently useful post-Step responsibility?
+7. Are remaining unknowns local enough that Exact Realization can resolve them safely, or do they require Proposal/Question/Evidence first?
+8. Is the Step selected but still unrealized, and has any text accidentally treated selection as current-owner authority?
+9. After implementation, does Evidence establish the planned body strongly enough for materialization, or is revalidation required?
 
-These questions guide selected components; they do not replace Use-Case Registry selection or local component applicability gates.
+These questions guide selected components; they do not replace Use-Case Registry selection or local component applicability gates and are not automatically USER-facing interview questions.
 
-## 15. Revalidation
+## 16. Revalidation
 
 ```text
-Evidence / Finding / accepted upstream change
-→ identify most-upstream affected owner meaning
-→ revalidate that owner
-→ revalidate/invalidate dependent downstream meaning only where affected
+Evidence / Finding / USER amendment / implementation mismatch
+→ identify most-upstream affected current or future meaning
+→ if current implemented truth is challenged: revalidate current owner
+→ if selected future meaning is challenged: revalidate the Evolution Step / affected Target Body / Decision
 → preserve unaffected accepted meaning
-→ return to current Use-Case composition at a useful depth
+→ rebuild dependent exact work only where affected
 ```
 
 Do not compensate for an upstream inconsistency by adding lower-level implementation complexity.
 
-## 16. Retired Routes
+If a semantic correction is selected for an already-implemented system but is itself not yet implemented, that **new desired state** belongs in an Evolution Step until realized; selection alone does not rewrite current owner truth.
+
+## 17. Retired Routes
 
 These are not current SDS Target families:
 
@@ -159,4 +244,4 @@ TM-TEST-DESIGN
 TM-TEST-STRATEGY
 ```
 
-Compatibility surfaces must route to current owners and must not revive retired semantic authority.
+Compatibility surfaces must route to current contracts and must not revive retired semantic authority.

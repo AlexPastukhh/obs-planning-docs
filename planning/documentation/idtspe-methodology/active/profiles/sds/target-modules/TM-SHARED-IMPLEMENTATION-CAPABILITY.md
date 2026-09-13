@@ -9,29 +9,32 @@ Own one coherent reusable **non-end-to-end** implementation responsibility used 
 
 Ordinary explicit shared collaborators and concerns applied cross-cutting around Slice execution are the same Target family when the semantic responsibility is coherent. The difference is participation/application shape, not Target type.
 
+## Temporal Authority / Evolution-Step Hosting
+
+A canonical Shared owner describes a reusable capability and bindings that are **currently realized**. Future Shared responsibility or future consumer bindings are represented as a **Target Shared Body** inside `TM-EVOLUTION-STEP`.
+
+A future consumer may justify a future Target Shared Body or a prepare-now Decision, but it does not count as an already-realized current consumer and does not create current Shared authority ahead of implementation.
+
 ## Existence Gate
 
-Create/retain a Shared Capability when multiple selected Slice implementation requirements need the same coherent reusable responsibility.
+Resolve the gate against the state being represented.
 
-Typical evidence:
+For a **current Shared owner**, require current implemented evidence that the capability has coherent reusable responsibility. Multiple current Slice consumers are the normal strong signal; a retained existing capability with fewer current consumers still needs independent current responsibility rather than hypothetical future demand.
 
-```text
-2+ concrete selected Slice consumers
-```
-
-Allowed exception:
+For a **Target Shared Body inside an Evolution Step**, evaluate the complete post-Step target consumer set. Current consumers plus future Target Slice Bodies may justify the planned Shared responsibility when the selected/candidate route makes that reuse concrete.
 
 ```text
-1 current selected consumer
-+ a selected known Evolution Step establishes another concrete consumer
-+ the seam is materially justified now
+future consumer in Step
+≠ current consumer
 ```
+
+A prepare-now seam in current implementation requires its own current justification/Decision; the future Step is Evidence for that decision, not automatic current Shared-owner creation.
 
 Reject extraction for common utility dumping, superficial duplication, one-Slice concern without real reuse/evolution pressure, Slice-specific policy, Domain semantics, or framework technique without independently coherent responsibility.
 
 ## Source Contract
 
-Primary sources are selected `IR-SLICE-*` identities and concrete consumer Slices. Feature/Domain/Evolution/current implementation evidence may help classify ownership but do not replace the consumer requirement trace.
+Primary sources are selected `IR-SLICE-*` identities and concrete consumer Slices **in the state being represented**: current realized Slices for a current Shared owner, or current/Target Slice Bodies for a future Target Shared Body. Feature/Domain/Evolution/current implementation evidence may help classify ownership but do not replace the consumer requirement trace.
 
 ## Lens Profile
 
@@ -58,7 +61,7 @@ Declared Result Units are a possible semantic surface, not a mandatory form. App
 | Result Unit | Make explicit when | Omit / keep sparse when |
 |---|---|---|
 | `RU-SHARED-01` | when a coherent reusable non-end-to-end responsibility passes the Shared formation gate | omit the entire Shared owner when reuse/consumer pressure is insufficient |
-| `RU-SHARED-02` | when concrete selected Slice consumers need durable realization bindings to the Shared capability | omit hypothetical consumers and bindings not grounded in selected Slice IR |
+| `RU-SHARED-02` | when concrete Slice consumers in the represented current/target state need durable realization bindings to the Shared capability | omit hypothetical consumers and bindings not grounded in the corresponding current/Target Slice IR |
 | `RU-SHARED-03` | when durable implementation constraints are naturally owned by the Shared capability | omit when implementation choices remain local/transient; no proof RU is required by default |
 
 Do not create `N/A` placeholders. Re-evaluate a previously omitted Unit only when its trigger/materiality changes.
@@ -184,7 +187,7 @@ Shared candidate
 
 ## Evolution
 
-A future change to Shared capability target state belongs to `TM-EVOLUTION-STEP`. Current Shared owner records only current contract/IR/bindings and relevant Step references.
+A future change to Shared capability target state belongs to the applicable `TM-EVOLUTION-STEP` Target Shared Body. Current Shared owner records only realized current contract/IR/bindings and optional Step references for navigation/revalidation.
 
 ## Validators / Handoff
 
@@ -201,12 +204,18 @@ runtime/operability/migration meaning is placed as current IR, implementation de
 
 ## Consumer Invariant
 
-Durable architecturally meaningful consumption must trace to a selected Slice implementation need:
+Durable architecturally meaningful consumption must trace to a selected Slice implementation need **in the same represented state**:
 
 ```text
-TM-SLICE-OWNER / RU-SOWN-02 / IR-SLICE-*
-↓ selected realization binding
-TM-SHARED-IMPLEMENTATION-CAPABILITY / RU-SHARED-02
+current state:
+  current TM-SLICE-OWNER / IR-SLICE-*
+  ↓ realized binding
+  current Shared owner / RU-SHARED-02
+
+future Step state:
+  Target Slice Body / future IR-SLICE-*
+  ↓ selected future binding
+  Target Shared Body / RU-SHARED-02
 ```
 
 Not every import/helper/library is modeled.

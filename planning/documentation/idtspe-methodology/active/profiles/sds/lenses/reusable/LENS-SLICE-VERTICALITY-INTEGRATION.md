@@ -170,7 +170,7 @@ known selected Step
 → Forced Migration only when current structure cannot reasonably reach the target
 ```
 
-Known change is evidence, not current future-scope implementation.
+Known change is planning evidence, not current implementation and not current-owner truth. Under SDS, selected unrealized boundary/responsibility changes belong to the applicable Evolution Step Target Feature/Slice/Shared Bodies.
 
 ## Two Evidence Depths
 
@@ -184,7 +184,7 @@ Walk the whole concrete path and repeat the same method with stronger evidence. 
 
 ## Output / Disposition
 
-The Lens may KEEP, REFINE, CHALLENGE or leave OPEN a boundary, surface Shared/Domain pressure or produce Finding/Proposal pressure. It does not directly mutate accepted Feature/Slice owner meaning.
+The Lens may KEEP, REFINE, CHALLENGE or leave OPEN a boundary, surface Shared/Domain pressure or produce Finding/Proposal pressure. It does not directly mutate accepted Feature/Slice owner meaning. When the selected boundary is future/unrealized, its semantic destination is the Evolution Step Target Body; current owner mutation waits for realization/materialization.
 
 ## Guards
 
@@ -199,7 +199,7 @@ Lens decision pressure ≠ direct owner mutation
 
 ## Reusable Guidance Semantics
 
-This Lens follows `../../shared/reusable-guidance-model.md`: reusable questions / `RG-*` / `RR-*` / `RRC-*` / patterns are discovery guidance only; selected owner-local `IR-*` meaning is independently approved and never live-inherits later reusable-guidance edits.
+This Lens follows `../../shared/reusable-guidance-model.md`: reusable questions / `RG-*` / `RR-*` / `RRC-*` / patterns are discovery guidance only; selected owner-local `IR-*` meaning is independently approved in the correct current/future owner state and never live-inherits later reusable-guidance edits.
 
 ## Behavioral Coverage
 
@@ -263,7 +263,7 @@ Accepted Feature/Domain/Shared/Evolution meaning and current implementation evid
 
 `NONE_DIRECT` by default.
 
-Working Slice Discovery is non-persistent by default. Durable Slice/Shared owner representation is resolved by the Core Artifact Boundary Lens. A cross-Slice coverage/map view may be generated/embedded when independently useful but remains derived.
+Working Slice Discovery is non-persistent by default. Durable Slice/Shared meaning is represented in the current owner only when realized; unrealized future meaning is represented in the Evolution Step Target Body. Core Artifact Boundary Lens resolves physical representation. A cross-Slice coverage/map view may be generated/embedded when independently useful but remains derived.
 
 ## Composition / Escalation
 

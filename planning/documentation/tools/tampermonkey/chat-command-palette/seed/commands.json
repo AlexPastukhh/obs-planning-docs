@@ -158,7 +158,7 @@
       "permissionMode": "read-only-planning",
       "keyReminders": [
         "SDS is an IDTSPE profile, not a second runtime.",
-        "AI-proposed material candidates are Proposals by default; they become Decisions/current owner meaning only when actually selected.",
+        "AI-proposed material candidates are Proposals by default; selection makes them accepted planning meaning only through normal authority. Under SDS, unrealized selected future meaning stays in the applicable Evolution Step/Target Body until realization/materialization rather than becoming current-owner truth merely by selection.",
         "Do not infer a dedicated file from Target identity; use Documentation / Representation and P-14 when persistence is material.",
         "Bootstrap is governance orientation only: no Target Formation, invocation-mode selection or Target execution.",
         "This command plans/reviews only; it does not edit repository files, implement, test, commit or push."
@@ -420,8 +420,8 @@
         "собери идеи домена",
         "domain ideas"
       ],
-      "description": "legacy compatibility alias; supplied Domain ideas route into current transient discovery and/or durable Domain owner as justified",
-      "meaning": "Legacy alias for current Domain work. Treat supplied legacy-idea/candidate material as normal IDTSPE Proposal/Q/R/P material. Use TM-DOMAIN-DISCOVERY for transient discovery; promote relevant meaning to TM-DOMAIN-OWNER only when independent durable Domain ownership becomes useful. Do not revive an Ideas accumulator or unified shallow/deep Domain Target family.",
+      "description": "legacy compatibility alias; supplied Domain ideas route into transient discovery and then to the correct current or future Domain planning destination",
+      "meaning": "Legacy alias for Domain work. Treat supplied legacy-idea/candidate material as normal IDTSPE Proposal/Q/R/P material. Use TM-DOMAIN-DISCOVERY for transient discovery. For unrealized future state, selected durable Domain meaning belongs to a Target Domain Body in TM-EVOLUTION-STEP; direct TM-DOMAIN-OWNER authority describes realized/current truth. Do not revive an Ideas accumulator or unified shallow/deep Domain Target family.",
       "activeContextBehavior": "Use selected Feature behavior, current Domain facts, Slice/Shared pressures, Evidence/Evolution and existing Domain representation as relevant. Resolve discovery versus durable-owner need from the current situation; stop before unrelated Slice planning unless the user expands the work.",
       "traversalReadMode": "Reuse current reliable IDTSPE/SDS governance; refresh the selected Domain owner/module route when uncertain.",
       "ownerFiles": [
@@ -429,7 +429,7 @@
         "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-DOMAIN-OWNER.md",
         "planning/documentation/idtspe-methodology/active/profiles/sds/shared/idtspe-command-surface-contract.md"
       ],
-      "expectedOutput": "Current transient Domain discovery and/or durable Domain Owner result only when independently justified, with proportional Core State and handoffs; no legacy Domain-Ideas accumulator or shallow/deep family split.",
+      "expectedOutput": "Transient Domain discovery plus the correct temporal handoff: Evolution Step Target Domain Body for selected-but-unrealized meaning, or current Domain-owner revalidation for realized truth. No legacy Domain-Ideas accumulator or shallow/deep family split.",
       "permissionMode": "read-only-planning",
       "keyReminders": [
         "Legacy compatibility alias only; the canonical material-planning runtime is IDTSPE.",
@@ -667,7 +667,7 @@
       "permissionMode": "read-only-planning",
       "keyReminders": [
         "SDS is an IDTSPE profile, not a second runtime.",
-        "AI-proposed material candidates are Proposals by default; they become Decisions/current owner meaning only when actually selected.",
+        "AI-proposed material candidates are Proposals by default; selection makes them accepted planning meaning only through normal authority. Under SDS, unrealized selected future meaning stays in the applicable Evolution Step/Target Body until realization/materialization rather than becoming current-owner truth merely by selection.",
         "Do not infer a dedicated file from Target identity; use Documentation / Representation and P-14 when persistence is material.",
         "This command plans/reviews only; it does not edit repository files, implement, test, commit or push."
       ],
@@ -706,7 +706,7 @@
       "permissionMode": "read-only-planning",
       "keyReminders": [
         "SDS is an IDTSPE profile, not a second runtime.",
-        "AI-proposed material candidates are Proposals by default; they become Decisions/current owner meaning only when actually selected.",
+        "AI-proposed material candidates are Proposals by default; selection makes them accepted planning meaning only through normal authority. Under SDS, unrealized selected future meaning stays in the applicable Evolution Step/Target Body until realization/materialization rather than becoming current-owner truth merely by selection.",
         "Do not infer a dedicated file from Target identity; use Documentation / Representation and P-14 when persistence is material.",
         "This command plans/reviews only; it does not edit repository files, implement, test, commit or push."
       ],
@@ -783,7 +783,7 @@
       "permissionMode": "read-only-planning",
       "keyReminders": [
         "SDS is an IDTSPE profile, not a second runtime.",
-        "AI-proposed material candidates are Proposals by default; they become Decisions/current owner meaning only when actually selected.",
+        "AI-proposed material candidates are Proposals by default; selection makes them accepted planning meaning only through normal authority. Under SDS, unrealized selected future meaning stays in the applicable Evolution Step/Target Body until realization/materialization rather than becoming current-owner truth merely by selection.",
         "Do not infer a dedicated file from Target identity; use Documentation / Representation and P-14 when persistence is material.",
         "This command plans/reviews only; it does not edit repository files, implement, test, commit or push."
       ],
@@ -819,11 +819,11 @@
         "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-DOMAIN-DISCOVERY.md",
         "planning/documentation/idtspe-methodology/active/profiles/sds/shared/idtspe-command-surface-contract.md"
       ],
-      "expectedOutput": "Transient Domain discovery findings/candidates, material rules/invariants/boundaries, proportional Core State and promotion handoffs; may validly end without a durable Domain owner.",
+      "expectedOutput": "Transient Domain discovery findings/candidates, material rules/invariants/boundaries and proportional Core State. For unrealized work, selected durable Domain meaning hands off to Target Domain Body/Bodies in the active Evolution Step; direct current Domain-owner handoff applies only to realized/current-state revalidation. A zero-owner/body result remains valid.",
       "permissionMode": "read-only-planning",
       "keyReminders": [
         "SDS is an IDTSPE profile, not a second runtime.",
-        "AI-proposed material candidates are Proposals by default; they become Decisions/current owner meaning only when actually selected.",
+        "AI-proposed material candidates are Proposals by default; selection makes them accepted planning meaning only through normal authority. Under SDS, unrealized selected future meaning stays in the applicable Evolution Step/Target Body until realization/materialization rather than becoming current-owner truth merely by selection.",
         "Do not infer a dedicated file from Target identity; use Documentation / Representation and P-14 when persistence is material.",
         "This command plans/reviews only; it does not edit repository files, implement, test, commit or push."
       ],
@@ -968,7 +968,7 @@
       "permissionMode": "read-only-planning",
       "keyReminders": [
         "SDS is an IDTSPE profile, not a second runtime.",
-        "AI-proposed material candidates are Proposals by default; they become Decisions/current owner meaning only when actually selected.",
+        "AI-proposed material candidates are Proposals by default; selection makes them accepted planning meaning only through normal authority. Under SDS, unrealized selected future meaning stays in the applicable Evolution Step/Target Body until realization/materialization rather than becoming current-owner truth merely by selection.",
         "Do not infer a dedicated file from Target identity; use Documentation / Representation and P-14 when persistence is material.",
         "This command plans/reviews only; it does not edit repository files, implement, test, commit or push."
       ],
@@ -1079,8 +1079,8 @@
         "idtspe пропозалы"
       ],
       "description": "Work through the current IDTSPE context with canonical Proposal/Q-R-P/Decision lifecycle under USER-gated interaction.",
-      "meaning": "Apply the Session USER-gated proposal-driven interaction policy and compose the current IDTSPE Work Context through canonical Core Proposal/Decision and Q/R/P lifecycle semantics. Material candidate Unit/Target/owner meaning remains Proposal until selected through the canonical lifecycle; material unresolved Question/Risk/Problem meaning remains governed by the Q/R/P owner. This command creates no parallel Proposal, Decision or Q/R/P semantics.",
-      "activeContextBehavior": "Use the current Work Context and re-evaluate UC-IDTSPE-COMPOSE-CURRENT-WORK proportionally. Express material candidate meaning as formal IDTSPE Proposal State only when lifecycle/addressability/review is useful, link material Q/R/P through their canonical owner, perform proportional candidate review, and wait for USER selection at material gates. Selected meaning may then flow to Decision / Target Result / natural-owner state under normal authority.",
+      "meaning": "Apply the Session USER-gated proposal-driven interaction policy and compose the current IDTSPE Work Context through canonical Core Proposal/Decision, USER-input intake and Q/R/P lifecycle semantics. Before presenting a material formal or conversational Proposal, resolve any genuinely required USER-only grounding through the minimum useful clarification; then form/review the Proposal. Material candidate Unit/Target/owner meaning remains Proposal until selected through the canonical lifecycle; material unresolved Question/Risk/Problem meaning remains governed by the Q/R/P owner. This command creates no parallel Proposal, Decision or Q/R/P semantics.",
+      "activeContextBehavior": "Use the current Work Context and re-evaluate UC-IDTSPE-COMPOSE-CURRENT-WORK proportionally. Reuse available Sources/USER input first; when a material USER-only grounding gap would materially change the candidate, ask the minimum useful clarification and intake the answer before presenting the affected Proposal. Express material candidate meaning as formal IDTSPE Proposal State only when lifecycle/addressability/review is useful, link material Q/R/P through their canonical owner, perform proportional candidate review, and wait for USER selection at material gates. Selected meaning then flows to its normal planning destination; under SDS, unrealized selected future meaning remains in the applicable Evolution Step/Target Body until realization/materialization rather than becoming current-owner truth merely by selection.",
       "traversalReadMode": "Reuse current reliable Core governance. Otherwise read the current composition/state model plus canonical Proposal/Decision and Q/R/P lifecycle owners, and the Session USER-gated interaction owner. Load profile/Target/Lens detail only when the current composition makes it applicable.",
       "ownerFiles": [
         "planning/documentation/idtspe-methodology/active/idtspe-core/shared/idtspe-command-surface-contract.md",
@@ -1088,16 +1088,17 @@
         "planning/documentation/idtspe-methodology/active/idtspe-core/shared/maintain-current-work-state-use-case.md",
         "planning/documentation/idtspe-methodology/active/idtspe-core/shared/idtspe-unit-and-target-step-result-model.md",
         "planning/documentation/idtspe-methodology/active/idtspe-core/shared/proposal-and-decision-lifecycle-contract.md",
+        "planning/documentation/idtspe-methodology/active/idtspe-core/shared/user-input-decision-and-answer-intake-rule.md",
         "planning/documentation/idtspe-methodology/active/idtspe-core/shared/qrp-lifecycle-and-review-contract.md",
         "planning/session/principles-and-terminology.md",
         "planning/session/session-runtime-contract.md"
       ],
-      "expectedOutput": "Current useful IDTSPE work is USER-gated and represented canonically: material candidate meaning remains Proposal, relevant Q/R/P remains linked through its lifecycle, proportional candidate review is performed when useful, and only USER-selected/otherwise-authoritatively selected meaning becomes Decision / Target Result / natural-owner state.",
+      "expectedOutput": "Current useful IDTSPE work is USER-gated and represented canonically: required USER-only grounding is clarified before the affected material Proposal, material candidate meaning remains Proposal until selected, relevant Q/R/P remains linked through its lifecycle, and selected meaning is integrated into the correct planning/current destination without treating selection as realization.",
       "permissionMode": "read-only-planning-unless-separately-authorized",
       "keyReminders": [
         "The Session policy owns when AI must stop for USER input; IDTSPE Core owns formal Proposal/Q/R/P/Decision semantics.",
-        "AI recommendation is not selection; Proposal becomes Decision/current owner meaning only through normal authority.",
-        "Do not manufacture formal Proposal State for trivial/local candidate text that does not benefit from lifecycle/addressability/review.",
+        "AI recommendation is not selection; Proposal becomes selected Decision/planning meaning only through normal authority, and under SDS unrealized selected meaning remains Evolution Step target state until realization/materialization.",
+        "Ask a minimum grounding clarification only when material USER-only information/authority is actually required; do not manufacture questions or formal Proposal State for trivial/local candidate text.",
         "Q/R/P remains secondary material attached to the actual current owner and uses the canonical Q/R/P lifecycle.",
         "This command does not itself grant repository/file/application mutation, commit or push permission."
       ],
@@ -1202,7 +1203,7 @@
       "permissionMode": "read-only-planning",
       "keyReminders": [
         "SDS is an IDTSPE profile, not a second runtime.",
-        "AI-proposed material candidates are Proposals by default; they become Decisions/current owner meaning only when actually selected.",
+        "AI-proposed material candidates are Proposals by default; selection makes them accepted planning meaning only through normal authority. Under SDS, unrealized selected future meaning stays in the applicable Evolution Step/Target Body until realization/materialization rather than becoming current-owner truth merely by selection.",
         "Do not infer a dedicated file from Target identity; use Documentation / Representation and P-14 when persistence is material.",
         "This command plans/reviews only; it does not edit repository files, implement, test, commit or push."
       ],
@@ -1242,7 +1243,7 @@
       "permissionMode": "read-only-planning",
       "keyReminders": [
         "SDS is an IDTSPE profile, not a second runtime.",
-        "AI-proposed material candidates are Proposals by default; they become Decisions/current owner meaning only when actually selected.",
+        "AI-proposed material candidates are Proposals by default; selection makes them accepted planning meaning only through normal authority. Under SDS, unrealized selected future meaning stays in the applicable Evolution Step/Target Body until realization/materialization rather than becoming current-owner truth merely by selection.",
         "Do not infer a dedicated file from Target identity; use Documentation / Representation and P-14 when persistence is material.",
         "This command plans/reviews only; it does not edit repository files, implement, test, commit or push."
       ],
@@ -1271,18 +1272,18 @@
         "план слайса приложения"
       ],
       "description": "implementation slice",
-      "meaning": "Run TM-IMPLEMENTATION-SLICE for transient whole-Slice implementation discovery. Resolve one bounded end-to-end realization from selected Feature behavior through semantic application entry/result, concrete step-by-step realization, material Domain/Shared/effect/recovery relations, integration proof and Evolution/OPEN pressure. Promote to TM-SLICE-OWNER only when durable Slice responsibility is independently useful.",
+      "meaning": "Run TM-IMPLEMENTATION-SLICE for transient whole-Slice implementation discovery. Resolve one bounded end-to-end realization from selected Feature/Step behavior through semantic application entry/result, concrete step-by-step realization, material Domain/Shared/effect/recovery relations, integration proof and Evolution/OPEN pressure. For unrealized work, independently useful durable Slice responsibility becomes a Target Slice Body in the active Evolution Step; it becomes current TM-SLICE-OWNER authority only after realization/materialization.",
       "activeContextBehavior": "Treat the explicit command as selected invocation intent inside always-active IDTSPE. Re-evaluate current Use-Case composition, resolve/reuse a natural Target/context only when useful, confirm the selected Target Module Entry Point/local applicability gate, and then resolve CREATE/REFINE/EXTEND/REVALIDATE/REPAIR from actual current Target state. Do not create a Target or Result Unit merely because the command exists.",
       "traversalReadMode": "Reuse current reliable IDTSPE/SDS governance; targeted refresh of the selected owner route when uncertain; full bootstrap only when no reliable sufficient governance context exists.",
       "ownerFiles": [
         "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-IMPLEMENTATION-SLICE.md",
         "planning/documentation/idtspe-methodology/active/profiles/sds/shared/idtspe-command-surface-contract.md"
       ],
-      "expectedOutput": "Applicable projection: RU-SLICE-01 Whole-Slice Responsibility / Candidate Structure; RU-SLICE-02 Semantic Application Entry / Result Boundary; RU-SLICE-03 Step-by-Step End-to-End Realization; RU-SLICE-04 Feature Integration Proof; RU-SLICE-05 Evolution / OPEN Slice Pressure. Zero/one durable Slice Owner handoff only when justified.",
+      "expectedOutput": "Applicable projection: RU-SLICE-01 Whole-Slice Responsibility / Candidate Structure; RU-SLICE-02 Semantic Application Entry / Result Boundary; RU-SLICE-03 Step-by-Step End-to-End Realization; RU-SLICE-04 Feature Integration Proof; RU-SLICE-05 Evolution / OPEN Slice Pressure. Zero/one Target Slice Body handoff inside an Evolution Step for unrealized work, or current Slice-owner revalidation for already-realized truth.",
       "permissionMode": "read-only-planning",
       "keyReminders": [
         "SDS is an IDTSPE profile, not a second runtime.",
-        "AI-proposed material candidates are Proposals by default; they become Decisions/current owner meaning only when actually selected.",
+        "AI-proposed material candidates are Proposals by default; selection makes them accepted planning meaning only through normal authority. Under SDS, unrealized selected future meaning stays in the applicable Evolution Step/Target Body until realization/materialization rather than becoming current-owner truth merely by selection.",
         "Do not infer a dedicated file from Target identity; use Documentation / Representation and P-14 when persistence is material.",
         "This command plans/reviews only; it does not edit repository files, implement, test, commit or push."
       ],
@@ -1382,7 +1383,7 @@
         "спланируй сквозную ответственность"
       ],
       "description": "legacy compatibility alias for Shared Implementation Capability / sharedness evaluation",
-      "meaning": "Legacy alias for current shared/cross-cutting planning. Route genuine reusable multi-consumer implementation responsibility to TM-SHARED-IMPLEMENTATION-CAPABILITY after its existence gate; otherwise keep the concern in its natural owner and use the Core Shared/Cross-Cutting Lens when evaluation is useful. TM-CROSS-CUTTING-CONCERN is retired.",
+      "meaning": "Legacy alias for shared/cross-cutting planning. Route genuine reusable multi-consumer implementation responsibility through TM-SHARED-IMPLEMENTATION-CAPABILITY after its temporal existence gate. Future consumers/capability meaning belong to a Target Shared Body in an Evolution Step; current Shared authority contains realized consumers only. Otherwise keep the concern in its natural owner/state and use the Core Shared/Cross-Cutting Lens when useful. TM-CROSS-CUTTING-CONCERN is retired.",
       "activeContextBehavior": "Treat this legacy trigger as explicit compatibility intent inside always-active IDTSPE. Re-evaluate current Use-Case composition and route only to the current owners listed here; preserve local applicability/materiality gates and do not revive the retired Target family.",
       "traversalReadMode": "Reuse current reliable IDTSPE/SDS governance; targeted refresh of the selected owner route when uncertain; full bootstrap only when no reliable sufficient governance context exists.",
       "ownerFiles": [
@@ -1390,7 +1391,7 @@
         "planning/documentation/idtspe-methodology/active/idtspe-core/lenses/reusable/LENS-SHARED-CROSS-CUTTING-RESPONSIBILITY.md",
         "planning/documentation/idtspe-methodology/active/profiles/sds/shared/idtspe-command-surface-contract.md"
       ],
-      "expectedOutput": "A current Shared Capability result only when genuine shared-consumer pressure justifies it; otherwise a natural-owner/local result. No retired Cross-Cutting Target is created.",
+      "expectedOutput": "A Shared Capability result in the correct temporal host: current owner for realized reusable responsibility or Target Shared Body for unrealized future responsibility; otherwise a natural-owner/local result. No retired Cross-Cutting Target is created.",
       "permissionMode": "read-only-planning",
       "keyReminders": [
         "Legacy compatibility alias only; do not expose as a primary methodology surface.",
@@ -1476,7 +1477,7 @@
       "permissionMode": "read-only-planning",
       "keyReminders": [
         "SDS is an IDTSPE profile, not a second runtime.",
-        "AI-proposed material candidates are Proposals by default; they become Decisions/current owner meaning only when actually selected.",
+        "AI-proposed material candidates are Proposals by default; selection makes them accepted planning meaning only through normal authority. Under SDS, unrealized selected future meaning stays in the applicable Evolution Step/Target Body until realization/materialization rather than becoming current-owner truth merely by selection.",
         "Do not infer a dedicated file from Target identity; use Documentation / Representation and P-14 when persistence is material.",
         "This command plans/reviews only; it does not edit repository files, implement, test, commit or push."
       ],
@@ -1582,7 +1583,7 @@
       "permissionMode": "read-only-planning",
       "keyReminders": [
         "SDS is an IDTSPE profile, not a second runtime.",
-        "AI-proposed material candidates are Proposals by default; they become Decisions/current owner meaning only when actually selected.",
+        "AI-proposed material candidates are Proposals by default; selection makes them accepted planning meaning only through normal authority. Under SDS, unrealized selected future meaning stays in the applicable Evolution Step/Target Body until realization/materialization rather than becoming current-owner truth merely by selection.",
         "Do not infer a dedicated file from Target identity; use Documentation / Representation and P-14 when persistence is material.",
         "This command plans/reviews only; it does not edit repository files, implement, test, commit or push."
       ],
@@ -1673,7 +1674,7 @@
       "permissionMode": "read-only-planning",
       "keyReminders": [
         "SDS is an IDTSPE profile, not a second runtime.",
-        "AI-proposed material candidates are Proposals by default; they become Decisions/current owner meaning only when actually selected.",
+        "AI-proposed material candidates are Proposals by default; selection makes them accepted planning meaning only through normal authority. Under SDS, unrealized selected future meaning stays in the applicable Evolution Step/Target Body until realization/materialization rather than becoming current-owner truth merely by selection.",
         "Do not infer a dedicated file from Target identity; use Documentation / Representation and P-14 when persistence is material.",
         "This command plans/reviews only; it does not edit repository files, implement, test, commit or push."
       ],
@@ -1701,7 +1702,7 @@
         "спланируй общее требование"
       ],
       "description": "legacy compatibility alias for owner-local implementation-requirement discovery",
-      "meaning": "Legacy alias for requirement planning. TM-REQUIREMENT is retired: evaluate whether material implementation constraints need to become/change/retire owner-local IR/PFR through LENS-IMPLEMENTATION-REQUIREMENTS-DISCOVERY and the requirement-ownership rule. A Shared Capability is introduced only if reusable multi-consumer implementation responsibility independently passes its existence gate.",
+      "meaning": "Legacy alias for requirement planning. TM-REQUIREMENT is retired: evaluate whether material implementation constraints need to become/change/retire owner-local IR/PFR through LENS-IMPLEMENTATION-REQUIREMENTS-DISCOVERY and the requirement-ownership rule. Future IR/PFR for unrealized state stays in the corresponding Evolution Step Target Body; current owner Requirements describe realized truth. A Shared Capability/current or Target Shared Body is formed only through its temporal existence gate.",
       "activeContextBehavior": "Treat this legacy trigger as explicit compatibility intent inside always-active IDTSPE. Re-evaluate current Use-Case composition and route only to the current owners listed here; preserve local applicability/materiality gates and do not revive the retired Target family.",
       "traversalReadMode": "Reuse current reliable IDTSPE/SDS governance; targeted refresh of the selected owner route when uncertain; full bootstrap only when no reliable sufficient governance context exists.",
       "ownerFiles": [
@@ -1710,7 +1711,7 @@
         "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-SHARED-IMPLEMENTATION-CAPABILITY.md",
         "planning/documentation/idtspe-methodology/active/profiles/sds/shared/idtspe-command-surface-contract.md"
       ],
-      "expectedOutput": "Owner-local IR/PFR disposition and, only when independently justified, a Shared Capability binding. No standalone Requirement Target.",
+      "expectedOutput": "Owner-family IR/PFR disposition in the correct temporal host: current realized owner or Evolution Step Target Body, plus a Shared Capability binding only when independently justified. No standalone Requirement Target.",
       "permissionMode": "read-only-planning",
       "keyReminders": [
         "Legacy compatibility alias only; do not expose as a primary methodology surface.",
@@ -1753,7 +1754,7 @@
       "permissionMode": "read-only-planning",
       "keyReminders": [
         "SDS is an IDTSPE profile, not a second runtime.",
-        "AI-proposed material candidates are Proposals by default; they become Decisions/current owner meaning only when actually selected.",
+        "AI-proposed material candidates are Proposals by default; selection makes them accepted planning meaning only through normal authority. Under SDS, unrealized selected future meaning stays in the applicable Evolution Step/Target Body until realization/materialization rather than becoming current-owner truth merely by selection.",
         "Do not infer a dedicated file from Target identity; use Documentation / Representation and P-14 when persistence is material.",
         "This command plans/reviews only; it does not edit repository files, implement, test, commit or push."
       ],
@@ -2047,18 +2048,19 @@
         "proposal driven"
       ],
       "description": "Enable strict USER-gated proposal-driven interaction for the current task.",
-      "meaning": "Apply the canonical Session USER-gated proposal-driven interaction policy to the current task. AI may do only proportionate low-cost read-only investigation needed to frame the next useful AI Proposal, then must stop at material interaction boundaries for USER selection. This command changes interaction gating only and does not create formal IDTSPE Proposal semantics.",
+      "meaning": "Apply the canonical Session USER-gated proposal-driven interaction policy to the current task. AI may do proportionate low-cost read-only investigation needed to ground the next useful AI Proposal. If a material USER-only fact/constraint/preference/choice is required to formulate that Proposal adequately, AI asks the minimum useful clarification first, incorporates the answer, and only then presents/refines the Proposal. This command changes interaction gating only and does not create formal IDTSPE Proposal semantics.",
       "activeContextBehavior": "Apply the stricter gating policy to the current task from this invocation onward until the USER explicitly cancels or weakens it, or the task ends. Preserve already accepted task meaning and permissions; do not reinterpret prior AI suggestions as approved Proposals.",
       "traversalReadMode": "Reuse the ambient Session contract when current; otherwise read the Session principles/runtime sections defining AI Proposal, Real Gate, Authorization Boundary and USER-gated proposal-driven interaction. Do not traverse IDTSPE Proposal owners merely because this interaction mode is active.",
       "ownerFiles": [
         "planning/session/principles-and-terminology.md",
         "planning/session/session-runtime-contract.md"
       ],
-      "expectedOutput": "The current task is explicitly USER-gated: cheap Proposal-framing research may proceed autonomously, while each material decision/clarification/direction/costly work/artifact/mutation boundary is surfaced as an AI Proposal and only the selected Proposal scope proceeds.",
+      "expectedOutput": "The current task is explicitly USER-gated: cheap Proposal-framing research may proceed autonomously; material USER-only grounding gaps are resolved through the minimum useful clarification before the affected Proposal; then each material decision/direction/costly-work/artifact/mutation Proposal is surfaced for USER selection and only the selected Proposal scope proceeds.",
       "permissionMode": "interaction-policy-only-no-mutation-grant",
       "keyReminders": [
         "This is a Session interaction policy, not a second planning runtime and not a formal IDTSPE Proposal mode.",
         "Do not gate trivial mechanical substeps; gate material boundaries defined by the Session owner.",
+        "Before a material Proposal, ask only the minimum USER clarification genuinely required for adequate grounding; do not wrap that question in a Proposal and do not ask when Sources are sufficient.",
         "Show alternatives only when materially distinct alternatives are genuinely useful.",
         "Approval authorizes only the selected Proposal scope; the next material boundary requires a new Proposal.",
         "The command itself grants no repository/file/application mutation, commit or push permission."
@@ -2091,7 +2093,7 @@
       "permissionMode": "read-only-planning",
       "keyReminders": [
         "SDS is an IDTSPE profile, not a second runtime.",
-        "AI-proposed material candidates are Proposals by default; they become Decisions/current owner meaning only when actually selected.",
+        "AI-proposed material candidates are Proposals by default; selection makes them accepted planning meaning only through normal authority. Under SDS, unrealized selected future meaning stays in the applicable Evolution Step/Target Body until realization/materialization rather than becoming current-owner truth merely by selection.",
         "Do not infer a dedicated file from Target identity; use Documentation / Representation and P-14 when persistence is material.",
         "This command plans/reviews only; it does not edit repository files, implement, test, commit or push."
       ],
@@ -2482,7 +2484,7 @@
       ],
       "description": "Classify material findings by impact and semantic resolution escalation, then route them to the correct owner/lifecycle.",
       "meaning": "Review one or more current Finding Candidates through canonical IDTSPE Finding Disposition. Keep Review Priority (blast radius) separate from Resolution Escalation (RE-0 deterministic correction through RE-4 upstream semantic change), identify the earliest affected semantic owner, and show exactly what USER review/selection is actually required without creating a parallel Finding lifecycle.",
-      "activeContextBehavior": "Use current checked owners/Evidence and classify only material findings. Prefer the smallest justified Resolution Escalation. For RE-0/RE-1 show deterministic/local correction meaning without inventing a new architecture/product choice; for RE-2 route candidate semantic change to the current natural owner; for RE-3 revalidate the earliest affected upstream owner; for RE-4 surface the upstream Proposal/Decision/Requirement change before dependent work. Preserve unaffected accepted meaning.",
+      "activeContextBehavior": "Use current checked owners/Evidence and classify only material findings. Prefer the smallest justified Resolution Escalation. For RE-0/RE-1 show deterministic/local correction meaning without inventing a new architecture/product choice; for RE-2/RE-4 identify the correct semantic decision surface, but do not confuse selection with current-owner mutation. Under SDS, a selected correction that is still unrealized is integrated into the applicable Evolution Step Target Body until realization/materialization. For RE-3 revalidate the earliest affected upstream owner. Preserve unaffected accepted meaning.",
       "traversalReadMode": "Reuse current reliable Core governance. Read Finding Disposition, AI Reviewability, Proposal/Decision, Q/R/P and Revalidation owners as needed. Load the active profile's depth/Requirement/owner contracts only when a finding actually depends on profile-specific semantics; do not hard-code SDS into the generic Core surface.",
       "ownerFiles": [
         "planning/documentation/idtspe-methodology/active/idtspe-core/shared/idtspe-command-surface-contract.md",
@@ -2500,7 +2502,8 @@
         "RE-0 means current accepted meaning already determines one correction; do not manufacture a new semantic Decision.",
         "A detail at architecture depth is not automatically an architecture Decision. Escalate only when accepted owner meaning itself must change or be revalidated.",
         "Under proposal-driven interaction an AI Proposal may gate the next material action at any RE category, but formal IDTSPE Proposal State is created only when candidate semantic meaning benefits from lifecycle/addressability/review.",
-        "When an active profile defines Requirement/depth semantics, use that profile owner only after the generic Finding disposition identifies it as applicable.",
+        "When an active profile defines Requirement/depth/temporal-host semantics, use that profile owner only after the generic Finding disposition identifies it as applicable.",
+        "Resolution escalation identifies the semantic decision distance; it does not by itself mean current-owner state changes before the selected correction is realized.",
         "Do not mutate files/application state, commit or push. This command reviews/routes findings only."
       ],
       "userTarget": "<findings / review result / current work context to classify and disposition>",
@@ -2538,7 +2541,7 @@
       "permissionMode": "read-only-planning",
       "keyReminders": [
         "SDS is an IDTSPE profile, not a second runtime.",
-        "AI-proposed material candidates are Proposals by default; they become Decisions/current owner meaning only when actually selected.",
+        "AI-proposed material candidates are Proposals by default; selection makes them accepted planning meaning only through normal authority. Under SDS, unrealized selected future meaning stays in the applicable Evolution Step/Target Body until realization/materialization rather than becoming current-owner truth merely by selection.",
         "Do not infer a dedicated file from Target identity; use Documentation / Representation and P-14 when persistence is material.",
         "This command plans/reviews only; it does not edit repository files, implement, test, commit or push."
       ],
@@ -2577,7 +2580,7 @@
       "permissionMode": "read-only-planning",
       "keyReminders": [
         "SDS is an IDTSPE profile, not a second runtime.",
-        "AI-proposed material candidates are Proposals by default; they become Decisions/current owner meaning only when actually selected.",
+        "AI-proposed material candidates are Proposals by default; selection makes them accepted planning meaning only through normal authority. Under SDS, unrealized selected future meaning stays in the applicable Evolution Step/Target Body until realization/materialization rather than becoming current-owner truth merely by selection.",
         "Do not infer a dedicated file from Target identity; use Documentation / Representation and P-14 when persistence is material.",
         "This command plans/reviews only; it does not edit repository files, implement, test, commit or push."
       ],

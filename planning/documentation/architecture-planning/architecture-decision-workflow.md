@@ -88,7 +88,7 @@ Rejected Complexity
 Revisit Trigger when useful
 ```
 
-Selected meaning belongs in the narrowest real semantic/architecture owner; the decision record must not become a competing definition of Domain/Scenario/Requirement truth.
+Selected meaning belongs in the narrowest real semantic/architecture **planning destination**. If that meaning changes already-realized current truth only after future implementation, the active profile must host it as future state rather than rewriting the current owner immediately. Under SDS, such unrealized selected meaning is integrated into the applicable Evolution Step Target Body. The decision record must not become a competing definition of Domain/Scenario/Requirement truth.
 
 
 ## Concern / Decision Trace — When Material
@@ -106,6 +106,20 @@ Architecture Q/R/P / Q/R/P Group
 ```
 
 Do not infer product/user priority or risk tolerance merely because one architecture route is technically cleaner. If user-owned input is missing, keep it explicit in AI Comment.
+
+## 6A. SDS Temporal Handoff — When Applicable
+
+For future SDS software architecture:
+
+```text
+Architecture Proposal / Decision
+→ affected Evolution Step
+→ corresponding Target Owner Body/Bodies
+→ Exact Realization / Evidence
+→ Target Owner Materialization only after the state is actually realized
+```
+
+This keeps Architecture Planning responsible for architecture reasoning while SDS remains responsible for future application target-state hosting.
 
 ## 7. Exit Criteria
 

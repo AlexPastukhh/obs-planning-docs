@@ -20,6 +20,22 @@ Concept, responsibility boundary, proportional existing-solution research, optio
 
 Use this Target conditionally when the own-Application contribution, responsibility boundary or feasibility is materially unsettled or challenged. Reuse/skip it when trusted current Application meaning is already sufficient and unchanged.
 
+## Temporal Authority / Evolution-Step Hosting
+
+This module defines the **shape and production method** of Application Definition meaning; it does not make unrealized selected meaning current truth by itself.
+
+```text
+review/revalidate an already-realized Application contribution
+→ direct current Application owner use is valid
+
+plan a new/changed Application contribution that is not yet realized
+→ use this module in a supporting role inside TM-EVOLUTION-STEP
+→ produce a Target Application Body
+→ keep current Application truth unchanged until realization/materialization
+```
+
+For greenfield software, no current Application owner is also a valid current state. A selected Target Application Body becomes current authority only after the Step is realized and required proof/revalidation succeeds.
+
 
 
 ## High-Level Example — Self-Contained Walkthrough
@@ -96,7 +112,7 @@ optional Refined Core Real-Life Scenario
 material feasibility findings
 ```
 
-This becomes a Source for Feature/Scenario/Screen planning and optional Prototype work.
+When this walkthrough describes an unrealized application, this becomes a Target Application Body inside the active Evolution Step and a Source for future Feature/Scenario/Screen body planning and optional Prototype work. It becomes current Application authority only after realization/materialization.
 
 ### Boundary / Lesson
 
@@ -422,9 +438,9 @@ WHEN: accepted Application Definition is used downstream
 GUIDANCE: REQUIRED
 PERSISTENCE_GUIDANCE: REQUIRED
 PLACEMENT_DIRECTIVE: PLACE
-SEMANTIC_OWNER: current Application Definition Target
-REPRESENTATION: EXISTING_OR_NEW_CANONICAL_ARTIFACT
-FILE_OR_ARTIFACT: <application-definition-owner>
+SEMANTIC_OWNER: current Application Definition owner when realized; otherwise active TM-EVOLUTION-STEP / Target Application Body
+REPRESENTATION: CURRENT_OWNER_OR_EVOLUTION_STEP_REPRESENTATION
+FILE_OR_ARTIFACT: <application-definition-owner-or-evolution-step-owner>
 CONTENT: concept; responsibility boundary; build/buy/adapt/integrate position; core/secondary real-life scenario inventory; feasibility conclusion
 GUIDANCE_SOURCE: TARGET_MODULE
 RESOLVER: P-14 / TF-10
@@ -465,7 +481,7 @@ RESOLVER: P-14 / TF-10
 
 Shell placement semantics: [`artifact-placement-and-idtspe-response-contract.md`](../../../idtspe-core/shared/artifact-placement-and-idtspe-response-contract.md).
 
-**REQUIRED** — an accepted Application Definition used downstream must have one canonical persistent artifact owner (existing or new). Its concept, responsibility boundary, build/buy/adapt/integrate position and current core-real-life-scenario inventory must not exist only in chat history.
+**REQUIRED** — an accepted Application Definition used downstream must have one canonical persistent representation in its **actual semantic owner**. For realized/current truth this is the current Application owner; for unrealized future state it is the active Evolution Step / Target Application Body. Do not create a current Application owner artifact ahead of realization merely because the future body is accepted.
 
 **PREFERRED** — substantial market/reference research may use a supporting Evidence artifact when it is too large/volatile for the canonical Application Definition. Research observations surface Finding Candidates; Core Finding Disposition may resolve accepted material as Evidence/Proposals or another appropriate State, but never as a second application-semantic owner merely because it came from reference research.
 

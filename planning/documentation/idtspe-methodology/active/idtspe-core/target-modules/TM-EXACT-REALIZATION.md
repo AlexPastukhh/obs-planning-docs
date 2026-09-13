@@ -82,6 +82,21 @@ user authority for integration / verification / repair / destination mutation
 
 `TF-04 SOURCE_SET` remains authority for the concrete Target. The lists above are source archetypes, not a closed whitelist.
 
+### Active-profile future-state handoff
+
+When an active profile defines a dedicated future-transition owner, the selected future target state is a valid accepted upstream planning Source for Exact without becoming current-owner truth first.
+
+For current SDS:
+
+```text
+selected TM-EVOLUTION-STEP target state
+→ Exact Realization
+→ authorized integration/proof Evidence
+→ SDS Target Owner Materialization after the realized state is established
+```
+
+This Core module produces/integrates the exact result; it does not itself redefine SDS current natural-owner authority or collapse selection into realization.
+
 ## Decision-Driver Candidates
 
 Target Goal comes from the current Target context. Typical reusable driver candidates include:

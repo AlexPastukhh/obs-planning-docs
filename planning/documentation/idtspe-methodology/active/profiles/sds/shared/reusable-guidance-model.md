@@ -85,12 +85,23 @@ The selected answer belongs to the natural consuming owner/context, not to this 
 
 ## Local adoption / authority rule
 
-A reusable Requirement becomes durable owner-local meaning only when:
+A reusable Requirement becomes selected owner-local meaning only when:
 
 ```text
 local problem makes it relevant
 + applicability is confirmed
-+ the natural owner selects/adopts it
++ the natural owner family/state selects/adopts it
+```
+
+Temporal placement is separate from selection:
+
+```text
+realized/current owner state
+→ selected local IR/PFR belongs to the current owner
+
+unrealized future owner state under SDS
+→ selected local IR/PFR belongs to the corresponding Evolution Step Target Owner Body
+→ current owner remains unchanged until realization/materialization
 ```
 
 The consuming owner may adopt wording, narrow it, combine it, reject it, satisfy the intent without durable documentation, or discover that the issue belongs upstream.
@@ -204,7 +215,7 @@ reusable Vertical Slice guide
 → own RG-PRG-* questions/RR/RRC/patterns/trade-offs as reusable knowledge, not Lens operations
 ```
 
-Concrete Feature/Domain/Slice/Shared owners own only their independently selected local meaning. Material edits that can change future discovery direction are proposal-first, including applicability changes, new/removed RR/RRC, materially changed solution space/trade-offs, Feature/Slice boundary heuristics, DDD ownership rules or programming-principle interpretation.
+Concrete current Feature/Domain/Slice/Shared owners own only independently selected **realized/current** local meaning. Under SDS, independently selected but unrealized future meaning belongs to the corresponding Evolution Step Target Body. Material edits that can change future discovery direction are proposal-first, including applicability changes, new/removed RR/RRC, materially changed solution space/trade-offs, Feature/Slice boundary heuristics, DDD ownership rules or programming-principle interpretation.
 
 
 
@@ -214,6 +225,6 @@ The complete 22-group Programming Principles corpus is indexed by [`programming-
 
 ## Evolution integration
 
-Reusable guidance consumes current selected meaning + relevant selected Evolution Steps + implementation/proof Evidence. It does not create another Evolution roadmap.
+Reusable guidance consumes current realized meaning + relevant concrete candidate/selected Evolution Steps/Target Bodies + implementation/proof Evidence. It does not create another Evolution roadmap or current-owner authority.
 
 Ask proportionally whether known change affects the decision, causes avoidable Forced Migration, can remain local, justifies a seam now, or should remain OPEN.

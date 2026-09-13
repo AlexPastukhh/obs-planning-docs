@@ -32,8 +32,9 @@ material semantic ownership question
 → sketch candidate realization concretely enough to test the model
 → define Domain unit proof candidates
 → inspect known Evolution / OPEN pressure
-→ proposal to zero/one/several durable natural owners
-→ discard working discovery by default after selected meaning is materialized
+→ for unrealized work: proposal to zero/one/several Target Domain Bodies in the active Evolution Step
+→ for current-state review: proposal/revalidation to existing current Domain owner(s) when applicable
+→ discard working discovery by default after selected meaning reaches its proper Step/current-owner destination
 ```
 
 Discovery may loop with Slice Discovery. Neither is a mandatory stage before the other.
@@ -154,8 +155,9 @@ Working Domain Discovery is transient/non-persistent by default.
 
 ```text
 working discovery
-→ zero owners: discard after result is clear
-→ one/several durable owners: move selected durable semantic meaning into TM-DOMAIN-OWNER
+→ zero owner/body outcome: discard after result is clear
+→ unrealized future state: move selected semantic meaning into Target Domain Body/Bodies in TM-EVOLUTION-STEP
+→ already-realized current-state revalidation: update the current Domain owner only through normal accepted correction semantics
 → exact literal realization: Core Exact/code/tests
 ```
 
@@ -187,9 +189,10 @@ working plan is not retained as competing durable authority
 
 ```text
 selected Domain meaning
-→ TM-DOMAIN-OWNER when durable ownership exists
-→ TM-IMPLEMENTATION-SLICE / TM-SLICE-OWNER as consumer context
-→ Core Exact for literal realization
+→ if unrealized: Target Domain Body in the active TM-EVOLUTION-STEP
+→ if revalidating realized truth: current TM-DOMAIN-OWNER
+→ Slice discovery/Target Slice Body as consumer context when applicable
+→ Core Exact for literal realization once the selected Step/current meaning is sufficient
 
 Domain discovery contradicts Feature/Slice/Shared assumptions
 → Finding → natural upstream owner revalidation
@@ -199,16 +202,17 @@ Domain discovery contradicts Feature/Slice/Shared assumptions
 
 ```text
 selected durable semantic contract
-→ TM-DOMAIN-OWNER / RU-DOWN-01
+→ unrealized state: Target Domain Body shaped by TM-DOMAIN-OWNER / RU-DOWN-01 inside Evolution Step
+→ realized current-state correction: current TM-DOMAIN-OWNER / RU-DOWN-01 after the correction is actually materialized
 
 selected durable owner-local implementation constraint
-→ TM-DOMAIN-OWNER / RU-DOWN-02
+→ same temporal routing for the Target/current Domain Body / RU-DOWN-02
 
 unselected/uncertain candidate
 → Proposal / Finding / OPEN as appropriate
 ```
 
-The discovery plan is normally disposable after the durable owner/code/tests carry current authority.
+The discovery plan is normally disposable after the Evolution Step/current owner/code/tests carry the appropriate planning/current authority.
 
 ## Guards
 

@@ -179,15 +179,16 @@ Slice realization
 → apply DDD lens
 → natural Domain owner / no Domain owner
 → optional TM-DOMAIN-DISCOVERY
-→ selected durable TM-DOMAIN-OWNER meaning / IR / proof
-→ return to Slice realization
+→ unrealized work: selected durable Domain meaning / IR / proof → Target Domain Body in TM-EVOLUTION-STEP
+→ realized current-state review: current TM-DOMAIN-OWNER consequence
+→ return to Slice/Step realization
 ```
 
 A Feature may use zero, one or several Domain owners. A Slice may coordinate several Domain owners and Shared capabilities without owning their semantic rules.
 
 ## Output / Disposition
 
-The Lens may produce Findings, alternatives, candidate reusable/local Requirements or Proposal pressure. It does not directly mutate accepted owner results. Selected owner-local requirements are approved in the natural owner rather than inherited live from reusable guidance.
+The Lens may produce Findings, alternatives, candidate reusable/local Requirements or Proposal pressure. It does not directly mutate accepted owner results. Selected owner-local requirements are independently approved in the natural owner **state being represented**: current owner for realized truth or the corresponding Evolution Step Target Domain Body for unrealized future state.
 
 ## Guards
 
@@ -202,7 +203,7 @@ Lens knowledge ≠ project truth
 
 ## Reusable Guidance Semantics
 
-This Lens follows `../../shared/reusable-guidance-model.md`: reusable questions / `RG-*` / `RR-*` / `RRC-*` / patterns are discovery guidance only; selected owner-local `IR-*` meaning is independently approved and never live-inherits later reusable-guidance edits.
+This Lens follows `../../shared/reusable-guidance-model.md`: reusable questions / `RG-*` / `RR-*` / `RRC-*` / patterns are discovery guidance only; selected owner-local `IR-*` meaning is independently approved in the correct current/future owner state and never live-inherits later reusable-guidance edits.
 
 ## Finding Contract
 
@@ -234,7 +235,7 @@ This Lens body is the current operational evaluation contract. The R2 source is 
 
 `NONE_DIRECT` by default.
 
-If a durable Domain owner is selected, representation is resolved per owner through Core Artifact Boundary Lens. Working DDD discovery is non-persistent by default.
+If durable Domain responsibility is selected, representation follows the correct temporal host: current Domain owner for realized truth or Evolution Step Target Domain Body for unrealized future state. Core Artifact Boundary Lens resolves physical representation. Working DDD discovery is non-persistent by default.
 
 ## Composition / Escalation
 
@@ -244,7 +245,7 @@ Domain question
 → local answer / OPEN
   OR TM-DOMAIN-DISCOVERY
   OR Finding/Proposal for Feature/Slice/Shared/Domain boundary
-→ selected durable TM-DOMAIN-OWNER when justified
+→ selected durable Domain meaning → current TM-DOMAIN-OWNER only for realized truth, otherwise Target Domain Body in TM-EVOLUTION-STEP
 ```
 
 Compose with Vertical Slice for end-to-end ownership, IR Discovery for durable constraints, Programming Principles knowledge for generic implementation-quality concerns, Evolution for known change and Test Proof for proof quality.

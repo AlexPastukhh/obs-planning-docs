@@ -105,7 +105,7 @@ RESOLVER: P-14 / TF-10
 
 Shell placement semantics: [`artifact-placement-and-idtspe-response-contract.md`](../../shared/artifact-placement-and-idtspe-response-contract.md).
 
-When the Lens surfaces a strong sharedness finding and Core Finding Disposition / Target Formation confirms genuine shared ownership, **REQUIRED** one canonical natural shared owner/representation is preferred over duplicated equal-authority consumer copies when genuine shared ownership is selected.
+When the Lens surfaces a strong sharedness finding and Core Finding Disposition / Target Formation confirms genuine shared ownership, **REQUIRED** one canonical semantic shared destination/representation is preferred over duplicated equal-authority consumer copies. The active profile decides whether that destination is current realized owner state or future-transition target state; under SDS unrealized Shared meaning belongs to an Evolution Step Target Shared Body.
 
 Consumer artifacts store only local integration obligations + references.
 

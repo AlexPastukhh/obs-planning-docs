@@ -103,6 +103,30 @@ Use a Planning Branch only when an alternative needs a materially deep downstrea
 
 Several merely related Proposals do not require a named group. Use ordinary relations/review grouping unless a compatible candidate bundle actually represents one selectable approach.
 
+## 4A. Proposal Grounding Before Presentation
+
+A material Proposal should not be presented as adequately formed when a missing **material USER-only fact, preference, constraint or USER-owned choice** can materially change the candidate itself.
+
+Canonical interaction boundary:
+
+```text
+inspect available Sources / Evidence
++ perform proportionate authorized investigation
+↓
+can a responsible material candidate be stated?
+  yes → present/review Proposal
+  no, because material USER input/authority is required
+     → ask the minimum useful USER question
+     → classify/intake the answer
+     → then form/refine the Proposal
+```
+
+Do not ask the USER to restate facts that trustworthy Sources already establish. Do not require a question before every Proposal. Non-blocking assumptions/unknowns may remain explicit in the Proposal when they do not prevent useful candidate review.
+
+An interaction clarification is not automatically a formal Core `Question`/Q-R-P State Unit. Formalize it only when independent lifecycle/addressability/review value exists. The canonical USER-input intake rule owns how the answer is classified.
+
+Grounding does not authorize selection: a well-grounded AI Proposal is still unselected until normal authority selects it.
+
 ## 5. Candidate Review
 
 AI may autonomously inspect, compare, challenge, refine and recommend candidate Proposals inside the authorized work scope.
@@ -212,7 +236,7 @@ A Question can be answered while a separate Decision is still needed. A recommen
 
 ## 8. Decision Formation And Trace
 
-Accepted material meaning becomes authoritative only through the normal Decision / Target Result / natural-owner path.
+Accepted material meaning becomes authoritative for the **planning/semantic state being represented** only through the normal Decision / Target Result / semantic-owner path. The active profile may place selected but unrealized meaning in a dedicated future-transition owner rather than the current natural owner; selection never implies realization.
 
 A material Decision may retain useful trace:
 
@@ -324,4 +348,5 @@ fallback ≠ current Decision unless selected
 Rationale ≠ Evidence
 selected meaning ≠ automatic persistence
 accepted semantic change ≠ automatic repository mutation
+selected future meaning ≠ realized/current-owner truth unless the active owner contract says realization has occurred
 ```

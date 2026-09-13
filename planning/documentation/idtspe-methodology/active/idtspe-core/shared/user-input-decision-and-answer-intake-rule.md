@@ -403,6 +403,21 @@ USER question / Decision Gate
 = interaction step used only when USER information/authority is actually required
 ```
 
+# 10A.1 Proposal Grounding Handoff
+
+The Session / Proposal lifecycle may invoke this rule **before a material Proposal is presented** when a material USER-only fact, constraint, preference or USER-owned choice is needed to ground the candidate adequately.
+
+```text
+minimum useful USER question
+→ USER answer
+→ apply this intake rule
+→ classify fact / answer / constraint / Decision / Proposal / delegation
+→ do not re-ask already supplied meaning
+→ return the resolved input to Proposal formation/review
+```
+
+The grounding question does not become a formal Q/R/P Question merely because it was asked conversationally.
+
 # 10B. User Decision Gate Presentation
 
 `User Decision Gate` is an interaction Guard/Rule pattern, not a new semantic State/Decision type. When it fires, expose proportionally:

@@ -1,18 +1,18 @@
 # LENS-WORKSPACE-EVOLUTION-ARCHITECTURE — Evolution Impact / Change Isolation
 
 Role: reusable all-Target Evolution lens  
-Applicability: when known selected Evolution may materially change the current owner/boundary/realization decision
+Applicability: when a concrete candidate/selected Evolution Step may materially change a current owner/boundary/realization or future Target Body decision
 
 ## Purpose
 
-Evaluate whether current selected meaning can evolve through known Steps with coherent, localized change and without avoidable migration or premature implementation of future behavior.
+Evaluate whether current realized meaning and/or a concrete future Step route can evolve with coherent, localized change and without avoidable migration or premature implementation of future behavior.
 
 This Lens does not own Evolution plans. `TM-EVOLUTION-STEPS-MAP` routes to `TM-EVOLUTION-STEP`; natural Target owners own their current durable meaning.
 
 ## Analysis Surface
 
-**Primary:** current Target/Result Unit choices whose owner boundary, realization or compatibility may be affected by selected known Evolution.  
-**Conditional:** relevant Evolution Step target states, Steps Map relations, owner/dependency relations, current implementation/Evidence and accepted Decisions.  
+**Primary:** current owner/Result choices or Evolution Step Target Bodies whose boundary, realization or compatibility may be affected by concrete candidate/selected Evolution.  
+**Conditional:** relevant Evolution Step target states/branches, Steps Map relations, owner/dependency relations, current implementation/Evidence, assumptions and accepted Decisions.  
 **Context:** active Use Case/Target/profile and current Entry State.
 
 ## Supported Operations
@@ -30,7 +30,7 @@ Registry selection is not execution; confirm this Analysis Surface is material b
 
 - current Target / Result Unit under review;
 - Steps Map registry/routing;
-- relevant selected Evolution Step target states;
+- relevant concrete candidate/selected Evolution Step target states/branches;
 - actual current implementation/Evidence when realization pressure matters;
 - known owner/dependency boundaries.
 
@@ -40,9 +40,9 @@ Registry selection is not execution; confirm this Analysis Surface is material b
 
 ```text
 current Target concern
-→ inspect Steps Map for materially relevant selected Steps
+→ inspect Steps Map for materially relevant concrete candidate/selected Steps
 → if none: record no material known-Evolution pressure and stop
-→ if relevant: load only those Step target states
+→ if relevant: load only those Step target states/branches
 ```
 
 ### 2. Entry/target-state consistency
@@ -66,7 +66,7 @@ Ask:
 
 ### 4. Current-scope discipline
 
-Known Evolution is design evidence, not permission to implement future behavior now.
+Known/candidate Evolution is planning evidence, not permission to implement future behavior now and not permission to rewrite current owners.
 
 Prefer the simplest current design that preserves a healthy path to selected known change. Reject speculative generic seams unsupported by current or selected Evolution need.
 
@@ -82,7 +82,7 @@ OPEN — insufficient Evidence
 Finding Candidate for another natural owner
 ```
 
-There is no generic `TM-EVOLUTION-IMPACT`. Material impact is written where the natural owner/result needs it or returned through Proposal/Finding revalidation.
+There is no generic `TM-EVOLUTION-IMPACT`. Material future-state impact is written into the affected Evolution Step Target Body/Decision; current-state impact is written to the current owner only when it concerns realized truth or an explicitly selected prepare-now current change.
 
 ## Questions
 
@@ -106,7 +106,7 @@ no material relevant Step → stop proportionally
 
 ## Prepared Seam / Port Check
 
-A seam/port/type-variation boundary may be justified by a selected known Evolution Step even with one current implementation variant.
+A seam/port/type-variation boundary may be justified as a **current prepare-now change** by a concrete selected Evolution Step even with one current implementation variant, but that is a separate current Decision from the future Step body itself.
 
 Check:
 - which named Step it serves;
@@ -138,7 +138,8 @@ The Lens does not write the Evolution Step, a generic Impact owner or a second a
 Step / current owner question
 → Lens evaluation
 → Finding / Proposal / Decision when material
-→ natural owner current consequence
+→ future consequence → Evolution Step Target Body
+→ current prepare-now consequence → current owner only when separately selected and actually realized
 ```
 
 Current implementation outlook belongs to the affected owner or transient working plan; future target state remains in the Evolution Step.

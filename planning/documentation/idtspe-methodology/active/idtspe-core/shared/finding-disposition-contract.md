@@ -318,6 +318,23 @@ formal IDTSPE Proposal State
 
 `Recommendation ≠ Decision`. A deterministic correction may be recommended without inventing a selectable architecture/product choice.
 
+### Temporal Authority Specialization
+
+`RE-2` / `RE-4` identify the semantic decision surface that must change; they do **not** universally mean that the current natural-owner body is rewritten immediately after selection. The active profile decides where newly selected but unrealized meaning is hosted.
+
+For current SDS:
+
+```text
+RE-2 / RE-4 selects a semantic correction
++ correction is not yet realized
+→ integrate the selected desired state into the applicable TM-EVOLUTION-STEP Target Owner Body
+→ current natural owner remains realized truth
+→ after implementation + required proof/revalidation
+   Target Owner Materialization updates current owner authority
+```
+
+A deterministic `RE-0` repair that simply restores already-accepted current meaning does not require a new future semantic body unless the repair itself needs material future-transition planning.
+
 ### Profile / Depth Specialization
 
 Core does not define a universal numeric architecture/Requirement depth. A profile or Target owner may supply depth vocabulary and specialized durable semantics. When SDS is active, for example, `Most-upstream affected meaning/depth` may use the SDS `PL-L0 ... PL-L4` guidance and Requirement impact is resolved through the SDS natural-owner Requirement contract. The generic `RE-*` category still belongs here.

@@ -11,6 +11,21 @@ A Feature is the primary behavioral authority. Scenario composes Features into a
 
 Feature formation is implementation-aware but not an exact implementation plan. The same Feature/Slice Boundary Method from `LENS-SLICE-VERTICALITY-INTEGRATION` is used here at lighter evidence depth and later during Slice Discovery with stronger evidence.
 
+## Temporal Authority / Evolution-Step Hosting
+
+A canonical Feature owner describes realized/current behavior. When the behavior being planned is not yet implemented, apply this module in a supporting role inside `TM-EVOLUTION-STEP` and produce a **Target Feature Body** using the same `Feature Definition` contract.
+
+```text
+Target Feature Body selected
+≠ current Feature owner updated
+
+Step realized + required proof/revalidation
+→ Target Owner Materialization
+→ Feature owner now reflects the realized body
+```
+
+Future `BR-*` belongs to the Target Feature Body until materialization. Do not create a separate `FutureFeature` type.
+
 ## Activation / Scope Gate
 
 Use when application behavior needs an independently addressable owner or an existing Feature boundary must be reviewed.
@@ -108,7 +123,7 @@ Declared Result Units are a possible semantic surface, not a mandatory form. App
 | `RU-FEAT-01` | when the Feature needs an explicit semantic identity/intent/result/entry anchor | omit fields that are already obvious; do not manufacture separate entries for transport variants |
 | `RU-FEAT-02` | when behavior-facing semantic data is needed to understand Feature meaning | omit data detail owned by Domain/storage or irrelevant to behavior |
 | `RU-FEAT-03` | when durable/addressable must-hold behavior is useful for downstream owners/proof/revalidation | omit BR atomization for obvious transient behavior that does not need durable addressability |
-| `RU-FEAT-04` | when implementation/proof/evolution pressure should survive into later discovery | omit current mechanism ideas or generic concerns with no downstream consequence |
+| `RU-FEAT-04` | primarily in a future Target Feature Body when implementation/proof/evolution pressure must survive into realization planning; in a current owner only for a current realized limitation/risk with independent semantic value | omit generic future roadmap/current mechanism ideas from current owners; route unrealized change pressure to Evolution Step/Q-R-P instead |
 | `RU-FEAT-05` | when Feature/Slice boundary meaning or rationale is materially ambiguous/important | omit explicit rationale when the boundary is straightforward and no competing shape matters |
 
 Do not create `N/A` placeholders. Re-evaluate a previously omitted Unit only when its trigger/materiality changes.
@@ -194,25 +209,28 @@ Behavior requirements state what the Feature must establish/forbid/return, not h
 
 ### RU-FEAT-04 — Implementation Concerns
 
-Capture material concerns that should influence later implementation discovery, for example:
+This RU is primarily a **future Target Feature Body / active planning** surface. Capture only material concerns needed to shape the not-yet-realized Feature result, for example:
 
 - likely Domain ownership pressure;
 - external effects / uncertainty / retry concerns;
 - expected shared-capability pressure;
 - proof boundary concerns;
 - UI/spatial realization concerns;
-- known Evolution pressure.
+- concrete Evolution pressure.
 
-This RU is not an exact implementation plan and does not create durable Slice/Domain/Shared authority.
+It is not an exact implementation plan and does not create durable Slice/Domain/Shared authority.
 
-After implementation + proof, reconcile each material concern rather than keeping a historical concern log:
+For a **current realized Feature owner**, do not retain a roadmap of unrealized implementation concerns. Keep only current realized semantics/limitations, durable current Risk/Problem/Decision meaning when independently useful, and optional navigation to the Evolution Step that owns any planned change.
+
+After implementation + proof, reconcile each future concern rather than copying the planning residue into the current Feature owner:
 
 ```text
-still OPEN and capable of changing Feature/boundary/implementation
-→ KEEP-AS-CURRENT-CONCERN
+still OPEN because it concerns another unrealized change
+→ ROUTE-TO-EVOLUTION-STEP / Proposal / Q-R-P as appropriate
 
 produced/changed durable BR/IR/PFR/Decision/Risk/Known Problem
-→ PROMOTE/ROUTE-DURABLE-MEANING through Proposal/approval to natural owner
+→ place it in the semantic state actually established by realization;
+  future next-state meaning remains in a Step, current realized meaning may materialize to the natural owner
 
 resolved completely by implementation/proof
 → REMOVE-AS-RESOLVED
@@ -221,10 +239,10 @@ only influenced exact code/test realization
 → REMOVE-AS-REALIZATION-ONLY
 
 Evidence shows Feature/BR/boundary itself is wrong
-→ REOPEN-UPSTREAM
+→ REOPEN-UPSTREAM / new corrective future Step when a change must still be implemented
 ```
 
-Removal/material reinterpretation of an existing durable concern is proposal-first when it changes selected Feature meaning.
+Removal/material reinterpretation of existing current Feature meaning is proposal-first when it changes accepted semantics; selection of the correction still does not make that correction current truth before realization.
 
 ### RU-FEAT-05 — Feature / Slice Boundary
 
@@ -305,7 +323,7 @@ selected Feature
 → optional TM-PROTOTYPE when empirical pre-commit uncertainty remains
 → optional TM-IMPLEMENTATION-SLICE for transient whole-Slice discovery
 ↕ optional TM-DOMAIN-DISCOVERY when semantic ownership needs discovery
-→ durable TM-SLICE-OWNER / TM-DOMAIN-OWNER as selected meaning warrants
-→ TM-SHARED-IMPLEMENTATION-CAPABILITY only when genuine reusable responsibility emerges
-→ Exact Realization when upstream meaning is sufficient
+→ when work is unrealized, integrate selected durable Domain/Slice/Shared meaning into the active Evolution Step Target Bodies
+→ when reviewing already-realized truth, revalidate current TM-SLICE-OWNER / TM-DOMAIN-OWNER / Shared owners directly as applicable
+→ Exact Realization when the selected Step/current meaning is sufficient
 ```

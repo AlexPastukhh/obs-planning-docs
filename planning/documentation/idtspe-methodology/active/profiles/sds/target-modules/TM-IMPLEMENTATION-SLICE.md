@@ -32,9 +32,10 @@ selected Feature
 → discover Domain / Shared dependencies and effect/recovery seams
 → design whole-Feature integration proof
 → record known Evolution / OPEN pressure
-→ proposal to durable Slice/Domain/Shared owners as warranted
+→ for unrealized work: proposal to Target Slice/Domain/Shared Bodies in the active Evolution Step as warranted
+→ for current-state review: route findings to existing current owners as warranted
 → implementation / Exact
-→ discard working discovery by default when current authority lives naturally elsewhere
+→ discard working discovery by default when planning/current authority lives naturally elsewhere
 ```
 
 Slice and Domain discovery may alternate as evidence demands.
@@ -171,7 +172,7 @@ Do not invent behavior in implementation planning.
 
 This Target is working/non-persistent by default.
 
-Its temporary result may be conversational or a working implementation plan. Selected durable responsibility moves into `TM-SLICE-OWNER`; exact classes/methods/files/tests go to Core Exact/code.
+Its temporary result may be conversational or a working implementation plan. For unrealized work, selected durable responsibility moves into a Target Slice Body shaped by `TM-SLICE-OWNER` inside the Evolution Step; it becomes current Slice authority only after realization/materialization. Exact classes/methods/files/tests go to Core Exact/code.
 
 If retained for review/handoff, mark it as working Source, not current durable Slice authority.
 
@@ -193,7 +194,8 @@ working discovery does not become a shadow class/call registry
 
 ```text
 selected durable responsibility
-→ TM-SLICE-OWNER
+→ unrealized work: Target Slice Body in TM-EVOLUTION-STEP
+→ realized current-state revalidation: current TM-SLICE-OWNER
 
 shared reusable responsibility discovered
 → TM-SHARED-IMPLEMENTATION-CAPABILITY gate
@@ -212,16 +214,17 @@ stronger Evidence contradicts Feature/Slice boundary
 
 ```text
 selected durable Slice responsibility / boundary contract
-→ TM-SLICE-OWNER / RU-SOWN-01
+→ unrealized state: Target Slice Body shaped by TM-SLICE-OWNER / RU-SOWN-01 inside Evolution Step
+→ realized current-state revalidation: current TM-SLICE-OWNER
 
 selected durable Slice implementation constraints
-→ TM-SLICE-OWNER / RU-SOWN-02
+→ same temporal routing for RU-SOWN-02
 
 reusable non-end-to-end responsibility with genuine consumers
-→ TM-SHARED-IMPLEMENTATION-CAPABILITY
+→ Target Shared Body in the Step when unrealized, or current Shared owner when already realized
 
 semantic Domain meaning
-→ TM-DOMAIN-OWNER (possibly via Domain Discovery)
+→ Target Domain Body in the Step when unrealized, or current TM-DOMAIN-OWNER when revalidating realized truth
 ```
 
 ## Guards

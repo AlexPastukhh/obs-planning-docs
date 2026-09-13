@@ -254,6 +254,17 @@ registries/catalogs used to find distributed owners
 
 This is why a strategy/catalog/discovery/responsibility map can be more valuable than a file for every individual semantic owner.
 
+### Future-state semantic-owner guard
+
+Representation does not decide whether future meaning belongs to the current natural owner or to a dedicated future-transition owner. The active profile/Target contract decides that first.
+
+```text
+future meaning semantic owner resolved by profile/Target
+→ this Lens chooses only its representation
+```
+
+For example, current SDS owns materially planned unrealized target state in `TM-EVOLUTION-STEP`; its current natural owners describe realized truth. Therefore a future Target Body must not be placed into a current-owner artifact merely because that artifact would be convenient.
+
 ## Part 5 — Existing Owner Before New Owner
 
 Before creating a dedicated artifact, ask:
@@ -283,7 +294,7 @@ Evolution Lens / SL-CAPTURE
 Simplicity Lens / SL-CAPTURE
 ```
 
-The supporting file does not become a Slice Strategy semantic owner. Selected durable Slice responsibility, if one is useful, remains with `TM-SLICE-OWNER`; transient discovery remains working Source by default.
+The supporting file does not become a Slice Strategy semantic owner. The active profile decides whether selected Slice responsibility is current-owner truth or future-transition meaning; under current SDS, unrealized selected Slice responsibility belongs to an Evolution Step Target Slice Body until realization/materialization. Transient discovery remains working Source by default.
 
 Those iterations do not imply four files. Their material findings do not choose a semantic destination themselves: Core Finding Disposition resolves the owner/lifecycle consequence. When the current owner remains appropriate, Documentation / Representation may keep the accepted meaning consolidated there unless independent separation is justified.
 
@@ -340,7 +351,7 @@ SL-CAPTURE.md
 ├── Important Behavior / DATA obligations
 ├── Implementation Plan
 ├── Transient proof design / supporting proof-policy note when independently useful
-├── Evolution considerations
+├── Evolution references/considerations only when the active semantic owner permits them
 ├── Q/R/P
 └── Decisions
 ```
@@ -349,7 +360,7 @@ Do **not** automatically create:
 
 ```text
 SL-CAPTURE.test-design.md
-SL-CAPTURE.evolution.md
+<semantic-owner companion>.md
 SL-CAPTURE.frontend.md
 SL-CAPTURE.parts/...
 ```
@@ -397,7 +408,7 @@ several transient Domain discoveries
 
 several Slice working plans / owner references
 → may remain sections in one supporting coordination artifact when that view has independent value
-→ selected durable Slice authority still remains in the natural Slice owner(s)
+→ selected durable Slice meaning remains in the semantic owner resolved by the active profile; under SDS unrealized meaning is in Evolution Step Target Slice Body and only realized meaning is in current Slice owner(s)
 
 one complex Domain/Slice owner
 → may be promoted to its own artifact while peers stay consolidated
@@ -670,17 +681,18 @@ code/types/tests
   = primary durable meaning
 
 planning residue
-  = only rationale/relations/future meaning not adequately recoverable from implementation
+  = only rationale/relations/non-executable meaning not adequately recoverable from implementation
+  + future meaning only when the active profile says this owner is its semantic authority
 ```
 
 ## Example D — Same Owner, Companion Under Pressure
 
 ```text
 owner.md
-owner.evolution.md
+owner.companion.md
 ```
 
-This is still one semantic owner. The companion is justified only by independent representation pressure; it does not create a second Target/authority.
+This is still one semantic owner **only when the active methodology has already resolved that content to that owner**. The companion is justified only by independent representation pressure; it does not create a second Target/authority. If a profile defines a dedicated future-transition owner (for example SDS `TM-EVOLUTION-STEP`), future meaning belongs to that owner instead of an owner-local companion.
 
 ## Example Lesson
 

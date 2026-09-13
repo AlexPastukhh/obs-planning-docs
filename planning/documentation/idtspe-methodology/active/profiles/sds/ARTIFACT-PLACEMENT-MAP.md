@@ -20,6 +20,22 @@ selected SDS semantic-owner type
 
 It does not create semantic owners, require one-file-per-owner topology, or override current Target Module/Lens artifact guidance.
 
+## Temporal Representation Boundary
+
+This map projects **semantic authority already resolved elsewhere**. Under current SDS semantics:
+
+```text
+canonical Application/Feature/Scenario/Screen/Domain/Slice/Shared representations
+= realized/current owner truth
+
+unrealized planned target state
+= representation of TM-EVOLUTION-STEP / its Target Owner Bodies
+```
+
+Do not create/update current-owner artifacts merely because a future Target Body has been selected. After Exact Realization + required proof/revalidation, `TM-EVOLUTION-STEP` resolves semantic Target Owner Materialization; only then does P-14/TF-10 resolve the physical create/update/move/split/merge needed for the new current owner representation.
+
+`Target Owner Materialization` is therefore distinct from representation promotion/demotion (for example embedded → dedicated file).
+
 ## Working vs Durable
 
 `TM-DOMAIN-DISCOVERY` and `TM-IMPLEMENTATION-SLICE` working plans are non-persistent by default.
@@ -32,7 +48,7 @@ Exact internal working plans are likewise transient by default.
 
 ### Application Definition
 
-An accepted Application Definition used downstream normally needs one durable human-readable canonical owner, existing or new.
+A realized/current Application Definition used downstream normally needs one durable discoverable canonical representation, existing or new. A selected future Target Application Body remains represented with its Evolution Step until Target Owner Materialization.
 
 ### Feature
 
@@ -68,13 +84,15 @@ Consumer bindings are good candidates for compact textual representation when ot
 
 ### Evolution Step / Steps Map
 
-A substantial Step may have dedicated addressability. A shallow Step may be embedded in the Steps Map.
+A substantial Step may have dedicated addressability. A shallow Step may be embedded in the Steps Map when identity/selection state and required target-state meaning remain clear.
 
-The Map stores routing/prerequisite/readiness, not a duplicate of full Step target state.
+Step representation may contain complete Target Application/Feature/Scenario/Screen/Domain/Slice/Shared Bodies because those bodies are **future Step-owned meaning**, not current-owner duplicates. Several bodies may share one Step artifact.
+
+The Map stores routing/selection relation/prerequisite/readiness/compact uncertainty, not a duplicate of full Step target state.
 
 ### Requirements
 
-Keep `BR/IR/PFR` with their natural owner. Do not create one Requirement file per item and do not revive a generic Requirement register merely for storage convenience.
+Keep current realized `BR/IR/PFR` with their natural owner representation. Future `BR/IR/PFR` remain inside the corresponding Evolution Step Target Body until Target Owner Materialization. Do not create one Requirement file per item and do not revive a generic Requirement register merely for storage convenience.
 
 ### Proof / Evidence
 
@@ -110,7 +128,7 @@ planning/
 ├── SCENARIOS.md                     # several small Scenario owners
 ├── SCREEN-MAP.md                    # only when spatial meaning matters
 ├── SLICES.md                        # several durable Slice owner sections
-└── EVOLUTION-STEPS.md               # only when selected future Steps exist
+└── EVOLUTION-STEPS.md               # concrete candidate/selected future Steps; current owner files above remain realized truth
 
 src/
 └── ...                              # Domain/Shared/realization truth where natural
@@ -130,9 +148,9 @@ planning/
 ├── SCREEN-MAP.md
 ├── SLICES.md                        # small Slices
 ├── slices/
-│   └── SL-EXPORT.md                 # promoted durable Slice owner
+│   └── SL-EXPORT.md                 # dedicated representation of one current realized Slice owner
 ├── SHARED-CAPABILITIES.md           # small shared owners/bindings
-└── EVOLUTION-STEPS.md
+└── EVOLUTION-STEPS.md               # future Step planning / Target Bodies
 
 src/
 └── ...
@@ -165,7 +183,7 @@ planning/
 │   └── SH-AUTHORITY.md
 └── evolution/
     ├── STEPS-MAP.md
-    └── EVO-EXPORT.md
+    └── EVO-EXPORT.md                 # complete unrealized target bodies / alternatives / materialization plan
 
 src/
 └── ...

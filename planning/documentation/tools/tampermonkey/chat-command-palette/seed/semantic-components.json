@@ -413,7 +413,7 @@
       "scope": "SDS",
       "label": "Evolution Step",
       "actionLabel": "Спланировать Evolution Step",
-      "description": "one coherent qualitative future transition / target state",
+      "description": "canonical bounded unrealized future transition / target-state planning owner",
       "sources": [
         "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/README.md",
         "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-EVOLUTION-STEP.md"
@@ -429,7 +429,7 @@
       "scope": "SDS",
       "label": "Evolution Steps Map",
       "actionLabel": "Спланировать Evolution Map",
-      "description": "registry/routing/prerequisite/readiness map for Steps",
+      "description": "registry/routing/selection-relation/readiness map for concrete Step candidates/selections",
       "sources": [
         "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/README.md",
         "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-EVOLUTION-STEPS-MAP.md"

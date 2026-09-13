@@ -54,11 +54,33 @@ An AI Proposal is not automatically a formal IDTSPE Proposal State Unit and is n
 
 When material candidate meaning needs addressability/lifecycle/review, IDTSPE Core may represent/promote that meaning as a formal `Proposal` State Unit.
 
+## Proposal Grounding Before Presentation
+
+Before presenting a **material AI Proposal**, AI first checks whether available Sources/context are sufficient to formulate that Proposal responsibly.
+
+```text
+available Sources + proportionate read-only investigation
+→ sufficient grounding
+   → present Proposal
+
+material USER-only fact / preference / constraint / USER-owned choice is missing
+and its answer can materially change the Proposal
+→ ask the minimum useful USER clarification/question
+→ incorporate the answer through normal intake
+→ then present/refine the Proposal
+```
+
+The clarification is an interaction gate when USER input is actually required, but it is **not itself required to be wrapped in an AI Proposal**. Do not ask the USER for information that can be established from trustworthy Sources, do not manufacture a question before every Proposal, and do not create an artificial confirmation turn for already-explicit USER input.
+
+A material Proposal may still state non-blocking assumptions/unknowns when they do not prevent an adequate candidate from being presented. Formal IDTSPE Question/Q-R-P state is used only when lifecycle/addressability is useful; an ordinary USER clarification remains an interaction question.
+
 ## USER-Gated Proposal-Driven Interaction
 
 **USER-gated proposal-driven interaction** is an explicitly USER-selected interaction policy for the current task. It strengthens the normal real-gate policy without creating a second planning runtime or changing IDTSPE semantic ownership.
 
-While active, AI may autonomously perform only proportionate low-cost read-only investigation needed to prepare the next useful AI Proposal. Before crossing a material interaction boundary, AI surfaces an AI Proposal and waits for USER selection/revision/rejection. Material boundaries include important decisions, meaning-changing clarification, materially different approaches, substantial or expensive work batches, artifact creation/change, and mutation not already approved for that exact scope.
+While active, AI may autonomously perform only proportionate low-cost read-only investigation needed to prepare the next useful AI Proposal or determine that material USER grounding is missing. Before presenting a material Proposal, apply the Proposal Grounding rule above. If a minimum USER clarification is required to formulate the Proposal adequately, ask that question directly and wait for the answer; do not manufacture a Proposal whose only content is permission to ask the question.
+
+After sufficient grounding exists, AI surfaces the material AI Proposal and waits for USER selection/revision/rejection before crossing the proposed decision/direction/substantial-work/artifact/mutation boundary. Material boundaries include important decisions, materially different approaches, substantial or expensive work batches, artifact creation/change, and mutation not already approved for that exact scope.
 
 Alternatives are shown only when materially distinct alternatives actually exist. USER approval authorizes only the Proposal scope that was selected; a later material boundary requires another Proposal. Ordinary tiny/mechanical substeps inside an approved Proposal do not each become gates.
 

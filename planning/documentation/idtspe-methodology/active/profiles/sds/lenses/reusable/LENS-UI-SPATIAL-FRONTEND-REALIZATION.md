@@ -150,9 +150,9 @@ Screen, UI-heavy Slice, Scenario handoff, Prototype/Practical Evidence and Local
 
 ## Artifact / File Implications
 
-`NONE_DIRECT / NO_DISTINCT_SUPPORTING_ARTIFACT`. Selected Screen spatial meaning is represented through `TM-SCREEN`; selected UI/frontend implementation meaning belongs to the current Slice or another natural Target owner. This Lens owns reusable evaluation, not a duplicate artifact contract.
+`NONE_DIRECT / NO_DISTINCT_SUPPORTING_ARTIFACT`. Current realized Screen/UI meaning is represented through the current Screen/Slice/natural owner. Selected but unrealized future Screen/UI meaning belongs to the corresponding Evolution Step Target Screen/Slice Body. This Lens owns reusable evaluation, not a duplicate artifact contract.
 
-Future UI/frontend change is evaluated through the owner-local Evolution Step + L5 when material; the Lens does not own an evolution companion or global map.
+Future UI/frontend change is evaluated through the applicable `TM-EVOLUTION-STEP` + L5 when material; the Lens does not own an evolution companion or map and does not write future meaning into current owners.
 
 ## Guards
 

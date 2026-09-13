@@ -14,7 +14,7 @@ Scope: historical invocation alias redirected to current IDTSPE/SDS authority; h
     "спланируй сквозную ответственность"
   ],
   "description": "legacy compatibility alias for Shared Implementation Capability / sharedness evaluation",
-  "meaning": "Legacy alias for current shared/cross-cutting planning. Route genuine reusable multi-consumer implementation responsibility to TM-SHARED-IMPLEMENTATION-CAPABILITY after its existence gate; otherwise keep the concern in its natural owner and use the Core Shared/Cross-Cutting Lens when evaluation is useful. TM-CROSS-CUTTING-CONCERN is retired.",
+  "meaning": "Legacy alias for shared/cross-cutting planning. Route genuine reusable multi-consumer implementation responsibility through TM-SHARED-IMPLEMENTATION-CAPABILITY after its temporal existence gate. Future consumers/capability meaning belong to a Target Shared Body in an Evolution Step; current Shared authority contains realized consumers only. Otherwise keep the concern in its natural owner/state and use the Core Shared/Cross-Cutting Lens when useful. TM-CROSS-CUTTING-CONCERN is retired.",
   "activeContextBehavior": "Treat this legacy trigger as explicit compatibility intent inside always-active IDTSPE. Re-evaluate current Use-Case composition and route only to the current owners listed here; preserve local applicability/materiality gates and do not revive the retired Target family.",
   "traversalReadMode": "Reuse current reliable IDTSPE/SDS governance; targeted refresh of the selected owner route when uncertain; full bootstrap only when no reliable sufficient governance context exists.",
   "ownerFiles": [
@@ -22,7 +22,7 @@ Scope: historical invocation alias redirected to current IDTSPE/SDS authority; h
     "planning/documentation/idtspe-methodology/active/idtspe-core/lenses/reusable/LENS-SHARED-CROSS-CUTTING-RESPONSIBILITY.md",
     "planning/documentation/idtspe-methodology/active/profiles/sds/shared/idtspe-command-surface-contract.md"
   ],
-  "expectedOutput": "A current Shared Capability result only when genuine shared-consumer pressure justifies it; otherwise a natural-owner/local result. No retired Cross-Cutting Target is created.",
+  "expectedOutput": "A Shared Capability result in the correct temporal host: current owner for realized reusable responsibility or Target Shared Body for unrealized future responsibility; otherwise a natural-owner/local result. No retired Cross-Cutting Target is created.",
   "permissionMode": "read-only-planning",
   "keyReminders": [
     "Legacy compatibility alias only; do not expose as a primary methodology surface.",

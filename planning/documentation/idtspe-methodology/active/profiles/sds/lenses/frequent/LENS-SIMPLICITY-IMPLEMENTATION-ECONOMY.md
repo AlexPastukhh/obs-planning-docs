@@ -55,17 +55,16 @@ current Target + accepted semantic owners
 candidate Proposals / implementation plan / transient proof design
 current implementation/workspace when available
 accepted current architecture Decisions from natural owners
-relevant Scenario future/change meaning
-Strategy May Change / planned future Slice meaning
-relevant selected Evolution Steps + current Slice/Shared implementation outlook
-relevant <owner>.evolution.md representation only when already justified
+relevant concrete Evolution Step target-state meaning / Planning Branches
+relevant selected/candidate Evolution Steps + current Slice/Shared implemented truth
+Step Target Owner Bodies and Step representation only when materially relevant
 L4 dependency/change surface
 L5 Evolution / Change Isolation findings
 L6 proof/operation findings
 observed implementation friction when available
 ```
 
-Accepted owner-local evolution meaning is constraint/evidence for simplification, not a second semantic authority over Scenario/Domain meaning.
+Evolution Step meaning is future-state planning authority/evidence for simplification; it does not become current Scenario/Domain/Slice/Shared truth before realization/materialization.
 
 
 
@@ -223,10 +222,10 @@ Compare the simpler candidate to the current candidate, not to an imaginary perf
 A simplification is only acceptable after checking both global and local evolution planning:
 
 ```text
-Current Global Architecture Position
-+ relevant global planned/probable paths
-+ prepared extension points
-+ relevant local <owner>.evolution.md
+Current realized architecture position
++ relevant concrete Evolution Steps / Planning Branches
++ current prepared extension points
++ affected Step Target Owner Bodies
 ↓
 Would simplification:
   destroy an already-justified seam?

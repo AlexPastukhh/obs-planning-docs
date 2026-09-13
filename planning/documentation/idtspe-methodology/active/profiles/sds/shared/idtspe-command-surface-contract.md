@@ -86,6 +86,22 @@ USER invocation
 
 Command identity never changes semantic-owner authority. A command does not bypass the Use-Case-driven work context; explicit selection merely supplies strong invocation context to that composition.
 
+## Unrealized-Work Hosting Rule
+
+Direct SDS commands select a methodology component, not a temporal authority shortcut. Before treating an owner-shaped result as current truth, resolve the same current-vs-future boundary as the profile bootstrap:
+
+```text
+command targets realized/current owner review
+→ direct current-owner Target/revalidation is valid
+
+command plans materially unrealized future state
+→ TM-EVOLUTION-STEP is the primary future-state planning Target
+→ selected TM-* command/module may run as supporting production inside that Step
+→ result becomes a Target Owner Body, not current-owner truth
+```
+
+Therefore direct commands such as Feature/Scenario/Screen/Domain/Slice/Shared planning do not bypass Evolution Step hosting merely because the user invoked the module explicitly. They also do not force an Evolution Step when the work truly concerns current realized state or a transient evidence/discovery operation.
+
 ## Specialized Commands
 
 Dedicated repository commands may remain useful for stable recurring intents, including project/application-specific capabilities that are not methodology Use Cases. They are optional shortcuts to current semantic owners/capabilities. A new Target Module or Lens does not automatically require a command, and a command does not create a new Use Case.

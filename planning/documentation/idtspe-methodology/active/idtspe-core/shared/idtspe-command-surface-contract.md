@@ -53,7 +53,7 @@ idtspe.review_consistency
 
 idtspe.proposal
 → idtspe пропозал
-→ USER-gated IDTSPE work using canonical Proposal/Q/R/P/Decision semantics without creating a second lifecycle
+→ USER-gated IDTSPE work using canonical USER-input intake + Proposal/Q/R/P/Decision semantics; required USER-only grounding is clarified before the affected material Proposal without creating a second lifecycle
 
 idtspe.findings.review
 → разбери файндинги <findings/context>

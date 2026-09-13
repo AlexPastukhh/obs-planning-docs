@@ -14,7 +14,7 @@ Scope: historical invocation alias redirected to current IDTSPE/SDS authority; h
     "спланируй общее требование"
   ],
   "description": "legacy compatibility alias for owner-local implementation-requirement discovery",
-  "meaning": "Legacy alias for requirement planning. TM-REQUIREMENT is retired: evaluate whether material implementation constraints need to become/change/retire owner-local IR/PFR through LENS-IMPLEMENTATION-REQUIREMENTS-DISCOVERY and the requirement-ownership rule. A Shared Capability is introduced only if reusable multi-consumer implementation responsibility independently passes its existence gate.",
+  "meaning": "Legacy alias for requirement planning. TM-REQUIREMENT is retired: evaluate whether material implementation constraints need to become/change/retire owner-local IR/PFR through LENS-IMPLEMENTATION-REQUIREMENTS-DISCOVERY and the requirement-ownership rule. Future IR/PFR for unrealized state stays in the corresponding Evolution Step Target Body; current owner Requirements describe realized truth. A Shared Capability/current or Target Shared Body is formed only through its temporal existence gate.",
   "activeContextBehavior": "Treat this legacy trigger as explicit compatibility intent inside always-active IDTSPE. Re-evaluate current Use-Case composition and route only to the current owners listed here; preserve local applicability/materiality gates and do not revive the retired Target family.",
   "traversalReadMode": "Reuse current reliable IDTSPE/SDS governance; targeted refresh of the selected owner route when uncertain; full bootstrap only when no reliable sufficient governance context exists.",
   "ownerFiles": [
@@ -23,7 +23,7 @@ Scope: historical invocation alias redirected to current IDTSPE/SDS authority; h
     "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-SHARED-IMPLEMENTATION-CAPABILITY.md",
     "planning/documentation/idtspe-methodology/active/profiles/sds/shared/idtspe-command-surface-contract.md"
   ],
-  "expectedOutput": "Owner-local IR/PFR disposition and, only when independently justified, a Shared Capability binding. No standalone Requirement Target.",
+  "expectedOutput": "Owner-family IR/PFR disposition in the correct temporal host: current realized owner or Evolution Step Target Body, plus a Shared Capability binding only when independently justified. No standalone Requirement Target.",
   "permissionMode": "read-only-planning",
   "keyReminders": [
     "Legacy compatibility alias only; do not expose as a primary methodology surface.",

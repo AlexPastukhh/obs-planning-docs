@@ -19,6 +19,25 @@ current Work Context / concern
 
 `NO_REUSABLE_TARGET_MODULE` is a valid outcome. Registry selection does not itself create a Target. Recheck when the work concern, active Target/profile, accepted upstream meaning or module-specific materiality changes. Result Units and fields remain sparse: declared possibility does not make them mandatory.
 
+## Temporal Hosting Rule — Current Owners vs Future Target Bodies
+
+Before instantiating an SDS owner-shaped Target result, classify the represented time boundary:
+
+```text
+already realized / implemented current truth
+→ direct current-owner Target/revalidation is valid
+
+materially planned but unrealized target state
+→ TM-EVOLUTION-STEP is the primary future-state planning Target
+→ the natural-owner Target Module is used in a supporting role
+→ its result is a Target Owner Body inside the Step
+→ selection does not update the current owner
+```
+
+Core Target Module semantics already allow a real reusable module to be used as `SUPPORTING` without proving that a second Target Instance exists. Therefore SDS does not introduce `FutureFeature`, `FutureDomain`, `FutureSlice` or parallel future-owner Target families.
+
+After Exact Realization + required proof/revalidation, `TM-EVOLUTION-STEP` resolves Target Owner Materialization (`CREATE / REPLACE / RETIRE`), after which current owners describe the new realized truth.
+
 ## Active SDS Target Modules
 
 | Module ID | Alias | Role / Result |
@@ -33,8 +52,8 @@ current Work Context / concern
 | [`TM-IMPLEMENTATION-SLICE`](TM-IMPLEMENTATION-SLICE.md) | `slice` | compatibility ID for transient Slice Discovery |
 | [`TM-SLICE-OWNER`](TM-SLICE-OWNER.md) | `slice-owner` | durable end-to-end Slice responsibility + Slice IR |
 | [`TM-SHARED-IMPLEMENTATION-CAPABILITY`](TM-SHARED-IMPLEMENTATION-CAPABILITY.md) | `shared` | durable reusable non-end-to-end implementation capability |
-| [`TM-EVOLUTION-STEP`](TM-EVOLUTION-STEP.md) | `evolution-step` | one coherent qualitative future transition / target state |
-| [`TM-EVOLUTION-STEPS-MAP`](TM-EVOLUTION-STEPS-MAP.md) | `evolution-map` | registry/routing/prerequisite/readiness map for Steps |
+| [`TM-EVOLUTION-STEP`](TM-EVOLUTION-STEP.md) | `evolution-step` | canonical bounded unrealized future transition / target-state planning owner |
+| [`TM-EVOLUTION-STEPS-MAP`](TM-EVOLUTION-STEPS-MAP.md) | `evolution-map` | registry/routing/selection-relation/readiness map for concrete Step candidates/selections |
 | [`TM-PRACTICAL-TEST`](TM-PRACTICAL-TEST.md) | `practical-test` | implemented real-subject practical Evidence |
 
 ## Retired / Subsumed Baseline Modules

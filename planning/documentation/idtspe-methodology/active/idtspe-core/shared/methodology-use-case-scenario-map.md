@@ -110,8 +110,8 @@ A root scenario begins from the ordinary functional entry route. A focused scena
 **Trigger / Situation:** A bounded behavior, owner, constraint, uncertainty, dependency, or proof concern becomes independently useful.  
 **AI Action:** Form/reuse only the needed Target/State surface and consult the relevant Target Module/Lens/profile registry.  
 **Why This Step:** Structure is justified by a useful result, not by elapsed time or a fixed phase sequence.  
-**Method / Mechanics:** Progress proportionally through useful SDS planning depth: `PL-L0` behavior/owner meaning, `PL-L1` durable implementation/proof constraints, `PL-L2` implementation architecture/responsibility, `PL-L3` transient exact reasoning, `PL-L4` literal realization. Levels may overlap, be skipped, or reopen narrowly. When useful, AI may expose the smallest next methodology action without executing it; when continuation is requested, it performs the smallest useful ordinary action after re-evaluating current composition.  
-**Possible Result:** One or more bounded semantic results at the depth needed now.  
+**Method / Mechanics:** First distinguish current realized truth from unrealized target state. When SDS work plans a material state change/new owner, form/reuse the applicable `TM-EVOLUTION-STEP` as the future-state planning owner and use Application/Feature/Scenario/Screen/Domain/Slice/Shared modules as supporting production for its Target Owner Bodies. Then progress proportionally through useful SDS planning depth: `PL-L0` behavior/owner meaning, `PL-L1` durable implementation/proof constraints, `PL-L2` implementation architecture/responsibility, `PL-L3` transient exact reasoning, `PL-L4` literal realization. Levels may overlap, be skipped, or reopen narrowly. Depth movement is not automatically orchestrated by this Scenario.  
+**Possible Result:** One or more bounded current-owner reviews or Evolution Step target-state bodies at the depth needed now, without treating selection as realization.  
 **Derived From / Owners:** `UC-IDTSPE-COMPOSE-CURRENT-WORK`, `planning/documentation/idtspe-methodology/active/profiles/sds/shared/directed-methodology-workflow-and-next-step-resolution.md`.
 
 ### Step `SCN-01-S3` — evaluate material surfaces
@@ -150,6 +150,15 @@ A root scenario begins from the ordinary functional entry route. A focused scena
 **Possible Result:** A directly integrable literal result, or an optional reviewed intended-change plan followed by that result.  
 **Derived From / Owners:** `TM-PRE-UPDATE-PLAN`, `TM-EXACT-REALIZATION`.
 
+### Step `SCN-01-S4M` — materialize future owner truth only after realization/proof
+
+**Trigger / Situation:** Exact/integration work has actually realized an SDS Evolution Step target state and the required Evidence/revalidation is sufficient to establish what became real.  
+**AI Action:** Apply the Step's Target Owner Materialization Set to semantic authority: create/replace/retire only the current natural-owner bodies actually established by the realized result.  
+**Why This Step:** Selected future meaning is planning authority, not current truth. Current owners should change only after implementation has made that meaning real.  
+**Method / Mechanics:** Compare actual realized state/Evidence to the selected Step Target Owner Bodies; if materially consistent, materialize the applicable bodies; if not, surface a Finding/revalidation instead of copying the planned body blindly. Resolve physical file representation separately through Documentation / Representation + P-14.  
+**Possible Result:** Updated current natural owners that reflect realized truth, with the Evolution Step retained as transition/decision lineage.  
+**Derived From / Owners:** `TM-EVOLUTION-STEP`, `LENS-ARTIFACT-BOUNDARY-ADDRESSABILITY`.
+
 ### Step `SCN-01-S5` — revalidate only affected meaning
 
 **Trigger / Situation:** New Evidence/Finding/upstream change invalidates or materially challenges accepted meaning.  
@@ -173,6 +182,7 @@ A root scenario begins from the ordinary functional entry route. A focused scena
     {"id":"SCN-01-S3R","title":"Challenge current meaning when independent review is useful","semanticRefs":["planning/documentation/review-diff-review-workflow.md"]},
     {"id":"SCN-01-S3F","title":"Disposition material findings before choosing the correction route","semanticRefs":["planning/documentation/idtspe-methodology/active/idtspe-core/shared/finding-disposition-contract.md#resolution-escalation","planning/documentation/idtspe-methodology/active/ai-reviewability/README.md"]},
     {"id":"SCN-01-S4","title":"Realize exactly when meaning is sufficient","semanticRefs":["TM-PRE-UPDATE-PLAN","TM-EXACT-REALIZATION"]},
+    {"id":"SCN-01-S4M","title":"Materialize future owner truth only after realization/proof","semanticRefs":["TM-EVOLUTION-STEP","LENS-ARTIFACT-BOUNDARY-ADDRESSABILITY"]},
     {"id":"SCN-01-S5","title":"Revalidate only affected meaning","semanticRefs":["UC-IDTSPE-REVALIDATE-CURRENT-WORK","planning/documentation/idtspe-methodology/active/idtspe-core/shared/consistency-review-use-case.md"]}
   ]
 }
@@ -185,41 +195,50 @@ A root scenario begins from the ordinary functional entry route. A focused scena
 **Type:** FOCUSED  
 **Entry assumption:** normal Use-Case routing has already selected current IDTSPE composition and SDS is applicable. This scenario does not redefine that entry route.
 
-### Step `SCN-02-S1` — select only the semantic owners the change actually needs
+### Step `SCN-02-S0` — host the unrealized change in an Evolution Step
 
-**Trigger / Situation:** The application change needs product/behavior/spatial meaning.  
-**AI Action:** Use Application / Feature / Scenario / Screen Target Modules only for material perspectives.  
-**Why This Step:** These are peer semantic owners, not mandatory sequential stages.  
-**Method / Mechanics:** Start from whichever perspective is currently informative; co-form/revalidate peers as pressure appears.  
-**Possible Result:** Bounded application/feature/journey/screen meaning without duplicate authority.  
-**Derived From / Owners:** `TM-APPLICATION-DEFINITION`, `TM-FEATURE`, `TM-SCENARIO-PLANNING`, `TM-SCREEN`.
+**Trigger / Situation:** The requested application change/new capability is materially different from current realized state.  
+**AI Action:** Establish/reuse one coherent `TM-EVOLUTION-STEP` boundary with expected Entry State and concrete driver; keep current natural owners as current truth.  
+**Why This Step:** Future planning must not silently overwrite current Feature/Scenario/Domain/Slice/etc owners before implementation.  
+**Method / Mechanics:** Treat absence as a valid Entry State for greenfield/new-owner work. Real alternatives remain Proposal/Planning Branch state; a Step may exist before final route selection when the future transition is concrete enough for addressability/review.  
+**Possible Result:** A concrete future-transition owner with current Entry State, candidate/selected route context and explicit uncertainty where material.  
+**Derived From / Owners:** `TM-EVOLUTION-STEP`, `TM-EVOLUTION-STEPS-MAP`, `LENS-UNCERTAINTY-ASSUMPTION-REVERSIBILITY`.
 
-### Step `SCN-02-S2` — discover Domain meaning when implementation semantics require it
+### Step `SCN-02-S1` — form only the target owner bodies the Step actually needs
+
+**Trigger / Situation:** The Step needs application/behavior/journey/spatial meaning.  
+**AI Action:** Use Application / Feature / Scenario / Screen Target Modules only for material perspectives, in supporting role inside the Step.  
+**Why This Step:** These contracts define natural owner shapes, but their future bodies are not current owner authority yet.  
+**Method / Mechanics:** Start from whichever perspective is informative; co-form/revalidate peer Target Bodies as pressure appears. Future BRs remain in the Target Feature Body.  
+**Possible Result:** Complete-enough Target Application/Feature/Scenario/Screen Bodies for the current planning depth without duplicate current authority.  
+**Derived From / Owners:** `TM-EVOLUTION-STEP`, `TM-APPLICATION-DEFINITION`, `TM-FEATURE`, `TM-SCENARIO-PLANNING`, `TM-SCREEN`.
+
+### Step `SCN-02-S2` — discover Domain meaning and integrate it into Target Domain Bodies
 
 **Trigger / Situation:** Identity/state/lifecycle/invariant/consistency ownership becomes material.  
-**AI Action:** Use Domain Discovery and DDD evaluation; promote durable meaning to Domain Owner only when justified.  
-**Why This Step:** Aggregate/Entity/Value Object discovery is part of Domain discovery and does not need another Target family.  
-**Method / Mechanics:** Discover bounded candidates transiently; evaluate ownership/consistency; create/reuse durable Domain owner only for stable semantic responsibility.  
-**Possible Result:** Zero/one/several durable Domain owners backed by bounded discovery.  
-**Derived From / Owners:** `TM-DOMAIN-DISCOVERY`, `LENS-DOMAIN-MODELING-DDD`, `TM-DOMAIN-OWNER`.
+**AI Action:** Use Domain Discovery and DDD evaluation; when durable post-Step Domain responsibility is justified, shape a Target Domain Body inside the Step.  
+**Why This Step:** Discovery is transient and selected future Domain meaning is still unrealized.  
+**Method / Mechanics:** Discover bounded candidates transiently; evaluate ownership/consistency; allow zero/one/several future Domain bodies. Future IR-DOMAIN/PFR meaning remains in those bodies.  
+**Possible Result:** Zero/one/several Target Domain Bodies backed by bounded discovery, without premature current Domain-owner creation.  
+**Derived From / Owners:** `TM-DOMAIN-DISCOVERY`, `LENS-DOMAIN-MODELING-DDD`, `TM-DOMAIN-OWNER`, `TM-EVOLUTION-STEP`.
 
-### Step `SCN-02-S3` — discover implementation Slice candidates one at a time
+### Step `SCN-02-S3` — discover implementation Slice candidates and integrate selected future responsibility
 
 **Trigger / Situation:** End-to-end implementation responsibility/boundary becomes useful.  
-**AI Action:** Use the Slice Discovery module for one bounded candidate per invocation; use Verticality/Integration evaluation as material.  
-**Why This Step:** Multiple Slice candidates do not require a portfolio/strategy Target Module.  
-**Method / Mechanics:** Repeat the same Slice Discovery module for additional candidates; form a durable Slice Owner only for selected stable responsibility.  
-**Possible Result:** One or more transient Slice candidates and zero/one durable owner per selected responsibility.  
-**Derived From / Owners:** `TM-IMPLEMENTATION-SLICE`, `LENS-SLICE-VERTICALITY-INTEGRATION`, `TM-SLICE-OWNER`.
+**AI Action:** Use Slice Discovery for bounded candidates; use Verticality/Integration evaluation as material; shape Target Slice/Shared Bodies when durable post-Step responsibility is justified.  
+**Why This Step:** Multiple candidates do not require a portfolio/strategy Target and future consumers do not create current Shared owners.  
+**Method / Mechanics:** Repeat Slice Discovery as needed; keep alternatives branch-scoped until selection; put future IR-SLICE/IR-SHARED in the corresponding target bodies.  
+**Possible Result:** Transient Slice discovery plus selected/candidate Target Slice/Shared Bodies inside the Step.  
+**Derived From / Owners:** `TM-IMPLEMENTATION-SLICE`, `LENS-SLICE-VERTICALITY-INTEGRATION`, `TM-SLICE-OWNER`, `TM-SHARED-IMPLEMENTATION-CAPABILITY`, `TM-EVOLUTION-STEP`.
 
-### Step `SCN-02-S4` — simplify and prove proportionally
+### Step `SCN-02-S4` — simplify, resolve uncertainty and prove proportionally
 
-**Trigger / Situation:** Complexity, proof, change impact or practical evidence becomes material.  
-**AI Action:** Apply only relevant Core/SDS Lenses and proof/evidence owners while planning continues.  
-**Why This Step:** Verification is not a late mandatory phase; it constrains meaning whenever useful.  
-**Method / Mechanics:** Use Unit applicability checkpoints and selected Lens/Target owners without forcing every evaluator.  
-**Possible Result:** Simpler, reviewable meaning with material proof/risk constraints integrated.  
-**Derived From / Owners:** `LENS-SIMPLICITY-IMPLEMENTATION-ECONOMY`, `LENS-DEPENDENCY-CHANGE-IMPACT`, `LENS-TEST-PROOF-EVIDENCE`, `TM-PRACTICAL-TEST`.
+**Trigger / Situation:** Complexity, uncertainty, proof, change impact or practical evidence becomes material.  
+**AI Action:** Apply only relevant Core/SDS Lenses and Evidence Targets while planning continues.  
+**Why This Step:** Selection, confidence and realization are separate; proof/evidence should constrain planning without turning every unknown into ceremony.  
+**Method / Mechanics:** Use Unit applicability checkpoints and selected Lens/Target owners. Keep uncertainty attached to the smallest useful subject with an Evidence/assumption basis; do not invent numeric confidence.  
+**Possible Result:** Simpler target bodies, explicit material unknowns/evidence needs, and a Step ready for deeper planning/Exact when sufficient.  
+**Derived From / Owners:** `LENS-SIMPLICITY-IMPLEMENTATION-ECONOMY`, `LENS-UNCERTAINTY-ASSUMPTION-REVERSIBILITY`, `LENS-DEPENDENCY-CHANGE-IMPACT`, `LENS-TEST-PROOF-EVIDENCE`, `TM-PROTOTYPE`, `TM-PRACTICAL-TEST`.
 
 [METHODOLOGY_SCENARIO]
 {
@@ -229,10 +248,11 @@ A root scenario begins from the ordinary functional entry route. A focused scena
   "entryRoute":"Starts after normal Use-Case routing; SDS is applicable",
   "assumptions":["UC-IDTSPE-COMPOSE-CURRENT-WORK already governs composition"],
   "steps":[
-    {"id":"SCN-02-S1","title":"Select material application semantic owners","semanticRefs":["TM-APPLICATION-DEFINITION","TM-FEATURE","TM-SCENARIO-PLANNING","TM-SCREEN"]},
-    {"id":"SCN-02-S2","title":"Discover Domain meaning when needed","semanticRefs":["TM-DOMAIN-DISCOVERY","LENS-DOMAIN-MODELING-DDD","TM-DOMAIN-OWNER"]},
-    {"id":"SCN-02-S3","title":"Discover implementation Slice candidates one at a time","semanticRefs":["TM-IMPLEMENTATION-SLICE","LENS-SLICE-VERTICALITY-INTEGRATION","TM-SLICE-OWNER"]},
-    {"id":"SCN-02-S4","title":"Simplify and prove proportionally","semanticRefs":["LENS-SIMPLICITY-IMPLEMENTATION-ECONOMY","LENS-DEPENDENCY-CHANGE-IMPACT","LENS-TEST-PROOF-EVIDENCE","TM-PRACTICAL-TEST"]}
+    {"id":"SCN-02-S0","title":"Host the unrealized change in an Evolution Step","semanticRefs":["TM-EVOLUTION-STEP","TM-EVOLUTION-STEPS-MAP","LENS-UNCERTAINTY-ASSUMPTION-REVERSIBILITY"]},
+    {"id":"SCN-02-S1","title":"Form only the target owner bodies the Step actually needs","semanticRefs":["TM-EVOLUTION-STEP","TM-APPLICATION-DEFINITION","TM-FEATURE","TM-SCENARIO-PLANNING","TM-SCREEN"]},
+    {"id":"SCN-02-S2","title":"Discover Domain meaning and integrate Target Domain Bodies","semanticRefs":["TM-DOMAIN-DISCOVERY","LENS-DOMAIN-MODELING-DDD","TM-DOMAIN-OWNER","TM-EVOLUTION-STEP"]},
+    {"id":"SCN-02-S3","title":"Discover Slice candidates and integrate selected future responsibility","semanticRefs":["TM-IMPLEMENTATION-SLICE","LENS-SLICE-VERTICALITY-INTEGRATION","TM-SLICE-OWNER","TM-SHARED-IMPLEMENTATION-CAPABILITY","TM-EVOLUTION-STEP"]},
+    {"id":"SCN-02-S4","title":"Simplify, resolve uncertainty and prove proportionally","semanticRefs":["LENS-SIMPLICITY-IMPLEMENTATION-ECONOMY","LENS-UNCERTAINTY-ASSUMPTION-REVERSIBILITY","LENS-DEPENDENCY-CHANGE-IMPACT","LENS-TEST-PROOF-EVIDENCE","TM-PROTOTYPE","TM-PRACTICAL-TEST"]}
   ]
 }
 [/METHODOLOGY_SCENARIO]
@@ -265,8 +285,8 @@ A root scenario begins from the ordinary functional entry route. A focused scena
 **Trigger / Situation:** A Finding is `RE-2` or `RE-4`, or otherwise exposes materially different candidate semantic answers that require selection.  
 **AI Action:** Review the corrective candidate(s) through the canonical Proposal/Decision lifecycle at the actual current/upstream owner.  
 **Why This Step:** USER decision effort belongs on the semantic choice that changes accepted meaning, not on every defect report.  
-**Method / Mechanics:** Keep the Finding/Q/R/P provenance, compare only real candidate answers, recommend when evidence justifies it, and require actual selection before changing accepted Decision/Requirement/owner meaning. `RE-0/RE-1` does not become a formal Proposal merely to satisfy ceremony.  
-**Possible Result:** A selected/revised/deferred semantic correction, or an explicit unresolved decision surface.  
+**Method / Mechanics:** Keep the Finding/Q/R/P provenance, compare only real candidate answers, recommend when evidence justifies it, and require actual selection before changing accepted planning meaning. If SDS correction meaning is selected but still unrealized, integrate it into the applicable Evolution Step Target Body rather than rewriting current owner truth immediately. `RE-0/RE-1` does not become a formal Proposal merely to satisfy ceremony.  
+**Possible Result:** A selected/revised/deferred semantic correction in its correct current/future host, or an explicit unresolved decision surface.  
 **Derived From / Owners:** `planning/documentation/idtspe-methodology/active/idtspe-core/shared/proposal-and-decision-lifecycle-contract.md`, `planning/documentation/idtspe-methodology/active/idtspe-core/shared/qrp-lifecycle-and-review-contract.md`.
 
 ### Step `SCN-03-S2` — repair/revalidate narrowly
@@ -323,6 +343,15 @@ A root scenario begins from the ordinary functional entry route. A focused scena
 **Possible Result:** Exact code/config/docs/package result and supporting Evidence where executed.  
 **Derived From / Owners:** `TM-EXACT-REALIZATION`.
 
+### Step `SCN-04-S2M` — materialize SDS target bodies only when realization is established
+
+**Trigger / Situation:** Exact/integration work actually realized an Evolution Step and sufficient proof/revalidation establishes the post-Step state.  
+**AI Action:** Apply Target Owner Materialization to semantic current authority; do not treat the selected Step body as already current before this point.  
+**Why This Step:** Exact output is a candidate/realization result; current natural owners must reflect what actually became real.  
+**Method / Mechanics:** Compare implementation/Evidence against the Step Target Bodies, materialize `CREATE/REPLACE/RETIRE` owner semantics only when established, and route physical placement separately through P-14.  
+**Possible Result:** Current owners synchronized to realized truth, or a material Finding if the realization diverges from the selected Step.  
+**Derived From / Owners:** `TM-EVOLUTION-STEP`, `LENS-ARTIFACT-BOUNDARY-ADDRESSABILITY`.
+
 ### Step `SCN-04-S3` — revalidate only when exact work exposes material contradiction
 
 **Trigger / Situation:** Exact work or verification exposes a material conflict with accepted meaning.  
@@ -333,7 +362,7 @@ A root scenario begins from the ordinary functional entry route. A focused scena
 **Derived From / Owners:** `UC-IDTSPE-REVALIDATE-CURRENT-WORK`.
 
 [METHODOLOGY_SCENARIO]
-{"id":"SCN-04","type":"FOCUSED","title":"Решения готовы — хочу перейти к точной реализации","entryRoute":"Starts after accepted meaning is sufficiently determined","assumptions":["Mutation authority remains owned by the active host/session contract"],"steps":[{"id":"SCN-04-S1","title":"Optionally review the intended update","semanticRefs":["TM-PRE-UPDATE-PLAN"]},{"id":"SCN-04-S1R","title":"Resolve representation only when persistence is material","semanticRefs":["LENS-ARTIFACT-BOUNDARY-ADDRESSABILITY"]},{"id":"SCN-04-S2","title":"Realize the accepted meaning literally","semanticRefs":["TM-EXACT-REALIZATION"]},{"id":"SCN-04-S3","title":"Revalidate material contradiction only","semanticRefs":["UC-IDTSPE-REVALIDATE-CURRENT-WORK"]}]}
+{"id":"SCN-04","type":"FOCUSED","title":"Решения готовы — хочу перейти к точной реализации","entryRoute":"Starts after accepted meaning is sufficiently determined","assumptions":["Mutation authority remains owned by the active host/session contract"],"steps":[{"id":"SCN-04-S1","title":"Optionally review the intended update","semanticRefs":["TM-PRE-UPDATE-PLAN"]},{"id":"SCN-04-S1R","title":"Resolve representation only when persistence is material","semanticRefs":["LENS-ARTIFACT-BOUNDARY-ADDRESSABILITY"]},{"id":"SCN-04-S2","title":"Realize the accepted meaning literally","semanticRefs":["TM-EXACT-REALIZATION"]},{"id":"SCN-04-S2M","title":"Materialize SDS target bodies only when realization is established","semanticRefs":["TM-EVOLUTION-STEP","LENS-ARTIFACT-BOUNDARY-ADDRESSABILITY"]},{"id":"SCN-04-S3","title":"Revalidate material contradiction only","semanticRefs":["UC-IDTSPE-REVALIDATE-CURRENT-WORK"]}]}
 [/METHODOLOGY_SCENARIO]
 
 ## 9. `SCN-05` MAINTENANCE — Я меняю саму методологию или документацию
@@ -400,8 +429,8 @@ A root scenario begins from the ordinary functional entry route. A focused scena
 **Trigger / Situation:** The Finding is `RE-2`: correction requires changing a Decision, durable must-hold/Requirement, owner boundary or other accepted meaning of the current semantic owner.  
 **AI Action:** Surface and review the real corrective Proposal(s) at that owner before dependent realization continues.  
 **Why This Step:** The decision belongs to the owner whose accepted meaning changes; the finding producer does not gain authority to rewrite it.  
-**Method / Mechanics:** Preserve driver/provenance, review only real alternatives, make USER-owned unknowns visible, and select/revise/defer through the canonical lifecycle.  
-**Possible Result:** Selected current-owner semantic correction or a bounded unresolved decision.  
+**Method / Mechanics:** Preserve driver/provenance, ground the Proposal through any genuinely required USER-only clarification, review only real alternatives, make USER-owned unknowns visible, and select/revise/defer through the canonical lifecycle. Selection identifies the desired semantic correction. Under SDS, when that correction is still unrealized, integrate it into the applicable Evolution Step Target Owner Body; current implemented owner truth changes only after realization/materialization.  
+**Possible Result:** Selected corrective future/current planning meaning in the correct temporal host, or a bounded unresolved decision.  
 **Derived From / Owners:** `planning/documentation/idtspe-methodology/active/idtspe-core/shared/proposal-and-decision-lifecycle-contract.md`, `planning/documentation/idtspe-methodology/active/idtspe-core/shared/qrp-lifecycle-and-review-contract.md`.
 
 ### Step `SCN-07-S4` — revalidate upstream before compensating downstream
@@ -418,8 +447,8 @@ A root scenario begins from the ordinary functional entry route. A focused scena
 **Trigger / Situation:** Direct disposition produced `RE-4`, or `SCN-07-S4` revalidation established that an upstream Decision/Requirement/owner meaning must actually change.  
 **AI Action:** Review and select the upstream corrective Proposal(s) at the real upstream owner.  
 **Why This Step:** Upstream revalidation and upstream semantic selection are different actions; the USER should inspect the Proposal only after a real upstream change surface exists.  
-**Method / Mechanics:** Preserve the Finding/revalidation evidence, expose affected downstream consequences, compare only real candidate answers and use canonical Proposal/Decision/Q/R/P semantics before accepted upstream meaning changes.  
-**Possible Result:** Selected/revised/deferred upstream change, or an explicit material decision block.  
+**Method / Mechanics:** Preserve the Finding/revalidation evidence, expose affected downstream consequences, compare only real candidate answers and use canonical Proposal/Decision/Q/R/P semantics before accepted upstream desired meaning changes. Under SDS, an upstream change that still requires implementation is hosted in the relevant Evolution Step Target Body rather than immediately replacing current realized owner truth.  
+**Possible Result:** Selected/revised/deferred upstream desired-state change in its correct temporal host, or an explicit material decision block.  
 **Derived From / Owners:** `planning/documentation/idtspe-methodology/active/idtspe-core/shared/proposal-and-decision-lifecycle-contract.md`, `planning/documentation/idtspe-methodology/active/idtspe-core/shared/qrp-lifecycle-and-review-contract.md`.
 
 ### Step `SCN-07-S5` — interpret SDS Requirement/depth semantics only when actually implicated
@@ -427,8 +456,8 @@ A root scenario begins from the ordinary functional entry route. A focused scena
 **Trigger / Situation:** SDS is active and the finding concerns durable owner-local must-hold meaning, or the distinction between behavior/Requirement/implementation architecture materially affects disposition.  
 **AI Action:** Consult the SDS Requirement/depth owners after Core has identified that profile-specific semantics are actually relevant.  
 **Why This Step:** Generic Finding escalation must not become SDS-specific, but SDS provides the natural owner vocabulary when the finding reaches `BR-*`, `IR-*`, `PFR-*` or `PL-L0..L4` meaning.  
-**Method / Mechanics:** Use owner-local Requirement discovery only when durable must-hold meaning may need add/refine/replace/retire; treat planning depth as reasoning/readiness context, not as a rule that every detail at level X is an architecture Decision at level X.  
-**Possible Result:** No Requirement change, a current-owner Requirement/Decision candidate, or an upstream behavior/owner revalidation route.  
+**Method / Mechanics:** Use owner-local Requirement discovery only when durable must-hold meaning may need add/refine/replace/retire; route future `BR/IR/PFR` into the corresponding Evolution Step Target Body until realization/materialization; treat planning depth as reasoning/readiness context, not as a rule that every detail at level X is an architecture Decision at level X.  
+**Possible Result:** No Requirement change, a future Target-Body Requirement/Decision candidate, a realized-current-owner correction route, or an upstream revalidation route.  
 **Derived From / Owners:** `LENS-IMPLEMENTATION-REQUIREMENTS-DISCOVERY`, `planning/documentation/idtspe-methodology/active/profiles/sds/shared/requirement-ownership-and-exception-rule.md`, `planning/documentation/idtspe-methodology/active/profiles/sds/shared/directed-methodology-workflow-and-next-step-resolution.md`.
 
 [METHODOLOGY_SCENARIO]

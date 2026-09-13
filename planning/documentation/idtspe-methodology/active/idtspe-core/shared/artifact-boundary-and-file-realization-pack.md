@@ -290,7 +290,7 @@ register / index / collection artifact
 
 Examples:
 
-- natural owner evolution section or same-owner `<owner>.evolution.md` companion when accepted evolution meaning needs durable addressability;
+- profile-resolved future/evolution owner artifact or companion representation when accepted evolution meaning needs durable addressability; the active profile decides semantic ownership before this pack chooses representation;
 - Scenario Registry;
 - Decision Portfolio projection;
 - Concern Register when distributed durable concerns justify it.
@@ -868,28 +868,24 @@ No `notes/` file or copied Decision portfolio is created. If tooling needs a tec
 
 ---
 
-# 17. Example — WEUC
+# 17. Example — Future Evolution Representation
 
-Suppose one future evolution finding is local to one Domain/Slice owner.
+Suppose one future-evolution finding affects a Domain/Slice concern.
 
-Artifact Discovery may select:
+Artifact Discovery must **not** decide semantic ownership by choosing an `<owner>.evolution.md` filename. First resolve the future-state owner through the active profile/Target contract. For current SDS, materially planned unrealized target state belongs to `TM-EVOLUTION-STEP`; a Step artifact/section is therefore the natural representation candidate.
 
-```text
-keep it in <owner>.evolution.md
-```
+If another profile explicitly keeps evolution meaning owner-local, an owner companion may still be valid there.
 
-Suppose later the same evolution direction affects several owners and becomes part of the application/workspace plan.
-
-Then the canonical route is:
+Canonical route:
 
 ```text
 local Lens finding / evolution pressure
 → Core Finding Disposition
-→ natural owner or Target Formation for independently substantial cross-owner architecture
-→ Documentation / Representation chooses any durable artifact only when independently useful
+→ active profile resolves future/current semantic owner
+→ Documentation / Representation chooses durable representation only when independently useful
 ```
 
-Do not create a parallel WEUC-instance register merely because several future paths exist. The global Workspace Evolution Map is the canonical aggregation owner.
+Do not create a parallel future-path register merely because several alternatives exist; use the canonical registry/coordination owner defined by the active methodology/profile.
 
 ---
 
@@ -1122,8 +1118,8 @@ Scenario methodology
 Slice methodology
 → defines Slice artifact forms/content
 
-Profile Target owners + evolution Lens
-→ define accepted owner-local evolution meaning; Documentation / Representation chooses any physical companion form
+Profile Target/evolution contracts + evolution Lens
+→ define the accepted future/current semantic owner; Documentation / Representation chooses any physical representation/companion form only after that ownership is resolved
 
 Q/R/P model
 → defines concern storage forms

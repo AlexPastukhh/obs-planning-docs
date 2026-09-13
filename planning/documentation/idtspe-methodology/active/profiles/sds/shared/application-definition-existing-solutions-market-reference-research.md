@@ -135,4 +135,4 @@ new Q/R/P
 Step-02 challenge / revalidation triggers
 ```
 
-It does not automatically create accepted Application/Feature/Scenario/Screen meaning; selected durable meaning still goes through the natural owner and normal Proposal/Decision flow.
+It does not automatically create accepted Application/Feature/Scenario/Screen meaning; selected meaning still goes through normal Proposal/Decision authority and the correct temporal host. Under SDS, unrealized future Application/Feature/Scenario/Screen meaning belongs to the active Evolution Step Target Body until realization/materialization.

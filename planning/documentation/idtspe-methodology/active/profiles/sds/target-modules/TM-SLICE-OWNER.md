@@ -9,6 +9,12 @@ Own one durable end-to-end implementation responsibility corresponding to a sele
 
 Transient `TM-IMPLEMENTATION-SLICE` may discover the realization but is not durable authority.
 
+## Temporal Authority / Evolution-Step Hosting
+
+A canonical Slice owner describes a currently realized end-to-end implementation responsibility. For a responsibility/boundary that is selected but not yet implemented, use this module inside `TM-EVOLUTION-STEP` to produce a **Target Slice Body**.
+
+Future `IR-SLICE-*` / owner-local `PFR-*` remain in the Target Slice Body until realization/materialization. Selection of a Slice boundary is planning authority for the Step, not proof that the Slice already exists in current implementation.
+
 ## Source Contract
 
 Possible sources:
@@ -125,7 +131,7 @@ Literal tests remain code/Exact authority; this Target owns only durable respons
 
 ## Evolution
 
-Selected future Slice target state belongs to `TM-EVOLUTION-STEP`. Current owner may reference relevant Steps/impact but does not maintain a second owner-local Evolution Steps roadmap.
+Selected or candidate future Slice target state belongs to the applicable `TM-EVOLUTION-STEP` Target Slice Body. Current owner may reference relevant Steps for navigation/revalidation but contains only realized current Slice truth and does not maintain a second future roadmap.
 
 ## Validators / Handoff
 

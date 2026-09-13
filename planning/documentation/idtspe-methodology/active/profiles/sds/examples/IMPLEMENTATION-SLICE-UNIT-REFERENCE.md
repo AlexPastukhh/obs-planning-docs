@@ -4,40 +4,48 @@ Status: active worked reference
 
 This reference mirrors the current `TM-IMPLEMENTATION-SLICE` Target Step-Result Contract. It is a transient discovery example, not a durable Slice-owner schema.
 
+The example is scoped to an **unrealized Evolution Step**, so selected durable future Slice meaning is integrated into a Target Slice Body rather than a current Slice owner.
+
 ## Target / Sources
 
 ```text
-Target:
+Evolution Step:
+  EVO-PAYMENT
+
+Expected Entry State:
+  checkout exists without integrated payment
+
+Target Feature Body:
+  FEAT-PAY-ORDER
+
+Relevant future Feature behavior:
+  BR-PAY-01 — payable order can be paid with a supported method
+  BR-PAY-02 — failed provider acceptance is never exposed as success
+
+Relevant Target Scenario Body:
+  SCN-CHECKOUT
+
+Current/Target Domain sources as applicable:
+  Order
+  PaymentAttempt
+
+Supporting working Target:
   SL-PAYMENT-DISCOVERY
 
 Module:
   TM-IMPLEMENTATION-SLICE
-
-Selected Feature:
-  FEAT-PAY-ORDER
-
-Relevant Feature behavior:
-  BR-PAY-01 — payable order can be paid with a supported method
-  BR-PAY-02 — failed provider acceptance is never exposed as success
-
-Relevant Scenario:
-  SCN-CHECKOUT
-
-Relevant Domain owners:
-  Order
-  PaymentAttempt
 ```
 
 ## RU-SLICE-01 — Whole-Slice Responsibility / Candidate Structure
 
 ```text
 Responsibility:
-  realize FEAT-PAY-ORDER end to end
+  realize future FEAT-PAY-ORDER end to end
 
 Candidate structure:
   checkout/payment entry adapter
   PayOrder application operation
-  Order + PaymentAttempt Domain owners
+  Order + PaymentAttempt Domain semantics
   payment-provider adapter
   persistence
   result projection
@@ -97,38 +105,50 @@ retry after uncertain transport outcome
 
 ## RU-SLICE-05 — Evolution / OPEN Slice Pressure
 
-### Selected Evolution Step — asynchronous completion
+### Alternative future route inside the same Step
+
+Suppose provider completion semantics remain unresolved:
 
 ```text
-Future target-state pressure:
-  provider may return pending and complete later
+Proposal A:
+  synchronous completion only
 
-Current question:
-  should stable PaymentAttempt identity/state already be explicit now?
-
-Prepare-now result:
-  keep a stable attempt identity/lifecycle seam only if the selected Step
-  makes that current cost worthwhile
-
-Recheck:
-  if async provider support is deferred/cancelled or current provider semantics change
+Proposal B:
+  pending + asynchronous completion
 ```
 
-If no selected Evolution/Open pressure affects the current Slice, omit this RU entirely.
+If downstream consequences materially differ, the Step may explore separate Planning Branches. Slice Discovery can run inside each branch and return branch-scoped candidate consequences.
 
-## Optional Durable Handoff
-
-If the discovered end-to-end responsibility is worth durable ownership:
+Example uncertainty for Proposal B:
 
 ```text
-TM-SLICE-OWNER
-  RU-SOWN-01 — Slice Responsibility / Boundary Contract
-  RU-SOWN-02 — Slice Implementation Requirements, only when material
+Need for stable PaymentAttempt identity:
+  HIGH confidence basis — follows from accepted retry/idempotency semantics
+
+Provider callback ordering:
+  LOW/MEDIUM confidence basis — docs only; no real integration Evidence yet
 ```
 
-If the Domain meaning itself changes, update/revalidate the Domain owner rather than burying that meaning inside the Slice.
+Do not invent a numeric probability. Do not treat branch-scoped meaning as selected.
 
-If a coherent reusable non-end-to-end responsibility with real consumers is discovered, apply the `TM-SHARED-IMPLEMENTATION-CAPABILITY` existence gate.
+## Target Slice Body Handoff
+
+After a route is actually selected, durable post-Step Slice responsibility may be represented as:
+
+```text
+Target Slice Body: SL-PAYMENT
+  RU-SOWN-01 — complete post-Step Slice Responsibility / Boundary Contract
+  RU-SOWN-02 — future IR-SLICE-* only when material
+```
+
+This body belongs to `EVO-PAYMENT` until the Slice is actually implemented and required proof/revalidation succeeds.
+
+```text
+selected Target Slice Body
+≠ current Slice owner
+```
+
+Likewise, selected future Domain/Shared meaning becomes Target Domain/Shared Bodies inside the Step rather than current owners ahead of implementation.
 
 ## Generic State Boundary
 
@@ -150,8 +170,17 @@ Decision:
   selected reconciliation ownership/identity rule
 ```
 
-Those State Units support the Target; they do not become extra `RU-SLICE-*`.
+Those State Units support the Step/current Target; they do not become extra `RU-SLICE-*`.
 
-## Representation Boundary
+## Exact / Materialization Boundary
 
-The discovery result may stay conversational or in a temporary working plan. Persist it only when review/handoff value justifies it. Durable responsibility goes to `TM-SLICE-OWNER`; exact implementation goes to code / `TM-EXACT-REALIZATION`.
+```text
+selected EVO-PAYMENT target state
+→ TM-EXACT-REALIZATION
+→ code/tests/config
+→ actual Evidence
+→ if realized/proven:
+   CREATE/REPLACE current Slice/Domain/Shared owners from the corresponding Target Bodies
+```
+
+The discovery result may stay conversational or in a temporary working plan. Physical persistence/file layout is resolved separately by Documentation / Representation + P-14.
