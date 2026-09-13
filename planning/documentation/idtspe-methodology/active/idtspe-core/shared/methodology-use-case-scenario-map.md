@@ -457,7 +457,7 @@ They are profile Target/Lens capabilities reached from generic IDTSPE Use Cases.
 
 Create an SDS-specific Use Case only if a future scenario exposes a distinct independently useful Result about **how SDS methodology documentation is used**, not merely a new SDS planning result.
 
-## 13. Maintenance / Scenario Revalidation Rule
+## 12. Maintenance / Scenario Revalidation Rule
 
 When a Use Case/component owner changes materially:
 
