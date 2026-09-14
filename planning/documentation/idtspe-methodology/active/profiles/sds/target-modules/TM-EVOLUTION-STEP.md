@@ -51,9 +51,27 @@ An implementation defect does not silently rewrite the current semantic owner. A
 
 Absence is a valid current Entry State. Creating the first Feature, Scenario, Screen, Domain, Slice, Shared capability, Application Definition or owner-local Requirement may therefore be planned from `not present` to selected post-Step meaning.
 
+For Requirements and other owner-local must-holds, `not present` here means **semantically absent from accepted current owner meaning**, not merely absent as an explicit sentence/ID/file fragment.
+
+```text
+newly surfaced owner meaning
+→ is it already entailed by accepted current semantics?
+
+YES
+→ CURRENT SEMANTIC COMPLETION and/or CURRENT REALIZATION CORRECTION
+→ current natural owner remains temporal authority
+→ this Step is not the semantic host merely because representation was missing
+
+NO + new/revised meaning is selected and materially unrealized
+→ FUTURE SEMANTIC CHANGE
+→ Evolution Step may be the temporal host
+```
+
+`Discovery time ≠ semantic time`; `representation absence ≠ semantic absence`.
+
 ## Step Identity, Alternatives And Uncertainty
 
-A Step may be worth addressability before one final route is selected when the transition itself is concrete enough to plan/review. A Core `Need Candidate` / Desired Outcome alone is change pressure, not sufficient Step formation: disposition must first establish enough concrete materially unrealized transition meaning to justify a coherent Step boundary, and must reuse an existing Step when the resolved change naturally belongs to that transition. Use existing Core semantics rather than a Step-specific alternative ontology:
+A Step may be worth addressability before one final route is selected when the transition itself is concrete enough to plan/review. A Core `Need Candidate` / Desired Outcome or newly explicit Requirement alone is change pressure/representation pressure, not sufficient Step formation: disposition must first establish that the meaning is **not already entailed by accepted current semantics** and then establish enough concrete materially unrealized transition meaning to justify a coherent Step boundary. Reuse an existing Step when the resolved change naturally belongs to that transition. Use existing Core semantics rather than a Step-specific alternative ontology:
 
 ```text
 materially different future route

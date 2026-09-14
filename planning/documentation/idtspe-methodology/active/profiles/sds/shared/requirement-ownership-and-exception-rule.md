@@ -31,7 +31,39 @@ selected but unrealized future owner meaning
 
 This does not create a future Requirement type. `BR-*`, `IR-*` and `PFR-*` keep their normal family/owner semantics; only their temporal host differs.
 
-A selected requirement change intended to correct an already-implemented system is still **future desired state** until the correction is actually realized. Selection alone does not make the current implementation conform or rewrite current-owner truth.
+### Discovery Time vs Semantic Time
+
+```text
+Discovery time ≠ semantic time.
+Representation absence ≠ semantic absence.
+```
+
+A durable must-hold surfaced now must first be tested against the **accepted current meaning of its natural owner**. The fact that a Requirement sentence/ID was not previously written does not prove that the semantic constraint starts now.
+
+```text
+CURRENT SEMANTIC COMPLETION
+accepted current owner meaning already entails the must-hold
++ explicit BR/IR/PFR representation is missing or incomplete
+→ articulate/refine the Requirement at the current natural owner
+→ accepted semantic meaning does not change
+→ no Evolution Step
+
+CURRENT REALIZATION CORRECTION
+accepted current owner meaning already requires the must-hold
++ actual implementation/proof violates or fails to realize it
+→ correct/prove the realization against current authority
+→ no semantic Evolution Step
+
+FUTURE SEMANTIC CHANGE
+accepted current owner meaning does not entail the must-hold
++ new/revised meaning is selected
+→ host the selected unrealized BR/IR/PFR in the applicable
+  TM-EVOLUTION-STEP Target Owner Body until materialization
+```
+
+These are normative disposition distinctions, not new Requirement families, persistent states or a separate lifecycle.
+
+A selected **semantic** requirement change intended to correct an already-implemented system is still **future desired state** until the correction is actually realized. Selection alone does not make the current implementation conform or rewrite current-owner truth. This rule does not apply to `CURRENT SEMANTIC COMPLETION`, because articulating an already-entailed current must-hold does not select new semantics.
 
 ## Requirement Families
 
@@ -90,6 +122,19 @@ no durable output
 ```
 
 Requirement discovery is non-monotonic and may legitimately produce zero durable Requirements.
+
+`ADD NEW` describes representation/identity work, not temporal meaning by itself:
+
+```text
+ADD NEW Requirement
+≠ automatically FUTURE SEMANTIC CHANGE
+
+ADD NEW + meaning already entailed by accepted current owner
+→ CURRENT SEMANTIC COMPLETION
+
+ADD NEW + meaning not already entailed + selected
+→ FUTURE SEMANTIC CHANGE
+```
 
 ## Behavioral Necessity / Relevance
 
