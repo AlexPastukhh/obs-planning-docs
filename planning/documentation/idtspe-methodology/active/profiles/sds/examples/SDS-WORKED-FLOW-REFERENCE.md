@@ -110,6 +110,7 @@ Supporting peer planning may produce:
 
 ```text
 Target Feature Body: FEAT-CAPTURE-ITEM
+  # complete TM-FEATURE Feature Definition for the selected post-Step state; change annotations never substitute for this body
   Principal Result:
     selected material + source context is durably accepted
     and the application returns a truthful success/failure result
@@ -145,7 +146,7 @@ Target Screen Body:
 
 Feature/Scenario/Screen remain peer owner families. Their **future bodies** are Step-owned until the application is actually realized.
 
-## 6. Domain discovery → Target Domain Body when justified
+## 6. Domain discovery → Evolution Impact → Target Domain Body when justified
 
 Capture behavior exposes semantic pressure around:
 
@@ -169,7 +170,7 @@ Target Domain Body: CaptureItem
 
 The future `IR-DOMAIN-*` lives in this Target Domain Body. There is still no current Domain owner because nothing is implemented yet.
 
-## 7. Slice discovery → Target Slice Body when justified
+## 7. Slice discovery → Evolution Impact → Target Slice Body when justified
 
 `TM-IMPLEMENTATION-SLICE` may discover:
 
@@ -189,7 +190,7 @@ Target Slice Body: SL-CAPTURE
   future IR-SLICE-* only when material
 ```
 
-Transient discovery remains a working Source. The Target Slice Body is future planning; neither is current implementation truth yet.
+Slice Discovery remains working methodology. Selected Result Content with continuing pre-realization value may be retained in the Step Slice Evolution Impact; the Target Slice Body is future durable Slice meaning. Neither is current implementation truth yet.
 
 ## 8. Shared capability uses the target-state consumer set, not imaginary current consumers
 

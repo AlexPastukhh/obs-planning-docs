@@ -26,6 +26,8 @@ Step realized + required proof/revalidation
 
 Future `BR-*` belongs to the Target Feature Body until materialization. Do not create a separate `FutureFeature` type.
 
+For every selected `NEW` or `CHANGED` Feature in an Evolution Step, the Target Feature Body is the **complete** ordinary `Feature Definition` expected after the Step, not a delta. `[EXISTING]/[NEW]/[CHANGED]/[REMOVED]` annotations may aid review but never substitute for that body. If a Step preserves Feature behavior unchanged (for example a pure Refactoring/Forced Migration), reference the current Feature as retained target behavior rather than copying it. Feature does not need an owner-local `Evolution Impact` Result Unit; future Feature authority is represented directly by the Step Feature target state/Target Feature Body, with lightweight relevant-Step navigation in a current Feature only when useful.
+
 ## Activation / Scope Gate
 
 Use when application behavior needs an independently addressable owner or an existing Feature boundary must be reviewed.

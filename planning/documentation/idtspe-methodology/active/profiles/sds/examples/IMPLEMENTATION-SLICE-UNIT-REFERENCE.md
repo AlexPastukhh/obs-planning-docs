@@ -2,7 +2,7 @@
 
 Status: active worked reference
 
-This reference mirrors the current `TM-IMPLEMENTATION-SLICE` Target Step-Result Contract. It is a transient discovery example, not a durable Slice-owner schema.
+This reference mirrors the current `TM-IMPLEMENTATION-SLICE` Target Step-Result Contract. It is a working discovery example, not a durable Slice-owner schema. The discovery Target/artifact is transient by default, while selected Result Content may be retained in the owning Evolution Impact when unrealized continuation/realization still needs it.
 
 The example is scoped to an **unrealized Evolution Step**, so selected durable future Slice meaning is integrated into a Target Slice Body rather than a current Slice owner.
 
@@ -131,7 +131,7 @@ Provider callback ordering:
 
 Do not invent a numeric probability. Do not treat branch-scoped meaning as selected.
 
-## Target Slice Body Handoff
+## Evolution Impact / Target Slice Body Handoff
 
 After a route is actually selected, durable post-Step Slice responsibility may be represented as:
 

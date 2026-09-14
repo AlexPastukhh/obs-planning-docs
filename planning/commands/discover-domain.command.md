@@ -15,18 +15,18 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
     "исследуй домен приложения"
   ],
   "description": "domain discovery",
-  "meaning": "Run TM-DOMAIN-DISCOVERY through current Use-Case-driven IDTSPE composition and the selected Target Module entry point for the selected target.",
+  "meaning": "Run TM-DOMAIN-DISCOVERY as transient Domain discovery through current Use-Case-driven IDTSPE composition and the selected Target Module entry point. The working Target/artifact is transient by default; selected useful Result Content may hand off to a Step Evolution Impact without becoming durable Domain authority.",
   "activeContextBehavior": "Treat the explicit command as selected invocation intent inside always-active IDTSPE. Re-evaluate current Use-Case composition, resolve/reuse a natural Target/context only when useful, confirm the selected Target Module Entry Point/local applicability gate, and then resolve CREATE/REFINE/EXTEND/REVALIDATE/REPAIR from actual current Target state. Do not create a Target or Result Unit merely because the command exists.",
   "traversalReadMode": "Reuse current reliable IDTSPE/SDS governance; targeted refresh of the selected owner route when uncertain; full bootstrap only when no reliable sufficient governance context exists.",
   "ownerFiles": [
     "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-DOMAIN-DISCOVERY.md",
     "planning/documentation/idtspe-methodology/active/profiles/sds/shared/idtspe-command-surface-contract.md"
   ],
-  "expectedOutput": "Transient Domain discovery findings/candidates, material rules/invariants/boundaries and proportional Core State. For unrealized work, selected durable Domain meaning hands off to Target Domain Body/Bodies in the active Evolution Step; direct current Domain-owner handoff applies only to realized/current-state revalidation. A zero-owner/body result remains valid.",
+  "expectedOutput": "Domain Discovery Working Plan with proportional findings/candidates, material rules/invariants/boundaries and Core State. For unrealized work, selected useful Result Content hands off to the applicable Evolution Impact(s) in the active Evolution Step; zero/one/several Target Domain Bodies are formed only when durable post-Step Domain meaning is sufficiently resolved. Direct current Domain-owner handoff applies only to realized/current-state revalidation. A zero-owner/body result remains valid.",
   "permissionMode": "read-only-planning",
   "keyReminders": [
     "SDS is an IDTSPE profile, not a second runtime.",
-    "AI-proposed material candidates are Proposals by default; selection makes them accepted planning meaning only through normal authority. Under SDS, unrealized selected future meaning stays in the applicable Evolution Step/Target Body until realization/materialization rather than becoming current-owner truth merely by selection.",
+    "AI-proposed material candidates are Proposals by default; selection makes them accepted planning meaning only through normal authority. Under SDS, unrealized selected future meaning stays in the applicable Evolution Step / Evolution Impact / Target Body according to its natural result destination until realization/materialization rather than becoming current-owner truth merely by selection.",
     "Do not infer a dedicated file from Target identity; use Documentation / Representation and P-14 when persistence is material.",
     "This command plans/reviews only; it does not edit repository files, implement, test, commit or push."
   ],

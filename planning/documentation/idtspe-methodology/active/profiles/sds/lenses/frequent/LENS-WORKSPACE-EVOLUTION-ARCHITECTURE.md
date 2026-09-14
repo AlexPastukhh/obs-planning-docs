@@ -82,7 +82,7 @@ OPEN — insufficient Evidence
 Finding Candidate for another natural owner
 ```
 
-There is no generic `TM-EVOLUTION-IMPACT`. Material future-state impact is written into the affected Evolution Step Target Body/Decision; current-state impact is written to the current owner only when it concerns realized truth or an explicitly selected prepare-now current change.
+There is no generic `TM-EVOLUTION-IMPACT`. Material future-state impact is written into the affected Evolution Step `RU-EVO-02 Evolution Impact` and, when sufficiently resolved, the corresponding Target Owner Body/Decision. A current Scenario/Screen/Domain/Slice/Shared owner may expose only the reverse Step reference/revalidation projection in its own Evolution Impact Unit; it does not copy future meaning.
 
 ## Questions
 
@@ -138,11 +138,12 @@ The Lens does not write the Evolution Step, a generic Impact owner or a second a
 Step / current owner question
 → Lens evaluation
 → Finding / Proposal / Decision when material
-→ future consequence → Evolution Step Target Body
+→ future consequence → Evolution Step / RU-EVO-02
+→ optional Target Owner Body when durable post-Step meaning is sufficiently resolved
 → current prepare-now consequence → current owner only when separately selected and actually realized
 ```
 
-Current implementation outlook belongs to the affected owner or transient working plan; future target state remains in the Evolution Step.
+Current realized meaning stays with the affected current owner. Future impact and any selected retained Domain/Slice discovery Result Content remain Step-owned; exact implementation outlook belongs to Exact or transient working reasoning unless independently selected into an Impact.
 
 ## Finding Contract
 

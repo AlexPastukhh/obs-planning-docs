@@ -170,7 +170,7 @@ known selected Step
 → Forced Migration only when current structure cannot reasonably reach the target
 ```
 
-Known change is planning evidence, not current implementation and not current-owner truth. Under SDS, selected unrealized boundary/responsibility changes belong to the applicable Evolution Step Target Feature/Slice/Shared Bodies.
+Known change is planning evidence, not current implementation and not current-owner truth. Under SDS, Feature target state is represented directly by the Step; selected unrealized Scenario/Screen/Domain/Slice/Shared consequences belong to Step Evolution Impact Units and, when sufficiently resolved, corresponding Target Owner Bodies.
 
 ## Two Evidence Depths
 
@@ -263,7 +263,7 @@ Accepted Feature/Domain/Shared/Evolution meaning and current implementation evid
 
 `NONE_DIRECT` by default.
 
-Working Slice Discovery is non-persistent by default. Durable Slice/Shared meaning is represented in the current owner only when realized; unrealized future meaning is represented in the Evolution Step Target Body. Core Artifact Boundary Lens resolves physical representation. A cross-Slice coverage/map view may be generated/embedded when independently useful but remains derived.
+Working Slice Discovery Target/artifact is non-persistent by default. Selected Slice Discovery Result Content with continuing pre-realization value may be retained by the applicable Step Evolution Impact without becoming durable Slice authority. Durable Slice/Shared meaning is represented in the current owner only when realized; sufficiently resolved unrealized owner meaning is represented in the corresponding Step Target Owner Body. Core Artifact Boundary Lens resolves physical representation. A cross-Slice coverage/map view may be generated/embedded when independently useful but remains derived.
 
 ## Composition / Escalation
 

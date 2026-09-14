@@ -1,7 +1,7 @@
 # TM-IMPLEMENTATION-SLICE — Slice Discovery / Non-Persistent Slice Planning
 
 Entry Point: `tm.implementation_slice`  
-Role: transient whole-Slice implementation discovery Target Module
+Role: bounded whole-Slice implementation discovery Target Module; working Target is transient by default, selected Result Content may hand off to Step-owned Evolution Impact
 
 ## Purpose
 
@@ -183,11 +183,23 @@ Do not invent behavior in implementation planning.
 
 ## Representation / Artifact Contract
 
-This Target is working/non-persistent by default.
+This discovery Target/artifact is working/non-persistent by default. Its selected Result Content may still have continuing Step value before implementation exists.
 
-Its temporary result may be conversational or a working implementation plan. For unrealized work, selected durable responsibility moves into a Target Slice Body shaped by `TM-SLICE-OWNER` inside the Evolution Step; it becomes current Slice authority only after realization/materialization. Exact classes/methods/files/tests go to Core Exact/code.
+```text
+working Unit Resolution / rejected alternatives
+→ discard by default after resolution
 
-If retained for review/handoff, mark it as working Source, not current durable Slice authority.
+selected useful whole-path Result Content for unrealized work
+→ applicable TM-EVOLUTION-STEP / RU-EVO-02 Slice/Domain/Shared Impact(s)
+
+selected durable post-Step responsibility/boundary
+→ corresponding Target Slice/Domain/Shared Body when sufficiently resolved
+
+exact literal classes/methods/files/tests
+→ Core Exact/code
+```
+
+Retaining selected planning meaning inside an Impact does not make the discovery Target or volatile class/call topology a current durable Slice authority.
 
 ## Validators
 
@@ -206,8 +218,9 @@ working discovery does not become a shadow class/call registry
 ## Handoff / Revalidation
 
 ```text
-selected durable responsibility
-→ unrealized work: Target Slice Body in TM-EVOLUTION-STEP
+selected Slice discovery meaning
+→ unrealized work: applicable Evolution Impact(s) in TM-EVOLUTION-STEP
+→ when durable post-Step Slice responsibility is resolved: Target Slice Body in that Step
 → realized current-state revalidation: current TM-SLICE-OWNER
 
 shared reusable responsibility discovered
@@ -234,10 +247,10 @@ selected durable Slice implementation constraints
 → same temporal routing for RU-SOWN-02
 
 reusable non-end-to-end responsibility with genuine consumers
-→ Target Shared Body in the Step when unrealized, or current Shared owner when already realized
+→ selected planning consequence into Shared Evolution Impact; Target Shared Body when sufficiently resolved, or current Shared owner when already realized
 
 semantic Domain meaning
-→ Target Domain Body in the Step when unrealized, or current TM-DOMAIN-OWNER when revalidating realized truth
+→ selected planning consequence into Domain Evolution Impact; Target Domain Body when sufficiently resolved, or current TM-DOMAIN-OWNER when revalidating realized truth
 ```
 
 ## Guards

@@ -22,8 +22,9 @@ this guide owns: cross-component temporal/semantic relationships and readiness g
 Before deciding which SDS component should produce meaning, classify whether the subject is current-realized truth or future-unrealized target state.
 
 ```text
-already realized / implemented owner truth
+accepted current owner contract for a materialized state
 → work directly with the current natural owner when review/revalidation is needed
+→ actual implementation/Evidence may confirm or contradict that contract without silently rewriting it
 
 material desired state is not yet realized
 → host that future state in TM-EVOLUTION-STEP
@@ -42,11 +43,14 @@ For unrealized software change, the normal orientation is:
 current realized owners / implementation / Evidence
 → Evolution Step
 → proportionate future-state production:
-     Application Definition when needed
-     Feature ↔ Scenario ↔ Screen target bodies
-     Domain / Slice / Shared discovery
-     Domain / Slice / Shared target bodies
-     future owner-local Requirements
+     one or more Feature target states
+       NEW/CHANGED → complete Target Feature Body
+       unchanged → current Feature reference
+     Scenario / Screen / Domain / Slice / Shared Evolution Impacts as material
+     Domain / Slice discovery when useful
+     selected Discovery Result Content retained in Impact when still useful
+     Target Scenario / Screen / Domain / Slice / Shared Bodies when sufficiently resolved
+     future owner-local Requirements inside corresponding Target Bodies
 → Exact Realization when selected meaning is sufficient
 → implementation / build / test / Evidence as authorized
 → targeted revalidation
@@ -82,7 +86,7 @@ Scenario = journey composition / linking / continuity / terminal Benefit
 Screen   = spatial/navigation composition / Feature presence / routes
 ```
 
-When planning future state, their complete post-Step forms are peer **Target Bodies inside the Step**. A finding in one proposes/revalidates another body; it never silently edits another.
+When planning future state, Feature is the behavioral anchor: every selected NEW/CHANGED Feature uses one complete Target Feature Body, while unchanged Feature behavior is referenced. Scenario and Screen consequences are first represented through bounded Step `Evolution Impact` Units; when selected journey/spatial meaning changes deeply enough for materialization, the complete post-Step Target Scenario/Screen Body is formed. A finding in one proposes/revalidates another owner; it never silently edits another.
 
 When reviewing implemented current truth, the existing current owners remain the direct authorities.
 
@@ -98,27 +102,31 @@ When semantic state/identity/lifecycle/invariant/consistency ownership is materi
 
 ```text
 future Feature/Slice pressure inside Step
+→ Domain Evolution Impact / OPEN ownership pressure
 → relevant DDD evaluation
 → optional TM-DOMAIN-DISCOVERY
-→ zero / one / several Target Domain Bodies inside that Step
+→ selected useful Discovery Result Content retained in the Impact when useful
+→ zero / one / several Target Domain Bodies when durable post-Step Domain meaning is sufficiently resolved
 ```
 
 For an already-realized Domain, direct `TM-DOMAIN-OWNER` review/revalidation remains valid.
 
-Discovery is non-persistent by default and may reason concretely about classes/methods/persistence seams/unit-proof candidates. `no Domain owner/body` is a valid result.
+Discovery Target/artifact is non-persistent by default and may reason concretely about classes/methods/persistence seams/unit-proof candidates. Selected Result Content may be retained in the Domain Evolution Impact without becoming Domain authority. `no Domain owner/body` is a valid result.
 
 ## 7. Slice Discovery / Slice Target Body
 
 When a future Feature benefits from concrete whole-path implementation reasoning:
 
 ```text
-Target Feature Body + relevant Scenario/Screen target/current sources
-→ TM-IMPLEMENTATION-SLICE
+Feature target state + relevant Scenario/Screen target/current sources
+→ Slice Evolution Impact
+→ TM-IMPLEMENTATION-SLICE when concrete whole-path reasoning is useful
 → whole-slice responsibility / entry-result / Domain+Shared dependencies / effects / failure-recovery / proof
-→ optional Target Slice Body inside the Evolution Step when durable post-Step responsibility is useful
+→ selected useful Discovery Result Content retained in the Impact when useful
+→ optional Target Slice Body when durable post-Step responsibility is sufficiently resolved
 ```
 
-Do not split Slices by frontend/backend/database technical layer alone. `TM-IMPLEMENTATION-SLICE` is transient discovery, not a durable Strategy owner.
+Do not split Slices by frontend/backend/database technical layer alone. `TM-IMPLEMENTATION-SLICE` is working discovery, not a durable Strategy owner; Step retention of selected Result Content does not change that ownership boundary.
 
 A current `TM-SLICE-OWNER` is created/replaced/retired only when the corresponding responsibility is actually realized and materialized.
 
@@ -183,7 +191,7 @@ A Step may be candidate, selected, conditional or represented by alternative Pro
 
 Use `LENS-WORKSPACE-EVOLUTION-ARCHITECTURE` when change isolation, prepare-now-vs-defer or avoidable Forced Migration is material. Use Core uncertainty/evidence semantics for confidence basis rather than inventing numeric certainty or a Step-specific confidence lifecycle.
 
-No generic Evolution Impact Target/RU is created.
+No generic `TM-EVOLUTION-IMPACT` Target is created. `TM-EVOLUTION-STEP` owns repeatable `RU-EVO-02 Evolution Impact` Units for Scenario/Screen/Domain/Slice/Shared/OPEN responsibility subjects; current realized owners may expose only their optional reverse Step-reference/revalidation Impact Unit.
 
 ## 14. Exact Realization / Recommended Planning Depth
 
@@ -206,10 +214,10 @@ Ordinary depth movement is not a USER gate and is not automatically orchestrated
 When this guide is consulted, ask only questions material to the current owner/Step relationship:
 
 1. Is the subject current realized truth or unrealized target state?
-2. If unrealized, which Evolution Step owns the transition and which target bodies are materially affected?
+2. If unrealized, which Evolution Step owns the transition, what are its Feature target states, and which Scenario/Screen/Domain/Slice/Shared Evolution Impacts are material?
 3. Is an unresolved upstream semantic choice blocking trustworthy downstream planning/Exact work?
 4. Are Feature/Scenario/Screen peer bodies inconsistent, or merely expressing different responsibilities?
-5. Would transient Domain/Slice discovery add bounded value, or is the future/current meaning already sufficient?
+5. Would Domain/Slice discovery add bounded value, and if so which selected Result Content must remain in the owning Evolution Impact until realization?
 6. Does a candidate Domain/Slice/Shared body represent independently useful post-Step responsibility?
 7. Are remaining unknowns local enough that Exact Realization can resolve them safely, or do they require Proposal/Question/Evidence first?
 8. Is the Step selected but still unrealized, and has any text accidentally treated selection as current-owner authority?

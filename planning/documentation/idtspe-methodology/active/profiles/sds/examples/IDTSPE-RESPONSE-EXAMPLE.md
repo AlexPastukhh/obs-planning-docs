@@ -80,7 +80,7 @@ RU-SLICE-04 — Feature Integration Proof
     source variants preserve truthful result semantics
 ```
 
-Transient Slice Discovery helps construct/refine the Target Slice Body. It is not another durable Slice authority.
+Slice Discovery helps refine the Step Slice Evolution Impact and, when durable post-Step responsibility is sufficiently resolved, the Target Slice Body. Selected useful discovery Result Content may remain in the Impact while unrealized; discovery is not another durable Slice authority.
 
 ## Material Core State
 
@@ -124,8 +124,9 @@ A Lens observation becomes accepted State/result meaning only through normal Cor
 ## Persistence / Placement
 
 ```text
-transient Slice Discovery working plan
-→ may remain conversational/non-persistent
+Slice Discovery Working Plan
+→ exploratory resolution remains transient by default
+→ selected useful Result Content may be retained in the owning Evolution Impact
 
 Target Slice / Feature / Domain Bodies
 → represented with the Evolution Step

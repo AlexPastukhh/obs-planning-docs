@@ -111,14 +111,16 @@ This is orientation only. It is not a mandatory phase sequence. Cross-owner read
 - Evolution Step Target Owner Bodies reuse natural owner contracts without creating `FutureFeature`, `FutureDomain`, `FutureSlice` or another parallel owner ontology.
 - Target Owner Materialization is a semantic authority transition after realization/proof; it is distinct from physical representation promotion/demotion or file placement under P-14/TF-10.
 - Feature, Scenario and Screen are peer semantic owner families; none silently edits another.
-- Domain and Slice discovery are transient by default; discovery artifacts do not become durable authority merely by existing.
+- Domain and Slice discovery Targets/artifacts are transient by default; selected Discovery Working Plan Result Content may be retained in a Step `Evolution Impact` when continuation/realization/review/revalidation still needs it, without becoming durable Domain/Slice authority.
 - Durable Requirements stay with exactly one natural owner **in the state being represented**: future Requirements live in the corresponding Step Target Body until materialization.
 - Shared capability formation is governed by its Target Module; future consumers do not count as already-realized current consumers.
 - There is no baseline Test Strategy/Test Design Target family; proof follows natural owners/Step obligations and Core proof/evidence evaluation.
 - Programming Principles are reusable knowledge, not a mega-Lens and not live-inherited owner Requirements.
 - Planning depth is guidance, not a one-active-level state machine or approval ladder.
-- Discovery/planning results are non-persistent by default unless independent durable representation value exists.
+- Exploratory discovery resolution/rejected alternatives are non-persistent by default. Selected planning Result Content persists only in its natural destination when it has continuing value; physical artifact persistence remains a separate proportional representation decision.
 - Proposal selection, uncertainty/confidence and realization/materialization are separate axes.
+- Every Evolution Step is behaviorally grounded by one or more Feature target states: selected NEW/CHANGED Features use complete `TM-FEATURE` Target Feature Bodies; unchanged Feature behavior is referenced rather than copied.
+- Scenario/Screen/Domain/Slice/Shared future consequences use Step-owned `Evolution Impact` Units; current realized owners may expose only reverse Step navigation/revalidation through their own optional Evolution Impact Unit.
 
 ## Canonical SDS Owners
 

@@ -78,6 +78,7 @@ Module-wide Source/Knowledge/Production/Lens/validator guidance is a shared defa
 | Result Unit | Meaning |
 |---|---|
 | `RU-SCEN-01` | Journey Composition — actor/external participation, Feature/context links, order/branch/convergence/re-entry, continuity, terminal Benefit closure, sparse journey must-holds and optional E2E Proof Intent |
+| `RU-SCEN-02` | Evolution Impact — current-owner reverse references to concrete unrealized Evolution Steps that materially affect this realized Scenario |
 
 ### Result Unit Applicability / Materiality
 
@@ -86,10 +87,11 @@ Declared Result Units are a possible semantic surface, not a mandatory form. App
 | Result Unit | Make explicit when | Omit / keep sparse when |
 |---|---|---|
 | `RU-SCEN-01` | when journey composition across actors/features/screens/external steps has independent planning value | omit optional branches/must-holds/E2E intent that are not material to continuity or terminal Benefit |
+| `RU-SCEN-02` | for a current realized Scenario, when one or more concrete unrealized Steps materially affect its journey composition and reverse navigation/revalidation is useful | omit when no relevant Step exists; omit from the Target Scenario Body of the Step that owns the future change |
 
 Do not create `N/A` placeholders. Re-evaluate a previously omitted Unit only when its trigger/materiality changes.
 
-One RU is intentionally broad because these aspects jointly define one journey graph. Internal objects/steps/branches remain addressable within it when useful without becoming separate target-state Result Units.
+`RU-SCEN-01` is intentionally broad because its journey aspects jointly define one graph. `RU-SCEN-02` is separate because current-owner evolution navigation/revalidation has a different responsibility. Internal journey objects/steps/branches remain addressable within `RU-SCEN-01` when useful without becoming separate target-state Result Units.
 
 
 ### Explicit Unit Checkpoint Placement
@@ -101,6 +103,16 @@ Each material Unit below inherits the generic [`Unit Applicability Envelope`](..
 1. **Opening Unit Checkpoint — `RU-SCEN-01`** — resolve/reuse current applicable Core + active-profile Lens registry candidates and any Unit-triggered supporting registry pressure before material work.
 2. **Unit Work — `RU-SCEN-01`** — produce/refine only the material meaning owned by this Result Unit; run additional applicability checks immediately when the Analysis Surface changes materially.
 3. **Closing Unit Checkpoint — `RU-SCEN-01`** — evaluate the actual candidate Unit result, disposition material Findings/owner consequences, and reopen/refine narrowly when needed before treating the Unit as current-for-handoff.
+
+#### `RU-SCEN-02` processing envelope
+
+1. **Opening Unit Checkpoint — `RU-SCEN-02`** — inspect only concrete relevant Steps/Map relations and confirm they materially affect this current Scenario.
+2. **Unit Work — `RU-SCEN-02`** — retain compact Step references/revalidation pressure only; future journey meaning remains canonical in the Step-side Evolution Impact / Target Scenario Body.
+3. **Closing Unit Checkpoint — `RU-SCEN-02`** — ensure the current Scenario contains no copied future roadmap/Target Body and stale realized-Step references are not presented as active future impact.
+
+### RU-SCEN-02 — Evolution Impact
+
+For a current realized Scenario, keep only compact navigation/revalidation projection to concrete unrealized Steps that materially affect its journey composition. The Step-side `RU-EVO-02` owns future impact meaning; a changed future Scenario is represented by a Target Scenario Body in that Step. This reverse projection may be stored, generated or derived.
 
 ## Journey Shape
 
@@ -177,13 +189,14 @@ Use stable local addressability only when the journey constraint needs independe
 
 ## Evolution / Change Outlook
 
-Scenario may surface that current journey composition is affected by known future change, but it does not own a durable “Scenario Development/Change Outlook” roadmap.
+Scenario does not own a second future roadmap. `RU-SCEN-02` exposes only current-owner reverse navigation/revalidation; the applicable Evolution Step owns the future impact.
 
 ```text
 known future journey/capability change
-→ TM-EVOLUTION-STEP complete target state
-→ Scenario appears in that Step when journey composition changes
-→ current Scenario revalidation when appropriate
+→ TM-EVOLUTION-STEP / RU-EVO-02 Scenario impact
+→ optional complete Target Scenario Body when selected journey meaning changes
+→ RU-SCEN-02 in current Scenario references that Step when useful
+→ realization/materialization updates current Scenario authority
 ```
 
 ## Representation / Artifact Contract

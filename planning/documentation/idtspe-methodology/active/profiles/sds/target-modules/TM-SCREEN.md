@@ -71,6 +71,7 @@ Module-wide Source/Knowledge/Production/Lens/validator guidance is a shared defa
 |---|---|
 | `RU-SCREEN-01` | Screen Map — Screen inventory, Feature/Scenario participation, routes/transitions and global spatial constraints |
 | `RU-SCREEN-02` | Screen Draft Set — independently useful Screen/zone composition details |
+| `RU-SCREEN-03` | Evolution Impact — current-owner reverse references to concrete unrealized Evolution Steps that materially affect this realized Screen/spatial owner |
 
 ### Result Unit Applicability / Materiality
 
@@ -80,6 +81,7 @@ Declared Result Units are a possible semantic surface, not a mandatory form. App
 |---|---|---|
 | `RU-SCREEN-01` | when cross-screen inventory/routes/Feature participation or global spatial constraints matter | omit global map detail when a single local Screen composition is sufficient |
 | `RU-SCREEN-02` | when one or more Screen/zone compositions need independent spatial detail | omit Screen drafts whose layout/zone meaning adds no planning value yet |
+| `RU-SCREEN-03` | for current realized Screen meaning, when concrete unrealized Steps materially affect spatial/navigation composition and reverse navigation/revalidation is useful | omit when no relevant Step exists; omit from the Target Screen Body of the Step that owns the future change |
 
 Do not create `N/A` placeholders. Re-evaluate a previously omitted Unit only when its trigger/materiality changes.
 
@@ -99,6 +101,12 @@ Each material Unit below inherits the generic [`Unit Applicability Envelope`](..
 1. **Opening Unit Checkpoint — `RU-SCREEN-02`** — resolve/reuse current applicable Core + active-profile Lens registry candidates and any Unit-triggered supporting registry pressure before material work.
 2. **Unit Work — `RU-SCREEN-02`** — produce/refine only the material meaning owned by this Result Unit; run additional applicability checks immediately when the Analysis Surface changes materially.
 3. **Closing Unit Checkpoint — `RU-SCREEN-02`** — evaluate the actual candidate Unit result, disposition material Findings/owner consequences, and reopen/refine narrowly when needed before treating the Unit as current-for-handoff.
+
+#### `RU-SCREEN-03` processing envelope
+
+1. **Opening Unit Checkpoint — `RU-SCREEN-03`** — inspect concrete relevant Steps and confirm material spatial/navigation impact.
+2. **Unit Work — `RU-SCREEN-03`** — retain compact Step references/revalidation pressure only; future Screen meaning remains in Step-side `RU-EVO-02` / Target Screen Body.
+3. **Closing Unit Checkpoint — `RU-SCREEN-03`** — ensure no future Target Screen Body or roadmap is copied into current Screen authority.
 
 ### RU-SCREEN-01 — Screen Map
 
@@ -128,6 +136,10 @@ screen-specific contextual constraints
 ```
 
 Do not copy canonical Feature behavior text into Screen drafts. Reference Feature/BR identity when addressability helps.
+
+### RU-SCREEN-03 — Evolution Impact
+
+For current realized Screen meaning, expose only compact references to concrete unrealized Steps that materially affect spatial/navigation composition. Canonical future impact and any changed Target Screen Body remain Step-owned. The reverse projection may be explicit, generated or derived.
 
 ## Example
 

@@ -204,31 +204,31 @@ A root scenario begins from the ordinary functional entry route. A focused scena
 **Possible Result:** A concrete future-transition owner with current Entry State, candidate/selected route context and explicit uncertainty where material.  
 **Derived From / Owners:** `TM-EVOLUTION-STEP`, `TM-EVOLUTION-STEPS-MAP`, `LENS-UNCERTAINTY-ASSUMPTION-REVERSIBILITY`.
 
-### Step `SCN-02-S1` — form only the target owner bodies the Step actually needs
+### Step `SCN-02-S1` — establish Feature target state and peer Evolution Impacts
 
-**Trigger / Situation:** The Step needs application/behavior/journey/spatial meaning.  
-**AI Action:** Use Application / Feature / Scenario / Screen Target Modules only for material perspectives, in supporting role inside the Step.  
-**Why This Step:** These contracts define natural owner shapes, but their future bodies are not current owner authority yet.  
-**Method / Mechanics:** Start from whichever perspective is informative; co-form/revalidate peer Target Bodies as pressure appears. Future BRs remain in the Target Feature Body.  
-**Possible Result:** Complete-enough Target Application/Feature/Scenario/Screen Bodies for the current planning depth without duplicate current authority.  
-**Derived From / Owners:** `TM-EVOLUTION-STEP`, `TM-APPLICATION-DEFINITION`, `TM-FEATURE`, `TM-SCENARIO-PLANNING`, `TM-SCREEN`.
+**Trigger / Situation:** The Step needs application behavior and may affect journey/spatial meaning.  
+**AI Action:** Ground the Step in one or more Feature target states. For every selected NEW/CHANGED Feature, form one complete Target Feature Body using `TM-FEATURE`; reference unchanged Feature behavior rather than copying it. Open Scenario/Screen Evolution Impact Units only where the Step materially affects those peers.  
+**Why This Step:** Feature is the behavioral target of the transition, while Scenario/Screen consequences should not create duplicate future roadmaps.  
+**Method / Mechanics:** Co-form/revalidate only material peer meaning. `[NEW]/[CHANGED]` annotations are provenance, never a substitute for the complete Target Feature Body. A selected changed Scenario/Screen may deepen from Impact into its complete Target Owner Body.  
+**Possible Result:** Complete Feature target state plus bounded Scenario/Screen Impacts and only the Target Scenario/Screen Bodies actually needed.  
+**Derived From / Owners:** `TM-EVOLUTION-STEP`, `TM-FEATURE`, `TM-SCENARIO-PLANNING`, `TM-SCREEN`.
 
-### Step `SCN-02-S2` — discover Domain meaning and integrate it into Target Domain Bodies
+### Step `SCN-02-S2` — deepen Domain Evolution Impact through discovery when useful
 
-**Trigger / Situation:** Identity/state/lifecycle/invariant/consistency ownership becomes material.  
-**AI Action:** Use Domain Discovery and DDD evaluation; when durable post-Step Domain responsibility is justified, shape a Target Domain Body inside the Step.  
-**Why This Step:** Discovery is transient and selected future Domain meaning is still unrealized.  
-**Method / Mechanics:** Discover bounded candidates transiently; evaluate ownership/consistency; allow zero/one/several future Domain bodies. Future IR-DOMAIN/PFR meaning remains in those bodies.  
-**Possible Result:** Zero/one/several Target Domain Bodies backed by bounded discovery, without premature current Domain-owner creation.  
+**Trigger / Situation:** Feature/Slice pressure makes Domain ownership/state/lifecycle/invariant/consistency materially relevant.  
+**AI Action:** Open/refine a Domain `Evolution Impact`; use Domain Discovery and DDD evaluation when bounded concrete exploration helps. Retain selected Discovery Result Content in the Impact only while it has continuing pre-realization value; form zero/one/several Target Domain Bodies only when durable post-Step Domain responsibility is sufficiently resolved.  
+**Why This Step:** Discovery work remains working methodology, while selected future impact and durable future Domain semantics have different temporal destinations.  
+**Method / Mechanics:** Keep ownership `OPEN` rather than inventing a new Domain owner; allow zero/one/several owner outcomes; keep future IR-DOMAIN/PFR only in the corresponding Target Domain Body.  
+**Possible Result:** A refined Domain Impact, optionally with retained selected discovery planning meaning and zero/one/several Target Domain Bodies.  
 **Derived From / Owners:** `TM-DOMAIN-DISCOVERY`, `LENS-DOMAIN-MODELING-DDD`, `TM-DOMAIN-OWNER`, `TM-EVOLUTION-STEP`.
 
-### Step `SCN-02-S3` — discover implementation Slice candidates and integrate selected future responsibility
+### Step `SCN-02-S3` — deepen Slice/Shared Evolution Impact through whole-path discovery
 
-**Trigger / Situation:** End-to-end implementation responsibility/boundary becomes useful.  
-**AI Action:** Use Slice Discovery for bounded candidates; use Verticality/Integration evaluation as material; shape Target Slice/Shared Bodies when durable post-Step responsibility is justified.  
-**Why This Step:** Multiple candidates do not require a portfolio/strategy Target and future consumers do not create current Shared owners.  
-**Method / Mechanics:** Repeat Slice Discovery as needed; keep alternatives branch-scoped until selection; put future IR-SLICE/IR-SHARED in the corresponding target bodies.  
-**Possible Result:** Transient Slice discovery plus selected/candidate Target Slice/Shared Bodies inside the Step.  
+**Trigger / Situation:** End-to-end implementation responsibility/boundary or reusable non-end-to-end pressure becomes useful.  
+**AI Action:** Open/refine Slice/Shared `Evolution Impact` Units; use Slice Discovery and Verticality/Integration evaluation when bounded whole-path reasoning helps. Retain selected Discovery Result Content in the owning Impact while it has continuing pre-realization value; shape Target Slice/Shared Bodies when durable post-Step responsibility is sufficiently resolved.  
+**Why This Step:** Multiple candidates do not require a portfolio/strategy Target, working discovery does not become durable authority, and future consumers do not create current Shared owners.  
+**Method / Mechanics:** Keep alternatives branch-scoped until selection; route durable future IR-SLICE/IR-SHARED only to corresponding Target Bodies; literal implementation remains Exact.  
+**Possible Result:** Refined Slice/Shared Impacts with optional retained selected discovery planning meaning and optional Target Slice/Shared Bodies.  
 **Derived From / Owners:** `TM-IMPLEMENTATION-SLICE`, `LENS-SLICE-VERTICALITY-INTEGRATION`, `TM-SLICE-OWNER`, `TM-SHARED-IMPLEMENTATION-CAPABILITY`, `TM-EVOLUTION-STEP`.
 
 ### Step `SCN-02-S4` — simplify, resolve uncertainty and prove proportionally
@@ -249,9 +249,9 @@ A root scenario begins from the ordinary functional entry route. A focused scena
   "assumptions":["UC-IDTSPE-COMPOSE-CURRENT-WORK already governs composition"],
   "steps":[
     {"id":"SCN-02-S0","title":"Host the unrealized change in an Evolution Step","semanticRefs":["TM-EVOLUTION-STEP","TM-EVOLUTION-STEPS-MAP","LENS-UNCERTAINTY-ASSUMPTION-REVERSIBILITY"]},
-    {"id":"SCN-02-S1","title":"Form only the target owner bodies the Step actually needs","semanticRefs":["TM-EVOLUTION-STEP","TM-APPLICATION-DEFINITION","TM-FEATURE","TM-SCENARIO-PLANNING","TM-SCREEN"]},
-    {"id":"SCN-02-S2","title":"Discover Domain meaning and integrate Target Domain Bodies","semanticRefs":["TM-DOMAIN-DISCOVERY","LENS-DOMAIN-MODELING-DDD","TM-DOMAIN-OWNER","TM-EVOLUTION-STEP"]},
-    {"id":"SCN-02-S3","title":"Discover Slice candidates and integrate selected future responsibility","semanticRefs":["TM-IMPLEMENTATION-SLICE","LENS-SLICE-VERTICALITY-INTEGRATION","TM-SLICE-OWNER","TM-SHARED-IMPLEMENTATION-CAPABILITY","TM-EVOLUTION-STEP"]},
+    {"id":"SCN-02-S1","title":"Establish Feature target state and peer Evolution Impacts","semanticRefs":["TM-EVOLUTION-STEP","TM-FEATURE","TM-SCENARIO-PLANNING","TM-SCREEN"]},
+    {"id":"SCN-02-S2","title":"Deepen Domain Evolution Impact through discovery when useful","semanticRefs":["TM-DOMAIN-DISCOVERY","LENS-DOMAIN-MODELING-DDD","TM-DOMAIN-OWNER","TM-EVOLUTION-STEP"]},
+    {"id":"SCN-02-S3","title":"Deepen Slice/Shared Evolution Impact through whole-path discovery","semanticRefs":["TM-IMPLEMENTATION-SLICE","LENS-SLICE-VERTICALITY-INTEGRATION","TM-SLICE-OWNER","TM-SHARED-IMPLEMENTATION-CAPABILITY","TM-EVOLUTION-STEP"]},
     {"id":"SCN-02-S4","title":"Simplify, resolve uncertainty and prove proportionally","semanticRefs":["LENS-SIMPLICITY-IMPLEMENTATION-ECONOMY","LENS-UNCERTAINTY-ASSUMPTION-REVERSIBILITY","LENS-DEPENDENCY-CHANGE-IMPACT","LENS-TEST-PROOF-EVIDENCE","TM-PROTOTYPE","TM-PRACTICAL-TEST"]}
   ]
 }

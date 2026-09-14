@@ -54,6 +54,7 @@ Module-wide Source/Knowledge/Production/Lens/validator guidance is a shared defa
 |---|---|
 | `RU-SOWN-01` | Slice Responsibility / Boundary Contract |
 | `RU-SOWN-02` | Slice Implementation Requirements |
+| `RU-SOWN-03` | Evolution Impact — current-owner reverse references to concrete unrealized Evolution Steps that materially affect this realized Slice owner |
 
 ### Result Unit Applicability / Materiality
 
@@ -63,6 +64,7 @@ Declared Result Units are a possible semantic surface, not a mandatory form. App
 |---|---|---|
 | `RU-SOWN-01` | when an end-to-end Slice responsibility/boundary deserves durable ownership/addressability | omit the durable owner when transient Slice Discovery is sufficient |
 | `RU-SOWN-02` | when durable owner-local implementation/proof constraints are needed | omit when no Slice-local IR/PFR is necessary; zero Requirements is valid |
+| `RU-SOWN-03` | for a current realized Slice owner, when concrete unrealized Steps materially affect its responsibility/boundary and reverse navigation/revalidation is useful | omit when no relevant Step exists; omit from the Target Slice Body of the Step that owns the future change |
 
 Do not create `N/A` placeholders. Re-evaluate a previously omitted Unit only when its trigger/materiality changes.
 
@@ -82,6 +84,12 @@ Each material Unit below inherits the generic [`Unit Applicability Envelope`](..
 1. **Opening Unit Checkpoint — `RU-SOWN-02`** — resolve/reuse current applicable Core + active-profile Lens registry candidates and any Unit-triggered supporting registry pressure before material work.
 2. **Unit Work — `RU-SOWN-02`** — produce/refine only the material meaning owned by this Result Unit; run additional applicability checks immediately when the Analysis Surface changes materially.
 3. **Closing Unit Checkpoint — `RU-SOWN-02`** — evaluate the actual candidate Unit result, disposition material Findings/owner consequences, and reopen/refine narrowly when needed before treating the Unit as current-for-handoff.
+
+#### `RU-SOWN-03` processing envelope
+
+1. **Opening Unit Checkpoint — `RU-SOWN-03`** — inspect concrete relevant Steps and confirm material impact on this current Slice responsibility/boundary.
+2. **Unit Work — `RU-SOWN-03`** — retain compact Step references/revalidation pressure only; future Slice impact, selected Slice Discovery planning meaning and Target Slice Body remain Step-owned.
+3. **Closing Unit Checkpoint — `RU-SOWN-03`** — ensure current Slice authority contains no copied future roadmap or volatile planned class/call topology.
 
 ### RU-SOWN-01 — Slice Responsibility / Boundary Contract
 
@@ -125,6 +133,10 @@ Capability binding:
 
 The Slice owns the `IR-SLICE-*` meaning; the Shared capability owns the selected consumer-to-capability binding.
 
+### RU-SOWN-03 — Evolution Impact
+
+For a current realized Slice owner, expose compact navigation/revalidation references to concrete unrealized Steps that materially affect this responsibility/boundary. Canonical future impact belongs to Step-side `RU-EVO-02`; selected Slice Discovery planning detail and any Target Slice Body remain in the Step. This reverse projection may be stored, generated or derived.
+
 ## Production / Revalidation Method
 
 ```text
@@ -144,7 +156,7 @@ Literal tests remain code/Exact authority; this Target owns only durable respons
 
 ## Evolution
 
-Selected or candidate future Slice target state belongs to the applicable `TM-EVOLUTION-STEP` Target Slice Body. Current owner may reference relevant Steps for navigation/revalidation but contains only realized current Slice truth and does not maintain a second future roadmap.
+Future Slice impact belongs to the applicable `TM-EVOLUTION-STEP` / `RU-EVO-02`. When a selected post-Step Slice responsibility/boundary is sufficiently resolved for materialization, it is represented by a Target Slice Body. `RU-SOWN-03` in the current owner is only reverse navigation/revalidation projection and does not maintain a second future roadmap.
 
 ## Validators / Handoff
 

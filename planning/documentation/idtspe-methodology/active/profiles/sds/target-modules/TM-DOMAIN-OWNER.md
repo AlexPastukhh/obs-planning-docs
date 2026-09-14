@@ -52,6 +52,7 @@ Module-wide Source/Knowledge/Production/Lens/validator guidance is a shared defa
 |---|---|
 | `RU-DOWN-01` | Domain Semantic Contract |
 | `RU-DOWN-02` | Domain Implementation Requirements |
+| `RU-DOWN-03` | Evolution Impact — current-owner reverse references to concrete unrealized Evolution Steps that materially affect this realized Domain owner |
 
 ### Result Unit Applicability / Materiality
 
@@ -61,6 +62,7 @@ Declared Result Units are a possible semantic surface, not a mandatory form. App
 |---|---|---|
 | `RU-DOWN-01` | when a durable Domain owner has independently useful semantic responsibility | omit the entire durable owner when discovery does not justify that responsibility |
 | `RU-DOWN-02` | when durable implementation/proof constraints are naturally owned by the Domain | omit when no owner-local IR/PFR is needed; zero Requirements is valid |
+| `RU-DOWN-03` | for a current realized Domain owner, when concrete unrealized Steps materially affect its semantics/responsibility and reverse navigation/revalidation is useful | omit when no relevant Step exists; omit from the Target Domain Body of the Step that owns the future change |
 
 Do not create `N/A` placeholders. Re-evaluate a previously omitted Unit only when its trigger/materiality changes.
 
@@ -80,6 +82,12 @@ Each material Unit below inherits the generic [`Unit Applicability Envelope`](..
 1. **Opening Unit Checkpoint — `RU-DOWN-02`** — resolve/reuse current applicable Core + active-profile Lens registry candidates and any Unit-triggered supporting registry pressure before material work.
 2. **Unit Work — `RU-DOWN-02`** — produce/refine only the material meaning owned by this Result Unit; run additional applicability checks immediately when the Analysis Surface changes materially.
 3. **Closing Unit Checkpoint — `RU-DOWN-02`** — evaluate the actual candidate Unit result, disposition material Findings/owner consequences, and reopen/refine narrowly when needed before treating the Unit as current-for-handoff.
+
+#### `RU-DOWN-03` processing envelope
+
+1. **Opening Unit Checkpoint — `RU-DOWN-03`** — inspect concrete relevant Steps and confirm material impact on this current Domain owner.
+2. **Unit Work — `RU-DOWN-03`** — retain compact Step references/revalidation pressure only; future Domain impact, discovery-selected planning meaning and Target Domain Body remain Step-owned.
+3. **Closing Unit Checkpoint — `RU-DOWN-03`** — ensure the current Domain owner contains no copied future contract/IR/discovery plan and stale realized-Step references are not presented as active future impact.
 
 ### RU-DOWN-01 — Domain Semantic Contract
 
@@ -109,6 +117,10 @@ optional owner-local PFR-* when a non-obvious durable proof-realization constrai
 
 Requirement wording owns the must-hold meaning. Tests prove it; they do not define it.
 
+### RU-DOWN-03 — Evolution Impact
+
+For a current realized Domain owner, expose compact navigation/revalidation references to concrete unrealized Steps that materially affect this owner. The Step-side `RU-EVO-02` is canonical future-impact authority. This Unit does not copy Target Domain Bodies, future IR/PFR or selected Domain Discovery planning detail. The reverse projection may be stored, generated or derived.
+
 ## Production / Revalidation Method
 
 ```text
@@ -127,7 +139,7 @@ Domain unit proof belongs with the Domain realization and proves semantic rules/
 
 ## Evolution
 
-Relevant selected Evolution Steps are Sources for revalidation. Future target Domain state belongs inside the Step Target Domain Body; current Domain owner remains current authority until realization and Target Owner Materialization change it. Physical representation promotion/demotion remains a separate P-14 concern.
+Relevant concrete Evolution Steps are Sources for revalidation and are exposed proportionally through `RU-DOWN-03`. Future Domain impact belongs to Step-side `RU-EVO-02`; a changed/created selected post-Step Domain contract belongs to the Step Target Domain Body. Current Domain owner remains current semantic authority until realization and Target Owner Materialization change it. Physical representation promotion/demotion remains a separate P-14 concern.
 
 ## Validators / Handoff
 

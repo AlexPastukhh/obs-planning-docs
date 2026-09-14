@@ -38,11 +38,11 @@ Do not create/update current-owner artifacts merely because a future Target Body
 
 ## Working vs Durable
 
-`TM-DOMAIN-DISCOVERY` and `TM-IMPLEMENTATION-SLICE` working plans are non-persistent by default.
+`TM-DOMAIN-DISCOVERY` and `TM-IMPLEMENTATION-SLICE` working Targets/artifacts are non-persistent by default. Their exploratory Unit Resolution and rejected alternatives normally disappear after handoff.
 
-Persist only when the working artifact itself has continuing review/handoff value. Persistence does not promote it into semantic authority.
+Selected Discovery Working Plan Result Content with continuing continuation/realization/review/revalidation value may instead be integrated/projected into the applicable Step `Evolution Impact` Unit. That Step-owned retention does not promote the discovery artifact or implementation-shaped detail into Domain/Slice semantic authority.
 
-Exact internal working plans are likewise transient by default.
+Physical persistence of a working artifact remains proportional and is distinct from semantic Result hosting. Exact internal working plans remain transient by default.
 
 ## Typical Owner Representation
 
@@ -58,35 +58,35 @@ Several small Features may share one document if Feature/BR identities remain cl
 
 ### Scenario
 
-Scenario journey meaning may be embedded or dedicated. Preserve Scenario identity, Feature references, path/branch/convergence/re-entry, continuity and terminal Benefit without copying Feature BR prose.
+Scenario journey meaning may be embedded or dedicated. Preserve Scenario identity, Feature references, path/branch/convergence/re-entry, continuity and terminal Benefit without copying Feature BR prose. Current-owner `Evolution Impact` may be stored or derived as compact Step navigation/revalidation; full future Scenario meaning remains Step-owned.
 
 ### Screen
 
-A compact application may use one Screen Map. Promote Screen Drafts to independently addressable sections/files only when their review/reuse pressure justifies it.
+A compact application may use one Screen Map. Promote Screen Drafts to independently addressable sections/files only when their review/reuse pressure justifies it. Current-owner `Evolution Impact` is reverse Step navigation/revalidation, not a second Screen roadmap.
 
 ### Domain
 
 Implementation-native types/state/invariants/operations/tests may be sufficient durable representation for a Domain owner.
 
-Use hybrid/dedicated semantic representation when important Domain meaning cannot remain discoverable/stable from implementation-native truth alone.
+Use hybrid/dedicated semantic representation when important Domain meaning cannot remain discoverable/stable from implementation-native truth alone. Current-owner `Evolution Impact` may be a compact explicit or derived Step-reference projection.
 
 ### Slice
 
 A durable Slice has semantic identity independent of file topology.
 
-Small Slice owners may share a `SLICES.md`-like existing owner/section; substantial ones may have dedicated files. Do not maintain a separate hand-written class/call graph as durable truth.
+Small Slice owners may share a `SLICES.md`-like existing owner/section; substantial ones may have dedicated files. Current-owner `Evolution Impact` may be a compact explicit or derived Step-reference projection. Do not maintain a separate hand-written class/call graph as durable truth merely to compensate for hard-to-navigate implementation.
 
 ### Shared Implementation Capability
 
 Small Shared owners may be embedded in an implementation architecture/owner file; independently substantial shared responsibilities may have dedicated addressability.
 
-Consumer bindings are good candidates for compact textual representation when otherwise hard to discover.
+Consumer bindings are good candidates for compact textual representation when otherwise hard to discover. Current-owner `Evolution Impact` may similarly be represented as compact/derived Step navigation.
 
 ### Evolution Step / Steps Map
 
 A substantial Step may have dedicated addressability. A shallow Step may be embedded in the Steps Map when identity/selection state and required target-state meaning remain clear.
 
-Step representation may contain complete Target Application/Feature/Scenario/Screen/Domain/Slice/Shared Bodies because those bodies are **future Step-owned meaning**, not current-owner duplicates. Several bodies may share one Step artifact.
+Step representation may contain Feature target states, bounded `Evolution Impact` Units and complete Target Application/Feature/Scenario/Screen/Domain/Slice/Shared Bodies because this is **future Step-owned meaning**, not current-owner duplication. Several Units/bodies may share one Step artifact; one Impact Unit does not imply one file.
 
 The Map stores routing/selection relation/prerequisite/readiness/compact uncertainty, not a duplicate of full Step target state.
 

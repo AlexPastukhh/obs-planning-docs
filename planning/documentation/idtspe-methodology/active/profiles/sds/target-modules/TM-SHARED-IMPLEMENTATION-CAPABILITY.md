@@ -66,6 +66,7 @@ Module-wide Source/Knowledge/Production/Lens/validator guidance is a shared defa
 | `RU-SHARED-01` | Shared Capability Contract |
 | `RU-SHARED-02` | Consumer Requirement Bindings |
 | `RU-SHARED-03` | Shared Capability Implementation Requirements |
+| `RU-SHARED-04` | Evolution Impact — current-owner reverse references to concrete unrealized Evolution Steps that materially affect this realized Shared capability/bindings |
 
 ### Result Unit Applicability / Materiality
 
@@ -76,6 +77,7 @@ Declared Result Units are a possible semantic surface, not a mandatory form. App
 | `RU-SHARED-01` | when a coherent reusable non-end-to-end responsibility passes the Shared formation gate | omit the entire Shared owner when reuse/consumer pressure is insufficient |
 | `RU-SHARED-02` | when concrete Slice consumers in the represented current/target state need durable realization bindings to the Shared capability | omit hypothetical consumers and bindings not grounded in the corresponding current/Target Slice IR |
 | `RU-SHARED-03` | when durable implementation constraints are naturally owned by the Shared capability | omit when implementation choices remain local/transient; no proof RU is required by default |
+| `RU-SHARED-04` | for a current realized Shared owner, when concrete unrealized Steps materially affect its capability/consumer bindings and reverse navigation/revalidation is useful | omit when no relevant Step exists; omit from the Target Shared Body of the Step that owns the future change |
 
 Do not create `N/A` placeholders. Re-evaluate a previously omitted Unit only when its trigger/materiality changes.
 
@@ -101,6 +103,12 @@ Each material Unit below inherits the generic [`Unit Applicability Envelope`](..
 1. **Opening Unit Checkpoint — `RU-SHARED-03`** — resolve/reuse current applicable Core + active-profile Lens registry candidates and any Unit-triggered supporting registry pressure before material work.
 2. **Unit Work — `RU-SHARED-03`** — produce/refine only the material meaning owned by this Result Unit; run additional applicability checks immediately when the Analysis Surface changes materially.
 3. **Closing Unit Checkpoint — `RU-SHARED-03`** — evaluate the actual candidate Unit result, disposition material Findings/owner consequences, and reopen/refine narrowly when needed before treating the Unit as current-for-handoff.
+
+#### `RU-SHARED-04` processing envelope
+
+1. **Opening Unit Checkpoint — `RU-SHARED-04`** — inspect concrete relevant Steps and confirm material impact on this current Shared capability/binding set.
+2. **Unit Work — `RU-SHARED-04`** — retain compact Step references/revalidation pressure only; future Shared impact and Target Shared Body remain Step-owned.
+3. **Closing Unit Checkpoint — `RU-SHARED-04`** — ensure current Shared authority contains no copied future consumer set/capability plan.
 
 ### RU-SHARED-01 — Shared Capability Contract
 
@@ -158,6 +166,10 @@ IR-SHARED-*
 
 Do not duplicate consumer `IR-SLICE-*`.
 
+### RU-SHARED-04 — Evolution Impact
+
+For a current realized Shared owner, expose compact navigation/revalidation references to concrete unrealized Steps that materially affect the capability or consumer bindings. Canonical future impact belongs to Step-side `RU-EVO-02`; any Target Shared Body remains Step-owned. This reverse projection may be stored, generated or derived.
+
 ## Production Method
 
 ```text
@@ -200,7 +212,7 @@ Shared candidate
 
 ## Evolution
 
-A future change to Shared capability target state belongs to the applicable `TM-EVOLUTION-STEP` Target Shared Body. Current Shared owner records only realized current contract/IR/bindings and optional Step references for navigation/revalidation.
+Future Shared capability/binding impact belongs to the applicable `TM-EVOLUTION-STEP` / `RU-EVO-02`. When selected future Shared meaning is sufficiently resolved for materialization, it is represented by a Target Shared Body. Current `RU-SHARED-04` records only reverse Step navigation/revalidation and never copies the future plan.
 
 ## Validators / Handoff
 

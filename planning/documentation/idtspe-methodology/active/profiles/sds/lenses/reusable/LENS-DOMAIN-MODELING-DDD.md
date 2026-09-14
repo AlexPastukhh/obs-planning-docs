@@ -179,7 +179,7 @@ Slice realization
 → apply DDD lens
 → natural Domain owner / no Domain owner
 → optional TM-DOMAIN-DISCOVERY
-→ unrealized work: selected durable Domain meaning / IR / proof → Target Domain Body in TM-EVOLUTION-STEP
+→ unrealized work: selected discovery/planning meaning → Domain Evolution Impact in TM-EVOLUTION-STEP; durable Domain meaning / IR / proof → Target Domain Body when sufficiently resolved
 → realized current-state review: current TM-DOMAIN-OWNER consequence
 → return to Slice/Step realization
 ```
@@ -235,7 +235,7 @@ This Lens body is the current operational evaluation contract. The R2 source is 
 
 `NONE_DIRECT` by default.
 
-If durable Domain responsibility is selected, representation follows the correct temporal host: current Domain owner for realized truth or Evolution Step Target Domain Body for unrealized future state. Core Artifact Boundary Lens resolves physical representation. Working DDD discovery is non-persistent by default.
+If durable Domain responsibility is selected, representation follows the correct temporal host: current Domain owner for realized truth or Evolution Step Target Domain Body for unrealized future state. Selected Domain Discovery Result Content with continuing pre-realization value may be retained by the applicable Step Evolution Impact without becoming Domain authority. Working discovery artifact/resolution remains non-persistent by default. Core Artifact Boundary Lens resolves physical representation.
 
 ## Composition / Escalation
 
@@ -245,7 +245,8 @@ Domain question
 → local answer / OPEN
   OR TM-DOMAIN-DISCOVERY
   OR Finding/Proposal for Feature/Slice/Shared/Domain boundary
-→ selected durable Domain meaning → current TM-DOMAIN-OWNER only for realized truth, otherwise Target Domain Body in TM-EVOLUTION-STEP
+→ selected planning consequence → Step Domain Evolution Impact for unrealized work
+→ selected durable Domain meaning → current TM-DOMAIN-OWNER only for realized truth, otherwise Target Domain Body in TM-EVOLUTION-STEP when sufficiently resolved
 ```
 
 Compose with Vertical Slice for end-to-end ownership, IR Discovery for durable constraints, Programming Principles knowledge for generic implementation-quality concerns, Evolution for known change and Test Proof for proof quality.

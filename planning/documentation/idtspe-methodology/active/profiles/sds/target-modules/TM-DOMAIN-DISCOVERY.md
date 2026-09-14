@@ -1,7 +1,7 @@
 # TM-DOMAIN-DISCOVERY — Transient Domain Discovery
 
 Entry Point: `tm.domain_discovery`  
-Role: transient/non-persistent implementation discovery Target Module
+Role: bounded implementation discovery Target Module; working Target is transient by default, selected Result Content may hand off to Step-owned Evolution Impact
 
 ## Purpose
 
@@ -32,9 +32,10 @@ material semantic ownership question
 → sketch candidate realization concretely enough to test the model
 → define Domain unit proof candidates
 → inspect known Evolution / OPEN pressure
-→ for unrealized work: proposal to zero/one/several Target Domain Bodies in the active Evolution Step
+→ for unrealized work: integrate selected useful Result Content into the applicable Evolution Impact(s) in the active Evolution Step
+→ when durable post-Step Domain responsibility is resolved: zero/one/several Target Domain Bodies
 → for current-state review: proposal/revalidation to existing current Domain owner(s) when applicable
-→ discard working discovery by default after selected meaning reaches its proper Step/current-owner destination
+→ discard exploratory resolution/rejected alternatives by default after selected meaning reaches its proper Step/current-owner destination
 ```
 
 Discovery may loop with Slice Discovery. Neither is a mandatory stage before the other.
@@ -139,7 +140,7 @@ literal unit-test cases and expected semantic result
 alternatives / trade-offs
 ```
 
-These details are not durable authority merely because they were useful during discovery.
+These details are not durable authority merely because they were useful during discovery. Selected portions may nevertheless be retained as Step-owned `Evolution Impact` Result Content when continuation/realization/review/revalidation still depends on them; that retention does not make them Domain owner authority or exact implementation commitment.
 
 ### RU-DOM-04 — Evolution / OPEN Domain Pressure
 
@@ -164,17 +165,27 @@ Primary reusable guidance is owned by `LENS-DOMAIN-MODELING-DDD` and the reusabl
 
 ## Representation / Artifact Contract
 
-Working Domain Discovery is transient/non-persistent by default.
+Working Domain Discovery Target/artifact is transient/non-persistent by default; this does not require discarding selected Result Content that has an explicit Step destination.
 
 ```text
-working discovery
-→ zero owner/body outcome: discard after result is clear
-→ unrealized future state: move selected semantic meaning into Target Domain Body/Bodies in TM-EVOLUTION-STEP
-→ already-realized current-state revalidation: update the current Domain owner only through normal accepted correction semantics
-→ exact literal realization: Core Exact/code/tests
+working discovery Unit Resolution / rejected alternatives
+→ discard by default after resolution
+
+selected useful Result Content for unrealized work
+→ applicable TM-EVOLUTION-STEP / RU-EVO-02 Evolution Impact
+→ optional Target Domain Body/Bodies when durable post-Step Domain meaning is resolved
+
+zero owner/body outcome
+→ Impact may record the selected ownership conclusion without inventing a Domain owner
+
+already-realized current-state revalidation
+→ current Domain owner through normal accepted correction semantics
+
+exact literal realization
+→ Core Exact/code/tests
 ```
 
-Persistence of the working plan for handoff/review does not make it Domain authority.
+Retaining selected planning meaning in a Step does not promote the discovery artifact or candidate implementation shape into Domain semantic authority.
 
 ## Domain Evolution Query
 
@@ -201,8 +212,9 @@ working plan is not retained as competing durable authority
 ## Handoff / Revalidation
 
 ```text
-selected Domain meaning
-→ if unrealized: Target Domain Body in the active TM-EVOLUTION-STEP
+selected Domain discovery meaning
+→ if unrealized: applicable Evolution Impact(s) in the active TM-EVOLUTION-STEP
+→ when durable post-Step Domain contract is resolved: Target Domain Body/Bodies in that Step
 → if revalidating realized truth: current TM-DOMAIN-OWNER
 → Slice discovery/Target Slice Body as consumer context when applicable
 → Core Exact for literal realization once the selected Step/current meaning is sufficient
@@ -225,7 +237,7 @@ unselected/uncertain candidate
 → Proposal / Finding / OPEN as appropriate
 ```
 
-The discovery plan is normally disposable after the Evolution Step/current owner/code/tests carry the appropriate planning/current authority.
+The discovery Target/artifact is normally disposable after selected Result Content has reached the applicable Evolution Impact/Target Domain Body/current owner/Exact destination. Step-retained selected planning meaning may remain while the transition is unrealized and later as lineage when independently useful.
 
 ## Guards
 

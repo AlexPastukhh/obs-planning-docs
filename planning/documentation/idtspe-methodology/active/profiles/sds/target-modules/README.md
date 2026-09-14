@@ -23,7 +23,7 @@ current Work Context / concern
 
 All active SDS modules use the Core Unit contract: declared `RU-*` entries are Module-defined Units with bounded Result Responsibility, Unit Resolution and Current Result Content. Existing module-wide Production Method / Knowledge Basis / Lens Profile text is interpreted as shared defaults only where genuinely applicable across Units; Unit-specific questions/guidance/lenses/validators attach to the relevant Unit responsibility.
 
-This conformance does not change SDS temporal authority: selected but unrealized Unit Result Content remains inside the applicable Evolution Step Target Owner Body until realization/materialization establishes current truth.
+This conformance does not change SDS temporal authority: selected but unrealized owner semantics remain Step-owned until realization/materialization. Feature target state is direct Step meaning; Scenario/Screen/Domain/Slice/Shared consequences may be hosted first in Step `Evolution Impact` Units and promoted into complete Target Owner Bodies when the selected owner change is sufficiently resolved.
 
 ## Temporal Hosting Rule — Current Owners vs Future Target Bodies
 
@@ -99,12 +99,12 @@ These are peer owners and may be formed/revalidated together.
 ## Domain / Slice / Shared
 
 ```text
-TM-DOMAIN-DISCOVERY      transient → zero/one/several TM-DOMAIN-OWNER
-TM-IMPLEMENTATION-SLICE  transient → zero/one TM-SLICE-OWNER for one selected durable responsibility
+TM-DOMAIN-DISCOVERY      working Target → selected Result Content → Domain Evolution Impact → zero/one/several Target Domain Bodies as warranted
+TM-IMPLEMENTATION-SLICE  working Target → selected Result Content → Slice/Domain/Shared Evolution Impact → Target owner body/bodies as warranted
 TM-SHARED-IMPLEMENTATION-CAPABILITY durable only under genuine shared-consumer pressure
 ```
 
-Discovery is not persistence and does not become authority merely because a working artifact exists.
+Discovery artifact/Unit Resolution is transient by default and never becomes authority merely because it exists. Selected Result Content may be retained in the owning Evolution Impact while unrealized; durable semantic authority still belongs to Target Owner Bodies/current owners at the correct temporal boundary.
 
 ## Requirements / Proof
 
