@@ -110,6 +110,10 @@ Pre-Update Plan:
 
 Generic Questions/Proposals/Q/R/P/Decisions/Evidence remain Core State. Do not create Target-specific copies of them.
 
+## Unit Contract Conformance
+
+Each declared Result Unit is a Module-defined Unit Contract. Its runtime work is represented as Unit Resolution plus Current Result Content; generic Question/QRP/Proposal/Evidence/Decision meaning remains Core Resolution State related to the Unit/Target subject it actually concerns. A material Proposal selection has Decision semantics, while a separate durable Decision trace is retained only when it adds future review/revalidation value.
+
 ## Target Step-Result Contract
 
 **Target Step Result:** `Pre-Update Plan`

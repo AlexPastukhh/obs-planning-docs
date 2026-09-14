@@ -7,135 +7,61 @@ Purpose: define a reusable module that can shape one IDTSPE Target or contribute
 
 # 1. Core Definition
 
-A `Target Module` is a reusable **IDTSPE methodology component** for a recurring class of bounded Target production. It extends the generic Documentation component vocabulary; it does not replace a Use Case.
-
-It may provide:
-
-```text
-Target form / Target-Type candidate
-Scope archetype + boundary prompts
-Source Contract candidates
-Knowledge Basis / theory references when useful
-Resolution Questions / Question-set preset
-Proposal / Variant discovery prompts
-Lens Profile / reusable Lens references / local pattern aids
-Q/R/P prompts
-Decision surfaces
-Output schema / draft template
-Validators / completeness gates
-Downstream Source handoff
-Revalidation signals
-```
-
-It does **not** own the current project's accepted Scenario/Domain/Slice/etc meaning.
-
-Formula:
-
-```text
-Target Module
-= reusable methodology / preset / contract
-
-Target Instance
-= concrete current planning owner
-
-Local Target Contract
-= one-off Target methodology contract formed dynamically when no reusable module fits
-```
-
-A material IDTSPE Target does **not** require a pre-existing Target Module. Reusable modules are preferred when a recurring contract genuinely fits; otherwise Target Formation creates a bounded Local Target Contract and the same Shell/Lens lifecycle continues.
-
-A Use-Case Process/registry may nominate a Target Module, but the Module's `Entry Point / trigger / applicability` is the final local gate for whether this Module should be used for the current Target. Registry selection never bypasses that gate.
-
-
-## Target Step Result Contract
-
-A Target Module exists because a recurring Target family benefits from a reusable way to produce one coherent **Target Step Result family**.
-
-Conceptually:
+A `Target Module` is a reusable IDTSPE methodology component for a recurring class of bounded Target production. It remains a **Target-family contract**, not merely a bag of Units and not current project authority.
 
 ```text
 Target Module
 =
-Target Step-Result Contract
-+ Target Resolution / Production Method
-+ Knowledge Basis
-+ Lens Profile
-+ Validators
-+ Handoff / Revalidation
-+ Representation Guidance
+Target-family / formation contract
++ composition of Module-defined Unit Contracts
++ genuinely cross-Unit Target rules
++ validators / handoff / revalidation / representation guidance
 ```
 
-### Step-Result Contract
-
-Defines proportionally:
+A Module-defined Unit Contract is the primary reusable production slice:
 
 ```text
-what useful Step Result this Target family aims to produce
-which Target Step Result Units may compose it
-what each Result Unit means / why it exists
-Applicability / Materiality / Omission semantics for optional Result Units/field families
-possible fields/substructure
-relations among Result Units
-typical inputs and consumers/handoff
-validation/completeness meaning that distinguishes missing material meaning from legitimate omission
-revalidation/retention conditions when useful
-representation guidance
+Unit Contract
+├─ Result Responsibility / Purpose
+├─ Applicability / Materiality / Omission
+├─ Inputs / Source needs
+├─ Drivers: Goal / Questions / recurring Problems
+├─ Knowledge Basis when useful
+├─ Resolution Method / Guidance
+├─ Proposal discovery aids when useful
+├─ applicable Lenses / registry triggers
+├─ Result Content Contract
+├─ Validators
+├─ Handoff / consumers
+├─ Revalidation
+└─ Representation guidance
 ```
+
+Thin Units may omit most specialized resolution aids. Heavy Units may carry substantial knowledge, questions, proposal discovery and validation guidance. Shared Target-family guidance may remain module-level and be referenced by several Unit Contracts rather than duplicated.
+
+A `Local Target Contract` provides the same responsibilities dynamically for a one-off Target when no reusable module fits.
+
+## Target Step Result Contract
+
+The Target Step Result is the coherent applicable composition/projection of **Current Result Content from its Units**. Candidate Unit meaning does not become current merely by appearing in a draft.
+
+```text
+Target Module
+→ Unit Contract inventory / dependency shape
+→ runtime Unit Resolution
+→ Current Result Content
+→ Target Step Result composition
+```
+
+The Module defines target-wide formation/scope/Source archetypes only where genuinely shared. It should not centralize all questions, all knowledge, all Lens guidance and all methods at module level when those concerns actually belong to one Unit responsibility.
 
 ### Per-Unit Applicability Envelope
 
-Every material Result Unit declared by a concrete Target Module inherits the generic [`Unit Applicability Envelope`](idtspe-unit-and-target-step-result-model.md#5b-unit-applicability-envelope--opening--in-unit--closing-checkpoints).
+Every material Module-defined Unit inherits the generic Opening / In-Unit / Closing applicability envelope. The Unit's own contract supplies the reusable resolution material relevant to that responsibility; applicable Lenses may be selected through the ordinary registry scan.
 
-The module must make placement explicit for each material Unit:
+### Contextual Units
 
-```text
-Opening Unit Checkpoint — RU-...
-→ Unit Work — RU-...
-→ Closing Unit Checkpoint — RU-...
-```
-
-The module may name primary/frequent Lens candidates or Unit-specific registry triggers, but Core owns checkpoint semantics. In-Unit Applicability Checks remain allowed whenever material; Opening/Closing are mandatory minimum boundaries, not exclusive evaluation windows.
-
-"One result family" does not mean:
-
-```text
-one Result Unit
-one field
-one semantic entity
-one file
-one uniformly populated template
-```
-
-A concrete Target Step Result is a sparse/material projection of the possible Module surface.
-
-### Resolution / Production Method
-
-The Module may supply reusable ways to produce/refine that result:
-
-```text
-Source archetype
-Decision-driver candidates
-  Question candidates
-  Problem candidates
-  Target Goal / Desired Outcome comes from the Target contract/context
-Proposal / Variant discovery aids
-branch triggers
-candidate answer shapes/pattern aids
-Internal Object Contracts
-shared Result-Unit methods
-Decision surfaces
-validators
-handoff/revalidation prompts
-```
-
-The current Target Goal / Desired Outcome is Target/scope context, not a new Generic State Unit introduced by the Module. Concrete Questions/Proposals/Q/R/P/Decisions/Evidence remain generic IDTSPE State meaning. The Module contributes reusable driver candidates/prompts/methods and Proposal/Variant discovery aids; it does not duplicate their Core lifecycle inside its result schema. Sources, previous work/checkpoints, Broad Discussion, user/AI input or dispositioned Findings may add drivers/candidates beyond Module presets.
-
-Canonical owners:
-- Unit/result semantics: [`idtspe-unit-and-target-step-result-model.md`](idtspe-unit-and-target-step-result-model.md);
-- Proposal/Decision candidate-selection lifecycle: [`proposal-and-decision-lifecycle-contract.md`](proposal-and-decision-lifecycle-contract.md).
-
-
----
+A Target Module does not have to predeclare every local responsibility that can arise. Core may form a Contextual Unit from the active context when no module Unit fits and the local responsibility is independently useful. Contextual Units do not become new Target Module entries merely because they occurred once.
 
 # 2. Relationship To Documentation Use Cases And Other Component Types
 
@@ -183,10 +109,10 @@ TM-IP-04 RELATIONS
   expected Target relations / owner relations for TF-05
 
 TM-IP-05 QUESTIONS
-  RQ candidates/presets for TF-06 QUESTION_SET
+  Unit-specific driver/question presets + genuinely Target-wide candidates; TF-06 remains Target-level coordination
 
 TM-IP-06 PROPOSALS
-  Proposal/Variant discovery aids for TF-07 PROPOSAL_SPACE
+  Unit-specific Proposal discovery aids + genuinely cross-Unit candidates; TF-07 remains Target-level coordination
 
 TM-IP-07 BRANCHING
   branch triggers / comparison dimensions for TF-08 BRANCH_POLICY
@@ -321,19 +247,32 @@ Target Formation Contribution
   Source Contract archetype
   expected relations
 
+Unit Contracts
+  one entry per reusable Module-defined Unit responsibility
+  Result Responsibility / Purpose
+  Applicability / Materiality / Omission
+  Inputs / Source needs
+  Drivers / Question or recurring-Problem guidance
+  Unit-specific Knowledge Basis or reference to shared Module Knowledge Basis when useful
+  Resolution Method / Guidance
+  Proposal discovery aids when useful
+  applicable Lens refs / registry triggers
+  Result Content Contract
+  validators
+  consumers / handoff / revalidation
+  representation guidance
+
 Knowledge Basis [when useful]
   theory/reference links at any useful granularity
   applied interpretation for this Target family when useful
 
-Resolution Questions
-  default candidates
-  required/proportional/optional
-  question-generation rules
+Shared / Target-Wide Driver Guidance [when useful]
+  only genuinely cross-Unit formation/coordination questions or recurring Problems
+  Unit-specific drivers belong in Unit Contracts
 
-Proposal / Variant Discovery
-  candidate-answer categories
-  pattern prompts
-  anti-bias / no-solution-smuggling rules
+Shared / Target-Wide Proposal Discovery [when useful]
+  only genuinely cross-Unit / Target-form candidate patterns
+  Unit-specific Proposal discovery belongs in Unit Contracts
 
 Lens Profile / Patterns
   required/frequent reusable Lens refs
@@ -347,19 +286,16 @@ Optional Target-Specific Concern Hints
   only recurring domain-specific concern categories when they add value;
   generic Q/R/P storage/lifecycle remains owned by the IDTSPE Shell
 
-Decision Surfaces
-  which material choices normally map to:
-    Target-Scope Decision
-    Question-Set Decision
-    Answer Decision
+Selection / Coordination Surfaces [when useful]
+  Target-level Target-Scope / Question-Set coordination choices
+  cross-Unit selection surfaces only when genuinely shared
+  Unit-local material selection remains in the affected Unit Resolution
 
 Target Step-Result Contract
   Step Result family
-  Result Units + their purpose/boundary
-  per-Unit/field Applicability / Materiality / Omission rules where conditional
-  possible semantic fields / addressable substructure
-  mapping from selected answers/Decisions into current Result Units
-  typical consumers + revalidation/retention conditions when useful
+  Unit Contract inventory / relations
+  composition of Current Result Content into the Target Step Result
+  target-level completeness / handoff / representation where genuinely cross-Unit
 
 Output Schema / Template — compatibility/technical projection
   optional concrete projection shape for the Step-Result Contract
@@ -426,65 +362,36 @@ Command identity never becomes module authority. See `idtspe-command-surface-con
 
 # 7. Knowledge Basis
 
-A reusable Target Module may carry a `Knowledge Basis` when reusable theory/reference knowledge materially helps its Evaluation. The shared [`Knowledge Basis guidance`](knowledge-basis-contract.md) defines the theory/current-state boundary without imposing a fixed section schema.
-
-The distinction from `TM-IP-03 SOURCES` is fundamental:
+Use the shared Knowledge Basis contract. Knowledge may live at the smallest reusable consumer:
 
 ```text
-Source Contract
-→ archetype for current Target-instance inputs/evidence/constraints
+Unit-specific theory/application bridge
+→ Unit Contract Knowledge Basis
 
-Knowledge Basis
-→ reusable principles/rules/theory/pattern knowledge
-  used by this recurring Target methodology
-```
-
-Knowledge may stay inline, link to separate theory/reference material, use a separate applied Knowledge Basis, or combine these forms. Existing `INLINE / REFERENCED / HYBRID` labels are compatible representation only, not required states. Follow theory references proportionally when they are useful to the current Evaluation.
-
-Symmetry does not move reusable evaluation knowledge out of Lenses:
-
-```text
-Target-result formation/resolution/representation knowledge
+truly Target-family-wide theory/application bridge
 → Target Module Knowledge Basis
 
-reusable evaluation perspective across Targets
-→ Lens + Lens Knowledge Basis
+reusable evaluation perspective
+→ Lens Knowledge Basis
 ```
 
-Referenced theory/reference material remains knowledge, not a Target Source or project authority. A Theoretical Module is only one possible way to package such theory.
+A Unit may reference a shared Module Knowledge Basis without copying it. Reference-only Knowledge Basis remains valid when the application is obvious; applied interpretation is added when the consumer needs a semantic bridge from broad theory.
 
----
+# 8. Questions / Drivers Inside A Target Module
 
-# 8. Questions Inside A Target Module
-
-A module may contain reusable question candidates.
-
-Example:
+Reusable decision-driver guidance should normally live with the Unit responsibility it helps resolve. A Module may also define genuinely Target-wide formation questions.
 
 ```text
-TM-DOMAIN-DISCOVERY
+Unit-specific Question / recurring Problem guidance
+→ Unit Contract
 
-RQ:
-  Which concrete invariant must remain true?
-
-RQ:
-  Which state/combination must be impossible?
+cross-Unit / Target-form question
+→ Target Module level when genuinely shared
 ```
 
-They are reusable decision-driver candidates/presets:
+Concrete runtime Questions/Problems remain Core Resolution State and attach to the smallest correct semantic subject. Preset prompts do not automatically become formal Questions or USER interview questions.
 
-```text
-Question candidates
-Problem candidates
-Target Goal / Desired Outcome from the Target contract/context
-
-≠ exhaustive decision-driver set
-≠ automatic user interview
-```
-
-Current Questions/Problems may also emerge from the situation, Sources, previous steps/checkpoints and Broad Discussion; an independently useful new Goal is handled through normal scope/Target Formation rather than silently becoming a new Generic State Unit. Normal intake and User Question Policy still apply. At an Integration Checkpoint, all material drivers are integrated under the same Core authority rules. Canonical working model: [`broad-discussion-and-integration-checkpoint-model.md`](broad-discussion-and-integration-checkpoint-model.md).
-
----
+`TF-06 QUESTION_SET` remains a Target-level coordination surface: before Unit decomposition it may help determine what the Target must resolve; after Units exist it primarily coordinates/projects material Unit drivers plus genuine Target-wide questions.
 
 # 9. Ready-Made Candidate Answers / Patterns
 
@@ -521,6 +428,10 @@ module pattern
 The module must include applicability prompts/anti-patterns so pattern libraries do not become pattern matching by name.
 
 ---
+
+### Proposal Space Coordination
+
+Proposal discovery aids should likewise live at the Unit contract when they are Unit-specific. `TF-07 PROPOSAL_SPACE` coordinates material Unit Proposals plus genuine cross-Unit/Target-wide Proposals; it is not a second owner of Proposal semantics.
 
 # 10. Lens Profile And Reusable Lens Library
 
@@ -692,25 +603,22 @@ repo provenance/reuse candidates are known
 
 ```text
 Target Module
-↓ contributes to
-Target Formation Resolution Set
-↓
-Target Instance
-↓
-full IDTSPE
-  Scope
-  Questions
-  Proposals
-  Q/R/P
-  Branches when needed
-  Decisions
-  Revalidation
-↓
-Target Step Result
-  → material Result Units
-↓
-accepted Result Units / outputs become downstream Sources only where explicitly declared
+→ Target-family formation contract
+→ Module-defined Unit Contracts
+→ Unit Resolution at runtime
+→ Current Result Content per resolved Unit
+→ Target Step Result composition
 ```
+
+```text
+Module Unit
+= generic Unit mechanics + reusable Unit Contract preset
+
+Contextual Unit
+= generic Unit mechanics + dynamically established bounded responsibility
+```
+
+Generic Proposal/QRP/Decision/Evidence/Findings/Revalidation remain Core semantics and are related to the Unit/Target subject they actually concern; the module does not duplicate their lifecycle inside Result Content.
 
 ## Lens Boundary Invariant
 

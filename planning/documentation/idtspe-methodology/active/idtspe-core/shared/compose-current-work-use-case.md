@@ -54,6 +54,24 @@ another methodology Use Case
 
 This is a composition list, not a mandatory sequence.
 
+## Unit Composition Rule
+
+When a Target is useful, compose only the Units currently justified by the Target Module/Local Target Contract plus any Contextual Unit whose bounded local responsibility is independently useful. Do not form Contextual Units merely to wrap every Question/QRP/Proposal.
+
+```text
+existing Module-defined Unit fits
+→ use its Unit Resolution
+
+no Unit fits + bounded local responsibility is independently useful
+→ Contextual Unit
+
+responsibility is independently substantial beyond the Target
+→ Target Formation
+
+no independent responsibility
+→ keep meaning attached to the existing subject / Broad Discussion / Core Resolution State
+```
+
 ## Boundaries
 
 This Use Case does **not** define:

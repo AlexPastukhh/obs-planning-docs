@@ -48,7 +48,7 @@ It may occur:
 - across many messages before an Integration Checkpoint;
 - between two checkpoints;
 - inside a response that also contains structured IDTSPE State / Target Result meaning;
-- after a checkpoint while focusing on one Proposal, Question, Problem, Risk, Evidence item, Decision or Result Unit.
+- after a checkpoint while focusing on one Unit Resolution, Proposal, Question, Problem, Risk, Evidence item, Decision or Result Content.
 
 Broad Discussion does **not** require every reply to reproduce:
 
@@ -131,7 +131,7 @@ They may relate to:
 - a Question or Problem;
 - one Proposal;
 - several Proposals or a Candidate Bundle;
-- a Target Result Unit/field;
+- a Unit / Unit Result field;
 - a relation/boundary;
 - a Decision.
 
@@ -163,22 +163,18 @@ A checkpoint may contain explanatory Broad Discussion. If that explanation surfa
 
 A checkpoint response shows the integrated whole proportionally. A practical rendering may contain:
 
-1. **Broad Discussion Summary** — optional retrospective summary of what materially changed/was learned since the previous checkpoint; it never substitutes for explicit integrated semantic state.
-2. **Broad Discussion / Key Points** — explanatory discussion when it helps review the integrated state.
-3. **Target Goal / Desired Outcome context** — the current Target/scope goal when useful to understand the decision space.
-4. **Generic IDTSPE State** — current material Questions, explicitly surfaced Proposals with `Addresses` relations plus material Proposal relations/bundles, Q/R/P/Evidence, Decisions, Branch/Revalidation/relations as applicable. Do not introduce Goal as a Generic State Unit merely for this projection.
-5. **Target Step Result** — complete applicable current Target Result Units, sparse where the Target contract permits.
-6. **Lens / Consistency Review** — relevant checks, explanatory analysis and material Finding Candidates/disposition consequences.
-7. **Semantic retention / Artifact Placement** — what semantic state should be retained and, separately, whether/how it should physically persist when material.
-8. **Handoff / next work** — useful next discussion focus, Target handoff or revalidation trigger.
+1. optional Broad Discussion Summary / Key Points;
+2. Target Goal / Desired Outcome context when useful;
+3. **Units** — material Module-defined and Contextual Units, each with useful Unit Resolution state and Current Result Content (which may be absent while unresolved);
+4. **Cross-cutting Core Resolution State** — only state whose natural subject is broader than one Unit;
+5. **Target Step Result** — coherent composition/projection of applicable Unit Result Content;
+6. Lens / consistency review and material Finding disposition consequences;
+7. semantic retention / Artifact Placement when material;
+8. handoff / next work.
 
-This is not a mandatory heading template. Preserve meaning while keeping the rendering proportional and readable.
-
-When Proposals/Q/R/P/Evidence already appear in the structured checkpoint State, do not redundantly reproduce them inside Broad Discussion as a second competing copy. Discussion may explain them by reference.
+This is not a mandatory heading template. Do not duplicate Proposal/QRP/Evidence/Decision bodies both inside a Unit Resolution and again in a global list merely for presentation. Cross-Unit state should remain explicitly cross-Unit rather than being copied into every Unit.
 
 A checkpoint may leave material alternatives unresolved. Integration is not forced resolution.
-
----
 
 ## 7. Decision / Alternative Projection
 
@@ -246,8 +242,8 @@ Key Points make material Broad Discussion easy to review without becoming State.
 Material Proposals are explicit and address the current Target Goal, a Question or a Problem.
 Integration Checkpoint carries whole-state integration; Broad Discussion Summary is optional retrospective prose, not structured State.
 Target Goal / Desired Outcome remains Target/scope context unless Target Formation changes it.
-Generic State preserves material decision-space meaning through existing Core kinds.
-Target Result Units show what that work currently means for the Target.
+Core Resolution State preserves material decision-space meaning through existing Core kinds and attaches to the smallest correct subject.
+Unit Result Content shows the normalized current answer for bounded responsibilities; the Target Step Result composes the applicable Unit results.
 Decisions retain accepted choices by default; material non-selected alternatives remain a user-controlled retention choice.
 Physical persistence remains a separate representation decision.
 ```

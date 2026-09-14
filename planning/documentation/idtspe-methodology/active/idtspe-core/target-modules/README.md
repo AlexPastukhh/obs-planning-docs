@@ -51,6 +51,12 @@ canonical user-level command surface
 A reusable Target Module may keep a Knowledge Basis when theory/reference knowledge materially helps its work. The Knowledge Basis may be inline or separately represented and can reference theory at any useful granularity; no fixed mode/schema is required. The module does not copy generic Shell state or reusable Lens algorithms/Knowledge Basis merely because a Lens is attached.
 
 
+## Unit-Centric Contract Invariant
+
+A concrete Target Module primarily defines reusable **Module Unit Contracts**. Module-wide Source/Knowledge/Lens/Method guidance is shared only when genuinely cross-Unit; Unit-specific guidance belongs with or is referenced by the affected Unit Contract. Runtime Core Resolution State attaches to the smallest correct subject and Current Result Content is produced per resolved Unit before Target Step Result composition.
+
+Installed modules may conform through this shared interpretation without duplicating the same guidance text into every Unit section. Materially revised modules should make Unit responsibilities and Unit-specific resolution guidance explicit where that improves usability.
+
 ## Staged Compatibility
 
 Current installed profile modules may still express their result through `Target-specific output`, `Output Schema` or ordinary output headings. Until the profile conformance pass makes Unit boundaries literal, interpret those headings by meaning as one or more Result Units/fields.

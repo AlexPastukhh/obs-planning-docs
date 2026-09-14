@@ -40,6 +40,19 @@ selected Feature
 
 Slice and Domain discovery may alternate as evidence demands.
 
+## Unit Contract Conformance
+
+Declared target-specific `RU-*` responsibilities in this module are interpreted as **Module-defined Unit Contracts**, not output buckets only. For each material Unit:
+
+```text
+Unit responsibility
+→ relevant inputs / shared or Unit-specific reusable guidance
+→ Unit Resolution with Core Question/QRP/Proposal/Evidence/Decision state only when useful
+→ Current Result Content when sufficiently resolved
+```
+
+Module-wide Source/Knowledge/Production/Lens/validator guidance is a shared default only where it genuinely applies across Units. Unit-specific subsection text specializes that guidance. Do not duplicate Core lifecycle semantics inside Result Content, and do not require a formal Proposal/Decision when trusted Sources/Evidence determine the result without a material choice.
+
 ## Target Step-Result Contract
 
 **Target Step Result:** `Slice Discovery Working Plan`

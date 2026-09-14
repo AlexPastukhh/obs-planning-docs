@@ -58,7 +58,7 @@ Canonical working-conversation owner: [`broad-discussion-and-integration-checkpo
 
 ```text
 Producer
-  Lens / Validator / Evidence / User / Implementation / ...
+  Lens / Validator / Evidence / User / Implementation / Review / ...
         │
         ▼
      Finding Candidate
@@ -68,23 +68,33 @@ IDTSPE Core Finding Disposition
         │
         ├─ materiality
         ├─ affected/current meaning
-        ├─ semantic resolution owner
-        ├─ State/lifecycle representation
-        └─ downstream consequence
-        │
-        ▼
-IDTSPE State / Target lifecycle
+        ├─ smallest correct semantic subject / resolution owner
+        ├─ lifecycle representation when needed
+        └─ downstream/revalidation consequence
         │
         ▼
 normal authority / resolution
         │
         ▼
-existing Target Step Result Unit updated when warranted
+accepted/derived meaning integrated into the correct destination
 ```
 
-A finding must not silently mutate an accepted Result Unit or Decision.
+For target-result work the preferred route is often:
 
----
+```text
+finding concerns an existing bounded Unit responsibility
+→ that Unit Resolution
+
+no suitable Unit, but a bounded local responsibility is independently useful
+→ Contextual Unit
+
+responsibility independently substantial
+→ Target Formation
+```
+
+This is not universal Unit-first routing. A finding may instead concern Target Scope, Source authority, a Target relation/handoff, another semantic owner, methodology state or another canonical subject directly.
+
+A finding must not silently mutate accepted Result Content or Decision meaning.
 
 ## 3. Disposition Questions
 
@@ -93,41 +103,31 @@ Resolve proportionally:
 ```text
 1. Is the finding material?
 2. What existing meaning does it concern?
-3. Who semantically owns resolution?
-4. What IDTSPE State/lifecycle representation is appropriate?
-5. What downstream consequence follows after resolution?
+3. What is the smallest correct semantic subject / resolution owner?
+4. If target-result work is implicated, does an existing Unit own the responsibility?
+5. If not, is a Contextual Unit sufficient or is Target Formation warranted?
+6. What Core lifecycle representation is useful, if any?
+7. What downstream/revalidation consequence follows after resolution?
 ```
 
-Useful owner outcomes:
+Useful outcomes include:
 
 ```text
-current Target
-another existing Target
-shared/canonical owner
-ownership unresolved
-```
-
-Useful State/lifecycle outcomes include:
-
-```text
-open/refine Question
-open/refine Risk or Problem
+attach/open/refine Unit Resolution
+form a Contextual Unit
+open/refine Question / Risk / Problem
 open/refine Proposal / Planning Branch
 attach Evidence / open Evidence Need
 supply Decision input
 challenge accepted Decision/state
 create Revalidation Signal
 record Target Relation / Handoff
+route to another existing semantic owner
 form an ownership/Target candidate
 mark duplicate / non-material / already represented
 ```
 
-The exact disposition uses current Core lifecycle rules; this contract does not create a second lifecycle.
-
-
-When disposition indicates an actual change, the finding may create/refine a formal Proposal or supply Proposal input. A realization-only finding still does not authorize mutation by itself; the actual change follows the Session proposal-first/approval boundary. The Finding Candidate remains transient unless another Core/owner state is justified.
-
----
+The exact destination uses current Core/owner lifecycle rules; this contract does not create a second lifecycle.
 
 ## 4. Direct vs Explicit Disposition Resolution
 
@@ -211,23 +211,19 @@ Suggested lifecycle consequence — optional hint
 
 Do not require all fields when the disposition is obvious.
 
-A Session/review producer may additionally attach transient R2-compatible hints such as:
+A producer may attach transient routing hints, but generic Core must not define profile-specific Requirement/depth taxonomies as Finding authority. When the finding plausibly affects a profile-owned Requirement/depth concept, Core records the affected owner/meaning and routes to that active profile owner for interpretation.
+
+Useful generic hints may include:
 
 ```text
-Classification: RF-REALIZATION-ONLY | RF-POSSIBLE-NEW-IR | RF-POSSIBLE-IR-CHANGE | RF-RECONSIDER-IR-SET | RF-POSSIBLE-BEHAVIOR-IMPACT
-Discovered at depth/group: ...
-Most-upstream affected meaning/depth: ...
-Affected depths/groups: ...
+Most-upstream affected owner
 Upstream revalidation: NONE | POSSIBLE | REQUIRED
-Downstream consequence if accepted: NONE | REVALIDATE ... | INVALIDATE ...
-Complexity delta: REDUCES | ROUGHLY-NEUTRAL | ADDS
-Requirement change proposed: YES | NO | POSSIBLE
-USER confirmation required for actual change: YES
+Downstream consequence if accepted
+Complexity consequence when reviewability benefits
+Profile-specific semantic review needed: YES | NO | POSSIBLE
 ```
 
-These are review/routing hints only. They do not create a new Finding State kind, a Requirement owner, or a planning-level state machine. Core disposition still resolves the real natural owner and lifecycle consequence.
-
-A producer may also suggest the transient routing outcome `NO-DOC-CHANGE`, `NO-REQUIREMENT-CHANGE`, `MODIFY-EXISTING`, `SIMPLIFY-SET`, `NEW-REQUIREMENT` or `UPSTREAM-REVALIDATION`; the destination owner defines what the resulting durable change actually means.
+These are routing/review projections only and are not durable Finding schema by default.
 
 Example:
 
@@ -303,20 +299,17 @@ The **most-upstream affected owner** controls escalation. Do not hide `RE-3` / `
 
 ### Proposal / Decision Boundary
 
-Interaction gating and formal Core State remain distinct:
+Interaction gating and formal Core semantics remain distinct:
 
 ```text
-material corrective action under USER-gated proposal-driven interaction
-→ may be surfaced as an interaction AI Proposal at any RE category
-
-formal IDTSPE Proposal State
-→ use only when candidate semantic meaning benefits from lifecycle/addressability/review
-→ normally material for RE-2 / RE-4
-→ may be useful for RE-1 / RE-3 when real alternatives or independently reviewable candidate meaning exist
-→ do not manufacture it for an obvious RE-0 correction
+Finding
+→ may resolve deterministically with no formal Proposal
+→ may open/refine a Proposal when real candidate semantic meaning exists
 ```
 
-`Recommendation ≠ Decision`. A deterministic correction may be recommended without inventing a selectable architecture/product choice.
+`RE-*` categorizes the Finding's semantic resolution distance, not a Proposal. If Finding resolution produces a material Proposal, that Proposal receives the canonical Proposal Semantic Change Impact Review before material selection.
+
+A deterministic `RE-0` correction must not manufacture a formal Proposal/Decision surface solely for ceremony. A material `RE-2`/`RE-4` normally exposes a real selection surface, but the exact Proposal/Decision retention semantics remain owned by the Proposal/Decision contract.
 
 ### Temporal Authority Specialization
 
@@ -438,22 +431,21 @@ Finding / accepted input
 
 ---
 
-## 10. Result Update Rule
+## 10. Result / Resolution Update Rule
 
-Canonical path:
+Canonical proportional path:
 
 ```text
 Finding
 → Finding Disposition
-→ State Unit / lifecycle consequence
+→ smallest correct subject / owner
+→ Unit Resolution or other canonical lifecycle consequence
 → normal authority/resolution
-→ accepted meaning
-→ existing Result Unit updated when warranted
+→ accepted/derived meaning
+→ affected Unit Result Content / Target Result / owner meaning updated when warranted
 ```
 
-A trusted low-contention direct source correction may still be integrated proportionally under normal authority rules; do not manufacture ceremony solely to satisfy the diagram.
-
----
+A trusted low-contention direct correction may integrate proportionally without manufacturing intermediate State objects.
 
 ## 11. Cross-Owner Disposition
 

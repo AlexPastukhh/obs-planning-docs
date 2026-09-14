@@ -190,41 +190,20 @@ Resolution Slot Prompt
 It follows the existing User Question Policy.
 
 
-## Relation To IDTSPE Units
+## Relation To Units And Unit Resolution
 
 ```text
 Resolution Slot
-≠ IDTSPE State Unit
-≠ Target Step Result Unit
+≠ Unit
+≠ Unit Resolution
+≠ Core Resolution State
 ```
 
-A Slot may reference or help resolve Units, but do not create one Slot per Unit/field mechanically.
+A Slot is coordination/status metadata for a planning subject. A Unit is a bounded resolution/result responsibility. Core Questions/Proposals/QRP/Decisions may be related to a Unit Resolution or to a broader Target/Work-Context subject.
 
-Example:
+Do not create one Slot per Unit/field mechanically. Likewise, do not turn `TF-06 QUESTION_SET` or `TF-07 PROPOSAL_SPACE` into semantic owners of Unit-local Questions/Proposals.
 
-```text
-Question State Unit:
-  Which service owns orchestration?
-
-Proposal State Units:
-  reuse ApplicationService
-  add CaptureFacade
-
-Decision:
-  reuse ApplicationService
-
-Result Unit:
-  Uses / Ownership Boundary
-  → ApplicationService owns the selected orchestration responsibility
-
-Target-formation Slot:
-  TARGET_SCOPE / ACCEPTED
-```
-
-The current `TF-01..TF-10` set remains canonical compatibility/runtime coordination. A later Core simplification may revise its grouping, but this transition does not renumber or remove the slots.
-
-
----
+The current `TF-01..TF-10` set remains Target Formation coordination compatibility. A later Core simplification may revise grouping, but this transition does not renumber/remove slots.
 
 # 5. Durable IDTSPE Decisions Remain The Same Three Types
 
@@ -349,12 +328,15 @@ Value:
 TF-06 QUESTION_SET
 
 Prompt:
-  Какие вопросы нужно разрешить,
-  чтобы Target output был достаточно надёжным/полезным?
+  Какие material drivers/questions должен координировать Target сейчас,
+  чтобы его Units/Target output были достаточно надёжными/полезными?
 
 Value:
-  selected RQ set
-  + Question-Set Decision
+  Target-level coordination view over:
+    Unit-local material Questions/drivers when Units exist
+    + genuinely Target-wide Questions
+    + pre-Unit formation Questions needed to establish useful Units/Target shape
+  + Question-Set Decision when that coordination choice is itself material
 
 
 TF-06A LENS_SET
@@ -389,11 +371,18 @@ TF-07 PROPOSAL_SPACE
 
 Prompt:
   Какие materially different Proposals / variants / routes
-  нужно рассмотреть для выбранных вопросов?
+  реально нужны для текущих Unit/Target resolution surfaces?
 
 Value:
-  sufficient candidate Proposal space
+  Target-level coordination view over:
+    material Unit Proposals
+    + genuinely cross-Unit / Target-wide Proposals
+    + pre-Unit candidates that may change Target/Unit formation
   + provenance
+
+Rule:
+  TF-07 coordinates candidate space; canonical Proposal identity/review/selection remains in the Proposal lifecycle.
+  Do not copy the same Proposal body into every affected Unit.
 
 
 TF-08 BRANCH_POLICY

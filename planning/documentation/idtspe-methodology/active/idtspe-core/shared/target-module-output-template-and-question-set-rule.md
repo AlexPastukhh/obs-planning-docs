@@ -2,33 +2,20 @@
 
 Status: active generic Target Module rule
 
-## Generic IDTSPE State vs Target Step Result
+## Core Resolution State vs Unit Result Content
 
-Every concrete Target may have generic Core State Units:
+Every concrete Target may have generic Core Resolution State such as Sources, Questions, Proposals, Q/R/P, Branches, Decisions, Evidence, Revalidation and relations. Those semantics remain Core-owned and attach to the smallest correct subject.
 
-```text
-Sources
-Questions
-Proposals
-Q/R/P
-Planning Branch state
-Decisions
-Evidence / Evidence Needs
-Revalidation Signals
-Relations / Handoff state
-```
-
-A Target Module must not duplicate those generic units merely as target-specific result fields.
-
-The target-specific result is:
+The target-specific work surface is composed from Units:
 
 ```text
 Target Step Result
-→ one or more Target Step Result Units
-→ target-specific fields/substructure
+→ Module-defined / target-local Units
+→ Unit Resolution
+→ Current Result Content
 ```
 
-Canonical model: [`idtspe-unit-and-target-step-result-model.md`](idtspe-unit-and-target-step-result-model.md).
+A Target Module must not duplicate generic Core state as Result Content fields merely to make it visible. Unit Result Content is the normalized target-specific answer; Resolution State explains/maintains the decision space when useful.
 
 ## Broad Discussion And Integration Checkpoint
 
@@ -51,41 +38,28 @@ Integration Checkpoint
 
 A Target Module invocation may serve as an Integration Checkpoint. It does not end discussion and does not imply physical persistence. Canonical owner: [`broad-discussion-and-integration-checkpoint-model.md`](broad-discussion-and-integration-checkpoint-model.md).
 
-## Target Module Result Contract
+## Target Module / Unit Contract
 
 A reusable Target Module should explain proportionally:
 
 ```text
 Purpose / recurring Target family
-
-Target Step-Result Contract
-  useful Step Result family
-  Result Units
-  Unit purpose/boundary
-  possible fields/substructure
-  Unit relations
-  validation/completeness meaning
-  handoff/consumers
-  representation guidance
-
-Resolution / Production Method
-  Source archetype
-  Decision-driver candidates
-    Question candidates
-    Problem candidates
-    Target Goal / Desired Outcome from Target context
-  Proposal/pattern aids
-  branch/escalation triggers
-  Internal Object Contracts/shared methods when useful
-
-Knowledge Basis
-Lens Profile
-Validators
-Handoff / revalidation
-Artifact / File Contract
+Target formation / scope / shared Source archetype where useful
+Unit Contract inventory / dependencies
+for each material Unit:
+  Result Responsibility
+  Applicability / Materiality / Omission
+  Inputs / Source needs
+  Drivers
+  Knowledge Basis / guidance when useful
+  Proposal discovery aids when useful
+  Lens triggers
+  Result Content Contract
+  Validators / consumers / revalidation / representation
+Target-level validators / handoff / representation where genuinely cross-Unit
 ```
 
-"One result family" does not mean one field, one Unit, one entity or one file.
+The runtime may additionally form Contextual Units under the Core rule. Their conclusion has an explicit destination and does not automatically create a durable Result section.
 
 ## Proportional / Sparse Projection Rule
 
@@ -143,21 +117,9 @@ Do not duplicate reusable Lens evaluation knowledge inside a Target Module merel
 
 ## Decision-Driver Examples Are Non-Exhaustive
 
-A Module may seed reusable decision-driver candidates:
+Unit Contracts may seed reusable Question/Problem drivers; Target Module level may seed genuinely Target-wide formation drivers. These are non-exhaustive and not automatic USER questions.
 
-```text
-Question candidates
-Problem candidates
-Target Goal / Desired Outcome from the Target contract/context
-
-≠ exhaustive driver set
-≠ automatic interview
-≠ fixed sequence
-```
-
-The current Target may add, remove, split, merge or reopen Questions through normal Core question-set resolution, and may surface/refine material Problems through existing P-09 Problem semantics. When a Module is active, its Target Goal plus Question/Problem candidates are the ordinary starting driver set for Proposal discovery, but Questions/Problems discovered from Sources, previous steps/checkpoints, Broad Discussion, user/AI input or dispositioned findings are accepted on equal Core semantic footing and are not second-class simply because they were not predeclared in the Module. An independently useful new Goal goes through normal scope/Target Formation rather than becoming a Generic State Unit by implication.
-
-Concrete Questions are Core State Units; material Problems use the existing P-09 Problem meaning. Proposal driver/`Addresses` semantics are owned by [`proposal-and-decision-lifecycle-contract.md`](proposal-and-decision-lifecycle-contract.md); this rule only says that Module-supplied driver candidates are non-exhaustive inputs to that Core lifecycle.
+Concrete runtime Questions/Problems from Sources, Broad Discussion, user/AI input, Findings or earlier Units are accepted on equal Core footing. `TF-06 QUESTION_SET` coordinates the current Target-level view rather than owning Unit-local question meaning.
 
 ## Result Unit / Field Explanation Rule
 

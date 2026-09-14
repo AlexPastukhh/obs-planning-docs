@@ -58,26 +58,21 @@ A confirmed problem is not itself automatically a Proposal. A proposed semantic 
 
 ### 3A. Finding Resolution Escalation
 
-For each material finding, use the Core [`Finding Disposition Contract`](idtspe-methodology/active/idtspe-core/shared/finding-disposition-contract.md) to expose `Resolution Escalation` when it helps distinguish a deterministic/local correction from a current-owner or upstream semantic decision. Keep this separate from `Review Priority`: priority is blast radius if wrong; escalation is how far semantic authority must move.
+For each material finding, invoke the canonical [`Finding Disposition Contract`](idtspe-methodology/active/idtspe-core/shared/finding-disposition-contract.md#6a-resolution-escalation-projection). `RE-0..RE-4` definitions and the Decision-Surface Test are owned **only there**; this ReviewDiff workflow must not maintain a second normative copy.
+
+ReviewDiff adds only review context:
 
 ```text
-RE-0 DETERMINISTIC-CORRECTION
-→ current accepted meaning already determines the correction
+Review Priority
+→ blast radius / cost if wrong
 
-RE-1 LOCAL-REALIZATION-CHOICE
-→ local implementation/detail choice; accepted architecture/behavior/Requirement meaning stays true
-
-RE-2 CURRENT-OWNER-SEMANTIC-CHANGE
-→ current natural owner needs a new/revised Decision/Requirement/boundary
-
-RE-3 UPSTREAM-REVALIDATION
-→ upstream meaning may be implicated; revalidate earliest affected owner before choosing a workaround
-
-RE-4 UPSTREAM-SEMANTIC-CHANGE
-→ actual upstream accepted meaning must change before dependent work can safely proceed
+Resolution Escalation
+→ canonical Finding-disposition projection by reference
 ```
 
-Under USER-gated proposal-driven interaction, the next corrective action may still be shown as an interaction AI Proposal for any category. Do not convert an obvious `RE-0` finding into a formal IDTSPE Proposal State merely to create ceremony. Formal Proposal State remains for material candidate semantic meaning where lifecycle/addressability/review is useful.
+Route the finding to the smallest correct subject. For target-result findings prefer the affected Unit Resolution when that Unit owns the responsibility; use a Contextual Unit only for a new independently useful bounded local responsibility; use Target Formation/another owner directly when appropriate.
+
+Under USER-gated interaction the next corrective action may still be shown as an interaction AI Proposal at any RE category. Do not manufacture formal Proposal State for an obvious deterministic correction.
 
 ## 4. Candidate Review For Material Corrective Proposals
 
@@ -98,6 +93,10 @@ Current Conclusion
 `required check ≠ required populated field`. Do not invent risks, alternatives or refinements when none are material.
 
 The review tests whether the correction deserves implementation; it does not defend a change merely because it already appears in the diff.
+
+### Proposal Semantic Change Impact
+
+Every material corrective Proposal uses the canonical Proposal Semantic Change Impact Review before selection. Review the affected Unit/owner, upstream accepted meaning, Requirement/Source/Evidence/downstream/revalidation/temporal consequences proportionally. If the review newly discovers a material contradiction or owner conflict, surface a Finding Candidate and disposition it normally; known intended impact already stated by the Proposal is not a new Finding automatically.
 
 ## 5. Current Review Plan And Finding Propagation
 

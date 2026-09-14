@@ -46,18 +46,18 @@ Do not create Q/R/P for every uncertainty, imaginable future, implementation inc
 
 ## 3. Owner-Attachment / Admission Gate
 
-A material Q/R/P item must be attached to concrete current meaning.
+A material Q/R/P item must be attached/related to concrete semantic meaning at the smallest useful subject.
 
 ```text
 candidate observation
-→ concrete semantic owner / affected meaning?
-→ concrete current / target / Proposal / Result / Decision relation?
-→ materially unresolved/adverse after a cheap check against current evidence/owners?
+→ concrete affected meaning?
+→ one Unit / Result field / Proposal / Decision / Target / cross-Unit subject?
+→ materially unresolved/adverse after a cheap check?
 ```
 
-If not, integrate the obvious consequence or keep the material as discussion, Source, Evidence, Proposal or observation as appropriate.
+Unit-local Q/R/P belongs in that Unit Resolution. Cross-Unit, Target-level or cross-owner Q/R/P remains valid when that is its natural resolution surface. Do not force every Q/R/P into exactly one Unit merely to satisfy structure.
 
-Stable Q/R/P IDs are useful only when independent addressability, cross-reference, lifecycle, review or revalidation value exists.
+If the observation has no material unresolved/adverse state, integrate the obvious consequence or keep it as discussion/Source/Evidence/Proposal as appropriate.
 
 ## 4. Proportional Item Shape
 
@@ -196,7 +196,8 @@ AI/other preference for a Proposal
 → Recommendation, not selection
 
 selected material route
-→ Decision / Target Result / natural-owner meaning
+→ Decision semantics
+→ affected Unit Result Content / Target Result / natural-owner meaning
 ```
 
 Canonical Proposal/Decision semantics: [`proposal-and-decision-lifecycle-contract.md`](proposal-and-decision-lifecycle-contract.md).

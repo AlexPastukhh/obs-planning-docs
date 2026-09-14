@@ -11,12 +11,12 @@ A `Knowledge Basis` is the bridge between reusable theory/reference knowledge an
 Theory / reference knowledge
 → selected/referenced material
 → Knowledge Basis
-→ Target Module or Lens Evaluation
+→ Target Module, Unit Contract or Lens Evaluation
 ```
 
 Theory itself may be organized in any useful form: files, folders, sections, books, notes, external references, broad corpora or other knowledge structures. It does not need to be organized around IDTSPE Use Cases, Target Modules, Lenses or operational goals.
 
-A Knowledge Basis may identify the relevant parts of that broader theory and, when useful, interpret them for the concrete purpose of its Target Module or Lens.
+A Knowledge Basis may identify the relevant parts of that broader theory and, when useful, interpret them for the concrete purpose of its Target Module, Unit Contract or Lens.
 
 Example:
 
@@ -44,7 +44,7 @@ Knowledge Basis has no required serialization, mode enum or mandatory field list
 
 It may be:
 
-- a few applied notes directly inside a Target Module or Lens;
+- a few applied notes directly inside a Target Module, Unit Contract or Lens;
 - a section that links to theory files or folders;
 - a separate Knowledge Basis file referenced by the consumer;
 - several files/layers when the applied knowledge is substantial;
@@ -77,23 +77,35 @@ Applied Knowledge Basis for a visual evaluation:
 
 Applied interpretation can be layered in whatever way helps the consumer, for example `Color`, `Composition`, `Shadow`, `Typography`, `Aggregate Boundary Theory`, or `Failure Semantics`. Those layers are ordinary organization, not methodology ontology.
 
-## 4. Target Module And Lens Use
+## 4. Target Module, Unit Contract And Lens Use
 
 ```text
 Target Module Knowledge Basis
-→ theory/reference knowledge selected and interpreted for producing/evaluating that recurring Target result
+→ theory/reference knowledge selected/interpreted for genuinely Target-family-wide production/evaluation meaning
+
+Unit Contract Knowledge Basis
+→ theory/reference knowledge selected/interpreted for one bounded Unit responsibility
 
 Lens Knowledge Basis
-→ theory/reference knowledge selected and interpreted for applying that recurring evaluation perspective
+→ theory/reference knowledge selected/interpreted for one recurring evaluation perspective
 ```
 
-A Target Module or Lens does not need a separate Knowledge Basis when no reusable theory/reference material adds value. Short obvious guidance may simply remain in its Evaluation/Method.
+Prefer the smallest reusable consumer that matches the knowledge:
 
-When a substantial reusable theoretical base exists, separating it from the operational Method is useful because:
+```text
+knowledge is specific to one Unit responsibility
+→ Unit Contract Knowledge Basis
 
-- the theory can remain broad and reusable;
-- the consumer can stay focused on application;
-- several consumers can interpret the same theory differently without duplicating the underlying corpus.
+knowledge genuinely governs several Units / the whole Target family
+→ Target Module Knowledge Basis
+
+knowledge defines a reusable evaluation perspective across subjects
+→ Lens Knowledge Basis
+```
+
+A Unit may reference Module-shared Knowledge Basis instead of copying it. A Target Module, Unit Contract or Lens does not need a separate Knowledge Basis when no reusable theory/reference material adds value. Short obvious guidance may remain in its Resolution/Evaluation Method.
+
+The representation remains deliberately flexible: a Knowledge Basis may be only a stable theory reference when the application is obvious, or may add applied interpretation when a semantic bridge from broad theory to the consumer is needed.
 
 ## 5. Authority / Current-State Boundary
 

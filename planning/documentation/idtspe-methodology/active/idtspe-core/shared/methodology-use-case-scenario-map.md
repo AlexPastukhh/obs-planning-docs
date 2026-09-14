@@ -117,9 +117,9 @@ A root scenario begins from the ordinary functional entry route. A focused scena
 ### Step `SCN-01-S3` — evaluate material surfaces
 
 **Trigger / Situation:** A material Result Unit / decision surface exists.  
-**AI Action:** Use the applicable Lens registry checkpoint(s) and selected evaluators proportionally.  
+**AI Action:** Work through the applicable bounded Unit Resolution, use the applicable Lens registry checkpoint(s) and selected evaluators proportionally, and integrate only sufficiently resolved meaning into Current Result Content.  
 **Why This Step:** Cross-cutting concerns should challenge the actual current surface without becoming another semantic owner.  
-**Method / Mechanics:** Use the Result Unit Opening/In-Unit/Closing applicability envelope; select zero or more additional Lenses as material and route Findings through current Core disposition.  
+**Method / Mechanics:** Use the Unit Opening/In-Unit/Closing applicability envelope; keep unresolved candidate meaning in Unit Resolution; select zero or more additional Lenses as material; route Findings to the smallest correct subject/owner and integrate resolved meaning into Current Result Content.  
 **Possible Result:** Current result meaning with material findings resolved/routed, or an explicit no-additional-lens outcome.  
 **Derived From / Owners:** `planning/documentation/idtspe-methodology/active/idtspe-core/shared/idtspe-unit-and-target-step-result-model.md`, `planning/documentation/idtspe-methodology/active/idtspe-core/lenses/README.md`.
 
@@ -137,7 +137,7 @@ A root scenario begins from the ordinary functional entry route. A focused scena
 **Trigger / Situation:** Evaluation/review/execution evidence produces one or more material Finding Candidates.  
 **AI Action:** Classify each material Finding through Core Finding Disposition, keeping impact priority separate from semantic Resolution Escalation.  
 **Why This Step:** A severe defect may still have a deterministic correction, while a modest-looking defect may expose a current-owner or upstream semantic decision. USER attention should follow the actual resolution authority, not the prose severity alone.  
-**Method / Mechanics:** Identify the affected/current owner and earliest potentially affected upstream meaning; assign the smallest justified `RE-0..RE-4` escalation; route deterministic/local corrections directly, current-owner semantic changes through Proposal/Decision, and possible/confirmed upstream impact through targeted Revalidation before downstream compensation. Formal Proposal State is used only when candidate semantic meaning benefits from lifecycle/addressability/review.  
+**Method / Mechanics:** Identify the smallest correct semantic subject, affected/current owner and earliest potentially affected upstream meaning; assign the smallest justified `RE-0..RE-4` escalation. Route Unit-local findings into the affected Unit Resolution; form a Contextual Unit only for a new bounded local responsibility; use another owner/Target Formation directly when that is the real subject. Route deterministic/local corrections directly, semantic changes through Proposal selection, and possible/confirmed upstream impact through targeted Revalidation before downstream compensation. Any material corrective Proposal receives canonical Proposal Semantic Change Impact Review before selection.  
 **Possible Result:** A finding set whose correction route and USER-review depth are explicit without manufacturing architecture/product decisions for deterministic defects.  
 **Derived From / Owners:** `planning/documentation/idtspe-methodology/active/idtspe-core/shared/finding-disposition-contract.md`, `planning/documentation/idtspe-methodology/active/ai-reviewability/README.md`, `planning/documentation/idtspe-methodology/active/idtspe-core/shared/proposal-and-decision-lifecycle-contract.md`.
 
@@ -424,10 +424,10 @@ A root scenario begins from the ordinary functional entry route. A focused scena
 **Possible Result:** Deterministic/local correction ready for the normal realization/mutation boundary, with no new semantic Decision.  
 **Derived From / Owners:** `planning/documentation/idtspe-methodology/active/idtspe-core/shared/finding-disposition-contract.md`.
 
-### Step `SCN-07-S3` — resolve current-owner semantic change through Proposal/Decision
+### Step `SCN-07-S3` — resolve current-owner semantic change through Unit Resolution + Proposal selection
 
 **Trigger / Situation:** The Finding is `RE-2`: correction requires changing a Decision, durable must-hold/Requirement, owner boundary or other accepted meaning of the current semantic owner.  
-**AI Action:** Surface and review the real corrective Proposal(s) at that owner before dependent realization continues.  
+**AI Action:** Route the finding into the affected Unit/owner resolution surface and review the real corrective Proposal(s), including Semantic Change Impact, before dependent realization continues.  
 **Why This Step:** The decision belongs to the owner whose accepted meaning changes; the finding producer does not gain authority to rewrite it.  
 **Method / Mechanics:** Preserve driver/provenance, ground the Proposal through any genuinely required USER-only clarification, review only real alternatives, make USER-owned unknowns visible, and select/revise/defer through the canonical lifecycle. Selection identifies the desired semantic correction. Under SDS, when that correction is still unrealized, integrate it into the applicable Evolution Step Target Owner Body; current implemented owner truth changes only after realization/materialization.  
 **Possible Result:** Selected corrective future/current planning meaning in the correct temporal host, or a bounded unresolved decision.  
@@ -460,11 +460,51 @@ A root scenario begins from the ordinary functional entry route. A focused scena
 **Possible Result:** No Requirement change, a future Target-Body Requirement/Decision candidate, a realized-current-owner correction route, or an upstream revalidation route.  
 **Derived From / Owners:** `LENS-IMPLEMENTATION-REQUIREMENTS-DISCOVERY`, `planning/documentation/idtspe-methodology/active/profiles/sds/shared/requirement-ownership-and-exception-rule.md`, `planning/documentation/idtspe-methodology/active/profiles/sds/shared/directed-methodology-workflow-and-next-step-resolution.md`.
 
+## 11. `SCN-08` FOCUSED — Есть Proposal / вариант решения — понять последствия и довести до разрешения
+
+**Type:** FOCUSED  
+**Entry assumption:** a real Proposal/candidate route exists; a Finding is not required.
+
+### Step `SCN-08-S1` — establish the candidate and real driver
+
+**Trigger / Situation:** USER/AI/Unit work has produced a material candidate answer/route.  
+**AI Action:** Preserve Proposal identity and its actual Goal/Question/Problem driver; ground only missing material USER-only facts/authority.  
+**Possible Result:** One responsible unselected Proposal ready for review.  
+**Derived From / Owners:** `planning/documentation/idtspe-methodology/active/idtspe-core/shared/proposal-and-decision-lifecycle-contract.md`.
+
+### Step `SCN-08-S2` — review semantic change impact
+
+**Trigger / Situation:** The Proposal is material enough that selection consequences may affect current/upstream/downstream meaning.  
+**AI Action:** Run canonical Proposal Semantic Change Impact Review proportionally; use applicable Lenses only as evaluators.  
+**Method / Mechanics:** Check affected Unit/owner, accepted-meaning change, upstream owner, Requirement/Source/Evidence/downstream/revalidation/temporal consequences and whether durable Decision trace would add future value. Do not assign `RE-*` to the Proposal.  
+**Possible Result:** A reviewed candidate with known consequences, or newly surfaced Finding Candidate(s).  
+**Derived From / Owners:** `planning/documentation/idtspe-methodology/active/idtspe-core/shared/proposal-and-decision-lifecycle-contract.md`, `planning/documentation/idtspe-methodology/active/idtspe-core/lenses/README.md`.
+
+### Step `SCN-08-S3` — disposition newly discovered contradictions only
+
+**Trigger / Situation:** Proposal review newly exposes a material contradiction, unsupported assumption, owner conflict or stale upstream basis.  
+**AI Action:** Route that newly surfaced meaning through canonical Finding Disposition and targeted Revalidation as needed.  
+**Why This Step:** Known intended impact already stated by a Proposal is not a Finding automatically.  
+**Possible Result:** Refined candidate, upstream revalidation, another owner route or bounded additional Unit/Target responsibility.  
+**Derived From / Owners:** `planning/documentation/idtspe-methodology/active/idtspe-core/shared/finding-disposition-contract.md`, `UC-IDTSPE-REVALIDATE-CURRENT-WORK`.
+
+### Step `SCN-08-S4` — select and integrate without over-retaining trace
+
+**Trigger / Situation:** Candidate meaning is sufficiently reviewed and applicable selection authority is available.  
+**AI Action:** Select/revise/reject/defer through the canonical Proposal lifecycle; integrate selected meaning into affected Unit Result Content / owner.  
+**Method / Mechanics:** Material selection has Decision semantics. Retain a separate explicit/durable Decision trace only when rationale/trade-off/revalidation value should survive. Under SDS, selected but unrealized meaning remains in the applicable Evolution Step Target Body until realization/materialization.  
+**Possible Result:** Current Result Content / selected future result meaning plus only useful retained resolution trace.  
+**Derived From / Owners:** `planning/documentation/idtspe-methodology/active/idtspe-core/shared/proposal-and-decision-lifecycle-contract.md`, `planning/documentation/idtspe-methodology/active/idtspe-core/shared/idtspe-unit-and-target-step-result-model.md`.
+
 [METHODOLOGY_SCENARIO]
-{"id":"SCN-07","type":"FOCUSED","title":"Нашёлся баг или файндинг — понять, можно ли исправить локально или надо поднимать решение","entryRoute":"Starts from a material Finding Candidate after normal routing; generic Core first, active profile only when implicated","assumptions":["Finding producer is not semantic resolution authority"],"steps":[{"id":"SCN-07-S1","title":"Establish the finding and smallest justified escalation","semanticRefs":["planning/documentation/idtspe-methodology/active/idtspe-core/shared/finding-disposition-contract.md#resolution-escalation","planning/documentation/idtspe-methodology/active/ai-reviewability/README.md"]},{"id":"SCN-07-S2","title":"Keep deterministic/local repair inside accepted meaning","semanticRefs":["planning/documentation/idtspe-methodology/active/idtspe-core/shared/finding-disposition-contract.md"]},{"id":"SCN-07-S3","title":"Resolve current-owner semantic change through Proposal/Decision","semanticRefs":["planning/documentation/idtspe-methodology/active/idtspe-core/shared/proposal-and-decision-lifecycle-contract.md","planning/documentation/idtspe-methodology/active/idtspe-core/shared/qrp-lifecycle-and-review-contract.md"]},{"id":"SCN-07-S4","title":"Revalidate upstream before compensating downstream","semanticRefs":["UC-IDTSPE-REVALIDATE-CURRENT-WORK"]},{"id":"SCN-07-S4P","title":"Change upstream accepted meaning only after RE-4 is established","semanticRefs":["planning/documentation/idtspe-methodology/active/idtspe-core/shared/proposal-and-decision-lifecycle-contract.md","planning/documentation/idtspe-methodology/active/idtspe-core/shared/qrp-lifecycle-and-review-contract.md"]},{"id":"SCN-07-S5","title":"Interpret SDS Requirement/depth semantics only when actually implicated","semanticRefs":["LENS-IMPLEMENTATION-REQUIREMENTS-DISCOVERY","planning/documentation/idtspe-methodology/active/profiles/sds/shared/requirement-ownership-and-exception-rule.md"]}]}
+{"id":"SCN-08","type":"FOCUSED","title":"Есть Proposal / вариант решения — понять последствия и довести до разрешения","entryRoute":"Starts from a real material Proposal; Finding origin is optional","assumptions":["Canonical Proposal/Decision lifecycle owns candidate/selection semantics"],"steps":[{"id":"SCN-08-S1","title":"Establish the candidate and driver","semanticRefs":["planning/documentation/idtspe-methodology/active/idtspe-core/shared/proposal-and-decision-lifecycle-contract.md"]},{"id":"SCN-08-S2","title":"Review semantic change impact","semanticRefs":["planning/documentation/idtspe-methodology/active/idtspe-core/shared/proposal-and-decision-lifecycle-contract.md","planning/documentation/idtspe-methodology/active/idtspe-core/lenses/README.md"]},{"id":"SCN-08-S3","title":"Disposition newly discovered contradictions only","semanticRefs":["planning/documentation/idtspe-methodology/active/idtspe-core/shared/finding-disposition-contract.md","UC-IDTSPE-REVALIDATE-CURRENT-WORK"]},{"id":"SCN-08-S4","title":"Select and integrate proportionally","semanticRefs":["planning/documentation/idtspe-methodology/active/idtspe-core/shared/proposal-and-decision-lifecycle-contract.md","planning/documentation/idtspe-methodology/active/idtspe-core/shared/idtspe-unit-and-target-step-result-model.md"]}]}
 [/METHODOLOGY_SCENARIO]
 
-## 11. SDS-Specific Use-Case Test
+[METHODOLOGY_SCENARIO]
+{"id":"SCN-07","type":"FOCUSED","title":"Нашёлся баг или файндинг — понять, можно ли исправить локально или надо поднимать решение","entryRoute":"Starts from a material Finding Candidate after normal routing; generic Core first, active profile only when implicated","assumptions":["Finding producer is not semantic resolution authority"],"steps":[{"id":"SCN-07-S1","title":"Establish the finding and smallest justified escalation","semanticRefs":["planning/documentation/idtspe-methodology/active/idtspe-core/shared/finding-disposition-contract.md#resolution-escalation","planning/documentation/idtspe-methodology/active/ai-reviewability/README.md"]},{"id":"SCN-07-S2","title":"Keep deterministic/local repair inside accepted meaning","semanticRefs":["planning/documentation/idtspe-methodology/active/idtspe-core/shared/finding-disposition-contract.md"]},{"id":"SCN-07-S3","title":"Resolve current-owner semantic change through Unit Resolution + Proposal selection","semanticRefs":["planning/documentation/idtspe-methodology/active/idtspe-core/shared/proposal-and-decision-lifecycle-contract.md","planning/documentation/idtspe-methodology/active/idtspe-core/shared/qrp-lifecycle-and-review-contract.md"]},{"id":"SCN-07-S4","title":"Revalidate upstream before compensating downstream","semanticRefs":["UC-IDTSPE-REVALIDATE-CURRENT-WORK"]},{"id":"SCN-07-S4P","title":"Change upstream accepted meaning only after RE-4 is established","semanticRefs":["planning/documentation/idtspe-methodology/active/idtspe-core/shared/proposal-and-decision-lifecycle-contract.md","planning/documentation/idtspe-methodology/active/idtspe-core/shared/qrp-lifecycle-and-review-contract.md"]},{"id":"SCN-07-S5","title":"Interpret SDS Requirement/depth semantics only when actually implicated","semanticRefs":["LENS-IMPLEMENTATION-REQUIREMENTS-DISCOVERY","planning/documentation/idtspe-methodology/active/profiles/sds/shared/requirement-ownership-and-exception-rule.md"]}]}
+[/METHODOLOGY_SCENARIO]
+
+## 12. SDS-Specific Use-Case Test
 
 Current conclusion: no separate SDS methodology-use Use Case is justified.
 
@@ -486,7 +526,7 @@ They are profile Target/Lens capabilities reached from generic IDTSPE Use Cases.
 
 Create an SDS-specific Use Case only if a future scenario exposes a distinct independently useful Result about **how SDS methodology documentation is used**, not merely a new SDS planning result.
 
-## 12. Maintenance / Scenario Revalidation Rule
+## 13. Maintenance / Scenario Revalidation Rule
 
 When a Use Case/component owner changes materially:
 

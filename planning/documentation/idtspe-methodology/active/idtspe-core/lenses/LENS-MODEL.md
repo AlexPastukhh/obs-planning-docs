@@ -7,8 +7,8 @@ Status: active generic methodology owner
 ```text
 Lens
 = reusable evaluation/discovery perspective
-  applied inside IDTSPE to material IDTSPE State Units
-  and/or Target Step Result Units
+  applied inside IDTSPE to material Units / Unit Result Content
+  and/or Core Resolution State / broader semantic subjects
 ```
 
 A Lens may contribute explanatory Broad Discussion analysis and Key Points without creating any Unit. It may also discover materially actionable meaning concerning Evidence needs, Proposal refinements, Q/R/P, comparison dimensions, Decision inputs, revalidation signals and supporting-artifact guidance. Only meaning that needs ownership/State/lifecycle disposition crosses the Finding Candidate boundary; Generic Core Finding Disposition resolves that destination. The Lens does not define Unit kinds or own disposition.
@@ -173,41 +173,13 @@ Canonical producer/Core bridge: [`../shared/finding-disposition-contract.md`](..
 Use proportionally:
 
 ```text
-Primary Result Units / semantic selectors
-Conditional Result Units
-Relevant State Units
-Context
+Primary Units / Unit Result Content / Unit Resolution subjects
+Conditional Units / Result fields
+Relevant Core Resolution State
+Target / cross-owner Context
 ```
 
-A target/profile-specific Lens should name known Result Units/fields when practical.
-A generic Core Lens may use semantic selectors because it cannot know every profile schema.
-
-Example:
-
-```text
-Slice Verticality Lens
-
-Primary Result Units:
-  Outcome / semantic obligations / proof intent
-  Uses / Ownership Boundary
-  optional Runtime Path
-  Evolution Steps
-
-Relevant State:
-  Questions
-  Risks / Problems
-  Decisions
-  Evidence
-  Revalidation state
-
-Context:
-  Scenario
-  Domain
-  Screen
-  current implementation/workspace
-```
-
-Context availability does not imply auditing all of it.
+A target/profile-specific Lens should name known Module-defined Units/fields when practical. A generic Core Lens may use semantic selectors because it cannot know every profile schema. Context availability does not imply auditing all of it.
 
 ### Supported Operations
 
@@ -274,30 +246,22 @@ Canonical interaction model: [`../shared/broad-discussion-and-integration-checkp
 
 ### Core Finding Disposition
 
-The Lens stops at the finding boundary.
+The Lens stops at explanatory analysis or Finding Candidate.
 
 ```text
 Lens
 → Broad Discussion / Key Points when explanatory only
 → Finding Candidate when material semantic disposition is needed
 
-Core
-→ materiality / ownership / State-lifecycle disposition
-→ normal resolution
-→ existing Result Unit update when warranted
+Core Finding Disposition
+→ smallest correct semantic subject / owner
+→ existing Unit Resolution when that Unit owns the responsibility
+→ Contextual Unit when a new bounded local responsibility is useful
+→ Target Formation when independently substantial
+→ another canonical owner directly when Unit routing would be artificial
 ```
 
-Therefore the following are not Lens methods:
-
-```text
-State-Unit routing
-External Routing
-REOPEN
-AFFECT / UPDATE AFTER RESOLUTION
-Target Formation
-```
-
-A Lens may expose a finding that *leads* to those outcomes, but Core owns the disposition/lifecycle.
+The Lens does not own State routing, Target Formation, REOPEN, handoff authority or Result Content mutation.
 
 ### Result ownership guard
 

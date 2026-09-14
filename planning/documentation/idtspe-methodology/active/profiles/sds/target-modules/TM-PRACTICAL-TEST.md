@@ -98,6 +98,19 @@ establish what real implemented subject/property must be accepted or learned fro
 
 Existing telemetry/logging is Evidence Source. This Target does not own permanent observability architecture; missing observability becomes a Finding Candidate for the natural Slice/Shared/implementation owner or Exact Realization when warranted.
 
+## Unit Contract Conformance
+
+Declared target-specific `RU-*` responsibilities in this module are interpreted as **Module-defined Unit Contracts**, not output buckets only. For each material Unit:
+
+```text
+Unit responsibility
+→ relevant inputs / shared or Unit-specific reusable guidance
+→ Unit Resolution with Core Question/QRP/Proposal/Evidence/Decision state only when useful
+→ Current Result Content when sufficiently resolved
+```
+
+Module-wide Source/Knowledge/Production/Lens/validator guidance is a shared default only where it genuinely applies across Units. Unit-specific subsection text specializes that guidance. Do not duplicate Core lifecycle semantics inside Result Content, and do not require a formal Proposal/Decision when trusted Sources/Evidence determine the result without a material choice.
+
 ## Target Step-Result Contract
 
 **Target Step Result:** `Implemented Practical Evidence Result`

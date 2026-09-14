@@ -217,3 +217,20 @@ Current SDS extension:
 Repository command definitions carry concrete aliases plus stable `methodologyBinding` and helper-presentation metadata. The Helper is a metadata-driven projection only.
 
 Changing tabs/groups/order must not silently redefine Core command semantics, Target ownership, Lens ownership or host-target policy.
+
+
+## Proposal / Finding Command Coverage
+
+Canonical command coverage follows semantic owners rather than one command per internal step:
+
+```text
+idtspe пропозал
+→ includes Proposal grounding + Candidate Review + Proposal Semantic Change Impact + selection gating
+
+разбери файндинги
+→ Finding Disposition + RE-* + correct owner/Unit/revalidation routing
+```
+
+Do not create a mandatory separate Proposal-impact command merely because impact review is an explicit lifecycle step. A focused shortcut is justified only if practice demonstrates an independently useful recurring USER intent.
+
+Unit Resolution, Result Content, Decision trace, Q/R/P, Finding Inbox, Requirement impact and Source impact do not each require standalone direct commands by ontology.

@@ -7,32 +7,51 @@ Purpose: define what one bounded IDTSPE work step produces, how target-specific 
 
 ## 1. Core Model
 
+The central bounded-work object is a **Unit**: one semantic/result responsibility that can be resolved, reviewed and handed off without forcing a separate Target or file.
+
 ```text
-Target
+IDTSPE Work Context
+↓
+zero or more bounded Targets
 ↓
 Target Module or Local Target Contract
 ↓
-current bounded IDTSPE work step
+zero or more bounded Units
+  ├─ Module-defined Unit
+  └─ Contextual Unit when current work exposes an independently useful local responsibility
 ↓
-IDTSPE Step Output
-├─ Target Step Result
-│  └─ one or more Target Step Result Units
-└─ material IDTSPE State Units
+for each material Unit
+  Result Responsibility
+  + Unit Resolution
+  + Current Result Content when sufficiently resolved
+↓
+Target Step Result
+  = composition/projection of applicable Unit Result Content
 ```
 
-`IDTSPE Step Output` is an explanatory umbrella for material semantic output of one work/integration pass. It is **not** a new semantic owner and does not imply one persisted record. Ordinary Broad Discussion may surround or occur between these outputs without becoming Units. Proposal/Decision lifecycle rules are owned separately by [`proposal-and-decision-lifecycle-contract.md`](proposal-and-decision-lifecycle-contract.md); Broad Discussion/checkpoint projection is owned by [`broad-discussion-and-integration-checkpoint-model.md`](broad-discussion-and-integration-checkpoint-model.md).
-
-The two Unit roles are distinct:
+`Unit Resolution` is both the process and the current working semantic state used to obtain sufficiently resolved Unit Result Content. It may relate proportionally to Sources/Evidence, Questions, Problems/Risks, Proposals, Findings, Decisions, Branches and Revalidation. Those Core resolution items keep their own lifecycle/addressability semantics; they are not a second family of peer work/result Units.
 
 ```text
-IDTSPE Unit
-├─ Target Step Result Unit
-└─ IDTSPE State Unit
+Core Resolution State
+→ normally attaches to the smallest correct semantic subject:
+   one Unit / one Result field / one Proposal / one Decision / one Target
+→ may remain cross-Unit, Target-level or Work-Context-level
+   when that is its natural subject
 ```
 
-A Unit is meaningful because it deserves explicit processing/addressability, not because it has a dedicated file.
+`Current Result Content` is the normalized current answer/output owned by the Unit. It may be absent while Unit Resolution is still open. Candidate result meaning may be useful during resolution, but candidate meaning is not current Result Content merely because it was written down.
 
----
+```text
+trusted Source / Evidence
+→ unambiguous non-decision derivation
+→ Current Result Content
+```
+
+is valid; Proposal/Decision ceremony is not mandatory when no material choice exists.
+
+A material Proposal that is actually selected still has **Decision semantics** under the canonical Proposal/Decision lifecycle. A separate explicit/durable Decision State Unit or retained Decision trace is required only when the selection/rationale/trade-off/revalidation meaning has independent future value.
+
+`IDTSPE Step Output` remains an explanatory umbrella for the material semantic output of one work/integration pass. It may contain Unit Result Content plus material Core Resolution State. It is not a new semantic owner and does not imply one persisted record.
 
 ## 2. Target Step Result
 
@@ -112,9 +131,9 @@ Generic Core now installs [`TM-EXACT-REALIZATION`](../target-modules/TM-EXACT-RE
 
 ---
 
-## 3. Target Step Result Unit
+## 3. Target Step Result Unit / Module-Defined Unit
 
-Full term:
+Full compatibility term:
 
 ```text
 Target Step Result Unit
@@ -123,41 +142,34 @@ Target Step Result Unit
 Short form when context is clear:
 
 ```text
-Result Unit
+Result Unit / Unit
 ```
 
-Definition:
+A Target Module-declared Result Unit is a **Module-defined Unit Contract instance** for one bounded part of the Target Step Result. It is not merely an output bucket: its responsibility includes obtaining and validating the result meaning it owns.
 
 ```text
-Result Unit
-= one meaningful part/entity/section/output unit
-  inside the Target Step Result
-  that deserves explicit or separately addressable processing.
+Unit
+= one bounded target-specific result responsibility
+  deserving explicit/separately addressable processing
+
+Unit
+├─ Result Responsibility / Purpose
+├─ Applicability / Materiality / Omission
+├─ Unit Resolution
+│  ├─ Inputs / Sources / Evidence as applicable
+│  ├─ reusable Questions/Problems/guidance from its Unit Contract
+│  ├─ Knowledge Basis / theory references when useful
+│  ├─ Proposal discovery / applicable Lenses / validators when useful
+│  └─ current Core Resolution State attached to this subject
+└─ Current Result Content
+   └─ normalized target-specific answer owned by the Unit
 ```
 
-A Result Unit may deserve explicit treatment because it has its own:
+A Unit may deserve explicit treatment because it has its own purpose, questions, internal structure, validation, materiality, consumer, review focus, handoff, revalidation or representation destination. "Self-contained" means the Unit contract contains or references enough reusable methodology to process that bounded responsibility; it does **not** require every Unit to carry a large Question pack, Knowledge Basis, Proposal space or Lens set.
 
-```text
-purpose
-questions
-internal structure
-validation
-materiality
-consumer
-review focus
-handoff
-representation/persistence destination
-```
+A thin technical Unit may have almost no specialized resolution material. A heavy semantic Unit may host several Questions, Proposals, Q/R/P items, Evidence items and Decisions during its resolution.
 
-A Result Unit is **not automatically**:
-
-```text
-a separate Target
-a separate semantic owner
-a separate Target Module
-a separate file
-a new Core methodology type
-```
+A Unit is not automatically a separate Target, semantic owner outside the Target contract, Target Module, file or new Core methodology type.
 
 ### Example — composite Slice result
 
@@ -165,71 +177,33 @@ a new Core methodology type
 Target Step Result:
   Implementation Slice Plan
 
-Result Unit:
+Unit:
   Slice Outcome Definition
-  Purpose:
+  Responsibility:
     establish what useful/checkable outcome the Slice must deliver
+  Current Result Content:
+    <normalized selected/derived Slice outcome meaning>
 
-Result Unit:
+Unit:
   Runtime Path
-  Purpose:
-    describe the selected running-system path
+  Responsibility:
+    resolve and describe the selected running-system path
 
-Result Unit:
+Unit:
   Uses / Ownership Boundary
-  Purpose:
-    preserve material Domain/shared/dependency responsibility relations
-
-Result Unit:
-  Future-State / Evolution Handoff
-  Purpose:
-    preserve only the target-specific handoff/reference required by the active profile's future-state semantic owner;
-    do not assume owner-local Evolution authority
-
-Field group inside Result Unit:
-  Slice Outcome Definition.verificationObligations
-  Purpose:
-    state what later proof must establish without creating a separate Slice Result Unit by default
+  Responsibility:
+    resolve material Domain/shared/dependency responsibility relations
 ```
 
-All of those Units may remain sections of one planning artifact. Unit identity does not force file splitting.
+All Units may remain sections of one planning artifact. Unit identity does not force file splitting.
 
 ### Example — several physical destinations
 
-```text
-Target Step Result:
-  exact software realization
+One Target Step Result may still materialize asymmetrically: a Unit's current result may be represented in planning prose, implementation-native files, package metadata or generated review views according to the representation contract. The Unit remains one semantic responsibility even when its result is projected into several physical forms.
 
-Result Unit:
-  Realization Intent
-  → planning/review representation
+## 4. Core Resolution State / IDTSPE State Unit
 
-Result Unit:
-  CaptureItem.cs
-  → implementation-native project file
-
-Result Unit:
-  Apply Manifest
-  → package metadata
-
-Result Unit:
-  Review Projection
-  → generated diff/view
-```
-
-One Target Step Result may therefore materialize asymmetrically.
-
----
-
-## 4. IDTSPE State Unit
-
-```text
-IDTSPE State Unit
-= one typed generic planning/resolution unit
-  maintained by IDTSPE around the current Target work.
-```
-
-Core owns the generic State Unit kinds. Typical kinds include:
+`IDTSPE State Unit` remains the compatibility/addressability term for typed generic planning/resolution meaning maintained by Core. Typical kinds include:
 
 ```text
 Source
@@ -240,172 +214,151 @@ Decision
 Evidence / Evidence Need
 Planning Branch state/reference
 Revalidation Signal
-Methodology Usage State when methodology selection/application/recheck meaning is useful to retain
+Methodology Usage State when useful
 Target Relation / Handoff item when independently useful
 persistence/representation state when materially useful
 validation/readiness finding when independently useful
 ```
 
-Existing names remain the normal prose vocabulary. Do not force labels such as `Risk Unit` when `Risk` is already unambiguous.
-
-Canonical cross-cutting lifecycle owners:
-
-- [`qrp-lifecycle-and-review-contract.md`](qrp-lifecycle-and-review-contract.md) — Question/Risk/Problem semantics, lifecycle, grouping and retention;
-- [`proposal-and-decision-lifecycle-contract.md`](proposal-and-decision-lifecycle-contract.md) — Proposal candidate/selection and Decision trace lifecycle.
-
-Finding `Resolution Escalation` (`RE-0 ... RE-4`) is a transient review/routing projection owned by [`finding-disposition-contract.md`](finding-disposition-contract.md), **not** another IDTSPE State Unit kind. A Finding may still disposition into an existing Question, Risk/Problem, Proposal, Decision input, Evidence, Revalidation Signal or independently useful validation/readiness finding according to normal materiality.
-
-### Proposal / Decision lifecycle relation
-
-`Proposal` and `Decision` are Core State Unit kinds, but their candidate/selection lifecycle is not defined by this Unit model. Canonical Proposal drivers/relations, Candidate Bundles, review outcomes, Proposal → Decision selection, rationale/alternative retention and revalidation semantics are owned by [`proposal-and-decision-lifecycle-contract.md`](proposal-and-decision-lifecycle-contract.md).
-
-This model owns only the Unit/addressability boundary:
+These kinds retain their canonical lifecycle owners. Finding `Resolution Escalation` (`RE-0..RE-4`) remains a transient Finding-disposition projection and is **not** a State Unit, Unit kind, lifecycle or priority scale. The topology changes are compositional:
 
 ```text
-material candidate meaning needs Core lifecycle/addressability
-→ Proposal State Unit may be explicit
+old mental model to avoid:
+  Result Units + peer generic work Units
 
-accepted material selection needs Core lifecycle/addressability
-→ Decision State Unit may be explicit
-
-formal Proposal / Decision Unit exists
-≠ separate file required
+preferred model:
+  bounded Unit responsibility
+  + Core Resolution State attached/related to the semantic subject it concerns
+  + Current Result Content
 ```
 
-The umbrella `IDTSPE State Unit` exists for:
-- addressability;
-- Lens interaction / Finding Disposition addressability;
-- validation;
-- persistence decisions;
-- cross-reference/revalidation.
+Core Resolution State is **not forced into exactly one Unit**. Cross-Unit, Target-level, cross-Target or Work-Context state remains valid when that is the smallest correct subject.
 
-### State Units can be useful outputs
-
-State Units are not merely invisible intermediates.
-
-Example: a Lens/validation pass may leave the target-specific Step Result unchanged while surfacing:
+### Proposal / Decision / Result relation
 
 ```text
-Risk R-17:
-  persistence failure may be reported as success
+Proposal
+= candidate resolution that may carry proposed Result Meaning,
+  a proposed Resolution/Realization Route, or both
 
-Question Q-18:
-  which boundary owns failure translation?
+material Proposal selected under applicable authority
+= Decision semantics occurred
 
-Evidence Need EN-19:
-  run an integration test with persistence failure
+explicit/durable Decision Unit/trace
+= retain when later work/review/revalidation benefits from
+  knowing the selection/rationale/trade-off/reconsider condition
 
-Revalidation Signal RV-20:
-  reopen if repository result semantics change
+Current Result Content
+= normalized current Unit answer after selected or safely derived meaning is integrated
 ```
 
-That is a useful IDTSPE Step Output even before a Result Unit changes.
-
-If later resolution accepts:
+Therefore:
 
 ```text
-Decision D-21:
-  ApplicationService owns failure-result mapping
+Question → trusted Answer/Evidence → Result Content
 ```
 
-the selected meaning may then update:
+may need no Decision at all, while:
 
 ```text
-Result Unit:
-  Uses / Ownership Boundary
-
-Field:
-  failurePropagation responsibility
+Proposal A / Proposal B → material selection
+→ Decision semantics
+→ Result Content
 ```
 
-This generic example assumes the selected meaning belongs to the **current Target state being resolved**. A profile may impose a temporal-host boundary. For example, under SDS an accepted change that is still unrealized is integrated into the applicable Evolution Step Target Body first; it does not rewrite the current natural owner until realization/materialization.
+may or may not need a separately retained Decision record.
+
+### State can be useful before Result Content exists
+
+A Unit may remain unresolved while its Resolution carries useful addressable state:
+
+```text
+Unit: Uses / Ownership Boundary
+
+Problem:
+  failure translation ownership is inconsistent
+
+Evidence Need:
+  run persistence-failure integration proof
+
+Proposal:
+  ApplicationService owns failure translation
+
+Current Result Content:
+  absent until the material choice is resolved
+```
+
+That is useful IDTSPE work even before current Unit Result Content changes.
 
 ### Methodology Usage State
 
-`Methodology Usage State` is an optional generic State Unit for retaining **material facts about how the methodology is currently being used** when those facts help continuation, review or revalidation.
-
-Use proportionally:
-
-```text
-Methodology Usage State
-  Current Work Concern — when retaining it helps orientation/re-entry
-  Active Use Cases — only the material current set
-  Relevant Registry Traversals — registry + purpose + selected entries/outcome
-  Applied Components — Target Modules / Lenses / reusable guidance + operation/purpose + applied-to surface
-  Material Guards / Validators / Rules / Packs — only when their activation affects continuation/review
-  Contextual Adaptations / deferred recommendations — when later work must know them
-  Recheck Triggers / Re-entry — when future context may change applicability
-```
-
-Example:
-
-```text
-Methodology Usage State:
-  Active Use Case: UC-IDTSPE-COMPOSE-CURRENT-WORK
-  Registry: SDS Programming Principles
-  Relevant entries:
-    RG-PRG-RESOURCE-MANAGEMENT
-    RG-PRG-TIMEOUT-CANCELLATION-BOUNDS
-  Applied through:
-    Slice Target Production + VOO/Quality perspective
-  Recheck:
-    if cancellation/effect ownership changes
-```
-
-This is **not an execution log**. Do not record every file read, command, tool call, non-applicable registry row or transient reasoning step.
-
-`Current Work Concern` may exist only as conversational/work-context meaning. Promote it into explicit Methodology Usage State only when addressability/continuation/revalidation value is material.
-
-### Decision retained context
-
-This model recognizes `Decision` as a Core State Unit. What Decision trace/rationale/alternative context should be retained is owned by [`proposal-and-decision-lifecycle-contract.md`](proposal-and-decision-lifecycle-contract.md); interaction-specific intake is owned by [`user-input-decision-and-answer-intake-rule.md`](user-input-decision-and-answer-intake-rule.md).
-
----
+`Methodology Usage State` remains optional generic state for retaining material facts about methodology use when continuation/audit/revalidation benefits. It is not an execution log and does not create one methodology-state Unit per target Unit.
 
 ## 5. Unit Definition Authority
 
-The ownership boundary is strict:
+The ownership boundary is:
 
 ```text
 IDTSPE Core
-→ defines generic State Unit kinds and generic lifecycle rules
+→ defines generic Unit mechanics
+→ defines Unit Resolution / Current Result Content semantics
+→ defines generic Core Resolution State kinds/lifecycles
+→ defines Contextual Unit boundary
 
 Target Module / Local Target Contract
-→ defines the Target Step Result family
-→ defines target-specific Result Units and their fields/substructure
+→ defines recurring/target-local Module-defined Unit Contracts
+→ defines their Result Responsibility and Result Content contract
+→ contributes reusable Unit-specific resolution guidance
 
 Lens
-→ does not define either Unit kind
+→ defines neither Unit kinds nor result ownership
+→ evaluates an Analysis Surface and may surface Finding Candidates
 ```
 
-A Lens may discover content that causes the runtime to open/populate a new `Risk`, `Question`, `Proposal`, `Evidence Need`, etc., but:
+A concrete Module-defined Unit Contract may proportionally supply or reference:
 
 ```text
-Core
-→ already defines that State Unit kind
-
-Lens
-→ supplies finding/proposal/evaluation content
-
-IDTSPE Core
-→ dispositions the finding into the applicable State/lifecycle/owner destination
+Result Responsibility / Purpose
+Applicability / Materiality / Omission
+Inputs / Sources
+Drivers: Goal / Questions / recurring Problems
+Knowledge Basis
+Resolution Method / Guidance
+Proposal discovery aids
+Applicable Lenses / registry triggers
+Result Content Contract
+Validators
+Handoff / consumers
+Revalidation
+Representation guidance
 ```
 
-Likewise, a Lens may affect a Result Unit only when that Unit/field already belongs to the active Target Module/Local Target Contract.
+Possible does not mean mandatory. Shared module-level guidance may be referenced by several Units rather than copied.
 
-Repeated Lens findings revealing missing target-result meaning are a signal to:
+### Contextual Unit
+
+A `Contextual Unit` is formed when current work exposes an independently useful **bounded local resolution/result responsibility** that is not already represented by a suitable Module-defined Unit, but does not justify a separate Target.
 
 ```text
-revise the Target Module Step-Result Contract
-OR
-let Core Finding Disposition resolve another Target/owner
-OR
-keep the meaning in generic State Units
+Finding / Question / Problem / Source conflict / Broad Discussion
+→ no suitable existing Unit
+→ bounded local responsibility is independently useful
+→ Contextual Unit
 ```
 
-not to create a Lens-owned result field silently.
+A Contextual Unit uses the same generic Unit mechanics but normally has no prepackaged specialized Knowledge Basis/guidance beyond what the context/Core/Lenses provide.
 
----
+A Contextual Unit must declare a useful **Result Destination** proportionally. Its resolution may:
+
+```text
+integrate into an existing Module-defined Unit Result Content
+contribute target-local result meaning under the Local Target Contract
+remain a resolved Target/Work-Context conclusion without a new result section
+handoff to another existing owner
+become Target Formation input when independent responsibility grows
+```
+
+Do not persist a `CU-*` result section merely because a Contextual Unit existed during resolution.
 
 ## 5A. Unit Applicability / Materiality / Omission Contract
 
@@ -529,75 +482,55 @@ A module may add primary/frequent Lens candidates or local triggers for that Uni
 
 ## 6. Lens / Finding Boundary
 
-This Unit model defines what Core State Units and Target Result Units are available to be addressed; it does **not** define Lens operations or Lens applicability.
-
-Canonical owners:
-
-- [`../lenses/LENS-MODEL.md`](../lenses/LENS-MODEL.md) — Lens Analysis Surface, supported operations, applicability and Typical Findings contract;
-- [`finding-disposition-contract.md`](finding-disposition-contract.md) — Finding Candidate → Core ownership/State/lifecycle disposition.
-
-Unit-side invariant:
+A Lens/validator/Evidence check/review may analyze a Unit, Proposal, Decision, Target or other semantic subject. Useful explanation may remain Broad Discussion. Newly surfaced potentially material meaning crosses the Finding Candidate boundary only when ownership/lifecycle disposition is needed.
 
 ```text
-Lens analysis may inspect existing State / Result Units
-→ explanatory analysis may remain discussion only
-→ material newly surfaced meaning may become a Finding Candidate
-→ only normal Core authority/disposition may create/refine State or update an existing Result Unit
-
-Lens
-≠ Unit-kind owner
-≠ permission to invent a target-result field
+Lens / Validator / Evidence / Review
+→ explanatory analysis only
+   OR
+→ Finding Candidate
+→ Core Finding Disposition
+→ smallest correct semantic subject / owner
 ```
 
-## 7. Target Module Step-Result Contract
+When the finding concerns one bounded Unit responsibility:
 
-A Target Module defines one recurring Target family and the **possible result surface**, not a questionnaire that requires uniform completion.
+```text
+Finding
+→ existing Unit Resolution
+```
 
-Conceptually:
+When no suitable Unit exists but a bounded local responsibility is useful:
+
+```text
+Finding
+→ Contextual Unit
+```
+
+When the responsibility is independently substantial:
+
+```text
+Finding
+→ Target Formation
+```
+
+A Finding may instead route directly to Target Scope, Source authority, Target relation/handoff, another semantic owner, methodology state or another canonical subject when that is more correct. Unit-centric does not mean Unit-exclusive.
+
+## 7. Target Module Step-Result / Unit Contract
+
+A Target Module defines one recurring Target Step Result family primarily through its set/composition of Module-defined Unit Contracts plus genuinely Target-wide rules.
+
+For each material Unit the module must make enough reusable meaning reachable to resolve that responsibility safely. Unit-specific questions/Knowledge Basis/Lens triggers/validators belong with that Unit when they are specific to it; truly shared Target-family guidance may remain module-level and be referenced by several Units.
 
 ```text
 Target Module
-=
-Target Step-Result Contract
-+ Target Resolution / Production Method
-+ Knowledge Basis
-+ Lens Profile
-+ Validators
-+ Handoff / Revalidation
-+ Representation Guidance
+→ Unit Contract inventory + dependencies
+→ Unit Resolution at runtime
+→ Current Result Content per resolved Unit
+→ Target Step Result composition/projection
 ```
 
-The Step-Result Contract should explain proportionally:
-
-```text
-what useful Step Result this family aims to produce
-which Result Units may compose it
-what each Unit means and why it exists
-Applicability / Materiality / Omission semantics for each materially optional Unit/field family
-possible fields/substructure
-relations among Units
-typical inputs and consumers/handoff
-validation/completeness meaning that distinguishes "not applicable" from "missing material meaning"
-retention/revalidation conditions when useful
-representation guidance
-```
-
-The Resolution / Production Method may supply:
-
-```text
-Source archetype
-Question candidates
-Proposal/pattern discovery aids
-branch triggers
-candidate answer shapes
-Internal Object Contracts
-shared Result-Unit methods
-Decision surfaces
-```
-
-Concrete Questions/Proposals/Q/R/P/Decisions remain generic State Units. The Module contributes reusable ways to discover/resolve them; it does not duplicate their Core lifecycle inside the Result schema.
-
----
+The Target Step Result is therefore the coherent applicable composition of Unit Result Content, not a container that becomes current merely because candidate content was produced.
 
 ## 8. Proportional / Sparse Projection Rule
 
@@ -676,31 +609,17 @@ Supporting-role use does not automatically create a child Target Instance. A sep
 
 ## 10. Resolution Slot Boundary
 
-Current Core may use a `Resolution Slot` to track one planning subject's prompt/status/value/resolution metadata.
+A Resolution Slot remains coordination metadata for one planning subject, especially Target Formation. It is not a Unit and does not replace Unit Resolution.
 
 ```text
 Resolution Slot
-= resolution-state/coordination structure
+= coordination/status view
 
-IDTSPE Unit
-= meaningful content/work item
+Unit Resolution
+= actual bounded work/resolution state for one Unit responsibility
 ```
 
-Do not infer:
-
-```text
-one Result Unit field
-→ one Resolution Slot
-
-one State Unit
-→ one Resolution Slot
-```
-
-Use Slots only where the generic resolution mechanism benefits from explicit status/value bookkeeping.
-
-The canonical Target Formation `TF-*` slots remain valid until separately revised.
-
----
+`TF-06 QUESTION_SET` and `TF-07 PROPOSAL_SPACE` remain Target-level coordination surfaces. Before Unit decomposition they may help establish what the Target must resolve. After Unit formation they primarily coordinate/project material Unit drivers/Proposals plus genuinely Target-wide or cross-Unit meaning. They are not reduced to a mechanical index and do not become semantic owners of Unit-local Questions/Proposals.
 
 ## 11. Persistence / Representation
 
@@ -871,33 +790,21 @@ Older reusable Lens bodies that predate the literal current Lens contract remain
 ## 15. Key Invariants
 
 ```text
-one Target
-≠ one Result Unit
-≠ one file
-
-State Unit
-≠ lesser/temporary by definition
-
-Target Module / Local Target Contract
-→ defines target-specific Result Units
-
-Core Unit model
-→ defines generic State Unit kinds and Unit materiality/addressability
-
-Lens
-→ may analyze Units but does not define their kinds
-
-Finding Candidate
-≠ accepted semantic meaning automatically
-
-Result Unit addressability
-≠ separate Target
-
-Output schema
-= projection contract
-≠ mandatory questionnaire
-
-persistence
-= downstream representation decision
-≠ definition of the Step Result
+Unit = bounded resolution/result responsibility
+Module-defined Unit ≠ output bucket only
+Contextual Unit ≠ automatic Target or durable result section
+Unit-centric ≠ all state must belong to exactly one Unit
+Unit Resolution may exist while Current Result Content is absent
+Candidate Result Content ≠ Current Result Content
+Proposal ≠ Decision ≠ Result Content
+material Proposal selection has Decision semantics
+explicit/durable Decision trace is proportional, not mandatory for every derived result
+Question answered by trusted Source/Evidence may update Result Content without Decision
+Core Resolution State keeps its lifecycle/addressability while attaching to the smallest correct subject
+Finding Candidate ≠ Unit automatically
+Finding may route to Unit Resolution, Contextual Unit, Target Formation or another canonical owner
+Lens ≠ Unit owner ≠ Finding disposition authority
+Target Step Result = coherent projection/composition of applicable Unit Result Content
+Unit identity ≠ file identity
+semantic retention ≠ physical persistence
 ```

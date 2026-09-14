@@ -9,38 +9,28 @@ Purpose: define the generic technical IDTSPE runtime/composition contract used i
 IDTSPE Work Context
 + current Use-Case composition
 + Broad Discussion / Key Points
-+ zero or more material IDTSPE State Units
 + zero or more bounded Targets
   each Target when present:
     Target Formation Resolution Set
     + Target Module or Local Target Contract
     + typed Sources
     + selected/applicable Lenses
-    + applicable/material Target Step Result Units
+    + zero or more bounded Units
+      each material Unit:
+        Result Responsibility
+        + Unit Resolution
+        + Current Result Content when resolved
+    + Target Step Result composition
     + Validators / Guards
     + Artifact Placement when material
++ cross-Unit / Target / Work-Context Core Resolution State when material
 + Handoff / Evidence / Revalidation when material
 = current proportional IDTSPE work
 ```
 
-A Target-specific shell pass still operates on one primary bounded Target at a time, but the **work context itself does not require a Target** and may retain relations among several Targets when that is the real current situation. Functional composition is owned by [`shared/compose-current-work-use-case.md`](shared/compose-current-work-use-case.md); this Shell owns the generic technical mechanics once those mechanisms are needed.
+A Target-specific shell pass still operates on one primary bounded Target at a time, while the Work Context may contain zero/several Targets. Unit-local Core Resolution State attaches to Unit Resolution; broader state remains at its natural subject.
 
-Canonical working-conversation / checkpoint model: [`shared/broad-discussion-and-integration-checkpoint-model.md`](shared/broad-discussion-and-integration-checkpoint-model.md).
-
-Canonical content model:
-
-```text
-IDTSPE Unit
-├─ Target Step Result Unit
-│  defined by Target Module / Local Target Contract
-└─ IDTSPE State Unit
-   Core-defined generic planning kind:
-   Source / Question / Proposal / Q-R-P / Decision / Evidence / Methodology Usage State / ...
-```
-
-The current `P-01..P-15` labels remain stable **technical runtime navigation**. They are not a second semantic ontology above the Unit/Target models.
-
-The shell owns **planning mechanics**. It does not own current product/domain/application semantics.
+The current `P-01..P-15` labels remain stable technical runtime navigation, not a second ontology.
 
 ## Work-Context Proportionality
 
@@ -127,19 +117,18 @@ A relation does not automatically create Source authority.
 
 ### P-05 Question Port
 
-Connects:
+Coordinates material Question/Problem drivers across the current Target through `TF-06 QUESTION_SET`.
+
 ```text
-Target Module Question examples
-Source-derived questions
-Questions surfaced in previous steps/checkpoints or Broad Discussion
-explicit user questions / questions implied by current Goal or Problem
-Questions created/refined through Core Finding Disposition when material findings require Question State
-current unresolved Q/R/P questions when relevant
+before Unit decomposition
+→ Target-level questions may help establish useful Unit/Target shape
+
+after Units exist
+→ Unit-local Questions/Problems attach to Unit Resolution
+→ TF-06 projects/coordinates them plus genuine Target-wide questions
 ```
 
-into one selected `Question Set` through `TF-06 QUESTION_SET`. Goals/Desired Outcomes and Problems may drive the Proposal/Decision space without being retyped as Questions merely to pass through P-05.
-
-Question examples are non-exhaustive and are not automatic user questions. A Target Module may also provide Problem driver candidates; the Target Goal / Desired Outcome comes from the Target contract/context. These are the ordinary starting driver set for Proposal discovery, but current Sources/situation, previous work/checkpoints, Broad Discussion, user/AI input and dispositioned findings may add drivers on equal Core semantic footing. Problem drivers use the existing P-09 Problem meaning rather than being retyped as Questions.
+Module question presets should normally come from the relevant Unit Contract when Unit-specific. Prompts are not automatic USER questions or formal Question State.
 
 ### P-06 Lens Port
 
@@ -157,11 +146,20 @@ The Shell does **not** redefine Lens activation classes, Required Core inventory
 
 ### P-07 Proposal / Alternative Port
 
-Connects materially different answer candidates from USER input, Sources, AI proposals, Target Module discovery aids, and accepted/dispositioned candidate input from research/Lenses/prototypes.
+Connects materially different candidate resolutions from USER input, Sources, AI proposals, Unit Contract discovery aids, Broad Discussion and dispositioned Findings.
 
-`TF-07 PROPOSAL_SPACE` is the technical resolution slot for the current candidate space. Canonical Proposal identity, driver relations, candidate bundles, review/selection outcomes and Proposal → Decision semantics are owned by [`shared/proposal-and-decision-lifecycle-contract.md`](shared/proposal-and-decision-lifecycle-contract.md).
+```text
+Unit-local Proposal
+→ affected Unit Resolution
 
-Finding producers do not bypass that lifecycle: materially new semantic consequences first cross [`shared/finding-disposition-contract.md`](shared/finding-disposition-contract.md) when ownership/State/lifecycle disposition is needed.
+cross-Unit / Target-wide Proposal
+→ broader subject
+
+TF-07 PROPOSAL_SPACE
+→ Target-level coordination/projection of the real candidate space
+```
+
+Canonical Proposal identity, grounding, Semantic Change Impact Review, review/selection and Decision semantics are owned by the Proposal/Decision lifecycle. A Proposal may exist without a Finding; a Finding may resolve without a Proposal.
 
 ### P-08 Branch Port
 
@@ -173,50 +171,58 @@ A Planning Branch is not one Proposal; it is an alternative downstream planning 
 
 ### P-09 Q/R/P Port
 
-Carries material unresolved `Question`, `Risk` and `Problem` meaning attached to the real planning subject/Proposal/Decision/Result relation it concerns. Q/R/P is not a parallel semantic-root model.
+Carries material unresolved Question/Risk/Problem meaning attached to its real subject:
 
-Canonical Q/R/P semantics, lifecycle, priority/category/grouping and retention are owned by [`shared/qrp-lifecycle-and-review-contract.md`](shared/qrp-lifecycle-and-review-contract.md). Proposal/Decision context relations are owned by the Proposal/Decision lifecycle contract.
+```text
+Unit / Result field
+Proposal / Decision
+Target / cross-Unit owner relation
+```
+
+Unit-local Q/R/P is part of that Unit Resolution. Q/R/P is not a parallel planning root and is not forced into one Unit when its natural subject is broader.
 
 ### P-10 Decision Port
 
-Turns selected material answers into the three normal durable Decision types while preserving authority rules.
+Connects **material selection semantics** into the affected Unit/Target/owner meaning.
 
 ```text
-AI proposal
-≠ accepted Decision
+AI Proposal ≠ selection
+material Proposal selected under applicable authority
+→ Decision semantics
+→ integrate selected meaning into affected Result Content / owner
 ```
 
-Canonical selection, Decision trace (`Addresses` / `Selected` / optional `Rationale / Why` / `Exposes`), alternative retention and revalidation semantics are owned by [`shared/proposal-and-decision-lifecycle-contract.md`](shared/proposal-and-decision-lifecycle-contract.md). This port only connects that accepted Decision meaning into the Shell lifecycle.
+A separate explicit/durable Decision State/trace is retained only when selection/rationale/trade-off/revalidation meaning has independent future value. The Shell does not force a durable Decision record for straightforward non-decision derivation or every resolved Unit field.
 
 ### P-11 Target Step Result Projection Port
 
-Projects selected/current target-specific meaning into the **Target Step Result** supplied by the active Target Module/local contract.
+Projects **Current Result Content** from applicable Units into the Target Step Result supplied by the active Target Module/Local Contract.
 
 ```text
-Target Step Result
-→ one or more Target Step Result Units
-→ each Unit contains only supported/material target-specific meaning
+Unit Resolution
+→ candidate meaning while unresolved
+→ selected / safely derived meaning
+→ Current Result Content
 
 Target Step Result
-≠ generic IDTSPE State Units
+= coherent composition/projection of applicable Unit Result Content
 ```
 
-Generic Questions/Proposals/QRP/Branches/Decisions/Evidence/Revalidation remain Core State Units and are not duplicated merely as module result fields.
-
-Existing `Target-specific output`, `Output Schema` and `Target-specific Output Template` wording is migration-compatible technical projection vocabulary; the canonical semantic model is the Step Result / Result Unit contract. A full Target integration pass may serve as an Integration Checkpoint: it reconciles accumulated Broad Discussion/current State into the coherent applicable Generic State + Target Result without ending discussion or implying physical persistence.
+Generic Core Resolution State is not duplicated into result fields merely to expose the reasoning history. Contextual Unit conclusions integrate into their declared destination; a Contextual Unit does not automatically create a durable result section.
 
 ### P-12 Validation Port
 
-Runs proportionally:
+Runs proportionally over the actual analysis surface:
+
 ```text
-Target Module validators over the declared Result Units
-applicable Lens checks over their declared/implicit analysis focus
+Unit Contract validators over Unit Result Content / Resolution as applicable
+applicable Lens checks
 Core authority/user guards
 cross-Unit / cross-owner consistency checks when invoked
 Evidence sufficiency where material
 ```
 
-Validation may surface Finding Candidates. Generic Core Finding Disposition resolves them into normal State/lifecycle/owner destinations such as Problem / Risk / Question / Evidence Need / Revalidation Signal or another owner. Validator/Lens findings do not define new Result Units or become substitute semantic owners.
+Validation may surface Finding Candidates. Finding Disposition routes each finding to the smallest correct semantic subject: often an affected Unit Resolution, sometimes a Contextual Unit/Target Formation or another owner directly.
 
 ### P-13 Handoff / Methodology Direction Port
 
@@ -353,7 +359,7 @@ Source
   = accepted truth / evidence / constraint used to plan it
 
 Knowledge Basis
-  = reusable principles / rules / theory / pattern knowledge used by a Target Module or Lens
+  = reusable principles / rules / theory / pattern knowledge used by a Target Module, Unit Contract or Lens
   = not current Target Source / evidence / project truth
 
 Lens
@@ -372,19 +378,21 @@ Do not infer one role from another.
 
 ## Recursive Escalation
 
-When a local unresolved concern becomes independently material:
+When local work surfaces new responsibility:
 
 ```text
-current Target
-→ Lens / Part Plan surfaces new choice-space Finding Candidate(s) / proposal context
-→ Core Finding Disposition decides whether accepted meaning creates/refines normal Core State, owner or lifecycle consequence
-→ when independently substantial: Target Formation candidate
-→ Target Formation decides reuse existing Target / handoff existing owner / form new bounded child-local Target
-→ any newly formed Target uses the full IDTSPE Shell again
-→ accepted external result returns as Source to parent
+Finding / Question / Problem / Source conflict
+→ smallest correct existing semantic subject?
+   yes → resolve there
+→ existing Unit responsibility?
+   yes → Unit Resolution
+→ new bounded local responsibility inside current Target?
+   yes → Contextual Unit
+→ independently substantial responsibility?
+   yes → Target Formation candidate
 ```
 
-No special planning engine is required for architecture, algorithms, frontend state strategy or other local design problems.
+Target Formation decides reuse/handoff/new Target. No special planning engine is required for architecture, algorithms, frontend state or other local design problems.
 
 ## Planning-State Representation
 
@@ -416,8 +424,10 @@ Lens Set resolved and material findings handled
 Proposal/Branch space sufficient
 blocking Q/R/P resolved/deferred explicitly
 material Decisions accepted under correct authority
-Target Step Result projected proportionally into declared Result Units
-material State Units visible/resolved/deferred as needed
+material Unit Resolutions sufficiently resolved/deferred for the current handoff
+Current Result Content projected for resolved applicable Units
+Target Step Result composed from applicable Unit Result Content
+material Core Resolution State visible/resolved/deferred at the correct subject
 validators pass or material findings dispositioned
 handoff/persistence/revalidation contract sufficient
 ```

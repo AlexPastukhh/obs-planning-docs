@@ -69,6 +69,22 @@ A lightweight conversational AI proposal may remain informal when formal address
 
 Source material is not automatically a Proposal. Facts, constraints, accepted Decisions, Questions, corrections, Evidence and provenance keep their own meaning unless an actual candidate answer is present.
 
+## 3A. Proposal Payload And Unit Resolution
+
+A Proposal is a **candidate resolution** for a material planning subject. It may carry:
+
+```text
+Proposed Result Meaning
+  candidate meaning that could become part of affected Unit/owner Result Content
+
+Proposed Resolution / Realization Route
+  candidate way to obtain/prove/realize the result when the route itself is material
+```
+
+Either part may exist alone; complex Proposals may contain both. Proposal payload is candidate meaning, not Current Result Content.
+
+When a Proposal is Unit-local, relate it to the affected Unit Resolution. Cross-Unit/Target-wide Proposals remain valid when their natural subject spans several Units or the Target itself.
+
 ## 4. Proposal Identity, Refinement And Alternative Proposals
 
 Do not create a second `Proposal Variant` ontology merely to preserve the former Idea-Variant shape.
@@ -188,6 +204,42 @@ Complexity consequence: <relevant semantic / ownership / structural / state / co
 
 Do not equate fewer classes/lines with lower total system complexity.
 
+## 5A. Proposal Semantic Change Impact Review
+
+Every **material Proposal** receives a proportional semantic-impact review as part of Candidate Review, regardless of whether it came from a Finding, USER input, AI reasoning, Target Module discovery aid or ordinary Unit Resolution.
+
+Resolve only the dimensions that are material:
+
+```text
+Affected Unit / semantic subject
+Affected current owner(s)
+Most-upstream potentially affected owner
+Which accepted meaning would change, if any
+Requirement consequence under the active profile/owner
+Source / Evidence consequence
+Downstream consumer consequence
+Revalidation consequence
+Temporal-host consequence when current vs unrealized meaning differs
+Whether the selection deserves explicit retained Decision trace
+```
+
+Do not create a second `RE-*` scale for Proposals. `Resolution Escalation RE-0..RE-4` belongs to Finding Disposition only.
+
+Proposal review may use applicable Lenses as evaluators. Lenses may contribute analysis or surface a new Finding Candidate; they do not own the Proposal lifecycle or impact conclusion.
+
+```text
+Proposal review
+→ known intended owner/upstream change already stated by Proposal
+   = Proposal impact, not a new Finding automatically
+
+Proposal review
+→ newly discovers a material contradiction/unsupported assumption/owner conflict
+   = Finding Candidate
+   → Finding Disposition
+```
+
+A Proposal does not "rewrite a Source". It may conflict with a Source, require additional Evidence, challenge Source authority/currentness, or propose changing upstream semantic owner meaning whose later accepted result becomes a downstream Source.
+
 ## 6. Selection Outcomes
 
 Material Proposal review may lead to:
@@ -214,7 +266,7 @@ USER amendment
 
 An AI recommendation is not selection. A Lens Finding, Evidence item, validator result or Finding Disposition is not selection by itself.
 
-## 7. Answer / Recommendation / Proposal / Decision Boundary
+## 7. Answer / Recommendation / Proposal / Decision / Result Boundary
 
 Keep these meanings distinct:
 
@@ -223,56 +275,47 @@ Answer / Evidence
 = factual or interpretive resolution of a Question/evidence gap
 
 Proposal
-= candidate answer/solution/approach that may be selected
+= candidate resolution: proposed Result Meaning and/or Resolution/Realization Route
 
 Recommendation
-= AI/other recommendation for a Proposal/route; not selection
+= recommendation for a Proposal/route; not selection
 
-Decision
-= actually selected material meaning under the applicable authority
+Decision semantics
+= actual material selection under applicable authority
+
+explicit/durable Decision State / retained trace
+= addressable record retained when selection/rationale/revalidation value is independently useful
+
+Current Result Content
+= normalized current answer/output of the affected Unit after selected or safely derived meaning is integrated
 ```
 
-A Question can be answered while a separate Decision is still needed. A recommendation can be strong without being selected. A Proposal can remain viable without being recommended.
+A Question may be answered and integrated into Result Content without any Decision when no material choice remains. A material Proposal cannot become current selected meaning merely by being recommended; if it is materially selected, Decision semantics occurred even if no separate durable Decision record is retained.
 
-## 8. Decision Formation And Trace
+## 8. Decision Formation, Integration And Trace
 
-Accepted material meaning becomes authoritative for the **planning/semantic state being represented** only through the normal Decision / Target Result / semantic-owner path. The active profile may place selected but unrealized meaning in a dedicated future-transition owner rather than the current natural owner; selection never implies realization.
+Accepted material selection becomes authoritative for the planning/semantic state being represented through normal Decision semantics and integration into the affected Unit/Target/natural owner. Selection never implies realization when the active profile has a temporal-host boundary.
 
-A material Decision may retain useful trace:
+A separate explicit/durable Decision record is proportional. Retain it when removing the Decision and keeping only Result Content would lose material future value, for example:
 
 ```text
-Decision
-
-Addresses
-  Target Goal context / Question / Problem / Q/R/P when useful
-
-Selected
-  Proposal / compatible Proposal set / Candidate Bundle when useful
-
-Rationale / Why
-  optional concise selection reasoning
-
-Integrated Into
-  natural semantic owner / Result meaning when useful
-
-Affected Owners
-  owners requiring review/revalidation; not silent rewrite authority
-
-Evidence / Q/R/P / alternative references
-  only when useful
-
-Exposes
-  newly material Question / Risk / Problem when the selection reveals one
-
-Reconsider When
-  concrete revalidation trigger when useful
+why a non-obvious choice was made
+material alternative/trade-off
+accepted/residual Risk or Problem
+intentional deviation from default methodology/principle
+cross-owner selection consequence
+concrete reconsider/revalidation trigger
+protection against a later "correction" that would unknowingly reverse an intentional choice
 ```
 
-Relations are many-to-many: one Decision may address several Q/R/P; one Q/R/P group may require several Decisions; one Decision may expose new Q/R/P.
+A retained Decision may include `Addresses`, selected Proposal/bundle, concise rationale, `Integrated Into`, affected owners, Evidence/Q/R/P refs, exposed Q/R/P and `Reconsider When`.
 
-`Rationale / Why` is not Evidence. Evidence is independently sourced/supporting meaning; rationale explains why available meaning led to the selection.
+```text
+Decision trace
+≠ Result Content
+```
 
-Decision trace is explanatory/revalidation metadata, not a new Decision type.
+Result Content should remain understandable as the current normalized answer. Decision trace explains the material selection history/revalidation basis when preserving that history adds value.
 
 ## 9. Retention
 
@@ -338,7 +381,7 @@ Actual mutation follows the ambient Session proposal-first/authorization rules a
 
 ```text
 legacy Idea = current Proposal compatibility meaning, not a second ontology
-AI Proposal ≠ accepted Decision
+AI Proposal ≠ accepted material selection / Decision semantics
 formal Proposal ≠ authority
 Finding ≠ selection
 candidate refinement ≠ automatically a new Proposal

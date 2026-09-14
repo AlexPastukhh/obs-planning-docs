@@ -159,57 +159,59 @@ accepted architecture Answer Decisions when reviewing an existing application
 ### Source Discovery Rule
 Expected archetype only; current `TF-04 SOURCE_SET` remains authority.
 
-## Knowledge Basis
+## Unit Resolution Guidance / Knowledge Basis
 
-Shared contract: [`knowledge-basis-contract.md`](../../../idtspe-core/shared/knowledge-basis-contract.md)
-
-Mode: `HYBRID`
-
-**Embedded Principles / Rules / Theory:**
-
-- Application Definition distinguishes the selected real-world contribution from detailed Scenario/Screen/Domain/implementation meaning.
-- Existing-solution/reference research informs build/buy/adapt/integrate positioning without turning competitor features into Requirements.
-- Core vs secondary real-life scenario classification and refined real-life route are Target-family planning knowledge.
-
-**Referenced Knowledge Owners:**
-
-- [`application-definition-existing-solutions-market-reference-research.md`](../shared/application-definition-existing-solutions-market-reference-research.md)
-- [`application-definition-refined-core-real-life-scenario.md`](../shared/application-definition-refined-core-real-life-scenario.md)
-
-**Reference Load Policy:**
-
-Read the market/reference guide when comparative/market research depth is material. Read the refined core-real-life-scenario guide only when the selected core route needs the stronger application-aware refinement.
-
-**Operationalization Notes:**
-
-This Knowledge Basis supports planning this recurring Target/result family. It is not a current Target Source, project truth or Decision. Reusable cross-Target evaluation knowledge remains in the Lens owners named by this module's `Lens Profile`; do not duplicate their Operational Evaluation Contract or Knowledge Basis here.
-
-## Question Set Examples — Non-Exhaustive
-
-Examples only. Current `TF-06 QUESTION_SET` may add/remove/split/merge questions.
+Shared contract: [`knowledge-basis-contract.md`](../../../idtspe-core/shared/knowledge-basis-contract.md). The Application family has some shared principles, but substantial theory/reference material is attached to the Unit that consumes it rather than treated as one undifferentiated module-wide bridge.
 
 ```text
-Does an existing solution already satisfy the Need well enough?
-What research depth is proportional?
-Which direct alternatives/substitutes/adjacent references matter?
-Should we use/buy/adapt/integrate/hybrid instead of build?
+RU-APP-01 Application Identity / Selected Contribution
+  Drivers:
+    What exact real-world contribution/result is assigned to this Application?
+    What user/actor value justifies it?
+  Knowledge Basis:
+    embedded Application-definition contribution/boundary principles
 
-Which 1–few core real-life scenarios are the main reason this Application should exist?
-Which routes are secondary/supporting only?
-How does the full real-life path look with manual/current, existing app, workaround, Concept A/B or hybrid?
-Which route best fits the Fundamental Need?
+RU-APP-02 Existing-Solution / Reference Position
+  Drivers:
+    Does an existing solution already satisfy the Need well enough?
+    Which substitutes/references matter, and is build/buy/adapt/integrate/hybrid justified?
+  Knowledge Basis:
+    application-definition-existing-solutions-market-reference-research.md
+    Reference-only use is valid when the application is obvious; add applied interpretation only when needed for this Unit.
 
-What exact real-world result/contribution is assigned to the Application?
-What user/actor value justifies the concept?
-Which responsibilities are inside vs outside?
-What state/information must the Application own vs merely consume/display/pass through?
-Which handoffs cross the boundary?
-Which tempting responsibilities are responsibility creep?
+RU-APP-03 Core Real-Life Scenario Position
+  Drivers:
+    Which 1–few core real-life scenarios justify the Application?
+    Which routes are secondary/supporting?
+    Which route best fits the Fundamental Need?
+  Knowledge Basis:
+    application-definition-refined-core-real-life-scenario.md when stronger application-aware refinement is material
 
-Can representative behavior plausibly be realized without pathological complexity?
-Which persistence/integration/consistency/performance/operational constraints can change the concept/boundary?
-Does feasibility Evidence narrow/broaden/reject the Application contribution?
+RU-APP-04 Application Concept
+  Drivers:
+    What concept makes the selected contribution coherent?
+    Which concept/route follows from current Unit results and accepted constraints?
+  Knowledge Basis:
+    selected outputs of RU-APP-01..03 + embedded Application-definition principles
+
+RU-APP-05 Responsibility Boundary
+  Drivers:
+    Which responsibilities/state are inside vs outside?
+    Which handoffs cross the boundary?
+    Which tempting responsibilities are responsibility creep?
+  Knowledge Basis:
+    embedded authority/boundary principles; use reusable ownership Lenses when triggered
+
+RU-APP-06 Realization Feasibility
+  Drivers:
+    Can representative behavior be realized without pathological complexity?
+    Which persistence/integration/consistency/performance/operational constraints can change the concept/boundary?
+    Does Evidence narrow/broaden/reject the selected contribution?
+  Knowledge Basis:
+    applicable implementation/evolution/proof Lenses and Evidence; no separate theory load when they add no value
 ```
+
+Concrete `TF-06 QUESTION_SET` coordinates the material current Unit drivers plus any genuine Target-wide question; the reusable prompts above do not automatically become USER questions or formal Question State.
 
 ## Lens Profile
 
@@ -241,6 +243,19 @@ stabilize selected real-world contribution → research existing solutions/refer
 Material alternative comparisons are Resolution/Production state until selected; they are not a separate Result Unit by default.
 
 A Lens may surface Finding Candidates while this method runs. Their State/lifecycle/owner destination is resolved by the Core [`Finding Disposition Contract`](../../../idtspe-core/shared/finding-disposition-contract.md); a Lens does not directly mutate accepted Result Units.
+
+## Unit Contract Conformance
+
+Declared target-specific `RU-*` responsibilities in this module are interpreted as **Module-defined Unit Contracts**, not output buckets only. For each material Unit:
+
+```text
+Unit responsibility
+→ relevant inputs / shared or Unit-specific reusable guidance
+→ Unit Resolution with Core Question/QRP/Proposal/Evidence/Decision state only when useful
+→ Current Result Content when sufficiently resolved
+```
+
+Module-wide Source/Knowledge/Production/Lens/validator guidance is a shared default only where it genuinely applies across Units. Unit-specific subsection text specializes that guidance. Do not duplicate Core lifecycle semantics inside Result Content, and do not require a formal Proposal/Decision when trusted Sources/Evidence determine the result without a material choice.
 
 ## Target Step-Result Contract
 

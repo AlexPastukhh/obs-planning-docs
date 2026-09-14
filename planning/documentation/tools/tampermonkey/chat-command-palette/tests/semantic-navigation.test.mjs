@@ -311,3 +311,36 @@ test('Finding review surface separates impact priority from semantic resolution 
   assert.match(review,/RE-0 \/ RE-1 with a known but unapplied correction[\s\S]*NEEDS CORRECTION/);
   assert.match(review,/RE-2 \/ RE-4 with unresolved required selection[\s\S]*BLOCKED BY MATERIAL DECISION/);
 });
+
+test('Unit model is resolution-centric and keeps Contextual Unit result destination explicit',()=>{
+  const unit=read('planning/documentation/idtspe-methodology/active/idtspe-core/shared/idtspe-unit-and-target-step-result-model.md');
+  assert.match(unit,/Unit Resolution[\s\S]*Current Result Content/);
+  assert.match(unit,/Contextual Unit[\s\S]*Result Destination/);
+  assert.match(unit,/Unit-centric does not mean Unit-exclusive/);
+  assert.match(unit,/material Proposal selection has Decision semantics/);
+  assert.match(unit,/explicit\/durable Decision trace is proportional/);
+});
+
+test('Proposal lifecycle owns semantic impact while RE categories remain Finding-only',()=>{
+  const proposal=read('planning/documentation/idtspe-methodology/active/idtspe-core/shared/proposal-and-decision-lifecycle-contract.md');
+  const finding=read('planning/documentation/idtspe-methodology/active/idtspe-core/shared/finding-disposition-contract.md');
+  const command=codec.parseCommandDefinitionDocument(read('planning/commands/idtspe-proposal.command.md'));
+  assert.match(proposal,/## 5A\. Proposal Semantic Change Impact Review/);
+  assert.match(proposal,/Resolution Escalation RE-0\.\.RE-4.*belongs to Finding Disposition only/is);
+  assert.match(finding,/`RE-\*` categorizes the Finding's semantic resolution distance, not a Proposal/);
+  assert.match(command.activeContextBehavior,/Proposal Semantic Change Impact Review/);
+});
+
+test('ReviewDiff delegates RE taxonomy to Finding owner instead of copying definitions',()=>{
+  const review=read('planning/documentation/review-diff-review-workflow.md');
+  assert.match(review,/RE-0\.\.RE-4.*owned \*\*only there\*\*/s);
+  assert.doesNotMatch(review,/RE-0 DETERMINISTIC-CORRECTION/);
+  assert.match(review,/Proposal Semantic Change Impact/);
+});
+
+test('Knowledge Basis supports Unit consumers and keeps reference-only vs applied bridge freedom',()=>{
+  const kb=read('planning/documentation/idtspe-methodology/active/idtspe-core/shared/knowledge-basis-contract.md');
+  assert.match(kb,/Target Module, Unit Contract or Lens Evaluation/);
+  assert.match(kb,/A Knowledge Basis may simply point to theory when the application is obvious/);
+  assert.match(kb,/Unit Contract Knowledge Basis/);
+});

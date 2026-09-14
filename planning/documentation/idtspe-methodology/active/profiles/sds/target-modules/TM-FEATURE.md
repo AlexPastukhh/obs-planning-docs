@@ -102,6 +102,19 @@ OPEN — insufficient Evidence
 
 Do not force exact class/method mapping during Feature formation.
 
+## Unit Contract Conformance
+
+Declared target-specific `RU-*` responsibilities in this module are interpreted as **Module-defined Unit Contracts**, not output buckets only. For each material Unit:
+
+```text
+Unit responsibility
+→ relevant inputs / shared or Unit-specific reusable guidance
+→ Unit Resolution with Core Question/QRP/Proposal/Evidence/Decision state only when useful
+→ Current Result Content when sufficiently resolved
+```
+
+Module-wide Source/Knowledge/Production/Lens/validator guidance is a shared default only where it genuinely applies across Units. Unit-specific subsection text specializes that guidance. Do not duplicate Core lifecycle semantics inside Result Content, and do not require a formal Proposal/Decision when trusted Sources/Evidence determine the result without a material choice.
+
 ## Target Step-Result Contract
 
 **Target Step Result:** `Feature Definition`
@@ -278,18 +291,45 @@ implementation concern ≠ selected implementation topology
 one Requirement ≠ one test
 ```
 
-## Knowledge Basis / Question Guidance
+## Unit Resolution Guidance / Knowledge Basis
 
-Reusable Vertical Slice guidance is the primary boundary knowledge source. DDD, Implementation Requirements Discovery, Evolution and UI/spatial evaluators plus selected [`RG-PRG-*`](../shared/programming-principles/README.md) knowledge are consulted only when their concerns are material.
+Use the shared [`Knowledge Basis contract`](../../../idtspe-core/shared/knowledge-basis-contract.md). Knowledge and drivers attach to the Unit responsibility they actually support; this section is only a compact Unit-contract index, not one undifferentiated Feature question set.
 
-Useful questions include:
-- What one intent and principal meaningful Result/result family define this Feature?
-- What is the semantic application entry, distinct from transport/button/URI mechanics?
-- What minimal semantic Data is required to understand behavior?
-- What must the application establish/forbid/return?
-- Which behavior needs durable `BR-*` addressability?
-- Which implementation concerns can change feasibility/boundary/proof/evolution?
-- Does current/known Evolution support one Slice, a module/branch/adapter, a split, or Shared extraction?
+```text
+RU-FEAT-01 Identity / Intent / Principal Result / Semantic Entry
+  Drivers:
+    What one intent and principal meaningful Result/result family define this Feature?
+    What is the semantic application entry, distinct from transport/button/URI mechanics?
+  Knowledge Basis:
+    normally thin; Feature identity/semantic-entry rules in this module are sufficient
+
+RU-FEAT-02 Semantic Data
+  Driver:
+    What minimal semantic Data is required to understand behavior?
+  Knowledge Basis:
+    use DDD theory/Lens only when Domain ownership/invariant pressure is actually material
+
+RU-FEAT-03 Feature Behavior
+  Drivers:
+    What must the application establish/forbid/return?
+    Which behavior needs durable BR-* addressability?
+  Knowledge Basis:
+    behavior semantics here + applicable proof/Requirement guidance when material
+
+RU-FEAT-04 Implementation Concerns
+  Driver:
+    Which realization/proof/evolution concerns can materially change feasibility or later ownership?
+  Knowledge Basis:
+    selected RG-PRG-* / Implementation Requirements / Evolution guidance only when triggered
+
+RU-FEAT-05 Feature / Slice Boundary
+  Driver:
+    Does current/known Evolution support one Slice, a module/branch/adapter, a split, or Shared extraction?
+  Knowledge Basis:
+    reusable Vertical Slice guidance is the primary theory/reference source; use DDD/UI/Evolution support only when relevant
+```
+
+A Unit may reach the referenced Lens/Knowledge Basis without copying that theory here. Formal runtime Questions/Proposals/QRP/Decisions are created only when their Core lifecycle/addressability value is material.
 
 ## Representation / Artifact Contract
 

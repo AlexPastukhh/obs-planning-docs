@@ -19,6 +19,12 @@ current Work Context / concern
 
 `NO_REUSABLE_TARGET_MODULE` is a valid outcome. Registry selection does not itself create a Target. Recheck when the work concern, active Target/profile, accepted upstream meaning or module-specific materiality changes. Result Units and fields remain sparse: declared possibility does not make them mandatory.
 
+## Unit-Centric Conformance
+
+All active SDS modules use the Core Unit contract: declared `RU-*` entries are Module-defined Units with bounded Result Responsibility, Unit Resolution and Current Result Content. Existing module-wide Production Method / Knowledge Basis / Lens Profile text is interpreted as shared defaults only where genuinely applicable across Units; Unit-specific questions/guidance/lenses/validators attach to the relevant Unit responsibility.
+
+This conformance does not change SDS temporal authority: selected but unrealized Unit Result Content remains inside the applicable Evolution Step Target Owner Body until realization/materialization establishes current truth.
+
 ## Temporal Hosting Rule — Current Owners vs Future Target Bodies
 
 Before instantiating an SDS owner-shaped Target result, classify the represented time boundary:

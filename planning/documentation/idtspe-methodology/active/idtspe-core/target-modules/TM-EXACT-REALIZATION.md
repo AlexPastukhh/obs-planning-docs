@@ -126,6 +126,10 @@ selected destination/environment cannot provide the intended verification Eviden
 
 Concrete Questions/Problems/Proposals/Q/R/P/Decisions/Evidence remain generic Core State. The module supplies recurring discovery prompts, not a second state runtime.
 
+## Unit Contract Conformance
+
+Each declared Result Unit is a Module-defined Unit Contract. Its runtime work is represented as Unit Resolution plus Current Result Content; generic Question/QRP/Proposal/Evidence/Decision meaning remains Core Resolution State related to the Unit/Target subject it actually concerns. A material Proposal selection has Decision semantics, while a separate durable Decision trace is retained only when it adds future review/revalidation value.
+
 ## Target Step-Result Contract
 
 **Target Step Result:** `Exact Realization`
