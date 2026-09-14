@@ -293,11 +293,36 @@ Use the smallest category that fits the checked current owners:
 
 | Resolution Escalation | Meaning | Durable semantic change | USER review expectation |
 |---|---|---|---|
-| `RE-0 DETERMINISTIC-CORRECTION` | a confirmed defect has one correction clearly implied by current accepted meaning/contracts | none; accepted Decision/Requirement/owner meaning remains unchanged | correction can be presented compactly; no new semantic choice to decide |
+| `RE-0 DETERMINISTIC-CORRECTION` | a confirmed defect or missing explicit articulation has one correction clearly implied by current accepted meaning/contracts | none; accepted semantic meaning remains unchanged; current representation may be completed/clarified with an already-implied must-hold | correction can be presented compactly; no new semantic choice to decide |
 | `RE-1 LOCAL-REALIZATION-CHOICE` | one or more realization/detail routes fit the same accepted current-owner meaning | no accepted architecture/behavior/Requirement/owner-boundary change; a local detail may vary | focused review only when local trade-off matters; AI may recommend a route |
 | `RE-2 CURRENT-OWNER-SEMANTIC-CHANGE` | safe resolution requires new/revised selected meaning at the current natural owner | current-owner Decision, durable must-hold/Requirement when the active profile defines one, boundary, or equivalent owner result changes | USER reviews/selects the current-owner Proposal when selection authority is USER-owned |
 | `RE-3 UPSTREAM-REVALIDATION` | current work exposes evidence that an upstream owner/Decision/Requirement may be implicated, but an upstream semantic change is not yet established | unknown until the earliest affected upstream owner is revalidated | USER is shown the upstream exposure; revalidation/evidence comes before selecting a downstream workaround |
 | `RE-4 UPSTREAM-SEMANTIC-CHANGE` | safe resolution requires an actual new/revised/replaced upstream Decision/Requirement/owner meaning | upstream accepted meaning changes; affected downstream work must consume the new result | USER reviews/selects at the upstream decision surface before dependent work proceeds |
+
+### Current Semantic Completion vs RE-2
+
+```text
+Discovery time ≠ semantic time.
+Representation absence ≠ semantic absence.
+```
+
+A newly explicit `BR-*`, `IR-*`, `PFR-*` or equivalent owner-local must-hold is **not automatically `RE-2`**. If accepted current owner meaning already uniquely entails that constraint, making the constraint explicit is `CURRENT SEMANTIC COMPLETION` and remains `RE-0`: accepted semantics do not change even though representation/Requirement identity may be added or clarified.
+
+```text
+missing explicit Requirement
++ meaning already entailed by accepted current owner
+→ CURRENT SEMANTIC COMPLETION
+→ RE-0
+→ current natural owner representation may be completed
+→ no semantic Evolution Step
+
+meaning not already entailed
++ current owner must newly select/accept it
+→ RE-2
+→ semantic change
+```
+
+If current implementation/Evidence also violates an already-entailed must-hold, that adds `CURRENT REALIZATION CORRECTION`; it still does not turn the must-hold itself into future semantics. The active profile owns Requirement-family interpretation and exact representation.
 
 ### Decision-Surface Test
 
@@ -348,7 +373,7 @@ RE-2 / RE-4 selects a semantic correction
    Target Owner Materialization updates current owner authority
 ```
 
-A deterministic `RE-0` repair that simply restores already-accepted current meaning does not require a new future semantic body unless the repair itself needs material future-transition planning.
+A deterministic `RE-0` correction that restores already-accepted current meaning **or completes its missing explicit representation** does not require a new future semantic body. Only genuinely new selected unrealized semantics belong to an Evolution Step; literal repair work may still use ordinary exact planning without making the Step semantic owner.
 
 ### Profile / Depth Specialization
 

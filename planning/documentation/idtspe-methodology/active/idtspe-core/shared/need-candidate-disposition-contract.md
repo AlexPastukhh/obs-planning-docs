@@ -19,6 +19,14 @@ Need Candidate Disposition
 
 A Need Candidate is a lightweight intake/Core boundary. It is **not automatically a persisted State Unit, Target, Feature, Requirement, Proposal or Evolution Step**.
 
+```text
+Need discovered now ≠ meaning starts now.
+Discovery time ≠ semantic time.
+Representation absence ≠ semantic absence.
+```
+
+Disposition must distinguish a genuinely new desired semantic state from a desired outcome that was already entailed by accepted current owner meaning but was never made explicit enough in its Requirement/invariant representation.
+
 Typical USER language includes:
 
 ```text
@@ -105,6 +113,20 @@ Useful outcomes include:
 already represented / already supported
 → current owner / usage / Evidence / realization route
 
+desired outcome already entailed by accepted current meaning
++ corresponding durable must-hold was not explicit
+→ CURRENT SEMANTIC COMPLETION
+→ natural current owner
+→ BR / IR-DOMAIN / IR-SLICE / IR-SHARED / PFR when warranted by the active profile
+→ no Proposal merely to re-select already accepted meaning
+→ no Evolution Step
+
+accepted current meaning already requires the outcome
++ actual implementation/Evidence violates it
+→ CURRENT REALIZATION CORRECTION
+→ Finding Disposition / exact correction as appropriate
+→ no semantic Evolution Step
+
 actual defect / contradiction surfaced
 → Finding Candidate
 → Finding Disposition
@@ -162,17 +184,19 @@ If Need review discovers that accepted current meaning already requires the outc
 
 ## 7. SDS Evolution Placement
 
-Under SDS, future-state placement is resolved **after** enough semantic meaning exists to identify a concrete unrealized transition.
+Under SDS, future-state placement is resolved **after** enough semantic meaning exists to identify a concrete unrealized transition. Before Evolution placement, test whether the surfaced meaning is semantically new at all.
 
 ```text
 Need Candidate
 → disposition / Proposal resolution / selection as needed
 → materially unrealized change?
 
-NO
+NO — already entailed current meaning
+→ current semantic completion and/or current realization correction
 → current owner / realization / Evidence / no-op route
+→ no Evolution Step
 
-YES
+YES — not already entailed + selected materially unrealized meaning
 → existing Step if the change belongs to that coherent qualitative transition
 → new Step candidate only when an independent transition boundary is justified
 ```

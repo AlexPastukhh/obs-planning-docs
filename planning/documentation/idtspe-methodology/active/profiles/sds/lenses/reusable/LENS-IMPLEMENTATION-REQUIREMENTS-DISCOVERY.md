@@ -24,7 +24,7 @@ REFINE    — improve existing/candidate IR/PFR wording, scope or classification
 CHALLENGE — surface a Finding Candidate when durable requirement meaning is misplaced, excessive, missing or stale
 ```
 
-A valid result is `NO_DURABLE_REQUIREMENT_CHANGE`.
+A valid result is `NO_DURABLE_REQUIREMENT_CHANGE`. A newly explicit Requirement may also be `CURRENT SEMANTIC COMPLETION`: a representation change with no accepted semantic change.
 
 ## Natural owner rule
 
@@ -40,18 +40,30 @@ A transient Slice/Domain discovery plan may discover candidates but is never dur
 
 ### Temporal host
 
-The natural **owner family** does not imply that selected future Requirement text belongs in the current owner immediately.
+The natural **owner family** does not imply a temporal host. Before deciding current owner vs Evolution Step, test the candidate must-hold against accepted current owner semantics.
 
 ```text
-current realized owner review
-→ selected IR/PFR may refine current owner only when the correction/current meaning is actually realized
+candidate durable must-hold
+→ natural owner
+→ is this meaning already entailed by accepted current owner semantics?
 
-unrealized future planning
+YES
+→ CURRENT SEMANTIC COMPLETION
+→ write/refine the missing explicit IR/PFR at the current owner
+→ no Evolution Step merely because the Requirement representation is new
+
+YES + implementation/proof violates the must-hold
+→ CURRENT REALIZATION CORRECTION
+→ current owner remains semantic authority
+→ repair/prove realization; no semantic Evolution Step
+
+NO + new/revised meaning is selected
+→ FUTURE SEMANTIC CHANGE
 → selected IR/PFR belongs to the corresponding Target Domain / Slice / Shared Body inside TM-EVOLUTION-STEP
 → current owner remains unchanged until Target Owner Materialization
 ```
 
-The Lens discovers/classifies Requirement meaning; `TM-EVOLUTION-STEP` owns unrealized target-state hosting.
+`Discovery time ≠ semantic time`; `representation absence ≠ semantic absence`. The Lens discovers/classifies Requirement meaning; `TM-EVOLUTION-STEP` owns only genuinely unrealized target-state meaning, not newly written representations of already-accepted current constraints.
 
 ## Requirement meaning
 
@@ -80,10 +92,14 @@ material implementation/proof concern
 → apply relevant thematic Lens(es)
 → ask whether the concern is durable + must-hold + owner-local
 → classify natural owner
-→ compare with existing owner Requirements
+→ compare with accepted current owner meaning + existing owner Requirements
+→ temporal test:
+   already entailed current meaning?
+     YES → CURRENT SEMANTIC COMPLETION (or CURRENT REALIZATION CORRECTION when realization violates it)
+     NO  → only selected new/revised meaning can become FUTURE SEMANTIC CHANGE
 → KEEP / ADD NEW / REFINE / WEAKEN / STRENGTHEN / MERGE / REPLACE DECISION / RETIRE / MOVE / REOPEN / ACCEPT RISK
-→ if selected, write independently approved local IR/PFR text in the natural owner **state being represented**:
-   current owner for realized/current truth, or the corresponding Evolution Step Target Body for unrealized future state
+→ write independently approved local IR/PFR text in the correct owner **state being represented**:
+   current owner for already-entailed current meaning, or the corresponding Evolution Step Target Body for selected unrealized future meaning
 → prove through the natural proof boundary
 → materialize future Requirement authority only after the Step is actually realized
 ↺ implementation/proof findings may reopen discovery
