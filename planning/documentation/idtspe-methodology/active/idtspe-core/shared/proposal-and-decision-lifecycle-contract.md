@@ -310,6 +310,10 @@ protection against a later "correction" that would unknowingly reverse an intent
 
 A retained Decision may include `Addresses`, selected Proposal/bundle, concise rationale, `Integrated Into`, affected owners, Evidence/Q/R/P refs, exposed Q/R/P and `Reconsider When`.
 
+Decision↔Q/R/P relations remain many-to-many: one Decision may address several Q/R/P; one Q/R/P group may require several Decisions; one Decision may expose new Q/R/P.
+
+`Rationale / Why` is not Evidence. Evidence is independently sourced/supporting meaning; rationale explains why the available meaning led to the selection.
+
 ```text
 Decision trace
 ≠ Result Content

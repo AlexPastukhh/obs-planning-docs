@@ -292,7 +292,26 @@ That is useful IDTSPE work even before current Unit Result Content changes.
 
 ### Methodology Usage State
 
-`Methodology Usage State` remains optional generic state for retaining material facts about methodology use when continuation/audit/revalidation benefits. It is not an execution log and does not create one methodology-state Unit per target Unit.
+`Methodology Usage State` remains optional generic Core Resolution State for retaining **material facts about how the methodology is currently being used** when those facts help continuation, review, handoff or revalidation. It is not an execution log and does not create one methodology-state Unit per target Unit.
+
+Use proportionally:
+
+```text
+Methodology Usage State
+  Current Work Concern — when retaining it helps orientation/re-entry
+  Active Use Cases — only the material current set
+  Relevant Registry Traversals — registry + purpose + selected entries/outcome
+  Applied Components — Target Modules / Lenses / reusable guidance + operation/purpose + applied-to subject
+  Material Guards / Validators / Rules / Packs — only when their activation affects continuation/review
+  Contextual Adaptations / deferred recommendations — when later work must know them
+  Recheck Triggers / Re-entry — when future context may change applicability
+```
+
+Do not record every file read, command, tool call, non-applicable registry row or transient reasoning step. Reuse stable methodology-use meaning rather than serializing execution history.
+
+`Current Work Concern` may remain only conversational/work-context meaning. Promote it into explicit Methodology Usage State only when independent addressability, continuation, audit or revalidation value is material.
+
+Methodology Usage State may attach to a Unit when methodology-use meaning is genuinely Unit-local, or remain cross-Unit/Target/Work-Context state when that is its natural subject. It is not forced into a Unit solely because the overall model is Unit-centric.
 
 ## 5. Unit Definition Authority
 

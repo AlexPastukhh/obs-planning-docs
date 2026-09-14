@@ -59,6 +59,8 @@ Unit-local Q/R/P belongs in that Unit Resolution. Cross-Unit, Target-level or cr
 
 If the observation has no material unresolved/adverse state, integrate the obvious consequence or keep it as discussion/Source/Evidence/Proposal as appropriate.
 
+Stable Q/R/P identity/ID is proportional: create or retain it only when independent addressability, cross-reference, lifecycle, review or revalidation value exists. Unit-local attachment does not by itself require a stable Q/R/P ID.
+
 ## 4. Proportional Item Shape
 
 Useful fields when material:

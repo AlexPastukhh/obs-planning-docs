@@ -653,7 +653,7 @@
       "scope": "Core",
       "label": "Revalidate Current IDTSPE Work",
       "actionLabel": "Перевалидировать текущую работу",
-      "description": "The narrowest affected semantic subject is rechecked; stale/dependent Unit Resolution, Result Content or broader owner meaning is invalidated/reopened only where warranted; unaffected accepted meaning remains stable; and a precise re-entry route is known.",
+      "description": "The narrowest affected semantic subject and relevant methodology-use surface are rechecked; stale/dependent Unit Resolution, Result Content or broader owner meaning is invalidated/reopened only where warranted; unaffected accepted meaning remains stable; and a precise re-entry route is known.",
       "sources": [
         "planning/documentation/use-case-registry-map.md",
         "planning/documentation/idtspe-methodology/active/idtspe-core/shared/idtspe-methodology-use-case-registry.md"

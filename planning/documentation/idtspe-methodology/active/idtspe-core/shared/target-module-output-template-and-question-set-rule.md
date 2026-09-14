@@ -119,7 +119,9 @@ Do not duplicate reusable Lens evaluation knowledge inside a Target Module merel
 
 Unit Contracts may seed reusable Question/Problem drivers; Target Module level may seed genuinely Target-wide formation drivers. These are non-exhaustive and not automatic USER questions.
 
-Concrete runtime Questions/Problems from Sources, Broad Discussion, user/AI input, Findings or earlier Units are accepted on equal Core footing. `TF-06 QUESTION_SET` coordinates the current Target-level view rather than owning Unit-local question meaning.
+Concrete runtime Questions/Problems from Sources, previous steps/checkpoints, Broad Discussion, user/AI input, Findings or earlier Units are accepted on equal Core footing. Current Questions may be added, removed, split, merged or reopened through normal Core question-set/Unit Resolution work as the actual situation changes; Module presets are not a closed questionnaire.
+
+`TF-06 QUESTION_SET` coordinates the current Target-level view rather than owning Unit-local question meaning. An independently useful **new Goal / Desired Outcome** changes scope/Target responsibility and therefore goes through normal Scope / Target Formation rather than being silently introduced as a generic State item or ordinary local Unit driver.
 
 ## Result Unit / Field Explanation Rule
 

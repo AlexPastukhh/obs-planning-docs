@@ -344,3 +344,38 @@ test('Knowledge Basis supports Unit consumers and keeps reference-only vs applie
   assert.match(kb,/A Knowledge Basis may simply point to theory when the application is obvious/);
   assert.match(kb,/Unit Contract Knowledge Basis/);
 });
+
+
+test('Unit-resolution refactor preserves Decision and QRP lifecycle invariants',()=>{
+  const proposal=read('planning/documentation/idtspe-methodology/active/idtspe-core/shared/proposal-and-decision-lifecycle-contract.md');
+  const qrp=read('planning/documentation/idtspe-methodology/active/idtspe-core/shared/qrp-lifecycle-and-review-contract.md');
+  assert.match(proposal,/Decision↔Q\/R\/P relations remain many-to-many/);
+  assert.match(proposal,/`Rationale \/ Why` is not Evidence/);
+  assert.match(qrp,/Stable Q\/R\/P identity\/ID is proportional[\s\S]*independent addressability, cross-reference, lifecycle, review or revalidation value/);
+});
+
+test('Integration and revalidation retain pre-existing trigger and routing obligations',()=>{
+  const integrate=read('planning/documentation/idtspe-methodology/active/idtspe-core/shared/integrate-current-work-use-case.md');
+  const revalidate=read('planning/documentation/idtspe-methodology/active/idtspe-core/shared/revalidate-current-work-use-case.md');
+  assert.match(integrate,/important accepted meaning is distributed across turns\/owners\/Units/);
+  assert.match(integrate,/Elapsed time or message count alone is not a trigger/);
+  assert.match(integrate,/Integration Checkpoint ≠ periodic timer event/);
+  assert.match(integrate,/Session Runtime may expose or request the checkpoint, but Session does not own/);
+  assert.match(revalidate,/Consistency Review Process/);
+  assert.match(revalidate,/Use-Case Registry Map/);
+  assert.match(revalidate,/reuse trustworthy unaffected scans\/components/);
+  assert.match(revalidate,/Record material revalidation\/recheck state/);
+  assert.match(revalidate,/Integration Checkpoint only when a coherent whole-state view is now useful/);
+});
+
+test('Methodology Usage State and Target Module driver guards survive Unit-centric topology',()=>{
+  const unit=read('planning/documentation/idtspe-methodology/active/idtspe-core/shared/idtspe-unit-and-target-step-result-model.md');
+  const moduleRule=read('planning/documentation/idtspe-methodology/active/idtspe-core/shared/target-module-output-template-and-question-set-rule.md');
+  for(const token of ['Active Use Cases','Relevant Registry Traversals','Applied Components','Material Guards / Validators / Rules / Packs','Contextual Adaptations / deferred recommendations','Recheck Triggers / Re-entry']){
+    assert.match(unit,new RegExp(token.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')));
+  }
+  assert.match(unit,/It is not an execution log/);
+  assert.match(unit,/Current Work Concern[\s\S]*Promote it into explicit Methodology Usage State only when independent addressability/);
+  assert.match(moduleRule,/Current Questions may be added, removed, split, merged or reopened/);
+  assert.match(moduleRule,/independently useful \*\*new Goal \/ Desired Outcome\*\*[\s\S]*Scope \/ Target Formation/);
+});
