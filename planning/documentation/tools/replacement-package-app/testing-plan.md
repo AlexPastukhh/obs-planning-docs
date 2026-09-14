@@ -24,12 +24,12 @@ Prove active schema-1 consumer rules without legacy ChangeSet behavior: valid ad
 Prove file applicability at the target Apply boundary: exact add/replace/delete, Git-equivalent source acceptance, binary divergence fail-closed behavior, add-target absence, clean-filter unverifiable failure, and exact retries that cannot promote previously failed add/delete/replace into Applied state or restore externally changed bytes from an unproven journal.
 
 ### ApplyReplacementPackageFeatureIntegrationTests
-Prove end-to-end application-service boundaries with real Git where practical:
+Prove one Apply Feature across its explicit Apply/Commit/Publish module boundaries with real Git where practical:
 - Start Workspace captures/verifies the exact target transport endpoint, cannot be redirected by later origin or `insteadOf` mutation, persists GitWorkspace and creates no Core.ChangeSet;
 - package ZIP is captured once; later path replacement cannot change applied bytes/identity;
 - Apply state-write recovery via schema-3 proven journal, independent digest-corruption and captured-payload-binding rejection, previous-journal-schema fail-closed behavior, and package RepositoryIdentity fencing;
-- Commit is separate and recovers exact existing commit after state-write failure;
-- Publish confirms exact remote tip without ChangeSet authority;
+- Commit is a separate module boundary and recovers exact existing commit after state-write failure;
+- Publish is a separate module boundary and confirms exact remote tip without ChangeSet authority;
 - pre-push NotConfirmed persistence failure blocks push;
 - post-push final-state persistence failure leaves durable NotConfirmed;
 - uncertain Retry confirms before another push;
@@ -38,7 +38,9 @@ Prove end-to-end application-service boundaries with real Git where practical:
 - sequential packages derive previous tip from package journal;
 - workspace creation recovers after state persistence failure and conflicting leftover journals fail closed;
 - Work lock acquisition failure is operation-local rather than false state divergence;
-- automatic OBS action composes Start → Apply → Commit → Publish and is idempotent.
+- current automatic OBS action composes Start → Apply → Commit → Publish through the same Feature modules and is idempotent.
+
+Planned `ApplyExtent`, automatic Finalize and URI behavior is not part of the current automated gate until the corresponding Evolution Steps are implemented and the affected owners are revalidated.
 
 ### ApplyReceiptTests
 Prove schema-1 result formatting remains stable. `status: applied` is top-level handoff only after automatic publication proof.

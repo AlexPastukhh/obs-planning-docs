@@ -35,9 +35,9 @@ Current responsibility: `CoreTests` for review-baseline freshness, owned-only st
 
 ## Evolution Impact
 
-### EVO-RPKG-ADOPT-REVIEWED-RESULT-WORKFLOW
+### EVO-RPKG-INTRODUCE-WORK-FINALIZATION
 Canonical Scenario step:
-[`EVO-RPKG-ADOPT-REVIEWED-RESULT-WORKFLOW`](../scenarios/SCN-RPKG-COMPLETE-REPOSITORY-WORK.md#evo-rpkg-adopt-reviewed-result-workflow)
+[`EVO-RPKG-INTRODUCE-WORK-FINALIZATION`](../scenarios/SCN-RPKG-COMPLETE-REPOSITORY-WORK.md#evo-rpkg-adopt-reviewed-result-workflow)
 
 Target BI references:
 - `BI-RPKG-FINALIZE-ONLY-APPROVED-PUBLISHED-REVISION`

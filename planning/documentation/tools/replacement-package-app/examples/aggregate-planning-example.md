@@ -838,7 +838,7 @@ The current Scenario actor owns the semantic decision. Do not persist it in `Pac
 
 ### FUTURE EXTENSION — renewed review authority after published-tree change
 
-Canonical selected Evolution: `EVO-RPKG-ADOPT-REVIEWED-RESULT-WORKFLOW`.
+Canonical selected Evolution: `EVO-RPKG-INTRODUCE-WORK-FINALIZATION`.
 
 Finalize requires current review authority. If the published work tree changes after the original review, a future selected mechanism must establish authority for the new exact tree.
 
@@ -1165,7 +1165,7 @@ test("committed_application_reports_committed_as_the_highest_proven_state_withou
 
 ## Future / Evolution planning
 
-Canonical selected Evolution: `EVO-RPKG-ADOPT-REVIEWED-RESULT-WORKFLOW`.
+Canonical selected Evolution: `EVO-RPKG-INTRODUCE-WORK-FINALIZATION`.
 
 ### FUTURE EXTENSION — Confirm Reviewed Published Revision
 
@@ -1424,7 +1424,7 @@ test("finalization_completes_only_when_integration_and_final_comment_are_both_pr
 
 ## Future / Evolution planning
 
-Canonical selected Evolution: `EVO-RPKG-ADOPT-REVIEWED-RESULT-WORKFLOW`.
+Canonical selected Evolution: `EVO-RPKG-INTRODUCE-WORK-FINALIZATION`.
 
 ### SELECTED FUTURE PRESSURE — Ensure Integration PR
 

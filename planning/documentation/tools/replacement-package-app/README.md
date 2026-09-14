@@ -22,16 +22,16 @@ The target executable does not open/adopt old persisted ChangeSet works. The alr
 ## Behavioral authority
 
 - [`scenarios/SCN-RPKG-COMPLETE-REPOSITORY-WORK.md`](scenarios/SCN-RPKG-COMPLETE-REPOSITORY-WORK.md) — current Work/package realization Scenario;
-- [`features/`](features/) — Apply, Commit and Publish Feature authority;
+- [`features/`](features/) — one Apply Feature authority with Apply/Commit/Publish modules;
 - [`screens.md`](screens.md) — current target Main Work Window;
 - [`domain/README.md`](domain/README.md) — Work-centered owner map;
 - [`slices.md`](slices.md) — current target Slice navigation;
-- [`evolution-steps-map.md`](evolution-steps-map.md) — completed cutover + future evolution boundary.
+- [`evolution-steps-map.md`](evolution-steps-map.md) — evolution registry/readiness map; substantial future target states live in dedicated `evolution-steps/` owners.
 
 Separate current capability:
 - [`scenarios/SCN-RPKG-PROVIDE-REPOSITORY-CONTEXT.md`](scenarios/SCN-RPKG-PROVIDE-REPOSITORY-CONTEXT.md) / Repository Snapshot.
 
-Future reviewed-result/PR/Finalize planning remains planned and must be rebased onto WorkId/GitWorkspace/ReplacementPackageState before implementation.
+Future requested extent, independent Work Finalization, automatic Apply→Finalize composition and URI entry remain planned in dedicated Evolution Step owners routed by `evolution-steps-map.md`; they are not current executable behavior.
 
 ## Documentation methodology
 

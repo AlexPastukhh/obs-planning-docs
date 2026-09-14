@@ -1,6 +1,8 @@
 # Replacement Package App — Evolution Steps Map
 
-Status: active evolution planning owner
+Status: active evolution registry / coordination owner
+
+This file routes selected Evolution Steps, prerequisite/readiness relations and current-vs-future navigation. Dedicated substantial Step owners hold complete future target state.
 
 ## Current target state
 
@@ -10,82 +12,35 @@ WorkId
 ├─ GitWorkspace
 └─ ReplacementPackageState*
 
-OBS apply-package
-→ ensure Work Intent
-→ ensure GitWorkspace
-→ Apply Package
-→ Commit applied
-→ Publish / Retry Publish
+OBS apply-package handoff
+→ Apply Feature entry
+→ ensure wider Work prerequisites as required
+→ Apply → Commit → Publish
 ```
 
-There is no target central ChangeSet Aggregate or package execution-state machine.
+Apply, Commit and Publish are current modules/operations of one `F-RPKG-APPLY-REPLACEMENT-PACKAGE`. The current handoff has no `ApplyExtent`, no automatic Finalize selection and no URI entry.
 
-## EVO-RPKG-MODULARIZE-PACKAGE-REALIZATION
+## Implemented lineage
 
-Evolution Kinds: Refactoring / Introduction / Forced Migration
+| Step | Kind | Status / result |
+|---|---|---|
+| `EVO-RPKG-MODULARIZE-PACKAGE-REALIZATION` | Refactoring / Introduction / Forced Migration | **IMPLEMENTED** — one Apply Feature, explicit Apply/Commit/Publish module boundaries, independent operation Results, shared `ReplacementPackageState`, no generic Resume state machine. |
+| `EVO-RPKG-RETIRE-CHANGESET-AGGREGATE` | Refactoring / Introduction / Retirement / Forced Migration | **IMPLEMENTED for target paths** — WorkId / WorkIntent / GitWorkspace / ReplacementPackageState replace `Core.ChangeSet` authority; old works remain with old executable. |
+| `EVO-RPKG-RETIRE-LEGACY-INTERACTION-SURFACE` | Retirement / Forced Migration | **IMPLEMENTED for target Main Work Window** — legacy ChangeSet Review/Chat/Finalize controls are absent from target UI. |
 
-Status: IMPLEMENTED for current target executable.
+## Selected future Steps
 
-Result:
-- Apply, Commit and Publish are independent Feature operations with independent Results;
-- `ReplacementPackageState` is shared durable package continuity;
-- `PublicationObservation` is evidence, not operation result;
-- automatic `OBS-ACTION apply-package` composes Start → Apply → Commit → Publish without a generic Resume abstraction;
-- exact archive bytes are captured once for Apply;
-- package-journal schema 3 separates crash evidence from applicability authority: only `applicabilityProven=true` may recover already-intended bytes; digest integrity and captured-package binding are independent proofs;
-- Start workspace pins `baseCommit` through a verified isolated Git transport endpoint rather than stale local branch state, mutable remote aliases or later URL rewrites;
-- Apply itself fences package RepositoryIdentity to the persisted GitWorkspace Repository Target;
-- Publish refreshes observation and pushes through shared isolated Git transport endpoints that exclude post-capture `insteadOf` / `pushInsteadOf` rewrites, and uses durable `NotConfirmed` as write-ahead uncertainty guard;
-- Work mutation serialization is owned by a dedicated re-entrant `WorkOperationLock` application port with operation-local failure semantics;
-- one shared Git transport capability owns GitHub RepositoryIdentity normalization and actual remote endpoint execution.
+| Step | Kind | Owner | Requires | Actual readiness / routing note |
+|---|---|---|---|---|
+| `EVO-RPKG-PARAMETERIZE-APPLY-HANDOFF` | Expansion / Refactoring | [`evolution-steps/EVO-RPKG-PARAMETERIZE-APPLY-HANDOFF.md`](evolution-steps/EVO-RPKG-PARAMETERIZE-APPLY-HANDOFF.md) | — | Current entry state is realized; Step target planning is selected. |
+| `EVO-RPKG-INTRODUCE-WORK-FINALIZATION` | Introduction / Expansion / Forced Migration | [`evolution-steps/EVO-RPKG-INTRODUCE-WORK-FINALIZATION.md`](evolution-steps/EVO-RPKG-INTRODUCE-WORK-FINALIZATION.md) | — | Current publish boundary exists; remaining OPEN target choices must be closed before implementation. |
+| `EVO-RPKG-ENABLE-AUTOMATIC-FINALIZATION` | Expansion / Refactoring | [`evolution-steps/EVO-RPKG-ENABLE-AUTOMATIC-FINALIZATION.md`](evolution-steps/EVO-RPKG-ENABLE-AUTOMATIC-FINALIZATION.md) | parameterized handoff + Work Finalization | Blocked until both required Step target states are realized. |
+| `EVO-RPKG-ADD-APPLY-URI-ENTRY` | Expansion | [`evolution-steps/EVO-RPKG-ADD-APPLY-URI-ENTRY.md`](evolution-steps/EVO-RPKG-ADD-APPLY-URI-ENTRY.md) | automatic finalization composition | Blocked until the complete handoff command semantics it must preserve are realized. |
 
-Proof gate:
-- Apply stops before Commit;
-- Commit stops before Publish;
-- exact same archive/package is idempotent;
-- archive path replacement after capture cannot change applied bytes/identity;
-- state persistence failure after Apply/Commit can recover exact established effects;
-- unexpected remote tip or foreign effective push destination blocks before push; post-verification `insteadOf` / `pushInsteadOf` mutation cannot redirect fetch, observation or push;
-- no blind repush after unconfirmed publication;
-- sequential packages work without `publishedTip`/executionState owner;
-- target schema-1 protocol/applicability validation is owned by dedicated target suites rather than retired `CoreTests`;
-- failed applicability cannot become Applied on exact retry merely because current bytes equal intended bytes, and an unproven journal cannot restore changed Worktree bytes;
-- previous package-journal schemas fail closed in the new executable; unfinished work remains with the executable that created that journal.
+Derived navigation:
+- parameterized handoff and Work Finalization both enable automatic Finalization composition;
+- automatic Finalization composition enables the selected URI target that preserves both `ApplyExtent` and `FinalizeMode`.
 
-## EVO-RPKG-RETIRE-CHANGESET-AGGREGATE
+## Boundary
 
-Evolution Kinds: Refactoring / Introduction / Retirement / Forced Migration
-
-Status: IMPLEMENTED for target executable paths; mechanical legacy-source deletion may continue independently.
-
-Resulting state:
-- WorkId is stable correlation identity;
-- Work Intent owns semantic intent/Issue;
-- GitWorkspace owns Repository Target/targetBranch/worktree/baseCommit;
-- ReplacementPackageState owns exact package/commit/publication facts;
-- Start workspace and package realization never create/read/update `Core.ChangeSet` as authority;
-- old persisted works are not imported by the new executable;
-- schema-1 `changeSetId` / `ChangeSet-Id` remain transport aliases until separate protocol evolution.
-
-No dual-read/dual-write compatibility migration is required because the previous deployed executable remains owner of old works.
-
-## EVO-RPKG-RETIRE-LEGACY-INTERACTION-SURFACE
-
-Evolution Kinds: Retirement / Forced Migration
-
-Status: IMPLEMENTED for target Main Work Window.
-
-Removed from target executable UI:
-- ChangeSet navigation/history;
-- Current Change / ReviewDiff controls;
-- Review chat / delivery controls;
-- generic External Interaction controls;
-- legacy Finalize / Reopen / Retry Push controls.
-
-Target Main Work Window contains Repository Target, WorkId, target branch, archive/package identity, OBS action and Start/Apply/Commit/Publish/Retry Publish.
-
-The old built executable remains the owner of retired legacy UI behavior.
-
-## Future reviewed-result / PR / Finalize evolution
-
-The planned reviewed-result Scenario remains future. Before implementation, rebase it onto the current Work-centered owners. Do not reintroduce ChangeSet execution states, package `Resume`, or a central lifecycle bucket merely to host reviewed-result/PR/approval facts.
+The Map does not duplicate complete target Feature/Scenario bodies. Current owners remain current authority until a Step is implemented and its target bodies are revalidated/promoted.
