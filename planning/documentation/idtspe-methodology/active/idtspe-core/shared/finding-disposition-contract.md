@@ -29,7 +29,7 @@ Validator / readiness check
 Evidence check
 implementation observation
 consistency check
-user clarification
+user observation / clarification that surfaces finding-shaped meaning
 Source conflict
 revalidation pass
 another Target / downstream handoff
@@ -51,6 +51,28 @@ Broad Discussion / Lens analysis / Key Points
 Use a Finding Candidate only for newly surfaced potentially material meaning that needs Core ownership/State/lifecycle disposition. This keeps ordinary exploration/review prose from proliferating State.
 
 Canonical working-conversation owner: [`broad-discussion-and-integration-checkpoint-model.md`](broad-discussion-and-integration-checkpoint-model.md).
+
+---
+
+
+## 1B. USER Desired Outcome / Proposal Boundary
+
+Do not use Finding Candidate as a generic container for every USER-requested change.
+
+```text
+USER expresses a wanted outcome without a concrete answer
+→ Need Candidate when semantic home/solution still needs disposition
+
+USER suggests a concrete candidate answer
+→ Proposal
+
+USER reports/clarifies a potentially material defect, contradiction, unsupported assumption or stale meaning
+→ Finding Candidate
+```
+
+A Need Candidate may later expose a Finding if review establishes that accepted current meaning already requires the desired outcome but actual implementation/Evidence contradicts it. The original wanted outcome itself is not a Finding merely because change may be needed.
+
+Canonical owner: [`need-candidate-disposition-contract.md`](need-candidate-disposition-contract.md).
 
 ---
 

@@ -53,7 +53,7 @@ Absence is a valid current Entry State. Creating the first Feature, Scenario, Sc
 
 ## Step Identity, Alternatives And Uncertainty
 
-A Step may be worth addressability before one final route is selected when the transition itself is concrete enough to plan/review. Use existing Core semantics rather than a Step-specific alternative ontology:
+A Step may be worth addressability before one final route is selected when the transition itself is concrete enough to plan/review. A Core `Need Candidate` / Desired Outcome alone is change pressure, not sufficient Step formation: disposition must first establish enough concrete materially unrealized transition meaning to justify a coherent Step boundary, and must reuse an existing Step when the resolved change naturally belongs to that transition. Use existing Core semantics rather than a Step-specific alternative ontology:
 
 ```text
 materially different future route

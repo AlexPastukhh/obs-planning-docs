@@ -32,7 +32,7 @@ All command surfaces execute under the thin Session interaction contract once th
 
 This is **inheritance, not routing**. A command routes directly to its current semantic owner; it must not insert `Session → IDTSPE/profile owner` as an obligatory semantic hop merely to obtain progress, steering or authorization behavior. Session is reloaded only when the interaction context/rules cannot be reconstructed safely.
 
-## Generic Core Surface Inventory — 13
+## Generic Core Surface Inventory — 14
 
 ```text
 idtspe.bootstrap
@@ -54,6 +54,10 @@ idtspe.review_consistency
 idtspe.proposal
 → idtspe пропозал
 → USER-gated IDTSPE work using canonical USER-input intake + Proposal/Q/R/P/Decision semantics; required USER-only grounding is clarified before the affected material Proposal without creating a second lifecycle
+
+idtspe.needs.review
+→ разбери нид-кандидаты <needs/context>
+→ ground wanted outcomes as Need Candidates, determine semantic home/current coverage and route them without prematurely manufacturing a solution/Requirement/Feature/Evolution Step
 
 idtspe.findings.review
 → разбери файндинги <findings/context>
@@ -80,7 +84,7 @@ lenscmd.linked-notes.justify
 → проверь оправданы ли linked notes <target>
 ```
 
-These are **13 generic Core methodology surfaces**. Installed profiles contribute their own additional surfaces; current total counts are a projection owned by the relevant profile/integration contracts, not by Core.
+These are **14 generic Core methodology surfaces**. Installed profiles contribute their own additional surfaces; current total counts are a projection owned by the relevant profile/integration contracts, not by Core.
 
 ## Bootstrap / Work Boundary
 
@@ -219,11 +223,14 @@ Repository command definitions carry concrete aliases plus stable `methodologyBi
 Changing tabs/groups/order must not silently redefine Core command semantics, Target ownership, Lens ownership or host-target policy.
 
 
-## Proposal / Finding Command Coverage
+## Need / Proposal / Finding Command Coverage
 
-Canonical command coverage follows semantic owners rather than one command per internal step:
+Canonical command coverage follows semantic owners rather than one command per internal step. `Need Candidate` receives a dedicated orchestration surface because “review what I want and determine where it belongs” is a stable recurring USER intent, while the command still routes into existing canonical owners rather than creating a Need-owned product lifecycle.
 
 ```text
+разбери нид-кандидаты
+→ Need Candidate grounding/disposition + correct current/Proposal/Finding/Q-R-P/profile temporal-owner routing
+
 idtspe пропозал
 → includes Proposal grounding + Candidate Review + Proposal Semantic Change Impact + selection gating
 
@@ -231,6 +238,6 @@ idtspe пропозал
 → Finding Disposition + RE-* + correct owner/Unit/revalidation routing
 ```
 
-Do not create a mandatory separate Proposal-impact command merely because impact review is an explicit lifecycle step. A focused shortcut is justified only if practice demonstrates an independently useful recurring USER intent.
+The Need command is an intake/disposition shortcut, not one command per downstream Need outcome. Do not create a mandatory separate Proposal-impact command merely because impact review is an explicit lifecycle step. A focused shortcut is justified only if practice demonstrates an independently useful recurring USER intent.
 
 Unit Resolution, Result Content, Decision trace, Q/R/P, Finding Inbox, Requirement impact and Source impact do not each require standalone direct commands by ontology.

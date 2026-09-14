@@ -53,6 +53,7 @@ Open the narrowest canonical owner when its mechanism becomes material:
 - Target Formation → [`shared/resolution-slot-and-target-formation-resolution-set.md`](shared/resolution-slot-and-target-formation-resolution-set.md);
 - reusable Target Module → [`shared/target-module-model.md`](shared/target-module-model.md) plus the selected Target Module registry/owner;
 - Lens selection/application → [`lenses/README.md`](lenses/README.md) and [`lenses/LENS-MODEL.md`](lenses/LENS-MODEL.md), then only selected Lens bodies;
+- unresolved USER wanted outcome / semantic-home routing → [`shared/need-candidate-disposition-contract.md`](shared/need-candidate-disposition-contract.md);
 - material candidate/selection meaning → [`shared/proposal-and-decision-lifecycle-contract.md`](shared/proposal-and-decision-lifecycle-contract.md);
 - material Question/Risk/Problem lifecycle → [`shared/qrp-lifecycle-and-review-contract.md`](shared/qrp-lifecycle-and-review-contract.md);
 - material Lens/review finding consequence → [`shared/finding-disposition-contract.md`](shared/finding-disposition-contract.md);
@@ -86,6 +87,7 @@ Use [`IDTSPE-CORE-MAP.md`](IDTSPE-CORE-MAP.md) for a compact topology view; use 
 
 - [`shared/idtspe-unit-and-target-step-result-model.md`](shared/idtspe-unit-and-target-step-result-model.md) — Core State / Target Step Result / Unit applicability-materiality-omission.
 - [`shared/broad-discussion-and-integration-checkpoint-model.md`](shared/broad-discussion-and-integration-checkpoint-model.md) — Broad Discussion and checkpoint interaction/projection semantics.
+- [`shared/need-candidate-disposition-contract.md`](shared/need-candidate-disposition-contract.md) — USER wanted outcome → Need Candidate grounding/disposition → existing natural owner/lifecycle route.
 - [`shared/proposal-and-decision-lifecycle-contract.md`](shared/proposal-and-decision-lifecycle-contract.md) — Proposal candidate space, selection, Decision trace/retention/revalidation.
 - [`shared/qrp-lifecycle-and-review-contract.md`](shared/qrp-lifecycle-and-review-contract.md) — Q/R/P lifecycle, priority/category/grouping and retention.
 - [`shared/target-module-model.md`](shared/target-module-model.md) — reusable Target Module contract.
