@@ -27,6 +27,7 @@
     'command.plan':{actionLabel:'Спланировать command route',tail:'General · Command Route',scenarioRefs:['planning/command-routing.md']},
     'session.proposal_driven':{actionLabel:'Включить proposal-driven gating',tail:'General · Session Interaction',scenarioRefs:['planning/session/session-runtime-contract.md']},
     'idtspe.proposal':{actionLabel:'Работать через IDTSPE Proposals',tail:'General · IDTSPE Proposal Lifecycle',scenarioRefs:['planning/documentation/idtspe-methodology/active/idtspe-core/shared/proposal-and-decision-lifecycle-contract.md']},
+    'idtspe.needs.review':{actionLabel:'Разобрать нид-кандидаты',tail:'General · Need Candidate Disposition',scenarioRefs:['planning/documentation/idtspe-methodology/active/idtspe-core/shared/need-candidate-disposition-contract.md']},
     'idtspe.findings.review':{actionLabel:'Разобрать файндинги',tail:'General · Finding Disposition',scenarioRefs:['planning/documentation/idtspe-methodology/active/idtspe-core/shared/finding-disposition-contract.md#resolution-escalation']},
     'helper.command.add':{actionLabel:'Добавить команду в Helper',tail:'Tool · Planning Command',category:'TOOL',scenarioRefs:['planning/use-cases/UC-REPO-MAINTAIN-PLANNING-COMMAND.md','planning/documentation/tampermonkey-command-projection-workflow.md']}
   });

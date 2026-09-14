@@ -112,16 +112,22 @@ Use-Case/component routing
 Canonical Lens owner: [`lenses/LENS-MODEL.md`](lenses/LENS-MODEL.md).
 Finding lifecycle owner: [`shared/finding-disposition-contract.md`](shared/finding-disposition-contract.md).
 
-## 7. Proposal / Q-R-P / Decision / Evidence
+## 7. Need / Proposal / Q-R-P / Decision / Evidence
 
 ```text
-material driver
+USER wanted outcome with unresolved semantic home / solution
+→ Need Candidate
+→ Need Candidate Disposition
+→ current owner / Finding / Proposal / Q-R-P / profile temporal owner as applicable
+
+material driver + concrete candidate answer
 → candidate Proposal space
 → review / comparison
 → exact selection or unresolved/deferred state
 → Decision / natural-owner authority when accepted
 ```
 
+Canonical Need Candidate grounding/routing: [`shared/need-candidate-disposition-contract.md`](shared/need-candidate-disposition-contract.md).
 Canonical candidate/selection semantics: [`shared/proposal-and-decision-lifecycle-contract.md`](shared/proposal-and-decision-lifecycle-contract.md).
 Canonical Q/R/P lifecycle/review contract: [`shared/qrp-lifecycle-and-review-contract.md`](shared/qrp-lifecycle-and-review-contract.md).
 State kind/addressability semantics remain in the Unit model.

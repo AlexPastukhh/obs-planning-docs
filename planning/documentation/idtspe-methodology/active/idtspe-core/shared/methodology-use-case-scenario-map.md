@@ -58,6 +58,7 @@ A rule needed only because the scenario itself says so is a warning: it may reve
 | `UCSM-10` | Work moves toward Exact/materialization | compose → relevant readiness/TM/Lens/representation owners | is deeper work entered without a fixed phase gate |
 | `UCSM-11` | Active profile contributes specialized components | compose → profile directory → profile registries | can generic IDTSPE UCs cover SDS without SDS-specific runtime UCs |
 | `UCSM-12` | Change the methodology itself | Documentation maintenance UC + IDTSPE maintenance UC where component type is IDTSPE-specific | are methodology-maintenance vs planning semantics separated |
+| `UCSM-13` | USER expresses a wanted outcome before solution/owner/temporal placement is known | compose → Need Candidate Disposition → current owner / Finding / Proposal / Q-R-P / SDS Evolution placement as applicable | can the methodology locate the correct semantic home without prematurely manufacturing a Proposal, Requirement, Feature or Evolution Step |
 
 ## 4. Canonical Working-Scenario Contract
 
@@ -104,6 +105,15 @@ A root scenario begins from the ordinary functional entry route. A focused scena
 **Method / Mechanics:** Resolve applicable Use Cases, keep only material state/components, and explicitly allow `Broad Discussion only` when no Target/Lens/persistence is useful yet.  
 **Possible Result:** A bounded concern and a useful next question, with no unnecessary Target.  
 **Derived From / Owners:** `UC-DOC-USE-REPOSITORY-GUIDANCE`, `UC-IDTSPE-COMPOSE-CURRENT-WORK`.
+
+### Step `SCN-01-S1N` — disposition an unresolved wanted outcome before inventing a solution
+
+**Trigger / Situation:** The USER expresses what should become possible/true, but the correct semantic home, candidate solution or temporal placement is not yet sufficiently resolved.  
+**AI Action:** Ground the exact USER input as Need Candidate Evidence, derive a reviewable normalized Desired Outcome and disposition it to the smallest useful existing semantic route.  
+**Why This Step:** A wanted outcome can become a Feature change, Domain/Slice/Shared Requirement, Finding, Proposal, existing-owner realization issue or Evolution Step input; choosing one too early would let phrasing manufacture architecture.  
+**Method / Mechanics:** Check materiality, relevant accepted current meaning and actual realization/Evidence, smallest plausible semantic subject/owner, current coverage, whether a concrete answer already exists and whether a materially unrealized transition is actually established. Route an established contradiction to Finding Disposition and a concrete candidate answer to Proposal lifecycle. Under SDS, use Evolution placement only after enough coherent selected/unrealized meaning exists; reuse an existing Step when the change belongs there.  
+**Possible Result:** A grounded Need Candidate routed to the correct current/future owner/lifecycle, or an explicit unresolved Question/Problem/Proposal-discovery surface without a premature Feature/Requirement/Step.  
+**Derived From / Owners:** `planning/documentation/idtspe-methodology/active/idtspe-core/shared/need-candidate-disposition-contract.md`.
 
 ### Step `SCN-01-S2` — deepen meaning only when pressure appears
 
@@ -177,6 +187,7 @@ A root scenario begins from the ordinary functional entry route. A focused scena
   "assumptions": [],
   "steps": [
     {"id":"SCN-01-S1","title":"Establish the smallest useful composition","semanticRefs":["UC-DOC-USE-REPOSITORY-GUIDANCE","UC-IDTSPE-COMPOSE-CURRENT-WORK"]},
+    {"id":"SCN-01-S1N","title":"Disposition an unresolved wanted outcome before inventing a solution","semanticRefs":["planning/documentation/idtspe-methodology/active/idtspe-core/shared/need-candidate-disposition-contract.md"]},
     {"id":"SCN-01-S2","title":"Deepen meaning only when pressure appears","semanticRefs":["UC-IDTSPE-COMPOSE-CURRENT-WORK","planning/documentation/idtspe-methodology/active/profiles/sds/shared/directed-methodology-workflow-and-next-step-resolution.md"]},
     {"id":"SCN-01-S3","title":"Evaluate material surfaces","semanticRefs":["planning/documentation/idtspe-methodology/active/idtspe-core/shared/idtspe-unit-and-target-step-result-model.md","planning/documentation/idtspe-methodology/active/idtspe-core/lenses/README.md"]},
     {"id":"SCN-01-S3R","title":"Challenge current meaning when independent review is useful","semanticRefs":["planning/documentation/review-diff-review-workflow.md"]},
@@ -195,9 +206,18 @@ A root scenario begins from the ordinary functional entry route. A focused scena
 **Type:** FOCUSED  
 **Entry assumption:** normal Use-Case routing has already selected current IDTSPE composition and SDS is applicable. This scenario does not redefine that entry route.
 
+### Step `SCN-02-S0N` — resolve the requested outcome before choosing its future-state host
+
+**Trigger / Situation:** The USER wants an application capability/change, but it is not yet established whether accepted current meaning already covers it, whether a concrete solution is selected, or whether it belongs to an existing/new Evolution Step.  
+**AI Action:** Ground/disposition the Need Candidate before forming future-state ownership.  
+**Why This Step:** “I want X” is change pressure, not proof that X is a new Feature, Requirement or independent Evolution Step.  
+**Method / Mechanics:** Preserve exact USER input Evidence; inspect current semantic owners plus actual realization/Evidence; identify the smallest plausible semantic subject; distinguish already-covered need, contradiction/Finding, candidate Proposal and unresolved discovery. If selected materially unrealized change becomes sufficiently coherent, determine whether it belongs to an existing Step or justifies a new qualitative transition boundary.  
+**Possible Result:** No Step is needed; an existing Step is the correct host; a new Step candidate is justified; or further Proposal/Question/Problem/discovery work remains before Step formation.  
+**Derived From / Owners:** `planning/documentation/idtspe-methodology/active/idtspe-core/shared/need-candidate-disposition-contract.md`.
+
 ### Step `SCN-02-S0` — host the unrealized change in an Evolution Step
 
-**Trigger / Situation:** The requested application change/new capability is materially different from current realized state.  
+**Trigger / Situation:** Need/Proposal/Decision work has established a sufficiently concrete materially unrealized application transition.  
 **AI Action:** Establish/reuse one coherent `TM-EVOLUTION-STEP` boundary with expected Entry State and concrete driver; keep current natural owners as current truth.  
 **Why This Step:** Future planning must not silently overwrite current Feature/Scenario/Domain/Slice/etc owners before implementation.  
 **Method / Mechanics:** Treat absence as a valid Entry State for greenfield/new-owner work. Real alternatives remain Proposal/Planning Branch state; a Step may exist before final route selection when the future transition is concrete enough for addressability/review.  
@@ -248,6 +268,7 @@ A root scenario begins from the ordinary functional entry route. A focused scena
   "entryRoute":"Starts after normal Use-Case routing; SDS is applicable",
   "assumptions":["UC-IDTSPE-COMPOSE-CURRENT-WORK already governs composition"],
   "steps":[
+    {"id":"SCN-02-S0N","title":"Resolve the requested outcome before choosing its future-state host","semanticRefs":["planning/documentation/idtspe-methodology/active/idtspe-core/shared/need-candidate-disposition-contract.md"]},
     {"id":"SCN-02-S0","title":"Host the unrealized change in an Evolution Step","semanticRefs":["TM-EVOLUTION-STEP","TM-EVOLUTION-STEPS-MAP","LENS-UNCERTAINTY-ASSUMPTION-REVERSIBILITY"]},
     {"id":"SCN-02-S1","title":"Establish Feature target state and peer Evolution Impacts","semanticRefs":["TM-EVOLUTION-STEP","TM-FEATURE","TM-SCENARIO-PLANNING","TM-SCREEN"]},
     {"id":"SCN-02-S2","title":"Deepen Domain Evolution Impact through discovery when useful","semanticRefs":["TM-DOMAIN-DISCOVERY","LENS-DOMAIN-MODELING-DDD","TM-DOMAIN-OWNER","TM-EVOLUTION-STEP"]},
@@ -404,7 +425,7 @@ A root scenario begins from the ordinary functional entry route. A focused scena
 ## 10. `SCN-07` FOCUSED — Нашёлся баг или файндинг — понять, можно ли исправить локально или надо поднимать решение
 
 **Type:** FOCUSED  
-**Entry assumption:** a material Finding Candidate already exists from review, Evidence, validation, exact work, testing, user clarification or another producer. The scenario is generic Core; active profiles contribute only when the finding actually reaches their semantics.
+**Entry assumption:** a material Finding Candidate already exists from review, Evidence, validation, exact work, testing, USER observation/clarification that actually surfaces finding-shaped meaning, or another producer. A wanted outcome alone belongs to Need Candidate disposition rather than becoming a Finding automatically. The scenario is generic Core; active profiles contribute only when the finding actually reaches their semantics.
 
 ### Step `SCN-07-S1` — establish the finding and smallest justified escalation
 
@@ -467,8 +488,8 @@ A root scenario begins from the ordinary functional entry route. A focused scena
 
 ### Step `SCN-08-S1` — establish the candidate and real driver
 
-**Trigger / Situation:** USER/AI/Unit work has produced a material candidate answer/route.  
-**AI Action:** Preserve Proposal identity and its actual Goal/Question/Problem driver; ground only missing material USER-only facts/authority.  
+**Trigger / Situation:** USER/AI/Unit work or Need Candidate disposition has produced a material candidate answer/route.  
+**AI Action:** Preserve Proposal identity and its actual Goal/Desired Outcome/Question/Problem driver; retain useful Need/Source provenance when applicable, and ground only missing material USER-only facts/authority.  
 **Possible Result:** One responsible unselected Proposal ready for review.  
 **Derived From / Owners:** `planning/documentation/idtspe-methodology/active/idtspe-core/shared/proposal-and-decision-lifecycle-contract.md`.
 

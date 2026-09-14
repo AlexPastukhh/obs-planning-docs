@@ -63,7 +63,7 @@ Proposal
 
 For approval-relevant formal Proposals, the motivating Question and/or Problem must be visible explicitly, inline or by reference. A missing material driver is an unresolved planning gap rather than a free-floating Proposal.
 
-The Target Goal / Desired Outcome is Target/scope context; this contract does not introduce a separate Generic Goal State Unit.
+The Target Goal / Desired Outcome is Target/scope context; this contract does not introduce a separate Generic Goal State Unit. A `Need Candidate` may be the intake/disposition subject that establishes or refines that desired-outcome context before a concrete candidate answer exists. When disposition yields a real candidate answer, this Proposal lifecycle takes over; the Proposal may retain the Need/Source reference as driver provenance without copying a parallel Need-owned semantic result.
 
 A lightweight conversational AI proposal may remain informal when formal addressability/lifecycle adds no value. If formalized, it becomes the same candidate Proposal role and remains unselected.
 

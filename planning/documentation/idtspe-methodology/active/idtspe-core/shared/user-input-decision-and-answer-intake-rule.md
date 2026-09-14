@@ -144,10 +144,27 @@ Status: ACCEPTED_FROM_USER_INPUT
 Example:
 
 ```text
+"Хотелось бы сохранять полезный фрагмент и быстро возвращаться к чтению."
+```
+
+This is primarily a wanted outcome. When its semantic home/solution is not already clear, intake may form a lightweight:
+
+```text
+Need Candidate
+→ exact USER statement retained as Source/Evidence
+→ normalized Desired Outcome remains derived/reviewable
+→ Need Candidate Disposition decides the natural route
+```
+
+It is not a Proposal merely because satisfying it may require change.
+
+Example:
+
+```text
 "Можно попробовать browser extension."
 ```
 
-This is:
+This already contains a candidate answer and is therefore:
 
 ```text
 Proposal
@@ -478,7 +495,7 @@ for unresolved AI proposals
 
 # 13. Broad Discussion Material Intake
 
-This rule owns **classification/intake from USER language**, not Proposal/Decision lifecycle semantics. Canonical Proposal drivers/relations, selection outcomes, Decision trace/retention and revalidation are owned by [`proposal-and-decision-lifecycle-contract.md`](proposal-and-decision-lifecycle-contract.md).
+This rule owns **classification/intake from USER language**, not Need Candidate disposition or Proposal/Decision lifecycle semantics. Wanted outcomes whose home/solution is unresolved hand off to [`need-candidate-disposition-contract.md`](need-candidate-disposition-contract.md); concrete candidate answers hand off to the Proposal/Decision owner. Canonical Proposal drivers/relations, selection outcomes, Decision trace/retention and revalidation are owned by [`proposal-and-decision-lifecycle-contract.md`](proposal-and-decision-lifecycle-contract.md).
 
 During Broad Discussion, preserve enough explicit meaning to classify material input correctly without forcing a full State dump:
 
@@ -486,7 +503,12 @@ During Broad Discussion, preserve enough explicit meaning to classify material i
 USER fact / observation
 → Source or other current-context meaning
 
-USER suggestion without clear selection
+USER wanted outcome without a concrete answer and with unresolved semantic home
+→ Need Candidate
+→ exact USER input remains Source/Evidence
+→ canonical Need Candidate Disposition
+
+USER suggestion that already contains a concrete candidate answer without clear selection
 → Proposal candidate
 
 USER explicit material selection
