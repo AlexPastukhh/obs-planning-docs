@@ -139,3 +139,42 @@ test('Evolution wording avoids persistence and representation vocabulary collisi
   assert.match(registry,/resolved into complete Target Owner Bodies/);
 });
 
+
+
+test('Core distinguishes Target Work Units from Core State Units without one peer result inventory',()=>{
+  const unit=read('planning/documentation/idtspe-methodology/active/idtspe-core/shared/idtspe-unit-and-target-step-result-model.md');
+  assert.match(unit,/Target Work Unit/);
+  assert.match(unit,/Core State Unit/);
+  assert.match(unit,/not one common peer `IDTSPE Unit` inventory/i);
+  assert.match(unit,/Target Step Result[\s\S]*Target Work Unit Result Content/);
+  assert.match(unit,/Core State Unit[\s\S]*not.*automatic.*Target Step Result/is);
+  assert.match(unit,/Module-defined Unit/);
+  assert.match(unit,/Contextual Unit/);
+});
+
+test('Source model uses consumer-side Source State Units and keeps TF-04 runtime Source Set distinct from Source Contract archetype',()=>{
+  const target=read('planning/documentation/idtspe-methodology/active/idtspe-core/shared/target-type-instance-source-and-relation-model.md');
+  const formation=read('planning/documentation/idtspe-methodology/active/idtspe-core/shared/resolution-slot-and-target-formation-resolution-set.md');
+  const module=read('planning/documentation/idtspe-methodology/active/idtspe-core/shared/target-module-model.md');
+  assert.match(target,/Source Subject/);
+  assert.match(target,/Source State Unit/);
+  assert.match(target,/consumer-side typed Core State Unit\/binding/);
+  assert.match(target,/Target Relation[\s\S]*≠ Source relation/);
+  assert.match(formation,/TF-04 SOURCE_SET[\s\S]*actual typed Source Set[\s\S]*Source State Units \/ consumer bindings/);
+  assert.doesNotMatch(formation,/TF-04 SOURCE_SET[\s\S]{0,300}Value:\s*\n\s*typed Source Contract/);
+  assert.match(module,/Source Contract archetype[\s\S]*runtime `TF-04 SOURCE_SET` resolves the concrete Target's actual Source Set/);
+});
+
+test('Documentation responsibility map routes to canonical owners without replacing Documentation role semantics',()=>{
+  const principles=read('planning/documentation/principles-and-terminology.md');
+  const active=read('planning/documentation/idtspe-methodology/active/README.md');
+  const map=read('planning/documentation/idtspe-methodology/active/METHODOLOGY-RESPONSIBILITY-MAP.md');
+  assert.match(principles,/## Responsibility Map/);
+  assert.match(principles,/routing mapping.*not the semantic body/is);
+  assert.match(active,/METHODOLOGY-RESPONSIBILITY-MAP\.md/);
+  assert.match(map,/Target Work Unit mechanics; Core State Unit relation/);
+  assert.match(map,/target-type-instance-source-and-relation-model\.md/);
+  assert.match(map,/resolution-slot-and-target-formation-resolution-set\.md/);
+  assert.match(map,/Target Module \/ Unit Contract \/ Source Contract archetype/);
+  assert.match(map,/Responsibility Map row ≠ copied semantic contract/);
+});

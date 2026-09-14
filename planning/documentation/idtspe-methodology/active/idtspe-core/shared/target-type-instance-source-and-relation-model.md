@@ -29,7 +29,7 @@ It may later be promoted into a Target Module only if repetition justifies reuse
 
 One concrete bounded planning owner.
 
-A Target Instance is the semantic/planning responsibility, not a file. One bounded IDTSPE work step over that Target produces/refines a `Target Step Result`, which may contain several addressable Result Units.
+A Target Instance is the semantic/planning responsibility, not a file. Its current working composition may include a Source Set, Target Work Units, Target-level Core State Units and Target Relations/Handoffs. One bounded IDTSPE work step over that Target produces/refines a `Target Step Result` from applicable Target Work Unit Current Result Content.
 
 Examples:
 
@@ -39,9 +39,21 @@ DOMAIN-RESEARCH-CAPTURE
 SL-CAP-01
 ```
 
-### Source
+### Source / Source Subject
 
-Accepted semantic truth, Evidence, constraint or accepted planning state actually used by the current Target.
+A **Source** is accepted semantic truth, Evidence, constraint or accepted planning state actually used by the current consumer. The authoritative meaning being consumed is the **Source Subject**.
+
+Typical Source Subjects include current semantic owners, accepted Target Step Results or Target Work Unit results, Decisions, Evidence, authoritative external documents and exact USER provenance when that statement itself is materially consumed.
+
+### Source State Unit / Source Unit
+
+A **Source State Unit** is the consumer-side typed Core State Unit/binding from the current Target or Target Work Unit to a Source Subject. Short form `Source Unit` is acceptable where Core State context is clear.
+
+The Source State Unit owns the consumer relationship — such as role, consumer scope, authority, requiredness, freshness and review/revalidation obligation — not a copied second body of the Source Subject.
+
+### Source Set
+
+The actual runtime `Source Set` for one Target is the proportional set of Source State Units/bindings that the Target currently consumes. A Source State Unit may be Target-shared, Unit-local or apply to a declared subset of Target Work Units.
 
 ### Target Relation
 
@@ -53,28 +65,42 @@ Target Relation
 ```
 
 
-## 2. Target Step Result / Unit Relation
+## 2. Target Instance Composition / Target Step Result Relation
 
 ```text
 Target Instance
-↓ one bounded work step
-Target Step Result
-├─ Result Unit A
-├─ Result Unit B
-└─ Result Unit C
+├─ Identity / Purpose / Scope / Contract
+├─ Source Set
+│  └─ Source State Units / bindings
+│     ├─ Target-shared
+│     ├─ Unit-local
+│     └─ multi-Unit as applicable
+├─ Target Work Units
+│  ├─ Module-defined
+│  └─ Contextual
+│     each:
+│       Result Responsibility
+│       + Unit Resolution ↔ applicable Core State Units
+│       + Current Result Content
+├─ Target-level Core State Units
+├─ Target Relations / Handoffs
+└─ Target Step Result
+   = composition/projection of applicable
+     Target Work Unit Current Result Content
 ```
 
 Important:
 
 ```text
 one Target
-≠ one Result Unit
+≠ one Target Work Unit
+≠ one Core State Unit
 ≠ one file
 ```
 
-Target Module/Local Target Contract defines the target-specific Result Unit kinds. Generic Questions/Proposals/Q/R/P/Decisions/Evidence around the Target are Core State Units, not extra Target result fields by default.
+Target Module/Local Target Contract defines the target-specific Work Unit/Result Unit kinds. Generic Source/Question/Proposal/Q/R/P/Decision/Evidence/Revalidation state uses Core State Unit semantics and may be Unit-local, Target-level, cross-Target or Work-Context-level. Core State Units do not become extra Target Step Result Units merely because they participate in Unit Resolution.
 
-A Result Unit may be the precise downstream Source when another Target depends only on that accepted meaning. Source authority remains explicit.
+A Target Work Unit result may be the precise downstream **Source Subject** when another Target depends only on that accepted meaning. The downstream Target still establishes its own explicit Source State Unit/binding; Source authority is never inferred from topology alone.
 
 ## 3. Working Target Relation Vocabulary
 
@@ -134,19 +160,22 @@ A Target contributes to a broader result/composition without implying that a ded
 
 ## 4. Source Relation Remains Separate
 
-Conceptual Source entry:
+Conceptual Source State Unit/binding:
 
 ```text
-Source
-  identity / owner
+Source State Unit
+  identity when useful
+  Source Subject / ref
+  Consumer Scope
   role
-  relationToTarget
   authority
   requiredness
   freshness
-  review obligation
+  review / revalidation obligation
   reason
 ```
+
+`Consumer Scope` may be the whole Target, one Target Work Unit, or a declared subset of Work Units. A trivial/obvious Source relation may remain embedded/implicit rather than gaining a persisted identity.
 
 Conceptual Target relation:
 
@@ -173,9 +202,12 @@ Later:
 
 ```text
 SCN-REVIEW
-  Source:
-    accepted output of SCN-CAPTURE
-    relationToTarget:
+  Source State Unit:
+    Source Subject:
+      accepted output of SCN-CAPTURE
+    Consumer Scope:
+      relevant Scenario Work Unit(s) / Target
+    role:
       startingStateFrom
 ```
 
@@ -185,7 +217,7 @@ Separately:
 SCN-CAPTURE FLOW_TO SCN-REVIEW
 ```
 
-The first is semantic Source authority. The second is topology.
+The first is the consumer-side semantic Source authority binding; the accepted output of `SCN-CAPTURE` remains the Source Subject. The second is topology.
 
 ## 6. Step-02 Is Not A Fixed Target Type
 
@@ -253,7 +285,7 @@ Topology:
 T-ROUTE-CAPTURE FLOW_TO T-ROUTE-LATER-USE
 ```
 
-Both consume `NEED-01` as Source.
+Both consume the accepted `NEED-01` meaning through their own Source State Unit/binding when explicit Source addressability is material.
 
 If the later-use Target also depends on the accepted property:
 

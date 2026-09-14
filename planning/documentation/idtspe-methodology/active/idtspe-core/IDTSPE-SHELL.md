@@ -13,14 +13,15 @@ IDTSPE Work Context
   each Target when present:
     Target Formation Resolution Set
     + Target Module or Local Target Contract
-    + typed Sources
+    + actual Source Set
+      + Source State Units/bindings scoped to Target/Work Units as applicable
     + selected/applicable Lenses
-    + zero or more bounded Units
-      each material Unit:
+    + zero or more Target Work Units
+      each material Work Unit:
         Result Responsibility
-        + Unit Resolution
+        + Unit Resolution ↔ applicable Core State Units
         + Current Result Content when resolved
-    + Target Step Result composition
+    + Target Step Result composition from Work Unit Current Result Content
     + Validators / Guards
     + Artifact Placement when material
 + cross-Unit / Target / Work-Context Core Resolution State when material
@@ -28,7 +29,7 @@ IDTSPE Work Context
 = current proportional IDTSPE work
 ```
 
-A Target-specific shell pass still operates on one primary bounded Target at a time, while the Work Context may contain zero/several Targets. Unit-local Core Resolution State attaches to Unit Resolution; broader state remains at its natural subject.
+A Target-specific shell pass still operates on one primary bounded Target at a time, while the Work Context may contain zero/several Targets. Unit-local Core State Units/Core Resolution State attach to Work Unit Resolution; broader state remains at its natural Target/cross-Target/Work-Context subject. Target Work Units and Core State Units are distinct compositional roles, not one peer result inventory.
 
 The current `P-01..P-15` labels remain stable technical runtime navigation, not a second ontology.
 
@@ -85,18 +86,19 @@ Resolved through `TF-01 PURPOSE_OUTPUT`, `TF-02 TARGET_TYPE_FORM`, `TF-03 TARGET
 
 ### P-03 Source Port
 
-Connects typed inputs:
+Connects the concrete Target's Source State Units/bindings to authoritative Source Subjects such as:
 ```text
 Direct Semantic Sources
-Inherited Lineage
+Inherited Lineage when lineage itself is material
 Evidence / Current-State Sources
-current canonical Target artifact(s) when refining/revalidating an existing owner
+current canonical Target owner/result when refining/revalidating
 Constraint / Planning-State Sources
+accepted upstream Target Work Unit / Target Step Result
 ```
 
-Resolved through `TF-04 SOURCE_SET` and L2 Authority/SoT/Reuse.
+Resolved through `TF-04 SOURCE_SET` and L2 Authority/SoT/Reuse. Reusable Target Module `Source Contract` text supplies archetypes/needs only; it is not the concrete runtime Source Set.
 
-Source relation is separate from Target topology relation.
+Source relation is separate from Target topology relation. A Target relation never silently creates a Source State Unit/binding.
 
 ### P-04 Relation Port
 

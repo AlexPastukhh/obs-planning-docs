@@ -55,9 +55,9 @@ another methodology Use Case
 
 This is a composition list, not a mandatory sequence.
 
-## Unit Composition Rule
+## Target Work Unit Composition Rule
 
-When a Target is useful, compose only the Units currently justified by the Target Module/Local Target Contract plus any Contextual Unit whose bounded local responsibility is independently useful. Do not form Contextual Units merely to wrap every Question/QRP/Proposal.
+When a Target is useful, compose only the Target Work Units currently justified by the Target Module/Local Target Contract plus any Contextual Unit whose bounded local result responsibility is independently useful. Core State Units may participate in their Unit Resolution or remain Target/cross-Target/Work-Context state; do not form Contextual Work Units merely to wrap every Source/Question/QRP/Proposal/Decision/Evidence item.
 
 ```text
 existing Module-defined Unit fits
@@ -69,8 +69,8 @@ no Unit fits + bounded local responsibility is independently useful
 responsibility is independently substantial beyond the Target
 → Target Formation
 
-no independent responsibility
-→ keep meaning attached to the existing subject / Broad Discussion / Core Resolution State
+no independent target-specific result responsibility
+→ keep meaning attached to the existing subject / Broad Discussion / Core State Unit / Core Resolution State
 ```
 
 ## Boundaries

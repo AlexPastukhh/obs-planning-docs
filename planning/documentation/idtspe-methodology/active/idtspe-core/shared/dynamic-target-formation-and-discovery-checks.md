@@ -88,7 +88,9 @@ What is inside/outside this Target?
 
 ### TF-04 SOURCE_SET
 
-Resolve actual semantic/Evidence/constraint Sources.
+Resolve the actual typed Source Set for this Target: zero or more Source State Units/consumer bindings to authoritative semantic/Evidence/constraint Source Subjects. Reusable Target Module/Unit `Source Contract` text provides archetypes/needs only; it is not the runtime TF-04 value.
+
+Source State Units may be Target-shared, Unit-local or multi-Unit as material. Target topology never silently creates Source authority.
 
 ### TF-05 TARGET_RELATIONS
 

@@ -311,7 +311,13 @@ Prompt:
   реально нужны для этого Target?
 
 Value:
-  typed Source Contract
+  actual typed Source Set
+  = zero or more Source State Units / consumer bindings
+    to authoritative Source Subjects
+
+Note:
+  reusable Target Module / Unit Contract Source Contracts are archetypes/needs;
+  they inform TF-04 but are not the runtime TF-04 value
 
 
 TF-05 TARGET_RELATIONS

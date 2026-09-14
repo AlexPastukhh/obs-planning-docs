@@ -1,13 +1,15 @@
 # IDTSPE Unit And Target Step Result Model
 
 Status: active generic methodology owner
-Purpose: define what one bounded IDTSPE work step produces, how target-specific result meaning differs from generic planning state, and the common Unit/addressability vocabulary used by Target Modules, Lenses, validation and persistence.
+Purpose: define what one bounded IDTSPE work step produces, how target-specific Target Work Units differ from generic Core State Units, and the common result/state addressability vocabulary used by Target Modules, Lenses, validation and persistence.
 
 ---
 
 ## 1. Core Model
 
-The central bounded-work object is a **Unit**: one semantic/result responsibility that can be resolved, reviewed and handed off without forcing a separate Target or file.
+The central bounded target-work object is a **Target Work Unit**: one target-specific semantic/result responsibility that can be resolved, reviewed and handed off without forcing a separate Target or file. Existing `Result Unit`, `Target Step Result Unit` and unqualified `Unit` wording remain valid short/compatibility forms when target-work context is clear.
+
+Core also maintains **Core State Units** such as Sources, Questions, Proposals, Q/R/P, Decisions and Evidence. They may be addressable inside the same Work Context/Target, but they have generic Core lifecycle semantics and are not peer Target Step Result responsibilities.
 
 ```text
 IDTSPE Work Context
@@ -16,30 +18,35 @@ zero or more bounded Targets
 ↓
 Target Module or Local Target Contract
 ↓
-zero or more bounded Units
+zero or more Target Work Units
   ├─ Module-defined Unit
   └─ Contextual Unit when current work exposes an independently useful local responsibility
 ↓
-for each material Unit
+for each material Target Work Unit
   Result Responsibility
   + Unit Resolution
+      ↔ applicable Core State Units / Core Resolution State
   + Current Result Content when sufficiently resolved
 ↓
 Target Step Result
-  = composition/projection of applicable Unit Result Content
+  = composition/projection of applicable Target Work Unit Result Content
 ```
 
-`Unit Resolution` is both the process and the current working semantic state used to obtain sufficiently resolved Unit Result Content. It may relate proportionally to Sources/Evidence, Questions, Problems/Risks, Proposals, Findings, Decisions, Branches and Revalidation. Those Core resolution items keep their own lifecycle/addressability semantics; they are not a second family of peer work/result Units.
+This is not one common peer `IDTSPE Unit` inventory. `Target Work Unit` and `Core State Unit` are deliberately different compositional roles that may coexist in one Target/Work Context.
+
+`Unit Resolution` is both the process and the current working semantic state used to obtain sufficiently resolved Target Work Unit Result Content. It may relate proportionally to Source State Units/Evidence, Questions, Problems/Risks, Proposals, Findings, Decisions, Branches and Revalidation. Addressable generic Core items keep their own Core State Unit/lifecycle semantics; they are not a second family of peer Target Work Units or Target Step Result Units.
 
 ```text
-Core Resolution State
+Core State Unit / Core Resolution State
 → normally attaches to the smallest correct semantic subject:
-   one Unit / one Result field / one Proposal / one Decision / one Target
-→ may remain cross-Unit, Target-level or Work-Context-level
+   one Target Work Unit / one Result field / one Proposal / one Decision / one Target
+→ may remain cross-Unit, Target-level, cross-Target or Work-Context-level
    when that is its natural subject
 ```
 
-`Current Result Content` is the normalized current answer/output owned by the Unit. It may be absent while Unit Resolution is still open. Candidate result meaning may be useful during resolution, but candidate meaning is not current Result Content merely because it was written down.
+A Core State Unit may therefore be Unit-local without becoming Target Work Unit Result Content, or may legitimately sit above/between several Target Work Units/Targets when that is its natural scope.
+
+`Current Result Content` is the normalized current answer/output owned by the Target Work Unit. It may be absent while Unit Resolution is still open. Candidate result meaning may be useful during resolution, but candidate meaning is not current Result Content merely because it was written down.
 
 ```text
 trusted Source / Evidence
@@ -51,7 +58,7 @@ is valid; Proposal/Decision ceremony is not mandatory when no material choice ex
 
 A material Proposal that is actually selected still has **Decision semantics** under the canonical Proposal/Decision lifecycle. A separate explicit/durable Decision State Unit or retained Decision trace is required only when the selection/rationale/trade-off/revalidation meaning has independent future value.
 
-`IDTSPE Step Output` remains an explanatory umbrella for the material semantic output of one work/integration pass. It may contain Unit Result Content plus material Core Resolution State. It is not a new semantic owner and does not imply one persisted record.
+`IDTSPE Step Output` remains an explanatory umbrella for the material semantic output of one work/integration pass. It may contain the `Target Step Result` (Target Work Unit Result Content composition) plus material Core State Units/Core Resolution State and handoff/revalidation consequences. It is not a new semantic owner and does not imply one persisted record.
 
 ## 2. Target Step Result
 
@@ -131,7 +138,7 @@ Generic Core now installs [`TM-EXACT-REALIZATION`](../target-modules/TM-EXACT-RE
 
 ---
 
-## 3. Target Step Result Unit / Module-Defined Unit
+## 3. Target Work Unit / Target Step Result Unit / Module-Defined Unit
 
 Full compatibility term:
 
@@ -139,20 +146,26 @@ Full compatibility term:
 Target Step Result Unit
 ```
 
-Short form when context is clear:
+Preferred disambiguating term when Core State Units are also being discussed:
+
+```text
+Target Work Unit
+```
+
+Short/compatibility forms when target-work context is clear:
 
 ```text
 Result Unit / Unit
 ```
 
-A Target Module-declared Result Unit is a **Module-defined Unit Contract instance** for one bounded part of the Target Step Result. It is not merely an output bucket: its responsibility includes obtaining and validating the result meaning it owns.
+A Target Module-declared Result Unit is a **Module-defined Target Work Unit Contract instance** for one bounded part of the Target Step Result. It is not merely an output bucket: its responsibility includes obtaining and validating the result meaning it owns.
 
 ```text
-Unit
+Target Work Unit
 = one bounded target-specific result responsibility
   deserving explicit/separately addressable processing
 
-Unit
+Target Work Unit
 ├─ Result Responsibility / Purpose
 ├─ Applicability / Materiality / Omission
 ├─ Unit Resolution
@@ -201,12 +214,12 @@ All Units may remain sections of one planning artifact. Unit identity does not f
 
 One Target Step Result may still materialize asymmetrically: a Unit's current result may be represented in planning prose, implementation-native files, package metadata or generated review views according to the representation contract. The Unit remains one semantic responsibility even when its result is projected into several physical forms.
 
-## 4. Core Resolution State / IDTSPE State Unit
+## 4. Core State Unit / Core Resolution State
 
-`IDTSPE State Unit` remains the compatibility/addressability term for typed generic planning/resolution meaning maintained by Core. Typical kinds include:
+A **Core State Unit** is typed generic planning/resolution meaning maintained by Core when independent lifecycle/addressability is useful. Existing `IDTSPE State Unit` / `State Unit` wording remains compatible. Typical kinds include:
 
 ```text
-Source
+Source State Unit / Source Unit
 Question
 Proposal
 Question / Risk / Problem (Q/R/P)
@@ -224,15 +237,32 @@ These kinds retain their canonical lifecycle owners. Finding `Resolution Escalat
 
 ```text
 old mental model to avoid:
-  Result Units + peer generic work Units
+  one peer Unit inventory where Result Units and generic Core state
+  all participate in Target Step Result composition
 
 preferred model:
-  bounded Unit responsibility
-  + Core Resolution State attached/related to the semantic subject it concerns
-  + Current Result Content
+  Target Work Unit responsibility
+  + Core State Units / Core Resolution State attached or related
+    to the semantic subject they concern
+  + Target Work Unit Current Result Content
 ```
 
-Core Resolution State is **not forced into exactly one Unit**. Cross-Unit, Target-level, cross-Target or Work-Context state remains valid when that is the smallest correct subject.
+Core State Units/Core Resolution State are **not forced into exactly one Target Work Unit**. Cross-Unit, Target-level, cross-Target or Work-Context state remains valid when that is the smallest correct subject. Conversely, being addressable as a Core State Unit does not make that state a Target Work Unit or automatic Target Step Result content.
+
+### Source State Unit boundary
+
+`Source` remains accepted semantic truth, Evidence, constraint or accepted planning state actually used by the consumer. When that Source relation needs explicit/addressable Core state, represent it as a **Source State Unit** (short form `Source Unit`): a consumer-side typed binding to an authoritative **Source Subject**.
+
+```text
+Source Subject
+= authoritative owner/result/Evidence/Decision/statement being consumed
+
+Source State Unit
+= consumer-side binding from Target / Target Work Unit
+  to that Source Subject
+```
+
+The Source State Unit owns the consumer relationship (role/scope/authority/requiredness/freshness/revalidation), not a copied second body of the upstream truth. A Source may remain implicit when no independent authority/provenance/addressability value exists.
 
 ### Proposal / Decision / Result relation
 
@@ -270,7 +300,7 @@ may or may not need a separately retained Decision record.
 
 ### State can be useful before Result Content exists
 
-A Unit may remain unresolved while its Resolution carries useful addressable state:
+A Target Work Unit may remain unresolved while its Resolution carries useful addressable Core state:
 
 ```text
 Unit: Uses / Ownership Boundary
@@ -311,7 +341,7 @@ Do not record every file read, command, tool call, non-applicable registry row o
 
 `Current Work Concern` may remain only conversational/work-context meaning. Promote it into explicit Methodology Usage State only when independent addressability, continuation, audit or revalidation value is material.
 
-Methodology Usage State may attach to a Unit when methodology-use meaning is genuinely Unit-local, or remain cross-Unit/Target/Work-Context state when that is its natural subject. It is not forced into a Unit solely because the overall model is Unit-centric.
+Methodology Usage State may attach to a Target Work Unit when methodology-use meaning is genuinely Unit-local, or remain cross-Unit/Target/Work-Context state when that is its natural subject. It is not forced into a Work Unit solely because the overall model is Unit-centric.
 
 ## 5. Unit Definition Authority
 
@@ -319,9 +349,9 @@ The ownership boundary is:
 
 ```text
 IDTSPE Core
-→ defines generic Unit mechanics
+→ defines generic Target Work Unit mechanics
 → defines Unit Resolution / Current Result Content semantics
-→ defines generic Core Resolution State kinds/lifecycles
+→ defines Core State Unit kinds/lifecycles and their relation to Work Units
 → defines Contextual Unit boundary
 
 Target Module / Local Target Contract
@@ -400,7 +430,7 @@ Generic Core State examples:
 
 | State Unit kind | Introduce / make explicit when | Normally omit / keep implicit when |
 |---|---|---|
-| `Source` | authority/provenance affects resolution, conflict handling or future revalidation | the source is obvious, transient or adds no independent authority value |
+| `Source State Unit` | a consumed Source needs explicit authority/provenance, consumer scope, conflict handling or future revalidation | the Source relation is obvious/transient and adds no independent lifecycle/addressability value |
 | `Question` | an unresolved question benefits from explicit resolution/addressability | already answered or trivial enough to remain Broad Discussion |
 | `Proposal` | a material candidate approach/meaning needs comparison, review, acceptance or lifecycle | every fleeting AI idea or obvious local implementation choice |
 | `Risk / Problem` | downside/problem can change decision, proof, ownership, scope or revalidation | generic hypothetical concern has no current consequence |
@@ -651,18 +681,21 @@ This model establishes that State/Result Unit addressability does not imply one 
 
 ## 12. Downstream Source Boundary
 
-Another Target's accepted result becomes a Source only explicitly.
+Another Target's accepted result becomes a Source only explicitly. The upstream accepted meaning remains the **Source Subject**; the downstream consumer records a Source State Unit/binding when that relation is material.
 
 Useful Unit-level handoff is allowed:
 
 ```text
 Target A
-  accepted Result Unit RU-03
-↓ explicit Source relation
+  accepted Target Work Unit RU-03
+      ↓
 Target B
+  Source State Unit
+    Source Subject: Target A / RU-03 accepted Current Result Content
+    Consumer Scope: one Work Unit or whole Target
 ```
 
-The entire physical artifact need not become one undifferentiated Source merely because several Units share a file.
+Target topology (`FLOW_TO`, `PRECEDES`, etc.) does not create this Source authority automatically. The entire physical artifact need not become one undifferentiated Source merely because several Units share a file.
 
 ---
 
@@ -679,14 +712,15 @@ Current Step intent:
   produce a sufficiently resolved vertical Slice plan before exact realization
 ```
 
-Current State Units:
+Current Core State Units:
 
 ```text
-Sources:
-  SCN-CAPTURE
-  CaptureItem Domain owner
-  current CaptureController
-  current CaptureRepository
+Source State Units:
+  Source Subject: SCN-CAPTURE accepted result
+  Source Subject: CaptureItem Domain owner
+  Source Subject: current CaptureController
+  Source Subject: current CaptureRepository
+  Consumer Scope: Target-shared or Unit-local as applicable
 
 Question:
   which existing owner should orchestrate capture?
@@ -790,10 +824,10 @@ The canonical ownership split is:
 
 ```text
 Target Module / Local Target Contract
-→ target-specific Target Step-Result Contract + Result Units
+→ target-specific Target Step-Result Contract + Target Work Units / Result Units
 
 Core Unit model
-→ generic State Unit kinds + Unit applicability/materiality/addressability
+→ Target Work Unit mechanics + Core State Unit kinds/lifecycles + applicability/materiality/addressability
 
 Lens Model
 → Lens Analysis Surface / operations / Typical Findings
@@ -809,7 +843,8 @@ Older reusable Lens bodies that predate the literal current Lens contract remain
 ## 15. Key Invariants
 
 ```text
-Unit = bounded resolution/result responsibility
+Target Work Unit = bounded target-specific resolution/result responsibility
+Core State Unit ≠ Target Work Unit
 Module-defined Unit ≠ output bucket only
 Contextual Unit ≠ automatic Target or durable result section
 Unit-centric ≠ all state must belong to exactly one Unit
@@ -819,11 +854,11 @@ Proposal ≠ Decision ≠ Result Content
 material Proposal selection has Decision semantics
 explicit/durable Decision trace is proportional, not mandatory for every derived result
 Question answered by trusted Source/Evidence may update Result Content without Decision
-Core Resolution State keeps its lifecycle/addressability while attaching to the smallest correct subject
+Core State Unit / Core Resolution State keeps its lifecycle/addressability while attaching to the smallest correct subject
 Finding Candidate ≠ Unit automatically
 Finding may route to Unit Resolution, Contextual Unit, Target Formation or another canonical owner
 Lens ≠ Unit owner ≠ Finding disposition authority
-Target Step Result = coherent projection/composition of applicable Unit Result Content
+Target Step Result = coherent projection/composition of applicable Target Work Unit Result Content
 Unit identity ≠ file identity
 semantic retention ≠ physical persistence
 ```

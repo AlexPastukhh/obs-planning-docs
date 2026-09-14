@@ -192,6 +192,29 @@ README does not need a Use Case merely to justify its existence.
 
 README should not duplicate detailed Use-Case Process, Principles & Terminology, or other semantic owner bodies.
 
+## Responsibility Map
+
+A **Responsibility Map** is a cross-cutting routing projection from a semantic responsibility/task to its current canonical owner.
+
+It is useful when ownership spans several sibling areas/files and a reader would otherwise need to infer the owner from repository topology or duplicated prose. Existing application/architecture/testing responsibility maps are examples of this role.
+
+```text
+Responsibility Map
+→ responsibility / task
+→ current canonical owner
+→ optional supporting/projection owner when useful
+```
+
+A Responsibility Map owns the **routing mapping**, not the semantic body it points to. The mapped owner remains authoritative for complete meaning. Do not copy full contracts into the map or let the map become a second semantic Source of Truth.
+
+Boundary with neighboring navigation roles:
+
+- **README** — structural/direct-child responsibility and navigation for one area;
+- **Use-Case Registry** — functional capability/result routing;
+- **Responsibility Map** — cross-file/cross-area semantic responsibility → canonical-owner routing.
+
+A Responsibility Map may be manually maintained when small, but its critical owner mappings should be mechanically parity-checked when drift would materially confuse methodology routing.
+
 ## Principles & Terminology
 
 A **Principles & Terminology** file defines the vocabulary and stable semantic rules of an area.
@@ -306,8 +329,9 @@ Structural navigation and functional navigation are different:
 
 - README answers **what is here and what is it responsible for?**
 - Use-Case Registry answers **what meaningful results can I obtain and where does each Use Case live?**
+- Responsibility Map answers **which current canonical owner owns this cross-cutting responsibility/task?**
 
-Neither should duplicate the other's semantic body. Cross-scope navigation starts from README/area navigation; each area owns its own current functional or methodology-specific navigation model.
+None should duplicate the semantic body owned by the destination owner. Cross-scope navigation starts from README/area navigation; each area owns its own current functional or methodology-specific navigation model.
 
 ## Progressive Complexity Principle
 
@@ -321,6 +345,6 @@ Create it when the current Use Case becomes clearer, more reusable, or more inde
 
 Documentation roles are semantic roles, not filename-driven ontology.
 
-Use Case, Process, Principles & Terminology, Template, Example, README, and Use-Case Registry describe what meaning a representation owns.
+Use Case, Process, Principles & Terminology, Template, Example, README, Use-Case Registry, and Responsibility Map describe what meaning a representation owns or routes to.
 
 A file exists because useful meaning needs representation. A file or folder does not create a capability merely by existing.

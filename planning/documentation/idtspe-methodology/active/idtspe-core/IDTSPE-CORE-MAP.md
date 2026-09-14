@@ -16,10 +16,11 @@ UC-IDTSPE-COMPOSE-CURRENT-WORK      [default continuously relevant]
 ↓
 smallest useful IDTSPE projection
 ├─ Broad Discussion only
-├─ material Core State Units
+├─ material Work-Context / cross-Target Core State Units
 ├─ zero/one/several Targets
 │  ├─ Target Module / Local Target Contract
-│  └─ applicable Target Step Result Units
+│  ├─ actual Source Set / Source State Units
+│  └─ applicable Target Work Units / Result Units
 ├─ selected/applicable Lenses
 ├─ selected registry/Knowledge entries
 ├─ active profile components
@@ -56,9 +57,11 @@ The map only shows these dependencies. Each linked owner remains authoritative f
 IDTSPE Work Context
 ├─ current Work Concern
 ├─ Broad Discussion / Key Points
-├─ material Core State Units
+├─ material Work-Context / cross-Target Core State Units
 ├─ zero/one/several Targets
-│  └─ material Target Result Units
+│  ├─ material Source State Units / Source bindings
+│  ├─ material Target Work Units / Result Units
+│  └─ Target-level Core State Units when material
 ├─ Methodology Usage State when continuation/revalidation value exists
 └─ physical representation only when useful
 ```

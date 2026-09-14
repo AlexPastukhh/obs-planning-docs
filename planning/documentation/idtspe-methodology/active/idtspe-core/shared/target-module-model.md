@@ -18,7 +18,7 @@ Target-family / formation contract
 + validators / handoff / revalidation / representation guidance
 ```
 
-A Module-defined Unit Contract is the primary reusable production slice:
+A Module-defined Unit Contract is the primary reusable **Target Work Unit** production slice:
 
 ```text
 Unit Contract
@@ -53,7 +53,7 @@ Target Module
 → Target Step Result composition
 ```
 
-The Module defines target-wide formation/scope/Source archetypes only where genuinely shared. It should not centralize all questions, all knowledge, all Lens guidance and all methods at module level when those concerns actually belong to one Unit responsibility.
+The Module defines target-wide formation/scope/Source Contract archetypes only where genuinely shared. Unit-specific Source needs belong to the relevant Unit Contract. At runtime `TF-04 SOURCE_SET` resolves the concrete Target's actual Source Set as Source State Units/bindings to authoritative Source Subjects; the reusable Source Contract archetype is not itself that runtime Source Set. The Module should not centralize all questions, all knowledge, all Lens guidance and all methods at module level when those concerns actually belong to one Unit responsibility.
 
 ### Per-Unit Applicability Envelope
 
@@ -99,7 +99,8 @@ TM-IP-02 SCOPE
   scope archetype / boundary questions for TF-03 TARGET_SCOPE
 
 TM-IP-03 SOURCES
-  Source Contract archetype for TF-04 SOURCE_SET
+  reusable Source Contract archetype / shared Source needs for TF-04 SOURCE_SET
+  (runtime TF-04 resolves actual Source State Units/bindings)
 
 TM-IP-03A KNOWLEDGE_BASIS
   reusable principles/rules/theory/pattern knowledge for this recurring Target family
@@ -583,7 +584,7 @@ A Target Module is ready for integration only if:
 one stable entry point exists
 purpose/output are explicit
 scope/authority boundary is explicit
-Source Contract is not a closed universal whitelist
+Source Contract is not a closed universal whitelist and is not the concrete runtime Source Set
 Knowledge Basis, when useful, remains distinct from current Target Sources and does not duplicate reusable Lens knowledge
 theory/reference provenance is retained at an economical granularity when material
 applied interpretation is present when raw theory alone does not explain how it should guide this Target family

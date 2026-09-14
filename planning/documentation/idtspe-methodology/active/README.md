@@ -8,6 +8,7 @@ internal semantics.
 
 ## Generic IDTSPE Core
 
+- [`METHODOLOGY-RESPONSIBILITY-MAP.md`](METHODOLOGY-RESPONSIBILITY-MAP.md) — cross-Core/profile responsibility → current canonical owner routing; the destination owner remains semantic authority.
 - [`idtspe-core/README.md`](idtspe-core/README.md) — generic IDTSPE Core bootstrap/navigation + semantic contracts.
 - [`idtspe-core/IDTSPE-SHELL.md`](idtspe-core/IDTSPE-SHELL.md) — generic Target/Resolution shell.
 - [`idtspe-core/target-modules/README.md`](idtspe-core/target-modules/README.md) — generic Target Modules.
