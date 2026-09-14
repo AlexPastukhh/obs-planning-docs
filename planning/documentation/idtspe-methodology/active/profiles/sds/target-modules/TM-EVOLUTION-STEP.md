@@ -283,7 +283,7 @@ Unaffected owners are referenced rather than copied.
 
 `TM-DOMAIN-DISCOVERY` and `TM-IMPLEMENTATION-SLICE` remain working/discovery Targets, not durable semantic owners. Their exploratory Unit Resolution and rejected alternatives are transient by default.
 
-However, selected Current Result Content may have continuing continuation/realization/review/revalidation value while the Step remains unrealized. In that case integrate or project only that useful selected meaning into the applicable `RU-EVO-02` rather than retaining the whole discovery Target as competing authority.
+However, selected Current Result Content may have continuing pre-realization handoff/review/revalidation value while the Step remains unrealized. In that case integrate or project only that useful selected meaning into the applicable `RU-EVO-02` rather than retaining the whole discovery Target as competing authority.
 
 ```text
 Domain Discovery Working Plan

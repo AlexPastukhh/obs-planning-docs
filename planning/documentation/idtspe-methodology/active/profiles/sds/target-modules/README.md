@@ -23,7 +23,7 @@ current Work Context / concern
 
 All active SDS modules use the Core Unit contract: declared `RU-*` entries are Module-defined Units with bounded Result Responsibility, Unit Resolution and Current Result Content. Existing module-wide Production Method / Knowledge Basis / Lens Profile text is interpreted as shared defaults only where genuinely applicable across Units; Unit-specific questions/guidance/lenses/validators attach to the relevant Unit responsibility.
 
-This conformance does not change SDS temporal authority: selected but unrealized owner semantics remain Step-owned until realization/materialization. Feature target state is direct Step meaning; Scenario/Screen/Domain/Slice/Shared consequences may be hosted first in Step `Evolution Impact` Units and promoted into complete Target Owner Bodies when the selected owner change is sufficiently resolved.
+This conformance does not change SDS temporal authority: selected but unrealized owner semantics remain Step-owned until realization/materialization. Feature target state is direct Step meaning; Scenario/Screen/Domain/Slice/Shared consequences may be hosted first in Step `Evolution Impact` Units and resolved into complete Target Owner Bodies when the selected owner change is sufficiently resolved.
 
 ## Temporal Hosting Rule — Current Owners vs Future Target Bodies
 

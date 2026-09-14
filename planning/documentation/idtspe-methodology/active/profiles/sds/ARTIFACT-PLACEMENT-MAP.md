@@ -40,7 +40,7 @@ Do not create/update current-owner artifacts merely because a future Target Body
 
 `TM-DOMAIN-DISCOVERY` and `TM-IMPLEMENTATION-SLICE` working Targets/artifacts are non-persistent by default. Their exploratory Unit Resolution and rejected alternatives normally disappear after handoff.
 
-Selected Discovery Working Plan Result Content with continuing continuation/realization/review/revalidation value may instead be integrated/projected into the applicable Step `Evolution Impact` Unit. That Step-owned retention does not promote the discovery artifact or implementation-shaped detail into Domain/Slice semantic authority.
+Selected Discovery Working Plan Result Content with continuing pre-realization handoff/review/revalidation value may instead be integrated/projected into the applicable Step `Evolution Impact` Unit. That Step-owned retention does not promote the discovery artifact or implementation-shaped detail into Domain/Slice semantic authority.
 
 Physical persistence of a working artifact remains proportional and is distinct from semantic Result hosting. Exact internal working plans remain transient by default.
 

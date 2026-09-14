@@ -94,3 +94,48 @@ test('Session interaction contract is ambient bootstrap, not a mandatory command
   assert.match(coreCommands,/routes directly to its current semantic owner/i);
   assert.match(registryMap,/is\s+\*\*not\*\*\s+another row in this functional methodology-routing map/i);
 });
+
+test('Evolution Step keeps Feature target state direct and Evolution Impact bounded to peer/supporting subjects',()=>{
+  const evo=read('planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-EVOLUTION-STEP.md');
+  assert.match(evo,/`RU-EVO-02` \| Evolution Impact/);
+  assert.match(evo,/Every selected `NEW` or `CHANGED` Feature uses the ordinary complete `TM-FEATURE` \*\*Feature Definition\*\* contract/);
+  assert.match(evo,/Feature does not use `RU-EVO-02` as its primary future mechanism/);
+  const ruLine=evo.split('\n').find((line)=>line.includes('| `RU-EVO-02` |')) ?? '';
+  assert.match(ruLine,/Scenario\/Screen\/Domain\/Slice\/Shared/);
+  assert.doesNotMatch(ruLine,/Feature|Application/);
+});
+
+test('realized Scenario Screen Domain Slice and Shared owners expose reverse Evolution Impact Units',()=>{
+  const expectations=[
+    ['planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-SCENARIO-PLANNING.md','RU-SCEN-02'],
+    ['planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-SCREEN.md','RU-SCREEN-03'],
+    ['planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-DOMAIN-OWNER.md','RU-DOWN-03'],
+    ['planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-SLICE-OWNER.md','RU-SOWN-03'],
+    ['planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-SHARED-IMPLEMENTATION-CAPABILITY.md','RU-SHARED-04']
+  ];
+  for(const [rel,id] of expectations){
+    const text=read(rel);
+    assert.ok(text.includes(`| \`${id}\` | Evolution Impact`),`${rel}: missing reverse Impact Unit`);
+    assert.match(text,/concrete unrealized Evolution Steps/i,`${rel}: reverse Impact must point to unrealized Steps`);
+  }
+});
+
+test('Evolution Steps Map removes realized Steps from active future projection but may retain compact lineage prerequisites',()=>{
+  const map=read('planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-EVOLUTION-STEPS-MAP.md');
+  assert.match(map,/leave active future projection/);
+  assert.match(map,/realized prerequisite \/ lineage reference/i);
+  assert.match(map,/not a mandatory Step-status enum/i);
+  assert.match(map,/must not continue to look like pending future work/i);
+  assert.match(map,/Current-owner `Evolution Impact` reverse projections likewise stop presenting that Step as active future impact/i);
+});
+
+test('Evolution wording avoids persistence and representation vocabulary collisions',()=>{
+  const evo=read('planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-EVOLUTION-STEP.md');
+  const placement=read('planning/documentation/idtspe-methodology/active/profiles/sds/ARTIFACT-PLACEMENT-MAP.md');
+  const registry=read('planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/README.md');
+  assert.doesNotMatch(evo,/continuing continuation/);
+  assert.doesNotMatch(placement,/continuing continuation/);
+  assert.doesNotMatch(registry,/promoted into complete Target Owner Bodies/);
+  assert.match(registry,/resolved into complete Target Owner Bodies/);
+});
+

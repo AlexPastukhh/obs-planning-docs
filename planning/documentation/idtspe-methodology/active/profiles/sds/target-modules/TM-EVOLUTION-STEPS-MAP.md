@@ -122,6 +122,25 @@ A map entry may reference a dedicated Step or embed a shallow Step. Do not copy 
 
 A generated/derived relation view is valid when it can be regenerated from Step/Core authorities.
 
+## Post-Realization Projection
+
+After successful realization + required proof/revalidation + Target Owner Materialization, a Step is no longer an active unrealized future transition. Remove it from the active candidate/selected/deferred/readiness projection.
+
+When later `requires` interpretation, readiness, navigation or lineage still depends on that Step identity, the Map may retain or derive a compact **realized prerequisite / lineage reference** sufficient to resolve the Step and the fact that its target state was realized. Do not copy its former Target Owner Bodies back into the Map.
+
+```text
+selected/planned Step
+→ active future projection
+
+realization + proof/revalidation + materialization
+→ leave active future projection
+
+identity still needed by later requires/readiness/lineage
+→ compact realized prerequisite / lineage reference
+```
+
+This is a lifecycle/projection rule, not a mandatory Step-status enum. A realized Step may remain historical lineage, but it must not continue to look like pending future work. Current-owner `Evolution Impact` reverse projections likewise stop presenting that Step as active future impact after realization/materialization; any independently useful historical reference is lineage/navigation, not current evolution pressure.
+
 ## Validators / Handoff
 
 ```text
@@ -136,6 +155,8 @@ confidence/uncertainty summary has evidence/assumption basis when material
 Map does not duplicate full Step Target Owner Bodies
 cycle/contradiction pressure is surfaced
 source discovery loads only relevant Steps
+realized Steps are not left in the active future projection
+realized prerequisite/lineage references remain compact and do not copy old target state
 ```
 
 ## Source Discovery Rule
@@ -161,4 +182,6 @@ selection ≠ realization
 requires is semantic prerequisite
 readiness is not inferred from plan existence alone
 vague future idea ≠ Step merely because a Map could list it
+realized Step ≠ active future Step
+realized prerequisite reference ≠ duplicated historical target state
 ```
