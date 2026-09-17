@@ -24,6 +24,11 @@ Replacement Package App
 
 This file is navigation only. It does not own Builder behavior, package schema, consumer behavior, Domain semantics, implementation mechanics or proof requirements.
 
+
+Canonical current TOOL / REPOSITORY working Scenario:
+
+- [`repository-scenarios/SCN-06-BUILD-AND-VERIFY-REPLACEMENT-PACKAGE.md`](repository-scenarios/SCN-06-BUILD-AND-VERIFY-REPLACEMENT-PACKAGE.md)
+
 The older `replacement-package-builder/features/*` and `replacement-package-builder/scenarios/*` target drafts are **legacy Source/Evidence**, not current or selected future semantic authority. Selected future Builder product meaning is owned by:
 
 - [`tools/replacement-package-app/evolution-steps/EVO-RPKG-ESTABLISH-REPLACEMENT-PACKAGE-CONSTRUCTION.md`](tools/replacement-package-app/evolution-steps/EVO-RPKG-ESTABLISH-REPLACEMENT-PACKAGE-CONSTRUCTION.md)

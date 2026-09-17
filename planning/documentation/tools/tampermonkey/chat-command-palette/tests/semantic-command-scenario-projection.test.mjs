@@ -118,7 +118,7 @@ test('tool/repository scenario is repository-owned and archive read-source remai
   const m=memory();
   const scn06=m.scenarioEntries.find((scenario)=>scenario.id==='SCN-06');
   assert.ok(scn06);
-  assert.equal(scn06.source,'planning/documentation/replacement-package-builder/scenarios/SCN-BLDR-BUILD-AND-REVIEW-REPLACEMENT-PACKAGE.md');
+  assert.equal(scn06.source,'planning/documentation/repository-scenarios/SCN-06-BUILD-AND-VERIFY-REPLACEMENT-PACKAGE.md');
   assert.deepEqual(equivalentIds(scn06.steps.find((step)=>step.id==='SCN-06-S1A')),['archive_source.use']);
   assert.deepEqual(equivalentIds(scn06.steps.find((step)=>step.id==='SCN-06-S2')),['replacement_archive.create']);
   assert.deepEqual(equivalentIds(scn06.steps.find((step)=>step.id==='SCN-06-S3')),['critical_review.apply','idtspe.review_consistency']);

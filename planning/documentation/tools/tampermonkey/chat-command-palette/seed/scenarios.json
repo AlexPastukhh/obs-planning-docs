@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "kind": "scenario-seed",
-  "generatedFrom": "planning/documentation/idtspe-methodology/active/idtspe-core/shared/methodology-use-case-scenario-map.md + planning/documentation/replacement-package-builder/scenarios/SCN-BLDR-BUILD-AND-REVIEW-REPLACEMENT-PACKAGE.md",
+  "generatedFrom": "planning/documentation/idtspe-methodology/active/idtspe-core/shared/methodology-use-case-scenario-map.md + planning/documentation/repository-scenarios/SCN-06-BUILD-AND-VERIFY-REPLACEMENT-PACKAGE.md",
   "items": [
     {
       "id": "SCN-01",
@@ -368,7 +368,7 @@
         }
       ],
       "canonicalIntro": "## `SCN-06` TOOL / REPOSITORY — Изменение готово — хочу собрать и проверить replacement package\n\n**Type:** TOOL / REPOSITORY continuation  \n**Entry assumption:** semantic/exact changes already exist in a selected working snapshot/branch. This is not a mandatory IDTSPE stage. This presentation Scenario is owned here with the replacement-package workflow rather than by IDTSPE Core.",
-      "source": "planning/documentation/replacement-package-builder/scenarios/SCN-BLDR-BUILD-AND-REVIEW-REPLACEMENT-PACKAGE.md"
+      "source": "planning/documentation/repository-scenarios/SCN-06-BUILD-AND-VERIFY-REPLACEMENT-PACKAGE.md"
     },
     {
       "id": "SCN-07",

@@ -4,9 +4,8 @@
 > This document belongs to the pre-v14 Builder product model and is not current or selected future semantic authority. Current mechanical package-production semantics are owned by `UC-REPO-BUILD-REPLACEMENT-PACKAGE`; selected future Builder semantics are owned by `EVO-RPKG-ESTABLISH-REPLACEMENT-PACKAGE-CONSTRUCTION` and later verification Evolution. Command invocation remains a derived route, not Scenario/Feature authority.
 
 
-Status: active derived current/target migration map
 
-Canonical BI meaning remains in the planned Builder Scenario. This file only maps selected target BIs to current capability, planned realization ownership and proof gaps.
+Historical BI mapping is retained only as Source/Evidence. It does not establish current or selected future Builder behavior; current producer semantics and selected future Evolution owners named in the retirement banner remain authoritative.
 
 ## Domain boundary decision
 

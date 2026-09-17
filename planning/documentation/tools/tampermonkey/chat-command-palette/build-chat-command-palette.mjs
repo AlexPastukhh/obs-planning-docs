@@ -16,7 +16,7 @@ const scenarioSeedPath=path.join(seedDir,'scenarios.json');
 const useCaseRegistryMapPath='planning/documentation/use-case-registry-map.md';
 const scenarioSourcePaths=[
   'planning/documentation/idtspe-methodology/active/idtspe-core/shared/methodology-use-case-scenario-map.md',
-  'planning/documentation/replacement-package-builder/scenarios/SCN-BLDR-BUILD-AND-REVIEW-REPLACEMENT-PACKAGE.md'
+  'planning/documentation/repository-scenarios/SCN-06-BUILD-AND-VERIFY-REPLACEMENT-PACKAGE.md'
 ];
 const coreTargetRegistryPath='planning/documentation/idtspe-methodology/active/idtspe-core/target-modules/README.md';
 const sdsTargetRegistryPath='planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/README.md';

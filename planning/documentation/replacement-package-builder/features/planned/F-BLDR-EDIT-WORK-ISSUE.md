@@ -8,7 +8,7 @@
 
 `F-BLDR-EDIT-WORK-ISSUE`
 
-Status: future `Introduction`.
+Historical draft position: formerly proposed future `Introduction`; no current/future selection authority.
 
 ## Intent
 
