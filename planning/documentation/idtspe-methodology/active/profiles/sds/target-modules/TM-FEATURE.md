@@ -194,33 +194,24 @@ Transport variants do not automatically define separate semantic entries.
 
 ### RU-FEAT-02 — Semantic Data
 
-Own behavior-facing semantic data meaning needed to understand the Feature. Do not duplicate Domain state ownership or storage schema.
+Own addressable Feature Data Objects as `FDO-*` when behavior-facing data/result identity needs stable reference across FBS/Scenario/realization. Do not duplicate Domain state ownership or storage schema.
 
 ### RU-FEAT-03 — Feature Behavior
 
-Use stable `BR-*` identities for durable addressable must-hold behavior when useful.
-
-Prefer a compact numbered **Main path** when it makes the behavior easiest to follow:
+Feature owns stable Feature-local `FBS-*` identities for addressable semantic behavior actions/transitions when useful.
 
 ```text
-one row = one semantic behavior step
-one step may own one or several BR-*
-canonical BR prose stays beside the owning behavior/branch where practical
+FBS-* = normative Feature behavior step/action
+BR-*  = independently useful Feature must-hold Requirement
 ```
 
-Correctness-critical order is normative. If order is partial or still OPEN, say so rather than silently fixing an implementation-convenience order.
+An FBS may have zero, one or several attached BRs. The step does not need a BR merely to be normative behavior.
 
-For a material branch inside a step:
-- state one exact decision/question;
-- show one path/variant column per real branch when useful;
-- continue ordered actions inside each path;
-- end with explicit convergence, re-entry/retry, Success or Stop.
+Prefer a compact Main Path table when it makes behavior easiest to follow. Use semantic FBS names plus short ordinary numeric suffixes, and keep relevant BRs/errors/QRPE adjacent to the step when practical.
 
-These steps/branch columns are representation, not new persistent Behavior-Step/Branch ontology.
+Correctness-critical order is normative. If order is partial or OPEN, state that rather than fixing implementation-convenience order.
 
-Keep actor/user/AI free-form reasoning in Scenario when the application merely consumes supplied input. Feature behavior starts at the semantic application boundary: what the application accepts, validates, establishes, changes and returns.
-
-Behavior requirements state what the Feature must establish/forbid/return, not how classes or adapters implement it.
+Branch/order/path are selected solution structure, not Requirements by existence. Keep actor/user/AI free-form reasoning in Scenario when the application merely consumes supplied input.
 
 ### RU-FEAT-04 — Implementation Concerns
 

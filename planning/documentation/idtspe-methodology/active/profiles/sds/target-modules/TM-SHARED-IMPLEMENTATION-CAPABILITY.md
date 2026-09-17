@@ -264,3 +264,9 @@ Shared Capability ≠ Slice-specific policy
 cross-cutting application shape ≠ separate Target type
 consumer binding ≠ copied Slice Requirement
 ```
+
+## Behavior / Error Ownership Guard
+
+Shared capability owns reusable mechanics and `IR-SHARED-*`, not Feature/Scenario behavior meaning. The same shared mechanism may realize several behavior owners without becoming their semantic owner.
+
+Expected failures created only by that mechanism may be `ERR-IMP-SHARED-*`. Shared typed-result transport must preserve consumer-defined error semantics instead of creating one global application error ontology.

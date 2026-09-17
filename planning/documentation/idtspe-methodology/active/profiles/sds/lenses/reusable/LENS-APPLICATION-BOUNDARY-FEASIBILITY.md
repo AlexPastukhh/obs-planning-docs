@@ -297,3 +297,7 @@ Market/reference/implementation facts are Target Inputs/Evidence; the Applicatio
 ## Provenance
 
 Pre-Lens Application lenses + later market/reference + refined core real-life scenario decisions.
+
+## Upstream Application Definition Rule
+
+Evaluate Selected/Possible `AB-*`, contribution/boundary intent and whole real-life solution routes. Application Definition may lead realization; not-yet-implemented intent does not become a Target Application Body.

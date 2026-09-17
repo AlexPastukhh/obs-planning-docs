@@ -18,7 +18,7 @@ Future `IR-SLICE-*` / owner-local `PFR-*` remain in the Target Slice Body until 
 ## Source Contract
 
 Possible sources:
-- selected Feature and `BR-*`;
+- selected Feature `FBS-*` / `BR-*` and material Scenario `SR-*`;
 - Slice Discovery working plan;
 - selected Domain owners;
 - selected Shared capabilities;
@@ -98,7 +98,8 @@ Own proportionally:
 ```text
 end-to-end responsibility / implementation result
 Feature reference
-BR-* references
+FBS-* / BR-* realization references
+material SR-* realization references when genuinely cross-Feature
 semantic application entry/result when durable/useful
 Domain owners used
 Shared capability owners used
@@ -140,8 +141,8 @@ For a current realized Slice owner, expose compact navigation/revalidation refer
 ## Production / Revalidation Method
 
 ```text
-selected Feature + discovery/current implementation
-→ establish durable end-to-end responsibility/boundary
+selected Feature FBS/BR/SR obligations + discovery/current implementation
+→ establish a behavior-aligned end-to-end realization path and durable responsibility/boundary
 → reference Domain/Shared owners explicitly
 → select only durable owner-local IR/PFR
 → keep volatile class/call detail implementation-native
@@ -185,3 +186,13 @@ Slice dependency ≠ loss of Slice locality
 IR-SLICE-* ≠ Shared capability contract
 representation choice ≠ semantic identity
 ```
+
+## Behavior Realization Contract
+
+```text
+FBS / BR / material SR
+→ Domain realization vs Slice realization vs joint realization
+→ durable IR-SLICE-* only when a separate implementation must-hold exists
+```
+
+Reference upstream behavior instead of rewriting it. Slice-owned `ERR-IMP-SLICE-*` are expected failures created by selected Slice mechanisms.

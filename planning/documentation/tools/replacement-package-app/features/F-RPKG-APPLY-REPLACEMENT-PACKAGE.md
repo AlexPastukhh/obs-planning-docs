@@ -1,119 +1,73 @@
 # F-RPKG-APPLY-REPLACEMENT-PACKAGE — Apply Replacement Package
 
-Status: active current Feature owner
+## Realizes Upstream Meaning
 
-## Intent
+- [Realize AI-Created Repository Work](../application-definition.md#ab-rpkg-realize-ai-repository-work-01)
+- [Know Repository Work Outcome](../application-definition.md#ab-rpkg-know-repository-work-outcome-02)
 
-Realize one exact validated replacement package for one Work through explicit, recoverable Apply, Commit and Publish modules.
+Current Feature does not own Issue/comments or AI semantic branch decisions. Selected future owner changes are referenced below.
 
-The modules keep separate operation Results and stopping boundaries, while sharing the same `GitWorkspace`, `ReplacementPackageState`, package journal and per-Work serialization boundary. In the current executable, manual UI/CLI entries may invoke modules separately, while automatic `OBS-ACTION apply-package` composes all three modules after workspace establishment.
+## RU-FEAT-02 — Semantic Data
 
-## Semantic Entry
+Feature Data Objects are addressable when Scenario/Screen/other owners need to refer to what the user supplies, has available, or receives. Addressability does not steal Domain ownership.
 
-The current external application entry for this Feature is the supported `OBS-ACTION/1` handoff with `action: apply-package`. The Feature owns accepting/reading that handoff as its application command and resolving the requested package-application invocation. `PACKAGE-PROTOCOL.md` owns the wire grammar and field contract; this Feature owns the behavior selected by the resolved command.
-
-The current executable supports handoff entry only. URI entry is not current behavior. The current handoff selects the fixed full realization path after wider Work prerequisites are established: Apply → Commit → Publish. Future requested extent, automatic Finalize selection and URI entry are owned by dedicated Evolution Steps until realized.
-
-Work Intent and GitWorkspace keep their own natural ownership. The entry composition may ensure those prerequisites before the first Apply module without moving their state semantics into this Feature.
-
-## Principal Result
-
-The Feature's durable realization fact is `ReplacementPackageState` for the exact Work/package identity:
-
-- after **Apply**, exact package bytes are established and package identity is durable;
-- after **Commit**, exact `commitSha` is durable;
-- after **Publish**, exact remote publication evidence is durable in `PublicationObservation`.
-
-Each concrete module invocation returns its own `Result<..., ...>`. Operation Result and durable package state remain distinct.
-
-## Module 1 — Apply
-
-### Result
-
-`Result<ReplacementPackageState, ApplyFailure>`
-
-Success means exact package bytes are established in the Work worktree and exact package identity is durably recorded. Apply stops before Commit.
-
-### Expected behavior
-
-| Behavior step | Requirement |
+| Feature Data Object | Plain meaning |
 |---|---|
-| Read package once | The supplied ZIP is opened/validated/hashed once for the invocation; mutation consumes the captured `PackageData` bytes rather than reopening the mutable archive path. |
-| Resolve exact Work workspace | Apply requires persisted `GitWorkspace` for the same WorkId and requires package `repositoryIdentity` to equal that workspace Repository Target identity. |
-| Enforce package continuity | Same `packageId` is idempotent only for the same exact archive SHA; a different unfinished package blocks a new Apply. |
-| Prove applicability before mutation | Replace/delete require exact expected source; add requires required absence; no undeclared payload is applied. |
-| Journal before mutation | Durable schema-3 journal captures exact package/workspace/base and prior/intended bytes before first file mutation. It starts unproven; retry may only re-prove against unchanged captured prior bytes and may not restore from that journal. Only successful applicability proof durably sets `applicabilityProven=true`, after which it may serve as recovery authority. Digest integrity and captured-`PackageData` byte binding are independent checks. |
-| Persist exact state | After intended bytes are proven, persist `ReplacementPackageState(WorkId, packageIdentity, no commit, NotRequested)`. |
+| <a id="fdo-rpkg-work-id-01"></a>**WorkId**<br><code>FDO-RPKG-WORK-ID-01</code> | Exact Work identity supplied/held by the request; semantic equality comes from the WorkId Domain owner. |
+| <a id="fdo-rpkg-package-identity-02"></a>**Package Identity**<br><code>FDO-RPKG-PACKAGE-IDENTITY-02</code> | Exact Replacement Package identity: packageId + archive SHA-256. |
+| <a id="fdo-rpkg-work-branch-03"></a>**Work Branch**<br><code>FDO-RPKG-WORK-BRANCH-03</code> | Exact Work Branch used for publication. |
+| <a id="fdo-rpkg-apply-result-04"></a>**Apply Result**<br><code>FDO-RPKG-APPLY-RESULT-04</code> | Proven/rejected Apply result for the exact package. |
+| <a id="fdo-rpkg-publication-result-05"></a>**Publication Result**<br><code>FDO-RPKG-PUBLICATION-RESULT-05</code> | Proven/diverged/uncertain publication result for the exact commit/Work Branch. |
 
-If file effects completed after a proven journal but package-state persistence failed, repeating the exact package recovers from that durable proof and persists the same state without rereading different archive bytes. If applicability failed before promotion, retry must prove applicability again and cannot convert matching prior/intended bytes into success.
+## RU-FEAT-03 — Feature Behavior
 
-## Module 2 — Commit applied
+### Global Behavior Requirements
 
-### Result
+| Behavior Requirement | Type | Plain required behavior | Related behavior expected errors | QRPE / Examples |
+|---|---|---|---|---|
+| <a id="br-rpkg-keep-requested-work-package-01"></a>**Keep Requested Work And Package**<br><code>BR-RPKG-KEEP-REQUESTED-WORK-PACKAGE-01</code> | Identity / Scope | When an Apply invocation starts for Work A and package P, it must keep using A/P or stop. | [Wrong Work Or Package](#err-beh-rpkg-wrong-work-or-package-01) | Target Good Example: A/P1 remains A/P1 through every behavior step.<br>Problem Example: A later UI selection silently retargets the running operation. |
+| <a id="br-rpkg-keep-proven-results-02"></a>**Keep Proven Results**<br><code>BR-RPKG-KEEP-PROVEN-RESULTS-02</code> | Recovery / Truthfulness | Already Proven Results remain true through later failures/retries. | [Package Result Conflict](#err-beh-rpkg-package-result-conflict-03) | Target Good Example: Commit C remains proven after Publish fails.<br>Problem Example: Later failure erases C and retry creates a different commit. |
+| <a id="br-rpkg-report-success-only-when-proven-03"></a>**Report Success Only When Proven**<br><code>BR-RPKG-REPORT-SUCCESS-ONLY-WHEN-PROVEN-03</code> | Outcome / Proof | Report success only when the result that defines success is proven. | [Publication Not Confirmed](#err-beh-rpkg-publication-not-confirmed-06) | Target Good Example: Publish success follows fresh proof of remote result.<br>Problem Example: Transport returned ambiguously but the app reports Published. |
 
-`Result<ReplacementPackageState, CommitAppliedFailure>`
+### Main Path
 
-Success returns the exact package state with durable `commitSha`. Commit stops before Publish.
+Path order/branching is the selected Feature behavior solution. It is normative Result Content, but a path row/branch is **not automatically a Requirement**.
 
-### Expected behavior
+| Feature Behavior Step | Required action | Attached Behavior Requirements | Related behavior expected errors | QRPE / Examples |
+|---|---|---|---|---|
+| <a id="fbs-rpkg-resolve-requested-package-01"></a>**Resolve Requested Package**<br><code>FBS-RPKG-RESOLVE-REQUESTED-PACKAGE-01</code> | Resolve and validate the exact requested package before package effects. | <a id="br-rpkg-resolve-exact-requested-package-04"></a>**Resolve Exact Requested Package**<br><code>BR-RPKG-RESOLVE-EXACT-REQUESTED-PACKAGE-04</code> (Identity / Validation) — Use the exact requested package. | [Wrong Work Or Package](#err-beh-rpkg-wrong-work-or-package-01) | Target Good Example: The exact package is bound before effects.<br>Problem Example: Another package is substituted. |
+| <a id="fbs-rpkg-apply-package-02"></a>**Apply Package**<br><code>FBS-RPKG-APPLY-PACKAGE-02</code> | Change the Work files to the exact result declared by the package. | <a id="br-rpkg-apply-only-to-expected-source-05"></a>**Apply Only To Expected Source**<br><code>BR-RPKG-APPLY-ONLY-TO-EXPECTED-SOURCE-05</code> (Eligibility / Safety) — Mutate only while package preconditions remain true.<br><a id="br-rpkg-applied-result-must-match-package-06"></a>**Applied Result Must Match Package**<br><code>BR-RPKG-APPLIED-RESULT-MUST-MATCH-PACKAGE-06</code> (Result / Proof) — Applied result must exactly match the package. | [Package Source Changed](#err-beh-rpkg-package-source-changed-02)<br>[Package Result Conflict](#err-beh-rpkg-package-result-conflict-03) | Target Good Example: Exact declared file result is established.<br>Problem Example: Changed source is overwritten anyway. |
+| <a id="fbs-rpkg-commit-applied-package-03"></a>**Commit Applied Package**<br><code>FBS-RPKG-COMMIT-APPLIED-PACKAGE-03</code> | Create or recover the exact commit containing only the applied package result. | <a id="br-rpkg-commit-only-package-changes-07"></a>**Commit Only Package Changes**<br><code>BR-RPKG-COMMIT-ONLY-PACKAGE-CHANGES-07</code> (Effect Scope / Safety) — Do not include unrelated work.<br><a id="br-rpkg-commit-must-represent-exact-package-08"></a>**Commit Must Represent Exact Package Result**<br><code>BR-RPKG-COMMIT-MUST-REPRESENT-EXACT-PACKAGE-08</code> (Result / Proof) — Prove the exact package commit. | [Unrelated Work Would Be Committed](#err-beh-rpkg-unrelated-work-would-be-committed-04)<br>[Package Result Conflict](#err-beh-rpkg-package-result-conflict-03) | Target Good Example: Commit contains only package paths.<br>Problem Example: Unrelated staged work is included. |
+| <a id="fbs-rpkg-publish-exact-commit-04"></a>**Publish Exact Commit**<br><code>FBS-RPKG-PUBLISH-EXACT-COMMIT-04</code> | Publish/reconcile the exact commit to the requested Work Branch and finish only when the remote result is proven. | <a id="br-rpkg-check-current-remote-before-publish-09"></a>**Check Current Remote Before Publish**<br><code>BR-RPKG-CHECK-CURRENT-REMOTE-BEFORE-PUBLISH-09</code> (Eligibility / Freshness) — Use fresh destination observation.<br><a id="br-rpkg-publish-only-to-requested-work-branch-10"></a>**Publish Only To Requested Work Branch**<br><code>BR-RPKG-PUBLISH-ONLY-TO-REQUESTED-WORK-BRANCH-10</code> (Effect Scope / Safety) — Publish only to the requested Work Branch.<br><a id="br-rpkg-publish-only-when-confirmed-11"></a>**Publish Only When Confirmed**<br><code>BR-RPKG-PUBLISH-ONLY-WHEN-CONFIRMED-11</code> (Outcome / Proof) — Publish succeeds only when confirmed. | [Remote Work Branch Diverged](#err-beh-rpkg-remote-work-branch-diverged-05)<br>[Publication Not Confirmed](#err-beh-rpkg-publication-not-confirmed-06) | R: Push may happen even if the client later sees an error.<br>Target Good Example: Fresh observation later proves the intended commit remotely.<br>Problem Example: Retry pushes again without reconciliation. |
 
-| Behavior step | Requirement |
+### Behavior Expected Errors
+
+| Behavior Expected Error | Type | Plain meaning |
+|---|---|---|
+| <a id="err-beh-rpkg-wrong-work-or-package-01"></a>**Wrong Work Or Package**<br><code>ERR-BEH-RPKG-WRONG-WORK-OR-PACKAGE-01</code> | Identity / Scope | Resolved Work/package differs from request. |
+| <a id="err-beh-rpkg-package-source-changed-02"></a>**Package Source Changed**<br><code>ERR-BEH-RPKG-PACKAGE-SOURCE-CHANGED-02</code> | Eligibility | Package source conditions are no longer true. |
+| <a id="err-beh-rpkg-package-result-conflict-03"></a>**Package Result Conflict**<br><code>ERR-BEH-RPKG-PACKAGE-RESULT-CONFLICT-03</code> | Consistency / Proof | Observed/proven result conflicts with allowed package result. |
+| <a id="err-beh-rpkg-unrelated-work-would-be-committed-04"></a>**Unrelated Work Would Be Committed**<br><code>ERR-BEH-RPKG-UNRELATED-WORK-WOULD-BE-COMMITTED-04</code> | Effect Scope / Safety | Commit would include unrelated work. |
+| <a id="err-beh-rpkg-remote-work-branch-diverged-05"></a>**Remote Work Branch Diverged**<br><code>ERR-BEH-RPKG-REMOTE-WORK-BRANCH-DIVERGED-05</code> | Eligibility / Conflict | Fresh remote state does not permit this Publish. |
+| <a id="err-beh-rpkg-publication-not-confirmed-06"></a>**Publication Not Confirmed**<br><code>ERR-BEH-RPKG-PUBLICATION-NOT-CONFIRMED-06</code> | Outcome / Uncertainty | Exact publication result cannot currently be proven. |
+
+## RU-FEAT-04 — Implementation Concerns
+
+| Concern | Why it matters for this Feature | Natural-owner consequence | Source |
+|---|---|---|---|
+| **Composable package-stage realization** | Selected Evolution must support stopping after Apply/Commit and later composing independent Finalize without duplicating package behavior. | [Keep Package Stages Composable](../slices/SL-RPKG-01-apply-replacement-work.md#ir-slice-rpkg-keep-stages-composable-07) | [Parameterize Apply Handoff](../evolution-steps/EVO-RPKG-PARAMETERIZE-APPLY-HANDOFF.md)<br>[Enable Automatic Finalization](../evolution-steps/EVO-RPKG-ENABLE-AUTOMATIC-FINALIZATION.md) |
+
+This Unit contains actual Feature-specific concerns. Reusable prose about what an Implementation Concern means belongs in methodology, not in the concrete Feature.
+
+
+## RU-FEAT-06 — Evolution Impact
+
+Current Feature authority keeps only reverse navigation to active unrealized Steps that materially change this Feature. Future behavior remains Step-owned.
+
+| Evolution Step | Why this Feature changes |
 |---|---|
-| Load exact owners | Require the Work's persisted `GitWorkspace` and exact `ReplacementPackageState`. |
-| Re-prove package realization | Durable package journal must match WorkId, packageId, archive SHA, worktree, derived branch and exact intended file state. |
-| Commit only intended package paths | Unrelated staged/dirty work fails closed; commit carries exact Package-Id and schema-1 ChangeSet-Id/WorkId trailer. |
-| Recover exact commit | If commit creation succeeded before package-state persistence, retry proves exact branch HEAD, parent, trailers, changed paths and bytes, then reuses that commit. |
-| Persist commit fact | Exact commit SHA is stored in `ReplacementPackageState`; re-proving the same commit preserves publication evidence. |
+| [Parameterize Apply Handoff](../evolution-steps/EVO-RPKG-PARAMETERIZE-APPLY-HANDOFF.md) | Adds ApplyExtent, bounded wait behavior, timeout outcome, and parameterized entry semantics. |
+| [Enable Automatic Finalization](../evolution-steps/EVO-RPKG-ENABLE-AUTOMATIC-FINALIZATION.md) | Adds explicit automatic-Finalize behavior/composition request semantics. |
+| [Add Apply URI Entry](../evolution-steps/EVO-RPKG-ADD-APPLY-URI-ENTRY.md) *(Probable)* | Adds an equivalent URI semantic entry into this Feature request. |
 
-## Module 3 — Publish / Retry Publish
-
-### Result
-
-`Result<ReplacementPackageState, PublishFailure>`
-
-Operation Result says what happened in this invocation. `PublicationObservation` says what remote fact is currently proven.
-
-### Publication evidence
-
-```text
-NotRequested
-NotConfirmed
-ConfirmedAbsent
-ConfirmedTip(sha)
-```
-
-`NotConfirmed` means publication of the intended commit is not currently proven; remote observation is required before any further push. It is also the conservative write-ahead guard persisted immediately before a possible push.
-
-### Expected behavior
-
-| Behavior step | Requirement |
-|---|---|
-| Require exact committed state | Resolve `GitWorkspace`, exact package state and durable package journal; derive the previous publication boundary from journal `baseHead`. |
-| Observe before any possible push | Every not-yet-published invocation captures one verified fetch transport endpoint and performs fresh remote observation through isolated Git transport state; previously persisted `ConfirmedAbsent`/previous-tip evidence is not reusable push authorization. |
-| Decide from observation | Exact intended tip → success; remote absent or exact package `baseHead` → push may be safe; any other tip → `REMOTE_BRANCH_DIVERGED`, no push. |
-| Persist uncertainty guard | Before mechanics may push, durably save `NotConfirmed`; persistence failure blocks the side effect. |
-| Fence destination + push with exact lease | If a push may occur, capture one verified push transport endpoint whose RepositoryIdentity matches observation/source authority, persist `NotConfirmed`, transfer the exact commit into isolated transport state, then push with the exact lease. Registered-repository `origin`/`pushurl` changes and later `url.*.insteadOf` / `pushInsteadOf` changes cannot redirect the side effect. Repository mismatch is a Publish operation failure, not evidence that durable Work state diverged. |
-| Reconcile after possible push | Observe exact remote branch again. Exact intended tip → success; unchanged previous/absent → retryable push failure; anything else → divergence. |
-| Persist stronger evidence | Confirmation is durable. If stronger evidence cannot be saved after possible push, durable `NotConfirmed` remains retry authority. |
-
-`Retry Publish` invokes this same module. It never blindly repushes an unconfirmed prior effect and never uses `Core.ChangeSet.publishedTip` or `PublicationUncertain` as authority.
-
-## Feature boundary decisions
-
-### One Feature, three modules
-
-Apply, Commit and Publish are explicit module/operation boundaries of one replacement-package Apply Feature. Separate operation Results and explicit stop points do not make them separate product Features.
-
-The current automatic `OBS-ACTION apply-package` route composes Start workspace → Apply → Commit → Publish. Current manual module entries remain valid and do not imply a generic Resume abstraction.
-
-### Current command scope
-
-The current target command has no `ApplyExtent` and does not automatically invoke the future Finalize Feature. Planned command parameterization is owned by `../evolution-steps/EVO-RPKG-PARAMETERIZE-APPLY-HANDOFF.md` until implemented; this current Feature owner must not present those future semantics as existing behavior.
-
-### Finalize remains separate
-
-`F-RPKG-FINALIZE-REPOSITORY-WORK` has different eligibility, effects and terminal Result. Future `EVO-RPKG-ENABLE-AUTOMATIC-FINALIZATION` may allow this Apply Feature's semantic entry to invoke Finalize intentionally, but that does not transfer Finalize behavior or ownership into this Feature.
-
-### No legacy runtime authority
-
-No module dispatches from `Core.ChangeSet.executionState` or uses legacy package lifecycle buckets as authority.
+[Introduce Work Finalization](../evolution-steps/EVO-RPKG-INTRODUCE-WORK-FINALIZATION.md) creates a separate Feature and does not by itself change current Apply Feature semantics.

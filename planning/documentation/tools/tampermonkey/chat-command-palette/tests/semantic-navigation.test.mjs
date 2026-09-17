@@ -119,7 +119,7 @@ test('all reusable Lenses separate Target Inputs from explicit Knowledge Basis',
     'planning/documentation/idtspe-methodology/active/profiles/sds/lenses/reusable'
   ];
   const files=roots.flatMap((rel)=>fs.readdirSync(path.join(repoRoot,rel)).filter((name)=>/^LENS-.*\.md$/.test(name)).map((name)=>`${rel}/${name}`));
-  assert.equal(files.length,18);
+  assert.equal(files.length,19);
   for(const rel of files){const text=read(rel);assert.equal((text.match(/^## Knowledge Basis$/gm)||[]).length,1,rel);assert.match(text,/^## Artifact \/ File Implications$/m,rel);}
   const proof=read('planning/documentation/idtspe-methodology/active/idtspe-core/lenses/reusable/LENS-TEST-PROOF-EVIDENCE.md');
   assert.match(proof,/Testing Knowledge Basis/);assert.match(proof,/theoretical-modules\/testing\/README\.md/);
@@ -216,7 +216,7 @@ test('all installed idtspe Target Module and Lens aliases are globally unique an
     }
   }
   assert.equal(aliases.filter((x)=>x.source==='Core Lens registry').length,11);
-  assert.equal(aliases.filter((x)=>x.source==='SDS Lens registry').length,8);
+  assert.equal(aliases.filter((x)=>x.source==='SDS Lens registry').length,9);
 
   const byAlias=new Map();
   for(const item of aliases){
@@ -224,7 +224,7 @@ test('all installed idtspe Target Module and Lens aliases are globally unique an
     assert.equal(prior,undefined,`idtspe alias collision: ${item.alias} -> ${prior?.id} / ${item.id}`);
     byAlias.set(item.alias,item);
   }
-  assert.equal(byAlias.size,35);
+  assert.equal(byAlias.size,36);
 
   for(const [alias,id] of [
     ['scenario','TM-SCENARIO-PLANNING'],

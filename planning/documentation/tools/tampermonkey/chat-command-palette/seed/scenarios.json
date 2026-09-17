@@ -112,13 +112,14 @@
         },
         {
           "id": "SCN-02-S0",
-          "title": "Host the unrealized change in an Evolution Step",
+          "title": "Refine Application intent or host a downstream unrealized transition",
           "semanticRefs": [
+            "TM-APPLICATION-DEFINITION",
             "TM-EVOLUTION-STEP",
             "TM-EVOLUTION-STEPS-MAP",
             "LENS-UNCERTAINTY-ASSUMPTION-REVERSIBILITY"
           ],
-          "canonicalText": "### Step `SCN-02-S0` — host the unrealized change in an Evolution Step\n\n**Trigger / Situation:** Need/Proposal/Decision work has established a sufficiently concrete materially unrealized application transition.  \n**AI Action:** Establish/reuse one coherent `TM-EVOLUTION-STEP` boundary with expected Entry State and concrete driver; keep current natural owners as current truth.  \n**Why This Step:** Future planning must not silently overwrite current Feature/Scenario/Domain/Slice/etc owners before implementation.  \n**Method / Mechanics:** Treat absence as a valid Entry State for greenfield/new-owner work. Real alternatives remain Proposal/Planning Branch state; a Step may exist before final route selection when the future transition is concrete enough for addressability/review.  \n**Possible Result:** A concrete future-transition owner with current Entry State, candidate/selected route context and explicit uncertainty where material.  \n**Derived From / Owners:** `TM-EVOLUTION-STEP`, `TM-EVOLUTION-STEPS-MAP`, `LENS-UNCERTAINTY-ASSUMPTION-REVERSIBILITY`."
+          "canonicalText": "### Step `SCN-02-S0` — refine Application intent or host a downstream unrealized transition\n\n**Trigger / Situation:** Need/Proposal/Decision work has established selected Application intent and/or a sufficiently concrete materially unrealized downstream transition.  \n**AI Action:** If Application need/value/contribution/boundary meaning itself changes, refine `TM-APPLICATION-DEFINITION` directly. If selected downstream Scenario/Feature/Screen/Domain/Slice/Shared meaning remains unrealized, establish/reuse one coherent `TM-EVOLUTION-STEP` and record the Application driver separately from Entry State.  \n**Why This Step:** Application Definition is upstream intent/value authority and may lead realization; downstream current owners still must not be overwritten before implementation.  \n**Method / Mechanics:** `Driven By` is not `Entering From`. Treat absence as a valid downstream Entry State. Real alternatives remain Proposal/Planning Branch state. Do not create Target Application Body/Application materialization.  \n**Possible Result:** Refined selected/possible Application meaning and/or one downstream future-transition owner with explicit semantic/realization prerequisites.  \n**Derived From / Owners:** `TM-APPLICATION-DEFINITION`, `TM-EVOLUTION-STEP`, `TM-EVOLUTION-STEPS-MAP`, `LENS-UNCERTAINTY-ASSUMPTION-REVERSIBILITY`."
         },
         {
           "id": "SCN-02-S1",
@@ -129,7 +130,7 @@
             "TM-SCENARIO-PLANNING",
             "TM-SCREEN"
           ],
-          "canonicalText": "### Step `SCN-02-S1` — establish Feature target state and peer Evolution Impacts\n\n**Trigger / Situation:** The Step needs application behavior and may affect journey/spatial meaning.  \n**AI Action:** Ground the Step in one or more Feature target states. For every selected NEW/CHANGED Feature, form one complete Target Feature Body using `TM-FEATURE`; reference unchanged Feature behavior rather than copying it. Open Scenario/Screen Evolution Impact Units only where the Step materially affects those peers.  \n**Why This Step:** Feature is the behavioral target of the transition, while Scenario/Screen consequences should not create duplicate future roadmaps.  \n**Method / Mechanics:** Co-form/revalidate only material peer meaning. `[NEW]/[CHANGED]` annotations are provenance, never a substitute for the complete Target Feature Body. A selected changed Scenario/Screen may deepen from Impact into its complete Target Owner Body.  \n**Possible Result:** Complete Feature target state plus bounded Scenario/Screen Impacts and only the Target Scenario/Screen Bodies actually needed.  \n**Derived From / Owners:** `TM-EVOLUTION-STEP`, `TM-FEATURE`, `TM-SCENARIO-PLANNING`, `TM-SCREEN`."
+          "canonicalText": "### Step `SCN-02-S1` — establish Feature target state and peer Evolution Impacts\n\n**Trigger / Situation:** The Step needs application behavior and may affect journey/spatial meaning.  \n**AI Action:** Ground the Step in selected downstream behavior. For NEW/CHANGED Features form complete Target Feature Bodies using stable `FBS-*`/`FDO-*`/`BR-*`; use stable `SR-*`/optional `SPS-*` in changed Target Scenarios. Open only material downstream Evolution Impacts/Target Bodies.  \n**Why This Step:** Feature is the behavioral target of the transition, while Scenario/Screen consequences should not create duplicate future roadmaps.  \n**Method / Mechanics:** Co-form/revalidate only material peer meaning. `[NEW]/[CHANGED]` annotations are provenance, never a substitute for the complete Target Feature Body. A selected changed Scenario/Screen may deepen from Impact into its complete Target Owner Body.  \n**Possible Result:** Complete Feature target state plus bounded Scenario/Screen Impacts and only the Target Scenario/Screen Bodies actually needed.  \n**Derived From / Owners:** `TM-EVOLUTION-STEP`, `TM-FEATURE`, `TM-SCENARIO-PLANNING`, `TM-SCREEN`."
         },
         {
           "id": "SCN-02-S2",
@@ -297,7 +298,7 @@
             "UC-DOC-PLAN-DOCUMENTATION-CHANGE",
             "UC-IDTSPE-MAINTAIN-TARGET-MODULE"
           ],
-          "canonicalText": "### Step `SCN-05-S1` — resolve the documentation capability/owner change\n\n**Trigger / Situation:** A methodology/documentation capability, owner boundary, route or contract needs material change.  \n**AI Action:** Use the Documentation change Use Case and, when an IDTSPE component contract itself changes, the corresponding IDTSPE maintenance Use Case.  \n**Why This Step:** Documentation maintenance and planning semantics must not collapse into one owner.  \n**Method / Mechanics:** Resolve current owner(s), intended semantic delta, dependencies and exact realization readiness before mutation.  \n**Possible Result:** A bounded documentation/methodology change ready for realization.  \n**Derived From / Owners:** `UC-DOC-PLAN-DOCUMENTATION-CHANGE`, `UC-IDTSPE-MAINTAIN-TARGET-MODULE`."
+          "canonicalText": "### Step `SCN-05-S1` — resolve the documentation capability/owner change\n\n**Trigger / Situation:** A methodology/documentation capability, owner boundary, route or contract needs material change.  \n**AI Action:** Use the Documentation change Use Case and, when an IDTSPE component contract itself changes, the corresponding IDTSPE maintenance Use Case.  \n**Why This Step:** Documentation maintenance and planning semantics must not collapse into one owner.  \n**Method / Mechanics:** Resolve current owner(s), intended semantic delta, dependencies and exact realization readiness. For a substantial cross-cutting change, produce Documentation Change Coverage naming canonical owners, registries/navigation, commands, canonical scenarios, Helper/generated projections, examples/tests/audits before mutation.  \n**Possible Result:** A bounded documentation/methodology change plus explicit coverage of all affected current/derived surfaces, ready for realization.  \n**Derived From / Owners:** `UC-DOC-PLAN-DOCUMENTATION-CHANGE`, `UC-IDTSPE-MAINTAIN-TARGET-MODULE`."
         },
         {
           "id": "SCN-05-S2",
@@ -431,7 +432,7 @@
           "canonicalText": "### Step `SCN-07-S5` — interpret SDS Requirement/depth semantics only when actually implicated\n\n**Trigger / Situation:** SDS is active and the finding concerns durable owner-local must-hold meaning, or the distinction between behavior/Requirement/implementation architecture materially affects disposition.  \n**AI Action:** Consult the SDS Requirement/depth owners after Core has identified that profile-specific semantics are actually relevant.  \n**Why This Step:** Generic Finding escalation must not become SDS-specific, but SDS provides the natural owner vocabulary when the finding reaches `BR-*`, `IR-*`, `PFR-*` or `PL-L0..L4` meaning.  \n**Method / Mechanics:** Use owner-local Requirement discovery only when durable must-hold meaning may need add/refine/replace/retire. For `ADD NEW`, distinguish a new explicit representation of already-entailed current meaning from genuinely new selected semantics: the former completes the current natural owner with no Evolution Step; the latter belongs in the corresponding Evolution Step Target Body until realization/materialization. Treat planning depth as reasoning/readiness context, not as a rule that every detail at level X is an architecture Decision at level X.  \n**Possible Result:** No Requirement change, current semantic completion with an added/refined current `BR/IR/PFR`, a future Target-Body Requirement/Decision candidate, a current realization correction route, or an upstream revalidation route.  \n**Derived From / Owners:** `LENS-IMPLEMENTATION-REQUIREMENTS-DISCOVERY`, `planning/documentation/idtspe-methodology/active/profiles/sds/shared/requirement-ownership-and-exception-rule.md`, `planning/documentation/idtspe-methodology/active/profiles/sds/shared/directed-methodology-workflow-and-next-step-resolution.md`."
         }
       ],
-      "canonicalIntro": "## 10. `SCN-07` FOCUSED — Нашёлся баг или файндинг — понять, можно ли исправить локально или надо поднимать решение\n\n**Type:** FOCUSED  \n**Entry assumption:** a material Finding Candidate already exists from review, Evidence, validation, exact work, testing, USER observation/clarification that actually surfaces finding-shaped meaning, or another producer. A wanted outcome alone belongs to Need Candidate disposition rather than becoming a Finding automatically. The scenario is generic Core; active profiles contribute only when the finding actually reaches their semantics.",
+      "canonicalIntro": "## 11. `SCN-07` FOCUSED — Нашёлся баг или файндинг — понять, можно ли исправить локально или надо поднимать решение\n\n**Type:** FOCUSED  \n**Entry assumption:** a material Finding Candidate already exists from review, Evidence, validation, exact work, testing, USER observation/clarification that actually surfaces finding-shaped meaning, or another producer. A wanted outcome alone belongs to Need Candidate disposition rather than becoming a Finding automatically. The scenario is generic Core; active profiles contribute only when the finding actually reaches their semantics.",
       "source": "planning/documentation/idtspe-methodology/active/idtspe-core/shared/methodology-use-case-scenario-map.md"
     },
     {
@@ -479,7 +480,38 @@
           "canonicalText": "### Step `SCN-08-S4` — select and integrate without over-retaining trace\n\n**Trigger / Situation:** Candidate meaning is sufficiently reviewed and applicable selection authority is available.  \n**AI Action:** Select/revise/reject/defer through the canonical Proposal lifecycle; integrate selected meaning into affected Unit Result Content / owner.  \n**Method / Mechanics:** Material selection has Decision semantics. Retain a separate explicit/durable Decision trace only when rationale/trade-off/revalidation value should survive. Under SDS, selected but unrealized meaning remains in the applicable Evolution Step Target Body until realization/materialization.  \n**Possible Result:** Current Result Content / selected future result meaning plus only useful retained resolution trace.  \n**Derived From / Owners:** `planning/documentation/idtspe-methodology/active/idtspe-core/shared/proposal-and-decision-lifecycle-contract.md`, `planning/documentation/idtspe-methodology/active/idtspe-core/shared/idtspe-unit-and-target-step-result-model.md`."
         }
       ],
-      "canonicalIntro": "## 11. `SCN-08` FOCUSED — Есть Proposal / вариант решения — понять последствия и довести до разрешения\n\n**Type:** FOCUSED  \n**Entry assumption:** a real Proposal/candidate route exists; a Finding is not required.",
+      "canonicalIntro": "## 12. `SCN-08` FOCUSED — Есть Proposal / вариант решения — понять последствия и довести до разрешения\n\n**Type:** FOCUSED  \n**Entry assumption:** a real Proposal/candidate route exists; a Finding is not required.",
+      "source": "planning/documentation/idtspe-methodology/active/idtspe-core/shared/methodology-use-case-scenario-map.md"
+    },
+    {
+      "id": "SCN-DOC-REGISTRY-01",
+      "type": "FOCUSED",
+      "title": "Я хочу явно пройти по регистрам методологии и увидеть, что применимо",
+      "entryRoute": "UC-DOC-USE-REPOSITORY-GUIDANCE",
+      "assumptions": [
+        "read-only; no component execution"
+      ],
+      "steps": [
+        {
+          "id": "SCN-DOC-REGISTRY-01-S1",
+          "title": "Resolve Use-Case applicability from the root map",
+          "semanticRefs": [
+            "UC-DOC-USE-REPOSITORY-GUIDANCE",
+            "planning/documentation/use-case-registry-map.md"
+          ],
+          "canonicalText": "### Step `SCN-DOC-REGISTRY-01-S1` — resolve Use-Case applicability from the root map\n\n**Trigger / Situation:** The USER wants a visible methodology registry scan for current work.  \n**AI Action:** Use `UC-DOC-USE-REPOSITORY-GUIDANCE`; start at the Methodology Use-Case Registry Map, scan only plausible scoped registries, and identify applicable Use Cases.  \n**Why This Step:** Use Cases govern methodology composition; component registries are not a second root runtime.  \n**Possible Result:** Applicable Use Cases and explicit skipped Use-Case registries.  \n**Derived From / Owners:** `UC-DOC-USE-REPOSITORY-GUIDANCE`, `planning/documentation/use-case-registry-map.md`."
+        },
+        {
+          "id": "SCN-DOC-REGISTRY-01-S2",
+          "title": "Traverse only registries reached by selected Processes",
+          "semanticRefs": [
+            "UC-DOC-USE-REPOSITORY-GUIDANCE",
+            "planning/documentation/idtspe-methodology/active/idtspe-core/shared/methodology-registry-directory.md"
+          ],
+          "canonicalText": "### Step `SCN-DOC-REGISTRY-01-S2` — traverse only registries reached by selected Processes\n\n**Trigger / Situation:** Applicable Use Cases require specialized Target/Lens/component discovery.  \n**AI Action:** Follow only registry directories/components reached by those Use-Case Processes; report scanned registries, reason, plausible applicable entries and deliberately skipped registries.  \n**Why This Step:** A global scan would bypass applicability/materiality and turn registry navigation into a second runtime.  \n**Possible Result:** Registry Traversal Trace with `Execution: NONE`.  \n**Derived From / Owners:** `UC-DOC-USE-REPOSITORY-GUIDANCE`, `planning/documentation/idtspe-methodology/active/idtspe-core/shared/methodology-registry-directory.md`."
+        }
+      ],
+      "canonicalIntro": "## 10. `SCN-DOC-REGISTRY-01` FOCUSED — Я хочу явно пройти по регистрам методологии и увидеть, что применимо\n\n**Type:** FOCUSED / READ-ONLY  \n**Entry assumption:** USER explicitly asks to inspect applicable repository methodology; this is not component execution.",
       "source": "planning/documentation/idtspe-methodology/active/idtspe-core/shared/methodology-use-case-scenario-map.md"
     }
   ]

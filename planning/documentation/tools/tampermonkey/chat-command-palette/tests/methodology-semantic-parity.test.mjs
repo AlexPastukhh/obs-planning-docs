@@ -58,13 +58,13 @@ test('Slice RU schema stays in parity across TM, Core example and supporting tem
   }
 });
 
-test('active SDS registries expose 13 Target Modules and 7 Lenses, excluding retired stubs',()=>{
+test('active SDS registries expose 13 Target Modules and 8 Lenses, excluding retired stubs',()=>{
   const tm=read('planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/README.md');
   const activeTms=[...tm.matchAll(/^\| \[`(TM-[^`]+)`\]\([^)]+\.md\)/gm)].map((m)=>m[1]);
   assert.equal(activeTms.length,13);
   const lens=read('planning/documentation/idtspe-methodology/active/profiles/sds/lenses/README.md');
   const activeLenses=[...lens.matchAll(/^\| \[`(LENS-[^`]+)`\]\([^)]+\.md\)/gm)].map((m)=>m[1]);
-  assert.equal(activeLenses.length,7);
+  assert.equal(activeLenses.length,8);
   for(const id of ['TM-REQUIREMENT','TM-SLICE-STRATEGY','TM-CROSS-CUTTING-CONCERN','TM-TEST-DESIGN','TM-TEST-STRATEGY']){
     assert.equal(activeTms.includes(id),false,`${id}: retired stub leaked into active registry`);
     const stub=read(`planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/${id}.md`);

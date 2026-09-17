@@ -262,3 +262,7 @@ No dedicated Requirement artifact is implied. Selected durable IR/PFR stays with
 ## Revalidation / Composition
 
 Reapply only when the concern, natural owner, accepted behavior/Domain/Slice/Shared boundary, selected Evolution, reusable guidance or relevant proof Evidence changes materially. Compose with the thematic evaluator that explains the concern; do not use this Lens as a substitute for DDD, Vertical Slice, authority/trust, operability, quality or programming-principle reasoning.
+
+## BR / IR Routing Rule
+
+Use the SDS Expected Error + Requirement contract. BR is product behavior; IR is HOW realization must be arranged for current behavior or concrete known Evolution pressure. Existing code shape alone does not justify IR.

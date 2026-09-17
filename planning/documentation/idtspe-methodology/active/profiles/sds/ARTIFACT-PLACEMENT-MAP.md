@@ -48,7 +48,7 @@ Physical persistence of a working artifact remains proportional and is distinct 
 
 ### Application Definition
 
-A realized/current Application Definition used downstream normally needs one durable discoverable canonical representation, existing or new. A selected future Target Application Body remains represented with its Evolution Step until Target Owner Materialization.
+Application Definition is upstream need/value/contribution authority and may lead current downstream realization. Keep one durable discoverable canonical representation when persistence is material. Do not place a selected future Application body inside an Evolution Step; Steps reference Application Definition as driver and own only unrealized downstream owner target state.
 
 ### Feature
 
@@ -202,3 +202,7 @@ retired Slice Strategy view ≠ restored semantic owner
 SDS representation example ≠ required repository tree
 profile projection ≠ Core placement authority
 ```
+
+## Worked Navigation Topology
+
+A project may use `navigation/` for maps/registries whose primary job is discoverability. It is not a semantic-owner namespace; rows stay shallow (`identity + short purpose/status + canonical link + compact relation`).

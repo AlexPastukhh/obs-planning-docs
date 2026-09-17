@@ -76,3 +76,30 @@ Use-Case Registry Map
 The Documentation Use Case never explains how to discover the implementation Slice; the selected SDS component owns that work.
 
 Shared meaning: [`../principles-and-terminology.md`](../principles-and-terminology.md)
+
+## Explicit Registry Traversal Trace
+
+When the USER explicitly asks to inspect/scan methodology registries, keep this Use Case as semantic owner and expose the semantic traversal instead of a low-level file-read log.
+
+```text
+Registry Traversal Trace
+Context
+Use-Case registry traversal
+  registry + why scanned + applicable UC rows
+Active / selected Use Cases
+Downstream registry traversal
+  registry + why scanned + plausibly applicable components
+Registries not scanned + reason
+Unresolved applicability
+Execution: NONE
+```
+
+Guards:
+
+```text
+SCANNED ≠ APPLICABLE
+APPLICABLE ≠ SELECTED
+SELECTED ≠ EXECUTED
+```
+
+Start at the Methodology Use-Case Registry Map, open only plausibly applicable scoped Use-Case registries, then follow only registry directories/components reached by selected Use-Case Processes. Do not globally scan every Target/Lens/theory registry. Ordinary implicit methodology composition need not emit this trace.

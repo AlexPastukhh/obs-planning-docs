@@ -35,6 +35,7 @@ Use [`../../../idtspe-core/lenses/README.md`](../../../idtspe-core/lenses/README
 | [`LENS-SLICE-VERTICALITY-INTEGRATION`](reusable/LENS-SLICE-VERTICALITY-INTEGRATION.md) | Feature/Slice boundary, end-to-end realization, behavior coverage or change locality is material |
 | [`LENS-UI-SPATIAL-FRONTEND-REALIZATION`](reusable/LENS-UI-SPATIAL-FRONTEND-REALIZATION.md) | Screen/spatial/UI/frontend realization questions are material |
 | [`LENS-IMPLEMENTATION-REQUIREMENTS-DISCOVERY`](reusable/LENS-IMPLEMENTATION-REQUIREMENTS-DISCOVERY.md) | reasoning may need to become/change/retire durable owner-local IR/PFR meaning |
+| [`LENS-TERMS-UBIQUITOUS-LANGUAGE`](reusable/LENS-TERMS-UBIQUITOUS-LANGUAGE.md) | durable terminology/definition consistency is material, especially for Requirements/errors |
 
 There is **no Programming Principles Lens**. The complete 22-group reusable corpus is routed through [`../shared/programming-principles/README.md`](../shared/programming-principles/README.md); selected groups are evaluated by their natural Core/SDS Lens or Target Production owner.
 
@@ -51,6 +52,7 @@ ddd                         → LENS-DOMAIN-MODELING-DDD
 verticality                 → LENS-SLICE-VERTICALITY-INTEGRATION
 ui                          → LENS-UI-SPATIAL-FRONTEND-REALIZATION
 implementation-requirements → LENS-IMPLEMENTATION-REQUIREMENTS-DISCOVERY
+terms                       → LENS-TERMS-UBIQUITOUS-LANGUAGE
 ```
 
 `l5` is an invocation compatibility alias only; it does not restore numbered-Lens ontology. Alias resolution does not make a Lens applicable: the selected Lens still checks its own Applicability, Analysis Surface and Supported Operation.

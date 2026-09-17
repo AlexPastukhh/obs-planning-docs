@@ -18,25 +18,29 @@ what application/contribution we are building
 
 Concept, responsibility boundary, proportional existing-solution research, optional refined core real-life scenario and proportional feasibility are aspects of one Application Definition Target.
 
-Use this Target conditionally when the own-Application contribution, responsibility boundary or feasibility is materially unsettled or challenged. Reuse/skip it when trusted current Application meaning is already sufficient and unchanged.
+Use this Target when Application need/value/contribution, responsibility boundary or feasibility is materially unsettled or challenged. Application Definition is upstream intent/value authority and may intentionally lead downstream realization.
 
 ## Temporal Authority / Evolution-Step Hosting
 
-This module defines the **shape and production method** of Application Definition meaning; it does not make unrealized selected meaning current truth by itself.
+Application Definition is the upstream **need/value/contribution authority**. It is not a realized-current-state owner analogous to Feature/Scenario/Screen/Domain/Slice/Shared.
 
 ```text
-review/revalidate an already-realized Application contribution
-→ direct current Application owner use is valid
+Application Definition
+= selected + possible Application needs / Benefits / contribution / boundary intent
 
-plan a new/changed Application contribution that is not yet realized
-→ use this module in a supporting role inside TM-EVOLUTION-STEP
-→ produce a Target Application Body
-→ keep current Application truth unchanged until realization/materialization
+Selected Application intent
+≠ downstream capability already realized
 ```
 
-For greenfield software, no current Application owner is also a valid current state. A selected Target Application Body becomes current authority only after the Step is realized and required proof/revalidation succeeds.
+Use stable addressable `AB-*` when independent downstream reference is useful. Each Benefit may carry:
+- `Selected` — accepted Application value/need that may drive downstream planning;
+- `Possible` — plausible value/need retained for exploration/revalidation but not selected.
 
+`Selected/Possible` is planning/epistemic state, not semantic time or realization status.
 
+When Application meaning changes, refine this owner **directly**. Do not route it through `Evolution Impact`, `Target Application Body`, `CREATE/REPLACE/RETIRE` materialization or current-owner reverse Step references.
+
+Evolution Steps may record `Driven By` references to selected `AB-*` / contribution / boundary intent, but Application Definition is neither semantic Entry State nor a Step-owned Target Body.
 
 ## High-Level Example — Self-Contained Walkthrough
 
@@ -112,7 +116,7 @@ optional Refined Core Real-Life Scenario
 material feasibility findings
 ```
 
-When this walkthrough describes an unrealized application, this becomes a Target Application Body inside the active Evolution Step and a Source for future Feature/Scenario/Screen body planning and optional Prototype work. It becomes current Application authority only after realization/materialization.
+When this walkthrough describes desired Application intent that is not yet realized downstream, the Application Definition may still state that selected intent directly. Concrete unrealized downstream behavior/realization changes are then planned in Evolution Steps and may use this definition as an upstream driver.
 
 ### Boundary / Lesson
 
@@ -453,7 +457,7 @@ WHEN: accepted Application Definition is used downstream
 GUIDANCE: REQUIRED
 PERSISTENCE_GUIDANCE: REQUIRED
 PLACEMENT_DIRECTIVE: PLACE
-SEMANTIC_OWNER: current Application Definition owner when realized; otherwise active TM-EVOLUTION-STEP / Target Application Body
+SEMANTIC_OWNER: TM-APPLICATION-DEFINITION / Application Definition owner
 REPRESENTATION: CURRENT_OWNER_OR_EVOLUTION_STEP_REPRESENTATION
 FILE_OR_ARTIFACT: <application-definition-owner-or-evolution-step-owner>
 CONTENT: concept; responsibility boundary; build/buy/adapt/integrate position; core/secondary real-life scenario inventory; feasibility conclusion
@@ -496,7 +500,7 @@ RESOLVER: P-14 / TF-10
 
 Shell placement semantics: [`artifact-placement-and-idtspe-response-contract.md`](../../../idtspe-core/shared/artifact-placement-and-idtspe-response-contract.md).
 
-**REQUIRED** — an accepted Application Definition used downstream must have one canonical persistent representation in its **actual semantic owner**. For realized/current truth this is the current Application owner; for unrealized future state it is the active Evolution Step / Target Application Body. Do not create a current Application owner artifact ahead of realization merely because the future body is accepted.
+**REQUIRED** — an accepted Application Definition used downstream must have one canonical persistent representation when persistence is material. It remains the upstream semantic owner even when downstream realization lags behind the selected intent.
 
 **PREFERRED** — substantial market/reference research may use a supporting Evidence artifact when it is too large/volatile for the canonical Application Definition. Research observations surface Finding Candidates; Core Finding Disposition may resolve accepted material as Evidence/Proposals or another appropriate State, but never as a second application-semantic owner merely because it came from reference research.
 

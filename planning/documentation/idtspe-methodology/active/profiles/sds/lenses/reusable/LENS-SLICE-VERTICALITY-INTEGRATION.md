@@ -268,3 +268,7 @@ Working Slice Discovery Target/artifact is non-persistent by default. Selected S
 ## Composition / Escalation
 
 Compose with DDD for semantic Domain ownership, IR Discovery for durable constraints, Programming Principles knowledge for generic implementation quality, UI/spatial for frontend realization, Evolution for known change, Simplicity for cost and Test Proof for proof quality.
+
+## Behavior Realization Coverage
+
+Evaluate realization coverage from `FBS-*` / `BR-*` and genuinely cross-Feature `SR-*` into Domain vs Slice vs Shared responsibility. Reference upstream behavior rather than duplicating it.

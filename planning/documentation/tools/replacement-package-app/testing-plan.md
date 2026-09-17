@@ -1,57 +1,41 @@
-# Replacement Package App — Test Strategy
+# Target Proof Plan
 
-Status: active target strategy
+Tests prove owner requirements; tests do not become owner authority.
 
-Tests prove selected behavior; they do not define it.
+## Feature
 
-## Target automated gates
+- prove each current FBS:
+  - `FBS-RPKG-RESOLVE-REQUESTED-PACKAGE-01`;
+  - `FBS-RPKG-APPLY-PACKAGE-02`;
+  - `FBS-RPKG-COMMIT-APPLIED-PACKAGE-03`;
+  - `FBS-RPKG-PUBLISH-EXACT-COMMIT-04`;
+- prove every material global/step-local BR;
+- prove behavior expected errors and their required handling.
 
-### WorkAggregateTests
-Prove:
-- WorkId/RepositoryTarget/GitWorkspace shapes and shared Git transport RepositoryIdentity normalization;
-- exact archive identity requirement;
-- ReplacementPackageState publication semantics;
-- same-commit evidence preservation;
-- exact persisted-key fencing;
-- per-Work `WorkOperationLock` serialization across independent lock instances/processes and same-thread re-entrancy;
-- one unfinished package under concurrency;
-- no legacy package-state import.
+## Scenario
 
-### PackageProtocolTests
-Prove active schema-1 consumer rules without legacy ChangeSet behavior: valid add/replace/delete payload shape, traversal/absolute-path rejection, case collisions, undeclared payload rejection, action payload requirements, ZIP-entry collisions and Work Intent identity consistency.
+For non-obvious Scenario Requirements, proof should make the Target Good Example / Problem Example
+distinction concrete, especially Work-context continuity and user-visible choice.
 
-### PackageApplicabilityTests
-Prove file applicability at the target Apply boundary: exact add/replace/delete, Git-equivalent source acceptance, binary divergence fail-closed behavior, add-target absence, clean-filter unverifiable failure, and exact retries that cannot promote previously failed add/delete/replace into Applied state or restore externally changed bytes from an unproven journal.
+## Domain
 
-### ApplyReplacementPackageFeatureIntegrationTests
-Prove one Apply Feature across its explicit Apply/Commit/Publish module boundaries with real Git where practical:
-- Start Workspace captures/verifies the exact target transport endpoint, cannot be redirected by later origin or `insteadOf` mutation, persists GitWorkspace and creates no Core.ChangeSet;
-- package ZIP is captured once; later path replacement cannot change applied bytes/identity;
-- Apply state-write recovery via schema-3 proven journal, independent digest-corruption and captured-payload-binding rejection, previous-journal-schema fail-closed behavior, and package RepositoryIdentity fencing;
-- Commit is a separate module boundary and recovers exact existing commit after state-write failure;
-- Publish is a separate module boundary and confirms exact remote tip without ChangeSet authority;
-- pre-push NotConfirmed persistence failure blocks push;
-- post-push final-state persistence failure leaves durable NotConfirmed;
-- uncertain Retry confirms before another push;
-- unexpected remote tip and foreign effective origin push URL fail before push; isolated fetch/observation/push endpoints cannot be redirected by later remote-alias, `insteadOf` or `pushInsteadOf` mutation; repository mismatch remains an operation failure rather than false state divergence;
-- every not-yet-published Publish invocation refreshes remote observation before any possible push;
-- sequential packages derive previous tip from package journal;
-- workspace creation recovers after state persistence failure and conflicting leftover journals fail closed;
-- Work lock acquisition failure is operation-local rather than false state divergence;
-- current automatic OBS action composes Start → Apply → Commit → Publish through the same Feature modules and is idempotent.
+Prove Domain realization of the Feature Steps it claims:
+- Apply Proven Result;
+- exact package commit fact;
+- publication proof/uncertainty;
+- exact Work/Package Identity binding.
 
-Planned `ApplyExtent`, automatic Finalize and URI behavior is not part of the current automated gate until the corresponding Evolution Steps are implemented and the affected owners are revalidated.
+## Slice
 
-### ApplyReceiptTests
-Prove schema-1 result formatting remains stable. `status: applied` is top-level handoff only after automatic publication proof.
+Prove end-to-end allocation plus natural IR:
+- captured package/request boundary;
+- applicability before mutation;
+- package-only commit scope;
+- fenced publication destination;
+- reconciliation before repeat;
+- composable stage boundaries for selected Evolution pressure.
 
-### WindowsLauncherInstallerTests
-Keep launcher packaging mechanics proof while the launcher remains part of distributable application operation.
+## Evolution
 
-## Legacy tests
-
-`CoreTests`, `ChatBridgeTests` and DOM bridge regressions belong to the previous legacy executable/source behavior and are intentionally removed from the target build gate. Target-critical package protocol/applicability cases formerly living in `CoreTests` are re-owned by `PackageProtocolTests` and `PackageApplicabilityTests`; legacy UI/chat cases are not.
-
-## Practical acceptance
-
-See `MANUAL-ACCEPTANCE.md` for real filesystem/Git/remote/UI checks. GitHub status checks are separate evidence and must not be inferred from local test success.
+A Target Feature Body remains Step-owned until realization. Materialization removes only
+planning-only realization annotations, not selected FBS/BR/error semantics.

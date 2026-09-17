@@ -1,16 +1,9 @@
-# Replacement Package App — Features
+# Replacement Package App — Feature Navigation
 
-Status: current target Feature catalog
+Status: compatibility navigation projection
 
-Replacement-package realization:
-- `F-RPKG-APPLY-REPLACEMENT-PACKAGE.md` — one current Feature realized through explicit Apply, Commit and Publish/Retry modules; the current handoff entry is part of this Feature boundary.
+Canonical current Feature registry: [`../navigation/FEATURE-REGISTRY.md`](../navigation/FEATURE-REGISTRY.md).
 
-Separate current capability:
-- `F-RPKG-EXPORT-REPOSITORY-SNAPSHOT.md`
+Current accepted Feature authority in this documentation set is [`F-RPKG-APPLY-REPLACEMENT-PACKAGE`](F-RPKG-APPLY-REPLACEMENT-PACKAGE.md).
 
-Selected future capability:
-- Work-centered `F-RPKG-FINALIZE-REPOSITORY-WORK` is not a current Feature owner yet; its complete target Feature body is owned by [`../evolution-steps/EVO-RPKG-INTRODUCE-WORK-FINALIZATION.md`](../evolution-steps/EVO-RPKG-INTRODUCE-WORK-FINALIZATION.md) until realization/promotion.
-
-Legacy-source Feature documents for old Current Change/Finalize behavior are not current target runtime authority. The already-deployed old executable owns those old workflows.
-
-`Apply`, `Commit` and `Publish` are module/operation boundaries of one replacement-package Apply Feature. Their independent operation Results do not create three product Features. Future `ApplyExtent`, automatic Finalize composition and URI entry are owned by dedicated Evolution Steps referenced from `../evolution-steps-map.md`.
+Repository Snapshot and Builder construction are not accepted current Feature owners; follow the Evolution Map for their selected target semantics. Work Finalization remains future Step-owned until realization/materialization.

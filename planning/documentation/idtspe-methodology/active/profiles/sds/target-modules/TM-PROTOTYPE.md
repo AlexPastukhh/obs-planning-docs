@@ -223,3 +223,20 @@ question still requires real implementation
 → preserve useful inquiry context + prototype limits
 → TM-PRACTICAL-TEST later
 ```
+
+## Evolution Horizon Extension
+
+Prototype is optional and never automatic merely because an Evolution Step exists. A Prototype Target may investigate one Step, one Planning Branch, or the cumulative projected state of several selected/planned Steps.
+
+Record material baseline/predecessor status (`REALIZED / PARTIAL / SIMULATED / STUBBED`), projected target set, fidelity by dimension, explicit side-effect boundary, and link to a separate physical prototype artifact when one exists.
+
+```text
+evolution-steps/
+  EVO-....md
+  PROTO-....md       # TM-PROTOTYPE Target instance
+
+prototypes/
+  PROTO-.../         # executable/mock/throwaway subject
+```
+
+`Prototype Target ≠ Prototype Artifact`; `prototype success ≠ Step realized`.

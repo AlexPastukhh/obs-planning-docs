@@ -640,3 +640,7 @@ Do not silently place future meaning into a current natural-owner artifact merel
 This contract ends at persistence/representation. Methodology continuation/next-target guidance is not artifact-placement authority.
 
 Generic handoff/Methodology Direction is exposed through Shell `P-13` and the active Use-Case/profile readiness owners. Current SDS readiness owner: [`../../profiles/sds/shared/directed-methodology-workflow-and-next-step-resolution.md`](../../profiles/sds/shared/directed-methodology-workflow-and-next-step-resolution.md).
+
+## Navigation Placement Projection
+
+When material, P-14 may record `Primary Entry`, `Required Outgoing`, `Return / Coordinator`, and `Derived Navigation: GENERATED | EXPLICIT | NONE`. These guide representation only; links/indexes never create semantic ownership.

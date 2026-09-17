@@ -250,3 +250,7 @@ Domain question
 ```
 
 Compose with Vertical Slice for end-to-end ownership, IR Discovery for durable constraints, Programming Principles knowledge for generic implementation-quality concerns, Evolution for known change and Test Proof for proof quality.
+
+## Behavior / Language Alignment
+
+Trace material upstream `FBS-*` / `BR-*` realization and apply Terms/Ubiquitous Language. Do not reward generic object/state catalogs disconnected from behavior responsibility.

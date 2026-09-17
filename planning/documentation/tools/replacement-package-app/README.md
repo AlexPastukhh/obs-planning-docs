@@ -1,88 +1,42 @@
-# OBS Replacement Package App
+# Replacement Package Application
 
-Status: active current target documentation
-Runtime: Java 21 / Swing
-Scope: Work-centered replacement-package realization plus separate Repository Snapshot capability.
+Status: proposed documentation/navigation view over upstream Application intent, current accepted downstream owners, and planned evolution.
 
-## Current application route
+`APP-RPKG` is one semantic Application with multiple executable/tool parts. Executable identity does not define Application identity. See [`application-definition.md`](application-definition.md).
 
-```text
-Repository Target + WorkId
-→ Work Intent
-→ GitWorkspace
-→ Apply Package
-→ Commit applied
-→ Publish / Retry Publish
-```
+## Where to start
 
-Automatic `OBS-ACTION apply-package` composes the same operations. It is not a generic Resume/state-machine entry.
+- **What this Application is / why it exists** → [`application-definition.md`](application-definition.md)
+- **Maps / registries / where authority lives** → [`navigation/README.md`](navigation/README.md)
+- **Current Scenario** → [`navigation/SCENARIO-REGISTRY.md`](navigation/SCENARIO-REGISTRY.md)
+- **Current Features** → [`navigation/FEATURE-REGISTRY.md`](navigation/FEATURE-REGISTRY.md)
+- **Implementation-owner navigation** → [`navigation/OWNER-MAP.md`](navigation/OWNER-MAP.md)
+- **Planned future** → [`navigation/EVOLUTION-STEPS-MAP.md`](navigation/EVOLUTION-STEPS-MAP.md)
+- **Cumulative planned-horizon Prototype Target** → [`evolution-steps/PROTO-RPKG-SELECTED-PLANNED-HORIZON-01.md`](evolution-steps/PROTO-RPKG-SELECTED-PLANNED-HORIZON-01.md)
+- **Physical prototype subjects** → [`prototypes/README.md`](prototypes/README.md)
+- **Sibling Builder implementation subject** → [`../replacement-package-builder/README.md`](../replacement-package-builder/README.md)
 
-The target executable does not open/adopt old persisted ChangeSet works. The already-deployed old executable remains owner of legacy ChangeSet Review/Chat/Finalize behavior.
+## Documentation areas
 
-## Behavioral authority
+| Area | Responsibility |
+|---|---|
+| [`application-definition.md`](application-definition.md) | upstream Application intent/value, Selected/Possible Benefits and contribution/boundary intent |
+| [`TERMS.md`](TERMS.md) | current selected application vocabulary only; future Step-owned terms stay in their Step until materialization |
+| [`navigation/`](navigation/README.md) | non-authoritative maps/registries and read paths; use this to find authority |
+| [`features/`](features/) | current accepted Feature behavior owners |
+| [`scenarios/`](scenarios/) | current accepted Scenario journey owners |
+| [`domain/`](domain/) | current accepted Domain semantic owners represented in documentation where useful |
+| [`slices/`](slices/) | current accepted end-to-end realization owners |
+| [`evolution-steps/`](evolution-steps/) | future `TM-EVOLUTION-STEP` authorities plus peer `TM-PROTOTYPE` Target-instance files that investigate the planned horizon |
+| [`prototypes/`](prototypes/README.md) | physical executable/mock/throwaway prototype subjects only; not Prototype Target authority |
+| [`testing-plan.md`](testing-plan.md) | proof/navigation plan tied back to semantic owners; tests do not become owner authority |
 
-- [`scenarios/SCN-RPKG-COMPLETE-REPOSITORY-WORK.md`](scenarios/SCN-RPKG-COMPLETE-REPOSITORY-WORK.md) — current Work/package realization Scenario;
-- [`features/`](features/) — one Apply Feature authority with Apply/Commit/Publish modules;
-- [`screens.md`](screens.md) — current target Main Work Window;
-- [`domain/README.md`](domain/README.md) — Work-centered owner map;
-- [`slices.md`](slices.md) — current target Slice navigation;
-- [`evolution-steps-map.md`](evolution-steps-map.md) — evolution registry/readiness map; substantial future target states live in dedicated `evolution-steps/` owners.
+`navigation/` answers **where is the authority?**; owner/Step files answer **what is the meaning?**
 
-Separate current capability:
-- [`scenarios/SCN-RPKG-PROVIDE-REPOSITORY-CONTEXT.md`](scenarios/SCN-RPKG-PROVIDE-REPOSITORY-CONTEXT.md) / Repository Snapshot.
+## Current / future guard
 
-Future requested extent, independent Work Finalization, automatic Apply→Finalize composition and URI entry remain planned in dedicated Evolution Step owners routed by `evolution-steps-map.md`; they are not current executable behavior.
+Existing Builder PB-01/PB-02 implementation is not treated as accepted current package-construction Feature authority in this proposal. It is implementation Evidence pending [`Establish Replacement Package Construction`](evolution-steps/EVO-RPKG-ESTABLISH-REPLACEMENT-PACKAGE-CONSTRUCTION.md).
 
-## Documentation methodology
+Repository Snapshot is also **not** current capability. Its selected target meaning exists only in [`Introduce Repository Snapshot Workflow`](evolution-steps/EVO-RPKG-INTRODUCE-REPOSITORY-SNAPSHOT-WORKFLOW.md) until realization/materialization.
 
-Root process authority:
-- [`documentation-use-cases.md`](documentation-use-cases.md) — shared terminology, process routing, cross-group rules and stable Documentation Use Case identities.
-
-Normative Documentation Use Case groups:
-- [`documentation-use-cases/application-modeling.md`](documentation-use-cases/application-modeling.md) — Scenario / Feature / Screen planning;
-- [`documentation-use-cases/implementation-discovery-and-proof.md`](documentation-use-cases/implementation-discovery-and-proof.md) — Domain/Slice/Shared discovery, implementation Requirements and proof;
-- [`documentation-use-cases/evolution-planning.md`](documentation-use-cases/evolution-planning.md) — Evolution Step planning;
-- [`documentation-use-cases/documentation-governance.md`](documentation-use-cases/documentation-governance.md) — readability, ownership and documentation-interface maintenance;
-- [`documentation-use-cases/ai-session-work.md`](documentation-use-cases/ai-session-work.md) — AI planning/proposal/finding/exact-realization/execution Use Cases.
-
-Reusable guidance:
-- [`methodology-guidance/reusable-guidance-model.md`](methodology-guidance/reusable-guidance-model.md);
-- [`methodology-guidance/reusable-ddd-domain-discovery.md`](methodology-guidance/reusable-ddd-domain-discovery.md);
-- [`methodology-guidance/reusable-vertical-slice-discovery.md`](methodology-guidance/reusable-vertical-slice-discovery.md);
-- [`methodology-guidance/reusable-programming-principles.md`](methodology-guidance/reusable-programming-principles.md).
-
-Detailed AI/session procedures:
-- [`session-methodology/README.md`](session-methodology/README.md).
-
-Recommended forms:
-- [`documentation-templates.md`](documentation-templates.md).
-
-Methodology navigation does not replace product semantic authority. Feature/Scenario/Domain/Slice/Shared owners remain authoritative for selected application meaning.
-
-## Focused contracts
-
-- [`PACKAGE-PROTOCOL.md`](PACKAGE-PROTOCOL.md) — schema-1 package/action consumer contract;
-- [`APPLY-RESULT.md`](APPLY-RESULT.md) — top-level automatic result handoff;
-- [`MANUAL-ACCEPTANCE.md`](MANUAL-ACCEPTANCE.md) — target practical acceptance.
-
-## Current source boundary
-
-Target executable entry paths use:
-- `WorkId`;
-- `GitWorkspace` / `FileGitWorkspaceRepository`;
-- `ReplacementPackageState` / its repository;
-- durable workspace/package journals;
-- explicit Apply / Commit / Publish application services.
-
-`Core.ChangeSet` may remain temporarily as unreachable retired source while mechanical legacy deletion is completed, but it is not current target behavior authority.
-
-## Build / run
-
-Windows requirements: JDK 21, Git, authenticated `gh` for Work Intent, Node/Edge only for separately-retained legacy tooling outside the target Main Work Window.
-
-```cmd
-run-tests.cmd
-run-app.cmd
-```
-
-`build.cmd` produces `build\replacement-package-app.jar` and compiles the target test set. Legacy Core/ChatBridge suites are intentionally not acceptance gates for the new executable after Forced Migration.
+Apply URI Entry and automatic Snapshot attachment remain **Probable**, not Selected/Planned.

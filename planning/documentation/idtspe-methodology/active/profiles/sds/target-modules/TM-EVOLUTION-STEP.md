@@ -9,7 +9,7 @@ Own one coherent **not-yet-realized** qualitative transition from an expected En
 
 An Evolution Step is the canonical SDS semantic owner for materially planned future state. Current natural owners remain authority for accepted current semantic contracts until the represented transition is actually implemented and the required proof/revalidation succeeds.
 
-Every Step is behaviorally grounded by one or more Feature target states. Material consequences for Scenario, Screen, Domain, Slice and Shared responsibilities are resolved through bounded `Evolution Impact` Units.
+A Step may be Behavioral, Implementation or Mixed. Material downstream consequences for Feature, Scenario, Screen, Domain, Slice and Shared are represented through bounded impacts and complete Target Owner Bodies. Application Definition is upstream intent/value authority and may drive a Step but is not a Step Target Owner Body.
 
 ```text
 current natural owners + actual implementation / Evidence
@@ -49,7 +49,7 @@ Proposal selected
 
 An implementation defect does not silently rewrite the current semantic owner. A selected correction/change that is still unrealized belongs to an Evolution Step until realization/materialization.
 
-Absence is a valid current Entry State. Creating the first Feature, Scenario, Screen, Domain, Slice, Shared capability, Application Definition or owner-local Requirement may therefore be planned from `not present` to selected post-Step meaning.
+Absence is a valid current Entry State. Creating the first Feature, Scenario, Screen, Domain, Slice, Shared capability or owner-local Requirement may therefore be planned from `not present` to selected post-Step meaning.
 
 For Requirements and other owner-local must-holds, `not present` here means **semantically absent from accepted current owner meaning**, not merely absent as an explicit sentence/ID/file fragment.
 
@@ -126,15 +126,17 @@ Meaning created by an earlier required Step is `[EXISTING]` in a later Step once
 
 ## Relations
 
-Canonical prerequisite relation:
+Keep two relations distinct:
 
 ```text
-Step B requires Step A
+Entering From / semantic prerequisite
+= predecessor target meaning must already be realized/materialized because it forms Entry State
+
+Realization Prerequisite
+= implementation foundation that must be realized before implementation begins, without becoming product semantics
 ```
 
-`requires` states a semantic prerequisite. `enables` is derived reverse navigation. Dependency cycles are architecture pressure and require re-evaluation rather than acceptance as normal planning topology.
-
-Alternative/conditional relations may be represented through ordinary Proposal/Planning-Branch/Decision relations or compact Map navigation. Do not invent a closed Step-variant relation taxonomy unless a real later need appears.
+`enables` is derived reverse navigation. Do not turn a realization foundation into a fake semantic predecessor or total chronology.
 
 ## Step Kinds
 
@@ -150,13 +152,19 @@ The kind describes transition character; it does not replace the target-state co
 
 ## Source / Readiness Contract
 
-Before realization, compare actual current state to the Step's expected Entry State. Planned predecessor existence is not equivalent to Entry State being realized.
+Before realization, compare actual current state to expected Entry State and all Realization Prerequisites.
 
-A selected Step must be independently usable/coherent at its own finish. Do not create an intermediate selected Step that only makes sense if a later Step is also completed unless the intermediate result is itself coherent.
+Each substantial Step owns:
 
-A candidate/branch route may remain incomplete where the incompleteness is explicit and is exactly what the branch/question exists to resolve.
+```text
+Readiness: READY | NOT_READY
+reason / blockers
+Step Q/R/P with blocking significance
+```
 
-Direct Step work is self-sufficient: resolve current affected owners, lazily inspect the Steps Map when it exists, reuse applicable Step identity/relations, read only material prerequisite Steps, and return Map consequences. The USER does not need to plan the Map first.
+`READY` means semantic Entry State and realization prerequisites are realized, intended CREATE/REPLACE owners have complete enough Target Bodies, the Materialization Set is truthful, and no blocking Q/R/P remains. `READY ≠ REALIZED`.
+
+The Map projects only the enum; detailed reasons stay in the Step.
 
 ## Unit Contract Conformance
 
@@ -276,7 +284,6 @@ Target Owner Bodies use the affected owner's ordinary Target Module/contract sha
 Examples:
 
 ```text
-Target Application Body
 Target Feature Body
 Target Scenario Body
 Target Screen Body
@@ -475,3 +482,17 @@ requires ≠ chronology-only ordering
 future owner-shaped body ≠ new Future* ontology
 Target Owner Materialization ≠ P-14 representation promotion
 ```
+
+## Application Driver / Change Surface
+
+When useful:
+
+```text
+Driven By: selected AB-* / selected Application contribution or boundary intent
+Change Surface: Behavioral | Implementation | Mixed
+Evolution Role: optional Foundation / evolution-enabling or other descriptive role
+```
+
+A pure implementation Step is valid under concrete selected pressure (correctness, safety, consistency, migration or known Evolution). Generic cleanup alone is not enough.
+
+Application Definition is refined directly in `TM-APPLICATION-DEFINITION`; do not create Application Definition Impact, Complete Target Application Body or Application Definition materialization rows.

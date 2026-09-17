@@ -214,3 +214,16 @@ one Feature/Slice may involve many Screens
 ## Handoff
 
 Screen meaning is a source to Feature/Slice realization where UI obligations are material. Practical UI behavior may be explored through `TM-PROTOTYPE` before committed realization or `TM-PRACTICAL-TEST` against the real implementation/environment.
+
+## Natural Visual Requirement Owner
+
+Visuality alone does not create Screen ownership:
+
+```text
+journey visibility/interaction must-hold → SR-* when Scenario-natural
+Feature behavior/result must-hold → BR-* when Feature-natural
+independently meaningful reusable spatial/navigation composition → Screen
+frontend mechanism → IR-* at natural realization owner when durable
+```
+
+A simple visual SR/BR may be realized directly in UI code without a separate Screen requirement family.

@@ -27,7 +27,8 @@ A Scenario may own proportionally:
 - result/context continuity from one step to the next;
 - Screen/external-system participation when journey-significant;
 - terminal Benefit closure / what makes the journey complete;
-- journey-level must-hold constraints that are not merely copied Feature behavior;
+- stable `SR-*` Scenario Requirements for journey-level must-holds that are not merely copied Feature behavior;
+- optional stable `SPS-*` Scenario Path Step identities when a path step needs independent cross-reference/revalidation;
 - optional E2E Proof Intent when whole-journey proof is independently useful.
 
 ## Source Contract
@@ -183,9 +184,19 @@ Conditional SDS/Core Lenses:
 
 ## Journey Constraint Identity
 
-Fresh R2 permits `SR-*` labels for journey-level requirements. This migration preserves the **journey must-hold meaning** but does not establish a target-state `SR-*` Requirement family.
+Scenario owns a stable `SR-*` Requirement family for independently useful journey-level must-holds.
 
-Use stable local addressability only when the journey constraint needs independent reference/revalidation. Do not copy Feature `BR-*` text.
+```text
+journey must-hold natural to the Scenario
+→ SR-*
+
+Feature behavior must-hold
+→ BR-* in Feature; Scenario references it rather than copying it
+```
+
+Use stable `SPS-*` identities for Scenario path steps only when cross-reference/revalidation benefits from identity. Order/branch/path structure may itself be selected normative journey structure without becoming an SR merely by existing.
+
+A Scenario may reference Feature-owned `FDO-*` to make inter-step data/result continuity explicit.
 
 ## Evolution / Change Outlook
 

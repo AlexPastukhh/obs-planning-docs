@@ -1,171 +1,151 @@
 # EVO-RPKG-ADD-APPLY-URI-ENTRY — Add Apply URI Entry
 
-Status: PLANNED
-Evolution Kinds: Expansion
+[← Evolution Steps Map](../navigation/EVOLUTION-STEPS-MAP.md)
 
-## Evolution Intent
+Planning Position: **Probable — not selected**  
+Target Resolution: **Substantial Target (candidate)**
+Change Surface: **Mixed**  
 
-Add URI as a second application entry representation for the same fully parameterized Apply command, preserving identical Apply extent and Finalize selection semantics.
+## Driven By Application Definition
+- [Realize AI-Created Repository Work](../application-definition.md#ab-rpkg-realize-ai-repository-work-01)
+- [Delegate Mechanical Repository Work](../application-definition.md#ab-rpkg-delegate-mechanical-repository-work-04)
 
-## Requires
+## Entering From
+- [Enable Automatic Finalization](EVO-RPKG-ENABLE-AUTOMATIC-FINALIZATION.md) realized/materialized
 
-- `EVO-RPKG-ENABLE-AUTOMATIC-FINALIZATION`.
+## Realization Prerequisite
+- [`Standardize Typed Operation Results`](EVO-RPKG-STANDARDIZE-OPERATION-RESULTS.md)
 
-## Expected Entry State
+## Step Purpose
+Likely add URI as an equivalent entry into the same complete semantic Apply request, not a second behavior contract. The transition is concrete enough to keep Step identity and substantial candidate target planning, but it is **not selected**.
 
-- the handoff entry already resolves to one stable `PackageApplicationRequest`;
-- that request carries all selected Apply modularity and automatic-Finalize semantics;
-- Apply Feature owns entry consumption and command behavior.
+## Selection Boundary
+The target bodies below are candidate post-Step planning for this probable Step. They do not authorize materialization or implementation until the normal Proposal/Decision authority selects this Step/route.
 
-## Target Owner Promotion Set
+## Owner Impacts
+### Feature Impact — Apply Replacement Package — CHANGED
+Adds normalized `Apply Entry` and BR `Keep Entry Forms Equivalent` plus expected invalid-entry outcome.
 
-- **REPLACE** `../features/F-RPKG-APPLY-REPLACEMENT-PACKAGE.md` with the Target Feature body below after realization/revalidation.
-- **REVALIDATE/REPLACE AS MATERIAL** URI/protocol/screen/installation/proof owners required for a usable URI entry.
+### Scenario Impact — CHANGED
+Adds existing-entry vs URI entry branch that converges before Apply Feature behavior.
 
-## Target Feature — F-RPKG-APPLY-REPLACEMENT-PACKAGE
+### Adapter/Slice Impact — CHANGED/NEW
+URI adapter parses/validates/normalizes only; it does not own Work/Feature semantics.
 
+## Candidate Target Feature Body
+<a id="f-rpkg-apply-replacement-package"></a>
 # F-RPKG-APPLY-REPLACEMENT-PACKAGE — Apply Replacement Package
 
-Status: active current Feature owner
+## Realizes Upstream Meaning
+- [Realize AI-Created Repository Work](../application-definition.md#ab-rpkg-realize-ai-repository-work-01)
+- [Know Repository Work Outcome](../application-definition.md#ab-rpkg-know-repository-work-outcome-02)
 
-## Intent
-
-Realize one exact validated replacement package for one Work through explicit, recoverable Apply, Commit and Publish modules.
-
-The modules keep separate operation Results and stopping boundaries, while sharing the same `GitWorkspace`, `ReplacementPackageState`, package journal and per-Work serialization boundary.
-
-## Semantic Entry
-
-The Feature accepts/reads either the supported handoff representation or the supported application URI representation. Both are entry adapters of this same Feature and must resolve to the same semantic `PackageApplicationRequest`. `PACKAGE-PROTOCOL.md` and the URI representation contract own their wire grammars; this Feature owns resolution into and execution of the semantic command.
-
-## Application Command
-
-`PackageApplicationRequest` carries exact Work/package/repository inputs plus:
-
-```text
-ApplyExtent = APPLY | APPLY_COMMIT | APPLY_COMMIT_PUBLISH
-FinalizeMode = NONE | AUTOMATIC
-```
-
-For semantically equivalent inputs:
-
-```text
-resolve(handoff) == resolve(uri)
-```
-
-The selected entry representation must not change Apply extent, Finalize selection, identity, validation, recovery or Result semantics. The Feature executes the request exactly as defined by the post-automatic-finalization Feature contract.
-
-## Principal Result
-
-The Feature's durable realization fact is `ReplacementPackageState` for the exact Work/package identity:
-
-- after **Apply**, exact package bytes are established and package identity is durable;
-- after **Commit**, exact `commitSha` is durable;
-- after **Publish**, exact remote publication evidence is durable in `PublicationObservation`.
-
-Each concrete module invocation returns its own `Result<..., ...>`. Operation Result and durable package state remain distinct.
-
-## Module 1 — Apply
-
-### Result
-
-`Result<ReplacementPackageState, ApplyFailure>`
-
-Success means exact package bytes are established in the Work worktree and exact package identity is durably recorded. Apply stops before Commit.
-
-### Expected behavior
-
-| Behavior step | Requirement |
+## RU-FEAT-02 — Semantic Data
+| Feature Data Object | Plain meaning |
 |---|---|
-| Read package once | The supplied ZIP is opened/validated/hashed once for the invocation; mutation consumes the captured `PackageData` bytes rather than reopening the mutable archive path. |
-| Resolve exact Work workspace | Apply requires persisted `GitWorkspace` for the same WorkId and requires package `repositoryIdentity` to equal that workspace Repository Target identity. |
-| Enforce package continuity | Same `packageId` is idempotent only for the same exact archive SHA; a different unfinished package blocks a new Apply. |
-| Prove applicability before mutation | Replace/delete require exact expected source; add requires required absence; no undeclared payload is applied. |
-| Journal before mutation | Durable schema-3 journal captures exact package/workspace/base and prior/intended bytes before first file mutation. It starts unproven; retry may only re-prove against unchanged captured prior bytes and may not restore from that journal. Only successful applicability proof durably sets `applicabilityProven=true`, after which it may serve as recovery authority. Digest integrity and captured-`PackageData` byte binding are independent checks. |
-| Persist exact state | After intended bytes are proven, persist `ReplacementPackageState(WorkId, packageIdentity, no commit, NotRequested)`. |
+| <a id="fdo-rpkg-work-id-01"></a>**WorkId**<br><code>FDO-RPKG-WORK-ID-01</code> | Exact Work identity. |
+| <a id="fdo-rpkg-package-identity-02"></a>**Package Identity**<br><code>FDO-RPKG-PACKAGE-IDENTITY-02</code> | packageId + exact archive hash. |
+| <a id="fdo-rpkg-work-branch-03"></a>**Work Branch**<br><code>FDO-RPKG-WORK-BRANCH-03</code> | Exact requested publication branch. |
+| <a id="fdo-rpkg-apply-result-04"></a>**Apply Result**<br><code>FDO-RPKG-APPLY-RESULT-04</code> | Proven/rejected Apply result. |
+| <a id="fdo-rpkg-publication-result-05"></a>**Publication Result**<br><code>FDO-RPKG-PUBLICATION-RESULT-05</code> | Proven/diverged/uncertain publication result. |
+| <a id="fdo-rpkg-apply-extent-06"></a>**Apply Extent**<br><code>FDO-RPKG-APPLY-EXTENT-06</code> | Requested terminal package-realization extent. |
+| <a id="fdo-rpkg-package-wait-policy-07"></a>**Package Wait Policy**<br><code>FDO-RPKG-PACKAGE-WAIT-POLICY-07</code> | Bounded policy for waiting for the exact package. |
+| <a id="fdo-rpkg-finalize-mode-08"></a>**Finalize Mode**<br><code>FDO-RPKG-FINALIZE-MODE-08</code> | Immediate automatic Finalize vs deferred independent Finalize. |
+| <a id="fdo-rpkg-apply-entry-09"></a>**Apply Entry**<br><code>FDO-RPKG-APPLY-ENTRY-09</code> | Normalized semantic request produced by equivalent entry forms. |
 
-If file effects completed after a proven journal but package-state persistence failed, repeating the exact package recovers from that durable proof and persists the same state without rereading different archive bytes. If applicability failed before promotion, retry must prove applicability again and cannot convert matching prior/intended bytes into success.
+## RU-FEAT-03 — Feature Behavior
 
-## Module 2 — Commit applied
+### Global BR
+| BR | Type | Plain required behavior |
+|---|---|---|
+| <a id="br-rpkg-keep-requested-work-package-01"></a>**Keep Requested Work And Package**<br><code>BR-RPKG-KEEP-REQUESTED-WORK-PACKAGE-01</code> | Identity / Scope | Invocation stays bound to exact requested Work/package or stops. |
+| <a id="br-rpkg-keep-proven-results-02"></a>**Keep Proven Results**<br><code>BR-RPKG-KEEP-PROVEN-RESULTS-02</code> | Recovery / Truthfulness | Later failure/retry cannot erase already proven Apply/Commit/Publish facts. |
+| <a id="br-rpkg-report-success-only-when-proven-03"></a>**Report Success Only When Proven**<br><code>BR-RPKG-REPORT-SUCCESS-ONLY-WHEN-PROVEN-03</code> | Outcome / Proof | Report the requested success result only when that result is proven. |
+| <a id="br-rpkg-bound-package-wait-12"></a>**Bound Package Wait**<br><code>BR-RPKG-BOUND-PACKAGE-WAIT-12</code> | Outcome / Error Handling | Wait only within the selected bound; timeout returns without package effects. |
+| <a id="br-rpkg-respect-requested-apply-extent-13"></a>**Respect Requested Apply Extent**<br><code>BR-RPKG-RESPECT-REQUESTED-APPLY-EXTENT-13</code> | Effect Scope | Stop exactly at the extent requested for this invocation. |
+| <a id="br-rpkg-automatic-finalize-only-when-requested-14"></a>**Automatic Finalize Only When Requested**<br><code>BR-RPKG-AUTOMATIC-FINALIZE-ONLY-WHEN-REQUESTED-14</code> | Eligibility / Effect Scope | Invoke automatic Finalize only when explicitly requested and exact Finalize eligibility is proven. |
+| <a id="br-rpkg-keep-entry-forms-equivalent-15"></a>**Keep Entry Forms Equivalent**<br><code>BR-RPKG-KEEP-ENTRY-FORMS-EQUIVALENT-15</code> | Input / Equivalence | Equivalent UI/handoff/URI inputs normalize to the same complete semantic request. |
 
-### Result
+### Main Path
+Apply → Commit → Publish are the selected Feature path; correctness-critical order is normative. `ApplyExtent` adds normative stop branches after the selected stage without creating a generic Resume state. After eligible completion, `FinalizeMode=IMMEDIATE` may hand off to the separate Finalize Feature; Finalize behavior is not copied into this Feature.
 
-`Result<ReplacementPackageState, CommitAppliedFailure>`
+| FBS | Required action | Attached BR |
+|---|---|---|
+| <a id="fbs-rpkg-resolve-requested-package-01"></a>**Resolve Requested Package**<br><code>FBS-RPKG-RESOLVE-REQUESTED-PACKAGE-01</code> | Resolve the exact requested package, waiting only under the captured bounded wait policy; timeout performs no package effect. | <a id="br-rpkg-resolve-exact-requested-package-04"></a>**Resolve Exact Requested Package** `BR-RPKG-RESOLVE-EXACT-REQUESTED-PACKAGE-04`<br>[Bound Package Wait](#br-rpkg-bound-package-wait-12) |
+| <a id="fbs-rpkg-apply-package-02"></a>**Apply Package**<br><code>FBS-RPKG-APPLY-PACKAGE-02</code> | Establish exact package-declared file result. | <a id="br-rpkg-apply-only-to-expected-source-05"></a>**Apply Only To Expected Source** `BR-RPKG-APPLY-ONLY-TO-EXPECTED-SOURCE-05`<br><a id="br-rpkg-applied-result-must-match-package-06"></a>**Applied Result Must Match Package** `BR-RPKG-APPLIED-RESULT-MUST-MATCH-PACKAGE-06` |
+| <a id="fbs-rpkg-commit-applied-package-03"></a>**Commit Applied Package**<br><code>FBS-RPKG-COMMIT-APPLIED-PACKAGE-03</code> | Create/recover exact commit containing only package result. | <a id="br-rpkg-commit-only-package-changes-07"></a>**Commit Only Package Changes** `BR-RPKG-COMMIT-ONLY-PACKAGE-CHANGES-07`<br><a id="br-rpkg-commit-must-represent-exact-package-08"></a>**Commit Must Represent Exact Package Result** `BR-RPKG-COMMIT-MUST-REPRESENT-EXACT-PACKAGE-08` |
+| <a id="fbs-rpkg-publish-exact-commit-04"></a>**Publish Exact Commit**<br><code>FBS-RPKG-PUBLISH-EXACT-COMMIT-04</code> | Publish/reconcile exact commit to requested Work Branch and finish only on proven result. | <a id="br-rpkg-check-current-remote-before-publish-09"></a>**Check Current Remote Before Publish** `BR-RPKG-CHECK-CURRENT-REMOTE-BEFORE-PUBLISH-09`<br><a id="br-rpkg-publish-only-to-requested-work-branch-10"></a>**Publish Only To Requested Work Branch** `BR-RPKG-PUBLISH-ONLY-TO-REQUESTED-WORK-BRANCH-10`<br><a id="br-rpkg-publish-only-when-confirmed-11"></a>**Publish Only When Confirmed** `BR-RPKG-PUBLISH-ONLY-WHEN-CONFIRMED-11` |
 
-Success returns the exact package state with durable `commitSha`. Commit stops before Publish.
-
-### Expected behavior
-
-| Behavior step | Requirement |
+### Behavior Expected Errors
+| Error | Plain meaning |
 |---|---|
-| Load exact owners | Require the Work's persisted `GitWorkspace` and exact `ReplacementPackageState`. |
-| Re-prove package realization | Durable package journal must match WorkId, packageId, archive SHA, worktree, derived branch and exact intended file state. |
-| Commit only intended package paths | Unrelated staged/dirty work fails closed; commit carries exact Package-Id and schema-1 ChangeSet-Id/WorkId trailer. |
-| Recover exact commit | If commit creation succeeded before package-state persistence, retry proves exact branch HEAD, parent, trailers, changed paths and bytes, then reuses that commit. |
-| Persist commit fact | Exact commit SHA is stored in `ReplacementPackageState`; re-proving the same commit preserves publication evidence. |
+| <a id="err-beh-rpkg-wrong-work-or-package-01"></a>**Wrong Work Or Package** `ERR-BEH-RPKG-WRONG-WORK-OR-PACKAGE-01` | requested identity mismatch |
+| <a id="err-beh-rpkg-package-source-changed-02"></a>**Package Source Changed** `ERR-BEH-RPKG-PACKAGE-SOURCE-CHANGED-02` | package preconditions no longer true |
+| <a id="err-beh-rpkg-package-result-conflict-03"></a>**Package Result Conflict** `ERR-BEH-RPKG-PACKAGE-RESULT-CONFLICT-03` | proven/observed result conflicts with allowed package result |
+| <a id="err-beh-rpkg-unrelated-work-would-be-committed-04"></a>**Unrelated Work Would Be Committed** `ERR-BEH-RPKG-UNRELATED-WORK-WOULD-BE-COMMITTED-04` | commit would include unrelated work |
+| <a id="err-beh-rpkg-remote-work-branch-diverged-05"></a>**Remote Work Branch Diverged** `ERR-BEH-RPKG-REMOTE-WORK-BRANCH-DIVERGED-05` | fresh remote state does not permit this Publish |
+| <a id="err-beh-rpkg-publication-not-confirmed-06"></a>**Publication Not Confirmed** `ERR-BEH-RPKG-PUBLICATION-NOT-CONFIRMED-06` | exact publication cannot currently be proven |
+| <a id="err-beh-rpkg-package-wait-timed-out-07"></a>**Package Wait Timed Out** `ERR-BEH-RPKG-PACKAGE-WAIT-TIMED-OUT-07` | exact package did not appear within selected bound |
+| <a id="err-beh-rpkg-automatic-finalize-not-eligible-08"></a>**Automatic Finalize Not Eligible** `ERR-BEH-RPKG-AUTOMATIC-FINALIZE-NOT-ELIGIBLE-08` | requested automatic Finalize cannot safely start from the proven result |
+| <a id="err-beh-rpkg-entry-invalid-09"></a>**Entry Invalid** `ERR-BEH-RPKG-ENTRY-INVALID-09` | entry cannot be normalized to one complete valid Apply request |
 
-## Module 3 — Publish / Retry Publish
+## RU-FEAT-04 — Implementation Concerns
+**Composable package-stage realization:** Apply/Commit/Publish realization boundaries must remain independently composable for selected extent/finalization evolution without copied behavior implementation.
 
-### Result
 
-`Result<ReplacementPackageState, PublishFailure>`
+## Candidate Target Scenario Body
+<a id="scn-rpkg-complete-repository-work-target"></a>
+# SCN-RPKG-COMPLETE-REPOSITORY-WORK — Complete Repository Work (post-Step target)
 
-Operation Result says what happened in this invocation. `PublicationObservation` says what remote fact is currently proven.
+## Realizes Application Benefits
+- [Realize AI-Created Repository Work](../application-definition.md#ab-rpkg-realize-ai-repository-work-01)
+- [Know Repository Work Outcome](../application-definition.md#ab-rpkg-know-repository-work-outcome-02)
 
-### Publication evidence
-
-```text
-NotRequested
-NotConfirmed
-ConfirmedAbsent
-ConfirmedTip(sha)
-```
-
-`NotConfirmed` means publication of the intended commit is not currently proven; remote observation is required before any further push. It is also the conservative write-ahead guard persisted immediately before a possible push.
-
-### Expected behavior
-
-| Behavior step | Requirement |
+## Scenario Requirements
+| SR | Plain meaning |
 |---|---|
-| Require exact committed state | Resolve `GitWorkspace`, exact package state and durable package journal; derive the previous publication boundary from journal `baseHead`. |
-| Observe before any possible push | Every not-yet-published invocation captures one verified fetch transport endpoint and performs fresh remote observation through isolated Git transport state; previously persisted `ConfirmedAbsent`/previous-tip evidence is not reusable push authorization. |
-| Decide from observation | Exact intended tip → success; remote absent or exact package `baseHead` → push may be safe; any other tip → `REMOTE_BRANCH_DIVERGED`, no push. |
-| Persist uncertainty guard | Before mechanics may push, durably save `NotConfirmed`; persistence failure blocks the side effect. |
-| Fence destination + push with exact lease | If a push may occur, capture one verified push transport endpoint whose RepositoryIdentity matches observation/source authority, persist `NotConfirmed`, transfer the exact commit into isolated transport state, then push with the exact lease. Registered-repository `origin`/`pushurl` changes and later `url.*.insteadOf` / `pushInsteadOf` changes cannot redirect the side effect. Repository mismatch is a Publish operation failure, not evidence that durable Work state diverged. |
-| Reconcile after possible push | Observe exact remote branch again. Exact intended tip → success; unchanged previous/absent → retryable push failure; anything else → divergence. |
-| Persist stronger evidence | Confirmation is durable. If stronger evidence cannot be saved after possible push, durable `NotConfirmed` remains retry authority. |
+| <a id="sr-rpkg-keep-work-context-stable-01"></a>**Keep Work Context Stable** `SR-RPKG-KEEP-WORK-CONTEXT-STABLE-01` | exact Work/package context remains stable through journey |
+| <a id="sr-rpkg-show-operation-context-at-user-decisions-02"></a>**Show Operation Context At User Decisions** `SR-RPKG-SHOW-OPERATION-CONTEXT-AT-USER-DECISIONS-02` | user-controlled effect/retry exposes affected context |
+| <a id="sr-rpkg-keep-terminal-outcome-understandable-03"></a>**Keep Terminal Outcome Understandable** `SR-RPKG-KEEP-TERMINAL-OUTCOME-UNDERSTANDABLE-03` | proven/rejected/uncertain terminal meaning is distinguishable |
+| <a id="sr-rpkg-let-actor-choose-apply-extent-04"></a>**Let Actor Choose Apply Extent** `SR-RPKG-LET-ACTOR-CHOOSE-APPLY-EXTENT-04` | request can choose how far this package realization proceeds |
+| <a id="sr-rpkg-let-actor-bound-package-wait-05"></a>**Let Actor Bound Package Wait** `SR-RPKG-LET-ACTOR-BOUND-PACKAGE-WAIT-05` | request can choose bounded wait for exact package |
+| <a id="sr-rpkg-keep-reviewed-result-context-06"></a>**Keep Reviewed Result Context** `SR-RPKG-KEEP-REVIEWED-RESULT-CONTEXT-06` | independent Finalize stays tied to exact reviewed result/authority |
+| <a id="sr-rpkg-support-immediate-and-deferred-finalization-07"></a>**Support Immediate And Deferred Finalization** `SR-RPKG-SUPPORT-IMMEDIATE-AND-DEFERRED-FINALIZATION-07` | actor can explicitly choose immediate composition or deferred independent Finalize |
+| <a id="sr-rpkg-support-equivalent-direct-uri-entry-08"></a>**Support Equivalent Direct URI Entry** `SR-RPKG-SUPPORT-EQUIVALENT-DIRECT-URI-ENTRY-08` | URI and other entries converge on same semantic request |
 
-`Retry Publish` invokes this same module. It never blindly repushes an unconfirmed prior effect and never uses `Core.ChangeSet.publishedTip` or `PublicationUncertain` as authority.
+## Main Actor / Application Path
+| SPS | Actor/application interaction | Feature/context | Data in | Result out |
+|---|---|---|---|---|
+| <a id="sps-rpkg-establish-realization-request-01"></a>**Establish Realization Request** `SPS-RPKG-ESTABLISH-REALIZATION-REQUEST-01` | Actor enters through existing handoff/UI or direct URI; adapter normalizes to one exact semantic request. | App entry | WorkId + Package Identity + ApplyExtent + PackageWaitPolicy + FinalizeMode | exact captured request |
+| <a id="sps-rpkg-request-package-realization-02"></a>**Request Package Realization** `SPS-RPKG-REQUEST-PACKAGE-REALIZATION-02` | App/user invokes package realization under captured request. | Apply Replacement Package | captured request | selected extent result |
+| <a id="sps-rpkg-observe-realization-outcome-03"></a>**Observe Realization Outcome** `SPS-RPKG-OBSERVE-REALIZATION-OUTCOME-03` | Actor consumes truthful result. | outcome surface | operation result | proven/rejected/uncertain meaning |
+| <a id="sps-rpkg-choose-finalization-mode-04"></a>**Choose Finalization Mode** `SPS-RPKG-CHOOSE-FINALIZATION-MODE-04` | Captured request selects immediate vs deferred Finalize. | Scenario composition | eligible Apply result + FinalizeMode | branch |
+| <a id="sps-rpkg-immediate-or-deferred-finalize-05"></a>**Immediate Or Deferred Finalize** `SPS-RPKG-IMMEDIATE-OR-DEFERRED-FINALIZE-05` | IMMEDIATE invokes separate Finalize after eligibility; DEFERRED returns control and permits later independent Finalize. | Apply + Finalize Features | exact result/Review Authority as required | Finalize result or deferred state |
 
-## Feature boundary decisions
+### Entry decision
+Existing handoff/UI and URI are two selected entry branches; both converge before Apply Feature behavior.
 
-### One Feature, three modules
-
-Apply, Commit and Publish are explicit module/operation boundaries of one replacement-package Apply Feature. Separate operation Results and explicit stop points do not make them separate product Features.
-
-### Entry ownership
-
-The Feature owns accepting/reading each supported application entry representation and resolving it into the package-application command whose behavior it executes. Protocol/transport owners define representation grammar; they do not own Apply behavior.
-
-### Finalize remains separate
-
-`F-RPKG-FINALIZE-REPOSITORY-WORK` has different eligibility, effects and terminal Result. Invoking that Feature from this Feature does not transfer Finalize behavior or ownership here and creates no reverse dependency from Finalize to Apply.
-
-### Entry variants do not create alternate workflows
-
-Handoff and URI are entry variants of the same Feature. URI adds no Feature, module, lifecycle state or parallel realization path. Malformed/incomplete/unsupported URI input fails before repository effects.
-
-### No legacy runtime authority
-
-No module dispatches from `Core.ChangeSet.executionState` or uses legacy package lifecycle buckets as authority.
+### Finalization decision
+`IMMEDIATE` and `DEFERRED` are selected Scenario branches that solve SR-07. The branch structure is not itself a Requirement.
 
 
-## Transition Obligations
+Issue/comment authoring remains actor/AI responsibility when that ownership Step is also realized; if independent Steps materialize in a different order, revalidate this body against actual Entry State instead of silently merging roadmaps.
 
-- handoff remains supported unless a separate selected retirement Step says otherwise;
-- URI registration/dispatch must fail closed for unsupported/malformed input before repository effects;
-- URI transport encoding must preserve the exact semantic request rather than introducing URI-only defaults or behavior.
 
-## Realization / Promotion Gate
+## Candidate materialization consequences
+No Target Owner Materialization Set is active while this Step remains **Probable / unselected**.
 
-The Step may become `IMPLEMENTED` only when URI and handoff entries resolve to the same semantic request for equivalent inputs, the application remains coherent/usable through both entries, required platform registration/proof exists, and the target Feature body is ready for wholesale canonical promotion.
+If selected later, the current candidate direction implies:
+- Apply Feature — likely `REPLACE`;
+- applicable realization Scenario — likely `REPLACE`;
+- URI entry adapter Slice/Screen integration — still requires a complete natural-owner Target Body before any `CREATE`/`REPLACE` consequence can be declared.
+
+## Step Readiness
+
+Readiness: **NOT_READY**
+
+The Step is Probable/unselected, its semantic predecessor is unrealized, and no Materialization Set is active.
+
+### Step Q/R/P
+- P [BLOCKING]: select the Step through normal Core selection before realization.
+- P [BLOCKING]: realize Automatic Finalization first if the current semantic dependency remains selected.

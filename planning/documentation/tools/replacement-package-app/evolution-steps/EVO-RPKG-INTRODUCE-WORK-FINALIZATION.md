@@ -1,145 +1,113 @@
-# EVO-RPKG-INTRODUCE-WORK-FINALIZATION — Introduce Work Finalization
+# EVO-RPKG-INTRODUCE-WORK-FINALIZATION — Introduce Independent Work Finalization
 
-Status: PLANNED
-Evolution Kinds: Introduction / Expansion / Forced Migration
+[← Evolution Steps Map](../navigation/EVOLUTION-STEPS-MAP.md)
 
-## Evolution Intent
+Planning Position: **Selected / Planned**  
+Target Resolution: **Partial Target**
+Change Surface: **Mixed**  
 
-Introduce a new Work-centered, independently callable Finalize capability that can take one exact reviewed published Work result to a truthful finalized state without legacy ChangeSet lifecycle authority.
+## Driven By Application Definition
+- [Realize AI-Created Repository Work](../application-definition.md#ab-rpkg-realize-ai-repository-work-01)
+- [Know Repository Work Outcome](../application-definition.md#ab-rpkg-know-repository-work-outcome-02)
 
-## Requires
+## Entering From
+- current realized downstream owner state
 
-None beyond the current ability to produce and prove an exact published Work result. This Step does not require parameterized Apply handoff.
+## Realization Prerequisite
+- [`Standardize Typed Operation Results`](EVO-RPKG-STANDARDIZE-OPERATION-RESULTS.md)
 
-## Expected Entry State
+## Step Purpose
+Add an independently callable Finalize capability for an exact reviewed repository result. Finalize performs the selected repository integration/terminal repository obligation; **AI remains owner of GitHub Issue/comment communication**.
 
-- current package realization stops after exact Work-branch publication proof;
-- the new executable has no current Work-centered Finalize capability;
-- legacy deployed ChangeSet Review/Finalize remains outside the target executable;
-- no target Finalize behavior may depend on legacy execution-state buckets.
+## Owner Impacts
 
-## Target Owner Promotion Set
+### Feature Impact — Finalize Repository Work — NEW
+Adds exact reviewed-result validation, integration and finalized-result proof.
 
-- **REPLACE** `../features/F-RPKG-FINALIZE-REPOSITORY-WORK.md` routing stub with the Target Feature body below after realization/revalidation.
-- **REPLACE** `../scenarios/planned/SCN-RPKG-COMPLETE-REVIEWED-REPOSITORY-WORK.md` routing stub with the Target Scenario body below after realization/revalidation; move/promote it to the selected current Scenario location if representation changes at realization.
-- **REVALIDATE/CREATE AS MATERIAL** natural Domain/Screen/Slice/proof owners required to make Finalize independently usable.
+### Scenario Impact — repository realization journey — CHANGED
+Adds independent later Finalize interaction after exact review authority. Issue/comment updates remain actor actions outside the Finalize Feature.
 
-## Target Feature — F-RPKG-FINALIZE-REPOSITORY-WORK
 
+## Complete Target Feature Body — Finalize Repository Work
+
+<a id="f-rpkg-finalize-repository-work"></a>
 # F-RPKG-FINALIZE-REPOSITORY-WORK — Finalize Repository Work
 
-Status: active current Feature owner
+## Realizes Upstream Meaning
+- [Realize AI-Created Repository Work](../application-definition.md#ab-rpkg-realize-ai-repository-work-01)
+- [Know Repository Work Outcome](../application-definition.md#ab-rpkg-know-repository-work-outcome-02)
 
-## Intent
+## Feature Data
+- exact Work identity;
+- exact reviewed published result;
+- Review Authority proving what was reviewed;
+- exact Finalized Result / expected error.
 
-Finalize one exact reviewed published Work by integrating that exact result into the exact target branch and proving the required final Work-Issue communication.
+## Global BR
+| BR | Type | Plain behavior | QRPE / Examples |
+|---|---|---|---|
+| <a id="br-rpkg-finalize-only-reviewed-result-01"></a>**Finalize Only Reviewed Result**<br><code>BR-RPKG-FINALIZE-ONLY-REVIEWED-RESULT-01</code> | Identity / Authorization | Finalize only the exact repository result covered by current Review Authority. | Problem Example: review covers A but newer B is integrated. |
+| <a id="br-rpkg-keep-proven-finalization-effects-02"></a>**Keep Proven Finalization Effects**<br><code>BR-RPKG-KEEP-PROVEN-FINALIZATION-EFFECTS-02</code> | Recovery / Truthfulness | Already proven integration/finalization effects remain true through later failure/retry. | Problem Example: uncertain response causes blind duplicate integration. |
+| <a id="br-rpkg-finalize-only-when-proven-03"></a>**Finalize Only When Proven**<br><code>BR-RPKG-FINALIZE-ONLY-WHEN-PROVEN-03</code> | Outcome / Proof | Report Finalized only when selected repository-side finalization obligation is proven. | — |
 
-## Principal Result
+## Main Path
+| FBS | Required action |
+|---|---|
+| <a id="fbs-rpkg-validate-reviewed-work-01"></a>**Validate Reviewed Work**<br><code>FBS-RPKG-VALIDATE-REVIEWED-WORK-01</code> | Validate Review Authority for the exact published result. |
+| <a id="fbs-rpkg-integrate-reviewed-result-02"></a>**Integrate Reviewed Result**<br><code>FBS-RPKG-INTEGRATE-REVIEWED-RESULT-02</code> | Perform/reconcile the selected repository integration mechanism for that exact result. |
+| <a id="fbs-rpkg-establish-finalized-result-03"></a>**Establish Finalized Result**<br><code>FBS-RPKG-ESTABLISH-FINALIZED-RESULT-03</code> | Establish terminal Finalized only when integration/final repository obligation is proven. |
 
-`RepositoryWork.Finalized` only after exact integration and exact final Issue communication are both proven.
-
-## Semantic Entry
-
-The Feature is independently callable with one exact `FinalizeRequest`. It does not know whether the caller is UI, CLI, Apply Feature or another future composition.
-
-## Semantic Data
-
-`FinalizeRequest` identifies the exact `repositoryIdentity`, `WorkId`, `IssueRef`, `workBranch`, `publishedCommit`, `publishedTreeId`, `targetBranch`, current `ReviewAuthority`, and optional actor-supplied final comment text.
-
-`ReviewAuthority` must cover the exact `publishedTreeId` being finalized.
-
-## Feature Behavior
-
-### BR-RPKG-FINALIZE-EXACT-WORK
-Finalize must bind to the exact Work/repository/branch/publication identities supplied by the request; labels, recency or similar trees cannot substitute identity.
-
-### BR-RPKG-FINALIZE-CURRENT-REVIEW-AUTHORITY
-Finalize is ineligible unless current review authority proves the exact `publishedTreeId`; stale/missing authority stops before integration.
-
-### BR-RPKG-FINALIZE-INTEGRATE-EXACT-RESULT
-The integration effect must integrate the exact reviewed published Work result into the exact target branch and must produce durable/verifiable integration proof. The concrete mechanism (direct integration, PR or another selected mechanism) is an OPEN target detail until selected before realization.
-
-### BR-RPKG-FINALIZE-FINAL-ISSUE-COMMUNICATION
-Finalize must post/confirm the required final communication on the exact Work Issue. Actor-supplied final text is preserved semantically. Exact generated wording and whether Finalize closes the Issue remain OPEN until selected before realization.
-
-### BR-RPKG-FINALIZE-PRESERVE-PARTIAL-EXTERNAL-RESULTS
-If one external effect is already proven and a later effect fails or is uncertain, retry/recovery preserves the proven effect and reconciles uncertainty before any duplicate attempt.
-
-### BR-RPKG-FINALIZE-MARK-FINALIZED-ONLY-AFTER-BOTH-PROVEN
-`RepositoryWork.Finalized` is established only when both exact integration proof and exact final Issue-communication proof exist.
-
-## Boundary Decisions
-
-Finalize is a separate independently callable Feature. It owns its eligibility, effects, recovery/reconciliation and terminal Result. It has no dependency on Apply, `ApplyExtent`, `FinalizeMode`, handoff/URI representation or automatic/manual invocation policy.
-
-Another Feature may invoke Finalize by supplying a valid `FinalizeRequest`; that creates no reverse dependency and does not move Finalize behavior to the caller.
-
-Legacy `Core.ChangeSet` execution states, generic package Resume and old ChangeSet Finalize controls are not authority for this Feature.
+There is deliberately **no FBS for final Issue communication**. AI can update/close/comment on the Work Issue as an actor action after consuming the finalization result.
 
 
-## Target Scenario — SCN-RPKG-COMPLETE-REVIEWED-REPOSITORY-WORK
+## Complete Target Scenario Body
 
-# SCN-RPKG-COMPLETE-REVIEWED-REPOSITORY-WORK — Complete Reviewed Repository Work
+<a id="scn-rpkg-complete-repository-work-target"></a>
+# SCN-RPKG-COMPLETE-REPOSITORY-WORK — Complete Repository Work (post-Step target)
 
-Status: active current Scenario owner
+## Realizes Application Benefits
+- [Realize AI-Created Repository Work](../application-definition.md#ab-rpkg-realize-ai-repository-work-01)
+- [Know Repository Work Outcome](../application-definition.md#ab-rpkg-know-repository-work-outcome-02)
 
-## Application Benefit / Desired Result
+## Scenario Requirements
+| SR | Plain meaning |
+|---|---|
+| <a id="sr-rpkg-keep-work-context-stable-01"></a>**Keep Work Context Stable** `SR-RPKG-KEEP-WORK-CONTEXT-STABLE-01` | exact Work/package context remains stable through journey |
+| <a id="sr-rpkg-show-operation-context-at-user-decisions-02"></a>**Show Operation Context At User Decisions** `SR-RPKG-SHOW-OPERATION-CONTEXT-AT-USER-DECISIONS-02` | user-controlled effect/retry exposes affected context |
+| <a id="sr-rpkg-keep-terminal-outcome-understandable-03"></a>**Keep Terminal Outcome Understandable** `SR-RPKG-KEEP-TERMINAL-OUTCOME-UNDERSTANDABLE-03` | proven/rejected/uncertain terminal meaning is distinguishable |
+| <a id="sr-rpkg-keep-reviewed-result-context-06"></a>**Keep Reviewed Result Context** `SR-RPKG-KEEP-REVIEWED-RESULT-CONTEXT-06` | independent Finalize stays tied to exact reviewed result/authority |
 
-An exact published Work result is proven to be the exact previously reviewed result, integrated into the exact target branch, and finalized with truthful external-effect evidence, without restoring legacy ChangeSet lifecycle semantics.
-
-## Scenario Entry
-
-The Scenario receives one exact published Work result plus exact upstream review evidence for the predicted/reviewed result. The application must prove that the published result is the reviewed result before Finalize eligibility exists; visual similarity, labels and recency are not approval authority.
-
-## Scenario Process / Feature Interaction Map
-
-```text
-exact published Work result
-+ exact reviewed-result evidence
-        ↓
-FI-RPKG-CONFIRM-REVIEWED-PUBLISHED-RESULT
-        ↓
-current ReviewAuthority for exact publishedTreeId
-        ↓
-FI-RPKG-VERIFY-FINALIZE-ELIGIBILITY
-        ↓
-F-RPKG-FINALIZE-REPOSITORY-WORK
-        ├─ exact integration proof
-        ├─ exact final Issue communication proof
-        └─ RepositoryWork.Finalized
-```
-
-## FI-RPKG-CONFIRM-REVIEWED-PUBLISHED-RESULT
-
-Bind review authority only after proving the actual published Work result equals the exact reviewed result and belongs to the intended Work/package/source context. Git resulting-tree equality is the preferred exact content identity when applicable. Failure to prove identity leaves the published result unapproved and blocked from Finalize; it is preserved as evidence rather than automatically rewritten.
-
-## FI-RPKG-VERIFY-FINALIZE-ELIGIBILITY
-
-Require exact Work/repository/publication identity and current `ReviewAuthority` for the exact `publishedTreeId`. Missing/stale authority stops before Finalize.
-
-## Finalize Interaction
-
-Invoke the independently callable `F-RPKG-FINALIZE-REPOSITORY-WORK`. The Scenario does not duplicate the Feature's integration/comment/recovery contract.
-
-## Scenario Result
-
-Success means the exact published Work result is proven to be the reviewed result, exact integration into the target branch is proven, required final Work-Issue communication is proven, and the Work is `Finalized`.
-
-## Boundaries
-
-- this Scenario does not own Apply/Commit/Publish behavior;
-- this Scenario does not define automatic Apply→Finalize composition;
-- this Scenario does not use `Ready`, `AppliedUncommitted`, `CommittedUnpublished`, `PublicationUncertain` or generic `Resume` as public/domain state;
-- the future automatic Apply entry may call the independent Finalize Feature without changing this Scenario/Feature authority.
+## Main Actor / Application Path
+| SPS | Actor/application interaction | Feature/context | Data in | Result out |
+|---|---|---|---|---|
+| <a id="sps-rpkg-establish-realization-request-01"></a>**Establish Realization Request** `SPS-RPKG-ESTABLISH-REALIZATION-REQUEST-01` | Actor/automation supplies exact realization request. | App entry | WorkId + Package Identity | exact captured request |
+| <a id="sps-rpkg-request-package-realization-02"></a>**Request Package Realization** `SPS-RPKG-REQUEST-PACKAGE-REALIZATION-02` | App/user invokes package realization under captured request. | Apply Replacement Package | captured request | selected extent result |
+| <a id="sps-rpkg-observe-realization-outcome-03"></a>**Observe Realization Outcome** `SPS-RPKG-OBSERVE-REALIZATION-OUTCOME-03` | Actor consumes truthful result. | outcome surface | operation result | proven/rejected/uncertain meaning |
+| <a id="sps-rpkg-obtain-review-authority-04"></a>**Obtain Review Authority** `SPS-RPKG-OBTAIN-REVIEW-AUTHORITY-04` | Actor/AI review establishes authority for one exact published result outside or around App. | external review participant | published result | exact Review Authority |
+| <a id="sps-rpkg-request-independent-finalize-05"></a>**Request Independent Finalize** `SPS-RPKG-REQUEST-INDEPENDENT-FINALIZE-05` | Actor later invokes Finalize for exact reviewed result. | Finalize Repository Work | Work + Review Authority | Finalized/expected outcome |
+| <a id="sps-rpkg-consume-finalize-result-06"></a>**Consume Finalize Result** `SPS-RPKG-CONSUME-FINALIZE-RESULT-06` | Actor consumes result; AI may update Issue/comments outside App. | outcome + AI external action | finalization result | next work/log action |
 
 
-## Transition Obligations
+Issue/comment authoring remains actor/AI responsibility when that ownership Step is also realized; if independent Steps materialize in a different order, revalidate this body against actual Entry State instead of silently merging roadmaps.
 
-- do not import old persisted ChangeSet lifecycle state into the new Finalize capability;
-- old deployed executable remains owner of old works;
-- select any still-OPEN integration/review-authority/Issue-closure details before implementation if they are required for a usable realized target;
-- remove or retire any remaining future-planning artifact that would compete with the promoted Feature/Scenario owners.
 
-## Realization / Promotion Gate
+## Open Target choices
+- exact integration mechanism (direct integration vs PR-backed route if materially different);
+- exact Review Authority representation;
+- Domain/Slice allocation and uncertainty/reconciliation proof.
 
-The Step may become `IMPLEMENTED` only when the target Finalize Feature is independently usable, its target Scenario is coherent, all material OPEN choices required for execution are selected, required proof exists, and the target bodies can be promoted into canonical Feature/Scenario owners without reconstructing semantics from a delta list.
+## Materialization Set
+- Finalize Feature — `CREATE`;
+- affected Scenario — `REPLACE`;
+- natural Domain/Slice owners — impacts remain OPEN/partial and are **not yet in the Materialization Set**; add `CREATE`/`REPLACE` only after complete Target Owner Bodies are resolved.
+
+## Step Readiness
+
+Readiness: **NOT_READY**
+
+Typed Operation Results is not yet realized and Domain/Slice allocation plus proof/integration details remain unresolved.
+
+### Step Q/R/P
+- Q [BLOCKING]: what exact integration mechanism establishes the finalized reviewed result?
+- Q [BLOCKING]: which Domain/Slice owners hold finalization state/invariants?
+- P [BLOCKING]: resolve complete affected owner bodies before materialization.
