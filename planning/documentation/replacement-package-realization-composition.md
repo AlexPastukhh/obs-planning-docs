@@ -33,9 +33,13 @@ finding / stale-meaning re-entry
 → idtspe-methodology/active/idtspe-core/shared/finding-disposition-contract.md
 → idtspe-methodology/active/idtspe-core/shared/revalidate-current-work-use-case.md
 
-Builder pre-handoff package/replay/review behavior
-→ replacement-package-builder/scenarios/SCN-BLDR-BUILD-AND-REVIEW-REPLACEMENT-PACKAGE.md
-→ replacement-package-builder/features/F-BLDR-APPLY-PACKAGE-FOR-REVIEW.md
+current package producer
+→ use-cases/UC-REPO-BUILD-REPLACEMENT-PACKAGE.md
+→ build-replacement-archive-workflow.md
+
+selected future Builder product semantics
+→ tools/replacement-package-app/evolution-steps/EVO-RPKG-ESTABLISH-REPLACEMENT-PACKAGE-CONSTRUCTION.md
+→ later EVO-RPKG-ADD-LOCAL-PACKAGE-VERIFICATION.md
 
 package seam
 → tools/replacement-package-app/PACKAGE-PROTOCOL.md
@@ -110,47 +114,51 @@ no unreviewed material semantic delta exists
 
 These are checks over current Core/owner meaning, not a new app-local planning level.
 
-## Route B — Builder candidate, replay/review, exact handoff
+## Route B — current package-producer transport with explicit semantic review
 
-Use when Builder's consumer-equivalent package replay is the useful exact review mechanism.
+Use when a protocol-valid package is the selected transport but the future Builder Feature/Scenario model has not yet been realized/materialized.
 
 ```text
 current IDTSPE work resolves the desired exact result
-→ Builder owns Start/Build/Apply-for-Review behavior
-→ exact candidate package + expectedSource
-→ consumer-equivalent isolated replay
-→ predicted tree + review artifacts
-→ semantic review against current accepted meaning
+→ AI/human owns semantic work context and review decision
+→ current package producer mechanically builds a protocol-valid package
+→ exact package/source/result evidence is reviewed
 
 NEEDS_CORRECTION
 → Finding Candidate
 → Core disposition / targeted revalidation
 → correct desired exact result
 → build a NEW package identity
-→ replay/review again
+→ review again
 
 APPROVABLE
-→ freeze this exact reviewed tuple:
-   package identity
-   + expected source
-   + predicted result identity
-→ exact Builder handoff
-→ current Replacement Package App Apply / Commit / Publish
+→ freeze the exact reviewed package/result intended for handoff
+→ AI emits the exact consumer handoff
+→ current Replacement Package App realizes the package
 → stop at the CURRENT App Scenario boundary
 ```
 
-`APPROVABLE` is Builder/product composition truth for the exact reviewed tuple. It does not create a generic IDTSPE State Unit or a separate Session Checkpoint type.
+Do not attribute Issue creation, semantic branch creation or review authority to the retained legacy Builder target drafts. Those documents are Source/Evidence only.
 
-An IDTSPE Integration Checkpoint may still be useful before handoff when the current work state has become distributed enough that a coherent whole-state view materially helps review, continuation or handoff. It is not required merely because a package is being built.
+Future Builder package-construction/verification product semantics become consumable here only after:
+
+```text
+EVO-RPKG-ESTABLISH-REPLACEMENT-PACKAGE-CONSTRUCTION
+→ Exact Realization + proof/materialization
+→ later EVO-RPKG-ADD-LOCAL-PACKAGE-VERIFICATION
+```
+
+Until then the current generic producer route remains the transport authority.
 
 ## Review checkpoints must remain distinct
 
 Do not conflate these two facts:
 
 ```text
-PRE-HANDOFF BUILDER REVIEW
-= predicted result was semantically reviewed before consumer mutation
-= current/planned Builder Scenario + review Feature responsibility
+PRE-HANDOFF SEMANTIC REVIEW
+= exact intended package/result was reviewed before consumer mutation
+= currently owned by AI/human review over package/repository Evidence
+= may later consume realized Builder verification behavior after its Evolution Steps materialize
 
 POST-REALIZATION CONSUMER IDENTITY VERIFICATION
 = actual authoritative published result is proven identical
@@ -158,7 +166,7 @@ POST-REALIZATION CONSUMER IDENTITY VERIFICATION
 = Replacement Package App product behavior
 ```
 
-The first can be used by the current composition when Builder support exists.
+The first is valid now without assigning review authority to the legacy Builder target drafts. Future realized Builder verification may strengthen its mechanical proof without taking semantic review ownership from AI/human.
 
 The second is **not implemented by the current App Scenario merely because the R2 workflow describes the intended composition**. Current App authority stops after exact package commit publication is proven.
 
@@ -198,8 +206,8 @@ Until then, these steps remain planned/dependent product behavior. Do not report
 The intended end-to-end invariant is stronger than visual/diff similarity:
 
 ```text
-Builder reviewed tuple
-(package identity + expected source + predicted result)
+reviewed exact tuple
+(package identity + expected source/result evidence as available)
 → exact handoff
 → real consumer realization
 → when supported by current product behavior:
@@ -219,7 +227,7 @@ new material Evidence/Finding
 → UC-IDTSPE-REVALIDATE-CURRENT-WORK when affected meaning may be stale
 → reopen the narrowest natural owner / exact realization
 → produce/review a new exact result
-→ for Builder route: build a new package and replay/review again
+→ build a new package and review the new exact result again
 ```
 
 Do not restart unrelated methodology or unaffected Targets.
@@ -239,7 +247,7 @@ non-trivial code change with available local tests
 → Exact + local proof before package may be useful
 
 consumer-sensitive file transformation
-→ Builder replay/review may be more useful than local-only confidence
+→ package replay/verification Evidence may be useful, but current semantic review remains AI/human-owned until the selected Builder verification Step is materialized
 ```
 
 The composition adapts to context; it does not replace the always-active proportional IDTSPE Use-Case loop.

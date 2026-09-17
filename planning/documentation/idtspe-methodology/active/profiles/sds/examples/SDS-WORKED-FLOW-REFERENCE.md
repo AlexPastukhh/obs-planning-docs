@@ -68,13 +68,16 @@ Expected Entry State:
 Driver:
   reduce interruption while preserving material + source context
 
-Current state:
-  no current Application / Feature / Scenario / Screen / Domain / Slice owner exists
+Current downstream state:
+  no current Feature / Scenario / Screen / Domain / Slice owner exists
+
+Upstream Application Definition:
+  selected need/contribution may already be stated before realization
 ```
 
-The Step is the semantic owner of the future target state. The supporting SDS modules below shape Target Owner Bodies **inside this Step**.
+The Step is the semantic owner of the future **downstream** target state. Application Definition is refined upstream and may drive the Step; supporting downstream SDS modules shape Target Owner Bodies **inside this Step**.
 
-## 4. Application target body — only when own-software boundary is material
+## 4. Application Definition driver — only when own-software boundary is material
 
 Existing alternatives are compared proportionally:
 
@@ -95,14 +98,15 @@ outside:
   full long-term knowledge management
 ```
 
-`TM-APPLICATION-DEFINITION` produces:
+`TM-APPLICATION-DEFINITION` is refined directly:
 
 ```text
-Target Application Body
+Application Definition
+  AB-CAPTURE-FAST-TEMPORARY-CAPTURE — Selected
   own contribution / boundary / feasibility meaning
 ```
 
-This is selected future planning meaning inside `EVO-INITIAL-CAPTURE`; it is **not yet a current Application owner**.
+`EVO-INITIAL-CAPTURE` records that selected Application meaning under `Driven By`, but does not copy it into a Target Application Body.
 
 ## 5. Feature / Scenario / Screen target bodies
 
@@ -299,8 +303,8 @@ TM-PRACTICAL-TEST
 The Step carries a semantic materialization plan such as:
 
 ```text
-CREATE current Application owner
-  from Target Application Body
+Application Definition
+  no Step materialization; it already owns upstream intent
 
 CREATE current Feature owners
   FEAT-CAPTURE-ITEM

@@ -1,74 +1,23 @@
-# Replacement Package Builder
+# Replacement Package Builder — Current Producer Route + Legacy Target Evidence
 
-Status: active producer-side documentation entry
+Status: current producer navigation plus **legacy target/source evidence**.
 
-## Purpose
+## Current authoritative producer route
 
-Provide one navigation owner for replacement-package production while preserving the existing narrow current owners and making the planned Feature/Scenario target explicit.
+- [`../../commands/build-replacement-archive.command.md`](../../commands/build-replacement-archive.command.md) — current executable package-producer route.
+- [`../../use-cases/UC-REPO-BUILD-REPLACEMENT-PACKAGE.md`](../../use-cases/UC-REPO-BUILD-REPLACEMENT-PACKAGE.md) — current repository package-production Use Case.
+- [`../build-replacement-archive-workflow.md`](../build-replacement-archive-workflow.md) — current detailed producer workflow.
+- [`../tools/replacement-package-app/PACKAGE-PROTOCOL.md`](../tools/replacement-package-app/PACKAGE-PROTOCOL.md) — package/handoff protocol.
 
-## Current authoritative producer owners
+These contracts describe mechanical package production. They do not establish a Builder-owned Work Issue/branch/review product model.
 
-- `../../commands/build-replacement-archive.command.md` — current command entry.
-- `../../use-cases/UC-REPO-BUILD-REPLACEMENT-PACKAGE.md` — current generic repository use case.
-- `../build-replacement-archive-workflow.md` — current detailed producer workflow.
-- `../tools/replacement-package-app/PACKAGE-PROTOCOL.md` — current package/handoff contract owned at the consumer boundary.
+## Legacy target drafts
 
-These remain current implementation truth until the planned Feature owners are realized and promoted.
+The files under `features/`, `scenarios/` and `behavior-realization-map.md` were created under an earlier product model where Builder owned Start Work / Issue / work-branch orchestration and pre-handoff review. They are retained only as **Source/Evidence** for implementation/conformance analysis and are not selected current or future semantic authority.
 
-## Planned Feature owners
+Selected Builder evolution is now owned by:
 
-- [`features/README.md`](features/README.md) — planned Feature catalog.
-- [`features/F-BLDR-START-REPOSITORY-WORK.md`](features/F-BLDR-START-REPOSITORY-WORK.md)
-- [`features/F-BLDR-BUILD-REPLACEMENT-PACKAGE.md`](features/F-BLDR-BUILD-REPLACEMENT-PACKAGE.md)
-- [`features/F-BLDR-APPLY-PACKAGE-FOR-REVIEW.md`](features/F-BLDR-APPLY-PACKAGE-FOR-REVIEW.md)
-- [`features/F-BLDR-ADD-ISSUE-REVIEW-COMMENT.md`](features/F-BLDR-ADD-ISSUE-REVIEW-COMMENT.md)
-- [`features/planned/F-BLDR-EDIT-WORK-ISSUE.md`](features/planned/F-BLDR-EDIT-WORK-ISSUE.md) — future Introduction.
+- [`../tools/replacement-package-app/evolution-steps/EVO-RPKG-ESTABLISH-REPLACEMENT-PACKAGE-CONSTRUCTION.md`](../tools/replacement-package-app/evolution-steps/EVO-RPKG-ESTABLISH-REPLACEMENT-PACKAGE-CONSTRUCTION.md)
+- then [`../tools/replacement-package-app/evolution-steps/EVO-RPKG-ADD-LOCAL-PACKAGE-VERIFICATION.md`](../tools/replacement-package-app/evolution-steps/EVO-RPKG-ADD-LOCAL-PACKAGE-VERIFICATION.md)
 
-Feature owners are the planned primary behavioral authority. The Scenario composes them and does not duplicate their internal validation/recovery behavior.
-
-## Selected target Scenario
-
-- [`scenarios/SCN-BLDR-BUILD-AND-REVIEW-REPLACEMENT-PACKAGE.md`](scenarios/SCN-BLDR-BUILD-AND-REVIEW-REPLACEMENT-PACKAGE.md)
-- [`behavior-realization-map.md`](behavior-realization-map.md) — derived current/target implementation coverage; not behavior authority.
-
-Target high-level flow:
-
-```text
-Start Repository Work
-→ Build exact package
-→ Apply exact package for Review in isolated state
-→ semantic decision
-   ├─ NEEDS_CORRECTION → durable finding → correction → new packageId → fresh Review
-   └─ APPROVABLE → freeze the exact reviewed package
-→ exact handoff / URI
-→ STOP
-```
-
-Pre-`APPROVABLE` correction keeps the same logical `changeSetId` and the same selected package `expectedSource`; every new ZIP receives a new `packageId`.
-
-## Current capability coverage
-
-| Target capability | Current state |
-|---|---|
-| exact readable source / fail-closed base acquisition | CURRENT capability |
-| deterministic package materialization + protocol validation | CURRENT capability |
-| exact ZIP/package handoff | CURRENT capability, but not yet review-bound |
-| explicit Start Repository Work identity/Issue/branch Feature | PLANNED TARGET |
-| clean replay of exact package in isolated review state | PLANNED TARGET |
-| coherent predicted tree + latest/cumulative/full review result | PLANNED TARGET |
-| approval bound to exact package/result identity | PLANNED TARGET |
-| correction comment + new package/review loop | PLANNED TARGET |
-
-## Boundary
-
-The Builder is a producer. Ordinary completion remains:
-
-```text
-exact APPROVABLE package + exact handoff identity → consumer → stop
-```
-
-It does not apply files to the consumer repository, create the consumer commit/publish result, integrate into the target branch or Finalize consumer work.
-## Consumer composition
-
-For the app-specific transition from an exact Builder-reviewed tuple to current Replacement Package App realization, use [`../replacement-package-realization-composition.md`](../replacement-package-realization-composition.md). Builder still stops at exact handoff; the composition guide does not make Builder responsible for consumer Apply/Commit/Publish or future reviewed-result verification.
-
+Application Definition selects the boundary that AI owns Issue/comments, semantic working branch/context, semantic edits, review decision and exact App handoff. Do not revive legacy Builder target semantics merely because implementation/docs exist. Exact Realization may `KEEP / MODIFY / REPLACE` reusable mechanics after the selected target is complete enough.

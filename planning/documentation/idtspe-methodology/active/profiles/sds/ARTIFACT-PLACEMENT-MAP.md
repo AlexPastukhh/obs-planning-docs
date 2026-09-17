@@ -25,10 +25,13 @@ It does not create semantic owners, require one-file-per-owner topology, or over
 This map projects **semantic authority already resolved elsewhere**. Under current SDS semantics:
 
 ```text
-canonical Application/Feature/Scenario/Screen/Domain/Slice/Shared representations
-= realized/current owner truth
+Application Definition representation
+= upstream selected/possible need/value/contribution intent; may lead realization
 
-unrealized planned target state
+canonical Feature/Scenario/Screen/Domain/Slice/Shared representations
+= realized/current downstream owner truth
+
+unrealized planned downstream target state
 = representation of TM-EVOLUTION-STEP / its Target Owner Bodies
 ```
 
@@ -86,7 +89,7 @@ Consumer bindings are good candidates for compact textual representation when ot
 
 A substantial Step may have dedicated addressability. A shallow Step may be embedded in the Steps Map when identity/selection state and required target-state meaning remain clear.
 
-Step representation may contain Feature target states, bounded `Evolution Impact` Units and complete Target Application/Feature/Scenario/Screen/Domain/Slice/Shared Bodies because this is **future Step-owned meaning**, not current-owner duplication. Several Units/bodies may share one Step artifact; one Impact Unit does not imply one file.
+Step representation may contain Feature target states, bounded `Evolution Impact` Units and complete Target Feature/Scenario/Screen/Domain/Slice/Shared Bodies because this is **future Step-owned downstream meaning**, not current-owner duplication. Application Definition stays upstream and is linked as a driver rather than copied into the Step. Several Units/bodies may share one Step artifact; one Impact Unit does not imply one file.
 
 The Map stores routing/selection relation/prerequisite/readiness/compact uncertainty, not a duplicate of full Step target state.
 

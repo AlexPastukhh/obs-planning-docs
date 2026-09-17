@@ -135,4 +135,4 @@ new Q/R/P
 Step-02 challenge / revalidation triggers
 ```
 
-It does not automatically create accepted Application/Feature/Scenario/Screen meaning; selected meaning still goes through normal Proposal/Decision authority and the correct temporal host. Under SDS, unrealized future Application/Feature/Scenario/Screen meaning belongs to the active Evolution Step Target Body until realization/materialization.
+It does not automatically select Application/Feature/Scenario/Screen meaning. Selected Application need/value/contribution is refined directly in Application Definition. Any unrealized downstream Feature/Scenario/Screen realization then belongs to the applicable Evolution Step Target Body until realization/materialization.

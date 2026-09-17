@@ -19,30 +19,37 @@ this guide owns: cross-component temporal/semantic relationships and readiness g
 
 ## 1. Temporal Authority First
 
-Before deciding which SDS component should produce meaning, classify whether the subject is current-realized truth or future-unrealized target state.
+Before deciding which SDS component should produce meaning, first ask whether the subject is upstream Application intent or a downstream owner state. Then classify downstream owner meaning as current-realized vs future-unrealized target state.
 
 ```text
 accepted current owner contract for a materialized state
 → work directly with the current natural owner when review/revalidation is needed
 → actual implementation/Evidence may confirm or contradict that contract without silently rewriting it
 
-material desired state is not yet realized
-→ host that future state in TM-EVOLUTION-STEP
-→ apply natural-owner Target Modules as supporting production methods inside the Step
+Application need/value/contribution/boundary intent changes
+→ refine TM-APPLICATION-DEFINITION directly
+→ selected Application intent may drive downstream Evolution
+
+material downstream desired state is not yet realized
+→ host that future downstream state in TM-EVOLUTION-STEP
+→ apply downstream natural-owner Target Modules as supporting production methods inside the Step
 ```
 
 A selected Proposal/Decision about future state does not by itself update the canonical current owner.
 
-For greenfield work, absence is a valid current Entry State. Planning the first Feature/Domain/Slice/etc therefore still uses an Evolution Step when the planned meaning is not yet implemented.
+For greenfield downstream work, absence is a valid current Entry State. Planning the first Feature/Scenario/Screen/Domain/Slice/Shared owner therefore still uses an Evolution Step when the planned meaning is not yet implemented. Application Definition may already state the selected need before those owners exist.
 
 ## 2. Preferred Semantic Direction
 
 For unrealized software change, the normal orientation is:
 
 ```text
-current realized owners / implementation / Evidence
+Application Definition
+→ selected upstream driver when material
+
+current realized downstream owners / implementation / Evidence
 → Evolution Step
-→ proportionate future-state production:
+→ proportionate downstream future-state production:
      one or more Feature target states
        NEW/CHANGED → complete Target Feature Body
        unchanged → current Feature reference
@@ -67,11 +74,13 @@ This direction is orientation, not a phase sequence. Several planning depths/mod
 Application Definition is the conditional upstream semantic form when own-Application contribution/boundary/feasibility can materially change downstream meaning.
 
 ```text
-review already-realized application contribution
-→ direct current-owner revalidation is valid
+review/refine Application need/value/contribution/boundary intent
+→ work directly with TM-APPLICATION-DEFINITION
+→ classify addressable Benefits as Selected or Possible
 
-plan a new/changed unrealized application contribution
-→ Target Application Body inside the active Evolution Step
+selected Application intent requires unrealized downstream change
+→ Evolution Step references that intent through `Driven By`
+→ Step owns only downstream Target Owner Bodies
 ```
 
 The exact activation/skip gate remains owned by [`../target-modules/TM-APPLICATION-DEFINITION.md`](../target-modules/TM-APPLICATION-DEFINITION.md).
@@ -86,7 +95,7 @@ Scenario = journey composition / linking / continuity / terminal Benefit
 Screen   = spatial/navigation composition / Feature presence / routes
 ```
 
-When planning future state, Feature is the behavioral anchor: every selected NEW/CHANGED Feature uses one complete Target Feature Body, while unchanged Feature behavior is referenced. Scenario and Screen consequences are first represented through bounded Step `Evolution Impact` Units; when selected journey/spatial meaning changes deeply enough for materialization, the complete post-Step Target Scenario/Screen Body is formed. A finding in one proposes/revalidates another owner; it never silently edits another.
+When a Behavioral/Mixed Step changes Feature behavior, every selected NEW/CHANGED Feature uses one complete Target Feature Body while unchanged Feature behavior is referenced. Scenario and Screen consequences are first represented through bounded Step `Evolution Impact` Units; when selected journey/spatial meaning changes deeply enough for materialization, the complete post-Step Target Scenario/Screen Body is formed. Implementation-only foundation Steps need not invent a Feature target. A finding in one proposes/revalidates another owner; it never silently edits another.
 
 When reviewing implemented current truth, the existing current owners remain the direct authorities.
 

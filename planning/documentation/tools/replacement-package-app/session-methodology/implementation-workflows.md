@@ -104,130 +104,63 @@ file add/replace/delete check
 no unreviewed semantic delta check
 ```
 
-### Workflow B — Builder Work: build → replay/review → handoff → consumer verification
+### Workflow B — Package transport/review while Builder product semantics are being re-established
 
-Stable ID:
+Use when exact repository changes must be packaged/reviewed but the v14 Builder product Feature/Scenario model has **not** yet been accepted/materialized.
 
-```text
-SWF-BUILDER-WORK-BUILD-REPLAY-REVIEW-HANDOFF-AND-CONSUMER-VERIFY
-```
-
-This workflow composes already-owned Builder/App behavior. Session Methodology must not redefine those product Features/Scenarios.
-
-Canonical Builder producer Scenario:
+Current producer authority is the generic repository package route, not the retired Builder Start Work / Review Feature draft:
 
 ```text
-planning/documentation/replacement-package-builder/scenarios/
-SCN-BLDR-BUILD-AND-REVIEW-REPLACEMENT-PACKAGE.md
+planning/commands/build-replacement-archive.command.md
+planning/use-cases/UC-REPO-BUILD-REPLACEMENT-PACKAGE.md
+planning/documentation/build-replacement-archive-workflow.md
 ```
 
-Canonical Builder review Feature:
+Application boundary:
 
 ```text
-planning/documentation/replacement-package-builder/features/
-F-BLDR-APPLY-PACKAGE-FOR-REVIEW.md
+AI / human owns
+  Work Issue/comments
+  semantic working branch/context
+  semantic edits
+  review decision
+  exact consumer handoff
+
+package producer owns
+  mechanical exact package construction from selected source/result bytes
+  protocol validation
+  fail-closed base acquisition
+
+Replacement Package App owns
+  authoritative package realization according to current accepted App behavior
 ```
 
-The Builder Scenario already owns this pre-handoff journey:
+Current session composition:
 
 ```text
-Human work/target intent
-→ ChatGPT uses F-BLDR-START-REPOSITORY-WORK
-→ ChatGPT prepares desired resulting content/deletions
-→ F-BLDR-BUILD-REPLACEMENT-PACKAGE
-→ F-BLDR-APPLY-PACKAGE-FOR-REVIEW
-     fresh isolated review workspace at exact expectedSource
-     apply exact package using consumer-equivalent applicability/result semantics
-     → predictedTree
-     → latest.diff
-     → cumulative.diff
-     → full resulting workspace/tree
-→ ChatGPT semantic review of exact source/package/result
-   NEEDS_CORRECTION
-   ├─ record/materialize finding according to Builder Scenario
-   ├─ correct candidate inputs
-   ├─ build a NEW package
-   └─ replay/review again
-   APPROVABLE
-   └─ freeze exact package/source/predicted-result tuple
-→ exact consumer handoff
+confirm semantic work context owned by AI/human
+→ progress planning/implementation to the required depth
+→ review exact intended file result
+→ request/build protocol-valid Replacement Package through current producer command/use case
+→ review the exact package/result using available package/repository evidence
+→ if correction is required: change semantic inputs/result, produce a NEW packageId and review again
+→ when exact result is approved: AI emits the exact selected consumer handoff
+→ consumer App realizes that exact package
 ```
 
-Session Methodology **consumes** this Scenario. It should not duplicate its Behavior Requirements.
+Do **not** use `F-BLDR-START-REPOSITORY-WORK`, `F-BLDR-BUILD-REPLACEMENT-PACKAGE`, the old Builder review Scenario, or current Snapshot semantics as current product authority. Those retained documents are legacy target/source Evidence only.
 
-The session-level composition around it is:
+Selected future Builder semantics are owned by:
 
 ```text
-confirm Work / Issue / branch context
-→ progressive planning to the depth needed
-→ user confirms candidate implementation direction
-→ ChatGPT prepares literal desired result
-→ Builder builds exact candidate package
-→ Builder Apply-for-Review reconstructs consumer-equivalent predicted result
-→ ChatGPT reviews:
-   latest.diff
-   cumulative.diff
-   full resulting tree/workspace
-   package/source/result identity
-   current Issue goal/acceptance
-   current approved Requirements/Decisions
-→ findings return to the appropriate planning level
-→ repeat until Builder Scenario yields an APPROVABLE exact package/result
-→ user reviews/confirms the final literal result
-→ establish `SCP-FINAL-LITERAL-CANDIDATE-APPROVED`
-→ emit/use the exact approved Builder handoff
-→ consumer App realizes that exact reviewed package
-→ downstream reviewed-result verification proves the real consumer result
-   equals the Builder-reviewed predicted result
+tools/replacement-package-app/evolution-steps/
+EVO-RPKG-ESTABLISH-REPLACEMENT-PACKAGE-CONSTRUCTION.md
+→ later EVO-RPKG-ADD-LOCAL-PACKAGE-VERIFICATION.md
 ```
 
-Two distinct review checkpoints must not be conflated:
+When those Steps are realized/proven/materialized, this session workflow may be revalidated to consume the resulting current Builder Feature/Scenario owners. Until then, implementation mechanics can be reused only as Evidence under `KEEP / MODIFY / REPLACE`.
 
-```text
-PRE-HANDOFF BUILDER REVIEW
-= semantic review of predicted result before real consumer mutation
-= owned by SCN-BLDR-BUILD-AND-REVIEW-REPLACEMENT-PACKAGE
-  + F-BLDR-APPLY-PACKAGE-FOR-REVIEW
-
-POST-REALIZATION CONSUMER IDENTITY VERIFICATION
-= prove actual real published result is the exact reviewed predicted result
-= product Scenario responsibility on Replacement Package App side
-```
-
-Current App status matters:
-
-```text
-current active:
-tools/replacement-package-app/scenarios/SCN-RPKG-COMPLETE-REPOSITORY-WORK.md
-→ Apply / Commit / Publish
-→ exact package commit publication proven
-→ current Scenario stops.
-
-planned future:
-tools/replacement-package-app/scenarios/planned/
-SCN-RPKG-COMPLETE-REVIEWED-REPOSITORY-WORK.md
-→ consumes Builder-reviewed handoff/result identity
-→ proves actual published tree == reviewed predicted tree
-→ then future PR / Finalize behavior.
-```
-
-Therefore this session workflow may define the **intended composition**, but it must not claim the App already implements the planned reviewed-result verification until that product Scenario becomes current.
-
-During current migration state, Workflow B can still use Builder pre-handoff replay/review as the exact literal review mechanism, then use the currently implemented App Apply/Commit/Publish boundary. Any post-publish identity/review step beyond current App authority must be labeled as planned/dependent on future product behavior.
-
-The crucial invariant is:
-
-```text
-Builder reviewed tuple
-(package identity + expected source + predicted result)
-→ exact handoff
-→ real App realization
-→ when product support exists:
-   actual published result identity == reviewed predicted result identity
-```
-
-Do not replace this with “looks like the same diff”.
-
+Current Replacement Package App realization still stops where its accepted current Scenario stops; future reviewed-result verification/Finalize behavior remains Step-owned until materialized.
 
 ### Workflow checkpoints vs optional depth
 

@@ -13,7 +13,6 @@ A UI/persistence registration key may still identify a saved selection slot or n
 ## Behavior Items implemented
 
 - `BI-RPKG-CURRENT-EXACT-REPOSITORY-TARGET`
-- supports `BI-RPKG-SNAPSHOT-EXACT-SOURCE`
 - planned target `BI-RPKG-APPLY-EXACT-REPOSITORY-TARGET`
 
 ## Value / Relationships / Invariants
@@ -32,7 +31,7 @@ Requirement:
 Repository execution authority must use the exact captured `RepositoryTarget(repositoryIdentity, registeredPath)` and revalidate that path/repository relation rather than substituting whichever same-origin clone/current checkout is convenient.
 
 Reason:
-Exact repository work and Snapshot source truth must not drift when several local clones or locations exist.
+Exact repository work must not drift when several local clones or locations exist. Future Snapshot source selection may reuse this value after Snapshot target realization, but it is not a current Snapshot behavior justification.
 
 Derived from:
 `BI-RPKG-CURRENT-EXACT-REPOSITORY-TARGET`.
