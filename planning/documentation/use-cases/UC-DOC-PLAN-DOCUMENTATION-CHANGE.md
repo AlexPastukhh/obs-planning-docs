@@ -4,6 +4,23 @@
 
 A repository documentation capability, semantic owner structure, navigation model, dependency, or methodology needs a material change that cannot be resolved by simply reading a known owner or placing a file in an obvious existing responsibility.
 
+## Documentation Change Coverage
+
+For a substantial change that can affect several owners/projections, produce this proportional reviewable result before Exact realization:
+
+```text
+Semantic owners to change
+Existing artifacts to change
+New owners/artifacts, if any
+Registries/catalogs affected
+Commands/direct invocation projections affected
+Canonical methodology scenarios affected
+Helper/generated projections affected
+Examples/tests/audits requiring revalidation
+```
+
+A small obvious local correction does not require a separate coverage rendering. This result is not a new Target Module; it is a completeness checkpoint of this Use Case.
+
 ## Result
 
 The target documentation meaning is resolved to the needed depth, affected Use Cases and semantic owners are clear, and the change is ready for exact repository realization without implementation having to invent semantic decisions.

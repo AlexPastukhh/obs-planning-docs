@@ -34,7 +34,7 @@ Represent meaningful future application evolution early enough to influence curr
 
 ## Evolution Steps Map relationship
 
-[`../evolution-steps-map.md`](../evolution-steps-map.md) owns rough horizon / likelihood / dependency / order / readiness relationships between known Evolution Steps. The canonical Evolution Step owns the qualitative target change itself.
+[`../navigation/EVOLUTION-STEPS-MAP.md`](../navigation/EVOLUTION-STEPS-MAP.md) owns rough horizon / likelihood / dependency / order / readiness relationships between known Evolution Steps. The canonical Evolution Step owns the qualitative target change itself.
 
 The map does not redefine Feature/Scenario/Evolution meaning and is not changed automatically by every methodology edit.
 

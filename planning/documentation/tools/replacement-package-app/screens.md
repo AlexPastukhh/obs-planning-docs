@@ -35,6 +35,6 @@ The target screen is Work-centered. It has no ChangeSet selector, Review chat/de
 
 **SBI-RPKG-AUTOMATIC-COMPOSITION-VISIBLE** — Run OBS Action is the current full entry composition across the same Apply Feature modules, not a generic Resume/state-machine command. Planned requested extent and URI entry remain future evolution until implemented.
 
-Repository Snapshot remains a separately-owned CLI/capability and is not part of this Main Work Window.
+Repository Snapshot is not an accepted current product capability and is not part of this Main Work Window. Existing CLI/code mechanics are implementation Evidence only; selected future meaning is owned by [`EVO-RPKG-INTRODUCE-REPOSITORY-SNAPSHOT-WORKFLOW`](evolution-steps/EVO-RPKG-INTRODUCE-REPOSITORY-SNAPSHOT-WORKFLOW.md).
 
 Legacy Review/Finalize UI remains available only through the already-deployed old executable; it is not a compatibility requirement for the new target build.

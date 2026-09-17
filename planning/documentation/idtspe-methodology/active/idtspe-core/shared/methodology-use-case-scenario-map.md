@@ -59,6 +59,7 @@ A rule needed only because the scenario itself says so is a warning: it may reve
 | `UCSM-11` | Active profile contributes specialized components | compose → profile directory → profile registries | can generic IDTSPE UCs cover SDS without SDS-specific runtime UCs |
 | `UCSM-12` | Change the methodology itself | Documentation maintenance UC + IDTSPE maintenance UC where component type is IDTSPE-specific | are methodology-maintenance vs planning semantics separated |
 | `UCSM-13` | USER expresses a wanted outcome before solution/owner/temporal placement is known | compose → Need Candidate Disposition → current owner / Finding / Proposal / Q-R-P / SDS Evolution placement as applicable | can the methodology locate the correct semantic home without prematurely manufacturing a Proposal, Requirement, Feature or Evolution Step |
+| `UCSM-14` | USER explicitly requests visible methodology registry traversal | `UC-DOC-USE-REPOSITORY-GUIDANCE` → Use-Case Registry Map → reached registry directories | can traversal be visible without global scan or automatic component execution |
 
 ## 4. Canonical Working-Scenario Contract
 
@@ -215,19 +216,19 @@ A root scenario begins from the ordinary functional entry route. A focused scena
 **Possible Result:** Current semantic completion/correction with no Step; an existing Step as the correct future host; a new Step candidate; or further Proposal/Question/Problem/discovery work before Step formation.  
 **Derived From / Owners:** `planning/documentation/idtspe-methodology/active/idtspe-core/shared/need-candidate-disposition-contract.md`.
 
-### Step `SCN-02-S0` — host the unrealized change in an Evolution Step
+### Step `SCN-02-S0` — refine Application intent or host a downstream unrealized transition
 
-**Trigger / Situation:** Need/Proposal/Decision work has established a sufficiently concrete materially unrealized application transition.  
-**AI Action:** Establish/reuse one coherent `TM-EVOLUTION-STEP` boundary with expected Entry State and concrete driver; keep current natural owners as current truth.  
-**Why This Step:** Future planning must not silently overwrite current Feature/Scenario/Domain/Slice/etc owners before implementation.  
-**Method / Mechanics:** Treat absence as a valid Entry State for greenfield/new-owner work. Real alternatives remain Proposal/Planning Branch state; a Step may exist before final route selection when the future transition is concrete enough for addressability/review.  
-**Possible Result:** A concrete future-transition owner with current Entry State, candidate/selected route context and explicit uncertainty where material.  
-**Derived From / Owners:** `TM-EVOLUTION-STEP`, `TM-EVOLUTION-STEPS-MAP`, `LENS-UNCERTAINTY-ASSUMPTION-REVERSIBILITY`.
+**Trigger / Situation:** Need/Proposal/Decision work has established selected Application intent and/or a sufficiently concrete materially unrealized downstream transition.  
+**AI Action:** If Application need/value/contribution/boundary meaning itself changes, refine `TM-APPLICATION-DEFINITION` directly. If selected downstream Scenario/Feature/Screen/Domain/Slice/Shared meaning remains unrealized, establish/reuse one coherent `TM-EVOLUTION-STEP` and record the Application driver separately from Entry State.  
+**Why This Step:** Application Definition is upstream intent/value authority and may lead realization; downstream current owners still must not be overwritten before implementation.  
+**Method / Mechanics:** `Driven By` is not `Entering From`. Treat absence as a valid downstream Entry State. Real alternatives remain Proposal/Planning Branch state. Do not create Target Application Body/Application materialization.  
+**Possible Result:** Refined selected/possible Application meaning and/or one downstream future-transition owner with explicit semantic/realization prerequisites.  
+**Derived From / Owners:** `TM-APPLICATION-DEFINITION`, `TM-EVOLUTION-STEP`, `TM-EVOLUTION-STEPS-MAP`, `LENS-UNCERTAINTY-ASSUMPTION-REVERSIBILITY`.
 
 ### Step `SCN-02-S1` — establish Feature target state and peer Evolution Impacts
 
 **Trigger / Situation:** The Step needs application behavior and may affect journey/spatial meaning.  
-**AI Action:** Ground the Step in one or more Feature target states. For every selected NEW/CHANGED Feature, form one complete Target Feature Body using `TM-FEATURE`; reference unchanged Feature behavior rather than copying it. Open Scenario/Screen Evolution Impact Units only where the Step materially affects those peers.  
+**AI Action:** Ground the Step in selected downstream behavior. For NEW/CHANGED Features form complete Target Feature Bodies using stable `FBS-*`/`FDO-*`/`BR-*`; use stable `SR-*`/optional `SPS-*` in changed Target Scenarios. Open only material downstream Evolution Impacts/Target Bodies.  
 **Why This Step:** Feature is the behavioral target of the transition, while Scenario/Screen consequences should not create duplicate future roadmaps.  
 **Method / Mechanics:** Co-form/revalidate only material peer meaning. `[NEW]/[CHANGED]` annotations are provenance, never a substitute for the complete Target Feature Body. A selected changed Scenario/Screen may deepen from Impact into its complete Target Owner Body.  
 **Possible Result:** Complete Feature target state plus bounded Scenario/Screen Impacts and only the Target Scenario/Screen Bodies actually needed.  
@@ -269,7 +270,7 @@ A root scenario begins from the ordinary functional entry route. A focused scena
   "assumptions":["UC-IDTSPE-COMPOSE-CURRENT-WORK already governs composition"],
   "steps":[
     {"id":"SCN-02-S0N","title":"Resolve the requested outcome before choosing its future-state host","semanticRefs":["planning/documentation/idtspe-methodology/active/idtspe-core/shared/need-candidate-disposition-contract.md"]},
-    {"id":"SCN-02-S0","title":"Host the unrealized change in an Evolution Step","semanticRefs":["TM-EVOLUTION-STEP","TM-EVOLUTION-STEPS-MAP","LENS-UNCERTAINTY-ASSUMPTION-REVERSIBILITY"]},
+    {"id":"SCN-02-S0","title":"Refine Application intent or host a downstream unrealized transition","semanticRefs":["TM-APPLICATION-DEFINITION","TM-EVOLUTION-STEP","TM-EVOLUTION-STEPS-MAP","LENS-UNCERTAINTY-ASSUMPTION-REVERSIBILITY"]},
     {"id":"SCN-02-S1","title":"Establish Feature target state and peer Evolution Impacts","semanticRefs":["TM-EVOLUTION-STEP","TM-FEATURE","TM-SCENARIO-PLANNING","TM-SCREEN"]},
     {"id":"SCN-02-S2","title":"Deepen Domain Evolution Impact through discovery when useful","semanticRefs":["TM-DOMAIN-DISCOVERY","LENS-DOMAIN-MODELING-DDD","TM-DOMAIN-OWNER","TM-EVOLUTION-STEP"]},
     {"id":"SCN-02-S3","title":"Deepen Slice/Shared Evolution Impact through whole-path discovery","semanticRefs":["TM-IMPLEMENTATION-SLICE","LENS-SLICE-VERTICALITY-INTEGRATION","TM-SLICE-OWNER","TM-SHARED-IMPLEMENTATION-CAPABILITY","TM-EVOLUTION-STEP"]},
@@ -306,7 +307,7 @@ A root scenario begins from the ordinary functional entry route. A focused scena
 **Trigger / Situation:** A Finding is `RE-2` or `RE-4`, or otherwise exposes materially different candidate semantic answers that require selection.  
 **AI Action:** Review the corrective candidate(s) through the canonical Proposal/Decision lifecycle at the actual current/upstream owner.  
 **Why This Step:** USER decision effort belongs on the semantic choice that changes accepted meaning, not on every defect report.  
-**Method / Mechanics:** Keep the Finding/Q/R/P provenance, compare only real candidate answers, recommend when evidence justifies it, and require actual selection before changing accepted planning meaning. If SDS correction meaning is selected but still unrealized, integrate it into the applicable Evolution Step Target Body rather than rewriting current owner truth immediately. `RE-0/RE-1` does not become a formal Proposal merely to satisfy ceremony.  
+**Method / Mechanics:** Keep the Finding/Q/R/P provenance, compare only real candidate answers, recommend when evidence justifies it, and require actual selection before changing accepted planning meaning. If SDS correction meaning is selected but still unrealized, integrate downstream owner meaning into the applicable Evolution Step Target Body rather than rewriting current downstream owner truth immediately. If the correction changes Application need/value/contribution/boundary intent itself, refine Application Definition directly and let any downstream Step reference it as `Driven By`. `RE-0/RE-1` does not become a formal Proposal merely to satisfy ceremony.  
 **Possible Result:** A selected/revised/deferred semantic correction in its correct current/future host, or an explicit unresolved decision surface.  
 **Derived From / Owners:** `planning/documentation/idtspe-methodology/active/idtspe-core/shared/proposal-and-decision-lifecycle-contract.md`, `planning/documentation/idtspe-methodology/active/idtspe-core/shared/qrp-lifecycle-and-review-contract.md`.
 
@@ -396,8 +397,8 @@ A root scenario begins from the ordinary functional entry route. A focused scena
 **Trigger / Situation:** A methodology/documentation capability, owner boundary, route or contract needs material change.  
 **AI Action:** Use the Documentation change Use Case and, when an IDTSPE component contract itself changes, the corresponding IDTSPE maintenance Use Case.  
 **Why This Step:** Documentation maintenance and planning semantics must not collapse into one owner.  
-**Method / Mechanics:** Resolve current owner(s), intended semantic delta, dependencies and exact realization readiness before mutation.  
-**Possible Result:** A bounded documentation/methodology change ready for realization.  
+**Method / Mechanics:** Resolve current owner(s), intended semantic delta, dependencies and exact realization readiness. For a substantial cross-cutting change, produce Documentation Change Coverage naming canonical owners, registries/navigation, commands, canonical scenarios, Helper/generated projections, examples/tests/audits before mutation.  
+**Possible Result:** A bounded documentation/methodology change plus explicit coverage of all affected current/derived surfaces, ready for realization.  
 **Derived From / Owners:** `UC-DOC-PLAN-DOCUMENTATION-CHANGE`, `UC-IDTSPE-MAINTAIN-TARGET-MODULE`.
 
 ### Step `SCN-05-S2` — refresh only affected derived projections/examples
@@ -422,7 +423,32 @@ A root scenario begins from the ordinary functional entry route. A focused scena
 {"id":"SCN-05","type":"MAINTENANCE","title":"Я меняю саму методологию или документацию","entryRoute":"Documentation Use-Case routing; IDTSPE maintenance UC only for the component type being changed","assumptions":[],"steps":[{"id":"SCN-05-S1","title":"Resolve the documentation capability/owner change","semanticRefs":["UC-DOC-PLAN-DOCUMENTATION-CHANGE","UC-IDTSPE-MAINTAIN-TARGET-MODULE"]},{"id":"SCN-05-S2","title":"Refresh only affected derived projections/examples","semanticRefs":["UC-DOC-PLAN-DOCUMENTATION-CHANGE","planning/command-routing.md","planning/documentation/idtspe-methodology/active/idtspe-core/shared/methodology-use-case-scenario-map.md"]},{"id":"SCN-05-S3","title":"Review the resulting documentation","semanticRefs":["UC-DOC-REVIEW-DOCUMENTATION"]}]}
 [/METHODOLOGY_SCENARIO]
 
-## 10. `SCN-07` FOCUSED — Нашёлся баг или файндинг — понять, можно ли исправить локально или надо поднимать решение
+## 10. `SCN-DOC-REGISTRY-01` FOCUSED — Я хочу явно пройти по регистрам методологии и увидеть, что применимо
+
+**Type:** FOCUSED / READ-ONLY  
+**Entry assumption:** USER explicitly asks to inspect applicable repository methodology; this is not component execution.
+
+### Step `SCN-DOC-REGISTRY-01-S1` — resolve Use-Case applicability from the root map
+
+**Trigger / Situation:** The USER wants a visible methodology registry scan for current work.  
+**AI Action:** Use `UC-DOC-USE-REPOSITORY-GUIDANCE`; start at the Methodology Use-Case Registry Map, scan only plausible scoped registries, and identify applicable Use Cases.  
+**Why This Step:** Use Cases govern methodology composition; component registries are not a second root runtime.  
+**Possible Result:** Applicable Use Cases and explicit skipped Use-Case registries.  
+**Derived From / Owners:** `UC-DOC-USE-REPOSITORY-GUIDANCE`, `planning/documentation/use-case-registry-map.md`.
+
+### Step `SCN-DOC-REGISTRY-01-S2` — traverse only registries reached by selected Processes
+
+**Trigger / Situation:** Applicable Use Cases require specialized Target/Lens/component discovery.  
+**AI Action:** Follow only registry directories/components reached by those Use-Case Processes; report scanned registries, reason, plausible applicable entries and deliberately skipped registries.  
+**Why This Step:** A global scan would bypass applicability/materiality and turn registry navigation into a second runtime.  
+**Possible Result:** Registry Traversal Trace with `Execution: NONE`.  
+**Derived From / Owners:** `UC-DOC-USE-REPOSITORY-GUIDANCE`, `planning/documentation/idtspe-methodology/active/idtspe-core/shared/methodology-registry-directory.md`.
+
+[METHODOLOGY_SCENARIO]
+{"id":"SCN-DOC-REGISTRY-01","type":"FOCUSED","title":"Я хочу явно пройти по регистрам методологии и увидеть, что применимо","entryRoute":"UC-DOC-USE-REPOSITORY-GUIDANCE","assumptions":["read-only; no component execution"],"steps":[{"id":"SCN-DOC-REGISTRY-01-S1","title":"Resolve Use-Case applicability from the root map","semanticRefs":["UC-DOC-USE-REPOSITORY-GUIDANCE","planning/documentation/use-case-registry-map.md"]},{"id":"SCN-DOC-REGISTRY-01-S2","title":"Traverse only registries reached by selected Processes","semanticRefs":["UC-DOC-USE-REPOSITORY-GUIDANCE","planning/documentation/idtspe-methodology/active/idtspe-core/shared/methodology-registry-directory.md"]}]}
+[/METHODOLOGY_SCENARIO]
+
+## 11. `SCN-07` FOCUSED — Нашёлся баг или файндинг — понять, можно ли исправить локально или надо поднимать решение
 
 **Type:** FOCUSED  
 **Entry assumption:** a material Finding Candidate already exists from review, Evidence, validation, exact work, testing, USER observation/clarification that actually surfaces finding-shaped meaning, or another producer. A wanted outcome alone belongs to Need Candidate disposition rather than becoming a Finding automatically. The scenario is generic Core; active profiles contribute only when the finding actually reaches their semantics.
@@ -468,7 +494,7 @@ A root scenario begins from the ordinary functional entry route. A focused scena
 **Trigger / Situation:** Direct disposition produced `RE-4`, or `SCN-07-S4` revalidation established that an upstream Decision/Requirement/owner meaning must actually change.  
 **AI Action:** Review and select the upstream corrective Proposal(s) at the real upstream owner.  
 **Why This Step:** Upstream revalidation and upstream semantic selection are different actions; the USER should inspect the Proposal only after a real upstream change surface exists.  
-**Method / Mechanics:** Preserve the Finding/revalidation evidence, expose affected downstream consequences, compare only real candidate answers and use canonical Proposal/Decision/Q/R/P semantics before accepted upstream desired meaning changes. Under SDS, an upstream change that still requires implementation is hosted in the relevant Evolution Step Target Body rather than immediately replacing current realized owner truth.  
+**Method / Mechanics:** Preserve the Finding/revalidation evidence, expose affected downstream consequences, compare only real candidate answers and use canonical Proposal/Decision/Q/R/P semantics before accepted upstream desired meaning changes. Under SDS, an upstream **downstream-owner** change that still requires implementation is hosted in the relevant Evolution Step Target Body rather than immediately replacing current realized owner truth. Application Definition need/value/contribution changes are refined directly; unrealized downstream consequences are then Step-owned.  
 **Possible Result:** Selected/revised/deferred upstream desired-state change in its correct temporal host, or an explicit material decision block.  
 **Derived From / Owners:** `planning/documentation/idtspe-methodology/active/idtspe-core/shared/proposal-and-decision-lifecycle-contract.md`, `planning/documentation/idtspe-methodology/active/idtspe-core/shared/qrp-lifecycle-and-review-contract.md`.
 
@@ -481,7 +507,7 @@ A root scenario begins from the ordinary functional entry route. A focused scena
 **Possible Result:** No Requirement change, current semantic completion with an added/refined current `BR/IR/PFR`, a future Target-Body Requirement/Decision candidate, a current realization correction route, or an upstream revalidation route.  
 **Derived From / Owners:** `LENS-IMPLEMENTATION-REQUIREMENTS-DISCOVERY`, `planning/documentation/idtspe-methodology/active/profiles/sds/shared/requirement-ownership-and-exception-rule.md`, `planning/documentation/idtspe-methodology/active/profiles/sds/shared/directed-methodology-workflow-and-next-step-resolution.md`.
 
-## 11. `SCN-08` FOCUSED — Есть Proposal / вариант решения — понять последствия и довести до разрешения
+## 12. `SCN-08` FOCUSED — Есть Proposal / вариант решения — понять последствия и довести до разрешения
 
 **Type:** FOCUSED  
 **Entry assumption:** a real Proposal/candidate route exists; a Finding is not required.
@@ -513,7 +539,7 @@ A root scenario begins from the ordinary functional entry route. A focused scena
 
 **Trigger / Situation:** Candidate meaning is sufficiently reviewed and applicable selection authority is available.  
 **AI Action:** Select/revise/reject/defer through the canonical Proposal lifecycle; integrate selected meaning into affected Unit Result Content / owner.  
-**Method / Mechanics:** Material selection has Decision semantics. Retain a separate explicit/durable Decision trace only when rationale/trade-off/revalidation value should survive. Under SDS, selected but unrealized meaning remains in the applicable Evolution Step Target Body until realization/materialization.  
+**Method / Mechanics:** Material selection has Decision semantics. Retain a separate explicit/durable Decision trace only when rationale/trade-off/revalidation value should survive. Under SDS, selected but unrealized **downstream owner** meaning remains in the applicable Evolution Step Target Body until realization/materialization. Application Definition is the explicit upstream exception and is refined directly.  
 **Possible Result:** Current Result Content / selected future result meaning plus only useful retained resolution trace.  
 **Derived From / Owners:** `planning/documentation/idtspe-methodology/active/idtspe-core/shared/proposal-and-decision-lifecycle-contract.md`, `planning/documentation/idtspe-methodology/active/idtspe-core/shared/idtspe-unit-and-target-step-result-model.md`.
 
@@ -525,7 +551,7 @@ A root scenario begins from the ordinary functional entry route. A focused scena
 {"id":"SCN-07","type":"FOCUSED","title":"Нашёлся баг или файндинг — понять, можно ли исправить локально или надо поднимать решение","entryRoute":"Starts from a material Finding Candidate after normal routing; generic Core first, active profile only when implicated","assumptions":["Finding producer is not semantic resolution authority"],"steps":[{"id":"SCN-07-S1","title":"Establish the finding and smallest justified escalation","semanticRefs":["planning/documentation/idtspe-methodology/active/idtspe-core/shared/finding-disposition-contract.md#resolution-escalation","planning/documentation/idtspe-methodology/active/ai-reviewability/README.md"]},{"id":"SCN-07-S2","title":"Keep deterministic/local repair inside accepted meaning","semanticRefs":["planning/documentation/idtspe-methodology/active/idtspe-core/shared/finding-disposition-contract.md"]},{"id":"SCN-07-S3","title":"Resolve current-owner semantic change through Unit Resolution + Proposal selection","semanticRefs":["planning/documentation/idtspe-methodology/active/idtspe-core/shared/proposal-and-decision-lifecycle-contract.md","planning/documentation/idtspe-methodology/active/idtspe-core/shared/qrp-lifecycle-and-review-contract.md"]},{"id":"SCN-07-S4","title":"Revalidate upstream before compensating downstream","semanticRefs":["UC-IDTSPE-REVALIDATE-CURRENT-WORK"]},{"id":"SCN-07-S4P","title":"Change upstream accepted meaning only after RE-4 is established","semanticRefs":["planning/documentation/idtspe-methodology/active/idtspe-core/shared/proposal-and-decision-lifecycle-contract.md","planning/documentation/idtspe-methodology/active/idtspe-core/shared/qrp-lifecycle-and-review-contract.md"]},{"id":"SCN-07-S5","title":"Interpret SDS Requirement/depth semantics only when actually implicated","semanticRefs":["LENS-IMPLEMENTATION-REQUIREMENTS-DISCOVERY","planning/documentation/idtspe-methodology/active/profiles/sds/shared/requirement-ownership-and-exception-rule.md"]}]}
 [/METHODOLOGY_SCENARIO]
 
-## 12. SDS-Specific Use-Case Test
+## 13. SDS-Specific Use-Case Test
 
 Current conclusion: no separate SDS methodology-use Use Case is justified.
 
@@ -547,7 +573,7 @@ They are profile Target/Lens capabilities reached from generic IDTSPE Use Cases.
 
 Create an SDS-specific Use Case only if a future scenario exposes a distinct independently useful Result about **how SDS methodology documentation is used**, not merely a new SDS planning result.
 
-## 13. Maintenance / Scenario Revalidation Rule
+## 14. Maintenance / Scenario Revalidation Rule
 
 When a Use Case/component owner changes materially:
 

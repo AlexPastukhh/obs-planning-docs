@@ -116,11 +116,23 @@ predecessor planned or selected
 
 ## Production / Representation
 
-Maintain the smallest registry sufficient for discovery/routing.
+Maintain a compact registry/table with:
 
-A map entry may reference a dedicated Step or embed a shallow Step. Do not copy detailed Target Feature/Scenario/Screen/Domain/Slice/Shared bodies from a substantial Step.
+```text
+Step
+Planning Position
+Change Surface / Role
+Target Resolution
+Enters from
+Realization prerequisite
+plain addition/change
+principal target owners
+Readiness: READY | NOT_READY
+```
 
-A generated/derived relation view is valid when it can be regenerated from Step/Core authorities.
+Planning Position, Target Resolution, Readiness and Realization are independent. `Probable ≠ Selected`; `Complete Target ≠ READY`; `READY ≠ Realized`.
+
+For non-trivial branching include a compact derived **semantic DAG/read-path view**. Show realization-foundation ordering separately so it does not masquerade as semantic parentage. Detailed readiness reasons/QRP remain in each Step.
 
 ## Post-Realization Projection
 

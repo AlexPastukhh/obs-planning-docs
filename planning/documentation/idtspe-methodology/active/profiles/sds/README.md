@@ -44,18 +44,23 @@ The current SDS baseline defines **no separate runtime methodology-use Use Cases
 
 ## Temporal Authority Boundary
 
-SDS separates **realized current truth** from **unrealized future planning**.
+SDS separates **realized downstream owner truth** from **unrealized downstream target planning** while keeping Application Definition upstream of that boundary.
 
 ```text
-canonical natural owners
-= realized / implemented current system truth
+Application Definition
+= selected / possible need, value, contribution and boundary intent
+= may legitimately lead current realization
+= refined directly when that intent changes
+
+Feature / Scenario / Screen / Domain / Slice / Shared
+= realized / implemented current owner truth when materialized
 
 Evolution Step
-= canonical semantic owner of materially planned but unrealized SDS target state
+= canonical semantic owner of materially planned but unrealized downstream target state
 
 Exact Realization + required proof/revalidation
 → Target Owner Materialization
-→ current natural owners are created/replaced/retired to match what is now realized
+→ downstream current natural owners are created/replaced/retired to match what is now realized
 ```
 
 Selection does not collapse this boundary:
@@ -66,9 +71,9 @@ selected Proposal / Decision
 ≠ current-owner truth
 ```
 
-When planning an unrealized change, the ordinary Application/Feature/Scenario/Screen/Domain/Slice/Shared Target Modules may be used in a **supporting role inside `TM-EVOLUTION-STEP`** to shape complete post-Step Target Owner Bodies. Those bodies remain Step-owned planning meaning until materialization.
+When planning an unrealized downstream change, Feature/Scenario/Screen/Domain/Slice/Shared Target Modules may be used in a **supporting role inside `TM-EVOLUTION-STEP`** to shape complete post-Step Target Owner Bodies. `TM-APPLICATION-DEFINITION` is the exception: it is refined directly and may be referenced by the Step through `Driven By`, but it never becomes a Step-owned Target Application Body.
 
-For greenfield work, `absence` is a valid current state. The first planned owner is therefore also expressed as a Target Body in an Evolution Step and becomes a current owner only after realization/proof.
+For greenfield downstream owners, `absence` is a valid current state. The first planned Feature/Scenario/Screen/Domain/Slice/Shared owner is therefore expressed as a Target Body in an Evolution Step and becomes current only after realization/proof. Application Definition may already exist upstream before any such owner is realized.
 
 Current-owner review/revalidation remains valid: the same Target Module contracts can evaluate already-realized owner truth directly.
 
@@ -81,13 +86,17 @@ Do not browse all profile components ceremonially.
 ## Compact Owner Topology
 
 ```text
-current realized application/workspace state
-→ canonical current natural owners + implementation + Evidence
+Application Definition
+→ selected/possible Benefits + contribution/boundary intent
 
-material desired state differs / new owner is planned
+current realized downstream state
+→ canonical current Feature/Scenario/Screen/Domain/Slice/Shared owners + implementation + Evidence
+
+material downstream desired state differs / new downstream owner is planned
 → Evolution Step
+   ├─ Driven By Application Definition when material
    ├─ Proposal / Planning Branch / Decision / Q-R-P / Evidence as needed
-   ├─ Target Application / Feature / Scenario / Screen bodies as applicable
+   ├─ Target Feature / Scenario / Screen bodies as applicable
    ├─ Target Domain / Slice / Shared bodies as applicable
    ├─ future owner-local BR/IR/PFR inside the corresponding Target Body
    └─ transition / proof obligations + Target Owner Materialization Set
@@ -107,7 +116,7 @@ This is orientation only. It is not a mandatory phase sequence. Cross-owner read
 
 ## Key Profile Invariants
 
-- Canonical natural owners describe realized/current system truth; selected-but-unrealized future meaning stays in an Evolution Step.
+- Application Definition is upstream intent/value authority and may lead realization; Feature/Scenario/Screen/Domain/Slice/Shared current owners describe realized/current downstream truth, while selected-but-unrealized downstream meaning stays in an Evolution Step.
 - Evolution Step Target Owner Bodies reuse natural owner contracts without creating `FutureFeature`, `FutureDomain`, `FutureSlice` or another parallel owner ontology.
 - Target Owner Materialization is a semantic authority transition after realization/proof; it is distinct from physical representation promotion/demotion or file placement under P-14/TF-10.
 - Feature, Scenario and Screen are peer semantic owner families; none silently edits another.
@@ -119,7 +128,7 @@ This is orientation only. It is not a mandatory phase sequence. Cross-owner read
 - Planning depth is guidance, not a one-active-level state machine or approval ladder.
 - Exploratory discovery resolution/rejected alternatives are non-persistent by default. Selected planning Result Content persists only in its natural destination when it has continuing value; physical artifact persistence remains a separate proportional representation decision.
 - Proposal selection, uncertainty/confidence and realization/materialization are separate axes.
-- Every Evolution Step is behaviorally grounded by one or more Feature target states: selected NEW/CHANGED Features use complete `TM-FEATURE` Target Feature Bodies; unchanged Feature behavior is referenced rather than copied.
+- Behavioral/Mixed Evolution Steps are grounded by the affected Feature/Scenario behavior as material. Implementation-only foundation Steps are valid without inventing Feature behavior when concrete selected realization pressure exists and `Behavior Change: None intended`.
 - Scenario/Screen/Domain/Slice/Shared future consequences use Step-owned `Evolution Impact` Units; current realized owners may expose only reverse Step navigation/revalidation through their own optional Evolution Impact Unit.
 
 ## Canonical SDS Owners

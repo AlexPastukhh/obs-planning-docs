@@ -42,7 +42,7 @@ test('command navigation is derived from semantic identity and exposes UC/TM/Len
   ]);
   assert.equal(navigation.methodologyPrimaryIds(entries,'USE_CASES').length,16);
   assert.equal(navigation.methodologyPrimaryIds(entries,'TARGET_MODULES').length,15);
-  assert.equal(navigation.methodologyPrimaryIds(entries,'LENSES').length,18);
+  assert.equal(navigation.methodologyPrimaryIds(entries,'LENSES').length,19);
 });
 
 test('every current semantic component projects to exactly one primary command card',()=>{

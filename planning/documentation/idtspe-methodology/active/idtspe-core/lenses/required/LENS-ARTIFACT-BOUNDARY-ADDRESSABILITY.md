@@ -724,3 +724,7 @@ This Lens owns the representation decision; referenced packs own deeper realizat
 ## Provenance
 
 Expanded from the prior Artifact / File Boundary / Addressability Lens, the Artifact/File Realization Pack, current SDS AP/AG source guidance, and the pressure-driven documentation/materialization model developed during methodology consolidation.
+
+## Discoverability / Navigation Check
+
+For material addressable artifacts ask how a normal consumer arrives, what outgoing/return links are required, and whether a shallow registry improves discovery without copying owner bodies. Navigation projections are non-authoritative. Application Definition is an SDS temporal exception to the generic realized-current-owner example: it may lead downstream realization.

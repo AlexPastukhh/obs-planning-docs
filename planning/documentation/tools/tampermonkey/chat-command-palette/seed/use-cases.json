@@ -141,7 +141,8 @@
       "target": "<Use Repository Methodology / Guidance target>",
       "manualInvocation": true,
       "trigger": "Repository methodology/documentation may help the current work, or current guidance orientation may be missing, stale, too broad, conflicting, or no longer appropriate to the current situation. This Use Case is about **working with methodology/documentation files**. It does not own product planning, code changes, Domain/Slice design, Target production, Lens analysis or other specialized work performed by the methodology being consulted.",
-      "result": "The current work has a situation-appropriate methodology orientation: applicable Use Cases and semantic owners are known, required documentation actions are clear, only useful detail is loaded, and contextual adaptations/deferments are explicit when material."
+      "result": "The current work has a situation-appropriate methodology orientation: applicable Use Cases and semantic owners are known, required documentation actions are clear, only useful detail is loaded, and contextual adaptations/deferments are explicit when material.",
+      "commandId": "methodology.registries.scan"
     },
     {
       "id": "UC-IDTSPE-COMPOSE-CURRENT-WORK",

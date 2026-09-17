@@ -273,3 +273,7 @@ Design-system/platform facts are Target Inputs; this Lens owns the reusable UI/s
 ## Provenance
 
 Pre-Lens Screen/Frontend lenses + source-grounded Enman feature/API boundary evidence as non-binding patterns.
+
+## Natural Visual Owner Rule
+
+Visuality alone does not create Screen ownership. Route Scenario-natural visibility to SR, Feature-natural behavior/result to BR, independently meaningful spatial/navigation composition to Screen, and durable mechanism to IR.

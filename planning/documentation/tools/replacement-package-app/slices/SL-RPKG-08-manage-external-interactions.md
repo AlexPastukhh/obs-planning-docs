@@ -1,21 +1,16 @@
 # SL-RPKG-08 — Manage External Interactions
 
-Status: active current Slice owner
+Status: active current Slice owner for retained legacy/diagnostic external interactions. Snapshot-related implementation is Evidence only.
 
 ## Result / Responsibility
 
-Persist and project current actionable/attention truth for exact browser handoff interactions without accumulating ordinary terminal history or rewriting uncertainty.
+Persist and project current actionable/attention truth for exact retained browser handoff interactions without accumulating ordinary terminal history or rewriting uncertainty.
 
-## Scenario behavior realized
+## Current behavior realized
 
-Supports:
-- `FI-RPKG-DELIVER-REPOSITORY-CONTEXT`
-- `FI-RPKG-DELIVER-LEGACY-CURRENT-CHANGE`
+Current semantic scope is the retained legacy Current Change / diagnostic handoff path, including truthful uncertainty after possible Send.
 
-Behavior Items:
-- `BI-RPKG-SNAPSHOT-HANDOFF-EXACT-ARTIFACT`
-- `BI-RPKG-SNAPSHOT-HANDOFF-FROZEN-DESTINATION`
-- `BI-RPKG-LEGACY-CURRENT-CHANGE-UNCERTAINTY-TRUTHFUL`
+Snapshot export/attachment is **not** accepted current semantic behavior. Existing Snapshot-facing code/tests under this Slice are implementation Evidence for [`EVO-RPKG-INTRODUCE-REPOSITORY-SNAPSHOT-WORKFLOW`](../evolution-steps/EVO-RPKG-INTRODUCE-REPOSITORY-SNAPSHOT-WORKFLOW.md). Do not reintroduce `FI-RPKG-DELIVER-REPOSITORY-CONTEXT` or `BI-RPKG-SNAPSHOT-*` as current authority merely because those mechanics exist.
 
 ## Domain used
 
@@ -33,8 +28,9 @@ Once Send may have occurred and cannot be confirmed, later cancellation/dismissa
 
 ## Tests
 
-Primary current proof: `ChatBridgeTests` for identity, dedupe, cancellation boundaries, uncertainty persistence/dismissal and retry identity.
+`ChatBridgeTests` remain current proof for the retained interaction mechanics. Snapshot-related cases are Evidence/reuse candidates until Snapshot target realization.
 
 ## Evolution Impact
 
-Current Change delivery may reduce under the target workflow; Snapshot delivery keeps this Aggregate/Slice useful.
+- Current Change delivery may reduce under later workflow changes.
+- Repository Snapshot may reuse this Slice or replace its allocation only through [`EVO-RPKG-INTRODUCE-REPOSITORY-SNAPSHOT-WORKFLOW`](../evolution-steps/EVO-RPKG-INTRODUCE-REPOSITORY-SNAPSHOT-WORKFLOW.md).

@@ -1,10 +1,14 @@
 # F-BLDR-EDIT-WORK-ISSUE — Edit Work Issue
 
+> **Status: RETIRED LEGACY TARGET DRAFT / SOURCE EVIDENCE ONLY.**  
+> This document belongs to the pre-v14 Builder product model and is not current or selected future semantic authority. Current mechanical package-production semantics are owned by `UC-REPO-BUILD-REPLACEMENT-PACKAGE`; selected future Builder semantics are owned by `EVO-RPKG-ESTABLISH-REPLACEMENT-PACKAGE-CONSTRUCTION` and later verification Evolution. Command invocation remains a derived route, not Scenario/Feature authority.
+
+
 ## Identity
 
 `F-BLDR-EDIT-WORK-ISSUE`
 
-Status: future `Introduction`.
+Historical draft position: formerly proposed future `Introduction`; no current/future selection authority.
 
 ## Intent
 

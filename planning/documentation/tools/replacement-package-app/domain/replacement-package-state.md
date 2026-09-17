@@ -1,35 +1,48 @@
-# Replacement Package State
+<a id="domain-rpkg-replacement-package-state"></a>
+# Replacement Package State — Aggregate Domain Owner
 
-Status: active current Aggregate/runtime owner for package realization
+## RU-DOWN-TERMS — Terms / Ubiquitous Language
 
-## Responsibility
+| Canonical term | Plain definition |
+|---|---|
+| [Replacement Package State](../TERMS.md#term-rpkg-replacement-package-state-05) | The durable domain record of which Apply, Commit, and Publish results have been proven for one exact Work and Package Identity, including publication uncertainty when needed. |
+| [Package Identity](../TERMS.md#term-rpkg-package-identity-04) | The exact identity of one Replacement Package realization: packageId plus archive SHA-256. |
+| [Proven Result](../TERMS.md#term-rpkg-proven-result-06) | A result the application has enough exact evidence to treat as true, rather than merely attempted or assumed. |
+| [Publication Uncertainty](../TERMS.md#term-rpkg-publication-uncertainty-07) | A publish may have happened, but the application cannot yet prove the exact remote result. |
+| [Reconciliation](../TERMS.md#term-rpkg-reconciliation-08) | Observe current external facts after an uncertain effect before deciding whether any effect must be repeated. |
 
-Own durable facts for one exact replacement package realized within one Work. It is shared continuity for Apply Package, Commit applied and Publish/Retry Publish, but it never represents operation success/failure.
+## RU-DOWN-01 — Domain Behavior Realization Contract
 
-## Domain Concepts / Invariants
+### Global Behavior Requirements realized by this Aggregate
 
-`ReplacementPackageState = (WorkId, ReplacementPackageIdentity, commitSha?, PublicationObservation)`.
+| Feature Behavior Requirement | What this Aggregate realizes | Related Domain IR | Behavior expected errors | QRPE / Examples |
+|---|---|---|---|---|
+| [Keep Requested Work And Package](../features/F-RPKG-APPLY-REPLACEMENT-PACKAGE.md#br-rpkg-keep-requested-work-package-01) | Keeps Replacement Package State bound to one exact Work and Package Identity. | [Bind Package State To Work And Package](#ir-domain-rpkg-bind-package-state-to-work-package-01) | [Wrong Work Or Package](../features/F-RPKG-APPLY-REPLACEMENT-PACKAGE.md#err-beh-rpkg-wrong-work-or-package-01) when durable state proves the mismatch | Target Good Example: A/P1 state is used only for A/P1.<br>Problem Example: A/P1 state is accepted as proof for A/P2. |
+| [Keep Proven Results](../features/F-RPKG-APPLY-REPLACEMENT-PACKAGE.md#br-rpkg-keep-proven-results-02) | Keeps already Proven Results for Apply/Commit/Publish when later operations fail. | [Preserve Proven Results](#ir-domain-rpkg-preserve-proven-results-02) | [Package Result Conflict](../features/F-RPKG-APPLY-REPLACEMENT-PACKAGE.md#err-beh-rpkg-package-result-conflict-03) | Target Good Example: Proven commit C survives a later Publish failure.<br>Problem Example: Later failure erases C. |
+| [Report Success Only When Proven](../features/F-RPKG-APPLY-REPLACEMENT-PACKAGE.md#br-rpkg-report-success-only-when-proven-03) | Represents Publication Uncertainty instead of inventing success or non-occurrence. | [Preserve Publication Uncertainty](#ir-domain-rpkg-preserve-publication-uncertainty-03) | [Publication Not Confirmed](../features/F-RPKG-APPLY-REPLACEMENT-PACKAGE.md#err-beh-rpkg-publication-not-confirmed-06) | Target Good Example: Unconfirmed possible push remains uncertain.<br>Problem Example: It is recorded as definitely not published. |
 
-- existence of the state proves that the exact package Apply succeeded; there is no separate `applied` flag;
-- `ReplacementPackageIdentity = packageId + required archiveSha256`;
-- commit identity belongs here, not to Work or GitWorkspace;
-- publication evidence is `NotRequested | NotConfirmed | ConfirmedAbsent | ConfirmedTip(sha)`;
-- `NotConfirmed` means publication of the intended commit is not currently proven and exact remote observation is required before any further push; it may be written conservatively before the possible-push boundary;
-- Published is derived only when `ConfirmedTip` equals the exact package commit;
-- one Work may have many completed package states but at most one unfinished package realization;
-- re-proving the same exact commit is idempotent and preserves publication evidence;
-- persisted storage identity is fenced to exact `(WorkId, packageId)`;
-- Work-mutating package operations execute under one durable per-Work `WorkOperationLock` application boundary; this Aggregate/repository does not own overall Work execution serialization.
+### Feature Behavior Steps realized by this Aggregate
 
-## Durable side-effect rules
+A Step may be realized jointly by Domain and Slice. This table states this Aggregate's
+semantic part of the **same Feature Step**.
 
-- Apply journals prior/intended file bytes before mutation under a self-validating integrity digest, rebinds recovery bytes to the captured exact archive payload, and persists this Aggregate only after exact intended bytes are established;
-- Commit may recover an exact journal-proven Git commit if commit creation succeeded before package-state persistence;
-- before a Publish push can occur, `NotConfirmed` must be durable; if that write fails no push begins;
-- after a possible push, failure to persist stronger observation leaves durable `NotConfirmed` as retry authority.
+| Feature Behavior Step | Aggregate realization of the Step | Step-local BRs realized here | Behavior expected errors realized here | Related Domain IR | QRPE / Examples |
+|---|---|---|---|---|---|
+| [Apply Package](../features/F-RPKG-APPLY-REPLACEMENT-PACKAGE.md#fbs-rpkg-apply-package-02) | Decides/records when the exact applied package result is a Proven Result for this Work and Package Identity. | [Applied Result Must Match Package](../features/F-RPKG-APPLY-REPLACEMENT-PACKAGE.md#br-rpkg-applied-result-must-match-package-06) | [Package Result Conflict](../features/F-RPKG-APPLY-REPLACEMENT-PACKAGE.md#err-beh-rpkg-package-result-conflict-03) | [Bind Package State To Work And Package](#ir-domain-rpkg-bind-package-state-to-work-package-01); [Preserve Proven Results](#ir-domain-rpkg-preserve-proven-results-02) | Target Good Example: Exact declared post-Apply result becomes the proven applied result for A/P1.<br>Problem Example: A different file result is recorded as Applied. |
+| [Commit Applied Package](../features/F-RPKG-APPLY-REPLACEMENT-PACKAGE.md#fbs-rpkg-commit-applied-package-03) | Owns the durable fact identifying the exact commit that represents the proven applied package result. | [Commit Must Represent Exact Package Result](../features/F-RPKG-APPLY-REPLACEMENT-PACKAGE.md#br-rpkg-commit-must-represent-exact-package-08) | [Package Result Conflict](../features/F-RPKG-APPLY-REPLACEMENT-PACKAGE.md#err-beh-rpkg-package-result-conflict-03) | [Bind Package State To Work And Package](#ir-domain-rpkg-bind-package-state-to-work-package-01); [Preserve Proven Results](#ir-domain-rpkg-preserve-proven-results-02) | Target Good Example: Commit C is bound to A/P1 and preserved as the exact package commit.<br>Problem Example: A later unrelated commit is accepted as the package commit. |
+| [Publish Exact Commit](../features/F-RPKG-APPLY-REPLACEMENT-PACKAGE.md#fbs-rpkg-publish-exact-commit-04) | Owns the durable fact that publication is proven, diverged, or uncertain for the exact package commit/Work Branch. | [Publish Only When Confirmed](../features/F-RPKG-APPLY-REPLACEMENT-PACKAGE.md#br-rpkg-publish-only-when-confirmed-11) plus global proven-result BRs | [Publication Not Confirmed](../features/F-RPKG-APPLY-REPLACEMENT-PACKAGE.md#err-beh-rpkg-publication-not-confirmed-06); durable contradiction may contribute to [Package Result Conflict](../features/F-RPKG-APPLY-REPLACEMENT-PACKAGE.md#err-beh-rpkg-package-result-conflict-03) | [Preserve Proven Results](#ir-domain-rpkg-preserve-proven-results-02); [Preserve Publication Uncertainty](#ir-domain-rpkg-preserve-publication-uncertainty-03) | Target Good Example: Remote proof confirms C and state records confirmed publication.<br>Problem Example: A possible push with no confirmation is recorded as definitely unpublished. |
 
-No legacy package state is inferred from `Core.ChangeSet`; old works remain with the deployed old executable.
+### Domain Implementation Requirements
 
-## Tests
+| Domain Implementation Requirement | Type | Plain implementation requirement | Realizes | Related expected errors | QRPE / Examples |
+|---|---|---|---|---|---|
+| <a id="ir-domain-rpkg-bind-package-state-to-work-package-01"></a>**Bind Package State To Work And Package**<br><code>IR-DOMAIN-RPKG-BIND-PACKAGE-STATE-TO-WORK-PACKAGE-01</code> | Identity / Consistency | Replacement Package State for Work A/Package P1 can never satisfy realization of another Work or Package Identity. | [Keep Requested Work And Package](../features/F-RPKG-APPLY-REPLACEMENT-PACKAGE.md#br-rpkg-keep-requested-work-package-01) | [Wrong Work Or Package](../features/F-RPKG-APPLY-REPLACEMENT-PACKAGE.md#err-beh-rpkg-wrong-work-or-package-01); [Package State Identity Conflict](#err-imp-domain-rpkg-package-state-identity-conflict-01) | Target Good Example: State for A/P1 is accepted only for an operation that is also A/P1.<br>Problem Example: State for A/P1 is reused for A/P2 because labels are similar. |
+| <a id="ir-domain-rpkg-preserve-proven-results-02"></a>**Preserve Proven Results**<br><code>IR-DOMAIN-RPKG-PRESERVE-PROVEN-RESULTS-02</code> | Consistency / Recovery | Once Apply, Commit, or Publish is a Proven Result, a later local failure cannot erase that proven fact. | [Keep Proven Results](../features/F-RPKG-APPLY-REPLACEMENT-PACKAGE.md#br-rpkg-keep-proven-results-02) | [Package Result Conflict](../features/F-RPKG-APPLY-REPLACEMENT-PACKAGE.md#err-beh-rpkg-package-result-conflict-03); [Package State Persistence Conflict](#err-imp-domain-rpkg-package-state-persistence-conflict-02) | Target Good Example: Commit C remains proven after a later Publish failure.<br>Problem Example: A persistence failure makes a previously proven commit unknown again. |
+| <a id="ir-domain-rpkg-preserve-publication-uncertainty-03"></a>**Preserve Publication Uncertainty**<br><code>IR-DOMAIN-RPKG-PRESERVE-PUBLICATION-UNCERTAINTY-03</code> | Uncertainty / Truthfulness | If publication may have happened but is not confirmed, Replacement Package State keeps Publication Uncertainty instead of claiming 'not published'. | [Report Success Only When Proven](../features/F-RPKG-APPLY-REPLACEMENT-PACKAGE.md#br-rpkg-report-success-only-when-proven-03); [Keep Proven Results](../features/F-RPKG-APPLY-REPLACEMENT-PACKAGE.md#br-rpkg-keep-proven-results-02) | [Publication Not Confirmed](../features/F-RPKG-APPLY-REPLACEMENT-PACKAGE.md#err-beh-rpkg-publication-not-confirmed-06) | Target Good Example: Possible push plus missing confirmation keeps Publication Uncertainty.<br>Problem Example: Possible push plus local exception is written as definitely not published. |
 
-`WorkAggregateTests` proves state shape, exact archive identity, publication derivation, evidence preservation, storage-key fencing, per-Work locking, concurrent unfinished-package exclusion and state-v2 isolation. Feature/Scenario integration proves Apply/Commit recovery, corrupt-state fail-closed behavior, publication fencing, no-blind-retry and sequential packages without `publishedTip`/execution-state authority.
+### Domain Implementation Expected Errors
+
+| Domain Implementation Expected Error | Type | Plain meaning | Handling IR | QRPE / Examples |
+|---|---|---|---|---|
+| <a id="err-imp-domain-rpkg-package-state-identity-conflict-01"></a>**Package State Identity Conflict**<br><code>ERR-IMP-DOMAIN-RPKG-PACKAGE-STATE-IDENTITY-CONFLICT-01</code> | Identity / Consistency | Selected durable state belongs to another exact Work/Package Identity. | [Bind Package State To Work And Package](#ir-domain-rpkg-bind-package-state-to-work-package-01) | Target Good Example: Reject the state and keep the exact identity boundary.<br>Problem Example: Accept it because labels happen to match. |
+| <a id="err-imp-domain-rpkg-package-state-persistence-conflict-02"></a>**Package State Persistence Conflict**<br><code>ERR-IMP-DOMAIN-RPKG-PACKAGE-STATE-PERSISTENCE-CONFLICT-02</code> | Persistence / Consistency | The selected persistence representation cannot safely preserve or advance Replacement Package State. | [Preserve Proven Results](#ir-domain-rpkg-preserve-proven-results-02) / [Preserve Publication Uncertainty](#ir-domain-rpkg-preserve-publication-uncertainty-03) | Target Good Example: Keep already Proven Results and return failure.<br>Problem Example: Overwrite stronger proven state with weaker/unknown state. |

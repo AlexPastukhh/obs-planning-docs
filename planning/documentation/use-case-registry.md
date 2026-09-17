@@ -6,9 +6,9 @@ This registry is one scope reached through the [`Methodology Use-Case Registry M
 
 ### Methodology / Guidance Use
 
-| ID | Use Case | Situation summary | Result summary | Owner |
-|---|---|---|---|---|
-| `UC-DOC-USE-REPOSITORY-GUIDANCE` | Use Repository Methodology / Guidance | methodology/documentation may help, or current orientation may be stale/unclear | relevant Use Cases/owners and documentation actions are selected proportionally | [`use-cases/UC-DOC-USE-REPOSITORY-GUIDANCE.md`](use-cases/UC-DOC-USE-REPOSITORY-GUIDANCE.md) |
+| ID | Use Case | Situation summary | Result summary | Owner | Related command |
+|---|---|---|---|---|---|
+| `UC-DOC-USE-REPOSITORY-GUIDANCE` | Use Repository Methodology / Guidance | methodology/documentation may help, or current orientation may be stale/unclear | relevant Use Cases/owners and documentation actions are selected proportionally; explicit scan may return Registry Traversal Trace | [`use-cases/UC-DOC-USE-REPOSITORY-GUIDANCE.md`](use-cases/UC-DOC-USE-REPOSITORY-GUIDANCE.md) | пройди регистры методологии |
 
 ### Documentation Change / Review
 

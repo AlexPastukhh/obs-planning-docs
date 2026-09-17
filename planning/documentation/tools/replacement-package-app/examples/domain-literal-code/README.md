@@ -2,7 +2,7 @@
 
 Status: **executable methodology example; not product/runtime authority**
 
-This tree demonstrates the recommended literal Domain handoff layout.
+This tree demonstrates Domain classification/layout mechanics only. Its concrete RPKG owner list is legacy illustrative source material and does **not** establish current Replacement Package product semantics; in particular Snapshot/Builder shapes remain implementation/example Evidence until their Evolution Steps are materialized.
 
 ## Classification rule
 

@@ -27,22 +27,25 @@ This conformance does not change SDS temporal authority: selected but unrealized
 
 ## Temporal Hosting Rule — Current Owners vs Future Target Bodies
 
-Before instantiating an SDS owner-shaped Target result, classify the represented time boundary:
+Before instantiating an SDS owner-shaped result, classify authority:
 
 ```text
-already realized / implemented current truth
-→ direct current-owner Target/revalidation is valid
+TM-APPLICATION-DEFINITION
+→ upstream selected/possible need/value/contribution authority
+→ refined directly even when downstream realization lags
+→ never Target Application Body / Step materialization
 
-materially planned but unrealized target state
-→ TM-EVOLUTION-STEP is the primary future-state planning Target
-→ the natural-owner Target Module is used in a supporting role
-→ its result is a Target Owner Body inside the Step
-→ selection does not update the current owner
+Feature / Scenario / Screen / Domain / Slice / Shared
+already realized current truth
+→ direct current-owner Target/revalidation
+
+materially planned but unrealized downstream state
+→ TM-EVOLUTION-STEP owns future transition
+→ natural-owner Target Module may produce complete Target Owner Body
+→ selection does not update current owner
 ```
 
-Core Target Module semantics already allow a real reusable module to be used as `SUPPORTING` without proving that a second Target Instance exists. Therefore SDS does not introduce `FutureFeature`, `FutureDomain`, `FutureSlice` or parallel future-owner Target families.
-
-After Exact Realization + required proof/revalidation, `TM-EVOLUTION-STEP` resolves Target Owner Materialization (`CREATE / REPLACE / RETIRE`), after which current owners describe the new realized truth.
+After Exact Realization + proof/revalidation, downstream Target Owner Materialization may `CREATE / REPLACE / RETIRE`.
 
 ## Active SDS Target Modules
 
@@ -109,8 +112,9 @@ Discovery artifact/Unit Resolution is transient by default and never becomes aut
 ## Requirements / Proof
 
 ```text
-Feature behavior → BR-*
-Scenario journey must-hold → Scenario-owned, no mandatory SR-* family
+Feature behavior action/transition → FBS-*
+Feature behavior must-hold → BR-*
+Scenario journey must-hold → SR-*
 Domain / Slice / Shared implementation constraint → owner-local IR-*
 rare durable proof-realization HOW constraint → owner-local PFR-*
 ```

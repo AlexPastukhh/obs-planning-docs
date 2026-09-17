@@ -1,35 +1,7 @@
-# Replacement Package App — Behavior Realization Map
+# Replacement Package App — Behavior Realization Navigation
 
-Status: active derived current navigation
+Status: compatibility derived navigation
 
-This map is not behavior authority. It points selected current behavior to its natural owner/proof after Work-centered runtime cutover.
+Canonical owner navigation is now [`navigation/OWNER-MAP.md`](navigation/OWNER-MAP.md). Current behavior authority is reached through [`navigation/FEATURE-REGISTRY.md`](navigation/FEATURE-REGISTRY.md) and [`navigation/SCENARIO-REGISTRY.md`](navigation/SCENARIO-REGISTRY.md). Planned target state is reached through [`navigation/EVOLUTION-STEPS-MAP.md`](navigation/EVOLUTION-STEPS-MAP.md).
 
-| Behavior | Current owner | Proof responsibility |
-|---|---|---|
-| exact Work correlation | WorkId | WorkAggregateTests + package/action identity tests |
-| exact local repository target | RepositoryTarget + GitWorkspace | Start workspace / publication identity integration tests |
-| durable semantic intent / exact Issue | Work Intent | Work Intent integration/Core transport tests where exercised |
-| exact workspace pinning/recovery | GitWorkspace + workspace journal | target Feature/Scenario integration |
-| exact package bytes / no archive TOCTOU | Apply Feature / Apply module + package journal | immutable captured archive test |
-| no second unfinished package | ReplacementPackageState + per-Work lock | WorkAggregate concurrency tests |
-| file Apply stopping boundary | Apply Feature / Apply module | target Feature integration |
-| package-only exact Commit + crash recovery | Apply Feature / Commit module + package journal | target Feature integration |
-| exact remote confirmation / no blind retry | Apply Feature / Publish module + PublicationObservation | target Feature integration |
-| unexpected remote tip blocks before push | Apply Feature / Publish module | target Feature integration |
-| current automatic route shares the same module semantics | Apply Feature + AutomaticPackageRealization | automatic composition/idempotence tests |
-| operation Result distinct from durable state | Apply Feature module Result types + Aggregate state | Domain/Feature tests |
-| Repository Snapshot read-only export | Repository Snapshot | separate snapshot tests/acceptance |
-
-## Aggregate summary
-
-```text
-RepositoryTarget
-WorkId
-WorkIntent
-GitWorkspace
-ReplacementPackageState*
-```
-
-`Core.ChangeSet` and External Interaction are not target runtime Aggregates. Legacy source/docs that still describe old Review/Finalize behavior are historical compatibility material owned by the previous deployed executable.
-
-Future requested-extent, automatic-Finalize and URI behavior is owned by `evolution-steps-map.md` until realized. Future reviewed-result/PR/Finalize work must introduce the narrowest natural owners for its own invariants rather than expanding WorkId or recreating ChangeSet.
+This compatibility file intentionally carries no independent behavior or future-state authority.

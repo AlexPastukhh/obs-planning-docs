@@ -1,26 +1,18 @@
 # External Interaction
 
-Status: active current Aggregate owner
+Status: active current Aggregate owner for retained legacy/diagnostic external handoff. Snapshot-related implementation is Evidence only.
 
 ## Responsibility
 
-Own one exact external handoff intent and its truthful lifecycle: exact source/artifact + exact destination + semantic attach/send/cancel/failure/post-Send uncertainty state.
+Own one exact current external handoff intent and its truthful lifecycle: exact source/artifact + exact destination + semantic attach/send/cancel/failure/post-Send uncertainty state.
 
-External browser state must not rewrite repository or Repository Snapshot truth.
+External browser state must not rewrite repository truth.
 
-## Behavior Items implemented
+## Current behavior implemented
 
-Snapshot:
-- `BI-RPKG-SNAPSHOT-HANDOFF-EXACT-ARTIFACT`
-- `BI-RPKG-SNAPSHOT-HANDOFF-FROZEN-DESTINATION`
-- `BI-RPKG-SNAPSHOT-DELIVERY-DOES-NOT-CHANGE-REVIEW-BINDING`
-- `BI-RPKG-SNAPSHOT-DELIVERY-FAILURE-DOES-NOT-INVALIDATE-EXPORT`
+Current semantic behavior is limited to retained legacy/diagnostic Current Change handoff and its truthful uncertainty boundaries.
 
-Legacy Current Change:
-- `BI-RPKG-LEGACY-CURRENT-CHANGE-EXACT-ARTIFACT`
-- `BI-RPKG-LEGACY-CURRENT-CHANGE-FROZEN-DESTINATION`
-- `BI-RPKG-LEGACY-CURRENT-CHANGE-UNCERTAINTY-TRUTHFUL`
-- `BI-RPKG-LEGACY-BROWSER-DOES-NOT-AUTHORIZE-REPOSITORY`
+Existing Snapshot handoff/export references in code/tests are **not current Domain behavior authority**. They are Evidence/reuse candidates for [`EVO-RPKG-INTRODUCE-REPOSITORY-SNAPSHOT-WORKFLOW`](../evolution-steps/EVO-RPKG-INTRODUCE-REPOSITORY-SNAPSHOT-WORKFLOW.md).
 
 ## Domain Concepts / Invariants
 
@@ -33,19 +25,14 @@ Legacy Current Change:
 
 ## Domain Implementation Items
 
-### DI-RPKG-EXTERNAL-INTERACTION-TRUTHFUL-UNCERTAINTY — Preserve externally uncertain side effects
+### DI-RPKG-EXTERNAL-INTERACTION-TRUTHFUL-UNCERTAINTY
 Requirement:
 Once an external Send may have occurred, the Aggregate must preserve that uncertainty until stronger evidence resolves it; UI dismissal may hide attention but cannot rewrite semantic truth.
 
-Reason:
-Blind retry or false cancellation could duplicate external effects.
-
 ## Tests
 
-Local Aggregate/bridge proof is realized mainly by `SL-RPKG-08` and the shared ChatGPT handoff capability.
+Local Aggregate/bridge proof is realized mainly by `SL-RPKG-08` and the shared ChatGPT handoff capability. Snapshot-oriented tests remain Evidence only until Snapshot materialization.
 
 ## Evolution Impact
 
-### EVO-RPKG-DOWNGRADE-CURRENT-CHANGE-TO-DIAGNOSTIC
-Refactoring:
-Legacy Current Change delivery may leave the ordinary target path. External Interaction remains necessary for Repository Snapshot delivery and any retained optional diagnostic handoff.
+Repository Snapshot may reuse or change this Aggregate only through [`EVO-RPKG-INTRODUCE-REPOSITORY-SNAPSHOT-WORKFLOW`](../evolution-steps/EVO-RPKG-INTRODUCE-REPOSITORY-SNAPSHOT-WORKFLOW.md).

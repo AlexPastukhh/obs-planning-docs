@@ -292,6 +292,24 @@
       "target": "<Slice Verticality / Integration analysis surface>"
     },
     {
+      "id": "LENS-TERMS-UBIQUITOUS-LANGUAGE",
+      "kind": "LENS",
+      "scope": "SDS",
+      "label": "Terms / Ubiquitous Language",
+      "actionLabel": "Terms / Ubiquitous Language",
+      "description": "durable terminology/definition consistency is material, especially for Requirements/errors",
+      "sources": [
+        "planning/documentation/idtspe-methodology/active/profiles/sds/lenses/README.md",
+        "planning/documentation/idtspe-methodology/active/profiles/sds/lenses/reusable/LENS-TERMS-UBIQUITOUS-LANGUAGE.md"
+      ],
+      "aliases": [
+        "terms"
+      ],
+      "commandId": "",
+      "invocation": "idtspe lens terms <target/context>",
+      "target": "<Terms / Ubiquitous Language analysis surface>"
+    },
+    {
       "id": "LENS-UI-SPATIAL-FRONTEND-REALIZATION",
       "kind": "LENS",
       "scope": "SDS",
@@ -819,7 +837,7 @@
         "planning/documentation/use-case-registry.md"
       ],
       "aliases": [],
-      "commandId": "",
+      "commandId": "methodology.registries.scan",
       "invocation": "",
       "target": "<Use Repository Methodology / Guidance target>"
     }

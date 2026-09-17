@@ -18,7 +18,7 @@ Future `IR-DOMAIN-*` / owner-local `PFR-*` remain inside that Target Domain Body
 ## Source Contract
 
 Possible sources:
-- selected Feature behavior (`BR-*`);
+- selected Feature behavior (`FBS-*` and `BR-*`);
 - Domain Discovery working plans;
 - current implementation/tests/Evidence;
 - selected Slice consumers;
@@ -100,7 +100,7 @@ state / lifecycle
 invariants / consistency boundary
 semantic operations / rules
 Domain failure/result semantics when material
-BR-* references where Feature behavior is a source
+FBS-* / BR-* realization references where Feature behavior is a source
 useful neighbor / consumer relations
 ```
 
@@ -124,8 +124,9 @@ For a current realized Domain owner, expose compact navigation/revalidation refe
 ## Production / Revalidation Method
 
 ```text
-selected discovery/current Domain truth
-→ establish semantic responsibility + identity/state/lifecycle/invariants/operations
+selected Feature FBS/BR + discovery/current Domain truth
+→ state which FBS/BR this owner realizes fully/partially/jointly
+→ establish only Domain semantics needed for that realization
 → keep only durable implementation constraints in RU-DOWN-02
 → prove Domain semantics through focused implementation-native unit proof
 ↺ revalidate from Slice consumer Evidence / known Evolution / changed Feature behavior
@@ -170,3 +171,15 @@ Feature BR remains Feature authority
 IR-DOMAIN-* belongs here only when this owner is natural authority
 representation choice ≠ semantic identity
 ```
+
+## Behavior Realization Contract
+
+Make upstream realization explicit when material:
+
+```text
+FBS-* / BR-* realized
+→ FULL | PARTIAL | JOINT (descriptive, not mandatory enum)
+→ Domain responsibility / invariant / semantic operation that realizes it
+```
+
+Do not turn the owner into a generic code state/lifecycle catalog. Domain-owned `ERR-IMP-DOMAIN-*` exist only for expected failures created by the selected Domain mechanism.
