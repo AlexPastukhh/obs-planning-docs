@@ -16,14 +16,14 @@ current GitHub planning/commands/*.command.md
 → validate
 → replace local direct-command + semantic + scenario projections and local order/groups
 → remove local/legacy command rows absent from GitHub authority
-→ restore locally hidden repository-backed catalog rows
+→ restore locally deleted repository-backed catalog rows
 → prune Favorite IDs that no longer resolve
 → preserve local Prompt content
 ```
 
 The UI confirms before replacement because unsaved local direct Command drafts and legacy/local command rows absent from GitHub are intentionally discarded. Prompt-library content remains separate and is preserved.
 
-**Additional reset:** Hard Reload clears local Import suppression for direct Commands, Use Cases, semantic components and Scenarios before accepting those repository-backed catalogs again. Helper-library suppression is preserved because Hard Reload intentionally preserves Prompt/helper-library local state instead of reloading that library.
+**Additional reset:** Hard Reload clears local Import/local-delete suppression for direct Commands, Use Cases, semantic components and Scenarios before accepting those repository-backed catalogs again. Schema-v8 migration already removes the retired hidden-row tombstones, so recovery has no separate hide layer to reconcile. Helper-library suppression is preserved because Hard Reload intentionally preserves Prompt/helper-library local state instead of reloading that library.
 
 **Boundary:** Hard Reload is explicit and performs repository reads only after confirmation. It does not mutate GitHub, does not overwrite local Prompt content and does not imply commit/push. Generated use-case/semantic/scenario seeds are build-verified repository projections; canonical meaning remains in current methodology/repository owners.
 

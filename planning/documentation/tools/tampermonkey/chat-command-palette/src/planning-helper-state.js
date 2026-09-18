@@ -7,7 +7,7 @@
 
   const KEYS=Object.freeze({settings:'obsPlanningHelper:v1:repositorySettings',token:'obsPlanningHelper:v1:githubToken',localSnapshot:'obsPlanningHelper:v2:localSnapshot'});
   const LEGACY_KEYS=Object.freeze({commandCache:'obsPlanningHelper:v1:commandCatalogCache',localLibrary:'obsPlanningHelper:v1:localLibrary',repositoryLibraryCache:'obsPlanningHelper:v1:repositoryLibraryCache'});
-  const LOCAL_SNAPSHOT_SCHEMA_VERSION=7;
+  const LOCAL_SNAPSHOT_SCHEMA_VERSION=8;
   const POSITION_KEY='obs-planning-helper-position-v2';
   const DEFAULT_SETTINGS=Object.freeze({owner:'AlexPastukhh',repo:'obs-planning-docs',branch:'main'});
 
@@ -30,7 +30,7 @@
   function normalizeHelperRecord(value){const input=value&&typeof value==='object'?value:{},item=deps.normalizeHelperLibraryItem(input.item||input),path=deps.helperLibraryTargetPath(item);if(input.path&&String(input.path)!==path)throw new TypeError(`Helper-library snapshot path mismatch: ${input.path}`);const rawContent=String(input.rawContent||deps.renderHelperLibraryDocument(item)).replace(/\r\n?/g,'\n'),parsed=deps.parseHelperLibraryDocument(rawContent,{kind:item.kind,path});if(JSON.stringify(parsed)!==JSON.stringify(item))throw new TypeError(`Helper-library snapshot raw content does not match item: ${item.kind}:${item.id}`);const repositorySha=String(input.repositorySha||'').trim();return{item,path,rawContent,repositoryKnown:Boolean(input.repositoryKnown||repositorySha),repositorySha};}
   function stripLegacyCommandDirectionPlacement(value){const input=value&&typeof value==='object'?value:{},definition={...(input.definition||input)};delete definition.directionIds;return{...input,definition,rawContent:''};}
   function normalizePlanningHelperLocalSnapshot(value){
-    if(!value||typeof value!=='object'||![1,2,3,4,5,6,LOCAL_SNAPSHOT_SCHEMA_VERSION].includes(value.schemaVersion))throw new TypeError('Unsupported Planning Helper local snapshot schema.');
+    if(!value||typeof value!=='object'||![1,2,3,4,5,6,7,LOCAL_SNAPSHOT_SCHEMA_VERSION].includes(value.schemaVersion))throw new TypeError('Unsupported Planning Helper local snapshot schema.');
     const rawCommands=value.schemaVersion<5?(value.planningCommands||[]).map(stripLegacyCommandDirectionPlacement):(value.planningCommands||[]);
     const planningCommands=rawCommands.map(normalizeCommandRecord).sort((a,b)=>a.path.localeCompare(b.path));
     const helperItems=(value.helperItems||[]).map(normalizeHelperRecord).sort((a,b)=>a.path.localeCompare(b.path));
@@ -39,7 +39,7 @@
     const scenarios=deps.normalizeScenarios(value.scenarios||[]),scenarioCatalogSha=String(value.scenarioCatalogSha||'').trim();
     const catalogOrder=deps.normalizeCatalogOrder(value.catalogOrder||{}),catalogOrderSha=String(value.catalogOrderSha||'').trim();
     const suppressedRepository=normalizeSuppressedRepository(value.suppressedRepository||{});
-    const hiddenCommandIds=normalizeIdList(value.hiddenCommandIds,'hiddenCommandIds'),hiddenUseCaseIds=normalizeIdList(value.hiddenUseCaseIds,'hiddenUseCaseIds'),favoriteCommandIds=normalizeIdList(value.favoriteCommandIds,'favoriteCommandIds'),favoriteUseCaseIds=normalizeIdList(value.favoriteUseCaseIds,'favoriteUseCaseIds');
+    const favoriteCommandIds=normalizeIdList(value.favoriteCommandIds,'favoriteCommandIds'),favoriteUseCaseIds=normalizeIdList(value.favoriteUseCaseIds,'favoriteUseCaseIds');
     deps.validateCommandCatalog(planningCommands.map((record)=>record.definition));
     if(new Set(planningCommands.map((record)=>record.path)).size!==planningCommands.length)throw new TypeError('Duplicate planning-command path in local snapshot.');
     if(new Set(helperItems.map((record)=>record.path)).size!==helperItems.length)throw new TypeError('Duplicate helper-library path in local snapshot.');
@@ -48,7 +48,7 @@
     if(useCases.some((entry)=>suppressedRepository.useCases.includes(entry.id)))throw new TypeError('A Use Case cannot be both present and repository-suppressed.');
     if(semanticComponents.some((entry)=>suppressedRepository.semanticComponents.includes(entry.id)))throw new TypeError('A semantic component cannot be both present and repository-suppressed.');
     if(scenarios.some((entry)=>suppressedRepository.scenarios.includes(entry.id)))throw new TypeError('A Scenario cannot be both present and repository-suppressed.');
-    return{schemaVersion:LOCAL_SNAPSHOT_SCHEMA_VERSION,savedAt:cleanIso(value.savedAt,''),planningCommands,helperItems,useCases,useCaseCatalogSha,semanticComponents,semanticComponentCatalogSha,scenarios,scenarioCatalogSha,catalogOrder,catalogOrderSha,suppressedRepository,hiddenCommandIds,hiddenUseCaseIds,favoriteCommandIds,favoriteUseCaseIds};
+    return{schemaVersion:LOCAL_SNAPSHOT_SCHEMA_VERSION,savedAt:cleanIso(value.savedAt,''),planningCommands,helperItems,useCases,useCaseCatalogSha,semanticComponents,semanticComponentCatalogSha,scenarios,scenarioCatalogSha,catalogOrder,catalogOrderSha,suppressedRepository,favoriteCommandIds,favoriteUseCaseIds};
   }
   async function loadPlanningHelperLocalSnapshot(){const value=await gmGet(KEYS.localSnapshot,null);return value==null?null:normalizePlanningHelperLocalSnapshot(value);}
   async function savePlanningHelperLocalSnapshot(value){const normalized=normalizePlanningHelperLocalSnapshot({...value,schemaVersion:LOCAL_SNAPSHOT_SCHEMA_VERSION,savedAt:value?.savedAt||new Date().toISOString()}),payload={...normalized,savedAt:new Date().toISOString()};await gmSet(KEYS.localSnapshot,payload);const checked=await gmGet(KEYS.localSnapshot,null),normalizedChecked=normalizePlanningHelperLocalSnapshot(checked);if(JSON.stringify(normalizedChecked)!==JSON.stringify(payload))throw new Error('Planning Helper local snapshot write-back verification failed.');return payload;}
@@ -64,7 +64,7 @@
     try{const repoCache=await gmGet(LEGACY_KEYS.repositoryLibraryCache,null),records=repoCache?.schemaVersion===2&&Array.isArray(repoCache.records)?repoCache.records:repoCache?.schemaVersion===1&&Array.isArray(repoCache.items)?repoCache.items.map((item)=>({item})):[];for(const record of records){const item=deps.normalizeHelperLibraryItem(record.item||record);helperByKey.set(helperKey(item),normalizeHelperRecord({item,repositoryKnown:true,repositorySha:record.sha||''}));}}catch(error){warnings.push(`Legacy repository-library cache ignored: ${error.message||String(error)}`);}
     try{const local=await gmGet(LEGACY_KEYS.localLibrary,null);if(local&&local.schemaVersion===1&&Array.isArray(local.items))for(const raw of local.items){const item=deps.normalizeHelperLibraryItem(raw),key=helperKey(item),previous=helperByKey.get(key);helperByKey.set(key,normalizeHelperRecord({item,repositoryKnown:Boolean(previous?.repositoryKnown),repositorySha:previous?.repositorySha||''}));}}catch(error){warnings.push(`Legacy local helper library ignored: ${error.message||String(error)}`);}
     try{let raw='';try{raw=typeof localStorage!=='undefined'?localStorage.getItem(deps.LEGACY_LOCAL_STORAGE_KEY)||'':'';}catch(_){}if(raw){for(const item of deps.parseLegacyProjectionRegistry(raw)){const key=helperKey(item);if(!helperByKey.has(key))helperByKey.set(key,normalizeHelperRecord({item,repositoryKnown:false}));}}}catch(error){warnings.push(`Legacy page-local command projections ignored: ${error.message||String(error)}`);}
-    const snapshot=await savePlanningHelperLocalSnapshot({schemaVersion:LOCAL_SNAPSHOT_SCHEMA_VERSION,planningCommands:commandRecordsFromDefinitions(definitions,true),helperItems:[...helperByKey.values()],useCases:[],useCaseCatalogSha:'',semanticComponents:[],semanticComponentCatalogSha:'',scenarios:[],scenarioCatalogSha:'',catalogOrder:deps.normalizeCatalogOrder({}),catalogOrderSha:'',suppressedRepository:{},hiddenCommandIds:[],hiddenUseCaseIds:[],favoriteCommandIds:[],favoriteUseCaseIds:[]});
+    const snapshot=await savePlanningHelperLocalSnapshot({schemaVersion:LOCAL_SNAPSHOT_SCHEMA_VERSION,planningCommands:commandRecordsFromDefinitions(definitions,true),helperItems:[...helperByKey.values()],useCases:[],useCaseCatalogSha:'',semanticComponents:[],semanticComponentCatalogSha:'',scenarios:[],scenarioCatalogSha:'',catalogOrder:deps.normalizeCatalogOrder({}),catalogOrderSha:'',suppressedRepository:{},favoriteCommandIds:[],favoriteUseCaseIds:[]});
     warnings.push('Commands, semantic components and scenarios are repository-backed catalogs. Use Hard Reload GitHub to populate/restore them from the configured repository.');
     return{snapshot,migrated:true,seededCommands:definitions.length,warnings};
   }

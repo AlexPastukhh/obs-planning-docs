@@ -1,7 +1,7 @@
 # OBS Planning Helper — Developer / Build Entry
 
 Status: active modular Tampermonkey helper implementation  
-Version: `0.39.3`  
+Version: `0.39.4`  
 Scope: local-first, GitHub-backed **semantic command projection** with canonical methodology working Scenarios, reusable Prompts, explicit repository recovery/publish actions, editable ordered presentation groups, per-tab group navigation/filter state, canonical `Контекст / Результат / Суть` explanations, Favorites and a wide/resizable browser UI.
 
 ## Read Order
@@ -133,7 +133,7 @@ Persistent key:
 obsPlanningHelper:v2:localSnapshot
 ```
 
-Schema v7 keeps:
+Schema v8 keeps:
 
 ```text
 planningCommands[]
@@ -144,13 +144,11 @@ helperItems[]
 catalogOrder { commands[], commandGroups[], scenarios[], prompts[] }
 catalogOrderSha
 suppressedRepository { commands[], helperItems[], useCases[], semanticComponents[], scenarios[] }
-hiddenCommandIds[]
-hiddenUseCaseIds[]      # compatibility state only
 favoriteCommandIds[]
 favoriteUseCaseIds[]    # compatibility state only
 ```
 
-Semantic command Favorites use stable semantic card IDs. During migration, legacy direct-command favorite/order IDs are recognized so existing local preferences do not disappear; the next local reorder/favorite update writes semantic IDs.
+Semantic command Favorites use stable semantic card IDs. During migration, legacy direct-command favorite/order IDs are recognized so existing local preferences do not disappear; the next local reorder/favorite update writes semantic IDs. Schema v8 retires the old `hiddenCommandIds` / `hiddenUseCaseIds` tombstones entirely: legacy values are discarded during migration, and object presence in the snapshot is the only local existence rule.
 
 The snapshot is a browser working cache. Losing it must not lose durable semantic truth because current projections can be rebuilt from GitHub with `Hard Reload GitHub`.
 
@@ -231,7 +229,7 @@ Delete keys use repository paths for direct Commands/helper-library items and ca
 
 Use Cases are the Import owner for UC projection state. `upsert.useCases` materializes/updates the coupled `USE_CASE` semantic projection metadata. `delete.useCases` removes only the Use Case itself and suppresses only that Use-Case ID from ordinary `Sync missing`; it does not hide or delete a direct Planning Command. Existing coupled UC projection metadata may remain non-rendered so a later Use-Case upsert can recover the same presentation/direct binding. `semanticComponents` remains the Import surface for Target Modules and Lenses, not a second UC editing route.
 
-Deletion semantics are literal CRUD by collection. `delete.commands` removes only the direct `planning/commands/*.command.md` record; if a semantic owner still exists, its card may remain as a generic projection. `delete.useCases` removes only the Use Case, so an independently existing direct command may remain visible as General. `delete.semanticComponents` removes only that Target Module/Lens component, so its independently existing direct command may likewise remain visible as General. Import does not create cross-entity `hiddenCommandIds`/`hiddenUseCaseIds` side effects. To remove both a semantic capability and its backing command, list both explicitly in the same `delete` payload.
+Deletion semantics are literal CRUD by collection. `delete.commands` removes only the direct `planning/commands/*.command.md` record; if a semantic owner still exists, its card may remain as a generic projection. `delete.useCases` removes only the Use Case, so an independently existing direct command may remain visible as General. `delete.semanticComponents` removes only that Target Module/Lens component, so its independently existing direct command may likewise remain visible as General. There is no hidden-row layer in the current snapshot model. To remove both a semantic capability and its backing command, list both explicitly in the same `delete` payload.
 
 Imported Use-Case / Target-Module / Lens / Scenario rows are local projection overrides for inspection/use; they do not become new semantic authority and are not written into generated `seed/*.json`. Durable semantic repository changes still belong to their canonical owners plus the normal build/projection route. Direct Commands and Prompts retain their existing explicit per-row `Save GitHub` path.
 
@@ -264,7 +262,7 @@ fetch catalog-order.json (order + commandGroups)
 validate all catalogs
 replace local direct-command + semantic + scenario projections and GitHub order/groups
 remove local/legacy command rows absent from GitHub authority
-clear local command/source hide tombstones and Import suppression for direct Commands / Use Cases / semantic components / Scenarios
+clear Import suppression for direct Commands / Use Cases / semantic components / Scenarios
 preserve helper-library Import suppression because Prompt/helper-library content is not reloaded
 prune Favorite IDs that no longer resolve
 preserve Prompt-library content
@@ -276,7 +274,7 @@ The confirmation warns that unsaved local command drafts and local/legacy comman
 
 Per-row direct Command/Prompt save uses optimistic SHA update plus exact read-back verification. Conflicts never overwrite automatically. `Save order GitHub` persists only `catalog-order.json`; it changes presentation order, not semantic meaning.
 
-Repository delete remains unsupported. Local delete/hide and Import `DELETE` make zero GitHub writes; Import `DELETE` changes only the explicitly addressed local collection plus same-entity suppression state.
+Repository delete remains unsupported. Local Delete and Import `DELETE` make zero GitHub writes. Both physically remove only the explicitly addressed local object and record same-entity suppression so ordinary `Sync missing` does not immediately restore it; `Hard Reload GitHub` remains the explicit authoritative recovery path for GitHub-backed catalogs.
 
 ## Commands Navigation
 
