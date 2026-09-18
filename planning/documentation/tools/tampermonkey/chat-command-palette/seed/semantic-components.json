@@ -529,7 +529,8 @@
         "planning/documentation/idtspe-methodology/active/profiles/sds/lenses/frequent/LENS-WORKSPACE-EVOLUTION-ARCHITECTURE.md"
       ],
       "aliases": [
-        "evolution"
+        "evolution",
+        "l5"
       ],
       "commandId": "",
       "invocation": "idtspe lens evolution <target/context>",
@@ -606,11 +607,9 @@
         "planning/documentation/idtspe-methodology/active/profiles/visual-production-2d/TARGET-MODULE-REGISTRY.md",
         "planning/documentation/idtspe-methodology/active/profiles/visual-production-2d/target-modules/TM-2D-30-VISUAL-CONSTRUCTION.md"
       ],
-      "aliases": [
-        "material"
-      ],
+      "aliases": [],
       "commandId": "",
-      "invocation": "idtspe tm material <target>",
+      "invocation": "idtspe tm TM-2D-30-VISUAL-CONSTRUCTION <target>",
       "target": "<Material Multi-route Construction Composition target>"
     },
     {
@@ -877,7 +876,8 @@
         "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-DOMAIN-DISCOVERY.md"
       ],
       "aliases": [
-        "domain-discovery"
+        "domain-discovery",
+        "domain"
       ],
       "commandId": "",
       "invocation": "idtspe tm domain-discovery <target>",
@@ -919,10 +919,10 @@
         "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-EVOLUTION-STEP.md"
       ],
       "aliases": [
-        "materially"
+        "evolution-step"
       ],
       "commandId": "",
-      "invocation": "idtspe tm materially <target>",
+      "invocation": "idtspe tm evolution-step <target>",
       "target": "<Спланировать Evolution Step target>"
     },
     {

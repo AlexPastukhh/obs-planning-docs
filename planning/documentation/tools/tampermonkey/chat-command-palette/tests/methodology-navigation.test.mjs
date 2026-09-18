@@ -116,6 +116,20 @@ test('generic Lens dispatcher stays infrastructure while concrete registered Len
   assert.match(ddd.label,/SDS Lens · LENS-DOMAIN-MODELING-DDD/);
 });
 
+test('Target Module aliases come only from explicit registry alias declarations',()=>{
+  const domain=components.find((component)=>component.id==='TM-DOMAIN-DISCOVERY');
+  assert.ok(domain);
+  assert.deepEqual(domain.aliases,['domain-discovery','domain']);
+  const evolution=components.find((component)=>component.id==='TM-EVOLUTION-STEP');
+  assert.ok(evolution);
+  assert.deepEqual(evolution.aliases,['evolution-step']);
+  const visualComposition=components.find((component)=>component.id==='TM-2D-30-VISUAL-CONSTRUCTION');
+  assert.ok(visualComposition);
+  assert.deepEqual(visualComposition.aliases,[]);
+  assert.equal(components.some((component)=>component.aliases?.includes('material')),false);
+  assert.equal(components.some((component)=>component.aliases?.includes('materially')),false);
+});
+
 test('preferred command order uses stable semantic IDs and contains one Pre-Update identity',()=>{
   assert.equal(new Set(order.commands).size,order.commands.length);
   const ids=new Set(entries.map((entry)=>entry.id));

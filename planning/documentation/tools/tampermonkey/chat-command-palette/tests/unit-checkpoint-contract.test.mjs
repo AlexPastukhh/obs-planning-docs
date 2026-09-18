@@ -36,6 +36,7 @@ test('every current Target Module explicitly wraps every processing-envelope Res
     assert.ok(units.length>0,`${component.id}: no declared Result Units found`);
     for(const unit of units){
       assert.ok(text.includes('Opening Unit Checkpoint — `'+unit+'`'),`${component.id}/${unit}: missing Opening checkpoint`);
+      assert.ok(text.includes('Unit Work — `'+unit+'`'),`${component.id}/${unit}: missing Unit Work checkpoint`);
       assert.ok(text.includes('Closing Unit Checkpoint — `'+unit+'`'),`${component.id}/${unit}: missing Closing checkpoint`);
     }
   }

@@ -136,7 +136,29 @@ function ownerExplanation(rel,kind,fallback=''){
   return{context:ownerSection(rel,['Applicability Gate','Applicability','Situation'])||compactMarkdown(fallback),result:ownerSection(rel,['Result','Findings / Outputs','Output / Disposition','Primary Result Units / Semantic Selectors'])||compactMarkdown(fallback),essence};
 }
 function relativeFromRegistry(registryPath,target){return resolveRegistryTarget(registryPath,target);}
-function registryAliases(text,prefix){const map=new Map();for(const m of text.matchAll(/^\s*([^\s#][^→\n]*?)\s*→\s*(`?(?:TM|LENS)-[A-Z0-9-]+`?)/gm)){const id=cleanCell(m[2]),alias=cleanCell(m[1]).split(/\s+/)[0];if(id.startsWith(prefix)&&alias&&!map.has(id))map.set(id,alias);}return map;}
+function explicitAliasSectionMap(text,prefix){
+  const map=new Map(),lines=String(text||'').split(/\r?\n/);let inAliases=false;
+  for(const line of lines){
+    const heading=line.match(/^##\s+(.+?)\s*$/);
+    if(heading){inAliases=/alias/i.test(heading[1]);continue;}
+    if(!inAliases)continue;
+    const m=line.match(/^\s*`?([a-z0-9][a-z0-9._-]*)`?\s*→\s*`?((?:TM|LENS)-[A-Z0-9-]+)`?(?:\s*(?:#.*)?)$/);
+    if(!m||!m[2].startsWith(prefix))continue;
+    const alias=m[1],id=m[2],aliases=map.get(id)||[];if(!aliases.includes(alias))aliases.push(alias);map.set(id,aliases);
+  }
+  return map;
+}
+function explicitTableAliases(lines,id){
+  let headers=null;
+  for(const line of lines){
+    if(/^\|/.test(line)&&/\balias(?:es)?\b/i.test(line)&&/\bmodule id\b/i.test(line)){headers=splitRow(line).map((cell)=>cleanCell(cell).toLowerCase());continue;}
+    if(!headers||!/^\|/.test(line)||/^\|\s*---/.test(line))continue;
+    const cells=splitRow(line),idIndex=headers.findIndex((h)=>h==='module id'),aliasIndex=headers.findIndex((h)=>h==='alias'||h==='aliases');
+    if(idIndex<0||aliasIndex<0||!cells[idIndex]?.includes(id))continue;
+    return [...cells[aliasIndex].matchAll(/`([a-z0-9][a-z0-9._-]*)`/g)].map((m)=>m[1]);
+  }
+  return[];
+}
 function currentTargetRows(registryPath,scope){
   const text=fs.readFileSync(path.join(repoRoot,registryPath),'utf8');let body=text;
   if(scope==='Core')body=(text.split('## Installed Generic Core Target Modules')[1]||'').split('## Generic `idtspe` Invocation Aliases')[0]||'';
@@ -154,12 +176,12 @@ function currentTargetRows(registryPath,scope){
   return rows;
 }
 function currentLensRows(registryPath,scope){
-  const text=fs.readFileSync(path.join(repoRoot,registryPath),'utf8'),aliases=registryAliases(text,'LENS-');let body=text;
+  const text=fs.readFileSync(path.join(repoRoot,registryPath),'utf8'),aliases=explicitAliasSectionMap(text,'LENS-');let body=text;
   if(scope==='SDS')body=(text.split('## SDS-Specific Lens Registry')[1]||'').split('## Generic `idtspe` SDS Lens Aliases')[0]||'';
   else body=text.split('## 3A. Generic `idtspe` Lens Aliases')[0]||text;
   const rows=[],seen=new Set();
   for(const m of body.matchAll(/\[`(LENS-[A-Z0-9-]+)`\]\(([^)]+)\)\s*\|\s*([^\n|]+)/g)){
-    const id=m[1];if(seen.has(id))continue;const rel=relativeFromRegistry(registryPath,m[2]);if(!rel||!fs.existsSync(path.join(repoRoot,rel)))continue;seen.add(id);const alias=aliases.get(id)||'';
+    const id=m[1];if(seen.has(id))continue;const rel=relativeFromRegistry(registryPath,m[2]);if(!rel||!fs.existsSync(path.join(repoRoot,rel)))continue;seen.add(id);const alias=(aliases.get(id)||[])[0]||'';
     const description=compactMarkdown(m[3])||headingTitle(rel,id),explanation=ownerExplanation(rel,'LENS',description);
     rows.push({id,kind:'LENS',scope,label:headingTitle(rel,id),actionLabel:ACTION_LABELS[id]||headingTitle(rel,id),description,...explanation,sources:[registryPath,rel],aliases:alias?[alias]:[],invocation:`idtspe lens ${alias||id} <target/context>`,target:`<${ACTION_LABELS[id]||headingTitle(rel,id)} analysis surface>`});
   }
@@ -181,22 +203,22 @@ function installedProfileRegistries(){
   if(!profiles.length)throw new Error(`No installed profiles discovered in ${installedProfilesRegistryPath}`);return profiles;
 }
 function profileTargetRows(registryPath,scope){
-  if(!registryPath)return[];const lines=fs.readFileSync(path.join(repoRoot,registryPath),'utf8').split(/\r?\n/),aliases=registryAliases(lines.join('\n'),'TM-'),rows=[],seen=new Set();
+  if(!registryPath)return[];const lines=fs.readFileSync(path.join(repoRoot,registryPath),'utf8').split(/\r?\n/),sectionAliases=explicitAliasSectionMap(lines.join('\n'),'TM-'),rows=[],seen=new Set();
   for(const line of lines){
     if(!/^\|/.test(line)||!line.includes('TM-')||/^\|\s*---/.test(line))continue;const id=(line.match(/TM-[A-Z0-9-]+/)||[])[0];if(!id||seen.has(id))continue;
     const targets=markdownLinkTargets(line),rel=targets.map((target)=>relativeFromRegistry(registryPath,target)).find((candidate)=>candidate&&fs.existsSync(path.join(repoRoot,candidate))&&path.basename(candidate)!==path.basename(registryPath));if(!rel)continue;
-    seen.add(id);const cells=splitRow(line),alias=aliases.get(id)||(cells.flatMap((cell)=>[...cell.matchAll(/`([a-z][a-z0-9-]*)`/g)].map((m)=>m[1])).find((value)=>!value.startsWith('tm-'))||''),description=compactMarkdown(cells.at(-1))||headingTitle(rel,id),explanation=ownerExplanation(rel,'TARGET_MODULE',description);
-    rows.push({id,kind:'TARGET_MODULE',scope,label:headingTitle(rel,id),actionLabel:ACTION_LABELS[id]||headingTitle(rel,id),description,...explanation,sources:[registryPath,rel],aliases:alias?[alias]:[],invocation:`idtspe tm ${alias||id} <target>`,target:`<${ACTION_LABELS[id]||headingTitle(rel,id)} target>`});
+    seen.add(id);const cells=splitRow(line),aliases=[...explicitTableAliases(lines,id),...(sectionAliases.get(id)||[])].filter((value,index,all)=>all.indexOf(value)===index),alias=aliases[0]||'',description=compactMarkdown(cells.at(-1))||headingTitle(rel,id),explanation=ownerExplanation(rel,'TARGET_MODULE',description);
+    rows.push({id,kind:'TARGET_MODULE',scope,label:headingTitle(rel,id),actionLabel:ACTION_LABELS[id]||headingTitle(rel,id),description,...explanation,sources:[registryPath,rel],aliases,invocation:`idtspe tm ${alias||id} <target>`,target:`<${ACTION_LABELS[id]||headingTitle(rel,id)} target>`});
   }
   return rows;
 }
 function profileLensRows(registryPath,scope){
-  if(!registryPath)return[];const text=fs.readFileSync(path.join(repoRoot,registryPath),'utf8'),aliases=registryAliases(text,'LENS-'),rows=[],seen=new Set();
+  if(!registryPath)return[];const text=fs.readFileSync(path.join(repoRoot,registryPath),'utf8'),aliasMap=explicitAliasSectionMap(text,'LENS-'),rows=[],seen=new Set();
   for(const line of text.split(/\r?\n/)){
     if(!/^\|/.test(line)||!line.includes('LENS-')||/^\|\s*---/.test(line))continue;const id=(line.match(/LENS-[A-Z0-9-]+/)||[])[0];if(!id||seen.has(id))continue;
     const targets=markdownLinkTargets(line),rel=targets.map((target)=>relativeFromRegistry(registryPath,target)).find((candidate)=>candidate&&fs.existsSync(path.join(repoRoot,candidate))&&path.basename(candidate)!==path.basename(registryPath));if(!rel)continue;
-    seen.add(id);const cells=splitRow(line),alias=aliases.get(id)||'',description=compactMarkdown(cells.at(-1))||headingTitle(rel,id),explanation=ownerExplanation(rel,'LENS',description);
-    rows.push({id,kind:'LENS',scope,label:headingTitle(rel,id),actionLabel:ACTION_LABELS[id]||headingTitle(rel,id),description,...explanation,sources:[registryPath,rel],aliases:alias?[alias]:[],invocation:`idtspe lens ${alias||id} <target/context>`,target:`<${ACTION_LABELS[id]||headingTitle(rel,id)} analysis surface>`});
+    seen.add(id);const cells=splitRow(line),aliases=aliasMap.get(id)||[],alias=aliases[0]||'',description=compactMarkdown(cells.at(-1))||headingTitle(rel,id),explanation=ownerExplanation(rel,'LENS',description);
+    rows.push({id,kind:'LENS',scope,label:headingTitle(rel,id),actionLabel:ACTION_LABELS[id]||headingTitle(rel,id),description,...explanation,sources:[registryPath,rel],aliases,invocation:`idtspe lens ${alias||id} <target/context>`,target:`<${ACTION_LABELS[id]||headingTitle(rel,id)} analysis surface>`});
   }
   return rows;
 }
