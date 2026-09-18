@@ -5,9 +5,9 @@ Scope: non-authoritative incremental repository→local acquisition and one-dire
 
 **Trigger/input:** explicit `Sync missing`, or `Reload` on one direct-backed Command.
 
-**Successful result:** `Sync missing` adds absent repository direct Commands, semantic components, canonical working Scenarios and Prompt/helper records without overwriting same-ID/path local records; `Reload` replaces one selected direct command definition with verified remote content while keeping its semantic card identity stable.
+**Successful result:** `Sync missing` adds absent repository direct Commands, semantic components, canonical working Scenarios and Prompt/helper records without overwriting same-ID/path local records and without restoring keys explicitly suppressed by Import delete. Suppression is per natural key only: a deleted direct Command, Use Case, Target Module/Lens component, Scenario or helper item blocks ordinary `Sync missing` only for that same object. No hidden-row or cross-entity suppression exists. `Reload` replaces one selected direct command definition with verified remote content while keeping its semantic card identity stable.
 
-**Boundary:** `Sync missing` is additive, not a complete freshness reset. Complete repository→local recovery of GitHub-backed projections/order belongs to `SCN-PH-RECOVER`. Neither branch publishes local content.
+**Boundary:** `Sync missing` is additive, suppression-aware, and not a complete freshness reset. Complete repository→local recovery of GitHub-backed projections/order belongs to `SCN-PH-RECOVER`. Neither branch publishes local content.
 
 **Traceability:**
 

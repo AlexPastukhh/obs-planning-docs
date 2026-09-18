@@ -19,6 +19,7 @@ Scope: local draft/Favorite/order/layout work without implicit repository mutati
 - `Save order GitHub` is required for durable repository order/group layout;
 - Prompt edits remain local-first and are not overwritten by semantic-catalog Hard Reload;
 - panel position/size are local UI state only;
+- local Delete physically removes the selected local direct Command or Use Case and records same-entity suppression so ordinary `Sync missing` does not immediately restore it; there is no hidden-row tombstone layer;
 - local content/order changes make zero GitHub requests.
 
 **Traceability:**

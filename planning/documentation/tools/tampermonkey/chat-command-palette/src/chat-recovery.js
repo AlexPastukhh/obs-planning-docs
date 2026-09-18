@@ -5,13 +5,20 @@
 })(typeof globalThis !== 'undefined' ? globalThis : this, function (deps) {
   'use strict';
 
+  const PATCH_START='[PLANNING_HELPER_PATCH]',PATCH_END='[/PLANNING_HELPER_PATCH]';
+  const PATCH_COLLECTIONS=Object.freeze(['commands','helperItems','useCases','semanticComponents','scenarios']);
+
+  function normalizePatchSection(value,label){const input=value==null?{}:value;if(!input||typeof input!=='object'||Array.isArray(input))throw new TypeError(`${label} must be an object.`);for(const key of Object.keys(input))if(!PATCH_COLLECTIONS.includes(key))throw new TypeError(`Unsupported ${label} field: ${key}`);const out={};for(const key of PATCH_COLLECTIONS){const items=input[key]==null?[]:input[key];if(!Array.isArray(items))throw new TypeError(`${label}.${key} must be an array.`);out[key]=items;}return out;}
+  function parsePlanningHelperPatch(source){const blocks=[...String(source||'').matchAll(/\[PLANNING_HELPER_PATCH\]\s*([\s\S]*?)\s*\[\/PLANNING_HELPER_PATCH\]/g)];if(blocks.length>1)throw new TypeError('Only one PLANNING_HELPER_PATCH block is allowed per import.');if(!blocks.length)return null;let raw;try{raw=JSON.parse(blocks[0][1]);}catch(error){throw new TypeError(`Invalid PLANNING_HELPER_PATCH JSON: ${error.message||String(error)}`);}if(!raw||typeof raw!=='object'||Array.isArray(raw))throw new TypeError('PLANNING_HELPER_PATCH must contain one JSON object.');if(Number(raw.schemaVersion)!==1)throw new TypeError(`Unsupported PLANNING_HELPER_PATCH schemaVersion: ${raw.schemaVersion}`);for(const key of Object.keys(raw))if(!['schemaVersion','upsert','delete','catalogOrder'].includes(key))throw new TypeError(`Unsupported PLANNING_HELPER_PATCH field: ${key}`);const upsert=normalizePatchSection(raw.upsert,'upsert'),del=normalizePatchSection(raw.delete,'delete');for(const key of PATCH_COLLECTIONS)for(const item of del[key])if(typeof item!=='string'||!item.trim())throw new TypeError(`delete.${key} must contain non-empty string keys.`);return{schemaVersion:1,upsert,delete:del,catalogOrder:raw.catalogOrder==null?null:raw.catalogOrder};}
+
   function parseChatImport(text) {
     const source=String(text || '');
     const definitions=source.includes('[PLANNING_COMMAND_DEFINITION]') ? deps.parseCommandDefinitionBatch(source) : [];
     const helperItems=source.includes('[PLANNING_HELPER_LIBRARY_ITEM]') ? deps.parseHelperLibraryBatch(source) : [];
-    if(!definitions.length&&!helperItems.length)throw new TypeError('No planning-command definitions or helper-library items found.');
+    const patch=source.includes(PATCH_START)?parsePlanningHelperPatch(source):null;
+    if(!definitions.length&&!helperItems.length&&!patch)throw new TypeError('No planning-command definitions, helper-library items or Planning Helper patch found.');
     if(definitions.length)deps.validateCommandCatalog(definitions);
-    return { definitions, helperItems };
+    return { definitions, helperItems, patch };
   }
 
   function buildRecoveryRequest(settings) {
@@ -33,5 +40,5 @@
     ].join('\n');
   }
 
-  return { parseChatImport, buildRecoveryRequest };
+  return { PATCH_START, PATCH_END, parsePlanningHelperPatch, parseChatImport, buildRecoveryRequest };
 });
