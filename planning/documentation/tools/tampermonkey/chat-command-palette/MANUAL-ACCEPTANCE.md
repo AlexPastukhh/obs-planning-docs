@@ -81,7 +81,11 @@ Canonical application semantics: [`scenarios/README.md`](scenarios/README.md). A
 ## `SCN-PH-PUBLISH`
 
 - Exercise direct Command/Prompt create, exact no-op and current-SHA update; verify exact remote read-back.
-- Exercise stale-SHA conflict with equal intended remote bytes; confirm recovered verified success without a second PUT.
+- Create at least two unsaved supported local changes across direct Commands / Prompts plus a local `catalog-order.json` change. Run **Publish local changes**, inspect the preview, and confirm one GitHub commit contains every changed supported file and no semantic projection file.
+- Leave a local Command/Prompt suppression/delete present during bulk publish and confirm preview marks it skipped and GitHub repository deletion is not attempted.
+- After bulk preview but before Execute, advance the configured branch remotely; confirm Execute fails closed before the branch ref is updated and requires a fresh preview.
+- Exercise unknown ref-update network result where reread proves the prepared commit is HEAD; confirm success is recovered. Exercise a non-matching reread and confirm result stays unverified instead of retrying/ref-forcing.
+- Exercise stale-SHA conflict with equal intended remote bytes on per-row save; confirm recovered verified success without a second PUT.
 - Exercise real conflicting bytes; confirm no automatic overwrite.
 - Force local snapshot persistence failure after verified remote success; confirm UI reports remote success plus local-metadata warning.
 - In every normal Commands classification, confirm the group navigator lists all groups immediately. From `All groups`, click one group and confirm it is isolated; select a second group and confirm both remain visible. Switch away/back and reload the page; confirm the selected-group filter is preserved for that classification.

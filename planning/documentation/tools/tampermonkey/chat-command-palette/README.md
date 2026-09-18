@@ -123,7 +123,7 @@ explicit Hard Reload GitHub
 
 `seed/*.json` is generated repository data, never independent semantic authority and never the source of methodology prose. `npm run build:check` verifies projection freshness against canonical sources.
 
-Normal startup/search/tab/group-filter/group-collapse switching, command selection, Run/Body/local edit/group/reorder/Favorite operations make no GitHub request. GitHub access occurs only after explicit repository actions.
+Normal startup/search/tab/group-filter/group-collapse switching, command selection, Run/Body/local edit/group/reorder/Favorite operations make no GitHub request. GitHub access occurs only after explicit repository actions. `Publish local changes` is also explicit: opening it reads current repository state for preview, and confirmation is required before the one-commit publish.
 
 ## Unified Local Snapshot
 
@@ -270,9 +270,11 @@ preserve Prompt-library content
 
 The confirmation warns that unsaved local command drafts and local/legacy command rows absent from GitHub are lost. Prompt-library content is intentionally outside this replace-sync. No implicit/background hard reload exists.
 
-### Save GitHub / Save order GitHub
+### Save GitHub / Save order GitHub / Publish local changes
 
 Per-row direct Command/Prompt save uses optimistic SHA update plus exact read-back verification. Conflicts never overwrite automatically. `Save order GitHub` persists only `catalog-order.json`; it changes presentation order, not semantic meaning.
+
+`Publish local changes` is the batch counterpart for reviewed local work. It previews only supported repository files that are locally dirty: direct Planning Commands, helper-library Command/Prompt records and `catalog-order.json`. On confirmation it publishes all changed supported files in **one GitHub commit** using the Git Data API (blobs → one tree → one commit → one non-force branch-ref update). The preview freezes both local snapshot identity and current branch HEAD; either changing before Execute invalidates the preview and nothing is published. After a successful ref update every published/no-op file is reread exactly before local repository evidence is refreshed. Local delete/suppression is deliberately skipped, and Use-Case / Target-Module / Lens / Scenario projection overrides are never written by this bulk path.
 
 Repository delete remains unsupported. Local Delete and Import `DELETE` make zero GitHub writes. Both physically remove only the explicitly addressed local object and record same-entity suppression so ordinary `Sync missing` does not immediately restore it; `Hard Reload GitHub` remains the explicit authoritative recovery path for GitHub-backed catalogs.
 
@@ -307,7 +309,7 @@ For `replacement_archive.create` (`давай архив`), the token captures t
 Desktop default is a wide panel (about 980px). The panel is resizable, persists `left/top/width/height`, clamps to the viewport and uses a command list + detail pane on wide screens. On narrow screens the detail pane yields to the command list. Commands navigation persists the active command classification, selected-group filter per classification, and each group's collapsed/expanded state in browser-local storage. Selecting a command updates only card selection + the detail pane, so the command-list scroll position does not jump to the beginning.
 
 - normal browse/group-filter/group-collapse/command selection/Run/Body/group/reorder/local edit is local-only;
-- all repository reads/writes are explicit UI actions;
+- all repository reads/writes are explicit UI actions; bulk `Publish local changes` previews supported dirty files first and publishes them only after confirmation;
 - Hard Reload is an authoritative replace-sync for the local GitHub-backed command/semantic/scenario/order/group cache and requires confirmation; command rows absent from GitHub are removed locally;
 - local Prompt content is excluded from Hard Reload;
 - generated seeds/userscript never become canonical semantic authority;
