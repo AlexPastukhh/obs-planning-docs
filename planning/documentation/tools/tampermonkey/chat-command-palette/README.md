@@ -1,7 +1,7 @@
 # OBS Planning Helper — Developer / Build Entry
 
 Status: active modular Tampermonkey helper implementation  
-Version: `0.38.0`  
+Version: `0.39.0`  
 Scope: local-first, GitHub-backed **semantic command projection** with canonical methodology working Scenarios, reusable Prompts, explicit repository recovery/publish actions, editable ordered presentation groups, per-tab group navigation/filter state, canonical `Контекст / Результат / Суть` explanations, Favorites and a wide/resizable browser UI.
 
 ## Read Order
@@ -51,7 +51,7 @@ Direct command files may provide the invocation body for that card, but the card
 
 ## Command Card Contract
 
-A command card is compact browse/navigation UI. Selecting it opens the command-detail pane, which exposes:
+A command card is compact browse/navigation UI. The card itself exposes a fast **Run** action; selecting the card opens the command-detail pane without rebuilding or scrolling the command list, and the detail pane exposes:
 
 ```text
 <Action> · <Scope/Kind> · <Canonical ID>
@@ -69,7 +69,7 @@ Domain Modeling / DDD · SDS Lens · LENS-DOMAIN-MODELING-DDD
 ```
 
 - Selecting a command card opens the detail pane. The detail pane shows **Контекст**, **Результат**, **Суть** projected from canonical authority rather than maintained as Helper-only prose. Direct commands project `activeContextBehavior / expectedOutput / meaning`; Use Cases project `Situation / Result / Purpose`; Target Modules and Lenses project the corresponding owner sections.
-- **Run** inserts the current canonical invocation body.
+- **Run** on either the compact card or the detail pane inserts the same current canonical invocation body.
 - Direct-command **Body** also carries the same canonical `context / result / essence` fields, so focused commands such as proposal-archive production remain understandable without treating the compact route prompt as a second semantic owner.
 - **Body** shows the exact adaptive invocation body, optional full-read body, semantic binding, provenance, permissions/sources and the direct source file when one exists.
 - **Scenarios N** lists canonical working Scenarios/steps where this capability is derived as a command equivalent.
@@ -133,7 +133,7 @@ Persistent key:
 obsPlanningHelper:v2:localSnapshot
 ```
 
-Schema v6 keeps:
+Schema v7 keeps:
 
 ```text
 planningCommands[]
@@ -143,6 +143,7 @@ scenarios[] + scenarioCatalogSha
 helperItems[]
 catalogOrder { commands[], commandGroups[], scenarios[], prompts[] }
 catalogOrderSha
+suppressedRepository { commands[], helperItems[], useCases[], semanticComponents[], scenarios[] }
 hiddenCommandIds[]
 hiddenUseCaseIds[]      # compatibility state only
 favoriteCommandIds[]
@@ -197,6 +198,41 @@ When a Commands classification opens, Helper shows all of its groups immediately
 
 **Manage groups** creates, renames, reorders and deletes groups. Deleting a group moves its cards to `Other / Ungrouped`; cards are never discarded by a layout edit. The detail-pane Group selector changes card membership. `Save order GitHub` explicitly persists `catalog-order.json`; per-user selected-group filters and collapsed/expanded state remain browser-local UI state and are not repository authority.
 
+## ChatGPT Import and Recovery
+
+`Import from ChatGPT` is a local-only, atomic state-change path. It accepts the existing direct-command/helper-library marker blocks and the current general patch marker:
+
+```text
+[PLANNING_HELPER_PATCH]
+{
+  "schemaVersion": 1,
+  "upsert": {
+    "commands": [],
+    "helperItems": [],
+    "useCases": [],
+    "semanticComponents": [],
+    "scenarios": []
+  },
+  "delete": {
+    "commands": [],
+    "helperItems": [],
+    "useCases": [],
+    "semanticComponents": [],
+    "scenarios": []
+  },
+  "catalogOrder": null
+}
+[/PLANNING_HELPER_PATCH]
+```
+
+The Helper parses the whole payload, applies deletes then upserts to an in-memory candidate snapshot, validates the complete resulting catalogs and only then persists. Any invalid item/collision rejects the whole import. Preview reports `ADD`, `UPDATE`, `DELETE`, `SUPPRESS` or `UNCHANGED` before Apply. Import performs zero GitHub requests.
+
+Delete keys use repository paths for direct Commands/helper-library items and canonical IDs for Use Cases, semantic components and Scenarios. Imported deletes are remembered in `suppressedRepository`, so ordinary `Sync missing` does not immediately restore the intentionally removed GitHub row. A later import upsert of the same natural key removes that suppression. `Hard Reload GitHub` is the explicit reset that clears all import suppression and accepts current GitHub-backed catalogs again.
+
+Imported semantic Use-Case / Target-Module / Lens / Scenario rows are local projection overrides for inspection/use; they do not become new semantic authority and are not written into generated `seed/*.json`. Durable semantic repository changes still belong to their canonical owners plus the normal build/projection route. Direct Commands and Prompts retain their existing explicit per-row `Save GitHub` path.
+
+`Restore local items from ChatGPT markers` remains the recovery fallback for complete direct-command/helper-library marker sets and keeps its existing reconcile semantics; the general patch marker is intentionally an Import surface, not a Restore payload.
+
 ## GitHub Actions
 
 ### Check GitHub
@@ -205,7 +241,7 @@ Reads repository inventory/current generated catalogs and reports local/GitHub s
 
 ### Sync missing
 
-Adds repository records/IDs absent locally. It does not overwrite same-path/same-ID local content. This is incremental acquisition, not freshness reconciliation.
+Adds repository records/IDs absent locally unless that natural key is explicitly suppressed by a local import delete. It does not overwrite same-path/same-ID local content. This is incremental acquisition, not freshness reconciliation.
 
 ### Reload one direct Command
 
@@ -224,7 +260,7 @@ fetch catalog-order.json (order + commandGroups)
 validate all catalogs
 replace local direct-command + semantic + scenario projections and GitHub order/groups
 remove local/legacy command rows absent from GitHub authority
-clear local command/source hide tombstones
+clear local command/source hide tombstones and all import suppression
 prune Favorite IDs that no longer resolve
 preserve Prompt-library content
 ```
@@ -235,7 +271,7 @@ The confirmation warns that unsaved local command drafts and local/legacy comman
 
 Per-row direct Command/Prompt save uses optimistic SHA update plus exact read-back verification. Conflicts never overwrite automatically. `Save order GitHub` persists only `catalog-order.json`; it changes presentation order, not semantic meaning.
 
-Repository delete remains unsupported. Local delete/hide makes zero GitHub writes.
+Repository delete remains unsupported. Local delete/hide and Import `DELETE` make zero GitHub writes; Import `DELETE` changes only the local projection and suppression state.
 
 ## Commands Navigation
 
@@ -265,7 +301,7 @@ For `replacement_archive.create` (`давай архив`), the token captures t
 
 ## UI Layout / Safety Boundary
 
-Desktop default is a wide panel (about 980px). The panel is resizable, persists `left/top/width/height`, clamps to the viewport and uses a command list + detail pane on wide screens. On narrow screens the detail pane yields to the command list. Commands navigation persists the active command classification, selected-group filter per classification, and each group's collapsed/expanded state in browser-local storage.
+Desktop default is a wide panel (about 980px). The panel is resizable, persists `left/top/width/height`, clamps to the viewport and uses a command list + detail pane on wide screens. On narrow screens the detail pane yields to the command list. Commands navigation persists the active command classification, selected-group filter per classification, and each group's collapsed/expanded state in browser-local storage. Selecting a command updates only card selection + the detail pane, so the command-list scroll position does not jump to the beginning.
 
 - normal browse/group-filter/group-collapse/command selection/Run/Body/group/reorder/local edit is local-only;
 - all repository reads/writes are explicit UI actions;

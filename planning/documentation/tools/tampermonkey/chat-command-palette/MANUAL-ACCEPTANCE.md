@@ -49,8 +49,11 @@ Canonical application semantics: [`scenarios/README.md`](scenarios/README.md). A
 ## `SCN-PH-IMPORT`
 
 - Import valid direct Planning Command/helper marker blocks and confirm local merge without GitHub requests.
+- Import one `PLANNING_HELPER_PATCH` that adds/updates a direct Command, Prompt/helper item, Use Case, semantic component and Scenario; confirm preview shows the intended `ADD` / `UPDATE` rows and Apply is atomic.
+- Import a patch delete for each supported type; confirm the rows disappear locally and the corresponding suppression keys are persisted.
+- Run `Sync missing` and confirm those intentionally suppressed GitHub rows do not reappear; import-upsert one suppressed row and confirm it reappears and its suppression is cleared.
 - Confirm changed imported direct content loses exact-content repository verification metadata.
-- Confirm invalid/colliding definitions fail before persistence.
+- Confirm invalid/colliding definitions or any invalid patch item fail before persistence and leave the whole snapshot unchanged.
 - Confirm imported direct command IDs do not create a second semantic card when they bind to an already projected UC/TM/Lens owner.
 
 <a id="scn-ph-check-repository"></a>
@@ -64,7 +67,7 @@ Canonical application semantics: [`scenarios/README.md`](scenarios/README.md). A
 <a id="scn-ph-sync"></a>
 ## `SCN-PH-SYNC`
 
-- Put a supported direct Command, semantic component, Scenario or Prompt record in GitHub that is absent locally; run `Sync missing` and confirm only missing content is added.
+- Put a supported direct Command, semantic component, Scenario or Prompt record in GitHub that is absent locally; run `Sync missing` and confirm only missing, non-suppressed content is added.
 - Confirm same-ID/path local records are not overwritten.
 - Edit one tracked local direct Planning Command, run row `Reload`, and confirm only that direct definition is replaced by GitHub content while its semantic card identity stays stable.
 
@@ -85,7 +88,7 @@ Canonical application semantics: [`scenarios/README.md`](scenarios/README.md). A
 ## `SCN-PH-RECOVER`
 
 - Create local direct-command edits/hides and local order divergence; keep a local Prompt with unsaved content.
-- Run `Hard Reload GitHub`, accept confirmation and verify current direct Commands + semantic components + canonical Scenarios + order/groups replace GitHub-backed local catalog state; hidden repository-backed rows reappear; local/legacy command rows absent from GitHub disappear; Prompt content survives; valid Favorites survive and stale Favorite IDs are pruned.
+- Run `Hard Reload GitHub`, accept confirmation and verify current direct Commands + semantic components + canonical Scenarios + order/groups replace GitHub-backed local catalog state and all Import suppression is cleared; hidden repository-backed rows reappear; local/legacy command rows absent from GitHub disappear; Prompt content survives; valid Favorites survive and stale Favorite IDs are pruned.
 - Confirm the recovered semantic cards keep stable `uc:/tm:/lens:` identities even if their backing direct shortcut changed.
 - Confirm no maintained semantic catalog needs a new userscript installation for recovery.
 - Exercise pasted recovery fallback and confirm it makes zero Helper-side GitHub requests and invents no SHA.
@@ -124,6 +127,8 @@ Canonical application semantics: [`scenarios/README.md`](scenarios/README.md). A
 - [ ] Current Core/SDS Target Modules and Lenses each project to exactly one primary semantic card.
 - [ ] Current specific Lenses appear as cards; generic Lens apply remains infrastructure, and Lens operation variants do not become cards.
 - [ ] `План обновления · Core TM · TM-PRE-UPDATE-PLAN` has the historical Pre-Update/file-update phrases as aliases but only one primary card.
+- [ ] Every compact command card has a `Run` button that uses the same ordinary invocation path as detail-pane `Run`.
+- [ ] Selecting a command card updates the selected state/detail pane without rebuilding the command list; after scrolling deep in a group, repeated selections do not jump the list back to the top.
 - [ ] Selecting every command card opens a detail pane with non-empty `Контекст / Результат / Суть` projected from canonical command/semantic owners.
 - [ ] `Body` is available for every command card; direct-backed Body identifies its source file and includes canonical `context / result / essence`, while generic Body identifies its semantic owner/generic route.
 - [ ] `Собрать review-only proposal archive` Body is self-contained enough to state proposal purpose/boundary/result and contains Markdown links to `UC-DOC-PLAN-DOCUMENTATION-CHANGE` and the canonical Use Case definition.

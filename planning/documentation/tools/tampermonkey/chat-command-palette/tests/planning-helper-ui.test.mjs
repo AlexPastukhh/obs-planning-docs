@@ -30,3 +30,7 @@ test('command cards avoid repeating group names outside All commands while detai
 
 
 test('Favorites is a command filter rather than a duplicated synthetic group',async()=>{const fs=await import('node:fs');const source=fs.readFileSync(new URL('../src/planning-helper-ui.js',import.meta.url),'utf8');assert.match(source,/favoritesOnly/);assert.match(source,/Favorites/);assert.doesNotMatch(source,/favorite-group/);});
+
+test('selecting a command updates only selection/detail and does not rerender the command list',async()=>{const fs=await import('node:fs');const source=fs.readFileSync(new URL('../src/planning-helper-ui.js',import.meta.url),'utf8');const match=source.match(/function selectCommand\(entry\)\{([^}]|}(?!\s*function commandCard))*}/);assert.ok(match);assert.match(match[0],/renderCommandDetail/);assert.doesNotMatch(match[0],/renderEntries/);assert.match(source,/commandCardNodes\.set\(entry\.id,row\)/)});
+
+test('compact command cards expose the same ordinary Run path as the detail pane',async()=>{const fs=await import('node:fs');const source=fs.readFileSync(new URL('../src/planning-helper-ui.js',import.meta.url),'utf8');const start=source.indexOf('function commandCard('),end=source.indexOf('function renderCommandDetail(',start),cardSource=source.slice(start,end);assert.match(cardSource,/button\('Run','run-action'/);assert.match(cardSource,/insertBody\(entry\.adaptiveBody\|\|entry\.text/);assert.match(cardSource,/commandExecutionId\(entry\)/)});
