@@ -23,7 +23,7 @@ current GitHub planning/commands/*.command.md
 
 The UI confirms before replacement because unsaved local direct Command drafts and legacy/local command rows absent from GitHub are intentionally discarded. Prompt-library content remains separate and is preserved.
 
-**Additional reset:** Hard Reload clears all local Import suppression before accepting repository-backed catalogs again.
+**Additional reset:** Hard Reload clears local Import suppression for direct Commands, Use Cases, semantic components and Scenarios before accepting those repository-backed catalogs again. Helper-library suppression is preserved because Hard Reload intentionally preserves Prompt/helper-library local state instead of reloading that library.
 
 **Boundary:** Hard Reload is explicit and performs repository reads only after confirmation. It does not mutate GitHub, does not overwrite local Prompt content and does not imply commit/push. Generated use-case/semantic/scenario seeds are build-verified repository projections; canonical meaning remains in current methodology/repository owners.
 

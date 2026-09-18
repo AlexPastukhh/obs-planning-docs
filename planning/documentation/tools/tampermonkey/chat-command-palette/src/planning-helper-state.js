@@ -43,7 +43,6 @@
     deps.validateCommandCatalog(planningCommands.map((record)=>record.definition));
     if(new Set(planningCommands.map((record)=>record.path)).size!==planningCommands.length)throw new TypeError('Duplicate planning-command path in local snapshot.');
     if(new Set(helperItems.map((record)=>record.path)).size!==helperItems.length)throw new TypeError('Duplicate helper-library path in local snapshot.');
-    if(planningCommands.some((record)=>hiddenCommandIds.includes(record.definition.id)))throw new TypeError('A planning command cannot be both visible and locally deleted.');
     if(planningCommands.some((record)=>suppressedRepository.commands.includes(record.path)))throw new TypeError('A planning command cannot be both present and repository-suppressed.');
     if(helperItems.some((record)=>suppressedRepository.helperItems.includes(record.path)))throw new TypeError('A helper-library item cannot be both present and repository-suppressed.');
     if(useCases.some((entry)=>suppressedRepository.useCases.includes(entry.id)))throw new TypeError('A Use Case cannot be both present and repository-suppressed.');

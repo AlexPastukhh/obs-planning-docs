@@ -49,7 +49,11 @@ Canonical application semantics: [`scenarios/README.md`](scenarios/README.md). A
 ## `SCN-PH-IMPORT`
 
 - Import valid direct Planning Command/helper marker blocks and confirm local merge without GitHub requests.
-- Import one `PLANNING_HELPER_PATCH` that adds/updates a direct Command, Prompt/helper item, Use Case, semantic component and Scenario; confirm preview shows the intended `ADD` / `UPDATE` rows and Apply is atomic.
+- Import one `PLANNING_HELPER_PATCH` that adds/updates a direct Command, Prompt/helper item, Use Case, Target Module/Lens semantic component and Scenario; confirm preview shows the intended `ADD` / `UPDATE` rows and Apply is atomic.
+- Update one Use Case through `upsert.useCases`; confirm its coupled `USE_CASE` semantic component is updated automatically. Delete that Use Case; confirm both UC halves are suppressed together and any direct backing command does not reappear as General.
+- Attempt to upsert/delete a `USE_CASE` through `semanticComponents`; confirm Import rejects it and directs the caller to `useCases`.
+- Delete a direct command that backs a semantic card; confirm preview explicitly says the semantic card remains as a generic projection. Delete a TM/Lens semantic capability instead; confirm its direct backing stays locally hidden rather than reappearing as General.
+- Submit duplicate upserts/deletes or one natural key in both upsert and delete; confirm the whole Import fails before persistence.
 - Import a patch delete for each supported type; confirm the rows disappear locally and the corresponding suppression keys are persisted.
 - Run `Sync missing` and confirm those intentionally suppressed GitHub rows do not reappear; import-upsert one suppressed row and confirm it reappears and its suppression is cleared.
 - Confirm changed imported direct content loses exact-content repository verification metadata.
@@ -88,7 +92,7 @@ Canonical application semantics: [`scenarios/README.md`](scenarios/README.md). A
 ## `SCN-PH-RECOVER`
 
 - Create local direct-command edits/hides and local order divergence; keep a local Prompt with unsaved content.
-- Run `Hard Reload GitHub`, accept confirmation and verify current direct Commands + semantic components + canonical Scenarios + order/groups replace GitHub-backed local catalog state and all Import suppression is cleared; hidden repository-backed rows reappear; local/legacy command rows absent from GitHub disappear; Prompt content survives; valid Favorites survive and stale Favorite IDs are pruned.
+- Run `Hard Reload GitHub`, accept confirmation and verify current direct Commands + semantic components + canonical Scenarios + order/groups replace GitHub-backed local catalog state; Import suppression for those reloaded catalogs is cleared, hidden repository-backed rows reappear, local/legacy command rows absent from GitHub disappear, Prompt content survives, and Prompt/helper-library suppression also survives because Hard Reload does not reload that library; valid Favorites survive and stale Favorite IDs are pruned.
 - Confirm the recovered semantic cards keep stable `uc:/tm:/lens:` identities even if their backing direct shortcut changed.
 - Confirm no maintained semantic catalog needs a new userscript installation for recovery.
 - Exercise pasted recovery fallback and confirm it makes zero Helper-side GitHub requests and invents no SHA.

@@ -5,9 +5,9 @@ Scope: canonical detailed application behavior owner; this Scenario owns its tri
 
 **Trigger/input:** Import from ChatGPT with supported planning-command/helper-library marker blocks and/or one `PLANNING_HELPER_PATCH` block.
 
-**Successful result:** the complete candidate change is validated atomically and then merged into local snapshot/RAM state. Patch upserts cover direct Commands, helper items, Use Cases, semantic components, Scenarios and optional catalog order; patch deletes remove/suppress the selected natural keys so ordinary `Sync missing` does not immediately restore them. Changed imported content loses exact repository evidence until separately verified/published.
+**Successful result:** the complete candidate change is validated atomically and then merged into local snapshot/RAM state. Natural-key duplicates and upsert/delete conflicts fail closed. `useCases` owns UC import state and automatically keeps its coupled `USE_CASE` semantic projection synchronized; `semanticComponents` accepts only Target Modules/Lenses. Direct-command delete mirrors command-file removal and may leave the semantic capability as a generic card, while Use-Case/TM/Lens capability delete suppresses that semantic projection and keeps any direct backing hidden rather than exposing it as General. Patch deletes remain suppressed from ordinary `Sync missing`. Changed imported content loses exact repository evidence until separately verified/published.
 
-**Boundary:** Import performs zero GitHub requests and does not imply repository persistence or semantic ownership. Direct Command/Prompt persistence keeps its explicit Save GitHub path; semantic projections remain local until their canonical repository owners/build route changes. Hard Reload GitHub clears import suppression.
+**Boundary:** Import performs zero GitHub requests and does not imply repository persistence or semantic ownership. Direct Command/Prompt persistence keeps its explicit Save GitHub path; semantic projections remain local until their canonical repository owners/build route changes. Hard Reload clears Import suppression only for the catalogs it reloads; helper-library suppression remains with the preserved Prompt/helper-library local state.
 
 **Traceability:**
 

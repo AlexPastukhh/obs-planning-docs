@@ -225,11 +225,15 @@ When a Commands classification opens, Helper shows all of its groups immediately
 [/PLANNING_HELPER_PATCH]
 ```
 
-The Helper parses the whole payload, applies deletes then upserts to an in-memory candidate snapshot, validates the complete resulting catalogs and only then persists. Any invalid item/collision rejects the whole import. Preview reports `ADD`, `UPDATE`, `DELETE`, `SUPPRESS` or `UNCHANGED` before Apply. Import performs zero GitHub requests.
+The Helper parses the whole payload, resolves natural keys, rejects duplicate or contradictory operations, applies the candidate change in memory, validates the complete resulting catalogs and only then persists. A natural key cannot be upserted and deleted in one import, and duplicate upserts/deletes fail closed instead of relying on last-write-wins ordering. Preview reports `ADD`, `UPDATE`, `DELETE`, `SUPPRESS` or `UNCHANGED` before Apply. Import performs zero GitHub requests.
 
-Delete keys use repository paths for direct Commands/helper-library items and canonical IDs for Use Cases, semantic components and Scenarios. Imported deletes are remembered in `suppressedRepository`, so ordinary `Sync missing` does not immediately restore the intentionally removed GitHub row. A later import upsert of the same natural key removes that suppression. `Hard Reload GitHub` is the explicit reset that clears all import suppression and accepts current GitHub-backed catalogs again.
+Delete keys use repository paths for direct Commands/helper-library items and canonical IDs for Use Cases, semantic components and Scenarios. Imported deletes are remembered in `suppressedRepository`, so ordinary `Sync missing` does not immediately restore the intentionally removed GitHub row. A later import upsert of the same natural key removes that suppression. Hard Reload resets suppression only for the catalogs it actually reloads (direct Commands + Use Cases + semantic components + Scenarios); helper-library suppression remains because Prompt/helper-library content is intentionally outside Hard Reload.
 
-Imported semantic Use-Case / Target-Module / Lens / Scenario rows are local projection overrides for inspection/use; they do not become new semantic authority and are not written into generated `seed/*.json`. Durable semantic repository changes still belong to their canonical owners plus the normal build/projection route. Direct Commands and Prompts retain their existing explicit per-row `Save GitHub` path.
+Use Cases are the Import owner for UC projection state. `upsert.useCases` materializes/updates the coupled `USE_CASE` semantic component; `delete.useCases` removes/suppresses both halves together. `semanticComponents` is therefore only for Target Modules and Lenses; attempting to import/delete a UC there is rejected. This prevents a UC card from surviving with Lens semantics or otherwise drifting from its Use-Case source.
+
+Deletion semantics are explicit. `delete.commands` mirrors deletion of one direct `planning/commands/*.command.md` artifact; when that file backed a semantic UC/TM/Lens card, preview states that the semantic card remains as a generic projection. `delete.useCases` or `delete.semanticComponents` deletes the semantic capability projection and locally hides any direct backing command so it cannot reappear as an unrelated General card. Re-upserting the semantic owner restores the capability; restoring a separately hidden direct backing requires that command to be upserted/restored as well.
+
+Imported Use-Case / Target-Module / Lens / Scenario rows are local projection overrides for inspection/use; they do not become new semantic authority and are not written into generated `seed/*.json`. Durable semantic repository changes still belong to their canonical owners plus the normal build/projection route. Direct Commands and Prompts retain their existing explicit per-row `Save GitHub` path.
 
 `Restore local items from ChatGPT markers` remains the recovery fallback for complete direct-command/helper-library marker sets and keeps its existing reconcile semantics; the general patch marker is intentionally an Import surface, not a Restore payload.
 
@@ -260,7 +264,8 @@ fetch catalog-order.json (order + commandGroups)
 validate all catalogs
 replace local direct-command + semantic + scenario projections and GitHub order/groups
 remove local/legacy command rows absent from GitHub authority
-clear local command/source hide tombstones and all import suppression
+clear local command/source hide tombstones and Import suppression for direct Commands / Use Cases / semantic components / Scenarios
+preserve helper-library Import suppression because Prompt/helper-library content is not reloaded
 prune Favorite IDs that no longer resolve
 preserve Prompt-library content
 ```
