@@ -66,13 +66,14 @@ test('presentation grouping moves one card without changing semantic identity',(
 
 
 
-test('presentation groups support create rename level reorder and delete-to-Ungrouped without losing cards',()=>{
-  let order={schemaVersion:3,commands:['a','b'],commandGroups:[{id:'g.one',viewId:'GENERAL',label:'One',level:'PRIMARY',order:10,items:['a']},{id:'g.two',viewId:'GENERAL',label:'Two',level:'ADVANCED',order:20,items:['b']}]};
-  order=runtime.createCommandGroupInOrder(order,{viewId:'GENERAL',label:'Custom Review',level:'ADVANCED'});
-  const created=order.commandGroups.find((group)=>group.label==='Custom Review');assert.ok(created);assert.equal(created.level,'ADVANCED');
-  order=runtime.updateCommandGroupInOrder(order,created.id,{label:'Custom Audit',level:'PRIMARY'});assert.equal(order.commandGroups.find((group)=>group.id===created.id).label,'Custom Audit');assert.equal(order.commandGroups.find((group)=>group.id===created.id).level,'PRIMARY');
+test('presentation groups are one ordered list per tab and support create rename reorder and delete-to-Ungrouped',()=>{
+  let order={schemaVersion:4,commands:['a','b'],commandGroups:[{id:'g.one',viewId:'GENERAL',label:'One',order:10,items:['a']},{id:'g.two',viewId:'GENERAL',label:'Two',order:20,items:['b']}]};
+  order=runtime.createCommandGroupInOrder(order,{viewId:'GENERAL',label:'Custom Review'});
+  const created=order.commandGroups.find((group)=>group.label==='Custom Review');assert.ok(created);assert.equal('level' in created,false);
+  order=runtime.updateCommandGroupInOrder(order,created.id,{label:'Custom Audit'});assert.equal(order.commandGroups.find((group)=>group.id===created.id).label,'Custom Audit');
   order=runtime.assignCommandGroupInOrder(order,'a',created.id,'GENERAL');assert.deepEqual(order.commandGroups.find((group)=>group.id===created.id).items,['a']);
-  order=runtime.moveCommandGroupInOrder(order,created.id,-1);assert.ok(order.commandGroups.find((group)=>group.id===created.id));
+  const before=order.commandGroups.filter((group)=>group.viewId==='GENERAL').sort((a,b)=>a.order-b.order).map((group)=>group.id),createdIndex=before.indexOf(created.id);
+  order=runtime.moveCommandGroupInOrder(order,created.id,-1);const after=order.commandGroups.filter((group)=>group.viewId==='GENERAL').sort((a,b)=>a.order-b.order).map((group)=>group.id);assert.equal(after.indexOf(created.id),Math.max(0,createdIndex-1));
   order=runtime.deleteCommandGroupInOrder(order,created.id);const fallback=order.commandGroups.find((group)=>group.label==='Other / Ungrouped');assert.ok(fallback);assert.ok(fallback.items.includes('a'));assert.equal(order.commandGroups.some((group)=>group.id===created.id),false);
 });
 
