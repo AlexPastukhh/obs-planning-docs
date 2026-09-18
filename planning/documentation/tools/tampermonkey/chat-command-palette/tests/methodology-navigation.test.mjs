@@ -55,15 +55,41 @@ test('every current semantic component projects to exactly one primary command c
   }
 });
 
-test('Core and SDS semantic sections come from scope/profile instead of helperPresentation navigation',()=>{
+test('GitHub-backed presentation groups refine views without replacing semantic identity',()=>{
   const tm=navigation.buildMethodologyViewGroups(entries,'TARGET_MODULES');
-  assert.deepEqual(tm.map((section)=>section.label),['IDTSPE Core','Profile · SDS']);
+  assert.deepEqual(tm.map((section)=>section.label),['Core Lifecycle','Application Behavior','Domain / Realization Structure','Evolution','Evidence / Experiments']);
   const lenses=navigation.buildMethodologyViewGroups(entries,'LENSES');
-  assert.deepEqual(lenses.map((section)=>section.label),['IDTSPE Core','Profile · SDS']);
+  assert.deepEqual(lenses.map((section)=>section.label),['Meaning / Ownership','Risk / Uncertainty / Proof','Representation / Navigation','SDS Product / Realization']);
+  for(const entry of entries.filter((item)=>item.semanticKind)){
+    assert.ok(entry.semanticScope,entry.id);
+    assert.ok(entry.presentationGroup?.id,entry.id);
+  }
   const source=fs.readFileSync(path.join(moduleRoot,'src','methodology-navigation.js'),'utf8');
+  assert.match(source,/presentationGroup/);
   assert.match(source,/semanticKind/);
   assert.match(source,/semanticScope/);
   assert.match(source,/Compatibility fallbacks are read-only/);
+});
+
+test('every visible command card has canonical Context, Result and Essence projection',()=>{
+  for(const entry of entries){
+    assert.ok(String(entry.context||'').trim(),`${entry.id}: context`);
+    assert.ok(String(entry.result||'').trim(),`${entry.id}: result`);
+    assert.ok(String(entry.essence||'').trim(),`${entry.id}: essence`);
+  }
+});
+
+test('presentation levels separate Primary, Advanced and Semantic Component surfaces',()=>{
+  const general=navigation.buildMethodologyViewGroups(entries,'GENERAL');
+  assert.ok(general.some((group)=>group.level==='PRIMARY'));
+  assert.ok(general.some((group)=>group.level==='ADVANCED'));
+  for(const viewId of ['USE_CASES','TARGET_MODULES','LENSES'])for(const group of navigation.buildMethodologyViewGroups(entries,viewId))assert.equal(group.level,'SEMANTIC_COMPONENT',`${viewId}:${group.id}`);
+});
+
+test('catalog-order command groups cover every current command card exactly once',()=>{
+  const grouped=order.commandGroups.flatMap((group)=>group.items);
+  assert.equal(new Set(grouped).size,grouped.length);
+  assert.deepEqual(new Set(grouped),new Set(entries.map((entry)=>entry.id)));
 });
 
 test('generic Lens dispatcher stays infrastructure while concrete registered Lenses are primary cards',()=>{

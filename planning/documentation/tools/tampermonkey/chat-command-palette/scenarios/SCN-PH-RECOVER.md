@@ -12,14 +12,16 @@ current GitHub planning/commands/*.command.md
 + current seed/use-cases.json
 + current seed/semantic-components.json
 + current seed/scenarios.json
-+ current catalog-order.json
++ current catalog-order.json (order + presentation groups)
 → validate
-→ replace local direct-command + semantic + scenario projections and local order
+→ replace local direct-command + semantic + scenario projections and local order/groups
+→ remove local/legacy command rows absent from GitHub authority
 → restore locally hidden repository-backed catalog rows
-→ preserve local Prompt content and Favorites
+→ prune Favorite IDs that no longer resolve
+→ preserve local Prompt content
 ```
 
-The UI confirms before replacement because unsaved local direct Command drafts are intentionally discarded.
+The UI confirms before replacement because unsaved local direct Command drafts and legacy/local command rows absent from GitHub are intentionally discarded. Prompt-library content remains separate and is preserved.
 
 **Boundary:** Hard Reload is explicit and performs repository reads only after confirmation. It does not mutate GitHub, does not overwrite local Prompt content and does not imply commit/push. Generated use-case/semantic/scenario seeds are build-verified repository projections; canonical meaning remains in current methodology/repository owners.
 

@@ -3,6 +3,9 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
+import {createRequire} from 'node:module';
+const require=createRequire(import.meta.url);
+const commandBody=require('../src/command-body.js');
 const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..');
 const repoRoot=path.resolve(root,'../../../../..');
 const read=(rel)=>fs.readFileSync(path.join(root,rel),'utf8');
@@ -28,5 +31,19 @@ test('generated userscript contains runtime but no maintained current Command/UC
 
 test('command-maintenance helper command is projected as Tools / Repository',()=>{
   const runtime=read('src/planning-helper-runtime.js');
-  assert.match(runtime,/'helper\.command\.add':\{actionLabel:'Добавить команду в Helper',tail:'Tool · Planning Command',category:'TOOL'/);
+  assert.match(runtime,/'helper\.command\.add':\{actionLabel:'Создать \/ изменить Planning Command',tail:'Tool · Planning Command',category:'TOOL'/);
+});
+
+
+test('proposal archive command body is self-contained and links existing Use-Case authority',()=>{
+  const proposal=JSON.parse(read('seed/commands.json')).items.find((item)=>item.id==='proposal_archive.create');
+  assert.ok(proposal);
+  const text=commandBody.buildCommandBody(proposal,commandBody.MODE.ADAPTIVE);
+  assert.ok(text.includes('context:\n  Use the active selected proposal scope'));
+  assert.ok(text.includes('result:\n  One review-only proposal ZIP'));
+  assert.ok(text.includes('essence:\n  Package the currently selected proposal'));
+  assert.ok(text.includes('[UC-DOC-PLAN-DOCUMENTATION-CHANGE](../documentation/use-cases/UC-DOC-PLAN-DOCUMENTATION-CHANGE.md)'));
+  assert.ok(text.includes('[Use Case — Situation + Result + Process](../documentation/principles-and-terminology.md#use-case)'));
+  assert.match(text,/Never include PACKAGE\.json/);
+  assert.match(text,/Do not apply locally, commit or push/);
 });

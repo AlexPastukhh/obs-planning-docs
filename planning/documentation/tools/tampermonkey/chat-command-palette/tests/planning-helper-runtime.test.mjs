@@ -54,3 +54,33 @@ test('Favorites are local stable-ID projections',()=>{let local=snapshot();local
 test('legacy direct-command favorite IDs migrate to stable semantic card IDs at materialization',()=>{const defs=require('../seed/commands.json').items,pre=defs.find((d)=>d.id==='tmcmd.pre.update');assert.ok(pre);const local=state.normalizePlanningHelperLocalSnapshot({...snapshot(),planningCommands:[state.normalizeCommandRecord({definition:pre,repositoryKnown:true})],favoriteCommandIds:['tmcmd.pre.update']});const memory=runtime.materializeSnapshot(local);assert.deepEqual(memory.favoriteCommandIds,['tm:TM-PRE-UPDATE-PLAN']);const toggled=runtime.toggleFavoriteCommandInSnapshot(local,'tm:TM-PRE-UPDATE-PLAN');assert.deepEqual(toggled.favoriteCommandIds,[])});
 
 test('moveId uses current IDs, preserves unspecified IDs and moves one item',()=>{assert.deepEqual(runtime.moveId(['b'],['a','b','c'],'b',-1),['b','a','c']);assert.deepEqual(runtime.moveId(['a','c'],['a','b','c'],'c',-1),['c','a','b'])});
+
+
+test('presentation grouping moves one card without changing semantic identity',()=>{
+  const order={schemaVersion:2,commands:['a','b'],commandGroups:[{id:'g.one',viewId:'GENERAL',label:'One',order:0,items:['a']},{id:'g.two',viewId:'GENERAL',label:'Two',order:1,items:['b']}]};
+  const next=runtime.assignCommandGroupInOrder(order,'a','g.two');
+  assert.deepEqual(next.commandGroups.find((group)=>group.id==='g.one').items,[]);
+  assert.deepEqual(next.commandGroups.find((group)=>group.id==='g.two').items,['b','a']);
+  assert.deepEqual(next.commands,['a','b']);
+});
+
+
+
+test('presentation groups support create rename level reorder and delete-to-Ungrouped without losing cards',()=>{
+  let order={schemaVersion:3,commands:['a','b'],commandGroups:[{id:'g.one',viewId:'GENERAL',label:'One',level:'PRIMARY',order:10,items:['a']},{id:'g.two',viewId:'GENERAL',label:'Two',level:'ADVANCED',order:20,items:['b']}]};
+  order=runtime.createCommandGroupInOrder(order,{viewId:'GENERAL',label:'Custom Review',level:'ADVANCED'});
+  const created=order.commandGroups.find((group)=>group.label==='Custom Review');assert.ok(created);assert.equal(created.level,'ADVANCED');
+  order=runtime.updateCommandGroupInOrder(order,created.id,{label:'Custom Audit',level:'PRIMARY'});assert.equal(order.commandGroups.find((group)=>group.id===created.id).label,'Custom Audit');assert.equal(order.commandGroups.find((group)=>group.id===created.id).level,'PRIMARY');
+  order=runtime.assignCommandGroupInOrder(order,'a',created.id,'GENERAL');assert.deepEqual(order.commandGroups.find((group)=>group.id===created.id).items,['a']);
+  order=runtime.moveCommandGroupInOrder(order,created.id,-1);assert.ok(order.commandGroups.find((group)=>group.id===created.id));
+  order=runtime.deleteCommandGroupInOrder(order,created.id);const fallback=order.commandGroups.find((group)=>group.label==='Other / Ungrouped');assert.ok(fallback);assert.ok(fallback.items.includes('a'));assert.equal(order.commandGroups.some((group)=>group.id===created.id),false);
+});
+
+test('runtime hard-reload source is an authoritative command/catalog replace and preserves prompts only',()=>{
+  const source=require('node:fs').readFileSync(require('node:path').resolve(import.meta.dirname,'../src/planning-helper-runtime.js'),'utf8');
+  assert.match(source,/preservedPrompts=memory\.helperRecords\.filter/);
+  assert.match(source,/removedLegacyCommands=memory\.helperRecords\.length-preservedPrompts\.length/);
+  assert.match(source,/planningCommands,helperItems:preservedPrompts,useCases:useCaseCatalog\.useCases/);
+  assert.match(source,/catalogOrder:order\.order/);
+  assert.match(source,/hiddenCommandIds:\[\],hiddenUseCaseIds:\[\]/);
+});

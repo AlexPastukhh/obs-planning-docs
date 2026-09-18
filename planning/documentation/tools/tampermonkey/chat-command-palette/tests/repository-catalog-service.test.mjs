@@ -14,3 +14,18 @@ test('catalog order normalizes unique stable IDs and rejects wrong kind',()=>{co
 test('readOrder treats absent GitHub order as an empty valid order',async()=>{const client={async read(){const e=new Error('missing');e.kind='not_found';throw e}};const service=new repo.RepositoryCatalogService(client);const result=await service.readOrder();assert.equal(result.sha,'');assert.deepEqual(result.order.commands,[])});
 
 test('saveOrder exact no-op performs no write',async()=>{let writes=0;const existing=repo.renderCatalogOrder({commands:['a']});const client={async read(){return{sha:'s1',content:existing}},async saveVerified(){writes++;throw new Error('unexpected')}};const service=new repo.RepositoryCatalogService(client);const result=await service.saveOrder({commands:['a']});assert.equal(result.action,'noop');assert.equal(writes,0)});
+
+
+test('catalog order schema v3 round-trips presentation groups with Primary/Advanced/Semantic levels and upgrades v2',()=>{
+  const value=repo.normalizeCatalogOrder({schemaVersion:2,commands:['A','B'],commandGroups:[{id:'g.one',viewId:'GENERAL',label:'One',level:'ADVANCED',order:0,items:['A']},{id:'g.two',viewId:'USE_CASES',label:'Two',order:1,items:['B']}]});
+  assert.equal(value.schemaVersion,3);
+  assert.equal(value.commandGroups[0].level,'ADVANCED');
+  assert.equal(value.commandGroups[1].level,'SEMANTIC_COMPONENT');
+  assert.deepEqual(value.commandGroups.map((group)=>group.id),['g.one','g.two']);
+  const parsed=repo.parseCatalogOrder(repo.renderCatalogOrder(value));
+  assert.deepEqual(parsed.commandGroups,value.commandGroups);
+});
+
+test('catalog order rejects one command card assigned to multiple presentation groups',()=>{
+  assert.throws(()=>repo.normalizeCatalogOrder({schemaVersion:2,commandGroups:[{id:'g.one',viewId:'GENERAL',label:'One',items:['A']},{id:'g.two',viewId:'GENERAL',label:'Two',items:['A']}]}),/multiple groups/i);
+});

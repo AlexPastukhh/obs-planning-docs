@@ -37,7 +37,8 @@
     const label=safeLine(value.label||id,`${id} label`),actionLabel=safeLine(value.actionLabel||label,`${id} actionLabel`),description=String(value.description||label).trim();
     const sources=uniqueStrings(value.sources,(v)=>safePath(v,`${id} source`));if(!sources.length)throw new TypeError(`Semantic component sources are required: ${id}`);
     const aliases=uniqueStrings(value.aliases||[],(v)=>safeLine(v,`${id} alias`));
-    return{id,kind,scope,label,actionLabel,description,sources,aliases,commandId:String(value.commandId||'').trim(),invocation:String(value.invocation||'').trim(),target:String(value.target||`<${label} target>`).trim()};
+    const context=String(value.context||'').trim(),result=String(value.result||'').trim(),essence=String(value.essence||description||label).trim();
+    return{id,kind,scope,label,actionLabel,description,context,result,essence,sources,aliases,commandId:String(value.commandId||'').trim(),invocation:String(value.invocation||'').trim(),target:String(value.target||`<${label} target>`).trim()};
   }
   function normalizeSemanticComponents(values){const out=(Array.isArray(values)?values:[]).map(normalizeSemanticComponent),ids=out.map((x)=>x.id);if(new Set(ids).size!==ids.length)throw new TypeError('Duplicate semantic component ids.');return out;}
 

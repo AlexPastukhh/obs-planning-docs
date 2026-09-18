@@ -333,6 +333,23 @@ Structural navigation and functional navigation are different:
 
 None should duplicate the semantic body owned by the destination owner. Cross-scope navigation starts from README/area navigation; each area owns its own current functional or methodology-specific navigation model.
 
+### Markdown Link Navigation Rule
+
+For repository Markdown documentation, an ordinary **relative Markdown link** is the default lightweight relation when a normal reader materially benefits from moving directly from one addressable artifact to another. Prefer a direct link over a bare filename, path, ID or prose-only mention when the destination is part of the useful reading path. When one specific section is the useful destination, prefer a stable fragment link.
+
+```text
+Markdown link
+= navigation / discoverability relation
+
+Markdown link
+≠ semantic ownership
+≠ dependency authority
+≠ synchronization contract
+≠ review-on-change obligation
+```
+
+Do not turn every textual mention into a link. Use a shallow registry when a many-owner overview is more useful than many direct relations, and use Linked Notes or another tracked relation only when backlinks/query/synchronization behavior is independently justified. A broken path or fragment is a documentation defect, while a mechanically valid link may still be misleading when it points to stale, legacy or non-authoritative material.
+
 ## Progressive Complexity Principle
 
 Use the smallest representation that preserves the required meaning.

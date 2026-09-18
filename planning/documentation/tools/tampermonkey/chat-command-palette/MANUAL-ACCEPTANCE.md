@@ -1,7 +1,7 @@
 # OBS Planning Helper Manual Acceptance
 
 Status: active acceptance plan; execution evidence remains separate from automated tests  
-Version: v1.6.0 / Planning Helper `0.35.0`
+Version: v1.7.0 / Planning Helper `0.36.0`
 
 Canonical application semantics: [`scenarios/README.md`](scenarios/README.md). Automated tests do **not** mark these browser/remote checks complete.
 
@@ -75,15 +75,15 @@ Canonical application semantics: [`scenarios/README.md`](scenarios/README.md). A
 - Exercise stale-SHA conflict with equal intended remote bytes; confirm recovered verified success without a second PUT.
 - Exercise real conflicting bytes; confirm no automatic overwrite.
 - Force local snapshot persistence failure after verified remote success; confirm UI reports remote success plus local-metadata warning.
-- Reorder Commands/Scenarios, run `Save order GitHub`, and verify only `catalog-order.json` changes with intended stable IDs.
-- Edit `catalog-order.json` directly in GitHub, then Hard Reload; confirm durable order becomes local order.
+- Reorder Commands/Scenarios, move a Command with **Group**, then use **Manage groups** to create, rename, change Primary/Advanced level, reorder and delete a group. Confirm delete moves cards to `Other / Ungrouped`. Run `Save order GitHub` and verify only `catalog-order.json` changes with intended stable IDs/group metadata/membership.
+- Edit `catalog-order.json` order/groups directly in GitHub, then Hard Reload; confirm durable GitHub order/groups become the local layout.
 - Confirm repository delete/local Git commit/push are unavailable.
 
 <a id="scn-ph-recover"></a>
 ## `SCN-PH-RECOVER`
 
 - Create local direct-command edits/hides and local order divergence; keep a local Prompt with unsaved content.
-- Run `Hard Reload GitHub`, accept confirmation and verify current direct Commands + semantic components + canonical Scenarios + order replace GitHub-backed local catalog state; hidden repository-backed rows reappear; local Prompt content and Favorites survive.
+- Run `Hard Reload GitHub`, accept confirmation and verify current direct Commands + semantic components + canonical Scenarios + order/groups replace GitHub-backed local catalog state; hidden repository-backed rows reappear; local/legacy command rows absent from GitHub disappear; Prompt content survives; valid Favorites survive and stale Favorite IDs are pruned.
 - Confirm the recovered semantic cards keep stable `uc:/tm:/lens:` identities even if their backing direct shortcut changed.
 - Confirm no maintained semantic catalog needs a new userscript installation for recovery.
 - Exercise pasted recovery fallback and confirm it makes zero Helper-side GitHub requests and invents no SHA.
@@ -114,13 +114,17 @@ Canonical application semantics: [`scenarios/README.md`](scenarios/README.md). A
 ## IDTSPE / SDS Methodology Navigation
 
 - [ ] Top-level surfaces are exactly `Commands`, `Scenarios`, `Prompts`.
-- [ ] Commands navigation groups are derived from semantic identity: `General`, `Use Cases`, `Target Modules`, `Lenses`, `Tools / Repository`.
+- [ ] Commands navigation keeps the top-level classifications `General`, `Use Cases`, `Target Modules`, `Lenses`, `Tools / Repository`, renders smaller GitHub-backed presentation groups inside each classification, and labels groups as `Primary`, `Advanced`, or `Semantic Component`.
 - [ ] UC/TM/Lens rows show full `<Action> · <Scope/Kind> · <Canonical ID>` labels.
 - [ ] Current Core/SDS Target Modules and Lenses each project to exactly one primary semantic card.
 - [ ] Current specific Lenses appear as cards; generic Lens apply remains infrastructure, and Lens operation variants do not become cards.
 - [ ] `План обновления · Core TM · TM-PRE-UPDATE-PLAN` has the historical Pre-Update/file-update phrases as aliases but only one primary card.
-- [ ] `Body` is available for every command card; direct-backed Body identifies its source file, generic Body identifies its semantic owner/generic route.
+- [ ] `Смысл` is available for every command card and shows non-empty `Контекст / Результат / Суть` projected from canonical command/semantic owners.
+- [ ] `Body` is available for every command card; direct-backed Body identifies its source file and includes canonical `context / result / essence`, while generic Body identifies its semantic owner/generic route.
+- [ ] `Собрать review-only proposal archive` Body is self-contained enough to state proposal purpose/boundary/result and contains Markdown links to `UC-DOC-PLAN-DOCUMENTATION-CHANGE` and the canonical Use Case definition.
+- [ ] `Group` changes card membership only; `Manage groups` can create / rename / reorder / reclassify / delete groups; delete moves cards to `Other / Ungrouped`; `Save order GitHub` persists presentation layout through `catalog-order.json`.
 - [ ] `Scenarios N` is available for every command card and matches the reverse index derived from canonical Scenario semantic refs.
 - [ ] Scenario view shows canonical prose plus derived command equivalents; canonical Scenario source contains no command IDs/triggers/Helper labels.
 - [ ] No cross-view highlighting/selection machinery is required.
+- [ ] `Hard Reload GitHub` replaces commands/semantic/scenarios/order/groups from GitHub, removes local command rows absent from GitHub (including legacy helper-command rows), preserves Prompt-library content and prunes stale favorites.
 - [ ] Direct-backed semantic rows may expose Edit/Reload/Save/Delete; projection-only semantic rows do not.

@@ -1,13 +1,13 @@
 # SCN-PH-USE — Use Helper Content In ChatGPT
 
 Status: active current behavior owner
-Scope: canonical detailed application behavior owner for Run/Body/Scenario navigation and explicit invocation side effects.
+Scope: canonical detailed application behavior owner for Run/Смысл/Body/Scenario navigation and explicit invocation side effects.
 
-**Trigger/input:** the user selects a semantic/general/tool Command or Prompt, opens `Body`, opens `Scenarios N`, runs a command, or uses an explicit one-shot Bind variant when offered.
+**Trigger/input:** the user selects a semantic/general/tool Command or Prompt, opens `Смысл`, opens `Body`, opens `Scenarios N`, runs a command, or uses an explicit one-shot Bind variant when offered.
 
-**Successful result:** every Command exposes the current invocation through `Run`, exact inspectable invocation/source/provenance through `Body`, and a reverse index of canonical working Scenario usage through `Scenarios N`. Scenario steps render canonical prose plus derived command equivalents. Normal use is local and network-independent.
+**Successful result:** every Command exposes the current invocation through `Run`, canonical **Контекст / Результат / Суть** through `Смысл`, exact inspectable invocation/source/provenance through `Body`, and a reverse index of canonical working Scenario usage through `Scenarios N`. Direct-command Body also carries canonical `context / result / essence`; presentation group headers distinguish Primary, Advanced and Semantic Component surfaces. Scenario steps render canonical prose plus derived command equivalents. Normal use is local and network-independent.
 
-**Boundary:** canonical working Scenarios never own command IDs/triggers/body text; command equivalents are runtime projections from semantic refs. There is no required cross-view highlight/selection state. Generated/generic semantic cards do not pretend to be editable direct command files. Invocation side effects are Helper runtime behavior, not command semantic authority. Ordinary `Run` is non-binding; explicit `Bind + Run` is one-invocation authority only.
+**Boundary:** `Смысл` is projection, not a second prose authority: direct cards derive it from direct-command fields and semantic cards from their canonical UC/TM/Lens owners. Canonical working Scenarios never own command IDs/triggers/body text; command equivalents are runtime projections from semantic refs. There is no required cross-view highlight/selection state. Generated/generic semantic cards do not pretend to be editable direct command files. Invocation side effects are Helper runtime behavior, not command semantic authority. Ordinary `Run` is non-binding; explicit `Bind + Run` is one-invocation authority only.
 
 **Manual invocation invariant:** each current UC/TM/Lens has one primary semantic Command card. Direct/focused aliases do not create duplicate primary cards. Specific Lenses appear as cards; generic Lens apply and Lens operation variants remain infrastructure/internal selection.
 
