@@ -23,8 +23,9 @@ Material documentation findings are tied to their real semantic owners, verified
 11. Check that Examples demonstrate rather than own meaning.
 12. Check that README remains structural navigation and Use-Case Registry remains functional navigation.
 13. Check for competing semantic owners, stale routes, unnecessary file splits, and supporting files that no current Use Case needs.
-14. Use mechanical link/path checks as supporting evidence only; they do not prove semantic correctness or useful Use-Case boundaries.
-15. Route each material finding to the real current owner and the appropriate current change/maintenance Use Case.
-16. Use [`UC-DOC-PLAN-DOCUMENTATION-CHANGE`](UC-DOC-PLAN-DOCUMENTATION-CHANGE.md) when a material repair first needs semantic planning.
+14. Use mechanical link/path checks as supporting evidence only; they do not prove semantic correctness or useful Use-Case boundaries. For Markdown documentation, also check useful direct relative links, fragment validity, misleading links to stale/non-authoritative artifacts, and important bare path/ID references that force unnecessary manual search.
+15. Treat ordinary Markdown links as navigation/addressability only; do not infer semantic ownership, synchronization or review-on-change authority from link existence. Prefer registry or Linked Notes/tracked relations only when their stronger behavior is independently justified.
+16. Route each material finding to the real current owner and the appropriate current change/maintenance Use Case.
+17. Use [`UC-DOC-PLAN-DOCUMENTATION-CHANGE`](UC-DOC-PLAN-DOCUMENTATION-CHANGE.md) when a material repair first needs semantic planning.
 
 Shared review rules: [`../principles-and-terminology.md`](../principles-and-terminology.md)

@@ -10,6 +10,9 @@
       "label": "Documentation / Representation / Artifact Boundary",
       "actionLabel": "Documentation / Representation",
       "description": "Documentation / Representation — persist or not; code vs prose; existing owner vs dedicated artifact; consolidate vs split; handoff to P-14; direct surface lenscmd.documentation.representation.check",
+      "context": "This is a required Core **check** whenever an IDTSPE iteration has a material result that might persist, alter an existing representation or affect artifact/file topology. It may close cheaply: ``text no material result to preserve → NO_PERSISTENCE_NEEDED `` Do not manufacture a documentation task merely because this Lens is required.",
+      "result": "``text NO_PERSISTENCE_NEEDED IMPLEMENTATION_NATIVE EXISTING_OWNER_SECTION REGISTRY_OR_CATALOG STRATEGY_OR_DISCOVERY_ARTIFACT DEDICATED_TARGET_OWNER_ARTIFACT SPECIALIZED_COMPANION_ARTIFACT GLOBAL_OR_CROSS_OWNER_ARTIFACT GENERATED_OR_DERIVED_VIEW UNRESOLVED what meaning is worth preserving resolved semantic-owner context, or likely-owner ambiguity requiring Core Finding Disposition what stays in code/tests/schema/config what planning residue remains textual duplication/staleness risk split/promotion trigger when relevant P-14 placement input ``",
+      "essence": "Choose the **smallest effective representation** for material Target meaning. The Lens exists to prevent a false equation: ``text IDTSPE Target exists → a dedicated Markdown file must exist ` The correct model is: `text IDTSPE = planning runtime semantic result → decide whether anything deserves durable persistence → choose the most natural representation → reuse an existing owner before creating another artifact → prefer consolidation before split → let representation grow only when real review/addressability/lifecycle pressure appears → then hand the selected representation to P-14 / TF-10 for concrete placement `` The Lens deliberately treats source code, types, tests, schemas, configuration, names, package/module structure and carefully chosen comments as possible **natural representations** of current meaning. It also recognizes the classes of knowledge that implementation repres…",
       "sources": [
         "planning/documentation/idtspe-methodology/active/idtspe-core/lenses/README.md",
         "planning/documentation/idtspe-methodology/active/idtspe-core/lenses/required/LENS-ARTIFACT-BOUNDARY-ADDRESSABILITY.md"
@@ -28,6 +31,9 @@
       "label": "Authority / Source-of-Truth / Reuse",
       "actionLabel": "Authority / Source of Truth / Reuse",
       "description": "L2 — canonical owner/Source/reuse/no duplicate truth",
+      "context": "Always check for a material IDTSPE choice.",
+      "result": "``text canonical owner Source role classification reuse decision authority conflict duplicate-truth finding owner/revalidation finding projection/history-only classification ``",
+      "essence": "Use canonical truth, preserve one-directional planning, avoid duplicate semantic authority and reuse valid accepted work instead of re-planning it.",
       "sources": [
         "planning/documentation/idtspe-methodology/active/idtspe-core/lenses/README.md",
         "planning/documentation/idtspe-methodology/active/idtspe-core/lenses/required/LENS-AUTHORITY-SOT-REUSE.md"
@@ -46,6 +52,9 @@
       "label": "Dependency / Change Surface / Blast Radius",
       "actionLabel": "Dependency / Change Impact",
       "description": "L4 — dependency/change surface/consumers/blast radius",
+      "context": "Activate when a Target/Proposal changes a structured system with meaningful dependency/consumer/change relations: ``text repository/documentation codebase/modules/packages API/schema/messages files/artifacts data/storage integration graph generated projections ``",
+      "result": "``text dependency graph subset change surface consumer impact freshness/review obligations migration/rollback concerns projected structural change impact Q/R/P ``",
+      "essence": "Evaluate structural dependency topology and concrete impact surface created by a choice.",
       "sources": [
         "planning/documentation/idtspe-methodology/active/idtspe-core/lenses/README.md",
         "planning/documentation/idtspe-methodology/active/idtspe-core/lenses/frequent/LENS-DEPENDENCY-CHANGE-IMPACT.md"
@@ -64,6 +73,9 @@
       "label": "Linked Notes Possible Usage / Justification",
       "actionLabel": "Linked Notes Possible Usage / Justification",
       "description": "justify linked-note/backlink/query behavior without creating notes storage or duplicate semantic authority; direct surface lenscmd.linked-notes.justify",
+      "context": "Use when someone proposes or implicitly needs one of these: ``text cross-owner backlink/navigation \"show me everything related to X\" query/view over distributed owners one concept/Decision/QRP referenced from several places relationship discovery without copying source bodies review traversal across several current owners `` Do not activate merely because two Markdown files can link to each other.",
+      "result": "``text usage justification: YES / NO concrete navigation/query job owners/objects to connect why ordinary links are insufficient (when YES) required stable IDs/relations anti-duplication guard implementation/tooling assumptions Reference Object handoff when relevant revalidation trigger ``",
+      "essence": "Decide whether **Linked Notes behavior is actually justified** for a selected Target/artifact/owner set without creating a second semantic owner, duplicate content, or a new notes/ persistence tree. ``text Linked Notes = linking / backlink / query / cross-owner navigation behavior over already existing canonical owners and addressable objects Linked Notes ≠ semantic owner Linked Notes ≠ Target Module Linked Notes ≠ separate planning artifact family Linked Notes ≠ default physical storage `` The default result is **NOT_JUSTIFIED** until a concrete navigation/review/query need is shown.",
       "sources": [
         "planning/documentation/idtspe-methodology/active/idtspe-core/lenses/README.md",
         "planning/documentation/idtspe-methodology/active/idtspe-core/lenses/reusable/LENS-LINKED-NOTES-USAGE-JUSTIFICATION.md"
@@ -82,6 +94,9 @@
       "label": "Need / Value / Scope",
       "actionLabel": "Need / Value / Scope",
       "description": "L1 — Need/value/right bounded Target",
+      "context": "Always check for a material IDTSPE choice. Trusted upstream Need/scope may satisfy it without reopening.",
+      "result": "``text Need/value basis scope correction split/merge/defer candidate inside/outside clarification unnecessary RQ finding unsupported-solution finding Q/R/P when material ``",
+      "essence": "Keep planning tied to a real Need/useful result and choose the right bounded Target/question/answer rather than allowing a proposed solution to justify itself.",
       "sources": [
         "planning/documentation/idtspe-methodology/active/idtspe-core/lenses/README.md",
         "planning/documentation/idtspe-methodology/active/idtspe-core/lenses/required/LENS-NEED-VALUE-SCOPE.md"
@@ -98,8 +113,11 @@
       "kind": "LENS",
       "scope": "Core",
       "label": "Prototype / Implemented Practical Evidence",
-      "actionLabel": "Prototype / Implemented Practical Evidence",
+      "actionLabel": "Prototype / Practical Evidence",
       "description": "minimum practical experiment / observed Evidence",
+      "context": "Primary for TM-PROTOTYPE and TM-PRACTICAL-TEST; supporting when another Target needs practical observation/acceptance Evidence.",
+      "result": "Typical Finding Candidates include: ``text prototype cannot credibly answer a question requiring real integration collection plan does not observe the claimed property data is available but irrelevant to the question critical real/simulated or version/environment boundary is hidden sample/window/environment makes the conclusion too broad interpretation is presented as observation required post-implementation evidence cannot currently be observed `` Core Finding Disposition selects any owner/revalidation consequence.",
+      "essence": "Evaluate whether practical Evidence before or after implementation is capable of answering the material question credibly, economically and with honest limits.",
       "sources": [
         "planning/documentation/idtspe-methodology/active/idtspe-core/lenses/README.md",
         "planning/documentation/idtspe-methodology/active/idtspe-core/lenses/reusable/LENS-PRACTICAL-EVIDENCE.md"
@@ -109,7 +127,7 @@
       ],
       "commandId": "",
       "invocation": "idtspe lens practical-evidence <target/context>",
-      "target": "<Prototype / Implemented Practical Evidence analysis surface>"
+      "target": "<Prototype / Practical Evidence analysis surface>"
     },
     {
       "id": "LENS-QUALITY-RISK-MATERIALITY",
@@ -118,6 +136,9 @@
       "label": "Cross-Cutting Quality / Risk Materiality",
       "actionLabel": "Quality / Risk / Materiality",
       "description": "material quality/risk categories",
+      "context": "Check candidates for material differences in: ``text security privacy performance / capacity reliability / availability safety compliance / auditability UX / accessibility business/economic cost `` Operability/observability as a realization property is primarily L6.",
+      "result": "``text material quality condition/ref risk/failure mode comparison dimension Evidence need likely-owner / lifecycle hint Q/R/P revalidation signal ``",
+      "essence": "Activate only quality/risk dimensions capable of changing the answer; avoid both omission and universal NFR ceremony.",
       "sources": [
         "planning/documentation/idtspe-methodology/active/idtspe-core/lenses/README.md",
         "planning/documentation/idtspe-methodology/active/idtspe-core/lenses/frequent/LENS-QUALITY-RISK-MATERIALITY.md"
@@ -136,6 +157,9 @@
       "label": "Shared / Cross-Cutting Ownership",
       "actionLabel": "Shared / Cross-Cutting Ownership",
       "description": "shared ownership / applicability / local integration",
+      "context": "Reusable when the same implementation responsibility appears across several consumers and genuine shared ownership is uncertain. It does not imply a dedicated Cross-Cutting Target family.",
+      "result": "sharedness, canonical owner, applicability matrix, local integration contract, exceptions/bypass, shared mechanism Proposals and Q/R/P.",
+      "essence": "Determine whether a responsibility is genuinely shared and how consumers integrate it without duplicating authority or prematurely building a framework.",
       "sources": [
         "planning/documentation/idtspe-methodology/active/idtspe-core/lenses/README.md",
         "planning/documentation/idtspe-methodology/active/idtspe-core/lenses/reusable/LENS-SHARED-CROSS-CUTTING-RESPONSIBILITY.md"
@@ -154,6 +178,9 @@
       "label": "Test Proof / Evidence Quality",
       "actionLabel": "Test Proof / Evidence Quality",
       "description": "proof-layer/evidence quality",
+      "context": "Primary when: ``text a test/proof is being designed shared proof strategy is being selected actual current tests/Evidence are being reviewed an Exact Realization needs to decide what automated proof is credible `` Supporting when another Target needs a concrete testing perspective.",
+      "result": "Typical Lens output is concise Finding/Key-Point material such as: ``text property mismatch wrong/over-expensive proof layer weak assertion / missing no-mutation observation false-confidence escape path refactor-fragile implementation coupling duplicated proof representative-case gap cross-side proof gap isolation/reproducibility problem stale/missing Evidence Practical Evidence handoff `` Only material semantic/lifecycle consequences cross Finding Candidate → Core Finding Disposition.",
+      "essence": "Evaluate whether a proposed or actual test/proof **credibly establishes the selected semantic property without unnecessary cost, false confidence or implementation coupling**. This Lens is the common operational authority for: ``text proof-design evaluation shared testing-strategy evaluation actual test/Evidence coverage review proof gaps / stale Evidence review `` It does not create a Test Coverage Target. Coverage review is an application of this Lens to current semantics + actual Evidence.",
       "sources": [
         "planning/documentation/idtspe-methodology/active/idtspe-core/lenses/README.md",
         "planning/documentation/idtspe-methodology/active/idtspe-core/lenses/reusable/LENS-TEST-PROOF-EVIDENCE.md"
@@ -172,6 +199,9 @@
       "label": "Uncertainty / Assumption / Reversibility",
       "actionLabel": "Uncertainty / Assumptions / Reversibility",
       "description": "L3 — assumptions/Evidence/reversibility/cost of being wrong",
+      "context": "Check every material choice. If no material unknown can change the answer, resolve no material uncertainty and do no extra work.",
+      "result": "``text assumption/unknown classification Evidence need research/prototype candidate reversible/deferred choice confidence basis Q/R/P revalidation signal ``",
+      "essence": "Before choosing, distinguish established basis from assumption/unknown, decide whether Evidence is worth acquiring and avoid expensive irreversible commitment before it is justified. This is prospective planning, not revalidation.",
       "sources": [
         "planning/documentation/idtspe-methodology/active/idtspe-core/lenses/README.md",
         "planning/documentation/idtspe-methodology/active/idtspe-core/lenses/required/LENS-UNCERTAINTY-ASSUMPTION-REVERSIBILITY.md"
@@ -190,6 +220,9 @@
       "label": "Proof / Observation / Diagnosis / Operation",
       "actionLabel": "Verifiability / Observability / Operability",
       "description": "L6 — proof/observation/diagnosis/operation",
+      "context": "Activate when correctness/failure/state must be demonstrably checked or safely operated, especially for Slices, integrations, runtime workflows, critical automation, shared mechanisms and failure-prone architecture.",
+      "result": "``text Q/R/P proof/Evidence requirements observability/diagnosis requirements operation/recovery requirements Test/Practical Evidence handoff Decision rationale ``",
+      "essence": "Ask whether correctness/failure/state can be credibly proved, observed, diagnosed and operated at acceptable cost before accepting a realization/architecture/result. Broader than test/proof design: it also covers observability, diagnosis, operation and recovery.",
       "sources": [
         "planning/documentation/idtspe-methodology/active/idtspe-core/lenses/README.md",
         "planning/documentation/idtspe-methodology/active/idtspe-core/lenses/frequent/LENS-VERIFIABILITY-OBSERVABILITY-OPERABILITY.md"
@@ -206,8 +239,11 @@
       "kind": "LENS",
       "scope": "SDS",
       "label": "Application Definition / Alternatives / Core Real-Life Route / Feasibility",
-      "actionLabel": "Application Definition / Alternatives / Core Real-Life Route / Feasibility",
+      "actionLabel": "Application Boundary / Alternatives / Feasibility",
       "description": "own-Application contribution/boundary/feasibility is unsettled",
+      "context": "Primary for TM-APPLICATION-DEFINITION.",
+      "result": "TM-APPLICATION-DEFINITION: RU-APP-01..RU-APP-06",
+      "essence": "Evaluate whether an own Application is justified, which real-world contribution it should own, what existing alternatives teach us, which core real-life routes justify its existence, and whether the boundary is plausibly realizable.",
       "sources": [
         "planning/documentation/idtspe-methodology/active/profiles/sds/lenses/README.md",
         "planning/documentation/idtspe-methodology/active/profiles/sds/lenses/reusable/LENS-APPLICATION-BOUNDARY-FEASIBILITY.md"
@@ -217,7 +253,7 @@
       ],
       "commandId": "",
       "invocation": "idtspe lens application-boundary <target/context>",
-      "target": "<Application Definition / Alternatives / Core Real-Life Route / Feasibility analysis surface>"
+      "target": "<Application Boundary / Alternatives / Feasibility analysis surface>"
     },
     {
       "id": "LENS-DOMAIN-MODELING-DDD",
@@ -226,6 +262,9 @@
       "label": "Domain Modeling / DDD",
       "actionLabel": "Domain Modeling / DDD",
       "description": "Domain identity/state/lifecycle/consistency/ownership questions are material",
+      "context": "Use when a material concern involves semantic state, identity, lifecycle, invariant, consistency, Domain policy/operation, Domain failure/result semantics, persistence boundary tied to semantic ownership, concurrency/atomicity tied to invariants, Domain proof or known Domain evolution. Stop proportionally when the concern is merely UI/transport/filesystem/Git/database/framework orchestration with no selected Domain meaning.",
+      "result": "The Lens may produce Findings, alternatives, candidate reusable/local Requirements or Proposal pressure. It does not directly mutate accepted owner results. Selected owner-local requirements are independently approved in the natural owner **state being represented**: current owner for realized truth or the corresponding Evolution Step Target Domain Body for unrealized future state.",
+      "essence": "Provide the reusable DDD question/requirement/solution corpus for deciding whether meaning belongs in Domain and, when it does, how identity, ownership, lifecycle, consistency, semantic operations, persistence, failure, proof and known evolution should be shaped. This Lens/Knowledge Basis never contains the current project-specific Domain model and never creates DDD patterns by ceremony.",
       "sources": [
         "planning/documentation/idtspe-methodology/active/profiles/sds/lenses/README.md",
         "planning/documentation/idtspe-methodology/active/profiles/sds/lenses/reusable/LENS-DOMAIN-MODELING-DDD.md"
@@ -242,8 +281,11 @@
       "kind": "LENS",
       "scope": "SDS",
       "label": "Owner-Local Implementation Requirements Discovery",
-      "actionLabel": "Owner-Local Implementation Requirements Discovery",
+      "actionLabel": "Implementation Requirements",
       "description": "reasoning may need to become/change/retire durable owner-local IR/PFR meaning",
+      "context": "Use when current implementation/proof reasoning may need to become, change, move, merge, retire or explicitly *not become* durable owner-local IR/PFR meaning. Do not apply merely because implementation planning exists.",
+      "result": "reasoning may need to become/change/retire durable owner-local IR/PFR meaning",
+      "essence": "reasoning may need to become/change/retire durable owner-local IR/PFR meaning",
       "sources": [
         "planning/documentation/idtspe-methodology/active/profiles/sds/lenses/README.md",
         "planning/documentation/idtspe-methodology/active/profiles/sds/lenses/reusable/LENS-IMPLEMENTATION-REQUIREMENTS-DISCOVERY.md"
@@ -253,7 +295,7 @@
       ],
       "commandId": "",
       "invocation": "idtspe lens implementation-requirements <target/context>",
-      "target": "<Owner-Local Implementation Requirements Discovery analysis surface>"
+      "target": "<Implementation Requirements analysis surface>"
     },
     {
       "id": "LENS-SIMPLICITY-IMPLEMENTATION-ECONOMY",
@@ -262,6 +304,9 @@
       "label": "Simplicity / Implementation Economy / Evolution-Safe Simplification",
       "actionLabel": "Simplicity / Implementation Economy",
       "description": "complexity/implementation economy/evolution-safe simplification is material",
+      "context": "Activate when a Domain/Slice/proof/UI/Shared/architecture candidate contains material structural choice, especially when one or more of these are present: ``text several abstraction layers / wrappers / interfaces long orchestration or call chain many owners/entities for one useful result repeated mappings or representation changes several state owners several files/artifacts for one small responsibility multiple test layers/fixtures for the same property speculative extension seams ceremonial Domain patterns configuration/indirection that is hard to explain locally ` Also activate when a reviewer/agent has the concrete question: `text “Have we over-designed this?” “Can we implement the same thing with fewer moving parts?” “Can we remove a layer without making the next known change worse?” ``",
+      "result": "semantic selectors over selected Domain/Slice/proof/UI/Shared/architecture Result Units whose implementation cost/complexity is material",
+      "essence": "Search for a **simpler, cheaper and easier-to-understand way to realize the same accepted meaning** without creating a predictable evolution/change problem. This Lens is deliberately different from the WEUC Lens: ``text WEUC Lens / L5 = how architecture/Target structure behaves under current + future change; which seams/paths/global architecture positions are justified Simplicity Lens = whether the current candidate can be made materially simpler now while still respecting accepted evolution constraints from current map/Decision owners and any L5-derived meaning accepted through Core Finding Disposition `` The Lens is not “minimize file count” or “remove abstractions by default”. It asks whether each abstraction, owner, hop, mapping, test layer or mechanism **earns its cost**.",
       "sources": [
         "planning/documentation/idtspe-methodology/active/profiles/sds/lenses/README.md",
         "planning/documentation/idtspe-methodology/active/profiles/sds/lenses/frequent/LENS-SIMPLICITY-IMPLEMENTATION-ECONOMY.md"
@@ -280,6 +325,9 @@
       "label": "Vertical Slice / Integration",
       "actionLabel": "Slice Verticality / Integration",
       "description": "Feature/Slice boundary, end-to-end realization, behavior coverage or change locality is material",
+      "context": "Feature/Slice boundary, end-to-end realization, behavior coverage or change locality is material",
+      "result": "The Lens may KEEP, REFINE, CHALLENGE or leave OPEN a boundary, surface Shared/Domain pressure or produce Finding/Proposal pressure. It does not directly mutate accepted Feature/Slice owner meaning. When the selected boundary is future/unrealized, its semantic destination is the Evolution Step Target Body; current owner mutation waits for realization/materialization.",
+      "essence": "Own the reusable Feature/Slice Boundary Method and end-to-end realization questions. Optimize for locality of responsibility/change and coherent Feature proof, not dependency absence or technical-layer isolation. The same method is used at two evidence depths:",
       "sources": [
         "planning/documentation/idtspe-methodology/active/profiles/sds/lenses/README.md",
         "planning/documentation/idtspe-methodology/active/profiles/sds/lenses/reusable/LENS-SLICE-VERTICALITY-INTEGRATION.md"
@@ -298,6 +346,9 @@
       "label": "Terms / Ubiquitous Language",
       "actionLabel": "Terms / Ubiquitous Language",
       "description": "durable terminology/definition consistency is material, especially for Requirements/errors",
+      "context": "Strongly check changed SR-*, BR-*, IR-*, PFR-*, ERR-BEH-*, ERR-IMP-*; proportionally check AB/SPS/FBS/FDO/owner/result names.",
+      "result": "durable terminology/definition consistency is material, especially for Requirements/errors",
+      "essence": "durable terminology/definition consistency is material, especially for Requirements/errors",
       "sources": [
         "planning/documentation/idtspe-methodology/active/profiles/sds/lenses/README.md",
         "planning/documentation/idtspe-methodology/active/profiles/sds/lenses/reusable/LENS-TERMS-UBIQUITOUS-LANGUAGE.md"
@@ -316,6 +367,9 @@
       "label": "Screen / UI / Frontend Realization",
       "actionLabel": "Screen / UI / Frontend Realization",
       "description": "Screen/spatial/UI/frontend realization questions are material",
+      "context": "Primary for Screen; supporting for UI-heavy Implementation Slice and other Targets where UI/frontend realization is material.",
+      "result": "TM-SCREEN: RU-SCREEN-01..RU-SCREEN-02",
+      "essence": "Evaluate spatial/UI/frontend realization while preserving Scenario/DATA/Behavior/Screen/Slice authority. The Lens does not require a universal frontend architecture or a dedicated Frontend Target family.",
       "sources": [
         "planning/documentation/idtspe-methodology/active/profiles/sds/lenses/README.md",
         "planning/documentation/idtspe-methodology/active/profiles/sds/lenses/reusable/LENS-UI-SPATIAL-FRONTEND-REALIZATION.md"
@@ -334,6 +388,9 @@
       "label": "Evolution Impact / Change Isolation",
       "actionLabel": "Evolution Impact / Change Isolation",
       "description": "known Evolution/change-isolation/prepare-now-vs-defer pressure is material",
+      "context": "known Evolution/change-isolation/prepare-now-vs-defer pressure is material",
+      "result": "known Evolution/change-isolation/prepare-now-vs-defer pressure is material",
+      "essence": "Evaluate whether current realized meaning and/or a concrete future Step route can evolve with coherent, localized change and without avoidable migration or premature implementation of future behavior. This Lens does not own Evolution plans. TM-EVOLUTION-STEPS-MAP routes to TM-EVOLUTION-STEP; natural Target owners own their current durable meaning.",
       "sources": [
         "planning/documentation/idtspe-methodology/active/profiles/sds/lenses/README.md",
         "planning/documentation/idtspe-methodology/active/profiles/sds/lenses/frequent/LENS-WORKSPACE-EVOLUTION-ARCHITECTURE.md"
@@ -352,6 +409,9 @@
       "label": "Exact Realization / Integration",
       "actionLabel": "Точная реализация",
       "description": "produce one exact directly integrable realization; codebase realization is the primary/default archetype, with optional transient internal detailed exact planning and explicitly authorized integration/verification/repair.",
+      "context": "Apply the Core Unit Applicability / Materiality / Omission Contract. | Result Unit | Make explicit when | Omit / keep sparse when | |---|---|---| | RU-REAL-01 | when current accepted meaning is sufficient to produce one exact directly-integrable candidate for the bounded scope | do not instantiate Exact merely to force literal output while upstream meaning/readiness is still materially unresolved | No N/A placeholder is required. Only one Target-specific Result Unit is required. Verification, build/test observations, repair reasoning, Problems, Proposals, Decisions and Findings remain generic Core State/Evidence around the evolving exact result.",
+      "result": "**Target Step Result:** Exact Realization | Result Unit | Meaning | |---|---| | RU-REAL-01 | Exact Realization — the current complete directly integrable candidate result for the selected bounded scope | ### Result Unit Applicability / Materiality Apply the Core Unit Applicability / Materiality / Omission Contract. | Result Unit | Make explicit when | Omit / keep sparse when | |---|---|---| | RU-REAL-01 | when current accepted meaning is sufficient to produce one exact directly-integrable candidate for the bounded scope | do not instantiate Exact merely to force literal output while upstream meaning/readiness is still materially unresolved | No N/A placeholder is required. Only one Target-specific Result Unit is required. Verification, build/test observations, repair reasoning, Problems, Proposals, Decisions and Findings remain generic Core State/Evidence around the evolving exact res…",
+      "essence": "Produce the **exact current candidate realization** of already-sufficient upstream meaning in a form that can be directly integrated into a selected destination/environment without another material design pass. The module is generic: an Exact Realization may be code, test code, configuration, a migration, schema, workflow, manifest, exact documentation replacement or another directly integrable artifact. The **primary/default archetype is codebase realization**. When the user asks to implement code, use the code workflow in this module by default unless the user explicitly asks for a shorter depth such as exact code only with no integration/build/test attempt. ``text accepted upstream meaning current destination state bounded realization scope ↓ RU-REAL-01 Exact Realization ↓ optional / explicitly authorized Integration Attempt into selected environment ↓ Evidence / Lens analysis ↓ mi…",
       "sources": [
         "planning/documentation/idtspe-methodology/active/idtspe-core/target-modules/README.md",
         "planning/documentation/idtspe-methodology/active/idtspe-core/target-modules/TM-EXACT-REALIZATION.md"
@@ -368,6 +428,9 @@
       "label": "Pre-Update Plan",
       "actionLabel": "План обновления",
       "description": "optional concrete reviewable plan of intended changes before actual mutation; one RU-PUPDATE-01.",
+      "context": "Apply the Core Unit Applicability / Materiality / Omission Contract. | Result Unit | Make explicit when | Omit / keep sparse when | |---|---|---| | RU-PUPDATE-01 | when a separate concrete reviewable intended-change plan has independent value before mutation | omit the entire Target when direct Exact/current authorized work is sufficiently clear | No N/A placeholder is required. Typical proportional content: ``text Goal Current basis / accepted meaning used Change scope Preserve / must-not-change boundary Planned changes Order / dependency only when material Verification / checks after update Open material issue only when unresolved and consequential `` These are useful content prompts, not mandatory form fields. A tiny plan may be a few bullets.",
+      "result": "**Target Step Result:** Pre-Update Plan | Result Unit | Meaning | |---|---| | RU-PUPDATE-01 | Pre-Update Plan — concrete planned changes derived from current accepted meaning/current state, sufficient for review before actual update | ### Result Unit Applicability / Materiality Apply the Core Unit Applicability / Materiality / Omission Contract. | Result Unit | Make explicit when | Omit / keep sparse when | |---|---|---| | RU-PUPDATE-01 | when a separate concrete reviewable intended-change plan has independent value before mutation | omit the entire Target when direct Exact/current authorized work is sufficiently clear | No N/A placeholder is required. Typical proportional content: ``text Goal Current basis / accepted meaning used Change scope Preserve / must-not-change boundary Planned changes Order / dependency only when material Verification / checks after update Open material issu…",
+      "essence": "Before actually changing code/files/configuration/another destination, produce one **concrete update plan** from the current accepted context and current state. The module is intentionally light. It does not reopen already-settled design merely to make a plan and it does not require a new taxonomy of planning fields. ``text current request accepted prior meaning / Decisions / principles relevant current destination state ↓ ordinary IDTSPE Questions / Risks / Problems / Proposals / Evidence only where useful ↓ RU-PUPDATE-01 Pre-Update Plan ↓ optional TM-EXACT-REALIZATION / another actual update mechanism ``",
       "sources": [
         "planning/documentation/idtspe-methodology/active/idtspe-core/target-modules/README.md",
         "planning/documentation/idtspe-methodology/active/idtspe-core/target-modules/TM-PRE-UPDATE-PLAN.md"
@@ -384,6 +447,9 @@
       "label": "Application Definition",
       "actionLabel": "Определить приложение",
       "description": "conditional own-Application contribution / boundary / feasibility",
+      "context": "A person doing research repeatedly finds useful fragments in articles. Existing bookmarks are too coarse, copying into a notes app interrupts reading, and the team is considering building a small capture application. At this point there is a real Need and a selected real-life problem space, but it is still unclear whether custom software is justified and what the application should actually own.",
+      "result": "The result is a coherent Application Definition containing: ``text why custom software is still justified core vs secondary real-life scenarios selected application responsibility boundary owned vs merely consumed information/state optional Refined Core Real-Life Scenario material feasibility findings `` When this walkthrough describes desired Application intent that is not yet realized downstream, the Application Definition may still state that selected intent directly. Concrete unrealized downstream behavior/realization changes are then planned in Evolution Steps and may use this definition as an upstream driver.",
+      "essence": "Define one coherent own-application contribution: ``text what application/contribution we are building why custom software is still justified which core real-life paths justify its existence what is inside/outside its responsibility whether the concept/boundary is plausibly realizable `` Concept, responsibility boundary, proportional existing-solution research, optional refined core real-life scenario and proportional feasibility are aspects of one Application Definition Target. Use this Target when Application need/value/contribution, responsibility boundary or feasibility is materially unsettled or challenged. Application Definition is upstream intent/value authority and may intentionally lead downstream realization.",
       "sources": [
         "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/README.md",
         "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-APPLICATION-DEFINITION.md"
@@ -400,6 +466,9 @@
       "label": "Transient Domain Discovery",
       "actionLabel": "Исследовать Domain",
       "description": "transient bounded Domain discovery",
+      "context": "Declared Result Units are a possible semantic surface, not a mandatory form. Apply the Core Unit Applicability / Materiality / Omission Contract. | Result Unit | Make explicit when | Omit / keep sparse when | |---|---|---| | RU-DOM-01 | when semantic ownership/classification is uncertain enough to justify bounded Domain discovery | omit the entire discovery Target when shallow Lens reasoning is sufficient | | RU-DOM-02 | when state/lifecycle/invariant/consistency meaning affects owner selection or correctness | omit categories that have no selected semantic pressure | | RU-DOM-03 | when concrete candidate realization/proof helps discriminate Domain alternatives | omit implementation-shaped detail when semantic ownership can be resolved without it | | RU-DOM-04 | when selected Evolution or unresolved Domain pressure can change the current candidate | omit speculative future pressure an…",
+      "result": "**Target Step Result:** Domain Discovery Working Plan | Result Unit | Meaning | |---|---| | RU-DOM-01 | Ownership / Classification | | RU-DOM-02 | Semantic State / Lifecycle / Consistency | | RU-DOM-03 | Candidate Realization + Domain Unit Proof | | RU-DOM-04 | Evolution / OPEN Domain Pressure | ### Result Unit Applicability / Materiality Declared Result Units are a possible semantic surface, not a mandatory form. Apply the Core Unit Applicability / Materiality / Omission Contract. | Result Unit | Make explicit when | Omit / keep sparse when | |---|---|---| | RU-DOM-01 | when semantic ownership/classification is uncertain enough to justify bounded Domain discovery | omit the entire discovery Target when shallow Lens reasoning is sufficient | | RU-DOM-02 | when state/lifecycle/invariant/consistency meaning affects owner selection or correctness | omit categories that have no selected s…",
+      "essence": "Produce a bounded working Domain plan when semantic state, identity, lifecycle, invariant or consistency ownership is unclear enough that concrete exploration is useful. This Target is a **Source**, not durable Domain authority. One discovery may yield zero, one or several durable Domain owners. It is not one Target per Aggregate. Concrete candidate classes, types, methods, signatures, persistence seams and literal unit-test candidates are allowed because this is working implementation discovery.",
       "sources": [
         "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/README.md",
         "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-DOMAIN-DISCOVERY.md"
@@ -416,6 +485,9 @@
       "label": "Durable Domain Semantic Owner",
       "actionLabel": "Сформировать Domain Owner",
       "description": "durable Domain semantic contract + Domain IR",
+      "context": "Declared Result Units are a possible semantic surface, not a mandatory form. Apply the Core Unit Applicability / Materiality / Omission Contract. | Result Unit | Make explicit when | Omit / keep sparse when | |---|---|---| | RU-DOWN-01 | when a durable Domain owner has independently useful semantic responsibility | omit the entire durable owner when discovery does not justify that responsibility | | RU-DOWN-02 | when durable implementation/proof constraints are naturally owned by the Domain | omit when no owner-local IR/PFR is needed; zero Requirements is valid | | RU-DOWN-03 | for a current realized Domain owner, when concrete unrealized Steps materially affect its semantics/responsibility and reverse navigation/revalidation is useful | omit when no relevant Step exists; omit from the Target Domain Body of the Step that owns the future change | Do not create N/A placeholders. Re-eval…",
+      "result": "**Target Step Result:** Durable Domain Owner Contract | Result Unit | Meaning | |---|---| | RU-DOWN-01 | Domain Semantic Contract | | RU-DOWN-02 | Domain Implementation Requirements | | RU-DOWN-03 | Evolution Impact — current-owner reverse references to concrete unrealized Evolution Steps that materially affect this realized Domain owner | ### Result Unit Applicability / Materiality Declared Result Units are a possible semantic surface, not a mandatory form. Apply the Core Unit Applicability / Materiality / Omission Contract. | Result Unit | Make explicit when | Omit / keep sparse when | |---|---|---| | RU-DOWN-01 | when a durable Domain owner has independently useful semantic responsibility | omit the entire durable owner when discovery does not justify that responsibility | | RU-DOWN-02 | when durable implementation/proof constraints are naturally owned by the Domain | omit when no…",
+      "essence": "Own one coherent durable Domain responsibility. Do not create one Target for every Entity, Value Object or Aggregate member; use a Target only where independent semantic ownership/review/revalidation is useful. Transient TM-DOMAIN-DISCOVERY may be a Source, but never remains authority merely because it discovered the model.",
       "sources": [
         "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/README.md",
         "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-DOMAIN-OWNER.md"
@@ -432,6 +504,9 @@
       "label": "Evolution Step",
       "actionLabel": "Спланировать Evolution Step",
       "description": "canonical bounded unrealized future transition / target-state planning owner",
+      "context": "Declared Result Units are a possible semantic surface, not a mandatory form. Apply the Core Unit Applicability / Materiality / Omission Contract. | Result Unit | Make explicit when | Omit / keep sparse when | |---|---|---| | RU-EVO-01 | when a concrete unrealized transition has enough meaning to deserve planning/review/addressability, whether its final route is selected or represented by real candidate branches | omit the whole Step for vague speculative “may change later” pressure with no concrete transition, driver, route or decision value | | RU-EVO-02 | when the Step materially affects or may introduce/redistribute/retire one Scenario/Screen/Domain/Slice/Shared responsibility and that impact benefits from bounded resolution/addressability | omit unaffected subjects and vague hypothetical pressure; keep OPEN ownership explicit rather than inventing a premature owner | Do not create…",
+      "result": "**Target Step Result:** Evolution Step Future-State Plan | Result Unit | Meaning | |---|---| | RU-EVO-01 | Future-State Plan / Step Frame — Expected Entry State, transition scope/driver, Feature target states, Step relations, transition/proof obligations, uncertainty/revalidation references and Target Owner Materialization Set; unresolved alternatives remain Core Proposal/Planning Branch state | | RU-EVO-02 | Evolution Impact — repeatable bounded future consequence for one Scenario/Screen/Domain/Slice/Shared or unresolved ownership/responsibility subject, including selected planning meaning and an optional Target Owner Body when sufficiently resolved | ### Result Unit Applicability / Materiality Declared Result Units are a possible semantic surface, not a mandatory form. Apply the Core Unit Applicability / Materiality / Omission Contract. | Result Unit | Make explicit when | Omit / ke…",
+      "essence": "Own one coherent **not-yet-realized** qualitative transition from an expected Entry State toward one or more concrete candidate/selected future target-state routes. An Evolution Step is the canonical SDS semantic owner for materially planned future state. Current natural owners remain authority for accepted current semantic contracts until the represented transition is actually implemented and the required proof/revalidation succeeds. A Step may be Behavioral, Implementation or Mixed. Material downstream consequences for Feature, Scenario, Screen, Domain, Slice and Shared are represented through bounded impacts and complete Target Owner Bodies. Application Definition is upstream intent/value authority and may drive a Step but is not a Step Target Owner Body. ``text current natural owners + actual implementation / Evidence transition driver / constraints one or more Feature target stat…",
       "sources": [
         "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/README.md",
         "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-EVOLUTION-STEP.md"
@@ -448,6 +523,9 @@
       "label": "Evolution Steps Map",
       "actionLabel": "Спланировать Evolution Map",
       "description": "registry/routing/selection-relation/readiness map for concrete Step candidates/selections",
+      "context": "Declared Result Units are a possible semantic surface, not a mandatory form. Apply the Core Unit Applicability / Materiality / Omission Contract. | Result Unit | Make explicit when | Omit / keep sparse when | |---|---|---| | RU-EVOMAP-01 | when several concrete Evolution Steps/candidates need lightweight registry/routing visibility | omit rows for vague unbounded future ideas that do not yet deserve Step identity | | RU-EVOMAP-02 | when prerequisite/alternative/condition/horizon/readiness/uncertainty relations materially affect navigation, selection or revalidation | omit relation/detail that does not affect routing/readiness/decision quality | Do not create N/A placeholders.",
+      "result": "**Target Step Result:** Evolution Steps Registry / Coordination Map | Result Unit | Meaning | |---|---| | RU-EVOMAP-01 | Registry / Routing | | RU-EVOMAP-02 | Relations / Horizon / Readiness / Uncertainty Summary | ### Result Unit Applicability / Materiality Declared Result Units are a possible semantic surface, not a mandatory form. Apply the Core Unit Applicability / Materiality / Omission Contract. | Result Unit | Make explicit when | Omit / keep sparse when | |---|---|---| | RU-EVOMAP-01 | when several concrete Evolution Steps/candidates need lightweight registry/routing visibility | omit rows for vague unbounded future ideas that do not yet deserve Step identity | | RU-EVOMAP-02 | when prerequisite/alternative/condition/horizon/readiness/uncertainty relations materially affect navigation, selection or revalidation | omit relation/detail that does not affect routing/readiness/deci…",
+      "essence": "Provide discoverable routing across **concrete known future transitions** without duplicating each Evolution Step's complete future-state plan or Target Owner Bodies. The Map coordinates identity, selection/candidate visibility, prerequisites, alternatives/conditions, horizon, readiness and compact uncertainty. TM-EVOLUTION-STEP owns the full future-transition planning state.",
       "sources": [
         "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/README.md",
         "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-EVOLUTION-STEPS-MAP.md"
@@ -464,6 +542,9 @@
       "label": "Feature Behavioral Owner",
       "actionLabel": "Спланировать Feature",
       "description": "primary Feature behavior + Feature/Slice boundary owner",
+      "context": "Declared Result Units are a possible semantic surface, not a mandatory form. Apply the Core Unit Applicability / Materiality / Omission Contract. | Result Unit | Make explicit when | Omit / keep sparse when | |---|---|---| | RU-FEAT-01 | when the Feature needs an explicit semantic identity/intent/result/entry anchor | omit fields that are already obvious; do not manufacture separate entries for transport variants | | RU-FEAT-02 | when behavior-facing semantic data is needed to understand Feature meaning | omit data detail owned by Domain/storage or irrelevant to behavior | | RU-FEAT-03 | when durable/addressable must-hold behavior is useful for downstream owners/proof/revalidation | omit BR atomization for obvious transient behavior that does not need durable addressability | | RU-FEAT-04 | primarily in a future Target Feature Body when implementation/proof/evolution pressure must sur…",
+      "result": "**Target Step Result:** Feature Definition | Result Unit | Meaning | |---|---| | RU-FEAT-01 | Identity / Intent / Principal Result / Semantic Entry | | RU-FEAT-02 | Semantic Data | | RU-FEAT-03 | Feature Behavior — addressable BR-* behavior items | | RU-FEAT-04 | Implementation Concerns — material realization/proof/evolution concerns without exact implementation ownership | | RU-FEAT-05 | Feature / Slice Boundary — selected boundary meaning and material rationale | ### Result Unit Applicability / Materiality Declared Result Units are a possible semantic surface, not a mandatory form. Apply the Core Unit Applicability / Materiality / Omission Contract. | Result Unit | Make explicit when | Omit / keep sparse when | |---|---|---| | RU-FEAT-01 | when the Feature needs an explicit semantic identity/intent/result/entry anchor | omit fields that are already obvious; do not manufacture separa…",
+      "essence": "Own one coherent application/user capability boundary and the behavior that makes its principal result true. A Feature is the primary behavioral authority. Scenario composes Features into a journey; Screen owns spatial/navigation composition; Slice owns durable implementation responsibility. None of those owners duplicates Feature behavior. Feature formation is implementation-aware but not an exact implementation plan. The same Feature/Slice Boundary Method from LENS-SLICE-VERTICALITY-INTEGRATION is used here at lighter evidence depth and later during Slice Discovery with stronger evidence.",
       "sources": [
         "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/README.md",
         "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-FEATURE.md"
@@ -480,6 +561,9 @@
       "label": "Slice Discovery / Non-Persistent Slice Planning",
       "actionLabel": "Исследовать Implementation Slice",
       "description": "compatibility ID for transient Slice Discovery",
+      "context": "Declared Result Units are a possible semantic surface, not a mandatory form. Apply the Core Unit Applicability / Materiality / Omission Contract. | Result Unit | Make explicit when | Omit / keep sparse when | |---|---|---| | RU-SLICE-01 | when whole-Slice responsibility/candidate structure is needed to reason end-to-end | omit the whole discovery Target when current implementation path is already sufficiently clear | | RU-SLICE-02 | when semantic application entry/result boundaries are material to integration/ownership/proof | omit adapter/transport detail that does not alter semantic entry/result meaning | | RU-SLICE-03 | when concrete end-to-end realization detail is needed to resolve dependencies/effects/failure/proof | stop at the minimum detail that discriminates decisions; do not build a shadow class/call registry | | RU-SLICE-04 | when whole-Feature integration proof needs expl…",
+      "result": "**Target Step Result:** Slice Discovery Working Plan | Result Unit | Meaning | |---|---| | RU-SLICE-01 | Whole-Slice Responsibility / Candidate Structure | | RU-SLICE-02 | Semantic Application Entry / Result Boundary | | RU-SLICE-03 | Step-by-Step End-to-End Realization | | RU-SLICE-04 | Feature Integration Proof | | RU-SLICE-05 | Evolution / OPEN Slice Pressure | ### Result Unit Applicability / Materiality Declared Result Units are a possible semantic surface, not a mandatory form. Apply the Core Unit Applicability / Materiality / Omission Contract. | Result Unit | Make explicit when | Omit / keep sparse when | |---|---|---| | RU-SLICE-01 | when whole-Slice responsibility/candidate structure is needed to reason end-to-end | omit the whole discovery Target when current implementation path is already sufficiently clear | | RU-SLICE-02 | when semantic application entry/result boundaries…",
+      "essence": "Produce a concrete working end-to-end realization plan for a selected Feature when detailed implementation discovery is useful. This Target is transient. It may contain concrete classes, methods, calls, signatures, adapters, persistence/external boundaries and literal integration-test candidates. Selected durable responsibility is later owned by TM-SLICE-OWNER; volatile class/call topology does not become durable owner truth by default.",
       "sources": [
         "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/README.md",
         "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-IMPLEMENTATION-SLICE.md"
@@ -496,6 +580,9 @@
       "label": "Implemented Practical Evidence / Acceptance",
       "actionLabel": "Спланировать Practical Test",
       "description": "implemented real-subject practical Evidence",
+      "context": "Declared Result Units are a possible semantic surface, not a mandatory form. Apply the Core Unit Applicability / Materiality / Omission Contract. | Result Unit | Make explicit when | Omit / keep sparse when | |---|---|---| | RU-PTEST-01 | when a property requires observation against a real implemented subject/environment | omit the Practical Test Target when simulated/unit/integration Evidence is already sufficient | | RU-PTEST-02 | when planned real-subject observation/data collection must be explicit for credibility | omit incidental procedure detail that cannot affect Evidence interpretation | | RU-PTEST-03 | when the practical test has actually produced Evidence worth interpreting | before execution keep Evidence Need/plan only; never prefill results | Do not create N/A placeholders. Re-evaluate a previously omitted Unit only when its trigger/materiality changes. RU-PTEST-03 is ab…",
+      "result": "**Target Step Result:** Implemented Practical Evidence Result | Result Unit | Meaning | |---|---| | RU-PTEST-01 | Evidence Intent / Real Subject — what real implementation/property will be observed and why real Evidence is needed | | RU-PTEST-02 | Observation / Data Collection Plan — proportional planned observation against the intended/actual real subject | | RU-PTEST-03 | Evidence Results / Interpretation — actual real-subject Evidence refs, material limitations and acceptance/learning interpretation | ### Result Unit Applicability / Materiality Declared Result Units are a possible semantic surface, not a mandatory form. Apply the Core Unit Applicability / Materiality / Omission Contract. | Result Unit | Make explicit when | Omit / keep sparse when | |---|---|---| | RU-PTEST-01 | when a property requires observation against a real implemented subject/environment | omit the Practical…",
+      "essence": "Own one practical Evidence inquiry whose **actual Evidence subject is the real implemented system/environment**, for acceptance and/or post-implementation learning. The Target may be planned before realization so implementation can make later observation possible. Actual Evidence/results begin only when the real implemented subject exists. Shared inquiry/collection mechanics are owned by Practical Evidence Method; this module should not duplicate that method.",
       "sources": [
         "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/README.md",
         "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-PRACTICAL-TEST.md"
@@ -512,6 +599,9 @@
       "label": "Prototype / Experiment",
       "actionLabel": "Спланировать Prototype",
       "description": "transient empirical pre-commit inquiry",
+      "context": "Declared Result Units are a possible semantic surface, not a mandatory form. Apply the Core Unit Applicability / Materiality / Omission Contract. | Result Unit | Make explicit when | Omit / keep sparse when | |---|---|---| | RU-PROTO-01 | when a concrete uncertainty/property justifies an empirical pre-commit inquiry | omit the whole Prototype Target when no such uncertainty exists | | RU-PROTO-02 | when the minimum credible subject/observation boundary must be selected before running the inquiry | omit non-material instrumentation/procedure detail | | RU-PROTO-03 | when the prototype actually produced observations worth interpreting | before execution keep only Evidence Need/plan; do not invent results | Do not create N/A placeholders. Re-evaluate a previously omitted Unit only when its trigger/materiality changes. The shared method's full inquiry fields are guidance, not mandatory du…",
+      "result": "**Target Step Result:** Prototype Evidence Result | Result Unit | Meaning | |---|---| | RU-PROTO-01 | Prototype Intent / Question — what uncertainty/property this Prototype exists to investigate and why it matters | | RU-PROTO-02 | Prototype Subject / Observation Plan — minimum credible prototype, material real-vs-simulated boundary and proportional collection plan | | RU-PROTO-03 | Prototype Results / Interpretation — actual Evidence refs, material limitations and interpretation relative to the inquiry | ### Result Unit Applicability / Materiality Declared Result Units are a possible semantic surface, not a mandatory form. Apply the Core Unit Applicability / Materiality / Omission Contract. | Result Unit | Make explicit when | Omit / keep sparse when | |---|---|---| | RU-PROTO-01 | when a concrete uncertainty/property justifies an empirical pre-commit inquiry | omit the whole Prototy…",
+      "essence": "Own one bounded practical inquiry where a **partial, simulated, mocked or throwaway subject is acceptable** and practical observation can reduce material uncertainty before the real implementation is complete. The shared inquiry/collection mechanics are owned by Practical Evidence Method. This module owns only the Prototype-specific Target/result.",
       "sources": [
         "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/README.md",
         "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-PROTOTYPE.md"
@@ -528,6 +618,9 @@
       "label": "Scenario Journey Composition",
       "actionLabel": "Спланировать Scenario",
       "description": "Scenario journey composition; compatibility ID/path retained",
+      "context": "Declared Result Units are a possible semantic surface, not a mandatory form. Apply the Core Unit Applicability / Materiality / Omission Contract. | Result Unit | Make explicit when | Omit / keep sparse when | |---|---|---| | RU-SCEN-01 | when journey composition across actors/features/screens/external steps has independent planning value | omit optional branches/must-holds/E2E intent that are not material to continuity or terminal Benefit | | RU-SCEN-02 | for a current realized Scenario, when one or more concrete unrealized Steps materially affect its journey composition and reverse navigation/revalidation is useful | omit when no relevant Step exists; omit from the Target Scenario Body of the Step that owns the future change | Do not create N/A placeholders. Re-evaluate a previously omitted Unit only when its trigger/materiality changes. RU-SCEN-01 is intentionally broad because its…",
+      "result": "**Target Step Result:** Scenario Journey Composition | Result Unit | Meaning | |---|---| | RU-SCEN-01 | Journey Composition — actor/external participation, Feature/context links, order/branch/convergence/re-entry, continuity, terminal Benefit closure, sparse journey must-holds and optional E2E Proof Intent | | RU-SCEN-02 | Evolution Impact — current-owner reverse references to concrete unrealized Evolution Steps that materially affect this realized Scenario | ### Result Unit Applicability / Materiality Declared Result Units are a possible semantic surface, not a mandatory form. Apply the Core Unit Applicability / Materiality / Omission Contract. | Result Unit | Make explicit when | Omit / keep sparse when | |---|---|---| | RU-SCEN-01 | when journey composition across actors/features/screens/external steps has independent planning value | omit optional branches/must-holds/E2E intent th…",
+      "essence": "Own one coherent actor-to-benefit journey composition across Feature results, Screens and external contexts. Scenario does **not** own Feature behavior, Feature semantic data, implementation Slice topology, Domain semantics or target-state implementation requirements.",
       "sources": [
         "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/README.md",
         "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-SCENARIO-PLANNING.md"
@@ -544,6 +637,9 @@
       "label": "Screen / Spatial Owner",
       "actionLabel": "Спланировать Screen",
       "description": "Screen/spatial/navigation composition",
+      "context": "Declared Result Units are a possible semantic surface, not a mandatory form. Apply the Core Unit Applicability / Materiality / Omission Contract. | Result Unit | Make explicit when | Omit / keep sparse when | |---|---|---| | RU-SCREEN-01 | when cross-screen inventory/routes/Feature participation or global spatial constraints matter | omit global map detail when a single local Screen composition is sufficient | | RU-SCREEN-02 | when one or more Screen/zone compositions need independent spatial detail | omit Screen drafts whose layout/zone meaning adds no planning value yet | | RU-SCREEN-03 | for current realized Screen meaning, when concrete unrealized Steps materially affect spatial/navigation composition and reverse navigation/revalidation is useful | omit when no relevant Step exists; omit from the Target Screen Body of the Step that owns the future change | Do not create N/A placeh…",
+      "result": "**Target Step Result:** Screen / Spatial Model | Result Unit | Meaning | |---|---| | RU-SCREEN-01 | Screen Map — Screen inventory, Feature/Scenario participation, routes/transitions and global spatial constraints | | RU-SCREEN-02 | Screen Draft Set — independently useful Screen/zone composition details | | RU-SCREEN-03 | Evolution Impact — current-owner reverse references to concrete unrealized Evolution Steps that materially affect this realized Screen/spatial owner | ### Result Unit Applicability / Materiality Declared Result Units are a possible semantic surface, not a mandatory form. Apply the Core Unit Applicability / Materiality / Omission Contract. | Result Unit | Make explicit when | Omit / keep sparse when | |---|---|---| | RU-SCREEN-01 | when cross-screen inventory/routes/Feature participation or global spatial constraints matter | omit global map detail when a single local…",
+      "essence": "Own application spatial and navigation composition when it is independently useful: Screen/surface inventory and purpose; Feature presence / availability / visibility by Screen or zone; Screen zones / hierarchy / stable spatial composition; meaningful routes/transitions/re-entry/back/cancel/recovery; Scenario × Screen participation; screen-specific contextual constraints, including accessibility/platform constraints when spatially owned. Screen does not own Feature behavior, Domain meaning or implementation topology.",
       "sources": [
         "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/README.md",
         "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-SCREEN.md"
@@ -560,6 +656,9 @@
       "label": "Durable Shared Implementation Capability",
       "actionLabel": "Спланировать Shared Capability",
       "description": "durable reusable non-end-to-end implementation capability",
+      "context": "Declared Result Units are a possible semantic surface, not a mandatory form. Apply the Core Unit Applicability / Materiality / Omission Contract. | Result Unit | Make explicit when | Omit / keep sparse when | |---|---|---| | RU-SHARED-01 | when a coherent reusable non-end-to-end responsibility passes the Shared formation gate | omit the entire Shared owner when reuse/consumer pressure is insufficient | | RU-SHARED-02 | when concrete Slice consumers in the represented current/target state need durable realization bindings to the Shared capability | omit hypothetical consumers and bindings not grounded in the corresponding current/Target Slice IR | | RU-SHARED-03 | when durable implementation constraints are naturally owned by the Shared capability | omit when implementation choices remain local/transient; no proof RU is required by default | | RU-SHARED-04 | for a current realized Shar…",
+      "result": "**Target Step Result:** Shared Implementation Capability Contract | Result Unit | Meaning | |---|---| | RU-SHARED-01 | Shared Capability Contract | | RU-SHARED-02 | Consumer Requirement Bindings | | RU-SHARED-03 | Shared Capability Implementation Requirements | | RU-SHARED-04 | Evolution Impact — current-owner reverse references to concrete unrealized Evolution Steps that materially affect this realized Shared capability/bindings | ### Result Unit Applicability / Materiality Declared Result Units are a possible semantic surface, not a mandatory form. Apply the Core Unit Applicability / Materiality / Omission Contract. | Result Unit | Make explicit when | Omit / keep sparse when | |---|---|---| | RU-SHARED-01 | when a coherent reusable non-end-to-end responsibility passes the Shared formation gate | omit the entire Shared owner when reuse/consumer pressure is insufficient | | RU-SHARED…",
+      "essence": "Own one coherent reusable **non-end-to-end** implementation responsibility used by multiple Slice owners. Ordinary explicit shared collaborators and concerns applied cross-cutting around Slice execution are the same Target family when the semantic responsibility is coherent. The difference is participation/application shape, not Target type.",
       "sources": [
         "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/README.md",
         "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-SHARED-IMPLEMENTATION-CAPABILITY.md"
@@ -576,6 +675,9 @@
       "label": "Durable End-to-End Slice Owner",
       "actionLabel": "Сформировать Slice Owner",
       "description": "durable end-to-end Slice responsibility + Slice IR",
+      "context": "Declared Result Units are a possible semantic surface, not a mandatory form. Apply the Core Unit Applicability / Materiality / Omission Contract. | Result Unit | Make explicit when | Omit / keep sparse when | |---|---|---| | RU-SOWN-01 | when an end-to-end Slice responsibility/boundary deserves durable ownership/addressability | omit the durable owner when transient Slice Discovery is sufficient | | RU-SOWN-02 | when durable owner-local implementation/proof constraints are needed | omit when no Slice-local IR/PFR is necessary; zero Requirements is valid | | RU-SOWN-03 | for a current realized Slice owner, when concrete unrealized Steps materially affect its responsibility/boundary and reverse navigation/revalidation is useful | omit when no relevant Step exists; omit from the Target Slice Body of the Step that owns the future change | Do not create N/A placeholders. Re-evaluate a prev…",
+      "result": "**Target Step Result:** Durable Slice Owner Contract | Result Unit | Meaning | |---|---| | RU-SOWN-01 | Slice Responsibility / Boundary Contract | | RU-SOWN-02 | Slice Implementation Requirements | | RU-SOWN-03 | Evolution Impact — current-owner reverse references to concrete unrealized Evolution Steps that materially affect this realized Slice owner | ### Result Unit Applicability / Materiality Declared Result Units are a possible semantic surface, not a mandatory form. Apply the Core Unit Applicability / Materiality / Omission Contract. | Result Unit | Make explicit when | Omit / keep sparse when | |---|---|---| | RU-SOWN-01 | when an end-to-end Slice responsibility/boundary deserves durable ownership/addressability | omit the durable owner when transient Slice Discovery is sufficient | | RU-SOWN-02 | when durable owner-local implementation/proof constraints are needed | omit when n…",
+      "essence": "Own one durable end-to-end implementation responsibility corresponding to a selected Feature boundary. Slice independence means locality of responsibility/change, not absence of dependencies. Transient TM-IMPLEMENTATION-SLICE may discover the realization but is not durable authority.",
       "sources": [
         "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/README.md",
         "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-SLICE-OWNER.md"
@@ -590,8 +692,11 @@
       "kind": "USE_CASE",
       "scope": "Core",
       "label": "Compose Current IDTSPE Work",
-      "actionLabel": "Компоновать текущую работу",
+      "actionLabel": "Определить состав текущей methodology work",
       "description": "The current work has the **smallest useful IDTSPE composition** for the situation, with relevant methodology components selected or explicitly left unnecessary for now, and with useful recheck/next-action conditions clear. A valid Result may be only: ``text continue Broad Discussion; no Target / Lens / Target Module / Checkpoint / persisted State is useful yet. ``",
+      "context": "IDTSPE work is active — which is the default in this methodology environment — and the current situation requires deciding **how much IDTSPE structure is useful now**. This Use Case is re-evaluated at entry and whenever the next material methodology action or changed context may require a different composition.",
+      "result": "The current work has the **smallest useful IDTSPE composition** for the situation, with relevant methodology components selected or explicitly left unnecessary for now, and with useful recheck/next-action conditions clear. A valid Result may be only: ``text continue Broad Discussion; no Target / Lens / Target Module / Checkpoint / persisted State is useful yet. ``",
+      "essence": "The current work has the **smallest useful IDTSPE composition** for the situation, with relevant methodology components selected or explicitly left unnecessary for now, and with useful recheck/next-action conditions clear. A valid Result may be only: ``text continue Broad Discussion; no Target / Lens / Target Module / Checkpoint / persisted State is useful yet. ``",
       "sources": [
         "planning/documentation/use-case-registry-map.md",
         "planning/documentation/idtspe-methodology/active/idtspe-core/shared/idtspe-methodology-use-case-registry.md"
@@ -608,6 +713,9 @@
       "label": "Integrate Current IDTSPE Work",
       "actionLabel": "Интегрировать текущую работу",
       "description": "An **IDTSPE Integration Checkpoint** reconciles material Broad Discussion into the current Unit/Target/Work-Context model: Unit Resolutions, Current Result Content, material cross-cutting Core Resolution State, unresolved/revalidation state and a useful continuation point. It does not manufacture completion or approval.",
+      "context": "Broad Discussion/current work has accumulated enough distributed material that a coherent whole-state view is now more useful than continuing local discussion alone, or an explicit review/handoff/readiness point needs integrated current meaning. Typical triggers include: important accepted meaning is distributed across turns/owners/Units; a substantial Decision/Finding/revalidation pass changed several dependent parts; continuation/handoff/resume would otherwise be unreliable; a downstream transition needs a coherent current boundary view; the USER explicitly requests a checkpoint/integration review. Elapsed time or message count alone is not a trigger. An Integration Checkpoint is not a periodic timer event.",
+      "result": "An **IDTSPE Integration Checkpoint** reconciles material Broad Discussion into the current Unit/Target/Work-Context model: Unit Resolutions, Current Result Content, material cross-cutting Core Resolution State, unresolved/revalidation state and a useful continuation point. It does not manufacture completion or approval.",
+      "essence": "An **IDTSPE Integration Checkpoint** reconciles material Broad Discussion into the current Unit/Target/Work-Context model: Unit Resolutions, Current Result Content, material cross-cutting Core Resolution State, unresolved/revalidation state and a useful continuation point. It does not manufacture completion or approval.",
       "sources": [
         "planning/documentation/use-case-registry-map.md",
         "planning/documentation/idtspe-methodology/active/idtspe-core/shared/idtspe-methodology-use-case-registry.md"
@@ -622,8 +730,11 @@
       "kind": "USE_CASE",
       "scope": "Core",
       "label": "Maintain Current IDTSPE Work State",
-      "actionLabel": "Maintain Current IDTSPE Work State",
+      "actionLabel": "Поддерживать состояние текущей работы",
       "description": "The smallest useful current Work Context is represented coherently around bounded Units, their Unit Resolution state and Current Result Content, plus any material cross-Unit/Target/Work-Context Core Resolution State. Stale/invalidated meaning is distinguishable without serializing the whole conversation.",
+      "context": "Current working meaning benefits from explicit semantic retention/addressability because it must survive distributed discussion, support review/revalidation, be handed off/resumed, or participate in Core/Target lifecycle.",
+      "result": "The smallest useful current Work Context is represented coherently around bounded Units, their Unit Resolution state and Current Result Content, plus any material cross-Unit/Target/Work-Context Core Resolution State. Stale/invalidated meaning is distinguishable without serializing the whole conversation.",
+      "essence": "The smallest useful current Work Context is represented coherently around bounded Units, their Unit Resolution state and Current Result Content, plus any material cross-Unit/Target/Work-Context Core Resolution State. Stale/invalidated meaning is distinguishable without serializing the whole conversation.",
       "sources": [
         "planning/documentation/use-case-registry-map.md",
         "planning/documentation/idtspe-methodology/active/idtspe-core/shared/idtspe-methodology-use-case-registry.md"
@@ -638,8 +749,11 @@
       "kind": "USE_CASE",
       "scope": "Core",
       "label": "Create / Review / Integrate Reusable Lens",
-      "actionLabel": "Create / Review / Integrate Reusable Lens",
+      "actionLabel": "Поддерживать reusable Lens",
       "description": "``text one canonical Lens/Lens Pack owner registry entry / applicability summary activation class/gate Operational Evaluation Contract explicit Analysis Surface / supported operations / Finding Contract Knowledge Basis / theory-reference links when useful consumer/profile mapping migrated duplicate knowledge/guidance consistency checks ``",
+      "context": "Use when: ``text one evaluation perspective repeats across Target families an existing Target Module embeds reusable Lens knowledge frequent cross-cutting reasoning has no stable owner several Lens names overlap/duplicate one reasoning loop an existing Lens has unclear applicability/output/escalation ``",
+      "result": "``text one canonical Lens/Lens Pack owner registry entry / applicability summary activation class/gate Operational Evaluation Contract explicit Analysis Surface / supported operations / Finding Contract Knowledge Basis / theory-reference links when useful consumer/profile mapping migrated duplicate knowledge/guidance consistency checks ``",
+      "essence": "``text one canonical Lens/Lens Pack owner registry entry / applicability summary activation class/gate Operational Evaluation Contract explicit Analysis Surface / supported operations / Finding Contract Knowledge Basis / theory-reference links when useful consumer/profile mapping migrated duplicate knowledge/guidance consistency checks ``",
       "sources": [
         "planning/documentation/use-case-registry-map.md",
         "planning/documentation/idtspe-methodology/active/idtspe-core/shared/idtspe-methodology-use-case-registry.md"
@@ -654,8 +768,11 @@
       "kind": "USE_CASE",
       "scope": "Core",
       "label": "Create / Review / Integrate Target Module",
-      "actionLabel": "Create / Review / Integrate Target Module",
+      "actionLabel": "Поддерживать Target Module",
       "description": "``text one Target Module owner catalog entry stable Entry Point integration map Target Step-Result Contract / Unit Contracts / Result Content responsibilities explicit per-Unit Opening / Closing Applicability Checkpoints Resolution / Production Method output schema/projection when useful validators provenance mapping command/Tampermonkey readiness route ` If reuse already covers the need: `text no new module → integrate/reuse existing one `` ---",
+      "context": "Use when: ``text a recurring Target class has no reusable contract an existing UC/workflow/template family should become IDTSPE-addressable a Target Module is incomplete/stale/overlapping several modules need composition/entry-point reconciliation `` ---",
+      "result": "``text one Target Module owner catalog entry stable Entry Point integration map Target Step-Result Contract / Unit Contracts / Result Content responsibilities explicit per-Unit Opening / Closing Applicability Checkpoints Resolution / Production Method output schema/projection when useful validators provenance mapping command/Tampermonkey readiness route ` If reuse already covers the need: `text no new module → integrate/reuse existing one `` ---",
+      "essence": "``text one Target Module owner catalog entry stable Entry Point integration map Target Step-Result Contract / Unit Contracts / Result Content responsibilities explicit per-Unit Opening / Closing Applicability Checkpoints Resolution / Production Method output schema/projection when useful validators provenance mapping command/Tampermonkey readiness route ` If reuse already covers the need: `text no new module → integrate/reuse existing one `` ---",
       "sources": [
         "planning/documentation/use-case-registry-map.md",
         "planning/documentation/idtspe-methodology/active/idtspe-core/shared/idtspe-methodology-use-case-registry.md"
@@ -672,6 +789,9 @@
       "label": "Revalidate Current IDTSPE Work",
       "actionLabel": "Перевалидировать текущую работу",
       "description": "The narrowest affected semantic subject and relevant methodology-use surface are rechecked; stale/dependent Unit Resolution, Result Content or broader owner meaning is invalidated/reopened only where warranted; unaffected accepted meaning remains stable; and a precise re-entry route is known.",
+      "context": "Existing working/accepted meaning may no longer be reliable because a Finding, Evidence item, accepted upstream change, Source/authority change, USER redirect, implementation discovery, methodology change or explicit consistency concern affects its assumptions, relations or consumers.",
+      "result": "The narrowest affected semantic subject and relevant methodology-use surface are rechecked; stale/dependent Unit Resolution, Result Content or broader owner meaning is invalidated/reopened only where warranted; unaffected accepted meaning remains stable; and a precise re-entry route is known.",
+      "essence": "The narrowest affected semantic subject and relevant methodology-use surface are rechecked; stale/dependent Unit Resolution, Result Content or broader owner meaning is invalidated/reopened only where warranted; unaffected accepted meaning remains stable; and a precise re-entry route is known.",
       "sources": [
         "planning/documentation/use-case-registry-map.md",
         "planning/documentation/idtspe-methodology/active/idtspe-core/shared/idtspe-methodology-use-case-registry.md"
@@ -688,6 +808,9 @@
       "label": "Maintain Documentation Example",
       "actionLabel": "Maintain Documentation Example",
       "description": "A current non-authoritative example demonstrates the intended result/process/shape/behavior and is reachable from the semantic owner it illustrates.",
+      "context": "Reusable meaning would be materially easier to understand through demonstration, or an existing example is stale, misleading, too large, or incorrectly treated as authority.",
+      "result": "A current non-authoritative example demonstrates the intended result/process/shape/behavior and is reachable from the semantic owner it illustrates.",
+      "essence": "A current non-authoritative example demonstrates the intended result/process/shape/behavior and is reachable from the semantic owner it illustrates.",
       "sources": [
         "planning/documentation/use-case-registry-map.md",
         "planning/documentation/use-case-registry.md"
@@ -704,6 +827,9 @@
       "label": "Maintain Principles & Terminology",
       "actionLabel": "Maintain Principles & Terminology",
       "description": "The area has one coherent term-centered owner for the needed vocabulary and stable semantic rules, with duplicated or misplaced meaning routed back to that owner.",
+      "context": "Stable shared vocabulary/rules in an area are missing, stale, duplicated, inconsistently defined, or mixed into operational Process.",
+      "result": "The area has one coherent term-centered owner for the needed vocabulary and stable semantic rules, with duplicated or misplaced meaning routed back to that owner.",
+      "essence": "The area has one coherent term-centered owner for the needed vocabulary and stable semantic rules, with duplicated or misplaced meaning routed back to that owner.",
       "sources": [
         "planning/documentation/use-case-registry-map.md",
         "planning/documentation/use-case-registry.md"
@@ -720,6 +846,9 @@
       "label": "Maintain Reusable Process",
       "actionLabel": "Maintain Reusable Process",
       "description": "The reusable Process is represented at the smallest useful scope, remains reachable from the Use Cases that need it, and does not become a competing owner of shared terminology or result meaning.",
+      "context": "A repeated way of reaching one or more Use-Case Results needs to be established, clarified, changed, reused across Use Cases, or extracted because inline Process has become too substantial.",
+      "result": "The reusable Process is represented at the smallest useful scope, remains reachable from the Use Cases that need it, and does not become a competing owner of shared terminology or result meaning.",
+      "essence": "The reusable Process is represented at the smallest useful scope, remains reachable from the Use Cases that need it, and does not become a competing owner of shared terminology or result meaning.",
       "sources": [
         "planning/documentation/use-case-registry-map.md",
         "planning/documentation/use-case-registry.md"
@@ -736,6 +865,9 @@
       "label": "Maintain README Navigation",
       "actionLabel": "Maintain README Navigation",
       "description": "The README accurately maps the current area and direct-child responsibilities, with natural next navigation and without becoming a second owner of Use-Case/Process/Principles meaning.",
+      "context": "An area's structure/responsibilities changed, readers cannot naturally determine what the area contains, or the README duplicates semantic bodies instead of serving structural navigation.",
+      "result": "The README accurately maps the current area and direct-child responsibilities, with natural next navigation and without becoming a second owner of Use-Case/Process/Principles meaning.",
+      "essence": "The README accurately maps the current area and direct-child responsibilities, with natural next navigation and without becoming a second owner of Use-Case/Process/Principles meaning.",
       "sources": [
         "planning/documentation/use-case-registry-map.md",
         "planning/documentation/use-case-registry.md"
@@ -752,6 +884,9 @@
       "label": "Maintain Documentation Template",
       "actionLabel": "Maintain Documentation Template",
       "description": "A shape-only current template exists where useful, remains reachable from the Use Case/Process that uses it, and contains no semantic decision logic that belongs in another owner.",
+      "context": "A repeated output or Process shape is useful enough to standardize, or an existing template is stale, over-prescriptive, semantically overloaded, or no longer used.",
+      "result": "A shape-only current template exists where useful, remains reachable from the Use Case/Process that uses it, and contains no semantic decision logic that belongs in another owner.",
+      "essence": "A shape-only current template exists where useful, remains reachable from the Use Case/Process that uses it, and contains no semantic decision logic that belongs in another owner.",
       "sources": [
         "planning/documentation/use-case-registry-map.md",
         "planning/documentation/use-case-registry.md"
@@ -768,6 +903,9 @@
       "label": "Establish / Change Repository Use Case",
       "actionLabel": "Establish / Change Repository Use Case",
       "description": "The capability is represented by the smallest correct current Use-Case set, every surviving Use Case has Situation, Result, and Process, and the applicable Use-Case Registry points to the canonical owner of each Use Case.",
+      "context": "A recurring repository/documentation capability appears to be missing, duplicated, incorrectly bounded, split across several owners, or no longer independently useful.",
+      "result": "The capability is represented by the smallest correct current Use-Case set, every surviving Use Case has Situation, Result, and Process, and the applicable Use-Case Registry points to the canonical owner of each Use Case.",
+      "essence": "The capability is represented by the smallest correct current Use-Case set, every surviving Use Case has Situation, Result, and Process, and the applicable Use-Case Registry points to the canonical owner of each Use Case.",
       "sources": [
         "planning/documentation/use-case-registry-map.md",
         "planning/documentation/use-case-registry.md"
@@ -784,6 +922,9 @@
       "label": "Maintain Use-Case Registry",
       "actionLabel": "Maintain Use-Case Registry",
       "description": "The registry for the selected scope lists every current Use Case and its canonical owner, with navigation-only grouping and without duplicating Use-Case bodies.",
+      "context": "Use-Case identity, location, current/legacy status, or coverage changed, or readers cannot reliably discover the current functional capability landscape.",
+      "result": "The registry for the selected scope lists every current Use Case and its canonical owner, with navigation-only grouping and without duplicating Use-Case bodies.",
+      "essence": "The registry for the selected scope lists every current Use Case and its canonical owner, with navigation-only grouping and without duplicating Use-Case bodies.",
       "sources": [
         "planning/documentation/use-case-registry-map.md",
         "planning/documentation/use-case-registry.md"
@@ -800,6 +941,9 @@
       "label": "Plan Repository Documentation Change",
       "actionLabel": "Спланировать изменение документации",
       "description": "The target documentation meaning is resolved to the needed depth, affected Use Cases and semantic owners are clear, and the change is ready for exact repository realization without implementation having to invent semantic decisions.",
+      "context": "A repository documentation capability, semantic owner structure, navigation model, dependency, or methodology needs a material change that cannot be resolved by simply reading a known owner or placing a file in an obvious existing responsibility.",
+      "result": "The target documentation meaning is resolved to the needed depth, affected Use Cases and semantic owners are clear, and the change is ready for exact repository realization without implementation having to invent semantic decisions.",
+      "essence": "The target documentation meaning is resolved to the needed depth, affected Use Cases and semantic owners are clear, and the change is ready for exact repository realization without implementation having to invent semantic decisions.",
       "sources": [
         "planning/documentation/use-case-registry-map.md",
         "planning/documentation/use-case-registry.md"
@@ -816,6 +960,9 @@
       "label": "Review Repository Documentation",
       "actionLabel": "Проверить документацию",
       "description": "Material documentation findings are tied to their real semantic owners, verified and unverified areas are distinguished, and each required correction has a narrow current repair/change route without the review itself becoming new semantic authority.",
+      "context": "The current repository documentation may contain stale routes, duplicate semantic authority, orphan methodology/supporting files, unclear Use-Case boundaries, misleading navigation, or inconsistent application of the current documentation contracts.",
+      "result": "Material documentation findings are tied to their real semantic owners, verified and unverified areas are distinguished, and each required correction has a narrow current repair/change route without the review itself becoming new semantic authority.",
+      "essence": "Material documentation findings are tied to their real semantic owners, verified and unverified areas are distinguished, and each required correction has a narrow current repair/change route without the review itself becoming new semantic authority.",
       "sources": [
         "planning/documentation/use-case-registry-map.md",
         "planning/documentation/use-case-registry.md"
@@ -830,8 +977,11 @@
       "kind": "USE_CASE",
       "scope": "Documentation",
       "label": "Use Repository Methodology / Guidance",
-      "actionLabel": "Use Repository Methodology / Guidance",
+      "actionLabel": "Подобрать repository guidance",
       "description": "The current work has a situation-appropriate methodology orientation: applicable Use Cases and semantic owners are known, required documentation actions are clear, only useful detail is loaded, and contextual adaptations/deferments are explicit when material.",
+      "context": "Repository methodology/documentation may help the current work, or current guidance orientation may be missing, stale, too broad, conflicting, or no longer appropriate to the current situation. This Use Case is about **working with methodology/documentation files**. It does not own product planning, code changes, Domain/Slice design, Target production, Lens analysis or other specialized work performed by the methodology being consulted.",
+      "result": "The current work has a situation-appropriate methodology orientation: applicable Use Cases and semantic owners are known, required documentation actions are clear, only useful detail is loaded, and contextual adaptations/deferments are explicit when material.",
+      "essence": "The current work has a situation-appropriate methodology orientation: applicable Use Cases and semantic owners are known, required documentation actions are clear, only useful detail is loaded, and contextual adaptations/deferments are explicit when material.",
       "sources": [
         "planning/documentation/use-case-registry-map.md",
         "planning/documentation/use-case-registry.md"

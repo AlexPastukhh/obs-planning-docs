@@ -70,7 +70,7 @@ The JSON is intentionally strict so repository writes, build-time validation and
 - IDs, canonical commands and aliases are unique across the complete catalog.
 - `ownerFiles` and `keyReminders` are arrays of strings.
 - `palette` is boolean. `false` keeps a registered command out of the normal palette without making it unregistered.
-- current command semantics do **not** maintain Helper-only `When To Use` / `What You Get` prose. Invocation context is explained by canonical Scenarios and semantic owners; old cached definitions containing `helperPresentation` remain parser-compatible only.
+- current command semantics do **not** maintain Helper-only `When To Use` / `What You Get` prose. Helper may project **Контекст / Результат / Суть** from canonical fields: direct commands use `activeContextBehavior / expectedOutput / meaning`; semantic UC/TM/Lens cards use their canonical owners. Old cached definitions containing `helperPresentation` remain parser-compatible only.
 - one high-level command may orchestrate several existing project capabilities or methodology components when that gives a useful stable invocation surface. This never creates a Use Case, Target Module, Lens or semantic owner and never lets the command own their algorithms.
 - refinements contain only compact owner-read instructions; they do not duplicate owner algorithms.
 - result-producing commands may depend on reusable governance through `ownerFiles` / their semantic owner route; the shared command router reuses current governance, refreshes affected owners proportionally, and performs a full internal preflight only when no reliable sufficient governance context exists. A source snapshot/commit/branch change alone does not force a full reread.
@@ -80,9 +80,9 @@ The JSON is intentionally strict so repository writes, build-time validation and
 
 The Planning Helper does not render one primary row per direct command file. Current methodology Use Cases, Target Modules and Lenses project to one stable semantic Command identity (`uc:...`, `tm:...`, `lens:...`). A direct command definition may supply that card's invocation body/aliases, while focused aliases remain refinements rather than duplicate primary cards.
 
-Every primary command card exposes `Run`, `Body` and `Scenarios N`. `Body` exposes the actual invocation plus provenance/source information; `Scenarios N` is a derived reverse index into canonical working Scenarios. Canonical Scenarios contain semantic owner references and never contain command IDs/triggers/Helper labels.
+Every primary command card exposes `Run`, `Смысл`, `Body`, `Scenarios N` and presentation-only `Group`. `Body` exposes the actual invocation plus provenance/source information; `Scenarios N` is a derived reverse index into canonical working Scenarios. Canonical Scenarios contain semantic owner references and never contain command IDs/triggers/Helper labels.
 
-`helperPresentation.navigation` and `helperPresentation.whenToUse/whatYouGet` are legacy-cache compatibility only. Current Helper navigation derives from semantic kind/scope/registry membership, and usage explanation comes from canonical Scenario prose.
+`helperPresentation.navigation` and `helperPresentation.whenToUse/whatYouGet` are legacy-cache compatibility only. Current Helper navigation derives from semantic identity plus GitHub-backed presentation groups in `catalog-order.json`; the three-part explanation is projected from canonical command/UC/TM/Lens authority. Canonical Scenario prose remains the authority for workflow composition/examples, not a duplicate per-card help catalog.
 
 ## Current IDTSPE/SDS Projection
 
@@ -106,7 +106,7 @@ Normal repository workflow:
 4. Update root/global command-system documentation only when shared routing rules change.
 5. Update examples/navigation only when affected.
 
-The Planning Helper treats this repository catalog as durable authority/backup while normal browser operation remains local-first. Commands are loaded from one browser-local snapshot into RAM. Explicit `Hard Reload GitHub` reads the complete current direct command catalog and replaces the repository-backed local command cache; `Sync missing` remains incremental. ChatGPT-mediated marker-block restore is a fallback/debugging route, not the only repository recovery path.
+The Planning Helper treats this repository catalog as durable authority/backup while normal browser operation remains local-first. Commands are loaded from one browser-local snapshot into RAM. Explicit `Hard Reload GitHub` reads the complete current direct/semantic/scenario catalogs and `catalog-order.json`, replaces the GitHub-backed local command surface, removes command rows absent from GitHub, preserves Prompt-library content and prunes stale favorites; `Sync missing` remains incremental. ChatGPT-mediated marker-block restore is a fallback/debugging route, not the only repository recovery path.
 
 The Planning Helper Commands surface can create/edit a validated local command-definition draft. `Save GitHub` reads/validates the complete direct remote command catalog, then creates or updates the deterministic `planning/commands/*.command.md` target with optimistic SHA protection and exact verification. `Reload GitHub` explicitly replaces one local command draft with the current remote command. Repository command deletion/retirement remains outside the Helper runtime and requires the separate authorized documentation/command-maintenance route.
 

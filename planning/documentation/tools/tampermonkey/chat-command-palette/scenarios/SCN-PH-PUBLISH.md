@@ -3,13 +3,13 @@
 Status: active current behavior owner
 Scope: canonical detailed application behavior owner for explicit Helper→GitHub persistence.
 
-**Trigger/input:** per-row `Save GitHub` for a real Planning Command/Prompt/legacy helper record, or global `Save order GitHub` for current catalog order.
+**Trigger/input:** per-row `Save GitHub` for a real Planning Command/Prompt/legacy helper record, or global `Save order GitHub` for current catalog order/presentation groups.
 
-**Successful result:** a deterministic Command/Prompt target is created, exact-no-op confirmed, or updated using current remote SHA and exact read-back verification; `Save order GitHub` creates/updates only `catalog-order.json` with current ordered stable IDs.
+**Successful result:** a deterministic Command/Prompt target is created, exact-no-op confirmed, or updated using current remote SHA and exact read-back verification; `Save order GitHub` creates/updates only `catalog-order.json` with current ordered stable IDs and presentation-only `commandGroups[]`.
 
 **Conflict boundary:** optimistic conflicts are reread once. If remote bytes already equal intended bytes, the write is recovered as verified success without a second PUT. If bytes differ, nothing is overwritten automatically. A verified remote result remains remote success even if later local metadata persistence fails.
 
-**Semantic boundary:** order persistence changes presentation/order only; it does not change Command/Scenario/UC/TM/Lens meaning. Commands order uses stable semantic IDs for UC/TM/Lens cards.
+**Semantic boundary:** order/group persistence changes presentation only; it does not change Command/Scenario/UC/TM/Lens meaning. Commands order uses stable semantic IDs for UC/TM/Lens cards.
 
 **Traceability:**
 

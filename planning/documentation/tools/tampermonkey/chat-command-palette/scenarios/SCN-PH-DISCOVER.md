@@ -5,9 +5,9 @@ Scope: canonical detailed application behavior owner for discovering current Hel
 
 **Trigger/input:** the helper starts/opens, the user selects `Commands`, `Scenarios` or `Prompts`, selects a Commands classification, or searches/browses current content.
 
-**Successful result:** current semantic Commands, canonical working Scenarios and Prompts can be found from the three top-level surfaces using materialized RAM state without implicit GitHub access. Within Commands, Use Cases / Target Modules / Lenses are semantic classifications rather than peer surfaces. Favorites project the same stable semantic Command identity without duplicating authority.
+**Successful result:** current semantic Commands, canonical working Scenarios and Prompts can be found from the three top-level surfaces using materialized RAM state without implicit GitHub access. Within Commands, Use Cases / Target Modules / Lenses are semantic classifications rather than peer surfaces, and smaller GitHub-backed presentation groups improve browsing without becoming semantic owners. Favorites project the same stable semantic Command identity without duplicating authority.
 
-**Boundary:** Favorites/order/navigation never become semantic authority. One current UC/TM/Lens capability has one primary semantic card. A direct command definition may supply that card's invocation body without replacing its semantic owner. Startup/migration/materialization are supporting mechanisms, not separate outcomes.
+**Boundary:** Favorites/order/presentation groups/navigation never become semantic authority. One current UC/TM/Lens capability has one primary semantic card. A direct command definition may supply that card's invocation body without replacing its semantic owner. Startup/migration/materialization are supporting mechanisms, not separate outcomes.
 
 **Registry parity invariant:** every current projected methodology UC/TM/Lens appears exactly once as a primary semantic Command card; retired compatibility entries do not become current semantic cards. The build fails on projection/seed parity drift.
 

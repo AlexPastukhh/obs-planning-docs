@@ -28,5 +28,5 @@ test('generated userscript contains runtime but no maintained current Command/UC
 
 test('command-maintenance helper command is projected as Tools / Repository',()=>{
   const runtime=read('src/planning-helper-runtime.js');
-  assert.match(runtime,/'helper\.command\.add':\{actionLabel:'Добавить команду в Helper',tail:'Tool · Planning Command',category:'TOOL'/);
+  assert.match(runtime,/'helper\.command\.add':\{actionLabel:'Создать \/ изменить Planning Command',tail:'Tool · Planning Command',category:'TOOL'/);
 });

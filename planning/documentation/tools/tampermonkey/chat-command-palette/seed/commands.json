@@ -179,6 +179,43 @@
     },
     {
       "schemaVersion": 1,
+      "id": "proposal_archive.create",
+      "file": "build-proposal-archive.command.md",
+      "command": "дай архив proposal",
+      "englishName": "build proposal archive",
+      "commandFamily": [
+        "дай архив proposal",
+        "дай архив пропозал",
+        "собери proposal archive",
+        "proposal archive"
+      ],
+      "description": "produce one review-only proposal ZIP",
+      "meaning": "Package the currently selected proposal/planning target into one review-only ZIP that is easy to inspect, discuss and compare. The archive is descriptive planning output, not an executable repository transition: it MUST NOT contain PACKAGE.json, base-files/replacement-files replacement protocol payloads or OBS-ACTION apply instructions. Preserve enough README/navigation/context inside the archive for a reviewer to understand what is proposed, what is intentionally not current truth, and which questions or migration consequences remain open.",
+      "activeContextBehavior": "Use the active selected proposal scope and current checked source/context needed to make that proposal self-contained. Do not silently convert accepted current repository state into a proposal or a proposal into accepted current semantic authority. When the proposal concerns documentation change, route its semantic planning through UC-DOC-PLAN-DOCUMENTATION-CHANGE and keep Documentation Change Coverage when the change is substantial. A Use Case is a Situation + independently useful Result + Process capability; see planning/documentation/principles-and-terminology.md#use-case rather than inventing a new Use Case merely because a proposal archive is being produced.",
+      "traversalReadMode": "Targeted/full depending on proposal scope and whether the review archive must include multiple owners/projections.",
+      "ownerFiles": [
+        "planning/documentation/use-cases/UC-DOC-PLAN-DOCUMENTATION-CHANGE.md",
+        "planning/documentation/principles-and-terminology.md"
+      ],
+      "expectedOutput": "One review-only proposal ZIP with clear proposal status/readme and the complete selected proposal artifacts needed for review. No PACKAGE.json, no replacement-package base/replacement payloads, no apply/finalize/commit/push instructions and no claim that proposed target meaning is already current.",
+      "permissionMode": "artifact-no-commit-push",
+      "keyReminders": [
+        "This command produces a review artifact, not a Replacement Package.",
+        "Never include PACKAGE.json or replacement-package base-files/replacement-files protocol structure.",
+        "State clearly that the archive is REVIEW-ONLY / PROPOSAL when that is the selected meaning.",
+        "Include enough navigation/context that a reviewer can understand the proposal without relying on hidden chat context.",
+        "A proposal archive does not create a new Use Case; reuse current semantic owners and Use Cases.",
+        "Use Case definition/reference: planning/documentation/principles-and-terminology.md#use-case.",
+        "Do not apply locally, commit or push."
+      ],
+      "userTarget": "<proposal/planning scope to package for review>",
+      "palette": true,
+      "helperPresentation": null,
+      "methodologyBinding": null,
+      "refinements": []
+    },
+    {
+      "schemaVersion": 1,
       "id": "replacement_archive.create",
       "file": "build-replacement-archive.command.md",
       "command": "давай архив",
@@ -2425,6 +2462,44 @@
         "No repository mutation, archive, commit or push is implied."
       ],
       "userTarget": "<Real-Life Situation / Need>",
+      "palette": true,
+      "helperPresentation": null,
+      "methodologyBinding": null,
+      "refinements": []
+    },
+    {
+      "schemaVersion": 1,
+      "id": "documentation.links.review",
+      "file": "review-documentation-links.command.md",
+      "command": "проверь связность документации",
+      "englishName": "review documentation links",
+      "commandFamily": [
+        "проверь связность документации",
+        "проверь markdown-ссылки",
+        "проверь ссылки документации",
+        "review documentation links"
+      ],
+      "description": "focused Markdown navigation and link correctness review",
+      "meaning": "Review one selected documentation scope for useful direct Markdown navigation, broken path/fragment targets, misleading links to stale or non-authoritative artifacts, and cases where a registry or stronger tracked relation is actually justified. This is a focused invocation of the existing documentation-review capability, not a new semantic Use Case and not a generic repository-link crawler by default.",
+      "activeContextBehavior": "Use the explicitly selected documentation file/folder/scope. Start from current semantic owners and navigation expectations. Treat ordinary relative Markdown links as the default lightweight navigation relation when a reader materially benefits from direct traversal. Do not turn every textual mention into a link and do not infer semantic ownership, synchronization or review-on-change obligations merely from a valid link.",
+      "traversalReadMode": "Targeted to selected documentation scope plus current navigation/owner routes needed to judge the links.",
+      "ownerFiles": [
+        "planning/documentation/use-cases/UC-DOC-REVIEW-DOCUMENTATION.md",
+        "planning/documentation/principles-and-terminology.md",
+        "planning/documentation/idtspe-methodology/active/idtspe-core/lenses/required/LENS-ARTIFACT-BOUNDARY-ADDRESSABILITY.md"
+      ],
+      "expectedOutput": "One compact Documentation Link Review containing scope, Broken Links, Missing Useful Direct Links, Misleading/Stale Links, Wrong Navigation Mechanism when material, and verdict OK or NEEDS_CORRECTION. Distinguish mechanical link validity from semantic/navigation correctness.",
+      "permissionMode": "read-only",
+      "keyReminders": [
+        "Ordinary relative Markdown links are the default lightweight navigation mechanism when direct traversal is materially useful.",
+        "A Markdown link is navigation/addressability only; it does not create semantic ownership, dependency, synchronization or review-on-change authority.",
+        "Broken paths or fragments are documentation defects, but zero broken links does not prove useful navigation.",
+        "Flag important plain-text references that should be direct links when readers otherwise must search manually.",
+        "Flag links that technically resolve but lead to stale, legacy or non-authoritative destinations when a current owner exists.",
+        "Use a registry for useful many-owner overview and Linked Notes/tracked relations only when their stronger behavior is justified.",
+        "Do not mutate repository files under this command."
+      ],
+      "userTarget": "<documentation file/folder/scope to review>",
       "palette": true,
       "helperPresentation": null,
       "methodologyBinding": null,

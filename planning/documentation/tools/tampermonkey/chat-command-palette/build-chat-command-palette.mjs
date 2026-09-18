@@ -78,11 +78,15 @@ function readCanonicalUseCases(commands){
 
 const UC_COMMAND_IDS=Object.freeze({'UC-IDTSPE-COMPOSE-CURRENT-WORK':'plan.now'});
 const ACTION_LABELS=Object.freeze({
-  'UC-IDTSPE-COMPOSE-CURRENT-WORK':'Компоновать текущую работу',
+  'UC-IDTSPE-COMPOSE-CURRENT-WORK':'Определить состав текущей methodology work',
   'UC-IDTSPE-INTEGRATE-CURRENT-WORK':'Интегрировать текущую работу',
+  'UC-IDTSPE-MAINTAIN-CURRENT-WORK-STATE':'Поддерживать состояние текущей работы',
+  'UC-IDTSPE-MAINTAIN-TARGET-MODULE':'Поддерживать Target Module',
+  'UC-IDTSPE-MAINTAIN-LENS':'Поддерживать reusable Lens',
   'UC-IDTSPE-REVALIDATE-CURRENT-WORK':'Перевалидировать текущую работу',
   'UC-DOC-PLAN-DOCUMENTATION-CHANGE':'Спланировать изменение документации',
   'UC-DOC-REVIEW-DOCUMENTATION':'Проверить документацию',
+  'UC-DOC-USE-REPOSITORY-GUIDANCE':'Подобрать repository guidance',
   'TM-PRE-UPDATE-PLAN':'План обновления',
   'TM-EXACT-REALIZATION':'Точная реализация',
   'TM-APPLICATION-DEFINITION':'Определить приложение',
@@ -107,9 +111,31 @@ const ACTION_LABELS=Object.freeze({
   'LENS-QUALITY-RISK-MATERIALITY':'Quality / Risk / Materiality',
   'LENS-SIMPLICITY-IMPLEMENTATION-ECONOMY':'Simplicity / Implementation Economy',
   'LENS-DOMAIN-MODELING-DDD':'Domain Modeling / DDD',
-  'LENS-SLICE-VERTICALITY-INTEGRATION':'Slice Verticality / Integration'
+  'LENS-SLICE-VERTICALITY-INTEGRATION':'Slice Verticality / Integration',
+  'LENS-PRACTICAL-EVIDENCE':'Prototype / Practical Evidence',
+  'LENS-TEST-PROOF-EVIDENCE':'Test Proof / Evidence Quality',
+  'LENS-APPLICATION-BOUNDARY-FEASIBILITY':'Application Boundary / Alternatives / Feasibility',
+  'LENS-IMPLEMENTATION-REQUIREMENTS-DISCOVERY':'Implementation Requirements',
+  'LENS-TERMS-UBIQUITOUS-LANGUAGE':'Terms / Ubiquitous Language',
+  'LENS-UI-SPATIAL-FRONTEND-REALIZATION':'Screen / UI / Frontend Realization',
+  'LENS-WORKSPACE-EVOLUTION-ARCHITECTURE':'Evolution Impact / Change Isolation'
 });
 function headingTitle(rel,id){const text=fs.readFileSync(path.join(repoRoot,rel),'utf8'),first=text.split(/\r?\n/).find((line)=>line.startsWith('# '))||id;return first.replace(/^#\s+/,'').replace(new RegExp(`^${id.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')}\\s*[—-]\\s*`),'').trim()||id;}
+function ownerSection(rel,names){
+  const lines=fs.readFileSync(path.join(repoRoot,rel),'utf8').split(/\r?\n/),wanted=(names||[]).map((name)=>String(name).trim().toLowerCase());
+  for(let i=0;i<lines.length;i++){
+    const match=lines[i].match(/^(#{2,4})\s+(.+?)\s*$/);if(!match)continue;
+    const title=cleanCell(match[2]).toLowerCase();if(!wanted.some((name)=>title===name||title.startsWith(`${name} —`)||title.startsWith(`${name} /`)))continue;
+    const level=match[1].length,out=[];for(let j=i+1;j<lines.length;j++){const next=lines[j].match(/^(#{1,6})\s+/);if(next&&next[1].length<=level)break;out.push(lines[j]);}
+    const text=compactMarkdown(out.join('\n'));if(text)return text.length>900?`${text.slice(0,897).trim()}…`:text;
+  }
+  return'';
+}
+function ownerExplanation(rel,kind,fallback=''){
+  const essence=ownerSection(rel,['Purpose'])||compactMarkdown(fallback);
+  if(kind==='TARGET_MODULE')return{context:ownerSection(rel,['Situation','Result Unit Applicability / Materiality','Applicability'])||compactMarkdown(fallback),result:ownerSection(rel,['Result','Target Step-Result Contract'])||compactMarkdown(fallback),essence};
+  return{context:ownerSection(rel,['Applicability Gate','Applicability','Situation'])||compactMarkdown(fallback),result:ownerSection(rel,['Result','Findings / Outputs','Output / Disposition','Primary Result Units / Semantic Selectors'])||compactMarkdown(fallback),essence};
+}
 function relativeFromRegistry(registryPath,target){return resolveRegistryTarget(registryPath,target);}
 function registryAliases(text,prefix){const map=new Map();for(const m of text.matchAll(/^\s*([^\s#][^→\n]*?)\s*→\s*(`?(?:TM|LENS)-[A-Z0-9-]+`?)/gm)){const id=cleanCell(m[2]),alias=cleanCell(m[1]).split(/\s+/)[0];if(id.startsWith(prefix)&&alias&&!map.has(id))map.set(id,alias);}return map;}
 function currentTargetRows(registryPath,scope){
@@ -119,12 +145,12 @@ function currentTargetRows(registryPath,scope){
   const rows=[],seen=new Set();
   for(const m of body.matchAll(/\[`(TM-[A-Z0-9-]+)`\]\(([^)]+)\)(?:\s*\|\s*([^|\n]+)\s*\|\s*([^\n|]+)|\s*—\s*([^\n]+))/g)){
     const id=m[1];if(seen.has(id))continue;const rel=relativeFromRegistry(registryPath,m[2]);if(!rel||!fs.existsSync(path.join(repoRoot,rel)))continue;seen.add(id);
-    const aliasCell=cleanCell(m[3]||''),alias=(aliasCell.match(/`([^`]+)`/)||[])[1]||'';const description=compactMarkdown(m[4]||m[5]||headingTitle(rel,id));
-    rows.push({id,kind:'TARGET_MODULE',scope,label:headingTitle(rel,id),actionLabel:ACTION_LABELS[id]||headingTitle(rel,id),description,sources:[registryPath,rel],aliases:alias?[alias]:[],invocation:`idtspe tm ${alias||id} <target>`,target:`<${ACTION_LABELS[id]||headingTitle(rel,id)} target>`});
+    const aliasCell=cleanCell(m[3]||''),alias=(aliasCell.match(/`([^`]+)`/)||[])[1]||'';const description=compactMarkdown(m[4]||m[5]||headingTitle(rel,id)),explanation=ownerExplanation(rel,'TARGET_MODULE',description);
+    rows.push({id,kind:'TARGET_MODULE',scope,label:headingTitle(rel,id),actionLabel:ACTION_LABELS[id]||headingTitle(rel,id),description,...explanation,sources:[registryPath,rel],aliases:alias?[alias]:[],invocation:`idtspe tm ${alias||id} <target>`,target:`<${ACTION_LABELS[id]||headingTitle(rel,id)} target>`});
   }
   if(scope==='Core'){
     // Core list is prose bullets rather than a table; ensure both current modules are captured.
-    for(const id of ['TM-PRE-UPDATE-PLAN','TM-EXACT-REALIZATION'])if(!seen.has(id)){const match=body.match(new RegExp('\\[`'+id+'`\\]\\(([^)]+)\\)'));if(match){const rel=relativeFromRegistry(registryPath,match[1]),alias=id==='TM-PRE-UPDATE-PLAN'?'pre-update':'exact';rows.push({id,kind:'TARGET_MODULE',scope,label:headingTitle(rel,id),actionLabel:ACTION_LABELS[id]||headingTitle(rel,id),description:headingTitle(rel,id),sources:[registryPath,rel],aliases:[alias],invocation:`idtspe tm ${alias} <target>`,target:`<${ACTION_LABELS[id]||headingTitle(rel,id)} target>`});}}
+    for(const id of ['TM-PRE-UPDATE-PLAN','TM-EXACT-REALIZATION'])if(!seen.has(id)){const match=body.match(new RegExp('\\[`'+id+'`\\]\\(([^)]+)\\)'));if(match){const rel=relativeFromRegistry(registryPath,match[1]),alias=id==='TM-PRE-UPDATE-PLAN'?'pre-update':'exact',description=headingTitle(rel,id),explanation=ownerExplanation(rel,'TARGET_MODULE',description);rows.push({id,kind:'TARGET_MODULE',scope,label:headingTitle(rel,id),actionLabel:ACTION_LABELS[id]||headingTitle(rel,id),description,...explanation,sources:[registryPath,rel],aliases:[alias],invocation:`idtspe tm ${alias} <target>`,target:`<${ACTION_LABELS[id]||headingTitle(rel,id)} target>`});}}
   }
   return rows;
 }
@@ -135,12 +161,13 @@ function currentLensRows(registryPath,scope){
   const rows=[],seen=new Set();
   for(const m of body.matchAll(/\[`(LENS-[A-Z0-9-]+)`\]\(([^)]+)\)\s*\|\s*([^\n|]+)/g)){
     const id=m[1];if(seen.has(id))continue;const rel=relativeFromRegistry(registryPath,m[2]);if(!rel||!fs.existsSync(path.join(repoRoot,rel)))continue;seen.add(id);const alias=aliases.get(id)||'';
-    rows.push({id,kind:'LENS',scope,label:headingTitle(rel,id),actionLabel:ACTION_LABELS[id]||headingTitle(rel,id),description:compactMarkdown(m[3])||headingTitle(rel,id),sources:[registryPath,rel],aliases:alias?[alias]:[],invocation:`idtspe lens ${alias||id} <target/context>`,target:`<${ACTION_LABELS[id]||headingTitle(rel,id)} analysis surface>`});
+    const description=compactMarkdown(m[3])||headingTitle(rel,id),explanation=ownerExplanation(rel,'LENS',description);
+    rows.push({id,kind:'LENS',scope,label:headingTitle(rel,id),actionLabel:ACTION_LABELS[id]||headingTitle(rel,id),description,...explanation,sources:[registryPath,rel],aliases:alias?[alias]:[],invocation:`idtspe lens ${alias||id} <target/context>`,target:`<${ACTION_LABELS[id]||headingTitle(rel,id)} analysis surface>`});
   }
   return rows;
 }
 function readCanonicalSemanticComponents(commands,useCases){
-  const ucComponents=useCases.map((uc)=>({id:uc.id,kind:'USE_CASE',scope:uc.id.startsWith('UC-DOC-')?'Documentation':'Core',label:uc.label,actionLabel:ACTION_LABELS[uc.id]||uc.label,description:uc.description,sources:uc.sources,aliases:[],commandId:UC_COMMAND_IDS[uc.id]||uc.commandId||'',invocation:'',target:uc.target}));
+  const ucComponents=useCases.map((uc)=>({id:uc.id,kind:'USE_CASE',scope:uc.id.startsWith('UC-DOC-')?'Documentation':'Core',label:uc.label,actionLabel:ACTION_LABELS[uc.id]||uc.label,description:uc.description,context:uc.trigger||uc.description,result:uc.result||uc.description,essence:uc.description,sources:uc.sources,aliases:[],commandId:UC_COMMAND_IDS[uc.id]||uc.commandId||'',invocation:'',target:uc.target}));
   const all=[...ucComponents,...currentTargetRows(coreTargetRegistryPath,'Core'),...currentTargetRows(sdsTargetRegistryPath,'SDS'),...currentLensRows(coreLensRegistryPath,'Core'),...currentLensRows(sdsLensRegistryPath,'SDS')];
   return semantic.normalizeSemanticComponents(all).sort((a,b)=>a.kind.localeCompare(b.kind)||a.scope.localeCompare(b.scope)||a.id.localeCompare(b.id));
 }

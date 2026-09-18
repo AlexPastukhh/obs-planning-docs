@@ -54,3 +54,21 @@ test('Favorites are local stable-ID projections',()=>{let local=snapshot();local
 test('legacy direct-command favorite IDs migrate to stable semantic card IDs at materialization',()=>{const defs=require('../seed/commands.json').items,pre=defs.find((d)=>d.id==='tmcmd.pre.update');assert.ok(pre);const local=state.normalizePlanningHelperLocalSnapshot({...snapshot(),planningCommands:[state.normalizeCommandRecord({definition:pre,repositoryKnown:true})],favoriteCommandIds:['tmcmd.pre.update']});const memory=runtime.materializeSnapshot(local);assert.deepEqual(memory.favoriteCommandIds,['tm:TM-PRE-UPDATE-PLAN']);const toggled=runtime.toggleFavoriteCommandInSnapshot(local,'tm:TM-PRE-UPDATE-PLAN');assert.deepEqual(toggled.favoriteCommandIds,[])});
 
 test('moveId uses current IDs, preserves unspecified IDs and moves one item',()=>{assert.deepEqual(runtime.moveId(['b'],['a','b','c'],'b',-1),['b','a','c']);assert.deepEqual(runtime.moveId(['a','c'],['a','b','c'],'c',-1),['c','a','b'])});
+
+
+test('presentation grouping moves one card without changing semantic identity',()=>{
+  const order={schemaVersion:2,commands:['a','b'],commandGroups:[{id:'g.one',viewId:'GENERAL',label:'One',order:0,items:['a']},{id:'g.two',viewId:'GENERAL',label:'Two',order:1,items:['b']}]};
+  const next=runtime.assignCommandGroupInOrder(order,'a','g.two');
+  assert.deepEqual(next.commandGroups.find((group)=>group.id==='g.one').items,[]);
+  assert.deepEqual(next.commandGroups.find((group)=>group.id==='g.two').items,['b','a']);
+  assert.deepEqual(next.commands,['a','b']);
+});
+
+test('runtime hard-reload source is an authoritative command/catalog replace and preserves prompts only',()=>{
+  const source=require('node:fs').readFileSync(require('node:path').resolve(import.meta.dirname,'../src/planning-helper-runtime.js'),'utf8');
+  assert.match(source,/preservedPrompts=memory\.helperRecords\.filter/);
+  assert.match(source,/removedLegacyCommands=memory\.helperRecords\.length-preservedPrompts\.length/);
+  assert.match(source,/planningCommands,helperItems:preservedPrompts,useCases:useCaseCatalog\.useCases/);
+  assert.match(source,/catalogOrder:order\.order/);
+  assert.match(source,/hiddenCommandIds:\[\],hiddenUseCaseIds:\[\]/);
+});

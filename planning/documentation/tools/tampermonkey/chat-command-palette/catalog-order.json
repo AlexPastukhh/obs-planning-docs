@@ -1,28 +1,16 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "kind": "planning-helper-catalog-order",
   "commands": [
-    "idtspe.bootstrap",
-    "tm:TM-PRE-UPDATE-PLAN",
-    "tm:TM-EXACT-REALIZATION",
     "idtspe.next",
     "idtspe.continue",
+    "idtspe.proposal",
+    "session.proposal_driven",
+    "critical_review.apply",
+    "review_audit.recheck",
     "idtspe.review_consistency",
-    "idtspe.lenses.select",
-    "lens:LENS-ARTIFACT-BOUNDARY-ADDRESSABILITY",
-    "lens:LENS-LINKED-NOTES-USAGE-JUSTIFICATION",
-    "application_sds.bootstrap",
-    "tm:TM-APPLICATION-DEFINITION",
-    "tm:TM-PROTOTYPE",
-    "tm:TM-SCENARIO-PLANNING",
-    "tm:TM-SCREEN",
-    "tm:TM-DOMAIN-DISCOVERY",
-    "tm:TM-DOMAIN-OWNER",
-    "tm:TM-IMPLEMENTATION-SLICE",
-    "tm:TM-PRACTICAL-TEST",
-    "lens:LENS-TEST-PROOF-EVIDENCE",
-    "lens:LENS-WORKSPACE-EVOLUTION-ARCHITECTURE",
-    "lens:LENS-SIMPLICITY-IMPLEMENTATION-ECONOMY",
+    "idtspe.findings.review",
+    "idtspe.needs.review",
     "application_reality.review",
     "application_research.research",
     "application_solution.plan",
@@ -31,15 +19,68 @@
     "architecture_path.trace",
     "architecture_pressure.review",
     "architecture_decision.plan",
+    "documentation.links.review",
+    "idtspe.lenses.select",
+    "idtspe.bootstrap",
+    "application_sds.bootstrap",
+    "documentation_principles.read",
     "governance.development",
     "current_state.report",
-    "uc:UC-IDTSPE-COMPOSE-CURRENT-WORK",
-    "review_audit.recheck",
-    "critical_review.apply",
-    "archive_source.use",
-    "replacement_archive.create",
     "command.plan",
-    "documentation_principles.read"
+    "uc:UC-IDTSPE-COMPOSE-CURRENT-WORK",
+    "uc:UC-IDTSPE-MAINTAIN-CURRENT-WORK-STATE",
+    "uc:UC-IDTSPE-INTEGRATE-CURRENT-WORK",
+    "uc:UC-IDTSPE-REVALIDATE-CURRENT-WORK",
+    "uc:UC-IDTSPE-MAINTAIN-TARGET-MODULE",
+    "uc:UC-IDTSPE-MAINTAIN-LENS",
+    "uc:UC-DOC-USE-REPOSITORY-GUIDANCE",
+    "uc:UC-DOC-PLAN-DOCUMENTATION-CHANGE",
+    "uc:UC-DOC-REVIEW-DOCUMENTATION",
+    "uc:UC-DOC-MAINTAIN-USE-CASE",
+    "uc:UC-DOC-MAINTAIN-USE-CASE-REGISTRY",
+    "uc:UC-DOC-MAINTAIN-PRINCIPLES-TERMINOLOGY",
+    "uc:UC-DOC-MAINTAIN-PROCESS",
+    "uc:UC-DOC-MAINTAIN-TEMPLATE",
+    "uc:UC-DOC-MAINTAIN-EXAMPLE",
+    "uc:UC-DOC-MAINTAIN-README",
+    "tm:TM-PRE-UPDATE-PLAN",
+    "tm:TM-EXACT-REALIZATION",
+    "tm:TM-APPLICATION-DEFINITION",
+    "tm:TM-SCENARIO-PLANNING",
+    "tm:TM-FEATURE",
+    "tm:TM-SCREEN",
+    "tm:TM-DOMAIN-DISCOVERY",
+    "tm:TM-DOMAIN-OWNER",
+    "tm:TM-IMPLEMENTATION-SLICE",
+    "tm:TM-SLICE-OWNER",
+    "tm:TM-SHARED-IMPLEMENTATION-CAPABILITY",
+    "tm:TM-EVOLUTION-STEP",
+    "tm:TM-EVOLUTION-STEPS-MAP",
+    "tm:TM-PROTOTYPE",
+    "tm:TM-PRACTICAL-TEST",
+    "lens:LENS-NEED-VALUE-SCOPE",
+    "lens:LENS-AUTHORITY-SOT-REUSE",
+    "lens:LENS-DEPENDENCY-CHANGE-IMPACT",
+    "lens:LENS-SHARED-CROSS-CUTTING-RESPONSIBILITY",
+    "lens:LENS-QUALITY-RISK-MATERIALITY",
+    "lens:LENS-UNCERTAINTY-ASSUMPTION-REVERSIBILITY",
+    "lens:LENS-PRACTICAL-EVIDENCE",
+    "lens:LENS-TEST-PROOF-EVIDENCE",
+    "lens:LENS-VERIFIABILITY-OBSERVABILITY-OPERABILITY",
+    "lens:LENS-ARTIFACT-BOUNDARY-ADDRESSABILITY",
+    "lens:LENS-LINKED-NOTES-USAGE-JUSTIFICATION",
+    "lens:LENS-APPLICATION-BOUNDARY-FEASIBILITY",
+    "lens:LENS-DOMAIN-MODELING-DDD",
+    "lens:LENS-TERMS-UBIQUITOUS-LANGUAGE",
+    "lens:LENS-UI-SPATIAL-FRONTEND-REALIZATION",
+    "lens:LENS-IMPLEMENTATION-REQUIREMENTS-DISCOVERY",
+    "lens:LENS-SLICE-VERTICALITY-INTEGRATION",
+    "lens:LENS-SIMPLICITY-IMPLEMENTATION-ECONOMY",
+    "lens:LENS-WORKSPACE-EVOLUTION-ARCHITECTURE",
+    "replacement_archive.create",
+    "proposal_archive.create",
+    "archive_source.use",
+    "helper.command.add"
   ],
   "useCases": [
     "UC-DOC-USE-REPOSITORY-GUIDANCE",
@@ -77,5 +118,254 @@
     "helper-library:prompt:planning-4je394",
     "helper-library:prompt:planning-zip-dif-1jskeny",
     "helper-library:prompt:replacement-arch-bootstr-s3labd"
+  ],
+  "commandGroups": [
+    {
+      "id": "general.methodology-flow",
+      "viewId": "GENERAL",
+      "label": "Methodology Flow",
+      "order": 10,
+      "items": [
+        "idtspe.next",
+        "idtspe.continue",
+        "idtspe.proposal",
+        "session.proposal_driven"
+      ]
+    },
+    {
+      "id": "general.review-validation",
+      "viewId": "GENERAL",
+      "label": "Review / Validation",
+      "order": 20,
+      "items": [
+        "critical_review.apply",
+        "review_audit.recheck",
+        "idtspe.review_consistency",
+        "idtspe.findings.review",
+        "idtspe.needs.review"
+      ]
+    },
+    {
+      "id": "general.application",
+      "viewId": "GENERAL",
+      "label": "Application Discovery / Solution",
+      "order": 30,
+      "items": [
+        "application_reality.review",
+        "application_research.research",
+        "application_solution.plan",
+        "application_realization.review"
+      ]
+    },
+    {
+      "id": "general.architecture",
+      "viewId": "GENERAL",
+      "label": "Architecture",
+      "order": 40,
+      "items": [
+        "workspace_uses.discover",
+        "architecture_path.trace",
+        "architecture_pressure.review",
+        "architecture_decision.plan"
+      ]
+    },
+    {
+      "id": "general.documentation",
+      "viewId": "GENERAL",
+      "label": "Documentation",
+      "order": 50,
+      "items": [
+        "documentation.links.review"
+      ]
+    },
+    {
+      "id": "general.utilities",
+      "viewId": "GENERAL",
+      "label": "Methodology Utilities",
+      "order": 60,
+      "items": [
+        "idtspe.lenses.select",
+        "idtspe.bootstrap",
+        "application_sds.bootstrap",
+        "documentation_principles.read",
+        "governance.development",
+        "current_state.report",
+        "command.plan"
+      ]
+    },
+    {
+      "id": "uc.current-work",
+      "viewId": "USE_CASES",
+      "label": "Current Work Orchestration",
+      "order": 10,
+      "items": [
+        "uc:UC-IDTSPE-COMPOSE-CURRENT-WORK",
+        "uc:UC-IDTSPE-MAINTAIN-CURRENT-WORK-STATE",
+        "uc:UC-IDTSPE-INTEGRATE-CURRENT-WORK",
+        "uc:UC-IDTSPE-REVALIDATE-CURRENT-WORK"
+      ]
+    },
+    {
+      "id": "uc.methodology-maintenance",
+      "viewId": "USE_CASES",
+      "label": "Methodology Maintenance",
+      "order": 20,
+      "items": [
+        "uc:UC-IDTSPE-MAINTAIN-TARGET-MODULE",
+        "uc:UC-IDTSPE-MAINTAIN-LENS"
+      ]
+    },
+    {
+      "id": "uc.documentation-planning",
+      "viewId": "USE_CASES",
+      "label": "Documentation Planning / Review",
+      "order": 30,
+      "items": [
+        "uc:UC-DOC-USE-REPOSITORY-GUIDANCE",
+        "uc:UC-DOC-PLAN-DOCUMENTATION-CHANGE",
+        "uc:UC-DOC-REVIEW-DOCUMENTATION"
+      ]
+    },
+    {
+      "id": "uc.documentation-components",
+      "viewId": "USE_CASES",
+      "label": "Documentation Components / Advanced",
+      "order": 40,
+      "items": [
+        "uc:UC-DOC-MAINTAIN-USE-CASE",
+        "uc:UC-DOC-MAINTAIN-USE-CASE-REGISTRY",
+        "uc:UC-DOC-MAINTAIN-PRINCIPLES-TERMINOLOGY",
+        "uc:UC-DOC-MAINTAIN-PROCESS",
+        "uc:UC-DOC-MAINTAIN-TEMPLATE",
+        "uc:UC-DOC-MAINTAIN-EXAMPLE",
+        "uc:UC-DOC-MAINTAIN-README"
+      ]
+    },
+    {
+      "id": "tm.core-lifecycle",
+      "viewId": "TARGET_MODULES",
+      "label": "Core Lifecycle",
+      "order": 10,
+      "items": [
+        "tm:TM-PRE-UPDATE-PLAN",
+        "tm:TM-EXACT-REALIZATION"
+      ]
+    },
+    {
+      "id": "tm.application-behavior",
+      "viewId": "TARGET_MODULES",
+      "label": "Application Behavior",
+      "order": 20,
+      "items": [
+        "tm:TM-APPLICATION-DEFINITION",
+        "tm:TM-SCENARIO-PLANNING",
+        "tm:TM-FEATURE",
+        "tm:TM-SCREEN"
+      ]
+    },
+    {
+      "id": "tm.realization-structure",
+      "viewId": "TARGET_MODULES",
+      "label": "Domain / Realization Structure",
+      "order": 30,
+      "items": [
+        "tm:TM-DOMAIN-DISCOVERY",
+        "tm:TM-DOMAIN-OWNER",
+        "tm:TM-IMPLEMENTATION-SLICE",
+        "tm:TM-SLICE-OWNER",
+        "tm:TM-SHARED-IMPLEMENTATION-CAPABILITY"
+      ]
+    },
+    {
+      "id": "tm.evolution",
+      "viewId": "TARGET_MODULES",
+      "label": "Evolution",
+      "order": 40,
+      "items": [
+        "tm:TM-EVOLUTION-STEP",
+        "tm:TM-EVOLUTION-STEPS-MAP"
+      ]
+    },
+    {
+      "id": "tm.evidence",
+      "viewId": "TARGET_MODULES",
+      "label": "Evidence / Experiments",
+      "order": 50,
+      "items": [
+        "tm:TM-PROTOTYPE",
+        "tm:TM-PRACTICAL-TEST"
+      ]
+    },
+    {
+      "id": "lens.meaning-ownership",
+      "viewId": "LENSES",
+      "label": "Meaning / Ownership",
+      "order": 10,
+      "items": [
+        "lens:LENS-NEED-VALUE-SCOPE",
+        "lens:LENS-AUTHORITY-SOT-REUSE",
+        "lens:LENS-DEPENDENCY-CHANGE-IMPACT",
+        "lens:LENS-SHARED-CROSS-CUTTING-RESPONSIBILITY"
+      ]
+    },
+    {
+      "id": "lens.risk-proof",
+      "viewId": "LENSES",
+      "label": "Risk / Uncertainty / Proof",
+      "order": 20,
+      "items": [
+        "lens:LENS-QUALITY-RISK-MATERIALITY",
+        "lens:LENS-UNCERTAINTY-ASSUMPTION-REVERSIBILITY",
+        "lens:LENS-PRACTICAL-EVIDENCE",
+        "lens:LENS-TEST-PROOF-EVIDENCE",
+        "lens:LENS-VERIFIABILITY-OBSERVABILITY-OPERABILITY"
+      ]
+    },
+    {
+      "id": "lens.representation-navigation",
+      "viewId": "LENSES",
+      "label": "Representation / Navigation",
+      "order": 30,
+      "items": [
+        "lens:LENS-ARTIFACT-BOUNDARY-ADDRESSABILITY",
+        "lens:LENS-LINKED-NOTES-USAGE-JUSTIFICATION"
+      ]
+    },
+    {
+      "id": "lens.sds-product-realization",
+      "viewId": "LENSES",
+      "label": "SDS Product / Realization",
+      "order": 40,
+      "items": [
+        "lens:LENS-APPLICATION-BOUNDARY-FEASIBILITY",
+        "lens:LENS-DOMAIN-MODELING-DDD",
+        "lens:LENS-TERMS-UBIQUITOUS-LANGUAGE",
+        "lens:LENS-UI-SPATIAL-FRONTEND-REALIZATION",
+        "lens:LENS-IMPLEMENTATION-REQUIREMENTS-DISCOVERY",
+        "lens:LENS-SLICE-VERTICALITY-INTEGRATION",
+        "lens:LENS-SIMPLICITY-IMPLEMENTATION-ECONOMY",
+        "lens:LENS-WORKSPACE-EVOLUTION-ARCHITECTURE"
+      ]
+    },
+    {
+      "id": "tools.package-archive",
+      "viewId": "TOOLS",
+      "label": "Packages / Archives",
+      "order": 10,
+      "items": [
+        "replacement_archive.create",
+        "proposal_archive.create",
+        "archive_source.use"
+      ]
+    },
+    {
+      "id": "tools.helper-commands",
+      "viewId": "TOOLS",
+      "label": "Helper / Commands",
+      "order": 20,
+      "items": [
+        "helper.command.add"
+      ]
+    }
   ]
 }
