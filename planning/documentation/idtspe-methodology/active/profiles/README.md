@@ -9,6 +9,8 @@ A profile packages concrete Target Modules, profile-specific Lenses, semantic gu
 | Profile | Bootstrap entry | Scope |
 |---|---|---|
 | [`SDS`](sds/README.md) | [`sds/README.md`](sds/README.md) → `Profile Bootstrap` | software/Application planning through behavior, implementation ownership, exact realization and evidence |
+| [`2D Visual Production`](visual-production-2d/README.md) | [`visual-production-2d/README.md`](visual-production-2d/README.md) → `Profile Bootstrap` | planning and producing 2D visual results through requirements, visual material, whole-visual design, construction and delivery adaptation |
+| [`Reference Knowledge`](reference-knowledge/README.md) | [`reference-knowledge/README.md`](reference-knowledge/README.md) → `Profile Bootstrap` | reusable reference subjects/Banks, Vocabulary, analysis and evidence-grounded Landscape research |
 
 ## Bootstrap Rule
 
@@ -23,7 +25,13 @@ installed profile
 
 A profile becomes relevant when the current Work Concern needs specialized semantics/components inside that profile's declared scope. Profile relevance does not itself create a Target or select every profile registry/component. Incremental profile bootstrap is needed only when that profile context is not already reliable.
 
-If no installed profile is materially relevant, remain in generic IDTSPE Core. For the current installation, software/Application behavior, implementation ownership, realization or software-specific evaluation pressure makes SDS plausibly relevant.
+If no installed profile is materially relevant, remain in generic IDTSPE Core. For the current installation:
+
+- software/Application behavior, implementation ownership, realization or software-specific evaluation pressure makes SDS plausibly relevant;
+- a bounded 2D visual outcome/material/design/construction/adaptation concern makes 2D Visual Production plausibly relevant;
+- reusable reference-subject ownership, Bank/Vocabulary work or corpus/Landscape research makes Reference Knowledge plausibly relevant.
+
+Profile applicability is independent: several profiles may be relevant to one broader concern without one profile becoming semantic owner of another.
 
 ## Rule
 

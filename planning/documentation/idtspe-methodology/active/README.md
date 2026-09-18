@@ -19,6 +19,8 @@ internal semantics.
 
 - [`profiles/README.md`](profiles/README.md) — installed profile registry.
 - [`profiles/sds/README.md`](profiles/sds/README.md) — SDS profile entry.
+- [`profiles/visual-production-2d/README.md`](profiles/visual-production-2d/README.md) — 2D Visual Production profile entry.
+- [`profiles/reference-knowledge/README.md`](profiles/reference-knowledge/README.md) — Reference Knowledge profile entry.
 
 A profile may add Target Modules, Lenses, workflow direction, command surfaces,
 representation guidance and examples without redefining IDTSPE Core.
@@ -34,9 +36,9 @@ representation guidance and examples without redefining IDTSPE Core.
 
 ## Audits
 
-The current assembled-methodology consistency result is [`POST-PASS12-CONSISTENCY-AUDIT.md`](POST-PASS12-CONSISTENCY-AUDIT.md). It is evidence, not semantic authority: current registries, Use Cases, Target Modules, Lenses and shared contracts remain the owners.
+Top-level `*AUDIT.md` files, including [`POST-PASS12-CONSISTENCY-AUDIT.md`](POST-PASS12-CONSISTENCY-AUDIT.md), are retained as dated consistency checkpoints/evidence, not semantic authority. Installing or changing profiles may make an older audit incomplete for the newly assembled state.
 
-Other top-level `*AUDIT.md` files are historical checkpoints retained for provenance. They must not be used as current counts, routing, Target/Lens identities or workflow authority when they differ from current owners.
+Current registries, Use Cases, Target Modules, Lenses and shared contracts remain the owners and must be preferred whenever an audit differs from current installed state.
 
 Legacy `active/target-modules`, `active/lenses`, `active/generic`, `active/shared`
 and `active/examples` are compatibility navigation only. New canonical owners

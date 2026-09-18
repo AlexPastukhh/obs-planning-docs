@@ -89,7 +89,15 @@ Use `idtspe lens <alias> <target>` when explicit Lens selection is intended.
 
 Profile registry: [`../../profiles/sds/lenses/README.md`](../../profiles/sds/lenses/README.md)
 
-The SDS profile registry owns its current Lens inventory, names and attachment policy. Core indexes the profile registry but does not duplicate the current profile Lens count/list or encode SDS-specific Analysis Surface assumptions here.
+### 2D Visual Production
+
+Profile registry: [`../../profiles/visual-production-2d/LENS-REGISTRY.md`](../../profiles/visual-production-2d/LENS-REGISTRY.md)
+
+### Reference Knowledge
+
+Profile registry: [`../../profiles/reference-knowledge/LENS-REGISTRY.md`](../../profiles/reference-knowledge/LENS-REGISTRY.md)
+
+Each profile registry owns its current Lens inventory, names and attachment policy. Core indexes the registries but does not duplicate mutable profile Lens counts/lists or encode profile-specific Analysis Surface assumptions here.
 
 ## 5. Composition / Applicability Scan Rule
 

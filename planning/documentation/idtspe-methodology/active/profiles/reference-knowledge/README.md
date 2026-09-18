@@ -1,0 +1,140 @@
+<a id="profile-reference-knowledge"></a>
+# Reference Knowledge Profile — IDTSPE
+
+Status: active profile
+
+## Purpose
+
+Reference Knowledge is an IDTSPE profile for maintaining reusable Banks, Entries and Vocabularies and for researching accumulated reference knowledge at Entry and Landscape scale.
+
+The methodology is separate from concrete storage. The base profile assumes one Reference Knowledge installation/registry; cross-installation federation is not modeled until a real use case requires it.
+
+## Profile Areas
+
+```text
+models/
+  profile-wide semantic models and stable invariants
+
+guidance/
+  reusable methods/policies used by Targets, operations or Lenses
+
+target-modules/
+  recurring Target / Target Step-Result families
+
+lenses/
+  reusable evaluation perspectives
+
+domain-packs/
+  optional Domain Pack extension model plus concrete packs only after derivation
+
+integration/
+  consumer/profile integration contracts
+
+templates/
+  canonical representation templates; semantic models remain authoritative
+
+examples/
+  non-authoritative demonstrations and acceptance fixtures
+```
+
+## Profile Bootstrap
+
+This profile assumes the primary Documentation / IDTSPE bootstrap is already current.
+
+Read in order:
+
+1. this `README.md`;
+2. [Reference Knowledge Object Model](models/REFERENCE-KNOWLEDGE-OBJECT-MODEL.md#reference-knowledge-object-model);
+3. [Bank Principles](models/BANK-PRINCIPLES.md#bank-principles);
+4. [Vocabulary Model](models/VOCABULARY-MODEL.md#vocabulary-model);
+5. [Reference Knowledge Representation Model](models/REFERENCE-KNOWLEDGE-REPRESENTATION-MODEL.md#reference-knowledge-representation-model);
+6. [Target Module Registry](TARGET-MODULE-REGISTRY.md#reference-knowledge-target-module-registry);
+7. [Lens Registry](LENS-REGISTRY.md#reference-knowledge-lens-registry);
+8. [Domain Pack Model And Derivation Guidance](domain-packs/DOMAIN-PACK-MODEL-AND-DERIVATION-GUIDANCE.md#domain-pack-model-and-derivation-guidance);
+9. [Domain Pack Registry](DOMAIN-PACK-REGISTRY.md#reference-knowledge-domain-pack-registry);
+10. [Consumer / Source Integration](integration/CONSUMER-SOURCE-INTEGRATION.md#consumer-source-integration);
+11. [Bank Change Authority](guidance/BANK-CHANGE-AUTHORITY.md#bank-change-authority);
+12. [Artifact Placement Map](ARTIFACT-PLACEMENT-MAP.md#reference-knowledge-artifact-placement-map).
+
+Read concrete Domain Packs, Target Modules, Lenses and examples only when selected/applicable. No concrete Domain Packs are currently installed.
+
+## Core Shape
+
+```text
+REFERENCE KNOWLEDGE
+│
+├─ Banks
+│  ├─ Entries
+│  ├─ Tag Assignments
+│  ├─ Entry Relations
+│  ├─ Analysis Records
+│  └─ Landscape Snapshots
+│
+├─ Vocabulary Packages
+│  ├─ Tag definitions
+│  └─ Relation Type definitions
+│
+└─ Domain Packs [when derived]
+   └─ reusable domain-specific Knowledge Basis
+```
+
+Browse/search/filter/query are capabilities over this knowledge graph, not additional durable object kinds.
+
+## Banks Are Ownership Boundaries
+
+Banks divide ownership/reuse/lifecycle, not visual/music/game/application/design domains. One installation may contain several Banks. Bank visibility is explicit and non-transitive; it does not grant write authority.
+
+## Entry Is The Central Subject Result
+
+[Entry](target-modules/TM-RK-10-ENTRY.md#tm-rk-10-entry) owns the recurring Target family for one durable reference subject. Its module-defined Units are intentionally small:
+
+```text
+Entry Identity And Ownership
+Entry Representation
+Semantic Decomposition [only when material]
+```
+
+Tag Assignment, Entry Relation and Analysis remain separate semantic records but are ordinary bank operations by default rather than candidate Units on every Entry Target. This keeps simple Entry creation cheap while preserving deeper work when it is useful.
+
+## Entry Identity Uses Retirement + Successors
+
+There are no merge/split primitives and no automatic dependent-statement migration.
+
+```text
+same subject remains valid
+→ refine current Entry
+
+additional independently useful subject
+→ create/reuse another Entry
+
+old record should no longer be preferred
+→ RETIRE old Entry when authorized/useful
+→ optional Successors refs
+```
+
+Rules live in [Reference Knowledge Object Model](models/REFERENCE-KNOWLEDGE-OBJECT-MODEL.md#entry-retirement-and-successors).
+
+## Vocabulary
+
+Vocabulary Packages own Tag and Relation Type definitions. Banks record only registered Packages they consume. Vocabulary Evolution has two responsibilities: accepted definition change and proportional affected-knowledge review. It does not silently redefine stable IDs or automatically rewrite old statements.
+
+## Landscape Analysis
+
+Landscape Analysis is adaptive evidence-grounded research across a selected corpus. It may investigate comparison, chronology, possible lineage, branching, combinations, distribution, influence, constraints or other useful questions, but no fixed checklist is required. Chronology, similarity, lineage and causality remain distinct claims.
+
+## Domain Packs
+
+A Domain Pack is optional domain-specific Knowledge Basis for Entry resolution and Landscape inquiry. Concrete packs are derived from real subject/research needs rather than cloned from a mandatory file skeleton or reversed from production Target Modules.
+
+No concrete Domain Packs are currently installed; generic Entry and Landscape work remains valid without them.
+
+## Consumer Boundary
+
+Reference Knowledge records describe reusable subjects and accumulated knowledge. A consumer Target decides whether an Entry/Analysis/artifact qualifies as its Source. Bank presence does not grant downstream authority automatically.
+
+## Target Modules
+
+- [Bank Formation](target-modules/TM-RK-05-BANK-FORMATION.md#tm-rk-05-bank-formation)
+- [Entry](target-modules/TM-RK-10-ENTRY.md#tm-rk-10-entry)
+- [Vocabulary Evolution](target-modules/TM-RK-20-VOCABULARY-EVOLUTION.md#tm-rk-20-vocabulary-evolution)
+- [Landscape Analysis](target-modules/TM-RK-50-LANDSCAPE-ANALYSIS.md#tm-rk-50-landscape-analysis)

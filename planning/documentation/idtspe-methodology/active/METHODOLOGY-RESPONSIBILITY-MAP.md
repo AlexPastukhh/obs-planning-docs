@@ -22,6 +22,8 @@ Generic Documentation semantics for a `Responsibility Map` are owned by [`../../
 | Current IDTSPE work composition | [`idtspe-core/shared/compose-current-work-use-case.md`](idtspe-core/shared/compose-current-work-use-case.md) | [`idtspe-core/IDTSPE-SHELL.md`](idtspe-core/IDTSPE-SHELL.md) is technical runtime/composition contract |
 | SDS Evolution Step future-state owner / Evolution Impact / materialization | [`profiles/sds/target-modules/TM-EVOLUTION-STEP.md`](profiles/sds/target-modules/TM-EVOLUTION-STEP.md) | [`profiles/sds/target-modules/TM-EVOLUTION-STEPS-MAP.md`](profiles/sds/target-modules/TM-EVOLUTION-STEPS-MAP.md) owns registry/readiness coordination only |
 | SDS Target Module discovery | [`profiles/sds/target-modules/README.md`](profiles/sds/target-modules/README.md) | concrete Target Module file owns specialized Target production contract |
+| 2D Visual Production Target/Lens discovery | [`profiles/visual-production-2d/README.md`](profiles/visual-production-2d/README.md) | [`profiles/visual-production-2d/TARGET-MODULE-REGISTRY.md`](profiles/visual-production-2d/TARGET-MODULE-REGISTRY.md), [`profiles/visual-production-2d/LENS-REGISTRY.md`](profiles/visual-production-2d/LENS-REGISTRY.md) |
+| Reference Knowledge Bank/Entry/Vocabulary/Landscape methodology discovery | [`profiles/reference-knowledge/README.md`](profiles/reference-knowledge/README.md) | [`profiles/reference-knowledge/TARGET-MODULE-REGISTRY.md`](profiles/reference-knowledge/TARGET-MODULE-REGISTRY.md), [`profiles/reference-knowledge/LENS-REGISTRY.md`](profiles/reference-knowledge/LENS-REGISTRY.md), [`profiles/reference-knowledge/DOMAIN-PACK-REGISTRY.md`](profiles/reference-knowledge/DOMAIN-PACK-REGISTRY.md) |
 
 ## Guards
 

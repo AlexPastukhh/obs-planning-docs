@@ -34,11 +34,11 @@ The thin [`planning/session/`](../session/README.md) interaction contract is amb
 | IDTSPE Core | always in the active IDTSPE work environment; especially before a material methodology action or after context/revalidation change | proportional composition of IDTSPE work, state, integration, revalidation, and maintenance of IDTSPE component types | [`idtspe-methodology/active/idtspe-core/shared/idtspe-methodology-use-case-registry.md`](idtspe-methodology/active/idtspe-core/shared/idtspe-methodology-use-case-registry.md) |
 | Active profile | only if the profile defines a distinct methodology-usage capability not already covered by generic Documentation or IDTSPE Core | profile-specific **use of methodology documentation**, not profile planning semantics themselves | profile-owned registry when one exists |
 
-## SDS Baseline
+## Installed Profile Baseline
 
-The current SDS profile defines **no separate runtime Use Cases**. Its Feature / Scenario / Screen / Domain / Slice / Shared / Evolution / Prototype / Practical Test work is owned by SDS Target Modules, Lenses and related profile contracts. Generic Documentation + IDTSPE Use Cases discover and compose those components through the active-profile registries.
+The current installed profiles — SDS, 2D Visual Production and Reference Knowledge — define **no separate runtime methodology-use Use Cases**. Their specialized planning/research work is owned by profile Target Modules, Lenses and related profile contracts. Generic Documentation + IDTSPE Use Cases discover and compose those components through the installed-profile and active-profile registries.
 
-Create an SDS-specific Use Case later only if a recurring situation requires an independently useful way of **using SDS methodology documentation** that cannot be expressed by the existing generic/IDTSPE Use Cases.
+Create a profile-specific Use Case later only if a recurring situation requires an independently useful way of **using that profile's methodology documentation** that cannot be expressed by the existing generic/IDTSPE Use Cases.
 
 ## Re-evaluation Triggers
 

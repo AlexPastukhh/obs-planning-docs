@@ -30,7 +30,9 @@ See [`active/README.md`](active/README.md) for the short installed-zone index. T
 active/
 ├── idtspe-core/          generic planning runtime/contracts
 ├── profiles/             installed planning families
-│   └── sds/              current Solution/Application planning profile
+│   ├── sds/              Solution/Application planning
+│   ├── visual-production-2d/  2D visual production
+│   └── reference-knowledge/   reusable reference knowledge / Banks
 ├── ai-reviewability/     independent peer concern
 ├── theoretical-modules/  useful raw/not-yet-operationalized theory
 └── <current audits>      verification only; not semantic owners
@@ -51,7 +53,7 @@ There is intentionally no separate whole-system map that knows the internals of 
 | Integration ledger | repository-specific migration/update state | no |
 | Provenance source | historical/superseded source | no |
 
-Core mechanics cannot be redefined by SDS. A Lens evaluates/discovers; it does not become Target-result semantic owner. File location never creates semantic ownership by itself.
+Core mechanics cannot be redefined by an installed profile. A Lens evaluates/discovers; it does not become Target-result semantic owner. File location never creates semantic ownership by itself.
 
 ## IDTSPE Core
 
@@ -68,21 +70,23 @@ Generic optional Need / real-life solution discovery is [`active/idtspe-core/sha
 
 [`active/profiles/README.md`](active/profiles/README.md) is the installed-profile registry.
 
-Current SDS entry:
+Current profile entries:
 
-- [`active/profiles/sds/README.md`](active/profiles/sds/README.md)
-- [`active/profiles/sds/target-modules/README.md`](active/profiles/sds/target-modules/README.md)
-- [`active/profiles/sds/lenses/README.md`](active/profiles/sds/lenses/README.md)
-- [`active/profiles/sds/shared/directed-methodology-workflow-and-next-step-resolution.md`](active/profiles/sds/shared/directed-methodology-workflow-and-next-step-resolution.md)
-- [`active/profiles/sds/ARTIFACT-PLACEMENT-MAP.md`](active/profiles/sds/ARTIFACT-PLACEMENT-MAP.md)
+- [`active/profiles/sds/README.md`](active/profiles/sds/README.md) — Solution/Application planning.
+- [`active/profiles/visual-production-2d/README.md`](active/profiles/visual-production-2d/README.md) — 2D visual production.
+- [`active/profiles/reference-knowledge/README.md`](active/profiles/reference-knowledge/README.md) — reusable reference knowledge, Banks, Vocabulary and Landscape analysis.
 
-Current SDS inventory, semantic direction and owner topology are owned by [`active/profiles/sds/README.md`](active/profiles/sds/README.md) plus its Target Module/Lens registries. This workspace README intentionally does not duplicate profile cardinalities or workflow topology.
+Each profile owns its own inventory, bootstrap/read set, Target Module/Lens registries and profile-specific representation guidance. This workspace README intentionally does not duplicate profile cardinalities or internal workflow topology.
 
 ## Representation
 
 Generic authority: [`active/idtspe-core/lenses/required/LENS-ARTIFACT-BOUNDARY-ADDRESSABILITY.md`](active/idtspe-core/lenses/required/LENS-ARTIFACT-BOUNDARY-ADDRESSABILITY.md).
 
-SDS examples/guidance: [`active/profiles/sds/ARTIFACT-PLACEMENT-MAP.md`](active/profiles/sds/ARTIFACT-PLACEMENT-MAP.md).
+Profile-specific representation guidance remains with the applicable profile, for example:
+
+- [`active/profiles/sds/ARTIFACT-PLACEMENT-MAP.md`](active/profiles/sds/ARTIFACT-PLACEMENT-MAP.md)
+- [`active/profiles/visual-production-2d/ARTIFACT-PLACEMENT-MAP.md`](active/profiles/visual-production-2d/ARTIFACT-PLACEMENT-MAP.md)
+- [`active/profiles/reference-knowledge/ARTIFACT-PLACEMENT-MAP.md`](active/profiles/reference-knowledge/ARTIFACT-PLACEMENT-MAP.md)
 
 ```text
 semantic owner
@@ -108,8 +112,8 @@ Neither may silently override `active/`.
 Before adding a file, ask:
 
 1. Is this generic IDTSPE mechanics? → `active/idtspe-core/`.
-2. Is it SDS-specific recurring Target/Lens/workflow/placement meaning? → `active/profiles/sds/`.
-3. Is it another installed planning family? → a sibling `active/profiles/<profile>/`.
+2. Is it profile-specific recurring Target/Lens/guidance/placement meaning? → the applicable `active/profiles/<profile>/`.
+3. Is it a new installed planning family? → a sibling `active/profiles/<profile>/` plus installed-profile navigation.
 4. Is it useful theory not yet operationalized? → `active/theoretical-modules/`.
 5. Is it a repository-specific migration fact? → `integration/`.
 6. Is it historical/superseded source? → `sources-readonly/`.

@@ -97,6 +97,16 @@ Current SDS Target Module inventory is owned by the profile registry:
 
 [`../../profiles/sds/target-modules/README.md`](../../profiles/sds/target-modules/README.md)
 
-Core does not hard-code the current profile module count.
+### 2D Visual Production Profile
 
-Other profiles may install different Target Module sets. Their existence must not force Scenario/Domain/Slice semantics into IDTSPE Core.
+Current 2D Visual Production Target Module inventory is owned by:
+
+[`../../profiles/visual-production-2d/TARGET-MODULE-REGISTRY.md`](../../profiles/visual-production-2d/TARGET-MODULE-REGISTRY.md)
+
+### Reference Knowledge Profile
+
+Current Reference Knowledge Target Module inventory is owned by:
+
+[`../../profiles/reference-knowledge/TARGET-MODULE-REGISTRY.md`](../../profiles/reference-knowledge/TARGET-MODULE-REGISTRY.md)
+
+Core does not hard-code mutable profile module counts. Installed profiles may expose different Target Module sets; their existence must not force one profile's specialized semantics into Core or another profile.

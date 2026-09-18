@@ -1,7 +1,7 @@
 # IDTSPE Core
 
 Status: active canonical generic methodology package
-Scope: always-active proportional planning/resolution work model independent of SDS/Application-specific semantics.
+Scope: always-active proportional planning/resolution work model independent of installed-profile-specific semantics.
 
 ## Boundary
 
@@ -19,8 +19,8 @@ IDTSPE Core
   Broad Discussion / Core State / Targets / Target Modules / Lenses /
   Proposal-Q/R/P-Decision-Evidence-Finding / Integration / Revalidation / Representation
 
-SDS Profile
-= specialized Target Modules, Lenses, registries, knowledge, owner topology and planning semantics
+Installed Profiles
+= specialized Target Modules, Lenses, registries, knowledge and planning semantics layered on Core
 ```
 
 IDTSPE is not an opt-in mode. The canonical proportionality owner is [`shared/contextual-methodology-application-contract.md`](shared/contextual-methodology-application-contract.md); Broad Discussion with no Target/State/Lens/Checkpoint is a valid projection when deeper structure has no current value.
@@ -103,7 +103,7 @@ Use [`IDTSPE-CORE-MAP.md`](IDTSPE-CORE-MAP.md) for a compact topology view; use 
 
 Profiles extend Core with specialized Target Modules, Lenses, registry directories, knowledge and planning semantics. They do not replace Core or create a second runtime shell. Profile bootstrap is incremental and occurs only when specialized profile semantics are materially relevant.
 
-The current SDS profile defines no separate runtime methodology-use Use Cases; generic Documentation + IDTSPE Use Cases compose its components through the profile registries.
+The current installed profiles define no separate runtime methodology-use Use Cases; generic Documentation + IDTSPE Use Cases compose their components through the installed-profile registry and each selected profile's own registries.
 
 ## Scenario Map Boundary
 

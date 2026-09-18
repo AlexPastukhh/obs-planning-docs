@@ -32,9 +32,9 @@ A directory match means "scan this registry", not "apply every entry".
 
 ## Active Profile Composition
 
-When a profile is active, compose this Core directory with the profile's own local directory. Core does not duplicate mutable profile entries.
+When a profile is active, compose this Core directory with that profile's bootstrap/registries and any dedicated local registry directory the profile defines. A dedicated local directory is optional; the profile README and canonical registries remain sufficient routing surfaces when no extra directory is useful. Core does not duplicate mutable profile entries.
 
-Current SDS local directory: [`../../profiles/sds/shared/methodology-registry-directory.md`](../../profiles/sds/shared/methodology-registry-directory.md).
+Current installed-profile entry points are indexed by [`../../profiles/README.md`](../../profiles/README.md). SDS additionally defines a dedicated local directory at [`../../profiles/sds/shared/methodology-registry-directory.md`](../../profiles/sds/shared/methodology-registry-directory.md).
 
 ## Traversal Procedure
 
