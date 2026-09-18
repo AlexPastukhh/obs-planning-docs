@@ -50,10 +50,10 @@ Canonical application semantics: [`scenarios/README.md`](scenarios/README.md). A
 
 - Import valid direct Planning Command/helper marker blocks and confirm local merge without GitHub requests.
 - Import one `PLANNING_HELPER_PATCH` that adds/updates a direct Command, Prompt/helper item, Use Case, Target Module/Lens semantic component and Scenario; confirm preview shows the intended `ADD` / `UPDATE` rows and Apply is atomic.
-- Update one Use Case through `upsert.useCases`; confirm its coupled `USE_CASE` semantic component is updated automatically. Delete that Use Case; confirm both UC halves are suppressed together and any direct backing command does not reappear as General.
+- Update one Use Case through `upsert.useCases`; confirm its coupled `USE_CASE` semantic component is updated automatically. Delete that Use Case; confirm the card disappears, any direct backing command stays hidden, and the coupled UC component remains only as non-rendered metadata. Re-upsert the Use Case and confirm its previous direct binding/action label/aliases/scope are restored.
 - Attempt to upsert/delete a `USE_CASE` through `semanticComponents`; confirm Import rejects it and directs the caller to `useCases`.
 - Delete a direct command that backs a semantic card; confirm preview explicitly says the semantic card remains as a generic projection. Delete a TM/Lens semantic capability instead; confirm its direct backing stays locally hidden rather than reappearing as General.
-- Submit duplicate upserts/deletes or one natural key in both upsert and delete; confirm the whole Import fails before persistence.
+- Submit duplicate upserts/deletes or one natural key in both upsert and delete; confirm the whole Import fails before persistence. Also submit `delete.useCases`/`delete.semanticComponents` together with an upsert of that capability's backing direct command and confirm the cross-type contradiction is rejected atomically.
 - Import a patch delete for each supported type; confirm the rows disappear locally and the corresponding suppression keys are persisted.
 - Run `Sync missing` and confirm those intentionally suppressed GitHub rows do not reappear; import-upsert one suppressed row and confirm it reappears and its suppression is cleared.
 - Confirm changed imported direct content loses exact-content repository verification metadata.

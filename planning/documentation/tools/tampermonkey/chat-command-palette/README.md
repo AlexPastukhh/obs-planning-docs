@@ -1,7 +1,7 @@
 # OBS Planning Helper — Developer / Build Entry
 
 Status: active modular Tampermonkey helper implementation  
-Version: `0.39.0`  
+Version: `0.39.2`  
 Scope: local-first, GitHub-backed **semantic command projection** with canonical methodology working Scenarios, reusable Prompts, explicit repository recovery/publish actions, editable ordered presentation groups, per-tab group navigation/filter state, canonical `Контекст / Результат / Суть` explanations, Favorites and a wide/resizable browser UI.
 
 ## Read Order
@@ -229,9 +229,9 @@ The Helper parses the whole payload, resolves natural keys, rejects duplicate or
 
 Delete keys use repository paths for direct Commands/helper-library items and canonical IDs for Use Cases, semantic components and Scenarios. Imported deletes are remembered in `suppressedRepository`, so ordinary `Sync missing` does not immediately restore the intentionally removed GitHub row. A later import upsert of the same natural key removes that suppression. Hard Reload resets suppression only for the catalogs it actually reloads (direct Commands + Use Cases + semantic components + Scenarios); helper-library suppression remains because Prompt/helper-library content is intentionally outside Hard Reload.
 
-Use Cases are the Import owner for UC projection state. `upsert.useCases` materializes/updates the coupled `USE_CASE` semantic component; `delete.useCases` removes/suppresses both halves together. `semanticComponents` is therefore only for Target Modules and Lenses; attempting to import/delete a UC there is rejected. This prevents a UC card from surviving with Lens semantics or otherwise drifting from its Use-Case source.
+Use Cases are the Import owner for UC projection state. `upsert.useCases` materializes/updates the coupled `USE_CASE` semantic component. `delete.useCases` suppresses/removes the visible Use Case while retaining an existing coupled `USE_CASE` component as non-rendered local projection metadata; this preserves `commandId`, action label, aliases and scope so a later Use-Case upsert can restore the same card instead of degrading it to a generic projection. `semanticComponents` is therefore only for Target Modules and Lenses; attempting to import/delete a UC there is rejected.
 
-Deletion semantics are explicit. `delete.commands` mirrors deletion of one direct `planning/commands/*.command.md` artifact; when that file backed a semantic UC/TM/Lens card, preview states that the semantic card remains as a generic projection. `delete.useCases` or `delete.semanticComponents` deletes the semantic capability projection and locally hides any direct backing command so it cannot reappear as an unrelated General card. Re-upserting the semantic owner restores the capability; restoring a separately hidden direct backing requires that command to be upserted/restored as well.
+Deletion semantics are explicit. `delete.commands` mirrors deletion of one direct `planning/commands/*.command.md` artifact; when that file backed a semantic UC/TM/Lens card, preview states that the semantic card remains as a generic projection. `delete.useCases` or `delete.semanticComponents` suppresses the semantic capability and locally hides any direct backing command so it cannot reappear as an unrelated General card. Re-upserting a Use Case restores the preserved coupled projection metadata and unhides an existing backing command record that was hidden by that capability delete; a separately deleted command artifact still requires its own command upsert/restore. A single atomic patch that deletes a semantic capability while upserting its backing command is rejected as contradictory cross-type intent.
 
 Imported Use-Case / Target-Module / Lens / Scenario rows are local projection overrides for inspection/use; they do not become new semantic authority and are not written into generated `seed/*.json`. Durable semantic repository changes still belong to their canonical owners plus the normal build/projection route. Direct Commands and Prompts retain their existing explicit per-row `Save GitHub` path.
 
