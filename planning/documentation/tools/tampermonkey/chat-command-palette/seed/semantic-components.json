@@ -1,8 +1,84 @@
 {
   "schemaVersion": 1,
   "kind": "semantic-component-seed",
-  "generatedFrom": "planning/documentation/use-case-registry-map.md + current Core/SDS Target Module and Lens registries",
+  "generatedFrom": "planning/documentation/use-case-registry-map.md + current Core and installed-profile Target Module/Lens registries",
   "items": [
+    {
+      "id": "LENS-CONSTRUCTION-FIDELITY-CONSISTENCY",
+      "kind": "LENS",
+      "scope": "2D Visual Production",
+      "label": "Realization Fidelity",
+      "actionLabel": "Realization Fidelity",
+      "description": "construction-route Units and construction review",
+      "context": "Apply during route Unit work or Construction Review when actual source/artifacts exist and fidelity/consistency can materially fail.",
+      "result": "construction-route Units and construction review",
+      "essence": "Evaluate whether actual editable construction faithfully realizes accepted Requirements/Whole Visual Design/Source constraints and remains internally consistent across parts/passes/variants.",
+      "sources": [
+        "planning/documentation/idtspe-methodology/active/profiles/visual-production-2d/LENS-REGISTRY.md",
+        "planning/documentation/idtspe-methodology/active/profiles/visual-production-2d/lenses/frequent/LENS-CONSTRUCTION-FIDELITY-CONSISTENCY.md"
+      ],
+      "aliases": [],
+      "commandId": "",
+      "invocation": "idtspe lens LENS-CONSTRUCTION-FIDELITY-CONSISTENCY <target/context>",
+      "target": "<Realization Fidelity analysis surface>"
+    },
+    {
+      "id": "LENS-REPRESENTATION-EDITABILITY-ECONOMY",
+      "kind": "LENS",
+      "scope": "2D Visual Production",
+      "label": "Source Representation Economy",
+      "actionLabel": "Source Representation Economy",
+      "description": "construction route selection, structured source architecture, local-revision pressure",
+      "context": "Apply when choosing/reviewing pixel/vector/raster/procedural route, semantic part/layer structure, hybrid composition or when source complexity/editability becomes a material concern.",
+      "result": "construction route selection, structured source architecture, local-revision pressure",
+      "essence": "Evaluate whether the selected editable representation/structure/tool route is economical for the required visual meaning, local revision, reuse and outputs.",
+      "sources": [
+        "planning/documentation/idtspe-methodology/active/profiles/visual-production-2d/LENS-REGISTRY.md",
+        "planning/documentation/idtspe-methodology/active/profiles/visual-production-2d/lenses/reusable/LENS-REPRESENTATION-EDITABILITY-ECONOMY.md"
+      ],
+      "aliases": [],
+      "commandId": "",
+      "invocation": "idtspe lens LENS-REPRESENTATION-EDITABILITY-ECONOMY <target/context>",
+      "target": "<Source Representation Economy analysis surface>"
+    },
+    {
+      "id": "LENS-VISUAL-UNIT-NEED-AND-SOURCE-COVERAGE",
+      "kind": "LENS",
+      "scope": "2D Visual Production",
+      "label": "Unit Need / Visual Source Coverage",
+      "actionLabel": "Unit Need / Visual Source Coverage",
+      "description": "candidate Unit proposal checkpoint; Unit Opening/Closing when Unit need or visual Source coverage may have changed",
+      "context": "Use during Candidate Unit Selection for **every module-defined candidate Unit**. At Unit Opening/Closing, apply when Unit need or relevant visual Source/reference coverage may have changed. Also apply when: a new visual-information gap appears; accepted Sources conflict; a previously omitted Unit may now be needed; the current Unit exposes a smaller independently useful responsibility; additional Visual Material Preparation may be needed.",
+      "result": "candidate Unit proposal checkpoint; Unit Opening/Closing when Unit need or visual Source coverage may have changed",
+      "essence": "Evaluate a candidate/current visual Work Unit across three coupled questions: does the responsibility deserve an explicit Unit in this Target; how well do accepted visual Sources/references cover the responsibility; how much additional analysis/preparation/resolution is likely to be needed.",
+      "sources": [
+        "planning/documentation/idtspe-methodology/active/profiles/visual-production-2d/LENS-REGISTRY.md",
+        "planning/documentation/idtspe-methodology/active/profiles/visual-production-2d/lenses/frequent/LENS-VISUAL-UNIT-NEED-AND-SOURCE-COVERAGE.md"
+      ],
+      "aliases": [],
+      "commandId": "",
+      "invocation": "idtspe lens LENS-VISUAL-UNIT-NEED-AND-SOURCE-COVERAGE <target/context>",
+      "target": "<Unit Need / Visual Source Coverage analysis surface>"
+    },
+    {
+      "id": "LENS-WHOLE-VISUAL-COHERENCE",
+      "kind": "LENS",
+      "scope": "2D Visual Production",
+      "label": "Whole-Result Coherence",
+      "actionLabel": "Whole-Result Coherence",
+      "description": "Whole Visual Design; construction whole-candidate review",
+      "context": "Apply when a whole image/graphic/scene-like result can fail through cross-part composition even if local parts look acceptable.",
+      "result": "Whole Visual Design; construction whole-candidate review",
+      "essence": "Evaluate whether individually plausible parts/requirements form one coherent visual result with effective hierarchy, relationships and global language.",
+      "sources": [
+        "planning/documentation/idtspe-methodology/active/profiles/visual-production-2d/LENS-REGISTRY.md",
+        "planning/documentation/idtspe-methodology/active/profiles/visual-production-2d/lenses/frequent/LENS-WHOLE-VISUAL-COHERENCE.md"
+      ],
+      "aliases": [],
+      "commandId": "",
+      "invocation": "idtspe lens LENS-WHOLE-VISUAL-COHERENCE <target/context>",
+      "target": "<Whole-Result Coherence analysis surface>"
+    },
     {
       "id": "LENS-ARTIFACT-BOUNDARY-ADDRESSABILITY",
       "kind": "LENS",
@@ -235,6 +311,63 @@
       "target": "<Verifiability / Observability / Operability analysis surface>"
     },
     {
+      "id": "LENS-RK-ENTRY-IDENTITY-AND-DUPLICATION",
+      "kind": "LENS",
+      "scope": "Reference Knowledge",
+      "label": "Entry Identity / Duplication",
+      "actionLabel": "Entry Identity / Duplication",
+      "description": "new/ambiguous/duplicate/over-broad/obsolete Entry record",
+      "context": "Apply when creating an Entry with plausible existing matches, when names/locators/provenance conflict, when an Entry seems over-broad, when several Entries may denote the same subject, or when a record may no longer be the preferred current representation.",
+      "result": "May surface: no identity problem; likely existing Entry to reuse; current Entry boundary correction; duplicate/obsolete Entry that may be retired; additional independently useful Entry candidates; suggested successor Entry/Entries for a retired record; unresolved identity requiring more evidence; downstream knowledge worth separately revalidating. These are Finding Candidates / routing inputs. The Lens does not mutate, retire or create Entries.",
+      "essence": "Evaluate whether one or more Entry records have clear, non-duplicative and useful subject boundaries, and whether a current record should be reused, corrected or retired.",
+      "sources": [
+        "planning/documentation/idtspe-methodology/active/profiles/reference-knowledge/LENS-REGISTRY.md",
+        "planning/documentation/idtspe-methodology/active/profiles/reference-knowledge/lenses/LENS-RK-ENTRY-IDENTITY-AND-DUPLICATION.md"
+      ],
+      "aliases": [],
+      "commandId": "",
+      "invocation": "idtspe lens LENS-RK-ENTRY-IDENTITY-AND-DUPLICATION <target/context>",
+      "target": "<Entry Identity / Duplication analysis surface>"
+    },
+    {
+      "id": "LENS-RK-LANDSCAPE-EVIDENCE-ADEQUACY",
+      "kind": "LENS",
+      "scope": "Reference Knowledge",
+      "label": "Landscape Evidence Adequacy",
+      "actionLabel": "Landscape Evidence Adequacy",
+      "description": "Landscape/evolution/distribution/lineage/causal interpretation claims",
+      "context": "Apply whenever a Landscape interpretation may overreach its evidence, especially for broad population claims, temporal/evolutionary narratives, inferred genealogy/influence or causal explanation.",
+      "result": "May recommend: keep interpretation at current strength; narrow scope; label as hypothesis; preserve several plausible interpretations; expand/rebalance evidence; revalidate Entry identity/vocabulary first; stop investigation because stronger inference is not justified/proportionate.",
+      "essence": "Evaluate whether the available evidence supports the scope and strength of a proposed Landscape observation, comparison, evolutionary interpretation, distribution claim, lineage hypothesis or causal explanation.",
+      "sources": [
+        "planning/documentation/idtspe-methodology/active/profiles/reference-knowledge/LENS-REGISTRY.md",
+        "planning/documentation/idtspe-methodology/active/profiles/reference-knowledge/lenses/LENS-RK-LANDSCAPE-EVIDENCE-ADEQUACY.md"
+      ],
+      "aliases": [],
+      "commandId": "",
+      "invocation": "idtspe lens LENS-RK-LANDSCAPE-EVIDENCE-ADEQUACY <target/context>",
+      "target": "<Landscape Evidence Adequacy analysis surface>"
+    },
+    {
+      "id": "LENS-RK-TAG-QUALITY-AND-TAXONOMY",
+      "kind": "LENS",
+      "scope": "Reference Knowledge",
+      "label": "Tag Quality / Taxonomy",
+      "actionLabel": "Tag Quality / Taxonomy",
+      "description": "canonical Tag creation/refactor/parenting",
+      "context": "Apply for new canonical Tags, parent changes, duplicate/over-broad candidates, deprecation/successor proposals and broad retagging questions.",
+      "result": "Typical Finding Candidates: create; reuse; alias; parent change; deprecate old definition; suggest zero/one/many successors; retain current structure; revalidation need.",
+      "essence": "Evaluate whether a Tag definition/refactor improves reusable classification, taxonomy and bank-wide retrieval.",
+      "sources": [
+        "planning/documentation/idtspe-methodology/active/profiles/reference-knowledge/LENS-REGISTRY.md",
+        "planning/documentation/idtspe-methodology/active/profiles/reference-knowledge/lenses/LENS-RK-TAG-QUALITY-AND-TAXONOMY.md"
+      ],
+      "aliases": [],
+      "commandId": "",
+      "invocation": "idtspe lens LENS-RK-TAG-QUALITY-AND-TAXONOMY <target/context>",
+      "target": "<Tag Quality / Taxonomy analysis surface>"
+    },
+    {
       "id": "LENS-APPLICATION-BOUNDARY-FEASIBILITY",
       "kind": "LENS",
       "scope": "SDS",
@@ -403,13 +536,205 @@
       "target": "<Evolution Impact / Change Isolation analysis surface>"
     },
     {
+      "id": "TM-2D-10-VISUAL-REQUIREMENTS",
+      "kind": "TARGET_MODULE",
+      "scope": "2D Visual Production",
+      "label": "Visual Outcome / Requirement Owner",
+      "actionLabel": "Visual Outcome / Requirement Owner",
+      "description": "what the visual must accomplish",
+      "context": "what the visual must accomplish",
+      "result": "Visual Requirements = coherent projection of accepted Current Result Content from the material Units.",
+      "essence": "Own the bounded meaning of what a 2D visual result must accomplish before design/construction decides how to realize it.",
+      "sources": [
+        "planning/documentation/idtspe-methodology/active/profiles/visual-production-2d/TARGET-MODULE-REGISTRY.md",
+        "planning/documentation/idtspe-methodology/active/profiles/visual-production-2d/target-modules/TM-2D-10-VISUAL-REQUIREMENTS.md"
+      ],
+      "aliases": [],
+      "commandId": "",
+      "invocation": "idtspe tm TM-2D-10-VISUAL-REQUIREMENTS <target>",
+      "target": "<Visual Outcome / Requirement Owner target>"
+    },
+    {
+      "id": "TM-2D-15-VISUAL-MATERIAL-PREPARATION",
+      "kind": "TARGET_MODULE",
+      "scope": "2D Visual Production",
+      "label": "Qualified Visual Material Preparation",
+      "actionLabel": "Qualified Visual Material Preparation",
+      "description": "prepare qualified visual material / Source Subjects",
+      "context": "prepare qualified visual material / Source Subjects",
+      "result": "Prepared Visual Material Set = accepted material-coverage/qualification/preparation meaning from the material Units.",
+      "essence": "Prepare, qualify and where useful transform visual material so downstream visual responsibilities can consume trustworthy Source Subjects without duplicating consumer-side authority.",
+      "sources": [
+        "planning/documentation/idtspe-methodology/active/profiles/visual-production-2d/TARGET-MODULE-REGISTRY.md",
+        "planning/documentation/idtspe-methodology/active/profiles/visual-production-2d/target-modules/TM-2D-15-VISUAL-MATERIAL-PREPARATION.md"
+      ],
+      "aliases": [],
+      "commandId": "",
+      "invocation": "idtspe tm TM-2D-15-VISUAL-MATERIAL-PREPARATION <target>",
+      "target": "<Qualified Visual Material Preparation target>"
+    },
+    {
+      "id": "TM-2D-20-WHOLE-VISUAL-DESIGN",
+      "kind": "TARGET_MODULE",
+      "scope": "2D Visual Production",
+      "label": "Coherent Whole Visual Solution",
+      "actionLabel": "Coherent Whole Visual Solution",
+      "description": "coherent complete visual solution/direction",
+      "context": "coherent complete visual solution/direction",
+      "result": "Whole Visual Design = coherent composition of material visual-design Unit results.",
+      "essence": "Own the coherent whole-image visual solution/direction that satisfies accepted requirements before exact construction owns paths, pixels, layers or procedural implementation.",
+      "sources": [
+        "planning/documentation/idtspe-methodology/active/profiles/visual-production-2d/TARGET-MODULE-REGISTRY.md",
+        "planning/documentation/idtspe-methodology/active/profiles/visual-production-2d/target-modules/TM-2D-20-WHOLE-VISUAL-DESIGN.md"
+      ],
+      "aliases": [],
+      "commandId": "",
+      "invocation": "idtspe tm TM-2D-20-WHOLE-VISUAL-DESIGN <target>",
+      "target": "<Coherent Whole Visual Solution target>"
+    },
+    {
+      "id": "TM-2D-30-VISUAL-CONSTRUCTION",
+      "kind": "TARGET_MODULE",
+      "scope": "2D Visual Production",
+      "label": "Material Multi-route Construction Composition",
+      "actionLabel": "Material Multi-route Construction Composition",
+      "description": "material multi-route composition/integration only",
+      "context": "material multi-route composition/integration only",
+      "result": "Integrated Visual Construction = accepted multi-route composition/integration meaning and integrated editable result when those responsibilities are material.",
+      "essence": "Own construction composition/integration only when combining multiple accepted construction routes requires independently useful semantic decisions rather than mechanical aggregation.",
+      "sources": [
+        "planning/documentation/idtspe-methodology/active/profiles/visual-production-2d/TARGET-MODULE-REGISTRY.md",
+        "planning/documentation/idtspe-methodology/active/profiles/visual-production-2d/target-modules/TM-2D-30-VISUAL-CONSTRUCTION.md"
+      ],
+      "aliases": [
+        "material"
+      ],
+      "commandId": "",
+      "invocation": "idtspe tm material <target>",
+      "target": "<Material Multi-route Construction Composition target>"
+    },
+    {
+      "id": "TM-2D-31-EDITABLE-RASTER-CONSTRUCTION",
+      "kind": "TARGET_MODULE",
+      "scope": "2D Visual Production",
+      "label": "Structured Layered Raster Construction",
+      "actionLabel": "Structured Layered Raster Construction",
+      "description": "structured layered raster construction",
+      "context": "structured layered raster construction",
+      "result": "Editable Layered Raster Construction Result = coherent projection/composition of accepted Current Result Content from the material Units.",
+      "essence": "Construct the actual editable 2D result using this route while preserving accepted upstream visual meaning and exposing meaningful whole candidates for review.",
+      "sources": [
+        "planning/documentation/idtspe-methodology/active/profiles/visual-production-2d/TARGET-MODULE-REGISTRY.md",
+        "planning/documentation/idtspe-methodology/active/profiles/visual-production-2d/target-modules/TM-2D-31-EDITABLE-RASTER-CONSTRUCTION.md"
+      ],
+      "aliases": [],
+      "commandId": "",
+      "invocation": "idtspe tm TM-2D-31-EDITABLE-RASTER-CONSTRUCTION <target>",
+      "target": "<Structured Layered Raster Construction target>"
+    },
+    {
+      "id": "TM-2D-31-PAINTERLY-RASTER-CONSTRUCTION",
+      "kind": "TARGET_MODULE",
+      "scope": "2D Visual Production",
+      "label": "Painterly Raster Construction",
+      "actionLabel": "Painterly Raster Construction",
+      "description": "painterly raster construction",
+      "context": "painterly raster construction",
+      "result": "Painterly Raster Construction Result = coherent projection/composition of accepted Current Result Content from the material Units.",
+      "essence": "Construct the actual editable 2D result using this route while preserving accepted upstream visual meaning and exposing meaningful whole candidates for review.",
+      "sources": [
+        "planning/documentation/idtspe-methodology/active/profiles/visual-production-2d/TARGET-MODULE-REGISTRY.md",
+        "planning/documentation/idtspe-methodology/active/profiles/visual-production-2d/target-modules/TM-2D-31-PAINTERLY-RASTER-CONSTRUCTION.md"
+      ],
+      "aliases": [],
+      "commandId": "",
+      "invocation": "idtspe tm TM-2D-31-PAINTERLY-RASTER-CONSTRUCTION <target>",
+      "target": "<Painterly Raster Construction target>"
+    },
+    {
+      "id": "TM-2D-31-PIXEL-ART-CONSTRUCTION",
+      "kind": "TARGET_MODULE",
+      "scope": "2D Visual Production",
+      "label": "Native Pixel-grid Construction",
+      "actionLabel": "Native Pixel-grid Construction",
+      "description": "native pixel-grid construction",
+      "context": "native pixel-grid construction",
+      "result": "Editable Native Pixel Construction Result = coherent projection/composition of accepted Current Result Content from the material Units.",
+      "essence": "Construct the actual editable 2D result using this route while preserving accepted upstream visual meaning and exposing meaningful whole candidates for review.",
+      "sources": [
+        "planning/documentation/idtspe-methodology/active/profiles/visual-production-2d/TARGET-MODULE-REGISTRY.md",
+        "planning/documentation/idtspe-methodology/active/profiles/visual-production-2d/target-modules/TM-2D-31-PIXEL-ART-CONSTRUCTION.md"
+      ],
+      "aliases": [],
+      "commandId": "",
+      "invocation": "idtspe tm TM-2D-31-PIXEL-ART-CONSTRUCTION <target>",
+      "target": "<Native Pixel-grid Construction target>"
+    },
+    {
+      "id": "TM-2D-31-PROCEDURAL-CONSTRUCTION",
+      "kind": "TARGET_MODULE",
+      "scope": "2D Visual Production",
+      "label": "Deterministic Procedural 2D Construction",
+      "actionLabel": "Deterministic Procedural 2D Construction",
+      "description": "deterministic parameter/field-based construction",
+      "context": "deterministic parameter/field-based construction",
+      "result": "Deterministic Procedural Visual Construction Result = coherent projection/composition of accepted Current Result Content from the material Units.",
+      "essence": "Construct the actual editable 2D result using this route while preserving accepted upstream visual meaning and exposing meaningful whole candidates for review.",
+      "sources": [
+        "planning/documentation/idtspe-methodology/active/profiles/visual-production-2d/TARGET-MODULE-REGISTRY.md",
+        "planning/documentation/idtspe-methodology/active/profiles/visual-production-2d/target-modules/TM-2D-31-PROCEDURAL-CONSTRUCTION.md"
+      ],
+      "aliases": [],
+      "commandId": "",
+      "invocation": "idtspe tm TM-2D-31-PROCEDURAL-CONSTRUCTION <target>",
+      "target": "<Deterministic Procedural 2D Construction target>"
+    },
+    {
+      "id": "TM-2D-31-VECTOR-CONSTRUCTION",
+      "kind": "TARGET_MODULE",
+      "scope": "2D Visual Production",
+      "label": "Semantic Vector / Shape Construction",
+      "actionLabel": "Semantic Vector / Shape Construction",
+      "description": "semantic vector/path construction",
+      "context": "semantic vector/path construction",
+      "result": "Editable Semantic Vector Construction Result = coherent projection/composition of accepted Current Result Content from the material Units.",
+      "essence": "Construct the actual editable 2D result using this route while preserving accepted upstream visual meaning and exposing meaningful whole candidates for review.",
+      "sources": [
+        "planning/documentation/idtspe-methodology/active/profiles/visual-production-2d/TARGET-MODULE-REGISTRY.md",
+        "planning/documentation/idtspe-methodology/active/profiles/visual-production-2d/target-modules/TM-2D-31-VECTOR-CONSTRUCTION.md"
+      ],
+      "aliases": [],
+      "commandId": "",
+      "invocation": "idtspe tm TM-2D-31-VECTOR-CONSTRUCTION <target>",
+      "target": "<Semantic Vector / Shape Construction target>"
+    },
+    {
+      "id": "TM-2D-50-DELIVERY-ADAPTATION",
+      "kind": "TARGET_MODULE",
+      "scope": "2D Visual Production",
+      "label": "Visually Material Output Adaptation",
+      "actionLabel": "Visually Material Output Adaptation",
+      "description": "visually material output/crop/localization adaptation",
+      "context": "visually material output/crop/localization adaptation",
+      "result": "Delivery Adaptation = accepted context map, adaptation meaning and delivery-variant result where visual adaptation is material.",
+      "essence": "Own visual decisions needed to adapt an accepted visual result across materially different delivery contexts. Mechanical export alone does not justify this Target.",
+      "sources": [
+        "planning/documentation/idtspe-methodology/active/profiles/visual-production-2d/TARGET-MODULE-REGISTRY.md",
+        "planning/documentation/idtspe-methodology/active/profiles/visual-production-2d/target-modules/TM-2D-50-DELIVERY-ADAPTATION.md"
+      ],
+      "aliases": [],
+      "commandId": "",
+      "invocation": "idtspe tm TM-2D-50-DELIVERY-ADAPTATION <target>",
+      "target": "<Visually Material Output Adaptation target>"
+    },
+    {
       "id": "TM-EXACT-REALIZATION",
       "kind": "TARGET_MODULE",
       "scope": "Core",
       "label": "Exact Realization / Integration",
       "actionLabel": "Точная реализация",
       "description": "produce one exact directly integrable realization; codebase realization is the primary/default archetype, with optional transient internal detailed exact planning and explicitly authorized integration/verification/repair.",
-      "context": "Apply the Core Unit Applicability / Materiality / Omission Contract. | Result Unit | Make explicit when | Omit / keep sparse when | |---|---|---| | RU-REAL-01 | when current accepted meaning is sufficient to produce one exact directly-integrable candidate for the bounded scope | do not instantiate Exact merely to force literal output while upstream meaning/readiness is still materially unresolved | No N/A placeholder is required. Only one Target-specific Result Unit is required. Verification, build/test observations, repair reasoning, Problems, Proposals, Decisions and Findings remain generic Core State/Evidence around the evolving exact result.",
+      "context": "Use this Target Module when all are materially true: ``text a bounded thing is ready to be realized upstream semantic/planning meaning is sufficient for exact realization a concrete destination/current-state context can be inspected or explicitly represented the useful result is the exact directly integrable payload itself `` Do not use it merely to hide unresolved product/Domain/architecture choices inside code or another artifact. If the main work is still choosing behavior, Domain meaning, architecture, Slice structure, proof intent or another independently substantial semantic answer, keep/resolve that work in its natural Target first. A small implementation-local choice may remain inside Exact Realization when it does not change accepted upstream meaning or escape the Target scope. A purely mechanical application of an already exact accepted payload does not require a new Exact R…",
       "result": "**Target Step Result:** Exact Realization | Result Unit | Meaning | |---|---| | RU-REAL-01 | Exact Realization — the current complete directly integrable candidate result for the selected bounded scope | ### Result Unit Applicability / Materiality Apply the Core Unit Applicability / Materiality / Omission Contract. | Result Unit | Make explicit when | Omit / keep sparse when | |---|---|---| | RU-REAL-01 | when current accepted meaning is sufficient to produce one exact directly-integrable candidate for the bounded scope | do not instantiate Exact merely to force literal output while upstream meaning/readiness is still materially unresolved | No N/A placeholder is required. Only one Target-specific Result Unit is required. Verification, build/test observations, repair reasoning, Problems, Proposals, Decisions and Findings remain generic Core State/Evidence around the evolving exact res…",
       "essence": "Produce the **exact current candidate realization** of already-sufficient upstream meaning in a form that can be directly integrated into a selected destination/environment without another material design pass. The module is generic: an Exact Realization may be code, test code, configuration, a migration, schema, workflow, manifest, exact documentation replacement or another directly integrable artifact. The **primary/default archetype is codebase realization**. When the user asks to implement code, use the code workflow in this module by default unless the user explicitly asks for a shorter depth such as exact code only with no integration/build/test attempt. ``text accepted upstream meaning current destination state bounded realization scope ↓ RU-REAL-01 Exact Realization ↓ optional / explicitly authorized Integration Attempt into selected environment ↓ Evidence / Lens analysis ↓ mi…",
       "sources": [
@@ -428,7 +753,7 @@
       "label": "Pre-Update Plan",
       "actionLabel": "План обновления",
       "description": "optional concrete reviewable plan of intended changes before actual mutation; one RU-PUPDATE-01.",
-      "context": "Apply the Core Unit Applicability / Materiality / Omission Contract. | Result Unit | Make explicit when | Omit / keep sparse when | |---|---|---| | RU-PUPDATE-01 | when a separate concrete reviewable intended-change plan has independent value before mutation | omit the entire Target when direct Exact/current authorized work is sufficiently clear | No N/A placeholder is required. Typical proportional content: ``text Goal Current basis / accepted meaning used Change scope Preserve / must-not-change boundary Planned changes Order / dependency only when material Verification / checks after update Open material issue only when unresolved and consequential `` These are useful content prompts, not mandatory form fields. A tiny plan may be a few bullets.",
+      "context": "Use when the useful requested result is approximately: ``text \"before changing it, tell me exactly what you plan to update\" \"make a pre-update plan\" \"show the planned changes first\" `` Skip it when the requested change is already sufficiently tiny/obvious and the user wants direct Exact Realization/application. Do not use it as a mandatory gate before every implementation.",
       "result": "**Target Step Result:** Pre-Update Plan | Result Unit | Meaning | |---|---| | RU-PUPDATE-01 | Pre-Update Plan — concrete planned changes derived from current accepted meaning/current state, sufficient for review before actual update | ### Result Unit Applicability / Materiality Apply the Core Unit Applicability / Materiality / Omission Contract. | Result Unit | Make explicit when | Omit / keep sparse when | |---|---|---| | RU-PUPDATE-01 | when a separate concrete reviewable intended-change plan has independent value before mutation | omit the entire Target when direct Exact/current authorized work is sufficiently clear | No N/A placeholder is required. Typical proportional content: ``text Goal Current basis / accepted meaning used Change scope Preserve / must-not-change boundary Planned changes Order / dependency only when material Verification / checks after update Open material issu…",
       "essence": "Before actually changing code/files/configuration/another destination, produce one **concrete update plan** from the current accepted context and current state. The module is intentionally light. It does not reopen already-settled design merely to make a plan and it does not require a new taxonomy of planning fields. ``text current request accepted prior meaning / Decisions / principles relevant current destination state ↓ ordinary IDTSPE Questions / Risks / Problems / Proposals / Evidence only where useful ↓ RU-PUPDATE-01 Pre-Update Plan ↓ optional TM-EXACT-REALIZATION / another actual update mechanism ``",
       "sources": [
@@ -439,6 +764,82 @@
       "commandId": "",
       "invocation": "idtspe tm TM-PRE-UPDATE-PLAN <target>",
       "target": "<План обновления target>"
+    },
+    {
+      "id": "TM-RK-05-BANK-FORMATION",
+      "kind": "TARGET_MODULE",
+      "scope": "Reference Knowledge",
+      "label": "Bank Formation",
+      "actionLabel": "Bank Formation",
+      "description": "one usable Bank definition/configuration",
+      "context": "Use when a Bank itself needs independent identity/scope or its visibility/vocabulary/write policy changes materially. Do not form this Target for ordinary record creation inside an already defined Bank.",
+      "result": "One usable Bank definition/configuration registered for Reference Knowledge work.",
+      "essence": "Create or materially reconfigure one durable Bank ownership boundary.",
+      "sources": [
+        "planning/documentation/idtspe-methodology/active/profiles/reference-knowledge/TARGET-MODULE-REGISTRY.md",
+        "planning/documentation/idtspe-methodology/active/profiles/reference-knowledge/target-modules/TM-RK-05-BANK-FORMATION.md"
+      ],
+      "aliases": [],
+      "commandId": "",
+      "invocation": "idtspe tm TM-RK-05-BANK-FORMATION <target>",
+      "target": "<Bank Formation target>"
+    },
+    {
+      "id": "TM-RK-10-ENTRY",
+      "kind": "TARGET_MODULE",
+      "scope": "Reference Knowledge",
+      "label": "Entry",
+      "actionLabel": "Entry",
+      "description": "one correctly owned and sufficiently resolved Entry record",
+      "context": "Use when the bounded useful result is the Entry record itself: establishing subject identity/ownership, materially resolving its representation or subject boundary, or retiring a record that should no longer be preferred. Do not form an Entry Target merely to add one obvious Tag Assignment, Relation, Analysis note or small factual/locator correction when the owner and intended change are already clear.",
+      "result": "One correctly owned and sufficiently resolved Entry record. Related Tag Assignments, Relations or Analysis may be created/refined as ordinary bank operations when useful, but are not module-defined Entry Units by default.",
+      "essence": "Create, materially refine, revalidate or retire one durable Entry record for one independently useful reference subject.",
+      "sources": [
+        "planning/documentation/idtspe-methodology/active/profiles/reference-knowledge/TARGET-MODULE-REGISTRY.md",
+        "planning/documentation/idtspe-methodology/active/profiles/reference-knowledge/target-modules/TM-RK-10-ENTRY.md"
+      ],
+      "aliases": [],
+      "commandId": "",
+      "invocation": "idtspe tm TM-RK-10-ENTRY <target>",
+      "target": "<Entry target>"
+    },
+    {
+      "id": "TM-RK-20-VOCABULARY-EVOLUTION",
+      "kind": "TARGET_MODULE",
+      "scope": "Reference Knowledge",
+      "label": "Vocabulary Evolution",
+      "actionLabel": "Vocabulary Evolution",
+      "description": "accepted Vocabulary Package definition change + material consequence review",
+      "context": "Use when accepted reusable vocabulary meaning itself must change: create/refine/deprecate Tag or Relation Type definitions, taxonomy/inverse semantics or successor pointers. Do not form this Target for one ordinary Tag Assignment / Entry Relation using already accepted definitions.",
+      "result": "Accepted Vocabulary Package definition change plus only the material consequence/revalidation understanding needed for existing knowledge.",
+      "essence": "Change reusable Tag / Relation Type meaning inside one Vocabulary Package without silently redefining stable identities or forcing automatic rewrites of bank-owned statements.",
+      "sources": [
+        "planning/documentation/idtspe-methodology/active/profiles/reference-knowledge/TARGET-MODULE-REGISTRY.md",
+        "planning/documentation/idtspe-methodology/active/profiles/reference-knowledge/target-modules/TM-RK-20-VOCABULARY-EVOLUTION.md"
+      ],
+      "aliases": [],
+      "commandId": "",
+      "invocation": "idtspe tm TM-RK-20-VOCABULARY-EVOLUTION <target>",
+      "target": "<Vocabulary Evolution target>"
+    },
+    {
+      "id": "TM-RK-50-LANDSCAPE-ANALYSIS",
+      "kind": "TARGET_MODULE",
+      "scope": "Reference Knowledge",
+      "label": "Landscape Analysis",
+      "actionLabel": "Landscape Analysis",
+      "description": "bounded evidence-grounded understanding of a selected knowledge landscape",
+      "context": "Use when the useful result concerns relationships/patterns/development across multiple Entries or a broader knowledge landscape rather than resolution of one Entry. Do not require a fixed research shape. Genealogy, temporal evolution, distributions, causal interpretation, genre formation, coexistence of ideas or other inquiry directions are selected only when materially useful and supportable.",
+      "result": "Landscape Understanding = coherent current understanding of the selected concern, including only material evidence context, supported observations/interpretations, uncertainty/open questions and revalidation meaning. A retained representation may be called a Landscape Snapshot.",
+      "essence": "Build the best useful, evidence-grounded understanding of a selected knowledge landscape, with inquiry depth and direction adapted to the current concern, available Sources and expected value of further investigation.",
+      "sources": [
+        "planning/documentation/idtspe-methodology/active/profiles/reference-knowledge/TARGET-MODULE-REGISTRY.md",
+        "planning/documentation/idtspe-methodology/active/profiles/reference-knowledge/target-modules/TM-RK-50-LANDSCAPE-ANALYSIS.md"
+      ],
+      "aliases": [],
+      "commandId": "",
+      "invocation": "idtspe tm TM-RK-50-LANDSCAPE-ANALYSIS <target>",
+      "target": "<Landscape Analysis target>"
     },
     {
       "id": "TM-APPLICATION-DEFINITION",
@@ -454,9 +855,11 @@
         "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/README.md",
         "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-APPLICATION-DEFINITION.md"
       ],
-      "aliases": [],
+      "aliases": [
+        "application"
+      ],
       "commandId": "",
-      "invocation": "idtspe tm TM-APPLICATION-DEFINITION <target>",
+      "invocation": "idtspe tm application <target>",
       "target": "<Определить приложение target>"
     },
     {
@@ -466,16 +869,18 @@
       "label": "Transient Domain Discovery",
       "actionLabel": "Исследовать Domain",
       "description": "transient bounded Domain discovery",
-      "context": "Declared Result Units are a possible semantic surface, not a mandatory form. Apply the Core Unit Applicability / Materiality / Omission Contract. | Result Unit | Make explicit when | Omit / keep sparse when | |---|---|---| | RU-DOM-01 | when semantic ownership/classification is uncertain enough to justify bounded Domain discovery | omit the entire discovery Target when shallow Lens reasoning is sufficient | | RU-DOM-02 | when state/lifecycle/invariant/consistency meaning affects owner selection or correctness | omit categories that have no selected semantic pressure | | RU-DOM-03 | when concrete candidate realization/proof helps discriminate Domain alternatives | omit implementation-shaped detail when semantic ownership can be resolved without it | | RU-DOM-04 | when selected Evolution or unresolved Domain pressure can change the current candidate | omit speculative future pressure an…",
+      "context": "Use when a Feature/Slice/current implementation reaches material Domain questions that cannot be resolved proportionally by a lighter Lens check. Do not create Domain discovery merely because implementation contains data or classes.",
       "result": "**Target Step Result:** Domain Discovery Working Plan | Result Unit | Meaning | |---|---| | RU-DOM-01 | Ownership / Classification | | RU-DOM-02 | Semantic State / Lifecycle / Consistency | | RU-DOM-03 | Candidate Realization + Domain Unit Proof | | RU-DOM-04 | Evolution / OPEN Domain Pressure | ### Result Unit Applicability / Materiality Declared Result Units are a possible semantic surface, not a mandatory form. Apply the Core Unit Applicability / Materiality / Omission Contract. | Result Unit | Make explicit when | Omit / keep sparse when | |---|---|---| | RU-DOM-01 | when semantic ownership/classification is uncertain enough to justify bounded Domain discovery | omit the entire discovery Target when shallow Lens reasoning is sufficient | | RU-DOM-02 | when state/lifecycle/invariant/consistency meaning affects owner selection or correctness | omit categories that have no selected s…",
       "essence": "Produce a bounded working Domain plan when semantic state, identity, lifecycle, invariant or consistency ownership is unclear enough that concrete exploration is useful. This Target is a **Source**, not durable Domain authority. One discovery may yield zero, one or several durable Domain owners. It is not one Target per Aggregate. Concrete candidate classes, types, methods, signatures, persistence seams and literal unit-test candidates are allowed because this is working implementation discovery.",
       "sources": [
         "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/README.md",
         "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-DOMAIN-DISCOVERY.md"
       ],
-      "aliases": [],
+      "aliases": [
+        "domain-discovery"
+      ],
       "commandId": "",
-      "invocation": "idtspe tm TM-DOMAIN-DISCOVERY <target>",
+      "invocation": "idtspe tm domain-discovery <target>",
       "target": "<Исследовать Domain target>"
     },
     {
@@ -492,9 +897,11 @@
         "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/README.md",
         "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-DOMAIN-OWNER.md"
       ],
-      "aliases": [],
+      "aliases": [
+        "domain-owner"
+      ],
       "commandId": "",
-      "invocation": "idtspe tm TM-DOMAIN-OWNER <target>",
+      "invocation": "idtspe tm domain-owner <target>",
       "target": "<Сформировать Domain Owner target>"
     },
     {
@@ -511,9 +918,11 @@
         "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/README.md",
         "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-EVOLUTION-STEP.md"
       ],
-      "aliases": [],
+      "aliases": [
+        "materially"
+      ],
       "commandId": "",
-      "invocation": "idtspe tm TM-EVOLUTION-STEP <target>",
+      "invocation": "idtspe tm materially <target>",
       "target": "<Спланировать Evolution Step target>"
     },
     {
@@ -530,9 +939,11 @@
         "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/README.md",
         "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-EVOLUTION-STEPS-MAP.md"
       ],
-      "aliases": [],
+      "aliases": [
+        "evolution-map"
+      ],
       "commandId": "",
-      "invocation": "idtspe tm TM-EVOLUTION-STEPS-MAP <target>",
+      "invocation": "idtspe tm evolution-map <target>",
       "target": "<Спланировать Evolution Map target>"
     },
     {
@@ -542,16 +953,18 @@
       "label": "Feature Behavioral Owner",
       "actionLabel": "Спланировать Feature",
       "description": "primary Feature behavior + Feature/Slice boundary owner",
-      "context": "Declared Result Units are a possible semantic surface, not a mandatory form. Apply the Core Unit Applicability / Materiality / Omission Contract. | Result Unit | Make explicit when | Omit / keep sparse when | |---|---|---| | RU-FEAT-01 | when the Feature needs an explicit semantic identity/intent/result/entry anchor | omit fields that are already obvious; do not manufacture separate entries for transport variants | | RU-FEAT-02 | when behavior-facing semantic data is needed to understand Feature meaning | omit data detail owned by Domain/storage or irrelevant to behavior | | RU-FEAT-03 | when durable/addressable must-hold behavior is useful for downstream owners/proof/revalidation | omit BR atomization for obvious transient behavior that does not need durable addressability | | RU-FEAT-04 | primarily in a future Target Feature Body when implementation/proof/evolution pressure must sur…",
+      "context": "Use when application behavior needs an independently addressable owner or an existing Feature boundary must be reviewed. Do not create a Feature merely because there is another button, endpoint, transport, technical layer, class or screen.",
       "result": "**Target Step Result:** Feature Definition | Result Unit | Meaning | |---|---| | RU-FEAT-01 | Identity / Intent / Principal Result / Semantic Entry | | RU-FEAT-02 | Semantic Data | | RU-FEAT-03 | Feature Behavior — addressable BR-* behavior items | | RU-FEAT-04 | Implementation Concerns — material realization/proof/evolution concerns without exact implementation ownership | | RU-FEAT-05 | Feature / Slice Boundary — selected boundary meaning and material rationale | ### Result Unit Applicability / Materiality Declared Result Units are a possible semantic surface, not a mandatory form. Apply the Core Unit Applicability / Materiality / Omission Contract. | Result Unit | Make explicit when | Omit / keep sparse when | |---|---|---| | RU-FEAT-01 | when the Feature needs an explicit semantic identity/intent/result/entry anchor | omit fields that are already obvious; do not manufacture separa…",
       "essence": "Own one coherent application/user capability boundary and the behavior that makes its principal result true. A Feature is the primary behavioral authority. Scenario composes Features into a journey; Screen owns spatial/navigation composition; Slice owns durable implementation responsibility. None of those owners duplicates Feature behavior. Feature formation is implementation-aware but not an exact implementation plan. The same Feature/Slice Boundary Method from LENS-SLICE-VERTICALITY-INTEGRATION is used here at lighter evidence depth and later during Slice Discovery with stronger evidence.",
       "sources": [
         "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/README.md",
         "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-FEATURE.md"
       ],
-      "aliases": [],
+      "aliases": [
+        "feature"
+      ],
       "commandId": "",
-      "invocation": "idtspe tm TM-FEATURE <target>",
+      "invocation": "idtspe tm feature <target>",
       "target": "<Спланировать Feature target>"
     },
     {
@@ -561,16 +974,18 @@
       "label": "Slice Discovery / Non-Persistent Slice Planning",
       "actionLabel": "Исследовать Implementation Slice",
       "description": "compatibility ID for transient Slice Discovery",
-      "context": "Declared Result Units are a possible semantic surface, not a mandatory form. Apply the Core Unit Applicability / Materiality / Omission Contract. | Result Unit | Make explicit when | Omit / keep sparse when | |---|---|---| | RU-SLICE-01 | when whole-Slice responsibility/candidate structure is needed to reason end-to-end | omit the whole discovery Target when current implementation path is already sufficiently clear | | RU-SLICE-02 | when semantic application entry/result boundaries are material to integration/ownership/proof | omit adapter/transport detail that does not alter semantic entry/result meaning | | RU-SLICE-03 | when concrete end-to-end realization detail is needed to resolve dependencies/effects/failure/proof | stop at the minimum detail that discriminates decisions; do not build a shadow class/call registry | | RU-SLICE-04 | when whole-Feature integration proof needs expl…",
+      "context": "Use when Feature meaning is sufficiently selected but exact end-to-end realization is not yet clear enough for safe implementation/Exact work. Do not create a Slice discovery plan merely to restate Feature behavior.",
       "result": "**Target Step Result:** Slice Discovery Working Plan | Result Unit | Meaning | |---|---| | RU-SLICE-01 | Whole-Slice Responsibility / Candidate Structure | | RU-SLICE-02 | Semantic Application Entry / Result Boundary | | RU-SLICE-03 | Step-by-Step End-to-End Realization | | RU-SLICE-04 | Feature Integration Proof | | RU-SLICE-05 | Evolution / OPEN Slice Pressure | ### Result Unit Applicability / Materiality Declared Result Units are a possible semantic surface, not a mandatory form. Apply the Core Unit Applicability / Materiality / Omission Contract. | Result Unit | Make explicit when | Omit / keep sparse when | |---|---|---| | RU-SLICE-01 | when whole-Slice responsibility/candidate structure is needed to reason end-to-end | omit the whole discovery Target when current implementation path is already sufficiently clear | | RU-SLICE-02 | when semantic application entry/result boundaries…",
       "essence": "Produce a concrete working end-to-end realization plan for a selected Feature when detailed implementation discovery is useful. This Target is transient. It may contain concrete classes, methods, calls, signatures, adapters, persistence/external boundaries and literal integration-test candidates. Selected durable responsibility is later owned by TM-SLICE-OWNER; volatile class/call topology does not become durable owner truth by default.",
       "sources": [
         "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/README.md",
         "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-IMPLEMENTATION-SLICE.md"
       ],
-      "aliases": [],
+      "aliases": [
+        "slice"
+      ],
       "commandId": "",
-      "invocation": "idtspe tm TM-IMPLEMENTATION-SLICE <target>",
+      "invocation": "idtspe tm slice <target>",
       "target": "<Исследовать Implementation Slice target>"
     },
     {
@@ -580,16 +995,18 @@
       "label": "Implemented Practical Evidence / Acceptance",
       "actionLabel": "Спланировать Practical Test",
       "description": "implemented real-subject practical Evidence",
-      "context": "Declared Result Units are a possible semantic surface, not a mandatory form. Apply the Core Unit Applicability / Materiality / Omission Contract. | Result Unit | Make explicit when | Omit / keep sparse when | |---|---|---| | RU-PTEST-01 | when a property requires observation against a real implemented subject/environment | omit the Practical Test Target when simulated/unit/integration Evidence is already sufficient | | RU-PTEST-02 | when planned real-subject observation/data collection must be explicit for credibility | omit incidental procedure detail that cannot affect Evidence interpretation | | RU-PTEST-03 | when the practical test has actually produced Evidence worth interpreting | before execution keep Evidence Need/plan only; never prefill results | Do not create N/A placeholders. Re-evaluate a previously omitted Unit only when its trigger/materiality changes. RU-PTEST-03 is ab…",
+      "context": "Use when the real implementation/environment is materially necessary to answer the acceptance/learning question credibly, for example: ``text real interaction/usability real provider/integration behavior operational diagnosis production/staging telemetry patterns performance under representative conditions support/incident/real-data learning ` Do not create this Target merely because a feature shipped or because automated tests ran. Build/compile/unit/integration/E2E checks performed while realizing code remain Core Evidence in TM-EXACT-REALIZATION` unless a separately useful real operated Evidence inquiry exists.",
       "result": "**Target Step Result:** Implemented Practical Evidence Result | Result Unit | Meaning | |---|---| | RU-PTEST-01 | Evidence Intent / Real Subject — what real implementation/property will be observed and why real Evidence is needed | | RU-PTEST-02 | Observation / Data Collection Plan — proportional planned observation against the intended/actual real subject | | RU-PTEST-03 | Evidence Results / Interpretation — actual real-subject Evidence refs, material limitations and acceptance/learning interpretation | ### Result Unit Applicability / Materiality Declared Result Units are a possible semantic surface, not a mandatory form. Apply the Core Unit Applicability / Materiality / Omission Contract. | Result Unit | Make explicit when | Omit / keep sparse when | |---|---|---| | RU-PTEST-01 | when a property requires observation against a real implemented subject/environment | omit the Practical…",
       "essence": "Own one practical Evidence inquiry whose **actual Evidence subject is the real implemented system/environment**, for acceptance and/or post-implementation learning. The Target may be planned before realization so implementation can make later observation possible. Actual Evidence/results begin only when the real implemented subject exists. Shared inquiry/collection mechanics are owned by Practical Evidence Method; this module should not duplicate that method.",
       "sources": [
         "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/README.md",
         "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-PRACTICAL-TEST.md"
       ],
-      "aliases": [],
+      "aliases": [
+        "practical-test"
+      ],
       "commandId": "",
-      "invocation": "idtspe tm TM-PRACTICAL-TEST <target>",
+      "invocation": "idtspe tm practical-test <target>",
       "target": "<Спланировать Practical Test target>"
     },
     {
@@ -599,16 +1016,18 @@
       "label": "Prototype / Experiment",
       "actionLabel": "Спланировать Prototype",
       "description": "transient empirical pre-commit inquiry",
-      "context": "Declared Result Units are a possible semantic surface, not a mandatory form. Apply the Core Unit Applicability / Materiality / Omission Contract. | Result Unit | Make explicit when | Omit / keep sparse when | |---|---|---| | RU-PROTO-01 | when a concrete uncertainty/property justifies an empirical pre-commit inquiry | omit the whole Prototype Target when no such uncertainty exists | | RU-PROTO-02 | when the minimum credible subject/observation boundary must be selected before running the inquiry | omit non-material instrumentation/procedure detail | | RU-PROTO-03 | when the prototype actually produced observations worth interpreting | before execution keep only Evidence Need/plan; do not invent results | Do not create N/A placeholders. Re-evaluate a previously omitted Unit only when its trigger/materiality changes. The shared method's full inquiry fields are guidance, not mandatory du…",
+      "context": "Use when: ``text material uncertainty exists practical observation is more discriminating than reasoning/research alone a cheaper partial/simulated/throwaway subject can answer enough of the question credibly `` Do not create prototype work for ceremony when the result cannot discriminate between meaningful alternatives.",
       "result": "**Target Step Result:** Prototype Evidence Result | Result Unit | Meaning | |---|---| | RU-PROTO-01 | Prototype Intent / Question — what uncertainty/property this Prototype exists to investigate and why it matters | | RU-PROTO-02 | Prototype Subject / Observation Plan — minimum credible prototype, material real-vs-simulated boundary and proportional collection plan | | RU-PROTO-03 | Prototype Results / Interpretation — actual Evidence refs, material limitations and interpretation relative to the inquiry | ### Result Unit Applicability / Materiality Declared Result Units are a possible semantic surface, not a mandatory form. Apply the Core Unit Applicability / Materiality / Omission Contract. | Result Unit | Make explicit when | Omit / keep sparse when | |---|---|---| | RU-PROTO-01 | when a concrete uncertainty/property justifies an empirical pre-commit inquiry | omit the whole Prototy…",
       "essence": "Own one bounded practical inquiry where a **partial, simulated, mocked or throwaway subject is acceptable** and practical observation can reduce material uncertainty before the real implementation is complete. The shared inquiry/collection mechanics are owned by Practical Evidence Method. This module owns only the Prototype-specific Target/result.",
       "sources": [
         "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/README.md",
         "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-PROTOTYPE.md"
       ],
-      "aliases": [],
+      "aliases": [
+        "prototype"
+      ],
       "commandId": "",
-      "invocation": "idtspe tm TM-PROTOTYPE <target>",
+      "invocation": "idtspe tm prototype <target>",
       "target": "<Спланировать Prototype target>"
     },
     {
@@ -625,9 +1044,11 @@
         "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/README.md",
         "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-SCENARIO-PLANNING.md"
       ],
-      "aliases": [],
+      "aliases": [
+        "scenario"
+      ],
       "commandId": "",
-      "invocation": "idtspe tm TM-SCENARIO-PLANNING <target>",
+      "invocation": "idtspe tm scenario <target>",
       "target": "<Спланировать Scenario target>"
     },
     {
@@ -644,9 +1065,11 @@
         "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/README.md",
         "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-SCREEN.md"
       ],
-      "aliases": [],
+      "aliases": [
+        "screen"
+      ],
       "commandId": "",
-      "invocation": "idtspe tm TM-SCREEN <target>",
+      "invocation": "idtspe tm screen <target>",
       "target": "<Спланировать Screen target>"
     },
     {
@@ -663,9 +1086,11 @@
         "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/README.md",
         "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-SHARED-IMPLEMENTATION-CAPABILITY.md"
       ],
-      "aliases": [],
+      "aliases": [
+        "shared"
+      ],
       "commandId": "",
-      "invocation": "idtspe tm TM-SHARED-IMPLEMENTATION-CAPABILITY <target>",
+      "invocation": "idtspe tm shared <target>",
       "target": "<Спланировать Shared Capability target>"
     },
     {
@@ -682,9 +1107,11 @@
         "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/README.md",
         "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-SLICE-OWNER.md"
       ],
-      "aliases": [],
+      "aliases": [
+        "slice-owner"
+      ],
       "commandId": "",
-      "invocation": "idtspe tm TM-SLICE-OWNER <target>",
+      "invocation": "idtspe tm slice-owner <target>",
       "target": "<Сформировать Slice Owner target>"
     },
     {

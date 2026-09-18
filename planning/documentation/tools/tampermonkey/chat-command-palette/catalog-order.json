@@ -80,7 +80,28 @@
     "replacement_archive.create",
     "proposal_archive.create",
     "archive_source.use",
-    "helper.command.add"
+    "helper.command.add",
+    "tm:TM-2D-10-VISUAL-REQUIREMENTS",
+    "tm:TM-2D-15-VISUAL-MATERIAL-PREPARATION",
+    "tm:TM-2D-20-WHOLE-VISUAL-DESIGN",
+    "tm:TM-2D-30-VISUAL-CONSTRUCTION",
+    "tm:TM-2D-31-PIXEL-ART-CONSTRUCTION",
+    "tm:TM-2D-31-VECTOR-CONSTRUCTION",
+    "tm:TM-2D-31-EDITABLE-RASTER-CONSTRUCTION",
+    "tm:TM-2D-31-PAINTERLY-RASTER-CONSTRUCTION",
+    "tm:TM-2D-31-PROCEDURAL-CONSTRUCTION",
+    "tm:TM-2D-50-DELIVERY-ADAPTATION",
+    "tm:TM-RK-05-BANK-FORMATION",
+    "tm:TM-RK-10-ENTRY",
+    "tm:TM-RK-20-VOCABULARY-EVOLUTION",
+    "tm:TM-RK-50-LANDSCAPE-ANALYSIS",
+    "lens:LENS-VISUAL-UNIT-NEED-AND-SOURCE-COVERAGE",
+    "lens:LENS-WHOLE-VISUAL-COHERENCE",
+    "lens:LENS-CONSTRUCTION-FIDELITY-CONSISTENCY",
+    "lens:LENS-REPRESENTATION-EDITABILITY-ECONOMY",
+    "lens:LENS-RK-ENTRY-IDENTITY-AND-DUPLICATION",
+    "lens:LENS-RK-TAG-QUALITY-AND-TAXONOMY",
+    "lens:LENS-RK-LANDSCAPE-EVIDENCE-ADEQUACY"
   ],
   "useCases": [
     "UC-DOC-USE-REPOSITORY-GUIDANCE",
@@ -397,6 +418,59 @@
       "order": 20,
       "items": [
         "helper.command.add"
+      ]
+    },
+    {
+      "id": "tm.profile-2d-visual-production",
+      "viewId": "TARGET_MODULES",
+      "label": "2D Visual Production",
+      "order": 60,
+      "items": [
+        "tm:TM-2D-10-VISUAL-REQUIREMENTS",
+        "tm:TM-2D-15-VISUAL-MATERIAL-PREPARATION",
+        "tm:TM-2D-20-WHOLE-VISUAL-DESIGN",
+        "tm:TM-2D-30-VISUAL-CONSTRUCTION",
+        "tm:TM-2D-31-PIXEL-ART-CONSTRUCTION",
+        "tm:TM-2D-31-VECTOR-CONSTRUCTION",
+        "tm:TM-2D-31-EDITABLE-RASTER-CONSTRUCTION",
+        "tm:TM-2D-31-PAINTERLY-RASTER-CONSTRUCTION",
+        "tm:TM-2D-31-PROCEDURAL-CONSTRUCTION",
+        "tm:TM-2D-50-DELIVERY-ADAPTATION"
+      ]
+    },
+    {
+      "id": "tm.profile-reference-knowledge",
+      "viewId": "TARGET_MODULES",
+      "label": "Reference Knowledge",
+      "order": 70,
+      "items": [
+        "tm:TM-RK-05-BANK-FORMATION",
+        "tm:TM-RK-10-ENTRY",
+        "tm:TM-RK-20-VOCABULARY-EVOLUTION",
+        "tm:TM-RK-50-LANDSCAPE-ANALYSIS"
+      ]
+    },
+    {
+      "id": "lens.profile-2d-visual-production",
+      "viewId": "LENSES",
+      "label": "2D Visual Production",
+      "order": 50,
+      "items": [
+        "lens:LENS-VISUAL-UNIT-NEED-AND-SOURCE-COVERAGE",
+        "lens:LENS-WHOLE-VISUAL-COHERENCE",
+        "lens:LENS-CONSTRUCTION-FIDELITY-CONSISTENCY",
+        "lens:LENS-REPRESENTATION-EDITABILITY-ECONOMY"
+      ]
+    },
+    {
+      "id": "lens.profile-reference-knowledge",
+      "viewId": "LENSES",
+      "label": "Reference Knowledge",
+      "order": 60,
+      "items": [
+        "lens:LENS-RK-ENTRY-IDENTITY-AND-DUPLICATION",
+        "lens:LENS-RK-TAG-QUALITY-AND-TAXONOMY",
+        "lens:LENS-RK-LANDSCAPE-EVIDENCE-ADEQUACY"
       ]
     }
   ]

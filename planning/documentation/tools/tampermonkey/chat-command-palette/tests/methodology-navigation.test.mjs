@@ -41,8 +41,8 @@ test('command navigation is derived from semantic identity and exposes UC/TM/Len
     {id:'TOOLS',label:'Tools / Repository'}
   ]);
   assert.equal(navigation.methodologyPrimaryIds(entries,'USE_CASES').length,16);
-  assert.equal(navigation.methodologyPrimaryIds(entries,'TARGET_MODULES').length,15);
-  assert.equal(navigation.methodologyPrimaryIds(entries,'LENSES').length,19);
+  assert.equal(navigation.methodologyPrimaryIds(entries,'TARGET_MODULES').length,29);
+  assert.equal(navigation.methodologyPrimaryIds(entries,'LENSES').length,26);
 });
 
 test('every current semantic component projects to exactly one primary command card',()=>{
@@ -57,9 +57,9 @@ test('every current semantic component projects to exactly one primary command c
 
 test('GitHub-backed presentation groups refine views without replacing semantic identity',()=>{
   const tm=navigation.buildMethodologyViewGroups(entries,'TARGET_MODULES');
-  assert.deepEqual(tm.map((section)=>section.label),['Core Lifecycle','Application Behavior','Domain / Realization Structure','Evolution','Evidence / Experiments']);
+  assert.deepEqual(tm.map((section)=>section.label),['Core Lifecycle','Application Behavior','Domain / Realization Structure','Evolution','Evidence / Experiments','2D Visual Production','Reference Knowledge']);
   const lenses=navigation.buildMethodologyViewGroups(entries,'LENSES');
-  assert.deepEqual(lenses.map((section)=>section.label),['Meaning / Ownership','Risk / Uncertainty / Proof','Representation / Navigation','SDS Product / Realization']);
+  assert.deepEqual(lenses.map((section)=>section.label),['Meaning / Ownership','Risk / Uncertainty / Proof','Representation / Navigation','SDS Product / Realization','2D Visual Production','Reference Knowledge']);
   for(const entry of entries.filter((item)=>item.semanticKind)){
     assert.ok(entry.semanticScope,entry.id);
     assert.ok(entry.presentationGroup?.id,entry.id);
@@ -81,7 +81,7 @@ test('every visible command card has canonical Context, Result and Essence proje
 
 test('every command card belongs to one normal tab/group and All commands is only a cross-tab projection',()=>{
   const views=navigation.methodologyViewDefinitions(entries);
-  assert.deepEqual(views.map((view)=>[view.id,view.count]),[['GENERAL',25],['USE_CASES',16],['TARGET_MODULES',15],['LENSES',19],['TOOLS',4]]);
+  assert.deepEqual(views.map((view)=>[view.id,view.count]),[['GENERAL',25],['USE_CASES',16],['TARGET_MODULES',29],['LENSES',26],['TOOLS',4]]);
   const normalGroups=views.flatMap((view)=>navigation.buildMethodologyViewGroups(entries,view.id));
   assert.equal(normalGroups.reduce((sum,group)=>sum+group.entries.length,0),entries.length);
   const all=navigation.buildAllMethodologyGroups(entries);

@@ -19,9 +19,8 @@ const scenarioSourcePaths=[
   'planning/documentation/repository-scenarios/SCN-06-BUILD-AND-VERIFY-REPLACEMENT-PACKAGE.md'
 ];
 const coreTargetRegistryPath='planning/documentation/idtspe-methodology/active/idtspe-core/target-modules/README.md';
-const sdsTargetRegistryPath='planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/README.md';
+const installedProfilesRegistryPath='planning/documentation/idtspe-methodology/active/profiles/README.md';
 const coreLensRegistryPath='planning/documentation/idtspe-methodology/active/idtspe-core/lenses/README.md';
-const sdsLensRegistryPath='planning/documentation/idtspe-methodology/active/profiles/sds/lenses/README.md';
 const check=process.argv.includes('--check');
 const codec=require('./src/command-definition-codec.js');
 const catalog=require('./src/command-catalog.js');
@@ -133,7 +132,7 @@ function ownerSection(rel,names){
 }
 function ownerExplanation(rel,kind,fallback=''){
   const essence=ownerSection(rel,['Purpose'])||compactMarkdown(fallback);
-  if(kind==='TARGET_MODULE')return{context:ownerSection(rel,['Situation','Result Unit Applicability / Materiality','Applicability'])||compactMarkdown(fallback),result:ownerSection(rel,['Result','Target Step-Result Contract'])||compactMarkdown(fallback),essence};
+  if(kind==='TARGET_MODULE')return{context:ownerSection(rel,['Situation','Activation / Scope Gate','Result Unit Applicability / Materiality','Applicability'])||compactMarkdown(fallback),result:ownerSection(rel,['Result','Target Step Result','Target Step-Result Contract'])||compactMarkdown(fallback),essence};
   return{context:ownerSection(rel,['Applicability Gate','Applicability','Situation'])||compactMarkdown(fallback),result:ownerSection(rel,['Result','Findings / Outputs','Output / Disposition','Primary Result Units / Semantic Selectors'])||compactMarkdown(fallback),essence};
 }
 function relativeFromRegistry(registryPath,target){return resolveRegistryTarget(registryPath,target);}
@@ -166,9 +165,45 @@ function currentLensRows(registryPath,scope){
   }
   return rows;
 }
+function installedProfileRegistries(){
+  const text=fs.readFileSync(path.join(repoRoot,installedProfilesRegistryPath),'utf8'),lines=text.split(/\r?\n/),profiles=[];let inInstalled=false;
+  for(const line of lines){
+    if(/^##\s+Installed\s*$/i.test(line.trim())){inInstalled=true;continue;}
+    if(inInstalled&&/^##\s+/.test(line.trim()))break;
+    if(!inInstalled||!/^\|/.test(line)||/^\|\s*---/.test(line)||/^\|\s*Profile\s*\|/i.test(line))continue;
+    const cells=splitRow(line),label=plainCell(cells[0]),bootstrapTarget=markdownLinkTargets(cells[1]||cells[0])[0];if(!label||!bootstrapTarget)continue;
+    const bootstrap=resolveRegistryTarget(installedProfilesRegistryPath,bootstrapTarget);if(!bootstrap||!fs.existsSync(path.join(repoRoot,bootstrap)))throw new Error(`Installed profile bootstrap is missing: ${bootstrap||bootstrapTarget}`);
+    const dir=path.posix.dirname(bootstrap),scope=label==='SDS'?'SDS':label;
+    const targetCandidates=[`${dir}/TARGET-MODULE-REGISTRY.md`,`${dir}/target-modules/README.md`],lensCandidates=[`${dir}/LENS-REGISTRY.md`,`${dir}/lenses/README.md`];
+    const targetRegistry=targetCandidates.find((rel)=>fs.existsSync(path.join(repoRoot,rel)))||'',lensRegistry=lensCandidates.find((rel)=>fs.existsSync(path.join(repoRoot,rel)))||'';
+    profiles.push({scope,bootstrap,targetRegistry,lensRegistry});
+  }
+  if(!profiles.length)throw new Error(`No installed profiles discovered in ${installedProfilesRegistryPath}`);return profiles;
+}
+function profileTargetRows(registryPath,scope){
+  if(!registryPath)return[];const lines=fs.readFileSync(path.join(repoRoot,registryPath),'utf8').split(/\r?\n/),aliases=registryAliases(lines.join('\n'),'TM-'),rows=[],seen=new Set();
+  for(const line of lines){
+    if(!/^\|/.test(line)||!line.includes('TM-')||/^\|\s*---/.test(line))continue;const id=(line.match(/TM-[A-Z0-9-]+/)||[])[0];if(!id||seen.has(id))continue;
+    const targets=markdownLinkTargets(line),rel=targets.map((target)=>relativeFromRegistry(registryPath,target)).find((candidate)=>candidate&&fs.existsSync(path.join(repoRoot,candidate))&&path.basename(candidate)!==path.basename(registryPath));if(!rel)continue;
+    seen.add(id);const cells=splitRow(line),alias=aliases.get(id)||(cells.flatMap((cell)=>[...cell.matchAll(/`([a-z][a-z0-9-]*)`/g)].map((m)=>m[1])).find((value)=>!value.startsWith('tm-'))||''),description=compactMarkdown(cells.at(-1))||headingTitle(rel,id),explanation=ownerExplanation(rel,'TARGET_MODULE',description);
+    rows.push({id,kind:'TARGET_MODULE',scope,label:headingTitle(rel,id),actionLabel:ACTION_LABELS[id]||headingTitle(rel,id),description,...explanation,sources:[registryPath,rel],aliases:alias?[alias]:[],invocation:`idtspe tm ${alias||id} <target>`,target:`<${ACTION_LABELS[id]||headingTitle(rel,id)} target>`});
+  }
+  return rows;
+}
+function profileLensRows(registryPath,scope){
+  if(!registryPath)return[];const text=fs.readFileSync(path.join(repoRoot,registryPath),'utf8'),aliases=registryAliases(text,'LENS-'),rows=[],seen=new Set();
+  for(const line of text.split(/\r?\n/)){
+    if(!/^\|/.test(line)||!line.includes('LENS-')||/^\|\s*---/.test(line))continue;const id=(line.match(/LENS-[A-Z0-9-]+/)||[])[0];if(!id||seen.has(id))continue;
+    const targets=markdownLinkTargets(line),rel=targets.map((target)=>relativeFromRegistry(registryPath,target)).find((candidate)=>candidate&&fs.existsSync(path.join(repoRoot,candidate))&&path.basename(candidate)!==path.basename(registryPath));if(!rel)continue;
+    seen.add(id);const cells=splitRow(line),alias=aliases.get(id)||'',description=compactMarkdown(cells.at(-1))||headingTitle(rel,id),explanation=ownerExplanation(rel,'LENS',description);
+    rows.push({id,kind:'LENS',scope,label:headingTitle(rel,id),actionLabel:ACTION_LABELS[id]||headingTitle(rel,id),description,...explanation,sources:[registryPath,rel],aliases:alias?[alias]:[],invocation:`idtspe lens ${alias||id} <target/context>`,target:`<${ACTION_LABELS[id]||headingTitle(rel,id)} analysis surface>`});
+  }
+  return rows;
+}
 function readCanonicalSemanticComponents(commands,useCases){
   const ucComponents=useCases.map((uc)=>({id:uc.id,kind:'USE_CASE',scope:uc.id.startsWith('UC-DOC-')?'Documentation':'Core',label:uc.label,actionLabel:ACTION_LABELS[uc.id]||uc.label,description:uc.description,context:uc.trigger||uc.description,result:uc.result||uc.description,essence:uc.description,sources:uc.sources,aliases:[],commandId:UC_COMMAND_IDS[uc.id]||uc.commandId||'',invocation:'',target:uc.target}));
-  const all=[...ucComponents,...currentTargetRows(coreTargetRegistryPath,'Core'),...currentTargetRows(sdsTargetRegistryPath,'SDS'),...currentLensRows(coreLensRegistryPath,'Core'),...currentLensRows(sdsLensRegistryPath,'SDS')];
+  const profiles=installedProfileRegistries(),profileTargets=profiles.flatMap((profile)=>profileTargetRows(profile.targetRegistry,profile.scope)),profileLenses=profiles.flatMap((profile)=>profileLensRows(profile.lensRegistry,profile.scope));
+  const all=[...ucComponents,...currentTargetRows(coreTargetRegistryPath,'Core'),...profileTargets,...currentLensRows(coreLensRegistryPath,'Core'),...profileLenses];
   return semantic.normalizeSemanticComponents(all).sort((a,b)=>a.kind.localeCompare(b.kind)||a.scope.localeCompare(b.scope)||a.id.localeCompare(b.id));
 }
 function readCanonicalScenarios(){
@@ -186,7 +221,7 @@ function readCanonicalScenarios(){
   }
   const scenarios=semantic.normalizeScenarios(items);if(!scenarios.length)throw new Error(`No canonical working Scenarios found in ${scenarioSourcePaths.join(', ')}.`);for(const scenario of scenarios){if(!scenario.canonicalIntro)throw new Error(`Canonical scenario intro was not projected: ${scenario.id}`);for(const step of scenario.steps)if(!step.canonicalText)throw new Error(`Canonical scenario step prose was not projected: ${step.id}`);}return scenarios.sort((a,b)=>a.id.localeCompare(b.id));
 }
-function seedText(kind,items){const generatedFrom=kind==='planning-command-seed'?'planning/commands/*.command.md':kind==='use-case-seed'?`${useCaseRegistryMapPath} -> mapped current scoped methodology Use-Case registries only`:kind==='semantic-component-seed'?`${useCaseRegistryMapPath} + current Core/SDS Target Module and Lens registries`:scenarioSourcePaths.join(' + ');return JSON.stringify({schemaVersion:1,kind,generatedFrom,items},null,2)+'\n';}
+function seedText(kind,items){const generatedFrom=kind==='planning-command-seed'?'planning/commands/*.command.md':kind==='use-case-seed'?`${useCaseRegistryMapPath} -> mapped current scoped methodology Use-Case registries only`:kind==='semantic-component-seed'?`${useCaseRegistryMapPath} + current Core and installed-profile Target Module/Lens registries`:scenarioSourcePaths.join(' + ');return JSON.stringify({schemaVersion:1,kind,generatedFrom,items},null,2)+'\n';}
 function ensureSeed(pathname,expected){if(check){const actual=fs.existsSync(pathname)?fs.readFileSync(pathname,'utf8'):'';if(actual!==expected)throw new Error(`Generated seed catalog is stale: ${path.relative(repoRoot,pathname)}`);return;}fs.mkdirSync(path.dirname(pathname),{recursive:true});fs.writeFileSync(pathname,expected,'utf8');}
 function build(){
   const definitions=readCommands(),useCases=readCanonicalUseCases(definitions),semanticComponents=readCanonicalSemanticComponents(definitions,useCases),scenarios=readCanonicalScenarios();

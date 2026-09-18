@@ -38,7 +38,19 @@ One correctly owned and sufficiently resolved Entry record. Related Tag Assignme
 
 ## Unit Checkpoint Map
 
-Every material Unit follows the inherited Core applicability/materiality envelope. A clear USER request may already imply obvious Unit selection; do not add profile-specific confirmation ceremony.
+Every material Unit follows the inherited Core applicability/materiality envelope. A clear USER request or already-current accepted scope may satisfy obvious applicability/selection without extra profile-specific ceremony.
+
+#### `RU-RKE-01` processing envelope
+
+**Opening Unit Checkpoint — `RU-RKE-01`** → **Unit Work — `RU-RKE-01`** → **Closing Unit Checkpoint — `RU-RKE-01`**.
+
+#### `RU-RKE-02` processing envelope
+
+**Opening Unit Checkpoint — `RU-RKE-02`** → **Unit Work — `RU-RKE-02`** → **Closing Unit Checkpoint — `RU-RKE-02`**.
+
+#### `RU-RKE-03` processing envelope
+
+**Opening Unit Checkpoint — `RU-RKE-03`** → **Unit Work — `RU-RKE-03`** → **Closing Unit Checkpoint — `RU-RKE-03`**.
 
 <a id="ru-rke-01"></a>
 ## `RU-RKE-01` — Entry Identity And Ownership

@@ -36,7 +36,19 @@ A retained representation may be called a `Landscape Snapshot`.
 
 ## Unit Checkpoint Map
 
-Every material Unit uses its inherited Opening / In-Unit / Closing applicability envelope.
+Every material Unit follows the inherited Core applicability/materiality envelope. A clear USER request or already-current accepted scope may satisfy obvious applicability/selection without extra profile-specific ceremony.
+
+#### `RU-RKL-01` processing envelope
+
+**Opening Unit Checkpoint — `RU-RKL-01`** → **Unit Work — `RU-RKL-01`** → **Closing Unit Checkpoint — `RU-RKL-01`**.
+
+#### `RU-RKL-02` processing envelope
+
+**Opening Unit Checkpoint — `RU-RKL-02`** → **Unit Work — `RU-RKL-02`** → **Closing Unit Checkpoint — `RU-RKL-02`**.
+
+#### `RU-RKL-03` processing envelope
+
+**Opening Unit Checkpoint — `RU-RKL-03`** → **Unit Work — `RU-RKL-03`** → **Closing Unit Checkpoint — `RU-RKL-03`**.
 
 <a id="ru-rkl-01"></a>
 ## `RU-RKL-01` — Scope And Evidence Base

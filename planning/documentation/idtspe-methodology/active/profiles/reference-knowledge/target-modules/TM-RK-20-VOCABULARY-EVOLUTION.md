@@ -33,6 +33,18 @@ Accepted Vocabulary Package definition change plus only the material consequence
 | `RU-RKV-01` | [Definition Change](#ru-rkv-01) | resolve accepted Tag and/or Relation Type definition changes in the selected Package |
 | `RU-RKV-02` | [Affected Knowledge Review](#ru-rkv-02) | identify material consequences for existing statements/Landscape results without implied migration |
 
+## Unit Checkpoint Map
+
+Every material Unit follows the inherited Core applicability/materiality envelope. A clear USER request or already-current accepted scope may satisfy obvious applicability/selection without extra profile-specific ceremony.
+
+#### `RU-RKV-01` processing envelope
+
+**Opening Unit Checkpoint — `RU-RKV-01`** → **Unit Work — `RU-RKV-01`** → **Closing Unit Checkpoint — `RU-RKV-01`**.
+
+#### `RU-RKV-02` processing envelope
+
+**Opening Unit Checkpoint — `RU-RKV-02`** → **Unit Work — `RU-RKV-02`** → **Closing Unit Checkpoint — `RU-RKV-02`**.
+
 <a id="ru-rkv-01"></a>
 ## `RU-RKV-01` — Definition Change
 

@@ -35,7 +35,15 @@ One usable Bank definition/configuration registered for Reference Knowledge work
 
 ## Unit Checkpoint Map
 
-Every material Unit follows the inherited Core applicability/materiality envelope; omit Units whose responsibility is already current or not independently useful.
+Every material Unit follows the inherited Core applicability/materiality envelope. A clear USER request or already-current accepted scope may satisfy obvious applicability/selection without extra profile-specific ceremony.
+
+#### `RU-RKB-01` processing envelope
+
+**Opening Unit Checkpoint — `RU-RKB-01`** → **Unit Work — `RU-RKB-01`** → **Closing Unit Checkpoint — `RU-RKB-01`**.
+
+#### `RU-RKB-02` processing envelope
+
+**Opening Unit Checkpoint — `RU-RKB-02`** → **Unit Work — `RU-RKB-02`** → **Closing Unit Checkpoint — `RU-RKB-02`**.
 
 <a id="ru-rkb-01"></a>
 ## `RU-RKB-01` — Bank Identity And Scope

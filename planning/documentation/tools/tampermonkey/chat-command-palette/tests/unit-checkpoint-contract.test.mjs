@@ -24,15 +24,16 @@ test('generic Result Unit contract owns Opening/In-Unit/Closing applicability se
   assert.match(text,/reopen|refine/i);
 });
 
-test('every current Core/SDS Target Module explicitly wraps every processing-envelope Result Unit with Opening and Closing checkpoints',()=>{
+test('every current Target Module explicitly wraps every processing-envelope Result Unit with Opening and Closing checkpoints',()=>{
   const modules=components.filter((component)=>component.kind==='TARGET_MODULE');
-  assert.equal(modules.length,15);
+  assert.equal(modules.length,29);
   for(const component of modules){
     const owner=component.sources.at(-1),text=readRepo(owner);
-    const units=[...text.matchAll(/^#### `([^`]+)` processing envelope$/gm)].map((match)=>match[1]);
-    assert.ok(units.length>0,`${component.id}: no explicit Result Unit processing envelopes`);
-    const unique=[...new Set(units)];
-    assert.equal(unique.length,units.length,`${component.id}: duplicate processing-envelope heading`);
+    const inventory=(text.match(/## Candidate Unit Inventory\s*\n([\s\S]*?)(?=\n## )/)||[])[1]||'';
+    const inventoryUnits=[...new Set([...inventory.matchAll(/RU-[A-Z0-9-]+/g)].map((match)=>match[0]))];
+    const envelopeUnits=[...new Set([...text.matchAll(/^#### `((?:RU)-[A-Z0-9-]+)` processing envelope$/gm)].map((match)=>match[1]))];
+    const units=inventoryUnits.length?inventoryUnits:envelopeUnits;
+    assert.ok(units.length>0,`${component.id}: no declared Result Units found`);
     for(const unit of units){
       assert.ok(text.includes('Opening Unit Checkpoint — `'+unit+'`'),`${component.id}/${unit}: missing Opening checkpoint`);
       assert.ok(text.includes('Closing Unit Checkpoint — `'+unit+'`'),`${component.id}/${unit}: missing Closing checkpoint`);
