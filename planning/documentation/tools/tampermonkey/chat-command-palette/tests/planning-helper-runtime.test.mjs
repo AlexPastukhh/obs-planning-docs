@@ -64,6 +64,18 @@ test('presentation grouping moves one card without changing semantic identity',(
   assert.deepEqual(next.commands,['a','b']);
 });
 
+
+
+test('presentation groups support create rename level reorder and delete-to-Ungrouped without losing cards',()=>{
+  let order={schemaVersion:3,commands:['a','b'],commandGroups:[{id:'g.one',viewId:'GENERAL',label:'One',level:'PRIMARY',order:10,items:['a']},{id:'g.two',viewId:'GENERAL',label:'Two',level:'ADVANCED',order:20,items:['b']}]};
+  order=runtime.createCommandGroupInOrder(order,{viewId:'GENERAL',label:'Custom Review',level:'ADVANCED'});
+  const created=order.commandGroups.find((group)=>group.label==='Custom Review');assert.ok(created);assert.equal(created.level,'ADVANCED');
+  order=runtime.updateCommandGroupInOrder(order,created.id,{label:'Custom Audit',level:'PRIMARY'});assert.equal(order.commandGroups.find((group)=>group.id===created.id).label,'Custom Audit');assert.equal(order.commandGroups.find((group)=>group.id===created.id).level,'PRIMARY');
+  order=runtime.assignCommandGroupInOrder(order,'a',created.id,'GENERAL');assert.deepEqual(order.commandGroups.find((group)=>group.id===created.id).items,['a']);
+  order=runtime.moveCommandGroupInOrder(order,created.id,-1);assert.ok(order.commandGroups.find((group)=>group.id===created.id));
+  order=runtime.deleteCommandGroupInOrder(order,created.id);const fallback=order.commandGroups.find((group)=>group.label==='Other / Ungrouped');assert.ok(fallback);assert.ok(fallback.items.includes('a'));assert.equal(order.commandGroups.some((group)=>group.id===created.id),false);
+});
+
 test('runtime hard-reload source is an authoritative command/catalog replace and preserves prompts only',()=>{
   const source=require('node:fs').readFileSync(require('node:path').resolve(import.meta.dirname,'../src/planning-helper-runtime.js'),'utf8');
   assert.match(source,/preservedPrompts=memory\.helperRecords\.filter/);

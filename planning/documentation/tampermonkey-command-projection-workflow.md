@@ -85,6 +85,15 @@ english_name:
 command_family:
   `<canonical command>` / `<alias 1>` / `<English alias>`
 
+context:
+  <canonical activeContextBehavior>
+
+result:
+  <canonical expectedOutput>
+
+essence:
+  <canonical meaning>
+
 <route read block selected by the palette action>
 
 key_reminders:
@@ -99,7 +108,7 @@ user_target:
 [/PLANNING_COMMAND]
 ```
 
-Command meaning, aliases, English name, reminders and target stay identical between read variants. Only the source/read block changes.
+Command context, result, essence, aliases, English name, reminders and target stay identical between read variants. Only the source/read block changes. These three summary fields are copied from the canonical direct command definition and do not create Helper-owned semantics.
 
 ## 4. Adaptive Route-Read Variant
 
@@ -234,6 +243,10 @@ commandFamily:
 ```
 
 Do not retain creation-wording IDs, labels or aliases after the accepted repository command definition removes them.
+
+### Proposal archive command
+
+The `дай архив proposal` route is review-only. Its direct invocation body must remain self-contained enough to communicate the selected proposal scope, review-only result and non-apply boundary through canonical `context / result / essence`. It must also preserve repository Markdown references to the existing [documentation-change Use Case](use-cases/UC-DOC-PLAN-DOCUMENTATION-CHANGE.md) and [Use Case definition](principles-and-terminology.md#use-case); producing a proposal archive does not create a new Use Case.
 
 ### Replacement archive command
 

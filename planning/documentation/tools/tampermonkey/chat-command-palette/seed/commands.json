@@ -191,7 +191,7 @@
       ],
       "description": "produce one review-only proposal ZIP",
       "meaning": "Package the currently selected proposal/planning target into one review-only ZIP that is easy to inspect, discuss and compare. The archive is descriptive planning output, not an executable repository transition: it MUST NOT contain PACKAGE.json, base-files/replacement-files replacement protocol payloads or OBS-ACTION apply instructions. Preserve enough README/navigation/context inside the archive for a reviewer to understand what is proposed, what is intentionally not current truth, and which questions or migration consequences remain open.",
-      "activeContextBehavior": "Use the active selected proposal scope and current checked source/context needed to make that proposal self-contained. Do not silently convert accepted current repository state into a proposal or a proposal into accepted current semantic authority. When the proposal concerns documentation change, route its semantic planning through UC-DOC-PLAN-DOCUMENTATION-CHANGE and keep Documentation Change Coverage when the change is substantial. A Use Case is a Situation + independently useful Result + Process capability; see planning/documentation/principles-and-terminology.md#use-case rather than inventing a new Use Case merely because a proposal archive is being produced.",
+      "activeContextBehavior": "Use the active selected proposal scope and current checked source/context needed to make that proposal self-contained. Do not silently convert accepted current repository state into a proposal or a proposal into accepted current semantic authority. When the proposal concerns documentation change, route its semantic planning through [UC-DOC-PLAN-DOCUMENTATION-CHANGE](../documentation/use-cases/UC-DOC-PLAN-DOCUMENTATION-CHANGE.md) and keep Documentation Change Coverage when the change is substantial. A Use Case is a Situation + independently useful Result + Process capability; see [Use Case — Situation + Result + Process](../documentation/principles-and-terminology.md#use-case) rather than inventing a new Use Case merely because a proposal archive is being produced.",
       "traversalReadMode": "Targeted/full depending on proposal scope and whether the review archive must include multiple owners/projections.",
       "ownerFiles": [
         "planning/documentation/use-cases/UC-DOC-PLAN-DOCUMENTATION-CHANGE.md",
@@ -205,7 +205,8 @@
         "State clearly that the archive is REVIEW-ONLY / PROPOSAL when that is the selected meaning.",
         "Include enough navigation/context that a reviewer can understand the proposal without relying on hidden chat context.",
         "A proposal archive does not create a new Use Case; reuse current semantic owners and Use Cases.",
-        "Use Case definition/reference: planning/documentation/principles-and-terminology.md#use-case.",
+        "Documentation-change route: [UC-DOC-PLAN-DOCUMENTATION-CHANGE](../documentation/use-cases/UC-DOC-PLAN-DOCUMENTATION-CHANGE.md).",
+        "Use Case definition/reference: [Use Case — Situation + Result + Process](../documentation/principles-and-terminology.md#use-case).",
         "Do not apply locally, commit or push."
       ],
       "userTarget": "<proposal/planning scope to package for review>",

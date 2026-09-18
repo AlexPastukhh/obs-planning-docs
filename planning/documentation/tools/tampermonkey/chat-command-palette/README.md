@@ -2,7 +2,7 @@
 
 Status: active modular Tampermonkey helper implementation  
 Version: `0.36.0`  
-Scope: local-first, GitHub-backed **semantic command projection** with canonical methodology working Scenarios, reusable Prompts, explicit repository recovery/publish actions, editable presentation groups/order, canonical `Контекст / Результат / Суть` explanations, Favorites and a wide/resizable browser UI.
+Scope: local-first, GitHub-backed **semantic command projection** with canonical methodology working Scenarios, reusable Prompts, explicit repository recovery/publish actions, editable presentation groups/order, explicit **Primary / Advanced / Semantic Component** presentation levels, canonical `Контекст / Результат / Суть` explanations, Favorites and a wide/resizable browser UI.
 
 ## Read Order
 
@@ -68,6 +68,7 @@ Domain Modeling / DDD · SDS Lens · LENS-DOMAIN-MODELING-DDD
 
 - **Run** inserts the current canonical invocation body.
 - **Смысл** shows three compact fields — **Контекст**, **Результат**, **Суть** — projected from canonical authority rather than maintained as Helper-only prose. Direct commands project `activeContextBehavior / expectedOutput / meaning`; Use Cases project `Situation / Result / Purpose`; Target Modules and Lenses project the corresponding owner sections.
+- Direct-command **Body** also carries the same canonical `context / result / essence` fields, so focused commands such as proposal-archive production remain understandable without treating the compact route prompt as a second semantic owner.
 - **Body** shows the exact adaptive invocation body, optional full-read body, semantic binding, provenance, permissions/sources and the direct source file when one exists.
 - **Scenarios N** lists canonical working Scenarios/steps where this capability is derived as a command equivalent.
 - **Group** changes presentation-only membership inside the current Commands classification. It does not change semantic identity, ownership, invocation body or applicability.
@@ -188,9 +189,9 @@ Durable order source:
 planning/documentation/tools/tampermonkey/chat-command-palette/catalog-order.json
 ```
 
-It stores ordered stable IDs for Commands, Scenarios and Prompts plus `commandGroups[]`. Groups are **presentation-only** subdivisions inside the existing Commands classifications (`General`, `Use Cases`, `Target Modules`, `Lenses`, `Tools / Repository`). They never become methodology owners. Command order/group membership uses semantic IDs for UC/TM/Lens cards and direct IDs only for General/Tool capabilities without a semantic owner ID. Unknown/new IDs remain visible even before they are assigned to a group.
+It stores ordered stable IDs for Commands, Scenarios and Prompts plus `commandGroups[]`. Groups are **presentation-only** subdivisions inside the existing Commands classifications (`General`, `Use Cases`, `Target Modules`, `Lenses`, `Tools / Repository`). Each group also has a presentation `level`: `PRIMARY`, `ADVANCED`, or `SEMANTIC_COMPONENT`. UC/TM/Lens groups are Semantic Component surfaces; General/Tools can separate ordinary user actions from advanced/manual methodology controls. Levels and groups never become methodology owners. Command order/group membership uses semantic IDs for UC/TM/Lens cards and direct IDs only for General/Tool capabilities without a semantic owner ID. Unknown/new IDs remain visible even before they are assigned to a group.
 
-The UI exposes `↑` / `↓` and **Group**. Moving an item or changing its group changes only the local layout. `Save order GitHub` explicitly persists `catalog-order.json`.
+The UI exposes per-card **Group** plus **Manage groups** for create / rename / presentation-level change / delete / group reorder. Deleting a group moves its cards to `Other / Ungrouped`; cards are never discarded by a layout edit. Moving an item or changing group metadata changes only the local layout. `Save order GitHub` explicitly persists `catalog-order.json`.
 
 ## GitHub Actions
 
@@ -244,7 +245,7 @@ Lenses
 Tools / Repository
 ```
 
-Inside each classification, `catalog-order.json#commandGroups` supplies smaller **presentation-only** groups such as `Review / Validation`, `Architecture`, `Application Behavior`, `Evolution`, `Meaning / Ownership` and `Packages / Archives`. A group may be edited with **Group** and persisted with `Save order GitHub`; it never changes semantic scope, ownership or applicability.
+Inside each classification, `catalog-order.json#commandGroups` supplies smaller **presentation-only** groups such as `Review / Validation`, `Architecture Analysis`, `Application Behavior`, `Evolution`, `Meaning / Ownership` and `Packages / Archives`. Group headers expose whether the surface is **Primary**, **Advanced**, or a **Semantic Component**. Per-card **Group** changes membership; **Manage groups** creates, renames, reorders, reclassifies or deletes groups. Deletion falls back to `Other / Ungrouped`. `Save order GitHub` persists the layout; none of these operations changes semantic scope, ownership or applicability.
 
 `src/methodology-navigation.js` combines stable semantic identity (`semanticKind`, `semanticScope`, tool/general classification) with the optional GitHub-backed presentation group. If a current card has no group yet, compatibility/fallback grouping keeps it visible rather than dropping it. `helperPresentation.navigation` remains compatibility-only input for old cached records and is not a current semantic source.
 

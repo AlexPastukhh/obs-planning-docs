@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 2,
+  "schemaVersion": 3,
   "kind": "planning-helper-catalog-order",
   "commands": [
     "idtspe.next",
@@ -124,31 +124,30 @@
       "id": "general.methodology-flow",
       "viewId": "GENERAL",
       "label": "Methodology Flow",
+      "level": "PRIMARY",
       "order": 10,
       "items": [
         "idtspe.next",
-        "idtspe.continue",
-        "idtspe.proposal",
-        "session.proposal_driven"
+        "idtspe.continue"
       ]
     },
     {
       "id": "general.review-validation",
       "viewId": "GENERAL",
       "label": "Review / Validation",
+      "level": "PRIMARY",
       "order": 20,
       "items": [
         "critical_review.apply",
         "review_audit.recheck",
-        "idtspe.review_consistency",
-        "idtspe.findings.review",
-        "idtspe.needs.review"
+        "idtspe.review_consistency"
       ]
     },
     {
       "id": "general.application",
       "viewId": "GENERAL",
       "label": "Application Discovery / Solution",
+      "level": "PRIMARY",
       "order": 30,
       "items": [
         "application_reality.review",
@@ -158,14 +157,12 @@
       ]
     },
     {
-      "id": "general.architecture",
+      "id": "general.architecture-decision",
       "viewId": "GENERAL",
-      "label": "Architecture",
+      "label": "Architecture Decision",
+      "level": "PRIMARY",
       "order": 40,
       "items": [
-        "workspace_uses.discover",
-        "architecture_path.trace",
-        "architecture_pressure.review",
         "architecture_decision.plan"
       ]
     },
@@ -173,30 +170,76 @@
       "id": "general.documentation",
       "viewId": "GENERAL",
       "label": "Documentation",
+      "level": "PRIMARY",
       "order": 50,
       "items": [
         "documentation.links.review"
       ]
     },
     {
-      "id": "general.utilities",
+      "id": "general.user-utilities",
+      "viewId": "GENERAL",
+      "label": "User Utilities",
+      "level": "PRIMARY",
+      "order": 60,
+      "items": [
+        "current_state.report",
+        "command.plan"
+      ]
+    },
+    {
+      "id": "general.proposal-lifecycle",
+      "viewId": "GENERAL",
+      "label": "Proposal / Interaction Modes",
+      "level": "ADVANCED",
+      "order": 110,
+      "items": [
+        "idtspe.proposal",
+        "session.proposal_driven"
+      ]
+    },
+    {
+      "id": "general.review-triage",
+      "viewId": "GENERAL",
+      "label": "Finding / Need Disposition",
+      "level": "ADVANCED",
+      "order": 120,
+      "items": [
+        "idtspe.findings.review",
+        "idtspe.needs.review"
+      ]
+    },
+    {
+      "id": "general.architecture-analysis",
+      "viewId": "GENERAL",
+      "label": "Architecture Analysis",
+      "level": "ADVANCED",
+      "order": 130,
+      "items": [
+        "workspace_uses.discover",
+        "architecture_path.trace",
+        "architecture_pressure.review"
+      ]
+    },
+    {
+      "id": "general.methodology-utilities",
       "viewId": "GENERAL",
       "label": "Methodology Utilities",
-      "order": 60,
+      "level": "ADVANCED",
+      "order": 140,
       "items": [
         "idtspe.lenses.select",
         "idtspe.bootstrap",
         "application_sds.bootstrap",
         "documentation_principles.read",
-        "governance.development",
-        "current_state.report",
-        "command.plan"
+        "governance.development"
       ]
     },
     {
       "id": "uc.current-work",
       "viewId": "USE_CASES",
       "label": "Current Work Orchestration",
+      "level": "SEMANTIC_COMPONENT",
       "order": 10,
       "items": [
         "uc:UC-IDTSPE-COMPOSE-CURRENT-WORK",
@@ -209,6 +252,7 @@
       "id": "uc.methodology-maintenance",
       "viewId": "USE_CASES",
       "label": "Methodology Maintenance",
+      "level": "SEMANTIC_COMPONENT",
       "order": 20,
       "items": [
         "uc:UC-IDTSPE-MAINTAIN-TARGET-MODULE",
@@ -219,6 +263,7 @@
       "id": "uc.documentation-planning",
       "viewId": "USE_CASES",
       "label": "Documentation Planning / Review",
+      "level": "SEMANTIC_COMPONENT",
       "order": 30,
       "items": [
         "uc:UC-DOC-USE-REPOSITORY-GUIDANCE",
@@ -230,6 +275,7 @@
       "id": "uc.documentation-components",
       "viewId": "USE_CASES",
       "label": "Documentation Components / Advanced",
+      "level": "SEMANTIC_COMPONENT",
       "order": 40,
       "items": [
         "uc:UC-DOC-MAINTAIN-USE-CASE",
@@ -245,6 +291,7 @@
       "id": "tm.core-lifecycle",
       "viewId": "TARGET_MODULES",
       "label": "Core Lifecycle",
+      "level": "SEMANTIC_COMPONENT",
       "order": 10,
       "items": [
         "tm:TM-PRE-UPDATE-PLAN",
@@ -255,6 +302,7 @@
       "id": "tm.application-behavior",
       "viewId": "TARGET_MODULES",
       "label": "Application Behavior",
+      "level": "SEMANTIC_COMPONENT",
       "order": 20,
       "items": [
         "tm:TM-APPLICATION-DEFINITION",
@@ -267,6 +315,7 @@
       "id": "tm.realization-structure",
       "viewId": "TARGET_MODULES",
       "label": "Domain / Realization Structure",
+      "level": "SEMANTIC_COMPONENT",
       "order": 30,
       "items": [
         "tm:TM-DOMAIN-DISCOVERY",
@@ -280,6 +329,7 @@
       "id": "tm.evolution",
       "viewId": "TARGET_MODULES",
       "label": "Evolution",
+      "level": "SEMANTIC_COMPONENT",
       "order": 40,
       "items": [
         "tm:TM-EVOLUTION-STEP",
@@ -290,6 +340,7 @@
       "id": "tm.evidence",
       "viewId": "TARGET_MODULES",
       "label": "Evidence / Experiments",
+      "level": "SEMANTIC_COMPONENT",
       "order": 50,
       "items": [
         "tm:TM-PROTOTYPE",
@@ -300,6 +351,7 @@
       "id": "lens.meaning-ownership",
       "viewId": "LENSES",
       "label": "Meaning / Ownership",
+      "level": "SEMANTIC_COMPONENT",
       "order": 10,
       "items": [
         "lens:LENS-NEED-VALUE-SCOPE",
@@ -312,6 +364,7 @@
       "id": "lens.risk-proof",
       "viewId": "LENSES",
       "label": "Risk / Uncertainty / Proof",
+      "level": "SEMANTIC_COMPONENT",
       "order": 20,
       "items": [
         "lens:LENS-QUALITY-RISK-MATERIALITY",
@@ -325,6 +378,7 @@
       "id": "lens.representation-navigation",
       "viewId": "LENSES",
       "label": "Representation / Navigation",
+      "level": "SEMANTIC_COMPONENT",
       "order": 30,
       "items": [
         "lens:LENS-ARTIFACT-BOUNDARY-ADDRESSABILITY",
@@ -335,6 +389,7 @@
       "id": "lens.sds-product-realization",
       "viewId": "LENSES",
       "label": "SDS Product / Realization",
+      "level": "SEMANTIC_COMPONENT",
       "order": 40,
       "items": [
         "lens:LENS-APPLICATION-BOUNDARY-FEASIBILITY",
@@ -351,6 +406,7 @@
       "id": "tools.package-archive",
       "viewId": "TOOLS",
       "label": "Packages / Archives",
+      "level": "PRIMARY",
       "order": 10,
       "items": [
         "replacement_archive.create",
@@ -362,6 +418,7 @@
       "id": "tools.helper-commands",
       "viewId": "TOOLS",
       "label": "Helper / Commands",
+      "level": "PRIMARY",
       "order": 20,
       "items": [
         "helper.command.add"

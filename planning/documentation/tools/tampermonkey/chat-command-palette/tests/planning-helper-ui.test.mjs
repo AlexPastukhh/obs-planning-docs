@@ -22,3 +22,6 @@ test('favorites project selected stable IDs without requiring semantic grouping'
 
 
 test('command cards expose Run, Body and Scenarios while optional chat binding remains explicit',async()=>{const fs=await import('node:fs');const source=fs.readFileSync(new URL('../src/planning-helper-ui.js',import.meta.url),'utf8');assert.match(source,/button\('Run'/);assert.match(source,/button\('Body'/);assert.match(source,/button\(`Scenarios \${uses\.length}`/);assert.match(source,/function openCommandBody/);assert.match(source,/function openCommandScenarios/);assert.match(source,/Bind \+ Run/);assert.match(source,/capture-chat-context/);assert.doesNotMatch(source,/highlightedCommand|highlightPlacements|autoSelectCommand/);});
+
+
+test('command grouping UI can manage groups and keeps delete fallback explicit',async()=>{const fs=await import('node:fs');const source=fs.readFileSync(new URL('../src/planning-helper-ui.js',import.meta.url),'utf8');assert.match(source,/Manage groups/);assert.match(source,/function openGroupManager/);assert.match(source,/onCreateCatalogGroup/);assert.match(source,/onUpdateCatalogGroup/);assert.match(source,/onDeleteCatalogGroup/);assert.match(source,/onMoveCatalogGroup/);assert.match(source,/Other \/ Ungrouped/);assert.match(source,/SEMANTIC_COMPONENT/);});

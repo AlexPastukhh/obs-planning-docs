@@ -79,6 +79,13 @@ test('every visible command card has canonical Context, Result and Essence proje
   }
 });
 
+test('presentation levels separate Primary, Advanced and Semantic Component surfaces',()=>{
+  const general=navigation.buildMethodologyViewGroups(entries,'GENERAL');
+  assert.ok(general.some((group)=>group.level==='PRIMARY'));
+  assert.ok(general.some((group)=>group.level==='ADVANCED'));
+  for(const viewId of ['USE_CASES','TARGET_MODULES','LENSES'])for(const group of navigation.buildMethodologyViewGroups(entries,viewId))assert.equal(group.level,'SEMANTIC_COMPONENT',`${viewId}:${group.id}`);
+});
+
 test('catalog-order command groups cover every current command card exactly once',()=>{
   const grouped=order.commandGroups.flatMap((group)=>group.items);
   assert.equal(new Set(grouped).size,grouped.length);
