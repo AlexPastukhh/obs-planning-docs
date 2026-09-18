@@ -79,11 +79,26 @@ test('every visible command card has canonical Context, Result and Essence proje
   }
 });
 
-test('presentation levels separate Primary, Advanced and Semantic Component surfaces',()=>{
-  const general=navigation.buildMethodologyViewGroups(entries,'GENERAL');
-  assert.ok(general.some((group)=>group.level==='PRIMARY'));
-  assert.ok(general.some((group)=>group.level==='ADVANCED'));
-  for(const viewId of ['USE_CASES','TARGET_MODULES','LENSES'])for(const group of navigation.buildMethodologyViewGroups(entries,viewId))assert.equal(group.level,'SEMANTIC_COMPONENT',`${viewId}:${group.id}`);
+test('every command card belongs to one normal tab/group and All commands is only a cross-tab projection',()=>{
+  const views=navigation.methodologyViewDefinitions(entries);
+  assert.deepEqual(views.map((view)=>[view.id,view.count]),[['GENERAL',25],['USE_CASES',16],['TARGET_MODULES',15],['LENSES',19],['TOOLS',4]]);
+  const normalGroups=views.flatMap((view)=>navigation.buildMethodologyViewGroups(entries,view.id));
+  assert.equal(normalGroups.reduce((sum,group)=>sum+group.entries.length,0),entries.length);
+  const all=navigation.buildAllMethodologyGroups(entries);
+  assert.equal(all.reduce((sum,group)=>sum+group.entries.length,0),entries.length);
+  assert.ok(all.every((group)=>group.viewId&&group.viewLabel&&group.sourceGroupId));
+});
+
+test('group navigation selection supports isolate, multi-select and return to all',()=>{
+  const groups=navigation.buildMethodologyViewGroups(entries,'GENERAL');
+  let selected=navigation.toggleSelectedGroupId(groups,null,groups[1].id);
+  assert.deepEqual(selected,[groups[1].id]);
+  selected=navigation.toggleSelectedGroupId(groups,selected,groups[3].id);
+  assert.deepEqual(new Set(selected),new Set([groups[1].id,groups[3].id]));
+  assert.deepEqual(navigation.filterGroupsBySelection(groups,selected).map((group)=>group.id),[groups[1].id,groups[3].id]);
+  selected=navigation.toggleSelectedGroupId(groups,selected,groups[1].id);
+  assert.deepEqual(selected,[groups[3].id]);
+  assert.equal(navigation.normalizeSelectedGroupIds(groups,groups.map((group)=>group.id)),null);
 });
 
 test('catalog-order command groups cover every current command card exactly once',()=>{
