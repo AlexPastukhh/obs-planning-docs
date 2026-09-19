@@ -52,6 +52,51 @@ A separate Process file remains supporting methodology. It must be reachable fro
 
 An extracted Process should reference the Principles & Terminology and other semantic owners it materially relies on instead of copying their meaning.
 
+`Process` is reserved for orchestration that belongs to one or more Use Cases and exists to reach their independently useful Results. A sequence of steps inside another methodology component does not become a Process merely because it has order or repetition.
+
+## Component Method
+
+A **Component Method** is a reusable way for a methodology component to perform part of that component's own responsibility.
+
+A Component Method does not own an independently useful Use-Case Result and is not a second name for Process. Its consumer/owner must be clear from context or naming. Examples include a Lens evaluation method, a Target-Module production method, or a Unit-local resolution method.
+
+When a Component Method is extracted into a separate file, qualify the primary consumer when that prevents ambiguity, for example `*.lens-method.md`, `*.target-module-method.md`, or `*.unit-method.md`.
+
+## Operation
+
+An **Operation** is a bounded callable action that may be reused by one or more Processes or methodology components without owning their Result or semantic responsibility.
+
+Examples include acquiring, cropping, annotating, measuring, normalizing, extracting, converting, or otherwise transforming an input when those actions are useful reusable mechanics rather than a Use Case or component-owned result.
+
+An Operation may be invoked by a Process, Lens, Target Module, Unit, or other current owner. Reuse does not promote the Operation into a Process. When represented separately, its name should make the operational role clear, for example `*.operation.md`.
+
+## Guidance
+
+**Guidance** is reusable instructional or knowledge content for a named consumer. It helps that consumer perform its responsibility but does not itself own execution flow or the consumer's Result.
+
+When Guidance is extracted, name the consumer when useful to preserve ownership, for example `*.unit-guidance.md` or `*.target-module-guidance.md`. Do not classify generic theory/knowledge as Guidance merely because a component can read it; use the knowledge/theory owner appropriate to that area.
+
+## Checkpoint
+
+A **Checkpoint** is a bounded review, validation, readiness, or integration point used inside a Process or methodology component.
+
+A Checkpoint may define what must be examined and what state/result is expected at that point, but it does not become the owner of the larger Process or component lifecycle. When extracted, qualify its consumer when needed, for example `*.target-module-checkpoint.md`.
+
+## Consumer-Qualified Naming Principle
+
+Before selecting a new file/folder name or moving an existing artifact, classify:
+
+```text
+semantic role
++ primary consumer
++ natural semantic owner
+→ representation/path/name
+```
+
+The semantic role is determined before the filename. New creation and structural migration should use names that reveal the role and, where ambiguity is plausible, the primary consumer.
+
+Avoid catch-all architectural names such as `shared`, `helper`, or generic `workflow` when the actual role/consumer can be stated. Do not label component-local mechanics as `Process`, and do not use an unqualified generic `method` name when the consumer-specific method type is material to understanding ownership. Existing ambiguous names are migration/review findings when they materially obscure current ownership; changing a name must not silently change semantic authority.
+
 ## Use-Case Registry
 
 A **Use-Case Registry** is the current functional map of a Use-Case scope.
