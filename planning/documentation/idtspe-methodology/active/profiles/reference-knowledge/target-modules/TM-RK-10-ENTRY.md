@@ -28,13 +28,17 @@ Typical Sources: represented material/subject, existing matching Entries, proven
 
 One correctly owned and sufficiently resolved Entry record. Related Tag Assignments, Relations or Analysis may be created/refined as ordinary bank operations when useful, but are not module-defined Entry Units by default.
 
-## Candidate Unit Inventory
+## Module-defined Unit Inventory
 
 | ID | Unit | Bounded result responsibility |
 |---|---|---|
 | `RU-RKE-01` | [Entry Identity And Ownership](#ru-rke-01) | establish what subject the durable record denotes, its owning Bank and whether the record remains current |
 | `RU-RKE-02` | [Entry Representation](#ru-rke-02) | retain the material locator/provenance/intrinsic factual representation needed for useful reuse |
 | `RU-RKE-03` | [Semantic Decomposition](#ru-rke-03) | discover independently useful related subjects when deeper subject resolution is material |
+
+## Module-defined Unit Visibility
+
+Generic Unit existence/disposition semantics follow the Core [Unit / Target Step Result Model](../../../idtspe-core/shared/idtspe-unit-and-target-step-result-model.md). This module owns only the Reference-Knowledge Unit responsibilities, local materiality/omission reasoning and specialized guidance below; Contextual Units remain governed by Core formation semantics.
 
 ## Unit Checkpoint Map
 
@@ -72,7 +76,7 @@ Every material Unit follows the inherited Core applicability/materiality envelop
 
 **Result Responsibility.** The durable representation needed to locate/understand the Entry subject without mixing interpretation into intrinsic Entry state.
 
-**Applicability / Omission.** Include when locator/artifact/provenance/intrinsic factual description adds reusable value. May remain thin for subjects already directly addressable by another stable source.
+**Applicability / Omission.** Substantive resolution is material when locator/artifact/provenance/intrinsic factual description adds reusable value. If it is not material, keep `RU-RKE-02` declared with a concise omission disposition; do not manufacture representation detail merely because the Unit exists.
 
 **Inputs / Sources.** Material locators/artifacts, known origin/provenance, intrinsic factual properties and representation constraints.
 
@@ -87,7 +91,7 @@ Every material Unit follows the inherited Core applicability/materiality envelop
 
 **Result Responsibility.** A useful disposition of additional independently useful subjects discovered while resolving the Entry.
 
-**Applicability / Omission.** Include only when the current material contains meaningful internal/related subject structure whose separate identity could improve reuse/search/classification/relations/analysis. Omit for simple retention where deeper decomposition has no current value.
+**Applicability / Omission.** Include only when the current material contains meaningful internal/related subject structure whose separate identity could improve reuse/search/classification/relations/analysis. When deeper decomposition has no current value, keep this Unit declared with a concise omission disposition instead of substantive decomposition work.
 
 **Inputs / Sources.** Current Entry/material, [Entry Semantic Decomposition Guidance](../guidance/ENTRY-SEMANTIC-DECOMPOSITION-GUIDANCE.md#entry-semantic-decomposition-guidance), applicable installed Domain Pack guidance and relevant existing Entries.
 

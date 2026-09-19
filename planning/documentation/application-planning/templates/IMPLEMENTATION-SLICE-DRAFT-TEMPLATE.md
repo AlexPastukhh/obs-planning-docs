@@ -33,7 +33,7 @@ RU-SLICE-05 — Evolution / OPEN Slice Pressure
   <only known selected evolution or unresolved pressure that materially affects the Slice>
 ```
 
-All Result Units are sparse. Omit a Unit or internal detail when it is not material; do not write `N/A` merely because the template shows the possible surface.
+Declare every Module-defined Result Unit shown above. Resolve material Units to content or `OPEN`; for a non-material/non-applicable Unit, keep the heading and give one concise omission reason. Optional internal detail may remain absent when it adds no value. Do not use a bare `N/A`.
 
 ## Ownership Boundary
 

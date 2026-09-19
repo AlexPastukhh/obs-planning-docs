@@ -11,9 +11,9 @@ Own construction composition/integration only when combining multiple accepted c
 
 ## Target Step Result
 
-`Integrated Visual Construction` = accepted multi-route composition/integration meaning and integrated editable result when those responsibilities are material.
+`Integrated Visual Construction`. Generic Unit existence/disposition semantics follow the Core [Unit / Target Step Result Model](../../../idtspe-core/shared/idtspe-unit-and-target-step-result-model.md); this module owns only the visual Unit responsibilities/materiality below.
 
-## Candidate Unit Inventory
+## Module-defined Unit Inventory
 
 | Unit | Name | Bounded result responsibility |
 |---|---|---|

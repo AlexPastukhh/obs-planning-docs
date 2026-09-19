@@ -40,7 +40,7 @@ Use situational selection at four different layers rather than one global yes/no
    Does this Target Module / Lens / guidance entry actually apply?
 
 4. Unit/field materiality
-   Which declared State/Result meaning is useful enough to instantiate/populate now?
+   Which declared Result Units require substantive resolution now, and which remain visible with explicit omission disposition?
 ```
 
 No layer automatically implies the next layer must produce something.
@@ -53,8 +53,10 @@ Lens Registry scanned
 → valid result
 
 TM-FEATURE selected
-→ optional Result Unit not material
-→ leave it absent
+→ one Module-defined Result Unit not material
+→ keep the Unit visible
+→ record a concise omission reason
+→ do not perform substantive Unit work
 
 Broad Discussion clarifies concern
 → no Target needed yet
@@ -140,7 +142,7 @@ IDTSPE may also become **lighter** as work changes.
 
 - A previously relevant Lens need not be rerun when its recheck conditions have not changed.
 - A State Unit may be superseded/retired when it no longer represents current useful state.
-- An optional Result Unit may remain absent.
+- A non-material Module-defined Result Unit remains visible with an explicit omission disposition; optional fields inside a Unit may still remain absent when their contract allows it.
 - A resolved branch may stop being actively represented if its retained Decision is sufficient.
 - A checkpoint does not force a permanent checkpoint artifact.
 

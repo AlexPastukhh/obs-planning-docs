@@ -14,7 +14,7 @@ Scenario does **not** own Feature behavior, Feature semantic data, implementatio
 
 A canonical Scenario owner describes the realized/current journey composition. For a journey that is only planned, changed or newly introduced in an unrealized future state, use this module inside `TM-EVOLUTION-STEP` to produce a **Target Scenario Body**.
 
-Selected future journey meaning remains Step-owned until realization/materialization. Current Scenario owners may reference relevant Steps for navigation/revalidation but do not carry a second future roadmap.
+Selected future journey meaning remains Step-owned until realization/materialization. Current Scenario `RU-SCEN-02` specializes the shared Current-Owner Evolution Impact Projection Contract for journey-composition revalidation; it does not own a second future roadmap.
 
 ## Owned Meaning
 
@@ -29,7 +29,8 @@ A Scenario may own proportionally:
 - terminal Benefit closure / what makes the journey complete;
 - stable `SR-*` Scenario Requirements for journey-level must-holds that are not merely copied Feature behavior;
 - optional stable `SPS-*` Scenario Path Step identities when a path step needs independent cross-reference/revalidation;
-- optional E2E Proof Intent when whole-journey proof is independently useful.
+- optional E2E Proof Intent when whole-journey proof is independently useful;
+- journey-wide realization/proof/integration concerns whose natural subject is the Scenario rather than one Feature or exact implementation mechanism.
 
 ## Source Contract
 
@@ -54,6 +55,7 @@ identify actor + terminal Benefit
 → map material Screen/external participation
 → capture sparse journey must-holds
 → optionally capture E2E Proof Intent
+→ resolve journey-wide realization/proof/integration concerns when material
 ↺ reconcile with Feature / Screen peers
 ```
 
@@ -61,16 +63,7 @@ Scenario formation is non-linear. A finding in journey composition may challenge
 
 ## Unit Contract Conformance
 
-Declared target-specific `RU-*` responsibilities in this module are interpreted as **Module-defined Unit Contracts**, not output buckets only. For each material Unit:
-
-```text
-Unit responsibility
-→ relevant inputs / shared or Unit-specific reusable guidance
-→ Unit Resolution with Core Question/QRP/Proposal/Evidence/Decision state only when useful
-→ Current Result Content when sufficiently resolved
-```
-
-Module-wide Source/Knowledge/Production/Lens/validator guidance is a shared default only where it genuinely applies across Units. Unit-specific subsection text specializes that guidance. Do not duplicate Core lifecycle semantics inside Result Content, and do not require a formal Proposal/Decision when trusted Sources/Evidence determine the result without a material choice.
+This module specializes the Core [Target Module Model](../../../idtspe-core/shared/target-module-model.md) and [Unit / Target Step Result Model](../../../idtspe-core/shared/idtspe-unit-and-target-step-result-model.md). The Core owners define generic Unit lifecycle, complete-inventory/disposition and Proposal/Core-State semantics; this module defines only its SDS-specific Unit responsibilities, local materiality, production guidance, validators and handoffs below.
 
 ## Target Step-Result Contract
 
@@ -79,20 +72,21 @@ Module-wide Source/Knowledge/Production/Lens/validator guidance is a shared defa
 | Result Unit | Meaning |
 |---|---|
 | `RU-SCEN-01` | Journey Composition — actor/external participation, Feature/context links, order/branch/convergence/re-entry, continuity, terminal Benefit closure, sparse journey must-holds and optional E2E Proof Intent |
-| `RU-SCEN-02` | Evolution Impact — current-owner reverse references to concrete unrealized Evolution Steps that materially affect this realized Scenario |
+| `RU-SCEN-02` | Evolution Impact — Scenario-local current-owner reverse navigation/revalidation under the shared projection contract |
+| `RU-SCEN-03` | Journey Realization Concerns — Scenario-wide realization/proof/integration pressure without exact mechanism ownership |
 
 ### Result Unit Applicability / Materiality
 
-Declared Result Units are a possible semantic surface, not a mandatory form. Apply the Core [`Unit Applicability / Materiality / Omission Contract`](../../../idtspe-core/shared/idtspe-unit-and-target-step-result-model.md#5a-unit-applicability--materiality--omission-contract).
+Unit presence/disposition mechanics follow the Core [`Unit Applicability / Materiality / Disposition Contract`](../../../idtspe-core/shared/idtspe-unit-and-target-step-result-model.md#5a-unit-applicability--materiality--disposition-contract). The table below owns only this module's local substantive-materiality and omission-rationale triggers.
 
-| Result Unit | Make explicit when | Omit / keep sparse when |
+| Result Unit | Substantive resolution is material when | Explicit omission disposition when not material |
 |---|---|---|
 | `RU-SCEN-01` | when journey composition across actors/features/screens/external steps has independent planning value | omit optional branches/must-holds/E2E intent that are not material to continuity or terminal Benefit |
-| `RU-SCEN-02` | for a current realized Scenario, when one or more concrete unrealized Steps materially affect its journey composition and reverse navigation/revalidation is useful | omit when no relevant Step exists; omit from the Target Scenario Body of the Step that owns the future change |
+| `RU-SCEN-02` | for a current realized Scenario, when any concrete unrealized Step materially affects its journey composition; depth follows what that Step has actually resolved | omit substantive content when no concrete unrealized Step materially affects this Scenario; future Target Scenario Body omits current-owner reverse projection |
+| `RU-SCEN-03` | when a journey-wide realization/proof/integration concern can materially change feasibility, continuity or proof allocation and is not owned by one Feature/Screen/Domain/Slice/Shared owner | keep Unit declared with a concise omission reason when no Scenario-wide concern exists |
 
-Do not create `N/A` placeholders. Re-evaluate a previously omitted Unit only when its trigger/materiality changes.
 
-`RU-SCEN-01` is intentionally broad because its journey aspects jointly define one graph. `RU-SCEN-02` is separate because current-owner evolution navigation/revalidation has a different responsibility. Internal journey objects/steps/branches remain addressable within `RU-SCEN-01` when useful without becoming separate target-state Result Units.
+`RU-SCEN-01` is intentionally broad because its journey aspects jointly define one graph. `RU-SCEN-02` is separate because current-owner evolution navigation/revalidation has a different responsibility. `RU-SCEN-03` is separate because journey-wide realization/proof pressure is not journey composition itself and can be consumed by Step-wide implementation-concern analysis. Internal journey objects/steps/branches remain addressable within `RU-SCEN-01` when useful without becoming separate target-state Result Units.
 
 
 ### Explicit Unit Checkpoint Placement
@@ -107,13 +101,25 @@ Each material Unit below inherits the generic [`Unit Applicability Envelope`](..
 
 #### `RU-SCEN-02` processing envelope
 
-1. **Opening Unit Checkpoint — `RU-SCEN-02`** — inspect only concrete relevant Steps/Map relations and confirm they materially affect this current Scenario.
-2. **Unit Work — `RU-SCEN-02`** — retain compact Step references/revalidation pressure only; future journey meaning remains canonical in the Step-side Evolution Impact / Target Scenario Body.
-3. **Closing Unit Checkpoint — `RU-SCEN-02`** — ensure the current Scenario contains no copied future roadmap/Target Body and stale realized-Step references are not presented as active future impact.
+1. **Opening Unit Checkpoint — `RU-SCEN-02`** — determine whether this Scenario's journey composition is materially affected, then apply the shared [Current-Owner Evolution Impact Projection Contract](../shared/current-owner-evolution-impact-projection-contract.md).
+2. **Unit Work — `RU-SCEN-02`** — produce the Scenario-local reverse navigation/revalidation projection under that shared contract.
+3. **Closing Unit Checkpoint — `RU-SCEN-02`** — validate Scenario-local revalidation/handoff needs and the shared projection-contract guards.
+
+#### `RU-SCEN-03` processing envelope
+
+1. **Opening Unit Checkpoint — `RU-SCEN-03`** — inspect journey composition plus owner-local Feature/Screen/Domain/Slice/Shared concerns and proof pressure; bind supporting methods before applying them.
+2. **Unit Work — `RU-SCEN-03`** — retain only Scenario-wide realization/proof/integration pressure that can change journey feasibility/continuity/proof; route owner-local concerns to their owners and literal mechanisms to Exact.
+3. **Closing Unit Checkpoint — `RU-SCEN-03`** — ensure concern meaning does not become a duplicate Feature implementation concern, Slice plan or exact mechanism.
 
 ### RU-SCEN-02 — Evolution Impact
 
-For a current realized Scenario, keep only compact navigation/revalidation projection to concrete unrealized Steps that materially affect its journey composition. The Step-side `RU-EVO-02` owns future impact meaning; a changed future Scenario is represented by a Target Scenario Body in that Step. This reverse projection may be stored, generated or derived.
+This Scenario-local Unit specializes the shared [Current-Owner Evolution Impact Projection Contract](../shared/current-owner-evolution-impact-projection-contract.md). Its local affected surface is **journey composition**. The shared contract owns inclusion threshold across candidate/selected/conditional/deferred Steps, truthful planning-position projection, depth/no-copy rules and post-realization removal from active future impact. This Target Module owns only the Unit identity, Scenario-specific materiality test and local revalidation/handoff use.
+
+### RU-SCEN-03 — Journey Realization Concerns
+
+Own only material realization/proof/integration concerns whose smallest natural subject is the Scenario journey as a whole, for example cross-Feature correlation/continuity pressure, whole-journey observability/proof pressure or external-context handoff constraints that can change Scenario feasibility.
+
+Do not copy one Feature's `RU-FEAT-04`, one owner-local IR/PFR or exact transport/mechanism detail. Reference those owners. A future Target Scenario Body carries future Scenario-wide concerns; a current Scenario keeps only currently realized concerns with independent semantic value.
 
 ## Journey Shape
 
@@ -184,7 +190,19 @@ Conditional SDS/Core Lenses:
 
 ## Journey Constraint Identity
 
-Scenario owns a stable `SR-*` Requirement family for independently useful journey-level must-holds.
+Scenario owns a stable `SR-*` Requirement family for independently useful journey-level must-holds. Use the shared [`Requirement Classification And Representation Contract`](../shared/requirement-classification-and-representation-contract.md) for Type/QRPE semantics.
+
+When addressable Scenario Requirements are material, use the exact reusable table schema:
+
+```text
+Scenario Requirement | Type | Plain required interaction/journey meaning | QRPE / Examples
+```
+
+When stable `SPS-*` identities are material, use the exact reusable path schema:
+
+```text
+Scenario Path Step | Actor / application interaction | Feature / participant | Data/result | Attached SR | QRPE / Examples
+```
 
 ```text
 journey must-hold natural to the Scenario
@@ -205,7 +223,7 @@ Scenario does not own a second future roadmap. `RU-SCEN-02` exposes only current
 ```text
 known future journey/capability change
 → TM-EVOLUTION-STEP / RU-EVO-02 Scenario impact
-→ optional complete Target Scenario Body when selected journey meaning changes
+→ optional complete Target Scenario Body when candidate/selected journey meaning is sufficiently resolved for the requested Target Result depth; selection is still required for canonical integration/materialization
 → RU-SCEN-02 in current Scenario references that Step when useful
 → realization/materialization updates current Scenario authority
 ```
@@ -233,6 +251,8 @@ Screen participation is spatial/contextual, not behavior ownership
 journey must-holds are truly cross-Feature/context and do not duplicate BRs
 optional E2E proof intent remains proof intent, not test catalog
 known future change is routed through Evolution Step rather than hidden here
+current-owner reverse impact includes every concrete materially relevant unrealized Step with truthful planning position
+journey realization concerns are Scenario-wide rather than copied owner-local/exact mechanism detail
 representation remains proportional/addressable
 ```
 
@@ -253,4 +273,4 @@ E2E Proof Intent ≠ mandatory test catalog
 
 ## Handoff
 
-Scenario findings route to the natural owner through Proposal/revalidation. Implementation work starts from selected Feature meaning; Scenario remains a source when whole-journey continuity or E2E proof matters.
+Scenario findings route to the natural owner through Proposal/revalidation. Implementation work starts from selected Feature meaning; Scenario remains a source when whole-journey continuity, `RU-SCEN-03` realization concerns or E2E proof matters. Evolution Step `RU-EVO-03` may reference Scenario realization concerns when their composition creates Step-wide pressure.

@@ -11,9 +11,9 @@ Prepare, qualify and where useful transform visual material so downstream visual
 
 ## Target Step Result
 
-`Prepared Visual Material Set` = accepted material-coverage/qualification/preparation meaning from the material Units.
+`Prepared Visual Material Set`. Generic Unit existence/disposition semantics follow the Core [Unit / Target Step Result Model](../../../idtspe-core/shared/idtspe-unit-and-target-step-result-model.md); this module owns only the visual Unit responsibilities/materiality below.
 
-## Candidate Unit Inventory
+## Module-defined Unit Inventory
 
 | Unit | Name | Bounded result responsibility |
 |---|---|---|

@@ -62,8 +62,7 @@ A coherent candidate future transition becomes addressable:
 ```text
 Evolution Step: EVO-INITIAL-CAPTURE
 
-Expected Entry State:
-  no own capture application exists
+Entering From: None
 
 Driver:
   reduce interruption while preserving material + source context
@@ -341,8 +340,8 @@ A later future change such as PDF source support becomes another Step:
 ```text
 Evolution Step: EVO-PDF-SOURCE
 
-Expected Entry State:
-  current realized owners from EVO-INITIAL-CAPTURE
+Entering From:
+  EVO-INITIAL-CAPTURE
 
 Target Feature Body:
   complete post-Step FEAT-CAPTURE-ITEM meaning

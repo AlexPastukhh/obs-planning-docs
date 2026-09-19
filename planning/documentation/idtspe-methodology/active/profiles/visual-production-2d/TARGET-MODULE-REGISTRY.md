@@ -16,7 +16,7 @@
 
 ## Profile-wide Unit-selection route
 
-[Unit Selection And Lens Checkpoints](shared/UNIT-SELECTION-AND-LENS-CHECKPOINTS.md#shared-unit-selection-and-lens-checkpoints) requires every candidate Unit to be evaluated against the current situation and responsibility-specific visual Source/reference coverage before runtime projection. [Unit Need / Visual Source Coverage](lenses/frequent/LENS-VISUAL-UNIT-NEED-AND-SOURCE-COVERAGE.md#lens-visual-unit-need-and-source-coverage) performs that evaluation. Any AI `OMIT` recommendation must retain the Unit name/ID plus situation, relevant Source/reference coverage and explicit omission reason for USER selection.
+[Unit Disposition / Materiality Review And Lens Checkpoints](shared/UNIT-SELECTION-AND-LENS-CHECKPOINTS.md#shared-unit-selection-and-lens-checkpoints) keeps every Module-defined Unit instantiated/addressable and evaluates only substantive resolution depth/disposition. [Unit Need / Visual Source Coverage](lenses/frequent/LENS-VISUAL-UNIT-NEED-AND-SOURCE-COVERAGE.md#lens-visual-unit-need-and-source-coverage) performs that evaluation. Omitted substantive work retains the Unit name/ID plus concise reason; material disposition choices use normal Proposal/Decision authority.
 
 
 ## Construction route selection

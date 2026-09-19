@@ -12,19 +12,27 @@ Invocation: `CREATE | REFINE | EXTEND | REVALIDATE | REPAIR | RETIRE`
 
 <material Bank/visibility/Vocabulary context, existing knowledge and external Sources>
 
-## Unit Composition [when material]
+## Unit Composition
 
-<selected module-defined Units and any Contextual Unit that actually exists>
+<complete Module-defined Unit inventory and any Contextual Unit that actually exists>
 
-Do not reproduce every candidate Unit merely to record `OMIT`. Retain composition rationale/selection only when it has continuing decision, review, handoff or revalidation value. A clear USER request/current accepted scope may already establish obvious Unit selection under the Core contract.
+Retain composition rationale/selection only when it has continuing decision, review, handoff or revalidation value. The concrete Target result still declares every Module-defined Unit; materiality controls whether substantive Unit Resolution is required.
 
 ## Current Target Work Units
 
-<only actual selected/material Units and their Current Result Content>
+### <RU-ID> — <Name>
+
+**Methodology:** [exact reusable Unit owner](...)
+
+Disposition: `<RESOLVED | OPEN | OMITTED — concise reason>`
+
+<Current Result Content when resolved/material; no substantive filler when omitted>
+
+<repeat for every Module-defined Unit; add Contextual Units only when actually formed>
 
 ## Target Step Result
 
-<coherent composition/projection of actual Unit results>
+<complete Module-defined Unit inventory with RESOLVED / OPEN / explicit omission dispositions and proportional content, plus any Contextual Units that actually formed>
 
 ## Material Core State / Revalidation [when useful]
 

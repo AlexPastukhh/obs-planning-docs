@@ -85,6 +85,42 @@ Either part may exist alone; complex Proposals may contain both. Proposal payloa
 
 When a Proposal is Unit-local, relate it to the affected Unit Resolution. Cross-Unit/Target-wide Proposals remain valid when their natural subject spans several Units or the Target itself.
 
+## 3B. Proposal Target Result — Candidate Target Instance Under Proposal Authority
+
+When the USER/current process asks for a **Proposal of a Target Result** (for example a proposed Feature Definition, Scenario Journey Composition or another Target Module result), form an ordinary **candidate Target Instance** through the normal Target Module/Local Target Contract. Candidate Target Instance structure is owned by the canonical [Target Instance model](target-type-instance-source-and-relation-model.md#candidate-target-instance); this Proposal contract owns the enclosing candidate authority/lifecycle.
+
+```text
+enclosing Proposal / Planning Branch
+→ owns candidate authority/status
+→ contains candidate Target Instance
+
+candidate Target Instance
+→ ordinary Target identity / relations / Source Set
+→ complete Module-defined Unit inventory
+→ ordinary Unit / Requirement / object identities and fields
+→ ordinary Target Step Result shape
+```
+
+Do not write `Proposed Feature`, `candidate BR`, `if approved this Unit...` or similar status noise inside ordinary child content when the enclosing Proposal/branch already makes candidate authority unambiguous. A child item gets its own explicit status only when it materially differs from the enclosing status or has an independent lifecycle.
+
+Formation of the candidate Target Instance does **not** select it. Until normal selection/integration occurs, its target-shaped meaning remains Proposal/branch-scoped candidate meaning rather than canonical `Current Result Content`/current-owner authority. Actual selection/authority requirements still govern canonical integration, current-owner mutation, materialization and realization execution.
+
+When a Target Module uses `selected` / `accepted` wording only to describe the **complete shape** of its target state, an explicitly requested Proposal Target Result may form the same complete candidate Target Instance before semantic selection. If the Proposal is accepted, promote/integrate that same Target meaning through normal Decision/natural-owner/temporal-host semantics rather than regenerating a separately shaped "final" version.
+
+A single candidate Target Instance does not require a Planning Branch. Use a Planning Branch when counterfactual downstream exploration beyond that proposed Target is materially useful for comparison.
+
+## 3C. Smallest Sufficient Planning-State Boundary
+
+`Proposal`, `Selected`, `Current` and analogous planning authority are written at the smallest enclosing scope that makes the contained meaning unambiguous.
+
+```text
+enclosing Proposal / selected Step route / current owner body
+→ contained meaning inherits that planning status
+→ unless a nested item has a materially different explicit status/lifecycle
+```
+
+Inherited planning status does not transfer semantic ownership. Repeat status metadata only when it resolves a real ambiguity such as mixed accepted/candidate content, partial selection, independent nested Proposal lifecycle or another materially different authority boundary.
+
 ## 4. Proposal Identity, Refinement And Alternative Proposals
 
 Do not create a second `Proposal Variant` ontology merely to preserve the former Idea-Variant shape.

@@ -250,22 +250,13 @@ A Lens may surface Finding Candidates while this method runs. Their State/lifecy
 
 ## Unit Contract Conformance
 
-Declared target-specific `RU-*` responsibilities in this module are interpreted as **Module-defined Unit Contracts**, not output buckets only. For each material Unit:
-
-```text
-Unit responsibility
-→ relevant inputs / shared or Unit-specific reusable guidance
-→ Unit Resolution with Core Question/QRP/Proposal/Evidence/Decision state only when useful
-→ Current Result Content when sufficiently resolved
-```
-
-Module-wide Source/Knowledge/Production/Lens/validator guidance is a shared default only where it genuinely applies across Units. Unit-specific subsection text specializes that guidance. Do not duplicate Core lifecycle semantics inside Result Content, and do not require a formal Proposal/Decision when trusted Sources/Evidence determine the result without a material choice.
+This module specializes the Core [Target Module Model](../../../idtspe-core/shared/target-module-model.md) and [Unit / Target Step Result Model](../../../idtspe-core/shared/idtspe-unit-and-target-step-result-model.md). The Core owners define generic Unit lifecycle, complete-inventory/disposition and Proposal/Core-State semantics; this module defines only its SDS-specific Unit responsibilities, local materiality, production guidance, validators and handoffs below.
 
 ## Target Step-Result Contract
 
 **Target Step Result:** `Application Definition`
 
-The possible result surface is proportional/sparse. Generic IDTSPE State is not duplicated as target-specific fields.
+The six Module-defined Result Units are the complete Application Definition Unit inventory. Their content remains proportional: resolve material meaning, keep unresolved material explicit as `OPEN`, and give a concise omission disposition when a Unit is not material/applicable. Generic IDTSPE State is not duplicated as target-specific fields.
 
 | Result Unit | Meaning | Current projection detail |
 |---|---|---|
@@ -278,20 +269,19 @@ The possible result surface is proportional/sparse. Generic IDTSPE State is not 
 
 ### Result Unit Applicability / Materiality
 
-Declared Result Units are a possible semantic surface, not a mandatory form. Apply the Core [`Unit Applicability / Materiality / Omission Contract`](../../../idtspe-core/shared/idtspe-unit-and-target-step-result-model.md#5a-unit-applicability--materiality--omission-contract).
+Unit presence/disposition mechanics follow the Core [`Unit Applicability / Materiality / Disposition Contract`](../../../idtspe-core/shared/idtspe-unit-and-target-step-result-model.md#5a-unit-applicability--materiality--disposition-contract). The table below owns only this module's local substantive-materiality and omission-rationale triggers.
 
-| Result Unit | Make explicit when | Omit / keep sparse when |
+| Result Unit | Substantive resolution is material when | Explicit omission disposition when not material |
 |---|---|---|
-| `RU-APP-01` | when an own-Application contribution/identity must be distinguished from existing solutions or surrounding responsibility | omit only if the module itself is not needed; otherwise keep the minimum identity/contribution needed to anchor the definition |
+| `RU-APP-01` | always once an Application Definition Target is formed; its identity/contribution anchors the Target | no Unit-level omission after Target formation; keep the minimum identity/contribution anchor, and keep unresolved material explicit as `OPEN` |
 | `RU-APP-02` | when build/buy/adapt/integrate/reference position can change the selected contribution or feasibility | omit when trusted existing-solution context is already sufficient and adds no decision value |
 | `RU-APP-03` | when concrete real-life paths are needed to test the Application concept/boundary | omit detailed/refined scenarios when a small path inventory already establishes the necessary context |
-| `RU-APP-04` | when a coherent own-Application concept is being selected/refined | omit only when no Application Definition Target is justified |
+| `RU-APP-04` | always once an Application Definition Target is formed; the Application concept is a core responsibility of this Target | no Unit-level omission after Target formation; keep unresolved concept meaning explicit as `OPEN` rather than treating Target non-formation as a Unit disposition |
 | `RU-APP-05` | when inside/outside responsibility is material to feasibility, ownership or downstream planning | keep implicit only when the boundary is already unambiguous from accepted owner meaning |
 | `RU-APP-06` | when feasibility can change the concept, responsibility boundary or build/adapt/integrate position | omit when feasibility is routine/trusted and cannot materially change the selected concept |
 
-Do not create `N/A` placeholders. Re-evaluate a previously omitted Unit only when its trigger/materiality changes.
 
-Only applicable/material Result Units are projected for one concrete Target step. Result Unit identity does not imply a separate Target or file.
+Result Unit identity does not imply a separate Target or file. Generic Unit presence/disposition remains Core-owned.
 
 
 

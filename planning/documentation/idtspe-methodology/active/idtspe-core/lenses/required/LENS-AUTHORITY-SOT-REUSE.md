@@ -58,6 +58,20 @@ Are projections clearly projections?
 Are owner references preserved?
 ```
 
+## Natural Subject Check
+
+Evaluate the material under the canonical Core [Natural Subject / Ownership Boundary](../../shared/idtspe-unit-and-target-step-result-model.md#natural-subject--ownership-boundary); this Lens does not redefine that ownership routing.
+
+Operationally ask:
+
+- what semantic subject does this meaning actually describe?
+- would keeping it here duplicate another Target/Unit/owner's authority?
+- if several owners are involved, is the **relation/composition itself** genuinely the current Target's subject, or is this merely a convenient collection point?
+- is exact realization detail being mistaken for durable semantic authority?
+- is ownership unclear/conflicting enough to surface a Finding Candidate?
+
+Physical file location, a planning table/Step or a Markdown link is evidence about representation/navigation only, not ownership.
+
 ## Findings / Outputs
 
 ```text

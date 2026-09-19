@@ -33,8 +33,10 @@ The current owners remain current truth. Future changes below are Step-owned unt
 ## Evolution Step Target State — relevant projection
 
 ```text
-Expected Entry State:
-  current FEAT-CAPTURE-ITEM + CaptureItem + current capture Slice implementation
+Entering From:
+  EVO-INITIAL-CAPTURE
+
+Semantic predecessor meaning is resolved by following that materialized Step/current owners; it is not copied into a second Entry-State inventory.
 
 Selected future route:
   explicit source-variant boundary

@@ -20,7 +20,7 @@ smallest useful IDTSPE projection
 ├─ zero/one/several Targets
 │  ├─ Target Module / Local Target Contract
 │  ├─ actual Source Set / Source State Units
-│  └─ applicable Target Work Units / Result Units
+│  └─ complete Module-defined Unit inventory + any actually formed Contextual Units
 ├─ selected/applicable Lenses
 ├─ selected registry/Knowledge entries
 ├─ active profile components
@@ -60,7 +60,8 @@ IDTSPE Work Context
 ├─ material Work-Context / cross-Target Core State Units
 ├─ zero/one/several Targets
 │  ├─ material Source State Units / Source bindings
-│  ├─ material Target Work Units / Result Units
+│  ├─ complete Module-defined Unit inventory with dispositions/content
+│  ├─ any Contextual Units that actually formed
 │  └─ Target-level Core State Units when material
 ├─ Methodology Usage State when continuation/revalidation value exists
 └─ physical representation only when useful

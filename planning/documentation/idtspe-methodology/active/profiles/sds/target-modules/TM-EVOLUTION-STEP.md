@@ -5,17 +5,19 @@ Role: persistent bounded future-transition planning owner
 
 ## Purpose
 
-Own one coherent **not-yet-realized** qualitative transition from an expected Entry State toward one or more concrete candidate/selected future target-state routes.
+Own one coherent **not-yet-realized** qualitative transition toward one or more concrete candidate/selected future target-state routes.
 
-An Evolution Step is the canonical SDS semantic owner for materially planned future state. Current natural owners remain authority for accepted current semantic contracts until the represented transition is actually implemented and the required proof/revalidation succeeds.
+An Evolution Step is the canonical SDS semantic owner for materially planned future downstream state. Current natural owners remain authority for accepted current semantic contracts until the represented transition is implemented and the required proof/revalidation succeeds.
 
-A Step may be Behavioral, Implementation or Mixed. Material downstream consequences for Feature, Scenario, Screen, Domain, Slice and Shared are represented through bounded impacts and complete Target Owner Bodies. Application Definition is upstream intent/value authority and may drive a Step but is not a Step Target Owner Body.
+A Step may be Behavioral, Implementation or Mixed. Material downstream consequences for Feature, Scenario, Screen, Domain, Slice and Shared are represented through complete Target Owner Bodies and bounded Impact Units without turning the Step into a duplicate owner catalog.
 
 ```text
 current natural owners + actual implementation / Evidence
 + transition driver / constraints
-+ one or more Feature target states
-+ material Evolution Impacts
++ direct semantic predecessor relation(s)
++ future Target Owner Bodies / bounded Impacts
++ Step-wide implementation concerns
++ transition/proof/materialization obligations
 = Evolution Step planning state
 ```
 
@@ -42,101 +44,55 @@ Target Owner Materialization
 Selection is not realization:
 
 ```text
-Proposal selected
-≠ target body materialized
-≠ current owner changed
+CANDIDATE / PROBABLE / CONDITIONAL / DEFERRED Step
+≠ SELECTED Step
+
+SELECTED Step
+≠ REALIZED Step
+
+Planning Complete
+≠ Realization Start Ready
 ```
 
-An implementation defect does not silently rewrite the current semantic owner. A selected correction/change that is still unrealized belongs to an Evolution Step until realization/materialization.
+Candidate route meaning remains Core Proposal/Planning-Branch scoped until normal authority selects it. A Planning Branch may reuse this Step's production methods and carry branch-local Target Bodies/Impacts for comparison without becoming canonical Step Result authority.
 
-Absence is a valid current Entry State. Creating the first Feature, Scenario, Screen, Domain, Slice, Shared capability or owner-local Requirement may therefore be planned from `not present` to selected post-Step meaning.
+## Step Semantic Prerequisite — `Entering From`
 
-For Requirements and other owner-local must-holds, `not present` here means **semantically absent from accepted current owner meaning**, not merely absent as an explicit sentence/ID/file fragment.
+`Entering From` is the canonical semantic-prerequisite relation for an Evolution Step.
 
 ```text
-newly surfaced owner meaning
-→ is it already entailed by accepted current semantics?
+current Step requires prior semantic evolution
+→ reference the smallest sufficient direct predecessor Step set
 
-YES
-→ CURRENT SEMANTIC COMPLETION and/or CURRENT REALIZATION CORRECTION
-→ current natural owner remains temporal authority
-→ this Step is not the semantic host merely because representation was missing
-
-NO + new/revised meaning is selected and materially unrealized
-→ FUTURE SEMANTIC CHANGE
-→ Evolution Step may be the temporal host
+predecessor Step authority
++ its realized/materialized Target Owner meaning
+→ defines the semantic state required before realization of this Step may start
 ```
 
-`Discovery time ≠ semantic time`; `representation absence ≠ semantic absence`.
+Do not maintain a second hand-authored `Expected Entry State` inventory that copies predecessor Feature/Scenario/Domain/Slice/Shared state.
 
-## Step Identity, Alternatives And Uncertainty
-
-A Step may be worth addressability before one final route is selected when the transition itself is concrete enough to plan/review. A Core `Need Candidate` / Desired Outcome or newly explicit Requirement alone is change pressure/representation pressure, not sufficient Step formation: disposition must first establish that the meaning is **not already entailed by accepted current semantics** and then establish enough concrete materially unrealized transition meaning to justify a coherent Step boundary. Reuse an existing Step when the resolved change naturally belongs to that transition. Use existing Core semantics rather than a Step-specific alternative ontology:
+Examples:
 
 ```text
-materially different future route
-→ Proposal
+greenfield Step
+Entering From: None
 
-route needs deep downstream counterfactual exploration
-→ Planning Branch
+single direct predecessor
+Entering From: EVO-02
 
-USER / applicable authority selection
-→ Decision
+several independent direct predecessors
+Entering From:
+- EVO-A
+- EVO-B
 ```
 
-`ASSUMED_FOR_BRANCH ≠ SELECTED`; `SELECTED ≠ REALIZED`.
+Direct predecessors are the smallest sufficient set. Transitive predecessor history is followed through predecessor Step authority; do not copy the full chain into every later Step.
 
-A Planning Branch may reuse this Step's Feature/Impact/Target Owner Body production methods and carry **branch-local candidate meaning** as downstream branch planning. That meaning is branch-scoped Target result/state for comparison, not canonical selected Step Result. After root selection, run the normal branch promotion/consistency check before integrating justified meaning into the canonical Step Result.
+A Step may be **Planning Complete** while a selected/planned predecessor is not yet realized. **Realization Start Readiness** is different: every direct predecessor must be realized/materialized before this Step may start realization.
 
-Uncertainty/confidence is independent of selection and realization. Use the Core uncertainty/assumption/evidence model. When a compact summary is useful, state **subject + basis**, for example:
+An optional human-readable entry-state summary may be derived from `Entering From` and current materialized owner truth, but it is a projection only and never separately maintained authority.
 
-```text
-Target-state confidence: MEDIUM
-Basis: current API docs + prototype Evidence
-Main uncertainty: provider callback ordering in production
-Recheck when: real integration Evidence exists
-```
-
-Do not invent numeric probabilities or a Step-specific confidence lifecycle. Attach material uncertainty to the smallest useful subject: the whole Step, one Proposal/Branch, one `Evolution Impact`, one Target Owner Body, or one assumption/Decision.
-
-## Step Semantics
-
-For a selected route:
-
-```text
-Expected Entry State
-+ Feature target state(s)
-+ material Evolution Impacts
-+ transition-only obligations when needed
-= coherent post-Step target state
-```
-
-Annotations relative to Entry State may be used for provenance/review:
-
-```text
-[EXISTING]
-[NEW]
-[CHANGED]
-[REMOVED]
-```
-
-These annotations are change/provenance views. They do **not** replace a complete Target Owner Body when such a body is required.
-
-Meaning created by an earlier required Step is `[EXISTING]` in a later Step once it belongs to that later Step's expected Entry State.
-
-## Relations
-
-Keep two relations distinct:
-
-```text
-Entering From / semantic prerequisite
-= predecessor target meaning must already be realized/materialized because it forms Entry State
-
-Realization Prerequisite
-= implementation foundation that must be realized before implementation begins, without becoming product semantics
-```
-
-`enables` is derived reverse navigation. Do not turn a realization foundation into a fake semantic predecessor or total chronology.
+`enables` may be derived reverse navigation. Do not turn technical implementation pressure into a fake semantic predecessor or force one total chronology.
 
 ## Step Kinds
 
@@ -150,36 +106,11 @@ Use one or more proportionally; Kinds are composable rather than a mandatory exc
 
 The kind describes transition character; it does not replace the target-state contract.
 
-## Source / Readiness Contract
-
-Before realization, compare actual current state to expected Entry State and all Realization Prerequisites.
-
-Each substantial Step owns:
-
-```text
-Readiness: READY | NOT_READY
-reason / blockers
-Step Q/R/P with blocking significance
-```
-
-`READY` means semantic Entry State and realization prerequisites are realized, intended CREATE/REPLACE owners have complete enough Target Bodies, the Materialization Set is truthful, and no blocking Q/R/P remains. `READY ≠ REALIZED`.
-
-The Map projects only the enum; detailed reasons stay in the Step.
-
 ## Unit Contract Conformance
 
-Declared target-specific `RU-*` responsibilities in this module are interpreted as **Module-defined Unit Contracts**, not output buckets only. For each material Unit:
+This module specializes the Core [Target Module Model](../../../idtspe-core/shared/target-module-model.md) and [Unit / Target Step Result Model](../../../idtspe-core/shared/idtspe-unit-and-target-step-result-model.md). Core owns generic Unit lifecycle/presence/disposition semantics; this module owns the Evolution-Step-specific Unit identities, dependencies, materiality, production guidance, validators and handoffs below.
 
-```text
-Unit responsibility
-→ relevant inputs / shared or Unit-specific reusable guidance
-→ Unit Resolution with Core Question/QRP/Proposal/Evidence/Decision state only when useful
-→ Current Result Content when sufficiently resolved
-```
-
-`RU-EVO-02` is a repeatable Unit Contract: instantiate one bounded Unit per material affected/proposed subject when separate resolution/addressability is useful. Do not create placeholder Impact Units for unaffected subjects.
-
-Module-wide Source/Knowledge/Production/Lens/validator guidance is a shared default only where it genuinely applies across Units. Unit-specific subsection text specializes that guidance. Do not duplicate Core lifecycle semantics inside Result Content, and do not require a formal Proposal/Decision when trusted Sources/Evidence determine the result without a material choice.
+`RU-EVO-02` is a repeatable Module-defined Unit **family**: the `RU-EVO-02` Unit itself is part of every formed Step inventory, while bounded child Impact instances exist only for actual material affected/proposed subjects. If there are no material Impact subjects, the Unit carries its local omission disposition rather than manufacturing placeholder child impacts. The other Step Units are one-per-Step responsibilities.
 
 ## Target Step-Result Contract
 
@@ -187,99 +118,136 @@ Module-wide Source/Knowledge/Production/Lens/validator guidance is a shared defa
 
 | Result Unit | Meaning |
 |---|---|
-| `RU-EVO-01` | Future-State Plan / Step Frame — Expected Entry State, transition scope/driver, Feature target states, Step relations, transition/proof obligations, uncertainty/revalidation references and Target Owner Materialization Set; unresolved alternatives remain Core Proposal/Planning Branch state |
-| `RU-EVO-02` | Evolution Impact — repeatable bounded future consequence for one Scenario/Screen/Domain/Slice/Shared or unresolved ownership/responsibility subject, including selected planning meaning and an optional Target Owner Body when sufficiently resolved |
+| `RU-EVO-01` | Step Frame / Semantic Relations — Step identity/boundary/driver/kinds, `Driven By`, direct `Entering From`, and composition/index of post-Step Target Owner Bodies without copying their bodies |
+| `RU-EVO-02` | Evolution Impact — repeatable bounded future consequence for one Scenario/Screen/Domain/Slice/Shared or unresolved ownership/responsibility subject |
+| `RU-EVO-03` | Step-wide Implementation Concerns — cross-owner realization/proof/integration pressure whose natural subject is the transition as a whole; owner-local concerns are referenced, not copied |
+| `RU-EVO-04` | Target Owner Materialization Set — planned `CREATE / REPLACE / RETIRE` semantic authority transitions after successful realization/proof |
+| `RU-EVO-05` | Transition / Proof Obligations — one-time migration/cutover/compatibility/bridge/proof obligations whose natural subject is the transition rather than steady-state owners |
+| `RU-EVO-06` | Planning Completeness / Realization Start Readiness — separate conclusions about whether the Step is sufficiently planned and whether realization may begin now |
 
 ### Result Unit Applicability / Materiality
 
-Declared Result Units are a possible semantic surface, not a mandatory form. Apply the Core [`Unit Applicability / Materiality / Omission Contract`](../../../idtspe-core/shared/idtspe-unit-and-target-step-result-model.md#5a-unit-applicability--materiality--omission-contract).
+Unit presence/disposition mechanics follow the Core [`Unit Applicability / Materiality / Disposition Contract`](../../../idtspe-core/shared/idtspe-unit-and-target-step-result-model.md#5a-unit-applicability--materiality--disposition-contract). The table below owns only Evolution-Step-specific substantive-materiality and omission-rationale triggers.
 
-| Result Unit | Make explicit when | Omit / keep sparse when |
+| Result Unit | Substantive resolution is material when | Explicit omission disposition when not material |
 |---|---|---|
-| `RU-EVO-01` | when a concrete unrealized transition has enough meaning to deserve planning/review/addressability, whether its final route is selected or represented by real candidate branches | omit the whole Step for vague speculative “may change later” pressure with no concrete transition, driver, route or decision value |
-| `RU-EVO-02` | when the Step materially affects or may introduce/redistribute/retire one Scenario/Screen/Domain/Slice/Shared responsibility and that impact benefits from bounded resolution/addressability | omit unaffected subjects and vague hypothetical pressure; keep OPEN ownership explicit rather than inventing a premature owner |
+| `RU-EVO-01` | always once a concrete Evolution Step Target is formed; it owns Step identity/boundary/driver/relations | no Unit-level omission: vague speculative pressure that does not deserve Step identity fails the Target-level Step formation gate, so no Evolution Step Target should be formed |
+| `RU-EVO-02` | one Scenario/Screen/Domain/Slice/Shared/OPEN responsibility is materially affected and bounded impact resolution helps planning | `Omitted: no material peer/supporting-owner impact subjects`; do not instantiate child Impact entries for unaffected subjects |
+| `RU-EVO-03` | owner-local concern surfaces compose into a cross-owner Step-wide realization/proof/integration concern | `Omitted: no Step-wide implementation concern; owner-local concerns remain sufficient` |
+| `RU-EVO-04` | the Step is intended eventually to create/replace/retire downstream semantic owner authority | `Omitted` only for an intentionally non-materializing investigative Step; ordinary product/application Steps should resolve the set |
+| `RU-EVO-05` | transition-only migration/cutover/compatibility/proof meaning exists | `Omitted: no transition-only/proof obligation beyond ordinary owner/Exact proof` |
+| `RU-EVO-06` | always for a concrete Step that may be reviewed/realized | do not omit; keep conclusions `INCOMPLETE/BLOCKED` with reasons when not ready |
 
-Do not create `N/A` placeholders. Re-evaluate previously omitted detail only when its trigger/materiality changes.
+`RU-EVO-02` repeatability does not require placeholder child Impact instances for unaffected owners. The complete-inventory rule still requires the parent `RU-EVO-02` Unit responsibility to be visible with its resolved/open/omitted disposition; child Impact instances remain proportional to actual material subjects.
 
-### Explicit Unit Checkpoint Placement
+## Explicit Unit Checkpoint Placement
 
-Each material Unit inherits the generic [`Unit Applicability Envelope`](../../../idtspe-core/shared/idtspe-unit-and-target-step-result-model.md#5b-unit-applicability-envelope--opening--in-unit--closing-checkpoints).
+Each material Unit inherits the Core [`Unit Applicability Envelope`](../../../idtspe-core/shared/idtspe-unit-and-target-step-result-model.md#5b-unit-applicability-envelope--opening--in-unit--closing-checkpoints), including Methodology binding before substantive work.
 
 #### `RU-EVO-01` processing envelope
 
-1. **Opening Unit Checkpoint — `RU-EVO-01`** — resolve/reuse current applicable Core + active-profile Lens registry candidates and any Unit-triggered supporting registry pressure before material work.
-2. **Unit Work — `RU-EVO-01`** — resolve the Step frame and Feature target states, compose material `RU-EVO-02` results, keep unresolved alternatives in Core Proposal/Planning Branch state and integrate only actually selected route meaning into canonical Step Result.
-3. **Closing Unit Checkpoint — `RU-EVO-01`** — disposition material Findings/owner consequences, confirm selection/uncertainty/readiness truthfully and ensure unrealized meaning has not leaked into current-owner authority.
+1. **Opening Unit Checkpoint — `RU-EVO-01`** — bind this Unit method; inspect upstream driver/current owner truth and relevant Steps Map relations.
+2. **Unit Work — `RU-EVO-01`** — establish Step identity/boundary, `Driven By`, direct `Entering From`, kinds and post-Step owner-body composition; do not author a duplicate Expected Entry State.
+3. **Closing Unit Checkpoint — `RU-EVO-01`** — verify semantic predecessors are direct/minimal, owner-local future meaning lives in Target Owner Bodies and the Step frame does not steal their bodies.
 
 #### `RU-EVO-02` processing envelope — one per material Impact subject
 
-1. **Opening Unit Checkpoint — `RU-EVO-02`** — resolve/reuse applicable Lenses/supporting Target Modules for this specific affected/proposed subject and distinguish current owner truth from Step-owned future meaning.
-2. **Unit Work — `RU-EVO-02`** — resolve only this Impact's useful future consequence; use supporting Scenario/Screen/Domain/Slice/Shared methods and Discovery Working Plans proportionally, retain selected planning Result Content only when it has continuing Step value, and keep candidate alternatives Proposal/Branch scoped.
-3. **Closing Unit Checkpoint — `RU-EVO-02`** — ensure selected durable must-holds are in the natural Target Owner Body/Decision rather than hidden in planning detail, and ensure any materializable owner change converges on one coherent post-Step Target Owner Body.
+1. **Opening Unit Checkpoint — `RU-EVO-02`** — bind this Unit plus the affected owner's supporting Target Module/Lenses as needed; distinguish current owner truth from Step-owned future meaning.
+2. **Unit Work — `RU-EVO-02`** — resolve only this subject's useful future consequence/ownership pressure; use supporting owner/discovery methods proportionally.
+3. **Closing Unit Checkpoint — `RU-EVO-02`** — durable owner-local future meaning converges into one coherent Target Owner Body/Decision instead of remaining duplicated in Impact detail.
+
+#### `RU-EVO-03` processing envelope
+
+1. **Opening Unit Checkpoint — `RU-EVO-03`** — inspect affected owner-local concern/feasibility/Requirement surfaces before inventing Step-wide concern meaning.
+2. **Unit Work — `RU-EVO-03`** — reference owner-local concerns and retain only cross-owner sequencing/integration/foundation/proof pressure whose smallest natural subject is the whole transition.
+3. **Closing Unit Checkpoint — `RU-EVO-03`** — ensure exact mechanism stayed in Exact and owner-local concerns were not copied into the Step.
+
+#### `RU-EVO-04` processing envelope
+
+1. **Opening Unit Checkpoint — `RU-EVO-04`** — inspect represented candidate/selected/assumed route Target Owner Bodies and current owner existence.
+2. **Unit Work — `RU-EVO-04`** — disposition each materially changed downstream owner as `CREATE / REPLACE / RETIRE`.
+3. **Closing Unit Checkpoint — `RU-EVO-04`** — ensure physical file operations were not confused with semantic materialization and each changed owner has one coherent post-Step body.
+
+#### `RU-EVO-05` processing envelope
+
+1. **Opening Unit Checkpoint — `RU-EVO-05`** — identify only transition-wide one-time/proof obligations not already owned as steady-state Requirement/owner content.
+2. **Unit Work — `RU-EVO-05`** — resolve migration/backfill/cutover/compatibility/bridge/proof obligations proportionally.
+3. **Closing Unit Checkpoint — `RU-EVO-05`** — ensure steady-state Feature/Scenario/Domain/Slice/Shared meaning was not displaced into transition obligations.
+
+#### `RU-EVO-06` processing envelope
+
+1. **Opening Unit Checkpoint — `RU-EVO-06`** — inspect the actual Step result, Q/R/P/Evidence, direct predecessor realization state and requested planning/realization depth.
+2. **Unit Work — `RU-EVO-06`** — resolve **Planning Completeness** independently from **Realization Start Readiness**.
+3. **Closing Unit Checkpoint — `RU-EVO-06`** — planning completeness is not blocked merely by unrealized predecessors; Start Readiness is not marked READY until every direct predecessor is realized/materialized and other start conditions are satisfied.
+
+## `RU-EVO-01` — Step Frame / Semantic Relations
+
+Own only transition-wide framing/relations:
+
+```text
+Step ID / name
+transition purpose / boundary / driver
+Driven By upstream Application Definition / Decision refs when material
+Step Kind(s)
+Entering From: direct semantic predecessor Step(s) | None
+composition/index of materially changed Target Owner Bodies
+candidate/selected/conditional/deferred authority through ordinary Core Proposal/Decision/Branch semantics
+```
+
+`Entering From` points to Step authority, not a Feature generation label alone. If the same Feature changes through several Steps, predecessor Step identity preserves which generation is required.
+
+Do not copy predecessor Target Owner Body state into a separately authored Entry-State inventory.
 
 ## Feature Target State Contract
 
-Feature is the central behavioral target of an Evolution Step. Every Step identifies one or more Feature target states.
+Feature is the primary behavioral owner when Feature behavior is created/changed by the Step.
 
 ```text
-Feature unchanged by this Step
-→ reference the current Feature as retained post-Step behavior
+NEW/CHANGED Feature
+→ complete ordinary TM-FEATURE Target Feature Body
+
+Feature behavior intentionally unchanged
+→ reference retained current/precedessor-realized Feature behavior
 → do not copy a full Target Feature Body merely for completeness
-
-Feature NEW
-→ one complete Target Feature Body
-→ Target Owner Materialization: CREATE
-
-Feature CHANGED
-→ one complete replacement Target Feature Body
-→ Target Owner Materialization: REPLACE
-
-Feature RETIRED
-→ explicit retirement consequence
-→ Target Owner Materialization: RETIRE
 ```
 
-Every selected `NEW` or `CHANGED` Feature uses the ordinary complete `TM-FEATURE` **Feature Definition** contract. The body must be readable as the Feature expected after the Step and suitable as the semantic source for later materialization. `[EXISTING] / [NEW] / [CHANGED] / [REMOVED]` annotations may explain provenance but never substitute for the complete Target Feature Body.
+A Behavioral/Mixed Step normally has one or more material Feature target states. An implementation-focused transition may legitimately change Domain/Slice/Shared realization or transition architecture while behavior remains unchanged; it must not invent a changed Feature merely to satisfy structure.
 
-A pure Refactoring/Forced Migration may keep Feature behavior unchanged while materially changing Domain/Slice/Shared realization; the Step remains behaviorally grounded by the retained Feature target state.
-
-Feature does not use `RU-EVO-02` as its primary future mechanism. Current Feature representation may keep lightweight relevant-Step navigation where useful, but future Feature authority is the Step's Feature target state/Target Feature Body.
+Every represented `NEW` or `CHANGED` Feature on the active candidate/selected Step route uses the ordinary complete `TM-FEATURE` **Feature Definition** contract. The body is readable as the Feature expected after the Step; candidate authority remains enclosing Proposal/Step state until normal selection, after which the same body may become semantic source for materialization. Feature does not use `RU-EVO-02` as its primary future mechanism; in particular, `RU-EVO-02` is not a Feature delta mechanism.
 
 ## `RU-EVO-02` — Evolution Impact
 
 Use one bounded Impact for one smallest useful subject. Normal subjects are:
 
 ```text
-existing Scenario
-existing Screen
-existing Domain owner
-existing Slice owner
-existing Shared capability
-bounded ownership/responsibility pressure whose final owner is still OPEN
+existing/new Scenario
+existing/new Screen
+existing/new Domain owner
+existing/new Slice owner
+existing/new Shared capability
+bounded ownership/responsibility pressure whose final owner is OPEN
 ```
 
-Current Result Content is proportional. It may contain:
+Feature future meaning is represented directly by Target Feature Body, not `RU-EVO-02`.
+
+Impact Current Result Content is proportional and may contain:
 
 ```text
-Subject / current state (including ABSENT/OPEN ownership when accurate)
-Evolution Kinds when useful
-[EXISTING] / [NEW] / [CHANGED] / [REMOVED] provenance when useful
-selected future consequence / change-isolation meaning
-selected Domain/Slice Discovery Result Content with continuing Step value
+Subject / current state / OPEN ownership when accurate
+selected/candidate future consequence or change-isolation meaning
+selected Discovery Result Content with continuing Step value
 uncertainty / Evidence basis / recheck condition when material
 optional Target Scenario/Screen/Domain/Slice/Shared Body when sufficiently resolved
 materialization consequence reference when resolved
 ```
 
-An Impact may remain intentionally shallow when that is enough to guide current architecture/evolution decisions. Do not force a complete future owner merely to record known direction.
+An Impact may remain intentionally shallow when that is enough to guide current planning. For new/redistributed responsibility, keep owner outcome `OPEN` until supporting discovery/decision resolves natural owners.
 
-For a new/redistributed responsibility, keep owner outcome `OPEN` until supporting discovery/decision resolves whether there are zero/one/several natural owners. Do not name a future Domain/Slice/Shared owner merely to make the Impact look complete.
-
-Selected implementation-shaped planning detail is not automatically `BR-*`, `IR-*`, `PFR-*`, a Decision or an exact implementation commitment. If detail must remain a durable must-hold after realization, route it to its natural Target Owner Body/Decision. Literal files/code/tests/config/schema remain Core Exact Realization territory.
+Selected implementation-shaped planning detail is not automatically `BR-*`, `SR-*`, `IR-*`, `PFR-*`, a Decision or an exact implementation commitment. Durable owner-local future must-holds converge into the corresponding Target Owner Body. Literal files/code/tests/config/schema remain Core Exact Realization territory.
 
 ## Target Owner Bodies
 
-Target Owner Bodies use the affected owner's ordinary Target Module/contract shape and remain Step-owned future meaning until materialization.
+Target Owner Bodies use each affected owner's ordinary Target Module/contract shape and remain Step-owned future meaning until materialization.
 
 Examples:
 
@@ -292,15 +260,13 @@ Target Slice Body
 Target Shared Body
 ```
 
-These are descriptive roles inside the Step, **not new Core State/Target types** such as `FutureFeature` or `FutureDomain`.
+These are descriptive roles inside the Step, not new Core State/Target types.
 
-For selected `NEW`/`CHANGED` Features, the full Target Feature Body rule above is mandatory. For Scenario/Screen/Domain/Slice/Shared, an Impact may remain shallower until a selected owner change is sufficiently resolved; when the Step intends to materialize a `CREATE` or `REPLACE`, the corresponding Target Owner Body must be complete enough for the requested realization/materialization depth.
+One natural owner on one Step route has **one coherent canonical post-Step Target Owner Body**. Several Impact aspects/resolution threads must converge into that body rather than create competing future versions.
 
-One natural owner on one selected Step route has **one coherent canonical post-Step Target Owner Body**. Several Impact aspects/resolution threads must converge into that body rather than create competing future versions.
+Supporting Target Modules may be used inside the Evolution Step without automatically forming a second Target Instance. For the selected route, selected output is Step-owned future target-state meaning. For unresolved alternatives, output remains Proposal/Planning-Branch scoped.
 
-Supporting Target Modules may be used inside the Evolution Step without forming a second Target Instance when their reusable production method is useful. For the selected route, their selected output is Step-owned future target-state meaning. For unresolved alternatives, output remains explicitly Proposal/Planning-Branch scoped and is not canonical Step Result authority.
-
-Owner-local `BR-*`, `IR-*`, `PFR-*` or other must-holds belonging to the selected future state stay inside the corresponding Target Owner Body. Candidate alternative requirements stay branch/proposal-scoped until selection. Current owner Requirements remain unchanged until materialization.
+Owner-local `BR-*`, `SR-*`, `IR-*`, `PFR-*` and other must-holds stay inside the corresponding Target Owner Body. Candidate alternative Requirements remain Proposal/Branch scoped until selection. Current owner Requirements remain unchanged until materialization.
 
 Unaffected owners are referenced rather than copied.
 
@@ -308,25 +274,64 @@ Unaffected owners are referenced rather than copied.
 
 `TM-DOMAIN-DISCOVERY` and `TM-IMPLEMENTATION-SLICE` remain working/discovery Targets, not durable semantic owners. Their exploratory Unit Resolution and rejected alternatives are transient by default.
 
-However, selected Current Result Content may have continuing pre-realization handoff/review/revalidation value while the Step remains unrealized. In that case integrate or project only that useful selected meaning into the applicable `RU-EVO-02` rather than retaining the whole discovery Target as competing authority.
+Selected Current Result Content may have continuing pre-realization value. In that case integrate/project only that useful selected meaning into the applicable `RU-EVO-02` and/or Target Owner Body; do not retain the whole discovery Target as competing authority.
+
+## `RU-EVO-03` — Step-wide Implementation Concerns
+
+This Unit replaces the former `Realization Prerequisite` concept. It does **not** own a list of technical foundations that must already exist before implementation. It owns only material realization/proof/integration pressure whose natural subject is the **whole transition**.
+
+Before writing Step-wide concern meaning, inspect affected reusable owner surfaces where defined:
 
 ```text
-Domain Discovery Working Plan
-→ selected useful Result Content
-→ applicable Domain Evolution Impact
-→ optional Target Domain Body when durable post-Step Domain meaning is resolved
-
-Slice Discovery Working Plan
-→ selected useful Result Content
-→ applicable Slice/Domain/Shared Evolution Impact(s)
-→ optional Target Slice/Domain/Shared Body when durable post-Step meaning is resolved
+Target Feature Body / RU-FEAT-04 Implementation Concerns
+Target Scenario Body / RU-SCEN-03 Journey Realization Concerns
+Application Definition / RU-APP-06 Realization Feasibility
+  when upstream feasibility still materially constrains this Step
+Target Domain / Slice / Shared owner-local IR/PFR and relevant owner constraints
+Screen/spatial constraints when they materially affect cross-owner realization
 ```
 
-Persistence of selected planning meaning does not promote it into semantic owner authority. After realization, actual implementation becomes current realization truth; durable semantic meaning materializes to natural owners; pre-realization planning detail may remain only as lineage when independently useful.
+Then apply Natural Subject:
 
-## Target Owner Materialization Set
+```text
+concern belongs to one Feature/Scenario/Domain/Slice/Shared owner
+→ keep/reference it there
 
-For each materially affected owner whose selected post-Step authority changes, state the semantic transition needed after successful realization:
+several owner-local concerns create one cross-owner ordering/integration/foundation/proof pressure
+whose subject is the whole transition
+→ RU-EVO-03 owns that Step-wide concern
+→ reference contributing owner-local concerns
+
+literal GitHub Action / file / class / config / schema / call sequence
+→ Exact Realization / transient exact planning
+```
+
+Examples of possible Step-wide concerns include cross-owner deployment/order pressure, compatibility-foundation uncertainty, whole-transition observability/proof coordination pressure or integration sequencing that cannot be understood as one owner's steady-state concern.
+
+`RU-EVO-03` owns the **concern / analysis pressure**, not the final one-time transition must-hold merely because the concern was discovered here. Resolve each material concern proportionally:
+
+```text
+no material obligation remains
+→ close the concern
+
+one owner naturally owns the durable meaning
+→ route/reference that owner-local Unit/Requirement
+
+literal realization mechanism
+→ Exact / transient exact planning
+
+unresolved blocker / uncertainty
+→ Q/R/P / OPEN as appropriate
+
+one-time transition/proof must-hold whose natural subject is the Step
+→ RU-EVO-05 Transition / Proof Obligation
+```
+
+Do not duplicate owner-local concern prose or duplicate an established `RU-EVO-05` obligation back into the concern as a second authority. References/navigation do not transfer ownership.
+
+## `RU-EVO-04` — Target Owner Materialization Set
+
+For each materially affected downstream owner whose represented post-Step authority would change under this Step result, state the semantic transition required after successful realization:
 
 ```text
 CREATE
@@ -342,13 +347,15 @@ RETIRE
   → remove current owner authority because the realized state no longer contains it
 ```
 
-This set is semantic authority planning. It is distinct from physical representation operations such as file create/update/move/split/merge or embedded→dedicated representation promotion/demotion, which remain owned by Documentation / Representation + P-14 / TF-10.
+This set is semantic authority planning. It is distinct from physical file operations such as create/update/move/split/merge or embedded→dedicated representation changes, which remain Documentation / Representation concerns.
 
-`Evolution Kinds` describe transition character; do not create a parallel `INTRODUCTION/CHANGE/RETIREMENT` materialization enum.
+The enclosing Proposal/Step planning boundary owns candidate/selected status. `CREATE / REPLACE / RETIRE` describes the represented post-realization authority transition and does not itself select the Step.
 
-## Transition Obligations
+## `RU-EVO-05` — Transition / Proof Obligations
 
-Keep transition-only meaning separate from steady-state owner impact/target meaning. Examples include:
+Own established one-time must-holds of the represented transition. `RU-EVO-03` may discover/analyze pressure that resolves into this Unit, but once an obligation is established its canonical Step-wide must-hold meaning lives here rather than in both Units.
+
+Keep transition-only meaning separate from steady-state owner meaning. Examples:
 
 ```text
 migration / backfill
@@ -356,66 +363,90 @@ cutover
 compatibility window
 old-representation retirement
 one-time bridge/reconciliation
+transition-wide proof/materialization observation needed to establish what was realized
 ```
 
-Do not move steady-state Feature behavior or durable Domain/Slice/Shared requirements into transition obligations merely because they become relevant during the transition.
+Do not move steady-state Feature behavior, Scenario must-holds or durable Domain/Slice/Shared Requirements here merely because they become relevant during the transition. Owner-local proof-realization requirements remain owner-local `PFR-*`; literal tests remain Exact/code.
+
+## `RU-EVO-06` — Planning Completeness / Realization Start Readiness
+
+Maintain two different conclusions.
+
+### Planning Completeness
+
+```text
+Planning Completeness: COMPLETE | INCOMPLETE
+```
+
+`COMPLETE` means the Step is sufficiently and coherently planned for the requested planning depth:
+
+- Step boundary/driver/relations are resolved enough;
+- direct `Entering From` predecessor identity is correct;
+- material Target Owner Bodies/Impacts are resolved deeply enough for the requested planning purpose;
+- Step-wide implementation concerns and transition/proof obligations are resolved or explicitly OPEN at an acceptable planning boundary;
+- materialization intent is truthful;
+- blocking planning Q/R/P are resolved or explicitly retained as known blockers rather than hidden.
+
+A predecessor may still be selected/planned but unrealized. That does **not** by itself make planning incomplete.
+
+### Realization Start Readiness
+
+```text
+Realization Start Readiness: READY | BLOCKED
+```
+
+`READY` means the represented Step route has no remaining semantic/realization blocker to starting the requested implementation scope **once the enclosing route has actual realization authority**:
+
+```text
+every direct Entering From predecessor realized/materialized
++ required Target Bodies sufficiently resolved
++ Step-wide Implementation Concerns resolved/tolerated/routed deeply enough
++ transition/proof obligations sufficiently resolved
++ no blocking Q/R/P for implementation start
+```
+
+Selection/authorization is intentionally not stored as an internal readiness blocker inside a Proposal Target Result; candidate/selected authority belongs to the enclosing Proposal/Step boundary. Actual realization execution still requires the applicable external selection/authorization in addition to `READY`.
+
+`READY ≠ REALIZED`. A Step may be `Planning Completeness: COMPLETE` and `Realization Start Readiness: BLOCKED` solely because a predecessor has not yet been realized.
+
+The Steps Map may project both compact statuses; detailed reasons stay in the Step.
 
 ## Production Method
 
 ```text
 material unrealized transition
 → inspect current natural owners + actual implementation / Evidence
-→ define coherent Step boundary + Expected Entry State
-→ identify concrete driver / decision surface
-→ establish one or more Feature target states
-   → unchanged Feature: reference retained current behavior
+→ define coherent Step boundary / driver
+→ resolve direct Entering From predecessor Step(s), or None
+→ establish Feature target state(s) when behavior changes
    → NEW/CHANGED Feature: complete Target Feature Body
-→ form/refine Proposal alternatives or Planning Branches when useful
-→ instantiate material Evolution Impact Units for Scenario/Screen/Domain/Slice/Shared/OPEN ownership pressure
-→ use supporting Scenario/Screen/Domain/Slice/Shared methods and Discovery Working Plans proportionally
-→ retain only selected planning Result Content with continuing Step value
-→ form complete Target Owner Bodies when selected materialization/realization needs them
-→ keep candidate meaning explicitly Proposal/branch-scoped
-→ make uncertainty / Evidence basis explicit where material
-→ select route only through normal authority
-→ establish transition/proof obligations and Target Owner Materialization Set
-→ enter Exact Realization only when selected upstream meaning is sufficient
+   → unchanged behavior: current/predecessor-realized Feature reference
+→ instantiate material RU-EVO-02 Impact Units for Scenario/Screen/Domain/Slice/Shared/OPEN pressure
+→ use supporting owner/discovery methods proportionally
+→ form complete Target Owner Bodies when represented candidate/selected/assumed route planning needs them
+→ inspect owner-local concern/feasibility surfaces
+→ resolve RU-EVO-03 Step-wide Implementation Concerns without copying owner-local meaning
+→ resolve RU-EVO-04 Materialization Set
+→ resolve RU-EVO-05 transition/proof obligations
+→ resolve RU-EVO-06 Planning Completeness separately from Realization Start Readiness
+→ enter Exact Realization only when selected/accepted upstream meaning is sufficient and realization-start conditions are satisfied
 ```
 
-One Step may contain several Feature target states and several owner changes when only their composition creates a usable target state. Several commits/packages may realize one Step; implementation packaging does not define application Evolution Step boundaries.
+One Step may contain several Target Owner Bodies when only their composition creates a usable transition. Several commits/packages may realize one Step; implementation packaging does not define application Evolution Step boundaries.
 
 ## Current-Owner Evolution Impact Projection
 
-Current realized Scenario/Screen/Domain/Slice/Shared owners may expose their own optional `Evolution Impact` Unit as reverse navigation/revalidation projection to concrete unrealized Steps that materially affect them.
-
-```text
-Step / RU-EVO-02
-→ canonical future-impact meaning
-
-current owner / Evolution Impact Unit
-→ Step reference / compact navigation-revalidation projection only
-```
-
-The current owner does not copy the Step's Target Body, selected discovery detail, future Requirements or full Impact prose. The reverse projection may be stored, generated or derived according to representation needs.
+Reusable reverse-projection semantics for current realized Feature/Scenario/Screen/Domain/Slice/Shared owners are owned by the shared [Current-Owner Evolution Impact Projection Contract](../shared/current-owner-evolution-impact-projection-contract.md). This Step remains authority for the future Target/Impact meaning that those current owners reference; it does not redefine the reverse-projection contract.
 
 ## Representation
 
-Early shallow representation is valid. A substantial Step may have a dedicated owner artifact; a shallow Step may be embedded in the Steps Map when that still preserves identity, candidate/selection state, Feature target state(s) and necessary Impact meaning.
+Early shallow representation is valid. A substantial Step may have a dedicated owner artifact; a shallow Step may be embedded in the Steps Map when that preserves Step identity, relations, candidate/selection state, Target Body/Impact references, concerns and readiness truthfully.
 
-Full Target Owner Bodies for a substantial Step strongly favor dedicated Step addressability but do not require one file per body or one file per natural owner. `RU-EVO-02` Unit identity does not imply one file per Impact.
-
-Representation does not change semantic Step identity.
+Full Target Owner Bodies strongly favor dedicated Step addressability but do not require one file per body or Unit. Unit identity does not imply file identity.
 
 ## Realization / Materialization Gate
 
-Before implementation:
-
-```text
-actual state matches required Entry State?
-selected Feature target state(s) are clear enough for requested realization?
-material Impact meaning is resolved deeply enough for requested realization?
-material uncertainty either resolved or explicitly tolerated/handled?
-```
+Before implementation, use `RU-EVO-06 Realization Start Readiness`; do not substitute plan existence or selection for READY.
 
 After implementation:
 
@@ -425,74 +456,56 @@ Exact/integration Evidence
 ↓
 confirm what was actually realized
 ↓
-materialize only the Target Owner Bodies that the realized result establishes
+materialize only Target Owner Bodies established by the realized result
 ↓
-current natural owners now own the accepted materialized semantic contracts
+current natural owners now own accepted materialized semantic contracts
 ↓
-actual code/runtime remains realization Evidence/truth, not an automatic semantic-owner rewrite
+actual code/runtime remains realization Evidence/truth,
+not an automatic semantic-owner rewrite
 ```
 
-If actual realization differs materially from the selected Step meaning, do not materialize the planned body blindly. Surface a Finding/revalidation and reconcile the Step/realization first.
+If actual realization differs materially from selected Step meaning, do not materialize the planned body blindly. Surface a Finding/revalidation and reconcile Step/realization first.
 
 ## Validators / Handoff
 
 ```text
 Step is concrete enough to deserve future-transition ownership
-Step is behaviorally grounded by one or more Feature target states
-NEW/CHANGED Feature has one complete Target Feature Body using TM-FEATURE Feature Definition
+no separately maintained Expected Entry State shadows predecessor authority
+Entering From uses smallest sufficient direct semantic predecessor Step set
+Planning Completeness is independent of predecessor realization
+Realization Start Readiness requires all direct predecessors realized/materialized
+NEW/CHANGED Feature uses one complete TM-FEATURE Target Feature Body
 unchanged Feature is referenced rather than copied
 current owners remain current semantic authority until realization/materialization
-candidate Proposal/branch meaning is not mislabeled canonical Step Result or selected
+candidate Proposal/branch meaning is not mislabeled canonical selected Step Result
 selected meaning is not mislabeled realized
-material uncertainty has a subject + basis rather than invented precision
-Evolution Impact is bounded to Scenario/Screen/Domain/Slice/Shared or OPEN responsibility, not Feature delta
-OPEN ownership is not prematurely converted into an invented owner
-selected planning detail is not silently treated as Requirement/Decision/exact commitment
-one selected post-Step Target Owner Body exists per materially changed natural owner
-unaffected owners are referenced rather than copied
-future Requirements remain inside their target bodies
+RU-EVO-02 is bounded to Scenario/Screen/Domain/Slice/Shared/OPEN responsibility, not Feature delta
+resolved durable owner-local future meaning converges into one natural Target Owner Body
+RU-EVO-03 references owner-local concerns and owns only Step-wide composition pressure
+no Realization Prerequisite list survives as a duplicate technical-foundation owner
+exact mechanism/detail remains Exact/discovery territory
 transition-only obligations remain separate from steady-state target meaning
 materialization set identifies CREATE / REPLACE / RETIRE semantics where needed
-physical P-14 representation operations are not confused with semantic materialization
-requires relations are semantic prerequisites
-cycles trigger architecture re-evaluation
+physical representation operations are not confused with semantic materialization
 ```
 
-Handoff to Core Exact Realization uses the selected Step future-state plan as upstream planning authority. After proof/materialization, retain the Step as transition/decision lineage; it does not remain a competing current-state semantic owner. Surface changed Step identity/`requires`/readiness/addressability consequences back to `TM-EVOLUTION-STEPS-MAP` without copying full Step meaning there.
+Handoff to Core Exact Realization uses the selected/accepted Step future-state plan as upstream planning authority only when `RU-EVO-06` says realization may start for the requested scope. After proof/materialization, retain the Step as transition/decision lineage; it does not remain a competing current-state semantic owner. Surface changed Step identity/`Entering From`/planning-completeness/start-readiness/addressability consequences back to `TM-EVOLUTION-STEPS-MAP` without copying full Step meaning there.
 
 ## Evolution Impact Evaluation
 
-Use `LENS-WORKSPACE-EVOLUTION-ARCHITECTURE` to evaluate impact/change isolation against current owners and candidate/selected Step routes. There is no generic durable `TM-EVOLUTION-IMPACT`; `Evolution Impact` is a module-defined bounded Unit responsibility in the Step and a reverse navigation/revalidation Unit in affected current owners.
+Use `LENS-WORKSPACE-EVOLUTION-ARCHITECTURE` to evaluate change isolation/Natural Subject against current owners and candidate/selected Step routes. There is no generic durable `TM-EVOLUTION-IMPACT`; Step-side future Impact remains `RU-EVO-02`, while current-owner reverse projection follows the shared [Current-Owner Evolution Impact Projection Contract](../shared/current-owner-evolution-impact-projection-contract.md).
 
 ## Guards
 
 ```text
 Step ≠ detached change list
-Step ≠ vague future wishlist
-Feature delta ≠ complete Target Feature Body
-Evolution Impact ≠ generic Target family
-Evolution Impact planning detail ≠ hidden durable Requirement
-Discovery Working Plan ≠ durable owner
-Step Target Body ≠ current owner before realization
-selected ≠ realized
-confidence ≠ selection
-confidence ≠ realization
-planned predecessor ≠ realized Entry State
-requires ≠ chronology-only ordering
-future owner-shaped body ≠ new Future* ontology
-Target Owner Materialization ≠ P-14 representation promotion
+Step ≠ second current-state owner
+Entering From ≠ technical foundation relation
+Expected Entry State projection ≠ independent authority
+Step-wide Implementation Concern ≠ copied Feature/Scenario/IR concern
+Planning Complete ≠ Start Ready
+Start Ready ≠ Realized
+Target Owner Body ≠ new FutureOwner ontology
+Impact ≠ Feature delta
+materialization ≠ physical file mutation
 ```
-
-## Application Driver / Change Surface
-
-When useful:
-
-```text
-Driven By: selected AB-* / selected Application contribution or boundary intent
-Change Surface: Behavioral | Implementation | Mixed
-Evolution Role: optional Foundation / evolution-enabling or other descriptive role
-```
-
-A pure implementation Step is valid under concrete selected pressure (correctness, safety, consistency, migration or known Evolution). Generic cleanup alone is not enough.
-
-Application Definition is refined directly in `TM-APPLICATION-DEFINITION`; do not create Application Definition Impact, Complete Target Application Body or Application Definition materialization rows.

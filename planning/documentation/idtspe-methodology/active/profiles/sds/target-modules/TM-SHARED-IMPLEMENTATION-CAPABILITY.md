@@ -46,16 +46,7 @@ No Shared-specific or cross-cutting-specific Lens is required.
 
 ## Unit Contract Conformance
 
-Declared target-specific `RU-*` responsibilities in this module are interpreted as **Module-defined Unit Contracts**, not output buckets only. For each material Unit:
-
-```text
-Unit responsibility
-→ relevant inputs / shared or Unit-specific reusable guidance
-→ Unit Resolution with Core Question/QRP/Proposal/Evidence/Decision state only when useful
-→ Current Result Content when sufficiently resolved
-```
-
-Module-wide Source/Knowledge/Production/Lens/validator guidance is a shared default only where it genuinely applies across Units. Unit-specific subsection text specializes that guidance. Do not duplicate Core lifecycle semantics inside Result Content, and do not require a formal Proposal/Decision when trusted Sources/Evidence determine the result without a material choice.
+This module specializes the Core [Target Module Model](../../../idtspe-core/shared/target-module-model.md) and [Unit / Target Step Result Model](../../../idtspe-core/shared/idtspe-unit-and-target-step-result-model.md). The Core owners define generic Unit lifecycle, complete-inventory/disposition and Proposal/Core-State semantics; this module defines only its SDS-specific Unit responsibilities, local materiality, production guidance, validators and handoffs below.
 
 ## Target Step-Result Contract
 
@@ -70,16 +61,15 @@ Module-wide Source/Knowledge/Production/Lens/validator guidance is a shared defa
 
 ### Result Unit Applicability / Materiality
 
-Declared Result Units are a possible semantic surface, not a mandatory form. Apply the Core [`Unit Applicability / Materiality / Omission Contract`](../../../idtspe-core/shared/idtspe-unit-and-target-step-result-model.md#5a-unit-applicability--materiality--omission-contract).
+Unit presence/disposition mechanics follow the Core [`Unit Applicability / Materiality / Disposition Contract`](../../../idtspe-core/shared/idtspe-unit-and-target-step-result-model.md#5a-unit-applicability--materiality--disposition-contract). The table below owns only this module's local substantive-materiality and omission-rationale triggers.
 
-| Result Unit | Make explicit when | Omit / keep sparse when |
+| Result Unit | Substantive resolution is material when | Explicit omission disposition when not material |
 |---|---|---|
-| `RU-SHARED-01` | when a coherent reusable non-end-to-end responsibility passes the Shared formation gate | omit the entire Shared owner when reuse/consumer pressure is insufficient |
+| `RU-SHARED-01` | always once a Shared capability Target is formed; it owns the coherent reusable responsibility | no Unit-level omission: when reuse/consumer pressure is insufficient, the Target-level Shared formation gate fails and no Shared owner Target should be formed |
 | `RU-SHARED-02` | when concrete Slice consumers in the represented current/target state need durable realization bindings to the Shared capability | omit hypothetical consumers and bindings not grounded in the corresponding current/Target Slice IR |
 | `RU-SHARED-03` | when durable implementation constraints are naturally owned by the Shared capability | omit when implementation choices remain local/transient; no proof RU is required by default |
 | `RU-SHARED-04` | for a current realized Shared owner, when concrete unrealized Steps materially affect its capability/consumer bindings and reverse navigation/revalidation is useful | omit when no relevant Step exists; omit from the Target Shared Body of the Step that owns the future change |
 
-Do not create `N/A` placeholders. Re-evaluate a previously omitted Unit only when its trigger/materiality changes.
 
 
 ### Explicit Unit Checkpoint Placement
@@ -106,9 +96,9 @@ Each material Unit below inherits the generic [`Unit Applicability Envelope`](..
 
 #### `RU-SHARED-04` processing envelope
 
-1. **Opening Unit Checkpoint — `RU-SHARED-04`** — inspect concrete relevant Steps and confirm material impact on this current Shared capability/binding set.
-2. **Unit Work — `RU-SHARED-04`** — retain compact Step references/revalidation pressure only; future Shared impact and Target Shared Body remain Step-owned.
-3. **Closing Unit Checkpoint — `RU-SHARED-04`** — ensure current Shared authority contains no copied future consumer set/capability plan.
+1. **Opening Unit Checkpoint — `RU-SHARED-04`** — determine whether this Shared capability/consumer-binding surface is materially affected, then apply the shared [Current-Owner Evolution Impact Projection Contract](../shared/current-owner-evolution-impact-projection-contract.md).
+2. **Unit Work — `RU-SHARED-04`** — produce the Shared-local reverse navigation/revalidation projection under that shared contract.
+3. **Closing Unit Checkpoint — `RU-SHARED-04`** — validate Shared-local revalidation/handoff needs and the shared projection-contract guards.
 
 ### RU-SHARED-01 — Shared Capability Contract
 
@@ -164,11 +154,15 @@ Own only durable constraints naturally owned by the Shared Capability:
 IR-SHARED-*
 ```
 
-Do not duplicate consumer `IR-SLICE-*`.
+Do not duplicate consumer `IR-SLICE-*`. Use the shared [`Requirement Classification And Representation Contract`](../shared/requirement-classification-and-representation-contract.md). When addressable Shared IRs are represented as a table, use the exact reusable schema:
+
+```text
+Shared Implementation Requirement | Type | Plain implementation requirement | Realizes / protects | Related expected errors | QRPE / Examples
+```
 
 ### RU-SHARED-04 — Evolution Impact
 
-For a current realized Shared owner, expose compact navigation/revalidation references to concrete unrealized Steps that materially affect the capability or consumer bindings. Canonical future impact belongs to Step-side `RU-EVO-02`; any Target Shared Body remains Step-owned. This reverse projection may be stored, generated or derived.
+This Shared owner-local Unit specializes the shared [Current-Owner Evolution Impact Projection Contract](../shared/current-owner-evolution-impact-projection-contract.md). Its local affected surface is **Shared capability/consumer bindings**. The shared contract owns inclusion threshold across candidate/selected/conditional/deferred Steps, truthful planning-position projection, depth/no-copy rules and post-realization removal from active future impact. This Target Module owns only the Unit identity, Shared owner-specific materiality test and local revalidation/handoff use.
 
 ## Production Method
 
@@ -212,7 +206,7 @@ Shared candidate
 
 ## Evolution
 
-Future Shared capability/binding impact belongs to the applicable `TM-EVOLUTION-STEP` / `RU-EVO-02`. When selected future Shared meaning is sufficiently resolved for materialization, it is represented by a Target Shared Body. Current `RU-SHARED-04` records only reverse Step navigation/revalidation and never copies the future plan.
+Future Shared capability/binding impact belongs to the applicable `TM-EVOLUTION-STEP` / `RU-EVO-02`. When candidate/selected future Shared meaning is sufficiently resolved for the requested Target Result depth, it may be represented by a Target Shared Body; selection is still required for canonical integration/materialization. Current `RU-SHARED-04` records only reverse Step navigation/revalidation and never copies the future plan.
 
 ## Validators / Handoff
 

@@ -25,41 +25,37 @@ Requiredness: <if material>
 Freshness / Revalidation: <if material>
 ```
 
-## Candidate Unit Selection
+## Unit Disposition / Materiality Review
 
-At initial Target formation, include one entry for **every candidate Unit heading from the active Target Module**.
+The complete Module-defined Unit inventory already exists for this formed Target. Record a separate review entry only where materiality/depth is not obvious or where the rationale has continuing review/revalidation value.
 
 ### <Unit Semantic Name> (`<RU-ID>`)
 
-AI recommendation: `<INCLUDE | INCLUDE — LIGHT/SOURCE-DERIVED | OMIT | OPEN>`
+AI recommendation: `<SUBSTANTIVE RESOLUTION | LIGHT / SOURCE-DERIVED RESOLUTION | OMIT SUBSTANTIVE RESOLUTION | OPEN>`
 
 Situation / goal:
 <current Target facts/requested change that matter to this Unit>
 
 Relevant reference / Source coverage:
-<which accepted Sources/references cover this Unit responsibility and how;
-or `none / not relevant` with the reason>
+<which accepted Sources/references cover this Unit responsibility and how; or `none / not relevant` with the reason>
 
 Reason:
-<why the Unit remains useful, may be thin, should be omitted, or remains open>
+<why substantive work is needed, may be light, is omitted, or remains open>
 
-USER selection:
-`<INCLUDE | OMIT | OPEN>`
-
-State refs:
-<Proposal / Decision / Finding / Revalidation refs only when useful>
-
-For an `OMIT` recommendation, `Reason` must explicitly explain why **no independently useful unresolved result responsibility remains** after considering the situation and relevant Source/reference coverage. Do not remove the heading from this section after omission is selected.
-
-<repeat for every module-defined candidate Unit>
+Disposition authority/state:
+<current accepted context | Proposal/Decision ref when the disposition is a material choice | OPEN>
 
 ## Current Target Work Units
 
-Only USER-selected/material Units appear here.
+Declare the complete Module-defined Unit inventory for this formed Target. Add Contextual Units only when they actually form. Materiality controls substantive resolution depth, not whether a Module-defined Unit heading disappears.
 
 ### <RU-ID> — <Name>
 
-<free-form Current Result Content appropriate to this Unit>
+**Methodology:** [exact reusable Unit owner](...)
+
+Disposition: `<RESOLVED | OPEN | OMITTED — concise reason>`
+
+<free-form Current Result Content when resolved/material; omit substantive content when the Unit is non-material>
 
 <material Source / State / artifact refs when useful>
 
@@ -69,7 +65,7 @@ Only USER-selected/material Units appear here.
 
 ## Target Step Result
 
-<projection/composition of Current Result Content from actual selected/material Units>
+<complete Module-defined Unit inventory with RESOLVED / OPEN / explicit omission dispositions and proportional content, plus any Contextual Units that actually formed>
 
 ## Artifact Placement
 

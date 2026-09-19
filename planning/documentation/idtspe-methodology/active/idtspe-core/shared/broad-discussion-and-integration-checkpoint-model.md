@@ -165,9 +165,9 @@ A checkpoint response shows the integrated whole proportionally. A practical ren
 
 1. optional Broad Discussion Summary / Key Points;
 2. Target Goal / Desired Outcome context when useful;
-3. **Units** — material Module-defined and Contextual Units, each with useful Unit Resolution state and Current Result Content (which may be absent while unresolved);
+3. **Units** — the complete Module-defined Unit inventory for each formed Target, each marked RESOLVED / OPEN / explicit omission as applicable, plus only Contextual Units that actually formed; material Units may include useful Unit Resolution state and Current Result Content;
 4. **Cross-cutting Core Resolution State** — only state whose natural subject is broader than one Unit;
-5. **Target Step Result** — coherent composition/projection of applicable Unit Result Content;
+5. **Target Step Result** — coherent composition of the complete Module-defined Unit inventory plus any formed Contextual Units, with proportional content/dispositions;
 6. Lens / consistency review and material Finding disposition consequences;
 7. semantic retention / Artifact Placement when material;
 8. handoff / next work.
@@ -243,7 +243,7 @@ Material Proposals are explicit and address the current Target Goal, a Question 
 Integration Checkpoint carries whole-state integration; Broad Discussion Summary is optional retrospective prose, not structured State.
 Target Goal / Desired Outcome remains Target/scope context unless Target Formation changes it.
 Core Resolution State preserves material decision-space meaning through existing Core kinds and attaches to the smallest correct subject.
-Unit Result Content shows the normalized current answer for bounded responsibilities; the Target Step Result composes the applicable Unit results.
+Unit Result Content shows the normalized current answer for resolved bounded responsibilities; the Target Step Result declares the complete Module-defined Unit inventory with resolved / OPEN / explicit-omission dispositions and proportional content, plus any Contextual Units that actually formed.
 Decisions retain accepted choices by default; material non-selected alternatives remain a user-controlled retention choice.
 Physical persistence remains a separate representation decision.
 ```

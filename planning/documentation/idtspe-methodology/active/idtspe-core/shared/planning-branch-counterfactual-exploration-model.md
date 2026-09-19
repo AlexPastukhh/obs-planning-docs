@@ -45,6 +45,8 @@ Then create Planning Branches.
 
 ---
 
+A Planning Branch is **not** required merely to render one requested Target-shaped Proposal. The Proposal lifecycle may hold one complete candidate Target Result directly. Open a Branch only when downstream counterfactual planning beyond that Target materially improves comparison/decision quality.
+
 # 2. Fundamental Invariant
 
 ```text

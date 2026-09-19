@@ -196,9 +196,10 @@ NO — already entailed current meaning
 → current owner / realization / Evidence / no-op route
 → no Evolution Step
 
-YES — not already entailed + selected materially unrealized meaning
-→ existing Step if the change belongs to that coherent qualitative transition
-→ new Step candidate only when an independent transition boundary is justified
+YES — not already entailed + sufficiently concrete materially unrealized meaning
+→ existing Step when the change belongs to that coherent qualitative transition
+→ new candidate Step when an independent transition boundary is justified
+→ an explicitly requested Proposal Target Result may form an ordinary candidate Target Instance before semantic selection; Proposal/Target lifecycle owners govern its candidate authority, and selection is still required for canonical integration/materialization/realization authority
 ```
 
 A vague wanted outcome alone does not justify a Step. `TM-EVOLUTION-STEP` remains the authority for Step applicability, Feature target states, Evolution Impacts and materialization.

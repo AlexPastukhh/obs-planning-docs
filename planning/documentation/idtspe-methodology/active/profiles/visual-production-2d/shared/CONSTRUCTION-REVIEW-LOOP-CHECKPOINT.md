@@ -35,7 +35,7 @@ construction route selection
 Delivery Adaptation
 ```
 
-If review changes whether a candidate Unit is needed, route the change through [Unit Selection And Lens Checkpoints](UNIT-SELECTION-AND-LENS-CHECKPOINTS.md#shared-unit-selection-and-lens-checkpoints).
+If review changes a Module-defined Unit's materiality/depth, route the change through [Unit Disposition / Materiality Review And Lens Checkpoints](UNIT-SELECTION-AND-LENS-CHECKPOINTS.md#shared-unit-selection-and-lens-checkpoints).
 
 If review materially challenges the active construction route, route the change through [Construction Route Selection](CONSTRUCTION-ROUTE-SELECTION.md#shared-construction-route-selection).
 

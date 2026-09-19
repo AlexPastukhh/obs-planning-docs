@@ -26,12 +26,16 @@ Typical Sources: selected Vocabulary Package, current definitions, relevant assi
 
 Accepted Vocabulary Package definition change plus only the material consequence/revalidation understanding needed for existing knowledge.
 
-## Candidate Unit Inventory
+## Module-defined Unit Inventory
 
 | ID | Unit | Bounded result responsibility |
 |---|---|---|
 | `RU-RKV-01` | [Definition Change](#ru-rkv-01) | resolve accepted Tag and/or Relation Type definition changes in the selected Package |
 | `RU-RKV-02` | [Affected Knowledge Review](#ru-rkv-02) | identify material consequences for existing statements/Landscape results without implied migration |
+
+## Module-defined Unit Visibility
+
+Generic Unit existence/disposition semantics follow the Core [Unit / Target Step Result Model](../../../idtspe-core/shared/idtspe-unit-and-target-step-result-model.md). This module owns only the Reference-Knowledge Unit responsibilities, local materiality/omission reasoning and specialized guidance below; Contextual Units remain governed by Core formation semantics.
 
 ## Unit Checkpoint Map
 
@@ -65,7 +69,7 @@ Every material Unit follows the inherited Core applicability/materiality envelop
 
 **Result Responsibility.** Proportional understanding of what existing knowledge, queries or retained Landscape results materially need attention because of `RU-RKV-01`.
 
-**Applicability / Omission.** Omit when the accepted definition change has no material downstream consequence beyond future use. Include only to the depth justified by affected knowledge.
+**Applicability / Omission.** When the accepted definition change has no material downstream consequence beyond future use, keep this Unit declared with a concise omission disposition. Include only to the depth justified by affected knowledge.
 
 **Inputs / Sources.** Accepted definition change, visible affected Assignments/Relations, retained Landscape results, current Bank ownership/authority.
 

@@ -26,13 +26,17 @@ Typical Sources: visible Bank Entries, Entry metadata, Tags, Entry Relations, An
 
 A retained representation may be called a `Landscape Snapshot`.
 
-## Candidate Unit Inventory
+## Module-defined Unit Inventory
 
 | ID | Unit | Bounded result responsibility |
 |---|---|---|
 | `RU-RKL-01` | [Scope And Evidence Base](#ru-rkl-01) | establish what is being investigated and what evidence can support the inquiry |
 | `RU-RKL-02` | [Adaptive Landscape Inquiry](#ru-rkl-02) | investigate the most material questions/directions proportionally to evidence and expected information value |
 | `RU-RKL-03` | [Current Understanding And Synthesis](#ru-rkl-03) | integrate supported meaning, uncertainty, competing interpretations and useful open questions |
+
+## Module-defined Unit Visibility
+
+Generic Unit existence/disposition semantics follow the Core [Unit / Target Step Result Model](../../../idtspe-core/shared/idtspe-unit-and-target-step-result-model.md). This module owns only the Reference-Knowledge Unit responsibilities, local materiality/omission reasoning and specialized guidance below; Contextual Units remain governed by Core formation semantics.
 
 ## Unit Checkpoint Map
 
@@ -89,7 +93,7 @@ Every material Unit follows the inherited Core applicability/materiality envelop
 
 **Result Responsibility.** Coherent bounded representation of what is currently understood about the Landscape concern and what remains materially uncertain.
 
-**Applicability / Omission.** Include when several observations/interpretations need integration or the result must be retained/handed off. May be thin when one direct finding already serves the Target.
+**Applicability / Omission.** Substantive resolution is material when several observations/interpretations need integration or the result must be retained/handed off. If it is not material, keep `RU-RKL-03` declared with a concise omission disposition rather than silently dropping the Unit.
 
 **Inputs / Sources.** Material `RU-RKL-01..02` results, applicable installed Domain context when available, Evidence and material limitations.
 

@@ -5,7 +5,7 @@ This profile projection indexes Target Module `ARTIFACT_PROPOSAL` and Lens `ARTI
 
 | Content kind | Guidance owner | Typical semantic owner | Proposal representation | Notes |
 |---|---|---|---|---|
-| Candidate Unit proposal / user-selection trace | `AG-VIS-UNIT-01` | current Target planning / Proposal-Decision owner | section in `target.md` or equivalent | retains every candidate heading + AI recommendation + USER selection; OMIT entries also retain situation/goal + relevant Source/reference coverage + explicit omission reason; omitted headings are not runtime Units |
+| Unit disposition / materiality trace | `AG-VIS-UNIT-01` | current Target Unit/disposition state; Proposal-Decision owner only when disposition is a material choice | section in `target.md` or equivalent | retains every Module-defined Unit heading + current recommendation/disposition rationale when useful; omitted substantive work keeps explicit omission reason; Unit identity remains in the Target result and omission is not substantive Unit Resolution |
 | material Unit-need / Source-coverage finding | `AG-VIS-UNIT-02` | resolved Finding/Evidence/Target owner | embedded finding/evidence or supporting artifact | only when it must survive |
 | accepted visual requirements | `AP-2D-REQ-01` | Requirements Target | embedded owner or visual brief | dedicated file not forced |
 | retained visual-material registry | `AP-2D-MAT-01` | Material Preparation / project material owner | registry artifact when useful | consumer authority remains in Source State Units |

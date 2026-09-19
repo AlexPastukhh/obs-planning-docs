@@ -36,8 +36,8 @@ Purpose / recurring Target family
 Target form / scope
 Upstream Source Contract
 Target Step-Result Contract
-  Result Units / fields as material
-  Applicability / Materiality / Omission rules for conditional units/field families
+  complete Module-defined Unit inventory for every formed Target
+  per-Unit materiality/disposition rules; optional fields remain proportional
 Resolution / Production Method
   question candidates / Proposal aids / branch triggers / internal object contracts
 Knowledge Basis / theory bridge [when useful]
@@ -53,7 +53,7 @@ A reusable Target Module may keep a Knowledge Basis when theory/reference knowle
 
 ## Unit-Centric Contract Invariant
 
-A concrete Target Module primarily defines reusable **Module Unit Contracts**. Module-wide Source/Knowledge/Lens/Method guidance is shared only when genuinely cross-Unit; Unit-specific guidance belongs with or is referenced by the affected Unit Contract. Runtime Core Resolution State attaches to the smallest correct subject and Current Result Content is produced per resolved Unit before Target Step Result composition.
+A concrete Target Module primarily defines reusable **Module Unit Contracts**. Module-wide Source/Knowledge/Lens/Method guidance is shared only when genuinely cross-Unit; Unit-specific guidance belongs with or is referenced by the affected Unit Contract. Runtime Core Resolution State attaches to the smallest correct subject. Target Step Result composition follows the canonical Core Unit/Result model: every Module-defined Unit remains instantiated/addressable with `RESOLVED`, `OPEN` or explicit omission disposition, while Current Result Content exists only for sufficiently resolved Units.
 
 Installed modules may conform through this shared interpretation without duplicating the same guidance text into every Unit section. Materially revised modules should make Unit responsibilities and Unit-specific resolution guidance explicit where that improves usability.
 

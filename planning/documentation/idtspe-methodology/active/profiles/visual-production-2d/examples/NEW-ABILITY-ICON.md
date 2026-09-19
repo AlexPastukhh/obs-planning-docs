@@ -3,11 +3,11 @@
 
 Request: 48/64 px `ice shield` icon matching an existing icon family.
 
-## Visual Material Preparation — Candidate Unit Selection
+## Visual Material Preparation — Unit Disposition / Materiality Review
 
 ### [Coverage And Information Gaps](../target-modules/TM-2D-15-VISUAL-MATERIAL-PREPARATION.md#ru-mat-01) (`RU-MAT-01`)
 
-AI recommendation: **INCLUDE**
+AI recommendation: **SUBSTANTIVE RESOLUTION**
 
 Situation / goal: create a new semantic icon while inheriting a family language.
 
@@ -15,11 +15,11 @@ Relevant reference / Source coverage: existing family icons cover style/palette 
 
 Reason: responsibility-specific coverage/gaps need to be explicit before design.
 
-USER selection: **INCLUDE**.
+Materiality disposition: **MATERIAL**.
 
 ### [Qualified Visual Material Set](../target-modules/TM-2D-15-VISUAL-MATERIAL-PREPARATION.md#ru-mat-02) (`RU-MAT-02`)
 
-AI recommendation: **INCLUDE — LIGHT**
+AI recommendation: **LIGHT RESOLUTION**
 
 Situation / goal: the family icons are reused as art-direction material.
 
@@ -27,11 +27,11 @@ Relevant reference / Source coverage: **strong** for family style; several concr
 
 Reason: retaining provenance/limitations is useful because these references constrain downstream design.
 
-USER selection: **INCLUDE**.
+Materiality disposition: **MATERIAL**.
 
 ### [Prepared Visual Material](../target-modules/TM-2D-15-VISUAL-MATERIAL-PREPARATION.md#ru-mat-03) (`RU-MAT-03`)
 
-AI recommendation: **OMIT**
+AI recommendation: **OMIT SUBSTANTIVE RESOLUTION**
 
 Situation / goal: the existing family references are already readable at useful scale and no crop, palette extraction, annotation or helper render is required before design.
 
@@ -39,11 +39,11 @@ Relevant reference / Source coverage: **strong and directly usable** for the inh
 
 Omission reason: no transformation/helper artifact would add material information or downstream usability in this Target.
 
-USER selection: **OMIT**.
+Materiality disposition: **OMITTED**.
 
 ## Whole Visual Design
 
-All three candidate Units are included because the new icon still needs a selected subject configuration, target-size composition/hierarchy and a coherent inherited/new visual-language direction.
+All three Module-defined Units receive substantive resolution because the new icon still needs a selected subject configuration, target-size composition/hierarchy and a coherent inherited/new visual-language direction.
 
 ## Vector Construction
 

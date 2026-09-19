@@ -33,16 +33,7 @@ Conditional: Evolution, Implementation Requirements Discovery, quality/verifiabi
 
 ## Unit Contract Conformance
 
-Declared target-specific `RU-*` responsibilities in this module are interpreted as **Module-defined Unit Contracts**, not output buckets only. For each material Unit:
-
-```text
-Unit responsibility
-→ relevant inputs / shared or Unit-specific reusable guidance
-→ Unit Resolution with Core Question/QRP/Proposal/Evidence/Decision state only when useful
-→ Current Result Content when sufficiently resolved
-```
-
-Module-wide Source/Knowledge/Production/Lens/validator guidance is a shared default only where it genuinely applies across Units. Unit-specific subsection text specializes that guidance. Do not duplicate Core lifecycle semantics inside Result Content, and do not require a formal Proposal/Decision when trusted Sources/Evidence determine the result without a material choice.
+This module specializes the Core [Target Module Model](../../../idtspe-core/shared/target-module-model.md) and [Unit / Target Step Result Model](../../../idtspe-core/shared/idtspe-unit-and-target-step-result-model.md). The Core owners define generic Unit lifecycle, complete-inventory/disposition and Proposal/Core-State semantics; this module defines only its SDS-specific Unit responsibilities, local materiality, production guidance, validators and handoffs below.
 
 ## Target Step-Result Contract
 
@@ -56,15 +47,14 @@ Module-wide Source/Knowledge/Production/Lens/validator guidance is a shared defa
 
 ### Result Unit Applicability / Materiality
 
-Declared Result Units are a possible semantic surface, not a mandatory form. Apply the Core [`Unit Applicability / Materiality / Omission Contract`](../../../idtspe-core/shared/idtspe-unit-and-target-step-result-model.md#5a-unit-applicability--materiality--omission-contract).
+Unit presence/disposition mechanics follow the Core [`Unit Applicability / Materiality / Disposition Contract`](../../../idtspe-core/shared/idtspe-unit-and-target-step-result-model.md#5a-unit-applicability--materiality--disposition-contract). The table below owns only this module's local substantive-materiality and omission-rationale triggers.
 
-| Result Unit | Make explicit when | Omit / keep sparse when |
+| Result Unit | Substantive resolution is material when | Explicit omission disposition when not material |
 |---|---|---|
-| `RU-DOWN-01` | when a durable Domain owner has independently useful semantic responsibility | omit the entire durable owner when discovery does not justify that responsibility |
+| `RU-DOWN-01` | always once a durable Domain owner Target is formed; it owns that durable responsibility/boundary | no Unit-level omission: when discovery does not justify a durable Domain responsibility, the Target-level owner-formation gate fails and no Domain owner Target should be formed |
 | `RU-DOWN-02` | when durable implementation/proof constraints are naturally owned by the Domain | omit when no owner-local IR/PFR is needed; zero Requirements is valid |
 | `RU-DOWN-03` | for a current realized Domain owner, when concrete unrealized Steps materially affect its semantics/responsibility and reverse navigation/revalidation is useful | omit when no relevant Step exists; omit from the Target Domain Body of the Step that owns the future change |
 
-Do not create `N/A` placeholders. Re-evaluate a previously omitted Unit only when its trigger/materiality changes.
 
 
 ### Explicit Unit Checkpoint Placement
@@ -85,9 +75,9 @@ Each material Unit below inherits the generic [`Unit Applicability Envelope`](..
 
 #### `RU-DOWN-03` processing envelope
 
-1. **Opening Unit Checkpoint — `RU-DOWN-03`** — inspect concrete relevant Steps and confirm material impact on this current Domain owner.
-2. **Unit Work — `RU-DOWN-03`** — retain compact Step references/revalidation pressure only; future Domain impact, discovery-selected planning meaning and Target Domain Body remain Step-owned.
-3. **Closing Unit Checkpoint — `RU-DOWN-03`** — ensure the current Domain owner contains no copied future contract/IR/discovery plan and stale realized-Step references are not presented as active future impact.
+1. **Opening Unit Checkpoint — `RU-DOWN-03`** — determine whether this Domain's semantics/responsibility is materially affected, then apply the shared [Current-Owner Evolution Impact Projection Contract](../shared/current-owner-evolution-impact-projection-contract.md).
+2. **Unit Work — `RU-DOWN-03`** — produce the Domain-local reverse navigation/revalidation projection under that shared contract.
+3. **Closing Unit Checkpoint — `RU-DOWN-03`** — validate Domain-local revalidation/handoff needs and the shared projection-contract guards.
 
 ### RU-DOWN-01 — Domain Semantic Contract
 
@@ -115,11 +105,17 @@ IR-DOMAIN-*
 optional owner-local PFR-* when a non-obvious durable proof-realization constraint genuinely exists
 ```
 
-Requirement wording owns the must-hold meaning. Tests prove it; they do not define it.
+Requirement wording owns the must-hold meaning. Tests prove it; they do not define it. Use the shared [`Requirement Classification And Representation Contract`](../shared/requirement-classification-and-representation-contract.md). When addressable Domain IRs are represented as a table, use the exact reusable schema:
+
+```text
+Domain Implementation Requirement | Type | Plain implementation requirement | Realizes | Related expected errors | QRPE / Examples
+```
+
+When owner-local `PFR-*` is material, use the shared exact `Proof Requirement | Type | Plain proof-realization requirement | Protects / verifies | QRPE / Examples` schema from the same contract.
 
 ### RU-DOWN-03 — Evolution Impact
 
-For a current realized Domain owner, expose compact navigation/revalidation references to concrete unrealized Steps that materially affect this owner. The Step-side `RU-EVO-02` is canonical future-impact authority. This Unit does not copy Target Domain Bodies, future IR/PFR or selected Domain Discovery planning detail. The reverse projection may be stored, generated or derived.
+This Domain owner-local Unit specializes the shared [Current-Owner Evolution Impact Projection Contract](../shared/current-owner-evolution-impact-projection-contract.md). Its local affected surface is **Domain semantics/responsibility**. The shared contract owns inclusion threshold across candidate/selected/conditional/deferred Steps, truthful planning-position projection, depth/no-copy rules and post-realization removal from active future impact. This Target Module owns only the Unit identity, Domain owner-specific materiality test and local revalidation/handoff use.
 
 ## Production / Revalidation Method
 
@@ -140,7 +136,7 @@ Domain unit proof belongs with the Domain realization and proves semantic rules/
 
 ## Evolution
 
-Relevant concrete Evolution Steps are Sources for revalidation and are exposed proportionally through `RU-DOWN-03`. Future Domain impact belongs to Step-side `RU-EVO-02`; a changed/created selected post-Step Domain contract belongs to the Step Target Domain Body. Current Domain owner remains current semantic authority until realization and Target Owner Materialization change it. Physical representation promotion/demotion remains a separate P-14 concern.
+Relevant concrete Evolution Steps are Sources for revalidation and are exposed proportionally through `RU-DOWN-03`. Future Domain impact belongs to Step-side `RU-EVO-02`; a sufficiently resolved candidate/selected post-Step Domain contract may be represented by the Step Target Domain Body at the requested Target Result depth, while actual selection remains required for canonical integration/materialization. Current Domain owner remains current semantic authority until realization and Target Owner Materialization change it. Physical representation promotion/demotion remains a separate P-14 concern.
 
 ## Validators / Handoff
 

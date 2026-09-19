@@ -31,7 +31,7 @@ Broad Discussion
 Integration Checkpoint
 → situationally reconciles accumulated discussion/current Sources when a coherent whole-state view is useful
 → renders coherent applicable Generic State
-→ renders complete applicable Target Result Units
+→ renders the complete Module-defined Target Result Unit inventory with resolved / OPEN / explicit-omission dispositions
 → applies relevant Lens/consistency checks
 → preserves unresolved alternatives
 ```
@@ -46,9 +46,11 @@ A reusable Target Module should explain proportionally:
 Purpose / recurring Target family
 Target formation / scope / shared Source archetype where useful
 Unit Contract inventory / dependencies
-for each material Unit:
+for each Module-defined Unit:
   Result Responsibility
-  Applicability / Materiality / Omission
+  Applicability / Materiality / Disposition
+  exact reusable methodology owner / stable Unit Contract anchor
+for each material Unit:
   Inputs / Source needs
   Drivers
   Knowledge Basis / guidance when useful
@@ -61,34 +63,46 @@ Target-level validators / handoff / representation where genuinely cross-Unit
 
 The runtime may additionally form Contextual Units under the Core rule. Their conclusion has an explicit destination and does not automatically create a durable Result section.
 
-## Proportional / Sparse Projection Rule
+## Complete Unit Inventory / Proportional Content Rule
 
 ```text
 Target Module Step-Result Contract
-= possible/addressable semantic surface
+= complete Module-defined Unit inventory
 
 Concrete Target Step Result
-= only supported/applicable/material projection
+= every Module-defined Unit declared
++ resolved / OPEN / explicit omission disposition
++ substantive depth only where material
 ```
 
 A declared Unit/field does not imply:
 
 ```text
-it must be asked
-it must be answered
-it must persist
-it must be equally detailed
-its absence is automatically an unresolved Decision
+every Unit must receive substantive work
+every optional field must be populated
+every Unit must persist separately
+every Unit must be equally detailed
+an omitted/non-material Unit needs a bare N/A placeholder
 ```
 
-Therefore:
+A non-material Module-defined Unit uses a concise omission reason. Optional fields **inside** a Unit may remain absent when their field contract allows that. Contextual Units remain contextual and are not predeclared.
+
+## Methodology Binding In Produced Target Results
+
+The Core [Opening Unit Checkpoint](idtspe-unit-and-target-step-result-model.md#opening-unit-checkpoint) owns methodology-owner binding before substantive Unit resolution. When a Target representation is authored, this representation contract renders that already-resolved binding using the Documentation [Methodology / Contextual Annotation Principle](../../../../principles-and-terminology.md#methodology--contextual-annotation-principle) before the Unit's substantive content. It does not redefine lookup, ambiguity handling or smallest-sufficient-scope semantics.
+
+## Proposal Target Result Representation
+
+Candidate Target Instance authority/lifecycle is owned by the Core [Proposal/Decision lifecycle](proposal-and-decision-lifecycle-contract.md#3b-proposal-target-result--candidate-target-instance-under-proposal-authority) and [Target Instance model](target-type-instance-source-and-relation-model.md#candidate-target-instance). This file owns only the representation consequence:
 
 ```text
-blank optional field
-≠ unresolved Decision
+candidate Target Instance body
+→ render through the ordinary active Target Module / Local Target Contract
+→ use ordinary Target/Unit names and normal result-content shape
+→ do not repeat Proposal/Candidate status on every nested Unit/Requirement/row
 ```
 
-Only supported/material meaning is projected.
+Local nested status is written only when it materially differs from the enclosing candidate boundary. Representation never upgrades candidate authority or grants realization permission.
 
 ## Output Schema / Template Compatibility
 

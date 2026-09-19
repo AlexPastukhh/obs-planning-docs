@@ -1,33 +1,39 @@
 <a id="shared-unit-selection-and-lens-checkpoints"></a>
-# Unit Selection And Lens Checkpoints
+# Unit Disposition / Materiality Review And Lens Checkpoints
 
-## Candidate Unit Selection
+## Module-defined Unit Disposition / Materiality Review
 
-When a Target Module is first formed, evaluate **every module-defined candidate Unit heading** against the current situation and relevant visual Source/reference coverage before projecting runtime Work Units.
+When a Target Module is formed, its complete Module-defined Unit inventory is instantiated/addressable in the concrete Target. Evaluate **every Unit** against the current situation and responsibility-specific visual Source/reference coverage to decide how much substantive Unit Resolution is justified; do not decide whether the Unit exists.
 
 ```text
-Candidate Unit Inventory
+complete Module-defined Unit inventory
 → Unit Need / Visual Source Coverage
-→ AI recommendation + explicit rationale for every candidate heading
-→ USER selection when not already current
-→ runtime Target Work Unit projection
+→ AI recommendation + rationale for every Unit
+→ normal Proposal/Decision authority only when the disposition itself is a material unresolved choice
+→ Unit result disposition / work depth
+→ substantive Unit Resolution only where material
 ```
 
-The initial Candidate Unit Selection must therefore preserve a reviewable entry for every candidate Unit in the active Target Module. Do not silently skip a heading because it appears optional or well-covered by references.
+Typical work-depth recommendations are ordinary guidance, not a second Core status enum:
 
-For an already-current Target, retain the previous entries. Re-ask only where material revalidation pressure changes the recommendation/selection; do not erase previously selected omissions merely because the runtime Unit is absent.
+```text
+substantive resolution
+light / source-derived resolution
+omit substantive resolution
+OPEN — materiality/disposition unresolved
+```
+
+For an already-current Target, retain the current Unit instances/dispositions. Re-evaluate only where Target scope, Source coverage, Evidence or other material pressure changes.
 
 ## Required Omission Record
 
-An AI recommendation to omit a Unit is incomplete unless the proposal/selection representation contains:
+An omission disposition is incomplete unless the Unit remains individually addressable and the Target result states:
 
 ```text
 <Unit semantic name> (<RU-ID>)
 
-AI recommendation: OMIT
-
 Situation / goal:
-  <what is true in this Target that makes the responsibility potentially unnecessary>
+  <what makes substantive work unnecessary>
 
 Relevant reference / Source coverage:
   <which accepted Sources cover the responsibility and how>
@@ -35,60 +41,32 @@ Relevant reference / Source coverage:
   none / not relevant — <why Source coverage is not the reason>
 
 Omission reason:
-  <why no independently useful unresolved result responsibility remains
-   after considering the situation + Source coverage>
+  <why no independently useful unresolved result responsibility remains>
 
-USER selection:
-  OMIT | INCLUDE | OPEN
+Disposition authority/state:
+  <current accepted meaning / Proposal-Decision ref when a material choice exists / OPEN>
 ```
 
-The `Omission reason` must be specific to that Unit and Target. Do not use generic explanations such as `not needed`, `optional`, `covered`, or `irrelevant` without saying **what covers it or what situation makes it unnecessary**.
+Do not collapse several omitted Units into one aggregate omission trace. Do not perform substantive Unit Resolution merely to fill the heading, and do not use a bare `N/A`.
 
-Do not collapse several omitted Units into one aggregate omission trace. Keep each omitted Unit name individually addressable with its own rationale.
+## Material / Thin Units
 
-The selected omission remains in Candidate Unit Selection. Do not instantiate an `N/A` runtime Work Unit.
-
-## Included / Thin Units
-
-For an included candidate, instantiate it only to the depth its responsibility requires.
-
-Strong Source/reference coverage may lead to:
-
-```text
-INCLUDE
-+ light/source-derived Unit Resolution
-```
-
-when explicit Unit ownership, handoff, validation or revalidation remains useful.
-
-Strong coverage is therefore **not** an automatic omission rule.
+Strong Source/reference coverage may support light/source-derived Unit Resolution when explicit Unit ownership, handoff, validation or revalidation remains useful. Strong coverage is not an automatic omission rule.
 
 ## Unit Checkpoint Lens Passes
 
-Every selected/material Unit uses the Core Opening / In-Unit / Closing envelope declared by its Target Module.
-
-At Opening and Closing, treat [Unit Need / Visual Source Coverage](../lenses/frequent/LENS-VISUAL-UNIT-NEED-AND-SOURCE-COVERAGE.md#lens-visual-unit-need-and-source-coverage) as a primary profile Lens candidate whenever:
-
-- Unit need may have changed;
-- relevant visual Source/reference coverage may have changed;
-- missing information has appeared;
-- another candidate Unit may now be useful;
-- current responsibility may need deeper analysis or decomposition.
+Every material Unit uses the Core Opening / In-Unit / Closing envelope declared by its Target Module. At Opening and Closing, treat [Unit Need / Visual Source Coverage](../lenses/frequent/LENS-VISUAL-UNIT-NEED-AND-SOURCE-COVERAGE.md#lens-visual-unit-need-and-source-coverage) as a primary profile Lens candidate whenever Unit materiality/depth or relevant visual Source/reference coverage may have changed.
 
 Other Core/profile Lenses remain registry-selected by their own gates.
 
 ## Revalidation
 
-When review/Evidence suggests a changed Unit composition:
-
 ```text
-Finding / Evidence
+Finding / Evidence / Target-scope change
 → Unit Need / Visual Source Coverage
-→ AI recommendation + explicit situation/coverage rationale
-→ USER selection
-→ updated runtime Unit projection
+→ AI recommendation + rationale
+→ Proposal/Decision only when a material unresolved choice actually exists
+→ updated Unit disposition / resolution depth
 ```
 
-If a previously omitted Unit becomes useful, retain the old omission selection as prior planning state when it has review value and record the new recommendation/selection normally.
-
-This route also applies when proposing a new Contextual Unit from visual work.
+A Module-defined Unit never disappears from the formed Target merely because its substantive resolution changes. This route also applies when proposing a new **Contextual Unit**, whose existence still follows the Core contextual-formation gate.

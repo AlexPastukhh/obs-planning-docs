@@ -12,8 +12,8 @@ The example is scoped to an **unrealized Evolution Step**, so selected durable f
 Evolution Step:
   EVO-PAYMENT
 
-Expected Entry State:
-  checkout exists without integrated payment
+Entering From:
+  EVO-CHECKOUT-BASE (materialized semantic predecessor)
 
 Target Feature Body:
   FEAT-PAY-ORDER

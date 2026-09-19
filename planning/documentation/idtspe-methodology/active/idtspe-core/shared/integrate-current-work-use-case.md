@@ -18,14 +18,14 @@ Elapsed time or message count alone is not a trigger. An Integration Checkpoint 
 
 ## Result
 
-An **IDTSPE Integration Checkpoint** reconciles material Broad Discussion into the current Unit/Target/Work-Context model: Unit Resolutions, Current Result Content, material cross-cutting Core Resolution State, unresolved/revalidation state and a useful continuation point. It does not manufacture completion or approval.
+An **IDTSPE Integration Checkpoint** reconciles material Broad Discussion into the current Unit/Target/Work-Context model: the complete Module-defined Unit inventory, material Unit Resolutions, Current Result Content / OPEN / explicit omission dispositions, material cross-cutting Core Resolution State, unresolved/revalidation state and a useful continuation point. It does not manufacture completion or approval.
 
 ## Process
 
 1. **Collect** — start from the previous coherent state and collect only material changed/new meaning plus current authoritative Sources/owner results needed for coherence.
 2. **Relate** — attach Unit-local Questions/Problems/Proposals/QRP/Evidence/Decisions/Findings to the affected Unit Resolution; keep genuinely cross-Unit/Target/Work-Context state at its natural broader subject. Preserve canonical Proposal/Decision/Q/R/P relations instead of reconstructing them from prose.
 3. **Disposition Findings** — route material Finding Candidates to the smallest correct subject/owner; form Contextual Units only when an independently useful bounded local responsibility exists.
-4. **Maintain current state** — use `UC-IDTSPE-MAINTAIN-CURRENT-WORK-STATE`; preserve Current Result Content separately from unresolved/candidate Unit Resolution meaning, unresolved alternatives and revalidation signals.
+4. **Maintain current state** — use `UC-IDTSPE-MAINTAIN-CURRENT-WORK-STATE`; preserve Current Result Content separately from unresolved/candidate Unit Resolution meaning, unresolved alternatives and revalidation signals; ensure every Module-defined Unit in each formed Target has a resolved / OPEN / explicit-omission disposition.
 5. **Integrate selections/derivations** — integrate safely derived answers and materially selected Proposal meaning into affected Result Content/owners under normal authority. Explicit Decision trace remains proportional.
 6. **Check** — apply only currently applicable Lens/consistency/validation checks needed to judge whether the integrated whole fits together. `no material finding` is valid.
 7. **Resolve representation separately** — if physical persistence/placement is material, invoke the canonical Artifact/Representation path. A checkpoint may remain context-only when persistence adds no value.

@@ -23,7 +23,8 @@ A Module-defined Unit Contract is the primary reusable **Target Work Unit** prod
 ```text
 Unit Contract
 ├─ Result Responsibility / Purpose
-├─ Applicability / Materiality / Omission
+├─ Applicability / Materiality / Disposition
+├─ stable reusable methodology owner / anchor reachability
 ├─ Inputs / Source needs
 ├─ Drivers: Goal / Questions / recurring Problems
 ├─ Knowledge Basis when useful
@@ -41,23 +42,41 @@ Thin Units may omit most specialized resolution aids. Heavy Units may carry subs
 
 A `Local Target Contract` provides the same responsibilities dynamically for a one-off Target when no reusable module fits.
 
+### Unit Method Owner Reachability
+
+Every Module-defined Unit must expose a stable addressable Unit Contract location that can be bound before substantive Unit work. The Unit Contract may reference additional reusable methodology owners, but the produced Target result references those owners rather than copying their reusable method.
+
+```text
+active Target Module / Local Target Contract
+→ exact Module-defined Unit Contract
+→ concise Methodology binding in produced representation when materialized
+→ Unit Resolution
+```
+
+A supporting owner discovered during Unit work is bound/referenced before that supporting method is applied. This requirement does not create a second runtime State Unit or methodology-lookup phase.
+
+### Natural Subject Conformance
+
+Canonical Natural Subject / Ownership Boundary semantics are owned by the Core [Unit And Target Step Result Model](idtspe-unit-and-target-step-result-model.md#natural-subject--ownership-boundary). A Target Module does not redefine that routing. Its design obligation is only to prove that each Module-defined Unit responsibility, and any genuinely target-wide rule, has this Target family as its natural subject; otherwise the module references/hands off to the natural owner.
+
+Target Module creation/review enforces this conformance through `UC-IDTSPE-MAINTAIN-TARGET-MODULE`; `LENS-AUTHORITY-SOT-REUSE` may evaluate ambiguous/conflicting cases without becoming the semantic owner.
+
 ## Target Step Result Contract
 
-The Target Step Result is the coherent applicable composition/projection of **Current Result Content from its Units**. Candidate Unit meaning does not become current merely by appearing in a draft.
+Canonical runtime Unit disposition and Target Step Result composition are owned by the Core [Unit And Target Step Result Model](idtspe-unit-and-target-step-result-model.md#2-target-step-result). A Target Module owns the **Step Result family**, its complete reusable Unit Contract inventory/dependency shape, and target-family-specific composition constraints; it does not redefine generic runtime disposition semantics.
 
 ```text
 Target Module
-→ Unit Contract inventory / dependency shape
-→ runtime Unit Resolution
-→ Current Result Content
-→ Target Step Result composition
+→ Step Result family + complete Unit Contract inventory / dependency shape
+→ Core Unit / Target Step Result contract
+→ concrete Target Step Result
 ```
 
 The Module defines target-wide formation/scope/Source Contract archetypes only where genuinely shared. Unit-specific Source needs belong to the relevant Unit Contract. At runtime `TF-04 SOURCE_SET` resolves the concrete Target's actual Source Set as Source State Units/bindings to authoritative Source Subjects; the reusable Source Contract archetype is not itself that runtime Source Set. The Module should not centralize all questions, all knowledge, all Lens guidance and all methods at module level when those concerns actually belong to one Unit responsibility.
 
 ### Per-Unit Applicability Envelope
 
-Every material Module-defined Unit inherits the generic Opening / In-Unit / Closing applicability envelope. The Unit's own contract supplies the reusable resolution material relevant to that responsibility; applicable Lenses may be selected through the ordinary registry scan.
+Every material Module-defined Unit inherits the generic Opening / In-Unit / Closing applicability envelope. Every Module-defined Unit remains visible in the concrete Target result; non-material Units use an explicit omission disposition rather than substantive Unit Resolution. The Unit's own contract supplies the reusable resolution material relevant to that responsibility; applicable Lenses may be selected through the ordinary registry scan.
 
 ### Contextual Units
 
@@ -295,7 +314,7 @@ Selection / Coordination Surfaces [when useful]
 Target Step-Result Contract
   Step Result family
   Unit Contract inventory / relations
-  composition of Current Result Content into the Target Step Result
+  target-family-specific composition constraints; generic runtime composition stays Core-owned
   target-level completeness / handoff / representation where genuinely cross-Unit
 
 Output Schema / Template — compatibility/technical projection
@@ -499,18 +518,9 @@ TM-FEATURE
     BR-* Behavior Requirement item schema
 ```
 
-The schema is where accepted answers/Decisions are integrated into declared Result Units while Scenario planning retains methodology ownership.
+The schema is where accepted answers/Decisions are integrated into declared Result Units while the Target Module remains methodology authority for its own reusable Unit contracts.
 
-The Module contract is a **maximum/possible semantic surface**, not a questionnaire that forces unsupported Units/fields.
-
-Rule:
-
-```text
-blank optional field
-≠ unresolved Decision
-```
-
-Only supported/material meaning is projected.
+The Module contract defines a **complete Module-defined Unit inventory** plus proportional internal fields. Runtime Unit presence/disposition and optional-field semantics follow the Core [Unit And Target Step Result Model](idtspe-unit-and-target-step-result-model.md#5a-unit-applicability--materiality--disposition-contract); this model owns only the reusable Unit inventory/schema design. It is not a questionnaire that forces substantive work or unsupported detail in every Unit.
 
 ---
 

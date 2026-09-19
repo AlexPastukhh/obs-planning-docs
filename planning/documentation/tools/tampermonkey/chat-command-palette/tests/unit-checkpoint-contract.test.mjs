@@ -29,7 +29,7 @@ test('every current Target Module explicitly wraps every processing-envelope Res
   assert.equal(modules.length,29);
   for(const component of modules){
     const owner=component.sources.at(-1),text=readRepo(owner);
-    const inventory=(text.match(/## Candidate Unit Inventory\s*\n([\s\S]*?)(?=\n## )/)||[])[1]||'';
+    const inventory=(text.match(/## Module-defined Unit Inventory\s*\n([\s\S]*?)(?=\n## )/)||[])[1]||'';
     const inventoryUnits=[...new Set([...inventory.matchAll(/RU-[A-Z0-9-]+/g)].map((match)=>match[0]))];
     const envelopeUnits=[...new Set([...text.matchAll(/^#### `((?:RU)-[A-Z0-9-]+)` processing envelope$/gm)].map((match)=>match[1]))];
     const units=inventoryUnits.length?inventoryUnits:envelopeUnits;

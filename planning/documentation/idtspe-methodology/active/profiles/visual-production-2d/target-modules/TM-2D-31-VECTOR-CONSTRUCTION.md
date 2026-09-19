@@ -11,9 +11,9 @@ Construct the actual editable 2D result using this route while preserving accept
 
 ## Target Step Result
 
-`Editable Semantic Vector Construction Result` = coherent projection/composition of accepted Current Result Content from the material Units.
+`Editable Semantic Vector Construction Result`. Generic Unit existence/disposition semantics follow the Core [Unit / Target Step Result Model](../../../idtspe-core/shared/idtspe-unit-and-target-step-result-model.md); this module owns only the visual Unit responsibilities/materiality below.
 
-## Candidate Unit Inventory
+## Module-defined Unit Inventory
 
 | Unit | Name | Bounded result responsibility |
 |---|---|---|

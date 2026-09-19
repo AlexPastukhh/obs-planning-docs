@@ -21,15 +21,15 @@ Requirement ownership is resolved against the **owner state being represented**.
 
 ```text
 current realized owner
-→ current owner-local BR/IR/PFR authority
+→ current owner-local Requirement authority
 
 selected but unrealized future owner meaning
 → corresponding Target Owner Body inside TM-EVOLUTION-STEP
-→ future BR/IR/PFR lives inside that body
+→ future owner-local Requirement meaning lives inside that body
 → current owner Requirement set remains unchanged until realization/materialization
 ```
 
-This does not create a future Requirement type. `BR-*`, `IR-*` and `PFR-*` keep their normal family/owner semantics; only their temporal host differs.
+This does not create a future Requirement type. `BR-*`, `SR-*`, `IR-*` and `PFR-*` keep their normal family/owner semantics; only their temporal host differs. Family/owner authority remains separate from local discovery/provenance under [`semantic-family-authority-and-provenance-contract.md`](semantic-family-authority-and-provenance-contract.md).
 
 ### Discovery Time vs Semantic Time
 
@@ -43,7 +43,7 @@ A durable must-hold surfaced now must first be tested against the **accepted cur
 ```text
 CURRENT SEMANTIC COMPLETION
 accepted current owner meaning already entails the must-hold
-+ explicit BR/IR/PFR representation is missing or incomplete
++ explicit natural-owner Requirement representation is missing or incomplete
 → articulate/refine the Requirement at the current natural owner
 → accepted semantic meaning does not change
 → no Evolution Step
@@ -57,7 +57,7 @@ accepted current owner meaning already requires the must-hold
 FUTURE SEMANTIC CHANGE
 accepted current owner meaning does not entail the must-hold
 + new/revised meaning is selected
-→ host the selected unrealized BR/IR/PFR in the applicable
+→ host the selected unrealized Requirement in the applicable
   TM-EVOLUTION-STEP Target Owner Body until materialization
 ```
 
@@ -73,11 +73,11 @@ Feature owns durable must-hold behavior.
 
 Canonical `BR-*` text stays with the Feature behavior/branch it constrains when practical. Scenario/Screen/Slice/Domain reference the identity rather than copying canonical prose.
 
-### Scenario journey must-hold
+### Scenario Requirement — `SR-*`
 
-Scenario may own sparse constraints that are genuinely about the whole journey across Features/Screens/contexts.
+A durable journey-level must-hold whose natural owner is the Scenario belongs to the Scenario as `SR-*`. A Scenario may legitimately have zero `SR-*` Requirements when no journey-level must-hold needs independent durable addressability.
 
-Fresh R2 sometimes labels these `SR-*`. SDS preserves the semantic meaning but does **not** establish a mandatory target-state `SR-*` Requirement family. Use an addressable local identifier only when independent traceability is useful.
+Scenario-specific formation, `SR-*` identity, SR↔SPS relation, SR↔BR duplication guards, exact representation and validators are owned by [`TM-SCENARIO-PLANNING`](../target-modules/TM-SCENARIO-PLANNING.md).
 
 A journey must-hold must not duplicate Feature BR text.
 
@@ -102,6 +102,10 @@ Rare owner-local durable non-obvious constraint on **how proof itself must be re
 ## Other Owner-Local Must-Holds
 
 Application Definition and Screen may own material responsibility/spatial/accessibility/platform must-holds as part of their own selected result. Stable addressability may be added when useful without creating a universal Requirement Target family.
+
+## Classification / Representation
+
+Reusable `Requirement Type`, the common Requirement table contract and `QRPE / Examples` semantics are owned by [`requirement-classification-and-representation-contract.md`](requirement-classification-and-representation-contract.md). Type/classification never changes natural Requirement ownership or temporal hosting.
 
 ## Discovery
 

@@ -103,7 +103,7 @@ applicable ≠ every optional detail must be produced
 
 A Use-Case Process may therefore select, adapt, defer, use only as inspiration/theory, or reject a recommendation when the recommendation's own authority/boundary allows contextual interpretation. Normative authority/permission rules remain binding where they actually apply.
 
-The same principle applies recursively to supporting methodology components: registry entries are screened before detail is loaded; component applicability is checked before use; optional units/fields are materialized only when useful.
+The same principle applies recursively to supporting methodology components: registry entries are screened before detail is loaded; component applicability is checked before use; optional fields and Contextual Units are materialized only when useful. Visibility of predeclared Module-defined Units follows their owning methodology contract; materiality may control substantive work/disposition without making those Units silently disappear.
 
 ## Use-Case Registry Map
 
@@ -128,7 +128,8 @@ component selected
 ≠ local applicability passed
 
 local applicability passed
-≠ every optional Unit/field produced
+≠ every Module-defined Unit requires substantive resolution
+≠ every optional field is produced
 ```
 
 This term applies to Use-Case Registries and specialized methodology-component registries. The metadata and next authority differ by registry type, but the scan/selection boundary remains the same.
@@ -260,6 +261,51 @@ Concrete use may add situational meaning such as:
 Local extension does not automatically update the reusable owner.
 
 Repeated usefulness is a signal to review whether the reusable owner should be extended.
+
+## Methodology / Contextual Annotation Principle
+
+When a produced planning/documentation result needs to show **how a material Unit or independently material block was formed**, bind it to the smallest sufficient reusable methodology owner set instead of copying methodology prose into the result.
+
+```text
+reusable method governs the scope
+→ one concise Methodology annotation
+
+no reusable method governs the genuinely local/supporting scope
+→ one concise Contextual annotation
+
+reusable owner should exist but is missing / ambiguous / conflicting
+→ OPEN methodology-owner resolution / Finding
+→ do not relabel the scope as merely Contextual
+```
+
+Persisted forms:
+
+```md
+**Methodology:** [exact reusable owner](...)
+```
+
+or:
+
+```md
+**Contextual:** <concise local reason>
+```
+
+Rules:
+
+- one annotation at the **smallest sufficient scope** may govern ordinary child content;
+- several materially applicable reusable owners stay on the same concise `Methodology:` line when practical;
+- a `Methodology:` line identifies the reusable method owner; it must not restate or summarize that owner's reusable method merely to make the result self-contained;
+- add another annotation only when a child block materially uses a different reusable method or has an independently useful contextual reason;
+- do not mechanically annotate every Requirement, behavior/path row or table cell;
+- annotation/navigation does not transfer semantic ownership of the produced result.
+
+Methodology-owner binding is an execution concern of the applicable production method (for IDTSPE Target Units, the Core Unit contract). This principle owns the concise persisted representation, not the runtime lookup algorithm.
+
+## Ordinary Readable Markdown Principle
+
+Use ordinary portable Markdown headings, paragraphs, lists and tables for normal methodology/planning representation. HTML disclosure containers such as `<details>` are not the default representation and should be used only when a separately selected need justifies them.
+
+Do not hide unresolved authority, status, omission, methodology binding or other material review meaning behind collapsible metadata.
 
 ## Template
 

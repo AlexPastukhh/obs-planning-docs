@@ -16,3 +16,6 @@ IR = durable requirement on HOW realization is arranged for current behavior or 
 ```
 
 Selected FBS/SPS/branch/order/layout may be normative structure without automatically becoming Requirements.
+
+
+Requirement family/natural-owner authority is governed by [`requirement-ownership-and-exception-rule.md`](requirement-ownership-and-exception-rule.md); family authority must not be inferred from local discovery/provenance. Reusable Requirement `Type` and QRPE/table representation are governed by [`requirement-classification-and-representation-contract.md`](requirement-classification-and-representation-contract.md).

@@ -29,7 +29,7 @@ It may later be promoted into a Target Module only if repetition justifies reuse
 
 One concrete bounded planning owner.
 
-A Target Instance is the semantic/planning responsibility, not a file. Its current working composition may include a Source Set, Target Work Units, Target-level Core State Units and Target Relations/Handoffs. One bounded IDTSPE work step over that Target produces/refines a `Target Step Result` from applicable Target Work Unit Current Result Content.
+A Target Instance is the semantic/planning responsibility, not a file. Its current working composition may include a Source Set, Target Work Units, Target-level Core State Units and Target Relations/Handoffs. One bounded IDTSPE work step over that Target produces/refines a `Target Step Result` from the complete Module-defined Unit inventory with resolved / OPEN / explicit-omission dispositions and proportional content, plus any Contextual Units that actually formed.
 
 Examples:
 
@@ -38,6 +38,24 @@ SCN-CAPTURE
 DOMAIN-RESEARCH-CAPTURE
 SL-CAP-01
 ```
+
+#### Candidate Target Instance
+
+A **candidate Target Instance** is an ordinary Target Instance formed under enclosing Proposal or Planning-Branch authority before canonical selection/integration. `candidate` is planning authority/status, not a second Target type.
+
+```text
+Proposal / Planning Branch
+→ candidate Target Instance
+→ ordinary Target Module / Local Target Contract
+→ complete Module-defined Unit inventory
+→ ordinary Target Step Result shape
+
+candidate Target Instance
+≠ canonical selected/current Target authority
+≠ realization authorization
+```
+
+The candidate Target Instance uses normal Target/Unit identities, methods, validators and representation. Its child content inherits the enclosing candidate authority unless a nested item has a materially different status/lifecycle. After selection, normal promotion/integration reuses the same Target meaning rather than regenerating a differently shaped "final" Target.
 
 ### Source / Source Subject
 
@@ -76,17 +94,18 @@ Target Instance
 │     ├─ Unit-local
 │     └─ multi-Unit as applicable
 ├─ Target Work Units
-│  ├─ Module-defined
-│  └─ Contextual
-│     each:
+│  ├─ complete Module-defined Unit inventory
+│  │    └─ each Unit: RESOLVED / OPEN / explicit omission + proportional content
+│  └─ Contextual Units only when actually formed
+│     each material Unit may carry:
 │       Result Responsibility
 │       + Unit Resolution ↔ applicable Core State Units
-│       + Current Result Content
+│       + Current Result Content when sufficiently resolved
 ├─ Target-level Core State Units
 ├─ Target Relations / Handoffs
 └─ Target Step Result
-   = composition/projection of applicable
-     Target Work Unit Current Result Content
+   = complete Module-defined Unit inventory with dispositions/content
+     + any Contextual Units that actually formed
 ```
 
 Important:

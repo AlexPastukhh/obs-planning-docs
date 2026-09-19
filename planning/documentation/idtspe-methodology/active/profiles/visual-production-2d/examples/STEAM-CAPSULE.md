@@ -12,7 +12,7 @@ All candidate headings are evaluated individually. In this example the AI recomm
 - [Editable Raster Construction](../target-modules/TM-2D-31-EDITABLE-RASTER-CONSTRUCTION.md#tm-2d-31-editable-raster-construction) for the illustration;
 - [Vector Construction](../target-modules/TM-2D-31-VECTOR-CONSTRUCTION.md#tm-2d-31-vector-construction) for logo/title treatment.
 
-Each route shows every candidate Unit heading and evaluates it from the actual route situation + relevant Source/reference coverage before USER selection.
+Each route shows every Module-defined Unit heading and evaluates it from the actual route situation + relevant Source/reference coverage before the disposition is accepted through normal authority when a material choice exists.
 
 ## Multi-route Visual Construction Target Formation
 
@@ -26,8 +26,8 @@ Omission reason: no new cross-route semantic result remains for a separate compo
 
 USER selection in this branch: **no Multi-route Visual Construction Target**.
 
-If canonical integration instead contains unresolved edge/color/occlusion/layout decisions, the AI proposes [Multi-route Visual Construction](../target-modules/TM-2D-30-VISUAL-CONSTRUCTION.md#tm-2d-30-visual-construction), then shows both candidate Units individually and applies the same situation/coverage/omission rule before USER selection.
+If canonical integration instead contains unresolved edge/color/occlusion/layout decisions, the AI proposes [Multi-route Visual Construction](../target-modules/TM-2D-30-VISUAL-CONSTRUCTION.md#tm-2d-30-visual-construction), then shows both Module-defined Units individually and applies the same situation/coverage/omission rule before the disposition is accepted through normal authority when a material choice exists.
 
 ## Delivery Adaptation
 
-For multiple storefront aspect ratios/crops, all Delivery candidate Units are evaluated individually. A proposed omission must retain the Unit name and explain the delivery situation, relevant source/canonical-result coverage and why no separate adaptation responsibility remains.
+For multiple storefront aspect ratios/crops, all Delivery Module-defined Units are evaluated individually. A proposed omission must retain the Unit name and explain the delivery situation, relevant source/canonical-result coverage and why no separate adaptation responsibility remains.

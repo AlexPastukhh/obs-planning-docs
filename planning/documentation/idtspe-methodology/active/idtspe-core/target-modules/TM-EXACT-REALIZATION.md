@@ -140,13 +140,13 @@ Each declared Result Unit is a Module-defined Unit Contract. Its runtime work is
 
 ### Result Unit Applicability / Materiality
 
-Apply the Core [`Unit Applicability / Materiality / Omission Contract`](../shared/idtspe-unit-and-target-step-result-model.md#5a-unit-applicability--materiality--omission-contract).
+Apply the Core [`Unit Applicability / Materiality / Disposition Contract`](../shared/idtspe-unit-and-target-step-result-model.md#5a-unit-applicability--materiality--disposition-contract).
 
-| Result Unit | Make explicit when | Omit / keep sparse when |
+| Result Unit | Substantive resolution is material when | Target/Unit disposition when not material |
 |---|---|---|
 | `RU-REAL-01` | when current accepted meaning is sufficient to produce one exact directly-integrable candidate for the bounded scope | do not instantiate Exact merely to force literal output while upstream meaning/readiness is still materially unresolved |
 
-No `N/A` placeholder is required.
+When this Target is formed, its Module-defined Unit remains declared. Do not use a bare `N/A`; if substantive Unit work is not material, record a concise explicit omission disposition. The whole Target may still be skipped when its Target-level activation gate is not met.
 
 Only one Target-specific Result Unit is required. Verification, build/test observations, repair reasoning, Problems, Proposals, Decisions and Findings remain generic Core State/Evidence around the evolving exact result.
 

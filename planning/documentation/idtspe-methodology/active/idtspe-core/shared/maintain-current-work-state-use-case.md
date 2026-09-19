@@ -13,8 +13,8 @@ The smallest useful current Work Context is represented coherently around bounde
 ## Process
 
 1. Start from current Broad Discussion, previous integrated state, current Units/Target Results and accepted owner meaning.
-2. Apply the Unit applicability/materiality/omission contract.
-3. For each material Unit retain only useful `Unit Resolution` meaning and `Current Result Content`; Current Result Content may be absent while resolution remains open.
+2. Apply the Unit applicability/materiality/disposition contract: every Module-defined Unit of a formed Target remains visible as RESOLVED / OPEN / explicit omission; Contextual Units remain present only when actually formed.
+3. For each material Unit retain only useful `Unit Resolution` meaning and `Current Result Content`; unresolved material Units remain explicitly `OPEN`, while non-material/non-applicable Module-defined Units retain their concise omission disposition.
 4. Keep Core Resolution State attached to the smallest correct semantic subject. Unit-local state belongs with that Unit; cross-Unit/Target/Work-Context state stays at that broader subject when natural.
 5. Promote working meaning into explicit Question/QRP/Proposal/Decision/Evidence/etc only when lifecycle/addressability/continuation/revalidation value is material.
 6. Retain explicit/durable Decision trace only when selection/rationale/revalidation value should survive; material selection semantics remain governed by the Proposal/Decision lifecycle even when no separate Decision record persists.

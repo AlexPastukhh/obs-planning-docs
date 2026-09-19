@@ -95,7 +95,7 @@ The Map stores routing/selection relation/prerequisite/readiness/compact uncerta
 
 ### Requirements
 
-Keep current realized `BR/IR/PFR` with their natural owner representation. Future `BR/IR/PFR` remain inside the corresponding Evolution Step Target Body until Target Owner Materialization. Do not create one Requirement file per item and do not revive a generic Requirement register merely for storage convenience.
+Keep current realized owner-local Requirements (`BR-*`, `SR-*`, `IR-*`, `PFR-*`) with their natural owner representation. Future owner-local Requirements remain inside the corresponding Evolution Step Target Owner Body until Target Owner Materialization. Do not create one Requirement file per item and do not revive a generic Requirement register merely for storage convenience.
 
 ### Proof / Evidence
 

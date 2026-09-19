@@ -42,16 +42,7 @@ Discovery may loop with Slice Discovery. Neither is a mandatory stage before the
 
 ## Unit Contract Conformance
 
-Declared target-specific `RU-*` responsibilities in this module are interpreted as **Module-defined Unit Contracts**, not output buckets only. For each material Unit:
-
-```text
-Unit responsibility
-→ relevant inputs / shared or Unit-specific reusable guidance
-→ Unit Resolution with Core Question/QRP/Proposal/Evidence/Decision state only when useful
-→ Current Result Content when sufficiently resolved
-```
-
-Module-wide Source/Knowledge/Production/Lens/validator guidance is a shared default only where it genuinely applies across Units. Unit-specific subsection text specializes that guidance. Do not duplicate Core lifecycle semantics inside Result Content, and do not require a formal Proposal/Decision when trusted Sources/Evidence determine the result without a material choice.
+This module specializes the Core [Target Module Model](../../../idtspe-core/shared/target-module-model.md) and [Unit / Target Step Result Model](../../../idtspe-core/shared/idtspe-unit-and-target-step-result-model.md). The Core owners define generic Unit lifecycle, complete-inventory/disposition and Proposal/Core-State semantics; this module defines only its SDS-specific Unit responsibilities, local materiality, production guidance, validators and handoffs below.
 
 ## Target Step-Result Contract
 
@@ -66,16 +57,15 @@ Module-wide Source/Knowledge/Production/Lens/validator guidance is a shared defa
 
 ### Result Unit Applicability / Materiality
 
-Declared Result Units are a possible semantic surface, not a mandatory form. Apply the Core [`Unit Applicability / Materiality / Omission Contract`](../../../idtspe-core/shared/idtspe-unit-and-target-step-result-model.md#5a-unit-applicability--materiality--omission-contract).
+Unit presence/disposition mechanics follow the Core [`Unit Applicability / Materiality / Disposition Contract`](../../../idtspe-core/shared/idtspe-unit-and-target-step-result-model.md#5a-unit-applicability--materiality--disposition-contract). The table below owns only this module's local substantive-materiality and omission-rationale triggers.
 
-| Result Unit | Make explicit when | Omit / keep sparse when |
+| Result Unit | Substantive resolution is material when | Explicit omission disposition when not material |
 |---|---|---|
-| `RU-DOM-01` | when semantic ownership/classification is uncertain enough to justify bounded Domain discovery | omit the entire discovery Target when shallow Lens reasoning is sufficient |
+| `RU-DOM-01` | always once a Domain Discovery Target is formed; it owns the bounded ownership/classification discovery subject | no Unit-level omission: when shallow Lens reasoning is sufficient, the Target-level discovery gate fails and the discovery Target should not be formed |
 | `RU-DOM-02` | when state/lifecycle/invariant/consistency meaning affects owner selection or correctness | omit categories that have no selected semantic pressure |
 | `RU-DOM-03` | when concrete candidate realization/proof helps discriminate Domain alternatives | omit implementation-shaped detail when semantic ownership can be resolved without it |
 | `RU-DOM-04` | when selected Evolution or unresolved Domain pressure can change the current candidate | omit speculative future pressure and already-resolved questions |
 
-Do not create `N/A` placeholders. Re-evaluate a previously omitted Unit only when its trigger/materiality changes.
 
 
 ### Explicit Unit Checkpoint Placement
@@ -154,7 +144,7 @@ Use proportionally:
 - Feature Implementation Concerns;
 - current Slice discovery/owner question;
 - current implementation/types/tests/Evidence;
-- known selected Evolution Steps;
+- relevant concrete candidate/selected Evolution Steps, preserving their planning position;
 - accepted Proposal/Decision context.
 
 Source Discovery is evidence-driven. Do not build a global Domain model merely because source exists.

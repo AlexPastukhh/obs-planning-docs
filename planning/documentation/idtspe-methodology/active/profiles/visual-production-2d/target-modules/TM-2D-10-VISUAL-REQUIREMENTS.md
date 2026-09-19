@@ -11,9 +11,9 @@ Own the bounded meaning of what a 2D visual result must accomplish before design
 
 ## Target Step Result
 
-`Visual Requirements` = coherent projection of accepted Current Result Content from the material Units.
+`Visual Requirements`. Generic Unit existence/disposition semantics follow the Core [Unit / Target Step Result Model](../../../idtspe-core/shared/idtspe-unit-and-target-step-result-model.md); this module owns only the visual Unit responsibilities/materiality below.
 
-## Candidate Unit Inventory
+## Module-defined Unit Inventory
 
 | Unit | Name | Bounded result responsibility |
 |---|---|---|

@@ -90,16 +90,7 @@ A Prototype shape does not become canonical product/UI/architecture meaning mere
 
 ## Unit Contract Conformance
 
-Declared target-specific `RU-*` responsibilities in this module are interpreted as **Module-defined Unit Contracts**, not output buckets only. For each material Unit:
-
-```text
-Unit responsibility
-→ relevant inputs / shared or Unit-specific reusable guidance
-→ Unit Resolution with Core Question/QRP/Proposal/Evidence/Decision state only when useful
-→ Current Result Content when sufficiently resolved
-```
-
-Module-wide Source/Knowledge/Production/Lens/validator guidance is a shared default only where it genuinely applies across Units. Unit-specific subsection text specializes that guidance. Do not duplicate Core lifecycle semantics inside Result Content, and do not require a formal Proposal/Decision when trusted Sources/Evidence determine the result without a material choice.
+This module specializes the Core [Target Module Model](../../../idtspe-core/shared/target-module-model.md) and [Unit / Target Step Result Model](../../../idtspe-core/shared/idtspe-unit-and-target-step-result-model.md). The Core owners define generic Unit lifecycle, complete-inventory/disposition and Proposal/Core-State semantics; this module defines only its SDS-specific Unit responsibilities, local materiality, production guidance, validators and handoffs below.
 
 ## Target Step-Result Contract
 
@@ -113,15 +104,14 @@ Module-wide Source/Knowledge/Production/Lens/validator guidance is a shared defa
 
 ### Result Unit Applicability / Materiality
 
-Declared Result Units are a possible semantic surface, not a mandatory form. Apply the Core [`Unit Applicability / Materiality / Omission Contract`](../../../idtspe-core/shared/idtspe-unit-and-target-step-result-model.md#5a-unit-applicability--materiality--omission-contract).
+Unit presence/disposition mechanics follow the Core [`Unit Applicability / Materiality / Disposition Contract`](../../../idtspe-core/shared/idtspe-unit-and-target-step-result-model.md#5a-unit-applicability--materiality--disposition-contract). The table below owns only this module's local substantive-materiality and omission-rationale triggers.
 
-| Result Unit | Make explicit when | Omit / keep sparse when |
+| Result Unit | Substantive resolution is material when | Explicit omission disposition when not material |
 |---|---|---|
-| `RU-PROTO-01` | when a concrete uncertainty/property justifies an empirical pre-commit inquiry | omit the whole Prototype Target when no such uncertainty exists |
+| `RU-PROTO-01` | always once a Prototype Target is formed; it owns the inquiry identity/property being tested | no Unit-level omission: when no concrete uncertainty/property justifies empirical inquiry, the Target-level activation gate fails and the Prototype Target should not be formed |
 | `RU-PROTO-02` | when the minimum credible subject/observation boundary must be selected before running the inquiry | omit non-material instrumentation/procedure detail |
 | `RU-PROTO-03` | when the prototype actually produced observations worth interpreting | before execution keep only Evidence Need/plan; do not invent results |
 
-Do not create `N/A` placeholders. Re-evaluate a previously omitted Unit only when its trigger/materiality changes.
 
 The shared method's full inquiry fields are guidance, not mandatory duplicated Result fields.
 

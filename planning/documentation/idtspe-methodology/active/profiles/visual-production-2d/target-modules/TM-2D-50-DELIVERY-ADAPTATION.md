@@ -11,9 +11,9 @@ Own visual decisions needed to adapt an accepted visual result across materially
 
 ## Target Step Result
 
-`Delivery Adaptation` = accepted context map, adaptation meaning and delivery-variant result where visual adaptation is material.
+`Delivery Adaptation`. Generic Unit existence/disposition semantics follow the Core [Unit / Target Step Result Model](../../../idtspe-core/shared/idtspe-unit-and-target-step-result-model.md); this module owns only the visual Unit responsibilities/materiality below.
 
-## Candidate Unit Inventory
+## Module-defined Unit Inventory
 
 | Unit | Name | Bounded result responsibility |
 |---|---|---|
@@ -67,7 +67,7 @@ Own the accepted visually adapted family. Pure deterministic export artifacts ma
 
 ## Lens Profile
 
-Use the shared Unit Need / Source Coverage Lens for candidate Unit need and context-specific visual Sources. Whole Visual Coherence may be useful across materially different crops/variants.
+Use the shared Unit Need / Source Coverage Lens for Unit materiality/depth and context-specific visual Sources. Whole Visual Coherence may be useful across materially different crops/variants.
 
 ## Validators
 

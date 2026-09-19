@@ -26,7 +26,7 @@ Step realized + required proof/revalidation
 
 Future `BR-*` belongs to the Target Feature Body until materialization. Do not create a separate `FutureFeature` type.
 
-For every selected `NEW` or `CHANGED` Feature in an Evolution Step, the Target Feature Body is the **complete** ordinary `Feature Definition` expected after the Step, not a delta. `[EXISTING]/[NEW]/[CHANGED]/[REMOVED]` annotations may aid review but never substitute for that body. If a Step preserves Feature behavior unchanged (for example a pure Refactoring/Forced Migration), reference the current Feature as retained target behavior rather than copying it. Feature does not need an owner-local `Evolution Impact` Result Unit; future Feature authority is represented directly by the Step Feature target state/Target Feature Body, with lightweight relevant-Step navigation in a current Feature only when useful.
+For every represented `NEW` or `CHANGED` Feature on a candidate/selected Evolution Step route, the Target Feature Body is the **complete** ordinary `Feature Definition` expected after the Step, not a delta. `[EXISTING]/[NEW]/[CHANGED]/[REMOVED]` annotations may aid review but never substitute for that body. Candidate authority stays on the enclosing Proposal/Step boundary until normal selection. If a Step preserves Feature behavior unchanged (for example a pure Refactoring/Forced Migration), reference the current Feature as retained target behavior rather than copying it. Future Feature authority is represented directly by the Step Feature target state/Target Feature Body. The **current realized Feature** additionally owns `RU-FEAT-06 — Evolution Impact`, specializing the shared Current-Owner Evolution Impact Projection Contract for Feature-local impact/revalidation; this reverse Unit never becomes a second future Feature body.
 
 ## Activation / Scope Gate
 
@@ -77,6 +77,8 @@ behavior / BR-*
 implementation concerns
 ↕
 Feature/Slice boundary reasoning
+↕
+current-owner Evolution Impact reverse projection when applicable
 ↺ peer reconciliation with Scenario and Screen
 ↺ Proposal / USER review / targeted lenses when meaning changes
 ```
@@ -106,16 +108,7 @@ Do not force exact class/method mapping during Feature formation.
 
 ## Unit Contract Conformance
 
-Declared target-specific `RU-*` responsibilities in this module are interpreted as **Module-defined Unit Contracts**, not output buckets only. For each material Unit:
-
-```text
-Unit responsibility
-→ relevant inputs / shared or Unit-specific reusable guidance
-→ Unit Resolution with Core Question/QRP/Proposal/Evidence/Decision state only when useful
-→ Current Result Content when sufficiently resolved
-```
-
-Module-wide Source/Knowledge/Production/Lens/validator guidance is a shared default only where it genuinely applies across Units. Unit-specific subsection text specializes that guidance. Do not duplicate Core lifecycle semantics inside Result Content, and do not require a formal Proposal/Decision when trusted Sources/Evidence determine the result without a material choice.
+This module specializes the Core [Target Module Model](../../../idtspe-core/shared/target-module-model.md) and [Unit / Target Step Result Model](../../../idtspe-core/shared/idtspe-unit-and-target-step-result-model.md). The Core owners define generic Unit lifecycle, complete-inventory/disposition and Proposal/Core-State semantics; this module defines only its SDS-specific Unit responsibilities, local materiality, production guidance, validators and handoffs below.
 
 ## Target Step-Result Contract
 
@@ -128,20 +121,21 @@ Module-wide Source/Knowledge/Production/Lens/validator guidance is a shared defa
 | `RU-FEAT-03` | Feature Behavior — addressable `BR-*` behavior items |
 | `RU-FEAT-04` | Implementation Concerns — material realization/proof/evolution concerns without exact implementation ownership |
 | `RU-FEAT-05` | Feature / Slice Boundary — selected boundary meaning and material rationale |
+| `RU-FEAT-06` | Evolution Impact — Feature-local current-owner reverse navigation/revalidation under the shared projection contract |
 
 ### Result Unit Applicability / Materiality
 
-Declared Result Units are a possible semantic surface, not a mandatory form. Apply the Core [`Unit Applicability / Materiality / Omission Contract`](../../../idtspe-core/shared/idtspe-unit-and-target-step-result-model.md#5a-unit-applicability--materiality--omission-contract).
+Unit presence/disposition mechanics follow the Core [`Unit Applicability / Materiality / Disposition Contract`](../../../idtspe-core/shared/idtspe-unit-and-target-step-result-model.md#5a-unit-applicability--materiality--disposition-contract). The table below owns only this module's local substantive-materiality and omission-rationale triggers.
 
-| Result Unit | Make explicit when | Omit / keep sparse when |
+| Result Unit | Substantive resolution is material when | Explicit omission disposition when not material |
 |---|---|---|
 | `RU-FEAT-01` | when the Feature needs an explicit semantic identity/intent/result/entry anchor | omit fields that are already obvious; do not manufacture separate entries for transport variants |
 | `RU-FEAT-02` | when behavior-facing semantic data is needed to understand Feature meaning | omit data detail owned by Domain/storage or irrelevant to behavior |
 | `RU-FEAT-03` | when durable/addressable must-hold behavior is useful for downstream owners/proof/revalidation | omit BR atomization for obvious transient behavior that does not need durable addressability |
 | `RU-FEAT-04` | primarily in a future Target Feature Body when implementation/proof/evolution pressure must survive into realization planning; in a current owner only for a current realized limitation/risk with independent semantic value | omit generic future roadmap/current mechanism ideas from current owners; route unrealized change pressure to Evolution Step/Q-R-P instead |
-| `RU-FEAT-05` | when Feature/Slice boundary meaning or rationale is materially ambiguous/important | omit explicit rationale when the boundary is straightforward and no competing shape matters |
+| `RU-FEAT-05` | when Feature/Slice boundary meaning or rationale is materially ambiguous/important | keep Unit declared with a concise omission reason when the boundary is straightforward and no competing shape matters |
+| `RU-FEAT-06` | in a current realized Feature when any concrete unrealized Step contains material Feature impact/target meaning; depth follows what the Step has actually resolved | omit substantive content when no concrete unrealized Step materially affects this Feature; in a future Target Feature Body omit current-owner reverse projection because the body itself is Step-owned future meaning |
 
-Do not create `N/A` placeholders. Re-evaluate a previously omitted Unit only when its trigger/materiality changes.
 
 
 ### Explicit Unit Checkpoint Placement
@@ -178,6 +172,12 @@ Each material Unit below inherits the generic [`Unit Applicability Envelope`](..
 2. **Unit Work — `RU-FEAT-05`** — produce/refine only the material meaning owned by this Result Unit; run additional applicability checks immediately when the Analysis Surface changes materially.
 3. **Closing Unit Checkpoint — `RU-FEAT-05`** — evaluate the actual candidate Unit result, disposition material Findings/owner consequences, and reopen/refine narrowly when needed before treating the Unit as current-for-handoff.
 
+#### `RU-FEAT-06` processing envelope
+
+1. **Opening Unit Checkpoint — `RU-FEAT-06`** — determine whether this Feature's behavior/target meaning is materially affected, then apply the shared [Current-Owner Evolution Impact Projection Contract](../shared/current-owner-evolution-impact-projection-contract.md).
+2. **Unit Work — `RU-FEAT-06`** — produce the Feature-local reverse navigation/revalidation projection under that shared contract.
+3. **Closing Unit Checkpoint — `RU-FEAT-06`** — validate Feature-local revalidation/handoff needs and the shared projection-contract guards.
+
 ### RU-FEAT-01 — Identity / Intent / Principal Result / Semantic Entry
 
 Capture proportionally:
@@ -207,7 +207,21 @@ BR-*  = independently useful Feature must-hold Requirement
 
 An FBS may have zero, one or several attached BRs. The step does not need a BR merely to be normative behavior.
 
-Prefer a compact Main Path table when it makes behavior easiest to follow. Use semantic FBS names plus short ordinary numeric suffixes, and keep relevant BRs/errors/QRPE adjacent to the step when practical.
+Use the shared [`Requirement Classification And Representation Contract`](../shared/requirement-classification-and-representation-contract.md) for `BR-*` Type and `QRPE / Examples` semantics.
+
+When addressable Feature Requirements are material, use the exact reusable table schema:
+
+```text
+Behavior Requirement | Type | Plain required behavior | Related behavior expected errors | QRPE / Examples
+```
+
+When addressable Feature behavior steps are material, use the exact reusable Main Path schema:
+
+```text
+Feature Behavior Step | Required action | Attached Behavior Requirements | Related behavior expected errors | QRPE / Examples
+```
+
+Feature-wide `BR-*` may appear in the Requirement table; BRs especially relevant to one `FBS-*` are also referenced adjacent to that step. Both remain the same Feature-owned `BR-*` family. Use semantic FBS names plus short ordinary numeric suffixes.
 
 Correctness-critical order is normative. If order is partial or OPEN, state that rather than fixing implementation-convenience order.
 
@@ -253,6 +267,10 @@ Removal/material reinterpretation of existing current Feature meaning is proposa
 ### RU-FEAT-05 — Feature / Slice Boundary
 
 Record the selected behavioral/locality boundary. The detailed implementation topology is discovered later and may challenge/reframe this boundary through Proposal/revalidation.
+
+### RU-FEAT-06 — Evolution Impact
+
+This Feature-local Unit specializes the shared [Current-Owner Evolution Impact Projection Contract](../shared/current-owner-evolution-impact-projection-contract.md). Its local affected surface is **Feature behavior/target meaning**. The shared contract owns inclusion threshold across candidate/selected/conditional/deferred Steps, truthful planning-position projection, depth/no-copy rules and post-realization removal from active future impact. This Target Module owns only the Unit identity, Feature-specific materiality test and local revalidation/handoff use.
 
 ## Peer Reconciliation
 
@@ -320,6 +338,12 @@ RU-FEAT-05 Feature / Slice Boundary
     Does current/known Evolution support one Slice, a module/branch/adapter, a split, or Shared extraction?
   Knowledge Basis:
     reusable Vertical Slice guidance is the primary theory/reference source; use DDD/UI/Evolution support only when relevant
+
+RU-FEAT-06 Evolution Impact
+  Driver:
+    Which concrete unrealized Steps currently contain material Feature impact/target meaning, and how deeply is that impact resolved?
+  Knowledge Basis:
+    relevant Step/Map authority + Evolution guidance; no copied future body
 ```
 
 A Unit may reach the referenced Lens/Knowledge Basis without copying that theory here. Formal runtime Questions/Proposals/QRP/Decisions are created only when their Core lifecycle/addressability value is material.
@@ -346,6 +370,8 @@ implementation concerns are clearly non-behavioral discovery inputs
 Feature/Slice boundary has explicit selected/OPEN meaning
 Scenario/Screen peer constraints were reconciled where material
 known Evolution was considered proportionally
+current Feature reverse impact includes every concrete materially relevant unrealized Step without promoting non-selected planning position
+future Feature authority remains in the Step Target Feature Body rather than RU-FEAT-06
 no exact class/call topology is frozen as Feature truth
 ```
 

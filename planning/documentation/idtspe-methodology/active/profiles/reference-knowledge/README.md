@@ -91,7 +91,7 @@ Banks divide ownership/reuse/lifecycle, not visual/music/game/application/design
 ```text
 Entry Identity And Ownership
 Entry Representation
-Semantic Decomposition [only when material]
+Semantic Decomposition — Unit always present; substantive resolution only when material
 ```
 
 Tag Assignment, Entry Relation and Analysis remain separate semantic records but are ordinary bank operations by default rather than candidate Units on every Entry Target. This keeps simple Entry creation cheap while preserving deeper work when it is useful.

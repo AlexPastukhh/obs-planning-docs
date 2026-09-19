@@ -3,13 +3,12 @@
 
 These examples demonstrate the profile-wide route:
 
-These examples use the same Candidate Unit Selection rule as the profile: every module-defined candidate Unit is evaluated from the current situation + relevant visual Source/reference coverage. Any `OMIT` recommendation keeps the Unit name/ID and states an explicit omission reason before USER selection.
+These examples use the same Unit Disposition / Materiality Review rule as the profile: every Module-defined Unit remains instantiated/addressable, while the current situation + relevant visual Source/reference coverage determine substantive resolution depth. Omitted substantive work keeps the Unit name/ID plus explicit reason; a materially contested disposition follows normal Proposal/Decision authority.
 
-1. Target Module exposes candidate Unit headings;
-2. [Unit Need / Visual Source Coverage](../lenses/frequent/LENS-VISUAL-UNIT-NEED-AND-SOURCE-COVERAGE.md#lens-visual-unit-need-and-source-coverage) evaluates Unit need, visual Source coverage and likely resolution depth;
-3. AI recommends with rationale;
-4. user selects when the choice is not already current;
-5. only selected/material Units appear in the runtime Target Work Unit set.
+1. Target Module instantiates its complete Module-defined Unit inventory;
+2. [Unit Need / Visual Source Coverage](../lenses/frequent/LENS-VISUAL-UNIT-NEED-AND-SOURCE-COVERAGE.md#lens-visual-unit-need-and-source-coverage) evaluates materiality/depth and visual Source coverage;
+3. AI resolves obvious depth/disposition from accepted context or forms a Proposal when a material choice remains;
+4. the complete Module-defined Unit inventory remains visible/addressable in the Target result; only material Units receive substantive Unit Resolution, while omitted Units retain explicit disposition.
 
 They are illustrative, not mandatory recipes.
 

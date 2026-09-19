@@ -11,9 +11,9 @@ Own the coherent whole-image visual solution/direction that satisfies accepted r
 
 ## Target Step Result
 
-`Whole Visual Design` = coherent composition of material visual-design Unit results.
+`Whole Visual Design`. Generic Unit existence/disposition semantics follow the Core [Unit / Target Step Result Model](../../../idtspe-core/shared/idtspe-unit-and-target-step-result-model.md); this module owns only the visual Unit responsibilities/materiality below.
 
-## Candidate Unit Inventory
+## Module-defined Unit Inventory
 
 | Unit | Name | Bounded result responsibility |
 |---|---|---|
@@ -65,7 +65,7 @@ Own overall visual direction, not exact RGB values, local brushwork or final tex
 
 ## Lens Profile
 
-Primary conditional profile Lens: [Whole Visual Coherence](../lenses/frequent/LENS-WHOLE-VISUAL-COHERENCE.md#lens-whole-visual-coherence) across the composed candidate. [Unit Need / Visual Source Coverage](../lenses/frequent/LENS-VISUAL-UNIT-NEED-AND-SOURCE-COVERAGE.md#lens-visual-unit-need-and-source-coverage) governs candidate Unit need and Source sufficiency.
+Primary conditional profile Lens: [Whole Visual Coherence](../lenses/frequent/LENS-WHOLE-VISUAL-COHERENCE.md#lens-whole-visual-coherence) across the composed candidate. [Unit Need / Visual Source Coverage](../lenses/frequent/LENS-VISUAL-UNIT-NEED-AND-SOURCE-COVERAGE.md#lens-visual-unit-need-and-source-coverage) evaluates Unit materiality/depth and Source sufficiency.
 
 ## Validators
 

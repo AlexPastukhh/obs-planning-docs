@@ -9,13 +9,13 @@ Status: active profile Lens
 
 Evaluate a candidate/current visual Work Unit across three coupled questions:
 
-1. does the responsibility deserve an explicit Unit in this Target;
+1. how much substantive resolution this already-instantiated Module-defined Unit responsibility needs;
 2. how well do accepted visual Sources/references cover the responsibility;
 3. how much additional analysis/preparation/resolution is likely to be needed.
 
 ## Applicability
 
-Use during Candidate Unit Selection for **every module-defined candidate Unit**.
+Use during Target formation/materiality review for **every Module-defined Unit** when responsibility-specific depth/disposition is not already obvious from accepted context.
 
 At Unit Opening/Closing, apply when Unit need or relevant visual Source/reference coverage may have changed.
 
@@ -23,7 +23,7 @@ Also apply when:
 
 - a new visual-information gap appears;
 - accepted Sources conflict;
-- a previously omitted Unit may now be needed;
+- a previously omitted Unit may now need substantive resolution;
 - the current Unit exposes a smaller independently useful responsibility;
 - additional Visual Material Preparation may be needed.
 
@@ -33,7 +33,7 @@ Use proportionally:
 
 - candidate/current Unit responsibility;
 - current Target scope, goal and requested change;
-- accepted Unit selections;
+- current Unit dispositions/materiality;
 - relevant Visual Requirements / Whole Visual Design / prior Unit results;
 - relevant Source bindings and retained visual-material qualification;
 - current previews/Evidence/Findings;
@@ -71,16 +71,16 @@ none / not relevant
 
 `none / not relevant` is valid when omission/inclusion is driven by the Target situation rather than visual reference coverage; state why.
 
-### Independent Unit Value
+### Substantive Resolution Value
 
-- What separately useful result would this Unit own?
+- What independently useful result responsibility does this already-instantiated Unit need to resolve now?
 - Does explicit ownership improve review, handoff, revalidation, reuse or continuation?
-- If omitted, is all necessary meaning already supplied by accepted Sources/other owners/current scope?
+- If substantive work is omitted, is all necessary meaning already supplied by accepted Sources/other owners/current scope?
 - Would omission hide a real unresolved responsibility?
 
 ### Resolution Depth
 
-If included:
+If substantive resolution is material:
 
 - Can the result be derived almost directly from trustworthy Sources?
 - Is targeted visual analysis needed?
@@ -91,30 +91,30 @@ If included:
 
 ## Output
 
-For each candidate Unit produce an AI recommendation:
+For each reviewed Module-defined Unit produce a recommendation about work depth/disposition:
 
 ```text
-include
-include with light/source-derived resolution
-omit
-open
+substantive resolution
+light / source-derived resolution
+omit substantive resolution
+OPEN
 ```
 
-For `omit`, the output must include:
+For omission, the output must include:
 
 ```text
 Unit semantic name + stable ID
 Situation / goal
 Relevant reference / Source coverage
 Omission reason
-USER selection or OPEN
+Disposition authority/state or OPEN
 ```
 
 An omission recommendation is not complete if its reason is only `optional`, `not needed`, `covered`, `irrelevant`, or another generic label.
 
-For `include` / `include with light source-derived resolution`, state enough situation + Source-coverage rationale to explain why the responsibility remains useful.
+For substantive/light resolution, state enough situation + Source-coverage rationale to explain the chosen depth when it is not obvious.
 
-Material include/omit changes are user-selected unless already current.
+When materiality/disposition itself is a material unresolved choice, use normal Proposal/Decision authority; do not create a profile-specific mandatory USER-selection rule.
 
 The Lens may also surface:
 
@@ -123,41 +123,40 @@ The Lens may also surface:
 - Material Preparation re-entry;
 - deeper analysis need;
 - Contextual Unit pressure;
-- revalidation of prior Unit selection.
+- revalidation of prior Unit disposition/depth.
 
 ## Guards
 
 - Strong Source coverage does not automatically remove a Unit.
 - Missing Sources do not automatically force a Unit if the responsibility is outside the selected Target.
-- Do not instantiate a Unit merely because the module lists it.
-- Do not create an `N/A` Work Unit to preserve selection history.
+- Do not create fake `N/A` content; keep the real Unit instance with an omission reason when non-material.
 - Do not treat “needs analysis” as automatically requiring a new Unit.
 - Do not assign consumer-specific Source authority from material appearance alone.
-- Do not silently select the AI include/omit recommendation.
+- Do not silently turn a materially contested disposition into accepted meaning; route real choices through normal Proposal/Decision authority.
 - Do not summarize several omitted Units as one anonymous omission when their reasons differ.
 
 ## Revalidation
 
-Recheck when Target scope, requested change, Source bindings/materials, intended output context, USER Unit selection or construction review materially changes.
+Recheck when Target scope, requested change, Source bindings/materials, intended output context, Unit disposition authority/state or construction review materially changes.
 
 ## Artifact Guidance
 
 ```text
 ARTIFACT_GUIDANCE
 ID: AG-VIS-UNIT-01
-CONTENT_KIND: candidate Unit selection trace
-WHEN: candidate Unit inclusion/omission is reviewed or materially revalidated
+CONTENT_KIND: Unit disposition / materiality rationale
+WHEN: Unit materiality/depth is non-obvious or materially revalidated and retaining the rationale adds review/revalidation value
 GUIDANCE: PROFILE_REQUIRED
 PERSISTENCE_GUIDANCE: REQUIRED
 PLACEMENT_DIRECTIVE: ROUTE
-SEMANTIC_OWNER: current Target planning / Proposal-Decision owner
+SEMANTIC_OWNER: current Target Unit/disposition state; Proposal-Decision owner only for material choice
 REPRESENTATION: EMBED_CURRENT_OWNER
 FILE_OR_ARTIFACT: <current-target-owner>
 CONTENT:
-  one individually addressable entry per candidate Unit considered;
+  one individually addressable entry per Module-defined Unit reviewed;
   for OMIT: Unit name/ID + situation/goal + relevant Source/reference coverage
-  + explicit omission reason + USER selection/OPEN;
-  for included Units: enough rationale to explain current Unit need/depth
+  + explicit omission reason + disposition authority/state;
+  for material Units: enough rationale to explain current Unit resolution depth when useful
 GUIDANCE_SOURCE: LENS
 RESOLVER: P-14 / TF-10
 ```

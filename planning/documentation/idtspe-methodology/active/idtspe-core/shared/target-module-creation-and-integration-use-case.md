@@ -78,32 +78,32 @@ Material alternatives may use Planning Branches.
 2. inspect existing semantic owners / reuse candidates
 3. decide module boundary
 4. define single Entry Point
-5. define Module Unit Contracts only where a bounded result/resolution responsibility is independently useful
+5. define Module Unit Contracts only where a bounded result/resolution responsibility is independently useful; prove the smallest natural semantic subject of each proposed Unit belongs to this Target family
 6. define explicit Opening / Closing Unit Checkpoint placement for every material Result Unit, inheriting the generic Unit Applicability Envelope; keep In-Unit Applicability Checks available whenever material
-7. for each Unit define Result Responsibility, Result Content contract and enough reusable Unit Resolution guidance/references
-8. keep only genuinely cross-Unit Resolution / Production Method at module level; move Unit-specific guidance into Unit Contracts
-9. map the module to current IDTSPE integration points
-10. define Target Formation contributions
-11. define Source Contract archetype
-12. identify reusable theory/reference knowledge and place it at Unit Contract, Target Module or Lens level according to its real consumer
-13. keep useful references/provenance and add consumer-specific interpretation when raw theory is too broad
-14. define Unit-specific question/Problem driver guidance plus only genuinely Target-wide question guidance
-15. define Unit-specific Proposal/pattern discovery aids plus only genuinely cross-Unit candidate guidance
-16. define Lens Profile: reuse Lens Library first; keep only genuinely local Lens prompts; add applicability gates
-17. define recurring Q/R/P discovery hints only when target-specific
-18. define material selection surfaces; do not require a durable Decision record for every safely derived Result Content
-19. define semantic output/projection schema when useful
-20. define Internal Object Contracts / supporting module composition
-21. for every proposed Supporting Target Module, prove it can also be a coherent standalone recurring Target family; otherwise use a Result Unit / Internal Object Contract / shared Result-Unit method
-22. define validators against Result Units/boundaries
-23. define downstream Unit/output → Source handoff
-24. define revalidation prompts
-25. define representation guidance / current Artifact contract
-26. map current repository UCs/workflows/templates/commands
-27. create at least one worked acceptance example showing Result + State Units
-28. run module consistency/readiness review
+7. for every Module-defined Unit establish a stable addressable Unit Contract/method owner; for each material Unit define Result Responsibility, Result Content contract and enough reusable Unit Resolution guidance/references
+8. verify the concrete Target result can declare the complete Module-defined Unit inventory with resolved / OPEN / explicit-omission dispositions without forcing substantive work on non-material Units
+9. keep only genuinely cross-Unit Resolution / Production Method at module level; move Unit-specific guidance into Unit Contracts
+10. map the module to current IDTSPE integration points
+11. define Target Formation contributions
+12. define Source Contract archetype
+13. identify reusable theory/reference knowledge and place it at Unit Contract, Target Module or Lens level according to its real consumer
+14. keep useful references/provenance and add consumer-specific interpretation when raw theory is too broad
+15. define Unit-specific question/Problem driver guidance plus only genuinely Target-wide question guidance
+16. define Unit-specific Proposal/pattern discovery aids plus only genuinely cross-Unit candidate guidance
+17. define Lens Profile: reuse Lens Library first; keep only genuinely local Lens prompts; add applicability gates
+18. define recurring Q/R/P discovery hints only when target-specific
+19. define material selection surfaces; do not require a durable Decision record for every safely derived Result Content
+20. define semantic output/projection schema when useful
+21. define Internal Object Contracts / supporting module composition
+22. for every proposed Supporting Target Module, prove it can also be a coherent standalone recurring Target family; otherwise use a Result Unit / Internal Object Contract / shared Result-Unit method
+23. define validators against Result Units/boundaries
+24. define downstream Unit/output → Source handoff
+25. define revalidation prompts
+26. define representation guidance / current Artifact contract
+27. map current repository UCs/workflows/templates/commands
+28. create at least one worked acceptance example showing Result + State Units
+29. run module consistency/readiness review
 ```
-
 ---
 
 ## Result
@@ -115,6 +115,8 @@ one Target Module owner
 + integration map
 + Target Step-Result Contract / Unit Contracts / Result Content responsibilities
 + explicit per-Unit Opening / Closing Applicability Checkpoints
++ stable per-Unit methodology-owner binding points
++ complete Module-defined Unit inventory/disposition contract
 + Resolution / Production Method
 + output schema/projection when useful
 + validators
@@ -143,6 +145,8 @@ create a new Target Module because a reusable Lens is missing — create/promote
 confuse reusable theory/Knowledge Basis with current Target Sources or copy reusable Lens evaluation knowledge into the module
 force a one-off useful Target into a reusable module — keep a Local Target Contract until repetition justifies promotion
 treat module output template as semantic authority
+copy foreign-owner meaning into a Unit merely because the Module is a convenient aggregation point
+let a Module-defined Unit silently disappear from an actually formed Target result
 create one user command for every internal submodule
 force supporting modules into separate Target Instances
 ```

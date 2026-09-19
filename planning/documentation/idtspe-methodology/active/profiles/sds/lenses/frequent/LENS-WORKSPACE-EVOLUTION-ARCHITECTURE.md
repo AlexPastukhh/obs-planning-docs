@@ -1,7 +1,7 @@
 # LENS-WORKSPACE-EVOLUTION-ARCHITECTURE — Evolution Impact / Change Isolation
 
 Role: reusable all-Target Evolution lens  
-Applicability: when a concrete candidate/selected Evolution Step may materially change a current owner/boundary/realization or future Target Body decision
+Applicability: when any concrete unrealized Evolution Step may materially change a current owner/boundary/realization or future Target Body decision
 
 ## Purpose
 
@@ -11,15 +11,15 @@ This Lens does not own Evolution plans. `TM-EVOLUTION-STEPS-MAP` routes to `TM-E
 
 ## Analysis Surface
 
-**Primary:** current owner/Result choices or Evolution Step Target Bodies whose boundary, realization or compatibility may be affected by concrete candidate/selected Evolution.  
+**Primary:** current owner/Result choices or Evolution Step Target Bodies whose boundary, realization or compatibility may be affected by concrete unrealized Evolution.  
 **Conditional:** relevant Evolution Step target states/branches, Steps Map relations, owner/dependency relations, current implementation/Evidence, assumptions and accepted Decisions.  
-**Context:** active Use Case/Target/profile and current Entry State.
+**Context:** active Use Case/Target/profile, current materialized owner state and direct `Entering From` predecessor lineage when relevant.
 
 ## Supported Operations
 
 ```text
 ANALYZE   — trace known Evolution pressure and change locality
-CHECK     — test current choice against Entry/Target-State and migration constraints
+CHECK     — test current choice against current materialized/predecessor state, Target-State and migration constraints
 REFINE    — improve a current owner/boundary/seam choice without changing semantic authority
 CHALLENGE — surface a Finding Candidate when the current choice is materially inconsistent or needlessly migration-prone
 ```
@@ -30,7 +30,7 @@ Registry selection is not execution; confirm this Analysis Surface is material b
 
 - current Target / Result Unit under review;
 - Steps Map registry/routing;
-- relevant concrete candidate/selected Evolution Step target states/branches;
+- relevant concrete unrealized Evolution Step target states/branches, with truthful planning position;
 - actual current implementation/Evidence when realization pressure matters;
 - known owner/dependency boundaries.
 
@@ -40,19 +40,14 @@ Registry selection is not execution; confirm this Analysis Surface is material b
 
 ```text
 current Target concern
-→ inspect Steps Map for materially relevant concrete candidate/selected Steps
+→ inspect Steps Map for materially relevant concrete unrealized Steps regardless of selected/candidate/conditional/deferred planning position
 → if none: record no material known-Evolution pressure and stop
 → if relevant: load only those Step target states/branches
 ```
 
-### 2. Entry/target-state consistency
+### 2. Step contract consistency
 
-For each relevant Step ask:
-
-- what does the Step expect already to exist at Entry State?
-- does current planning create, preserve or contradict that prerequisite?
-- is predecessor-created meaning correctly treated as existing in the later Step?
-- is a planned predecessor being mistaken for realized readiness?
+Evaluate relevant Step relations/readiness **against** [`TM-EVOLUTION-STEP`](../../target-modules/TM-EVOLUTION-STEP.md) rather than defining a second Step contract. Ask whether the represented predecessor lineage, target-state composition, concerns and readiness conclusions are internally coherent and whether projections/maps match their Step authority. If a mismatch is discovered, surface it as a Finding rather than repairing Step semantics inside the Lens.
 
 ### 3. Change isolation
 
@@ -70,7 +65,13 @@ Known/candidate Evolution is planning evidence, not permission to implement futu
 
 Prefer the simplest current design that preserves a healthy path to selected known change. Reject speculative generic seams unsupported by current or selected Evolution need.
 
-### 5. Impact disposition
+### 5. Natural Subject / Step-wide concern evaluation
+
+Apply the canonical Core [Natural Subject / Ownership Boundary](../../../../idtspe-core/shared/idtspe-unit-and-target-step-result-model.md#natural-subject--ownership-boundary) and the concrete [`TM-EVOLUTION-STEP`](../../target-modules/TM-EVOLUTION-STEP.md) Unit contracts. This Lens evaluates whether current routing is healthy; it does not own the destination ontology.
+
+Operationally ask whether an item is genuinely Step-wide, belongs to one owner-local Target Body/Requirement/concern surface, or is literal Exact/discovery mechanism. When several owner-local concerns are present, challenge Step-wide ownership unless the **cross-owner relation itself** has independent transition meaning.
+
+### 6. Impact disposition
 
 Lens output may be:
 
@@ -82,17 +83,19 @@ OPEN — insufficient Evidence
 Finding Candidate for another natural owner
 ```
 
-There is no generic `TM-EVOLUTION-IMPACT`. Material future-state impact is written into the affected Evolution Step `RU-EVO-02 Evolution Impact` and, when sufficiently resolved, the corresponding Target Owner Body/Decision. A current Scenario/Screen/Domain/Slice/Shared owner may expose only the reverse Step reference/revalidation projection in its own Evolution Impact Unit; it does not copy future meaning.
+There is no generic `TM-EVOLUTION-IMPACT`. Step-side future impact/Target Body semantics remain owned by `TM-EVOLUTION-STEP` and natural-owner Target Modules. Current-owner reverse navigation/revalidation follows the shared [Current-Owner Evolution Impact Projection Contract](../../shared/current-owner-evolution-impact-projection-contract.md). The Lens only evaluates whether those owners/projections are consistent and appropriately isolated.
 
 ## Questions
 
-- Which selected Steps are actually relevant to this Target?
-- What prerequisite meaning must already be realized?
+- Which concrete unrealized Steps are actually relevant to this Target, regardless of planning position?
+- Which direct `Entering From` predecessor relations are semantically required?
+- Do the Step-owned Planning Completeness / Realization Start Readiness conclusions fit the observed target/predecessor state?
+- Is any projection/consumer contradicting the Step-owned readiness conclusion?
 - Which owner should absorb the change?
 - Does the current boundary localize the known transition?
 - Would a module/branch/adapter/Shared extraction help for a real known need?
 - Is current abstraction supported by current/selected future evidence?
-- Does any `requires` cycle reveal a bad Step decomposition?
+- Does any `Entering From` cycle reveal a bad Step decomposition?
 
 ## Guards
 
@@ -115,7 +118,7 @@ Check:
 - whether future change is already cheap without it;
 - what remains on the current/simple side.
 
-Reject speculative frameworks with no current/selected-future consumer.
+Reject speculative frameworks with no current/concrete-future consumer.
 
 ## Prepare Now vs Defer
 

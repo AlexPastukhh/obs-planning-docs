@@ -26,12 +26,16 @@ Typical Sources: intended ownership/reuse scope, current Bank Registry, existing
 
 One usable Bank definition/configuration registered for Reference Knowledge work.
 
-## Candidate Unit Inventory
+## Module-defined Unit Inventory
 
 | ID | Unit | Bounded result responsibility |
 |---|---|---|
 | `RU-RKB-01` | [Bank Identity And Scope](#ru-rkb-01) | establish Bank identity and owned reusable-knowledge boundary |
 | `RU-RKB-02` | [Access And Ownership Policy](#ru-rkb-02) | resolve visible Banks, consumed Vocabulary Packages and material local mutation policy |
+
+## Module-defined Unit Visibility
+
+Generic Unit existence/disposition semantics follow the Core [Unit / Target Step Result Model](../../../idtspe-core/shared/idtspe-unit-and-target-step-result-model.md). This module owns only the Reference-Knowledge Unit responsibilities, local materiality/omission reasoning and specialized guidance below; Contextual Units remain governed by Core formation semantics.
 
 ## Unit Checkpoint Map
 
@@ -65,7 +69,7 @@ Every material Unit follows the inherited Core applicability/materiality envelop
 
 **Result Responsibility.** The material access/authority configuration needed for Bank work beyond its basic identity.
 
-**Applicability / Omission.** Omit or keep source-derived when installation/repository defaults already provide the needed behavior and no material Bank-specific policy remains.
+**Applicability / Omission.** When installation/repository defaults already provide the needed behavior and no material Bank-specific policy remains, keep this Unit declared with a concise omission disposition or a source-derived minimal result as appropriate.
 
 **Inputs / Sources.** Other registered Banks, registered Vocabulary Packages, repository/system permissions and intended cross-bank reuse.
 

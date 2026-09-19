@@ -57,11 +57,12 @@ This is a composition list, not a mandatory sequence.
 
 ## Target Work Unit Composition Rule
 
-When a Target is useful, compose only the Target Work Units currently justified by the Target Module/Local Target Contract plus any Contextual Unit whose bounded local result responsibility is independently useful. Core State Units may participate in their Unit Resolution or remain Target/cross-Target/Work-Context state; do not form Contextual Work Units merely to wrap every Source/Question/QRP/Proposal/Decision/Evidence item.
+When a Target is useful, the selected Target Module declares its complete Module-defined Unit inventory. Compose substantive work only for the Units whose materiality currently justifies Unit Resolution; keep the remaining Module-defined Units visible in the Target result with concise explicit omission dispositions. Add a Contextual Unit only when the active context exposes an independently useful bounded local responsibility. Core State Units may participate in Unit Resolution or remain Target/cross-Target/Work-Context state; do not form Contextual Work Units merely to wrap every Source/Question/QRP/Proposal/Decision/Evidence item.
 
 ```text
 existing Module-defined Unit fits
-→ use its Unit Resolution
+→ keep its identity in the complete Target inventory
+→ use substantive Unit Resolution only when material
 
 no Unit fits + bounded local responsibility is independently useful
 → Contextual Unit

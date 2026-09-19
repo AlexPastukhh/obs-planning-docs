@@ -85,34 +85,22 @@ Do not browse all profile components ceremonially.
 
 ## Compact Owner Topology
 
+This README is a bootstrap/responsibility map, not a second semantic contract. For cross-owner temporal/readiness composition use the [SDS Semantic Composition / Readiness Guide](shared/directed-methodology-workflow-and-next-step-resolution.md); for complete Step semantics use [`TM-EVOLUTION-STEP`](target-modules/TM-EVOLUTION-STEP.md); for current-owner reverse Evolution Impact use the shared [Current-Owner Evolution Impact Projection Contract](shared/current-owner-evolution-impact-projection-contract.md).
+
 ```text
 Application Definition
-→ selected/possible Benefits + contribution/boundary intent
+→ upstream intent/value/contribution/boundary owner
 
-current realized downstream state
-→ canonical current Feature/Scenario/Screen/Domain/Slice/Shared owners + implementation + Evidence
+realized downstream Feature/Scenario/Screen/Domain/Slice/Shared
+→ current natural owners
 
-material downstream desired state differs / new downstream owner is planned
+materially planned unrealized downstream change
 → Evolution Step
-   ├─ Driven By Application Definition when material
-   ├─ Proposal / Planning Branch / Decision / Q-R-P / Evidence as needed
-   ├─ Target Feature / Scenario / Screen bodies as applicable
-   ├─ Target Domain / Slice / Shared bodies as applicable
-   ├─ future owner-local BR/IR/PFR inside the corresponding Target Body
-   └─ transition / proof obligations + Target Owner Materialization Set
-
-selected Step meaning sufficiently resolved
-→ Core Exact Realization
-→ implementation-native proof / Evidence
-→ targeted revalidation
-→ Target Owner Materialization
-→ updated canonical current owners
-
-optional Practical Test
-→ real-subject/environment Evidence after the relevant implementation exists
+→ natural-owner Target Bodies as needed
+→ Exact + Evidence + materialization before current-owner authority changes
 ```
 
-This is orientation only. It is not a mandatory phase sequence. Cross-owner readiness/direction is canonically owned by [`shared/directed-methodology-workflow-and-next-step-resolution.md`](shared/directed-methodology-workflow-and-next-step-resolution.md); each concrete Target Module/Lens owns its own production/evaluation semantics.
+This is routing orientation only, not a mandatory phase sequence or a duplicate definition of Step Units/readiness.
 
 ## Key Profile Invariants
 
@@ -121,15 +109,15 @@ This is orientation only. It is not a mandatory phase sequence. Cross-owner read
 - Target Owner Materialization is a semantic authority transition after realization/proof; it is distinct from physical representation promotion/demotion or file placement under P-14/TF-10.
 - Feature, Scenario and Screen are peer semantic owner families; none silently edits another.
 - Domain and Slice discovery Targets/artifacts are transient by default; selected Discovery Working Plan Result Content may be retained in a Step `Evolution Impact` when continuation/realization/review/revalidation still needs it, without becoming durable Domain/Slice authority.
-- Durable Requirements stay with exactly one natural owner **in the state being represented**: future Requirements live in the corresponding Step Target Body until materialization.
+- Durable Requirements stay with exactly one natural owner **in the state being represented**: future `BR/SR/IR/PFR` live in the corresponding Step Target Body until materialization; reusable Type/QRPE representation does not change ownership.
 - Shared capability formation is governed by its Target Module; future consumers do not count as already-realized current consumers.
 - There is no baseline Test Strategy/Test Design Target family; proof follows natural owners/Step obligations and Core proof/evidence evaluation.
 - Programming Principles are reusable knowledge, not a mega-Lens and not live-inherited owner Requirements.
 - Planning depth is guidance, not a one-active-level state machine or approval ladder.
 - Exploratory discovery resolution/rejected alternatives are non-persistent by default. Selected planning Result Content persists only in its natural destination when it has continuing value; physical artifact persistence remains a separate proportional representation decision.
 - Proposal selection, uncertainty/confidence and realization/materialization are separate axes.
-- Behavioral/Mixed Evolution Steps are grounded by the affected Feature/Scenario behavior as material. Implementation-only foundation Steps are valid without inventing Feature behavior when concrete selected realization pressure exists and `Behavior Change: None intended`.
-- Scenario/Screen/Domain/Slice/Shared future consequences use Step-owned `Evolution Impact` Units; current realized owners may expose only reverse Step navigation/revalidation through their own optional Evolution Impact Unit.
+- Behavioral/Mixed Evolution Steps are grounded by affected Feature/Scenario behavior as material. Implementation-focused Steps may exist without inventing new Feature behavior when concrete transition-wide implementation pressure exists and `Behavior Change: None intended`; exact mechanism still belongs to Exact.
+- Step-side future Impact/Target Body semantics stay with `TM-EVOLUTION-STEP`; current-owner reverse Evolution Impact follows the shared `current-owner-evolution-impact-projection-contract.md` rather than a README-local rule.
 
 ## Canonical SDS Owners
 
@@ -138,7 +126,9 @@ This is orientation only. It is not a mandatory phase sequence. Cross-owner read
 - [`target-modules/TM-EVOLUTION-STEPS-MAP.md`](target-modules/TM-EVOLUTION-STEPS-MAP.md) — navigation/coordination across concrete Step candidates/selections/relations/readiness.
 - [`target-modules/README.md`](target-modules/README.md) — active SDS Target Module registry; concrete modules own their own production/formation rules.
 - [`lenses/README.md`](lenses/README.md) — SDS Lens registry; concrete Lenses own specialized evaluation methods.
-- [`shared/requirement-ownership-and-exception-rule.md`](shared/requirement-ownership-and-exception-rule.md) — natural Requirement ownership, BR/IR/PFR families and current-vs-future hosting.
+- [`shared/semantic-family-authority-and-provenance-contract.md`](shared/semantic-family-authority-and-provenance-contract.md) — reusable SDS family/natural-owner authority vs local semantic meaning/provenance.
+- [`shared/requirement-ownership-and-exception-rule.md`](shared/requirement-ownership-and-exception-rule.md) — natural Requirement ownership, `BR/SR/IR/PFR` families and current-vs-future hosting.
+- [`shared/requirement-classification-and-representation-contract.md`](shared/requirement-classification-and-representation-contract.md) — reusable extensible Requirement Type classification guidance plus QRPE/common table semantics.
 - [`shared/reusable-guidance-model.md`](shared/reusable-guidance-model.md) — `RG/RR/RRC` reusable-guidance semantics and no-live-inheritance rule.
 - [`shared/programming-principles/README.md`](shared/programming-principles/README.md) — compact trigger registry for the reusable programming-principle corpus.
 - [`ARTIFACT-PLACEMENT-MAP.md`](ARTIFACT-PLACEMENT-MAP.md) — SDS-specific semantic-owner → representation projection used with Core representation policy.

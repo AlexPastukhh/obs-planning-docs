@@ -19,7 +19,7 @@ For the 2D visual-production portion, read in order:
 2. [Visual Production Invariants](shared/VISUAL-PRODUCTION-INVARIANTS.md#shared-visual-production-invariants);
 3. [2D Visual Production Target Module Registry](TARGET-MODULE-REGISTRY.md#registry-2d-target-modules);
 4. [2D Visual Lens Registry](LENS-REGISTRY.md#registry-2d-lenses);
-5. [Unit Selection And Lens Checkpoints](shared/UNIT-SELECTION-AND-LENS-CHECKPOINTS.md#shared-unit-selection-and-lens-checkpoints);
+5. [Unit Disposition / Materiality Review And Lens Checkpoints](shared/UNIT-SELECTION-AND-LENS-CHECKPOINTS.md#shared-unit-selection-and-lens-checkpoints);
 6. [Construction Route Selection](shared/CONSTRUCTION-ROUTE-SELECTION.md#shared-construction-route-selection);
 7. [Construction Review Loop Checkpoint](shared/CONSTRUCTION-REVIEW-LOOP-CHECKPOINT.md#shared-construction-review-loop-checkpoint);
 8. [Artifact Placement Map](ARTIFACT-PLACEMENT-MAP.md#artifact-placement-map).
@@ -70,19 +70,19 @@ Use [Multi-route Visual Construction](target-modules/TM-2D-30-VISUAL-CONSTRUCTIO
 
 This topology is directional guidance, not a mandatory phase state machine. Findings may re-enter the smallest correct upstream owner.
 
-## Candidate Unit Selection
+## Module-defined Unit Disposition / Materiality Review
 
-Target Modules expose candidate Unit responsibilities. Before runtime Unit projection, [Unit Need / Visual Source Coverage](lenses/frequent/LENS-VISUAL-UNIT-NEED-AND-SOURCE-COVERAGE.md#lens-visual-unit-need-and-source-coverage) evaluates:
+A formed Target instantiates the complete Module-defined Unit inventory. [Unit Need / Visual Source Coverage](lenses/frequent/LENS-VISUAL-UNIT-NEED-AND-SOURCE-COVERAGE.md#lens-visual-unit-need-and-source-coverage) evaluates the substantive resolution depth/disposition of those Units:
 
-- whether a candidate Unit has useful independent responsibility in this Target;
+- how much substantive work this already-instantiated Unit responsibility needs in this Target;
 - how accepted visual Sources cover that responsibility;
 - how much further analysis/preparation/resolution is likely to be needed.
 
-The AI evaluates **every candidate Unit** against the current situation and responsibility-specific Source/reference coverage, then presents a recommendation and rationale. Material include/omit changes are user-selected unless the same selection is already current.
+The AI evaluates Unit materiality/depth against the current situation and responsibility-specific Source/reference coverage. Obvious dispositions may be derived from accepted context; a materially contested disposition follows normal Proposal/Decision authority.
 
-If the AI recommends omission, the Candidate Unit Selection must keep that Unit's name/ID and explicitly record the current situation, relevant Source/reference coverage, and why no independently useful unresolved responsibility remains. The omitted candidate stays visible in the selection trace and does not become an `N/A` Work Unit.
+If substantive work is omitted, the Unit remains instantiated/addressable in the Target result with its name/ID, concise omission reason and enough situation/Source context when useful. Omission never turns the Unit into `N/A` or removes it from the Target inventory.
 
-The profile checkpoint route is [Unit Selection And Lens Checkpoints](shared/UNIT-SELECTION-AND-LENS-CHECKPOINTS.md#shared-unit-selection-and-lens-checkpoints).
+The profile checkpoint route is [Unit Disposition / Materiality Review And Lens Checkpoints](shared/UNIT-SELECTION-AND-LENS-CHECKPOINTS.md#shared-unit-selection-and-lens-checkpoints).
 
 ## Visual Materials And Sources
 

@@ -18,9 +18,10 @@ zero or more bounded Targets
 ↓
 Target Module or Local Target Contract
 ↓
-zero or more Target Work Units
-  ├─ Module-defined Unit
-  └─ Contextual Unit when current work exposes an independently useful local responsibility
+Target Work Units
+  ├─ complete Module-defined Unit inventory for every formed Target
+  │    └─ each Unit dispositioned as RESOLVED / OPEN / explicit omission
+  └─ Contextual Unit only when current work actually forms an independently useful local responsibility
 ↓
 for each material Target Work Unit
   Result Responsibility
@@ -29,7 +30,8 @@ for each material Target Work Unit
   + Current Result Content when sufficiently resolved
 ↓
 Target Step Result
-  = composition/projection of applicable Target Work Unit Result Content
+  = complete Module-defined Unit inventory with proportional dispositions/content
+  + any Contextual Units that actually formed
 ```
 
 This is not one common peer `IDTSPE Unit` inventory. `Target Work Unit` and `Core State Unit` are deliberately different compositional roles that may coexist in one Target/Work Context.
@@ -46,6 +48,33 @@ Core State Unit / Core Resolution State
 
 A Core State Unit may therefore be Unit-local without becoming Target Work Unit Result Content, or may legitimately sit above/between several Target Work Units/Targets when that is its natural scope.
 
+### Natural Subject / Ownership Boundary
+
+For every material result/state item, resolve its **smallest natural semantic subject** before treating the current Target/Unit as its owner.
+
+```text
+meaning whose smallest natural subject is this Target Work Unit
+→ valid local ownership candidate
+
+meaning naturally owned by another Target / Unit / semantic owner
+→ reference / Source / handoff to that owner
+→ do not copy semantic authority into the current Unit
+
+relation / composition / transition constraint spanning several owners
+→ may remain at the enclosing Target only when that relation itself
+   is the enclosing Target's natural subject
+
+exact realization mechanism / literal code / files / config / call sequence
+→ realization/discovery/Exact owner unless selected durable semantics
+   belong to another natural owner
+
+owner unclear or conflicting
+→ Finding / owner resolution
+→ do not invent ownership for convenience
+```
+
+Physical co-location, a convenient table, a planning Step that happens to mention several owners, or a Markdown link does not establish semantic ownership.
+
 `Current Result Content` is the normalized current answer/output owned by the Target Work Unit. It may be absent while Unit Resolution is still open. Candidate result meaning may be useful during resolution, but candidate meaning is not current Result Content merely because it was written down.
 
 ```text
@@ -58,15 +87,17 @@ is valid; Proposal/Decision ceremony is not mandatory when no material choice ex
 
 A material Proposal that is actually selected still has **Decision semantics** under the canonical Proposal/Decision lifecycle. A separate explicit/durable Decision State Unit or retained Decision trace is required only when the selection/rationale/trade-off/revalidation meaning has independent future value.
 
-`IDTSPE Step Output` remains an explanatory umbrella for the material semantic output of one work/integration pass. It may contain the `Target Step Result` (Target Work Unit Result Content composition) plus material Core State Units/Core Resolution State and handoff/revalidation consequences. It is not a new semantic owner and does not imply one persisted record.
+`IDTSPE Step Output` remains an explanatory umbrella for the material semantic output of one work/integration pass. It may contain the `Target Step Result` (complete Module-defined Unit inventory with proportional Unit content/dispositions plus any formed Contextual Units) plus material Core State Units/Core Resolution State and handoff/revalidation consequences. It is not a new semantic owner and does not imply one persisted record.
 
 ## 2. Target Step Result
 
 ```text
 Target Step Result
-= the useful target-specific selected/resolved output
+= the useful target-specific output shape/meaning
   that the current bounded IDTSPE work step
-  is trying to produce or refine for the selected Target.
+  is trying to produce or refine for the formed Target.
+
+Canonical/current authority follows normal Proposal/Decision/integration rules. An explicitly requested Proposal Target Result forms an ordinary candidate Target Instance under the Core Target Instance/Proposal contracts; its complete Target-result shape does not become `Current Result Content` merely by being rendered.
 ```
 
 `Step` qualifies the word `Result`: it means the result wanted from **this current IDTSPE work pass**, not the final product/result of the domain being planned.
@@ -382,7 +413,7 @@ Revalidation
 Representation guidance
 ```
 
-Possible does not mean mandatory. Shared module-level guidance may be referenced by several Units rather than copied.
+A Module-defined Unit being declared does not mean it is materially worked in every Target. Shared module-level guidance may be referenced by several Units rather than copied; non-material Units remain visible with explicit omission disposition rather than silently disappearing.
 
 ### Contextual Unit
 
@@ -409,24 +440,47 @@ become Target Formation input when independent responsibility grows
 
 Do not persist a `CU-*` result section merely because a Contextual Unit existed during resolution.
 
-## 5A. Unit Applicability / Materiality / Omission Contract
+## 5A. Unit Applicability / Materiality / Disposition Contract
 
 Every Unit kind/definition must make it possible to answer three different questions:
 
 ```text
 Applicability
-→ can this Unit kind/Result Unit meaning apply to the current situation/Target?
+→ can this Unit kind / responsibility apply to the current Target/situation?
 
 Materiality
-→ would making this meaning explicit now improve resolution, lifecycle, validation, continuation, handoff or consumer use?
+→ does this Unit require substantive resolution now?
 
-Omission
-→ when is it correct to leave the Unit absent/unpopulated for now?
+Disposition
+→ what explicit result state does this Unit have in the concrete Target result?
 ```
 
-These checks are situational and may be expressed by a concise rule rather than a mandatory schema block. The owner should also make typical inputs/consumers and revalidation/retention conditions clear when they materially affect use.
+For a **Module-defined Unit**, Target formation instantiates the complete reusable Unit inventory. Once that Target exists, every Module-defined Unit is a concrete Target Work Unit instance and remains addressable/visible in the Target result; materiality controls substantive work/depth, **not whether the Unit exists or whether its identity silently disappears**. In an authored Target representation, each Module-defined Unit is shown by its Unit heading/identity plus its current disposition/content.
 
-Generic Core State examples:
+```text
+Module-defined Unit + material + sufficiently resolved
+→ declare Unit
+→ Current Result Content
+
+Module-defined Unit + material + unresolved
+→ declare Unit
+→ explicit OPEN / unresolved result meaning
+
+Module-defined Unit + not applicable / not material now
+→ keep the Unit instance declared/addressable
+→ show its Unit heading/identity
+→ concise explicit omission disposition with the reason
+→ no substantive Unit Resolution solely to fill the Unit
+
+no concrete Target formed
+→ no Target result / no Unit inventory merely for ceremony
+```
+
+Do not use a bare `N/A` placeholder. The omission text must communicate why substantive Unit work is not justified in this Target/result. A non-material Unit does **not** require full Unit Resolution merely because its identity is visible.
+
+A **Contextual Unit** remains different: it is created only when the active context actually exposes an independently useful bounded local responsibility. Do not predeclare hypothetical Contextual Units merely to prove they were considered.
+
+Generic Core State examples remain proportional:
 
 | State Unit kind | Introduce / make explicit when | Normally omit / keep implicit when |
 |---|---|---|
@@ -443,11 +497,7 @@ Generic Core State examples:
 | representation/persistence state | physical placement/materialization choice has independent review/revalidation value | representation follows directly from current owner contract with no ambiguity |
 | validation/readiness finding | a material validation result must survive beyond the immediate evaluation | no material finding exists or it is already disposed into another owned Unit |
 
-These are defaults, not a closed ontology-specific checklist. The current Use Case and local owner still judge usefulness against context.
-
-Target-specific Result Units follow the same rule, but their applicability/materiality/omission semantics are owned by the Target Module/Local Contract.
-
-Do not create a placeholder Unit only to record `N/A`. Absence is a first-class valid projection when the omission rule is satisfied.
+Core State remains sparse because Core State kinds are not a predeclared Target-specific inventory. The complete-inventory rule above applies specifically to Module-defined Units of an actually formed Target.
 
 ## 5B. Unit Applicability Envelope — Opening / In-Unit / Closing Checkpoints
 
@@ -465,7 +515,26 @@ current Work Context + Target + accepted State
 
 ### Opening Unit Checkpoint
 
-Before materially working one Result Unit:
+Before substantive work on one material Module-defined Unit, bind the working Unit to the reusable method that governs how it is resolved.
+
+```text
+material Unit becomes current work subject
+→ resolve/reuse the exact Unit Contract anchor as the primary method owner
+→ resolve the smallest sufficient additional reusable owner set already known to be material
+→ when an authorized working representation is being authored, write the concise Methodology binding before substantive Unit content
+→ otherwise retain the binding in current working context until/if representation is materialized
+→ then begin substantive Unit Resolution
+```
+
+The persisted binding form is owned by Documentation [`Methodology / Contextual Annotation Principle`](../../../../principles-and-terminology.md#methodology--contextual-annotation-principle); normally:
+
+```md
+**Methodology:** [exact reusable owner](...)
+```
+
+Do not copy the method after the link. If a reusable owner should exist but is missing, ambiguous or conflicting, surface an OPEN methodology-owner resolution / Finding instead of pretending the block is merely Contextual.
+
+After the primary binding is established:
 
 ```text
 current Unit Analysis Surface
@@ -476,7 +545,7 @@ current Unit Analysis Surface
 → consult other component registries only when this Unit exposes a material trigger for them
 ```
 
-`Opening Unit Checkpoint` is mandatory for a material Unit. A valid result is `NO_ADDITIONAL_LENS` / no new supporting component. Mandatory checkpoint does **not** mean mandatory full-file reread, exhaustive registry traversal, Lens execution or Finding creation.
+`Opening Unit Checkpoint` is mandatory for a material Unit. A valid result is `NO_ADDITIONAL_LENS` / no new supporting component. Mandatory checkpoint does **not** mean mandatory full-file reread, exhaustive registry traversal, Lens execution or Finding creation. Supporting methodology discovered later is bound/referenced before that supporting method is applied; it need not all be predicted at the opening checkpoint.
 
 ### In-Unit Applicability Check
 
@@ -569,7 +638,7 @@ A Finding may instead route directly to Target Scope, Source authority, Target r
 
 A Target Module defines one recurring Target Step Result family primarily through its set/composition of Module-defined Unit Contracts plus genuinely Target-wide rules.
 
-For each material Unit the module must make enough reusable meaning reachable to resolve that responsibility safely. Unit-specific questions/Knowledge Basis/Lens triggers/validators belong with that Unit when they are specific to it; truly shared Target-family guidance may remain module-level and be referenced by several Units.
+For each Module-defined Unit the module must make its reusable method owner/addressable contract reachable; for each material Unit it must additionally expose enough reusable meaning to resolve that responsibility safely. Unit-specific questions/Knowledge Basis/Lens triggers/validators belong with that Unit when they are specific to it; truly shared Target-family guidance may remain module-level and be referenced by several Units.
 
 ```text
 Target Module
@@ -579,29 +648,32 @@ Target Module
 → Target Step Result composition/projection
 ```
 
-The Target Step Result is therefore the coherent applicable composition of Unit Result Content, not a container that becomes current merely because candidate content was produced.
+The Target Step Result is therefore the coherent composition of the complete Module-defined Unit inventory with each Unit's resolved / OPEN / explicit-omission disposition and proportional content, plus any Contextual Units that actually formed. It is not a container that becomes current merely because candidate content was produced.
 
-## 8. Proportional / Sparse Projection Rule
+## 8. Complete Module-Defined Unit Inventory / Proportional Content Rule
 
 ```text
 Target Module Step-Result Contract
-= possible/addressable semantic surface
+= complete reusable Module-defined Unit inventory
 
-Concrete Target Step Result
-= only the applicable, supported and material projection
-  for this Target step
+Concrete Target Step Result for an actually formed Target
+= every Module-defined Unit declared
++ each Unit dispositioned as resolved / OPEN / explicitly omitted
++ substantive depth proportional to materiality
 ```
 
 A declared Result Unit/field does **not** mean:
-- it must be asked;
-- it must be introduced before its applicability/materiality is established;
-- it must be resolved;
-- it must be persisted;
+- it must receive substantive work when non-material;
+- every optional field inside the Unit must be populated;
+- it must be persisted separately;
 - it must be equally detailed;
-- its absence automatically creates Q/R/P;
-- `N/A` placeholders are required to prove it was considered.
+- omission automatically creates Q/R/P;
+- Contextual Units must be predeclared;
+- a bare `N/A` proves correct consideration.
 
-The Target Module/Local Contract should expose enough trigger/materiality/consumer meaning that the active Use Case/production method can decide whether the Unit is useful **in this situation**. A concrete result may legitimately contain only one of several possible Result Units.
+The active Use Case/production method decides which declared Units require substantive Unit Resolution. Non-material Module-defined Units remain visible with a concise omission rationale. Material unresolved Units remain visible as `OPEN` instead of disappearing.
+
+Optional **fields inside** a Unit may still remain absent when the Unit contract makes that field optional and no independent ambiguity is created. Complete Unit visibility is not a requirement to render every possible field/schema cell.
 
 Existing `Output Schema` / `Target-specific Output Template` terminology remains a compatibility/technical projection vocabulary. The semantic owner is the Step-Result Contract; a template is one way to project it.
 
@@ -858,7 +930,7 @@ Core State Unit / Core Resolution State keeps its lifecycle/addressability while
 Finding Candidate ≠ Unit automatically
 Finding may route to Unit Resolution, Contextual Unit, Target Formation or another canonical owner
 Lens ≠ Unit owner ≠ Finding disposition authority
-Target Step Result = coherent projection/composition of applicable Target Work Unit Result Content
+Target Step Result = complete Module-defined Unit inventory with resolved / OPEN / explicit-omission dispositions + any formed Contextual Unit results
 Unit identity ≠ file identity
 semantic retention ≠ physical persistence
 ```

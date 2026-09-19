@@ -14,38 +14,17 @@ current Work Context / concern
 → choose zero or more plausible Target Modules
 → open module body
 → confirm its Entry Point / local applicability gate
-→ instantiate only material Result Units
+→ declare the complete Module-defined Unit inventory
+→ substantively resolve only material Units; non-material Units receive explicit omission dispositions
 ```
 
-`NO_REUSABLE_TARGET_MODULE` is a valid outcome. Registry selection does not itself create a Target. Recheck when the work concern, active Target/profile, accepted upstream meaning or module-specific materiality changes. Result Units and fields remain sparse: declared possibility does not make them mandatory.
+`NO_REUSABLE_TARGET_MODULE` is a valid outcome. Registry selection does not itself create a Target. Recheck when the work concern, active Target/profile, accepted upstream meaning or module-specific materiality changes. Module-defined Unit identities are complete in every formed Target result; substantive Unit work and optional fields remain proportional to materiality. Contextual Units remain contextual.
 
-## Unit-Centric Conformance
+## Core / Temporal Conformance Routing
 
-All active SDS modules use the Core Unit contract: declared `RU-*` entries are Module-defined Units with bounded Result Responsibility, Unit Resolution and Current Result Content. Existing module-wide Production Method / Knowledge Basis / Lens Profile text is interpreted as shared defaults only where genuinely applicable across Units; Unit-specific questions/guidance/lenses/validators attach to the relevant Unit responsibility.
+Concrete SDS Target Modules inherit generic Unit/Target semantics from the Core [Unit And Target Step Result Model](../../../idtspe-core/shared/idtspe-unit-and-target-step-result-model.md) and [Target Module Model](../../../idtspe-core/shared/target-module-model.md). This registry does not restate those contracts.
 
-This conformance does not change SDS temporal authority: selected but unrealized owner semantics remain Step-owned until realization/materialization. Feature target state is direct Step meaning; Scenario/Screen/Domain/Slice/Shared consequences may be hosted first in Step `Evolution Impact` Units and resolved into complete Target Owner Bodies when the selected owner change is sufficiently resolved.
-
-## Temporal Hosting Rule — Current Owners vs Future Target Bodies
-
-Before instantiating an SDS owner-shaped result, classify authority:
-
-```text
-TM-APPLICATION-DEFINITION
-→ upstream selected/possible need/value/contribution authority
-→ refined directly even when downstream realization lags
-→ never Target Application Body / Step materialization
-
-Feature / Scenario / Screen / Domain / Slice / Shared
-already realized current truth
-→ direct current-owner Target/revalidation
-
-materially planned but unrealized downstream state
-→ TM-EVOLUTION-STEP owns future transition
-→ natural-owner Target Module may produce complete Target Owner Body
-→ selection does not update current owner
-```
-
-After Exact Realization + proof/revalidation, downstream Target Owner Materialization may `CREATE / REPLACE / RETIRE`.
+Cross-owner current-vs-future hosting/readiness is routed to the SDS [Semantic Composition / Readiness Guide](../shared/directed-methodology-workflow-and-next-step-resolution.md) and [`TM-EVOLUTION-STEP`](TM-EVOLUTION-STEP.md). Current-owner reverse Evolution Impact projection semantics are routed to the shared [Current-Owner Evolution Impact Projection Contract](../shared/current-owner-evolution-impact-projection-contract.md). Registry rows below are discovery summaries only.
 
 ## Active SDS Target Modules
 
@@ -88,10 +67,10 @@ Pre-Update is not a mandatory predecessor of Exact.
 
 ```text
 TM-FEATURE
-  behavior / semantic Feature Data / BR-* / implementation concerns / Feature-Slice boundary
+  behavior / semantic Feature Data / BR-* / implementation concerns / Feature-Slice boundary / owner-local reverse Impact Unit
 
 TM-SCENARIO-PLANNING
-  journey composition / continuity / terminal Benefit / sparse journey must-holds / optional E2E proof intent
+  journey composition / continuity / terminal Benefit / SR-* / optional E2E proof intent / journey realization concerns / owner-local reverse Impact Unit
 
 TM-SCREEN
   spatial/navigation composition / Feature presence / routes / Screen-specific constraints
@@ -116,6 +95,7 @@ Feature behavior action/transition → FBS-*
 Feature behavior must-hold → BR-*
 Scenario journey must-hold → SR-*
 Domain / Slice / Shared implementation constraint → owner-local IR-*
+Durable SDS Requirement → reusable Requirement Type classification only when that classification materially improves review/traceability/representation; Type remains optional and does not affect family/owner semantics
 rare durable proof-realization HOW constraint → owner-local PFR-*
 ```
 

@@ -59,6 +59,10 @@ Does it merely make implementation convenient?
 What opportunity cost/responsibility creep appears?
 ```
 
+## Ownership-Boundary Companion Check
+
+Ask whether this Target/Unit contains owner-local meaning whose natural subject is another owner and should therefore be a Source/reference/handoff rather than part of this Target's own scope. A broad collection point is not a justification for semantic ownership.
+
 ## Findings / Outputs
 
 ```text

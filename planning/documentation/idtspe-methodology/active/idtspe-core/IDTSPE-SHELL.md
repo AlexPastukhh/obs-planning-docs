@@ -16,12 +16,13 @@ IDTSPE Work Context
     + actual Source Set
       + Source State Units/bindings scoped to Target/Work Units as applicable
     + selected/applicable Lenses
-    + zero or more Target Work Units
-      each material Work Unit:
-        Result Responsibility
-        + Unit Resolution ↔ applicable Core State Units
-        + Current Result Content when resolved
-    + Target Step Result composition from Work Unit Current Result Content
+    + complete Module-defined Target Work Unit inventory
+      each Module-defined Unit remains instantiated/addressable in the formed Target:
+        RESOLVED → proportional Current Result Content
+        OPEN → explicit unresolved disposition
+        OMITTED → concise omission reason; no substantive Unit Resolution required
+      + Contextual Units only when actually formed
+    + Target Step Result composition from the complete Unit inventory/dispositions/content
     + Validators / Guards
     + Artifact Placement when material
 + cross-Unit / Target / Work-Context Core Resolution State when material
@@ -198,7 +199,7 @@ A separate explicit/durable Decision State/trace is retained only when selection
 
 ### P-11 Target Step Result Projection Port
 
-Projects **Current Result Content** from applicable Units into the Target Step Result supplied by the active Target Module/Local Contract.
+Projects the complete Module-defined Unit inventory into the Target Step Result supplied by the active Target Module/Local Contract: resolved material Units contribute Current Result Content, unresolved material Units remain `OPEN`, non-material Module-defined Units retain explicit omission dispositions, and only actually formed Contextual Units are added.
 
 ```text
 Unit Resolution
@@ -207,7 +208,9 @@ Unit Resolution
 → Current Result Content
 
 Target Step Result
-= coherent composition/projection of applicable Unit Result Content
+= complete Module-defined Unit inventory
+  with resolved / OPEN / explicit-omission dispositions and proportional content
++ any Contextual Units that actually formed
 ```
 
 Generic Core Resolution State is not duplicated into result fields merely to expose the reasoning history. Contextual Unit conclusions integrate into their declared destination; a Contextual Unit does not automatically create a durable result section.
@@ -427,8 +430,8 @@ Proposal/Branch space sufficient
 blocking Q/R/P resolved/deferred explicitly
 material Decisions accepted under correct authority
 material Unit Resolutions sufficiently resolved/deferred for the current handoff
-Current Result Content projected for resolved applicable Units
-Target Step Result composed from applicable Unit Result Content
+Current Result Content projected for resolved material Units; OPEN/omission dispositions preserved for the rest of the Module-defined inventory
+Target Step Result composed from the complete Module-defined Unit inventory plus any formed Contextual Units
 material Core Resolution State visible/resolved/deferred at the correct subject
 validators pass or material findings dispositioned
 handoff/persistence/revalidation contract sufficient
