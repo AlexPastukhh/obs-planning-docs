@@ -80,7 +80,7 @@ test('generic IDTSPE command surfaces depend on Core command-surface authority r
   const sdsOwner='planning/documentation/idtspe-methodology/active/profiles/sds/shared/idtspe-command-surface-contract.md';
   const files=['bootstrap-idtspe.command.md','work-through-idtspe.command.md','idtspe-next.command.md','idtspe-continue.command.md','review-idtspe-consistency.command.md','idtspe-proposal.command.md','review-idtspe-needs.command.md','review-idtspe-findings.command.md','plan-pre-update.command.md','realize-exact-result.command.md','select-idtspe-lenses.command.md','apply-idtspe-lens.command.md','check-documentation-representation.command.md','check-linked-notes-justification.command.md'];
   for(const file of files){const command=codec.parseCommandDefinitionDocument(read(`planning/commands/${file}`));assert.ok(command.ownerFiles.includes(coreOwner),`${command.id}: missing Core command-surface owner`);assert.ok(!command.ownerFiles.includes(sdsOwner),`${command.id}: generic Core surface depends on SDS command owner`);}
-  const core=read(coreOwner);assert.match(core,/Generic Core Surface Inventory — 14/);assert.match(core,/CREATE_OR_REUSE_TARGET/);assert.match(core,/RESOLVE_OR_REUSE_TARGET/);
+  const core=read(coreOwner);assert.match(core,/Generic Core Surface Inventory — 15/);assert.match(core,/CREATE_OR_REUSE_TARGET/);assert.match(core,/RESOLVE_OR_REUSE_TARGET/);
   const sds=read(sdsOwner);assert.match(sds,/SDS Profile Command Surface Extension/);assert.match(sds,/generic IDTSPE Core surfaces are owned separately/i);
 });
 
@@ -119,7 +119,7 @@ test('all reusable Lenses separate Target Inputs from explicit Knowledge Basis',
     'planning/documentation/idtspe-methodology/active/profiles/sds/lenses/reusable'
   ];
   const files=roots.flatMap((rel)=>fs.readdirSync(path.join(repoRoot,rel)).filter((name)=>/^LENS-.*\.md$/.test(name)).map((name)=>`${rel}/${name}`));
-  assert.equal(files.length,19);
+  assert.equal(files.length,20);
   for(const rel of files){const text=read(rel);assert.equal((text.match(/^## Knowledge Basis$/gm)||[]).length,1,rel);assert.match(text,/^## Artifact \/ File Implications$/m,rel);}
   const proof=read('planning/documentation/idtspe-methodology/active/idtspe-core/lenses/reusable/LENS-TEST-PROOF-EVIDENCE.md');
   assert.match(proof,/Testing Knowledge Basis/);assert.match(proof,/theoretical-modules\/testing\/README\.md/);
@@ -215,7 +215,7 @@ test('all installed idtspe Target Module and Lens aliases are globally unique an
       if(m)add(m[1],m[2],source);
     }
   }
-  assert.equal(aliases.filter((x)=>x.source==='Core Lens registry').length,11);
+  assert.equal(aliases.filter((x)=>x.source==='Core Lens registry').length,12);
   assert.equal(aliases.filter((x)=>x.source==='SDS Lens registry').length,9);
 
   const byAlias=new Map();
@@ -224,7 +224,7 @@ test('all installed idtspe Target Module and Lens aliases are globally unique an
     assert.equal(prior,undefined,`idtspe alias collision: ${item.alias} -> ${prior?.id} / ${item.id}`);
     byAlias.set(item.alias,item);
   }
-  assert.equal(byAlias.size,36);
+  assert.equal(byAlias.size,37);
 
   for(const [alias,id] of [
     ['scenario','TM-SCENARIO-PLANNING'],

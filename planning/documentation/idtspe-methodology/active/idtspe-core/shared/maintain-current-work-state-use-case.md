@@ -21,7 +21,8 @@ The smallest useful current Work Context is represented coherently around bounde
 7. A transient pending Finding inbox may be used as local working representation, but findings should be dispositioned into their real subjects/owners when useful; the inbox is not a second Finding lifecycle.
 8. Mark invalidated/revalidation-needed dependent meaning without reopening unaffected accepted meaning.
 9. Use the smallest useful representation: context-only, inline state, one local file, several natural owners, or another placement chosen through representation rules.
-10. Remove/supersede stale duplicate working representation when current state makes it misleading.
+10. Refresh the applicable [`Resolution Carry-Forward`](resolution-carry-forward-projection-contract.md) only when material open/deferred/residual continuation state changed; add/remove compact references without copying canonical semantic bodies.
+11. Remove/supersede stale duplicate working representation when current state makes it misleading.
 
 ## Boundary
 

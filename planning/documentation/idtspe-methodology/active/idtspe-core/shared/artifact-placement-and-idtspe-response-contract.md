@@ -42,6 +42,10 @@ Integration Checkpoint
 
 Logical/semantic retention of a Decision/Proposal/Result Unit does not by itself create a file. Formal Proposal is Core candidate State; any `ARTIFACT_PROPOSAL` placement guidance is a separate representation concern. Documentation / Representation + P-14 remain the physical representation boundary.
 
+## 1B. Resolution Carry-Forward Representation
+
+[`Resolution Carry-Forward`](resolution-carry-forward-projection-contract.md) is a projection/navigation owner. When its continuation value is material, Documentation / Representation + P-14 may place it inline in an Integration Checkpoint, in an existing coordination register/artifact, or as a generated view. Placement never transfers Proposal/Decision/Q/R/P/Evidence authority into the aggregate, and no separate artifact is required when in-context projection is sufficient.
+
 ## 2. Semantic Owner vs Artifact Owner
 
 Always separate:
@@ -554,7 +558,7 @@ Scenario SCN-CAPTURE owns:
   actor/external participation
   FEAT-CAPTURE invocation order
   retry/re-entry branch
-  terminal Benefit closure
+  Benefit manifestation / closure
 
 Proposal:
   maybe use a floating capture window later

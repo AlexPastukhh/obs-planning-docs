@@ -1,0 +1,56 @@
+# IDTSPE Capture / Review Selected Decisions
+
+Status: active project command definition
+Scope: generic Core Decision capture/review entry; it never grants selection authority.
+
+[PLANNING_COMMAND_DEFINITION]
+{
+  "schemaVersion": 1,
+  "id": "idtspe.decisions.capture",
+  "file": "idtspe-decisions-capture.command.md",
+  "command": "зафиксируй решения",
+  "englishName": "IDTSPE capture/review selected decisions",
+  "commandFamily": [
+    "зафиксируй решения",
+    "зафиксируй принятые решения",
+    "выдели решения из текущего контекста",
+    "разбери принятые решения",
+    "idtspe decisions"
+  ],
+  "description": "Extract and review actual selected material Decisions from current context without inventing selection authority.",
+  "meaning": "Classify current USER/context meaning through the canonical USER Input Decision And Answer Intake Rule. Only actual material selections become Decision semantics; AI-only candidates/suggestions remain Proposal/Source/Answer/unresolved state as appropriate. Review each material Decision through the Proposal/Decision Resolution Context Lens, disposition related QRPE, retain a separate Decision trace only when it has independent future value, integrate selected meaning into its natural/temporal owner, and refresh Resolution Carry-Forward for surviving material residual/reconsider state.",
+  "activeContextBehavior": "Reuse current context and existing Decisions first. Extract exact selected meaning only where actual USER/applicable authority selection exists; never select unresolved alternatives on the USER's behalf. Run LENS-PROPOSAL-DECISION-RESOLUTION-CONTEXT for material captured/reviewed Decisions, classify residual QRPE through canonical lifecycle owners, integrate selected meaning into the correct owner, and project surviving continuation/revalidation items into Resolution Carry-Forward when useful.",
+  "traversalReadMode": "Read USER-input intake + Proposal/Decision lifecycle + Resolution Context Lens first; use Q/R/P, Decision Revalidation Helper, Carry-Forward and natural owner/Target detail only where the captured Decision requires them.",
+  "ownerFiles": [
+    "planning/documentation/idtspe-methodology/active/idtspe-core/shared/idtspe-command-surface-contract.md",
+    "planning/documentation/idtspe-methodology/active/idtspe-core/shared/user-input-decision-and-answer-intake-rule.md",
+    "planning/documentation/idtspe-methodology/active/idtspe-core/shared/proposal-and-decision-lifecycle-contract.md",
+    "planning/documentation/idtspe-methodology/active/idtspe-core/shared/qrp-lifecycle-and-review-contract.md",
+    "planning/documentation/idtspe-methodology/active/idtspe-core/lenses/required/LENS-PROPOSAL-DECISION-RESOLUTION-CONTEXT.md",
+    "planning/documentation/idtspe-methodology/active/idtspe-core/shared/decision-revalidation-helper-model.md",
+    "planning/documentation/idtspe-methodology/active/idtspe-core/shared/resolution-carry-forward-projection-contract.md",
+    "planning/documentation/idtspe-methodology/active/idtspe-core/shared/maintain-current-work-state-use-case.md"
+  ],
+  "expectedOutput": "Actual selected material Decisions are identified without promoting AI-only candidates, their exact selected meaning/integration owner and material QRPE disposition are clear, proportional retained Decision traces are preserved only when useful, and surviving residual/revalidation state is discoverable through Carry-Forward.",
+  "permissionMode": "read-only-planning-unless-separately-authorized",
+  "keyReminders": [
+    "Actual material selection is required; this command does not grant AI selection authority.",
+    "USER facts/preferences/corrections/candidates are not Decisions unless the intake/lifecycle rules establish actual selection.",
+    "QRPE is a review view over canonical Q/R/P/Evidence owners, not a new State kind.",
+    "A separate durable Decision trace is proportional; selected meaning still integrates into its natural owner.",
+    "This command does not itself grant repository/file/application mutation, commit or push permission."
+  ],
+  "userTarget": "<current context / selected Decisions to capture or review>",
+  "palette": true,
+  "refinements": [],
+  "methodologyBinding": {
+    "methodologyRuntime": "IDTSPE",
+    "profile": null,
+    "surfaceKind": "ORCHESTRATION",
+    "targetModuleId": null,
+    "lensId": null,
+    "parentSurface": null,
+    "hostTargetPolicy": "NONE"
+  }
+}
+[/PLANNING_COMMAND_DEFINITION]

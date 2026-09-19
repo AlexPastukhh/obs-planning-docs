@@ -27,7 +27,7 @@ optional Need / Solution Discovery
 → TM-APPLICATION-DEFINITION when an own-Application boundary is material
 → optional TM-PROTOTYPE
 → TM-FEATURE as primary behavior owner
-→ TM-SCENARIO-PLANNING when actor-to-Benefit journey composition is independently useful
+→ TM-SCENARIO-PLANNING when actor/external journey composition with Benefit manifestation/closure is independently useful
 → TM-SCREEN when spatial/navigation composition is independently useful
 → TM-DOMAIN-DISCOVERY → optional TM-DOMAIN-OWNER
 ↔ TM-IMPLEMENTATION-SLICE → optional TM-SLICE-OWNER

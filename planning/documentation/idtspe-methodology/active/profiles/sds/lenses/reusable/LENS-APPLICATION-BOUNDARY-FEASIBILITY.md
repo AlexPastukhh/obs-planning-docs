@@ -1,11 +1,11 @@
-# LENS-APPLICATION-BOUNDARY-FEASIBILITY — Application Definition / Alternatives / Core Real-Life Route / Feasibility
+# LENS-APPLICATION-BOUNDARY-FEASIBILITY — Application Definition / Benefits / Boundary / Feasibility
 
 Lens ID: `LENS-APPLICATION-BOUNDARY-FEASIBILITY`  
 Activation: `TARGET_PROFILE_REUSABLE`
 
 ## Purpose
 
-Evaluate whether an own Application is justified, which real-world contribution it should own, what existing alternatives teach us, which core real-life routes justify its existence, and whether the boundary is plausibly realizable.
+Evaluate whether an own Application is justified, which real-world contribution it should own, what existing alternatives teach us, which Benefits justify it and whether representative real-life situations support a truthful boundary, and whether the boundary is plausibly realizable.
 
 ## Applicability Gate
 
@@ -29,7 +29,7 @@ later Scenario/Domain/Slice Evidence
 
 ### Primary Result Units / Semantic Selectors
 
-- `TM-APPLICATION-DEFINITION`: `RU-APP-01..RU-APP-06`
+- `TM-APPLICATION-DEFINITION`: `RU-APP-01..RU-APP-07`
 
 ### Conditional Result Units / Semantic Selectors
 
@@ -91,25 +91,22 @@ Deep guide: `../../shared/application-definition-existing-solutions-market-refer
 
 Application exists to realize an already selected real-world solution contribution, not to justify itself after the fact.
 
-## Core Real-Life Scenario Refinement
+## Benefit / Representative Real-Life Scenario Evaluation
 
-Identify the 1–few core real-life paths for which the Application exists:
+Canonical Benefit/RLS schemas and authority are owned by [`TM-APPLICATION-DEFINITION`](../../target-modules/TM-APPLICATION-DEFINITION.md). This Lens evaluates them; it does not redefine them.
+
+Check proportionally:
 
 ```text
-Fundamental Need
-+ actor context
-+ human/manual/external steps
-+ own Application contribution
-+ real-world result
+Do selected/possible Benefits state a real User Need and what the user receives?
+Is Additional Info only proportional free-form clarification rather than a forced schema?
+Do representative RLS examples make the real-world context understandable?
+Is the bounded [Target contribution] explicit enough to avoid responsibility creep?
+Do surrounding RLS steps remain surrounding workflow rather than selected Application behavior?
+Are AB-* manifestation/closure markers truthful and many-to-many where useful?
 ```
 
-Compare manual/current, existing-app, workaround, own Concept A/B and hybrid routes.
-
-Core ≠ secondary convenience scenario.
-
-If accepted, Refined Core Real-Life Scenario becomes the nearest real-life Source for Prototype/Scenario Planning; otherwise Step-02 remains fallback.
-
-Deep guide: `../../shared/application-definition-refined-core-real-life-scenario.md`.
+Supporting refinement guide: `../../shared/application-definition-representative-real-life-scenario-guide.md`.
 
 ## Concept Sufficiency
 
@@ -155,8 +152,8 @@ Recheck when Scenario/Domain/Slice/current implementation Evidence challenges th
 ```text
 build/buy/adapt/integrate/hybrid finding
 reference/market Evidence
-core/secondary real-life scenario findings
-selected/refined real-life route
+Benefit sufficiency / Representative RLS boundary findings
+truthful Target-contribution boundary
 concept sufficiency
 responsibility/state boundary
 feasibility finding
@@ -198,7 +195,7 @@ If this Lens exposes a genuinely independent Evidence or planning problem outsid
 
 ## Guards
 
-Competitor feature ≠ our requirement. Refined real-life scenario ≠ Application Scenario. Feasibility ≠ detailed architecture plan.
+Competitor feature ≠ our requirement. Representative Real-Life Scenario ≠ Application Scenario. Feasibility ≠ detailed architecture plan.
 
 ## Composition
 
@@ -218,7 +215,7 @@ They have a Fundamental Need, but custom software may not be the best route.
 
 ### Why This Lens
 
-This Application-profile Lens examines alternatives, core real-life routes, responsibility boundaries and proportional feasibility before the app concept hardens.
+This Application-profile Lens examines alternatives, representative real-life situations, responsibility boundaries and proportional feasibility before the app concept hardens.
 
 ### Walkthrough
 
@@ -259,7 +256,7 @@ The Lens surfaces Finding Candidates about:
 
 ```text
 build/buy/adapt/integrate position
-core real-life route
+representative real-life situation
 concept sufficiency
 responsibility/state boundary
 feasibility
@@ -296,7 +293,7 @@ Market/reference/implementation facts are Target Inputs/Evidence; the Applicatio
 
 ## Provenance
 
-Pre-Lens Application lenses + later market/reference + refined core real-life scenario decisions.
+Pre-Lens Application lenses + later market/reference + representative real-life scenario boundary decisions.
 
 ## Upstream Application Definition Rule
 

@@ -7,7 +7,13 @@ Purpose: represent one application Screen/surface or a small Screen set as spati
 Canonical owner:
 `../../idtspe-methodology/active/profiles/sds/target-modules/TM-SCREEN.md`
 
+Every formed Screen Target keeps all three Module-defined Units below. Use `RESOLVED`, `OPEN`, or `OMITTED — <concise reason>` at each heading.
+
 ## RU-SCREEN-01 — Screen Map
+
+**Methodology:** [TM-SCREEN](../../idtspe-methodology/active/profiles/sds/target-modules/TM-SCREEN.md)
+
+Disposition: `RESOLVED | OPEN | OMITTED — <reason>`
 
 Use when cross-Screen inventory/routes/participation/global spatial constraints are material.
 
@@ -21,6 +27,10 @@ Screen / surface
 ```
 
 ## RU-SCREEN-02 — Screen Draft Set
+
+**Methodology:** [TM-SCREEN](../../idtspe-methodology/active/profiles/sds/target-modules/TM-SCREEN.md)
+
+Disposition: `RESOLVED | OPEN | OMITTED — <reason>`
 
 Use only for Screens/zones that need independent spatial detail:
 
@@ -40,11 +50,19 @@ Do not copy canonical Feature behavior into Screen drafts. Reference Feature/`BR
 
 ```text
 Feature  → behavior / principal result
-Scenario → actor-to-Benefit journey composition
+Scenario → actor/external journey composition + Benefit manifestation/closure
 Screen   → spatial/navigation composition, Feature presence and screen-specific constraints
 ```
 
 Changing where a Feature is exposed usually changes Screen composition, not Feature behavior identity.
+
+## RU-SCREEN-03 — Evolution Impact
+
+**Methodology:** [TM-SCREEN](../../idtspe-methodology/active/profiles/sds/target-modules/TM-SCREEN.md)
+
+Disposition: `RESOLVED | OPEN | OMITTED — <reason>`
+
+For a current realized Screen, reference concrete unrealized Evolution Steps that materially affect spatial/navigation composition. In a future Target Screen Body keep the Unit present but `OMITTED` because current-owner reverse projection is not applicable there.
 
 ## Representation
 

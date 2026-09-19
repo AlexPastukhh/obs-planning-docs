@@ -68,11 +68,11 @@ This module specializes the Core [Target Module Model](../../../idtspe-core/shar
 
 Unit presence/disposition mechanics follow the Core [`Unit Applicability / Materiality / Disposition Contract`](../../../idtspe-core/shared/idtspe-unit-and-target-step-result-model.md#5a-unit-applicability--materiality--disposition-contract). The table below owns only this module's local substantive-materiality and omission-rationale triggers.
 
-| Result Unit | Substantive resolution is material when | Explicit omission disposition when not material |
+| Result Unit | Substantive resolution is material when | Unit disposition when substantive resolution is not material |
 |---|---|---|
-| `RU-SCREEN-01` | when cross-screen inventory/routes/Feature participation or global spatial constraints matter | omit global map detail when a single local Screen composition is sufficient |
-| `RU-SCREEN-02` | when one or more Screen/zone compositions need independent spatial detail | omit Screen drafts whose layout/zone meaning adds no planning value yet |
-| `RU-SCREEN-03` | for current realized Screen meaning, when concrete unrealized Steps materially affect spatial/navigation composition and reverse navigation/revalidation is useful | omit when no relevant Step exists; omit from the Target Screen Body of the Step that owns the future change |
+| `RU-SCREEN-01` | when cross-screen inventory/routes/Feature participation or global spatial constraints matter | `OMITTED` when no cross-Screen map/routes/global spatial result is independently material beyond local Screen composition |
+| `RU-SCREEN-02` | when one or more Screen/zone compositions need independent spatial detail | `OMITTED` when no Screen/zone composition currently needs independent spatial detail |
+| `RU-SCREEN-03` | for current realized Screen meaning, when concrete unrealized Steps materially affect spatial/navigation composition and reverse navigation/revalidation is useful | use `OMITTED` with a concise reason when no relevant Step exists; in a future Target Screen Body keep the Unit present but `OMITTED` because current-owner reverse projection is not applicable inside the Step-owned future body |
 
 
 

@@ -59,12 +59,12 @@ This module specializes the Core [Target Module Model](../../../idtspe-core/shar
 
 Unit presence/disposition mechanics follow the Core [`Unit Applicability / Materiality / Disposition Contract`](../../../idtspe-core/shared/idtspe-unit-and-target-step-result-model.md#5a-unit-applicability--materiality--disposition-contract). The table below owns only this module's local substantive-materiality and omission-rationale triggers.
 
-| Result Unit | Substantive resolution is material when | Explicit omission disposition when not material |
+| Result Unit | Substantive resolution is material when | Unit disposition when substantive resolution is not material |
 |---|---|---|
 | `RU-DOM-01` | always once a Domain Discovery Target is formed; it owns the bounded ownership/classification discovery subject | no Unit-level omission: when shallow Lens reasoning is sufficient, the Target-level discovery gate fails and the discovery Target should not be formed |
-| `RU-DOM-02` | when state/lifecycle/invariant/consistency meaning affects owner selection or correctness | omit categories that have no selected semantic pressure |
-| `RU-DOM-03` | when concrete candidate realization/proof helps discriminate Domain alternatives | omit implementation-shaped detail when semantic ownership can be resolved without it |
-| `RU-DOM-04` | when selected Evolution or unresolved Domain pressure can change the current candidate | omit speculative future pressure and already-resolved questions |
+| `RU-DOM-02` | when state/lifecycle/invariant/consistency meaning affects owner selection or correctness | `OMITTED` when state/lifecycle/invariant/consistency meaning is not material to owner selection or correctness |
+| `RU-DOM-03` | when concrete candidate realization/proof helps discriminate Domain alternatives | `OMITTED` when candidate realization/proof detail is unnecessary to discriminate Domain alternatives |
+| `RU-DOM-04` | when selected Evolution or unresolved Domain pressure can change the current candidate | `OMITTED` when no selected Evolution or unresolved Domain pressure can change the current candidate |
 
 
 

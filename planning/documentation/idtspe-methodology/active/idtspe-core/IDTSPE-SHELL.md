@@ -197,6 +197,11 @@ material Proposal selected under applicable authority
 
 A separate explicit/durable Decision State/trace is retained only when selection/rationale/trade-off/revalidation meaning has independent future value. The Shell does not force a durable Decision record for straightforward non-decision derivation or every resolved Unit field.
 
+
+### Proposal / Decision Operational Review
+
+When a material Proposal/Decision surface exists, the required Core [`LENS-PROPOSAL-DECISION-RESOLUTION-CONTEXT`](lenses/required/LENS-PROPOSAL-DECISION-RESOLUTION-CONTEXT.md) evaluates that concrete context through the canonical Proposal/Decision, Q/R/P, Evidence and USER-input owners. Surviving material open/deferred/residual state may be projected through [`Resolution Carry-Forward`](shared/resolution-carry-forward-projection-contract.md) for continuation/handoff; neither the Lens nor the projection becomes a second semantic lifecycle owner.
+
 ### P-11 Target Step Result Projection Port
 
 Projects the complete Module-defined Unit inventory into the Target Step Result supplied by the active Target Module/Local Contract: resolved material Units contribute Current Result Content, unresolved material Units remain `OPEN`, non-material Module-defined Units retain explicit omission dispositions, and only actually formed Contextual Units are added.
@@ -471,7 +476,7 @@ P-05 Questions:
   who/what starts the journey?
   which Feature/context actions participate and in what order?
   where do branches/convergence/re-entry occur?
-  what terminal Benefit/result closes the journey?
+  what Benefit manifestation/closure/result closes the journey?
 
 P-07 Proposals:
   direct capture → confirmation
@@ -486,7 +491,7 @@ P-11 Output:
   actor/external participation
   Feature/Screen participation
   branch/convergence/re-entry
-  terminal Benefit + journey must-hold meaning
+  Benefit manifestation/closure + journey must-hold meaning
 
 P-13 Handoff:
   Feature revalidation when behavior is unresolved

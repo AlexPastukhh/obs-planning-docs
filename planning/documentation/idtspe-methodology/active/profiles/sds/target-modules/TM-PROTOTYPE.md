@@ -106,11 +106,11 @@ This module specializes the Core [Target Module Model](../../../idtspe-core/shar
 
 Unit presence/disposition mechanics follow the Core [`Unit Applicability / Materiality / Disposition Contract`](../../../idtspe-core/shared/idtspe-unit-and-target-step-result-model.md#5a-unit-applicability--materiality--disposition-contract). The table below owns only this module's local substantive-materiality and omission-rationale triggers.
 
-| Result Unit | Substantive resolution is material when | Explicit omission disposition when not material |
+| Result Unit | Substantive resolution is material when | Unit disposition when substantive resolution is not material |
 |---|---|---|
 | `RU-PROTO-01` | always once a Prototype Target is formed; it owns the inquiry identity/property being tested | no Unit-level omission: when no concrete uncertainty/property justifies empirical inquiry, the Target-level activation gate fails and the Prototype Target should not be formed |
-| `RU-PROTO-02` | when the minimum credible subject/observation boundary must be selected before running the inquiry | omit non-material instrumentation/procedure detail |
-| `RU-PROTO-03` | when the prototype actually produced observations worth interpreting | before execution keep only Evidence Need/plan; do not invent results |
+| `RU-PROTO-02` | when the minimum credible subject/observation boundary must be selected before running the inquiry | `OMITTED` when the credible subject/observation boundary is already sufficiently established and needs no independent resolution |
+| `RU-PROTO-03` | when the prototype actually produced observations worth interpreting | `OPEN` while planned prototype observations are still pending; otherwise `OMITTED` with a concise reason when observed-outcome interpretation is not material; never invent results |
 
 
 The shared method's full inquiry fields are guidance, not mandatory duplicated Result fields.

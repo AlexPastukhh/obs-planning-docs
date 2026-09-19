@@ -95,7 +95,7 @@ These are peer semantic owner families:
 
 ```text
 Feature  = primary behavior + semantic Feature Data + BR-*
-Scenario = journey composition / linking / continuity / terminal Benefit / journey realization concerns
+Scenario = journey composition / linking / continuity / Benefit manifestation/closure / journey realization concerns
 Screen   = spatial/navigation composition / Feature presence / routes
 ```
 

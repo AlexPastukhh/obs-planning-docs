@@ -81,7 +81,7 @@ A registry row is only lightweight routing metadata. Selecting a Lens row does n
 
 ### REQUIRED_CORE
 
-Required Core checks are part of every material IDTSPE lifecycle, but not all run at the same moment. L1–L3 check material choice surfaces; Documentation / Representation is the required output/materialization check. Required does not mean that a finding must be manufactured.
+Required Core checks are part of every material IDTSPE lifecycle, but not all run at the same moment. L1–L3 check material choice surfaces; Proposal / Decision Resolution Context is required only when a material Proposal/Decision surface exists; Documentation / Representation is the required output/materialization check. Required does not mean that a finding must be manufactured.
 
 Valid outcomes:
 
@@ -97,10 +97,11 @@ Current Core Pack:
 L1 Need / Value / Scope
 L2 Authority / Source-of-Truth / Reuse
 L3 Uncertainty / Assumption / Reversibility
+Proposal / Decision Resolution Context — when a material Proposal/Decision surface exists
 Documentation / Representation / Artifact Boundary
 ```
 
-L3 may close as `no material uncertainty`. Documentation / Representation may close as `NO_PERSISTENCE_NEEDED` or `IMPLEMENTATION_NATIVE`; it does not force file creation.
+L3 may close as `no material uncertainty`. Proposal / Decision Resolution Context is `NOT_APPLICABLE` when no material Proposal/Decision surface exists. Documentation / Representation may close as `NO_PERSISTENCE_NEEDED` or `IMPLEMENTATION_NATIVE`; it does not force file creation.
 
 ### FREQUENT_CONDITIONAL
 
@@ -370,6 +371,7 @@ P-06 Lens Port
 → Lens Applicability Scan
 → required Core Pack
     L1/L2/L3 across material choice surfaces
+    + Proposal / Decision Resolution Context when a material Proposal/Decision surface exists
     + Documentation / Representation at materialization
   + Target Module Lens Profile when a reusable module is active
   + applicable frequent/reusable Core Lenses
@@ -489,7 +491,7 @@ Lens Prompt ≠ RQ ≠ Q/R/P Question ≠ User Question
 
 ## 16. High-Level Composition Example
 
-Suppose a Scenario Target uses `TM-SCENARIO-PLANNING`. Required Core Lenses are checked when their corresponding material surfaces exist, while Scenario journey-composition work remains owned by the Target Module itself. Feature behavior remains Feature authority; the Scenario may only reference participating Feature results and compose actor/external links, order/branch/convergence, continuity and terminal Benefit. The Lens Applicability Scan may additionally select Quality/Risk, Practical Evidence, UI, Vertical Slice, Evolution, Test Proof or another registered Lens when the current Analysis Surface makes that perspective material. No Lens is attached merely because its topic could become relevant downstream.
+Suppose a Scenario Target uses `TM-SCENARIO-PLANNING`. Required Core Lenses are checked when their corresponding material surfaces exist, while Scenario journey-composition work remains owned by the Target Module itself. Feature behavior remains Feature authority; the Scenario may only reference participating Feature results and compose actor/external links, order/branch/convergence, continuity and Benefit manifestation/closure. The Lens Applicability Scan may additionally select Quality/Risk, Practical Evidence, UI, Vertical Slice, Evolution, Test Proof or another registered Lens when the current Analysis Surface makes that perspective material. No Lens is attached merely because its topic could become relevant downstream.
 
 
 ## Migration Compatibility

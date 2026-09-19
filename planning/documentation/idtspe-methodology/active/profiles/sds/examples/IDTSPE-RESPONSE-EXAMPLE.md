@@ -4,6 +4,9 @@ Status: active worked response projection; not a universal response template
 
 This example shows one **situational Integration Checkpoint** during an unrealized Evolution Step after transient Slice Discovery. Generic response/checkpoint mechanics remain owned by IDTSPE Core.
 
+
+> **Unit-inventory reminder:** every formed Target shown here has its complete Module-defined Unit inventory. Example excerpts may abbreviate `OMITTED` Units for readability only when their heading/disposition is explicitly preserved or the excerpt says it is partial; an omitted Unit never means a non-existent Unit.
+
 ## Situation / Current Work Context
 
 The current implementation already supports capture, but a selected future Step changes source handling and truthful failure behavior enough that future Slice/Domain meaning needs review.
@@ -55,31 +58,57 @@ Target Slice Body:
 
 ## Supporting Slice Discovery Result
 
+### RU-SLICE-01 — Whole-Slice Responsibility / Candidate Structure
+
+**Methodology:** [TM-IMPLEMENTATION-SLICE](../target-modules/TM-IMPLEMENTATION-SLICE.md)
+
 ```text
-RU-SLICE-01 — Whole-Slice Responsibility / Candidate Structure
-  future responsibility:
-    realize post-Step FEAT-CAPTURE-ITEM end to end
+future responsibility:
+  realize post-Step FEAT-CAPTURE-ITEM end to end
+```
 
-RU-SLICE-02 — Semantic Application Entry / Result Boundary
-  entry:
-    capture selected material + source context
-  result:
-    accepted(item-id)
-    or rejected/failure with truthful semantics
+### RU-SLICE-02 — Semantic Application Entry / Result Boundary
 
-RU-SLICE-03 — Step-by-Step End-to-End Realization
-  adapter input
-  → CaptureApplicationService
-  → CaptureItem semantic validation/creation
-  → repository save
-  → semantic result mapping
-  → adapter/UI truthful projection
+**Methodology:** [TM-IMPLEMENTATION-SLICE](../target-modules/TM-IMPLEMENTATION-SLICE.md)
 
-RU-SLICE-04 — Feature Integration Proof
-  prove through the semantic application boundary that:
-    successful durable acceptance → success
-    persistence failure → never success
-    source variants preserve truthful result semantics
+```text
+entry:
+  capture selected material + source context
+result:
+  accepted(item-id)
+  or rejected/failure with truthful semantics
+```
+
+### RU-SLICE-03 — Step-by-Step End-to-End Realization
+
+**Methodology:** [TM-IMPLEMENTATION-SLICE](../target-modules/TM-IMPLEMENTATION-SLICE.md)
+
+```text
+adapter input
+→ CaptureApplicationService
+→ CaptureItem semantic validation/creation
+→ repository save
+→ semantic result mapping
+→ adapter/UI truthful projection
+```
+
+### RU-SLICE-04 — Feature Integration Proof
+
+**Methodology:** [TM-IMPLEMENTATION-SLICE](../target-modules/TM-IMPLEMENTATION-SLICE.md)
+
+```text
+prove through the semantic application boundary that:
+  successful durable acceptance → success
+  persistence failure → never success
+  source variants preserve truthful result semantics
+```
+
+### RU-SLICE-05 — Evolution / OPEN Slice Pressure
+
+**Methodology:** [TM-IMPLEMENTATION-SLICE](../target-modules/TM-IMPLEMENTATION-SLICE.md)
+
+```text
+RESOLVED — EVO-SOURCE-VARIANTS materially changes source-boundary/failure semantics for this discovery Target; no additional unrelated future pressure is asserted
 ```
 
 Slice Discovery helps refine the Step Slice Evolution Impact and, when durable post-Step responsibility is sufficiently resolved, the Target Slice Body. Selected useful discovery Result Content may remain in the Impact while unrealized; discovery is not another durable Slice authority.

@@ -179,66 +179,21 @@ An interaction clarification is not automatically a formal Core `Question`/Q-R-P
 
 Grounding does not authorize selection: a well-grounded AI Proposal is still unselected until normal authority selects it.
 
-## 5. Candidate Review
+## 5. Candidate Review / Resolution Context Handoff
 
-AI may autonomously inspect, compare, challenge, refine and recommend candidate Proposals inside the authorized work scope.
-
-For a material Proposal under review, perform the useful checks proportionally. The check is required when the corresponding question is material; empty output is not required when no issue is found.
+This lifecycle owner defines **what** Proposal/Decision states and selection outcomes mean. Reusable operational evaluation of one concrete material Proposal/Decision context is owned by [`LENS-PROPOSAL-DECISION-RESOLUTION-CONTEXT`](../lenses/required/LENS-PROPOSAL-DECISION-RESOLUTION-CONTEXT.md).
 
 ```text
-Driver / Need fit
-  does the Proposal actually answer the Goal / Question / Problem?
-
-Necessity / Better Route
-  can it be omitted?
-  can the underlying problem be removed/avoided?
-  does an existing mechanism already cover the need?
-  is a smaller/simpler route sufficient?
-
-Refinement
-  can the same candidate be clarified, narrowed, simplified, strengthened,
-  split/combined or made conditional without becoming a different answer?
-
-Local consistency
-  is the candidate internally coherent for its scoped owner/driver?
-
-Integrated consistency
-  does it fit affected upstream/downstream/current owners and accepted meaning?
-
-Combination evaluation
-  when several Proposals are meant to coexist, does their combination remain coherent?
+material Proposal / Decision surface
+→ normal Unit/Lens-registry applicability path
+→ Resolution Context Lens
+→ optional related QRPE applicability/disposition
+→ return here for canonical Semantic Change Impact / selection / integration / retention semantics
 ```
 
-Review should expose proportionally what is useful for the current decision, such as:
+The Lens may compose L2/L3/L4/Quality-Risk checks and may surface a Finding Candidate, but it does not select the Proposal, define Decision semantics or replace this lifecycle contract. Do not duplicate the Lens's detailed operational question set here.
 
-```text
-what is proposed
-driver / problem being addressed
-source/provenance when useful
-affected current owner/authority
-expected effect / benefit
-material benefits / downsides / risks
-constraints / must-preserve meaning
-important unknowns / assumptions
-durable Requirement / Decision / owner consequence when any
-proof consequence
-known Evolution consequence
-what remains unchanged
-AI recommendation when useful
-what that recommendation sacrifices
-reconsider trigger when useful
-```
-
-Do not manufacture competing alternatives or objections merely for symmetry. When several real options remain, make the situational decision priorities visible when that materially helps review.
-
-Complexity or other comparison dimensions are review aids, not mandatory Proposal schema fields unless a consuming owner explicitly requires them. When a compact complexity comparison helps, it may use:
-
-```text
-Complexity delta: REDUCES | ROUGHLY-NEUTRAL | ADDS
-Complexity consequence: <relevant semantic / ownership / structural / state / coupling / maintenance / proof / operational / migration / evolution effect>
-```
-
-Do not equate fewer classes/lines with lower total system complexity.
+A material Proposal remains unselected even after a thorough Lens review or AI recommendation.
 
 ## 5A. Proposal Semantic Change Impact Review
 
@@ -382,6 +337,10 @@ If a new material Decision lacks a rationale that would help future review/reval
 Semantic retention does not imply a dedicated file. Physical persistence is resolved separately by Representation / P-14.
 
 A useful Proposal discovered outside the current Target does not require a global Idea/Future-Idea ontology or mandatory inbox. When retaining it has independent continuation/review value, keep it as ordinary Proposal State with enough context to recover its driver/provenance and let Documentation / Representation choose a natural owner, existing register/inbox, another selected owner, or no physical persistence. A register is navigation/retention infrastructure only; it does not select the Proposal or make it backlog/product authority.
+
+### Carry-Forward Projection Integration
+
+Open/deferred Proposals, materially retained non-selected alternatives, residual Decision Q/R/P/Evidence needs and reconsider triggers may feed the canonical [`Resolution Carry-Forward`](resolution-carry-forward-projection-contract.md) projection when continuation/handoff value is material. The projection stores compact routing/status/reference entries only; Proposal/Decision semantic bodies remain owned here and by their natural owners.
 
 ## 10. Durable Decision Protection Under Proposal Review
 

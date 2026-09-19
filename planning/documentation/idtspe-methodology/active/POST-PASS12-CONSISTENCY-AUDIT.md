@@ -72,8 +72,8 @@ Broad Discussion is a complete valid low-ceremony projection. Structure is intro
 Registry-driven inventory at this audit point:
 
 - generic Core Target Modules: **2** — Pre-Update Plan and Exact Realization;
-- generic Core reusable Lenses: **11**;
-- State/Result Unit semantics are sparse and materiality-driven;
+- generic Core reusable Lenses: **12**;
+- complete Module-defined Unit inventory contract: Module-defined Result Units are always present in a formed Target; whole-Unit `RESOLVED / OPEN / OMITTED` disposition is distinct from proportional omission of optional internal detail;
 - optional `Methodology Usage State` may retain material UC/registry/component/recheck context, but is not an execution/file-read log;
 - Integration Checkpoint is situational, not timer/message-count driven.
 
@@ -102,7 +102,7 @@ Feature
 = primary behavior / semantic Feature Data / BR-*
 
 Scenario
-= actor-to-Benefit journey composition / continuity / terminal Benefit
+= actor/external journey composition / continuity / one-or-more Benefit manifestation/closure
 
 Screen
 = spatial/navigation composition / Feature presence / routes
@@ -161,7 +161,7 @@ After the parity corrections above, the assembled methodology is internally cons
 
 - Use-Case root/form/reachability;
 - always-active proportional IDTSPE;
-- State/Result Unit applicability/materiality;
+- State/Result Unit applicability/materiality, including complete Module-defined Unit inventories and Target-gate vs Unit-disposition separation;
 - current Core/SDS Target Module and Lens registry parity;
 - retired-owner compatibility boundary;
 - Programming Principles 22-group architecture;

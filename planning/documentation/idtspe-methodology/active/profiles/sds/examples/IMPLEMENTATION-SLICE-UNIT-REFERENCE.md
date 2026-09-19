@@ -6,6 +6,9 @@ This reference mirrors the current `TM-IMPLEMENTATION-SLICE` Target Step-Result 
 
 The example is scoped to an **unrealized Evolution Step**, so selected durable future Slice meaning is integrated into a Target Slice Body rather than a current Slice owner.
 
+
+> **Unit-inventory reminder:** every formed Target shown here has its complete Module-defined Unit inventory. Example excerpts may abbreviate `OMITTED` Units for readability only when their heading/disposition is explicitly preserved or the excerpt says it is partial; an omitted Unit never means a non-existent Unit.
+
 ## Target / Sources
 
 ```text
@@ -38,6 +41,8 @@ Module:
 
 ## RU-SLICE-01 — Whole-Slice Responsibility / Candidate Structure
 
+**Methodology:** [TM-IMPLEMENTATION-SLICE](../target-modules/TM-IMPLEMENTATION-SLICE.md)
+
 ```text
 Responsibility:
   realize future FEAT-PAY-ORDER end to end
@@ -55,6 +60,8 @@ The candidate structure is working discovery. Class/file identity is not durable
 
 ## RU-SLICE-02 — Semantic Application Entry / Result Boundary
 
+**Methodology:** [TM-IMPLEMENTATION-SLICE](../target-modules/TM-IMPLEMENTATION-SLICE.md)
+
 ```text
 Entry:
   PayOrder(order-id, selected-method, payment-input)
@@ -70,6 +77,8 @@ Transport/HTTP/UI variants may adapt this boundary without becoming separate sem
 
 ## RU-SLICE-03 — Step-by-Step End-to-End Realization
 
+**Methodology:** [TM-IMPLEMENTATION-SLICE](../target-modules/TM-IMPLEMENTATION-SLICE.md)
+
 ```text
 receive semantic payment request
 → load/validate payable Order
@@ -84,6 +93,8 @@ receive semantic payment request
 Material questions may include transaction boundary, retry/idempotency, timeout/cancellation, uncertain provider outcome and recovery. Include only the detail needed to resolve those choices; do not build a shadow class/call registry.
 
 ## RU-SLICE-04 — Feature Integration Proof
+
+**Methodology:** [TM-IMPLEMENTATION-SLICE](../target-modules/TM-IMPLEMENTATION-SLICE.md)
 
 ```text
 prove through the semantic application boundary:
@@ -104,6 +115,8 @@ retry after uncertain transport outcome
 `LENS-TEST-PROOF-EVIDENCE` may refine proof selection if layer/setup/assertion choices are non-trivial. Literal test code belongs to Exact Realization.
 
 ## RU-SLICE-05 — Evolution / OPEN Slice Pressure
+
+**Methodology:** [TM-IMPLEMENTATION-SLICE](../target-modules/TM-IMPLEMENTATION-SLICE.md)
 
 ### Alternative future route inside the same Step
 
@@ -137,8 +150,9 @@ After a route is actually selected, durable post-Step Slice responsibility may b
 
 ```text
 Target Slice Body: SL-PAYMENT
-  RU-SOWN-01 — complete post-Step Slice Responsibility / Boundary Contract
-  RU-SOWN-02 — future IR-SLICE-* only when material
+  RU-SOWN-01 — RESOLVED — complete post-Step Slice Responsibility / Boundary Contract
+  RU-SOWN-02 — RESOLVED / OPEN / OMITTED — future Slice-owned IR/PFR only when material
+  RU-SOWN-03 — OMITTED — current-owner reverse Evolution Impact is not applicable inside the Step-owned future body
 ```
 
 This body belongs to `EVO-PAYMENT` until the Slice is actually implemented and required proof/revalidation succeeds.

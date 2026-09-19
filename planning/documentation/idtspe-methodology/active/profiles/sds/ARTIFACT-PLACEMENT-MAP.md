@@ -61,7 +61,7 @@ Several small Features may share one document if Feature/BR identities remain cl
 
 ### Scenario
 
-Scenario journey meaning may be embedded or dedicated. Preserve Scenario identity, Feature references, path/branch/convergence/re-entry, continuity and terminal Benefit without copying Feature BR prose. Current-owner `Evolution Impact` may be stored or derived as compact Step navigation/revalidation; full future Scenario meaning remains Step-owned.
+Scenario journey meaning may be embedded or dedicated. Preserve Scenario identity, Feature references, path/branch/convergence/re-entry, continuity and Benefit manifestation/closure without copying Feature BR prose. Current-owner `Evolution Impact` may be stored or derived as compact Step navigation/revalidation; full future Scenario meaning remains Step-owned.
 
 ### Screen
 

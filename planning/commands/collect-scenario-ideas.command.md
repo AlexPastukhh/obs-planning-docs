@@ -22,7 +22,7 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
     "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-SCENARIO-PLANNING.md",
     "planning/documentation/idtspe-methodology/active/profiles/sds/shared/idtspe-command-surface-contract.md"
   ],
-  "expectedOutput": "Current Scenario Journey Composition with actor/context, Feature/result links, journey order/branches/re-entry, continuity, terminal Benefit and only material journey-level must-holds/E2E intent; no legacy Scenario-Ideas accumulator or duplicated Feature behavior/data.",
+  "expectedOutput": "Current Scenario Journey Composition with actor/context, Feature/result links, journey order/branches/re-entry, continuity, one-or-more Benefit manifestation/closure points when material and only material journey-level must-holds/E2E intent; no legacy Scenario-Ideas accumulator or duplicated Feature behavior/data.",
   "permissionMode": "read-only-planning",
   "keyReminders": [
     "Legacy compatibility alias only; the canonical material-planning runtime is IDTSPE.",

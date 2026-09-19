@@ -44,10 +44,10 @@ This module specializes the Core [Target Module Model](../../../idtspe-core/shar
 
 Unit presence/disposition mechanics follow the Core [`Unit Applicability / Materiality / Disposition Contract`](../../../idtspe-core/shared/idtspe-unit-and-target-step-result-model.md#5a-unit-applicability--materiality--disposition-contract). The table below owns only Map-specific substantive-materiality and omission-rationale triggers.
 
-| Result Unit | Substantive resolution is material when | Explicit omission disposition when not material |
+| Result Unit | Substantive resolution is material when | Unit disposition when substantive resolution is not material |
 |---|---|---|
-| `RU-EVOMAP-01` | one or more concrete Steps need discoverable registry/routing visibility | `Omitted: no concrete Evolution Step currently deserves registry identity` |
-| `RU-EVOMAP-02` | predecessor/alternative/condition/horizon/concern/readiness/uncertainty projection materially affects navigation, realization ordering or review | keep Unit declared with a concise omission reason when no cross-Step relation/readiness detail is material beyond the registry rows |
+| `RU-EVOMAP-01` | one or more concrete Steps need discoverable registry/routing visibility | `OMITTED` — no concrete Evolution Step currently deserves registry identity |
+| `RU-EVOMAP-02` | predecessor/alternative/condition/horizon/concern/readiness/uncertainty projection materially affects navigation, realization ordering or review | `OMITTED` with a concise reason when no cross-Step relation/readiness detail is material beyond the registry rows |
 
 
 ### Explicit Unit Checkpoint Placement

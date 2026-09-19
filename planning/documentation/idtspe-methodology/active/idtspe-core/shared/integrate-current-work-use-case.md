@@ -39,6 +39,10 @@ Canonical supporting owners:
 - Unit/materiality semantics: [`idtspe-unit-and-target-step-result-model.md`](idtspe-unit-and-target-step-result-model.md);
 - physical placement: [`artifact-placement-and-idtspe-response-contract.md`](artifact-placement-and-idtspe-response-contract.md).
 
+## Resolution Carry-Forward Reconciliation
+
+At a useful Integration Checkpoint / handoff, reconcile the applicable [`Resolution Carry-Forward`](resolution-carry-forward-projection-contract.md): project only surviving material open/deferred/residual items as compact references/status, remove closed trivial entries, and preserve canonical bodies at their natural owners. This projection is optional when no continuation value exists.
+
 ## Boundary
 
 ```text

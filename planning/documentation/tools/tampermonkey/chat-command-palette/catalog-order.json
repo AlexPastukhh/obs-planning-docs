@@ -5,6 +5,7 @@
     "idtspe.next",
     "idtspe.continue",
     "idtspe.proposal",
+    "idtspe.decisions.capture",
     "session.proposal_driven",
     "critical_review.apply",
     "review_audit.recheck",
@@ -119,9 +120,12 @@
     "UC-DOC-MAINTAIN-EXAMPLE",
     "UC-DOC-MAINTAIN-README",
     "UC-IDTSPE-MAINTAIN-TARGET-MODULE",
-    "UC-IDTSPE-MAINTAIN-LENS"
+    "UC-IDTSPE-MAINTAIN-LENS",
+    "idtspe.decisions.capture"
   ],
-  "scenarios": [],
+  "scenarios": [
+    "idtspe.decisions.capture"
+  ],
   "prompts": [
     "helper-library:prompt:item-nl3amm-1bfixd6",
     "helper-library:prompt:commands-onboarding-1kge1i0",
@@ -138,7 +142,8 @@
     "helper-library:prompt:multiplex-zip-dif-1rtv9yf",
     "helper-library:prompt:planning-4je394",
     "helper-library:prompt:planning-zip-dif-1jskeny",
-    "helper-library:prompt:replacement-arch-bootstr-s3labd"
+    "helper-library:prompt:replacement-arch-bootstr-s3labd",
+    "idtspe.decisions.capture"
   ],
   "commandGroups": [
     {
@@ -209,6 +214,7 @@
       "order": 70,
       "items": [
         "idtspe.proposal",
+        "idtspe.decisions.capture",
         "session.proposal_driven"
       ]
     },
@@ -358,7 +364,8 @@
         "lens:LENS-NEED-VALUE-SCOPE",
         "lens:LENS-AUTHORITY-SOT-REUSE",
         "lens:LENS-DEPENDENCY-CHANGE-IMPACT",
-        "lens:LENS-SHARED-CROSS-CUTTING-RESPONSIBILITY"
+        "lens:LENS-SHARED-CROSS-CUTTING-RESPONSIBILITY",
+        "lens:LENS-PROPOSAL-DECISION-RESOLUTION-CONTEXT"
       ]
     },
     {

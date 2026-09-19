@@ -60,13 +60,13 @@ This module specializes the Core [Target Module Model](../../../idtspe-core/shar
 
 Unit presence/disposition mechanics follow the Core [`Unit Applicability / Materiality / Disposition Contract`](../../../idtspe-core/shared/idtspe-unit-and-target-step-result-model.md#5a-unit-applicability--materiality--disposition-contract). The table below owns only this module's local substantive-materiality and omission-rationale triggers.
 
-| Result Unit | Substantive resolution is material when | Explicit omission disposition when not material |
+| Result Unit | Substantive resolution is material when | Unit disposition when substantive resolution is not material |
 |---|---|---|
 | `RU-SLICE-01` | always once an Implementation Slice discovery Target is formed; it owns the whole-Slice responsibility/candidate structure | no Unit-level omission: when the current implementation path is already sufficiently clear, the Target-level discovery gate fails and the discovery Target should not be formed |
-| `RU-SLICE-02` | when semantic application entry/result boundaries are material to integration/ownership/proof | omit adapter/transport detail that does not alter semantic entry/result meaning |
-| `RU-SLICE-03` | when concrete end-to-end realization detail is needed to resolve dependencies/effects/failure/proof | stop at the minimum detail that discriminates decisions; do not build a shadow class/call registry |
-| `RU-SLICE-04` | when whole-Feature integration proof needs explicit planning to validate the selected Slice | omit trivial proof mechanics already implied by the accepted boundary |
-| `RU-SLICE-05` | when selected Evolution or unresolved Slice pressure can affect current boundary/realization | omit speculative future change or questions with no current consequence |
+| `RU-SLICE-02` | when semantic application entry/result boundaries are material to integration/ownership/proof | `OMITTED` when no semantic application entry/result boundary needs independent resolution for integration/ownership/proof |
+| `RU-SLICE-03` | when concrete end-to-end realization detail is needed to resolve dependencies/effects/failure/proof | `OMITTED` when concrete end-to-end realization detail is unnecessary to resolve dependencies/effects/failure/proof |
+| `RU-SLICE-04` | when whole-Feature integration proof needs explicit planning to validate the selected Slice | `OMITTED` when no explicit whole-Feature integration-proof result is needed beyond accepted owner/proof meaning |
+| `RU-SLICE-05` | when selected Evolution or unresolved Slice pressure can affect current boundary/realization | `OMITTED` when no selected Evolution or unresolved Slice pressure has a current boundary/realization consequence |
 
 
 

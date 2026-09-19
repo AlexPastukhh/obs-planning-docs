@@ -123,7 +123,10 @@ Choose only Questions that materially help resolve/produce the current Target St
 Select/apply Lenses inside the current IDTSPE work. Compose:
 
 ```text
-L1-L3 required Core Pack
+required Core Pack
+  L1-L3 across material choice surfaces
+  Proposal / Decision Resolution Context when a material Proposal/Decision surface exists
+  Documentation / Representation at output/materialization
 Target Module Lens Profile
 applicable L4/L5/L6/Quality
 genuinely local Lens only when needed
@@ -191,7 +194,7 @@ TF-06:
   migration?
 
 TF-06A:
-  L1-L3 + L4 + L5 + L6
+  required Core Pack + applicable L4 + L5 + L6
 
 TF-07:
   direct calls

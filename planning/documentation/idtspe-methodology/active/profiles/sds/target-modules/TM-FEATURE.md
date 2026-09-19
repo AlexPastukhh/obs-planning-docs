@@ -127,14 +127,14 @@ This module specializes the Core [Target Module Model](../../../idtspe-core/shar
 
 Unit presence/disposition mechanics follow the Core [`Unit Applicability / Materiality / Disposition Contract`](../../../idtspe-core/shared/idtspe-unit-and-target-step-result-model.md#5a-unit-applicability--materiality--disposition-contract). The table below owns only this module's local substantive-materiality and omission-rationale triggers.
 
-| Result Unit | Substantive resolution is material when | Explicit omission disposition when not material |
+| Result Unit | Substantive resolution is material when | Unit disposition when substantive resolution is not material |
 |---|---|---|
-| `RU-FEAT-01` | when the Feature needs an explicit semantic identity/intent/result/entry anchor | omit fields that are already obvious; do not manufacture separate entries for transport variants |
-| `RU-FEAT-02` | when behavior-facing semantic data is needed to understand Feature meaning | omit data detail owned by Domain/storage or irrelevant to behavior |
-| `RU-FEAT-03` | when durable/addressable must-hold behavior is useful for downstream owners/proof/revalidation | omit BR atomization for obvious transient behavior that does not need durable addressability |
-| `RU-FEAT-04` | primarily in a future Target Feature Body when implementation/proof/evolution pressure must survive into realization planning; in a current owner only for a current realized limitation/risk with independent semantic value | omit generic future roadmap/current mechanism ideas from current owners; route unrealized change pressure to Evolution Step/Q-R-P instead |
-| `RU-FEAT-05` | when Feature/Slice boundary meaning or rationale is materially ambiguous/important | keep Unit declared with a concise omission reason when the boundary is straightforward and no competing shape matters |
-| `RU-FEAT-06` | in a current realized Feature when any concrete unrealized Step contains material Feature impact/target meaning; depth follows what the Step has actually resolved | omit substantive content when no concrete unrealized Step materially affects this Feature; in a future Target Feature Body omit current-owner reverse projection because the body itself is Step-owned future meaning |
+| `RU-FEAT-01` | when the Feature needs an explicit semantic identity/intent/result/entry anchor | `OMITTED` when no independent identity/intent/result/entry clarification is material beyond accepted owner context |
+| `RU-FEAT-02` | when behavior-facing semantic data is needed to understand Feature meaning | `OMITTED` when no behavior-facing semantic data requires independent Feature-owned expression |
+| `RU-FEAT-03` | when durable/addressable must-hold behavior is useful for downstream owners/proof/revalidation | `OMITTED` when no durable/addressable Feature must-hold behavior needs explicit `BR-*` identity |
+| `RU-FEAT-04` | primarily in a future Target Feature Body when implementation/proof/evolution pressure must survive into realization planning; in a current owner only for a current realized limitation/risk with independent semantic value | `OMITTED` when no owner-local implementation/proof/evolution concern with independent semantic value exists; generic future roadmap/current mechanism pressure routes to Evolution Step/Q-R-P instead |
+| `RU-FEAT-05` | when Feature/Slice boundary meaning or rationale is materially ambiguous/important | `OMITTED` with a concise reason when the boundary is already unambiguous and no competing shape/rationale matters |
+| `RU-FEAT-06` | in a current realized Feature when any concrete unrealized Step contains material Feature impact/target meaning; depth follows what the Step has actually resolved | use `OMITTED` with a concise reason when no concrete unrealized Step materially affects this Feature; in a future Target Feature Body keep `RU-FEAT-06` present but `OMITTED` because current-owner reverse projection is not applicable inside Step-owned future meaning |
 
 
 

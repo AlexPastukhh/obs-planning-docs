@@ -485,6 +485,8 @@ Generic required Core Pack:
 LENS-NEED-VALUE-SCOPE
 LENS-AUTHORITY-SOT-REUSE
 LENS-UNCERTAINTY-ASSUMPTION-REVERSIBILITY
+LENS-PROPOSAL-DECISION-RESOLUTION-CONTEXT
+  required through registry only when a material Proposal/Decision surface exists
 LENS-ARTIFACT-BOUNDARY-ADDRESSABILITY
   Documentation / Representation check at output/materialization
 ```

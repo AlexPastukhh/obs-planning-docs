@@ -21,7 +21,7 @@ no Target / Lens / Target Module / Checkpoint / persisted State is useful yet.
 
 ## Process
 
-1. Start from the actual USER request/current Work Concern and the current integrated state if one exists. Reuse known facts, accepted Decisions and existing owner results.
+1. Start from the actual USER request/current Work Concern and the current integrated state if one exists. Reuse known facts, accepted Decisions and existing owner results; when an applicable [`Resolution Carry-Forward`](resolution-carry-forward-projection-contract.md) exists, scan its compact surviving-state references for orientation and open only the canonical items that are material now.
 2. Apply the [`Contextual Methodology Application Contract`](contextual-methodology-application-contract.md). Do not treat IDTSPE always-on status as a reason to instantiate every mechanism.
 3. Prefer Broad Discussion while it remains the clearest and least costly working surface. Use Key Points proportionally for material logical structure.
 4. When USER input expresses a wanted outcome whose semantic home/solution/temporal destination is not yet sufficiently resolved, treat it as a lightweight `Need Candidate` and use [`need-candidate-disposition-contract.md`](need-candidate-disposition-contract.md) proportionally. Preserve exact USER/source Evidence, normalize the desired outcome without inventing a solution, and route the result into existing current-owner / Finding / Proposal / Q-R-P / Target/profile semantics. A Need Candidate alone does not justify a Feature, Requirement or Evolution Step.

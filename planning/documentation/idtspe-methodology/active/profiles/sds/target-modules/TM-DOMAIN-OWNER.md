@@ -49,11 +49,11 @@ This module specializes the Core [Target Module Model](../../../idtspe-core/shar
 
 Unit presence/disposition mechanics follow the Core [`Unit Applicability / Materiality / Disposition Contract`](../../../idtspe-core/shared/idtspe-unit-and-target-step-result-model.md#5a-unit-applicability--materiality--disposition-contract). The table below owns only this module's local substantive-materiality and omission-rationale triggers.
 
-| Result Unit | Substantive resolution is material when | Explicit omission disposition when not material |
+| Result Unit | Substantive resolution is material when | Unit disposition when substantive resolution is not material |
 |---|---|---|
 | `RU-DOWN-01` | always once a durable Domain owner Target is formed; it owns that durable responsibility/boundary | no Unit-level omission: when discovery does not justify a durable Domain responsibility, the Target-level owner-formation gate fails and no Domain owner Target should be formed |
-| `RU-DOWN-02` | when durable implementation/proof constraints are naturally owned by the Domain | omit when no owner-local IR/PFR is needed; zero Requirements is valid |
-| `RU-DOWN-03` | for a current realized Domain owner, when concrete unrealized Steps materially affect its semantics/responsibility and reverse navigation/revalidation is useful | omit when no relevant Step exists; omit from the Target Domain Body of the Step that owns the future change |
+| `RU-DOWN-02` | when durable implementation/proof constraints are naturally owned by the Domain | `OMITTED` when no Domain-owned `IR/PFR` is needed; zero Requirements is valid |
+| `RU-DOWN-03` | for a current realized Domain owner, when concrete unrealized Steps materially affect its semantics/responsibility and reverse navigation/revalidation is useful | use `OMITTED` with a concise reason when no relevant Step exists; in a future Target Domain Body keep the Unit present but `OMITTED` because current-owner reverse projection is not applicable inside the Step-owned future body |
 
 
 

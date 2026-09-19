@@ -435,6 +435,10 @@ minimum useful USER question
 
 The grounding question does not become a formal Q/R/P Question merely because it was asked conversationally.
 
+# 10A.2 Proposal / Decision Resolution Context Handoff
+
+After this rule classifies USER input as a material Proposal or actual selected Decision, hand the concrete surface to [`LENS-PROPOSAL-DECISION-RESOLUTION-CONTEXT`](../lenses/required/LENS-PROPOSAL-DECISION-RESOLUTION-CONTEXT.md) through the normal registry/checkpoint path. Classification authority remains here; the Lens evaluates the concrete resolution context and does not promote AI-only suggestions into Decisions.
+
 # 10B. User Decision Gate Presentation
 
 `User Decision Gate` is an interaction Guard/Rule pattern, not a new semantic State/Decision type. When it fires, expose proportionally:

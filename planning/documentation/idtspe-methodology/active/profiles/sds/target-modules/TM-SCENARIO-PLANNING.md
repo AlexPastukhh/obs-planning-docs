@@ -6,7 +6,7 @@ Compatibility rule: canonical ID/path `TM-SCENARIO-PLANNING` is retained; the se
 
 ## Purpose
 
-Own one coherent actor-to-benefit journey composition across Feature results, Screens and external contexts.
+Own one coherent actor/external journey composition across Feature results, Screens and external contexts, including where one or more upstream Application Benefits manifest or close.
 
 Scenario does **not** own Feature behavior, Feature semantic data, implementation Slice topology, Domain semantics or target-state implementation requirements.
 
@@ -26,7 +26,7 @@ A Scenario may own proportionally:
 - ordering, branching, convergence, optional paths and re-entry;
 - result/context continuity from one step to the next;
 - Screen/external-system participation when journey-significant;
-- terminal Benefit closure / what makes the journey complete;
+- Benefit manifestation/closure / what makes the journey complete;
 - stable `SR-*` Scenario Requirements for journey-level must-holds that are not merely copied Feature behavior;
 - optional stable `SPS-*` Scenario Path Step identities when a path step needs independent cross-reference/revalidation;
 - optional E2E Proof Intent when whole-journey proof is independently useful;
@@ -36,7 +36,7 @@ A Scenario may own proportionally:
 
 Typical sources:
 
-- Need / Benefit / Application Definition when applicable;
+- Application Definition / Need / one or more `AB-*` Benefits when applicable;
 - selected Features;
 - Screen topology;
 - external actor/system facts;
@@ -48,7 +48,7 @@ Typical sources:
 ## Production Method
 
 ```text
-identify actor + terminal Benefit
+identify actor + Benefit manifestation/closure
 → select/reconcile participating Feature results
 → establish order / branch / convergence / re-entry
 → preserve result/context continuity
@@ -71,7 +71,7 @@ This module specializes the Core [Target Module Model](../../../idtspe-core/shar
 
 | Result Unit | Meaning |
 |---|---|
-| `RU-SCEN-01` | Journey Composition — actor/external participation, Feature/context links, order/branch/convergence/re-entry, continuity, terminal Benefit closure, sparse journey must-holds and optional E2E Proof Intent |
+| `RU-SCEN-01` | Journey Composition — actor/external participation, Feature/context links, order/branch/convergence/re-entry, continuity, Benefit manifestation/closure, sparse journey must-holds and optional E2E Proof Intent |
 | `RU-SCEN-02` | Evolution Impact — Scenario-local current-owner reverse navigation/revalidation under the shared projection contract |
 | `RU-SCEN-03` | Journey Realization Concerns — Scenario-wide realization/proof/integration pressure without exact mechanism ownership |
 
@@ -79,11 +79,11 @@ This module specializes the Core [Target Module Model](../../../idtspe-core/shar
 
 Unit presence/disposition mechanics follow the Core [`Unit Applicability / Materiality / Disposition Contract`](../../../idtspe-core/shared/idtspe-unit-and-target-step-result-model.md#5a-unit-applicability--materiality--disposition-contract). The table below owns only this module's local substantive-materiality and omission-rationale triggers.
 
-| Result Unit | Substantive resolution is material when | Explicit omission disposition when not material |
+| Result Unit | Substantive resolution is material when | Unit disposition when substantive resolution is not material |
 |---|---|---|
-| `RU-SCEN-01` | when journey composition across actors/features/screens/external steps has independent planning value | omit optional branches/must-holds/E2E intent that are not material to continuity or terminal Benefit |
-| `RU-SCEN-02` | for a current realized Scenario, when any concrete unrealized Step materially affects its journey composition; depth follows what that Step has actually resolved | omit substantive content when no concrete unrealized Step materially affects this Scenario; future Target Scenario Body omits current-owner reverse projection |
-| `RU-SCEN-03` | when a journey-wide realization/proof/integration concern can materially change feasibility, continuity or proof allocation and is not owned by one Feature/Screen/Domain/Slice/Shared owner | keep Unit declared with a concise omission reason when no Scenario-wide concern exists |
+| `RU-SCEN-01` | when journey composition across actors/features/screens/external steps has independent planning value | `OMITTED` when no independently material journey-composition result is needed beyond referenced owner meaning |
+| `RU-SCEN-02` | for a current realized Scenario, when any concrete unrealized Step materially affects its journey composition; depth follows what that Step has actually resolved | use `OMITTED` with a concise reason when no concrete unrealized Step materially affects this Scenario; in a future Target Scenario Body keep `RU-SCEN-02` present but `OMITTED` because current-owner reverse projection is not applicable inside Step-owned future meaning |
+| `RU-SCEN-03` | when a journey-wide realization/proof/integration concern can materially change feasibility, continuity or proof allocation and is not owned by one Feature/Screen/Domain/Slice/Shared owner | `OMITTED` with a concise reason when no Scenario-wide realization/proof/integration concern exists |
 
 
 `RU-SCEN-01` is intentionally broad because its journey aspects jointly define one graph. `RU-SCEN-02` is separate because current-owner evolution navigation/revalidation has a different responsibility. `RU-SCEN-03` is separate because journey-wide realization/proof pressure is not journey composition itself and can be consumed by Step-wide implementation-concern analysis. Internal journey objects/steps/branches remain addressable within `RU-SCEN-01` when useful without becoming separate target-state Result Units.
@@ -128,10 +128,11 @@ A compact representation may look like:
 ```text
 Scenario: <ID / name>
 Actor / context: ...
-Terminal Benefit: ...
+Benefit refs: <AB-* ...>   # one or several when material
 
 Journey:
   Feature A result
+    → [AB-01 manifests/closes]   # optional path-step annotation when useful
   → actor/external linking action
   → Feature B result
   ├─ branch ...
@@ -146,6 +147,9 @@ Journey must-holds:
 
 E2E Proof Intent: optional
 ```
+
+
+Application Benefits remain upstream Application Definition authority. A Scenario may manifest/close one or several `AB-*` items across different `SPS-*` path steps or at the terminal journey result. Those markers express where the user experiences upstream value; they do not transfer Benefit semantics into the Scenario.
 
 ## Peer Boundaries
 
@@ -167,7 +171,7 @@ The same Feature may participate in several Scenarios. A Scenario may traverse s
 Prefer selected semantic owners and current Evidence over stale copied scenario prose.
 
 ```text
-Application Definition / Need / Benefit when relevant
+Application Definition / Need / one or more `AB-*` Benefits when relevant
 + selected Feature results
 + selected Screen/external context
 + current implementation/Evidence
@@ -201,7 +205,7 @@ Scenario Requirement | Type | Plain required interaction/journey meaning | QRPE 
 When stable `SPS-*` identities are material, use the exact reusable path schema:
 
 ```text
-Scenario Path Step | Actor / application interaction | Feature / participant | Data/result | Attached SR | QRPE / Examples
+Scenario Path Step | Actor / application interaction | Feature / participant | Data/result | Benefit manifestation / closure | Attached SR | QRPE / Examples
 ```
 
 ```text
@@ -237,12 +241,12 @@ Valid forms include:
 - several small Scenarios in one owner file;
 - dedicated Scenario file when independently reviewed/reused.
 
-Preserve Scenario identity, actor/context where material, Feature references, branch/convergence/re-entry, continuity, Screen/external participation and terminal Benefit. Do not turn a journey representation into a second Feature behavior catalog.
+Preserve Scenario identity, actor/context where material, Feature references, branch/convergence/re-entry, continuity, Screen/external participation and Benefit manifestation/closure. Do not turn a journey representation into a second Feature behavior catalog.
 
 ## Validators
 
 ```text
-journey boundary has coherent starting context + terminal Benefit/result
+journey boundary has coherent starting context + truthful Benefit manifestation/closure and journey result
 participating Feature results are truthful references to Feature authority
 linking actor/external actions are explicit when they matter
 branch paths converge/re-enter/stop explicitly

@@ -51,11 +51,11 @@ This module specializes the Core [Target Module Model](../../../idtspe-core/shar
 
 Unit presence/disposition mechanics follow the Core [`Unit Applicability / Materiality / Disposition Contract`](../../../idtspe-core/shared/idtspe-unit-and-target-step-result-model.md#5a-unit-applicability--materiality--disposition-contract). The table below owns only this module's local substantive-materiality and omission-rationale triggers.
 
-| Result Unit | Substantive resolution is material when | Explicit omission disposition when not material |
+| Result Unit | Substantive resolution is material when | Unit disposition when substantive resolution is not material |
 |---|---|---|
-| `RU-SOWN-01` | when an end-to-end Slice responsibility/boundary deserves durable ownership/addressability | omit the durable owner when transient Slice Discovery is sufficient |
-| `RU-SOWN-02` | when durable owner-local implementation/proof constraints are needed | omit when no Slice-local IR/PFR is necessary; zero Requirements is valid |
-| `RU-SOWN-03` | for a current realized Slice owner, when concrete unrealized Steps materially affect its responsibility/boundary and reverse navigation/revalidation is useful | omit when no relevant Step exists; omit from the Target Slice Body of the Step that owns the future change |
+| `RU-SOWN-01` | always once a durable Slice Owner Target is formed; it owns the durable end-to-end responsibility/boundary | no Unit-level omission after Target formation; when transient Slice Discovery is sufficient, the Target-level Slice-owner formation gate fails and no durable Slice Owner Target is formed |
+| `RU-SOWN-02` | when durable owner-local implementation/proof constraints are needed | `OMITTED` when no Slice-local `IR/PFR` is necessary; zero Requirements is valid |
+| `RU-SOWN-03` | for a current realized Slice owner, when concrete unrealized Steps materially affect its responsibility/boundary and reverse navigation/revalidation is useful | use `OMITTED` with a concise reason when no relevant Step exists; in a future Target Slice Body keep the Unit present but `OMITTED` because current-owner reverse projection is not applicable inside the Step-owned future body |
 
 
 

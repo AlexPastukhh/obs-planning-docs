@@ -32,7 +32,7 @@ All command surfaces execute under the thin Session interaction contract once th
 
 This is **inheritance, not routing**. A command routes directly to its current semantic owner; it must not insert `Session → IDTSPE/profile owner` as an obligatory semantic hop merely to obtain progress, steering or authorization behavior. Session is reloaded only when the interaction context/rules cannot be reconstructed safely.
 
-## Generic Core Surface Inventory — 14
+## Generic Core Surface Inventory — 15
 
 ```text
 idtspe.bootstrap
@@ -53,7 +53,11 @@ idtspe.review_consistency
 
 idtspe.proposal
 → idtspe пропозал
-→ USER-gated IDTSPE work using canonical USER-input intake + Proposal/Q/R/P/Decision semantics; required USER-only grounding is clarified before the affected material Proposal without creating a second lifecycle
+→ discover/form/review material Proposals from current context through canonical lifecycle + Proposal/Decision Resolution Context Lens; optional QRPE is checked and selection remains USER/authority-gated
+
+idtspe.decisions.capture
+→ зафиксируй решения
+→ capture/review only actual selected material Decisions from current context; never grants AI selection authority; uses intake + lifecycle + Resolution Context Lens + residual Carry-Forward routing
 
 idtspe.needs.review
 → разбери нид-кандидаты <needs/context>
@@ -84,7 +88,7 @@ lenscmd.linked-notes.justify
 → проверь оправданы ли linked notes <target>
 ```
 
-These are **14 generic Core methodology surfaces**. Installed profiles contribute their own additional surfaces; current total counts are a projection owned by the relevant profile/integration contracts, not by Core.
+These are **15 generic Core methodology surfaces**. Installed profiles contribute their own additional surfaces; current total counts are a projection owned by the relevant profile/integration contracts, not by Core.
 
 ## Bootstrap / Work Boundary
 
@@ -215,6 +219,33 @@ A profile extension may add bootstrap, Target Module, focused Target and profile
 Current SDS extension:
 
 [`../../profiles/sds/shared/idtspe-command-surface-contract.md`](../../profiles/sds/shared/idtspe-command-surface-contract.md)
+
+
+### Proposal / Decision Explicit Entries
+
+```text
+idtspe.proposal
+→ candidate discovery/refinement/review
+→ Proposal/Decision lifecycle
+→ Resolution Context Lens
+→ optional QRPE
+→ Proposal Semantic Change Impact
+→ selection gate
+→ selected meaning integration
+→ Carry-Forward refresh for surviving state
+
+idtspe.decisions.capture
+→ USER/context intake classification
+→ actual material selection exists?
+   no → do not manufacture Decision
+   yes → Decision semantics
+→ Resolution Context Lens + QRPE disposition
+→ proportional retained Decision trace
+→ natural/temporal-owner integration
+→ Carry-Forward refresh
+```
+
+Both are explicit entries into the same canonical Core lifecycle. The architecture-specific Decision command remains specialized and does not substitute for generic Decision capture/review.
 
 ## Repository / Helper Boundary
 

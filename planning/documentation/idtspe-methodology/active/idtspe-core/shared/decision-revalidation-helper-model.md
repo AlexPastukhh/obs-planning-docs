@@ -204,6 +204,10 @@ Artifact/File Pack decides physical representation.
 
 ---
 
+# 6A. Resolution Context Lens Integration
+
+For a material accepted-Decision review, [`LENS-PROPOSAL-DECISION-RESOLUTION-CONTEXT`](../lenses/required/LENS-PROPOSAL-DECISION-RESOLUTION-CONTEXT.md) may evaluate the current Decision qualification/integration and residual QRPE context. This helper still owns only the accepted-Decision-specific revalidation projection; it is not replaced by the Lens or by Resolution Carry-Forward.
+
 # 7. Validator
 
 `Decision Revalidation Readiness Validator` checks:

@@ -63,12 +63,12 @@ This module specializes the Core [Target Module Model](../../../idtspe-core/shar
 
 Unit presence/disposition mechanics follow the Core [`Unit Applicability / Materiality / Disposition Contract`](../../../idtspe-core/shared/idtspe-unit-and-target-step-result-model.md#5a-unit-applicability--materiality--disposition-contract). The table below owns only this module's local substantive-materiality and omission-rationale triggers.
 
-| Result Unit | Substantive resolution is material when | Explicit omission disposition when not material |
+| Result Unit | Substantive resolution is material when | Unit disposition when substantive resolution is not material |
 |---|---|---|
 | `RU-SHARED-01` | always once a Shared capability Target is formed; it owns the coherent reusable responsibility | no Unit-level omission: when reuse/consumer pressure is insufficient, the Target-level Shared formation gate fails and no Shared owner Target should be formed |
-| `RU-SHARED-02` | when concrete Slice consumers in the represented current/target state need durable realization bindings to the Shared capability | omit hypothetical consumers and bindings not grounded in the corresponding current/Target Slice IR |
-| `RU-SHARED-03` | when durable implementation constraints are naturally owned by the Shared capability | omit when implementation choices remain local/transient; no proof RU is required by default |
-| `RU-SHARED-04` | for a current realized Shared owner, when concrete unrealized Steps materially affect its capability/consumer bindings and reverse navigation/revalidation is useful | omit when no relevant Step exists; omit from the Target Shared Body of the Step that owns the future change |
+| `RU-SHARED-02` | when concrete Slice consumers in the represented current/target state need durable realization bindings to the Shared capability | `OMITTED` when no grounded current/Target Slice consumer needs a durable realization binding |
+| `RU-SHARED-03` | when durable implementation constraints are naturally owned by the Shared capability | `OMITTED` when no Shared-owned durable implementation constraint is material; zero Shared `IR/PFR` is valid |
+| `RU-SHARED-04` | for a current realized Shared owner, when concrete unrealized Steps materially affect its capability/consumer bindings and reverse navigation/revalidation is useful | use `OMITTED` with a concise reason when no relevant Step exists; in a future Target Shared Body keep the Unit present but `OMITTED` because current-owner reverse projection is not applicable inside the Step-owned future body |
 
 
 

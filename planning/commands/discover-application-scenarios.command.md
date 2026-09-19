@@ -14,7 +14,7 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
     "собери сценарии приложения"
   ],
   "description": "scenario boundary discovery",
-  "meaning": "Focused Scenario-boundary entry: inspect Application responsibility plus selected Feature results/Benefits for independently meaningful actor-to-Benefit journey boundaries, surface Scenario Target candidates through normal Target Formation, and use TM-SCENARIO-PLANNING for each selected Scenario. Do not create a separate Scenario Discovery result/catalog authority.",
+  "meaning": "Focused Scenario-boundary entry: inspect Application responsibility plus selected Feature results/Benefits for independently meaningful actor/external journey boundaries and Benefit manifestation/closure paths, surface Scenario Target candidates through normal Target Formation, and use TM-SCENARIO-PLANNING for each selected Scenario. Do not create a separate Scenario Discovery result/catalog authority.",
   "activeContextBehavior": "Treat the explicit command as selected invocation intent inside always-active IDTSPE. Re-evaluate current Use-Case composition, resolve/reuse a natural Target/context only when useful, confirm the selected Target Module Entry Point/local applicability gate, and then resolve CREATE/REFINE/EXTEND/REVALIDATE/REPAIR from actual current Target state. Do not create a Target or Result Unit merely because the command exists.",
   "traversalReadMode": "Reuse current reliable IDTSPE/SDS governance; targeted refresh of the selected owner route when uncertain; full bootstrap only when no reliable sufficient governance context exists.",
   "ownerFiles": [

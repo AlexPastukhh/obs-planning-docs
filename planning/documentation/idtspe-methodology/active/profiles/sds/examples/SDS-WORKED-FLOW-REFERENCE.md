@@ -18,6 +18,10 @@ Exact + Evidence
 → updated current owners
 ```
 
+
+> **Unit-inventory reminder:** every formed Target shown here has its complete Module-defined Unit inventory. Example excerpts may abbreviate `OMITTED` Units for readability only when their heading/disposition is explicitly preserved or the excerpt says it is partial; an omitted Unit never means a non-existent Unit.
+> **Representation reminder:** sections that say `partial semantic excerpt` intentionally focus on cross-owner composition rather than reproducing every Unit body/`Methodology:` annotation. Full authored Unit representations still bind the exact reusable Unit owner before substantive content.
+
 ## 1. Start Lightweight
 
 ```text
@@ -109,7 +113,7 @@ Application Definition
 
 ## 5. Feature / Scenario / Screen target bodies
 
-Supporting peer planning may produce:
+Supporting peer planning may produce the following **partial semantic excerpts** of complete Target Feature/Scenario/Screen Bodies:
 
 ```text
 Target Feature Body: FEAT-CAPTURE-ITEM
@@ -135,7 +139,7 @@ Target Scenario Body: SCN-CAPTURE-THEN-REVIEW
     → later returns
     → FEAT-REVIEW-ITEM result
 
-  Terminal Benefit:
+  Benefit manifestation / closure:
     useful material is preserved without interrupting reading
     and can be intentionally reviewed later
 
@@ -167,8 +171,9 @@ If durable post-Step Domain responsibility is justified:
 
 ```text
 Target Domain Body: CaptureItem
-  RU-DOWN-01 Domain Semantic Contract
-  RU-DOWN-02 Domain Implementation Requirements — only if material
+  RU-DOWN-01 — RESOLVED — Domain Semantic Contract
+  RU-DOWN-02 — OMITTED — no independent Domain-owned IR/PFR is established in this example
+  RU-DOWN-03 — OMITTED — current-owner reverse Evolution Impact is not applicable inside the Step-owned future body
 ```
 
 The future `IR-DOMAIN-*` lives in this Target Domain Body. There is still no current Domain owner because nothing is implemented yet.
@@ -189,8 +194,9 @@ If independently durable end-to-end responsibility is useful after the Step is r
 
 ```text
 Target Slice Body: SL-CAPTURE
-  durable Slice responsibility/boundary
-  future IR-SLICE-* only when material
+  RU-SOWN-01 — RESOLVED — durable Slice responsibility/boundary
+  RU-SOWN-02 — OMITTED — no independent durable Slice-local IR/PFR is established in this example
+  RU-SOWN-03 — OMITTED — current-owner reverse Evolution Impact is not applicable inside the Step-owned future body
 ```
 
 Slice Discovery remains working methodology. Selected Result Content with continuing pre-realization value may be retained in the Step Slice Evolution Impact; the Target Slice Body is future durable Slice meaning. Neither is current implementation truth yet.
@@ -203,9 +209,12 @@ Inside the Step, `TM-SHARED-IMPLEMENTATION-CAPABILITY` may form:
 
 ```text
 Target Shared Body: SH-AUDIT-CONTEXT
-  future consumers:
+  RU-SHARED-01 — RESOLVED — coherent reusable audit-context responsibility
+  RU-SHARED-02 — RESOLVED — future consumers:
     Target Slice Body SL-CAPTURE
     Target Slice Body SL-REVIEW
+  RU-SHARED-03 — OMITTED — no independent Shared-owned durable implementation constraint is established in this example
+  RU-SHARED-04 — OMITTED — current-owner reverse Evolution Impact is not applicable inside the Step-owned future body
 ```
 
 That is a valid future shared capability candidate/selection.

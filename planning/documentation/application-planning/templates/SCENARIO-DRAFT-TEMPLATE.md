@@ -2,12 +2,18 @@
 
 Status: active supporting template; canonical semantic contract is SDS `TM-SCENARIO-PLANNING`.
 
-Use this shape only when a human-readable Scenario representation is useful. A Scenario owns **actor-to-Benefit journey composition across selected Feature results**. It does not own Feature behavior, Feature semantic data, implementation topology or Domain semantics.
+Use this shape only when a human-readable Scenario representation is useful. A Scenario owns **actor/external journey composition across selected Feature results, including Benefit manifestation/closure points**. It does not own the upstream Benefit semantics, Feature behavior, Feature semantic data, implementation topology or Domain semantics.
 
 Canonical owner:
 `../../idtspe-methodology/active/profiles/sds/target-modules/TM-SCENARIO-PLANNING.md`
 
+Every formed Scenario Target keeps all three Module-defined Units below. Use `RESOLVED`, `OPEN`, or `OMITTED — <concise reason>` at each heading; do not delete a Unit because its substantive work is not material.
+
 ## RU-SCEN-01 — Journey Composition
+
+**Methodology:** [TM-SCENARIO-PLANNING](../../idtspe-methodology/active/profiles/sds/target-modules/TM-SCENARIO-PLANNING.md)
+
+Disposition: `RESOLVED | OPEN | OMITTED — <reason>`
 
 Represent proportionally:
 
@@ -15,7 +21,7 @@ Represent proportionally:
 Scenario ID / name
 Actor / external participants
 Context / entry when material
-Terminal Benefit
+Benefit refs / manifestation-closure (`AB-*`, one or several when material)
 
 Participating Feature results
   FEAT-* / BR-* references as useful
@@ -27,7 +33,7 @@ Journey
   ├─ material branch
   └─ alternate branch
   → convergence / re-entry
-  → terminal Benefit
+  → Benefit manifestation / closure
 
 Continuity
   <what result/context must survive between steps>
@@ -54,6 +60,22 @@ Screen   → spatial/navigation composition + Feature presence
 ```
 
 A finding in the journey may challenge Feature or Screen meaning through normal Proposal/Finding/revalidation mechanics; the Scenario does not mutate peers directly.
+
+## RU-SCEN-02 — Evolution Impact
+
+**Methodology:** [TM-SCENARIO-PLANNING](../../idtspe-methodology/active/profiles/sds/target-modules/TM-SCENARIO-PLANNING.md)
+
+Disposition: `RESOLVED | OPEN | OMITTED — <reason>`
+
+When material, reference concrete unrealized Evolution Steps that affect this current realized Scenario. In a future Target Scenario Body this Unit remains present but is `OMITTED` because reverse current-owner projection is not applicable there.
+
+## RU-SCEN-03 — Journey Realization Concerns
+
+**Methodology:** [TM-SCENARIO-PLANNING](../../idtspe-methodology/active/profiles/sds/target-modules/TM-SCENARIO-PLANNING.md)
+
+Disposition: `RESOLVED | OPEN | OMITTED — <reason>`
+
+Keep only journey-wide realization/proof/integration pressure whose natural subject is the Scenario; reference owner-local concerns instead of copying them.
 
 ## Evolution / Proof
 

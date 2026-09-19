@@ -18,7 +18,8 @@ test('Scenario primary command matches journey-composition ownership',()=>{
   const d=byId.get('application_scenario.plan'); assert.ok(d);
   assert.equal(d.methodologyBinding?.targetModuleId,'TM-SCENARIO-PLANNING');
   const text=commandText('application_scenario.plan');
-  assert.match(text,/actor-to-Benefit journey/i);
+  assert.match(text,/actor\/external journey/i);
+  assert.match(text,/Benefit manifestation\/closure|Benefits may manifest or close/i);
   assert.match(text,/Feature/);
   assert.doesNotMatch(text,/Scenario Behavior|DATA\s*\+\s*Behavior Items|Development\/Change Outlook/i);
 });
@@ -357,4 +358,156 @@ test('owner-local Evolution Impact processing delegates shared inclusion depth a
     assert.match(block,/Current-Owner Evolution Impact Projection Contract/,`${name}: ${id} must delegate to shared contract`);
     assert.doesNotMatch(block,/regardless of selected\/candidate|no deeper than|never copy the Target|stale\/realized Steps/,`${name}: ${id} must not restate shared projection algorithm`);
   }
+});
+
+
+test('Application Definition separates Benefits from Representative Real-Life Scenarios and uses seven Units',()=>{
+  const app=read('planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-APPLICATION-DEFINITION.md');
+  const scenario=read('planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-SCENARIO-PLANNING.md');
+  const lens=read('planning/documentation/idtspe-methodology/active/profiles/sds/lenses/reusable/LENS-APPLICATION-BOUNDARY-FEASIBILITY.md');
+  assert.match(app,/RU-APP-03` \| Application Benefits/);
+  assert.match(app,/RU-APP-04` \| Representative Real-Life Scenarios/);
+  assert.match(app,/RU-APP-07` \| Realization Feasibility/);
+  assert.match(app,/User Need[\s\S]*User Receives[\s\S]*Additional Info/);
+  assert.match(app,/one Benefit may appear in several Representative RLS|One Benefit may appear in several Representative RLS/i);
+  assert.match(app,/RLS must not decompose Target internals/i);
+  assert.doesNotMatch(app,/Core Real-Life Scenario Position|Core vs Secondary Real-Life/);
+  assert.match(scenario,/Benefit manifestation \/ closure/);
+  assert.match(scenario,/Benefits remain upstream Application Definition authority/);
+  assert.match(lens,/Canonical Benefit\/RLS schemas and authority are owned by/);
+});
+
+test('Proposal Decision Resolution Context Lens is operational evaluator, QRPE is a view, and Carry-Forward is projection-only',()=>{
+  const lens=read('planning/documentation/idtspe-methodology/active/idtspe-core/lenses/required/LENS-PROPOSAL-DECISION-RESOLUTION-CONTEXT.md');
+  const life=read('planning/documentation/idtspe-methodology/active/idtspe-core/shared/proposal-and-decision-lifecycle-contract.md');
+  const qrp=read('planning/documentation/idtspe-methodology/active/idtspe-core/shared/qrp-lifecycle-and-review-contract.md');
+  const carry=read('planning/documentation/idtspe-methodology/active/idtspe-core/shared/resolution-carry-forward-projection-contract.md');
+  assert.match(lens,/Activation: `REQUIRED_CORE` on a material Proposal \/ Decision surface/);
+  assert.match(lens,/QRPE.*not.*new Core State kind/is);
+  assert.match(lens,/Lens ≠ Proposal\/Decision lifecycle owner/);
+  assert.match(life,/Candidate Review \/ Resolution Context Handoff/);
+  assert.doesNotMatch(life,/Driver \/ Need fit[\s\S]*Necessity \/ Better Route/);
+  assert.match(qrp,/Proposal \/ Decision QRPE Navigation/);
+  assert.match(carry,/projection \/ aggregate navigation owner/);
+  assert.match(carry,/Carry-Forward ≠ semantic owner/);
+});
+
+test('generic Decision capture command never grants selection authority and Proposal command uses Resolution Context Lens',()=>{
+  const proposal=read('planning/commands/idtspe-proposal.command.md');
+  const decisions=read('planning/commands/idtspe-decisions-capture.command.md');
+  const surface=read('planning/documentation/idtspe-methodology/active/idtspe-core/shared/idtspe-command-surface-contract.md');
+  assert.match(proposal,/LENS-PROPOSAL-DECISION-RESOLUTION-CONTEXT/);
+  assert.match(decisions,/"id": "idtspe.decisions.capture"/);
+  assert.match(decisions,/Only actual material selections become Decision semantics|actual selected material Decisions/i);
+  assert.match(decisions,/never grants selection authority|does not grant AI selection authority/i);
+  assert.match(surface,/Generic Core Surface Inventory — 15/);
+  assert.match(surface,/idtspe\.decisions\.capture/);
+});
+
+test('formed Target Units stay present: reverse Impact, Practical Test evidence and Slice-owner identity use dispositions not Unit absence',()=>{
+  const dir='planning/documentation/idtspe-methodology/active/profiles/sds/target-modules';
+  for(const [name,id] of [
+    ['TM-FEATURE.md','RU-FEAT-06'],['TM-SCENARIO-PLANNING.md','RU-SCEN-02'],['TM-SCREEN.md','RU-SCREEN-03'],
+    ['TM-DOMAIN-OWNER.md','RU-DOWN-03'],['TM-SLICE-OWNER.md','RU-SOWN-03'],['TM-SHARED-IMPLEMENTATION-CAPABILITY.md','RU-SHARED-04']]){
+    const text=read(`${dir}/${name}`);
+    const line=text.split('\n').find((x)=>x.includes(`| \`${id}\` |`) && /OMITTED/.test(x));
+    assert.ok(line,`${name}: ${id} must keep explicit OMITTED future/nonmaterial disposition`);
+    assert.doesNotMatch(line,/omit from the Target|future Target .* omits/i);
+  }
+  const ptest=read(`${dir}/TM-PRACTICAL-TEST.md`);
+  assert.doesNotMatch(ptest,/RU-PTEST-03` is absent until/);
+  assert.match(ptest,/RU-PTEST-03` remains an instantiated Module-defined Unit/);
+  const sown=read(`${dir}/TM-SLICE-OWNER.md`);
+  assert.match(sown,/RU-SOWN-01[\s\S]*Target-level Slice-owner formation gate fails/i);
+});
+
+
+test('required Core Lens Pack includes Proposal Decision Resolution Context only on material Proposal Decision surfaces',()=>{
+  const model=read('planning/documentation/idtspe-methodology/active/idtspe-core/lenses/LENS-MODEL.md');
+  const tf=read('planning/documentation/idtspe-methodology/active/idtspe-core/shared/dynamic-target-formation-and-discovery-checks.md');
+  assert.match(model,/Proposal \/ Decision Resolution Context — when a material Proposal\/Decision surface exists/);
+  assert.match(model,/Proposal \/ Decision Resolution Context is `NOT_APPLICABLE` when no material Proposal\/Decision surface exists/);
+  assert.match(tf,/required Core Pack[\s\S]*Proposal \/ Decision Resolution Context when a material Proposal\/Decision surface exists/);
+  assert.doesNotMatch(tf,/L1-L3 required Core Pack/);
+});
+
+test('Scenario command and representation surfaces use multi-Benefit manifestation closure rather than terminal-Benefit shorthand',()=>{
+  const files=[
+    'planning/commands/plan-application-scenario.command.md',
+    'planning/commands/collect-scenario-ideas.command.md',
+    'planning/commands/discover-application-scenarios.command.md',
+    'planning/documentation/application-planning/templates/SCENARIO-DRAFT-TEMPLATE.md',
+    'planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-SCENARIO-PLANNING.md'
+  ];
+  for(const rel of files){
+    const text=read(rel);
+    assert.doesNotMatch(text,/terminal Benefit|actor-to-Benefit|actor-to-benefit/i,`${rel}: stale single/terminal Benefit Scenario shorthand`);
+  }
+  const plan=read(files[0]);
+  assert.match(plan,/one-or-more Benefit manifestation\/closure points when material/);
+});
+
+test('Practical Test Unit disposition never uses Target non-formation as a Unit omission rule',()=>{
+  const ptest=read('planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-PRACTICAL-TEST.md');
+  const row=ptest.split('\n').find((line)=>line.includes('| `RU-PTEST-01` |') && line.includes('when a property requires observation')) ?? '';
+  assert.match(row,/`OMITTED`/);
+  assert.doesNotMatch(row,/omit the Practical Test Target/i);
+  assert.match(row,/Target formation itself is decided before this Unit-level disposition/);
+});
+
+
+test('SDS Unit materiality tables use whole-Unit dispositions rather than inner-detail omission prose',()=>{
+  const dir='planning/documentation/idtspe-methodology/active/profiles/sds/target-modules';
+  const offenders=[];
+  for(const name of fs.readdirSync(path.join(repoRoot,dir)).filter((n)=>n.startsWith('TM-')&&n.endsWith('.md'))){
+    const text=read(`${dir}/${name}`);
+    const table=(text.match(/\| Result Unit \| Substantive resolution is material when \| Unit disposition when substantive resolution is not material \|\n\|---\|---\|---\|\n([\s\S]*?)(?=\n\n)/)||[])[1]||'';
+    if(!table) continue;
+    for(const line of table.split('\n')){
+      if(!/^\| `RU-/.test(line)) continue;
+      const cells=line.split('|').map((v)=>v.trim());
+      const disposition=cells[3]||'';
+      if(!/`OMITTED`|no Unit-level omission|do not omit/i.test(disposition)) offenders.push(`${name}: ${line}`);
+    }
+  }
+  assert.deepEqual(offenders,[]);
+});
+
+test('Exact Realization separates Target activation from formed Unit existence',()=>{
+  const exact=read('planning/documentation/idtspe-methodology/active/idtspe-core/target-modules/TM-EXACT-REALIZATION.md');
+  const table=(exact.match(/\| Result Unit \| Substantive resolution is material when \| Target\/Unit disposition when not material \|\n\|---\|---\|---\|\n([\s\S]*?)(?=\n\n)/)||[])[1]||'';
+  const row=table.split('\n').find((line)=>line.includes('| `RU-REAL-01` |'))??'';
+  assert.match(row,/always once an Exact Realization Target is formed/);
+  assert.match(row,/no Unit-level omission after Target formation/);
+  assert.doesNotMatch(row,/do not instantiate Exact merely/i);
+});
+
+test('supporting Scenario Screen Domain templates expose complete Module-defined inventories with methodology bindings',()=>{
+  const cases=[
+    ['planning/documentation/application-planning/templates/SCENARIO-DRAFT-TEMPLATE.md',['RU-SCEN-01','RU-SCEN-02','RU-SCEN-03'],'TM-SCENARIO-PLANNING'],
+    ['planning/documentation/application-planning/templates/SCREEN-DRAFT-TEMPLATE.md',['RU-SCREEN-01','RU-SCREEN-02','RU-SCREEN-03'],'TM-SCREEN'],
+    ['planning/documentation/application-planning/templates/DOMAIN-DRAFT-TEMPLATE.md',['RU-DOWN-01','RU-DOWN-02','RU-DOWN-03'],'TM-DOMAIN-OWNER']
+  ];
+  for(const [rel,units,owner] of cases){
+    const text=read(rel);
+    for(const unit of units) assert.match(text,new RegExp(`## ${unit.replaceAll('-','\\-')}\\b`),`${rel}: missing ${unit}`);
+    assert.match(text,/\*\*Methodology:\*\*/);
+    assert.match(text,new RegExp(owner));
+  }
+});
+
+test('active SDS Slice examples no longer hide formed Module-defined inventory entries',()=>{
+  const response=read('planning/documentation/idtspe-methodology/active/profiles/sds/examples/IDTSPE-RESPONSE-EXAMPLE.md');
+  for(const id of ['RU-SLICE-01','RU-SLICE-02','RU-SLICE-03','RU-SLICE-04','RU-SLICE-05']) assert.match(response,new RegExp(id));
+  const slice=read('planning/documentation/idtspe-methodology/active/profiles/sds/examples/IMPLEMENTATION-SLICE-UNIT-REFERENCE.md');
+  for(const id of ['RU-SOWN-01','RU-SOWN-02','RU-SOWN-03']) assert.match(slice,new RegExp(id));
+  const flow=read('planning/documentation/idtspe-methodology/active/profiles/sds/examples/SDS-WORKED-FLOW-REFERENCE.md');
+  for(const id of ['RU-DOWN-01','RU-DOWN-02','RU-DOWN-03','RU-SOWN-01','RU-SOWN-02','RU-SOWN-03','RU-SHARED-01','RU-SHARED-02','RU-SHARED-03','RU-SHARED-04']) assert.match(flow,new RegExp(id));
+  assert.doesNotMatch(flow,/RU-DOWN-02 Domain Implementation Requirements — only if material/);
+});
+
+test('Application Definition no longer classifies representative RLS as core surrounding alternative authority categories',()=>{
+  const app=read('planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-APPLICATION-DEFINITION.md');
+  assert.doesNotMatch(app,/core\/surrounding\/alternative representative real-life scenario inventory/i);
+  assert.match(app,/representative real-life scenario inventory with bounded Target-contribution \/ Benefit relations/);
 });

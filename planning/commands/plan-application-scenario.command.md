@@ -15,14 +15,14 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
     "план сценария приложения"
   ],
   "description": "Scenario journey composition across selected Feature results",
-  "meaning": "Run TM-SCENARIO-PLANNING for one actor-to-Benefit journey. Compose selected Feature results, actor/external linking actions, order/branch/convergence/re-entry, continuity, material Screen/external participation, sparse journey-level must-holds and optional E2E Proof Intent. Feature behavior and Feature semantic data remain TM-FEATURE authority.",
+  "meaning": "Run TM-SCENARIO-PLANNING for one actor/external journey in which one or more upstream Application Benefits may manifest or close. Compose selected Feature results, actor/external linking actions, order/branch/convergence/re-entry, continuity, material Screen/external participation, sparse journey-level must-holds and optional E2E Proof Intent. Feature behavior and Feature semantic data remain TM-FEATURE authority; Benefit semantics remain Application Definition authority.",
   "activeContextBehavior": "Treat the explicit command as selected invocation intent inside always-active IDTSPE. Re-evaluate current Use-Case composition, resolve/reuse a natural Target/context only when useful, confirm the selected Target Module Entry Point/local applicability gate, and then resolve CREATE/REFINE/EXTEND/REVALIDATE/REPAIR from actual current Target state. Do not create a Target or Result Unit merely because the command exists.",
   "traversalReadMode": "Reuse current reliable IDTSPE/SDS governance; targeted refresh of the selected owner route when uncertain; full bootstrap only when no reliable sufficient governance context exists.",
   "ownerFiles": [
     "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-SCENARIO-PLANNING.md",
     "planning/documentation/idtspe-methodology/active/profiles/sds/shared/idtspe-command-surface-contract.md"
   ],
-  "expectedOutput": "One Scenario Journey Composition (RU-SCEN-01): actor/context, participating Feature/result links, journey order/branches/re-entry, continuity, terminal Benefit, only material journey must-holds and optional E2E Proof Intent, plus proportional Core State.",
+  "expectedOutput": "One Scenario Journey Composition (RU-SCEN-01): actor/context, participating Feature/result links, journey order/branches/re-entry, continuity, one-or-more Benefit manifestation/closure points when material, only material journey must-holds and optional E2E Proof Intent, plus proportional Core State.",
   "permissionMode": "read-only-planning",
   "keyReminders": [
     "SDS is an IDTSPE profile, not a second runtime.",

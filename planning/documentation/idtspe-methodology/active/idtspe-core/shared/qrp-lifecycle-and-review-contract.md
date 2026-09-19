@@ -206,6 +206,12 @@ Canonical Proposal/Decision semantics: [`proposal-and-decision-lifecycle-contrac
 
 One Decision may address several Q/R/P. One Q/R/P group may need several Decisions. A Decision may introduce/expose new Q/R/P.
 
+### Proposal / Decision QRPE Navigation
+
+When Q/R/P is materially related to a Proposal or Decision, [`LENS-PROPOSAL-DECISION-RESOLUTION-CONTEXT`](../lenses/required/LENS-PROPOSAL-DECISION-RESOLUTION-CONTEXT.md) may select it into a compact `QRPE` review view together with relevant Evidence. This does not create a new Q/R/P lifecycle or `QRPE` State kind; this contract remains Q/R/P authority.
+
+After selection, each related Q/R/P is dispositioned individually rather than copied mechanically from Proposal to Decision context.
+
 ## 10. Active Projection Vs Retained Trace
 
 Active Q/R/P shows current material unresolved/residual state, not the entire reasoning history.
@@ -282,6 +288,10 @@ one logical Q/R/P item/group
 When distributed durable Q/R/P is materially expensive to navigate, an area-level register/index may be useful. That register stores routing/status/reference information by default, not a duplicate semantic body, and remains a projection over natural owners.
 
 Physical choices such as inline section vs area-root register vs no separate materialization are resolved by Documentation / Representation and P-14. Canonical placement owner: [`artifact-placement-and-idtspe-response-contract.md`](artifact-placement-and-idtspe-response-contract.md).
+
+### Resolution Carry-Forward Projection
+
+Material open/deferred/residual Q/R/P that must survive continuation/handoff may be referenced by [`Resolution Carry-Forward`](resolution-carry-forward-projection-contract.md). The aggregate owns only compact routing/status entries; detailed Q/R/P bodies and lifecycle remain here and at their natural subjects.
 
 ## 14. Revalidation
 

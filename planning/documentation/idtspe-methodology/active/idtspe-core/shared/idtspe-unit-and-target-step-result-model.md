@@ -811,7 +811,7 @@ RU-SLICE-01 Whole-Slice Responsibility / Candidate Structure
 RU-SLICE-02 Semantic Application Entry / Result Boundary
 RU-SLICE-03 Step-by-Step End-to-End Realization
 RU-SLICE-04 Feature Integration Proof
-RU-SLICE-05 Evolution / OPEN Slice Pressure — only when material
+RU-SLICE-05 Evolution / OPEN Slice Pressure — Unit always present; substantive content only when material, otherwise explicit omission disposition
 ```
 
 Slice Verticality / Integration Lens Analysis Surface:

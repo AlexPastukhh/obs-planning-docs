@@ -129,13 +129,13 @@ This module specializes the Core [Target Module Model](../../../idtspe-core/shar
 
 Unit presence/disposition mechanics follow the Core [`Unit Applicability / Materiality / Disposition Contract`](../../../idtspe-core/shared/idtspe-unit-and-target-step-result-model.md#5a-unit-applicability--materiality--disposition-contract). The table below owns only Evolution-Step-specific substantive-materiality and omission-rationale triggers.
 
-| Result Unit | Substantive resolution is material when | Explicit omission disposition when not material |
+| Result Unit | Substantive resolution is material when | Unit disposition when substantive resolution is not material |
 |---|---|---|
 | `RU-EVO-01` | always once a concrete Evolution Step Target is formed; it owns Step identity/boundary/driver/relations | no Unit-level omission: vague speculative pressure that does not deserve Step identity fails the Target-level Step formation gate, so no Evolution Step Target should be formed |
-| `RU-EVO-02` | one Scenario/Screen/Domain/Slice/Shared/OPEN responsibility is materially affected and bounded impact resolution helps planning | `Omitted: no material peer/supporting-owner impact subjects`; do not instantiate child Impact entries for unaffected subjects |
-| `RU-EVO-03` | owner-local concern surfaces compose into a cross-owner Step-wide realization/proof/integration concern | `Omitted: no Step-wide implementation concern; owner-local concerns remain sufficient` |
-| `RU-EVO-04` | the Step is intended eventually to create/replace/retire downstream semantic owner authority | `Omitted` only for an intentionally non-materializing investigative Step; ordinary product/application Steps should resolve the set |
-| `RU-EVO-05` | transition-only migration/cutover/compatibility/proof meaning exists | `Omitted: no transition-only/proof obligation beyond ordinary owner/Exact proof` |
+| `RU-EVO-02` | one Scenario/Screen/Domain/Slice/Shared/OPEN responsibility is materially affected and bounded impact resolution helps planning | `OMITTED` — no material peer/supporting-owner impact subjects; do not instantiate child Impact entries for unaffected subjects |
+| `RU-EVO-03` | owner-local concern surfaces compose into a cross-owner Step-wide realization/proof/integration concern | `OMITTED` — no Step-wide implementation concern; owner-local concerns remain sufficient |
+| `RU-EVO-04` | the Step is intended eventually to create/replace/retire downstream semantic owner authority | `OMITTED` only for an intentionally non-materializing investigative Step; ordinary product/application Steps should resolve the set |
+| `RU-EVO-05` | transition-only migration/cutover/compatibility/proof meaning exists | `OMITTED` — no transition-only/proof obligation beyond ordinary owner/Exact proof |
 | `RU-EVO-06` | always for a concrete Step that may be reviewed/realized | do not omit; keep conclusions `INCOMPLETE/BLOCKED` with reasons when not ready |
 
 `RU-EVO-02` repeatability does not require placeholder child Impact instances for unaffected owners. The complete-inventory rule still requires the parent `RU-EVO-02` Unit responsibility to be visible with its resolved/open/omitted disposition; child Impact instances remain proportional to actual material subjects.
@@ -285,7 +285,7 @@ Before writing Step-wide concern meaning, inspect affected reusable owner surfac
 ```text
 Target Feature Body / RU-FEAT-04 Implementation Concerns
 Target Scenario Body / RU-SCEN-03 Journey Realization Concerns
-Application Definition / RU-APP-06 Realization Feasibility
+Application Definition / RU-APP-07 Realization Feasibility
   when upstream feasibility still materially constrains this Step
 Target Domain / Slice / Shared owner-local IR/PFR and relevant owner constraints
 Screen/spatial constraints when they materially affect cross-owner realization

@@ -568,7 +568,7 @@
         "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-SCENARIO-PLANNING.md",
         "planning/documentation/idtspe-methodology/active/profiles/sds/shared/idtspe-command-surface-contract.md"
       ],
-      "expectedOutput": "Current Scenario Journey Composition with actor/context, Feature/result links, journey order/branches/re-entry, continuity, terminal Benefit and only material journey-level must-holds/E2E intent; no legacy Scenario-Ideas accumulator or duplicated Feature behavior/data.",
+      "expectedOutput": "Current Scenario Journey Composition with actor/context, Feature/result links, journey order/branches/re-entry, continuity, one-or-more Benefit manifestation/closure points when material and only material journey-level must-holds/E2E intent; no legacy Scenario-Ideas accumulator or duplicated Feature behavior/data.",
       "permissionMode": "read-only-planning",
       "keyReminders": [
         "Legacy compatibility alias only; the canonical material-planning runtime is IDTSPE.",
@@ -810,7 +810,7 @@
         "собери сценарии приложения"
       ],
       "description": "scenario boundary discovery",
-      "meaning": "Focused Scenario-boundary entry: inspect Application responsibility plus selected Feature results/Benefits for independently meaningful actor-to-Benefit journey boundaries, surface Scenario Target candidates through normal Target Formation, and use TM-SCENARIO-PLANNING for each selected Scenario. Do not create a separate Scenario Discovery result/catalog authority.",
+      "meaning": "Focused Scenario-boundary entry: inspect Application responsibility plus selected Feature results/Benefits for independently meaningful actor/external journey boundaries and Benefit manifestation/closure paths, surface Scenario Target candidates through normal Target Formation, and use TM-SCENARIO-PLANNING for each selected Scenario. Do not create a separate Scenario Discovery result/catalog authority.",
       "activeContextBehavior": "Treat the explicit command as selected invocation intent inside always-active IDTSPE. Re-evaluate current Use-Case composition, resolve/reuse a natural Target/context only when useful, confirm the selected Target Module Entry Point/local applicability gate, and then resolve CREATE/REFINE/EXTEND/REVALIDATE/REPAIR from actual current Target state. Do not create a Target or Result Unit merely because the command exists.",
       "traversalReadMode": "Reuse current reliable IDTSPE/SDS governance; targeted refresh of the selected owner route when uncertain; full bootstrap only when no reliable sufficient governance context exists.",
       "ownerFiles": [
@@ -1066,6 +1066,56 @@
     },
     {
       "schemaVersion": 1,
+      "id": "idtspe.decisions.capture",
+      "file": "idtspe-decisions-capture.command.md",
+      "command": "зафиксируй решения",
+      "englishName": "IDTSPE capture/review selected decisions",
+      "commandFamily": [
+        "зафиксируй решения",
+        "зафиксируй принятые решения",
+        "выдели решения из текущего контекста",
+        "разбери принятые решения",
+        "idtspe decisions"
+      ],
+      "description": "Extract and review actual selected material Decisions from current context without inventing selection authority.",
+      "meaning": "Classify current USER/context meaning through the canonical USER Input Decision And Answer Intake Rule. Only actual material selections become Decision semantics; AI-only candidates/suggestions remain Proposal/Source/Answer/unresolved state as appropriate. Review each material Decision through the Proposal/Decision Resolution Context Lens, disposition related QRPE, retain a separate Decision trace only when it has independent future value, integrate selected meaning into its natural/temporal owner, and refresh Resolution Carry-Forward for surviving material residual/reconsider state.",
+      "activeContextBehavior": "Reuse current context and existing Decisions first. Extract exact selected meaning only where actual USER/applicable authority selection exists; never select unresolved alternatives on the USER's behalf. Run LENS-PROPOSAL-DECISION-RESOLUTION-CONTEXT for material captured/reviewed Decisions, classify residual QRPE through canonical lifecycle owners, integrate selected meaning into the correct owner, and project surviving continuation/revalidation items into Resolution Carry-Forward when useful.",
+      "traversalReadMode": "Read USER-input intake + Proposal/Decision lifecycle + Resolution Context Lens first; use Q/R/P, Decision Revalidation Helper, Carry-Forward and natural owner/Target detail only where the captured Decision requires them.",
+      "ownerFiles": [
+        "planning/documentation/idtspe-methodology/active/idtspe-core/shared/idtspe-command-surface-contract.md",
+        "planning/documentation/idtspe-methodology/active/idtspe-core/shared/user-input-decision-and-answer-intake-rule.md",
+        "planning/documentation/idtspe-methodology/active/idtspe-core/shared/proposal-and-decision-lifecycle-contract.md",
+        "planning/documentation/idtspe-methodology/active/idtspe-core/shared/qrp-lifecycle-and-review-contract.md",
+        "planning/documentation/idtspe-methodology/active/idtspe-core/lenses/required/LENS-PROPOSAL-DECISION-RESOLUTION-CONTEXT.md",
+        "planning/documentation/idtspe-methodology/active/idtspe-core/shared/decision-revalidation-helper-model.md",
+        "planning/documentation/idtspe-methodology/active/idtspe-core/shared/resolution-carry-forward-projection-contract.md",
+        "planning/documentation/idtspe-methodology/active/idtspe-core/shared/maintain-current-work-state-use-case.md"
+      ],
+      "expectedOutput": "Actual selected material Decisions are identified without promoting AI-only candidates, their exact selected meaning/integration owner and material QRPE disposition are clear, proportional retained Decision traces are preserved only when useful, and surviving residual/revalidation state is discoverable through Carry-Forward.",
+      "permissionMode": "read-only-planning-unless-separately-authorized",
+      "keyReminders": [
+        "Actual material selection is required; this command does not grant AI selection authority.",
+        "USER facts/preferences/corrections/candidates are not Decisions unless the intake/lifecycle rules establish actual selection.",
+        "QRPE is a review view over canonical Q/R/P/Evidence owners, not a new State kind.",
+        "A separate durable Decision trace is proportional; selected meaning still integrates into its natural owner.",
+        "This command does not itself grant repository/file/application mutation, commit or push permission."
+      ],
+      "userTarget": "<current context / selected Decisions to capture or review>",
+      "palette": true,
+      "helperPresentation": null,
+      "methodologyBinding": {
+        "methodologyRuntime": "IDTSPE",
+        "profile": null,
+        "surfaceKind": "ORCHESTRATION",
+        "targetModuleId": null,
+        "lensId": null,
+        "parentSurface": null,
+        "hostTargetPolicy": "NONE"
+      },
+      "refinements": []
+    },
+    {
+      "schemaVersion": 1,
       "id": "idtspe.next",
       "file": "idtspe-next.command.md",
       "command": "что дальше по методологии",
@@ -1114,11 +1164,14 @@
         "idtspe пропозал",
         "idtspe proposal",
         "idtspe proposals",
-        "idtspe пропозалы"
+        "idtspe пропозалы",
+        "дай пропозалы",
+        "дай пропозалы по текущему контексту",
+        "разбери пропозал"
       ],
-      "description": "Work through the current IDTSPE context with canonical Proposal/Q-R-P/Decision lifecycle under USER-gated interaction.",
-      "meaning": "Apply the Session USER-gated proposal-driven interaction policy and compose the current IDTSPE Work Context through canonical Core Proposal/Decision, USER-input intake and Q/R/P lifecycle semantics. Before presenting a material formal or conversational Proposal, resolve any genuinely required USER-only grounding through the minimum useful clarification; then form/review the Proposal. Material candidate Unit/Target/owner meaning remains Proposal until selected through the canonical lifecycle; material unresolved Question/Risk/Problem meaning remains governed by the Q/R/P owner. This command creates no parallel Proposal, Decision or Q/R/P semantics.",
-      "activeContextBehavior": "Use the current Work Context and re-evaluate UC-IDTSPE-COMPOSE-CURRENT-WORK proportionally. Reuse available Sources/USER input first; when a material USER-only grounding gap would materially change the candidate, ask the minimum useful clarification and intake the answer before presenting the affected Proposal. Express material candidate meaning as formal IDTSPE Proposal State only when lifecycle/addressability/review is useful, link material Q/R/P through their canonical owner, perform proportional candidate review including canonical Proposal Semantic Change Impact Review for every material Proposal, use applicable Lenses only as evaluators, route any newly discovered material contradiction through Finding Disposition, and wait for USER selection at material gates. Selected meaning then flows to its normal planning destination; under SDS, unrealized selected future meaning remains in the applicable Evolution Step/Target Body until realization/materialization rather than becoming current-owner truth merely by selection.",
+      "description": "Discover, form, review and refine material IDTSPE Proposals from the current context through canonical Proposal/Decision lifecycle + Resolution Context Lens under USER-gated selection.",
+      "meaning": "Use the current IDTSPE Work Context to discover/form only material candidate Proposals or review/refine a supplied Proposal. Canonical Proposal/Decision lifecycle owns candidate/selection semantics; LENS-PROPOSAL-DECISION-RESOLUTION-CONTEXT evaluates each material Proposal/Decision context and checks optional related QRPE; Proposal Semantic Change Impact remains lifecycle-owned. Keep candidates UNSELECTED until actual USER/authorized selection, integrate selected meaning into its natural/temporal owner, and refresh Resolution Carry-Forward only for surviving material open/deferred/residual state.",
+      "activeContextBehavior": "Reuse current Sources, accepted Results, Decisions and Carry-Forward references first. Resolve genuinely required USER-only grounding before presenting the affected material candidate. For each material Proposal run the Resolution Context Lens, surface only material QRPE, then perform canonical Proposal Semantic Change Impact Review. AI recommendation is not selection. After valid selection, disposition Proposal QRPE into Decision context, integrate selected meaning into the natural owner and update Carry-Forward for surviving state. Under SDS, unrealized selected future meaning remains Evolution Step/Target Body hosted until realization/materialization.",
       "traversalReadMode": "Reuse current reliable Core governance. Otherwise read the current composition/state model plus canonical Proposal/Decision and Q/R/P lifecycle owners, and the Session USER-gated interaction owner. Load profile/Target/Lens detail only when the current composition makes it applicable.",
       "ownerFiles": [
         "planning/documentation/idtspe-methodology/active/idtspe-core/shared/idtspe-command-surface-contract.md",
@@ -1129,16 +1182,18 @@
         "planning/documentation/idtspe-methodology/active/idtspe-core/shared/user-input-decision-and-answer-intake-rule.md",
         "planning/documentation/idtspe-methodology/active/idtspe-core/shared/qrp-lifecycle-and-review-contract.md",
         "planning/session/principles-and-terminology.md",
-        "planning/session/session-runtime-contract.md"
+        "planning/session/session-runtime-contract.md",
+        "planning/documentation/idtspe-methodology/active/idtspe-core/lenses/required/LENS-PROPOSAL-DECISION-RESOLUTION-CONTEXT.md",
+        "planning/documentation/idtspe-methodology/active/idtspe-core/shared/resolution-carry-forward-projection-contract.md"
       ],
-      "expectedOutput": "Current useful IDTSPE work is USER-gated and represented canonically: required USER-only grounding is clarified before the affected material Proposal, material candidate meaning remains Proposal until selected, relevant Q/R/P remains linked through its lifecycle, and selected meaning is integrated into the correct planning/current destination without treating selection as realization.",
+      "expectedOutput": "Material Proposals from the current context are reviewable but remain UNSELECTED until actual authority selects them; optional related QRPE is evaluated/dispositioned, selected meaning integrates into its natural/temporal owner, and only surviving material open/deferred/residual state is projected into Resolution Carry-Forward.",
       "permissionMode": "read-only-planning-unless-separately-authorized",
       "keyReminders": [
-        "The Session policy owns when AI must stop for USER input; IDTSPE Core owns formal Proposal/Q/R/P/Decision semantics.",
-        "AI recommendation is not selection; Proposal becomes selected Decision/planning meaning only through normal authority, and under SDS unrealized selected meaning remains Evolution Step target state until realization/materialization.",
-        "Ask a minimum grounding clarification only when material USER-only information/authority is actually required; do not manufacture questions or formal Proposal State for trivial/local candidate text.",
-        "Q/R/P remains secondary material attached to the actual Unit/Proposal/Decision/owner subject and uses the canonical Q/R/P lifecycle.",
-        "Every material Proposal receives proportional Semantic Change Impact Review; RE-0..RE-4 remain Finding-only categories, not Proposal categories.",
+        "Lifecycle contracts own Proposal/Decision/Q/R/P/Evidence semantics; the Resolution Context Lens is the operational evaluator and QRPE is only a compact view.",
+        "AI recommendation is not selection; do not convert nearby AI suggestions into Decisions.",
+        "Use \"none material\" when no related QRPE exists; do not force an empty QRPE form.",
+        "After selection, disposition Proposal QRPE individually rather than copying it mechanically into Decision context.",
+        "Resolution Carry-Forward stores compact continuation refs/status only; it is not a second semantic owner.",
         "This command does not itself grant repository/file/application mutation, commit or push permission."
       ],
       "userTarget": "<current IDTSPE work context / target / candidate meaning>",
@@ -1271,14 +1326,14 @@
         "план сценария приложения"
       ],
       "description": "Scenario journey composition across selected Feature results",
-      "meaning": "Run TM-SCENARIO-PLANNING for one actor-to-Benefit journey. Compose selected Feature results, actor/external linking actions, order/branch/convergence/re-entry, continuity, material Screen/external participation, sparse journey-level must-holds and optional E2E Proof Intent. Feature behavior and Feature semantic data remain TM-FEATURE authority.",
+      "meaning": "Run TM-SCENARIO-PLANNING for one actor/external journey in which one or more upstream Application Benefits may manifest or close. Compose selected Feature results, actor/external linking actions, order/branch/convergence/re-entry, continuity, material Screen/external participation, sparse journey-level must-holds and optional E2E Proof Intent. Feature behavior and Feature semantic data remain TM-FEATURE authority; Benefit semantics remain Application Definition authority.",
       "activeContextBehavior": "Treat the explicit command as selected invocation intent inside always-active IDTSPE. Re-evaluate current Use-Case composition, resolve/reuse a natural Target/context only when useful, confirm the selected Target Module Entry Point/local applicability gate, and then resolve CREATE/REFINE/EXTEND/REVALIDATE/REPAIR from actual current Target state. Do not create a Target or Result Unit merely because the command exists.",
       "traversalReadMode": "Reuse current reliable IDTSPE/SDS governance; targeted refresh of the selected owner route when uncertain; full bootstrap only when no reliable sufficient governance context exists.",
       "ownerFiles": [
         "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-SCENARIO-PLANNING.md",
         "planning/documentation/idtspe-methodology/active/profiles/sds/shared/idtspe-command-surface-contract.md"
       ],
-      "expectedOutput": "One Scenario Journey Composition (RU-SCEN-01): actor/context, participating Feature/result links, journey order/branches/re-entry, continuity, terminal Benefit, only material journey must-holds and optional E2E Proof Intent, plus proportional Core State.",
+      "expectedOutput": "One Scenario Journey Composition (RU-SCEN-01): actor/context, participating Feature/result links, journey order/branches/re-entry, continuity, one-or-more Benefit manifestation/closure points when material, only material journey must-holds and optional E2E Proof Intent, plus proportional Core State.",
       "permissionMode": "read-only-planning",
       "keyReminders": [
         "SDS is an IDTSPE profile, not a second runtime.",

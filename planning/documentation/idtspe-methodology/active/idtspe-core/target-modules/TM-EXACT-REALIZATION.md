@@ -144,7 +144,7 @@ Apply the Core [`Unit Applicability / Materiality / Disposition Contract`](../sh
 
 | Result Unit | Substantive resolution is material when | Target/Unit disposition when not material |
 |---|---|---|
-| `RU-REAL-01` | when current accepted meaning is sufficient to produce one exact directly-integrable candidate for the bounded scope | do not instantiate Exact merely to force literal output while upstream meaning/readiness is still materially unresolved |
+| `RU-REAL-01` | always once an Exact Realization Target is formed; it owns the exact directly-integrable candidate for the bounded scope | no Unit-level omission after Target formation; if accepted meaning/readiness is insufficient for exact output, the Target-level activation gate fails and the Exact Target should not be formed; a formed Unit that becomes temporarily blocked stays `OPEN` with the blocker |
 
 When this Target is formed, its Module-defined Unit remains declared. Do not use a bare `N/A`; if substantive Unit work is not material, record a concise explicit omission disposition. The whole Target may still be skipped when its Target-level activation gate is not met.
 
@@ -522,6 +522,8 @@ Generic required Core Pack is inherited from the [`Lens Registry`](../lenses/REA
 - [`LENS-AUTHORITY-SOT-REUSE`](../lenses/required/LENS-AUTHORITY-SOT-REUSE.md)
 - [`LENS-UNCERTAINTY-ASSUMPTION-REVERSIBILITY`](../lenses/required/LENS-UNCERTAINTY-ASSUMPTION-REVERSIBILITY.md)
 - [`LENS-ARTIFACT-BOUNDARY-ADDRESSABILITY`](../lenses/required/LENS-ARTIFACT-BOUNDARY-ADDRESSABILITY.md)
+
+The required Core [`LENS-PROPOSAL-DECISION-RESOLUTION-CONTEXT`](../lenses/required/LENS-PROPOSAL-DECISION-RESOLUTION-CONTEXT.md) is selected through the registry/checkpoint path only when a material Proposal/Decision surface exists; it is not a fixed Target-family attachment.
 
 Frequent conditional Core Lenses:
 

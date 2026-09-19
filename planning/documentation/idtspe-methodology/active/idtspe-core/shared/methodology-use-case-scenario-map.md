@@ -36,7 +36,7 @@ Is the same methodology action duplicated by several UCs?
 Does a UC have an independently useful Result?
 Can Broad Discussion remain lightweight when deeper structure is not useful?
 Are registry scans targeted/lazy rather than exhaustive?
-Are State/Result Units instantiated only when material?
+Are all Module-defined Result Units instantiated/addressable in every formed Target, with substantive resolution only where material?
 Are re-entry/revalidation paths explicit enough without scenario-owned orchestration?
 ```
 
@@ -583,3 +583,8 @@ When a Use Case/component owner changes materially:
 4. update derived Helper command-equivalent projection when the semantic mapping changed.
 
 The scenario corpus may evolve without becoming runtime authority. A projection/helper must not write command metadata back into these canonical scenarios.
+
+
+## Proposal / Decision Context Integration Note
+
+Material Proposal/Decision surfaces remain Core lifecycle State. Ordinary Unit work reaches the required Proposal/Decision Resolution Context Lens through the Lens Registry/checkpoint path; after lifecycle disposition, only surviving material open/deferred/residual state is projected into Resolution Carry-Forward for continuation/navigation. Target Modules do not gain Proposal/Decision/QRPE lifecycle fields merely because those states are visible around Unit work.

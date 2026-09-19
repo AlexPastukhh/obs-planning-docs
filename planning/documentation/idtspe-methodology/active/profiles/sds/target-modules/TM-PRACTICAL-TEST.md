@@ -116,14 +116,14 @@ This module specializes the Core [Target Module Model](../../../idtspe-core/shar
 
 Unit presence/disposition mechanics follow the Core [`Unit Applicability / Materiality / Disposition Contract`](../../../idtspe-core/shared/idtspe-unit-and-target-step-result-model.md#5a-unit-applicability--materiality--disposition-contract). The table below owns only this module's local substantive-materiality and omission-rationale triggers.
 
-| Result Unit | Substantive resolution is material when | Explicit omission disposition when not material |
+| Result Unit | Substantive resolution is material when | Unit disposition when substantive resolution is not material |
 |---|---|---|
-| `RU-PTEST-01` | when a property requires observation against a real implemented subject/environment | omit the Practical Test Target when simulated/unit/integration Evidence is already sufficient |
-| `RU-PTEST-02` | when planned real-subject observation/data collection must be explicit for credibility | omit incidental procedure detail that cannot affect Evidence interpretation |
-| `RU-PTEST-03` | when the practical test has actually produced Evidence worth interpreting | before execution keep Evidence Need/plan only; never prefill results |
+| `RU-PTEST-01` | when a property requires observation against a real implemented subject/environment | `OMITTED` — real-subject Evidence Intent is not material for this formed Target instance; Target formation itself is decided before this Unit-level disposition |
+| `RU-PTEST-02` | when planned real-subject observation/data collection must be explicit for credibility | `OMITTED` when an explicit planned observation/procedure result is unnecessary for credible Evidence interpretation |
+| `RU-PTEST-03` | when the practical test has actually produced Evidence worth interpreting | `OPEN` while required real Evidence is still pending; otherwise `OMITTED` with a concise reason when observed-outcome interpretation is not material; never prefill results |
 
 
-`RU-PTEST-03` is absent until real implemented Evidence has actually been collected.
+`RU-PTEST-03` remains an instantiated Module-defined Unit from Target formation. Before real implemented Evidence has been collected it stays explicitly `OPEN` when evidence collection is still required, or `OMITTED` with a concise reason when observed-outcome resolution is not material for this Target instance; it never disappears merely because Evidence is not yet available.
 
 The shared method's detailed inquiry fields are guidance, not a mandatory duplicated schema.
 

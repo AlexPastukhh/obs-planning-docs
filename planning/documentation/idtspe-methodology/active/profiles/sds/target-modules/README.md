@@ -70,7 +70,7 @@ TM-FEATURE
   behavior / semantic Feature Data / BR-* / implementation concerns / Feature-Slice boundary / owner-local reverse Impact Unit
 
 TM-SCENARIO-PLANNING
-  journey composition / continuity / terminal Benefit / SR-* / optional E2E proof intent / journey realization concerns / owner-local reverse Impact Unit
+  journey composition / continuity / Benefit manifestation/closure / SR-* / optional E2E proof intent / journey realization concerns / owner-local reverse Impact Unit
 
 TM-SCREEN
   spatial/navigation composition / Feature presence / routes / Screen-specific constraints

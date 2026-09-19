@@ -29,6 +29,7 @@ The required Core Pack is part of every material IDTSPE lifecycle **when its cor
 | [`LENS-AUTHORITY-SOT-REUSE`](required/LENS-AUTHORITY-SOT-REUSE.md) | L2 — canonical owner/Source/reuse/no duplicate truth | `INLINE` |
 | [`LENS-UNCERTAINTY-ASSUMPTION-REVERSIBILITY`](required/LENS-UNCERTAINTY-ASSUMPTION-REVERSIBILITY.md) | L3 — assumptions/Evidence/reversibility/cost of being wrong | `INLINE` |
 | [`LENS-ARTIFACT-BOUNDARY-ADDRESSABILITY`](required/LENS-ARTIFACT-BOUNDARY-ADDRESSABILITY.md) | Documentation / Representation — persist or not; code vs prose; existing owner vs dedicated artifact; consolidate vs split; handoff to P-14; direct surface `lenscmd.documentation.representation.check` | `HYBRID` |
+| [`LENS-PROPOSAL-DECISION-RESOLUTION-CONTEXT`](required/LENS-PROPOSAL-DECISION-RESOLUTION-CONTEXT.md) | Proposal / Decision Resolution Context — required when a material Proposal/Decision surface exists; operational QRPE/qualification/disposition evaluator, not lifecycle owner | `INLINE` |
 
 ## 2. Generic Frequent Conditional Lenses
 
@@ -72,6 +73,7 @@ need             → LENS-NEED-VALUE-SCOPE
 authority        → LENS-AUTHORITY-SOT-REUSE
 uncertainty      → LENS-UNCERTAINTY-ASSUMPTION-REVERSIBILITY
 representation   → LENS-ARTIFACT-BOUNDARY-ADDRESSABILITY
+proposal-decision → LENS-PROPOSAL-DECISION-RESOLUTION-CONTEXT
 dependency       → LENS-DEPENDENCY-CHANGE-IMPACT
 operability      → LENS-VERIFIABILITY-OBSERVABILITY-OPERABILITY
 quality-risk     → LENS-QUALITY-RISK-MATERIALITY
@@ -108,6 +110,7 @@ P-06 Lens Port
 → TF-06A Lens Applicability Scan
 → required Core Pack
   L1/L2/L3 at material choices
+  + Proposal / Decision Resolution Context when a material Proposal/Decision surface exists
   + Documentation / Representation at materialization
 + Target Module Lens Profile
 + applicable generic conditional/reusable lenses

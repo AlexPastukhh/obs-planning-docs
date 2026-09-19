@@ -29,7 +29,8 @@ The following Core mechanics may be invoked by the Use Cases above but do not re
 - Target Formation;
 - Lens Applicability Scan / Lens operations;
 - Finding Disposition;
-- Proposal/Decision lifecycle ([`proposal-and-decision-lifecycle-contract.md`](proposal-and-decision-lifecycle-contract.md)) and optional Q/R/P grouping/priority;
+- Proposal/Decision lifecycle ([`proposal-and-decision-lifecycle-contract.md`](proposal-and-decision-lifecycle-contract.md)), Proposal/Decision Resolution Context Lens and optional Q/R/P grouping/priority;
+- Resolution Carry-Forward projection ([`resolution-carry-forward-projection-contract.md`](resolution-carry-forward-projection-contract.md)) for material continuation/handoff routing;
 - consistency review;
 - registry traversal;
 - Broad Discussion / Key Points;
