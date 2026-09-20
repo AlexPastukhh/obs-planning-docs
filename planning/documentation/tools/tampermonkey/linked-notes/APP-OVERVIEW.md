@@ -176,7 +176,7 @@ The current prototype does not automatically:
 
 ## 13. Agent-Facing Repository Capabilities
 
-Some Linked Notes capabilities change how an AI/chat should author repository content or a Reader-targeted response. Their canonical repository-facing registry is [`.linked-notes/AGENT-GUIDE.md`](../../../../../linked-notes/AGENT-GUIDE.md).
+Some Linked Notes capabilities change how an AI/chat should author repository content or a Reader-targeted response. Their canonical repository-facing registry is [`.linked-notes/AGENT-GUIDE.md`](../../../../../.linked-notes/AGENT-GUIDE.md).
 
 Current registry entries:
 

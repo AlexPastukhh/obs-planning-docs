@@ -27,7 +27,7 @@ The Reader supports the documented narrow safe `<details>/<summary>` form, uses 
 **Traceability:**
 
 - **Product / behavior:** [`APP-OVERVIEW.md#9-chat-response-reader`](../APP-OVERVIEW.md#9-chat-response-reader), [`CHAT-RESPONSE-READER.md`](../CHAT-RESPONSE-READER.md), [`ARCHITECTURE.md#rich-markdown-and-reader`](../ARCHITECTURE.md#rich-markdown-and-reader).
-- **Focused / repository contract:** Reader-target response conventions are in [`.linked-notes/CHAT-RESPONSE-FORMAT.md`](../../../../../../linked-notes/CHAT-RESPONSE-FORMAT.md); current DOM-handoff limitation is tracked in [`KNOWN-ISSUES.md`](../KNOWN-ISSUES.md).
+- **Focused / repository contract:** Reader-target response conventions are in [`.linked-notes/CHAT-RESPONSE-FORMAT.md`](../../../../../../.linked-notes/CHAT-RESPONSE-FORMAT.md); current DOM-handoff limitation is tracked in [`KNOWN-ISSUES.md`](../KNOWN-ISSUES.md).
 - **Primary implementation:** [`src/chat-response-reader.js`](../src/chat-response-reader.js), [`src/chat-response-reader-runtime.js`](../src/chat-response-reader-runtime.js), shared safe projection in [`src/rich-markdown-renderer.js`](../src/rich-markdown-renderer.js).
 - **Automated evidence:** [`tests/chat-response-reader.test.mjs`](../tests/chat-response-reader.test.mjs), [`tests/chat-response-reader-runtime.test.mjs`](../tests/chat-response-reader-runtime.test.mjs), [`tests/rich-markdown-renderer.test.mjs`](../tests/rich-markdown-renderer.test.mjs).
 - **Manual acceptance:** [`CHAT-RESPONSE-READER-CHECKLIST.md#reader--details-acceptance`](../CHAT-RESPONSE-READER-CHECKLIST.md#reader--details-acceptance).

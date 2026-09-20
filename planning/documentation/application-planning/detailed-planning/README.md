@@ -464,9 +464,9 @@ When a candidate genuinely needs literal stale-copy detection/synchronization, i
 
 Read only the repository-facing contract unless Linked Notes development itself is in scope:
 
-1. [`../../../../.linked-notes/AGENT-GUIDE.md`](../../../../linked-notes/AGENT-GUIDE.md)
-2. [`../../../../.linked-notes/REFERENCE-OBJECTS.md`](../../../../linked-notes/REFERENCE-OBJECTS.md)
-3. inspect [`../../../../.linked-notes/reference-objects.json`](../../../../linked-notes/reference-objects.json) only when current live registry state matters.
+1. [`../../../../.linked-notes/AGENT-GUIDE.md`](../../../../.linked-notes/AGENT-GUIDE.md)
+2. [`../../../../.linked-notes/REFERENCE-OBJECTS.md`](../../../../.linked-notes/REFERENCE-OBJECTS.md)
+3. inspect [`../../../../.linked-notes/reference-objects.json`](../../../../.linked-notes/reference-objects.json) only when current live registry state matters.
 
 Minimal marker syntax:
 

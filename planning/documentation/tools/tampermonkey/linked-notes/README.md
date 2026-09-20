@@ -28,8 +28,8 @@ Do not infer current behavior from [`CHANGELOG.md`](CHANGELOG.md) alone. The cha
 
 If the task is to work with repository files/content **inside a context where Linked Notes may consume that content**, do not read implementation architecture by default. Start at the repository-facing route:
 
-1. [`.linked-notes/README.md`](../../../../../linked-notes/README.md);
-2. [`.linked-notes/AGENT-GUIDE.md`](../../../../../linked-notes/AGENT-GUIDE.md);
+1. [`.linked-notes/README.md`](../../../../../.linked-notes/README.md);
+2. [`.linked-notes/AGENT-GUIDE.md`](../../../../../.linked-notes/AGENT-GUIDE.md);
 3. only the applicable detailed agent-facing contract.
 
 That route owns application-aware authoring rules such as Reference Objects, Review Dependencies, Ordered Reference Lists, repository templates and Reader-target response formatting.
@@ -66,7 +66,7 @@ Focused implementation mappings/checks:
 - [`FULL-APP-STATE-EXPORT.md`](FULL-APP-STATE-EXPORT.md);
 - [`PROTOTYPE-CHECKLIST.md`](PROTOTYPE-CHECKLIST.md).
 
-Repository-facing conventions consumed by the prototype live under the repository root [`.linked-notes/`](../../../../../linked-notes/README.md). Content-working chats should enter through its `AGENT-GUIDE.md`; those contracts are separate from this developer/application documentation.
+Repository-facing conventions consumed by the prototype live under the repository root [`.linked-notes/`](../../../../../.linked-notes/README.md). Content-working chats should enter through its `AGENT-GUIDE.md`; those contracts are separate from this developer/application documentation.
 
 Former Linked Notes workflow documents under `planning/areas/documentation-workbench/` are retained as legacy planning/compatibility context. Do not route current Linked Notes semantics through them.
 

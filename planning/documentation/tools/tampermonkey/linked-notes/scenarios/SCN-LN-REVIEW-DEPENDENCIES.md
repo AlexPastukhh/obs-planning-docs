@@ -22,7 +22,7 @@ Scope: canonical detailed application behavior owner for repository Review Depen
 
 **Traceability:**
 
-- **Repository/agent contract:** [`.linked-notes/REVIEW-DEPENDENCIES.md`](../../../../../../linked-notes/REVIEW-DEPENDENCIES.md), [`.linked-notes/review-dependencies.json`](../../../../../../linked-notes/review-dependencies.json), [`.linked-notes/AGENT-GUIDE.md`](../../../../../../linked-notes/AGENT-GUIDE.md).
+- **Repository/agent contract:** [`.linked-notes/REVIEW-DEPENDENCIES.md`](../../../../../../.linked-notes/REVIEW-DEPENDENCIES.md), [`.linked-notes/review-dependencies.json`](../../../../../../.linked-notes/review-dependencies.json), [`.linked-notes/AGENT-GUIDE.md`](../../../../../../.linked-notes/AGENT-GUIDE.md).
 - **Product / state / architecture:** [`APP-OVERVIEW.md`](../APP-OVERVIEW.md), [`DATA-AND-STATE.md`](../DATA-AND-STATE.md), [`ARCHITECTURE.md`](../ARCHITECTURE.md).
 - **Primary implementation:** [`src/review-dependency-markers.js`](../src/review-dependency-markers.js), [`src/review-dependency-registry.js`](../src/review-dependency-registry.js), [`src/review-dependency-fingerprint.js`](../src/review-dependency-fingerprint.js), [`src/repository-review-dependency-service.js`](../src/repository-review-dependency-service.js), [`src/repository-review-dependencies-runtime.js`](../src/repository-review-dependencies-runtime.js).
 - **Automated evidence:** matching `tests/review-dependency-*.test.mjs`, [`tests/repository-review-dependency-service.test.mjs`](../tests/repository-review-dependency-service.test.mjs), [`tests/repository-review-dependencies-runtime.test.mjs`](../tests/repository-review-dependencies-runtime.test.mjs), plus suite/build inclusion through [`verify-linked-notes.mjs`](../verify-linked-notes.mjs).
