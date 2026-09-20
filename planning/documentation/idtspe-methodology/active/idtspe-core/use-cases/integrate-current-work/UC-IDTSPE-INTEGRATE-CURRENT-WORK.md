@@ -27,8 +27,8 @@ An **IDTSPE Integration Checkpoint** reconciles material Broad Discussion into t
 3. **Disposition Findings** — route material Finding Candidates to the smallest correct subject/owner; form Contextual Units only when an independently useful bounded local responsibility exists.
 4. **Maintain current state** — use `UC-IDTSPE-MAINTAIN-CURRENT-WORK-STATE`; preserve Current Result Content separately from unresolved/candidate Unit Resolution meaning, unresolved alternatives and revalidation signals; ensure every Module-defined Unit in each formed Target has a resolved / OPEN / explicit-omission disposition.
 5. **Integrate selections/derivations** — integrate safely derived answers and materially selected Proposal meaning into affected Result Content/owners under normal authority. Explicit Decision trace remains proportional.
-6. **Check** — apply only currently applicable Lens/consistency/validation checks needed to judge whether the integrated whole fits together. `no material finding` is valid.
-7. **Resolve representation separately** — if physical persistence/placement is material, invoke the canonical Artifact/Representation path. A checkpoint may remain context-only when persistence adds no value.
+6. **Check** — apply only currently applicable Lens/consistency/validation checks needed to judge whether the integrated whole fits together. `no material finding` is valid. For any retained material Proposal, ensure its proportional Review Provenance makes the materially applied Lens operations/recheck state recoverable without copying the reasoning transcript.
+7. **Resolve representation separately** — if physical persistence/placement is material, invoke the canonical Artifact/Representation path. A checkpoint may remain context-only when persistence adds no value, except when the Resolution Carry-Forward Durable Coordination Materialization Threshold requires one durable discoverable coordination representation.
 8. **Protect coherence** — new material Proposal/Question/Problem/Evidence/Decision consequence surfaced while rendering must be integrated into the same checkpoint or marked explicitly as post-checkpoint exploration.
 9. **Continue** — state the useful continuation/re-entry point when non-obvious. The checkpoint does not end Broad Discussion.
 
@@ -41,7 +41,7 @@ Canonical supporting owners:
 
 ## Resolution Carry-Forward Reconciliation
 
-At a useful Integration Checkpoint / handoff, reconcile the applicable [`Resolution Carry-Forward`](../../resolution/continuation/RESOLUTION-CARRY-FORWARD-PROJECTION.md): project only surviving material open/deferred/residual items as compact references/status, remove closed trivial entries, and preserve canonical bodies at their natural owners. This projection is optional when no continuation value exists.
+At a useful Integration Checkpoint / handoff, reconcile the applicable [`Resolution Carry-Forward`](../../resolution/continuation/RESOLUTION-CARRY-FORWARD-PROJECTION.md): project only surviving material open/deferred/residual items plus only the accepted Decision anchors needed to understand that surviving state; remove closed trivial entries; preserve canonical bodies at their natural owners. The projection may be omitted when no continuation value exists, but when its Durable Coordination Materialization Threshold is crossed the checkpoint must leave one durable discoverable representation for the coordination scope.
 
 ## Boundary
 

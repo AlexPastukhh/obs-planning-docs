@@ -44,7 +44,9 @@ Logical/semantic retention of a Decision/Proposal/Result Unit does not by itself
 
 ## 1B. Resolution Carry-Forward Representation
 
-[`Resolution Carry-Forward`](../resolution/continuation/RESOLUTION-CARRY-FORWARD-PROJECTION.md) is a projection/navigation owner. When its continuation value is material, Documentation / Representation + P-14 may place it inline in an Integration Checkpoint, in an existing coordination register/artifact, or as a generated view. Placement never transfers Proposal/Decision/Q/R/P/Evidence authority into the aggregate, and no separate artifact is required when in-context projection is sufficient.
+[`Resolution Carry-Forward`](../resolution/continuation/RESOLUTION-CARRY-FORWARD-PROJECTION.md) is a projection/navigation owner. When its continuation value is material, Documentation / Representation + P-14 may place it inline in an Integration Checkpoint, in an existing coordination register/artifact, or as a generated view. Placement never transfers Proposal/Decision/Q/R/P/Evidence authority into the aggregate.
+
+When the Carry-Forward contract's **Durable Coordination Materialization Threshold** is crossed, P-14 must choose one durable discoverable representation for that coordination scope. Reuse an existing canonical coordination artifact/register when it already gives stable re-entry; otherwise create a dedicated Carry-Forward artifact (default descriptive name `RESOLUTION-CARRY-FORWARD.md` or an equivalent profile/workspace name). In-context-only projection remains valid only below that threshold.
 
 ## 2. Semantic Owner vs Artifact Owner
 

@@ -195,6 +195,24 @@ The Lens may compose L2/L3/L4/Quality-Risk checks and may surface a Finding Cand
 
 A material Proposal remains unselected even after a thorough Lens review or AI recommendation.
 
+### Retained Proposal Review Provenance
+
+When a **material Proposal itself is retained beyond the immediate review turn** — because it remains OPEN/DEFERRED, is intentionally retained after rejection/supersession, or is retained as part of a Decision trace — retain enough review provenance to make later review/handoff/revalidation understandable.
+
+Minimum retained provenance is proportional but must expose:
+
+```text
+Review Provenance
+  Resolution Context Lens / operation — REQUIRED for a reviewed material Proposal
+  Other materially applied Lenses / operations — when they affected review
+  Applied-to subject/scope — when not obvious from the Proposal identity
+  Recheck trigger / unresolved review state — when material
+```
+
+The provenance records **which reusable evaluators were applied**, not their full analysis transcript. It may be stored inline with the retained Proposal or referenced from an applicable `Methodology Usage State`; do not maintain competing copies.
+
+A retained material Proposal whose required review has not yet happened must remain visibly unresolved (for example `Review Provenance: pending required Resolution Context review`) rather than looking reviewed by omission. Routine transient conversational Proposals that are not retained do not need durable Lens provenance.
+
 ## 5A. Proposal Semantic Change Impact Review
 
 Every **material Proposal** receives a proportional semantic-impact review as part of Candidate Review, regardless of whether it came from a Finding, USER input, AI reasoning, Target Module discovery aid or ordinary Unit Resolution.
@@ -331,6 +349,8 @@ trivial transient alternative
 ```
 
 Retention of material non-selected/deferred/rejected/superseded alternatives is USER-controlled. When retention would prevent predictable future rework or preserve a recurring trade-off, recommend retaining it and ask proportionally whether the alternative/reason should survive.
+
+When a material Proposal is retained, preserve the proportional **Review Provenance** defined in Candidate Review so later consumers can distinguish reviewed candidate meaning from merely captured candidate meaning and can re-run the right Lenses when context changes.
 
 If a new material Decision lacks a rationale that would help future review/revalidation, the interaction layer may ask whether a short rationale should be retained. These optional retention choices are not blocking approval gates unless the missing meaning itself is needed to resolve ambiguity.
 

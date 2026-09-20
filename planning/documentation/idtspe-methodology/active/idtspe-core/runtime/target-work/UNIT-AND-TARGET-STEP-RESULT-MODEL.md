@@ -370,6 +370,8 @@ Methodology Usage State
 
 Do not record every file read, command, tool call, non-applicable registry row or transient reasoning step. Reuse stable methodology-use meaning rather than serializing execution history.
 
+When a retained material Proposal needs review provenance, its `Review Provenance` may reference the applicable `Methodology Usage State` entries for materially applied Lenses/operations instead of duplicating them. The Proposal lifecycle defines when that provenance must survive; Methodology Usage State remains the generic reusable carrier for methodology-application facts.
+
 `Current Work Concern` may remain only conversational/work-context meaning. Promote it into explicit Methodology Usage State only when independent addressability, continuation, audit or revalidation value is material.
 
 Methodology Usage State may attach to a Target Work Unit when methodology-use meaning is genuinely Unit-local, or remain cross-Unit/Target/Work-Context state when that is its natural subject. It is not forced into a Work Unit solely because the overall model is Unit-centric.
