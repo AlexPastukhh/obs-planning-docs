@@ -1,7 +1,7 @@
 # LENS-SIMPLICITY-IMPLEMENTATION-ECONOMY — Simplicity / Implementation Economy / Evolution-Safe Simplification
 
-Lens ID: `LENS-SIMPLICITY-IMPLEMENTATION-ECONOMY`  
-Short name: `Simplicity Lens`  
+Lens ID: `LENS-SIMPLICITY-IMPLEMENTATION-ECONOMY`
+Short name: `Simplicity Lens`
 Activation: `FREQUENT_CONDITIONAL`
 
 ## Purpose
@@ -324,7 +324,7 @@ Do not remove a proof layer when it observes a genuinely different boundary/prop
 
 ## Reusable Command Surface
 
-Methodology surface key: `lenscmd.simplicity.check`  
+Methodology surface key: `lenscmd.simplicity.check`
 Canonical user intent: `проверь можно ли упростить <target>`
 
 Use this direct Lens command when the simplification challenge itself is the stable user intent. It activates this Lens against the selected existing Target/owner scope; it does not create a Simplicity Target Module.
@@ -372,7 +372,7 @@ Likely semantic owner — optional hint
 Suggested lifecycle consequence — optional hint
 ```
 
-Core [`Finding Disposition`](../../../../idtspe-core/shared/finding-disposition-contract.md) resolves the actual State/lifecycle/owner destination. Normal authority/resolution must occur before accepted Result Unit meaning changes.
+Core [`Finding Disposition`](../../../../idtspe-core/resolution/findings/FINDING-DISPOSITION.md) resolves the actual State/lifecycle/owner destination. Normal authority/resolution must occur before accepted Result Unit meaning changes.
 
 This Lens does not define new Result Units or target-result fields. If repeated findings reveal missing target-result meaning, revise the appropriate Target Module/Local Target Contract or let Core disposition the finding to another owner.
 
@@ -407,7 +407,7 @@ GUIDANCE_SOURCE: LENS
 RESOLVER: P-14 / TF-10
 ```
 
-Shell placement semantics: [`artifact-placement-and-idtspe-response-contract.md`](../../../../idtspe-core/shared/artifact-placement-and-idtspe-response-contract.md).
+Shell placement semantics: [`planning/documentation/idtspe-methodology/active/idtspe-core/representation/ARTIFACT-PLACEMENT-AND-IDTSPE-RESPONSE-CONTRACT.md`](../../../../idtspe-core/representation/ARTIFACT-PLACEMENT-AND-IDTSPE-RESPONSE-CONTRACT.md).
 
 The Lens does not create a dedicated “simplicity file” by default. Accepted conclusions belong with the Target whose plan changed. If simplification exposes a genuinely cross-owner architecture question, surface a Finding Candidate. Core Finding Disposition keeps local meaning with its natural owner or routes an independently substantial workspace-wide problem through ordinary Target Formation / a Local Target Contract.
 

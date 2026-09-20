@@ -1,8 +1,8 @@
 <a id="lens-rk-landscape-evidence-adequacy"></a>
 # Landscape Evidence Adequacy
 
-Lens ID: `LENS-RK-LANDSCAPE-EVIDENCE-ADEQUACY`  
-Activation: `FREQUENT_CONDITIONAL`  
+Lens ID: `LENS-RK-LANDSCAPE-EVIDENCE-ADEQUACY`
+Activation: `FREQUENT_CONDITIONAL`
 Status: active profile Lens
 
 ## Purpose / Evaluation Objective
@@ -75,7 +75,7 @@ Material evidence/identity/vocabulary gaps route through Core Finding Dispositio
 
 ## Knowledge Basis
 
-[Landscape Research And Evolution Guidance](../guidance/LANDSCAPE-RESEARCH-AND-EVOLUTION-GUIDANCE.md#landscape-research-and-evolution-guidance).
+[Landscape Research And Evolution Guidance](../knowledge-bases/LANDSCAPE-RESEARCH-AND-EVOLUTION.md#landscape-research-and-evolution-guidance).
 
 ## Provenance
 

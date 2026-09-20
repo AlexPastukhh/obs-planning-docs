@@ -1,6 +1,6 @@
 # LENS-QUALITY-RISK-MATERIALITY — Cross-Cutting Quality / Risk Materiality
 
-Lens ID: `LENS-QUALITY-RISK-MATERIALITY`  
+Lens ID: `LENS-QUALITY-RISK-MATERIALITY`
 Activation: `FREQUENT_CONDITIONAL`
 
 ## Purpose
@@ -94,7 +94,7 @@ RESOLVER: P-14 / TF-10
 ```
 
 
-Shell placement semantics: [`artifact-placement-and-idtspe-response-contract.md`](../../shared/artifact-placement-and-idtspe-response-contract.md).
+Shell placement semantics: [`planning/documentation/idtspe-methodology/active/idtspe-core/representation/ARTIFACT-PLACEMENT-AND-IDTSPE-RESPONSE-CONTRACT.md`](../../representation/ARTIFACT-PLACEMENT-AND-IDTSPE-RESPONSE-CONTRACT.md).
 
 After Core Finding Disposition resolves a material quality/risk finding, persist accepted State with the **resolved semantic owner**; an exceptional shared Requirement/Cross-Cutting owner is used only when disposition/Target Formation selects it.
 

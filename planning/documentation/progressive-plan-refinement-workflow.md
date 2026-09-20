@@ -1,10 +1,10 @@
 # Progressive Plan Refinement Workflow
 
 Status: compatibility / provenance-only workflow; not current runtime authority
-Current runtime owners: [`use-case-registry-map.md`](use-case-registry-map.md) → applicable current Use Case, especially [`idtspe-methodology/active/idtspe-core/shared/compose-current-work-use-case.md`](idtspe-methodology/active/idtspe-core/shared/compose-current-work-use-case.md), plus selected Target/Lens/profile owners.
+Current runtime owners: [`use-case-registry-map.md`](use-case-registry-map.md) → applicable current Use Case, especially [`idtspe-methodology/active/idtspe-core/use-cases/compose-current-work/UC-IDTSPE-COMPOSE-CURRENT-WORK.md`](idtspe-methodology/active/idtspe-core/use-cases/compose-current-work/UC-IDTSPE-COMPOSE-CURRENT-WORK.md), plus selected Target/Lens/profile owners.
 Historical note: this file preserves the older accumulating `Current Plan` refinement presentation and must not be used as a competing runtime route.
 This file is not a repository-level Use-Case owner.
-Shared Q/R/P semantics: [`idtspe-methodology/active/idtspe-core/shared/qrp-lifecycle-and-review-contract.md`](idtspe-methodology/active/idtspe-core/shared/qrp-lifecycle-and-review-contract.md)
+Shared Q/R/P semantics: [`idtspe-methodology/active/idtspe-core/resolution/qrp/QRP-LIFECYCLE-AND-REVIEW.md`](idtspe-methodology/active/idtspe-core/resolution/qrp/QRP-LIFECYCLE-AND-REVIEW.md)
 
 ## Purpose
 

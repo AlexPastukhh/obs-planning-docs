@@ -1,9 +1,9 @@
 <a id="tm-rk-50-landscape-analysis"></a>
 # Landscape Analysis
 
-Module ID: `TM-RK-50-LANDSCAPE-ANALYSIS`  
-Status: active profile module  
-Entry Point: `rk.landscape-analyze`  
+Module ID: `TM-RK-50-LANDSCAPE-ANALYSIS`
+Status: active profile module
+Entry Point: `rk.landscape-analyze`
 Supported Roles: `PRIMARY`
 
 ## Purpose
@@ -36,7 +36,7 @@ A retained representation may be called a `Landscape Snapshot`.
 
 ## Module-defined Unit Visibility
 
-Generic Unit existence/disposition semantics follow the Core [Unit / Target Step Result Model](../../../idtspe-core/shared/idtspe-unit-and-target-step-result-model.md). This module owns only the Reference-Knowledge Unit responsibilities, local materiality/omission reasoning and specialized guidance below; Contextual Units remain governed by Core formation semantics.
+Generic Unit existence/disposition semantics follow the Core [Unit / Target Step Result Model](../../../idtspe-core/runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md). This module owns only the Reference-Knowledge Unit responsibilities, local materiality/omission reasoning and specialized guidance below; Contextual Units remain governed by Core formation semantics.
 
 ## Unit Checkpoint Map
 
@@ -63,7 +63,7 @@ Every material Unit follows the inherited Core applicability/materiality envelop
 
 **Inputs / Sources.** USER concern/questions, visible Bank scope, relevant Entries/Tags/Relations/Analysis, chronology/provenance, prior Landscape work and external evidence when needed.
 
-**Knowledge Basis.** [Landscape Research And Evolution Guidance](../guidance/LANDSCAPE-RESEARCH-AND-EVOLUTION-GUIDANCE.md#landscape-research-and-evolution-guidance), [Bank Principles](../models/BANK-PRINCIPLES.md#bank-principles).
+**Knowledge Basis.** [Landscape Research And Evolution Guidance](../knowledge-bases/LANDSCAPE-RESEARCH-AND-EVOLUTION.md#landscape-research-and-evolution-guidance), [Bank Principles](../models/BANK-PRINCIPLES.md#bank-principles).
 
 **Resolution Method.** State what the inquiry is trying to understand without prematurely forcing a fixed answer form. Identify the currently useful evidence base and its material gaps/limits. Select time/population/segments only when they help the concern; allow scope to refine during inquiry when new evidence justifies it. Materialize exact Entry membership/query context only when exact reproduction or comparison is materially useful.
 
@@ -80,7 +80,7 @@ Every material Unit follows the inherited Core applicability/materiality envelop
 
 **Inputs / Sources.** `RU-RKL-01` scope/evidence, applicable installed Domain Pack knowledge and independently registered Lenses when available, relevant Entry/Vocabulary/Analysis material and newly discovered Evidence.
 
-**Knowledge Basis.** [Landscape Research And Evolution Guidance](../guidance/LANDSCAPE-RESEARCH-AND-EVOLUTION-GUIDANCE.md#landscape-research-and-evolution-guidance), [Landscape Evidence Adequacy](../lenses/LENS-RK-LANDSCAPE-EVIDENCE-ADEQUACY.md#lens-rk-landscape-evidence-adequacy), plus applicable installed Domain Pack inquiry guidance and registered Lenses when available.
+**Knowledge Basis.** [Landscape Research And Evolution Guidance](../knowledge-bases/LANDSCAPE-RESEARCH-AND-EVOLUTION.md#landscape-research-and-evolution-guidance), [Landscape Evidence Adequacy](../lenses/LENS-RK-LANDSCAPE-EVIDENCE-ADEQUACY.md#lens-rk-landscape-evidence-adequacy), plus applicable installed Domain Pack inquiry guidance and registered Lenses when available.
 
 **Resolution Method.** Generate questions from the current concern and evidence rather than executing a fixed checklist. Pursue only directions likely to materially improve understanding. Possible directions include comparison, recurring patterns, earlier/later forms, partial genealogy/lineage, branching, combinations/hybrids, coexistence/adoption/displacement/revival, cross-domain transfer, distributions, constraints/enablers, documented influence, plausible drivers or other questions surfaced by the investigation. Re-evaluate direction/depth after material findings and stop when further work is unlikely to add proportional value.
 
@@ -97,7 +97,7 @@ Every material Unit follows the inherited Core applicability/materiality envelop
 
 **Inputs / Sources.** Material `RU-RKL-01..02` results, applicable installed Domain context when available, Evidence and material limitations.
 
-**Knowledge Basis.** [Landscape Research And Evolution Guidance](../guidance/LANDSCAPE-RESEARCH-AND-EVOLUTION-GUIDANCE.md#landscape-research-and-evolution-guidance), plus applicable installed Domain Pack guidance / independently registered Lenses when available.
+**Knowledge Basis.** [Landscape Research And Evolution Guidance](../knowledge-bases/LANDSCAPE-RESEARCH-AND-EVOLUTION.md#landscape-research-and-evolution-guidance), plus applicable installed Domain Pack guidance / independently registered Lenses when available.
 
 **Resolution Method.** Integrate only meaning justified by current evidence. Preserve partial/branching/uncertain models when a single clean narrative is not warranted. Distinguish supported observation, interpretation and hypothesis. State material unknowns/competing explanations and whether additional investigation has a useful next direction.
 

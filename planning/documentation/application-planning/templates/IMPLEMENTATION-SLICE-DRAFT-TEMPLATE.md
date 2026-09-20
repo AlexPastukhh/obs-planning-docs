@@ -8,7 +8,7 @@ Canonical owners:
 
 - `../../idtspe-methodology/active/profiles/sds/target-modules/TM-IMPLEMENTATION-SLICE.md`
 - `../../idtspe-methodology/active/profiles/sds/target-modules/TM-SLICE-OWNER.md` when durable Slice responsibility is independently justified
-- `../../idtspe-methodology/active/profiles/sds/ARTIFACT-PLACEMENT-MAP.md`
+- `../../idtspe-methodology/active/profiles/sds/representation/ARTIFACT-PLACEMENT-MAP.md`
 
 ## Suggested Current Shape
 

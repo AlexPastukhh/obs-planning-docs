@@ -1,8 +1,8 @@
 <a id="tm-2d-20-whole-visual-design"></a>
 # TM-2D-20-WHOLE-VISUAL-DESIGN — Coherent Whole Visual Solution
 
-Entry Point: `tm.2d.whole-visual-design`  
-Supported Roles: PRIMARY  
+Entry Point: `tm.2d.whole-visual-design`
+Supported Roles: PRIMARY
 Status: active profile module
 
 ## Purpose
@@ -11,7 +11,7 @@ Own the coherent whole-image visual solution/direction that satisfies accepted r
 
 ## Target Step Result
 
-`Whole Visual Design`. Generic Unit existence/disposition semantics follow the Core [Unit / Target Step Result Model](../../../idtspe-core/shared/idtspe-unit-and-target-step-result-model.md); this module owns only the visual Unit responsibilities/materiality below.
+`Whole Visual Design`. Generic Unit existence/disposition semantics follow the Core [Unit / Target Step Result Model](../../../idtspe-core/runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md); this module owns only the visual Unit responsibilities/materiality below.
 
 ## Module-defined Unit Inventory
 

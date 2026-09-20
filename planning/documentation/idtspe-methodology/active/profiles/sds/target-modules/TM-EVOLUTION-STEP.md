@@ -1,6 +1,6 @@
 # TM-EVOLUTION-STEP — Evolution Step
 
-Entry Point: `tm.evolution_step`  
+Entry Point: `tm.evolution_step`
 Role: persistent bounded future-transition planning owner
 
 ## Purpose
@@ -108,7 +108,7 @@ The kind describes transition character; it does not replace the target-state co
 
 ## Unit Contract Conformance
 
-This module specializes the Core [Target Module Model](../../../idtspe-core/shared/target-module-model.md) and [Unit / Target Step Result Model](../../../idtspe-core/shared/idtspe-unit-and-target-step-result-model.md). Core owns generic Unit lifecycle/presence/disposition semantics; this module owns the Evolution-Step-specific Unit identities, dependencies, materiality, production guidance, validators and handoffs below.
+This module specializes the Core [Target Module Model](../../../idtspe-core/target-modules/TARGET-MODULE-MODEL.md) and [Unit / Target Step Result Model](../../../idtspe-core/runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md). Core owns generic Unit lifecycle/presence/disposition semantics; this module owns the Evolution-Step-specific Unit identities, dependencies, materiality, production guidance, validators and handoffs below.
 
 `RU-EVO-02` is a repeatable Module-defined Unit **family**: the `RU-EVO-02` Unit itself is part of every formed Step inventory, while bounded child Impact instances exist only for actual material affected/proposed subjects. If there are no material Impact subjects, the Unit carries its local omission disposition rather than manufacturing placeholder child impacts. The other Step Units are one-per-Step responsibilities.
 
@@ -127,7 +127,7 @@ This module specializes the Core [Target Module Model](../../../idtspe-core/shar
 
 ### Result Unit Applicability / Materiality
 
-Unit presence/disposition mechanics follow the Core [`Unit Applicability / Materiality / Disposition Contract`](../../../idtspe-core/shared/idtspe-unit-and-target-step-result-model.md#5a-unit-applicability--materiality--disposition-contract). The table below owns only Evolution-Step-specific substantive-materiality and omission-rationale triggers.
+Unit presence/disposition mechanics follow the Core [`Unit Applicability / Materiality / Disposition Contract`](../../../idtspe-core/runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md#5a-unit-applicability--materiality--disposition-contract). The table below owns only Evolution-Step-specific substantive-materiality and omission-rationale triggers.
 
 | Result Unit | Substantive resolution is material when | Unit disposition when substantive resolution is not material |
 |---|---|---|
@@ -142,7 +142,7 @@ Unit presence/disposition mechanics follow the Core [`Unit Applicability / Mater
 
 ## Explicit Unit Checkpoint Placement
 
-Each material Unit inherits the Core [`Unit Applicability Envelope`](../../../idtspe-core/shared/idtspe-unit-and-target-step-result-model.md#5b-unit-applicability-envelope--opening--in-unit--closing-checkpoints), including Methodology binding before substantive work.
+Each material Unit inherits the Core [`Unit Applicability Envelope`](../../../idtspe-core/runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md#5b-unit-applicability-envelope--opening--in-unit--closing-checkpoints), including Methodology binding before substantive work.
 
 #### `RU-EVO-01` processing envelope
 
@@ -436,7 +436,7 @@ One Step may contain several Target Owner Bodies when only their composition cre
 
 ## Current-Owner Evolution Impact Projection
 
-Reusable reverse-projection semantics for current realized Feature/Scenario/Screen/Domain/Slice/Shared owners are owned by the shared [Current-Owner Evolution Impact Projection Contract](../shared/current-owner-evolution-impact-projection-contract.md). This Step remains authority for the future Target/Impact meaning that those current owners reference; it does not redefine the reverse-projection contract.
+Reusable reverse-projection semantics for current realized Feature/Scenario/Screen/Domain/Slice/Shared owners are owned by the shared [Current-Owner Evolution Impact Projection Contract](../profile-contracts/evolution/CURRENT-OWNER-EVOLUTION-IMPACT-PROJECTION.md). This Step remains authority for the future Target/Impact meaning that those current owners reference; it does not redefine the reverse-projection contract.
 
 ## Representation
 
@@ -493,7 +493,7 @@ Handoff to Core Exact Realization uses the selected/accepted Step future-state p
 
 ## Evolution Impact Evaluation
 
-Use `LENS-WORKSPACE-EVOLUTION-ARCHITECTURE` to evaluate change isolation/Natural Subject against current owners and candidate/selected Step routes. There is no generic durable `TM-EVOLUTION-IMPACT`; Step-side future Impact remains `RU-EVO-02`, while current-owner reverse projection follows the shared [Current-Owner Evolution Impact Projection Contract](../shared/current-owner-evolution-impact-projection-contract.md).
+Use `LENS-WORKSPACE-EVOLUTION-ARCHITECTURE` to evaluate change isolation/Natural Subject against current owners and candidate/selected Step routes. There is no generic durable `TM-EVOLUTION-IMPACT`; Step-side future Impact remains `RU-EVO-02`, while current-owner reverse projection follows the shared [Current-Owner Evolution Impact Projection Contract](../profile-contracts/evolution/CURRENT-OWNER-EVOLUTION-IMPACT-PROJECTION.md).
 
 ## Guards
 

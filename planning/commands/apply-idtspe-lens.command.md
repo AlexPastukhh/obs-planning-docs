@@ -20,9 +20,9 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
   "traversalReadMode": "Resolve the requested Lens through current Core/profile registries, then read that Lens body and only the referenced Knowledge Basis owners required by its Reference Load Policy. Refresh Target/profile governance proportionally when uncertain.",
   "ownerFiles": [
     "planning/documentation/idtspe-methodology/active/idtspe-core/lenses/LENS-MODEL.md",
-    "planning/documentation/idtspe-methodology/active/idtspe-core/lenses/README.md",
-    "planning/documentation/idtspe-methodology/active/idtspe-core/shared/resolution-slot-and-target-formation-resolution-set.md",
-    "planning/documentation/idtspe-methodology/active/idtspe-core/shared/idtspe-command-surface-contract.md"
+    "planning/documentation/idtspe-methodology/active/idtspe-core/lenses/LENS-REGISTRY.md",
+    "planning/documentation/idtspe-methodology/active/idtspe-core/runtime/target-work/RESOLUTION-SLOT-AND-TARGET-FORMATION-SET.md",
+    "planning/documentation/idtspe-methodology/active/idtspe-core/commands/IDTSPE-COMMAND-SURFACE-CONTRACT.md"
   ],
   "expectedOutput": "Selected Lens applicability/disposition plus explanatory analysis and material Finding Candidates. Core Finding Disposition resolves any Evidence/Proposal/Q-R-P/Decision/owner/revalidation consequences; Lens-owned supporting-artifact guidance remains separate from semantic ownership.",
   "permissionMode": "read-only-planning",

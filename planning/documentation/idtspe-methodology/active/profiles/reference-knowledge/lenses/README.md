@@ -1,7 +1,7 @@
 <a id="reference-knowledge-lenses"></a>
 # Reference Knowledge Lenses
 
-Use [Reference Knowledge Lens Registry](../LENS-REGISTRY.md#reference-knowledge-lens-registry) for applicability routing.
+Use [Reference Knowledge Lens Registry](../registries/LENS-REGISTRY.md#reference-knowledge-lens-registry) for applicability routing.
 
 Current reusable Lenses:
 

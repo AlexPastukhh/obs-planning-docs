@@ -48,7 +48,7 @@ Lens Operational Evaluation Contract
 → owns how to analyze/check/refine/challenge the selected surface
 ```
 
-The fundamental situational question "how much methodology is useful now?" belongs to [`../shared/contextual-methodology-application-contract.md`](../shared/contextual-methodology-application-contract.md) + `UC-IDTSPE-COMPOSE-CURRENT-WORK`, not to a recursive meta-Lens.
+The fundamental situational question "how much methodology is useful now?" belongs to [`../runtime/applicability/CONTEXTUAL-METHODOLOGY-APPLICATION-CONTRACT.md`](../runtime/applicability/CONTEXTUAL-METHODOLOGY-APPLICATION-CONTRACT.md) + `UC-IDTSPE-COMPOSE-CURRENT-WORK`, not to a recursive meta-Lens.
 
 
 The Operational Evaluation Contract owns **how and when to look**. The Knowledge Basis explains **which principles/rules/theory/pattern knowledge make that evaluation credible**.
@@ -166,8 +166,8 @@ The operational contract must make clear:
 4. what kinds of material findings it can surface.
 ```
 
-Canonical Unit model: [`../shared/idtspe-unit-and-target-step-result-model.md`](../shared/idtspe-unit-and-target-step-result-model.md).  
-Canonical producer/Core bridge: [`../shared/finding-disposition-contract.md`](../shared/finding-disposition-contract.md).
+Canonical Unit model: [`../runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md`](../runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md).
+Canonical producer/Core bridge: [`../resolution/findings/FINDING-DISPOSITION.md`](../resolution/findings/FINDING-DISPOSITION.md).
 
 ### Analysis Surface
 
@@ -243,7 +243,7 @@ Lens analysis / trade-off explanation / examples
 
 At an Integration Checkpoint, the same Lens may help check the integrated Generic State + Target Result. Only a material newly surfaced semantic consequence needing disposition becomes a Finding Candidate. A checkpoint may therefore report `no material finding` while still including useful Lens analysis.
 
-Canonical interaction model: [`../shared/broad-discussion-and-integration-checkpoint-model.md`](../shared/broad-discussion-and-integration-checkpoint-model.md).
+Canonical interaction model: [`../representation/interaction/BROAD-DISCUSSION-AND-INTEGRATION-CHECKPOINT-PROJECTION.md`](../representation/interaction/BROAD-DISCUSSION-AND-INTEGRATION-CHECKPOINT-PROJECTION.md).
 
 ### Core Finding Disposition
 
@@ -286,7 +286,7 @@ keep the meaning in generic State Units
 
 ## 5. Knowledge Basis
 
-A reusable Lens may carry a `Knowledge Basis` when reusable theory/reference knowledge materially supports the evaluation. The shared [`Knowledge Basis guidance`](../shared/knowledge-basis-contract.md) keeps theory separate from current Target inputs while allowing consumer-specific selection and interpretation. There is no required mode enum or field schema.
+A reusable Lens may carry a `Knowledge Basis` when reusable theory/reference knowledge materially supports the evaluation. The shared [`Knowledge Basis guidance`](../knowledge-bases/KNOWLEDGE-BASIS-CONTRACT.md) keeps theory separate from current Target inputs while allowing consumer-specific selection and interpretation. There is no required mode enum or field schema.
 
 Lens-specific specialization:
 
@@ -402,7 +402,7 @@ A Local Target Contract may select any registered Core/profile Lens whose applic
 
 ## 9. Choice-Lifecycle Participation
 
-The Lens model does not own the generic Target/Proposal/Decision lifecycle. Canonical candidate/selection semantics are in [`../shared/proposal-and-decision-lifecycle-contract.md`](../shared/proposal-and-decision-lifecycle-contract.md); Target Formation and Shell resolution remain owned by their Core contracts.
+The Lens model does not own the generic Target/Proposal/Decision lifecycle. Canonical candidate/selection semantics are in [`../resolution/proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md`](../resolution/proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md); Target Formation and Shell resolution remain owned by their Core contracts.
 
 Lens-local participation is only:
 
@@ -418,7 +418,7 @@ Typical Lens packs may attach at different choice surfaces, but that attachment 
 
 ## 10. Finding → Disposition Boundary
 
-A Lens stops at explanatory analysis or a Finding Candidate. Canonical ownership/State/lifecycle disposition, handoff and Target Formation consequences are owned by [`../shared/finding-disposition-contract.md`](../shared/finding-disposition-contract.md).
+A Lens stops at explanatory analysis or a Finding Candidate. Canonical ownership/State/lifecycle disposition, handoff and Target Formation consequences are owned by [`../resolution/findings/FINDING-DISPOSITION.md`](../resolution/findings/FINDING-DISPOSITION.md).
 
 ```text
 Lens activation ≠ new Target Instance
@@ -429,7 +429,7 @@ Finding Candidate ≠ automatic child Target
 
 ## 11. Artifact / File Ownership Boundary
 
-A Lens may contribute **supporting representation guidance for findings produced by that perspective**, but it does not own the generic placement schema or final destination resolution. Canonical `ARTIFACT_GUIDANCE`, placement-status, precedence and P-14 / TF-10 semantics are owned by [`../shared/artifact-placement-and-idtspe-response-contract.md`](../shared/artifact-placement-and-idtspe-response-contract.md).
+A Lens may contribute **supporting representation guidance for findings produced by that perspective**, but it does not own the generic placement schema or final destination resolution. Canonical `ARTIFACT_GUIDANCE`, placement-status, precedence and P-14 / TF-10 semantics are owned by [`../representation/ARTIFACT-PLACEMENT-AND-IDTSPE-RESPONSE-CONTRACT.md`](../representation/ARTIFACT-PLACEMENT-AND-IDTSPE-RESPONSE-CONTRACT.md).
 
 Lens-local responsibility is limited to:
 
@@ -511,7 +511,7 @@ Core generic Lens bodies
   until a separate literal Core-Lens conformance pass is useful
 ```
 
-Mechanical registry/file parity and snapshot counts belong to [`../shared/active-methodology-mechanical-consistency-check.md`](../shared/active-methodology-mechanical-consistency-check.md), not to this semantic contract.
+Mechanical registry/file parity and snapshot counts belong to [`../planning/documentation/idtspe-methodology/active/evidence/checks/ACTIVE-METHODOLOGY-MECHANICAL-CONSISTENCY-CHECK.md`](../../evidence/checks/ACTIVE-METHODOLOGY-MECHANICAL-CONSISTENCY-CHECK.md), not to this semantic contract.
 
 Compatibility interpretation for any reusable Lens body not yet rewritten literally:
 
@@ -538,7 +538,7 @@ New or materially revised Lens files should make Analysis Surface, supported ope
 
 ## 17. Maintenance
 
-Creation/review/promotion of a reusable Lens is owned by [`../shared/lens-creation-and-integration-use-case.md`](../shared/lens-creation-and-integration-use-case.md).
+Creation/review/promotion of a reusable Lens is owned by [`../use-cases/maintain-lens/UC-IDTSPE-MAINTAIN-LENS.md`](../use-cases/maintain-lens/UC-IDTSPE-MAINTAIN-LENS.md).
 
 Mechanical checks should verify:
 

@@ -57,4 +57,4 @@ An agent editing markers without the application must validate the declared stru
 
 Do not label a fragment as a paragraph merely because the intended content is conceptually paragraph-like.
 
-Repository-facing details are canonical in [`.linked-notes/ORDERED-REFERENCE-LISTS.md`](../../../.linked-notes/ORDERED-REFERENCE-LISTS.md).
+Repository-facing details are canonical in [`.linked-notes/ORDERED-REFERENCE-LISTS.md`](../../../linked-notes/ORDERED-REFERENCE-LISTS.md).

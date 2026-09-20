@@ -1,6 +1,6 @@
 # TM-SCREEN — Screen / Spatial Owner
 
-Entry Point: `tm.screen`  
+Entry Point: `tm.screen`
 Role: conditional spatial/navigation Target Module
 
 ## Purpose
@@ -52,7 +52,7 @@ selected Features + Scenario journey needs
 
 ## Unit Contract Conformance
 
-This module specializes the Core [Target Module Model](../../../idtspe-core/shared/target-module-model.md) and [Unit / Target Step Result Model](../../../idtspe-core/shared/idtspe-unit-and-target-step-result-model.md). The Core owners define generic Unit lifecycle, complete-inventory/disposition and Proposal/Core-State semantics; this module defines only its SDS-specific Unit responsibilities, local materiality, production guidance, validators and handoffs below.
+This module specializes the Core [Target Module Model](../../../idtspe-core/target-modules/TARGET-MODULE-MODEL.md) and [Unit / Target Step Result Model](../../../idtspe-core/runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md). The Core owners define generic Unit lifecycle, complete-inventory/disposition and Proposal/Core-State semantics; this module defines only its SDS-specific Unit responsibilities, local materiality, production guidance, validators and handoffs below.
 
 ## Target Step-Result Contract
 
@@ -66,7 +66,7 @@ This module specializes the Core [Target Module Model](../../../idtspe-core/shar
 
 ### Result Unit Applicability / Materiality
 
-Unit presence/disposition mechanics follow the Core [`Unit Applicability / Materiality / Disposition Contract`](../../../idtspe-core/shared/idtspe-unit-and-target-step-result-model.md#5a-unit-applicability--materiality--disposition-contract). The table below owns only this module's local substantive-materiality and omission-rationale triggers.
+Unit presence/disposition mechanics follow the Core [`Unit Applicability / Materiality / Disposition Contract`](../../../idtspe-core/runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md#5a-unit-applicability--materiality--disposition-contract). The table below owns only this module's local substantive-materiality and omission-rationale triggers.
 
 | Result Unit | Substantive resolution is material when | Unit disposition when substantive resolution is not material |
 |---|---|---|
@@ -78,7 +78,7 @@ Unit presence/disposition mechanics follow the Core [`Unit Applicability / Mater
 
 ### Explicit Unit Checkpoint Placement
 
-Each material Unit below inherits the generic [`Unit Applicability Envelope`](../../../idtspe-core/shared/idtspe-unit-and-target-step-result-model.md#5b-unit-applicability-envelope--opening--in-unit--closing-checkpoints). Opening/Closing are mandatory logical applicability boundaries; registries may also be checked during Unit work whenever new material pressure appears.
+Each material Unit below inherits the generic [`Unit Applicability Envelope`](../../../idtspe-core/runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md#5b-unit-applicability-envelope--opening--in-unit--closing-checkpoints). Opening/Closing are mandatory logical applicability boundaries; registries may also be checked during Unit work whenever new material pressure appears.
 
 #### `RU-SCREEN-01` processing envelope
 
@@ -94,7 +94,7 @@ Each material Unit below inherits the generic [`Unit Applicability Envelope`](..
 
 #### `RU-SCREEN-03` processing envelope
 
-1. **Opening Unit Checkpoint — `RU-SCREEN-03`** — determine whether this Screen's spatial/navigation composition is materially affected, then apply the shared [Current-Owner Evolution Impact Projection Contract](../shared/current-owner-evolution-impact-projection-contract.md).
+1. **Opening Unit Checkpoint — `RU-SCREEN-03`** — determine whether this Screen's spatial/navigation composition is materially affected, then apply the shared [Current-Owner Evolution Impact Projection Contract](../profile-contracts/evolution/CURRENT-OWNER-EVOLUTION-IMPACT-PROJECTION.md).
 2. **Unit Work — `RU-SCREEN-03`** — produce the Screen-local reverse navigation/revalidation projection under that shared contract.
 3. **Closing Unit Checkpoint — `RU-SCREEN-03`** — validate Screen-local revalidation/handoff needs and the shared projection-contract guards.
 
@@ -129,7 +129,7 @@ Do not copy canonical Feature behavior text into Screen drafts. Reference Featur
 
 ### RU-SCREEN-03 — Evolution Impact
 
-This Screen-local Unit specializes the shared [Current-Owner Evolution Impact Projection Contract](../shared/current-owner-evolution-impact-projection-contract.md). Its local affected surface is **spatial/navigation composition**. The shared contract owns inclusion threshold across candidate/selected/conditional/deferred Steps, truthful planning-position projection, depth/no-copy rules and post-realization removal from active future impact. This Target Module owns only the Unit identity, Screen-specific materiality test and local revalidation/handoff use.
+This Screen-local Unit specializes the shared [Current-Owner Evolution Impact Projection Contract](../profile-contracts/evolution/CURRENT-OWNER-EVOLUTION-IMPACT-PROJECTION.md). Its local affected surface is **spatial/navigation composition**. The shared contract owns inclusion threshold across candidate/selected/conditional/deferred Steps, truthful planning-position projection, depth/no-copy rules and post-realization removal from active future impact. This Target Module owns only the Unit identity, Screen-specific materiality test and local revalidation/handoff use.
 
 ## Example
 

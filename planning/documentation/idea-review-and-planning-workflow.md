@@ -17,10 +17,10 @@ legacy collect/review Ideas request
 
 Canonical owners:
 
-- [`idtspe-methodology/active/idtspe-core/shared/compose-current-work-use-case.md`](idtspe-methodology/active/idtspe-core/shared/compose-current-work-use-case.md)
-- [`idtspe-methodology/active/idtspe-core/shared/proposal-and-decision-lifecycle-contract.md`](idtspe-methodology/active/idtspe-core/shared/proposal-and-decision-lifecycle-contract.md)
-- [`idtspe-methodology/active/idtspe-core/shared/qrp-lifecycle-and-review-contract.md`](idtspe-methodology/active/idtspe-core/shared/qrp-lifecycle-and-review-contract.md)
-- [`idtspe-methodology/active/ai-reviewability/README.md`](idtspe-methodology/active/ai-reviewability/README.md)
+- [`idtspe-methodology/active/idtspe-core/use-cases/compose-current-work/UC-IDTSPE-COMPOSE-CURRENT-WORK.md`](idtspe-methodology/active/idtspe-core/use-cases/compose-current-work/UC-IDTSPE-COMPOSE-CURRENT-WORK.md)
+- [`idtspe-methodology/active/idtspe-core/resolution/proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md`](idtspe-methodology/active/idtspe-core/resolution/proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md)
+- [`idtspe-methodology/active/idtspe-core/resolution/qrp/QRP-LIFECYCLE-AND-REVIEW.md`](idtspe-methodology/active/idtspe-core/resolution/qrp/QRP-LIFECYCLE-AND-REVIEW.md)
+- [`idtspe-methodology/active/ai-reviewability/AI-OUTPUT-REVIEWABILITY.md`](idtspe-methodology/active/ai-reviewability/AI-OUTPUT-REVIEWABILITY.md)
 
 ## Legacy Phase Mapping
 

@@ -8,26 +8,26 @@ Purpose: preserve old links/vocabulary while routing former Planning Concern / C
 ```text
 Question / Risk / Problem semantics, lifecycle, priority/category,
 grouping, retention, provenance and representation boundary
-→ idtspe-methodology/active/idtspe-core/shared/qrp-lifecycle-and-review-contract.md
+→ idtspe-methodology/active/idtspe-core/resolution/qrp/QRP-LIFECYCLE-AND-REVIEW.md
 
 Proposal / Decision candidate-selection lifecycle, relations,
 rationale/trace, alternative retention and revalidation
-→ idtspe-methodology/active/idtspe-core/shared/proposal-and-decision-lifecycle-contract.md
+→ idtspe-methodology/active/idtspe-core/resolution/proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md
 
 AI review projection, Key Points, Review Priority, Q/R/P analysis surface
 and proportional pre-return recheck
-→ idtspe-methodology/active/ai-reviewability/README.md
+→ idtspe-methodology/active/ai-reviewability/AI-OUTPUT-REVIEWABILITY.md
 
 physical persistence / area register / one-detail-location realization
-→ idtspe-methodology/active/idtspe-core/shared/artifact-placement-and-idtspe-response-contract.md
+→ idtspe-methodology/active/idtspe-core/representation/ARTIFACT-PLACEMENT-AND-IDTSPE-RESPONSE-CONTRACT.md
 ```
 
 Direct links:
 
-- [`idtspe-methodology/active/idtspe-core/shared/qrp-lifecycle-and-review-contract.md`](idtspe-methodology/active/idtspe-core/shared/qrp-lifecycle-and-review-contract.md)
-- [`idtspe-methodology/active/idtspe-core/shared/proposal-and-decision-lifecycle-contract.md`](idtspe-methodology/active/idtspe-core/shared/proposal-and-decision-lifecycle-contract.md)
-- [`idtspe-methodology/active/ai-reviewability/README.md`](idtspe-methodology/active/ai-reviewability/README.md)
-- [`idtspe-methodology/active/idtspe-core/shared/artifact-placement-and-idtspe-response-contract.md`](idtspe-methodology/active/idtspe-core/shared/artifact-placement-and-idtspe-response-contract.md)
+- [`idtspe-methodology/active/idtspe-core/resolution/qrp/QRP-LIFECYCLE-AND-REVIEW.md`](idtspe-methodology/active/idtspe-core/resolution/qrp/QRP-LIFECYCLE-AND-REVIEW.md)
+- [`idtspe-methodology/active/idtspe-core/resolution/proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md`](idtspe-methodology/active/idtspe-core/resolution/proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md)
+- [`idtspe-methodology/active/ai-reviewability/AI-OUTPUT-REVIEWABILITY.md`](idtspe-methodology/active/ai-reviewability/AI-OUTPUT-REVIEWABILITY.md)
+- [`idtspe-methodology/active/idtspe-core/representation/ARTIFACT-PLACEMENT-AND-IDTSPE-RESPONSE-CONTRACT.md`](idtspe-methodology/active/idtspe-core/representation/ARTIFACT-PLACEMENT-AND-IDTSPE-RESPONSE-CONTRACT.md)
 
 ## Vocabulary Mapping
 

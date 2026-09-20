@@ -6,9 +6,9 @@ Scope: truth-seeking semantic review of a repository ReviewDiff after changes ar
 Use with:
 
 ```text
-planning/documentation/idtspe-methodology/active/idtspe-core/shared/proposal-and-decision-lifecycle-contract.md
-planning/documentation/idtspe-methodology/active/idtspe-core/shared/qrp-lifecycle-and-review-contract.md
-planning/documentation/idtspe-methodology/active/ai-reviewability/README.md
+planning/documentation/idtspe-methodology/active/idtspe-core/resolution/proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md
+planning/documentation/idtspe-methodology/active/idtspe-core/resolution/qrp/QRP-LIFECYCLE-AND-REVIEW.md
+planning/documentation/idtspe-methodology/active/ai-reviewability/AI-OUTPUT-REVIEWABILITY.md
 selected current semantic/documentation/application owners affected by the diff
 ```
 
@@ -58,7 +58,7 @@ A confirmed problem is not itself automatically a Proposal. A proposed semantic 
 
 ### 3A. Finding Resolution Escalation
 
-For each material finding, invoke the canonical [`Finding Disposition Contract`](idtspe-methodology/active/idtspe-core/shared/finding-disposition-contract.md#6a-resolution-escalation-projection). `RE-0..RE-4` definitions and the Decision-Surface Test are owned **only there**; this ReviewDiff workflow must not maintain a second normative copy.
+For each material finding, invoke the canonical [`Finding Disposition Contract`](idtspe-methodology/active/idtspe-core/resolution/findings/FINDING-DISPOSITION.md#6a-resolution-escalation-projection). `RE-0..RE-4` definitions and the Decision-Surface Test are owned **only there**; this ReviewDiff workflow must not maintain a second normative copy.
 
 ReviewDiff adds only review context:
 
@@ -146,7 +146,7 @@ materially different Proposals / refinements
 
 ## 6. Q/R/P
 
-Use [`idtspe-methodology/active/idtspe-core/shared/qrp-lifecycle-and-review-contract.md`](idtspe-methodology/active/idtspe-core/shared/qrp-lifecycle-and-review-contract.md). ReviewDiff does not own a separate Q/R/P lifecycle.
+Use [`idtspe-methodology/active/idtspe-core/resolution/qrp/QRP-LIFECYCLE-AND-REVIEW.md`](idtspe-methodology/active/idtspe-core/resolution/qrp/QRP-LIFECYCLE-AND-REVIEW.md). ReviewDiff does not own a separate Q/R/P lifecycle.
 
 Valid active Q/R/P includes:
 

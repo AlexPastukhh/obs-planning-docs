@@ -1,8 +1,8 @@
 <a id="tm-2d-50-delivery-adaptation"></a>
 # TM-2D-50-DELIVERY-ADAPTATION — Visually Material Output Adaptation
 
-Entry Point: `tm.2d.delivery-adaptation`  
-Supported Roles: PRIMARY, SUPPORTING  
+Entry Point: `tm.2d.delivery-adaptation`
+Supported Roles: PRIMARY, SUPPORTING
 Status: active profile module
 
 ## Purpose
@@ -11,7 +11,7 @@ Own visual decisions needed to adapt an accepted visual result across materially
 
 ## Target Step Result
 
-`Delivery Adaptation`. Generic Unit existence/disposition semantics follow the Core [Unit / Target Step Result Model](../../../idtspe-core/shared/idtspe-unit-and-target-step-result-model.md); this module owns only the visual Unit responsibilities/materiality below.
+`Delivery Adaptation`. Generic Unit existence/disposition semantics follow the Core [Unit / Target Step Result Model](../../../idtspe-core/runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md); this module owns only the visual Unit responsibilities/materiality below.
 
 ## Module-defined Unit Inventory
 

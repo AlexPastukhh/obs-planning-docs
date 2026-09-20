@@ -19,8 +19,8 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
   "activeContextBehavior": "Re-evaluate current methodology Use Cases, normally UC-IDTSPE-COMPOSE-CURRENT-WORK. Use the active concern/context when clear. If a Target or specialized component is not yet useful, continue Broad Discussion rather than inventing one.",
   "traversalReadMode": "Reuse/targeted by uncertainty.",
   "ownerFiles": [
-    "planning/documentation/idtspe-methodology/active/idtspe-core/shared/compose-current-work-use-case.md",
-    "planning/documentation/idtspe-methodology/active/idtspe-core/shared/idtspe-methodology-use-case-registry.md"
+    "planning/documentation/idtspe-methodology/active/idtspe-core/use-cases/compose-current-work/UC-IDTSPE-COMPOSE-CURRENT-WORK.md",
+    "planning/documentation/idtspe-methodology/active/idtspe-core/use-cases/USE-CASE-REGISTRY.md"
   ],
   "expectedOutput": "The smallest useful next planning action/composition for current context, including Broad Discussion/no structural change when that is sufficient.",
   "permissionMode": "plan-only",

@@ -7,14 +7,14 @@ Scope: AI/chat sessions that plan, develop or materially change repository docum
 
 Before material work, select the relevant area through current README/navigation, resolve that area's applicable semantic entry/current owner, and follow its canonical owner route. Conversation memory, examples, generated projections, historical artifacts and implementation alone are not semantic authority.
 
-For material planning/development answers also follow the installed peer [`documentation/idtspe-methodology/active/ai-reviewability/README.md`](documentation/idtspe-methodology/active/ai-reviewability/README.md).
+For material planning/development answers also follow the installed peer [`documentation/idtspe-methodology/active/ai-reviewability/AI-OUTPUT-REVIEWABILITY.md`](documentation/idtspe-methodology/active/ai-reviewability/AI-OUTPUT-REVIEWABILITY.md).
 
-For material Q/R/P follow `documentation/idtspe-methodology/active/idtspe-core/shared/qrp-lifecycle-and-review-contract.md`; for material candidate/selection meaning follow `documentation/idtspe-methodology/active/idtspe-core/shared/proposal-and-decision-lifecycle-contract.md`. AI review presentation follows the installed peer `documentation/idtspe-methodology/active/ai-reviewability/README.md`. Do not invent user-owned Needs/preferences/feelings/business priority/risk tolerance to close a Q/R/P item or select a Decision.
+For material Q/R/P follow `documentation/idtspe-methodology/active/idtspe-core/resolution/qrp/QRP-LIFECYCLE-AND-REVIEW.md`; for material candidate/selection meaning follow `documentation/idtspe-methodology/active/idtspe-core/resolution/proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md`. AI review presentation follows the installed peer `documentation/idtspe-methodology/active/ai-reviewability/AI-OUTPUT-REVIEWABILITY.md`. Do not invent user-owned Needs/preferences/feelings/business priority/risk tolerance to close a Q/R/P item or select a Decision.
 
 
 ## Current IDTSPE Working Rule
 
-For material planning, use [`documentation/idtspe-methodology/active/idtspe-core/IDTSPE-DEFAULT-WORK-MODE.md`](documentation/idtspe-methodology/active/idtspe-core/IDTSPE-DEFAULT-WORK-MODE.md) unless a narrower current owner route explicitly supersedes it.
+For material planning, use [`documentation/idtspe-methodology/active/idtspe-core/runtime/IDTSPE-DEFAULT-WORK-MODE.md`](documentation/idtspe-methodology/active/idtspe-core/runtime/IDTSPE-DEFAULT-WORK-MODE.md) unless a narrower current owner route explicitly supersedes it.
 
 ```text
 AI-proposed material candidate → Proposal by default; remains unselected until normal authority selects it

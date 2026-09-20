@@ -1,6 +1,6 @@
 # LENS-TEST-PROOF-EVIDENCE — Test Proof / Evidence Quality
 
-Lens ID: `LENS-TEST-PROOF-EVIDENCE`  
+Lens ID: `LENS-TEST-PROOF-EVIDENCE`
 Activation: `TARGET_PROFILE_REUSABLE`
 
 ## Purpose
@@ -467,7 +467,7 @@ Do not create one proof file per property when code + existing owner context is 
 
 Canonical deeper theory/reference owner:
 
-- [`Testing Knowledge Basis`](../../../theoretical-modules/testing/README.md)
+- [`Testing Knowledge Basis`](../../knowledge-bases/testing/README.md)
 
 The Knowledge Basis owns reusable theory/mechanics such as public-boundary testing, API/integration patterns, E2E selection, test-object patterns, no-mutation mechanics, isolation and representative proof. This Lens owns the operational **evaluation questions** above; Target Modules own only independently useful concrete planning/evidence results.
 

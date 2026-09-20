@@ -1,6 +1,6 @@
 # LENS-PROPOSAL-DECISION-RESOLUTION-CONTEXT — Proposal / Decision Resolution Context
 
-Lens ID: `LENS-PROPOSAL-DECISION-RESOLUTION-CONTEXT`  
+Lens ID: `LENS-PROPOSAL-DECISION-RESOLUTION-CONTEXT`
 Activation: `REQUIRED_CORE` on a material Proposal / Decision surface
 
 ## Purpose
@@ -11,10 +11,10 @@ Operationally evaluate one material Proposal/Decision resolution context through
 
 Canonical semantic/lifecycle owners remain:
 
-- [`proposal-and-decision-lifecycle-contract.md`](../../shared/proposal-and-decision-lifecycle-contract.md) — Proposal/Decision identity, candidate/selection/integration/retention semantics;
-- [`qrp-lifecycle-and-review-contract.md`](../../shared/qrp-lifecycle-and-review-contract.md) — Question/Risk/Problem lifecycle;
-- [`user-input-decision-and-answer-intake-rule.md`](../../shared/user-input-decision-and-answer-intake-rule.md) — USER-input classification;
-- [`decision-revalidation-helper-model.md`](../../shared/decision-revalidation-helper-model.md) — accepted-Decision revalidation helper/projection;
+- [`planning/documentation/idtspe-methodology/active/idtspe-core/resolution/proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md`](../../resolution/proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md) — Proposal/Decision identity, candidate/selection/integration/retention semantics;
+- [`planning/documentation/idtspe-methodology/active/idtspe-core/resolution/qrp/QRP-LIFECYCLE-AND-REVIEW.md`](../../resolution/qrp/QRP-LIFECYCLE-AND-REVIEW.md) — Question/Risk/Problem lifecycle;
+- [`planning/documentation/idtspe-methodology/active/idtspe-core/runtime/interaction/USER-INPUT-DECISION-AND-ANSWER-INTAKE-RULE.md`](../../runtime/interaction/USER-INPUT-DECISION-AND-ANSWER-INTAKE-RULE.md) — USER-input classification;
+- [`planning/documentation/idtspe-methodology/active/idtspe-core/resolution/proposal-decision/DECISION-REVALIDATION.resolution-projection.md`](../../resolution/proposal-decision/DECISION-REVALIDATION.resolution-projection.md) — accepted-Decision revalidation helper/projection;
 - Evidence remains ordinary Core Evidence State.
 
 This Lens owns only the reusable **operational evaluation** of a concrete Proposal/Decision context.
@@ -118,7 +118,7 @@ Evidence → still material to accepted basis/revalidation?
 Decision → exposes any new Q/R/P?
 ```
 
-Surviving open/deferred/residual items remain with their canonical lifecycle/natural owners and may be projected into [`Resolution Carry-Forward`](../../shared/resolution-carry-forward-projection-contract.md) when continuation value is material.
+Surviving open/deferred/residual items remain with their canonical lifecycle/natural owners and may be projected into [`Resolution Carry-Forward`](../../resolution/continuation/RESOLUTION-CARRY-FORWARD-PROJECTION.md) when continuation value is material.
 
 ## Composition With Existing Lenses
 

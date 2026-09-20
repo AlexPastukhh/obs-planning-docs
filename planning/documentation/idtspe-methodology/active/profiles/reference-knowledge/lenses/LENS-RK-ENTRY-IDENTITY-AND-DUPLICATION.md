@@ -1,8 +1,8 @@
 <a id="lens-rk-entry-identity-and-duplication"></a>
 # Entry Identity / Duplication
 
-Lens ID: `LENS-RK-ENTRY-IDENTITY-AND-DUPLICATION`  
-Activation: `FREQUENT_CONDITIONAL`  
+Lens ID: `LENS-RK-ENTRY-IDENTITY-AND-DUPLICATION`
+Activation: `FREQUENT_CONDITIONAL`
 Status: active profile Lens
 
 ## Purpose / Evaluation Objective
@@ -87,7 +87,7 @@ Recheck when provenance, artifact identity, new related Entries or downstream ev
 
 ## Knowledge Basis
 
-[Reference Knowledge Object Model](../models/REFERENCE-KNOWLEDGE-OBJECT-MODEL.md#reference-knowledge-object-model), [Entry Semantic Decomposition Guidance](../guidance/ENTRY-SEMANTIC-DECOMPOSITION-GUIDANCE.md#entry-semantic-decomposition-guidance), [Entry Retirement And Successors](../models/REFERENCE-KNOWLEDGE-OBJECT-MODEL.md#entry-retirement-and-successors), [Bank Principles](../models/BANK-PRINCIPLES.md#bank-principles).
+[Reference Knowledge Object Model](../models/REFERENCE-KNOWLEDGE-OBJECT-MODEL.md#reference-knowledge-object-model), [Entry Semantic Decomposition Guidance](../target-module-support/entry/RU-RKE-03-ENTRY-SEMANTIC-DECOMPOSITION.unit-guidance.md#entry-semantic-decomposition-guidance), [Entry Retirement And Successors](../models/REFERENCE-KNOWLEDGE-OBJECT-MODEL.md#entry-retirement-and-successors), [Bank Principles](../models/BANK-PRINCIPLES.md#bank-principles).
 
 ## Provenance
 

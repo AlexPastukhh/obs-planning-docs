@@ -1,6 +1,6 @@
 # LENS-IMPLEMENTATION-REQUIREMENTS-DISCOVERY — Owner-Local Implementation Requirements Discovery
 
-Role: reusable discovery/evaluation Lens  
+Role: reusable discovery/evaluation Lens
 Purpose: discover whether a material implementation/proof concern should become, change or retire a durable owner-local Implementation Requirement.
 
 This Lens **does not own Requirements**. It is composed with thematic evaluators and reusable knowledge such as DDD, Vertical Slice, selected Programming Principles `RG-PRG-*` entries, Evolution, quality, trust/security or operability. The thematic evaluator explains the concern; this Lens classifies durable must-hold meaning and routes it to the natural implementation owner.
@@ -11,8 +11,8 @@ Use when current implementation/proof reasoning may need to become, change, move
 
 ## Analysis Surface
 
-**Primary:** a material implementation/proof concern plus the relevant natural Domain/Slice/Shared owner family, its current realized IR/PFR set and/or the active Evolution Step Target Body when future state is being planned.  
-**Conditional:** Feature behavior, Scenario must-holds, selected Evolution, thematic Lens findings, selected `RG/RR/RRC` guidance, accepted Decisions/Risks/Questions and proof Evidence.  
+**Primary:** a material implementation/proof concern plus the relevant natural Domain/Slice/Shared owner family, its current realized IR/PFR set and/or the active Evolution Step Target Body when future state is being planned.
+**Conditional:** Feature behavior, Scenario must-holds, selected Evolution, thematic Lens findings, selected `RG/RR/RRC` guidance, accepted Decisions/Risks/Questions and proof Evidence.
 **Context:** current Work Context/Target and requirement-ownership rules.
 
 ## Supported Operations
@@ -249,15 +249,15 @@ The Lens stops at the Finding Candidate. Core Finding Disposition owns lifecycle
 
 Use the following as reusable discovery knowledge, not as durable Requirement authority:
 
-- [`../../shared/reusable-guidance-model.md`](../../shared/reusable-guidance-model.md) for reusable-guidance selection/adaptation semantics;
+- [`../../profile-contracts/reusable-guidance/REUSABLE-GUIDANCE-MODEL.md`](../../profile-contracts/reusable-guidance/REUSABLE-GUIDANCE-MODEL.md) for reusable-guidance selection/adaptation semantics;
 - [`../../../../../../tools/replacement-package-app/documentation-use-cases/implementation-discovery-and-proof.md`](../../../../../../tools/replacement-package-app/documentation-use-cases/implementation-discovery-and-proof.md) as R2 migration provenance for 3×2 discovery, necessity/relevance and production↔proof questioning;
-- [`../../shared/programming-principles/README.md`](../../shared/programming-principles/README.md) when a trigger indicates that one or more engineering principles should be consulted before deciding whether durable IR/PFR meaning is justified.
+- [`../../knowledge-bases/programming-principles/README.md`](../../knowledge-bases/programming-principles/README.md) when a trigger indicates that one or more engineering principles should be consulted before deciding whether durable IR/PFR meaning is justified.
 
 Candidate guidance from these sources remains non-authoritative until the natural owner selects durable local meaning.
 
 ## Artifact / File Implications
 
-No dedicated Requirement artifact is implied. Selected durable IR/PFR stays with exactly one natural owner according to [`../../shared/requirement-ownership-and-exception-rule.md`](../../shared/requirement-ownership-and-exception-rule.md). Transient discovery remains non-persistent unless independent representation value passes Core representation checks.
+No dedicated Requirement artifact is implied. Selected durable IR/PFR stays with exactly one natural owner according to [`../../profile-contracts/requirements/REQUIREMENT-OWNERSHIP-AND-NATURAL-OWNER.md`](../../profile-contracts/requirements/REQUIREMENT-OWNERSHIP-AND-NATURAL-OWNER.md). Transient discovery remains non-persistent unless independent representation value passes Core representation checks.
 
 ## Revalidation / Composition
 

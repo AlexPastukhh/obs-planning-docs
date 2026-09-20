@@ -150,7 +150,7 @@ Do not create Prototype work merely because the methodology supports it.
 
 ## Q/R/P — When Material
 
-Use `../../idtspe-methodology/active/idtspe-core/shared/qrp-lifecycle-and-review-contract.md`. Group related Q/R/P when they share one resolution surface; keep member Priority/Review Category/Status. AI review may recommend only when evidence is sufficient and must not invent user-owned Needs/preferences. Related Proposals reference the one canonical Q/R/P item/group representation instead of mirroring full bodies.
+Use `../../idtspe-methodology/active/idtspe-core/resolution/qrp/QRP-LIFECYCLE-AND-REVIEW.md`. Group related Q/R/P when they share one resolution surface; keep member Priority/Review Category/Status. AI review may recommend only when evidence is sufficient and must not invent user-owned Needs/preferences. Related Proposals reference the one canonical Q/R/P item/group representation instead of mirroring full bodies.
 
 If material concerns are durable/distributed, keep/update the Q/R/P register/index selected through representation rules. If none: `No material unresolved issues identified.`
 

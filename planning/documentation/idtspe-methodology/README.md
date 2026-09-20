@@ -60,15 +60,15 @@ Core mechanics cannot be redefined by an installed profile. A Lens evaluates/dis
 Start at:
 
 - [`active/idtspe-core/README.md`](active/idtspe-core/README.md)
-- [`active/idtspe-core/IDTSPE-SHELL.md`](active/idtspe-core/IDTSPE-SHELL.md)
-- [`active/idtspe-core/target-modules/README.md`](active/idtspe-core/target-modules/README.md)
-- [`active/idtspe-core/lenses/README.md`](active/idtspe-core/lenses/README.md)
+- [`active/idtspe-core/runtime/IDTSPE-RUNTIME-COMPOSITION-CONTRACT.md`](active/idtspe-core/runtime/IDTSPE-RUNTIME-COMPOSITION-CONTRACT.md)
+- [`active/idtspe-core/target-modules/TARGET-MODULE-REGISTRY.md`](active/idtspe-core/target-modules/TARGET-MODULE-REGISTRY.md)
+- [`active/idtspe-core/lenses/LENS-REGISTRY.md`](active/idtspe-core/lenses/LENS-REGISTRY.md)
 
-Generic optional Need / real-life solution discovery is [`active/idtspe-core/shared/solution-discovery-workflow.md`](active/idtspe-core/shared/solution-discovery-workflow.md).
+Generic optional Need / real-life solution discovery is [`active/idtspe-core/runtime/target-work/guidance/NEED-AND-REAL-LIFE-SOLUTION-DISCOVERY.target-formation-guidance.md`](active/idtspe-core/runtime/target-work/guidance/NEED-AND-REAL-LIFE-SOLUTION-DISCOVERY.target-formation-guidance.md).
 
 ## Installed Profiles
 
-[`active/profiles/README.md`](active/profiles/README.md) is the installed-profile registry.
+[`active/profiles/PROFILE-REGISTRY.md`](active/profiles/PROFILE-REGISTRY.md) is the installed-profile registry.
 
 Current profile entries:
 
@@ -84,9 +84,9 @@ Generic authority: [`active/idtspe-core/lenses/required/LENS-ARTIFACT-BOUNDARY-A
 
 Profile-specific representation guidance remains with the applicable profile, for example:
 
-- [`active/profiles/sds/ARTIFACT-PLACEMENT-MAP.md`](active/profiles/sds/ARTIFACT-PLACEMENT-MAP.md)
-- [`active/profiles/visual-production-2d/ARTIFACT-PLACEMENT-MAP.md`](active/profiles/visual-production-2d/ARTIFACT-PLACEMENT-MAP.md)
-- [`active/profiles/reference-knowledge/ARTIFACT-PLACEMENT-MAP.md`](active/profiles/reference-knowledge/ARTIFACT-PLACEMENT-MAP.md)
+- [`active/profiles/sds/representation/ARTIFACT-PLACEMENT-MAP.md`](active/profiles/sds/representation/ARTIFACT-PLACEMENT-MAP.md)
+- [`active/profiles/visual-production-2d/representation/ARTIFACT-PLACEMENT-MAP.md`](active/profiles/visual-production-2d/representation/ARTIFACT-PLACEMENT-MAP.md)
+- [`active/profiles/reference-knowledge/representation/ARTIFACT-PLACEMENT-MAP.md`](active/profiles/reference-knowledge/representation/ARTIFACT-PLACEMENT-MAP.md)
 
 ```text
 semantic owner

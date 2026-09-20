@@ -4,7 +4,7 @@
 
 
 Status: active reusable canonical owner
-Scope: stable concepts/invariants for whole-solution/workflow planning, Application Concept/Prototype work, current Scenario/Screen requirements and optional Domain/Slice implementation planning. Generic Q/R/P lifecycle is owned by Core `../idtspe-methodology/active/idtspe-core/shared/qrp-lifecycle-and-review-contract.md`; Proposal/Decision lifecycle is owned by `../idtspe-methodology/active/idtspe-core/shared/proposal-and-decision-lifecycle-contract.md`.
+Scope: stable concepts/invariants for whole-solution/workflow planning, Application Concept/Prototype work, current Scenario/Screen requirements and optional Domain/Slice implementation planning. Generic Q/R/P lifecycle is owned by Core `../idtspe-methodology/active/idtspe-core/resolution/qrp/QRP-LIFECYCLE-AND-REVIEW.md`; Proposal/Decision lifecycle is owned by `../idtspe-methodology/active/idtspe-core/resolution/proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md`.
 
 ## Evidence And Decision States
 

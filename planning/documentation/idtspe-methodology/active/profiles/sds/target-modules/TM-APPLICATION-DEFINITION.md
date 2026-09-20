@@ -1,7 +1,7 @@
 # TM-APPLICATION-DEFINITION — Application Definition
 
-Entry Point: `tm.application.definition`  
-Role: primary Target Module  
+Entry Point: `tm.application.definition`
+Role: primary Target Module
 Target form: selected own-application definition
 
 ## Purpose
@@ -166,7 +166,7 @@ Expected archetype only; current `TF-04 SOURCE_SET` remains authority.
 
 ## Unit Resolution Guidance / Knowledge Basis
 
-Shared contract: [`knowledge-basis-contract.md`](../../../idtspe-core/shared/knowledge-basis-contract.md). The Application family has shared principles, but substantial theory/reference material is attached to the Unit that consumes it rather than treated as one undifferentiated module-wide bridge.
+Shared contract: [`planning/documentation/idtspe-methodology/active/idtspe-core/knowledge-bases/KNOWLEDGE-BASIS-CONTRACT.md`](../../../idtspe-core/knowledge-bases/KNOWLEDGE-BASIS-CONTRACT.md). The Application family has shared principles, but substantial theory/reference material is attached to the Unit that consumes it rather than treated as one undifferentiated module-wide bridge.
 
 ```text
 RU-APP-01 Application Identity / Selected Contribution
@@ -229,7 +229,7 @@ Concrete `TF-06 QUESTION_SET` coordinates the material current Unit drivers plus
 
 ## Lens Profile
 
-Generic required Core Pack is inherited from the [`Lens Registry`](../../../idtspe-core/lenses/README.md):
+Generic required Core Pack is inherited from the [`Lens Registry`](../../../idtspe-core/lenses/LENS-REGISTRY.md):
 - [`LENS-NEED-VALUE-SCOPE`](../../../idtspe-core/lenses/required/LENS-NEED-VALUE-SCOPE.md) — L1.
 - [`LENS-AUTHORITY-SOT-REUSE`](../../../idtspe-core/lenses/required/LENS-AUTHORITY-SOT-REUSE.md) — L2.
 - [`LENS-UNCERTAINTY-ASSUMPTION-REVERSIBILITY`](../../../idtspe-core/lenses/required/LENS-UNCERTAINTY-ASSUMPTION-REVERSIBILITY.md) — L3; required check may resolve as `no material uncertainty`.
@@ -268,7 +268,7 @@ Material alternative comparisons are Resolution/Production state until selected;
 
 ## Unit Contract Conformance
 
-This module specializes the Core [Target Module Model](../../../idtspe-core/shared/target-module-model.md) and [Unit / Target Step Result Model](../../../idtspe-core/shared/idtspe-unit-and-target-step-result-model.md). The Core owners define generic Unit lifecycle, complete-inventory/disposition and Proposal/Core-State semantics; this module defines only its SDS-specific Unit responsibilities, local materiality, production guidance, validators and handoffs below.
+This module specializes the Core [Target Module Model](../../../idtspe-core/target-modules/TARGET-MODULE-MODEL.md) and [Unit / Target Step Result Model](../../../idtspe-core/runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md). The Core owners define generic Unit lifecycle, complete-inventory/disposition and Proposal/Core-State semantics; this module defines only its SDS-specific Unit responsibilities, local materiality, production guidance, validators and handoffs below.
 
 ## Target Step-Result Contract
 
@@ -288,7 +288,7 @@ The seven Module-defined Result Units below are the complete Application Definit
 
 ### Result Unit Applicability / Materiality
 
-Unit presence/disposition mechanics follow the Core [`Unit Applicability / Materiality / Disposition Contract`](../../../idtspe-core/shared/idtspe-unit-and-target-step-result-model.md#5a-unit-applicability--materiality--disposition-contract). The table below owns only this module's local substantive-materiality and omission-rationale triggers.
+Unit presence/disposition mechanics follow the Core [`Unit Applicability / Materiality / Disposition Contract`](../../../idtspe-core/runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md#5a-unit-applicability--materiality--disposition-contract). The table below owns only this module's local substantive-materiality and omission-rationale triggers.
 
 | Result Unit | Substantive resolution is material when | Unit disposition when substantive resolution is not material |
 |---|---|---|
@@ -302,8 +302,8 @@ Unit presence/disposition mechanics follow the Core [`Unit Applicability / Mater
 
 ### Application Definition Identity
 
-**Application:** `<stable name / identity>`  
-**Selected Contribution:** `<bounded real-world contribution assigned to this Application>`  
+**Application:** `<stable name / identity>`
+**Selected Contribution:** `<bounded real-world contribution assigned to this Application>`
 **Need / upstream driver refs:** `<Need / solution / trusted intent refs>`
 
 ### Existing Solutions / Market / Reference Research
@@ -388,7 +388,7 @@ Material Application alternatives remain ordinary Proposal / Planning Branch / D
 
 ### Explicit Unit Checkpoint Placement
 
-Each material Unit inherits the generic [`Unit Applicability Envelope`](../../../idtspe-core/shared/idtspe-unit-and-target-step-result-model.md#5b-unit-applicability-envelope--opening--in-unit--closing-checkpoints). Opening/Closing are logical applicability boundaries; registries may also be checked during Unit work whenever new material pressure appears.
+Each material Unit inherits the generic [`Unit Applicability Envelope`](../../../idtspe-core/runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md#5b-unit-applicability-envelope--opening--in-unit--closing-checkpoints). Opening/Closing are logical applicability boundaries; registries may also be checked during Unit work whenever new material pressure appears.
 
 #### `RU-APP-01` processing envelope
 
@@ -436,7 +436,7 @@ Each material Unit inherits the generic [`Unit Applicability Envelope`](../../..
 
 ### Structured Artifact / File Proposals
 
-These proposal records are the Target Module's local placement guidance. [`ARTIFACT-PLACEMENT-MAP.md`](../ARTIFACT-PLACEMENT-MAP.md) projects them into the annotated SDS materialization tree; this Target Module remains the source.
+These proposal records are the Target Module's local placement guidance. [`representation/ARTIFACT-PLACEMENT-MAP.md`](../representation/ARTIFACT-PLACEMENT-MAP.md) projects them into the annotated SDS materialization tree; this Target Module remains the source.
 
 ```text
 ARTIFACT_PROPOSAL
@@ -487,7 +487,7 @@ RESOLVER: P-14 / TF-10
 ```
 
 
-Shell placement semantics: [`artifact-placement-and-idtspe-response-contract.md`](../../../idtspe-core/shared/artifact-placement-and-idtspe-response-contract.md).
+Shell placement semantics: [`planning/documentation/idtspe-methodology/active/idtspe-core/representation/ARTIFACT-PLACEMENT-AND-IDTSPE-RESPONSE-CONTRACT.md`](../../../idtspe-core/representation/ARTIFACT-PLACEMENT-AND-IDTSPE-RESPONSE-CONTRACT.md).
 
 **REQUIRED** — an accepted Application Definition used downstream must have one canonical persistent representation when persistence is material. It remains the upstream semantic owner even when downstream realization lags behind the selected intent.
 

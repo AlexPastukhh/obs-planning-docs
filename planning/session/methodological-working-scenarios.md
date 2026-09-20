@@ -9,7 +9,7 @@ The former **Methodological Working Scenario (MWS)** mixed design examples with 
 - IDTSPE Target Modules/Lenses/Core mechanics as specialized planning/resolution owners;
 - **Methodology Use-Case Scenario Map** as a non-authoritative design/evaluation/orientation artifact.
 
-Canonical map: [`../documentation/idtspe-methodology/active/idtspe-core/shared/methodology-use-case-scenario-map.md`](../documentation/idtspe-methodology/active/idtspe-core/shared/methodology-use-case-scenario-map.md).
+Canonical map: [`../documentation/idtspe-methodology/active/idtspe-core/evaluation/USE-CASE-SCENARIO-MAP.md`](../documentation/idtspe-methodology/active/idtspe-core/evaluation/USE-CASE-SCENARIO-MAP.md).
 
 A methodology-use scenario may illustrate how several Use Cases compose and may be used to test whether the Use-Case set is complete/effective. It does **not** decide runtime registry timing, Target Module selection, Lens selection, State lifecycle or user gates.
 

@@ -20,7 +20,7 @@ Scope: legacy explicit recheck shortcut retained only for compatibility; current
   "activeContextBehavior": "If explicitly invoked for compatibility, recheck the selected current target using the current reviewability principles; do not treat this shortcut as a separate current planning capability.",
   "traversalReadMode": "Targeted/full by risk and current owner uncertainty.",
   "ownerFiles": [
-    "planning/documentation/idtspe-methodology/active/ai-reviewability/README.md"
+    "planning/documentation/idtspe-methodology/active/ai-reviewability/AI-OUTPUT-REVIEWABILITY.md"
   ],
   "expectedOutput": "Corrected current answer/review only when material new findings exist; otherwise a compact confirmation that no material omission was found.",
   "permissionMode": "read-only",

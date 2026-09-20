@@ -27,7 +27,7 @@ planning/areas/*
 | `REVIEW-DIFF-PRACTICAL-EXAMPLE.md` | Semantic ReviewDiff review | `review-diff-review-workflow.md` + Core Proposal/Q-R-P owners | current |
 | `CRITICAL-REVIEW-COMMAND-EXAMPLE.md` | Critical review | root Command Routing and reviewable-output owner | current |
 | `CURRENT-PLANNING-STATE-RESPONSE-EXAMPLE.md` | Current-state response | root Command Routing and relevant state owners | current |
-| `AI-REVIEWABILITY-KEY-POINTS-EXAMPLE.md` | AI Key Points / Review Priority output | `idtspe-methodology/active/ai-reviewability/README.md` | current |
+| `AI-REVIEWABILITY-KEY-POINTS-EXAMPLE.md` | AI Key Points / Review Priority output | `idtspe-methodology/active/ai-reviewability/AI-OUTPUT-REVIEWABILITY.md` | current |
 | `STATUS-RECONCILIATION-SCENARIO-PROJECT-EXAMPLE.md` | Status reconciliation | relevant status owners | current |
 | `SOURCE-USAGE-CASCADE-GENERIC-EXAMPLE.md` | Source-usage cascade | relevant cascade owners | current |
 

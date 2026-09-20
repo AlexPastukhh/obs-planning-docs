@@ -24,7 +24,7 @@ Scope: representation preference only; no separate SDS runtime/profile.
   "traversalReadMode": "Reuse current IDTSPE/SDS governance and read the canonical Artifact Placement Map plus Documentation / Representation Lens proportionally. Do not load retired SDS profile files.",
   "ownerFiles": [
     "planning/documentation/idtspe-methodology/active/profiles/sds/README.md",
-    "planning/documentation/idtspe-methodology/active/profiles/sds/ARTIFACT-PLACEMENT-MAP.md",
+    "planning/documentation/idtspe-methodology/active/profiles/sds/representation/ARTIFACT-PLACEMENT-MAP.md",
     "planning/documentation/idtspe-methodology/active/idtspe-core/lenses/required/LENS-ARTIFACT-BOUNDARY-ADDRESSABILITY.md"
   ],
   "expectedOutput": "A representation recommendation/update for the same semantic owners using the MIXED / ASYMMETRIC topology as an example, with any promotion/demotion justified by addressability/review/lifecycle pressure.",

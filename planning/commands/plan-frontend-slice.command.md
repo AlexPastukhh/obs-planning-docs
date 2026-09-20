@@ -20,7 +20,7 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
   "ownerFiles": [
     "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-IMPLEMENTATION-SLICE.md",
     "planning/documentation/idtspe-methodology/active/profiles/sds/lenses/reusable/LENS-UI-SPATIAL-FRONTEND-REALIZATION.md",
-    "planning/documentation/idtspe-methodology/active/profiles/sds/shared/idtspe-command-surface-contract.md"
+    "planning/documentation/idtspe-methodology/active/profiles/sds/commands/SDS-COMMAND-SURFACE-EXTENSION.md"
   ],
   "expectedOutput": "Frontend-specific realization meaning resolved inside the current vertical Slice, or a normal Local Target Formation candidate when independently substantial.",
   "permissionMode": "read-only-planning",

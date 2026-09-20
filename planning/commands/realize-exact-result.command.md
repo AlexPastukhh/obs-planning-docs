@@ -21,7 +21,7 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
   "traversalReadMode": "Reuse current reliable IDTSPE governance; read TM-EXACT-REALIZATION completely, inspect the exact current destination/codebase Sources needed for the bounded result, and refresh applicable upstream owners/Lenses proportionally when material.",
   "ownerFiles": [
     "planning/documentation/idtspe-methodology/active/idtspe-core/target-modules/TM-EXACT-REALIZATION.md",
-    "planning/documentation/idtspe-methodology/active/idtspe-core/shared/idtspe-command-surface-contract.md"
+    "planning/documentation/idtspe-methodology/active/idtspe-core/commands/IDTSPE-COMMAND-SURFACE-CONTRACT.md"
   ],
   "expectedOutput": "RU-REAL-01 Exact Realization: a complete directly integrable current candidate (code-first by default), plus only the integration/build/test Evidence, bounded repairs, Findings/revalidation and final exact review requested/authorized for this invocation.",
   "permissionMode": "exact-realization-explicit-authority-no-commit-push",

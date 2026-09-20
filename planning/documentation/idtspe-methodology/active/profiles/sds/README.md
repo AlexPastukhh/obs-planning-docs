@@ -15,13 +15,13 @@ This `README.md` is the canonical SDS profile bootstrap entry. SDS bootstrap is 
 For the SDS portion, read in order:
 
 1. this `README.md`;
-2. [`shared/methodology-registry-directory.md`](shared/methodology-registry-directory.md);
-3. [`target-modules/README.md`](target-modules/README.md);
-4. [`lenses/README.md`](lenses/README.md);
-5. [`shared/directed-methodology-workflow-and-next-step-resolution.md`](shared/directed-methodology-workflow-and-next-step-resolution.md);
-6. [`shared/requirement-ownership-and-exception-rule.md`](shared/requirement-ownership-and-exception-rule.md);
-7. [`shared/reusable-guidance-model.md`](shared/reusable-guidance-model.md);
-8. [`ARTIFACT-PLACEMENT-MAP.md`](ARTIFACT-PLACEMENT-MAP.md).
+2. [`registries/METHODOLOGY-REGISTRY-DIRECTORY.md`](registries/METHODOLOGY-REGISTRY-DIRECTORY.md);
+3. [`registries/TARGET-MODULE-REGISTRY.md`](registries/TARGET-MODULE-REGISTRY.md);
+4. [`registries/LENS-REGISTRY.md`](registries/LENS-REGISTRY.md);
+5. [`profile-contracts/SDS-SEMANTIC-COMPOSITION-AND-READINESS.md`](profile-contracts/SDS-SEMANTIC-COMPOSITION-AND-READINESS.md);
+6. [`profile-contracts/requirements/REQUIREMENT-OWNERSHIP-AND-NATURAL-OWNER.md`](profile-contracts/requirements/REQUIREMENT-OWNERSHIP-AND-NATURAL-OWNER.md);
+7. [`profile-contracts/reusable-guidance/REUSABLE-GUIDANCE-MODEL.md`](profile-contracts/reusable-guidance/REUSABLE-GUIDANCE-MODEL.md);
+8. [`representation/ARTIFACT-PLACEMENT-MAP.md`](representation/ARTIFACT-PLACEMENT-MAP.md).
 
 Specific Target Modules, Lenses, Programming Principle details, examples and supporting knowledge remain lazy/conditional reads after registry selection and local applicability. Profile bootstrap does not create an SDS-specific runtime Use Case or select a Target merely by being read.
 
@@ -79,13 +79,13 @@ Current-owner review/revalidation remains valid: the same Target Module contract
 
 ## Profile Registry Entry
 
-Start SDS-specific dependency discovery at [`shared/methodology-registry-directory.md`](shared/methodology-registry-directory.md). That directory routes an already-selected IDTSPE Use-Case Process to the relevant Target Module, Lens, programming-principle, requirement, semantic-composition or representation owner.
+Start SDS-specific dependency discovery at [`registries/METHODOLOGY-REGISTRY-DIRECTORY.md`](registries/METHODOLOGY-REGISTRY-DIRECTORY.md). That directory routes an already-selected IDTSPE Use-Case Process to the relevant Target Module, Lens, programming-principle, requirement, semantic-composition or representation owner.
 
 Do not browse all profile components ceremonially.
 
 ## Compact Owner Topology
 
-This README is a bootstrap/responsibility map, not a second semantic contract. For cross-owner temporal/readiness composition use the [SDS Semantic Composition / Readiness Guide](shared/directed-methodology-workflow-and-next-step-resolution.md); for complete Step semantics use [`TM-EVOLUTION-STEP`](target-modules/TM-EVOLUTION-STEP.md); for current-owner reverse Evolution Impact use the shared [Current-Owner Evolution Impact Projection Contract](shared/current-owner-evolution-impact-projection-contract.md).
+This README is a bootstrap/responsibility map, not a second semantic contract. For cross-owner temporal/readiness composition use the [SDS Semantic Composition / Readiness Guide](profile-contracts/SDS-SEMANTIC-COMPOSITION-AND-READINESS.md); for complete Step semantics use [`TM-EVOLUTION-STEP`](target-modules/TM-EVOLUTION-STEP.md); for current-owner reverse Evolution Impact use the shared [Current-Owner Evolution Impact Projection Contract](profile-contracts/evolution/CURRENT-OWNER-EVOLUTION-IMPACT-PROJECTION.md).
 
 ```text
 Application Definition
@@ -121,17 +121,17 @@ This is routing orientation only, not a mandatory phase sequence or a duplicate 
 
 ## Canonical SDS Owners
 
-- [`shared/directed-methodology-workflow-and-next-step-resolution.md`](shared/directed-methodology-workflow-and-next-step-resolution.md) — cross-owner semantic composition, temporal hosting/readiness, upstream/downstream direction and planning-depth guidance.
+- [`profile-contracts/SDS-SEMANTIC-COMPOSITION-AND-READINESS.md`](profile-contracts/SDS-SEMANTIC-COMPOSITION-AND-READINESS.md) — cross-owner semantic composition, temporal hosting/readiness, upstream/downstream direction and planning-depth guidance.
 - [`target-modules/TM-EVOLUTION-STEP.md`](target-modules/TM-EVOLUTION-STEP.md) — canonical SDS owner for materially planned unrealized target state and Target Owner Materialization semantics.
 - [`target-modules/TM-EVOLUTION-STEPS-MAP.md`](target-modules/TM-EVOLUTION-STEPS-MAP.md) — navigation/coordination across concrete Step candidates/selections/relations/readiness.
-- [`target-modules/README.md`](target-modules/README.md) — active SDS Target Module registry; concrete modules own their own production/formation rules.
-- [`lenses/README.md`](lenses/README.md) — SDS Lens registry; concrete Lenses own specialized evaluation methods.
-- [`shared/semantic-family-authority-and-provenance-contract.md`](shared/semantic-family-authority-and-provenance-contract.md) — reusable SDS family/natural-owner authority vs local semantic meaning/provenance.
-- [`shared/requirement-ownership-and-exception-rule.md`](shared/requirement-ownership-and-exception-rule.md) — natural Requirement ownership, `BR/SR/IR/PFR` families and current-vs-future hosting.
-- [`shared/requirement-classification-and-representation-contract.md`](shared/requirement-classification-and-representation-contract.md) — reusable extensible Requirement Type classification guidance plus QRPE/common table semantics.
-- [`shared/reusable-guidance-model.md`](shared/reusable-guidance-model.md) — `RG/RR/RRC` reusable-guidance semantics and no-live-inheritance rule.
-- [`shared/programming-principles/README.md`](shared/programming-principles/README.md) — compact trigger registry for the reusable programming-principle corpus.
-- [`ARTIFACT-PLACEMENT-MAP.md`](ARTIFACT-PLACEMENT-MAP.md) — SDS-specific semantic-owner → representation projection used with Core representation policy.
+- [`registries/TARGET-MODULE-REGISTRY.md`](registries/TARGET-MODULE-REGISTRY.md) — active SDS Target Module registry; concrete modules own their own production/formation rules.
+- [`registries/LENS-REGISTRY.md`](registries/LENS-REGISTRY.md) — SDS Lens registry; concrete Lenses own specialized evaluation methods.
+- [`profile-contracts/semantic-families/SEMANTIC-FAMILY-AUTHORITY-AND-PROVENANCE.md`](profile-contracts/semantic-families/SEMANTIC-FAMILY-AUTHORITY-AND-PROVENANCE.md) — reusable SDS family/natural-owner authority vs local semantic meaning/provenance.
+- [`profile-contracts/requirements/REQUIREMENT-OWNERSHIP-AND-NATURAL-OWNER.md`](profile-contracts/requirements/REQUIREMENT-OWNERSHIP-AND-NATURAL-OWNER.md) — natural Requirement ownership, `BR/SR/IR/PFR` families and current-vs-future hosting.
+- [`profile-contracts/requirements/REQUIREMENT-CLASSIFICATION-AND-REPRESENTATION.md`](profile-contracts/requirements/REQUIREMENT-CLASSIFICATION-AND-REPRESENTATION.md) — reusable extensible Requirement Type classification guidance plus QRPE/common table semantics.
+- [`profile-contracts/reusable-guidance/REUSABLE-GUIDANCE-MODEL.md`](profile-contracts/reusable-guidance/REUSABLE-GUIDANCE-MODEL.md) — `RG/RR/RRC` reusable-guidance semantics and no-live-inheritance rule.
+- [`knowledge-bases/programming-principles/README.md`](knowledge-bases/programming-principles/README.md) — compact trigger registry for the reusable programming-principle corpus.
+- [`representation/ARTIFACT-PLACEMENT-MAP.md`](representation/ARTIFACT-PLACEMENT-MAP.md) — SDS-specific semantic-owner → representation projection used with Core representation policy.
 
 ## Compatibility / Retired Families
 

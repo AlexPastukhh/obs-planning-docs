@@ -20,7 +20,7 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
   "traversalReadMode": "Reuse a current reliable primary bootstrap; otherwise read planning/README.md and follow its child README read sets. Do not bootstrap an installed profile unless it is separately applicable.",
   "ownerFiles": [
     "planning/README.md",
-    "planning/documentation/idtspe-methodology/active/idtspe-core/shared/idtspe-command-surface-contract.md"
+    "planning/documentation/idtspe-methodology/active/idtspe-core/commands/IDTSPE-COMMAND-SURFACE-CONTRACT.md"
   ],
   "expectedOutput": "Primary bootstrap current through IDTSPE Core, with Session/Documentation/Core boundaries understood and no profile selected by bootstrap.",
   "permissionMode": "read-only-planning",

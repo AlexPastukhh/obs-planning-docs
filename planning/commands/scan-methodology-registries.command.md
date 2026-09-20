@@ -22,7 +22,7 @@ Scope: focused read-only invocation of the existing Documentation methodology-us
   "ownerFiles": [
     "planning/documentation/use-case-registry-map.md",
     "planning/documentation/use-cases/UC-DOC-USE-REPOSITORY-GUIDANCE.md",
-    "planning/documentation/idtspe-methodology/active/idtspe-core/shared/methodology-registry-directory.md"
+    "planning/documentation/idtspe-methodology/active/idtspe-core/navigation/METHODOLOGY-REGISTRY-DIRECTORY.md"
   ],
   "expectedOutput": "Registry Traversal Trace with context, scanned registries and reasons, applicable Use Cases/components, skipped registries, unresolved applicability, and Execution: NONE.",
   "permissionMode": "read-only",

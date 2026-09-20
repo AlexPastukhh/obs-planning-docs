@@ -1,7 +1,7 @@
 # LENS-DEPENDENCY-CHANGE-IMPACT — Dependency / Change Surface / Blast Radius
 
-Lens ID: `LENS-DEPENDENCY-CHANGE-IMPACT`  
-Legacy alias: `L4`  
+Lens ID: `LENS-DEPENDENCY-CHANGE-IMPACT`
+Legacy alias: `L4`
 Activation: `FREQUENT_CONDITIONAL`
 
 ## Purpose
@@ -132,7 +132,7 @@ RESOLVER: P-14 / TF-10
 ```
 
 
-Shell placement semantics: [`artifact-placement-and-idtspe-response-contract.md`](../../shared/artifact-placement-and-idtspe-response-contract.md).
+Shell placement semantics: [`planning/documentation/idtspe-methodology/active/idtspe-core/representation/ARTIFACT-PLACEMENT-AND-IDTSPE-RESPONSE-CONTRACT.md`](../../representation/ARTIFACT-PLACEMENT-AND-IDTSPE-RESPONSE-CONTRACT.md).
 
 Normally **NO_DISTINCT_SUPPORTING_ARTIFACT**: dependency/change output is a Finding Candidate; when Core Finding Disposition resolves accepted Decision/plan meaning to the current Target, its ordinary representation carries it.
 

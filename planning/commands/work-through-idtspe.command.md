@@ -20,12 +20,12 @@ Scope: generic IDTSPE work-mode and installed-component dispatcher.
   "activeContextBehavior": "Start from the current Use-Case-driven IDTSPE Work Context. With no selector, continue proportionally without forcing a Target, State Unit, Lens or Integration Checkpoint. With a Target Module selector, resolve/create a Target only when the selected module Entry Point and current situation make it useful. With a Lens selector, resolve/reuse the natural host Target when material, apply the Lens, and route material Finding Candidates through Core Finding Disposition. The command never enables IDTSPE and never creates semantic authority.",
   "traversalReadMode": "Read current Core/profile Target Module and Lens registry summaries first. For an exact/unique selector, read only the selected component body plus the minimum Core/profile governance it requires. Do not scan/load every module or Lens body. Reuse current reliable governance; targeted refresh when uncertain.",
   "ownerFiles": [
-    "planning/documentation/idtspe-methodology/active/idtspe-core/shared/compose-current-work-use-case.md",
-    "planning/documentation/idtspe-methodology/active/idtspe-core/shared/idtspe-methodology-use-case-registry.md",
-    "planning/documentation/idtspe-methodology/active/idtspe-core/target-modules/README.md",
-    "planning/documentation/idtspe-methodology/active/idtspe-core/lenses/README.md",
-    "planning/documentation/idtspe-methodology/active/profiles/README.md",
-    "planning/documentation/idtspe-methodology/active/idtspe-core/shared/idtspe-command-surface-contract.md"
+    "planning/documentation/idtspe-methodology/active/idtspe-core/use-cases/compose-current-work/UC-IDTSPE-COMPOSE-CURRENT-WORK.md",
+    "planning/documentation/idtspe-methodology/active/idtspe-core/use-cases/USE-CASE-REGISTRY.md",
+    "planning/documentation/idtspe-methodology/active/idtspe-core/target-modules/TARGET-MODULE-REGISTRY.md",
+    "planning/documentation/idtspe-methodology/active/idtspe-core/lenses/LENS-REGISTRY.md",
+    "planning/documentation/idtspe-methodology/active/profiles/PROFILE-REGISTRY.md",
+    "planning/documentation/idtspe-methodology/active/idtspe-core/commands/IDTSPE-COMMAND-SURFACE-CONTRACT.md"
   ],
   "expectedOutput": "The smallest useful current IDTSPE composition (including a valid Broad-Discussion-only result) or the explicitly selected applicable Target Module/Lens result/evaluation. No command invocation makes optional structure mandatory.",
   "permissionMode": "read-only-planning",

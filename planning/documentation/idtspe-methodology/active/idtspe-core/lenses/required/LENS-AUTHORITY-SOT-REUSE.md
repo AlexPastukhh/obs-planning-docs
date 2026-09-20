@@ -1,7 +1,7 @@
 # LENS-AUTHORITY-SOT-REUSE — Authority / Source-of-Truth / Reuse
 
-Lens ID: `LENS-AUTHORITY-SOT-REUSE`  
-Legacy alias: `L2`  
+Lens ID: `LENS-AUTHORITY-SOT-REUSE`
+Legacy alias: `L2`
 Activation: `REQUIRED_CORE`
 
 ## Purpose
@@ -60,7 +60,7 @@ Are owner references preserved?
 
 ## Natural Subject Check
 
-Evaluate the material under the canonical Core [Natural Subject / Ownership Boundary](../../shared/idtspe-unit-and-target-step-result-model.md#natural-subject--ownership-boundary); this Lens does not redefine that ownership routing.
+Evaluate the material under the canonical Core [Natural Subject / Ownership Boundary](../../runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md#natural-subject--ownership-boundary); this Lens does not redefine that ownership routing.
 
 Operationally ask:
 
@@ -127,7 +127,7 @@ RESOLVER: P-14 / TF-10
 ```
 
 
-Shell placement semantics: [`artifact-placement-and-idtspe-response-contract.md`](../../shared/artifact-placement-and-idtspe-response-contract.md).
+Shell placement semantics: [`planning/documentation/idtspe-methodology/active/idtspe-core/representation/ARTIFACT-PLACEMENT-AND-IDTSPE-RESPONSE-CONTRACT.md`](../../representation/ARTIFACT-PLACEMENT-AND-IDTSPE-RESPONSE-CONTRACT.md).
 
 L2 often changes **placement/reference**, not semantic content.
 

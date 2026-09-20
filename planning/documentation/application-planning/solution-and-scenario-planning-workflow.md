@@ -232,7 +232,7 @@ semantic body
 → Potential Better Routes when material
 ```
 
-Use Core `../idtspe-methodology/active/idtspe-core/shared/qrp-lifecycle-and-review-contract.md` for Q/R/P lifecycle/grouping and `../idtspe-methodology/active/idtspe-core/shared/proposal-and-decision-lifecycle-contract.md` for candidate/Decision semantics. Use scoped Proposal review only when a real answer-seeking candidate exists. Link relevant Requirements rather than copying or turning them into flow steps mechanically.
+Use Core `../idtspe-methodology/active/idtspe-core/resolution/qrp/QRP-LIFECYCLE-AND-REVIEW.md` for Q/R/P lifecycle/grouping and `../idtspe-methodology/active/idtspe-core/resolution/proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md` for candidate/Decision semantics. Use scoped Proposal review only when a real answer-seeking candidate exists. Link relevant Requirements rather than copying or turning them into flow steps mechanically.
 
 ## Variant Work
 

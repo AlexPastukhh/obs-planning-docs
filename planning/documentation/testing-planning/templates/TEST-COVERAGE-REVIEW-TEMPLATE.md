@@ -13,4 +13,4 @@ Status: review draft
 ## Duplicated / Wrong-Layer Coverage
 ## Corrections / Handoffs
 ## Q/R/P
-<Use the shared `../../idtspe-methodology/active/idtspe-core/shared/qrp-lifecycle-and-review-contract.md`: owner/current-plan attachment, grouping by shared resolution surface, Priority + Review Category + Status when material, AI Comment without inventing user/product preference, optional Recommendation, selected Decision refs, residual/retained lifecycle and an optional Q/R/P navigation index when useful.>
+<Use the shared `../../idtspe-methodology/active/idtspe-core/resolution/qrp/QRP-LIFECYCLE-AND-REVIEW.md`: owner/current-plan attachment, grouping by shared resolution surface, Priority + Review Category + Status when material, AI Comment without inventing user/product preference, optional Recommendation, selected Decision refs, residual/retained lifecycle and an optional Q/R/P navigation index when useful.>

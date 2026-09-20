@@ -1,6 +1,6 @@
 # LENS-SLICE-VERTICALITY-INTEGRATION — Vertical Slice / Integration
 
-Role: reusable thematic Slice-boundary and end-to-end integration lens  
+Role: reusable thematic Slice-boundary and end-to-end integration lens
 Primary use: Feature boundary formation, transient Slice Discovery, durable Slice owner review
 
 ## Purpose
@@ -11,8 +11,8 @@ The same method is used at two evidence depths:
 
 ## Analysis Surface
 
-**Primary:** Feature/Slice boundary meaning, transient Slice Discovery results, durable Slice-owner responsibility and whole-path realization/proof surfaces.  
-**Conditional:** Feature BR, Scenario/Screen participation, Domain/Shared dependencies, side effects/failure/recovery, accepted Decisions/Evidence, selected Evolution and relevant `RG-PRG-*` knowledge entries.  
+**Primary:** Feature/Slice boundary meaning, transient Slice Discovery results, durable Slice-owner responsibility and whole-path realization/proof surfaces.
+**Conditional:** Feature BR, Scenario/Screen participation, Domain/Shared dependencies, side effects/failure/recovery, accepted Decisions/Evidence, selected Evolution and relevant `RG-PRG-*` knowledge entries.
 **Context:** active Work Context/Target and current evidence depth.
 
 ## Supported Operations
@@ -253,9 +253,9 @@ Feature formation, Slice Discovery, durable Slice owner, Shared extraction/class
 
 Primary reusable theory bridge:
 
-- [`../../shared/reusable-guidance-model.md`](../../shared/reusable-guidance-model.md) for contextual use of reusable guidance;
+- [`../../profile-contracts/reusable-guidance/REUSABLE-GUIDANCE-MODEL.md`](../../profile-contracts/reusable-guidance/REUSABLE-GUIDANCE-MODEL.md) for contextual use of reusable guidance;
 - [`../../../../../../tools/replacement-package-app/methodology-guidance/reusable-vertical-slice-discovery.md`](../../../../../../tools/replacement-package-app/methodology-guidance/reusable-vertical-slice-discovery.md) as the R2 Vertical Slice source corpus retained for migration provenance/coverage;
-- [`../../shared/programming-principles/README.md`](../../shared/programming-principles/README.md) for selective principle drill-down when boundary, state, failure, dependency or execution triggers are material.
+- [`../../knowledge-bases/programming-principles/README.md`](../../knowledge-bases/programming-principles/README.md) for selective principle drill-down when boundary, state, failure, dependency or execution triggers are material.
 
 Accepted Feature/Domain/Shared/Evolution meaning and current implementation evidence are Analysis Surface/Target Inputs, not Knowledge Basis.
 

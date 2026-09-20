@@ -67,7 +67,7 @@ Canonical reusable algorithm: `planning/documentation/command-routing-workflow.m
 
 ## Current IDTSPE Command Family
 
-The current material-planning command surface is defined by [`planning/documentation/idtspe-methodology/active/profiles/sds/shared/idtspe-command-surface-contract.md`](documentation/idtspe-methodology/active/profiles/sds/shared/idtspe-command-surface-contract.md).
+The current material-planning command surface is defined by [`planning/documentation/idtspe-methodology/active/profiles/sds/commands/SDS-COMMAND-SURFACE-EXTENSION.md`](documentation/idtspe-methodology/active/profiles/sds/commands/SDS-COMMAND-SURFACE-EXTENSION.md).
 
 ```text
 current methodology Use Cases

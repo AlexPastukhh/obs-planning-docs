@@ -1,9 +1,9 @@
 <a id="tm-rk-10-entry"></a>
 # Entry
 
-Module ID: `TM-RK-10-ENTRY`  
-Status: active profile module  
-Entry Point: `rk.entry`  
+Module ID: `TM-RK-10-ENTRY`
+Status: active profile module
+Entry Point: `rk.entry`
 Supported Roles: `PRIMARY | SUPPORTING`
 
 ## Purpose
@@ -22,7 +22,7 @@ Typical Sources: represented material/subject, existing matching Entries, proven
 
 ## Knowledge Basis
 
-[Reference Knowledge Object Model](../models/REFERENCE-KNOWLEDGE-OBJECT-MODEL.md#reference-knowledge-object-model), [Bank Principles](../models/BANK-PRINCIPLES.md#bank-principles), [Entry Semantic Decomposition Guidance](../guidance/ENTRY-SEMANTIC-DECOMPOSITION-GUIDANCE.md#entry-semantic-decomposition-guidance), applicable installed Domain Pack guidance when available.
+[Reference Knowledge Object Model](../models/REFERENCE-KNOWLEDGE-OBJECT-MODEL.md#reference-knowledge-object-model), [Bank Principles](../models/BANK-PRINCIPLES.md#bank-principles), [Entry Semantic Decomposition Guidance](../target-module-support/entry/RU-RKE-03-ENTRY-SEMANTIC-DECOMPOSITION.unit-guidance.md#entry-semantic-decomposition-guidance), applicable installed Domain Pack guidance when available.
 
 ## Target Step Result
 
@@ -38,7 +38,7 @@ One correctly owned and sufficiently resolved Entry record. Related Tag Assignme
 
 ## Module-defined Unit Visibility
 
-Generic Unit existence/disposition semantics follow the Core [Unit / Target Step Result Model](../../../idtspe-core/shared/idtspe-unit-and-target-step-result-model.md). This module owns only the Reference-Knowledge Unit responsibilities, local materiality/omission reasoning and specialized guidance below; Contextual Units remain governed by Core formation semantics.
+Generic Unit existence/disposition semantics follow the Core [Unit / Target Step Result Model](../../../idtspe-core/runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md). This module owns only the Reference-Knowledge Unit responsibilities, local materiality/omission reasoning and specialized guidance below; Contextual Units remain governed by Core formation semantics.
 
 ## Unit Checkpoint Map
 
@@ -93,7 +93,7 @@ Every material Unit follows the inherited Core applicability/materiality envelop
 
 **Applicability / Omission.** Include only when the current material contains meaningful internal/related subject structure whose separate identity could improve reuse/search/classification/relations/analysis. When deeper decomposition has no current value, keep this Unit declared with a concise omission disposition instead of substantive decomposition work.
 
-**Inputs / Sources.** Current Entry/material, [Entry Semantic Decomposition Guidance](../guidance/ENTRY-SEMANTIC-DECOMPOSITION-GUIDANCE.md#entry-semantic-decomposition-guidance), applicable installed Domain Pack guidance and relevant existing Entries.
+**Inputs / Sources.** Current Entry/material, [Entry Semantic Decomposition Guidance](../target-module-support/entry/RU-RKE-03-ENTRY-SEMANTIC-DECOMPOSITION.unit-guidance.md#entry-semantic-decomposition-guidance), applicable installed Domain Pack guidance and relevant existing Entries.
 
 **Resolution Method.** Test discovered candidates for independent durable usefulness. Reuse/create separate Entries only when warranted. Decomposition does not automatically create hierarchy or Relations. Route discovered classification/relation/analysis meaning to its natural ordinary operation instead of embedding it into the current Entry.
 

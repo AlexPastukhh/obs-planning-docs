@@ -1,9 +1,9 @@
 <a id="tm-rk-20-vocabulary-evolution"></a>
 # Vocabulary Evolution
 
-Module ID: `TM-RK-20-VOCABULARY-EVOLUTION`  
-Status: active profile module  
-Entry Point: `rk.vocabulary-evolve`  
+Module ID: `TM-RK-20-VOCABULARY-EVOLUTION`
+Status: active profile module
+Entry Point: `rk.vocabulary-evolve`
 Supported Roles: `PRIMARY`
 
 ## Purpose
@@ -35,7 +35,7 @@ Accepted Vocabulary Package definition change plus only the material consequence
 
 ## Module-defined Unit Visibility
 
-Generic Unit existence/disposition semantics follow the Core [Unit / Target Step Result Model](../../../idtspe-core/shared/idtspe-unit-and-target-step-result-model.md). This module owns only the Reference-Knowledge Unit responsibilities, local materiality/omission reasoning and specialized guidance below; Contextual Units remain governed by Core formation semantics.
+Generic Unit existence/disposition semantics follow the Core [Unit / Target Step Result Model](../../../idtspe-core/runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md). This module owns only the Reference-Knowledge Unit responsibilities, local materiality/omission reasoning and specialized guidance below; Contextual Units remain governed by Core formation semantics.
 
 ## Unit Checkpoint Map
 

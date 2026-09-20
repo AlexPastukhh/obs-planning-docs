@@ -7,8 +7,8 @@ Status: active supporting knowledge index; **not** the canonical SDS profile
 This area preserves reusable pre-Application discovery/research/prototype knowledge and older application-planning workflows that can support IDTSPE Resolution. Canonical SDS semantic ownership is elsewhere:
 
 - [`../idtspe-methodology/active/profiles/sds/README.md`](../idtspe-methodology/active/profiles/sds/README.md)
-- [`../idtspe-methodology/active/profiles/sds/shared/directed-methodology-workflow-and-next-step-resolution.md`](../idtspe-methodology/active/profiles/sds/shared/directed-methodology-workflow-and-next-step-resolution.md)
-- [`../idtspe-methodology/active/profiles/sds/target-modules/README.md`](../idtspe-methodology/active/profiles/sds/target-modules/README.md)
+- [`../idtspe-methodology/active/profiles/sds/profile-contracts/SDS-SEMANTIC-COMPOSITION-AND-READINESS.md`](../idtspe-methodology/active/profiles/sds/profile-contracts/SDS-SEMANTIC-COMPOSITION-AND-READINESS.md)
+- [`../idtspe-methodology/active/profiles/sds/registries/TARGET-MODULE-REGISTRY.md`](../idtspe-methodology/active/profiles/sds/registries/TARGET-MODULE-REGISTRY.md)
 
 This directory must not define a parallel Domain Draft / frontend/server Slice / WEUC SDS lifecycle.
 
@@ -16,7 +16,7 @@ This directory must not define a parallel Domain Draft / frontend/server Slice /
 
 When there is no trusted explicit own-Application intent, use generic Need / Real-Life Solution Discovery:
 
-[`../idtspe-methodology/active/idtspe-core/shared/solution-discovery-workflow.md`](../idtspe-methodology/active/idtspe-core/shared/solution-discovery-workflow.md)
+[`../idtspe-methodology/active/idtspe-core/runtime/target-work/guidance/NEED-AND-REAL-LIFE-SOLUTION-DISCOVERY.target-formation-guidance.md`](../idtspe-methodology/active/idtspe-core/runtime/target-work/guidance/NEED-AND-REAL-LIFE-SOLUTION-DISCOVERY.target-formation-guidance.md)
 
 Useful supporting owners here include current-reality review, whole-solution comparison, existing-solution research, Application Concept/prototype knowledge and selected detailed-planning references. Their output becomes Source/Evidence/Resolution input for canonical IDTSPE/SDS owners; it does not establish a second Scenario/Domain/Slice authority.
 
@@ -41,7 +41,7 @@ Screens are conditional as defined by the current Target Module registry. There 
 
 Mini/Modular/Full terminology is legacy compatibility only. Current SDS representation examples are LIGHT / MIXED / COMPLEX in:
 
-[`../idtspe-methodology/active/profiles/sds/ARTIFACT-PLACEMENT-MAP.md`](../idtspe-methodology/active/profiles/sds/ARTIFACT-PLACEMENT-MAP.md)
+[`../idtspe-methodology/active/profiles/sds/representation/ARTIFACT-PLACEMENT-MAP.md`](../idtspe-methodology/active/profiles/sds/representation/ARTIFACT-PLACEMENT-MAP.md)
 
 Those examples are not schemas or mandatory file trees.
 

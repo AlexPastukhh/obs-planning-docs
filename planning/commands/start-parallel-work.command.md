@@ -20,9 +20,9 @@ Scope: retired fixed parallel-work-scope invocation. No current branch-based coo
   "activeContextBehavior": "Do not resurrect fixed registered scopes or legacy action logs. Re-evaluate current Use-Case composition; introduce multiple Targets/Planning Branch state only when the current Core applicability/materiality contracts justify them.",
   "traversalReadMode": "Current navigation only; legacy provenance may be read only when historical analysis is explicitly requested.",
   "ownerFiles": [
-    "planning/documentation/idtspe-methodology/active/idtspe-core/shared/compose-current-work-use-case.md",
-    "planning/documentation/idtspe-methodology/active/idtspe-core/IDTSPE-SHELL.md",
-    "planning/documentation/idtspe-methodology/active/idtspe-core/shared/idtspe-unit-and-target-step-result-model.md"
+    "planning/documentation/idtspe-methodology/active/idtspe-core/use-cases/compose-current-work/UC-IDTSPE-COMPOSE-CURRENT-WORK.md",
+    "planning/documentation/idtspe-methodology/active/idtspe-core/runtime/IDTSPE-RUNTIME-COMPOSITION-CONTRACT.md",
+    "planning/documentation/idtspe-methodology/active/idtspe-core/runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md"
   ],
   "expectedOutput": "A current proportional work composition: one line when sufficient, or explicit multi-Target/Planning-Branch structure when independently useful. No fixed Scope Registry/action-log runtime.",
   "permissionMode": "read-only",

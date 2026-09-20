@@ -27,13 +27,13 @@ legacy Idea Group
 ```
 
 Canonical current owner:
-[`idtspe-methodology/active/idtspe-core/shared/proposal-and-decision-lifecycle-contract.md`](idtspe-methodology/active/idtspe-core/shared/proposal-and-decision-lifecycle-contract.md).
+[`idtspe-methodology/active/idtspe-core/resolution/proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md`](idtspe-methodology/active/idtspe-core/resolution/proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md).
 
 Q/R/P semantics are owned by:
-[`idtspe-methodology/active/idtspe-core/shared/qrp-lifecycle-and-review-contract.md`](idtspe-methodology/active/idtspe-core/shared/qrp-lifecycle-and-review-contract.md).
+[`idtspe-methodology/active/idtspe-core/resolution/qrp/QRP-LIFECYCLE-AND-REVIEW.md`](idtspe-methodology/active/idtspe-core/resolution/qrp/QRP-LIFECYCLE-AND-REVIEW.md).
 
 AI review presentation is owned by:
-[`idtspe-methodology/active/ai-reviewability/README.md`](idtspe-methodology/active/ai-reviewability/README.md).
+[`idtspe-methodology/active/ai-reviewability/AI-OUTPUT-REVIEWABILITY.md`](idtspe-methodology/active/ai-reviewability/AI-OUTPUT-REVIEWABILITY.md).
 
 ## Preserved Review Intent
 

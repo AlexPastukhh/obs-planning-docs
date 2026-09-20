@@ -6,4 +6,4 @@
 - [Construction Fidelity / Consistency](frequent/LENS-CONSTRUCTION-FIDELITY-CONSISTENCY.md#lens-construction-fidelity-consistency)
 - [Representation / Editability Economy](reusable/LENS-REPRESENTATION-EDITABILITY-ECONOMY.md#lens-representation-editability-economy)
 
-Use [2D Visual Lens Registry](../LENS-REGISTRY.md#registry-2d-lenses) for activation/routing metadata.
+Use [2D Visual Lens Registry](../registries/LENS-REGISTRY.md#registry-2d-lenses) for activation/routing metadata.

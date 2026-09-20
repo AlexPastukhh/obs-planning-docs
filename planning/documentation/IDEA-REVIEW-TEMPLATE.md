@@ -4,10 +4,10 @@ Status: compatibility/provenance projection; **not a current semantic template a
 Purpose: let historical `IDEA-*` material be read/migrated without preserving a second Idea ontology.
 
 Canonical Proposal semantics:
-[`idtspe-methodology/active/idtspe-core/shared/proposal-and-decision-lifecycle-contract.md`](idtspe-methodology/active/idtspe-core/shared/proposal-and-decision-lifecycle-contract.md)
+[`idtspe-methodology/active/idtspe-core/resolution/proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md`](idtspe-methodology/active/idtspe-core/resolution/proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md)
 
 Canonical Q/R/P semantics:
-[`idtspe-methodology/active/idtspe-core/shared/qrp-lifecycle-and-review-contract.md`](idtspe-methodology/active/idtspe-core/shared/qrp-lifecycle-and-review-contract.md)
+[`idtspe-methodology/active/idtspe-core/resolution/qrp/QRP-LIFECYCLE-AND-REVIEW.md`](idtspe-methodology/active/idtspe-core/resolution/qrp/QRP-LIFECYCLE-AND-REVIEW.md)
 
 ## Legacy → Current Projection
 

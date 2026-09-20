@@ -8,8 +8,8 @@ Parent family: [`../README.md`](../README.md)
 > **Current SDS boundary.** Feature is the primary behavior owner; Scenario owns actor/external journey composition with Benefit manifestation/closure; Screen owns spatial/navigation composition; Domain/Slice use transient Discovery plus optional durable Owner modules; requirements are natural-owner `BR-*` / `IR-*` / rare `PFR-*`; there is no active Slice Strategy Target. When this older workspace guidance conflicts with current IDTSPE/SDS owners, the current Target Module/Lens registries and contracts win.
 
 
-Q/R/P lifecycle owner: [`../../idtspe-methodology/active/idtspe-core/shared/qrp-lifecycle-and-review-contract.md`](../../idtspe-methodology/active/idtspe-core/shared/qrp-lifecycle-and-review-contract.md)
-Proposal / Decision owner: [`../../idtspe-methodology/active/idtspe-core/shared/proposal-and-decision-lifecycle-contract.md`](../../idtspe-methodology/active/idtspe-core/shared/proposal-and-decision-lifecycle-contract.md)
+Q/R/P lifecycle owner: [`../../idtspe-methodology/active/idtspe-core/resolution/qrp/QRP-LIFECYCLE-AND-REVIEW.md`](../../idtspe-methodology/active/idtspe-core/resolution/qrp/QRP-LIFECYCLE-AND-REVIEW.md)
+Proposal / Decision owner: [`../../idtspe-methodology/active/idtspe-core/resolution/proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md`](../../idtspe-methodology/active/idtspe-core/resolution/proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md)
 
 ## 1. Purpose
 
@@ -464,9 +464,9 @@ When a candidate genuinely needs literal stale-copy detection/synchronization, i
 
 Read only the repository-facing contract unless Linked Notes development itself is in scope:
 
-1. [`../../../../.linked-notes/AGENT-GUIDE.md`](../../../../.linked-notes/AGENT-GUIDE.md)
-2. [`../../../../.linked-notes/REFERENCE-OBJECTS.md`](../../../../.linked-notes/REFERENCE-OBJECTS.md)
-3. inspect [`../../../../.linked-notes/reference-objects.json`](../../../../.linked-notes/reference-objects.json) only when current live registry state matters.
+1. [`../../../../.linked-notes/AGENT-GUIDE.md`](../../../../linked-notes/AGENT-GUIDE.md)
+2. [`../../../../.linked-notes/REFERENCE-OBJECTS.md`](../../../../linked-notes/REFERENCE-OBJECTS.md)
+3. inspect [`../../../../.linked-notes/reference-objects.json`](../../../../linked-notes/reference-objects.json) only when current live registry state matters.
 
 Minimal marker syntax:
 
@@ -509,6 +509,6 @@ Slice-local verification may remain compact, but material proof design routes to
 
 ## Q/R/P Handoff
 
-`Questions / Risks / Problems` inside detailed planning is a secondary lens over the selected Scenario/Screen/Domain/Slice owner, not a planning entity. Generic Q/R/P lifecycle/grouping/priority/category/retention is owned by `../../idtspe-methodology/active/idtspe-core/shared/qrp-lifecycle-and-review-contract.md`; Proposal/Decision semantics by the canonical Proposal lifecycle owner; AI review presentation by the active AI Reviewability peer.
+`Questions / Risks / Problems` inside detailed planning is a secondary lens over the selected Scenario/Screen/Domain/Slice owner, not a planning entity. Generic Q/R/P lifecycle/grouping/priority/category/retention is owned by `../../idtspe-methodology/active/idtspe-core/resolution/qrp/QRP-LIFECYCLE-AND-REVIEW.md`; Proposal/Decision semantics by the canonical Proposal lifecycle owner; AI review presentation by the active AI Reviewability peer.
 
 A fully described Scenario/Domain/Slice does not receive another Q/R/P item merely because another question can be phrased. Conversely, a material residual Risk/Problem is not dropped merely because the Question that exposed it has been answered.

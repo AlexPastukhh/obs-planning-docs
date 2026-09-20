@@ -21,7 +21,7 @@ Scope: generic manual invocation route for one selected current canonical Use Ca
   "ownerFiles": [
     "planning/documentation/use-case-registry-map.md",
     "planning/documentation/use-case-registry.md",
-    "planning/documentation/idtspe-methodology/active/idtspe-core/shared/idtspe-methodology-use-case-registry.md"
+    "planning/documentation/idtspe-methodology/active/idtspe-core/use-cases/USE-CASE-REGISTRY.md"
   ],
   "expectedOutput": "The selected current methodology Use-Case Result for the user target, with owner-route semantics and permission boundary preserved.",
   "permissionMode": "read-only-unless-selected-uc-route-explicitly-authorizes-more",

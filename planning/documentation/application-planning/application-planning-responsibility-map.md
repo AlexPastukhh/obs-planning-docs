@@ -26,10 +26,10 @@ Status: active reusable nested responsibility map
 | Optional human-readable Domain/Aggregate model shape | `templates/DOMAIN-DRAFT-TEMPLATE.md` (legacy filename; supporting only) |
 | Optional derived Slice coordination shape | `templates/SLICE-STRATEGY-DRAFT-TEMPLATE.md` (legacy filename; supporting/non-authoritative only) |
 | Optional human-readable Implementation Slice shape | `templates/IMPLEMENTATION-SLICE-DRAFT-TEMPLATE.md` (supporting; canonical TM owns semantics) |
-| Generic Q/R/P lifecycle / grouping / retention | Core [`../idtspe-methodology/active/idtspe-core/shared/qrp-lifecycle-and-review-contract.md`](../idtspe-methodology/active/idtspe-core/shared/qrp-lifecycle-and-review-contract.md) |
-| Generic Proposal / Decision lifecycle | Core [`../idtspe-methodology/active/idtspe-core/shared/proposal-and-decision-lifecycle-contract.md`](../idtspe-methodology/active/idtspe-core/shared/proposal-and-decision-lifecycle-contract.md) |
+| Generic Q/R/P lifecycle / grouping / retention | Core [`../idtspe-methodology/active/idtspe-core/resolution/qrp/QRP-LIFECYCLE-AND-REVIEW.md`](../idtspe-methodology/active/idtspe-core/resolution/qrp/QRP-LIFECYCLE-AND-REVIEW.md) |
+| Generic Proposal / Decision lifecycle | Core [`../idtspe-methodology/active/idtspe-core/resolution/proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md`](../idtspe-methodology/active/idtspe-core/resolution/proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md) |
 | Legacy Idea compatibility | `Idea` maps to current Core Proposal; legacy Idea files are compatibility/provenance only |
-| SDS representation examples / promotion pressure | `../idtspe-methodology/active/profiles/sds/ARTIFACT-PLACEMENT-MAP.md` |
+| SDS representation examples / promotion pressure | `../idtspe-methodology/active/profiles/sds/representation/ARTIFACT-PLACEMENT-MAP.md` |
 | Canonical SDS Target/owner route | `../idtspe-methodology/active/profiles/sds/README.md` + Target Module registry |
 | Detailed planning worked example | `examples/DETAILED-PLANNING-WORKSPACE-EXAMPLE.md` |
 | Concrete solution/application Workflows / Concepts / Prototype artifacts / Requirements / Scenarios / Screens / Domains / Slices / decisions / implementation state | project/application-local owners |

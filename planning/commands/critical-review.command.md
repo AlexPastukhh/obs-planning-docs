@@ -20,9 +20,9 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
   "activeContextBehavior": "Use the provided target; ask only if the target is missing.",
   "traversalReadMode": "Targeted/full by risk and evidence needs.",
   "ownerFiles": [
-    "planning/documentation/idtspe-methodology/active/ai-reviewability/README.md",
-    "planning/documentation/idtspe-methodology/active/idtspe-core/shared/proposal-and-decision-lifecycle-contract.md",
-    "planning/documentation/idtspe-methodology/active/idtspe-core/shared/qrp-lifecycle-and-review-contract.md",
+    "planning/documentation/idtspe-methodology/active/ai-reviewability/AI-OUTPUT-REVIEWABILITY.md",
+    "planning/documentation/idtspe-methodology/active/idtspe-core/resolution/proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md",
+    "planning/documentation/idtspe-methodology/active/idtspe-core/resolution/qrp/QRP-LIFECYCLE-AND-REVIEW.md",
     "planning/documentation/review-diff-review-workflow.md"
   ],
   "expectedOutput": "Truth-seeking verdict grounded in checked owners/evidence; material corrective candidate answers are Proposals under the canonical Proposal lifecycle; material Q/R/P uses the Core Q/R/P contract; ReviewDiff targets use the ReviewDiff semantic-review workflow.",

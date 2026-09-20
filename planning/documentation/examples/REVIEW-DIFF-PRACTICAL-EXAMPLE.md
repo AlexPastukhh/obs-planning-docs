@@ -3,7 +3,7 @@
 Status: active practical example
 Scope: demonstrate current semantic ReviewDiff output without owning methodology or transport/application mechanics.
 
-Canonical owner: [`../review-diff-review-workflow.md`](../review-diff-review-workflow.md). Q/R/P semantics live in Core [`../idtspe-methodology/active/idtspe-core/shared/qrp-lifecycle-and-review-contract.md`](../idtspe-methodology/active/idtspe-core/shared/qrp-lifecycle-and-review-contract.md); Proposal/Decision semantics live in [`../idtspe-methodology/active/idtspe-core/shared/proposal-and-decision-lifecycle-contract.md`](../idtspe-methodology/active/idtspe-core/shared/proposal-and-decision-lifecycle-contract.md).
+Canonical owner: [`../review-diff-review-workflow.md`](../review-diff-review-workflow.md). Q/R/P semantics live in Core [`../idtspe-methodology/active/idtspe-core/resolution/qrp/QRP-LIFECYCLE-AND-REVIEW.md`](../idtspe-methodology/active/idtspe-core/resolution/qrp/QRP-LIFECYCLE-AND-REVIEW.md); Proposal/Decision semantics live in [`../idtspe-methodology/active/idtspe-core/resolution/proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md`](../idtspe-methodology/active/idtspe-core/resolution/proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md).
 
 ## Case A — Confirmed correction selected, but not yet present in reviewed transition
 

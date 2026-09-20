@@ -1,10 +1,10 @@
 # LENS-ARTIFACT-BOUNDARY-ADDRESSABILITY — Documentation / Representation / Artifact Boundary
 
-Lens ID: `LENS-ARTIFACT-BOUNDARY-ADDRESSABILITY`  
-Working name: **Documentation / Representation Lens**  
-Activation: `REQUIRED_CORE`  
+Lens ID: `LENS-ARTIFACT-BOUNDARY-ADDRESSABILITY`
+Working name: **Documentation / Representation Lens**
+Activation: `REQUIRED_CORE`
 Required stage: material IDTSPE output / persistence / representation resolution
-Direct methodology surface: `lenscmd.documentation.representation.check`  
+Direct methodology surface: `lenscmd.documentation.representation.check`
 Canonical user intent: `проверь как лучше зафиксировать <target/result>`
 
 ## Purpose
@@ -595,9 +595,9 @@ GUIDANCE_SOURCE: LENS
 RESOLVER: P-14 / TF-10
 ```
 
-Shell placement semantics: [`artifact-placement-and-idtspe-response-contract.md`](../../shared/artifact-placement-and-idtspe-response-contract.md).
+Shell placement semantics: [`planning/documentation/idtspe-methodology/active/idtspe-core/representation/ARTIFACT-PLACEMENT-AND-IDTSPE-RESPONSE-CONTRACT.md`](../../representation/ARTIFACT-PLACEMENT-AND-IDTSPE-RESPONSE-CONTRACT.md).
 
-SDS annotated materialization projection: [`../../../profiles/sds/ARTIFACT-PLACEMENT-MAP.md`](../../../profiles/sds/ARTIFACT-PLACEMENT-MAP.md).
+SDS annotated materialization projection: [`../../../profiles/sds/representation/ARTIFACT-PLACEMENT-MAP.md`](../../../profiles/sds/representation/ARTIFACT-PLACEMENT-MAP.md).
 
 ## Guards / Anti-Patterns
 
@@ -709,9 +709,9 @@ Mode: `HYBRID`
 
 **Referenced Knowledge Owners:**
 
-- [`artifact-boundary-and-file-realization-pack.md`](../../shared/artifact-boundary-and-file-realization-pack.md)
-- [`artifact-placement-and-idtspe-response-contract.md`](../../shared/artifact-placement-and-idtspe-response-contract.md)
-- [`target-evolution-companion-artifact.md`](../../shared/target-evolution-companion-artifact.md)
+- [`planning/documentation/idtspe-methodology/active/idtspe-core/representation/methods/ARTIFACT-BOUNDARY-AND-FILE-REALIZATION.representation-method.md`](../../representation/methods/ARTIFACT-BOUNDARY-AND-FILE-REALIZATION.representation-method.md)
+- [`planning/documentation/idtspe-methodology/active/idtspe-core/representation/ARTIFACT-PLACEMENT-AND-IDTSPE-RESPONSE-CONTRACT.md`](../../representation/ARTIFACT-PLACEMENT-AND-IDTSPE-RESPONSE-CONTRACT.md)
+- [`planning/documentation/idtspe-methodology/active/idtspe-core/representation/TARGET-EVOLUTION-COMPANION-ARTIFACT.md`](../../representation/TARGET-EVOLUTION-COMPANION-ARTIFACT.md)
 
 **Reference Load Policy:**
 

@@ -25,17 +25,21 @@ When a 2D Visual Production profile is active:
 ```text
 Reference Knowledge Entry
 → candidate reusable visual material
-→ 2D Visual Material Preparation / local visual-material registry when material
-→ responsibility-relative qualification/coverage
+→ consuming 2D Unit applies Unit Need / Visual Source Coverage
+→ Visual Material Preparation Operation only when bounded acquisition/transformation is needed
+→ current Target/Unit owns contextual interpretation
 → downstream Core Source binding
+→ optional retained material registry for reusable intrinsic provenance/qualification
 ```
 
 Reference Knowledge does not replace:
 
-- 2D visual-material qualification/preparation;
+- 2D Unit-relative need/coverage analysis or bounded preparation mechanics;
 - responsibility-specific visual Source coverage;
 - consumer role/authority/requiredness/freshness;
 - production-owned prepared/derived material.
+
+Ordinary consumer preparation does not instantiate TM-2D-15. That Target Module forms only when a Prepared Visual Material Set is itself an independently useful reusable Target Result.
 
 The 2D profile does not automatically provide decomposition/analysis Knowledge Basis for any future visual-domain Reference Knowledge pack. If such a pack is later derived, its analysis model must be derived independently under the Domain Pack model. Production methodology and reference analysis remain separate responsibilities.
 

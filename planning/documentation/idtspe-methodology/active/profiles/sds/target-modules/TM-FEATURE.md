@@ -1,6 +1,6 @@
 # TM-FEATURE — Feature Behavioral Owner
 
-Entry Point: `tm.feature`  
+Entry Point: `tm.feature`
 Role: primary application behavior Target Module
 
 ## Purpose
@@ -108,7 +108,7 @@ Do not force exact class/method mapping during Feature formation.
 
 ## Unit Contract Conformance
 
-This module specializes the Core [Target Module Model](../../../idtspe-core/shared/target-module-model.md) and [Unit / Target Step Result Model](../../../idtspe-core/shared/idtspe-unit-and-target-step-result-model.md). The Core owners define generic Unit lifecycle, complete-inventory/disposition and Proposal/Core-State semantics; this module defines only its SDS-specific Unit responsibilities, local materiality, production guidance, validators and handoffs below.
+This module specializes the Core [Target Module Model](../../../idtspe-core/target-modules/TARGET-MODULE-MODEL.md) and [Unit / Target Step Result Model](../../../idtspe-core/runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md). The Core owners define generic Unit lifecycle, complete-inventory/disposition and Proposal/Core-State semantics; this module defines only its SDS-specific Unit responsibilities, local materiality, production guidance, validators and handoffs below.
 
 ## Target Step-Result Contract
 
@@ -125,7 +125,7 @@ This module specializes the Core [Target Module Model](../../../idtspe-core/shar
 
 ### Result Unit Applicability / Materiality
 
-Unit presence/disposition mechanics follow the Core [`Unit Applicability / Materiality / Disposition Contract`](../../../idtspe-core/shared/idtspe-unit-and-target-step-result-model.md#5a-unit-applicability--materiality--disposition-contract). The table below owns only this module's local substantive-materiality and omission-rationale triggers.
+Unit presence/disposition mechanics follow the Core [`Unit Applicability / Materiality / Disposition Contract`](../../../idtspe-core/runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md#5a-unit-applicability--materiality--disposition-contract). The table below owns only this module's local substantive-materiality and omission-rationale triggers.
 
 | Result Unit | Substantive resolution is material when | Unit disposition when substantive resolution is not material |
 |---|---|---|
@@ -140,7 +140,7 @@ Unit presence/disposition mechanics follow the Core [`Unit Applicability / Mater
 
 ### Explicit Unit Checkpoint Placement
 
-Each material Unit below inherits the generic [`Unit Applicability Envelope`](../../../idtspe-core/shared/idtspe-unit-and-target-step-result-model.md#5b-unit-applicability-envelope--opening--in-unit--closing-checkpoints). Opening/Closing are mandatory logical applicability boundaries; registries may also be checked during Unit work whenever new material pressure appears.
+Each material Unit below inherits the generic [`Unit Applicability Envelope`](../../../idtspe-core/runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md#5b-unit-applicability-envelope--opening--in-unit--closing-checkpoints). Opening/Closing are mandatory logical applicability boundaries; registries may also be checked during Unit work whenever new material pressure appears.
 
 #### `RU-FEAT-01` processing envelope
 
@@ -174,7 +174,7 @@ Each material Unit below inherits the generic [`Unit Applicability Envelope`](..
 
 #### `RU-FEAT-06` processing envelope
 
-1. **Opening Unit Checkpoint — `RU-FEAT-06`** — determine whether this Feature's behavior/target meaning is materially affected, then apply the shared [Current-Owner Evolution Impact Projection Contract](../shared/current-owner-evolution-impact-projection-contract.md).
+1. **Opening Unit Checkpoint — `RU-FEAT-06`** — determine whether this Feature's behavior/target meaning is materially affected, then apply the shared [Current-Owner Evolution Impact Projection Contract](../profile-contracts/evolution/CURRENT-OWNER-EVOLUTION-IMPACT-PROJECTION.md).
 2. **Unit Work — `RU-FEAT-06`** — produce the Feature-local reverse navigation/revalidation projection under that shared contract.
 3. **Closing Unit Checkpoint — `RU-FEAT-06`** — validate Feature-local revalidation/handoff needs and the shared projection-contract guards.
 
@@ -207,7 +207,7 @@ BR-*  = independently useful Feature must-hold Requirement
 
 An FBS may have zero, one or several attached BRs. The step does not need a BR merely to be normative behavior.
 
-Use the shared [`Requirement Classification And Representation Contract`](../shared/requirement-classification-and-representation-contract.md) for `BR-*` Type and `QRPE / Examples` semantics.
+Use the shared [`Requirement Classification And Representation Contract`](../profile-contracts/requirements/REQUIREMENT-CLASSIFICATION-AND-REPRESENTATION.md) for `BR-*` Type and `QRPE / Examples` semantics.
 
 When addressable Feature Requirements are material, use the exact reusable table schema:
 
@@ -270,7 +270,7 @@ Record the selected behavioral/locality boundary. The detailed implementation to
 
 ### RU-FEAT-06 — Evolution Impact
 
-This Feature-local Unit specializes the shared [Current-Owner Evolution Impact Projection Contract](../shared/current-owner-evolution-impact-projection-contract.md). Its local affected surface is **Feature behavior/target meaning**. The shared contract owns inclusion threshold across candidate/selected/conditional/deferred Steps, truthful planning-position projection, depth/no-copy rules and post-realization removal from active future impact. This Target Module owns only the Unit identity, Feature-specific materiality test and local revalidation/handoff use.
+This Feature-local Unit specializes the shared [Current-Owner Evolution Impact Projection Contract](../profile-contracts/evolution/CURRENT-OWNER-EVOLUTION-IMPACT-PROJECTION.md). Its local affected surface is **Feature behavior/target meaning**. The shared contract owns inclusion threshold across candidate/selected/conditional/deferred Steps, truthful planning-position projection, depth/no-copy rules and post-realization removal from active future impact. This Target Module owns only the Unit identity, Feature-specific materiality test and local revalidation/handoff use.
 
 ## Peer Reconciliation
 
@@ -304,7 +304,7 @@ one Requirement ≠ one test
 
 ## Unit Resolution Guidance / Knowledge Basis
 
-Use the shared [`Knowledge Basis contract`](../../../idtspe-core/shared/knowledge-basis-contract.md). Knowledge and drivers attach to the Unit responsibility they actually support; this section is only a compact Unit-contract index, not one undifferentiated Feature question set.
+Use the shared [`Knowledge Basis contract`](../../../idtspe-core/knowledge-bases/KNOWLEDGE-BASIS-CONTRACT.md). Knowledge and drivers attach to the Unit responsibility they actually support; this section is only a compact Unit-contract index, not one undifferentiated Feature question set.
 
 ```text
 RU-FEAT-01 Identity / Intent / Principal Result / Semantic Entry

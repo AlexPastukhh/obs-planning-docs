@@ -61,7 +61,7 @@ A Functional Workflow is not automatically:
 
 #### Decisions — Optional
 
-<Selected local Decisions only; Recommendation remains separate. Use Proposal/Decision lifecycle (`../../idtspe-methodology/active/idtspe-core/shared/proposal-and-decision-lifecycle-contract.md`) fields when material.>
+<Selected local Decisions only; Recommendation remains separate. Use Proposal/Decision lifecycle (`../../idtspe-methodology/active/idtspe-core/resolution/proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md`) fields when material.>
 
 #### What Must Be Tested — Optional
 
@@ -153,7 +153,7 @@ A `viable` alternative remains part of whole-solution/Application Concept compar
 
 ## 12. Q/R/P — When Material
 
-Use the shared `../../idtspe-methodology/active/idtspe-core/shared/qrp-lifecycle-and-review-contract.md`; do not maintain a workflow-specific issue ontology.
+Use the shared `../../idtspe-methodology/active/idtspe-core/resolution/qrp/QRP-LIFECYCLE-AND-REVIEW.md`; do not maintain a workflow-specific issue ontology.
 
 ```markdown
 ### CG/Q/R/P-FW-<ID> — <title>

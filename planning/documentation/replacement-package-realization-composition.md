@@ -1,7 +1,7 @@
 # Replacement Package Reviewed Realization Composition
 
-Status: active app-specific/external composition owner  
-Scope: Replacement Package Builder + package protocol + Replacement Package App  
+Status: active app-specific/external composition owner
+Scope: Replacement Package Builder + package protocol + Replacement Package App
 Not authority for: generic IDTSPE runtime, SDS Target semantics, Builder internal behavior, App internal behavior, package schema.
 
 ## Purpose
@@ -24,14 +24,14 @@ Use the owners in this order for their own meaning:
 
 ```text
 methodology-use / current work composition
-→ idtspe-methodology/active/idtspe-core/shared/compose-current-work-use-case.md
+→ idtspe-methodology/active/idtspe-core/use-cases/compose-current-work/UC-IDTSPE-COMPOSE-CURRENT-WORK.md
 
 exact directly-integrable candidate
 → idtspe-methodology/active/idtspe-core/target-modules/TM-EXACT-REALIZATION.md
 
 finding / stale-meaning re-entry
-→ idtspe-methodology/active/idtspe-core/shared/finding-disposition-contract.md
-→ idtspe-methodology/active/idtspe-core/shared/revalidate-current-work-use-case.md
+→ idtspe-methodology/active/idtspe-core/resolution/findings/FINDING-DISPOSITION.md
+→ idtspe-methodology/active/idtspe-core/use-cases/revalidate-current-work/UC-IDTSPE-REVALIDATE-CURRENT-WORK.md
 
 current package producer
 → use-cases/UC-REPO-BUILD-REPLACEMENT-PACKAGE.md

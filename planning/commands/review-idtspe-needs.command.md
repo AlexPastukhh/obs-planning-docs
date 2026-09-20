@@ -21,13 +21,13 @@ Scope: one concrete OBS Planning command route. Reusable semantics remain in lin
   "activeContextBehavior": "Use current checked Sources/Evidence and exact USER wording. Do not silently turn wanted outcome into a Feature, Requirement, Proposal or Evolution Step. If current accepted meaning already covers the need, route to current usage/realization/Evidence as applicable. If review establishes a defect/contradiction, hand off a Finding Candidate to Finding Disposition. If a concrete answer exists, hand off to canonical Proposal Candidate Review. If material ownership/meaning remains unresolved, use Broad Discussion/Q-R-P/discovery proportionally. Under SDS, place sufficiently coherent selected materially unrealized meaning into an existing Evolution Step when it belongs to that transition, or identify a new Step candidate only when an independent qualitative transition is justified.",
   "traversalReadMode": "Reuse current reliable Core governance. Read Need Candidate Disposition and USER-input intake first; consult Proposal/Decision, Finding, Q-R-P, current owner/Evidence and active-profile temporal/Requirement owners only when disposition reaches those semantics. Do not hard-code SDS into the generic Core surface.",
   "ownerFiles": [
-    "planning/documentation/idtspe-methodology/active/idtspe-core/shared/idtspe-command-surface-contract.md",
-    "planning/documentation/idtspe-methodology/active/idtspe-core/shared/need-candidate-disposition-contract.md",
-    "planning/documentation/idtspe-methodology/active/idtspe-core/shared/user-input-decision-and-answer-intake-rule.md",
-    "planning/documentation/idtspe-methodology/active/idtspe-core/shared/compose-current-work-use-case.md",
-    "planning/documentation/idtspe-methodology/active/idtspe-core/shared/proposal-and-decision-lifecycle-contract.md",
-    "planning/documentation/idtspe-methodology/active/idtspe-core/shared/finding-disposition-contract.md",
-    "planning/documentation/idtspe-methodology/active/idtspe-core/shared/qrp-lifecycle-and-review-contract.md"
+    "planning/documentation/idtspe-methodology/active/idtspe-core/commands/IDTSPE-COMMAND-SURFACE-CONTRACT.md",
+    "planning/documentation/idtspe-methodology/active/idtspe-core/resolution/needs/NEED-CANDIDATE-DISPOSITION.md",
+    "planning/documentation/idtspe-methodology/active/idtspe-core/runtime/interaction/USER-INPUT-DECISION-AND-ANSWER-INTAKE-RULE.md",
+    "planning/documentation/idtspe-methodology/active/idtspe-core/use-cases/compose-current-work/UC-IDTSPE-COMPOSE-CURRENT-WORK.md",
+    "planning/documentation/idtspe-methodology/active/idtspe-core/resolution/proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md",
+    "planning/documentation/idtspe-methodology/active/idtspe-core/resolution/findings/FINDING-DISPOSITION.md",
+    "planning/documentation/idtspe-methodology/active/idtspe-core/resolution/qrp/QRP-LIFECYCLE-AND-REVIEW.md"
   ],
   "expectedOutput": "A compact Need Candidate review: exact USER/source evidence remains traceable; each need has a normalized desired outcome, relevant current meaning/coverage, smallest plausible semantic subject/owner, disposition, next canonical route, temporal/Evolution placement when applicable, and only the material unresolved USER decision/question that actually remains.",
   "permissionMode": "read-only-planning",

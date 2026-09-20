@@ -3,7 +3,7 @@
 Status: current reusable response/output example
 Scope: demonstrate the current material-answer review surface without the retired Level 1/2/3 model.
 
-Canonical owner: [`../idtspe-methodology/active/ai-reviewability/README.md`](../idtspe-methodology/active/ai-reviewability/README.md)
+Canonical owner: [`../idtspe-methodology/active/ai-reviewability/AI-OUTPUT-REVIEWABILITY.md`](../idtspe-methodology/active/ai-reviewability/AI-OUTPUT-REVIEWABILITY.md)
 
 This file demonstrates output shape only. It does not own planning semantics, command routing or permissions.
 

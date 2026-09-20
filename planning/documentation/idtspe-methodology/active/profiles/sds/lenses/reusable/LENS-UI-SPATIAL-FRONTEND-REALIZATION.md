@@ -1,6 +1,6 @@
 # LENS-UI-SPATIAL-FRONTEND-REALIZATION — Screen / UI / Frontend Realization
 
-Lens ID: `LENS-UI-SPATIAL-FRONTEND-REALIZATION`  
+Lens ID: `LENS-UI-SPATIAL-FRONTEND-REALIZATION`
 Activation: `TARGET_PROFILE_REUSABLE`
 
 ## Purpose
@@ -140,7 +140,7 @@ Likely semantic owner — optional hint
 Suggested lifecycle consequence — optional hint
 ```
 
-Core [`Finding Disposition`](../../../../idtspe-core/shared/finding-disposition-contract.md) resolves the actual State/lifecycle/owner destination. Normal authority/resolution must occur before accepted Result Unit meaning changes.
+Core [`Finding Disposition`](../../../../idtspe-core/resolution/findings/FINDING-DISPOSITION.md) resolves the actual State/lifecycle/owner destination. Normal authority/resolution must occur before accepted Result Unit meaning changes.
 
 This Lens does not define new Result Units or target-result fields. If repeated findings reveal missing target-result meaning, revise the appropriate Target Module/Local Target Contract or let Core disposition the finding to another owner.
 

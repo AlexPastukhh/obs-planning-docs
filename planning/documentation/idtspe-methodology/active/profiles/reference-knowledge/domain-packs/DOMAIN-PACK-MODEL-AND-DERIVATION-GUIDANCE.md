@@ -154,7 +154,7 @@ The process may discover that the proposed domain does not justify a separate pa
 
 ## Registration Gate
 
-A row belongs in [Domain Pack Registry](../DOMAIN-PACK-REGISTRY.md#reference-knowledge-domain-pack-registry) only when all material conditions hold:
+A row belongs in [Domain Pack Registry](../registries/DOMAIN-PACK-REGISTRY.md#reference-knowledge-domain-pack-registry) only when all material conditions hold:
 
 - a concrete pack owner exists;
 - applicability/boundary is understandable;

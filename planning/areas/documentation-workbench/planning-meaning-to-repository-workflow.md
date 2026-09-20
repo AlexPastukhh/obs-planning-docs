@@ -130,7 +130,7 @@ It does not own direct documentation editing that starts without solution planni
 
 ```text
 current-context.md
-../../documentation/idtspe-methodology/active/idtspe-core/shared/proposal-and-decision-lifecycle-contract.md
+../../documentation/idtspe-methodology/active/idtspe-core/resolution/proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md
 ../../documentation/workspace-planning/workspace-planning-principles-and-terminology.md
 ../../documentation/workspace-planning/use-case-registry.md
 ../../documentation/application-planning/solution-and-scenario-planning-workflow.md

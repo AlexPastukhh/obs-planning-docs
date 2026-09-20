@@ -20,7 +20,7 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
   "traversalReadMode": "Reuse current reliable IDTSPE/SDS governance; targeted refresh of the selected owner route when uncertain; full bootstrap only when no reliable sufficient governance context exists.",
   "ownerFiles": [
     "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-DOMAIN-DISCOVERY.md",
-    "planning/documentation/idtspe-methodology/active/profiles/sds/shared/idtspe-command-surface-contract.md"
+    "planning/documentation/idtspe-methodology/active/profiles/sds/commands/SDS-COMMAND-SURFACE-EXTENSION.md"
   ],
   "expectedOutput": "Domain Discovery Working Plan with proportional findings/candidates, material rules/invariants/boundaries and Core State. For unrealized work, selected useful Result Content hands off to the applicable Evolution Impact(s) in the active Evolution Step; zero/one/several Target Domain Bodies are formed only when durable post-Step Domain meaning is sufficiently resolved. Direct current Domain-owner handoff applies only to realized/current-state revalidation. A zero-owner/body result remains valid.",
   "permissionMode": "read-only-planning",

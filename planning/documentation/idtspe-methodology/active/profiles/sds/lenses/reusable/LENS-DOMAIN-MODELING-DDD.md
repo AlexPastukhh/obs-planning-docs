@@ -1,6 +1,6 @@
 # LENS-DOMAIN-MODELING-DDD — Domain Modeling / DDD
 
-Role: reusable thematic Domain modeling lens  
+Role: reusable thematic Domain modeling lens
 Primary use: Domain Discovery, durable Domain owner formation/review, owner-local Domain requirement discovery
 
 ## Purpose
@@ -11,8 +11,8 @@ This Lens/Knowledge Basis never contains the current project-specific Domain mod
 
 ## Analysis Surface
 
-**Primary:** current Feature/Slice/Domain Result Units or owner questions involving semantic identity, state, lifecycle, invariant, consistency, operations, failure/result meaning, persistence ownership, concurrency/atomicity, Domain proof or selected Evolution.  
-**Conditional:** related BR/IR/PFR, accepted Decisions, Evidence, relevant Slice/Shared relations and selected `RG-PRG-*` knowledge entries.  
+**Primary:** current Feature/Slice/Domain Result Units or owner questions involving semantic identity, state, lifecycle, invariant, consistency, operations, failure/result meaning, persistence ownership, concurrency/atomicity, Domain proof or selected Evolution.
+**Conditional:** related BR/IR/PFR, accepted Decisions, Evidence, relevant Slice/Shared relations and selected `RG-PRG-*` knowledge entries.
 **Context:** active Work Context/Target and natural-owner candidates.
 
 ## Supported Operations
@@ -225,9 +225,9 @@ Feature boundary review, Domain Discovery, durable Domain owner, Slice Discovery
 
 Primary reusable theory bridge:
 
-- [`../../shared/reusable-guidance-model.md`](../../shared/reusable-guidance-model.md) for how reusable questions/patterns become candidate guidance rather than live owner authority;
+- [`../../profile-contracts/reusable-guidance/REUSABLE-GUIDANCE-MODEL.md`](../../profile-contracts/reusable-guidance/REUSABLE-GUIDANCE-MODEL.md) for how reusable questions/patterns become candidate guidance rather than live owner authority;
 - [`../../../../../../tools/replacement-package-app/methodology-guidance/reusable-ddd-domain-discovery.md`](../../../../../../tools/replacement-package-app/methodology-guidance/reusable-ddd-domain-discovery.md) as the R2 DDD source corpus retained for migration provenance/coverage;
-- [`../../shared/programming-principles/README.md`](../../shared/programming-principles/README.md) for selective drill-down into generic implementation principles that become relevant during Domain reasoning.
+- [`../../knowledge-bases/programming-principles/README.md`](../../knowledge-bases/programming-principles/README.md) for selective drill-down into generic implementation principles that become relevant during Domain reasoning.
 
 This Lens body is the current operational evaluation contract. The R2 source is a knowledge/provenance source and never project truth or a competing runtime owner.
 

@@ -1,8 +1,8 @@
 <a id="tm-2d-31-vector-construction"></a>
 # TM-2D-31-VECTOR-CONSTRUCTION — Semantic Vector / Shape Construction
 
-Entry Point: `tm.2d.construction.vector`  
-Supported Roles: PRIMARY, SUPPORTING  
+Entry Point: `tm.2d.construction.vector`
+Supported Roles: PRIMARY, SUPPORTING
 Status: active profile module
 
 ## Purpose
@@ -11,7 +11,7 @@ Construct the actual editable 2D result using this route while preserving accept
 
 ## Target Step Result
 
-`Editable Semantic Vector Construction Result`. Generic Unit existence/disposition semantics follow the Core [Unit / Target Step Result Model](../../../idtspe-core/shared/idtspe-unit-and-target-step-result-model.md); this module owns only the visual Unit responsibilities/materiality below.
+`Editable Semantic Vector Construction Result`. Generic Unit existence/disposition semantics follow the Core [Unit / Target Step Result Model](../../../idtspe-core/runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md); this module owns only the visual Unit responsibilities/materiality below.
 
 ## Module-defined Unit Inventory
 
@@ -85,11 +85,11 @@ Use only when masks/clips/effects or secondary structures have independent const
 
 ## Construction Review Loop
 
-At meaningful whole-candidate milestones use [Construction Review Loop Checkpoint](../shared/CONSTRUCTION-REVIEW-LOOP-CHECKPOINT.md#shared-construction-review-loop-checkpoint).
+At meaningful whole-candidate milestones use [Construction Review Loop Checkpoint](../target-module-support/construction/CONSTRUCTION-REVIEW-LOOP.target-module-checkpoint.md#shared-construction-review-loop-checkpoint).
 
 ## Exact Realization
 
-Route Unit Resolution may invoke Core Exact Realization through [Exact Realization Integration](../shared/EXACT-REALIZATION-INTEGRATION.md#shared-exact-realization-integration) when literal construction/modification is needed.
+Route Unit Resolution may invoke Core Exact Realization through [Exact Realization Integration](../target-module-support/construction/EXACT-REALIZATION-INTEGRATION.target-module-guidance.md#shared-exact-realization-integration) when literal construction/modification is needed.
 
 ## Validators
 

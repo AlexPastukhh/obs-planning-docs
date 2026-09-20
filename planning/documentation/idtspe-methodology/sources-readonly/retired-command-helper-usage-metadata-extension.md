@@ -63,4 +63,4 @@ Current navigation is derived from semantic identity (`USE_CASE`, `TARGET_MODULE
 - direct command contract: [`planning/commands/README.md`](../../../commands/README.md);
 - command routing: [`planning/command-routing.md`](../../../command-routing.md);
 - semantic command/Scenario projection: [`planning/documentation/tools/tampermonkey/chat-command-palette/README.md`](../../tools/tampermonkey/chat-command-palette/README.md);
-- canonical methodology working Scenarios: [`methodology-use-case-scenario-map.md`](../active/idtspe-core/shared/methodology-use-case-scenario-map.md); repository/tool Scenario ownership remains with its repository workflow/scenario owners.
+- canonical methodology working Scenarios: [`planning/documentation/idtspe-methodology/active/idtspe-core/evaluation/USE-CASE-SCENARIO-MAP.md`](../active/idtspe-core/evaluation/USE-CASE-SCENARIO-MAP.md); repository/tool Scenario ownership remains with its repository workflow/scenario owners.

@@ -31,7 +31,7 @@ The thin [`planning/session/`](../session/README.md) interaction contract is amb
 | Scope | Applicability | What its Use Cases govern | Registry |
 |---|---|---|---|
 | Generic Documentation | whenever repository methodology/documentation must be found, interpreted, reviewed or changed | how to work with methodology/documentation owners and how to maintain documentation capabilities | [`use-case-registry.md`](use-case-registry.md) |
-| IDTSPE Core | always in the active IDTSPE work environment; especially before a material methodology action or after context/revalidation change | proportional composition of IDTSPE work, state, integration, revalidation, and maintenance of IDTSPE component types | [`idtspe-methodology/active/idtspe-core/shared/idtspe-methodology-use-case-registry.md`](idtspe-methodology/active/idtspe-core/shared/idtspe-methodology-use-case-registry.md) |
+| IDTSPE Core | always in the active IDTSPE work environment; especially before a material methodology action or after context/revalidation change | proportional composition of IDTSPE work, state, integration, revalidation, and maintenance of IDTSPE component types | [`idtspe-methodology/active/idtspe-core/use-cases/USE-CASE-REGISTRY.md`](idtspe-methodology/active/idtspe-core/use-cases/USE-CASE-REGISTRY.md) |
 | Active profile | only if the profile defines a distinct methodology-usage capability not already covered by generic Documentation or IDTSPE Core | profile-specific **use of methodology documentation**, not profile planning semantics themselves | profile-owned registry when one exists |
 
 ## Installed Profile Baseline

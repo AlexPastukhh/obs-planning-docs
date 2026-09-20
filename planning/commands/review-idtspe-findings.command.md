@@ -21,13 +21,13 @@ Scope: one concrete OBS Planning command route. Reusable semantics remain in lin
   "activeContextBehavior": "Use current checked owners/Evidence and classify only material findings. Prefer the smallest justified Resolution Escalation. For RE-0/RE-1 show deterministic/local correction meaning without inventing a new architecture/product choice; route a Unit-local finding into the affected Unit Resolution, form a Contextual Unit only when a new bounded local responsibility is independently useful, and avoid Unit routing when Target Scope/Source/relation/another owner is the real subject; for RE-2/RE-4 identify the correct semantic decision surface, but do not confuse selection with current-owner mutation. Under SDS, a selected correction that is still unrealized is integrated into the applicable Evolution Step Target Body until realization/materialization. For RE-3 revalidate the earliest affected upstream owner. Preserve unaffected accepted meaning.",
   "traversalReadMode": "Reuse current reliable Core governance. Read Finding Disposition, AI Reviewability, Proposal/Decision, Q/R/P and Revalidation owners as needed. Load the active profile's depth/Requirement/owner contracts only when a finding actually depends on profile-specific semantics; do not hard-code SDS into the generic Core surface.",
   "ownerFiles": [
-    "planning/documentation/idtspe-methodology/active/idtspe-core/shared/idtspe-command-surface-contract.md",
-    "planning/documentation/idtspe-methodology/active/idtspe-core/shared/finding-disposition-contract.md",
-    "planning/documentation/idtspe-methodology/active/ai-reviewability/README.md",
-    "planning/documentation/idtspe-methodology/active/idtspe-core/shared/proposal-and-decision-lifecycle-contract.md",
-    "planning/documentation/idtspe-methodology/active/idtspe-core/shared/qrp-lifecycle-and-review-contract.md",
-    "planning/documentation/idtspe-methodology/active/idtspe-core/shared/revalidate-current-work-use-case.md",
-    "planning/documentation/idtspe-methodology/active/idtspe-core/shared/idtspe-unit-and-target-step-result-model.md"
+    "planning/documentation/idtspe-methodology/active/idtspe-core/commands/IDTSPE-COMMAND-SURFACE-CONTRACT.md",
+    "planning/documentation/idtspe-methodology/active/idtspe-core/resolution/findings/FINDING-DISPOSITION.md",
+    "planning/documentation/idtspe-methodology/active/ai-reviewability/AI-OUTPUT-REVIEWABILITY.md",
+    "planning/documentation/idtspe-methodology/active/idtspe-core/resolution/proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md",
+    "planning/documentation/idtspe-methodology/active/idtspe-core/resolution/qrp/QRP-LIFECYCLE-AND-REVIEW.md",
+    "planning/documentation/idtspe-methodology/active/idtspe-core/use-cases/revalidate-current-work/UC-IDTSPE-REVALIDATE-CURRENT-WORK.md",
+    "planning/documentation/idtspe-methodology/active/idtspe-core/runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md"
   ],
   "expectedOutput": "A compact material-finding review: each finding has checked affected/current owner, Review Priority when useful, Resolution Escalation RE-0..RE-4, most-upstream affected owner/depth, Decision/Requirement impact when applicable, upstream-revalidation consequence, corrective Proposal/route status, downstream consequence, and a plain USER-review statement. Deterministic/local findings are not presented as unresolved architecture decisions; upstream-impact findings are made explicit before downstream correction.",
   "permissionMode": "read-only-planning",

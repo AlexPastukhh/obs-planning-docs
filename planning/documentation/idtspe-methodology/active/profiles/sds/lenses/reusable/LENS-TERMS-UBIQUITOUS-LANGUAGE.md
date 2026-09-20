@@ -17,7 +17,7 @@ Material unresolved terminology ambiguity blocks semantic completeness when inte
 
 ## Knowledge Basis
 
-Primary reusable guidance: [`Terms / Ubiquitous Language Contract`](../../../../idtspe-core/shared/terms-and-ubiquitous-language-contract.md). Project/application Terms owners remain semantic vocabulary sources; this Lens evaluates rather than owns them.
+Primary reusable guidance: [`Terms / Ubiquitous Language Contract`](../../../../idtspe-core/knowledge-bases/TERMS-AND-UBIQUITOUS-LANGUAGE.md). Project/application Terms owners remain semantic vocabulary sources; this Lens evaluates rather than owns them.
 
 ## Artifact / File Implications
 

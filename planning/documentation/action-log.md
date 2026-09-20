@@ -9,8 +9,8 @@ Logging starts only after explicit user instruction; no pre-start history is rec
 
 ### LOG-DOC-001 — Scope logs, package final-state logging and reusable Goal Map
 
-**Type:** IDEA REVIEW  
-**Source:** current planning chat; material result of `собери идеи` after logging had been explicitly requested  
+**Type:** IDEA REVIEW
+**Source:** current planning chat; material result of `собери идеи` after logging had been explicitly requested
 
 **Current Conclusions:**
 - independent parallel-work scopes are fixed repository structures with a canonical log at each scope root;
@@ -20,22 +20,22 @@ Logging starts only after explicit user instruction; no pre-start history is rec
 
 ### LOG-DOC-002 — Existing reusable staging-workspace model is superseded
 
-**Type:** IDEA CLARIFICATION  
-**Updates:** `LOG-DOC-001`  
+**Type:** IDEA CLARIFICATION
+**Updates:** `LOG-DOC-001`
 
 **Clarification:** the existing reusable `planning/documentation/parallel-work/` workspace/sync/global-log architecture is not partially maintained. Its foundational staging/shadow-copy/local-log/main-log model is superseded in full by fixed registered scopes + scope-local logs.
 
 ### LOG-DOC-003 — Scope boundaries are fixed by the root Scope Registry
 
-**Type:** IDEA CLARIFICATION  
-**Updates:** `LOG-DOC-001`  
+**Type:** IDEA CLARIFICATION
+**Updates:** `LOG-DOC-001`
 
 **Clarification:** chats cannot repartition the repository into different scopes per task. Scope roots/log paths are registered canonically in the root Scope Registry and remain fixed until an explicit registry architecture change. Nested paths belong to the deepest active registered scope root.
 
 ### LOG-DOC-004 — Material ordinary chat clarifications remain part of Idea provenance
 
-**Type:** IDEA CLARIFICATION  
-**Updates:** `LOG-DOC-001`  
+**Type:** IDEA CLARIFICATION
+**Updates:** `LOG-DOC-001`
 
 **Clarification:** after `собери идеи`, an ordinary user/chat message that materially changes Idea meaning, Current Conclusion, constraint, resolved Q/R/P or implementation requirement must be reflected in the scope log before the next `APPLIED` record. Non-material conversation is not logged.
 
@@ -43,10 +43,10 @@ Additional selected clarification: cross-scope work has one affected canonical l
 
 ### LOG-DOC-005 — Apply registered scopes, scope-log lifecycle and reusable Goal Map migration
 
-**Type:** APPLIED  
-**Applied From:** `LOG-DOC-001`, `LOG-DOC-002`, `LOG-DOC-003`, `LOG-DOC-004`  
-**ChangeSet:** `63d43c12-62d2-4647-9611-50a57cc62859`  
-**Package:** `d951e3b1-45aa-42b2-9b17-96e9376c0b04`  
+**Type:** APPLIED
+**Applied From:** `LOG-DOC-001`, `LOG-DOC-002`, `LOG-DOC-003`, `LOG-DOC-004`
+**ChangeSet:** `63d43c12-62d2-4647-9611-50a57cc62859`
+**Package:** `d951e3b1-45aa-42b2-9b17-96e9376c0b04`
 
 **Target-State Result:** after successful Apply of this package:
 - the root Scope Registry and fixed initial scope boundaries exist;
@@ -61,8 +61,8 @@ Additional selected clarification: cross-scope work has one affected canonical l
 
 ### LOG-DOC-006 — ReviewDiff found missing reusable log-reference identity contract
 
-**Type:** REVIEW DIFF  
-**Reviewed:** ChangeSet `63d43c12-62d2-4647-9611-50a57cc62859`, package `d951e3b1-45aa-42b2-9b17-96e9376c0b04`  
+**Type:** REVIEW DIFF
+**Reviewed:** ChangeSet `63d43c12-62d2-4647-9611-50a57cc62859`, package `d951e3b1-45aa-42b2-9b17-96e9376c0b04`
 
 **Material Finding / Selected Correction:** cross-scope references already depend on canonical log Entry IDs, but reusable scope/log semantics did not define stable/non-reused/non-renumbered Entry identity or the minimum semantic anchors for supported record kinds. The selected correction is to add that contract inside the existing scope/log workflow rather than create a separate schema owner.
 
@@ -70,17 +70,17 @@ Additional selected clarification: cross-scope work has one affected canonical l
 
 ### LOG-DOC-007 — Add practical ReviewDiff and File Update examples
 
-**Type:** IDEA CLARIFICATION  
-**Updates:** `LOG-DOC-006`  
+**Type:** IDEA CLARIFICATION
+**Updates:** `LOG-DOC-006`
 
 **Clarification:** practical examples are required for semantic ReviewDiff and `план файл-обновление` so future chats can reproduce the current output contracts. The existing `COLLECT-IDEAS-PRACTICAL-EXAMPLE.md` was checked and remains current coverage, so it is not duplicated or rewritten. Examples remain demonstrations only and link back to canonical owners.
 
 ### LOG-DOC-008 — Apply stable log identity correction and practical example coverage
 
-**Type:** APPLIED  
-**Applied From:** `LOG-DOC-006`, `LOG-DOC-007`  
-**ChangeSet:** `63d43c12-62d2-4647-9611-50a57cc62859`  
-**Package:** `2816952e-701e-401f-9bcc-0b59d92263d7`  
+**Type:** APPLIED
+**Applied From:** `LOG-DOC-006`, `LOG-DOC-007`
+**ChangeSet:** `63d43c12-62d2-4647-9611-50a57cc62859`
+**Package:** `2816952e-701e-401f-9bcc-0b59d92263d7`
 
 **Target-State Result:** after successful Apply of this package:
 - reusable scope/log semantics define stable non-reused Scope IDs and stable unique/non-renumbered canonical Log Entry IDs;
@@ -94,45 +94,45 @@ Additional selected clarification: cross-scope work has one affected canonical l
 
 ### XREF-DOC-001 — Planning Helper save recovery and scope-direction clarification
 
-**Type:** CROSS-SCOPE REFERENCE  
-**Canonical Log:** `planning/documentation/tools/tampermonkey/chat-command-palette/action-log.md`  
-**Entry:** `LOG-PH-003`  
+**Type:** CROSS-SCOPE REFERENCE
+**Canonical Log:** `planning/documentation/tools/tampermonkey/chat-command-palette/action-log.md`
+**Entry:** `LOG-PH-003`
 **Reason:** reusable scope methodology changed as part of the same cross-scope work item as the Planning Helper publishing correction. Full reasoning, selected clarification and applied-state history are owned by the canonical Helper log entry.
 
 ### XREF-DOC-002 — Detailed application planning workspace/profile alignment
 
-**Type:** CROSS-SCOPE REFERENCE  
-**Canonical Log:** `planning/documentation/application-planning/action-log.md`  
-**Entry:** `LOG-APP-003`  
+**Type:** CROSS-SCOPE REFERENCE
+**Canonical Log:** `planning/documentation/application-planning/action-log.md`
+**Entry:** `LOG-APP-003`
 **Reason:** the specialized SDS profile/field kit under the reusable-documentation scope were aligned with the new detailed application-planning workspace and Reference Object Candidate contract. Full reasoning and applied-state history are owned by the canonical Application Planning log entry.
 
 ### XREF-DOC-003 — Scenario Variant authority profile correction
 
-**Type:** CROSS-SCOPE REFERENCE  
-**Canonical Log:** `planning/documentation/application-planning/action-log.md`  
-**Entry:** `LOG-APP-005`  
+**Type:** CROSS-SCOPE REFERENCE
+**Canonical Log:** `planning/documentation/application-planning/action-log.md`
+**Entry:** `LOG-APP-005`
 **Reason:** the specialized SDS profile under the reusable-documentation scope was corrected so current Scenario behavior authority follows the selected Scenario owner/Variant rather than unconditionally the root Scenario file. Full ReviewDiff correction reasoning and applied-state history are owned by the canonical Application Planning log entry.
 
 
 ### XREF-DOC-004 — Application Concept bridge and Idea-finding traceability
 
-**Type:** CROSS-SCOPE REFERENCE  
-**Canonical Log:** `planning/documentation/application-planning/action-log.md`  
-**Entry:** `LOG-APP-007`  
+**Type:** CROSS-SCOPE REFERENCE
+**Canonical Log:** `planning/documentation/application-planning/action-log.md`
+**Entry:** `LOG-APP-007`
 **Reason:** generic Idea/File Update/ReviewDiff traceability semantics changed as part of the same cross-scope work item as the Application Concept/Solution→Application planning bridge and detailed-planning traceability update. Full Idea Review and applied-state history are owned by the canonical Application Planning log entry.
 
 
 ### XREF-DOC-005 — Prototype/Requirement/Domain/Slice planning and focused Use-Case activation
 
-**Type:** CROSS-SCOPE REFERENCE  
-**Canonical Log:** `planning/documentation/application-planning/action-log.md`  
-**Entry:** `LOG-APP-009`  
+**Type:** CROSS-SCOPE REFERENCE
+**Canonical Log:** `planning/documentation/application-planning/action-log.md`
+**Entry:** `LOG-APP-009`
 **Reason:** reusable Scenario/Domain/Slice profile/field-kit and Tampermonkey semantic-projection workflow changed as part of the same Application Planning methodology work. Full Idea Review and applied-state history are owned by the canonical Application Planning log entry.
 
 ### LOG-DOC-009 — Workspace Architecture Planning foundation
 
-**Type:** IDEA REVIEW  
-**Source:** current planning discussion + material result of `собери идеи` covering Universal Architecture Lens, Workspace Use Cases, paths, change pressure/axes, architecture decisions/state/evolution, Domain Discovery/Realization and Vertical Slice reasoning  
+**Type:** IDEA REVIEW
+**Source:** current planning discussion + material result of `собери идеи` covering Universal Architecture Lens, Workspace Use Cases, paths, change pressure/axes, architecture decisions/state/evolution, Domain Discovery/Realization and Vertical Slice reasoning
 
 **Current Conclusions:**
 - Workspace Architecture Planning is a separate reusable Direction/family rather than a subtopic hidden inside Application Domain/Slice planning;
@@ -151,24 +151,24 @@ Additional selected clarification: cross-scope work has one affected canonical l
 
 #### Q-ARCH-TERM-01 — canonical name for a rare/one-off significant Workspace change
 
-**Related Ideas:** `IDEA-ARCH-02`, `IDEA-AXIS-01`  
-**Current Plan:** distinguish stable Workspace Use Cases from important concrete Workspace changes; keep the latter descriptive rather than fixing a new ontology term in this ChangeSet.  
-**Finding:** `Workspace Change Case` remains only a working term; a better canonical name may exist.  
-**Relation / Impact On Current Plan:** the Architecture Lens, paths and pressure model do not depend on the final label, so current behavior remains usable without promoting the working term.  
+**Related Ideas:** `IDEA-ARCH-02`, `IDEA-AXIS-01`
+**Current Plan:** distinguish stable Workspace Use Cases from important concrete Workspace changes; keep the latter descriptive rather than fixing a new ontology term in this ChangeSet.
+**Finding:** `Workspace Change Case` remains only a working term; a better canonical name may exist.
+**Relation / Impact On Current Plan:** the Architecture Lens, paths and pressure model do not depend on the final label, so current behavior remains usable without promoting the working term.
 **Blocking:** no.
 
 #### Q-ARCH-UC-DISCOVERY-01 — separate Workspace-Use-Case-Discovery UC
 
-**Related Ideas:** `IDEA-ARCH-01`, `IDEA-ARCH-UC-01`  
-**Current Plan:** keep five Architecture Use Cases; `workspace-use-case-discovery-workflow.md` is supporting work primarily under `UC-PLAN-ARCH-PRESSURE`.  
-**Finding:** the discovery result can be independently useful and may later justify its own UC if separate activation proves valuable.  
-**Relation / Impact On Current Plan:** no sixth UC is needed for the current Direction topology; the supporting workflow remains reusable by State/Path/Decision work.  
+**Related Ideas:** `IDEA-ARCH-01`, `IDEA-ARCH-UC-01`
+**Current Plan:** keep five Architecture Use Cases; `workspace-use-case-discovery-workflow.md` is supporting work primarily under `UC-PLAN-ARCH-PRESSURE`.
+**Finding:** the discovery result can be independently useful and may later justify its own UC if separate activation proves valuable.
+**Relation / Impact On Current Plan:** no sixth UC is needed for the current Direction topology; the supporting workflow remains reusable by State/Path/Decision work.
 **Blocking:** no.
 
 ### LOG-DOC-010 — Architecture Planning detailed clarifications and first-update boundary
 
-**Type:** IDEA CLARIFICATION  
-**Updates:** `LOG-DOC-009`  
+**Type:** IDEA CLARIFICATION
+**Updates:** `LOG-DOC-009`
 
 **Clarification:** Architecture Planning must explicitly preserve Workspace Use Cases as first-class inputs rather than collapsing them into a generic future-change axis. Read-only/understanding UCs are architecture-relevant because a Workspace must support finding canonical meaning, navigation, forming a correct mental model and safe reasoning in addition to mutation. Excessive facts/locations/exceptions that must be held simultaneously to avoid errors are a material Working-Context-Load problem. Extensions are reviewed through the future Workspace UCs / affected current UCs and paths they imply rather than used as bare labels that automatically justify abstractions.
 
@@ -176,10 +176,10 @@ Additional selected clarification: cross-scope work has one affected canonical l
 
 ### LOG-DOC-011 — Apply Workspace Architecture Planning foundation and application handoffs
 
-**Type:** APPLIED  
-**Applied From:** `LOG-DOC-009`, `LOG-DOC-010`  
-**ChangeSet:** `7624a3de-c989-466f-8942-c64e2972f530`  
-**Package:** `0fa1c488-a230-4963-97e1-b10268299e02`  
+**Type:** APPLIED
+**Applied From:** `LOG-DOC-009`, `LOG-DOC-010`
+**ChangeSet:** `7624a3de-c989-466f-8942-c64e2972f530`
+**Package:** `0fa1c488-a230-4963-97e1-b10268299e02`
 
 **Target-State Result:** after successful Apply of this package:
 - `DIR-PLAN-ARCHITECTURE` is a discoverable reusable peer Direction under `planning/documentation/architecture-planning/` with five independently activatable Architecture Use Cases;
@@ -194,8 +194,8 @@ Additional selected clarification: cross-scope work has one affected canonical l
 
 ### LOG-DOC-012 — ReviewDiff correct Architecture variant/template/log integration
 
-**Type:** REVIEW DIFF  
-**Reviewed:** ChangeSet `7624a3de-c989-466f-8942-c64e2972f530`, package `0fa1c488-a230-4963-97e1-b10268299e02`  
+**Type:** REVIEW DIFF
+**Reviewed:** ChangeSet `7624a3de-c989-466f-8942-c64e2972f530`, package `0fa1c488-a230-4963-97e1-b10268299e02`
 
 **Material Findings / Selected Corrections:**
 - Architecture Decision/Evolution introduced wording that could be read as a new `Architecture Variant` / `Evolution Variant` ontology even though the repository already owns generic `Idea Variant` + `Current Selected Variant` semantics. Correct the Architecture workflows/template to reuse generic Idea Variants and explicitly avoid a new Variant type.
@@ -206,10 +206,10 @@ Additional selected clarification: cross-scope work has one affected canonical l
 
 ### LOG-DOC-013 — Apply Architecture Planning integration corrections
 
-**Type:** APPLIED  
-**Applied From:** `LOG-DOC-012`  
-**ChangeSet:** `7624a3de-c989-466f-8942-c64e2972f530`  
-**Package:** `933f384c-98ea-4bcf-aa96-68db0a0a9f1a`  
+**Type:** APPLIED
+**Applied From:** `LOG-DOC-012`
+**ChangeSet:** `7624a3de-c989-466f-8942-c64e2972f530`
+**Package:** `933f384c-98ea-4bcf-aa96-68db0a0a9f1a`
 
 **Target-State Result:** after successful Apply of this package:
 - Architecture Decision/Evolution alternatives use the reusable generic `Idea Variant` / `Current Selected Variant` contract; no new Architecture/Evolution Variant ontology exists;
@@ -225,23 +225,23 @@ Additional selected clarification: cross-scope work has one affected canonical l
 
 ### XREF-DOC-006 — Scenario-first planning, Testing foundation and Review Dependencies
 
-**Type:** CROSS-SCOPE REFERENCE  
-**Canonical Log:** `planning/documentation/application-planning/action-log.md`  
-**Entry:** `LOG-APP-014`  
+**Type:** CROSS-SCOPE REFERENCE
+**Canonical Log:** `planning/documentation/application-planning/action-log.md`
+**Entry:** `LOG-APP-014`
 **Reason:** reusable documentation gains Testing Planning and Review Dependency owners and retires Field Kits as part of the same transition; full rationale and applied state are owned by the canonical Application Planning entry.
 
 
 ### XREF-DOC-007 — ReviewDiff correction for preserved content and Scenario-first consistency
 
-**Type:** CROSS-SCOPE REFERENCE  
-**Canonical Log:** `planning/documentation/application-planning/action-log.md`  
-**Entry:** `LOG-APP-016`  
+**Type:** CROSS-SCOPE REFERENCE
+**Canonical Log:** `planning/documentation/application-planning/action-log.md`
+**Entry:** `LOG-APP-016`
 **Reason:** reusable documentation bootstrap/profile/example corrections participate in the same ChangeSet correction; full ReviewDiff findings and target state are owned by the canonical Application Planning entry.
 
 ### LOG-DOC-014 — UC-centric Workspace planning and integrated collect-ideas
 
-**Type:** IDEA REVIEW  
-**Source:** current planning discussion + repeated `собери идеи` review of UC/Scenario-centric planning, semantic file roles, vertical UC realization and the `собери идеи` command  
+**Type:** IDEA REVIEW
+**Source:** current planning discussion + repeated `собери идеи` review of UC/Scenario-centric planning, semantic file roles, vertical UC realization and the `собери идеи` command
 
 **Current Conclusions:**
 - development of an evolving Workspace is centered on useful Workspace Use Cases; Application actor-visible behavior remains Scenario-centered at the application boundary;
@@ -259,8 +259,8 @@ Additional selected clarification: cross-scope work has one affected canonical l
 
 ### LOG-DOC-015 — UC-centric planning clarifications and pre-package owner corrections
 
-**Type:** IDEA CLARIFICATION  
-**Updates:** `LOG-DOC-014`  
+**Type:** IDEA CLARIFICATION
+**Updates:** `LOG-DOC-014`
 
 **Clarification / resulting meaning:**
 - Step 3 stays inside the same UC block as Step 1/2; do not create generic Workspace Domain/Slice peer UCs merely because those planning depths are separately reviewable;
@@ -274,10 +274,10 @@ Additional selected clarification: cross-scope work has one affected canonical l
 
 ### LOG-DOC-016 — Apply UC-centric Workspace planning foundation and collect-ideas integration
 
-**Type:** APPLIED  
-**Applied From:** `LOG-DOC-014`, `LOG-DOC-015`  
-**ChangeSet:** `d70d352a-e364-4798-8dab-910f14eaba49`  
-**Package:** `1379cdb4-b362-4147-96fe-1babfe6b848e`  
+**Type:** APPLIED
+**Applied From:** `LOG-DOC-014`, `LOG-DOC-015`
+**ChangeSet:** `d70d352a-e364-4798-8dab-910f14eaba49`
+**Package:** `1379cdb4-b362-4147-96fe-1babfe6b848e`
 
 **Target-State Result:** after successful Apply of this package:
 - `DIR-PLAN-WORKSPACE` is discoverable as a reusable peer Direction for planning useful capabilities of evolving Workspaces;
@@ -295,8 +295,8 @@ Additional selected clarification: cross-scope work has one affected canonical l
 
 ### LOG-DOC-017 — ReviewDiff correct Workspace planning target boundaries
 
-**Type:** REVIEW DIFF  
-**Reviewed:** ChangeSet `d70d352a-e364-4798-8dab-910f14eaba49`, package `1379cdb4-b362-4147-96fe-1babfe6b848e`  
+**Type:** REVIEW DIFF
+**Reviewed:** ChangeSet `d70d352a-e364-4798-8dab-910f14eaba49`, package `1379cdb4-b362-4147-96fe-1babfe6b848e`
 
 **Material Findings / Selected Corrections:**
 - keep `WORKSPACE-USE-CASE-PLANNING-TEMPLATE.md` Workspace-UC-specific rather than mixing the Workspace template with Application Scenario grouping; `собери идеи` remains the orchestration route that branches to existing Application Planning owners when actor-visible behavior is in scope;
@@ -308,10 +308,10 @@ Additional selected clarification: cross-scope work has one affected canonical l
 
 ### LOG-DOC-018 — Apply Workspace planning ReviewDiff corrections
 
-**Type:** APPLIED  
-**Applied From:** `LOG-DOC-017`  
-**ChangeSet:** `d70d352a-e364-4798-8dab-910f14eaba49`  
-**Package:** `e11ef3c8-5ca5-4d2d-a21b-882ef9bc80ba`  
+**Type:** APPLIED
+**Applied From:** `LOG-DOC-017`
+**ChangeSet:** `d70d352a-e364-4798-8dab-910f14eaba49`
+**Package:** `e11ef3c8-5ca5-4d2d-a21b-882ef9bc80ba`
 
 **Target-State Result:** after successful Apply of this package:
 - the Workspace planning template is Workspace-UC-specific; Application Scenario planning continues through existing Application Planning owners while `собери идеи` may orchestrate both branches;
@@ -324,8 +324,8 @@ Additional selected clarification: cross-scope work has one affected canonical l
 
 ### LOG-DOC-019 — Align current documentation after UC-centric Workspace planning
 
-**Type:** ACTION  
-**Source:** checked consistency review of local repository snapshot `391fc4832ff7f166d2ff07397a5b1f9ebba5f0ab` after the UC-centric Workspace Planning ChangeSet  
+**Type:** ACTION
+**Source:** checked consistency review of local repository snapshot `391fc4832ff7f166d2ff07397a5b1f9ebba5f0ab` after the UC-centric Workspace Planning ChangeSet
 
 **Selected Corrections:**
 - distinguish Idea-local Current Conclusions / Current Selected Variants and the integrated `Current Plan Snapshot` from final `Current Overall Conclusions`, so `собери идеи` can present Q/R/P early without implying final conclusions exist before UC/Scenario integration;
@@ -342,10 +342,10 @@ Additional selected clarification: cross-scope work has one affected canonical l
 
 ### LOG-DOC-020 — Apply UC-centric planning consistency cleanup
 
-**Type:** APPLIED  
-**Applied From:** `LOG-DOC-019`  
-**ChangeSet:** `3fc169b2-413e-42cd-8557-c7231eff05de`  
-**Package:** `435db6d8-06d6-438d-abcf-65fded5ab627`  
+**Type:** APPLIED
+**Applied From:** `LOG-DOC-019`
+**ChangeSet:** `3fc169b2-413e-42cd-8557-c7231eff05de`
+**Package:** `435db6d8-06d6-438d-abcf-65fded5ab627`
 
 **Target-State Result:** after successful Apply of this package:
 - generic Idea review and integrated `собери идеи` output use one coherent baseline/order contract: local Idea conclusions feed an integrated Current Plan, Q/R/P may be displayed early, and final Current Overall Conclusions follow useful-result integration;
@@ -361,8 +361,8 @@ Additional selected clarification: cross-scope work has one affected canonical l
 
 ### LOG-DOC-021 — ReviewDiff correct Planning Helper Direction parity
 
-**Type:** REVIEW DIFF  
-**Reviewed:** ChangeSet `3fc169b2-413e-42cd-8557-c7231eff05de`, package `435db6d8-06d6-438d-abcf-65fded5ab627`  
+**Type:** REVIEW DIFF
+**Reviewed:** ChangeSet `3fc169b2-413e-42cd-8557-c7231eff05de`, package `435db6d8-06d6-438d-abcf-65fded5ab627`
 
 **Material Finding / Selected Correction:** the consistency-cleanup package restored `DIR-PLAN-WORKSPACE` and the Workspace Planning UCs in Planning Helper projections, but the active root `DIR-PLAN-ARCHITECTURE` remained absent from `DIRECTION_DEFINITIONS` even though Architecture Planning UCs were already projected. The selected correction is to add the missing Architecture Direction and replace the one-off Workspace Direction test with generic root-Direction registry parity so this class of drift fails verification.
 
@@ -370,10 +370,10 @@ Additional selected clarification: cross-scope work has one affected canonical l
 
 ### LOG-DOC-022 — Apply Planning Helper Direction parity correction
 
-**Type:** APPLIED  
-**Applied From:** `LOG-DOC-021`  
-**ChangeSet:** `3fc169b2-413e-42cd-8557-c7231eff05de`  
-**Package:** `c72eec6e-9a21-4bac-99af-e3e921ed73b7`  
+**Type:** APPLIED
+**Applied From:** `LOG-DOC-021`
+**ChangeSet:** `3fc169b2-413e-42cd-8557-c7231eff05de`
+**Package:** `c72eec6e-9a21-4bac-99af-e3e921ed73b7`
 
 **Target-State Result:** after successful Apply of this package:
 - Planning Helper projects `DIR-PLAN-ARCHITECTURE` alongside every other current root Direction;
@@ -386,8 +386,8 @@ Additional selected clarification: cross-scope work has one affected canonical l
 
 ### LOG-DOC-023 — Review UC/Scenario semantic discoverability consistency
 
-**Type:** ACTION  
-**Source:** checked current local snapshot `317eb792a13c59b67b8904d1d77695ae7f354080` after the prior UC-centric consistency ChangeSet was approved  
+**Type:** ACTION
+**Source:** checked current local snapshot `317eb792a13c59b67b8904d1d77695ae7f354080` after the prior UC-centric consistency ChangeSet was approved
 
 **Selected Corrections:**
 - replace the residual universal `everything useful → Use Case` discoverability wording with the current semantic boundary: Workspace/methodology capabilities route through Use-Case Registries/UCs, while Application actor-visible behavior routes through Scenario Catalogs/Scenarios;
@@ -405,10 +405,10 @@ Additional selected clarification: cross-scope work has one affected canonical l
 
 ### LOG-DOC-024 — Apply UC/Scenario semantic discoverability consistency cleanup
 
-**Type:** APPLIED  
-**Applied From:** `LOG-DOC-023`  
-**ChangeSet:** `7e35d0db-274f-4da9-9ebb-319e965cabae`  
-**Package:** `bd53ee52-46b2-4c32-b631-ab9b21bcc51c`  
+**Type:** APPLIED
+**Applied From:** `LOG-DOC-023`
+**ChangeSet:** `7e35d0db-274f-4da9-9ebb-319e965cabae`
+**Package:** `bd53ee52-46b2-4c32-b631-ab9b21bcc51c`
 
 **Target-State Result:** after successful Apply of this package:
 - natural repository navigation resolves a Direction and then the correct primary semantic registry: Workspace/methodology → Use-Case Registry, Application → Scenario Catalog;
@@ -424,22 +424,22 @@ Additional selected clarification: cross-scope work has one affected canonical l
 
 ### XREF-DOC-008 — Planning Helper editable real Commands and prompt governance
 
-**Type:** CROSS-SCOPE REFERENCE  
-**Canonical Log:** `planning/documentation/tools/tampermonkey/chat-command-palette/action-log.md`  
-**Entry:** `LOG-PH-007`  
+**Type:** CROSS-SCOPE REFERENCE
+**Canonical Log:** `planning/documentation/tools/tampermonkey/chat-command-palette/action-log.md`
+**Entry:** `LOG-PH-007`
 **Reason:** reusable command-routing/planning semantics, prompt-maintenance UC/workflow, Tampermonkey projection methodology and reusable Helper overview participate in the same Planning Helper command-workspace transition; full rationale and applied target state are owned by the canonical Helper log.
 
 ### XREF-DOC-009 — Planning Helper residual command-workspace correction
 
-**Type:** CROSS-SCOPE REFERENCE  
-**Canonical Log:** `planning/documentation/tools/tampermonkey/chat-command-palette/action-log.md`  
-**Entry:** `LOG-PH-009`  
+**Type:** CROSS-SCOPE REFERENCE
+**Canonical Log:** `planning/documentation/tools/tampermonkey/chat-command-palette/action-log.md`
+**Entry:** `LOG-PH-009`
 **Reason:** reusable Tampermonkey overview/helper-library summaries and the generated userscript participate in the same ReviewDiff correction for complete `Reload GitHub` disclosure and current Commands/Prompts boundaries; full finding/rationale and applied target state are owned by the canonical Helper log.
 
 ### LOG-DOC-025 — Review prompt/helper-library consistency after editable Commands transition
 
-**Type:** ACTION  
-**Source:** holistic consistency review of selected local snapshot `070d02a599582a612d7e39acedba5bdd66bbe181` after the editable-real-Commands and ReviewDiff correction packages  
+**Type:** ACTION
+**Source:** holistic consistency review of selected local snapshot `070d02a599582a612d7e39acedba5bdd66bbe181` after the editable-real-Commands and ReviewDiff correction packages
 
 **Selected Corrections:**
 - expose `prompt-maintenance-workflow.md` and the already-active `reviewable-agent-output-and-commands-workflow.md` in the reusable Documentation Core Owners index so current UCs route naturally to their real owners;
@@ -456,10 +456,10 @@ Additional selected clarification: cross-scope work has one affected canonical l
 
 ### LOG-DOC-026 — Apply prompt/helper-library consistency cleanup
 
-**Type:** APPLIED  
-**Applied From:** `LOG-DOC-025`  
-**ChangeSet:** `5a94619f-95a6-4b9f-8439-368bdc431798`  
-**Package:** `fdd1940b-9834-49fd-bd25-5ce0d3e94318`  
+**Type:** APPLIED
+**Applied From:** `LOG-DOC-025`
+**ChangeSet:** `5a94619f-95a6-4b9f-8439-368bdc431798`
+**Package:** `fdd1940b-9834-49fd-bd25-5ce0d3e94318`
 
 **Target-State Result:** after successful Apply of this package:
 - reusable Documentation Core Owners directly expose prompt maintenance and reviewable-agent-output/command response behavior;
@@ -474,8 +474,8 @@ Additional selected clarification: cross-scope work has one affected canonical l
 
 ### LOG-DOC-027 — ReviewDiff correct exact-duplicate prompt invariant
 
-**Type:** REVIEW DIFF  
-**Reviewed:** ChangeSet `5a94619f-95a6-4b9f-8439-368bdc431798`, package `fdd1940b-9834-49fd-bd25-5ce0d3e94318`  
+**Type:** REVIEW DIFF
+**Reviewed:** ChangeSet `5a94619f-95a6-4b9f-8439-368bdc431798`, package `fdd1940b-9834-49fd-bd25-5ce0d3e94318`
 
 **Material Finding / Selected Correction:** the new prompt-maintenance workflow allowed an explicitly intentional byte-identical prompt duplicate for a distinct interaction purpose, while the selected automated corpus invariant rejects every duplicate exact `item.text`. Keep the stricter tested invariant: byte-identical active prompt bodies have exactly one current record; only materially overlapping but non-identical prompts may coexist when their distinct interaction purpose is explicit. No schema escape hatch or test change is needed.
 
@@ -485,10 +485,10 @@ Additional selected clarification: cross-scope work has one affected canonical l
 
 ### LOG-DOC-028 — Apply exact-duplicate prompt invariant correction
 
-**Type:** APPLIED  
-**Applied From:** `LOG-DOC-027`  
-**ChangeSet:** `5a94619f-95a6-4b9f-8439-368bdc431798`  
-**Package:** `6cc9bdbc-66e8-4b93-b361-610ee3127d26`  
+**Type:** APPLIED
+**Applied From:** `LOG-DOC-027`
+**ChangeSet:** `5a94619f-95a6-4b9f-8439-368bdc431798`
+**Package:** `6cc9bdbc-66e8-4b93-b361-610ee3127d26`
 
 **Target-State Result:** after successful Apply of this package, reusable prompt maintenance requires one current record for every byte-identical active prompt body, while materially overlapping non-identical prompts may coexist only for an explicit distinct interaction purpose; the existing Helper corpus test already enforces the exact-body uniqueness invariant and remains unchanged.
 
@@ -496,8 +496,8 @@ Additional selected clarification: cross-scope work has one affected canonical l
 
 ### LOG-DOC-029 — Directed accumulating SDS/UCDS planning and AI reviewability
 
-**Type:** IDEA REVIEW  
-**Source:** current planning discussion and selected clarifications covering durable accumulation of `собери идеи` results, proportional Application/Workspace planning profiles, reviewable AI output, directed planning dependencies, execution order and recheck quality  
+**Type:** IDEA REVIEW
+**Source:** current planning discussion and selected clarifications covering durable accumulation of `собери идеи` results, proportional Application/Workspace planning profiles, reviewable AI output, directed planning dependencies, execution order and recheck quality
 
 **Current Conclusions:**
 - material AI planning/development answers expose complete `Key Points` and a separate `Review Priority` (`Critical / High / Normal / Low`) based on blast radius/correction cost/cross-owner effect and material current change pressure rather than confidence;
@@ -512,15 +512,15 @@ Additional selected clarification: cross-scope work has one affected canonical l
 - the reusable Goal Map owner/Use Case is retired because its useful current-plan function is covered by the accumulating UCDS/SDS representation and execution-order projection; Dashboard/product-specific Goal Maps remain separate application concepts;
 - no new generic `Current Planning Workspace`, Planning Draft, Planning Item or other parallel semantic owner is introduced.
 
-**Questions / Risks / Problems:**  
+**Questions / Risks / Problems:**
 No material unresolved issue blocks this selected transition. Exact physical Mini/Modular project layouts remain proportional and project-local; the profile examples are not mandatory directory ontology.
 
 ### LOG-DOC-030 — Apply directed SDS/UCDS planning and AI reviewability transition
 
-**Type:** APPLIED  
-**Applied From:** `LOG-DOC-029`  
-**ChangeSet:** `89c6d385-fcab-4142-b83c-e89e1fbda34d`  
-**Package:** `d0ac05e6-e115-4cfa-a32e-1639d1420280`  
+**Type:** APPLIED
+**Applied From:** `LOG-DOC-029`
+**ChangeSet:** `89c6d385-fcab-4142-b83c-e89e1fbda34d`
+**Package:** `d0ac05e6-e115-4cfa-a32e-1639d1420280`
 
 **Target-State Result:** after successful Apply of this package:
 - reusable AI working/reviewability semantics own Key Points, Review Priority, upstream→downstream planning direction, built-in focus/integration recheck and evidence-driven backflow; former answer Levels 1/2/3 and the current `обс` Use Case are retired;
@@ -536,8 +536,8 @@ No material unresolved issue blocks this selected transition. Exact physical Min
 
 ### LOG-DOC-031 — ReviewDiff correct SDS/UCDS profile routing, planning state and example coverage
 
-**Type:** REVIEW DIFF  
-**Reviewed:** ChangeSet `89c6d385-fcab-4142-b83c-e89e1fbda34d`, package `d0ac05e6-e115-4cfa-a32e-1639d1420280`  
+**Type:** REVIEW DIFF
+**Reviewed:** ChangeSet `89c6d385-fcab-4142-b83c-e89e1fbda34d`, package `d0ac05e6-e115-4cfa-a32e-1639d1420280`
 
 **Material Findings / Selected Corrections:**
 - current examples still advertised the retired Level-2 response model and reusable Goal Map as current, while the collect-Ideas practical example still demonstrated the pre-UCDS output contract; replace the Level-2 example with a current Key-Points/Review-Priority example, park Goal-Map examples in the index and update the collect-Ideas example to the accumulating UCDS contract;
@@ -550,10 +550,10 @@ No material unresolved issue blocks this selected transition. Exact physical Min
 
 ### LOG-DOC-032 — Apply SDS/UCDS ReviewDiff integration corrections
 
-**Type:** APPLIED  
-**Applied From:** `LOG-DOC-031`  
-**ChangeSet:** `89c6d385-fcab-4142-b83c-e89e1fbda34d`  
-**Package:** `90cabe4e-0690-4059-ac1b-2771c65c08ce`  
+**Type:** APPLIED
+**Applied From:** `LOG-DOC-031`
+**ChangeSet:** `89c6d385-fcab-4142-b83c-e89e1fbda34d`
+**Package:** `90cabe4e-0690-4059-ac1b-2771c65c08ce`
 
 **Target-State Result:** after successful Apply of this correction package:
 - reusable examples expose current Key Points/Review Priority without Level 1/2/3, Goal-Map examples are parked rather than current, and the collect-Ideas practical example demonstrates accumulating Mini UCDS with explicit Planning State;
@@ -567,8 +567,8 @@ No material unresolved issue blocks this selected transition. Exact physical Min
 
 ### LOG-DOC-033 — ReviewDiff restore collect-Ideas default depth and sync legacy insertion
 
-**Type:** REVIEW DIFF  
-**Reviewed:** ChangeSet `89c6d385-fcab-4142-b83c-e89e1fbda34d`, correction package `90cabe4e-0690-4059-ac1b-2771c65c08ce`  
+**Type:** REVIEW DIFF
+**Reviewed:** ChangeSet `89c6d385-fcab-4142-b83c-e89e1fbda34d`, correction package `90cabe4e-0690-4059-ac1b-2771c65c08ce`
 
 **Material Findings / Selected Corrections:**
 - the directed/UCDS rewrite accidentally removed the established `собери идеи` default depth from the canonical command and Workspace Planning principles: once a documentation/Workspace UC boundary is sufficiently grounded, Step 1 + Step 2 should normally be reviewed; Step 1 may stand alone while the target UC picture remains materially unresolved; Step 3 is included when explicitly requested or realization is sufficiently grounded/useful;
@@ -578,10 +578,10 @@ No material unresolved issue blocks this selected transition. Exact physical Min
 
 ### LOG-DOC-034 — Apply collect-Ideas depth and legacy-insertion correction
 
-**Type:** APPLIED  
-**Applied From:** `LOG-DOC-033`  
-**ChangeSet:** `89c6d385-fcab-4142-b83c-e89e1fbda34d`  
-**Package:** `9e1b397e-3383-4101-87ef-1aafaa1e3c0d`  
+**Type:** APPLIED
+**Applied From:** `LOG-DOC-033`
+**ChangeSet:** `89c6d385-fcab-4142-b83c-e89e1fbda34d`
+**Package:** `9e1b397e-3383-4101-87ef-1aafaa1e3c0d`
 
 **Target-State Result:** after successful Apply of this correction package:
 - the canonical `собери идеи` route and Workspace Planning principles again state the normal documentation/Workspace planning depth: Step 1 + Step 2 once the UC boundary is grounded, Step 1 alone only while the UC picture remains materially unresolved, and Step 3 when requested or sufficiently grounded/useful;
@@ -594,8 +594,8 @@ No material unresolved issue blocks this selected transition. Exact physical Min
 
 ### LOG-DOC-035 — UC/Scenario-first planning and methodology integration
 
-**Type:** IDEA REVIEW / LATER CLARIFICATION INTEGRATION  
-**Source:** current planning discussion after the directed SDS/UCDS planning packages; includes material later clarifications and full UC/Idea/Q/R/P consistency review  
+**Type:** IDEA REVIEW / LATER CLARIFICATION INTEGRATION
+**Source:** current planning discussion after the directed SDS/UCDS planning packages; includes material later clarifications and full UC/Idea/Q/R/P consistency review
 
 **Current Conclusions:**
 - primary planning is hard-locked to Real-Life Need/situation → Workspace UC or Application Scenario → Current→Target meaning → downstream dependencies/realization; a FIND/Q/R/P queue cannot be the planning root;
@@ -616,10 +616,10 @@ No material unresolved issue blocks this selected transition. Exact physical Min
 
 ### LOG-DOC-036 — Apply UC/Scenario-first planning and methodology integration
 
-**Type:** APPLIED  
-**Applied From:** `LOG-DOC-035`  
-**ChangeSet:** `62b89da9-51ad-4492-8c6f-e27415cb421f`  
-**Package:** `5858bb0f-fbcb-40e8-a319-71f2db029e9c`  
+**Type:** APPLIED
+**Applied From:** `LOG-DOC-035`
+**ChangeSet:** `62b89da9-51ad-4492-8c6f-e27415cb421f`
+**Package:** `5858bb0f-fbcb-40e8-a319-71f2db029e9c`
 
 **Target-State Result:** after successful Apply of this exact package:
 - root/reusable registries expose the selected Progressive Review, Review Audit, Planning Findings Review and Current Semantic Consistency capabilities;
@@ -636,8 +636,8 @@ No material unresolved issue blocks this selected transition. Exact physical Min
 
 ### LOG-DOC-037 — ReviewDiff correct package identity and dependency owner boundary
 
-**Type:** REVIEW DIFF  
-**Reviewed:** ChangeSet `62b89da9-51ad-4492-8c6f-e27415cb421f`, applied package `81749fe8-1e1a-4fb2-bd7d-1207058d5e9d`  
+**Type:** REVIEW DIFF
+**Reviewed:** ChangeSet `62b89da9-51ad-4492-8c6f-e27415cb421f`, applied package `81749fe8-1e1a-4fb2-bd7d-1207058d5e9d`
 
 **Material Findings / Selected Corrections:**
 - `LOG-DOC-036` recorded the superseded pre-exact-base package ID `5858bb0f-fbcb-40e8-a319-71f2db029e9c`, while the exact-base replacement package actually applied for this ChangeSet was `81749fe8-1e1a-4fb2-bd7d-1207058d5e9d`; preserve the historical record and correct the cumulative history through this later ReviewDiff entry rather than rewriting old knowledge;
@@ -647,10 +647,10 @@ No material unresolved issue blocks this selected transition. Exact physical Min
 
 ### LOG-DOC-038 — Apply ReviewDiff correction for dependency owner and package history
 
-**Type:** APPLIED  
-**Applied From:** `LOG-DOC-037`  
-**ChangeSet:** `62b89da9-51ad-4492-8c6f-e27415cb421f`  
-**Package:** `7d46ae70-9f16-491f-8bd2-95e0fb1ec70d`  
+**Type:** APPLIED
+**Applied From:** `LOG-DOC-037`
+**ChangeSet:** `62b89da9-51ad-4492-8c6f-e27415cb421f`
+**Package:** `7d46ae70-9f16-491f-8bd2-95e0fb1ec70d`
 
 **Target-State Result:** after successful Apply of this correction package:
 - the dependency workflow header/purpose semantically owns the full already-registered dependency-management UC family rather than only Configure Review Dependencies;
@@ -662,23 +662,23 @@ No material unresolved issue blocks this selected transition. Exact physical Min
 
 ### XREF-DOC-010 — Planning Helper Direction-nested Commands / Use Cases
 
-**Type:** CROSS-SCOPE REFERENCE  
-**Canonical Log:** `planning/documentation/tools/tampermonkey/chat-command-palette/action-log.md`  
-**Entry:** `LOG-PH-011`  
+**Type:** CROSS-SCOPE REFERENCE
+**Canonical Log:** `planning/documentation/tools/tampermonkey/chat-command-palette/action-log.md`
+**Entry:** `LOG-PH-011`
 **Reason:** the generated `planning/documentation/tools/tampermonkey/chat-command-palette.user.js` artifact belongs to the reusable-documentation parent scope while the Helper source/docs/tests own the behavior change; full rationale and APPLIED target state remain in the canonical Planning Helper log.
 
 
 ### XREF-DOC-011 — Planning Helper local Delete, seed catalogs and branch consistency
 
-**Type:** CROSS-SCOPE REFERENCE  
-**Canonical Log:** `planning/documentation/tools/tampermonkey/chat-command-palette/action-log.md`  
-**Entry:** `LOG-PH-013`  
+**Type:** CROSS-SCOPE REFERENCE
+**Canonical Log:** `planning/documentation/tools/tampermonkey/chat-command-palette/action-log.md`
+**Entry:** `LOG-PH-013`
 **Reason:** reusable reviewability wording and the generated `planning/documentation/tools/tampermonkey/chat-command-palette.user.js` artifact participate in the same Helper correction; full user clarification, ReviewDiff findings and APPLIED target state remain in the canonical Planning Helper log.
 
 ### LOG-DOC-039 — Complete callable Use-Case projection and practical testing plan
 
-**Type:** IDEA CLARIFICATION / INTEGRATED REVIEW  
-**Source:** explicit user clarification after the Planning Helper local-delete/seed package and review of the Testing Planning realization  
+**Type:** IDEA CLARIFICATION / INTEGRATED REVIEW
+**Source:** explicit user clarification after the Planning Helper local-delete/seed package and review of the Testing Planning realization
 
 **Current Conclusions:**
 - Testing Plan / Practical Acceptance has an independently useful result and must therefore be a current semantic Use Case rather than only a template/shared contract; select `UC-PLAN-TEST-PLAN — Plan Practical Testing / Acceptance`;
@@ -693,10 +693,10 @@ No material unresolved issue blocks this selected transition. Exact physical Min
 
 ### LOG-DOC-040 — Apply callable Use-Case parity and practical testing plan
 
-**Type:** APPLIED  
-**Applied From:** `LOG-DOC-039`  
-**ChangeSet:** `a73fe7e8-5004-4363-9a86-d91a4e2fd58b`  
-**Package:** `058d09c3-5a6e-4df9-a80e-cf948243cd71`  
+**Type:** APPLIED
+**Applied From:** `LOG-DOC-039`
+**ChangeSet:** `a73fe7e8-5004-4363-9a86-d91a4e2fd58b`
+**Package:** `058d09c3-5a6e-4df9-a80e-cf948243cd71`
 
 **Target-State Result:** after successful Apply of this package:
 - Testing Planning registers `UC-PLAN-TEST-PLAN` with `practical-testing-plan-workflow.md` as its owner and routes the existing Testing Plan / Practical Acceptance template through that UC;
@@ -712,8 +712,8 @@ No material unresolved issue blocks this selected transition. Exact physical Min
 
 ### LOG-DOC-041 — ReviewDiff correct direct-command classification for callable UCs
 
-**Type:** REVIEW DIFF  
-**Reviewed:** ChangeSet `a73fe7e8-5004-4363-9a86-d91a4e2fd58b`, applied package `058d09c3-5a6e-4df9-a80e-cf948243cd71`  
+**Type:** REVIEW DIFF
+**Reviewed:** ChangeSet `a73fe7e8-5004-4363-9a86-d91a4e2fd58b`, applied package `058d09c3-5a6e-4df9-a80e-cf948243cd71`
 
 **Material Finding / Selected Correction:**
 - registry-driven UC discovery and 70/70 Helper visibility are correct, but the build mapped any `Related command` cell containing a known command alias to `commandId`; this incorrectly treated supporting wording such as `supports положняк` and `none required; собери идеи may route here` as direct bespoke invocation ownership;
@@ -724,10 +724,10 @@ No material unresolved issue blocks this selected transition. Exact physical Min
 
 ### LOG-DOC-042 — Apply direct-command classification correction
 
-**Type:** APPLIED  
-**Applied From:** `LOG-DOC-041`  
-**ChangeSet:** `a73fe7e8-5004-4363-9a86-d91a4e2fd58b`  
-**Package:** `eb0549b8-3626-4e86-a2bc-73eb879ca211`  
+**Type:** APPLIED
+**Applied From:** `LOG-DOC-041`
+**ChangeSet:** `a73fe7e8-5004-4363-9a86-d91a4e2fd58b`
+**Package:** `eb0549b8-3626-4e86-a2bc-73eb879ca211`
 
 **Target-State Result:** after successful Apply of this correction package:
 - Planning Helper `0.29.1` keeps exact 70/70 current canonical UC projection/seed parity;
@@ -743,8 +743,8 @@ No material unresolved issue blocks this selected transition. Exact physical Min
 
 ### LOG-DOC-043 — Clarify same-quality Application SDS, WEUC-driven architecture evidence and Helper favorites
 
-**Type:** IDEA CLARIFICATION / INTEGRATED REVIEW  
-**Updates:** `LOG-DOC-035`, `LOG-DOC-036`, `LOG-DOC-039`, `LOG-DOC-040`  
+**Type:** IDEA CLARIFICATION / INTEGRATED REVIEW
+**Updates:** `LOG-DOC-035`, `LOG-DOC-036`, `LOG-DOC-039`, `LOG-DOC-040`
 **Source:** current planning discussion clarifying the accumulated `собери идеи` Application plan, SDS physical profiles, architecture-driving internal evolution cases, practical testing and Planning Helper manual control
 
 **Clarification / Resulting Current Meaning:**
@@ -763,10 +763,10 @@ No material unresolved issue blocks this selected transition. Exact physical Min
 
 ### LOG-DOC-044 — Apply complete Application SDS planning and Planning Helper favorites
 
-**Type:** APPLIED  
-**Applied From:** `LOG-DOC-043`  
-**ChangeSet:** `063d10a8-d80e-47b3-b804-d2cde2bb3a7b`  
-**Package:** `ba099b14-95cc-4869-bb63-6a4ce3fd6ffb`  
+**Type:** APPLIED
+**Applied From:** `LOG-DOC-043`
+**ChangeSet:** `063d10a8-d80e-47b3-b804-d2cde2bb3a7b`
+**Package:** `ba099b14-95cc-4869-bb63-6a4ce3fd6ffb`
 
 **Target-State Result:** after successful Apply of this package:
 - canonical SDS profile guidance, Application planning and `собери идеи` expose the same explicit Step 0–4 Application planning-quality contract, preserve Scenario DATA/Behavior in Mini/Modular/Full, and define Mini one-file, Modular small-growing-file-set and Full rich-owner representations;
@@ -783,8 +783,8 @@ No material unresolved issue blocks this selected transition. Exact physical Min
 
 ### LOG-DOC-045 — ReviewDiff correct duplicate Application SDS package logging
 
-**Type:** REVIEW DIFF  
-**Reviewed:** ChangeSet `063d10a8-d80e-47b3-b804-d2cde2bb3a7b`, applied package `ba099b14-95cc-4869-bb63-6a4ce3fd6ffb`  
+**Type:** REVIEW DIFF
+**Reviewed:** ChangeSet `063d10a8-d80e-47b3-b804-d2cde2bb3a7b`, applied package `ba099b14-95cc-4869-bb63-6a4ce3fd6ffb`
 
 **Material Finding / Selected Correction:**
 - the repository transition itself, SDS/WEUC semantics, direct command surface, Favorites behavior and automated verification are correct, but the produced target logs accidentally contain duplicate `LOG-DOC-043` / `LOG-DOC-044` entries plus duplicate cross-scope `XREF-016`, `XREF-007` and `XREF-014` entries;
@@ -795,10 +795,10 @@ No material unresolved issue blocks this selected transition. Exact physical Min
 
 ### LOG-DOC-046 — Apply Application SDS package-log coherence correction
 
-**Type:** APPLIED  
-**Applied From:** `LOG-DOC-045`  
-**ChangeSet:** `063d10a8-d80e-47b3-b804-d2cde2bb3a7b`  
-**Package:** `b633a04e-ce30-40c1-a4ab-090601234c05`  
+**Type:** APPLIED
+**Applied From:** `LOG-DOC-045`
+**ChangeSet:** `063d10a8-d80e-47b3-b804-d2cde2bb3a7b`
+**Package:** `b633a04e-ce30-40c1-a4ab-090601234c05`
 
 **Target-State Result:** after successful Apply of this correction package:
 - reusable-documentation history has exactly one `LOG-DOC-043` clarification and one `LOG-DOC-044` applied record for the original `ba099b14-95cc-4869-bb63-6a4ce3fd6ffb` package;
@@ -949,7 +949,7 @@ No material unresolved issue blocks this selected transition. Exact physical Min
 
 ### LOG-DOC-053 — Review corrected IDTSPE/SDS command surface and staged repository installation boundary
 
-**Type:** IDEA REVIEW / LATER CLARIFICATION / INTEGRATED CONSISTENCY REVIEW  
+**Type:** IDEA REVIEW / LATER CLARIFICATION / INTEGRATED CONSISTENCY REVIEW
 **Source:** accepted corrected IDTSPE methodology workspace + current replacement-package request against the user-selected `ca768b61...` repository snapshot
 
 **Current Conclusions:**
@@ -968,10 +968,10 @@ No material unresolved issue blocks this selected transition. Exact physical Min
 
 ### LOG-DOC-054 — Apply IDTSPE/SDS authority, 39-command surface and metadata-driven Helper navigation
 
-**Type:** APPLIED  
-**Applied From:** `LOG-DOC-053`  
-**ChangeSet:** `b0f880f0-5d73-4881-9754-b150c3dd4435`  
-**Package:** `46052a68-afd1-4913-8e75-0dd21a23e412`  
+**Type:** APPLIED
+**Applied From:** `LOG-DOC-053`
+**ChangeSet:** `b0f880f0-5d73-4881-9754-b150c3dd4435`
+**Package:** `46052a68-afd1-4913-8e75-0dd21a23e412`
 
 **Target-State Result:** after successful Apply of this package:
 - the corrected methodology workspace is installed at `planning/documentation/idtspe-methodology/` and root planning governance identifies IDTSPE + SDS as the current material-planning authority;
@@ -989,7 +989,7 @@ No material unresolved issue blocks this selected transition. Exact physical Min
 
 ### LOG-DOC-055 — Review post-Apply IDTSPE routing, legacy-alias retirement and Test Strategy realization registry
 
-**Type:** REVIEW DIFF / LATER CLARIFICATION / INTEGRATED CONSISTENCY REVIEW  
+**Type:** REVIEW DIFF / LATER CLARIFICATION / INTEGRATED CONSISTENCY REVIEW
 **Source:** post-Apply ReviewDiff of the IDTSPE/SDS installation package + user clarification that shared Test Strategy may need a registry-like file for cross-Slice test realization topology
 
 **Material Findings / Selected Corrections:**
@@ -1006,10 +1006,10 @@ No material unresolved issue blocks this selected transition. Exact physical Min
 
 ### LOG-DOC-056 — Apply IDTSPE routing/legacy-alias correction and Test Strategy realization registry
 
-**Type:** APPLIED  
-**Applied From:** `LOG-DOC-055`  
-**ChangeSet:** `b0f880f0-5d73-4881-9754-b150c3dd4435`  
-**Package:** `3fcc3e13-11df-4a27-a109-8c096fac8685`  
+**Type:** APPLIED
+**Applied From:** `LOG-DOC-055`
+**ChangeSet:** `b0f880f0-5d73-4881-9754-b150c3dd4435`
+**Package:** `3fcc3e13-11df-4a27-a109-8c096fac8685`
 
 **Target-State Result:** after successful Apply of this exact package:
 - root Architecture planning resolves through current SDS/IDTSPE architecture ownership: `SDS-FULL-MAP` + `TM-WEUC` for project-global architecture/evolution + WEUC Lens for target-local fitness; the root Direction no longer advertises the legacy Architecture registry as current authority;
@@ -1027,7 +1027,7 @@ No material unresolved issue blocks this selected transition. Exact physical Min
 
 ### LOG-DOC-057 — Review residual bootstrap semantics and Helper methodology-view authority
 
-**Type:** REVIEW DIFF / USER-SELECTED CORRECTION  
+**Type:** REVIEW DIFF / USER-SELECTED CORRECTION
 **Source:** post-Apply ReviewDiff after `LOG-DOC-056` + explicit user approval to correct the remaining findings
 
 **Material Findings / Selected Corrections:**
@@ -1040,10 +1040,10 @@ No material unresolved issue blocks this selected transition. Exact physical Min
 
 ### LOG-DOC-058 — Apply bootstrap/view-authority cleanup
 
-**Type:** APPLIED  
-**Applied From:** `LOG-DOC-057`  
-**ChangeSet:** `b0f880f0-5d73-4881-9754-b150c3dd4435`  
-**Package:** `b580c0bc-95fa-475b-a59d-450a3e2ca9f9`  
+**Type:** APPLIED
+**Applied From:** `LOG-DOC-057`
+**ChangeSet:** `b0f880f0-5d73-4881-9754-b150c3dd4435`
+**Package:** `b580c0bc-95fa-475b-a59d-450a3e2ca9f9`
 
 **Target-State Result:** after successful Apply of this exact package:
 - `idtspe.bootstrap` and `application_sds.bootstrap` are governance-orientation surfaces only; both preserve `hostTargetPolicy=NONE`, may report/reuse an already-current Target only for orientation, and explicitly forbid Target Formation, Target selection, invocation-mode inference and Target/Target-Module execution;
@@ -1057,7 +1057,7 @@ No material unresolved issue blocks this selected transition. Exact physical Min
 
 ### LOG-DOC-059 — Review IDTSPE Target/Lens composition, Knowledge Basis and artifact-guidance ownership
 
-**Type:** REVIEW DIFF / USER-SELECTED PRE-UPDATE  
+**Type:** REVIEW DIFF / USER-SELECTED PRE-UPDATE
 **Source:** current user-selected repository snapshot `46ee341cef4b6c581dc1e461f21cd1e11755abb7` + explicit clarification of Target Module/Lens usage and pre-update omission review
 
 **Material Findings / Selected Corrections:**
@@ -1081,10 +1081,10 @@ No material unresolved issue blocks this selected transition. Exact physical Min
 
 ### LOG-DOC-060 — Apply Lens applicability / Knowledge Basis / guidance-ownership integration
 
-**Type:** APPLIED  
-**Applied From:** `LOG-DOC-059`  
-**ChangeSet:** `4a7b4e71-bb08-4b49-906d-f8a54f05d3fb`  
-**Package:** `f73b494c-e01e-4bfc-b39f-61144726259f`  
+**Type:** APPLIED
+**Applied From:** `LOG-DOC-059`
+**ChangeSet:** `4a7b4e71-bb08-4b49-906d-f8a54f05d3fb`
+**Package:** `f73b494c-e01e-4bfc-b39f-61144726259f`
 
 **Target-State Result:** after successful Apply of this exact package:
 - generic IDTSPE explicitly supports either a reusable Target Module or a one-off Local Target Contract; Target Module and Target Instance remain distinct;
@@ -1102,7 +1102,7 @@ No material unresolved issue blocks this selected transition. Exact physical Min
 
 ### LOG-DOC-061 — Review residual Core/SDS command authority, Lens host policy, evolution handoff and ChangeSet finalization
 
-**Type:** REVIEW DIFF / LATER CLARIFICATION / USER-SELECTED CORRECTION  
+**Type:** REVIEW DIFF / LATER CLARIFICATION / USER-SELECTED CORRECTION
 **Source:** post-Apply ReviewDiff after `LOG-DOC-060` + user clarification that accepted `APPROVABLE` ReviewDiff finalizes a ChangeSet for future replacement-package continuity
 
 **Material Findings / Selected Corrections:**
@@ -1115,13 +1115,13 @@ No material unresolved issue blocks this selected transition. Exact physical Min
 
 ### LOG-DOC-062 — Apply Core command authority / host-policy / evolution-handoff / ChangeSet-finalization correction
 
-**Type:** APPLIED  
-**Applied From:** `LOG-DOC-061`  
-**ChangeSet:** `4a7b4e71-bb08-4b49-906d-f8a54f05d3fb`  
-**Package:** `d5699ab9-ba22-44b5-83fe-59fb94984536`  
+**Type:** APPLIED
+**Applied From:** `LOG-DOC-061`
+**ChangeSet:** `4a7b4e71-bb08-4b49-906d-f8a54f05d3fb`
+**Package:** `d5699ab9-ba22-44b5-83fe-59fb94984536`
 
 **Target-State Result:** after successful Apply of this exact package:
-- `active/idtspe-core/shared/idtspe-command-surface-contract.md` is the canonical generic Core command-surface owner. All **9 / 9** IDTSPE Core command definitions reference it rather than the SDS profile command owner; the SDS command-surface file is explicitly a profile extension that contributes SDS bootstrap/Target/focused/Lens-shortcut surfaces and the current Core+SDS aggregate projection;
+- `active/idtspe-core/commands/IDTSPE-COMMAND-SURFACE-CONTRACT.md` is the canonical generic Core command-surface owner. All **9 / 9** IDTSPE Core command definitions reference it rather than the SDS profile command owner; the SDS command-surface file is explicitly a profile extension that contributes SDS bootstrap/Target/focused/Lens-shortcut surfaces and the current Core+SDS aggregate projection;
 - Core bootstrap/navigation reads the generic command-surface contract and the methodology/system/helper maps distinguish generic Core command authority from the SDS extension;
 - `idtspe.lenses.select` uses `CREATE_OR_REUSE_TARGET`, so the TF-06A Applicability Scan can operate during Target Formation / Local Target Contract formation; `idtspe.lens.apply` keeps `RESOLVE_OR_REUSE_TARGET`;
 - Frontend and TM-WEUC prose no longer present target-local evolution companions as Target-Module proposals. They consume/reference L5/WEUC results; `AG-L5-02` plus Documentation / Representation / P-14 owns optional Evolution-section / `<owner>.evolution.md` proposal and embed-vs-split resolution; existing Domain/Slice wording remains aligned with the same boundary;
@@ -1134,7 +1134,7 @@ No material unresolved issue blocks this selected transition. Exact physical Min
 
 ### LOG-DOC-063 — Review residual Domain/Slice evolution-companion proposer wording
 
-**Type:** REVIEW DIFF / LATER CLARIFICATION / USER-SELECTED CORRECTION  
+**Type:** REVIEW DIFF / LATER CLARIFICATION / USER-SELECTED CORRECTION
 **Source:** post-Apply ReviewDiff after `LOG-DOC-062`
 
 **Material Findings / Selected Corrections:**
@@ -1147,10 +1147,10 @@ No material unresolved issue blocks this selected transition. Exact physical Min
 
 ### LOG-DOC-064 — Apply final Domain/Slice evolution-companion handoff wording correction
 
-**Type:** APPLIED  
-**Applied From:** `LOG-DOC-063`  
-**ChangeSet:** `4a7b4e71-bb08-4b49-906d-f8a54f05d3fb`  
-**Package:** `d886c59f-9b57-4cf0-9de6-661fa338fc21`  
+**Type:** APPLIED
+**Applied From:** `LOG-DOC-063`
+**ChangeSet:** `4a7b4e71-bb08-4b49-906d-f8a54f05d3fb`
+**Package:** `d886c59f-9b57-4cf0-9de6-661fa338fc21`
 
 **Target-State Result:** after successful Apply of this exact package:
 - `TM-DOMAIN-DRAFT` routes material future Domain evolution to WEUC/L5, explicitly states that the Target Module does not propose or require an evolution companion, and treats `CaptureItem.evolution.md` only as an example after `AG-L5-02` + Documentation / Representation + P-14 placement;
@@ -1165,7 +1165,7 @@ No material unresolved issue blocks this selected transition. Exact physical Min
 
 ### LOG-DOC-065 — Review shared Target/Lens Knowledge Basis contract and Target Module symmetry
 
-**Type:** LATER CLARIFICATION / INTEGRATED CONSISTENCY REVIEW  
+**Type:** LATER CLARIFICATION / INTEGRATED CONSISTENCY REVIEW
 **Source:** user clarification that Target Modules should expose the same formal Knowledge Basis shape as Lenses + current user-selected repository snapshot `36dfbf878d4ff9e616de70d7535135c5c0c9966e`
 
 **Material Findings / Selected Changes:**
@@ -1182,13 +1182,13 @@ No material unresolved issue blocks this selected transition. Exact physical Min
 
 ### LOG-DOC-066 — Apply shared Target/Lens Knowledge Basis contract across IDTSPE Core and SDS
 
-**Type:** APPLIED  
-**Applied From:** `LOG-DOC-065`  
-**ChangeSet:** `d70e9881-c187-4742-b7f3-0278353539b7`  
-**Package:** `14bfb562-aadf-4c13-b3cc-110736f7bc5b`  
+**Type:** APPLIED
+**Applied From:** `LOG-DOC-065`
+**ChangeSet:** `d70e9881-c187-4742-b7f3-0278353539b7`
+**Package:** `14bfb562-aadf-4c13-b3cc-110736f7bc5b`
 
 **Target-State Result:** after successful Apply of this exact package:
-- `active/idtspe-core/shared/knowledge-basis-contract.md` is the canonical shared Knowledge Basis owner for reusable Target Modules and Lenses; both use `INLINE | REFERENCED | HYBRID` with the same embedded/referenced/load-policy/operationalization shape;
+- `active/idtspe-core/knowledge-bases/KNOWLEDGE-BASIS-CONTRACT.md` is the canonical shared Knowledge Basis owner for reusable Target Modules and Lenses; both use `INLINE | REFERENCED | HYBRID` with the same embedded/referenced/load-policy/operationalization shape;
 - Target Module Core contracts expose `TM-IP-03A KNOWLEDGE_BASIS`, require exactly one Knowledge Basis, validate its separation from current Target Sources and keep reusable evaluation knowledge in Lens owners; Target Module maintenance now resolves Knowledge Basis mode/owners/load policy explicitly;
 - Lens Model/maintenance use the same shared contract while retaining Lens-specific Operational Evaluation Contract + Target Inputs/Evidence boundaries;
 - Core bootstrap/maps/Shell/default work mode know that selected Target Module and Lens referenced Knowledge Basis bodies are loaded lazily according to their own load policies; Theoretical Modules may be referenced by either operational owner;
@@ -1201,7 +1201,7 @@ No material unresolved issue blocks this selected transition. Exact physical Min
 
 ### LOG-DOC-067 — Correct stale current-base metadata found in shared Knowledge Basis ReviewDiff
 
-**Type:** REVIEW DIFF / USER-SELECTED CORRECTION  
+**Type:** REVIEW DIFF / USER-SELECTED CORRECTION
 **Source:** post-Apply cumulative ReviewDiff after `LOG-DOC-066`; ReviewDiff was not accepted as `APPROVABLE`, so ChangeSet `d70e9881-c187-4742-b7f3-0278353539b7` remains open for this correction
 
 **Material Findings / Selected Corrections:**
@@ -1213,10 +1213,10 @@ No material unresolved issue blocks this selected transition. Exact physical Min
 
 ### LOG-DOC-068 — Apply shared Knowledge Basis current-base metadata correction
 
-**Type:** APPLIED  
-**Applied From:** `LOG-DOC-067`  
-**ChangeSet:** `d70e9881-c187-4742-b7f3-0278353539b7`  
-**Package:** `9aac30b8-a319-448c-acaf-2cb60a9c31ae`  
+**Type:** APPLIED
+**Applied From:** `LOG-DOC-067`
+**ChangeSet:** `d70e9881-c187-4742-b7f3-0278353539b7`
+**Package:** `9aac30b8-a319-448c-acaf-2cb60a9c31ae`
 
 **Target-State Result:** after successful Apply of this exact package:
 - `MANIFEST.json` current `repo_snapshot_base` is `36dfbf878d4ff9e616de70d7535135c5c0c9966e`, matching the already-recorded repository audit evidence for the shared Target/Lens Knowledge Basis ChangeSet;
@@ -1228,31 +1228,31 @@ No material unresolved issue blocks this selected transition. Exact physical Min
 
 ### XREF-DOC-012 — Replacement Package App action-assisted Review-chat binding protocol
 
-**Type:** CROSS-SCOPE REFERENCE  
-**Canonical Log:** `planning/documentation/tools/replacement-package-app/action-log.md`  
-**Entry:** `LOG-RPKG-033`  
+**Type:** CROSS-SCOPE REFERENCE
+**Canonical Log:** `planning/documentation/tools/replacement-package-app/action-log.md`
+**Entry:** `LOG-RPKG-033`
 **Reason:** the canonical shared `OBS-ACTION/1` protocol is synchronized into `planning/documentation/build-replacement-archive-workflow.md` in the reusable-documentation scope, while the Replacement Package App scope owns the SL-RPKG-06 behavior, implementation, tests and full APPLIED rationale.
 
 ### XREF-DOC-013 — Replacement Package App prepared Apply and Review-chat rebind protocol
 
-**Type:** CROSS-SCOPE REFERENCE  
-**Canonical Log:** `planning/documentation/tools/replacement-package-app/action-log.md`  
-**Entry:** `LOG-RPKG-034`  
+**Type:** CROSS-SCOPE REFERENCE
+**Canonical Log:** `planning/documentation/tools/replacement-package-app/action-log.md`
+**Entry:** `LOG-RPKG-034`
 **Reason:** the Replacement Package App scope owns prepared action resolution, configurable Review-chat title matching, explicit rebind authorization and Swing background execution, while this transition also synchronizes the canonical `OBS-ACTION/1` definition/use through `planning/documentation/build-replacement-archive-workflow.md` in the reusable-documentation scope.
 
 
 ### XREF-DOC-014 — Replacement Package App prepared Apply ReviewDiff correction
 
-**Type:** CROSS-SCOPE REFERENCE  
-**Canonical Log:** `planning/documentation/tools/replacement-package-app/action-log.md`  
-**Entry:** `LOG-RPKG-035`  
+**Type:** CROSS-SCOPE REFERENCE
+**Canonical Log:** `planning/documentation/tools/replacement-package-app/action-log.md`
+**Entry:** `LOG-RPKG-035`
 **Reason:** the Replacement Package App scope owns the EDT pre-Prepare correction plus the accepted manual-rebind-during-Execute and non-interactive CLI limitations, while this correction also updates the materialized shared `OBS-ACTION/1` protocol in `planning/documentation/build-replacement-archive-workflow.md` so producer/consumer wording remains truthful.
 
 ### LOG-DOC-069 — Review Target Step Result / Unit foundation replacement before Apply
 
-**Type:** REVIEW DIFF / USER-SELECTED CORRECTION  
-**Reviewed:** ChangeSet `48a0c50e-8960-4ff0-9c12-3f8a20ebad97`, preliminary package `d4d655ff-6701-468a-b250-541764d0e85c`  
-**Source:** current planning discussion comparing the preliminary replacement package with the preserved design-v6 model and explicit user clarification of Supporting Target Module semantics  
+**Type:** REVIEW DIFF / USER-SELECTED CORRECTION
+**Reviewed:** ChangeSet `48a0c50e-8960-4ff0-9c12-3f8a20ebad97`, preliminary package `d4d655ff-6701-468a-b250-541764d0e85c`
+**Source:** current planning discussion comparing the preliminary replacement package with the preserved design-v6 model and explicit user clarification of Supporting Target Module semantics
 
 **Material Findings / Selected Corrections:**
 - the preliminary package omitted the active `SCOPE-REUSABLE-DOCUMENTATION` canonical `planning/documentation/action-log.md`; replacement target state must include its own cumulative review/correction meaning plus `APPLIED` relation rather than defer logging to a later package;
@@ -1265,9 +1265,9 @@ No material unresolved issue blocks this selected transition. Exact physical Min
 
 ### LOG-DOC-070 — Pre-update rebase correction for Target Step Result / Unit foundation
 
-**Type:** REVIEW DIFF / PRE-UPDATE CHECK  
-**Reviewed:** ChangeSet `48a0c50e-8960-4ff0-9c12-3f8a20ebad97`, preliminary package `67d76acb-81c1-4d22-947f-25c01308448d`  
-**Current Repository:** `github:AlexPastukhh/obs-planning-docs@d72cfc4c1682f40ec21ecaed4742213636980bad`  
+**Type:** REVIEW DIFF / PRE-UPDATE CHECK
+**Reviewed:** ChangeSet `48a0c50e-8960-4ff0-9c12-3f8a20ebad97`, preliminary package `67d76acb-81c1-4d22-947f-25c01308448d`
+**Current Repository:** `github:AlexPastukhh/obs-planning-docs@d72cfc4c1682f40ec21ecaed4742213636980bad`
 
 **Material Finding / Selected Correction:**
 - the preliminary replacement declared `5439c9da38db610759f90e32eb67331bac2c3cde` as current package base, but `main` advanced by one commit to `d72cfc4c1682f40ec21ecaed4742213636980bad` before Apply;
@@ -1280,12 +1280,12 @@ No material unresolved issue blocks this selected transition. Exact physical Min
 
 ### LOG-DOC-071 — Rebase Target Step Result / Unit package to selected local snapshot
 
-**Type:** REVIEW DIFF / PRE-UPDATE SOURCE CORRECTION  
-**Reviewed:** ChangeSet `48a0c50e-8960-4ff0-9c12-3f8a20ebad97`, preliminary package `e836cc54-9285-4ad6-8d3a-854451919681`  
-**Selected Source:** `obs-planning-docs-local-base-3d1ce07c-20260827-143346.zip`  
-**Snapshot SHA-256:** `cdd8cd6334bc4cd9f4398adf42fe4b0c1dba664773619267d923b643a395ba61`  
-**Repository:** `github:AlexPastukhh/obs-planning-docs`  
-**Snapshot Base Commit:** `3d1ce07c69ce7819aa42d4ade1bea3d02bbe418f`  
+**Type:** REVIEW DIFF / PRE-UPDATE SOURCE CORRECTION
+**Reviewed:** ChangeSet `48a0c50e-8960-4ff0-9c12-3f8a20ebad97`, preliminary package `e836cc54-9285-4ad6-8d3a-854451919681`
+**Selected Source:** `obs-planning-docs-local-base-3d1ce07c-20260827-143346.zip`
+**Snapshot SHA-256:** `cdd8cd6334bc4cd9f4398adf42fe4b0c1dba664773619267d923b643a395ba61`
+**Repository:** `github:AlexPastukhh/obs-planning-docs`
+**Snapshot Base Commit:** `3d1ce07c69ce7819aa42d4ade1bea3d02bbe418f`
 
 **Material Finding / Selected Correction:**
 - source state changed again before Apply, and the user explicitly supplied a fresh local repository snapshot for package rebasing;
@@ -1299,10 +1299,10 @@ No material unresolved issue blocks this selected transition. Exact physical Min
 
 ### LOG-DOC-072 — Apply Target Step Result / Unit Core foundation
 
-**Type:** APPLIED  
-**Applied From:** `LOG-DOC-069`, `LOG-DOC-070`, `LOG-DOC-071`  
-**ChangeSet:** `48a0c50e-8960-4ff0-9c12-3f8a20ebad97`  
-**Package:** `16223524-1499-4614-a472-8f4bab0ae919`  
+**Type:** APPLIED
+**Applied From:** `LOG-DOC-069`, `LOG-DOC-070`, `LOG-DOC-071`
+**ChangeSet:** `48a0c50e-8960-4ff0-9c12-3f8a20ebad97`
+**Package:** `16223524-1499-4614-a472-8f4bab0ae919`
 
 **Target-State Result:** after successful Apply of this exact package:
 - IDTSPE Core has one canonical Target Step Result / IDTSPE Unit model: Target Module or Local Target Contract owns target-specific Result Units, while Core owns generic State Unit kinds such as Question / Idea / Q-R-P / Decision / Evidence;
@@ -1321,11 +1321,11 @@ No material unresolved issue blocks this selected transition. Exact physical Min
 
 ### LOG-DOC-073 — Correct foundation package chronology after applied-v5 source verification
 
-**Type:** REVIEW DIFF / USER-SELECTED CORRECTION  
-**Reviewed:** ChangeSet `48a0c50e-8960-4ff0-9c12-3f8a20ebad97`, applied foundation package `16223524-1499-4614-a472-8f4bab0ae919`  
-**Selected Source:** `obs-planning-docs-local-base-3d1ce07c-20260827-145642(1).zip`  
-**Repository:** `github:AlexPastukhh/obs-planning-docs`  
-**Snapshot Base Commit:** `3d1ce07c69ce7819aa42d4ade1bea3d02bbe418f`  
+**Type:** REVIEW DIFF / USER-SELECTED CORRECTION
+**Reviewed:** ChangeSet `48a0c50e-8960-4ff0-9c12-3f8a20ebad97`, applied foundation package `16223524-1499-4614-a472-8f4bab0ae919`
+**Selected Source:** `obs-planning-docs-local-base-3d1ce07c-20260827-145642(1).zip`
+**Repository:** `github:AlexPastukhh/obs-planning-docs`
+**Snapshot Base Commit:** `3d1ce07c69ce7819aa42d4ade1bea3d02bbe418f`
 
 **Material Finding / Selected Correction:**
 - the fresh local snapshot matches all 21 replacement payloads of foundation package v5 exactly, so v5 is no longer a hypothetical/proposed Apply: its target state is already present in the local source and `LOG-DOC-072 APPLIED` is factual history;
@@ -1338,10 +1338,10 @@ No material unresolved issue blocks this selected transition. Exact physical Min
 
 ### LOG-DOC-074 — Apply Target Step Result / Unit ReviewDiff correction
 
-**Type:** APPLIED  
-**Applied From:** `LOG-DOC-073`  
-**ChangeSet:** `48a0c50e-8960-4ff0-9c12-3f8a20ebad97`  
-**Package:** `9ff30167-9271-4977-8962-12ccc0ec91da`  
+**Type:** APPLIED
+**Applied From:** `LOG-DOC-073`
+**ChangeSet:** `48a0c50e-8960-4ff0-9c12-3f8a20ebad97`
+**Package:** `9ff30167-9271-4977-8962-12ccc0ec91da`
 
 **Target-State Result:** after successful Apply of this exact correction package:
 - the Target Step Result / IDTSPE Unit foundation already applied by package `16223524-1499-4614-a472-8f4bab0ae919` remains unchanged;
@@ -1354,12 +1354,12 @@ No material unresolved issue blocks this selected transition. Exact physical Min
 
 ### LOG-DOC-075 — Review SDS literal Unit/Lens conformance and generic Finding Disposition
 
-**Type:** IDEA REVIEW / METHODOLOGY REFINEMENT / PRE-APPLY TARGET  
-**ChangeSet:** `4ec06243-a2ef-43ca-9825-2e1289ff1465`  
-**Selected Source:** `obs-planning-docs-local-base-c824891a-20260827-170946.zip`  
-**Repository:** `github:AlexPastukhh/obs-planning-docs`  
-**Snapshot Base Commit:** `c824891af9d3b77d528a6b4f17d3fac21c47ba5e`  
-**GitHub Head Checked:** `da098a83db7ec707fb362d998eb0267b505c6b80`  
+**Type:** IDEA REVIEW / METHODOLOGY REFINEMENT / PRE-APPLY TARGET
+**ChangeSet:** `4ec06243-a2ef-43ca-9825-2e1289ff1465`
+**Selected Source:** `obs-planning-docs-local-base-c824891a-20260827-170946.zip`
+**Repository:** `github:AlexPastukhh/obs-planning-docs`
+**Snapshot Base Commit:** `c824891af9d3b77d528a6b4f17d3fac21c47ba5e`
+**GitHub Head Checked:** `da098a83db7ec707fb362d998eb0267b505c6b80`
 
 **Material Discussion / Selected Meaning:**
 - migrate the existing SDS profile rather than redesign its topology: preserve all 17 Target Modules, all 7 SDS-specific Lenses, current purposes/Source contracts/commands/artifact rules and current Scenario/Domain/Slice/Test/WEUC ownership;
@@ -1378,10 +1378,10 @@ No material unresolved issue blocks this selected transition. Exact physical Min
 
 ### LOG-DOC-076 — Apply SDS Unit / Lens conformance migration
 
-**Type:** APPLIED  
-**Applied From:** `LOG-DOC-075`  
-**ChangeSet:** `4ec06243-a2ef-43ca-9825-2e1289ff1465`  
-**Package:** `4035bdc4-bf58-4f7d-8ee9-dc21cb17c1d9`  
+**Type:** APPLIED
+**Applied From:** `LOG-DOC-075`
+**ChangeSet:** `4ec06243-a2ef-43ca-9825-2e1289ff1465`
+**Package:** `4035bdc4-bf58-4f7d-8ee9-dc21cb17c1d9`
 
 **Target-State Result:** after successful Apply of this exact package:
 - all 17 active SDS Target Modules literally expose a Resolution / Production Method and explicit Target Step-Result Contract / Result Units;
@@ -1396,10 +1396,10 @@ No material unresolved issue blocks this selected transition. Exact physical Min
 
 ### LOG-DOC-077 — Correct destructive Core navigation rewrites after current-source verification
 
-**Type:** REVIEW DIFF / USER-SELECTED CORRECTION / CURRENT-SOURCE REBASE  
-**ChangeSet:** `4ec06243-a2ef-43ca-9825-2e1289ff1465`  
-**Current selected source:** `obs-planning-docs-local-base-da098a83-20260827-191526.zip`  
-**Snapshot Base Commit:** `da098a83db7ec707fb362d998eb0267b505c6b80`  
+**Type:** REVIEW DIFF / USER-SELECTED CORRECTION / CURRENT-SOURCE REBASE
+**ChangeSet:** `4ec06243-a2ef-43ca-9825-2e1289ff1465`
+**Current selected source:** `obs-planning-docs-local-base-da098a83-20260827-191526.zip`
+**Snapshot Base Commit:** `da098a83db7ec707fb362d998eb0267b505c6b80`
 **Reviewed preliminary target:** package `4035bdc4-bf58-4f7d-8ee9-dc21cb17c1d9` plus rejected ReviewDiff correction package `28289fcb-46f4-4d05-911d-ae0c1eb78a8b`
 
 **Current-source finding:**
@@ -1419,10 +1419,10 @@ No material unresolved issue blocks this selected transition. Exact physical Min
 
 ### LOG-DOC-078 — Apply current-source SDS ReviewDiff preservation correction
 
-**Type:** APPLIED  
-**Applied From:** `LOG-DOC-077`  
-**ChangeSet:** `4ec06243-a2ef-43ca-9825-2e1289ff1465`  
-**Package:** `8eba0c50-044e-4271-b4b6-92d90d5f93a6`  
+**Type:** APPLIED
+**Applied From:** `LOG-DOC-077`
+**ChangeSet:** `4ec06243-a2ef-43ca-9825-2e1289ff1465`
+**Package:** `8eba0c50-044e-4271-b4b6-92d90d5f93a6`
 
 **Target-State Result:** after successful Apply of this exact package:
 - the already-present 17/17 SDS Target Module and 7/7 SDS Lens conformance remains unchanged;
@@ -1436,10 +1436,10 @@ No material unresolved issue blocks this selected transition. Exact physical Min
 
 ### LOG-DOC-079 — Correct SDS ReviewDiff link scope, source metadata and Domain Evidence Result boundary
 
-**Type:** REVIEW DIFF / METHODOLOGY CONSISTENCY CORRECTION / PRE-APPLY TARGET  
-**ChangeSet:** `4ec06243-a2ef-43ca-9825-2e1289ff1465`  
-**Current source:** supplied cumulative ReviewDiff over local working tree at Git base `da098a83db7ec707fb362d998eb0267b505c6b80`  
-**Prior correction package:** `8eba0c50-044e-4271-b4b6-92d90d5f93a6`  
+**Type:** REVIEW DIFF / METHODOLOGY CONSISTENCY CORRECTION / PRE-APPLY TARGET
+**ChangeSet:** `4ec06243-a2ef-43ca-9825-2e1289ff1465`
+**Current source:** supplied cumulative ReviewDiff over local working tree at Git base `da098a83db7ec707fb362d998eb0267b505c6b80`
+**Prior correction package:** `8eba0c50-044e-4271-b4b6-92d90d5f93a6`
 
 **Material Findings / Selected Corrections:**
 - ReviewDiff exposed inconsistent link-audit scope: `MANIFEST.json` recorded **543/543 active methodology** while `FINAL-METHODOLOGY-AUDIT.md` called **725/725** the active-methodology count. Exact current target recheck resolves this as **543/543 active** and **730/730 methodology root + active + integration**; both scopes must be named explicitly.
@@ -1451,10 +1451,10 @@ No material unresolved issue blocks this selected transition. Exact physical Min
 
 ### LOG-DOC-080 — Apply SDS ReviewDiff consistency correction
 
-**Type:** APPLIED  
-**Applied From:** `LOG-DOC-079`  
-**ChangeSet:** `4ec06243-a2ef-43ca-9825-2e1289ff1465`  
-**Package:** `3f0e3d51-99a3-4e26-9755-c76a82eae1a2`  
+**Type:** APPLIED
+**Applied From:** `LOG-DOC-079`
+**ChangeSet:** `4ec06243-a2ef-43ca-9825-2e1289ff1465`
+**Package:** `3f0e3d51-99a3-4e26-9755-c76a82eae1a2`
 
 **Target-State Result:** after successful Apply of this exact package:
 - link audit metadata is internally consistent: active methodology **543/543**, methodology root + active + integration **730/730**;
@@ -1466,12 +1466,12 @@ No material unresolved issue blocks this selected transition. Exact physical Min
 
 ### LOG-DOC-081 — Review residual Lens-routing / automatic child-Target semantics after SDS conformance
 
-**Type:** REVIEW DIFF / METHODOLOGY CONSISTENCY CORRECTION / OPEN-CHANGESET CONTINUATION  
-**ChangeSet:** `4ec06243-a2ef-43ca-9825-2e1289ff1465`  
-**ChangeSet Label:** `SDS Unit and Finding Disposition conformance migration`  
-**Current Git Head:** `94b6d74b8074dd4dda13934b29977a89ef5379a2` (`Finalize ChangeSet` in the unrelated Replacement Package App child scope)  
-**Current Source:** exact current working-tree bytes reconstructed from the supplied cumulative ReviewDiff; paths not changed by that diff are verified directly against Git head  
-**Continuity:** same still-open SDS ChangeSet `4ec06243-a2ef-43ca-9825-2e1289ff1465`; the unrelated Git commit does not finalize/close it  
+**Type:** REVIEW DIFF / METHODOLOGY CONSISTENCY CORRECTION / OPEN-CHANGESET CONTINUATION
+**ChangeSet:** `4ec06243-a2ef-43ca-9825-2e1289ff1465`
+**ChangeSet Label:** `SDS Unit and Finding Disposition conformance migration`
+**Current Git Head:** `94b6d74b8074dd4dda13934b29977a89ef5379a2` (`Finalize ChangeSet` in the unrelated Replacement Package App child scope)
+**Current Source:** exact current working-tree bytes reconstructed from the supplied cumulative ReviewDiff; paths not changed by that diff are verified directly against Git head
+**Continuity:** same still-open SDS ChangeSet `4ec06243-a2ef-43ca-9825-2e1289ff1465`; the unrelated Git commit does not finalize/close it
 
 **Material Findings / Selected Corrections:**
 - the current SDS conformance target correctly establishes `Finding Candidate → Core Finding Disposition`, but residual prose still lets some SDS Lenses say they hand/route findings to WEUC, reopen upstream owners, or promote/open child Targets directly;
@@ -1486,10 +1486,10 @@ No material unresolved issue blocks this selected transition. Exact physical Min
 
 ### LOG-DOC-082 — Apply Finding-Disposition / Target-Formation lifecycle conformance cleanup
 
-**Type:** APPLIED  
-**Applied From:** `LOG-DOC-081`  
-**ChangeSet:** `4ec06243-a2ef-43ca-9825-2e1289ff1465`  
-**Package:** `bec59bee-6430-48bd-b409-4dd079723abc`  
+**Type:** APPLIED
+**Applied From:** `LOG-DOC-081`
+**ChangeSet:** `4ec06243-a2ef-43ca-9825-2e1289ff1465`
+**Package:** `bec59bee-6430-48bd-b409-4dd079723abc`
 
 **Target-State Result:** after successful Apply of this exact package:
 - SDS Lens findings no longer directly hand/route semantic meaning, reopen owners, or create/promote Targets; they surface Finding Candidates plus optional likely-owner/lifecycle hints, and Core Finding Disposition resolves the actual consequence;
@@ -1503,9 +1503,9 @@ No material unresolved issue blocks this selected transition. Exact physical Min
 
 ### LOG-DOC-083 — Review final residual Core/SDS lifecycle and State-vs-Result inconsistencies
 
-**Type:** REVIEW DIFF / METHODOLOGY CONSISTENCY CORRECTION / OPEN-CHANGESET CONTINUATION  
-**Source:** cumulative ReviewDiff after `LOG-DOC-082` + broad residual scan requested before final approval  
-**ChangeSet:** `4ec06243-a2ef-43ca-9825-2e1289ff1465`  
+**Type:** REVIEW DIFF / METHODOLOGY CONSISTENCY CORRECTION / OPEN-CHANGESET CONTINUATION
+**Source:** cumulative ReviewDiff after `LOG-DOC-082` + broad residual scan requested before final approval
+**ChangeSet:** `4ec06243-a2ef-43ca-9825-2e1289ff1465`
 
 **Material Findings / Selected Corrections:**
 - `BOOTSTRAP-SDS.md` contains literal `\n` escape text in the newly appended conformance section; restore real Markdown newlines;
@@ -1523,10 +1523,10 @@ No material unresolved issue blocks this selected transition. Exact physical Min
 
 ### LOG-DOC-084 — Apply final Finding-Disposition / Target-Formation consistency correction
 
-**Type:** APPLIED  
-**Applied From:** `LOG-DOC-083`  
-**ChangeSet:** `4ec06243-a2ef-43ca-9825-2e1289ff1465`  
-**Package:** `f030db4e-2f56-4f6a-95e7-7312850d5b75`  
+**Type:** APPLIED
+**Applied From:** `LOG-DOC-083`
+**ChangeSet:** `4ec06243-a2ef-43ca-9825-2e1289ff1465`
+**Package:** `f030db4e-2f56-4f6a-95e7-7312850d5b75`
 
 **Target-State Result:** after successful Apply of this exact package:
 - the SDS bootstrap conformance section is valid Markdown rather than literal escaped newline text;
@@ -1543,10 +1543,10 @@ No material unresolved issue blocks this selected transition. Exact physical Min
 
 ### LOG-DOC-085 — Review post-v6 whole-active residual lifecycle authority
 
-**Type:** REVIEW DIFF / WHOLE-ACTIVE RESIDUAL SCAN / OPEN-CHANGESET CONTINUATION  
-**ChangeSet:** `4ec06243-a2ef-43ca-9825-2e1289ff1465`  
-**Prior package:** `f030db4e-2f56-4f6a-95e7-7312850d5b75`  
-**Source:** latest cumulative ReviewDiff reconstructed over verified Git head `94b6d74b8074dd4dda13934b29977a89ef5379a2` plus a whole-active-tree context scan  
+**Type:** REVIEW DIFF / WHOLE-ACTIVE RESIDUAL SCAN / OPEN-CHANGESET CONTINUATION
+**ChangeSet:** `4ec06243-a2ef-43ca-9825-2e1289ff1465`
+**Prior package:** `f030db4e-2f56-4f6a-95e7-7312850d5b75`
+**Source:** latest cumulative ReviewDiff reconstructed over verified Git head `94b6d74b8074dd4dda13934b29977a89ef5379a2` plus a whole-active-tree context scan
 
 **Material Findings / Selected Corrections:**
 - v6 correctly removed the broad Core Lens/Target lifecycle contradictions, but a whole-active scan found a small residual set outside those prior hunks;
@@ -1562,10 +1562,10 @@ No material unresolved issue blocks this selected transition. Exact physical Min
 
 ### LOG-DOC-086 — Apply post-v6 residual lifecycle authority correction
 
-**Type:** APPLIED  
-**Applied From:** `LOG-DOC-085`  
-**ChangeSet:** `4ec06243-a2ef-43ca-9825-2e1289ff1465`  
-**Package:** `8b070940-6225-479c-8a63-050b6d3093dc`  
+**Type:** APPLIED
+**Applied From:** `LOG-DOC-085`
+**ChangeSet:** `4ec06243-a2ef-43ca-9825-2e1289ff1465`
+**Package:** `8b070940-6225-479c-8a63-050b6d3093dc`
 
 **Target-State Result:** after successful Apply of this exact package:
 - P-15 Evidence/Revalidation uses Finding Candidate → Core Finding Disposition before reaffirm/revalidation/reopen;
@@ -1579,10 +1579,10 @@ No material unresolved issue blocks this selected transition. Exact physical Min
 
 ### LOG-DOC-087 — Review final runtime / escalation / command-gate lifecycle residuals
 
-**Type:** REVIEW DIFF / WHOLE-ACTIVE CONSISTENCY CORRECTION / OPEN-CHANGESET CONTINUATION  
-**ChangeSet:** `4ec06243-a2ef-43ca-9825-2e1289ff1465`  
-**Prior package:** `8b070940-6225-479c-8a63-050b6d3093dc`  
-**Source:** latest cumulative ReviewDiff `Вставленный текст(20260827-211053).txt` after `LOG-DOC-086`, checked against verified Git head `94b6d74b8074dd4dda13934b29977a89ef5379a2` and exact target blob hashes  
+**Type:** REVIEW DIFF / WHOLE-ACTIVE CONSISTENCY CORRECTION / OPEN-CHANGESET CONTINUATION
+**ChangeSet:** `4ec06243-a2ef-43ca-9825-2e1289ff1465`
+**Prior package:** `8b070940-6225-479c-8a63-050b6d3093dc`
+**Source:** latest cumulative ReviewDiff `Вставленный текст(20260827-211053).txt` after `LOG-DOC-086`, checked against verified Git head `94b6d74b8074dd4dda13934b29977a89ef5379a2` and exact target blob hashes
 
 **Material Findings / Selected Corrections:**
 - the post-v6 correction fixed its seven declared residual owners, but final whole-active review found six remaining canonical runtime/navigation owners that still used pre-disposition shorthand;
@@ -1596,10 +1596,10 @@ No material unresolved issue blocks this selected transition. Exact physical Min
 
 ### LOG-DOC-088 — Apply final runtime / escalation / command-gate consistency correction
 
-**Type:** APPLIED  
-**Applied From:** `LOG-DOC-087`  
-**ChangeSet:** `4ec06243-a2ef-43ca-9825-2e1289ff1465`  
-**Package:** `edfcae2c-21c5-4d2f-8e14-7436e8a5a6ef`  
+**Type:** APPLIED
+**Applied From:** `LOG-DOC-087`
+**ChangeSet:** `4ec06243-a2ef-43ca-9825-2e1289ff1465`
+**Package:** `edfcae2c-21c5-4d2f-8e14-7436e8a5a6ef`
 
 **Target-State Result:** after successful Apply of this exact package:
 - `IDTSPE-SHELL` Lens role and recursive escalation use Finding Candidate / Core Finding Disposition / Target Formation candidate semantics;
@@ -1612,10 +1612,10 @@ No material unresolved issue blocks this selected transition. Exact physical Min
 
 ### LOG-DOC-089 — Review final Documentation / Representation finding-ownership residuals
 
-**Type:** REVIEW DIFF / WHOLE-ACTIVE CONSISTENCY CORRECTION / OPEN-CHANGESET CONTINUATION  
-**ChangeSet:** `4ec06243-a2ef-43ca-9825-2e1289ff1465`  
-**Prior package:** `edfcae2c-21c5-4d2f-8e14-7436e8a5a6ef`  
-**Source:** latest cumulative ReviewDiff `Вставленный текст(20260827-213945).txt` after `LOG-DOC-088`, checked against verified Git head `94b6d74b8074dd4dda13934b29977a89ef5379a2` and exact current target blob hashes  
+**Type:** REVIEW DIFF / WHOLE-ACTIVE CONSISTENCY CORRECTION / OPEN-CHANGESET CONTINUATION
+**ChangeSet:** `4ec06243-a2ef-43ca-9825-2e1289ff1465`
+**Prior package:** `edfcae2c-21c5-4d2f-8e14-7436e8a5a6ef`
+**Source:** latest cumulative ReviewDiff `Вставленный текст(20260827-213945).txt` after `LOG-DOC-088`, checked against verified Git head `94b6d74b8074dd4dda13934b29977a89ef5379a2` and exact current target blob hashes
 
 **Material Findings / Selected Corrections:**
 - the runtime/escalation/command-gate correction is coherent, but final whole-active review found one remaining Documentation / Representation cluster that still used pre-disposition ownership shorthand;
@@ -1629,10 +1629,10 @@ No material unresolved issue blocks this selected transition. Exact physical Min
 
 ### LOG-DOC-090 — Apply final Documentation / Representation finding-disposition consistency correction
 
-**Type:** APPLIED  
-**Applied From:** `LOG-DOC-089`  
-**ChangeSet:** `4ec06243-a2ef-43ca-9825-2e1289ff1465`  
-**Package:** `f6616562-fa43-436d-9bcb-4a949d2c19c8`  
+**Type:** APPLIED
+**Applied From:** `LOG-DOC-089`
+**ChangeSet:** `4ec06243-a2ef-43ca-9825-2e1289ff1465`
+**Package:** `f6616562-fa43-436d-9bcb-4a949d2c19c8`
 
 **Target-State Result:** after successful Apply of this exact package:
 - the Unit model no longer names Lens routing as a State-Unit purpose;
@@ -1645,10 +1645,10 @@ No material unresolved issue blocks this selected transition. Exact physical Min
 
 ### LOG-DOC-091 — Review final host-Target / AG projection residuals
 
-**Type:** REVIEW DIFF / WHOLE-ACTIVE CONSISTENCY CORRECTION / OPEN-CHANGESET CONTINUATION  
-**ChangeSet:** `4ec06243-a2ef-43ca-9825-2e1289ff1465`  
-**Prior package:** `f6616562-fa43-436d-9bcb-4a949d2c19c8`  
-**Source:** latest cumulative ReviewDiff `Вставленный текст(20260827-215835).txt` after `LOG-DOC-090`, checked against verified Git head `94b6d74b8074dd4dda13934b29977a89ef5379a2` and exact current target blob hashes  
+**Type:** REVIEW DIFF / WHOLE-ACTIVE CONSISTENCY CORRECTION / OPEN-CHANGESET CONTINUATION
+**ChangeSet:** `4ec06243-a2ef-43ca-9825-2e1289ff1465`
+**Prior package:** `f6616562-fa43-436d-9bcb-4a949d2c19c8`
+**Source:** latest cumulative ReviewDiff `Вставленный текст(20260827-215835).txt` after `LOG-DOC-090`, checked against verified Git head `94b6d74b8074dd4dda13934b29977a89ef5379a2` and exact current target blob hashes
 
 **Material Findings / Selected Corrections:**
 - v9 correctly aligned the Documentation / Representation Lens and its two PASS audits, but one final whole-active scan found four projection/runtime phrases still implying a Lens-owned return path;
@@ -1662,10 +1662,10 @@ No material unresolved issue blocks this selected transition. Exact physical Min
 
 ### LOG-DOC-092 — Apply final host-Target / AG projection consistency correction
 
-**Type:** APPLIED  
-**Applied From:** `LOG-DOC-091`  
-**ChangeSet:** `4ec06243-a2ef-43ca-9825-2e1289ff1465`  
-**Package:** `5a9cb4dd-58d7-44ae-a092-e510c8cf3f29`  
+**Type:** APPLIED
+**Applied From:** `LOG-DOC-091`
+**ChangeSet:** `4ec06243-a2ef-43ca-9825-2e1289ff1465`
+**Package:** `5a9cb4dd-58d7-44ae-a092-e510c8cf3f29`
 
 **Target-State Result:** after successful Apply of this exact package:
 - generic `idtspe.lens.apply` surfaces Finding Candidates and delegates actual semantic owner/State/lifecycle resolution to Core Finding Disposition;
@@ -1678,10 +1678,10 @@ No material unresolved issue blocks this selected transition. Exact physical Min
 
 ### LOG-DOC-093 — Review residual RETURN_TO_TARGET_OWNER / conditional owner-routing shorthand
 
-**Type:** REVIEW DIFF / WHOLE-ACTIVE CONSISTENCY CORRECTION / OPEN-CHANGESET CONTINUATION  
-**ChangeSet:** `4ec06243-a2ef-43ca-9825-2e1289ff1465`  
-**Prior package:** `5a9cb4dd-58d7-44ae-a092-e510c8cf3f29`  
-**Source:** latest cumulative ReviewDiff `Вставленный текст(20260827-221306).txt` after `LOG-DOC-092`, checked against verified Git head `94b6d74b8074dd4dda13934b29977a89ef5379a2` and exact current target blob hashes  
+**Type:** REVIEW DIFF / WHOLE-ACTIVE CONSISTENCY CORRECTION / OPEN-CHANGESET CONTINUATION
+**ChangeSet:** `4ec06243-a2ef-43ca-9825-2e1289ff1465`
+**Prior package:** `5a9cb4dd-58d7-44ae-a092-e510c8cf3f29`
+**Source:** latest cumulative ReviewDiff `Вставленный текст(20260827-221306).txt` after `LOG-DOC-092`, checked against verified Git head `94b6d74b8074dd4dda13934b29977a89ef5379a2` and exact current target blob hashes
 
 **Material Findings / Selected Corrections:**
 - v10 correctly removed its four declared host-Target/AG projection phrases, but a broader exact active-tree scan found the equivalent `RETURN_TO_TARGET_OWNER` shorthand still present in canonical `LENS-MODEL` and five SDS Lens bodies;
@@ -1694,10 +1694,10 @@ No material unresolved issue blocks this selected transition. Exact physical Min
 
 ### LOG-DOC-094 — Apply final return-to-Target-owner / conditional owner-routing consistency correction
 
-**Type:** APPLIED  
-**Applied From:** `LOG-DOC-093`  
-**ChangeSet:** `4ec06243-a2ef-43ca-9825-2e1289ff1465`  
-**Package:** `b40f91e5-7ff8-44ec-9f00-ec8220f779e5`  
+**Type:** APPLIED
+**Applied From:** `LOG-DOC-093`
+**ChangeSet:** `4ec06243-a2ef-43ca-9825-2e1289ff1465`
+**Package:** `b40f91e5-7ff8-44ec-9f00-ec8220f779e5`
 
 **Target-State Result:** after successful Apply of this exact package:
 - canonical `LENS-MODEL` and the five affected SDS Lenses use `NO_DISTINCT_SUPPORTING_ARTIFACT` instead of `RETURN_TO_TARGET_OWNER` for no-AG/no-direct-artifact semantics;
@@ -1710,9 +1710,9 @@ No material unresolved issue blocks this selected transition. Exact physical Min
 
 ### LOG-DOC-095 — Review residual producer-to-owner / Lens-destination shortcuts after v11
 
-**Type:** REVIEW DIFF / WHOLE-ACTIVE CONSISTENCY CORRECTION / OPEN-CHANGESET CONTINUATION  
-**ChangeSet:** `4ec06243-a2ef-43ca-9825-2e1289ff1465`  
-**Prior package:** `b40f91e5-7ff8-44ec-9f00-ec8220f779e5`  
+**Type:** REVIEW DIFF / WHOLE-ACTIVE CONSISTENCY CORRECTION / OPEN-CHANGESET CONTINUATION
+**ChangeSet:** `4ec06243-a2ef-43ca-9825-2e1289ff1465`
+**Prior package:** `b40f91e5-7ff8-44ec-9f00-ec8220f779e5`
 **Source:** latest cumulative ReviewDiff `SDS Unit and Finding Disposition conformance migration-review-c71bf10d.diff`; exact current target reconstructed and all 93/93 cumulative target blob hashes verified
 
 **Material Findings / Selected Corrections:**
@@ -1728,10 +1728,10 @@ No material unresolved issue blocks this selected transition. Exact physical Min
 
 ### LOG-DOC-096 — Apply final producer-to-owner / Lens-destination consistency correction
 
-**Type:** APPLIED  
-**Applied From:** `LOG-DOC-095`  
-**ChangeSet:** `4ec06243-a2ef-43ca-9825-2e1289ff1465`  
-**Package:** `ec30223d-434f-484a-997a-7a722705197d`  
+**Type:** APPLIED
+**Applied From:** `LOG-DOC-095`
+**ChangeSet:** `4ec06243-a2ef-43ca-9825-2e1289ff1465`
+**Package:** `ec30223d-434f-484a-997a-7a722705197d`
 
 **Target-State Result:** after successful Apply of this exact package:
 - the SDS general conditional command gate emits Target Formation input instead of routing to a current owner itself; WEUC/global-update and frontend helper projections use Finding Disposition / Target Formation rather than command-owned destination shorthand;
@@ -1745,10 +1745,10 @@ No material unresolved issue blocks this selected transition. Exact physical Min
 
 ### LOG-DOC-097 — Review residual WEUC/L5 global-update destination shortcuts after v12
 
-**Type:** REVIEW DIFF / WHOLE-ACTIVE CONSISTENCY CORRECTION / OPEN-CHANGESET CONTINUATION  
-**ChangeSet:** `4ec06243-a2ef-43ca-9825-2e1289ff1465`  
-**Prior package:** `ec30223d-434f-484a-997a-7a722705197d`  
-**Source:** latest cumulative ReviewDiff `SDS Unit and Finding Disposition conformance migration-review-b422c46e.diff`; exact post-v12 target reconstructed and all 94/94 cumulative target blob hashes verified  
+**Type:** REVIEW DIFF / WHOLE-ACTIVE CONSISTENCY CORRECTION / OPEN-CHANGESET CONTINUATION
+**ChangeSet:** `4ec06243-a2ef-43ca-9825-2e1289ff1465`
+**Prior package:** `ec30223d-434f-484a-997a-7a722705197d`
+**Source:** latest cumulative ReviewDiff `SDS Unit and Finding Disposition conformance migration-review-b422c46e.diff`; exact post-v12 target reconstructed and all 94/94 cumulative target blob hashes verified
 
 **Material Findings / Selected Corrections:**
 - v12 correctly removes the reviewed producer→owner/Lens-destination shortcuts, but a wider WEUC/L5 projection scan finds one residual semantic family: several Shell/map/profile/workflow/registry projections still send a global evolution/architecture update candidate directly to `TM-WEUC`;
@@ -1761,10 +1761,10 @@ No material unresolved issue blocks this selected transition. Exact physical Min
 
 ### LOG-DOC-098 — Apply final WEUC/L5 global-update disposition consistency correction
 
-**Type:** APPLIED  
-**Applied From:** `LOG-DOC-097`  
-**ChangeSet:** `4ec06243-a2ef-43ca-9825-2e1289ff1465`  
-**Package:** `0f09ceef-8c93-4c82-8b60-837dcf8aaacd`  
+**Type:** APPLIED
+**Applied From:** `LOG-DOC-097`
+**ChangeSet:** `4ec06243-a2ef-43ca-9825-2e1289ff1465`
+**Package:** `0f09ceef-8c93-4c82-8b60-837dcf8aaacd`
 
 **Target-State Result:** after successful Apply of this exact package:
 - Shell, generic Lens model, methodology/SDS maps, Phase-07 workflow, TM-WEUC profile/registry/source projections, shared artifact/source-lineage projections and worked example use Finding Candidate → Core Finding Disposition before inferred global `TM-WEUC` owner/handoff;
@@ -1778,10 +1778,10 @@ No material unresolved issue blocks this selected transition. Exact physical Min
 
 ### LOG-DOC-099 — Review final Lens Finding → State/owner disposition residuals after v13
 
-**Type:** REVIEW DIFF / WHOLE-ACTIVE INVARIANT-CLASS CORRECTION / OPEN-CHANGESET CONTINUATION  
-**ChangeSet:** `4ec06243-a2ef-43ca-9825-2e1289ff1465`  
-**Prior package:** `0f09ceef-8c93-4c82-8b60-837dcf8aaacd`  
-**Source:** cumulative ReviewDiff `Вставленный текст(20260828-100417).txt` after `LOG-DOC-098`; exact target reconstructed from snapshot `c824891a...` + cumulative diff and all 99/99 target blob hashes verified  
+**Type:** REVIEW DIFF / WHOLE-ACTIVE INVARIANT-CLASS CORRECTION / OPEN-CHANGESET CONTINUATION
+**ChangeSet:** `4ec06243-a2ef-43ca-9825-2e1289ff1465`
+**Prior package:** `0f09ceef-8c93-4c82-8b60-837dcf8aaacd`
+**Source:** cumulative ReviewDiff `Вставленный текст(20260828-100417).txt` after `LOG-DOC-098`; exact target reconstructed from snapshot `c824891a...` + cumulative diff and all 99/99 target blob hashes verified
 
 **Material Findings / Selected Corrections:**
 - v13 correctly closes its WEUC/L5 direct-destination and companion-creation cluster, but invariant-class review finds residual pre-disposition wording in generic response/materialization, Resolution Slot summary and several reusable Lens Artifact Guidance bodies;
@@ -1797,10 +1797,10 @@ No material unresolved issue blocks this selected transition. Exact physical Min
 
 ### LOG-DOC-100 — Apply final Lens Finding → State/owner disposition consistency correction
 
-**Type:** APPLIED  
-**Applied From:** `LOG-DOC-099`  
-**ChangeSet:** `4ec06243-a2ef-43ca-9825-2e1289ff1465`  
-**Package:** `fd5e8bca-aceb-4e40-b595-8e10ca180ea8`  
+**Type:** APPLIED
+**Applied From:** `LOG-DOC-099`
+**ChangeSet:** `4ec06243-a2ef-43ca-9825-2e1289ff1465`
+**Package:** `fd5e8bca-aceb-4e40-b595-8e10ca180ea8`
 
 **Target-State Result:** after successful Apply of this exact package:
 - generic Artifact Placement and Shell/Resolution-Slot projections distinguish raw Lens Finding Candidates from dispositioned Ideas/Q/R/P/Evidence/Decision inputs;
@@ -1814,10 +1814,10 @@ No material unresolved issue blocks this selected transition. Exact physical Min
 
 ### LOG-DOC-101 — Review post-v14 SDS projection shorthand residuals
 
-**Type:** REVIEW DIFF / WHOLE-ACTIVE INVARIANT-CLASS CORRECTION / OPEN-CHANGESET CONTINUATION  
-**ChangeSet:** `4ec06243-a2ef-43ca-9825-2e1289ff1465`  
-**Prior package:** `fd5e8bca-aceb-4e40-b595-8e10ca180ea8`  
-**Source:** cumulative ReviewDiff `Вставленный текст(20260828-104157).txt` after `LOG-DOC-100`; exact post-v14 target matches all 99/99 cumulative target blob hashes  
+**Type:** REVIEW DIFF / WHOLE-ACTIVE INVARIANT-CLASS CORRECTION / OPEN-CHANGESET CONTINUATION
+**ChangeSet:** `4ec06243-a2ef-43ca-9825-2e1289ff1465`
+**Prior package:** `fd5e8bca-aceb-4e40-b595-8e10ca180ea8`
+**Source:** cumulative ReviewDiff `Вставленный текст(20260828-104157).txt` after `LOG-DOC-100`; exact post-v14 target matches all 99/99 cumulative target blob hashes
 
 **Material Findings / Selected Corrections:**
 - v14 correctly establishes the generic producer → Finding Candidate → Core Finding Disposition → accepted State/resolved owner bridge, but a final SDS projection scan finds six stale shorthand owners that still render dispositioned outcomes as if they were direct Lens/producer outputs;
@@ -1832,10 +1832,10 @@ No material unresolved issue blocks this selected transition. Exact physical Min
 
 ### LOG-DOC-102 — Apply post-v14 SDS projection shorthand consistency correction
 
-**Type:** APPLIED  
-**Applied From:** `LOG-DOC-101`  
-**ChangeSet:** `4ec06243-a2ef-43ca-9825-2e1289ff1465`  
-**Package:** `753428e5-c2a7-4f2f-b5b1-b98443342589`  
+**Type:** APPLIED
+**Applied From:** `LOG-DOC-101`
+**ChangeSet:** `4ec06243-a2ef-43ca-9825-2e1289ff1465`
+**Package:** `753428e5-c2a7-4f2f-b5b1-b98443342589`
 
 **Target-State Result:** after successful Apply of this exact package:
 - SDS Artifact Placement Map conditions Lens-generated owner projections on Core Finding Disposition before Documentation / Representation + P-14 placement;
@@ -1849,10 +1849,10 @@ No material unresolved issue blocks this selected transition. Exact physical Min
 
 ### LOG-DOC-103 — Review final post-v15 producer→State/Decision projection residuals
 
-**Type:** REVIEW DIFF / WHOLE-ACTIVE INVARIANT-CLASS CORRECTION / OPEN-CHANGESET CONTINUATION  
-**ChangeSet:** `4ec06243-a2ef-43ca-9825-2e1289ff1465`  
-**Prior package:** `753428e5-c2a7-4f2f-b5b1-b98443342589`  
-**Source:** cumulative ReviewDiff `SDS Unit and Finding Disposition conformance migration-review-db9b8119.diff` after `LOG-DOC-102`; exact post-v15 target matches all 99/99 cumulative target blob hashes  
+**Type:** REVIEW DIFF / WHOLE-ACTIVE INVARIANT-CLASS CORRECTION / OPEN-CHANGESET CONTINUATION
+**ChangeSet:** `4ec06243-a2ef-43ca-9825-2e1289ff1465`
+**Prior package:** `753428e5-c2a7-4f2f-b5b1-b98443342589`
+**Source:** cumulative ReviewDiff `SDS Unit and Finding Disposition conformance migration-review-db9b8119.diff` after `LOG-DOC-102`; exact post-v15 target matches all 99/99 cumulative target blob hashes
 
 **Material Findings / Selected Corrections:**
 - v15 correctly fixes its six stale SDS projections, but a multiline producer→State/Decision sweep finds a final residual family where compact examples still skip the generic Finding Disposition bridge;
@@ -1869,10 +1869,10 @@ No material unresolved issue blocks this selected transition. Exact physical Min
 
 ### LOG-DOC-104 — Apply final post-v15 producer-disposition invariant consistency correction
 
-**Type:** APPLIED  
-**Applied From:** `LOG-DOC-103`  
-**ChangeSet:** `4ec06243-a2ef-43ca-9825-2e1289ff1465`  
-**Package:** `c3e07864-039c-40d1-b81d-5acfad2f14c7`  
+**Type:** APPLIED
+**Applied From:** `LOG-DOC-103`
+**ChangeSet:** `4ec06243-a2ef-43ca-9825-2e1289ff1465`
+**Package:** `c3e07864-039c-40d1-b81d-5acfad2f14c7`
 
 **Target-State Result:** after successful Apply of this exact package:
 - generic `LENS-MODEL` no longer shortcuts Lens/Evidence evaluation directly into Answer Decisions;
@@ -1888,10 +1888,10 @@ No material unresolved issue blocks this selected transition. Exact physical Min
 
 ### LOG-DOC-105 — Review whole-active authority/source-projection residuals after v16
 
-**Type:** REVIEW DIFF / WHOLE-ACTIVE AUTHORITY + SOURCE-PROJECTION CONSISTENCY CORRECTION / OPEN-CHANGESET CONTINUATION  
-**ChangeSet:** `4ec06243-a2ef-43ca-9825-2e1289ff1465`  
-**Prior package:** `c3e07864-039c-40d1-b81d-5acfad2f14c7`  
-**Source:** cumulative ReviewDiff `SDS Unit and Finding Disposition conformance migration-review-c04945eb.diff` after `LOG-DOC-104`; exact post-v16 target matches all 100/100 cumulative target blob hashes  
+**Type:** REVIEW DIFF / WHOLE-ACTIVE AUTHORITY + SOURCE-PROJECTION CONSISTENCY CORRECTION / OPEN-CHANGESET CONTINUATION
+**ChangeSet:** `4ec06243-a2ef-43ca-9825-2e1289ff1465`
+**Prior package:** `c3e07864-039c-40d1-b81d-5acfad2f14c7`
+**Source:** cumulative ReviewDiff `SDS Unit and Finding Disposition conformance migration-review-c04945eb.diff` after `LOG-DOC-104`; exact post-v16 target matches all 100/100 cumulative target blob hashes
 
 **Material Findings / Selected Corrections:**
 - v16 correctly removes the multiline Lens→Decision / local-L5 / raw-finding-persistence family it targeted, but an expanded whole-active authority/source sweep finds residual equivalents expressed through verbs (`feed`, `decides`, `generate`), structured Lens `SEMANTIC_OWNER` fields, Source tables and compact lifecycle examples;
@@ -1907,10 +1907,10 @@ No material unresolved issue blocks this selected transition. Exact physical Min
 
 ### LOG-DOC-106 — Apply whole-active authority/source-projection consistency correction
 
-**Type:** APPLIED  
-**Applied From:** `LOG-DOC-105`  
-**ChangeSet:** `4ec06243-a2ef-43ca-9825-2e1289ff1465`  
-**Package:** `b53d5c4e-2f7e-4ad0-83c4-df5f99339eb0`  
+**Type:** APPLIED
+**Applied From:** `LOG-DOC-105`
+**ChangeSet:** `4ec06243-a2ef-43ca-9825-2e1289ff1465`
+**Package:** `b53d5c4e-2f7e-4ad0-83c4-df5f99339eb0`
 
 **Target-State Result:** after successful Apply of this exact package:
 - generic Lens model/L6/Linked Notes/Practical Evidence/Test Proof authority wording consistently uses Finding Candidate → Core Finding Disposition before accepted revalidation/Decision/owner consequences;
@@ -1925,10 +1925,10 @@ No material unresolved issue blocks this selected transition. Exact physical Min
 
 ### LOG-DOC-107 — Review post-v17 APPROVABLE blockers / residual producer-State-source projections
 
-**Type:** REVIEW DIFF / APPROVABLE-BLOCKER CORRECTION / OPEN-CHANGESET CONTINUATION  
-**ChangeSet:** `4ec06243-a2ef-43ca-9825-2e1289ff1465`  
-**Prior package:** `b53d5c4e-2f7e-4ad0-83c4-df5f99339eb0`  
-**Source:** cumulative ReviewDiff `Вставленный текст(20260828-122847).txt` after `LOG-DOC-106`; exact post-v17 target matches all 102/102 cumulative target blob hashes  
+**Type:** REVIEW DIFF / APPROVABLE-BLOCKER CORRECTION / OPEN-CHANGESET CONTINUATION
+**ChangeSet:** `4ec06243-a2ef-43ca-9825-2e1289ff1465`
+**Prior package:** `b53d5c4e-2f7e-4ad0-83c4-df5f99339eb0`
+**Source:** cumulative ReviewDiff `Вставленный текст(20260828-122847).txt` after `LOG-DOC-106`; exact post-v17 target matches all 102/102 cumulative target blob hashes
 
 **Material Findings / Selected Corrections:**
 - v17 applies correctly and closes its 23-file authority/source-projection cluster, but the post-v17 APPROVABLE review finds eleven remaining semantic projections outside that correction's exact normalized forms;
@@ -1947,10 +1947,10 @@ No material unresolved issue blocks this selected transition. Exact physical Min
 
 ### LOG-DOC-108 — Apply post-v17 APPROVABLE residual consistency correction
 
-**Type:** APPLIED  
-**Applied From:** `LOG-DOC-107`  
-**ChangeSet:** `4ec06243-a2ef-43ca-9825-2e1289ff1465`  
-**Package:** `d77f7701-ac75-44b7-9a8c-1fceb1970d5e`  
+**Type:** APPLIED
+**Applied From:** `LOG-DOC-107`
+**ChangeSet:** `4ec06243-a2ef-43ca-9825-2e1289ff1465`
+**Package:** `d77f7701-ac75-44b7-9a8c-1fceb1970d5e`
 
 **Target-State Result:** after successful Apply of this exact package:
 - WEUC/L5 local architecture/evolution flow and ordinary-target example cross Core Finding Disposition before accepted local Decision/QRP/Evidence-Need/evolution meaning, TM-WEUC handoff or `AG-L5-02` companion materialization;
@@ -1969,10 +1969,10 @@ No material unresolved issue blocks this selected transition. Exact physical Min
 
 ### LOG-DOC-109 — Review post-v18 canonical Shell/Lens/Domain residuals before APPROVABLE
 
-**Type:** REVIEW DIFF / APPROVABLE-BLOCKER CORRECTION / OPEN-CHANGESET CONTINUATION  
-**ChangeSet:** `4ec06243-a2ef-43ca-9825-2e1289ff1465`  
-**Prior package:** `d77f7701-ac75-44b7-9a8c-1fceb1970d5e`  
-**Source:** supplied post-v18 cumulative ReviewDiff `Вставленный текст(20260828-140951).txt` + `post-v18-approvable-review(1).md`; exact post-v18 target matches all 104/104 cumulative target blob hashes  
+**Type:** REVIEW DIFF / APPROVABLE-BLOCKER CORRECTION / OPEN-CHANGESET CONTINUATION
+**ChangeSet:** `4ec06243-a2ef-43ca-9825-2e1289ff1465`
+**Prior package:** `d77f7701-ac75-44b7-9a8c-1fceb1970d5e`
+**Source:** supplied post-v18 cumulative ReviewDiff `Вставленный текст(20260828-140951).txt` + `post-v18-approvable-review(1).md`; exact post-v18 target matches all 104/104 cumulative target blob hashes
 
 **Material Findings / Selected Corrections:**
 - v18 applies correctly and closes its twelve reviewed/pre-package semantic residuals, but the post-v18 APPROVABLE review finds a final compact cluster in four canonical/target owners;
@@ -1987,10 +1987,10 @@ No material unresolved issue blocks this selected transition. Exact physical Min
 
 ### LOG-DOC-110 — Apply post-v18 canonical residual consistency correction
 
-**Type:** APPLIED  
-**Applied From:** `LOG-DOC-109`  
-**ChangeSet:** `4ec06243-a2ef-43ca-9825-2e1289ff1465`  
-**Package:** `d4f18f08-9c5d-49a0-b35c-3875fbe96249`  
+**Type:** APPLIED
+**Applied From:** `LOG-DOC-109`
+**ChangeSet:** `4ec06243-a2ef-43ca-9825-2e1289ff1465`
+**Package:** `d4f18f08-9c5d-49a0-b35c-3875fbe96249`
 
 **Target-State Result:** after successful Apply of this exact package:
 - Shell P-07 sends raw Lens/research/prototype observations through Finding Candidate → Core Finding Disposition before Idea/alternative State enters `TF-07 IDEA_SPACE`;
@@ -2005,10 +2005,10 @@ No material unresolved issue blocks this selected transition. Exact physical Min
 
 ### LOG-DOC-111 — Review post-v19 evolution-companion disposition projections before APPROVABLE
 
-**Type:** REVIEW DIFF / WHOLE-ACTIVE PRE-PACKAGE CONSISTENCY CORRECTION / OPEN-CHANGESET CONTINUATION  
-**ChangeSet:** `4ec06243-a2ef-43ca-9825-2e1289ff1465`  
-**Prior package:** `d4f18f08-9c5d-49a0-b35c-3875fbe96249`  
-**Source:** cumulative ReviewDiff `SDS Unit and Finding Disposition conformance migration-review-883739ac.diff`; exact post-v19 target matches all 104/104 cumulative target blob hashes  
+**Type:** REVIEW DIFF / WHOLE-ACTIVE PRE-PACKAGE CONSISTENCY CORRECTION / OPEN-CHANGESET CONTINUATION
+**ChangeSet:** `4ec06243-a2ef-43ca-9825-2e1289ff1465`
+**Prior package:** `d4f18f08-9c5d-49a0-b35c-3875fbe96249`
+**Source:** cumulative ReviewDiff `SDS Unit and Finding Disposition conformance migration-review-883739ac.diff`; exact post-v19 target matches all 104/104 cumulative target blob hashes
 
 **Material Findings / Selected Corrections:**
 - v19 applies correctly and closes the four post-v18 canonical blockers, but the requested pre-package whole-active recheck finds one explicit remaining TM-WEUC creation/splitting authority error plus a small family of semantically equivalent **evolution-companion projection shorthands** that could become the next review tail if only that one line were corrected;
@@ -2026,10 +2026,10 @@ No material unresolved issue blocks this selected transition. Exact physical Min
 
 ### LOG-DOC-112 — Apply post-v19 evolution-companion disposition consistency correction
 
-**Type:** APPLIED  
-**Applied From:** `LOG-DOC-111`  
-**ChangeSet:** `4ec06243-a2ef-43ca-9825-2e1289ff1465`  
-**Package:** `793ec3a1-e78a-473f-902b-8988c03f89b4`  
+**Type:** APPLIED
+**Applied From:** `LOG-DOC-111`
+**ChangeSet:** `4ec06243-a2ef-43ca-9825-2e1289ff1465`
+**Package:** `793ec3a1-e78a-473f-902b-8988c03f89b4`
 
 **Target-State Result:** after successful Apply of this exact package:
 - TM-WEUC no longer assigns local companion creation/splitting to L5; `AG-L5-02`, Documentation / Representation and P-14 / TF-10 have separate proposal/representation/materialization responsibilities;
@@ -2047,9 +2047,9 @@ No material unresolved issue blocks this selected transition. Exact physical Min
 
 ### LOG-DOC-113 — Simplify Knowledge Basis into a theory-to-application bridge
 
-**Type:** IDEA REVIEW / METHODOLOGY CLARIFICATION / NEW CHANGESET  
-**ChangeSet:** `92232e26-bf87-42e1-b344-9390bb031461`  
-**ChangeSet Label:** `IDTSPE Knowledge Basis theory bridge simplification`  
+**Type:** IDEA REVIEW / METHODOLOGY CLARIFICATION / NEW CHANGESET
+**ChangeSet:** `92232e26-bf87-42e1-b344-9390bb031461`
+**ChangeSet Label:** `IDTSPE Knowledge Basis theory bridge simplification`
 
 **Selected Meaning:**
 - Knowledge Basis is not a rigid literal sub-schema and no longer requires exactly one section, `INLINE / REFERENCED / HYBRID`, or an explicit load-policy field;
@@ -2063,10 +2063,10 @@ No material unresolved issue blocks this selected transition. Exact physical Min
 
 ### LOG-DOC-114 — Apply Knowledge Basis theory-bridge simplification
 
-**Type:** APPLIED  
-**Applied From:** `LOG-DOC-113`  
-**ChangeSet:** `92232e26-bf87-42e1-b344-9390bb031461`  
-**Package:** `54d440b8-9234-4403-b3b6-10c12085438c`  
+**Type:** APPLIED
+**Applied From:** `LOG-DOC-113`
+**ChangeSet:** `92232e26-bf87-42e1-b344-9390bb031461`
+**Package:** `54d440b8-9234-4403-b3b6-10c12085438c`
 
 **Target-State Result:** after successful Apply of this exact package:
 - `knowledge-basis-contract.md` becomes flexible theory-to-application guidance rather than an exact serialization contract;
@@ -2077,10 +2077,10 @@ No material unresolved issue blocks this selected transition. Exact physical Min
 - current Sources/Evidence/project truth remain separate from reusable theory.
 ### LOG-DOC-115 — Unify SDS Scenario planning around one Scenario Target
 
-**Type:** IDEA REVIEW / METHODOLOGY REFINEMENT / NEW CHANGESET  
-**ChangeSet:** `405f5eb1-4748-4088-a8e9-7143b8236688`  
-**ChangeSet Label:** `SDS Scenario Planning target unification`  
-**Source:** current GitHub `main` `f6652ce27eddb0cfe35d700dd479a25f11addfa4`, reconstructed exact touched bases from the previously supplied repository snapshot plus the finalized Knowledge Basis ReviewDiff and verified against current GitHub blobs/current registries  
+**Type:** IDEA REVIEW / METHODOLOGY REFINEMENT / NEW CHANGESET
+**ChangeSet:** `405f5eb1-4748-4088-a8e9-7143b8236688`
+**ChangeSet Label:** `SDS Scenario Planning target unification`
+**Source:** current GitHub `main` `f6652ce27eddb0cfe35d700dd479a25f11addfa4`, reconstructed exact touched bases from the previously supplied repository snapshot plus the finalized Knowledge Basis ReviewDiff and verified against current GitHub blobs/current registries
 
 **Selected Meaning:**
 - this ChangeSet is limited to the SDS Scenario Target family and coherence projections; it does not redesign Slice, Screen, Domain, Cross-Cutting, Test, WEUC or other Target families;
@@ -2095,10 +2095,10 @@ No material unresolved issue blocks this selected transition. Exact physical Min
 
 ### LOG-DOC-116 — Apply SDS Scenario Planning target unification
 
-**Type:** APPLIED  
-**Applied From:** `LOG-DOC-115`  
-**ChangeSet:** `405f5eb1-4748-4088-a8e9-7143b8236688`  
-**Package:** `9a31f4da-cdd3-446f-9875-e7c8a27da0bc`  
+**Type:** APPLIED
+**Applied From:** `LOG-DOC-115`
+**ChangeSet:** `405f5eb1-4748-4088-a8e9-7143b8236688`
+**Package:** `9a31f4da-cdd3-446f-9875-e7c8a27da0bc`
 
 **Target-State Result:** after successful Apply of this exact package:
 - active SDS has **16 Target Modules** and **6 SDS-specific / 17 total reusable Lenses**;
@@ -2112,9 +2112,9 @@ No material unresolved issue blocks this selected transition. Exact physical Min
 
 ### LOG-DOC-117 — Correct residual Knowledge Basis wording after Scenario ReviewDiff
 
-**Type:** REVIEW DIFF / CONSISTENCY CORRECTION / OPEN-CHANGESET CONTINUATION  
-**ChangeSet:** `405f5eb1-4748-4088-a8e9-7143b8236688`  
-**Prior Package:** `9a31f4da-cdd3-446f-9875-e7c8a27da0bc`  
+**Type:** REVIEW DIFF / CONSISTENCY CORRECTION / OPEN-CHANGESET CONTINUATION
+**ChangeSet:** `405f5eb1-4748-4088-a8e9-7143b8236688`
+**Prior Package:** `9a31f4da-cdd3-446f-9875-e7c8a27da0bc`
 
 **Material Finding / Selected Correction:**
 - the Scenario unification ReviewDiff preserves the selected three-Result-Unit Scenario model, but `active/profiles/sds/shared/sds-target-module-profile.md` still contains two pre-simplification Knowledge Basis shorthands: one says Target Module knowledge is loaded according to a module load policy and another says every module carries one shared-contract `## Knowledge Basis`;
@@ -2124,10 +2124,10 @@ No material unresolved issue blocks this selected transition. Exact physical Min
 
 ### LOG-DOC-118 — Apply Scenario Knowledge Basis wording correction
 
-**Type:** APPLIED  
-**Applied From:** `LOG-DOC-117`  
-**ChangeSet:** `405f5eb1-4748-4088-a8e9-7143b8236688`  
-**Package:** `b0876599-8fa6-486d-9fdd-a8bc983be3a4`  
+**Type:** APPLIED
+**Applied From:** `LOG-DOC-117`
+**ChangeSet:** `405f5eb1-4748-4088-a8e9-7143b8236688`
+**Package:** `b0876599-8fa6-486d-9fdd-a8bc983be3a4`
 
 **Target-State Result:** after successful Apply of this exact correction package:
 - `sds-target-module-profile.md` no longer requires every Target Module to carry a Knowledge Basis and no longer depends on a per-module Knowledge Basis load-policy field;
@@ -2138,10 +2138,10 @@ No material unresolved issue blocks this selected transition. Exact physical Min
 
 ### LOG-DOC-119 — Redesign Prototype and implemented practical Evidence Targets
 
-**Type:** IDEA REVIEW / METHODOLOGY REFINEMENT / NEW CHANGESET  
-**ChangeSet:** `e2c33fe2-1f2d-4ae4-bc76-bfdae0e3b5ab`  
-**ChangeSet Label:** `SDS Prototype and implemented practical evidence redesign`  
-**Source:** current finalized GitHub `main` `8071d30a23a29a5944f9bbdf2874d78a56f26920` after the accepted Scenario Planning ChangeSet  
+**Type:** IDEA REVIEW / METHODOLOGY REFINEMENT / NEW CHANGESET
+**ChangeSet:** `e2c33fe2-1f2d-4ae4-bc76-bfdae0e3b5ab`
+**ChangeSet Label:** `SDS Prototype and implemented practical evidence redesign`
+**Source:** current finalized GitHub `main` `8071d30a23a29a5944f9bbdf2874d78a56f26920` after the accepted Scenario Planning ChangeSet
 
 **Selected Meaning:**
 - keep `TM-PROTOTYPE` as a separate Target because practical uncertainty resolution has its own inquiry, experiment design, data/observation collection and interpretation; Prototype is not merely a Lens operation;
@@ -2155,10 +2155,10 @@ No material unresolved issue blocks this selected transition. Exact physical Min
 
 ### LOG-DOC-120 — Apply Prototype and implemented practical Evidence redesign
 
-**Type:** APPLIED  
-**Applied From:** `LOG-DOC-119`  
-**ChangeSet:** `e2c33fe2-1f2d-4ae4-bc76-bfdae0e3b5ab`  
-**Package:** `188037ec-53a6-41fd-980f-d83d38336848`  
+**Type:** APPLIED
+**Applied From:** `LOG-DOC-119`
+**ChangeSet:** `e2c33fe2-1f2d-4ae4-bc76-bfdae0e3b5ab`
+**Package:** `188037ec-53a6-41fd-980f-d83d38336848`
 
 **Target-State Result:** after successful Apply of this exact package:
 - `TM-PROTOTYPE` owns a compact `Intent / Questions → Plan → Results / Evidence` pre-implementation practical-evidence flow;
@@ -2169,10 +2169,10 @@ No material unresolved issue blocks this selected transition. Exact physical Min
 
 ### LOG-DOC-121 — Correct Prototype / implemented practical Evidence ReviewDiff projections
 
-**Type:** REVIEW DIFF / CONSISTENCY CORRECTION / OPEN-CHANGESET CONTINUATION  
-**ChangeSet:** `e2c33fe2-1f2d-4ae4-bc76-bfdae0e3b5ab`  
-**ChangeSet Label:** `SDS Prototype and implemented practical evidence redesign`  
-**Prior Package:** `188037ec-53a6-41fd-980f-d83d38336848`  
+**Type:** REVIEW DIFF / CONSISTENCY CORRECTION / OPEN-CHANGESET CONTINUATION
+**ChangeSet:** `e2c33fe2-1f2d-4ae4-bc76-bfdae0e3b5ab`
+**ChangeSet Label:** `SDS Prototype and implemented practical evidence redesign`
+**Prior Package:** `188037ec-53a6-41fd-980f-d83d38336848`
 
 **Material Finding / later clarification / selected correction:**
 - preserve the reviewed three-Result-Unit contracts of `TM-PROTOTYPE` and `TM-PRACTICAL-TEST`; no new Target Module or Result Unit is introduced;
@@ -2184,10 +2184,10 @@ No material unresolved issue blocks this selected transition. Exact physical Min
 
 ### LOG-DOC-122 — Apply Prototype / implemented practical Evidence projection correction
 
-**Type:** APPLIED  
-**Applied From:** `LOG-DOC-121`  
-**ChangeSet:** `e2c33fe2-1f2d-4ae4-bc76-bfdae0e3b5ab`  
-**Package:** `6a101a56-aa6a-47d7-beae-e9f1aab08776`  
+**Type:** APPLIED
+**Applied From:** `LOG-DOC-121`
+**ChangeSet:** `e2c33fe2-1f2d-4ae4-bc76-bfdae0e3b5ab`
+**Package:** `6a101a56-aa6a-47d7-beae-e9f1aab08776`
 
 **Target-State Result:** after successful Apply of this exact correction package:
 - `TM-PROTOTYPE` still owns `Intent / Questions → Prototype Plan → Results / Evidence`;
@@ -2198,19 +2198,19 @@ No material unresolved issue blocks this selected transition. Exact physical Min
 
 ### XREF-DOC-015 — Planning Helper command side-effect invocation framework
 
-**Type:** CROSS-SCOPE REFERENCE  
-**Canonical Log:** `planning/documentation/tools/tampermonkey/chat-command-palette/action-log.md`  
-**Entry:** `LOG-PH-014` / `LOG-PH-015`  
-**ChangeSet:** `8bb283e5-7568-45a0-a05a-4817567ad1e2`  
-**Package:** `be6a98be-c31a-44b6-8d24-4250b5c61052`  
+**Type:** CROSS-SCOPE REFERENCE
+**Canonical Log:** `planning/documentation/tools/tampermonkey/chat-command-palette/action-log.md`
+**Entry:** `LOG-PH-014` / `LOG-PH-015`
+**ChangeSet:** `8bb283e5-7568-45a0-a05a-4817567ad1e2`
+**Package:** `be6a98be-c31a-44b6-8d24-4250b5c61052`
 **Reason:** Planning Helper owns the generic invocation-time command side-effect framework, `capture-chat-context` stage-1 token behavior, runtime/tests/docs and canonical rationale. This reusable-documentation scope participates because the generated `planning/documentation/tools/tampermonkey/chat-command-palette.user.js` artifact is outside the registered `chat-command-palette/` child root; the generated artifact is synchronized with the same Helper target state.
 
 ### LOG-DOC-123 — Redesign Slice Strategy as Slice Implementation Strategy
 
-**Type:** IDEA REVIEW / METHODOLOGY REFINEMENT / NEW CHANGESET  
-**ChangeSet:** `ba1a2f95-fafb-405b-892b-1295e250eeb0`  
-**ChangeSet Label:** `SDS Slice implementation strategy redesign`  
-**Source:** current finalized GitHub `main` `98a98ce04fd3385a57a7a05e193ba990485479e9` after the accepted Prototype / implemented practical Evidence ChangeSet  
+**Type:** IDEA REVIEW / METHODOLOGY REFINEMENT / NEW CHANGESET
+**ChangeSet:** `ba1a2f95-fafb-405b-892b-1295e250eeb0`
+**ChangeSet Label:** `SDS Slice implementation strategy redesign`
+**Source:** current finalized GitHub `main` `98a98ce04fd3385a57a7a05e193ba990485479e9` after the accepted Prototype / implemented practical Evidence ChangeSet
 
 **Selected Meaning:**
 - retain compatibility Target ID `TM-SLICE-STRATEGY` and entry point `tm.slice.strategy`, while making the module semantically own Slice Implementation Strategy rather than only candidate decomposition/order;
@@ -2227,10 +2227,10 @@ No material unresolved issue blocks this selected transition. Exact physical Min
 
 ### LOG-DOC-124 — Apply Slice implementation strategy redesign
 
-**Type:** APPLIED  
-**Applied From:** `LOG-DOC-123`  
-**ChangeSet:** `ba1a2f95-fafb-405b-892b-1295e250eeb0`  
-**Package:** `092e1190-17c7-42b3-a7b8-13ef2907fb20`  
+**Type:** APPLIED
+**Applied From:** `LOG-DOC-123`
+**ChangeSet:** `ba1a2f95-fafb-405b-892b-1295e250eeb0`
+**Package:** `092e1190-17c7-42b3-a7b8-13ef2907fb20`
 
 **Target-State Result:** after successful Apply of this exact package:
 - `TM-SLICE-STRATEGY` is the compatibility identity for Slice Implementation Strategy and exposes exactly `RU-SSTRAT-01..03` as Slice Portfolio / Realization Map, Domain / Aggregate Realization Map, and Selected Slice Owner Register;
@@ -2243,11 +2243,11 @@ No material unresolved issue blocks this selected transition. Exact physical Min
 
 ### LOG-DOC-125 — Correct Slice implementation strategy ReviewDiff findings
 
-**Type:** REVIEW DIFF / CONSISTENCY CORRECTION / OPEN-CHANGESET CONTINUATION  
-**ChangeSet:** `ba1a2f95-fafb-405b-892b-1295e250eeb0`  
-**ChangeSet Label:** `SDS Slice implementation strategy redesign`  
-**Prior Package:** `092e1190-17c7-42b3-a7b8-13ef2907fb20`  
-**Reviewed Result:** `NEEDS CORRECTION`  
+**Type:** REVIEW DIFF / CONSISTENCY CORRECTION / OPEN-CHANGESET CONTINUATION
+**ChangeSet:** `ba1a2f95-fafb-405b-892b-1295e250eeb0`
+**ChangeSet Label:** `SDS Slice implementation strategy redesign`
+**Prior Package:** `092e1190-17c7-42b3-a7b8-13ef2907fb20`
+**Reviewed Result:** `NEEDS CORRECTION`
 
 **Material Findings / selected correction:**
 - preserve the selected three-Result-Unit Slice Implementation Strategy model, Slice/Behavior distinction, broad/shallow Domain/Aggregate map, many-to-many `Slice → Uses → Aggregate/domain concept` relation, current-code authority and flexible representation; no Target/Lens/AP topology change is introduced;
@@ -2258,10 +2258,10 @@ No material unresolved issue blocks this selected transition. Exact physical Min
 
 ### LOG-DOC-126 — Apply Slice implementation strategy ReviewDiff correction
 
-**Type:** APPLIED  
-**Applied From:** `LOG-DOC-125`  
-**ChangeSet:** `ba1a2f95-fafb-405b-892b-1295e250eeb0`  
-**Package:** `3b79ff63-c2ca-4bcc-8da9-023988123544`  
+**Type:** APPLIED
+**Applied From:** `LOG-DOC-125`
+**ChangeSet:** `ba1a2f95-fafb-405b-892b-1295e250eeb0`
+**Package:** `3b79ff63-c2ca-4bcc-8da9-023988123544`
 
 **Target-State Result:** after successful Apply of this exact correction package:
 - `TM-SLICE-STRATEGY` still exposes exactly `RU-SSTRAT-01 Slice Portfolio / Realization Map`, `RU-SSTRAT-02 Domain / Aggregate Realization Map`, and `RU-SSTRAT-03 Selected Slice Owner Register`;
@@ -2274,19 +2274,19 @@ No material unresolved issue blocks this selected transition. Exact physical Min
 
 ### XREF-DOC-016 — Invocation-scoped chatContextToken binding handoff
 
-**Type:** CROSS-SCOPE REFERENCE  
-**Canonical Log:** `planning/documentation/tools/replacement-package-app/action-log.md`  
-**Entry:** `LOG-RPKG-050`  
-**ChangeSet:** `10ce3e4a-4b24-42d4-9b63-b7fee8b8c655`  
-**Package:** `9ba85d44-3853-4452-92ba-e96495d302d4`  
+**Type:** CROSS-SCOPE REFERENCE
+**Canonical Log:** `planning/documentation/tools/replacement-package-app/action-log.md`
+**Entry:** `LOG-RPKG-050`
+**ChangeSet:** `10ce3e4a-4b24-42d4-9b63-b7fee8b8c655`
+**Package:** `9ba85d44-3853-4452-92ba-e96495d302d4`
 **Reason:** reusable-documentation scope participates through the synchronized replacement-package producer workflow and generated Planning Helper userscript outside the registered Helper child root; full token-binding semantics and APPLIED relation remain in the Replacement Package App canonical log.
 
 ### LOG-DOC-127 — Add Broad Discussion and Integration Checkpoint work model
 
-**Type:** IDEA REVIEW / USER CLARIFICATION / CORE METHODOLOGY REFINEMENT / NEW CHANGESET  
-**ChangeSet:** `312f308b-762d-4b53-8868-ac887474db55`  
-**ChangeSet Label:** `IDTSPE Broad Discussion and integration checkpoint model`  
-**Source:** current finalized GitHub `main` `d7a0bbdbb63e0a161a2d071d7d0ab680b3343f1b` after the finalized invocation-scoped chatContextToken binding ChangeSet  
+**Type:** IDEA REVIEW / USER CLARIFICATION / CORE METHODOLOGY REFINEMENT / NEW CHANGESET
+**ChangeSet:** `312f308b-762d-4b53-8868-ac887474db55`
+**ChangeSet Label:** `IDTSPE Broad Discussion and integration checkpoint model`
+**Source:** current finalized GitHub `main` `d7a0bbdbb63e0a161a2d071d7d0ab680b3343f1b` after the finalized invocation-scoped chatContextToken binding ChangeSet
 
 **Selected Meaning:**
 - make Broad Discussion a first-class normal IDTSPE working mode that may span many chat turns before/between checkpoints and may also coexist with structured Target responses; it is ordinary useful chat prose rather than a new Target/Unit/runtime;
@@ -2305,10 +2305,10 @@ No material unresolved issue blocks this selected transition. Exact physical Min
 
 ### LOG-DOC-128 — Apply Broad Discussion and Integration Checkpoint work model
 
-**Type:** APPLIED  
-**Applied From:** `LOG-DOC-127`  
-**ChangeSet:** `312f308b-762d-4b53-8868-ac887474db55`  
-**Package:** `d7ea82d4-9f38-4422-87dc-637e4f861cd3`  
+**Type:** APPLIED
+**Applied From:** `LOG-DOC-127`
+**ChangeSet:** `312f308b-762d-4b53-8868-ac887474db55`
+**Package:** `d7ea82d4-9f38-4422-87dc-637e4f861cd3`
 
 **Target-State Result:** after successful Apply of this exact package:
 - Core bootstrap/map/README/Shell/default-work-mode discover and consistently explain `Broad Discussion ↔ Integration Checkpoint` as the ordinary iterative interaction rhythm;
@@ -2326,11 +2326,11 @@ No material unresolved issue blocks this selected transition. Exact physical Min
 
 ### LOG-DOC-129 — Review Broad Discussion / Integration Checkpoint post-Apply clarifications
 
-**Type:** REVIEW DIFF / USER CLARIFICATION / CONSISTENCY CORRECTION / OPEN-CHANGESET CONTINUATION  
-**ChangeSet:** `312f308b-762d-4b53-8868-ac887474db55`  
-**ChangeSet Label:** `IDTSPE Broad Discussion and integration checkpoint model`  
-**Reviewed Package:** `d7ea82d4-9f38-4422-87dc-637e4f861cd3`  
-**Review Result:** `NEEDS CORRECTION`  
+**Type:** REVIEW DIFF / USER CLARIFICATION / CONSISTENCY CORRECTION / OPEN-CHANGESET CONTINUATION
+**ChangeSet:** `312f308b-762d-4b53-8868-ac887474db55`
+**ChangeSet Label:** `IDTSPE Broad Discussion and integration checkpoint model`
+**Reviewed Package:** `d7ea82d4-9f38-4422-87dc-637e4f861cd3`
+**Review Result:** `NEEDS CORRECTION`
 **Source Basis:** verified repository snapshot `github:AlexPastukhh/obs-planning-docs` at `d7a0bbdbb63e0a161a2d071d7d0ab680b3343f1b` plus the supplied cumulative post-Apply ReviewDiff for package `d7ea82d4-9f38-4422-87dc-637e4f861cd3`
 
 **Material ReviewDiff findings / later clarifications / selected correction:**
@@ -2345,10 +2345,10 @@ No Target Module, Lens, Unit kind, Result Unit family, AP/AG identity, command I
 
 ### LOG-DOC-130 — Apply Broad Discussion material-intake clarification correction
 
-**Type:** APPLIED  
-**Applied From:** `LOG-DOC-129`  
-**ChangeSet:** `312f308b-762d-4b53-8868-ac887474db55`  
-**Package:** `d46c640b-8604-44a5-be31-e36b98470db9`  
+**Type:** APPLIED
+**Applied From:** `LOG-DOC-129`
+**ChangeSet:** `312f308b-762d-4b53-8868-ac887474db55`
+**Package:** `d46c640b-8604-44a5-be31-e36b98470db9`
 
 **Target-State Result:** after successful Apply of this exact correction package:
 - material Broad Discussion remains conversational/proportional but each material logical part has one evident existing semantic anchor + Key Points, and each material response exposes a compact Intake Summary of only new/changed carry-forward meaning;
@@ -2360,11 +2360,11 @@ No Target Module, Lens, Unit kind, Result Unit family, AP/AG identity, command I
 
 ### LOG-DOC-131 — Correct remaining Broad Discussion / Integration Checkpoint ReviewDiff findings
 
-**Type:** REVIEW DIFF / USER CLARIFICATION / CONSISTENCY CORRECTION / OPEN-CHANGESET CONTINUATION  
-**ChangeSet:** `312f308b-762d-4b53-8868-ac887474db55`  
-**ChangeSet Label:** `IDTSPE Broad Discussion and integration checkpoint model`  
-**Prior Package:** `d46c640b-8604-44a5-be31-e36b98470db9`  
-**Reviewed Result:** `NEEDS CORRECTION`  
+**Type:** REVIEW DIFF / USER CLARIFICATION / CONSISTENCY CORRECTION / OPEN-CHANGESET CONTINUATION
+**ChangeSet:** `312f308b-762d-4b53-8868-ac887474db55`
+**ChangeSet Label:** `IDTSPE Broad Discussion and integration checkpoint model`
+**Prior Package:** `d46c640b-8604-44a5-be31-e36b98470db9`
+**Reviewed Result:** `NEEDS CORRECTION`
 **Source Basis:** exact post-Apply state of prior package reconstructed from verified `d7a0bbdbb63e0a161a2d071d7d0ab680b3343f1b` snapshot + successful Broad Discussion packages, plus the supplied cumulative ReviewDiff for the prior package.
 
 **Material ReviewDiff findings / selected correction:**
@@ -2381,10 +2381,10 @@ No Target Module/Lens/command ID/Result Unit/AP/AG topology change and no Domain
 
 ### LOG-DOC-132 — Apply remaining Broad Discussion / Integration Checkpoint correction
 
-**Type:** APPLIED  
-**Applied From:** `LOG-DOC-131`  
-**ChangeSet:** `312f308b-762d-4b53-8868-ac887474db55`  
-**Package:** `0df594dd-0599-4630-9b4c-047b1c9e2315`  
+**Type:** APPLIED
+**Applied From:** `LOG-DOC-131`
+**ChangeSet:** `312f308b-762d-4b53-8868-ac887474db55`
+**Package:** `0df594dd-0599-4630-9b4c-047b1c9e2315`
 
 **Target-State Result:** after successful Apply of this exact package:
 - Broad Discussion remains ordinary multi-turn chat; material logical parts use proportional Key Points, while no block-owner record or per-response Intake Summary is mandatory;
@@ -2397,19 +2397,19 @@ No Target Module/Lens/command ID/Result Unit/AP/AG topology change and no Domain
 
 ### XREF-DOC-017 — chatContextToken direct bind/rebind authority
 
-**Type:** CROSS-SCOPE REFERENCE  
-**Canonical Log:** `planning/documentation/tools/replacement-package-app/action-log.md`  
-**Entry:** `LOG-RPKG-054`  
-**ChangeSet:** `9baa3cc4-1d24-4613-b074-83e98496fa3e`  
-**Package:** `84a3ccd8-d9bf-4881-a228-e59c006e612f`  
+**Type:** CROSS-SCOPE REFERENCE
+**Canonical Log:** `planning/documentation/tools/replacement-package-app/action-log.md`
+**Entry:** `LOG-RPKG-054`
+**ChangeSet:** `9baa3cc4-1d24-4613-b074-83e98496fa3e`
+**Package:** `84a3ccd8-d9bf-4881-a228-e59c006e612f`
 **Reason:** reusable documentation participates through the shared replacement-package `OBS-ACTION/1` workflow, where `chatContextToken` is now explicitly bind/rebind authority and token binding is separated from repository Apply truth; the Replacement Package App scope owns implementation/tests/full APPLIED rationale.
 
 
 ### LOG-DOC-133 — Add generic Exact Realization Target Module
 
-**Type:** IDEA REVIEW / METHODOLOGY REFINEMENT / NEW CHANGESET  
-**ChangeSet:** `15cf1f7a-000e-46b5-9846-2a0caa9ba88d`  
-**ChangeSet Label:** `IDTSPE Exact Realization generic Target Module`  
+**Type:** IDEA REVIEW / METHODOLOGY REFINEMENT / NEW CHANGESET
+**ChangeSet:** `15cf1f7a-000e-46b5-9846-2a0caa9ba88d`
+**ChangeSet Label:** `IDTSPE Exact Realization generic Target Module`
 **Source:** current GitHub `main` `a9050a6b5172495fa3522af2e26c4fac901d4f80`. The earlier handoff base `87a0ffa05aab8d369804267bc6379704629d6c64` was followed by `f6bb2072...` (unrelated Replacement Package App finalization) and then `a9050a6b...` (one added Planning Helper prompt). Neither head advance changes any intended Exact Realization replace base except the documentation action log already reconstructed at the current preceding state; all package replace preconditions use exact current touched-path bytes.
 
 **Selected Meaning:**
@@ -2427,10 +2427,10 @@ No Target Module/Lens/command ID/Result Unit/AP/AG topology change and no Domain
 
 ### LOG-DOC-134 — Apply generic Exact Realization Target Module
 
-**Type:** APPLIED  
-**Applied From:** `LOG-DOC-133`  
-**ChangeSet:** `15cf1f7a-000e-46b5-9846-2a0caa9ba88d`  
-**Package:** `8acc820d-7e9e-4de1-93b0-6d6b3f877707`  
+**Type:** APPLIED
+**Applied From:** `LOG-DOC-133`
+**ChangeSet:** `15cf1f7a-000e-46b5-9846-2a0caa9ba88d`
+**Package:** `8acc820d-7e9e-4de1-93b0-6d6b3f877707`
 
 **Target-State Result:** after successful Apply of this exact package:
 - IDTSPE Core installs `TM-EXACT-REALIZATION` with one `RU-REAL-01`, a code-first exact-result workflow and explicit review/integration/verification/minor-repair authority boundaries;
@@ -2441,12 +2441,12 @@ No Target Module/Lens/command ID/Result Unit/AP/AG topology change and no Domain
 
 ### LOG-DOC-135 — Correct Exact Realization ReviewDiff audit projection
 
-**Type:** REVIEW DIFF / CONSISTENCY CORRECTION / OPEN-CHANGESET CONTINUATION  
-**ChangeSet:** `15cf1f7a-000e-46b5-9846-2a0caa9ba88d`  
-**ChangeSet Label:** `IDTSPE Exact Realization generic Target Module`  
-**Prior Package:** `8acc820d-7e9e-4de1-93b0-6d6b3f877707`  
-**Reviewed Result:** `NEEDS CORRECTION`  
-**Source Basis:** exact post-Apply target of prior package `8acc820d-7e9e-4de1-93b0-6d6b3f877707` plus the supplied cumulative ReviewDiff; current GitHub `main` remains `a9050a6b5172495fa3522af2e26c4fac901d4f80`, so the correction package uses the prior applied package target as the exact touched-file base rather than guessing from GitHub.  
+**Type:** REVIEW DIFF / CONSISTENCY CORRECTION / OPEN-CHANGESET CONTINUATION
+**ChangeSet:** `15cf1f7a-000e-46b5-9846-2a0caa9ba88d`
+**ChangeSet Label:** `IDTSPE Exact Realization generic Target Module`
+**Prior Package:** `8acc820d-7e9e-4de1-93b0-6d6b3f877707`
+**Reviewed Result:** `NEEDS CORRECTION`
+**Source Basis:** exact post-Apply target of prior package `8acc820d-7e9e-4de1-93b0-6d6b3f877707` plus the supplied cumulative ReviewDiff; current GitHub `main` remains `a9050a6b5172495fa3522af2e26c4fac901d4f80`, so the correction package uses the prior applied package target as the exact touched-file base rather than guessing from GitHub.
 
 **Material ReviewDiff finding / selected correction:**
 - keep the Exact Realization semantic design unchanged; the blocker is audit/projection consistency rather than the Target Module model;
@@ -2458,10 +2458,10 @@ No `TM-EXACT-REALIZATION` workflow, repair authority, Domain/Slice/Test boundary
 
 ### LOG-DOC-136 — Apply Exact Realization ReviewDiff audit correction
 
-**Type:** APPLIED  
-**Applied From:** `LOG-DOC-135`  
-**ChangeSet:** `15cf1f7a-000e-46b5-9846-2a0caa9ba88d`  
-**Package:** `b0a9bad8-1b8f-4a49-af1f-983dec13e780`  
+**Type:** APPLIED
+**Applied From:** `LOG-DOC-135`
+**ChangeSet:** `15cf1f7a-000e-46b5-9846-2a0caa9ba88d`
+**Package:** `b0a9bad8-1b8f-4a49-af1f-983dec13e780`
 
 **Target-State Result:** after successful Apply of this exact correction package:
 - generic Core `TM-EXACT-REALIZATION` and `RU-REAL-01` retain the previously selected code-first exact-realization semantics and explicit integration/verification/minor-repair authority boundary;
@@ -2471,10 +2471,10 @@ No `TM-EXACT-REALIZATION` workflow, repair authority, Domain/Slice/Test boundary
 
 ### LOG-DOC-137 — Simplify Testing ownership and add optional generic Pre-Update Plan
 
-**Type:** IDEA CLARIFICATION  
-**Updates:** `LOG-DOC-133` / `LOG-DOC-134` Exact Realization boundary + current Testing / Pre-Update planning  
-**ChangeSet:** `2c7d090e-e95b-44a0-827f-78f4721ae133`  
-**Package:** `52a30497-e5ab-497e-8c86-dfc4eb11e1a4`  
+**Type:** IDEA CLARIFICATION
+**Updates:** `LOG-DOC-133` / `LOG-DOC-134` Exact Realization boundary + current Testing / Pre-Update planning
+**ChangeSet:** `2c7d090e-e95b-44a0-827f-78f4721ae133`
+**Package:** `52a30497-e5ab-497e-8c86-dfc4eb11e1a4`
 
 **Clarification / resulting meaning:**
 - simplify Testing around one reusable Testing Knowledge Basis for proof theory/mechanics and `LENS-TEST-PROOF-EVIDENCE` as the operational proof-quality + actual-coverage review authority;
@@ -2487,10 +2487,10 @@ No `TM-EXACT-REALIZATION` workflow, repair authority, Domain/Slice/Test boundary
 
 ### LOG-DOC-138 — Apply Testing simplification and generic Pre-Update target state
 
-**Type:** APPLIED  
-**Applied From:** `LOG-DOC-137`  
-**ChangeSet:** `2c7d090e-e95b-44a0-827f-78f4721ae133`  
-**Package:** `52a30497-e5ab-497e-8c86-dfc4eb11e1a4`  
+**Type:** APPLIED
+**Applied From:** `LOG-DOC-137`
+**ChangeSet:** `2c7d090e-e95b-44a0-827f-78f4721ae133`
+**Package:** `52a30497-e5ab-497e-8c86-dfc4eb11e1a4`
 
 **Target-State Result:** after successful Apply of this exact package:
 - the installed Target topology is `2 generic Core + 15 SDS = 17`: Core owns optional Pre-Update Plan and Exact Realization, while SDS no longer owns a Test Coverage Target;
@@ -2503,11 +2503,11 @@ No `TM-EXACT-REALIZATION` workflow, repair authority, Domain/Slice/Test boundary
 
 ### LOG-DOC-139 — Correct Testing Evidence persistence boundary
 
-**Type:** REVIEW DIFF / CONSISTENCY CORRECTION / OPEN-CHANGESET CONTINUATION  
-**ChangeSet:** `2c7d090e-e95b-44a0-827f-78f4721ae133`  
-**ChangeSet Label:** `IDTSPE testing simplification and generic Pre-Update Plan`  
-**Prior Package:** `52a30497-e5ab-497e-8c86-dfc4eb11e1a4`  
-**Reviewed Result:** `NEEDS SMALL CORRECTION`  
+**Type:** REVIEW DIFF / CONSISTENCY CORRECTION / OPEN-CHANGESET CONTINUATION
+**ChangeSet:** `2c7d090e-e95b-44a0-827f-78f4721ae133`
+**ChangeSet Label:** `IDTSPE testing simplification and generic Pre-Update Plan`
+**Prior Package:** `52a30497-e5ab-497e-8c86-dfc4eb11e1a4`
+**Reviewed Result:** `NEEDS SMALL CORRECTION`
 **Source Basis:** exact post-Apply target of prior package `52a30497-e5ab-497e-8c86-dfc4eb11e1a4` plus the supplied cumulative ReviewDiff; current GitHub `main` remains `b68b6dfac1f41fd8e79b8ea4a862ada3eddad433`, so this correction package uses the prior applied package target as the exact touched-file base.
 
 **Selected correction / clarification:**
@@ -2519,10 +2519,10 @@ No `TM-EXACT-REALIZATION` workflow, repair authority, Domain/Slice/Test boundary
 
 ### LOG-DOC-140 — Apply Testing Evidence persistence ReviewDiff correction
 
-**Type:** APPLIED  
-**Applied From:** `LOG-DOC-139`  
-**ChangeSet:** `2c7d090e-e95b-44a0-827f-78f4721ae133`  
-**Package:** `e78abb02-eb7a-4c4b-bccf-3340fd2f06bd`  
+**Type:** APPLIED
+**Applied From:** `LOG-DOC-139`
+**ChangeSet:** `2c7d090e-e95b-44a0-827f-78f4721ae133`
+**Package:** `e78abb02-eb7a-4c4b-bccf-3340fd2f06bd`
 
 **Target-State Result:** after successful Apply of this exact correction package:
 - `AG-TEST-02` is materiality-driven: executed automated/practical Evidence may remain in existing test/run/tool output and is persisted/referenced only when continuing review/revalidation/traceability/Decision/Finding value warrants it;
@@ -2532,9 +2532,9 @@ No `TM-EXACT-REALIZATION` workflow, repair authority, Domain/Slice/Test boundary
 
 ### XREF-DOC-018 — Replacement Package Feature/Scenario and disposable Slice/Aggregate planning
 
-**Type:** CROSS-SCOPE REFERENCE  
-**Canonical Log:** `planning/documentation/tools/replacement-package-app/action-log.md`  
-**Entry:** `LOG-RPKG-078`  
-**ChangeSet:** `4e7fcebe-494b-4443-bcbc-39a5bbd5202e`  
-**Package:** `5de952c1-8cf5-4a0a-987f-1d8c877b5b28`  
+**Type:** CROSS-SCOPE REFERENCE
+**Canonical Log:** `planning/documentation/tools/replacement-package-app/action-log.md`
+**Entry:** `LOG-RPKG-078`
+**ChangeSet:** `4e7fcebe-494b-4443-bcbc-39a5bbd5202e`
+**Package:** `5de952c1-8cf5-4a0a-987f-1d8c877b5b28`
 **Reason:** Builder Feature/Scenario/navigation files under `planning/documentation/replacement-package-builder/` participate in the same Feature-centered documentation migration as the Replacement Package App local methodology/product owners. Full rationale, non-persistent Slice/Aggregate planning semantics, Pre-Apply correction and APPLIED target-state relation are owned by the canonical Replacement Package App scope log.

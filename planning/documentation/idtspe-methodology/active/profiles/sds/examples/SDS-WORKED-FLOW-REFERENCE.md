@@ -397,4 +397,4 @@ Target Owner Materialization
   only after implementation + required proof/revalidation
 ```
 
-Physical owner/file placement is proportional; see [`../ARTIFACT-PLACEMENT-MAP.md`](../ARTIFACT-PLACEMENT-MAP.md).
+Physical owner/file placement is proportional; see [`../representation/ARTIFACT-PLACEMENT-MAP.md`](../representation/ARTIFACT-PLACEMENT-MAP.md).

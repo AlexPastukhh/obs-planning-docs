@@ -81,7 +81,7 @@ supporting Source/Evidence refs [when useful]
 
 A Landscape Snapshot is a Bank-owned retained corpus-level research result. `Landscape Snapshot ID` is stable and unique within its owning Bank. A retained Snapshot records `Created At`; it includes `As Of` / observed period when temporal framing is material and may reference a prior Snapshot in the same Bank through `Supersedes`.
 
-Landscape semantics and historical interpretation rules live in [Landscape Research And Evolution Guidance](../guidance/LANDSCAPE-RESEARCH-AND-EVOLUTION-GUIDANCE.md#landscape-research-and-evolution-guidance).
+Landscape semantics and historical interpretation rules live in [Landscape Research And Evolution Guidance](../knowledge-bases/LANDSCAPE-RESEARCH-AND-EVOLUTION.md#landscape-research-and-evolution-guidance).
 
 ## Vocabulary Package
 

@@ -47,14 +47,14 @@ Read in order:
 2. [Reference Knowledge Object Model](models/REFERENCE-KNOWLEDGE-OBJECT-MODEL.md#reference-knowledge-object-model);
 3. [Bank Principles](models/BANK-PRINCIPLES.md#bank-principles);
 4. [Vocabulary Model](models/VOCABULARY-MODEL.md#vocabulary-model);
-5. [Reference Knowledge Representation Model](models/REFERENCE-KNOWLEDGE-REPRESENTATION-MODEL.md#reference-knowledge-representation-model);
-6. [Target Module Registry](TARGET-MODULE-REGISTRY.md#reference-knowledge-target-module-registry);
-7. [Lens Registry](LENS-REGISTRY.md#reference-knowledge-lens-registry);
+5. [Reference Knowledge Representation Model](representation/REFERENCE-KNOWLEDGE-REPRESENTATION-MODEL.md#reference-knowledge-representation-model);
+6. [Target Module Registry](registries/TARGET-MODULE-REGISTRY.md#reference-knowledge-target-module-registry);
+7. [Lens Registry](registries/LENS-REGISTRY.md#reference-knowledge-lens-registry);
 8. [Domain Pack Model And Derivation Guidance](domain-packs/DOMAIN-PACK-MODEL-AND-DERIVATION-GUIDANCE.md#domain-pack-model-and-derivation-guidance);
-9. [Domain Pack Registry](DOMAIN-PACK-REGISTRY.md#reference-knowledge-domain-pack-registry);
+9. [Domain Pack Registry](registries/DOMAIN-PACK-REGISTRY.md#reference-knowledge-domain-pack-registry);
 10. [Consumer / Source Integration](integration/CONSUMER-SOURCE-INTEGRATION.md#consumer-source-integration);
-11. [Bank Change Authority](guidance/BANK-CHANGE-AUTHORITY.md#bank-change-authority);
-12. [Artifact Placement Map](ARTIFACT-PLACEMENT-MAP.md#reference-knowledge-artifact-placement-map).
+11. [Bank Change Authority](profile-contracts/BANK-CHANGE-AUTHORITY.md#bank-change-authority);
+12. [Artifact Placement Map](representation/ARTIFACT-PLACEMENT-MAP.md#reference-knowledge-artifact-placement-map).
 
 Read concrete Domain Packs, Target Modules, Lenses and examples only when selected/applicable. No concrete Domain Packs are currently installed.
 

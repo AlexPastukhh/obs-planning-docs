@@ -1,9 +1,9 @@
 # Planning Findings / Q/R/P Completeness Review Workflow
 
 Status: active supporting workflow for planning-concern review
-Current semantic authority: [`idtspe-methodology/active/idtspe-core/shared/qrp-lifecycle-and-review-contract.md`](idtspe-methodology/active/idtspe-core/shared/qrp-lifecycle-and-review-contract.md) plus the selected methodology/Target owner.
+Current semantic authority: [`idtspe-methodology/active/idtspe-core/resolution/qrp/QRP-LIFECYCLE-AND-REVIEW.md`](idtspe-methodology/active/idtspe-core/resolution/qrp/QRP-LIFECYCLE-AND-REVIEW.md) plus the selected methodology/Target owner.
 This file is not a repository-level Use-Case owner.
-Shared Q/R/P semantics: [`idtspe-methodology/active/idtspe-core/shared/qrp-lifecycle-and-review-contract.md`](idtspe-methodology/active/idtspe-core/shared/qrp-lifecycle-and-review-contract.md)
+Shared Q/R/P semantics: [`idtspe-methodology/active/idtspe-core/resolution/qrp/QRP-LIFECYCLE-AND-REVIEW.md`](idtspe-methodology/active/idtspe-core/resolution/qrp/QRP-LIFECYCLE-AND-REVIEW.md)
 
 ## Purpose
 

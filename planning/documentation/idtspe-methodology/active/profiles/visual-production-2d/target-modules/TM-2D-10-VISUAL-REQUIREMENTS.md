@@ -1,8 +1,8 @@
 <a id="tm-2d-10-visual-requirements"></a>
 # TM-2D-10-VISUAL-REQUIREMENTS — Visual Outcome / Requirement Owner
 
-Entry Point: `tm.2d.visual-requirements`  
-Supported Roles: PRIMARY, SUPPORTING  
+Entry Point: `tm.2d.visual-requirements`
+Supported Roles: PRIMARY, SUPPORTING
 Status: active profile module
 
 ## Purpose
@@ -11,7 +11,7 @@ Own the bounded meaning of what a 2D visual result must accomplish before design
 
 ## Target Step Result
 
-`Visual Requirements`. Generic Unit existence/disposition semantics follow the Core [Unit / Target Step Result Model](../../../idtspe-core/shared/idtspe-unit-and-target-step-result-model.md); this module owns only the visual Unit responsibilities/materiality below.
+`Visual Requirements`. Generic Unit existence/disposition semantics follow the Core [Unit / Target Step Result Model](../../../idtspe-core/runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md); this module owns only the visual Unit responsibilities/materiality below.
 
 ## Module-defined Unit Inventory
 

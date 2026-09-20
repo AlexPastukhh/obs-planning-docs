@@ -1,6 +1,6 @@
 # LENS-PRACTICAL-EVIDENCE — Prototype / Implemented Practical Evidence
 
-Lens ID: `LENS-PRACTICAL-EVIDENCE`  
+Lens ID: `LENS-PRACTICAL-EVIDENCE`
 Activation: `TARGET_PROFILE_REUSABLE`
 
 ## Purpose
@@ -126,7 +126,7 @@ Mode: `HYBRID`
 
 **Referenced Knowledge Owners:**
 
-- [`practical-evidence-method.md`](../../shared/practical-evidence-method.md)
+- [`planning/documentation/idtspe-methodology/active/idtspe-core/knowledge-bases/PRACTICAL-EVIDENCE.knowledge-basis.md`](../../knowledge-bases/PRACTICAL-EVIDENCE.knowledge-basis.md)
 
 **Reference Load Policy:**
 

@@ -1,7 +1,7 @@
 # TM-SCENARIO-PLANNING — Scenario Journey Composition
 
-Entry Point: `tm.scenario`  
-Role: journey-composition Target Module  
+Entry Point: `tm.scenario`
+Role: journey-composition Target Module
 Compatibility rule: canonical ID/path `TM-SCENARIO-PLANNING` is retained; the semantic owner is Scenario Journey Composition.
 
 ## Purpose
@@ -63,7 +63,7 @@ Scenario formation is non-linear. A finding in journey composition may challenge
 
 ## Unit Contract Conformance
 
-This module specializes the Core [Target Module Model](../../../idtspe-core/shared/target-module-model.md) and [Unit / Target Step Result Model](../../../idtspe-core/shared/idtspe-unit-and-target-step-result-model.md). The Core owners define generic Unit lifecycle, complete-inventory/disposition and Proposal/Core-State semantics; this module defines only its SDS-specific Unit responsibilities, local materiality, production guidance, validators and handoffs below.
+This module specializes the Core [Target Module Model](../../../idtspe-core/target-modules/TARGET-MODULE-MODEL.md) and [Unit / Target Step Result Model](../../../idtspe-core/runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md). The Core owners define generic Unit lifecycle, complete-inventory/disposition and Proposal/Core-State semantics; this module defines only its SDS-specific Unit responsibilities, local materiality, production guidance, validators and handoffs below.
 
 ## Target Step-Result Contract
 
@@ -77,7 +77,7 @@ This module specializes the Core [Target Module Model](../../../idtspe-core/shar
 
 ### Result Unit Applicability / Materiality
 
-Unit presence/disposition mechanics follow the Core [`Unit Applicability / Materiality / Disposition Contract`](../../../idtspe-core/shared/idtspe-unit-and-target-step-result-model.md#5a-unit-applicability--materiality--disposition-contract). The table below owns only this module's local substantive-materiality and omission-rationale triggers.
+Unit presence/disposition mechanics follow the Core [`Unit Applicability / Materiality / Disposition Contract`](../../../idtspe-core/runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md#5a-unit-applicability--materiality--disposition-contract). The table below owns only this module's local substantive-materiality and omission-rationale triggers.
 
 | Result Unit | Substantive resolution is material when | Unit disposition when substantive resolution is not material |
 |---|---|---|
@@ -91,7 +91,7 @@ Unit presence/disposition mechanics follow the Core [`Unit Applicability / Mater
 
 ### Explicit Unit Checkpoint Placement
 
-Each material Unit below inherits the generic [`Unit Applicability Envelope`](../../../idtspe-core/shared/idtspe-unit-and-target-step-result-model.md#5b-unit-applicability-envelope--opening--in-unit--closing-checkpoints). Opening/Closing are mandatory logical applicability boundaries; registries may also be checked during Unit work whenever new material pressure appears.
+Each material Unit below inherits the generic [`Unit Applicability Envelope`](../../../idtspe-core/runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md#5b-unit-applicability-envelope--opening--in-unit--closing-checkpoints). Opening/Closing are mandatory logical applicability boundaries; registries may also be checked during Unit work whenever new material pressure appears.
 
 #### `RU-SCEN-01` processing envelope
 
@@ -101,7 +101,7 @@ Each material Unit below inherits the generic [`Unit Applicability Envelope`](..
 
 #### `RU-SCEN-02` processing envelope
 
-1. **Opening Unit Checkpoint — `RU-SCEN-02`** — determine whether this Scenario's journey composition is materially affected, then apply the shared [Current-Owner Evolution Impact Projection Contract](../shared/current-owner-evolution-impact-projection-contract.md).
+1. **Opening Unit Checkpoint — `RU-SCEN-02`** — determine whether this Scenario's journey composition is materially affected, then apply the shared [Current-Owner Evolution Impact Projection Contract](../profile-contracts/evolution/CURRENT-OWNER-EVOLUTION-IMPACT-PROJECTION.md).
 2. **Unit Work — `RU-SCEN-02`** — produce the Scenario-local reverse navigation/revalidation projection under that shared contract.
 3. **Closing Unit Checkpoint — `RU-SCEN-02`** — validate Scenario-local revalidation/handoff needs and the shared projection-contract guards.
 
@@ -113,7 +113,7 @@ Each material Unit below inherits the generic [`Unit Applicability Envelope`](..
 
 ### RU-SCEN-02 — Evolution Impact
 
-This Scenario-local Unit specializes the shared [Current-Owner Evolution Impact Projection Contract](../shared/current-owner-evolution-impact-projection-contract.md). Its local affected surface is **journey composition**. The shared contract owns inclusion threshold across candidate/selected/conditional/deferred Steps, truthful planning-position projection, depth/no-copy rules and post-realization removal from active future impact. This Target Module owns only the Unit identity, Scenario-specific materiality test and local revalidation/handoff use.
+This Scenario-local Unit specializes the shared [Current-Owner Evolution Impact Projection Contract](../profile-contracts/evolution/CURRENT-OWNER-EVOLUTION-IMPACT-PROJECTION.md). Its local affected surface is **journey composition**. The shared contract owns inclusion threshold across candidate/selected/conditional/deferred Steps, truthful planning-position projection, depth/no-copy rules and post-realization removal from active future impact. This Target Module owns only the Unit identity, Scenario-specific materiality test and local revalidation/handoff use.
 
 ### RU-SCEN-03 — Journey Realization Concerns
 
@@ -194,7 +194,7 @@ Conditional SDS/Core Lenses:
 
 ## Journey Constraint Identity
 
-Scenario owns a stable `SR-*` Requirement family for independently useful journey-level must-holds. Use the shared [`Requirement Classification And Representation Contract`](../shared/requirement-classification-and-representation-contract.md) for Type/QRPE semantics.
+Scenario owns a stable `SR-*` Requirement family for independently useful journey-level must-holds. Use the shared [`Requirement Classification And Representation Contract`](../profile-contracts/requirements/REQUIREMENT-CLASSIFICATION-AND-REPRESENTATION.md) for Type/QRPE semantics.
 
 When addressable Scenario Requirements are material, use the exact reusable table schema:
 

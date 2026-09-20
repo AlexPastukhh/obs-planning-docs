@@ -1,7 +1,7 @@
 # TM-PRE-UPDATE-PLAN — Pre-Update Plan
 
-Entry Point: `tm.pre.update`  
-Role: generic Core optional Target Module  
+Entry Point: `tm.pre.update`
+Role: generic Core optional Target Module
 Target form: `PRE_UPDATE_PLAN`
 
 ## Purpose
@@ -124,7 +124,7 @@ Each declared Result Unit is a Module-defined Unit Contract. Its runtime work is
 
 ### Result Unit Applicability / Materiality
 
-Apply the Core [`Unit Applicability / Materiality / Disposition Contract`](../shared/idtspe-unit-and-target-step-result-model.md#5a-unit-applicability--materiality--disposition-contract).
+Apply the Core [`Unit Applicability / Materiality / Disposition Contract`](../runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md#5a-unit-applicability--materiality--disposition-contract).
 
 | Result Unit | Substantive resolution is material when | Target/Unit disposition when not material |
 |---|---|---|
@@ -150,7 +150,7 @@ These are useful content prompts, not mandatory form fields. A tiny plan may be 
 
 ### Explicit Unit Checkpoint Placement
 
-Each material Unit below inherits the generic [`Unit Applicability Envelope`](../shared/idtspe-unit-and-target-step-result-model.md#5b-unit-applicability-envelope--opening--in-unit--closing-checkpoints). Opening/Closing are mandatory logical applicability boundaries; registries may also be checked during Unit work whenever new material pressure appears. For `RU-PUPDATE-01`, both boundaries explicitly scan/reuse the Core Lens Registry and any active-profile Lens Registry; frequent Lens candidates remain those named in this module's Lens Profile.
+Each material Unit below inherits the generic [`Unit Applicability Envelope`](../runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md#5b-unit-applicability-envelope--opening--in-unit--closing-checkpoints). Opening/Closing are mandatory logical applicability boundaries; registries may also be checked during Unit work whenever new material pressure appears. For `RU-PUPDATE-01`, both boundaries explicitly scan/reuse the Core Lens Registry and any active-profile Lens Registry; frequent Lens candidates remain those named in this module's Lens Profile.
 
 #### `RU-PUPDATE-01` processing envelope
 

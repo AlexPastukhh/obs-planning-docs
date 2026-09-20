@@ -16,7 +16,7 @@ Source / fact / constraint / Question / Proposal / Q/R/P / Evidence / Decision
 
 Canonical Proposal semantics/review:
 
-`planning/documentation/idtspe-methodology/active/idtspe-core/shared/proposal-and-decision-lifecycle-contract.md`
+`planning/documentation/idtspe-methodology/active/idtspe-core/resolution/proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md`
 
 Legacy `Idea` in historical material maps to current `Proposal`; it is not a second current methodology type.
 

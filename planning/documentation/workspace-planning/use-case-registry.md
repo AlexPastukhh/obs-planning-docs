@@ -47,7 +47,7 @@ All three Workspace Planning UCs use these selected rules:
 
 - Real-Life Basis is `known | partial | unknown`; do not invent Need;
 - reuse an existing UC whenever its useful result already owns the Need, or reuse/extraction is currently useful/clearly justified;
-- Planning Q/R/P follows Core `../idtspe-methodology/active/idtspe-core/shared/qrp-lifecycle-and-review-contract.md`: active/residual concerns attach only to a concrete UC/current planned state; related concerns sharing one resolution surface are grouped;
+- Planning Q/R/P follows Core `../idtspe-methodology/active/idtspe-core/resolution/qrp/QRP-LIFECYCLE-AND-REVIEW.md`: active/residual concerns attach only to a concrete UC/current planned state; related concerns sharing one resolution surface are grouped;
 - Q/R/P Priority reuses Review Priority semantics and is separate from Review Category/status; AI review does not invent user-owned Need/preferences/risk tolerance;
 - one logical Q/R/P item/group has one detailed representation plus an optional register/index when material; retained trace is preserved only when useful;
 - `Review Order` is a derived lens over attached concerns;

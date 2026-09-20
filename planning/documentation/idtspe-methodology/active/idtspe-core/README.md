@@ -23,7 +23,7 @@ Installed Profiles
 = specialized Target Modules, Lenses, registries, knowledge and planning semantics layered on Core
 ```
 
-IDTSPE is not an opt-in mode. The canonical proportionality owner is [`shared/contextual-methodology-application-contract.md`](shared/contextual-methodology-application-contract.md); Broad Discussion with no Target/State/Lens/Checkpoint is a valid projection when deeper structure has no current value.
+IDTSPE is not an opt-in mode. The canonical proportionality owner is [`runtime/applicability/CONTEXTUAL-METHODOLOGY-APPLICATION-CONTRACT.md`](runtime/applicability/CONTEXTUAL-METHODOLOGY-APPLICATION-CONTRACT.md); Broad Discussion with no Target/State/Lens/Checkpoint is a valid projection when deeper structure has no current value.
 
 ## Bootstrap
 
@@ -36,12 +36,12 @@ Core bootstrap establishes enough **routing, proportionality and ownership orien
 Read in order:
 
 1. this `README.md`;
-2. [`IDTSPE-CORE-MAP.md`](IDTSPE-CORE-MAP.md) — compact conceptual/dependency map, not a competing semantic owner;
-3. [`IDTSPE-DEFAULT-WORK-MODE.md`](IDTSPE-DEFAULT-WORK-MODE.md);
-4. [`shared/idtspe-methodology-use-case-registry.md`](shared/idtspe-methodology-use-case-registry.md);
-5. [`shared/compose-current-work-use-case.md`](shared/compose-current-work-use-case.md);
-6. [`shared/contextual-methodology-application-contract.md`](shared/contextual-methodology-application-contract.md);
-7. [`shared/methodology-registry-directory.md`](shared/methodology-registry-directory.md).
+2. [`navigation/IDTSPE-CORE-MAP.md`](navigation/IDTSPE-CORE-MAP.md) — compact conceptual/dependency map, not a competing semantic owner;
+3. [`runtime/IDTSPE-DEFAULT-WORK-MODE.md`](runtime/IDTSPE-DEFAULT-WORK-MODE.md);
+4. [`use-cases/USE-CASE-REGISTRY.md`](use-cases/USE-CASE-REGISTRY.md);
+5. [`use-cases/compose-current-work/UC-IDTSPE-COMPOSE-CURRENT-WORK.md`](use-cases/compose-current-work/UC-IDTSPE-COMPOSE-CURRENT-WORK.md);
+6. [`runtime/applicability/CONTEXTUAL-METHODOLOGY-APPLICATION-CONTRACT.md`](runtime/applicability/CONTEXTUAL-METHODOLOGY-APPLICATION-CONTRACT.md);
+7. [`navigation/METHODOLOGY-REGISTRY-DIRECTORY.md`](navigation/METHODOLOGY-REGISTRY-DIRECTORY.md).
 
 After this spine is current, Core bootstrap is sufficient for ordinary routing/composition. Reuse it while trustworthy. Do not read deeper Core owners merely to claim that bootstrap completed.
 
@@ -49,17 +49,17 @@ After this spine is current, Core bootstrap is sufficient for ordinary routing/c
 
 Open the narrowest canonical owner when its mechanism becomes material:
 
-- explicit Core State / Target Result / Unit applicability → [`shared/idtspe-unit-and-target-step-result-model.md`](shared/idtspe-unit-and-target-step-result-model.md);
-- Target Formation → [`shared/resolution-slot-and-target-formation-resolution-set.md`](shared/resolution-slot-and-target-formation-resolution-set.md);
-- reusable Target Module → [`shared/target-module-model.md`](shared/target-module-model.md) plus the selected Target Module registry/owner;
-- Lens selection/application → [`lenses/README.md`](lenses/README.md) and [`lenses/LENS-MODEL.md`](lenses/LENS-MODEL.md), then only selected Lens bodies;
-- unresolved USER wanted outcome / semantic-home routing → [`shared/need-candidate-disposition-contract.md`](shared/need-candidate-disposition-contract.md);
-- material candidate/selection meaning → [`shared/proposal-and-decision-lifecycle-contract.md`](shared/proposal-and-decision-lifecycle-contract.md);
-- material Question/Risk/Problem lifecycle → [`shared/qrp-lifecycle-and-review-contract.md`](shared/qrp-lifecycle-and-review-contract.md);
-- material Lens/review finding consequence → [`shared/finding-disposition-contract.md`](shared/finding-disposition-contract.md);
-- exact Shell port/TF mechanics → [`IDTSPE-SHELL.md`](IDTSPE-SHELL.md);
-- representation/persistence/materialization boundary → [`shared/artifact-placement-and-idtspe-response-contract.md`](shared/artifact-placement-and-idtspe-response-contract.md);
-- direct IDTSPE command-surface semantics → [`shared/idtspe-command-surface-contract.md`](shared/idtspe-command-surface-contract.md);
+- explicit Core State / Target Result / Unit applicability → [`runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md`](runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md);
+- Target Formation → [`runtime/target-work/RESOLUTION-SLOT-AND-TARGET-FORMATION-SET.md`](runtime/target-work/RESOLUTION-SLOT-AND-TARGET-FORMATION-SET.md);
+- reusable Target Module → [`target-modules/TARGET-MODULE-MODEL.md`](target-modules/TARGET-MODULE-MODEL.md) plus the selected Target Module registry/owner;
+- Lens selection/application → [`lenses/LENS-REGISTRY.md`](lenses/LENS-REGISTRY.md) and [`lenses/LENS-MODEL.md`](lenses/LENS-MODEL.md), then only selected Lens bodies;
+- unresolved USER wanted outcome / semantic-home routing → [`resolution/needs/NEED-CANDIDATE-DISPOSITION.md`](resolution/needs/NEED-CANDIDATE-DISPOSITION.md);
+- material candidate/selection meaning → [`resolution/proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md`](resolution/proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md);
+- material Question/Risk/Problem lifecycle → [`resolution/qrp/QRP-LIFECYCLE-AND-REVIEW.md`](resolution/qrp/QRP-LIFECYCLE-AND-REVIEW.md);
+- material Lens/review finding consequence → [`resolution/findings/FINDING-DISPOSITION.md`](resolution/findings/FINDING-DISPOSITION.md);
+- runtime composition ports / TF mechanics → [`runtime/IDTSPE-RUNTIME-COMPOSITION-CONTRACT.md`](runtime/IDTSPE-RUNTIME-COMPOSITION-CONTRACT.md);
+- representation/persistence/materialization boundary → [`representation/ARTIFACT-PLACEMENT-AND-IDTSPE-RESPONSE-CONTRACT.md`](representation/ARTIFACT-PLACEMENT-AND-IDTSPE-RESPONSE-CONTRACT.md);
+- direct IDTSPE command-surface semantics → [`commands/IDTSPE-COMMAND-SURFACE-CONTRACT.md`](commands/IDTSPE-COMMAND-SURFACE-CONTRACT.md);
 - integration/revalidation → the selected Integration/Revalidation Use-Case owner from the Core Use-Case Registry.
 
 Other Core contracts, examples, specific Target Modules/Lenses, theory and profiles remain lazy/conditional reads reached from Use Cases, registries and current applicability. Primary bootstrap stops before profile bootstrap.
@@ -79,25 +79,25 @@ current situation
 → component-local applicability/materiality
 ```
 
-The default continuously relevant runtime capability is [`UC-IDTSPE-COMPOSE-CURRENT-WORK`](shared/compose-current-work-use-case.md). Its valid result may be no additional structure beyond Broad Discussion.
+The default continuously relevant runtime capability is [`UC-IDTSPE-COMPOSE-CURRENT-WORK`](use-cases/compose-current-work/UC-IDTSPE-COMPOSE-CURRENT-WORK.md). Its valid result may be no additional structure beyond Broad Discussion.
 
 ## Canonical Core Owners
 
-Use [`IDTSPE-CORE-MAP.md`](IDTSPE-CORE-MAP.md) for a compact topology view; use these files for normative meaning:
+Use [`navigation/IDTSPE-CORE-MAP.md`](navigation/IDTSPE-CORE-MAP.md) for a compact topology view; use these files for normative meaning:
 
-- [`shared/idtspe-unit-and-target-step-result-model.md`](shared/idtspe-unit-and-target-step-result-model.md) — Core State / Target Step Result / Unit applicability-materiality-omission.
-- [`shared/broad-discussion-and-integration-checkpoint-model.md`](shared/broad-discussion-and-integration-checkpoint-model.md) — Broad Discussion and checkpoint interaction/projection semantics.
-- [`shared/need-candidate-disposition-contract.md`](shared/need-candidate-disposition-contract.md) — USER wanted outcome → Need Candidate grounding/disposition → existing natural owner/lifecycle route.
-- [`shared/proposal-and-decision-lifecycle-contract.md`](shared/proposal-and-decision-lifecycle-contract.md) — Proposal candidate space, selection, Decision trace/retention/revalidation.
-- [`shared/qrp-lifecycle-and-review-contract.md`](shared/qrp-lifecycle-and-review-contract.md) — Q/R/P lifecycle, priority/category/grouping and retention.
-- [`shared/target-module-model.md`](shared/target-module-model.md) — reusable Target Module contract.
-- [`lenses/LENS-MODEL.md`](lenses/LENS-MODEL.md) + [`lenses/README.md`](lenses/README.md) — reusable Lens contract and registry.
-- [`shared/finding-disposition-contract.md`](shared/finding-disposition-contract.md) — producer → Finding Candidate → owner/State/lifecycle disposition.
-- [`shared/methodology-registry-directory.md`](shared/methodology-registry-directory.md) — supporting registry-family router used from selected Use-Case Processes.
-- [`shared/artifact-placement-and-idtspe-response-contract.md`](shared/artifact-placement-and-idtspe-response-contract.md) — physical representation/placement interface and P-14 response contract.
-- [`shared/knowledge-basis-contract.md`](shared/knowledge-basis-contract.md) — reusable knowledge/theory boundary.
-- [`shared/resolution-slot-and-target-formation-resolution-set.md`](shared/resolution-slot-and-target-formation-resolution-set.md) — Target Formation/resolution mechanics.
-- [`shared/user-input-decision-and-answer-intake-rule.md`](shared/user-input-decision-and-answer-intake-rule.md) — USER input classification, question policy and conditional Decision Gate interaction.
+- [`runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md`](runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md) — Core State / Target Step Result / Unit applicability-materiality-omission.
+- [`representation/interaction/BROAD-DISCUSSION-AND-INTEGRATION-CHECKPOINT-PROJECTION.md`](representation/interaction/BROAD-DISCUSSION-AND-INTEGRATION-CHECKPOINT-PROJECTION.md) — Broad Discussion and checkpoint interaction/projection semantics.
+- [`resolution/needs/NEED-CANDIDATE-DISPOSITION.md`](resolution/needs/NEED-CANDIDATE-DISPOSITION.md) — USER wanted outcome → Need Candidate grounding/disposition → existing natural owner/lifecycle route.
+- [`resolution/proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md`](resolution/proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md) — Proposal candidate space, selection, Decision trace/retention/revalidation.
+- [`resolution/qrp/QRP-LIFECYCLE-AND-REVIEW.md`](resolution/qrp/QRP-LIFECYCLE-AND-REVIEW.md) — Q/R/P lifecycle, priority/category/grouping and retention.
+- [`target-modules/TARGET-MODULE-MODEL.md`](target-modules/TARGET-MODULE-MODEL.md) — reusable Target Module contract.
+- [`lenses/LENS-MODEL.md`](lenses/LENS-MODEL.md) + [`lenses/LENS-REGISTRY.md`](lenses/LENS-REGISTRY.md) — reusable Lens contract and registry.
+- [`resolution/findings/FINDING-DISPOSITION.md`](resolution/findings/FINDING-DISPOSITION.md) — producer → Finding Candidate → owner/State/lifecycle disposition.
+- [`navigation/METHODOLOGY-REGISTRY-DIRECTORY.md`](navigation/METHODOLOGY-REGISTRY-DIRECTORY.md) — supporting registry-family router used from selected Use-Case Processes.
+- [`representation/ARTIFACT-PLACEMENT-AND-IDTSPE-RESPONSE-CONTRACT.md`](representation/ARTIFACT-PLACEMENT-AND-IDTSPE-RESPONSE-CONTRACT.md) — physical representation/placement interface and P-14 response contract.
+- [`knowledge-bases/KNOWLEDGE-BASIS-CONTRACT.md`](knowledge-bases/KNOWLEDGE-BASIS-CONTRACT.md) — reusable knowledge/theory boundary.
+- [`runtime/target-work/RESOLUTION-SLOT-AND-TARGET-FORMATION-SET.md`](runtime/target-work/RESOLUTION-SLOT-AND-TARGET-FORMATION-SET.md) — Target Formation/resolution mechanics.
+- [`runtime/interaction/USER-INPUT-DECISION-AND-ANSWER-INTAKE-RULE.md`](runtime/interaction/USER-INPUT-DECISION-AND-ANSWER-INTAKE-RULE.md) — USER input classification, question policy and conditional Decision Gate interaction.
 
 ## Profile Rule
 
@@ -107,9 +107,9 @@ The current installed profiles define no separate runtime methodology-use Use Ca
 
 ## Scenario Map Boundary
 
-[`shared/methodology-use-case-scenario-map.md`](shared/methodology-use-case-scenario-map.md) is design/evaluation/orientation material for checking methodology coverage. It is not runtime routing authority and cannot override current Use Cases/components.
+[`evaluation/USE-CASE-SCENARIO-MAP.md`](evaluation/USE-CASE-SCENARIO-MAP.md) is design/evaluation/orientation material for checking methodology coverage. It is not runtime routing authority and cannot override current Use Cases/components.
 
 ## Adjacent Packages
 
-- [`../ai-reviewability/README.md`](../ai-reviewability/README.md) — peer Key Points/review projection concern.
-- [`../theoretical-modules/README.md`](../theoretical-modules/README.md) — independent reusable theory registry; raw bodies are loaded lazily.
+- [`../ai-reviewability/AI-OUTPUT-REVIEWABILITY.md`](../ai-reviewability/AI-OUTPUT-REVIEWABILITY.md) — peer Key Points/review projection concern.
+- [`knowledge-bases/testing/README.md`](knowledge-bases/testing/README.md) — active Core Testing Knowledge Basis, read lazily when testing/proof theory is materially relevant.

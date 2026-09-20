@@ -16,13 +16,13 @@ This `README.md` is the canonical profile entry. It assumes the primary Document
 For the 2D visual-production portion, read in order:
 
 1. this `README.md`;
-2. [Visual Production Invariants](shared/VISUAL-PRODUCTION-INVARIANTS.md#shared-visual-production-invariants);
-3. [2D Visual Production Target Module Registry](TARGET-MODULE-REGISTRY.md#registry-2d-target-modules);
-4. [2D Visual Lens Registry](LENS-REGISTRY.md#registry-2d-lenses);
-5. [Unit Disposition / Materiality Review And Lens Checkpoints](shared/UNIT-SELECTION-AND-LENS-CHECKPOINTS.md#shared-unit-selection-and-lens-checkpoints);
-6. [Construction Route Selection](shared/CONSTRUCTION-ROUTE-SELECTION.md#shared-construction-route-selection);
-7. [Construction Review Loop Checkpoint](shared/CONSTRUCTION-REVIEW-LOOP-CHECKPOINT.md#shared-construction-review-loop-checkpoint);
-8. [Artifact Placement Map](ARTIFACT-PLACEMENT-MAP.md#artifact-placement-map).
+2. [Visual Production Invariants](profile-contracts/VISUAL-PRODUCTION-INVARIANTS.md#shared-visual-production-invariants);
+3. [2D Visual Production Target Module Registry](registries/TARGET-MODULE-REGISTRY.md#registry-2d-target-modules);
+4. [2D Visual Lens Registry](registries/LENS-REGISTRY.md#registry-2d-lenses);
+5. [Unit Disposition / Materiality Review And Lens Checkpoints](runtime/UNIT-DISPOSITION-AND-LENS-CHECKPOINTS.md#shared-unit-selection-and-lens-checkpoints);
+6. [Construction Route Selection](target-module-support/construction/CONSTRUCTION-ROUTE-SELECTION.target-module-guidance.md#shared-construction-route-selection);
+7. [Construction Review Loop Checkpoint](target-module-support/construction/CONSTRUCTION-REVIEW-LOOP.target-module-checkpoint.md#shared-construction-review-loop-checkpoint);
+8. [Artifact Placement Map](representation/ARTIFACT-PLACEMENT-MAP.md#artifact-placement-map).
 
 Concrete Target Modules, Lenses, templates and examples remain lazy reads after registry selection and local applicability.
 
@@ -31,7 +31,7 @@ Concrete Target Modules, Lenses, templates and examples remain lazy reads after 
 The profile owns reusable methodology for:
 
 - visual outcome and requirement resolution;
-- visual-material acquisition, qualification and preparation;
+- visual-material need/coverage analysis at the current Unit plus reusable bounded preparation operations;
 - coherent whole-visual design;
 - native pixel, vector, editable raster, painterly raster and procedural construction;
 - material multi-route construction integration;
@@ -40,7 +40,7 @@ The profile owns reusable methodology for:
 - construction review and re-entry;
 - visual-material registry/representation guidance.
 
-Canonical 3D asset/scene construction belongs to a sibling 3D profile. A temporary 3D helper used only to resolve a 2D visual-information gap may participate through [Visual Material Preparation](target-modules/TM-2D-15-VISUAL-MATERIAL-PREPARATION.md#tm-2d-15-visual-material-preparation).
+Canonical 3D asset/scene construction belongs to a sibling 3D profile. A temporary 3D helper used only to resolve a 2D visual-information gap is supporting material: route the gap through the Unit Need / Visual Source Coverage Lens and use the [Visual Material Preparation Operation](operations/VISUAL-MATERIAL-PREPARATION.operation.md#visual-material-preparation-operation) when a bounded helper transformation is sufficient.
 
 ## Target Topology
 
@@ -49,8 +49,10 @@ Normal direction:
 ```text
 Visual Requirements
         ↓
-Visual Material Preparation        [re-enter when new information is needed]
-        ↓
+Unit Need / Visual Source Coverage  [evaluate missing/partial/conflicting information]
+        ↓ when bounded preparation is useful
+Visual Material Preparation Operation
+        ↓ continue affected Unit
 Whole Visual Design
         ↓
 one concrete Construction Route
@@ -68,7 +70,7 @@ A concrete construction route is normally the PRIMARY construction Target:
 
 Use [Multi-route Visual Construction](target-modules/TM-2D-30-VISUAL-CONSTRUCTION.md#tm-2d-30-visual-construction) only when combining route results introduces material integration/composition meaning. Mechanical aggregation does not require that Target.
 
-This topology is directional guidance, not a mandatory phase state machine. Findings may re-enter the smallest correct upstream owner.
+This topology is directional guidance, not a mandatory phase state machine. Ordinary acquisition/crop/annotation/measurement/normalization does not form a Target Module. Form [TM-2D-15 Prepared Visual Material Set](target-modules/TM-2D-15-PREPARED-VISUAL-MATERIAL-SET.md#tm-2d-15-prepared-visual-material-set) only when the retained Prepared Visual Material Set is itself an independently useful Target Result. Findings otherwise re-enter the smallest correct Unit/owner.
 
 ## Module-defined Unit Disposition / Materiality Review
 
@@ -82,28 +84,28 @@ The AI evaluates Unit materiality/depth against the current situation and respon
 
 If substantive work is omitted, the Unit remains instantiated/addressable in the Target result with its name/ID, concise omission reason and enough situation/Source context when useful. Omission never turns the Unit into `N/A` or removes it from the Target inventory.
 
-The profile checkpoint route is [Unit Disposition / Materiality Review And Lens Checkpoints](shared/UNIT-SELECTION-AND-LENS-CHECKPOINTS.md#shared-unit-selection-and-lens-checkpoints).
+The profile checkpoint route is [Unit Disposition / Materiality Review And Lens Checkpoints](runtime/UNIT-DISPOSITION-AND-LENS-CHECKPOINTS.md#shared-unit-selection-and-lens-checkpoints).
 
 ## Visual Materials And Sources
 
-Use [Visual Material And Source Usage](shared/VISUAL-MATERIAL-AND-SOURCE-USAGE.md#shared-visual-material-and-source-usage) for the profile bridge between retained visual materials and Core Source bindings.
+Use [Visual Material And Source Usage](source-contracts/VISUAL-MATERIAL-AND-SOURCE-USAGE.md#shared-visual-material-and-source-usage) for the profile bridge between retained visual materials and Core Source bindings.
 
-Use [Visual Material Storage And Registry](shared/VISUAL-MATERIAL-STORAGE-AND-REGISTRY.md#shared-visual-material-storage-and-registry) when retained material volume/reuse justifies a project-level registry/store.
+Use [Visual Material Storage And Registry](representation/VISUAL-MATERIAL-STORAGE-AND-REGISTRY.md#shared-visual-material-storage-and-registry) when retained material volume/reuse justifies a project-level registry/store. Current Target/Unit interpretation remains local to that semantic owner; use [Visual Target-local Material Analysis Representation Guidance](representation/VISUAL-TARGET-LOCAL-MATERIAL-ANALYSIS.representation-guidance.md#visual-target-local-material-analysis-representation-guidance) to choose embedded, aggregate, per-reference or mixed representation.
 
 ## Construction
 
-Construction Targets produce implementation-native editable sources. [Exact Realization Integration](shared/EXACT-REALIZATION-INTEGRATION.md#shared-exact-realization-integration) permits literal source construction/modification during Unit Resolution rather than deferring all realization to the end.
+Construction Targets produce implementation-native editable sources. [Exact Realization Integration](target-module-support/construction/EXACT-REALIZATION-INTEGRATION.target-module-guidance.md#shared-exact-realization-integration) permits literal source construction/modification during Unit Resolution rather than deferring all realization to the end.
 
-At meaningful whole-candidate milestones, use [Construction Review Loop Checkpoint](shared/CONSTRUCTION-REVIEW-LOOP-CHECKPOINT.md#shared-construction-review-loop-checkpoint).
+At meaningful whole-candidate milestones, use [Construction Review Loop Checkpoint](target-module-support/construction/CONSTRUCTION-REVIEW-LOOP.target-module-checkpoint.md#shared-construction-review-loop-checkpoint).
 
 ## Registries
 
-- [Target Module Registry](TARGET-MODULE-REGISTRY.md#registry-2d-target-modules)
-- [Lens Registry](LENS-REGISTRY.md#registry-2d-lenses)
-- [Artifact Placement Map](ARTIFACT-PLACEMENT-MAP.md#artifact-placement-map)
+- [Target Module Registry](registries/TARGET-MODULE-REGISTRY.md#registry-2d-target-modules)
+- [Lens Registry](registries/LENS-REGISTRY.md#registry-2d-lenses)
+- [Artifact Placement Map](representation/ARTIFACT-PLACEMENT-MAP.md#artifact-placement-map)
 
 ## Templates And Examples
 
-- [Target Instance Template](templates/TARGET-INSTANCE.template.md#template-target-instance)
-- [Visual Material Registry Template](templates/VISUAL-MATERIAL-REGISTRY.template.md#template-visual-material-registry)
+- [Target Instance Template](representation/templates/TARGET-INSTANCE.template.md#template-target-instance)
+- [Visual Material Registry Template](representation/templates/VISUAL-MATERIAL-REGISTRY.template.md#template-visual-material-registry)
 - [Representative Workflow Examples](examples/README.md#representative-workflow-examples)

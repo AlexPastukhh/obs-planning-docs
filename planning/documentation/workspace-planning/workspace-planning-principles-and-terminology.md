@@ -5,7 +5,7 @@ Scope: plan changes to evolving Workspaces through useful Workspace Use Cases, e
 
 Canonical generic UC identity/registry semantics: [`../principles-and-terminology.md`](../principles-and-terminology.md)
 Generic Architecture Lens: [`../architecture-planning/README.md`](../architecture-planning/README.md)
-AI reviewability/direction: [`../idtspe-methodology/active/ai-reviewability/README.md`](../idtspe-methodology/active/ai-reviewability/README.md)
+AI reviewability/direction: [`../idtspe-methodology/active/ai-reviewability/AI-OUTPUT-REVIEWABILITY.md`](../idtspe-methodology/active/ai-reviewability/AI-OUTPUT-REVIEWABILITY.md)
 Recommended integrated shape: [`WORKSPACE-USE-CASE-PLANNING-TEMPLATE.md`](WORKSPACE-USE-CASE-PLANNING-TEMPLATE.md)
 
 ## 1. UCDS Pattern
@@ -190,6 +190,6 @@ Real-Life Situation / Need / Desired Result
 → Vertical Realization / verification when useful
 ```
 
-Planning Q/R/P uses Core `../idtspe-methodology/active/idtspe-core/shared/qrp-lifecycle-and-review-contract.md`. Active/residual concerns attach to a concrete semantic owner/current planned state; related Q/R/P sharing one resolution surface form a Q/R/P Group. Q/R/P Priority reuses Review Priority semantics and stays distinct from Review Category/Review Order. AI review must not invent user-owned Need/preferences/risk tolerance. `Review Order` is derived, never a queue. Real-Life Basis may be `known | partial | unknown`; formal RLUC is proportional.
+Planning Q/R/P uses Core `../idtspe-methodology/active/idtspe-core/resolution/qrp/QRP-LIFECYCLE-AND-REVIEW.md`. Active/residual concerns attach to a concrete semantic owner/current planned state; related Q/R/P sharing one resolution surface form a Q/R/P Group. Q/R/P Priority reuses Review Priority semantics and stays distinct from Review Category/Review Order. AI review must not invent user-owned Need/preferences/risk tolerance. `Review Order` is derived, never a queue. Real-Life Basis may be `known | partial | unknown`; formal RLUC is proportional.
 
 Reuse-first: if an existing UC already owns the useful result, reuse it; extract a supporting UC when it has an independently useful reusable result, distinct trigger/result and meaningful consumers. Do not create a new UC for a trivial repeated check, but do not collapse an independently useful capability merely to reduce count.

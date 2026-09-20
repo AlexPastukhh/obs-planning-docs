@@ -49,7 +49,7 @@ Situation / goal: costume/pose identity must remain readable inside the silhouet
 
 Relevant reference / Source coverage: **strong for visible front form, potentially missing/partial for occluded or unseen articulation**.
 
-Reason: target-grid internal form still needs construction; missing information may trigger Material Preparation rather than invention.
+Reason: target-grid internal form still needs construction; missing information is first surfaced by the Unit Need / Visual Source Coverage Lens. If a crop, measurement, extra capture or helper view is enough, invoke the Visual Material Preparation Operation rather than inventing unseen form.
 
 Materiality disposition: **MATERIAL**.
 
@@ -65,4 +65,4 @@ Reason: pixel-specific edge/detail cleanup remains an independent final construc
 
 Materiality disposition: **MATERIAL**.
 
-Review at 1× may reveal a missing side/rear form Source need, which re-enters Visual Material Preparation rather than granting the concept art authority over unseen form.
+Review at 1× may reveal a missing side/rear form Source need. Re-enter the affected Unit through the Source-Coverage Lens; use the preparation Operation for bounded acquisition/transformation, then continue the Unit. Do not form TM-2D-15 unless a reusable Prepared Visual Material Set has independent Target value, and do not grant the concept art authority over unseen form.

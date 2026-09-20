@@ -1,9 +1,9 @@
 <a id="tm-rk-05-bank-formation"></a>
 # Bank Formation
 
-Module ID: `TM-RK-05-BANK-FORMATION`  
-Status: active profile module  
-Entry Point: `rk.bank-form`  
+Module ID: `TM-RK-05-BANK-FORMATION`
+Status: active profile module
+Entry Point: `rk.bank-form`
 Supported Roles: `PRIMARY`
 
 ## Purpose
@@ -20,7 +20,7 @@ Typical Sources: intended ownership/reuse scope, current Bank Registry, existing
 
 ## Knowledge Basis
 
-[Bank Principles](../models/BANK-PRINCIPLES.md#bank-principles), [Vocabulary Model](../models/VOCABULARY-MODEL.md#vocabulary-model), [Reference Knowledge Representation](../models/REFERENCE-KNOWLEDGE-REPRESENTATION-MODEL.md#reference-knowledge-representation-model).
+[Bank Principles](../models/BANK-PRINCIPLES.md#bank-principles), [Vocabulary Model](../models/VOCABULARY-MODEL.md#vocabulary-model), [Reference Knowledge Representation](../representation/REFERENCE-KNOWLEDGE-REPRESENTATION-MODEL.md#reference-knowledge-representation-model).
 
 ## Target Step Result
 
@@ -35,7 +35,7 @@ One usable Bank definition/configuration registered for Reference Knowledge work
 
 ## Module-defined Unit Visibility
 
-Generic Unit existence/disposition semantics follow the Core [Unit / Target Step Result Model](../../../idtspe-core/shared/idtspe-unit-and-target-step-result-model.md). This module owns only the Reference-Knowledge Unit responsibilities, local materiality/omission reasoning and specialized guidance below; Contextual Units remain governed by Core formation semantics.
+Generic Unit existence/disposition semantics follow the Core [Unit / Target Step Result Model](../../../idtspe-core/runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md). This module owns only the Reference-Knowledge Unit responsibilities, local materiality/omission reasoning and specialized guidance below; Contextual Units remain governed by Core formation semantics.
 
 ## Unit Checkpoint Map
 

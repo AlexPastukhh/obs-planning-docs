@@ -1,7 +1,7 @@
 # LENS-VERIFIABILITY-OBSERVABILITY-OPERABILITY — Proof / Observation / Diagnosis / Operation
 
-Lens ID: `LENS-VERIFIABILITY-OBSERVABILITY-OPERABILITY`  
-Legacy alias: `L6`  
+Lens ID: `LENS-VERIFIABILITY-OBSERVABILITY-OPERABILITY`
+Legacy alias: `L6`
 Activation: `FREQUENT_CONDITIONAL`
 
 ## Purpose
@@ -105,7 +105,7 @@ RESOLVER: P-14 / TF-10
 ```
 
 
-Shell placement semantics: [`artifact-placement-and-idtspe-response-contract.md`](../../shared/artifact-placement-and-idtspe-response-contract.md).
+Shell placement semantics: [`planning/documentation/idtspe-methodology/active/idtspe-core/representation/ARTIFACT-PLACEMENT-AND-IDTSPE-RESPONSE-CONTRACT.md`](../../representation/ARTIFACT-PLACEMENT-AND-IDTSPE-RESPONSE-CONTRACT.md).
 
 Normally **NO_DISTINCT_SUPPORTING_ARTIFACT**: L6 surfaces Finding Candidates; when Core Finding Disposition resolves accepted requirement/Decision/Test-handoff meaning to the current Target, that Target's ordinary representation carries it.
 

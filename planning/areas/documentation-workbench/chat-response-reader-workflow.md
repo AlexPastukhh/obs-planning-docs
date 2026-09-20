@@ -71,7 +71,7 @@ future supported automatic handoff
 
 The target automatic direction is an explicit supported handoff in which response content crosses an integration boundary without Linked Notes programmatically extracting it from the ChatGPT page/UI. This statement is a project architecture boundary, not a legal interpretation of any external service terms.
 
-The repository-facing authoring contract for chats that intentionally format a response for Reader is [`.linked-notes/CHAT-RESPONSE-FORMAT.md`](../../../.linked-notes/CHAT-RESPONSE-FORMAT.md).
+The repository-facing authoring contract for chats that intentionally format a response for Reader is [`.linked-notes/CHAT-RESPONSE-FORMAT.md`](../../../linked-notes/CHAT-RESPONSE-FORMAT.md).
 
 ## 5. Details / Summary Contract
 

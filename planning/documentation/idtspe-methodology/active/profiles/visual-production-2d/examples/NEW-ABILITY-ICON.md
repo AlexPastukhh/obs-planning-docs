@@ -3,43 +3,17 @@
 
 Request: 48/64 px `ice shield` icon matching an existing icon family.
 
-## Visual Material Preparation — Unit Disposition / Materiality Review
+## Unit-relative Source Coverage / Material Preparation
 
-### [Coverage And Information Gaps](../target-modules/TM-2D-15-VISUAL-MATERIAL-PREPARATION.md#ru-mat-01) (`RU-MAT-01`)
+The current visual-design Unit applies [Unit Need / Visual Source Coverage](../lenses/frequent/LENS-VISUAL-UNIT-NEED-AND-SOURCE-COVERAGE.md#lens-visual-unit-need-and-source-coverage):
 
-AI recommendation: **SUBSTANTIVE RESOLUTION**
+- existing family icons strongly cover style/palette conventions;
+- they do not directly specify the new shield subject/configuration;
+- this gap belongs to the current design Unit's analysis, not to a generic Material Preparation Target.
 
-Situation / goal: create a new semantic icon while inheriting a family language.
+The references are already readable at useful scale, so no crop, measurement, annotation, palette extraction or helper render is needed. The [Visual Material Preparation Operation](../operations/VISUAL-MATERIAL-PREPARATION.operation.md#visual-material-preparation-operation) is therefore not invoked.
 
-Relevant reference / Source coverage: existing family icons cover style/palette conventions strongly, but do not directly specify the new shield content.
-
-Reason: responsibility-specific coverage/gaps need to be explicit before design.
-
-Materiality disposition: **MATERIAL**.
-
-### [Qualified Visual Material Set](../target-modules/TM-2D-15-VISUAL-MATERIAL-PREPARATION.md#ru-mat-02) (`RU-MAT-02`)
-
-AI recommendation: **LIGHT RESOLUTION**
-
-Situation / goal: the family icons are reused as art-direction material.
-
-Relevant reference / Source coverage: **strong** for family style; several concrete project references are available.
-
-Reason: retaining provenance/limitations is useful because these references constrain downstream design.
-
-Materiality disposition: **MATERIAL**.
-
-### [Prepared Visual Material](../target-modules/TM-2D-15-VISUAL-MATERIAL-PREPARATION.md#ru-mat-03) (`RU-MAT-03`)
-
-AI recommendation: **OMIT SUBSTANTIVE RESOLUTION**
-
-Situation / goal: the existing family references are already readable at useful scale and no crop, palette extraction, annotation or helper render is required before design.
-
-Relevant reference / Source coverage: **strong and directly usable** for the inherited family language.
-
-Omission reason: no transformation/helper artifact would add material information or downstream usability in this Target.
-
-Materiality disposition: **OMITTED**.
+TM-2D-15 is also not formed: there is no independently useful Prepared Visual Material Set Result beyond the current icon work. If the project instead needed a reusable qualified icon-family reference pack for multiple future consumers, [TM-2D-15 Prepared Visual Material Set](../target-modules/TM-2D-15-PREPARED-VISUAL-MATERIAL-SET.md#tm-2d-15-prepared-visual-material-set) could become a separate supporting Target.
 
 ## Whole Visual Design
 

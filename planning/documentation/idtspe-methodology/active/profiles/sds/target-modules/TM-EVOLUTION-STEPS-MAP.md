@@ -1,6 +1,6 @@
 # TM-EVOLUTION-STEPS-MAP — Evolution Steps Map
 
-Entry Point: `tm.evolution_steps_map`  
+Entry Point: `tm.evolution_steps_map`
 Role: persistent registry/coordination Target
 
 ## Purpose
@@ -29,7 +29,7 @@ Do **not** register vague speculative ideas whose transition/driver is not concr
 
 ## Unit Contract Conformance
 
-This module specializes the Core [Target Module Model](../../../idtspe-core/shared/target-module-model.md) and [Unit / Target Step Result Model](../../../idtspe-core/shared/idtspe-unit-and-target-step-result-model.md). Core owns generic Unit lifecycle/presence/disposition semantics; this module owns only the Map-specific projection Unit responsibilities, materiality, production guidance and validators below.
+This module specializes the Core [Target Module Model](../../../idtspe-core/target-modules/TARGET-MODULE-MODEL.md) and [Unit / Target Step Result Model](../../../idtspe-core/runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md). Core owns generic Unit lifecycle/presence/disposition semantics; this module owns only the Map-specific projection Unit responsibilities, materiality, production guidance and validators below.
 
 ## Target Step-Result Contract
 
@@ -42,7 +42,7 @@ This module specializes the Core [Target Module Model](../../../idtspe-core/shar
 
 ### Result Unit Applicability / Materiality
 
-Unit presence/disposition mechanics follow the Core [`Unit Applicability / Materiality / Disposition Contract`](../../../idtspe-core/shared/idtspe-unit-and-target-step-result-model.md#5a-unit-applicability--materiality--disposition-contract). The table below owns only Map-specific substantive-materiality and omission-rationale triggers.
+Unit presence/disposition mechanics follow the Core [`Unit Applicability / Materiality / Disposition Contract`](../../../idtspe-core/runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md#5a-unit-applicability--materiality--disposition-contract). The table below owns only Map-specific substantive-materiality and omission-rationale triggers.
 
 | Result Unit | Substantive resolution is material when | Unit disposition when substantive resolution is not material |
 |---|---|---|
@@ -52,7 +52,7 @@ Unit presence/disposition mechanics follow the Core [`Unit Applicability / Mater
 
 ### Explicit Unit Checkpoint Placement
 
-Each material Unit inherits the Core [`Unit Applicability Envelope`](../../../idtspe-core/shared/idtspe-unit-and-target-step-result-model.md#5b-unit-applicability-envelope--opening--in-unit--closing-checkpoints).
+Each material Unit inherits the Core [`Unit Applicability Envelope`](../../../idtspe-core/runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md#5b-unit-applicability-envelope--opening--in-unit--closing-checkpoints).
 
 #### `RU-EVOMAP-01` processing envelope
 
@@ -106,7 +106,7 @@ cycle / contradiction pressure
 - Planning Completeness;
 - Realization Start Readiness.
 
-Those semantics are owned by [`TM-EVOLUTION-STEP`](TM-EVOLUTION-STEP.md). The Map stores enough Step reference/status information for navigation/coordination and points readers back to that authority for reasons and conditions. Current-owner reverse Evolution Impact lifecycle is governed separately by the shared [Current-Owner Evolution Impact Projection Contract](../shared/current-owner-evolution-impact-projection-contract.md).
+Those semantics are owned by [`TM-EVOLUTION-STEP`](TM-EVOLUTION-STEP.md). The Map stores enough Step reference/status information for navigation/coordination and points readers back to that authority for reasons and conditions. Current-owner reverse Evolution Impact lifecycle is governed separately by the shared [Current-Owner Evolution Impact Projection Contract](../profile-contracts/evolution/CURRENT-OWNER-EVOLUTION-IMPACT-PROJECTION.md).
 
 ## Production / Representation
 
@@ -146,7 +146,7 @@ identity still needed by later Entering From/readiness/lineage
 → compact realized predecessor / lineage reference
 ```
 
-Current-owner reverse Evolution Impact projection lifecycle follows the shared [Current-Owner Evolution Impact Projection Contract](../shared/current-owner-evolution-impact-projection-contract.md); the Map does not maintain a second copy of that rule.
+Current-owner reverse Evolution Impact projection lifecycle follows the shared [Current-Owner Evolution Impact Projection Contract](../profile-contracts/evolution/CURRENT-OWNER-EVOLUTION-IMPACT-PROJECTION.md); the Map does not maintain a second copy of that rule.
 
 ## Validators / Handoff
 

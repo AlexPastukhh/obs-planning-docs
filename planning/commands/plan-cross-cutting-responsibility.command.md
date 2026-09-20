@@ -20,7 +20,7 @@ Scope: historical invocation alias redirected to current IDTSPE/SDS authority; h
   "ownerFiles": [
     "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-SHARED-IMPLEMENTATION-CAPABILITY.md",
     "planning/documentation/idtspe-methodology/active/idtspe-core/lenses/reusable/LENS-SHARED-CROSS-CUTTING-RESPONSIBILITY.md",
-    "planning/documentation/idtspe-methodology/active/profiles/sds/shared/idtspe-command-surface-contract.md"
+    "planning/documentation/idtspe-methodology/active/profiles/sds/commands/SDS-COMMAND-SURFACE-EXTENSION.md"
   ],
   "expectedOutput": "A Shared Capability result in the correct temporal host: current owner for realized reusable responsibility or Target Shared Body for unrealized future responsibility; otherwise a natural-owner/local result. No retired Cross-Cutting Target is created.",
   "permissionMode": "read-only-planning",

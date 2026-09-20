@@ -11,16 +11,16 @@ Review Priority
 Review Order projection
 Q/R/P review presentation
 proportional pre-return self-recheck
-→ idtspe-methodology/active/ai-reviewability/README.md
+→ idtspe-methodology/active/ai-reviewability/AI-OUTPUT-REVIEWABILITY.md
 
 material Finding ownership/lifecycle routing
-→ idtspe-methodology/active/idtspe-core/shared/finding-disposition-contract.md
+→ idtspe-methodology/active/idtspe-core/resolution/findings/FINDING-DISPOSITION.md
 
 targeted evidence-driven upstream repair / preserve unaffected meaning
-→ idtspe-methodology/active/idtspe-core/shared/revalidate-current-work-use-case.md
+→ idtspe-methodology/active/idtspe-core/use-cases/revalidate-current-work/UC-IDTSPE-REVALIDATE-CURRENT-WORK.md
 
 cross-owner semantic/projection drift review
-→ idtspe-methodology/active/idtspe-core/shared/consistency-review-use-case.md
+→ idtspe-methodology/active/idtspe-core/use-case-processes/CROSS-OWNER-CONSISTENCY-REVIEW.use-case-process.md
 
 dependency/change-surface evaluation when materially useful
 → idtspe-methodology/active/idtspe-core/lenses/frequent/LENS-DEPENDENCY-CHANGE-IMPACT.md
@@ -28,10 +28,10 @@ dependency/change-surface evaluation when materially useful
 
 Direct links:
 
-- [`idtspe-methodology/active/ai-reviewability/README.md`](idtspe-methodology/active/ai-reviewability/README.md)
-- [`idtspe-methodology/active/idtspe-core/shared/finding-disposition-contract.md`](idtspe-methodology/active/idtspe-core/shared/finding-disposition-contract.md)
-- [`idtspe-methodology/active/idtspe-core/shared/revalidate-current-work-use-case.md`](idtspe-methodology/active/idtspe-core/shared/revalidate-current-work-use-case.md)
-- [`idtspe-methodology/active/idtspe-core/shared/consistency-review-use-case.md`](idtspe-methodology/active/idtspe-core/shared/consistency-review-use-case.md)
+- [`idtspe-methodology/active/ai-reviewability/AI-OUTPUT-REVIEWABILITY.md`](idtspe-methodology/active/ai-reviewability/AI-OUTPUT-REVIEWABILITY.md)
+- [`idtspe-methodology/active/idtspe-core/resolution/findings/FINDING-DISPOSITION.md`](idtspe-methodology/active/idtspe-core/resolution/findings/FINDING-DISPOSITION.md)
+- [`idtspe-methodology/active/idtspe-core/use-cases/revalidate-current-work/UC-IDTSPE-REVALIDATE-CURRENT-WORK.md`](idtspe-methodology/active/idtspe-core/use-cases/revalidate-current-work/UC-IDTSPE-REVALIDATE-CURRENT-WORK.md)
+- [`idtspe-methodology/active/idtspe-core/use-case-processes/CROSS-OWNER-CONSISTENCY-REVIEW.use-case-process.md`](idtspe-methodology/active/idtspe-core/use-case-processes/CROSS-OWNER-CONSISTENCY-REVIEW.use-case-process.md)
 
 ## Compatibility Mapping
 

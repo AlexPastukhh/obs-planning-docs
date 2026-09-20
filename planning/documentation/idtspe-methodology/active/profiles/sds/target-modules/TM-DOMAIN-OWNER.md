@@ -1,6 +1,6 @@
 # TM-DOMAIN-OWNER — Durable Domain Semantic Owner
 
-Entry Point: `tm.domain_owner`  
+Entry Point: `tm.domain_owner`
 Role: durable semantic owner
 
 ## Purpose
@@ -29,11 +29,11 @@ Possible sources:
 
 Required primary lens: `LENS-DOMAIN-MODELING-DDD`.
 
-Conditional: Evolution, Implementation Requirements Discovery, quality/verifiability and Representation Lenses, plus selected [`RG-PRG-*`](../shared/programming-principles/README.md) knowledge when material.
+Conditional: Evolution, Implementation Requirements Discovery, quality/verifiability and Representation Lenses, plus selected [`RG-PRG-*`](../knowledge-bases/programming-principles/README.md) knowledge when material.
 
 ## Unit Contract Conformance
 
-This module specializes the Core [Target Module Model](../../../idtspe-core/shared/target-module-model.md) and [Unit / Target Step Result Model](../../../idtspe-core/shared/idtspe-unit-and-target-step-result-model.md). The Core owners define generic Unit lifecycle, complete-inventory/disposition and Proposal/Core-State semantics; this module defines only its SDS-specific Unit responsibilities, local materiality, production guidance, validators and handoffs below.
+This module specializes the Core [Target Module Model](../../../idtspe-core/target-modules/TARGET-MODULE-MODEL.md) and [Unit / Target Step Result Model](../../../idtspe-core/runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md). The Core owners define generic Unit lifecycle, complete-inventory/disposition and Proposal/Core-State semantics; this module defines only its SDS-specific Unit responsibilities, local materiality, production guidance, validators and handoffs below.
 
 ## Target Step-Result Contract
 
@@ -47,7 +47,7 @@ This module specializes the Core [Target Module Model](../../../idtspe-core/shar
 
 ### Result Unit Applicability / Materiality
 
-Unit presence/disposition mechanics follow the Core [`Unit Applicability / Materiality / Disposition Contract`](../../../idtspe-core/shared/idtspe-unit-and-target-step-result-model.md#5a-unit-applicability--materiality--disposition-contract). The table below owns only this module's local substantive-materiality and omission-rationale triggers.
+Unit presence/disposition mechanics follow the Core [`Unit Applicability / Materiality / Disposition Contract`](../../../idtspe-core/runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md#5a-unit-applicability--materiality--disposition-contract). The table below owns only this module's local substantive-materiality and omission-rationale triggers.
 
 | Result Unit | Substantive resolution is material when | Unit disposition when substantive resolution is not material |
 |---|---|---|
@@ -59,7 +59,7 @@ Unit presence/disposition mechanics follow the Core [`Unit Applicability / Mater
 
 ### Explicit Unit Checkpoint Placement
 
-Each material Unit below inherits the generic [`Unit Applicability Envelope`](../../../idtspe-core/shared/idtspe-unit-and-target-step-result-model.md#5b-unit-applicability-envelope--opening--in-unit--closing-checkpoints). Opening/Closing are mandatory logical applicability boundaries; registries may also be checked during Unit work whenever new material pressure appears.
+Each material Unit below inherits the generic [`Unit Applicability Envelope`](../../../idtspe-core/runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md#5b-unit-applicability-envelope--opening--in-unit--closing-checkpoints). Opening/Closing are mandatory logical applicability boundaries; registries may also be checked during Unit work whenever new material pressure appears.
 
 #### `RU-DOWN-01` processing envelope
 
@@ -75,7 +75,7 @@ Each material Unit below inherits the generic [`Unit Applicability Envelope`](..
 
 #### `RU-DOWN-03` processing envelope
 
-1. **Opening Unit Checkpoint — `RU-DOWN-03`** — determine whether this Domain's semantics/responsibility is materially affected, then apply the shared [Current-Owner Evolution Impact Projection Contract](../shared/current-owner-evolution-impact-projection-contract.md).
+1. **Opening Unit Checkpoint — `RU-DOWN-03`** — determine whether this Domain's semantics/responsibility is materially affected, then apply the shared [Current-Owner Evolution Impact Projection Contract](../profile-contracts/evolution/CURRENT-OWNER-EVOLUTION-IMPACT-PROJECTION.md).
 2. **Unit Work — `RU-DOWN-03`** — produce the Domain-local reverse navigation/revalidation projection under that shared contract.
 3. **Closing Unit Checkpoint — `RU-DOWN-03`** — validate Domain-local revalidation/handoff needs and the shared projection-contract guards.
 
@@ -105,7 +105,7 @@ IR-DOMAIN-*
 optional owner-local PFR-* when a non-obvious durable proof-realization constraint genuinely exists
 ```
 
-Requirement wording owns the must-hold meaning. Tests prove it; they do not define it. Use the shared [`Requirement Classification And Representation Contract`](../shared/requirement-classification-and-representation-contract.md). When addressable Domain IRs are represented as a table, use the exact reusable schema:
+Requirement wording owns the must-hold meaning. Tests prove it; they do not define it. Use the shared [`Requirement Classification And Representation Contract`](../profile-contracts/requirements/REQUIREMENT-CLASSIFICATION-AND-REPRESENTATION.md). When addressable Domain IRs are represented as a table, use the exact reusable schema:
 
 ```text
 Domain Implementation Requirement | Type | Plain implementation requirement | Realizes | Related expected errors | QRPE / Examples
@@ -115,7 +115,7 @@ When owner-local `PFR-*` is material, use the shared exact `Proof Requirement | 
 
 ### RU-DOWN-03 — Evolution Impact
 
-This Domain owner-local Unit specializes the shared [Current-Owner Evolution Impact Projection Contract](../shared/current-owner-evolution-impact-projection-contract.md). Its local affected surface is **Domain semantics/responsibility**. The shared contract owns inclusion threshold across candidate/selected/conditional/deferred Steps, truthful planning-position projection, depth/no-copy rules and post-realization removal from active future impact. This Target Module owns only the Unit identity, Domain owner-specific materiality test and local revalidation/handoff use.
+This Domain owner-local Unit specializes the shared [Current-Owner Evolution Impact Projection Contract](../profile-contracts/evolution/CURRENT-OWNER-EVOLUTION-IMPACT-PROJECTION.md). Its local affected surface is **Domain semantics/responsibility**. The shared contract owns inclusion threshold across candidate/selected/conditional/deferred Steps, truthful planning-position projection, depth/no-copy rules and post-realization removal from active future impact. This Target Module owns only the Unit identity, Domain owner-specific materiality test and local revalidation/handoff use.
 
 ## Production / Revalidation Method
 

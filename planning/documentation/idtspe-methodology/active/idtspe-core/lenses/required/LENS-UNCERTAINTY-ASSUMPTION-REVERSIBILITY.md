@@ -1,7 +1,7 @@
 # LENS-UNCERTAINTY-ASSUMPTION-REVERSIBILITY — Uncertainty / Assumption / Reversibility
 
-Lens ID: `LENS-UNCERTAINTY-ASSUMPTION-REVERSIBILITY`  
-Legacy alias: `L3`  
+Lens ID: `LENS-UNCERTAINTY-ASSUMPTION-REVERSIBILITY`
+Legacy alias: `L3`
 Activation: `REQUIRED_CORE`
 
 ## Purpose
@@ -95,7 +95,7 @@ RESOLVER: P-14 / TF-10
 ```
 
 
-Shell placement semantics: [`artifact-placement-and-idtspe-response-contract.md`](../../shared/artifact-placement-and-idtspe-response-contract.md).
+Shell placement semantics: [`planning/documentation/idtspe-methodology/active/idtspe-core/representation/ARTIFACT-PLACEMENT-AND-IDTSPE-RESPONSE-CONTRACT.md`](../../representation/ARTIFACT-PLACEMENT-AND-IDTSPE-RESPONSE-CONTRACT.md).
 
 Normally **NO_DISTINCT_SUPPORTING_ARTIFACT**: the Lens surfaces a Finding Candidate; when Core Finding Disposition resolves accepted uncertainty/Q/R/P/Decision-basis/revalidation state to the current Target, that Target carries it in its ordinary planning representation.
 

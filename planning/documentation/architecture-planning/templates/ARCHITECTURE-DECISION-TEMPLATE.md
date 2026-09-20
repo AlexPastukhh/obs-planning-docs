@@ -1,8 +1,8 @@
 # Architecture Decision
 
 Status: reusable recommended template
-Generic Proposal/Decision semantics: [`../../idtspe-methodology/active/idtspe-core/shared/proposal-and-decision-lifecycle-contract.md`](../../idtspe-methodology/active/idtspe-core/shared/proposal-and-decision-lifecycle-contract.md)
-Q/R/P lifecycle semantics: [`../../idtspe-methodology/active/idtspe-core/shared/qrp-lifecycle-and-review-contract.md`](../../idtspe-methodology/active/idtspe-core/shared/qrp-lifecycle-and-review-contract.md)
+Generic Proposal/Decision semantics: [`../../idtspe-methodology/active/idtspe-core/resolution/proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md`](../../idtspe-methodology/active/idtspe-core/resolution/proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md)
+Q/R/P lifecycle semantics: [`../../idtspe-methodology/active/idtspe-core/resolution/qrp/QRP-LIFECYCLE-AND-REVIEW.md`](../../idtspe-methodology/active/idtspe-core/resolution/qrp/QRP-LIFECYCLE-AND-REVIEW.md)
 
 ## Target / Current Baseline
 

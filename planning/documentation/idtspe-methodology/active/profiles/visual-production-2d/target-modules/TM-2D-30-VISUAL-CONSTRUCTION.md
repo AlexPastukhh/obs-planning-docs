@@ -1,8 +1,8 @@
 <a id="tm-2d-30-visual-construction"></a>
 # TM-2D-30-VISUAL-CONSTRUCTION — Material Multi-route Construction Composition
 
-Entry Point: `tm.2d.visual-construction`  
-Supported Roles: PRIMARY, COMPOSITION  
+Entry Point: `tm.2d.visual-construction`
+Supported Roles: PRIMARY, COMPOSITION
 Status: active profile module
 
 ## Purpose
@@ -11,7 +11,7 @@ Own construction composition/integration only when combining multiple accepted c
 
 ## Target Step Result
 
-`Integrated Visual Construction`. Generic Unit existence/disposition semantics follow the Core [Unit / Target Step Result Model](../../../idtspe-core/shared/idtspe-unit-and-target-step-result-model.md); this module owns only the visual Unit responsibilities/materiality below.
+`Integrated Visual Construction`. Generic Unit existence/disposition semantics follow the Core [Unit / Target Step Result Model](../../../idtspe-core/runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md); this module owns only the visual Unit responsibilities/materiality below.
 
 ## Module-defined Unit Inventory
 
@@ -66,7 +66,7 @@ Primary profile Lens for route architecture: [Representation / Editability Econo
 
 ## Construction Review Loop
 
-At meaningful integrated-candidate milestones use [Construction Review Loop Checkpoint](../shared/CONSTRUCTION-REVIEW-LOOP-CHECKPOINT.md#shared-construction-review-loop-checkpoint).
+At meaningful integrated-candidate milestones use [Construction Review Loop Checkpoint](../target-module-support/construction/CONSTRUCTION-REVIEW-LOOP.target-module-checkpoint.md#shared-construction-review-loop-checkpoint).
 
 ## Validators
 

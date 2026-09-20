@@ -1,7 +1,7 @@
 # LENS-NEED-VALUE-SCOPE — Need / Value / Scope
 
-Lens ID: `LENS-NEED-VALUE-SCOPE`  
-Legacy alias: `L1`  
+Lens ID: `LENS-NEED-VALUE-SCOPE`
+Legacy alias: `L1`
 Activation: `REQUIRED_CORE`
 
 ## Purpose
@@ -102,7 +102,7 @@ RESOLVER: P-14 / TF-10
 ```
 
 
-Shell placement semantics: [`artifact-placement-and-idtspe-response-contract.md`](../../shared/artifact-placement-and-idtspe-response-contract.md).
+Shell placement semantics: [`planning/documentation/idtspe-methodology/active/idtspe-core/representation/ARTIFACT-PLACEMENT-AND-IDTSPE-RESPONSE-CONTRACT.md`](../../representation/ARTIFACT-PLACEMENT-AND-IDTSPE-RESPONSE-CONTRACT.md).
 
 Normally **NO_DISTINCT_SUPPORTING_ARTIFACT**: an L1 Finding Candidate is not persisted as Lens output; when Core Finding Disposition resolves accepted Scope/Decision state to the current Target, that Target's normal representation carries it.
 

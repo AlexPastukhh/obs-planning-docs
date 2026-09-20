@@ -1,7 +1,7 @@
 # TM-EXACT-REALIZATION — Exact Realization / Integration
 
-Entry Point: `tm.exact.realization`  
-Role: generic Core primary/supporting Target Module  
+Entry Point: `tm.exact.realization`
+Role: generic Core primary/supporting Target Module
 Target form: `EXACT_REALIZATION`
 
 ## Purpose
@@ -140,7 +140,7 @@ Each declared Result Unit is a Module-defined Unit Contract. Its runtime work is
 
 ### Result Unit Applicability / Materiality
 
-Apply the Core [`Unit Applicability / Materiality / Disposition Contract`](../shared/idtspe-unit-and-target-step-result-model.md#5a-unit-applicability--materiality--disposition-contract).
+Apply the Core [`Unit Applicability / Materiality / Disposition Contract`](../runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md#5a-unit-applicability--materiality--disposition-contract).
 
 | Result Unit | Substantive resolution is material when | Target/Unit disposition when not material |
 |---|---|---|
@@ -153,7 +153,7 @@ Only one Target-specific Result Unit is required. Verification, build/test obser
 
 ### Explicit Unit Checkpoint Placement
 
-Each material Unit below inherits the generic [`Unit Applicability Envelope`](../shared/idtspe-unit-and-target-step-result-model.md#5b-unit-applicability-envelope--opening--in-unit--closing-checkpoints). Opening/Closing are mandatory logical applicability boundaries; registries may also be checked during Unit work whenever new material pressure appears.
+Each material Unit below inherits the generic [`Unit Applicability Envelope`](../runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md#5b-unit-applicability-envelope--opening--in-unit--closing-checkpoints). Opening/Closing are mandatory logical applicability boundaries; registries may also be checked during Unit work whenever new material pressure appears.
 
 #### `RU-REAL-01` processing envelope
 
@@ -516,7 +516,7 @@ If the selected integration environment was already the intended local destinati
 
 ## Lens Profile
 
-Generic required Core Pack is inherited from the [`Lens Registry`](../lenses/README.md):
+Generic required Core Pack is inherited from the [`Lens Registry`](../lenses/LENS-REGISTRY.md):
 
 - [`LENS-NEED-VALUE-SCOPE`](../lenses/required/LENS-NEED-VALUE-SCOPE.md)
 - [`LENS-AUTHORITY-SOT-REUSE`](../lenses/required/LENS-AUTHORITY-SOT-REUSE.md)

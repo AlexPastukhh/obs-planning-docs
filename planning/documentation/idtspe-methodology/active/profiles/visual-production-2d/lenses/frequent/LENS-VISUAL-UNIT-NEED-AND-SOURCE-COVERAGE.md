@@ -1,8 +1,8 @@
 <a id="lens-visual-unit-need-and-source-coverage"></a>
 # LENS-VISUAL-UNIT-NEED-AND-SOURCE-COVERAGE — Unit Need / Visual Source Coverage
 
-Lens ID: `LENS-VISUAL-UNIT-NEED-AND-SOURCE-COVERAGE`  
-Activation: `TARGET_PROFILE_REUSABLE`  
+Lens ID: `LENS-VISUAL-UNIT-NEED-AND-SOURCE-COVERAGE`
+Activation: `TARGET_PROFILE_REUSABLE`
 Status: active profile Lens
 
 ## Purpose
@@ -11,7 +11,7 @@ Evaluate a candidate/current visual Work Unit across three coupled questions:
 
 1. how much substantive resolution this already-instantiated Module-defined Unit responsibility needs;
 2. how well do accepted visual Sources/references cover the responsibility;
-3. how much additional analysis/preparation/resolution is likely to be needed.
+3. what Unit-relative information gaps/conflicts/contextual reference analysis remain and what bounded preparation, if any, is needed before continuing the Unit.
 
 ## Applicability
 
@@ -25,7 +25,7 @@ Also apply when:
 - accepted Sources conflict;
 - a previously omitted Unit may now need substantive resolution;
 - the current Unit exposes a smaller independently useful responsibility;
-- additional Visual Material Preparation may be needed.
+- additional acquisition/transformation may be needed before the Unit can continue.
 
 ## Analysis Inputs
 
@@ -85,7 +85,8 @@ If substantive resolution is material:
 - Can the result be derived almost directly from trustworthy Sources?
 - Is targeted visual analysis needed?
 - Is a material choice/Proposal likely?
-- Is additional Visual Material Preparation needed?
+- Is a bounded Visual Material Preparation Operation needed before re-evaluating/continuing this Unit?
+- Would a retained Prepared Visual Material Set have independently useful Target value beyond this Unit?
 - Is literal construction/modification needed?
 - Has work exposed Contextual Unit pressure?
 
@@ -120,7 +121,8 @@ The Lens may also surface:
 
 - responsibility-specific Source gaps;
 - conflicting Sources;
-- Material Preparation re-entry;
+- Visual Material Preparation Operation routing when bounded acquisition/transformation is enough;
+- conditional TM-2D-15 formation only when a Prepared Visual Material Set is independently useful as its own Target Result;
 - deeper analysis need;
 - Contextual Unit pressure;
 - revalidation of prior Unit disposition/depth.
@@ -130,14 +132,26 @@ The Lens may also surface:
 - Strong Source coverage does not automatically remove a Unit.
 - Missing Sources do not automatically force a Unit if the responsibility is outside the selected Target.
 - Do not create fake `N/A` content; keep the real Unit instance with an omission reason when non-material.
-- Do not treat “needs analysis” as automatically requiring a new Unit.
+- Do not treat “needs analysis” as automatically requiring a new Unit, Target Module or shared analysis owner. The current Target/Unit owns its concrete material/reference interpretation.
 - Do not assign consumer-specific Source authority from material appearance alone.
 - Do not silently turn a materially contested disposition into accepted meaning; route real choices through normal Proposal/Decision authority.
 - Do not summarize several omitted Units as one anonymous omission when their reasons differ.
 
+## Material Preparation / Continuation Routing
+
+```text
+missing / partial / conflicting visual information
+→ analyze need and Source coverage for the affected Unit
+→ use Visual Material Preparation Operation when bounded acquisition/transformation is sufficient
+→ re-evaluate and continue the affected Unit
+→ form TM-2D-15 only when a Prepared Visual Material Set is independently useful as a Target Result
+```
+
+The Lens owns the reusable evaluation method, not the concrete analysis result. The current Target/Unit owns the analysis meaning. Representation may be embedded, aggregate, per-reference or mixed according to [Visual Target-local Material Analysis Representation Guidance](../../representation/VISUAL-TARGET-LOCAL-MATERIAL-ANALYSIS.representation-guidance.md#visual-target-local-material-analysis-representation-guidance).
+
 ## Revalidation
 
-Recheck when Target scope, requested change, Source bindings/materials, intended output context, Unit disposition authority/state or construction review materially changes.
+Recheck when Target scope, requested change, Source bindings/materials, intended output context, Unit disposition authority/state or construction review materially changes. Re-entry after preparation/acquisition is normal.
 
 ## Artifact Guidance
 
@@ -165,5 +179,5 @@ RESOLVER: P-14 / TF-10
 
 - Core Unit applicability/materiality/omission;
 - Core Source Subject / Source binding semantics;
-- [Visual Material And Source Usage](../../shared/VISUAL-MATERIAL-AND-SOURCE-USAGE.md#shared-visual-material-and-source-usage);
+- [Visual Material And Source Usage](../../source-contracts/VISUAL-MATERIAL-AND-SOURCE-USAGE.md#shared-visual-material-and-source-usage);
 - visual responsibility roles defined by the active Target Module.

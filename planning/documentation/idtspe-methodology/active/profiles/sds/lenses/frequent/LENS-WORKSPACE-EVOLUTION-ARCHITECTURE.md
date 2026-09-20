@@ -1,6 +1,6 @@
 # LENS-WORKSPACE-EVOLUTION-ARCHITECTURE — Evolution Impact / Change Isolation
 
-Role: reusable all-Target Evolution lens  
+Role: reusable all-Target Evolution lens
 Applicability: when any concrete unrealized Evolution Step may materially change a current owner/boundary/realization or future Target Body decision
 
 ## Purpose
@@ -11,8 +11,8 @@ This Lens does not own Evolution plans. `TM-EVOLUTION-STEPS-MAP` routes to `TM-E
 
 ## Analysis Surface
 
-**Primary:** current owner/Result choices or Evolution Step Target Bodies whose boundary, realization or compatibility may be affected by concrete unrealized Evolution.  
-**Conditional:** relevant Evolution Step target states/branches, Steps Map relations, owner/dependency relations, current implementation/Evidence, assumptions and accepted Decisions.  
+**Primary:** current owner/Result choices or Evolution Step Target Bodies whose boundary, realization or compatibility may be affected by concrete unrealized Evolution.
+**Conditional:** relevant Evolution Step target states/branches, Steps Map relations, owner/dependency relations, current implementation/Evidence, assumptions and accepted Decisions.
 **Context:** active Use Case/Target/profile, current materialized owner state and direct `Entering From` predecessor lineage when relevant.
 
 ## Supported Operations
@@ -67,7 +67,7 @@ Prefer the simplest current design that preserves a healthy path to selected kno
 
 ### 5. Natural Subject / Step-wide concern evaluation
 
-Apply the canonical Core [Natural Subject / Ownership Boundary](../../../../idtspe-core/shared/idtspe-unit-and-target-step-result-model.md#natural-subject--ownership-boundary) and the concrete [`TM-EVOLUTION-STEP`](../../target-modules/TM-EVOLUTION-STEP.md) Unit contracts. This Lens evaluates whether current routing is healthy; it does not own the destination ontology.
+Apply the canonical Core [Natural Subject / Ownership Boundary](../../../../idtspe-core/runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md#natural-subject--ownership-boundary) and the concrete [`TM-EVOLUTION-STEP`](../../target-modules/TM-EVOLUTION-STEP.md) Unit contracts. This Lens evaluates whether current routing is healthy; it does not own the destination ontology.
 
 Operationally ask whether an item is genuinely Step-wide, belongs to one owner-local Target Body/Requirement/concern surface, or is literal Exact/discovery mechanism. When several owner-local concerns are present, challenge Step-wide ownership unless the **cross-owner relation itself** has independent transition meaning.
 
@@ -83,7 +83,7 @@ OPEN — insufficient Evidence
 Finding Candidate for another natural owner
 ```
 
-There is no generic `TM-EVOLUTION-IMPACT`. Step-side future impact/Target Body semantics remain owned by `TM-EVOLUTION-STEP` and natural-owner Target Modules. Current-owner reverse navigation/revalidation follows the shared [Current-Owner Evolution Impact Projection Contract](../../shared/current-owner-evolution-impact-projection-contract.md). The Lens only evaluates whether those owners/projections are consistent and appropriately isolated.
+There is no generic `TM-EVOLUTION-IMPACT`. Step-side future impact/Target Body semantics remain owned by `TM-EVOLUTION-STEP` and natural-owner Target Modules. Current-owner reverse navigation/revalidation follows the shared [Current-Owner Evolution Impact Projection Contract](../../profile-contracts/evolution/CURRENT-OWNER-EVOLUTION-IMPACT-PROJECTION.md). The Lens only evaluates whether those owners/projections are consistent and appropriately isolated.
 
 ## Questions
 
@@ -164,9 +164,9 @@ Core Finding Disposition resolves lifecycle/owner consequences.
 
 Use knowledge selectively; these are theory/guidance dependencies, not current Target Sources or evidence:
 
-- [`../../shared/programming-principles/README.md`](../../shared/programming-principles/README.md) for trigger-first principle selection rather than loading the whole corpus;
-- [`../../shared/programming-principles/guidance/design-and-structure.md`](../../shared/programming-principles/guidance/design-and-structure.md), especially `RG-PRG-KISS-YAGNI-EVOLUTION`, for prepare-now vs defer pressure;
-- [`../../shared/programming-principles/guidance/interfaces-boundaries-and-evolution.md`](../../shared/programming-principles/guidance/interfaces-boundaries-and-evolution.md), especially compatibility/versioning/migration guidance when transition shape is material;
+- [`../../knowledge-bases/programming-principles/README.md`](../../knowledge-bases/programming-principles/README.md) for trigger-first principle selection rather than loading the whole corpus;
+- [`../../knowledge-bases/programming-principles/guidance/design-and-structure.md`](../../knowledge-bases/programming-principles/guidance/design-and-structure.md), especially `RG-PRG-KISS-YAGNI-EVOLUTION`, for prepare-now vs defer pressure;
+- [`../../knowledge-bases/programming-principles/guidance/interfaces-boundaries-and-evolution.md`](../../knowledge-bases/programming-principles/guidance/interfaces-boundaries-and-evolution.md), especially compatibility/versioning/migration guidance when transition shape is material;
 - [`../../../../../../tools/replacement-package-app/documentation-use-cases/evolution-planning.md`](../../../../../../tools/replacement-package-app/documentation-use-cases/evolution-planning.md) as R2 migration provenance/coverage input only, not as current IDTSPE/SDS authority.
 
 The Steps Map, selected Evolution Steps, implementation state and Evidence remain **Target Inputs/Evidence**, not Knowledge Basis.

@@ -1,13 +1,13 @@
 # TM-PROTOTYPE — Prototype / Experiment
 
-Entry Point: `tm.prototype`  
+Entry Point: `tm.prototype`
 Role: practical-evidence Target Module before full implementation
 
 ## Purpose
 
 Own one bounded practical inquiry where a **partial, simulated, mocked or throwaway subject is acceptable** and practical observation can reduce material uncertainty before the real implementation is complete.
 
-The shared inquiry/collection mechanics are owned by [`Practical Evidence Method`](../../../idtspe-core/shared/practical-evidence-method.md). This module owns only the Prototype-specific Target/result.
+The shared inquiry/collection mechanics are owned by [`Practical Evidence Method`](../../../idtspe-core/knowledge-bases/PRACTICAL-EVIDENCE.knowledge-basis.md). This module owns only the Prototype-specific Target/result.
 
 ## Boundary With Implemented Practical Evidence
 
@@ -64,7 +64,7 @@ Current `TF-04 SOURCE_SET` remains authority.
 ## Knowledge Basis / Lens Profile
 
 Shared method/Knowledge Basis:
-- [`Practical Evidence Method`](../../../idtspe-core/shared/practical-evidence-method.md)
+- [`Practical Evidence Method`](../../../idtspe-core/knowledge-bases/PRACTICAL-EVIDENCE.knowledge-basis.md)
 
 Primary Lens:
 - [`LENS-PRACTICAL-EVIDENCE`](../../../idtspe-core/lenses/reusable/LENS-PRACTICAL-EVIDENCE.md)
@@ -90,7 +90,7 @@ A Prototype shape does not become canonical product/UI/architecture meaning mere
 
 ## Unit Contract Conformance
 
-This module specializes the Core [Target Module Model](../../../idtspe-core/shared/target-module-model.md) and [Unit / Target Step Result Model](../../../idtspe-core/shared/idtspe-unit-and-target-step-result-model.md). The Core owners define generic Unit lifecycle, complete-inventory/disposition and Proposal/Core-State semantics; this module defines only its SDS-specific Unit responsibilities, local materiality, production guidance, validators and handoffs below.
+This module specializes the Core [Target Module Model](../../../idtspe-core/target-modules/TARGET-MODULE-MODEL.md) and [Unit / Target Step Result Model](../../../idtspe-core/runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md). The Core owners define generic Unit lifecycle, complete-inventory/disposition and Proposal/Core-State semantics; this module defines only its SDS-specific Unit responsibilities, local materiality, production guidance, validators and handoffs below.
 
 ## Target Step-Result Contract
 
@@ -104,7 +104,7 @@ This module specializes the Core [Target Module Model](../../../idtspe-core/shar
 
 ### Result Unit Applicability / Materiality
 
-Unit presence/disposition mechanics follow the Core [`Unit Applicability / Materiality / Disposition Contract`](../../../idtspe-core/shared/idtspe-unit-and-target-step-result-model.md#5a-unit-applicability--materiality--disposition-contract). The table below owns only this module's local substantive-materiality and omission-rationale triggers.
+Unit presence/disposition mechanics follow the Core [`Unit Applicability / Materiality / Disposition Contract`](../../../idtspe-core/runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md#5a-unit-applicability--materiality--disposition-contract). The table below owns only this module's local substantive-materiality and omission-rationale triggers.
 
 | Result Unit | Substantive resolution is material when | Unit disposition when substantive resolution is not material |
 |---|---|---|
@@ -118,7 +118,7 @@ The shared method's full inquiry fields are guidance, not mandatory duplicated R
 
 ### Explicit Unit Checkpoint Placement
 
-Each material Unit below inherits the generic [`Unit Applicability Envelope`](../../../idtspe-core/shared/idtspe-unit-and-target-step-result-model.md#5b-unit-applicability-envelope--opening--in-unit--closing-checkpoints). Opening/Closing are mandatory logical applicability boundaries; registries may also be checked during Unit work whenever new material pressure appears.
+Each material Unit below inherits the generic [`Unit Applicability Envelope`](../../../idtspe-core/runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md#5b-unit-applicability-envelope--opening--in-unit--closing-checkpoints). Opening/Closing are mandatory logical applicability boundaries; registries may also be checked during Unit work whenever new material pressure appears.
 
 #### `RU-PROTO-01` processing envelope
 

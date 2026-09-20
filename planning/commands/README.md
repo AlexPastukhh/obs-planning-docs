@@ -86,7 +86,7 @@ Every primary command card exposes `Run`, `Смысл`, `Body`, `Scenarios N` an
 
 ## Current IDTSPE/SDS Projection
 
-Current methodology command-surface ownership is layered: generic Core surfaces are owned by [`idtspe-core/shared/idtspe-command-surface-contract.md`](../documentation/idtspe-methodology/active/idtspe-core/shared/idtspe-command-surface-contract.md), while SDS-specific surfaces extend them through [`profiles/sds/shared/idtspe-command-surface-contract.md`](../documentation/idtspe-methodology/active/profiles/sds/shared/idtspe-command-surface-contract.md). Repository IDs/aliases may reuse existing commands; methodology identity is not inferred from filenames.
+Current methodology command-surface ownership is layered: generic Core surfaces are owned by [`idtspe-core/commands/IDTSPE-COMMAND-SURFACE-CONTRACT.md`](../documentation/idtspe-methodology/active/idtspe-core/commands/IDTSPE-COMMAND-SURFACE-CONTRACT.md), while SDS-specific surfaces extend them through [`profiles/sds/commands/SDS-COMMAND-SURFACE-EXTENSION.md`](../documentation/idtspe-methodology/active/profiles/sds/commands/SDS-COMMAND-SURFACE-EXTENSION.md). Repository IDs/aliases may reuse existing commands; methodology identity is not inferred from filenames.
 
 IDTSPE is always active; command invocation does not enable it. A direct Target Module/Lens command expresses USER intent and provides strong selection context, but current Use-Case composition and the selected component's local applicability/materiality gate still determine whether a Target/Unit/Lens application is useful. Hidden legacy aliases may remain for compatibility, but they must route only to current owners and must not preserve retired Target families.
 
