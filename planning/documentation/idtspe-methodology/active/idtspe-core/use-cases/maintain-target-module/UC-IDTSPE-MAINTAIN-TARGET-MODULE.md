@@ -1,6 +1,9 @@
 # UC-IDTSPE-MAINTAIN-TARGET-MODULE — Create / Review / Integrate Target Module
 
 Status: active methodology Use Case proposal
+
+<a id="uc-idtspe-maintain-target-module"></a>
+Responsibility ID: `IDTSPE.UC.MAINTAIN-TARGET-MODULE`
 Purpose: establish or change one reusable Target Module and integrate it into generic IDTSPE without creating competing semantic authority.
 
 > Semantic Owner Dependencies

@@ -2,7 +2,14 @@
 
 Status: active generic work-model contract; compatibility path for former opt-in `idtspe.work`
 
+<a id="idtspe-default-work-mode"></a>
 ## Core Rule
+
+Responsibility ID: `IDTSPE.DEFAULT-WORK-MODE`
+
+> Semantic Owner Dependencies
+> - `CONTEXTUALIZES` [`Contextual Methodology Application`](applicability/CONTEXTUAL-METHODOLOGY-APPLICATION-CONTRACT.md#idtspe-contextual-application) — `IDTSPE.CONTEXTUAL-APPLICATION`
+> - `CONTEXTUALIZES` [`Compose Current IDTSPE Work`](../use-cases/compose-current-work/UC-IDTSPE-COMPOSE-CURRENT-WORK.md#uc-idtspe-compose-current-work) — `IDTSPE.UC.COMPOSE-CURRENT-WORK`
 
 IDTSPE is already the default planning/resolution work model in this methodology environment. The USER does **not** choose whether to enable it.
 

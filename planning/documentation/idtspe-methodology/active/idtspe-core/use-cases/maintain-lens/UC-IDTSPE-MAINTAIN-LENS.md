@@ -1,6 +1,9 @@
 # UC-IDTSPE-MAINTAIN-LENS — Create / Review / Integrate Reusable Lens
 
 Status: active methodology Use Case
+
+<a id="uc-idtspe-maintain-lens"></a>
+Responsibility ID: `IDTSPE.UC.MAINTAIN-LENS`
 Purpose: create, extract, merge, split or revise one reusable IDTSPE Lens/Lens Pack without turning it into a Target Module or project semantic authority.
 
 ## Situation

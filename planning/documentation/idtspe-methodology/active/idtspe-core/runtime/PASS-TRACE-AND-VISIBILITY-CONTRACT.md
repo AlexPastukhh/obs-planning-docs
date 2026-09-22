@@ -3,7 +3,15 @@
 Status: active generic methodology owner
 Purpose: define the observable runtime trace established near the start of every normal IDTSPE Shell pass so methodology routing can be recorded as it happens rather than reconstructed after the pass.
 
+<a id="idtspe-pass-trace"></a>
 ## 1. Boundary
+
+Responsibility ID: `IDTSPE.PASS-TRACE`
+
+> Semantic Owner Dependency
+> Type: `REPRESENTS`
+> Responsibility: `IDTSPE.RUNTIME-COMPOSITION`
+> Owner: [Runtime / Work-Context Composition](IDTSPE-RUNTIME-COMPOSITION-CONTRACT.md#idtspe-runtime-composition)
 
 `Pass Trace` is an **observability projection of IDTSPE runtime**, not a semantic planning owner and not private chain-of-thought. It records only explicit methodology/runtime facts that are already safe to expose: Use-Case selection, composition, port admission, owner/component selection, material lifecycle events, port outcomes, unresolved state and methodology direction.
 

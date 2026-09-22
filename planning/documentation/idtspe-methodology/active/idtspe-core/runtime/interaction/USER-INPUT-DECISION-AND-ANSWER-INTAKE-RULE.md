@@ -6,7 +6,10 @@ Purpose: let one user message simultaneously invoke a workflow, provide Sources,
 
 ---
 
+<a id="idtspe-user-input-intake"></a>
 # 1. Core Rule
+
+Responsibility ID: `IDTSPE.USER-INPUT-INTAKE`
 
 > Semantic Owner Dependencies
 > - `CONTEXTUALIZES` [`Need Candidate Disposition`](../../resolution/needs/NEED-CANDIDATE-DISPOSITION.md#resolution-need-candidate-disposition) — `RESOLUTION.NEED-CANDIDATE-DISPOSITION`

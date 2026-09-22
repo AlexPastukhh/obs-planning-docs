@@ -9,16 +9,19 @@ This registry is reached by the fundamental [`UC-DOC-RESOLVE-CURRENT-USE-CASES`]
 > Responsibility: `DOC.USE-CASE-APPLICABILITY-RESOLUTION`
 > Owner: [`UC-DOC-RESOLVE-CURRENT-USE-CASES`](../../../../use-cases/UC-DOC-RESOLVE-CURRENT-USE-CASES.md)
 
-This scoped registry owns its compact routing rows; it does not own the cross-scope applicability-resolution Process.
+<a id="idtspe-use-case-discovery"></a>
+Responsibility ID: `IDTSPE.USE-CASE-DISCOVERY`
+
+This scoped registry owns compact IDTSPE Use-Case discovery/routing rows only; it does not own the cross-scope applicability-resolution Process or the semantic mechanisms invoked by each Use Case. Responsibility routing for the Use Cases themselves is in [`RESPONSIBILITY-MAP.md`](RESPONSIBILITY-MAP.md).
 
 ## Runtime / Work Composition
 
 | ID | Use Case | Situation summary | Result summary | Owner |
 |---|---|---|---|---|
-| `UC-IDTSPE-COMPOSE-CURRENT-WORK` | Compose Current IDTSPE Work | always during active IDTSPE work; especially before a material methodology action or after context change | smallest useful IDTSPE composition plus a refreshed/reaffirmed Port Requirement Set for the next normal Shell pass | [`planning/documentation/idtspe-methodology/active/idtspe-core/use-cases/compose-current-work/UC-IDTSPE-COMPOSE-CURRENT-WORK.md`](compose-current-work/UC-IDTSPE-COMPOSE-CURRENT-WORK.md) |
-| `UC-IDTSPE-MAINTAIN-CURRENT-WORK-STATE` | Maintain Current IDTSPE Work State | working meaning needs explicit retention/addressability for lifecycle, continuation, review, handoff or revalidation | proportional current Core State + complete Module-defined Target Result dispositions / methodology-use state | [`planning/documentation/idtspe-methodology/active/idtspe-core/use-cases/maintain-current-work-state/UC-IDTSPE-MAINTAIN-CURRENT-WORK-STATE.md`](maintain-current-work-state/UC-IDTSPE-MAINTAIN-CURRENT-WORK-STATE.md) |
-| `UC-IDTSPE-INTEGRATE-CURRENT-WORK` | Integrate Current IDTSPE Work | distributed current meaning makes a coherent whole-state view useful, or explicit checkpoint/review/handoff needs one | situational IDTSPE Integration Checkpoint with current meaning/revalidation/continuation integrated | [`planning/documentation/idtspe-methodology/active/idtspe-core/use-cases/integrate-current-work/UC-IDTSPE-INTEGRATE-CURRENT-WORK.md`](integrate-current-work/UC-IDTSPE-INTEGRATE-CURRENT-WORK.md) |
-| `UC-IDTSPE-REVALIDATE-CURRENT-WORK` | Revalidate Current IDTSPE Work | Finding/Evidence/Decision/source/USER/methodology change may make existing meaning stale | narrow affected meaning/components rechecked; unaffected meaning preserved; precise re-entry route | [`planning/documentation/idtspe-methodology/active/idtspe-core/use-cases/revalidate-current-work/UC-IDTSPE-REVALIDATE-CURRENT-WORK.md`](revalidate-current-work/UC-IDTSPE-REVALIDATE-CURRENT-WORK.md) |
+| `UC-IDTSPE-COMPOSE-CURRENT-WORK` | Compose Current IDTSPE Work | always during active IDTSPE work; especially before a material methodology action or after context change | smallest useful IDTSPE composition plus a refreshed/reaffirmed Port Requirement Set for the next normal Shell pass | [`planning/documentation/idtspe-methodology/active/idtspe-core/use-cases/compose-current-work/UC-IDTSPE-COMPOSE-CURRENT-WORK.md`](compose-current-work/UC-IDTSPE-COMPOSE-CURRENT-WORK.md#uc-idtspe-compose-current-work) |
+| `UC-IDTSPE-MAINTAIN-CURRENT-WORK-STATE` | Maintain Current IDTSPE Work State | working meaning needs explicit retention/addressability for lifecycle, continuation, review, handoff or revalidation | proportional current Core State + complete Module-defined Target Result dispositions / methodology-use state | [`planning/documentation/idtspe-methodology/active/idtspe-core/use-cases/maintain-current-work-state/UC-IDTSPE-MAINTAIN-CURRENT-WORK-STATE.md`](maintain-current-work-state/UC-IDTSPE-MAINTAIN-CURRENT-WORK-STATE.md#uc-idtspe-maintain-current-work-state) |
+| `UC-IDTSPE-INTEGRATE-CURRENT-WORK` | Integrate Current IDTSPE Work | distributed current meaning makes a coherent whole-state view useful, or explicit checkpoint/review/handoff needs one | situational IDTSPE Integration Checkpoint with current meaning/revalidation/continuation integrated | [`planning/documentation/idtspe-methodology/active/idtspe-core/use-cases/integrate-current-work/UC-IDTSPE-INTEGRATE-CURRENT-WORK.md`](integrate-current-work/UC-IDTSPE-INTEGRATE-CURRENT-WORK.md#uc-idtspe-integrate-current-work) |
+| `UC-IDTSPE-REVALIDATE-CURRENT-WORK` | Revalidate Current IDTSPE Work | Finding/Evidence/Decision/source/USER/methodology change may make existing meaning stale | narrow affected meaning/components rechecked; unaffected meaning preserved; precise re-entry route | [`planning/documentation/idtspe-methodology/active/idtspe-core/use-cases/revalidate-current-work/UC-IDTSPE-REVALIDATE-CURRENT-WORK.md`](revalidate-current-work/UC-IDTSPE-REVALIDATE-CURRENT-WORK.md#uc-idtspe-revalidate-current-work) |
 
 `UC-IDTSPE-COMPOSE-CURRENT-WORK` is the default continuously relevant runtime Use Case. Its normal outcome may be **no additional methodology structure** beyond Broad Discussion.
 
@@ -26,8 +29,8 @@ This scoped registry owns its compact routing rows; it does not own the cross-sc
 
 | ID | Use Case | Situation summary | Result summary | Owner |
 |---|---|---|---|---|
-| `UC-IDTSPE-MAINTAIN-TARGET-MODULE` | Create / Review / Integrate Target Module | recurring Target class lacks/requires change to a reusable Target Module | accepted Target Module contract + catalog/profile/integration consequences | [`planning/documentation/idtspe-methodology/active/idtspe-core/use-cases/maintain-target-module/UC-IDTSPE-MAINTAIN-TARGET-MODULE.md`](maintain-target-module/UC-IDTSPE-MAINTAIN-TARGET-MODULE.md) |
-| `UC-IDTSPE-MAINTAIN-LENS` | Create / Review / Integrate Reusable Lens | repeated evaluation perspective is missing/duplicated/misbounded or existing Lens needs change | accepted Lens contract + registry/profile/integration consequences | [`planning/documentation/idtspe-methodology/active/idtspe-core/use-cases/maintain-lens/UC-IDTSPE-MAINTAIN-LENS.md`](maintain-lens/UC-IDTSPE-MAINTAIN-LENS.md) |
+| `UC-IDTSPE-MAINTAIN-TARGET-MODULE` | Create / Review / Integrate Target Module | recurring Target class lacks/requires change to a reusable Target Module | accepted Target Module contract + catalog/profile/integration consequences | [`planning/documentation/idtspe-methodology/active/idtspe-core/use-cases/maintain-target-module/UC-IDTSPE-MAINTAIN-TARGET-MODULE.md`](maintain-target-module/UC-IDTSPE-MAINTAIN-TARGET-MODULE.md#uc-idtspe-maintain-target-module) |
+| `UC-IDTSPE-MAINTAIN-LENS` | Create / Review / Integrate Reusable Lens | repeated evaluation perspective is missing/duplicated/misbounded or existing Lens needs change | accepted Lens contract + registry/profile/integration consequences | [`planning/documentation/idtspe-methodology/active/idtspe-core/use-cases/maintain-lens/UC-IDTSPE-MAINTAIN-LENS.md`](maintain-lens/UC-IDTSPE-MAINTAIN-LENS.md#uc-idtspe-maintain-lens) |
 
 ## Supporting Processes, Not Separate Runtime Use Cases
 

@@ -28,3 +28,5 @@ This map owns routing only. Destination files own the semantic bodies.
 | Dynamic Target Formation explanatory projection | [`projections/DYNAMIC-TARGET-FORMATION.explanatory-projection.md`](projections/DYNAMIC-TARGET-FORMATION.explanatory-projection.md) | Projection only; semantic authority remains with the owners above |
 
 For Target Module Meta-Model/discovery responsibilities, continue through [`../../target-modules/RESPONSIBILITY-MAP.md`](../../target-modules/RESPONSIBILITY-MAP.md).
+
+Generic Core State / Methodology Usage State sections physically co-located in `UNIT-AND-TARGET-STEP-RESULT-MODEL.md` are **not Target Work responsibilities**; route them through [`../RESPONSIBILITY-MAP.md`](../RESPONSIBILITY-MAP.md).

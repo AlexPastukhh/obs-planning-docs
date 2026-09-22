@@ -2,6 +2,9 @@
 
 Status: active IDTSPE runtime Use Case
 
+<a id="uc-idtspe-revalidate-current-work"></a>
+Responsibility ID: `IDTSPE.UC.REVALIDATE-CURRENT-WORK`
+
 ## Situation
 
 Existing working/accepted meaning may no longer be reliable because a Finding, Evidence item, accepted upstream change, Source/authority change, USER redirect, implementation discovery, methodology change or explicit consistency concern affects its assumptions, relations or consumers.
@@ -11,6 +14,11 @@ Existing working/accepted meaning may no longer be reliable because a Finding, E
 The narrowest affected semantic subject and relevant methodology-use surface are rechecked; stale/dependent Unit Resolution, Result Content or broader owner meaning is invalidated/reopened only where warranted; unaffected accepted meaning remains stable; and a precise re-entry route is known.
 
 ## Process
+
+> Semantic Owner Dependency
+> Type: `CONTEXTUALIZES`
+> Responsibility: `CORE.STATE-UNIT`
+> Owner: [Core State Unit / Core Resolution State](../../runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md#core-state-unit-boundary)
 
 > Semantic Owner Dependency
 > Type: `CONTEXTUALIZES`

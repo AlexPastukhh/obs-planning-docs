@@ -2,6 +2,9 @@
 
 Status: active IDTSPE runtime Use Case
 
+<a id="uc-idtspe-maintain-current-work-state"></a>
+Responsibility ID: `IDTSPE.UC.MAINTAIN-CURRENT-WORK-STATE`
+
 ## Situation
 
 Current working meaning benefits from explicit semantic retention/addressability because it must survive distributed discussion, support review/revalidation, be handed off/resumed, or participate in Core/Target lifecycle.
@@ -11,6 +14,16 @@ Current working meaning benefits from explicit semantic retention/addressability
 The smallest useful current Work Context is represented coherently around material Target Resolution Requirements, bounded Units, their Unit Resolution state and Current Result Content, plus any material cross-Unit/Target/Work-Context Core Resolution State. Stale/invalidated meaning is distinguishable without serializing the whole conversation.
 
 ## Process
+
+> Semantic Owner Dependency
+> Type: `CONTEXTUALIZES`
+> Responsibility: `CORE.STATE-UNIT`
+> Owner: [Core State Unit / Core Resolution State](../../runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md#core-state-unit-boundary)
+
+> Semantic Owner Dependency
+> Type: `CONTEXTUALIZES`
+> Responsibility: `CORE.METHODOLOGY-USAGE-STATE`
+> Owner: [Methodology Usage State](../../runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md#core-methodology-usage-state)
 
 > Semantic Owner Dependency
 > Type: `CONTEXTUALIZES`

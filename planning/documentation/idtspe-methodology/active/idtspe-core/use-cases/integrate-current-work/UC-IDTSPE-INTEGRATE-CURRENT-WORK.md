@@ -2,6 +2,9 @@
 
 Status: active IDTSPE runtime Use Case
 
+<a id="uc-idtspe-integrate-current-work"></a>
+Responsibility ID: `IDTSPE.UC.INTEGRATE-CURRENT-WORK`
+
 ## Situation
 
 Broad Discussion/current work has accumulated enough distributed material that a coherent whole-state view is now more useful than continuing local discussion alone, or an explicit review/handoff/readiness point needs integrated current meaning.
@@ -21,6 +24,16 @@ Elapsed time or message count alone is not a trigger. An Integration Checkpoint 
 An **IDTSPE Integration Checkpoint** reconciles material Broad Discussion into the current Unit/Target/Work-Context model: the complete Module-defined Unit inventory when a Target Module Instance exists, applicable Core-defined Units, actually formed Contextual Units, material Unit Resolutions, Current Result Content / OPEN / explicit omission dispositions as applicable, material cross-cutting Core Resolution State, unresolved/revalidation state and a useful continuation point. It does not manufacture completion or approval.
 
 ## Process
+
+> Semantic Owner Dependency
+> Type: `CONTEXTUALIZES`
+> Responsibility: `CORE.STATE-UNIT`
+> Owner: [Core State Unit / Core Resolution State](../../runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md#core-state-unit-boundary)
+
+> Semantic Owner Dependency
+> Type: `CONTEXTUALIZES`
+> Responsibility: `REPRESENTATION.DISCUSSION-CHECKPOINT`
+> Owner: [Broad Discussion / Integration Checkpoint Projection](../../representation/interaction/BROAD-DISCUSSION-AND-INTEGRATION-CHECKPOINT-PROJECTION.md#representation-discussion-checkpoint)
 
 > Semantic Owner Dependency
 > Type: `CONTEXTUALIZES`

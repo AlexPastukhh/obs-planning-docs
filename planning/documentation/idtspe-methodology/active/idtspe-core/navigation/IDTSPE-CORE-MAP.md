@@ -3,6 +3,10 @@
 Status: active generic methodology map
 Role: compact **conceptual/dependency projection** over canonical Core owners. This map helps orientation; it does not redefine the normative contracts linked below.
 
+> Semantic Owner Dependencies
+> - `REPRESENTS` [`Runtime / Core State Responsibility Map`](../runtime/RESPONSIBILITY-MAP.md) — runtime/Core-State routing
+> - `REPRESENTS` [`IDTSPE Use-Case Orchestration Responsibility Map`](../use-cases/RESPONSIBILITY-MAP.md) — functional orchestration routing
+
 ## 1. Functional Entry And Runtime Composition
 
 ```text
@@ -70,8 +74,8 @@ IDTSPE Work Context
 └─ physical representation only when useful
 ```
 
-Functional current-work composition owner: [`use-cases/compose-current-work/UC-IDTSPE-COMPOSE-CURRENT-WORK.md`](../use-cases/compose-current-work/UC-IDTSPE-COMPOSE-CURRENT-WORK.md).
-Technical Work-Context/Shell composition owner: [`runtime/IDTSPE-RUNTIME-COMPOSITION-CONTRACT.md`](../runtime/IDTSPE-RUNTIME-COMPOSITION-CONTRACT.md).
+Functional current-work orchestration routes through [`use-cases/RESPONSIBILITY-MAP.md`](../use-cases/RESPONSIBILITY-MAP.md).
+Technical Work-Context/Core-State/Shell composition routes through [`runtime/RESPONSIBILITY-MAP.md`](../runtime/RESPONSIBILITY-MAP.md).
 Target Work / Target Formation / Target Instance subtree routing: [`runtime/target-work/RESPONSIBILITY-MAP.md`](../runtime/target-work/RESPONSIBILITY-MAP.md).
 Broad Discussion / checkpoint interaction owner: [`representation/interaction/BROAD-DISCUSSION-AND-INTEGRATION-CHECKPOINT-PROJECTION.md`](../representation/interaction/BROAD-DISCUSSION-AND-INTEGRATION-CHECKPOINT-PROJECTION.md).
 
@@ -153,7 +157,7 @@ Finding / Evidence / accepted upstream change / redirect
 → narrow affected-owner/component re-entry
 ```
 
-Canonical Processes: [`use-cases/integrate-current-work/UC-IDTSPE-INTEGRATE-CURRENT-WORK.md`](../use-cases/integrate-current-work/UC-IDTSPE-INTEGRATE-CURRENT-WORK.md) and [`use-cases/revalidate-current-work/UC-IDTSPE-REVALIDATE-CURRENT-WORK.md`](../use-cases/revalidate-current-work/UC-IDTSPE-REVALIDATE-CURRENT-WORK.md).
+Canonical orchestration routing: [`use-cases/RESPONSIBILITY-MAP.md`](../use-cases/RESPONSIBILITY-MAP.md). Integration and Revalidation remain distinct Use-Case owners; the semantic mechanisms they invoke stay with their routed owners.
 
 ## 9. Exact / Pre-Update
 

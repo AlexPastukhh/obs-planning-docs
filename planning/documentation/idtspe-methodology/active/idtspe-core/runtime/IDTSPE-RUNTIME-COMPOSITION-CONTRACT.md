@@ -3,6 +3,17 @@
 Status: active generic methodology owner
 Purpose: define the generic technical IDTSPE runtime/composition contract used inside an always-active **IDTSPE Work Context**. A Work Context may remain Broad Discussion with zero Targets, or coordinate one or several bounded Targets with typed Sources, Core State Units, reusable Lenses, Target Step Result projection, validation, persistence and revalidation without hard-coding any domain/application module.
 
+<a id="idtspe-runtime-composition"></a>
+## Runtime / Work-Context Composition
+
+Responsibility ID: `IDTSPE.RUNTIME-COMPOSITION`
+
+> Semantic Owner Dependencies
+> - `CONTEXTUALIZES` [`Core State Unit / Core Resolution State`](target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md#core-state-unit-boundary) — `CORE.STATE-UNIT`
+> - `CONTEXTUALIZES` [`Compose Current IDTSPE Work`](../use-cases/compose-current-work/UC-IDTSPE-COMPOSE-CURRENT-WORK.md#uc-idtspe-compose-current-work) — `IDTSPE.UC.COMPOSE-CURRENT-WORK`
+
+This responsibility owns the **technical** Work Context/Shell composition and port contract. Functional selection of what methodology work is useful now belongs to the IDTSPE Use-Case layer; Target Work, Resolution, Lens, Knowledge and Representation owners keep their own semantics.
+
 ## Core Formula
 
 ```text

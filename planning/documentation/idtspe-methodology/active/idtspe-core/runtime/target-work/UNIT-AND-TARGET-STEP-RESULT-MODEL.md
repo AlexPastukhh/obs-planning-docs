@@ -753,6 +753,8 @@ All Units/Slots may remain sections of one planning artifact. Unit/Slot identity
 <a id="core-state-unit-boundary"></a>
 ## 4. Core State Unit / Core Resolution State
 
+Responsibility ID: `CORE.STATE-UNIT`
+
 A **Core State Unit** is typed generic planning/resolution meaning maintained by Core when independent lifecycle/addressability is useful. Existing `IDTSPE State Unit` / `State Unit` wording remains compatible. Typical kinds include:
 
 ```text
@@ -862,7 +864,10 @@ Current Result Content:
 
 That is useful IDTSPE work even before current Unit Current Result Content changes.
 
+<a id="core-methodology-usage-state"></a>
 ### Methodology Usage State
+
+Responsibility ID: `CORE.METHODOLOGY-USAGE-STATE`
 
 `Methodology Usage State` remains optional generic Core Resolution State for retaining **material facts about how the methodology is currently being used** when those facts help continuation, review, handoff or revalidation. It is not an execution log and does not create one methodology-state Unit per target Unit.
 

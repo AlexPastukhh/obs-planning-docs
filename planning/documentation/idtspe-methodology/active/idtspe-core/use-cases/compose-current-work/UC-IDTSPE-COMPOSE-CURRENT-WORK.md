@@ -2,6 +2,9 @@
 
 Status: active primary IDTSPE runtime Use Case
 
+<a id="uc-idtspe-compose-current-work"></a>
+Responsibility ID: `IDTSPE.UC.COMPOSE-CURRENT-WORK`
+
 ## Situation
 
 IDTSPE work is active — which is the default in this methodology environment — and the current situation requires deciding **how much IDTSPE structure is useful now**.
@@ -25,6 +28,21 @@ no Target / Lens / Target Module / Checkpoint / persisted State is useful yet.
 ```
 
 ## Process
+
+> Semantic Owner Dependency
+> Type: `CONTEXTUALIZES`
+> Responsibility: `CORE.STATE-UNIT`
+> Owner: [Core State Unit / Core Resolution State](../../runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md#core-state-unit-boundary)
+
+> Semantic Owner Dependency
+> Type: `CONTEXTUALIZES`
+> Responsibility: `CORE.METHODOLOGY-USAGE-STATE`
+> Owner: [Methodology Usage State](../../runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md#core-methodology-usage-state)
+
+> Semantic Owner Dependency
+> Type: `CONTEXTUALIZES`
+> Responsibility: `IDTSPE.RUNTIME-COMPOSITION`
+> Owner: [Runtime / Work-Context Composition](../../runtime/IDTSPE-RUNTIME-COMPOSITION-CONTRACT.md#idtspe-runtime-composition)
 
 > Semantic Owner Dependencies
 > - `CONTEXTUALIZES` [`Target Formation requirement/coverage`](../../runtime/target-work/RESOLUTION-SLOT-AND-TARGET-FORMATION-SET.md#target-formation-requirement-coverage) — `TARGET-FORMATION.REQUIREMENT-COVERAGE`

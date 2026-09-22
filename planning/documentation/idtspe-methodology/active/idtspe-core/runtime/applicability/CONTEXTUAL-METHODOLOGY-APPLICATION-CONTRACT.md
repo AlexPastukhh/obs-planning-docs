@@ -6,7 +6,10 @@ Purpose: make IDTSPE **always active but proportionate**. This is the fundamenta
 
 Generic documentation authority: [`Principles & Terminology`](../../../../../principles-and-terminology.md), especially [`Use-Case Applicability Scan`](../../../../../principles-and-terminology.md#doc-use-case-applicability-scan), [`Contextual Guidance Principle`](../../../../../principles-and-terminology.md#doc-contextual-guidance), and [`Registry Scan`](../../../../../principles-and-terminology.md#doc-registry-scan), plus the generic Use Case/Process definitions.
 
+<a id="idtspe-contextual-application"></a>
 ## 1. Core Invariant
+
+Responsibility ID: `IDTSPE.CONTEXTUAL-APPLICATION`
 
 ```text
 IDTSPE is always the current planning/resolution work model.

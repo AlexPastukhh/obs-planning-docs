@@ -38,12 +38,14 @@ Read in order:
 
 1. this `README.md`;
 2. [`navigation/IDTSPE-CORE-MAP.md`](navigation/IDTSPE-CORE-MAP.md) — compact conceptual/dependency map, not a competing semantic owner;
-3. [`runtime/IDTSPE-DEFAULT-WORK-MODE.md`](runtime/IDTSPE-DEFAULT-WORK-MODE.md);
-4. [`use-cases/USE-CASE-REGISTRY.md`](use-cases/USE-CASE-REGISTRY.md);
-5. [`use-cases/compose-current-work/UC-IDTSPE-COMPOSE-CURRENT-WORK.md`](use-cases/compose-current-work/UC-IDTSPE-COMPOSE-CURRENT-WORK.md);
-6. [`runtime/applicability/CONTEXTUAL-METHODOLOGY-APPLICATION-CONTRACT.md`](runtime/applicability/CONTEXTUAL-METHODOLOGY-APPLICATION-CONTRACT.md);
-7. [`runtime/PASS-TRACE-AND-VISIBILITY-CONTRACT.md`](runtime/PASS-TRACE-AND-VISIBILITY-CONTRACT.md);
-8. [`navigation/METHODOLOGY-REGISTRY-DIRECTORY.md`](navigation/METHODOLOGY-REGISTRY-DIRECTORY.md).
+3. [`runtime/RESPONSIBILITY-MAP.md`](runtime/RESPONSIBILITY-MAP.md) — Runtime/Work Context/Core State responsibility routing;
+4. [`use-cases/RESPONSIBILITY-MAP.md`](use-cases/RESPONSIBILITY-MAP.md) — IDTSPE Use-Case orchestration responsibility routing;
+5. [`runtime/IDTSPE-DEFAULT-WORK-MODE.md`](runtime/IDTSPE-DEFAULT-WORK-MODE.md);
+6. [`use-cases/USE-CASE-REGISTRY.md`](use-cases/USE-CASE-REGISTRY.md);
+7. [`use-cases/compose-current-work/UC-IDTSPE-COMPOSE-CURRENT-WORK.md`](use-cases/compose-current-work/UC-IDTSPE-COMPOSE-CURRENT-WORK.md);
+8. [`runtime/applicability/CONTEXTUAL-METHODOLOGY-APPLICATION-CONTRACT.md`](runtime/applicability/CONTEXTUAL-METHODOLOGY-APPLICATION-CONTRACT.md);
+9. [`runtime/PASS-TRACE-AND-VISIBILITY-CONTRACT.md`](runtime/PASS-TRACE-AND-VISIBILITY-CONTRACT.md);
+10. [`navigation/METHODOLOGY-REGISTRY-DIRECTORY.md`](navigation/METHODOLOGY-REGISTRY-DIRECTORY.md).
 
 After this spine is current, Core bootstrap is sufficient for ordinary routing/composition. Reuse it while trustworthy. Do not read deeper Core owners merely to claim that bootstrap completed.
 
@@ -55,8 +57,8 @@ Open the narrowest canonical owner when its mechanism becomes material:
 - reusable Target Module / Target Module discovery → [`target-modules/RESPONSIBILITY-MAP.md`](target-modules/RESPONSIBILITY-MAP.md), then the Meta-Model/Registry/concrete Model owner;
 - Lens Meta-Model / discovery / concrete Lens operational semantics → [`lenses/RESPONSIBILITY-MAP.md`](lenses/RESPONSIBILITY-MAP.md), then only the routed owner/selected Lens body;
 - Need / Finding / Q/R/P / Proposal / Decision / Planning Branch / accepted-Decision revalidation / continuation-resolution meaning → [`resolution/RESPONSIBILITY-MAP.md`](resolution/RESPONSIBILITY-MAP.md), then the routed lifecycle/projection owner;
-- runtime composition ports / TF mechanics → [`runtime/IDTSPE-RUNTIME-COMPOSITION-CONTRACT.md`](runtime/IDTSPE-RUNTIME-COMPOSITION-CONTRACT.md);
-- pass trace / route visibility / no-duplicate traversal semantics → [`runtime/PASS-TRACE-AND-VISIBILITY-CONTRACT.md`](runtime/PASS-TRACE-AND-VISIBILITY-CONTRACT.md);
+- Work Context / Core State / runtime composition / trace / contextual application / USER-intake responsibility → [`runtime/RESPONSIBILITY-MAP.md`](runtime/RESPONSIBILITY-MAP.md), then the routed owner;
+- IDTSPE runtime and methodology-maintenance Use-Case orchestration → [`use-cases/RESPONSIBILITY-MAP.md`](use-cases/RESPONSIBILITY-MAP.md), then the routed Use Case;
 - Knowledge Basis / reusable theory / Source-Evidence authority boundary → [`knowledge-bases/RESPONSIBILITY-MAP.md`](knowledge-bases/RESPONSIBILITY-MAP.md);
 - representation/persistence/materialization/checkpoint/file-realization routing → [`representation/RESPONSIBILITY-MAP.md`](representation/RESPONSIBILITY-MAP.md);
 - direct IDTSPE command-surface semantics → [`commands/IDTSPE-COMMAND-SURFACE-CONTRACT.md`](commands/IDTSPE-COMMAND-SURFACE-CONTRACT.md);
