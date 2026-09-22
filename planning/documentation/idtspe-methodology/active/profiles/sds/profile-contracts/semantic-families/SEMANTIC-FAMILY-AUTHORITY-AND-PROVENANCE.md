@@ -1,4 +1,7 @@
+<a id="sds-semantic-family-authority-provenance"></a>
 # SDS Semantic Family Authority And Provenance Contract
+
+Responsibility ID: `SDS.SEMANTIC-FAMILY-AUTHORITY-PROVENANCE`
 
 Status: active SDS shared semantic-authority contract
 

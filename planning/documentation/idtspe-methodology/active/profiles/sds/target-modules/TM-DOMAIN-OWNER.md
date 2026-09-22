@@ -1,7 +1,14 @@
 # TM-DOMAIN-OWNER — Durable Domain Semantic Owner
 
+Module ID: `TM-DOMAIN-OWNER`
+
 Entry Point: `tm.domain_owner`
 Role: durable semantic owner
+
+> Semantic Owner Dependency
+> Type: `EXTENDS`
+> Responsibility: `TARGET-MODULE.META-MODEL`
+> Owner: [Target Module Meta-Model](../../../idtspe-core/target-modules/TARGET-MODULE-MODEL.md#target-module-meta-model)
 
 ## Purpose
 

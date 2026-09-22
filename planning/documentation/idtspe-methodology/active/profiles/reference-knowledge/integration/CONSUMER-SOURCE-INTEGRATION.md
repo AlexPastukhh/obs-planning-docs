@@ -1,6 +1,8 @@
 <a id="consumer-source-integration"></a>
 # Consumer / Source Integration
 
+Responsibility ID: `RK.CONSUMER-SOURCE-INTEGRATION`
+
 Reference Knowledge owns reusable Bank/Entry/Vocabulary/Landscape meaning. It does not grant consumer-side Source authority automatically.
 
 ```text
@@ -11,6 +13,9 @@ Bank Entry / Analysis / artifact locator
 ```
 
 Bank existence, mounting, tagging, domain classification or prior analysis do not make an Entry authoritative for every consumer responsibility.
+
+> Semantic Owner Dependencies
+> - `CONTEXTUALIZES` [Target / Source Relation](../../../idtspe-core/runtime/target-work/TARGET-CONTRACT-INSTANCE-SOURCE-RELATION-MODEL.md#target-instance-source-relation-contract) — `TARGET.INSTANCE-SOURCE-RELATION`
 
 ## Producer / Consumer Ownership
 

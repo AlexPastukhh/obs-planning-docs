@@ -1,7 +1,14 @@
 # TM-IMPLEMENTATION-SLICE — Slice Discovery / Non-Persistent Slice Planning
 
+Module ID: `TM-IMPLEMENTATION-SLICE`
+
 Entry Point: `tm.implementation_slice`
 Role: bounded whole-Slice implementation discovery Target Module; working Target is transient by default, selected Result Content may hand off to Step-owned Evolution Impact
+
+> Semantic Owner Dependency
+> Type: `EXTENDS`
+> Responsibility: `TARGET-MODULE.META-MODEL`
+> Owner: [Target Module Meta-Model](../../../idtspe-core/target-modules/TARGET-MODULE-MODEL.md#target-module-meta-model)
 
 ## Purpose
 

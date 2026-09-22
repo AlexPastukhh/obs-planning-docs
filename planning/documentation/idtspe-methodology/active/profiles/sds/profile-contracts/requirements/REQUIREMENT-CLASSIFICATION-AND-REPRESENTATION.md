@@ -1,6 +1,12 @@
+<a id="sds-requirement-classification-representation"></a>
 # SDS Requirement Classification And Representation Contract
 
+Responsibility ID: `SDS.REQUIREMENT-CLASSIFICATION-REPRESENTATION`
+
 Status: active SDS shared Requirement classification/representation contract
+
+> Semantic Owner Dependencies
+> - `CONTEXTUALIZES` [Requirement Ownership / Natural Owner](REQUIREMENT-OWNERSHIP-AND-NATURAL-OWNER.md#sds-requirement-ownership) — `SDS.REQUIREMENT-OWNERSHIP`
 
 ## Purpose
 

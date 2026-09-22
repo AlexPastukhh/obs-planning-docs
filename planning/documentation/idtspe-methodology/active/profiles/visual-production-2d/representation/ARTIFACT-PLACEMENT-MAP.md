@@ -1,6 +1,8 @@
 <a id="artifact-placement-map"></a>
 # Artifact Placement Map
 
+Responsibility ID: `VISUAL2D.ARTIFACT-PLACEMENT`
+
 This profile projection indexes Target Module `ARTIFACT_PROPOSAL` and Lens `ARTIFACT_GUIDANCE` records. Final placement remains P-14 / PERSISTENCE_ADDRESSABILITY.
 
 | Content kind | Guidance owner | Typical semantic owner | Proposal representation | Notes |
@@ -14,3 +16,7 @@ This profile projection indexes Target Module `ARTIFACT_PROPOSAL` and Lens `ARTI
 | review previews | producer / Evidence owner | producer Target / Evidence | generated/supporting evidence artifact | never canonical merely because reviewable |
 | integrated hybrid source | `AP-2D-VC-01` | multi-route Construction Target | implementation-native integrated source | only when composition Target is material |
 | delivery variants | `AP-2D-DEL-01` | Delivery Adaptation Target | output/variant family owner | mechanical exports need no new semantic owner |
+
+> Semantic Owner Dependencies
+> - `EXTENDS` [Core Artifact Placement](../../../idtspe-core/representation/ARTIFACT-PLACEMENT-AND-IDTSPE-RESPONSE-CONTRACT.md#representation-artifact-placement) — `REPRESENTATION.ARTIFACT-PLACEMENT`
+

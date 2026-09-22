@@ -1,5 +1,8 @@
 <a id="shared-construction-review-loop-checkpoint"></a>
+<a id="shared-construction-review-loop"></a>
 # Construction Review Loop Checkpoint
+
+Responsibility ID: `VISUAL2D.CONSTRUCTION-REVIEW-LOOP`
 
 Use after a meaningful whole construction candidate exists.
 

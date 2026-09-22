@@ -1,8 +1,14 @@
+<a id="sds-reusable-guidance-model"></a>
 # Reusable Guidance Model — SDS Shared Contract
+
+Responsibility ID: `SDS.REUSABLE-GUIDANCE-MODEL`
 
 Role: common methodology-guidance semantics for reusable SDS lenses/knowledge bases
 
 This contract defines how reusable questions, reusable requirements/candidates, principles and solution patterns are consumed without becoming a second product/application Requirement authority.
+
+> Semantic Owner Dependencies
+> - `EXTENDS` [Knowledge Basis Contract](../../../../idtspe-core/knowledge-bases/KNOWLEDGE-BASIS-CONTRACT.md#knowledge-basis-contract) — `KNOWLEDGE.BASIS`
 
 ## Recommended means
 

@@ -1,8 +1,15 @@
 # TM-PRACTICAL-TEST — Implemented Practical Evidence / Acceptance
 
+Module ID: `TM-PRACTICAL-TEST`
+
 Entry Point: `tm.test.practical`
 Role: implemented practical-evidence Target Module
 Compatibility name: `TM-PRACTICAL-TEST` is retained so command/routing identity does not require a migration.
+
+> Semantic Owner Dependency
+> Type: `EXTENDS`
+> Responsibility: `TARGET-MODULE.META-MODEL`
+> Owner: [Target Module Meta-Model](../../../idtspe-core/target-modules/TARGET-MODULE-MODEL.md#target-module-meta-model)
 
 ## Purpose
 

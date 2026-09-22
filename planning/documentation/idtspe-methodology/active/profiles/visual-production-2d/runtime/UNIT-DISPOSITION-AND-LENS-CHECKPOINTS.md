@@ -1,6 +1,12 @@
 <a id="shared-unit-selection-and-lens-checkpoints"></a>
 # Unit Disposition / Materiality Review And Lens Checkpoints
 
+Responsibility ID: `VISUAL2D.UNIT-DISPOSITION-LENS-CHECKPOINTS`
+
+> Semantic Owner Dependencies
+> - `CONTEXTUALIZES` [Unit Applicability / Disposition](../../../idtspe-core/runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md#twu-applicability-disposition) — `TWU.APPLICABILITY-DISPOSITION`
+> - `CONTEXTUALIZES` [Lens Meta-Model](../../../idtspe-core/lenses/LENS-MODEL.md#lens-meta-model) — `LENS.META-MODEL`
+
 ## Module-defined Unit Disposition / Materiality Review
 
 When a Target Module is formed, its complete Module-defined Unit inventory is instantiated/addressable in the concrete Target. Evaluate **every Unit** against the current situation and responsibility-specific visual Source/reference coverage to decide how much substantive Unit Resolution is justified; do not decide whether the Unit exists.

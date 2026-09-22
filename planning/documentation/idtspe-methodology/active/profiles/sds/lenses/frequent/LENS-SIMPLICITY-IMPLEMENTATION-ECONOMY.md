@@ -4,6 +4,11 @@ Lens ID: `LENS-SIMPLICITY-IMPLEMENTATION-ECONOMY`
 Short name: `Simplicity Lens`
 Activation: `FREQUENT_CONDITIONAL`
 
+> Semantic Owner Dependency
+> Type: `EXTENDS`
+> Responsibility: `LENS.META-MODEL`
+> Owner: [Lens Meta-Model](../../../../idtspe-core/lenses/LENS-MODEL.md#lens-meta-model)
+
 ## Purpose
 
 Search for a **simpler, cheaper and easier-to-understand way to realize the same accepted meaning** without creating a predictable evolution/change problem.

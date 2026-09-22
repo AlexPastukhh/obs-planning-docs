@@ -1,7 +1,14 @@
 # TM-SHARED-IMPLEMENTATION-CAPABILITY — Durable Shared Implementation Capability
 
+Module ID: `TM-SHARED-IMPLEMENTATION-CAPABILITY`
+
 Entry Point: `tm.shared_implementation_capability`
 Role: durable reusable non-end-to-end implementation owner
+
+> Semantic Owner Dependency
+> Type: `EXTENDS`
+> Responsibility: `TARGET-MODULE.META-MODEL`
+> Owner: [Target Module Meta-Model](../../../idtspe-core/target-modules/TARGET-MODULE-MODEL.md#target-module-meta-model)
 
 ## Purpose
 

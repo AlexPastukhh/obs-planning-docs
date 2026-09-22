@@ -1,4 +1,7 @@
+<a id="idtspe-profile-discovery"></a>
 # Installed IDTSPE Profiles
+
+Responsibility ID: `IDTSPE.PROFILE-DISCOVERY`
 
 Status: active profile registry
 
@@ -11,6 +14,8 @@ A profile packages concrete Target Modules, profile-specific Lenses, semantic gu
 | [`SDS`](sds/README.md) | [`sds/README.md`](sds/README.md) → `Profile Bootstrap` | software/Application planning through behavior, implementation ownership, exact realization and evidence |
 | [`2D Visual Production`](visual-production-2d/README.md) | [`visual-production-2d/README.md`](visual-production-2d/README.md) → `Profile Bootstrap` | planning and producing 2D visual results through requirements, visual material, whole-visual design, construction and delivery adaptation |
 | [`Reference Knowledge`](reference-knowledge/README.md) | [`reference-knowledge/README.md`](reference-knowledge/README.md) → `Profile Bootstrap` | reusable reference subjects/Banks, Vocabulary, analysis and evidence-grounded Landscape research |
+
+For profile-local responsibility routing after profile selection, use [`RESPONSIBILITY-MAP.md`](RESPONSIBILITY-MAP.md); each profile child map routes its own semantic owners without duplicating Core contracts.
 
 ## Bootstrap Rule
 

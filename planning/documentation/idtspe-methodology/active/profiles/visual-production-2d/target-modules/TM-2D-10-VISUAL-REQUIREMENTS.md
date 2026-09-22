@@ -1,9 +1,16 @@
 <a id="tm-2d-10-visual-requirements"></a>
 # TM-2D-10-VISUAL-REQUIREMENTS — Visual Outcome / Requirement Owner
 
+Module ID: `TM-2D-10-VISUAL-REQUIREMENTS`
+
 Entry Point: `tm.2d.visual-requirements`
 Supported Roles: PRIMARY, SUPPORTING
 Status: active profile module
+
+> Semantic Owner Dependency
+> Type: `EXTENDS`
+> Responsibility: `TARGET-MODULE.META-MODEL`
+> Owner: [Target Module Meta-Model](../../../idtspe-core/target-modules/TARGET-MODULE-MODEL.md#target-module-meta-model)
 
 ## Purpose
 

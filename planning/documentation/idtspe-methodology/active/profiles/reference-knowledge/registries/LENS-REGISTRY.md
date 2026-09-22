@@ -1,6 +1,8 @@
 <a id="reference-knowledge-lens-registry"></a>
 # Reference Knowledge Lens Registry
 
+Responsibility ID: `RK.LENS-DISCOVERY`
+
 Registry rows are routing metadata only. Selection does not execute a Lens or force a Finding.
 
 | Lens | Stable ID | Activation | Applicability summary |
@@ -12,3 +14,7 @@ Registry rows are routing metadata only. Selection does not execute a Lens or fo
 Unit applicability/materiality is owned by IDTSPE Core and does not need a Reference-Knowledge-specific Lens.
 
 A future Domain Pack may reference an existing registered Lens or motivate derivation of a new reusable Lens. Domain Pack existence does not itself create a Lens.
+
+> Semantic Owner Dependencies
+> - `CONTEXTUALIZES` [Lens Meta-Model](../../../idtspe-core/lenses/LENS-MODEL.md#lens-meta-model) — `LENS.META-MODEL`
+

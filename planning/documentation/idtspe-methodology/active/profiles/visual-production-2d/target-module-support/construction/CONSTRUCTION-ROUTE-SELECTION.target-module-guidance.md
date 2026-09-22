@@ -1,6 +1,8 @@
 <a id="shared-construction-route-selection"></a>
 # Construction Route Selection
 
+Responsibility ID: `VISUAL2D.CONSTRUCTION-ROUTE-SELECTION`
+
 Select the construction route during Target/module formation when the representation is not already fixed by the request/current accepted state.
 
 ```text

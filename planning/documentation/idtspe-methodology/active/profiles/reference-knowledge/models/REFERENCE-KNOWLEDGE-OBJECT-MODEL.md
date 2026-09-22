@@ -1,6 +1,8 @@
 <a id="reference-knowledge-object-model"></a>
 # Reference Knowledge Object Model
 
+Responsibility ID: `RK.OBJECT-MODEL`
+
 ## Bank
 
 A Bank is the ownership/write-policy/lifecycle boundary for durable Reference Knowledge. Canonical rules live in [Bank Principles](BANK-PRINCIPLES.md#bank-principles).

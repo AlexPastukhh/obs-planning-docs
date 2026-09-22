@@ -1,6 +1,13 @@
 # LENS-TERMS-UBIQUITOUS-LANGUAGE — Terms / Ubiquitous Language
 
+Lens ID: `LENS-TERMS-UBIQUITOUS-LANGUAGE`
+
 Status: active reusable SDS Lens
+
+> Semantic Owner Dependency
+> Type: `EXTENDS`
+> Responsibility: `LENS.META-MODEL`
+> Owner: [Lens Meta-Model](../../../../idtspe-core/lenses/LENS-MODEL.md#lens-meta-model)
 
 ## Applicability
 Strongly check changed `SR-*`, `BR-*`, `IR-*`, `PFR-*`, `ERR-BEH-*`, `ERR-IMP-*`; proportionally check AB/SPS/FBS/FDO/owner/result names.

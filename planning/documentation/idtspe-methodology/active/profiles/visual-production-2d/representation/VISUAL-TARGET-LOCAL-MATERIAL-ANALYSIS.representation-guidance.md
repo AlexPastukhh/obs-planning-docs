@@ -1,8 +1,13 @@
 <a id="visual-target-local-material-analysis-representation-guidance"></a>
 # Visual Target-local Material Analysis — Representation Guidance
 
+Responsibility ID: `VISUAL2D.TARGET-LOCAL-MATERIAL-ANALYSIS`
+
 Status: active representation guidance
 Primary consumer: the current Target/Unit that already owns contextual material/reference analysis
+
+> Semantic Owner Dependencies
+> - `EXTENDS` [Core Artifact Placement](../../../idtspe-core/representation/ARTIFACT-PLACEMENT-AND-IDTSPE-RESPONSE-CONTRACT.md#representation-artifact-placement) — `REPRESENTATION.ARTIFACT-PLACEMENT`
 
 ## Boundary
 

@@ -1,8 +1,13 @@
 <a id="visual-material-preparation-operation"></a>
 # Visual Material Preparation Operation
 
+Responsibility ID: `VISUAL2D.MATERIAL-PREPARATION`
+
 Status: active profile Operation
 Primary consumers: current visual Target/Unit, Source-Coverage Lens routing, TM-2D-15 when a reusable set Target exists
+
+> Semantic Owner Dependencies
+> - `CONTEXTUALIZES` [Visual Material / Source Usage](../source-contracts/VISUAL-MATERIAL-AND-SOURCE-USAGE.md#visual-material-and-source-usage) — `VISUAL2D.MATERIAL-SOURCE-USAGE`
 
 ## Responsibility
 

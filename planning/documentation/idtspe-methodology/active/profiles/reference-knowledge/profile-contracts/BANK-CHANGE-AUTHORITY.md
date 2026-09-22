@@ -1,6 +1,8 @@
 <a id="bank-change-authority"></a>
 # Bank Change Authority
 
+Responsibility ID: `RK.BANK-CHANGE-AUTHORITY`
+
 ## Direct Bank Tasks
 
 When the USER explicitly asks to create/refine an Entry, assign Tags, relate Entries, add Analysis, evolve vocabulary or analyze a Landscape, that instruction authorizes initiating the corresponding scoped work only within the semantic owner/write authority already applicable to that object. USER intent does not replace Bank ownership or Vocabulary Package evolution authority. Do not ask redundant confirmation for every obvious local statement.

@@ -1,4 +1,7 @@
+<a id="sds-current-owner-evolution-impact"></a>
 # Current-Owner Evolution Impact Projection Contract
+
+Responsibility ID: `SDS.CURRENT-OWNER-EVOLUTION-IMPACT`
 
 Status: active shared SDS semantic contract
 Purpose: own the reusable reverse navigation/revalidation semantics used by current realized Feature, Scenario, Screen, Domain, Slice and Shared owners when concrete unrealized Evolution Steps materially affect them.

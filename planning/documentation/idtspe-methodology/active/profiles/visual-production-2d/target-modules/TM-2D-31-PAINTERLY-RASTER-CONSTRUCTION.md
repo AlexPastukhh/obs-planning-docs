@@ -1,9 +1,16 @@
 <a id="tm-2d-31-painterly-raster-construction"></a>
 # TM-2D-31-PAINTERLY-RASTER-CONSTRUCTION — Painterly Raster Construction
 
+Module ID: `TM-2D-31-PAINTERLY-RASTER-CONSTRUCTION`
+
 Entry Point: `tm.2d.construction.painterly-raster`
 Supported Roles: PRIMARY, SUPPORTING
 Status: active profile module
+
+> Semantic Owner Dependency
+> Type: `EXTENDS`
+> Responsibility: `TARGET-MODULE.META-MODEL`
+> Owner: [Target Module Meta-Model](../../../idtspe-core/target-modules/TARGET-MODULE-MODEL.md#target-module-meta-model)
 
 ## Purpose
 

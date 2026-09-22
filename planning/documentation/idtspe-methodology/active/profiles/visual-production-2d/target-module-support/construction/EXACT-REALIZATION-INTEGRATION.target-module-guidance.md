@@ -1,6 +1,8 @@
 <a id="shared-exact-realization-integration"></a>
 # Exact Realization Integration
 
+Responsibility ID: `VISUAL2D.EXACT-REALIZATION-INTEGRATION`
+
 Construction Unit Resolution may invoke Core Exact Realization whenever literal source creation or modification is needed.
 
 ```text

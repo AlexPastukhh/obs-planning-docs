@@ -1,7 +1,14 @@
 # TM-PROTOTYPE — Prototype / Experiment
 
+Module ID: `TM-PROTOTYPE`
+
 Entry Point: `tm.prototype`
 Role: practical-evidence Target Module before full implementation
+
+> Semantic Owner Dependency
+> Type: `EXTENDS`
+> Responsibility: `TARGET-MODULE.META-MODEL`
+> Owner: [Target Module Meta-Model](../../../idtspe-core/target-modules/TARGET-MODULE-MODEL.md#target-module-meta-model)
 
 ## Purpose
 

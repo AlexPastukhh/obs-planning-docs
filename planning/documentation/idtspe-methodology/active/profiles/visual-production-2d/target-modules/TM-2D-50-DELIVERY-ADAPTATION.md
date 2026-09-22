@@ -1,9 +1,16 @@
 <a id="tm-2d-50-delivery-adaptation"></a>
 # TM-2D-50-DELIVERY-ADAPTATION — Visually Material Output Adaptation
 
+Module ID: `TM-2D-50-DELIVERY-ADAPTATION`
+
 Entry Point: `tm.2d.delivery-adaptation`
 Supported Roles: PRIMARY, SUPPORTING
 Status: active profile module
+
+> Semantic Owner Dependency
+> Type: `EXTENDS`
+> Responsibility: `TARGET-MODULE.META-MODEL`
+> Owner: [Target Module Meta-Model](../../../idtspe-core/target-modules/TARGET-MODULE-MODEL.md#target-module-meta-model)
 
 ## Purpose
 

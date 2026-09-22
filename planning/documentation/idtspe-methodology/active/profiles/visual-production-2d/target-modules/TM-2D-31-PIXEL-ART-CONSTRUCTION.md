@@ -1,9 +1,16 @@
 <a id="tm-2d-31-pixel-art-construction"></a>
 # TM-2D-31-PIXEL-ART-CONSTRUCTION — Native Pixel-grid Construction
 
+Module ID: `TM-2D-31-PIXEL-ART-CONSTRUCTION`
+
 Entry Point: `tm.2d.construction.pixel-art`
 Supported Roles: PRIMARY, SUPPORTING
 Status: active profile module
+
+> Semantic Owner Dependency
+> Type: `EXTENDS`
+> Responsibility: `TARGET-MODULE.META-MODEL`
+> Owner: [Target Module Meta-Model](../../../idtspe-core/target-modules/TARGET-MODULE-MODEL.md#target-module-meta-model)
 
 ## Purpose
 

@@ -186,9 +186,9 @@ Reusable Knowledge Basis/theory and its boundary from current Source/Evidence au
 
 ## 11. Profile Boundary
 
-Core sees installed profiles through the profile registry and delegates specialized discovery to the selected profile directory. Profile components own profile semantics; Core continues to own generic planning/resolution mechanics.
+Core sees installed profiles through the [profile responsibility map](../../profiles/RESPONSIBILITY-MAP.md) and profile registry, then delegates specialized discovery to the selected profile child map/registries. Profile components own profile semantics; Core continues to own generic planning/resolution mechanics.
 
-Current SDS profile contributes specialized Target/Lens/knowledge registries but no separate runtime Use Cases.
+The current SDS, 2D Visual Production and Reference Knowledge profiles contribute specialized Target/Lens/knowledge/representation semantics but no separate runtime methodology-use Use Cases.
 
 ## 12. Scenario Map Boundary
 

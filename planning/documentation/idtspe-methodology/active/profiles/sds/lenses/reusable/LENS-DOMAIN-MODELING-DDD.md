@@ -1,7 +1,14 @@
 # LENS-DOMAIN-MODELING-DDD — Domain Modeling / DDD
 
+Lens ID: `LENS-DOMAIN-MODELING-DDD`
+
 Role: reusable thematic Domain modeling lens
 Primary use: Domain Discovery, durable Domain owner formation/review, owner-local Domain requirement discovery
+
+> Semantic Owner Dependency
+> Type: `EXTENDS`
+> Responsibility: `LENS.META-MODEL`
+> Owner: [Lens Meta-Model](../../../../idtspe-core/lenses/LENS-MODEL.md#lens-meta-model)
 
 ## Purpose
 

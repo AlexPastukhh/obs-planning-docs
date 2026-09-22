@@ -1,9 +1,16 @@
 <a id="tm-2d-31-editable-raster-construction"></a>
 # TM-2D-31-EDITABLE-RASTER-CONSTRUCTION — Structured Layered Raster Construction
 
+Module ID: `TM-2D-31-EDITABLE-RASTER-CONSTRUCTION`
+
 Entry Point: `tm.2d.construction.editable-raster`
 Supported Roles: PRIMARY, SUPPORTING
 Status: active profile module
+
+> Semantic Owner Dependency
+> Type: `EXTENDS`
+> Responsibility: `TARGET-MODULE.META-MODEL`
+> Owner: [Target Module Meta-Model](../../../idtspe-core/target-modules/TARGET-MODULE-MODEL.md#target-module-meta-model)
 
 ## Purpose
 

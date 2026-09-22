@@ -1,5 +1,8 @@
 <a id="shared-visual-production-invariants"></a>
+<a id="visual2d-production-invariants"></a>
 # Visual Production Invariants
+
+Responsibility ID: `VISUAL2D.PRODUCTION-INVARIANTS`
 
 1. **Module-defined Unit identity is fixed by the formed Target Module.** Every Module-defined Unit exists/addressable in the concrete Target result; current situation and visual Source/reference coverage determine substantive resolution depth/disposition, not Unit existence.
 2. **Visual Source/reference coverage is responsibility-specific.** A Source may strongly cover one Unit responsibility and poorly cover another; avoid global labels such as “the reference covers everything”.

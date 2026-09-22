@@ -1,8 +1,15 @@
 # TM-SCENARIO-PLANNING — Scenario Journey Composition
 
+Module ID: `TM-SCENARIO-PLANNING`
+
 Entry Point: `tm.scenario`
 Role: journey-composition Target Module
 Compatibility rule: canonical ID/path `TM-SCENARIO-PLANNING` is retained; the semantic owner is Scenario Journey Composition.
+
+> Semantic Owner Dependency
+> Type: `EXTENDS`
+> Responsibility: `TARGET-MODULE.META-MODEL`
+> Owner: [Target Module Meta-Model](../../../idtspe-core/target-modules/TARGET-MODULE-MODEL.md#target-module-meta-model)
 
 ## Purpose
 

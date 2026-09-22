@@ -1,7 +1,14 @@
 # TM-SLICE-OWNER — Durable End-to-End Slice Owner
 
+Module ID: `TM-SLICE-OWNER`
+
 Entry Point: `tm.slice_owner`
 Role: durable implementation responsibility owner
+
+> Semantic Owner Dependency
+> Type: `EXTENDS`
+> Responsibility: `TARGET-MODULE.META-MODEL`
+> Owner: [Target Module Meta-Model](../../../idtspe-core/target-modules/TARGET-MODULE-MODEL.md#target-module-meta-model)
 
 ## Purpose
 

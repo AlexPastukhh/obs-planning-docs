@@ -1,7 +1,21 @@
 <a id="profile-2d-visual-production"></a>
+<a id="visual2d-profile-bootstrap"></a>
 # 2D Visual Production Profile — IDTSPE
 
+Responsibility ID: `VISUAL2D.PROFILE-BOOTSTRAP`
+
 Status: active profile
+
+> Semantic Owner Dependencies
+> - `CONTEXTUALIZES` [Installed Profile Discovery](../PROFILE-REGISTRY.md#idtspe-profile-discovery) — `IDTSPE.PROFILE-DISCOVERY`
+
+> Semantic Owner Dependencies
+> - `CONTEXTUALIZES` [Visual Production Invariants](profile-contracts/VISUAL-PRODUCTION-INVARIANTS.md#visual2d-production-invariants) — `VISUAL2D.PRODUCTION-INVARIANTS`
+> - `CONTEXTUALIZES` [2D Target Module Discovery](registries/TARGET-MODULE-REGISTRY.md#registry-2d-target-modules) — `VISUAL2D.TARGET-MODULE-DISCOVERY`
+> - `CONTEXTUALIZES` [2D Lens Discovery](registries/LENS-REGISTRY.md#registry-2d-lenses) — `VISUAL2D.LENS-DISCOVERY`
+> - `CONTEXTUALIZES` [Visual Material / Source Usage](source-contracts/VISUAL-MATERIAL-AND-SOURCE-USAGE.md#visual-material-and-source-usage) — `VISUAL2D.MATERIAL-SOURCE-USAGE`
+> - `CONTEXTUALIZES` [Construction Route Selection](target-module-support/construction/CONSTRUCTION-ROUTE-SELECTION.target-module-guidance.md#shared-construction-route-selection) — `VISUAL2D.CONSTRUCTION-ROUTE-SELECTION`
+> - `CONTEXTUALIZES` [2D Artifact Placement](representation/ARTIFACT-PLACEMENT-MAP.md#artifact-placement-map) — `VISUAL2D.ARTIFACT-PLACEMENT`
 
 ## Purpose
 
@@ -16,13 +30,14 @@ This `README.md` is the canonical profile entry. It assumes the primary Document
 For the 2D visual-production portion, read in order:
 
 1. this `README.md`;
-2. [Visual Production Invariants](profile-contracts/VISUAL-PRODUCTION-INVARIANTS.md#shared-visual-production-invariants);
-3. [2D Visual Production Target Module Registry](registries/TARGET-MODULE-REGISTRY.md#registry-2d-target-modules);
-4. [2D Visual Lens Registry](registries/LENS-REGISTRY.md#registry-2d-lenses);
-5. [Unit Disposition / Materiality Review And Lens Checkpoints](runtime/UNIT-DISPOSITION-AND-LENS-CHECKPOINTS.md#shared-unit-selection-and-lens-checkpoints);
-6. [Construction Route Selection](target-module-support/construction/CONSTRUCTION-ROUTE-SELECTION.target-module-guidance.md#shared-construction-route-selection);
-7. [Construction Review Loop Checkpoint](target-module-support/construction/CONSTRUCTION-REVIEW-LOOP.target-module-checkpoint.md#shared-construction-review-loop-checkpoint);
-8. [Artifact Placement Map](representation/ARTIFACT-PLACEMENT-MAP.md#artifact-placement-map).
+2. [Responsibility Map](RESPONSIBILITY-MAP.md);
+3. [Visual Production Invariants](profile-contracts/VISUAL-PRODUCTION-INVARIANTS.md#visual2d-production-invariants);
+4. [2D Visual Production Target Module Registry](registries/TARGET-MODULE-REGISTRY.md#registry-2d-target-modules);
+5. [2D Visual Lens Registry](registries/LENS-REGISTRY.md#registry-2d-lenses);
+6. [Unit Disposition / Materiality Review And Lens Checkpoints](runtime/UNIT-DISPOSITION-AND-LENS-CHECKPOINTS.md#shared-unit-selection-and-lens-checkpoints);
+7. [Construction Route Selection](target-module-support/construction/CONSTRUCTION-ROUTE-SELECTION.target-module-guidance.md#shared-construction-route-selection);
+8. [Construction Review Loop Checkpoint](target-module-support/construction/CONSTRUCTION-REVIEW-LOOP.target-module-checkpoint.md#shared-construction-review-loop);
+9. [Artifact Placement Map](representation/ARTIFACT-PLACEMENT-MAP.md#artifact-placement-map).
 
 Concrete Target Modules, Lenses, templates and examples remain lazy reads after registry selection and local applicability.
 

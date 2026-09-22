@@ -1,9 +1,16 @@
 <a id="tm-2d-30-visual-construction"></a>
 # TM-2D-30-VISUAL-CONSTRUCTION — Material Multi-route Construction Composition
 
+Module ID: `TM-2D-30-VISUAL-CONSTRUCTION`
+
 Entry Point: `tm.2d.visual-construction`
 Supported Roles: PRIMARY, COMPOSITION
 Status: active profile module
+
+> Semantic Owner Dependency
+> Type: `EXTENDS`
+> Responsibility: `TARGET-MODULE.META-MODEL`
+> Owner: [Target Module Meta-Model](../../../idtspe-core/target-modules/TARGET-MODULE-MODEL.md#target-module-meta-model)
 
 ## Purpose
 

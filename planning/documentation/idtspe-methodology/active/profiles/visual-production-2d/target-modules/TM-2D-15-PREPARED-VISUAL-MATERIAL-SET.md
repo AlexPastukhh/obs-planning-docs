@@ -1,9 +1,16 @@
 <a id="tm-2d-15-prepared-visual-material-set"></a>
 # TM-2D-15-PREPARED-VISUAL-MATERIAL-SET — Prepared Visual Material Set
 
+Module ID: `TM-2D-15-PREPARED-VISUAL-MATERIAL-SET`
+
 Entry Point: `tm.2d.prepared-visual-material-set`
 Supported Roles: PRIMARY, SUPPORTING
 Status: active profile module, conditional formation
+
+> Semantic Owner Dependency
+> Type: `EXTENDS`
+> Responsibility: `TARGET-MODULE.META-MODEL`
+> Owner: [Target Module Meta-Model](../../../idtspe-core/target-modules/TARGET-MODULE-MODEL.md#target-module-meta-model)
 
 ## Formation Gate
 

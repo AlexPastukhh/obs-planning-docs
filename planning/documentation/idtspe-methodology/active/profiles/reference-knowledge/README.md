@@ -1,7 +1,21 @@
 <a id="profile-reference-knowledge"></a>
+<a id="reference-knowledge-profile-bootstrap"></a>
 # Reference Knowledge Profile — IDTSPE
 
+Responsibility ID: `RK.PROFILE-BOOTSTRAP`
+
 Status: active profile
+
+> Semantic Owner Dependencies
+> - `CONTEXTUALIZES` [Installed Profile Discovery](../PROFILE-REGISTRY.md#idtspe-profile-discovery) — `IDTSPE.PROFILE-DISCOVERY`
+
+> Semantic Owner Dependencies
+> - `CONTEXTUALIZES` [Reference Knowledge Object Model](models/REFERENCE-KNOWLEDGE-OBJECT-MODEL.md#reference-knowledge-object-model) — `RK.OBJECT-MODEL`
+> - `CONTEXTUALIZES` [Bank Principles](models/BANK-PRINCIPLES.md#bank-principles) — `RK.BANK-PRINCIPLES`
+> - `CONTEXTUALIZES` [Vocabulary Model](models/VOCABULARY-MODEL.md#vocabulary-model) — `RK.VOCABULARY-MODEL`
+> - `CONTEXTUALIZES` [Bank Change Authority](profile-contracts/BANK-CHANGE-AUTHORITY.md#bank-change-authority) — `RK.BANK-CHANGE-AUTHORITY`
+> - `CONTEXTUALIZES` [Reference Knowledge Representation Model](representation/REFERENCE-KNOWLEDGE-REPRESENTATION-MODEL.md#reference-knowledge-representation-model) — `RK.REPRESENTATION-MODEL`
+> - `CONTEXTUALIZES` [Consumer / Source Integration](integration/CONSUMER-SOURCE-INTEGRATION.md#consumer-source-integration) — `RK.CONSUMER-SOURCE-INTEGRATION`
 
 ## Purpose
 
@@ -44,17 +58,18 @@ This profile assumes the primary Documentation / IDTSPE bootstrap is already cur
 Read in order:
 
 1. this `README.md`;
-2. [Reference Knowledge Object Model](models/REFERENCE-KNOWLEDGE-OBJECT-MODEL.md#reference-knowledge-object-model);
-3. [Bank Principles](models/BANK-PRINCIPLES.md#bank-principles);
-4. [Vocabulary Model](models/VOCABULARY-MODEL.md#vocabulary-model);
-5. [Reference Knowledge Representation Model](representation/REFERENCE-KNOWLEDGE-REPRESENTATION-MODEL.md#reference-knowledge-representation-model);
-6. [Target Module Registry](registries/TARGET-MODULE-REGISTRY.md#reference-knowledge-target-module-registry);
-7. [Lens Registry](registries/LENS-REGISTRY.md#reference-knowledge-lens-registry);
-8. [Domain Pack Model And Derivation Guidance](domain-packs/DOMAIN-PACK-MODEL-AND-DERIVATION-GUIDANCE.md#domain-pack-model-and-derivation-guidance);
-9. [Domain Pack Registry](registries/DOMAIN-PACK-REGISTRY.md#reference-knowledge-domain-pack-registry);
-10. [Consumer / Source Integration](integration/CONSUMER-SOURCE-INTEGRATION.md#consumer-source-integration);
-11. [Bank Change Authority](profile-contracts/BANK-CHANGE-AUTHORITY.md#bank-change-authority);
-12. [Artifact Placement Map](representation/ARTIFACT-PLACEMENT-MAP.md#reference-knowledge-artifact-placement-map).
+2. [Responsibility Map](RESPONSIBILITY-MAP.md) — profile-local responsibility routing;
+3. [Reference Knowledge Object Model](models/REFERENCE-KNOWLEDGE-OBJECT-MODEL.md#reference-knowledge-object-model);
+4. [Bank Principles](models/BANK-PRINCIPLES.md#bank-principles);
+5. [Vocabulary Model](models/VOCABULARY-MODEL.md#vocabulary-model);
+6. [Reference Knowledge Representation Model](representation/REFERENCE-KNOWLEDGE-REPRESENTATION-MODEL.md#reference-knowledge-representation-model);
+7. [Target Module Registry](registries/TARGET-MODULE-REGISTRY.md#reference-knowledge-target-module-registry);
+8. [Lens Registry](registries/LENS-REGISTRY.md#reference-knowledge-lens-registry);
+9. [Domain Pack Model And Derivation Guidance](domain-packs/DOMAIN-PACK-MODEL-AND-DERIVATION-GUIDANCE.md#domain-pack-model-and-derivation-guidance);
+10. [Domain Pack Registry](registries/DOMAIN-PACK-REGISTRY.md#reference-knowledge-domain-pack-registry);
+11. [Consumer / Source Integration](integration/CONSUMER-SOURCE-INTEGRATION.md#consumer-source-integration);
+12. [Bank Change Authority](profile-contracts/BANK-CHANGE-AUTHORITY.md#bank-change-authority);
+13. [Artifact Placement Map](representation/ARTIFACT-PLACEMENT-MAP.md#reference-knowledge-artifact-placement-map).
 
 Read concrete Domain Packs, Target Modules, Lenses and examples only when selected/applicable. No concrete Domain Packs are currently installed.
 

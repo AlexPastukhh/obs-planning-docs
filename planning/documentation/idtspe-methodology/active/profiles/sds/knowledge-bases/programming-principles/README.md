@@ -1,7 +1,13 @@
+<a id="sds-programming-principles"></a>
 # Programming Principles Registry — SDS
+
+Responsibility ID: `SDS.PROGRAMMING-PRINCIPLES`
 
 Status: active reusable-knowledge registry
 Role: compact relevance scan over the complete 22-group programming-principles corpus; **not a Lens and not a checklist to execute in full**
+
+> Semantic Owner Dependencies
+> - `EXTENDS` [Knowledge Basis Contract](../../../../idtspe-core/knowledge-bases/KNOWLEDGE-BASIS-CONTRACT.md#knowledge-basis-contract) — `KNOWLEDGE.BASIS`
 
 ## Authority / Boundary
 

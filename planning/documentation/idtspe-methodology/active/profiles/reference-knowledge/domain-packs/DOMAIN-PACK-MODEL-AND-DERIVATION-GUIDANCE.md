@@ -1,6 +1,8 @@
 <a id="domain-pack-model-and-derivation-guidance"></a>
 # Domain Pack Model And Derivation Guidance
 
+Responsibility ID: `RK.DOMAIN-PACK-MODEL`
+
 A Domain Pack is reusable domain-specific Knowledge Basis for Reference Knowledge work. It exists only when a concrete domain has been deliberately derived and registered; being able to name a domain does not create a Domain Pack.
 
 ```text

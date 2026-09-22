@@ -1,6 +1,8 @@
 <a id="registry-2d-target-modules"></a>
 # Target Module Registry — 2D Visual Production
 
+Responsibility ID: `VISUAL2D.TARGET-MODULE-DISCOVERY`
+
 | Depth | Target Module | Stable ID | Roles | Use |
 |---:|---|---|---|---|
 | 10 | [Visual Requirements](../target-modules/TM-2D-10-VISUAL-REQUIREMENTS.md#tm-2d-10-visual-requirements) | `TM-2D-10-VISUAL-REQUIREMENTS` | PRIMARY / SUPPORTING | what the visual must accomplish |
@@ -13,6 +15,9 @@
 | 31 | [Painterly Raster Construction](../target-modules/TM-2D-31-PAINTERLY-RASTER-CONSTRUCTION.md#tm-2d-31-painterly-raster-construction) | `TM-2D-31-PAINTERLY-RASTER-CONSTRUCTION` | PRIMARY / SUPPORTING | painterly raster construction |
 | 31 | [Procedural Construction](../target-modules/TM-2D-31-PROCEDURAL-CONSTRUCTION.md#tm-2d-31-procedural-construction) | `TM-2D-31-PROCEDURAL-CONSTRUCTION` | PRIMARY / SUPPORTING | deterministic parameter/field-based construction |
 | 50 | [Delivery Adaptation](../target-modules/TM-2D-50-DELIVERY-ADAPTATION.md#tm-2d-50-delivery-adaptation) | `TM-2D-50-DELIVERY-ADAPTATION` | PRIMARY / SUPPORTING conditional | visually material output/crop/localization adaptation |
+
+> Semantic Owner Dependencies
+> - `CONTEXTUALIZES` [Target Module Meta-Model](../../../idtspe-core/target-modules/TARGET-MODULE-MODEL.md#target-module-meta-model) — `TARGET-MODULE.META-MODEL`
 
 ## Profile-wide Unit-selection route
 

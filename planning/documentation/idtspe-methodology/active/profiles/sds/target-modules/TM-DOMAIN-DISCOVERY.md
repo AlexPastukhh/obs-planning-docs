@@ -1,7 +1,14 @@
 # TM-DOMAIN-DISCOVERY — Transient Domain Discovery
 
+Module ID: `TM-DOMAIN-DISCOVERY`
+
 Entry Point: `tm.domain_discovery`
 Role: bounded implementation discovery Target Module; working Target is transient by default, selected Result Content may hand off to Step-owned Evolution Impact
+
+> Semantic Owner Dependency
+> Type: `EXTENDS`
+> Responsibility: `TARGET-MODULE.META-MODEL`
+> Owner: [Target Module Meta-Model](../../../idtspe-core/target-modules/TARGET-MODULE-MODEL.md#target-module-meta-model)
 
 ## Purpose
 

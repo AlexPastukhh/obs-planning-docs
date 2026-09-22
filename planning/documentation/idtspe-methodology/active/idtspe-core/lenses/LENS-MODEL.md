@@ -143,12 +143,13 @@ Quality / Risk Materiality
 Target Resolution Coverage
 ```
 
-Installed profiles may contribute additional frequent conditional Lenses. The current SDS profile contributes:
+Installed profiles may contribute additional frequent/reusable Lenses. Current profile inventories and activation summaries are owned by the selected profile responsibility map/registry:
 
-```text
-L5 WEUC / Target Evolution / Architecture Fitness + Workspace work-cost
-Simplicity / Implementation Economy / Evolution-Safe Simplification
-```
+- [`SDS`](../../profiles/sds/RESPONSIBILITY-MAP.md);
+- [`2D Visual Production`](../../profiles/visual-production-2d/RESPONSIBILITY-MAP.md);
+- [`Reference Knowledge`](../../profiles/reference-knowledge/RESPONSIBILITY-MAP.md).
+
+Core does not duplicate those mutable profile Lens inventories here.
 
 ### TARGET_PROFILE_REUSABLE
 

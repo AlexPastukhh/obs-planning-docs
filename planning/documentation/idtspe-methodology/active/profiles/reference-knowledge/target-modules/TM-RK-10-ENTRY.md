@@ -6,6 +6,11 @@ Status: active profile module
 Entry Point: `rk.entry`
 Supported Roles: `PRIMARY | SUPPORTING`
 
+> Semantic Owner Dependency
+> Type: `EXTENDS`
+> Responsibility: `TARGET-MODULE.META-MODEL`
+> Owner: [Target Module Meta-Model](../../../idtspe-core/target-modules/TARGET-MODULE-MODEL.md#target-module-meta-model)
+
 ## Purpose
 
 Create, materially refine, revalidate or retire one durable Entry record for one independently useful reference subject.

@@ -1,7 +1,12 @@
 <a id="reference-knowledge-representation-model"></a>
 # Reference Knowledge Representation Model
 
+Responsibility ID: `RK.REPRESENTATION-MODEL`
+
 Reference Knowledge semantics are independent from physical representation. A Bank, Entry, statement, Vocabulary Package or Landscape result may be represented in files, a database or another implementation without changing semantic ownership.
+
+> Semantic Owner Dependencies
+> - `CONTEXTUALIZES` [Core Artifact Placement](../../../idtspe-core/representation/ARTIFACT-PLACEMENT-AND-IDTSPE-RESPONSE-CONTRACT.md#representation-artifact-placement) — `REPRESENTATION.ARTIFACT-PLACEMENT`
 
 ## Semantic Identity And Storage
 

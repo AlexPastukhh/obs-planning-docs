@@ -1,7 +1,14 @@
 # TM-EVOLUTION-STEPS-MAP — Evolution Steps Map
 
+Module ID: `TM-EVOLUTION-STEPS-MAP`
+
 Entry Point: `tm.evolution_steps_map`
 Role: persistent registry/coordination Target
+
+> Semantic Owner Dependency
+> Type: `EXTENDS`
+> Responsibility: `TARGET-MODULE.META-MODEL`
+> Owner: [Target Module Meta-Model](../../../idtspe-core/target-modules/TARGET-MODULE-MODEL.md#target-module-meta-model)
 
 ## Purpose
 

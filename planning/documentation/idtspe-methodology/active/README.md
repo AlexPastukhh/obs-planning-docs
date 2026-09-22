@@ -21,6 +21,7 @@ This README routes to current canonical owners; it does not duplicate their sema
 ## Installed Profiles
 
 - [`profiles/PROFILE-REGISTRY.md`](profiles/PROFILE-REGISTRY.md) — installed profile registry.
+- [`profiles/RESPONSIBILITY-MAP.md`](profiles/RESPONSIBILITY-MAP.md) — installed-profile responsibility routing; child profile maps route profile-local owners.
 - [`profiles/sds/README.md`](profiles/sds/README.md) — SDS profile entry.
 - [`profiles/visual-production-2d/README.md`](profiles/visual-production-2d/README.md) — 2D Visual Production profile entry.
 - [`profiles/reference-knowledge/README.md`](profiles/reference-knowledge/README.md) — Reference Knowledge profile entry.

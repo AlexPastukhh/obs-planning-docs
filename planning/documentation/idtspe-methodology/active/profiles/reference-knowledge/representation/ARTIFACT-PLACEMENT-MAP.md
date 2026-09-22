@@ -1,6 +1,8 @@
 <a id="reference-knowledge-artifact-placement-map"></a>
 # Reference Knowledge Artifact Placement Map
 
+Responsibility ID: `RK.ARTIFACT-PLACEMENT`
+
 This map separates semantic ownership from physical representation. It does not require one file per semantic object/statement.
 
 | Semantic content | Semantic owner | Persistence / representation owner | Typical representation |
@@ -17,3 +19,7 @@ This map separates semantic ownership from physical representation. It does not 
 | binary/media object | represented artifact/object owner where one exists | producer/external/local storage owner | locator/reference; no automatic Bank copy |
 
 Browse/search/filter/query results are projections unless a natural owner such as a Landscape Snapshot retains the relevant inquiry context.
+
+> Semantic Owner Dependencies
+> - `EXTENDS` [Core Artifact Placement](../../../idtspe-core/representation/ARTIFACT-PLACEMENT-AND-IDTSPE-RESPONSE-CONTRACT.md#representation-artifact-placement) — `REPRESENTATION.ARTIFACT-PLACEMENT`
+

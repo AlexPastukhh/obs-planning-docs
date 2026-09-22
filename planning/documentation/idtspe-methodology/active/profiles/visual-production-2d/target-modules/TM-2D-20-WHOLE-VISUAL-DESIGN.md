@@ -1,9 +1,16 @@
 <a id="tm-2d-20-whole-visual-design"></a>
 # TM-2D-20-WHOLE-VISUAL-DESIGN — Coherent Whole Visual Solution
 
+Module ID: `TM-2D-20-WHOLE-VISUAL-DESIGN`
+
 Entry Point: `tm.2d.whole-visual-design`
 Supported Roles: PRIMARY
 Status: active profile module
+
+> Semantic Owner Dependency
+> Type: `EXTENDS`
+> Responsibility: `TARGET-MODULE.META-MODEL`
+> Owner: [Target Module Meta-Model](../../../idtspe-core/target-modules/TARGET-MODULE-MODEL.md#target-module-meta-model)
 
 ## Purpose
 

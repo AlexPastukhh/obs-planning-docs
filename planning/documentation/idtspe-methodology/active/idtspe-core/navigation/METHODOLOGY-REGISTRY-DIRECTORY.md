@@ -33,7 +33,7 @@ A directory match means "scan this registry", not "apply every entry".
 
 When a profile is active, compose this Core directory with that profile's bootstrap/registries and any dedicated local registry directory the profile defines. A dedicated local directory is optional; the profile README and canonical registries remain sufficient routing surfaces when no extra directory is useful. Core does not duplicate mutable profile entries.
 
-Current installed-profile entry points are indexed by [`../../profiles/PROFILE-REGISTRY.md`](../../profiles/PROFILE-REGISTRY.md). SDS additionally defines a dedicated local directory at [`../../profiles/sds/registries/METHODOLOGY-REGISTRY-DIRECTORY.md`](../../profiles/sds/registries/METHODOLOGY-REGISTRY-DIRECTORY.md). Knowledge Bases remain reached through their owning component/profile navigation unless a real registry need exists; this directory does not invent a catch-all Knowledge-Basis Registry.
+Current installed-profile entry points are indexed by [`../../profiles/PROFILE-REGISTRY.md`](../../profiles/PROFILE-REGISTRY.md) and profile-local semantic routing is owned by [`../../profiles/RESPONSIBILITY-MAP.md`](../../profiles/RESPONSIBILITY-MAP.md). SDS additionally defines a compact local registry directory; 2D Visual Production and Reference Knowledge route through their child Responsibility Maps and scoped registries. Knowledge Bases remain reached through their owning component/profile navigation unless a real registry need exists; this directory does not invent a catch-all Knowledge-Basis Registry.
 
 ## Traversal Procedure
 

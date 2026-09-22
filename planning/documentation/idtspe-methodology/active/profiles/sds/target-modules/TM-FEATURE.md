@@ -1,7 +1,14 @@
 # TM-FEATURE — Feature Behavioral Owner
 
+Module ID: `TM-FEATURE`
+
 Entry Point: `tm.feature`
 Role: primary application behavior Target Module
+
+> Semantic Owner Dependency
+> Type: `EXTENDS`
+> Responsibility: `TARGET-MODULE.META-MODEL`
+> Owner: [Target Module Meta-Model](../../../idtspe-core/target-modules/TARGET-MODULE-MODEL.md#target-module-meta-model)
 
 ## Purpose
 

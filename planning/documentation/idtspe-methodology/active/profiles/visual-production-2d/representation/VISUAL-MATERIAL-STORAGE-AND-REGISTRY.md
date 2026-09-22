@@ -1,6 +1,8 @@
 <a id="shared-visual-material-storage-and-registry"></a>
 # Visual Material Storage And Registry
 
+Responsibility ID: `VISUAL2D.MATERIAL-STORAGE-REGISTRY`
+
 Use a project-level visual-material store when retained material volume, provenance or reuse pressure makes central discovery useful.
 
 Preferred shape:
@@ -15,6 +17,9 @@ visual-materials/
 │   └── <ephemeral working material when useful>
 └── registry.md | registry.yaml
 ```
+
+> Semantic Owner Dependencies
+> - `EXTENDS` [Core Artifact Placement](../../../idtspe-core/representation/ARTIFACT-PLACEMENT-AND-IDTSPE-RESPONSE-CONTRACT.md#representation-artifact-placement) — `REPRESENTATION.ARTIFACT-PLACEMENT`
 
 ## Ownership
 

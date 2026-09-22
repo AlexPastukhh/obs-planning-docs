@@ -5,6 +5,11 @@ Lens ID: `LENS-REPRESENTATION-EDITABILITY-ECONOMY`
 Activation: `TARGET_PROFILE_REUSABLE`  
 Status: active profile Lens
 
+> Semantic Owner Dependency
+> Type: `EXTENDS`
+> Responsibility: `LENS.META-MODEL`
+> Owner: [Lens Meta-Model](../../../../idtspe-core/lenses/LENS-MODEL.md#lens-meta-model)
+
 ## Purpose / Evaluation Objective
 
 Evaluate whether the selected editable representation/structure/tool route is economical for the required visual meaning, local revision, reuse and outputs.

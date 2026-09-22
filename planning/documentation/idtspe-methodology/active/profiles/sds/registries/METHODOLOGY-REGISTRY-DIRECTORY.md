@@ -1,9 +1,16 @@
+<a id="sds-methodology-discovery"></a>
 # SDS Methodology Registry Directory
+
+Responsibility ID: `SDS.METHODOLOGY-DISCOVERY`
 
 Status: active SDS profile routing directory
 Role: supporting registry router used from an applicable IDTSPE Use-Case Process; **not a Use Case, workflow engine or semantic owner**
 
 Generic directory: [`../../../idtspe-core/navigation/METHODOLOGY-REGISTRY-DIRECTORY.md`](../../../idtspe-core/navigation/METHODOLOGY-REGISTRY-DIRECTORY.md).
+
+> Semantic Owner Dependencies
+> - `REPRESENTS` [SDS Target Module Discovery](TARGET-MODULE-REGISTRY.md#sds-target-module-discovery) — `SDS.TARGET-MODULE-DISCOVERY`
+> - `REPRESENTS` [SDS Lens Discovery](LENS-REGISTRY.md#sds-lens-discovery) — `SDS.LENS-DISCOVERY`
 
 ## Purpose
 

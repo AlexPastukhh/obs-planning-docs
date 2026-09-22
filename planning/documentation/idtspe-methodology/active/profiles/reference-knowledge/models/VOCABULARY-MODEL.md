@@ -1,6 +1,8 @@
 <a id="vocabulary-model"></a>
 # Vocabulary Model
 
+Responsibility ID: `RK.VOCABULARY-MODEL`
+
 This file owns the base profile semantics for Vocabulary Packages, Tags, Relation Types, Tag Assignments and Entry Relations.
 
 <a id="vocabulary-package-model"></a>

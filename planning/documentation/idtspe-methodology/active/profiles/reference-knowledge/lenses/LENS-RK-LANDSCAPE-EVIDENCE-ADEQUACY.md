@@ -5,6 +5,11 @@ Lens ID: `LENS-RK-LANDSCAPE-EVIDENCE-ADEQUACY`
 Activation: `FREQUENT_CONDITIONAL`
 Status: active profile Lens
 
+> Semantic Owner Dependency
+> Type: `EXTENDS`
+> Responsibility: `LENS.META-MODEL`
+> Owner: [Lens Meta-Model](../../../idtspe-core/lenses/LENS-MODEL.md#lens-meta-model)
+
 ## Purpose / Evaluation Objective
 
 Evaluate whether the available evidence supports the scope and strength of a proposed Landscape observation, comparison, evolutionary interpretation, distribution claim, lineage hypothesis or causal explanation.

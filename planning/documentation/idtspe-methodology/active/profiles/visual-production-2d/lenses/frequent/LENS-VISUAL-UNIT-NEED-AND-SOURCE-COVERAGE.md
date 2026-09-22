@@ -5,6 +5,11 @@ Lens ID: `LENS-VISUAL-UNIT-NEED-AND-SOURCE-COVERAGE`
 Activation: `TARGET_PROFILE_REUSABLE`
 Status: active profile Lens
 
+> Semantic Owner Dependency
+> Type: `EXTENDS`
+> Responsibility: `LENS.META-MODEL`
+> Owner: [Lens Meta-Model](../../../../idtspe-core/lenses/LENS-MODEL.md#lens-meta-model)
+
 ## Purpose
 
 Evaluate a candidate/current visual Work Unit across three coupled questions:

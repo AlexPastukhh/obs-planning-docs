@@ -6,6 +6,11 @@ Status: active profile module
 Entry Point: `rk.landscape-analyze`
 Supported Roles: `PRIMARY`
 
+> Semantic Owner Dependency
+> Type: `EXTENDS`
+> Responsibility: `TARGET-MODULE.META-MODEL`
+> Owner: [Target Module Meta-Model](../../../idtspe-core/target-modules/TARGET-MODULE-MODEL.md#target-module-meta-model)
+
 ## Purpose
 
 Build the best useful, evidence-grounded understanding of a selected knowledge landscape, with inquiry depth and direction adapted to the current concern, available Sources and expected value of further investigation.

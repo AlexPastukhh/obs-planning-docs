@@ -5,6 +5,11 @@ Lens ID: `LENS-WHOLE-VISUAL-COHERENCE`
 Activation: `FREQUENT_CONDITIONAL`  
 Status: active profile Lens
 
+> Semantic Owner Dependency
+> Type: `EXTENDS`
+> Responsibility: `LENS.META-MODEL`
+> Owner: [Lens Meta-Model](../../../../idtspe-core/lenses/LENS-MODEL.md#lens-meta-model)
+
 ## Purpose / Evaluation Objective
 
 Evaluate whether individually plausible parts/requirements form one coherent visual result with effective hierarchy, relationships and global language.

@@ -1,6 +1,8 @@
 <a id="registry-2d-lenses"></a>
 # 2D Visual Lens Registry
 
+Responsibility ID: `VISUAL2D.LENS-DISCOVERY`
+
 Registry selection is lightweight routing metadata; selection does not execute a Lens or force a Finding.
 
 | Lens | Stable ID | Activation | Typical surfaces |
@@ -11,3 +13,7 @@ Registry selection is lightweight routing metadata; selection does not execute a
 | [Representation / Editability Economy](../lenses/reusable/LENS-REPRESENTATION-EDITABILITY-ECONOMY.md#lens-representation-editability-economy) | `LENS-REPRESENTATION-EDITABILITY-ECONOMY` | TARGET_PROFILE_REUSABLE | construction route selection, structured source architecture, local-revision pressure |
 
 Core required/frequent Lenses remain available and are not replaced by this registry. Profile checkpoint routing is owned by [Unit Selection And Lens Checkpoints](../runtime/UNIT-DISPOSITION-AND-LENS-CHECKPOINTS.md#shared-unit-selection-and-lens-checkpoints).
+
+> Semantic Owner Dependencies
+> - `CONTEXTUALIZES` [Lens Meta-Model](../../../idtspe-core/lenses/LENS-MODEL.md#lens-meta-model) — `LENS.META-MODEL`
+

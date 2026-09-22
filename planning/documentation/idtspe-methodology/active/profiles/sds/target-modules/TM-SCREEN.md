@@ -1,7 +1,14 @@
 # TM-SCREEN — Screen / Spatial Owner
 
+Module ID: `TM-SCREEN`
+
 Entry Point: `tm.screen`
 Role: conditional spatial/navigation Target Module
+
+> Semantic Owner Dependency
+> Type: `EXTENDS`
+> Responsibility: `TARGET-MODULE.META-MODEL`
+> Owner: [Target Module Meta-Model](../../../idtspe-core/target-modules/TARGET-MODULE-MODEL.md#target-module-meta-model)
 
 ## Purpose
 

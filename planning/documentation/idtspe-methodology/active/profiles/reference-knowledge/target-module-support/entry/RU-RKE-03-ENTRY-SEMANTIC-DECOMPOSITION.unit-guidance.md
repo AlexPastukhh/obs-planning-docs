@@ -1,9 +1,15 @@
 <a id="entry-semantic-decomposition-guidance"></a>
+<a id="rk-entry-semantic-decomposition-guidance"></a>
 # Entry Semantic Decomposition Guidance
+
+Responsibility ID: `RK.ENTRY-DECOMPOSITION-GUIDANCE`
 
 Semantic decomposition helps the Entry Target decide whether meaningful content around the current subject deserves another Entry identity or belongs elsewhere.
 
 It is Unit guidance for `RU-RKE-03`, not a separate Target family.
+
+> Semantic Owner Dependencies
+> - `CONTEXTUALIZES` [Reference Knowledge Object Model](../../models/REFERENCE-KNOWLEDGE-OBJECT-MODEL.md#reference-knowledge-object-model) — `RK.OBJECT-MODEL`
 
 ## Destination Test
 

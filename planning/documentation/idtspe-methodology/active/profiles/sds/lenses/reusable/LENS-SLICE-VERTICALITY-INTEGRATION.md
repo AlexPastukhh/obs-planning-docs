@@ -1,7 +1,14 @@
 # LENS-SLICE-VERTICALITY-INTEGRATION — Vertical Slice / Integration
 
+Lens ID: `LENS-SLICE-VERTICALITY-INTEGRATION`
+
 Role: reusable thematic Slice-boundary and end-to-end integration lens
 Primary use: Feature boundary formation, transient Slice Discovery, durable Slice owner review
+
+> Semantic Owner Dependency
+> Type: `EXTENDS`
+> Responsibility: `LENS.META-MODEL`
+> Owner: [Lens Meta-Model](../../../../idtspe-core/lenses/LENS-MODEL.md#lens-meta-model)
 
 ## Purpose
 

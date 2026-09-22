@@ -1,4 +1,7 @@
+<a id="sds-requirement-ownership"></a>
 # Requirement Ownership And Natural-Owner Rule
+
+Responsibility ID: `SDS.REQUIREMENT-OWNERSHIP`
 
 Status: active SDS requirement ownership contract
 

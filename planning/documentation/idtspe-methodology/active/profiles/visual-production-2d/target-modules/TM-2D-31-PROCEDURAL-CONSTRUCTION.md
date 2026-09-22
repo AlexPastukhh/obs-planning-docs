@@ -1,9 +1,16 @@
 <a id="tm-2d-31-procedural-construction"></a>
 # TM-2D-31-PROCEDURAL-CONSTRUCTION — Deterministic Procedural 2D Construction
 
+Module ID: `TM-2D-31-PROCEDURAL-CONSTRUCTION`
+
 Entry Point: `tm.2d.construction.procedural`
 Supported Roles: PRIMARY, SUPPORTING
 Status: active profile module
+
+> Semantic Owner Dependency
+> Type: `EXTENDS`
+> Responsibility: `TARGET-MODULE.META-MODEL`
+> Owner: [Target Module Meta-Model](../../../idtspe-core/target-modules/TARGET-MODULE-MODEL.md#target-module-meta-model)
 
 ## Purpose
 

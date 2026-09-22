@@ -5,6 +5,11 @@ Lens ID: `LENS-RK-ENTRY-IDENTITY-AND-DUPLICATION`
 Activation: `FREQUENT_CONDITIONAL`
 Status: active profile Lens
 
+> Semantic Owner Dependency
+> Type: `EXTENDS`
+> Responsibility: `LENS.META-MODEL`
+> Owner: [Lens Meta-Model](../../../idtspe-core/lenses/LENS-MODEL.md#lens-meta-model)
+
 ## Purpose / Evaluation Objective
 
 Evaluate whether one or more Entry records have clear, non-duplicative and useful subject boundaries, and whether a current record should be reused, corrected or retired.

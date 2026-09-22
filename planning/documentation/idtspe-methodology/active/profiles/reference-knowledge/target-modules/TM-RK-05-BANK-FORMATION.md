@@ -6,6 +6,11 @@ Status: active profile module
 Entry Point: `rk.bank-form`
 Supported Roles: `PRIMARY`
 
+> Semantic Owner Dependency
+> Type: `EXTENDS`
+> Responsibility: `TARGET-MODULE.META-MODEL`
+> Owner: [Target Module Meta-Model](../../../idtspe-core/target-modules/TARGET-MODULE-MODEL.md#target-module-meta-model)
+
 ## Purpose
 
 Create or materially reconfigure one durable Bank ownership boundary.

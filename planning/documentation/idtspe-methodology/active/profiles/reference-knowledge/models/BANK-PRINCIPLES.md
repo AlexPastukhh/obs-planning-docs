@@ -1,6 +1,8 @@
 <a id="bank-principles"></a>
 # Bank Principles
 
+Responsibility ID: `RK.BANK-PRINCIPLES`
+
 These principles define stable Reference Knowledge Bank semantics.
 
 <a id="bank-ownership-boundary"></a>

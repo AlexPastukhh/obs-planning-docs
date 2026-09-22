@@ -1,6 +1,8 @@
 <a id="reference-knowledge-target-module-registry"></a>
 # Reference Knowledge Target Module Registry
 
+Responsibility ID: `RK.TARGET-MODULE-DISCOVERY`
+
 | Target Module | Stable ID | Typical role | Result family |
 |---|---|---|---|
 | [Bank Formation](../target-modules/TM-RK-05-BANK-FORMATION.md#tm-rk-05-bank-formation) | `TM-RK-05-BANK-FORMATION` | PRIMARY | one usable Bank definition/configuration |
@@ -15,3 +17,7 @@ Ordinary browse/search/filter, Tag Assignment, Relation creation/refinement, Ana
 Entry identity ambiguity/duplication/over-broad pressure is evaluated by [Entry Identity / Duplication](../lenses/LENS-RK-ENTRY-IDENTITY-AND-DUPLICATION.md#lens-rk-entry-identity-and-duplication). Old records remain resolvable and may be retired with optional successor refs; there is no separate merge/split/identity-surgery Target family.
 
 Candidate Unit selection follows the current IDTSPE Core Unit applicability/materiality contract. A clear USER request or accepted scope may already imply obvious Unit selection; profile-specific approval ceremony is not added here.
+
+> Semantic Owner Dependencies
+> - `CONTEXTUALIZES` [Target Module Meta-Model](../../../idtspe-core/target-modules/TARGET-MODULE-MODEL.md#target-module-meta-model) — `TARGET-MODULE.META-MODEL`
+

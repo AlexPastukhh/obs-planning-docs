@@ -3,6 +3,11 @@
 Lens ID: `LENS-UI-SPATIAL-FRONTEND-REALIZATION`
 Activation: `TARGET_PROFILE_REUSABLE`
 
+> Semantic Owner Dependency
+> Type: `EXTENDS`
+> Responsibility: `LENS.META-MODEL`
+> Owner: [Lens Meta-Model](../../../../idtspe-core/lenses/LENS-MODEL.md#lens-meta-model)
+
 ## Purpose
 
 Evaluate spatial/UI/frontend realization while preserving Scenario/DATA/Behavior/Screen/Slice authority. The Lens does not require a universal frontend architecture or a dedicated Frontend Target family.

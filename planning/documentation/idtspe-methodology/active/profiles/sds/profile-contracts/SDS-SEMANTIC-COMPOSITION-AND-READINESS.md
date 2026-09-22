@@ -1,7 +1,13 @@
+<a id="sds-semantic-composition-readiness"></a>
 # SDS Semantic Composition / Readiness Guide
+
+Responsibility ID: `SDS.SEMANTIC-COMPOSITION-READINESS`
 
 Status: active profile semantic-composition guide
 Compatibility path: `directed-methodology-workflow-and-next-step-resolution.md`
+
+> Semantic Owner Dependencies
+> - `CONTEXTUALIZES` [Contextual Methodology Application](../../../idtspe-core/runtime/applicability/CONTEXTUAL-METHODOLOGY-APPLICATION-CONTRACT.md#idtspe-contextual-application) — `IDTSPE.CONTEXTUAL-APPLICATION`
 
 ## Purpose
 

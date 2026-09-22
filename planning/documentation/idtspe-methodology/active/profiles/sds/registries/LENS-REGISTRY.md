@@ -1,8 +1,17 @@
+<a id="sds-lens-discovery"></a>
 # SDS Lens Registry
+
+Responsibility ID: `SDS.LENS-DISCOVERY`
 
 Status: active synchronized SDS Lens registry
 
 Lenses discover/evaluate/refine/challenge meaning. They never become the semantic owner whose result they inspect.
+
+> Semantic Owner Dependencies
+> - `CONTEXTUALIZES` [Lens Meta-Model](../../../idtspe-core/lenses/LENS-MODEL.md#lens-meta-model) — `LENS.META-MODEL`
+
+> Semantic Owner Dependencies
+> - `CONTEXTUALIZES` [SDS Programming Principles](../knowledge-bases/programming-principles/README.md#sds-programming-principles) — `SDS.PROGRAMMING-PRINCIPLES`
 
 ## Registry Scan Guide
 
@@ -56,6 +65,8 @@ terms                       → LENS-TERMS-UBIQUITOUS-LANGUAGE
 ```
 
 `l5` is an invocation compatibility alias only; it does not restore numbered-Lens ontology. Alias resolution does not make a Lens applicable: the selected Lens still checks its own Applicability, Analysis Surface and Supported Operation.
+
+Attachment and composition notes below are registry-level routing projections only. Concrete Lens files own operational evaluation semantics; Programming Principles remain Knowledge Basis content rather than Lens definitions.
 
 ## Typical Attachment / Consumption
 

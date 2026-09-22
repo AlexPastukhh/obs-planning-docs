@@ -1,9 +1,14 @@
 <a id="landscape-research-and-evolution-guidance"></a>
 # Landscape Research And Evolution Guidance
 
+Responsibility ID: `RK.LANDSCAPE-RESEARCH`
+
 Landscape Analysis builds a bounded current understanding of a selected knowledge landscape from available Bank knowledge and other accepted Sources.
 
 The useful result may be historical, comparative, structural, evolutionary, distributional or mixed. Do not force a fixed analytical checklist.
+
+> Semantic Owner Dependencies
+> - `EXTENDS` [Knowledge Basis Contract](../../../idtspe-core/knowledge-bases/KNOWLEDGE-BASIS-CONTRACT.md#knowledge-basis-contract) — `KNOWLEDGE.BASIS`
 
 ## Adaptive Inquiry Principle
 

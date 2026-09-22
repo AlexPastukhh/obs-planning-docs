@@ -6,6 +6,11 @@ Status: active profile module
 Entry Point: `rk.vocabulary-evolve`
 Supported Roles: `PRIMARY`
 
+> Semantic Owner Dependency
+> Type: `EXTENDS`
+> Responsibility: `TARGET-MODULE.META-MODEL`
+> Owner: [Target Module Meta-Model](../../../idtspe-core/target-modules/TARGET-MODULE-MODEL.md#target-module-meta-model)
+
 ## Purpose
 
 Change reusable Tag / Relation Type meaning inside one Vocabulary Package without silently redefining stable identities or forcing automatic rewrites of bank-owned statements.

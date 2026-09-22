@@ -1,6 +1,19 @@
+<a id="sds-profile-bootstrap"></a>
 # SDS Profile — Software / Application Planning on IDTSPE
 
+Responsibility ID: `SDS.PROFILE-BOOTSTRAP`
+
 Status: active synchronized profile
+
+> Semantic Owner Dependencies
+> - `CONTEXTUALIZES` [Installed Profile Discovery](../PROFILE-REGISTRY.md#idtspe-profile-discovery) — `IDTSPE.PROFILE-DISCOVERY`
+
+> Semantic Owner Dependencies
+> - `CONTEXTUALIZES` [SDS Semantic Composition / Readiness](profile-contracts/SDS-SEMANTIC-COMPOSITION-AND-READINESS.md#sds-semantic-composition-readiness) — `SDS.SEMANTIC-COMPOSITION-READINESS`
+> - `CONTEXTUALIZES` [Requirement Ownership / Natural Owner](profile-contracts/requirements/REQUIREMENT-OWNERSHIP-AND-NATURAL-OWNER.md#sds-requirement-ownership) — `SDS.REQUIREMENT-OWNERSHIP`
+> - `CONTEXTUALIZES` [SDS Target Module Discovery](registries/TARGET-MODULE-REGISTRY.md#sds-target-module-discovery) — `SDS.TARGET-MODULE-DISCOVERY`
+> - `CONTEXTUALIZES` [SDS Lens Discovery](registries/LENS-REGISTRY.md#sds-lens-discovery) — `SDS.LENS-DISCOVERY`
+> - `CONTEXTUALIZES` [SDS Artifact Placement](representation/ARTIFACT-PLACEMENT-MAP.md#sds-artifact-placement) — `SDS.ARTIFACT-PLACEMENT`
 
 ## Purpose
 
@@ -15,13 +28,14 @@ This `README.md` is the canonical SDS profile bootstrap entry. SDS bootstrap is 
 For the SDS portion, read in order:
 
 1. this `README.md`;
-2. [`registries/METHODOLOGY-REGISTRY-DIRECTORY.md`](registries/METHODOLOGY-REGISTRY-DIRECTORY.md);
-3. [`registries/TARGET-MODULE-REGISTRY.md`](registries/TARGET-MODULE-REGISTRY.md);
-4. [`registries/LENS-REGISTRY.md`](registries/LENS-REGISTRY.md);
-5. [`profile-contracts/SDS-SEMANTIC-COMPOSITION-AND-READINESS.md`](profile-contracts/SDS-SEMANTIC-COMPOSITION-AND-READINESS.md);
-6. [`profile-contracts/requirements/REQUIREMENT-OWNERSHIP-AND-NATURAL-OWNER.md`](profile-contracts/requirements/REQUIREMENT-OWNERSHIP-AND-NATURAL-OWNER.md);
-7. [`profile-contracts/reusable-guidance/REUSABLE-GUIDANCE-MODEL.md`](profile-contracts/reusable-guidance/REUSABLE-GUIDANCE-MODEL.md);
-8. [`representation/ARTIFACT-PLACEMENT-MAP.md`](representation/ARTIFACT-PLACEMENT-MAP.md).
+2. [`RESPONSIBILITY-MAP.md`](RESPONSIBILITY-MAP.md) — profile-local responsibility routing;
+3. [`registries/METHODOLOGY-REGISTRY-DIRECTORY.md`](registries/METHODOLOGY-REGISTRY-DIRECTORY.md);
+4. [`registries/TARGET-MODULE-REGISTRY.md`](registries/TARGET-MODULE-REGISTRY.md);
+5. [`registries/LENS-REGISTRY.md`](registries/LENS-REGISTRY.md);
+6. [`profile-contracts/SDS-SEMANTIC-COMPOSITION-AND-READINESS.md`](profile-contracts/SDS-SEMANTIC-COMPOSITION-AND-READINESS.md);
+7. [`profile-contracts/requirements/REQUIREMENT-OWNERSHIP-AND-NATURAL-OWNER.md`](profile-contracts/requirements/REQUIREMENT-OWNERSHIP-AND-NATURAL-OWNER.md);
+8. [`profile-contracts/reusable-guidance/REUSABLE-GUIDANCE-MODEL.md`](profile-contracts/reusable-guidance/REUSABLE-GUIDANCE-MODEL.md);
+9. [`representation/ARTIFACT-PLACEMENT-MAP.md`](representation/ARTIFACT-PLACEMENT-MAP.md).
 
 Specific Target Modules, Lenses, Programming Principle details, examples and supporting knowledge remain lazy/conditional reads after registry selection and local applicability. Profile bootstrap does not create an SDS-specific runtime Use Case or select a Target merely by being read.
 
@@ -85,7 +99,7 @@ Do not browse all profile components ceremonially.
 
 ## Compact Owner Topology
 
-This README is a bootstrap/responsibility map, not a second semantic contract. For cross-owner temporal/readiness composition use the [SDS Semantic Composition / Readiness Guide](profile-contracts/SDS-SEMANTIC-COMPOSITION-AND-READINESS.md); for complete Step semantics use [`TM-EVOLUTION-STEP`](target-modules/TM-EVOLUTION-STEP.md); for current-owner reverse Evolution Impact use the shared [Current-Owner Evolution Impact Projection Contract](profile-contracts/evolution/CURRENT-OWNER-EVOLUTION-IMPACT-PROJECTION.md).
+This README owns the SDS bootstrap/read-set boundary, not the profile responsibility map or a second semantic contract. Use [`RESPONSIBILITY-MAP.md`](RESPONSIBILITY-MAP.md) for responsibility routing. For cross-owner temporal/readiness composition use the [SDS Semantic Composition / Readiness Guide](profile-contracts/SDS-SEMANTIC-COMPOSITION-AND-READINESS.md); for complete Step semantics use [`TM-EVOLUTION-STEP`](target-modules/TM-EVOLUTION-STEP.md); for current-owner reverse Evolution Impact use the shared [Current-Owner Evolution Impact Projection Contract](profile-contracts/evolution/CURRENT-OWNER-EVOLUTION-IMPACT-PROJECTION.md).
 
 ```text
 Application Definition

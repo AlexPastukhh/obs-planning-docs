@@ -5,6 +5,11 @@ Lens ID: `LENS-RK-TAG-QUALITY-AND-TAXONOMY`
 Activation: `FREQUENT_CONDITIONAL`  
 Status: active profile Lens
 
+> Semantic Owner Dependency
+> Type: `EXTENDS`
+> Responsibility: `LENS.META-MODEL`
+> Owner: [Lens Meta-Model](../../../idtspe-core/lenses/LENS-MODEL.md#lens-meta-model)
+
 ## Purpose / Evaluation Objective
 
 Evaluate whether a Tag definition/refactor improves reusable classification, taxonomy and bank-wide retrieval.

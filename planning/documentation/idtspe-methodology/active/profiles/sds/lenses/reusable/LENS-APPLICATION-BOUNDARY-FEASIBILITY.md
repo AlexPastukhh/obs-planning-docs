@@ -3,6 +3,11 @@
 Lens ID: `LENS-APPLICATION-BOUNDARY-FEASIBILITY`
 Activation: `TARGET_PROFILE_REUSABLE`
 
+> Semantic Owner Dependency
+> Type: `EXTENDS`
+> Responsibility: `LENS.META-MODEL`
+> Owner: [Lens Meta-Model](../../../../idtspe-core/lenses/LENS-MODEL.md#lens-meta-model)
+
 ## Purpose
 
 Evaluate whether an own Application is justified, which real-world contribution it should own, what existing alternatives teach us, which Benefits justify it and whether representative real-life situations support a truthful boundary, and whether the boundary is plausibly realizable.

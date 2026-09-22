@@ -48,11 +48,11 @@ The following Core mechanics may be invoked by the Use Cases above but do not re
 
 A new Use Case is added only for a distinct independently useful **methodology-use Result**, not for every Core mechanism or Target/Lens operation.
 
-## SDS Profile Boundary
+## Installed Profile Boundary
 
-The current SDS profile contributes Target Modules, Lenses, registries, knowledge and semantic rules. It defines no separate runtime methodology-use Use Cases because these IDTSPE Use Cases can discover/compose the SDS components through the active-profile directory.
+The current SDS, 2D Visual Production and Reference Knowledge profiles contribute specialized Target Modules, Lenses, registries, knowledge/representation and profile semantic rules. They define no separate runtime methodology-use Use Cases because these IDTSPE Use Cases discover/compose profile components through [`../../profiles/RESPONSIBILITY-MAP.md`](../../profiles/RESPONSIBILITY-MAP.md) and the selected profile routing.
 
-`Feature`, `Scenario`, `Screen`, `Domain`, `Slice`, `Shared`, `Evolution`, `Prototype` and `Practical Test` are therefore **not** Use Cases at this documentation-methodology layer.
+Profile Target families such as SDS `Feature`/`Scenario`/`Evolution`, 2D visual design/construction families, and Reference Knowledge Bank/Entry/Landscape families are therefore **not** Use Cases at this documentation-methodology layer.
 
 ## Capability / Component Boundary
 

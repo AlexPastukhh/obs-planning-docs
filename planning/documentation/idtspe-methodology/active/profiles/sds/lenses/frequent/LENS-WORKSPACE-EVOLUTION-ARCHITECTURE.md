@@ -1,7 +1,14 @@
 # LENS-WORKSPACE-EVOLUTION-ARCHITECTURE — Evolution Impact / Change Isolation
 
+Lens ID: `LENS-WORKSPACE-EVOLUTION-ARCHITECTURE`
+
 Role: reusable all-Target Evolution lens
 Applicability: when any concrete unrealized Evolution Step may materially change a current owner/boundary/realization or future Target Body decision
+
+> Semantic Owner Dependency
+> Type: `EXTENDS`
+> Responsibility: `LENS.META-MODEL`
+> Owner: [Lens Meta-Model](../../../../idtspe-core/lenses/LENS-MODEL.md#lens-meta-model)
 
 ## Purpose
 

@@ -1,7 +1,14 @@
 # TM-EVOLUTION-STEP — Evolution Step
 
+Module ID: `TM-EVOLUTION-STEP`
+
 Entry Point: `tm.evolution_step`
 Role: persistent bounded future-transition planning owner
+
+> Semantic Owner Dependency
+> Type: `EXTENDS`
+> Responsibility: `TARGET-MODULE.META-MODEL`
+> Owner: [Target Module Meta-Model](../../../idtspe-core/target-modules/TARGET-MODULE-MODEL.md#target-module-meta-model)
 
 ## Purpose
 

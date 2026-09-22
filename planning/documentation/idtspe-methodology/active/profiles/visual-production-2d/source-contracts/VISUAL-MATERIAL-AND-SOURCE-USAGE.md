@@ -1,5 +1,11 @@
 <a id="shared-visual-material-and-source-usage"></a>
+<a id="visual-material-and-source-usage"></a>
 # Visual Material And Source Usage
+
+Responsibility ID: `VISUAL2D.MATERIAL-SOURCE-USAGE`
+
+> Semantic Owner Dependencies
+> - `CONTEXTUALIZES` [Target / Source Relation](../../../idtspe-core/runtime/target-work/TARGET-CONTRACT-INSTANCE-SOURCE-RELATION-MODEL.md#target-instance-source-relation-contract) — `TARGET.INSTANCE-SOURCE-RELATION`
 
 ## Visual Material
 

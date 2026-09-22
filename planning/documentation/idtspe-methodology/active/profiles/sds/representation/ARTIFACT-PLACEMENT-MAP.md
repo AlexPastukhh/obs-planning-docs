@@ -1,4 +1,7 @@
+<a id="sds-artifact-placement"></a>
 # SDS Artifact Placement Map — Owner / Representation Guidance
+
+Responsibility ID: `SDS.ARTIFACT-PLACEMENT`
 
 Status: active SDS profile placement guidance
 
@@ -6,6 +9,9 @@ This file projects selected SDS semantic owners into possible physical represent
 
 Canonical generic policy:
 [`../../idtspe-core/lenses/required/LENS-ARTIFACT-BOUNDARY-ADDRESSABILITY.md`](../../../idtspe-core/lenses/required/LENS-ARTIFACT-BOUNDARY-ADDRESSABILITY.md).
+
+> Semantic Owner Dependencies
+> - `EXTENDS` [Core Artifact Placement](../../../idtspe-core/representation/ARTIFACT-PLACEMENT-AND-IDTSPE-RESPONSE-CONTRACT.md#representation-artifact-placement) — `REPRESENTATION.ARTIFACT-PLACEMENT`
 
 ## Profile Projection Boundary
 

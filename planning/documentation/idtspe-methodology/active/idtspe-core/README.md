@@ -105,7 +105,7 @@ Use [`navigation/IDTSPE-CORE-MAP.md`](navigation/IDTSPE-CORE-MAP.md) for a compa
 
 Profiles extend Core with specialized Target Modules, Lenses, registry directories, knowledge and planning semantics. They do not replace Core or create a second runtime shell. Profile bootstrap is incremental and occurs only when specialized profile semantics are materially relevant.
 
-The current installed profiles define no separate runtime methodology-use Use Cases; generic Documentation + IDTSPE Use Cases compose their components through the installed-profile registry and each selected profile's own registries.
+The current installed profiles define no separate runtime methodology-use Use Cases; generic Documentation + IDTSPE Use Cases compose their components through the installed-profile [`RESPONSIBILITY-MAP`](../profiles/RESPONSIBILITY-MAP.md), registry and each selected profile's own routing/owners.
 
 ## Scenario Map Boundary
 

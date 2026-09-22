@@ -1,9 +1,16 @@
 # LENS-IMPLEMENTATION-REQUIREMENTS-DISCOVERY — Owner-Local Implementation Requirements Discovery
 
+Lens ID: `LENS-IMPLEMENTATION-REQUIREMENTS-DISCOVERY`
+
 Role: reusable discovery/evaluation Lens
 Purpose: discover whether a material implementation/proof concern should become, change or retire a durable owner-local Implementation Requirement.
 
 This Lens **does not own Requirements**. It is composed with thematic evaluators and reusable knowledge such as DDD, Vertical Slice, selected Programming Principles `RG-PRG-*` entries, Evolution, quality, trust/security or operability. The thematic evaluator explains the concern; this Lens classifies durable must-hold meaning and routes it to the natural implementation owner.
+
+> Semantic Owner Dependency
+> Type: `EXTENDS`
+> Responsibility: `LENS.META-MODEL`
+> Owner: [Lens Meta-Model](../../../../idtspe-core/lenses/LENS-MODEL.md#lens-meta-model)
 
 ## Applicability
 

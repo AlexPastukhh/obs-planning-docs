@@ -5,6 +5,11 @@ Lens ID: `LENS-CONSTRUCTION-FIDELITY-CONSISTENCY`
 Activation: `FREQUENT_CONDITIONAL`  
 Status: active profile Lens
 
+> Semantic Owner Dependency
+> Type: `EXTENDS`
+> Responsibility: `LENS.META-MODEL`
+> Owner: [Lens Meta-Model](../../../../idtspe-core/lenses/LENS-MODEL.md#lens-meta-model)
+
 ## Purpose / Evaluation Objective
 
 Evaluate whether actual editable construction faithfully realizes accepted Requirements/Whole Visual Design/Source constraints and remains internally consistent across parts/passes/variants.

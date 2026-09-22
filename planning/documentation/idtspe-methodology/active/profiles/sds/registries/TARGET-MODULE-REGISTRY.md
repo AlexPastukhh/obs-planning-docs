@@ -1,8 +1,18 @@
+<a id="sds-target-module-discovery"></a>
 # SDS Target Module Catalog
+
+Responsibility ID: `SDS.TARGET-MODULE-DISCOVERY`
 
 Status: active synchronized SDS Target registry
 
 SDS Target Modules own recurring SDS Target/result families. Generic Questions / formal Proposals / Q-R-P / Decisions / Evidence / Findings / Revalidation remain IDTSPE Core State.
+
+> Semantic Owner Dependencies
+> - `CONTEXTUALIZES` [Target Module Meta-Model](../../../idtspe-core/target-modules/TARGET-MODULE-MODEL.md#target-module-meta-model) — `TARGET-MODULE.META-MODEL`
+> - `CONTEXTUALIZES` [SDS Semantic Composition / Readiness](../profile-contracts/SDS-SEMANTIC-COMPOSITION-AND-READINESS.md#sds-semantic-composition-readiness) — `SDS.SEMANTIC-COMPOSITION-READINESS`
+
+> Semantic Owner Dependencies
+> - `CONTEXTUALIZES` [Requirement Ownership / Natural Owner](../profile-contracts/requirements/REQUIREMENT-OWNERSHIP-AND-NATURAL-OWNER.md#sds-requirement-ownership) — `SDS.REQUIREMENT-OWNERSHIP`
 
 ## Registry Scan Guide
 
@@ -62,6 +72,8 @@ Retirement removes baseline Target-family authority, not useful semantic guidanc
 - Core `TM-EXACT-REALIZATION` — exact directly-integrable/literal result; may use transient internal exact planning.
 
 Pre-Update is not a mandatory predecessor of Exact.
+
+The family summaries below are discovery projections only. They help route/open plausible concrete modules; the selected `TM-*` file, SDS composition/readiness owner and Requirement owner remain authoritative if a summary is incomplete or stale.
 
 ## Feature / Scenario / Screen
 

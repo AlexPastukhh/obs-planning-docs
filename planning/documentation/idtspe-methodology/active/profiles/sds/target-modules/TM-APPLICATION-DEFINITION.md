@@ -1,8 +1,15 @@
 # TM-APPLICATION-DEFINITION — Application Definition
 
+Module ID: `TM-APPLICATION-DEFINITION`
+
 Entry Point: `tm.application.definition`
 Role: primary Target Module
 Target family / archetype: selected own-application definition
+
+> Semantic Owner Dependency
+> Type: `EXTENDS`
+> Responsibility: `TARGET-MODULE.META-MODEL`
+> Owner: [Target Module Meta-Model](../../../idtspe-core/target-modules/TARGET-MODULE-MODEL.md#target-module-meta-model)
 
 ## Purpose
 
