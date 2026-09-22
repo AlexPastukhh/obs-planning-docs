@@ -415,7 +415,7 @@ SEMANTIC_OWNER: nearest natural semantic/implementation owner or scoped Core Dec
 REPRESENTATION: EMBED_OR_EXISTING_ARTIFACT
 CONTENT: property-to-proof design; layer; setup/action/observation; required assertions/signals
 GUIDANCE_SOURCE: LENS
-RESOLVER: P-14 / TF-10
+RESOLVER: P-14 / PERSISTENCE_ADDRESSABILITY
 ```
 
 ```text
@@ -430,7 +430,7 @@ SEMANTIC_OWNER: resolved Evidence State/owner when retained; otherwise existing 
 REPRESENTATION: EXISTING_TEST_RUN_ARTIFACT_OR_SUPPORTING_EVIDENCE
 CONTENT: retained executed Evidence reference/summary with freshness/provenance when material; not semantic authority
 GUIDANCE_SOURCE: LENS
-RESOLVER: P-14 / TF-10
+RESOLVER: P-14 / PERSISTENCE_ADDRESSABILITY
 ```
 
 ```text
@@ -445,7 +445,7 @@ SEMANTIC_OWNER: resolved host review/semantic owner; the Lens does not create a 
 REPRESENTATION: EMBED_OR_REVIEW_ARTIFACT
 CONTENT: property→actual Evidence mapping; freshness/assertion/escape/refactor/wrong-layer gaps; disposition references
 GUIDANCE_SOURCE: LENS
-RESOLVER: P-14 / TF-10
+RESOLVER: P-14 / PERSISTENCE_ADDRESSABILITY
 ```
 
 Planned proof that must survive for later implementation should live with the nearest natural owner or a scoped explicitly selected cross-owner Decision/supporting owner when independent coordination value exists. No generic Test Design/Strategy Target is assumed.

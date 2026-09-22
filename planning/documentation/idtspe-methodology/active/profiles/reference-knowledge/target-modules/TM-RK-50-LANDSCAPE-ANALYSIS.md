@@ -57,7 +57,9 @@ Every material Unit follows the inherited Core applicability/materiality envelop
 <a id="ru-rkl-01"></a>
 ## `RU-RKL-01` — Scope And Evidence Base
 
-**Result Responsibility.** A sufficiently clear Landscape concern/scope and evidence base so later interpretations can be understood at the correct strength.
+**Responsibility.** Resolve a sufficiently clear Landscape concern/scope and evidence base so later interpretations can be understood at the correct strength.
+
+**Purpose.** Bound the inquiry and evidence authority so subsequent observations/interpretations are proportional and reviewable.
 
 **Applicability / Omission.** Required for every Landscape Target, but may stay thin when the concern and evidence scope are already obvious/current.
 
@@ -67,14 +69,16 @@ Every material Unit follows the inherited Core applicability/materiality envelop
 
 **Resolution Method.** State what the inquiry is trying to understand without prematurely forcing a fixed answer form. Identify the currently useful evidence base and its material gaps/limits. Select time/population/segments only when they help the concern; allow scope to refine during inquiry when new evidence justifies it. Materialize exact Entry membership/query context only when exact reproduction or comparison is materially useful.
 
-**Result Content.** Landscape concern/scope, selected evidence base/search scope, material time/population/segment context when useful, and known evidence limitations.
+**Result Content Contract.** Landscape concern/scope, selected evidence base/search scope, material time/population/segment context when useful, and known evidence limitations.
 
 **Validators.** Later claims can be traced to an appropriate evidence scope; Bank-visible examples are not silently treated as a broader population; unavailable evidence is not claimed as checked.
 
 <a id="ru-rkl-02"></a>
 ## `RU-RKL-02` — Adaptive Landscape Inquiry
 
-**Result Responsibility.** Material investigated observations/interpretations that improve understanding of the current Landscape concern.
+**Responsibility.** Resolve material investigated observations/interpretations that improve understanding of the current Landscape concern.
+
+**Purpose.** Produce evidence-grounded understanding through adaptive inquiry without forcing a fixed checklist or unsupported narrative.
 
 **Applicability / Omission.** Required whenever research beyond already-established Sources is useful. May be source-derived/light when existing trusted material already provides sufficient understanding.
 
@@ -84,14 +88,16 @@ Every material Unit follows the inherited Core applicability/materiality envelop
 
 **Resolution Method.** Generate questions from the current concern and evidence rather than executing a fixed checklist. Pursue only directions likely to materially improve understanding. Possible directions include comparison, recurring patterns, earlier/later forms, partial genealogy/lineage, branching, combinations/hybrids, coexistence/adoption/displacement/revival, cross-domain transfer, distributions, constraints/enablers, documented influence, plausible drivers or other questions surfaced by the investigation. Re-evaluate direction/depth after material findings and stop when further work is unlikely to add proportional value.
 
-**Result Content.** Supported observations/relationships/interpretations, explicit hypotheses or competing explanations where needed, material uncertainty, evidence links/context and useful newly surfaced questions. No specific finding family is mandatory.
+**Result Content Contract.** Supported observations/relationships/interpretations, explicit hypotheses or competing explanations where needed, material uncertainty, evidence links/context and useful newly surfaced questions. No specific finding family is mandatory.
 
 **Validators.** Chronology is not silently converted to influence/causality; structural similarity is not automatically lineage; claim strength matches evidence; investigation depth remains proportional rather than exhaustive.
 
 <a id="ru-rkl-03"></a>
 ## `RU-RKL-03` — Current Understanding And Synthesis
 
-**Result Responsibility.** Coherent bounded representation of what is currently understood about the Landscape concern and what remains materially uncertain.
+**Responsibility.** Resolve a coherent bounded representation of what is currently understood about the Landscape concern and what remains materially uncertain.
+
+**Purpose.** Give downstream readers/revalidation a usable synthesis without erasing uncertainty, competing explanations or evidence limits.
 
 **Applicability / Omission.** Substantive resolution is material when several observations/interpretations need integration or the result must be retained/handed off. If it is not material, keep `RU-RKL-03` declared with a concise omission disposition rather than silently dropping the Unit.
 
@@ -101,7 +107,7 @@ Every material Unit follows the inherited Core applicability/materiality envelop
 
 **Resolution Method.** Integrate only meaning justified by current evidence. Preserve partial/branching/uncertain models when a single clean narrative is not warranted. Distinguish supported observation, interpretation and hypothesis. State material unknowns/competing explanations and whether additional investigation has a useful next direction.
 
-**Result Content.** Current Landscape understanding / Key Findings, uncertainty and competing interpretations when material, useful open questions/next evidence directions, limitations and revalidation signals. When retained as a Snapshot, include stable Snapshot ID, `Created At`, material `As Of` / observed period and optional `Supersedes` ref.
+**Result Content Contract.** Current Landscape understanding / Key Findings, uncertainty and competing interpretations when material, useful open questions/next evidence directions, limitations and revalidation signals. When retained as a Snapshot, include stable Snapshot ID, `Created At`, material `As Of` / observed period and optional `Supersedes` ref.
 
 **Validators.** Synthesis does not become authority over individual Entries; neat narrative does not erase uncertainty/counterexamples; broad words such as common/dominant/emerging/declining use evidence appropriate to that scope.
 
@@ -138,5 +144,5 @@ REPRESENTATION: EXISTING_OR_NEW_CANONICAL_ARTIFACT
 FILE_OR_ARTIFACT: <selected-bank-landscape-snapshot-representation>
 CONTENT: Snapshot ID/Created At/As Of when material, optional Supersedes ref, concern/scope, evidence base, material inquiry observations/interpretations, uncertainty/open questions, synthesis, limitations and revalidation trigger
 GUIDANCE_SOURCE: TARGET_MODULE
-RESOLVER: P-14 / TF-10
+RESOLVER: P-14 / PERSISTENCE_ADDRESSABILITY
 ```

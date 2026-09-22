@@ -44,6 +44,7 @@ idtspe.work
 
 idtspe.next
 → что дальше по методологии
+→ resolve the smallest useful next methodology action from current methodology + Work Context and surface it as a Generic AI Proposal (GIP); do not execute that GIP
 
 idtspe.continue
 → продолжи по методологии
@@ -101,6 +102,55 @@ Bootstrap must not silently select a Target, infer a Target invocation mode or e
 
 `idtspe.next` and `idtspe.continue` are explicit navigation/convenience surfaces, not approval gates between natural AI work steps. Thin Session Runtime allows automatic progression through ordinary in-scope interaction steps, while IDTSPE Use Cases own methodology composition.
 
+`idtspe.next` does **not** own Shell visibility. `P-02 Pass Trace / Visibility` owns observability for a normal Shell pass. `idtspe.next` resolves the smallest useful next methodology action from current methodology + current Work Context and presents that action as a **Generic AI Proposal (GIP)**, then stops without executing it. When a current P-13 Handoff / Methodology Direction result exists it may inform that GIP, but Handoff is not required: `idtspe.next` remains valid in Broad Discussion with zero Targets.
+
+
+## Shell Port Requirement Composition
+
+User/command/component intent may require one or more non-baseline Shell ports to be traversed in the current normal IDTSPE pass. This is a **methodology composition rule**, not a second execution runtime and not a requirement that every port have a public command.
+
+```text
+explicit semantic intents
+→ resolve required port capability / owner route
+→ merge requirements into the current Use-Case-driven composition
+→ P-01 routes one Shell pass
+→ P-02 traces admission origin/result
+→ shared prefixes are resolved/reused once per current subject/basis/operation
+```
+
+Port requirements compose declaratively. Several intents that require the same port, registry/meta-model or other shared prefix must not recursively launch several independent `idtspe.work` passes. The runtime merges them into one pass and applies the P-02 reuse guard.
+
+An explicit requirement means **perform the port applicability/traversal check**; it does not manufacture a positive result. `NOT_APPLICABLE`, `CHECKED_NO_RESULT`, `CHECKED_NO_CHANGE` and `REUSED` remain valid outcomes. Automatic composition, explicit requirement and downstream materiality all enter the same port contract; only the trace `origin` differs.
+
+Concrete direct-command include syntax/schema and Helper grouping are intentionally deferred to the command/tooling migration. Until then, existing direct commands keep their current definitions and stale numeric port references are interpreted through the Shell's temporary port-number compatibility mapping.
+
+### Target Module Shared Prefix
+
+A concrete `TM-*` selection resolves through the Target Port and the canonical Target Module Meta-Model before applying the selected Target Module Model. Applying the Model forms/reuses the model-defined **Target Module Instance** inside the Target Instance; it does not create a second Target. If several Target Module Models are selected in one pass, shared Target-port / Target Module Meta-Model work is reused rather than repeated.
+
+```text
+IDTSPE composition
+→ P-03 Target
+→ Target Module Meta-Model
+→ selected Target Module Model(s)
+→ model-defined Target Module Instance portion(s) inside the relevant Target Instance(s)
+```
+
+Concrete `TM-*` models remain Target Module registry/components, not Shell-port definitions. A Local Target Contract remains the first-class alternative when no reusable Target Module Model fits.
+
+### Lens Shared Prefix
+
+A concrete `LENS-*` application resolves through the Lens Port and canonical Lens Meta-Model. If several Lens Models are selected/applied in one pass, shared Lens-port / Lens Meta-Model / registry resolution is reused for the same current analysis surface/basis.
+
+```text
+IDTSPE composition
+→ P-06 Lens
+→ Lens Meta-Model
+→ selected Lens Model(s)
+→ Lens Application(s)
+```
+
+Concrete `LENS-*` models remain Lens registry/components, not Shell-port definitions. Lens selection and named Lens application are distinct operations that may share the same port/meta-model prefix.
 
 ## Generic Component Dispatch
 
@@ -167,7 +217,7 @@ bounded Target candidate / existing Target
 ↓
 Target Formation when needed
 ↓
-TF-06A Lens Applicability Scan
+P-06 Lens Applicability Scan
 ↓
 resolved Lens Set
 ```

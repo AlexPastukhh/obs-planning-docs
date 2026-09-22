@@ -53,7 +53,7 @@ Both remain representations of that semantic owner. The filename suffix `.evolut
 
 ## Physical vs Semantic Promotion
 
-Physical split/merge or embedded→dedicated promotion/demotion is a Documentation / Representation + P-14/TF-10 concern.
+Physical split/merge or embedded→dedicated promotion/demotion is a Documentation / Representation + P-14/PERSISTENCE_ADDRESSABILITY concern.
 
 It must not be confused with profile-specific semantic transitions such as SDS `Target Owner Materialization`, where realized future meaning becomes current natural-owner authority.
 

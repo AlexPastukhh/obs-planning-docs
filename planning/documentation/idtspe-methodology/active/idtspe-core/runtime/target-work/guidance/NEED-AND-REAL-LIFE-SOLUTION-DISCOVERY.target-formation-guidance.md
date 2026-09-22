@@ -125,7 +125,7 @@ parts combine mechanically, no new Target is required.
 
 ## User Authority
 
-AI-generated scope/route candidates remain unselected AI Proposals or formal Proposals, as appropriate, until accepted under
+AI-generated scope/route candidates remain unselected Generic AI Proposals (GIPs) or formal Proposals, as appropriate, until accepted under
 normal authority. Do not smuggle a proposed Application/technology into the Need.
 
 Ask a user question only when a material user-only fact cannot be resolved from

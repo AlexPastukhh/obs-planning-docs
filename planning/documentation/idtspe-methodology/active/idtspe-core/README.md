@@ -18,6 +18,7 @@ IDTSPE Core
 = always-active proportional planning/resolution work context
   Broad Discussion / Core State / Targets / Target Modules / Lenses /
   Proposal-Q/R/P-Decision-Evidence-Finding / Integration / Revalidation / Representation
+  + included Shell Pass Trace / Visibility runtime observability
 
 Installed Profiles
 = specialized Target Modules, Lenses, registries, knowledge and planning semantics layered on Core
@@ -41,7 +42,8 @@ Read in order:
 4. [`use-cases/USE-CASE-REGISTRY.md`](use-cases/USE-CASE-REGISTRY.md);
 5. [`use-cases/compose-current-work/UC-IDTSPE-COMPOSE-CURRENT-WORK.md`](use-cases/compose-current-work/UC-IDTSPE-COMPOSE-CURRENT-WORK.md);
 6. [`runtime/applicability/CONTEXTUAL-METHODOLOGY-APPLICATION-CONTRACT.md`](runtime/applicability/CONTEXTUAL-METHODOLOGY-APPLICATION-CONTRACT.md);
-7. [`navigation/METHODOLOGY-REGISTRY-DIRECTORY.md`](navigation/METHODOLOGY-REGISTRY-DIRECTORY.md).
+7. [`runtime/PASS-TRACE-AND-VISIBILITY-CONTRACT.md`](runtime/PASS-TRACE-AND-VISIBILITY-CONTRACT.md);
+8. [`navigation/METHODOLOGY-REGISTRY-DIRECTORY.md`](navigation/METHODOLOGY-REGISTRY-DIRECTORY.md).
 
 After this spine is current, Core bootstrap is sufficient for ordinary routing/composition. Reuse it while trustworthy. Do not read deeper Core owners merely to claim that bootstrap completed.
 
@@ -49,15 +51,15 @@ After this spine is current, Core bootstrap is sufficient for ordinary routing/c
 
 Open the narrowest canonical owner when its mechanism becomes material:
 
-- explicit Core State / Target Result / Unit applicability → [`runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md`](runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md);
-- Target Formation → [`runtime/target-work/RESOLUTION-SLOT-AND-TARGET-FORMATION-SET.md`](runtime/target-work/RESOLUTION-SLOT-AND-TARGET-FORMATION-SET.md);
-- reusable Target Module → [`target-modules/TARGET-MODULE-MODEL.md`](target-modules/TARGET-MODULE-MODEL.md) plus the selected Target Module registry/owner;
+- Target Work / Target Formation / Target Instance / subject-reference meaning → [`runtime/target-work/RESPONSIBILITY-MAP.md`](runtime/target-work/RESPONSIBILITY-MAP.md), then the routed canonical owner;
+- reusable Target Module / Target Module discovery → [`target-modules/RESPONSIBILITY-MAP.md`](target-modules/RESPONSIBILITY-MAP.md), then the Meta-Model/Registry/concrete Model owner;
 - Lens selection/application → [`lenses/LENS-REGISTRY.md`](lenses/LENS-REGISTRY.md) and [`lenses/LENS-MODEL.md`](lenses/LENS-MODEL.md), then only selected Lens bodies;
 - unresolved USER wanted outcome / semantic-home routing → [`resolution/needs/NEED-CANDIDATE-DISPOSITION.md`](resolution/needs/NEED-CANDIDATE-DISPOSITION.md);
 - material candidate/selection meaning → [`resolution/proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md`](resolution/proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md);
 - material Question/Risk/Problem lifecycle → [`resolution/qrp/QRP-LIFECYCLE-AND-REVIEW.md`](resolution/qrp/QRP-LIFECYCLE-AND-REVIEW.md);
 - material Lens/review finding consequence → [`resolution/findings/FINDING-DISPOSITION.md`](resolution/findings/FINDING-DISPOSITION.md);
 - runtime composition ports / TF mechanics → [`runtime/IDTSPE-RUNTIME-COMPOSITION-CONTRACT.md`](runtime/IDTSPE-RUNTIME-COMPOSITION-CONTRACT.md);
+- pass trace / route visibility / no-duplicate traversal semantics → [`runtime/PASS-TRACE-AND-VISIBILITY-CONTRACT.md`](runtime/PASS-TRACE-AND-VISIBILITY-CONTRACT.md);
 - representation/persistence/materialization boundary → [`representation/ARTIFACT-PLACEMENT-AND-IDTSPE-RESPONSE-CONTRACT.md`](representation/ARTIFACT-PLACEMENT-AND-IDTSPE-RESPONSE-CONTRACT.md);
 - direct IDTSPE command-surface semantics → [`commands/IDTSPE-COMMAND-SURFACE-CONTRACT.md`](commands/IDTSPE-COMMAND-SURFACE-CONTRACT.md);
 - integration/revalidation → the selected Integration/Revalidation Use-Case owner from the Core Use-Case Registry.
@@ -85,13 +87,17 @@ The default continuously relevant runtime capability is [`UC-IDTSPE-COMPOSE-CURR
 
 Use [`navigation/IDTSPE-CORE-MAP.md`](navigation/IDTSPE-CORE-MAP.md) for a compact topology view; use these files for normative meaning:
 
-- [`runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md`](runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md) — Core State / Target Step Result / Unit applicability-materiality-omission.
+- [`runtime/target-work/RESPONSIBILITY-MAP.md`](runtime/target-work/RESPONSIBILITY-MAP.md) — Target Work / Formation / Target Instance responsibility routing.
+- [`runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md`](runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md#twu-unit-contract) — Target Work Unit / Collection / Slot / Target Step Result semantics.
+- [`runtime/target-work/TARGET-WORK-SUBJECT-REFERENCE-CONTRACT.md`](runtime/target-work/TARGET-WORK-SUBJECT-REFERENCE-CONTRACT.md#target-work-subject-reference) — canonical Target Work subject reference grammar.
 - [`representation/interaction/BROAD-DISCUSSION-AND-INTEGRATION-CHECKPOINT-PROJECTION.md`](representation/interaction/BROAD-DISCUSSION-AND-INTEGRATION-CHECKPOINT-PROJECTION.md) — Broad Discussion and checkpoint interaction/projection semantics.
 - [`resolution/needs/NEED-CANDIDATE-DISPOSITION.md`](resolution/needs/NEED-CANDIDATE-DISPOSITION.md) — USER wanted outcome → Need Candidate grounding/disposition → existing natural owner/lifecycle route.
 - [`resolution/proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md`](resolution/proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md) — Proposal candidate space, selection, Decision trace/retention/revalidation.
 - [`resolution/qrp/QRP-LIFECYCLE-AND-REVIEW.md`](resolution/qrp/QRP-LIFECYCLE-AND-REVIEW.md) — Q/R/P lifecycle, priority/category/grouping and retention.
-- [`target-modules/TARGET-MODULE-MODEL.md`](target-modules/TARGET-MODULE-MODEL.md) — reusable Target Module contract.
-- [`lenses/LENS-MODEL.md`](lenses/LENS-MODEL.md) + [`lenses/LENS-REGISTRY.md`](lenses/LENS-REGISTRY.md) — reusable Lens contract and registry.
+- [`target-modules/RESPONSIBILITY-MAP.md`](target-modules/RESPONSIBILITY-MAP.md) — Target Module Meta-Model/discovery/supporting-projection routing.
+- [`target-modules/TARGET-MODULE-MODEL.md`](target-modules/TARGET-MODULE-MODEL.md#target-module-meta-model) — Target Module Meta-Model; concrete `TM-*` owners are Target Module Models and form Target Module Instances inside concrete Targets when applied.
+- [`lenses/LENS-MODEL.md`](lenses/LENS-MODEL.md) + [`lenses/LENS-REGISTRY.md`](lenses/LENS-REGISTRY.md) — Lens Meta-Model, concrete Lens Models and registry.
+- [`runtime/PASS-TRACE-AND-VISIBILITY-CONTRACT.md`](runtime/PASS-TRACE-AND-VISIBILITY-CONTRACT.md) — included Shell Pass Trace / Visibility and runtime reuse/observability contract.
 - [`resolution/findings/FINDING-DISPOSITION.md`](resolution/findings/FINDING-DISPOSITION.md) — producer → Finding Candidate → owner/State/lifecycle disposition.
 - [`navigation/METHODOLOGY-REGISTRY-DIRECTORY.md`](navigation/METHODOLOGY-REGISTRY-DIRECTORY.md) — supporting registry-family router used from selected Use-Case Processes.
 - [`representation/ARTIFACT-PLACEMENT-AND-IDTSPE-RESPONSE-CONTRACT.md`](representation/ARTIFACT-PLACEMENT-AND-IDTSPE-RESPONSE-CONTRACT.md) — physical representation/placement interface and P-14 response contract.
@@ -113,3 +119,8 @@ The current installed profiles define no separate runtime methodology-use Use Ca
 
 - [`../ai-reviewability/AI-OUTPUT-REVIEWABILITY.md`](../ai-reviewability/AI-OUTPUT-REVIEWABILITY.md) — peer Key Points/review projection concern.
 - [`knowledge-bases/testing/README.md`](knowledge-bases/testing/README.md) — active Core Testing Knowledge Basis, read lazily when testing/proof theory is materially relevant.
+
+
+## Target Resolution / Prepared Coverage
+
+Target work derives material Requirements from the current task/scope/Sources plus universal Core Target requirements. Target Module Models provide prepared reusable recognition/coverage and Module-defined Unit Definitions; Core-defined Units provide cross-target prepared coverage; uncovered bounded work is completed by locally defined Contextual Units. Canonical detail: [`runtime/target-work/RESOLUTION-SLOT-AND-TARGET-FORMATION-SET.md`](runtime/target-work/RESOLUTION-SLOT-AND-TARGET-FORMATION-SET.md).

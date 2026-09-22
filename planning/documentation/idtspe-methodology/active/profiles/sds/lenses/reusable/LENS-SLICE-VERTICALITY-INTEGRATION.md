@@ -170,7 +170,7 @@ known selected Step
 → Forced Migration only when current structure cannot reasonably reach the target
 ```
 
-Known change is planning evidence, not current implementation and not current-owner truth. Under SDS, Feature target state is represented directly by the Step; selected unrealized Scenario/Screen/Domain/Slice/Shared consequences belong to Step Evolution Impact Units and, when sufficiently resolved, corresponding Target Owner Bodies.
+Known change is planning evidence, not current implementation and not current-owner truth. Under SDS, Feature target state is represented directly by the Step; selected unrealized Scenario/Screen/Domain/Slice/Shared consequences belong to the Step `RU-EVO-02` Evolution Impact collection/items and, when sufficiently resolved, corresponding Target Owner Bodies.
 
 ## Two Evidence Depths
 

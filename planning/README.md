@@ -33,17 +33,22 @@ Bootstrap establishes methodology knowledge only. It does not create a Target, S
 
 ## Semantic Navigation
 
-README navigation is structural/bootstrap navigation. After primary bootstrap, choose the **narrowest current functional route that matches the actual request**; do not force every task through one global registry.
+> Semantic Owner Dependency
+> Type: CONTEXTUALIZES
+> Responsibility: `DOC.USE-CASE-APPLICABILITY-RESOLUTION`
+> Owner: [`UC-DOC-RESOLVE-CURRENT-USE-CASES`](documentation/use-cases/UC-DOC-RESOLVE-CURRENT-USE-CASES.md)
+
+README navigation is structural/bootstrap navigation. After primary bootstrap, choose the **narrowest current functional route that matches the actual request**; do not replace area-specific functional routing with one global registry. For any methodology-guided work, the fundamental methodology applicability Use Case is an ambient composition requirement that resolves/reaffirms methodology-use Use Cases before the selected route proceeds; it does not replace repository/application-specific routing.
 
 ```text
+methodology-guided work (ambient)
+→ planning/documentation/use-cases/UC-DOC-RESOLVE-CURRENT-USE-CASES.md
+→ planning/documentation/use-case-registry-map.md / plausible scoped methodology registries
+→ current methodology-use Use-Case composition
+
 repository-specific operational work
 → planning/use-case-registry.md
 → selected UC-REPO-* owner
-
-methodology / guidance use
-→ planning/documentation/use-case-registry-map.md
-→ scoped methodology Use-Case Registry
-→ selected Use Case owner
 
 specialized application / architecture / testing / tool area
 → that area's current README/navigation

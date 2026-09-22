@@ -103,7 +103,7 @@ Canonical Proposal identity, driver relations, candidate bundles, review/selecti
 This interaction model owns only how that meaning may remain conversationally visible before the next integration pass:
 
 ```text
-lightweight AI Proposal
+lightweight Generic AI Proposal (GIP)
 → may remain conversational when formal lifecycle/addressability adds no value
 
 material formal Proposal
@@ -131,7 +131,7 @@ They may relate to:
 - a Question or Problem;
 - one Proposal;
 - several Proposals or a Candidate Bundle;
-- a Unit / Unit Result field;
+- a Unit / Current Result Content field;
 - a relation/boundary;
 - a Decision.
 
@@ -165,9 +165,9 @@ A checkpoint response shows the integrated whole proportionally. A practical ren
 
 1. optional Broad Discussion Summary / Key Points;
 2. Target Goal / Desired Outcome context when useful;
-3. **Units** — the complete Module-defined Unit inventory for each formed Target, each marked RESOLVED / OPEN / explicit omission as applicable, plus only Contextual Units that actually formed; material Units may include useful Unit Resolution state and Current Result Content;
+3. **Units** — for module-backed Targets, the complete Module-defined Unit inventory with each Unit marked RESOLVED / OPEN / explicit omission as applicable; for any Target, applicable Core-defined Units plus Contextual Units that actually formed; material Units may include useful Unit Resolution state and Current Result Content;
 4. **Cross-cutting Core Resolution State** — only state whose natural subject is broader than one Unit;
-5. **Target Step Result** — coherent composition of the complete Module-defined Unit inventory plus any formed Contextual Units, with proportional content/dispositions;
+5. **Target Step Result** — coherent composition of the Target Module Instance contribution when present plus applicable Core-defined Unit and formed Contextual Unit contributions through their Result Destinations, with proportional content/dispositions;
 6. Lens / consistency review and material Finding disposition consequences;
 7. semantic retention / Artifact Placement when material;
 8. handoff / next work.
@@ -227,7 +227,7 @@ Keep three layers distinct:
 
 3. Physical persistence / representation
    file / section / artifact / implementation-native code/test / generated view
-   decided separately by Documentation / Representation + P-14 / TF-10
+   decided separately by Documentation / Representation + P-14 / PERSISTENCE_ADDRESSABILITY
 ```
 
 A Unit becoming material/addressable does not imply one file per Unit. A checkpoint creating an integrated semantic snapshot does not by itself authorize repository mutation.
@@ -243,7 +243,7 @@ Material Proposals are explicit and address the current Target Goal, a Question 
 Integration Checkpoint carries whole-state integration; Broad Discussion Summary is optional retrospective prose, not structured State.
 Target Goal / Desired Outcome remains Target/scope context unless Target Formation changes it.
 Core Resolution State preserves material decision-space meaning through existing Core kinds and attaches to the smallest correct subject.
-Unit Result Content shows the normalized current answer for resolved bounded responsibilities; the Target Step Result declares the complete Module-defined Unit inventory with resolved / OPEN / explicit-omission dispositions and proportional content, plus any Contextual Units that actually formed.
+Current Result Content shows the normalized current answer for resolved bounded responsibilities. For a module-backed Target, the Target Step Result declares the complete Module-defined Unit inventory with resolved / OPEN / explicit-omission dispositions and proportional content; for any Target it also includes applicable Core-defined Unit contributions and Contextual Unit contributions through their Result Destinations.
 Decisions retain accepted choices by default; material non-selected alternatives remain a user-controlled retention choice.
 Physical persistence remains a separate representation decision.
 ```

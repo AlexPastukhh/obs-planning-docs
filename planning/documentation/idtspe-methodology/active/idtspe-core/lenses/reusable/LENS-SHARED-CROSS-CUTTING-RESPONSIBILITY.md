@@ -83,7 +83,7 @@ REPRESENTATION: NEW_OR_EXISTING_CANONICAL_ARTIFACT
 FILE_OR_ARTIFACT: <shared-capability-or-natural-owner>
 CONTENT: shared guarantee/mechanism/applicability; consumer artifacts keep local refs
 GUIDANCE_SOURCE: LENS
-RESOLVER: P-14 / TF-10
+RESOLVER: P-14 / PERSISTENCE_ADDRESSABILITY
 ```
 
 ```text
@@ -99,7 +99,7 @@ REPRESENTATION: EMBED_CURRENT_OWNER
 FILE_OR_ARTIFACT: <consumer-owner>
 CONTENT: keep local; do not manufacture shared file
 GUIDANCE_SOURCE: LENS
-RESOLVER: P-14 / TF-10
+RESOLVER: P-14 / PERSISTENCE_ADDRESSABILITY
 ```
 
 

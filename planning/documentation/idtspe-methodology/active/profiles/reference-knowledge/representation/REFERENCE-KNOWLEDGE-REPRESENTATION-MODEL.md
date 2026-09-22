@@ -73,4 +73,4 @@ one Entry ≠ embedded copy of every statement about it
 
 A file-oriented repository may compact many Tag Assignments / Relations into shared files or tables. Semantic separation never requires one Markdown file per statement.
 
-Physical materialization remains subordinate to semantic ownership and the current P-14 / TF-10 placement decision.
+Physical materialization remains subordinate to semantic ownership and the current P-14 / PERSISTENCE_ADDRESSABILITY placement decision.

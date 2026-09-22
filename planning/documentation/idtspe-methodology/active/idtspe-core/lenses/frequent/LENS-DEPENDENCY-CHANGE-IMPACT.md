@@ -112,7 +112,7 @@ REPRESENTATION: EMBED_CURRENT_TARGET_PLANNING_STATE
 FILE_OR_ARTIFACT: <current-idtspe-owner>
 CONTENT: affected owners/consumers/change surface/migration obligations
 GUIDANCE_SOURCE: LENS
-RESOLVER: P-14 / TF-10
+RESOLVER: P-14 / PERSISTENCE_ADDRESSABILITY
 ```
 
 ```text
@@ -128,7 +128,7 @@ REPRESENTATION: SUPPORTING_ARTIFACT
 FILE_OR_ARTIFACT: <dependency-or-change-impact-artifact>
 CONTENT: bounded dependency/change-surface evidence; referenced by current Target
 GUIDANCE_SOURCE: LENS
-RESOLVER: P-14 / TF-10
+RESOLVER: P-14 / PERSISTENCE_ADDRESSABILITY
 ```
 
 

@@ -72,7 +72,7 @@ REPRESENTATION: EMBED_CURRENT_OWNER or EXISTING_ARTIFACT
 FILE_OR_ARTIFACT: <applicable-target-owner>
 CONTENT: compact rationale/constraints for the selected representation; no mandatory separate document
 GUIDANCE_SOURCE: LENS
-RESOLVER: P-14 / TF-10
+RESOLVER: P-14 / PERSISTENCE_ADDRESSABILITY
 ```
 
 ## Knowledge Basis

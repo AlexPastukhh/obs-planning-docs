@@ -98,7 +98,7 @@ REPRESENTATION: EMBED_CURRENT_TARGET_PLANNING_STATE
 FILE_OR_ARTIFACT: <current-idtspe-owner>
 CONTENT: accepted scope/value correction and rationale; no separate Lens file
 GUIDANCE_SOURCE: LENS
-RESOLVER: P-14 / TF-10
+RESOLVER: P-14 / PERSISTENCE_ADDRESSABILITY
 ```
 
 
@@ -120,7 +120,7 @@ Often paired with L2 at Target/Source boundaries and L3 when Need/scope assumpti
 
 ## Escalation / Revalidation
 
-A material contradiction is a Finding Candidate. Core Finding Disposition may select Target-Scope or upstream-Need revalidation/reopen when warranted; L1 itself does not perform the lifecycle transition.
+A material contradiction is a Finding Candidate. Core Finding Disposition may select Target Scope or upstream-Need revalidation/reopen when warranted; L1 itself does not perform the lifecycle transition.
 
 ## High-Level Example — Self-Contained Walkthrough
 

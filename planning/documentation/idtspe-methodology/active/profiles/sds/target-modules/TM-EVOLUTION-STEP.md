@@ -9,7 +9,7 @@ Own one coherent **not-yet-realized** qualitative transition toward one or more 
 
 An Evolution Step is the canonical SDS semantic owner for materially planned future downstream state. Current natural owners remain authority for accepted current semantic contracts until the represented transition is implemented and the required proof/revalidation succeeds.
 
-A Step may be Behavioral, Implementation or Mixed. Material downstream consequences for Feature, Scenario, Screen, Domain, Slice and Shared are represented through complete Target Owner Bodies and bounded Impact Units without turning the Step into a duplicate owner catalog.
+A Step may be Behavioral, Implementation or Mixed. Material downstream consequences for Feature, Scenario, Screen, Domain, Slice and Shared are represented through complete Target Owner Bodies plus the bounded `RU-EVO-02` Impact collection without turning the Step into a duplicate owner catalog.
 
 ```text
 current natural owners + actual implementation / Evidence
@@ -106,11 +106,11 @@ Use one or more proportionally; Kinds are composable rather than a mandatory exc
 
 The kind describes transition character; it does not replace the target-state contract.
 
-## Unit Contract Conformance
+## Unit Definition Conformance
 
 This module specializes the Core [Target Module Model](../../../idtspe-core/target-modules/TARGET-MODULE-MODEL.md) and [Unit / Target Step Result Model](../../../idtspe-core/runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md). Core owns generic Unit lifecycle/presence/disposition semantics; this module owns the Evolution-Step-specific Unit identities, dependencies, materiality, production guidance, validators and handoffs below.
 
-`RU-EVO-02` is a repeatable Module-defined Unit **family**: the `RU-EVO-02` Unit itself is part of every formed Step inventory, while bounded child Impact instances exist only for actual material affected/proposed subjects. If there are no material Impact subjects, the Unit carries its local omission disposition rather than manufacturing placeholder child impacts. The other Step Units are one-per-Step responsibilities.
+`RU-EVO-02` is one Module-defined Unit responsibility in every formed Step inventory. Its Result Content Contract declares the `Evolution Impacts` Collection with `0..N` bounded Impact items governed by the same existing Impact item meaning. Impact items are runtime result values inside this Unit, not child Target Work Units and not Unit Resolution Slots merely by count. This Module defines a stricter domain-specific rule than generic Collection semantics: if there are no material Impact subjects, `RU-EVO-02` carries its Unit-level omission disposition and no placeholder items are manufactured. This does not redefine a generic empty Collection result as omission for other Units. The other Step Units likewise represent their own distinct Step-level responsibilities.
 
 ## Target Step-Result Contract
 
@@ -119,7 +119,7 @@ This module specializes the Core [Target Module Model](../../../idtspe-core/targ
 | Result Unit | Meaning |
 |---|---|
 | `RU-EVO-01` | Step Frame / Semantic Relations — Step identity/boundary/driver/kinds, `Driven By`, direct `Entering From`, and composition/index of post-Step Target Owner Bodies without copying their bodies |
-| `RU-EVO-02` | Evolution Impact — repeatable bounded future consequence for one Scenario/Screen/Domain/Slice/Shared or unresolved ownership/responsibility subject |
+| `RU-EVO-02` | Evolution Impacts — coherent `0..N` collection of bounded future consequences for material Scenario/Screen/Domain/Slice/Shared or unresolved ownership/responsibility subjects, all governed by one Unit contract |
 | `RU-EVO-03` | Step-wide Implementation Concerns — cross-owner realization/proof/integration pressure whose natural subject is the transition as a whole; owner-local concerns are referenced, not copied |
 | `RU-EVO-04` | Target Owner Materialization Set — planned `CREATE / REPLACE / RETIRE` semantic authority transitions after successful realization/proof |
 | `RU-EVO-05` | Transition / Proof Obligations — one-time migration/cutover/compatibility/bridge/proof obligations whose natural subject is the transition rather than steady-state owners |
@@ -127,22 +127,22 @@ This module specializes the Core [Target Module Model](../../../idtspe-core/targ
 
 ### Result Unit Applicability / Materiality
 
-Unit presence/disposition mechanics follow the Core [`Unit Applicability / Materiality / Disposition Contract`](../../../idtspe-core/runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md#5a-unit-applicability--materiality--disposition-contract). The table below owns only Evolution-Step-specific substantive-materiality and omission-rationale triggers.
+Unit presence/disposition mechanics follow the Core [`Unit Applicability / Materiality / Disposition Contract`](../../../idtspe-core/runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md#twu-applicability-disposition). The table below owns only Evolution-Step-specific substantive-materiality and omission-rationale triggers.
 
 | Result Unit | Substantive resolution is material when | Unit disposition when substantive resolution is not material |
 |---|---|---|
 | `RU-EVO-01` | always once a concrete Evolution Step Target is formed; it owns Step identity/boundary/driver/relations | no Unit-level omission: vague speculative pressure that does not deserve Step identity fails the Target-level Step formation gate, so no Evolution Step Target should be formed |
-| `RU-EVO-02` | one Scenario/Screen/Domain/Slice/Shared/OPEN responsibility is materially affected and bounded impact resolution helps planning | `OMITTED` — no material peer/supporting-owner impact subjects; do not instantiate child Impact entries for unaffected subjects |
+| `RU-EVO-02` | one or more Scenario/Screen/Domain/Slice/Shared/OPEN responsibilities are materially affected and bounded impact resolution helps planning | `OMITTED` — no material peer/supporting-owner impact subjects; keep no placeholder Impact items |
 | `RU-EVO-03` | owner-local concern surfaces compose into a cross-owner Step-wide realization/proof/integration concern | `OMITTED` — no Step-wide implementation concern; owner-local concerns remain sufficient |
 | `RU-EVO-04` | the Step is intended eventually to create/replace/retire downstream semantic owner authority | `OMITTED` only for an intentionally non-materializing investigative Step; ordinary product/application Steps should resolve the set |
 | `RU-EVO-05` | transition-only migration/cutover/compatibility/proof meaning exists | `OMITTED` — no transition-only/proof obligation beyond ordinary owner/Exact proof |
 | `RU-EVO-06` | always for a concrete Step that may be reviewed/realized | do not omit; keep conclusions `INCOMPLETE/BLOCKED` with reasons when not ready |
 
-`RU-EVO-02` repeatability does not require placeholder child Impact instances for unaffected owners. The complete-inventory rule still requires the parent `RU-EVO-02` Unit responsibility to be visible with its resolved/open/omitted disposition; child Impact instances remain proportional to actual material subjects.
+`RU-EVO-02` item cardinality does not multiply the Target Work Unit inventory. The complete-inventory rule requires the single `RU-EVO-02` Unit responsibility to remain visible with its resolved/open/omitted disposition; its Impact collection contains only actual material bounded subjects. Ordinary Impact fields/items are not Slots unless a future revision identifies a genuine independently formalized terminal contract role.
 
 ## Explicit Unit Checkpoint Placement
 
-Each material Unit inherits the Core [`Unit Applicability Envelope`](../../../idtspe-core/runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md#5b-unit-applicability-envelope--opening--in-unit--closing-checkpoints), including Methodology binding before substantive work.
+Each material Unit inherits the Core [`Unit Applicability Envelope`](../../../idtspe-core/runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md#twu-applicability-envelope), including Methodology binding before substantive work.
 
 #### `RU-EVO-01` processing envelope
 
@@ -150,11 +150,11 @@ Each material Unit inherits the Core [`Unit Applicability Envelope`](../../../id
 2. **Unit Work — `RU-EVO-01`** — establish Step identity/boundary, `Driven By`, direct `Entering From`, kinds and post-Step owner-body composition; do not author a duplicate Expected Entry State.
 3. **Closing Unit Checkpoint — `RU-EVO-01`** — verify semantic predecessors are direct/minimal, owner-local future meaning lives in Target Owner Bodies and the Step frame does not steal their bodies.
 
-#### `RU-EVO-02` processing envelope — one per material Impact subject
+#### `RU-EVO-02` processing envelope — one Unit per Step
 
-1. **Opening Unit Checkpoint — `RU-EVO-02`** — bind this Unit plus the affected owner's supporting Target Module/Lenses as needed; distinguish current owner truth from Step-owned future meaning.
-2. **Unit Work — `RU-EVO-02`** — resolve only this subject's useful future consequence/ownership pressure; use supporting owner/discovery methods proportionally.
-3. **Closing Unit Checkpoint — `RU-EVO-02`** — durable owner-local future meaning converges into one coherent Target Owner Body/Decision instead of remaining duplicated in Impact detail.
+1. **Opening Unit Checkpoint — `RU-EVO-02`** — bind the Unit once; identify the actual material Impact subjects and supporting owner Target Modules/Lenses needed proportionally; distinguish current owner truth from Step-owned future meaning.
+2. **Unit Work — `RU-EVO-02`** — resolve the coherent collection of bounded Impact items, one item per material smallest useful subject, using the same common Impact item contract defined by the Unit's Result Content Contract for each; do not create peer Units or Slots merely from item count.
+3. **Closing Unit Checkpoint — `RU-EVO-02`** — every retained Impact item is useful/bounded and durable owner-local future meaning converges into one coherent Target Owner Body/Decision instead of remaining duplicated in Impact detail.
 
 #### `RU-EVO-03` processing envelope
 
@@ -215,9 +215,25 @@ A Behavioral/Mixed Step normally has one or more material Feature target states.
 
 Every represented `NEW` or `CHANGED` Feature on the active candidate/selected Step route uses the ordinary complete `TM-FEATURE` **Feature Definition** contract. The body is readable as the Feature expected after the Step; candidate authority remains enclosing Proposal/Step state until normal selection, after which the same body may become semantic source for materialization. Feature does not use `RU-EVO-02` as its primary future mechanism; in particular, `RU-EVO-02` is not a Feature delta mechanism.
 
-## `RU-EVO-02` — Evolution Impact
+## `RU-EVO-02` — Evolution Impacts
 
-Use one bounded Impact for one smallest useful subject. Normal subjects are:
+**Responsibility.** Resolve the material bounded downstream/supporting-owner consequences of this Evolution Step for Scenario/Screen/Domain/Slice/Shared/OPEN-responsibility subjects without turning those subjects into peer Step Units or using this Unit as the Feature target-state owner.
+
+**Purpose.** Keep Step-local impact planning coherent and proportional while routing durable owner-local future meaning toward the natural Target Owner Body/Decision instead of duplicating owner authority inside the Step.
+
+**Result Content Contract.** One coherent Step-impact result with one declared Collection:
+
+```text
+Collection: Evolution Impacts
+Item Contract: one bounded Evolution Impact for one smallest useful material subject
+Item Key / Subject: natural Impact subject/reference when item-local formal reference is needed
+Cardinality: 0..N
+PER_ITEM Slots: none currently defined
+```
+
+Every retained item uses the same existing Impact item meaning under this Unit contract. Item cardinality does not create peer Units or Slot Definitions; ordinary item fields remain direct result content unless a future contract revision identifies a genuine terminal role that requires independent Slot tracking. This is a narrow compatibility update of the already-declared `RU-EVO-02` collection, not a broader SDS lower-contract migration.
+
+Normal item subjects are:
 
 ```text
 existing/new Scenario
@@ -230,7 +246,7 @@ bounded ownership/responsibility pressure whose final owner is OPEN
 
 Feature future meaning is represented directly by Target Feature Body, not `RU-EVO-02`.
 
-Impact Current Result Content is proportional and may contain:
+Each Impact item's proportional content may contain:
 
 ```text
 Subject / current state / OPEN ownership when accurate
@@ -241,7 +257,7 @@ optional Target Scenario/Screen/Domain/Slice/Shared Body when sufficiently resol
 materialization consequence reference when resolved
 ```
 
-An Impact may remain intentionally shallow when that is enough to guide current planning. For new/redistributed responsibility, keep owner outcome `OPEN` until supporting discovery/decision resolves natural owners.
+An Impact item may remain intentionally shallow when that is enough to guide current planning. For new/redistributed responsibility, keep owner outcome `OPEN` until supporting discovery/decision resolves natural owners.
 
 Selected implementation-shaped planning detail is not automatically `BR-*`, `SR-*`, `IR-*`, `PFR-*`, a Decision or an exact implementation commitment. Durable owner-local future must-holds converge into the corresponding Target Owner Body. Literal files/code/tests/config/schema remain Core Exact Realization territory.
 
@@ -421,7 +437,7 @@ material unrealized transition
 → establish Feature target state(s) when behavior changes
    → NEW/CHANGED Feature: complete Target Feature Body
    → unchanged behavior: current/predecessor-realized Feature reference
-→ instantiate material RU-EVO-02 Impact Units for Scenario/Screen/Domain/Slice/Shared/OPEN pressure
+→ resolve the single RU-EVO-02 Unit as a collection; add one bounded Impact item per material Scenario/Screen/Domain/Slice/Shared/OPEN subject
 → use supporting owner/discovery methods proportionally
 → form complete Target Owner Bodies when represented candidate/selected/assumed route planning needs them
 → inspect owner-local concern/feasibility surfaces
@@ -479,7 +495,7 @@ unchanged Feature is referenced rather than copied
 current owners remain current semantic authority until realization/materialization
 candidate Proposal/branch meaning is not mislabeled canonical selected Step Result
 selected meaning is not mislabeled realized
-RU-EVO-02 is bounded to Scenario/Screen/Domain/Slice/Shared/OPEN responsibility, not Feature delta
+RU-EVO-02 collection items are bounded to Scenario/Screen/Domain/Slice/Shared/OPEN responsibility subjects, not Feature delta
 resolved durable owner-local future meaning converges into one natural Target Owner Body
 RU-EVO-03 references owner-local concerns and owns only Step-wide composition pressure
 no Realization Prerequisite list survives as a duplicate technical-foundation owner

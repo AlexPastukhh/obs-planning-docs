@@ -17,7 +17,7 @@ should a separate owner/file/register/companion exist?
 what content still has unresolved persistence/placement?
 ```
 
-This is the lightweight projection of `P-14 Persistence / Artifact Port` and `TF-10 PERSISTENCE_ADDRESSABILITY` when physical persistence/representation is material. Semantic retention at an Integration Checkpoint is distinct from this physical placement decision.
+This is the lightweight projection of `P-14 Persistence / Artifact Port` and the Target `PERSISTENCE_ADDRESSABILITY` Requirement when physical persistence/representation is material. Semantic retention at an Integration Checkpoint is distinct from this physical placement decision.
 
 The deeper `Artifact / File Realization Pack` remains conditional for non-trivial layout/reorganization decisions.
 
@@ -98,7 +98,7 @@ implementation-native representation = valid durable representation when the imp
 
 Several small semantic owners may share one artifact when identities/boundaries remain clear. One substantial owner may use several representations when independent review/use/lifecycle pressure justifies them. Promotion from embedded → dedicated representation, or demotion/merge in the opposite direction, is reversible when independent size/review/reuse/lifecycle pressure changes.
 
-Do not create Markdown solely because methodology meaning is material; representation is selected by the current semantic owner + Documentation/Representation + P-14/TF-10.
+Do not create Markdown solely because methodology meaning is material; representation is selected by the current semantic owner + Documentation/Representation + P-14/PERSISTENCE_ADDRESSABILITY.
 
 ## 2B. Current Artifact Context
 
@@ -192,8 +192,8 @@ Guidance Sources
   existing workspace/profile rule when relevant
 
 Placement Resolver
-  P-14 / TF-10
-  plus Answer Decision ref when placement itself is material
+  P-14 / PERSISTENCE_ADDRESSABILITY
+  plus Decision ref when placement itself is material
 ```
 
 Do not invent an exact repository path when the current workspace/profile does not establish one. Use a logical pattern instead, for example:
@@ -257,7 +257,7 @@ Lens
 Workspace/profile/current owner
   → physical/layout constraint
 
-P-14 / TF-10
+P-14 / PERSISTENCE_ADDRESSABILITY
   → final placement resolution for the current IDTSPE instance
 ```
 
@@ -287,7 +287,7 @@ Use this order when guidance overlaps:
 4. applicable Lens Artifact Guidance
 5. Documentation / Representation Lens resolves persistence necessity, code-vs-prose and representation consolidation/split inside the already-resolved semantic-owner context; semantic-owner change goes through Core Finding Disposition / Target Formation first
 6. workspace/profile physical-layout preference / materialization tree
-7. P-14 / TF-10 resolves the concrete destination/action
+7. P-14 / PERSISTENCE_ADDRESSABILITY resolves the concrete destination/action
 ```
 
 A Lens cannot override semantic ownership or a Target Module's required canonical result owner.
@@ -296,7 +296,7 @@ If two valid guidance sources still imply materially different representations:
 
 ```text
 material placement choice
-→ ordinary Answer Decision
+→ ordinary Decision
 → P-14 records the selected destination + rationale
 ```
 
@@ -349,7 +349,7 @@ REPRESENTATION
 FILE_OR_ARTIFACT
 CONTENT
 GUIDANCE_SOURCE: TARGET_MODULE
-RESOLVER: P-14 / TF-10
+RESOLVER: P-14 / PERSISTENCE_ADDRESSABILITY
 ```
 
 ### Structured Lens Guidance Schema
@@ -369,10 +369,10 @@ REPRESENTATION
 FILE_OR_ARTIFACT
 CONTENT
 GUIDANCE_SOURCE: LENS
-RESOLVER: P-14 / TF-10
+RESOLVER: P-14 / PERSISTENCE_ADDRESSABILITY
 ```
 
-`FILE_OR_ARTIFACT` is the source-level proposed file/artifact/owner/register pattern. `CONTENT` says what the source proposes to place there. The resolved current-instance `Destination` is selected later by P-14 / TF-10.
+`FILE_OR_ARTIFACT` is the source-level proposed file/artifact/owner/register pattern. `CONTENT` says what the source proposes to place there. The resolved current-instance `Destination` is selected later by P-14 / PERSISTENCE_ADDRESSABILITY.
 
 An installed profile may maintain a human/tool-facing artifact/materialization projection from these source records. That projection must not invent placement semantics absent from the source records. Current SDS uses `active/profiles/sds/representation/ARTIFACT-PLACEMENT-MAP.md`; its former flattened registry path is compatibility-only.
 
@@ -457,7 +457,7 @@ Recommended compact table:
 | Content | Placement status | Semantic owner | Persistence | Representation / destination | Action | Guidance source(s) | Why / unresolved |
 |---|---|---|---|---|---|---|---|
 | Feature semantic data + behavior | RESOLVED | `FEAT-CAPTURE` | REQUIRED | embed in `<feature-owner-artifact>` | UPDATE | Feature owner | Feature owns behavior/data |
-| Screen/window Proposal | UNRESOLVED_PLACEMENT | UNRESOLVED_OWNER | PREFERRED | existing Generic Proposal State representation or `NONE` when ephemeral | UNRESOLVED | `AP-SCN-03` | unselected Proposal; no mandatory global Proposal tree |
+| Screen/window Proposal | UNRESOLVED_PLACEMENT | UNRESOLVED_OWNER | PREFERRED | existing IDTSPE Proposal State representation or `NONE` when ephemeral | UNRESOLVED | `AP-SCN-03` | unselected Proposal; no mandatory global Proposal tree |
 | Offline Slice evolution path | UNRESOLVED_PLACEMENT | applicable future-transition semantic owner (SDS: `TM-EVOLUTION-STEP`) | PREFERRED | `<future-transition-owner-artifact-or-section>` | UNRESOLVED | active profile evolution owner + Documentation / Representation | resolve embed/dedicated representation inside the actual future-transition owner; do not copy unrealized state into a current owner |
 | Benchmark scratch numbers | UNRESOLVED_PERSISTENCE | unresolved | UNRESOLVED | UNRESOLVED | NONE | `AG-L3-01` may flag Evidence value; no placement proposal yet | decide whether they become Decision Evidence |
 
@@ -517,7 +517,7 @@ Lens output first becomes:
 Finding Candidate
 ```
 
-Core Finding Disposition resolves materiality, State/Decision input, semantic owner and lifecycle consequence. Only accepted, already-owned meaning then reaches Documentation / Representation and `P-14 / TF-10` for persistence/representation.
+Core Finding Disposition resolves materiality, State/Decision input, semantic owner and lifecycle consequence. Only accepted, already-owned meaning then reaches Documentation / Representation and `P-14 / PERSISTENCE_ADDRESSABILITY` for persistence/representation.
 
 ## 9. Full Artifact Pack Escalation
 
@@ -539,7 +539,7 @@ merge/retire existing duplicates
 manual owner vs generated projection
 ```
 
-Then Artifact Boundary/Addressability is an ordinary material Answer Decision inside the artifact-representation planning problem.
+Then Artifact Boundary/Addressability is an ordinary material Decision inside the artifact-representation planning problem.
 
 ## 10. High-Level Example — Scenario Planning
 
@@ -601,12 +601,12 @@ Floating-window Proposal
   Representation:
     UNRESOLVED
   Destination:
-    existing Generic Proposal State representation or NONE when ephemeral
+    existing IDTSPE Proposal State representation or NONE when ephemeral
   Action:
     UNRESOLVED
 ```
 
-If the Proposal is worth retaining, P-14 / TF-10 selects a proportionate Generic Proposal representation without making it Screen authority or inventing a mandatory global register.
+If the Proposal is worth retaining, P-14 / PERSISTENCE_ADDRESSABILITY selects a proportionate Core Proposal representation without making it Screen authority or inventing a mandatory global register.
 
 ## 11. High-Level Example — Unknown Placement
 

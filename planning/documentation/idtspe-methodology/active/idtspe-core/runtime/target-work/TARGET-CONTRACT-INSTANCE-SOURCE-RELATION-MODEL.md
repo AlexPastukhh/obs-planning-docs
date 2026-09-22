@@ -1,13 +1,16 @@
 
-# Target Module / Local Contract, Target Instance, Source, And Target Relation Model
+# Target Module Model / Instance / Local Contract, Target Instance, Source, And Target Relation Model
 
 Status: active generic methodology owner
 
+<a id="target-instance-source-relation-contract"></a>
 ## 1. Distinct Concepts
 
-### Target Module
+Responsibility ID: `TARGET.INSTANCE-SOURCE-RELATION`
 
-Reusable methodology contract for a recurring Target family.
+### Target Module Model
+
+One concrete reusable `TM-*` methodology contract for a recurring Target family. Its generic definition/application rules are owned by the Target Module Meta-Model in [`../../target-modules/TARGET-MODULE-MODEL.md`](../../target-modules/TARGET-MODULE-MODEL.md#target-module-meta-model). Short form `Target Module` remains acceptable where the Model role is obvious.
 
 Examples:
 
@@ -17,19 +20,31 @@ TM-DOMAIN-DISCOVERY / Domain-Aggregate Modeling
 TM-IMPLEMENTATION-SLICE
 ```
 
+### Target Module Instance
+
+The model-defined portion of one concrete Target Instance after a Target Module Model is applied. It is not a second Target and does not replace the Target identity.
+
+```text
+Target Module Model
++ concrete Target Instance
+→ Target Module Instance inside that Target
+```
+
+It contains the instantiated Module-defined Unit inventory, Unit dispositions/result content, model-specific composition/validators and the module-defined Target Step Result structure. Concrete Source bindings, Target Relations and broader Core State remain parts of the Target Instance according to their natural owners even when the Model supplies reusable archetypes/guidance for them.
+
 ### Local Target Contract
 
-A one-off Target form created through Target Formation when no reusable Target Module fits well enough.
+A one-off Target-level governing/result-composition contract formed through Target Formation when no reusable Target Module fits well enough.
 
-It is a **first-class IDTSPE route**, not an error/fallback that requires inventing a module. It receives the same Scope/Source/Question/Lens/Proposal/Decision/Artifact/Handoff lifecycle as a module-backed Target. `TF-06A` may scan/apply any registered Lens whose applicability gate fits the local Target.
+It is a **first-class IDTSPE route**, not an error/fallback that requires inventing a module. It receives the same Target Resolution Requirement, Source, Lens, Proposal, Decision, Artifact and Handoff machinery as a module-backed Target. `P-06 Lens` may scan/apply any registered Lens whose applicability gate fits the local Target.
 
-It may later be promoted into a Target Module only if repetition justifies reuse.
+It does not create Module-defined Unit kinds or a Module-defined Unit inventory. It may instantiate applicable Core-defined Units and define Contextual Units for uncovered bounded target-local responsibilities. A recurring Contextual pattern may later be promoted into reusable methodology only after explicit review.
 
 ### Target Instance
 
-One concrete bounded planning owner.
+One concrete bounded planning responsibility/owner. It is broader than any Target Module Instance nested within it.
 
-A Target Instance is the semantic/planning responsibility, not a file. Its current working composition may include a Source Set, Target Work Units, Target-level Core State Units and Target Relations/Handoffs. One bounded IDTSPE work step over that Target produces/refines a `Target Step Result` from the complete Module-defined Unit inventory with resolved / OPEN / explicit-omission dispositions and proportional content, plus any Contextual Units that actually formed.
+A Target Instance is the semantic/planning responsibility, not a file. Its current working composition may include applicable/open Target Resolution Requirements with recoverable coverage refs, a Source Set, Target Work Units, Target-level Core State Units and Target Relations/Handoffs. One bounded IDTSPE work step over that Target produces/refines a `Target Step Result` from the Target Module Instance contribution when a reusable Target Module Model is used, plus applicable Core-defined Unit contributions and any Contextual Units that actually formed. Under a Local Target Contract there is no Module-defined Unit inventory; target-local bounded work is covered by applicable Core-defined Units and Contextual Units.
 
 Examples:
 
@@ -39,15 +54,20 @@ DOMAIN-RESEARCH-CAPTURE
 SL-CAP-01
 ```
 
+<a id="target-candidate-instance"></a>
 #### Candidate Target Instance
+
+Responsibility ID: `TARGET.CANDIDATE-INSTANCE`
 
 A **candidate Target Instance** is an ordinary Target Instance formed under enclosing Proposal or Planning-Branch authority before canonical selection/integration. `candidate` is planning authority/status, not a second Target type.
 
 ```text
 Proposal / Planning Branch
 → candidate Target Instance
-→ ordinary Target Module / Local Target Contract
-→ complete Module-defined Unit inventory
+→ ordinary Target Module Model / Target Module Instance path OR Local Target Contract path
+→ Module-defined Unit inventory only when a Target Module Instance exists
+→ applicable Core-defined Units
+→ Contextual Units only when actually formed
 → ordinary Target Step Result shape
 
 candidate Target Instance
@@ -71,7 +91,14 @@ The Source State Unit owns the consumer relationship — such as role, consumer 
 
 ### Source Set
 
-The actual runtime `Source Set` for one Target is the proportional set of Source State Units/bindings that the Target currently consumes. A Source State Unit may be Target-shared, Unit-local or apply to a declared subset of Target Work Units.
+The actual runtime `Source Set` for one Target is the proportional set of Source State Units/bindings that the Target currently consumes. A Source State Unit may be Target-shared, Unit-local, Collection-local, Collection-item-local, Unit-Resolution-Slot-local, or apply to a declared subset.
+
+> Semantic Owner Dependency
+> Type: `CONTEXTUALIZES`
+> Responsibility: `TWU.SUBJECT-REFERENCE`
+> Owner: [Target Work Subject Reference Contract](TARGET-WORK-SUBJECT-REFERENCE-CONTRACT.md#target-work-subject-reference)
+
+When `Consumer Scope` points into Target Work, preserve the smallest selected Unit / Collection / item / Slot subject through the canonical Target Work Subject Reference rather than defining a Source-specific address grammar.
 
 ### Target Relation
 
@@ -87,24 +114,34 @@ Target Relation
 
 ```text
 Target Instance
-├─ Identity / Purpose / Scope / Contract
+├─ Identity / Purpose / Scope / governing contract
+├─ applicable Target Resolution Requirements
+│  ├─ Status: OPEN | PARTIAL | COVERED | NOT_APPLICABLE | BLOCKED | DEFERRED
+│  └─ recoverable `Covered By` refs when material/non-obvious
 ├─ Source Set
 │  └─ Source State Units / bindings
 │     ├─ Target-shared
-│     ├─ Unit-local
-│     └─ multi-Unit as applicable
-├─ Target Work Units
-│  ├─ complete Module-defined Unit inventory
+│     ├─ Unit/Collection/item/Slot-local through the canonical Target Work Subject Reference
+│     └─ declared subset of Units / Collections / items / Slots as applicable
+├─ Target Module Instance when a reusable Target Module Model is used
+│  ├─ complete instantiated Module-defined Unit inventory
 │  │    └─ each Unit: RESOLVED / OPEN / explicit omission + proportional content
-│  └─ Contextual Units only when actually formed
-│     each material Unit may carry:
-│       Result Responsibility
-│       + Unit Resolution ↔ applicable Core State Units
-│       + Current Result Content when sufficiently resolved
+│  ├─ model-specific validators / composition rules
+│  └─ module-defined Target Step Result contribution
+├─ applicable Core-defined Units
+│  instantiated only when applicable
+├─ Contextual Units only when actually formed
+├─ each material Target Work Unit, regardless of definition authority, may carry:
+│    Unit Definition: Responsibility + Purpose + Result Content Contract
+│    + direct Unit Resolution or one Unit Resolution Set when composite
+│      └─ terminal Unit Resolution Slots (prepared/contextual as applicable; UNIT_WIDE roles are Unit-owned, PER_ITEM roles are owned by exactly one declared Collection; runtime state follows that ownership/scope)
+│    + applicable Core State attached to the smallest natural Unit/Slot subject
+│    + Current Result Content when sufficiently resolved
 ├─ Target-level Core State Units
 ├─ Target Relations / Handoffs
 └─ Target Step Result
-   = complete Module-defined Unit inventory with dispositions/content
+   = Target Module Instance contribution when present
+     + applicable Core-defined Unit contributions through their Result Destinations
      + any Contextual Units that actually formed
 ```
 
@@ -117,7 +154,7 @@ one Target
 ≠ one file
 ```
 
-Target Module/Local Target Contract defines the target-specific Work Unit/Result Unit kinds. Generic Source/Question/Proposal/Q/R/P/Decision/Evidence/Revalidation state uses Core State Unit semantics and may be Unit-local, Target-level, cross-Target or Work-Context-level. Core State Units do not become extra Target Step Result Units merely because they participate in Unit Resolution.
+A Target Module Model defines reusable Module-defined Work Unit/Result Unit kinds and instantiates the complete module inventory through its Target Module Instance. Target composition is responsibility-based: peer Target Work Units represent distinct bounded Unit-level contracts, not repeated homogeneous items. When `0..N` values share one Unit Responsibility/Result Content Contract, that collection belongs inside the Unit's Current Result Content. Core may separately instantiate applicable Core-defined Target Work Units. A Local Target Contract does not create Module-defined kinds; uncovered **distinct** bounded target-local responsibilities may be defined as Contextual Units. Generic Source/Question/Proposal/Q/R/P/Decision/Evidence/Revalidation state uses Core State Unit semantics and may be Unit-local, Target-level, cross-Target or Work-Context-level. Core State Units do not become extra Target Step Result Units merely because they participate in Unit Resolution.
 
 A Target Work Unit result may be the precise downstream **Source Subject** when another Target depends only on that accepted meaning. The downstream Target still establishes its own explicit Source State Unit/binding; Source authority is never inferred from topology alone.
 
@@ -194,7 +231,7 @@ Source State Unit
   reason
 ```
 
-`Consumer Scope` may be the whole Target, one Target Work Unit, or a declared subset of Work Units. A trivial/obvious Source relation may remain embedded/implicit rather than gaining a persisted identity.
+`Consumer Scope` may be the whole Target, one Target Work subject referenced through `TWU.SUBJECT-REFERENCE`, or a declared subset of such subjects. A trivial/obvious Source relation may remain embedded/implicit rather than gaining a persisted identity.
 
 Conceptual Target relation:
 

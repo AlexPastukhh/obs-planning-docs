@@ -196,7 +196,7 @@ revalidation trigger
 
 ```text
 Artifact / File planning
-P-14 / TF-10 representation decisions
+P-14 / PERSISTENCE_ADDRESSABILITY representation decisions
 Decision/QRP review navigation
 Dependency/change review
 SDS planning-context navigation
@@ -271,7 +271,7 @@ REPRESENTATION: EMBED_CURRENT_TARGET_PLANNING_STATE
 FILE_OR_ARTIFACT: <current-idtspe-owner>
 CONTENT: justified/not-justified result; concrete navigation/query job; connected owners; anti-duplication guard; Reference Object handoff if relevant; no separate notes artifact
 GUIDANCE_SOURCE: LENS
-RESOLVER: P-14 / TF-10
+RESOLVER: P-14 / PERSISTENCE_ADDRESSABILITY
 ```
 
 If the result is `NOT_JUSTIFIED` and no material Decision/revalidation value exists, no durable output is required.
@@ -320,7 +320,7 @@ Canonical owners remain unchanged:
 ```text
 Slice owner
   D-17
-  Addresses: Q-04, P-02
+  Addresses: Q-04, P-03
   Exposes: R-09
 
 Domain / other Target owners

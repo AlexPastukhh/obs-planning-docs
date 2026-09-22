@@ -2,7 +2,13 @@
 
 Entry Point: `tm.exact.realization`
 Role: generic Core primary/supporting Target Module
-Target form: `EXACT_REALIZATION`
+Target family / archetype: `EXACT_REALIZATION`
+
+> Semantic Owner Dependency
+> Type: `EXTENDS`
+> Responsibility: `TARGET-MODULE.META-MODEL`
+> Owner: [Target Module Meta-Model](TARGET-MODULE-MODEL.md#target-module-meta-model)
+
 
 ## Purpose
 
@@ -80,7 +86,7 @@ material Q/R/P and unresolved Findings that constrain realization
 user authority for integration / verification / repair / destination mutation
 ```
 
-`TF-04 SOURCE_SET` remains authority for the concrete Target. The lists above are source archetypes, not a closed whitelist.
+`SOURCE_AUTHORITY` Requirement remains authority for the concrete Target. The lists above are source archetypes, not a closed whitelist.
 
 ### Active-profile future-state handoff
 
@@ -126,9 +132,14 @@ selected destination/environment cannot provide the intended verification Eviden
 
 Concrete Questions/Problems/Proposals/Q/R/P/Decisions/Evidence remain generic Core State. The module supplies recurring discovery prompts, not a second state runtime.
 
-## Unit Contract Conformance
+## Unit Definition Conformance
 
-Each declared Result Unit is a Module-defined Unit Contract. Its runtime work is represented as Unit Resolution plus Current Result Content; generic Question/QRP/Proposal/Evidence/Decision meaning remains Core Resolution State related to the Unit/Target subject it actually concerns. A material Proposal selection has Decision semantics, while a separate durable Decision trace is retained only when it adds future review/revalidation value.
+> Semantic Owner Dependency
+> Type: `CONTEXTUALIZES`
+> Responsibility: `TWU.UNIT-CONTRACT`
+> Owner: [Target Work Unit contract](../runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md#twu-unit-contract)
+
+Each declared Result Unit is a Module-defined Unit Definition under the canonical Target Work Unit contract. This concrete Module owns only its Target-family-specific Unit definitions/deltas; generic simple/composite/runtime projection and Core State semantics remain with their Core owners. A material Proposal selection has Decision semantics, while a separate durable Decision trace is retained only when it adds future review/revalidation value.
 
 ## Target Step-Result Contract
 
@@ -138,9 +149,19 @@ Each declared Result Unit is a Module-defined Unit Contract. Its runtime work is
 |---|---|
 | `RU-REAL-01` | Exact Realization — the current complete directly integrable candidate result for the selected bounded scope |
 
+### `RU-REAL-01` Unit Definition
+
+**Responsibility.** Produce the complete exact directly integrable realization for the selected bounded scope.
+
+**Purpose.** Convert sufficiently accepted semantics into an exact candidate that can be reviewed/applied/verified without another material design pass.
+
+**Result Content Contract.** One complete current exact payload for the bounded realization, including the exact file/object/config/schema/test material needed for direct integration and the baseline/destination identity required to interpret it safely.
+
+This Unit is simple by default. Verification observations, repair reasoning, Questions, Problems, Proposals, Decisions and Evidence remain Core State around the Unit rather than automatically becoming Unit Resolution Slots; introduce a Slot only for a true terminal sub-responsibility of the exact result itself.
+
 ### Result Unit Applicability / Materiality
 
-Apply the Core [`Unit Applicability / Materiality / Disposition Contract`](../runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md#5a-unit-applicability--materiality--disposition-contract).
+Apply the Core [`Unit Applicability / Materiality / Disposition Contract`](../runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md#twu-applicability-disposition).
 
 | Result Unit | Substantive resolution is material when | Target/Unit disposition when not material |
 |---|---|---|
@@ -153,13 +174,13 @@ Only one Target-specific Result Unit is required. Verification, build/test obser
 
 ### Explicit Unit Checkpoint Placement
 
-Each material Unit below inherits the generic [`Unit Applicability Envelope`](../runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md#5b-unit-applicability-envelope--opening--in-unit--closing-checkpoints). Opening/Closing are mandatory logical applicability boundaries; registries may also be checked during Unit work whenever new material pressure appears.
+Each material Unit below inherits the generic [`Unit Applicability Envelope`](../runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md#twu-applicability-envelope). Opening/Closing are mandatory logical applicability boundaries; registries may also be checked during Unit work whenever new material pressure appears.
 
 #### `RU-REAL-01` processing envelope
 
 1. **Opening Unit Checkpoint — `RU-REAL-01`** — resolve/reuse current applicable Core + active-profile Lens registry candidates and any Unit-triggered supporting registry pressure before material work.
 2. **Unit Work — `RU-REAL-01`** — produce/refine only the material meaning owned by this Result Unit; run additional applicability checks immediately when the Analysis Surface changes materially.
-3. **Closing Unit Checkpoint — `RU-REAL-01`** — evaluate the actual candidate Unit result, disposition material Findings/owner consequences, and reopen/refine narrowly when needed before treating the Unit as current-for-handoff.
+3. **Closing Unit Checkpoint — `RU-REAL-01`** — evaluate the actual candidate Current Result Content, disposition material Findings/owner consequences, and reopen/refine narrowly when needed before treating the Unit as current-for-handoff.
 
 ### RU-REAL-01 — Exact Realization
 
@@ -531,7 +552,7 @@ Frequent conditional Core Lenses:
 - [`LENS-VERIFIABILITY-OBSERVABILITY-OPERABILITY`](../lenses/frequent/LENS-VERIFIABILITY-OBSERVABILITY-OPERABILITY.md) — credible checks/diagnosis/operability.
 - [`LENS-QUALITY-RISK-MATERIALITY`](../lenses/frequent/LENS-QUALITY-RISK-MATERIALITY.md) — material quality/risk dimensions.
 
-The active profile may add Domain/DDD, UI/frontend, simplicity or other applicable Lenses through normal `TF-06A LENS_SET` resolution. Lens analysis may remain explanatory Broad Discussion; only material newly surfaced meaning that needs ownership/State/lifecycle disposition becomes a Finding Candidate.
+The active profile may add Domain/DDD, UI/frontend, simplicity or other applicable Lenses through normal Lens applicability/selection resolution. Lens analysis may remain explanatory Broad Discussion; only material newly surfaced meaning that needs ownership/State/lifecycle disposition becomes a Finding Candidate.
 
 ## Validators / Guards
 
@@ -578,7 +599,7 @@ workflow / manifest
 exact destination artifact
 ```
 
-Do not create a Markdown planning file merely because this Target exists. Documentation / Representation + P-14 / TF-10 decides whether Decisions, rationale, unresolved Problems or review material need durable supporting representation beyond the implementation-native result.
+Do not create a Markdown planning file merely because this Target exists. Documentation / Representation + P-14 / PERSISTENCE_ADDRESSABILITY decides whether Decisions, rationale, unresolved Problems or review material need durable supporting representation beyond the implementation-native result.
 
 An integration environment and an intended durable destination are not automatically the same thing. Preserve enough baseline/destination identity to avoid applying an exact payload against an incompatible current state.
 

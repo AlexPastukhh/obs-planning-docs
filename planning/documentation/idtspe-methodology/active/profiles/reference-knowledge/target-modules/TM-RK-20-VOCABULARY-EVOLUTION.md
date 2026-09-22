@@ -52,7 +52,9 @@ Every material Unit follows the inherited Core applicability/materiality envelop
 <a id="ru-rkv-01"></a>
 ## `RU-RKV-01` — Definition Change
 
-**Result Responsibility.** Accepted canonical vocabulary-definition meaning for the selected Package.
+**Responsibility.** Resolve accepted canonical vocabulary-definition meaning for the selected Package.
+
+**Purpose.** Keep current Tag/Relation Type semantics authoritative, stable and reusable while making evolution/deprecation explicit.
 
 **Applicability / Omission.** Required for a Vocabulary Evolution Target. Tag-only or Relation-Type-only work simply leaves the other definition kind untouched; no empty peer Unit is created.
 
@@ -60,14 +62,16 @@ Every material Unit follows the inherited Core applicability/materiality envelop
 
 **Resolution Method.** Reuse an existing definition when meaning already fits. Preserve stable ID only when existing statements retain the same semantic meaning. For materially different meaning, create/reuse current definition(s), deprecate obsolete definition when useful and optionally add successor refs. Durable definitions never move between Packages.
 
-**Result Content.** Accepted Tag/Relation Type definition changes, including status/aliases/parents/inverse/body/successors only where applicable.
+**Result Content Contract.** Accepted Tag/Relation Type definition changes, including status/aliases/parents/inverse/body/successors only where applicable.
 
 **Validators.** Package authority is satisfied; stable IDs are not silently redefined; Tag Parents and Relation Type Inverse stay same-Package; cross-Package successor does not grant consumption/access automatically.
 
 <a id="ru-rkv-02"></a>
 ## `RU-RKV-02` — Affected Knowledge Review
 
-**Result Responsibility.** Proportional understanding of what existing knowledge, queries or retained Landscape results materially need attention because of `RU-RKV-01`.
+**Responsibility.** Resolve proportional understanding of what existing knowledge, queries or retained Landscape results materially need attention because of `RU-RKV-01`.
+
+**Purpose.** Prevent vocabulary evolution from silently invalidating downstream knowledge while avoiding unnecessary bulk rewrite.
 
 **Applicability / Omission.** When the accepted definition change has no material downstream consequence beyond future use, keep this Unit declared with a concise omission disposition. Include only to the depth justified by affected knowledge.
 
@@ -75,7 +79,7 @@ Every material Unit follows the inherited Core applicability/materiality envelop
 
 **Resolution Method.** Identify materially affected knowledge and classify each consequence as no action, ordinary owner-clear refinement/reclassification, revalidation, or separate bounded work. Never treat deprecation/successors as automatic statement migration. Preserve historical Landscape interpretability; retain exact query/membership/taxonomy context only when later reproduction/comparison is materially required.
 
-**Result Content.** Material affected-knowledge findings, explicit no-action where useful, and routed follow-up work/revalidation signals.
+**Result Content Contract.** Material affected-knowledge findings, explicit no-action where useful, and routed follow-up work/revalidation signals.
 
 **Validators.** Statement ownership is respected; no bulk rewrite is implied by vocabulary evolution; historical meaning is not rewritten merely to match current vocabulary.
 
@@ -109,5 +113,5 @@ REPRESENTATION: EXISTING_OR_NEW_CANONICAL_ARTIFACT
 FILE_OR_ARTIFACT: <selected-vocabulary-representation>
 CONTENT: accepted definition changes plus only material consequence/revalidation routing; no automatic statement rewrite
 GUIDANCE_SOURCE: TARGET_MODULE
-RESOLVER: P-14 / TF-10
+RESOLVER: P-14 / PERSISTENCE_ADDRESSABILITY
 ```

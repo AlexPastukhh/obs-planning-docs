@@ -20,6 +20,18 @@ SDS
 
 AI Reviewability may require presentation/recheck behavior, but it does not select semantic owners or mutate accepted meaning.
 
+## Pass Trace / Visibility Boundary
+
+IDTSPE `P-02 Pass Trace / Visibility` records the methodology route and runtime outcomes as they occur. AI Reviewability does not own that trace. `Key Points` may summarize material content/results from the trace and semantic owners, while Session Work Steps/Progress Updates may project its progress conversationally.
+
+```text
+P-02 Pass Trace = what methodology route/events occurred
+Key Points = what material content the reviewer should understand
+Work Steps / Progress Updates = what AI is doing/has established over time
+```
+
+These projections may reference one another but do not collapse into one ontology.
+
 ## Key Points Contract
 
 A material answer/output exposes its major material content as `Key Points` proportionally.

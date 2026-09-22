@@ -10,7 +10,7 @@ The fundamental lightweight policy is owned by [`../lenses/required/LENS-ARTIFAC
 
 ## 0. Lightweight Placement At Materialization; Deep Artifact Planning Is Conditional
 
-Ordinary Broad Discussion does not perform a full placement pass by default. An Integration Checkpoint or other persistence-sensitive structured pass uses lightweight `P-14` / `TF-10` placement when physical persistence is material, changed or unresolved; established inherited placement may be stated compactly.
+Ordinary Broad Discussion does not perform a full placement pass by default. An Integration Checkpoint or other persistence-sensitive structured pass uses lightweight `P-14` / `PERSISTENCE_ADDRESSABILITY` placement when physical persistence is material, changed or unresolved; established inherited placement may be stated compactly.
 
 That lightweight view answers:
 
@@ -520,7 +520,7 @@ Reconsider when:
   navigation cost becomes material
 ```
 
-This is an Answer Decision for an **artifact-representation Target** when material.
+This is an Decision for an **artifact-representation Target** when material.
 
 For trivial representation choices, a full durable Decision record is unnecessary.
 

@@ -12,8 +12,14 @@ The current work has a situation-appropriate methodology orientation: applicable
 
 ## Process
 
+> Semantic Owner Dependencies
+> - `CONTEXTUALIZES` [`UC-DOC-RESOLVE-CURRENT-USE-CASES`](UC-DOC-RESOLVE-CURRENT-USE-CASES.md) — `DOC.USE-CASE-APPLICABILITY-RESOLUTION`
+> - `CONTEXTUALIZES` [`Semantic Owner`](../principles-and-terminology.md#doc-semantic-owner) — `DOC.SEMANTIC-OWNER`
+> - `CONTEXTUALIZES` [`Contextual Guidance Principle`](../principles-and-terminology.md#doc-contextual-guidance) — `DOC.CONTEXTUAL-GUIDANCE`
+> - `CONTEXTUALIZES` [`Registry Scan`](../principles-and-terminology.md#doc-registry-scan) — `DOC.REGISTRY-SCAN`
+
 1. Start from the actual current situation and the useful result the USER is seeking; reuse already-known facts/constraints rather than manufacturing confirmation steps.
-2. Logically check the [`Methodology Use-Case Registry Map`](../use-case-registry-map.md), then scan the applicable scoped Use-Case Registry/Registries using their Situation/Result summaries. If this Use Case was itself selected by the same current applicability scan, this check refreshes orientation and discovers **additional** applicable capabilities; it does not recursively invoke this Use Case again while its current Situation/Result remain valid.
+2. Consume/reaffirm the current Use-Case composition from [`UC-DOC-RESOLVE-CURRENT-USE-CASES`](UC-DOC-RESOLVE-CURRENT-USE-CASES.md). Do not duplicate its Registry Map/scoped-registry selection Process here.
 3. Open only newly selected or insufficiently-known Use-Case owners and follow their Process. Reuse the current Process for already-active Use Cases while their authority/context remains trustworthy. Several Use Cases may compose when their independently useful Results are all needed.
 4. Reuse methodology material already current in context when trustworthy. Reread an owner when its authority/content may be stale or when the selected Process requires detail not currently known.
 5. Prefer semantic owners and registries over random browsing. Use README for structural navigation, Use-Case Registry for functional navigation, and specialized registries only when a selected Process routes to them.
@@ -34,10 +40,10 @@ The current work has a situation-appropriate methodology orientation: applicable
 8. When the active methodology provides its own component types (for example IDTSPE Target Modules or Lenses), treat them like other reachable methodology components: the Use Case Process may route to them, but their own contracts own the specialized work.
 9. Load detail lazily. A registry match justifies opening the relevant entry/body; it does not justify opening every sibling component.
 10. Preserve methodology-use state only when continuation/review/revalidation benefits from it. Do not create an execution log of every file read.
-11. Re-evaluate the Use-Case Registry Map when a material recheck trigger occurs.
+11. When a material applicability trigger occurs, hand applicability refresh back to `UC-DOC-RESOLVE-CURRENT-USE-CASES`; do not make this guidance Use Case a recursive registry wrapper.
 
 
-This Use Case is not a mandatory wrapper around every IDTSPE operation. Presence of the Documentation scope in the Registry Map or a scan of this registry does not select this row automatically.
+This Use Case is not a mandatory wrapper around every IDTSPE operation. The **fundamental applicability Use Case** is always logically active; this guidance row is selected only when methodology/documentation orientation/use is itself useful.
 
 ## Contextual Guidance Invariant
 
@@ -62,7 +68,8 @@ The current situation and the selected Use-Case Process determine what is worth 
 A USER asks to continue an existing software-planning concern.
 
 ```text
-Use-Case Registry Map
+UC-DOC-RESOLVE-CURRENT-USE-CASES
+→ Use-Case Registry Map
 → Documentation registry + always-active IDTSPE registry
 → UC-IDTSPE-COMPOSE-CURRENT-WORK is applicable
 → its Process sees that current Broad Discussion is still sufficient
@@ -75,31 +82,8 @@ Use-Case Registry Map
 
 The Documentation Use Case never explains how to discover the implementation Slice; the selected SDS component owns that work.
 
-Shared meaning: [`../principles-and-terminology.md`](../principles-and-terminology.md)
+Shared meaning: [`Semantic Owner`](../principles-and-terminology.md#doc-semantic-owner), [`Contextual Guidance Principle`](../principles-and-terminology.md#doc-contextual-guidance), and [`Registry Scan`](../principles-and-terminology.md#doc-registry-scan).
 
-## Explicit Registry Traversal Trace
+## Registry Traversal Visibility
 
-When the USER explicitly asks to inspect/scan methodology registries, keep this Use Case as semantic owner and expose the semantic traversal instead of a low-level file-read log.
-
-```text
-Registry Traversal Trace
-Context
-Use-Case registry traversal
-  registry + why scanned + applicable UC rows
-Active / selected Use Cases
-Downstream registry traversal
-  registry + why scanned + plausibly applicable components
-Registries not scanned + reason
-Unresolved applicability
-Execution: NONE
-```
-
-Guards:
-
-```text
-SCANNED ≠ APPLICABLE
-APPLICABLE ≠ SELECTED
-SELECTED ≠ EXECUTED
-```
-
-Start at the Methodology Use-Case Registry Map, open only plausibly applicable scoped Use-Case registries, then follow only registry directories/components reached by selected Use-Case Processes. Do not globally scan every Target/Lens/theory registry. Ordinary implicit methodology composition need not emit this trace.
+Explicit Registry Traversal Trace is owned by [`UC-DOC-RESOLVE-CURRENT-USE-CASES`](UC-DOC-RESOLVE-CURRENT-USE-CASES.md). This guidance Use Case may consume that trace when methodology orientation is the requested result, but does not redefine the traversal contract.

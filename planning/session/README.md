@@ -16,7 +16,7 @@ After these reads, the Session interaction contract remains ambient across ordin
 
 ## Contents
 
-- [`principles-and-terminology.md`](principles-and-terminology.md) — Session interaction vocabulary: work step, progress update, USER steering, AI Proposal, real gate and authorization boundary.
+- [`principles-and-terminology.md`](principles-and-terminology.md) — Session interaction vocabulary: work step, progress update, USER steering, Generic AI Proposal (GIP), real gate and authorization boundary.
 - [`session-runtime-contract.md`](session-runtime-contract.md) — clean-chat interaction, automatic work-step progression, progress visibility, steering and mutation/choice gates.
 - [`use-case-registry.md`](use-case-registry.md) — compatibility routes from the former Session Use Cases to their current Documentation/IDTSPE owners.
 - [`methodological-working-scenarios.md`](methodological-working-scenarios.md) — compatibility route to the IDTSPE Methodology Use-Case Scenario Map.

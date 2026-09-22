@@ -60,7 +60,7 @@ Are owner references preserved?
 
 ## Natural Subject Check
 
-Evaluate the material under the canonical Core [Natural Subject / Ownership Boundary](../../runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md#natural-subject--ownership-boundary); this Lens does not redefine that ownership routing.
+Evaluate the material under the canonical Core [Natural Subject / Ownership Boundary](../../runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md#twu-natural-subject-ownership); this Lens does not redefine that ownership routing.
 
 Operationally ask:
 
@@ -107,7 +107,7 @@ REPRESENTATION: EMBED_CURRENT_TARGET_PLANNING_STATE
 FILE_OR_ARTIFACT: <current-idtspe-owner>
 CONTENT: canonical owner/Source-role/reuse/conflict finding
 GUIDANCE_SOURCE: LENS
-RESOLVER: P-14 / TF-10
+RESOLVER: P-14 / PERSISTENCE_ADDRESSABILITY
 ```
 
 ```text
@@ -123,7 +123,7 @@ REPRESENTATION: UNRESOLVED
 FILE_OR_ARTIFACT: UNRESOLVED
 CONTENT: semantic owner unresolved; surface a Finding Candidate. Core Finding Disposition may surface a Target Formation candidate; do not create a file as a hidden semantic owner
 GUIDANCE_SOURCE: LENS
-RESOLVER: P-14 / TF-10
+RESOLVER: P-14 / PERSISTENCE_ADDRESSABILITY
 ```
 
 

@@ -333,7 +333,7 @@ Dynamic Target Formation applies inside branches too.
 The branch may discover:
 
 ```text
-new Target Type/form
+new/refined Target scope or Target Formation candidate
 new Sources
 new Target Relations
 new branch-local Proposals
@@ -473,7 +473,7 @@ cost
 Only now:
 
 ```text
-Answer Decision
+Decision
 → select one Proposal
 ```
 
@@ -761,7 +761,7 @@ The root Solution Decision gets better evidence.
 
 # 26. Relation To Carry-Over Proposals
 
-A carry-over Proposal is ordinary Generic Proposal State retained for later use. If durable
+A carry-over Proposal is ordinary IDTSPE Proposal State retained for later use. If durable
 representation is useful, Documentation / Representation may keep it in the current natural
 owner, an existing project register/inbox, another profile-selected owner, or no separate
 artifact when ephemeral.
@@ -786,17 +786,7 @@ An Inbox/carry-over Proposal can later become a Branch Root.
 
 Branch exploration does not add a fourth Decision type.
 
-Inside every branch Target:
-
-```text
-Target-Scope
-Question-Set
-Answer Decisions
-```
-
-still apply.
-
-They are just branch-scoped until promotion.
+Inside every branch Target, ordinary branch-scoped Target Scope, Requirements/coverage state and Decisions still apply. Decisions keep normal natural-Subject semantics; branch exploration does not create special Decision kinds.
 
 ---
 
@@ -819,7 +809,7 @@ Branch Summary
 ↓
 root Proposal comparison
 ↓
-actual Answer Decision
+actual Decision
 ↓
 Branch Promotion / Consistency Check
 ↓

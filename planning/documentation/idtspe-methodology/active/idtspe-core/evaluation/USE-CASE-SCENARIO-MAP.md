@@ -92,11 +92,11 @@ Canonical scenarios contain **no command IDs, command shortcuts, command bodies,
 
 A root scenario begins from the ordinary functional entry route. A focused scenario may start later only when it states the parent route / entry assumptions explicitly.
 
-## 5. `SCN-01` ROOT — Я пришёл с задачей — постепенно разберём её от общего смысла до Exact
+## 5. `SCN-01` ROOT — IDTSPE Shell Pass — от текущей задачи к пропорциональному runtime route
 
 **Type:** ROOT
 **Normal entry:** USER request → Methodology Use-Case Registry Map → relevant scoped registry → selected Use Case(s).
-**Purpose:** demonstrate the default philosophy: start lightweight and deepen only where additional resolution is useful.
+**Purpose:** demonstrate the normal IDTSPE Shell pass: Use-Case applicability and `UC-IDTSPE-COMPOSE-CURRENT-WORK` choose the current work composition; `P-01` routes it; included `P-02` establishes incremental trace/visibility; later ports are reached dynamically only when composition, new materiality or an explicit port requirement needs them. This is a graph traversal, not a fixed port checklist.
 
 ### Step `SCN-01-S1` — establish the smallest useful composition
 
@@ -106,6 +106,15 @@ A root scenario begins from the ordinary functional entry route. A focused scena
 **Method / Mechanics:** Resolve applicable Use Cases, keep only material state/components, and explicitly allow `Broad Discussion only` when no Target/Lens/persistence is useful yet.
 **Possible Result:** A bounded concern and a useful next question, with no unnecessary Target.
 **Derived From / Owners:** `UC-DOC-USE-REPOSITORY-GUIDANCE`, `UC-IDTSPE-COMPOSE-CURRENT-WORK`.
+
+### Step `SCN-01-S1P` — enter the Shell and establish the pass trace
+
+**Trigger / Situation:** The smallest useful composition is known for the current invocation.
+**AI Action:** Route that composition through `P-01 Invocation`, establish `P-02 Pass Trace / Visibility`, and record subsequent port admission/results as they occur.
+**Why This Step:** Composition and Shell routing are different responsibilities, and a reliable trace should be accumulated during execution rather than reconstructed at the end.
+**Method / Mechanics:** `P-01` translates the selected composition/explicit requirements into the current technical route. `P-02` selects the allowed visibility sink/detail, records `PASS_STARTED`, and then records `AUTO_COMPOSITION`, `EXPLICIT_REQUIREMENT` or `DOWNSTREAM_MATERIALITY` port origins plus result statuses. Shared prefixes are reused for unchanged subject/basis/operation.
+**Possible Result:** A traceable pass that may remain Broad Discussion-only or dynamically enter any subset of later ports without manufacturing work for untouched ports.
+**Derived From / Owners:** `planning/documentation/idtspe-methodology/active/idtspe-core/runtime/IDTSPE-RUNTIME-COMPOSITION-CONTRACT.md`, `planning/documentation/idtspe-methodology/active/idtspe-core/runtime/PASS-TRACE-AND-VISIBILITY-CONTRACT.md`.
 
 ### Step `SCN-01-S1N` — disposition an unresolved wanted outcome before inventing a solution
 
@@ -145,10 +154,15 @@ A root scenario begins from the ordinary functional entry route. A focused scena
 
 ### Step `SCN-01-S3F` — disposition material findings before choosing the correction route
 
+> Semantic Owner Dependency
+> Type: `REPRESENTS`
+> Responsibility: `TWU.SUBJECT-REFERENCE`
+> Owner: [Target Work Subject Reference Contract](../runtime/target-work/TARGET-WORK-SUBJECT-REFERENCE-CONTRACT.md#target-work-subject-reference)
+
 **Trigger / Situation:** Evaluation/review/execution evidence produces one or more material Finding Candidates.
 **AI Action:** Classify each material Finding through Core Finding Disposition, keeping impact priority separate from semantic Resolution Escalation.
 **Why This Step:** A severe defect may still have a deterministic correction, while a modest-looking defect may expose a current-owner or upstream semantic decision. USER attention should follow the actual resolution authority, not the prose severity alone.
-**Method / Mechanics:** Identify the smallest correct semantic subject, affected/current owner and earliest potentially affected upstream meaning; assign the smallest justified `RE-0..RE-4` escalation. Treat a missing explicit Requirement/invariant that is already uniquely entailed by accepted current owner semantics as `RE-0` current semantic completion, not `RE-2` merely because a new Requirement identity/text is added. Route Unit-local findings into the affected Unit Resolution; form a Contextual Unit only for a new bounded local responsibility; use another owner/Target Formation directly when that is the real subject. Route deterministic/current-completion/local corrections directly, semantic changes through Proposal selection, and possible/confirmed upstream impact through targeted Revalidation before downstream compensation. Any material corrective Proposal receives canonical Proposal Semantic Change Impact Review before selection.
+**Method / Mechanics:** Identify the smallest correct semantic subject, affected/current owner and earliest potentially affected upstream meaning; assign the smallest justified `RE-0..RE-4` escalation. Treat a missing explicit Requirement/invariant that is already uniquely entailed by accepted current owner semantics as `RE-0` current semantic completion, not `RE-2` merely because a new Requirement identity/text is added. For a Collection/item/Unit Resolution Slot subject, use the canonical [`TWU.SUBJECT-REFERENCE`](../runtime/target-work/TARGET-WORK-SUBJECT-REFERENCE-CONTRACT.md#target-work-subject-reference) rather than a scenario-local address grammar. Route other Unit-local findings into the affected parent Unit Resolution; form a Contextual Unit only for a new bounded local responsibility; use another owner/Target Formation directly when that is the real subject. Route deterministic/current-completion/local corrections directly, semantic changes through Proposal selection, and possible/confirmed upstream impact through targeted Revalidation before downstream compensation. Any material corrective Proposal receives canonical Proposal Semantic Change Impact Review before selection.
 **Possible Result:** A finding set whose correction route and USER-review depth are explicit without manufacturing architecture/product decisions for deterministic defects.
 **Derived From / Owners:** `planning/documentation/idtspe-methodology/active/idtspe-core/resolution/findings/FINDING-DISPOSITION.md`, `planning/documentation/idtspe-methodology/active/ai-reviewability/AI-OUTPUT-REVIEWABILITY.md`, `planning/documentation/idtspe-methodology/active/idtspe-core/resolution/proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md`.
 
@@ -183,11 +197,12 @@ A root scenario begins from the ordinary functional entry route. A focused scena
 {
   "id": "SCN-01",
   "type": "ROOT",
-  "title": "Я пришёл с задачей — постепенно разберём её от общего смысла до Exact",
+  "title": "IDTSPE Shell Pass — от текущей задачи к пропорциональному runtime route",
   "entryRoute": "USER request -> Methodology Use-Case Registry Map -> relevant scoped registry -> selected Use Case(s)",
   "assumptions": [],
   "steps": [
     {"id":"SCN-01-S1","title":"Establish the smallest useful composition","semanticRefs":["UC-DOC-USE-REPOSITORY-GUIDANCE","UC-IDTSPE-COMPOSE-CURRENT-WORK"]},
+    {"id":"SCN-01-S1P","title":"Enter the Shell and establish the pass trace","semanticRefs":["planning/documentation/idtspe-methodology/active/idtspe-core/runtime/IDTSPE-RUNTIME-COMPOSITION-CONTRACT.md","planning/documentation/idtspe-methodology/active/idtspe-core/runtime/PASS-TRACE-AND-VISIBILITY-CONTRACT.md"]},
     {"id":"SCN-01-S1N","title":"Disposition an unresolved wanted outcome before inventing a solution","semanticRefs":["planning/documentation/idtspe-methodology/active/idtspe-core/resolution/needs/NEED-CANDIDATE-DISPOSITION.md"]},
     {"id":"SCN-01-S2","title":"Deepen meaning only when pressure appears","semanticRefs":["UC-IDTSPE-COMPOSE-CURRENT-WORK","planning/documentation/idtspe-methodology/active/profiles/sds/profile-contracts/SDS-SEMANTIC-COMPOSITION-AND-READINESS.md"]},
     {"id":"SCN-01-S3","title":"Evaluate material surfaces","semanticRefs":["planning/documentation/idtspe-methodology/active/idtspe-core/runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md","planning/documentation/idtspe-methodology/active/idtspe-core/lenses/LENS-REGISTRY.md"]},
@@ -538,7 +553,7 @@ A root scenario begins from the ordinary functional entry route. A focused scena
 ### Step `SCN-08-S4` — select and integrate without over-retaining trace
 
 **Trigger / Situation:** Candidate meaning is sufficiently reviewed and applicable selection authority is available.
-**AI Action:** Select/revise/reject/defer through the canonical Proposal lifecycle; integrate selected meaning into affected Unit Result Content / owner.
+**AI Action:** Select/revise/reject/defer through the canonical Proposal lifecycle; integrate selected meaning into affected Current Result Content / owner.
 **Method / Mechanics:** Material selection has Decision semantics. Retain a separate explicit/durable Decision trace only when rationale/trade-off/revalidation value should survive. Under SDS, selected but unrealized **downstream owner** meaning remains in the applicable Evolution Step Target Body until realization/materialization. Application Definition is the explicit upstream exception and is refined directly.
 **Possible Result:** Current Result Content / selected future result meaning plus only useful retained resolution trace.
 **Derived From / Owners:** `planning/documentation/idtspe-methodology/active/idtspe-core/resolution/proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md`, `planning/documentation/idtspe-methodology/active/idtspe-core/runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md`.

@@ -70,7 +70,7 @@ The column remains present in exact owner schemas that adopt it. When no materia
 
 ## Smallest Sufficient Scope
 
-Apply the canonical Documentation [Methodology / Contextual Annotation Principle](../../../../../../principles-and-terminology.md#methodology--contextual-annotation-principle). For these Requirement representations, a whole table may be the smallest sufficient scope when one reusable method governs all rows; this contract does not create a second annotation/provenance rule.
+Apply the canonical Documentation [Methodology / Contextual Annotation Principle](../../../../../../principles-and-terminology.md#doc-methodology-contextual-annotation). For these Requirement representations, a whole table may be the smallest sufficient scope when one reusable method governs all rows; this contract does not create a second annotation/provenance rule.
 
 ## Guards
 

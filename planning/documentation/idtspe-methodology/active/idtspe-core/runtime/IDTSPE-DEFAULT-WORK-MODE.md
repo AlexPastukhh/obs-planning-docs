@@ -41,6 +41,10 @@ Use-Case Registry applicability check
 ↓
 UC-IDTSPE-COMPOSE-CURRENT-WORK
 ↓
+P-01 Invocation
+↓
+P-02 Pass Trace / Visibility
+↓
 Broad Discussion
   + only material explicit Core State
   + Target/Target Module only if bounded result helps
@@ -55,7 +59,7 @@ continue / revalidate / handoff / exact work
 
 Broad Discussion may span many turns. Material logical parts may use Key Points; material candidate meaning may become a formal Proposal when addressability/review/lifecycle helps.
 
-Do not force a visible 15-port form, full State dump, Target Result or Artifact Placement into every reply.
+Do not force a visible 16-port checklist, full State dump, Target Result or Artifact Placement into every reply. P-02 records the actual route proportionally; it does not require rendering every untouched port.
 
 ## Existing Artifacts First
 

@@ -103,15 +103,21 @@ accepted/derived meaning integrated into the correct destination
 
 For target-result work the preferred route is often:
 
+> Semantic Owner Dependency
+> Type: `CONTEXTUALIZES`
+> Responsibility: `TWU.SUBJECT-REFERENCE`
+> Owner: [Target Work Subject Reference Contract](../../runtime/target-work/TARGET-WORK-SUBJECT-REFERENCE-CONTRACT.md#target-work-subject-reference)
+
 ```text
-finding concerns an existing bounded Unit responsibility
+finding concerns Collection / item / existing Unit Resolution Slot
+→ route to that smallest natural Target Work subject
+→ reference it through TWU.SUBJECT-REFERENCE
+
+finding concerns the broader existing bounded Unit responsibility
 → that Unit Resolution
 
 no suitable Unit, but a bounded local responsibility is independently useful
-→ Contextual Unit
-
-responsibility independently substantial
-→ Target Formation
+→ Target Formation / Contextual Unit path
 ```
 
 This is not universal Unit-first routing. A finding may instead concern Target Scope, Source authority, a Target relation/handoff, another semantic owner, methodology state or another canonical subject directly.
@@ -489,7 +495,7 @@ Finding
 → Unit Resolution or other canonical lifecycle consequence
 → normal authority/resolution
 → accepted/derived meaning
-→ affected Unit Result Content / Target Result / owner meaning updated when warranted
+→ affected Current Result Content / Target Result / owner meaning updated when warranted
 ```
 
 A trusted low-contention direct correction may integrate proportionally without manufacturing intermediate State objects.

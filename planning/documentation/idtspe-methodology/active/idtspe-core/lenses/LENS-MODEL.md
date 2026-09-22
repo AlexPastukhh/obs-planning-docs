@@ -2,16 +2,33 @@
 
 Status: active generic methodology owner
 
+## Terminology: Lens Meta-Model → Lens Model → Lens Application
+
+This file is the canonical **Lens Meta-Model**: it defines what reusable Lens Models are and how they are selected/applied. The historical filename `LENS-MODEL.md` is retained for navigation compatibility.
+
+```text
+Lens Meta-Model
+  = methodology for defining/selecting/applying Lens Models
+
+Lens Model
+  = one concrete reusable `LENS-*` perspective/operational contract
+
+Lens Application
+  = one application of a Lens Model to a concrete Analysis Surface in a pass
+```
+
+A Lens Application is an execution/application event, not a new semantic owner and not necessarily a durable `Lens Instance`. Several selected Lens Models in one pass share the same Meta-Model/applicability machinery; unchanged shared work should be reused rather than reread/re-executed per Lens. Pass-level reuse/trace semantics are owned by [`../runtime/PASS-TRACE-AND-VISIBILITY-CONTRACT.md`](../runtime/PASS-TRACE-AND-VISIBILITY-CONTRACT.md).
+
 ## 1. Definition
 
 ```text
-Lens
+Lens Model
 = reusable evaluation/discovery perspective
-  applied inside IDTSPE to material Units / Unit Result Content
+  applied inside IDTSPE to material Units / Current Result Content
   and/or Core Resolution State / broader semantic subjects
 ```
 
-A Lens may contribute explanatory Broad Discussion analysis and Key Points without creating any Unit. It may also discover materially actionable meaning concerning Evidence needs, Proposal refinements, Q/R/P, comparison dimensions, Decision inputs, revalidation signals and supporting-artifact guidance. Only meaning that needs ownership/State/lifecycle disposition crosses the Finding Candidate boundary; Generic Core Finding Disposition resolves that destination. The Lens does not define Unit kinds or own disposition.
+A Lens Model, when applied, may contribute explanatory Broad Discussion analysis and Key Points without creating any Unit. It may also discover materially actionable meaning concerning Evidence needs, Proposal refinements, Q/R/P, comparison dimensions, Decision inputs, revalidation signals and supporting-artifact guidance. Only meaning that needs ownership/State/lifecycle disposition crosses the Finding Candidate boundary; Generic Core Finding Disposition resolves that destination. The Lens does not define Unit kinds or own disposition.
 
 ```text
 Lens ≠ Target Module
@@ -107,12 +124,13 @@ L3 may close as `no material uncertainty`. Proposal / Decision Resolution Contex
 
 Applicability gate is checked proportionally when the context makes the perspective plausible.
 
-Core reusable frequent set:
+Core frequent-conditional set:
 
 ```text
 L4 Dependency & Change Impact
 L6 Verifiability / Observability / Operability
 Quality / Risk Materiality
+Target Resolution Coverage
 ```
 
 Installed profiles may contribute additional frequent conditional Lenses. The current SDS profile contributes:
@@ -174,7 +192,8 @@ Canonical producer/Core bridge: [`../resolution/findings/FINDING-DISPOSITION.md`
 Use proportionally:
 
 ```text
-Primary Units / Unit Result Content / Unit Resolution subjects
+Primary Units / Current Result Content / Unit Resolution subjects
+Unit Resolution Slots when one terminal formal sub-responsibility is the smallest useful Analysis Surface
 Conditional Units / Result fields
 Relevant Core Resolution State
 Target / cross-owner Context
@@ -221,7 +240,8 @@ A finding may include proportionally:
 
 ```text
 Meaning
-Affected Unit(s) / fields — when known
+Affected Unit Resolution Slot / Collection / Collection item / Unit(s) / fields — when known
+  Target Work subjects use canonical TWU.SUBJECT-REFERENCE when a durable/referenceable subject is needed
 Evidence / rationale
 Materiality hint — optional
 Likely semantic owner — optional hint
@@ -256,11 +276,19 @@ Lens
 
 Core Finding Disposition
 → smallest correct semantic subject / owner
-→ existing Unit Resolution when that Unit owns the responsibility
+→ existing Unit Resolution Slot when one formal Slot remains the natural subject
+→ existing Unit Resolution when the broader Unit owns the responsibility
 → Contextual Unit when a new bounded local responsibility is useful
 → Target Formation when independently substantial
 → another canonical owner directly when Unit routing would be artificial
 ```
+
+> Semantic Owner Dependency
+> Type: `CONTEXTUALIZES`
+> Responsibility: `TWU.SUBJECT-REFERENCE`
+> Owner: [Target Work Subject Reference Contract](../runtime/target-work/TARGET-WORK-SUBJECT-REFERENCE-CONTRACT.md#target-work-subject-reference)
+
+A Lens finding about one Collection surface, Collection item or Slot does not mutate that subject directly: it becomes a Finding Candidate and passes through Core Finding Disposition. Preserve the smallest selected Target Work subject through the canonical reference contract; do not broaden one item-local finding to the whole Collection or to the common Slot role across all items.
 
 The Lens does not own State routing, Target Formation, REOPEN, handoff authority or Result Content mutation.
 
@@ -312,11 +340,11 @@ Knowledge owner → owns referenced principle/rule/theory meaning
 
 Knowledge may stay inline, point to theory files/folders/sections, use a separate applied Knowledge Basis, or combine these forms. Existing `INLINE / REFERENCED / HYBRID` labels remain compatible representation only. If material cannot yet be reduced to a stable evaluation objective + applicability gate + findings contract, keep it as theory/reference material instead of pretending it is already a Lens.
 
-## 6. Lens Applicability Scan / TF-06A LENS_SET
+## 6. Lens Applicability Scan / Lens applicability/selection
 
 IDTSPE does **not** select Lenses only through a Target Module.
 
-`TF-06A LENS_SET` owns one proportional **Lens Applicability Scan**:
+Lens applicability/selection owns one proportional **Lens Applicability Scan**:
 
 ```text
 Current Target / Target candidate / Local Target Contract
@@ -336,7 +364,7 @@ Current Target / Target candidate / Local Target Contract
 6. read full Lens body / referenced Knowledge Basis only for
    selected or plausibly applicable candidates
 ↓
-7. resolve TF-06A LENS_SET
+7. resolve Lens applicability/selection
 ```
 
 Useful applicability outcomes:
@@ -367,7 +395,7 @@ A Target Module contains one concise `Lens Profile` with direct relative links t
 
 ```text
 P-06 Lens Port
-→ TF-06A LENS_SET
+→ Lens applicability/selection
 → Lens Applicability Scan
 → required Core Pack
     L1/L2/L3 across material choice surfaces
@@ -380,7 +408,7 @@ P-06 Lens Port
   + exceptional local-only Lens when genuinely needed
 ```
 
-`TF-06A LENS_SET` is recomputed when material Target Scope / Sources / Questions change. The resulting Lens Set is contextual, not a fixed ritual.
+Lens applicability/selection is recomputed when material Target Scope / Sources / Questions change. The resulting Lens Set is contextual, not a fixed ritual.
 
 ## 8. Target Module / Local Target Contract Relation
 
@@ -395,7 +423,7 @@ one-off / unusual bounded planning result
 
 both
 → full IDTSPE lifecycle
-→ TF-06A Lens Applicability Scan
+→ P-06 Lens Applicability Scan
 ```
 
 A Local Target Contract may select any registered Core/profile Lens whose applicability gate is satisfied. It does not need a fake Target Module merely to gain access to reusable Lenses.
@@ -429,7 +457,7 @@ Finding Candidate ≠ automatic child Target
 
 ## 11. Artifact / File Ownership Boundary
 
-A Lens may contribute **supporting representation guidance for findings produced by that perspective**, but it does not own the generic placement schema or final destination resolution. Canonical `ARTIFACT_GUIDANCE`, placement-status, precedence and P-14 / TF-10 semantics are owned by [`../representation/ARTIFACT-PLACEMENT-AND-IDTSPE-RESPONSE-CONTRACT.md`](../representation/ARTIFACT-PLACEMENT-AND-IDTSPE-RESPONSE-CONTRACT.md).
+A Lens may contribute **supporting representation guidance for findings produced by that perspective**, but it does not own the generic placement schema or final destination resolution. Canonical `ARTIFACT_GUIDANCE`, placement-status, precedence and P-14 / PERSISTENCE_ADDRESSABILITY semantics are owned by [`../representation/ARTIFACT-PLACEMENT-AND-IDTSPE-RESPONSE-CONTRACT.md`](../representation/ARTIFACT-PLACEMENT-AND-IDTSPE-RESPONSE-CONTRACT.md).
 
 Lens-local responsibility is limited to:
 
@@ -474,7 +502,7 @@ existing canonical owners / stable IDs / relations
 → LENS-LINKED-NOTES-USAGE-JUSTIFICATION
 → linked-notes-usage Finding Candidate carrying JUSTIFIED_LINKED_NOTES / NOT_JUSTIFIED / existing-mechanism / likely-owner context
 → Core Finding Disposition resolves accepted Decision/State input + semantic owner/lifecycle consequence
-→ Documentation / Representation + P-14 / TF-10 only when durable representation/placement is useful
+→ Documentation / Representation + P-14 / PERSISTENCE_ADDRESSABILITY only when durable representation/placement is useful
 ```
 
 The Lens must not create `notes/` or `linked-notes/` trees or route semantic ownership itself.
@@ -531,7 +559,7 @@ accepted finding that changes current Target meaning
 → existing Result Unit update when warranted
 
 Artifact / File Implications
-→ remains current P-14 / TF-10 guidance
+→ remains current P-14 / PERSISTENCE_ADDRESSABILITY guidance
 ```
 
 New or materially revised Lens files should make Analysis Surface, supported operations and Finding Contract explicit.
@@ -551,5 +579,5 @@ Lens does not define State Unit kinds or Target Result Unit kinds
 zero or more AG-* records are allowed
 every AG-* describes Lens-produced supporting / artifact-placement meaning rather than duplicating Target-result AP
 Target Module Lens Profiles resolve to registered Lens owners
-TF-06A can discover applicable registered Lenses even without a Target Module
+P-06 Lens applicability can discover applicable registered Lenses even without a Target Module
 ```

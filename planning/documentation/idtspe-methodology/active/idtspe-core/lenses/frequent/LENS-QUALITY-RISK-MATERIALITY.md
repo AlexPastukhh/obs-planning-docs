@@ -74,7 +74,7 @@ REPRESENTATION: EMBED_NATURAL_OWNER_OR_CURRENT_TARGET
 FILE_OR_ARTIFACT: <natural-owner> or <current-idtspe-owner>
 CONTENT: material requirement/risk/Evidence need; do not create generic NFR file by default
 GUIDANCE_SOURCE: LENS
-RESOLVER: P-14 / TF-10
+RESOLVER: P-14 / PERSISTENCE_ADDRESSABILITY
 ```
 
 ```text
@@ -90,7 +90,7 @@ REPRESENTATION: UNRESOLVED
 FILE_OR_ARTIFACT: UNRESOLVED
 CONTENT: resolve semantic owner before creating shared artifact
 GUIDANCE_SOURCE: LENS
-RESOLVER: P-14 / TF-10
+RESOLVER: P-14 / PERSISTENCE_ADDRESSABILITY
 ```
 
 

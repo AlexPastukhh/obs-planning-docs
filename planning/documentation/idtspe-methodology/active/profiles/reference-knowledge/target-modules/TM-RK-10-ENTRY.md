@@ -59,7 +59,9 @@ Every material Unit follows the inherited Core applicability/materiality envelop
 <a id="ru-rke-01"></a>
 ## `RU-RKE-01` — Entry Identity And Ownership
 
-**Result Responsibility.** What independently useful subject this Entry record denotes, which Bank owns the record and whether it remains a preferred current record.
+**Responsibility.** Resolve what independently useful subject this Entry record denotes, which Bank owns it and whether it remains a preferred current record.
+
+**Purpose.** Preserve stable reusable Entry identity/currentness while preventing duplicate or ownership-drift records.
 
 **Applicability / Omission.** Required for new Entry formation and material identity/currentness questions. May be source-derived for routine refinement when identity/owner are already unambiguous.
 
@@ -67,14 +69,16 @@ Every material Unit follows the inherited Core applicability/materiality envelop
 
 **Resolution Method.** Prefer reuse of a correct existing Entry. Create a new record only when independent durable identity is useful. Choose the smallest correct owning Bank. If the same record remains semantically correct, refine it in place; if it should no longer be preferred, create/reuse current record(s), keep the old ref resolvable and retire the old Entry when authorized/useful.
 
-**Result Content.** Entry ID/name, owning Bank context, subject boundary, status and optional successor refs when retired.
+**Result Content Contract.** Entry ID/name, owning Bank context, subject boundary, status and optional successor refs when retired.
 
 **Validators.** One durable record denotes one useful subject boundary; Bank ownership is correct; retirement does not imply statement migration or successor equivalence.
 
 <a id="ru-rke-02"></a>
 ## `RU-RKE-02` — Entry Representation
 
-**Result Responsibility.** The durable representation needed to locate/understand the Entry subject without mixing interpretation into intrinsic Entry state.
+**Responsibility.** Resolve the durable representation needed to locate/understand the Entry subject without mixing interpretation into intrinsic Entry state.
+
+**Purpose.** Keep the Entry discoverable and understandable while preserving the boundary between intrinsic subject facts and later interpretation.
 
 **Applicability / Omission.** Substantive resolution is material when locator/artifact/provenance/intrinsic factual description adds reusable value. If it is not material, keep `RU-RKE-02` declared with a concise omission disposition; do not manufacture representation detail merely because the Unit exists.
 
@@ -82,14 +86,16 @@ Every material Unit follows the inherited Core applicability/materiality envelop
 
 **Resolution Method.** Keep locator separate from identity. Retain only factual intrinsic description/provenance useful to the Entry. Store durable access constraints when material, not momentary runtime availability. Interpretation/inference/comparison goes to Analysis instead of Entry Body.
 
-**Result Content.** Locator/artifact refs, known provenance/origin, intrinsic factual description/metadata and material durable access constraints.
+**Result Content Contract.** Locator/artifact refs, known provenance/origin, intrinsic factual description/metadata and material durable access constraints.
 
 **Validators.** Locator is not mistaken for identity; intrinsic facts are not mixed with unsupported interpretation; no structured field is retained merely because it could exist.
 
 <a id="ru-rke-03"></a>
 ## `RU-RKE-03` — Semantic Decomposition
 
-**Result Responsibility.** A useful disposition of additional independently useful subjects discovered while resolving the Entry.
+**Responsibility.** Resolve a useful disposition of additional independently useful subjects discovered while resolving the Entry.
+
+**Purpose.** Preserve genuinely reusable discovered subjects without over-decomposing every nameable part or smuggling relation/analysis meaning into the Entry body.
 
 **Applicability / Omission.** Include only when the current material contains meaningful internal/related subject structure whose separate identity could improve reuse/search/classification/relations/analysis. When deeper decomposition has no current value, keep this Unit declared with a concise omission disposition instead of substantive decomposition work.
 
@@ -97,7 +103,7 @@ Every material Unit follows the inherited Core applicability/materiality envelop
 
 **Resolution Method.** Test discovered candidates for independent durable usefulness. Reuse/create separate Entries only when warranted. Decomposition does not automatically create hierarchy or Relations. Route discovered classification/relation/analysis meaning to its natural ordinary operation instead of embedding it into the current Entry.
 
-**Result Content.** Reused/new Entry candidates and/or routing of discovered meaning to Tag Assignment, Relation, Analysis, intrinsic Entry fact or no durable retention.
+**Result Content Contract.** Reused/new Entry candidates and/or routing of discovered meaning to Tag Assignment, Relation, Analysis, intrinsic Entry fact or no durable retention.
 
 **Validators.** Do not split merely because something is nameable; do not silently retire the current Entry from inside decomposition; do not create automatic parent/child edges.
 
@@ -145,5 +151,5 @@ REPRESENTATION: EXISTING_OR_NEW_CANONICAL_ARTIFACT
 FILE_OR_ARTIFACT: <owning-bank-entry-representation>
 CONTENT: Entry identity/owner/currentness plus material locator/provenance/intrinsic factual representation; optional successor refs when retired
 GUIDANCE_SOURCE: TARGET_MODULE
-RESOLVER: P-14 / TF-10
+RESOLVER: P-14 / PERSISTENCE_ADDRESSABILITY
 ```

@@ -15,7 +15,7 @@ Apply during route Unit work or Construction Review when actual source/artifacts
 
 ## Target Inputs / Evidence
 
-Accepted upstream results; relevant Source State; current route Unit Result Content; canonical editable source; rendered previews; representative variants when applicable.
+Accepted upstream results; relevant Source State; current route Unit's Current Result Content; canonical editable source; rendered previews; representative variants when applicable.
 
 ## Supported Operations
 
@@ -70,7 +70,7 @@ REPRESENTATION: SUPPORTING_EVIDENCE_ARTIFACT or EMBED_CURRENT_OWNER
 FILE_OR_ARTIFACT: <construction-review-evidence>
 CONTENT: comparison preview/measurement/finding sufficient to support the disposition
 GUIDANCE_SOURCE: LENS
-RESOLVER: P-14 / TF-10
+RESOLVER: P-14 / PERSISTENCE_ADDRESSABILITY
 ```
 
 ## Knowledge Basis

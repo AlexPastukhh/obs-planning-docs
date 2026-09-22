@@ -27,7 +27,7 @@ Use ordinary Core Proposal/Planning-Branch/Decision semantics to represent actua
 
 Do **not** register vague speculative ideas whose transition/driver is not concrete enough to deserve Step identity. Such pressure can remain Proposal/Q/R/P/working discussion until it becomes an addressable Step candidate.
 
-## Unit Contract Conformance
+## Unit Definition Conformance
 
 This module specializes the Core [Target Module Model](../../../idtspe-core/target-modules/TARGET-MODULE-MODEL.md) and [Unit / Target Step Result Model](../../../idtspe-core/runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md). Core owns generic Unit lifecycle/presence/disposition semantics; this module owns only the Map-specific projection Unit responsibilities, materiality, production guidance and validators below.
 
@@ -42,7 +42,7 @@ This module specializes the Core [Target Module Model](../../../idtspe-core/targ
 
 ### Result Unit Applicability / Materiality
 
-Unit presence/disposition mechanics follow the Core [`Unit Applicability / Materiality / Disposition Contract`](../../../idtspe-core/runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md#5a-unit-applicability--materiality--disposition-contract). The table below owns only Map-specific substantive-materiality and omission-rationale triggers.
+Unit presence/disposition mechanics follow the Core [`Unit Applicability / Materiality / Disposition Contract`](../../../idtspe-core/runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md#twu-applicability-disposition). The table below owns only Map-specific substantive-materiality and omission-rationale triggers.
 
 | Result Unit | Substantive resolution is material when | Unit disposition when substantive resolution is not material |
 |---|---|---|
@@ -52,7 +52,7 @@ Unit presence/disposition mechanics follow the Core [`Unit Applicability / Mater
 
 ### Explicit Unit Checkpoint Placement
 
-Each material Unit inherits the Core [`Unit Applicability Envelope`](../../../idtspe-core/runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md#5b-unit-applicability-envelope--opening--in-unit--closing-checkpoints).
+Each material Unit inherits the Core [`Unit Applicability Envelope`](../../../idtspe-core/runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md#twu-applicability-envelope).
 
 #### `RU-EVOMAP-01` processing envelope
 

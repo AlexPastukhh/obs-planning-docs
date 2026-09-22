@@ -172,7 +172,7 @@ CONTENT:
   + explicit omission reason + disposition authority/state;
   for material Units: enough rationale to explain current Unit resolution depth when useful
 GUIDANCE_SOURCE: LENS
-RESOLVER: P-14 / TF-10
+RESOLVER: P-14 / PERSISTENCE_ADDRESSABILITY
 ```
 
 ## Knowledge Basis

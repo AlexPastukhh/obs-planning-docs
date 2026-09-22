@@ -75,7 +75,7 @@ REPRESENTATION: EMBED_OR_SUPPORTING_EVIDENCE_ARTIFACT
 FILE_OR_ARTIFACT: <prototype-or-implemented-evidence-owner> and optional <evidence-artifact>
 CONTENT: inquiry/collection context; actual observation; limitations; interpretation/follow-up
 GUIDANCE_SOURCE: LENS
-RESOLVER: P-14 / TF-10
+RESOLVER: P-14 / PERSISTENCE_ADDRESSABILITY
 ```
 
 ```text
@@ -91,7 +91,7 @@ REPRESENTATION: SUPPORTING_EVIDENCE_ARTIFACT
 FILE_OR_ARTIFACT: <practical-evidence-artifact>
 CONTENT: raw Evidence referenced from semantic/planning owner with relevant provenance/limits
 GUIDANCE_SOURCE: LENS
-RESOLVER: P-14 / TF-10
+RESOLVER: P-14 / PERSISTENCE_ADDRESSABILITY
 ```
 
 Persist only evidence necessary for traceability/review and permitted by privacy/safety constraints. More retained data is not automatically better evidence.

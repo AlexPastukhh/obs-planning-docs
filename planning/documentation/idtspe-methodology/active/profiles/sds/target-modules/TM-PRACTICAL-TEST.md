@@ -65,7 +65,7 @@ existing telemetry/logs/analytics/support/incident Evidence when relevant
 privacy/safety/window/reset constraints
 ```
 
-Current `TF-04 SOURCE_SET` remains authority.
+Current `SOURCE_AUTHORITY` Requirement remains authority.
 
 ## Knowledge Basis / Lens Profile
 
@@ -98,7 +98,7 @@ establish what real implemented subject/property must be accepted or learned fro
 
 Existing telemetry/logging is Evidence Source. This Target does not own permanent observability architecture; missing observability becomes a Finding Candidate for the natural Slice/Shared/implementation owner or Exact Realization when warranted.
 
-## Unit Contract Conformance
+## Unit Definition Conformance
 
 This module specializes the Core [Target Module Model](../../../idtspe-core/target-modules/TARGET-MODULE-MODEL.md) and [Unit / Target Step Result Model](../../../idtspe-core/runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md). The Core owners define generic Unit lifecycle, complete-inventory/disposition and Proposal/Core-State semantics; this module defines only its SDS-specific Unit responsibilities, local materiality, production guidance, validators and handoffs below.
 
@@ -114,7 +114,7 @@ This module specializes the Core [Target Module Model](../../../idtspe-core/targ
 
 ### Result Unit Applicability / Materiality
 
-Unit presence/disposition mechanics follow the Core [`Unit Applicability / Materiality / Disposition Contract`](../../../idtspe-core/runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md#5a-unit-applicability--materiality--disposition-contract). The table below owns only this module's local substantive-materiality and omission-rationale triggers.
+Unit presence/disposition mechanics follow the Core [`Unit Applicability / Materiality / Disposition Contract`](../../../idtspe-core/runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md#twu-applicability-disposition). The table below owns only this module's local substantive-materiality and omission-rationale triggers.
 
 | Result Unit | Substantive resolution is material when | Unit disposition when substantive resolution is not material |
 |---|---|---|
@@ -130,7 +130,7 @@ The shared method's detailed inquiry fields are guidance, not a mandatory duplic
 
 ### Explicit Unit Checkpoint Placement
 
-Each material Unit below inherits the generic [`Unit Applicability Envelope`](../../../idtspe-core/runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md#5b-unit-applicability-envelope--opening--in-unit--closing-checkpoints). Opening/Closing are mandatory logical applicability boundaries; registries may also be checked during Unit work whenever new material pressure appears.
+Each material Unit below inherits the generic [`Unit Applicability Envelope`](../../../idtspe-core/runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md#twu-applicability-envelope). Opening/Closing are mandatory logical applicability boundaries; registries may also be checked during Unit work whenever new material pressure appears.
 
 #### `RU-PTEST-01` processing envelope
 
@@ -164,7 +164,7 @@ SEMANTIC_OWNER: current TM-PRACTICAL-TEST Target
 REPRESENTATION: EXISTING_OWNER_OR_PRACTICAL_EVIDENCE_ARTIFACT
 CONTENT: real subject/intent; proportional observation plan; Evidence refs; material limits; interpretation/follow-up
 GUIDANCE_SOURCE: TARGET_MODULE
-RESOLVER: P-14 / TF-10
+RESOLVER: P-14 / PERSISTENCE_ADDRESSABILITY
 ```
 
 ```text
@@ -179,7 +179,7 @@ SEMANTIC_OWNER: current Practical Evidence Target as interpreter; raw observatio
 REPRESENTATION: SUPPORTING_EVIDENCE_ARTIFACT
 CONTENT: permitted raw Evidence with version/environment/time/window provenance and material limits
 GUIDANCE_SOURCE: TARGET_MODULE
-RESOLVER: P-14 / TF-10
+RESOLVER: P-14 / PERSISTENCE_ADDRESSABILITY
 ```
 
 Small intent/plan/result may live together. Persist a dedicated Implemented Practical Evidence owner only when the inquiry/result needs independent review/traceability.

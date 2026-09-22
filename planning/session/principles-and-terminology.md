@@ -46,45 +46,45 @@ The USER may redirect, amend, narrow, broaden, stop, change desired depth, answe
 
 AI re-evaluates affected methodology work rather than forcing an earlier path after the situation changed.
 
-## AI Proposal
+## Generic AI Proposal (GIP)
 
-An **AI Proposal** is the lightweight conversational surface used to make an intended AI change/action explicit before execution when proposal-first visibility is useful or required.
+A **Generic AI Proposal (GIP)** is the lightweight conversational surface used to make an intended AI change/action/direction explicit for review or selection without creating formal IDTSPE Proposal lifecycle merely by presentation.
 
-An AI Proposal is not automatically a formal IDTSPE Proposal State Unit and is never accepted merely because AI proposed it.
+A GIP is not automatically a formal IDTSPE Proposal State Unit and is never accepted merely because AI proposed it. A methodology-next recommendation may be surfaced as a GIP when AI is explicitly proposing that action/direction to the USER.
 
-When material candidate meaning needs addressability/lifecycle/review, IDTSPE Core may represent/promote that meaning as a formal `Proposal` State Unit.
+When the **candidate semantic meaning itself** needs addressability/lifecycle/review, IDTSPE Core may represent/promote that meaning as an `IDTSPE Proposal`. The interaction GIP may then present/reference that formal Proposal rather than creating a duplicate candidate.
 
-## Proposal Grounding Before Presentation
+## GIP Grounding Before Presentation
 
-Before presenting a **material AI Proposal**, AI first checks whether available Sources/context are sufficient to formulate that Proposal responsibly.
+Before presenting a **material GIP**, AI first checks whether available Sources/context are sufficient to formulate that GIP responsibly.
 
 ```text
 available Sources + proportionate read-only investigation
 → sufficient grounding
-   → present Proposal
+   → present GIP
 
 material USER-only fact / preference / constraint / USER-owned choice is missing
-and its answer can materially change the Proposal
+and its answer can materially change the GIP
 → ask the minimum useful USER clarification/question
 → incorporate the answer through normal intake
-→ then present/refine the Proposal
+→ then present/refine the GIP
 ```
 
-The clarification is an interaction gate when USER input is actually required, but it is **not itself required to be wrapped in an AI Proposal**. Do not ask the USER for information that can be established from trustworthy Sources, do not manufacture a question before every Proposal, and do not create an artificial confirmation turn for already-explicit USER input.
+The clarification is an interaction gate when USER input is actually required, but it is **not itself required to be wrapped in a GIP**. Do not ask the USER for information that can be established from trustworthy Sources, do not manufacture a question before every Proposal, and do not create an artificial confirmation turn for already-explicit USER input.
 
-A material Proposal may still state non-blocking assumptions/unknowns when they do not prevent an adequate candidate from being presented. Formal IDTSPE Question/Q-R-P state is used only when lifecycle/addressability is useful; an ordinary USER clarification remains an interaction question.
+A material GIP may still state non-blocking assumptions/unknowns when they do not prevent an adequate candidate from being presented. Formal IDTSPE Question/Q-R-P state is used only when lifecycle/addressability is useful; an ordinary USER clarification remains an interaction question.
 
 ## USER-Gated Proposal-Driven Interaction
 
 **USER-gated proposal-driven interaction** is an explicitly USER-selected interaction policy for the current task. It strengthens the normal real-gate policy without creating a second planning runtime or changing IDTSPE semantic ownership.
 
-While active, AI may autonomously perform only proportionate low-cost read-only investigation needed to prepare the next useful AI Proposal or determine that material USER grounding is missing. Before presenting a material Proposal, apply the Proposal Grounding rule above. If a minimum USER clarification is required to formulate the Proposal adequately, ask that question directly and wait for the answer; do not manufacture a Proposal whose only content is permission to ask the question.
+While active, AI may autonomously perform only proportionate low-cost read-only investigation needed to prepare the next useful GIP or determine that material USER grounding is missing. Before presenting a material GIP, apply the GIP Grounding rule above. If a minimum USER clarification is required to formulate the GIP adequately, ask that question directly and wait for the answer; do not manufacture a GIP whose only content is permission to ask the question.
 
-After sufficient grounding exists, AI surfaces the material AI Proposal and waits for USER selection/revision/rejection before crossing the proposed decision/direction/substantial-work/artifact/mutation boundary. Material boundaries include important decisions, materially different approaches, substantial or expensive work batches, artifact creation/change, and mutation not already approved for that exact scope.
+After sufficient grounding exists, AI surfaces the material GIP and waits for USER selection/revision/rejection before crossing the proposed decision/direction/substantial-work/artifact/mutation boundary. Material boundaries include important decisions, materially different approaches, substantial or expensive work batches, artifact creation/change, and mutation not already approved for that exact scope.
 
-Alternatives are shown only when materially distinct alternatives actually exist. USER approval authorizes only the Proposal scope that was selected; a later material boundary requires another Proposal. Ordinary tiny/mechanical substeps inside an approved Proposal do not each become gates.
+Alternatives are shown only when materially distinct alternatives actually exist. USER approval authorizes only the GIP scope that was selected; a later material boundary requires another GIP. Ordinary tiny/mechanical substeps inside an approved GIP do not each become gates.
 
-This interaction policy does **not** turn every conversational AI Proposal into a formal IDTSPE `Proposal` State Unit. Formal Proposal/Q/R/P/Decision semantics remain owned by IDTSPE Core when their lifecycle/addressability is useful.
+This interaction policy does **not** turn every conversational GIP into a formal IDTSPE `Proposal` State Unit. Formal Proposal/Q/R/P/Decision semantics remain owned by IDTSPE Core when their lifecycle/addressability is useful.
 
 The policy remains active for the current task until the USER explicitly cancels or weakens it, or the task ends.
 

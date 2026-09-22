@@ -8,17 +8,19 @@ When the primary bootstrap reaches this package, read:
 
 1. this `README.md`;
 2. [`principles-and-terminology.md`](principles-and-terminology.md);
-3. [`use-case-registry-map.md`](use-case-registry-map.md);
-4. [`use-case-registry.md`](use-case-registry.md).
+3. [`use-cases/UC-DOC-RESOLVE-CURRENT-USE-CASES.md`](use-cases/UC-DOC-RESOLVE-CURRENT-USE-CASES.md) — fundamental applicability Process for methodology-guided work;
+4. [`use-case-registry-map.md`](use-case-registry-map.md) — cross-scope routing metadata consumed by that Process;
+5. [`use-case-registry.md`](use-case-registry.md) — generic Documentation routing rows consumed when this scope is plausible.
 
-Specific Documentation Use-Case bodies are read only when the Registry Map/registry makes them applicable. The Registry Map remains the functional methodology entry after bootstrap.
+Other Documentation Use-Case bodies are read only when the current applicable Use-Case composition requires them. The Registry Map remains routing metadata; [`UC-DOC-RESOLVE-CURRENT-USE-CASES`](use-cases/UC-DOC-RESOLVE-CURRENT-USE-CASES.md) owns applicability resolution.
 
 ## Current Owners
 
 - [`principles-and-terminology.md`](principles-and-terminology.md) — documentation vocabulary and stable semantic rules.
-- [`use-case-registry-map.md`](use-case-registry-map.md) — cross-scope functional-entry map; the first lightweight check for methodology-use navigation.
+- [`use-case-registry-map.md`](use-case-registry-map.md) — cross-scope methodology-use routing metadata consumed by the fundamental applicability resolver.
 - [`use-case-registry.md`](use-case-registry.md) — current generic Documentation capabilities, with compact applicability/result summaries.
-- [`use-cases/`](use-cases/) — current Documentation Use-Case owners.
+- [`use-cases/`](use-cases/) — current Documentation Use-Case owners, including the fundamental methodology applicability Use Case.
+- [`processes/`](processes/) — reusable Documentation Processes reached from Use Cases; they do not replace Use-Case Results or semantic owners.
 - [`templates/`](templates/) — shape-only templates introduced by the fundamental layer.
 
 ## Existing Supporting Areas — Pending File-Level Decomposition

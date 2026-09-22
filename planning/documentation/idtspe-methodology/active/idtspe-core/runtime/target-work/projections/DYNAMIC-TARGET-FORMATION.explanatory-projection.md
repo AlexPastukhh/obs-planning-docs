@@ -1,233 +1,217 @@
-
 # Dynamic Target Formation — Narrative Guide
 
 Status: active explanatory projection
-Canonical state model: `resolution-slot-and-target-formation-resolution-set.md`
+Canonical Target model: [`Target Formation requirement/coverage`](../RESOLUTION-SLOT-AND-TARGET-FORMATION-SET.md#target-formation-requirement-coverage)
+
+> Semantic Owner Dependencies
+> - `REPRESENTS` [`Target Formation requirement/coverage`](../RESOLUTION-SLOT-AND-TARGET-FORMATION-SET.md#target-formation-requirement-coverage) — `TARGET-FORMATION.REQUIREMENT-COVERAGE`
+> - `REPRESENTS` [`Required Reusable Target Model Check`](../RESOLUTION-SLOT-AND-TARGET-FORMATION-SET.md#target-formation-reusable-model-check) — `TARGET-FORMATION.REUSABLE-MODEL-CHECK`
+> - `REPRESENTS` [`Target Module Meta-Model`](../../../target-modules/TARGET-MODULE-MODEL.md#target-module-meta-model) — `TARGET-MODULE.META-MODEL`
+> - `REPRESENTS` [`Target Work Unit contract`](../UNIT-AND-TARGET-STEP-RESULT-MODEL.md#twu-unit-contract) — `TWU.UNIT-CONTRACT`
 
 ## Purpose
 
-Explain how IDTSPE forms a Target and how the current `TF-*` compatibility set continues into later work-orchestration choices without making the whole IDTSPE lifecycle conceptually equal to Target Formation.
+Explain how IDTSPE chooses a useful bounded Target, reuses prepared Target Module analysis when available, and contextually completes uncovered scope/requirements without treating Target formation as a fixed `TF-*` questionnaire.
 
-This file does not define a second numbered mechanism.
-
-```text
-Canonical compatibility mechanism
-= TARGET_FORMATION_RESOLUTION_SET
-```
-
-The current `TF-01..TF-10` IDs remain canonical/stable in this transition. Conceptually, however, read them in two groups:
+## Formation Flow
 
 ```text
-FORMATION CORE
-  TF-01 PURPOSE_OUTPUT
-  TF-02 TARGET_TYPE_FORM
-  TF-03 TARGET_SCOPE
-  TF-04 SOURCE_SET
-  TF-05 TARGET_RELATIONS
-
-LATER WORK-ORCHESTRATION / RESOLUTION COMPATIBILITY SLOTS
-  TF-06 QUESTION_SET
-  TF-06A LENS_SET
-  TF-07 PROPOSAL_SPACE
-  TF-08 BRANCH_POLICY
-  TF-09 HANDOFF
-  TF-10 PERSISTENCE_ADDRESSABILITY
+current task / problem / accepted Sources
+↓
+derive provisional useful purpose/result
+↓
+derive a bounded Target scope/problem surface
+↓
+activate applicable universal Core Target Requirements
++ preserve explicit/already-obvious task Requirements
+↓
+REUSABLE_TARGET_MODEL_CHECK
+├─ suitable Target Module Model
+│  → apply Model
+│  → Target Module Instance
+│  → prepared recurring-scope analysis recognizes/formulates
+│     actual Requirements grounded in this task/scope/Sources
+│  → map them to prepared Module-defined Unit Definitions
+└─ NO_APPLICABLE_TARGET_MODULE
+   → Local Target Contract
+   → contextually analyze scope/problem surface
+   → derive/clarify actual grounded Requirements
+↓
+inspect uncovered scope/Requirements
+├─ direct coverage sufficient
+├─ applicable Core-defined Unit
+├─ prepared Module-defined Unit
+└─ otherwise contextual completion
+   → refine/split scope when needed
+   → clarify/derive Requirement
+   → DEFINE Contextual Unit when bounded work is needed
+↓
+Target is sufficiently formed to execute material Unit work
 ```
 
-This grouping is explanatory only: it does not renumber/remove the current slots. It prevents the reader from inferring that Questions, Lens work, Proposal discovery, handoff and persistence are all part of *forming the Target identity*.
+`Target sufficiently formed` does not mean all work is resolved. Formation and resolution may reopen each other.
 
-## Formation Outcomes
+## Target Boundary
 
-Before starting a material Target, IDTSPE may conclude:
+A Target is a bounded planning responsibility, not merely a topic or file.
 
 ```text
-reuse an existing Target Module
-reuse a Target Module with a local specialization
-create a one-off Local Target Contract
-split one apparent Target into sibling Targets
-reuse an existing Target Instance
-no new Target is needed
+Target
+= useful bounded scope
++ purpose / desired Target Step Result
++ sufficient work structure for the current step
 ```
 
-A local Target Contract does not automatically become methodology-global.
+Prefer solving the whole problem when that is actually simpler/cheaper. Otherwise choose a coherent boundary that avoids dragging the entire problem into one Target while still yielding an independently useful result.
 
-## Current Canonical Resolution Set
+## Prepared Target Module Coverage
 
-### TF-01 PURPOSE_OUTPUT
+A Target Module Model represents reusable work already done for a recurring Target family:
 
 ```text
-What useful `Target Step Result` should this bounded work step produce or refine?
+recognition of a typical scope/problem pattern
++ recurring requirement-pattern knowledge
++ prepared Module-defined Unit Definitions
++ reusable questions/guidance/lenses/validators
++ result composition/handoff guidance
 ```
 
-Bad:
+The current task remains the semantic source of its requirements. A Module recognizes and covers them; it does not create them merely by declaring a schema.
+
+A Module may cover only part of the current Target:
 
 ```text
-"analyze architecture"
-"think about options"
+current scope exposes R1 R2 R3 R4 R5
+TM-X covers R1 R2 R3
+→ apply TM-X
+→ keep its complete Module Unit inventory
+→ contextually/Core-cover R4 R5
 ```
 
-Better:
+Do not reject a useful reusable Module solely because a concrete Target has additional material needs.
+
+## Contextual Completion
+
+When prepared coverage is missing:
 
 ```text
-select a synchronization strategy
-identify the smallest useful capture Slice
-decide whether an own Application is justified
+uncovered need
+→ is scope wrong/too broad/too narrow?
+   yes → refine/split Target
+→ is the Requirement sufficiently understood?
+   no → derive/clarify it from task/Sources/questions
+→ can it be resolved directly?
+   yes → integrate Target state/result
+→ applicable prepared Core/Module Unit?
+   yes → use it
+→ bounded work still needed
+   → DEFINE Contextual Unit
+   → EXECUTE Unit Resolution
+   → integrate Current Result Content
 ```
 
-### TF-02 TARGET_TYPE_FORM
+The Contextual Unit definition should make the local responsibility executable: inputs/Sources, useful questions/drivers, guidance, result contract, validators and result destination as material.
+
+A Contextual Unit is local to the current Target. Repeated recurrence may later justify promotion into a reusable Module/Core Unit but does not do so automatically.
+
+## Universal Core Requirements
+
+The canonical Target model currently prepares these broad reusable requirements where applicable:
 
 ```text
-Which Target Module / Local Target Contract should own that Step-Result family?
+PURPOSE_RESULT
+BOUNDED_SCOPE
+SOURCE_AUTHORITY
+OWNER_RELATIONS
+HANDOFF_CONTINUATION          conditional
+PERSISTENCE_ADDRESSABILITY   conditional
 ```
 
-### TF-03 TARGET_SCOPE
+Target Module reuse is checked by the mandatory `REUSABLE_TARGET_MODEL_CHECK`; it is not a task Requirement.
+
+Coverage/readiness and no-lost-concern rules are cross-cutting invariants/validators rather than recursive peer Requirements.
+
+## Unrouted Concerns
+
+When a **Target already exists** and material meaning inside that Target has an unclear natural semantic destination, use the applicability-driven Core Target Work Unit:
 
 ```text
-What is inside/outside this Target?
+CORE-U-UNROUTED-CONCERNS
 ```
 
-### TF-04 SOURCE_SET
+One Target may have at most one such Unit instance containing multiple concerns. Its job is to route/disposition them, not to become a permanent miscellaneous backlog.
 
-Resolve the actual typed Source Set for this Target: zero or more Source State Units/consumer bindings to authoritative semantic/Evidence/constraint Source Subjects. Reusable Target Module/Unit `Source Contract` text provides archetypes/needs only; it is not the runtime TF-04 value.
+Before any Target exists, keep such material meaning in the Work Context / natural Core State and let it inform a GIP or Target Formation candidate. Do not instantiate a Target Work Unit solely to hold pre-Target ambiguity.
 
-Source State Units may be Target-shared, Unit-local or multi-Unit as material. Target topology never silently creates Source authority.
-
-### TF-05 TARGET_RELATIONS
-
-Resolve topology such as:
+## High-Level Example — Prepared Module + Contextual Completion
 
 ```text
-PART_OF
-PARALLEL_WITH
-PRECEDES
-FLOW_TO
-OVERLAPS_WITH
-ALTERNATIVE_TO
-CONTRIBUTES_TO
+Task:
+  plan offline capture behavior
+
+Provisional Target before full contextual decomposition:
+  purpose = define useful offline-capture behavior
+  scope = capture + local durability
+  excludes background synchronization implementation
+  explicit/obvious current need = capture must work offline
 ```
 
-Topology never silently creates Source authority.
-
-### Formation Core Exit
-
-After `TF-01..TF-05` are sufficiently resolved, the Target identity/form/scope/source/topology is formed enough to begin material resolution/production work.
-
-The remaining current `TF-*` slots stay in the same canonical resolution set for compatibility, but they coordinate **work over the formed Target** rather than define a second Target identity.
-
-### TF-06 QUESTION_SET
-
-Choose only Questions that materially help resolve/produce the current Target Step Result. Concrete Questions are Core State Units.
-
-### TF-06A LENS_SET
-
-Select/apply Lenses inside the current IDTSPE work. Compose:
+`REUSABLE_TARGET_MODEL_CHECK` runs on that provisional scope/problem surface and finds `TM-FEATURE`. Applying the Module reuses its prepared recurring-scope analysis instead of first deriving the whole Requirement set contextually:
 
 ```text
-required Core Pack
-  L1-L3 across material choice surfaces
-  Proposal / Decision Resolution Context when a material Proposal/Decision surface exists
-  Documentation / Representation at output/materialization
-Target Module Lens Profile
-applicable L4/L5/L6/Quality
-genuinely local Lens only when needed
+TM-FEATURE recognition/coverage guidance
++ current task/Sources
+→ grounded R1: capture works without network
+→ grounded R2: successful capture is durably stored
+→ grounded R3: failure is not reported as success
+
+prepared coverage:
+  R1 → RU-FEATURE-BEHAVIOR
+  R2/R3 → RU-FEATURE-RESULT + proof guidance
 ```
 
-### TF-07 PROPOSAL_SPACE
-
-Discover materially different answer candidates.
-
-### TF-08 BRANCH_POLICY
-
-Use shallow comparison by default; create Planning Branches only when alternatives imply materially different downstream networks.
-
-### TF-09 HANDOFF
-
-Define which accepted Target Step Result / Result Unit meaning becomes a downstream Source and for whom.
-
-### TF-10 PERSISTENCE_ADDRESSABILITY
-
-For material Result Units and material State Units that should survive, decide stable addressability and physical representation through the current P-14 / Artifact Placement mechanism.
-
-## High-Level Example — Local Architecture Problem Inside A Slice
-
-Parent Target:
+After prepared coverage is applied, remaining scope/context exposes an additional grounded need not sufficiently covered by the Module:
 
 ```text
-SL-CAP-01
+R4: conflict behavior must be sufficiently defined
+→ no suitable prepared Core/Module Unit
+→ DEFINE CU-OFFLINE-CONFLICT
+→ EXECUTE CU-OFFLINE-CONFLICT
+→ result covers R4
 ```
 
-During implementation planning, L5 exposes:
+The Requirements remain grounded in the actual task/scope/Sources. The Module contributed reusable recognition/analysis and prepared Unit coverage; contextual work only completed the remaining gap.
+
+## High-Level Example — No Target Module
 
 ```text
-three materially different server-integration strategies
-with different future provider-change costs
+Task / problem
+↓
+form provisional useful Target purpose/scope/problem surface
++ applicable Core Target Requirements
++ explicit/already-obvious task Requirements
+↓
+REUSABLE_TARGET_MODEL_CHECK
+→ NO_APPLICABLE_TARGET_MODULE
+↓
+Local Target Contract
+↓
+contextually derive/clarify grounded Requirements from the scope/task/Sources
+↓
+use applicable Core-defined Units
++ DEFINE Contextual Units for remaining bounded work
+↓
+EXECUTE material Units
+↓
+validate Requirement coverage/readiness
+↓
+Target Step Result
 ```
 
-A simple Answer Decision is insufficient because each alternative requires its own runtime/dependency investigation.
-
-Target Formation resolves:
+The large groups of work are therefore:
 
 ```text
-TF-01:
-  select server-integration strategy
-
-TF-02:
-  no reusable Target Module fits exactly
-  → Local Target Contract
-
-TF-03:
-  only integration responsibility, not entire Slice
-
-TF-04:
-  parent Slice
-  current API/client
-  current server
-  accepted Evolution Items
-
-TF-05:
-  PART_OF SL-CAP-01
-
-TF-06:
-  contract ownership?
-  retry semantics?
-  provider coupling?
-  migration?
-
-TF-06A:
-  required Core Pack + applicable L4 + L5 + L6
-
-TF-07:
-  direct calls
-  feature-local gateway
-  shared generic client
-
-TF-08:
-  branch only if shallow comparison is insufficient
-
-TF-09:
-  accepted strategy returns to SL-CAP-01 as Source
-
-TF-10:
-  persist Decision and supporting plan
+1. define/form Target
+2. define needed Unit work where not prepared
+3. execute Units and compose the result
 ```
-
-The child Target uses the same IDTSPE Shell; no special Architecture workflow is required.
-
-## High-Level Example — No New Target
-
-User already supplies:
-
-```text
-accepted Scenario
-accepted Domain
-one obvious small Useful Vertical Result
-```
-
-Target Formation can conclude:
-
-```text
-separate Slice Strategy Target not needed
-→ directly form TM-IMPLEMENTATION-SLICE
-```
-
-Dynamic formation is therefore also allowed to **avoid unnecessary Targets**.

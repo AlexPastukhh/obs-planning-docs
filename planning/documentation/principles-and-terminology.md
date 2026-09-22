@@ -117,25 +117,28 @@ A provenance-only/legacy registry may retain a smaller `ID | Use Case | Owner` s
 
 A registry must cover every current Use Case in its declared functional scope and point to each canonical owner. It does not aggregate neighboring Session, repository, application, or specialized-methodology capabilities merely because they exist in the same repository. Structural README/navigation routes between scopes. During staged migration, explicit compatibility routes may temporarily preserve unresolved legacy entries inside the affected scope.
 
+<a id="doc-use-case-applicability-scan"></a>
 ## Use-Case Applicability Scan
 
-A **Use-Case Applicability Scan** is the lightweight functional-entry check that determines which Use Cases are relevant to the current situation.
+Responsibility ID: `DOC.USE-CASE-APPLICABILITY-SCAN`
+
+A **Use-Case Applicability Scan** is the lightweight functional-entry check that determines which methodology-use Use Cases are relevant to the current situation. This section owns the generic scan meaning/invariants; the reusable operational resolution Process is owned by [`UC-DOC-RESOLVE-CURRENT-USE-CASES`](use-cases/UC-DOC-RESOLVE-CURRENT-USE-CASES.md). The Registry Map and scoped registries provide routing metadata rather than owning that Process.
 
 ```text
-current situation
-→ Use-Case Registry Map
-→ scoped Use-Case Registry row summaries
-→ zero or more relevant Use Cases
-→ read/follow only those Use-Case owners
+current situation + still-trustworthy prior applicability
+→ registry routing/applicability metadata
+→ current applicable Use-Case composition
+→ read/follow only owner detail needed for the next material action
 ```
 
-The scan is logically repeated when the situation changes materially. It does not require rereading unchanged files on every conversational turn. Loaded registry metadata may be reused while current and trustworthy.
+Reuse of current registry metadata/prior applicability is allowed while trustworthy; reuse does not mean skipping the logical applicability check. The operational owner defines re-evaluation timing, retention/add/drop behavior and command/tooling composition requirements.
 
-A Use-Case Applicability Scan chooses **ways of using the methodology/documentation system**. It must not duplicate the specialized planning/design/evaluation work of a methodology component reached by the selected Process.
+The scan selects **ways of using the methodology/documentation system**. It must not duplicate or execute specialized planning/design/evaluation work of a methodology component reached by a selected Use-Case Process. A Use Case may compose several supporting methodology components; component existence does not imply applicability or maximal use.
 
-A Use Case may compose several supporting methodology components. The existence of a component does not make it applicable, and applicability does not imply maximal use.
-
+<a id="doc-contextual-guidance"></a>
 ## Contextual Guidance Principle
+
+Responsibility ID: `DOC.CONTEXTUAL-GUIDANCE`
 
 Repository methodology is applied to the actual situation rather than executed as a ceremonial maximum.
 
@@ -156,7 +159,10 @@ A **Use-Case Registry Map** is a structural-functional map of scoped Use-Case Re
 
 The map contains registry-scope routing metadata, not Use-Case bodies and not specialized methodology-component entries.
 
+<a id="doc-registry-scan"></a>
 ## Registry Scan
+
+Responsibility ID: `DOC.REGISTRY-SCAN`
 
 A **Registry Scan** is a lightweight candidate-discovery operation over the routing/applicability metadata of a registry.
 
@@ -179,12 +185,19 @@ local applicability passed
 
 This term applies to Use-Case Registries and specialized methodology-component registries. The metadata and next authority differ by registry type, but the scan/selection boundary remains the same.
 
+<a id="doc-functional-routing-ownership"></a>
 ## Functional Routing Ownership Chain
+
+Responsibility ID: `DOC.FUNCTIONAL-ROUTING-OWNERSHIP`
 
 The methodology uses one semantic handoff chain so each routing decision has one owner:
 
 ```text
 current situation
+       │
+       ▼
+Fundamental Use-Case applicability resolver
+(Process authority; consults routing metadata)
        │
        ▼
 Use-Case Registry Map
@@ -238,7 +251,10 @@ README does not need a Use Case merely to justify its existence.
 
 README should not duplicate detailed Use-Case Process, Principles & Terminology, or other semantic owner bodies.
 
+<a id="doc-responsibility-map"></a>
 ## Responsibility Map
+
+Responsibility ID: `DOC.RESPONSIBILITY-MAP`
 
 A **Responsibility Map** is a cross-cutting routing projection from a semantic responsibility/task to its current canonical owner.
 
@@ -261,6 +277,26 @@ Boundary with neighboring navigation roles:
 
 A Responsibility Map may be manually maintained when small, but its critical owner mappings should be mechanically parity-checked when drift would materially confuse methodology routing.
 
+Responsibility Maps may be hierarchical when a scope contains several sibling semantic owners: a parent map may route to a narrower child map, which then routes to the canonical owner. Do **not** create a Responsibility Map for every folder by default. Create one when it materially reduces ownership inference, competing routes or semantic duplication. Map entries should state the responsibility, owner and useful boundary/routing distinction; they must not copy the owned contract body.
+
+<a id="doc-responsibility-anchor-audit-coverage"></a>
+## Responsibility / Anchor Audit Coverage
+
+Responsibility ID: `DOC.RESPONSIBILITY-ANCHOR-AUDIT-COVERAGE`
+
+A **Responsibility / Anchor Audit Coverage** artifact is non-normative evidence that records which declared methodology scopes have actually received a responsibility-owner / Responsibility Map / stable-anchor / inbound-link audit. It exists so later work can distinguish a closed audited zone from an area that merely happened to be touched by a package.
+
+```text
+coverage evidence
+→ audited scope
+→ responsibility/map checks performed
+→ anchor/link checks performed
+→ repair/closeout result
+→ explicit exclusions / future zones
+```
+
+The coverage artifact does not become a semantic owner or Responsibility Map. A zone may be marked closed only for its declared scope; profile/link-only migrations do not imply that the profile's own semantic responsibilities were audited. Update the coverage evidence when a dedicated responsibility/anchor audit closes or materially reopens a zone.
+
 ## Principles & Terminology
 
 A **Principles & Terminology** file defines the vocabulary and stable semantic rules of an area.
@@ -278,13 +314,121 @@ When a rule genuinely governs several terms, it may be written once as a cross-t
 
 Principles & Terminology defines meaning; it does not own step-by-step operational Process.
 
+<a id="doc-semantic-owner"></a>
 ## Semantic Owner
+
+Responsibility ID: `DOC.SEMANTIC-OWNER`
 
 A **Semantic Owner** is the one complete current owner of a responsibility or meaning.
 
-Several files may reference or demonstrate the same meaning, but they must not become competing authorities.
+Several files may reference, contextualize, extend, represent or demonstrate the same meaning, but they must not become competing authorities.
 
 When existing text mixes responsibilities, classify the meaning first and only then decide whether it should stay inline, move, or be extracted.
+
+<a id="doc-semantic-dry"></a>
+## Semantic DRY Principle
+
+Responsibility ID: `DOC.SEMANTIC-DRY`
+
+One normative semantic responsibility has exactly **one canonical semantic owner**. DRY applies to normative meaning, not to every repeated sentence.
+
+```text
+one responsibility / rule
+→ one canonical semantic owner
+
+non-owner
+→ may reference / restate / contextualize / extend / represent / migrate
+→ must not silently become a second authority for the base meaning
+```
+
+Contextual repetition is allowed when local comprehension or execution materially benefits from seeing the meaning in place. When that repeated/clarified passage could reasonably be mistaken for an independent rule, it MUST identify the canonical owner through a tracked `Semantic Owner Dependency` rather than relying on prose similarity.
+
+If changing one semantic rule repeatedly requires synchronized normative edits across several apparent owners, treat that as an ownership smell: first check whether the meaning is duplicated and should be consolidated under one owner. Do not mechanically synchronize competing normative copies merely to make current wording match.
+
+## Semantic Responsibility / Responsibility ID
+
+A **Semantic Responsibility** is a bounded normative meaning with one natural change responsibility and one canonical semantic owner.
+
+When cross-file routing/dependency tracking materially benefits from a stable name, assign a stable `Responsibility ID`. The ID names the responsibility, not its current physical location. Moving the owner to another file/heading therefore does not require changing the semantic identity.
+
+```text
+Responsibility ID
+≠ filename
+≠ heading title
+≠ fragment location
+```
+
+Do not invent fine-grained IDs for every sentence. Use them where a responsibility has independent consumers/change pressure.
+
+<a id="doc-explicit-stable-semantic-anchor"></a>
+## Explicit Stable Semantic Anchor
+
+Responsibility ID: `DOC.EXPLICIT-STABLE-SEMANTIC-ANCHOR`
+
+An **Explicit Stable Semantic Anchor** is a manually declared fragment identifier created because another artifact needs a stable direct reference to one semantic section. It is a documentation public-reference surface, not an automatically required decoration for every heading.
+
+```md
+<a id="twu-collection-contract"></a>
+## Collection Contract
+```
+
+Rules:
+
+- create an explicit anchor when a real cross-file consumer needs to reference that semantic section; do not mass-create anchors pre-emptively for every heading;
+- consumers that need a stable semantic section reference should use the explicit anchor rather than depend on an automatically generated heading slug; when an explicit anchor is introduced for an already-referenced section, migrate the reviewed section-specific inbound references from generated heading fragments to the explicit anchor in the same change unless an explicit compatibility reason requires otherwise;
+- keep the explicit anchor stable across ordinary heading-title edits; when ownership moves, preserve the Responsibility ID and update routing/dependencies to the new owner location;
+- an explicit anchor with **zero inbound references** is suspicious, not an automatic deletion target: first audit broken, misspelled, stale or incorrectly routed fragment references; remove the anchor only when it is genuinely unused;
+- an intentionally retained compatibility anchor is allowed only when its compatibility purpose is explicit.
+
+The existence of an explicit anchor signals that inbound references are expected or intentionally supported; it does not by itself prove that valid inbound references currently exist.
+
+<a id="doc-semantic-owner-dependency"></a>
+## Semantic Owner Dependency
+
+Responsibility ID: `DOC.SEMANTIC-OWNER-DEPENDENCY`
+
+A **Semantic Owner Dependency** records that a non-owner passage materially depends on semantic meaning owned elsewhere and therefore requires revalidation when that owner meaning changes. The dependency is declared next to the dependent passage and links to the canonical owner/explicit anchor; reverse dependency indexes are derived mechanically rather than maintained as a second manual Source of Truth.
+
+Use the smallest useful dependency type:
+
+```text
+RESTATES
+  repeats owner semantics without independent local authority
+
+CONTEXTUALIZES
+  explains an owner rule/consequence in the consumer's local context
+
+EXTENDS
+  inherits owner semantics and owns only an explicit local delta/constraint
+
+REPRESENTS
+  template/projection renders owner semantics without owning them
+
+MIGRATES
+  migration guidance maps legacy/current meaning toward the owner contract
+```
+
+A compact declaration should identify at least the dependency type and canonical owner link, and the `Responsibility ID` when one exists. `EXTENDS` must make its locally owned delta distinguishable from inherited base semantics. Prefer a small local declaration next to the dependent passage rather than a separate manually maintained reverse-dependency registry.
+
+```md
+> Semantic Owner Dependency
+> Type: CONTEXTUALIZES
+> Responsibility: DOC.SEMANTIC-DRY
+> Owner: [Semantic DRY Principle](#doc-semantic-dry)
+```
+
+The concrete relative path depends on the consumer location; the stable anchor/Responsibility ID are the durable semantic reference surfaces.
+
+```text
+ordinary Markdown link
+→ navigation only
+
+Semantic Owner Dependency
+→ non-owner semantic dependence
+→ REQUIRED revalidation after a semantic owner change
+```
+
+Changing only owner wording/layout without changing meaning does not automatically require a semantic rewrite of every dependent passage, but link integrity still applies. A semantic owner change triggers the reusable [`Semantic Owner Change Revalidation`](processes/SEMANTIC-OWNER-CHANGE-REVALIDATION.process.md) Process.
 
 ## Reusable Contract
 
@@ -307,7 +451,10 @@ Local extension does not automatically update the reusable owner.
 
 Repeated usefulness is a signal to review whether the reusable owner should be extended.
 
+<a id="doc-methodology-contextual-annotation"></a>
 ## Methodology / Contextual Annotation Principle
+
+Responsibility ID: `DOC.METHODOLOGY-CONTEXTUAL-ANNOTATION`
 
 When a produced planning/documentation result needs to show **how a material Unit or independently material block was formed**, bind it to the smallest sufficient reusable methodology owner set instead of copying methodology prose into the result.
 
@@ -424,22 +571,29 @@ Structural navigation and functional navigation are different:
 
 None should duplicate the semantic body owned by the destination owner. Cross-scope navigation starts from README/area navigation; each area owns its own current functional or methodology-specific navigation model.
 
+<a id="doc-markdown-link-navigation"></a>
 ### Markdown Link Navigation Rule
 
-For repository Markdown documentation, an ordinary **relative Markdown link** is the default lightweight relation when a normal reader materially benefits from moving directly from one addressable artifact to another. Prefer a direct link over a bare filename, path, ID or prose-only mention when the destination is part of the useful reading path. When one specific section is the useful destination, prefer a stable fragment link.
+Responsibility ID: `DOC.MARKDOWN-LINK-NAVIGATION`
+
+For repository Markdown documentation, an ordinary **relative Markdown link** is the default lightweight relation when a normal reader materially benefits from moving directly from one addressable artifact to another. Prefer a direct link over a bare filename, path, ID or prose-only mention when the destination is part of the useful reading path. When one specific semantic section must remain a stable cross-file reference target, link to its explicitly declared stable semantic anchor.
 
 ```text
-Markdown link
+ordinary Markdown link
 = navigation / discoverability relation
 
-Markdown link
+ordinary Markdown link
 ≠ semantic ownership
-≠ dependency authority
+≠ semantic dependency authority
 ≠ synchronization contract
 ≠ review-on-change obligation
+
+tracked Semantic Owner Dependency
+= explicit non-owner dependence on owner semantics
+→ semantic owner change requires revalidation
 ```
 
-Do not turn every textual mention into a link. Use a shallow registry when a many-owner overview is more useful than many direct relations, and use Linked Notes or another tracked relation only when backlinks/query/synchronization behavior is independently justified. A broken path or fragment is a documentation defect, while a mechanically valid link may still be misleading when it points to stale, legacy or non-authoritative material.
+Do not turn every textual mention into a link and do not turn every heading into an explicit anchor. When a non-owner materially restates/contextualizes/extends/represents/migrates owner semantics, use a Semantic Owner Dependency declaration with a direct owner link rather than expecting an ordinary link to imply revalidation. Use a shallow registry when a many-owner overview is more useful than many direct relations, and use Linked Notes or another tracked relation only when its stronger behavior is independently justified. A broken path or fragment is a documentation defect, while a mechanically valid link may still be misleading when it points to stale, legacy or non-authoritative material.
 
 ## Progressive Complexity Principle
 

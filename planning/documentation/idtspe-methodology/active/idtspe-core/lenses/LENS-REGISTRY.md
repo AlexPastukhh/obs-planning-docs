@@ -38,6 +38,7 @@ The required Core Pack is part of every material IDTSPE lifecycle **when its cor
 | [`LENS-DEPENDENCY-CHANGE-IMPACT`](frequent/LENS-DEPENDENCY-CHANGE-IMPACT.md) | L4 — dependency/change surface/consumers/blast radius | `INLINE` |
 | [`LENS-VERIFIABILITY-OBSERVABILITY-OPERABILITY`](frequent/LENS-VERIFIABILITY-OBSERVABILITY-OPERABILITY.md) | L6 — proof/observation/diagnosis/operation | `INLINE` |
 | [`LENS-QUALITY-RISK-MATERIALITY`](frequent/LENS-QUALITY-RISK-MATERIALITY.md) | material quality/risk categories | `INLINE` |
+| [`LENS-TARGET-RESOLUTION-COVERAGE`](frequent/LENS-TARGET-RESOLUTION-COVERAGE.md) | Target scope/Requirement/Unit coverage sufficiency; prepared vs contextual completion | `INLINE` |
 
 ## 3. Generic Reusable Lenses
 
@@ -55,7 +56,7 @@ Specific Lens shortcut commands are exceptional, but **every registered Lens is 
 ```text
 idtspe.lenses.select
 → подбери линзы <target/context>
-→ run the proportional TF-06A Lens Applicability Scan
+→ run the proportional Lens Applicability Scan through P-06
 
 idtspe.lens.apply
 → примени линзу <lens> к <target/context>
@@ -103,11 +104,11 @@ Each profile registry owns its current Lens inventory, names and attachment poli
 
 ## 5. Composition / Applicability Scan Rule
 
-`TF-06A LENS_SET` performs the proportional Lens Applicability Scan before resolving the active Lens Set. It combines required Core checks, the active Target Module Lens Profile when any, plausible Core/profile conditional Lenses and explicit user/agent Lens selection. Full Lens/Knowledge-Basis bodies are read only for selected or plausibly applicable candidates.
+Lens applicability performs the proportional Lens Applicability Scan before selecting/applying active Lenses. It combines required Core checks, the active Target Module Lens Profile when any, plausible Core/profile conditional Lenses and explicit user/agent Lens selection. Full Lens/Knowledge-Basis bodies are read only for selected or plausibly applicable candidates.
 
 ```text
 P-06 Lens Port
-→ TF-06A Lens Applicability Scan
+→ Lens Applicability Scan
 → required Core Pack
   L1/L2/L3 at material choices
   + Proposal / Decision Resolution Context when a material Proposal/Decision surface exists
@@ -128,7 +129,7 @@ The `INLINE / REFERENCED / HYBRID` values in the tables above describe the curre
 
 A Lens may contribute **zero or more** `AG-*` records. No AG record is required when Core Finding Disposition resolves the current Target as the semantic owner, the Target Module/local contract already owns representation of the accepted Target meaning, and no distinct supporting artifact is useful. AG records are reserved for Lens-produced supporting / artifact-placement meaning; semantic owner/handoff/reopen consequences remain Core Finding Disposition concerns, and AG must not duplicate a Target Module AP for the same Target result.
 
-The Documentation / Representation Lens is required before final P-14 placement whenever material output may persist. The Lens never creates semantic authority by itself; `P-14 / TF-10` resolves physical placement.
+The Documentation / Representation Lens is required before final P-14 placement whenever material output may persist. The Lens never creates semantic authority by itself; `P-14 / PERSISTENCE_ADDRESSABILITY` resolves physical placement.
 
 
 ## 6A. Analysis Surface / Operations / Findings
@@ -164,3 +165,9 @@ Materially revised SDS Lens bodies are required to conform literally to the Anal
 Audit/check evidence is retained under [`../../evidence/audits/`](../../evidence/audits/) and does not participate in Lens registry authority.
 
 Example standard: [`../examples/HIGH-LEVEL-EXAMPLE-AUTHORING-GUIDANCE.md`](../examples/HIGH-LEVEL-EXAMPLE-AUTHORING-GUIDANCE.md).
+
+### LENS-TARGET-RESOLUTION-COVERAGE — Target Resolution Coverage
+
+Path: [`frequent/LENS-TARGET-RESOLUTION-COVERAGE.md`](frequent/LENS-TARGET-RESOLUTION-COVERAGE.md)
+
+Use when a Target needs a reusable check that its current scope/Requirements are sufficiently covered by direct state, prepared Module/Core Units and contextual work without manufacturing duplicate owners. This Lens surfaces Findings only; Target Formation/Resolution owns composition changes.

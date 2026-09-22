@@ -52,7 +52,9 @@ Every material Unit follows the inherited Core applicability/materiality envelop
 <a id="ru-rkb-01"></a>
 ## `RU-RKB-01` — Bank Identity And Scope
 
-**Result Responsibility.** Stable Bank identity plus the boundary of reusable knowledge it owns.
+**Responsibility.** Establish stable Bank identity plus the boundary of reusable knowledge it owns.
+
+**Purpose.** Provide a durable reusable knowledge owner so later Entry/Vocabulary/Landscape work can route authority and reuse without overlap or accidental ownership drift.
 
 **Applicability / Omission.** Required for a new Bank. For reconfiguration, may remain unchanged when identity/scope are unaffected.
 
@@ -60,14 +62,16 @@ Every material Unit follows the inherited Core applicability/materiality envelop
 
 **Resolution Method.** Identify the durable knowledge owner justified by actual reuse/lifecycle; reject medium/domain-only partitions; choose the smallest ownership scope that genuinely owns the knowledge.
 
-**Result Content.** Bank ID/name, ownership/reuse scope and material boundary notes.
+**Result Content Contract.** Bank ID/name, ownership/reuse scope and material boundary notes.
 
 **Validators.** Scope is coherent, not merely a visual/music/game partition, and does not collide with another registered Bank identity.
 
 <a id="ru-rkb-02"></a>
 ## `RU-RKB-02` — Access And Ownership Policy
 
-**Result Responsibility.** The material access/authority configuration needed for Bank work beyond its basic identity.
+**Responsibility.** Resolve the material access/authority configuration needed for Bank work beyond its basic identity.
+
+**Purpose.** Make cross-bank visibility, vocabulary consumption and mutation authority explicit without conflating access with ownership.
 
 **Applicability / Omission.** When installation/repository defaults already provide the needed behavior and no material Bank-specific policy remains, keep this Unit declared with a concise omission disposition or a source-derived minimal result as appropriate.
 
@@ -75,7 +79,7 @@ Every material Unit follows the inherited Core applicability/materiality envelop
 
 **Resolution Method.** Select only Banks that should be visible to this Bank and only Vocabulary Packages it actually consumes. Record Bank-specific mutation/cross-bank-statement restrictions only when they differ materially from installation defaults. Visibility is explicit/non-transitive and never grants upstream mutation authority.
 
-**Result Content.** Visible Bank refs, consumed Vocabulary Package refs and material local write/mutation policy when needed.
+**Result Content Contract.** Visible Bank refs, consumed Vocabulary Package refs and material local write/mutation policy when needed.
 
 **Validators.** Referenced Banks/Packages are registered in the current installation; visibility does not imply ownership/write authority; vocabulary consumption does not imply evolution authority.
 
@@ -104,5 +108,5 @@ REPRESENTATION: EXISTING_OR_NEW_CANONICAL_ARTIFACT
 FILE_OR_ARTIFACT: <bank-registry-and-bank-owner>
 CONTENT: Bank identity/scope plus material visibility, Vocabulary consumption and Bank-specific mutation policy
 GUIDANCE_SOURCE: TARGET_MODULE
-RESOLVER: P-14 / TF-10
+RESOLVER: P-14 / PERSISTENCE_ADDRESSABILITY
 ```

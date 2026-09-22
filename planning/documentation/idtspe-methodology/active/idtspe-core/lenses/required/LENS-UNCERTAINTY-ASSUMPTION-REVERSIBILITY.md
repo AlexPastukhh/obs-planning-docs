@@ -75,7 +75,7 @@ REPRESENTATION: EMBED_CURRENT_TARGET_PLANNING_STATE
 FILE_OR_ARTIFACT: <current-idtspe-owner>
 CONTENT: assumption/unknown; Evidence need; reversible/defer choice; revalidation signal
 GUIDANCE_SOURCE: LENS
-RESOLVER: P-14 / TF-10
+RESOLVER: P-14 / PERSISTENCE_ADDRESSABILITY
 ```
 
 ```text
@@ -91,7 +91,7 @@ REPRESENTATION: UNRESOLVED
 FILE_OR_ARTIFACT: <prototype-or-practical-test-owner>
 CONTENT: Evidence question/protocol + likely Evidence Target hint; Core Finding Disposition / Target Formation resolves actual owner before placement
 GUIDANCE_SOURCE: LENS
-RESOLVER: P-14 / TF-10
+RESOLVER: P-14 / PERSISTENCE_ADDRESSABILITY
 ```
 
 

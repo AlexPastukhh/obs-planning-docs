@@ -25,10 +25,10 @@ Q/R/P lifecycle
 = separate Core owner; Q/R/P may drive, constrain or be exposed by Proposals/Decisions
 
 Session Runtime
-= interaction/authorization boundary for actual mutation
+= Generic AI Proposal (GIP) interaction/authorization boundary for intended AI action/direction and actual mutation
 ```
 
-A Proposal is candidate Core State. It is not accepted product/methodology authority merely because it was suggested, formalized, analyzed, recommended or selected by an AI-only heuristic.
+An `IDTSPE Proposal` (short form `Proposal` inside Core) is candidate Core State. It is not accepted product/methodology authority merely because it was suggested, formalized, analyzed, recommended or selected by an AI-only heuristic.
 
 ## 2. Legacy Idea Compatibility
 
@@ -65,9 +65,24 @@ For approval-relevant formal Proposals, the motivating Question and/or Problem m
 
 The Target Goal / Desired Outcome is Target/scope context; this contract does not introduce a separate Generic Goal State Unit. A `Need Candidate` may be the intake/disposition subject that establishes or refines that desired-outcome context before a concrete candidate answer exists. When disposition yields a real candidate answer, this Proposal lifecycle takes over; the Proposal may retain the Need/Source reference as driver provenance without copying a parallel Need-owned semantic result.
 
-A lightweight conversational AI proposal may remain informal when formal addressability/lifecycle adds no value. If formalized, it becomes the same candidate Proposal role and remains unselected.
+A Generic AI Proposal (GIP) is the lightweight Session interaction surface for an AI-suggested action/direction/candidate. It may remain purely interaction-level when formal addressability/lifecycle adds no value. If the candidate **semantic resolution** carried by a GIP needs Core lifecycle/addressability, represent that meaning as an IDTSPE Proposal; the GIP may present/reference that Proposal. Promotion never selects it.
 
 Source material is not automatically a Proposal. Facts, constraints, accepted Decisions, Questions, corrections, Evidence and provenance keep their own meaning unless an actual candidate answer is present.
+
+## 3AA. GIP / IDTSPE Proposal Boundary
+
+```text
+Generic AI Proposal (GIP)
+= interaction-level AI suggestion of what to do/change/produce next
+
+IDTSPE Proposal
+= addressable candidate semantic resolution owned by this lifecycle
+
+Recommendation
+= analytical/methodology recommendation; when AI explicitly presents it as the proposed next action, the interaction surface may be a GIP
+```
+
+A GIP can exist with no IDTSPE Proposal. An IDTSPE Proposal can exist without being presented through a GIP. When both exist, keep one semantic candidate authority: the GIP references/presents the IDTSPE Proposal rather than duplicating its payload.
 
 ## 3A. Proposal Payload And Unit Resolution
 
@@ -83,11 +98,21 @@ Proposed Resolution / Realization Route
 
 Either part may exist alone; complex Proposals may contain both. Proposal payload is candidate meaning, not Current Result Content.
 
-When a Proposal is Unit-local, relate it to the affected Unit Resolution. Cross-Unit/Target-wide Proposals remain valid when their natural subject spans several Units or the Target itself.
+> Semantic Owner Dependency
+> Type: `CONTEXTUALIZES`
+> Responsibility: `TWU.SUBJECT-REFERENCE`
+> Owner: [Target Work Subject Reference Contract](../../runtime/target-work/TARGET-WORK-SUBJECT-REFERENCE-CONTRACT.md#target-work-subject-reference)
+
+When a Proposal concerns a Target Work Collection/item/Slot, relate it to the smallest natural subject and use the canonical Target Work Subject Reference. This prevents one item-local Proposal from accidentally targeting the common role or broader Collection. Other Unit-local Proposals relate to the affected parent Unit Resolution. Cross-Unit/Target-wide Proposals remain valid when their natural subject spans several items/Slots/Units or the Target itself.
 
 ## 3B. Proposal Target Result — Candidate Target Instance Under Proposal Authority
 
-When the USER/current process asks for a **Proposal of a Target Result** (for example a proposed Feature Definition, Scenario Journey Composition or another Target Module result), form an ordinary **candidate Target Instance** through the normal Target Module/Local Target Contract. Candidate Target Instance structure is owned by the canonical [Target Instance model](../../runtime/target-work/TARGET-CONTRACT-INSTANCE-SOURCE-RELATION-MODEL.md#candidate-target-instance); this Proposal contract owns the enclosing candidate authority/lifecycle.
+> Semantic Owner Dependency
+> Type: `CONTEXTUALIZES`
+> Responsibility: `TARGET.CANDIDATE-INSTANCE`
+> Owner: [Candidate Target Instance](../../runtime/target-work/TARGET-CONTRACT-INSTANCE-SOURCE-RELATION-MODEL.md#target-candidate-instance)
+
+When the USER/current process asks for a **Proposal of a Target Result** (for example a proposed Feature Definition, Scenario Journey Composition or another Target Module result), form an ordinary **candidate Target Instance** through the normal Target Module/Local Target Contract. Candidate Target Instance structure is owned by the canonical Target contract above; this Proposal contract owns the enclosing candidate authority/lifecycle.
 
 ```text
 enclosing Proposal / Planning Branch
@@ -96,7 +121,9 @@ enclosing Proposal / Planning Branch
 
 candidate Target Instance
 → ordinary Target identity / relations / Source Set
-→ complete Module-defined Unit inventory
+→ complete Module-defined Unit inventory when a Target Module Instance exists
+→ applicable Core-defined Units
+→ Contextual Units only when actually formed
 → ordinary Unit / Requirement / object identities and fields
 → ordinary Target Step Result shape
 ```
@@ -177,7 +204,7 @@ Do not ask the USER to restate facts that trustworthy Sources already establish.
 
 An interaction clarification is not automatically a formal Core `Question`/Q-R-P State Unit. Formalize it only when independent lifecycle/addressability/review value exists. The canonical USER-input intake rule owns how the answer is classified.
 
-Grounding does not authorize selection: a well-grounded AI Proposal is still unselected until normal authority selects it.
+Grounding does not authorize selection: a well-grounded IDTSPE Proposal is still unselected until normal authority selects it. A GIP that presents/references that Proposal does not change its selection state.
 
 ## 5. Candidate Review / Resolution Context Handoff
 
@@ -400,7 +427,7 @@ Actual mutation follows the ambient Session proposal-first/authorization rules a
 
 ```text
 legacy Idea = current Proposal compatibility meaning, not a second ontology
-AI Proposal ≠ accepted material selection / Decision semantics
+Generic AI Proposal (GIP) ≠ accepted material selection / Decision semantics
 formal Proposal ≠ authority
 Finding ≠ selection
 candidate refinement ≠ automatically a new Proposal

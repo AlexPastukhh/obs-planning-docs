@@ -5,51 +5,104 @@ Purpose: define a reusable module that can shape one IDTSPE Target or contribute
 
 ---
 
-# 1. Core Definition
+<a id="target-module-meta-model"></a>
+## Terminology: Meta-Model → Model → Instance
 
-A `Target Module` is a reusable IDTSPE methodology component for a recurring class of bounded Target production. It remains a **Target-family contract**, not merely a bag of Units and not current project authority.
+Responsibility ID: `TARGET-MODULE.META-MODEL`
+
+This file is the canonical **Target Module Meta-Model**: it defines what reusable Target Module Models are, how they are applied, and which invariants every concrete Model must satisfy. The historical filename `TARGET-MODULE-MODEL.md` is retained for navigation compatibility.
 
 ```text
-Target Module
+Target Module Meta-Model
+  = methodology for defining/applying Target Module Models
+
+Target Module Model
+  = one concrete reusable `TM-*` contract
+
+Target Module Instance
+  = the model-defined runtime/planning structure formed inside one concrete Target Instance
+    when that Target Module Model is applied
+```
+
+A `Target Module Instance` is **not another Target** and is not a peer semantic owner. It is the part of the Target Instance whose shape is prescribed by the selected Model: instantiated Module-defined Unit inventory, Unit dispositions/content, module-specific validators/composition constraints and Target Step Result contribution. The Target Instance remains the bounded planning responsibility and may also carry Target Formation meaning, concrete Sources, relations and broader Core State that are not themselves created by the Model.
+
+```text
+Target Instance
+├─ Target identity / purpose / scope
+├─ applicable/open Target Resolution Requirements
+├─ concrete Sources / relations / broader Core State
+├─ applicable Core-defined Units
+├─ Contextual Units when actually defined/formed
+└─ Target Module Instance, when a reusable Model is used
+   ├─ instantiated Module-defined Units
+   ├─ RESOLVED / OPEN / OMITTED dispositions
+   ├─ proportional Current Result Content
+   ├─ Model-specific validators / composition rules
+   └─ Target Step Result contribution
+```
+
+When no reusable Target Module Model fits, Target Formation uses a `Local Target Contract` instead. That route forms the needed local target-specific structure directly and does **not** create a Target Module Model or Target Module Instance merely for symmetry.
+
+### Meta-Model Reuse In One Pass
+
+When several concrete Target Module Models are explicitly or automatically applied in one Shell pass, resolve the common Meta-Model rules once for the unchanged runtime basis and then apply each distinct Model. Do not reread/re-execute the same Meta-Model prefix separately for every `TM-*`. If the relevant basis changes materially, the shared prefix may be revalidated. Pass-level reuse/trace semantics are owned by [`../runtime/PASS-TRACE-AND-VISIBILITY-CONTRACT.md`](../runtime/PASS-TRACE-AND-VISIBILITY-CONTRACT.md).
+
+# 1. Core Definition
+
+A `Target Module Model` (short form: `Target Module` where unambiguous) is a reusable IDTSPE methodology component for a recurring class of bounded Target production. It remains a **Target-family contract**, not merely a bag of Units and not current project authority.
+
+```text
+Target Module Model
 =
-Target-family / formation contract
-+ composition of Module-defined Unit Contracts
+recurring-scope recognition / formation guidance
++ recurring requirement-pattern recognition
++ composition of Module-defined Unit Definitions
 + genuinely cross-Unit Target rules
 + validators / handoff / revalidation / representation guidance
 ```
 
-A Module-defined Unit Contract is the primary reusable **Target Work Unit** production slice:
+A Module-defined Unit Definition is the primary reusable **Target Work Unit** production slice and MUST conform to the canonical [Target Work Unit contract](../runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md#twu-unit-contract) — `TWU.UNIT-CONTRACT`.
+
+> Semantic Owner Dependencies
+> - `CONTEXTUALIZES` [`Target Work Unit contract`](../runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md#twu-unit-contract) — `TWU.UNIT-CONTRACT`
+> - `CONTEXTUALIZES` [`Collection contract`](../runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md#twu-collection-contract) — `TWU.COLLECTION-CONTRACT`
+> - `CONTEXTUALIZES` [`Unit Resolution Slot contract`](../runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md#twu-slot-contract) — `TWU.SLOT-CONTRACT`
+> - `CONTEXTUALIZES` [`Unit runtime projection`](../runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md#twu-runtime-projection) — `TWU.RUNTIME-PROJECTION`
+> - `CONTEXTUALIZES` [`Target Formation requirement/coverage`](../runtime/target-work/RESOLUTION-SLOT-AND-TARGET-FORMATION-SET.md#target-formation-requirement-coverage) — `TARGET-FORMATION.REQUIREMENT-COVERAGE`
+
+The Target Module owns only the reusable **inventory and Target-family-specific preset/delta** around those Unit Definitions: which bounded responsibilities recur for this Target family, their family-specific applicability/inputs/guidance/validators/destinations/dependencies, and genuinely cross-Unit composition rules. It does not own a second Unit/Collection/Slot schema.
 
 ```text
-Unit Contract
-├─ Result Responsibility / Purpose
-├─ Applicability / Materiality / Disposition
-├─ stable reusable methodology owner / anchor reachability
-├─ Inputs / Source needs
-├─ Drivers: Goal / Questions / recurring Problems
-├─ Knowledge Basis when useful
-├─ Resolution Method / Guidance
-├─ Proposal discovery aids when useful
-├─ applicable Lenses / registry triggers
-├─ Result Content Contract
-├─ Validators
-├─ Handoff / consumers
-├─ Revalidation
-└─ Representation guidance
+Target Module Model
+→ complete Module-defined Unit Definition inventory
+→ each Unit conforms to canonical Target Work Unit semantics
+→ module adds only Target-family-specific presets / relations / cross-Unit rules
 ```
 
-Thin Units may omit most specialized resolution aids. Heavy Units may carry substantial knowledge, questions, proposal discovery and validation guidance. Shared Target-family guidance may remain module-level and be referenced by several Unit Contracts rather than duplicated.
+Shared Target-family guidance may remain module-level and be referenced by several Unit Definitions rather than duplicated. Distinct peer Module-defined Units represent distinct bounded Unit responsibilities, not item count.
 
-A `Local Target Contract` provides the same responsibilities dynamically for a one-off Target when no reusable module fits.
+A `Local Target Contract` is the one-off Target-level governing/result-composition alternative when no reusable module fits. It does not create a Target Module Model, Target Module Instance or Module-defined Unit inventory. Applicable Core-defined Units may be instantiated under that contract. Any remaining independently useful bounded target-local responsibility may be defined as a Contextual Unit under the Core Target Work Unit mechanics.
 
 ### Unit Method Owner Reachability
 
-Every Module-defined Unit must expose a stable addressable Unit Contract location that can be bound before substantive Unit work. The Unit Contract may reference additional reusable methodology owners, but the produced Target result references those owners rather than copying their reusable method.
+> Semantic Owner Dependency
+> Type: `CONTEXTUALIZES`
+> Responsibility: `TWU.APPLICABILITY-ENVELOPE`
+> Owner: [Unit Applicability Envelope](../runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md#twu-applicability-envelope)
+
+Every Module-defined Unit must expose a stable addressable Unit Definition location that can be bound before substantive Unit work. `Unit Definition` is the canonical concept; older `Unit Contract` wording is compatibility shorthand, not another object. The Unit Definition may reference additional reusable methodology owners, but the produced Target result references those owners rather than copying their reusable method.
 
 ```text
-active Target Module / Local Target Contract
-→ exact Module-defined Unit Contract
+Target Module Model / Target Module Instance
+→ exact Module-defined Unit Definition
 → concise Methodology binding in produced representation when materialized
+→ Unit Resolution
+
+Local Target Contract
+→ applicable Core-defined Unit when one fits
+  or locally DEFINE a Contextual Unit
+→ applicable Core/reusable method owner when useful
+→ concise Methodology binding when materialized
 → Unit Resolution
 ```
 
@@ -57,30 +110,55 @@ A supporting owner discovered during Unit work is bound/referenced before that s
 
 ### Natural Subject Conformance
 
-Canonical Natural Subject / Ownership Boundary semantics are owned by the Core [Unit And Target Step Result Model](../runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md#natural-subject--ownership-boundary). A Target Module does not redefine that routing. Its design obligation is only to prove that each Module-defined Unit responsibility, and any genuinely target-wide rule, has this Target family as its natural subject; otherwise the module references/hands off to the natural owner.
+> Semantic Owner Dependency
+> Type: `CONTEXTUALIZES`
+> Responsibility: `TWU.NATURAL-SUBJECT-ROUTING`
+> Owner: [Natural Subject / Ownership Boundary](../runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md#twu-natural-subject-ownership)
+
+Canonical Natural Subject / Ownership Boundary semantics are owned by the Core [Unit And Target Step Result Model](../runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md#twu-natural-subject-ownership). A Target Module does not redefine that routing. Its design obligation is only to prove that each Module-defined Unit responsibility, and any genuinely target-wide rule, has this Target family as its natural subject; otherwise the module references/hands off to the natural owner.
 
 Target Module creation/review enforces this conformance through `UC-IDTSPE-MAINTAIN-TARGET-MODULE`; `LENS-AUTHORITY-SOT-REUSE` may evaluate ambiguous/conflicting cases without becoming the semantic owner.
 
 ## Target Step Result Contract
 
-Canonical runtime Unit disposition and Target Step Result composition are owned by the Core [Unit And Target Step Result Model](../runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md#2-target-step-result). A Target Module owns the **Step Result family**, its complete reusable Unit Contract inventory/dependency shape, and target-family-specific composition constraints; it does not redefine generic runtime disposition semantics.
+> Semantic Owner Dependency
+> Type: `CONTEXTUALIZES`
+> Responsibility: `TWU.TARGET-STEP-RESULT`
+> Owner: [Target Step Result](../runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md#twu-target-step-result)
+
+Canonical runtime Unit disposition and Target Step Result composition are owned by the Core [Unit And Target Step Result Model](../runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md#twu-target-step-result). A Target Module owns the **Step Result family**, its complete reusable Unit Definition inventory/dependency shape, and target-family-specific composition constraints; it does not redefine generic runtime disposition semantics.
 
 ```text
-Target Module
-→ Step Result family + complete Unit Contract inventory / dependency shape
-→ Core Unit / Target Step Result contract
+Target Module Model
+→ at application time forms a Target Module Instance
+→ Step Result family + complete Unit Definition inventory / dependency shape
+→ Core Target Work Unit / Target Step Result contract
 → concrete Target Step Result
 ```
 
-The Module defines target-wide formation/scope/Source Contract archetypes only where genuinely shared. Unit-specific Source needs belong to the relevant Unit Contract. At runtime `TF-04 SOURCE_SET` resolves the concrete Target's actual Source Set as Source State Units/bindings to authoritative Source Subjects; the reusable Source Contract archetype is not itself that runtime Source Set. The Module should not centralize all questions, all knowledge, all Lens guidance and all methods at module level when those concerns actually belong to one Unit responsibility.
+The Module defines target-wide formation/scope/Source Contract archetypes only where genuinely shared. Unit-specific Source needs belong to the relevant Unit Definition. At runtime the concrete `SOURCE_AUTHORITY` Requirement plus `P-04 Source` resolve actual Source State Units/bindings to authoritative Source Subjects; the reusable Source Contract archetype is not itself that runtime Source Set. The Module should not centralize all questions, all knowledge, all Lens guidance and all methods at module level when those concerns actually belong to one Unit responsibility.
+
+### Prepared Slot Definitions / Runtime Unit Resolution Set
+
+This Meta-Model does not redefine simple/composite Unit or Slot semantics. A Module may define reusable Units whose canonical Target Work Unit contract contains no formal Slots (simple) or contains independently formalized Slot Definitions (composite). Prepared Slot Definitions stay owned by the Unit Result Content Contract; a concrete Unit Resolution Set exists only through the canonical runtime projection for a substantive composite Unit.
+
+Target Module authoring therefore checks **conformance** to `TWU.SLOT-CONTRACT` and `TWU.RUNTIME-PROJECTION`; it does not maintain a parallel Slot schema. Collection cardinality, ordinary fields/questions/items and repeated values do not themselves create Slots or composite structure.
 
 ### Per-Unit Applicability Envelope
 
-Every material Module-defined Unit inherits the generic Opening / In-Unit / Closing applicability envelope. Every Module-defined Unit remains visible in the concrete Target result; non-material Units use an explicit omission disposition rather than substantive Unit Resolution. The Unit's own contract supplies the reusable resolution material relevant to that responsibility; applicable Lenses may be selected through the ordinary registry scan.
+> Semantic Owner Dependencies
+> - `CONTEXTUALIZES` [`Unit Applicability / Materiality / Disposition`](../runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md#twu-applicability-disposition) — `TWU.APPLICABILITY-DISPOSITION`
+> - `CONTEXTUALIZES` [`Unit Applicability Envelope`](../runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md#twu-applicability-envelope) — `TWU.APPLICABILITY-ENVELOPE`
+
+A Target Module does not own a second Unit applicability lifecycle. Its responsibility is to provide the reusable per-Unit applicability/materiality guidance and stable Unit Definition owner needed by the canonical Unit contract; runtime disposition/checkpoint behavior remains Core-owned.
 
 ### Contextual Units
 
-A Target Module does not have to predeclare every local responsibility that can arise. Core may form a Contextual Unit from the active context when no module Unit fits and the local responsibility is independently useful. Contextual Units do not become new Target Module entries merely because they occurred once.
+> Semantic Owner Dependencies
+> - `CONTEXTUALIZES` [`Target Formation requirement/coverage`](../runtime/target-work/RESOLUTION-SLOT-AND-TARGET-FORMATION-SET.md#target-formation-requirement-coverage) — `TARGET-FORMATION.REQUIREMENT-COVERAGE`
+> - `CONTEXTUALIZES` [`Target Work Unit contract`](../runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md#twu-unit-contract) — `TWU.UNIT-CONTRACT`
+
+A Target Module may intentionally cover only part of one concrete Target. It does not define a parallel contextual-completion algorithm: uncovered material needs remain with Target Formation, which chooses direct coverage, applicable Core-defined Units, Contextual Slot inside an existing Unit boundary, or Contextual Unit for a distinct bounded responsibility under the canonical owners above.
 
 # 2. Relationship To Documentation Use Cases And Other Component Types
 
@@ -106,61 +184,64 @@ The original repository methodology/theory owners remain referenced authorities/
 
 # 3. One Module Can Occupy Several IDTSPE Integration Points
 
-A Target Module is **not only a Target Type**.
+A Target Module is reusable **prepared analysis/coverage for a recurring Target family**, not merely a Target type label.
 
-It can contribute at these integration points:
+The historical `TM-IP-*` identifiers remain stable. Their semantics are refined as follows:
 
 ```text
-TM-IP-01 TARGET_FORM
-  candidate answer for TF-02 TARGET_TYPE_FORM
+TM-IP-01 TARGET_FORM / RECOGNITION
+  recurring Target-family/scope/problem signals used by REUSABLE_TARGET_MODEL_CHECK
+  + reusable Target-formation / scope guidance; does not create task Requirements by declaration
 
 TM-IP-02 SCOPE
-  scope archetype / boundary questions for TF-03 TARGET_SCOPE
+  scope archetype / boundary questions
+  + recurring requirement-pattern recognition guidance for needs grounded in the current task/scope/Sources
 
 TM-IP-03 SOURCES
-  reusable Source Contract archetype / shared Source needs for TF-04 SOURCE_SET
-  (runtime TF-04 resolves actual Source State Units/bindings)
+  reusable Source Contract archetype / shared Source needs;
+  runtime SOURCE_AUTHORITY + P-04 resolve actual Source State Units/bindings
 
 TM-IP-03A KNOWLEDGE_BASIS
   reusable principles/rules/theory/pattern knowledge for this recurring Target family
-  using the shared [`Knowledge Basis Contract`](../knowledge-bases/KNOWLEDGE-BASIS-CONTRACT.md)
 
 TM-IP-04 RELATIONS
-  expected Target relations / owner relations for TF-05
+  expected Target/owner relation guidance for OWNER_RELATIONS + P-05
 
 TM-IP-05 QUESTIONS
-  Unit-specific driver/question presets + genuinely Target-wide candidates; TF-06 remains Target-level coordination
+  Unit-specific drivers/questions + genuinely shared recognition/scope prompts;
+  no standalone Target QUESTION_SET owner
 
 TM-IP-06 PROPOSALS
-  Unit-specific Proposal discovery aids + genuinely cross-Unit candidates; TF-07 remains Target-level coordination
+  Unit-specific Proposal discovery aids + genuinely cross-Unit candidate guidance;
+  runtime Proposal semantics remain owned by P-07 / Proposal lifecycle
 
 TM-IP-07 BRANCHING
-  branch triggers / comparison dimensions for TF-08 BRANCH_POLICY
+  branch triggers / comparison dimensions;
+  runtime Branch semantics remain owned by P-08
 
 TM-IP-08 LENSES_PATTERNS
-  contributes to `TF-06A LENS_SET`:
-  Lens Profile referencing canonical generic/profile Lens owners + only genuinely local heuristics/patterns/anti-patterns
+  Lens Profile referencing canonical Lens owners + local attachment guidance
 
 TM-IP-09 OUTPUT
-  output schema/template into which selected answers are integrated
+  Target Step Result composition/schema guidance
+  + complete Module-defined Unit Definition inventory
+  + understandable recurring requirement-pattern → Unit responsibility coverage
 
 TM-IP-09A ARTIFACT_FILE_CONTRACT
-  explicit target-profile persistence/representation requirements and preferences
-  consumed by P-14 / TF-10
+  target-profile persistence/representation requirements/preferences
+  consumed through P-14 Persistence / Artifact and PERSISTENCE_ADDRESSABILITY
 
 TM-IP-10 VALIDATION
   completeness/consistency/projection validators
 
 TM-IP-11 HANDOFF
-  accepted-output → downstream-Source adapters for TF-09
+  accepted-output → downstream-Source adapters supporting HANDOFF_CONTINUATION + P-13
 
 TM-IP-12 REVALIDATION
   module-specific watch signals / reconsider prompts
 ```
 
-A module can fill only the integration points it genuinely owns.
-
----
+A module fills only the integration points it genuinely owns. It may cover only part of the concrete Target; Core/contextual completion handles uncovered scope/Requirements.
 
 # 4. Module Roles In One IDTSPE
 
@@ -262,25 +343,24 @@ Supported Integration Roles
 
 Target Formation Contribution
   purpose/output archetype
-  target form/type candidate
+  recurring scope/problem recognition + requirement-pattern guidance
   scope archetype
   Source Contract archetype
   expected relations
 
-Unit Contracts
+Unit Definitions
   one entry per reusable Module-defined Unit responsibility
-  Result Responsibility / Purpose
-  Applicability / Materiality / Omission
-  Inputs / Source needs
-  Drivers / Question or recurring-Problem guidance
-  Unit-specific Knowledge Basis or reference to shared Module Knowledge Basis when useful
-  Resolution Method / Guidance
-  Proposal discovery aids when useful
-  applicable Lens refs / registry triggers
-  Result Content Contract
-  validators
-  consumers / handoff / revalidation
-  representation guidance
+  stable exact Unit Definition owner/reachability
+  Target-family-specific applicability / inputs / guidance / validators / consumers / revalidation / representation delta as useful
+  MUST conform to TWU.UNIT-CONTRACT, TWU.COLLECTION-CONTRACT, TWU.SLOT-CONTRACT and TWU.RUNTIME-PROJECTION rather than copying their generic schema
+
+Unit / Result Field Explanation Rule
+  every non-obvious Module-defined Unit, prepared Unit Resolution Slot and important target-specific result field must be explained proportionally
+  Purpose / Meaning — why this Unit/Slot responsibility or field exists
+  Write here — what belongs in it
+  Do not put here — important ownership/boundary exclusions
+  Examples — when examples materially improve authoring/review
+  label-only schemas are insufficient when the meaning or boundary is not obvious
 
 Knowledge Basis [when useful]
   theory/reference links at any useful granularity
@@ -288,11 +368,11 @@ Knowledge Basis [when useful]
 
 Shared / Target-Wide Driver Guidance [when useful]
   only genuinely cross-Unit formation/coordination questions or recurring Problems
-  Unit-specific drivers belong in Unit Contracts
+  Unit-specific drivers belong in Unit Definitions or the relevant Unit Resolution Slot
 
 Shared / Target-Wide Proposal Discovery [when useful]
-  only genuinely cross-Unit / Target-form candidate patterns
-  Unit-specific Proposal discovery belongs in Unit Contracts
+  only genuinely cross-Unit / Target-composition candidate patterns
+  Unit-specific Proposal discovery belongs in Unit Definitions or the relevant Unit Resolution Slot
 
 Lens Profile / Patterns
   required/frequent reusable Lens refs
@@ -307,13 +387,13 @@ Optional Target-Specific Concern Hints
   generic Q/R/P storage/lifecycle remains owned by the IDTSPE Shell
 
 Selection / Coordination Surfaces [when useful]
-  Target-level Target-Scope / Question-Set coordination choices
+  Target-level material scope / requirement-coverage coordination choices
   cross-Unit selection surfaces only when genuinely shared
-  Unit-local material selection remains in the affected Unit Resolution
+  Slot-local material selection remains in the affected Unit Resolution Slot when one formal Slot is the natural subject; when that Target Work subject must be referenced, use the canonical [Target Work Subject Reference Contract](../runtime/target-work/TARGET-WORK-SUBJECT-REFERENCE-CONTRACT.md#target-work-subject-reference); otherwise Unit-local material selection remains in the affected Unit Resolution
 
 Target Step-Result Contract
   Step Result family
-  Unit Contract inventory / relations
+  Unit Definition inventory / relations
   target-family-specific composition constraints; generic runtime composition stays Core-owned
   target-level completeness / handoff / representation where genuinely cross-Unit
 
@@ -343,7 +423,7 @@ Artifact / File Contract
   Target-Module-local persistence/representation guidance for its own Target result
   conforms to the canonical `ARTIFACT_PROPOSAL` interface owned by
   `artifact-placement-and-idtspe-response-contract.md`
-  states Module-local conditions/preferences/requirements without redefining P-14/TF-10
+  states Module-local conditions/preferences/requirements without redefining P-14/PERSISTENCE_ADDRESSABILITY
   unresolved placement remains valid and is resolved by the canonical placement contract
 
 Repository Provenance
@@ -368,7 +448,7 @@ The entry point answers:
 ```text
 when should this module activate?
 what accepted Sources does it expect?
-what Resolution Set does it contribute?
+what recurring scope/requirement analysis and prepared Unit coverage does it contribute?
 what output does it promise?
 ```
 
@@ -386,7 +466,7 @@ Use the shared Knowledge Basis contract. Knowledge may live at the smallest reus
 
 ```text
 Unit-specific theory/application bridge
-→ Unit Contract Knowledge Basis
+→ Unit Definition Knowledge Basis
 
 truly Target-family-wide theory/application bridge
 → Target Module Knowledge Basis
@@ -399,19 +479,19 @@ A Unit may reference a shared Module Knowledge Basis without copying it. Referen
 
 # 8. Questions / Drivers Inside A Target Module
 
-Reusable decision-driver guidance should normally live with the Unit responsibility it helps resolve. A Module may also define genuinely Target-wide formation questions.
+Reusable question/driver guidance should live with the responsibility it helps resolve.
 
 ```text
 Unit-specific Question / recurring Problem guidance
-→ Unit Contract
+→ Unit Definition
 
-cross-Unit / Target-form question
-→ Target Module level when genuinely shared
+shared scope/recognition prompts
+→ Target Module recognition/formation guidance
 ```
 
-Concrete runtime Questions/Problems remain Core Resolution State and attach to the smallest correct semantic subject. Preset prompts do not automatically become formal Questions or USER interview questions.
+Concrete runtime Questions/Problems remain Core State and attach to their smallest natural subject. Preset prompts do not automatically become formal Questions or USER interview questions.
 
-`TF-06 QUESTION_SET` remains a Target-level coordination surface: before Unit decomposition it may help determine what the Target must resolve; after Units exist it primarily coordinates/projects material Unit drivers plus genuine Target-wide questions.
+There is no separate Target-level `QUESTION_SET` semantic owner. Prepared question packs remain reusable guidance and may be refined contextually when the concrete task exposes additional needs.
 
 # 9. Ready-Made Candidate Answers / Patterns
 
@@ -451,7 +531,7 @@ The module must include applicability prompts/anti-patterns so pattern libraries
 
 ### Proposal Space Coordination
 
-Proposal discovery aids should likewise live at the Unit contract when they are Unit-specific. `TF-07 PROPOSAL_SPACE` coordinates material Unit Proposals plus genuine cross-Unit/Target-wide Proposals; it is not a second owner of Proposal semantics.
+Proposal discovery aids should likewise live at the Unit Definition when they are Unit-specific. Runtime Proposals attach to their natural Unit/Requirement/Target subject through `P-07 Proposal`; there is no separate Target-level `PROPOSAL_SPACE` semantic owner.
 
 # 10. Lens Profile And Reusable Lens Library
 
@@ -470,7 +550,7 @@ frequent conditional Lens refs + gates
 local-only Lens prompts — only when truly non-reusable
 ```
 
-The module owns **that/when** those Lenses attach to this recurring Target family. The reusable Lens owner controls its Analysis Surface, supported operations, evaluation workflow, Typical Findings and Knowledge Basis. `TF-06A` may additionally discover applicable registered Lenses that the module did not pre-list.
+The module owns **that/when** those Lenses attach to this recurring Target family. The reusable Lens owner controls its Analysis Surface, supported operations, evaluation workflow, Typical Findings and Knowledge Basis. Normal `P-06 Lens` applicability scanning may additionally discover registered Lenses that the module did not pre-list.
 
 Selected rule:
 ```text
@@ -497,6 +577,7 @@ LENS-DEPENDENCY-CHANGE-IMPACT
 LENS-WORKSPACE-EVOLUTION-ARCHITECTURE
 LENS-VERIFIABILITY-OBSERVABILITY-OPERABILITY
 LENS-QUALITY-RISK-MATERIALITY
+LENS-TARGET-RESOLUTION-COVERAGE
 ```
 
 Lens operations may contribute explanatory Broad Discussion/Key Points without creating State. When they surface a material semantic consequence needing ownership/State/lifecycle disposition, that meaning becomes a Finding Candidate; Core Finding Disposition resolves it into normal generic Proposals / Evidence / Q/R/P / Decision inputs / revalidation or another owner as appropriate.
@@ -520,9 +601,9 @@ TM-FEATURE
     BR-* Behavior Requirement item schema
 ```
 
-The schema is where accepted answers/Decisions are integrated into declared Result Units while the Target Module remains methodology authority for its own reusable Unit contracts.
+The schema is where accepted answers/Decisions are integrated into declared Result Units while the Target Module remains methodology authority for its own reusable Unit Definitions.
 
-The Module contract defines a **complete Module-defined Unit inventory** plus proportional internal fields. Runtime Unit presence/disposition and optional-field semantics follow the Core [Unit And Target Step Result Model](../runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md#5a-unit-applicability--materiality--disposition-contract); this model owns only the reusable Unit inventory/schema design. It is not a questionnaire that forces substantive work or unsupported detail in every Unit.
+The Module contract defines a **complete Module-defined Unit inventory** plus proportional Target-family-specific internal guidance. Each Unit conforms to the canonical Unit/Collection/Slot/runtime-projection contracts rather than restating them here. Runtime Unit presence/disposition follows [`TWU.APPLICABILITY-DISPOSITION`](../runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md#twu-applicability-disposition); this Meta-Model owns only the reusable Module inventory/family design and target-family-specific composition constraints. It is not a questionnaire that forces substantive work or unsupported detail in every Unit.
 
 ---
 
@@ -617,7 +698,7 @@ repo provenance/reuse candidates are known
 ```text
 Target Module
 → Target-family formation contract
-→ Module-defined Unit Contracts
+→ Module-defined Unit Definitions
 → Unit Resolution at runtime
 → Current Result Content per resolved Unit
 → Target Step Result composition
@@ -625,13 +706,13 @@ Target Module
 
 ```text
 Module Unit
-= generic Unit mechanics + reusable Unit Contract preset
+= generic Unit mechanics + reusable Unit Definition preset
 
 Contextual Unit
-= generic Unit mechanics + dynamically established bounded responsibility
+= generic Unit mechanics + Unit Definition established now for the concrete Target
 ```
 
-Generic Proposal/QRP/Decision/Evidence/Findings/Revalidation remain Core semantics and are related to the Unit/Target subject they actually concern; the module does not duplicate their lifecycle inside Result Content.
+Core Proposal/QRP/Decision/Evidence/Findings/Revalidation remain Core semantics and are related to the Unit/Target subject they actually concern; the module does not duplicate their lifecycle inside Result Content.
 
 ## Lens Boundary Invariant
 
@@ -657,12 +738,12 @@ Artifact / File Contract
 
 as the implicit Step-Result Contract + Result Unit/field projection by meaning.
 
-New or materially revised Modules should make independently processable Result Units explicit. A later profile conformance pass may make this literal without requiring a new Core entity for every Unit.
+New or materially revised Modules MUST make reusable Module Unit Definitions explicit and conform them to the canonical Target Work Unit / Collection / Slot contracts linked above. Installed legacy lower-level schemas remain compatibility inputs until an explicit migration pass; that migration must preserve established Unit boundaries, lower-level item semantics and representation requirements rather than creating methodology objects merely to fit the current Core model. Detailed migration guidance remains non-normative in [`TARGET-WORK-UNIT-COLLECTION-SLOT-MIGRATION-NOTES.md`](../../evidence/migration-notes/TARGET-WORK-UNIT-COLLECTION-SLOT-MIGRATION-NOTES.md).
 
 ## Artifact / File Proposal Integration Point
 
 Every Target Module must expose an `## Artifact / File Contract` that explains, for the Module's own Target result, what meaning should normally survive, what should remain embedded, when a separate representation may be useful, and what should be routed elsewhere.
 
-The generic structured `ARTIFACT_PROPOSAL` field set, precedence, persistence policy and `P-14 / TF-10` resolution semantics are **not** owned here. They are canonical in [`planning/documentation/idtspe-methodology/active/idtspe-core/representation/ARTIFACT-PLACEMENT-AND-IDTSPE-RESPONSE-CONTRACT.md`](../representation/ARTIFACT-PLACEMENT-AND-IDTSPE-RESPONSE-CONTRACT.md). A Module conforms to that interface instead of redefining it.
+The generic structured `ARTIFACT_PROPOSAL` field set, precedence, persistence policy and `P-14 / PERSISTENCE_ADDRESSABILITY` resolution semantics are **not** owned here. They are canonical in [`planning/documentation/idtspe-methodology/active/idtspe-core/representation/ARTIFACT-PLACEMENT-AND-IDTSPE-RESPONSE-CONTRACT.md`](../representation/ARTIFACT-PLACEMENT-AND-IDTSPE-RESPONSE-CONTRACT.md). A Module conforms to that interface instead of redefining it.
 
 Target Module guidance owns only Target-result-side intent. It must not duplicate Lens-supporting guidance, invent a new semantic owner through placement, or require a hand-maintained shadow of implementation-native code/test topology.

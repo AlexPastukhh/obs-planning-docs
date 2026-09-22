@@ -67,7 +67,7 @@ Scenario journey composition
 → canonical Scenario owner representation
 
 unselected Screen Proposal
-→ inline/existing Generic Proposal State representation when useful, otherwise ephemeral
+→ inline/existing IDTSPE Proposal State representation when useful, otherwise ephemeral
 
 architecture concern
 → Persistence REQUIRED, Destination UNRESOLVED

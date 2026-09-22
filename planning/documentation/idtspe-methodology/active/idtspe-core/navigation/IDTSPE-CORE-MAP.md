@@ -14,13 +14,16 @@ relevant Documentation + IDTSPE Use Cases
 ↓
 UC-IDTSPE-COMPOSE-CURRENT-WORK      [default continuously relevant]
 ↓
-smallest useful IDTSPE projection
+P-01 Invocation → P-02 Pass Trace / Visibility [included in every normal Shell pass]
+↓
+smallest useful IDTSPE projection / dynamic Shell route
 ├─ Broad Discussion only
 ├─ material Work-Context / cross-Target Core State Units
 ├─ zero/one/several Targets
-│  ├─ Target Module / Local Target Contract
+│  ├─ Target Module Model → Target Module Instance OR Local Target Contract
 │  ├─ actual Source Set / Source State Units
-│  └─ complete Module-defined Unit inventory + any actually formed Contextual Units
+│  ├─ complete Module-defined Unit inventory when a Target Module Instance exists
+│  └─ any Contextual Units actually formed (the target-local Unit path for a Local Target Contract)
 ├─ selected/applicable Lenses
 ├─ selected registry/Knowledge entries
 ├─ active profile components
@@ -60,14 +63,16 @@ IDTSPE Work Context
 ├─ material Work-Context / cross-Target Core State Units
 ├─ zero/one/several Targets
 │  ├─ material Source State Units / Source bindings
-│  ├─ complete Module-defined Unit inventory with dispositions/content
+│  ├─ complete Module-defined Unit inventory with dispositions/content when a Target Module Instance exists
 │  ├─ any Contextual Units that actually formed
 │  └─ Target-level Core State Units when material
 ├─ Methodology Usage State when continuation/revalidation value exists
 └─ physical representation only when useful
 ```
 
-Canonical owner: [`runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md`](../runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md).
+Functional current-work composition owner: [`use-cases/compose-current-work/UC-IDTSPE-COMPOSE-CURRENT-WORK.md`](../use-cases/compose-current-work/UC-IDTSPE-COMPOSE-CURRENT-WORK.md).
+Technical Work-Context/Shell composition owner: [`runtime/IDTSPE-RUNTIME-COMPOSITION-CONTRACT.md`](../runtime/IDTSPE-RUNTIME-COMPOSITION-CONTRACT.md).
+Target Work / Target Formation / Target Instance subtree routing: [`runtime/target-work/RESPONSIBILITY-MAP.md`](../runtime/target-work/RESPONSIBILITY-MAP.md).
 Broad Discussion / checkpoint interaction owner: [`representation/interaction/BROAD-DISCUSSION-AND-INTEGRATION-CHECKPOINT-PROJECTION.md`](../representation/interaction/BROAD-DISCUSSION-AND-INTEGRATION-CHECKPOINT-PROJECTION.md).
 
 ## 4. Registry Navigation
@@ -99,8 +104,10 @@ bounded responsibility/result becomes useful
    OR Local Target Contract
 ```
 
-Canonical mechanics: [`runtime/target-work/RESOLUTION-SLOT-AND-TARGET-FORMATION-SET.md`](../runtime/target-work/RESOLUTION-SLOT-AND-TARGET-FORMATION-SET.md).
-Target Module semantics: [`target-modules/TARGET-MODULE-MODEL.md`](../target-modules/TARGET-MODULE-MODEL.md).
+Target Work / Target Formation ownership routing: [`runtime/target-work/RESPONSIBILITY-MAP.md`](../runtime/target-work/RESPONSIBILITY-MAP.md).
+Target Module Meta-Model / discovery ownership routing: [`target-modules/RESPONSIBILITY-MAP.md`](../target-modules/RESPONSIBILITY-MAP.md).
+
+Pass Trace / Visibility owner: [`runtime/PASS-TRACE-AND-VISIBILITY-CONTRACT.md`](../runtime/PASS-TRACE-AND-VISIBILITY-CONTRACT.md).
 
 ## 6. Lens System / Findings
 
@@ -168,7 +175,7 @@ These are Target Module routes, not mandatory planning phases or USER gates.
 selected semantic meaning
 → representation/persistence question becomes material
 → Documentation / Representation evaluation
-→ P-14 / TF-10 placement resolution
+→ P-14 / PERSISTENCE_ADDRESSABILITY placement resolution
 ```
 
 Canonical generic interface: [`representation/ARTIFACT-PLACEMENT-AND-IDTSPE-RESPONSE-CONTRACT.md`](../representation/ARTIFACT-PLACEMENT-AND-IDTSPE-RESPONSE-CONTRACT.md). A semantic Unit/owner never implies one dedicated file by itself.
@@ -188,3 +195,10 @@ scenario → decompose through current UCs → find gaps/duplication → improve
 ```
 
 It never owns runtime `when/why` routing when a current Use Case/component contract already owns that decision.
+
+
+### Target Resolution / Work Coverage
+
+- [`runtime/target-work/RESOLUTION-SLOT-AND-TARGET-FORMATION-SET.md`](../runtime/target-work/RESOLUTION-SLOT-AND-TARGET-FORMATION-SET.md) — generic Resolution Slot boundary + canonical Target Resolution Requirements, reusable-model check and prepared/contextual coverage flow.
+- [`runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md`](../runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md) — canonical Unit Definition/authoring model, Core-defined / Module-defined / Contextual Units, terminal Unit Resolution Slots for composite Units and Target Step Result composition.
+- [`lenses/frequent/LENS-TARGET-RESOLUTION-COVERAGE.md`](../lenses/frequent/LENS-TARGET-RESOLUTION-COVERAGE.md) — frequent-conditional coverage evaluation Lens.

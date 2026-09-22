@@ -1,7 +1,7 @@
 <a id="artifact-placement-map"></a>
 # Artifact Placement Map
 
-This profile projection indexes Target Module `ARTIFACT_PROPOSAL` and Lens `ARTIFACT_GUIDANCE` records. Final placement remains P-14 / TF-10.
+This profile projection indexes Target Module `ARTIFACT_PROPOSAL` and Lens `ARTIFACT_GUIDANCE` records. Final placement remains P-14 / PERSISTENCE_ADDRESSABILITY.
 
 | Content kind | Guidance owner | Typical semantic owner | Proposal representation | Notes |
 |---|---|---|---|---|

@@ -12,7 +12,7 @@ A planning workflow must not assume:
 
 ```text
 command
-→ AI proposal
+→ Generic AI Proposal (GIP)
 → separate user confirmation turn
 → next question
 → separate user answer turn
@@ -54,7 +54,7 @@ USER MESSAGE
 7. evaluate what is already resolved
 8. derive/propose only what is still unresolved
 9. show unresolved required Decisions/questions
-10. continue as far as possible without silently accepting AI proposals
+10. continue as far as possible without silently accepting Generic AI Proposals (GIPs)
 ```
 
 ---
@@ -90,12 +90,12 @@ If the user says:
 Приложение пока не выбираем.
 ```
 
-that can directly satisfy the Target-Scope Decision.
+that can directly satisfy the Decision about Target Scope.
 
 ChatGPT should record:
 
 ```text
-Target-Scope Decision
+Decision about Target Scope
 Status: ACCEPTED_FROM_USER_INPUT
 ```
 
@@ -137,7 +137,7 @@ Example:
 This is an explicit selection of Success Meaning:
 
 ```text
-Answer Decision
+Decision
 Status: ACCEPTED_FROM_USER_INPUT
 ```
 
@@ -218,7 +218,7 @@ After doing all possible work, ChatGPT should show a compact block only when use
 ```text
 RESOLVED
 
-Target-Scope Decision
+Decision about Target Scope
   ACCEPTED_FROM_USER_INPUT
 
 RQ1
@@ -318,8 +318,8 @@ From one message the workflow can resolve:
 
 ```text
 command
-Target-Scope Decision
-Question-Set Decision
+Decision about Target Scope
+Decision about question/coverage composition
 RQ1
 RQ2
 RQ3
@@ -346,7 +346,7 @@ Examples:
 → likely proposal unless context clearly selects it
 
 "считай успехом..."
-→ explicit Answer Decision
+→ explicit Decision
 
 "можешь сам выбрать несущественные детали"
 → delegation, scoped by the statement
@@ -494,7 +494,7 @@ AI must not manufacture confirmation turns
 for already explicit user Decisions
 
 AI must not manufacture acceptance
-for unresolved AI proposals
+for unresolved Generic AI Proposals (GIPs)
 ```
 
 # 13. Broad Discussion Material Intake

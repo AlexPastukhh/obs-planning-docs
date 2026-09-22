@@ -67,7 +67,7 @@ Prefer the simplest current design that preserves a healthy path to selected kno
 
 ### 5. Natural Subject / Step-wide concern evaluation
 
-Apply the canonical Core [Natural Subject / Ownership Boundary](../../../../idtspe-core/runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md#natural-subject--ownership-boundary) and the concrete [`TM-EVOLUTION-STEP`](../../target-modules/TM-EVOLUTION-STEP.md) Unit contracts. This Lens evaluates whether current routing is healthy; it does not own the destination ontology.
+Apply the canonical Core [Natural Subject / Ownership Boundary](../../../../idtspe-core/runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md#twu-natural-subject-ownership) and the concrete [`TM-EVOLUTION-STEP`](../../target-modules/TM-EVOLUTION-STEP.md) Unit Definitions. This Lens evaluates whether current routing is healthy; it does not own the destination ontology.
 
 Operationally ask whether an item is genuinely Step-wide, belongs to one owner-local Target Body/Requirement/concern surface, or is literal Exact/discovery mechanism. When several owner-local concerns are present, challenge Step-wide ownership unless the **cross-owner relation itself** has independent transition meaning.
 

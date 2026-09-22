@@ -3,6 +3,21 @@
 Status: active methodology Use Case proposal
 Purpose: establish or change one reusable Target Module and integrate it into generic IDTSPE without creating competing semantic authority.
 
+> Semantic Owner Dependencies
+> - `CONTEXTUALIZES` [`Target Module Meta-Model`](../../target-modules/TARGET-MODULE-MODEL.md#target-module-meta-model) — `TARGET-MODULE.META-MODEL`
+> - `CONTEXTUALIZES` [`Target Formation requirement/coverage`](../../runtime/target-work/RESOLUTION-SLOT-AND-TARGET-FORMATION-SET.md#target-formation-requirement-coverage) — `TARGET-FORMATION.REQUIREMENT-COVERAGE`
+> - `CONTEXTUALIZES` [`Required Reusable Target Model Check`](../../runtime/target-work/RESOLUTION-SLOT-AND-TARGET-FORMATION-SET.md#target-formation-reusable-model-check) — `TARGET-FORMATION.REUSABLE-MODEL-CHECK`
+> - `CONTEXTUALIZES` [`Target Work Unit contract`](../../runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md#twu-unit-contract) — `TWU.UNIT-CONTRACT`
+> - `CONTEXTUALIZES` [`Collection contract`](../../runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md#twu-collection-contract) — `TWU.COLLECTION-CONTRACT`
+> - `CONTEXTUALIZES` [`Unit Resolution Slot contract`](../../runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md#twu-slot-contract) — `TWU.SLOT-CONTRACT`
+> - `CONTEXTUALIZES` [`Unit runtime projection`](../../runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md#twu-runtime-projection) — `TWU.RUNTIME-PROJECTION`
+> - `CONTEXTUALIZES` [`Unit applicability / materiality / disposition`](../../runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md#twu-applicability-disposition) — `TWU.APPLICABILITY-DISPOSITION`
+> - `CONTEXTUALIZES` [`Natural Subject / Ownership Boundary`](../../runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md#twu-natural-subject-ownership) — `TWU.NATURAL-SUBJECT-ROUTING`
+> - `CONTEXTUALIZES` [`Unit Applicability Envelope`](../../runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md#twu-applicability-envelope) — `TWU.APPLICABILITY-ENVELOPE`
+> - `CONTEXTUALIZES` [`Target Step Result`](../../runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md#twu-target-step-result) — `TWU.TARGET-STEP-RESULT`
+
+This Use Case owns the **maintenance/orchestration process** for one reusable Target Module. The linked owners above remain authoritative for Target Formation, Unit/Collection/Slot/runtime and Target Step Result semantics.
+
 ---
 
 ## Situation
@@ -46,25 +61,17 @@ Creating a module is itself ordinary IDTSPE planning.
 Target:
   reusable Target Module contract
 
-Target-Scope Decision:
-  what recurring planning responsibility the module owns
+Recurring scope / responsibility analysis:
+  what recurring bounded Target family the module recognizes
+  which scope/problem signals make reuse plausible
+  which recurring requirement patterns should be checked against the concrete task/Sources
 
-Question-Set Decision:
-  what must be resolved to make the module reusable/safe
+Module coverage design:
+  which Module-defined Unit Definitions cover those recurring responsibilities
+  which questions/guidance/Lenses/validators help resolve each Unit
+  how Unit results compose the Target Step Result
 
-Answer Decisions:
-  entry point
-  integration roles
-  Source Contract
-  Target Step Result family
-  Result Units / important fields
-  Resolution / Production Method
-  Knowledge Basis / theory-reference links when useful
-  RQ pack
-  Lens Profile / reusable Lens refs / local pattern aids
-  output/projection schema when useful
-  validators
-  handoffs
+Material choices use ordinary Decisions identified by their natural Subject when a durable selection/rationale/revalidation trace is useful. There is no special Target-Scope / Question-Set / Answer Decision taxonomy.
 ```
 
 Material alternatives may use Planning Branches.
@@ -74,35 +81,36 @@ Material alternatives may use Planning Branches.
 ## Process
 
 ```text
-1. establish the recurring useful Target Step Result
-2. inspect existing semantic owners / reuse candidates
-3. decide module boundary
-4. define single Entry Point
-5. define Module Unit Contracts only where a bounded result/resolution responsibility is independently useful; prove the smallest natural semantic subject of each proposed Unit belongs to this Target family
-6. define explicit Opening / Closing Unit Checkpoint placement for every material Result Unit, inheriting the generic Unit Applicability Envelope; keep In-Unit Applicability Checks available whenever material
-7. for every Module-defined Unit establish a stable addressable Unit Contract/method owner; for each material Unit define Result Responsibility, Result Content contract and enough reusable Unit Resolution guidance/references
-8. verify the concrete Target result can declare the complete Module-defined Unit inventory with resolved / OPEN / explicit-omission dispositions without forcing substantive work on non-material Units
-9. keep only genuinely cross-Unit Resolution / Production Method at module level; move Unit-specific guidance into Unit Contracts
-10. map the module to current IDTSPE integration points
-11. define Target Formation contributions
-12. define Source Contract archetype
-13. identify reusable theory/reference knowledge and place it at Unit Contract, Target Module or Lens level according to its real consumer
-14. keep useful references/provenance and add consumer-specific interpretation when raw theory is too broad
-15. define Unit-specific question/Problem driver guidance plus only genuinely Target-wide question guidance
-16. define Unit-specific Proposal/pattern discovery aids plus only genuinely cross-Unit candidate guidance
-17. define Lens Profile: reuse Lens Library first; keep only genuinely local Lens prompts; add applicability gates
-18. define recurring Q/R/P discovery hints only when target-specific
-19. define material selection surfaces; do not require a durable Decision record for every safely derived Result Content
-20. define semantic output/projection schema when useful
-21. define Internal Object Contracts / supporting module composition
-22. for every proposed Supporting Target Module, prove it can also be a coherent standalone recurring Target family; otherwise use a Result Unit / Internal Object Contract / shared Result-Unit method
-23. define validators against Result Units/boundaries
-24. define downstream Unit/output → Source handoff
-25. define revalidation prompts
-26. define representation guidance / current Artifact contract
-27. map current repository UCs/workflows/templates/commands
-28. create at least one worked acceptance example showing Result + State Units
-29. run module consistency/readiness review
+1. establish the recurring useful Target Step Result / Target family
+2. inspect repeated real cases and existing semantic owners / reuse candidates
+3. derive the recurring bounded scope/problem pattern the module should recognize; do not turn the module into the semantic source of concrete task Requirements
+4. define single Entry Point plus recognition/applicability signals for REUSABLE_TARGET_MODEL_CHECK
+5. analyze recurring cases to identify requirement patterns that should be checked against the concrete task/scope/Sources
+6. map recurring grounded requirement patterns to the bounded Module-defined Unit responsibilities owned by the Target Module Meta-Model; one Unit may cover several Requirements and one Requirement may need several Units/other owners
+7. define each Module Unit only for a distinct bounded Unit responsibility and conform every Unit Definition to `TWU.UNIT-CONTRACT`; do not create a second local Unit/Collection/Slot schema in this Use Case
+8. validate Collection qualification, Item Contract/addressability, simple/composite classification, formal Slot Definitions and runtime Unit Resolution Set projection through the canonical Target Work Unit owners; this maintenance process supplies only Target-family-specific Unit presets/deltas
+9. place prepared questions/drivers, Proposal aids, helpful Lenses, validators and Source needs on the smallest natural Unit/Slot/other owner rather than centralizing them in the module or inventing a standalone Target Question Set
+10. define Module-specific Opening / Closing applicability guidance by applying `TWU.APPLICABILITY-ENVELOPE`; keep In-Unit applicability checks available whenever material
+11. verify the Target Module Instance exposes the complete Module-defined Unit inventory and that runtime Unit visibility/disposition follows the canonical Unit applicability contract without forcing substantive work on non-material Units
+12. verify that a useful module may cover only part of a concrete Target and that canonical Target Formation/Core/contextual completion can cover the remainder without modifying the reusable module ad hoc
+13. verify the module's Target Step Result family/composition constraints integrate through `TWU.TARGET-STEP-RESULT` rather than redefining generic Target Step Result runtime composition
+14. keep only genuinely cross-Unit Resolution / Production Method at module level; move Unit-specific guidance into Unit Definitions
+15. define Source Contract archetypes; runtime Sources remain concrete accepted Source Subjects/bindings
+16. identify reusable theory/reference knowledge and place/reference it at Target Module, Unit Definition, Unit Resolution Slot or Lens level according to its real consumer
+17. keep useful references/provenance and add consumer-specific interpretation when raw theory is too broad
+18. define Lens Profile: reuse Lens Library first; keep only genuinely local Lens prompts; add applicability gates
+19. define recurring Q/R/P discovery hints only when target-specific
+20. define material selection surfaces; use ordinary Decisions by natural Subject only when durable selection/rationale/revalidation value is useful
+21. define semantic output/projection schema and Target Step Result composition when useful
+22. define Internal Object Contracts / supporting module composition
+23. for every proposed Supporting Target Module, prove it can also be a coherent standalone recurring Target family; otherwise keep the meaning inside the natural Unit's Result Content Contract / Internal Object Contract / shared Unit method
+24. define validators against Unit responsibilities/boundaries and requirement coverage patterns
+25. define downstream Unit/output → Source handoff
+26. define revalidation prompts, including when scope/Source change should rerun REUSABLE_TARGET_MODEL_CHECK
+27. define representation guidance / current Artifact contract
+28. map current repository UCs/workflows/templates/commands
+29. create at least one worked acceptance example showing concrete grounded Requirements mapped to prepared Module Units plus contextual completion when coverage is incomplete
+30. run module consistency/readiness review
 ```
 ---
 
@@ -113,10 +121,10 @@ one Target Module owner
 + catalog entry
 + stable Entry Point
 + integration map
-+ Target Step-Result Contract / Unit Contracts / Result Content responsibilities
-+ explicit per-Unit Opening / Closing Applicability Checkpoints
++ Target Step-Result family / Module-defined Unit inventory and Target-family-specific Unit deltas conforming to the canonical Target Work owners
 + stable per-Unit methodology-owner binding points
-+ complete Module-defined Unit inventory/disposition contract
++ Module-specific applicability/checkpoint guidance conforming to the canonical Unit applicability envelope
++ complete Module-defined Unit inventory/composition contract without duplicated generic Unit/Collection/Slot/runtime semantics
 + Resolution / Production Method
 + output schema/projection when useful
 + validators
@@ -149,29 +157,45 @@ copy foreign-owner meaning into a Unit merely because the Module is a convenient
 let a Module-defined Unit silently disappear from an actually formed Target result
 create one user command for every internal submodule
 force supporting modules into separate Target Instances
+create peer Units from homogeneous collection items governed by one Unit contract
+create Slots from ordinary result fields/questions/items without terminal formal contract pressure
+create nested Unit Resolution Slots / subslots instead of promoting a newly independent responsibility to a Unit
 ```
 
 ---
 
 ## Integration Into IDTSPE
 
-A module may enter at different points:
+A module contributes reusable coverage through semantic integration points rather than the removed fixed `TF-*` Target Formation fields:
 
 ```text
-TF-02 Target Form candidate
-TF-03 Scope aid
-TF-04 Source Contract aid
-Target Module Knowledge Basis via shared Knowledge Basis Contract
-TF-06 Question Set
-TF-06A Lens Set contribution / Lens Profile
-TF-07 Proposal Space
-TF-08 Branch/Comparison policy
-Output Projection
+REUSABLE_TARGET_MODEL_CHECK
+  recurring Target-family / scope recognition
+
+Target formation / resolution
+  reusable scope-boundary guidance
+  recurring requirement-pattern recognition
+  Source Contract archetypes
+
+Module-defined Unit Definitions
+  prepared bounded work coverage
+  Target-family-specific presets/deltas on canonical `TWU.UNIT-CONTRACT` Unit Definitions
+  Unit/Slot questions, Proposal aids, helpful Lenses and validators on natural subjects
+  result destinations
+
+Target Module Knowledge Basis
+  via shared Knowledge Basis Contract when useful
+
+Lens Profile / Proposal aids / Branch triggers
+  ordinary reusable/runtime mechanisms on natural subjects
+
+Output Projection / Target Step Result composition
 Validator pack
-Downstream Source adapter
+Downstream Source adapter / Handoff guidance
+Representation guidance
 ```
 
-This flexibility is part of the contract.
+The concrete task/scope/Sources remain the semantic source of actual task Requirements; the module provides reusable recognition and coverage.
 
 ---
 

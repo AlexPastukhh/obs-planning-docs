@@ -65,9 +65,9 @@ WEUC comparison
 Cross-Branch Q/R/P
 
 Decision recommendation/proposal
-  optional AI proposal only
+  optional Generic AI Proposal (GIP) only
 
-Root Answer Decision ref
+Root Decision ref
   once actually selected
 
 Decision Revalidation Helper ref
@@ -126,7 +126,7 @@ accepted upstream Decisions
 constraints
 current reality
 same root Target scope
-same root Question Set
+same root material Questions / resolution drivers
 ```
 
 Branch-specific assumption:
@@ -272,7 +272,7 @@ But:
 
 ```text
 AI Recommendation
-≠ Root Answer Decision
+≠ Root Decision
 ```
 
 The user/authorized decision path selects.
@@ -284,7 +284,7 @@ The user/authorized decision path selects.
 When selected:
 
 ```text
-Root Answer Decision
+Root Decision
 ```
 
 is persisted in the root Target owner.

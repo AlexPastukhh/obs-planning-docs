@@ -9,289 +9,233 @@ Purpose: define the generic technical IDTSPE runtime/composition contract used i
 IDTSPE Work Context
 + current Use-Case composition
 + Broad Discussion / Key Points
++ P-02 Pass Trace / Visibility Contract
 + zero or more bounded Targets
   each Target when present:
-    Target Formation Resolution Set
-    + Target Module or Local Target Contract
-    + actual Source Set
-      + Source State Units/bindings scoped to Target/Work Units as applicable
-    + selected/applicable Lenses
-    + complete Module-defined Target Work Unit inventory
-      each Module-defined Unit remains instantiated/addressable in the formed Target:
-        RESOLVED → proportional Current Result Content
-        OPEN → explicit unresolved disposition
-        OMITTED → concise omission reason; no substantive Unit Resolution required
-      + Contextual Units only when actually formed
-    + Target Step Result composition from the complete Unit inventory/dispositions/content
+    Target Resolution Requirements
+      derived from current task/scope/Sources
+      + applicable universal Core Target Requirements
+    + required REUSABLE_TARGET_MODEL_CHECK during formation
+    + governing path:
+      Target Module Model + Target Module Instance when reusable coverage is useful
+        + complete Module-defined Unit inventory
+      or Local Target Contract
+        + no Module-defined Unit inventory
+    + applicable Core-defined Target Work Units
+    + Contextual Units only when locally defined/formed
+    + actual Source Set / Target Relations
+    + selected/applicable Lenses and normal Core Resolution State
+    + Target Step Result composition
+      from Module contribution when present
+      + Core-defined Unit Result Destinations
+      + Contextual Unit Result Destinations
     + Validators / Guards
-    + Artifact Placement when material
+    + Handoff / Persistence completeness when applicable
 + cross-Unit / Target / Work-Context Core Resolution State when material
-+ Handoff / Evidence / Revalidation when material
++ Evidence / Revalidation when material
 = current proportional IDTSPE work
 ```
 
-A Target-specific shell pass still operates on one primary bounded Target at a time, while the Work Context may contain zero/several Targets. Unit-local Core State Units/Core Resolution State attach to Work Unit Resolution; broader state remains at its natural Target/cross-Target/Work-Context subject. Target Work Units and Core State Units are distinct compositional roles, not one peer result inventory.
+Requirements come from the current task/scope/Sources plus universal Core Target needs. Target Module Models provide prepared reusable recognition/coverage and Unit Definitions; they are not a third semantic source of Requirements.
 
-The current `P-01..P-15` labels remain stable technical runtime navigation, not a second ontology.
+A Target-specific shell pass still operates on one primary bounded Target at a time, while the Work Context may contain zero/several Targets. Target Work Units and Core State Units remain distinct compositional roles.
+
+The current `P-01..P-15` labels are technical runtime navigation, not a second ontology. `P-01 Invocation` and `P-02 Pass Trace / Visibility` are REQUIRED in every normal Shell pass; other ports remain applicability/materiality/explicit-requirement driven.
+
+### Port-Number Migration Compatibility
+
+This methodology-only transition intentionally leaves direct `planning/commands/*` and Helper/group projections unchanged. During the compatibility window, a stale reference is interpreted by its **named semantic port and generation**, never by bare number. Two historical numberings are relevant.
+
+Pre-Trace legacy numbering (the repository/helper baseline before `P-02 Trace` was inserted):
+
+```text
+legacy P-02 Target        → canonical P-03 Target
+legacy P-03 Source        → canonical P-04 Source
+legacy P-04 Relation      → canonical P-05 Relation
+legacy P-05 Question      → no standalone canonical Question Port; route by natural meaning
+legacy P-06 Lens          → canonical P-06 Lens
+legacy P-07 Proposal      → canonical P-07 Proposal
+legacy P-08 Branch        → canonical P-08 Branch
+legacy P-09 Q/R/P         → canonical P-09 Q/R/P
+legacy P-10 Decision      → canonical P-10 Decision
+legacy P-11 Result        → canonical P-11 Target Step Result
+legacy P-12 Validation    → canonical P-12 Validation
+legacy P-13 Handoff       → canonical P-13 Handoff / Methodology Direction
+legacy P-14 Persistence   → canonical P-14 Persistence / Artifact
+legacy P-15 Revalidation  → canonical P-15 Evidence / Revalidation
+```
+
+Previous Trace-enabled numbering (`1fe3` generation, before standalone Question removal):
+
+```text
+previous P-02 Trace                 → canonical P-02 Trace / Visibility
+previous P-03 Target                → canonical P-03 Target
+previous P-04 Source                → canonical P-04 Source
+previous P-05 Relation              → canonical P-05 Relation
+previous P-06 Question              → no standalone canonical Question Port; route by natural meaning
+previous P-07 Lens                  → canonical P-06 Lens
+previous P-08 Proposal              → canonical P-07 Proposal
+previous P-09 Branch                → canonical P-08 Branch
+previous P-10 Q/R/P                 → canonical P-09 Q/R/P
+previous P-11 Decision              → canonical P-10 Decision
+previous P-12 Target Step Result    → canonical P-11 Target Step Result
+previous P-13 Validation            → canonical P-12 Validation
+previous P-14 Handoff / Direction   → canonical P-13 Handoff / Methodology Direction
+previous P-15 Persistence / Artifact→ canonical P-14 Persistence / Artifact
+previous P-16 Evidence/Revalidation → canonical P-15 Evidence / Revalidation
+```
+
+A removed Question port is routed by meaning to Requirement guidance, Unit Resolution, Q/R/P, or—only when an actual Target exists and ownership is unclear—`CORE-U-UNROUTED-CONCERNS`. Never map a bare historical port number to a canonical port without checking its semantic name/generation.
 
 ## Work-Context Proportionality
 
-The Shell is subordinate to the Use-Case/contextual-application layer:
+The Shell is subordinate to Use-Case/contextual composition. `P-01` and `P-02` are REQUIRED; all other ports are traversed only when composition/materiality or explicit requirements call for them.
 
 ```text
-Use-Case Registry applicability
-→ UC-IDTSPE-COMPOSE-CURRENT-WORK
-→ component/registry applicability
-→ local Unit materiality
-→ Shell ports used only where the selected composition needs them
+AUTO_COMPOSITION
+EXPLICIT_REQUIREMENT
+DOWNSTREAM_MATERIALITY
+→ same port contract
 ```
 
-Do not invoke all ports as a completion checklist. A port may remain unused in a valid work pass. Canonical rule: [`runtime/applicability/CONTEXTUAL-METHODOLOGY-APPLICATION-CONTRACT.md`](applicability/CONTEXTUAL-METHODOLOGY-APPLICATION-CONTRACT.md).
+An explicit requirement forces a real applicability/traversal check but not a positive semantic result. `NOT_APPLICABLE`, `CHECKED_NO_RESULT`, `CHECKED_NO_CHANGE` and `REUSED` remain valid outcomes.
 
-## Decision Type Reference
+<a id="idtspe-port-composition-refresh"></a>
+## Port Composition Refresh Rule
 
-The Shell does not define Decision types. Canonical Target-formation/Resolution-slot mapping owns the three durable Decision roles currently used by Core:
+Responsibility ID: `IDTSPE.PORT-COMPOSITION-REFRESH`
 
-[`runtime/target-work/RESOLUTION-SLOT-AND-TARGET-FORMATION-SET.md`](target-work/RESOLUTION-SLOT-AND-TARGET-FORMATION-SET.md)
+This section owns the technical refresh/admission/reuse semantics for the Port Requirement Set. `UC-IDTSPE-COMPOSE-CURRENT-WORK` invokes the refresh as orchestration; the Contextual Methodology Application Contract contextualizes when it is required; P-02 represents its observable trace.
 
-Proposal selection/Decision trace semantics are owned separately by [`resolution/proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md`](../resolution/proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md).
+Each **normal Shell pass** consumes one current Port Requirement Set. Before the pass enters `P-01`, the current IDTSPE Use-Case Process refreshes or reaffirms that set from the current methodology composition and this runtime applies the resulting admission/reuse contract.
+
+```text
+current Use-Case composition
++ AUTO_COMPOSITION requirements
++ EXPLICIT_REQUIREMENTs
++ current DOWNSTREAM_MATERIALITY
++ still-material defer/recheck obligations
+→ refresh / reaffirm Port Requirement Set
+→ one normal Shell pass
+```
+
+A previous pass's admitted/non-admitted port set is **not sticky authority** for the next pass. When the subject/basis/operation and all material requirement inputs remain equivalent, the previous determination may be `REUSED`; otherwise recompute only the affected admission decisions.
+
+Automatic refresh is not automatic focus. Intentionally narrowing/focusing work to a selected subset of ports requires explicit USER intent; ordinary refresh must still admit a newly material prerequisite/port when the current composition requires it.
+
+During a pass, `DOWNSTREAM_MATERIALITY` may make another port newly material. Admit it through the same Port Requirement Set/runtime contract and deduplicate shared prefixes; do not restart the full methodology route merely because the route deepened.
+
+## Decision Reference
+
+The Shell does not define Decision types. A material Decision is identified by its natural `Subject` and selected meaning. Descriptions such as "decision about Target Scope" are projections, not a closed Core Decision taxonomy.
 
 ## Shell Ports
 
-### P-01 Invocation Port
+### P-01 Invocation Port — REQUIRED
 
-Input, proportionally:
-```text
-current USER situation / Work Concern
-active methodology Use Case(s)
-current IDTSPE Work Context
-requested operation/mode when explicit
-invocation mode for a Target-specific pass: CREATE | REFINE | EXTEND | REVALIDATE | REPAIR
-current Target artifact(s) when they exist
-permission boundary
-```
+Routes the selected Use-Case composition into one normal Shell pass. It may validly route no Target-specific work when Broad Discussion remains sufficient.
 
-Output: the next technical Shell route for the composition selected by the active Use Case. It may be **no Target-specific route** when Broad Discussion remains sufficient. Reusing the same Target with `REFINE`/`REVALIDATE` is normal when durable owner representations already exist.
+### P-02 Pass Trace / Visibility Port — REQUIRED
 
-### P-02 Target Port
+Establishes the Pass Trace / Visibility Contract before substantive non-baseline work and records observable methodology/runtime facts incrementally. Trace is a pass-scoped produced result that may be rendered or persisted; persistence does not give it a Target lifecycle.
 
-This port is **conditional**. Use it only when Target Formation determines that a bounded Target/result responsibility is useful.
+Canonical owner: [`PASS-TRACE-AND-VISIBILITY-CONTRACT.md`](PASS-TRACE-AND-VISIBILITY-CONTRACT.md).
 
-Connects:
-```text
-Target Instance
-↔ Target Module / Target Type / local Target Contract
-```
+### P-03 Target Port
 
-Resolved through `TF-01 PURPOSE_OUTPUT`, `TF-02 TARGET_TYPE_FORM`, `TF-03 TARGET_SCOPE`. `NO_TARGET_NEEDED_YET` is a normal Work-Context outcome; it is not an error or a reason to invent a placeholder Target.
-
-### P-03 Source Port
-
-Connects the concrete Target's Source State Units/bindings to authoritative Source Subjects such as:
-```text
-Direct Semantic Sources
-Inherited Lineage when lineage itself is material
-Evidence / Current-State Sources
-current canonical Target owner/result when refining/revalidating
-Constraint / Planning-State Sources
-accepted upstream Target Work Unit / Target Step Result
-```
-
-Resolved through `TF-04 SOURCE_SET` and L2 Authority/SoT/Reuse. Reusable Target Module `Source Contract` text supplies archetypes/needs only; it is not the concrete runtime Source Set.
-
-Source relation is separate from Target topology relation. A Target relation never silently creates a Source State Unit/binding.
-
-### P-04 Relation Port
-
-Connects Target topology:
-```text
-PART_OF
-PARALLEL_WITH
-PRECEDES
-FLOW_TO
-OVERLAPS_WITH
-ALTERNATIVE_TO
-CONTRIBUTES_TO
-```
-
-Resolved through `TF-05 TARGET_RELATIONS`.
-
-A relation does not automatically create Source authority.
-
-### P-05 Question Port
-
-Coordinates material Question/Problem drivers across the current Target through `TF-06 QUESTION_SET`.
+Connects Target Formation/Resolution when a bounded Target is useful.
 
 ```text
-before Unit decomposition
-→ Target-level questions may help establish useful Unit/Target shape
-
-after Units exist
-→ Unit-local Questions/Problems attach to Unit Resolution
-→ TF-06 projects/coordinates them plus genuine Target-wide questions
+current task/problem/Sources
+→ provisional purpose + bounded scope/problem surface
+→ applicable Core Target Requirements
+   + explicit/already-obvious task Requirements
+→ REUSABLE_TARGET_MODEL_CHECK
+   → Target Module Instance when suitable
+      → prepared analysis recognizes/formulates actual grounded Requirements
+      → prepared Module Unit coverage
+   or Local Target Contract
+      → contextual scope/Requirement analysis
+→ prepared Core/Module coverage + contextual completion
 ```
 
-Module question presets should normally come from the relevant Unit Contract when Unit-specific. Prompts are not automatic USER questions or formal Question State.
+Target Formation may refine/split scope, derive/clarify Requirements and DEFINE Contextual Units when prepared coverage is insufficient. Unit Definition follows the canonical Responsibility/Purpose/Result Content Contract model; composite Units MUST use exactly one terminal Unit Resolution Set, including justified Contextual Slots within the same Responsibility/coherent result. `NO_TARGET_NEEDED_YET` remains valid.
+
+### P-04 Source Port
+
+Supports the `SOURCE_AUTHORITY` Target Requirement and normal Source State/binding lifecycle. Target Module Source Contracts provide reusable archetypes/needs; runtime Sources remain actual authoritative Source Subjects/bindings.
+
+### P-05 Relation Port
+
+Supports the `OWNER_RELATIONS` Requirement and Target topology/natural-owner relations. Relations do not silently create Source authority.
 
 ### P-06 Lens Port
 
-Technical Shell bridge for the contextual `TF-06A LENS_SET`.
+Runs normal Lens applicability/selection/application over the current analysis surface. Target Modules/Requirements/Units may reference helpful Lenses, but there is no fixed Target `LENS_SET` field.
 
-```text
-active Use-Case composition / Target context
-→ canonical Lens Applicability Scan
-→ TF-06A LENS_SET
-→ selected Lens owner(s)
-→ Finding Candidate only when material semantic disposition is needed
-```
-
-The Shell does **not** redefine Lens activation classes, Required Core inventory, registry scan algorithm, Analysis Surface or Lens operations. Canonical Lens selection/execution semantics are owned by [`lenses/LENS-MODEL.md`](../lenses/LENS-MODEL.md); finding consequences are owned by [`resolution/findings/FINDING-DISPOSITION.md`](../resolution/findings/FINDING-DISPOSITION.md).
+The Target Resolution Coverage Lens may evaluate scope/Requirement/Unit coverage and surface Finding Candidates; Target Formation/Resolution owns composition changes.
 
 ### P-07 Proposal / Alternative Port
 
-Connects materially different candidate resolutions from USER input, Sources, AI proposals, Unit Contract discovery aids, Broad Discussion and dispositioned Findings.
+Connects material candidate resolutions to their natural Requirement/Unit/Target/other subject. There is no fixed Target `PROPOSAL_SPACE` owner.
 
-```text
-Unit-local Proposal
-→ affected Unit Resolution
-
-cross-Unit / Target-wide Proposal
-→ broader subject
-
-TF-07 PROPOSAL_SPACE
-→ Target-level coordination/projection of the real candidate space
-```
-
-Canonical Proposal identity, grounding, Semantic Change Impact Review, review/selection and Decision semantics are owned by the Proposal/Decision lifecycle. A Proposal may exist without a Finding; a Finding may resolve without a Proposal.
+Canonical Proposal identity and selection semantics remain in the Proposal/Decision lifecycle. `GIP ≠ formal IDTSPE Proposal` remains invariant.
 
 ### P-08 Branch Port
 
-Connects optional counterfactual planning networks when shallow comparison is insufficient.
-
-Resolved through `TF-08 BRANCH_POLICY`.
-
-A Planning Branch is not one Proposal; it is an alternative downstream planning network from a shared Fork State.
+Connects optional counterfactual planning networks when shallow comparison is insufficient. There is no fixed Target `BRANCH_POLICY` field; branching is a resolution mechanism invoked when material.
 
 ### P-09 Q/R/P Port
 
-Carries material unresolved Question/Risk/Problem meaning attached to its real subject:
-
-```text
-Unit / Result field
-Proposal / Decision
-Target / cross-Unit owner relation
-```
-
-Unit-local Q/R/P is part of that Unit Resolution. Q/R/P is not a parallel planning root and is not forced into one Unit when its natural subject is broader.
+Carries material unresolved Question/Risk/Problem meaning attached to its natural subject. Questions no longer require a standalone Question Shell port.
 
 ### P-10 Decision Port
 
-Connects **material selection semantics** into the affected Unit/Target/owner meaning.
-
-```text
-AI Proposal ≠ selection
-material Proposal selected under applicable authority
-→ Decision semantics
-→ integrate selected meaning into affected Result Content / owner
-```
-
-A separate explicit/durable Decision State/trace is retained only when selection/rationale/trade-off/revalidation meaning has independent future value. The Shell does not force a durable Decision record for straightforward non-decision derivation or every resolved Unit field.
-
-
-### Proposal / Decision Operational Review
-
-When a material Proposal/Decision surface exists, the required Core [`LENS-PROPOSAL-DECISION-RESOLUTION-CONTEXT`](../lenses/required/LENS-PROPOSAL-DECISION-RESOLUTION-CONTEXT.md) evaluates that concrete context through the canonical Proposal/Decision, Q/R/P, Evidence and USER-input owners. Surviving material open/deferred/residual state may be projected through [`Resolution Carry-Forward`](../resolution/continuation/RESOLUTION-CARRY-FORWARD-PROJECTION.md) for continuation/handoff; neither the Lens nor the projection becomes a second semantic lifecycle owner.
+Connects material selection semantics into the affected subject. Durable Decision state/trace is proportional; straightforward non-decision derivation does not require a Decision record.
 
 ### P-11 Target Step Result Projection Port
 
-Projects the complete Module-defined Unit inventory into the Target Step Result supplied by the active Target Module/Local Contract: resolved material Units contribute Current Result Content, unresolved material Units remain `OPEN`, non-material Module-defined Units retain explicit omission dispositions, and only actually formed Contextual Units are added.
+Projects actual Target Work Unit/result composition:
 
 ```text
-Unit Resolution
-→ candidate meaning while unresolved
-→ selected / safely derived meaning
-→ Current Result Content
-
 Target Step Result
-= complete Module-defined Unit inventory
-  with resolved / OPEN / explicit-omission dispositions and proportional content
-+ any Contextual Units that actually formed
+= Target Module Instance contribution when present
+  (complete Module-defined Unit inventory with dispositions/content)
++ applicable Core-defined Unit contributions through Result Destinations
++ actually formed Contextual Unit contributions through Result Destinations
 ```
 
-Generic Core Resolution State is not duplicated into result fields merely to expose the reasoning history. Contextual Unit conclusions integrate into their declared destination; a Contextual Unit does not automatically create a durable result section.
+For a **substantive composite Unit**, project concrete Unit Resolution Slot disposition/state/content proportionally from the Slot Definitions in the Result Content Contract: one runtime resolution for each `UNIT_WIDE` Slot, or one runtime resolution per addressed item of the owning Collection for each `PER_ITEM` Slot. Prepared Slots with `OMITTED — reason` may remain concise; substantive Slots expose `OPEN / PARTIAL / RESOLVED / BLOCKED / DEFERRED` state as material. If the parent Module-defined Unit itself is omitted, project only the Unit-level omission; prepared Slot Definitions remain in methodology and no concrete Slot runtime state is required. Slots remain internal contributors to the parent Unit result, not peer Target Step Result Units.
+
+Core-defined Units are applicability-driven. Contextual Units exist only when locally defined/formed. Neither automatically requires its own durable result section.
 
 ### P-12 Validation Port
 
-Runs proportionally over the actual analysis surface:
-
-```text
-Unit Contract validators over Unit Result Content / Resolution as applicable
-applicable Lens checks
-Core authority/user guards
-cross-Unit / cross-owner consistency checks when invoked
-Evidence sufficiency where material
-```
-
-Validation may surface Finding Candidates. Finding Disposition routes each finding to the smallest correct semantic subject: often an affected Unit Resolution, sometimes a Contextual Unit/Target Formation or another owner directly.
+Runs proportional Unit/Slot validators, applicable Lenses, authority/user guards, cross-owner consistency and Target Requirement coverage/readiness checks. Findings route to the smallest correct semantic owner.
 
 ### P-13 Handoff / Methodology Direction Port
 
-Resolves `TF-09 HANDOFF` through the **current Use-Case composition plus the active profile/family semantic readiness guidance**. The Shell owns the generic handoff port and response shape; it does not own one universal Scenario/Domain/Slice chronology and does not delegate runtime orchestration to a profile resolver.
-
-```text
-accepted Target output
-→ typed downstream Source(s)
-→ active profile/family semantic composition/readiness guidance
-→ methodology readiness / next likely Target or no additional Target
-```
-
-Current installed SDS example: [`../profiles/sds/profile-contracts/SDS-SEMANTIC-COMPOSITION-AND-READINESS.md`](../../profiles/sds/profile-contracts/SDS-SEMANTIC-COMPOSITION-AND-READINESS.md).
-
-When a checkpoint/handoff-sensitive response needs Methodology Direction, distinguish proportionally:
-
-```text
-Recommended next Target/action
-Conditional alternatives
-Repeat-current trigger
-Backward-reopen trigger
-```
-
-The recommended next step is guidance, not permission to execute it automatically.
-
-Handoff/topology relation and Source authority remain distinct.
+For a Target, supports the conditional `HANDOFF_CONTINUATION` Requirement: downstream consumer/source binding and readiness. The same port also exposes Work-Context Methodology Direction, including zero-Target Broad Discussion; therefore the port is broader than the Target Requirement.
 
 ### P-14 Persistence / Artifact Port
 
-Technical Shell bridge for `TF-10 PERSISTENCE_ADDRESSABILITY`.
-
-```text
-material retained meaning
-→ Documentation / Representation decision
-→ P-14 / TF-10 placement resolution
-→ no persistence | implementation-native | existing owner | dedicated/supporting/generated representation
-```
-
-The Shell does not redefine ArtifactPlacementItem fields, AP/AG schemas, precedence, representation statuses or placement workflow. Canonical persistence/placement semantics are owned by [`representation/ARTIFACT-PLACEMENT-AND-IDTSPE-RESPONSE-CONTRACT.md`](../representation/ARTIFACT-PLACEMENT-AND-IDTSPE-RESPONSE-CONTRACT.md).
-
-Broad Discussion does not require a placement view. A checkpoint/persistence-sensitive pass exposes placement only when material/changed/unresolved.
+Generic persistence/representation bridge. For a Target, it supports the conditional `PERSISTENCE_ADDRESSABILITY` Requirement. It also applies to non-Target retained meaning such as Pass Trace, Proposal/Decision or Work-Context state.
 
 ```text
 semantic retention ≠ physical persistence
 Artifact Placement View ≠ file mutation
 ```
 
+Canonical owner: [`../representation/ARTIFACT-PLACEMENT-AND-IDTSPE-RESPONSE-CONTRACT.md`](../representation/ARTIFACT-PLACEMENT-AND-IDTSPE-RESPONSE-CONTRACT.md).
+
 ### P-15 Evidence / Revalidation Port
 
-Connects post-choice Evidence to accepted Decisions without making Evidence itself lifecycle authority:
-```text
-actual Evidence
-→ compare with accepted basis / residual Q/R/P / watch signals
-→ Finding Candidate when accepted meaning is materially challenged
-→ Core Finding Disposition
-→ reaffirm / revalidate / reopen the narrowest appropriate level when selected
-```
+> Semantic Owner Dependency
+> Type: `CONTEXTUALIZES`
+> Responsibility: `TWU.SUBJECT-REFERENCE`
+> Owner: [Target Work Subject Reference Contract](target-work/TARGET-WORK-SUBJECT-REFERENCE-CONTRACT.md#target-work-subject-reference)
 
-Revalidation is lifecycle, not a peer Lens.
+Connects post-choice Evidence/revalidation signals to accepted meaning without making Evidence lifecycle authority. Reopen the narrowest correct Requirement/Collection/Collection item/Unit Resolution Slot/Unit/Decision/Target scope when material challenge is accepted. When the selected subject is inside Target Work, use `TWU.SUBJECT-REFERENCE` so revalidation does not accidentally broaden or narrow the challenged scope.
 
 ## Integration Checkpoint / Representation Handoff
 
@@ -327,10 +271,9 @@ Sequencing/next-step is profile-supplied through P-13. Current SDS resolver: [`.
 Lenses are applied to **material choice surfaces**, not mechanically to every paragraph.
 
 ```text
-Target/Scope choice
-Question-Set choice
+Target/Scope or Requirement-coverage choice
 Proposal/Branch comparison
-Answer Decision
+Decision
 revalidation challenge
 ```
 
@@ -341,20 +284,14 @@ Required Core Lenses mean required **checks**; they may reuse trusted basis and 
 A Target Module can plug into shell ports through its integration points:
 
 ```text
-TARGET_FORM
-SCOPE
-SOURCES
-KNOWLEDGE_BASIS
-RELATIONS
-QUESTIONS
-PROPOSALS
-BRANCHING
+RECOGNITION / SCOPE_GUIDANCE
+REQUIREMENT_RECOGNITION / UNIT_COVERAGE
+SOURCES / KNOWLEDGE_BASIS / RELATIONS
+QUESTIONS_GUIDANCE
+PROPOSAL_BRANCH_GUIDANCE
 LENSES_PATTERNS
-OUTPUT
-ARTIFACT_FILE_CONTRACT
-VALIDATION
-HANDOFF
-REVALIDATION
+OUTPUT / ARTIFACT_FILE_CONTRACT
+VALIDATION / HANDOFF / REVALIDATION
 ```
 
 The module does not replace the shell and the shell does not contain target-specific semantics.
@@ -369,7 +306,7 @@ Source
   = accepted truth / evidence / constraint used to plan it
 
 Knowledge Basis
-  = reusable principles / rules / theory / pattern knowledge used by a Target Module, Unit Contract or Lens
+  = reusable principles / rules / theory / pattern knowledge used by a Target Module, Unit Definition or Lens
   = not current Target Source / evidence / project truth
 
 Lens
@@ -394,10 +331,14 @@ When local work surfaces new responsibility:
 Finding / Question / Problem / Source conflict
 → smallest correct existing semantic subject?
    yes → resolve there
-→ existing Unit responsibility?
+→ applicable existing Module/Core Unit responsibility?
    yes → Unit Resolution
-→ new bounded local responsibility inside current Target?
-   yes → Contextual Unit
+→ owner/destination unclear but concern is material?
+   → current Target exists?
+      yes → CORE-U-UNROUTED-CONCERNS
+      no  → retain in Work Context / natural Core State; may feed GIP / Target Formation
+→ uncovered bounded local responsibility inside current Target?
+   yes → DEFINE Contextual Unit → EXECUTE Unit Resolution
 → independently substantial responsibility?
    yes → Target Formation candidate
 ```
@@ -408,8 +349,8 @@ Target Formation decides reuse/handoff/new Target. No special planning engine is
 
 Generic IDTSPE State does **not** require a profile-global planning-state tree.
 
-Loose/carry-over Proposals remain ordinary Generic Proposal State. Their durable representation,
-when useful, is selected through Documentation / Representation + P-14 / TF-10 and may be:
+Loose/carry-over Proposals remain ordinary IDTSPE Proposal State. Their durable representation,
+when useful, is selected through Documentation / Representation + P-14 / PERSISTENCE_ADDRESSABILITY and may be:
 
 ```text
 current natural owner
@@ -424,22 +365,23 @@ not become a second semantic authority.
 
 ## Exit Condition
 
-An IDTSPE instance is ready to hand off when proportionally:
+The Pass Trace is closed from recorded runtime events rather than reconstructed after the fact. An IDTSPE instance is ready to hand off when proportionally:
 
 ```text
-Target form/scope resolved
-Sources sufficient and authoritative
-Question Set sufficient
-Lens Set resolved and material findings handled
-Proposal/Branch space sufficient
-blocking Q/R/P resolved/deferred explicitly
-material Decisions accepted under correct authority
-material Unit Resolutions sufficiently resolved/deferred for the current handoff
-Current Result Content projected for resolved material Units; OPEN/omission dispositions preserved for the rest of the Module-defined inventory
-Target Step Result composed from the complete Module-defined Unit inventory plus any formed Contextual Units
-material Core Resolution State visible/resolved/deferred at the correct subject
-validators pass or material findings dispositioned
-handoff/persistence/revalidation contract sufficient
+Target purpose/scope and applicable Target Resolution Requirements are sufficiently formed for this checkpoint
+Sources are sufficient/authoritative for the material work
+selected/applicable Lenses have no undispositioned material findings
+material Proposal/Branch surfaces are sufficiently resolved for the intended result
+blocking Q/R/P is resolved/deferred explicitly
+material Decisions are accepted under correct authority
+material Unit Resolutions are sufficiently resolved/deferred for the current handoff
+Module-defined Unit inventory preserves RESOLVED / OPEN / explicit-omission dispositions when a Target Module Instance exists
+applicable Core-defined Units and formed Contextual Units have explicit result/disposition destinations
+material Requirements are sufficiently covered or explicitly OPEN/BLOCKED/DEFERRED
+Target Step Result is composed from Module contribution when present plus Core-defined/Contextual contributions through Result Destinations
+material Core Resolution State is visible/resolved/deferred at the correct subject
+validators pass or material findings are dispositioned
+handoff/persistence/revalidation state is sufficient when applicable
 ```
 
 
@@ -456,12 +398,12 @@ plan the capture scenario
 Shell composition:
 
 ```text
-P-02 Target:
+P-03 Target:
   SCN-CAPTURE
   module:
     TM-SCENARIO-PLANNING
 
-P-03 Sources:
+P-04 Sources:
   Application Definition
   selected Feature behavior/semantic data
   relevant Screen context when known
@@ -472,7 +414,7 @@ P-06 Lenses:
   journey/continuity checks
   UI/Spatial when Screen relations matter
 
-P-05 Questions:
+Requirement/Unit drivers:
   who/what starts the journey?
   which Feature/context actions participate and in what order?
   where do branches/convergence/re-entry occur?
@@ -538,7 +480,7 @@ A trusted upstream Decision already answers a potential RQ.
 ```text
 L2 finds canonical accepted answer
 → question is not asked again
-→ Question Set stays smaller
+→ no duplicate Question State/work is created
 ```
 
 IDTSPE is therefore allowed to remove work, not only add structure.
@@ -557,7 +499,7 @@ L4 surfaces that observation as a Finding Candidate. Core Finding Disposition ma
 Risk
 new Proposal
 migration Question
-architecture Answer-Decision input
+architecture Decision input
 ```
 
 but L4 does not create that State or own the API semantics.
@@ -570,7 +512,7 @@ During any Target:
 "maybe support offline capture later"
 ```
 
-remains Generic Proposal State until it has enough basis to justify a concrete planning destination. Acceptance does not universally mean "write into the current owner": the active profile decides the temporal semantic owner. Under current SDS, materially planned but unrealized target state belongs to an Evolution Step, while current natural owners remain realized truth.
+remains IDTSPE Proposal State until it has enough basis to justify a concrete planning destination. Acceptance does not universally mean "write into the current owner": the active profile decides the temporal semantic owner. Under current SDS, materially planned but unrealized target state belongs to an Evolution Step, while current natural owners remain realized truth.
 
 ## Example Reading Standard
 

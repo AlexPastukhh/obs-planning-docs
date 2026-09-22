@@ -2,7 +2,7 @@
 
 Entry Point: `tm.application.definition`
 Role: primary Target Module
-Target form: selected own-application definition
+Target family / archetype: selected own-application definition
 
 ## Purpose
 
@@ -158,11 +158,11 @@ later Feature/Scenario/Screen/Domain/Slice/Shared implementation Evidence for re
 accepted constraints / non-goals
 ownership/privacy/integration constraints
 performance/data-volume/operational constraints when material
-accepted architecture Answer Decisions when reviewing an existing application
+accepted architecture Decisions when reviewing an existing application
 ```
 
 ### Source Discovery Rule
-Expected archetype only; current `TF-04 SOURCE_SET` remains authority.
+Expected archetype only; current `SOURCE_AUTHORITY` Requirement remains authority.
 
 ## Unit Resolution Guidance / Knowledge Basis
 
@@ -225,7 +225,7 @@ RU-APP-07 Realization Feasibility
     applicable implementation/evolution/proof Lenses and Evidence; no separate theory load when they add no value
 ```
 
-Concrete `TF-06 QUESTION_SET` coordinates the material current Unit drivers plus any genuine Target-wide question; the reusable prompts above do not automatically become USER questions or formal Question State.
+Concrete prepared/contextual question guidance stays on the natural Requirement/Unit subject; the reusable prompts above do not automatically become USER questions or formal Question State.
 
 ## Lens Profile
 
@@ -266,7 +266,7 @@ Benefit semantics do not belong to one RLS, and an RLS may demonstrate several B
 
 Material alternative comparisons are Resolution/Production state until selected; they are not a separate Result Unit by default. A Lens may surface Finding Candidates while this method runs; Core Finding Disposition owns their State/lifecycle/owner destination.
 
-## Unit Contract Conformance
+## Unit Definition Conformance
 
 This module specializes the Core [Target Module Model](../../../idtspe-core/target-modules/TARGET-MODULE-MODEL.md) and [Unit / Target Step Result Model](../../../idtspe-core/runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md). The Core owners define generic Unit lifecycle, complete-inventory/disposition and Proposal/Core-State semantics; this module defines only its SDS-specific Unit responsibilities, local materiality, production guidance, validators and handoffs below.
 
@@ -288,7 +288,7 @@ The seven Module-defined Result Units below are the complete Application Definit
 
 ### Result Unit Applicability / Materiality
 
-Unit presence/disposition mechanics follow the Core [`Unit Applicability / Materiality / Disposition Contract`](../../../idtspe-core/runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md#5a-unit-applicability--materiality--disposition-contract). The table below owns only this module's local substantive-materiality and omission-rationale triggers.
+Unit presence/disposition mechanics follow the Core [`Unit Applicability / Materiality / Disposition Contract`](../../../idtspe-core/runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md#twu-applicability-disposition). The table below owns only this module's local substantive-materiality and omission-rationale triggers.
 
 | Result Unit | Substantive resolution is material when | Unit disposition when substantive resolution is not material |
 |---|---|---|
@@ -388,7 +388,7 @@ Material Application alternatives remain ordinary Proposal / Planning Branch / D
 
 ### Explicit Unit Checkpoint Placement
 
-Each material Unit inherits the generic [`Unit Applicability Envelope`](../../../idtspe-core/runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md#5b-unit-applicability-envelope--opening--in-unit--closing-checkpoints). Opening/Closing are logical applicability boundaries; registries may also be checked during Unit work whenever new material pressure appears.
+Each material Unit inherits the generic [`Unit Applicability Envelope`](../../../idtspe-core/runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md#twu-applicability-envelope). Opening/Closing are logical applicability boundaries; registries may also be checked during Unit work whenever new material pressure appears.
 
 #### `RU-APP-01` processing envelope
 
@@ -451,7 +451,7 @@ REPRESENTATION: CURRENT_OWNER_OR_EVOLUTION_STEP_REPRESENTATION
 FILE_OR_ARTIFACT: <application-definition-owner-or-evolution-step-owner>
 CONTENT: concept; responsibility boundary; build/buy/adapt/integrate position; representative real-life scenario inventory with bounded Target-contribution / Benefit relations where material; feasibility conclusion
 GUIDANCE_SOURCE: TARGET_MODULE
-RESOLVER: P-14 / TF-10
+RESOLVER: P-14 / PERSISTENCE_ADDRESSABILITY
 ```
 
 ```text
@@ -467,7 +467,7 @@ REPRESENTATION: SUPPORTING_EVIDENCE_ARTIFACT
 FILE_OR_ARTIFACT: <application-reference-research-artifact>
 CONTENT: material comparison sources/findings/evidence without turning competitor behavior into application truth
 GUIDANCE_SOURCE: TARGET_MODULE
-RESOLVER: P-14 / TF-10
+RESOLVER: P-14 / PERSISTENCE_ADDRESSABILITY
 ```
 
 ```text
@@ -483,7 +483,7 @@ REPRESENTATION: EMBED_OR_SEPARATE_ADDRESSABLE_ARTIFACT
 FILE_OR_ARTIFACT: <application-definition-owner> or <representative-r-l-s-artifact>
 CONTENT: representative real-world situation; bounded Target contribution marker; optional AB-* manifestation/closure refs; surrounding workflow context
 GUIDANCE_SOURCE: TARGET_MODULE
-RESOLVER: P-14 / TF-10
+RESOLVER: P-14 / PERSISTENCE_ADDRESSABILITY
 ```
 
 

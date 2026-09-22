@@ -69,7 +69,7 @@ Do not ask "continue?" merely because another ordinary step begins.
 
 If one meaningful step runs long enough that the USER would otherwise lose orientation, provide an occasional concise update describing useful partial progress and current focus.
 
-Progress updates are transient interaction signals, not State Units or Checkpoints.
+Progress updates are transient interaction signals, not State Units or Checkpoints. During IDTSPE work they may project facts already recorded by `P-02 Pass Trace / Visibility`, but Session owns the conversational timing/shape while P-02 owns methodology-route trace semantics.
 
 ## 5. USER Steering
 
@@ -88,23 +88,23 @@ Before an actual repository/application/documentation/methodology mutation, surf
 When the USER explicitly requests proposal-driven gating (for example through the direct `пропозал` command or equivalent natural language), apply the canonical USER-gated proposal-driven interaction policy from [`principles-and-terminology.md`](principles-and-terminology.md) to the current task.
 
 ```text
-cheap read-only investigation needed to frame the next Proposal
+cheap read-only investigation needed to frame the next GIP
 → allowed autonomously
 
-Proposal grounding insufficient because material USER-only information/choice is missing
+GIP grounding insufficient because material USER-only information/choice is missing
 → ask minimum useful USER question directly
 → intake USER answer
-→ frame/refine the Proposal
+→ frame/refine the GIP
 
 important decision / materially different approach
 substantial or expensive work batch / large read-search-test-build-tool batch
 artifact creation or change / mutation outside already approved exact scope
-→ AI Proposal
+→ GIP
 → USER approve/select/revise/reject/defer as applicable
-→ execute only the selected Proposal scope
+→ execute only the selected GIP scope
 ```
 
-A grounding clarification is a real USER gate when required, but it is not a Proposal wrapper. Do not manufacture questions, alternatives or approval requests when trustworthy Sources/current USER input are already sufficient. The policy changes interaction gating only; IDTSPE still owns formal `Proposal`, Q/R/P, `Decision`, Target and Result semantics.
+A grounding clarification is a real USER gate when required, but it is not a GIP wrapper. Do not manufacture questions, alternatives or approval requests when trustworthy Sources/current USER input are already sufficient. The policy changes interaction gating only; IDTSPE still owns formal `Proposal`, Q/R/P, `Decision`, Target and Result semantics.
 
 The stricter policy remains active for the current task until the USER explicitly cancels or weakens it, or the task ends.
 
@@ -116,6 +116,6 @@ A depth transition is not an approval gate by itself.
 
 ## 8. IDTSPE Integration
 
-Broad Discussion, planning state, Targets, Lenses and Integration Checkpoints are IDTSPE-owned. Session runtime only governs how their work remains observable and steerable to the USER.
+Broad Discussion, planning state, Targets, Lenses and Integration Checkpoints are IDTSPE-owned. Session runtime governs Work Steps/Progress Updates and USER steering. IDTSPE `P-02 Pass Trace / Visibility` owns the observable methodology route; Session may project that trace conversationally without becoming its semantic owner.
 
 A situational IDTSPE Integration Checkpoint may be performed whenever its Use Case applies; Session does not maintain a competing generic Checkpoint object.

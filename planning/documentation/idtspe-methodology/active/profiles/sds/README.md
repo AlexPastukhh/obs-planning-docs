@@ -106,7 +106,7 @@ This is routing orientation only, not a mandatory phase sequence or a duplicate 
 
 - Application Definition is upstream intent/value authority and may lead realization; Feature/Scenario/Screen/Domain/Slice/Shared current owners describe realized/current downstream truth, while selected-but-unrealized downstream meaning stays in an Evolution Step.
 - Evolution Step Target Owner Bodies reuse natural owner contracts without creating `FutureFeature`, `FutureDomain`, `FutureSlice` or another parallel owner ontology.
-- Target Owner Materialization is a semantic authority transition after realization/proof; it is distinct from physical representation promotion/demotion or file placement under P-14/TF-10.
+- Target Owner Materialization is a semantic authority transition after realization/proof; it is distinct from physical representation promotion/demotion or file placement under P-14/PERSISTENCE_ADDRESSABILITY.
 - Feature, Scenario and Screen are peer semantic owner families; none silently edits another.
 - Domain and Slice discovery Targets/artifacts are transient by default; selected Discovery Working Plan Result Content may be retained in a Step `Evolution Impact` when continuation/realization/review/revalidation still needs it, without becoming durable Domain/Slice authority.
 - Durable Requirements stay with exactly one natural owner **in the state being represented**: future `BR/SR/IR/PFR` live in the corresponding Step Target Body until materialization; reusable Type/QRPE representation does not change ownership.

@@ -2,7 +2,13 @@
 
 Entry Point: `tm.pre.update`
 Role: generic Core optional Target Module
-Target form: `PRE_UPDATE_PLAN`
+Target family / archetype: `PRE_UPDATE_PLAN`
+
+> Semantic Owner Dependency
+> Type: `EXTENDS`
+> Responsibility: `TARGET-MODULE.META-MODEL`
+> Owner: [Target Module Meta-Model](TARGET-MODULE-MODEL.md#target-module-meta-model)
+
 
 ## Purpose
 
@@ -50,7 +56,7 @@ known Evidence / failures / constraints relevant to the change
 
 Do not invent a new design baseline when accepted upstream meaning already exists. If a material source is missing, surface the real Question/Problem instead of guessing the plan.
 
-Current `TF-04 SOURCE_SET` remains authority for the concrete Target.
+Current `SOURCE_AUTHORITY` Requirement remains authority for the concrete Target.
 
 ## Automatic IDTSPE Reasoning Around The Plan
 
@@ -110,9 +116,14 @@ Pre-Update Plan:
 
 Generic Questions/Proposals/Q/R/P/Decisions/Evidence remain Core State. Do not create Target-specific copies of them.
 
-## Unit Contract Conformance
+## Unit Definition Conformance
 
-Each declared Result Unit is a Module-defined Unit Contract. Its runtime work is represented as Unit Resolution plus Current Result Content; generic Question/QRP/Proposal/Evidence/Decision meaning remains Core Resolution State related to the Unit/Target subject it actually concerns. A material Proposal selection has Decision semantics, while a separate durable Decision trace is retained only when it adds future review/revalidation value.
+> Semantic Owner Dependency
+> Type: `CONTEXTUALIZES`
+> Responsibility: `TWU.UNIT-CONTRACT`
+> Owner: [Target Work Unit contract](../runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md#twu-unit-contract)
+
+Each declared Result Unit is a Module-defined Unit Definition under the canonical Target Work Unit contract. This concrete Module owns only its Target-family-specific Unit definitions/deltas; generic simple/composite/runtime projection and Core State semantics remain with their Core owners. A material Proposal selection has Decision semantics, while a separate durable Decision trace is retained only when it adds future review/revalidation value.
 
 ## Target Step-Result Contract
 
@@ -122,9 +133,19 @@ Each declared Result Unit is a Module-defined Unit Contract. Its runtime work is
 |---|---|
 | `RU-PUPDATE-01` | Pre-Update Plan — concrete planned changes derived from current accepted meaning/current state, sufficient for review before actual update |
 
+### `RU-PUPDATE-01` Unit Definition
+
+**Responsibility.** Resolve the concrete bounded set of intended changes, preserves and verification implications before mutation.
+
+**Purpose.** Provide an independently reviewable update plan when planning value justifies a separate pre-update Target, without turning the plan into implementation authority.
+
+**Result Content Contract.** One actionable plan that states the accepted basis, intended change scope, material preserve/must-not-change boundaries, dependencies/order when material, verification/checks and consequential unresolved issues.
+
+This Unit is simple by default and does not require a Unit Resolution Set merely because the plan has several content headings. Introduce terminal Slots only if one sub-responsibility actually needs independent status/guidance/reopen tracking while remaining inside this same plan Responsibility.
+
 ### Result Unit Applicability / Materiality
 
-Apply the Core [`Unit Applicability / Materiality / Disposition Contract`](../runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md#5a-unit-applicability--materiality--disposition-contract).
+Apply the Core [`Unit Applicability / Materiality / Disposition Contract`](../runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md#twu-applicability-disposition).
 
 | Result Unit | Substantive resolution is material when | Target/Unit disposition when not material |
 |---|---|---|
@@ -150,13 +171,13 @@ These are useful content prompts, not mandatory form fields. A tiny plan may be 
 
 ### Explicit Unit Checkpoint Placement
 
-Each material Unit below inherits the generic [`Unit Applicability Envelope`](../runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md#5b-unit-applicability-envelope--opening--in-unit--closing-checkpoints). Opening/Closing are mandatory logical applicability boundaries; registries may also be checked during Unit work whenever new material pressure appears. For `RU-PUPDATE-01`, both boundaries explicitly scan/reuse the Core Lens Registry and any active-profile Lens Registry; frequent Lens candidates remain those named in this module's Lens Profile.
+Each material Unit below inherits the generic [`Unit Applicability Envelope`](../runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md#twu-applicability-envelope). Opening/Closing are mandatory logical applicability boundaries; registries may also be checked during Unit work whenever new material pressure appears. For `RU-PUPDATE-01`, both boundaries explicitly scan/reuse the Core Lens Registry and any active-profile Lens Registry; frequent Lens candidates remain those named in this module's Lens Profile.
 
 #### `RU-PUPDATE-01` processing envelope
 
 1. **Opening Unit Checkpoint — `RU-PUPDATE-01`** — resolve/reuse current applicable Core + active-profile Lens registry candidates and any Unit-triggered supporting registry pressure before material work.
 2. **Unit Work — `RU-PUPDATE-01`** — produce/refine only the material meaning owned by this Result Unit; run additional applicability checks immediately when the Analysis Surface changes materially.
-3. **Closing Unit Checkpoint — `RU-PUPDATE-01`** — evaluate the actual candidate Unit result, disposition material Findings/owner consequences, and reopen/refine narrowly when needed before treating the Unit as current-for-handoff.
+3. **Closing Unit Checkpoint — `RU-PUPDATE-01`** — evaluate the actual candidate Current Result Content, disposition material Findings/owner consequences, and reopen/refine narrowly when needed before treating the Unit as current-for-handoff.
 
 ## Resolution / Production Method
 
@@ -254,7 +275,7 @@ SEMANTIC_OWNER: current Pre-Update Plan Target / existing change owner when one 
 REPRESENTATION: CONVERSATIONAL_BY_DEFAULT_OR_EXISTING_OWNER
 CONTENT: concrete intended changes + preserve boundary + material verification/open issue; no exact code mirror
 GUIDANCE_SOURCE: TARGET_MODULE
-RESOLVER: P-14 / TF-10
+RESOLVER: P-14 / PERSISTENCE_ADDRESSABILITY
 ```
 
 Default representation is conversational/current planning state. Do **not** create a Markdown file just because a Pre-Update Plan Target exists.

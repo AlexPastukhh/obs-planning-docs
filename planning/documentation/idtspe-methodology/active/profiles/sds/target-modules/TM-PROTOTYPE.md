@@ -59,7 +59,7 @@ current implementation/platform facts when extending an existing solution
 participant/operator/data/environment/time/privacy constraints
 ```
 
-Current `TF-04 SOURCE_SET` remains authority.
+Current `SOURCE_AUTHORITY` Requirement remains authority.
 
 ## Knowledge Basis / Lens Profile
 
@@ -88,7 +88,7 @@ identify material uncertainty
 
 A Prototype shape does not become canonical product/UI/architecture meaning merely because it was tested.
 
-## Unit Contract Conformance
+## Unit Definition Conformance
 
 This module specializes the Core [Target Module Model](../../../idtspe-core/target-modules/TARGET-MODULE-MODEL.md) and [Unit / Target Step Result Model](../../../idtspe-core/runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md). The Core owners define generic Unit lifecycle, complete-inventory/disposition and Proposal/Core-State semantics; this module defines only its SDS-specific Unit responsibilities, local materiality, production guidance, validators and handoffs below.
 
@@ -104,7 +104,7 @@ This module specializes the Core [Target Module Model](../../../idtspe-core/targ
 
 ### Result Unit Applicability / Materiality
 
-Unit presence/disposition mechanics follow the Core [`Unit Applicability / Materiality / Disposition Contract`](../../../idtspe-core/runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md#5a-unit-applicability--materiality--disposition-contract). The table below owns only this module's local substantive-materiality and omission-rationale triggers.
+Unit presence/disposition mechanics follow the Core [`Unit Applicability / Materiality / Disposition Contract`](../../../idtspe-core/runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md#twu-applicability-disposition). The table below owns only this module's local substantive-materiality and omission-rationale triggers.
 
 | Result Unit | Substantive resolution is material when | Unit disposition when substantive resolution is not material |
 |---|---|---|
@@ -118,7 +118,7 @@ The shared method's full inquiry fields are guidance, not mandatory duplicated R
 
 ### Explicit Unit Checkpoint Placement
 
-Each material Unit below inherits the generic [`Unit Applicability Envelope`](../../../idtspe-core/runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md#5b-unit-applicability-envelope--opening--in-unit--closing-checkpoints). Opening/Closing are mandatory logical applicability boundaries; registries may also be checked during Unit work whenever new material pressure appears.
+Each material Unit below inherits the generic [`Unit Applicability Envelope`](../../../idtspe-core/runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md#twu-applicability-envelope). Opening/Closing are mandatory logical applicability boundaries; registries may also be checked during Unit work whenever new material pressure appears.
 
 #### `RU-PROTO-01` processing envelope
 
@@ -152,7 +152,7 @@ SEMANTIC_OWNER: current Prototype Target
 REPRESENTATION: EXISTING_OWNER_OR_PROTOTYPE_ARTIFACT
 CONTENT: intent/question; prototype subject/real-vs-simulated boundary; proportional observation plan; Evidence refs; material limits; interpretation/follow-up
 GUIDANCE_SOURCE: TARGET_MODULE
-RESOLVER: P-14 / TF-10
+RESOLVER: P-14 / PERSISTENCE_ADDRESSABILITY
 ```
 
 ```text
@@ -167,7 +167,7 @@ SEMANTIC_OWNER: Prototype Target as interpreter; raw observation remains Evidenc
 REPRESENTATION: SUPPORTING_EVIDENCE_ARTIFACT
 CONTENT: actual observation/run records with provenance and material limits
 GUIDANCE_SOURCE: TARGET_MODULE
-RESOLVER: P-14 / TF-10
+RESOLVER: P-14 / PERSISTENCE_ADDRESSABILITY
 ```
 
 ```text
@@ -182,7 +182,7 @@ SEMANTIC_OWNER: UNRESOLVED until selected by natural owner
 REPRESENTATION: EXISTING_IDEA_STATE_OR_REGISTER
 CONTENT: unselected proposal with Prototype provenance; formalize as IDTSPE Proposal only when addressable lifecycle/review is useful
 GUIDANCE_SOURCE: TARGET_MODULE
-RESOLVER: P-14 / TF-10
+RESOLVER: P-14 / PERSISTENCE_ADDRESSABILITY
 ```
 
 Small Prototype intent/plan/result may live together in one existing/current owner. A separate Prototype artifact is justified when the inquiry/result is independently reviewed or reused.

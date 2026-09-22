@@ -51,11 +51,16 @@ A material Q/R/P item must be attached/related to concrete semantic meaning at t
 ```text
 candidate observation
 → concrete affected meaning?
-→ one Unit / Result field / Proposal / Decision / Target / cross-Unit subject?
+→ one Unit Resolution Slot / Unit / result meaning / Proposal / Decision / Target / cross-Unit subject?
 → materially unresolved/adverse after a cheap check?
 ```
 
-Unit-local Q/R/P belongs in that Unit Resolution. Cross-Unit, Target-level or cross-owner Q/R/P remains valid when that is its natural resolution surface. Do not force every Q/R/P into exactly one Unit merely to satisfy structure.
+> Semantic Owner Dependency
+> Type: `CONTEXTUALIZES`
+> Responsibility: `TWU.SUBJECT-REFERENCE`
+> Owner: [Target Work Subject Reference Contract](../../runtime/target-work/TARGET-WORK-SUBJECT-REFERENCE-CONTRACT.md#target-work-subject-reference)
+
+When a material Q/R/P concerns a Target Work Collection/item/Slot, first choose the smallest natural subject under this lifecycle and then use the canonical Target Work Subject Reference. Other Unit-local Q/R/P belongs in the parent Unit Resolution. Cross-Unit, Target-level or cross-owner Q/R/P remains valid when that is its natural resolution surface. Do not broaden one item-local subject or force every Q/R/P into exactly one Slot/Unit merely to satisfy structure.
 
 If the observation has no material unresolved/adverse state, integrate the obvious consequence or keep it as discussion/Source/Evidence/Proposal as appropriate.
 
@@ -199,7 +204,7 @@ AI/other preference for a Proposal
 
 selected material route
 → Decision semantics
-→ affected Unit Result Content / Target Result / natural-owner meaning
+→ affected Current Result Content / Target Result / natural-owner meaning
 ```
 
 Canonical Proposal/Decision semantics: [`planning/documentation/idtspe-methodology/active/idtspe-core/resolution/proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md`](../proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md).

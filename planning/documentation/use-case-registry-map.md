@@ -2,23 +2,31 @@
 
 Status: active functional-entry map
 
-Purpose: provide the **first lightweight methodology-navigation check** for repository work. It maps Use-Case scopes; it does not duplicate the Use Cases themselves.
+Purpose: provide the lightweight **cross-scope routing metadata** consumed by the fundamental methodology Use-Case applicability resolver. It maps Use-Case scopes; it does not own the applicability Process or duplicate the Use Cases themselves.
 
-Prerequisite: the primary bootstrap from [`planning/README.md`](../README.md) establishes Session + Documentation + IDTSPE Core. This map is the functional methodology entry **after** that bootstrap; bootstrap itself is not another Use Case.
+Prerequisite: the primary bootstrap from [`planning/README.md`](../README.md) establishes Session + Documentation + IDTSPE Core. [`UC-DOC-RESOLVE-CURRENT-USE-CASES`](use-cases/UC-DOC-RESOLVE-CURRENT-USE-CASES.md) is the functional methodology entry after bootstrap; this map is its first cross-scope routing data source, not another Use Case.
 
 ## Runtime Rule
 
+> Semantic Owner Dependency
+> Type: REPRESENTS
+> Responsibility: `DOC.USE-CASE-APPLICABILITY-RESOLUTION`
+> Owner: [`UC-DOC-RESOLVE-CURRENT-USE-CASES`](use-cases/UC-DOC-RESOLVE-CURRENT-USE-CASES.md)
+
+This map supplies cross-scope routing metadata to the owner Process; the sequence below is a routing projection, not a second applicability Process:
+
 ```text
 current situation
+→ fundamental Resolve Current Methodology Use Cases
 → logically scan this map for plausible Use-Case scopes
 → scan the relevant scoped Use-Case Registry/Registries
-→ select zero or more applicable Use Cases
-→ hand off to their canonical Use-Case owners
+→ retain/add/drop applicable Use Cases
+→ hand current composition to their canonical Use-Case owners
 ```
 
-This check is **always logically active** during methodology-guided work. "Always" does not mean rereading unchanged files after every message. Reuse current registry metadata while trustworthy and reread only when the methodology/repository changed, the active profile/scope changed, or current authority cannot be reconstructed safely.
+That fundamental Use Case is **always logically active** during methodology-guided work. "Always" does not mean rereading unchanged files after every message. Reuse current registry metadata while trustworthy and reread only when the methodology/repository changed, the active profile/scope changed, a material new request/action changes applicability, or current authority cannot be reconstructed safely.
 
-This map owns only cross-scope applicability/routing metadata. Downstream Process/component routing is owned by the selected Use Case and the supporting owners it explicitly reaches. The generic ownership/handoff chain and `scan ≠ select ≠ execute` semantics are defined in [`principles-and-terminology.md`](principles-and-terminology.md).
+This map owns only cross-scope applicability/routing metadata; it does not own the scan Process. Downstream Process/component routing is owned by the selected Use Case and the supporting owners it explicitly reaches. The generic [`Functional Routing Ownership Chain`](principles-and-terminology.md#doc-functional-routing-ownership) and [`Registry Scan`](principles-and-terminology.md#doc-registry-scan) semantics are defined in `Principles & Terminology`.
 
 A methodology component registry such as a Target Module Registry or Lens Registry is therefore consulted from a selected Use Case Process, not as a competing root workflow.
 
@@ -40,17 +48,6 @@ The current installed profiles — SDS, 2D Visual Production and Reference Knowl
 
 Create a profile-specific Use Case later only if a recurring situation requires an independently useful way of **using that profile's methodology documentation** that cannot be expressed by the existing generic/IDTSPE Use Cases.
 
-## Re-evaluation Triggers
+## Applicability Recheck Route
 
-Re-evaluate Use-Case applicability when material context changes, including:
-
-- a new task or clean/reloaded context;
-- the current work concern changes materially;
-- the active profile changes;
-- a Finding/Evidence/Decision changes what methodology may be relevant;
-- a checkpoint/integration pass reveals distributed or stale meaning;
-- the work is about to enter a materially different depth or realization mode;
-- the USER redirects, narrows, broadens, pauses or changes the intended result;
-- methodology/repository owners themselves changed.
-
-A mechanical substep does not require ceremonial rereading.
+Re-evaluation timing/triggers belong to [`UC-DOC-RESOLVE-CURRENT-USE-CASES`](use-cases/UC-DOC-RESOLVE-CURRENT-USE-CASES.md). Whenever that owner requires an applicability refresh, this map supplies current cross-scope routing metadata; it does not maintain a second trigger list.

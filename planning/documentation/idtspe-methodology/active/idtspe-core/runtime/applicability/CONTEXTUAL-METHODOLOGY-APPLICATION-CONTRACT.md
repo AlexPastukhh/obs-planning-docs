@@ -4,7 +4,7 @@ Status: active generic IDTSPE contract
 
 Purpose: make IDTSPE **always active but proportionate**. This is the fundamental situational-application mechanism; it is deliberately **not a Lens**.
 
-Generic documentation authority: [`../../../../principles-and-terminology.md`](../../../../../principles-and-terminology.md), especially Use Case, Process, Use-Case Applicability Scan and Contextual Guidance Principle.
+Generic documentation authority: [`Principles & Terminology`](../../../../../principles-and-terminology.md), especially [`Use-Case Applicability Scan`](../../../../../principles-and-terminology.md#doc-use-case-applicability-scan), [`Contextual Guidance Principle`](../../../../../principles-and-terminology.md#doc-contextual-guidance), and [`Registry Scan`](../../../../../principles-and-terminology.md#doc-registry-scan), plus the generic Use Case/Process definitions.
 
 ## 1. Core Invariant
 
@@ -63,9 +63,29 @@ Broad Discussion clarifies concern
 → continue Broad Discussion
 ```
 
+
+## 2A. Explicit Port Requirement
+
+Explicit USER/command/component intent may require one normal Shell port to be **traversed even when ordinary composition would not have selected it proactively**. This is a request for a real applicability/route check, not authority to fabricate a result.
+
+```text
+explicit port requirement
+→ normal Use-Case/context composition remains active
+→ enter/check the requested Shell port
+→ apply the same local owner/applicability/authority guards
+→ APPLIED | CHECKED_NO_CHANGE | CHECKED_NO_RESULT | NOT_APPLICABLE | REUSED | BLOCKED | DEFERRED
+```
+
+Several explicit requirements may be merged into one Shell pass. Shared meta-methodology/registry/owner prefixes are resolved once per unchanged subject/basis/operation and reused. Canonical trace/reuse semantics are owned by [`../PASS-TRACE-AND-VISIBILITY-CONTRACT.md`](../PASS-TRACE-AND-VISIBILITY-CONTRACT.md).
+
 ## 3. Inherited Contextual Guidance Semantics
 
-Generic recommendation/selection semantics are owned by Documentation [`principles-and-terminology.md`](../../../../../principles-and-terminology.md) → `Contextual Guidance Principle` / `Registry Scan`. IDTSPE inherits that contract rather than redefining it here.
+> Semantic Owner Dependencies
+> - `CONTEXTUALIZES` [`Use-Case Applicability Scan`](../../../../../principles-and-terminology.md#doc-use-case-applicability-scan) — `DOC.USE-CASE-APPLICABILITY-SCAN`
+> - `CONTEXTUALIZES` [`Contextual Guidance Principle`](../../../../../principles-and-terminology.md#doc-contextual-guidance) — `DOC.CONTEXTUAL-GUIDANCE`
+> - `CONTEXTUALIZES` [`Registry Scan`](../../../../../principles-and-terminology.md#doc-registry-scan) — `DOC.REGISTRY-SCAN`
+
+Generic recommendation/selection semantics are owned by those Documentation principles. IDTSPE inherits that contract rather than redefining it here.
 
 IDTSPE specializes the generic rule through the four applicability layers above:
 
@@ -146,11 +166,21 @@ IDTSPE may also become **lighter** as work changes.
 - A resolved branch may stop being actively represented if its retained Decision is sufficient.
 - A checkpoint does not force a permanent checkpoint artifact.
 
+<a id="idtspe-methodology-composition-recheck"></a>
 ## 8. Recheck Rule
 
-Re-evaluate proportional composition at material next-action boundaries and after context change. This is a logical check; unchanged registry/component metadata may be reused.
+Responsibility ID: `IDTSPE.METHODOLOGY-COMPOSITION-RECHECK`
 
-Particularly recheck after:
+This section owns the IDTSPE-level rule for **when current Use-Case/methodology composition is re-evaluated**. Re-evaluate at material next-action boundaries and after context change. This is a logical check; unchanged registry/component metadata may be reused.
+
+> Semantic Owner Dependency
+> Type: CONTEXTUALIZES
+> Responsibility: `IDTSPE.PORT-COMPOSITION-REFRESH`
+> Owner: [`Port Composition Refresh Rule`](../IDTSPE-RUNTIME-COMPOSITION-CONTRACT.md#idtspe-port-composition-refresh)
+
+Independently, **before every normal IDTSPE Shell pass**, refresh or reaffirm the current Port Requirement Set under the canonical Shell runtime contract. This is intentionally cheap: when current composition, explicit requirements, downstream materiality and recheck/defer obligations are unchanged, the prior determination may be reused. Previous-pass port admission is not persistent authority, and automatic refresh does not create a focused/narrowed port subset without explicit USER intent.
+
+Particularly recheck methodology composition after:
 
 - USER redirect/scope change;
 - material Proposal/Decision;

@@ -1,6 +1,8 @@
 # Post-Pass12 Assembled-Methodology Consistency Audit
 
 Status: **CURRENT CONSISTENCY EVIDENCE — PASS after parity corrections**
+
+Registry cardinalities below were revalidated against the current assembled Core/SDS registries after subsequent Target Resolution methodology updates; they are current evidence, not frozen historical Pass12 counts.
 Scope: assembled Documentation + Session interaction boundary + IDTSPE Core + SDS profile + active supporting Application/Testing entry surfaces + Planning Helper invocation projections after Master Pass 12.
 
 This file is **evidence, not semantic authority**. When a statement here conflicts with a current Use Case, registry, Target Module, Lens or shared contract, the semantic owner wins.
@@ -72,7 +74,7 @@ Broad Discussion is a complete valid low-ceremony projection. Structure is intro
 Registry-driven inventory at this audit point:
 
 - generic Core Target Modules: **2** — Pre-Update Plan and Exact Realization;
-- generic Core reusable Lenses: **12**;
+- generic Core Lenses: **13**;
 - complete Module-defined Unit inventory contract: Module-defined Result Units are always present in a formed Target; whole-Unit `RESOLVED / OPEN / OMITTED` disposition is distinct from proportional omission of optional internal detail;
 - optional `Methodology Usage State` may retain material UC/registry/component/recheck context, but is not an execution/file-read log;
 - Integration Checkpoint is situational, not timer/message-count driven.
@@ -92,7 +94,7 @@ Canonical profile owners:
 Current registry-driven inventory:
 
 - **13 active SDS Target Modules**;
-- **7 SDS-specific Lenses**;
+- **8 SDS-specific Lenses**;
 - **5 retired/subsumed Target-family IDs** retained only as explicit compatibility routes: Requirement, Slice Strategy, Cross-Cutting Concern, Test Design, Test Strategy.
 
 Key ownership:

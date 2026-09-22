@@ -350,7 +350,7 @@ what can be removed / merged / inlined / reused / deferred
 what must remain and why
 relevant global/local evolution constraints
 change-cost comparison
-selected simplification Answer Decision input
+selected simplification Decision input
 Q/R/P when unresolved
 revalidation trigger when deferred complexity may become justified
 ```
@@ -404,7 +404,7 @@ REPRESENTATION: EMBED_CURRENT_OWNER
 FILE_OR_ARTIFACT: <current-idtspe-owner>
 CONTENT: accepted simplification/retained-complexity Decision; removed/merged/deferred structure; justification; evolution constraints that must remain; reconsider trigger when relevant
 GUIDANCE_SOURCE: LENS
-RESOLVER: P-14 / TF-10
+RESOLVER: P-14 / PERSISTENCE_ADDRESSABILITY
 ```
 
 Shell placement semantics: [`planning/documentation/idtspe-methodology/active/idtspe-core/representation/ARTIFACT-PLACEMENT-AND-IDTSPE-RESPONSE-CONTRACT.md`](../../../../idtspe-core/representation/ARTIFACT-PLACEMENT-AND-IDTSPE-RESPONSE-CONTRACT.md).
@@ -449,7 +449,7 @@ candidate
 → Core Finding Disposition resolves retained/removable-complexity meaning
 → L6 evaluates proof/operation and may surface a Finding Candidate
 → Core Finding Disposition
-→ Answer Decision only when the relevant State/owner consequence is resolved
+→ Decision only when the relevant State/owner consequence is resolved
 ```
 
 ## Escalation / Revalidation
@@ -555,7 +555,7 @@ The simpler candidate therefore removes four unpaid layers while preserving the 
 
 ### Result
 
-The Slice Answer Decision records:
+The Slice Decision records:
 
 ```text
 REMOVE CaptureFacade

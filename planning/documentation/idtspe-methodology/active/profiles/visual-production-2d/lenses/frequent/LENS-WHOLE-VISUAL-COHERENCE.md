@@ -73,7 +73,7 @@ REPRESENTATION: SUPPORTING_EVIDENCE_ARTIFACT or EMBED_CURRENT_OWNER
 FILE_OR_ARTIFACT: <review-evidence-or-owner>
 CONTENT: compact review finding and supporting preview reference; no mandatory standalone file
 GUIDANCE_SOURCE: LENS
-RESOLVER: P-14 / TF-10
+RESOLVER: P-14 / PERSISTENCE_ADDRESSABILITY
 ```
 
 ## Knowledge Basis

@@ -104,7 +104,7 @@ REPRESENTATION: EXISTING_OR_NEW_CANONICAL_ARTIFACT
 FILE_OR_ARTIFACT: <visual-material-registry-or-owner>
 CONTENT: accepted Prepared Visual Material Set, with references to producer-owned artifacts/Sources rather than copied authority
 GUIDANCE_SOURCE: TARGET_MODULE
-RESOLVER: P-14 / TF-10
+RESOLVER: P-14 / PERSISTENCE_ADDRESSABILITY
 ```
 
 ## References

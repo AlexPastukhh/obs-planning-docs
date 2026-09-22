@@ -10,7 +10,12 @@ Check only the owners/relations/projections plausibly affected by a material cha
 
 ## Process
 
-1. Identify the changed/reopened owner, Decision, Source, relation, Result Unit or representation fact.
+> Semantic Owner Dependency
+> Type: `CONTEXTUALIZES`
+> Responsibility: `TWU.SUBJECT-REFERENCE`
+> Owner: [Target Work Subject Reference Contract](../runtime/target-work/TARGET-WORK-SUBJECT-REFERENCE-CONTRACT.md#target-work-subject-reference)
+
+1. Identify the changed/reopened smallest natural subject: Collection surface, Collection item, Unit Resolution Slot, Unit/Result owner, Decision, Source, relation, Target/cross-owner relation or representation fact. When the subject is inside Target Work, use `TWU.SUBJECT-REFERENCE` rather than a process-local address grammar.
 2. Enumerate only direct/material consumers and dependent owners that can actually be affected.
 3. Compare current meaning across those owners/projections.
 4. Distinguish:

@@ -30,7 +30,7 @@ semantic result
 → reuse an existing owner before creating another artifact
 → prefer consolidation before split
 → let representation grow only when real review/addressability/lifecycle pressure appears
-→ then hand the selected representation to P-14 / TF-10 for concrete placement
+→ then hand the selected representation to P-14 / PERSISTENCE_ADDRESSABILITY for concrete placement
 ```
 
 The Lens deliberately treats source code, types, tests, schemas, configuration, names, package/module structure and carefully chosen comments as possible **natural representations** of current meaning. It also recognizes the classes of knowledge that implementation represents poorly and therefore usually deserve planning/catalog/strategy/global artifacts.
@@ -228,7 +228,7 @@ WHY a local workaround remains
 
 Avoid comments that simply narrate the next line or duplicate type/signature information.
 
-A local comment is not enough for project-global architecture/evolution truth that must constrain several independent future Targets. Surface that meaning as a Finding Candidate with any useful likely-global-owner context; Core Finding Disposition resolves the semantic owner, and Documentation / Representation + P-14 / TF-10 then resolve how accepted meaning persists.
+A local comment is not enough for project-global architecture/evolution truth that must constrain several independent future Targets. Surface that meaning as a Finding Candidate with any useful likely-global-owner context; Core Finding Disposition resolves the semantic owner, and Documentation / Representation + P-14 / PERSISTENCE_ADDRESSABILITY then resolve how accepted meaning persists.
 
 ## Part 4 — What Implementation Represents Poorly
 
@@ -489,7 +489,7 @@ If exact literal duplication across files is intentionally required and equality
 
 This Lens decides **what representation is justified**.
 
-`P-14 / TF-10` decides **where that selected representation goes**.
+`P-14 / PERSISTENCE_ADDRESSABILITY` decides **where that selected representation goes**.
 
 ```text
 Documentation / Representation Lens
@@ -576,7 +576,7 @@ REPRESENTATION: RESOLVED_BY_DOCUMENTATION_REPRESENTATION_LENS
 FILE_OR_ARTIFACT: selected representation; may be code, existing section, registry/strategy, dedicated artifact, generated view or none
 CONTENT: persistence necessity + representation class + consolidation/split rationale + code-vs-prose boundary
 GUIDANCE_SOURCE: LENS
-RESOLVER: P-14 / TF-10
+RESOLVER: P-14 / PERSISTENCE_ADDRESSABILITY
 ```
 
 ```text
@@ -592,7 +592,7 @@ REPRESENTATION: UNRESOLVED
 FILE_OR_ARTIFACT: <artifact-plan>
 CONTENT: pressure-driven representation change; preserve semantic authority and minimize duplicated maintenance
 GUIDANCE_SOURCE: LENS
-RESOLVER: P-14 / TF-10
+RESOLVER: P-14 / PERSISTENCE_ADDRESSABILITY
 ```
 
 Shell placement semantics: [`planning/documentation/idtspe-methodology/active/idtspe-core/representation/ARTIFACT-PLACEMENT-AND-IDTSPE-RESPONSE-CONTRACT.md`](../../representation/ARTIFACT-PLACEMENT-AND-IDTSPE-RESPONSE-CONTRACT.md).
@@ -729,4 +729,9 @@ Expanded from the prior Artifact / File Boundary / Addressability Lens, the Arti
 
 For material addressable artifacts ask how a normal consumer arrives, what outgoing/return links are required, and whether a shallow registry improves discovery without copying owner bodies. Navigation projections are non-authoritative. Application Definition is an SDS temporal exception to the generic realized-current-owner example: it may lead downstream realization.
 
-For Markdown documentation, apply the canonical Documentation [Markdown Link Navigation Rule](../../../../../principles-and-terminology.md#markdown-link-navigation-rule). This Lens evaluates whether direct traversal, registry navigation or tracked relations best fit the representation need; it does not redefine link/ownership/dependency authority semantics. Broken targets/fragments and links to stale/non-authoritative destinations remain representation defects.
+> Semantic Owner Dependency
+> Type: CONTEXTUALIZES
+> Responsibility: `DOC.MARKDOWN-LINK-NAVIGATION`
+> Owner: [Markdown Link Navigation Rule](../../../../../principles-and-terminology.md#doc-markdown-link-navigation)
+
+For Markdown documentation, apply the canonical Documentation [Markdown Link Navigation Rule](../../../../../principles-and-terminology.md#doc-markdown-link-navigation). This Lens evaluates whether direct traversal, registry navigation or tracked relations best fit the representation need; it does not redefine link/ownership/dependency authority semantics. Broken targets/fragments and links to stale/non-authoritative destinations remain representation defects.

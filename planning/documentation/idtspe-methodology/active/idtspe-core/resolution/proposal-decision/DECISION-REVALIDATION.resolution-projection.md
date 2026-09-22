@@ -32,6 +32,11 @@ which alternative/branch should we compare again?
 
 # 2. Literal Shape
 
+> Semantic Owner Dependency
+> Type: `REPRESENTS`
+> Responsibility: `TWU.SUBJECT-REFERENCE`
+> Owner: [Target Work Subject Reference Contract](../../runtime/target-work/TARGET-WORK-SUBJECT-REFERENCE-CONTRACT.md#target-work-subject-reference)
+
 ```text
 Decision Revalidation Helper
 
@@ -61,11 +66,16 @@ Evidence Sources
 Reconsider Events / Thresholds
   event / condition / qualitative threshold
 
-Re-open Level
-  ANSWER
-  QUESTION_SET
-  TARGET_SCOPE
-  UPSTREAM
+Reopen Subject / Scope
+  current Decision subject
+  Requirement ref
+  Target Work subject ref when Collection / item / Unit Resolution Slot is the natural subject
+    use canonical TWU.SUBJECT-REFERENCE
+  Unit Resolution ref
+  Target Scope / Target Formation
+  upstream owner / Source
+  Proposal / Branch comparison ref
+  other natural semantic subject as applicable
 
 Fallback / Saved Alternatives
   Proposal refs
@@ -217,7 +227,7 @@ material residual Q/R/P has usable future Evidence/reopen contract?
 accepted basis identifiable?
 watch signals proportional?
 saved alternatives/branches available when useful?
-re-open level explicit?
+reopen subject/scope explicit?
 ```
 
 ---

@@ -9,7 +9,7 @@ Canonical generic policy:
 
 ## Profile Projection Boundary
 
-Generic semantic-owner/artifact-owner separation, representation cardinality, promotion/demotion and P-14/TF-10 placement semantics are owned by Core [`planning/documentation/idtspe-methodology/active/idtspe-core/representation/ARTIFACT-PLACEMENT-AND-IDTSPE-RESPONSE-CONTRACT.md`](../../../idtspe-core/representation/ARTIFACT-PLACEMENT-AND-IDTSPE-RESPONSE-CONTRACT.md) and the required Documentation / Representation Lens.
+Generic semantic-owner/artifact-owner separation, representation cardinality, promotion/demotion and P-14/PERSISTENCE_ADDRESSABILITY placement semantics are owned by Core [`planning/documentation/idtspe-methodology/active/idtspe-core/representation/ARTIFACT-PLACEMENT-AND-IDTSPE-RESPONSE-CONTRACT.md`](../../../idtspe-core/representation/ARTIFACT-PLACEMENT-AND-IDTSPE-RESPONSE-CONTRACT.md) and the required Documentation / Representation Lens.
 
 This SDS map owns only the **profile-specific projection**:
 
@@ -35,7 +35,7 @@ unrealized planned downstream target state
 = representation of TM-EVOLUTION-STEP / its Target Owner Bodies
 ```
 
-Do not create/update current-owner artifacts merely because a future Target Body has been selected. After Exact Realization + required proof/revalidation, `TM-EVOLUTION-STEP` resolves semantic Target Owner Materialization; only then does P-14/TF-10 resolve the physical create/update/move/split/merge needed for the new current owner representation.
+Do not create/update current-owner artifacts merely because a future Target Body has been selected. After Exact Realization + required proof/revalidation, `TM-EVOLUTION-STEP` resolves semantic Target Owner Materialization; only then does P-14/PERSISTENCE_ADDRESSABILITY resolve the physical create/update/move/split/merge needed for the new current owner representation.
 
 `Target Owner Materialization` is therefore distinct from representation promotion/demotion (for example embedded → dedicated file).
 

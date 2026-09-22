@@ -2,13 +2,20 @@
 
 Status: active IDTSPE functional registry
 
-This registry is reached from the generic [`Methodology Use-Case Registry Map`](../../../../use-case-registry-map.md). It governs **how IDTSPE methodology is composed/used**, not the specialized planning semantics owned by Target Modules/Lenses/profiles.
+This registry is reached by the fundamental [`UC-DOC-RESOLVE-CURRENT-USE-CASES`](../../../../use-cases/UC-DOC-RESOLVE-CURRENT-USE-CASES.md) through the generic [`Methodology Use-Case Registry Map`](../../../../use-case-registry-map.md). It governs **how IDTSPE methodology is composed/used**, not the specialized planning semantics owned by Target Modules/Lenses/profiles.
+
+> Semantic Owner Dependency
+> Type: REPRESENTS
+> Responsibility: `DOC.USE-CASE-APPLICABILITY-RESOLUTION`
+> Owner: [`UC-DOC-RESOLVE-CURRENT-USE-CASES`](../../../../use-cases/UC-DOC-RESOLVE-CURRENT-USE-CASES.md)
+
+This scoped registry owns its compact routing rows; it does not own the cross-scope applicability-resolution Process.
 
 ## Runtime / Work Composition
 
 | ID | Use Case | Situation summary | Result summary | Owner |
 |---|---|---|---|---|
-| `UC-IDTSPE-COMPOSE-CURRENT-WORK` | Compose Current IDTSPE Work | always during active IDTSPE work; especially before a material methodology action or after context change | smallest useful IDTSPE composition: possibly Broad Discussion only, or selected State/Target/TM/Lens/profile/guidance/checkpoint/revalidation components | [`planning/documentation/idtspe-methodology/active/idtspe-core/use-cases/compose-current-work/UC-IDTSPE-COMPOSE-CURRENT-WORK.md`](compose-current-work/UC-IDTSPE-COMPOSE-CURRENT-WORK.md) |
+| `UC-IDTSPE-COMPOSE-CURRENT-WORK` | Compose Current IDTSPE Work | always during active IDTSPE work; especially before a material methodology action or after context change | smallest useful IDTSPE composition plus a refreshed/reaffirmed Port Requirement Set for the next normal Shell pass | [`planning/documentation/idtspe-methodology/active/idtspe-core/use-cases/compose-current-work/UC-IDTSPE-COMPOSE-CURRENT-WORK.md`](compose-current-work/UC-IDTSPE-COMPOSE-CURRENT-WORK.md) |
 | `UC-IDTSPE-MAINTAIN-CURRENT-WORK-STATE` | Maintain Current IDTSPE Work State | working meaning needs explicit retention/addressability for lifecycle, continuation, review, handoff or revalidation | proportional current Core State + complete Module-defined Target Result dispositions / methodology-use state | [`planning/documentation/idtspe-methodology/active/idtspe-core/use-cases/maintain-current-work-state/UC-IDTSPE-MAINTAIN-CURRENT-WORK-STATE.md`](maintain-current-work-state/UC-IDTSPE-MAINTAIN-CURRENT-WORK-STATE.md) |
 | `UC-IDTSPE-INTEGRATE-CURRENT-WORK` | Integrate Current IDTSPE Work | distributed current meaning makes a coherent whole-state view useful, or explicit checkpoint/review/handoff needs one | situational IDTSPE Integration Checkpoint with current meaning/revalidation/continuation integrated | [`planning/documentation/idtspe-methodology/active/idtspe-core/use-cases/integrate-current-work/UC-IDTSPE-INTEGRATE-CURRENT-WORK.md`](integrate-current-work/UC-IDTSPE-INTEGRATE-CURRENT-WORK.md) |
 | `UC-IDTSPE-REVALIDATE-CURRENT-WORK` | Revalidate Current IDTSPE Work | Finding/Evidence/Decision/source/USER/methodology change may make existing meaning stale | narrow affected meaning/components rechecked; unaffected meaning preserved; precise re-entry route | [`planning/documentation/idtspe-methodology/active/idtspe-core/use-cases/revalidate-current-work/UC-IDTSPE-REVALIDATE-CURRENT-WORK.md`](revalidate-current-work/UC-IDTSPE-REVALIDATE-CURRENT-WORK.md) |
