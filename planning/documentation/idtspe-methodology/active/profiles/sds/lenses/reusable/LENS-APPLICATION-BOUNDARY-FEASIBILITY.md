@@ -10,7 +10,7 @@ Activation: `TARGET_PROFILE_REUSABLE`
 
 ## Purpose
 
-Evaluate whether an own Application is justified, which real-world contribution it should own, what existing alternatives teach us, which Benefits justify it and whether representative real-life situations support a truthful boundary, and whether the boundary is plausibly realizable.
+Evaluate whether an own Application is justified, which real-world contribution it should own, what existing alternatives teach us, which Benefits justify it, whether each Benefit has a truthful Responsibility Boundary, whether representative real-life situations make those Benefits concrete, whether the concise Application Concept is understandable, and whether the concept/Benefit boundaries are plausibly realizable.
 
 ## Applicability Gate
 
@@ -34,7 +34,7 @@ later Scenario/Domain/Slice Evidence
 
 ### Primary Result Units / Semantic Selectors
 
-- `TM-APPLICATION-DEFINITION`: `RU-APP-01..RU-APP-07`
+- `TM-APPLICATION-DEFINITION`: `RU-APP-01`, `RU-APP-02`, `RU-APP-03`, `RU-APP-04`, `RU-APP-05`, `RU-APP-07` (`RU-APP-06` is intentionally not a standalone Unit)
 
 ### Conditional Result Units / Semantic Selectors
 
@@ -104,8 +104,9 @@ Check proportionally:
 
 ```text
 Do selected/possible Benefits state a real User Need and what the user receives?
+Does each substantive Benefit state its own Responsibility Boundary: what the Application owns/provides for that Benefit and what remains outside?
 Is Additional Info only proportional free-form clarification rather than a forced schema?
-Do representative RLS examples make the real-world context understandable?
+Do representative RLS examples make the Benefits understandable through concrete real-life situations?
 Is the bounded [Target contribution] explicit enough to avoid responsibility creep?
 Do surrounding RLS steps remain surrounding workflow rather than selected Application behavior?
 Are AB-* manifestation/closure markers truthful and many-to-many where useful?
@@ -115,11 +116,18 @@ Supporting refinement guide: `../../shared/application-definition-representative
 
 ## Concept Sufficiency
 
-Does the concept provide enough user-visible/useful result to justify an own Application?
+Is the Application Concept a short, immediately understandable summary of:
+- what the Application is;
+- why it is needed / what overall Benefit it provides;
+- briefly how it roughly works?
 
-## Responsibility Boundary
+Do not require Feature decomposition, detailed behavior or architecture merely to satisfy Concept sufficiency.
 
-Separate inside Application / outside actor / external-system / shared-handoff responsibilities.
+## Benefit Responsibility Boundaries
+
+Check Responsibility Boundary on the affected `AB-*` items rather than creating or evaluating a standalone Responsibility Boundary Result Unit.
+
+For each material Benefit, distinguish what the Application owns/provides from actor/manual/external-system/shared-handoff responsibility and information merely consumed/displayed/forwarded/derived. Cross-Benefit consistency is a review concern; authoritative boundary meaning remains on each Benefit.
 
 ## Information / State Ownership
 
@@ -160,7 +168,7 @@ reference/market Evidence
 Benefit sufficiency / Representative RLS boundary findings
 truthful Target-contribution boundary
 concept sufficiency
-responsibility/state boundary
+Benefit responsibility/state boundary
 feasibility finding
 Q/R/P / revalidation signal
 ```
@@ -220,7 +228,7 @@ They have a Fundamental Need, but custom software may not be the best route.
 
 ### Why This Lens
 
-This Application-profile Lens examines alternatives, representative real-life situations, responsibility boundaries and proportional feasibility before the app concept hardens.
+This Application-profile Lens examines alternatives, representative real-life situations, Benefit-specific responsibility boundaries and proportional feasibility before the app concept hardens.
 
 ### Walkthrough
 
@@ -243,17 +251,18 @@ later review
 
 while long-term knowledge organization is already served well by existing tools.
 
-The Lens helps set:
+The Lens helps refine the relevant Benefit itself:
 
 ```text
-Inside:
-  capture + temporary review
+User Receives:
+  fast temporary capture + later review support
 
-Outside:
-  permanent knowledge management
+Responsibility Boundary:
+  Application owns capture + temporary review support.
+  Permanent knowledge management remains outside.
 ```
 
-It also checks whether the needed browser/platform integration is realistically possible.
+It also checks whether the concise Application Concept remains understandable and whether the needed browser/platform integration is realistically possible.
 
 ### Result
 
@@ -263,7 +272,7 @@ The Lens surfaces Finding Candidates about:
 build/buy/adapt/integrate position
 representative real-life situation
 concept sufficiency
-responsibility/state boundary
+Benefit responsibility/state boundary
 feasibility
 ```
 
@@ -302,4 +311,4 @@ Pre-Lens Application lenses + later market/reference + representative real-life 
 
 ## Upstream Application Definition Rule
 
-Evaluate Selected/Possible `AB-*`, contribution/boundary intent and whole real-life solution routes. Application Definition may lead realization; not-yet-implemented intent does not become a Target Application Body.
+Evaluate Selected/Possible `AB-*`, each Benefit's Responsibility Boundary, the concise Application Concept, and whole real-life solution routes. Application Definition may lead realization; not-yet-implemented intent does not become a Target Application Body.

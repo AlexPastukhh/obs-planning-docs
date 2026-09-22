@@ -49,9 +49,9 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
     }
   ],
   "includes": [
-    "idtspe.port.trace",
-    "methodology.use_cases.recheck",
-    "idtspe.compose-current-work"
+    "planning/commands/include-idtspe-trace-port.command.md",
+    "planning/commands/recheck-methodology-use-cases.command.md",
+    "planning/commands/compose-current-idtspe-work.command.md"
   ],
   "expectedOutput": "A refreshed/reaffirmed Port Requirement Set with explicit/automatic/downstream origins available to the same P-02 trace.",
   "permissionMode": "read-only-planning",

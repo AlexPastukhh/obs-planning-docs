@@ -34,7 +34,17 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
   "palette": true,
   "refinements": [],
   "includes": [
-    "methodology.use_cases.recheck"
+    "planning/commands/recheck-methodology-use-cases.command.md"
+  ],
+  "ownerRefs": [
+    {
+      "responsibilityId": "APP.USE-CASE-REGISTRY",
+      "path": "planning/documentation/application-planning/use-case-registry.md",
+      "anchor": "application-planning-use-case-registry",
+      "why": "Routes application research to the current supporting application-planning use cases.",
+      "role": "PRIMARY_OWNER",
+      "readMode": "REQUIRED"
+    }
   ]
 }
 [/PLANNING_COMMAND_DEFINITION]

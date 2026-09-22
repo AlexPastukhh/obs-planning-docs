@@ -35,7 +35,17 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
   "palette": true,
   "refinements": [],
   "includes": [
-    "methodology.use_cases.recheck"
+    "planning/commands/recheck-methodology-use-cases.command.md"
+  ],
+  "ownerRefs": [
+    {
+      "responsibilityId": "APP.REALIZATION-WORKFLOW",
+      "path": "planning/documentation/application-planning/application-realization-workflow.md",
+      "anchor": "application-realization-workflow",
+      "why": "Owns review of application realization against planned meaning.",
+      "role": "PRIMARY_OWNER",
+      "readMode": "REQUIRED"
+    }
   ]
 }
 [/PLANNING_COMMAND_DEFINITION]

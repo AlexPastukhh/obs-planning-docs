@@ -1,4 +1,7 @@
+<a id="application-realization-workflow"></a>
 # Application Realization Workflow
+
+Responsibility ID: `APP.REALIZATION-WORKFLOW`
 
 Status: active reusable workflow
 Scope: optional high-level realization/stress review between grounded application semantics/Domain and detailed Slice planning.

@@ -1,4 +1,7 @@
+<a id="session-end-workflow"></a>
 # End Session Command Workflow
+
+Responsibility ID: `SESSION.END-WORKFLOW`
 
 Status: active OBS area workflow
 Doc version: v0.1.1-runtime-cleanup

@@ -12,9 +12,13 @@ Role: compact **conceptual/dependency projection** over canonical Core owners. T
 ```text
 USER situation / current concern
 ↓
-Methodology Use-Case Registry Map   [always logical]
+fundamental Methodology Use-Case applicability resolver   [always logical]
 ↓
-relevant Documentation + IDTSPE Use Cases
+UC-IDTSPE-AI-WORKING-BOUNDARY      [always logical]
+↓
+Methodology Use-Case Registry Map / relevant scoped registries
+↓
+relevant specialized Documentation + IDTSPE Use Cases
 ↓
 UC-IDTSPE-COMPOSE-CURRENT-WORK      [default continuously relevant]
 ↓
@@ -35,7 +39,7 @@ smallest useful IDTSPE projection / dynamic Shell route
 └─ targeted Revalidation
 ```
 
-Canonical routing ownership: Documentation [`principles-and-terminology.md`](../../../../principles-and-terminology.md), [`use-case-registry-map.md`](../../../../use-case-registry-map.md), and Core [`use-cases/compose-current-work/UC-IDTSPE-COMPOSE-CURRENT-WORK.md`](../use-cases/compose-current-work/UC-IDTSPE-COMPOSE-CURRENT-WORK.md).
+Canonical routing ownership: Documentation [`UC-DOC-RESOLVE-CURRENT-USE-CASES`](../../../../use-cases/UC-DOC-RESOLVE-CURRENT-USE-CASES.md), [`principles-and-terminology.md`](../../../../principles-and-terminology.md), [`use-case-registry-map.md`](../../../../use-case-registry-map.md), Core [`UC-IDTSPE-AI-WORKING-BOUNDARY`](../use-cases/ai-working-boundary/UC-IDTSPE-AI-WORKING-BOUNDARY.md), and [`UC-IDTSPE-COMPOSE-CURRENT-WORK`](../use-cases/compose-current-work/UC-IDTSPE-COMPOSE-CURRENT-WORK.md).
 
 ## 2. Ownership Layers
 
@@ -130,8 +134,9 @@ Resolution lifecycle routing: [`resolution/RESPONSIBILITY-MAP.md`](../resolution
 ## 7. Need / Proposal / Q-R-P / Decision / Evidence
 
 ```text
-USER wanted outcome with unresolved semantic home / solution
-→ Need Candidate
+USER/Source wanted outcome with unresolved semantic home / solution
+→ Need Candidate Collection
+→ grounded Need Candidate + provenance
 → Need Candidate Disposition
 → current owner / Finding / Proposal / Q-R-P / profile temporal owner as applicable
 

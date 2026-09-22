@@ -35,7 +35,7 @@ IDTSPE Work Context
     + applicable Core-defined Target Work Units
     + Contextual Units only when locally defined/formed
     + actual Source Set / Target Relations
-    + selected/applicable Lenses and normal Core Resolution State
+    + selected/applicable Lens Applications and normal Core Resolution State
     + Target Step Result composition
       from Module contribution when present
       + Core-defined Unit Result Destinations
@@ -191,7 +191,7 @@ Supports the `OWNER_RELATIONS` Requirement and Target topology/natural-owner rel
 <a id="idtspe-port-p06"></a>
 ### P-06 Lens Port
 
-Runs normal Lens applicability/selection/application over the current analysis surface. Target Modules/Requirements/Units may reference helpful Lenses, but there is no fixed Target Lens Set field.
+Owns normal Lens applicability/selection/application over the current bounded Analysis Surface. Target Modules/Requirements/Units and P-12 Validation may request or reuse Lens evaluation, but P-06 owns the actual Lens applicability/operation/application lifecycle and there is no fixed Target Lens Set field.
 
 The Target Resolution Coverage Lens may evaluate scope/Requirement/Unit coverage and surface Finding Candidates; Target Formation/Resolution owns composition changes.
 
@@ -237,7 +237,7 @@ Core-defined Units are applicability-driven. Contextual Units exist only when lo
 <a id="idtspe-port-p12"></a>
 ### P-12 Validation Port
 
-Runs proportional Unit/Slot validators, applicable Lenses, authority/user guards, cross-owner consistency and Target Requirement coverage/readiness checks. Findings route to the smallest correct semantic owner.
+Orchestrates proportional Unit/Slot validators, authority/user guards, cross-owner consistency and Target Requirement coverage/readiness checks. When validation requires a Lens perspective, P-12 routes to or reuses the corresponding P-06 selected Lens Application; it MUST NOT independently select/apply a second Lens lifecycle for the same `(Lens, Analysis Surface, Operation, basis)` cell. Findings route to the smallest correct semantic owner.
 
 <a id="idtspe-port-p13"></a>
 ### P-13 Handoff / Methodology Direction Port

@@ -16,16 +16,18 @@ Responsibility ID: `LENS.DISCOVERY`
 The Lens Registry is normally reached from an applicable Use-Case Process (especially `UC-IDTSPE-COMPOSE-CURRENT-WORK`) when current meaning may benefit from evaluation/check/refinement/challenge.
 
 ```text
-current Work Context / Target / State surface
+current bounded Analysis Surface + Work Context
+→ optionally use natural Target/Target Module/profile context when present
 → scan registry applicability summaries
 → include required Core perspectives whose material surface exists
 → include only plausible conditional/profile candidates
 → open concrete Lens body
-→ confirm its local Applicability Gate + supported operation
-→ execute Lens
+→ confirm its local Applicability Gate + supported operation(s)
+→ select Lens Application request(s) `(Lens, Analysis Surface, Operation, basis)`
+→ execute only selected Lens Applications
 ```
 
-A registry scan may select **zero additional Lenses**. Selecting a row does not itself execute the Lens or create a Finding. Recheck only when the Lens's Analysis Surface, relevant Decisions/Evidence, active Target/profile or declared revalidation conditions change materially.
+A registry scan may select **zero additional Lenses**. Selecting a row does not itself execute the Lens or create a Finding. When execution is intended, the selection result preserves the supported operation(s) and Analysis Surface as selected Lens Application request(s); an operation-less Lens ID is insufficient to represent materially distinct review cells. Recheck only when the Lens's Analysis Surface, relevant Decisions/Evidence, active Target/profile or declared revalidation conditions change materially.
 
 ## 1. Required Core Lenses
 
@@ -63,15 +65,15 @@ Specific Lens shortcut commands are exceptional, but **every registered Lens is 
 
 ```text
 idtspe.lenses.select
-→ подбери линзы <target/context>
-→ run the proportional Lens Applicability Scan through P-06
+→ подбери линзы <analysis surface / target / context>
+→ run the proportional Lens Applicability Scan through P-06 without manufacturing a Target; resolve selected `(Lens, Analysis Surface, Operation, basis)` application requests
 
 idtspe.lens.apply
-→ примени линзу <lens> к <target/context>
-→ apply one selected registered Lens inside/reusing the natural IDTSPE Target context
+→ примени линзу <lens> к <analysis surface / target / context>
+→ apply one selected registered Lens through an explicit/resolved supported operation to the bounded Analysis Surface; resolve/reuse Target context only when naturally part of that surface
 ```
 
-The existing Documentation / Representation and Linked Notes commands remain convenience shortcuts for stable recurring intents. The generic operations do not create Lens-owned Targets and do not turn all Lens registry entries into separate command files.
+The existing Documentation / Representation and Linked Notes commands remain convenience shortcuts for stable recurring intents. The generic operations are Analysis-Surface-first: they do not create Lens-owned Targets, do not create a Target merely to host a Lens, and do not turn all Lens registry entries into separate command files.
 
 ## 3A. Generic `idtspe` Lens Aliases
 
@@ -112,7 +114,7 @@ Each profile registry owns its current Lens inventory, names and attachment poli
 
 ## 5. Composition / Applicability Scan Rule
 
-Lens applicability performs the proportional Lens Applicability Scan before selecting/applying active Lenses. It combines required Core checks, the active Target Module Lens Profile when any, plausible Core/profile conditional Lenses and explicit user/agent Lens selection. Full Lens/Knowledge-Basis bodies are read only for selected or plausibly applicable candidates.
+Lens applicability performs the proportional Lens Applicability Scan before selecting/applying active Lenses. It combines required Core checks, the active Target Module Lens Profile when any, plausible Core/profile conditional Lenses and explicit user/agent Lens selection, then preserves the materially useful supported operation(s) in selected Lens Application requests. Full Lens/Knowledge-Basis bodies are read only for selected or plausibly applicable candidates.
 
 ```text
 P-06 Lens Port
@@ -125,6 +127,8 @@ P-06 Lens Port
 + applicable generic conditional/reusable lenses
 + applicable profile-specific lenses
 + exceptional local-only lens
+→ selected Lens Application requests
+  `(Lens Model, Analysis Surface, supported Operation, relevant basis)`
 ```
 
 A Lens analyzes an explicit/implicit Analysis Surface through reusable operations such as `ANALYZE / CHECK / REFINE / CHALLENGE` and surfaces findings. Generic Core Finding Disposition resolves those findings into the appropriate State/lifecycle/owner destination; accepted resolution may later update already-declared Result Units. A Lens does not define State Unit kinds, Target Result Unit kinds, target output schema or semantic authority.

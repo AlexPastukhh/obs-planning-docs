@@ -1,4 +1,7 @@
+<a id="architecture-state-review"></a>
 # Architecture State Review Workflow
+
+Responsibility ID: `ARCH.STATE-REVIEW`
 
 Status: active reusable workflow
 Scope: understand/review current Workspace Architecture State relative to the important work the Workspace must support.

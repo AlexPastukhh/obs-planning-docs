@@ -35,7 +35,17 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
   "refinements": [],
   "methodologyBinding": null,
   "includes": [
-    "methodology.use_cases.recheck"
+    "planning/commands/recheck-methodology-use-cases.command.md"
+  ],
+  "ownerRefs": [
+    {
+      "responsibilityId": "TM-SCENARIO-PLANNING",
+      "path": "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-SCENARIO-PLANNING.md",
+      "anchor": "tm-scenario-planning-scenario-journey-composition",
+      "why": "Defines the Scenario planning model whose concerns are collected by this command.",
+      "role": "PRIMARY_OWNER",
+      "readMode": "REQUIRED"
+    }
   ]
 }
 [/PLANNING_COMMAND_DEFINITION]

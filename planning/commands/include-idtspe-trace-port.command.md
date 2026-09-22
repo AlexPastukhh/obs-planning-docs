@@ -40,7 +40,7 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
     }
   ],
   "includes": [
-    "methodology.use_cases.recheck"
+    "planning/commands/recheck-methodology-use-cases.command.md"
   ],
   "expectedOutput": "One current P-02 working trace exists and is ready to record methodology-runtime events incrementally; no particular sink is forced unless current context or an explicit trace command requires one.",
   "permissionMode": "read-only-planning",

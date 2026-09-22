@@ -132,7 +132,7 @@
     {
       "id": "UC-DOC-RESOLVE-CURRENT-USE-CASES",
       "label": "Resolve Current Methodology Use Cases",
-      "description": "The current applicable Use-Case composition is known: still-applicable current Use Cases are retained, newly applicable Use Cases are added, no-longer-applicable assumptions are released, and only owner detail needed for the next material action is loaded.",
+      "description": "The fundamental AI working authority boundary is current and the current applicable Use-Case composition is known: still-applicable current Use Cases are retained, newly applicable Use Cases are added, no-longer-applicable assumptions are released, and only owner detail needed for the next material action is loaded.",
       "sources": [
         "planning/documentation/use-case-registry-map.md",
         "planning/documentation/use-case-registry.md"
@@ -141,7 +141,7 @@
       "target": "<Resolve Current Methodology Use Cases target>",
       "manualInvocation": true,
       "trigger": "Any current Planning/repository work is starting or continuing, through an explicit Planning Command or ordinary natural-language work, and the current situation requires reaffirming which methodology-use capabilities are applicable now. This Use Case is **always logically active for every current Planning/repository work entry**. Every Planning Command composes it explicitly/transitively; ordinary natural-language work applies the same ambient registry-level recheck through routing. That does not mean every registry or Use-Case body is reread or executed on every turn.",
-      "result": "The current applicable Use-Case composition is known: still-applicable current Use Cases are retained, newly applicable Use Cases are added, no-longer-applicable assumptions are released, and only owner detail needed for the next material action is loaded.",
+      "result": "The fundamental AI working authority boundary is current and the current applicable Use-Case composition is known: still-applicable current Use Cases are retained, newly applicable Use Cases are added, no-longer-applicable assumptions are released, and only owner detail needed for the next material action is loaded.",
       "commandId": "methodology.registries.scan"
     },
     {
@@ -171,6 +171,20 @@
       "manualInvocation": true,
       "trigger": "Repository methodology/documentation may help the current work, or current guidance orientation may be missing, stale, too broad, conflicting, or no longer appropriate to the current situation. This Use Case is about **working with methodology/documentation files**. It does not own product planning, code changes, Domain/Slice design, Target production, Lens analysis or other specialized work performed by the methodology being consulted.",
       "result": "The current work has a situation-appropriate methodology orientation: applicable Use Cases and semantic owners are known, required documentation actions are clear, only useful detail is loaded, and contextual adaptations/deferments are explicit when material."
+    },
+    {
+      "id": "UC-IDTSPE-AI-WORKING-BOUNDARY",
+      "label": "Apply AI Working Authority Boundary",
+      "description": "The current work has an explicit, current authority boundary: the AI can continue deterministically within already granted authority, useful recommendations are surfaced through the appropriate interaction layer, accepted meaning is not silently changed, and USER authority is requested only when a real USER-owned choice/authorization is required. This Result is an ambient working constraint. It does not create a Target, Proposal, Decision, Finding, Need, command invocation, repository mutation or separate persistent state merely because the Use Case is active.",
+      "sources": [
+        "planning/documentation/use-case-registry-map.md",
+        "planning/documentation/idtspe-methodology/active/idtspe-core/use-cases/USE-CASE-REGISTRY.md"
+      ],
+      "instruction": "Resolve UC-IDTSPE-AI-WORKING-BOUNDARY through planning/documentation/use-case-registry-map.md, then the mapped scoped registry and current owner route (planning/documentation/idtspe-methodology/active/idtspe-core/use-cases/ai-working-boundary/UC-IDTSPE-AI-WORKING-BOUNDARY.md). Preserve its methodology-use boundary and permission model; this Helper projection is invocation/navigation only.",
+      "target": "<Apply AI Working Authority Boundary target>",
+      "manualInvocation": true,
+      "trigger": "Any current Planning/repository work is starting or continuing after primary bootstrap, whether the USER entered through ordinary natural language or through a Planning Command. This Use Case is **always logically active**. It is not a USER command, a special AI mode, or a separate runtime shell. Planning Commands may guarantee traversal to this Use Case, but the methodology must remain sufficient without Helper/command invocation.",
+      "result": "The current work has an explicit, current authority boundary: the AI can continue deterministically within already granted authority, useful recommendations are surfaced through the appropriate interaction layer, accepted meaning is not silently changed, and USER authority is requested only when a real USER-owned choice/authorization is required. This Result is an ambient working constraint. It does not create a Target, Proposal, Decision, Finding, Need, command invocation, repository mutation or separate persistent state merely because the Use Case is active."
     },
     {
       "id": "UC-IDTSPE-COMPOSE-CURRENT-WORK",

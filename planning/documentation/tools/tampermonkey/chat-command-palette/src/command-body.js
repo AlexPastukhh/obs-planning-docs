@@ -38,11 +38,16 @@
 
   function ownerRefLines(definition){const refs=definition.ownerRefs||[];if(!refs.length)return['  - none'];return refs.flatMap((ref)=>{const target=`${ref.path}${ref.anchor?'#'+ref.anchor:''}`;return[`  - ${ref.responsibilityId} → \`${target}\``,`    role: ${ref.role}; read: ${ref.readMode}; why: ${ref.why}`];});}
 
-  function contributionLines(definition){const items=definition.compositionContributions||[];if(!items.length)return['  - none'];return items.map((item)=>`  - ${item.kind}: ${item.value} | why: ${item.why}`);}
+  function commandPath(definition){return `planning/commands/${definition.file}`;}
+  function includedByLines(definition,definitions){const path=commandPath(definition);const deps=(definitions||[]).filter((item)=>(item.includes||[]).includes(path)).sort((a,b)=>commandPath(a).localeCompare(commandPath(b)));return deps.length?deps.map((dep)=>`  - ${commandPath(dep)} (${dep.id})`):['  - none'];}
 
-  function compositionLines(definition,definitions){if(!Array.isArray(definitions)||!definitions.length)return[];try{const byId=new Map(definitions.map((d)=>[String(d.id),d])),seen=new Set(),order=[];function visit(id){if(seen.has(id))return;const current=byId.get(id);if(!current)throw new Error(`Unknown included command: ${id}`);for(const included of current.includes||[])visit(included);seen.add(id);order.push(id);}visit(String(definition.id));return order.map((id,index)=>`  ${index+1}. ${id}${id===definition.id?'  ← selected/root action':''}`);}catch(_){return[];}}
+  function contributionLines(items){const list=items||[];if(!list.length)return['  - none'];return list.map((item)=>`  - ${item.kind}: ${item.value}${item.sourceCommandId?' | source: '+item.sourceCommandId:''} | why: ${item.why}`);}
+
+  function compositionPlan(definition,definitions){if(!Array.isArray(definitions)||!definitions.length)return{order:[],contributions:[]};try{const byPath=new Map(definitions.map((d)=>[commandPath(d),d])),seen=new Set(),order=[],contributions=[];function visit(current){if(seen.has(current.id))return;for(const includedPath of current.includes||[]){const included=byPath.get(includedPath);if(!included)throw new Error(`Unknown included command path: ${includedPath}`);visit(included);}seen.add(current.id);order.push({id:current.id,path:commandPath(current)});for(const item of current.compositionContributions||[])contributions.push({...item,sourceCommandId:current.id});const binding=current.methodologyBinding||{};if(binding.targetModuleId)contributions.push({kind:'SELECTED_TARGET_MODULE',value:binding.targetModuleId,why:'Registered Target Module selection contributed by command methodologyBinding before semantic execution.',sourceCommandId:current.id});if(binding.lensId)contributions.push({kind:'SELECTED_LENS',value:binding.lensId,why:'Registered Lens selection contributed by command methodologyBinding before semantic execution.',sourceCommandId:current.id});}visit(definition);const unique=[],keys=new Set();for(const item of contributions){const key=`${item.kind}|${item.value}|${item.sourceCommandId}`;if(!keys.has(key)){keys.add(key);unique.push(item);}}const hasAffectedRecheck=unique.some((item)=>item.kind==='REVIEW_COVERAGE_MODE'&&item.value==='LOCAL_AFFECTED_RECHECK');const effective=hasAffectedRecheck?unique.filter((item)=>!(item.kind==='REVIEW_COVERAGE_MODE'&&item.value==='CURRENT_BASIS')):unique;return{order,contributions:effective};}catch(_){return{order:[],contributions:[]};}}
+
 
   function buildCommandBody(definition, mode = MODE.ADAPTIVE, options = {}) {
+    const plan=compositionPlan(definition,options.definitions);
     return [
       '[PLANNING_COMMAND]',
       'Read this whole command body before answering.',
@@ -70,15 +75,22 @@
       `  ${definition.meaning}`,
       '',
       'command_includes:',
-      ...((definition.includes||[]).length?(definition.includes||[]).map((id)=>`  - ${id}`):['  - none']),
+      ...((definition.includes||[]).length?(definition.includes||[]).map((path)=>`  - ${path}`):['  - none']),
+      '',
+      'included_by_derived:',
+      ...includedByLines(definition,options.definitions),
+      '  Derived reverse projection only; `includes` remains the single canonical command dependency relation.',
       '  Expand ALL selected roots and transitive includes before semantic execution. Merge them into one DAG, reject cycles, deduplicate shared nodes, collect declarative contributions from every node, then execute dependencies before dependents. The selected/root command action runs last on its branch.',
       '',
-      'composition_contributions_pre_execution:',
-      ...contributionLines(definition),
-      '  Contributions from ALL expanded DAG nodes are collected before the first semantic command action.',
+      'own_composition_contributions_pre_execution:',
+      ...contributionLines(definition.compositionContributions||[]),
+      '',
+      'effective_composition_contributions_pre_execution:',
+      ...contributionLines(plan.contributions),
+      '  This is the merged contribution set from the fully expanded DAG; these facts are available before the first semantic command action.',
       '',
       'expanded_composition_dependencies_first:',
-      ...(compositionLines(definition,options.definitions).length?compositionLines(definition,options.definitions):['  - resolve from current command catalog before execution']),
+      ...(plan.order.length?plan.order.map((item,index)=>`  ${index+1}. ${item.path} (${item.id})${item.id===definition.id?'  ← selected/root action':''}`):['  - resolve from current command catalog before execution']),
       '',
       'own_canonical_refs:',
       ...ownerRefLines(definition),

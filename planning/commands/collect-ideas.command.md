@@ -36,7 +36,17 @@ Scope: legacy compatibility command alias. Current planning behavior is owned by
   "refinements": [],
   "methodologyBinding": null,
   "includes": [
-    "methodology.use_cases.recheck"
+    "planning/commands/recheck-methodology-use-cases.command.md"
+  ],
+  "ownerRefs": [
+    {
+      "responsibilityId": "IDTSPE.UC.COMPOSE-CURRENT-WORK",
+      "path": "planning/documentation/idtspe-methodology/active/idtspe-core/use-cases/compose-current-work/UC-IDTSPE-COMPOSE-CURRENT-WORK.md",
+      "anchor": "uc-idtspe-compose-current-work",
+      "why": "Owns proportional composition of currently useful IDTSPE work for generic idea collection.",
+      "role": "PRIMARY_OWNER",
+      "readMode": "REQUIRED"
+    }
   ]
 }
 [/PLANNING_COMMAND_DEFINITION]

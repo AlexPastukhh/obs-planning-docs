@@ -38,7 +38,17 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
   "palette": true,
   "refinements": [],
   "includes": [
-    "methodology.use_cases.recheck"
+    "planning/commands/recheck-methodology-use-cases.command.md"
+  ],
+  "ownerRefs": [
+    {
+      "responsibilityId": "SESSION.RUNTIME-CONTRACT",
+      "path": "planning/session/session-runtime-contract.md",
+      "anchor": "session-runtime-contract",
+      "why": "Defines the session interaction runtime and USER-gated proposal-driven behavior configured by this command.",
+      "role": "PRIMARY_OWNER",
+      "readMode": "REQUIRED"
+    }
   ]
 }
 [/PLANNING_COMMAND_DEFINITION]

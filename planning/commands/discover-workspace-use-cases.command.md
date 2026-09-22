@@ -38,7 +38,17 @@ Scope: one concrete OBS Planning command route. Canonical Workspace Use-Case ide
   "palette": true,
   "refinements": [],
   "includes": [
-    "methodology.use_cases.recheck"
+    "planning/commands/recheck-methodology-use-cases.command.md"
+  ],
+  "ownerRefs": [
+    {
+      "responsibilityId": "ARCH.WORKSPACE-USE-CASE-DISCOVERY",
+      "path": "planning/documentation/architecture-planning/workspace-use-case-discovery-workflow.md",
+      "anchor": "architecture-workspace-use-case-discovery",
+      "why": "Owns discovery of workspace use cases used as architecture-planning inputs.",
+      "role": "PRIMARY_OWNER",
+      "readMode": "REQUIRED"
+    }
   ]
 }
 [/PLANNING_COMMAND_DEFINITION]

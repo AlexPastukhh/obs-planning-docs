@@ -12,6 +12,7 @@ Purpose: let one user message simultaneously invoke a workflow, provide Sources,
 Responsibility ID: `IDTSPE.USER-INPUT-INTAKE`
 
 > Semantic Owner Dependencies
+> - `CONTEXTUALIZES` [`Need Candidate Collection`](../../resolution/needs/NEED-CANDIDATE-COLLECTION.md#resolution-need-candidate-collection) — `RESOLUTION.NEED-CANDIDATE-COLLECTION`
 > - `CONTEXTUALIZES` [`Need Candidate Disposition`](../../resolution/needs/NEED-CANDIDATE-DISPOSITION.md#resolution-need-candidate-disposition) — `RESOLUTION.NEED-CANDIDATE-DISPOSITION`
 > - `CONTEXTUALIZES` [`Proposal / Decision Lifecycle`](../../resolution/proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md#resolution-proposal-decision-lifecycle) — `RESOLUTION.PROPOSAL-DECISION-LIFECYCLE`
 
@@ -159,9 +160,9 @@ Example:
 This is primarily a wanted outcome. When its semantic home/solution is not already clear, intake may form a lightweight:
 
 ```text
-Need Candidate
-→ exact USER statement retained as Source/Evidence
-→ normalized Desired Outcome remains derived/reviewable
+Need Candidate Collection
+→ exact USER/Source provenance retained
+→ grounded Need Candidate + normalized Desired Outcome
 → Need Candidate Disposition decides the natural route
 ```
 
@@ -508,7 +509,7 @@ for unresolved Generic AI Proposals (GIPs)
 
 # 13. Broad Discussion Material Intake
 
-This rule owns **classification/intake from USER language**, not Need Candidate disposition or Proposal/Decision lifecycle semantics. Wanted outcomes whose home/solution is unresolved hand off to [`planning/documentation/idtspe-methodology/active/idtspe-core/resolution/needs/NEED-CANDIDATE-DISPOSITION.md`](../../resolution/needs/NEED-CANDIDATE-DISPOSITION.md); concrete candidate answers hand off to the Proposal/Decision owner. Canonical Proposal drivers/relations, selection outcomes, Decision trace/retention and revalidation are owned by [`planning/documentation/idtspe-methodology/active/idtspe-core/resolution/proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md`](../../resolution/proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md).
+This rule owns **classification/intake from USER language**, not Need Candidate collection/disposition or Proposal/Decision lifecycle semantics. Wanted outcomes whose home/solution is unresolved hand off first to [`Need Candidate Collection`](../../resolution/needs/NEED-CANDIDATE-COLLECTION.md#resolution-need-candidate-collection), then the grounded candidate reaches [`Need Candidate Disposition`](../../resolution/needs/NEED-CANDIDATE-DISPOSITION.md#resolution-need-candidate-disposition); concrete candidate answers hand off to the Proposal/Decision owner. Canonical Proposal drivers/relations, selection outcomes, Decision trace/retention and revalidation are owned by [`planning/documentation/idtspe-methodology/active/idtspe-core/resolution/proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md`](../../resolution/proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md).
 
 During Broad Discussion, preserve enough explicit meaning to classify material input correctly without forcing a full State dump:
 
@@ -517,9 +518,9 @@ USER fact / observation
 → Source or other current-context meaning
 
 USER wanted outcome without a concrete answer and with unresolved semantic home
-→ Need Candidate
-→ exact USER input remains Source/Evidence
-→ canonical Need Candidate Disposition
+→ Need Candidate Collection
+→ grounded Need Candidate + exact USER/Source provenance
+→ Need Candidate Disposition
 
 USER suggestion that already contains a concrete candidate answer without clear selection
 → Proposal candidate

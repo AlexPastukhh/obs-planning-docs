@@ -35,7 +35,17 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
   "refinements": [],
   "methodologyBinding": null,
   "includes": [
-    "methodology.use_cases.recheck"
+    "planning/commands/recheck-methodology-use-cases.command.md"
+  ],
+  "ownerRefs": [
+    {
+      "responsibilityId": "ARCH.PATH-ANALYSIS",
+      "path": "planning/documentation/architecture-planning/architecture-path-analysis-workflow.md",
+      "anchor": "architecture-path-analysis",
+      "why": "Owns architecture path analysis used to compare workspace evolution paths.",
+      "role": "PRIMARY_OWNER",
+      "readMode": "REQUIRED"
+    }
   ]
 }
 [/PLANNING_COMMAND_DEFINITION]

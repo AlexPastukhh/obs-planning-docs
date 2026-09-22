@@ -6,7 +6,7 @@ Canonical `Application Benefit` and `Representative Real-Life Scenario` semantic
 
 ## Purpose
 
-Help produce a small number of truthful representative real-world examples that clarify Benefit context and Application boundary without turning those examples into Application Scenario behavior or a second Benefit owner.
+Help produce a small number of truthful representative real-world examples whose primary job is to make one or several Application Benefits understandable through concrete situations, while also exposing boundary pressure without turning those examples into Application Scenario behavior or a second Benefit/boundary owner.
 
 ## Refinement Questions
 

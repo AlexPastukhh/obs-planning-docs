@@ -39,7 +39,17 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
   "refinements": [],
   "methodologyBinding": null,
   "includes": [
-    "methodology.use_cases.recheck"
+    "planning/commands/recheck-methodology-use-cases.command.md"
+  ],
+  "ownerRefs": [
+    {
+      "responsibilityId": "IDTSPE.DEFAULT-WORK-MODE",
+      "path": "planning/documentation/idtspe-methodology/active/idtspe-core/runtime/IDTSPE-DEFAULT-WORK-MODE.md",
+      "anchor": "idtspe-default-work-mode",
+      "why": "Keeps modular application idea collection proportional rather than forcing a full workflow.",
+      "role": "PRIMARY_OWNER",
+      "readMode": "REQUIRED"
+    }
   ]
 }
 [/PLANNING_COMMAND_DEFINITION]

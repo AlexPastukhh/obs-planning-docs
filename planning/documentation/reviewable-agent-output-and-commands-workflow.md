@@ -179,20 +179,19 @@ Do not apply this boundary to package-producer commands that explicitly stop at 
 - Do not apply `обн` / `upd` to code without an explicit code/update route.
 ```
 
-## Review Audit Projection
+## IDTSPE Review / Recheck Coverage Projection
 
-When `review_audit.recheck` / `перепроверь` is selected, expose proportionally:
+When `idtspe.review` or `idtspe.review.recheck` is selected, expose proportionally from the current Review Coverage Record:
 
 ```text
-Checked
-→ concrete files actually inspected when file-based
-→ semantic units actually reviewed
-
-Not Checked / Partial
-Review Quality / Sufficiency
-Material Findings / Corrections
-Review Delta vs previous relevant review
-Next Useful Checks
+Review Subject / Scope / Basis
+Checked / Validly Reused
+Partial / Blocked / Remaining Material Coverage
+Material Findings + Finding Disposition results
+Newly Exposed Surfaces
+Review Delta vs reliable prior basis   # recheck only, when prior coverage exists
+Next Required Recheck / Scope Escalation, if any
 ```
 
-Do not use file count as a substitute for semantic coverage. On repeat, prefer changed/stale/unchecked/partial/weak/newly relevant material before replaying an already-current sufficient check.
+Do not use file count as a substitute for semantic coverage. A normal review must self-check its current-basis coverage before completion. A recheck prefers changed/stale/invalidated/partial/newly exposed material and preserves trustworthy unchanged coverage rather than mechanically replaying everything. If no reliable prior Review Coverage Record exists, do not fabricate a delta; perform initial current-basis review semantics instead.
+

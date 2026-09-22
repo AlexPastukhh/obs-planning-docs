@@ -36,7 +36,17 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
   "refinements": [],
   "methodologyBinding": null,
   "includes": [
-    "methodology.use_cases.recheck"
+    "planning/commands/recheck-methodology-use-cases.command.md"
+  ],
+  "ownerRefs": [
+    {
+      "responsibilityId": "TM-DOMAIN-DISCOVERY",
+      "path": "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-DOMAIN-DISCOVERY.md",
+      "anchor": "tm-domain-discovery-transient-domain-discovery",
+      "why": "Defines transient Domain discovery semantics used when collecting domain ideas.",
+      "role": "PRIMARY_OWNER",
+      "readMode": "REQUIRED"
+    }
   ]
 }
 [/PLANNING_COMMAND_DEFINITION]

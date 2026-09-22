@@ -44,7 +44,17 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
     "hostTargetPolicy": "NONE"
   },
   "includes": [
-    "methodology.use_cases.recheck"
+    "planning/commands/recheck-methodology-use-cases.command.md"
+  ],
+  "ownerRefs": [
+    {
+      "responsibilityId": "IDTSPE.COMMAND-SURFACE",
+      "path": "planning/documentation/idtspe-methodology/active/idtspe-core/commands/IDTSPE-COMMAND-SURFACE-CONTRACT.md",
+      "anchor": "idtspe-command-surface",
+      "why": "Defines the canonical IDTSPE command surface and bootstrap/work boundary used by this command.",
+      "role": "PRIMARY_OWNER",
+      "readMode": "REQUIRED"
+    }
   ]
 }
 [/PLANNING_COMMAND_DEFINITION]

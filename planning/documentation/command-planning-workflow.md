@@ -38,7 +38,7 @@ planning/use-cases/UC-REPO-PLAN-UPDATE.md when a concrete repository transition 
 8. Plan one direct `planning/commands/*.command.md` definition.
 9. Update `planning/command-routing.md` only when shared/global policy changes.
 10. Update the related semantic-entry command reference only where that registry/catalog contract actually owns such a reference.
-11. Plan Helper projection as a derived view: direct includes, dependencies-first expanded composition, composition contributions and own refs/why must come from canonical definitions rather than Helper-authored semantics.
+11. Plan Helper projection as a derived view: direct includes, dependencies-first expanded composition, composition contributions (including pre-execution review coverage mode when relevant) and own refs/why must come from canonical definitions rather than Helper-authored semantics.
 12. When a concrete repository transition is needed, hand off to `UC-REPO-PLAN-UPDATE`; do not implement through this workflow.
 
 Commands are optional. A repository remains fully discoverable through README/navigation and the applicable Use-Case Registry, Scenario Catalog or specialized semantic owner without knowing command names.

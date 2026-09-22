@@ -40,7 +40,17 @@ Scope: focused read-only documentation-navigation review routed through the exis
   "palette": true,
   "refinements": [],
   "includes": [
-    "methodology.use_cases.recheck"
+    "planning/commands/recheck-methodology-use-cases.command.md"
+  ],
+  "ownerRefs": [
+    {
+      "responsibilityId": "UC-DOC-REVIEW-DOCUMENTATION",
+      "path": "planning/documentation/use-cases/UC-DOC-REVIEW-DOCUMENTATION.md",
+      "anchor": "uc-doc-review-documentation-review-repository-documentation",
+      "why": "Owns repository documentation review; link/addressability checks are performed inside that review route.",
+      "role": "PRIMARY_OWNER",
+      "readMode": "REQUIRED"
+    }
   ]
 }
 [/PLANNING_COMMAND_DEFINITION]

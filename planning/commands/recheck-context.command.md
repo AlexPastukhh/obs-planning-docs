@@ -34,7 +34,17 @@ Scope: legacy explicit recheck shortcut retained only for compatibility; current
   "palette": false,
   "refinements": [],
   "includes": [
-    "methodology.use_cases.recheck"
+    "planning/commands/recheck-methodology-use-cases.command.md"
+  ],
+  "ownerRefs": [
+    {
+      "responsibilityId": "AI.REVIEWABILITY",
+      "path": "planning/documentation/idtspe-methodology/active/ai-reviewability/AI-OUTPUT-REVIEWABILITY.md",
+      "anchor": "ai-reviewability-peer-cross-cutting-concern",
+      "why": "Defines the reviewability/recheck principles used to reassess current context.",
+      "role": "PRIMARY_OWNER",
+      "readMode": "REQUIRED"
+    }
   ]
 }
 [/PLANNING_COMMAND_DEFINITION]

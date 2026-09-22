@@ -2538,3 +2538,42 @@ No `TM-EXACT-REALIZATION` workflow, repair authority, Domain/Slice/Test boundary
 **ChangeSet:** `4e7fcebe-494b-4443-bcbc-39a5bbd5202e`
 **Package:** `5de952c1-8cf5-4a0a-987f-1d8c877b5b28`
 **Reason:** Builder Feature/Scenario/navigation files under `planning/documentation/replacement-package-builder/` participate in the same Feature-centered documentation migration as the Replacement Package App local methodology/product owners. Full rationale, non-persistent Slice/Aggregate planning semantics, Pre-Apply correction and APPLIED target-state relation are owned by the canonical Replacement Package App scope log.
+
+
+## 2026-09-22 — Review recheck closeout: Analysis-Surface Lens host policy and coverage reuse provenance
+
+- generic `idtspe.lenses.select`, `idtspe.lenses.apply-selected` and `idtspe.lens.apply` are now Analysis-Surface-first and use `hostTargetPolicy: NONE`; Target context is resolved/reused only when the natural selected surface belongs to Target work, never merely to host Lens analysis;
+- `idtspe.review_consistency` no longer requires Target resolution for cross-owner consistency surfaces;
+- Review Coverage cells now separate semantic status from provenance with `EXECUTED_THIS_PASS` vs `REUSED_FROM_PRIOR`, plus prior-cell/basis reference and reuse justification;
+- `critical_review.apply` is explicitly a lightweight adversarial critique, not an alias for the complete `idtspe.review` lifecycle or evidence of complete Review Coverage;
+- concrete/profile Lens shortcuts may retain Target host policy where their own semantic surface naturally requires Target work.
+
+## 2026-09-22 — v11 AI authority boundary, path-addressed command composition, and Finding→formal Proposal enforcement
+
+**Type:** TARGET-STATE / OPEN-CHANGESET CONTINUATION  
+**ChangeSet:** `c62ec40a-8ad4-45ef-8034-cd0ad6daf247`  
+**Package:** `b915ba9c-76c5-4c29-bcf1-0b96cdac7aea`
+
+- add fundamental always-active `UC-IDTSPE-AI-WORKING-BOUNDARY` and make `UC-DOC-RESOLVE-CURRENT-USE-CASES` reaffirm it for ordinary natural-language work and every Planning Command traversal;
+- preserve the invariant that commands are USER↔AI invocation/traversal guarantees derived from methodology, not an internal AI execution language, and no normative methodology rule may exist only in a command definition;
+- change Planning Command `includes` locators from opaque command IDs to canonical repository-relative `planning/commands/*.command.md` paths while preserving the same command→command dependency DAG semantics;
+- keep `ownerFiles` / `ownerRefs` as methodology/read authority routes and forbid methodology/Use-Case files in executable `includes`;
+- retain existing Review → Finding Disposition and Need Collection → Need Disposition decomposition; no new Finding Assessment ontology is introduced;
+- strengthen Finding disposition so `RE-2` / `RE-4` or an equivalent material semantic-change candidate requires AI formation/refinement of a formal IDTSPE Proposal before selection; Session GIP may present/reference that Proposal but cannot substitute for it; `RE-0` remains proposal-free unless a real candidate lifecycle independently exists and `RE-3` revalidates before any upstream semantic Proposal;
+- regenerate Planning Helper command/semantic/scenario catalogs and userscript from the canonical path-addressed graph; verification passes with 272/272 tests and generated build parity.
+
+
+## 2026-09-22 — v12 Application Definition Benefit-boundary and Concept normalization
+
+**Type:** TARGET-STATE / OPEN-CHANGESET CONTINUATION  
+**ChangeSet:** `c62ec40a-8ad4-45ef-8034-cd0ad6daf247`  
+**Package:** `ff4684b0-1327-4113-90b2-655ea0ca2c4c`
+
+- normalize `TM-APPLICATION-DEFINITION` to the accepted Application Definition contract: `Responsibility Boundary` is no longer a standalone Result Unit and is required inside each substantive `AB-*` Application Benefit;
+- preserve stable `RU-APP-07 Realization Feasibility` identity rather than renumbering after retirement of standalone `RU-APP-06`;
+- define `RU-APP-05 Application Concept` as a concise understandable summary of what the Application is, why it is needed / its overall Benefit, and briefly how it roughly works; detailed Feature/Scenario/architecture/implementation meaning stays with natural downstream owners;
+- reaffirm `RU-APP-04 Representative Real-Life Scenarios` as concrete real-world examples whose primary job is to make Benefits understandable, without becoming Application Scenario or Benefit/boundary authority;
+- keep the focused Application responsibility command as a USER invocation surface, but route its result to Responsibility Boundary on the affected Benefit(s) rather than inventing a standalone Unit; keep the Application Concept command focused on the concise Concept contract;
+- align the reusable Application planning terminology/template/workflow projections with the canonical SDS Target owner;
+- migrate the active Replacement Package App Application Definition consumer from a standalone responsibility section to Benefit-local boundaries and the concise Concept shape;
+- update Lens/test/helper projections so the retired standalone boundary Unit cannot regress.

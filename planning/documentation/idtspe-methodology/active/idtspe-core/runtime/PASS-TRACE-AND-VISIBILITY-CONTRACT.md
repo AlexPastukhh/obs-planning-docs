@@ -63,6 +63,7 @@ Observed dimensions
   owner / registry / component route
   Target Module Model / Lens Model selection when material
   material Unit/Slot composition + Finding / Proposal / Decision / Evidence / validation event
+  review-coverage control-plane events when material: effective mode, bounded review context established, review cells executed/reused/staled
   port result / unresolved state
   methodology direction when produced
 
@@ -121,6 +122,13 @@ Port composition
   required work not yet reached
   shared prefixes/results eligible for REUSED
 
+Review coverage orientation (when Review is active)
+  effective REVIEW_COVERAGE_MODE after contribution normalization
+  bounded Review Subject / Scope / Basis reference
+  material review cells planned, executed or validly reused
+  stale/invalidated/newly exposed coverage cues
+  Review Coverage Record remains authority; P-02 records runtime events only
+
 Continuation/recheck cues
   still-material DEFERRED/BLOCKED work
   recheck conditions already produced by normal methodology owners/processes
@@ -140,6 +148,21 @@ Port: COMPOSITION_CHECKED → REQUIRED / NOT_REQUIRED → traversal result
 The normal mechanism is **incremental-first** recording. P-02 trace MUST be updated at the nearest practical point when a meaningful applicability, routing, admission, owner/component selection, traversal, reuse or result event becomes known. A final trace MUST NOT normally be reconstructed from model memory after the work is complete.
 
 If an event was missed, P-02 MAY reconcile it from trustworthy Work Context / retained state / produced artifacts and mark/understand it as reconciled when material. This is a recovery path only; after reconciliation, resume incremental recording. Physical sink batching is allowed, but the structured runtime event must be retained when it occurs.
+
+### Review Coverage Trace Events
+
+When Review Strategy/Coverage is active, P-02 records proportional control-plane events such as:
+
+```text
+REVIEW_COVERAGE_CONTEXT_ESTABLISHED
+REVIEW_CELL_PLANNED
+REVIEW_CELL_EXECUTED
+REVIEW_CELL_REUSED
+REVIEW_CELL_INVALIDATED
+REVIEW_COVERAGE_UPDATED
+```
+
+These events expose what review work was planned/performed/reused during the pass. They do **not** make P-02 the owner of Review Coverage and do not replace the Review Coverage Record. `REVIEW_CELL_REUSED` must retain enough basis/provenance to distinguish reuse from fresh execution when that distinction is material.
 
 ## 4. Port Admission Origin
 

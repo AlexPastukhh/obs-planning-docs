@@ -1,4 +1,7 @@
+<a id="architecture-workspace-evolution-use-case-discovery"></a>
 # Contextual Workspace Evolution Use-Case Discovery Workflow
+
+Responsibility ID: `ARCH.WORKSPACE-EVOLUTION-USE-CASE-DISCOVERY`
 
 Status: active reusable owner
 Semantic entry: `UC-PLAN-ARCH-DISCOVER-WEUC`

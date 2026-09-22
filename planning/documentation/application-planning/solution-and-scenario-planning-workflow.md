@@ -1,4 +1,7 @@
+<a id="application-solution-scenario-planning"></a>
 # Solution And Scenario Planning Workflow
+
+Responsibility ID: `APP.SOLUTION-SCENARIO-PLANNING`
 
 > **Compatibility vocabulary boundary.** This supporting file preserves older application-planning discovery/workspace heuristics. Terms such as `Scenario DATA`, `Behavior Items`, standalone `Requirement`, or `Slice Strategy` below do not define current SDS owner identities. Current authority is the active SDS Target/Lens registries: Feature owns behavior/semantic data, Scenario owns actor/external journey composition with Benefit manifestation/closure, requirements stay with natural Feature/Domain/Slice/Shared owners, and Slice Strategy is not an active Target family. Use older terms only as supporting heuristics where they do not conflict with current owners.
 
@@ -51,41 +54,36 @@ Different Workflow Variants may move, split, combine or eliminate slots. A slot 
 
 Do not let checked existing solutions disappear merely because a custom idea appears. When an existing product/process/integration materially covers the relevant Need/slot, keep it as a viable comparator until the custom-vs-existing decision is actually resolved.
 
-## Application Concept Review
+## Application Definition / Concept Review
 
-Use Application Concept planning when own software is a material candidate, or when application creation is already confirmed but the value/feasibility concept is not grounded.
+Use current SDS Application Definition planning when own software is a material candidate, or when application creation is already confirmed but value/contribution/feasibility is not grounded.
 
-Review proportionally:
+Keep the responsibilities separate:
 
 ```text
-real-world Need / slot coverage
-concept statement / simplification mechanism
-what users would be able to do / know / obtain
-Concept Features
-interaction / solution hypotheses
-technical feasibility / likely shape
-important implementation unknowns / dependencies
-rough development complexity / effort / time
-maintenance / support burden
-estimate assumptions / confidence
-viable existing alternatives
-local + whole-solution integrated evaluation
-current worth-it conclusion
+existing-solution / alternative-route position
+Application Benefits
+  + Responsibility Boundary inside each Benefit
+Representative Real-Life Scenarios when concrete examples improve understanding
+Application Concept
+  = short summary of what the Application is
+  + why it is needed / overall Benefit
+  + brief concept-level "how it roughly works"
+Realization Feasibility
 ```
 
-Technical shape here exists only to judge feasibility/cost. Do not turn Concept review into detailed architecture or Slice planning. Prefer ranges/relative complexity and confidence over false precision.
+Do not put Concept Features, detailed interaction hypotheses, architecture, effort-model internals or implementation planning inside the Application Concept summary. Material alternatives remain Proposal/Decision/branch state; technical uncertainty belongs to proportional feasibility/research/prototype evidence according to its natural owner.
 
-A decision-sensitive technical uncertainty may use a feasibility spike/research experiment inside Concept work. That differs from `UC-PLAN-PROTOTYPE`, whose purpose is provisional interaction/workflow/spatial planning.
-
-An Application Concept can be rejected in favor of an existing/process route. That is a successful result.
+An own-Application route can still be rejected in favor of an existing/process route. That is a successful result.
 
 ## Application Handoff
 
 When the selected whole solution includes own Application responsibility, or that responsibility is already explicitly confirmed:
 
 ```text
-selected/current Application Concept
-→ explicit Application responsibility / inside-outside boundary
+selected/current Application Definition
+→ selected Benefits with their own Responsibility Boundaries
+→ concise Application Concept
 → candidate/current Application Scenarios grounded in real-world Needs/results
 → Prototype Planning when material interaction/workflow/spatial uncertainty remains
    → Prototype Scenarios
@@ -107,7 +105,7 @@ selected/current Application Concept
 → add individual Implementation Slices when useful
 → derive verification/testing evidence proportionally
 → review cross-Scenario / Screen / Requirement / Domain / Slice / whole-application consistency
-→ return to Application Concept / real-world workflow / whole solution when material
+→ return to Application Definition / real-world workflow / whole solution when material
 ```
 
 If application responsibility is externally mandated, do not manufacture a custom-vs-existing decision merely to satisfy the flow; still ground the Concept, real-world Need coverage and application boundary.

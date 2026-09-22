@@ -1,4 +1,7 @@
+<a id="architecture-change-pressure-workflow"></a>
 # Architecture Change-Pressure Workflow
+
+Responsibility ID: `ARCH.CHANGE-PRESSURE-WORKFLOW`
 
 Status: active reusable workflow
 Scope: establish/review Workspace Change Pressure and derive evidence-backed Change Axes / Change Hot Paths.

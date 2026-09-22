@@ -22,6 +22,9 @@ SDS
 
 AI Reviewability may require presentation/recheck behavior, but it does not select semantic owners or mutate accepted meaning.
 
+> Semantic Owner Dependency
+> - `CONTEXTUALIZES` [`Review Strategy And Coverage`](REVIEW-STRATEGY-AND-COVERAGE-CONTRACT.md#review-strategy-coverage) — `REVIEW.STRATEGY-COVERAGE`
+
 ## Pass Trace / Visibility Boundary
 
 IDTSPE `P-02 Pass Trace / Visibility` records the methodology route and runtime outcomes as they occur. AI Reviewability does not own that trace. `Key Points` may summarize material content/results from the trace and semantic owners, while Session Work Steps/Progress Updates may project its progress conversationally.
@@ -183,7 +186,7 @@ new downstream Evidence / contradiction / infeasibility
 
 The semantic lifecycle is owned by Core Revalidation/Consistency and the applicable profile/owner contracts. Reviewability only requires that contradictions/backflow are visible rather than silently compensated downstream.
 
-## Critical Review / Review Audit Boundary
+## Critical Review / IDTSPE Review Boundary
 
 Ordinary material answers use this built-in reviewability proportionally.
 
@@ -191,14 +194,16 @@ Explicit commands may request independently useful review work:
 
 ```text
 critical review
-→ adversarial/truth-seeking review of the selected target as hypothesis
+→ adversarial/truth-seeking challenge of the selected target as hypothesis
 
-review audit
-→ report what was actually checked, partial/unchecked material,
-  quality/sufficiency and delta versus prior review
+idtspe.review
+→ complete current-basis semantic review with explicit Review Strategy/Coverage
+
+idtspe.review.recheck
+→ repeat the same review lifecycle only for stale/partial/invalidated/newly exposed or otherwise affected coverage
 ```
 
-Those command/workflow owners do not create another Key Points/Review Priority ontology.
+Review Strategy/Coverage owns truthful checked/remaining coverage and prior-vs-current delta when a reliable prior record exists. These commands do not create another Key Points/Review Priority ontology.
 
 ## Boundary
 

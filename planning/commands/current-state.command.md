@@ -35,7 +35,17 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
   "palette": true,
   "refinements": [],
   "includes": [
-    "methodology.use_cases.recheck"
+    "planning/commands/recheck-methodology-use-cases.command.md"
+  ],
+  "ownerRefs": [
+    {
+      "responsibilityId": "STATUS.RECONCILIATION",
+      "path": "planning/documentation/status-reconciliation-workflow.md",
+      "anchor": "status-reconciliation",
+      "why": "Owns reconciliation of current repo/chat/planning state and the distinction between known, local and unknown state.",
+      "role": "PRIMARY_OWNER",
+      "readMode": "REQUIRED"
+    }
   ]
 }
 [/PLANNING_COMMAND_DEFINITION]

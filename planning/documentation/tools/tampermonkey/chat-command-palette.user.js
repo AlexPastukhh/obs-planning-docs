@@ -90,6 +90,15 @@
     return file;
   }
 
+  function validateCommandIncludePath(value, field = 'include path') {
+    const path = validateRepositoryPath(value, field);
+    assert(path.startsWith(`${COMMANDS_PATH}/`), `${field} must point under ${COMMANDS_PATH}/.`);
+    const file = path.slice(COMMANDS_PATH.length + 1);
+    assert(!file.includes('/'), `${field} must point to a direct command definition.`);
+    validateFileName(file);
+    return `${COMMANDS_PATH}/${file}`;
+  }
+
   function normalizeRefinement(raw, index) {
     assert(raw && typeof raw === 'object' && !Array.isArray(raw), `refinements[${index}] must be an object.`);
     const known = new Set(['id', 'label', 'description', 'readRequired', 'instruction']);
@@ -108,9 +117,14 @@
     assert(raw&&typeof raw==='object'&&!Array.isArray(raw),`compositionContributions[${index}] must be an object.`);
     const known=new Set(['kind','value','why']);for(const key of Object.keys(raw))assert(known.has(key),`Unknown compositionContributions[${index}] field: ${key}`);
     const kind=singleLine(raw.kind,`compositionContributions[${index}].kind`);
-    const allowed=new Set(['WORKING_TRACE_REQUIRED','TRACE_SINK_PREFERENCE','PORT_CAPABILITY_REQUIREMENT']);
+    const allowed=new Set(['WORKING_TRACE_REQUIRED','TRACE_SINK_PREFERENCE','PORT_CAPABILITY_REQUIREMENT','REVIEW_COVERAGE_MODE']);
     assert(allowed.has(kind),`compositionContributions[${index}].kind is invalid.`);
-    return{kind,value:singleLine(raw.value,`compositionContributions[${index}].value`),why:singleLine(raw.why,`compositionContributions[${index}].why`)};
+    const value=singleLine(raw.value,`compositionContributions[${index}].value`);
+    if(kind==='REVIEW_COVERAGE_MODE'){
+      const modes=new Set(['CURRENT_BASIS','LOCAL_AFFECTED_RECHECK']);
+      assert(modes.has(value),`compositionContributions[${index}].value is invalid for REVIEW_COVERAGE_MODE.`);
+    }
+    return{kind,value,why:singleLine(raw.why,`compositionContributions[${index}].why`)};
   }
 
   function normalizeOwnerRef(raw,index){
@@ -205,8 +219,8 @@
     assert(Array.isArray(refinementsRaw), 'refinements must be an array.');
     const refinements = refinementsRaw.map(normalizeRefinement);
     assert(new Set(refinements.map((item) => item.id)).size === refinements.length, 'refinement ids must be unique within a command.');
-    const includes = raw.includes == null ? [] : stringArray(raw.includes, 'includes').map((id, index) => validateId(id, `includes[${index}]`));
-    assert(new Set(includes).size === includes.length, 'includes must not contain duplicate command ids.');
+    const includes = raw.includes == null ? [] : stringArray(raw.includes, 'includes').map((path, index) => validateCommandIncludePath(path, `includes[${index}]`));
+    assert(new Set(includes).size === includes.length, 'includes must not contain duplicate command paths.');
     const contributionsRaw=raw.compositionContributions==null?[]:raw.compositionContributions;
     assert(Array.isArray(contributionsRaw),'compositionContributions must be an array.');
     const compositionContributions=contributionsRaw.map(normalizeCompositionContribution);
@@ -358,6 +372,7 @@
     commandPathForDefinition,
     toSerializable,
     validateRepositoryPath,
+    validateCommandIncludePath,
     validateId
   };
 });
@@ -369,7 +384,9 @@
 })(typeof globalThis !== 'undefined' ? globalThis : this, function () {
   'use strict';
 
+  const COMMANDS_PATH='planning/commands';
   function assert(condition, message) { if (!condition) throw new TypeError(message); }
+  function commandPath(definition){return `${COMMANDS_PATH}/${definition.file}`;}
 
   function validateCommandCatalog(definitions, options = {}) {
     assert(Array.isArray(definitions), 'Command catalog must be an array.');
@@ -377,14 +394,18 @@
     const byCommand = new Map();
     const byAlias = new Map();
     const byFile = new Map();
+    const byPath = new Map();
     for (const definition of definitions) {
       assert(definition && typeof definition === 'object', 'Catalog contains an invalid definition.');
       if (byId.has(definition.id)) throw new TypeError(`Duplicate command id: ${definition.id}`);
       if (byCommand.has(definition.command)) throw new TypeError(`Duplicate canonical command: ${definition.command}`);
       if (byFile.has(definition.file)) throw new TypeError(`Duplicate command file: ${definition.file}`);
+      const path=commandPath(definition);
+      if(byPath.has(path))throw new TypeError(`Duplicate command path: ${path}`);
       byId.set(definition.id, definition);
       byCommand.set(definition.command, definition);
       byFile.set(definition.file, definition);
+      byPath.set(path, definition);
       for (const alias of definition.commandFamily || []) {
         if (byAlias.has(alias) && byAlias.get(alias).id !== definition.id) {
           throw new TypeError(`Ambiguous command alias ${alias}: ${byAlias.get(alias).id} vs ${definition.id}`);
@@ -393,12 +414,13 @@
       }
     }
     const allowMissingIncludes = options.allowMissingIncludes === true;
-    for (const definition of definitions) for (const included of definition.includes || []) {
-      if (!byId.has(included)) {
-        if (!allowMissingIncludes) throw new TypeError(`Unknown included command id ${included} in ${definition.id}`);
+    for (const definition of definitions) for (const includedPath of definition.includes || []) {
+      const included=byPath.get(includedPath);
+      if (!included) {
+        if (!allowMissingIncludes) throw new TypeError(`Unknown included command path ${includedPath} in ${definition.id}`);
         continue;
       }
-      if (included === definition.id) throw new TypeError(`Command ${definition.id} cannot include itself.`);
+      if (included.id === definition.id) throw new TypeError(`Command ${definition.id} cannot include itself.`);
     }
     const visiting=new Set(),visited=new Set();
     function visit(id,stack=[]){
@@ -406,11 +428,11 @@
       if(visiting.has(id))throw new TypeError(`Command include cycle: ${[...stack,id].join(' -> ')}`);
       visiting.add(id);
       const definition=byId.get(id);
-      for(const included of definition?.includes||[]){if(byId.has(included))visit(included,[...stack,id]);}
+      for(const includedPath of definition?.includes||[]){const included=byPath.get(includedPath);if(included)visit(included.id,[...stack,id]);}
       visiting.delete(id);visited.add(id);
     }
     for(const definition of definitions)visit(definition.id);
-    return { definitions: [...definitions], byId, byCommand, byAlias, byFile };
+    return { definitions: [...definitions], byId, byCommand, byAlias, byFile, byPath };
   }
 
   function visibleCommandDefinitions(definitions) {
@@ -431,20 +453,17 @@
     return [...map.values()].sort((a, b) => a.file.localeCompare(b.file));
   }
 
-
-
   function expandCommandComposition(definitions,rootIds){
     const catalog=validateCommandCatalog(definitions);
     const roots=[...new Set((Array.isArray(rootIds)?rootIds:[rootIds]).map(String).filter(Boolean))];
     for(const id of roots)assert(catalog.byId.has(id),`Unknown composition root command id: ${id}`);
     const seen=new Set(),order=[];
-    function visit(id){
-      if(seen.has(id))return;
-      const definition=catalog.byId.get(id);
-      for(const included of definition.includes||[])visit(included);
-      seen.add(id);order.push(id);
+    function visit(definition){
+      if(seen.has(definition.id))return;
+      for(const includedPath of definition.includes||[]){const included=catalog.byPath.get(includedPath);if(included)visit(included);}
+      seen.add(definition.id);order.push(definition.id);
     }
-    for(const id of roots)visit(id);
+    for(const id of roots)visit(catalog.byId.get(id));
     const nodes=order.map((id)=>catalog.byId.get(id));
     const contributions=[];
     for(const node of nodes){
@@ -454,7 +473,9 @@
       if(binding.lensId)contributions.push({kind:'SELECTED_LENS',value:binding.lensId,why:'Registered Lens selection contributed by command methodologyBinding before semantic execution.',sourceCommandId:node.id});
     }
     const unique=[],seenContrib=new Set();for(const item of contributions){const key=`${item.kind}|${item.value}|${item.sourceCommandId}`;if(!seenContrib.has(key)){seenContrib.add(key);unique.push(item);}}
-    return{rootIds:roots,order,nodes,contributions:unique,byId:catalog.byId};
+    const hasAffectedRecheck=unique.some((item)=>item.kind==='REVIEW_COVERAGE_MODE'&&item.value==='LOCAL_AFFECTED_RECHECK');
+    const effective=hasAffectedRecheck?unique.filter((item)=>!(item.kind==='REVIEW_COVERAGE_MODE'&&item.value==='CURRENT_BASIS')):unique;
+    return{rootIds:roots,order,nodes,contributions:effective,byId:catalog.byId,byPath:catalog.byPath,paths:nodes.map(commandPath)};
   }
 
   function commandReferencePaths(definition) {
@@ -510,11 +531,16 @@
 
   function ownerRefLines(definition){const refs=definition.ownerRefs||[];if(!refs.length)return['  - none'];return refs.flatMap((ref)=>{const target=`${ref.path}${ref.anchor?'#'+ref.anchor:''}`;return[`  - ${ref.responsibilityId} → \`${target}\``,`    role: ${ref.role}; read: ${ref.readMode}; why: ${ref.why}`];});}
 
-  function contributionLines(definition){const items=definition.compositionContributions||[];if(!items.length)return['  - none'];return items.map((item)=>`  - ${item.kind}: ${item.value} | why: ${item.why}`);}
+  function commandPath(definition){return `planning/commands/${definition.file}`;}
+  function includedByLines(definition,definitions){const path=commandPath(definition);const deps=(definitions||[]).filter((item)=>(item.includes||[]).includes(path)).sort((a,b)=>commandPath(a).localeCompare(commandPath(b)));return deps.length?deps.map((dep)=>`  - ${commandPath(dep)} (${dep.id})`):['  - none'];}
 
-  function compositionLines(definition,definitions){if(!Array.isArray(definitions)||!definitions.length)return[];try{const byId=new Map(definitions.map((d)=>[String(d.id),d])),seen=new Set(),order=[];function visit(id){if(seen.has(id))return;const current=byId.get(id);if(!current)throw new Error(`Unknown included command: ${id}`);for(const included of current.includes||[])visit(included);seen.add(id);order.push(id);}visit(String(definition.id));return order.map((id,index)=>`  ${index+1}. ${id}${id===definition.id?'  ← selected/root action':''}`);}catch(_){return[];}}
+  function contributionLines(items){const list=items||[];if(!list.length)return['  - none'];return list.map((item)=>`  - ${item.kind}: ${item.value}${item.sourceCommandId?' | source: '+item.sourceCommandId:''} | why: ${item.why}`);}
+
+  function compositionPlan(definition,definitions){if(!Array.isArray(definitions)||!definitions.length)return{order:[],contributions:[]};try{const byPath=new Map(definitions.map((d)=>[commandPath(d),d])),seen=new Set(),order=[],contributions=[];function visit(current){if(seen.has(current.id))return;for(const includedPath of current.includes||[]){const included=byPath.get(includedPath);if(!included)throw new Error(`Unknown included command path: ${includedPath}`);visit(included);}seen.add(current.id);order.push({id:current.id,path:commandPath(current)});for(const item of current.compositionContributions||[])contributions.push({...item,sourceCommandId:current.id});const binding=current.methodologyBinding||{};if(binding.targetModuleId)contributions.push({kind:'SELECTED_TARGET_MODULE',value:binding.targetModuleId,why:'Registered Target Module selection contributed by command methodologyBinding before semantic execution.',sourceCommandId:current.id});if(binding.lensId)contributions.push({kind:'SELECTED_LENS',value:binding.lensId,why:'Registered Lens selection contributed by command methodologyBinding before semantic execution.',sourceCommandId:current.id});}visit(definition);const unique=[],keys=new Set();for(const item of contributions){const key=`${item.kind}|${item.value}|${item.sourceCommandId}`;if(!keys.has(key)){keys.add(key);unique.push(item);}}const hasAffectedRecheck=unique.some((item)=>item.kind==='REVIEW_COVERAGE_MODE'&&item.value==='LOCAL_AFFECTED_RECHECK');const effective=hasAffectedRecheck?unique.filter((item)=>!(item.kind==='REVIEW_COVERAGE_MODE'&&item.value==='CURRENT_BASIS')):unique;return{order,contributions:effective};}catch(_){return{order:[],contributions:[]};}}
+
 
   function buildCommandBody(definition, mode = MODE.ADAPTIVE, options = {}) {
+    const plan=compositionPlan(definition,options.definitions);
     return [
       '[PLANNING_COMMAND]',
       'Read this whole command body before answering.',
@@ -542,15 +568,22 @@
       `  ${definition.meaning}`,
       '',
       'command_includes:',
-      ...((definition.includes||[]).length?(definition.includes||[]).map((id)=>`  - ${id}`):['  - none']),
+      ...((definition.includes||[]).length?(definition.includes||[]).map((path)=>`  - ${path}`):['  - none']),
+      '',
+      'included_by_derived:',
+      ...includedByLines(definition,options.definitions),
+      '  Derived reverse projection only; `includes` remains the single canonical command dependency relation.',
       '  Expand ALL selected roots and transitive includes before semantic execution. Merge them into one DAG, reject cycles, deduplicate shared nodes, collect declarative contributions from every node, then execute dependencies before dependents. The selected/root command action runs last on its branch.',
       '',
-      'composition_contributions_pre_execution:',
-      ...contributionLines(definition),
-      '  Contributions from ALL expanded DAG nodes are collected before the first semantic command action.',
+      'own_composition_contributions_pre_execution:',
+      ...contributionLines(definition.compositionContributions||[]),
+      '',
+      'effective_composition_contributions_pre_execution:',
+      ...contributionLines(plan.contributions),
+      '  This is the merged contribution set from the fully expanded DAG; these facts are available before the first semantic command action.',
       '',
       'expanded_composition_dependencies_first:',
-      ...(compositionLines(definition,options.definitions).length?compositionLines(definition,options.definitions):['  - resolve from current command catalog before execution']),
+      ...(plan.order.length?plan.order.map((item,index)=>`  ${index+1}. ${item.path} (${item.id})${item.id===definition.id?'  ← selected/root action':''}`):['  - resolve from current command catalog before execution']),
       '',
       'own_canonical_refs:',
       ...ownerRefLines(definition),
@@ -1643,7 +1676,6 @@
     'critical_review.apply':{actionLabel:'Критически проверить',tail:'General · Critical Review',scenarioRefs:['planning/documentation/review-diff-review-workflow.md']},
     'idtspe.next':{actionLabel:'Показать следующий methodology action',tail:'General · IDTSPE Next',scenarioRefs:['UC-IDTSPE-COMPOSE-CURRENT-WORK']},
     'idtspe.continue':{actionLabel:'Продолжить methodology work',tail:'General · IDTSPE Continue',scenarioRefs:['UC-IDTSPE-COMPOSE-CURRENT-WORK']},
-    'review_audit.recheck':{actionLabel:'Аудировать coverage предыдущего review',tail:'General · Review Audit',scenarioRefs:['planning/documentation/review-audit-workflow.md']},
     'idtspe.review_consistency':{actionLabel:'Проверить consistency текущей работы',tail:'General · Consistency Review',scenarioRefs:['planning/documentation/idtspe-methodology/active/idtspe-core/use-case-processes/CROSS-OWNER-CONSISTENCY-REVIEW.use-case-process.md']},
     'idtspe.lenses.select':{actionLabel:'Подобрать применимые Lenses',tail:'General · Lens Selection',scenarioRefs:['planning/documentation/idtspe-methodology/active/idtspe-core/lenses/LENS-REGISTRY.md','planning/documentation/idtspe-methodology/active/idtspe-core/lenses/LENS-MODEL.md']},
     'replacement_archive.create':{actionLabel:'Собрать Replacement Package',tail:'Tool · UC-REPO-BUILD-REPLACEMENT-PACKAGE',category:'TOOL',scenarioRefs:['planning/use-cases/UC-REPO-BUILD-REPLACEMENT-PACKAGE.md','planning/documentation/build-replacement-archive-workflow.md']},
@@ -1655,8 +1687,11 @@
     'session.proposal_driven':{actionLabel:'Включить proposal-driven gating',tail:'General · Session Interaction',scenarioRefs:['planning/session/session-runtime-contract.md']},
     'idtspe.proposal':{actionLabel:'Работать через Proposal lifecycle',tail:'General · IDTSPE Proposal Lifecycle',scenarioRefs:['planning/documentation/idtspe-methodology/active/idtspe-core/resolution/proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md#resolution-proposal-decision-lifecycle','planning/documentation/idtspe-methodology/active/idtspe-core/lenses/required/LENS-PROPOSAL-DECISION-RESOLUTION-CONTEXT.md']},
     'idtspe.decisions.capture':{actionLabel:'Зафиксировать принятые решения',tail:'General · IDTSPE Decision Capture',scenarioRefs:['planning/documentation/idtspe-methodology/active/idtspe-core/runtime/interaction/USER-INPUT-DECISION-AND-ANSWER-INTAKE-RULE.md','planning/documentation/idtspe-methodology/active/idtspe-core/lenses/required/LENS-PROPOSAL-DECISION-RESOLUTION-CONTEXT.md']},
-    'idtspe.needs.review':{actionLabel:'Разобрать новые потребности',tail:'General · Need Candidate Disposition',scenarioRefs:['planning/documentation/idtspe-methodology/active/idtspe-core/resolution/needs/NEED-CANDIDATE-DISPOSITION.md']},
-    'idtspe.findings.review':{actionLabel:'Разобрать найденные проблемы',tail:'General · Finding Disposition',scenarioRefs:['planning/documentation/idtspe-methodology/active/idtspe-core/resolution/findings/FINDING-DISPOSITION.md#resolution-escalation']},
+    'idtspe.needs.collect':{actionLabel:'Собрать новые потребности',tail:'IDTSPE · Need Candidate Collection',scenarioRefs:['planning/documentation/idtspe-methodology/active/idtspe-core/resolution/needs/NEED-CANDIDATE-COLLECTION.md']},
+    'idtspe.needs.disposition':{actionLabel:'Диспозировать собранные потребности',tail:'IDTSPE · Need Candidate Disposition',scenarioRefs:['planning/documentation/idtspe-methodology/active/idtspe-core/resolution/needs/NEED-CANDIDATE-DISPOSITION.md']},
+    'idtspe.findings.disposition':{actionLabel:'Диспозировать Findings',tail:'IDTSPE · Finding Disposition',scenarioRefs:['planning/documentation/idtspe-methodology/active/idtspe-core/resolution/findings/FINDING-DISPOSITION.md#resolution-escalation']},
+    'idtspe.review':{actionLabel:'Провести IDTSPE review',tail:'IDTSPE · Review',scenarioRefs:['planning/documentation/idtspe-methodology/active/ai-reviewability/REVIEW-STRATEGY-AND-COVERAGE-CONTRACT.md']},
+    'idtspe.review.recheck':{actionLabel:'Перепроверить изменившееся coverage',tail:'IDTSPE · Review Recheck',scenarioRefs:['planning/documentation/idtspe-methodology/active/ai-reviewability/REVIEW-STRATEGY-AND-COVERAGE-CONTRACT.md#review-recheck-operation']},
     'idtspe.bootstrap':{actionLabel:'Загрузить IDTSPE Core',tail:'General · Bootstrap'},
     'application_sds.bootstrap':{actionLabel:'Загрузить SDS profile',tail:'General · Bootstrap'},
     'documentation_principles.read':{actionLabel:'Загрузить guidance по документации',tail:'General · Documentation Guidance'},

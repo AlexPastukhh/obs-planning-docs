@@ -1,4 +1,7 @@
+<a id="architecture-path-analysis"></a>
 # Architecture Path Analysis Workflow
+
+Responsibility ID: `ARCH.PATH-ANALYSIS`
 
 Status: active reusable workflow
 Scope: trace/evaluate one material Workspace Understanding Path, Workspace Change Path or Runtime Realization Path.

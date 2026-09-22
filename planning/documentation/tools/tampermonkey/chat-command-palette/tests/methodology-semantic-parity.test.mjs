@@ -358,20 +358,32 @@ test('owner-local Evolution Impact processing delegates shared inclusion depth a
 });
 
 
-test('Application Definition separates Benefits from Representative Real-Life Scenarios and uses seven Units',()=>{
+test('Application Definition keeps Responsibility Boundary inside each Benefit and uses concise Concept/RLS semantics',()=>{
   const app=read('planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-APPLICATION-DEFINITION.md');
   const scenario=read('planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-SCENARIO-PLANNING.md');
   const lens=read('planning/documentation/idtspe-methodology/active/profiles/sds/lenses/reusable/LENS-APPLICATION-BOUNDARY-FEASIBILITY.md');
+  const local=read('planning/documentation/tools/replacement-package-app/application-definition.md');
   assert.match(app,/RU-APP-03` \| Application Benefits/);
   assert.match(app,/RU-APP-04` \| Representative Real-Life Scenarios/);
+  assert.match(app,/RU-APP-05` \| Application Concept/);
   assert.match(app,/RU-APP-07` \| Realization Feasibility/);
-  assert.match(app,/User Need[\s\S]*User Receives[\s\S]*Additional Info/);
+  assert.doesNotMatch(app,/\| `RU-APP-06` \| Responsibility Boundary \|/);
+  assert.doesNotMatch(app,/#### `RU-APP-06` processing envelope/);
+  assert.match(app,/User Need[\s\S]*User Receives[\s\S]*Responsibility Boundary[\s\S]*Additional Info/);
+  assert.match(app,/Responsibility Boundary` is \*\*Benefit-local\*\*/);
+  assert.match(app,/Summary:[\s\S]*why it is needed \/ what overall Benefit it provides[\s\S]*How it roughly works:/i);
+  assert.match(app,/primary purpose is to make one or several Application Benefits understandable through concrete real-life situations/i);
   assert.match(app,/one Benefit may appear in several Representative RLS|One Benefit may appear in several Representative RLS/i);
   assert.match(app,/RLS must not decompose Target internals/i);
   assert.doesNotMatch(app,/Core Real-Life Scenario Position|Core vs Secondary Real-Life/);
   assert.match(scenario,/Benefit manifestation \/ closure/);
   assert.match(scenario,/Benefits remain upstream Application Definition authority/);
   assert.match(lens,/Canonical Benefit\/RLS schemas and authority are owned by/);
+  assert.match(lens,/Benefit Responsibility Boundaries/);
+  assert.doesNotMatch(lens,/TM-APPLICATION-DEFINITION`: `RU-APP-01\.\.RU-APP-07`/);
+  assert.doesNotMatch(local,/## RU-APP-0?6 .*Responsibility Boundary/);
+  assert.match(local,/## RU-APP-03 — Application Benefits[\s\S]*Responsibility Boundary:/);
+  assert.match(local,/## RU-APP-05 — Application Concept[\s\S]*\*\*Summary:\*\*[\s\S]*\*\*How it roughly works:\*\*/);
 });
 
 test('Proposal Decision Resolution Context Lens is operational evaluator, QRPE is a view, and Carry-Forward is projection-only',()=>{
@@ -397,7 +409,7 @@ test('generic Decision capture command never grants selection authority and Prop
   assert.match(decisions,/"id": "idtspe.decisions.capture"/);
   assert.match(decisions,/Only actual material selections become Decision semantics|actual selected material Decisions/i);
   assert.match(decisions,/never grants selection authority|does not grant AI selection authority/i);
-  assert.match(surface,/Primary User Convenience Surface Inventory — 15/);
+  assert.match(surface,/Primary User Convenience Surface Inventory — 18/);
   assert.match(surface,/idtspe\.decisions\.capture/);
 });
 

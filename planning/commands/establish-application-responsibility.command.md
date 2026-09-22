@@ -21,7 +21,7 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
     "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-APPLICATION-DEFINITION.md",
     "planning/documentation/idtspe-methodology/active/profiles/sds/commands/SDS-COMMAND-SURFACE-EXTENSION.md"
   ],
-  "expectedOutput": "Responsibility-boundary refinement of the same Application Definition Target.",
+  "expectedOutput": "Refinement of Responsibility Boundary on the affected Application Benefit(s), including cross-Benefit consistency when material, without creating a standalone Responsibility Boundary Result Unit.",
   "permissionMode": "read-only-planning",
   "keyReminders": [
     "SDS is an IDTSPE profile, not a second runtime.",
@@ -29,7 +29,7 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
     "Do not infer a dedicated file from Target identity; use Documentation / Representation and P-14 when persistence is material.",
     "This command plans/reviews only; it does not edit repository files, implement, test, commit or push."
   ],
-  "userTarget": "<Application responsibility boundary>",
+  "userTarget": "<Application Benefit responsibility boundary focus>",
   "palette": true,
   "refinements": [],
   "methodologyBinding": {
@@ -42,11 +42,11 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
     "hostTargetPolicy": "CREATE_OR_REUSE_TARGET"
   },
   "includes": [
-    "idtspe.work",
-    "idtspe.port-composition.recheck",
-    "idtspe.port.trace",
-    "idtspe.port.target",
-    "idtspe.target-module.apply"
+    "planning/commands/work-through-idtspe.command.md",
+    "planning/commands/recheck-idtspe-port-composition.command.md",
+    "planning/commands/include-idtspe-trace-port.command.md",
+    "planning/commands/idtspe-port-target.command.md",
+    "planning/commands/apply-idtspe-target-module.command.md"
   ],
   "ownerRefs": [
     {

@@ -39,10 +39,10 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
     }
   ],
   "includes": [
-    "idtspe.work",
-    "idtspe.port-composition.recheck",
-    "idtspe.port.trace",
-    "idtspe.port.result"
+    "planning/commands/work-through-idtspe.command.md",
+    "planning/commands/recheck-idtspe-port-composition.command.md",
+    "planning/commands/include-idtspe-trace-port.command.md",
+    "planning/commands/idtspe-port-result.command.md"
   ],
   "expectedOutput": "Current Target Step Result projection with complete applicable Unit inventory/dispositions and coherent result content.",
   "permissionMode": "read-only-planning",

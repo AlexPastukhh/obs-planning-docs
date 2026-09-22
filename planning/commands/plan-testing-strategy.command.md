@@ -45,9 +45,19 @@ Scope: historical invocation alias redirected to current IDTSPE/SDS authority; h
     "hostTargetPolicy": "RESOLVE_OR_REUSE_TARGET"
   },
   "includes": [
-    "idtspe.work",
-    "idtspe.port-composition.recheck",
-    "idtspe.port.trace"
+    "planning/commands/work-through-idtspe.command.md",
+    "planning/commands/recheck-idtspe-port-composition.command.md",
+    "planning/commands/include-idtspe-trace-port.command.md"
+  ],
+  "ownerRefs": [
+    {
+      "responsibilityId": "LENS-TEST-PROOF-EVIDENCE",
+      "path": "planning/documentation/idtspe-methodology/active/idtspe-core/lenses/reusable/LENS-TEST-PROOF-EVIDENCE.md",
+      "anchor": "lens-test-proof-evidence-test-proof-evidence-quality",
+      "why": "Defines reusable test/proof/evidence analysis used to shape testing strategy.",
+      "role": "PRIMARY_OWNER",
+      "readMode": "REQUIRED"
+    }
   ]
 }
 [/PLANNING_COMMAND_DEFINITION]

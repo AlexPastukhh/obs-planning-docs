@@ -66,6 +66,15 @@
     return file;
   }
 
+  function validateCommandIncludePath(value, field = 'include path') {
+    const path = validateRepositoryPath(value, field);
+    assert(path.startsWith(`${COMMANDS_PATH}/`), `${field} must point under ${COMMANDS_PATH}/.`);
+    const file = path.slice(COMMANDS_PATH.length + 1);
+    assert(!file.includes('/'), `${field} must point to a direct command definition.`);
+    validateFileName(file);
+    return `${COMMANDS_PATH}/${file}`;
+  }
+
   function normalizeRefinement(raw, index) {
     assert(raw && typeof raw === 'object' && !Array.isArray(raw), `refinements[${index}] must be an object.`);
     const known = new Set(['id', 'label', 'description', 'readRequired', 'instruction']);
@@ -84,9 +93,14 @@
     assert(raw&&typeof raw==='object'&&!Array.isArray(raw),`compositionContributions[${index}] must be an object.`);
     const known=new Set(['kind','value','why']);for(const key of Object.keys(raw))assert(known.has(key),`Unknown compositionContributions[${index}] field: ${key}`);
     const kind=singleLine(raw.kind,`compositionContributions[${index}].kind`);
-    const allowed=new Set(['WORKING_TRACE_REQUIRED','TRACE_SINK_PREFERENCE','PORT_CAPABILITY_REQUIREMENT']);
+    const allowed=new Set(['WORKING_TRACE_REQUIRED','TRACE_SINK_PREFERENCE','PORT_CAPABILITY_REQUIREMENT','REVIEW_COVERAGE_MODE']);
     assert(allowed.has(kind),`compositionContributions[${index}].kind is invalid.`);
-    return{kind,value:singleLine(raw.value,`compositionContributions[${index}].value`),why:singleLine(raw.why,`compositionContributions[${index}].why`)};
+    const value=singleLine(raw.value,`compositionContributions[${index}].value`);
+    if(kind==='REVIEW_COVERAGE_MODE'){
+      const modes=new Set(['CURRENT_BASIS','LOCAL_AFFECTED_RECHECK']);
+      assert(modes.has(value),`compositionContributions[${index}].value is invalid for REVIEW_COVERAGE_MODE.`);
+    }
+    return{kind,value,why:singleLine(raw.why,`compositionContributions[${index}].why`)};
   }
 
   function normalizeOwnerRef(raw,index){
@@ -181,8 +195,8 @@
     assert(Array.isArray(refinementsRaw), 'refinements must be an array.');
     const refinements = refinementsRaw.map(normalizeRefinement);
     assert(new Set(refinements.map((item) => item.id)).size === refinements.length, 'refinement ids must be unique within a command.');
-    const includes = raw.includes == null ? [] : stringArray(raw.includes, 'includes').map((id, index) => validateId(id, `includes[${index}]`));
-    assert(new Set(includes).size === includes.length, 'includes must not contain duplicate command ids.');
+    const includes = raw.includes == null ? [] : stringArray(raw.includes, 'includes').map((path, index) => validateCommandIncludePath(path, `includes[${index}]`));
+    assert(new Set(includes).size === includes.length, 'includes must not contain duplicate command paths.');
     const contributionsRaw=raw.compositionContributions==null?[]:raw.compositionContributions;
     assert(Array.isArray(contributionsRaw),'compositionContributions must be an array.');
     const compositionContributions=contributionsRaw.map(normalizeCompositionContribution);
@@ -334,6 +348,7 @@
     commandPathForDefinition,
     toSerializable,
     validateRepositoryPath,
+    validateCommandIncludePath,
     validateId
   };
 });

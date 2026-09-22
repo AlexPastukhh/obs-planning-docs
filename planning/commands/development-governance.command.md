@@ -40,7 +40,17 @@ Scope: working-context governance shortcut; semantic authority remains in linked
   ],
   "userTarget": "<application/development work in this session>",
   "includes": [
-    "methodology.use_cases.recheck"
+    "planning/commands/recheck-methodology-use-cases.command.md"
+  ],
+  "ownerRefs": [
+    {
+      "responsibilityId": "PLANNING.AI-WORKING-CONTRACT",
+      "path": "planning/AI-WORKING-CONTRACT.md",
+      "anchor": "planning-ai-working-contract",
+      "why": "Defines repository-wide AI working/governance constraints applied by this command.",
+      "role": "PRIMARY_OWNER",
+      "readMode": "REQUIRED"
+    }
   ]
 }
 [/PLANNING_COMMAND_DEFINITION]

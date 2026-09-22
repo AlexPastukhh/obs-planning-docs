@@ -36,7 +36,17 @@ Scope: generic manual invocation route for one selected current canonical Use Ca
   "palette": false,
   "refinements": [],
   "includes": [
-    "methodology.use_cases.recheck"
+    "planning/commands/recheck-methodology-use-cases.command.md"
+  ],
+  "ownerRefs": [
+    {
+      "responsibilityId": "DOC.USE-CASE-REGISTRY-MAP",
+      "path": "planning/documentation/use-case-registry-map.md",
+      "anchor": "methodology-use-case-registry-map",
+      "why": "Routes a requested Use Case to the current scoped registry and canonical Use-Case owner.",
+      "role": "PRIMARY_OWNER",
+      "readMode": "REQUIRED"
+    }
   ]
 }
 [/PLANNING_COMMAND_DEFINITION]

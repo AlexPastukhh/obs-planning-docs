@@ -40,7 +40,17 @@ Scope: representation preference only; no separate SDS runtime/profile.
   "palette": false,
   "refinements": [],
   "includes": [
-    "methodology.use_cases.recheck"
+    "planning/commands/recheck-methodology-use-cases.command.md"
+  ],
+  "ownerRefs": [
+    {
+      "responsibilityId": "SDS.PROFILE-BOOTSTRAP",
+      "path": "planning/documentation/idtspe-methodology/active/profiles/sds/README.md",
+      "anchor": "sds-profile-bootstrap",
+      "why": "Defines the SDS profile boundary reused by this legacy modular-work convenience command.",
+      "role": "PRIMARY_OWNER",
+      "readMode": "REQUIRED"
+    }
   ]
 }
 [/PLANNING_COMMAND_DEFINITION]

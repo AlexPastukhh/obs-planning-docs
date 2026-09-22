@@ -43,9 +43,9 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
     "hostTargetPolicy": "NONE"
   },
   "includes": [
-    "idtspe.work",
-    "idtspe.port-composition.recheck",
-    "idtspe.port.trace"
+    "planning/commands/work-through-idtspe.command.md",
+    "planning/commands/recheck-idtspe-port-composition.command.md",
+    "planning/commands/include-idtspe-trace-port.command.md"
   ],
   "ownerRefs": [
     {

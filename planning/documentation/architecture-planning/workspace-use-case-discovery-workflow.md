@@ -1,4 +1,7 @@
+<a id="architecture-workspace-use-case-discovery"></a>
 # Workspace Use-Case Discovery Workflow
+
+Responsibility ID: `ARCH.WORKSPACE-USE-CASE-DISCOVERY`
 
 Main owner for `UC-PLAN-ARCH-WORKSPACE-USES`.
 

@@ -1,4 +1,7 @@
+<a id="application-planning-use-case-registry"></a>
 # Solution / Application Planning Supporting Use-Case Registry
+
+Responsibility ID: `APP.USE-CASE-REGISTRY`
 
 Status: active supporting registry
 

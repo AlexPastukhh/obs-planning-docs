@@ -39,7 +39,7 @@ function canonicalMethodologyUcIds(){
 }
 function exactCaseExists(rel){let current=repoRoot;for(const segment of rel.split('/')){if(!fs.existsSync(current))return false;const names=fs.readdirSync(current);if(!names.includes(segment))return false;current=path.join(current,segment)}return fs.existsSync(current)}
 
-test('generated Use-Case seed contains exactly the current methodology Use Cases mapped by Registry Map',()=>{const expected=canonicalMethodologyUcIds(),actual=useCases.map((u)=>u.id);assert.equal(new Set(actual).size,actual.length);assert.deepEqual([...actual].sort(),[...expected].sort());assert.equal(actual.length,18);assert.equal(actual.filter((id)=>id.startsWith('UC-DOC-')).length,12);assert.equal(actual.filter((id)=>id.startsWith('UC-IDTSPE-')).length,6);for(const id of actual)assert.ok(id.startsWith('UC-DOC-')||id.startsWith('UC-IDTSPE-'),`${id}: project/profile planning UC leaked into methodology projection`)});
+test('generated Use-Case seed contains exactly the current methodology Use Cases mapped by Registry Map',()=>{const expected=canonicalMethodologyUcIds(),actual=useCases.map((u)=>u.id);assert.equal(new Set(actual).size,actual.length);assert.deepEqual([...actual].sort(),[...expected].sort());assert.equal(actual.length,19);assert.equal(actual.filter((id)=>id.startsWith('UC-DOC-')).length,12);assert.equal(actual.filter((id)=>id.startsWith('UC-IDTSPE-')).length,7);for(const id of actual)assert.ok(id.startsWith('UC-DOC-')||id.startsWith('UC-IDTSPE-'),`${id}: project/profile planning UC leaked into methodology projection`)});
 
 test('all generated semantic source paths exist with exact repository casing',()=>{for(const definition of useCases)for(const source of definition.sources||[])assert.ok(exactCaseExists(source),`${definition.id}: missing/exact-case-invalid source ${source}`)});
 
@@ -47,7 +47,7 @@ test('all generated semantic source paths exist with exact repository casing',()
 test('methodology Use-Case semantic bodies remain thin owner-route projections with explicit permission boundary',()=>{const uc=useCases.find((u)=>u.id==='UC-IDTSPE-COMPOSE-CURRENT-WORK');assert.ok(uc);assert.ok(uc.sources.includes('planning/documentation/use-case-registry-map.md'));assert.ok(uc.sources.includes('planning/documentation/idtspe-methodology/active/idtspe-core/use-cases/USE-CASE-REGISTRY.md'));for(const mode of ['adaptive','full']){const body=semantic.buildSemanticBody('use_case',uc,mode);assert.match(body,/\[PLANNING_USE_CASE\]/);assert.match(body,/use_case_id:\n  UC-IDTSPE-COMPOSE-CURRENT-WORK/);assert.match(body,/route_resolution:/);assert.match(body,/current owner route/);assert.match(body,/methodology-use/i);assert.match(body,/read context only/i)}assert.match(semantic.buildSemanticBody('use_case',uc,'full'),/Full use_case reading is required/)});
 
 
-test('methodology Use Cases and standalone project/domain command routes remain independently discoverable',()=>{for(const id of ['UC-DOC-USE-REPOSITORY-GUIDANCE','UC-DOC-PLAN-DOCUMENTATION-CHANGE','UC-IDTSPE-COMPOSE-CURRENT-WORK','UC-IDTSPE-INTEGRATE-CURRENT-WORK','UC-IDTSPE-REVALIDATE-CURRENT-WORK'])assert.ok(useCases.some((u)=>u.id===id),id);for(const projectUc of ['UC-REPO-PLAN-UPDATE','UC-REPO-BUILD-REPLACEMENT-PACKAGE','UC-PLAN-ARCH-WORKSPACE-USES','UC-PLAN-DOMAIN','UC-PLAN-SLICE','UC-PLAN-TEST-PLAN'])assert.ok(!useCases.some((u)=>u.id===projectUc),`${projectUc}: project/application UC must not be projected as methodology-use UC`);for(const file of ['review-audit.command.md','discover-workspace-use-cases.command.md','plan-domain.command.md','plan-application-slice.command.md','plan-practical-testing.command.md','bootstrap-application-sds-planning.command.md','build-replacement-archive.command.md'])assert.ok(fs.existsSync(path.join(repoRoot,'planning/commands',file)),file);const audit=codec.parseCommandDefinitionDocument(read('planning/commands/review-audit.command.md'));assert.equal(audit.id,'review_audit.recheck');assert.ok(audit.ownerFiles.includes('planning/documentation/review-audit-workflow.md'));assert.doesNotMatch(audit.meaning,/UC-REPO-AUDIT-REVIEW/)});
+test('methodology Use Cases and standalone project/domain command routes remain independently discoverable',()=>{for(const id of ['UC-DOC-USE-REPOSITORY-GUIDANCE','UC-DOC-PLAN-DOCUMENTATION-CHANGE','UC-IDTSPE-COMPOSE-CURRENT-WORK','UC-IDTSPE-INTEGRATE-CURRENT-WORK','UC-IDTSPE-REVALIDATE-CURRENT-WORK'])assert.ok(useCases.some((u)=>u.id===id),id);for(const projectUc of ['UC-REPO-PLAN-UPDATE','UC-REPO-BUILD-REPLACEMENT-PACKAGE','UC-PLAN-ARCH-WORKSPACE-USES','UC-PLAN-DOMAIN','UC-PLAN-SLICE','UC-PLAN-TEST-PLAN'])assert.ok(!useCases.some((u)=>u.id===projectUc),`${projectUc}: project/application UC must not be projected as methodology-use UC`);for(const file of ['discover-workspace-use-cases.command.md','plan-domain.command.md','plan-application-slice.command.md','plan-practical-testing.command.md','bootstrap-application-sds-planning.command.md','build-replacement-archive.command.md'])assert.ok(fs.existsSync(path.join(repoRoot,'planning/commands',file)),file);assert.equal(fs.existsSync(path.join(repoRoot,'planning/commands/review-audit.command.md')),false);assert.equal(fs.existsSync(path.join(repoRoot,'planning/documentation/review-audit-workflow.md')),false);const recheck=codec.parseCommandDefinitionDocument(read('planning/commands/recheck-current-idtspe.command.md'));assert.equal(recheck.id,'idtspe.review.recheck');assert.equal(recheck.command,'перепроверь');assert.ok(!recheck.ownerFiles.includes('planning/documentation/review-audit-workflow.md'));});
 
 test('project-specific Application Realization stays outside methodology Use-Case projection while its standalone owner/command remain reachable',()=>{assert.equal(useCases.some((u)=>u.id==='UC-PLAN-REALIZATION'),false);const command=codec.parseCommandDefinitionDocument(read('planning/commands/review-application-realization.command.md'));assert.equal(command.id,'application_realization.review');assert.ok(command.ownerFiles.includes('planning/documentation/application-planning/application-realization-workflow.md'));const owner=read('planning/documentation/application-planning/application-realization-workflow.md');assert.match(owner,/Architecture Cost Handoff/);assert.match(owner,/runtime/i)});
 
@@ -78,22 +78,31 @@ test('retired Test Strategy shortcut routes to current proof owners without rest
 test('generic IDTSPE command surfaces depend on Core command-surface authority rather than SDS profile authority',()=>{
   const coreOwner='planning/documentation/idtspe-methodology/active/idtspe-core/commands/IDTSPE-COMMAND-SURFACE-CONTRACT.md';
   const sdsOwner='planning/documentation/idtspe-methodology/active/profiles/sds/commands/SDS-COMMAND-SURFACE-EXTENSION.md';
-  const files=['bootstrap-idtspe.command.md','work-through-idtspe.command.md','idtspe-next.command.md','idtspe-continue.command.md','review-idtspe-consistency.command.md','idtspe-proposal.command.md','review-idtspe-needs.command.md','review-idtspe-findings.command.md','plan-pre-update.command.md','realize-exact-result.command.md','select-idtspe-lenses.command.md','apply-idtspe-lens.command.md','check-documentation-representation.command.md','check-linked-notes-justification.command.md'];
+  const files=['bootstrap-idtspe.command.md','work-through-idtspe.command.md','idtspe-next.command.md','idtspe-continue.command.md','review-current-idtspe.command.md','review-idtspe-consistency.command.md','idtspe-proposal.command.md','collect-idtspe-needs.command.md','disposition-idtspe-needs.command.md','disposition-idtspe-findings.command.md','recheck-current-idtspe.command.md','plan-pre-update.command.md','realize-exact-result.command.md','select-idtspe-lenses.command.md','apply-idtspe-lens.command.md','check-documentation-representation.command.md','check-linked-notes-justification.command.md'];
   for(const file of files){const command=codec.parseCommandDefinitionDocument(read(`planning/commands/${file}`));assert.ok(command.ownerFiles.includes(coreOwner),`${command.id}: missing Core command-surface owner`);assert.ok(!command.ownerFiles.includes(sdsOwner),`${command.id}: generic Core surface depends on SDS command owner`);}
-  const core=read(coreOwner);assert.match(core,/Primary User Convenience Surface Inventory — 15/);assert.match(core,/CREATE_OR_REUSE_TARGET/);assert.match(core,/RESOLVE_OR_REUSE_TARGET/);
+  const core=read(coreOwner);assert.match(core,/Primary User Convenience Surface Inventory — 18/);assert.match(core,/bounded Analysis Surface/);assert.match(core,/hostTargetPolicy: NONE/);assert.match(core,/must not create a Target merely to host/i);
   const sds=read(sdsOwner);assert.match(sds,/SDS Profile Command Surface Extension/);assert.match(sds,/generic IDTSPE Core surfaces are owned separately/i);
 });
 
-test('Need review surface grounds USER wanted outcomes without collapsing them into Proposal, Finding or Evolution Step',()=>{
-  const command=codec.parseCommandDefinitionDocument(read('planning/commands/review-idtspe-needs.command.md'));
-  assert.equal(command.id,'idtspe.needs.review');
-  assert.match(command.meaning,/exact originating USER input/i);
-  assert.match(command.activeContextBehavior,/Feature, Requirement, Proposal or Evolution Step/i);
-  const owner=read('planning/documentation/idtspe-methodology/active/idtspe-core/resolution/needs/NEED-CANDIDATE-DISPOSITION.md');
-  assert.match(owner,/exact originating USER input/i);
-  assert.match(owner,/transient by default/i);
-  assert.match(owner,/existing TM-EVOLUTION-STEP/i);
-  assert.match(owner,/new Step candidate/i);
+test('Need collection and disposition remain separate USER/Source-grounded operations',()=>{
+  const collect=codec.parseCommandDefinitionDocument(read('planning/commands/collect-idtspe-needs.command.md'));
+  const disposition=codec.parseCommandDefinitionDocument(read('planning/commands/disposition-idtspe-needs.command.md'));
+  assert.equal(collect.id,'idtspe.needs.collect');
+  assert.equal(disposition.id,'idtspe.needs.disposition');
+  assert.match(collect.meaning,/USER\/Source/i);
+  assert.match(collect.activeContextBehavior,/Stop at candidate formation/i);
+  assert.match(disposition.meaning,/grounded Need Candidates/i);
+  const collectionOwner=read('planning/documentation/idtspe-methodology/active/idtspe-core/resolution/needs/NEED-CANDIDATE-COLLECTION.md');
+  assert.match(collectionOwner,/AI improvement idea \/ preference[\s\S]*NOT a USER Need Candidate/i);
+  const dispositionOwner=read('planning/documentation/idtspe-methodology/active/idtspe-core/resolution/needs/NEED-CANDIDATE-DISPOSITION.md');
+  assert.match(dispositionOwner,/transient by default/i);
+  assert.match(dispositionOwner,/existing TM-EVOLUTION-STEP/i);
+  const compose=read('planning/documentation/idtspe-methodology/active/idtspe-core/use-cases/compose-current-work/UC-IDTSPE-COMPOSE-CURRENT-WORK.md');
+  assert.match(compose,/Need Candidate Collection[\s\S]*Need Candidate Disposition/);
+  const intake=read('planning/documentation/idtspe-methodology/active/idtspe-core/runtime/interaction/USER-INPUT-DECISION-AND-ANSWER-INTAKE-RULE.md');
+  assert.match(intake,/Need Candidate Collection[\s\S]*Need Candidate Disposition/);
+  const coreMap=read('planning/documentation/idtspe-methodology/active/idtspe-core/navigation/IDTSPE-CORE-MAP.md');
+  assert.match(coreMap,/Need Candidate Collection[\s\S]*Need Candidate Disposition/);
 });
 
 test('replacement archive producer finalizes ChangeSet continuity when APPROVABLE ReviewDiff is accepted',()=>{
@@ -146,10 +155,16 @@ test('generic Lens commands expose applicability scan and selected-Lens dispatch
   const apply=codec.parseCommandDefinitionDocument(read('planning/commands/apply-idtspe-lens.command.md'));
   assert.equal(select.id,'idtspe.lenses.select');assert.equal(apply.id,'idtspe.lens.apply');
   for(const command of [select,apply]){assert.equal(command.methodologyBinding?.surfaceKind,'ORCHESTRATION');assert.equal(command.methodologyBinding?.lensId,null);}
-  assert.equal(select.methodologyBinding?.hostTargetPolicy,'CREATE_OR_REUSE_TARGET');
-  assert.equal(apply.methodologyBinding?.hostTargetPolicy,'RESOLVE_OR_REUSE_TARGET');
-  assert.doesNotMatch(select.meaning,/TF-06A|LENS_SET/);assert.match(select.meaning,/no fixed Target.*Lens Set/i);assert.match(select.keyReminders.join(' '),/Local Target Contract/);
+  assert.equal(select.methodologyBinding?.hostTargetPolicy,'NONE');
+  assert.equal(apply.methodologyBinding?.hostTargetPolicy,'NONE');
+  assert.doesNotMatch(select.meaning,/TF-06A|LENS_SET/);assert.match(select.meaning,/no fixed Target.*Lens Set/i);assert.match(select.keyReminders.join(' '),/Analysis Surface.*primary/i);
+  assert.match(select.meaning,/must not create|Do not create/i);
+  assert.match(select.meaning,/Lens Model, Analysis Surface, Operation, basis/i);
   assert.match(apply.meaning,/Knowledge Basis/);assert.match(apply.keyReminders.join(' '),/does not create a Lens-owned Target/);
+  assert.match(apply.meaning,/supported Lens operation/i);
+  const model=read('planning/documentation/idtspe-methodology/active/idtspe-core/lenses/LENS-MODEL.md');
+  assert.match(model,/Current bounded Analysis Surface[\s\S]*optional natural Target/);
+  assert.match(model,/Selected Lens Application[\s\S]*Lens Model, Analysis Surface, Operation, relevant basis/i);
 });
 
 
@@ -304,8 +319,8 @@ test('Core cold bootstrap is a routing/proportionality spine and keeps deep mech
 
 
 test('Finding review surface separates impact priority from semantic resolution escalation',()=>{
-  const command=codec.parseCommandDefinitionDocument(read('planning/commands/review-idtspe-findings.command.md'));
-  assert.equal(command.id,'idtspe.findings.review');
+  const command=codec.parseCommandDefinitionDocument(read('planning/commands/disposition-idtspe-findings.command.md'));
+  assert.equal(command.id,'idtspe.findings.disposition');
   assert.equal(command.methodologyBinding?.profile,null);
   assert.equal(command.methodologyBinding?.surfaceKind,'ORCHESTRATION');
   assert.ok(command.ownerFiles.includes('planning/documentation/idtspe-methodology/active/idtspe-core/resolution/findings/FINDING-DISPOSITION.md'));
@@ -314,11 +329,40 @@ test('Finding review surface separates impact priority from semantic resolution 
   for(const token of ['RE-0 DETERMINISTIC-CORRECTION','RE-1 LOCAL-REALIZATION-CHOICE','RE-2 CURRENT-OWNER-SEMANTIC-CHANGE','RE-3 UPSTREAM-REVALIDATION','RE-4 UPSTREAM-SEMANTIC-CHANGE'])assert.match(finding,new RegExp(token));
   assert.match(finding,/Review Priority[\s\S]*cost \/ blast radius[\s\S]*Resolution Escalation[\s\S]*semantic distance \/ authority change required/);
   assert.match(finding,/A detail at architecture depth is not automatically an architecture Decision/);
+  assert.match(finding,/RE-2 current-owner semantic change[\s\S]*MUST form or refine a formal IDTSPE Proposal/i);
+  assert.match(finding,/RE-4 upstream semantic change[\s\S]*MUST form or refine a formal IDTSPE Proposal/i);
+  assert.match(finding,/GIP[\s\S]*not.*substitute[\s\S]*IDTSPE Proposal/is);
   const unit=read('planning/documentation/idtspe-methodology/active/idtspe-core/runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md');
   assert.match(unit,/Resolution Escalation.*not.*State Unit/is);
   const review=read('planning/documentation/review-diff-review-workflow.md');
   assert.match(review,/RE-0 \/ RE-1 with a known but unapplied correction[\s\S]*NEEDS CORRECTION/);
   assert.match(review,/RE-2 \/ RE-4 with unresolved required selection[\s\S]*BLOCKED BY MATERIAL DECISION/);
+});
+
+test('Review Strategy/Coverage supports distinct Lens checks and local affected recheck after change',()=>{
+  const strategy=read('planning/documentation/idtspe-methodology/active/ai-reviewability/REVIEW-STRATEGY-AND-COVERAGE-CONTRACT.md');
+  assert.match(strategy,/semantic subject \/ surface[\s\S]*review perspective[\s\S]*review operation[\s\S]*relevant basis/i);
+  assert.match(strategy,/Current-Pass Completeness/);
+  assert.match(strategy,/Review Coverage Record/);
+  assert.match(strategy,/MUST NOT intentionally defer/i);
+  assert.doesNotMatch(strategy,/REVIEW\.COVERAGE-AUDIT/);
+  assert.match(strategy,/LOCAL_AFFECTED/);
+  assert.match(strategy,/newly exposed semantic surface/i);
+  assert.match(strategy,/Lens Model, Analysis Surface, Operation, relevant basis/i);
+  const rootMap=read('planning/documentation/idtspe-methodology/active/navigation/METHODOLOGY-RESPONSIBILITY-MAP.md');
+  assert.match(rootMap,/REVIEW\.STRATEGY-COVERAGE/);
+  const activeReadme=read('planning/documentation/idtspe-methodology/active/README.md');
+  assert.match(activeReadme,/REVIEW-STRATEGY-AND-COVERAGE-CONTRACT/);
+  const review=codec.parseCommandDefinitionDocument(read('planning/commands/review-current-idtspe.command.md'));
+  const recheck=codec.parseCommandDefinitionDocument(read('planning/commands/recheck-current-idtspe.command.md'));
+  assert.equal(review.id,'idtspe.review');
+  assert.equal(recheck.id,'idtspe.review.recheck');
+  assert.equal(recheck.command,'перепроверь');
+  assert.equal(recheck.methodologyBinding.surfaceKind,'ORCHESTRATION');
+  assert.equal(recheck.methodologyBinding.hostTargetPolicy,'NONE');
+  assert.ok(!recheck.includes.includes('planning/commands/review-idtspe.command.md'));
+  assert.match(review.meaning,/Finding Disposition before the review is semantically complete/i);
+  assert.match(review.meaning,/Need collection is not a mandatory review stage/i);
 });
 
 test('Unit model is resolution-centric and keeps Contextual Unit result destination explicit',()=>{
@@ -336,6 +380,9 @@ test('Proposal lifecycle owns semantic impact while RE categories remain Finding
   const command=codec.parseCommandDefinitionDocument(read('planning/commands/idtspe-proposal.command.md'));
   assert.match(proposal,/## 5A\. Proposal Semantic Change Impact Review/);
   assert.match(proposal,/Resolution Escalation RE-0\.\.RE-4.*belongs to Finding Disposition only/is);
+  assert.match(proposal,/Finding-to-Proposal Handoff/);
+  assert.match(proposal,/material candidate semantic resolution[\s\S]*MUST form or refine a formal IDTSPE Proposal/i);
+  assert.match(proposal,/GIP[\s\S]*never substitutes for it/is);
   assert.match(finding,/`RE-\*` categorizes the Finding's semantic resolution distance, not a Proposal/);
   assert.match(command.activeContextBehavior,/Proposal Semantic Change Impact Review/);
 });

@@ -534,3 +534,11 @@ Logging starts only after explicit user instruction; no pre-start history is rec
 **ChangeSet:** `2c7d090e-e95b-44a0-827f-78f4721ae133`  
 **Package:** `e78abb02-eb7a-4c4b-bccf-3340fd2f06bd`  
 **Reason:** Planning Helper remains on the same 43-surface projection introduced by package `52a30497-e5ab-497e-8c86-dfc4eb11e1a4`. This correction changes no Helper seed/order/runtime/test behavior; it only corrects reusable Test Proof Lens Evidence-persistence semantics and records that Simple Owner Bootstrap is deferred to later work.
+
+### XREF-038 — Project v11 path-addressed command composition and fundamental AI authority boundary
+
+**Type:** CROSS-SCOPE REFERENCE  
+**Canonical Log:** `planning/documentation/action-log.md`  
+**ChangeSet:** `c62ec40a-8ad4-45ef-8034-cd0ad6daf247`  
+**Package:** `b915ba9c-76c5-4c29-bcf1-0b96cdac7aea`  
+**Reason:** Planning Helper participates by resolving command `includes` through canonical `planning/commands/*.command.md` paths, projecting the mandatory Use-Case recheck / fundamental AI Working Boundary traversal, regenerating catalogs/userscript, and adding regression coverage. Reusable AI authority and Finding→formal IDTSPE Proposal semantics remain owned by methodology, not Helper runtime.

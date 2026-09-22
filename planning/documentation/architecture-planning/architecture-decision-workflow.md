@@ -1,4 +1,7 @@
+<a id="architecture-decision-workflow"></a>
 # Architecture Decision Workflow
+
+Responsibility ID: `ARCH.DECISION-WORKFLOW`
 
 Status: active reusable workflow
 Scope: plan/review one material Architecture Decision as a testable current hypothesis about important Workspace/runtime paths.

@@ -484,8 +484,8 @@
       "actionLabel": "Application Boundary / Alternatives / Feasibility",
       "description": "own-Application contribution/boundary/feasibility is unsettled",
       "context": "Primary for TM-APPLICATION-DEFINITION.",
-      "result": "TM-APPLICATION-DEFINITION: RU-APP-01..RU-APP-07",
-      "essence": "Evaluate whether an own Application is justified, which real-world contribution it should own, what existing alternatives teach us, which Benefits justify it and whether representative real-life situations support a truthful boundary, and whether the boundary is plausibly realizable.",
+      "result": "TM-APPLICATION-DEFINITION: RU-APP-01, RU-APP-02, RU-APP-03, RU-APP-04, RU-APP-05, RU-APP-07 (RU-APP-06 is intentionally not a standalone Unit)",
+      "essence": "Evaluate whether an own Application is justified, which real-world contribution it should own, what existing alternatives teach us, which Benefits justify it, whether each Benefit has a truthful Responsibility Boundary, whether representative real-life situations make those Benefits concrete, whether the concise Application Concept is understandable, and whether the concept/Benefit boundaries are plausibly realizable.",
       "sources": [
         "planning/documentation/idtspe-methodology/active/profiles/sds/registries/LENS-REGISTRY.md",
         "planning/documentation/idtspe-methodology/active/profiles/sds/lenses/reusable/LENS-APPLICATION-BOUNDARY-FEASIBILITY.md"
@@ -1135,8 +1135,8 @@
       "actionLabel": "Определить приложение",
       "description": "conditional own-Application contribution / boundary / feasibility",
       "context": "A person doing research repeatedly finds useful fragments in articles. Existing bookmarks are too coarse, copying into a notes app interrupts reading, and the team is considering building a small capture application. At this point there is a real Need and a selected real-life problem space, but it is still unclear whether custom software is justified and what the application should actually own.",
-      "result": "The result is a coherent Application Definition containing: ``text why custom software is still justified Application Benefits Representative Real-Life Scenarios with bounded Target contribution markers selected application responsibility boundary owned vs merely consumed information/state material feasibility findings `` When this walkthrough describes desired Application intent that is not yet realized downstream, the Application Definition may still state that selected intent directly. Concrete unrealized downstream behavior/realization changes are then planned in Evolution Steps and may use this definition as an upstream driver.",
-      "essence": "Define one coherent own-application contribution: ``text what application/contribution we are building why custom software is still justified which Application Benefits are selected/possible which representative real-life situations show those Benefits in context what is inside/outside Application responsibility whether the concept/boundary is plausibly realizable `` Application Benefits and Representative Real-Life Scenarios are separate responsibilities. Benefits own independently addressable user-value meaning; Representative RLS instances are many-to-many examples of how one or several Benefits may manifest in a larger real-world path. RLS surrounding steps do not become selected Application behavior merely because they are shown. Use this Target when Application need/value/contribution, Benefit set, responsibility boundary or feasibility is materially unsettled or challenged. App…",
+      "result": "The result is a coherent Application Definition containing: ``text why custom software is still justified Application Benefits, each with its own Responsibility Boundary Representative Real-Life Scenarios that make Benefits concrete through real examples concise Application Concept, including a short explanation of how it roughly works owned vs merely consumed information/state as expressed by the affected Benefit boundaries material feasibility findings `` When this walkthrough describes desired Application intent that is not yet realized downstream, the Application Definition may still state that selected intent directly. Concrete unrealized downstream behavior/realization changes are then planned in Evolution Steps and may use this definition as an upstream driver.",
+      "essence": "Define one coherent own-application contribution: ``text what application/contribution we are building why custom software is still justified which Application Benefits are selected/possible what responsibility boundary belongs to each Benefit which representative real-life situations show those Benefits in context what concise Application Concept explains the Application and how it roughly works whether the concept/Benefit boundaries are plausibly realizable `` Application Benefits and Representative Real-Life Scenarios are separate responsibilities. Each Benefit owns independently addressable user-value meaning **and its own Responsibility Boundary** for that Benefit. Representative RLS instances are many-to-many examples of how one or several Benefits may manifest in a larger real-world path. RLS surrounding steps do not become selected Application behavior merely because they are…",
       "sources": [
         "planning/documentation/idtspe-methodology/active/profiles/sds/registries/TARGET-MODULE-REGISTRY.md",
         "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-APPLICATION-DEFINITION.md"
@@ -1506,6 +1506,26 @@
       "target": "<Сформировать Slice Owner target>"
     },
     {
+      "id": "UC-IDTSPE-AI-WORKING-BOUNDARY",
+      "kind": "USE_CASE",
+      "scope": "Core",
+      "label": "Apply AI Working Authority Boundary",
+      "actionLabel": "Apply AI Working Authority Boundary",
+      "description": "The current work has an explicit, current authority boundary: the AI can continue deterministically within already granted authority, useful recommendations are surfaced through the appropriate interaction layer, accepted meaning is not silently changed, and USER authority is requested only when a real USER-owned choice/authorization is required. This Result is an ambient working constraint. It does not create a Target, Proposal, Decision, Finding, Need, command invocation, repository mutation or separate persistent state merely because the Use Case is active.",
+      "context": "Any current Planning/repository work is starting or continuing after primary bootstrap, whether the USER entered through ordinary natural language or through a Planning Command. This Use Case is **always logically active**. It is not a USER command, a special AI mode, or a separate runtime shell. Planning Commands may guarantee traversal to this Use Case, but the methodology must remain sufficient without Helper/command invocation.",
+      "result": "The current work has an explicit, current authority boundary: the AI can continue deterministically within already granted authority, useful recommendations are surfaced through the appropriate interaction layer, accepted meaning is not silently changed, and USER authority is requested only when a real USER-owned choice/authorization is required. This Result is an ambient working constraint. It does not create a Target, Proposal, Decision, Finding, Need, command invocation, repository mutation or separate persistent state merely because the Use Case is active.",
+      "essence": "The current work has an explicit, current authority boundary: the AI can continue deterministically within already granted authority, useful recommendations are surfaced through the appropriate interaction layer, accepted meaning is not silently changed, and USER authority is requested only when a real USER-owned choice/authorization is required. This Result is an ambient working constraint. It does not create a Target, Proposal, Decision, Finding, Need, command invocation, repository mutation or separate persistent state merely because the Use Case is active.",
+      "sources": [
+        "planning/documentation/use-case-registry-map.md",
+        "planning/documentation/idtspe-methodology/active/idtspe-core/use-cases/USE-CASE-REGISTRY.md"
+      ],
+      "aliases": [],
+      "ownerRef": null,
+      "commandId": "",
+      "invocation": "",
+      "target": "<Apply AI Working Authority Boundary target>"
+    },
+    {
       "id": "UC-IDTSPE-COMPOSE-CURRENT-WORK",
       "kind": "USE_CASE",
       "scope": "Core",
@@ -1811,10 +1831,10 @@
       "scope": "Documentation",
       "label": "Resolve Current Methodology Use Cases",
       "actionLabel": "Resolve Current Methodology Use Cases",
-      "description": "The current applicable Use-Case composition is known: still-applicable current Use Cases are retained, newly applicable Use Cases are added, no-longer-applicable assumptions are released, and only owner detail needed for the next material action is loaded.",
+      "description": "The fundamental AI working authority boundary is current and the current applicable Use-Case composition is known: still-applicable current Use Cases are retained, newly applicable Use Cases are added, no-longer-applicable assumptions are released, and only owner detail needed for the next material action is loaded.",
       "context": "Any current Planning/repository work is starting or continuing, through an explicit Planning Command or ordinary natural-language work, and the current situation requires reaffirming which methodology-use capabilities are applicable now. This Use Case is **always logically active for every current Planning/repository work entry**. Every Planning Command composes it explicitly/transitively; ordinary natural-language work applies the same ambient registry-level recheck through routing. That does not mean every registry or Use-Case body is reread or executed on every turn.",
-      "result": "The current applicable Use-Case composition is known: still-applicable current Use Cases are retained, newly applicable Use Cases are added, no-longer-applicable assumptions are released, and only owner detail needed for the next material action is loaded.",
-      "essence": "The current applicable Use-Case composition is known: still-applicable current Use Cases are retained, newly applicable Use Cases are added, no-longer-applicable assumptions are released, and only owner detail needed for the next material action is loaded.",
+      "result": "The fundamental AI working authority boundary is current and the current applicable Use-Case composition is known: still-applicable current Use Cases are retained, newly applicable Use Cases are added, no-longer-applicable assumptions are released, and only owner detail needed for the next material action is loaded.",
+      "essence": "The fundamental AI working authority boundary is current and the current applicable Use-Case composition is known: still-applicable current Use Cases are retained, newly applicable Use Cases are added, no-longer-applicable assumptions are released, and only owner detail needed for the next material action is loaded.",
       "sources": [
         "planning/documentation/use-case-registry-map.md",
         "planning/documentation/use-case-registry.md"

@@ -13,7 +13,7 @@ Responsibility ID: `HELPER.SEMANTIC-PROJECTION`
 > - `REPRESENTS` [`Planning Command Definition Contract`](../../../../commands/README.md#planning-command-definition-contract) — `COMMAND.DEFINITION-CONTRACT`
 > - `CONTEXTUALIZES` [`IDTSPE Command Surface`](../../../idtspe-methodology/active/idtspe-core/commands/IDTSPE-COMMAND-SURFACE-CONTRACT.md#idtspe-command-surface) — `IDTSPE.COMMAND-SURFACE`
 
-The Helper owns projection/runtime mechanics only. Semantic command meaning and process stay with direct command definitions plus the projected methodology/repository owners. Registered command `includes` are a reproducible composition guarantee over those existing owners; they do not make Helper UI, generated seeds, numeric Shell ports or presentation groups methodology authority. Generated `seed/*.json`, userscript bytes, scenario-command reverse indexes and presentation groups are derived artifacts.
+The Helper owns projection/runtime mechanics only. Semantic command meaning and process stay with direct command definitions plus the projected methodology/repository owners. Registered command `includes` are canonical command-file-path edges forming a reproducible USER-invocation composition guarantee over those existing owners; they do not make Helper UI, generated seeds, numeric Shell ports or presentation groups methodology authority. Generated `seed/*.json`, userscript bytes, scenario-command reverse indexes and presentation groups are derived artifacts.
 
 ## Read Order
 
@@ -81,7 +81,7 @@ Domain Modeling / DDD · SDS Lens · LENS-DOMAIN-MODELING-DDD
 
 - Selecting a command card opens the detail pane. The detail pane shows **Контекст**, **Результат**, **Суть** projected from canonical authority rather than maintained as Helper-only prose. Direct commands project `activeContextBehavior / expectedOutput / meaning`; Use Cases project `Situation / Result / Purpose`; Target Modules and Lenses project the corresponding owner sections.
 - **Run** on either the compact card or the detail pane inserts the same current canonical invocation body.
-- Direct-command **Body** also carries the same canonical `context / result / essence` fields plus its registered `command_includes` composition. Includes expand declaratively, shared prefixes deduplicate, and an IDTSPE composition produces one effective Shell pass rather than recursively executing several independent passes.
+- Direct-command **Body** also carries the same canonical `context / result / essence` fields plus its registered `command_includes` composition. Include command-file paths expand declaratively, shared prefixes deduplicate, and an IDTSPE composition produces one effective Shell pass rather than recursively executing several independent passes.
 - **Body** shows the exact adaptive invocation body, optional full-read body, semantic binding, provenance, permissions/sources and the direct source file when one exists.
 - **Scenarios N** lists canonical working Scenarios/steps where this capability is derived as a command equivalent.
 - The detail-pane **Group** selector changes presentation-only membership inside the current Commands classification. It does not change semantic identity, ownership, invocation body or applicability.
@@ -189,7 +189,7 @@ The snapshot is a browser working cache. Losing it must not lose durable semanti
 
 Canonical source: `planning/commands/*.command.md`.
 
-Direct commands may be created/edited locally as drafts. `Save GitHub` is explicit. `Reload` replaces one selected direct command from GitHub. Direct command IDs are invocation/source identities; they do not define the primary semantic card identity for UC/TM/Lens capabilities. The optional `includes[]` field references other registered command IDs. The full repository catalog validates include references and cycles; partial browser/local projections may temporarily omit an included prefix without redefining or deleting that dependency.
+Direct commands may be created/edited locally as drafts. `Save GitHub` is explicit. `Reload` replaces one selected direct command from GitHub. Direct command IDs are invocation/source identities; they do not define the primary semantic card identity for UC/TM/Lens capabilities. The optional `includes[]` field references canonical repository-relative paths to other registered direct `planning/commands/*.command.md` definitions. Command IDs remain identities, not dependency locators. The full repository catalog validates include paths and cycles; partial browser/local projections may temporarily omit an included prefix without redefining or deleting that dependency.
 
 ### Semantic components
 

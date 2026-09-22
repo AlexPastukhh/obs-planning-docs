@@ -42,10 +42,11 @@ Read in order:
 4. [`use-cases/RESPONSIBILITY-MAP.md`](use-cases/RESPONSIBILITY-MAP.md) — IDTSPE Use-Case orchestration responsibility routing;
 5. [`runtime/IDTSPE-DEFAULT-WORK-MODE.md`](runtime/IDTSPE-DEFAULT-WORK-MODE.md);
 6. [`use-cases/USE-CASE-REGISTRY.md`](use-cases/USE-CASE-REGISTRY.md);
-7. [`use-cases/compose-current-work/UC-IDTSPE-COMPOSE-CURRENT-WORK.md`](use-cases/compose-current-work/UC-IDTSPE-COMPOSE-CURRENT-WORK.md);
-8. [`runtime/applicability/CONTEXTUAL-METHODOLOGY-APPLICATION-CONTRACT.md`](runtime/applicability/CONTEXTUAL-METHODOLOGY-APPLICATION-CONTRACT.md);
-9. [`runtime/PASS-TRACE-AND-VISIBILITY-CONTRACT.md`](runtime/PASS-TRACE-AND-VISIBILITY-CONTRACT.md);
-10. [`navigation/METHODOLOGY-REGISTRY-DIRECTORY.md`](navigation/METHODOLOGY-REGISTRY-DIRECTORY.md).
+7. [`use-cases/ai-working-boundary/UC-IDTSPE-AI-WORKING-BOUNDARY.md`](use-cases/ai-working-boundary/UC-IDTSPE-AI-WORKING-BOUNDARY.md) — fundamental authority-boundary application;
+8. [`use-cases/compose-current-work/UC-IDTSPE-COMPOSE-CURRENT-WORK.md`](use-cases/compose-current-work/UC-IDTSPE-COMPOSE-CURRENT-WORK.md);
+9. [`runtime/applicability/CONTEXTUAL-METHODOLOGY-APPLICATION-CONTRACT.md`](runtime/applicability/CONTEXTUAL-METHODOLOGY-APPLICATION-CONTRACT.md);
+10. [`runtime/PASS-TRACE-AND-VISIBILITY-CONTRACT.md`](runtime/PASS-TRACE-AND-VISIBILITY-CONTRACT.md);
+11. [`navigation/METHODOLOGY-REGISTRY-DIRECTORY.md`](navigation/METHODOLOGY-REGISTRY-DIRECTORY.md).
 
 After this spine is current, Core bootstrap is sufficient for ordinary routing/composition. Reuse it while trustworthy. Do not read deeper Core owners merely to claim that bootstrap completed.
 
@@ -74,14 +75,15 @@ For IDTSPE work:
 
 ```text
 current situation
+→ fundamental UC-IDTSPE-AI-WORKING-BOUNDARY
 → Registry Map / scoped Use-Case scan
-→ applicable IDTSPE Use Case(s)
+→ applicable specialized IDTSPE Use Case(s)
 → selected Use-Case Process
 → supporting registry/component only when that Process needs one
 → component-local applicability/materiality
 ```
 
-The default continuously relevant runtime capability is [`UC-IDTSPE-COMPOSE-CURRENT-WORK`](use-cases/compose-current-work/UC-IDTSPE-COMPOSE-CURRENT-WORK.md). Its valid result may be no additional structure beyond Broad Discussion.
+The fundamental always-active authority-boundary capability is [`UC-IDTSPE-AI-WORKING-BOUNDARY`](use-cases/ai-working-boundary/UC-IDTSPE-AI-WORKING-BOUNDARY.md). The default continuously relevant work-composition capability remains [`UC-IDTSPE-COMPOSE-CURRENT-WORK`](use-cases/compose-current-work/UC-IDTSPE-COMPOSE-CURRENT-WORK.md). Its valid result may be no additional structure beyond Broad Discussion.
 
 ## Canonical Core Owners
 
@@ -114,6 +116,7 @@ The current installed profiles define no separate runtime methodology-use Use Ca
 ## Adjacent Packages
 
 - [`../ai-reviewability/AI-OUTPUT-REVIEWABILITY.md`](../ai-reviewability/AI-OUTPUT-REVIEWABILITY.md) — peer Key Points/review projection concern.
+- [`../ai-reviewability/REVIEW-STRATEGY-AND-COVERAGE-CONTRACT.md`](../ai-reviewability/REVIEW-STRATEGY-AND-COVERAGE-CONTRACT.md#review-strategy-coverage) — peer review strategy/coverage owner used by `idtspe.review` and `idtspe.review.recheck`.
 - [`knowledge-bases/testing/README.md`](knowledge-bases/testing/README.md) — active Core Testing Knowledge Basis, read lazily when testing/proof theory is materially relevant.
 
 

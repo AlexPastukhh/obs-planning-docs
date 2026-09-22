@@ -15,9 +15,9 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
     "crit",
     "critical review"
   ],
-  "description": "critical review",
-  "meaning": "Critically evaluate the target/diff/plan/claim as a hypothesis rather than accepted truth.",
-  "activeContextBehavior": "Use the provided target; ask only if the target is missing.",
+  "description": "Run a lightweight adversarial critique of a supplied target; this is not the complete IDTSPE Review lifecycle.",
+  "meaning": "Critically evaluate the supplied target/diff/plan/claim as a hypothesis rather than accepted truth. This command is a lightweight critique surface: it does not establish or claim complete Review Strategy/Coverage, does not imply the full idtspe.review validator/Lens set, and does not by itself guarantee Finding Disposition. Use idtspe.review when a complete IDTSPE review lifecycle and Review Coverage Record are required.",
+  "activeContextBehavior": "Use the provided target; ask only if the target is missing. Keep the critique bounded to the requested target and evidence. Escalate into the complete IDTSPE Review route when the user asks for methodology-complete review/coverage or when a material issue requires formal review lifecycle handling.",
   "traversalReadMode": "Targeted/full by risk and evidence needs.",
   "ownerFiles": [
     "planning/documentation/idtspe-methodology/active/ai-reviewability/AI-OUTPUT-REVIEWABILITY.md",
@@ -25,11 +25,13 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
     "planning/documentation/idtspe-methodology/active/idtspe-core/resolution/qrp/QRP-LIFECYCLE-AND-REVIEW.md",
     "planning/documentation/review-diff-review-workflow.md"
   ],
-  "expectedOutput": "Truth-seeking verdict grounded in checked owners/evidence; material corrective candidate answers are Proposals under the canonical Proposal lifecycle; material Q/R/P uses the Core Q/R/P contract; ReviewDiff targets use the ReviewDiff semantic-review workflow.",
+  "expectedOutput": "A bounded adversarial critique grounded in checked owners/evidence. It may surface candidate concerns, Proposals or Q/R/P as appropriate, but it must not claim complete IDTSPE Review Coverage or completed Finding Disposition unless that lifecycle was explicitly entered. ReviewDiff targets still follow the ReviewDiff semantic-review workflow.",
   "permissionMode": "read-only",
   "keyReminders": [
     "Treat target as hypothesis, not accepted truth.",
-    "Use Proposal candidate review for material answer-seeking corrective alternatives; do not manufacture Proposals for mechanical findings.",
+    "This is a lightweight critique shortcut, not an alias for idtspe.review and not evidence of complete Review Coverage.",
+    "Use idtspe.review for the complete Review Strategy/Coverage → Validation/Lenses → Finding Disposition lifecycle.",
+    "Use Proposal candidate review for material answer-seeking corrective alternatives; do not manufacture Proposals for mechanical concerns.",
     "When the target is a ReviewDiff, distinguish technical integrity from semantic correctness and follow the ReviewDiff semantic-review workflow.",
     "Surface material Q/R/P through the Core contract; AI review may recommend technical/logical routes when justified but must not invent user-owned preferences or mark them selected.",
     "Do not edit files, create archives, commit or push."
@@ -38,7 +40,17 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
   "palette": true,
   "refinements": [],
   "includes": [
-    "methodology.use_cases.recheck"
+    "planning/commands/recheck-methodology-use-cases.command.md"
+  ],
+  "ownerRefs": [
+    {
+      "responsibilityId": "AI.REVIEWABILITY",
+      "path": "planning/documentation/idtspe-methodology/active/ai-reviewability/AI-OUTPUT-REVIEWABILITY.md",
+      "anchor": "ai-reviewability-peer-cross-cutting-concern",
+      "why": "Defines the reviewability principles and material-review boundary used by critical review.",
+      "role": "PRIMARY_OWNER",
+      "readMode": "REQUIRED"
+    }
   ]
 }
 [/PLANNING_COMMAND_DEFINITION]

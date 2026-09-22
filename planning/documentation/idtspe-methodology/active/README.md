@@ -36,6 +36,7 @@ A profile may add Target Modules, Lenses, runtime specialization, commands, Know
 ## Independent Peer Concern
 
 - [`ai-reviewability/AI-OUTPUT-REVIEWABILITY.md`](ai-reviewability/AI-OUTPUT-REVIEWABILITY.md) — independent AI reviewability concern.
+- [`ai-reviewability/REVIEW-STRATEGY-AND-COVERAGE-CONTRACT.md`](ai-reviewability/REVIEW-STRATEGY-AND-COVERAGE-CONTRACT.md#review-strategy-coverage) — review strategy, coverage-record continuity and repeated-review/recheck control over bounded semantic subjects.
 
 ## Evidence / Checks
 

@@ -23,6 +23,7 @@ Finding Disposition
 ```
 
 > Semantic Owner Dependencies
+> - `CONTEXTUALIZES` [`Need Candidate Collection`](../needs/NEED-CANDIDATE-COLLECTION.md#resolution-need-candidate-collection) — `RESOLUTION.NEED-CANDIDATE-COLLECTION`
 > - `CONTEXTUALIZES` [`Need Candidate Disposition`](../needs/NEED-CANDIDATE-DISPOSITION.md#resolution-need-candidate-disposition) — `RESOLUTION.NEED-CANDIDATE-DISPOSITION`
 > - `CONTEXTUALIZES` [`Proposal / Decision Lifecycle`](../proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md#resolution-proposal-decision-lifecycle) — `RESOLUTION.PROPOSAL-DECISION-LIFECYCLE`
 > - `CONTEXTUALIZES` [`Q/R/P Lifecycle`](../qrp/QRP-LIFECYCLE-AND-REVIEW.md#resolution-qrp-lifecycle) — `RESOLUTION.QRP-LIFECYCLE`
@@ -70,8 +71,9 @@ Canonical working-conversation owner: [`planning/documentation/idtspe-methodolog
 Do not use Finding Candidate as a generic container for every USER-requested change.
 
 ```text
-USER expresses a wanted outcome without a concrete answer
-→ Need Candidate when semantic home/solution still needs disposition
+USER/Source expresses a wanted outcome without a concrete answer
+→ Need Candidate Collection
+→ Need Candidate Disposition when semantic home/solution still needs routing
 
 USER suggests a concrete candidate answer
 → Proposal
@@ -82,7 +84,7 @@ USER reports/clarifies a potentially material defect, contradiction, unsupported
 
 A Need Candidate may later expose a Finding if review establishes that accepted current meaning already requires the desired outcome but actual implementation/Evidence contradicts it. The original wanted outcome itself is not a Finding merely because change may be needed.
 
-Canonical owner: [`planning/documentation/idtspe-methodology/active/idtspe-core/resolution/needs/NEED-CANDIDATE-DISPOSITION.md`](../needs/NEED-CANDIDATE-DISPOSITION.md).
+Canonical owners: [`Need Candidate Collection`](../needs/NEED-CANDIDATE-COLLECTION.md#resolution-need-candidate-collection) followed by [`Need Candidate Disposition`](../needs/NEED-CANDIDATE-DISPOSITION.md#resolution-need-candidate-disposition).
 
 ---
 
@@ -367,13 +369,23 @@ Interaction gating and formal Core semantics remain distinct:
 
 ```text
 Finding
-→ may resolve deterministically with no formal Proposal
-→ may open/refine a Proposal when real candidate semantic meaning exists
+→ RE-0 deterministic/current-semantic completion
+   → resolve without manufacturing a formal Proposal
+→ RE-1 local realization choice inside accepted meaning
+   → formal Proposal only when the local candidate itself needs Core lifecycle/addressability
+→ RE-2 current-owner semantic change
+   → AI MUST form or refine a formal IDTSPE Proposal before semantic selection
+→ RE-3 upstream revalidation
+   → revalidate first; do not pre-emptively propose an upstream semantic change
+→ RE-4 upstream semantic change
+   → AI MUST form or refine a formal IDTSPE Proposal at the affected upstream owner before semantic selection
 ```
 
-`RE-*` categorizes the Finding's semantic resolution distance, not a Proposal. If Finding resolution produces a material Proposal, that Proposal receives the canonical Proposal Semantic Change Impact Review before material selection.
+`RE-*` categorizes the Finding's semantic resolution distance, not a Proposal. Whenever disposition establishes a **material candidate semantic resolution** rather than an already-determined correction, the candidate MUST enter the canonical formal **IDTSPE Proposal** lifecycle before it can be selected or integrated. The AI is responsible for forming/refining that Proposal with the smallest natural semantic subject, driver/provenance and candidate meaning needed by the Proposal owner. That Proposal receives the canonical Proposal Semantic Change Impact Review before material selection.
 
-A deterministic `RE-0` correction must not manufacture a formal Proposal/Decision surface solely for ceremony. A material `RE-2`/`RE-4` normally exposes a real selection surface, but the exact Proposal/Decision retention semantics remain owned by the Proposal/Decision contract.
+A Session Generic AI Proposal (`GIP`) is **not** a substitute for this semantic handoff. A GIP may present/reference the formal IDTSPE Proposal when an interaction-level action/authorization surface is useful, but the semantic candidate itself remains the IDTSPE Proposal and the GIP must not duplicate or replace its authority.
+
+A deterministic `RE-0` correction must not manufacture a formal Proposal/Decision surface solely for ceremony. `RE-3` establishes revalidation pressure, not a Proposal, until revalidation proves that semantic change is actually required. A material `RE-2`/`RE-4` requires the formal IDTSPE Proposal handoff above; exact Proposal retention/Decision semantics remain owned by the Proposal/Decision contract.
 
 ### Temporal Authority Specialization
 

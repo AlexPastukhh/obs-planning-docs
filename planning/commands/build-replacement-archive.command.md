@@ -45,7 +45,17 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
   "palette": true,
   "refinements": [],
   "includes": [
-    "methodology.use_cases.recheck"
+    "planning/commands/recheck-methodology-use-cases.command.md"
+  ],
+  "ownerRefs": [
+    {
+      "responsibilityId": "UC-REPO-BUILD-REPLACEMENT-PACKAGE",
+      "path": "planning/use-cases/UC-REPO-BUILD-REPLACEMENT-PACKAGE.md",
+      "anchor": "uc-repo-build-replacement-package-build-replacement-package",
+      "why": "Owns the repository replacement-package workflow this command executes.",
+      "role": "PRIMARY_OWNER",
+      "readMode": "REQUIRED"
+    }
   ]
 }
 [/PLANNING_COMMAND_DEFINITION]

@@ -1,4 +1,7 @@
+<a id="planning-ai-working-contract"></a>
 # AI Working Contract
+
+Responsibility ID: `PLANNING.AI-WORKING-CONTRACT`
 
 Status: mandatory repository working contract
 Scope: AI/chat sessions that plan, develop or materially change repository documentation or application meaning.
@@ -11,6 +14,12 @@ For material planning/development answers also follow the installed peer [`docum
 
 For material Q/R/P follow `documentation/idtspe-methodology/active/idtspe-core/resolution/qrp/QRP-LIFECYCLE-AND-REVIEW.md`; for material candidate/selection meaning follow `documentation/idtspe-methodology/active/idtspe-core/resolution/proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md`. AI review presentation follows the installed peer `documentation/idtspe-methodology/active/ai-reviewability/AI-OUTPUT-REVIEWABILITY.md`. Do not invent user-owned Needs/preferences/feelings/business priority/risk tolerance to close a Q/R/P item or select a Decision.
 
+
+## Fundamental Use-Case Application
+
+The canonical always-active application route for this contract is [`UC-IDTSPE-AI-WORKING-BOUNDARY`](documentation/idtspe-methodology/active/idtspe-core/use-cases/ai-working-boundary/UC-IDTSPE-AI-WORKING-BOUNDARY.md#uc-idtspe-ai-working-boundary). [`UC-DOC-RESOLVE-CURRENT-USE-CASES`](documentation/use-cases/UC-DOC-RESOLVE-CURRENT-USE-CASES.md) reaffirms that Use Case for every current Planning/repository work entry.
+
+Planning Commands are USER↔AI invocation/traversal guarantees derived from methodology. They are not an internal AI execution language: while working from methodology, the AI follows canonical owners, references and handoffs directly rather than "calling" Planning Commands. No normative methodology rule may exist only in a command definition; a command may add invocation context, dependency/traversal guarantees, permission boundaries and expected invocation projections, but reusable semantic meaning must resolve to a canonical methodology/repository owner.
 
 ## Current IDTSPE Working Rule
 
@@ -31,10 +40,12 @@ The legacy shared Concern/Idea/Application/Architecture/Testing documents remain
 
 ## Hard Planning Root Invariant
 
-Planning does not start from a fixed FIND/Q/R/P queue, a mandatory Target sequence, or an SDS profile merely because one is installed. After bootstrap, the functional methodology root is the Methodology Use-Case Registry Map; IDTSPE composition then selects the smallest useful current structure and any applicable profile components.
+Planning does not start from a fixed FIND/Q/R/P queue, a mandatory Target sequence, or an SDS profile merely because one is installed. After bootstrap, the functional methodology root is the fundamental Use-Case applicability resolver with its mandatory AI Working Boundary companion; that resolver then uses the Methodology Use-Case Registry Map and IDTSPE composition selects the smallest useful current structure and any applicable profile components.
 
 ```text
 primary bootstrap current
+→ UC-DOC-RESOLVE-CURRENT-USE-CASES
+→ UC-IDTSPE-AI-WORKING-BOUNDARY
 → Methodology Use-Case Registry Map
 → applicable Use Case Process
 → Broad Discussion and/or material State/Target/component

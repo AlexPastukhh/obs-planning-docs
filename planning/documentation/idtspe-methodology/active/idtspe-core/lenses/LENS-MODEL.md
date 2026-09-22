@@ -24,10 +24,14 @@ Lens Model
   = one concrete reusable `LENS-*` perspective/operational contract
 
 Lens Application
-  = one application of a Lens Model to a concrete Analysis Surface in a pass
+  = one application of a Lens Model to a concrete Analysis Surface
+    through one selected supported Operation on a relevant basis in a pass
+
+Selected Lens Application
+  = execution request identity `(Lens Model, Analysis Surface, Operation, relevant basis)`
 ```
 
-A Lens Application is an execution/application event, not a new semantic owner and not necessarily a durable `Lens Instance`. Several selected Lens Models in one pass share the same Meta-Model/applicability machinery; unchanged shared work should be reused rather than reread/re-executed per Lens. Pass-level reuse/trace semantics are owned by [`../runtime/PASS-TRACE-AND-VISIBILITY-CONTRACT.md`](../runtime/PASS-TRACE-AND-VISIBILITY-CONTRACT.md).
+A Lens Application is an execution/application event, not a new semantic owner and not necessarily a durable `Lens Instance`. Selection must preserve the operation: `LENS-X + CHECK` and `LENS-X + CHALLENGE` are distinct Lens Applications when both are materially useful. Several selected Lens Applications in one pass share the same Meta-Model/applicability machinery; unchanged shared work should be reused rather than reread/re-executed per application. Pass-level reuse/trace semantics are owned by [`../runtime/PASS-TRACE-AND-VISIBILITY-CONTRACT.md`](../runtime/PASS-TRACE-AND-VISIBILITY-CONTRACT.md).
 
 ## 1. Definition
 
@@ -366,7 +370,8 @@ IDTSPE does **not** select Lenses only through a Target Module.
 Lens applicability/selection owns one proportional **Lens Applicability Scan**:
 
 ```text
-Current Target / Target candidate / Local Target Contract
+Current bounded Analysis Surface
++ optional natural Target / Target Module / profile context when applicable
 ↓
 1. include/check REQUIRED_CORE Lenses
 ↓
@@ -380,10 +385,17 @@ Current Target / Target candidate / Local Target Contract
 ↓
 5. include explicitly requested Lens perspectives
 ↓
-6. read full Lens body / referenced Knowledge Basis only for
-   selected or plausibly applicable candidates
+6. for each selected/plausibly applicable Lens, read enough of its
+   Applicability Gate + Supported Operations to resolve the materially useful
+   operation(s) for this Analysis Surface and caller intent
 ↓
-7. resolve Lens applicability/selection
+7. form selected Lens Application requests
+   `(Lens Model, Analysis Surface, Operation, relevant basis)`
+↓
+8. load the selected Lens operational detail / referenced Knowledge Basis
+   only to the depth required by those selected applications
+↓
+9. resolve Lens applicability/application selection
 ```
 
 Useful applicability outcomes:
@@ -406,7 +418,7 @@ Lens considered ≠ full Lens body must be read
 Lens applicable ≠ Lens finding must be manufactured
 ```
 
-Lens selection itself may become a material Resolution Question for high-impact/ambiguous Targets. Simple cases inherit required/module-attached Lenses mechanically and only scan plausible conditional candidates.
+Lens/application selection itself may become a material Resolution Question when the Analysis Surface, perspective or operation is high-impact/ambiguous. Simple cases inherit required/module-attached Lenses mechanically, scan plausible conditional candidates and choose only supported operations that match the current review/analysis intent. Do not silently collapse materially distinct `CHECK` and `CHALLENGE` coverage into one operation-less Lens selection.
 
 ## 7. Lens Profile In A Target Module
 
@@ -415,7 +427,7 @@ A Target Module contains one concise `Lens Profile` with direct relative links t
 ```text
 P-06 Lens Port
 → Lens applicability/selection
-→ Lens Applicability Scan
+→ Lens Applicability Scan over the bounded Analysis Surface
 → required Core Pack
     L1/L2/L3 across material choice surfaces
     + Proposal / Decision Resolution Context when a material Proposal/Decision surface exists
@@ -427,7 +439,7 @@ P-06 Lens Port
   + exceptional local-only Lens when genuinely needed
 ```
 
-Lens applicability/selection is recomputed when material Target Scope / Sources / Questions change. The resulting Lens Set is contextual, not a fixed ritual.
+Lens applicability/application selection is recomputed when the bounded Analysis Surface, relevant basis, caller intent, supported operations or natural Target/profile context changes materially. The result is a contextual set of selected Lens Applications, not a fixed Target Lens Set ritual.
 
 ## 8. Target Module / Local Target Contract Relation
 
@@ -599,4 +611,5 @@ zero or more AG-* records are allowed
 every AG-* describes Lens-produced supporting / artifact-placement meaning rather than duplicating Target-result AP
 Target Module Lens Profiles resolve to registered Lens owners
 P-06 Lens applicability can discover applicable registered Lenses even without a Target Module
+selected Lens execution preserves `(Lens Model, Analysis Surface, Operation, relevant basis)` rather than dropping the operation
 ```

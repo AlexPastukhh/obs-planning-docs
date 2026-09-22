@@ -32,7 +32,7 @@ Not maximum extensibility or implementation-convenience-shaped semantics.
 Read proportionally:
 
 ```text
-selected Application Concept / responsibility
+selected Application Definition / Benefit responsibility boundaries
 selected Feature behavior / BR-*
 current Scenario journey compositions when relevant
 selected Slice/Shared consumer pressure

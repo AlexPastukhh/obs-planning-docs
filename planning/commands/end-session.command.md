@@ -40,7 +40,17 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
   "palette": false,
   "refinements": [],
   "includes": [
-    "methodology.use_cases.recheck"
+    "planning/commands/recheck-methodology-use-cases.command.md"
+  ],
+  "ownerRefs": [
+    {
+      "responsibilityId": "SESSION.END-WORKFLOW",
+      "path": "planning/areas/planning-system/end-session-command-workflow.md",
+      "anchor": "session-end-workflow",
+      "why": "Owns the end-session process and its required session closeout outputs.",
+      "role": "PRIMARY_OWNER",
+      "readMode": "REQUIRED"
+    }
   ]
 }
 [/PLANNING_COMMAND_DEFINITION]

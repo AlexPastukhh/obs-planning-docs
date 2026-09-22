@@ -25,11 +25,11 @@ This map routes the repository command system, IDTSPE command surfaces and Plann
 explicit command / semantic card roots
 → COMMAND.ROOT-ROUTING resolves registered roots
 → fully expand ALL transitive `includes` before semantic execution
-→ merge one DAG; reject cycles/unresolved IDs; deduplicate shared nodes
+→ merge one DAG; reject cycles/unresolved command paths; deduplicate shared nodes
 → collect declarative intent/capability/component/trace/permission contributions from every node
 → establish one dependencies-first execution plan
 → establish/reuse the one P-02 working trace
-→ methodology.use_cases.recheck / DOC.USE-CASE-APPLICABILITY-RESOLUTION always rechecks the registry applicability surface
+→ `planning/commands/recheck-methodology-use-cases.command.md` / DOC.USE-CASE-APPLICABILITY-RESOLUTION always reaffirms UC-IDTSPE-AI-WORKING-BOUNDARY and rechecks the registry applicability surface
 → current selected Use-Case composition
 → when normal IDTSPE work is involved, IDTSPE.PORT-COMPOSITION-REFRESH sees all collected explicit requirements and refreshes/reaffirms the technical Port Requirement Set
 → dependencies execute before dependents; each selected root action executes last on its branch
@@ -37,6 +37,6 @@ explicit command / semantic card roots
 → Planning Helper only projects/invokes the same registered composition/semantic route
 ```
 
-`methodologyBinding` is semantic projection/dispatch metadata, not an embedded copy of Use-Case, Target Module, Lens or Shell-port semantics. `ownerFiles` are canonical read routes; structured `ownerRefs` may point to exact Responsibility/anchor purpose added by the command and MUST NOT repeat references inherited through includes. `includes` is a declarative dependency graph over registered commands and exists to guarantee the same canonical route an informed AI agent could follow directly from methodology owners/hand-offs.
+`methodologyBinding` is semantic projection/dispatch metadata, not an embedded copy of Use-Case, Target Module, Lens or Shell-port semantics. Planning Commands are USER↔AI invocation/traversal guarantees; the AI does not use the command graph as an internal methodology language. No reusable semantic rule may be command-only. `ownerFiles` are canonical read routes; structured `ownerRefs` may point to exact Responsibility/anchor purpose added by the command and MUST NOT repeat references inherited through includes. `includes` is a declarative dependency graph whose edges are canonical repository paths to registered direct command definitions and exists to guarantee the same canonical route an informed AI agent could follow directly from methodology owners/hand-offs.
 
 Command composition MUST NOT encode a parallel numeric-port topology: no durable `requiredPorts`, `portRequirements` or file-execution lists. Named `idtspe.port.*` commands contribute explicit named capability requirements during the **pre-execution composition stage**; the runtime composition owner resolves those requirements against the current Shell topology. The command node's later runtime action performs/checks the capability; it does not reveal the requirement for the first time.

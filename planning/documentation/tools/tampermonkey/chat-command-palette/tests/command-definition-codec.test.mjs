@@ -15,8 +15,8 @@ test('rejects multiline command fields and unsafe owner paths',()=>{assert.throw
 
 test('rejects retired Direction placement metadata',()=>{assert.throws(()=>codec.parseCommandDefinitionBatch(block({...base,directionIds:['DIR-PLAN-SOLUTION']})),/Unknown command definition field: directionIds/)});
 
-test('normalizes and serializes command includes',()=>{const d=codec.normalizeCommandDefinition({...base,includes:['base.command']});assert.deepEqual(d.includes,['base.command']);const parsed=codec.parseCommandDefinitionDocument(codec.renderCommandDefinitionDocument(d));assert.deepEqual(parsed.includes,['base.command']);});
-test('rejects duplicate or unsafe command includes',()=>{assert.throws(()=>codec.normalizeCommandDefinition({...base,includes:['x','x']}),/duplicate/);assert.throws(()=>codec.normalizeCommandDefinition({...base,includes:['bad id']}),/safe identifier|invalid/i);});
+test('normalizes and serializes command includes',()=>{const d=codec.normalizeCommandDefinition({...base,includes:['planning/commands/base.command.md']});assert.deepEqual(d.includes,['planning/commands/base.command.md']);const parsed=codec.parseCommandDefinitionDocument(codec.renderCommandDefinitionDocument(d));assert.deepEqual(parsed.includes,['planning/commands/base.command.md']);});
+test('rejects duplicate or unsafe command includes',()=>{assert.throws(()=>codec.normalizeCommandDefinition({...base,includes:['planning/commands/x.command.md','planning/commands/x.command.md']}),/duplicate/);assert.throws(()=>codec.normalizeCommandDefinition({...base,includes:['planning/methodology.md']}),/planning\/commands|command\.md|invalid/i);});
 
 
 test('normalizes and serializes structured command ownerRefs with why/role/readMode',()=>{const ownerRefs=[{responsibilityId:'TEST.OWNER',path:'planning/test.md',anchor:'owner-anchor',why:'Needed for the command-specific owner contract.',role:'PRIMARY_OWNER',readMode:'REQUIRED'}];const d=codec.normalizeCommandDefinition({...base,ownerRefs});assert.deepEqual(d.ownerRefs,ownerRefs);const parsed=codec.parseCommandDefinitionDocument(codec.renderCommandDefinitionDocument(d));assert.deepEqual(parsed.ownerRefs,ownerRefs);});
@@ -24,7 +24,7 @@ test('rejects invalid ownerRefs roles and unsafe anchors',()=>{assert.throws(()=
 
 
 test('normalizes and serializes structured composition contributions',()=>{
-  const value={...base,compositionContributions:[{kind:'PORT_CAPABILITY_REQUIREMENT',value:'TARGET',why:'Target capability must be known before Port Composition Refresh.'}]};
+  const value={...base,compositionContributions:[{kind:'PORT_CAPABILITY_REQUIREMENT',value:'TARGET',why:'Target capability must be known before Port Composition Refresh.'},{kind:'REVIEW_COVERAGE_MODE',value:'CURRENT_BASIS',why:'Review coverage context must be known before dependency semantic actions.'}]};
   const parsed=codec.parseCommandDefinitionDocument(block(value));
   assert.deepEqual(parsed.compositionContributions,value.compositionContributions);
   const rendered=codec.renderCommandDefinitionDocument(codec.normalizeCommandDefinition(value));
@@ -33,4 +33,9 @@ test('normalizes and serializes structured composition contributions',()=>{
 
 test('rejects invalid composition contribution kinds',()=>{
   assert.throws(()=>codec.parseCommandDefinitionDocument(block({...base,compositionContributions:[{kind:'UNKNOWN',value:'X',why:'bad'}]})),/compositionContributions\[0\]\.kind is invalid/);
+});
+
+
+test('rejects invalid REVIEW_COVERAGE_MODE values',()=>{
+  assert.throws(()=>codec.parseCommandDefinitionDocument(block({...base,compositionContributions:[{kind:'REVIEW_COVERAGE_MODE',value:'LOCAL_AFFECTED_RECHeCK',why:'typo must fail'}]})),/invalid for REVIEW_COVERAGE_MODE/);
 });

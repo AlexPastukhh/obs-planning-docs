@@ -69,44 +69,25 @@ Do not discard a viable existing option merely because an Application Concept is
 
 ## Application Concept
 
-An `Application Concept` is a reviewed candidate for using own application behavior to simplify or improve one or more real-world Needs/solution slots.
+In the current SDS Application Definition contract, `Application Concept` is a **short understandable summary of the Application**, not a container for the whole candidate-evaluation process.
 
-It answers proportionally:
-
-```text
-what life/workflow simplification the application creates
-what users would be able to do / know / obtain
-candidate Concept Features
-current interaction / solution hypotheses
-whether there is a realistic technical path
-important dependencies / implementation unknowns
-rough development complexity / effort / time
-maintenance / support burden
-comparison with viable existing alternatives
-local value + whole-solution integrated value
-```
-
-`Application Concept` may be reviewed **before** deciding to build custom software. It does not itself authorize or imply Application responsibility. A valid conclusion is to reject the custom concept because an existing/process route is simpler or better.
-
-When application creation is already explicitly mandated, do not reopen that external commitment without reason; still use Concept planning to ground what simplification/value the application should provide and whether the proposed concept is feasible.
-
-Technical feasibility at this level is a decision aid, not implementation planning. Use rough ranges/relative complexity, assumptions and confidence rather than false precision; use research/prototypes when a technical unknown can materially change the solution choice.
-
-### Application Concept Feature
-
-An `Application Concept Feature` is a Concept-scoped hypothesis about a useful capability/value contribution: something the application may let a user do, understand or obtain.
+It answers:
 
 ```text
-Concept Feature
-≠ automatically Scenario
-≠ automatically Implementation Slice
+what this Application is
+why it is needed / what overall Benefit it provides
+how it roughly works — briefly, at concept level
 ```
 
-Feature-to-Scenario/Slice relationships may be many-to-many. Concept Features do not revive a mandatory global `Feature` ontology or a required `Feature → Slice` stage.
+The short “how it roughly works” point must not expand into detailed Feature/Scenario behavior, architecture, Domain design or implementation planning.
+
+Existing-solution comparison, individual Application Benefits, Benefit-specific Responsibility Boundaries and proportional feasibility remain neighboring Application Definition responsibilities rather than fields inside Application Concept. Candidate alternatives remain normal Proposal/Decision/branch state until selected.
+
+Do not create a mandatory `Application Concept Feature` layer. If a capability hypothesis is really user value, keep it with the relevant Application Benefit/Proposal; if it becomes selected downstream behavior, route it to the natural Feature/Scenario owner.
 
 ## Application Responsibility
 
-Do not assume an application. Enter selected application planning only when Application responsibility is justified by the selected whole solution or already explicitly confirmed.
+Do not create one standalone Application Responsibility/Boundary unit in the canonical SDS Application Definition. Each substantive Application Benefit carries its own `Responsibility Boundary`: what the Application owns/provides for that Benefit and what remains with actors, manual process or external systems. Cross-Benefit consistency may be reviewed, but authoritative boundary meaning remains on the affected Benefits.
 
 When a custom concept is selected, derive the Application responsibility from the selected Concept + whole-solution boundary rather than silently expanding it. Keep people/process/existing tools/external services outside when the selected whole solution leaves them outside.
 
@@ -219,10 +200,10 @@ Implementation answer candidates that appear during solution/concept/prototype/S
 
 ## Prototype Planning
 
-`Prototype Planning` is proportional provisional interaction/workflow design and evidence collection between a selected/current Application Concept + Application responsibility and canonical detailed Scenario/Screen planning.
+`Prototype Planning` is proportional provisional interaction/workflow design and evidence collection between a selected/current Application Definition (Benefits with their Responsibility Boundaries + concise Application Concept) and canonical detailed Scenario/Screen planning.
 
 ```text
-Application Concept / responsibility
+Application Definition / Benefit responsibility boundaries
 → Prototype Planning when material uncertainty remains
    → Prototype Scenarios
    → Prototype Screens
@@ -356,7 +337,7 @@ Slice
 → one integrated delivery plan
 ```
 
-A Slice may use a product-facing feature label without introducing a mandatory Feature layer. Application Concept Features remain upstream concept hypotheses and do not create a required Feature owner between Scenario and Slice.
+A Slice may use a product-facing feature label without introducing a mandatory Feature layer. Application Concept does not create a Concept Feature layer; selected downstream capability meaning routes to its natural Feature/Scenario owner.
 
 ## Recommended Project-Local Planning Zones
 

@@ -5,19 +5,25 @@ import path from 'node:path';
 import {createRequire} from 'node:module';
 const require=createRequire(import.meta.url);
 const catalog=require('../src/command-catalog.js');
+const bodyApi=require('../src/command-body.js');
 
 const moduleRoot=path.resolve(import.meta.dirname,'..');
 const repoRoot=path.resolve(moduleRoot,'../../../../..');
 const commands=JSON.parse(fs.readFileSync(path.join(moduleRoot,'seed','commands.json'),'utf8')).items;
 const byId=new Map(commands.map((command)=>[command.id,command]));
+const byPath=new Map(commands.map((command)=>[`planning/commands/${command.file}`,command]));
+const commandPath=(id)=>{const command=byId.get(id);assert.ok(command,`missing command ${id}`);return `planning/commands/${command.file}`;};
+const paths=(ids)=>ids.map(commandPath);
 
 function closure(id,seen=new Set()){
   const command=byId.get(id);
   if(!command)return seen;
-  for(const included of command.includes||[]){
-    if(seen.has(included))continue;
-    seen.add(included);
-    closure(included,seen);
+  for(const includedPath of command.includes||[]){
+    const included=byPath.get(includedPath);
+    assert.ok(included,`${id}: unresolved include ${includedPath}`);
+    if(seen.has(included.id))continue;
+    seen.add(included.id);
+    closure(included.id,seen);
   }
   return seen;
 }
@@ -32,11 +38,31 @@ test('every Planning Command composition reaches the mandatory methodology Use-C
   }
 });
 
+test('all command include edges are canonical direct command-definition paths and resolve',()=>{
+  for(const command of commands){
+    for(const includedPath of command.includes||[]){
+      assert.match(includedPath,/^planning\/commands\/[^/]+\.command\.md$/,`${command.id}: ${includedPath}`);
+      assert.ok(byPath.has(includedPath),`${command.id}: unresolved ${includedPath}`);
+    }
+  }
+});
+
+test('mandatory Use-Case recheck applies the fundamental AI Working Boundary without a separate AI command',()=>{
+  const recheck=byId.get('methodology.use_cases.recheck');
+  assert.ok(recheck.ownerRefs.some((ref)=>ref.responsibilityId==='IDTSPE.UC.AI-WORKING-BOUNDARY'&&ref.readMode==='REQUIRED'));
+  assert.equal(commands.some((command)=>/ai[._-]?working[._-]?boundary/i.test(command.id)),false);
+  const resolver=read('planning/documentation/use-cases/UC-DOC-RESOLVE-CURRENT-USE-CASES.md');
+  const boundary=read('planning/documentation/idtspe-methodology/active/idtspe-core/use-cases/ai-working-boundary/UC-IDTSPE-AI-WORKING-BOUNDARY.md');
+  assert.match(resolver,/UC-IDTSPE-AI-WORKING-BOUNDARY/);
+  assert.match(boundary,/always logically active/i);
+  assert.match(boundary,/does not call Planning Commands as an internal methodology mechanism/i);
+});
+
 test('normal IDTSPE work exposes trace, UC recheck and Port Composition recheck as first-class dependencies',()=>{
-  assert.deepEqual(byId.get('idtspe.port.trace').includes,['methodology.use_cases.recheck']);
-  assert.deepEqual(byId.get('idtspe.compose-current-work').includes,['idtspe.port.trace','methodology.use_cases.recheck']);
-  assert.deepEqual(byId.get('idtspe.port-composition.recheck').includes,['idtspe.port.trace','methodology.use_cases.recheck','idtspe.compose-current-work']);
-  assert.deepEqual(byId.get('idtspe.work').includes,['idtspe.port.trace','methodology.use_cases.recheck','idtspe.compose-current-work','idtspe.port-composition.recheck']);
+  assert.deepEqual(byId.get('idtspe.port.trace').includes,paths(['methodology.use_cases.recheck']));
+  assert.deepEqual(byId.get('idtspe.compose-current-work').includes,paths(['idtspe.port.trace','methodology.use_cases.recheck']));
+  assert.deepEqual(byId.get('idtspe.port-composition.recheck').includes,paths(['idtspe.port.trace','methodology.use_cases.recheck','idtspe.compose-current-work']));
+  assert.deepEqual(byId.get('idtspe.work').includes,paths(['idtspe.port.trace','methodology.use_cases.recheck','idtspe.compose-current-work','idtspe.port-composition.recheck']));
 });
 
 test('specialized IDTSPE commands expose the base frame directly, not only transitively',()=>{
@@ -44,23 +70,23 @@ test('specialized IDTSPE commands expose the base frame directly, not only trans
   for(const command of commands){
     const binding=command.methodologyBinding||{};
     if(binding.methodologyRuntime!=='IDTSPE'||excluded.has(command.id)||binding.surfaceKind==='BOOTSTRAP')continue;
-    for(const id of base)assert.ok(command.includes.includes(id),`${command.id} missing ${id}`);
+    for(const id of base)assert.ok(command.includes.includes(commandPath(id)),`${command.id} missing ${id}`);
   }
 });
 
 test('Target Module and Lens prefixes expose full base plus their named port/meta-model path',()=>{
-  assert.deepEqual(byId.get('idtspe.port.target').includes,[...base]);
-  assert.deepEqual(byId.get('idtspe.target-module.apply').includes,[...base,'idtspe.port.target']);
-  assert.deepEqual(byId.get('idtspe.port.lens').includes,[...base]);
-  assert.deepEqual(byId.get('idtspe.lens.apply').includes,[...base,'idtspe.port.lens']);
-  assert.deepEqual(byId.get('idtspe.lenses.select').includes,[...base,'idtspe.port.lens']);
+  assert.deepEqual(byId.get('idtspe.port.target').includes,paths(base));
+  assert.deepEqual(byId.get('idtspe.target-module.apply').includes,paths([...base,'idtspe.port.target']));
+  assert.deepEqual(byId.get('idtspe.port.lens').includes,paths(base));
+  assert.deepEqual(byId.get('idtspe.lens.apply').includes,paths([...base,'idtspe.port.lens']));
+  assert.deepEqual(byId.get('idtspe.lenses.select').includes,paths([...base,'idtspe.port.lens']));
   for(const command of commands){
     const binding=command.methodologyBinding||{};
     if(['TARGET_MODULE','TARGET_MODULE_FOCUSED'].includes(binding.surfaceKind)){
-      for(const id of [...base,'idtspe.port.target','idtspe.target-module.apply'])assert.ok(command.includes.includes(id),`${command.id} missing ${id}`);
+      for(const id of [...base,'idtspe.port.target','idtspe.target-module.apply'])assert.ok(command.includes.includes(commandPath(id)),`${command.id} missing ${id}`);
     }
     if(binding.surfaceKind==='LENS'){
-      for(const id of [...base,'idtspe.port.lens','idtspe.lens.apply'])assert.ok(command.includes.includes(id),`${command.id} missing ${id}`);
+      for(const id of [...base,'idtspe.port.lens','idtspe.lens.apply'])assert.ok(command.includes.includes(commandPath(id)),`${command.id} missing ${id}`);
     }
   }
 });
@@ -68,7 +94,7 @@ test('Target Module and Lens prefixes expose full base plus their named port/met
 test('composition expansion is full-DAG first and produces dependencies-before-dependent order',()=>{
   const expanded=catalog.expandCommandComposition(commands,['tmcmd.screen']);
   const pos=new Map(expanded.order.map((id,index)=>[id,index]));
-  for(const [id,command] of expanded.nodes.map((d)=>[d.id,d]))for(const dep of command.includes||[])assert.ok(pos.get(dep)<pos.get(id),`${dep} must precede ${id}`);
+  for(const [id,command] of expanded.nodes.map((d)=>[d.id,d]))for(const depPath of command.includes||[]){const dep=byPath.get(depPath);assert.ok(dep,depPath);assert.ok(pos.get(dep.id)<pos.get(id),`${dep.id} must precede ${id}`);}
   assert.equal(expanded.order.at(-1),'tmcmd.screen');
   assert.ok(pos.get('idtspe.port.trace')<pos.get('idtspe.work'));
   assert.ok(pos.get('idtspe.compose-current-work')<pos.get('idtspe.port-composition.recheck'));
@@ -95,29 +121,45 @@ test('composition planning collects declarative contributions from the complete 
 test('trace configuration refines P-02 without forcing substantive IDTSPE work',()=>{
   for(const id of ['idtspe.trace.inline','idtspe.trace.artifact']){
     const command=byId.get(id);
-    assert.deepEqual(command.includes,['idtspe.port.trace']);
+    assert.deepEqual(command.includes,paths(['idtspe.port.trace']));
     assert.ok(!closure(id).has('idtspe.work'),id);
     assert.ok(!closure(id).has('idtspe.port-composition.recheck'),id);
     assert.ok(closure(id).has('methodology.use_cases.recheck'),id);
   }
 });
 
-test('review prerequisites precede review while Finding and Need disposition remain downstream outputs',()=>{
+test('review lifecycle uses existing Validation/Lens prerequisites, completes its own Findings, and keeps Needs separate',()=>{
   const review=byId.get('idtspe.review');
-  assert.ok(review.includes.includes('idtspe.lenses.apply-selected'));
-  assert.ok(!review.includes.includes('idtspe.findings.review'));
-  assert.ok(!review.includes.includes('idtspe.needs.review'));
+  assert.ok(review.includes.includes(commandPath('idtspe.lenses.apply-selected')));
+  assert.ok(!review.includes.includes(commandPath('idtspe.findings.disposition')));
+  assert.ok(!review.includes.includes(commandPath('idtspe.needs.collect')));
+  assert.ok(!review.includes.includes(commandPath('idtspe.needs.disposition')));
+  assert.ok(review.ownerRefs.some((ref)=>ref.responsibilityId==='REVIEW.STRATEGY-COVERAGE'));
+  assert.ok(review.ownerRefs.some((ref)=>ref.responsibilityId==='RESOLUTION.FINDING-DISPOSITION'&&ref.readMode==='REQUIRED'));
+  assert.ok(!review.ownerRefs.some((ref)=>ref.responsibilityId==='RESOLUTION.NEED-CANDIDATE-DISPOSITION'));
+  const recheck=byId.get('idtspe.review.recheck');
+  assert.ok(recheck);
+  assert.ok(!recheck.includes.includes(commandPath('idtspe.review')));
+  assert.ok(recheck.ownerRefs.some((ref)=>ref.responsibilityId==='REVIEW.STRATEGY-COVERAGE'));
+  assert.equal(recheck.command,'перепроверь');
+  assert.equal(recheck.methodologyBinding.surfaceKind,'ORCHESTRATION');
+  assert.equal(recheck.methodologyBinding.hostTargetPolicy,'NONE');
+  assert.ok(!recheck.ownerRefs.some((ref)=>ref.responsibilityId==='REVIEW.COVERAGE-AUDIT'));
+  assert.equal(byId.has('review_audit.recheck'),false);
   const consistency=byId.get('idtspe.review_consistency');
-  assert.ok(!consistency.includes.includes('idtspe.findings.review'));
-  assert.ok(review.ownerRefs.some((ref)=>ref.responsibilityId==='RESOLUTION.FINDING-DISPOSITION'&&ref.readMode==='ON_DEMAND'));
-  assert.ok(review.ownerRefs.some((ref)=>ref.responsibilityId==='RESOLUTION.NEED-CANDIDATE-DISPOSITION'&&ref.readMode==='ON_DEMAND'));
+  assert.equal(consistency.methodologyBinding.hostTargetPolicy,'NONE');
+  assert.ok(!consistency.includes.includes(commandPath('idtspe.findings.disposition')));
 });
 
-test('selected Lens application is a separate operation after selection',()=>{
+test('selected Lens application preserves operation identity after selection',()=>{
+  const select=byId.get('idtspe.lenses.select');
   const apply=byId.get('idtspe.lenses.apply-selected');
-  assert.ok(apply.includes.includes('idtspe.lenses.select'));
-  assert.ok(apply.includes.includes('idtspe.port.lens'));
-  assert.ok(!apply.includes.includes('idtspe.lens.apply'));
+  assert.ok(apply.includes.includes(commandPath('idtspe.lenses.select')));
+  assert.ok(apply.includes.includes(commandPath('idtspe.port.lens')));
+  assert.ok(!apply.includes.includes(commandPath('idtspe.lens.apply')));
+  assert.match(select.meaning,/Lens Model, Analysis Surface, Operation, basis/i);
+  assert.match(apply.meaning,/Lens Model, Analysis Surface, supported Operation, relevant basis/i);
+  assert.match(apply.meaning,/CHECK versus CHALLENGE/i);
 });
 
 test('Target port owns bounded Target formation while Target Module apply explicitly references Unit mechanics',()=>{
@@ -207,4 +249,118 @@ test('every structured command ownerRef resolves to an existing file and anchor'
       assert.ok(anchorsFor(ref.path).has(ref.anchor),`${command.id}: missing anchor ${ref.path}#${ref.anchor}`);
     }
   }
+});
+
+
+test('every direct Planning Command exposes at least one own structured canonical ownerRef with why',()=>{
+  for(const command of commands){
+    assert.ok(command.ownerRefs?.length,`${command.id}: ownerRefs`);
+    for(const ref of command.ownerRefs){
+      assert.ok(ref.responsibilityId,`${command.id}: responsibilityId`);
+      assert.ok(ref.path,`${command.id}: path`);
+      assert.ok(ref.anchor,`${command.id}: anchor`);
+      assert.ok(ref.why,`${command.id}: why`);
+      assert.ok(ref.role,`${command.id}: role`);
+      assert.ok(ref.readMode,`${command.id}: readMode`);
+    }
+  }
+});
+
+test('Helper command body exposes effective merged DAG contributions in addition to own contributions',()=>{
+  const body=bodyApi.buildCommandBody(byId.get('idtspe.work'),'adaptive',{definitions:commands});
+  assert.match(body,/own_composition_contributions_pre_execution:/);
+  assert.match(body,/effective_composition_contributions_pre_execution:/);
+  assert.match(body,/WORKING_TRACE_REQUIRED: P-02/);
+  assert.match(body,/source: idtspe\.port\.trace/);
+});
+
+test('active ReviewDiff workflow uses Generic AI Proposal terminology',()=>{
+  const text=read('planning/documentation/review-diff-review-workflow.md');
+  assert.doesNotMatch(text,/interaction AI Proposal/);
+  assert.match(text,/Generic AI Proposal \(GIP\)/);
+});
+
+test('idtspe.work establishes one shared pass and finalizes only after dependent leaf actions',()=>{
+  const command=byId.get('idtspe.work');
+  assert.match(command.meaning,/establishes\/enters one shared normal Shell pass/i);
+  assert.match(command.meaning,/finalization happens only after the selected leaf\/root actions/i);
+  const surface=read('planning/documentation/idtspe-methodology/active/idtspe-core/commands/IDTSPE-COMMAND-SURFACE-CONTRACT.md');
+  assert.match(surface,/establish\/enter one shared normal Shell pass/i);
+  assert.match(surface,/finalize the pass only after selected leaf\/root actions/i);
+});
+
+
+test('review coverage distinguishes executed cells from reused prior coverage and critical review stays lightweight',()=>{
+  const coverage=read('planning/documentation/idtspe-methodology/active/ai-reviewability/REVIEW-STRATEGY-AND-COVERAGE-CONTRACT.md');
+  assert.match(coverage,/Coverage Origin/);
+  assert.match(coverage,/EXECUTED_THIS_PASS/);
+  assert.match(coverage,/REUSED_FROM_PRIOR/);
+  assert.match(coverage,/Reuse Justification/);
+  const critical=byId.get('critical_review.apply');
+  assert.match(critical.meaning,/lightweight critique/i);
+  assert.match(critical.meaning,/does not establish or claim complete Review Strategy\/Coverage/i);
+  assert.match(critical.keyReminders.join(' '),/not an alias for idtspe\.review/i);
+});
+
+
+test('review coverage mode is collected before Validation/Lens dependency semantic actions',()=>{
+  const review=byId.get('idtspe.review');
+  const recheck=byId.get('idtspe.review.recheck');
+  assert.ok(review.compositionContributions.some((x)=>x.kind==='REVIEW_COVERAGE_MODE'&&x.value==='CURRENT_BASIS'));
+  assert.ok(recheck.compositionContributions.some((x)=>x.kind==='REVIEW_COVERAGE_MODE'&&x.value==='LOCAL_AFFECTED_RECHECK'));
+  const expandedReview=catalog.expandCommandComposition(commands,['idtspe.review']);
+  const expandedRecheck=catalog.expandCommandComposition(commands,['idtspe.review.recheck']);
+  assert.ok(expandedReview.contributions.some((x)=>x.kind==='REVIEW_COVERAGE_MODE'&&x.value==='CURRENT_BASIS'&&x.sourceCommandId==='idtspe.review'));
+  assert.ok(expandedRecheck.contributions.some((x)=>x.kind==='REVIEW_COVERAGE_MODE'&&x.value==='LOCAL_AFFECTED_RECHECK'&&x.sourceCommandId==='idtspe.review.recheck'));
+  const coverage=read('planning/documentation/idtspe-methodology/active/ai-reviewability/REVIEW-STRATEGY-AND-COVERAGE-CONTRACT.md');
+  assert.match(coverage,/before.*P-12 Validation.*P-06 Lens.*dependency actions execute/is);
+  assert.match(coverage,/Review Coverage working context/i);
+});
+
+test('P-12 delegates Lens evaluation to P-06 instead of owning a duplicate Lens lifecycle',()=>{
+  const runtime=read('planning/documentation/idtspe-methodology/active/idtspe-core/runtime/IDTSPE-RUNTIME-COMPOSITION-CONTRACT.md');
+  assert.match(runtime,/P-06 owns the actual Lens applicability\/operation\/application lifecycle/i);
+  assert.match(runtime,/P-12 routes to or reuses the corresponding P-06 selected Lens Application/i);
+  assert.match(runtime,/MUST NOT independently select\/apply a second Lens lifecycle/i);
+});
+
+test('active command documentation uses operation-aware Lens Application identity',()=>{
+  for(const rel of [
+    'planning/commands/README.md',
+    'planning/documentation/idtspe-methodology/active/idtspe-core/commands/IDTSPE-COMMAND-SURFACE-CONTRACT.md'
+  ]){
+    const text=read(rel);
+    assert.doesNotMatch(text,/selected applicable Lens Models/);
+    assert.doesNotMatch(text,/apply the currently selected applicable Lens Models/);
+    assert.match(text,/Analysis Surface, Operation, basis/);
+  }
+});
+
+
+test('consistency review establishes current-basis coverage before validation',()=>{
+  const consistency=byId.get('idtspe.review_consistency');
+  assert.ok(consistency.compositionContributions.some((x)=>x.kind==='REVIEW_COVERAGE_MODE'&&x.value==='CURRENT_BASIS'));
+  const expanded=catalog.expandCommandComposition(commands,['idtspe.review_consistency']);
+  assert.ok(expanded.contributions.some((x)=>x.kind==='REVIEW_COVERAGE_MODE'&&x.value==='CURRENT_BASIS'));
+});
+
+test('effective review coverage mode normalizes recheck over current basis',()=>{
+  const expanded=catalog.expandCommandComposition(commands,['idtspe.review','idtspe.review.recheck']);
+  const modes=expanded.contributions.filter((x)=>x.kind==='REVIEW_COVERAGE_MODE').map((x)=>x.value);
+  assert.ok(modes.includes('LOCAL_AFFECTED_RECHECK'));
+  assert.ok(!modes.includes('CURRENT_BASIS'));
+});
+
+test('review strategy leaves final Lens applicability and application selection to P-06',()=>{
+  const coverage=read('planning/documentation/idtspe-methodology/active/ai-reviewability/REVIEW-STRATEGY-AND-COVERAGE-CONTRACT.md');
+  assert.match(coverage,/coverage requirements, not a second Lens-applicability decision/i);
+  assert.match(coverage,/P-06 Lens Meta-Model\/Registry owns whether a Lens applies/i);
+});
+
+test('P-02 exposes review coverage control-plane without becoming coverage authority',()=>{
+  const trace=read('planning/documentation/idtspe-methodology/active/idtspe-core/runtime/PASS-TRACE-AND-VISIBILITY-CONTRACT.md');
+  assert.match(trace,/REVIEW_COVERAGE_CONTEXT_ESTABLISHED/);
+  assert.match(trace,/REVIEW_CELL_EXECUTED/);
+  assert.match(trace,/REVIEW_CELL_REUSED/);
+  assert.match(trace,/do \*\*not\*\* make P-02 the owner of Review Coverage/i);
 });

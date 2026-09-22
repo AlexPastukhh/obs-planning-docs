@@ -379,3 +379,11 @@ No material unresolved issues identified for this selected documentation/methodo
 **Canonical Log:** `planning/documentation/action-log.md`
 **Entry:** `LOG-DOC-050`
 **Reason:** Application Planning owners/templates/profiles adopt Concern Groups, shared Priority/Concern Category/Status, AI Comment boundaries, contextual Area Concern Register storage and retained/residual Decision trace without changing Scenario/Domain/Slice semantic ownership; full reviewed meaning is owned by the reusable-documentation canonical log.
+
+
+### XREF-011 — Application Definition Benefit-boundary and concise Concept normalization
+
+**Type:** CROSS-SCOPE REFERENCE  
+**Canonical Log:** `planning/documentation/action-log.md`  
+**Entry:** `2026-09-22 — v12 Application Definition Benefit-boundary and Concept normalization`  
+**Reason:** active Application Planning terminology/workflow/template projections are aligned with canonical SDS `TM-APPLICATION-DEFINITION`: per-Benefit Responsibility Boundaries, no standalone boundary Result Unit, concise Application Concept, and Representative RLS as concrete Benefit examples. Canonical Target semantics remain owned by the SDS Target Module.

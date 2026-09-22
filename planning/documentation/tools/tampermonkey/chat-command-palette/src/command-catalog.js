@@ -5,7 +5,9 @@
 })(typeof globalThis !== 'undefined' ? globalThis : this, function () {
   'use strict';
 
+  const COMMANDS_PATH='planning/commands';
   function assert(condition, message) { if (!condition) throw new TypeError(message); }
+  function commandPath(definition){return `${COMMANDS_PATH}/${definition.file}`;}
 
   function validateCommandCatalog(definitions, options = {}) {
     assert(Array.isArray(definitions), 'Command catalog must be an array.');
@@ -13,14 +15,18 @@
     const byCommand = new Map();
     const byAlias = new Map();
     const byFile = new Map();
+    const byPath = new Map();
     for (const definition of definitions) {
       assert(definition && typeof definition === 'object', 'Catalog contains an invalid definition.');
       if (byId.has(definition.id)) throw new TypeError(`Duplicate command id: ${definition.id}`);
       if (byCommand.has(definition.command)) throw new TypeError(`Duplicate canonical command: ${definition.command}`);
       if (byFile.has(definition.file)) throw new TypeError(`Duplicate command file: ${definition.file}`);
+      const path=commandPath(definition);
+      if(byPath.has(path))throw new TypeError(`Duplicate command path: ${path}`);
       byId.set(definition.id, definition);
       byCommand.set(definition.command, definition);
       byFile.set(definition.file, definition);
+      byPath.set(path, definition);
       for (const alias of definition.commandFamily || []) {
         if (byAlias.has(alias) && byAlias.get(alias).id !== definition.id) {
           throw new TypeError(`Ambiguous command alias ${alias}: ${byAlias.get(alias).id} vs ${definition.id}`);
@@ -29,12 +35,13 @@
       }
     }
     const allowMissingIncludes = options.allowMissingIncludes === true;
-    for (const definition of definitions) for (const included of definition.includes || []) {
-      if (!byId.has(included)) {
-        if (!allowMissingIncludes) throw new TypeError(`Unknown included command id ${included} in ${definition.id}`);
+    for (const definition of definitions) for (const includedPath of definition.includes || []) {
+      const included=byPath.get(includedPath);
+      if (!included) {
+        if (!allowMissingIncludes) throw new TypeError(`Unknown included command path ${includedPath} in ${definition.id}`);
         continue;
       }
-      if (included === definition.id) throw new TypeError(`Command ${definition.id} cannot include itself.`);
+      if (included.id === definition.id) throw new TypeError(`Command ${definition.id} cannot include itself.`);
     }
     const visiting=new Set(),visited=new Set();
     function visit(id,stack=[]){
@@ -42,11 +49,11 @@
       if(visiting.has(id))throw new TypeError(`Command include cycle: ${[...stack,id].join(' -> ')}`);
       visiting.add(id);
       const definition=byId.get(id);
-      for(const included of definition?.includes||[]){if(byId.has(included))visit(included,[...stack,id]);}
+      for(const includedPath of definition?.includes||[]){const included=byPath.get(includedPath);if(included)visit(included.id,[...stack,id]);}
       visiting.delete(id);visited.add(id);
     }
     for(const definition of definitions)visit(definition.id);
-    return { definitions: [...definitions], byId, byCommand, byAlias, byFile };
+    return { definitions: [...definitions], byId, byCommand, byAlias, byFile, byPath };
   }
 
   function visibleCommandDefinitions(definitions) {
@@ -67,20 +74,17 @@
     return [...map.values()].sort((a, b) => a.file.localeCompare(b.file));
   }
 
-
-
   function expandCommandComposition(definitions,rootIds){
     const catalog=validateCommandCatalog(definitions);
     const roots=[...new Set((Array.isArray(rootIds)?rootIds:[rootIds]).map(String).filter(Boolean))];
     for(const id of roots)assert(catalog.byId.has(id),`Unknown composition root command id: ${id}`);
     const seen=new Set(),order=[];
-    function visit(id){
-      if(seen.has(id))return;
-      const definition=catalog.byId.get(id);
-      for(const included of definition.includes||[])visit(included);
-      seen.add(id);order.push(id);
+    function visit(definition){
+      if(seen.has(definition.id))return;
+      for(const includedPath of definition.includes||[]){const included=catalog.byPath.get(includedPath);if(included)visit(included);}
+      seen.add(definition.id);order.push(definition.id);
     }
-    for(const id of roots)visit(id);
+    for(const id of roots)visit(catalog.byId.get(id));
     const nodes=order.map((id)=>catalog.byId.get(id));
     const contributions=[];
     for(const node of nodes){
@@ -90,7 +94,9 @@
       if(binding.lensId)contributions.push({kind:'SELECTED_LENS',value:binding.lensId,why:'Registered Lens selection contributed by command methodologyBinding before semantic execution.',sourceCommandId:node.id});
     }
     const unique=[],seenContrib=new Set();for(const item of contributions){const key=`${item.kind}|${item.value}|${item.sourceCommandId}`;if(!seenContrib.has(key)){seenContrib.add(key);unique.push(item);}}
-    return{rootIds:roots,order,nodes,contributions:unique,byId:catalog.byId};
+    const hasAffectedRecheck=unique.some((item)=>item.kind==='REVIEW_COVERAGE_MODE'&&item.value==='LOCAL_AFFECTED_RECHECK');
+    const effective=hasAffectedRecheck?unique.filter((item)=>!(item.kind==='REVIEW_COVERAGE_MODE'&&item.value==='CURRENT_BASIS')):unique;
+    return{rootIds:roots,order,nodes,contributions:effective,byId:catalog.byId,byPath:catalog.byPath,paths:nodes.map(commandPath)};
   }
 
   function commandReferencePaths(definition) {

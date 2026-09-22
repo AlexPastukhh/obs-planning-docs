@@ -60,7 +60,7 @@ test('scenario-to-command projection is precise and keeps show-next distinct fro
   const m=memory();
   const scn01=m.scenarioEntries.find((scenario)=>scenario.id==='SCN-01');
   assert.ok(scn01);
-  assert.deepEqual(equivalentIds(scn01.steps.find((step)=>step.id==='SCN-01-S1N')),['idtspe.needs.review']);
+  assert.deepEqual(equivalentIds(scn01.steps.find((step)=>step.id==='SCN-01-S1N')),['idtspe.needs.collect','idtspe.needs.disposition']);
   assert.deepEqual(equivalentIds(scn01.steps.find((step)=>step.id==='SCN-01-S2')),[
     'idtspe.continue','idtspe.next','uc:UC-IDTSPE-COMPOSE-CURRENT-WORK'
   ]);
@@ -76,25 +76,25 @@ test('scenario-to-command projection is precise and keeps show-next distinct fro
   assert.deepEqual(cont.scenarioUses.map((use)=>use.stepId),['SCN-01-S1','SCN-01-S2']);
   assert.match(next.definition.meaning,/show|next|propos/i);
   assert.match(cont.definition.meaning,/perform|continue|ordinary action/i);
-  assert.deepEqual(equivalentIds(scn01.steps.find((step)=>step.id==='SCN-01-S3F')),['idtspe.findings.review']);
+  assert.deepEqual(equivalentIds(scn01.steps.find((step)=>step.id==='SCN-01-S3F')),['idtspe.findings.disposition']);
 });
 
 test('critical-review scenario separates challenge, finding disposition, semantic proposal and revalidation',()=>{
   const m=memory(),scn03=m.scenarioEntries.find((scenario)=>scenario.id==='SCN-03');
   assert.ok(scn03);
   assert.deepEqual(equivalentIds(scn03.steps.find((step)=>step.id==='SCN-03-S1')),['critical_review.apply','lens:LENS-AUTHORITY-SOT-REUSE','lens:LENS-DEPENDENCY-CHANGE-IMPACT','lens:LENS-NEED-VALUE-SCOPE','lens:LENS-UNCERTAINTY-ASSUMPTION-REVERSIBILITY']);
-  assert.deepEqual(equivalentIds(scn03.steps.find((step)=>step.id==='SCN-03-S1D')),['idtspe.findings.review']);
+  assert.deepEqual(equivalentIds(scn03.steps.find((step)=>step.id==='SCN-03-S1D')),['idtspe.findings.disposition']);
   assert.deepEqual(equivalentIds(scn03.steps.find((step)=>step.id==='SCN-03-S1P')),['idtspe.proposal']);
   assert.deepEqual(equivalentIds(scn03.steps.find((step)=>step.id==='SCN-03-S2')),['idtspe.review_consistency','uc:UC-IDTSPE-REVALIDATE-CURRENT-WORK']);
-  assert.deepEqual(equivalentIds(scn03.steps.find((step)=>step.id==='SCN-03-S3')),['review_audit.recheck']);
+  assert.deepEqual(equivalentIds(scn03.steps.find((step)=>step.id==='SCN-03-S3')),['idtspe.review.recheck']);
 });
 
 test('need-candidate scenario entry projects the dedicated Need review command before Evolution Step formation',()=>{
   const m=memory(),scn02=m.scenarioEntries.find((scenario)=>scenario.id==='SCN-02');
   assert.ok(scn02);
-  assert.deepEqual(equivalentIds(scn02.steps.find((step)=>step.id==='SCN-02-S0N')),['idtspe.needs.review']);
-  assert.equal(equivalentIds(scn02.steps.find((step)=>step.id==='SCN-02-S0')).includes('idtspe.needs.review'),false);
-  const needs=m.commandEntries.find((entry)=>entry.id==='idtspe.needs.review');
+  assert.deepEqual(equivalentIds(scn02.steps.find((step)=>step.id==='SCN-02-S0N')),['idtspe.needs.collect','idtspe.needs.disposition']);
+  assert.equal(equivalentIds(scn02.steps.find((step)=>step.id==='SCN-02-S0')).includes('idtspe.needs.disposition'),false);
+  const needs=m.commandEntries.find((entry)=>entry.id==='idtspe.needs.disposition');
   assert.ok(needs);
   assert.deepEqual(needs.scenarioUses.map((use)=>use.stepId).sort(),['SCN-01-S1N','SCN-02-S0N']);
 });
@@ -102,7 +102,7 @@ test('need-candidate scenario entry projects the dedicated Need review command b
 test('finding-escalation scenario keeps deterministic repair command-free and separates RE-3 revalidation from RE-4 selection',()=>{
   const m=memory(),scn07=m.scenarioEntries.find((scenario)=>scenario.id==='SCN-07');
   assert.ok(scn07);
-  assert.deepEqual(equivalentIds(scn07.steps.find((step)=>step.id==='SCN-07-S1')),['idtspe.findings.review']);
+  assert.deepEqual(equivalentIds(scn07.steps.find((step)=>step.id==='SCN-07-S1')),['idtspe.findings.disposition']);
   assert.deepEqual(equivalentIds(scn07.steps.find((step)=>step.id==='SCN-07-S2')),[]);
   assert.deepEqual(equivalentIds(scn07.steps.find((step)=>step.id==='SCN-07-S3')),['idtspe.proposal']);
   assert.deepEqual(equivalentIds(scn07.steps.find((step)=>step.id==='SCN-07-S4')),['uc:UC-IDTSPE-REVALIDATE-CURRENT-WORK']);

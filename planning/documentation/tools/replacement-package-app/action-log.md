@@ -1930,3 +1930,20 @@ Logging starts only after explicit user instruction; no pre-start history is rec
 **Proof target:** literal Java remains compiled with `javac --release 21 -Xlint:all -Werror`; Aggregate Planning and executable source use the same semantic test-name set, expanded from 48 to 55 tests for the newly discovered invariants.
 
 **APPLIED relation:** successful Apply of package `5c0c2059-3ee4-4779-94fa-0e335921986c` corrects the published reviewed result `f79a772939b81155c774c70bd340a63c223b562d` in the same still-open ChangeSet and supersedes the unapplied full-base candidate `db8f6069-b91b-4081-be75-66e1d6fbcae6`; package `d074d7e2-9ad5-40cb-88e8-e118b86ab7ba` remains the already-published predecessor in the work-branch history.
+
+
+### LOG-RPKG-082 — Align Application Definition with Benefit-local Responsibility Boundaries
+
+**Type:** UPSTREAM APPLICATION-DEFINITION NORMALIZATION  
+**Canonical Cross-Scope Owner:** `planning/documentation/action-log.md` — v12 Application Definition Benefit-boundary and Concept normalization  
+**Package:** `ff4684b0-1327-4113-90b2-655ea0ca2c4c`
+
+**Selected correction:**
+- migrate `application-definition.md` to the canonical SDS Application Definition Unit identities;
+- move responsibility meaning into each `AB-RPKG-*` Benefit as its own `Responsibility Boundary`;
+- remove the standalone Replacement Package App Responsibility Boundary Unit;
+- keep Representative Real-Life Scenario material as concrete Benefit context rather than downstream Application Scenario behavior;
+- reduce Application Concept to a concise Summary + short `How it roughly works`;
+- retain Realization Feasibility under stable canonical `RU-APP-07`.
+
+**Authority boundary:** this entry does not independently redefine reusable Application Definition methodology; `TM-APPLICATION-DEFINITION` is the semantic owner and this project-local file is a consumer.

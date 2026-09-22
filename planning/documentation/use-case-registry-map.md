@@ -20,13 +20,14 @@ This map supplies cross-scope routing metadata to the owner Process; the sequenc
 ```text
 current situation
 → fundamental Resolve Current Methodology Use Cases
-→ logically scan this map for plausible Use-Case scopes
+→ reaffirm fundamental UC-IDTSPE-AI-WORKING-BOUNDARY
+→ logically scan this map for plausible specialized Use-Case scopes
 → scan the relevant scoped Use-Case Registry/Registries
 → retain/add/drop applicable Use Cases
 → hand current composition to their canonical Use-Case owners
 ```
 
-That fundamental Use Case is **always logically active for current Planning/repository work**. Explicit Planning Commands guarantee it through command composition; ordinary natural-language work reaches it through normal routing. "Always" means the applicability surface is reaffirmed, not that unchanged files are reread after every message. Reuse current registry metadata while trustworthy and reread only when the methodology/repository changed, the active profile/scope changed, a material new request/action changes applicability, or current authority cannot be reconstructed safely.
+That fundamental Use Case is **always logically active for current Planning/repository work**. As part of that pass it obligatorily reaffirms [`UC-IDTSPE-AI-WORKING-BOUNDARY`](idtspe-methodology/active/idtspe-core/use-cases/ai-working-boundary/UC-IDTSPE-AI-WORKING-BOUNDARY.md#uc-idtspe-ai-working-boundary); the boundary is therefore not dependent on a USER invoking an AI-specific command or on a conditional registry choice. Explicit Planning Commands guarantee it through command composition; ordinary natural-language work reaches it through normal routing. "Always" means the applicability surface is reaffirmed, not that unchanged files are reread after every message. Reuse current registry metadata while trustworthy and reread only when the methodology/repository changed, the active profile/scope changed, a material new request/action changes applicability, or current authority cannot be reconstructed safely.
 
 This map owns only cross-scope applicability/routing metadata; it does not own the scan Process. Downstream Process/component routing is owned by the selected Use Case and the supporting owners it explicitly reaches. The generic [`Functional Routing Ownership Chain`](principles-and-terminology.md#doc-functional-routing-ownership) and [`Registry Scan`](principles-and-terminology.md#doc-registry-scan) semantics are defined in `Principles & Terminology`.
 

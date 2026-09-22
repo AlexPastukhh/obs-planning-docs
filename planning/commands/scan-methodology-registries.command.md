@@ -36,7 +36,17 @@ Scope: focused read-only invocation of the existing Documentation methodology-us
   "palette": true,
   "refinements": [],
   "includes": [
-    "methodology.use_cases.recheck"
+    "planning/commands/recheck-methodology-use-cases.command.md"
+  ],
+  "ownerRefs": [
+    {
+      "responsibilityId": "DOC.USE-CASE-REGISTRY-MAP",
+      "path": "planning/documentation/use-case-registry-map.md",
+      "anchor": "methodology-use-case-registry-map",
+      "why": "Owns top-level routing across methodology Use-Case registries for a registry traversal scan.",
+      "role": "PRIMARY_OWNER",
+      "readMode": "REQUIRED"
+    }
   ]
 }
 [/PLANNING_COMMAND_DEFINITION]

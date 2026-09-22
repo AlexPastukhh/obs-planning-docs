@@ -41,7 +41,7 @@ All command surfaces execute under the thin Session interaction contract once th
 
 This is **inheritance, not routing**. A command routes directly to its current semantic owner; it must not insert `Session → IDTSPE/profile owner` as an obligatory semantic hop merely to obtain progress, steering or authorization behavior. Session is reloaded only when the interaction context/rules cannot be reconstructed safely.
 
-## Primary User Convenience Surface Inventory — 15
+## Primary User Convenience Surface Inventory — 18
 
 ```text
 idtspe.bootstrap
@@ -58,6 +58,14 @@ idtspe.next
 idtspe.continue
 → продолжи по методологии
 
+idtspe.review
+→ проведи idtspe review
+→ complete current-basis Review Strategy/Coverage pass with Validation/Lenses, Finding Disposition and coverage self-check
+
+idtspe.review.recheck
+→ перепроверь
+→ recheck LOCAL_AFFECTED stale/partial/invalidated/newly exposed coverage; fall back to initial review when no reliable prior coverage exists
+
 idtspe.review_consistency
 → проверь консистентность плана
 
@@ -69,11 +77,15 @@ idtspe.decisions.capture
 → зафиксируй решения
 → capture/review only actual selected material Decisions from current context; never grants AI selection authority; uses intake + lifecycle + Resolution Context Lens + residual Carry-Forward routing
 
-idtspe.needs.review
-→ разбери нид-кандидаты <needs/context>
-→ ground wanted outcomes as Need Candidates, determine semantic home/current coverage and route them without prematurely manufacturing a solution/Requirement/Feature/Evolution Step
+idtspe.needs.collect
+→ собери idtspe needs
+→ collect only USER/Source-grounded wanted outcomes as Need Candidates with provenance; stop before routing
 
-idtspe.findings.review
+idtspe.needs.disposition
+→ диспозируй idtspe needs
+→ route already collected Need Candidates to natural existing owners/lifecycles without recollecting or prematurely manufacturing a solution/Requirement/Feature/Evolution Step
+
+idtspe.findings.disposition
 → разбери файндинги <findings/context>
 → classify material findings by impact plus Resolution Escalation and route them through Finding Disposition/Revalidation
 
@@ -86,10 +98,10 @@ tmcmd.exact.realization
 → generic `TM-EXACT-REALIZATION`; code is the default archetype, while `сделай точную реализацию` remains a generic alias
 
 idtspe.lenses.select
-→ подбери линзы <target/context>
+→ подбери линзы <analysis surface / target / context>
 
 idtspe.lens.apply
-→ примени линзу <lens> к <target/context>
+→ примени линзу <lens> к <analysis surface / target / context>
 
 lenscmd.documentation.representation.check
 → проверь как лучше зафиксировать <target/result>
@@ -98,7 +110,7 @@ lenscmd.linked-notes.justify
 → проверь оправданы ли linked notes <target>
 ```
 
-These are **15 primary user convenience surfaces**, not the complete direct-command/composition inventory. Hidden/base `idtspe.port.*`, composition prefixes and additional operation surfaces may exist to guarantee canonical traversal without becoming new methodology owners. Installed profiles contribute additional surfaces; current total command/card counts are tooling projections, not Core ontology.
+These are **18 primary user convenience surfaces**, not the complete direct-command/composition inventory. Hidden/base `idtspe.port.*`, composition prefixes and additional operation surfaces may exist to guarantee canonical traversal without becoming new methodology owners. Installed profiles contribute additional surfaces; current total command/card counts are tooling projections, not Core ontology.
 
 ## Bootstrap / Work Boundary
 
@@ -124,9 +136,9 @@ Registered command composition is **expand-first / dependencies-before-dependent
 
 ```text
 selected command/component roots
-→ fully expand all transitive includes
+→ fully expand all transitive command-definition-path includes
 → merge one dependency DAG
-→ validate IDs / reject cycles
+→ resolve/validate command-definition paths / reject cycles
 → deduplicate shared nodes
 → collect declarative contributions from ALL expanded nodes
 → establish one execution plan
@@ -137,17 +149,19 @@ selected command/component roots
 
 Declarative contributions are collected **before** the first semantic command action. A named `idtspe.port.*` node therefore contributes its `EXPLICIT_REQUIREMENT` during composition planning even though the node's runtime check/traversal occurs later. Concrete TM/Lens semantic leaves contribute selected component identity at the same pre-execution stage. This lets Port Composition Refresh see the full intended pass before it runs.
 
+For Review commands, `REVIEW_COVERAGE_MODE` is also a pre-execution contribution. `idtspe.review` and current-basis specialized reviews such as `idtspe.review_consistency` contribute `CURRENT_BASIS`; `idtspe.review.recheck` contributes `LOCAL_AFFECTED_RECHECK`. Before Validation/Lens dependency semantic actions, resolve the bounded Review Subject/Scope/Basis and establish/refresh one Review Coverage working context from `REVIEW.STRATEGY-COVERAGE`. The strategy derives review obligations/intents and reusable prior coverage; it does **not** become a second Lens selector. P-06 remains the owner of Lens applicability, supported-operation resolution and final selected `(Lens Model, Analysis Surface, Operation, basis)` applications. The selected root review action later completes Finding Disposition, coverage update and self-check. Effective contribution normalization MUST collapse `CURRENT_BASIS + LOCAL_AFFECTED_RECHECK` for the same bounded review context to `LOCAL_AFFECTED_RECHECK` before semantic execution; do not expose both as simultaneously effective modes.
+
 Several intents that require the same port, registry/meta-model or other shared prefix must not recursively launch several independent `idtspe.work` passes. Shared prefixes are one DAG node and are performed/reused once per current subject/basis/operation.
 
 An explicit requirement means **perform a real applicability/traversal check**; it does not manufacture a positive result. `NOT_APPLICABLE`, `CHECKED_NO_RESULT`, `CHECKED_NO_CHANGE` and `REUSED` remain valid outcomes. Automatic composition, explicit requirement and downstream materiality all enter the same port contract; only P-02 trace `origin` differs.
 
-Concrete direct commands MAY carry declarative `includes` so the same canonical route is guaranteed even when invoked through the Helper. `includes` reference registered semantic command prefixes/capabilities; they MUST NOT become a parallel numeric `requiredPorts`/file-execution ontology. `ownerFiles` / structured owner references remain read routes, not executable includes.
+Concrete direct commands MAY carry declarative `includes` so the same canonical route is guaranteed when the USER invokes work through the Helper. `includes` reference canonical repository paths to registered direct Planning Command definitions; they remain command→command edges and MUST NOT point directly to methodology/Use-Case/owner files or become a parallel numeric `requiredPorts`/file-execution ontology. `ownerFiles` / structured owner references remain read routes, not executable includes. The AI itself works through methodology owners/references/handoffs rather than invoking commands internally.
 
 ### Registered Command-Prefix Composition
 
 ```text
 idtspe.port.trace
-  → includes methodology.use_cases.recheck but intentionally does not include idtspe.work (cycle guard)
+  → includes `planning/commands/recheck-methodology-use-cases.command.md` but intentionally does not include `planning/commands/work-through-idtspe.command.md` (cycle guard)
   → composition-time contribution establishes/reuses the one incremental working trace before dependency actions start
   → runtime node confirms/continues the canonical P-02 capability
 
@@ -155,17 +169,19 @@ methodology.use_cases.recheck
   → mandatory registry-level Use-Case applicability recheck
 
 idtspe.compose-current-work
-  → includes idtspe.port.trace + methodology.use_cases.recheck
+  → includes `planning/commands/include-idtspe-trace-port.command.md` + `planning/commands/recheck-methodology-use-cases.command.md`
   → resolve/reuse UC-IDTSPE-COMPOSE-CURRENT-WORK
   → establish the current proportional IDTSPE methodology composition
 
 idtspe.port-composition.recheck
-  → includes idtspe.port.trace + methodology.use_cases.recheck + idtspe.compose-current-work
+  → includes `planning/commands/include-idtspe-trace-port.command.md` + `planning/commands/recheck-methodology-use-cases.command.md` + `planning/commands/compose-current-idtspe-work.command.md`
   → refresh/reaffirm IDTSPE.PORT-COMPOSITION-REFRESH using ALL pre-collected DAG contributions and the already composed current IDTSPE work
 
 idtspe.work
-  → includes idtspe.port.trace + methodology.use_cases.recheck + idtspe.compose-current-work + idtspe.port-composition.recheck
-  → enter/continue one normal Shell pass after both composition stages are current
+  → includes `planning/commands/include-idtspe-trace-port.command.md` + `planning/commands/recheck-methodology-use-cases.command.md` + `planning/commands/compose-current-idtspe-work.command.md` + `planning/commands/recheck-idtspe-port-composition.command.md`
+  → establish/enter one shared normal Shell pass after both composition stages are current
+  → specialized dependent command nodes execute their named operations inside that same pass
+  → finalize the pass only after selected leaf/root actions complete or are validly REUSED
 
 idtspe.port.<capability>
   → explicitly includes the shared IDTSPE base frame
@@ -181,12 +197,12 @@ idtspe.target-module.apply
 idtspe.lens.apply
   → full base + idtspe.port.lens
   → Lens Registry + Lens Meta-Model
-  → selected LENS-* Model
+  → selected `(LENS-* Model, Analysis Surface, Operation, basis)` application
   → material Finding Candidates cross Finding Disposition
 
 idtspe.lenses.apply-selected
   → full base + idtspe.port.lens + idtspe.lenses.select
-  → apply the currently selected applicable Lens Models through one shared Lens Meta-Model prefix
+  → apply the currently selected `(Lens Model, Analysis Surface, Operation, basis)` Lens Application requests through one shared Lens Meta-Model prefix
   → material Finding Candidates cross Finding Disposition
 ```
 
@@ -216,8 +232,9 @@ A concrete `LENS-*` application resolves through the Lens Port and canonical Len
 IDTSPE composition
 → P-06 Lens
 → Lens Meta-Model
-→ selected Lens Model(s)
-→ Lens Application(s)
+→ selected Lens Application(s)
+   = Lens Model + bounded Analysis Surface + supported Operation + relevant basis
+→ Lens Application execution(s)
 ```
 
 Concrete `LENS-*` models remain Lens registry/components, not Shell-port definitions. Lens selection and named Lens application are distinct operations that may share the same port/meta-model prefix.
@@ -283,24 +300,28 @@ A material semantic/architectural/out-of-scope problem crosses normal Finding Di
 ### `idtspe.lenses.select`
 
 ```text
-bounded Target candidate / existing Target
-↓
-Target Formation when needed
+bounded Analysis Surface
+  = Target work when naturally applicable
+  | Core Resolution State
+  | cross-owner semantic subject
+  | another bounded context
 ↓
 P-06 Lens Applicability Scan
 ↓
-selected applicable Lens Models / dispositions
+selected Lens Application requests `(Lens Model, Analysis Surface, Operation, basis)` / dispositions
 ```
 
-This surface uses `CREATE_OR_REUSE_TARGET`: Lens selection is part of Target Formation and must work for a first-class Local Target Contract when no reusable Target Module fits.
+This generic surface uses `hostTargetPolicy: NONE`. The Analysis Surface is primary; Target context is resolved/reused only when the selected surface naturally belongs to Target work. Lens selection must not create a Target merely to host a broader semantic review/analysis surface. When the natural surface is Target Formation / a Local Target Contract, ordinary Target semantics still apply through that natural route.
 
 It does not execute every Lens body. Registry summaries/applicability gates are scanned first; full Lens and referenced Knowledge Basis bodies are loaded only for selected/plausibly applicable candidates.
 
 ### `idtspe.lens.apply`
 
 ```text
-existing/resolved natural Target context
+bounded Analysis Surface
 + selected registered Lens
+↓
+resolve/reuse Target context only when naturally part of that surface
 ↓
 apply that Lens Operational Evaluation Contract
 ↓
@@ -311,7 +332,7 @@ material Finding Candidate(s) only when semantic disposition is needed
 Core Finding Disposition resolves actual semantic owner / State / lifecycle consequence
 ```
 
-This surface uses `RESOLVE_OR_REUSE_TARGET`. It is a generic dispatcher, has no fixed `lensId`, and never creates a Lens-owned Target.
+This generic surface also uses `hostTargetPolicy: NONE`. It is a generic dispatcher, has no fixed `lensId`, never creates a Lens-owned Target and never creates/resolves a Target merely to host a Lens. Concrete/profile shortcuts may still require Target context when their own natural semantic surface is Target work.
 
 ## Specialized Lens Shortcut Rule
 
@@ -376,11 +397,14 @@ The `IDTSPE Pass` Helper view may project the registered generic composition pre
 
 ## Need / Proposal / Finding Command Coverage
 
-Canonical command coverage follows semantic owners rather than one command per internal step. `Need Candidate` receives a dedicated orchestration surface because “review what I want and determine where it belongs” is a stable recurring USER intent, while the command still routes into existing canonical owners rather than creating a Need-owned product lifecycle.
+Canonical command coverage follows semantic owners rather than one command per internal step. Need intake is deliberately split because collecting USER/Source-grounded wanted outcomes and routing already collected Need Candidates are independently useful operations with different authority boundaries.
 
 ```text
-разбери нид-кандидаты
-→ Need Candidate grounding/disposition + correct current/Proposal/Finding/Q-R-P/profile temporal-owner routing
+idtspe.needs.collect
+→ USER/Source wanted outcomes → grounded Need Candidates + provenance; no routing yet
+
+idtspe.needs.disposition
+→ already collected Need Candidates → current/Proposal/Finding/Q-R-P/profile temporal-owner routing
 
 idtspe пропозал
 → includes Proposal grounding + Candidate Review + Proposal Semantic Change Impact + selection gating
@@ -389,21 +413,26 @@ idtspe пропозал
 → Finding Disposition + RE-* + correct owner/Unit/revalidation routing
 ```
 
-The Need command is an intake/disposition shortcut, not one command per downstream Need outcome. Do not create a mandatory separate Proposal-impact command merely because impact review is an explicit lifecycle step. A focused shortcut is justified only if practice demonstrates an independently useful recurring USER intent.
+Need Collection and Need Disposition are separate command surfaces; neither creates one command per downstream Need outcome. Do not create a mandatory separate Proposal-impact command merely because impact review is an explicit lifecycle step. A focused shortcut is justified only if practice demonstrates an independently useful recurring USER intent.
 
 Unit Resolution, Result Content, Decision trace, Q/R/P, Finding Inbox, Requirement impact and Source impact do not each require standalone direct commands by ontology.
 
 
 ### Review Operation Ordering
 
-Generic Review is a cross-port operation, not a Shell port. Prerequisite analysis/validation/Lens application may be composed through `includes`; Findings and Needs produced **by** the review are downstream outputs and therefore MUST NOT be modeled as prerequisite includes.
+Generic Review is a cross-port operation, not a Shell port. Prerequisite analysis/validation/Lens application may be composed through `includes`. Material Finding Candidates produced by review are an intrinsic downstream stage of the complete review lifecycle and reach Finding Disposition before review completion. Need intake is separate: review does not manufacture Need Candidates from AI critique. If review notices an explicit USER/Source wanted outcome that was not yet collected, it hands that provenance to Need Candidate Collection as a separate intake route.
 
 ```text
-validation / selected Lens application prerequisites
+validation / selected Lens Application prerequisites
 → review own action
-→ material Finding Candidate(s) / grounded Need Candidate(s), when any
-→ canonical Finding / Need disposition
+→ material Finding Candidate(s), when any
+→ canonical Finding Disposition
+→ coverage self-check/update
 → Port Composition refresh when disposition makes new downstream capabilities material
+
+explicit USER/Source wanted outcome noticed during review
+→ separate Need Candidate Collection
+→ Need Candidate Disposition when routing is requested/material
 ```
 
-`idtspe.lenses.select` selects applicable Lenses; selection alone is not application. Review that depends on Lens analysis uses `idtspe.lenses.apply-selected` (or an equivalent natural Lens application route) so selected applicable Lenses are actually applied before the review result is finalized.
+`idtspe.lenses.select` selects applicable Lens Models **and the materially useful supported operation(s) for the current bounded Analysis Surface**, producing selected Lens Application requests rather than an operation-less Lens list. Selection alone is not application. Review that depends on Lens analysis uses `idtspe.lenses.apply-selected` (or an equivalent natural Lens application route) so each selected `(Lens, Analysis Surface, Operation, basis)` application is actually executed before the review result is finalized.

@@ -19,7 +19,7 @@ Status: active reusable nested responsibility map
 | Semantic planning Use Cases | `use-case-registry.md` |
 | Current reality recommended shape | `templates/CURRENT-WORKFLOW-AND-PROBLEM-ANALYSIS-DRAFT-TEMPLATE.md` |
 | Real-world / functional workflow recommended shape | `templates/FUNCTIONAL-WORKFLOW-DRAFT-TEMPLATE.md` |
-| Application Concept recommended shape | `templates/APPLICATION-CONCEPT-DRAFT-TEMPLATE.md` |
+| Application Concept recommended shape | `templates/APPLICATION-CONCEPT-DRAFT-TEMPLATE.md` — subordinate projection of canonical SDS `TM-APPLICATION-DEFINITION / RU-APP-05`; concise summary only |
 | Prototype plan/evidence recommended shapes | `templates/PROTOTYPE-PLAN-TEMPLATE.md` + `templates/PROTOTYPE-RESULT-TEMPLATE.md` |
 | Detailed Scenario shape | `templates/SCENARIO-DRAFT-TEMPLATE.md` |
 | Screen spatial/visual shape | `templates/SCREEN-DRAFT-TEMPLATE.md` |

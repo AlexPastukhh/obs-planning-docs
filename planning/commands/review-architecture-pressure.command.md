@@ -36,7 +36,17 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
   "palette": true,
   "refinements": [],
   "includes": [
-    "methodology.use_cases.recheck"
+    "planning/commands/recheck-methodology-use-cases.command.md"
+  ],
+  "ownerRefs": [
+    {
+      "responsibilityId": "ARCH.CHANGE-PRESSURE-WORKFLOW",
+      "path": "planning/documentation/architecture-planning/architecture-change-pressure-workflow.md",
+      "anchor": "architecture-change-pressure-workflow",
+      "why": "Owns interpretation/review of current architecture change pressure.",
+      "role": "PRIMARY_OWNER",
+      "readMode": "REQUIRED"
+    }
   ]
 }
 [/PLANNING_COMMAND_DEFINITION]

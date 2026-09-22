@@ -42,7 +42,17 @@ Canonical supporting concepts: [UC-DOC-PLAN-DOCUMENTATION-CHANGE](../documentati
   "palette": true,
   "refinements": [],
   "includes": [
-    "methodology.use_cases.recheck"
+    "planning/commands/recheck-methodology-use-cases.command.md"
+  ],
+  "ownerRefs": [
+    {
+      "responsibilityId": "UC-DOC-PLAN-DOCUMENTATION-CHANGE",
+      "path": "planning/documentation/use-cases/UC-DOC-PLAN-DOCUMENTATION-CHANGE.md",
+      "anchor": "uc-doc-plan-documentation-change-plan-repository-documentation-change",
+      "why": "Owns planning of a documentation change before a proposal archive is packaged; the command must preserve that planning boundary.",
+      "role": "PRIMARY_OWNER",
+      "readMode": "REQUIRED"
+    }
   ]
 }
 [/PLANNING_COMMAND_DEFINITION]

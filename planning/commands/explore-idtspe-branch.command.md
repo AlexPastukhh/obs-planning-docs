@@ -31,10 +31,10 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
     }
   ],
   "includes": [
-    "idtspe.work",
-    "idtspe.port-composition.recheck",
-    "idtspe.port.trace",
-    "idtspe.port.branch"
+    "planning/commands/work-through-idtspe.command.md",
+    "planning/commands/recheck-idtspe-port-composition.command.md",
+    "planning/commands/include-idtspe-trace-port.command.md",
+    "planning/commands/idtspe-port-branch.command.md"
   ],
   "expectedOutput": "Bounded Branch exploration/comparison result or CHECKED_NO_RESULT when branch depth is not justified.",
   "permissionMode": "read-only-planning",

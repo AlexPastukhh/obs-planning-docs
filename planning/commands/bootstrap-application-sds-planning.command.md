@@ -45,7 +45,17 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
     "hostTargetPolicy": "NONE"
   },
   "includes": [
-    "methodology.use_cases.recheck"
+    "planning/commands/recheck-methodology-use-cases.command.md"
+  ],
+  "ownerRefs": [
+    {
+      "responsibilityId": "SDS.PROFILE-BOOTSTRAP",
+      "path": "planning/documentation/idtspe-methodology/active/profiles/sds/README.md",
+      "anchor": "sds-profile-bootstrap",
+      "why": "Defines the SDS profile bootstrap and the profile-local methodology surface this command activates.",
+      "role": "PRIMARY_OWNER",
+      "readMode": "REQUIRED"
+    }
   ]
 }
 [/PLANNING_COMMAND_DEFINITION]

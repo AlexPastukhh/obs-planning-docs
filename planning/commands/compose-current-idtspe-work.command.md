@@ -41,8 +41,8 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
     }
   ],
   "includes": [
-    "idtspe.port.trace",
-    "methodology.use_cases.recheck"
+    "planning/commands/include-idtspe-trace-port.command.md",
+    "planning/commands/recheck-methodology-use-cases.command.md"
   ],
   "compositionContributions": [],
   "expectedOutput": "A current proportional IDTSPE methodology composition ready for Port Composition Refresh; this may validly remain Broad Discussion only.",

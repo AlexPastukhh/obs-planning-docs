@@ -35,7 +35,17 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
   "refinements": [],
   "methodologyBinding": null,
   "includes": [
-    "methodology.use_cases.recheck"
+    "planning/commands/recheck-methodology-use-cases.command.md"
+  ],
+  "ownerRefs": [
+    {
+      "responsibilityId": "ARCH.WORKSPACE-EVOLUTION-USE-CASE-DISCOVERY",
+      "path": "planning/documentation/architecture-planning/workspace-evolution-use-case-discovery-workflow.md",
+      "anchor": "architecture-workspace-evolution-use-case-discovery",
+      "why": "Owns discovery of contextual workspace-evolution use cases.",
+      "role": "PRIMARY_OWNER",
+      "readMode": "REQUIRED"
+    }
   ]
 }
 [/PLANNING_COMMAND_DEFINITION]

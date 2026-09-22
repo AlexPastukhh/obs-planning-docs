@@ -9,10 +9,10 @@
     "idtspe.decisions.capture",
     "session.proposal_driven",
     "critical_review.apply",
-    "review_audit.recheck",
     "idtspe.review_consistency",
-    "idtspe.findings.review",
-    "idtspe.needs.review",
+    "idtspe.findings.disposition",
+    "idtspe.needs.collect",
+    "idtspe.needs.disposition",
     "application_reality.review",
     "application_research.research",
     "application_solution.plan",
@@ -29,6 +29,7 @@
     "governance.development",
     "current_state.report",
     "command.plan",
+    "uc:UC-IDTSPE-AI-WORKING-BOUNDARY",
     "uc:UC-IDTSPE-COMPOSE-CURRENT-WORK",
     "uc:UC-IDTSPE-MAINTAIN-CURRENT-WORK-STATE",
     "uc:UC-IDTSPE-INTEGRATE-CURRENT-WORK",
@@ -128,6 +129,7 @@
     "idtspe.port-composition.recheck",
     "idtspe.port.trace",
     "idtspe.review",
+    "idtspe.review.recheck",
     "idtspe.unit.resolve",
     "idtspe.unit.define-contextual",
     "idtspe.branch.explore",
@@ -138,6 +140,7 @@
   "useCases": [
     "UC-DOC-USE-REPOSITORY-GUIDANCE",
     "UC-DOC-RESOLVE-CURRENT-USE-CASES",
+    "UC-IDTSPE-AI-WORKING-BOUNDARY",
     "UC-IDTSPE-COMPOSE-CURRENT-WORK",
     "UC-IDTSPE-MAINTAIN-CURRENT-WORK-STATE",
     "UC-IDTSPE-INTEGRATE-CURRENT-WORK",
@@ -195,8 +198,7 @@
       "label": "Review / Validation",
       "order": 20,
       "items": [
-        "critical_review.apply",
-        "review_audit.recheck"
+        "critical_review.apply"
       ]
     },
     {
@@ -358,12 +360,14 @@
     {
       "id": "idtspe-pass.review-disposition",
       "viewId": "IDTSPE_PASS",
-      "label": "Review / Finding / Need Disposition",
+      "label": "Review / Findings / Needs",
       "order": 75,
       "items": [
         "idtspe.review",
-        "idtspe.findings.review",
-        "idtspe.needs.review"
+        "idtspe.review.recheck",
+        "idtspe.findings.disposition",
+        "idtspe.needs.collect",
+        "idtspe.needs.disposition"
       ]
     },
     {
@@ -384,6 +388,7 @@
       "label": "Current Work Orchestration",
       "order": 10,
       "items": [
+        "uc:UC-IDTSPE-AI-WORKING-BOUNDARY",
         "uc:UC-IDTSPE-COMPOSE-CURRENT-WORK",
         "uc:UC-IDTSPE-MAINTAIN-CURRENT-WORK-STATE",
         "uc:UC-IDTSPE-INTEGRATE-CURRENT-WORK",

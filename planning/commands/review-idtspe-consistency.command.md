@@ -1,7 +1,7 @@
 # Review Plan Consistency
 
 Status: active project command definition
-Scope: one concrete OBS Planning command route. Reusable behavior remains in linked owner files.
+Scope: one concrete OBS Planning command route. Reusable semantics remain in linked owners.
 
 [PLANNING_COMMAND_DEFINITION]
 {
@@ -14,8 +14,8 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
     "проверь консистентность плана"
   ],
   "description": "Run the current IDTSPE consistency-review supporting process in the active Work Context.",
-  "meaning": "Invoke the Core consistency-review supporting process as an explicit validation/review action. Material contradictions surfaced by the review become downstream Finding Candidates and are dispositioned after review; Finding disposition is not a prerequisite include.",
-  "activeContextBehavior": "Use the current Work Context and applicable IDTSPE Use Case. Review only material current meaning/owners; create no fake Target. Route contradictions, stale Decisions and coverage gaps through Finding/Revalidation semantics.",
+  "meaning": "Invoke the Core consistency-review supporting process as a specialized review action. Apply its current validation scope, record/update Review Coverage for the checked consistency surfaces, and disposition every material contradiction surfaced as a Finding Candidate before the operation is complete unless blocked/deferred.",
+  "activeContextBehavior": "During composition planning, establish the bounded consistency Review Coverage working context for CURRENT_BASIS before Validation dependency actions begin. Use the current Work Context and bounded consistency Analysis Surface. Review only material current meaning/owners; do not resolve or create a Target merely to host cross-owner consistency review. If the selected surface naturally belongs to Target work, reuse that Target context. Route contradictions, stale Decisions and coverage gaps through Finding/Revalidation semantics.",
   "traversalReadMode": "Reuse current reliable IDTSPE/SDS governance; targeted refresh of the selected owner route when uncertain; full bootstrap only when no reliable sufficient governance context exists.",
   "ownerFiles": [
     "planning/documentation/idtspe-methodology/active/idtspe-core/use-case-processes/CROSS-OWNER-CONSISTENCY-REVIEW.use-case-process.md",
@@ -27,10 +27,12 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
   "permissionMode": "read-only-planning",
   "keyReminders": [
     "Consistency review runs through Validation; it is not a new Shell port.",
-    "Finding disposition happens after the review produces a material Finding Candidate, not before it as an include.",
-    "Do not silently mutate semantic owners from a consistency observation; route material findings through the canonical disposition owner."
+    "REVIEW_COVERAGE_MODE=CURRENT_BASIS is established before P-12 so consistency coverage is planned before validation executes.",
+    "Cross-owner consistency review is not Target-bound; use Target context only when the selected semantic surface naturally belongs to Target work.",
+    "Material Finding Candidates produced by this review are dispositioned as part of the completed review operation, not modeled as prerequisite includes.",
+    "Do not silently mutate semantic owners from a consistency observation; route material findings through canonical Finding Disposition."
   ],
-  "userTarget": "<current plan/scope>",
+  "userTarget": "<current plan / cross-owner consistency surface>",
   "palette": true,
   "refinements": [],
   "methodologyBinding": {
@@ -40,15 +42,23 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
     "targetModuleId": null,
     "lensId": null,
     "parentSurface": null,
-    "hostTargetPolicy": "RESOLVE_OR_REUSE_TARGET"
+    "hostTargetPolicy": "NONE"
   },
   "includes": [
-    "idtspe.work",
-    "idtspe.port-composition.recheck",
-    "idtspe.port.trace",
-    "idtspe.port.validation"
+    "planning/commands/work-through-idtspe.command.md",
+    "planning/commands/recheck-idtspe-port-composition.command.md",
+    "planning/commands/include-idtspe-trace-port.command.md",
+    "planning/commands/idtspe-port-validation.command.md"
   ],
   "ownerRefs": [
+    {
+      "responsibilityId": "REVIEW.STRATEGY-COVERAGE",
+      "path": "planning/documentation/idtspe-methodology/active/ai-reviewability/REVIEW-STRATEGY-AND-COVERAGE-CONTRACT.md",
+      "anchor": "review-strategy-coverage",
+      "why": "Tracks which consistency surfaces were checked and which become stale/need recheck after corrections.",
+      "role": "SUPPORTING_CONTRACT",
+      "readMode": "REQUIRED"
+    },
     {
       "responsibilityId": "IDTSPE.CROSS-OWNER-CONSISTENCY-REVIEW",
       "path": "planning/documentation/idtspe-methodology/active/idtspe-core/use-case-processes/CROSS-OWNER-CONSISTENCY-REVIEW.use-case-process.md",
@@ -64,6 +74,13 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
       "why": "Material contradictions surfaced by consistency review become Finding Candidates and must be dispositioned rather than silently mutating owners.",
       "role": "VALIDATION_HANDOFF",
       "readMode": "REQUIRED"
+    }
+  ],
+  "compositionContributions": [
+    {
+      "kind": "REVIEW_COVERAGE_MODE",
+      "value": "CURRENT_BASIS",
+      "why": "Establish current-basis consistency review coverage before P-12 Validation dependency actions execute."
     }
   ]
 }

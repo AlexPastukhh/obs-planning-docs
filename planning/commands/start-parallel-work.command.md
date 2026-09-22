@@ -36,7 +36,17 @@ Scope: retired fixed parallel-work-scope invocation. No current branch-based coo
   "palette": false,
   "refinements": [],
   "includes": [
-    "methodology.use_cases.recheck"
+    "planning/commands/recheck-methodology-use-cases.command.md"
+  ],
+  "ownerRefs": [
+    {
+      "responsibilityId": "IDTSPE.UC.COMPOSE-CURRENT-WORK",
+      "path": "planning/documentation/idtspe-methodology/active/idtspe-core/use-cases/compose-current-work/UC-IDTSPE-COMPOSE-CURRENT-WORK.md",
+      "anchor": "uc-idtspe-compose-current-work",
+      "why": "Owns composition of concurrent current work so parallel work does not bypass methodology applicability.",
+      "role": "PRIMARY_OWNER",
+      "readMode": "REQUIRED"
+    }
   ]
 }
 [/PLANNING_COMMAND_DEFINITION]

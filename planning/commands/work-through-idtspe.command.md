@@ -16,7 +16,7 @@ Scope: generic IDTSPE work-mode and installed-component dispatcher.
     "режим idtspe"
   ],
   "description": "Explicit navigation/dispatch shortcut inside the always-active proportional IDTSPE work context.",
-  "meaning": "IDTSPE is already active. Bare `idtspe` explicitly refreshes/reaffirms the current methodology Use-Case applicability, composes current IDTSPE work through `UC-IDTSPE-COMPOSE-CURRENT-WORK`, ALWAYS refreshes/reaffirms the current Port Requirement Set through `IDTSPE.PORT-COMPOSITION-REFRESH`, and then continues through one normal Shell pass with the smallest useful current composition, which may remain Broad Discussion only. Explicit registered Target Module/Lens selectors remain subject to current applicability/materiality gates.",
+  "meaning": "IDTSPE is already active. Bare `idtspe` explicitly refreshes/reaffirms the current methodology Use-Case applicability, composes current IDTSPE work through `UC-IDTSPE-COMPOSE-CURRENT-WORK`, ALWAYS refreshes/reaffirms the current Port Requirement Set through `IDTSPE.PORT-COMPOSITION-REFRESH`, and establishes/enters one shared normal Shell pass with the smallest useful current composition, which may remain Broad Discussion only. Specialized dependent command nodes perform their named operations inside that same pass; pass finalization happens only after the selected leaf/root actions have completed or been validly REUSED. Explicit registered Target Module/Lens selectors remain subject to current applicability/materiality gates.",
   "activeContextBehavior": "Treat bare `idtspe` as ordinary current-work continuation. `idtspe <TM-ID|LENS-ID|tm alias|lens alias> <context>` contributes explicit registered component intent before composition refresh; exact `TM-*` / `LENS-*` IDs always work, registry aliases resolve only when unique, and ambiguous or unknown selectors are not guessed.",
   "traversalReadMode": "Read current Core/profile Target Module and Lens registry summaries first. For an exact/unique selector, read only the selected component body plus the minimum Core/profile governance it requires. Do not scan/load every module or Lens body. Reuse current reliable governance; targeted refresh when uncertain.",
   "ownerFiles": [
@@ -27,11 +27,12 @@ Scope: generic IDTSPE work-mode and installed-component dispatcher.
     "planning/documentation/idtspe-methodology/active/profiles/PROFILE-REGISTRY.md",
     "planning/documentation/idtspe-methodology/active/idtspe-core/commands/IDTSPE-COMMAND-SURFACE-CONTRACT.md"
   ],
-  "expectedOutput": "The refreshed/reaffirmed Use-Case and Port Requirement composition plus the smallest useful current IDTSPE result (including a valid Broad-Discussion-only result) or explicitly selected applicable Target Module/Lens result/evaluation. No command invocation makes optional structure mandatory.",
+  "expectedOutput": "The refreshed/reaffirmed Use-Case and Port Requirement composition plus one shared current IDTSPE Shell pass in which the selected dependent operations/models run, followed by the smallest useful resulting IDTSPE output (including a valid Broad-Discussion-only result). No command invocation makes optional structure mandatory.",
   "permissionMode": "read-only-planning",
   "keyReminders": [
     "IDTSPE is always active in this methodology environment; this command is a convenience/navigation surface, not a mode switch.",
     "Every normal Shell pass refreshes/reaffirms the Port Requirement Set even when the prior composition is reusable.",
+    "`idtspe.work` establishes/enters the shared normal Shell pass; specialized dependent nodes execute their named operations inside that pass, and the pass finalizes after selected leaf actions complete or are validly REUSED.",
     "Canonical semantic selectors are TM-* Target Module IDs and LENS-* Lens IDs; short aliases are registry navigation only.",
     "An explicit component selector is strong invocation intent but still respects Use-Case/context composition plus the component local applicability/materiality gate.",
     "A Lens surfaces Finding Candidates; Core Finding Disposition resolves actual State/owner/lifecycle consequences.",
@@ -51,10 +52,10 @@ Scope: generic IDTSPE work-mode and installed-component dispatcher.
     "hostTargetPolicy": "NONE"
   },
   "includes": [
-    "idtspe.port.trace",
-    "methodology.use_cases.recheck",
-    "idtspe.compose-current-work",
-    "idtspe.port-composition.recheck"
+    "planning/commands/include-idtspe-trace-port.command.md",
+    "planning/commands/recheck-methodology-use-cases.command.md",
+    "planning/commands/compose-current-idtspe-work.command.md",
+    "planning/commands/recheck-idtspe-port-composition.command.md"
   ],
   "ownerRefs": [
     {

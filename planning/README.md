@@ -38,11 +38,12 @@ Bootstrap establishes methodology knowledge only. It does not create a Target, S
 > Responsibility: `DOC.USE-CASE-APPLICABILITY-RESOLUTION`
 > Owner: [`UC-DOC-RESOLVE-CURRENT-USE-CASES`](documentation/use-cases/UC-DOC-RESOLVE-CURRENT-USE-CASES.md)
 
-README navigation is structural/bootstrap navigation. After primary bootstrap, the fundamental methodology applicability Use Case is an **ambient recheck for every current Planning/repository work entry**, including natural-language work and explicit Planning Commands. It scans the Methodology Use-Case Registry Map plus only plausible scoped registry rows, then the work continues through the **narrowest current functional route that matches the actual request**. This ambient scan does not execute every Use Case and does not replace repository/application-specific routing.
+README navigation is structural/bootstrap navigation. After primary bootstrap, the fundamental methodology applicability Use Case is an **ambient recheck for every current Planning/repository work entry**, including natural-language work and explicit Planning Commands. That resolver obligatorily reaffirms the fundamental [`UC-IDTSPE-AI-WORKING-BOUNDARY`](documentation/idtspe-methodology/active/idtspe-core/use-cases/ai-working-boundary/UC-IDTSPE-AI-WORKING-BOUNDARY.md#uc-idtspe-ai-working-boundary), so AI authority/interaction discipline is part of methodology execution rather than command-only behavior. It scans the Methodology Use-Case Registry Map plus only plausible scoped registry rows, then the work continues through the **narrowest current functional route that matches the actual request**. This ambient scan does not execute every Use Case and does not replace repository/application-specific routing.
 
 ```text
 any current Planning / repository work entry
 → planning/documentation/use-cases/UC-DOC-RESOLVE-CURRENT-USE-CASES.md
+→ planning/documentation/idtspe-methodology/active/idtspe-core/use-cases/ai-working-boundary/UC-IDTSPE-AI-WORKING-BOUNDARY.md
 → planning/documentation/use-case-registry-map.md / plausible scoped methodology registries
 → current methodology-use Use-Case composition
 → narrowest functional route

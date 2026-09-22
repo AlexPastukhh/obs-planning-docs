@@ -14,9 +14,9 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
     "примени линзу",
     "используй линзу"
   ],
-  "description": "Apply one named registered Lens to a resolved/reused IDTSPE Target/context.",
-  "meaning": "Resolve/reuse the natural host Target, resolve the named Lens from the Core/active-profile registry, read its Operational Evaluation Contract and Knowledge Basis according to its load policy, and apply that perspective inside the current IDTSPE lifecycle. The command itself is a generic dispatcher and does not own the selected Lens semantics.",
-  "activeContextBehavior": "Resolve or reuse the natural current IDTSPE Target/context; a Local Target Contract is valid when no reusable Target Module fits. Explicit user selection may activate a registered Lens, but material Lens output remains a Finding Candidate until Core Finding Disposition resolves the actual State/owner/lifecycle consequence; Lens activation does not create a Lens-owned Target.",
+  "description": "Apply one named registered Lens through an explicit/resolved supported operation to a bounded IDTSPE Analysis Surface; Target context is optional and resolved only when natural.",
+  "meaning": "Resolve the named Lens from the Core/active-profile registry, resolve the bounded Analysis Surface and the supported Lens operation requested or naturally required by the caller, read its Operational Evaluation Contract and Knowledge Basis according to its load policy, and execute that `(Lens Model, Analysis Surface, Operation, basis)` application inside the current IDTSPE lifecycle. Do not create or resolve a Target merely to host a Lens over broader semantic meaning. The command itself is a generic dispatcher and does not own the selected Lens semantics.",
+  "activeContextBehavior": "Use the natural current Analysis Surface; it may be Target work, Core Resolution State, a cross-owner semantic subject, or another bounded context. Resolve/reuse Target context only when the surface naturally belongs to Target work. Explicit user selection may activate a registered Lens, but material Lens output remains a Finding Candidate until Core Finding Disposition resolves the actual State/owner/lifecycle consequence; Lens activation never creates a Lens-owned Target.",
   "traversalReadMode": "Resolve the requested Lens through current Core/profile registries, then read that Lens body and only the referenced Knowledge Basis owners required by its Reference Load Policy. Refresh Target/profile governance proportionally when uncertain.",
   "ownerFiles": [
     "planning/documentation/idtspe-methodology/active/idtspe-core/lenses/LENS-MODEL.md",
@@ -24,16 +24,18 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
     "planning/documentation/idtspe-methodology/active/idtspe-core/runtime/target-work/RESOLUTION-SLOT-AND-TARGET-FORMATION-SET.md",
     "planning/documentation/idtspe-methodology/active/idtspe-core/commands/IDTSPE-COMMAND-SURFACE-CONTRACT.md"
   ],
-  "expectedOutput": "Selected Lens applicability/disposition plus explanatory analysis and material Finding Candidates. Core Finding Disposition resolves any Evidence/Proposal/Q-R-P/Decision/owner/revalidation consequences; Lens-owned supporting-artifact guidance remains separate from semantic ownership.",
+  "expectedOutput": "Selected Lens applicability/disposition plus explanatory analysis and material Finding Candidates for the bounded Analysis Surface. Core Finding Disposition resolves any Evidence/Proposal/Q-R-P/Decision/owner/revalidation consequences; no Target is manufactured merely to host the Lens.",
   "permissionMode": "read-only-planning",
   "keyReminders": [
     "This is a dispatcher to the selected registered Lens; command text never becomes Lens authority.",
-    "A Lens may be explicitly applied even when no Target Module pre-attached it, subject to the natural host Target/context.",
+    "A Lens may be explicitly applied to any bounded Analysis Surface supported by the Lens; Target context is optional rather than mandatory.",
+    "Preserve the selected supported operation; do not silently treat CHECK, REFINE and CHALLENGE as the same application.",
+    "Resolve/reuse a Target only when the Analysis Surface naturally belongs to Target work.",
     "Knowledge Basis references are read according to the Lens load policy and remain separate knowledge owners.",
     "Lens activation does not create a Lens-owned Target; independent problems escalate only through generic Target Formation when justified.",
     "This command is read-only planning; it does not mutate repository files, commit or push."
   ],
-  "userTarget": "<lens> к <target/context>",
+  "userTarget": "<lens> [operation] к <analysis surface / target / context>",
   "palette": true,
   "refinements": [],
   "methodologyBinding": {
@@ -43,13 +45,13 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
     "targetModuleId": null,
     "lensId": null,
     "parentSurface": null,
-    "hostTargetPolicy": "RESOLVE_OR_REUSE_TARGET"
+    "hostTargetPolicy": "NONE"
   },
   "includes": [
-    "idtspe.work",
-    "idtspe.port-composition.recheck",
-    "idtspe.port.trace",
-    "idtspe.port.lens"
+    "planning/commands/work-through-idtspe.command.md",
+    "planning/commands/recheck-idtspe-port-composition.command.md",
+    "planning/commands/include-idtspe-trace-port.command.md",
+    "planning/commands/idtspe-port-lens.command.md"
   ],
   "ownerRefs": [
     {

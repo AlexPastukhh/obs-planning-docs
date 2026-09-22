@@ -119,7 +119,7 @@ Canonical application semantics: [`scenarios/README.md`](scenarios/README.md). A
 - Confirm Scenario planning keeps Scenario identity tied to user/actor goal/Need/desired observable result and treats DATA/Behavior as iterative discovery inputs.
 - Confirm Domain discovery can identify Entity/Value Object/Aggregate/Service/Policy candidates without introducing a separate Aggregate Discovery Target Module.
 - Confirm repeated `TM-IMPLEMENTATION-SLICE` invocation handles multiple Slice candidates; no current plural Slice Strategy TM is introduced.
-- Confirm `перепроверь` remains Review Audit rather than IDTSPE Revalidation.
+- Confirm generic `перепроверь` resolves to `idtspe.review.recheck`: affected Review Coverage is semantically re-reviewed, not routed through a separate Review Audit command and not confused with P-15 IDTSPE Revalidation.
 - Confirm `что дальше по методологии` shows/proposes the next action while `продолжи по методологии` performs the smallest useful ordinary next action.
 
 ## IDTSPE / SDS Methodology Navigation

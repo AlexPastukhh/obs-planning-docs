@@ -4,7 +4,7 @@
 
 
 Status: active reusable workflow
-Scope: interaction/workflow prototype planning between a selected/current Application Concept + Application responsibility and canonical detailed Scenario/Screen planning.
+Scope: interaction/workflow prototype planning between a selected/current Application Definition (Benefits with their Responsibility Boundaries + concise Application Concept) and canonical detailed Scenario/Screen planning.
 
 Canonical cross-cutting context: [`requirements-and-change-context.md`](requirements-and-change-context.md)
 
@@ -18,8 +18,9 @@ Recommended plan/evidence shapes:
 Prototype planning cheaply tests and clarifies **how the selected application concept may actually work for users** before detailed Scenario/Screen meaning is treated as current authority.
 
 ```text
-selected/current Application Concept
-+ explicit Application responsibility
+selected/current Application Definition
++ selected Application Benefits with their Responsibility Boundaries
++ concise Application Concept
 + candidate/current Application Scenarios
 ↓
 Prototype Planning
@@ -46,7 +47,7 @@ Keep two uses distinct:
 
 ```text
 technical feasibility spike
-→ used inside Application Concept/research when the question is whether a concept is technically feasible/costly
+→ used inside Application Definition feasibility/research when the question is whether the concept or a Benefit boundary is technically feasible/costly
 
 interaction/workflow prototype
 → UC-PLAN-PROTOTYPE

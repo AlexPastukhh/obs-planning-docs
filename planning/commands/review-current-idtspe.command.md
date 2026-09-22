@@ -1,7 +1,7 @@
 # Review Current IDTSPE Subject
 
 Status: active project command definition
-Scope: one concrete OBS Planning command route. Reusable behavior remains in linked owner files.
+Scope: one concrete OBS Planning command route. Reusable semantics remain in linked owners.
 
 [PLANNING_COMMAND_DEFINITION]
 {
@@ -13,62 +13,68 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
   "commandFamily": [
     "проведи idtspe review"
   ],
-  "description": "Run a broad proportional review of the current subject through existing Validation/Lens machinery and disposition surfaced Findings/Needs.",
-  "meaning": "Review the current subject against applicable contracts/validators and the currently applicable Lens Models, surface only material Findings, collect grounded Need Candidates from USER/source wanted outcomes, then disposition any produced Findings/Needs downstream through their canonical owners and refresh Port Composition if those dispositions make new capabilities material.",
-  "activeContextBehavior": "Compose with the current command set. Fully expand and merge all selected roots before semantic execution; reuse equivalent current work and follow the resulting dependencies-first plan.",
+  "description": "Run one complete current-basis review pass: plan proportional coverage, validate/apply useful Lenses, disposition all produced Finding Candidates, self-check coverage completeness, and update the Review Coverage Record.",
+  "meaning": "Review the bounded current semantic subject through Review Strategy/Coverage, applicable Validation and selected Lens operations. Catch all materially applicable checks already visible on the current basis rather than intentionally deferring them. Every material Finding Candidate produced by this review is passed through canonical Finding Disposition before the review is semantically complete, unless disposition is explicitly blocked/deferred. Before completion, self-check current coverage against applicable validators/perspectives and record remaining material gaps/blockers. Need collection is not a mandatory review stage.",
+  "activeContextBehavior": "Use current basis and prior coverage when available. During composition planning, establish/refresh the Review Coverage working context for CURRENT_BASIS before dependency semantic actions begin, so Validation/Lens selection consume already-derived current review cells. Reuse trustworthy unchanged checks only when they actually satisfy the current coverage cell; apply materially distinct useful Lens/validator checks now and complete with Finding Disposition plus a coverage self-check.",
   "traversalReadMode": "Read this command own canonical references plus included-command references proportionally. Do not duplicate reads already satisfied by an unchanged trustworthy shared prefix.",
   "ownerFiles": [
-    "planning/documentation/idtspe-methodology/active/ai-reviewability/AI-OUTPUT-REVIEWABILITY.md"
+    "planning/documentation/idtspe-methodology/active/idtspe-core/commands/IDTSPE-COMMAND-SURFACE-CONTRACT.md",
+    "planning/documentation/idtspe-methodology/active/ai-reviewability/REVIEW-STRATEGY-AND-COVERAGE-CONTRACT.md",
+    "planning/documentation/idtspe-methodology/active/ai-reviewability/AI-OUTPUT-REVIEWABILITY.md",
+    "planning/documentation/idtspe-methodology/active/idtspe-core/resolution/findings/FINDING-DISPOSITION.md"
   ],
   "ownerRefs": [
+    {
+      "responsibilityId": "IDTSPE.COMMAND-SURFACE",
+      "path": "planning/documentation/idtspe-methodology/active/idtspe-core/commands/IDTSPE-COMMAND-SURFACE-CONTRACT.md",
+      "anchor": "idtspe-command-surface",
+      "why": "Defines this generic IDTSPE user invocation surface and its relationship to the shared Shell/composition runtime.",
+      "role": "SUPPORTING_CONTRACT",
+      "readMode": "REQUIRED"
+    },
+    {
+      "responsibilityId": "REVIEW.STRATEGY-COVERAGE",
+      "path": "planning/documentation/idtspe-methodology/active/ai-reviewability/REVIEW-STRATEGY-AND-COVERAGE-CONTRACT.md",
+      "anchor": "review-strategy-coverage",
+      "why": "Owns current-basis review coverage, materially distinct review cells, change invalidation rules and coverage update semantics.",
+      "role": "PRIMARY_OWNER",
+      "readMode": "REQUIRED"
+    },
     {
       "responsibilityId": "AI.REVIEWABILITY",
       "path": "planning/documentation/idtspe-methodology/active/ai-reviewability/AI-OUTPUT-REVIEWABILITY.md",
       "anchor": "built-in-pre-return-recheck",
-      "why": "Provides review priority/order and guards against omissions, contradictions, unsupported assumptions and silent alternative selection.",
-      "role": "PRIMARY_OWNER",
+      "why": "Supplies proportional review-quality obligations and omission/contradiction checks without becoming semantic authority.",
+      "role": "SUPPORTING_CONTRACT",
       "readMode": "REQUIRED"
     },
     {
       "responsibilityId": "RESOLUTION.FINDING-DISPOSITION",
       "path": "planning/documentation/idtspe-methodology/active/idtspe-core/resolution/findings/FINDING-DISPOSITION.md",
       "anchor": "resolution-finding-disposition",
-      "why": "After review surfaces a material defect/contradiction/unsupported assumption, disposition that Finding Candidate to its natural subject/destination; this is downstream of review, not a prerequisite include.",
+      "why": "Finding Disposition is an intrinsic completion stage for material Finding Candidates produced by this review.",
       "role": "VALIDATION_HANDOFF",
-      "readMode": "ON_DEMAND"
-    },
-    {
-      "responsibilityId": "RESOLUTION.NEED-CANDIDATE-DISPOSITION",
-      "path": "planning/documentation/idtspe-methodology/active/idtspe-core/resolution/needs/NEED-CANDIDATE-DISPOSITION.md",
-      "anchor": "resolution-need-candidate-disposition",
-      "why": "After review surfaces a grounded USER/source wanted outcome, disposition the Need Candidate without converting AI preferences into USER needs; this is downstream of review, not a prerequisite include.",
-      "role": "VALIDATION_HANDOFF",
-      "readMode": "ON_DEMAND"
-    },
-    {
-      "responsibilityId": "IDTSPE.USER-INPUT-INTAKE",
-      "path": "planning/documentation/idtspe-methodology/active/idtspe-core/runtime/interaction/USER-INPUT-DECISION-AND-ANSWER-INTAKE-RULE.md",
-      "anchor": "idtspe-user-input-intake",
-      "why": "Preserves exact USER/source provenance when review collects a Need Candidate.",
-      "role": "SUPPORTING_CONTRACT",
-      "readMode": "ON_DEMAND"
+      "readMode": "REQUIRED"
     }
   ],
   "includes": [
-    "idtspe.work",
-    "idtspe.port-composition.recheck",
-    "idtspe.port.trace",
-    "idtspe.port.validation",
-    "idtspe.lenses.apply-selected"
+    "planning/commands/work-through-idtspe.command.md",
+    "planning/commands/recheck-idtspe-port-composition.command.md",
+    "planning/commands/include-idtspe-trace-port.command.md",
+    "planning/commands/idtspe-port-validation.command.md",
+    "planning/commands/apply-selected-idtspe-lenses.command.md"
   ],
-  "expectedOutput": "A proportional review result with material Findings/Needs dispositioned through their canonical owners and any newly required downstream Shell capabilities exposed.",
+  "expectedOutput": "An updated Review Coverage Record for the current basis, with coverage origin distinguishing EXECUTED_THIS_PASS from REUSED_FROM_PRIOR (including reuse basis/justification), a truthful statement of blocked/remaining material coverage, and all material review-produced Findings dispositioned to natural owners/lifecycles; no implicit Need collection.",
   "permissionMode": "read-only-planning",
   "keyReminders": [
-    "Review is an operation over existing capabilities, not a new Shell port.",
-    "Prerequisite includes run before review; Finding/Need disposition is downstream of review output and therefore is NOT modeled as an include.",
-    "Apply only currently selected applicable Lenses; do not merely select them and stop.",
-    "Do not manufacture Findings or Needs when the review produces none.",
-    "AI improvement ideas are GIPs/IDTSPE Proposals as appropriate, not USER Need Candidates."
+    "Review is an operation over existing P-12 Validation/P-06 Lens capabilities, not a new Shell port.",
+    "REVIEW_COVERAGE_MODE=CURRENT_BASIS is a pre-execution contribution: establish the Review Coverage working context before Validation/Lens dependency actions, not in the root action after them.",
+    "Catch materially applicable checks visible on the current basis now; do not manufacture extra passes by intentionally deferring obvious checks.",
+    "The same semantic surface may be checked through several materially distinct Lenses/operations.",
+    "Every material Finding Candidate produced by this review must reach Finding Disposition before review completion unless explicitly blocked/deferred.",
+    "Need collection is separate and USER/Source-grounded; AI improvement ideas are GIPs/Proposals, not Needs.",
+    "Before completion, perform the Review Strategy/Coverage self-check; do not leave a materially applicable current-basis review cell silently unexamined.",
+    "Do not report reused prior coverage as if it executed in this pass; preserve prior-cell/basis reference and reuse justification."
   ],
   "userTarget": "<current IDTSPE subject/context>",
   "palette": true,
@@ -81,6 +87,13 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
     "lensId": null,
     "parentSurface": null,
     "hostTargetPolicy": "NONE"
-  }
+  },
+  "compositionContributions": [
+    {
+      "kind": "REVIEW_COVERAGE_MODE",
+      "value": "CURRENT_BASIS",
+      "why": "Establish or refresh the bounded Review Coverage working context and candidate current-basis review cells before Validation/Lens dependency semantic actions execute."
+    }
+  ]
 }
 [/PLANNING_COMMAND_DEFINITION]

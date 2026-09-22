@@ -1,4 +1,7 @@
+<a id="session-runtime-contract"></a>
 # Session Interaction Runtime Contract
+
+Responsibility ID: `SESSION.RUNTIME-CONTRACT`
 
 Status: active generic USER↔AI interaction contract.
 

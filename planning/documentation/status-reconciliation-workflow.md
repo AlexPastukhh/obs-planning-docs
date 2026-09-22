@@ -1,4 +1,7 @@
+<a id="status-reconciliation"></a>
 # Status Reconciliation Workflow
+
+Responsibility ID: `STATUS.RECONCILIATION`
 Status: active reusable supporting Process
 Reachable from current-state/reporting and review routes when status evidence is material.
 Doc version: v0.2.0-obs-cleanup

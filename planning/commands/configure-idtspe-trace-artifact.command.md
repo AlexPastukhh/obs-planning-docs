@@ -31,7 +31,7 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
   "command": "веди трассу idtspe в trace-файле",
   "englishName": "configure IDTSPE working trace artifact",
   "includes": [
-    "idtspe.port.trace"
+    "planning/commands/include-idtspe-trace-port.command.md"
   ],
   "methodologyBinding": {
     "methodologyRuntime": "IDTSPE",

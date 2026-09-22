@@ -72,7 +72,7 @@ Resolution Escalation
 
 Route the finding to the smallest correct subject. For target-result findings prefer the affected Unit Resolution when that Unit owns the responsibility; use a Contextual Unit only for a new independently useful bounded local responsibility; use Target Formation/another owner directly when appropriate.
 
-Under USER-gated interaction the next corrective action may still be shown as an interaction AI Proposal at any RE category. Do not manufacture formal Proposal State for an obvious deterministic correction.
+Under USER-gated interaction the next corrective action may still be shown as a Generic AI Proposal (GIP) at any RE category. Do not manufacture formal Proposal State for an obvious deterministic correction.
 
 ## 4. Candidate Review For Material Corrective Proposals
 

@@ -21,7 +21,7 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
     "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-APPLICATION-DEFINITION.md",
     "planning/documentation/idtspe-methodology/active/profiles/sds/commands/SDS-COMMAND-SURFACE-EXTENSION.md"
   ],
-  "expectedOutput": "Application Definition with need/value/scope, selected responsibility, material alternatives, Q/R/P and Decisions.",
+  "expectedOutput": "Application Definition with selected contribution, Application Benefits each carrying its own Responsibility Boundary, representative real-life examples when useful, a concise Application Concept, proportional feasibility, and material Q/R/P/Decisions.",
   "permissionMode": "read-only-planning",
   "keyReminders": [
     "SDS is an IDTSPE profile, not a second runtime.",
@@ -42,11 +42,11 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
     "hostTargetPolicy": "CREATE_OR_REUSE_TARGET"
   },
   "includes": [
-    "idtspe.work",
-    "idtspe.port-composition.recheck",
-    "idtspe.port.trace",
-    "idtspe.port.target",
-    "idtspe.target-module.apply"
+    "planning/commands/work-through-idtspe.command.md",
+    "planning/commands/recheck-idtspe-port-composition.command.md",
+    "planning/commands/include-idtspe-trace-port.command.md",
+    "planning/commands/idtspe-port-target.command.md",
+    "planning/commands/apply-idtspe-target-module.command.md"
   ],
   "ownerRefs": [
     {

@@ -94,6 +94,23 @@ Recommendation
 
 A GIP can exist with no IDTSPE Proposal. An IDTSPE Proposal can exist without being presented through a GIP. When both exist, keep one semantic candidate authority: the GIP references/presents the IDTSPE Proposal rather than duplicating its payload.
 
+### Finding-to-Proposal Handoff
+
+[`Finding Disposition`](../findings/FINDING-DISPOSITION.md#resolution-finding-disposition) owns whether a Finding is deterministic/local, needs revalidation, or establishes a material semantic-change surface. When that disposition establishes a **material candidate semantic resolution** — canonically `RE-2` or `RE-4`, or an equivalent routed case — the AI MUST form or refine a formal IDTSPE Proposal under this lifecycle before semantic selection/integration. Preserve the Finding as driver/provenance and target the smallest natural affected owner/subject.
+
+```text
+Finding Disposition establishes material semantic change
+→ formal IDTSPE Proposal
+→ Proposal Semantic Change Impact Review
+→ normal selection / Decision authority
+
+GIP, if useful
+→ presents/references that IDTSPE Proposal
+→ never substitutes for it
+```
+
+`RE-0` deterministic/current-semantic completion does not gain a Proposal merely for ceremony. `RE-3` revalidates first; it enters this Proposal lifecycle only if revalidation establishes an actual candidate semantic change. `RE-1` remains inside accepted meaning unless the local candidate independently needs formal Core lifecycle/addressability.
+
 ## 3A. Proposal Payload And Unit Resolution
 
 A Proposal is a **candidate resolution** for a material planning subject. It may carry:
