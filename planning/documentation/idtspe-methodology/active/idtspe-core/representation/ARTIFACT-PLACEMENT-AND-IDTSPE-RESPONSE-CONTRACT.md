@@ -2,7 +2,17 @@
 
 Status: active generic methodology owner
 
+<a id="representation-artifact-placement"></a>
 ## 1. Purpose
+
+Responsibility ID: `REPRESENTATION.ARTIFACT-PLACEMENT`
+
+> Semantic Owner Dependencies
+> - `EXTENDS` [`Lens Meta-Model`](../lenses/LENS-MODEL.md#lens-meta-model) — `LENS.META-MODEL` — representation-specific Lens guidance handshake only
+> - `EXTENDS` [`Target Module Meta-Model`](../target-modules/TARGET-MODULE-MODEL.md#target-module-meta-model) — `TARGET-MODULE.META-MODEL` — representation-specific Module guidance handshake only
+> - `CONTEXTUALIZES` [`Finding Disposition`](../resolution/findings/FINDING-DISPOSITION.md#resolution-finding-disposition) — `RESOLUTION.FINDING-DISPOSITION`
+> - `CONTEXTUALIZES` [`Target Work subject reference`](../runtime/target-work/TARGET-WORK-SUBJECT-REFERENCE-CONTRACT.md#target-work-subject-reference) — `TWU.SUBJECT-REFERENCE`
+
 
 Physical persistence/placement must be made visible when an Integration Checkpoint or persistence-sensitive IDTSPE pass establishes material meaning that should survive and its representation is relevant **before file mutation is considered**. Ordinary Broad Discussion does not require an Artifact Placement View in every turn.
 
@@ -470,9 +480,9 @@ Recommended compact table:
 
 For larger plans, use one `ArtifactPlacementItem` block per unit.
 
-## 7. Target Module Responsibility
+## 7. Target Module Representation Contribution
 
-Every active Target Module must contain an explicit:
+The Target Module Meta-Model owns the requirement that every active Target Module expose an explicit:
 
 ```text
 ## Artifact / File Contract
@@ -490,9 +500,9 @@ which result types must be routed elsewhere
 
 Target Module artifact guidance is a **profile-level default/requirement**, not an unconditional hard-coded repository path unless the methodology intentionally defines a global artifact.
 
-## 8. Lens Responsibility
+## 8. Lens Representation Contribution
 
-Every reusable Lens must contain:
+The Lens Meta-Model owns the requirement that every reusable Lens expose:
 
 ```text
 ## Artifact / File Implications

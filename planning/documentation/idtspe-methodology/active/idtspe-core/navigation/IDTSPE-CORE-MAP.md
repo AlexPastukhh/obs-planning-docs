@@ -120,7 +120,7 @@ Use-Case/component routing
 → Core Finding Disposition when semantic consequence is material
 ```
 
-Canonical Lens owner: [`lenses/LENS-MODEL.md`](../lenses/LENS-MODEL.md).
+Canonical Lens responsibility routing: [`lenses/RESPONSIBILITY-MAP.md`](../lenses/RESPONSIBILITY-MAP.md).
 Resolution lifecycle routing: [`resolution/RESPONSIBILITY-MAP.md`](../resolution/RESPONSIBILITY-MAP.md); Finding Disposition remains the destination owner for Finding lifecycle/Resolution Escalation.
 
 ## 7. Need / Proposal / Q-R-P / Decision / Evidence
@@ -176,7 +176,9 @@ selected semantic meaning
 → P-14 / PERSISTENCE_ADDRESSABILITY placement resolution
 ```
 
-Canonical generic interface: [`representation/ARTIFACT-PLACEMENT-AND-IDTSPE-RESPONSE-CONTRACT.md`](../representation/ARTIFACT-PLACEMENT-AND-IDTSPE-RESPONSE-CONTRACT.md). A semantic Unit/owner never implies one dedicated file by itself.
+Canonical representation/persistence routing: [`representation/RESPONSIBILITY-MAP.md`](../representation/RESPONSIBILITY-MAP.md). A semantic Unit/owner never implies one dedicated file by itself.
+
+Reusable Knowledge Basis/theory and its boundary from current Source/Evidence authority route through [`knowledge-bases/RESPONSIBILITY-MAP.md`](../knowledge-bases/RESPONSIBILITY-MAP.md).
 
 ## 11. Profile Boundary
 

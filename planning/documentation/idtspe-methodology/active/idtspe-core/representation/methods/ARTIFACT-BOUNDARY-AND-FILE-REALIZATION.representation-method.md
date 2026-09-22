@@ -1,5 +1,14 @@
 # Artifact Boundary Discovery And File Realization Pack
 
+<a id="representation-artifact-boundary-method"></a>
+
+Responsibility ID: `REPRESENTATION.ARTIFACT-BOUNDARY-METHOD`
+
+> Semantic Owner Dependency
+> Type: `EXTENDS`
+> Responsibility: `REPRESENTATION.ARTIFACT-PLACEMENT`
+> Owner: [`Artifact Placement / Persistence`](../ARTIFACT-PLACEMENT-AND-IDTSPE-RESPONSE-CONTRACT.md#representation-artifact-placement)
+
 Status: active conditional deep artifact/file methodology pack
 Purpose: deepen a non-trivial Documentation / Representation decision: compare implementation-native/existing-owner/consolidated/split/generated representations, plan physical reorganization when needed, and validate the resulting repository representation.
 Repository mutation: none.

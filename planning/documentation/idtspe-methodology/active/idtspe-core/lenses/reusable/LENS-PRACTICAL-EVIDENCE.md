@@ -3,6 +3,10 @@
 Lens ID: `LENS-PRACTICAL-EVIDENCE`
 Activation: `TARGET_PROFILE_REUSABLE`
 
+> Semantic Owner Dependencies
+> - `CONTEXTUALIZES` [`Knowledge Basis Contract`](../../knowledge-bases/KNOWLEDGE-BASIS-CONTRACT.md#knowledge-basis-contract) — `KNOWLEDGE.BASIS`
+> - `CONTEXTUALIZES` [`Practical Evidence Knowledge Basis`](../../knowledge-bases/PRACTICAL-EVIDENCE.knowledge-basis.md#knowledge-practical-evidence) — `KNOWLEDGE.PRACTICAL-EVIDENCE`
+
 ## Purpose
 
 Evaluate whether practical Evidence before or after implementation is capable of answering the material question credibly, economically and with honest limits.

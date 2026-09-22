@@ -37,6 +37,9 @@ no Target / Lens / Target Module / Checkpoint / persisted State is useful yet.
 > - `CONTEXTUALIZES` [`Unit applicability / materiality / disposition`](../../runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md#twu-applicability-disposition) — `TWU.APPLICABILITY-DISPOSITION`
 > - `CONTEXTUALIZES` [`Need Candidate Disposition`](../../resolution/needs/NEED-CANDIDATE-DISPOSITION.md#resolution-need-candidate-disposition) — `RESOLUTION.NEED-CANDIDATE-DISPOSITION`
 > - `CONTEXTUALIZES` [`Resolution Carry-Forward`](../../resolution/continuation/RESOLUTION-CARRY-FORWARD-PROJECTION.md#resolution-carry-forward) — `RESOLUTION.CARRY-FORWARD`
+- `CONTEXTUALIZES` [`Lens Discovery`](../../lenses/LENS-REGISTRY.md#lens-discovery-registry) — `LENS.DISCOVERY`
+- `CONTEXTUALIZES` [`Knowledge Basis Contract`](../../knowledge-bases/KNOWLEDGE-BASIS-CONTRACT.md#knowledge-basis-contract) — `KNOWLEDGE.BASIS`
+- `CONTEXTUALIZES` [`Artifact Placement / Persistence`](../../representation/ARTIFACT-PLACEMENT-AND-IDTSPE-RESPONSE-CONTRACT.md#representation-artifact-placement) — `REPRESENTATION.ARTIFACT-PLACEMENT`
 
 This Use Case owns current-work **orchestration/composition** only; the linked owners define Target Formation, reusable-module and Unit contracts.
 

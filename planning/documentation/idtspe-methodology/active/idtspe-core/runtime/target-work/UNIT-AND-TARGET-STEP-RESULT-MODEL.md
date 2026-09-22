@@ -750,6 +750,7 @@ Unit:
 
 All Units/Slots may remain sections of one planning artifact. Unit/Slot identity does not force file splitting.
 
+<a id="core-state-unit-boundary"></a>
 ## 4. Core State Unit / Core Resolution State
 
 A **Core State Unit** is typed generic planning/resolution meaning maintained by Core when independent lifecycle/addressability is useful. Existing `IDTSPE State Unit` / `State Unit` wording remains compatible. Typical kinds include:

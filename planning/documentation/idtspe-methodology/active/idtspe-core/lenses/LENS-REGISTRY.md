@@ -1,9 +1,17 @@
 # IDTSPE Lens Registry
 
 Status: active generic Lens registry + installed-profile index
-Model: [`LENS-MODEL.md`](LENS-MODEL.md)
+Model: [`LENS-MODEL.md`](LENS-MODEL.md#lens-meta-model)
 
+<a id="lens-discovery-registry"></a>
 ## Registry Scan Guide
+
+Responsibility ID: `LENS.DISCOVERY`
+
+> Semantic Owner Dependencies
+> - `CONTEXTUALIZES` [`Lens Meta-Model`](LENS-MODEL.md#lens-meta-model) — `LENS.META-MODEL`
+> - `CONTEXTUALIZES` [`Knowledge Basis Contract`](../knowledge-bases/KNOWLEDGE-BASIS-CONTRACT.md#knowledge-basis-contract) — `KNOWLEDGE.BASIS`
+
 
 The Lens Registry is normally reached from an applicable Use-Case Process (especially `UC-IDTSPE-COMPOSE-CURRENT-WORK`) when current meaning may benefit from evaluation/check/refinement/challenge.
 
@@ -121,41 +129,18 @@ P-06 Lens Port
 
 A Lens analyzes an explicit/implicit Analysis Surface through reusable operations such as `ANALYZE / CHECK / REFINE / CHALLENGE` and surfaces findings. Generic Core Finding Disposition resolves those findings into the appropriate State/lifecycle/owner destination; accepted resolution may later update already-declared Result Units. A Lens does not define State Unit kinds, Target Result Unit kinds, target output schema or semantic authority.
 
-## 6. Knowledge Basis And Artifact / File Implications
+## 6. Knowledge / Representation Metadata Boundary
 
-A reusable Lens may contain or reference a Knowledge Basis when reusable theory/reference knowledge materially helps the evaluation. Target Modules use the same theory/current-state boundary while retaining a different operational role.
+This registry carries only summary-level routing metadata for those concerns. Canonical semantics are owned elsewhere:
 
-The `INLINE / REFERENCED / HYBRID` values in the tables above describe the current files only; they are not Generic conformance modes. `Target Inputs / Evidence` are current planning inputs. `Knowledge Basis` is reusable theory selected/interpreted for the evaluation and may be represented inline, in separate files, through broad/narrow references, or any useful combination.
+- Knowledge Basis / theory-current-state boundary → [`../knowledge-bases/RESPONSIBILITY-MAP.md`](../knowledge-bases/RESPONSIBILITY-MAP.md);
+- Lens Analysis Surface / supported operations / Finding contract → [`LENS-MODEL.md`](LENS-MODEL.md#lens-meta-model);
+- Finding lifecycle/disposition → [`../resolution/RESPONSIBILITY-MAP.md`](../resolution/RESPONSIBILITY-MAP.md);
+- artifact guidance / P-14 placement interface → [`../representation/RESPONSIBILITY-MAP.md`](../representation/RESPONSIBILITY-MAP.md).
 
-A Lens may contribute **zero or more** `AG-*` records. No AG record is required when Core Finding Disposition resolves the current Target as the semantic owner, the Target Module/local contract already owns representation of the accepted Target meaning, and no distinct supporting artifact is useful. AG records are reserved for Lens-produced supporting / artifact-placement meaning; semantic owner/handoff/reopen consequences remain Core Finding Disposition concerns, and AG must not duplicate a Target Module AP for the same Target result.
+The `INLINE / REFERENCED / HYBRID` values in the registry tables describe current Lens-file representation only; they are not Generic conformance modes. Likewise, a registry summary may mention `AG-*`, Analysis Surface or supported operations to aid discovery, but this file does not define those contracts. Open the selected Lens and the routed owner when the detail is material.
 
-The Documentation / Representation Lens is required before final P-14 placement whenever material output may persist. The Lens never creates semantic authority by itself; `P-14 / PERSISTENCE_ADDRESSABILITY` resolves physical placement.
-
-
-## 6A. Analysis Surface / Operations / Findings
-
-Canonical rule: [`LENS-MODEL.md`](LENS-MODEL.md) + [`../runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md`](../runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md) + [`../resolution/findings/FINDING-DISPOSITION.md`](../resolution/findings/FINDING-DISPOSITION.md).
-
-New or materially revised Lenses should make explicit:
-
-```text
-Analysis Surface
-  Primary / Conditional Result Units or semantic selectors
-  Relevant State Units
-  Context
-
-Supported Operations
-  ANALYZE
-  CHECK
-  REFINE
-  CHALLENGE
-
-Typical Findings / Finding Contract
-```
-
-A Lens may contribute explanatory Broad Discussion/Key Points with no finding. When Lens analysis surfaces material meaning that needs ownership/State/lifecycle disposition, it becomes a Finding Candidate and Core Finding Disposition resolves its destination. `REOPEN`, Result Unit update after resolution, cross-owner handoff and Target Formation are Core consequences rather than Lens operations.
-
-Materially revised SDS Lens bodies are required to conform literally to the Analysis Surface / Supported Operations / Finding Contract shell. Existing generic Core Lens bodies remain migration-compatible until a separate literal Core-Lens conformance pass is useful.
+Profile registries may impose their own literal conformance requirements on profile Lens files; this Core registry does not turn such profile-maintenance rules into generic Lens semantics.
 
 ## 7. Maintenance
 

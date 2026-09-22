@@ -3,6 +3,10 @@
 Lens ID: `LENS-TEST-PROOF-EVIDENCE`
 Activation: `TARGET_PROFILE_REUSABLE`
 
+> Semantic Owner Dependencies
+> - `CONTEXTUALIZES` [`Knowledge Basis Contract`](../../knowledge-bases/KNOWLEDGE-BASIS-CONTRACT.md#knowledge-basis-contract) — `KNOWLEDGE.BASIS`
+> - `CONTEXTUALIZES` [`Testing Knowledge Basis`](../../knowledge-bases/testing/README.md#knowledge-testing-basis) — `KNOWLEDGE.TESTING`
+
 ## Purpose
 
 Evaluate whether a proposed or actual test/proof **credibly establishes the selected semantic property without unnecessary cost, false confidence or implementation coupling**.

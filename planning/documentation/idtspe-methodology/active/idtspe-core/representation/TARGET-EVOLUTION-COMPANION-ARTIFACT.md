@@ -2,7 +2,16 @@
 
 Status: generic representation guidance
 
+<a id="representation-target-evolution-companion"></a>
 ## Purpose
+
+Responsibility ID: `REPRESENTATION.TARGET-EVOLUTION-COMPANION`
+
+> Semantic Owner Dependency
+> Type: `EXTENDS`
+> Responsibility: `REPRESENTATION.ARTIFACT-PLACEMENT`
+> Owner: [`Artifact Placement / Persistence`](ARTIFACT-PLACEMENT-AND-IDTSPE-RESPONSE-CONTRACT.md#representation-artifact-placement)
+
 
 Explain how evolution/future-transition meaning **already owned by the active methodology/profile** may be represented physically when it becomes too large or independently reviewable for its primary semantic owner artifact.
 

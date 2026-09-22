@@ -3,7 +3,16 @@
 Status: active reusable Practical Evidence Knowledge Basis / method
 Used by: `LENS-PRACTICAL-EVIDENCE`, `TM-PROTOTYPE`, `TM-PRACTICAL-TEST`
 
+<a id="knowledge-practical-evidence"></a>
 ## 1. Purpose / Ownership Split
+
+Responsibility ID: `KNOWLEDGE.PRACTICAL-EVIDENCE`
+
+> Semantic Owner Dependency
+> Type: `EXTENDS`
+> Responsibility: `KNOWLEDGE.BASIS`
+> Owner: [`Knowledge Basis Contract`](KNOWLEDGE-BASIS-CONTRACT.md#knowledge-basis-contract)
+
 
 Use one observation discipline before and after implementation without pretending those subjects have the same evidentiary strength.
 

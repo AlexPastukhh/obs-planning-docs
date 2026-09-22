@@ -69,6 +69,9 @@ A Module-defined Unit Definition is the primary reusable **Target Work Unit** pr
 > - `CONTEXTUALIZES` [`Unit Resolution Slot contract`](../runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md#twu-slot-contract) — `TWU.SLOT-CONTRACT`
 > - `CONTEXTUALIZES` [`Unit runtime projection`](../runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md#twu-runtime-projection) — `TWU.RUNTIME-PROJECTION`
 > - `CONTEXTUALIZES` [`Target Formation requirement/coverage`](../runtime/target-work/RESOLUTION-SLOT-AND-TARGET-FORMATION-SET.md#target-formation-requirement-coverage) — `TARGET-FORMATION.REQUIREMENT-COVERAGE`
+- `CONTEXTUALIZES` [`Lens Meta-Model`](../lenses/LENS-MODEL.md#lens-meta-model) — `LENS.META-MODEL`
+- `CONTEXTUALIZES` [`Knowledge Basis Contract`](../knowledge-bases/KNOWLEDGE-BASIS-CONTRACT.md#knowledge-basis-contract) — `KNOWLEDGE.BASIS`
+- `CONTEXTUALIZES` [`Artifact Placement / Persistence`](../representation/ARTIFACT-PLACEMENT-AND-IDTSPE-RESPONSE-CONTRACT.md#representation-artifact-placement) — `REPRESENTATION.ARTIFACT-PLACEMENT`
 
 The Target Module owns only the reusable **inventory and Target-family-specific preset/delta** around those Unit Definitions: which bounded responsibilities recur for this Target family, their family-specific applicability/inputs/guidance/validators/destinations/dependencies, and genuinely cross-Unit composition rules. It does not own a second Unit/Collection/Slot schema.
 

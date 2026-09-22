@@ -3,6 +3,11 @@
 Lens ID: `LENS-ARTIFACT-BOUNDARY-ADDRESSABILITY`
 Working name: **Documentation / Representation Lens**
 Activation: `REQUIRED_CORE`
+
+> Semantic Owner Dependencies
+> - `CONTEXTUALIZES` [`Artifact Placement / Persistence`](../../representation/ARTIFACT-PLACEMENT-AND-IDTSPE-RESPONSE-CONTRACT.md#representation-artifact-placement) — `REPRESENTATION.ARTIFACT-PLACEMENT`
+> - `CONTEXTUALIZES` [`Artifact Boundary / File Realization Method`](../../representation/methods/ARTIFACT-BOUNDARY-AND-FILE-REALIZATION.representation-method.md#representation-artifact-boundary-method) — `REPRESENTATION.ARTIFACT-BOUNDARY-METHOD`
+> - `CONTEXTUALIZES` [`Knowledge Basis Contract`](../../knowledge-bases/KNOWLEDGE-BASIS-CONTRACT.md#knowledge-basis-contract) — `KNOWLEDGE.BASIS`
 Required stage: material IDTSPE output / persistence / representation resolution
 Direct methodology surface: `lenscmd.documentation.representation.check`
 Canonical user intent: `проверь как лучше зафиксировать <target/result>`

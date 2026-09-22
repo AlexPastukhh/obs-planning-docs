@@ -3,7 +3,15 @@
 Status: active generic methodology guidance
 Purpose: keep reusable theory/reference knowledge separate from current project evidence while giving Target Modules, Unit Definitions, Unit Resolution Slots and Lenses a lightweight way to select and interpret the theory that is useful for their work.
 
+<a id="knowledge-basis-contract"></a>
 ## 1. Core Meaning
+
+Responsibility ID: `KNOWLEDGE.BASIS`
+
+> Semantic Owner Dependencies
+> - `CONTEXTUALIZES` [`Target / Source Relation`](../runtime/target-work/TARGET-CONTRACT-INSTANCE-SOURCE-RELATION-MODEL.md#target-instance-source-relation-contract) — `TARGET.INSTANCE-SOURCE-RELATION`
+> - `CONTEXTUALIZES` [`Core State Unit boundary`](../runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md#core-state-unit-boundary) — Source/Evidence remain current Core state, not reusable knowledge
+
 
 A `Knowledge Basis` is the bridge between reusable theory/reference knowledge and one operational methodology consumer.
 

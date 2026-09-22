@@ -2,7 +2,17 @@
 
 Status: active generic methodology owner
 
+<a id="lens-meta-model"></a>
 ## Terminology: Lens Meta-Model → Lens Model → Lens Application
+
+Responsibility ID: `LENS.META-MODEL`
+
+> Semantic Owner Dependencies
+> - `CONTEXTUALIZES` [`Finding Disposition`](../resolution/findings/FINDING-DISPOSITION.md#resolution-finding-disposition) — `RESOLUTION.FINDING-DISPOSITION`
+> - `CONTEXTUALIZES` [`Knowledge Basis Contract`](../knowledge-bases/KNOWLEDGE-BASIS-CONTRACT.md#knowledge-basis-contract) — `KNOWLEDGE.BASIS`
+> - `CONTEXTUALIZES` [`Target Work subject reference`](../runtime/target-work/TARGET-WORK-SUBJECT-REFERENCE-CONTRACT.md#target-work-subject-reference) — `TWU.SUBJECT-REFERENCE`
+> - `CONTEXTUALIZES` [`Artifact Placement / Persistence`](../representation/ARTIFACT-PLACEMENT-AND-IDTSPE-RESPONSE-CONTRACT.md#representation-artifact-placement) — `REPRESENTATION.ARTIFACT-PLACEMENT`
+
 
 This file is the canonical **Lens Meta-Model**: it defines what reusable Lens Models are and how they are selected/applied. The historical filename `LENS-MODEL.md` is retained for navigation compatibility.
 
@@ -321,7 +331,7 @@ keep the meaning in generic State Units
 
 ## 5. Knowledge Basis
 
-A reusable Lens may carry a `Knowledge Basis` when reusable theory/reference knowledge materially supports the evaluation. The shared [`Knowledge Basis guidance`](../knowledge-bases/KNOWLEDGE-BASIS-CONTRACT.md) keeps theory separate from current Target inputs while allowing consumer-specific selection and interpretation. There is no required mode enum or field schema.
+A reusable Lens may carry a `Knowledge Basis` when reusable theory/reference knowledge materially supports the evaluation. The shared [`Knowledge Basis guidance`](../knowledge-bases/KNOWLEDGE-BASIS-CONTRACT.md#knowledge-basis-contract) keeps theory separate from current Target inputs while allowing consumer-specific selection and interpretation. There is no required mode enum or field schema.
 
 Lens-specific specialization:
 
@@ -464,7 +474,7 @@ Finding Candidate ≠ automatic child Target
 
 ## 11. Artifact / File Ownership Boundary
 
-A Lens may contribute **supporting representation guidance for findings produced by that perspective**, but it does not own the generic placement schema or final destination resolution. Canonical `ARTIFACT_GUIDANCE`, placement-status, precedence and P-14 / PERSISTENCE_ADDRESSABILITY semantics are owned by [`../representation/ARTIFACT-PLACEMENT-AND-IDTSPE-RESPONSE-CONTRACT.md`](../representation/ARTIFACT-PLACEMENT-AND-IDTSPE-RESPONSE-CONTRACT.md).
+A Lens may contribute **supporting representation guidance for findings produced by that perspective**, but it does not own the generic placement schema or final destination resolution. Canonical `ARTIFACT_GUIDANCE`, placement-status, precedence and P-14 / PERSISTENCE_ADDRESSABILITY semantics are owned by [`Artifact Placement / Persistence`](../representation/ARTIFACT-PLACEMENT-AND-IDTSPE-RESPONSE-CONTRACT.md#representation-artifact-placement).
 
 Lens-local responsibility is limited to:
 

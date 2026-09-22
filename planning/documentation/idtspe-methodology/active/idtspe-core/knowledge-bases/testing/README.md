@@ -1,5 +1,14 @@
 # Testing Knowledge Basis — Proof Theory And Detailed Mechanics
 
+<a id="knowledge-testing-basis"></a>
+
+Responsibility ID: `KNOWLEDGE.TESTING`
+
+> Semantic Owner Dependency
+> Type: `EXTENDS`
+> Responsibility: `KNOWLEDGE.BASIS`
+> Owner: [`Knowledge Basis Contract`](../KNOWLEDGE-BASIS-CONTRACT.md#knowledge-basis-contract)
+
 Status: active reusable theoretical Knowledge Basis
 Consumers: `LENS-TEST-PROOF-EVIDENCE`, natural owner-local proof planning, `TM-EXACT-REALIZATION`, and `TM-PRACTICAL-TEST` when real-subject evidence is required
 
@@ -70,7 +79,7 @@ Lens evaluation:
 
 ## Imported-Theory Provenance
 
-The four linked source bodies were originally imported from source base `ca768b61b2c84d6cda6c27b4ace7c4fc87d404e7` and are intentionally preserved byte-for-byte as detailed reference material. Their local historical status/link wording is source provenance rather than a second current methodology authority.
+The four linked source bodies were originally imported from source base `ca768b61b2c84d6cda6c27b4ace7c4fc87d404e7` and their semantic/reference content is intentionally preserved as imported theory rather than rewritten into current methodology prose. Their local historical status/link wording is source provenance rather than a second current methodology authority. The `Source SHA256` values below refer to the original imported source bytes; repository checkout line-ending normalization may change the byte hash without changing the imported text.
 
 Current processed operational authority is:
 

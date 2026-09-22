@@ -1,5 +1,14 @@
 # Broad Discussion And Integration Checkpoint Model
 
+<a id="representation-discussion-checkpoint"></a>
+
+Responsibility ID: `REPRESENTATION.DISCUSSION-CHECKPOINT`
+
+> Semantic Owner Dependencies
+> - `CONTEXTUALIZES` [`Artifact Placement / Persistence`](../ARTIFACT-PLACEMENT-AND-IDTSPE-RESPONSE-CONTRACT.md#representation-artifact-placement) — `REPRESENTATION.ARTIFACT-PLACEMENT`
+> - `CONTEXTUALIZES` [`Resolution Responsibility Map`](../../resolution/RESPONSIBILITY-MAP.md) — lifecycle owners remain authoritative for Q/R/P/Proposal/Decision/Finding semantics
+> - `CONTEXTUALIZES` [`Target Work Unit`](../../runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md#twu-unit-contract) — `TWU.UNIT-CONTRACT`
+
 Status: active generic methodology owner
 Purpose: define the conversational/integration **interaction projection** for Broad Discussion and Integration Checkpoints without becoming the owner of Proposal/Decision lifecycle, Integration Use-Case Process, Lens semantics or physical placement policy.
 
