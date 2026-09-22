@@ -13,7 +13,7 @@ Responsibility ID: `IDTSPE.PASS-TRACE`
 > Responsibility: `IDTSPE.RUNTIME-COMPOSITION`
 > Owner: [Runtime / Work-Context Composition](IDTSPE-RUNTIME-COMPOSITION-CONTRACT.md#idtspe-runtime-composition)
 
-`Pass Trace` is an **observability projection of IDTSPE runtime**, not a semantic planning owner and not private chain-of-thought. It records only explicit methodology/runtime facts that are already safe to expose: Use-Case selection, composition, port admission, owner/component selection, material lifecycle events, port outcomes, unresolved state and methodology direction.
+`Pass Trace` is an **incrementally maintained methodology-runtime trace and observability projection**, not a domain/planning semantic owner and not private chain-of-thought. During the pass, the same structured trace is also the working orientation surface for completed/pending/reusable methodology traversal; at completion it is the source for final P-02 visibility. It records only explicit methodology/runtime facts that are already safe to expose: Use-Case selection, composition, port admission, owner/component selection, material lifecycle events, port outcomes, unresolved state and methodology direction.
 
 ```text
 IDTSPE semantic/runtime work
@@ -32,20 +32,24 @@ Session Work Steps / Progress Updates remain the interaction-time progress surfa
 
 ## 2. Included Runtime Position
 
-`P-02 Pass Trace / Visibility` is **included in every normal Shell pass** immediately after `P-01 Invocation`. P-02 establishes the Trace Contract before substantive non-baseline port work begins.
+`P-02 Pass Trace / Visibility` remains the **required canonical Shell port immediately after `P-01 Invocation`**, but the **same structured working trace is established/opened during invocation preparation** whenever normal IDTSPE work is being composed. This early establishment exists only so command-expansion, Use-Case-registry and Port-Composition events can be recorded when they actually happen; after `P-01`, canonical P-02 adopts/continues that same trace and records `PASS_STARTED`/Shell traversal. No second trace is created.
 
 ```text
-Use-Case applicability
+selected commands/components
+→ fully expand/merge command DAG
+→ establish/open one P-02 working trace
+→ record COMPOSITION_EXPANDED / selected roots / pending nodes as useful
+→ Use-Case applicability recheck (record as it happens)
 → UC-IDTSPE-COMPOSE-CURRENT-WORK
-→ refresh/reaffirm current Port Requirement Set
+→ Port Composition refresh/reaffirm (record as it happens)
 → P-01 Invocation
-→ P-02 establish Trace Contract + PASS_STARTED
+→ P-02 adopts/continues SAME trace + PASS_STARTED
 → dynamic Shell route
 → record observable events at the transition where they become known
-→ final Pass Overview is derived from the accumulated trace
+→ final Pass Overview is derived from the accumulated same trace
 ```
 
-Do not defer trace construction until the end merely to summarize from memory. If the active sink cannot be physically updated at every transition, retain the structured trace in the current runtime/work context and flush it at the nearest permitted checkpoint. The semantic event must still be recorded when it occurs.
+Do not defer trace construction until the end merely to summarize from memory. If the active sink cannot be physically updated at every transition, retain the structured trace in the current runtime/work context and flush it at the nearest permitted checkpoint. The methodology-runtime event must still be retained when it occurs.
 
 ## 3. Trace Contract
 
@@ -83,6 +87,59 @@ Detail
 When no stronger sink is explicitly selected by the active interaction/output contract, default to an `INLINE` proportional projection while keeping the structured runtime trace available through the pass. Long-running work may expose incremental routing through Session Progress Updates; short work may project only the final compact overview.
 
 Physical file/archive/realtime output is permitted only when the active task/output contract and permission boundary allow that sink. P-02 never grants mutation or artifact authority by itself.
+
+<a id="idtspe-pass-trace-working-orientation"></a>
+## 3A. Working Orientation Surface
+
+The same structured trace accumulated for P-02 visibility is used **during** the pass as the current methodology-traversal orientation surface. Do not create a second watch/to-do/ledger file merely to remember what methodology work remains.
+
+```text
+meaningful methodology-runtime event becomes known
+→ record/update P-02 trace at the nearest practical point
+→ consult current trace for completed / pending / reusable traversal
+→ continue the current pass
+→ later material events may refresh composition and update the same trace
+```
+
+The working trace may retain proportionally:
+
+```text
+Command composition
+  selected root commands/components
+  expanded/deduplicated dependency nodes
+  current dependencies-first pending/completed plan
+  declarative explicit capability/component/trace contributions
+
+Use-Case registry recheck result
+  checked/selected/released Use Cases where material
+  current selected Use-Case composition
+
+Port composition
+  current named Port Requirement Set
+  admission origin
+  ports already traversed + result status
+  required work not yet reached
+  shared prefixes/results eligible for REUSED
+
+Continuation/recheck cues
+  still-material DEFERRED/BLOCKED work
+  recheck conditions already produced by normal methodology owners/processes
+```
+
+This retained trace is **orientation/evidence, not sticky authority**. Every Planning Command still performs the mandatory Use-Case registry applicability recheck; every normal IDTSPE Shell pass still refreshes/reaffirms the Port Requirement Set. Those owner processes may reaffirm or change prior trace state, then update the same trace.
+
+Distinguish composition from traversal when detail is useful:
+
+```text
+Use Case: CHECKED → SELECTED / NOT_SELECTED → Process PENDING / APPLIED / REUSED as applicable
+Port: COMPOSITION_CHECKED → REQUIRED / NOT_REQUIRED → traversal result
+```
+
+### Incremental-First Principle
+
+The normal mechanism is **incremental-first** recording. P-02 trace MUST be updated at the nearest practical point when a meaningful applicability, routing, admission, owner/component selection, traversal, reuse or result event becomes known. A final trace MUST NOT normally be reconstructed from model memory after the work is complete.
+
+If an event was missed, P-02 MAY reconcile it from trustworthy Work Context / retained state / produced artifacts and mark/understand it as reconciled when material. This is a recovery path only; after reconciliation, resume incremental recording. Physical sink batching is allowed, but the structured runtime event must be retained when it occurs.
 
 ## 4. Port Admission Origin
 
@@ -228,7 +285,7 @@ consequence: existing scope basis remains sufficient
 
 ## 9. Final Pass Overview
 
-The final human-facing overview is derived from the trace, not independently reconstructed. A proportional overview may contain:
+The final human-facing overview is derived from the **same incrementally accumulated working trace**, optionally after a reconciliation check; it is not independently reconstructed from memory. A proportional overview may contain:
 
 ```text
 Use Cases / composition

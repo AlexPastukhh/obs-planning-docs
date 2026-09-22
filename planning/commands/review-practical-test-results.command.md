@@ -40,6 +40,23 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
     "lensId": null,
     "parentSurface": "practical_testing.plan",
     "hostTargetPolicy": "CREATE_OR_REUSE_TARGET"
-  }
+  },
+  "includes": [
+    "idtspe.work",
+    "idtspe.port-composition.recheck",
+    "idtspe.port.trace",
+    "idtspe.port.target",
+    "idtspe.target-module.apply"
+  ],
+  "ownerRefs": [
+    {
+      "responsibilityId": "TM-PRACTICAL-TEST",
+      "path": "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-PRACTICAL-TEST.md",
+      "anchor": "tm-practical-test-implemented-practical-evidence-acceptance",
+      "why": "Concrete Target Module Model semantics selected by this command; shared port/registry/Meta-Model references are inherited from included commands.",
+      "role": "PRIMARY_OWNER",
+      "readMode": "REQUIRED"
+    }
+  ]
 }
 [/PLANNING_COMMAND_DEFINITION]

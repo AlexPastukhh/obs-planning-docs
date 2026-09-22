@@ -1,4 +1,3 @@
-<a id="profile-lenses"></a>
 # 2D Visual Profile Lenses
 
 - [Unit Need / Visual Source Coverage](frequent/LENS-VISUAL-UNIT-NEED-AND-SOURCE-COVERAGE.md#lens-visual-unit-need-and-source-coverage)

@@ -34,6 +34,9 @@ Scope: focused read-only invocation of the existing Documentation methodology-us
   ],
   "userTarget": "<methodology-use context>",
   "palette": true,
-  "refinements": []
+  "refinements": [],
+  "includes": [
+    "methodology.use_cases.recheck"
+  ]
 }
 [/PLANNING_COMMAND_DEFINITION]

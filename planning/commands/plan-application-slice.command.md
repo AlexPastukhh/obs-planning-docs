@@ -41,6 +41,23 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
     "lensId": null,
     "parentSurface": null,
     "hostTargetPolicy": "CREATE_OR_REUSE_TARGET"
-  }
+  },
+  "includes": [
+    "idtspe.work",
+    "idtspe.port-composition.recheck",
+    "idtspe.port.trace",
+    "idtspe.port.target",
+    "idtspe.target-module.apply"
+  ],
+  "ownerRefs": [
+    {
+      "responsibilityId": "TM-IMPLEMENTATION-SLICE",
+      "path": "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-IMPLEMENTATION-SLICE.md",
+      "anchor": "tm-implementation-slice-slice-discovery-non-persistent-slice-planning",
+      "why": "Concrete Target Module Model semantics selected by this command; shared port/registry/Meta-Model references are inherited from included commands.",
+      "role": "PRIMARY_OWNER",
+      "readMode": "REQUIRED"
+    }
+  ]
 }
 [/PLANNING_COMMAND_DEFINITION]

@@ -2,7 +2,14 @@
 
 Status: current S6 invocation / compatibility contract
 
+<a id="sds-command-surface"></a>
 ## Purpose
+
+Responsibility ID: `SDS.COMMAND-SURFACE`
+
+> Semantic Owner Dependencies
+> - `EXTENDS` [`IDTSPE Core Command Surface`](../../../idtspe-core/commands/IDTSPE-COMMAND-SURFACE-CONTRACT.md#idtspe-command-surface) — `IDTSPE.COMMAND-SURFACE`
+> - `CONTEXTUALIZES` [`SDS Responsibility Map`](../RESPONSIBILITY-MAP.md)
 
 SDS extends generic IDTSPE invocation routing without creating a second runtime, a second Use-Case root or a competing semantic naming system. **Generic IDTSPE Core surfaces are owned separately** by [`../../../idtspe-core/commands/IDTSPE-COMMAND-SURFACE-CONTRACT.md`](../../../idtspe-core/commands/IDTSPE-COMMAND-SURFACE-CONTRACT.md); this file owns only the SDS profile extension.
 

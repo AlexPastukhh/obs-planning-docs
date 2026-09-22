@@ -38,6 +38,9 @@ Scope: focused read-only documentation-navigation review routed through the exis
   ],
   "userTarget": "<documentation file/folder/scope to review>",
   "palette": true,
-  "refinements": []
+  "refinements": [],
+  "includes": [
+    "methodology.use_cases.recheck"
+  ]
 }
 [/PLANNING_COMMAND_DEFINITION]

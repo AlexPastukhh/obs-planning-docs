@@ -3,7 +3,17 @@
 Status: active project-specific root command-system router
 Scope: mandatory executable-command entry and shared command routing/global policy. Semantic repository meaning is discovered through README/navigation and the selected area's own current semantic route.
 
+<a id="planning-command-routing"></a>
 ## Authority
+
+Responsibility ID: `COMMAND.ROOT-ROUTING`
+
+> Semantic Owner Dependencies
+> - `CONTEXTUALIZES` [`Planning Command Definition Contract`](commands/README.md#planning-command-definition-contract) — `COMMAND.DEFINITION-CONTRACT`
+> - `CONTEXTUALIZES` [`IDTSPE Command Surface`](documentation/idtspe-methodology/active/idtspe-core/commands/IDTSPE-COMMAND-SURFACE-CONTRACT.md#idtspe-command-surface) — `IDTSPE.COMMAND-SURFACE`
+> - `CONTEXTUALIZES` [`Planning Helper Semantic Projection`](documentation/tools/tampermonkey/chat-command-palette/README.md#planning-helper-semantic-projection) — `HELPER.SEMANTIC-PROJECTION`
+
+Cross-system responsibility routing: [`commands/RESPONSIBILITY-MAP.md`](commands/RESPONSIBILITY-MAP.md).
 
 ```text
 planning/command-routing.md
@@ -34,11 +44,15 @@ A command may link to the applicable semantic entry/current owner defined by the
 
 ```text
 1. Start here for an explicit command.
-2. Resolve the direct planning/commands/*.command.md whose commandFamily contains the trigger.
-3. Read that complete command definition.
-4. Follow its ownerFiles/read-mode requirements.
-5. Preserve its permission boundary.
-6. Use the related semantic entry/current owner only for purpose/context/owner navigation; semantic-entry activation does not grant command permission.
+2. Resolve the direct `planning/commands/*.command.md` whose `commandFamily` contains the trigger.
+3. Read that complete command definition and **fully expand all selected command/component roots and every registered transitive `includes` edge before semantic execution begins**.
+4. Merge one dependency DAG, reject unresolved IDs/cycles, deduplicate shared nodes, and collect declarative contributions (explicit capability requirements, selected semantic components, trace configuration, target/context selectors, permission constraints) from every node.
+5. Establish the dependencies-first execution plan. Included command actions are dependencies, not recursive independent passes; each selected root action executes only after its dependencies completed or were validly `REUSED`.
+6. For normal IDTSPE work, establish/reuse the one P-02 working trace early enough to record the following composition events incrementally.
+7. Run/reaffirm `methodology.use_cases.recheck` / `UC-DOC-RESOLVE-CURRENT-USE-CASES` for **every Planning Command invocation**. This is a compact registry applicability recheck, not execution of every Use Case.
+8. For normal IDTSPE Shell work, refresh/reaffirm the Port Requirement Set before P-01 through `IDTSPE.PORT-COMPOSITION-REFRESH`, using the already-collected explicit leaf requirements.
+9. Execute the resulting DAG dependencies before dependents while following each node's own `ownerRefs` / `ownerFiles` and current selected Use-Case owners. References inherited through included commands need not be repeated on the dependent command.
+10. Preserve the selected root command permission boundary. Semantic-entry activation or included command traversal never expands mutation/commit/push permission.
 ```
 
 Do not reconstruct commands from memory, helper output, examples or historical files when the command definition is readable.
@@ -67,7 +81,7 @@ Canonical reusable algorithm: `planning/documentation/command-routing-workflow.m
 
 ## Current IDTSPE Command Family
 
-The current material-planning command surface is defined by [`planning/documentation/idtspe-methodology/active/profiles/sds/commands/SDS-COMMAND-SURFACE-EXTENSION.md`](documentation/idtspe-methodology/active/profiles/sds/commands/SDS-COMMAND-SURFACE-EXTENSION.md).
+Current command/Helper responsibility routing starts at [`planning/commands/RESPONSIBILITY-MAP.md`](commands/RESPONSIBILITY-MAP.md). Generic IDTSPE invocation semantics are owned by [`IDTSPE.COMMAND-SURFACE`](documentation/idtspe-methodology/active/idtspe-core/commands/IDTSPE-COMMAND-SURFACE-CONTRACT.md#idtspe-command-surface); the installed SDS profile extends that surface through [`SDS.COMMAND-SURFACE`](documentation/idtspe-methodology/active/profiles/sds/commands/SDS-COMMAND-SURFACE-EXTENSION.md#sds-command-surface).
 
 ```text
 current methodology Use Cases
@@ -77,7 +91,7 @@ current methodology Use Cases
 = semantic Command projection only
 ```
 
-Generic Core command semantics/host-target policies are owned by the Core command-surface contract; profile contracts extend rather than redefine them. IDTSPE is already active. The canonical direct `idtspe` trigger is therefore a convenience request to refresh/reaffirm current Use-Case-driven composition, while `idtspe <TM-ID|LENS-ID|registry alias> <context>` supplies explicit selection context and still passes current Use-Case/context plus component-local applicability/materiality. Repository command IDs/legacy tmcmd keys remain implementation/compatibility details. SDS commands stay inside the same IDTSPE Work Context. `idtspe.lenses.select` resolves the contextual `TF-06A LENS_SET`; `idtspe.lens.apply` dispatches to one selected registered Lens without becoming that Lens authority. Fixed Lens shortcuts reuse/create a natural host Target only when material and never create a Lens-owned Target. A Local Target Contract may use the same Lens registry when no reusable Target Module fits. The Planning Helper command classifications are navigation projections only. One current UC/TM/Lens capability projects to one primary semantic Command card; direct/focused aliases do not create peer semantic owners.
+Generic Core command semantics/host-target policies are owned by the Core command-surface contract; profile contracts extend rather than redefine them. IDTSPE is already active. The canonical direct `idtspe` trigger is therefore a convenience request to refresh/reaffirm current Use-Case-driven composition, while `idtspe <TM-ID|LENS-ID|registry alias> <context>` supplies explicit selection context and still passes current Use-Case/context plus component-local applicability/materiality. Repository command IDs/legacy tmcmd keys remain implementation/compatibility details. SDS commands stay inside the same IDTSPE Work Context. `idtspe.lenses.select` resolves current Lens applicability/selection through the Lens capability and Lens Meta-Model; there is no fixed Target Lens Set field. `idtspe.lens.apply` dispatches to one selected registered Lens without becoming that Lens authority. Fixed Lens shortcuts reuse/create a natural host Target only when material and never create a Lens-owned Target. A Local Target Contract may use the same Lens registry when no reusable Target Module fits. The Planning Helper command classifications are navigation projections only. One current UC/TM/Lens capability projects to one primary semantic Command card; direct/focused aliases do not create peer semantic owners.
 
 ## Explicit-Meaning Rule
 
@@ -103,10 +117,12 @@ No unresolved choice or fallback authorizes destructive actions, unrelated scope
 ## Command Registry Rules
 
 - one direct `*.command.md` file = one concrete command;
+- every concrete command composes the methodology Use-Case registry applicability recheck, directly or transitively;
 - canonical command, English name and aliases are unique;
 - `commandFamily` includes the canonical trigger exactly;
 - command files own output, active-context behavior, reads and permissions;
 - reusable workflows own algorithms instead of being copied into command bodies;
+- `includes` may guarantee traversal through registered command prefixes/canonical semantic routes, but must not copy algorithms or persist a parallel numeric Shell-port topology;
 - commands are optional shortcuts: repository semantic discovery must remain possible through README/navigation and the selected area's own current semantic route;
 - a retired/legacy compatibility command may preserve an old ID/alias for callers, but its `meaning`, `ownerFiles`, active-context behavior and expected output must route to current semantic/methodology authority. `palette:false` alone is not semantic retirement and must never keep an obsolete runtime alive.
 
@@ -130,7 +146,7 @@ An archive from an earlier message is not automatically current. `archive read-s
 
 ## Planning Helper Boundary
 
-The Helper is a **semantic command projection**, not a semantic owner. Its primary command catalog combines current methodology Use Cases, Target Modules and Lenses with General/Tool direct commands. Methodology Use Cases start from `planning/documentation/use-case-registry-map.md` and only the current scoped registries mapped there; Target Modules/Lenses come from their current registries/owners. Project/area Use Cases remain reachable through their own declared routes unless explicitly projected.
+The Helper is a **semantic command projection**, not a semantic owner. Its primary command catalog combines current methodology Use Cases, Target Modules and Lenses with General/Tool direct commands plus the generic `IDTSPE Pass` command-composition surface. Methodology Use Cases start from `planning/documentation/use-case-registry-map.md` and only the current scoped registries mapped there; Target Modules/Lenses come from their current registries/owners. Project/area Use Cases remain reachable through their own declared routes unless explicitly projected.
 
 Canonical working Scenarios are presentation/integration examples owned outside the Helper. They contain semantic owner references, not command IDs/triggers. Helper derives command equivalents and the reverse `Scenarios N` index from those semantic references; Helper must not maintain separate `When To Use` / `What You Get` semantic prose.
 

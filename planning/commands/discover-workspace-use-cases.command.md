@@ -36,6 +36,9 @@ Scope: one concrete OBS Planning command route. Canonical Workspace Use-Case ide
   ],
   "userTarget": "<workspace/application realization area whose internal useful-result picture matters>",
   "palette": true,
-  "refinements": []
+  "refinements": [],
+  "includes": [
+    "methodology.use_cases.recheck"
+  ]
 }
 [/PLANNING_COMMAND_DEFINITION]

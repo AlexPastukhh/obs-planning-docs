@@ -72,10 +72,8 @@ test('scenario-to-command projection is precise and keeps show-next distinct fro
   ]);
   const next=m.commandEntries.find((entry)=>entry.id==='idtspe.next');
   const cont=m.commandEntries.find((entry)=>entry.id==='idtspe.continue');
-  assert.equal(next.scenarioUses.length,1);
-  assert.equal(cont.scenarioUses.length,1);
-  assert.equal(next.scenarioUses[0].stepId,'SCN-01-S2');
-  assert.equal(cont.scenarioUses[0].stepId,'SCN-01-S2');
+  assert.deepEqual(next.scenarioUses.map((use)=>use.stepId),['SCN-01-S1','SCN-01-S2']);
+  assert.deepEqual(cont.scenarioUses.map((use)=>use.stepId),['SCN-01-S1','SCN-01-S2']);
   assert.match(next.definition.meaning,/show|next|propos/i);
   assert.match(cont.definition.meaning,/perform|continue|ordinary action/i);
   assert.deepEqual(equivalentIds(scn01.steps.find((step)=>step.id==='SCN-01-S3F')),['idtspe.findings.review']);
@@ -153,12 +151,12 @@ test('Exact scenario exposes Representation only as a conditional semantic Lens 
   ]);
 });
 
-test('bare idtspe and generic Lens apply remain registered infrastructure with palette false',()=>{
+test('bare idtspe and generic Lens apply are visible IDTSPE Pass composition surfaces',()=>{
   const m=memory();
-  assert.ok(commands.some((command)=>command.id==='idtspe.work'&&command.palette===false));
-  assert.ok(commands.some((command)=>command.id==='idtspe.lens.apply'&&command.palette===false));
-  assert.equal(m.commandEntries.some((entry)=>entry.id==='idtspe.work'),false);
-  assert.equal(m.commandEntries.some((entry)=>entry.id==='idtspe.lens.apply'),false);
+  assert.ok(commands.some((command)=>command.id==='idtspe.work'&&command.palette===true));
+  assert.ok(commands.some((command)=>command.id==='idtspe.lens.apply'&&command.palette===true));
+  assert.equal(m.commandEntries.find((entry)=>entry.id==='idtspe.work')?.presentationGroup?.viewId,'IDTSPE_PASS');
+  assert.equal(m.commandEntries.find((entry)=>entry.id==='idtspe.lens.apply')?.presentationGroup?.viewId,'IDTSPE_PASS');
   assert.ok(m.commandEntries.some((entry)=>entry.id==='uc:UC-IDTSPE-COMPOSE-CURRENT-WORK'));
 });
 

@@ -38,7 +38,8 @@
     const sources=uniqueStrings(value.sources,(v)=>safePath(v,`${id} source`));if(!sources.length)throw new TypeError(`Semantic component sources are required: ${id}`);
     const aliases=uniqueStrings(value.aliases||[],(v)=>safeLine(v,`${id} alias`));
     const context=String(value.context||'').trim(),result=String(value.result||'').trim(),essence=String(value.essence||description||label).trim();
-    return{id,kind,scope,label,actionLabel,description,context,result,essence,sources,aliases,commandId:String(value.commandId||'').trim(),invocation:String(value.invocation||'').trim(),target:String(value.target||`<${label} target>`).trim()};
+    const ownerRef=value.ownerRef&&typeof value.ownerRef==='object'?{semanticId:safeLine(value.ownerRef.semanticId||id,`${id} ownerRef semanticId`),path:safePath(value.ownerRef.path,`${id} ownerRef path`),anchor:safeLine(value.ownerRef.anchor,`${id} ownerRef anchor`),why:safeLine(value.ownerRef.why,`${id} ownerRef why`),role:safeLine(value.ownerRef.role||'PRIMARY_OWNER',`${id} ownerRef role`),readMode:safeLine(value.ownerRef.readMode||'REQUIRED',`${id} ownerRef readMode`)}:null;
+    return{id,kind,scope,label,actionLabel,description,context,result,essence,sources,aliases,ownerRef,commandId:String(value.commandId||'').trim(),invocation:String(value.invocation||'').trim(),target:String(value.target||`<${label} target>`).trim()};
   }
   function normalizeSemanticComponents(values){const out=(Array.isArray(values)?values:[]).map(normalizeSemanticComponent),ids=out.map((x)=>x.id);if(new Set(ids).size!==ids.length)throw new TypeError('Duplicate semantic component ids.');return out;}
 
@@ -55,8 +56,22 @@
   function buildSemanticBody(kind,definition,mode){
     const normalized=kind==='use_case'?normalizeUseCaseDefinition(definition):normalizeSemanticComponent(definition),marker=kind==='use_case'?'PLANNING_USE_CASE':'PLANNING_SEMANTIC_ENTRY',idField=kind==='use_case'?'use_case_id':`${kind}_id`;
     const lines=[`[${marker}]`,`${idField}:`,`  ${normalized.id}`,'',`${kind}:`,`  ${normalized.label}`,'','mode:',`  ${mode}`];
-    if(kind==='use_case')lines.push('','semantic_owner:','  Use this Use Case as the current functional methodology-use guide: decide which methodology/documentation actions and components are relevant to the current situation, then follow the selected owner route. The Use Case does not replace specialized Target Module, Lens, profile or repository semantics.');
-    else lines.push('','semantic_owner:',`  Resolve and use ${normalized.id} as the current ${normalized.kind==='TARGET_MODULE'?'Target Module':'Lens'} owner. This Helper row is an invocation projection only.`);
+    if(kind==='use_case')lines.push('','semantic_owner:','  Use this Use Case as the current functional methodology-use guide: decide which methodology/documentation actions and components are relevant to the current situation, then follow the selected owner route. The Use Case does not replace specialized Target Module, Lens, profile or repository semantics.','', 'command_composition:', '  - methodology.use_cases.recheck', `  - ${normalized.id} (selected Use-Case owner/process)`, '  Fully resolve the registry-level applicability composition first. Selecting this Use Case does not execute every other Use Case; if this selected process later enters normal IDTSPE Shell work, its natural route supplies idtspe.work and the current Port Composition refresh.');
+    else {
+      lines.push('','semantic_owner:',`  Resolve and use ${normalized.id} as the current ${normalized.kind==='TARGET_MODULE'?'Target Module':'Lens'} owner. This Helper row is an invocation projection only.`);
+      const isTarget=normalized.kind===SEMANTIC_KINDS.TARGET_MODULE;
+      const base=isTarget?'idtspe.target-module.apply':'idtspe.lens.apply';
+      const port=isTarget?'idtspe.port.target':'idtspe.port.lens';
+      lines.push('','command_composition:',
+        '  - idtspe.work',
+        '  - idtspe.port-composition.recheck',
+        '  - idtspe.port.trace',
+        `  - ${port}`,
+        `  - ${base}`,
+        `  - ${normalized.id} (semantic owner selection)`,
+        '  Fully expand ALL selected roots/includes before semantic execution, merge/deduplicate one DAG, collect explicit component/capability contributions, then execute dependencies before dependents. This concrete semantic component is the leaf action on its branch.');
+      const ref=normalized.ownerRef;lines.push('','own_canonical_refs:',ref?`  - ${ref.semanticId} → \`${ref.path}#${ref.anchor}\` | role: ${ref.role}; read: ${ref.readMode}; why: ${ref.why}`:'  - resolve concrete component owner from current registry; shared registry/Meta-Model/port refs come from included commands.');
+    }
     lines.push('','source_of_truth:',...(normalized.sources||[]).map((s)=>`  - \`${s}\``));
     if(kind==='use_case')lines.push('','route_resolution:','  Resolve this exact current Use-Case entry. Follow its current owner route and then the current owner links/read-order to every principle, workflow, template and integration rule materially defining this Use Case. Do not treat this Helper body as a frozen list of all future owner paths.');
     lines.push('','read_rule:',...readRule(mode,kind).map((x)=>`  ${x}`));

@@ -41,6 +41,29 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
     "lensId": null,
     "parentSurface": null,
     "hostTargetPolicy": "NONE"
-  }
+  },
+  "includes": [
+    "idtspe.work",
+    "idtspe.port-composition.recheck",
+    "idtspe.port.trace"
+  ],
+  "ownerRefs": [
+    {
+      "responsibilityId": "IDTSPE.COMMAND-SURFACE",
+      "path": "planning/documentation/idtspe-methodology/active/idtspe-core/commands/IDTSPE-COMMAND-SURFACE-CONTRACT.md",
+      "anchor": "idtspe-command-surface",
+      "why": "Owns the generic continue-through-current-methodology command surface while current Use Cases/Shell remain the process authorities.",
+      "role": "PRIMARY_OWNER",
+      "readMode": "REQUIRED"
+    },
+    {
+      "responsibilityId": "IDTSPE.UC.COMPOSE-CURRENT-WORK",
+      "path": "planning/documentation/idtspe-methodology/active/idtspe-core/use-cases/compose-current-work/UC-IDTSPE-COMPOSE-CURRENT-WORK.md",
+      "anchor": "uc-idtspe-compose-current-work",
+      "why": "Provides the current methodology composition from which navigation/continuation is resolved.",
+      "role": "SUPPORTING_CONTRACT",
+      "readMode": "REQUIRED"
+    }
+  ]
 }
 [/PLANNING_COMMAND_DEFINITION]

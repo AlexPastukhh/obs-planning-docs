@@ -35,7 +35,7 @@ Scope: one concrete OBS Planning command route. Reusable semantics remain in lin
     "Review Priority is blast radius if wrong; Resolution Escalation is semantic authority distance. Do not collapse them.",
     "RE-0 means current accepted meaning already determines one correction; do not manufacture a new semantic Decision.",
     "A detail at architecture depth is not automatically an architecture Decision. Escalate only when accepted owner meaning itself must change or be revalidated.",
-    "Under proposal-driven interaction an AI Proposal may gate the next material action at any RE category, but formal IDTSPE Proposal State is created only when candidate semantic meaning benefits from lifecycle/addressability/review.",
+    "Under proposal-driven interaction a Generic AI Proposal (GIP) may gate the next material action at any RE category, but formal IDTSPE Proposal State is created only when candidate semantic meaning benefits from lifecycle/addressability/review.",
     "When an active profile defines Requirement/depth/temporal-host semantics, use that profile owner only after the generic Finding disposition identifies it as applicable.",
     "Resolution escalation identifies the semantic decision distance; it does not by itself mean current-owner state changes before the selected correction is realized.",
     "RE-* classifies Findings only. If disposition creates a material Proposal, review that Proposal through canonical Proposal Semantic Change Impact before material selection.",
@@ -52,6 +52,53 @@ Scope: one concrete OBS Planning command route. Reusable semantics remain in lin
     "lensId": null,
     "parentSurface": null,
     "hostTargetPolicy": "NONE"
-  }
+  },
+  "includes": [
+    "idtspe.work",
+    "idtspe.port-composition.recheck",
+    "idtspe.port.trace"
+  ],
+  "ownerRefs": [
+    {
+      "responsibilityId": "RESOLUTION.FINDING-DISPOSITION",
+      "path": "planning/documentation/idtspe-methodology/active/idtspe-core/resolution/findings/FINDING-DISPOSITION.md",
+      "anchor": "resolution-finding-disposition",
+      "why": "Primary operation: review/disposition material Finding Candidates by natural subject and consequence.",
+      "role": "PRIMARY_OWNER",
+      "readMode": "REQUIRED"
+    },
+    {
+      "responsibilityId": "TWU.SUBJECT-REFERENCE",
+      "path": "planning/documentation/idtspe-methodology/active/idtspe-core/runtime/target-work/TARGET-WORK-SUBJECT-REFERENCE-CONTRACT.md",
+      "anchor": "canonical-target-work-subject-reference",
+      "why": "Addresses the narrow Unit/Collection item/Slot subject when a Finding belongs to Target Work.",
+      "role": "SUPPORTING_CONTRACT",
+      "readMode": "ON_DEMAND"
+    },
+    {
+      "responsibilityId": "RESOLUTION.QRP-LIFECYCLE",
+      "path": "planning/documentation/idtspe-methodology/active/idtspe-core/resolution/qrp/QRP-LIFECYCLE-AND-REVIEW.md",
+      "anchor": "resolution-qrp-lifecycle",
+      "why": "Possible destination when the Finding exposes unresolved Question/Risk/Problem meaning.",
+      "role": "POSSIBLE_DESTINATION",
+      "readMode": "DESTINATION_ONLY"
+    },
+    {
+      "responsibilityId": "RESOLUTION.PROPOSAL-DECISION-LIFECYCLE",
+      "path": "planning/documentation/idtspe-methodology/active/idtspe-core/resolution/proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md",
+      "anchor": "resolution-proposal-decision-lifecycle",
+      "why": "Possible destination when the Finding implies a material candidate semantic change.",
+      "role": "POSSIBLE_DESTINATION",
+      "readMode": "DESTINATION_ONLY"
+    },
+    {
+      "responsibilityId": "IDTSPE.UC.REVALIDATE-CURRENT-WORK",
+      "path": "planning/documentation/idtspe-methodology/active/idtspe-core/use-cases/revalidate-current-work/UC-IDTSPE-REVALIDATE-CURRENT-WORK.md",
+      "anchor": "process",
+      "why": "Possible destination when the Finding challenges accepted upstream meaning/evidence.",
+      "role": "POSSIBLE_DESTINATION",
+      "readMode": "DESTINATION_ONLY"
+    }
+  ]
 }
 [/PLANNING_COMMAND_DEFINITION]

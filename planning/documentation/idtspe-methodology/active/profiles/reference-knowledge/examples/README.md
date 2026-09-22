@@ -1,4 +1,3 @@
-<a id="reference-knowledge-examples"></a>
 # Reference Knowledge Examples
 
 - [Entry Create Then Refine](ENTRY-CREATE-THEN-REFINE.md#example-entry-create-then-refine)

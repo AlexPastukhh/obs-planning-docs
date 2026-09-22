@@ -57,6 +57,54 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
     "lensId": null,
     "parentSurface": null,
     "hostTargetPolicy": "NONE"
-  }
+  },
+  "includes": [
+    "idtspe.work",
+    "idtspe.port-composition.recheck",
+    "idtspe.port.trace",
+    "idtspe.port.proposal"
+  ],
+  "ownerRefs": [
+    {
+      "responsibilityId": "RESOLUTION.PROPOSAL-DECISION-LIFECYCLE",
+      "path": "planning/documentation/idtspe-methodology/active/idtspe-core/resolution/proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md",
+      "anchor": "resolution-proposal-decision-lifecycle",
+      "why": "Owns formal IDTSPE Proposal identity, candidate semantics, review, selection boundary and integration.",
+      "role": "PRIMARY_OWNER",
+      "readMode": "REQUIRED"
+    },
+    {
+      "responsibilityId": "IDTSPE.USER-INPUT-INTAKE",
+      "path": "planning/documentation/idtspe-methodology/active/idtspe-core/runtime/interaction/USER-INPUT-DECISION-AND-ANSWER-INTAKE-RULE.md",
+      "anchor": "idtspe-user-input-intake",
+      "why": "Grounds required USER-only information before presenting an affected material candidate.",
+      "role": "SUPPORTING_CONTRACT",
+      "readMode": "REQUIRED"
+    },
+    {
+      "responsibilityId": "LENS-PROPOSAL-DECISION-RESOLUTION-CONTEXT",
+      "path": "planning/documentation/idtspe-methodology/active/idtspe-core/lenses/required/LENS-PROPOSAL-DECISION-RESOLUTION-CONTEXT.md",
+      "anchor": "lens-proposal-decision-resolution-context",
+      "why": "Evaluates the material Proposal/Decision resolution context without becoming Proposal authority.",
+      "role": "VALIDATION_HANDOFF",
+      "readMode": "ON_DEMAND"
+    },
+    {
+      "responsibilityId": "RESOLUTION.QRP-LIFECYCLE",
+      "path": "planning/documentation/idtspe-methodology/active/idtspe-core/resolution/qrp/QRP-LIFECYCLE-AND-REVIEW.md",
+      "anchor": "resolution-qrp-lifecycle",
+      "why": "Potentially routes material related unresolved Q/R/P surfaced during Proposal review.",
+      "role": "POSSIBLE_DESTINATION",
+      "readMode": "DESTINATION_ONLY"
+    },
+    {
+      "responsibilityId": "RESOLUTION.CARRY-FORWARD",
+      "path": "planning/documentation/idtspe-methodology/active/idtspe-core/resolution/continuation/RESOLUTION-CARRY-FORWARD-PROJECTION.md",
+      "anchor": "resolution-carry-forward",
+      "why": "Retains only surviving material open/deferred/residual continuation after Proposal work.",
+      "role": "VALIDATION_HANDOFF",
+      "readMode": "ON_DEMAND"
+    }
+  ]
 }
 [/PLANNING_COMMAND_DEFINITION]

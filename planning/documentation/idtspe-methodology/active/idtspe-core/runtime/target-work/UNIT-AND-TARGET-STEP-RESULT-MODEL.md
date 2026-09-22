@@ -892,6 +892,7 @@ When a retained material Proposal needs review provenance, its `Review Provenanc
 
 Methodology Usage State may attach to a Target Work Unit when methodology-use meaning is genuinely Unit-local, or remain cross-Unit/Target/Work-Context state when that is its natural subject. It is not forced into a Work Unit solely because the overall model is Unit-centric.
 
+<a id="twu-unit-definition-authority"></a>
 ## 5. Unit Definition Authority / DEFINE UNIT
 
 The canonical owner of Unit structure + Unit-authoring guidance is this model. There is no competing generic `Unit Contract` object and separate `Unit Creation Guide`; a normative **Unit Definition** is the result of `DEFINE UNIT`.
@@ -1119,10 +1120,10 @@ material Unit becomes current work subject
 The persisted binding form follows that Documentation owner; normally:
 
 ```md
-**Methodology:** [exact reusable owner](../../shared)
+**Methodology:** {link to exact reusable owner}
 ```
 
-Do not copy the method after the link. If a reusable owner should exist but is missing, ambiguous or conflicting, surface an OPEN methodology-owner resolution / Finding instead of pretending the block is merely Contextual.
+The braces above are placeholder notation, not a repository path. Replace them with a real Markdown link to the exact reusable owner. Do not copy the method after that owner link. If a reusable owner should exist but is missing, ambiguous or conflicting, surface an OPEN methodology-owner resolution / Finding instead of pretending the block is merely Contextual.
 
 After the primary binding is established:
 

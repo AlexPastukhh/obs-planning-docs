@@ -38,6 +38,9 @@ Scope: representation preference only; no separate SDS runtime/profile.
   ],
   "userTarget": "<current SDS plan / owner set>",
   "palette": false,
-  "refinements": []
+  "refinements": [],
+  "includes": [
+    "methodology.use_cases.recheck"
+  ]
 }
 [/PLANNING_COMMAND_DEFINITION]

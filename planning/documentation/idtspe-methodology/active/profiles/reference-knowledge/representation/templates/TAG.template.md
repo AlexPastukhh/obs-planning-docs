@@ -1,4 +1,3 @@
-<a id="reference-tag-template"></a>
 # <Tag Name>
 
 Omit optional fields/sections that have no current meaning; do not retain blank placeholders.

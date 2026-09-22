@@ -51,6 +51,46 @@ Scope: generic Core Decision capture/review entry; it never grants selection aut
     "lensId": null,
     "parentSurface": null,
     "hostTargetPolicy": "NONE"
-  }
+  },
+  "includes": [
+    "idtspe.work",
+    "idtspe.port-composition.recheck",
+    "idtspe.port.trace",
+    "idtspe.port.decision"
+  ],
+  "ownerRefs": [
+    {
+      "responsibilityId": "IDTSPE.USER-INPUT-INTAKE",
+      "path": "planning/documentation/idtspe-methodology/active/idtspe-core/runtime/interaction/USER-INPUT-DECISION-AND-ANSWER-INTAKE-RULE.md",
+      "anchor": "idtspe-user-input-intake",
+      "why": "Classifies exact USER/context input so only actual selected meaning becomes Decision semantics.",
+      "role": "SUPPORTING_CONTRACT",
+      "readMode": "REQUIRED"
+    },
+    {
+      "responsibilityId": "RESOLUTION.PROPOSAL-DECISION-LIFECYCLE",
+      "path": "planning/documentation/idtspe-methodology/active/idtspe-core/resolution/proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md",
+      "anchor": "resolution-proposal-decision-lifecycle",
+      "why": "Owns actual Decision formation, integration and proportional retained trace.",
+      "role": "PRIMARY_OWNER",
+      "readMode": "REQUIRED"
+    },
+    {
+      "responsibilityId": "RESOLUTION.QRP-LIFECYCLE",
+      "path": "planning/documentation/idtspe-methodology/active/idtspe-core/resolution/qrp/QRP-LIFECYCLE-AND-REVIEW.md",
+      "anchor": "resolution-qrp-lifecycle",
+      "why": "Routes related unresolved Q/R/P without collapsing them into the Decision.",
+      "role": "POSSIBLE_DESTINATION",
+      "readMode": "DESTINATION_ONLY"
+    },
+    {
+      "responsibilityId": "RESOLUTION.CARRY-FORWARD",
+      "path": "planning/documentation/idtspe-methodology/active/idtspe-core/resolution/continuation/RESOLUTION-CARRY-FORWARD-PROJECTION.md",
+      "anchor": "resolution-carry-forward",
+      "why": "Carries only surviving residual/revalidation work after selected meaning is integrated.",
+      "role": "VALIDATION_HANDOFF",
+      "readMode": "ON_DEMAND"
+    }
+  ]
 }
 [/PLANNING_COMMAND_DEFINITION]

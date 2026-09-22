@@ -42,6 +42,23 @@ Scope: historical invocation alias redirected to current IDTSPE/SDS authority; h
     "lensId": "LENS-IMPLEMENTATION-REQUIREMENTS-DISCOVERY",
     "parentSurface": null,
     "hostTargetPolicy": "RESOLVE_OR_REUSE_TARGET"
-  }
+  },
+  "includes": [
+    "idtspe.work",
+    "idtspe.port-composition.recheck",
+    "idtspe.port.trace",
+    "idtspe.port.lens",
+    "idtspe.lens.apply"
+  ],
+  "ownerRefs": [
+    {
+      "responsibilityId": "LENS-IMPLEMENTATION-REQUIREMENTS-DISCOVERY",
+      "path": "planning/documentation/idtspe-methodology/active/profiles/sds/lenses/reusable/LENS-IMPLEMENTATION-REQUIREMENTS-DISCOVERY.md",
+      "anchor": "lens-implementation-requirements-discovery-owner-local-implementation-requirements-discovery",
+      "why": "Concrete Lens Model semantics selected by this command; shared port/registry/Meta-Model references are inherited from included commands.",
+      "role": "PRIMARY_OWNER",
+      "readMode": "REQUIRED"
+    }
+  ]
 }
 [/PLANNING_COMMAND_DEFINITION]

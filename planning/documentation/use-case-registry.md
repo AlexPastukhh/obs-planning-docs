@@ -8,7 +8,7 @@ This registry is one scope reached through the [`Methodology Use-Case Registry M
 
 | ID | Use Case | Situation summary | Result summary | Owner | Related command |
 |---|---|---|---|---|---|
-| `UC-DOC-RESOLVE-CURRENT-USE-CASES` | Resolve Current Methodology Use Cases | any methodology-guided work starts/continues; before a material methodology action or after applicability-changing context | current applicable Use-Case composition is reaffirmed/refreshed using reusable registry metadata where trustworthy | [`use-cases/UC-DOC-RESOLVE-CURRENT-USE-CASES.md`](use-cases/UC-DOC-RESOLVE-CURRENT-USE-CASES.md) | пройди регистры методологии |
+| `UC-DOC-RESOLVE-CURRENT-USE-CASES` | Resolve Current Methodology Use Cases | any current Planning/repository work starts/continues; every explicit Planning Command and ordinary natural-language work entry | current applicable Use-Case composition is reaffirmed/refreshed using reusable registry metadata where trustworthy | [`use-cases/UC-DOC-RESOLVE-CURRENT-USE-CASES.md`](use-cases/UC-DOC-RESOLVE-CURRENT-USE-CASES.md) | пройди регистры методологии |
 
 ### Methodology / Guidance Use
 

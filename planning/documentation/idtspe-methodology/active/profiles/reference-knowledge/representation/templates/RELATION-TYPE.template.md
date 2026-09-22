@@ -1,4 +1,3 @@
-<a id="reference-relation-type-template"></a>
 # <Relation Type Name>
 
 Omit optional fields that have no current meaning; do not retain blank placeholders.

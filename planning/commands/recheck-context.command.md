@@ -32,6 +32,9 @@ Scope: legacy explicit recheck shortcut retained only for compatibility; current
   ],
   "userTarget": "<legacy explicit recheck target>",
   "palette": false,
-  "refinements": []
+  "refinements": [],
+  "includes": [
+    "methodology.use_cases.recheck"
+  ]
 }
 [/PLANNING_COMMAND_DEFINITION]

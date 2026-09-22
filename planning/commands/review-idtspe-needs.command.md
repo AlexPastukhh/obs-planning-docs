@@ -50,6 +50,61 @@ Scope: one concrete OBS Planning command route. Reusable semantics remain in lin
     "lensId": null,
     "parentSurface": null,
     "hostTargetPolicy": "NONE"
-  }
+  },
+  "includes": [
+    "idtspe.work",
+    "idtspe.port-composition.recheck",
+    "idtspe.port.trace"
+  ],
+  "ownerRefs": [
+    {
+      "responsibilityId": "RESOLUTION.NEED-CANDIDATE-DISPOSITION",
+      "path": "planning/documentation/idtspe-methodology/active/idtspe-core/resolution/needs/NEED-CANDIDATE-DISPOSITION.md",
+      "anchor": "resolution-need-candidate-disposition",
+      "why": "Primary operation: collect grounded wanted outcomes and disposition Need Candidates without treating AI preferences as USER needs.",
+      "role": "PRIMARY_OWNER",
+      "readMode": "REQUIRED"
+    },
+    {
+      "responsibilityId": "IDTSPE.USER-INPUT-INTAKE",
+      "path": "planning/documentation/idtspe-methodology/active/idtspe-core/runtime/interaction/USER-INPUT-DECISION-AND-ANSWER-INTAKE-RULE.md",
+      "anchor": "idtspe-user-input-intake",
+      "why": "Preserves exact USER/source provenance and keeps facts, answers, candidates and decisions distinct.",
+      "role": "SUPPORTING_CONTRACT",
+      "readMode": "REQUIRED"
+    },
+    {
+      "responsibilityId": "RESOLUTION.FINDING-DISPOSITION",
+      "path": "planning/documentation/idtspe-methodology/active/idtspe-core/resolution/findings/FINDING-DISPOSITION.md",
+      "anchor": "resolution-finding-disposition",
+      "why": "Possible destination when the surfaced need is actually a defect/contradiction against accepted meaning.",
+      "role": "POSSIBLE_DESTINATION",
+      "readMode": "DESTINATION_ONLY"
+    },
+    {
+      "responsibilityId": "RESOLUTION.PROPOSAL-DECISION-LIFECYCLE",
+      "path": "planning/documentation/idtspe-methodology/active/idtspe-core/resolution/proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md",
+      "anchor": "resolution-proposal-decision-lifecycle",
+      "why": "Possible destination when a concrete candidate resolution exists.",
+      "role": "POSSIBLE_DESTINATION",
+      "readMode": "DESTINATION_ONLY"
+    },
+    {
+      "responsibilityId": "RESOLUTION.QRP-LIFECYCLE",
+      "path": "planning/documentation/idtspe-methodology/active/idtspe-core/resolution/qrp/QRP-LIFECYCLE-AND-REVIEW.md",
+      "anchor": "resolution-qrp-lifecycle",
+      "why": "Possible destination when the desired outcome is material but unresolved.",
+      "role": "POSSIBLE_DESTINATION",
+      "readMode": "DESTINATION_ONLY"
+    },
+    {
+      "responsibilityId": "TARGET-FORMATION.REQUIREMENT-COVERAGE",
+      "path": "planning/documentation/idtspe-methodology/active/idtspe-core/runtime/target-work/RESOLUTION-SLOT-AND-TARGET-FORMATION-SET.md",
+      "anchor": "3-target-resolution-requirement",
+      "why": "Possible destination when the need creates or changes bounded Target responsibility/coverage.",
+      "role": "POSSIBLE_DESTINATION",
+      "readMode": "DESTINATION_ONLY"
+    }
+  ]
 }
 [/PLANNING_COMMAND_DEFINITION]

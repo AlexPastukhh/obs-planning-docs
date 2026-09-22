@@ -40,6 +40,23 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
     "lensId": "LENS-TEST-PROOF-EVIDENCE",
     "parentSurface": null,
     "hostTargetPolicy": "RESOLVE_OR_REUSE_TARGET"
-  }
+  },
+  "includes": [
+    "idtspe.work",
+    "idtspe.port-composition.recheck",
+    "idtspe.port.trace",
+    "idtspe.port.lens",
+    "idtspe.lens.apply"
+  ],
+  "ownerRefs": [
+    {
+      "responsibilityId": "LENS-TEST-PROOF-EVIDENCE",
+      "path": "planning/documentation/idtspe-methodology/active/idtspe-core/lenses/reusable/LENS-TEST-PROOF-EVIDENCE.md",
+      "anchor": "lens-test-proof-evidence-test-proof-evidence-quality",
+      "why": "Concrete Lens Model semantics selected by this command; shared port/registry/Meta-Model references are inherited from included commands.",
+      "role": "PRIMARY_OWNER",
+      "readMode": "REQUIRED"
+    }
+  ]
 }
 [/PLANNING_COMMAND_DEFINITION]

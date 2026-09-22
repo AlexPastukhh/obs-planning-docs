@@ -36,6 +36,9 @@ Scope: one concrete OBS Planning command route. Reusable review-audit behavior r
   ],
   "userTarget": "<review target / prior review / claim to recheck>",
   "palette": true,
-  "refinements": []
+  "refinements": [],
+  "includes": [
+    "methodology.use_cases.recheck"
+  ]
 }
 [/PLANNING_COMMAND_DEFINITION]

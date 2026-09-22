@@ -24,7 +24,7 @@ Bootstrap establishes methodology knowledge only. It does not create a Target, S
 - [`session/`](session/) — thin generic USER↔AI interaction/runtime contract; no current Session-owned planning methodology Use Cases.
 - [`documentation/`](documentation/) — generic reusable repository-documentation methodology and the functional methodology Use-Case entry.
 - [`AI-WORKING-CONTRACT.md`](AI-WORKING-CONTRACT.md) — mandatory repository working/authority contract.
-- [`command-routing.md`](command-routing.md) and [`commands/`](commands/) — executable command routing and command definitions.
+- [`command-routing.md`](command-routing.md) and [`commands/RESPONSIBILITY-MAP.md`](commands/RESPONSIBILITY-MAP.md) — executable command routing plus Command/Helper responsibility routing; direct definitions remain under [`commands/`](commands/).
 - [`areas/`](areas/) — project-local planning/application state.
 - [`helper-library/`](helper-library/) — Planning Helper source/library material.
 - [`dashboard/`](dashboard/) — current dashboard/view projections.
@@ -38,21 +38,20 @@ Bootstrap establishes methodology knowledge only. It does not create a Target, S
 > Responsibility: `DOC.USE-CASE-APPLICABILITY-RESOLUTION`
 > Owner: [`UC-DOC-RESOLVE-CURRENT-USE-CASES`](documentation/use-cases/UC-DOC-RESOLVE-CURRENT-USE-CASES.md)
 
-README navigation is structural/bootstrap navigation. After primary bootstrap, choose the **narrowest current functional route that matches the actual request**; do not replace area-specific functional routing with one global registry. For any methodology-guided work, the fundamental methodology applicability Use Case is an ambient composition requirement that resolves/reaffirms methodology-use Use Cases before the selected route proceeds; it does not replace repository/application-specific routing.
+README navigation is structural/bootstrap navigation. After primary bootstrap, the fundamental methodology applicability Use Case is an **ambient recheck for every current Planning/repository work entry**, including natural-language work and explicit Planning Commands. It scans the Methodology Use-Case Registry Map plus only plausible scoped registry rows, then the work continues through the **narrowest current functional route that matches the actual request**. This ambient scan does not execute every Use Case and does not replace repository/application-specific routing.
 
 ```text
-methodology-guided work (ambient)
+any current Planning / repository work entry
 → planning/documentation/use-cases/UC-DOC-RESOLVE-CURRENT-USE-CASES.md
 → planning/documentation/use-case-registry-map.md / plausible scoped methodology registries
 → current methodology-use Use-Case composition
-
-repository-specific operational work
-→ planning/use-case-registry.md
-→ selected UC-REPO-* owner
-
-specialized application / architecture / testing / tool area
-→ that area's current README/navigation
-→ its current functional owner
+→ narrowest functional route
+   ├─ repository-specific operational work
+   │  → planning/use-case-registry.md
+   │  → selected UC-REPO-* owner
+   └─ specialized application / architecture / testing / tool area
+      → that area's current README/navigation
+      → its current functional owner
 ```
 
 IDTSPE remains the proportional planning/resolution model across material work, but its always-active status does not replace these semantic-entry routes. Scan compact Situation/Result routing metadata first where available, open only plausible owners, and reuse current trustworthy routing context.

@@ -8,7 +8,7 @@ When the primary bootstrap reaches this package, read:
 
 1. this `README.md`;
 2. [`principles-and-terminology.md`](principles-and-terminology.md);
-3. [`use-cases/UC-DOC-RESOLVE-CURRENT-USE-CASES.md`](use-cases/UC-DOC-RESOLVE-CURRENT-USE-CASES.md) — fundamental applicability Process for methodology-guided work;
+3. [`use-cases/UC-DOC-RESOLVE-CURRENT-USE-CASES.md`](use-cases/UC-DOC-RESOLVE-CURRENT-USE-CASES.md) — ambient applicability Process for every current Planning/repository work entry;
 4. [`use-case-registry-map.md`](use-case-registry-map.md) — cross-scope routing metadata consumed by that Process;
 5. [`use-case-registry.md`](use-case-registry.md) — generic Documentation routing rows consumed when this scope is plausible.
 

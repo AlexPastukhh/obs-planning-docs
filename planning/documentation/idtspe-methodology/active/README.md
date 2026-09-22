@@ -16,6 +16,7 @@ This README routes to current canonical owners; it does not duplicate their sema
 - [`idtspe-core/lenses/RESPONSIBILITY-MAP.md`](idtspe-core/lenses/RESPONSIBILITY-MAP.md) — Core Lens Meta-Model/discovery/concrete-Lens responsibility routing.
 - [`idtspe-core/knowledge-bases/RESPONSIBILITY-MAP.md`](idtspe-core/knowledge-bases/RESPONSIBILITY-MAP.md) — Knowledge Basis/theory and Source-Evidence boundary routing.
 - [`idtspe-core/representation/RESPONSIBILITY-MAP.md`](idtspe-core/representation/RESPONSIBILITY-MAP.md) — representation/persistence/checkpoint/file-realization responsibility routing.
+- [`idtspe-core/commands/IDTSPE-COMMAND-SURFACE-CONTRACT.md`](idtspe-core/commands/IDTSPE-COMMAND-SURFACE-CONTRACT.md#idtspe-command-surface) — generic IDTSPE invocation surface and command-to-runtime-composition handshake; repository Commands/Helper route from [`../../../commands/RESPONSIBILITY-MAP.md`](../../../commands/RESPONSIBILITY-MAP.md).
 - [`idtspe-core/navigation/METHODOLOGY-REGISTRY-DIRECTORY.md`](idtspe-core/navigation/METHODOLOGY-REGISTRY-DIRECTORY.md) — supporting registry-family directory reached from selected Use-Case Processes.
 
 ## Installed Profiles

@@ -5,11 +5,11 @@
 })(typeof globalThis!=='undefined'?globalThis:this,function(){
   'use strict';
 
-  const VIEW_IDS=Object.freeze({ALL:'ALL',GENERAL:'GENERAL',USE_CASES:'USE_CASES',TARGET_MODULES:'TARGET_MODULES',LENSES:'LENSES',TOOLS:'TOOLS'});
+  const VIEW_IDS=Object.freeze({ALL:'ALL',GENERAL:'GENERAL',IDTSPE_PASS:'IDTSPE_PASS',USE_CASES:'USE_CASES',TARGET_MODULES:'TARGET_MODULES',LENSES:'LENSES',TOOLS:'TOOLS'});
   const VIEW_META=Object.freeze({
-    GENERAL:{label:'General',order:0},USE_CASES:{label:'Use Cases',order:10},TARGET_MODULES:{label:'Target Modules',order:20},LENSES:{label:'Lenses',order:30},TOOLS:{label:'Tools / Repository',order:40}
+    GENERAL:{label:'General',order:0},IDTSPE_PASS:{label:'IDTSPE Pass',order:5},USE_CASES:{label:'Use Cases',order:10},TARGET_MODULES:{label:'Target Modules',order:20},LENSES:{label:'Lenses',order:30},TOOLS:{label:'Tools / Repository',order:40}
   });
-  function kindLabelFor(entry){if(entry?.semanticKind==='USE_CASE')return`${entry.semanticScope||'Core'} UC`;if(entry?.semanticKind==='TARGET_MODULE')return`${entry.semanticScope||'Core'} TM`;if(entry?.semanticKind==='LENS')return`${entry.semanticScope||'Core'} Lens`;if(entry?.commandCategory==='TOOL')return'Tool';return'General';}
+  function kindLabelFor(entry){if(entry?.semanticKind==='USE_CASE')return`${entry.semanticScope||'Core'} UC`;if(entry?.semanticKind==='TARGET_MODULE')return`${entry.semanticScope||'Core'} TM`;if(entry?.semanticKind==='LENS')return`${entry.semanticScope||'Core'} Lens`;if(entry?.presentationGroup?.viewId===VIEW_IDS.IDTSPE_PASS)return'IDTSPE Pass';if(entry?.commandCategory==='TOOL')return'Tool';return'General';}
   function semanticNavigation(entry){
     const group=entry?.presentationGroup;if(group){const viewId=String(group.viewId||'').toUpperCase(),meta=VIEW_META[viewId]||{label:viewId||'General',order:90};return{viewId,viewLabel:meta.label,viewOrder:meta.order,sectionId:String(group.id||'UNGROUPED'),sectionLabel:String(group.label||'Other / Ungrouped'),sectionOrder:Number(group.order)||0,itemOrder:Number(group.itemOrder)||0,kindLabel:kindLabelFor(entry)};}
     if(entry?.semanticKind==='USE_CASE')return{viewId:VIEW_IDS.USE_CASES,viewLabel:'Use Cases',viewOrder:10,sectionId:String(entry.semanticScope||'Core').toUpperCase(),sectionLabel:entry.semanticScope||'Core',sectionOrder:entry.semanticScope==='Documentation'?0:10,itemOrder:Number(entry.semanticOrder)||0,kindLabel:`${entry.semanticScope||'Core'} UC`};

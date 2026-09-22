@@ -43,6 +43,9 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
     "lensId": null,
     "parentSurface": null,
     "hostTargetPolicy": "NONE"
-  }
+  },
+  "includes": [
+    "methodology.use_cases.recheck"
+  ]
 }
 [/PLANNING_COMMAND_DEFINITION]

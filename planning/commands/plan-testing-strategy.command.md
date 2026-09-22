@@ -43,6 +43,11 @@ Scope: historical invocation alias redirected to current IDTSPE/SDS authority; h
     "lensId": null,
     "parentSurface": null,
     "hostTargetPolicy": "RESOLVE_OR_REUSE_TARGET"
-  }
+  },
+  "includes": [
+    "idtspe.work",
+    "idtspe.port-composition.recheck",
+    "idtspe.port.trace"
+  ]
 }
 [/PLANNING_COMMAND_DEFINITION]

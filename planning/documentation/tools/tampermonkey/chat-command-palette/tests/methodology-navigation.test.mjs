@@ -35,14 +35,15 @@ test('command navigation is derived from semantic identity and exposes UC/TM/Len
   const views=navigation.methodologyViewDefinitions(entries).map(({id,label})=>({id,label}));
   assert.deepEqual(views,[
     {id:'GENERAL',label:'General'},
+    {id:'IDTSPE_PASS',label:'IDTSPE Pass'},
     {id:'USE_CASES',label:'Use Cases'},
     {id:'TARGET_MODULES',label:'Target Modules'},
     {id:'LENSES',label:'Lenses'},
     {id:'TOOLS',label:'Tools / Repository'}
   ]);
-  assert.equal(navigation.methodologyPrimaryIds(entries,'USE_CASES').length,16);
+  assert.equal(navigation.methodologyPrimaryIds(entries,'USE_CASES').length,18);
   assert.equal(navigation.methodologyPrimaryIds(entries,'TARGET_MODULES').length,29);
-  assert.equal(navigation.methodologyPrimaryIds(entries,'LENSES').length,27);
+  assert.equal(navigation.methodologyPrimaryIds(entries,'LENSES').length,28);
 });
 
 test('every current semantic component projects to exactly one primary command card',()=>{
@@ -81,7 +82,7 @@ test('every visible command card has canonical Context, Result and Essence proje
 
 test('every command card belongs to one normal tab/group and All commands is only a cross-tab projection',()=>{
   const views=navigation.methodologyViewDefinitions(entries);
-  assert.deepEqual(views.map((view)=>[view.id,view.count]),[['GENERAL',26],['USE_CASES',16],['TARGET_MODULES',29],['LENSES',27],['TOOLS',4]]);
+  assert.deepEqual(views.map((view)=>[view.id,view.count]),[['GENERAL',20],['IDTSPE_PASS',35],['USE_CASES',18],['TARGET_MODULES',29],['LENSES',28],['TOOLS',4]]);
   const normalGroups=views.flatMap((view)=>navigation.buildMethodologyViewGroups(entries,view.id));
   assert.equal(normalGroups.reduce((sum,group)=>sum+group.entries.length,0),entries.length);
   const all=navigation.buildAllMethodologyGroups(entries);
@@ -107,13 +108,16 @@ test('catalog-order command groups cover every current command card exactly once
   assert.deepEqual(new Set(grouped),new Set(entries.map((entry)=>entry.id)));
 });
 
-test('generic Lens dispatcher stays infrastructure while concrete registered Lenses are primary cards',()=>{
-  assert.equal(entries.some((entry)=>entry.id==='idtspe.lens.apply'),false);
+test('generic Lens dispatcher is exposed only through IDTSPE Pass while concrete registered Lenses remain primary Lens cards',()=>{
+  assert.equal(entries.some((entry)=>entry.id==='idtspe.lens.apply'),true);
+  assert.equal(entries.find((entry)=>entry.id==='idtspe.lens.apply')?.presentationGroup?.viewId,'IDTSPE_PASS');
   assert.equal(entries.some((entry)=>entry.id==='idtspe.lenses.select'),true);
+  assert.equal(entries.find((entry)=>entry.id==='idtspe.lenses.select')?.presentationGroup?.viewId,'IDTSPE_PASS');
   assert.equal(navigation.methodologyPrimaryIds(entries,'LENSES').every((id)=>id.startsWith('lens:LENS-')),true);
   const ddd=entries.find((entry)=>entry.id==='lens:LENS-DOMAIN-MODELING-DDD');
   assert.ok(ddd);
   assert.match(ddd.label,/SDS Lens · LENS-DOMAIN-MODELING-DDD/);
+  assert.equal(navigation.methodologyPrimaryIds(entries,'IDTSPE_PASS').some((id)=>id.startsWith('tm:')||id.startsWith('lens:')),false);
 });
 
 test('Target Module aliases come only from explicit registry alias declarations',()=>{

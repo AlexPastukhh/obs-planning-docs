@@ -40,6 +40,23 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
     "lensId": "LENS-LINKED-NOTES-USAGE-JUSTIFICATION",
     "parentSurface": null,
     "hostTargetPolicy": "RESOLVE_OR_REUSE_TARGET"
-  }
+  },
+  "includes": [
+    "idtspe.work",
+    "idtspe.port-composition.recheck",
+    "idtspe.port.trace",
+    "idtspe.port.lens",
+    "idtspe.lens.apply"
+  ],
+  "ownerRefs": [
+    {
+      "responsibilityId": "LENS-LINKED-NOTES-USAGE-JUSTIFICATION",
+      "path": "planning/documentation/idtspe-methodology/active/idtspe-core/lenses/reusable/LENS-LINKED-NOTES-USAGE-JUSTIFICATION.md",
+      "anchor": "lens-linked-notes-usage-justification-linked-notes-possible-usage-justification",
+      "why": "Concrete Lens Model semantics selected by this command; shared port/registry/Meta-Model references are inherited from included commands.",
+      "role": "PRIMARY_OWNER",
+      "readMode": "REQUIRED"
+    }
+  ]
 }
 [/PLANNING_COMMAND_DEFINITION]

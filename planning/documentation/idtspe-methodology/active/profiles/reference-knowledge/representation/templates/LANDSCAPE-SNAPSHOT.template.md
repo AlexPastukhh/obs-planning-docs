@@ -1,4 +1,3 @@
-<a id="reference-landscape-snapshot-template"></a>
 # <Landscape Snapshot Name>
 
 Landscape Snapshot ID: `<stable-landscape-snapshot-id>`

@@ -358,6 +358,7 @@ Knowledge owner → owns referenced principle/rule/theory meaning
 
 Knowledge may stay inline, point to theory files/folders/sections, use a separate applied Knowledge Basis, or combine these forms. Existing `INLINE / REFERENCED / HYBRID` labels remain compatible representation only. If material cannot yet be reduced to a stable evaluation objective + applicability gate + findings contract, keep it as theory/reference material instead of pretending it is already a Lens.
 
+<a id="lens-applicability-scan"></a>
 ## 6. Lens Applicability Scan / Lens applicability/selection
 
 IDTSPE does **not** select Lenses only through a Target Module.

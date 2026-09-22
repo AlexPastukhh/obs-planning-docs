@@ -4,6 +4,7 @@ This file defines the shared language and stable semantic rules used by the Docu
 
 It is term-centered. There is no required `Relationships` section or field schema. A relation is explained under the term where it naturally matters, or as a cross-term principle when the relation itself has important rules.
 
+<a id="doc-use-case"></a>
 ## Use Case
 
 A **Use Case** is an independently useful way of using the repository/documentation system to obtain a meaningful result.

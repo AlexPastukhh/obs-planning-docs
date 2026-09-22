@@ -43,7 +43,7 @@ test('proposal archive command body is self-contained and links existing Use-Cas
   assert.ok(text.includes('result:\n  One review-only proposal ZIP'));
   assert.ok(text.includes('essence:\n  Package the currently selected proposal'));
   assert.ok(text.includes('[UC-DOC-PLAN-DOCUMENTATION-CHANGE](../documentation/use-cases/UC-DOC-PLAN-DOCUMENTATION-CHANGE.md)'));
-  assert.ok(text.includes('[Use Case — Situation + Result + Process](../documentation/principles-and-terminology.md#use-case)'));
+  assert.ok(text.includes('[Use Case — Situation + Result + Process](../documentation/principles-and-terminology.md#doc-use-case)'));
   assert.match(text,/Never include PACKAGE\.json/);
   assert.match(text,/Do not apply locally, commit or push/);
 });

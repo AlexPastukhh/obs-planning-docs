@@ -1,4 +1,3 @@
-<a id="reference-knowledge-domain-packs"></a>
 # Reference Knowledge Domain Packs
 
 This directory owns the Domain Pack extension/derivation guidance and contains concrete installed Domain Packs only after they have been deliberately derived.

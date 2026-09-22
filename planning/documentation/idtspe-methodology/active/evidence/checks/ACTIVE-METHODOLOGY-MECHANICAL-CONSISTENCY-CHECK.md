@@ -1,8 +1,8 @@
 # Active Methodology Mechanical Consistency Check
 
-Status: **current post-Pass12 snapshot; mechanical facts only**
+Status: **current revised post-Pass4 command-composition / Helper closeout snapshot; mechanical facts only**
 
-Revalidated against the current Core plus all three installed profile registries after the responsibility/anchor audit through PASS-3-ALL-PROFILES. Broad lower-contract Unit Collection / Slot migration remains intentionally deferred and is not claimed here.
+Revalidated against the current Core plus all three installed profile registries after the corrected PASS-4 command-composition / Helper closeout. The corrected closeout adds registered semantic command includes, ambient every-work-entry Use-Case registry recheck, mandatory normal-Shell port-composition refresh, P-02 working-trace orientation and the `IDTSPE Pass` Helper projection without making Helper UI semantic authority. Broad lower-contract Unit Collection / Slot migration remains intentionally deferred and is not claimed here.
 
 This file reports observed registry/projection parity. Semantic authority remains in the owning registries/contracts.
 
@@ -22,11 +22,11 @@ visual_2d_lenses = 4
 reference_knowledge_lenses = 3
 installed_lenses = 28
 
-methodology_use_cases = 16
-  = 10 Documentation + 6 IDTSPE + 0 SDS-runtime
+methodology_use_cases = 18
+  = 12 Documentation + 6 IDTSPE + 0 SDS-runtime
 
-planning_command_definitions = 74
-  = 48 primary + 26 hidden compatibility
+planning_command_definitions = 99
+  = 73 palette-visible + 26 hidden compatibility/infrastructure
 ```
 
 Checks:
@@ -41,7 +41,7 @@ Checks:
 - Reference Knowledge Target Module registry/file parity: **4 / 4 PASS**
 - Reference Knowledge Lens registry/file parity: **3 / 3 PASS**
 - Reference Knowledge Domain Pack registry: **0 installed concrete packs / PASS**
-- Methodology Use-Case Registry Map projects only current Documentation/IDTSPE runtime UCs: **16 PASS**
+- Methodology Use-Case Registry Map projects only current Documentation/IDTSPE runtime UCs: **18 PASS**
 - SDS runtime methodology-use UC count: **0 PASS**
 - current Planning Helper command definitions parse and generated projections are verified by the palette test suite: **PASS**
 - numbered SDS workflow files remain retired; one semantic composition/readiness guide remains: **PASS**
@@ -84,8 +84,17 @@ Checks:
 - Reference Knowledge ownership check: Bank/Object/Vocabulary/change-authority/Domain-Pack/Landscape/consumer-Source/representation responsibilities route through `profiles/reference-knowledge/RESPONSIBILITY-MAP.md`; all **4 / 4** Target Modules and **3 / 3** Lenses expose unique IDs: **PASS**
 - Pass-3 Core-boundary check: profile Target Modules/Lenses explicitly extend the Core Meta-Models; profile representation extends Core artifact placement; visual/reference consumer Source semantics contextualize `TARGET.INSTANCE-SOURCE-RELATION` rather than creating second Core Source authority: **PASS**
 - Pass-3 stable-anchor/link check: profile-level Responsibility owners are routed through explicit stable anchors; reviewed profile fragment links resolve to explicit anchors; examples/templates remain supporting/non-owner projections: **PASS**
-- Pass-3 command boundary check: SDS/profile command-surface and Helper composition ownership remain intentionally deferred to PASS-4; this profile semantic closeout does not claim command composition closure: **PASS**
-- responsibility/anchor audit-coverage evidence check: the scoped closeout is recorded in [`SEMANTIC-RESPONSIBILITY-ANCHOR-AUDIT-COVERAGE.md`](../audits/SEMANTIC-RESPONSIBILITY-ANCHOR-AUDIT-COVERAGE.md) with explicit exclusions; this check does not claim whole-repository coverage: **PASS**
+- Pass-3 command boundary preservation check: SDS/profile command-surface and Helper composition ownership were intentionally deferred by Pass 3 and are now closed by the dedicated Pass-4 command/helper audit rather than retroactively absorbed into profile semantic ownership: **PASS**
+- Command/Helper Responsibility Map check: root routing, direct command-definition contract, command-maintenance Use Case, Core IDTSPE command surface, SDS command extension, Helper semantic projection and legacy Helper-library compatibility route through [`planning/commands/RESPONSIBILITY-MAP.md`](../../../../../commands/RESPONSIBILITY-MAP.md) to distinct owners: **PASS**
+- command-composition ownership check: `methodologyBinding` remains projection/dispatch metadata and `ownerFiles` remain read/owner routes; registered `includes` form a semantic command-prefix graph, while technical port topology is still derived/refreshed through `IDTSPE.PORT-COMPOSITION-REFRESH`; no parallel durable numeric `requiredPorts` / `portRequirements` ontology exists: **PASS**
+- strict command-catalog check: all **99 / 99** direct `planning/commands/*.command.md` definitions parse under the current schema; **288** `ownerFiles` references resolve; command IDs are unique; registered `includes` resolve in the complete repository catalog and are acyclic; unsupported durable numeric `requiredPorts` / `portRequirements` and file-execution `includeFiles` fields are absent: **PASS**
+- Planning Helper generated-projection check: final `npm run build` succeeds; generated catalogs expose **18** methodology Use Cases, **29** Target Modules, **28** Lenses and **9** canonical Scenarios; normal Helper navigation contains **124** primary command cards across `General`, `IDTSPE Pass`, `Use Cases`, `Target Modules`, `Lenses` and `Tools / Repository`, and `catalog-order` groups cover every current card exactly once: **PASS**
+- Planning Helper regression suite: final `npm test` result is **240 / 240 PASS**, including command-include graph, mandatory UC recheck, P-02 working-trace orientation, methodology-navigation, semantic-parity, command/scenario reverse projection and Unit-checkpoint contracts: **PASS**
+- final scoped responsibility/dependency check: across the active methodology plus direct Documentation / Session / Planning Command / Helper projections, **112** Responsibility IDs are unique and all **304** tracked Semantic Owner Dependency responsibility targets resolve: **PASS**
+- final scoped link/fragment check: current active-methodology plus direct Documentation / Session / Planning Command / Helper projections pass the scoped local-path/fragment checks with no known missing local paths, bad fragments or generated-heading cross-file fragment dependencies in the audited surface: **PASS**
+- fenced-example link-hygiene check: path-like placeholders in Markdown examples are not encoded as repository links; the Methodology binding example uses explicit non-link placeholder notation instead of the nonexistent `../../shared` path: **PASS**
+- final explicit-anchor check: **24** premature/orphan profile anchors with no real inbound `#anchor` consumer were removed as link hygiene without reopening profile semantics; the remaining **225** explicit anchors in the scoped closeout have **0** zero-inbound anchors: **PASS**
+- responsibility/anchor audit-coverage evidence check: all four planned passes and all listed audit zones are recorded `CLOSED` in [`SEMANTIC-RESPONSIBILITY-ANCHOR-AUDIT-COVERAGE.md`](../audits/SEMANTIC-RESPONSIBILITY-ANCHOR-AUDIT-COVERAGE.md); explicit exclusions now describe only out-of-scope repository/application/history surfaces and the separate deferred Collection/Slot profile migration: **PASS**
 - legacy profile migration status: broad SDS/other-profile lower-contract migration to explicit Collections/Slots is intentionally **DEFERRED / NOT CLAIMED**; migration constraints and discovered candidates are recorded in [`TARGET-WORK-UNIT-COLLECTION-SLOT-MIGRATION-NOTES.md`](../migration-notes/TARGET-WORK-UNIT-COLLECTION-SLOT-MIGRATION-NOTES.md)
 
 

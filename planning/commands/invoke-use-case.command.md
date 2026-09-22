@@ -34,6 +34,9 @@ Scope: generic manual invocation route for one selected current canonical Use Ca
   ],
   "userTarget": "<UC id + concrete target>",
   "palette": false,
-  "refinements": []
+  "refinements": [],
+  "includes": [
+    "methodology.use_cases.recheck"
+  ]
 }
 [/PLANNING_COMMAND_DEFINITION]

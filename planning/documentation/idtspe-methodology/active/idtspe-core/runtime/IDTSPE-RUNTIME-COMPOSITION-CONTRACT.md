@@ -118,14 +118,17 @@ Responsibility ID: `IDTSPE.PORT-COMPOSITION-REFRESH`
 
 This section owns the technical refresh/admission/reuse semantics for the Port Requirement Set. `UC-IDTSPE-COMPOSE-CURRENT-WORK` invokes the refresh as orchestration; the Contextual Methodology Application Contract contextualizes when it is required; P-02 represents its observable trace.
 
-Each **normal Shell pass** consumes one current Port Requirement Set. Before the pass enters `P-01`, the current IDTSPE Use-Case Process refreshes or reaffirms that set from the current methodology composition and this runtime applies the resulting admission/reuse contract.
+Each **normal Shell pass** consumes one current Port Requirement Set. Before **every** normal pass enters `P-01`, current Use-Case applicability is reaffirmed, `UC-IDTSPE-COMPOSE-CURRENT-WORK` composes/reaffirms the current proportional IDTSPE methodology work, and only then `IDTSPE.PORT-COMPOSITION-REFRESH` refreshes/reaffirms the Port Requirement Set from that composition plus all pre-collected command/component contributions. This runtime applies the resulting admission/reuse contract. A prior P-02 trace may be consulted as retained orientation/evidence, but it never permits skipping the refresh.
 
 ```text
-current Use-Case composition
+current Use-Case applicability composition
+→ UC-IDTSPE-COMPOSE-CURRENT-WORK
+→ current proportional IDTSPE methodology composition
 + AUTO_COMPOSITION requirements
-+ EXPLICIT_REQUIREMENTs
++ EXPLICIT_REQUIREMENTs collected from the fully expanded command/component DAG BEFORE semantic command execution
 + current DOWNSTREAM_MATERIALITY
 + still-material defer/recheck obligations
++ current P-02 working-trace orientation/evidence (never sticky authority)
 → refresh / reaffirm Port Requirement Set
 → one normal Shell pass
 ```
@@ -142,16 +145,19 @@ The Shell does not define Decision types. A material Decision is identified by i
 
 ## Shell Ports
 
+<a id="idtspe-port-p01"></a>
 ### P-01 Invocation Port — REQUIRED
 
 Routes the selected Use-Case composition into one normal Shell pass. It may validly route no Target-specific work when Broad Discussion remains sufficient.
 
+<a id="idtspe-port-p02"></a>
 ### P-02 Pass Trace / Visibility Port — REQUIRED
 
-Establishes the Pass Trace / Visibility Contract before substantive non-baseline work and records observable methodology/runtime facts incrementally. Trace is a pass-scoped produced result that may be rendered or persisted; persistence does not give it a Target lifecycle.
+Adopts/continues the one structured working trace already established during invocation preparation so earlier command-composition / Use-Case / Port-Composition events were recorded incrementally. Establishes the canonical Shell Pass Trace / Visibility Contract before substantive non-baseline work and records observable methodology/runtime facts incrementally. The same structured trace is the working orientation surface for completed/pending/reusable traversal during the pass and the source for final visibility. Trace may be rendered or persisted; persistence does not give it a Target lifecycle or replace mandatory Use-Case/Port Composition rechecks.
 
 Canonical owner: [`PASS-TRACE-AND-VISIBILITY-CONTRACT.md`](PASS-TRACE-AND-VISIBILITY-CONTRACT.md).
 
+<a id="idtspe-port-p03"></a>
 ### P-03 Target Port
 
 Connects Target Formation/Resolution when a bounded Target is useful.
@@ -172,38 +178,46 @@ current task/problem/Sources
 
 Target Formation may refine/split scope, derive/clarify Requirements and DEFINE Contextual Units when prepared coverage is insufficient. Unit Definition follows the canonical Responsibility/Purpose/Result Content Contract model; composite Units MUST use exactly one terminal Unit Resolution Set, including justified Contextual Slots within the same Responsibility/coherent result. `NO_TARGET_NEEDED_YET` remains valid.
 
+<a id="idtspe-port-p04"></a>
 ### P-04 Source Port
 
 Supports the `SOURCE_AUTHORITY` Target Requirement and normal Source State/binding lifecycle. Target Module Source Contracts provide reusable archetypes/needs; runtime Sources remain actual authoritative Source Subjects/bindings.
 
+<a id="idtspe-port-p05"></a>
 ### P-05 Relation Port
 
 Supports the `OWNER_RELATIONS` Requirement and Target topology/natural-owner relations. Relations do not silently create Source authority.
 
+<a id="idtspe-port-p06"></a>
 ### P-06 Lens Port
 
-Runs normal Lens applicability/selection/application over the current analysis surface. Target Modules/Requirements/Units may reference helpful Lenses, but there is no fixed Target `LENS_SET` field.
+Runs normal Lens applicability/selection/application over the current analysis surface. Target Modules/Requirements/Units may reference helpful Lenses, but there is no fixed Target Lens Set field.
 
 The Target Resolution Coverage Lens may evaluate scope/Requirement/Unit coverage and surface Finding Candidates; Target Formation/Resolution owns composition changes.
 
+<a id="idtspe-port-p07"></a>
 ### P-07 Proposal / Alternative Port
 
 Connects material candidate resolutions to their natural Requirement/Unit/Target/other subject. There is no fixed Target `PROPOSAL_SPACE` owner.
 
 Canonical Proposal identity and selection semantics remain in the Proposal/Decision lifecycle. `GIP ≠ formal IDTSPE Proposal` remains invariant.
 
+<a id="idtspe-port-p08"></a>
 ### P-08 Branch Port
 
 Connects optional counterfactual planning networks when shallow comparison is insufficient. There is no fixed Target `BRANCH_POLICY` field; branching is a resolution mechanism invoked when material.
 
+<a id="idtspe-port-p09"></a>
 ### P-09 Q/R/P Port
 
 Carries material unresolved Question/Risk/Problem meaning attached to its natural subject. Questions no longer require a standalone Question Shell port.
 
+<a id="idtspe-port-p10"></a>
 ### P-10 Decision Port
 
 Connects material selection semantics into the affected subject. Durable Decision state/trace is proportional; straightforward non-decision derivation does not require a Decision record.
 
+<a id="idtspe-port-p11"></a>
 ### P-11 Target Step Result Projection Port
 
 Projects actual Target Work Unit/result composition:
@@ -220,14 +234,17 @@ For a **substantive composite Unit**, project concrete Unit Resolution Slot disp
 
 Core-defined Units are applicability-driven. Contextual Units exist only when locally defined/formed. Neither automatically requires its own durable result section.
 
+<a id="idtspe-port-p12"></a>
 ### P-12 Validation Port
 
 Runs proportional Unit/Slot validators, applicable Lenses, authority/user guards, cross-owner consistency and Target Requirement coverage/readiness checks. Findings route to the smallest correct semantic owner.
 
+<a id="idtspe-port-p13"></a>
 ### P-13 Handoff / Methodology Direction Port
 
 For a Target, supports the conditional `HANDOFF_CONTINUATION` Requirement: downstream consumer/source binding and readiness. The same port also exposes Work-Context Methodology Direction, including zero-Target Broad Discussion; therefore the port is broader than the Target Requirement.
 
+<a id="idtspe-port-p14"></a>
 ### P-14 Persistence / Artifact Port
 
 Generic persistence/representation bridge. For a Target, it supports the conditional `PERSISTENCE_ADDRESSABILITY` Requirement. It also applies to non-Target retained meaning such as Pass Trace, Proposal/Decision or Work-Context state.
@@ -239,6 +256,7 @@ Artifact Placement View ≠ file mutation
 
 Canonical owner: [`../representation/ARTIFACT-PLACEMENT-AND-IDTSPE-RESPONSE-CONTRACT.md`](../representation/ARTIFACT-PLACEMENT-AND-IDTSPE-RESPONSE-CONTRACT.md).
 
+<a id="idtspe-port-p15"></a>
 ### P-15 Evidence / Revalidation Port
 
 > Semantic Owner Dependency

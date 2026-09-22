@@ -38,6 +38,9 @@ Scope: working-context governance shortcut; semantic authority remains in linked
     "Code does not silently create a second documentation owner.",
     "This command establishes working rules only; actual edits require the applicable authorization."
   ],
-  "userTarget": "<application/development work in this session>"
+  "userTarget": "<application/development work in this session>",
+  "includes": [
+    "methodology.use_cases.recheck"
+  ]
 }
 [/PLANNING_COMMAND_DEFINITION]

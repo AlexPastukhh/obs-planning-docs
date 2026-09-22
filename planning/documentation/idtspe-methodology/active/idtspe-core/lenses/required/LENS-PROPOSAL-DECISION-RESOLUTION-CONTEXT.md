@@ -1,6 +1,8 @@
 # LENS-PROPOSAL-DECISION-RESOLUTION-CONTEXT — Proposal / Decision Resolution Context
 
 Lens ID: `LENS-PROPOSAL-DECISION-RESOLUTION-CONTEXT`
+
+<a id="lens-proposal-decision-resolution-context"></a>
 Activation: `REQUIRED_CORE` on a material Proposal / Decision surface
 
 ## Purpose

@@ -1,4 +1,3 @@
-<a id="profile-2d-visual-production"></a>
 <a id="visual2d-profile-bootstrap"></a>
 # 2D Visual Production Profile — IDTSPE
 

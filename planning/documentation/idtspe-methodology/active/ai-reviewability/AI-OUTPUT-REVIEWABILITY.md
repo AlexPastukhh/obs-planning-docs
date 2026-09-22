@@ -5,6 +5,8 @@ Scope: make material AI outputs easy to review without becoming semantic plannin
 
 ## Position In The Methodology
 
+Responsibility ID: `AI.REVIEWABILITY`
+
 AI Reviewability is a **peer concern beside IDTSPE**, not a Target Module, Lens, profile, semantic owner or lifecycle engine.
 
 ```text

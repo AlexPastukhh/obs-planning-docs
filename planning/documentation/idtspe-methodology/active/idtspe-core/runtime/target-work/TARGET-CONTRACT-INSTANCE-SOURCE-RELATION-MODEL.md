@@ -22,7 +22,7 @@ TM-IMPLEMENTATION-SLICE
 
 ### Target Module Instance
 
-The model-defined portion of one concrete Target Instance after a Target Module Model is applied. It is not a second Target and does not replace the Target identity.
+One model-defined portion of one concrete Target Instance after a Target Module Model is actually applied to that Target. It is not a second Target and does not replace the Target identity.
 
 ```text
 Target Module Model
@@ -31,6 +31,8 @@ Target Module Model
 ```
 
 It contains the instantiated Module-defined Unit inventory, Unit dispositions/result content, model-specific composition/validators and the module-defined Target Step Result structure. Concrete Source bindings, Target Relations and broader Core State remain parts of the Target Instance according to their natural owners even when the Model supplies reusable archetypes/guidance for them.
+
+A Target Instance may contain `0..N` Target Module Instance portions when `0..N` reusable Models are actually applied to that same bounded Target. One applied Model contributes one current portion for that Target/basis. Merely consulting a Model as reusable guidance does not create an Instance portion. If a supporting Model exposes a genuinely separate bounded responsibility/natural owner, Target Formation routes that responsibility to the appropriate Target instead of hiding it as another portion of the current Target.
 
 ### Local Target Contract
 
@@ -42,9 +44,9 @@ It does not create Module-defined Unit kinds or a Module-defined Unit inventory.
 
 ### Target Instance
 
-One concrete bounded planning responsibility/owner. It is broader than any Target Module Instance nested within it.
+One concrete bounded planning responsibility/owner. It is broader than any Target Module Instance portion nested within it.
 
-A Target Instance is the semantic/planning responsibility, not a file. Its current working composition may include applicable/open Target Resolution Requirements with recoverable coverage refs, a Source Set, Target Work Units, Target-level Core State Units and Target Relations/Handoffs. One bounded IDTSPE work step over that Target produces/refines a `Target Step Result` from the Target Module Instance contribution when a reusable Target Module Model is used, plus applicable Core-defined Unit contributions and any Contextual Units that actually formed. Under a Local Target Contract there is no Module-defined Unit inventory; target-local bounded work is covered by applicable Core-defined Units and Contextual Units.
+A Target Instance is the semantic/planning responsibility, not a file. Its current working composition may include applicable/open Target Resolution Requirements with recoverable coverage refs, a Source Set, Target Work Units, Target-level Core State Units and Target Relations/Handoffs. One bounded IDTSPE work step over that Target produces/refines a `Target Step Result` from all Target Module Instance contributions actually present, plus applicable Core-defined Unit contributions and any Contextual Units that actually formed. Under a Local Target Contract there is no Module-defined Unit inventory; target-local bounded work is covered by applicable Core-defined Units and Contextual Units.
 
 Examples:
 
@@ -77,6 +79,7 @@ candidate Target Instance
 
 The candidate Target Instance uses normal Target/Unit identities, methods, validators and representation. Its child content inherits the enclosing candidate authority unless a nested item has a materially different status/lifecycle. After selection, normal promotion/integration reuses the same Target meaning rather than regenerating a differently shaped "final" Target.
 
+<a id="target-source-subject"></a>
 ### Source / Source Subject
 
 A **Source** is accepted semantic truth, Evidence, constraint or accepted planning state actually used by the current consumer. The authoritative meaning being consumed is the **Source Subject**.
@@ -123,11 +126,12 @@ Target Instance
 │     ├─ Target-shared
 │     ├─ Unit/Collection/item/Slot-local through the canonical Target Work Subject Reference
 │     └─ declared subset of Units / Collections / items / Slots as applicable
-├─ Target Module Instance when a reusable Target Module Model is used
-│  ├─ complete instantiated Module-defined Unit inventory
-│  │    └─ each Unit: RESOLVED / OPEN / explicit omission + proportional content
-│  ├─ model-specific validators / composition rules
-│  └─ module-defined Target Step Result contribution
+├─ 0..N Target Module Instance portions when reusable Target Module Models are actually applied
+│  └─ each applied Model portion
+│     ├─ complete instantiated Module-defined Unit inventory
+│     │    └─ each Unit: RESOLVED / OPEN / explicit omission + proportional content
+│     ├─ model-specific validators / composition rules
+│     └─ module-defined Target Step Result contribution
 ├─ applicable Core-defined Units
 │  instantiated only when applicable
 ├─ Contextual Units only when actually formed
@@ -140,7 +144,7 @@ Target Instance
 ├─ Target-level Core State Units
 ├─ Target Relations / Handoffs
 └─ Target Step Result
-   = Target Module Instance contribution when present
+   = Target Module Instance contribution(s) actually present
      + applicable Core-defined Unit contributions through their Result Destinations
      + any Contextual Units that actually formed
 ```
@@ -154,7 +158,7 @@ one Target
 ≠ one file
 ```
 
-A Target Module Model defines reusable Module-defined Work Unit/Result Unit kinds and instantiates the complete module inventory through its Target Module Instance. Target composition is responsibility-based: peer Target Work Units represent distinct bounded Unit-level contracts, not repeated homogeneous items. When `0..N` values share one Unit Responsibility/Result Content Contract, that collection belongs inside the Unit's Current Result Content. Core may separately instantiate applicable Core-defined Target Work Units. A Local Target Contract does not create Module-defined kinds; uncovered **distinct** bounded target-local responsibilities may be defined as Contextual Units. Generic Source/Question/Proposal/Q/R/P/Decision/Evidence/Revalidation state uses Core State Unit semantics and may be Unit-local, Target-level, cross-Target or Work-Context-level. Core State Units do not become extra Target Step Result Units merely because they participate in Unit Resolution.
+A Target Module Model defines reusable Module-defined Work Unit/Result Unit kinds and, when actually applied to a Target, instantiates the complete module inventory through its Target Module Instance portion. Target composition is responsibility-based: peer Target Work Units represent distinct bounded Unit-level contracts, not repeated homogeneous items. When `0..N` values share one Unit Responsibility/Result Content Contract, that collection belongs inside the Unit's Current Result Content. Core may separately instantiate applicable Core-defined Target Work Units. A Local Target Contract does not create Module-defined kinds; uncovered **distinct** bounded target-local responsibilities may be defined as Contextual Units. Generic Source/Question/Proposal/Q/R/P/Decision/Evidence/Revalidation state uses Core State Unit semantics and may be Unit-local, Target-level, cross-Target or Work-Context-level. Core State Units do not become extra Target Step Result Units merely because they participate in Unit Resolution.
 
 A Target Work Unit result may be the precise downstream **Source Subject** when another Target depends only on that accepted meaning. The downstream Target still establishes its own explicit Source State Unit/binding; Source authority is never inferred from topology alone.
 

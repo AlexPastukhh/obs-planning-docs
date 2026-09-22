@@ -17,3 +17,16 @@ test('Scenario Catalog contains the exact current Planning Helper Scenario set',
 test('all local Markdown links in Scenario Catalog/manual acceptance resolve to files and anchors',()=>{for(const rel of ['scenarios/README.md','MANUAL-ACCEPTANCE.md']){const base=path.join(root,rel),text=fs.readFileSync(base,'utf8');for(const link of links(text)){const {file,fragment}=resolveLink(base,link);assert.ok(fs.existsSync(file),`${rel}: missing link target ${link}`);if(fragment){const target=fs.readFileSync(file,'utf8');assert.ok(anchors(target).has(fragment),`${rel}: missing anchor ${fragment} in ${path.relative(repoRoot,file)}`)}}}});
 
 test('every canonical Planning Helper Scenario exposes implementation, automated evidence and manual acceptance',()=>{for(const id of ids){const file=path.join(root,'scenarios',`${id}.md`);assert.ok(fs.existsSync(file),`missing Scenario owner ${id}`);const section=fs.readFileSync(file,'utf8');assert.match(section,/\*\*Primary implementation:\*\*/);assert.match(section,/src\//);assert.match(section,/\*\*Automated evidence:\*\*/);assert.match(section,/tests\//);assert.match(section,/\*\*Manual acceptance:\*\*/);assert.match(section,/MANUAL-ACCEPTANCE\.md#/);}});
+
+
+test('Planning Command maintenance owns include-DAG and own canonical ref design',()=>{
+  const text=fs.readFileSync(path.join(repoRoot,'planning/use-cases/UC-REPO-MAINTAIN-PLANNING-COMMAND.md'),'utf8');
+  assert.match(text,/dependency composition/i);
+  assert.match(text,/fully expand the transitive include DAG/i);
+  assert.match(text,/dependencies-before-dependents/i);
+  assert.match(text,/composition-time contributions/i);
+  assert.match(text,/ownerRefs/);
+  assert.match(text,/why/);
+  assert.match(text,/Do.*not.*duplicate refs already inherited from included commands/i);
+  assert.match(text,/outputs discovered.*after.*own action/is);
+});

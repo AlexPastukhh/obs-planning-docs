@@ -1,4 +1,3 @@
-<a id="reference-knowledge-target-modules"></a>
 # Reference Knowledge Target Modules
 
 Current recurring Target families:

@@ -2,6 +2,8 @@
 
 Status: active functional-entry map
 
+Responsibility ID: `DOC.USE-CASE-REGISTRY-MAP`
+
 Purpose: provide the lightweight **cross-scope routing metadata** consumed by the fundamental methodology Use-Case applicability resolver. It maps Use-Case scopes; it does not own the applicability Process or duplicate the Use Cases themselves.
 
 Prerequisite: the primary bootstrap from [`planning/README.md`](../README.md) establishes Session + Documentation + IDTSPE Core. [`UC-DOC-RESOLVE-CURRENT-USE-CASES`](use-cases/UC-DOC-RESOLVE-CURRENT-USE-CASES.md) is the functional methodology entry after bootstrap; this map is its first cross-scope routing data source, not another Use Case.
@@ -24,7 +26,7 @@ current situation
 → hand current composition to their canonical Use-Case owners
 ```
 
-That fundamental Use Case is **always logically active** during methodology-guided work. "Always" does not mean rereading unchanged files after every message. Reuse current registry metadata while trustworthy and reread only when the methodology/repository changed, the active profile/scope changed, a material new request/action changes applicability, or current authority cannot be reconstructed safely.
+That fundamental Use Case is **always logically active for current Planning/repository work**. Explicit Planning Commands guarantee it through command composition; ordinary natural-language work reaches it through normal routing. "Always" means the applicability surface is reaffirmed, not that unchanged files are reread after every message. Reuse current registry metadata while trustworthy and reread only when the methodology/repository changed, the active profile/scope changed, a material new request/action changes applicability, or current authority cannot be reconstructed safely.
 
 This map owns only cross-scope applicability/routing metadata; it does not own the scan Process. Downstream Process/component routing is owned by the selected Use Case and the supporting owners it explicitly reaches. The generic [`Functional Routing Ownership Chain`](principles-and-terminology.md#doc-functional-routing-ownership) and [`Registry Scan`](principles-and-terminology.md#doc-registry-scan) semantics are defined in `Principles & Terminology`.
 

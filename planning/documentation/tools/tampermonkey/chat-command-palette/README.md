@@ -4,6 +4,17 @@ Status: active modular Tampermonkey helper implementation
 Version: `0.39.4`
 Scope: local-first, GitHub-backed **semantic command projection** with canonical methodology working Scenarios, reusable Prompts, explicit repository recovery/publish actions, editable ordered presentation groups, per-tab group navigation/filter state, canonical `Контекст / Результат / Суть` explanations, Favorites and a wide/resizable browser UI.
 
+<a id="planning-helper-semantic-projection"></a>
+## Projection Authority
+
+Responsibility ID: `HELPER.SEMANTIC-PROJECTION`
+
+> Semantic Owner Dependencies
+> - `REPRESENTS` [`Planning Command Definition Contract`](../../../../commands/README.md#planning-command-definition-contract) — `COMMAND.DEFINITION-CONTRACT`
+> - `CONTEXTUALIZES` [`IDTSPE Command Surface`](../../../idtspe-methodology/active/idtspe-core/commands/IDTSPE-COMMAND-SURFACE-CONTRACT.md#idtspe-command-surface) — `IDTSPE.COMMAND-SURFACE`
+
+The Helper owns projection/runtime mechanics only. Semantic command meaning and process stay with direct command definitions plus the projected methodology/repository owners. Registered command `includes` are a reproducible composition guarantee over those existing owners; they do not make Helper UI, generated seeds, numeric Shell ports or presentation groups methodology authority. Generated `seed/*.json`, userscript bytes, scenario-command reverse indexes and presentation groups are derived artifacts.
+
 ## Read Order
 
 1. `planning/command-routing.md` — executable-command and projection policy.
@@ -37,7 +48,7 @@ canonical methodology/repository owners
   Commands / Scenarios / Prompts UI
 ```
 
-Use Cases, Target Modules and Lenses are **classifications of semantic Commands**, not peer runtime surfaces competing with Commands.
+Use Cases, Target Modules and Lenses are **classifications of semantic Commands**, not peer runtime surfaces competing with Commands. `IDTSPE Pass` is a direct-command classification for generic Shell/composition controls only; concrete `TM-*` and `LENS-*` semantic cards remain in their dedicated classifications.
 
 A semantic component has one stable primary card identity:
 
@@ -70,7 +81,7 @@ Domain Modeling / DDD · SDS Lens · LENS-DOMAIN-MODELING-DDD
 
 - Selecting a command card opens the detail pane. The detail pane shows **Контекст**, **Результат**, **Суть** projected from canonical authority rather than maintained as Helper-only prose. Direct commands project `activeContextBehavior / expectedOutput / meaning`; Use Cases project `Situation / Result / Purpose`; Target Modules and Lenses project the corresponding owner sections.
 - **Run** on either the compact card or the detail pane inserts the same current canonical invocation body.
-- Direct-command **Body** also carries the same canonical `context / result / essence` fields, so focused commands such as proposal-archive production remain understandable without treating the compact route prompt as a second semantic owner.
+- Direct-command **Body** also carries the same canonical `context / result / essence` fields plus its registered `command_includes` composition. Includes expand declaratively, shared prefixes deduplicate, and an IDTSPE composition produces one effective Shell pass rather than recursively executing several independent passes.
 - **Body** shows the exact adaptive invocation body, optional full-read body, semantic binding, provenance, permissions/sources and the direct source file when one exists.
 - **Scenarios N** lists canonical working Scenarios/steps where this capability is derived as a command equivalent.
 - The detail-pane **Group** selector changes presentation-only membership inside the current Commands classification. It does not change semantic identity, ownership, invocation body or applicability.
@@ -86,6 +97,26 @@ Helper shows projection provenance separately from semantic meaning:
 - `DIRECT CURRENT` — a current direct `planning/commands/*.command.md` supplies the invocation;
 - `GENERIC CURRENT` — the semantic capability is current and uses a generic registry/dispatcher invocation;
 - `GENERATED` — reserved for an explicit convenience projection that is not itself a direct command definition.
+
+## Command Composition Projection
+
+Every Planning Command participates in the mandatory compact methodology Use-Case Registry applicability recheck. Commands that enter normal IDTSPE work additionally compose `idtspe.work`, which refreshes/reaffirms current IDTSPE composition and the Port Requirement Set before the Shell pass.
+
+Registered direct-command includes form a semantic command-prefix graph:
+
+```text
+methodology.use_cases.recheck
+└─ idtspe.work
+   ├─ idtspe.port.target
+   │  └─ idtspe.target-module.apply
+   ├─ idtspe.port.lens
+   │  └─ idtspe.lens.apply
+   └─ other named port-capability prefixes
+```
+
+The graph guarantees traversal of canonical methodology capabilities; it is not a durable copy of the Shell topology. Direct definitions MUST NOT persist numeric `requiredPorts`, `portRequirements` or `includeFiles` as a second methodology ontology. Current ports are resolved by the canonical composition owner.
+
+For generated semantic cards, the Helper projects the corresponding command prefix (`idtspe.target-module.apply` for concrete Target Module Models and `idtspe.lens.apply` for concrete Lens Models) while the actual Model/Lens owner remains the semantic authority.
 
 ## Canonical Scenario Contract
 
@@ -158,15 +189,15 @@ The snapshot is a browser working cache. Losing it must not lose durable semanti
 
 Canonical source: `planning/commands/*.command.md`.
 
-Direct commands may be created/edited locally as drafts. `Save GitHub` is explicit. `Reload` replaces one selected direct command from GitHub. Direct command IDs are invocation/source identities; they do not define the primary semantic card identity for UC/TM/Lens capabilities.
+Direct commands may be created/edited locally as drafts. `Save GitHub` is explicit. `Reload` replaces one selected direct command from GitHub. Direct command IDs are invocation/source identities; they do not define the primary semantic card identity for UC/TM/Lens capabilities. The optional `includes[]` field references other registered command IDs. The full repository catalog validates include references and cycles; partial browser/local projections may temporarily omit an included prefix without redefining or deleting that dependency.
 
 ### Semantic components
 
 `seed/semantic-components.json` projects current methodology Use Cases, Target Modules and Lenses from their authoritative registries/owners. Runtime creates **one primary command card per current semantic component**.
 
-Specific Lens cards are projected from the Lens Registry. The generic `примени линзу` dispatcher remains infrastructure and is not another primary Lens card. Lens operations (`ANALYZE/CHECK/REFINE/CHALLENGE`) and Target Module Result Units are selected by AI/context and do not become separate buttons.
+Specific Lens cards are projected from the Lens Registry and remain in `Lenses`. The generic `примени линзу` dispatcher is a visible `IDTSPE Pass` composition surface, not another primary Lens card. Lens operations (`ANALYZE/CHECK/REFINE/CHALLENGE`) and Target Module Units are selected by AI/context and do not become separate buttons. Concrete Target Module cards likewise remain in `Target Modules`; the generic `Apply Target Module` command is a shared-prefix composition surface in `IDTSPE Pass`.
 
-The bare `idtspe` direct command remains a current convenience/dispatcher route but is likewise not a second primary Helper card beside `UC-IDTSPE-COMPOSE-CURRENT-WORK`.
+The bare `idtspe` direct command is a visible `IDTSPE Pass` work-entry route. It remains distinct from the semantic `UC-IDTSPE-COMPOSE-CURRENT-WORK` card: the command guarantees invocation/composition, while the Use Case remains methodology authority for the process.
 
 ### Use Cases
 
@@ -190,7 +221,7 @@ Durable order source:
 planning/documentation/tools/tampermonkey/chat-command-palette/catalog-order.json
 ```
 
-It stores ordered stable IDs for Commands, Scenarios and Prompts plus `commandGroups[]`. Groups are **presentation-only** subdivisions inside the existing Commands classifications (`General`, `Use Cases`, `Target Modules`, `Lenses`, `Tools / Repository`). Each classification has one ordered group list; there is no separate Primary/Advanced/Semantic presentation tier. Groups never become methodology owners. Command order/group membership uses semantic IDs for UC/TM/Lens cards and direct IDs only for General/Tool capabilities without a semantic owner ID. Every current visible command card belongs to exactly one ordinary classification/group; `All commands` is only a cross-tab overview.
+It stores ordered stable IDs for Commands, Scenarios and Prompts plus `commandGroups[]`. Groups are **presentation-only** subdivisions inside the Commands classifications (`General`, `IDTSPE Pass`, `Use Cases`, `Target Modules`, `Lenses`, `Tools / Repository`). Each classification has one ordered group list; there is no separate Primary/Advanced/Semantic presentation tier. Groups never become methodology owners. Command order/group membership uses semantic IDs for UC/TM/Lens cards and direct IDs only for General/Tool capabilities without a semantic owner ID. Every current visible command card belongs to exactly one ordinary classification/group; `All commands` is only a cross-tab overview.
 
 When a Commands classification opens, Helper shows all of its groups immediately in a group navigator. `All groups` is the default; the first group selection isolates that group and subsequent selections build a multi-group filter. Selection is remembered per classification. Group containers remain ordered below the navigator and each container has independently persisted collapsed/expanded state. In normal classification view the group name is shown in the navigator and once on the group container, not repeated on every command card; `All commands` may show `Tab › Group` context because it intentionally mixes classifications.
 

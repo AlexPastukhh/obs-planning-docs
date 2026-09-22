@@ -1,5 +1,7 @@
 # Cross-Owner Consistency Review Process
 
+Responsibility ID: `IDTSPE.CROSS-OWNER-CONSISTENCY-REVIEW`
+
 Status: active reusable Core Process; former `UC-IDTSPE-REVIEW-CONSISTENCY` compatibility owner
 
 This is no longer a standalone runtime Use Case. Its independently useful effect belongs inside [`UC-IDTSPE-REVALIDATE-CURRENT-WORK`](../use-cases/revalidate-current-work/UC-IDTSPE-REVALIDATE-CURRENT-WORK.md) and, when integration itself exposes plausible drift, [`UC-IDTSPE-INTEGRATE-CURRENT-WORK`](../use-cases/integrate-current-work/UC-IDTSPE-INTEGRATE-CURRENT-WORK.md).

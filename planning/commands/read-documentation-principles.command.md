@@ -44,6 +44,9 @@ Scope: thin read-only shortcut for current methodology/documentation guidance; s
   ],
   "userTarget": "<documentation work in this session or none yet>",
   "palette": true,
-  "refinements": []
+  "refinements": [],
+  "includes": [
+    "methodology.use_cases.recheck"
+  ]
 }
 [/PLANNING_COMMAND_DEFINITION]

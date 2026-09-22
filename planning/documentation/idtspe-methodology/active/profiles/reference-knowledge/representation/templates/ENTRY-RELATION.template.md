@@ -1,4 +1,3 @@
-<a id="reference-entry-relation-template"></a>
 # <Relation Display Name>
 
 Source Entry: `<stable cross-bank Entry ref>`

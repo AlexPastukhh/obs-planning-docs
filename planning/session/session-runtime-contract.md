@@ -24,15 +24,16 @@ A natural-language USER request is sufficient.
 
 ```text
 USER request
+→ ambient methodology Use-Case applicability recheck
+   → Methodology Use-Case Registry Map + only plausible scoped registry rows
 → select the relevant current area / semantic-entry route through README/navigation
-→ methodology-use work: Methodology Use-Case Registry Map + scoped registry
-→ repository-specific operation: planning/use-case-registry.md
-→ specialized area work: that area's current functional navigation
+   ├─ repository-specific operation: planning/use-case-registry.md
+   └─ specialized area work: that area's current functional navigation
 → always-active IDTSPE proportional composition where planning/resolution work is material
 → ordinary work
 ```
 
-This is a routing choice, not a requirement to traverse every branch. Open only the branch whose Situation/scope plausibly matches the request, and reuse a current trustworthy route instead of rereading unchanged navigation.
+The ambient applicability recheck is always performed for current Planning/repository work, but it is a compact registry-surface check, not a requirement to execute every Use Case or traverse every functional branch. Reuse trustworthy registry metadata while still reaffirming applicability, then open only the functional branch whose Situation/scope plausibly matches the request.
 
 Helper commands/prompts may provide shortcuts, but are optional projections and do not change semantic ownership.
 

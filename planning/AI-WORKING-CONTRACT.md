@@ -46,7 +46,7 @@ Q/R/P remains secondary material attached to the actual current owner. AI should
 
 ## Repository Operational Work
 
-For repository-specific operational capabilities that are not owned more narrowly by Documentation, IDTSPE/SDS or another area, scan [`use-case-registry.md`](use-case-registry.md) by its compact Situation/Result summaries, then open only the selected `UC-REPO-*` owner. This branch is parallel to methodology-use navigation; do not force repository command/package/diff/prompt maintenance through the Methodology Use-Case Registry Map.
+For every explicit Planning Command, first run/reaffirm the global methodology Use-Case applicability surface through [`documentation/use-case-registry-map.md`](documentation/use-case-registry-map.md) / `UC-DOC-RESOLVE-CURRENT-USE-CASES`. This compact scan may confirm that no additional methodology Use Case is applicable; it does not make repository operational work methodology-owned and does not execute every selected Use Case. For repository-specific operational capabilities that are not owned more narrowly by Documentation, IDTSPE/SDS or another area, then scan [`use-case-registry.md`](use-case-registry.md) by its compact Situation/Result summaries and open only the selected `UC-REPO-*` owner.
 
 ## Documentation Work
 

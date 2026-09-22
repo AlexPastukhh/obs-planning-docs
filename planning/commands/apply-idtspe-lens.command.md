@@ -34,7 +34,7 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
     "This command is read-only planning; it does not mutate repository files, commit or push."
   ],
   "userTarget": "<lens> к <target/context>",
-  "palette": false,
+  "palette": true,
   "refinements": [],
   "methodologyBinding": {
     "methodologyRuntime": "IDTSPE",
@@ -44,6 +44,38 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
     "lensId": null,
     "parentSurface": null,
     "hostTargetPolicy": "RESOLVE_OR_REUSE_TARGET"
-  }
+  },
+  "includes": [
+    "idtspe.work",
+    "idtspe.port-composition.recheck",
+    "idtspe.port.trace",
+    "idtspe.port.lens"
+  ],
+  "ownerRefs": [
+    {
+      "responsibilityId": "LENS.META-MODEL",
+      "path": "planning/documentation/idtspe-methodology/active/idtspe-core/lenses/LENS-MODEL.md",
+      "anchor": "lens-meta-model",
+      "why": "Defines Lens Meta-Model → selected Lens Model → concrete Lens Application and its Finding boundary.",
+      "role": "PRIMARY_OWNER",
+      "readMode": "REQUIRED"
+    },
+    {
+      "responsibilityId": "LENS.DISCOVERY",
+      "path": "planning/documentation/idtspe-methodology/active/idtspe-core/lenses/LENS-REGISTRY.md",
+      "anchor": "registry-scan-guide",
+      "why": "Resolves the selected registered Lens and active profile pack without scanning unrelated Lens bodies.",
+      "role": "REGISTRY",
+      "readMode": "REQUIRED"
+    },
+    {
+      "responsibilityId": "RESOLUTION.FINDING-DISPOSITION",
+      "path": "planning/documentation/idtspe-methodology/active/idtspe-core/resolution/findings/FINDING-DISPOSITION.md",
+      "anchor": "resolution-finding-disposition",
+      "why": "Routes material Lens Finding Candidates to their natural destination instead of letting the Lens own semantic meaning.",
+      "role": "VALIDATION_HANDOFF",
+      "readMode": "REQUIRED"
+    }
+  ]
 }
 [/PLANNING_COMMAND_DEFINITION]

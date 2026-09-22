@@ -24,7 +24,9 @@ Target Module Instance
     when that Target Module Model is applied
 ```
 
-A `Target Module Instance` is **not another Target** and is not a peer semantic owner. It is the part of the Target Instance whose shape is prescribed by the selected Model: instantiated Module-defined Unit inventory, Unit dispositions/content, module-specific validators/composition constraints and Target Step Result contribution. The Target Instance remains the bounded planning responsibility and may also carry Target Formation meaning, concrete Sources, relations and broader Core State that are not themselves created by the Model.
+A `Target Module Instance` is **not another Target** and is not a peer semantic owner. It is one model-defined portion of the Target Instance whose shape is prescribed by one actually applied Model: instantiated Module-defined Unit inventory, Unit dispositions/content, module-specific validators/composition constraints and Target Step Result contribution. The Target Instance remains the bounded planning responsibility and may also carry Target Formation meaning, concrete Sources, relations and broader Core State that are not themselves created by the Model.
+
+One Target Instance may therefore contain `0..N` Target Module Instance portions when several distinct Target Module Models are actually applied to that same bounded Target. Each applied Model contributes at most one current model-defined portion for the same Target/basis; shared Meta-Model work is reused. Merely consulting a Target Module Model as guidance, or using it to recognize that another natural owner/Target is needed, does **not** instantiate that Model inside the current Target. A supporting Model that owns a genuinely separate bounded responsibility follows Target Formation to its own natural Target rather than becoming a second responsibility hidden inside the first Target.
 
 ```text
 Target Instance
@@ -33,15 +35,16 @@ Target Instance
 ├─ concrete Sources / relations / broader Core State
 ├─ applicable Core-defined Units
 ├─ Contextual Units when actually defined/formed
-└─ Target Module Instance, when a reusable Model is used
-   ├─ instantiated Module-defined Units
-   ├─ RESOLVED / OPEN / OMITTED dispositions
-   ├─ proportional Current Result Content
-   ├─ Model-specific validators / composition rules
-   └─ Target Step Result contribution
+└─ 0..N Target Module Instance portions, when reusable Models are actually applied
+   └─ each applied Model portion
+      ├─ instantiated Module-defined Units
+      ├─ RESOLVED / OPEN / OMITTED dispositions
+      ├─ proportional Current Result Content
+      ├─ Model-specific validators / composition rules
+      └─ Target Step Result contribution
 ```
 
-When no reusable Target Module Model fits, Target Formation uses a `Local Target Contract` instead. That route forms the needed local target-specific structure directly and does **not** create a Target Module Model or Target Module Instance merely for symmetry.
+When no reusable Target Module Model fits, Target Formation uses a `Local Target Contract` instead. That route forms the needed local target-specific structure directly and does **not** create a Target Module Model or Target Module Instance merely for symmetry. The local-contract route is the governing alternative for the bounded Target; reusable Models are not instantiated merely to imitate module-backed structure.
 
 ### Meta-Model Reuse In One Pass
 

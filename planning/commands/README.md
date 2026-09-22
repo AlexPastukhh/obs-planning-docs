@@ -3,7 +3,16 @@
 Status: active project command-definition registry
 Scope: repository-owned concrete command definitions used by the root command router, AI/chats and the modular Planning Helper.
 
+<a id="planning-command-definition-contract"></a>
 ## Authority
+
+Responsibility ID: `COMMAND.DEFINITION-CONTRACT`
+
+> Semantic Owner Dependencies
+> - `CONTEXTUALIZES` [`Root Command Routing`](../command-routing.md#planning-command-routing) — `COMMAND.ROOT-ROUTING`
+> - `CONTEXTUALIZES` [`Planning Helper Semantic Projection`](../documentation/tools/tampermonkey/chat-command-palette/README.md#planning-helper-semantic-projection) — `HELPER.SEMANTIC-PROJECTION`
+
+Responsibility routing across Commands/IDTSPE/Helper: [`RESPONSIBILITY-MAP.md`](RESPONSIBILITY-MAP.md).
 
 ```text
 planning/command-routing.md
@@ -49,6 +58,20 @@ Every command file contains exactly one marker block:
   "activeContextBehavior": "...",
   "traversalReadMode": "...",
   "ownerFiles": ["planning/..."],
+  "ownerRefs": [
+    {
+      "responsibilityId": "OWNER.RESPONSIBILITY",
+      "path": "planning/.../OWNER.md",
+      "anchor": "canonical-anchor",
+      "why": "why this command needs this owner/contract",
+      "role": "PRIMARY_OWNER",
+      "readMode": "REQUIRED"
+    }
+  ],
+  "includes": ["another.command.id"],
+  "compositionContributions": [
+    {"kind": "PORT_CAPABILITY_REQUIREMENT", "value": "TARGET", "why": "why this must be known before semantic execution"}
+  ],
   "expectedOutput": "...",
   "permissionMode": "...",
   "keyReminders": ["..."],
@@ -68,13 +91,89 @@ The JSON is intentionally strict so repository writes, build-time validation and
 - `file` equals the actual direct-child filename.
 - `commandFamily` contains the canonical `command` exactly.
 - IDs, canonical commands and aliases are unique across the complete catalog.
-- `ownerFiles` and `keyReminders` are arrays of strings.
+- `ownerFiles`, `includes` and `keyReminders` are arrays of strings. `includes` contains registered Planning Command IDs only; every referenced ID must exist, cycles are forbidden and duplicate IDs are invalid.
+- `compositionContributions` is an optional structured list collected from **all expanded DAG nodes before semantic execution**. It exposes only pre-execution facts required by composition (for example `WORKING_TRACE_REQUIRED`, `TRACE_SINK_PREFERENCE`, `PORT_CAPABILITY_REQUIREMENT`, or registered component selection). It is not another workflow or Shell topology.
+- `ownerRefs` is an optional structured list of the **references added by this command itself**. Each entry names `responsibilityId`, repository `path`, optional canonical `anchor`, human-readable `why`, semantic `role`, and `readMode`. Do not repeat references inherited from `includes`.
+- `ownerRefs.role` is one of `PRIMARY_OWNER`, `SUPPORTING_CONTRACT`, `REGISTRY`, `POSSIBLE_DESTINATION`, `VALIDATION_HANDOFF`, `RUNTIME_ENTRY`, `ROUTING`. `readMode` is `REQUIRED`, `ON_DEMAND` or `DESTINATION_ONLY`.
 - `palette` is boolean. `false` keeps a registered command out of the normal palette without making it unregistered.
 - current command semantics do **not** maintain Helper-only `When To Use` / `What You Get` prose. Helper may project **Контекст / Результат / Суть** from canonical fields: direct commands use `activeContextBehavior / expectedOutput / meaning`; semantic UC/TM/Lens cards use their canonical owners. Old cached definitions containing `helperPresentation` remain parser-compatible only.
 - one high-level command may orchestrate several existing project capabilities or methodology components when that gives a useful stable invocation surface. This never creates a Use Case, Target Module, Lens or semantic owner and never lets the command own their algorithms.
 - refinements contain only compact owner-read instructions; they do not duplicate owner algorithms.
 - result-producing commands may depend on reusable governance through `ownerFiles` / their semantic owner route; the shared command router reuses current governance, refreshes affected owners proportionally, and performs a full internal preflight only when no reliable sufficient governance context exists. A source snapshot/commit/branch change alone does not force a full reread.
+- `methodologyBinding` is optional **projection/dispatch metadata** for the current semantic surface (`IDTSPE`, profile, UC/TM/Lens surface kind, host-target policy). It never becomes a second semantic owner and does not encode Shell-port contracts.
+- `ownerFiles` are canonical owner/read routes, not command includes. `ownerRefs` refine that read route with exact Responsibility/anchor purpose; they still do not become executable includes.
+- `includes` is a declarative **command-composition dependency graph**. A command MUST NOT begin its own semantic action while its registered composition is still being discovered. Expand **all selected root commands/components and every transitive include first**, merge one DAG, reject cycles/unresolved IDs, deduplicate shared nodes, collect declarative contributions from every node, and only then execute dependencies before dependents. `includes` never means recursively run several independent passes.
+- Command composition MUST NOT maintain a parallel Shell-port ontology. Do not add durable numeric `requiredPorts`, `portRequirements`, `includeFiles` or similar lists. Named port/capability commands may contribute explicit requirements; `IDTSPE.PORT-COMPOSITION-REFRESH` resolves those requirements against the current Shell topology.
 
+
+<a id="planning-command-composition"></a>
+## Command Composition / Includes
+
+Every Planning Command invocation includes the canonical methodology Use-Case applicability recheck, either directly or transitively through its registered command composition. The recheck scans the Methodology Use-Case Registry Map and only plausibly applicable scoped registry rows; it does **not** execute every Use Case.
+
+### Expand First, Execute Dependencies Before Dependents
+
+The composition lifecycle is normative:
+
+```text
+all selected root commands / semantic component cards
+→ fully expand every transitive `includes` edge
+→ merge one dependency DAG
+→ reject unresolved IDs / cycles
+→ deduplicate shared nodes
+→ collect declarative contributions from ALL nodes before semantic execution
+→ establish the dependencies-first execution plan
+→ execute deepest/shared dependencies first
+→ execute each dependent only after its requirements completed or were validly REUSED
+→ selected root/leaf action executes last on its own branch
+```
+
+Declarative contributions are known at composition time rather than waiting for the node's later runtime action. The Helper/command resolver projects and merges the structured `compositionContributions` from every expanded node plus registered TM/Lens selection metadata before dependency semantic actions begin. They include, when applicable:
+
+```text
+explicit named capability/port requirements
+selected Target Module / Lens / Use-Case identity
+trace sink/detail configuration
+current target/context selectors
+permission constraints
+```
+
+This is essential for IDTSPE: `IDTSPE.PORT-COMPOSITION-REFRESH` must already know all explicit leaf requirements before it refreshes the Port Requirement Set.
+
+For normal IDTSPE work the reusable base is:
+
+```text
+idtspe.work
+├─ idtspe.port.trace
+├─ methodology.use_cases.recheck
+└─ idtspe.port-composition.recheck
+```
+
+The one structured P-02 working trace is established during invocation preparation so the Use-Case and Port Composition rechecks are recorded incrementally. Canonical Shell `P-02` after `P-01` adopts/continues that same trace; no second trace is created.
+
+User-level/specialized IDTSPE operations expose the base frame explicitly even when some dependencies are also reachable transitively. The duplicate edges are intentional declaration and are deduplicated in the merged DAG.
+
+```text
+TM-* command/card
+├─ idtspe.work
+├─ idtspe.port-composition.recheck
+├─ idtspe.port.trace
+├─ idtspe.port.target
+├─ idtspe.target-module.apply
+└─ selected TM-* Model
+
+LENS-* command/card
+├─ idtspe.work
+├─ idtspe.port-composition.recheck
+├─ idtspe.port.trace
+├─ idtspe.port.lens
+├─ idtspe.lens.apply
+└─ selected LENS-* Model
+```
+
+Named `idtspe.port.*` commands contribute an explicit named capability requirement. Generic `idtspe.target-module.apply` / `idtspe.lens.apply` contribute the reusable Meta-Model/registry/Unit-or-Finding machinery. Concrete TM/Lens cards add only their own selected Model reference; references inherited from the shared prefixes are not copied into every leaf card.
+
+The methodology remains independently executable without Helper/command projection: Use Cases, semantic owners and their natural handoffs define the process. Command composition is a reproducible traversal guarantee over those canonical owners, not a second source of methodology meaning.
 
 ## Planning Helper Semantic Projection
 
@@ -92,7 +191,7 @@ IDTSPE is always active; command invocation does not enable it. A direct Target 
 
 Planning Helper methodology Use Cases are projected only from [`../documentation/use-case-registry-map.md`](../documentation/use-case-registry-map.md) and the current scoped registries it maps. Filesystem presence of another `use-case-registry.md` does not make its entries global methodology-use UCs.
 
-Generic Lens operations are repository commands `idtspe.lenses.select` (`подбери линзы`) and `idtspe.lens.apply` (`примени линзу`). They are orchestration/dispatch surfaces over `TF-06A` + the registered Lens owners, not new Lens semantic authorities and not one-command-per-Lens expansion. The generic apply dispatcher and bare `idtspe` work dispatcher remain registered but use `palette: false`; Helper visibility follows the command contract instead of a separate hidden-infrastructure list.
+Generic Lens operations are repository commands `idtspe.lenses.select` (`подбери линзы`) and `idtspe.lens.apply` (`примени линзу`). They dispatch through the canonical Lens capability / Lens Meta-Model and registered Lens owners; there is no fixed Target Lens Set field. `idtspe.work`, named `idtspe.port.*`, `idtspe.target-module.apply` and `idtspe.lens.apply` are explicit command-composition surfaces projected in the `IDTSPE Pass` Helper view; concrete `TM-*` and `LENS-*` cards remain in their own semantic views.
 
 The six retired `collect-ideas*` command IDs remain hidden compatibility aliases only. They must route their supplied material into the current IDTSPE/SDS Target/owner model and must not retain the old collect-Ideas shell, Current Plan runtime, Idea Review owners or old SDS physical-profile owners. Hiding an old command from the palette is not enough if its owner route still revives obsolete semantics.
 

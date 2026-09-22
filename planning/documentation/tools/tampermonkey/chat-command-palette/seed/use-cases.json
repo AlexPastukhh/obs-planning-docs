@@ -60,6 +60,20 @@
       "result": "The README accurately maps the current area and direct-child responsibilities, with natural next navigation and without becoming a second owner of Use-Case/Process/Principles meaning."
     },
     {
+      "id": "UC-DOC-MAINTAIN-RESPONSIBILITY-MAP",
+      "label": "Maintain Responsibility Map",
+      "description": "The smallest useful current Responsibility Map routes each material responsibility in its declared scope to one canonical semantic owner, exposes useful ownership boundaries/child-map routes, and does not duplicate the semantic contracts it routes to.",
+      "sources": [
+        "planning/documentation/use-case-registry-map.md",
+        "planning/documentation/use-case-registry.md"
+      ],
+      "instruction": "Resolve UC-DOC-MAINTAIN-RESPONSIBILITY-MAP through planning/documentation/use-case-registry-map.md, then the mapped scoped registry and current owner route (planning/documentation/use-cases/UC-DOC-MAINTAIN-RESPONSIBILITY-MAP.md). Preserve its methodology-use boundary and permission model; this Helper projection is invocation/navigation only.",
+      "target": "<Maintain Responsibility Map target>",
+      "manualInvocation": true,
+      "trigger": "Semantic responsibilities/owners were added, moved, split, merged or clarified; a scope has enough sibling/cross-area owners that ownership is hard to infer; or an existing Responsibility Map may be stale, ambiguous or duplicating owned meaning.",
+      "result": "The smallest useful current Responsibility Map routes each material responsibility in its declared scope to one canonical semantic owner, exposes useful ownership boundaries/child-map routes, and does not duplicate the semantic contracts it routes to."
+    },
+    {
       "id": "UC-DOC-MAINTAIN-TEMPLATE",
       "label": "Maintain Documentation Template",
       "description": "A shape-only current template exists where useful, remains reachable from the Use Case/Process that uses it, and contains no semantic decision logic that belongs in another owner.",
@@ -116,6 +130,21 @@
       "result": "The target documentation meaning is resolved to the needed depth, affected Use Cases and semantic owners are clear, and the change is ready for exact repository realization without implementation having to invent semantic decisions."
     },
     {
+      "id": "UC-DOC-RESOLVE-CURRENT-USE-CASES",
+      "label": "Resolve Current Methodology Use Cases",
+      "description": "The current applicable Use-Case composition is known: still-applicable current Use Cases are retained, newly applicable Use Cases are added, no-longer-applicable assumptions are released, and only owner detail needed for the next material action is loaded.",
+      "sources": [
+        "planning/documentation/use-case-registry-map.md",
+        "planning/documentation/use-case-registry.md"
+      ],
+      "instruction": "Resolve UC-DOC-RESOLVE-CURRENT-USE-CASES through planning/documentation/use-case-registry-map.md, then the mapped scoped registry and current owner route (planning/documentation/use-cases/UC-DOC-RESOLVE-CURRENT-USE-CASES.md). Preserve its methodology-use boundary and permission model; this Helper projection is invocation/navigation only.",
+      "target": "<Resolve Current Methodology Use Cases target>",
+      "manualInvocation": true,
+      "trigger": "Any current Planning/repository work is starting or continuing, through an explicit Planning Command or ordinary natural-language work, and the current situation requires reaffirming which methodology-use capabilities are applicable now. This Use Case is **always logically active for every current Planning/repository work entry**. Every Planning Command composes it explicitly/transitively; ordinary natural-language work applies the same ambient registry-level recheck through routing. That does not mean every registry or Use-Case body is reread or executed on every turn.",
+      "result": "The current applicable Use-Case composition is known: still-applicable current Use Cases are retained, newly applicable Use Cases are added, no-longer-applicable assumptions are released, and only owner detail needed for the next material action is loaded.",
+      "commandId": "methodology.registries.scan"
+    },
+    {
       "id": "UC-DOC-REVIEW-DOCUMENTATION",
       "label": "Review Repository Documentation",
       "description": "Material documentation findings are tied to their real semantic owners, verified and unverified areas are distinguished, and each required correction has a narrow current repair/change route without the review itself becoming new semantic authority.",
@@ -141,50 +170,49 @@
       "target": "<Use Repository Methodology / Guidance target>",
       "manualInvocation": true,
       "trigger": "Repository methodology/documentation may help the current work, or current guidance orientation may be missing, stale, too broad, conflicting, or no longer appropriate to the current situation. This Use Case is about **working with methodology/documentation files**. It does not own product planning, code changes, Domain/Slice design, Target production, Lens analysis or other specialized work performed by the methodology being consulted.",
-      "result": "The current work has a situation-appropriate methodology orientation: applicable Use Cases and semantic owners are known, required documentation actions are clear, only useful detail is loaded, and contextual adaptations/deferments are explicit when material.",
-      "commandId": "methodology.registries.scan"
+      "result": "The current work has a situation-appropriate methodology orientation: applicable Use Cases and semantic owners are known, required documentation actions are clear, only useful detail is loaded, and contextual adaptations/deferments are explicit when material."
     },
     {
       "id": "UC-IDTSPE-COMPOSE-CURRENT-WORK",
       "label": "Compose Current IDTSPE Work",
-      "description": "The current work has the **smallest useful IDTSPE composition** for the situation, with relevant methodology components selected or explicitly left unnecessary for now, and with useful recheck/next-action conditions clear. A valid Result may be only: ``text continue Broad Discussion; no Target / Lens / Target Module / Checkpoint / persisted State is useful yet. ``",
+      "description": "The current work has the **smallest useful IDTSPE composition** for the situation, with relevant methodology components selected or explicitly left unnecessary for now, useful recheck/next-action conditions clear, and the current port-requirement composition refreshed/reaffirmed for the next normal Shell pass. A valid Result may be only: ``text continue Broad Discussion; no Target / Lens / Target Module / Checkpoint / persisted State is useful yet. ``",
       "sources": [
         "planning/documentation/use-case-registry-map.md",
-        "planning/documentation/idtspe-methodology/active/idtspe-core/shared/idtspe-methodology-use-case-registry.md"
+        "planning/documentation/idtspe-methodology/active/idtspe-core/use-cases/USE-CASE-REGISTRY.md"
       ],
-      "instruction": "Resolve UC-IDTSPE-COMPOSE-CURRENT-WORK through planning/documentation/use-case-registry-map.md, then the mapped scoped registry and current owner route (planning/documentation/idtspe-methodology/active/idtspe-core/shared/compose-current-work-use-case.md). Preserve its methodology-use boundary and permission model; this Helper projection is invocation/navigation only.",
+      "instruction": "Resolve UC-IDTSPE-COMPOSE-CURRENT-WORK through planning/documentation/use-case-registry-map.md, then the mapped scoped registry and current owner route (planning/documentation/idtspe-methodology/active/idtspe-core/use-cases/compose-current-work/UC-IDTSPE-COMPOSE-CURRENT-WORK.md). Preserve its methodology-use boundary and permission model; this Helper projection is invocation/navigation only.",
       "target": "<Compose Current IDTSPE Work target>",
       "manualInvocation": true,
-      "trigger": "IDTSPE work is active — which is the default in this methodology environment — and the current situation requires deciding **how much IDTSPE structure is useful now**. This Use Case is re-evaluated at entry and whenever the next material methodology action or changed context may require a different composition.",
-      "result": "The current work has the **smallest useful IDTSPE composition** for the situation, with relevant methodology components selected or explicitly left unnecessary for now, and with useful recheck/next-action conditions clear. A valid Result may be only: ``text continue Broad Discussion; no Target / Lens / Target Module / Checkpoint / persisted State is useful yet. ``"
+      "trigger": "IDTSPE work is active — which is the default in this methodology environment — and the current situation requires deciding **how much IDTSPE structure is useful now**. This Use Case is re-evaluated under the canonical Methodology Composition Recheck Rule. > Semantic Owner Dependency > Type: CONTEXTUALIZES > Responsibility: IDTSPE.METHODOLOGY-COMPOSITION-RECHECK > Owner: Methodology Composition Recheck Rule",
+      "result": "The current work has the **smallest useful IDTSPE composition** for the situation, with relevant methodology components selected or explicitly left unnecessary for now, useful recheck/next-action conditions clear, and the current port-requirement composition refreshed/reaffirmed for the next normal Shell pass. A valid Result may be only: ``text continue Broad Discussion; no Target / Lens / Target Module / Checkpoint / persisted State is useful yet. ``"
     },
     {
       "id": "UC-IDTSPE-INTEGRATE-CURRENT-WORK",
       "label": "Integrate Current IDTSPE Work",
-      "description": "An **IDTSPE Integration Checkpoint** reconciles material Broad Discussion into the current Unit/Target/Work-Context model: the complete Module-defined Unit inventory, material Unit Resolutions, Current Result Content / OPEN / explicit omission dispositions, material cross-cutting Core Resolution State, unresolved/revalidation state and a useful continuation point. It does not manufacture completion or approval.",
+      "description": "An **IDTSPE Integration Checkpoint** reconciles material Broad Discussion into the current Unit/Target/Work-Context model: the complete Module-defined Unit inventory when a Target Module Instance exists, applicable Core-defined Units, actually formed Contextual Units, material Unit Resolutions, Current Result Content / OPEN / explicit omission dispositions as applicable, material cross-cutting Core Resolution State, unresolved/revalidation state and a useful continuation point. It does not manufacture completion or approval.",
       "sources": [
         "planning/documentation/use-case-registry-map.md",
-        "planning/documentation/idtspe-methodology/active/idtspe-core/shared/idtspe-methodology-use-case-registry.md"
+        "planning/documentation/idtspe-methodology/active/idtspe-core/use-cases/USE-CASE-REGISTRY.md"
       ],
-      "instruction": "Resolve UC-IDTSPE-INTEGRATE-CURRENT-WORK through planning/documentation/use-case-registry-map.md, then the mapped scoped registry and current owner route (planning/documentation/idtspe-methodology/active/idtspe-core/shared/integrate-current-work-use-case.md). Preserve its methodology-use boundary and permission model; this Helper projection is invocation/navigation only.",
+      "instruction": "Resolve UC-IDTSPE-INTEGRATE-CURRENT-WORK through planning/documentation/use-case-registry-map.md, then the mapped scoped registry and current owner route (planning/documentation/idtspe-methodology/active/idtspe-core/use-cases/integrate-current-work/UC-IDTSPE-INTEGRATE-CURRENT-WORK.md). Preserve its methodology-use boundary and permission model; this Helper projection is invocation/navigation only.",
       "target": "<Integrate Current IDTSPE Work target>",
       "manualInvocation": true,
       "trigger": "Broad Discussion/current work has accumulated enough distributed material that a coherent whole-state view is now more useful than continuing local discussion alone, or an explicit review/handoff/readiness point needs integrated current meaning. Typical triggers include: important accepted meaning is distributed across turns/owners/Units; a substantial Decision/Finding/revalidation pass changed several dependent parts; continuation/handoff/resume would otherwise be unreliable; a downstream transition needs a coherent current boundary view; the USER explicitly requests a checkpoint/integration review. Elapsed time or message count alone is not a trigger. An Integration Checkpoint is not a periodic timer event.",
-      "result": "An **IDTSPE Integration Checkpoint** reconciles material Broad Discussion into the current Unit/Target/Work-Context model: the complete Module-defined Unit inventory, material Unit Resolutions, Current Result Content / OPEN / explicit omission dispositions, material cross-cutting Core Resolution State, unresolved/revalidation state and a useful continuation point. It does not manufacture completion or approval."
+      "result": "An **IDTSPE Integration Checkpoint** reconciles material Broad Discussion into the current Unit/Target/Work-Context model: the complete Module-defined Unit inventory when a Target Module Instance exists, applicable Core-defined Units, actually formed Contextual Units, material Unit Resolutions, Current Result Content / OPEN / explicit omission dispositions as applicable, material cross-cutting Core Resolution State, unresolved/revalidation state and a useful continuation point. It does not manufacture completion or approval."
     },
     {
       "id": "UC-IDTSPE-MAINTAIN-CURRENT-WORK-STATE",
       "label": "Maintain Current IDTSPE Work State",
-      "description": "The smallest useful current Work Context is represented coherently around bounded Units, their Unit Resolution state and Current Result Content, plus any material cross-Unit/Target/Work-Context Core Resolution State. Stale/invalidated meaning is distinguishable without serializing the whole conversation.",
+      "description": "The smallest useful current Work Context is represented coherently around material Target Resolution Requirements, bounded Units, their Unit Resolution state and Current Result Content, plus any material cross-Unit/Target/Work-Context Core Resolution State. Stale/invalidated meaning is distinguishable without serializing the whole conversation.",
       "sources": [
         "planning/documentation/use-case-registry-map.md",
-        "planning/documentation/idtspe-methodology/active/idtspe-core/shared/idtspe-methodology-use-case-registry.md"
+        "planning/documentation/idtspe-methodology/active/idtspe-core/use-cases/USE-CASE-REGISTRY.md"
       ],
-      "instruction": "Resolve UC-IDTSPE-MAINTAIN-CURRENT-WORK-STATE through planning/documentation/use-case-registry-map.md, then the mapped scoped registry and current owner route (planning/documentation/idtspe-methodology/active/idtspe-core/shared/maintain-current-work-state-use-case.md). Preserve its methodology-use boundary and permission model; this Helper projection is invocation/navigation only.",
+      "instruction": "Resolve UC-IDTSPE-MAINTAIN-CURRENT-WORK-STATE through planning/documentation/use-case-registry-map.md, then the mapped scoped registry and current owner route (planning/documentation/idtspe-methodology/active/idtspe-core/use-cases/maintain-current-work-state/UC-IDTSPE-MAINTAIN-CURRENT-WORK-STATE.md). Preserve its methodology-use boundary and permission model; this Helper projection is invocation/navigation only.",
       "target": "<Maintain Current IDTSPE Work State target>",
       "manualInvocation": true,
       "trigger": "Current working meaning benefits from explicit semantic retention/addressability because it must survive distributed discussion, support review/revalidation, be handed off/resumed, or participate in Core/Target lifecycle.",
-      "result": "The smallest useful current Work Context is represented coherently around bounded Units, their Unit Resolution state and Current Result Content, plus any material cross-Unit/Target/Work-Context Core Resolution State. Stale/invalidated meaning is distinguishable without serializing the whole conversation."
+      "result": "The smallest useful current Work Context is represented coherently around material Target Resolution Requirements, bounded Units, their Unit Resolution state and Current Result Content, plus any material cross-Unit/Target/Work-Context Core Resolution State. Stale/invalidated meaning is distinguishable without serializing the whole conversation."
     },
     {
       "id": "UC-IDTSPE-MAINTAIN-LENS",
@@ -192,9 +220,9 @@
       "description": "``text one canonical Lens/Lens Pack owner registry entry / applicability summary activation class/gate Operational Evaluation Contract explicit Analysis Surface / supported operations / Finding Contract Knowledge Basis / theory-reference links when useful consumer/profile mapping migrated duplicate knowledge/guidance consistency checks ``",
       "sources": [
         "planning/documentation/use-case-registry-map.md",
-        "planning/documentation/idtspe-methodology/active/idtspe-core/shared/idtspe-methodology-use-case-registry.md"
+        "planning/documentation/idtspe-methodology/active/idtspe-core/use-cases/USE-CASE-REGISTRY.md"
       ],
-      "instruction": "Resolve UC-IDTSPE-MAINTAIN-LENS through planning/documentation/use-case-registry-map.md, then the mapped scoped registry and current owner route (planning/documentation/idtspe-methodology/active/idtspe-core/shared/lens-creation-and-integration-use-case.md). Preserve its methodology-use boundary and permission model; this Helper projection is invocation/navigation only.",
+      "instruction": "Resolve UC-IDTSPE-MAINTAIN-LENS through planning/documentation/use-case-registry-map.md, then the mapped scoped registry and current owner route (planning/documentation/idtspe-methodology/active/idtspe-core/use-cases/maintain-lens/UC-IDTSPE-MAINTAIN-LENS.md). Preserve its methodology-use boundary and permission model; this Helper projection is invocation/navigation only.",
       "target": "<Create / Review / Integrate Reusable Lens target>",
       "manualInvocation": true,
       "trigger": "Use when: ``text one evaluation perspective repeats across Target families an existing Target Module embeds reusable Lens knowledge frequent cross-cutting reasoning has no stable owner several Lens names overlap/duplicate one reasoning loop an existing Lens has unclear applicability/output/escalation ``",
@@ -203,16 +231,16 @@
     {
       "id": "UC-IDTSPE-MAINTAIN-TARGET-MODULE",
       "label": "Create / Review / Integrate Target Module",
-      "description": "``text one Target Module owner catalog entry stable Entry Point integration map Target Step-Result Contract / Unit Contracts / Result Content responsibilities explicit per-Unit Opening / Closing Applicability Checkpoints stable per-Unit methodology-owner binding points complete Module-defined Unit inventory/disposition contract Resolution / Production Method output schema/projection when useful validators provenance mapping command/Tampermonkey readiness route ` If reuse already covers the need: `text no new module → integrate/reuse existing one `` ---",
+      "description": "``text one Target Module owner catalog entry stable Entry Point integration map Target Step-Result family / Module-defined Unit inventory and Target-family-specific Unit deltas conforming to the canonical Target Work owners stable per-Unit methodology-owner binding points Module-specific applicability/checkpoint guidance conforming to the canonical Unit applicability envelope complete Module-defined Unit inventory/composition contract without duplicated generic Unit/Collection/Slot/runtime semantics Resolution / Production Method output schema/projection when useful validators provenance mapping command/Tampermonkey readiness route ` If reuse already covers the need: `text no new module → integrate/reuse existing one `` ---",
       "sources": [
         "planning/documentation/use-case-registry-map.md",
-        "planning/documentation/idtspe-methodology/active/idtspe-core/shared/idtspe-methodology-use-case-registry.md"
+        "planning/documentation/idtspe-methodology/active/idtspe-core/use-cases/USE-CASE-REGISTRY.md"
       ],
-      "instruction": "Resolve UC-IDTSPE-MAINTAIN-TARGET-MODULE through planning/documentation/use-case-registry-map.md, then the mapped scoped registry and current owner route (planning/documentation/idtspe-methodology/active/idtspe-core/shared/target-module-creation-and-integration-use-case.md). Preserve its methodology-use boundary and permission model; this Helper projection is invocation/navigation only.",
+      "instruction": "Resolve UC-IDTSPE-MAINTAIN-TARGET-MODULE through planning/documentation/use-case-registry-map.md, then the mapped scoped registry and current owner route (planning/documentation/idtspe-methodology/active/idtspe-core/use-cases/maintain-target-module/UC-IDTSPE-MAINTAIN-TARGET-MODULE.md). Preserve its methodology-use boundary and permission model; this Helper projection is invocation/navigation only.",
       "target": "<Create / Review / Integrate Target Module target>",
       "manualInvocation": true,
       "trigger": "Use when: ``text a recurring Target class has no reusable contract an existing UC/workflow/template family should become IDTSPE-addressable a Target Module is incomplete/stale/overlapping several modules need composition/entry-point reconciliation `` ---",
-      "result": "``text one Target Module owner catalog entry stable Entry Point integration map Target Step-Result Contract / Unit Contracts / Result Content responsibilities explicit per-Unit Opening / Closing Applicability Checkpoints stable per-Unit methodology-owner binding points complete Module-defined Unit inventory/disposition contract Resolution / Production Method output schema/projection when useful validators provenance mapping command/Tampermonkey readiness route ` If reuse already covers the need: `text no new module → integrate/reuse existing one `` ---"
+      "result": "``text one Target Module owner catalog entry stable Entry Point integration map Target Step-Result family / Module-defined Unit inventory and Target-family-specific Unit deltas conforming to the canonical Target Work owners stable per-Unit methodology-owner binding points Module-specific applicability/checkpoint guidance conforming to the canonical Unit applicability envelope complete Module-defined Unit inventory/composition contract without duplicated generic Unit/Collection/Slot/runtime semantics Resolution / Production Method output schema/projection when useful validators provenance mapping command/Tampermonkey readiness route ` If reuse already covers the need: `text no new module → integrate/reuse existing one `` ---"
     },
     {
       "id": "UC-IDTSPE-REVALIDATE-CURRENT-WORK",
@@ -220,9 +248,9 @@
       "description": "The narrowest affected semantic subject and relevant methodology-use surface are rechecked; stale/dependent Unit Resolution, Result Content or broader owner meaning is invalidated/reopened only where warranted; unaffected accepted meaning remains stable; and a precise re-entry route is known.",
       "sources": [
         "planning/documentation/use-case-registry-map.md",
-        "planning/documentation/idtspe-methodology/active/idtspe-core/shared/idtspe-methodology-use-case-registry.md"
+        "planning/documentation/idtspe-methodology/active/idtspe-core/use-cases/USE-CASE-REGISTRY.md"
       ],
-      "instruction": "Resolve UC-IDTSPE-REVALIDATE-CURRENT-WORK through planning/documentation/use-case-registry-map.md, then the mapped scoped registry and current owner route (planning/documentation/idtspe-methodology/active/idtspe-core/shared/revalidate-current-work-use-case.md). Preserve its methodology-use boundary and permission model; this Helper projection is invocation/navigation only.",
+      "instruction": "Resolve UC-IDTSPE-REVALIDATE-CURRENT-WORK through planning/documentation/use-case-registry-map.md, then the mapped scoped registry and current owner route (planning/documentation/idtspe-methodology/active/idtspe-core/use-cases/revalidate-current-work/UC-IDTSPE-REVALIDATE-CURRENT-WORK.md). Preserve its methodology-use boundary and permission model; this Helper projection is invocation/navigation only.",
       "target": "<Revalidate Current IDTSPE Work target>",
       "manualInvocation": true,
       "trigger": "Existing working/accepted meaning may no longer be reliable because a Finding, Evidence item, accepted upstream change, Source/authority change, USER redirect, implementation discovery, methodology change or explicit consistency concern affects its assumptions, relations or consumers.",

@@ -1,4 +1,3 @@
-<a id="reference-vocabulary-package-template"></a>
 # <Vocabulary Package Name>
 
 Vocabulary Package ID: `<stable-package-id>`

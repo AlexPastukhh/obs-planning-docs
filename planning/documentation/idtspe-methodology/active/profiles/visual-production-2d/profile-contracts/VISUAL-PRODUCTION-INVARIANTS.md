@@ -1,4 +1,3 @@
-<a id="shared-visual-production-invariants"></a>
 <a id="visual2d-production-invariants"></a>
 # Visual Production Invariants
 

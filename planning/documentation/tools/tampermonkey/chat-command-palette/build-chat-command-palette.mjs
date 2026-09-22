@@ -15,12 +15,12 @@ const semanticComponentSeedPath=path.join(seedDir,'semantic-components.json');
 const scenarioSeedPath=path.join(seedDir,'scenarios.json');
 const useCaseRegistryMapPath='planning/documentation/use-case-registry-map.md';
 const scenarioSourcePaths=[
-  'planning/documentation/idtspe-methodology/active/idtspe-core/shared/methodology-use-case-scenario-map.md',
+  'planning/documentation/idtspe-methodology/active/idtspe-core/evaluation/USE-CASE-SCENARIO-MAP.md',
   'planning/documentation/repository-scenarios/SCN-06-BUILD-AND-VERIFY-REPLACEMENT-PACKAGE.md'
 ];
-const coreTargetRegistryPath='planning/documentation/idtspe-methodology/active/idtspe-core/target-modules/README.md';
-const installedProfilesRegistryPath='planning/documentation/idtspe-methodology/active/profiles/README.md';
-const coreLensRegistryPath='planning/documentation/idtspe-methodology/active/idtspe-core/lenses/README.md';
+const coreTargetRegistryPath='planning/documentation/idtspe-methodology/active/idtspe-core/target-modules/TARGET-MODULE-REGISTRY.md';
+const installedProfilesRegistryPath='planning/documentation/idtspe-methodology/active/profiles/PROFILE-REGISTRY.md';
+const coreLensRegistryPath='planning/documentation/idtspe-methodology/active/idtspe-core/lenses/LENS-REGISTRY.md';
 const check=process.argv.includes('--check');
 const codec=require('./src/command-definition-codec.js');
 const catalog=require('./src/command-catalog.js');
@@ -38,6 +38,8 @@ function readCommands(){
 function splitRow(line){return line.trim().replace(/^\|/,'').replace(/\|$/,'').split('|').map((v)=>v.trim());}
 function cleanCell(v){return String(v||'').replace(/`/g,'').trim();}
 function plainCell(v){return cleanCell(String(v||'').replace(/\[([^\]]+)\]\([^)]+\)/g,'$1'));}
+function markdownHeadingSlug(value){return String(value||'').toLowerCase().replace(/<[^>]+>/g,'').replace(/[`*_~]/g,'').replace(/[^\p{L}\p{N}_\- ]/gu,'').trim().replace(/\s+/g,'-').replace(/-+/g,'-');}
+function semanticOwnerRef(rel,id,kind){const lines=fs.readFileSync(path.join(repoRoot,rel),'utf8').split(/\r?\n/),heading=(lines.find((line)=>/^#\s+/.test(line))||`# ${id}`).replace(/^#\s+/,'').trim();return{semanticId:id,path:rel,anchor:markdownHeadingSlug(heading),why:`Concrete ${kind==='TARGET_MODULE'?'Target Module Model':'Lens Model'} semantics selected by this card; shared Meta-Model/registry/port references come from included commands.`,role:'PRIMARY_OWNER',readMode:'REQUIRED'};}
 function compactMarkdown(v){return String(v||'').replace(/<!--.*?-->/gs,' ').replace(/`([^`]+)`/g,'$1').replace(/\[([^\]]+)\]\([^)]+\)/g,'$1').replace(/^[ \t]*[-*+]\s+/gm,'').replace(/^[ \t]*\d+\.\s+/gm,'').replace(/\s+/g,' ').trim();}
 function commandIdForCell(cell,commands){const text=cleanCell(cell).toLowerCase();if(!text||text==='none'||text.startsWith('none ')||text.startsWith('supports '))return'';const matches=[];for(const def of commands)for(const aliasRaw of def.commandFamily||[]){const alias=String(aliasRaw).trim().toLowerCase();if(!alias)continue;if(text===alias||text.startsWith(`${alias} `)||text.startsWith(`${alias}.`)||text.startsWith(`${alias},`)||text.startsWith(`${alias};`)||text.startsWith(`${alias}:`))matches.push({id:def.id,alias});}matches.sort((a,b)=>b.alias.length-a.alias.length||a.id.localeCompare(b.id));return matches[0]?.id||'';}
 function markdownLinkTargets(cell){const out=[];for(const match of String(cell||'').matchAll(/\[[^\]]+\]\(([^)]+)\)/g)){const target=String(match[1]||'').trim().split('#')[0];if(target&&!out.includes(target))out.push(target);}return out;}
@@ -196,7 +198,7 @@ function installedProfileRegistries(){
     const cells=splitRow(line),label=plainCell(cells[0]),bootstrapTarget=markdownLinkTargets(cells[1]||cells[0])[0];if(!label||!bootstrapTarget)continue;
     const bootstrap=resolveRegistryTarget(installedProfilesRegistryPath,bootstrapTarget);if(!bootstrap||!fs.existsSync(path.join(repoRoot,bootstrap)))throw new Error(`Installed profile bootstrap is missing: ${bootstrap||bootstrapTarget}`);
     const dir=path.posix.dirname(bootstrap),scope=label==='SDS'?'SDS':label;
-    const targetCandidates=[`${dir}/TARGET-MODULE-REGISTRY.md`,`${dir}/target-modules/README.md`],lensCandidates=[`${dir}/LENS-REGISTRY.md`,`${dir}/lenses/README.md`];
+    const targetCandidates=[`${dir}/registries/TARGET-MODULE-REGISTRY.md`,`${dir}/TARGET-MODULE-REGISTRY.md`,`${dir}/target-modules/README.md`],lensCandidates=[`${dir}/registries/LENS-REGISTRY.md`,`${dir}/LENS-REGISTRY.md`,`${dir}/lenses/README.md`];
     const targetRegistry=targetCandidates.find((rel)=>fs.existsSync(path.join(repoRoot,rel)))||'',lensRegistry=lensCandidates.find((rel)=>fs.existsSync(path.join(repoRoot,rel)))||'';
     profiles.push({scope,bootstrap,targetRegistry,lensRegistry});
   }
@@ -208,7 +210,7 @@ function profileTargetRows(registryPath,scope){
     if(!/^\|/.test(line)||!line.includes('TM-')||/^\|\s*---/.test(line))continue;const id=(line.match(/TM-[A-Z0-9-]+/)||[])[0];if(!id||seen.has(id))continue;
     const targets=markdownLinkTargets(line),rel=targets.map((target)=>relativeFromRegistry(registryPath,target)).find((candidate)=>candidate&&fs.existsSync(path.join(repoRoot,candidate))&&path.basename(candidate)!==path.basename(registryPath));if(!rel)continue;
     seen.add(id);const cells=splitRow(line),aliases=[...explicitTableAliases(lines,id),...(sectionAliases.get(id)||[])].filter((value,index,all)=>all.indexOf(value)===index),alias=aliases[0]||'',description=compactMarkdown(cells.at(-1))||headingTitle(rel,id),explanation=ownerExplanation(rel,'TARGET_MODULE',description);
-    rows.push({id,kind:'TARGET_MODULE',scope,label:headingTitle(rel,id),actionLabel:ACTION_LABELS[id]||headingTitle(rel,id),description,...explanation,sources:[registryPath,rel],aliases,invocation:`idtspe tm ${alias||id} <target>`,target:`<${ACTION_LABELS[id]||headingTitle(rel,id)} target>`});
+    rows.push({id,kind:'TARGET_MODULE',scope,label:headingTitle(rel,id),actionLabel:ACTION_LABELS[id]||headingTitle(rel,id),description,...explanation,sources:[registryPath,rel],ownerRef:semanticOwnerRef(rel,id,'TARGET_MODULE'),aliases,invocation:`idtspe tm ${alias||id} <target>`,target:`<${ACTION_LABELS[id]||headingTitle(rel,id)} target>`});
   }
   return rows;
 }
@@ -218,7 +220,7 @@ function profileLensRows(registryPath,scope){
     if(!/^\|/.test(line)||!line.includes('LENS-')||/^\|\s*---/.test(line))continue;const id=(line.match(/LENS-[A-Z0-9-]+/)||[])[0];if(!id||seen.has(id))continue;
     const targets=markdownLinkTargets(line),rel=targets.map((target)=>relativeFromRegistry(registryPath,target)).find((candidate)=>candidate&&fs.existsSync(path.join(repoRoot,candidate))&&path.basename(candidate)!==path.basename(registryPath));if(!rel)continue;
     seen.add(id);const cells=splitRow(line),aliases=aliasMap.get(id)||[],alias=aliases[0]||'',description=compactMarkdown(cells.at(-1))||headingTitle(rel,id),explanation=ownerExplanation(rel,'LENS',description);
-    rows.push({id,kind:'LENS',scope,label:headingTitle(rel,id),actionLabel:ACTION_LABELS[id]||headingTitle(rel,id),description,...explanation,sources:[registryPath,rel],aliases,invocation:`idtspe lens ${alias||id} <target/context>`,target:`<${ACTION_LABELS[id]||headingTitle(rel,id)} analysis surface>`});
+    rows.push({id,kind:'LENS',scope,label:headingTitle(rel,id),actionLabel:ACTION_LABELS[id]||headingTitle(rel,id),description,...explanation,sources:[registryPath,rel],ownerRef:semanticOwnerRef(rel,id,'LENS'),aliases,invocation:`idtspe lens ${alias||id} <target/context>`,target:`<${ACTION_LABELS[id]||headingTitle(rel,id)} analysis surface>`});
   }
   return rows;
 }

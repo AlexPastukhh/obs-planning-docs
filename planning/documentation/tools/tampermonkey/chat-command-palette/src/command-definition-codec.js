@@ -12,8 +12,8 @@
   const allowedKeys = new Set([
     'schemaVersion', 'id', 'file', 'command', 'englishName', 'commandFamily',
     'description', 'meaning', 'activeContextBehavior', 'traversalReadMode',
-    'ownerFiles', 'expectedOutput', 'permissionMode', 'keyReminders',
-    'userTarget', 'palette', 'refinements', 'helperPresentation', 'methodologyBinding'
+    'ownerFiles', 'ownerRefs', 'expectedOutput', 'permissionMode', 'keyReminders',
+    'userTarget', 'palette', 'refinements', 'helperPresentation', 'methodologyBinding', 'includes', 'compositionContributions'
   ]);
 
   function assert(condition, message) {
@@ -76,6 +76,37 @@
       description: singleLine(raw.description, `refinements[${index}].description`),
       readRequired: stringArray(raw.readRequired, `refinements[${index}].readRequired`, { nonEmpty: true }).map((path, pathIndex) => validateRepositoryPath(path, `refinements[${index}].readRequired[${pathIndex}]`)),
       instruction: singleLine(raw.instruction, `refinements[${index}].instruction`)
+    };
+  }
+
+
+  function normalizeCompositionContribution(raw,index){
+    assert(raw&&typeof raw==='object'&&!Array.isArray(raw),`compositionContributions[${index}] must be an object.`);
+    const known=new Set(['kind','value','why']);for(const key of Object.keys(raw))assert(known.has(key),`Unknown compositionContributions[${index}] field: ${key}`);
+    const kind=singleLine(raw.kind,`compositionContributions[${index}].kind`);
+    const allowed=new Set(['WORKING_TRACE_REQUIRED','TRACE_SINK_PREFERENCE','PORT_CAPABILITY_REQUIREMENT']);
+    assert(allowed.has(kind),`compositionContributions[${index}].kind is invalid.`);
+    return{kind,value:singleLine(raw.value,`compositionContributions[${index}].value`),why:singleLine(raw.why,`compositionContributions[${index}].why`)};
+  }
+
+  function normalizeOwnerRef(raw,index){
+    assert(raw&&typeof raw==='object'&&!Array.isArray(raw),`ownerRefs[${index}] must be an object.`);
+    const known=new Set(['responsibilityId','path','anchor','why','role','readMode']);
+    for(const key of Object.keys(raw))assert(known.has(key),`Unknown ownerRefs[${index}] field: ${key}`);
+    const role=singleLine(raw.role,`ownerRefs[${index}].role`);
+    const roles=new Set(['PRIMARY_OWNER','SUPPORTING_CONTRACT','REGISTRY','POSSIBLE_DESTINATION','VALIDATION_HANDOFF','RUNTIME_ENTRY','ROUTING']);
+    assert(roles.has(role),`ownerRefs[${index}].role is invalid.`);
+    const readMode=raw.readMode==null?'REQUIRED':singleLine(raw.readMode,`ownerRefs[${index}].readMode`);
+    assert(new Set(['REQUIRED','ON_DEMAND','DESTINATION_ONLY']).has(readMode),`ownerRefs[${index}].readMode is invalid.`);
+    const anchor=raw.anchor==null||String(raw.anchor).trim()===''?'':singleLine(raw.anchor,`ownerRefs[${index}].anchor`);
+    if(anchor)assert(/^[A-Za-z0-9._-]+$/.test(anchor),`ownerRefs[${index}].anchor must be a safe Markdown anchor id.`);
+    return{
+      responsibilityId: singleLine(raw.responsibilityId,`ownerRefs[${index}].responsibilityId`),
+      path: validateRepositoryPath(raw.path,`ownerRefs[${index}].path`),
+      anchor,
+      why: singleLine(raw.why,`ownerRefs[${index}].why`),
+      role,
+      readMode
     };
   }
 
@@ -150,6 +181,18 @@
     assert(Array.isArray(refinementsRaw), 'refinements must be an array.');
     const refinements = refinementsRaw.map(normalizeRefinement);
     assert(new Set(refinements.map((item) => item.id)).size === refinements.length, 'refinement ids must be unique within a command.');
+    const includes = raw.includes == null ? [] : stringArray(raw.includes, 'includes').map((id, index) => validateId(id, `includes[${index}]`));
+    assert(new Set(includes).size === includes.length, 'includes must not contain duplicate command ids.');
+    const contributionsRaw=raw.compositionContributions==null?[]:raw.compositionContributions;
+    assert(Array.isArray(contributionsRaw),'compositionContributions must be an array.');
+    const compositionContributions=contributionsRaw.map(normalizeCompositionContribution);
+    const contributionKeys=compositionContributions.map((item)=>`${item.kind}|${item.value}`);
+    assert(new Set(contributionKeys).size===contributionKeys.length,'compositionContributions must not contain duplicate kind/value entries.');
+    const ownerRefsRaw=raw.ownerRefs==null?[]:raw.ownerRefs;
+    assert(Array.isArray(ownerRefsRaw),'ownerRefs must be an array.');
+    const ownerRefs=ownerRefsRaw.map(normalizeOwnerRef);
+    const ownerRefKeys=ownerRefs.map((ref)=>`${ref.responsibilityId}|${ref.path}|${ref.anchor}`);
+    assert(new Set(ownerRefKeys).size===ownerRefKeys.length,'ownerRefs must not contain duplicate responsibility/path/anchor entries.');
     assert(typeof raw.palette === 'boolean', 'palette must be boolean.');
     return {
       schemaVersion: SCHEMA_VERSION,
@@ -163,6 +206,9 @@
       activeContextBehavior: singleLine(raw.activeContextBehavior, 'activeContextBehavior'),
       traversalReadMode: singleLine(raw.traversalReadMode, 'traversalReadMode'),
       ownerFiles: stringArray(raw.ownerFiles, 'ownerFiles').map((path, index) => validateRepositoryPath(path, `ownerFiles[${index}]`)),
+      ownerRefs,
+      includes,
+      compositionContributions,
       expectedOutput: singleLine(raw.expectedOutput, 'expectedOutput'),
       permissionMode: singleLine(raw.permissionMode, 'permissionMode'),
       keyReminders: stringArray(raw.keyReminders, 'keyReminders', { nonEmpty: true }),
@@ -238,6 +284,9 @@
       activeContextBehavior: normalized.activeContextBehavior,
       traversalReadMode: normalized.traversalReadMode,
       ownerFiles: normalized.ownerFiles,
+      ownerRefs: normalized.ownerRefs,
+      includes: normalized.includes,
+      compositionContributions: normalized.compositionContributions,
       expectedOutput: normalized.expectedOutput,
       permissionMode: normalized.permissionMode,
       keyReminders: normalized.keyReminders,

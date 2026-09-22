@@ -39,12 +39,12 @@ function canonicalMethodologyUcIds(){
 }
 function exactCaseExists(rel){let current=repoRoot;for(const segment of rel.split('/')){if(!fs.existsSync(current))return false;const names=fs.readdirSync(current);if(!names.includes(segment))return false;current=path.join(current,segment)}return fs.existsSync(current)}
 
-test('generated Use-Case seed contains exactly the current methodology Use Cases mapped by Registry Map',()=>{const expected=canonicalMethodologyUcIds(),actual=useCases.map((u)=>u.id);assert.equal(new Set(actual).size,actual.length);assert.deepEqual([...actual].sort(),[...expected].sort());assert.equal(actual.length,16);assert.equal(actual.filter((id)=>id.startsWith('UC-DOC-')).length,10);assert.equal(actual.filter((id)=>id.startsWith('UC-IDTSPE-')).length,6);for(const id of actual)assert.ok(id.startsWith('UC-DOC-')||id.startsWith('UC-IDTSPE-'),`${id}: project/profile planning UC leaked into methodology projection`)});
+test('generated Use-Case seed contains exactly the current methodology Use Cases mapped by Registry Map',()=>{const expected=canonicalMethodologyUcIds(),actual=useCases.map((u)=>u.id);assert.equal(new Set(actual).size,actual.length);assert.deepEqual([...actual].sort(),[...expected].sort());assert.equal(actual.length,18);assert.equal(actual.filter((id)=>id.startsWith('UC-DOC-')).length,12);assert.equal(actual.filter((id)=>id.startsWith('UC-IDTSPE-')).length,6);for(const id of actual)assert.ok(id.startsWith('UC-DOC-')||id.startsWith('UC-IDTSPE-'),`${id}: project/profile planning UC leaked into methodology projection`)});
 
 test('all generated semantic source paths exist with exact repository casing',()=>{for(const definition of useCases)for(const source of definition.sources||[])assert.ok(exactCaseExists(source),`${definition.id}: missing/exact-case-invalid source ${source}`)});
 
 
-test('methodology Use-Case semantic bodies remain thin owner-route projections with explicit permission boundary',()=>{const uc=useCases.find((u)=>u.id==='UC-IDTSPE-COMPOSE-CURRENT-WORK');assert.ok(uc);assert.ok(uc.sources.includes('planning/documentation/use-case-registry-map.md'));assert.ok(uc.sources.includes('planning/documentation/idtspe-methodology/active/idtspe-core/shared/idtspe-methodology-use-case-registry.md'));for(const mode of ['adaptive','full']){const body=semantic.buildSemanticBody('use_case',uc,mode);assert.match(body,/\[PLANNING_USE_CASE\]/);assert.match(body,/use_case_id:\n  UC-IDTSPE-COMPOSE-CURRENT-WORK/);assert.match(body,/route_resolution:/);assert.match(body,/current owner route/);assert.match(body,/methodology-use/i);assert.match(body,/read context only/i)}assert.match(semantic.buildSemanticBody('use_case',uc,'full'),/Full use_case reading is required/)});
+test('methodology Use-Case semantic bodies remain thin owner-route projections with explicit permission boundary',()=>{const uc=useCases.find((u)=>u.id==='UC-IDTSPE-COMPOSE-CURRENT-WORK');assert.ok(uc);assert.ok(uc.sources.includes('planning/documentation/use-case-registry-map.md'));assert.ok(uc.sources.includes('planning/documentation/idtspe-methodology/active/idtspe-core/use-cases/USE-CASE-REGISTRY.md'));for(const mode of ['adaptive','full']){const body=semantic.buildSemanticBody('use_case',uc,mode);assert.match(body,/\[PLANNING_USE_CASE\]/);assert.match(body,/use_case_id:\n  UC-IDTSPE-COMPOSE-CURRENT-WORK/);assert.match(body,/route_resolution:/);assert.match(body,/current owner route/);assert.match(body,/methodology-use/i);assert.match(body,/read context only/i)}assert.match(semantic.buildSemanticBody('use_case',uc,'full'),/Full use_case reading is required/)});
 
 
 test('methodology Use Cases and standalone project/domain command routes remain independently discoverable',()=>{for(const id of ['UC-DOC-USE-REPOSITORY-GUIDANCE','UC-DOC-PLAN-DOCUMENTATION-CHANGE','UC-IDTSPE-COMPOSE-CURRENT-WORK','UC-IDTSPE-INTEGRATE-CURRENT-WORK','UC-IDTSPE-REVALIDATE-CURRENT-WORK'])assert.ok(useCases.some((u)=>u.id===id),id);for(const projectUc of ['UC-REPO-PLAN-UPDATE','UC-REPO-BUILD-REPLACEMENT-PACKAGE','UC-PLAN-ARCH-WORKSPACE-USES','UC-PLAN-DOMAIN','UC-PLAN-SLICE','UC-PLAN-TEST-PLAN'])assert.ok(!useCases.some((u)=>u.id===projectUc),`${projectUc}: project/application UC must not be projected as methodology-use UC`);for(const file of ['review-audit.command.md','discover-workspace-use-cases.command.md','plan-domain.command.md','plan-application-slice.command.md','plan-practical-testing.command.md','bootstrap-application-sds-planning.command.md','build-replacement-archive.command.md'])assert.ok(fs.existsSync(path.join(repoRoot,'planning/commands',file)),file);const audit=codec.parseCommandDefinitionDocument(read('planning/commands/review-audit.command.md'));assert.equal(audit.id,'review_audit.recheck');assert.ok(audit.ownerFiles.includes('planning/documentation/review-audit-workflow.md'));assert.doesNotMatch(audit.meaning,/UC-REPO-AUDIT-REVIEW/)});
@@ -71,16 +71,16 @@ test('IDTSPE and SDS bootstrap commands load governance without forming or execu
 
 test('Architecture and Testing remain reachable through their current semantic owners without Direction registries',()=>{assert.ok(fs.existsSync(path.join(repoRoot,'planning/documentation/architecture-planning/use-case-registry.md')));assert.ok(fs.existsSync(path.join(repoRoot,'planning/documentation/testing-planning/use-case-registry.md')));assert.equal(fs.existsSync(path.join(repoRoot,'planning/direction-registry.md')),false)});
 
-test('retired Test Strategy shortcut routes to current proof owners without restoring a durable Test Strategy Target',()=>{const owner=read('planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-TEST-STRATEGY.md');assert.match(owner,/RETIRED/i);assert.match(owner,/LENS-TEST-PROOF-EVIDENCE/);assert.match(owner,/transient coordination/);assert.match(owner,/No active Test Strategy Result Units remain/i);const command=codec.parseCommandDefinitionDocument(read('planning/commands/plan-testing-strategy.command.md'));assert.equal(command.palette,false);assert.match(command.meaning,/TM-TEST-STRATEGY is retired/i);assert.match(command.meaning,/LENS-TEST-PROOF-EVIDENCE/);assert.doesNotMatch(command.expectedOutput,/durable .*Test Strategy|RU-TSTRAT/i)});
+test('retired Test Strategy shortcut routes to current proof owners without restoring a durable Test Strategy Target',()=>{const registry=read('planning/documentation/idtspe-methodology/active/profiles/sds/registries/TARGET-MODULE-REGISTRY.md');assert.match(registry,/TM-TEST-STRATEGY.*RETIRE/i);assert.equal(fs.existsSync(path.join(repoRoot,'planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-TEST-STRATEGY.md')),false);const command=codec.parseCommandDefinitionDocument(read('planning/commands/plan-testing-strategy.command.md'));assert.equal(command.palette,false);assert.match(command.meaning,/TM-TEST-STRATEGY is retired/i);assert.match(command.meaning,/LENS-TEST-PROOF-EVIDENCE/);assert.doesNotMatch(command.expectedOutput,/durable .*Test Strategy|RU-TSTRAT/i)});
 
 
 
 test('generic IDTSPE command surfaces depend on Core command-surface authority rather than SDS profile authority',()=>{
-  const coreOwner='planning/documentation/idtspe-methodology/active/idtspe-core/shared/idtspe-command-surface-contract.md';
-  const sdsOwner='planning/documentation/idtspe-methodology/active/profiles/sds/shared/idtspe-command-surface-contract.md';
+  const coreOwner='planning/documentation/idtspe-methodology/active/idtspe-core/commands/IDTSPE-COMMAND-SURFACE-CONTRACT.md';
+  const sdsOwner='planning/documentation/idtspe-methodology/active/profiles/sds/commands/SDS-COMMAND-SURFACE-EXTENSION.md';
   const files=['bootstrap-idtspe.command.md','work-through-idtspe.command.md','idtspe-next.command.md','idtspe-continue.command.md','review-idtspe-consistency.command.md','idtspe-proposal.command.md','review-idtspe-needs.command.md','review-idtspe-findings.command.md','plan-pre-update.command.md','realize-exact-result.command.md','select-idtspe-lenses.command.md','apply-idtspe-lens.command.md','check-documentation-representation.command.md','check-linked-notes-justification.command.md'];
   for(const file of files){const command=codec.parseCommandDefinitionDocument(read(`planning/commands/${file}`));assert.ok(command.ownerFiles.includes(coreOwner),`${command.id}: missing Core command-surface owner`);assert.ok(!command.ownerFiles.includes(sdsOwner),`${command.id}: generic Core surface depends on SDS command owner`);}
-  const core=read(coreOwner);assert.match(core,/Generic Core Surface Inventory — 15/);assert.match(core,/CREATE_OR_REUSE_TARGET/);assert.match(core,/RESOLVE_OR_REUSE_TARGET/);
+  const core=read(coreOwner);assert.match(core,/Primary User Convenience Surface Inventory — 15/);assert.match(core,/CREATE_OR_REUSE_TARGET/);assert.match(core,/RESOLVE_OR_REUSE_TARGET/);
   const sds=read(sdsOwner);assert.match(sds,/SDS Profile Command Surface Extension/);assert.match(sds,/generic IDTSPE Core surfaces are owned separately/i);
 });
 
@@ -89,7 +89,7 @@ test('Need review surface grounds USER wanted outcomes without collapsing them i
   assert.equal(command.id,'idtspe.needs.review');
   assert.match(command.meaning,/exact originating USER input/i);
   assert.match(command.activeContextBehavior,/Feature, Requirement, Proposal or Evolution Step/i);
-  const owner=read('planning/documentation/idtspe-methodology/active/idtspe-core/shared/need-candidate-disposition-contract.md');
+  const owner=read('planning/documentation/idtspe-methodology/active/idtspe-core/resolution/needs/NEED-CANDIDATE-DISPOSITION.md');
   assert.match(owner,/exact originating USER input/i);
   assert.match(owner,/transient by default/i);
   assert.match(owner,/existing TM-EVOLUTION-STEP/i);
@@ -119,10 +119,10 @@ test('all reusable Lenses separate Target Inputs from explicit Knowledge Basis',
     'planning/documentation/idtspe-methodology/active/profiles/sds/lenses/reusable'
   ];
   const files=roots.flatMap((rel)=>fs.readdirSync(path.join(repoRoot,rel)).filter((name)=>/^LENS-.*\.md$/.test(name)).map((name)=>`${rel}/${name}`));
-  assert.equal(files.length,20);
+  assert.equal(files.length,21);
   for(const rel of files){const text=read(rel);assert.equal((text.match(/^## Knowledge Basis$/gm)||[]).length,1,rel);assert.match(text,/^## Artifact \/ File Implications$/m,rel);}
   const proof=read('planning/documentation/idtspe-methodology/active/idtspe-core/lenses/reusable/LENS-TEST-PROOF-EVIDENCE.md');
-  assert.match(proof,/Testing Knowledge Basis/);assert.match(proof,/theoretical-modules\/testing\/README\.md/);
+  assert.match(proof,/Testing Knowledge Basis/);assert.match(proof,/knowledge-bases\/testing\/README\.md/);
 });
 
 test('artifact guidance ownership keeps Target-result AP separate from Lens-produced supporting guidance',()=>{
@@ -148,7 +148,7 @@ test('generic Lens commands expose applicability scan and selected-Lens dispatch
   for(const command of [select,apply]){assert.equal(command.methodologyBinding?.surfaceKind,'ORCHESTRATION');assert.equal(command.methodologyBinding?.lensId,null);}
   assert.equal(select.methodologyBinding?.hostTargetPolicy,'CREATE_OR_REUSE_TARGET');
   assert.equal(apply.methodologyBinding?.hostTargetPolicy,'RESOLVE_OR_REUSE_TARGET');
-  assert.match(select.meaning,/TF-06A LENS_SET/);assert.match(select.keyReminders.join(' '),/Local Target Contract/);
+  assert.doesNotMatch(select.meaning,/TF-06A|LENS_SET/);assert.match(select.meaning,/no fixed Target.*Lens Set/i);assert.match(select.keyReminders.join(' '),/Local Target Contract/);
   assert.match(apply.meaning,/Knowledge Basis/);assert.match(apply.keyReminders.join(' '),/does not create a Lens-owned Target/);
 });
 
@@ -156,7 +156,7 @@ test('generic Lens commands expose applicability scan and selected-Lens dispatch
 test('canonical SDS authority is singular and legacy Mini/Modular/Full commands are hidden representation preferences',()=>{
   assert.equal(fs.existsSync(path.join(repoRoot,'planning/documentation/profiles/sds-planning-profiles.md')),false);
   assert.equal(fs.existsSync(path.join(repoRoot,'planning/documentation/profiles/scenario-domain-slice-docs-profile.md')),false);
-  const map=read('planning/documentation/idtspe-methodology/active/profiles/sds/ARTIFACT-PLACEMENT-MAP.md');
+  const map=read('planning/documentation/idtspe-methodology/active/profiles/sds/representation/ARTIFACT-PLACEMENT-MAP.md');
   for(const label of ['LIGHT','MIXED','COMPLEX'])assert.match(map,new RegExp(label));
   for(const file of ['work-mini-sds.command.md','work-modular-sds.command.md','work-full-sds.command.md']){
     const command=codec.parseCommandDefinitionDocument(read(`planning/commands/${file}`));
@@ -172,12 +172,12 @@ test('idtspe is one registry-driven dispatcher for ordinary work, Target Modules
   assert.equal(command.id,'idtspe.work');
   assert.equal(command.command,'idtspe');
   assert.ok(command.commandFamily.includes('idtspe'));
-  assert.match(command.meaning,/TM-\*/);
-  assert.match(command.meaning,/LENS-\*/);
-  assert.match(command.meaning,/Ambiguous or unknown selectors are not guessed/i);
-  const sdsTm=read('planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/README.md');
-  const coreLens=read('planning/documentation/idtspe-methodology/active/idtspe-core/lenses/README.md');
-  const sdsLens=read('planning/documentation/idtspe-methodology/active/profiles/sds/lenses/README.md');
+  assert.match(command.meaning,/Target Module/);
+  assert.match(command.meaning,/Lens/);
+  assert.match(command.activeContextBehavior,/Ambiguous or unknown selectors are not guessed/i);
+  const sdsTm=read('planning/documentation/idtspe-methodology/active/profiles/sds/registries/TARGET-MODULE-REGISTRY.md');
+  const coreLens=read('planning/documentation/idtspe-methodology/active/idtspe-core/lenses/LENS-REGISTRY.md');
+  const sdsLens=read('planning/documentation/idtspe-methodology/active/profiles/sds/registries/LENS-REGISTRY.md');
   for(const alias of ['application','scenario','domain','slice','shared','evolution-step','evolution-map','practical-test'])assert.match(sdsTm,new RegExp('`'+alias+'`'));const activeTm=sdsTm.split('## Retired / Subsumed Baseline Modules')[0];for(const retired of ['slice-strategy','crosscut'])assert.doesNotMatch(activeTm,new RegExp('`'+retired+'`'));
   for(const alias of ['representation','dependency','test-proof','ddd','ui','l5','simplicity'])assert.match(coreLens+sdsLens,new RegExp('\\b'+alias.replace('-','\\-')+'\\b'));
 });
@@ -194,7 +194,7 @@ test('all installed idtspe Target Module and Lens aliases are globally unique an
   const aliases=[];
   const add=(alias,id,source)=>{assert.match(alias,/^[a-z0-9-]+$/,`${source}: invalid alias ${alias}`);aliases.push({alias,id,source})};
 
-  const sdsTm=read('planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/README.md');
+  const sdsTm=read('planning/documentation/idtspe-methodology/active/profiles/sds/registries/TARGET-MODULE-REGISTRY.md');
   for(const line of sdsTm.split(/\r?\n/)){
     const m=line.match(/^\| \[`(TM-[A-Z0-9-]+)`\]\([^)]*\) \| (.+?) \|/);
     if(!m)continue;
@@ -202,13 +202,13 @@ test('all installed idtspe Target Module and Lens aliases are globally unique an
   }
   assert.equal(aliases.filter((x)=>x.source==='SDS Target Module registry').length,14);
 
-  const coreTm=read('planning/documentation/idtspe-methodology/active/idtspe-core/target-modules/README.md');
+  const coreTm=read('planning/documentation/idtspe-methodology/active/idtspe-core/target-modules/TARGET-MODULE-REGISTRY.md');
   for(const m of coreTm.matchAll(/^idtspe ([a-z0-9-]+) <scope>\n→ (TM-[A-Z0-9-]+)$/gm))add(m[1],m[2],'Core Target Module registry');
   assert.equal(aliases.filter((x)=>x.source==='Core Target Module registry').length,2);
 
   for(const [source,rel] of [
-    ['Core Lens registry','planning/documentation/idtspe-methodology/active/idtspe-core/lenses/README.md'],
-    ['SDS Lens registry','planning/documentation/idtspe-methodology/active/profiles/sds/lenses/README.md']
+    ['Core Lens registry','planning/documentation/idtspe-methodology/active/idtspe-core/lenses/LENS-REGISTRY.md'],
+    ['SDS Lens registry','planning/documentation/idtspe-methodology/active/profiles/sds/registries/LENS-REGISTRY.md']
   ]){
     for(const line of read(rel).split(/\r?\n/)){
       const m=line.match(/^([a-z0-9-]+)\s+→\s+(LENS-[A-Z0-9-]+)(?:\s+#.*)?$/);
@@ -242,8 +242,8 @@ test('README-owned bootstrap hierarchy keeps primary bootstrap generic and profi
   const documentation=read('planning/documentation/README.md');
   const core=read('planning/documentation/idtspe-methodology/active/idtspe-core/README.md');
   const sds=read('planning/documentation/idtspe-methodology/active/profiles/sds/README.md');
-  const oldCoreBootstrap=read('planning/documentation/idtspe-methodology/active/idtspe-core/BOOTSTRAP-IDTSPE.md');
-  const oldSdsBootstrap=read('planning/documentation/idtspe-methodology/active/profiles/sds/BOOTSTRAP-SDS.md');
+  assert.equal(fs.existsSync(path.join(repoRoot,'planning/documentation/idtspe-methodology/active/idtspe-core/BOOTSTRAP-IDTSPE.md')),false);
+  assert.equal(fs.existsSync(path.join(repoRoot,'planning/documentation/idtspe-methodology/active/profiles/sds/BOOTSTRAP-SDS.md')),false);
   assert.match(planning,/## Primary Bootstrap/);
   assert.match(planning,/session\/README\.md[\s\S]*AI-WORKING-CONTRACT\.md[\s\S]*documentation\/README\.md[\s\S]*idtspe-core\/README\.md/);
   assert.match(planning,/intentionally stops before any profile/i);
@@ -253,8 +253,6 @@ test('README-owned bootstrap hierarchy keeps primary bootstrap generic and profi
   assert.match(core,/## Bootstrap/);assert.match(core,/planning\/README\.md/);assert.match(core,/Primary bootstrap stops before profile bootstrap/);
   assert.match(sds,/## Profile Bootstrap/);assert.match(sds,/incremental/i);assert.match(sds,/planning\/README\.md/);
   assert.doesNotMatch(sds,/session\/principles-and-terminology|session-runtime-contract/);
-  assert.match(oldCoreBootstrap,/compatibility only/i);assert.match(oldCoreBootstrap,/planning\/README\.md/);
-  assert.match(oldSdsBootstrap,/compatibility only/i);assert.match(oldSdsBootstrap,/README\.md/);
   const coreCmd=codec.parseCommandDefinitionDocument(read('planning/commands/bootstrap-idtspe.command.md'));
   const sdsCmd=codec.parseCommandDefinitionDocument(read('planning/commands/bootstrap-application-sds-planning.command.md'));
   assert.ok(coreCmd.ownerFiles.includes('planning/README.md'));
@@ -264,14 +262,13 @@ test('README-owned bootstrap hierarchy keeps primary bootstrap generic and profi
 });
 
 
-test('clean-chat routing exposes repository-operational and methodology roots without forcing one global registry',()=>{
+test('clean-chat routing always rechecks methodology Use-Case applicability before the narrow functional route',()=>{
   const planning=read('planning/README.md');
   const session=read('planning/session/session-runtime-contract.md');
   const repoRegistry=read('planning/use-case-registry.md');
-  assert.match(planning,/repository-specific operational work[\s\S]*planning\/use-case-registry\.md/i);
-  assert.match(planning,/methodology \/ guidance use[\s\S]*documentation\/use-case-registry-map\.md/i);
-  assert.match(session,/repository-specific operation: planning\/use-case-registry\.md/i);
-  assert.match(session,/methodology-use work: Methodology Use-Case Registry Map/i);
+  assert.match(planning,/any current Planning \/ repository work entry[\s\S]*UC-DOC-RESOLVE-CURRENT-USE-CASES[\s\S]*repository-specific operational work[\s\S]*planning\/use-case-registry\.md/i);
+  assert.match(planning,/documentation\/use-case-registry-map\.md/i);
+  assert.match(session,/ambient methodology Use-Case applicability recheck[\s\S]*Methodology Use-Case Registry Map[\s\S]*repository-specific operation: planning\/use-case-registry\.md/i);
   assert.match(repoRegistry,/Situation summary/);
   assert.match(repoRegistry,/Result summary/);
   assert.match(repoRegistry,/UC-REPO-MAINTAIN-PLANNING-COMMAND/);
@@ -288,8 +285,8 @@ test('proposal-driven commands remain thin routes to Session and canonical IDTSP
   assert.equal(idtspe.id,'idtspe.proposal');
   assert.equal(idtspe.methodologyBinding?.surfaceKind,'ORCHESTRATION');
   assert.ok(idtspe.ownerFiles.includes('planning/session/session-runtime-contract.md'));
-  assert.ok(idtspe.ownerFiles.includes('planning/documentation/idtspe-methodology/active/idtspe-core/shared/proposal-and-decision-lifecycle-contract.md'));
-  assert.ok(idtspe.ownerFiles.includes('planning/documentation/idtspe-methodology/active/idtspe-core/shared/qrp-lifecycle-and-review-contract.md'));
+  assert.ok(idtspe.ownerFiles.includes('planning/documentation/idtspe-methodology/active/idtspe-core/resolution/proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md'));
+  assert.ok(idtspe.ownerFiles.includes('planning/documentation/idtspe-methodology/active/idtspe-core/resolution/qrp/QRP-LIFECYCLE-AND-REVIEW.md'));
 });
 
 
@@ -299,8 +296,8 @@ test('Core cold bootstrap is a routing/proportionality spine and keeps deep mech
   assert.match(bootstrap,/Bootstrap Spine — Required From Cold \/ Unreliable Core Context/);
   assert.match(bootstrap,/After this spine is current, Core bootstrap is sufficient/);
   assert.match(bootstrap,/Conditional Deep Reads — Required Only When The Current Composition Needs Them/);
-  for(const owner of ['idtspe-unit-and-target-step-result-model.md','target-module-model.md','LENS-MODEL.md','proposal-and-decision-lifecycle-contract.md','finding-disposition-contract.md','artifact-placement-and-idtspe-response-contract.md']){
-    assert.match(bootstrap,new RegExp(owner.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')));
+  for(const route of ['runtime/target-work/RESPONSIBILITY-MAP.md','target-modules/RESPONSIBILITY-MAP.md','lenses/RESPONSIBILITY-MAP.md','resolution/RESPONSIBILITY-MAP.md','knowledge-bases/RESPONSIBILITY-MAP.md','representation/RESPONSIBILITY-MAP.md']){
+    assert.ok(bootstrap.includes(route),`bootstrap missing lazy owner route ${route}`);
   }
   assert.match(bootstrap,/Do not read deeper Core owners merely to claim that bootstrap completed/);
 });
@@ -311,13 +308,13 @@ test('Finding review surface separates impact priority from semantic resolution 
   assert.equal(command.id,'idtspe.findings.review');
   assert.equal(command.methodologyBinding?.profile,null);
   assert.equal(command.methodologyBinding?.surfaceKind,'ORCHESTRATION');
-  assert.ok(command.ownerFiles.includes('planning/documentation/idtspe-methodology/active/idtspe-core/shared/finding-disposition-contract.md'));
+  assert.ok(command.ownerFiles.includes('planning/documentation/idtspe-methodology/active/idtspe-core/resolution/findings/FINDING-DISPOSITION.md'));
   assert.ok(!command.ownerFiles.some((x)=>x.includes('/profiles/sds/')), 'generic Finding review surface must not hard-depend on SDS');
-  const finding=read('planning/documentation/idtspe-methodology/active/idtspe-core/shared/finding-disposition-contract.md');
+  const finding=read('planning/documentation/idtspe-methodology/active/idtspe-core/resolution/findings/FINDING-DISPOSITION.md');
   for(const token of ['RE-0 DETERMINISTIC-CORRECTION','RE-1 LOCAL-REALIZATION-CHOICE','RE-2 CURRENT-OWNER-SEMANTIC-CHANGE','RE-3 UPSTREAM-REVALIDATION','RE-4 UPSTREAM-SEMANTIC-CHANGE'])assert.match(finding,new RegExp(token));
   assert.match(finding,/Review Priority[\s\S]*cost \/ blast radius[\s\S]*Resolution Escalation[\s\S]*semantic distance \/ authority change required/);
   assert.match(finding,/A detail at architecture depth is not automatically an architecture Decision/);
-  const unit=read('planning/documentation/idtspe-methodology/active/idtspe-core/shared/idtspe-unit-and-target-step-result-model.md');
+  const unit=read('planning/documentation/idtspe-methodology/active/idtspe-core/runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md');
   assert.match(unit,/Resolution Escalation.*not.*State Unit/is);
   const review=read('planning/documentation/review-diff-review-workflow.md');
   assert.match(review,/RE-0 \/ RE-1 with a known but unapplied correction[\s\S]*NEEDS CORRECTION/);
@@ -325,7 +322,7 @@ test('Finding review surface separates impact priority from semantic resolution 
 });
 
 test('Unit model is resolution-centric and keeps Contextual Unit result destination explicit',()=>{
-  const unit=read('planning/documentation/idtspe-methodology/active/idtspe-core/shared/idtspe-unit-and-target-step-result-model.md');
+  const unit=read('planning/documentation/idtspe-methodology/active/idtspe-core/runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md');
   assert.match(unit,/Unit Resolution[\s\S]*Current Result Content/);
   assert.match(unit,/Contextual Unit[\s\S]*Result Destination/);
   assert.match(unit,/Unit-centric does not mean Unit-exclusive/);
@@ -334,8 +331,8 @@ test('Unit model is resolution-centric and keeps Contextual Unit result destinat
 });
 
 test('Proposal lifecycle owns semantic impact while RE categories remain Finding-only',()=>{
-  const proposal=read('planning/documentation/idtspe-methodology/active/idtspe-core/shared/proposal-and-decision-lifecycle-contract.md');
-  const finding=read('planning/documentation/idtspe-methodology/active/idtspe-core/shared/finding-disposition-contract.md');
+  const proposal=read('planning/documentation/idtspe-methodology/active/idtspe-core/resolution/proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md');
+  const finding=read('planning/documentation/idtspe-methodology/active/idtspe-core/resolution/findings/FINDING-DISPOSITION.md');
   const command=codec.parseCommandDefinitionDocument(read('planning/commands/idtspe-proposal.command.md'));
   assert.match(proposal,/## 5A\. Proposal Semantic Change Impact Review/);
   assert.match(proposal,/Resolution Escalation RE-0\.\.RE-4.*belongs to Finding Disposition only/is);
@@ -351,24 +348,24 @@ test('ReviewDiff delegates RE taxonomy to Finding owner instead of copying defin
 });
 
 test('Knowledge Basis supports Unit consumers and keeps reference-only vs applied bridge freedom',()=>{
-  const kb=read('planning/documentation/idtspe-methodology/active/idtspe-core/shared/knowledge-basis-contract.md');
-  assert.match(kb,/Target Module, Unit Contract or Lens Evaluation/);
+  const kb=read('planning/documentation/idtspe-methodology/active/idtspe-core/knowledge-bases/KNOWLEDGE-BASIS-CONTRACT.md');
+  assert.match(kb,/Target Module, Unit Definition, Unit Resolution Slot or Lens Evaluation/);
   assert.match(kb,/A Knowledge Basis may simply point to theory when the application is obvious/);
-  assert.match(kb,/Unit Contract Knowledge Basis/);
+  assert.match(kb,/Unit Definition Knowledge Basis/);
 });
 
 
 test('Unit-resolution refactor preserves Decision and QRP lifecycle invariants',()=>{
-  const proposal=read('planning/documentation/idtspe-methodology/active/idtspe-core/shared/proposal-and-decision-lifecycle-contract.md');
-  const qrp=read('planning/documentation/idtspe-methodology/active/idtspe-core/shared/qrp-lifecycle-and-review-contract.md');
+  const proposal=read('planning/documentation/idtspe-methodology/active/idtspe-core/resolution/proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md');
+  const qrp=read('planning/documentation/idtspe-methodology/active/idtspe-core/resolution/qrp/QRP-LIFECYCLE-AND-REVIEW.md');
   assert.match(proposal,/Decision↔Q\/R\/P relations remain many-to-many/);
   assert.match(proposal,/`Rationale \/ Why` is not Evidence/);
   assert.match(qrp,/Stable Q\/R\/P identity\/ID is proportional[\s\S]*independent addressability, cross-reference, lifecycle, review or revalidation value/);
 });
 
 test('Integration and revalidation retain pre-existing trigger and routing obligations',()=>{
-  const integrate=read('planning/documentation/idtspe-methodology/active/idtspe-core/shared/integrate-current-work-use-case.md');
-  const revalidate=read('planning/documentation/idtspe-methodology/active/idtspe-core/shared/revalidate-current-work-use-case.md');
+  const integrate=read('planning/documentation/idtspe-methodology/active/idtspe-core/use-cases/integrate-current-work/UC-IDTSPE-INTEGRATE-CURRENT-WORK.md');
+  const revalidate=read('planning/documentation/idtspe-methodology/active/idtspe-core/use-cases/revalidate-current-work/UC-IDTSPE-REVALIDATE-CURRENT-WORK.md');
   assert.match(integrate,/important accepted meaning is distributed across turns\/owners\/Units/);
   assert.match(integrate,/Elapsed time or message count alone is not a trigger/);
   assert.match(integrate,/Integration Checkpoint ≠ periodic timer event/);
@@ -381,13 +378,13 @@ test('Integration and revalidation retain pre-existing trigger and routing oblig
 });
 
 test('Methodology Usage State and Target Module driver guards survive Unit-centric topology',()=>{
-  const unit=read('planning/documentation/idtspe-methodology/active/idtspe-core/shared/idtspe-unit-and-target-step-result-model.md');
-  const moduleRule=read('planning/documentation/idtspe-methodology/active/idtspe-core/shared/target-module-output-template-and-question-set-rule.md');
+  const unit=read('planning/documentation/idtspe-methodology/active/idtspe-core/runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md');
+  const moduleRule=read('planning/documentation/idtspe-methodology/active/idtspe-core/target-modules/TARGET-MODULE-STEP-RESULT-AND-QUESTION-SET-RULE.md');
   for(const token of ['Active Use Cases','Relevant Registry Traversals','Applied Components','Material Guards / Validators / Rules / Packs','Contextual Adaptations / deferred recommendations','Recheck Triggers / Re-entry']){
     assert.match(unit,new RegExp(token.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')));
   }
   assert.match(unit,/It is not an execution log/);
   assert.match(unit,/Current Work Concern[\s\S]*Promote it into explicit Methodology Usage State only when independent addressability/);
-  assert.match(moduleRule,/Current Questions may be added, removed, split, merged or reopened/);
-  assert.match(moduleRule,/independently useful \*\*new Goal \/ Desired Outcome\*\*[\s\S]*Scope \/ Target Formation/);
+  assert.match(moduleRule,/Reusable questions remain guidance on the natural Requirement\/Unit\/Slot subject/);
+  assert.match(moduleRule,/There is no standalone `Target Question Set` semantic owner/);
 });

@@ -1,4 +1,3 @@
-<a id="profile-reference-knowledge"></a>
 <a id="reference-knowledge-profile-bootstrap"></a>
 # Reference Knowledge Profile — IDTSPE
 

@@ -3,7 +3,14 @@
 Status: active prompt repository format + legacy helper-command compatibility
 Scope: reusable prompt insertion text and historical helper-command insertion records. Real Planning Commands are owned and edited through `planning/commands/*.command.md`; this folder is never planning-command authority.
 
+<a id="planning-helper-library-contract"></a>
 ## Boundary
+
+Responsibility ID: `HELPER.LIBRARY-COMPATIBILITY`
+
+> Semantic Owner Dependencies
+> - `CONTEXTUALIZES` [`Planning Command Definition Contract`](../commands/README.md#planning-command-definition-contract) — `COMMAND.DEFINITION-CONTRACT`
+> - `CONTEXTUALIZES` [`Planning Helper Semantic Projection`](../documentation/tools/tampermonkey/chat-command-palette/README.md#planning-helper-semantic-projection) — `HELPER.SEMANTIC-PROJECTION`
 
 ```text
 planning/commands/*.command.md

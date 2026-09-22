@@ -1,4 +1,3 @@
-<a id="reference-knowledge-target-instance-template"></a>
 # <Target ID / Name>
 
 Governing path: `TARGET_MODULE | LOCAL_TARGET_CONTRACT`

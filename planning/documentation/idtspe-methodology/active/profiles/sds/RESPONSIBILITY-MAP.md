@@ -26,5 +26,6 @@ This map routes SDS profile responsibilities only. It does not duplicate concret
 | SDS profile-specific artifact placement/representation | [`representation/ARTIFACT-PLACEMENT-MAP.md`](representation/ARTIFACT-PLACEMENT-MAP.md#sds-artifact-placement) — `SDS.ARTIFACT-PLACEMENT` | Extends Core representation placement; physical placement does not create semantic authority |
 | Concrete SDS recurring Target/result family | selected `target-modules/TM-*.md`, identified by its `Module ID` | Each concrete module `EXTENDS TARGET-MODULE.META-MODEL`; registry owns discovery only |
 | Concrete SDS evaluation perspective | selected `lenses/**/LENS-*.md`, identified by its `Lens ID` | Each concrete Lens `EXTENDS LENS.META-MODEL`; Finding disposition stays Core-owned |
+| SDS-specific command-surface / compatibility extension | [`commands/SDS-COMMAND-SURFACE-EXTENSION.md`](commands/SDS-COMMAND-SURFACE-EXTENSION.md#sds-command-surface) — `SDS.COMMAND-SURFACE` | Extends Core command surface only; direct repository command files/Helper remain projections |
 
-Examples and Target-Module support files are contextual/supporting projections of the owners above. `commands/SDS-COMMAND-SURFACE-EXTENSION.md` is intentionally reserved for the final command/Helper composition audit.
+Examples and Target-Module support files are contextual/supporting projections of the owners above.

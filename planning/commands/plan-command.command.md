@@ -37,6 +37,27 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
   ],
   "userTarget": "<what command route should be planned>",
   "palette": true,
-  "refinements": []
+  "refinements": [],
+  "includes": [
+    "methodology.use_cases.recheck"
+  ],
+  "ownerRefs": [
+    {
+      "responsibilityId": "COMMAND.MAINTENANCE",
+      "path": "planning/use-cases/UC-REPO-MAINTAIN-PLANNING-COMMAND.md",
+      "anchor": "command-maintenance",
+      "why": "Owns creation/change of command identity, semantic route, include DAG, own canonical refs and projection synchronization.",
+      "role": "PRIMARY_OWNER",
+      "readMode": "REQUIRED"
+    },
+    {
+      "responsibilityId": "COMMAND.DEFINITION-CONTRACT",
+      "path": "planning/commands/README.md",
+      "anchor": "planning-command-definition-contract",
+      "why": "Defines the parseable command schema, include-DAG semantics, structured refs/why and validation invariants.",
+      "role": "SUPPORTING_CONTRACT",
+      "readMode": "REQUIRED"
+    }
+  ]
 }
 [/PLANNING_COMMAND_DEFINITION]

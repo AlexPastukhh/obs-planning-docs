@@ -61,7 +61,7 @@ Open the narrowest canonical owner when its mechanism becomes material:
 - IDTSPE runtime and methodology-maintenance Use-Case orchestration → [`use-cases/RESPONSIBILITY-MAP.md`](use-cases/RESPONSIBILITY-MAP.md), then the routed Use Case;
 - Knowledge Basis / reusable theory / Source-Evidence authority boundary → [`knowledge-bases/RESPONSIBILITY-MAP.md`](knowledge-bases/RESPONSIBILITY-MAP.md);
 - representation/persistence/materialization/checkpoint/file-realization routing → [`representation/RESPONSIBILITY-MAP.md`](representation/RESPONSIBILITY-MAP.md);
-- direct IDTSPE command-surface semantics → [`commands/IDTSPE-COMMAND-SURFACE-CONTRACT.md`](commands/IDTSPE-COMMAND-SURFACE-CONTRACT.md);
+- direct IDTSPE command-surface semantics / owner-derived command→port composition → [`commands/IDTSPE-COMMAND-SURFACE-CONTRACT.md`](commands/IDTSPE-COMMAND-SURFACE-CONTRACT.md#idtspe-command-surface); repository command/Helper routing remains outside Core at [`../../../../commands/RESPONSIBILITY-MAP.md`](../../../../commands/RESPONSIBILITY-MAP.md);
 - integration/revalidation → the selected Integration/Revalidation Use-Case owner from the Core Use-Case Registry.
 
 Other Core contracts, examples, specific Target Modules/Lenses, theory and profiles remain lazy/conditional reads reached from Use Cases, registries and current applicability. Primary bootstrap stops before profile bootstrap.

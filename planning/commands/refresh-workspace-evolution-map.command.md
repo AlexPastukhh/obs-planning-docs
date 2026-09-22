@@ -32,6 +32,9 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
   "userTarget": "<affected Workspace scope / evolution evidence>",
   "palette": false,
   "refinements": [],
-  "methodologyBinding": null
+  "methodologyBinding": null,
+  "includes": [
+    "methodology.use_cases.recheck"
+  ]
 }
 [/PLANNING_COMMAND_DEFINITION]

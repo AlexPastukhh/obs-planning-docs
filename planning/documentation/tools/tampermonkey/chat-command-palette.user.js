@@ -36,8 +36,8 @@
   const allowedKeys = new Set([
     'schemaVersion', 'id', 'file', 'command', 'englishName', 'commandFamily',
     'description', 'meaning', 'activeContextBehavior', 'traversalReadMode',
-    'ownerFiles', 'expectedOutput', 'permissionMode', 'keyReminders',
-    'userTarget', 'palette', 'refinements', 'helperPresentation', 'methodologyBinding'
+    'ownerFiles', 'ownerRefs', 'expectedOutput', 'permissionMode', 'keyReminders',
+    'userTarget', 'palette', 'refinements', 'helperPresentation', 'methodologyBinding', 'includes', 'compositionContributions'
   ]);
 
   function assert(condition, message) {
@@ -100,6 +100,37 @@
       description: singleLine(raw.description, `refinements[${index}].description`),
       readRequired: stringArray(raw.readRequired, `refinements[${index}].readRequired`, { nonEmpty: true }).map((path, pathIndex) => validateRepositoryPath(path, `refinements[${index}].readRequired[${pathIndex}]`)),
       instruction: singleLine(raw.instruction, `refinements[${index}].instruction`)
+    };
+  }
+
+
+  function normalizeCompositionContribution(raw,index){
+    assert(raw&&typeof raw==='object'&&!Array.isArray(raw),`compositionContributions[${index}] must be an object.`);
+    const known=new Set(['kind','value','why']);for(const key of Object.keys(raw))assert(known.has(key),`Unknown compositionContributions[${index}] field: ${key}`);
+    const kind=singleLine(raw.kind,`compositionContributions[${index}].kind`);
+    const allowed=new Set(['WORKING_TRACE_REQUIRED','TRACE_SINK_PREFERENCE','PORT_CAPABILITY_REQUIREMENT']);
+    assert(allowed.has(kind),`compositionContributions[${index}].kind is invalid.`);
+    return{kind,value:singleLine(raw.value,`compositionContributions[${index}].value`),why:singleLine(raw.why,`compositionContributions[${index}].why`)};
+  }
+
+  function normalizeOwnerRef(raw,index){
+    assert(raw&&typeof raw==='object'&&!Array.isArray(raw),`ownerRefs[${index}] must be an object.`);
+    const known=new Set(['responsibilityId','path','anchor','why','role','readMode']);
+    for(const key of Object.keys(raw))assert(known.has(key),`Unknown ownerRefs[${index}] field: ${key}`);
+    const role=singleLine(raw.role,`ownerRefs[${index}].role`);
+    const roles=new Set(['PRIMARY_OWNER','SUPPORTING_CONTRACT','REGISTRY','POSSIBLE_DESTINATION','VALIDATION_HANDOFF','RUNTIME_ENTRY','ROUTING']);
+    assert(roles.has(role),`ownerRefs[${index}].role is invalid.`);
+    const readMode=raw.readMode==null?'REQUIRED':singleLine(raw.readMode,`ownerRefs[${index}].readMode`);
+    assert(new Set(['REQUIRED','ON_DEMAND','DESTINATION_ONLY']).has(readMode),`ownerRefs[${index}].readMode is invalid.`);
+    const anchor=raw.anchor==null||String(raw.anchor).trim()===''?'':singleLine(raw.anchor,`ownerRefs[${index}].anchor`);
+    if(anchor)assert(/^[A-Za-z0-9._-]+$/.test(anchor),`ownerRefs[${index}].anchor must be a safe Markdown anchor id.`);
+    return{
+      responsibilityId: singleLine(raw.responsibilityId,`ownerRefs[${index}].responsibilityId`),
+      path: validateRepositoryPath(raw.path,`ownerRefs[${index}].path`),
+      anchor,
+      why: singleLine(raw.why,`ownerRefs[${index}].why`),
+      role,
+      readMode
     };
   }
 
@@ -174,6 +205,18 @@
     assert(Array.isArray(refinementsRaw), 'refinements must be an array.');
     const refinements = refinementsRaw.map(normalizeRefinement);
     assert(new Set(refinements.map((item) => item.id)).size === refinements.length, 'refinement ids must be unique within a command.');
+    const includes = raw.includes == null ? [] : stringArray(raw.includes, 'includes').map((id, index) => validateId(id, `includes[${index}]`));
+    assert(new Set(includes).size === includes.length, 'includes must not contain duplicate command ids.');
+    const contributionsRaw=raw.compositionContributions==null?[]:raw.compositionContributions;
+    assert(Array.isArray(contributionsRaw),'compositionContributions must be an array.');
+    const compositionContributions=contributionsRaw.map(normalizeCompositionContribution);
+    const contributionKeys=compositionContributions.map((item)=>`${item.kind}|${item.value}`);
+    assert(new Set(contributionKeys).size===contributionKeys.length,'compositionContributions must not contain duplicate kind/value entries.');
+    const ownerRefsRaw=raw.ownerRefs==null?[]:raw.ownerRefs;
+    assert(Array.isArray(ownerRefsRaw),'ownerRefs must be an array.');
+    const ownerRefs=ownerRefsRaw.map(normalizeOwnerRef);
+    const ownerRefKeys=ownerRefs.map((ref)=>`${ref.responsibilityId}|${ref.path}|${ref.anchor}`);
+    assert(new Set(ownerRefKeys).size===ownerRefKeys.length,'ownerRefs must not contain duplicate responsibility/path/anchor entries.');
     assert(typeof raw.palette === 'boolean', 'palette must be boolean.');
     return {
       schemaVersion: SCHEMA_VERSION,
@@ -187,6 +230,9 @@
       activeContextBehavior: singleLine(raw.activeContextBehavior, 'activeContextBehavior'),
       traversalReadMode: singleLine(raw.traversalReadMode, 'traversalReadMode'),
       ownerFiles: stringArray(raw.ownerFiles, 'ownerFiles').map((path, index) => validateRepositoryPath(path, `ownerFiles[${index}]`)),
+      ownerRefs,
+      includes,
+      compositionContributions,
       expectedOutput: singleLine(raw.expectedOutput, 'expectedOutput'),
       permissionMode: singleLine(raw.permissionMode, 'permissionMode'),
       keyReminders: stringArray(raw.keyReminders, 'keyReminders', { nonEmpty: true }),
@@ -262,6 +308,9 @@
       activeContextBehavior: normalized.activeContextBehavior,
       traversalReadMode: normalized.traversalReadMode,
       ownerFiles: normalized.ownerFiles,
+      ownerRefs: normalized.ownerRefs,
+      includes: normalized.includes,
+      compositionContributions: normalized.compositionContributions,
       expectedOutput: normalized.expectedOutput,
       permissionMode: normalized.permissionMode,
       keyReminders: normalized.keyReminders,
@@ -322,7 +371,7 @@
 
   function assert(condition, message) { if (!condition) throw new TypeError(message); }
 
-  function validateCommandCatalog(definitions) {
+  function validateCommandCatalog(definitions, options = {}) {
     assert(Array.isArray(definitions), 'Command catalog must be an array.');
     const byId = new Map();
     const byCommand = new Map();
@@ -343,6 +392,24 @@
         byAlias.set(alias, definition);
       }
     }
+    const allowMissingIncludes = options.allowMissingIncludes === true;
+    for (const definition of definitions) for (const included of definition.includes || []) {
+      if (!byId.has(included)) {
+        if (!allowMissingIncludes) throw new TypeError(`Unknown included command id ${included} in ${definition.id}`);
+        continue;
+      }
+      if (included === definition.id) throw new TypeError(`Command ${definition.id} cannot include itself.`);
+    }
+    const visiting=new Set(),visited=new Set();
+    function visit(id,stack=[]){
+      if(visited.has(id))return;
+      if(visiting.has(id))throw new TypeError(`Command include cycle: ${[...stack,id].join(' -> ')}`);
+      visiting.add(id);
+      const definition=byId.get(id);
+      for(const included of definition?.includes||[]){if(byId.has(included))visit(included,[...stack,id]);}
+      visiting.delete(id);visited.add(id);
+    }
+    for(const definition of definitions)visit(definition.id);
     return { definitions: [...definitions], byId, byCommand, byAlias, byFile };
   }
 
@@ -364,16 +431,43 @@
     return [...map.values()].sort((a, b) => a.file.localeCompare(b.file));
   }
 
+
+
+  function expandCommandComposition(definitions,rootIds){
+    const catalog=validateCommandCatalog(definitions);
+    const roots=[...new Set((Array.isArray(rootIds)?rootIds:[rootIds]).map(String).filter(Boolean))];
+    for(const id of roots)assert(catalog.byId.has(id),`Unknown composition root command id: ${id}`);
+    const seen=new Set(),order=[];
+    function visit(id){
+      if(seen.has(id))return;
+      const definition=catalog.byId.get(id);
+      for(const included of definition.includes||[])visit(included);
+      seen.add(id);order.push(id);
+    }
+    for(const id of roots)visit(id);
+    const nodes=order.map((id)=>catalog.byId.get(id));
+    const contributions=[];
+    for(const node of nodes){
+      for(const item of node.compositionContributions||[])contributions.push({...item,sourceCommandId:node.id});
+      const binding=node.methodologyBinding||{};
+      if(binding.targetModuleId)contributions.push({kind:'SELECTED_TARGET_MODULE',value:binding.targetModuleId,why:'Registered Target Module selection contributed by command methodologyBinding before semantic execution.',sourceCommandId:node.id});
+      if(binding.lensId)contributions.push({kind:'SELECTED_LENS',value:binding.lensId,why:'Registered Lens selection contributed by command methodologyBinding before semantic execution.',sourceCommandId:node.id});
+    }
+    const unique=[],seenContrib=new Set();for(const item of contributions){const key=`${item.kind}|${item.value}|${item.sourceCommandId}`;if(!seenContrib.has(key)){seenContrib.add(key);unique.push(item);}}
+    return{rootIds:roots,order,nodes,contributions:unique,byId:catalog.byId};
+  }
+
   function commandReferencePaths(definition) {
     const paths = new Set();
     for (const owner of definition?.ownerFiles || []) paths.add(owner);
+    for (const ref of definition?.ownerRefs || []) if(ref?.path) paths.add(ref.path);
     for (const refinement of definition?.refinements || []) {
       for (const owner of refinement?.readRequired || []) paths.add(owner);
     }
     return [...paths].sort();
   }
 
-  return { validateCommandCatalog, visibleCommandDefinitions, stripRuntimeCommandMetadata, replaceDefinitionsByFile, commandReferencePaths };
+  return { validateCommandCatalog, visibleCommandDefinitions, stripRuntimeCommandMetadata, replaceDefinitionsByFile, expandCommandComposition, commandReferencePaths };
 });
 
 (function (root, factory) {
@@ -414,7 +508,13 @@
 
   function formatFamily(family) { return (family || []).map((item) => `\`${item}\``).join(' / '); }
 
-  function buildCommandBody(definition, mode = MODE.ADAPTIVE) {
+  function ownerRefLines(definition){const refs=definition.ownerRefs||[];if(!refs.length)return['  - none'];return refs.flatMap((ref)=>{const target=`${ref.path}${ref.anchor?'#'+ref.anchor:''}`;return[`  - ${ref.responsibilityId} → \`${target}\``,`    role: ${ref.role}; read: ${ref.readMode}; why: ${ref.why}`];});}
+
+  function contributionLines(definition){const items=definition.compositionContributions||[];if(!items.length)return['  - none'];return items.map((item)=>`  - ${item.kind}: ${item.value} | why: ${item.why}`);}
+
+  function compositionLines(definition,definitions){if(!Array.isArray(definitions)||!definitions.length)return[];try{const byId=new Map(definitions.map((d)=>[String(d.id),d])),seen=new Set(),order=[];function visit(id){if(seen.has(id))return;const current=byId.get(id);if(!current)throw new Error(`Unknown included command: ${id}`);for(const included of current.includes||[])visit(included);seen.add(id);order.push(id);}visit(String(definition.id));return order.map((id,index)=>`  ${index+1}. ${id}${id===definition.id?'  ← selected/root action':''}`);}catch(_){return[];}}
+
+  function buildCommandBody(definition, mode = MODE.ADAPTIVE, options = {}) {
     return [
       '[PLANNING_COMMAND]',
       'Read this whole command body before answering.',
@@ -440,6 +540,21 @@
       '',
       'essence:',
       `  ${definition.meaning}`,
+      '',
+      'command_includes:',
+      ...((definition.includes||[]).length?(definition.includes||[]).map((id)=>`  - ${id}`):['  - none']),
+      '  Expand ALL selected roots and transitive includes before semantic execution. Merge them into one DAG, reject cycles, deduplicate shared nodes, collect declarative contributions from every node, then execute dependencies before dependents. The selected/root command action runs last on its branch.',
+      '',
+      'composition_contributions_pre_execution:',
+      ...contributionLines(definition),
+      '  Contributions from ALL expanded DAG nodes are collected before the first semantic command action.',
+      '',
+      'expanded_composition_dependencies_first:',
+      ...(compositionLines(definition,options.definitions).length?compositionLines(definition,options.definitions):['  - resolve from current command catalog before execution']),
+      '',
+      'own_canonical_refs:',
+      ...ownerRefLines(definition),
+      '  These are references added by THIS command only; references inherited through included commands are intentionally not repeated.',
       '',
       ...commandReadBlock(definition, mode),
       '',
@@ -517,17 +632,17 @@
   function useCaseInvocationCommandId(useCaseId){return `uc.invoke.${String(useCaseId||'').toLowerCase()}`;}
   function buildUseCaseInvocationEntry(genericDefinition,useCase){return{id:useCaseInvocationCommandId(useCase.id),entityType:'use-case-invocation-command',useCaseId:useCase.id,label:useCase.label,command:useCase.label,englishName:`invoke use case · ${useCase.label}`,description:`Manual invocation of ${useCase.id} through its current canonical owner route`,adaptiveBody:buildUseCaseInvocationBody(genericDefinition,useCase,MODE.ADAPTIVE),fullBody:buildUseCaseInvocationBody(genericDefinition,useCase,MODE.FULL),refinementBodies:[],stateLabel:'Generated UC invocation · canonical registry remains authority'};}
 
-  function buildCommandEntry(definition) {
+  function buildCommandEntry(definition,definitions) {
     return {
       ...definition,
       label: definition.command,
-      adaptiveBody: buildCommandBody(definition, MODE.ADAPTIVE),
-      fullBody: buildCommandBody(definition, MODE.FULL),
+      adaptiveBody: buildCommandBody(definition, MODE.ADAPTIVE,{definitions}),
+      fullBody: buildCommandBody(definition, MODE.FULL,{definitions}),
       refinementBodies: (definition.refinements || []).map((refinement) => ({ ...refinement, body: buildRefinementBody(definition, refinement) }))
     };
   }
 
-  function buildCommandEntries(definitions) { return (definitions || []).filter((definition) => definition.palette === true).map(buildCommandEntry); }
+  function buildCommandEntries(definitions) { const all=definitions||[]; return all.filter((definition) => definition.palette === true).map((definition)=>buildCommandEntry(definition,all)); }
 
   return { MODE, commandReadBlock, buildCommandBody, buildRefinementBody, buildUseCaseInvocationBody, useCaseInvocationCommandId, buildUseCaseInvocationEntry, buildCommandEntry, buildCommandEntries };
 });
@@ -572,7 +687,8 @@
     const sources=uniqueStrings(value.sources,(v)=>safePath(v,`${id} source`));if(!sources.length)throw new TypeError(`Semantic component sources are required: ${id}`);
     const aliases=uniqueStrings(value.aliases||[],(v)=>safeLine(v,`${id} alias`));
     const context=String(value.context||'').trim(),result=String(value.result||'').trim(),essence=String(value.essence||description||label).trim();
-    return{id,kind,scope,label,actionLabel,description,context,result,essence,sources,aliases,commandId:String(value.commandId||'').trim(),invocation:String(value.invocation||'').trim(),target:String(value.target||`<${label} target>`).trim()};
+    const ownerRef=value.ownerRef&&typeof value.ownerRef==='object'?{semanticId:safeLine(value.ownerRef.semanticId||id,`${id} ownerRef semanticId`),path:safePath(value.ownerRef.path,`${id} ownerRef path`),anchor:safeLine(value.ownerRef.anchor,`${id} ownerRef anchor`),why:safeLine(value.ownerRef.why,`${id} ownerRef why`),role:safeLine(value.ownerRef.role||'PRIMARY_OWNER',`${id} ownerRef role`),readMode:safeLine(value.ownerRef.readMode||'REQUIRED',`${id} ownerRef readMode`)}:null;
+    return{id,kind,scope,label,actionLabel,description,context,result,essence,sources,aliases,ownerRef,commandId:String(value.commandId||'').trim(),invocation:String(value.invocation||'').trim(),target:String(value.target||`<${label} target>`).trim()};
   }
   function normalizeSemanticComponents(values){const out=(Array.isArray(values)?values:[]).map(normalizeSemanticComponent),ids=out.map((x)=>x.id);if(new Set(ids).size!==ids.length)throw new TypeError('Duplicate semantic component ids.');return out;}
 
@@ -589,8 +705,22 @@
   function buildSemanticBody(kind,definition,mode){
     const normalized=kind==='use_case'?normalizeUseCaseDefinition(definition):normalizeSemanticComponent(definition),marker=kind==='use_case'?'PLANNING_USE_CASE':'PLANNING_SEMANTIC_ENTRY',idField=kind==='use_case'?'use_case_id':`${kind}_id`;
     const lines=[`[${marker}]`,`${idField}:`,`  ${normalized.id}`,'',`${kind}:`,`  ${normalized.label}`,'','mode:',`  ${mode}`];
-    if(kind==='use_case')lines.push('','semantic_owner:','  Use this Use Case as the current functional methodology-use guide: decide which methodology/documentation actions and components are relevant to the current situation, then follow the selected owner route. The Use Case does not replace specialized Target Module, Lens, profile or repository semantics.');
-    else lines.push('','semantic_owner:',`  Resolve and use ${normalized.id} as the current ${normalized.kind==='TARGET_MODULE'?'Target Module':'Lens'} owner. This Helper row is an invocation projection only.`);
+    if(kind==='use_case')lines.push('','semantic_owner:','  Use this Use Case as the current functional methodology-use guide: decide which methodology/documentation actions and components are relevant to the current situation, then follow the selected owner route. The Use Case does not replace specialized Target Module, Lens, profile or repository semantics.','', 'command_composition:', '  - methodology.use_cases.recheck', `  - ${normalized.id} (selected Use-Case owner/process)`, '  Fully resolve the registry-level applicability composition first. Selecting this Use Case does not execute every other Use Case; if this selected process later enters normal IDTSPE Shell work, its natural route supplies idtspe.work and the current Port Composition refresh.');
+    else {
+      lines.push('','semantic_owner:',`  Resolve and use ${normalized.id} as the current ${normalized.kind==='TARGET_MODULE'?'Target Module':'Lens'} owner. This Helper row is an invocation projection only.`);
+      const isTarget=normalized.kind===SEMANTIC_KINDS.TARGET_MODULE;
+      const base=isTarget?'idtspe.target-module.apply':'idtspe.lens.apply';
+      const port=isTarget?'idtspe.port.target':'idtspe.port.lens';
+      lines.push('','command_composition:',
+        '  - idtspe.work',
+        '  - idtspe.port-composition.recheck',
+        '  - idtspe.port.trace',
+        `  - ${port}`,
+        `  - ${base}`,
+        `  - ${normalized.id} (semantic owner selection)`,
+        '  Fully expand ALL selected roots/includes before semantic execution, merge/deduplicate one DAG, collect explicit component/capability contributions, then execute dependencies before dependents. This concrete semantic component is the leaf action on its branch.');
+      const ref=normalized.ownerRef;lines.push('','own_canonical_refs:',ref?`  - ${ref.semanticId} → \`${ref.path}#${ref.anchor}\` | role: ${ref.role}; read: ${ref.readMode}; why: ${ref.why}`:'  - resolve concrete component owner from current registry; shared registry/Meta-Model/port refs come from included commands.');
+    }
     lines.push('','source_of_truth:',...(normalized.sources||[]).map((s)=>`  - \`${s}\``));
     if(kind==='use_case')lines.push('','route_resolution:','  Resolve this exact current Use-Case entry. Follow its current owner route and then the current owner links/read-order to every principle, workflow, template and integration rule materially defining this Use Case. Do not treat this Helper body as a frozen list of all future owner paths.');
     lines.push('','read_rule:',...readRule(mode,kind).map((x)=>`  ${x}`));
@@ -796,7 +926,7 @@
     const helperItems=source.includes('[PLANNING_HELPER_LIBRARY_ITEM]') ? deps.parseHelperLibraryBatch(source) : [];
     const patch=source.includes(PATCH_START)?parsePlanningHelperPatch(source):null;
     if(!definitions.length&&!helperItems.length&&!patch)throw new TypeError('No planning-command definitions, helper-library items or Planning Helper patch found.');
-    if(definitions.length)deps.validateCommandCatalog(definitions);
+    if(definitions.length)deps.validateCommandCatalog(definitions,{allowMissingIncludes:true});
     return { definitions, helperItems, patch };
   }
 
@@ -1093,7 +1223,7 @@
     const catalogOrder=deps.normalizeCatalogOrder(value.catalogOrder||{}),catalogOrderSha=String(value.catalogOrderSha||'').trim();
     const suppressedRepository=normalizeSuppressedRepository(value.suppressedRepository||{});
     const favoriteCommandIds=normalizeIdList(value.favoriteCommandIds,'favoriteCommandIds'),favoriteUseCaseIds=normalizeIdList(value.favoriteUseCaseIds,'favoriteUseCaseIds');
-    deps.validateCommandCatalog(planningCommands.map((record)=>record.definition));
+    deps.validateCommandCatalog(planningCommands.map((record)=>record.definition),{allowMissingIncludes:true});
     if(new Set(planningCommands.map((record)=>record.path)).size!==planningCommands.length)throw new TypeError('Duplicate planning-command path in local snapshot.');
     if(new Set(helperItems.map((record)=>record.path)).size!==helperItems.length)throw new TypeError('Duplicate helper-library path in local snapshot.');
     if(planningCommands.some((record)=>suppressedRepository.commands.includes(record.path)))throw new TypeError('A planning command cannot be both present and repository-suppressed.');
@@ -1112,7 +1242,7 @@
     const existingRaw=await gmGet(KEYS.localSnapshot,null),warnings=[];
     if(existingRaw!=null){const existing=normalizePlanningHelperLocalSnapshot(existingRaw),needsWrite=existingRaw.schemaVersion!==LOCAL_SNAPSHOT_SCHEMA_VERSION,snapshot=needsWrite?await savePlanningHelperLocalSnapshot(existing):existing;if(needsWrite&&(!existing.semanticComponents.length||!existing.scenarios.length))warnings.push('Planning Helper local snapshot migrated. Commands, semantic components and scenarios are GitHub-backed; use Hard Reload GitHub to restore current repository projections.');return{snapshot,migrated:needsWrite,seededCommands:0,warnings};}
     let definitions=[];
-    try{const legacy=await gmGet(LEGACY_KEYS.commandCache,null);if(legacy&&legacy.schemaVersion===1&&Array.isArray(legacy.definitions)){definitions=legacy.definitions.map((definition)=>{const next={...definition};delete next.directionIds;return next;});deps.validateCommandCatalog(definitions);}}catch(error){warnings.push(`Legacy planning-command cache ignored: ${error.message||String(error)}`);}deps.validateCommandCatalog(definitions);
+    try{const legacy=await gmGet(LEGACY_KEYS.commandCache,null);if(legacy&&legacy.schemaVersion===1&&Array.isArray(legacy.definitions)){definitions=legacy.definitions.map((definition)=>{const next={...definition};delete next.directionIds;return next;});deps.validateCommandCatalog(definitions,{allowMissingIncludes:true});}}catch(error){warnings.push(`Legacy planning-command cache ignored: ${error.message||String(error)}`);}deps.validateCommandCatalog(definitions,{allowMissingIncludes:true});
     const helperByKey=new Map();
     try{const repoCache=await gmGet(LEGACY_KEYS.repositoryLibraryCache,null),records=repoCache?.schemaVersion===2&&Array.isArray(repoCache.records)?repoCache.records:repoCache?.schemaVersion===1&&Array.isArray(repoCache.items)?repoCache.items.map((item)=>({item})):[];for(const record of records){const item=deps.normalizeHelperLibraryItem(record.item||record);helperByKey.set(helperKey(item),normalizeHelperRecord({item,repositoryKnown:true,repositorySha:record.sha||''}));}}catch(error){warnings.push(`Legacy repository-library cache ignored: ${error.message||String(error)}`);}
     try{const local=await gmGet(LEGACY_KEYS.localLibrary,null);if(local&&local.schemaVersion===1&&Array.isArray(local.items))for(const raw of local.items){const item=deps.normalizeHelperLibraryItem(raw),key=helperKey(item),previous=helperByKey.get(key);helperByKey.set(key,normalizeHelperRecord({item,repositoryKnown:Boolean(previous?.repositoryKnown),repositorySha:previous?.repositorySha||''}));}}catch(error){warnings.push(`Legacy local helper library ignored: ${error.message||String(error)}`);}
@@ -1194,11 +1324,11 @@
 })(typeof globalThis!=='undefined'?globalThis:this,function(){
   'use strict';
 
-  const VIEW_IDS=Object.freeze({ALL:'ALL',GENERAL:'GENERAL',USE_CASES:'USE_CASES',TARGET_MODULES:'TARGET_MODULES',LENSES:'LENSES',TOOLS:'TOOLS'});
+  const VIEW_IDS=Object.freeze({ALL:'ALL',GENERAL:'GENERAL',IDTSPE_PASS:'IDTSPE_PASS',USE_CASES:'USE_CASES',TARGET_MODULES:'TARGET_MODULES',LENSES:'LENSES',TOOLS:'TOOLS'});
   const VIEW_META=Object.freeze({
-    GENERAL:{label:'General',order:0},USE_CASES:{label:'Use Cases',order:10},TARGET_MODULES:{label:'Target Modules',order:20},LENSES:{label:'Lenses',order:30},TOOLS:{label:'Tools / Repository',order:40}
+    GENERAL:{label:'General',order:0},IDTSPE_PASS:{label:'IDTSPE Pass',order:5},USE_CASES:{label:'Use Cases',order:10},TARGET_MODULES:{label:'Target Modules',order:20},LENSES:{label:'Lenses',order:30},TOOLS:{label:'Tools / Repository',order:40}
   });
-  function kindLabelFor(entry){if(entry?.semanticKind==='USE_CASE')return`${entry.semanticScope||'Core'} UC`;if(entry?.semanticKind==='TARGET_MODULE')return`${entry.semanticScope||'Core'} TM`;if(entry?.semanticKind==='LENS')return`${entry.semanticScope||'Core'} Lens`;if(entry?.commandCategory==='TOOL')return'Tool';return'General';}
+  function kindLabelFor(entry){if(entry?.semanticKind==='USE_CASE')return`${entry.semanticScope||'Core'} UC`;if(entry?.semanticKind==='TARGET_MODULE')return`${entry.semanticScope||'Core'} TM`;if(entry?.semanticKind==='LENS')return`${entry.semanticScope||'Core'} Lens`;if(entry?.presentationGroup?.viewId===VIEW_IDS.IDTSPE_PASS)return'IDTSPE Pass';if(entry?.commandCategory==='TOOL')return'Tool';return'General';}
   function semanticNavigation(entry){
     const group=entry?.presentationGroup;if(group){const viewId=String(group.viewId||'').toUpperCase(),meta=VIEW_META[viewId]||{label:viewId||'General',order:90};return{viewId,viewLabel:meta.label,viewOrder:meta.order,sectionId:String(group.id||'UNGROUPED'),sectionLabel:String(group.label||'Other / Ungrouped'),sectionOrder:Number(group.order)||0,itemOrder:Number(group.itemOrder)||0,kindLabel:kindLabelFor(entry)};}
     if(entry?.semanticKind==='USE_CASE')return{viewId:VIEW_IDS.USE_CASES,viewLabel:'Use Cases',viewOrder:10,sectionId:String(entry.semanticScope||'Core').toUpperCase(),sectionLabel:entry.semanticScope||'Core',sectionOrder:entry.semanticScope==='Documentation'?0:10,itemOrder:Number(entry.semanticOrder)||0,kindLabel:`${entry.semanticScope||'Core'} UC`};
@@ -1511,11 +1641,11 @@
 
   const DIRECT_PRESENTATION=Object.freeze({
     'critical_review.apply':{actionLabel:'Критически проверить',tail:'General · Critical Review',scenarioRefs:['planning/documentation/review-diff-review-workflow.md']},
-    'idtspe.next':{actionLabel:'Показать следующий methodology action',tail:'General · IDTSPE Next',scenarioRefs:['planning/documentation/idtspe-methodology/active/profiles/sds/shared/directed-methodology-workflow-and-next-step-resolution.md']},
-    'idtspe.continue':{actionLabel:'Продолжить methodology work',tail:'General · IDTSPE Continue',scenarioRefs:['planning/documentation/idtspe-methodology/active/profiles/sds/shared/directed-methodology-workflow-and-next-step-resolution.md']},
+    'idtspe.next':{actionLabel:'Показать следующий methodology action',tail:'General · IDTSPE Next',scenarioRefs:['UC-IDTSPE-COMPOSE-CURRENT-WORK']},
+    'idtspe.continue':{actionLabel:'Продолжить methodology work',tail:'General · IDTSPE Continue',scenarioRefs:['UC-IDTSPE-COMPOSE-CURRENT-WORK']},
     'review_audit.recheck':{actionLabel:'Аудировать coverage предыдущего review',tail:'General · Review Audit',scenarioRefs:['planning/documentation/review-audit-workflow.md']},
-    'idtspe.review_consistency':{actionLabel:'Проверить consistency текущей работы',tail:'General · Consistency Review',scenarioRefs:['planning/documentation/idtspe-methodology/active/idtspe-core/shared/consistency-review-use-case.md']},
-    'idtspe.lenses.select':{actionLabel:'Подобрать применимые Lenses',tail:'General · Lens Selection',scenarioRefs:['planning/documentation/idtspe-methodology/active/idtspe-core/lenses/README.md','planning/documentation/idtspe-methodology/active/idtspe-core/shared/idtspe-unit-and-target-step-result-model.md']},
+    'idtspe.review_consistency':{actionLabel:'Проверить consistency текущей работы',tail:'General · Consistency Review',scenarioRefs:['planning/documentation/idtspe-methodology/active/idtspe-core/use-case-processes/CROSS-OWNER-CONSISTENCY-REVIEW.use-case-process.md']},
+    'idtspe.lenses.select':{actionLabel:'Подобрать применимые Lenses',tail:'General · Lens Selection',scenarioRefs:['planning/documentation/idtspe-methodology/active/idtspe-core/lenses/LENS-REGISTRY.md','planning/documentation/idtspe-methodology/active/idtspe-core/lenses/LENS-MODEL.md']},
     'replacement_archive.create':{actionLabel:'Собрать Replacement Package',tail:'Tool · UC-REPO-BUILD-REPLACEMENT-PACKAGE',category:'TOOL',scenarioRefs:['planning/use-cases/UC-REPO-BUILD-REPLACEMENT-PACKAGE.md','planning/documentation/build-replacement-archive-workflow.md']},
     'proposal_archive.create':{actionLabel:'Собрать review-only proposal archive',tail:'Tool · Proposal Archive',category:'TOOL',scenarioRefs:['planning/documentation/use-cases/UC-DOC-PLAN-DOCUMENTATION-CHANGE.md','planning/documentation/principles-and-terminology.md#use-case']},
     'archive_source.use':{actionLabel:'Использовать выбранный archive как source',tail:'Tool · Archive Source',category:'TOOL',scenarioRefs:['planning/command-routing.md#archive-read-source-boundary']},
@@ -1523,10 +1653,10 @@
     'documentation.links.review':{actionLabel:'Проверить связность документации',tail:'General · Documentation Links',scenarioRefs:['planning/documentation/use-cases/UC-DOC-REVIEW-DOCUMENTATION.md','planning/documentation/principles-and-terminology.md']},
     'command.plan':{actionLabel:'Спланировать command route',tail:'General · Command Route',scenarioRefs:['planning/command-routing.md']},
     'session.proposal_driven':{actionLabel:'Включить proposal-driven gating',tail:'General · Session Interaction',scenarioRefs:['planning/session/session-runtime-contract.md']},
-    'idtspe.proposal':{actionLabel:'Работать через Proposal lifecycle',tail:'General · IDTSPE Proposal Lifecycle',scenarioRefs:['planning/documentation/idtspe-methodology/active/idtspe-core/shared/proposal-and-decision-lifecycle-contract.md','planning/documentation/idtspe-methodology/active/idtspe-core/lenses/required/LENS-PROPOSAL-DECISION-RESOLUTION-CONTEXT.md']},
-    'idtspe.decisions.capture':{actionLabel:'Зафиксировать принятые решения',tail:'General · IDTSPE Decision Capture',scenarioRefs:['planning/documentation/idtspe-methodology/active/idtspe-core/shared/user-input-decision-and-answer-intake-rule.md','planning/documentation/idtspe-methodology/active/idtspe-core/lenses/required/LENS-PROPOSAL-DECISION-RESOLUTION-CONTEXT.md']},
-    'idtspe.needs.review':{actionLabel:'Разобрать новые потребности',tail:'General · Need Candidate Disposition',scenarioRefs:['planning/documentation/idtspe-methodology/active/idtspe-core/shared/need-candidate-disposition-contract.md']},
-    'idtspe.findings.review':{actionLabel:'Разобрать найденные проблемы',tail:'General · Finding Disposition',scenarioRefs:['planning/documentation/idtspe-methodology/active/idtspe-core/shared/finding-disposition-contract.md#resolution-escalation']},
+    'idtspe.proposal':{actionLabel:'Работать через Proposal lifecycle',tail:'General · IDTSPE Proposal Lifecycle',scenarioRefs:['planning/documentation/idtspe-methodology/active/idtspe-core/resolution/proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md#resolution-proposal-decision-lifecycle','planning/documentation/idtspe-methodology/active/idtspe-core/lenses/required/LENS-PROPOSAL-DECISION-RESOLUTION-CONTEXT.md']},
+    'idtspe.decisions.capture':{actionLabel:'Зафиксировать принятые решения',tail:'General · IDTSPE Decision Capture',scenarioRefs:['planning/documentation/idtspe-methodology/active/idtspe-core/runtime/interaction/USER-INPUT-DECISION-AND-ANSWER-INTAKE-RULE.md','planning/documentation/idtspe-methodology/active/idtspe-core/lenses/required/LENS-PROPOSAL-DECISION-RESOLUTION-CONTEXT.md']},
+    'idtspe.needs.review':{actionLabel:'Разобрать новые потребности',tail:'General · Need Candidate Disposition',scenarioRefs:['planning/documentation/idtspe-methodology/active/idtspe-core/resolution/needs/NEED-CANDIDATE-DISPOSITION.md']},
+    'idtspe.findings.review':{actionLabel:'Разобрать найденные проблемы',tail:'General · Finding Disposition',scenarioRefs:['planning/documentation/idtspe-methodology/active/idtspe-core/resolution/findings/FINDING-DISPOSITION.md#resolution-escalation']},
     'idtspe.bootstrap':{actionLabel:'Загрузить IDTSPE Core',tail:'General · Bootstrap'},
     'application_sds.bootstrap':{actionLabel:'Загрузить SDS profile',tail:'General · Bootstrap'},
     'documentation_principles.read':{actionLabel:'Загрузить guidance по документации',tail:'General · Documentation Guidance'},
@@ -1549,7 +1679,7 @@
 
   function materializeSnapshot(snapshot){
     const commandRecords=[...(snapshot.planningCommands||[])],helperRecords=[...(snapshot.helperItems||[])],useCases=deps.normalizeUseCaseDefinitions(snapshot.useCases||[]),semanticComponents=deps.normalizeSemanticComponents(snapshot.semanticComponents||[]),scenarios=deps.normalizeScenarios(snapshot.scenarios||[]),order=deps.normalizeCatalogOrder(snapshot.catalogOrder||{});
-    const definitions=commandRecords.map((record)=>record.definition);deps.validateCommandCatalog(definitions);
+    const definitions=commandRecords.map((record)=>record.definition);deps.validateCommandCatalog(definitions,{allowMissingIncludes:true});
     const commandByFile=new Map(commandRecords.map((record)=>[record.definition.file,record])),commandById=new Map(commandRecords.map((record)=>[record.definition.id,record])),helperByKey=new Map(helperRecords.map((record)=>[helperKey(record.item),record])),useCaseById=new Map(useCases.map((entry)=>[entry.id,entry]));
     const rawPlanningEntries=deps.buildCommandEntries(definitions).map((entry)=>{const record=commandById.get(entry.id),stateLabel=record?.repositoryKnown?'Registered · GitHub content verified':record?.repositoryTracked?'Registered · local draft changed':'Local command draft · not GitHub verified';return{...entry,entityType:'planning-command',definition:record?.definition||null,rawContent:record?.rawContent||'',repositoryPath:record?.path||'',repositoryKnown:Boolean(record?.repositoryKnown),repositoryTracked:Boolean(record?.repositoryTracked),repositorySha:record?.repositorySha||'',ownerFiles:[...(record?.definition?.ownerFiles||[])],stateLabel};});
     const rawEntryById=new Map(rawPlanningEntries.map((entry)=>[entry.id,entry])),consumedDirectIds=new Set(),semanticCommandEntries=[],useCaseComponentById=new Map(semanticComponents.filter((component)=>component.kind==='USE_CASE').map((component)=>[component.id,component])),effectiveSemanticComponents=[...semanticComponents.filter((component)=>component.kind!=='USE_CASE'),...useCases.map((useCase)=>useCaseSemanticComponent(useCase,useCaseComponentById.get(useCase.id)))];
@@ -1607,7 +1737,7 @@
   function compareUseCaseInventory(snapshot,remoteUseCases,remoteSha=''){return compareIdInventory(snapshot.useCases||[],remoteUseCases,snapshot.useCaseCatalogSha||'',remoteSha,'seed/use-cases.json',suppressionState(snapshot).useCases);}
   function compareRepositoryInventory(snapshot,remoteCatalog){const memory=materializeSnapshot(snapshot),remoteCommands=(remoteCatalog?.commands||[]).filter((entry)=>entry.kind==='planning-command'),remoteHelpers=remoteCatalog?.helperItems||[],suppressed=suppressionState(snapshot);return{planningCommands:inventoryBucket(memory.commandRecords,remoteCommands,suppressed.commands),useCases:compareUseCaseInventory(snapshot,remoteCatalog?.useCases||[],remoteCatalog?.useCaseSha||''),semanticComponents:compareIdInventory(snapshot.semanticComponents||[],remoteCatalog?.semanticComponents||[],snapshot.semanticComponentCatalogSha||'',remoteCatalog?.semanticComponentSha||'','seed/semantic-components.json',suppressed.semanticComponents),scenarios:compareIdInventory(snapshot.scenarios||[],remoteCatalog?.scenarios||[],snapshot.scenarioCatalogSha||'',remoteCatalog?.scenarioSha||'','seed/scenarios.json',suppressed.scenarios),helperCommands:inventoryBucket(memory.helperRecords.filter((record)=>record.item.kind===deps.HELPER_LIBRARY_KINDS.COMMAND),remoteHelpers.filter((entry)=>entry.kind===deps.HELPER_LIBRARY_KINDS.COMMAND),suppressed.helperItems),prompts:inventoryBucket(memory.helperRecords.filter((record)=>record.item.kind===deps.HELPER_LIBRARY_KINDS.PROMPT),remoteHelpers.filter((entry)=>entry.kind===deps.HELPER_LIBRARY_KINDS.PROMPT),suppressed.helperItems),catalogOrderChanged:Boolean(snapshot.catalogOrderSha&&remoteCatalog?.catalogOrderSha&&snapshot.catalogOrderSha!==remoteCatalog.catalogOrderSha)};}
 
-  function prepareLocalCommandSave(snapshot,value,existingId=''){const memory=materializeSnapshot(snapshot),raw=typeof value==='string'?JSON.parse(value):(value&&typeof value==='object'?value:{}),definition=deps.normalizeCommandDefinition(raw),previous=existingId?memory.commandById.get(String(existingId)):null;if(existingId&&!previous)throw new Error(`Planning command not found: ${existingId}`);if(previous&&(definition.id!==previous.definition.id||definition.file!==previous.definition.file))throw new TypeError('Editing an existing command cannot change its id or file. Create a new command draft instead.');const collisionByFile=memory.commandRecords.find((record)=>record.definition.file===definition.file&&record.definition.id!==definition.id);if(collisionByFile)throw new TypeError(`Planning command file ${definition.file} already belongs to ${collisionByFile.definition.id}.`);const collisionById=memory.commandRecords.find((record)=>record.definition.id===definition.id&&record.definition.file!==definition.file);if(collisionById)throw new TypeError(`Planning command id ${definition.id} already belongs to ${collisionById.definition.file}.`);const rawContent=deps.renderCommandDefinitionDocument(definition);if(previous&&previous.rawContent===rawContent)return{changed:false,definition:previous.definition,record:previous,snapshot};const record=deps.normalizeCommandRecord({definition,rawContent,repositoryKnown:false,repositoryTracked:Boolean(previous?.repositoryTracked||previous?.repositoryKnown),repositorySha:''}),records=[...memory.commandRecords.filter((entry)=>entry.definition.id!==definition.id),record];deps.validateCommandCatalog(records.map((entry)=>entry.definition));const suppressed=suppressionState(snapshot);suppressed.commands=withoutValue(suppressed.commands,record.path);return{changed:true,definition,record,snapshot:{...snapshot,planningCommands:records,suppressedRepository:suppressed}};}
+  function prepareLocalCommandSave(snapshot,value,existingId=''){const memory=materializeSnapshot(snapshot),raw=typeof value==='string'?JSON.parse(value):(value&&typeof value==='object'?value:{}),definition=deps.normalizeCommandDefinition(raw),previous=existingId?memory.commandById.get(String(existingId)):null;if(existingId&&!previous)throw new Error(`Planning command not found: ${existingId}`);if(previous&&(definition.id!==previous.definition.id||definition.file!==previous.definition.file))throw new TypeError('Editing an existing command cannot change its id or file. Create a new command draft instead.');const collisionByFile=memory.commandRecords.find((record)=>record.definition.file===definition.file&&record.definition.id!==definition.id);if(collisionByFile)throw new TypeError(`Planning command file ${definition.file} already belongs to ${collisionByFile.definition.id}.`);const collisionById=memory.commandRecords.find((record)=>record.definition.id===definition.id&&record.definition.file!==definition.file);if(collisionById)throw new TypeError(`Planning command id ${definition.id} already belongs to ${collisionById.definition.file}.`);const rawContent=deps.renderCommandDefinitionDocument(definition);if(previous&&previous.rawContent===rawContent)return{changed:false,definition:previous.definition,record:previous,snapshot};const record=deps.normalizeCommandRecord({definition,rawContent,repositoryKnown:false,repositoryTracked:Boolean(previous?.repositoryTracked||previous?.repositoryKnown),repositorySha:''}),records=[...memory.commandRecords.filter((entry)=>entry.definition.id!==definition.id),record];deps.validateCommandCatalog(records.map((entry)=>entry.definition),{allowMissingIncludes:true});const suppressed=suppressionState(snapshot);suppressed.commands=withoutValue(suppressed.commands,record.path);return{changed:true,definition,record,snapshot:{...snapshot,planningCommands:records,suppressedRepository:suppressed}};}
   function deleteLocalCommandFromSnapshot(snapshot,id){const memory=materializeSnapshot(snapshot),value=String(id||'').trim(),record=memory.commandById.get(value);if(!record)throw new Error(`Planning command not found: ${value||'<empty>'}`);const suppressed=suppressionState(snapshot);suppressed.commands=withValue(suppressed.commands,record.path);return deps.normalizePlanningHelperLocalSnapshot({...snapshot,planningCommands:memory.commandRecords.filter((entry)=>entry.definition.id!==value),suppressedRepository:suppressed,favoriteCommandIds:(snapshot.favoriteCommandIds||[]).filter((id)=>id!==value)});}
   function deleteLocalUseCaseFromSnapshot(snapshot,id){const value=String(id||'').trim();if(!(snapshot.useCases||[]).some((entry)=>entry.id===value))throw new Error(`Use Case not found: ${value||'<empty>'}`);const suppressed=suppressionState(snapshot);suppressed.useCases=withValue(suppressed.useCases,value);return deps.normalizePlanningHelperLocalSnapshot({...snapshot,useCases:(snapshot.useCases||[]).filter((entry)=>entry.id!==value),useCaseCatalogSha:'',suppressedRepository:suppressed,favoriteUseCaseIds:(snapshot.favoriteUseCaseIds||[]).filter((id)=>id!==value),favoriteCommandIds:(snapshot.favoriteCommandIds||[]).filter((id)=>id!==`uc:${value}`)});}
   function toggleFavoriteCommandInSnapshot(snapshot,id){const memory=materializeSnapshot(snapshot),value=String(id||'').trim(),entry=memory.commandEntries.find((candidate)=>candidate.id===value);if(!entry)throw new Error(`Command row not found: ${value||'<empty>'}`);const aliases=new Set([value,entry.directCommandId||''].filter(Boolean)),ids=new Set(snapshot.favoriteCommandIds||[]),isFavorite=[...aliases].some((candidate)=>ids.has(candidate))||memory.favoriteCommandIds.includes(value);for(const candidate of aliases)ids.delete(candidate);if(!isFavorite)ids.add(value);return deps.normalizePlanningHelperLocalSnapshot({...snapshot,favoriteCommandIds:[...ids]});}
@@ -1615,7 +1745,7 @@
   function prepareLocalHelperSave(snapshot,value,now=new Date().toISOString()){const memory=materializeSnapshot(snapshot),input=value&&typeof value==='object'?value:{},key=`${String(input.kind||'')}:${String(input.id||'')}`,previous=input.id?memory.helperByKey.get(key):null;if(previous){const stable=deps.normalizeHelperLibraryItem({...input,kind:previous.item.kind,id:previous.item.id,createdAt:previous.item.createdAt,updatedAt:previous.item.updatedAt}),unchanged=stable.title===previous.item.title&&stable.text===previous.item.text;if(unchanged)return{changed:false,item:previous.item,record:previous,snapshot};const item=deps.normalizeHelperLibraryItem({...stable,updatedAt:now}),record=deps.normalizeHelperRecord({item,rawContent:deps.renderHelperLibraryDocument(item),repositoryKnown:false,repositorySha:''});const suppressed=suppressionState(snapshot);suppressed.helperItems=withoutValue(suppressed.helperItems,record.path);return{changed:true,item,record,snapshot:{...snapshot,helperItems:[...memory.helperRecords.filter((entry)=>helperKey(entry.item)!==helperKey(item)),record],suppressedRepository:suppressed}};}const item=deps.normalizeHelperLibraryItem({...input,createdAt:input.createdAt||now,updatedAt:now}),record=deps.normalizeHelperRecord({item,rawContent:deps.renderHelperLibraryDocument(item),repositoryKnown:false,repositorySha:''});const suppressed=suppressionState(snapshot);suppressed.helperItems=withoutValue(suppressed.helperItems,record.path);return{changed:true,item,record,snapshot:{...snapshot,helperItems:[...memory.helperRecords,record],suppressedRepository:suppressed}};}
   function clearRepositoryEvidence(snapshot){const memory=materializeSnapshot(snapshot);return deps.normalizePlanningHelperLocalSnapshot({...snapshot,planningCommands:memory.commandRecords.map((record)=>deps.normalizeCommandRecord({...record,repositoryKnown:false,repositoryTracked:false,repositorySha:''})),helperItems:memory.helperRecords.map((record)=>deps.normalizeHelperRecord({...record,repositoryKnown:false,repositorySha:''})),useCaseCatalogSha:'',semanticComponentCatalogSha:'',scenarioCatalogSha:'',catalogOrderSha:'',suppressedRepository:{}});}
   async function persistVerifiedRepositoryResult(persist,next,result,settings,uiState){try{await persist(next);return{settings,...result,localSnapshotUpdated:true,localSnapshotError:'',...uiState()};}catch(error){return{settings,...result,localSnapshotUpdated:false,localSnapshotError:error?.message||String(error),...uiState()};}}
-  function mergeRemoteMissing(snapshot,remoteRecords={}){const memory=materializeSnapshot(snapshot),suppressed=suppressionState(snapshot),commandSuppressed=new Set(suppressed.commands),helperSuppressed=new Set(suppressed.helperItems),useCaseSuppressed=new Set(suppressed.useCases),componentSuppressed=new Set(suppressed.semanticComponents),scenarioSuppressed=new Set(suppressed.scenarios),commandMap=new Map(memory.commandRecords.map((record)=>[record.path,record])),helperMap=new Map(memory.helperRecords.map((record)=>[record.path,record])),addedCommands=[],addedHelpers=[];for(const remote of remoteRecords.commands||[]){if(commandMap.has(remote.path)||commandSuppressed.has(remote.path))continue;const record=deps.normalizeCommandRecord({definition:remote.definition,path:remote.path,rawContent:remote.rawContent,repositoryKnown:true,repositoryTracked:true,repositorySha:remote.sha});commandMap.set(record.path,record);addedCommands.push(record);}deps.validateCommandCatalog([...commandMap.values()].map((record)=>record.definition));for(const remote of remoteRecords.helperItems||[]){if(helperMap.has(remote.path)||helperSuppressed.has(remote.path))continue;const record=deps.normalizeHelperRecord({item:remote.item,path:remote.path,rawContent:remote.rawContent,repositoryKnown:true,repositorySha:remote.sha});helperMap.set(record.path,record);addedHelpers.push(record);}const mergeById=(current,incoming,suppressedIds)=>{const map=new Map((current||[]).map((entry)=>[entry.id,entry])),added=[];for(const item of incoming||[]){if(map.has(item.id)||suppressedIds.has(item.id))continue;map.set(item.id,item);added.push(item);}return{items:[...map.values()],added};};const uc=mergeById(snapshot.useCases,remoteRecords.useCases,useCaseSuppressed),components=mergeById(snapshot.semanticComponents,remoteRecords.semanticComponents,componentSuppressed),scenarios=mergeById(snapshot.scenarios,remoteRecords.scenarios,scenarioSuppressed);const next=deps.normalizePlanningHelperLocalSnapshot({...snapshot,planningCommands:[...commandMap.values()],helperItems:[...helperMap.values()],useCases:uc.items,semanticComponents:components.items,scenarios:scenarios.items,useCaseCatalogSha:uc.added.length?'':snapshot.useCaseCatalogSha,semanticComponentCatalogSha:components.added.length?'':snapshot.semanticComponentCatalogSha,scenarioCatalogSha:scenarios.added.length?'':snapshot.scenarioCatalogSha});return{snapshot:next,addedCommands,addedHelpers,addedUseCases:uc.added,addedSemanticComponents:components.added,addedScenarios:scenarios.added};}
+  function mergeRemoteMissing(snapshot,remoteRecords={}){const memory=materializeSnapshot(snapshot),suppressed=suppressionState(snapshot),commandSuppressed=new Set(suppressed.commands),helperSuppressed=new Set(suppressed.helperItems),useCaseSuppressed=new Set(suppressed.useCases),componentSuppressed=new Set(suppressed.semanticComponents),scenarioSuppressed=new Set(suppressed.scenarios),commandMap=new Map(memory.commandRecords.map((record)=>[record.path,record])),helperMap=new Map(memory.helperRecords.map((record)=>[record.path,record])),addedCommands=[],addedHelpers=[];for(const remote of remoteRecords.commands||[]){if(commandMap.has(remote.path)||commandSuppressed.has(remote.path))continue;const record=deps.normalizeCommandRecord({definition:remote.definition,path:remote.path,rawContent:remote.rawContent,repositoryKnown:true,repositoryTracked:true,repositorySha:remote.sha});commandMap.set(record.path,record);addedCommands.push(record);}deps.validateCommandCatalog([...commandMap.values()].map((record)=>record.definition),{allowMissingIncludes:true});for(const remote of remoteRecords.helperItems||[]){if(helperMap.has(remote.path)||helperSuppressed.has(remote.path))continue;const record=deps.normalizeHelperRecord({item:remote.item,path:remote.path,rawContent:remote.rawContent,repositoryKnown:true,repositorySha:remote.sha});helperMap.set(record.path,record);addedHelpers.push(record);}const mergeById=(current,incoming,suppressedIds)=>{const map=new Map((current||[]).map((entry)=>[entry.id,entry])),added=[];for(const item of incoming||[]){if(map.has(item.id)||suppressedIds.has(item.id))continue;map.set(item.id,item);added.push(item);}return{items:[...map.values()],added};};const uc=mergeById(snapshot.useCases,remoteRecords.useCases,useCaseSuppressed),components=mergeById(snapshot.semanticComponents,remoteRecords.semanticComponents,componentSuppressed),scenarios=mergeById(snapshot.scenarios,remoteRecords.scenarios,scenarioSuppressed);const next=deps.normalizePlanningHelperLocalSnapshot({...snapshot,planningCommands:[...commandMap.values()],helperItems:[...helperMap.values()],useCases:uc.items,semanticComponents:components.items,scenarios:scenarios.items,useCaseCatalogSha:uc.added.length?'':snapshot.useCaseCatalogSha,semanticComponentCatalogSha:components.added.length?'':snapshot.semanticComponentCatalogSha,scenarioCatalogSha:scenarios.added.length?'':snapshot.scenarioCatalogSha});return{snapshot:next,addedCommands,addedHelpers,addedUseCases:uc.added,addedSemanticComponents:components.added,addedScenarios:scenarios.added};}
   async function prepareInvocationBody(text,id,invocation={},operations=deps){const body=String(text==null?'':text);if(typeof operations.applyCommandSideEffects!=='function')return body;return operations.applyCommandSideEffects(id,body,{effectIds:invocation?.effectIds||[]});}
 
   async function insertWithClipboard(text,success,id,operations=deps){let copied=false;try{const copyResult=operations.copyText(text);copied=copyResult&&typeof copyResult.then==='function'?Boolean(await copyResult):Boolean(copyResult);}catch(_){copied=false;}const result=operations.insertIntoComposer(text,id);if(result.ok)return copied?`${success} · clipboard ready`:`${success} · clipboard copy failed`;return copied?`Direct insertion failed (${result.reason}). The exact text is in the clipboard — paste manually.`:`Direct insertion failed (${result.reason}) and clipboard copy also failed.`;}
@@ -1630,7 +1760,7 @@
     async function applyChatText(text,mode='import'){return repositoryLock.run(mode==='restore'?'Restore local snapshot':'Import chat items',async()=>{const parsed=deps.parseChatImport(text),merged=mergeChatImport(snapshot,parsed,mode);await persist(merged.snapshot);return{ok:true,mode,createdLocal:merged.newCommandRecords.length+merged.newHelperRecords.length,removedRepositoryCommands:merged.removedRepositoryCommands||0,removedRepositoryHelperItems:merged.removedRepositoryHelperItems||0,errors:[],...uiState()};});}
     async function saveLocalCommandDefinition(value,existingId=''){const prepared=prepareLocalCommandSave(snapshot,value,existingId);if(!prepared.changed)return{definition:prepared.definition,unchanged:true,...uiState()};const state=await persist(prepared.snapshot);return{definition:prepared.definition,unchanged:false,...state};}
     async function deleteLocalCommand(id){return persist(deleteLocalCommandFromSnapshot(snapshot,id));}async function deleteLocalUseCase(id){return persist(deleteLocalUseCaseFromSnapshot(snapshot,id));}async function toggleFavoriteCommand(id){return persist(toggleFavoriteCommandInSnapshot(snapshot,id));}async function toggleFavoriteUseCase(id){return persist(toggleFavoriteUseCaseInSnapshot(snapshot,id));}
-    async function reloadRepositoryCommand(id){return repositoryLock.run('Reload planning command from GitHub',async()=>{const{commandService,settings}=await makeServices(),record=memory.commandById.get(String(id||''));if(!record)throw new Error(`Planning command not found: ${id||'<empty>'}`);const remote=await commandService.readRemote(record.path),replacement=deps.normalizeCommandRecord({definition:remote.definition,path:remote.path,rawContent:remote.rawContent,repositoryKnown:true,repositoryTracked:true,repositorySha:remote.sha}),records=memory.commandRecords.map((entry)=>entry.definition.id===record.definition.id?replacement:entry);deps.validateCommandCatalog(records.map((entry)=>entry.definition));const state=await persist({...snapshot,planningCommands:records});return{settings,path:remote.path,sha:remote.sha,...state};});}
+    async function reloadRepositoryCommand(id){return repositoryLock.run('Reload planning command from GitHub',async()=>{const{commandService,settings}=await makeServices(),record=memory.commandById.get(String(id||''));if(!record)throw new Error(`Planning command not found: ${id||'<empty>'}`);const remote=await commandService.readRemote(record.path),replacement=deps.normalizeCommandRecord({definition:remote.definition,path:remote.path,rawContent:remote.rawContent,repositoryKnown:true,repositoryTracked:true,repositorySha:remote.sha}),records=memory.commandRecords.map((entry)=>entry.definition.id===record.definition.id?replacement:entry);deps.validateCommandCatalog(records.map((entry)=>entry.definition),{allowMissingIncludes:true});const state=await persist({...snapshot,planningCommands:records});return{settings,path:remote.path,sha:remote.sha,...state};});}
     async function saveLocalLibraryItem(value){const prepared=prepareLocalHelperSave(snapshot,value);if(!prepared.changed)return{item:prepared.item,unchanged:true,...uiState()};const state=await persist(prepared.snapshot);return{item:prepared.item,unchanged:false,...state};}async function deleteLocalLibraryItem(kind,id){const key=`${kind}:${id}`;return persist({...snapshot,helperItems:memory.helperRecords.filter((record)=>helperKey(record.item)!==key)});}
     async function checkRepository(){return repositoryLock.run('Check GitHub inventory',async()=>{const{commandService,helperService,catalogService,settings}=await makeServices(),commands=await commandService.listRemote(),helperItems=await helperService.listRemoteAll(),useCaseCatalog=await catalogService.readUseCases(),semanticCatalog=await catalogService.readSemanticComponents(),scenarioCatalog=await catalogService.readScenarios(),order=await catalogService.readOrder(),remoteCatalog={commands,helperItems,useCases:useCaseCatalog.useCases,useCaseSha:useCaseCatalog.sha,semanticComponents:semanticCatalog.components,semanticComponentSha:semanticCatalog.sha,scenarios:scenarioCatalog.scenarios,scenarioSha:scenarioCatalog.sha,catalogOrderSha:order.sha};return{settings,inventory:compareRepositoryInventory(snapshot,remoteCatalog),remoteCatalog};});}
     async function syncMissingRepository(){return repositoryLock.run('Sync missing from GitHub',async()=>{const{commandService,helperService,catalogService,settings}=await makeServices(),commands=await commandService.listRemote(),helperItems=await helperService.listRemoteAll(),useCaseCatalog=await catalogService.readUseCases(),semanticCatalog=await catalogService.readSemanticComponents(),scenarioCatalog=await catalogService.readScenarios(),remoteCatalog={commands,helperItems,useCases:useCaseCatalog.useCases,useCaseSha:useCaseCatalog.sha,semanticComponents:semanticCatalog.components,semanticComponentSha:semanticCatalog.sha,scenarios:scenarioCatalog.scenarios,scenarioSha:scenarioCatalog.sha},inventory=compareRepositoryInventory(snapshot,remoteCatalog),commandMissing=new Set(inventory.planningCommands.remoteOnly),helperMissing=new Set([...inventory.helperCommands.remoteOnly,...inventory.prompts.remoteOnly]),remoteCommands=[],remoteHelpers=[];for(const entry of commands)if(commandMissing.has(entry.path))remoteCommands.push(await commandService.readRemote(entry.path));for(const entry of helperItems)if(helperMissing.has(entry.path))remoteHelpers.push(await helperService.readRemote(entry.path));const merged=mergeRemoteMissing(snapshot,{commands:remoteCommands,helperItems:remoteHelpers,useCases:useCaseCatalog.useCases.filter((entry)=>inventory.useCases.remoteOnly.includes(entry.id)),semanticComponents:semanticCatalog.components.filter((entry)=>inventory.semanticComponents.remoteOnly.includes(entry.id)),scenarios:scenarioCatalog.scenarios.filter((entry)=>inventory.scenarios.remoteOnly.includes(entry.id))});await persist(merged.snapshot);return{settings,addedCommands:merged.addedCommands.length,addedUseCases:merged.addedUseCases.length,addedSemanticComponents:merged.addedSemanticComponents.length,addedScenarios:merged.addedScenarios.length,addedHelperCommands:merged.addedHelpers.filter((record)=>record.item.kind===deps.HELPER_LIBRARY_KINDS.COMMAND).length,addedPrompts:merged.addedHelpers.filter((record)=>record.item.kind===deps.HELPER_LIBRARY_KINDS.PROMPT).length,inventoryBefore:inventory,...uiState()};});}

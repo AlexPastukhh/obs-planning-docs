@@ -2,6 +2,7 @@
   "schemaVersion": 4,
   "kind": "planning-helper-catalog-order",
   "commands": [
+    "methodology.use_cases.recheck",
     "idtspe.next",
     "idtspe.continue",
     "idtspe.proposal",
@@ -35,6 +36,7 @@
     "uc:UC-IDTSPE-MAINTAIN-TARGET-MODULE",
     "uc:UC-IDTSPE-MAINTAIN-LENS",
     "uc:UC-DOC-USE-REPOSITORY-GUIDANCE",
+    "uc:UC-DOC-RESOLVE-CURRENT-USE-CASES",
     "uc:UC-DOC-PLAN-DOCUMENTATION-CHANGE",
     "uc:UC-DOC-REVIEW-DOCUMENTATION",
     "uc:UC-DOC-MAINTAIN-USE-CASE",
@@ -44,6 +46,7 @@
     "uc:UC-DOC-MAINTAIN-TEMPLATE",
     "uc:UC-DOC-MAINTAIN-EXAMPLE",
     "uc:UC-DOC-MAINTAIN-README",
+    "uc:UC-DOC-MAINTAIN-RESPONSIBILITY-MAP",
     "tm:TM-PRE-UPDATE-PLAN",
     "tm:TM-EXACT-REALIZATION",
     "tm:TM-APPLICATION-DEFINITION",
@@ -63,6 +66,7 @@
     "lens:LENS-AUTHORITY-SOT-REUSE",
     "lens:LENS-DEPENDENCY-CHANGE-IMPACT",
     "lens:LENS-SHARED-CROSS-CUTTING-RESPONSIBILITY",
+    "lens:LENS-TARGET-RESOLUTION-COVERAGE",
     "lens:LENS-QUALITY-RISK-MATERIALITY",
     "lens:LENS-UNCERTAINTY-ASSUMPTION-REVERSIBILITY",
     "lens:LENS-PRACTICAL-EVIDENCE",
@@ -83,7 +87,7 @@
     "archive_source.use",
     "helper.command.add",
     "tm:TM-2D-10-VISUAL-REQUIREMENTS",
-    "tm:TM-2D-15-VISUAL-MATERIAL-PREPARATION",
+    "tm:TM-2D-15-PREPARED-VISUAL-MATERIAL-SET",
     "tm:TM-2D-20-WHOLE-VISUAL-DESIGN",
     "tm:TM-2D-30-VISUAL-CONSTRUCTION",
     "tm:TM-2D-31-PIXEL-ART-CONSTRUCTION",
@@ -102,10 +106,38 @@
     "lens:LENS-REPRESENTATION-EDITABILITY-ECONOMY",
     "lens:LENS-RK-ENTRY-IDENTITY-AND-DUPLICATION",
     "lens:LENS-RK-TAG-QUALITY-AND-TAXONOMY",
-    "lens:LENS-RK-LANDSCAPE-EVIDENCE-ADEQUACY"
+    "lens:LENS-RK-LANDSCAPE-EVIDENCE-ADEQUACY",
+    "idtspe.work",
+    "idtspe.trace.inline",
+    "idtspe.trace.artifact",
+    "idtspe.port.target",
+    "idtspe.target-module.apply",
+    "idtspe.port.source",
+    "idtspe.port.relation",
+    "idtspe.port.lens",
+    "idtspe.lens.apply",
+    "idtspe.port.proposal",
+    "idtspe.port.branch",
+    "idtspe.port.qrp",
+    "idtspe.port.decision",
+    "idtspe.port.result",
+    "idtspe.port.validation",
+    "idtspe.port.handoff",
+    "idtspe.port.persistence",
+    "idtspe.port.revalidation",
+    "idtspe.port-composition.recheck",
+    "idtspe.port.trace",
+    "idtspe.review",
+    "idtspe.unit.resolve",
+    "idtspe.unit.define-contextual",
+    "idtspe.branch.explore",
+    "idtspe.qrp.review",
+    "idtspe.result.compose",
+    "idtspe.revalidate"
   ],
   "useCases": [
     "UC-DOC-USE-REPOSITORY-GUIDANCE",
+    "UC-DOC-RESOLVE-CURRENT-USE-CASES",
     "UC-IDTSPE-COMPOSE-CURRENT-WORK",
     "UC-IDTSPE-MAINTAIN-CURRENT-WORK-STATE",
     "UC-IDTSPE-INTEGRATE-CURRENT-WORK",
@@ -119,6 +151,7 @@
     "UC-DOC-MAINTAIN-TEMPLATE",
     "UC-DOC-MAINTAIN-EXAMPLE",
     "UC-DOC-MAINTAIN-README",
+    "UC-DOC-MAINTAIN-RESPONSIBILITY-MAP",
     "UC-IDTSPE-MAINTAIN-TARGET-MODULE",
     "UC-IDTSPE-MAINTAIN-LENS",
     "idtspe.decisions.capture"
@@ -163,8 +196,7 @@
       "order": 20,
       "items": [
         "critical_review.apply",
-        "review_audit.recheck",
-        "idtspe.review_consistency"
+        "review_audit.recheck"
       ]
     },
     {
@@ -213,19 +245,7 @@
       "label": "Proposal / Interaction Modes",
       "order": 70,
       "items": [
-        "idtspe.proposal",
-        "idtspe.decisions.capture",
         "session.proposal_driven"
-      ]
-    },
-    {
-      "id": "general.review-triage",
-      "viewId": "GENERAL",
-      "label": "Finding / Need Disposition",
-      "order": 80,
-      "items": [
-        "idtspe.findings.review",
-        "idtspe.needs.review"
       ]
     },
     {
@@ -245,11 +265,117 @@
       "label": "Methodology Utilities",
       "order": 100,
       "items": [
-        "idtspe.lenses.select",
         "idtspe.bootstrap",
         "application_sds.bootstrap",
         "documentation_principles.read",
         "governance.development"
+      ]
+    },
+    {
+      "id": "idtspe-pass.baseline",
+      "viewId": "IDTSPE_PASS",
+      "label": "P-01 · Invocation / Composition",
+      "order": 10,
+      "items": [
+        "methodology.use_cases.recheck",
+        "idtspe.port-composition.recheck",
+        "idtspe.work"
+      ]
+    },
+    {
+      "id": "idtspe-pass.trace",
+      "viewId": "IDTSPE_PASS",
+      "label": "P-02 · Trace / Visibility",
+      "order": 20,
+      "items": [
+        "idtspe.port.trace",
+        "idtspe.trace.inline",
+        "idtspe.trace.artifact"
+      ]
+    },
+    {
+      "id": "idtspe-pass.target",
+      "viewId": "IDTSPE_PASS",
+      "label": "P-03 · Target",
+      "order": 30,
+      "items": [
+        "idtspe.port.target",
+        "idtspe.target-module.apply",
+        "idtspe.unit.resolve",
+        "idtspe.unit.define-contextual"
+      ]
+    },
+    {
+      "id": "idtspe-pass.source-relation",
+      "viewId": "IDTSPE_PASS",
+      "label": "P-04 / P-05 · Source / Relation",
+      "order": 40,
+      "items": [
+        "idtspe.port.source",
+        "idtspe.port.relation"
+      ]
+    },
+    {
+      "id": "idtspe-pass.lens",
+      "viewId": "IDTSPE_PASS",
+      "label": "P-06 · Lens",
+      "order": 50,
+      "items": [
+        "idtspe.port.lens",
+        "idtspe.lenses.select",
+        "idtspe.lenses.apply-selected",
+        "idtspe.lens.apply"
+      ]
+    },
+    {
+      "id": "idtspe-pass.resolution",
+      "viewId": "IDTSPE_PASS",
+      "label": "P-07–P-10 · Proposal / Branch / Q-R-P / Decision",
+      "order": 60,
+      "items": [
+        "idtspe.port.proposal",
+        "idtspe.proposal",
+        "idtspe.port.branch",
+        "idtspe.branch.explore",
+        "idtspe.port.qrp",
+        "idtspe.qrp.review",
+        "idtspe.port.decision",
+        "idtspe.decisions.capture"
+      ]
+    },
+    {
+      "id": "idtspe-pass.result-validation",
+      "viewId": "IDTSPE_PASS",
+      "label": "P-11 / P-12 · Result / Validation",
+      "order": 70,
+      "items": [
+        "idtspe.port.result",
+        "idtspe.result.compose",
+        "idtspe.port.validation",
+        "idtspe.review_consistency"
+      ]
+    },
+    {
+      "id": "idtspe-pass.review-disposition",
+      "viewId": "IDTSPE_PASS",
+      "label": "Review / Finding / Need Disposition",
+      "order": 75,
+      "items": [
+        "idtspe.review",
+        "idtspe.findings.review",
+        "idtspe.needs.review"
+      ]
+    },
+    {
+      "id": "idtspe-pass.handoff-persistence",
+      "viewId": "IDTSPE_PASS",
+      "label": "P-13–P-15 · Handoff / Persistence / Revalidation",
+      "order": 80,
+      "items": [
+        "idtspe.port.handoff",
+        "idtspe.port.persistence",
+        "idtspe.port.revalidation",
+        "idtspe.revalidate"
       ]
     },
     {
@@ -281,6 +407,7 @@
       "order": 30,
       "items": [
         "uc:UC-DOC-USE-REPOSITORY-GUIDANCE",
+        "uc:UC-DOC-RESOLVE-CURRENT-USE-CASES",
         "uc:UC-DOC-PLAN-DOCUMENTATION-CHANGE",
         "uc:UC-DOC-REVIEW-DOCUMENTATION"
       ]
@@ -297,7 +424,8 @@
         "uc:UC-DOC-MAINTAIN-PROCESS",
         "uc:UC-DOC-MAINTAIN-TEMPLATE",
         "uc:UC-DOC-MAINTAIN-EXAMPLE",
-        "uc:UC-DOC-MAINTAIN-README"
+        "uc:UC-DOC-MAINTAIN-README",
+        "uc:UC-DOC-MAINTAIN-RESPONSIBILITY-MAP"
       ]
     },
     {
@@ -356,6 +484,36 @@
       ]
     },
     {
+      "id": "tm.profile-2d-visual-production",
+      "viewId": "TARGET_MODULES",
+      "label": "2D Visual Production",
+      "order": 60,
+      "items": [
+        "tm:TM-2D-10-VISUAL-REQUIREMENTS",
+        "tm:TM-2D-15-PREPARED-VISUAL-MATERIAL-SET",
+        "tm:TM-2D-20-WHOLE-VISUAL-DESIGN",
+        "tm:TM-2D-30-VISUAL-CONSTRUCTION",
+        "tm:TM-2D-31-PIXEL-ART-CONSTRUCTION",
+        "tm:TM-2D-31-VECTOR-CONSTRUCTION",
+        "tm:TM-2D-31-EDITABLE-RASTER-CONSTRUCTION",
+        "tm:TM-2D-31-PAINTERLY-RASTER-CONSTRUCTION",
+        "tm:TM-2D-31-PROCEDURAL-CONSTRUCTION",
+        "tm:TM-2D-50-DELIVERY-ADAPTATION"
+      ]
+    },
+    {
+      "id": "tm.profile-reference-knowledge",
+      "viewId": "TARGET_MODULES",
+      "label": "Reference Knowledge",
+      "order": 70,
+      "items": [
+        "tm:TM-RK-05-BANK-FORMATION",
+        "tm:TM-RK-10-ENTRY",
+        "tm:TM-RK-20-VOCABULARY-EVOLUTION",
+        "tm:TM-RK-50-LANDSCAPE-ANALYSIS"
+      ]
+    },
+    {
       "id": "lens.meaning-ownership",
       "viewId": "LENSES",
       "label": "Meaning / Ownership",
@@ -365,6 +523,7 @@
         "lens:LENS-AUTHORITY-SOT-REUSE",
         "lens:LENS-DEPENDENCY-CHANGE-IMPACT",
         "lens:LENS-SHARED-CROSS-CUTTING-RESPONSIBILITY",
+        "lens:LENS-TARGET-RESOLUTION-COVERAGE",
         "lens:LENS-PROPOSAL-DECISION-RESOLUTION-CONTEXT"
       ]
     },
@@ -408,56 +567,6 @@
       ]
     },
     {
-      "id": "tools.package-archive",
-      "viewId": "TOOLS",
-      "label": "Packages / Archives",
-      "order": 10,
-      "items": [
-        "replacement_archive.create",
-        "proposal_archive.create",
-        "archive_source.use"
-      ]
-    },
-    {
-      "id": "tools.helper-commands",
-      "viewId": "TOOLS",
-      "label": "Helper / Commands",
-      "order": 20,
-      "items": [
-        "helper.command.add"
-      ]
-    },
-    {
-      "id": "tm.profile-2d-visual-production",
-      "viewId": "TARGET_MODULES",
-      "label": "2D Visual Production",
-      "order": 60,
-      "items": [
-        "tm:TM-2D-10-VISUAL-REQUIREMENTS",
-        "tm:TM-2D-15-VISUAL-MATERIAL-PREPARATION",
-        "tm:TM-2D-20-WHOLE-VISUAL-DESIGN",
-        "tm:TM-2D-30-VISUAL-CONSTRUCTION",
-        "tm:TM-2D-31-PIXEL-ART-CONSTRUCTION",
-        "tm:TM-2D-31-VECTOR-CONSTRUCTION",
-        "tm:TM-2D-31-EDITABLE-RASTER-CONSTRUCTION",
-        "tm:TM-2D-31-PAINTERLY-RASTER-CONSTRUCTION",
-        "tm:TM-2D-31-PROCEDURAL-CONSTRUCTION",
-        "tm:TM-2D-50-DELIVERY-ADAPTATION"
-      ]
-    },
-    {
-      "id": "tm.profile-reference-knowledge",
-      "viewId": "TARGET_MODULES",
-      "label": "Reference Knowledge",
-      "order": 70,
-      "items": [
-        "tm:TM-RK-05-BANK-FORMATION",
-        "tm:TM-RK-10-ENTRY",
-        "tm:TM-RK-20-VOCABULARY-EVOLUTION",
-        "tm:TM-RK-50-LANDSCAPE-ANALYSIS"
-      ]
-    },
-    {
       "id": "lens.profile-2d-visual-production",
       "viewId": "LENSES",
       "label": "2D Visual Production",
@@ -478,6 +587,26 @@
         "lens:LENS-RK-ENTRY-IDENTITY-AND-DUPLICATION",
         "lens:LENS-RK-TAG-QUALITY-AND-TAXONOMY",
         "lens:LENS-RK-LANDSCAPE-EVIDENCE-ADEQUACY"
+      ]
+    },
+    {
+      "id": "tools.package-archive",
+      "viewId": "TOOLS",
+      "label": "Packages / Archives",
+      "order": 10,
+      "items": [
+        "replacement_archive.create",
+        "proposal_archive.create",
+        "archive_source.use"
+      ]
+    },
+    {
+      "id": "tools.helper-commands",
+      "viewId": "TOOLS",
+      "label": "Helper / Commands",
+      "order": 20,
+      "items": [
+        "helper.command.add"
       ]
     }
   ]

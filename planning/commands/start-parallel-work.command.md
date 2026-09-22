@@ -34,6 +34,9 @@ Scope: retired fixed parallel-work-scope invocation. No current branch-based coo
   ],
   "userTarget": "<parallel workstream target>",
   "palette": false,
-  "refinements": []
+  "refinements": [],
+  "includes": [
+    "methodology.use_cases.recheck"
+  ]
 }
 [/PLANNING_COMMAND_DEFINITION]

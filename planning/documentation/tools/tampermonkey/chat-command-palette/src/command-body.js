@@ -36,7 +36,13 @@
 
   function formatFamily(family) { return (family || []).map((item) => `\`${item}\``).join(' / '); }
 
-  function buildCommandBody(definition, mode = MODE.ADAPTIVE) {
+  function ownerRefLines(definition){const refs=definition.ownerRefs||[];if(!refs.length)return['  - none'];return refs.flatMap((ref)=>{const target=`${ref.path}${ref.anchor?'#'+ref.anchor:''}`;return[`  - ${ref.responsibilityId} → \`${target}\``,`    role: ${ref.role}; read: ${ref.readMode}; why: ${ref.why}`];});}
+
+  function contributionLines(definition){const items=definition.compositionContributions||[];if(!items.length)return['  - none'];return items.map((item)=>`  - ${item.kind}: ${item.value} | why: ${item.why}`);}
+
+  function compositionLines(definition,definitions){if(!Array.isArray(definitions)||!definitions.length)return[];try{const byId=new Map(definitions.map((d)=>[String(d.id),d])),seen=new Set(),order=[];function visit(id){if(seen.has(id))return;const current=byId.get(id);if(!current)throw new Error(`Unknown included command: ${id}`);for(const included of current.includes||[])visit(included);seen.add(id);order.push(id);}visit(String(definition.id));return order.map((id,index)=>`  ${index+1}. ${id}${id===definition.id?'  ← selected/root action':''}`);}catch(_){return[];}}
+
+  function buildCommandBody(definition, mode = MODE.ADAPTIVE, options = {}) {
     return [
       '[PLANNING_COMMAND]',
       'Read this whole command body before answering.',
@@ -62,6 +68,21 @@
       '',
       'essence:',
       `  ${definition.meaning}`,
+      '',
+      'command_includes:',
+      ...((definition.includes||[]).length?(definition.includes||[]).map((id)=>`  - ${id}`):['  - none']),
+      '  Expand ALL selected roots and transitive includes before semantic execution. Merge them into one DAG, reject cycles, deduplicate shared nodes, collect declarative contributions from every node, then execute dependencies before dependents. The selected/root command action runs last on its branch.',
+      '',
+      'composition_contributions_pre_execution:',
+      ...contributionLines(definition),
+      '  Contributions from ALL expanded DAG nodes are collected before the first semantic command action.',
+      '',
+      'expanded_composition_dependencies_first:',
+      ...(compositionLines(definition,options.definitions).length?compositionLines(definition,options.definitions):['  - resolve from current command catalog before execution']),
+      '',
+      'own_canonical_refs:',
+      ...ownerRefLines(definition),
+      '  These are references added by THIS command only; references inherited through included commands are intentionally not repeated.',
       '',
       ...commandReadBlock(definition, mode),
       '',
@@ -139,17 +160,17 @@
   function useCaseInvocationCommandId(useCaseId){return `uc.invoke.${String(useCaseId||'').toLowerCase()}`;}
   function buildUseCaseInvocationEntry(genericDefinition,useCase){return{id:useCaseInvocationCommandId(useCase.id),entityType:'use-case-invocation-command',useCaseId:useCase.id,label:useCase.label,command:useCase.label,englishName:`invoke use case · ${useCase.label}`,description:`Manual invocation of ${useCase.id} through its current canonical owner route`,adaptiveBody:buildUseCaseInvocationBody(genericDefinition,useCase,MODE.ADAPTIVE),fullBody:buildUseCaseInvocationBody(genericDefinition,useCase,MODE.FULL),refinementBodies:[],stateLabel:'Generated UC invocation · canonical registry remains authority'};}
 
-  function buildCommandEntry(definition) {
+  function buildCommandEntry(definition,definitions) {
     return {
       ...definition,
       label: definition.command,
-      adaptiveBody: buildCommandBody(definition, MODE.ADAPTIVE),
-      fullBody: buildCommandBody(definition, MODE.FULL),
+      adaptiveBody: buildCommandBody(definition, MODE.ADAPTIVE,{definitions}),
+      fullBody: buildCommandBody(definition, MODE.FULL,{definitions}),
       refinementBodies: (definition.refinements || []).map((refinement) => ({ ...refinement, body: buildRefinementBody(definition, refinement) }))
     };
   }
 
-  function buildCommandEntries(definitions) { return (definitions || []).filter((definition) => definition.palette === true).map(buildCommandEntry); }
+  function buildCommandEntries(definitions) { const all=definitions||[]; return all.filter((definition) => definition.palette === true).map((definition)=>buildCommandEntry(definition,all)); }
 
   return { MODE, commandReadBlock, buildCommandBody, buildRefinementBody, buildUseCaseInvocationBody, useCaseInvocationCommandId, buildUseCaseInvocationEntry, buildCommandEntry, buildCommandEntries };
 });

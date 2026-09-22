@@ -17,7 +17,7 @@
     const helperItems=source.includes('[PLANNING_HELPER_LIBRARY_ITEM]') ? deps.parseHelperLibraryBatch(source) : [];
     const patch=source.includes(PATCH_START)?parsePlanningHelperPatch(source):null;
     if(!definitions.length&&!helperItems.length&&!patch)throw new TypeError('No planning-command definitions, helper-library items or Planning Helper patch found.');
-    if(definitions.length)deps.validateCommandCatalog(definitions);
+    if(definitions.length)deps.validateCommandCatalog(definitions,{allowMissingIncludes:true});
     return { definitions, helperItems, patch };
   }
 

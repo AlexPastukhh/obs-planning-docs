@@ -49,7 +49,7 @@ test('Screen primary command composes Feature and Scenario journey spatial meani
 test('Slice RU schema stays in parity across TM, Core example and supporting template',()=>{
   const files=[
     'planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-IMPLEMENTATION-SLICE.md',
-    'planning/documentation/idtspe-methodology/active/idtspe-core/shared/idtspe-unit-and-target-step-result-model.md',
+    'planning/documentation/idtspe-methodology/active/idtspe-core/runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md',
     'planning/documentation/application-planning/templates/IMPLEMENTATION-SLICE-DRAFT-TEMPLATE.md'
   ];
   for(const rel of files){
@@ -60,24 +60,22 @@ test('Slice RU schema stays in parity across TM, Core example and supporting tem
 });
 
 test('active SDS registries expose 13 Target Modules and 8 Lenses, excluding retired stubs',()=>{
-  const tm=read('planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/README.md');
+  const tm=read('planning/documentation/idtspe-methodology/active/profiles/sds/registries/TARGET-MODULE-REGISTRY.md');
   const activeTms=[...tm.matchAll(/^\| \[`(TM-[^`]+)`\]\([^)]+\.md\)/gm)].map((m)=>m[1]);
   assert.equal(activeTms.length,13);
-  const lens=read('planning/documentation/idtspe-methodology/active/profiles/sds/lenses/README.md');
+  const lens=read('planning/documentation/idtspe-methodology/active/profiles/sds/registries/LENS-REGISTRY.md');
   const activeLenses=[...lens.matchAll(/^\| \[`(LENS-[^`]+)`\]\([^)]+\.md\)/gm)].map((m)=>m[1]);
   assert.equal(activeLenses.length,8);
   for(const id of ['TM-REQUIREMENT','TM-SLICE-STRATEGY','TM-CROSS-CUTTING-CONCERN','TM-TEST-DESIGN','TM-TEST-STRATEGY']){
-    assert.equal(activeTms.includes(id),false,`${id}: retired stub leaked into active registry`);
-    const stub=read(`planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/${id}.md`);
-    assert.match(stub,/RETIRED — not an active SDS Target Module/);
-    assert.match(stub,/excluded from the active SDS Target Module registry/);
+    assert.equal(activeTms.includes(id),false,`${id}: retired identity leaked into active registry`);
+    assert.match(tm,new RegExp(`\| \`${id}\` \| RETIRE`),`${id}: retirement route must remain explicit in the registry`);
   }
 });
 
 test('semantic contracts use registry-driven parity instead of frozen obsolete counts',()=>{
   for(const rel of [
     'planning/documentation/idtspe-methodology/active/idtspe-core/lenses/LENS-MODEL.md',
-    'planning/documentation/idtspe-methodology/active/idtspe-core/shared/idtspe-unit-and-target-step-result-model.md'
+    'planning/documentation/idtspe-methodology/active/idtspe-core/runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md'
   ]){
     const text=read(rel);
     assert.doesNotMatch(text,/12\/12 SDS|12 SDS Target|6\/6 SDS|6 SDS-specific reusable Lenses|11 Core \+ 6 SDS/i,rel);
@@ -87,7 +85,7 @@ test('semantic contracts use registry-driven parity instead of frozen obsolete c
 
 test('Session interaction contract is ambient bootstrap, not a mandatory command-routing hop',()=>{
   const session=read('planning/session/session-runtime-contract.md');
-  const coreCommands=read('planning/documentation/idtspe-methodology/active/idtspe-core/shared/idtspe-command-surface-contract.md');
+  const coreCommands=read('planning/documentation/idtspe-methodology/active/idtspe-core/commands/IDTSPE-COMMAND-SURFACE-CONTRACT.md');
   const registryMap=read('planning/documentation/use-case-registry-map.md');
   assert.match(session,/must-understand at session bootstrap or safe context restoration/i);
   assert.match(session,/must not route through Session/i);
@@ -109,21 +107,21 @@ test('Evolution Step keeps Feature target state direct and Evolution Impact boun
 
 
 test('Proposal Target Result forms an ordinary candidate Target Instance before semantic selection without granting realization authority',()=>{
-  const proposal=read('planning/documentation/idtspe-methodology/active/idtspe-core/shared/proposal-and-decision-lifecycle-contract.md');
-  const target=read('planning/documentation/idtspe-methodology/active/idtspe-core/shared/target-type-instance-source-and-relation-model.md');
-  const scenario=read('planning/documentation/idtspe-methodology/active/idtspe-core/shared/methodology-use-case-scenario-map.md');
+  const proposal=read('planning/documentation/idtspe-methodology/active/idtspe-core/resolution/proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md');
+  const target=read('planning/documentation/idtspe-methodology/active/idtspe-core/runtime/target-work/TARGET-CONTRACT-INSTANCE-SOURCE-RELATION-MODEL.md');
+  const scenario=read('planning/documentation/idtspe-methodology/active/idtspe-core/evaluation/USE-CASE-SCENARIO-MAP.md');
   const evo=read('planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-EVOLUTION-STEP.md');
   assert.match(proposal,/form the same complete candidate Target Instance before semantic selection/);
   assert.match(target,/candidate Target Instance.*ordinary Target Instance/is);
-  assert.match(target,/complete Module-defined Unit inventory/);
+  assert.match(target,/instantiated Module-defined Unit inventory/);
   assert.match(scenario,/form an ordinary candidate Target Instance through the applicable Target Module before semantic selection/);
   assert.match(evo,/Selection\/authorization is intentionally not stored as an internal readiness blocker inside a Proposal Target Result/);
   assert.match(evo,/Actual realization execution still requires the applicable external selection\/authorization in addition to `READY`/);
 });
 
 test('Requirement Type remains optional and Evolution concern analysis routes established transition obligations to RU-EVO-05',()=>{
-  const requirement=read('planning/documentation/idtspe-methodology/active/profiles/sds/shared/requirement-classification-and-representation-contract.md');
-  const registry=read('planning/documentation/idtspe-methodology/active/profiles/sds/shared/methodology-registry-directory.md');
+  const requirement=read('planning/documentation/idtspe-methodology/active/profiles/sds/profile-contracts/requirements/REQUIREMENT-CLASSIFICATION-AND-REPRESENTATION.md');
+  const registry=read('planning/documentation/idtspe-methodology/active/profiles/sds/registries/METHODOLOGY-REGISTRY-DIRECTORY.md');
   const evo=read('planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-EVOLUTION-STEP.md');
   assert.match(requirement,/not mandatory for every Requirement/);
   assert.match(registry,/use Type only when materially useful/);
@@ -132,7 +130,7 @@ test('Requirement Type remains optional and Evolution concern analysis routes es
 });
 
 test('current-owner reverse Evolution Impact has one shared SDS contract and owner-local Units only specialize it',()=>{
-  const shared=read('planning/documentation/idtspe-methodology/active/profiles/sds/shared/current-owner-evolution-impact-projection-contract.md');
+  const shared=read('planning/documentation/idtspe-methodology/active/profiles/sds/profile-contracts/evolution/CURRENT-OWNER-EVOLUTION-IMPACT-PROJECTION.md');
   assert.match(shared,/every \*\*concrete unrealized Evolution Step\*\*/i);
   assert.match(shared,/Selection is not the threshold/);
   assert.match(shared,/Projection depth must not exceed Step-side meaning already resolved/);
@@ -153,7 +151,7 @@ test('current-owner reverse Evolution Impact has one shared SDS contract and own
 
 test('Evolution Steps Map stays a projection while Step and shared Impact contracts own semantics',()=>{
   const map=read('planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-EVOLUTION-STEPS-MAP.md');
-  const impact=read('planning/documentation/idtspe-methodology/active/profiles/sds/shared/current-owner-evolution-impact-projection-contract.md');
+  const impact=read('planning/documentation/idtspe-methodology/active/profiles/sds/profile-contracts/evolution/CURRENT-OWNER-EVOLUTION-IMPACT-PROJECTION.md');
   assert.match(map,/Map owns only registry\/routing\/projection behavior/);
   assert.match(map,/Projection Source Contracts/);
   assert.match(map,/reads and projects, but does not independently define or recompute/);
@@ -164,8 +162,8 @@ test('Evolution Steps Map stays a projection while Step and shared Impact contra
 
 test('SDS registry routes temporal semantics instead of becoming a second semantic owner',()=>{
   const evo=read('planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-EVOLUTION-STEP.md');
-  const placement=read('planning/documentation/idtspe-methodology/active/profiles/sds/ARTIFACT-PLACEMENT-MAP.md');
-  const registry=read('planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/README.md');
+  const placement=read('planning/documentation/idtspe-methodology/active/profiles/sds/representation/ARTIFACT-PLACEMENT-MAP.md');
+  const registry=read('planning/documentation/idtspe-methodology/active/profiles/sds/registries/TARGET-MODULE-REGISTRY.md');
   assert.doesNotMatch(evo,/continuing continuation/);
   assert.doesNotMatch(placement,/continuing continuation/);
   assert.match(registry,/Core \/ Temporal Conformance Routing/);
@@ -177,40 +175,39 @@ test('SDS registry routes temporal semantics instead of becoming a second semant
 
 
 test('Core distinguishes Target Work Units from Core State Units without one peer result inventory',()=>{
-  const unit=read('planning/documentation/idtspe-methodology/active/idtspe-core/shared/idtspe-unit-and-target-step-result-model.md');
+  const unit=read('planning/documentation/idtspe-methodology/active/idtspe-core/runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md');
   assert.match(unit,/Target Work Unit/);
   assert.match(unit,/Core State Unit/);
-  assert.match(unit,/not one common peer `IDTSPE Unit` inventory/i);
-  assert.match(unit,/Target Step Result[\s\S]*Target Work Unit Result Content/);
+  assert.match(unit,/Core State Units[\s\S]*are not peer Target Work Units/i);
+  assert.match(unit,/Target Step Result[\s\S]*Current Result Content/);
   assert.match(unit,/Core State Unit[\s\S]*not.*automatic.*Target Step Result/is);
   assert.match(unit,/Module-defined Unit/);
   assert.match(unit,/Contextual Unit/);
 });
 
 test('Source model uses consumer-side Source State Units and keeps TF-04 runtime Source Set distinct from Source Contract archetype',()=>{
-  const target=read('planning/documentation/idtspe-methodology/active/idtspe-core/shared/target-type-instance-source-and-relation-model.md');
-  const formation=read('planning/documentation/idtspe-methodology/active/idtspe-core/shared/resolution-slot-and-target-formation-resolution-set.md');
-  const module=read('planning/documentation/idtspe-methodology/active/idtspe-core/shared/target-module-model.md');
+  const target=read('planning/documentation/idtspe-methodology/active/idtspe-core/runtime/target-work/TARGET-CONTRACT-INSTANCE-SOURCE-RELATION-MODEL.md');
+  const formation=read('planning/documentation/idtspe-methodology/active/idtspe-core/runtime/target-work/RESOLUTION-SLOT-AND-TARGET-FORMATION-SET.md');
+  const module=read('planning/documentation/idtspe-methodology/active/idtspe-core/target-modules/TARGET-MODULE-MODEL.md');
   assert.match(target,/Source Subject/);
   assert.match(target,/Source State Unit/);
   assert.match(target,/consumer-side typed Core State Unit\/binding/);
   assert.match(target,/Target Relation[\s\S]*≠ Source relation/);
-  assert.match(formation,/TF-04 SOURCE_SET[\s\S]*actual typed Source Set[\s\S]*Source State Units \/ consumer bindings/);
-  assert.doesNotMatch(formation,/TF-04 SOURCE_SET[\s\S]{0,300}Value:\s*\n\s*typed Source Contract/);
-  assert.match(module,/Source Contract archetype[\s\S]*runtime `TF-04 SOURCE_SET` resolves the concrete Target's actual Source Set/);
+  assert.match(formation,/SOURCE_AUTHORITY[\s\S]*Source State Units\/bindings/);
+  assert.match(formation,/former fixed `TF-\*` Target Formation Resolution Set is no longer the canonical Target model/);
+  assert.match(module,/Source Contract archetypes[\s\S]*`SOURCE_AUTHORITY` Requirement plus `P-04 Source` resolve actual Source State Units\/bindings/);
 });
 
 test('Documentation responsibility map routes to canonical owners without replacing Documentation role semantics',()=>{
   const principles=read('planning/documentation/principles-and-terminology.md');
   const active=read('planning/documentation/idtspe-methodology/active/README.md');
-  const map=read('planning/documentation/idtspe-methodology/active/METHODOLOGY-RESPONSIBILITY-MAP.md');
+  const map=read('planning/documentation/idtspe-methodology/active/navigation/METHODOLOGY-RESPONSIBILITY-MAP.md');
   assert.match(principles,/## Responsibility Map/);
   assert.match(principles,/routing mapping.*not the semantic body/is);
   assert.match(active,/METHODOLOGY-RESPONSIBILITY-MAP\.md/);
-  assert.match(map,/Target Work Unit mechanics; Core State Unit relation/);
-  assert.match(map,/target-type-instance-source-and-relation-model\.md/);
-  assert.match(map,/resolution-slot-and-target-formation-resolution-set\.md/);
-  assert.match(map,/Target Module \/ Unit Contract \/ Source Contract archetype/);
+  assert.match(map,/Target Work \/ Target Formation \/ Target Instance \/ Source-Relation/);
+  assert.match(map,/idtspe-core\/runtime\/target-work\/RESPONSIBILITY-MAP\.md/);
+  assert.match(map,/Target Module Meta-Model \/ discovery/);
   assert.match(map,/Responsibility Map row ≠ copied semantic contract/);
 });
 
@@ -245,12 +242,12 @@ test('Application Definition keeps Target formation gates outside Unit omission 
 });
 
 test('Core Target Step Result topology includes complete Module-defined Unit inventory and formed Contextual Units',()=>{
-  const unit=read('planning/documentation/idtspe-methodology/active/idtspe-core/shared/idtspe-unit-and-target-step-result-model.md');
-  const shell=read('planning/documentation/idtspe-methodology/active/idtspe-core/IDTSPE-SHELL.md');
-  const target=read('planning/documentation/idtspe-methodology/active/idtspe-core/shared/target-type-instance-source-and-relation-model.md');
-  const map=read('planning/documentation/idtspe-methodology/active/idtspe-core/IDTSPE-CORE-MAP.md');
+  const unit=read('planning/documentation/idtspe-methodology/active/idtspe-core/runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md');
+  const shell=read('planning/documentation/idtspe-methodology/active/idtspe-core/runtime/IDTSPE-RUNTIME-COMPOSITION-CONTRACT.md');
+  const target=read('planning/documentation/idtspe-methodology/active/idtspe-core/runtime/target-work/TARGET-CONTRACT-INSTANCE-SOURCE-RELATION-MODEL.md');
+  const map=read('planning/documentation/idtspe-methodology/active/idtspe-core/navigation/IDTSPE-CORE-MAP.md');
   for(const [rel,text] of [['unit',unit],['shell',shell],['target',target],['map',map]]){
-    assert.match(text,/complete Module-defined Unit inventory/i,`${rel}: missing complete Unit inventory topology`);
+    assert.match(text,/complete (?:instantiated )?Module-defined Unit inventory/i,`${rel}: missing complete Unit inventory topology`);
   }
   assert.doesNotMatch(unit,/Target Step Result\s*= coherent projection\/composition of applicable Target Work Unit Result Content/i);
   assert.doesNotMatch(shell,/Target Step Result composed from applicable Unit Result Content/i);
@@ -259,14 +256,14 @@ test('Core Target Step Result topology includes complete Module-defined Unit inv
 });
 
 test('Visual and Reference Knowledge representations keep omitted Module-defined Units visible and bind Unit methodology',()=>{
-  const visualInv=read('planning/documentation/idtspe-methodology/active/profiles/visual-production-2d/shared/VISUAL-PRODUCTION-INVARIANTS.md');
-  const visualTpl=read('planning/documentation/idtspe-methodology/active/profiles/visual-production-2d/templates/TARGET-INSTANCE.template.md');
-  const rkTpl=read('planning/documentation/idtspe-methodology/active/profiles/reference-knowledge/templates/TARGET-INSTANCE.template.md');
+  const visualInv=read('planning/documentation/idtspe-methodology/active/profiles/visual-production-2d/profile-contracts/VISUAL-PRODUCTION-INVARIANTS.md');
+  const visualTpl=read('planning/documentation/idtspe-methodology/active/profiles/visual-production-2d/representation/templates/TARGET-INSTANCE.template.md');
+  const rkTpl=read('planning/documentation/idtspe-methodology/active/profiles/reference-knowledge/representation/templates/TARGET-INSTANCE.template.md');
   assert.match(visualInv,/concrete Target result keeps the Unit heading\/identity visible with its concise omission reason/i);
   assert.match(visualInv,/not Unit non-existence/i);
   for(const [rel,text] of [['visual template',visualTpl],['reference template',rkTpl]]){
     assert.match(text,/complete Module-defined Unit inventory/i,`${rel}: missing complete Unit inventory`);
-    assert.match(text,/\*\*Methodology:\*\* \[exact reusable Unit owner\]/,`${rel}: missing methodology binding placeholder`);
+    assert.match(text,/\*\*Methodology \/ Unit Definition:\*\* \[exact reusable Unit owner\]/,`${rel}: missing methodology binding placeholder`);
     assert.match(text,/RESOLVED \| OPEN \| OMITTED/,`${rel}: missing explicit Unit disposition`);
   }
   const visualDir='planning/documentation/idtspe-methodology/active/profiles/visual-production-2d/target-modules';
@@ -278,8 +275,8 @@ test('Visual and Reference Knowledge representations keep omitted Module-defined
 });
 
 test('Natural Subject has one Core semantic owner while TM model and L2 only conform/evaluate',()=>{
-  const unit=read('planning/documentation/idtspe-methodology/active/idtspe-core/shared/idtspe-unit-and-target-step-result-model.md');
-  const tm=read('planning/documentation/idtspe-methodology/active/idtspe-core/shared/target-module-model.md');
+  const unit=read('planning/documentation/idtspe-methodology/active/idtspe-core/runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md');
+  const tm=read('planning/documentation/idtspe-methodology/active/idtspe-core/target-modules/TARGET-MODULE-MODEL.md');
   const lens=read('planning/documentation/idtspe-methodology/active/idtspe-core/lenses/required/LENS-AUTHORITY-SOT-REUSE.md');
   assert.match(unit,/### Natural Subject \/ Ownership Boundary/);
   assert.match(unit,/smallest natural semantic subject/);
@@ -300,7 +297,7 @@ test('Visual and Reference profiles use fixed Module-defined Unit inventory rath
       assert.doesNotMatch(text,/## Candidate Unit Inventory/,`${dir}/${name}: stale candidate inventory`);
     }
   }
-  const visualRule=read('planning/documentation/idtspe-methodology/active/profiles/visual-production-2d/shared/UNIT-SELECTION-AND-LENS-CHECKPOINTS.md');
+  const visualRule=read('planning/documentation/idtspe-methodology/active/profiles/visual-production-2d/runtime/UNIT-DISPOSITION-AND-LENS-CHECKPOINTS.md');
   assert.match(visualRule,/do not decide whether the Unit exists/);
   assert.match(visualRule,/normal Proposal\/Decision authority only when the disposition itself is a material unresolved choice/);
   assert.doesNotMatch(visualRule,/USER selection when not already current/);
@@ -321,7 +318,7 @@ test('Evolution materialization Unit accepts candidate selected and branch-assum
 });
 
 test('Target Module model references Core runtime disposition semantics instead of re-owning them',()=>{
-  const tm=read('planning/documentation/idtspe-methodology/active/idtspe-core/shared/target-module-model.md');
+  const tm=read('planning/documentation/idtspe-methodology/active/idtspe-core/target-modules/TARGET-MODULE-MODEL.md');
   assert.match(tm,/Canonical runtime Unit disposition and Target Step Result composition are owned by the Core/);
   assert.match(tm,/target-family-specific composition constraints; generic runtime composition stays Core-owned/);
   assert.doesNotMatch(tm,/Material resolved Units contribute \*\*Current Result Content\*\*; material unresolved Units remain `OPEN`/);
@@ -379,9 +376,9 @@ test('Application Definition separates Benefits from Representative Real-Life Sc
 
 test('Proposal Decision Resolution Context Lens is operational evaluator, QRPE is a view, and Carry-Forward is projection-only',()=>{
   const lens=read('planning/documentation/idtspe-methodology/active/idtspe-core/lenses/required/LENS-PROPOSAL-DECISION-RESOLUTION-CONTEXT.md');
-  const life=read('planning/documentation/idtspe-methodology/active/idtspe-core/shared/proposal-and-decision-lifecycle-contract.md');
-  const qrp=read('planning/documentation/idtspe-methodology/active/idtspe-core/shared/qrp-lifecycle-and-review-contract.md');
-  const carry=read('planning/documentation/idtspe-methodology/active/idtspe-core/shared/resolution-carry-forward-projection-contract.md');
+  const life=read('planning/documentation/idtspe-methodology/active/idtspe-core/resolution/proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md');
+  const qrp=read('planning/documentation/idtspe-methodology/active/idtspe-core/resolution/qrp/QRP-LIFECYCLE-AND-REVIEW.md');
+  const carry=read('planning/documentation/idtspe-methodology/active/idtspe-core/resolution/continuation/RESOLUTION-CARRY-FORWARD-PROJECTION.md');
   assert.match(lens,/Activation: `REQUIRED_CORE` on a material Proposal \/ Decision surface/);
   assert.match(lens,/QRPE.*not.*new Core State kind/is);
   assert.match(lens,/Lens ≠ Proposal\/Decision lifecycle owner/);
@@ -395,12 +392,12 @@ test('Proposal Decision Resolution Context Lens is operational evaluator, QRPE i
 test('generic Decision capture command never grants selection authority and Proposal command uses Resolution Context Lens',()=>{
   const proposal=read('planning/commands/idtspe-proposal.command.md');
   const decisions=read('planning/commands/idtspe-decisions-capture.command.md');
-  const surface=read('planning/documentation/idtspe-methodology/active/idtspe-core/shared/idtspe-command-surface-contract.md');
+  const surface=read('planning/documentation/idtspe-methodology/active/idtspe-core/commands/IDTSPE-COMMAND-SURFACE-CONTRACT.md');
   assert.match(proposal,/LENS-PROPOSAL-DECISION-RESOLUTION-CONTEXT/);
   assert.match(decisions,/"id": "idtspe.decisions.capture"/);
   assert.match(decisions,/Only actual material selections become Decision semantics|actual selected material Decisions/i);
   assert.match(decisions,/never grants selection authority|does not grant AI selection authority/i);
-  assert.match(surface,/Generic Core Surface Inventory — 15/);
+  assert.match(surface,/Primary User Convenience Surface Inventory — 15/);
   assert.match(surface,/idtspe\.decisions\.capture/);
 });
 
@@ -424,11 +421,10 @@ test('formed Target Units stay present: reverse Impact, Practical Test evidence 
 
 test('required Core Lens Pack includes Proposal Decision Resolution Context only on material Proposal Decision surfaces',()=>{
   const model=read('planning/documentation/idtspe-methodology/active/idtspe-core/lenses/LENS-MODEL.md');
-  const tf=read('planning/documentation/idtspe-methodology/active/idtspe-core/shared/dynamic-target-formation-and-discovery-checks.md');
+  const registry=read('planning/documentation/idtspe-methodology/active/idtspe-core/lenses/LENS-REGISTRY.md');
   assert.match(model,/Proposal \/ Decision Resolution Context — when a material Proposal\/Decision surface exists/);
   assert.match(model,/Proposal \/ Decision Resolution Context is `NOT_APPLICABLE` when no material Proposal\/Decision surface exists/);
-  assert.match(tf,/required Core Pack[\s\S]*Proposal \/ Decision Resolution Context when a material Proposal\/Decision surface exists/);
-  assert.doesNotMatch(tf,/L1-L3 required Core Pack/);
+  assert.match(registry,/required Core Pack[\s\S]*Proposal \/ Decision Resolution Context when a material Proposal\/Decision surface exists/);
 });
 
 test('Scenario command and representation surfaces use multi-Benefit manifestation closure rather than terminal-Benefit shorthand',()=>{
