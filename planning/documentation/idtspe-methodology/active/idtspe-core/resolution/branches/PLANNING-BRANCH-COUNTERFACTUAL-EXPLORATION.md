@@ -6,7 +6,10 @@ Purpose: explore one or more candidate Proposals **as if selected**, continue do
 
 ---
 
+<a id="resolution-planning-branch"></a>
 # 1. Core Concept
+
+Responsibility ID: `RESOLUTION.PLANNING-BRANCH`
 
 Sometimes an Proposal cannot be evaluated at the current Target depth.
 
@@ -46,6 +49,12 @@ Then create Planning Branches.
 ---
 
 A Planning Branch is **not** required merely to render one requested Target-shaped Proposal. The Proposal lifecycle may hold one complete candidate Target Result directly. Open a Branch only when downstream counterfactual planning beyond that Target materially improves comparison/decision quality.
+
+> Semantic Owner Dependencies
+> - `EXTENDS` [`Proposal / Decision Lifecycle`](../proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md#resolution-proposal-decision-lifecycle) — `RESOLUTION.PROPOSAL-DECISION-LIFECYCLE`
+> - `CONTEXTUALIZES` [`Q/R/P Lifecycle`](../qrp/QRP-LIFECYCLE-AND-REVIEW.md#resolution-qrp-lifecycle) — `RESOLUTION.QRP-LIFECYCLE`
+
+The branch owns only counterfactual branch-local authority/status and downstream exploration. Canonical Proposal/Decision and Q/R/P semantics remain inherited from the linked owners.
 
 # 2. Fundamental Invariant
 

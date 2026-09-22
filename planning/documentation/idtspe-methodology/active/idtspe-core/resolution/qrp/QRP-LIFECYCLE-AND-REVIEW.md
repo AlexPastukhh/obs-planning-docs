@@ -3,7 +3,10 @@
 Status: active generic IDTSPE Core owner
 Purpose: define the canonical cross-cutting semantics, lifecycle, grouping, review metadata and retention rules for material Questions, Risks and Problems without creating a parallel Concern runtime or work queue.
 
+<a id="resolution-qrp-lifecycle"></a>
 ## 1. Ownership Boundary
+
+Responsibility ID: `RESOLUTION.QRP-LIFECYCLE`
 
 ```text
 Question / Risk / Problem State meaning
@@ -26,6 +29,13 @@ selected product/application/workspace meaning
 Legacy `Planning Concern` means one material Q/R/P item. Legacy `Concern Group` means a related-Q/R/P grouping. Those are compatibility names, not additional current State kinds.
 
 Q/R/P is secondary material attached to actual current meaning. It is never the planning root.
+
+> Semantic Owner Dependency
+> Type: `CONTEXTUALIZES`
+> Responsibility: `RESOLUTION.PROPOSAL-DECISION-LIFECYCLE`
+> Owner: [Proposal / Decision Lifecycle](../proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md#resolution-proposal-decision-lifecycle)
+
+Q/R/P may drive, constrain or survive Proposal/Decision work, but this contract does not own candidate selection or Decision semantics.
 
 ## 2. Core Meanings
 

@@ -2,11 +2,19 @@
 
 Status: active Core projection/navigation contract
 
+<a id="resolution-carry-forward"></a>
 ## Purpose
+
+Responsibility ID: `RESOLUTION.CARRY-FORWARD`
 
 Provide one discoverable continuation/handoff projection for material resolution state that must not be forgotten after local Proposal/Decision/Unit work.
 
 `Resolution Carry-Forward` is a **projection / aggregate navigation owner**, not the semantic owner of underlying Proposal, Decision, Question, Risk, Problem, Evidence or Result meaning.
+
+> Semantic Owner Dependencies
+> - `REPRESENTS` [`Proposal / Decision Lifecycle`](../proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md#resolution-proposal-decision-lifecycle) — `RESOLUTION.PROPOSAL-DECISION-LIFECYCLE`
+> - `REPRESENTS` [`Q/R/P Lifecycle`](../qrp/QRP-LIFECYCLE-AND-REVIEW.md#resolution-qrp-lifecycle) — `RESOLUTION.QRP-LIFECYCLE`
+> - `REPRESENTS` [`Decision Revalidation Projection`](../proposal-decision/DECISION-REVALIDATION.resolution-projection.md#resolution-decision-revalidation-projection) — `RESOLUTION.DECISION-REVALIDATION-PROJECTION`
 
 ```text
 canonical underlying item

@@ -3,7 +3,10 @@
 Status: active generic IDTSPE Core owner
 Purpose: define how a newly expressed wanted outcome is grounded and routed before the methodology knows whether the correct destination is current realization, Finding, Proposal, Requirement/owner meaning, Evolution Step or another existing semantic owner.
 
+<a id="resolution-need-candidate-disposition"></a>
 ## 1. Core Definition
+
+Responsibility ID: `RESOLUTION.NEED-CANDIDATE-DISPOSITION`
 
 ```text
 Need Candidate
@@ -18,6 +21,13 @@ Need Candidate Disposition
 ```
 
 A Need Candidate is a lightweight intake/Core boundary. It is **not automatically a persisted State Unit, Target, Feature, Requirement, Proposal or Evolution Step**.
+
+> Semantic Owner Dependencies
+> - `CONTEXTUALIZES` [`Proposal / Decision Lifecycle`](../proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md#resolution-proposal-decision-lifecycle) — `RESOLUTION.PROPOSAL-DECISION-LIFECYCLE`
+> - `CONTEXTUALIZES` [`Finding Disposition`](../findings/FINDING-DISPOSITION.md#resolution-finding-disposition) — `RESOLUTION.FINDING-DISPOSITION`
+> - `CONTEXTUALIZES` [`Q/R/P Lifecycle`](../qrp/QRP-LIFECYCLE-AND-REVIEW.md#resolution-qrp-lifecycle) — `RESOLUTION.QRP-LIFECYCLE`
+
+The sections below may explain handoff conditions to those lifecycles, but they do not redefine those lifecycle contracts.
 
 ```text
 Need discovered now ≠ meaning starts now.

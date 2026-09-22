@@ -267,6 +267,13 @@ Canonical interaction model: [`../representation/interaction/BROAD-DISCUSSION-AN
 
 ### Core Finding Disposition
 
+> Semantic Owner Dependency
+> Type: `CONTEXTUALIZES`
+> Responsibility: `RESOLUTION.FINDING-DISPOSITION`
+> Owner: [Finding Disposition](../resolution/findings/FINDING-DISPOSITION.md#resolution-finding-disposition)
+
+The Lens Meta-Model owns the producer boundary only; Finding owner/lifecycle routing and Resolution Escalation remain Finding-Disposition-owned.
+
 The Lens stops at explanatory analysis or Finding Candidate.
 
 ```text
@@ -509,7 +516,7 @@ The Lens must not create `notes/` or `linked-notes/` trees or route semantic own
 
 ## 14. Revalidation Is Not A Peer Lens
 
-Revalidation is a Decision lifecycle mechanism. L3 may surface Finding Candidates carrying revalidation-signal meaning; Core Finding Disposition decides whether accepted revalidation State is created/refined. Uncertainty/Reversibility ≠ Revalidation.
+Targeted revalidation is a Core methodology Use-Case/process concern, not a Lens lifecycle and not merely a Decision subtype. L3 may surface Finding Candidates carrying revalidation-signal meaning; Core Finding Disposition decides whether targeted revalidation routing is warranted, while the Revalidate Current Work Use Case owns the actual affected-scope re-entry process. Uncertainty/Reversibility ≠ Revalidation.
 
 ## 15. User Questions
 

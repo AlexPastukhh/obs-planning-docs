@@ -17,6 +17,11 @@ The narrowest affected semantic subject and relevant methodology-use surface are
 > Responsibility: `TWU.SUBJECT-REFERENCE`
 > Owner: [Target Work Subject Reference Contract](../../runtime/target-work/TARGET-WORK-SUBJECT-REFERENCE-CONTRACT.md#target-work-subject-reference)
 
+> Semantic Owner Dependency
+> Type: `CONTEXTUALIZES`
+> Responsibility: `RESOLUTION.FINDING-DISPOSITION`
+> Owner: [Finding Disposition](../../resolution/findings/FINDING-DISPOSITION.md#resolution-finding-disposition)
+
 1. Establish the earliest/smallest affected semantic subject: Collection surface/item/Unit Resolution Slot when that is the actual Target Work subject, otherwise Unit/Result meaning, Proposal/Decision, Target Scope/Source/Relation, another owner, or broader Work Context. Use the canonical Target Work Subject Reference whenever the selected subject is inside Target Work.
 2. Use Core Finding Disposition when the trigger is a Finding Candidate; a Lens may evaluate/surface findings but does not decide lifecycle by itself.
 3. If one Unit Resolution Slot alone is affected, re-evaluate the **current** parent-Unit/Slot context rather than applying a separate transition-state machine. Distinguish the common `PER_ITEM` Slot Definition/role from one item-local runtime role through `TWU.SUBJECT-REFERENCE`; re-evaluate only the selected subject unless evidence shows the Collection Item Contract or broader Unit contract is affected. Confirm the parent Unit is substantive, re-evaluate Slot applicability/materiality, derive current Slot disposition, and only then reopen/continue substantive Slot Resolution when warranted. If the Slot becomes omitted, it has no active substantive Resolution State/Current Resolution Content; preserve only useful omission reason/history/provenance through normal trace/revalidation mechanisms. If the parent Unit Responsibility/result contract itself is affected, reopen the Unit Resolution. Mark parent Current Result Content stale/invalidated only when its accepted basis no longer holds.

@@ -67,6 +67,10 @@ Do not raise priority merely because a topic is complex or speculative.
 
 ### Review Priority vs Finding Resolution Escalation
 
+> Semantic Owner Dependencies
+> - `CONTEXTUALIZES` [`Q/R/P Lifecycle`](../idtspe-core/resolution/qrp/QRP-LIFECYCLE-AND-REVIEW.md#resolution-qrp-lifecycle) — `RESOLUTION.QRP-LIFECYCLE`
+> - `CONTEXTUALIZES` [`Finding Disposition / Resolution Escalation`](../idtspe-core/resolution/findings/FINDING-DISPOSITION.md#resolution-escalation) — `RESOLUTION.FINDING-DISPOSITION`
+
 Do not use `Review Priority` to encode how much semantic/user authority a correction needs. Core Finding Disposition owns the independent `Resolution Escalation` projection (`RE-0 ... RE-4`): deterministic correction, local realization choice, current-owner semantic change, upstream revalidation, or upstream semantic change.
 
 ```text
@@ -76,7 +80,7 @@ Resolution Escalation = semantic authority distance required to resolve
 
 A finding can therefore be `High + RE-0` or `Normal + RE-4`. Human review should show both dimensions when the distinction is material.
 
-Canonical escalation owner: [`../idtspe-core/resolution/findings/FINDING-DISPOSITION.md`](../idtspe-core/resolution/findings/FINDING-DISPOSITION.md).
+Canonical escalation owner: [`Finding Disposition`](../idtspe-core/resolution/findings/FINDING-DISPOSITION.md#resolution-finding-disposition).
 
 ## Broad Discussion Specialization
 

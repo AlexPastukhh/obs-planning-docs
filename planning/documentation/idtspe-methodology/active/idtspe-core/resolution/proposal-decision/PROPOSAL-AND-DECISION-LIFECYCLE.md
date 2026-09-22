@@ -3,7 +3,10 @@
 Status: active generic IDTSPE Core owner
 Purpose: define the canonical candidate-to-selection semantics for material Proposals and Decisions without coupling that lifecycle to any one conversation surface, Target Module, Lens, compatibility vocabulary or persistence representation.
 
+<a id="resolution-proposal-decision-lifecycle"></a>
 ## 1. Ownership Boundary
+
+Responsibility ID: `RESOLUTION.PROPOSAL-DECISION-LIFECYCLE`
 
 ```text
 Proposal / Decision lifecycle
@@ -29,6 +32,13 @@ Session Runtime
 ```
 
 An `IDTSPE Proposal` (short form `Proposal` inside Core) is candidate Core State. It is not accepted product/methodology authority merely because it was suggested, formalized, analyzed, recommended or selected by an AI-only heuristic.
+
+> Semantic Owner Dependencies
+> - `CONTEXTUALIZES` [`Need Candidate Disposition`](../needs/NEED-CANDIDATE-DISPOSITION.md#resolution-need-candidate-disposition) — `RESOLUTION.NEED-CANDIDATE-DISPOSITION`
+> - `CONTEXTUALIZES` [`Finding Disposition`](../findings/FINDING-DISPOSITION.md#resolution-finding-disposition) — `RESOLUTION.FINDING-DISPOSITION`
+> - `CONTEXTUALIZES` [`Q/R/P Lifecycle`](../qrp/QRP-LIFECYCLE-AND-REVIEW.md#resolution-qrp-lifecycle) — `RESOLUTION.QRP-LIFECYCLE`
+
+This lifecycle may receive drivers/findings/Q/R/P from those owners, but candidate selection and Decision integration remain owned here.
 
 ## 2. Legacy Idea Compatibility
 

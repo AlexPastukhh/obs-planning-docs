@@ -54,10 +54,7 @@ Open the narrowest canonical owner when its mechanism becomes material:
 - Target Work / Target Formation / Target Instance / subject-reference meaning → [`runtime/target-work/RESPONSIBILITY-MAP.md`](runtime/target-work/RESPONSIBILITY-MAP.md), then the routed canonical owner;
 - reusable Target Module / Target Module discovery → [`target-modules/RESPONSIBILITY-MAP.md`](target-modules/RESPONSIBILITY-MAP.md), then the Meta-Model/Registry/concrete Model owner;
 - Lens selection/application → [`lenses/LENS-REGISTRY.md`](lenses/LENS-REGISTRY.md) and [`lenses/LENS-MODEL.md`](lenses/LENS-MODEL.md), then only selected Lens bodies;
-- unresolved USER wanted outcome / semantic-home routing → [`resolution/needs/NEED-CANDIDATE-DISPOSITION.md`](resolution/needs/NEED-CANDIDATE-DISPOSITION.md);
-- material candidate/selection meaning → [`resolution/proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md`](resolution/proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md);
-- material Question/Risk/Problem lifecycle → [`resolution/qrp/QRP-LIFECYCLE-AND-REVIEW.md`](resolution/qrp/QRP-LIFECYCLE-AND-REVIEW.md);
-- material Lens/review finding consequence → [`resolution/findings/FINDING-DISPOSITION.md`](resolution/findings/FINDING-DISPOSITION.md);
+- Need / Finding / Q/R/P / Proposal / Decision / Planning Branch / accepted-Decision revalidation / continuation-resolution meaning → [`resolution/RESPONSIBILITY-MAP.md`](resolution/RESPONSIBILITY-MAP.md), then the routed lifecycle/projection owner;
 - runtime composition ports / TF mechanics → [`runtime/IDTSPE-RUNTIME-COMPOSITION-CONTRACT.md`](runtime/IDTSPE-RUNTIME-COMPOSITION-CONTRACT.md);
 - pass trace / route visibility / no-duplicate traversal semantics → [`runtime/PASS-TRACE-AND-VISIBILITY-CONTRACT.md`](runtime/PASS-TRACE-AND-VISIBILITY-CONTRACT.md);
 - representation/persistence/materialization boundary → [`representation/ARTIFACT-PLACEMENT-AND-IDTSPE-RESPONSE-CONTRACT.md`](representation/ARTIFACT-PLACEMENT-AND-IDTSPE-RESPONSE-CONTRACT.md);
@@ -91,14 +88,11 @@ Use [`navigation/IDTSPE-CORE-MAP.md`](navigation/IDTSPE-CORE-MAP.md) for a compa
 - [`runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md`](runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md#twu-unit-contract) — Target Work Unit / Collection / Slot / Target Step Result semantics.
 - [`runtime/target-work/TARGET-WORK-SUBJECT-REFERENCE-CONTRACT.md`](runtime/target-work/TARGET-WORK-SUBJECT-REFERENCE-CONTRACT.md#target-work-subject-reference) — canonical Target Work subject reference grammar.
 - [`representation/interaction/BROAD-DISCUSSION-AND-INTEGRATION-CHECKPOINT-PROJECTION.md`](representation/interaction/BROAD-DISCUSSION-AND-INTEGRATION-CHECKPOINT-PROJECTION.md) — Broad Discussion and checkpoint interaction/projection semantics.
-- [`resolution/needs/NEED-CANDIDATE-DISPOSITION.md`](resolution/needs/NEED-CANDIDATE-DISPOSITION.md) — USER wanted outcome → Need Candidate grounding/disposition → existing natural owner/lifecycle route.
-- [`resolution/proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md`](resolution/proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md) — Proposal candidate space, selection, Decision trace/retention/revalidation.
-- [`resolution/qrp/QRP-LIFECYCLE-AND-REVIEW.md`](resolution/qrp/QRP-LIFECYCLE-AND-REVIEW.md) — Q/R/P lifecycle, priority/category/grouping and retention.
+- [`resolution/RESPONSIBILITY-MAP.md`](resolution/RESPONSIBILITY-MAP.md) — Need / Finding / Q/R/P / Proposal / Decision / Planning Branch / Decision-revalidation / Carry-Forward responsibility routing.
 - [`target-modules/RESPONSIBILITY-MAP.md`](target-modules/RESPONSIBILITY-MAP.md) — Target Module Meta-Model/discovery/supporting-projection routing.
 - [`target-modules/TARGET-MODULE-MODEL.md`](target-modules/TARGET-MODULE-MODEL.md#target-module-meta-model) — Target Module Meta-Model; concrete `TM-*` owners are Target Module Models and form Target Module Instances inside concrete Targets when applied.
 - [`lenses/LENS-MODEL.md`](lenses/LENS-MODEL.md) + [`lenses/LENS-REGISTRY.md`](lenses/LENS-REGISTRY.md) — Lens Meta-Model, concrete Lens Models and registry.
 - [`runtime/PASS-TRACE-AND-VISIBILITY-CONTRACT.md`](runtime/PASS-TRACE-AND-VISIBILITY-CONTRACT.md) — included Shell Pass Trace / Visibility and runtime reuse/observability contract.
-- [`resolution/findings/FINDING-DISPOSITION.md`](resolution/findings/FINDING-DISPOSITION.md) — producer → Finding Candidate → owner/State/lifecycle disposition.
 - [`navigation/METHODOLOGY-REGISTRY-DIRECTORY.md`](navigation/METHODOLOGY-REGISTRY-DIRECTORY.md) — supporting registry-family router used from selected Use-Case Processes.
 - [`representation/ARTIFACT-PLACEMENT-AND-IDTSPE-RESPONSE-CONTRACT.md`](representation/ARTIFACT-PLACEMENT-AND-IDTSPE-RESPONSE-CONTRACT.md) — physical representation/placement interface and P-14 response contract.
 - [`knowledge-bases/KNOWLEDGE-BASIS-CONTRACT.md`](knowledge-bases/KNOWLEDGE-BASIS-CONTRACT.md) — reusable knowledge/theory boundary.

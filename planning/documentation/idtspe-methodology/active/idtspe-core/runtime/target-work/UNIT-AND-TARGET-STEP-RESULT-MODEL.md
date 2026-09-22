@@ -769,6 +769,11 @@ persistence/representation state when materially useful
 validation/readiness finding when independently useful
 ```
 
+> Semantic Owner Dependency
+> Type: `CONTEXTUALIZES`
+> Responsibility: `RESOLUTION.FINDING-DISPOSITION`
+> Owner: [Finding Disposition / Resolution Escalation](../../resolution/findings/FINDING-DISPOSITION.md#resolution-escalation)
+
 These kinds retain their canonical lifecycle owners. Finding `Resolution Escalation` (`RE-0..RE-4`) remains a transient Finding-disposition projection and is **not** a State Unit, Unit kind, lifecycle or priority scale. The topology changes are compositional:
 
 ```text

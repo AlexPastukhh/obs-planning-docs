@@ -12,6 +12,7 @@ This README routes to current canonical owners; it does not duplicate their sema
 - [`idtspe-core/runtime/IDTSPE-RUNTIME-COMPOSITION-CONTRACT.md`](idtspe-core/runtime/IDTSPE-RUNTIME-COMPOSITION-CONTRACT.md) — generic runtime composition/completeness envelope for bounded IDTSPE work.
 - [`idtspe-core/use-cases/USE-CASE-REGISTRY.md`](idtspe-core/use-cases/USE-CASE-REGISTRY.md) — IDTSPE methodology-use Use Cases.
 - [`idtspe-core/target-modules/TARGET-MODULE-REGISTRY.md`](idtspe-core/target-modules/TARGET-MODULE-REGISTRY.md) — generic Target Module registry.
+- [`idtspe-core/resolution/RESPONSIBILITY-MAP.md`](idtspe-core/resolution/RESPONSIBILITY-MAP.md) — Core Need/Finding/Q/R/P/Proposal/Decision/Branch/continuation resolution responsibility routing.
 - [`idtspe-core/lenses/LENS-REGISTRY.md`](idtspe-core/lenses/LENS-REGISTRY.md) — Core and installed-profile Lens routing.
 - [`idtspe-core/navigation/METHODOLOGY-REGISTRY-DIRECTORY.md`](idtspe-core/navigation/METHODOLOGY-REGISTRY-DIRECTORY.md) — supporting registry-family directory reached from selected Use-Case Processes.
 

@@ -28,15 +28,15 @@ A zone may be marked `CLOSED` only when the scoped pass has checked, proportiona
 |---|---|---|---|---|---|
 | `DOC-OWNERSHIP-RULES` | Documentation Semantic DRY, Responsibility Map, explicit anchors, Semantic Owner Dependency, fundamental Use-Case applicability resolver, IDTSPE port-composition refresh ownership and direct consumers | canonical owners/consumer dependencies checked; direct routing ownership repaired | explicit anchors created only for real consumers; reviewed generated fragments migrated; inbound refs checked | `CLOSED` | `8d1b5bfa-3719-4d45-95d3-5ae5b35f39f4` |
 | `CORE-TARGET-WORK-MODULES` | Core Target Work + Generic Resolution Slot boundary + Target Formation + Target Module Meta-Model/Registry/supporting projection + Core concrete Target Modules + canonical Target Work subject reference; direct Core orchestration/lifecycle consumers touched by these contracts; inbound fragment links to audited owner sections | local Responsibility Maps established; Unit/Formation/Module/reference responsibilities separated; Target Module Registry reduced to routing; supporting Step/Result rule demoted to contextual projection; Compose/Maintain-Target-Module stopped redefining Unit internals; subject-reference grammar extracted to one owner | stable anchors added only for real cross-file consumers; reviewed old generated fragments replaced; all cross-file fragment refs into the audited Core zone resolve to explicit anchors; reverse refs/link integrity checked | `CLOSED` | `f82f32c1-d9a5-4b35-a078-bb8bad9b1a3e` |
+| `CORE-RESOLUTION-LIFECYCLES` | Core Need Candidate, Finding Disposition/Resolution Escalation, Q/R/P, Proposal/Decision, accepted-Decision revalidation projection, counterfactual Planning Branch, Branch Comparison, Resolution Carry-Forward; direct Core orchestration/evaluation/intake/review/representation/Target-Work consumers touched by these contracts; inbound fragment links to audited owner sections | local `resolution/RESPONSIBILITY-MAP.md` established; parent Methodology/Core maps and Core README route through it; lifecycle vs projection vs orchestration boundaries made explicit; direct Core consumers track contextual/representation dependencies instead of silently restating owner rules | explicit stable owner anchors added only for real cross-file consumers; existing `#resolution-escalation` semanticRefs now resolve to an explicit anchor; cross-file fragment refs into the audited resolution subtree contain no generated-heading targets; reverse refs/link integrity checked | `CLOSED` | `1fb1d687-f207-4377-8ee9-80d5d0e9c605` |
 
 ## Explicit Exclusions / Future Zones
 
 `CLOSED` above does **not** mean these areas have received a dedicated responsibility/anchor audit:
 
-- broader Resolution lifecycle ownership beyond direct `TWU.SUBJECT-REFERENCE` consumers;
-- Lens registries/libraries beyond direct subject-reference consumers;
+- Lens registries/libraries beyond the audited Proposal/Decision Resolution Context Lens and direct resolution-owner consumers;
 - profile-level Target Module semantic ownership (SDS / 2D / Reference Knowledge); profile files touched only for audited stable-anchor link migration remain semantically unaudited;
-- representation/persistence ownership outside direct Target Work template/reference consumers;
+- representation/persistence ownership outside the audited direct Target Work and Carry-Forward consumers;
 - knowledge-base/theory ownership;
 - Helper/command composition implementation.
 

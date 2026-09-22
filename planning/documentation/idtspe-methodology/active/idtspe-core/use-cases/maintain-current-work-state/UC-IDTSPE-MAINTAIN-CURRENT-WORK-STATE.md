@@ -12,6 +12,11 @@ The smallest useful current Work Context is represented coherently around materi
 
 ## Process
 
+> Semantic Owner Dependency
+> Type: `CONTEXTUALIZES`
+> Responsibility: `RESOLUTION.CARRY-FORWARD`
+> Owner: [Resolution Carry-Forward](../../resolution/continuation/RESOLUTION-CARRY-FORWARD-PROJECTION.md#resolution-carry-forward)
+
 1. Start from current Broad Discussion, previous integrated state, current Units/Target Results and accepted owner meaning.
 2. Apply the Unit applicability/materiality/disposition contract: every Module-defined Unit of a formed Target remains visible as RESOLVED / OPEN / explicit omission; Core-defined Units remain present only when instantiated by applicability; Contextual Units remain present only when actually defined/formed.
 3. Retain material Target Resolution Requirements proportionally, especially OPEN / PARTIAL / BLOCKED / DEFERRED requirements and non-obvious `Covered By` refs. Do not duplicate obvious coverage already reconstructible from Target Module/Unit structure.
@@ -28,7 +33,7 @@ The smallest useful current Work Context is represented coherently around materi
 9. A transient pending Finding inbox may be used as local working representation, but findings should be dispositioned into their real subjects/owners when useful; the inbox is not a second Finding lifecycle.
 10. Mark invalidated/revalidation-needed dependent meaning without reopening unaffected accepted meaning.
 11. Use the smallest useful representation: context-only, inline state, one local file, several natural owners, or another placement chosen through representation rules.
-12. Refresh the applicable [`Resolution Carry-Forward`](../../resolution/continuation/RESOLUTION-CARRY-FORWARD-PROJECTION.md) only when material open/deferred/residual continuation state changed; add/remove compact references without copying canonical semantic bodies. When its Durable Coordination Materialization Threshold is crossed, ensure one durable discoverable coordination representation exists for the scope before handoff/re-entry.
+12. Refresh the applicable [`Resolution Carry-Forward`](../../resolution/continuation/RESOLUTION-CARRY-FORWARD-PROJECTION.md#resolution-carry-forward) only when material open/deferred/residual continuation state changed; add/remove compact references without copying canonical semantic bodies. When its Durable Coordination Materialization Threshold is crossed, ensure one durable discoverable coordination representation exists for the scope before handoff/re-entry.
 13. Remove/supersede stale duplicate working representation when current state makes it misleading.
 
 ## Boundary

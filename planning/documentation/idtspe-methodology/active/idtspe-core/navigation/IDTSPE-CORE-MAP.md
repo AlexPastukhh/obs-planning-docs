@@ -121,7 +121,7 @@ Use-Case/component routing
 ```
 
 Canonical Lens owner: [`lenses/LENS-MODEL.md`](../lenses/LENS-MODEL.md).
-Finding lifecycle owner: [`resolution/findings/FINDING-DISPOSITION.md`](../resolution/findings/FINDING-DISPOSITION.md).
+Resolution lifecycle routing: [`resolution/RESPONSIBILITY-MAP.md`](../resolution/RESPONSIBILITY-MAP.md); Finding Disposition remains the destination owner for Finding lifecycle/Resolution Escalation.
 
 ## 7. Need / Proposal / Q-R-P / Decision / Evidence
 
@@ -138,9 +138,7 @@ material driver + concrete candidate answer
 → Decision / natural-owner authority when accepted
 ```
 
-Canonical Need Candidate grounding/routing: [`resolution/needs/NEED-CANDIDATE-DISPOSITION.md`](../resolution/needs/NEED-CANDIDATE-DISPOSITION.md).
-Canonical candidate/selection semantics: [`resolution/proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md`](../resolution/proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md).
-Canonical Q/R/P lifecycle/review contract: [`resolution/qrp/QRP-LIFECYCLE-AND-REVIEW.md`](../resolution/qrp/QRP-LIFECYCLE-AND-REVIEW.md).
+Resolution lifecycle routing for Need / Proposal / Decision / Q/R/P / Branch / continuation concerns: [`resolution/RESPONSIBILITY-MAP.md`](../resolution/RESPONSIBILITY-MAP.md). The routed destination file remains the semantic owner.
 State kind/addressability semantics remain in the Unit model.
 
 ## 8. Integration / Revalidation

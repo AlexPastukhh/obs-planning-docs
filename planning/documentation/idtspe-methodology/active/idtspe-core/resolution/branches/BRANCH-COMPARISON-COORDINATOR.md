@@ -6,7 +6,10 @@ Purpose: coordinate sibling counterfactual Planning Branches so they are explore
 
 ---
 
+<a id="resolution-branch-comparison"></a>
 # 1. One Coordinator Per Divergence
+
+Responsibility ID: `RESOLUTION.BRANCH-COMPARISON`
 
 Example:
 
@@ -29,6 +32,13 @@ BRANCH-COMP-RC-ROUTE01
 ```
 
 The coordinator owns **comparison state**, not branch semantics.
+
+> Semantic Owner Dependencies
+> - `CONTEXTUALIZES` [`Planning Branch`](PLANNING-BRANCH-COUNTERFACTUAL-EXPLORATION.md#resolution-planning-branch) — `RESOLUTION.PLANNING-BRANCH`
+> - `CONTEXTUALIZES` [`Proposal / Decision Lifecycle`](../proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md#resolution-proposal-decision-lifecycle) — `RESOLUTION.PROPOSAL-DECISION-LIFECYCLE`
+> - `CONTEXTUALIZES` [`Q/R/P Lifecycle`](../qrp/QRP-LIFECYCLE-AND-REVIEW.md#resolution-qrp-lifecycle) — `RESOLUTION.QRP-LIFECYCLE`
+
+Comparison normalizes sibling branch evidence/summary surfaces; it does not own branch-local meaning or select the root Decision.
 
 ---
 

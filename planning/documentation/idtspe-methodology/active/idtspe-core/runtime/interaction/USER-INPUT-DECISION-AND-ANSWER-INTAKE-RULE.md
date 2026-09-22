@@ -8,6 +8,12 @@ Purpose: let one user message simultaneously invoke a workflow, provide Sources,
 
 # 1. Core Rule
 
+> Semantic Owner Dependencies
+> - `CONTEXTUALIZES` [`Need Candidate Disposition`](../../resolution/needs/NEED-CANDIDATE-DISPOSITION.md#resolution-need-candidate-disposition) — `RESOLUTION.NEED-CANDIDATE-DISPOSITION`
+> - `CONTEXTUALIZES` [`Proposal / Decision Lifecycle`](../../resolution/proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md#resolution-proposal-decision-lifecycle) — `RESOLUTION.PROPOSAL-DECISION-LIFECYCLE`
+
+This Rule owns input classification/intake only; Need and Proposal/Decision lifecycle consequences remain with the linked owners.
+
 A planning workflow must not assume:
 
 ```text

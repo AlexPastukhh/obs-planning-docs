@@ -7,9 +7,17 @@ This is a helper/projection attached to an accepted material Decision.
 
 It is not a new semantic authority and not a new Decision type.
 
+> Semantic Owner Dependencies
+> - `REPRESENTS` [`Proposal / Decision Lifecycle`](PROPOSAL-AND-DECISION-LIFECYCLE.md#resolution-proposal-decision-lifecycle) — `RESOLUTION.PROPOSAL-DECISION-LIFECYCLE`
+> - `REPRESENTS` [`Q/R/P Lifecycle`](../qrp/QRP-LIFECYCLE-AND-REVIEW.md#resolution-qrp-lifecycle) — `RESOLUTION.QRP-LIFECYCLE`
+> - `REPRESENTS` [`Branch Comparison`](../branches/BRANCH-COMPARISON-COORDINATOR.md#resolution-branch-comparison) — `RESOLUTION.BRANCH-COMPARISON`
+
 ---
 
+<a id="resolution-decision-revalidation-projection"></a>
 # 1. Why
+
+Responsibility ID: `RESOLUTION.DECISION-REVALIDATION-PROJECTION`
 
 An accepted Decision should not preserve only:
 

@@ -5,7 +5,10 @@ Purpose: define how newly surfaced potentially material meaning from Lenses, val
 
 ---
 
+<a id="resolution-finding-disposition"></a>
 ## 1. Core Definition
+
+Responsibility ID: `RESOLUTION.FINDING-DISPOSITION`
 
 ```text
 Finding Candidate
@@ -18,6 +21,13 @@ Finding Disposition
   handoff/revalidation consequence and eventual
   Result destination for that meaning.
 ```
+
+> Semantic Owner Dependencies
+> - `CONTEXTUALIZES` [`Need Candidate Disposition`](../needs/NEED-CANDIDATE-DISPOSITION.md#resolution-need-candidate-disposition) — `RESOLUTION.NEED-CANDIDATE-DISPOSITION`
+> - `CONTEXTUALIZES` [`Proposal / Decision Lifecycle`](../proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md#resolution-proposal-decision-lifecycle) — `RESOLUTION.PROPOSAL-DECISION-LIFECYCLE`
+> - `CONTEXTUALIZES` [`Q/R/P Lifecycle`](../qrp/QRP-LIFECYCLE-AND-REVIEW.md#resolution-qrp-lifecycle) — `RESOLUTION.QRP-LIFECYCLE`
+
+This contract owns Finding disposition and Resolution Escalation only; downstream lifecycle bodies remain with their linked owners.
 
 The producer is not the destination authority.
 
@@ -279,6 +289,7 @@ Core may disposition it as an existing/new Question, Risk, Decision input or ano
 
 ---
 
+<a id="resolution-escalation"></a>
 ## 6A. Resolution Escalation Projection
 
 When a material Finding is surfaced for review, expose **how far semantic resolution must escalate** when that distinction helps the USER understand whether the correction is deterministic, local, owner-semantic, or upstream-affecting.

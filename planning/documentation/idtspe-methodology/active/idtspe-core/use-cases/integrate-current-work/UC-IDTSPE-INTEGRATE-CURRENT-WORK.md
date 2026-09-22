@@ -22,6 +22,11 @@ An **IDTSPE Integration Checkpoint** reconciles material Broad Discussion into t
 
 ## Process
 
+> Semantic Owner Dependency
+> Type: `CONTEXTUALIZES`
+> Responsibility: `RESOLUTION.CARRY-FORWARD`
+> Owner: [Resolution Carry-Forward](../../resolution/continuation/RESOLUTION-CARRY-FORWARD-PROJECTION.md#resolution-carry-forward)
+
 1. **Collect** — start from the previous coherent state and collect only material changed/new meaning plus current authoritative Sources/owner results needed for coherence.
 > Semantic Owner Dependency
 > Type: `CONTEXTUALIZES`
@@ -46,7 +51,7 @@ Canonical supporting owners:
 
 ## Resolution Carry-Forward Reconciliation
 
-At a useful Integration Checkpoint / handoff, reconcile the applicable [`Resolution Carry-Forward`](../../resolution/continuation/RESOLUTION-CARRY-FORWARD-PROJECTION.md): project only surviving material open/deferred/residual items plus only the accepted Decision anchors needed to understand that surviving state; remove closed trivial entries; preserve canonical bodies at their natural owners. The projection may be omitted when no continuation value exists, but when its Durable Coordination Materialization Threshold is crossed the checkpoint must leave one durable discoverable representation for the coordination scope.
+At a useful Integration Checkpoint / handoff, reconcile the applicable [`Resolution Carry-Forward`](../../resolution/continuation/RESOLUTION-CARRY-FORWARD-PROJECTION.md#resolution-carry-forward): project only surviving material open/deferred/residual items plus only the accepted Decision anchors needed to understand that surviving state; remove closed trivial entries; preserve canonical bodies at their natural owners. The projection may be omitted when no continuation value exists, but when its Durable Coordination Materialization Threshold is crossed the checkpoint must leave one durable discoverable representation for the coordination scope.
 
 ## Boundary
 
