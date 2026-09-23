@@ -118,7 +118,7 @@ This module specializes the Core [Target Module Model](../../../idtspe-core/targ
 
 When `Driven By` references Application Definition value intent, a plain `AB-*` reference remains valid for a whole-Benefit driver. If only a bounded Benefit Responsibility Boundary / Constraint clause actually drives the Step, prefer the more precise `AB-* / BC-*` reference when that clause is addressable. This is reference precision only; the Evolution Step does not become owner of the Benefit or claim whole-Benefit realization.
 
-`RU-EVO-02` is one Module-defined Unit responsibility in every formed Step inventory. Its Result Content Contract declares the `Evolution Impacts` Collection with `0..N` bounded Impact items governed by the same existing Impact item meaning. Impact items are runtime result values inside this Unit, not child Target Work Units and not Unit Resolution Slots merely by count. This Module defines a stricter domain-specific rule than generic Collection semantics: if there are no material Impact subjects, `RU-EVO-02` carries its Unit-level omission disposition and no placeholder items are manufactured. This does not redefine a generic empty Collection result as omission for other Units. The other Step Units likewise represent their own distinct Step-level responsibilities.
+`RU-EVO-02` is one Module-defined Unit responsibility in every formed Step inventory. Its Result Content Contract declares the `Evolution Impacts` Collection with `0..N` bounded Impact items governed by the same existing Impact item meaning. Impact items are runtime result values inside this Unit, not child Target Work Units and not Unit Resolution Slots merely by count. This Module defines a stricter domain-specific rule than generic Collection semantics: if there are no material Impact subjects left after full Target Bodies and other Step Units own their natural meaning, `RU-EVO-02` carries its Unit-level omission disposition and no placeholder items are manufactured. This does not redefine a generic empty Collection result as omission for other Units. The other Step Units likewise represent their own distinct Step-level responsibilities.
 
 ## Target Step-Result Contract
 
@@ -184,7 +184,7 @@ Each material Unit inherits the Core [`Unit Applicability Envelope`](../../../id
 
 #### `RU-EVO-06` processing envelope
 
-1. **Opening Unit Checkpoint — `RU-EVO-06`** — inspect the actual Step result, Q/R/P/Evidence, direct predecessor realization state and requested planning/realization depth.
+1. **Opening Unit Checkpoint — `RU-EVO-06`** — inspect the actual Step result, all Unit dispositions, Target Body references, Q/R/P/Evidence, direct predecessor realization state and whether this is the intended next Step for realization.
 2. **Unit Work — `RU-EVO-06`** — resolve **Planning Completeness** independently from **Realization Start Readiness**.
 3. **Closing Unit Checkpoint — `RU-EVO-06`** — planning completeness is not blocked merely by unrealized predecessors; Start Readiness is not marked READY until every direct predecessor is realized/materialized and other start conditions are satisfied.
 
@@ -231,7 +231,7 @@ Every REALIZATION_NEAR `NEW` or `CHANGED` Feature on the active candidate/select
 
 In a `REALIZATION_NEAR` Step, a CREATE/REPLACE owner subject needs a complete Target Owner Body at the selected route's useful depth; RETIRE needs explicit retirement/transition and consumer consequences; affected but unchanged owners can be references/Impacts. In a `LATER_HORIZON` Step, a bounded Evolution Impact may be sufficient to account for the Step while its planning remains `INCOMPLETE`. Do not force distant speculative implementation detail. Feature may be a material Impact subject when its changed state is not yet a complete target; the Step's Feature authority and RU-EVO-02 must not duplicate the same complete Feature body. Persistence may place dedicated Step artifacts under `planning/evolution/steps/unrealized/` or `realized/` when useful, without requiring one file per Step. Horizon is planning depth, not permission to omit material near-term owner consequences.
 
-Before realizing the next Step, account for every other concrete unrealized Step known to affect the owners in scope: its Step-side `RU-EVO-02` must identify each material affected subject and a truthful bounded consequence/revalidation basis, and each affected **current realized** owner's local Evolution Impact projection must expose a reference back to that Step under the shared projection contract. This applies to candidate, conditional, deferred and later-horizon Steps as well as selected ones. Reconcile missing/mismatched Step-side and owner-side links before the near Step is marked start-ready. An affected future Target Owner Body is still Step-owned; its later consequences must remain traceable through the later Step and must be reprojected into the resulting current owner upon materialization. A vague idea without concrete Step identity does not qualify as an accounted Step.
+Here **next Step for realization** means the particular intended Step whose implementation will start next on the chosen route, not every Step marked `REALIZATION_NEAR` or every direct successor in a branch. This role is relative to the current realization decision; horizon alone cannot establish readiness. Before realizing it, account for every other concrete unrealized Step known to affect the owners in scope: that other Step must identify each materially affected subject in its bounded `RU-EVO-02` Impact **or** complete Target Owner Body / `RU-EVO-04` retirement transition as appropriate, with a truthful consequence/revalidation basis; each affected **current realized** owner's local Evolution Impact projection must expose a reference back to that Step under the shared projection contract. A complete Feature/Domain/Slice/other Body must not be duplicated just to create an Impact item. This applies to candidate, conditional, deferred and later-horizon Steps as well as selected ones. Reconcile missing/mismatched Step-side and owner-side links before the next Step is marked start-ready. An affected future Target Owner Body is still Step-owned; its later consequences must remain traceable through the later Step and must be reprojected into the resulting current owner upon materialization. A vague idea without concrete Step identity does not qualify as an accounted Step.
 
 ## `RU-EVO-02` — Evolution Impacts
 
@@ -272,7 +272,7 @@ Subject / current state / OPEN ownership when accurate
 selected/candidate future consequence or change-isolation meaning
 selected Discovery Result Content with continuing Step value
 uncertainty / Evidence basis / recheck condition when material
-optional Target Scenario/Screen/Domain/Slice/Shared Body when sufficiently resolved
+reference to a separate complete Target Scenario/Screen/Domain/Slice/Shared Body if one is already resolved and a distinct bounded Impact still matters
 materialization consequence reference when resolved
 ```
 
@@ -298,6 +298,10 @@ Target Shared Body
 These are descriptive roles inside the Step, not new Core State/Target types.
 
 One natural owner on one Step route has **one coherent canonical post-Step Target Owner Body**. Several Impact aspects/resolution threads must converge into that body rather than create competing future versions.
+
+For the **next Step for realization**, form the complete ordinary post-Step Target Body for **every** downstream natural owner whose semantic authority will be `CREATE`d or `REPLACE`d by that Step: Feature, Scenario, Screen, Domain, Slice and Shared as applicable. In particular, Domain and Slice require their full target identity/responsibility, relationships, constraints and material owner-local `IR-*`/`PFR-*` under `TM-DOMAIN-OWNER` / `TM-SLICE-OWNER`, rather than a bounded `RU-EVO-02` Impact standing in for their post-Step state. Evaluate every affected owner: for `RETIRE`, record retirement, consumers and transition consequences without fabricating a post-Step Body; for an owner confirmed unchanged, reference its retained current/predecessor-realized meaning and the revalidation outcome without copying a Body. A material consequence whose ownership is still `OPEN` blocks completion of the next Step when it prevents a trustworthy target state.
+
+The Step owns the **composition/index** of those complete bodies, not a requirement to embed their full prose in one file. A linked body in a separate file is equally part of the same Step Target Result when the Step names its Step-relative path, natural owner identity, intended `CREATE`/`REPLACE` disposition, route/authority and applicable body version; the link must resolve to that single complete body. For example, `planning/evolution/steps/unrealized/<Step-ID>/STEP.md` can link to `TARGET-FEATURE.md`, `TARGET-DOMAIN.md` and `TARGET-SLICE.md` beside it. A smaller Step may link to dedicated files elsewhere or embed its bodies. The directory and filenames are illustrative physical representation, not additional Target Instances, semantic owners or mandatory storage topology. On materialization, use the realized bodies to create/replace current natural owners; Step-owned files do not become current authority merely through selection, relocation or a path match.
 
 Supporting Target Modules may be used inside the Evolution Step without automatically forming a second Target Instance. For the selected route, selected output is Step-owned future target-state meaning. For unresolved alternatives, output remains Proposal/Planning-Branch scoped.
 
@@ -413,19 +417,22 @@ Maintain two different conclusions.
 Planning Completeness: COMPLETE | INCOMPLETE
 ```
 
-`COMPLETE` means the Step's full target state is coherently planned, regardless of its horizon or the depth requested for an interim planning pass:
+Every conclusion MUST carry a short **Planning Completeness explanation** rather than only an enum. For `INCOMPLETE`, state the units/bodies/decisions already resolved and the specific missing or open work, including how far a distant Step's Impacts and current-owner links account for it. For `COMPLETE`, identify the complete Step Unit inventory/dispositions, the full Target Bodies and `RU-EVO-04` owner transitions, and the disposition of material Q/R/P. References to the actual Step Units and body files suffice; do not copy the bodies into this explanation.
+
+`COMPLETE` means the Step's full pre-realization target state is coherently planned, regardless of its horizon or the depth requested for an interim planning pass:
 
 - Step boundary/driver/relations are resolved enough;
 - direct `Entering From` predecessor identity is correct;
+- `RU-EVO-01` through `RU-EVO-06` have each reached their applicable resolved or justified `OMITTED` disposition, with `RU-EVO-06` itself recording this complete result and an independent start-readiness conclusion; no required Unit remains open;
 - every `NEW`/`CHANGED` Feature has one complete ordinary `TM-FEATURE` Target Feature Body representing its entire post-Step behavior; a bounded Feature Impact alone cannot establish `COMPLETE`;
-- other material CREATE/REPLACE Target Owner Bodies and RETIRE/transition consequences are resolved to the target depth required to realize this Step; unchanged owners are referenced rather than copied;
+- every other materially `CREATE`d/`REPLACE`d natural owner has a complete ordinary Target Scenario/Screen/Domain/Slice/Shared Body, linked by the Step even when it lives in a separate file; `RU-EVO-04` identifies each transition, while `RETIRE` and unchanged-owner consequences are explicitly disposed without inventing bodies;
 - Step-wide implementation concerns and transition/proof obligations are resolved, or explicitly retained as tolerable for realization with their disposition and follow-up;
 - materialization intent is truthful;
 - every material planning Q/R/P is resolved or deliberately retained with explicit disposition; no question or blocker that prevents trustworthy realization is left unresolved under `COMPLETE`.
 
 A predecessor may still be selected/planned but unrealized. That does **not** by itself make planning incomplete.
 
-An implementation-only Step that preserves Feature behavior has no `NEW`/`CHANGED` Feature Body to complete; it still needs complete applicable owner target state and transition meaning. Never invent a Feature merely to satisfy this rule. A concrete `LATER_HORIZON` Step may remain `INCOMPLETE` while accounted for by bounded Step-side Impacts and the reciprocal current-owner references. `INCOMPLETE` is the truthful planning status even if its impacts are sufficiently planned for the horizon. Before such a Step becomes the next realization Step, complete its Target Bodies and all other planning obligations, then recompute `RU-EVO-06`.
+An implementation-only Step that preserves Feature behavior has no `NEW`/`CHANGED` Feature Body to complete; it still needs complete applicable Domain/Slice/Shared/other owner target state and transition meaning. Never invent a Feature merely to satisfy this rule. A concrete `LATER_HORIZON` Step may remain `INCOMPLETE` while accounted for by bounded Step-side Impacts or already completed Target Bodies, plus reciprocal current-owner references where applicable. `INCOMPLETE` is the truthful planning status even if its impacts are sufficiently planned for the horizon. Before such a Step becomes the **next Step for realization**, complete every required Unit and Target Body, record the completion explanation, then recompute `RU-EVO-06`.
 
 ### Realization Start Readiness
 
@@ -437,11 +444,11 @@ Realization Start Readiness: READY | BLOCKED
 
 ```text
 every direct Entering From predecessor realized/materialized
-+ Planning Completeness: COMPLETE, including complete Target Feature Bodies for every NEW/CHANGED Feature
++ Planning Completeness: COMPLETE, with a documented complete Unit inventory and full Target Bodies for every CREATE/REPLACE owner
 + Step-wide Implementation Concerns resolved/tolerated/routed deeply enough
 + transition/proof obligations sufficiently resolved
 + no blocking Q/R/P for implementation start
-+ other concrete unrealized Steps affecting owners in scope accounted for in Step-side Impacts and current-owner reverse projections
++ other concrete unrealized Steps affecting owners in scope accounted for in their Step-side Impacts or full Bodies/retirement transitions and applicable current-owner reverse projections
 ```
 
 Selection/authorization is intentionally not stored as an internal readiness blocker inside a Proposal Target Result; candidate/selected authority belongs to the enclosing Proposal/Step boundary. Actual realization execution still requires the applicable external selection/authorization in addition to `READY`.
@@ -460,14 +467,14 @@ material unrealized transition
 → establish Feature target state(s) when behavior changes
    → REALIZATION_NEAR NEW/CHANGED Feature: complete Target Feature Body; later horizon may retain bounded Impact
    → unchanged behavior: current/predecessor-realized Feature reference
-→ resolve the single RU-EVO-02 Unit as a collection; add one bounded Impact item per material Feature/Scenario/Screen/Domain/Slice/Shared/OPEN subject
+→ resolve the single RU-EVO-02 Unit; use bounded Impact items for material subjects whose meaning has not converged into a full Target Body or another natural Step Unit; otherwise use the justified Unit disposition
 → use supporting owner/discovery methods proportionally
-→ form complete Target Owner Bodies when represented candidate/selected/assumed route planning needs them
+→ for the next Step for realization, form/link complete Target Feature/Scenario/Screen/Domain/Slice/Shared Bodies for every CREATE/REPLACE owner, including full Domain and Slice contracts
 → inspect owner-local concern/feasibility surfaces
 → resolve RU-EVO-03 Step-wide Implementation Concerns without copying owner-local meaning
 → resolve RU-EVO-04 Materialization Set
 → resolve RU-EVO-05 transition/proof obligations
-→ resolve RU-EVO-06 Planning Completeness separately from Realization Start Readiness
+→ resolve RU-EVO-06 Planning Completeness with an explicit completed/missing inventory explanation, separately from Realization Start Readiness
 → enter Exact Realization only when selected/accepted upstream meaning is sufficient and realization-start conditions are satisfied
 ```
 
@@ -479,7 +486,7 @@ Reusable reverse-projection semantics for current realized Feature/Scenario/Scre
 
 ## Representation
 
-Early shallow representation is valid. A substantial Step may have a dedicated owner artifact; a shallow Step may be embedded in the Steps Map when that preserves Step identity, relations, candidate/selection state, Target Body/Impact references, concerns and readiness truthfully.
+Early shallow representation is valid for a later Step and its `INCOMPLETE` planning explanation. A substantial Step may have a dedicated owner artifact; a shallow Step may be embedded in the Steps Map when that preserves Step identity, relations, candidate/selection state, Target Body/Impact references, concerns and readiness truthfully. The next Step for realization must give each complete Target Body an unambiguous, resolvable reference before its `COMPLETE` conclusion; use a Step directory with a Step owner file and separate full bodies when several bodies would make one file hard to review.
 
 Full Target Owner Bodies strongly favor dedicated Step addressability but do not require one file per body or Unit. Unit identity does not imply file identity.
 
@@ -512,9 +519,9 @@ Step is concrete enough to deserve future-transition ownership
 no separately maintained Expected Entry State shadows predecessor authority
 Entering From uses smallest sufficient direct semantic predecessor Step set
 Planning Completeness is independent of predecessor realization
-COMPLETE requires a complete Target Feature Body for every NEW/CHANGED Feature, regardless of horizon; accounted LATER_HORIZON Impacts alone remain INCOMPLETE
+COMPLETE includes a reasoned all-Unit disposition inventory and complete Target Bodies for every CREATE/REPLACE Feature/Scenario/Screen/Domain/Slice/Shared owner, regardless of horizon; accounted LATER_HORIZON Impacts alone remain INCOMPLETE
 Realization Start Readiness requires all direct predecessors realized/materialized
-READY requires COMPLETE and reciprocal links for other concrete Steps affecting current owners in scope
+READY for the next Step for realization requires COMPLETE and reciprocal links for other concrete Steps affecting current owners in scope
 REALIZATION_NEAR NEW/CHANGED Feature uses one complete TM-FEATURE Target Feature Body
 unchanged Feature is referenced rather than copied
 current owners remain current semantic authority until realization/materialization

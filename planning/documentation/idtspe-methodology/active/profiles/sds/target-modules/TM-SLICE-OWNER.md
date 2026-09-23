@@ -18,7 +18,7 @@ Transient `TM-IMPLEMENTATION-SLICE` may discover the realization but is not dura
 
 ## Temporal Authority / Evolution-Step Hosting
 
-A canonical Slice owner describes a currently realized end-to-end implementation responsibility. For a responsibility/boundary that is selected but not yet implemented, use this module inside `TM-EVOLUTION-STEP` to produce a **Target Slice Body**.
+A canonical Slice owner describes a currently realized end-to-end implementation responsibility. For a responsibility/boundary that is selected but not yet implemented, use this module inside `TM-EVOLUTION-STEP` to produce a **Target Slice Body**. For the particular next Step for realization, every `CREATE`/`REPLACE` Slice needs a complete ordinary post-Step Slice Body, with all applicable Slice Units resolved or justifiably omitted and material consumer/boundary/owner-local constraint meaning. The Step may link to a separate complete Slice file; its path remains Step-owned future authority until materialization.
 
 Future `IR-SLICE-*` / owner-local `PFR-*` remain in the Target Slice Body until realization/materialization. Selection of a Slice boundary is planning authority for the Step, not proof that the Slice already exists in current implementation.
 
@@ -164,7 +164,7 @@ Literal tests remain code/Exact authority; this Target owns only durable respons
 
 ## Evolution
 
-Future Slice impact belongs to the applicable `TM-EVOLUTION-STEP` / `RU-EVO-02`. When a candidate/selected post-Step Slice responsibility/boundary is sufficiently resolved for the requested Target Result depth, it may be represented by a Target Slice Body; selection is still required for canonical integration/materialization. `RU-SOWN-03` in the current owner is only reverse navigation/revalidation projection and does not maintain a second future roadmap.
+Unresolved distant future Slice impact may be bounded in the applicable `TM-EVOLUTION-STEP / RU-EVO-02`. A complete post-Step Slice responsibility/boundary belongs in the Step Target Slice Body, mandatory for a `CREATE`/`REPLACE` Slice in the next Step for realization; selection is still required for canonical integration/materialization. `RU-SOWN-03` in the current owner is only reverse navigation/revalidation projection and does not maintain a second future roadmap.
 
 ## Validators / Handoff
 

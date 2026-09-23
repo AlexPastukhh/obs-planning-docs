@@ -218,7 +218,7 @@ Shared candidate
 
 ## Evolution
 
-Future Shared capability/binding impact belongs to the applicable `TM-EVOLUTION-STEP` / `RU-EVO-02`. When candidate/selected future Shared meaning is sufficiently resolved for the requested Target Result depth, it may be represented by a Target Shared Body; selection is still required for canonical integration/materialization. Current `RU-SHARED-04` records only reverse Step navigation/revalidation and never copies the future plan.
+Unresolved distant future Shared capability/binding impact may be bounded in the applicable `TM-EVOLUTION-STEP / RU-EVO-02`. A complete created/replaced post-Step Shared contract belongs in the Step Target Shared Body, mandatory when that owner is materialized by the next Step for realization; selection is still required for canonical integration/materialization. Current `RU-SHARED-04` records only reverse Step navigation/revalidation and never copies the future plan.
 
 ## Validators / Handoff
 

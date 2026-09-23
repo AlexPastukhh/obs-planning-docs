@@ -65,16 +65,16 @@ current realized downstream owners / implementation / Evidence
 → direct `Entering From` semantic predecessor relation(s), or None
 → proportionate downstream future-state production:
      one or more Feature target states
-       fully planned/next REALIZATION_NEAR NEW/CHANGED → complete Target Feature Body; INCOMPLETE LATER_HORIZON may retain bounded Feature Impact with owner-side Step references
+       particular next-for-realization Step: complete Target Feature Body for every NEW/CHANGED Feature; distant INCOMPLETE Step may retain bounded Feature Impact with owner-side Step references
        unchanged → current Feature reference
-     Scenario / Screen / Domain / Slice / Shared Evolution Impacts as material
+     Scenario / Screen / Domain / Slice / Shared bounded Evolution Impacts for distant unresolved owner meaning as material
      Domain / Slice discovery when useful
      selected Discovery Result Content retained in Impact when still useful
-     Target Scenario / Screen / Domain / Slice / Shared Bodies when sufficiently resolved
+     complete Target Scenario / Screen / Domain / Slice / Shared Bodies for every CREATE/REPLACE owner in the next-for-realization Step; distant bodies when resolved
      future owner-local Requirements inside corresponding Target Bodies
      Step-wide Implementation Concerns referencing owner-local concern/feasibility/IR surfaces
      Target Owner Materialization Set + transition/proof obligations
-     Planning Completeness + Realization Start Readiness according to `TM-EVOLUTION-STEP / RU-EVO-06` (full Step target state for COMPLETE; reciprocal later-Step impacts checked for READY)
+     Planning Completeness + its completed/missing inventory explanation + Realization Start Readiness according to `TM-EVOLUTION-STEP / RU-EVO-06` (all Step Units and affected-owner Target Bodies for COMPLETE; reciprocal later-Step meaning checked for READY)
 → Exact Realization when selected meaning is sufficient and realization-start conditions are met
 → implementation / build / test / Evidence as authorized
 → targeted revalidation
@@ -112,7 +112,9 @@ Scenario = journey composition / linking / continuity / Benefit manifestation/cl
 Screen   = spatial/navigation composition / Feature presence / routes
 ```
 
-When a Behavioral/Mixed Step represents changed Feature behavior, every NEW/CHANGED Feature in a fully planned Step uses one complete Target Feature Body. The next Step cannot start realization before that full body and its other Step planning obligations are complete. Later-horizon Feature work may remain a bounded Impact while the Step truthfully reports `INCOMPLETE`, provided each material Step-side owner Impact is matched by an affected current owner's Evolution Impact Step reference. Scenario and Screen consequences are first represented through bounded Step `Evolution Impact` Units; when complete Step planning requires changed journey/spatial target meaning, form the complete post-Step Target Scenario/Screen Body. Candidate bodies remain under their enclosing Proposal/branch authority until selected; canonical integration/materialization still requires normal selection. Implementation-only foundation Steps need not invent a Feature target. A finding in one proposes/revalidates another owner; it never silently edits another.
+When a Behavioral/Mixed Step represents changed Feature behavior, every NEW/CHANGED Feature in a fully planned Step uses one complete Target Feature Body. The **particular next Step for realization** cannot start until all `RU-EVO-01..06` obligations are resolved/disposed and every owner whose post-Step authority is created/replaced has a complete Target Body, especially Domain and Slice as well as Feature, Scenario, Screen and Shared. Their ordinary owner-specific Target Modules shape those complete bodies; the Step indexes them and may link separate files rather than embed them. A distant Step may retain bounded Impacts while truthfully reporting `INCOMPLETE` with its resolved/missing planning explained and each material current-owner impact reverse-linked. Scenario/Screen/Domain/Slice/Shared consequences can first be represented through bounded Step `Evolution Impact` items; they must converge into complete corresponding post-Step Target Bodies when those owners are created/replaced by the next Step. Current owners unchanged by the Step are referenced, and retirements specify transition/consumer consequences. Candidate bodies remain under their enclosing Proposal/branch authority until selected; canonical integration/materialization still requires normal selection. Implementation-only foundation Steps need not invent a Feature target. A finding in one proposes/revalidates another owner; it never silently edits another.
+
+Application Definition provides upstream application intent and Planning Resolution State coordinates planning; neither is materialized as a downstream natural owner by an Evolution Step. For the downstream materializable Feature/Scenario/Screen/Domain/Slice/Shared owner families, the selected Step's complete post-Step bodies guide Exact Realization. Only after implementation, required proof and revalidation does `RU-EVO-04` materialize their realized `CREATE`/`REPLACE`/`RETIRE` state into current natural owners. Discovery Targets remain working inputs rather than additional post-Step owner bodies.
 
 When reviewing implemented current truth, the existing current owners remain the direct authorities.
 
