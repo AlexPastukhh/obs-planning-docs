@@ -286,3 +286,7 @@ E2E Proof Intent ≠ mandatory test catalog
 ## Handoff
 
 Scenario findings route to the natural owner through Proposal/revalidation. Implementation work starts from selected Feature meaning; Scenario remains a source when whole-journey continuity, `RU-SCEN-03` realization concerns or E2E proof matters. Evolution Step `RU-EVO-03` may reference Scenario realization concerns when their composition creates Step-wide pressure.
+
+## Copied project example
+
+[Study Tab Launcher — Сценарный путь, SPS/SR и результат](../examples/study-tab-launcher/project/planning/documentation/scenarios/open-selected-project.md). Read the [case guide and capture limits](../examples/study-tab-launcher/README.md) with the current module contract; the copied project is a dated example, not live application authority.

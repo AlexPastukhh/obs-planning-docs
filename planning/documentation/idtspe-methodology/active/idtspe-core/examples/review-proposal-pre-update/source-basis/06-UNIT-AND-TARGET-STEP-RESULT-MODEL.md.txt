@@ -1,0 +1,1587 @@
+# IDTSPE Target Work Unit Definition, Resolution, And Target Step Result Model
+
+Status: active generic methodology owner
+Purpose: define how one Target Work Unit is **defined and executed**, including its Responsibility, Purpose, Result Content Contract, direct resolution for simple work, exactly one terminal Unit Resolution Set for composite work, Current Result Content, relation to generic Core State Units, and contribution to the Target Step Result.
+
+---
+
+## 1. Core Model
+
+The central bounded target-work object is a **Target Work Unit**: one target-specific bounded work responsibility whose resolution produces one coherent useful result without forcing a separate Target or file.
+
+Target Work Units may come from three definition authorities:
+
+```text
+Target Work Unit
+├─ Core-defined Unit
+│  reusable Unit Definition prepared by IDTSPE Core
+│  instantiated only when applicable
+├─ Module-defined Unit
+│  reusable Unit Definition prepared by one applied Target Module Model
+│  complete inventory is instantiated for each applied Model portion
+└─ Contextual Unit
+   locally defined for this concrete Target when no prepared Unit sufficiently covers
+   a bounded material responsibility
+```
+
+Core also maintains **Core State Units** such as Sources, Questions, Proposals, Q/R/P, Decisions and Evidence. These have generic lifecycle semantics and are not peer Target Work Units.
+
+```text
+Core-defined Target Work Unit
+≠ Core State Unit
+```
+
+Target work composition:
+
+```text
+IDTSPE Work Context
+↓
+zero or more bounded Targets
+↓
+Target governing path
+  ├─ Target Module Model → Target Module Instance
+  │    └─ complete Module-defined Unit inventory
+  └─ Local Target Contract
+       └─ no Module-defined Unit inventory
+↓
+Target Work Units
+  = applicable Core-defined Units
+  + complete Module-defined Unit inventory when a Target Module Instance exists
+  + Contextual Units only when actually defined/formed
+↓
+for each material Unit
+  Unit Definition
+    Responsibility
+    + Purpose
+    + Result Content Contract
+    + proportional resolution/validation guidance
+  + Unit Resolution
+    direct for simple work
+    or Unit Resolution Set for composite work
+  + Current Result Content when sufficiently resolved
+↓
+Target Step Result
+  = Target Module Instance contribution when present
+  + Core-defined Unit contributions through their Result Destinations
+  + Contextual Unit contributions through their Result Destinations
+```
+
+`Unit Resolution` is both the process and current working semantic state used to obtain sufficiently resolved Current Result Content. It may use Source/Evidence, Questions, Problems/Risks, Proposals, Findings, Decisions, Branches and Revalidation without turning those Core State items into peer Target Work Units.
+
+A Unit may cover one or more Target Resolution Requirements; a Requirement may require several Units/other owners. The Requirement is the need/completeness criterion, while the Unit owns bounded work that produces useful result meaning.
+
+<a id="twu-natural-subject-ownership"></a>
+### Natural Subject / Ownership Boundary
+
+Responsibility ID: `TWU.NATURAL-SUBJECT-ROUTING`
+
+For every material result/state item, resolve its **smallest natural semantic subject** before treating the current Target/Unit as its owner.
+
+```text
+meaning whose smallest natural subject is this Target Work Unit
+→ valid local ownership candidate
+
+meaning whose smallest formal work subject is one Unit Resolution Slot
+→ attach slot-local Questions/Evidence/Findings/etc. to that Slot while resolving it
+→ when another artifact must persist/reference that selected Target Work subject, use the canonical [Target Work Subject Reference Contract](TARGET-WORK-SUBJECT-REFERENCE-CONTRACT.md#target-work-subject-reference)
+→ resolved Slot content contributes to the parent Unit Current Result Content
+→ the parent Unit remains the result owner unless the sub-responsibility is promoted to a separate Unit
+
+meaning naturally owned by another Target / Unit / semantic owner
+→ reference / Source / handoff to that owner
+→ do not copy semantic authority into the current Unit
+
+relation / composition / transition constraint spanning several owners
+→ may remain at the enclosing Target only when that relation itself
+   is the enclosing Target's natural subject
+
+exact realization mechanism / literal code / files / config / call sequence
+→ realization/discovery/Exact owner unless selected durable semantics
+   belong to another natural owner
+
+owner unclear or conflicting
+→ Finding / owner resolution
+→ do not invent ownership for convenience
+```
+
+Physical co-location, a convenient table, a planning Step that happens to mention several owners, or a Markdown link does not establish semantic ownership.
+
+`Current Result Content` is the normalized current answer/output owned by the Target Work Unit. It may be absent while Unit Resolution is still open. Candidate result meaning may be useful during resolution, but candidate meaning is not current Result Content merely because it was written down.
+
+```text
+trusted Source / Evidence
+→ unambiguous non-decision derivation
+→ Current Result Content
+```
+
+is valid; Proposal/Decision ceremony is not mandatory when no material choice exists.
+
+A material Proposal that is actually selected still has **Decision semantics** under the canonical Proposal/Decision lifecycle. A separate explicit/durable Decision State Unit or retained Decision trace is required only when the selection/rationale/trade-off/revalidation meaning has independent future value.
+
+`IDTSPE Step Output` remains an explanatory umbrella for the material semantic output of one work/integration pass. It may contain the `Target Step Result` (the Target Module Instance contribution when present, plus applicable Core-defined Unit contributions and any formed Contextual Units) plus material Core State Units/Core Resolution State and handoff/revalidation consequences. It is not a new semantic owner and does not imply one persisted record.
+
+<a id="twu-target-step-result"></a>
+## 2. Target Step Result
+
+Responsibility ID: `TWU.TARGET-STEP-RESULT`
+
+```text
+Target Step Result
+= the useful target-specific output shape/meaning
+  that the current bounded IDTSPE work step
+  is trying to produce or refine for the formed Target.
+
+Canonical/current authority follows normal Proposal/Decision/integration rules. An explicitly requested Proposal Target Result forms an ordinary candidate Target Instance under the Core Target Instance/Proposal contracts; its complete Target-result shape does not become `Current Result Content` merely by being rendered.
+```
+
+`Step` qualifies the word `Result`: it means the result wanted from **this current IDTSPE work pass**, not the final product/result of the domain being planned.
+
+The same logical Target may later be revisited through:
+
+```text
+CREATE
+REFINE
+EXTEND
+REVALIDATE
+REPAIR
+```
+
+and therefore have a later Step Result revision.
+
+### Example — planning a Slice
+
+```text
+Target:
+  SL-CAP-01
+
+Current Step intent:
+  produce a sufficiently resolved vertical Slice plan before exact realization
+
+Target Step Result:
+  Implementation Slice Plan
+```
+
+The plan may contain a field called `Useful Vertical Result`. That is the runtime/product result of the Slice; it is not the same meaning as `Target Step Result`.
+
+Prefer:
+
+```text
+Target Step Result:
+  Implementation Slice Plan
+
+Result Unit:
+  Slice Outcome Definition
+
+Field:
+  Useful Vertical Result
+```
+
+over the linguistically ambiguous:
+
+```text
+Target Result contains Useful Vertical Result
+```
+
+### Example — literal implementation
+
+IDTSPE is not restricted to prose plans.
+
+```text
+Target:
+  realize selected CaptureItem Domain behavior
+
+Target Step Result:
+  exact selected implementation
+
+Result Unit:
+  CaptureItem source payload
+```
+
+In this Target family, literal future code may itself be the desired Result Unit rather than an example inside a planning document.
+
+Generic Core now installs [`TM-EXACT-REALIZATION`](../../target-modules/TM-EXACT-REALIZATION.md) for this recurring profile-independent result family. Profiles may reuse it directly and add only genuinely profile-specific semantic/design Targets around it.
+
+---
+
+<a id="twu-unit-contract"></a>
+## 3. Target Work Unit Definition / Resolution Model
+
+Responsibility ID: `TWU.UNIT-CONTRACT`
+
+Full compatibility term:
+
+```text
+Target Step Result Unit
+```
+
+Preferred disambiguating term when Core State Units are also being discussed:
+
+```text
+Target Work Unit
+```
+
+Short/compatibility forms when target-work context is clear:
+
+```text
+Result Unit / Unit
+```
+
+A Target Work Unit is one **bounded work responsibility** whose resolution produces one coherent useful result for the Target. Core-defined, Module-defined and Contextual Units use the same generic Unit mechanics; they differ mainly by **definition authority and formation rules**, not by their fundamental resolution model.
+
+### 3.1 One Canonical Unit Definition Model
+
+IDTSPE uses one canonical **Unit Definition** model. It owns both:
+
+```text
+what must/may be defined about a Unit
++
+how to define those parts well enough to execute the Unit
+```
+
+`Unit Contract` remains an acceptable compatibility/shorthand term for a normative reusable/local Unit Definition; it is **not a second methodology object beside Unit Definition**.
+
+```text
+DEFINE UNIT
+→ establish a sufficient Unit Definition
+→ EXECUTE Unit Resolution
+→ Current Result Content
+```
+
+Definition authority determines when `DEFINE UNIT` happened:
+
+```text
+CORE
+→ Unit was defined earlier by IDTSPE Core
+→ reusable cross-target Core-defined Unit
+
+TARGET_MODULE
+→ Unit was defined earlier while authoring a Target Module Model
+→ reusable Module-defined Unit
+
+CONTEXTUAL
+→ Unit is defined now for this concrete Target
+→ Contextual Unit
+```
+
+After definition, all three authorities use the same generic Unit Resolution mechanics.
+
+### 3.2 Semantic Core — Responsibility / Purpose / Result Content Contract
+
+The semantic core of a Unit Definition is:
+
+```text
+Responsibility
+Purpose
+Result Content Contract
+```
+
+#### Responsibility
+
+`Responsibility` defines the **natural bounded work responsibility** owned by the Unit:
+
+```text
+Responsibility
+= what bounded work this Unit owns
+= what belongs inside this Unit boundary
+= what should not be silently mixed with neighboring Units
+```
+
+Good reusable Responsibility wording names stable work meaning, for example:
+
+```text
+resolve offline conflict behavior
+resolve externally observable failure semantics
+resolve ownership and behavior of migration compatibility
+```
+
+Do not define reusable Responsibility merely as `cover Requirement R-17`; the concrete Target Requirement remains owned by Target Resolution.
+
+#### Purpose
+
+`Purpose` explains **why this bounded Responsibility/result is useful as a distinct Unit**. It is definition/rationale meaning, not runtime resolution state and not a separate lifecycle owner.
+
+```text
+Responsibility
+= what work is owned
+
+Purpose
+= why having this work/result as one Unit is useful
+```
+
+For every new or materially revised reusable Core-defined / Module-defined Unit, Purpose MUST be explicit in the normative Unit Definition. Legacy reusable Unit bodies may retain a recoverable implicit Purpose until they are materially revised; that compatibility allowance does not weaken the current authoring rule. For a small Contextual Unit, a separate Purpose field is proportional when the why is already obvious from the triggering Requirement + Responsibility.
+
+If a supposed Unit has no coherent Purpose distinct from neighboring work, reconsider the Unit boundary instead of inventing rationale text.
+
+#### Result Content Contract
+
+`Result Content Contract` defines **what coherent useful meaning must exist after resolving the Responsibility**. It describes expected result semantics, not the procedure used to obtain them.
+
+```text
+Responsibility
+→ bounded work boundary
+
+Result Content Contract
+→ expected coherent result/postcondition of that work
+```
+
+`Current Result Content` is the actual normalized meaning obtained at runtime; it is not the contract itself.
+
+### 3.3 Proportional Unit Definition Shape
+
+A Unit Definition may proportionally establish/reference:
+
+```text
+Identity
+  Unit ID / Name
+  Definition Authority: CORE | TARGET_MODULE | CONTEXTUAL
+
+Responsibility                         REQUIRED
+Purpose                                REQUIRED for new/materially revised reusable Units; proportional for Contextual Units
+Applicability / Materiality            proportional; reusable Units normally define applicability
+Inputs / Source Expectations           proportional
+Resolution Guidance                    proportional
+  useful Questions / recurring Problems / prompts
+  Knowledge Basis / theory references
+  analysis / Proposal-discovery guidance
+  helpful Lenses / registry triggers
+Result Content Contract                REQUIRED
+  ordinary result content / structure  proportional
+  UNIT_WIDE Slot Definitions           0..N, only for formal Unit-wide terminal roles
+    Slot ID                             REQUIRED; unique among UNIT_WIDE Slots of this Unit; stable/recoverable while referenced
+  Collection Definitions               0..N, whenever genuine repeated result-contract families are part of the contract
+    Collection ID                      REQUIRED; unique within this Unit Result Content Contract; stable/recoverable while referenced
+    Collection Name                    proportional
+    meaning / cardinality / constraints proportional
+    Item Contract                      REQUIRED
+    Item Key / Subject                 REQUIRED when stable item-local formal references are possible
+    PER_ITEM Slot Definitions           0..N, only for formal terminal roles repeated for each item
+      Slot ID                           REQUIRED; unique within the owning Collection; stable/recoverable while referenced
+Validation Guidance / Validators       proportional
+Result Destination / Consumers         proportional when non-obvious
+Revalidation Guidance                  proportional
+Representation Guidance                proportional
+  TABLE requirement only when the governing contract explicitly requires tabular representation
+```
+
+These are not a mandatory questionnaire. `Responsibility + Result Content Contract` are the minimum semantic core; add only the definition/guidance required to make the Unit safely executable and reviewable.
+
+Authoring guidance belongs beside the field it governs rather than in a competing `Unit Creation Guide`. For example, Inputs say what authority/material is needed, Questions help resolution but are not automatically Question State Units, Validators check result sufficiency without selecting the result, and repeated fields/items do not become Slots merely because they exist.
+
+<a id="twu-collection-contract"></a>
+### 3.3A Contract Boundary / Collections / Anti-Overstructuring
+
+Responsibility ID: `TWU.COLLECTION-CONTRACT`
+
+Target/Unit/Slot structure follows **contract boundaries**, not the count of runtime values. Prefer the least formal structure that preserves the required contracts.
+
+At Target level:
+
+```text
+Target
+→ composition of distinct Target Work Unit responsibilities/contracts
+→ NOT a homogeneous collection of repeated item-Units
+```
+
+If several runtime values share one Unit Responsibility and one Result Content Contract, keep them inside that Unit result rather than repeating the Unit as peer Target items. Different Target Work Units mean different bounded Unit-level responsibilities/contracts, even when their representations happen to look similar.
+
+A Unit `Result Content Contract` may combine ordinary content, formal Unit-wide Slot Definitions, and **zero or more explicitly declared Collections**:
+
+```text
+Unit Result Content Contract
+├─ ordinary content / structure
+├─ UNIT_WIDE Slot Definition 0..N
+├─ Collection A
+│  ├─ Item Contract
+│  └─ PER_ITEM Slot Definition 0..N
+├─ UNIT_WIDE Slot Definition 0..N
+└─ Collection B
+   ├─ Item Contract
+   └─ PER_ITEM Slot Definition 0..N
+```
+
+The order above is illustrative only. A **Collection Definition** is a named repeated-result contract surface inside one Unit `Result Content Contract`; it is not a Target Work Unit, not a lifecycle object, and not another formal resolution-decomposition level. A Unit may declare no Collections, one Collection, or several Collections. A **genuine repeated result-contract family** is a repeated family that is itself part of the Unit Result Content Contract with one common Item Contract; an ordinary list-valued or nested repeated field inside otherwise ordinary result content is not such a family merely because it repeats. Whenever a new or materially revised Unit contract contains a genuine repeated result-contract family, that family MUST be represented by an explicit Collection Definition even when it is the Unit's only Collection.
+
+A Collection Definition owns the common Item Contract for its items. The Item Contract may contain ordinary fields/relations/structure without any `PER_ITEM` Slots. A genuine repeated result-contract family therefore does **not** imply Slot decomposition, and an ordinary list-valued/nested repeated field remains ordinary content rather than becoming a Collection.
+
+```text
+Collection Definition
+  Collection ID — unique within the parent Unit Result Content Contract and stable/recoverable while referenced
+  Collection Name as needed
+  meaning / cardinality / constraints as needed
+  Item Contract
+  Item Key / Subject when item-local formal addressability is needed
+  PER_ITEM Slot Definitions 0..N when independently formalized item roles are required
+    Slot ID — unique within this Collection and stable/recoverable while referenced
+```
+
+A `UNIT_WIDE` Slot ID is unique among `UNIT_WIDE` Slots of its parent Unit and stable/recoverable while referenced. A `PER_ITEM` Slot ID is unique only within its owning Collection, so the same local Slot ID may be reused by another Collection without ambiguity because the canonical address includes `Collection ID`.
+
+`Item Key / Subject` is representation/runtime addressability, not a new methodology object. It MUST be stable/recoverable whenever any `PER_ITEM` Slot exists or whenever Source/Q/R/P/Proposal/Finding/Evidence/revalidation/other formal state may refer to one item independently.
+
+Existing legacy reusable lower-level contracts are not automatically rewritten by this rule. Until an explicit migration is performed, a pre-existing repeated item schema may remain recoverable from its current governing contract. New/materially revised contracts use explicit Collection Definitions. Migration MUST preserve existing Unit boundaries, item semantics and representation requirements rather than manufacturing new Units or Slots merely to fit this structure.
+
+Collection emptiness and Unit omission are distinct:
+
+```text
+substantive Unit
++ declared Collection permits zero items
++ resolution establishes zero items
+→ valid empty Collection result
+
+Unit OMITTED
+→ the Unit responsibility itself is not applicable/material for this Target
+```
+
+A Core/Module Unit may define a stricter domain-specific rule such as “no material items ⇒ Unit OMITTED”, but that is an explicit Unit-level contract rule, not the generic meaning of an empty Collection.
+
+Collections and Resolution Structure are independent:
+
+```text
+Collections: none or 1..N
++
+Resolution Structure: simple or composite
+```
+
+A Collection never by itself makes a Unit composite. A Unit with one or several Collections remains simple when it has no formal Slot roles and can resolve directly.
+
+Likewise, data shape does not automatically create Slots:
+
+```text
+multiple fields / questions / values / Collections / collection items
+≠ multiple Slots
+```
+
+Define a Unit Resolution Slot only when the Unit contract requires a terminal role/sub-responsibility to be independently formalized/tracked for resolution state, guidance, validation, revalidation, Source/Evidence ownership or comparable contract value.
+
+Formal Slot ownership is part of the **Result Content Contract**:
+
+```text
+UNIT_WIDE Slot
+→ declared directly by the Unit Result Content Contract
+→ formal role belongs to the Unit result as a whole
+→ one runtime resolution for the substantive Unit
+→ MUST NOT belong to a Collection
+
+PER_ITEM Slot
+→ declared inside exactly one Collection Definition
+→ formal role belongs to that Collection's Item Contract
+→ the same Slot Definition governs that role independently for each Collection item
+→ one item's omission/state does not affect another item
+```
+
+The structural relation to the enclosing Collection is the authoritative Collection relation for a `PER_ITEM` Slot; do not create a separate Slot Instance or Collection-item lifecycle object. A flattened representation may repeat the Collection ID for addressability, but that is representation of the same contract relation, not a new semantic owner.
+
+Runtime item/value occurrences do not create new Slot Definitions or another formal decomposition level. Collection Definitions scope repeated item contracts and `PER_ITEM` Slot evaluation; formal responsibility decomposition still stops at Unit → Slot.
+
+```text
+Unit identity
+= Unit Responsibility / Unit-level contract identity
+≠ Collection identity
+≠ collection-item identity
+
+Slot identity
+= terminal Unit-internal contract-role identity
+≠ collection-item identity
+
+collection item count N
+≠ N Units
+≠ N Slot Definitions
+```
+
+> Semantic Owner Dependency
+> Type: `CONTEXTUALIZES`
+> Responsibility: `TWU.SUBJECT-REFERENCE`
+> Owner: [Target Work Subject Reference Contract](TARGET-WORK-SUBJECT-REFERENCE-CONTRACT.md#target-work-subject-reference)
+
+Canonical reference composition for Unit / Collection / item / Slot subjects is owned by that contract. This Unit contract owns the subject definitions and identifier scopes that make those references unambiguous; it does not duplicate the reference grammar here. `Collection ID` remains unique within its parent Unit while referenced, `UNIT_WIDE` Slot ID remains unique among Unit-wide Slots of that Unit, and `PER_ITEM` Slot ID remains unique within its owning Collection. References do not introduce `Collection Instance`, `Item Instance` or `Slot Instance` ontology.
+
+Collection/Slot structure also does not imply table representation. `TABLE` is used only when the governing contract explicitly requires a table or exact table schema. Never infer TABLE from repetition, Collection semantics, Slot structure, or the existence of an exact Item Contract. When no TABLE requirement is stated, do not mark or migrate that contract as tabular; preserve/use its non-table representation semantics.
+
+<a id="twu-runtime-projection"></a>
+### 3.4 Unit Resolution — Simple vs Composite
+
+Responsibility ID: `TWU.RUNTIME-PROJECTION`
+
+A simple Unit resolves directly:
+
+```text
+Unit Definition
+→ Unit Resolution
+→ Current Result Content
+```
+
+Do **not** create a one-item wrapper Slot merely for symmetry.
+
+A Unit is **composite** only when its contract requires terminal roles/sub-responsibilities to be formally tracked independently. Collection cardinality, multiple result fields or multiple questions alone do not make a Unit composite. Formal Slot roles may be Unit-wide or may repeat across items of one declared Collection. A Unit is composite whenever its contract has formal Slot roles. Prepared Slot Definitions belong to the Unit `Result Content Contract`; a substantive composite Unit projects/resolves them through exactly one explicit **Unit Resolution Set**:
+
+```text
+Unit Definition
+→ Unit Resolution Set
+   ├─ Unit Resolution Slot A
+   ├─ Unit Resolution Slot B
+   └─ Unit Resolution Slot C
+→ Current Result Content
+```
+
+The Unit Resolution Set is the **runtime projection/resolution structure** of the formal Slot Definitions owned by the Unit `Result Content Contract`. It does not define prepared Slot contracts. Once a Unit is composite, all formally tracked sub-responsibilities are Slots; ordinary result content and Collection Item Contract fields remain ordinary content rather than peer formal resolution components. Unit-level resolution may still coordinate dependencies and integrate Slot contents into one coherent Current Result Content.
+
+The runtime Set may contain:
+
+```text
+runtime projections of prepared Slot Definitions
++
+runtime projections of Contextual Slot Definitions added for this concrete Unit when needed
+```
+
+A reusable Unit whose prepared definition is simple may become composite in one concrete Target when context reveals formal terminal contract roles that genuinely need independent tracking. In that case add Contextual Slot Definitions to the concrete Unit Result Content Contract and project one concrete Unit Resolution Set for the substantive Unit; do not mutate the reusable Unit Definition merely because the result has more items/fields. A reusable composite Unit keeps its prepared Slot **Definitions** in its Result Content Contract and may add Contextual Slots when the criteria below are met.
+
+Prepared Slot Definitions remain addressable in the reusable Unit Result Content Contract. A **concrete runtime Unit Resolution Set exists only for a substantive composite Unit**. If the parent Module-defined Unit is `OMITTED`, retain the Unit-level omission disposition and do not instantiate/project concrete Slot runtime states merely for ceremony. Once the parent composite Unit is substantive, project the applicable prepared/contextual Slot Definitions into the runtime Set and evaluate concrete Slot applicability/materiality/disposition; individual prepared roles may then be substantive or explicitly omitted. Contextual Slots exist only when actually defined for that substantive Unit resolution.
+
+<a id="twu-slot-contract"></a>
+### 3.5 Unit Resolution Slot — Specialized Terminal Sub-Responsibility
+
+Responsibility ID: `TWU.SLOT-CONTRACT`
+
+A **Unit Resolution Slot** is a purpose-built Unit-internal primitive:
+
+```text
+Unit Resolution Slot
+= terminal formally tracked sub-responsibility
+  inside one parent Target Work Unit
+  whose resolved content contributes to
+  the parent Unit Current Result Content
+```
+
+It is **not** the old generic `Resolution Slot`, does not inherit that generic `Prompt / Value / ANSWERED_FROM_*` contract automatically, and is not a `Result Part` plus another Slot object. The Slot itself is the formal modular resolution component. Slot identity is the identity of a terminal **contract role**, not the identity/count of runtime values or collection items. Slot ownership/scope is established by its location in the parent Unit `Result Content Contract`: a `UNIT_WIDE` Slot is declared directly by the Unit contract; a `PER_ITEM` Slot is declared inside exactly one Collection Definition.
+
+A Slot reuses/narrows the same conceptual definition shape as its parent Unit rather than duplicating a completely different contract:
+
+```text
+Effective Slot Definition
+= inherited relevant Parent Unit definition
++ Slot narrowing
++ Slot-specific additions/refinements
+```
+
+Normative Slot shape:
+
+```text
+UnitResolutionSlot
+
+Identity
+  Slot ID                             REQUIRED; stable/recoverable while referenced
+    UNIT_WIDE → unique among UNIT_WIDE Slots of the parent Unit
+    PER_ITEM  → unique within the owning Collection
+  Slot Name                           proportional
+  Definition Origin: PREPARED | CONTEXTUAL
+  Scope: UNIT_WIDE | PER_ITEM
+    UNIT_WIDE → declared directly by the Unit Result Content Contract
+    PER_ITEM  → declared inside exactly one Collection Definition
+
+Responsibility                         REQUIRED
+  terminal bounded sub-responsibility
+  MUST remain inside Parent Unit Responsibility
+
+Result Content Contract                REQUIRED
+  MUST remain inside the parent Unit's Result Content Contract boundary
+  UNIT_WIDE → narrows one formal Unit-wide result role
+  PER_ITEM  → narrows one formal role inside the enclosing Collection Item Contract
+
+Purpose                                inherit parent; optionally refine
+Applicability                          inherit; may narrow
+Materiality                            inherit parent context; narrow/evaluate for this Slot
+Inputs / Sources                       inherit relevant inputs; add/narrow when needed
+Resolution Guidance                    inherit/specialize proportionally
+  questions / problems / prompts / Knowledge Basis / Proposal aids / helpful Lenses
+Validation Guidance                    inherit/specialize proportionally
+Revalidation Guidance                  inherit/specialize proportionally
+
+Runtime Resolution State
+  for UNIT_WIDE Scope:
+    one runtime resolution governed by this Slot Definition for the Unit/result as a whole
+    do not repeat/inherit the role into collection items
+
+  for PER_ITEM Scope:
+    the Slot Definition belongs to exactly one declared Collection
+    repeat the same runtime resolution shape independently for each item of that Collection
+    use the canonical [Target Work Subject Reference Contract](TARGET-WORK-SUBJECT-REFERENCE-CONTRACT.md#target-work-subject-reference) when the common Slot Definition or one item-local runtime role must be referenced independently
+    do NOT create another Slot Definition, Slot Instance ontology, child Slot or peer Unit
+
+  per runtime resolution (Unit-wide or per-item as above):
+    Applicability: APPLICABLE | NOT_APPLICABLE
+    Materiality: MATERIAL | NON_MATERIAL
+    Disposition: SUBSTANTIVE | OMITTED — <reason>
+    Resolution State when SUBSTANTIVE: OPEN | PARTIAL | RESOLVED | BLOCKED | DEFERRED
+    Current Resolution Content
+    Supported / Resolved From
+    Remaining Gap
+    Reopen When
+```
+
+The default result destination of a Slot is the parent Unit's `Current Result Content`; the Slot's `Result Content Contract` narrows a component of the parent Unit `Result Content Contract` rather than creating a second independent result contract. Needing a separately useful external result/consumer is evidence that the responsibility may deserve its own Unit.
+
+Completion state and provenance are distinct: `RESOLVED` says the Slot is sufficiently resolved; `Supported / Resolved From` says whether that meaning came from USER input, Source/Evidence, Decision, derivation, another Slot/result or another natural owner.
+
+Lifecycle/state follows Slot `Scope`. A `UNIT_WIDE` Slot has one runtime resolution for the Unit as a whole and is not repeated by Collection item. A `PER_ITEM` Slot has an independent runtime resolution for each item of its owning Collection; therefore the same Slot Definition may be `RESOLVED` for Item A, `OMITTED` for Item B and `BLOCKED` for Item C at the same time. A `PER_ITEM` Slot Definition has no synthetic aggregate runtime status merely because it governs several items. Item-local runtime resolutions/values are ordinary Collection result structure governed by the same Slot contract; they are not methodology entities. When the common Slot Definition or one item-local runtime resolution must be referenced independently, use the canonical `TWU.SUBJECT-REFERENCE` contract rather than inventing a Slot Instance.
+
+Applicability, Materiality, Disposition and Resolution State are also distinct axes:
+
+```text
+Applicability
+→ can this terminal sub-responsibility apply in the concrete Unit context?
+
+Materiality
+→ does this Slot require substantive resolution now?
+
+Disposition
+→ SUBSTANTIVE or explicit OMITTED — reason
+
+Resolution State
+→ progress only for a SUBSTANTIVE Slot
+```
+
+Valid combinations are constrained by the following invariants:
+
+```text
+APPLICABLE + MATERIAL
+⇔ SUBSTANTIVE
+⇒ Resolution State exists
+
+APPLICABLE + NON_MATERIAL
+⇒ OMITTED — <reason>
+⇒ no active substantive Resolution State
+⇒ no active substantive Current Resolution Content
+
+NOT_APPLICABLE
+⇒ NON_MATERIAL
+⇒ OMITTED — <reason>
+⇒ no active substantive Resolution State
+⇒ no active substantive Current Resolution Content
+```
+
+Equivalently: `MATERIAL ⇒ APPLICABLE + SUBSTANTIVE`; `SUBSTANTIVE ⇒ APPLICABLE + MATERIAL`; `NOT_APPLICABLE ⇒ NON_MATERIAL + OMITTED`; and `NON_MATERIAL ⇒ OMITTED`. Therefore combinations such as `NOT_APPLICABLE + MATERIAL`, `NOT_APPLICABLE + SUBSTANTIVE`, `APPLICABLE + MATERIAL + OMITTED`, `NON_MATERIAL + SUBSTANTIVE`, or `OMITTED + OPEN/RESOLVED` are invalid. `DEFERRED` is reserved for an `APPLICABLE + MATERIAL + SUBSTANTIVE` Slot whose resolution is intentionally postponed; it is not a synonym for omission.
+
+Inside a **substantive composite Unit**, a prepared Slot role that is not applicable in meaning or non-material now remains addressable through `OMITTED — <reason>` rather than disappearing or using applicability as a resolution-progress status. For `PER_ITEM` Slot roles, this disposition is evaluated independently per item of the owning Collection; omission for one item does not omit the Slot Definition or the same role for other items. `UNIT_WIDE` Slot disposition is evaluated once for the Unit/result as a whole. This rule does not require runtime Slot instantiation when the parent Unit itself is `OMITTED`; in that case only the reusable prepared Slot Definition remains addressable through methodology. A Contextual Slot is never predeclared merely to show omission, but once formed it should not silently disappear when an explicit lifecycle disposition is useful. An `OMITTED` concrete Slot contributes no active substantive Current Resolution Content to the parent Unit result; retain only the concise omission reason plus any separate history/provenance needed for trace or revalidation.
+
+### 3.6 Slot Boundary / No Subslots
+
+Formal resolution decomposition stops at the Slot:
+
+```text
+Target
+→ Target Work Unit
+→ Unit Resolution Slot
+→ stop formal Slot decomposition
+```
+
+A Slot may use situational local reasoning components such as questions, notes, hypotheses, candidate variants, mini-checks, comparisons or temporary substeps, but those do **not** become contractual child Slots.
+
+```text
+Slot
+→ MUST NOT contain child Unit Resolution Slots / nested Unit Resolution Sets
+```
+
+If a Slot becomes complex enough to need its own formal decomposition, reusable contract, independent consumers/lifecycle or independently useful coherent result, promote/form that concern as a separate Unit instead of introducing subslots. If it leaves the parent Unit Responsibility altogether, route it to the correct Unit / Target / owner.
+
+### 3.7 Prepared + Contextual Slot Composition
+
+A reusable Core/Module Unit that is already known to be composite MUST predefine its prepared Slot Definitions in the Unit Result Content Contract. The concrete runtime Resolution Set is projected only when that Unit is substantive. A concrete substantive Unit may expose additional independently resolvable contract roles/sub-responsibilities. Add a **Contextual Unit Resolution Slot** only when:
+
+```text
+1. the sub-responsibility is sufficiently applicable/material to justify forming a Contextual Slot for this concrete Unit result;
+2. it remains inside the parent Unit Responsibility;
+3. it contributes to the same coherent parent Unit result;
+4. independent tracking/guidance/validation/reopen value justifies a Slot;
+5. it does not justify a separate Unit.
+```
+
+Do not create a Slot merely because there is another question, formatting field, Collection, collection item/value or local reasoning step. First declare the actual Unit Result Content Contract, including every genuine repeated result-contract family as a Collection Definition while leaving ordinary list-valued/nested repeated fields as ordinary content; then define formal Slots only when required. `UNIT_WIDE` Slots live directly in the Unit contract. `PER_ITEM` Slots live inside exactly one Collection Definition, and repeated item values use the same governing Slot Definition when such a formal role is actually required.
+
+No `Unit Module`, `Slot Pack` or recursive Slot hierarchy is introduced by this model. Repeated reusable Slot-group patterns may be considered later only if actual recurrence justifies a new concept.
+
+### 3.8 Current Result Content / Requirement Coverage Boundary
+
+`Current Result Content` is the normalized actual answer/output owned by the parent Unit. For a composite Unit it is composed according to the Unit `Result Content Contract` from sufficiently resolved Slot contents — including per-item Slot values/content from declared Collections — plus any necessary Unit-level integrative meaning. That Unit-level integrative meaning may synthesize/connect Slot results, but MUST NOT hide another independently resolvable formal sub-responsibility outside the Unit Resolution Set; any such sub-responsibility must be represented as a Slot or promoted/routed as a separate Unit when it crosses the parent boundary. OPEN/PARTIAL/BLOCKED/DEFERRED Slot state remains visible when material, at the Slot's declared `UNIT_WIDE` or `PER_ITEM` scope.
+
+```text
+prepared Unit found              ≠ Requirement COVERED
+Unit instantiated                ≠ Requirement COVERED
+Slot RESOLVED                    ≠ Requirement automatically COVERED
+Unit Current Result Content      ≠ Requirement automatically COVERED
+```
+
+Target Resolution remains the owner of coverage:
+
+```text
+actual Unit Current Result Content
++ other relevant Source / Decision / state
++ Requirement Completion Criterion
+→ OPEN | PARTIAL | COVERED | ...
+```
+
+### Example — composite Slice result
+
+```text
+Target Step Result:
+  Implementation Slice Plan
+
+Unit:
+  Runtime Path
+  Responsibility:
+    resolve and describe the selected running-system path
+  Purpose:
+    make the Slice implementable/reviewable as one coherent vertical path
+  Result Content Contract:
+    one coherent runtime path with material ownership, flow and failure behavior
+    UNIT_WIDE Slot Definition: SLOT-RUNTIME-FLOW
+      Responsibility: resolve the running flow through the Slice
+      Result Content Contract: selected flow and material boundaries
+    UNIT_WIDE Slot Definition: SLOT-FAILURE-BEHAVIOR
+      Responsibility: resolve material runtime failure behavior inside this path
+      Result Content Contract: observable failure semantics and handling boundaries
+
+  Runtime Unit Resolution Set: URS-RUNTIME-PATH
+    SLOT-RUNTIME-FLOW → <current disposition/state/content>
+    SLOT-FAILURE-BEHAVIOR → <current disposition/state/content>
+
+  Current Result Content:
+    <normalized composed runtime-path meaning>
+```
+
+All Units/Slots may remain sections of one planning artifact. Unit/Slot identity does not force file splitting.
+
+<a id="core-state-unit-boundary"></a>
+## 4. Core State Unit / Core Resolution State
+
+Responsibility ID: `CORE.STATE-UNIT`
+
+A **Core State Unit** is typed generic planning/resolution meaning maintained by Core when independent lifecycle/addressability is useful. Existing `IDTSPE State Unit` / `State Unit` wording remains compatible. Typical kinds include:
+
+```text
+Source State Unit / Source Unit
+Question
+Proposal
+Question / Risk / Problem (Q/R/P)
+Decision
+Evidence / Evidence Need
+Planning Branch state/reference
+Revalidation Signal
+Methodology Usage State when useful
+Target Relation / Handoff item when independently useful
+persistence/representation state when materially useful
+validation/readiness finding when independently useful
+```
+
+> Semantic Owner Dependency
+> Type: `CONTEXTUALIZES`
+> Responsibility: `RESOLUTION.FINDING-DISPOSITION`
+> Owner: [Finding Disposition / Resolution Escalation](../../resolution/findings/FINDING-DISPOSITION.md#resolution-escalation)
+
+These kinds retain their canonical lifecycle owners. Finding `Resolution Escalation` (`RE-0..RE-4`) remains a transient Finding-disposition projection and is **not** a State Unit, Unit kind, lifecycle or priority scale. The topology changes are compositional:
+
+```text
+old mental model to avoid:
+  one peer Unit inventory where Result Units and generic Core state
+  all participate in Target Step Result composition
+
+preferred model:
+  Target Work Unit responsibility
+  + Core State Units / Core Resolution State attached or related
+    to the semantic subject they concern
+  + Target Work Unit Current Result Content
+```
+
+Core State Units/Core Resolution State are **not forced into exactly one Target Work Unit**. Cross-Unit, Target-level, cross-Target or Work-Context state remains valid when that is the smallest correct subject. Conversely, being addressable as a Core State Unit does not make that state a Target Work Unit or automatic Target Step Result content.
+
+### Source State Unit boundary
+
+`Source` remains accepted semantic truth, Evidence, constraint or accepted planning state actually used by the consumer. When that Source relation needs explicit/addressable Core state, represent it as a **Source State Unit** (short form `Source Unit`): a consumer-side typed binding to an authoritative **Source Subject**.
+
+```text
+Source Subject
+= authoritative owner/result/Evidence/Decision/statement being consumed
+
+Source State Unit
+= consumer-side binding from Target / Target Work Unit
+  to that Source Subject
+```
+
+The Source State Unit owns the consumer relationship (role/scope/authority/requiredness/freshness/revalidation), not a copied second body of the upstream truth. A Source may remain implicit when no independent authority/provenance/addressability value exists.
+
+### Proposal / Decision / Result relation
+
+```text
+Proposal
+= candidate resolution that may carry proposed Result Meaning,
+  a proposed Resolution/Realization Route, or both
+
+material Proposal selected under applicable authority
+= Decision semantics occurred
+
+explicit/durable Decision Unit/trace
+= retain when later work/review/revalidation benefits from
+  knowing the selection/rationale/trade-off/reconsider condition
+
+Current Result Content
+= normalized current Unit answer after selected or safely derived meaning is integrated
+```
+
+Therefore:
+
+```text
+Question → trusted Answer/Evidence → Result Content
+```
+
+may need no Decision at all, while:
+
+```text
+Proposal A / Proposal B → material selection
+→ Decision semantics
+→ Result Content
+```
+
+may or may not need a separately retained Decision record.
+
+### State can be useful before Result Content exists
+
+A Target Work Unit may remain unresolved while its Resolution carries useful addressable Core state:
+
+```text
+Unit: Uses / Ownership Boundary
+
+Problem:
+  failure translation ownership is inconsistent
+
+Evidence Need:
+  run persistence-failure integration proof
+
+Proposal:
+  ApplicationService owns failure translation
+
+Current Result Content:
+  absent until the material choice is resolved
+```
+
+That is useful IDTSPE work even before current Unit Current Result Content changes.
+
+<a id="core-methodology-usage-state"></a>
+### Methodology Usage State
+
+Responsibility ID: `CORE.METHODOLOGY-USAGE-STATE`
+
+`Methodology Usage State` remains optional generic Core Resolution State for retaining **material facts about how the methodology is currently being used** when those facts help continuation, review, handoff or revalidation. It is not an execution log and does not create one methodology-state Unit per target Unit.
+
+Use proportionally:
+
+```text
+Methodology Usage State
+  Current Work Concern — when retaining it helps orientation/re-entry
+  Active Use Cases — only the material current set
+  Relevant Registry Traversals — registry + purpose + selected entries/outcome
+  Applied Components — Target Modules / Lenses / reusable guidance + operation/purpose + applied-to subject
+  Material Guards / Validators / Rules / Packs — only when their activation affects continuation/review
+  Contextual Adaptations / deferred recommendations — when later work must know them
+  Recheck Triggers / Re-entry — when future context may change applicability
+```
+
+Do not record every file read, command, tool call, non-applicable registry row or transient reasoning step. Reuse stable methodology-use meaning rather than serializing execution history.
+
+When a retained material Proposal needs review provenance, its `Review Provenance` may reference the applicable `Methodology Usage State` entries for materially applied Lenses/operations instead of duplicating them. The Proposal lifecycle defines when that provenance must survive; Methodology Usage State remains the generic reusable carrier for methodology-application facts.
+
+`Current Work Concern` may remain only conversational/work-context meaning. Promote it into explicit Methodology Usage State only when independent addressability, continuation, audit or revalidation value is material.
+
+Methodology Usage State may attach to a Target Work Unit when methodology-use meaning is genuinely Unit-local, or remain cross-Unit/Target/Work-Context state when that is its natural subject. It is not forced into a Work Unit solely because the overall model is Unit-centric.
+
+<a id="twu-unit-definition-authority"></a>
+## 5. Unit Definition Authority / DEFINE UNIT
+
+The canonical owner of Unit structure + Unit-authoring guidance is this model. There is no competing generic `Unit Contract` object and separate `Unit Creation Guide`; a normative **Unit Definition** is the result of `DEFINE UNIT`.
+
+The authority boundary is:
+
+```text
+IDTSPE Core
+→ defines generic Unit Definition / Resolution / Unit Resolution Slot mechanics
+→ defines Core State Unit kinds/lifecycles
+→ may DEFINE reusable Core-defined Target Work Units in advance
+→ defines Contextual Unit formation boundary
+
+Target Module Model
+→ may DEFINE reusable Module-defined Units in advance for a recurring Target family
+→ MUST predefine the Slot Definitions owned by every reusable Module-defined Unit that is composite
+→ concrete Unit Resolution Set is a runtime projection for a substantive composite Unit
+→ provides prepared recognition/coverage mapping and reusable resolution guidance
+
+Local Target Contract
+→ defines one-off Target-level composition/result boundary
+→ has no Module-defined Unit inventory
+→ may use applicable Core-defined Units and DEFINE Contextual Units
+
+Lens
+→ defines neither Unit kinds nor result ownership
+→ evaluates an Analysis Surface and may surface Finding Candidates
+```
+
+### DEFINE UNIT — Authoring / Formation Guidance
+
+Whether definition happens during Core/module authoring or contextually at runtime, use the same reasoning:
+
+```text
+material Requirement / recurring need
+→ can direct Target/Unit state cover it sufficiently?
+   yes → no new Unit needed
+→ is this merely another homogeneous item/value under an existing Unit Responsibility + Result Content Contract?
+   yes → keep it inside that Unit's result collection; do not form a peer Unit
+→ identify one natural bounded Responsibility
+→ state why that Responsibility/result is useful (Purpose)
+→ state the coherent Result Content Contract
+→ declare every genuine repeated result-contract family as an explicit Collection Definition with its existing/new Item Contract; keep ordinary list-valued/nested repeated fields as ordinary content; if item-local formal references are possible, define a stable/recoverable natural Item Key / Subject
+→ identify any formal UNIT_WIDE Slot roles directly under the Unit contract and any formal PER_ITEM Slot roles inside exactly one Collection
+→ identify only the Inputs / Sources / guidance / validation actually needed
+→ simple coherent resolution, including ordinary fields/collections?
+   yes → direct Unit Resolution
+   no → define terminal Unit Resolution Slots only for independently formalized contract roles/sub-responsibilities
+→ verify no Slot has escaped the parent Responsibility
+→ verify any concern needing another formal decomposition is a Unit candidate, not a subslot
+→ Unit Definition sufficiently executable
+```
+
+One Question does not imply one Unit or one Slot. One Target Requirement does not imply one Unit. One formatting/result field does not imply one Slot. One collection item does not imply one Unit or one Slot; repeated values governed by one Unit contract remain inside that Unit result.
+
+### Core-Defined Unit
+
+A `Core-defined Unit` is a reusable Target Work Unit **defined in advance by IDTSPE Core** for a cross-target bounded responsibility.
+
+Core Units are **applicability-driven**:
+
+```text
+Core Unit Definition exists globally
+→ check applicability to current Target/Requirement/situation
+→ instantiate only if applicable
+→ execute proportionally when material
+```
+
+Do not render a complete global Core Unit inventory for every Target.
+
+Initial Core Unit catalog:
+
+```text
+CORE-U-UNROUTED-CONCERNS
+  Applicability:
+    only inside an already formed Target; zero-Target Work Context keeps the concern
+    in natural Core State/Broad Discussion and may surface a GIP/Target Formation candidate
+  Responsibility:
+    retain and disposition material concerns whose natural semantic
+    subject/owner/destination is not yet sufficiently clear
+  Purpose:
+    prevent material planning meaning from being lost merely because its natural owner
+    is not yet sufficiently resolved
+  Result Content Contract:
+    Collection: Retained Concerns
+      Item Contract = one retained concern + its disposition/destination meaning
+      Item Key / Subject = natural concern identity/subject when item-local formal reference is needed
+      Cardinality = 0..N Concern items
+  Cardinality:
+    0..1 Unit per Target
+```
+
+Concern items inside `CORE-U-UNROUTED-CONCERNS` are a `0..N` collection governed by one Core Unit contract. They do not become peer Target Work Units or Unit Resolution Slots merely by count; they remain situational result items unless a genuinely separate Unit responsibility or formal Slot contract role is justified under the criteria above.
+
+The Unit may retain Questions, Risks, Problems, Findings, GIPs, unclear Requirements or other material meaning. Its current result routes/dispositions each concern to its natural owner (existing Unit, Q/R/P, Proposal, Contextual Unit, Target candidate, Source/Evidence owner, DEFERRED/BLOCKED/NON_MATERIAL, etc.). It is not a permanent miscellaneous backlog.
+
+### Contextual Unit
+
+A `Contextual Unit` is defined when the current Target exposes a bounded material responsibility that is not sufficiently covered by direct resolution or a suitable prepared Core/Module Unit and does not justify a separate Target.
+
+Contextual work has two distinct operations:
+
+```text
+Requirement / material need
+→ DEFINE Contextual Unit
+   Responsibility
+   Purpose when non-obvious
+   Result Content Contract
+   proportional Inputs / Guidance / Validation
+   Unit Resolution Slots when composite
+→ EXECUTE Unit Resolution
+→ Current Result Content
+→ integrate into natural Result Destination / Target Requirement coverage
+```
+
+A Contextual Unit is not automatically reusable. Repeated recurrence may later justify promotion into a Core-defined or Module-defined Unit after explicit review; promotion normalizes/reuses the same Unit Definition model rather than converting to a different Unit ontology.
+
+Do not create a Contextual Unit merely to avoid refining an incorrectly bounded Target scope or unclear Requirement.
+
+<a id="twu-applicability-disposition"></a>
+## 5A. Unit Applicability / Materiality / Disposition Contract
+
+Responsibility ID: `TWU.APPLICABILITY-DISPOSITION`
+
+Every Unit kind/definition must make it possible to answer three different questions:
+
+```text
+Applicability
+→ can this Unit kind / responsibility apply to the current Target/situation?
+
+Materiality
+→ does this Unit require substantive resolution now?
+
+Disposition
+→ what explicit result state does this Unit have in the concrete Target result?
+```
+
+For a **Module-defined Unit**, Target formation instantiates the complete reusable Unit inventory. Once that Target exists, every Module-defined Unit is a concrete Target Work Unit and remains addressable/visible in the Target result; materiality controls substantive work/depth, **not whether the Unit exists or whether its identity silently disappears**. In an authored Target representation, each Module-defined Unit is shown by its Unit heading/identity plus its current disposition/content.
+
+```text
+Module-defined Unit + material + sufficiently resolved
+→ declare Unit
+→ Current Result Content
+
+Module-defined Unit + material + unresolved
+→ declare Unit
+→ explicit OPEN / unresolved result meaning
+
+Module-defined Unit + not applicable / not material now
+→ keep the Unit declared/addressable
+→ show its Unit heading/identity
+→ concise explicit omission disposition with the reason
+→ no substantive Unit Resolution solely to fill the Unit
+→ if its reusable Unit Definition is composite, do not instantiate/project a concrete Unit Resolution Set or Slot runtime states
+
+no concrete Target formed
+→ no Target result / no Unit inventory merely for ceremony
+```
+
+Do not use a bare `N/A` placeholder. The omission text must communicate why substantive Unit work is not justified in this Target/result. A non-material Unit does **not** require full Unit Resolution merely because its identity is visible.
+
+A **Contextual Unit** remains different: it is created only when the active context actually exposes an independently useful bounded local responsibility. Do not predeclare hypothetical Contextual Units merely to prove they were considered.
+
+Generic Core State examples remain proportional:
+
+| State Unit kind | Introduce / make explicit when | Normally omit / keep implicit when |
+|---|---|---|
+| `Source State Unit` | a consumed Source needs explicit authority/provenance, consumer scope, conflict handling or future revalidation | the Source relation is obvious/transient and adds no independent lifecycle/addressability value |
+| `Question` | an unresolved question benefits from explicit resolution/addressability | already answered or trivial enough to remain Broad Discussion |
+| `Proposal` | a material candidate approach/meaning needs comparison, review, acceptance or lifecycle | every fleeting AI idea or obvious local implementation choice |
+| `Risk / Problem` | downside/problem can change decision, proof, ownership, scope or revalidation | generic hypothetical concern has no current consequence |
+| `Decision` | selected/rejected material meaning or rationale must constrain later work or survive review/handoff | no real choice was made or the fact is already owned unambiguously as Target result |
+| `Evidence / Evidence Need` | empirical/source support has independent resolution, proof or revalidation value | ordinary explanatory support does not need lifecycle/addressability |
+| `Planning Branch` | alternative/counterfactual reasoning must remain separately comparable or resumable | one path is already sufficient and alternatives add no decision value |
+| `Revalidation Signal` | a concrete condition/change may make current accepted/working meaning stale | vague “things may change” reminders |
+| `Methodology Usage State` | methodology selection/application/adaptation/recheck context matters for continuation, audit or revalidation | routine registry/file reads whose result is obvious and stable |
+| `Target Relation / Handoff` | cross-Target dependency/ownership/continuation meaning must remain addressable | relationship is local, transient or already explicit in the consuming Result Unit |
+| representation/persistence state | physical placement/materialization choice has independent review/revalidation value | representation follows directly from current owner contract with no ambiguity |
+| validation/readiness finding | a material validation result must survive beyond the immediate evaluation | no material finding exists or it is already disposed into another owned Unit |
+
+Core State remains sparse because Core State kinds are not a predeclared Target-specific inventory. The complete-inventory rule applies specifically to Module-defined Units of an actually formed Target Module Instance. Core-defined Units are instantiated only when applicable; Contextual Units exist only when locally defined/formed. A Local Target Contract has no Module-defined inventory.
+
+<a id="twu-applicability-envelope"></a>
+## 5B. Unit Applicability Envelope — Opening / In-Unit / Closing Checkpoints
+
+Responsibility ID: `TWU.APPLICABILITY-ENVELOPE`
+
+Every **material Target Step Result Unit** is processed inside a lightweight applicability envelope. The envelope is a responsibility boundary around Unit work, not a new Result Unit, State Unit, phase, persisted status or execution log.
+
+```text
+current Work Context + Target + accepted State
+→ Opening Unit Checkpoint — <RU-ID>
+→ Unit Work — <RU-ID>
+   ↕ In-Unit Applicability Check whenever material
+→ candidate Current Result Content
+→ Closing Unit Checkpoint — <RU-ID>
+→ Current Result Content / narrow re-entry when needed
+```
+
+### Opening Unit Checkpoint
+
+Before substantive work on one material Target Work Unit, bind the working Unit to the normative Unit Definition and reusable method owners that govern how it is resolved.
+
+```text
+Core-defined Unit    → Core Unit Definition
+Module-defined Unit  → Module-defined Unit Definition
+Contextual Unit      → locally established Contextual Unit Definition
+```
+
+```text
+material Unit becomes current work subject
+→ resolve/reuse the exact governing Unit Definition anchor as the primary method owner
+→ resolve the smallest sufficient additional reusable owner set already known to be material
+→ when an authorized working representation is being authored, write the concise Methodology binding before substantive Unit content
+→ otherwise retain the binding in current working context until/if representation is materialized
+→ if the substantive Unit is composite, establish/reuse the actual Unit Resolution Set as the runtime projection of the applicable prepared/contextual Slot Definitions for this Unit; project UNIT_WIDE roles once and PER_ITEM roles only for existing items of their owning Collections
+→ then begin substantive Unit Resolution
+```
+
+> Semantic Owner Dependency
+> Type: `CONTEXTUALIZES`
+> Responsibility: `DOC.METHODOLOGY-CONTEXTUAL-ANNOTATION`
+> Owner: [Methodology / Contextual Annotation Principle](../../../../../principles-and-terminology.md#doc-methodology-contextual-annotation)
+
+The persisted binding form follows that Documentation owner; normally:
+
+```md
+**Methodology:** {link to exact reusable owner}
+```
+
+The braces above are placeholder notation, not a repository path. Replace them with a real Markdown link to the exact reusable owner. Do not copy the method after that owner link. If a reusable owner should exist but is missing, ambiguous or conflicting, surface an OPEN methodology-owner resolution / Finding instead of pretending the block is merely Contextual.
+
+After the primary binding is established:
+
+```text
+current Unit Analysis Surface
+→ logically check Core Lens Registry applicability
+→ logically check active-profile Lens Registry applicability when a profile is active
+→ reuse trustworthy current registry summaries when nothing material changed
+→ open/apply only plausible Lenses at useful depth
+→ consult other component registries only when this Unit exposes a material trigger for them
+```
+
+`Opening Unit Checkpoint` is mandatory for a material Unit. A valid result is `NO_ADDITIONAL_LENS` / no new supporting component. Mandatory checkpoint does **not** mean mandatory full-file reread, exhaustive registry traversal, Lens execution or Finding creation. Supporting methodology discovered later is bound/referenced before that supporting method is applied; it need not all be predicted at the opening checkpoint.
+
+### In-Unit Applicability Check
+
+Opening and Closing checkpoints are minimum boundaries, not the only moments when registries may be consulted. During Unit work, re-evaluate applicability immediately when new Evidence, Finding pressure, ownership/dependency change, representation pressure, profile change or another material Analysis-Surface change makes another evaluator/supporting component plausibly useful.
+
+```text
+Opening/Closing checkpoint
+≠ exclusive registry-consultation window
+```
+
+Do not wait for Closing merely to preserve ceremony when a material issue is already visible.
+
+### Closing Unit Checkpoint
+
+After candidate Current Result Content exists, evaluate the **actual resulting Unit surface** before treating it as current-for-handoff:
+
+```text
+candidate Current Result Content
+→ for a composite Unit, verify material Slot dispositions/content and unresolved gaps are coherent with the parent Result Content Contract
+→ recheck Core Lens Registry applicability
+→ recheck active-profile Lens Registry applicability when active
+→ apply newly material checks at useful depth
+→ disposition material Findings through normal Core ownership/lifecycle
+→ resolve newly material owner / Target / revalidation / representation consequences
+→ Current Result Content
+```
+
+A Closing checkpoint may reopen/refine the same Unit or route upstream/downstream work and then run again. It is not a one-way approval gate.
+
+### Registry Read Economy
+
+```text
+mandatory logical checkpoint
+≠ mandatory physical reread
+≠ mandatory Lens selection
+≠ mandatory Finding
+≠ mandatory deeper methodology
+```
+
+Unchanged registry metadata/current summaries may be reused while trustworthy. Reread concrete owners when applicability, authority, content freshness or conflict cannot be reconstructed safely.
+
+### Target Module Projection Rule
+
+The generic algorithm above has one owner here. Every concrete Target Module must still make the envelope **explicit per material Result Unit** by naming:
+
+```text
+Opening Unit Checkpoint — RU-...
+Unit Work — RU-...
+Closing Unit Checkpoint — RU-...
+```
+
+A module may add primary/frequent Lens candidates or local triggers for that Unit, but must not copy/redefine this generic algorithm. This explicit placement makes Unit processing reviewable without turning checkpoints into extra Result Units.
+
+## 6. Lens / Finding Boundary
+
+A Lens/validator/Evidence check/review may analyze a Unit, Proposal, Decision, Target or other semantic subject. Useful explanation may remain Broad Discussion. Newly surfaced potentially material meaning crosses the Finding Candidate boundary only when ownership/lifecycle disposition is needed.
+
+```text
+Lens / Validator / Evidence / Review
+→ explanatory analysis only
+   OR
+→ Finding Candidate
+→ Core Finding Disposition
+→ smallest correct semantic subject / owner
+```
+
+When the finding concerns one terminal sub-responsibility of a composite Unit:
+
+```text
+Finding
+→ existing Unit Resolution Slot
+```
+
+When the finding concerns the broader bounded Unit responsibility:
+
+```text
+Finding
+→ existing Unit Resolution
+```
+
+When no suitable Unit exists but a bounded local responsibility is useful:
+
+```text
+Finding
+→ Contextual Unit
+```
+
+When the responsibility is independently substantial:
+
+```text
+Finding
+→ Target Formation
+```
+
+A Finding may instead route directly to Target Scope, Source authority, Target relation/handoff, another semantic owner, methodology state or another canonical subject when that is more correct. Unit-centric does not mean Unit-exclusive.
+
+## 7. Target Module Step-Result / Prepared Coverage Contract
+
+A Target Module Model packages reusable analysis for one recurring Target family. It does not semantically create task Requirements; it recognizes recurring requirement patterns in the current Target scope and provides prepared Module-defined Unit Definitions that can cover them.
+
+```text
+current task/scope Requirement
+→ Target Module recognition/coverage knowledge
+→ prepared Module-defined Unit Definition
+→ Unit Resolution at runtime
+→ Current Result Content
+→ Requirement coverage + Target Step Result contribution
+```
+
+For each Module-defined Unit the module must expose enough reusable meaning to perform that responsibility safely. Unit-specific questions/Knowledge Basis/Lens triggers/validators belong with the Unit Definition or the relevant Unit Resolution Slot when specific; genuinely shared Target-family guidance may remain module-level.
+
+For a Target governed by a Target Module Model, the complete Module-defined Unit inventory is instantiated even when some Units are non-material. The concrete Target may additionally use applicable Core-defined Units and define Contextual Units for uncovered material responsibilities.
+
+For a Local Target Contract there is no Module-defined inventory; Target work uses applicable Core-defined Units plus Contextual Units actually defined/formed.
+
+## 8. Complete Module-Defined Unit Inventory / Proportional Content Rule
+
+```text
+Target Module Step-Result Contract
+= complete reusable Module-defined Unit inventory
+
+Concrete module-backed Target
+= every Module-defined Unit instantiated/addressable
++ each Unit dispositioned as RESOLVED / OPEN / explicitly omitted
++ substantive depth proportional to materiality
+
+Core-defined Units
+= instantiate only when applicable
+
+Contextual Units
+= exist only when locally defined/formed
+```
+
+A declared Module-defined Unit does not mean it must receive substantive work when non-material, be persisted separately, be equally detailed, or have every optional field populated. Use a concise explicit omission reason rather than a bare `N/A`.
+
+`Prepared Unit exists` also does not mean it must be fully executed before Target formation completes. A sufficiently formed Target may carry OPEN Unit work into Target Resolution.
+
+Existing `Output Schema` / `Target-specific Output Template` terminology remains a compatibility/technical projection vocabulary. The semantic owner is the Step-Result Contract; a template is one way to project it.
+
+## 9. Internal Object Contract Boundary
+
+```text
+Result Unit
+= concrete target-result processing/addressability part
+
+Internal Object Contract
+= reusable object schema/questions/validation
+  owned inside one Target Module
+```
+
+Example:
+
+```text
+TM-FEATURE
+
+Result Units:
+  Semantic Data
+  Feature Behavior
+
+Internal Object Contracts when addressability is useful:
+  Feature semantic-data item
+  BR-* Behavior Requirement item
+```
+
+An Internal Object Contract may define several addressable objects inside one Result Unit.
+
+Physical separation/addressability does not create a new Target.
+
+### Supporting Target Module Boundary
+
+A `SUPPORTING TARGET MODULE` is still a **real reusable Target Module**.
+
+It is justified only when its recurring Target/Step-Result family can also make sense independently as a bounded Target family, even if one invocation reuses it in a supporting role inside another Target.
+
+```text
+can be a coherent Target family by itself
++ can contribute inside another Target
+→ Supporting Target Module role is valid
+
+can only exist as an internal part of one parent Target result
+→ not a Target Module
+→ use Result Unit / Internal Object Contract / shared Result-Unit method
+```
+
+Supporting-role use does not automatically create a child Target Instance. A separate Target exists only when normal Target Formation establishes an independently useful planning responsibility/result.
+
+---
+
+## 10. Unit Resolution Slot / Generic Resolution Slot / Target Requirement Boundary
+
+Three different primitives now have intentionally different responsibilities:
+
+```text
+Target Resolution Requirement
+= need/completeness criterion the Target must sufficiently cover
+
+Unit Resolution Slot
+= terminal formally tracked sub-responsibility inside one parent Unit
+
+Generic Resolution Slot
+= optional generic coordination/status view for one subject/value in workflows that need it
+```
+
+A **Unit Resolution Slot is purpose-built and normative here**. It does not inherit the historical generic Resolution Slot vocabulary and does not use that generic Slot merely for compatibility.
+
+```text
+Generic Resolution Slot
+  Prompt / Requiredness / Authority / Value / historical generic Status vocabulary
+
+Unit Resolution Slot
+  Responsibility / Result Content Contract / inherited-narrowed Unit guidance
+  + Applicability / Materiality / explicit SUBSTANTIVE vs OMITTED disposition
+  + OPEN | PARTIAL | RESOLVED | BLOCKED | DEFERRED when substantive
+  + Current Resolution Content / provenance / Remaining Gap / Reopen When
+```
+
+The generic Resolution Slot / Resolution Set remain valid elsewhere under [`RESOLUTION-SLOT-AND-TARGET-FORMATION-SET.md`](RESOLUTION-SLOT-AND-TARGET-FORMATION-SET.md). They are neither deleted nor the base class of Unit Resolution Slots.
+
+Questions/Proposals/Lenses/Branches attach to their smallest natural Requirement / Collection / Collection item / Unit / Unit Resolution Slot / Target subject through normal Core lifecycle/runtime mechanisms. When that selected subject is inside Target Work, use the canonical [Target Work Subject Reference Contract](TARGET-WORK-SUBJECT-REFERENCE-CONTRACT.md#target-work-subject-reference). A local question or reasoning step inside a Slot does not automatically become another formal Slot.
+
+## 11. Persistence / Representation
+
+```text
+Unit identity
+≠ file identity
+
+Unit Resolution Slot identity
+≠ file/artifact identity
+```
+
+This model establishes that State/Result Unit addressability does not imply one file per Unit or Target. Whether selected meaning should persist, and how it is represented/placed, is owned by the canonical Representation / P-14 path in [`planning/documentation/idtspe-methodology/active/idtspe-core/representation/ARTIFACT-PLACEMENT-AND-IDTSPE-RESPONSE-CONTRACT.md`](../../representation/ARTIFACT-PLACEMENT-AND-IDTSPE-RESPONSE-CONTRACT.md). Proposal/Decision retention policy is owned by [`planning/documentation/idtspe-methodology/active/idtspe-core/resolution/proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md`](../../resolution/proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md).
+
+## 12. Downstream Source Boundary
+
+Another Target's accepted result becomes a Source only explicitly. The upstream accepted meaning remains the **Source Subject**; the downstream consumer records a Source State Unit/binding when that relation is material.
+
+Useful Unit-level handoff is allowed:
+
+```text
+Target A
+  accepted Target Work Unit RU-03
+      ↓
+Target B
+  Source State Unit
+    Source Subject: Target A / RU-03 accepted Current Result Content
+    Consumer Scope: whole Target / one canonical Target Work subject / declared subset
+```
+
+Target topology (`FLOW_TO`, `PRECEDES`, etc.) does not create this Source authority automatically. The entire physical artifact need not become one undifferentiated Source merely because several Units share a file.
+
+---
+
+## 13. High-Level End-To-End Example
+
+```text
+Target:
+  SL-CAP-01
+
+Module:
+  TM-IMPLEMENTATION-SLICE
+
+Current Step intent:
+  produce a sufficiently resolved vertical Slice plan before exact realization
+```
+
+Current Core State Units:
+
+```text
+Source State Units:
+  Source Subject: SCN-CAPTURE accepted result
+  Source Subject: CaptureItem Domain owner
+  Source Subject: current CaptureController
+  Source Subject: current CaptureRepository
+  Consumer Scope: Target-shared / Unit-local / Collection-local / Collection-item-local / UNIT_WIDE Slot-local / common PER_ITEM Slot-definition-local / item-local PER_ITEM Slot-runtime-local as applicable
+
+Question:
+  which existing owner should orchestrate capture?
+
+Proposal:
+  reuse CaptureApplicationService
+
+Risk:
+  persistence failure may be reported as success
+```
+
+Target Step Result:
+
+```text
+RU-SLICE-01 Whole-Slice Responsibility / Candidate Structure
+RU-SLICE-02 Semantic Application Entry / Result Boundary
+RU-SLICE-03 Step-by-Step End-to-End Realization
+RU-SLICE-04 Feature Integration Proof
+RU-SLICE-05 Evolution / OPEN Slice Pressure — Unit always present; substantive content only when material, otherwise explicit omission disposition
+```
+
+Slice Verticality / Integration Lens Analysis Surface:
+
+```text
+Primary Result Units when material:
+  RU-SLICE-01
+  RU-SLICE-02
+  RU-SLICE-03
+  RU-SLICE-04
+
+Conditional:
+  RU-SLICE-05
+
+Relevant State:
+  Questions / Risks / Decisions / Evidence / Revalidation
+
+Context:
+  selected Feature + BR-*
+  relevant Scenario journey / Screen constraints
+  Domain / Shared owners
+  current code/tests
+```
+
+Lens operation:
+
+```text
+CHECK
+```
+
+Finding Candidate:
+
+```text
+Meaning:
+  repository failure has no explicit truthful semantic result path
+
+Affected:
+  RU-SLICE-02 semantic result boundary
+  RU-SLICE-03 end-to-end realization
+
+Related accepted meaning:
+  selected Feature BR forbids false success
+```
+
+Core Finding Disposition may resolve:
+
+```text
+Risk R-17:
+  persistence failure may be reported as success
+
+Question Q-18:
+  which owner maps repository failure into the semantic result?
+```
+
+After ordinary authority/resolution:
+
+```text
+Decision D-21:
+  ApplicationService maps repository result
+```
+
+The relevant Slice Result Units are then refined:
+
+```text
+RU-SLICE-02:
+  semantic result explicitly distinguishes durable success from persistence failure
+
+RU-SLICE-03:
+  Repository.save(...)
+  → ApplicationService.mapResult(...)
+  → adapter/UI truthful success/failure projection
+
+RU-SLICE-04:
+  integration proof asserts that persistence failure cannot surface as success
+```
+
+The Lens surfaced a finding. Core disposition/lifecycle resolved what to do with it. The Target Module continued to own the Result Unit.
+
+## 14. Migration Compatibility
+
+The canonical ownership split is:
+
+```text
+Target Module Model
+→ reusable Target Step-Result Contract + Module-defined Target Work Units
+
+Local Target Contract
+→ one-off Target-level result/composition contract
+→ target-local Target Work Units may be applicable Core-defined Units plus Contextual Units formed only when useful
+
+Core Target Work Unit model
+→ Unit Definition + Unit Resolution + terminal Unit Resolution Slot mechanics
+→ Core-defined Unit definitions + Core State Unit kinds/lifecycles + applicability/materiality/addressability
+
+Lens Model
+→ Lens Analysis Surface / operations / Typical Findings
+
+Finding Disposition
+→ Finding Candidate → State/lifecycle/ownership consequence
+```
+
+
+`Unit Contract` remains a compatibility phrase for the normative Unit Definition in older Modules/profile text. It does not create a second object. Existing legacy reusable Unit bodies may encode Purpose together with Responsibility/description until materially revised; every new or materially revised reusable Unit MUST make Responsibility, Purpose and Result Content Contract explicit and separately identifiable. Existing result fields/questions/collection items do not become Unit Resolution Slots automatically; introduce Slots only when the terminal contract-role/sub-responsibility criteria are actually met.
+
+Installed profile conformance is checked against current registries rather than frozen counts in this semantic model. Current mechanical registry/file parity is reported by [`planning/documentation/idtspe-methodology/active/evidence/checks/ACTIVE-METHODOLOGY-MECHANICAL-CONSISTENCY-CHECK.md`](../../../evidence/checks/ACTIVE-METHODOLOGY-MECHANICAL-CONSISTENCY-CHECK.md).
+
+Older reusable Lens bodies that predate the literal current Lens contract remain interpreted through [`../lenses/LENS-MODEL.md`](../../lenses/LENS-MODEL.md) until materially revised. This compatibility rule does not make the Unit model a second Lens owner.
+
+## 15. Key Invariants
+
+```text
+Target Work Unit = bounded target-specific work responsibility with one coherent useful result
+Unit Definition = Responsibility + Purpose + Result Content Contract + proportional execution guidance
+Unit Contract = compatibility shorthand for Unit Definition, not a second methodology object
+Core/Module/Contextual Units share generic mechanics; definition authority/formation rules differ
+Target composition = distinct Unit responsibilities/contracts, not a homogeneous collection of item-Units
+Genuine repeated result-contract families under one Unit contract stay inside that Unit's Current Result Content and are represented as explicit Collections when governed by a new/materially revised contract; ordinary list-valued or nested repeated fields that are not such contract families remain ordinary content
+Unit identity = Unit responsibility/contract identity, not collection-item identity
+Simple Unit resolves directly without a fake Slot, including Units with one or several Collections when no formal Slot roles are required
+Composite Unit has formal Slot Definitions in its Result Content Contract and, when substantive, MUST use exactly one runtime Unit Resolution Set to project/resolve them
+Unit Resolution Slot Responsibility MUST remain inside parent Unit Responsibility
+Unit Resolution Slot tracks Applicability / Materiality separately from SUBSTANTIVE vs OMITTED disposition and substantive resolution state
+Unit Resolution Slot has no formal child Slots / nested Resolution Set
+Prepared Slot Definitions + Contextual Slot Definitions belong to the Unit Result Content Contract and may project one concrete Unit Resolution Set only for a substantive composite Unit
+Parent Unit OMITTED → no concrete runtime Resolution Set / Slot states; prepared Slot Definitions remain reusable methodology
+Unit Result Content Contract may declare 0..N explicit Collections; each Collection owns one common Item Contract for one genuine repeated result-contract family
+New/materially revised genuine repeated result-contract families are explicit Collection Definitions even when only one Collection exists; ordinary list-valued/nested repeated fields remain ordinary content; legacy lower-level contracts remain recoverable until explicit migration
+UNIT_WIDE Slot Definition belongs directly to the Unit Result Content Contract; PER_ITEM Slot Definition belongs to exactly one declared Collection
+Slot identity = terminal contract-role identity, not runtime item identity; PER_ITEM Slot Definitions govern corresponding roles across items of their Collection, with lifecycle/value evaluated independently per item
+Canonical Unit / Collection / item / Slot reference composition is owned by `TWU.SUBJECT-REFERENCE`; this Unit model owns the subject/identifier contracts, not a duplicate address grammar
+Question ≠ Slot automatically; result field ≠ Slot automatically; collection item/value ≠ Slot automatically
+Collections and Resolution Structure are independent; Collections do not imply composite
+PER_ITEM Slot scope is valid only inside a declared Collection; UNIT_WIDE Slot scope does not repeat into Collection items
+Collection/Slot structure never implies TABLE; use/mark TABLE only when the governing contract explicitly requires it, otherwise preserve non-table representation
+No separate Result Part ontology is introduced; the Unit Resolution Slot itself is the formal modular result/resolution component
+Slot needing its own formal decomposition / independently useful result → separate Unit candidate
+Unit/Slot resolution ≠ Target Requirement COVERED automatically
+Core State Unit ≠ Target Work Unit
+Module-defined Unit ≠ output bucket only
+Contextual Unit ≠ automatic Target or durable result section
+Unit-centric ≠ all state must belong to exactly one Unit
+Unit Resolution may exist while Current Result Content is absent
+Candidate Result Content ≠ Current Result Content
+Proposal ≠ Decision ≠ Result Content
+material Proposal selection has Decision semantics
+explicit/durable Decision trace is proportional, not mandatory for every derived result
+Question answered by trusted Source/Evidence may update Result Content without Decision
+Core State Unit / Core Resolution State keeps its lifecycle/addressability while attaching to the smallest correct Requirement/Slot/Unit/Target/other subject
+Finding Candidate ≠ Unit automatically
+Finding may route to Unit Resolution Slot, Unit Resolution, Contextual Unit, Target Formation or another canonical owner
+Lens ≠ Unit owner ≠ Finding disposition authority
+Target Step Result = Target Module Instance contribution when present + applicable Core-defined Unit contributions + any formed Contextual Unit contributions
+Unit identity ≠ file identity
+semantic retention ≠ physical persistence
+```

@@ -4,13 +4,15 @@ Status: proposed **upstream Application intent/value definition** spanning the B
 
 Downstream implementation may lag this definition. That gap is planned through Evolution Steps.
 
-## RU-APP-01 — Application Identity / Selected Contribution
+## RU-APP-05 — Application Concept
 
-**Application:** Replacement Package Application
+**Summary:** A focused Replacement Package Application that supports AI-driven repository work by taking over bounded mechanical package/repository/context operations while leaving semantic repository-work authority with the AI/human actor. Its overall Benefit is dependable realization, truthful outcomes, reusable context and lower mechanical interaction cost around AI-created repository work.
 
-**Selected contribution:** support AI-driven repository work by making mechanically heavy package/repository operations dependable and automatable, while preserving durable work context, reviewability and truthful operation outcomes.
+**How it roughly works:** AI/external actors provide semantic intent/context and explicit handoffs; Builder/App parts perform selected mechanical preparation, realization, publication/context operations and return truthful results; shared implementation supplies reusable mechanics without becoming Application value authority.
 
-### Application parts
+This is selected Application intent even where current implementation has not yet conformed to it. Detailed Features, Scenarios, Screens, Domain and implementation mechanics remain downstream owners rather than Application Concept content.
+
+### Concept clarification — Application parts
 
 | Part | Selected Application role |
 |---|---|
@@ -19,6 +21,7 @@ Downstream implementation may lag this definition. That gap is planned through E
 | **replacement-package-common / shared implementation** | Reusable mechanics used by parts; not a separate Application and not owner of AB/SR/BR semantics. |
 
 The AI/human actor, GitHub Issue/comments, repository host, ChatGPT and VS Code are external participants unless a selected downstream owner explicitly says otherwise.
+
 
 ## RU-APP-02 — Existing-Solution / Alternative-Route Position
 
@@ -106,13 +109,6 @@ These anchors explain the selected Benefits through real-world context but do no
 
 `Apply → Commit → Publish`, package wait, Finalize branching, Snapshot generation, VS Code opening and Screen placement are **not** Representative Real-Life Scenario content here; they belong to downstream Scenario/Feature/Screen planning.
 
-## RU-APP-05 — Application Concept
-
-**Summary:** A focused Replacement Package Application that supports AI-driven repository work by taking over bounded mechanical package/repository/context operations while leaving semantic repository-work authority with the AI/human actor. Its overall Benefit is dependable realization, truthful outcomes, reusable context and lower mechanical interaction cost around AI-created repository work.
-
-**How it roughly works:** AI/external actors provide semantic intent/context and explicit handoffs; Builder/App parts perform selected mechanical preparation, realization, publication/context operations and return truthful results; shared implementation supplies reusable mechanics without becoming Application value authority.
-
-This is selected Application intent even where current implementation has not yet conformed to it. Detailed Features, Scenarios, Screens, Domain and implementation mechanics remain downstream owners rather than Application Concept content.
 
 ## RU-APP-07 — Realization Feasibility / Evidence Position
 

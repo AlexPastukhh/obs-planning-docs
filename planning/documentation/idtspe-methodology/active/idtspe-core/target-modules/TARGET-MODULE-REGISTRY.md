@@ -30,13 +30,17 @@ For semantic boundaries within this area, see [`RESPONSIBILITY-MAP.md`](RESPONSI
 
 ## Installed Generic Core Target Modules
 
-IDTSPE Core installs three profile-independent concrete Target Modules:
+IDTSPE Core installs five profile-independent concrete Target Modules:
 
 - [`TM-PLANNING-RESOLUTION-STATE`](TM-PLANNING-RESOLUTION-STATE.md) — bounded active planning and deliberately retained Decisions in two Collection Units.
+- [`TM-REVIEW-FINDINGS`](TM-REVIEW-FINDINGS.md) — optional bounded evidence-backed Finding discovery and diagnosis before candidate correction work; two `RU-RFIND-*` Units.
+- [`TM-PROPOSAL-WORKUP`](TM-PROPOSAL-WORKUP.md) — optional bounded candidate-resolution workup and review/handoff when that result is independently useful; canonical Proposals remain Core State at their natural subjects.
 - [`TM-PRE-UPDATE-PLAN`](TM-PRE-UPDATE-PLAN.md) — optional concrete reviewable plan of intended changes before actual mutation; one `RU-PUPDATE-01`.
 - [`TM-EXACT-REALIZATION`](TM-EXACT-REALIZATION.md) — produce one exact directly integrable realization; codebase realization is the primary/default archetype, with optional transient internal detailed exact planning and explicitly authorized integration/verification/repair.
 
 `TM-PRE-UPDATE-PLAN` is not a mandatory stage before Exact and is not the owner of generic exact-planning depth. Exact may use transient internal planning without instantiating a Pre-Update Target.
+
+Review Findings, Proposal Workup and Pre-Update Plan are distinct optional Target families. A complete review still follows the canonical Finding-to-Proposal handoff; it does not require a separate Target for either family. A Pre-Update Plan is independently formed to propose destination changes, not as a review stage.
 
 This does not introduce Scenario/Domain/Slice semantics into Core. Profiles may hand sufficiently determined semantic/design results to this reusable realization family instead of duplicating code-production modules.
 
@@ -48,6 +52,12 @@ Canonical semantic identity remains the `TM-*` ID. The generic dispatcher also a
 idtspe planning resolution state <scope>
 → TM-PLANNING-RESOLUTION-STATE
 
+idtspe review-findings <scope>
+→ TM-REVIEW-FINDINGS
+
+idtspe proposal-workup <scope>
+→ TM-PROPOSAL-WORKUP
+
 idtspe pre-update <scope>
 → TM-PRE-UPDATE-PLAN
 
@@ -55,7 +65,7 @@ idtspe exact <scope>
 → TM-EXACT-REALIZATION
 ```
 
-`pre-update` and `exact` are navigation aliases only; repository command IDs are not semantic Target Module identities.
+These are navigation aliases only; repository command IDs are not semantic Target Module identities.
 
 ## Installed Target Module Families
 

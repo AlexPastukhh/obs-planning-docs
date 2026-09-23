@@ -546,7 +546,7 @@
       "actionLabel": "Application Boundary / Alternatives / Feasibility",
       "description": "own-Application contribution/boundary/feasibility is unsettled",
       "context": "Primary for TM-APPLICATION-DEFINITION.",
-      "result": "TM-APPLICATION-DEFINITION: RU-APP-01, RU-APP-02, RU-APP-03, RU-APP-04, RU-APP-05, RU-APP-07 (RU-APP-06 is intentionally not a standalone Unit)",
+      "result": "TM-APPLICATION-DEFINITION: RU-APP-05, RU-APP-02, RU-APP-03, RU-APP-04, RU-APP-07 (RU-APP-01 is retired; RU-APP-06 is intentionally not a standalone Unit) Concept-first CHECK: verify that the opening Concept gives a concise whole-application explanation and basic working idea, while detailed Benefit promises/boundaries, alternative-route justification, RLS paths and feasibility remain in their natural Units. Document identity/source context must not recreate a separate contribution body.",
       "essence": "Evaluate whether an own Application is justified, which real-world contribution it should own, what existing alternatives teach us, which Benefits justify it, whether each Benefit has truthful Responsibility Boundary / Constraints, whether representative real-life situations make those Benefits concrete, whether the concise Application Concept is understandable, and whether the concept/Benefit boundaries are plausibly realizable.",
       "sources": [
         "planning/documentation/idtspe-methodology/active/profiles/sds/registries/LENS-REGISTRY.md",
@@ -1055,7 +1055,9 @@
         "planning/documentation/idtspe-methodology/active/idtspe-core/target-modules/TARGET-MODULE-REGISTRY.md",
         "planning/documentation/idtspe-methodology/active/idtspe-core/target-modules/TM-EXACT-REALIZATION.md"
       ],
-      "aliases": [],
+      "aliases": [
+        "exact"
+      ],
       "ownerRef": {
         "semanticId": "TM-EXACT-REALIZATION",
         "path": "planning/documentation/idtspe-methodology/active/idtspe-core/target-modules/TM-EXACT-REALIZATION.md",
@@ -1082,7 +1084,9 @@
         "planning/documentation/idtspe-methodology/active/idtspe-core/target-modules/TARGET-MODULE-REGISTRY.md",
         "planning/documentation/idtspe-methodology/active/idtspe-core/target-modules/TM-PLANNING-RESOLUTION-STATE.md"
       ],
-      "aliases": [],
+      "aliases": [
+        "planning resolution state"
+      ],
       "ownerRef": {
         "semanticId": "TM-PLANNING-RESOLUTION-STATE",
         "path": "planning/documentation/idtspe-methodology/active/idtspe-core/target-modules/TM-PLANNING-RESOLUTION-STATE.md",
@@ -1103,13 +1107,15 @@
       "actionLabel": "План обновления",
       "description": "optional concrete reviewable plan of intended changes before actual mutation; one RU-PUPDATE-01.",
       "context": "Use when the useful requested result is approximately: ``text \"before changing it, tell me exactly what you plan to update\" \"make a pre-update plan\" \"show the planned changes first\" `` Skip it when the requested change is already sufficiently tiny/obvious and the user wants direct Exact Realization/application. Do not use it as a mandatory gate before every implementation.",
-      "result": "**Target Step Result:** Pre-Update Plan | Result Unit | Meaning | |---|---| | RU-PUPDATE-01 | Pre-Update Plan — concrete planned changes derived from current accepted meaning/current state, sufficient for review before actual update | ### RU-PUPDATE-01 Unit Definition **Responsibility.** Resolve the concrete bounded set of intended changes, preserves and verification implications before mutation. **Purpose.** Provide an independently reviewable update plan when planning value justifies a separate pre-update Target, without turning the plan into implementation authority. **Result Content Contract.** One actionable plan that states the accepted basis, intended change scope, material preserve/must-not-change boundaries, dependencies/order when material, verification/checks and consequential unresolved issues. This Unit is simple by default and does not require a Unit Resolution Set merel…",
+      "result": "**Target Step Result:** Pre-Update Plan | Result Unit | Meaning | |---|---| | RU-PUPDATE-01 | Pre-Update Plan — concrete planned changes derived from current accepted meaning/current state, sufficient for review before actual update | ### RU-PUPDATE-01 Unit Definition **Responsibility.** Resolve the concrete bounded set of intended changes, preserves and verification implications before mutation. **Purpose.** Provide an independently reviewable update plan when planning value justifies a separate pre-update Target, without turning the plan into implementation authority. **Result Content Contract.** One actionable plan that states the accepted basis, intended change scope, material preserve/must-not-change boundaries, dependencies/order when material, verification/checks and consequential unresolved issues. When the destination is a set of files or other addressable artifacts, express…",
       "essence": "Before actually changing code/files/configuration/another destination, produce one **concrete update plan** from the current accepted context and current state. The module is intentionally light. It does not reopen already-settled design merely to make a plan and it does not require a new taxonomy of planning fields. ``text current request accepted prior meaning / Decisions / principles relevant current destination state ↓ ordinary IDTSPE Questions / Risks / Problems / Proposals / Evidence only where useful ↓ RU-PUPDATE-01 Pre-Update Plan ↓ optional TM-EXACT-REALIZATION / another actual update mechanism ``",
       "sources": [
         "planning/documentation/idtspe-methodology/active/idtspe-core/target-modules/TARGET-MODULE-REGISTRY.md",
         "planning/documentation/idtspe-methodology/active/idtspe-core/target-modules/TM-PRE-UPDATE-PLAN.md"
       ],
-      "aliases": [],
+      "aliases": [
+        "pre-update"
+      ],
       "ownerRef": {
         "semanticId": "TM-PRE-UPDATE-PLAN",
         "path": "planning/documentation/idtspe-methodology/active/idtspe-core/target-modules/TM-PRE-UPDATE-PLAN.md",
@@ -1121,6 +1127,64 @@
       "commandId": "",
       "invocation": "idtspe tm TM-PRE-UPDATE-PLAN <target>",
       "target": "<План обновления target>"
+    },
+    {
+      "id": "TM-PROPOSAL-WORKUP",
+      "kind": "TARGET_MODULE",
+      "scope": "Core",
+      "label": "Bounded Proposal Workup",
+      "actionLabel": "Bounded Proposal Workup",
+      "description": "optional bounded candidate-resolution workup and review/handoff when that result is independently useful; canonical Proposals remain Core State at their natural subjects.",
+      "context": "optional bounded candidate-resolution workup and review/handoff when that result is independently useful; canonical Proposals remain Core State at their natural subjects.",
+      "result": "optional bounded candidate-resolution workup and review/handoff when that result is independently useful; canonical Proposals remain Core State at their natural subjects.",
+      "essence": "optional bounded candidate-resolution workup and review/handoff when that result is independently useful; canonical Proposals remain Core State at their natural subjects.",
+      "sources": [
+        "planning/documentation/idtspe-methodology/active/idtspe-core/target-modules/TARGET-MODULE-REGISTRY.md",
+        "planning/documentation/idtspe-methodology/active/idtspe-core/target-modules/TM-PROPOSAL-WORKUP.md"
+      ],
+      "aliases": [
+        "proposal-workup"
+      ],
+      "ownerRef": {
+        "semanticId": "TM-PROPOSAL-WORKUP",
+        "path": "planning/documentation/idtspe-methodology/active/idtspe-core/target-modules/TM-PROPOSAL-WORKUP.md",
+        "anchor": "tm-proposal-workup",
+        "why": "Concrete Target Module Model semantics selected by this card; shared Meta-Model/registry/port references come from included commands.",
+        "role": "PRIMARY_OWNER",
+        "readMode": "REQUIRED"
+      },
+      "commandId": "",
+      "invocation": "idtspe tm TM-PROPOSAL-WORKUP <target>",
+      "target": "<Bounded Proposal Workup target>"
+    },
+    {
+      "id": "TM-REVIEW-FINDINGS",
+      "kind": "TARGET_MODULE",
+      "scope": "Core",
+      "label": "Review Finding Analysis",
+      "actionLabel": "Review Finding Analysis",
+      "description": "optional bounded evidence-backed Finding discovery and diagnosis before candidate correction work; two RU-RFIND-* Units.",
+      "context": "optional bounded evidence-backed Finding discovery and diagnosis before candidate correction work; two RU-RFIND-* Units.",
+      "result": "optional bounded evidence-backed Finding discovery and diagnosis before candidate correction work; two RU-RFIND-* Units.",
+      "essence": "optional bounded evidence-backed Finding discovery and diagnosis before candidate correction work; two RU-RFIND-* Units.",
+      "sources": [
+        "planning/documentation/idtspe-methodology/active/idtspe-core/target-modules/TARGET-MODULE-REGISTRY.md",
+        "planning/documentation/idtspe-methodology/active/idtspe-core/target-modules/TM-REVIEW-FINDINGS.md"
+      ],
+      "aliases": [
+        "review-findings"
+      ],
+      "ownerRef": {
+        "semanticId": "TM-REVIEW-FINDINGS",
+        "path": "planning/documentation/idtspe-methodology/active/idtspe-core/target-modules/TM-REVIEW-FINDINGS.md",
+        "anchor": "tm-review-findings",
+        "why": "Concrete Target Module Model semantics selected by this card; shared Meta-Model/registry/port references come from included commands.",
+        "role": "PRIMARY_OWNER",
+        "readMode": "REQUIRED"
+      },
+      "commandId": "",
+      "invocation": "idtspe tm TM-REVIEW-FINDINGS <target>",
+      "target": "<Review Finding Analysis target>"
     },
     {
       "id": "TM-RK-05-BANK-FORMATION",
@@ -1238,8 +1302,8 @@
       "actionLabel": "Определить приложение",
       "description": "conditional own-Application contribution / boundary / feasibility",
       "context": "A person doing research repeatedly finds useful fragments in articles. Existing bookmarks are too coarse, copying into a notes app interrupts reading, and the team is considering building a small capture application. At this point there is a real Need and a selected real-life problem space, but it is still unclear whether custom software is justified and what the application should actually own.",
-      "result": "The result is a coherent Application Definition containing: ``text why custom software is still justified Application Benefits, each with its own Responsibility Boundary / Constraints Representative Real-Life Scenarios that make Benefits concrete through real examples concise Application Concept, including a short explanation of how it roughly works owned vs merely consumed information/state as expressed by the affected Benefit boundaries material feasibility findings `` When this walkthrough describes desired Application intent that is not yet realized downstream, the Application Definition may still state that selected intent directly. Concrete unrealized downstream behavior/realization changes are then planned in Evolution Steps and may use this definition as an upstream driver.",
-      "essence": "Define one coherent own-application contribution: ``text what application/contribution we are building why custom software is still justified which Application Benefits are selected/possible what Responsibility Boundary / Constraints belong to each Benefit which representative real-life situations show those Benefits in context what concise Application Concept explains the Application and how it roughly works whether the concept/Benefit boundaries are plausibly realizable `` Application Benefits and Representative Real-Life Scenarios are separate responsibilities. Each Benefit owns independently addressable user-value meaning **and its own Responsibility Boundary / Constraints** for that Benefit. Representative RLS instances are many-to-many examples of how one or several Benefits may manifest in a larger real-world path. RLS surrounding steps do not become selected Application behavi…",
+      "result": "The result is a coherent Application Definition containing: ``text concise Application Concept, including a short explanation of how it roughly works why custom software is still justified Application Benefits, each with its own Responsibility Boundary / Constraints Representative Real-Life Scenarios that make Benefits concrete through real examples owned vs merely consumed information/state as expressed by the affected Benefit boundaries material feasibility findings `` When this walkthrough describes desired Application intent that is not yet realized downstream, the Application Definition may still state that selected intent directly. Concrete unrealized downstream behavior/realization changes are then planned in Evolution Steps and may use this definition as an upstream driver.",
+      "essence": "Define one coherent own-application contribution: ``text concise Application Concept: what we are building, why / overall value, and how it roughly works why custom software is still justified which Application Benefits are selected/possible what Responsibility Boundary / Constraints belong to each Benefit which representative real-life situations show those Benefits in context whether the concept/Benefit boundaries are plausibly realizable `` Application Benefits and Representative Real-Life Scenarios are separate responsibilities. Each Benefit owns independently addressable user-value meaning **and its own Responsibility Boundary / Constraints** for that Benefit. Representative RLS instances are many-to-many examples of how one or several Benefits may manifest in a larger real-world path. RLS surrounding steps do not become selected Application behavior merely because they are shown…",
       "sources": [
         "planning/documentation/idtspe-methodology/active/profiles/sds/registries/TARGET-MODULE-REGISTRY.md",
         "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-APPLICATION-DEFINITION.md"

@@ -68,10 +68,14 @@ Retirement removes baseline Target-family authority, not useful semantic guidanc
 
 ## Inherited Generic Core Target Modules
 
+- Core [`TM-PLANNING-RESOLUTION-STATE`](../../../idtspe-core/target-modules/TM-PLANNING-RESOLUTION-STATE.md) — optional bounded coordination of active planning and deliberately retained Decisions, including SDS context.
+
+- Core `TM-REVIEW-FINDINGS` — optional bounded finding discovery/diagnosis when a separate Review Finding Analysis result is useful; full review still requires the canonical linked Proposal handoff.
+- Core `TM-PROPOSAL-WORKUP` — optional bounded candidate-resolution brief; canonical Proposals remain Core State at the affected natural subjects.
 - Core `TM-PRE-UPDATE-PLAN` — optional reviewable plan before mutation when that result is useful.
 - Core `TM-EXACT-REALIZATION` — exact directly-integrable/literal result; may use transient internal exact planning.
 
-Pre-Update is not a mandatory predecessor of Exact.
+These Core modules are available independently under their own activation gates. Pre-Update is not a mandatory predecessor of Exact or a Review stage.
 
 The family summaries below are discovery projections only. They help route/open plausible concrete modules; the selected `TM-*` file, SDS composition/readiness owner and Requirement owner remain authoritative if a summary is incomplete or stale.
 

@@ -557,3 +557,7 @@ Target Owner Body ≠ new FutureOwner ontology
 Impact ≠ Feature delta
 materialization ≠ physical file mutation
 ```
+
+## Copied project example
+
+[Study Tab Launcher — Полные будущие Target Bodies вне bounded Impacts, отдельная readiness](../examples/study-tab-launcher/project/planning/documentation/evolution/unrealized/close-superseded-project-windows.md). Read the [case guide and capture limits](../examples/study-tab-launcher/README.md) with the current module contract; the copied project is a dated example, not live application authority.

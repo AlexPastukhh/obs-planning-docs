@@ -220,3 +220,7 @@ non-trivial proof-design problem
 missing durable observability
 → natural Slice/Shared implementation owner or Exact Realization candidate through normal disposition
 ```
+
+## Copied project example
+
+[Study Tab Launcher — План практического доказательства с OPEN, не выдуманный success](../examples/study-tab-launcher/project/planning/documentation/practical-tests/installed-browser-vscode-handoff.md). Read the [case guide and capture limits](../examples/study-tab-launcher/README.md) with the current module contract; the copied project is a dated example, not live application authority.

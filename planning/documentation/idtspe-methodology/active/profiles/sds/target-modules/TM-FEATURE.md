@@ -392,3 +392,7 @@ selected Feature
 → when reviewing already-realized truth, revalidate current TM-SLICE-OWNER / TM-DOMAIN-OWNER / Shared owners directly as applicable
 → Exact Realization when the selected Step/current meaning is sufficient
 ```
+
+## Copied project example
+
+[Study Tab Launcher — Benefit slices и связь с Scenario/Slice](../examples/study-tab-launcher/project/planning/documentation/features/open-local-project.md). Read the [case guide and capture limits](../examples/study-tab-launcher/README.md) with the current module contract; the copied project is a dated example, not live application authority.

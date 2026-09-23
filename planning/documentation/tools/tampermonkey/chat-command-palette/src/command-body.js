@@ -98,6 +98,10 @@
       '',
       ...commandReadBlock(definition, mode),
       '',
+      'example_read_rule:',
+      '  Follow planning/documentation/principles-and-terminology.md#doc-example-reading: inspect relevant inline/linked examples of the selected owner before producing its result; reuse current reading with basis, or state that none applies. Examples do not override contracts or authorize execution.',
+
+      '',
       'key_reminders:',
       ...(definition.keyReminders || []).map((item) => `  - ${item}`),
       '',
@@ -156,6 +160,7 @@
       '',
       'route_read_rule:',
       `  ${full?'Read the complete relevant current owner route for this UC.':'Read or reread the selected UC route when it is not current, remembered or certain.'}`,
+      '  Follow planning/documentation/principles-and-terminology.md#doc-example-reading for relevant inline/linked examples; examples remain non-authoritative.',
       '  Do not expand permissions merely because the UC is selected.',
       '',
       'key_reminders:',

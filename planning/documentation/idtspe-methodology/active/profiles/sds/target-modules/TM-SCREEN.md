@@ -224,3 +224,7 @@ frontend mechanism → IR-* at natural realization owner when durable
 ```
 
 A simple visual SR/BR may be realized directly in UI code without a separate Screen requirement family.
+
+## Copied project example
+
+[Study Tab Launcher — UI actions → Features / Scenarios](../examples/study-tab-launcher/project/planning/documentation/screens/chatgpt-launcher-widget.md). Read the [case guide and capture limits](../examples/study-tab-launcher/README.md) with the current module contract; the copied project is a dated example, not live application authority.

@@ -1,0 +1,121 @@
+<a id="planning-ai-working-contract"></a>
+# AI Working Contract
+
+Responsibility ID: `PLANNING.AI-WORKING-CONTRACT`
+
+Status: mandatory repository working contract
+Scope: AI/chat sessions that plan, develop or materially change repository documentation or application meaning.
+
+## Mandatory Rule
+
+Before material work, select the relevant area through current README/navigation, resolve that area's applicable semantic entry/current owner, and follow its canonical owner route. Conversation memory, examples, generated projections, historical artifacts and implementation alone are not semantic authority.
+
+For material planning/development answers also follow the installed peer [`documentation/idtspe-methodology/active/ai-reviewability/AI-OUTPUT-REVIEWABILITY.md`](../../project/planning/documentation/idtspe-methodology/active/ai-reviewability/AI-OUTPUT-REVIEWABILITY.md).
+
+For material Q/R/P follow `documentation/idtspe-methodology/active/idtspe-core/resolution/qrp/QRP-LIFECYCLE-AND-REVIEW.md`; for material candidate/selection meaning follow `documentation/idtspe-methodology/active/idtspe-core/resolution/proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md`. AI review presentation follows the installed peer `documentation/idtspe-methodology/active/ai-reviewability/AI-OUTPUT-REVIEWABILITY.md`. Do not invent user-owned Needs/preferences/feelings/business priority/risk tolerance to close a Q/R/P item or select a Decision.
+
+
+## Fundamental Use-Case Application
+
+The canonical always-active application route for this contract is [`UC-IDTSPE-AI-WORKING-BOUNDARY`](../../project/planning/documentation/idtspe-methodology/active/idtspe-core/use-cases/ai-working-boundary/UC-IDTSPE-AI-WORKING-BOUNDARY.md#uc-idtspe-ai-working-boundary). [`UC-DOC-RESOLVE-CURRENT-USE-CASES`](documentation/use-cases/UC-DOC-RESOLVE-CURRENT-USE-CASES.md) reaffirms that Use Case for every current Planning/repository work entry.
+
+Planning Commands are USER↔AI invocation/traversal guarantees derived from methodology. They are not an internal AI execution language: while working from methodology, the AI follows canonical owners, references and handoffs directly rather than "calling" Planning Commands. No normative methodology rule may exist only in a command definition; a command may add invocation context, dependency/traversal guarantees, permission boundaries and expected invocation projections, but reusable semantic meaning must resolve to a canonical methodology/repository owner.
+
+## Current IDTSPE Working Rule
+
+For material planning, use [`documentation/idtspe-methodology/active/idtspe-core/runtime/IDTSPE-DEFAULT-WORK-MODE.md`](../../project/planning/documentation/idtspe-methodology/active/idtspe-core/runtime/IDTSPE-DEFAULT-WORK-MODE.md) unless a narrower current owner route explicitly supersedes it.
+
+```text
+AI-proposed material candidate → Proposal by default; remains unselected until normal authority selects it
+material Q/R/P → current natural owner, with priority only when useful
+Decision → only after selection
+IDTSPE → always active and proportional; zero/one/several Targets allowed
+SDS work → current IDTSPE Use-Case composition + only selected/applicable SDS components
+material persistence → Documentation / Representation rules before durable materialization
+```
+
+Do not infer one-file-per-Target. Code/types/tests/schema/config or an existing discovery/strategy/owner section may be the correct durable representation.
+
+The legacy shared Concern/Idea/Application/Architecture/Testing documents remain migration/provenance inputs only where still referenced; they do not override the installed IDTSPE/SDS owners.
+
+## Hard Planning Root Invariant
+
+Planning does not start from a fixed FIND/Q/R/P queue, a mandatory Target sequence, or an SDS profile merely because one is installed. After bootstrap, the functional methodology root is the fundamental Use-Case applicability resolver with its mandatory AI Working Boundary companion; that resolver then uses the Methodology Use-Case Registry Map and IDTSPE composition selects the smallest useful current structure and any applicable profile components.
+
+```text
+primary bootstrap current
+→ UC-DOC-RESOLVE-CURRENT-USE-CASES
+→ UC-IDTSPE-AI-WORKING-BOUNDARY
+→ Methodology Use-Case Registry Map
+→ applicable Use Case Process
+→ Broad Discussion and/or material State/Target/component
+→ natural semantic owner
+→ realization / verification when useful
+```
+
+Q/R/P remains secondary material attached to the actual current owner. AI should not invent a formal queue, fixed workflow level, or persistent control ontology when ordinary discussion is enough.
+
+## Repository Operational Work
+
+For every explicit Planning Command, first run/reaffirm the global methodology Use-Case applicability surface through [`documentation/use-case-registry-map.md`](documentation/use-case-registry-map.md) / `UC-DOC-RESOLVE-CURRENT-USE-CASES`. This compact scan may confirm that no additional methodology Use Case is applicable; it does not make repository operational work methodology-owned and does not execute every selected Use Case. For repository-specific operational capabilities that are not owned more narrowly by Documentation, IDTSPE/SDS or another area, then scan [`use-case-registry.md`](use-case-registry.md) by its compact Situation/Result summaries and open only the selected `UC-REPO-*` owner.
+
+## Documentation Work
+
+Use [`documentation/use-case-registry-map.md`](documentation/use-case-registry-map.md), then the generic Documentation registry and the narrowest applicable current Documentation Use Case. Former `UC-SESSION-*` compatibility routes are not current functional owners.
+
+## Planning / Application Work
+
+When generic planning context is not reliable, bootstrap from [`README.md`](README.md). After bootstrap, start functional methodology navigation from [`documentation/use-case-registry-map.md`](documentation/use-case-registry-map.md), then follow the applicable Use Case Process and natural current owner. Profile READMEs are entered only when that profile is applicable.
+
+Do not impose generic Documentation navigation types onto a specialized methodology/application area. IDTSPE Core remains the generic always-active work model. When SDS or another profile is applicable, its own current owners define only the profile-specific semantic route.
+
+When a current integrated plan already exists, treat it as the current working baseline and integrate new selected meaning into the natural current semantic owners rather than creating a transcript of planning answers.
+
+## Directed Planning And Reviewability
+
+Material AI planning should be reviewable before it is returned:
+
+```text
+complete provisional picture when useful
+→ stabilize/review upstream meaning before downstream realization
+→ Key Points + Review Priority
+→ built-in current-target recheck
+→ integration check against selected upstream/global direction
+```
+
+Planning dependencies should normally point from upstream meaning to downstream realization. Downstream evidence may challenge upstream meaning only through an explicit finding; frequent backflow is a signal to review stage order/completion/boundaries. `крит` remains an optional explicit adversarial review; the retired `обс` shortcut and former Level 1/2/3 answer model are not the current quality architecture.
+
+## ReviewDiff Work
+
+A technically valid or integrity-verified ReviewDiff is not automatically a semantically correct change.
+
+When a ReviewDiff is supplied for review:
+
+```text
+planning/use-case-registry.md
+→ UC-REPO-REVIEW-DIFF
+→ planning/use-cases/UC-REPO-REVIEW-DIFF.md
+→ planning/documentation/review-diff-review-workflow.md
+→ affected current owners
+→ canonical Proposal review for material corrective alternatives
+```
+
+Do not imply semantic approval or Finalize while material correctness/ownership issues remain unresolved.
+
+## Application Development + Documentation
+
+Implementation must follow current selected planning meaning. If implementation changes accepted behavior, architecture, interfaces or another documented responsibility, reconcile the actual semantic owner and follow documentation ownership rules. Code does not silently become a second documentation owner.
+
+## No Silent Promotion
+
+```text
+Proposal ≠ Decision
+implementation proposal ≠ selected architecture
+example ≠ authority
+projection ≠ canonical state
+historical record ≠ current ontology
+```
+
+## Authority
+
+This contract routes to canonical owners. If it conflicts with a linked canonical principle/workflow owner, the canonical owner wins and this contract must be corrected.

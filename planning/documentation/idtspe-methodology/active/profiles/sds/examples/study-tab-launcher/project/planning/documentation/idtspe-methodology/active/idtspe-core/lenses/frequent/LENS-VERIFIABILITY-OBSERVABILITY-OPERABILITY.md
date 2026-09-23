@@ -1,0 +1,201 @@
+<a id="lens-verifiability-observability-operability"></a>
+# LENS-VERIFIABILITY-OBSERVABILITY-OPERABILITY — Proof / Observation / Diagnosis / Operation
+
+Lens ID: `LENS-VERIFIABILITY-OBSERVABILITY-OPERABILITY`
+Legacy alias: `L6`
+Activation: `FREQUENT_CONDITIONAL`
+
+## Purpose
+
+Ask whether correctness/failure/state can be credibly proved, observed, diagnosed and operated at acceptable cost before accepting a realization/architecture/result.
+
+Broader than test/proof design: it also covers observability, diagnosis, operation and recovery.
+
+## Applicability Gate
+
+Activate when correctness/failure/state must be demonstrably checked or safely operated, especially for Slices, integrations, runtime workflows, critical automation, shared mechanisms and failure-prone architecture.
+
+## Target Inputs / Evidence
+
+```text
+selected behavior/result/invariants
+runtime path
+candidate architecture/seams
+failure/recovery expectations
+environment/operator constraints
+existing tests/telemetry/operational evidence
+```
+
+## Verifiability
+
+```text
+What proves success?
+What proves failure?
+Can negative/no-mutation guarantees be proved?
+Are important invariants observable?
+Can the boundary be verified independently?
+```
+
+## Observability
+
+Can we tell what state/result occurred? Can important failures be detected? Is Evidence available at the right boundary?
+
+## Diagnosability
+
+If something fails, can we determine why? What context/logs/state/traces are needed?
+
+## Operability / Recovery
+
+Can a human/tool operate and recover safely? What rollback/manual burden exists?
+
+## Proof Cost
+
+Does this choice make proof disproportionately expensive? Would another boundary make verification/diagnosis simpler?
+
+## Findings / Outputs
+
+```text
+Q/R/P
+proof/Evidence requirements
+observability/diagnosis requirements
+operation/recovery requirements
+Test/Practical Evidence handoff
+Decision rationale
+```
+
+## Typical Consumers
+
+Feature/Slice/Domain/Shared/Scenario/Screen work, Architecture/WEUC decisions, Exact Realization, Practical Test and critical tooling decisions.
+
+## Artifact / File Implications
+
+### Structured Artifact / File Guidance
+
+These records describe conditional placement guidance produced by this Lens. They never create semantic ownership by themselves.
+
+```text
+ARTIFACT_GUIDANCE
+ID: AG-L6-01
+CONTENT_KIND: PROOF_OBSERVABILITY_OPERABILITY_FINDING
+WHEN: proof/diagnosis/operation consequence materially affects choice
+GUIDANCE: ADVISORY_PREFERRED
+PERSISTENCE_GUIDANCE: PREFERRED
+PLACEMENT_DIRECTIVE: PLACE
+SEMANTIC_OWNER: current Target when Core Finding Disposition resolves the accepted proof/operation finding there; otherwise resolved owner
+REPRESENTATION: EMBED_CURRENT_TARGET_PLANNING_STATE
+FILE_OR_ARTIFACT: <current-idtspe-owner>
+CONTENT: proof/observation/diagnosis/operation requirement/finding
+GUIDANCE_SOURCE: LENS
+RESOLVER: P-14 / PERSISTENCE_ADDRESSABILITY
+```
+
+```text
+ARTIFACT_GUIDANCE
+ID: AG-L6-02
+CONTENT_KIND: INDEPENDENT_SHARED_OPERABILITY_CONCERN
+WHEN: observability/operation mechanism becomes independently shared/material
+GUIDANCE: ROUTE
+PERSISTENCE_GUIDANCE: PREFERRED
+PLACEMENT_DIRECTIVE: ROUTE
+SEMANTIC_OWNER: owner selected by Target Formation when needed (often Cross-Cutting/shared or a bounded local Target)
+REPRESENTATION: UNRESOLVED
+FILE_OR_ARTIFACT: UNRESOLVED
+CONTENT: form real owner first; then place its canonical artifact
+GUIDANCE_SOURCE: LENS
+RESOLVER: P-14 / PERSISTENCE_ADDRESSABILITY
+```
+
+
+Shell placement semantics: [`planning/documentation/idtspe-methodology/active/idtspe-core/representation/ARTIFACT-PLACEMENT-AND-IDTSPE-RESPONSE-CONTRACT.md`](../../representation/ARTIFACT-PLACEMENT-AND-IDTSPE-RESPONSE-CONTRACT.md).
+
+Normally **NO_DISTINCT_SUPPORTING_ARTIFACT**: L6 surfaces Finding Candidates; when Core Finding Disposition resolves accepted requirement/Decision/Test-handoff meaning to the current Target, that Target's ordinary representation carries it.
+
+**PREFERRED supporting operational/proof artifact** when runbooks, telemetry contracts, recovery procedures or proof plans are independently reused/reviewed across Targets.
+
+If L6 exposes a genuinely shared implementation responsibility, surface a Finding Candidate with the Cross-Cutting/shared family as a likely owner hint. Core Finding Disposition and, when needed, Target Formation resolve the real owner before placement; do not create an unnamed “L6 file”.
+
+## Guards
+
+Proof/telemetry mechanism does not become semantic authority.
+
+## Composition
+
+Test Proof/Evidence specializes concrete proof. L5 consumes L6 findings when architecture changes operation/diagnosis cost.
+
+## Escalation / Revalidation
+
+A materially independent observability/operation subsystem may surface a Target Formation candidate through Core Finding Disposition; Target Formation decides whether a Cross-Cutting/shared or bounded local Target is warranted.
+
+## High-Level Example — Self-Contained Walkthrough
+
+### Situation
+
+A background import job processes hundreds of items asynchronously.
+
+Two architecture candidates both appear functionally correct.
+
+### Why This Lens
+
+L6 asks whether important success/failure/state can be proved, observed, diagnosed and operated in practice.
+
+### Walkthrough
+
+For candidate A:
+
+```text
+job returns immediately
+no durable per-item status
+errors only appear in generic logs
+```
+
+For candidate B:
+
+```text
+import has durable run status
+failed items are identified
+operator can inspect/retry failures
+```
+
+Questions:
+
+```text
+How do we know completion happened?
+How is partial failure detected?
+Can an operator diagnose why one item failed?
+Can recovery happen without rerunning everything?
+```
+
+### Result
+
+L6 may surface a Finding Candidate that candidate B has substantially better verification/diagnosis/operation characteristics. Core Finding Disposition may resolve that accepted meaning as input to the current Decision when the current Target/Decision is the actual owner.
+
+### Boundary / Lesson
+
+L6 does not prescribe a monitoring stack.
+
+It exposes proof/observation/operation consequences that may matter to the decision.
+
+## Knowledge Basis
+
+Mode: `INLINE`
+
+**Embedded Principles / Rules / Theory:**
+
+- A selected result should be provable/observable/diagnosable/operable at the boundary where correctness and failure matter.
+- Testability is broader than test/proof design and may require seams, telemetry, diagnostic context or operational mechanisms.
+
+**Referenced Knowledge Owners:**
+
+- `NONE`
+
+**Reference Load Policy:**
+
+No external knowledge body is required for normal use.
+
+**Operationalization Notes:**
+
+Concrete test/telemetry/runtime facts are Target Inputs/Evidence; this Lens owns the cross-cutting proof/operation perspective.
+
+## Provenance
+
+Restores Complete Picture v6 L6 / later Proof-Verification-Operability Lens.

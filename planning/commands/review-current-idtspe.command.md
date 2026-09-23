@@ -15,14 +15,16 @@ Scope: one concrete OBS Planning command route. Reusable semantics remain in lin
   ],
   "description": "Run one complete current-basis review pass: plan proportional coverage, validate/apply useful Lenses, disposition all produced Finding Candidates, form linked Proposals for every material Finding, self-check coverage completeness, and update the Review Coverage Record.",
   "meaning": "Review the bounded current semantic subject through Review Strategy/Coverage, applicable Validation and selected Lens operations. Catch all materially applicable checks already visible on the current basis rather than intentionally deferring them. Every material Finding Candidate produced by this review is passed through canonical Finding Disposition and receives a linked IDTSPE Proposal before the review is semantically complete; RE-3 proposals remain blocked by revalidation and Proposal existence does not imply persistence or selection. Before completion, self-check current coverage against applicable validators/perspectives and record remaining material gaps/blockers. Need collection is not a mandatory review stage.",
-  "activeContextBehavior": "Use current basis and prior coverage when available. During composition planning, establish/refresh the Review Coverage working context for CURRENT_BASIS before dependency semantic actions begin, so Validation/Lens selection consume already-derived current review cells. Reuse trustworthy unchanged checks only when they actually satisfy the current coverage cell; apply materially distinct useful Lens/validator checks now and complete with Finding Disposition plus a coverage self-check.",
+  "activeContextBehavior": "Use current basis and prior coverage when available. During composition planning, establish/refresh the Review Coverage working context for CURRENT_BASIS before dependency semantic actions begin, so Validation/Lens selection consume already-derived current review cells. Reuse trustworthy unchanged checks only when they actually satisfy the current coverage cell; apply materially distinct useful Lens/validator checks now. Keep Finding discovery/diagnosis distinct from linked Proposal formation; optional TM-REVIEW-FINDINGS and TM-PROPOSAL-WORKUP Targets are used only when their own results have independent value. Complete with canonical Finding/Proposal handoff and a coverage self-check.",
   "traversalReadMode": "Read this command own canonical references plus included-command references proportionally. Do not duplicate reads already satisfied by an unchanged trustworthy shared prefix.",
   "ownerFiles": [
     "planning/documentation/idtspe-methodology/active/idtspe-core/commands/IDTSPE-COMMAND-SURFACE-CONTRACT.md",
     "planning/documentation/idtspe-methodology/active/ai-reviewability/REVIEW-STRATEGY-AND-COVERAGE-CONTRACT.md",
     "planning/documentation/idtspe-methodology/active/ai-reviewability/AI-OUTPUT-REVIEWABILITY.md",
     "planning/documentation/idtspe-methodology/active/idtspe-core/resolution/findings/FINDING-DISPOSITION.md",
-    "planning/documentation/idtspe-methodology/active/idtspe-core/resolution/proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md"
+    "planning/documentation/idtspe-methodology/active/idtspe-core/resolution/proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md",
+    "planning/documentation/idtspe-methodology/active/idtspe-core/target-modules/TM-REVIEW-FINDINGS.md",
+    "planning/documentation/idtspe-methodology/active/idtspe-core/target-modules/TM-PROPOSAL-WORKUP.md"
   ],
   "ownerRefs": [
     {
@@ -56,6 +58,22 @@ Scope: one concrete OBS Planning command route. Reusable semantics remain in lin
       "why": "Finding Disposition is an intrinsic completion stage for material Finding Candidates produced by this review.",
       "role": "VALIDATION_HANDOFF",
       "readMode": "REQUIRED"
+    },
+    {
+      "responsibilityId": "TM-REVIEW-FINDINGS",
+      "path": "planning/documentation/idtspe-methodology/active/idtspe-core/target-modules/TM-REVIEW-FINDINGS.md",
+      "anchor": "tm-review-findings",
+      "why": "Optional separately useful diagnostic Target result for evidence-backed Finding discovery and RE-* analysis.",
+      "role": "POSSIBLE_DESTINATION",
+      "readMode": "ON_DEMAND"
+    },
+    {
+      "responsibilityId": "TM-PROPOSAL-WORKUP",
+      "path": "planning/documentation/idtspe-methodology/active/idtspe-core/target-modules/TM-PROPOSAL-WORKUP.md",
+      "anchor": "tm-proposal-workup",
+      "why": "Optional separately useful bounded candidate-resolution result after Finding diagnosis.",
+      "role": "POSSIBLE_DESTINATION",
+      "readMode": "ON_DEMAND"
     },
     {
       "responsibilityId": "RESOLUTION.PROPOSAL-DECISION-LIFECYCLE",

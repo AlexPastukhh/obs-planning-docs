@@ -570,3 +570,22 @@ Logging starts only after explicit user instruction; no pre-start history is rec
 **Verification:** focused runtime/UI regressions cover 1-based direct ordering, sidebar/contract projection and stable viewport behavior; canonical Scenario-owner regression also requires `SCN-PH-USE` to retain the `includes`/`ownerRefs` projection boundary and `SCN-PH-MANAGE-LOCAL` to retain numeric-reorder/selection/viewport semantics. Full Helper tests/build/verify must remain green and generated userscript parity must hold.
 
 **Review correction:** package `df5f3df0-9055-4e20-929e-8b08d75fd597` supersedes the un-applied technical draft `2b555855-45fc-49d5-a018-b8c2f618d06b`. The correction does not change the selected UI behavior; it completes the two active canonical Scenario behavior owners so implementation, manual acceptance and semantic ownership describe the same target state.
+
+## 2026-09-24 — 0.39.6: example reading and Core aliases
+
+- Added the read-only Documentation example-reading command and its General group entry.
+- Shared command/UC/TM/Lens bodies route example reading to the canonical Documentation owner.
+- Restored all five Core registry alias projections without changing exact-ID invocation.
+- Added source→projection and independent example navigation/hash checks; dated embedded snapshots remain outside active discovery.
+
+## 2026-09-24 — 0.39.7: full documentation example command
+
+- Added `documentation.example.full.read` / `посмотри полный пример документации` to General navigation.
+- Both copied example entry paths are explicit in command bodies; the command requests a connected project overview and preserves current/unrealized/open-evidence boundaries.
+- Reading is independent of Target formation and uses the canonical Documentation Example Reading contract.
+
+## 2026-09-24 — 0.39.8: Concept-first Application Definition
+
+- Regenerated Application-boundary Lens metadata from the revised five-Unit inventory.
+- Migrated the unselected Helper Application Definition candidate and Q/R/P subject references, preserving selection gates and historical review provenance.
+- Snapshot checks recognize explicit editorial revisions while retaining original capture hashes.

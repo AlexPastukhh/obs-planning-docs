@@ -2611,3 +2611,7 @@ No `TM-EXACT-REALIZATION` workflow, repair authority, Domain/Slice/Test boundary
 - keep historical Planning Item / old audit provenance as historical evidence only; historical mentions of Linked Notes / Reference Objects do not restore current authority.
 
 **Target-State Result:** after successful Apply of the correction package, no active semantic/runtime path depends on Linked Notes, Reference Objects or Review Dependency registries; ordinary links + stable anchors are the current addressability mechanism, current methodology/command/helper projections agree, generated Helper artifacts match source, and Replacement Package App current source/tests/build-launch path are internally consistent.
+
+## 2026-09-24 — Application Definition Concept first
+
+USER requested Concept as the first Unit, removing duplicate identity/contribution work. `RU-APP-05` retains its stable ID and now leads the five-Unit result; `RU-APP-01` is retired. Identity/Sources are ordinary context; Benefit promises/boundaries remain Benefit-local. Updated production/read order, inventories/checkpoints, natural Lens projection, Concept template and active Application Definition consumers. Launcher and its independent example are deliberately revised together, with provenance/hash history retained. No Application Benefit or selection/realization state is changed by this structural migration.

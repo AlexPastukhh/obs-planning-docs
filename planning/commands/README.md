@@ -144,7 +144,7 @@ permission constraints
 
 This is essential for IDTSPE: `IDTSPE.PORT-COMPOSITION-REFRESH` must already know all explicit leaf requirements before it refreshes the Port Requirement Set.
 
-For `idtspe.review`, `idtspe.review.recheck` and current-basis specialized reviews such as `idtspe.review_consistency`, `REVIEW_COVERAGE_MODE` is interpreted during this pre-execution composition stage. The Review Strategy/Coverage owner resolves the bounded Review Subject/Scope/Basis, trustworthy prior record when applicable, review obligations/intents and reusable prior coverage **before** Validation or Lens dependency semantic actions run. It does not select executable Lens applications: P-06 owns Lens applicability/supported-operation resolution and forms the selected `(Lens Model, Analysis Surface, Operation, basis)` applications. `CURRENT_BASIS` derives current-basis obligations; `LOCAL_AFFECTED_RECHECK` derives stale/partial/invalidated/newly exposed/previously blocked obligations. If both modes occur in one bounded review composition, the effective contribution set normalizes them to `LOCAL_AFFECTED_RECHECK` before semantic execution.
+For `idtspe.review`, `tmcmd.review.findings`, `idtspe.review.recheck` and current-basis specialized reviews such as `idtspe.review_consistency`, `REVIEW_COVERAGE_MODE` is interpreted during this pre-execution composition stage. The Review Strategy/Coverage owner resolves the bounded Review Subject/Scope/Basis, trustworthy prior record when applicable, review obligations/intents and reusable prior coverage **before** Validation or Lens dependency semantic actions run. It does not select executable Lens applications: P-06 owns Lens applicability/supported-operation resolution and forms the selected `(Lens Model, Analysis Surface, Operation, basis)` applications. `CURRENT_BASIS` derives current-basis obligations; `LOCAL_AFFECTED_RECHECK` derives stale/partial/invalidated/newly exposed/previously blocked obligations. If both modes occur in one bounded review composition, the effective contribution set normalizes them to `LOCAL_AFFECTED_RECHECK` before semantic execution. `tmcmd.pre.update` forms a separate optional plan and contributes no Review Coverage mode.
 
 For normal IDTSPE work the reusable base is:
 
@@ -234,3 +234,9 @@ planning/documentation/tools/tampermonkey/chat-command-palette.user.js
 ```
 
 Build generates `seed/commands.json` from the direct command catalog as a verified repository projection; current command identities are not maintained as hard-coded userscript authority. Runtime remains browser-local/RAM-first, while explicit `Reload`, `Sync missing` and `Hard Reload GitHub` provide repository reads/recovery. Generated projections never replace `planning/commands/*.command.md` as authority.
+
+## Relevant example reading
+
+The read-only `documentation.examples.read` command routes to [DOC.EXAMPLE-READING](../documentation/principles-and-terminology.md#doc-example-reading). Shared Helper command/UC/semantic bodies expose that same owner-route reading obligation. No example is mandatory merely because it exists, and no command turns an example into methodology authority.
+
+The [full documentation example command](read-full-documentation-example.command.md), `посмотри полный пример документации`, opens the fixed independent Study Tab Launcher case and copied project README for a connected overview. It is separate from selecting relevant examples for the current methodology owner.

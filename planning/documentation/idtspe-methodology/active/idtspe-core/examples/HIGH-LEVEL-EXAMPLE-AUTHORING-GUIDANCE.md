@@ -136,3 +136,7 @@ example
 ```
 
 The reusable rules remain in the owning Target Module/Lens/Shell.
+
+## Reading / reuse boundary
+
+Use the Documentation [Example Reading contract](../../../../principles-and-terminology.md#doc-example-reading) when consuming an example. A captured project must declare its capture basis and retain open Problems/unrealized state. Link to copied files inside the example package; never use a live application workspace as its source of example truth.

@@ -155,3 +155,7 @@ Canonical working Scenarios are presentation/integration examples owned outside 
 Projection freshness is a downstream maintenance consequence: when a current UC/TM/Lens owner, direct invocation route, canonical Scenario semantic reference, alias/provenance or projected source changes materially, regenerate/revalidate the affected Helper projection. This does **not** create a separate methodology Use Case for Helper maintenance.
 
 Generated Helper artifacts, semantic card labels, scenario-command mappings and UI groupings never become command or methodology authority.
+
+## Example reading on the selected owner route
+
+For methodology work, apply [DOC.EXAMPLE-READING](documentation/principles-and-terminology.md#doc-example-reading) to relevant inline/linked examples before producing the selected owner's result. The explicit [read-methodology-examples command](commands/read-methodology-examples.command.md) offers the same bounded read operation without Target formation. Reading guidance does not add a hidden includes edge or expand the selected root's permission.

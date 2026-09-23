@@ -1,0 +1,233 @@
+<a id="ai-reviewability-peer-cross-cutting-concern"></a>
+# AI Reviewability — Peer Cross-Cutting Concern
+
+Status: active independent cross-cutting concern
+Scope: make material AI outputs easy to review without becoming semantic planning authority.
+
+## Position In The Methodology
+
+Responsibility ID: `AI.REVIEWABILITY`
+
+AI Reviewability is a **peer concern beside IDTSPE**, not a Target Module, Lens, profile, semantic owner or lifecycle engine.
+
+```text
+AI Reviewability
+→ how material AI output is exposed/rechecked for human review
+
+IDTSPE
+→ planning State/Targets/Proposal/Decision/Q/R/P lifecycle and revalidation
+
+SDS
+→ software-specific planning components/owners
+```
+
+AI Reviewability may require presentation/recheck behavior, but it does not select semantic owners or mutate accepted meaning.
+
+> Semantic Owner Dependency
+> - `CONTEXTUALIZES` [`Review Strategy And Coverage`](REVIEW-STRATEGY-AND-COVERAGE-CONTRACT.md#review-strategy-coverage) — `REVIEW.STRATEGY-COVERAGE`
+
+## Pass Trace / Visibility Boundary
+
+IDTSPE `P-02 Pass Trace / Visibility` records the methodology route and runtime outcomes as they occur. AI Reviewability does not own that trace. `Key Points` may summarize material content/results from the trace and semantic owners, while Session Work Steps/Progress Updates may project its progress conversationally.
+
+```text
+P-02 Pass Trace = what methodology route/events occurred
+Key Points = what material content the reviewer should understand
+Work Steps / Progress Updates = what AI is doing/has established over time
+```
+
+These projections may reference one another but do not collapse into one ontology.
+
+## Key Points Contract
+
+A material answer/output exposes its major material content as `Key Points` proportionally.
+
+A reader who scans only Key Points should understand the major conclusions/alternatives/unresolved tensions, while evidence/reasoning/examples remain in the body.
+
+Stable `KP-*` IDs are optional and mainly useful for long-lived review/discussion.
+
+Key Points are a review/navigation projection, not State and not a second semantic owner.
+
+## Review Priority
+
+`Review Priority` expresses the cost/blast radius of being wrong. It is not confidence, prose complexity, lifecycle status or execution order.
+
+```text
+Critical
+→ error may change broad/global direction, invalidate several downstream owners
+  or cause expensive widespread rework / severe correctness harm
+
+High
+→ error may materially change one major owner/Target or several connected parts
+
+Normal
+→ material but mainly local
+
+Low
+→ local, cheaply reversible, low blast radius
+```
+
+Q/R/P may reuse the compact aliases `P0 / Critical`, `P1 / High`, `P2 / Normal`, `P3 / Low`; the Q/R/P owner controls Q/R/P lifecycle/category/group semantics.
+
+Do not raise priority merely because a topic is complex or speculative.
+
+### Review Priority vs Finding Resolution Escalation
+
+> Semantic Owner Dependencies
+> - `CONTEXTUALIZES` [`Q/R/P Lifecycle`](../idtspe-core/resolution/qrp/QRP-LIFECYCLE-AND-REVIEW.md#resolution-qrp-lifecycle) — `RESOLUTION.QRP-LIFECYCLE`
+> - `CONTEXTUALIZES` [`Finding Disposition / Resolution Escalation`](../idtspe-core/resolution/findings/FINDING-DISPOSITION.md#resolution-escalation) — `RESOLUTION.FINDING-DISPOSITION`
+
+Do not use `Review Priority` to encode how much semantic/user authority a correction needs. Core Finding Disposition owns the independent `Resolution Escalation` projection (`RE-0 ... RE-4`): deterministic correction, local realization choice, current-owner semantic change, upstream revalidation, or upstream semantic change.
+
+```text
+Review Priority = blast radius / cost if wrong
+Resolution Escalation = semantic authority distance required to resolve
+```
+
+A finding can therefore be `High + RE-0` or `Normal + RE-4`. Human review should show both dimensions when the distinction is material.
+
+Canonical escalation owner: [`Finding Disposition`](../idtspe-core/resolution/findings/FINDING-DISPOSITION.md#resolution-finding-disposition).
+
+## Broad Discussion Specialization
+
+In IDTSPE Broad Discussion, Key Points are the normal way to structure **material logical parts** of conversational prose.
+
+```text
+logical discussion part
+  explanation / evidence / alternatives
+  Key Points
+    concise key content
+```
+
+An Integration Checkpoint may additionally include an optional Broad Discussion Summary. Neither projection becomes planning authority or persistence by default.
+
+Canonical conversation/checkpoint owner:
+[`../idtspe-core/representation/interaction/BROAD-DISCUSSION-AND-INTEGRATION-CHECKPOINT-PROJECTION.md`](../idtspe-core/representation/interaction/BROAD-DISCUSSION-AND-INTEGRATION-CHECKPOINT-PROJECTION.md).
+
+## Q/R/P Review Projection
+
+When material Q/R/P is surfaced to the USER, useful AI review normally distinguishes proportionally:
+
+```text
+Known / implied
+→ what checked current owners/Evidence already establish
+
+Interpretation / options
+→ realistic meanings/routes visible from current context
+
+Technical/logical recommendation
+→ only when current evidence/principles justify one
+
+USER-owned unknown
+→ preference, feeling, product priority, risk tolerance or other authority the AI cannot invent
+
+Minimum useful USER question
+→ ask only when its answer can materially change the Decision
+```
+
+`Recommendation` is not `Decision`. Missing USER preference is not permission to manufacture one.
+
+Canonical Q/R/P semantic owner:
+[`../idtspe-core/resolution/qrp/QRP-LIFECYCLE-AND-REVIEW.md`](../idtspe-core/resolution/qrp/QRP-LIFECYCLE-AND-REVIEW.md).
+
+## Review Order
+
+When several material review items compete for attention, a `Review Order` may be derived from:
+
+```text
+Review/QRP Priority
++ semantic dependency / blocking
++ affected-owner / blast radius
++ timing / currentness
+```
+
+Review Order is navigation only. It does not become a work queue, second priority field or semantic authority.
+
+<a id="built-in-pre-return-recheck"></a>
+## Built-In Pre-Return Recheck
+
+Before returning a material planning/development result, perform a proportional self-recheck:
+
+```text
+Current-scope recheck
+→ reconstruct what the selected scope/owner must answer
+→ check omissions, contradictions, unsupported assumptions,
+  silently selected alternatives and missing completion meaning
+
+Integration recheck
+→ check Critical/High material against affected current owners,
+  accepted upstream meaning, Requirements/constraints and material Evidence
+```
+
+Quality target: repeating the ordinary recheck with no new evidence should normally not discover a material omission that should have been caught before the first answer.
+
+This is a review-quality obligation, **not** authority to run a second semantic lifecycle. When the recheck surfaces a material semantic issue, use normal Finding Disposition / Revalidation / Integration owners.
+
+Canonical semantic repair owners:
+
+- [`../idtspe-core/resolution/findings/FINDING-DISPOSITION.md`](../idtspe-core/resolution/findings/FINDING-DISPOSITION.md)
+- [`../idtspe-core/use-cases/revalidate-current-work/UC-IDTSPE-REVALIDATE-CURRENT-WORK.md`](../idtspe-core/use-cases/revalidate-current-work/UC-IDTSPE-REVALIDATE-CURRENT-WORK.md)
+- [`../idtspe-core/use-case-processes/CROSS-OWNER-CONSISTENCY-REVIEW.use-case-process.md`](../idtspe-core/use-case-processes/CROSS-OWNER-CONSISTENCY-REVIEW.use-case-process.md)
+
+## Semantic Dependency / Backflow Boundary
+
+AI Reviewability does not own a universal planning chronology.
+
+Generic rule:
+
+```text
+accepted upstream/current-owner meaning
+→ dependent realization
+
+new downstream Evidence / contradiction / infeasibility
+→ Finding Candidate
+→ earliest affected owner
+→ targeted Revalidation
+→ only affected dependent work becomes stale/rebuilt
+```
+
+The semantic lifecycle is owned by Core Revalidation/Consistency and the applicable profile/owner contracts. Reviewability only requires that contradictions/backflow are visible rather than silently compensated downstream.
+
+## Critical Review / IDTSPE Review Boundary
+
+Ordinary material answers use this built-in reviewability proportionally.
+
+Explicit commands may request independently useful review work:
+
+```text
+critical review
+→ adversarial/truth-seeking challenge of the selected target as hypothesis
+
+idtspe.review
+→ complete current-basis semantic review with explicit Review Strategy/Coverage
+
+idtspe.review.recheck
+→ repeat the same review lifecycle only for stale/partial/invalidated/newly exposed or otherwise affected coverage
+```
+
+Review Strategy/Coverage owns truthful checked/remaining coverage and prior-vs-current delta when a reliable prior record exists. These commands do not create another Key Points/Review Priority ontology.
+
+## Boundary
+
+```text
+Key Points / Review Priority / Review Order / pre-return recheck
+= review projections/obligations
+≠ semantic State owner
+≠ Proposal/Decision selection authority
+≠ Q/R/P lifecycle
+≠ Target lifecycle
+≠ persistence requirement
+```
+
+Do not manufacture Key Points for trivial replies, Critical/High labels for complexity alone, or repeated rechecks as a substitute for reading current owners/Evidence.
+
+## Source Provenance
+
+This owner consolidates the useful reviewability semantics formerly spread across:
+
+```text
+planning/documentation/ai-reviewability-and-directed-planning-principles.md
+planning/documentation/planning-concerns-and-decisions-model.md
+```
+
+Those compatibility files no longer own current reviewability/Q/R/P semantics.

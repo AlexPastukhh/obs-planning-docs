@@ -1,0 +1,349 @@
+# Переоценка Findings по обязательному обоснованию Priority / RE / последствий
+
+Дата: 2026-09-24. Текущий проход: **B-02 с коррекцией B-02.1** после замечания пользователя о выбранном Core omission. Объект — текущие файлы `C:/Users/alexa/Downloads/obs-planning-docs/planning`. Изменён только этот отчёт; предлагаемые исправления методологии и Helper в данном проходе не выполнялись.
+
+## Итог
+
+| Finding | Текущий статус | Priority | Resolution Escalation | Изменение вывода |
+|---|---|---|---|---|
+| F-01 — Collections | OPEN, подтверждён | Normal | RE-0 для дополнения уже заданных семейств | Формализация уже требуемой структуры; новые семантические поля/жизненные циклы не подразумеваются |
+| F-02 — handoff/completion | OPEN, подтверждён в уточнённой границе | Normal | RE-0 | Нет доказательства уже созданного второго lifecycle; есть неверная атрибуция и неоднозначное указание исполнения |
+| F-03 — пример owner/RE | CLOSED, исправление проверено | Normal — историческая оценка | RE-0 — выполненная коррекция примера | Прежний дефект отсутствует; повторное исправление не требуется |
+| F-04 — Core inventory в SDS | OPEN, подтверждён | Normal | RE-0 | Применимость PRS к SDS подтверждена самим модулем, а не только отсутствием запрета |
+| F-05 — omission Pre-Update | OPEN, таблица не согласована с выбранным Core disposition | Low | **RE-0** | Исправить локальный запрет omission; явный omission с причиной уже допустим по Core, нового выбора нет |
+| F-06 — Core aliases в Helper | OPEN, подтверждён как пробел metadata | Low | RE-0 для восстановления отображения registry → aliases | Работоспособность команд/поиска не объявлена нарушенной; проверены все пять Core TM |
+
+Пять открытых исправлений ограничены восстановлением уже заданного смысла. Для F-05 в B-02 ошибочно объявлялась новая локальная развилка: это исправлено в B-02.1. RE относится к Finding и границе его разрешения, а не является новой классификацией Proposal. Незначительные редакционные/кодовые варианты сами по себе не превращают детерминированное восстановление известного смысла в новый semantic Decision.
+
+## Основания и правила чтения
+
+Обязательный критерий: [Finding classification and consequence basis][C1], [evidence-backed resolution conclusions][C2], [Priority scale][C3]. Эти документы задают метод проверки. Доказательства конкретных дефектов и уже заданного поведения приведены отдельно под каждым Finding.
+
+Из сообщений пользователя в этой беседе:
+
+- **U-01**, уточнение роли модулей: «сначала там были файндинги, потом уже пропозалы».
+- **U-02**, отделение Pre-Update: «предапдейт не относится к ревью».
+- **U-03**, требование основания: «надо предоставить ссылку на что то что уже есть в докуменатции где то»; допустимо также «что пользователь говорил».
+
+- **U-04**, замечание к F-05: «мы явно можем омитить с указанием, т е это уже выбрано было в методологии».
+
+U-01 подтверждает порядок диагностики и решений; U-02 — независимость Pre-Update. Уже существующее основание omission — C6 и разграничение полномочий Target Module в C7. U-04 подтверждает требуемую трактовку, а не вводит новую политику. Общее «соответствует линии пользователя» не заменяет эти конкретные основания.
+
+## Findings — наблюдения, классификация и последствия
+
+### F-01 — Не объявлены три повторяющихся семейства результатов
+
+**Наблюдение.** [RU-RFIND-02][E1] требует диагноз для каждого кандидата; [RU-PWORK-02][E2] — оценку/handoff каждого материального Proposal; [RU-PUPDATE-01][E3] — повторяемые адресуемые операции с общим контрактом. Явных Collection Definitions для этих результатов в прочитанных Unit нет. Названные Collections первых Units описывают другие результаты и не объявляют Collection внутри вторых Units.
+
+**Почему это дефект.** [Collection contract][C4] прямо требует явного объявления genuine repeated result-contract family в новых/существенно изменённых Units. Критерий здесь выполняется: повторяется самостоятельный диагноз, review или операция по одному Item Contract. Общий сравнительный вывод workup, список Evidence-ссылок и обычные поля плана этим критерием автоматически не становятся Collections.
+
+**Priority Normal — аргумент.** Риск относится к трём конкретным результатам: можно потерять соответствие отдельного Finding его диагнозу, Proposal его оценке или операции её основанию при продолжении/recheck. Эти связи прямо требуются E1–E3. Это существенный пробел контрактов, но данных о глобальной поломке Core, фактической утрате пользовательских данных или уже неверных результатах других проектов нет.
+
+**RE-0 — аргумент.** C4 уже определяет требуемую форму, E1–E3 — содержательные ответственности и повторение. Минимальная коррекция делает эти существующие семейства явными. Она не добавляет новые обязательные результаты, стадии или lifecycle. Если при исправлении понадобятся новые поля, cardinality или независимые Slot-состояния, это дополнительное решение потребует собственной оценки; прежнее RE-0 его не покрывает.
+
+**Upstream.** Сохранить C4 и текущий состав Units. Противоречия, требующего изменения Unit Meta-Model, не обнаружено: исправляемые тела прямо заявляют следование этому контракту.
+
+**Downstream сейчас.** Потребители Unit Definitions — последующие Finding Analysis, Workup и Pre-Update результаты — могут не получить явную адресацию этих семейств. Это договорный риск по E1–E3; фактические внешние экземпляры не проверялись. [SDS placement projection][E4] ссылается на AP этих трёх модулей, поэтому затронутая representation-проекция должна быть проверена на сохранение смысла после изменения.
+
+**USER attention.** Проверить, что предлагается только явная форма существующих результатов. Нового semantic выбора для такого ограничения не нужно: основание C4 + E1–E3. Ввод дополнительных статусов/полей этим выводом не разрешён.
+
+### F-02 — Неверно названа проекция handoff и слишком широко сформулировано completion
+
+**Наблюдение.** [Review Findings][E1] называет `LINKED/PENDING/BLOCKED` «canonical Proposal handoff state», хотя canonical lifecycle не определяет эту тройку как отдельное состояние. [Review Strategy §2B][E5] обещает завершение Finding Disposition собственным действием выбранной review-команды; туда теперь включён диагностический маршрут. В то же время [§8][E6] и [сама команда][E7] явно отличают промежуточную диагностику от полного review.
+
+**Уточнение прежнего вывода.** Подтверждена неоднозначная формулировка, а не факт введения второго lifecycle: модуль прямо отрицает владение lifecycle. Сам по себе explicit blocker также не доказывает ложное завершение: нужно различать завершённую проверку покрытия и полный disposition.
+
+**Priority Normal — аргумент.** Неоднозначность находится в управляющем указании §2B и в диагностическом handoff: она может привести к преждевременному объявлению полного review либо к запуску Proposal work при запросе только диагностики. Риск ограничен наличием прямых защитных указаний §8/E7; поэтому High/Critical без дополнительных доказательств не ставлю.
+
+**RE-0 — аргумент.** U-01 уже выбирает разделение действий; E6/E7 устанавливают, что диагностика не закрывает полный review, а E1 сохраняет Core lifecycle. Достаточно согласовать неточное место с этим уже заданным смыслом и назвать тройку локальными описательными labels. Изобретать новый lifecycle или разрешать полный review без Proposal не требуется.
+
+**Upstream.** Сохранить canonical Finding/Proposal lifecycle и U-01. Ссылка на C1/C2 здесь определяет владельцев, но конкретный выбранный режим доказывают E6/E7 и U-01.
+
+**Downstream сейчас.** E7 ссылается на E1/E5 как PRIMARY/SUPPORTING owners: читатель этой команды получает оба неодинаково сформулированных указания. После исправления требуется пройти случаи diagnostic-only, full-review и существующего `BLOCKED_BY_REVALIDATION` Proposal. Последний означает наличие Proposal, хотя его selection ещё блокирован.
+
+**USER attention.** Новый semantic выбор не нужен для сохранения указанного разделения: его подтверждают U-01 и E6/E7. Необходимо проверить формулировки границы, а не выбирать новые стадии.
+
+### F-03 — Прежний дефект примера исправлен
+
+**Текущее доказательство.** В [worked example][E8] теперь явно заданы accepted rule O/R-1, требуемое `CURRENT_BASIS`, противоречащая декларация C и зависимый consumer H. Исправляемый owner — C; O/R-1 сохраняется; downstream H нуждается в recheck. Пример иллюстративный: O/R-1 не выдаётся за реальную запись чужого проекта.
+
+**Priority/RE.** Исторический Normal был обоснован возможностью научить неверной маршрутизации исправления. Коррекция примера соответствует RE-0: [определение RE-0][C5] требовало положительного accepted basis, а U-03 прямо требует показать доказательство. Изменилось объяснение учебного случая, не реальный набор допустимых modes проекта. Текущего открытого дефекта по этому Finding не осталось.
+
+**Upstream.** Сохранены C5 и U-03. **Downstream.** Для потребителей этого примера различие «источник правила / исправляемый owner / зависимый consumer» теперь явно показано. В [записи выполненного изменения][E9] зафиксировано применение и проверка; текущий текст перечитан в B-02. **USER attention:** новое исправление или выбор не требуется. P-03 оставлен как выполненный, а не предлагается повторно.
+
+### F-04 — SDS bootstrap сообщает неполный Core inventory
+
+**Наблюдение.** [Core registry][E10] содержит пять profile-independent модулей; [SDS registry][E11] перечисляет четыре; [bootstrap command][E12] утверждает `13 + 4` и не включает PRS.
+
+**Положительное доказательство применимости.** [TM-PLANNING-RESOLUTION-STATE][E13] прямо описывает работу «In SDS context» и SDS-hosting accepted/unrealized meaning. Следовательно, вывод не основан лишь на том, что «запрета не найдено».
+
+**Priority Normal — аргумент.** Bootstrap вводит пользователя/агента в доступную методологию, поэтому неполный перечень влияет на discovery одного реально применимого модуля. Core registry и точный TM-ID при этом остаются доступными: полной потери возможности работы не установлено.
+
+**RE-0 — аргумент.** E10 задаёт inventory, E13 доказывает использование PRS в SDS, E12 объявляет себя refresh governance поверх всегда активного Core. Исправление отражает уже существующую доступность; оно не устанавливает новый профильный модуль и не активирует Target.
+
+**Upstream.** Сохранить Core registry и PRS applicability gate. **Downstream сейчас.** Потребитель компактного bootstrap получает неполное описание; Helper включает direct command в `seed/commands.json` по своей [модели проекций][E14], поэтому тексты команды попадут в generated artifacts. После изменения они должны быть пересобраны/проверены; 13 SDS-specific модулей сохраняются.
+
+**USER attention.** Новый выбор доступности PRS не нужен — он уже подтверждён E10/E13. Выбор «счётчик или ссылка на registry» является вариантом представления; для минимальной коррекции предлагается согласовать существующий счётчик и перечень с пятью Core-модулями.
+
+### F-05 — Таблица Pre-Update запрещает уже допустимый явный omission
+
+**Наблюдение.** В [Pre-Update][E3] таблица устанавливает `always once ... formed` и `no Unit-level omission`, а следующий абзац разрешает omission с причиной. Непосредственно перед таблицей предписано применять Core Unit Applicability / Materiality / Disposition. [Core applicability][C6] явно разрешает для неприменимого/нематериального Module-defined Unit сохранить его идентичность и показать omission с причиной. [Target Module Meta-Model][C7] прямо оставляет runtime disposition за Core; модуль задаёт локальные applicability/materiality условия, но не второй lifecycle.
+
+**Ошибка предыдущего review.** Я рассматривал таблицу и следующий абзац как два равноправных варианта политики, не применив уже прочитанную upstream authority C6/C7. Затем рекомендовал переписать корректный абзац в пользу локального запрета. Это нарушило требование проверять и применять принятое основание перед назначением RE и формированием Proposals. U-04 указывает на эту ошибку; ложная развилка Q-05 отозвана.
+
+**RE-0 — аргумент.** Коррекция приводит локальную таблицу к уже выбранному правилу C6/C7, прямо унаследованному в E3 и подтверждённому U-04. При нематериальности Unit остаётся видимым с omission и объяснением; при материальности, но нехватке данных остаётся открытым/неразрешённым. Ни изменение Core, ни новое разрешение USER на этот смысл не нужны. Изначальный Target gate сохраняется: отсутствие пользы отдельного плана до формирования не обязывает создавать Target. Но этот gate не отменяет Core disposition у уже сформированного Unit.
+
+**Priority Low — аргумент.** Дефект ограничен одной локальной таблицей и отображением состояния одного Unit. Он может навязать ненужную работу или скрыть допустимый omission. Исправление обратимо; фактическая потеря данных, опасное исполнение или глобальный сбой не доказаны. Установленная иерархия источников позволяет исправить локальный контракт без изменения upstream lifecycle.
+
+**Upstream.** C6/C7 сохраняются; переоткрывать их для исправления этой таблицы оснований нет. **Downstream сейчас.** [Команда Pre-Update][E15] и [repository UC][E16] используют этот модуль; конфликтующая таблица может привести их потребителей к необоснованному запрету omission. После исправления проверить отсутствие Target при закрытом начальном gate, явный omission с причиной у существующего нематериального Unit и открытый материальный Unit при нехватке данных. Omission не означает исчезновение Unit или готовый содержательный план.
+
+**USER attention.** Повторный выбор не требуется: допустимость явного omission уже задана C6/C7 и подтверждена U-04. Проверить нужно соответствие исправленной таблицы этому основанию. P-05 ниже заменяет ошибочные P-05A/P-05B.
+
+### F-06 — Core aliases отсутствуют в semantic metadata Helper
+
+**Наблюдение.** В [registry][E10] заданы четыре коротких и один многословный alias. [Builder][E17] отсекает alias section, извлекает alias из отсутствующей у Core табличной колонки и выдаёт пустой массив. Повторное чтение [seed][E18] подтвердило `aliases: []` у **всех пяти** Core TM, включая Exact.
+
+**Priority Low — аргумент.** Доказана неполнота metadata. Exact-ID invocations присутствуют. В прочитанных src использования `component.aliases`, доказывающего отказ поиска по этому полю, не найдено; отсутствие такого использования также не доказывает состояние установленного браузера. Поэтому не утверждается ни поломка запуска, ни поломка UI-поиска.
+
+**RE-0 для восстановления metadata — аргумент.** Соответствие alias → TM-ID уже задано E10; E14 устанавливает направление canonical owners → derived seeds и не даёт Helper менять семантические имена. Добавление этой известной связи в существующее поле `aliases` сохраняет принятую семантику. Изменение UX-поиска, выбор другого invocation по умолчанию или новые пользовательские aliases были бы отдельной задачей и не включены в это RE-0.
+
+**Upstream.** E10 и пять semantic IDs остаются неизменными. **Downstream сейчас.** E17 → E18 теряет metadata, а [normalizer][E19] поддерживает и сохраняет `aliases`, когда они переданы. После исправления надо проверить generated seed/userscript и нормализованный компонент. Старый [alias test][E20] читает registry и допускает только однословный token; он не сравнивает это поле seed и не охватывает многословный PRS alias.
+
+**USER attention.** Для восстановления уже заданного отображения новый semantic выбор не требуется — основание E10/E14. Расширение поведения поиска не предлагается; поэтому связанного выбора UX здесь нет.
+
+## Proposals — кандидаты исправлений и их impact review
+
+Все предложения сохраняют связь с одноимённым Finding. Upstream/downstream basis берётся из его проверенного разбора выше; ниже указаны конкретные кандидатные эффекты и критерии проверки. P-01/P-02/P-04/P-05/P-06 подготовлены, но ещё не применены; P-03 уже выполнен. В B-02.1 исправлен только отчёт и его предложение P-05.
+
+| Proposal | Предлагаемое изменение | Candidate-specific последствия и проверка |
+|---|---|---|
+| **P-01 → F-01** | В трёх Unit объявить Collections для diagnoses, candidate reviews и file/artifact operations, сохранив уже описанные Item Contracts и ссылки на исходные субъекты | Новые имена — только адресация существующих результатов. Не копировать Proposal bodies, не создавать Slots на каждое поле. Проверить соответствие Finding↔diagnosis, Proposal↔review и операцию MOVE; неизвестный набор операций не обозначать как установленный пустой. Проверить E4, не обещая заранее необходимость изменения этой проекции. |
+| **P-02 → F-02** | Уточнить local handoff labels в TM и область обещания completion в §2B Review Strategy; сохранить диагностический маршрут | Полный review по-прежнему требует linked Proposal. Проверить diagnostic-only с pending handoff, zero-material-findings и существующий RE-3 Proposal. Наличие Proposal и selectable состояние должны различаться. Семантическая основа уже выбрана U-01/E6/E7. |
+| **P-03 → F-03** | Выполнено: пример содержит accepted basis и правильного исправляемого owner | Текущий E8 проверен; повторного изменения нет. |
+| **P-04 → F-04** | Дополнить SDS перечень ссылкой на PRS и согласовать bootstrap: 13 SDS-specific + 5 generic Core | Пересобрать изменившиеся command projections, проверить явную доступность PRS без его автоматического применения. Не менять inventory Core или gates. |
+| **P-05 → F-05, исправленный кандидат** | Исправить строку applicability table в TM-PRE-UPDATE-PLAN: содержательная работа нужна, когда конкретный план материален; иначе сохраняется видимый Unit с явным omission и причиной по Core. Сохранить корректный следующий абзац и начальный Target gate. | Восстанавливает C6/C7, прямо подтверждённые U-04. Не вводит новую политику и не требует прекращать Target только ради отсутствия содержательной работы Unit. Проверить три случая: gate до формирования; нематериальный существующий Unit; материальный, но неразрешённый Unit. Проверить E15/E16 на согласованность ожиданий. |
+| **P-06 → F-06** | Читать Core alias mapping из registry и заполнять существующее metadata-поле; убрать зависимость от fallback двух старых модулей | Сохранить текущие exact-ID invocations и уникальные карточки. Проверить все пять mappings, включая многословный PRS, в seed и после normalization. Добавить узкую проверку source→projection; затем build/verify. Изменение поиска или видимого default invocation не включать. |
+
+**Q-05 отозван как ложная развилка.** Допустимость явного omission с причиной уже определена C6/C7. P-05A отозван: он ошибочно предлагал предпочесть локальный запрет. P-05B не является новой альтернативой для выбора: его допустимый смысл уже унаследован из Core и восстановлен в исправленном P-05.
+
+Для P-01/P-02/P-04/P-05/P-06 отсутствие нового semantic выбора не означает отсутствие downstream-работы или отдельного разрешения файловой песочницы на запись. Retained Decision trace нужен только при собственной ценности; он не создаётся на каждый файл. Для P-05 требуется исправить локальную таблицу по существующему Core, а не создавать новую политику в отчёте.
+
+## Покрытие B-02 и ограничения
+
+- **EXECUTED_THIS_PASS:** перечитаны источники C1–C6/E1–E20 в относящихся к Findings частях; проверены текущий пример, обе omission-нормы, PRS SDS applicability, builder и пять фактических alias arrays. F-01/F-02/F-04/F-05/F-06 остаются материальными, каждому соответствует Proposal; F-03 закрыт по текущему тексту.
+- Применены проверочные перспективы Authority/SoT, Target Resolution Coverage, Dependency/Change Impact и Proposal/Decision Resolution Context к указанным поверхностям. Их ранее прочитанные критерии переиспользованы; факты и выводы перепроверены. Representation использована для выбора обновить этот единый отчёт. Новые Lens-owned артефакты не создавались.
+- Результат **285/285** относится к предыдущему проверенному проходу, записанному в E9; в B-02 тесты не запускались. Это не использовано как доказательство правильности RE или отсутствия semantic дефектов.
+- Browser/UI, все существующие пользовательские Target instances и произвольные внешние consumers не проверялись. Соответствующие последствия обозначены как границы/риски, без утверждений об уже произошедших сбоях.
+- В B-02 неверно заявлялось полное соблюдение проверки authority для F-05: источник C6 был приведён, но его приоритет над локальным запретом не был применён. В B-02.1 повторно прочитаны C6/C7/E3, учтён U-04 и исправлены classification, последствия, P-05 и Q-05. Само наличие ссылки или заполненного поля не доказывает выполнение review-контракта. Остальные пять Findings в этом корректирующем проходе заново целиком не проверялись; их evidence и ограничения остаются в B-02.
+
+## Источники B-02
+
+Ссылки ниже ведут к файлам текущей рабочей копии обычными Markdown-путями, совместимыми с VS Code. Цитируемые sections/Unit IDs указаны в тексте; суффиксы номеров строк не включены в пути.
+
+[C1]: C:/Users/alexa/Downloads/obs-planning-docs/planning/documentation/idtspe-methodology/active/idtspe-core/resolution/findings/FINDING-DISPOSITION.md
+[C2]: C:/Users/alexa/Downloads/obs-planning-docs/planning/documentation/idtspe-methodology/active/idtspe-core/resolution/proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md
+[C3]: C:/Users/alexa/Downloads/obs-planning-docs/planning/documentation/idtspe-methodology/active/ai-reviewability/AI-OUTPUT-REVIEWABILITY.md
+[C4]: C:/Users/alexa/Downloads/obs-planning-docs/planning/documentation/idtspe-methodology/active/idtspe-core/runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md
+[C5]: C:/Users/alexa/Downloads/obs-planning-docs/planning/documentation/idtspe-methodology/active/idtspe-core/resolution/findings/FINDING-DISPOSITION.md
+[C6]: C:/Users/alexa/Downloads/obs-planning-docs/planning/documentation/idtspe-methodology/active/idtspe-core/runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md
+[C7]: C:/Users/alexa/Downloads/obs-planning-docs/planning/documentation/idtspe-methodology/active/idtspe-core/target-modules/TARGET-MODULE-MODEL.md
+[E1]: C:/Users/alexa/Downloads/obs-planning-docs/planning/documentation/idtspe-methodology/active/idtspe-core/target-modules/TM-REVIEW-FINDINGS.md
+[E2]: C:/Users/alexa/Downloads/obs-planning-docs/planning/documentation/idtspe-methodology/active/idtspe-core/target-modules/TM-PROPOSAL-WORKUP.md
+[E3]: C:/Users/alexa/Downloads/obs-planning-docs/planning/documentation/idtspe-methodology/active/idtspe-core/target-modules/TM-PRE-UPDATE-PLAN.md
+[E4]: C:/Users/alexa/Downloads/obs-planning-docs/planning/documentation/idtspe-methodology/active/profiles/sds/representation/ARTIFACT-PLACEMENT-MAP.md
+[E5]: C:/Users/alexa/Downloads/obs-planning-docs/planning/documentation/idtspe-methodology/active/ai-reviewability/REVIEW-STRATEGY-AND-COVERAGE-CONTRACT.md
+[E6]: C:/Users/alexa/Downloads/obs-planning-docs/planning/documentation/idtspe-methodology/active/ai-reviewability/REVIEW-STRATEGY-AND-COVERAGE-CONTRACT.md
+[E7]: C:/Users/alexa/Downloads/obs-planning-docs/planning/commands/review-findings.command.md
+[E8]: C:/Users/alexa/Downloads/obs-planning-docs/planning/documentation/idtspe-methodology/active/idtspe-core/target-modules/TM-REVIEW-FINDINGS.md
+[E9]: C:/Users/alexa/study-tab-launcher/methodology-evidence-grounding-change.md
+[E10]: C:/Users/alexa/Downloads/obs-planning-docs/planning/documentation/idtspe-methodology/active/idtspe-core/target-modules/TARGET-MODULE-REGISTRY.md
+[E11]: C:/Users/alexa/Downloads/obs-planning-docs/planning/documentation/idtspe-methodology/active/profiles/sds/registries/TARGET-MODULE-REGISTRY.md
+[E12]: C:/Users/alexa/Downloads/obs-planning-docs/planning/commands/bootstrap-application-sds-planning.command.md
+[E13]: C:/Users/alexa/Downloads/obs-planning-docs/planning/documentation/idtspe-methodology/active/idtspe-core/target-modules/TM-PLANNING-RESOLUTION-STATE.md
+[E14]: C:/Users/alexa/Downloads/obs-planning-docs/planning/documentation/tools/tampermonkey/chat-command-palette/README.md
+[E15]: C:/Users/alexa/Downloads/obs-planning-docs/planning/commands/plan-pre-update.command.md
+[E16]: C:/Users/alexa/Downloads/obs-planning-docs/planning/use-cases/UC-REPO-PLAN-UPDATE.md
+[E17]: C:/Users/alexa/Downloads/obs-planning-docs/planning/documentation/tools/tampermonkey/chat-command-palette/build-chat-command-palette.mjs
+[E18]: C:/Users/alexa/Downloads/obs-planning-docs/planning/documentation/tools/tampermonkey/chat-command-palette/seed/semantic-components.json
+[E19]: C:/Users/alexa/Downloads/obs-planning-docs/planning/documentation/tools/tampermonkey/chat-command-palette/src/semantic-projections.js
+[E20]: C:/Users/alexa/Downloads/obs-planning-docs/planning/documentation/tools/tampermonkey/chat-command-palette/tests/semantic-navigation.test.mjs
+
+## История: исходная оценка B-01
+
+Ниже сохранён предыдущий отчёт как история. Его классификации, статусы и предложения заменены B-02/B-02.1 выше. В F-05 исходный RE-0 восстановлен с корректным upstream-основанием, но исходное предложение менять разрешающий omission абзац в пользу запрета отозвано.
+
+<details>
+<summary>Открыть исходный отчёт B-01</summary>
+
+# Проверка Core Review Findings / Proposal Workup / Pre-Update
+
+Дата: 2026-09-24.
+
+Объект: рабочая копия `C:/Users/alexa/Downloads/obs-planning-docs/planning`, включая новые незакоммиченные файлы. Это отчёт о методологии; расположение отчёта в Study Tab Launcher не делает его частью методологии Launcher.
+
+Результат: разделение трёх задач сохраняет смысл и не требует нового объединяющего модуля. Выявлены четыре недочёта в новых контрактах/интеграции и два ранее существовавших недочёта в затронутых владельцах. До использования как образца стоит устранить F-01–F-05. F-06 имеет меньший приоритет.
+
+Статус: проверка выполнена; Proposals ниже подготовлены. В последующем изменении от 2026-09-24 исправлен F-03 и усилены общие требования к доказательствам Priority/RE и upstream/downstream последствий: [отчёт об изменении](methodology-evidence-grounding-change.md). F-01/F-02/F-04/F-05/F-06 остаются открытыми. Далее сохранены выводы и предложения исходного прохода на Basis B-01; его краткие RE-0-оценки не следует использовать как замену обоснованию по новому контракту. Открытые исправления не означают, что сама проверка не выполнена.
+
+## Границы и доказательства
+
+Проверены три модуля, их команды, Finding/Proposal lifecycle, Target Module/Unit contracts, Review Strategy/Coverage, Core/SDS discovery и bootstrap, Helper builder и текущая проекция. Границы независимости модулей проверены по `UC-IDTSPE-MAINTAIN-TARGET-MODULE`.
+
+В этом проходе заново выполнены:
+
+- `node verify-chat-command-palette.mjs`: **285 тестов, 285 passed, 0 failed**; 113 command definitions, 16 source modules, 22 test files; generated catalogs/userscript соответствуют исходникам.
+- `git diff --check`: ошибок нет; Git сообщает о преобразовании LF/CRLF в некоторых файлах.
+- Поиск удалённого `idtspe.review.pre_update`, `review-pre-update.command.md`, `PRE_UPDATE_BASIS`: активных маршрутов не найдено; отрицательные assertions в тестах сохранены. Исторические записи не считались действующим контрактом.
+- Чтение Core alias registry, builder и `seed/semantic-components.json`: Core aliases не попадают в поле `aliases` карточек.
+
+Тесты подтверждают техническую связность проекций и проверяемые assertions. Они не доказывают правильность определения semantic owner, достаточность каждого Unit и корректность учебных примеров. Работа установленного браузерного Helper и действия реального пользователя в этом проходе не проверялись. Исходники Study Tab Launcher не входили в объект проверки.
+
+## Выбранные линзы и покрытие
+
+Basis B-01: прочитанное текущее состояние указанных выше файлов плюс повторно выполненная проверка Helper. Все строки — `EXECUTED_THIS_PASS`, операция `CHECK`: проверка текущего смысла по критериям соответствующей линзы. Для старых L1/L2/L3/L4/L6 использован их существующий проверочный метод в терминологии операций Lens Meta-Model; их файлы не дополнялись новыми декларациями.
+
+| Lens | Ограниченная поверхность | Результат |
+|---|---|---|
+| `LENS-NEED-VALUE-SCOPE` | самостоятельная польза трёх модулей, отсутствие обязательной последовательности | отдельный диагностический результат и существенный workup обоснованы; для простых случаев остаются обычные Core-операции |
+| `LENS-AUTHORITY-SOT-REUSE` | владельцы диагностики, исправления, Proposal и принятое значение | F-02, F-03; новые модули в целом сохраняют Core lifecycle |
+| `LENS-UNCERTAINTY-ASSUMPTION-REVERSIBILITY` | основания RE-0 в примере и пределы проверки | F-03; успешные тесты не приняты за доказательство семантики |
+| `LENS-ARTIFACT-BOUNDARY-ADDRESSABILITY` | Collections, optional persistence, discovery и отчёт | F-01, F-04, F-06; отдельные файлы на каждый Finding/Proposal не нужны |
+| `LENS-PROPOSAL-DECISION-RESOLUTION-CONTEXT` | Proposal handoff и предлагаемые здесь исправления | F-02; каждый материальный Finding имеет отдельный Proposal ниже; новые полномочия выбора не требуются |
+| `LENS-DEPENDENCY-CHANGE-IMPACT` | Core → SDS bootstrap; commands → Helper | F-04, F-06; удалённое совмещение Review/Pre-Update не осталось действующим маршрутом |
+| `LENS-TARGET-RESOLUTION-COVERAGE` | покрытие результата поддерживаемых модулей их Units и disposition | F-01, F-05; не требуется добавлять отдельные Units на каждую запись |
+| `LENS-VERIFIABILITY-OBSERVABILITY-OPERABILITY` | критерии завершения/блокировки, подтверждение проекций | F-02, F-05, F-06; определены проверки для каждого исправления |
+
+SDS Domain/Feature/Scenario/UI линзы не выбраны: проверяемый результат — generic Core методология. Отдельные Practical Evidence/Test Proof приложения не выполнялись: текущие выводы устанавливаются чтением контрактов и проекций; браузерный эксперимент оставлен за границами этого review. Дополнительная Quality/Risk линза не понадобилась для отдельной непокрытой поверхности.
+
+## Findings
+
+### F-01 — Повторяющиеся результаты не везде объявлены Collections
+
+**Review Priority: Normal. Resolution Escalation: RE-0. Proposal: P-01.**
+
+В `RU-RFIND-01` и `RU-PWORK-01` Collections объявлены. Однако следующие самостоятельные повторяющиеся семейства имеют общий контракт, но не имеют явной Collection Definition:
+
+- `RU-RFIND-02`: диагноз/disposition для каждого Finding Candidate;
+- `RU-PWORK-02`: оценка и handoff для каждого материального кандидата;
+- `RU-PUPDATE-01`: адресуемые proposed operation entries с единым контрактом операции, введённые последней правкой.
+
+Доказательства: [Review Findings:52](C:/Users/alexa/Downloads/obs-planning-docs/planning/documentation/idtspe-methodology/active/idtspe-core/target-modules/TM-REVIEW-FINDINGS.md), [Proposal Workup:59](C:/Users/alexa/Downloads/obs-planning-docs/planning/documentation/idtspe-methodology/active/idtspe-core/target-modules/TM-PROPOSAL-WORKUP.md), [Pre-Update:143](C:/Users/alexa/Downloads/obs-planning-docs/planning/documentation/idtspe-methodology/active/idtspe-core/target-modules/TM-PRE-UPDATE-PLAN.md).
+
+Критерий: [TWU Collection contract:402](C:/Users/alexa/Downloads/obs-planning-docs/planning/documentation/idtspe-methodology/active/idtspe-core/runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md) требует явного Collection Definition для genuine repeated result-contract family в новых/существенно изменённых Units. Здесь повторяется самостоятельный результат по общему контракту; речь не об обычном списковом поле вроде ссылок на Evidence.
+
+Последствие: формально неполный образец нового Unit; неочевидна стабильная адресация конкретного диагноза, оценки или операции при recheck.
+
+### F-02 — Локальная проекция handoff названа каноническим состоянием
+
+**Review Priority: Normal. Resolution Escalation: RE-0. Proposal: P-02.**
+
+[TM-REVIEW-FINDINGS:54](C:/Users/alexa/Downloads/obs-planning-docs/planning/documentation/idtspe-methodology/active/idtspe-core/target-modules/TM-REVIEW-FINDINGS.md) называет `LINKED / PENDING / BLOCKED` «canonical Proposal handoff state». Ссылка ведёт на lifecycle, который не определяет этот набор как canonical state. Это полезная локальная проекция наличия/ожидания ссылки, но так её и нужно обозначить.
+
+Смежная неточность: [Review Strategy:103](C:/Users/alexa/Downloads/obs-planning-docs/planning/documentation/idtspe-methodology/active/ai-reviewability/REVIEW-STRATEGY-AND-COVERAGE-CONTRACT.md) обобщённо говорит, что собственное действие выбранной review-команды завершает Finding Disposition; в той же секции теперь перечислена диагностическая `tmcmd.review.findings`. Позднее контракт правильно допускает отдельный промежуточный диагностический результат. Указания стоит согласовать непосредственно в месте исполнения.
+
+Последствие: читатель может принять локальную подпись за второй lifecycle либо смешать готовую диагностику с полным disposition. Наличие запрета на завершение полного review в других абзацах снижает риск, но не устраняет неточность.
+
+### F-03 — Учебный пример недостаточно обосновывает RE-0 и владельца исправления
+
+**Review Priority: Normal. Resolution Escalation: RE-0 для исправления примера. Proposal: P-03.**
+
+[Пример Review Findings:94](C:/Users/alexa/Downloads/obs-planning-docs/planning/documentation/idtspe-methodology/active/idtspe-core/target-modules/TM-REVIEW-FINDINGS.md) сообщает: команда объявляет coverage mode, отсутствующий в контракте. Затем выбирает `RE-0` и называет command contract natural affected owner.
+
+Из одного этого наблюдения не следует, что менять надо контракт: ошибочной может быть команда. Не доказано и существование единственной уже подразумеваемой коррекции. [RE-0:315](C:/Users/alexa/Downloads/obs-planning-docs/planning/documentation/idtspe-methodology/active/idtspe-core/resolution/findings/FINDING-DISPOSITION.md) требует именно такого основания.
+
+Последствие: пример учит исправлять более авторитетный источник под downstream-декларацию или преждевременно классифицировать неопределённость как детерминированную коррекцию.
+
+### F-04 — SDS-проекция неполно перечисляет доступные Core-модули
+
+**Review Priority: Normal. Resolution Escalation: RE-0. Proposal: P-04.**
+
+[Core registry:33](C:/Users/alexa/Downloads/obs-planning-docs/planning/documentation/idtspe-methodology/active/idtspe-core/target-modules/TARGET-MODULE-REGISTRY.md) устанавливает пять profile-independent модулей, включая `TM-PLANNING-RESOLUTION-STATE`. [SDS registry:69](C:/Users/alexa/Downloads/obs-planning-docs/planning/documentation/idtspe-methodology/active/profiles/sds/registries/TARGET-MODULE-REGISTRY.md) перечисляет четыре, а [bootstrap:30](C:/Users/alexa/Downloads/obs-planning-docs/planning/commands/bootstrap-application-sds-planning.command.md) сообщает закрытый счётчик `13 + 4`.
+
+Ограничения, исключающего Planning Resolution State из SDS, здесь нет. Его отсутствие уже было в прежнем SDS-списке; новое утверждение о четырёх унаследованных модулях закрепило неполную проекцию.
+
+Последствие: bootstrap может не дать обнаружить применимый Core-модуль. Владельцы исправления — SDS discovery/bootstrap; изменять Core inventory не требуется.
+
+### F-05 — В Pre-Update одновременно запрещён и разрешён omission единственного Unit
+
+**Review Priority: Low. Resolution Escalation: RE-0. Proposal: P-05.**
+
+[TM-PRE-UPDATE-PLAN:153](C:/Users/alexa/Downloads/obs-planning-docs/planning/documentation/idtspe-methodology/active/idtspe-core/target-modules/TM-PRE-UPDATE-PLAN.md) задаёт `no Unit-level omission` для сформированного Target. Следующий абзац допускает явный omission, если работа Unit нематериальна.
+
+Это ранее существовавшее противоречие в затронутом модуле. Последствие: допускаются две несовместимые трактовки пустого Pre-Update Target.
+
+### F-06 — Helper не проецирует зарегистрированные Core TM aliases
+
+**Review Priority: Low. Resolution Escalation: RE-0. Proposal: P-06.**
+
+[Core alias registry:47](C:/Users/alexa/Downloads/obs-planning-docs/planning/documentation/idtspe-methodology/active/idtspe-core/target-modules/TARGET-MODULE-REGISTRY.md) содержит aliases. [Builder:163](C:/Users/alexa/Downloads/obs-planning-docs/planning/documentation/tools/tampermonkey/chat-command-palette/build-chat-command-palette.mjs) читает Core bullets, но извлекает alias из табличной колонки, которой там нет. Секция aliases отрезана до разбора. Fallback для двух старых модулей уже не срабатывает, когда ID найден общим разбором.
+
+Фактическое подтверждение: `seed/semantic-components.json` содержит `aliases: []` для Planning Resolution State, Pre-Update, Proposal Workup и Review Findings. Это старый пробел builder, распространяющийся на новые модули.
+
+Последствие ограничено неполнотой alias metadata в Helper: прямые команды и invocation по точному TM-ID присутствуют. Отказ поиска в браузерном UI этой проверкой не установлен.
+
+## Proposals — что изменить и как проверить
+
+Все P-01–P-06 являются детерминированными предложениями коррекции к связанным Findings. Они сохраняют выбранное пользователем разделение работы, количество модулей и Core lifecycle. Эти предложения ещё не означают применения файловых изменений.
+
+### P-01 → F-01: дополнить существующие Unit Definitions
+
+Изменить три TM-файла из F-01:
+
+- В `RU-RFIND-02` объявить `RFIND-DIAGNOSES`, общий Item Contract и связь ровно с одним ключом Finding из `RFIND-CANDIDATES`; ожидается по одному диагнозу/disposition на каждый рассмотренный кандидат.
+- В `RU-PWORK-02` объявить `PWORK-REVIEWS` с ключом canonical Proposal и единым Item Contract оценки/handoff. Общий сравнительный вывод оставить интегративным содержимым Unit; Proposal bodies не копировать.
+- В `RU-PUPDATE-01` объявить `PUPDATE-OPERATIONS` с уже описанным контрактом операции, локальной идентичностью при необходимости ссылок и условием применимости к адресуемым назначениям. Общий basis/order/preserve оставить содержимым плана. Нулевой набор после проверки должен отличаться от ещё неизвестного набора операций.
+- Сохранить простые Units без искусственных Slots, новых Units и формальных Proposals на каждую запись.
+
+Проверить пример с двумя Findings, одним duplicate и одной блокировкой; пример с двумя Proposals и повторной оценкой одного; план с ADD/CHANGE/MOVE. Все повторяющиеся результаты должны иметь однозначные ключи и сохранять связь с исходными субъектами.
+
+### P-02 → F-02: уточнить локальную проекцию и границу завершения
+
+Изменить `TM-REVIEW-FINDINGS.md` и `REVIEW-STRATEGY-AND-COVERAGE-CONTRACT.md`:
+
+- Назвать `LINKED / PENDING / BLOCKED` локальными описательными handoff labels, производными от canonical Findings/Proposals, без отдельного lifecycle.
+- Прямо различить готовность диагностического результата, открытый Proposal handoff и завершение полного review.
+- В §2B Review Strategy ограничить обещание полного disposition командами, запрашивающими полный review; диагностика завершает только свой заявленный результат и сохраняет незавершённые обязательства.
+- Уточнить пункт 5 production method: блокер допускает честный незавершённый отчёт, но не заменяет обязательный linked Proposal при заявлении полного review.
+
+Проверить три случая: ноль материальных Findings; законченная диагностика с Proposal pending; RE-3 с существующим `BLOCKED_BY_REVALIDATION` Proposal. Последний случай не должен автоматически трактоваться как отсутствие Proposal.
+
+### P-03 → F-03: сделать пример однозначным
+
+Изменить только worked acceptance example в `TM-REVIEW-FINDINGS.md`:
+
+Задать принятый контракт, который явно разрешает `CURRENT_BASIS`, и команду, где вместо него по ошибке указан неподдерживаемый mode. Тогда affected owner — конкретная command definition, а contract — источник обязательного значения. Диагноз RE-0 обоснован уже принятым смыслом. Коррекцию mode показать только в последующем Proposal, сохранив разделение диагностики и решения.
+
+Проверка: по фактам примера можно определить изменяемый файл и единственную коррекцию без нового решения о наборе допустимых modes. При недостаточном источнике пример должен оставлять uncertainty/revalidation открытой.
+
+### P-04 → F-04: синхронизировать SDS discovery с Core
+
+Изменить SDS Target registry и SDS bootstrap command: добавить ссылку на `TM-PLANNING-RESOLUTION-STATE`; убрать неполный закрытый перечень из prose bootstrap либо согласовать его с текущими пятью Core-модулями. Сохранить 13 SDS-модулей и индивидуальные gates всех Core-модулей.
+
+Перегенерировать Helper-проекции штатным builder. Проверить bootstrap-маршрут: все пять Core-модулей обнаруживаются без чтения отдельных TM bodies и без исполнения любого из них. Core registry остаётся владельцем Core inventory.
+
+### P-05 → F-05: согласовать disposition единственного Pre-Update Unit
+
+Изменить абзац после applicability table в `TM-PRE-UPDATE-PLAN.md`: для этого сформированного Target применить явно выбранное таблицей `no Unit-level omission`; отсутствие самостоятельной пользы плана обрабатывать на Target activation gate. Открытая или заблокированная подготовка плана должна сохранять соответствующее состояние, а не исчезать как `OMITTED`.
+
+Проверить: ненужный отдельный план не создаёт Target; сформированный Pre-Update Target сохраняет свой единственный Unit с честным состоянием результата.
+
+### P-06 → F-06: читать Core aliases из канонического registry
+
+Изменить `build-chat-command-palette.mjs`: проецировать Core TM alias section, включая многословный `planning resolution state`; не поддерживать отдельный вручную заданный список двух старых модулей. Сохранить уникальную карточку на semantic ID и invocation по точному ID как допустимый fallback.
+
+Добавить узкую проверку соответствия всех Core aliases источнику, затем штатно пересобрать generated artifacts и выполнить verify. Проверить не только число карточек, но и фактическое содержимое `aliases` для всех пяти Core-модулей. Браузерную проверку поиска проводить отдельно, если меняется пользовательское обещание о поиске по alias.
+
+## Что подтверждено без нового Finding
+
+- Review Findings и Proposal Workup могут давать независимые полезные результаты; наличие одного Proposal не обязывает создавать Target.
+- Proposal Workup сохраняет естественных владельцев предлагаемого смысла и специализированные candidate Target Bodies. Дублировать эти bodies в workup не требуется.
+- Review Priority и `RE-*` разведены правильно; RE-3 не выдаётся за selectable downstream fix.
+- Pre-Update остаётся Core-модулем; Review не создаёт его в качестве обязательного этапа.
+- Не обнаружено необходимости возвращать combined command или добавлять четвёртый модуль для композиции.
+- Отдельные файлы/регистры Findings и Proposals не навязаны. Предлагаемые исправления можно внести в существующих владельцев.
+
+## Предел заключения
+
+Это завершённая проверка указанной поверхности с открытыми предложениями исправления. Содержимое каждого стороннего profile owner, все исторические аудиты, установленный Helper и продуктовый код Launcher не проверялись целиком. Для данной задачи не обнаружено нерешённого выбора, требующего пересмотра согласованной архитектуры трёх модулей. После исправления достаточно проверить затронутые контракты, перечисленные примеры и обновлённые проекции; повторять весь аудит репозитория не требуется.
+
+</details>

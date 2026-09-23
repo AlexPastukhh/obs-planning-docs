@@ -165,15 +165,13 @@ function currentTargetRows(registryPath,scope){
   const text=fs.readFileSync(path.join(repoRoot,registryPath),'utf8');let body=text;
   if(scope==='Core')body=(text.split('## Installed Generic Core Target Modules')[1]||'').split('## Generic `idtspe` Invocation Aliases')[0]||'';
   else body=(text.split('## Active SDS Target Modules')[1]||'').split('## Retired / Subsumed Baseline Modules')[0]||'';
+  const coreAliases=new Map();
+  if(scope==='Core')for(const match of text.matchAll(/^idtspe ([a-z0-9][a-z0-9 ._-]*) <scope>\r?\n→ (TM-[A-Z0-9-]+)$/gm))coreAliases.set(match[2],[match[1]]);
   const rows=[],seen=new Set();
   for(const m of body.matchAll(/\[`(TM-[A-Z0-9-]+)`\]\(([^)]+)\)(?:\s*\|\s*([^|\n]+)\s*\|\s*([^\n|]+)|\s*—\s*([^\n]+))/g)){
     const id=m[1];if(seen.has(id))continue;const rel=relativeFromRegistry(registryPath,m[2]);if(!rel||!fs.existsSync(path.join(repoRoot,rel)))continue;seen.add(id);
     const aliasCell=cleanCell(m[3]||''),alias=(aliasCell.match(/`([^`]+)`/)||[])[1]||'';const description=compactMarkdown(m[4]||m[5]||headingTitle(rel,id)),explanation=ownerExplanation(rel,'TARGET_MODULE',description);
-    rows.push({id,kind:'TARGET_MODULE',scope,label:headingTitle(rel,id),actionLabel:ACTION_LABELS[id]||headingTitle(rel,id),description,...explanation,sources:[registryPath,rel],ownerRef:semanticOwnerRef(rel,id,'TARGET_MODULE'),aliases:alias?[alias]:[],invocation:`idtspe tm ${alias||id} <target>`,target:`<${ACTION_LABELS[id]||headingTitle(rel,id)} target>`});
-  }
-  if(scope==='Core'){
-    // Core list is prose bullets rather than a table; ensure both current modules are captured.
-    for(const id of ['TM-PRE-UPDATE-PLAN','TM-EXACT-REALIZATION'])if(!seen.has(id)){const match=body.match(new RegExp('\\[`'+id+'`\\]\\(([^)]+)\\)'));if(match){const rel=relativeFromRegistry(registryPath,match[1]),alias=id==='TM-PRE-UPDATE-PLAN'?'pre-update':'exact',description=headingTitle(rel,id),explanation=ownerExplanation(rel,'TARGET_MODULE',description);rows.push({id,kind:'TARGET_MODULE',scope,label:headingTitle(rel,id),actionLabel:ACTION_LABELS[id]||headingTitle(rel,id),description,...explanation,sources:[registryPath,rel],ownerRef:semanticOwnerRef(rel,id,'TARGET_MODULE'),aliases:[alias],invocation:`idtspe tm ${alias} <target>`,target:`<${ACTION_LABELS[id]||headingTitle(rel,id)} target>`});}}
+    rows.push({id,kind:'TARGET_MODULE',scope,label:headingTitle(rel,id),actionLabel:ACTION_LABELS[id]||headingTitle(rel,id),description,...explanation,sources:[registryPath,rel],ownerRef:semanticOwnerRef(rel,id,'TARGET_MODULE'),aliases:scope==='Core'?(coreAliases.get(id)||[]):(alias?[alias]:[]),invocation:`idtspe tm ${alias||id} <target>`,target:`<${ACTION_LABELS[id]||headingTitle(rel,id)} target>`});
   }
   return rows;
 }

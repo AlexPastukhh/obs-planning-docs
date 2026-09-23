@@ -492,6 +492,7 @@ If a template needs semantic explanation, that explanation belongs in the releva
 
 A template must be reachable from at least one operational Use Case.
 
+<a id="doc-example"></a>
 ## Example
 
 An **Example** demonstrates a result, Process, template, owner, or other concrete behavior.
@@ -501,6 +502,17 @@ An example does not own rules.
 Its filename and header should make clear what it demonstrates.
 
 An example must be reachable from at least one operational Use Case or from a semantic owner that is itself reachable from a Use Case.
+
+<a id="doc-example-reading"></a>
+### Reading examples while using methodology
+
+Responsibility ID: `DOC.EXAMPLE-READING`
+
+When applying a selected methodology owner (Use Case, Target Module, Lens or Unit), inspect its inline examples and linked example entries. Read or validly reuse the examples materially relevant to the requested result before producing that result. Record the selected example/source and its useful mapping when it materially informs the work; no applicable example is a valid outcome. An explicit request to read examples performs this bounded reading even without producing a Target.
+
+Compare the example's declared basis, status, Unit/result boundaries and unresolved Evidence with the current owner contract and task. Explain any material adaptation or stale-example conflict. Current methodology owns reusable rules; the current task and its Sources own application meaning. An example does not authorize execution, select its Decisions for the current task, close its open Problems, or require reproducing its filenames/architecture. Do not scan every example or generate missing examples merely because an owner was selected. A copied project example is an isolated, dated fixture, not live application authority.
+
+Use [UC-DOC-MAINTAIN-EXAMPLE](use-cases/UC-DOC-MAINTAIN-EXAMPLE.md) when a stale/missing example warrants authoring or correction; reading does not automatically invoke maintenance.
 
 ## Theory
 

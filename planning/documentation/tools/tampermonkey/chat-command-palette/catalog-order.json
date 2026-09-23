@@ -27,6 +27,8 @@
     "idtspe.bootstrap",
     "application_sds.bootstrap",
     "documentation_principles.read",
+    "documentation.examples.read",
+    "documentation.example.full.read",
     "governance.development",
     "current_state.report",
     "command.plan",
@@ -50,6 +52,8 @@
     "uc:UC-DOC-MAINTAIN-README",
     "uc:UC-DOC-MAINTAIN-RESPONSIBILITY-MAP",
     "tm:TM-PLANNING-RESOLUTION-STATE",
+    "tm:TM-REVIEW-FINDINGS",
+    "tm:TM-PROPOSAL-WORKUP",
     "tm:TM-PRE-UPDATE-PLAN",
     "tm:TM-EXACT-REALIZATION",
     "tm:TM-APPLICATION-DEFINITION",
@@ -131,7 +135,6 @@
     "idtspe.port.trace",
     "idtspe.review",
     "idtspe.review.recheck",
-    "idtspe.review.pre_update",
     "idtspe.unit.resolve",
     "idtspe.unit.define-contextual",
     "idtspe.branch.explore",
@@ -271,6 +274,8 @@
         "idtspe.bootstrap",
         "application_sds.bootstrap",
         "documentation_principles.read",
+        "documentation.examples.read",
+        "documentation.example.full.read",
         "governance.development"
       ]
     },
@@ -366,7 +371,6 @@
       "items": [
         "idtspe.review",
         "idtspe.review.recheck",
-        "idtspe.review.pre_update",
         "idtspe.findings.disposition",
         "idtspe.needs.collect",
         "idtspe.needs.disposition"
@@ -442,6 +446,8 @@
       "order": 10,
       "items": [
         "tm:TM-PLANNING-RESOLUTION-STATE",
+        "tm:TM-REVIEW-FINDINGS",
+        "tm:TM-PROPOSAL-WORKUP",
         "tm:TM-PRE-UPDATE-PLAN",
         "tm:TM-EXACT-REALIZATION"
       ]

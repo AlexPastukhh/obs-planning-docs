@@ -203,3 +203,7 @@ FBS / BR / material SR
 ```
 
 Reference upstream behavior instead of rewriting it. Slice-owned `ERR-IMP-SLICE-*` are expected failures created by selected Slice mechanisms.
+
+## Copied project example
+
+[Study Tab Launcher — Текущая реализованная ответственность и связи](../examples/study-tab-launcher/project/planning/documentation/slices/open-local-project.md). Read the [case guide and capture limits](../examples/study-tab-launcher/README.md) with the current module contract; the copied project is a dated example, not live application authority.

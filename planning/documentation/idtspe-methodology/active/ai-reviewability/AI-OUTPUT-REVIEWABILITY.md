@@ -71,6 +71,8 @@ Q/R/P may reuse the compact aliases `P0 / Critical`, `P1 / High`, `P2 / Normal`,
 
 Do not raise priority merely because a topic is complex or speculative.
 
+For material Findings, present the chosen priority with concrete cost/blast-radius rationale and supporting subject/dependency references through [Finding classification and consequence basis](../idtspe-core/resolution/findings/FINDING-DISPOSITION.md#finding-classification-consequence-basis). A bare label is insufficient; this file owns the scale while Finding Disposition owns the diagnostic projection and its grounding obligation.
+
 ### Review Priority vs Finding Resolution Escalation
 
 > Semantic Owner Dependencies

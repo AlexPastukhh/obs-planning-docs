@@ -32,12 +32,13 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
     "planning/documentation/idtspe-methodology/active/idtspe-core/runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md",
     "planning/documentation/idtspe-methodology/active/idtspe-core/commands/IDTSPE-COMMAND-SURFACE-CONTRACT.md"
   ],
-  "expectedOutput": "RU-PUPDATE-01 Pre-Update Plan: concrete intended changes, preserve boundary, material dependencies/order and verification, after proportional registry/Lens applicability checks; unresolved material issues only when they actually remain.",
+  "expectedOutput": "RU-PUPDATE-01 Pre-Update Plan: concrete intended changes, including addressable proposed operations by path/owner/action/delta/basis/check for file or artifact destinations, preserve boundary, material dependencies/order and verification, after proportional registry/Lens applicability checks; unresolved material issues only when they actually remain.",
   "permissionMode": "read-only-planning",
   "keyReminders": [
     "Use accepted previous meaning/current context as the basis; do not redesign it without a material new conflict.",
     "Apply the generic Result Unit Opening/In-Unit/Closing applicability envelope; a checkpoint may reuse current registry metadata and does not mean executing every Lens.",
     "Use ordinary Q/R/P/Evidence + Proposals/Decisions only where they help resolve a real consequential choice; do not dump a mandatory QRPE form.",
+    "Proposed file/artifact operation entries are reviewable plan content, not automatically formal IDTSPE Proposals or permission to mutate.",
     "Inspect current destination state only as needed for a concrete safe plan and never guess consequential missing source facts.",
     "The plan does not mutate files, execute tests, create a replacement package, commit or push; actual mutation authority belongs to the later host/Exact workflow.",
     "Skip this Target when the change is trivial/obvious and the user explicitly wants direct realization."

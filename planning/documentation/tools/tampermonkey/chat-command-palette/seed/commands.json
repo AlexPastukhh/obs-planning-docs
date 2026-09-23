@@ -360,7 +360,7 @@
         "bootstrap SDS planning"
       ],
       "description": "Load the SDS profile over IDTSPE Core.",
-      "meaning": "Refresh SDS governance over always-active IDTSPE Core: the 13 active SDS Target Modules plus inherited generic Core TM-PRE-UPDATE-PLAN and TM-EXACT-REALIZATION, the current SDS Lens pack, profile registry directory, semantic composition/readiness guidance and representation/materialization policy. This is governance bootstrap, not task-specific planning execution.",
+      "meaning": "Refresh SDS governance over always-active IDTSPE Core: the 13 active SDS Target Modules plus optional inherited generic Core TM-PLANNING-RESOLUTION-STATE, TM-REVIEW-FINDINGS, TM-PROPOSAL-WORKUP, TM-PRE-UPDATE-PLAN and TM-EXACT-REALIZATION, the current SDS Lens pack, profile registry directory, semantic composition/readiness guidance and representation/materialization policy. This is governance bootstrap, not task-specific planning execution.",
       "activeContextBehavior": "Load or refresh SDS profile governance only. The SDS README assumes the primary bootstrap is current; if not, follow its prerequisite back to planning/README.md first. Preserve current Use-Case-driven Work Context if one exists. Do not perform Target Formation, select a Target, infer CREATE/REFINE/EXTEND/REVALIDATE/REPAIR, or execute a Target Module merely because bootstrap was requested.",
       "traversalReadMode": "Reuse current reliable SDS governance and current IDTSPE Core context; targeted refresh of the selected owner route when uncertain; full SDS governance preflight only when no reliable sufficient governance context exists.",
       "ownerFiles": [
@@ -385,7 +385,7 @@
       "permissionMode": "read-only",
       "keyReminders": [
         "Bootstrap is governance orientation only; IDTSPE is already active.",
-        "The active SDS baseline has 13 profile Target Modules plus 2 inherited generic Core Target Modules.",
+        "The active SDS baseline has 13 profile Target Modules plus 5 optional inherited generic Core Target Modules.",
         "SDS has no separate runtime methodology Use Cases in the current baseline; IDTSPE Use Cases compose SDS components.",
         "Do not infer a fixed Mini/Modular/Full workflow or mandatory Target sequence.",
         "This command grants no repository mutation, implementation, test, commit or push permission."
@@ -3331,7 +3331,7 @@
       ],
       "description": "Explicitly discover, form, review and refine material IDTSPE Proposals from current context, supplied Findings or a supplied Proposal through the canonical Proposal/Decision lifecycle under USER-gated selection.",
       "meaning": "Use the current IDTSPE Work Context to discover/form material candidate Proposals, form linked Proposals for supplied material Findings, or review/refine a supplied Proposal. When Findings are the input, preserve their Finding Disposition/RE-* state: deterministic/local candidates remain inside accepted meaning, RE-3 stays BLOCKED_BY_REVALIDATION, and RE-2/RE-4 remain semantic-change candidates requiring normal selection. Canonical Proposal/Decision lifecycle owns candidate/selection semantics; Proposal existence never implies persistence. Keep candidates UNSELECTED unless their route is an already-entailed RE-0 correction that needs no semantic selection, and integrate actually selected semantic change only through normal authority.",
-      "activeContextBehavior": "Reuse current Sources, accepted Results, Decisions, Findings and Carry-Forward references first. If explicit Proposal formation targets Findings, consume their current Finding Disposition rather than rerunning Review; form/refine the smallest linked candidate and preserve revalidation blocks. Resolve genuinely required USER-only grounding before presenting a selectable material candidate. For each material selectable Proposal run the Resolution Context Lens and canonical Proposal Semantic Change Impact Review proportionally. AI recommendation is not selection. Retention/file persistence is a separate proportional decision.",
+      "activeContextBehavior": "Reuse current Sources, accepted Results, Decisions, Findings and Carry-Forward references first. If explicit Proposal formation targets Findings, consume their current Finding Disposition rather than rerunning Review; form/refine the smallest linked candidate and preserve revalidation blocks. Resolve genuinely required USER-only grounding before presenting a selectable material candidate. For each material selectable Proposal run the Resolution Context Lens and canonical Proposal Semantic Change Impact Review proportionally. Use optional TM-PROPOSAL-WORKUP only when a bounded candidate-resolution brief has independent Target value; ordinary transient Proposal work remains this operation. AI recommendation is not selection. Retention/file persistence is a separate proportional decision.",
       "traversalReadMode": "Reuse current reliable Core governance. Otherwise read the current composition/state model plus canonical Proposal/Decision and Q/R/P lifecycle owners, and the Session USER-gated interaction owner. Load profile/Target/Lens detail only when the current composition makes it applicable.",
       "ownerFiles": [
         "planning/documentation/idtspe-methodology/active/idtspe-core/commands/IDTSPE-COMMAND-SURFACE-CONTRACT.md",
@@ -3345,7 +3345,8 @@
         "planning/session/session-runtime-contract.md",
         "planning/documentation/idtspe-methodology/active/idtspe-core/lenses/required/LENS-PROPOSAL-DECISION-RESOLUTION-CONTEXT.md",
         "planning/documentation/idtspe-methodology/active/idtspe-core/resolution/continuation/RESOLUTION-CARRY-FORWARD-PROJECTION.md",
-        "planning/documentation/idtspe-methodology/active/idtspe-core/resolution/findings/FINDING-DISPOSITION.md"
+        "planning/documentation/idtspe-methodology/active/idtspe-core/resolution/findings/FINDING-DISPOSITION.md",
+        "planning/documentation/idtspe-methodology/active/idtspe-core/target-modules/TM-PROPOSAL-WORKUP.md"
       ],
       "ownerRefs": [
         {
@@ -3386,6 +3387,14 @@
           "anchor": "resolution-carry-forward",
           "why": "Retains only surviving material open/deferred/residual continuation after Proposal work.",
           "role": "VALIDATION_HANDOFF",
+          "readMode": "ON_DEMAND"
+        },
+        {
+          "responsibilityId": "TM-PROPOSAL-WORKUP",
+          "path": "planning/documentation/idtspe-methodology/active/idtspe-core/target-modules/TM-PROPOSAL-WORKUP.md",
+          "anchor": "tm-proposal-workup",
+          "why": "Optional independently useful bounded candidate-resolution Target result; ordinary Proposal work does not require it.",
+          "role": "POSSIBLE_DESTINATION",
           "readMode": "ON_DEMAND"
         },
         {
@@ -4222,12 +4231,13 @@
         "planning/commands/apply-idtspe-target-module.command.md"
       ],
       "compositionContributions": [],
-      "expectedOutput": "RU-PUPDATE-01 Pre-Update Plan: concrete intended changes, preserve boundary, material dependencies/order and verification, after proportional registry/Lens applicability checks; unresolved material issues only when they actually remain.",
+      "expectedOutput": "RU-PUPDATE-01 Pre-Update Plan: concrete intended changes, including addressable proposed operations by path/owner/action/delta/basis/check for file or artifact destinations, preserve boundary, material dependencies/order and verification, after proportional registry/Lens applicability checks; unresolved material issues only when they actually remain.",
       "permissionMode": "read-only-planning",
       "keyReminders": [
         "Use accepted previous meaning/current context as the basis; do not redesign it without a material new conflict.",
         "Apply the generic Result Unit Opening/In-Unit/Closing applicability envelope; a checkpoint may reuse current registry metadata and does not mean executing every Lens.",
         "Use ordinary Q/R/P/Evidence + Proposals/Decisions only where they help resolve a real consequential choice; do not dump a mandatory QRPE form.",
+        "Proposed file/artifact operation entries are reviewable plan content, not automatically formal IDTSPE Proposals or permission to mutate.",
         "Inspect current destination state only as needed for a concrete safe plan and never guess consequential missing source facts.",
         "The plan does not mutate files, execute tests, create a replacement package, commit or push; actual mutation authority belongs to the later host/Exact workflow.",
         "Skip this Target when the change is trivial/obvious and the user explicitly wants direct realization."
@@ -4776,6 +4786,78 @@
     },
     {
       "schemaVersion": 1,
+      "id": "tmcmd.proposal.workup",
+      "file": "prepare-idtspe-proposals.command.md",
+      "command": "подготовь пропозалы",
+      "englishName": "prepare bounded IDTSPE proposals",
+      "commandFamily": [
+        "подготовь пропозалы",
+        "proposal workup"
+      ],
+      "description": "Produce an optional bounded candidate-resolution brief when Proposal development and review have independent Target value.",
+      "meaning": "Apply generic Core TM-PROPOSAL-WORKUP only when a bounded candidate-resolution result is independently useful. Form or refine canonical IDTSPE Proposals for grounded Goal/Q/R/P/Finding drivers at the smallest natural affected subjects, then review material candidates through the Resolution Context Lens and Proposal Semantic Change Impact Review. Keep recommendation distinct from USER/owner selection and preserve blocked RE-3 state.",
+      "activeContextBehavior": "Reuse current accepted meaning, Sources, Findings and their RE-* dispositions. Do not rerun Finding discovery merely because a Finding drives a Proposal; do not form a Target for a trivial/transient candidate when ordinary idtspe.proposal work suffices. If the affected semantic subject is unresolved, surface an ownership Question instead of using this Target as a substitute owner.",
+      "traversalReadMode": "Read TM-PROPOSAL-WORKUP and canonical Proposal/Decision lifecycle plus included shared Target/Proposal routes. Open profile/affected owner and Lens detail only where material to the bounded candidate review.",
+      "ownerFiles": [
+        "planning/documentation/idtspe-methodology/active/idtspe-core/commands/IDTSPE-COMMAND-SURFACE-CONTRACT.md",
+        "planning/documentation/idtspe-methodology/active/idtspe-core/target-modules/TM-PROPOSAL-WORKUP.md",
+        "planning/documentation/idtspe-methodology/active/idtspe-core/resolution/proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md",
+        "planning/documentation/idtspe-methodology/active/idtspe-core/lenses/required/LENS-PROPOSAL-DECISION-RESOLUTION-CONTEXT.md"
+      ],
+      "ownerRefs": [
+        {
+          "responsibilityId": "IDTSPE.COMMAND-SURFACE",
+          "path": "planning/documentation/idtspe-methodology/active/idtspe-core/commands/IDTSPE-COMMAND-SURFACE-CONTRACT.md",
+          "anchor": "idtspe-command-surface",
+          "why": "Defines the generic user invocation boundary for an optional Proposal Workup Target.",
+          "role": "SUPPORTING_CONTRACT",
+          "readMode": "REQUIRED"
+        },
+        {
+          "responsibilityId": "TM-PROPOSAL-WORKUP",
+          "path": "planning/documentation/idtspe-methodology/active/idtspe-core/target-modules/TM-PROPOSAL-WORKUP.md",
+          "anchor": "tm-proposal-workup",
+          "why": "Owns the optional bounded candidate-resolution Target result without replacing canonical Proposal State.",
+          "role": "PRIMARY_OWNER",
+          "readMode": "REQUIRED"
+        },
+        {
+          "responsibilityId": "LENS-PROPOSAL-DECISION-RESOLUTION-CONTEXT",
+          "path": "planning/documentation/idtspe-methodology/active/idtspe-core/lenses/required/LENS-PROPOSAL-DECISION-RESOLUTION-CONTEXT.md",
+          "anchor": "lens-proposal-decision-resolution-context",
+          "why": "Evaluates each material candidate's resolution context before a selection handoff.",
+          "role": "VALIDATION_HANDOFF",
+          "readMode": "REQUIRED"
+        }
+      ],
+      "includes": [
+        "planning/commands/apply-idtspe-target-module.command.md",
+        "planning/commands/idtspe-port-proposal.command.md"
+      ],
+      "compositionContributions": [],
+      "expectedOutput": "A bounded Proposal Workup with grounded canonical Proposal references, affected natural subjects, material alternatives/dependencies, proportionate review and truthful selectable/blocked/USER-selection handoff; no implied acceptance or file persistence.",
+      "permissionMode": "read-only-planning",
+      "keyReminders": [
+        "Canonical Proposal/Decision lifecycle owns candidate identity, review, selection and integration; the Target owns only the bounded workup result.",
+        "A supplied material Finding keeps its existing RE-* classification and becomes the driver of one or more linked Proposals.",
+        "No destination mutation, tests, commit or push is authorized."
+      ],
+      "userTarget": "<material driver and affected natural subject>",
+      "palette": true,
+      "helperPresentation": null,
+      "methodologyBinding": {
+        "methodologyRuntime": "IDTSPE",
+        "profile": null,
+        "surfaceKind": "TARGET_MODULE",
+        "targetModuleId": "TM-PROPOSAL-WORKUP",
+        "lensId": null,
+        "parentSurface": null,
+        "hostTargetPolicy": "CREATE_OR_REUSE_TARGET"
+      },
+      "refinements": []
+    },
+    {
+      "schemaVersion": 1,
       "id": "session.proposal_driven",
       "file": "proposal-driven.command.md",
       "command": "пропозал",
@@ -4931,6 +5013,101 @@
         "Read-only: no file edits, archive, commit or push."
       ],
       "userTarget": "<documentation work in this session or none yet>",
+      "palette": true,
+      "helperPresentation": null,
+      "methodologyBinding": null,
+      "refinements": []
+    },
+    {
+      "schemaVersion": 1,
+      "id": "documentation.example.full.read",
+      "file": "read-full-documentation-example.command.md",
+      "command": "посмотри полный пример документации",
+      "englishName": "read full project documentation example",
+      "commandFamily": [
+        "посмотри полный пример документации",
+        "прочитай полный пример документации",
+        "read full documentation example"
+      ],
+      "description": "Посмотреть полный сохранённый пример документации Study Tab Launcher и связи между его владельцами.",
+      "meaning": "Read the complete Study Tab Launcher documentation example through its case guide at planning/documentation/idtspe-methodology/active/profiles/sds/examples/study-tab-launcher/README.md and copied project entry at planning/documentation/idtspe-methodology/active/profiles/sds/examples/study-tab-launcher/project/planning/documentation/README.md. Follow DOC.EXAMPLE-READING to understand the connected application documentation: Application Definition, Features, Scenarios, Screen, Domain, Slices, Shared capabilities, evolution and practical evidence. Use the guide's current Target Module links when comparing the example with current contracts.",
+      "activeContextBehavior": "The example is fixed by this command, so no existing Target or user-supplied example path is required. Preserve any current Work Context. Give a connected overview of the full project example, then read deeper where the current request needs detail; do not substitute a single isolated Target Module example for the project overview.",
+      "traversalReadMode": "Read or validly reuse planning/documentation/idtspe-methodology/active/profiles/sds/examples/study-tab-launcher/README.md, then planning/documentation/idtspe-methodology/active/profiles/sds/examples/study-tab-launcher/project/planning/documentation/README.md and its linked project documentation. Cover the document families and follow at least one connected Feature → Scenario → Slice path together with current/unrealized ownership and open Evidence. Expand remaining project files where materially needed for the request. The embedded historical methodology/source-context is supporting provenance, not a requirement to read every historical file or bootstrap from its registries.",
+      "ownerFiles": [
+        "planning/documentation/principles-and-terminology.md",
+        "planning/documentation/idtspe-methodology/active/profiles/sds/examples/study-tab-launcher/README.md",
+        "planning/documentation/idtspe-methodology/active/profiles/sds/examples/study-tab-launcher/project/planning/documentation/README.md"
+      ],
+      "ownerRefs": [
+        {
+          "responsibilityId": "DOC.EXAMPLE-READING",
+          "path": "planning/documentation/principles-and-terminology.md",
+          "anchor": "doc-example-reading",
+          "why": "Owns example reading, relevance/basis checks and the explanatory authority boundary. The concrete copied example is supplied through ownerFiles and explicit route paths.",
+          "role": "PRIMARY_OWNER",
+          "readMode": "REQUIRED"
+        }
+      ],
+      "includes": [
+        "planning/commands/recheck-methodology-use-cases.command.md"
+      ],
+      "compositionContributions": [],
+      "expectedOutput": "A compact linked map of the full documentation example: its document families and relationships, which Target Modules it illustrates, one connected owner path, current versus unrealized meaning, and open Problems/practical evidence. Identify what was read or reused and any task-relevant deeper reading still needed; do not claim all files were read merely from reading the index.",
+      "permissionMode": "read-only",
+      "keyReminders": [
+        "Start with the copied full-project example: planning/documentation/idtspe-methodology/active/profiles/sds/examples/study-tab-launcher/README.md.",
+        "Then open the copied project documentation: planning/documentation/idtspe-methodology/active/profiles/sds/examples/study-tab-launcher/project/planning/documentation/README.md.",
+        "Read the independent example inside methodology; do not resolve it through a live application workspace.",
+        "Current methodology contracts retain authority over the dated embedded snapshot.",
+        "Preserve the unrealized Step and OPEN P-STL-HANDOFF-01/practical evidence as recorded.",
+        "Reading this example does not authorize Target formation, Proposal selection, edits, implementation, tests, commit or push."
+      ],
+      "userTarget": "<full copied Study Tab Launcher documentation example>",
+      "palette": true,
+      "helperPresentation": null,
+      "methodologyBinding": null,
+      "refinements": []
+    },
+    {
+      "schemaVersion": 1,
+      "id": "documentation.examples.read",
+      "file": "read-methodology-examples.command.md",
+      "command": "прочитай примеры методологии",
+      "englishName": "read relevant methodology examples",
+      "commandFamily": [
+        "прочитай примеры методологии",
+        "посмотри примеры методологии",
+        "read methodology examples"
+      ],
+      "description": "Read relevant examples linked by the selected methodology owner.",
+      "meaning": "Follow DOC.EXAMPLE-READING for the selected current methodology owner: inspect inline/linked examples, confirm their basis and status, and explain the material mapping or mismatch to the current task. Examples remain explanatory; current contracts and task Sources retain authority.",
+      "activeContextBehavior": "Reuse the current selected Use Case/Target Module/Lens/Unit and bounded request. Do not form a Target, execute an example or generate new examples merely to satisfy reading. If no owner is known, resolve it from current context; no applicable example is a valid explicit result.",
+      "traversalReadMode": "Read the current owner contract and its materially relevant inline/linked examples. Reuse trustworthy current reading with provenance; reread changed/uncertain examples. Do not scan the entire example library.",
+      "ownerFiles": [
+        "planning/documentation/principles-and-terminology.md"
+      ],
+      "ownerRefs": [
+        {
+          "responsibilityId": "DOC.EXAMPLE-READING",
+          "path": "planning/documentation/principles-and-terminology.md",
+          "anchor": "doc-example-reading",
+          "why": "Owns bounded example reading, relevance/basis checks and the non-authoritative example boundary.",
+          "role": "PRIMARY_OWNER",
+          "readMode": "REQUIRED"
+        }
+      ],
+      "includes": [
+        "planning/commands/recheck-methodology-use-cases.command.md"
+      ],
+      "compositionContributions": [],
+      "expectedOutput": "Relevant example references and basis/status, concise mapping to the current result/Units, material adaptation or stale-example Finding when present, or an explicit no-applicable-example result.",
+      "permissionMode": "read-only",
+      "keyReminders": [
+        "Read examples as explanation, not semantic authority or execution instructions.",
+        "Keep copied project examples separate from live application truth.",
+        "No Target formation, example generation, mutation, tests, commit or push is authorized."
+      ],
+      "userTarget": "<selected methodology owner / current result>",
       "palette": true,
       "helperPresentation": null,
       "methodologyBinding": null,
@@ -5640,14 +5817,16 @@
       ],
       "description": "Run one complete current-basis review pass: plan proportional coverage, validate/apply useful Lenses, disposition all produced Finding Candidates, form linked Proposals for every material Finding, self-check coverage completeness, and update the Review Coverage Record.",
       "meaning": "Review the bounded current semantic subject through Review Strategy/Coverage, applicable Validation and selected Lens operations. Catch all materially applicable checks already visible on the current basis rather than intentionally deferring them. Every material Finding Candidate produced by this review is passed through canonical Finding Disposition and receives a linked IDTSPE Proposal before the review is semantically complete; RE-3 proposals remain blocked by revalidation and Proposal existence does not imply persistence or selection. Before completion, self-check current coverage against applicable validators/perspectives and record remaining material gaps/blockers. Need collection is not a mandatory review stage.",
-      "activeContextBehavior": "Use current basis and prior coverage when available. During composition planning, establish/refresh the Review Coverage working context for CURRENT_BASIS before dependency semantic actions begin, so Validation/Lens selection consume already-derived current review cells. Reuse trustworthy unchanged checks only when they actually satisfy the current coverage cell; apply materially distinct useful Lens/validator checks now and complete with Finding Disposition plus a coverage self-check.",
+      "activeContextBehavior": "Use current basis and prior coverage when available. During composition planning, establish/refresh the Review Coverage working context for CURRENT_BASIS before dependency semantic actions begin, so Validation/Lens selection consume already-derived current review cells. Reuse trustworthy unchanged checks only when they actually satisfy the current coverage cell; apply materially distinct useful Lens/validator checks now. Keep Finding discovery/diagnosis distinct from linked Proposal formation; optional TM-REVIEW-FINDINGS and TM-PROPOSAL-WORKUP Targets are used only when their own results have independent value. Complete with canonical Finding/Proposal handoff and a coverage self-check.",
       "traversalReadMode": "Read this command own canonical references plus included-command references proportionally. Do not duplicate reads already satisfied by an unchanged trustworthy shared prefix.",
       "ownerFiles": [
         "planning/documentation/idtspe-methodology/active/idtspe-core/commands/IDTSPE-COMMAND-SURFACE-CONTRACT.md",
         "planning/documentation/idtspe-methodology/active/ai-reviewability/REVIEW-STRATEGY-AND-COVERAGE-CONTRACT.md",
         "planning/documentation/idtspe-methodology/active/ai-reviewability/AI-OUTPUT-REVIEWABILITY.md",
         "planning/documentation/idtspe-methodology/active/idtspe-core/resolution/findings/FINDING-DISPOSITION.md",
-        "planning/documentation/idtspe-methodology/active/idtspe-core/resolution/proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md"
+        "planning/documentation/idtspe-methodology/active/idtspe-core/resolution/proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md",
+        "planning/documentation/idtspe-methodology/active/idtspe-core/target-modules/TM-REVIEW-FINDINGS.md",
+        "planning/documentation/idtspe-methodology/active/idtspe-core/target-modules/TM-PROPOSAL-WORKUP.md"
       ],
       "ownerRefs": [
         {
@@ -5681,6 +5860,22 @@
           "why": "Finding Disposition is an intrinsic completion stage for material Finding Candidates produced by this review.",
           "role": "VALIDATION_HANDOFF",
           "readMode": "REQUIRED"
+        },
+        {
+          "responsibilityId": "TM-REVIEW-FINDINGS",
+          "path": "planning/documentation/idtspe-methodology/active/idtspe-core/target-modules/TM-REVIEW-FINDINGS.md",
+          "anchor": "tm-review-findings",
+          "why": "Optional separately useful diagnostic Target result for evidence-backed Finding discovery and RE-* analysis.",
+          "role": "POSSIBLE_DESTINATION",
+          "readMode": "ON_DEMAND"
+        },
+        {
+          "responsibilityId": "TM-PROPOSAL-WORKUP",
+          "path": "planning/documentation/idtspe-methodology/active/idtspe-core/target-modules/TM-PROPOSAL-WORKUP.md",
+          "anchor": "tm-proposal-workup",
+          "why": "Optional separately useful bounded candidate-resolution result after Finding diagnosis.",
+          "role": "POSSIBLE_DESTINATION",
+          "readMode": "ON_DEMAND"
         },
         {
           "responsibilityId": "RESOLUTION.PROPOSAL-DECISION-LIFECYCLE",
@@ -5919,6 +6114,94 @@
     },
     {
       "schemaVersion": 1,
+      "id": "tmcmd.review.findings",
+      "file": "review-findings.command.md",
+      "command": "разбери находки ревью",
+      "englishName": "review finding analysis",
+      "commandFamily": [
+        "разбери находки ревью",
+        "review findings analysis"
+      ],
+      "description": "Produce an optional bounded Review Finding Analysis Target that separates evidence-backed observations from impact and escalation diagnosis.",
+      "meaning": "Apply generic Core TM-REVIEW-FINDINGS only when a separately addressable diagnostic result is useful. Establish CURRENT_BASIS Review Coverage before Validation/Lens checks, then resolve RU-RFIND-01 observed Finding Candidates and RU-RFIND-02 canonical materiality, Review Priority, RE-* escalation, natural owner and USER-attention analysis. Hand material Findings to the Proposal lifecycle as a separate action. This diagnostic result does not by itself complete idtspe.review when linked Proposals remain pending.",
+      "activeContextBehavior": "Use the current bounded Review Subject/Scope/Basis and trustworthy prior coverage. Do not create a Pre-Update Plan or reinterpret an existing plan as a required review stage. Reuse valid prior checks with provenance and inspect materially applicable current cells; form or reuse a Review Findings Target only when its result has independent value.",
+      "traversalReadMode": "Read the selected TM and Review Strategy/coverage owner plus included command references proportionally. Inspect only current authoritative Sources needed for the bounded subject and checks.",
+      "ownerFiles": [
+        "planning/documentation/idtspe-methodology/active/idtspe-core/commands/IDTSPE-COMMAND-SURFACE-CONTRACT.md",
+        "planning/documentation/idtspe-methodology/active/idtspe-core/target-modules/TM-REVIEW-FINDINGS.md",
+        "planning/documentation/idtspe-methodology/active/ai-reviewability/REVIEW-STRATEGY-AND-COVERAGE-CONTRACT.md",
+        "planning/documentation/idtspe-methodology/active/idtspe-core/resolution/findings/FINDING-DISPOSITION.md"
+      ],
+      "ownerRefs": [
+        {
+          "responsibilityId": "IDTSPE.COMMAND-SURFACE",
+          "path": "planning/documentation/idtspe-methodology/active/idtspe-core/commands/IDTSPE-COMMAND-SURFACE-CONTRACT.md",
+          "anchor": "idtspe-command-surface",
+          "why": "Defines the generic user invocation and review composition boundary for this Target command.",
+          "role": "SUPPORTING_CONTRACT",
+          "readMode": "REQUIRED"
+        },
+        {
+          "responsibilityId": "TM-REVIEW-FINDINGS",
+          "path": "planning/documentation/idtspe-methodology/active/idtspe-core/target-modules/TM-REVIEW-FINDINGS.md",
+          "anchor": "tm-review-findings",
+          "why": "Owns the optional bounded diagnostic Target result and the separate Finding discovery/analysis Units.",
+          "role": "PRIMARY_OWNER",
+          "readMode": "REQUIRED"
+        },
+        {
+          "responsibilityId": "REVIEW.STRATEGY-COVERAGE",
+          "path": "planning/documentation/idtspe-methodology/active/ai-reviewability/REVIEW-STRATEGY-AND-COVERAGE-CONTRACT.md",
+          "anchor": "review-strategy-coverage",
+          "why": "Owns review cells, basis, coverage provenance and the complete-review boundary.",
+          "role": "SUPPORTING_CONTRACT",
+          "readMode": "REQUIRED"
+        },
+        {
+          "responsibilityId": "RESOLUTION.FINDING-DISPOSITION",
+          "path": "planning/documentation/idtspe-methodology/active/idtspe-core/resolution/findings/FINDING-DISPOSITION.md",
+          "anchor": "resolution-finding-disposition",
+          "why": "Owns materiality, Resolution Escalation routing and natural Finding destinations; AI Reviewability owns the separate Review Priority scale.",
+          "role": "VALIDATION_HANDOFF",
+          "readMode": "REQUIRED"
+        }
+      ],
+      "includes": [
+        "planning/commands/apply-idtspe-target-module.command.md",
+        "planning/commands/idtspe-port-validation.command.md",
+        "planning/commands/apply-selected-idtspe-lenses.command.md"
+      ],
+      "compositionContributions": [
+        {
+          "kind": "REVIEW_COVERAGE_MODE",
+          "value": "CURRENT_BASIS",
+          "why": "Derive bounded current-basis review cells before Validation/Lens semantic actions execute."
+        }
+      ],
+      "expectedOutput": "RU-RFIND-01 evidence-backed Finding Candidates and RU-RFIND-02 materiality/Review Priority/RE-* /natural-owner diagnosis with explicit Proposal handoff status; the canonical Review Coverage Record remains separate and full review completion waits for linked Proposals.",
+      "permissionMode": "read-only-planning",
+      "keyReminders": [
+        "This is an optional Review Finding Analysis Target, not a mandatory Target for every review.",
+        "Keep observations distinct from proposed corrections; Review Priority and RE-* answer different questions.",
+        "Do not report a complete idtspe.review while a material Finding lacks its required linked Proposal.",
+        "No destination mutation, tests, commit or push is authorized."
+      ],
+      "userTarget": "<bounded current review subject/scope/basis>",
+      "palette": true,
+      "helperPresentation": null,
+      "methodologyBinding": {
+        "methodologyRuntime": "IDTSPE",
+        "profile": null,
+        "surfaceKind": "TARGET_MODULE",
+        "targetModuleId": "TM-REVIEW-FINDINGS",
+        "lensId": null,
+        "parentSurface": null,
+        "hostTargetPolicy": "CREATE_OR_REUSE_TARGET"
+      },
+      "refinements": []
+    },
+    {
+      "schemaVersion": 1,
       "id": "idtspe.review_consistency",
       "file": "review-idtspe-consistency.command.md",
       "command": "проверь консистентность плана",
@@ -6105,112 +6388,6 @@
         "lensId": null,
         "parentSurface": "practical_testing.plan",
         "hostTargetPolicy": "CREATE_OR_REUSE_TARGET"
-      },
-      "refinements": []
-    },
-    {
-      "schemaVersion": 1,
-      "id": "idtspe.review.pre_update",
-      "file": "review-pre-update.command.md",
-      "command": "проведи предапдейт ревью",
-      "englishName": "pre-update review",
-      "commandFamily": [
-        "проведи предапдейт ревью",
-        "pre-update review"
-      ],
-      "description": "Focused pre-mutation Review on a resolved Pre-Update Plan and affected current owners.",
-      "meaning": "Resolve or reuse TM-PRE-UPDATE-PLAN first, then establish PRE_UPDATE_BASIS coverage over the plan, affected owners/dependencies and current destination basis before Validation/Lens dependencies execute. Disposition material Findings, form linked Proposals, refine the plan and self-check Review Coverage. This uses the canonical Review lifecycle and does not mutate the destination.",
-      "activeContextBehavior": "The first ordered semantic dependency is plan-pre-update. If the plan cannot resolve a bounded subject and basis, block review dependencies; otherwise derive PRE_UPDATE_BASIS cells before P-12/P-06 actions. Preserve accepted prior meaning and review the intended changes and affected current facts.",
-      "traversalReadMode": "Read this command own canonical references plus included-command references proportionally. Do not duplicate reads already satisfied by an unchanged trustworthy shared prefix.",
-      "ownerFiles": [
-        "planning/documentation/idtspe-methodology/active/idtspe-core/commands/IDTSPE-COMMAND-SURFACE-CONTRACT.md",
-        "planning/documentation/idtspe-methodology/active/ai-reviewability/REVIEW-STRATEGY-AND-COVERAGE-CONTRACT.md",
-        "planning/documentation/idtspe-methodology/active/ai-reviewability/AI-OUTPUT-REVIEWABILITY.md",
-        "planning/documentation/idtspe-methodology/active/idtspe-core/resolution/findings/FINDING-DISPOSITION.md",
-        "planning/documentation/idtspe-methodology/active/idtspe-core/resolution/proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md",
-        "planning/documentation/idtspe-methodology/active/idtspe-core/target-modules/TM-PRE-UPDATE-PLAN.md"
-      ],
-      "ownerRefs": [
-        {
-          "responsibilityId": "IDTSPE.COMMAND-SURFACE",
-          "path": "planning/documentation/idtspe-methodology/active/idtspe-core/commands/IDTSPE-COMMAND-SURFACE-CONTRACT.md",
-          "anchor": "idtspe-command-surface",
-          "why": "Defines this generic IDTSPE user invocation surface and its relationship to the shared Shell/composition runtime.",
-          "role": "SUPPORTING_CONTRACT",
-          "readMode": "REQUIRED"
-        },
-        {
-          "responsibilityId": "REVIEW.STRATEGY-COVERAGE",
-          "path": "planning/documentation/idtspe-methodology/active/ai-reviewability/REVIEW-STRATEGY-AND-COVERAGE-CONTRACT.md",
-          "anchor": "review-strategy-coverage",
-          "why": "Owns current-basis review coverage, materially distinct review cells, change invalidation rules and coverage update semantics.",
-          "role": "PRIMARY_OWNER",
-          "readMode": "REQUIRED"
-        },
-        {
-          "responsibilityId": "AI.REVIEWABILITY",
-          "path": "planning/documentation/idtspe-methodology/active/ai-reviewability/AI-OUTPUT-REVIEWABILITY.md",
-          "anchor": "built-in-pre-return-recheck",
-          "why": "Supplies proportional review-quality obligations and omission/contradiction checks without becoming semantic authority.",
-          "role": "SUPPORTING_CONTRACT",
-          "readMode": "REQUIRED"
-        },
-        {
-          "responsibilityId": "RESOLUTION.FINDING-DISPOSITION",
-          "path": "planning/documentation/idtspe-methodology/active/idtspe-core/resolution/findings/FINDING-DISPOSITION.md",
-          "anchor": "resolution-finding-disposition",
-          "why": "Finding Disposition is an intrinsic completion stage for material Finding Candidates produced by this review.",
-          "role": "VALIDATION_HANDOFF",
-          "readMode": "REQUIRED"
-        },
-        {
-          "responsibilityId": "RESOLUTION.PROPOSAL-DECISION-LIFECYCLE",
-          "path": "planning/documentation/idtspe-methodology/active/idtspe-core/resolution/proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md",
-          "anchor": "resolution-proposal-decision-lifecycle",
-          "why": "Owns linked IDTSPE Proposal identity, candidate/repair-route semantics, review, selection boundary and retention/persistence separation.",
-          "role": "VALIDATION_HANDOFF",
-          "readMode": "REQUIRED"
-        },
-        {
-          "responsibilityId": "TM-PRE-UPDATE-PLAN",
-          "path": "planning/documentation/idtspe-methodology/active/idtspe-core/target-modules/TM-PRE-UPDATE-PLAN.md",
-          "anchor": "tm-pre-update-plan",
-          "why": "Resolves bounded intended-change subject before focused review.",
-          "role": "SUPPORTING_CONTRACT",
-          "readMode": "REQUIRED"
-        }
-      ],
-      "includes": [
-        "planning/commands/plan-pre-update.command.md",
-        "planning/commands/idtspe-port-validation.command.md",
-        "planning/commands/apply-selected-idtspe-lenses.command.md"
-      ],
-      "compositionContributions": [
-        {
-          "kind": "REVIEW_COVERAGE_MODE",
-          "value": "PRE_UPDATE_BASIS",
-          "why": "Pre-execution coverage for resolved Pre-Update Plan and affected current basis; plan semantic dependency executes first."
-        }
-      ],
-      "expectedOutput": "One Pre-Update Plan plus focused Review Coverage Record, material Finding disposition, linked Proposals, refined plan and honest gaps/blockers.",
-      "permissionMode": "read-only-planning",
-      "keyReminders": [
-        "Plan-before-review ordering is required; an unresolved subject blocks review dependencies.",
-        "The same canonical Review/Finding/Proposal semantics apply; do not invent a second lifecycle.",
-        "Coverage mode is PRE_UPDATE_BASIS, not CURRENT_BASIS.",
-        "Do not mutate destination files, commit or push."
-      ],
-      "userTarget": "<planned update scope and destination basis>",
-      "palette": true,
-      "helperPresentation": null,
-      "methodologyBinding": {
-        "methodologyRuntime": "IDTSPE",
-        "profile": null,
-        "surfaceKind": "ORCHESTRATION",
-        "targetModuleId": null,
-        "lensId": null,
-        "parentSurface": null,
-        "hostTargetPolicy": "NONE"
       },
       "refinements": []
     },

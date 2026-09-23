@@ -78,9 +78,9 @@ test('retired Test Strategy shortcut routes to current proof owners without rest
 test('generic IDTSPE command surfaces depend on Core command-surface authority rather than SDS profile authority',()=>{
   const coreOwner='planning/documentation/idtspe-methodology/active/idtspe-core/commands/IDTSPE-COMMAND-SURFACE-CONTRACT.md';
   const sdsOwner='planning/documentation/idtspe-methodology/active/profiles/sds/commands/SDS-COMMAND-SURFACE-EXTENSION.md';
-  const files=['bootstrap-idtspe.command.md','work-through-idtspe.command.md','idtspe-next.command.md','idtspe-continue.command.md','review-current-idtspe.command.md','review-idtspe-consistency.command.md','idtspe-proposal.command.md','collect-idtspe-needs.command.md','disposition-idtspe-needs.command.md','disposition-idtspe-findings.command.md','recheck-current-idtspe.command.md','plan-pre-update.command.md','realize-exact-result.command.md','select-idtspe-lenses.command.md','apply-idtspe-lens.command.md','check-documentation-representation.command.md'];
+  const files=['bootstrap-idtspe.command.md','work-through-idtspe.command.md','idtspe-next.command.md','idtspe-continue.command.md','review-current-idtspe.command.md','review-idtspe-consistency.command.md','review-findings.command.md','idtspe-proposal.command.md','prepare-idtspe-proposals.command.md','collect-idtspe-needs.command.md','disposition-idtspe-needs.command.md','disposition-idtspe-findings.command.md','recheck-current-idtspe.command.md','plan-pre-update.command.md','realize-exact-result.command.md','select-idtspe-lenses.command.md','apply-idtspe-lens.command.md','check-documentation-representation.command.md'];
   for(const file of files){const command=codec.parseCommandDefinitionDocument(read(`planning/commands/${file}`));assert.ok(command.ownerFiles.includes(coreOwner),`${command.id}: missing Core command-surface owner`);assert.ok(!command.ownerFiles.includes(sdsOwner),`${command.id}: generic Core surface depends on SDS command owner`);}
-  const core=read(coreOwner);assert.match(core,/Primary User Convenience Surface Inventory — 18/);assert.match(core,/bounded Analysis Surface/);assert.match(core,/hostTargetPolicy: NONE/);assert.match(core,/must not create a Target merely to host/i);
+  const core=read(coreOwner);assert.match(core,/Primary User Convenience Surface Inventory — 19/);assert.match(core,/bounded Analysis Surface/);assert.match(core,/hostTargetPolicy: NONE/);assert.match(core,/must not create a Target merely to host/i);
   const sds=read(sdsOwner);assert.match(sds,/SDS Profile Command Surface Extension/);assert.match(sds,/generic IDTSPE Core surfaces are owned separately/i);
 });
 
@@ -142,7 +142,7 @@ test('artifact guidance ownership keeps Target-result AP separate from Lens-prod
   const coreTmDir=path.join(repoRoot,'planning/documentation/idtspe-methodology/active/idtspe-core/target-modules');
   const coreAp=fs.readdirSync(coreTmDir).filter((n)=>/^TM-.*\.md$/.test(n)).flatMap((n)=>[...fs.readFileSync(path.join(coreTmDir,n),'utf8').matchAll(/^ID: (AP-[A-Z0-9-]+)$/gm)].map((m)=>m[1]));
   const ag=lensRoots.flatMap(markdown).flatMap((f)=>[...fs.readFileSync(f,'utf8').matchAll(/^ID: (AG-[A-Z0-9-]+)$/gm)].map((m)=>m[1]));
-  assert.equal(ap.length,8);assert.equal(new Set(ap).size,8);assert.deepEqual(coreAp,['AP-PUPDATE-01']);assert.equal(ap.length+coreAp.length,9);assert.equal(ag.length,21);assert.equal(new Set(ag).size,21);
+  assert.equal(ap.length,8);assert.equal(new Set(ap).size,8);assert.deepEqual(coreAp,['AP-PUPDATE-01','AP-PWORK-01','AP-RFIND-01']);assert.equal(ap.length+coreAp.length,11);assert.equal(ag.length,21);assert.equal(new Set(ag).size,21);
   for(const retired of ['AP-DOM-02','AP-SLICE-03','AP-FE-03','AP-WEUC-01','AP-WEUC-02','AG-L5-02'])assert.ok(!ap.includes(retired)&&!ag.includes(retired),retired);
   for(const retiredFile of ['TM-DOMAIN-DRAFT.md','TM-FRONTEND-SLICE.md','TM-WEUC.md'])assert.equal(fs.existsSync(path.join(tmDir,retiredFile)),false,retiredFile);
   const l5=read('planning/documentation/idtspe-methodology/active/profiles/sds/lenses/frequent/LENS-WORKSPACE-EVOLUTION-ARCHITECTURE.md');assert.doesNotMatch(l5,/ID: AG-L5-02/);assert.match(l5,/`NONE_DIRECT` by default/);assert.match(l5,/natural-owner.*meaning|natural owner.*meaning/i);
@@ -207,7 +207,7 @@ test('generic Lens dispatcher crosses Core Finding Disposition before semantic o
 
 test('all installed idtspe Target Module and Lens aliases are globally unique and resolve to one semantic ID',()=>{
   const aliases=[];
-  const add=(alias,id,source)=>{assert.match(alias,/^[a-z0-9-]+$/,`${source}: invalid alias ${alias}`);aliases.push({alias,id,source})};
+  const add=(alias,id,source)=>{assert.match(alias,/^[a-z0-9][a-z0-9 -]*$/,`${source}: invalid alias ${alias}`);aliases.push({alias,id,source})};
 
   const sdsTm=read('planning/documentation/idtspe-methodology/active/profiles/sds/registries/TARGET-MODULE-REGISTRY.md');
   for(const line of sdsTm.split(/\r?\n/)){
@@ -218,8 +218,8 @@ test('all installed idtspe Target Module and Lens aliases are globally unique an
   assert.equal(aliases.filter((x)=>x.source==='SDS Target Module registry').length,14);
 
   const coreTm=read('planning/documentation/idtspe-methodology/active/idtspe-core/target-modules/TARGET-MODULE-REGISTRY.md');
-  for(const m of coreTm.matchAll(/^idtspe ([a-z0-9-]+) <scope>\n→ (TM-[A-Z0-9-]+)$/gm))add(m[1],m[2],'Core Target Module registry');
-  assert.equal(aliases.filter((x)=>x.source==='Core Target Module registry').length,2);
+  for(const m of coreTm.matchAll(/^idtspe ([a-z0-9][a-z0-9 -]*) <scope>\r?\n→ (TM-[A-Z0-9-]+)$/gm))add(m[1],m[2],'Core Target Module registry');
+  assert.equal(aliases.filter((x)=>x.source==='Core Target Module registry').length,5);
 
   for(const [source,rel] of [
     ['Core Lens registry','planning/documentation/idtspe-methodology/active/idtspe-core/lenses/LENS-REGISTRY.md'],
@@ -239,12 +239,14 @@ test('all installed idtspe Target Module and Lens aliases are globally unique an
     assert.equal(prior,undefined,`idtspe alias collision: ${item.alias} -> ${prior?.id} / ${item.id}`);
     byAlias.set(item.alias,item);
   }
-  assert.equal(byAlias.size,36);
+  assert.equal(byAlias.size,39);
 
   for(const [alias,id] of [
     ['scenario','TM-SCENARIO-PLANNING'],
     ['slice','TM-IMPLEMENTATION-SLICE'],
     ['pre-update','TM-PRE-UPDATE-PLAN'],
+    ['review-findings','TM-REVIEW-FINDINGS'],
+    ['proposal-workup','TM-PROPOSAL-WORKUP'],
     ['ddd','LENS-DOMAIN-MODELING-DDD'],
     ['l5','LENS-WORKSPACE-EVOLUTION-ARCHITECTURE'],
     ['representation','LENS-ARTIFACT-BOUNDARY-ADDRESSABILITY']

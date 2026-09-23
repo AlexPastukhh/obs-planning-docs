@@ -16,12 +16,11 @@ Target family / archetype: selected own-application definition
 Define one coherent own-application contribution:
 
 ```text
-what application/contribution we are building
+concise Application Concept: what we are building, why / overall value, and how it roughly works
 + why custom software is still justified
 + which Application Benefits are selected/possible
 + what Responsibility Boundary / Constraints belong to each Benefit
 + which representative real-life situations show those Benefits in context
-+ what concise Application Concept explains the Application and how it roughly works
 + whether the concept/Benefit boundaries are plausibly realizable
 ```
 
@@ -122,10 +121,10 @@ A feasibility check may confirm that capturing selected text and source context 
 The result is a coherent Application Definition containing:
 
 ```text
+concise Application Concept, including a short explanation of how it roughly works
 why custom software is still justified
 Application Benefits, each with its own Responsibility Boundary / Constraints
 Representative Real-Life Scenarios that make Benefits concrete through real examples
-concise Application Concept, including a short explanation of how it roughly works
 owned vs merely consumed information/state as expressed by the affected Benefit boundaries
 material feasibility findings
 ```
@@ -182,12 +181,16 @@ Expected archetype only; current `SOURCE_AUTHORITY` Requirement remains authorit
 Shared contract: [`planning/documentation/idtspe-methodology/active/idtspe-core/knowledge-bases/KNOWLEDGE-BASIS-CONTRACT.md`](../../../idtspe-core/knowledge-bases/KNOWLEDGE-BASIS-CONTRACT.md). The Application family has shared principles, but substantial theory/reference material is attached to the Unit that consumes it rather than treated as one undifferentiated module-wide bridge.
 
 ```text
-RU-APP-01 Application Identity / Selected Contribution
+RU-APP-05 Application Concept
   Drivers:
-    What exact real-world contribution/result is assigned to this Application?
-    What user/actor value justifies forming this Application Definition?
+    What short summary makes it immediately clear what this Application is?
+    Why is it needed / what overall Benefit does it provide?
+    How does it roughly work, stated only as a small internal concept point?
+  Exact Concept contract:
+    Summary — required; what the Application is + why it exists / overall Benefit
+    How it roughly works — required; short, conceptual, not detailed behavior/architecture
   Knowledge Basis:
-    embedded Application-definition contribution/boundary principles
+    trusted upstream Need/contribution Sources + embedded Application-definition principles; refine with material outputs of RU-APP-02, RU-APP-03, RU-APP-04 and RU-APP-07
 
 RU-APP-02 Existing-Solution / Reference Position
   Drivers:
@@ -216,17 +219,6 @@ RU-APP-04 Representative Real-Life Scenarios
     Which AB-* items manifest/close at which real-world steps?
   Knowledge Basis:
     [RU-APP-04 Representative Real-Life Scenarios guidance](../target-module-support/application-definition/RU-APP-04-REPRESENTATIVE-REAL-LIFE-SCENARIOS.unit-guidance.md) when stronger representative-path guidance is useful
-
-RU-APP-05 Application Concept
-  Drivers:
-    What short summary makes it immediately clear what this Application is?
-    Why is it needed / what overall Benefit does it provide?
-    How does it roughly work, stated only as a small internal concept point?
-  Exact Concept contract:
-    Summary — required; what the Application is + why it exists / overall Benefit
-    How it roughly works — required; short, conceptual, not detailed behavior/architecture
-  Knowledge Basis:
-    selected outputs of RU-APP-01..04 + embedded Application-definition principles
 
 RU-APP-07 Realization Feasibility
   Drivers:
@@ -262,14 +254,16 @@ Frequent conditional Lens(es):
 
 This module uses the existing `Upstream Source Contract`, Lens Profile, Unit Knowledge Basis and ordinary Proposal/branch/Core-State mechanisms to produce/refine the declared Result Units. Concrete Questions, Proposals, Q/R/P, Decisions and Evidence remain Core State Units.
 
+Concept-first is result/read order, not a requirement to finalize the Concept before researching alternatives or clarifying Benefits. It may start as an explicit candidate/open summary and be refined when later Unit work changes its basis.
+
 Default reusable production path:
 
 ```text
-stabilize selected real-world contribution
+sketch the concise Application Concept from trusted Need/contribution Sources
 → research existing solutions/references proportionally
 → form/refine Application Benefits, including each Benefit's own Responsibility Boundary / Constraints
 → form only representative RLS examples that materially clarify Benefits through concrete real-life context
-→ define the concise Application Concept
+→ refine the opening Application Concept from the resolved value/boundary context
 → test realization feasibility of the concept and affected Benefit boundaries
 → resolve material alternatives through normal Proposal/Branch/Decision state
 ```
@@ -286,15 +280,14 @@ This module specializes the Core [Target Module Model](../../../idtspe-core/targ
 
 **Target Step Result:** `Application Definition`
 
-The six Module-defined Result Units below are the complete Application Definition Unit inventory. `RU-APP-06` is intentionally not a standalone Unit: Responsibility Boundary is required inside each `AB-*` item in `RU-APP-03`. `RU-APP-07` retains its stable Unit ID rather than being renumbered. Their content remains proportional: resolve material meaning, keep unresolved material explicit as `OPEN`, and keep every non-material/non-applicable Unit present with a concise `OMITTED` reason. Generic IDTSPE State is not duplicated as target-specific fields.
+The five Module-defined Result Units below are the complete Application Definition Unit inventory, presented Concept first. `RU-APP-05` retains its stable identity despite moving first. `RU-APP-01` (Application Identity / Selected Contribution) is retired: document identity and upstream references are ordinary Target/document context, while the concise selected contribution belongs in the Concept Summary. No second contribution, Benefit or boundary body is retained. `RU-APP-06` is intentionally not a standalone Unit: Responsibility Boundary is required inside each `AB-*` item in `RU-APP-03`. `RU-APP-07` retains its stable Unit ID rather than being renumbered. Their content remains proportional: resolve material meaning, keep unresolved material explicit as `OPEN`, and keep every non-material/non-applicable Unit present with a concise `OMITTED` reason. Generic IDTSPE State is not duplicated as target-specific fields.
 
 | Result Unit | Meaning | Current projection detail |
 |---|---|---|
-| `RU-APP-01` | Application Identity / Selected Contribution | Application Definition Identity |
+| `RU-APP-05` | Application Concept | concise summary of what the Application is, why it is needed / overall Benefit, and briefly how it roughly works |
 | `RU-APP-02` | Existing-Solution / Reference Position | Existing Solutions / Market / Reference Research |
 | `RU-APP-03` | Application Benefits | addressable `AB-*` user-value responsibilities, each with its own Responsibility Boundary / Constraints |
 | `RU-APP-04` | Representative Real-Life Scenarios | representative `RLS-*` examples that make Benefits concrete, with bounded Target contribution + optional Benefit manifestation/closure markers |
-| `RU-APP-05` | Application Concept | concise summary of what the Application is, why it is needed / overall Benefit, and briefly how it roughly works |
 | `RU-APP-07` | Realization Feasibility | proportional feasibility findings |
 
 ### Result Unit Applicability / Materiality
@@ -303,18 +296,30 @@ Unit presence/disposition mechanics follow the Core [`Unit Applicability / Mater
 
 | Result Unit | Substantive resolution is material when | Unit disposition when substantive resolution is not material |
 |---|---|---|
-| `RU-APP-01` | always once an Application Definition Target is formed; its identity/contribution anchors the Target | no Unit-level omission after Target formation; keep minimum identity/contribution meaning and use `OPEN` if materially unresolved |
+| `RU-APP-05` | always once an Application Definition Target is formed; a concise understandable Application Concept is a core responsibility | no Unit-level omission after Target formation; unresolved concept remains `OPEN` |
 | `RU-APP-02` | build/buy/adapt/integrate/reference position can change selected contribution, Benefit set or feasibility | `OMITTED` when trusted existing-solution context is already sufficient and adds no decision value |
 | `RU-APP-03` | always once an Application Definition Target is formed; Application Benefits are the independently addressable value responsibilities that justify downstream planning, and each substantive Benefit needs its own Responsibility Boundary / Constraints | no Unit-level omission after Target formation; if Benefit or Benefit-boundary/constraint meaning is not sufficiently resolved, keep `OPEN` rather than inventing placeholder Benefits/boundaries |
 | `RU-APP-04` | representative examples materially clarify user/value context, Benefit manifestation/closure or one or more Benefit Responsibility Boundary / Constraints | `OMITTED` when Benefits and their boundaries are already understandable without a representative RLS; the Unit remains present |
-| `RU-APP-05` | always once an Application Definition Target is formed; a concise understandable Application Concept is a core responsibility | no Unit-level omission after Target formation; unresolved concept remains `OPEN` |
 | `RU-APP-07` | feasibility can change concept, one or more Benefit Responsibility Boundary / Constraints, Benefit credibility or build/adapt/integrate position | `OMITTED` when feasibility is routine/trusted and cannot materially change selected Application meaning |
 
-### Application Definition Identity
+<a id="application-definition-identity"></a>
+### Application Concept
 
-**Application:** `<stable name / identity>`
-**Selected Contribution:** `<bounded real-world contribution assigned to this Application>`
-**Need / upstream driver refs:** `<Need / solution / trusted intent refs>`
+`RU-APP-05` is the first Result Unit in the Application Definition. Keep the Application Concept short and immediately understandable:
+
+```text
+Summary:
+<what this Application is + why it is needed / what overall Benefit it provides>
+
+How it roughly works:
+<small conceptual explanation of the basic working idea, only as much as needed to understand the Application>
+```
+
+Do not turn Application Concept into Feature decomposition, detailed interaction behavior, architecture, Domain design or implementation planning. Those details belong to their natural downstream owners.
+
+The stable Application name/ID belongs in the document/Target heading, and Need / upstream driver references belong in ordinary source context. They do not require a Result Unit. The legacy `application-definition-identity` anchor routes here for old references; it does not restore retired `RU-APP-01`.
+
+Concept Summary owns only the concise whole-application explanation and selected contribution. Refer to `AB-*` for detailed User Need, User Receives and Benefit-local boundaries; do not repeat their catalog or constraints. Refer to `RU-APP-02` for alternative-route justification, `RU-APP-04` for representative paths, and `RU-APP-07` for feasibility.
 
 ### Existing Solutions / Market / Reference Research
 
@@ -405,22 +410,6 @@ Benefit markers
 
 RLS must not decompose Target internals into Feature behavior, Screens, Domain objects, internal Application handoffs, architecture or exact mechanisms. Those belong to downstream Target Modules / realization owners.
 
-### Application Concept
-
-Keep the Application Concept short and immediately understandable:
-
-```text
-Summary:
-<what this Application is + why it is needed / what overall Benefit it provides>
-
-How it roughly works:
-<small conceptual explanation of the basic working idea, only as much as needed to understand the Application>
-```
-
-Do not turn Application Concept into Feature decomposition, detailed interaction behavior, architecture, Domain design or implementation planning. Those details belong to their natural downstream owners.
-
-Benefit Responsibility Boundary / Constraints are not a separate Result Unit. They are required inside the affected `AB-*` items in `RU-APP-03`; Representative RLS surroundings and feasibility Evidence may challenge/refine those per-Benefit boundaries but do not create a second boundary owner.
-
 ### Realization Feasibility
 
 Use proportional Evidence about representative runtime feasibility, persistence/integration/consistency/performance/operability/cost only when it can change Application meaning. Literal mechanism selection remains downstream/Exact unless the mechanism itself becomes selected durable semantic meaning.
@@ -433,11 +422,11 @@ Material Application alternatives remain ordinary Proposal / Planning Branch / D
 
 Each material Unit inherits the generic [`Unit Applicability Envelope`](../../../idtspe-core/runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md#twu-applicability-envelope). Opening/Closing are logical applicability boundaries; registries may also be checked during Unit work whenever new material pressure appears.
 
-#### `RU-APP-01` processing envelope
+#### `RU-APP-05` processing envelope
 
-1. **Opening Unit Checkpoint — `RU-APP-01`** — bind the exact reusable Unit owner(s)/methodology before substantive work and resolve/reuse current applicable Core + active-profile Lens/registry pressure.
-2. **Unit Work — `RU-APP-01`** — produce/refine only the meaning owned by this Result Unit; run additional applicability checks when the Analysis Surface changes materially.
-3. **Closing Unit Checkpoint — `RU-APP-01`** — evaluate the actual Unit result/disposition, route material Findings/owner consequences, and reopen/refine narrowly when needed before handoff.
+1. **Opening Unit Checkpoint — `RU-APP-05`** — bind the exact reusable Unit owner(s)/methodology before substantive work and resolve/reuse current applicable Core + active-profile Lens/registry pressure.
+2. **Unit Work — `RU-APP-05`** — produce/refine only the meaning owned by this Result Unit; run additional applicability checks when the Analysis Surface changes materially.
+3. **Closing Unit Checkpoint — `RU-APP-05`** — evaluate the actual Unit result/disposition, route material Findings/owner consequences, and reopen/refine narrowly when needed before handoff.
 
 #### `RU-APP-02` processing envelope
 
@@ -456,12 +445,6 @@ Each material Unit inherits the generic [`Unit Applicability Envelope`](../../..
 1. **Opening Unit Checkpoint — `RU-APP-04`** — bind the exact reusable Unit owner(s)/methodology before substantive work and resolve/reuse current applicable Core + active-profile Lens/registry pressure.
 2. **Unit Work — `RU-APP-04`** — produce/refine only the meaning owned by this Result Unit; run additional applicability checks when the Analysis Surface changes materially.
 3. **Closing Unit Checkpoint — `RU-APP-04`** — evaluate the actual Unit result/disposition, route material Findings/owner consequences, and reopen/refine narrowly when needed before handoff.
-
-#### `RU-APP-05` processing envelope
-
-1. **Opening Unit Checkpoint — `RU-APP-05`** — bind the exact reusable Unit owner(s)/methodology before substantive work and resolve/reuse current applicable Core + active-profile Lens/registry pressure.
-2. **Unit Work — `RU-APP-05`** — produce/refine only the meaning owned by this Result Unit; run additional applicability checks when the Analysis Surface changes materially.
-3. **Closing Unit Checkpoint — `RU-APP-05`** — evaluate the actual Unit result/disposition, route material Findings/owner consequences, and reopen/refine narrowly when needed before handoff.
 
 #### `RU-APP-07` processing envelope
 
@@ -564,3 +547,7 @@ TM-DOMAIN-DISCOVERY / TM-IMPLEMENTATION-SLICE when later implementation ownershi
 ```
 
 Material architecture/change questions may use the Core/SDS Lens aliases L4/L5/L6 inside the current Target; these Lens aliases are not `PL-L*` planning-depth identities. When the problem has independently useful output and choice/revalidation depth, surface a Target Formation candidate; Target Formation decides reuse/handoff/new bounded Target.
+
+## Copied project example
+
+[Study Tab Launcher — Need/Benefits могут предшествовать realization; selected AB-STL-04 не превращает будущее поведение в current](../examples/study-tab-launcher/project/planning/documentation/application-definition.md). Read the [case guide and capture limits](../examples/study-tab-launcher/README.md) with the current module contract; the copied project is a dated example, not live application authority.

@@ -24,7 +24,7 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
   ],
   "description": "Explicitly discover, form, review and refine material IDTSPE Proposals from current context, supplied Findings or a supplied Proposal through the canonical Proposal/Decision lifecycle under USER-gated selection.",
   "meaning": "Use the current IDTSPE Work Context to discover/form material candidate Proposals, form linked Proposals for supplied material Findings, or review/refine a supplied Proposal. When Findings are the input, preserve their Finding Disposition/RE-* state: deterministic/local candidates remain inside accepted meaning, RE-3 stays BLOCKED_BY_REVALIDATION, and RE-2/RE-4 remain semantic-change candidates requiring normal selection. Canonical Proposal/Decision lifecycle owns candidate/selection semantics; Proposal existence never implies persistence. Keep candidates UNSELECTED unless their route is an already-entailed RE-0 correction that needs no semantic selection, and integrate actually selected semantic change only through normal authority.",
-  "activeContextBehavior": "Reuse current Sources, accepted Results, Decisions, Findings and Carry-Forward references first. If explicit Proposal formation targets Findings, consume their current Finding Disposition rather than rerunning Review; form/refine the smallest linked candidate and preserve revalidation blocks. Resolve genuinely required USER-only grounding before presenting a selectable material candidate. For each material selectable Proposal run the Resolution Context Lens and canonical Proposal Semantic Change Impact Review proportionally. AI recommendation is not selection. Retention/file persistence is a separate proportional decision.",
+  "activeContextBehavior": "Reuse current Sources, accepted Results, Decisions, Findings and Carry-Forward references first. If explicit Proposal formation targets Findings, consume their current Finding Disposition rather than rerunning Review; form/refine the smallest linked candidate and preserve revalidation blocks. Resolve genuinely required USER-only grounding before presenting a selectable material candidate. For each material selectable Proposal run the Resolution Context Lens and canonical Proposal Semantic Change Impact Review proportionally. Use optional TM-PROPOSAL-WORKUP only when a bounded candidate-resolution brief has independent Target value; ordinary transient Proposal work remains this operation. AI recommendation is not selection. Retention/file persistence is a separate proportional decision.",
   "traversalReadMode": "Reuse current reliable Core governance. Otherwise read the current composition/state model plus canonical Proposal/Decision and Q/R/P lifecycle owners, and the Session USER-gated interaction owner. Load profile/Target/Lens detail only when the current composition makes it applicable.",
   "ownerFiles": [
     "planning/documentation/idtspe-methodology/active/idtspe-core/commands/IDTSPE-COMMAND-SURFACE-CONTRACT.md",
@@ -38,7 +38,8 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
     "planning/session/session-runtime-contract.md",
     "planning/documentation/idtspe-methodology/active/idtspe-core/lenses/required/LENS-PROPOSAL-DECISION-RESOLUTION-CONTEXT.md",
     "planning/documentation/idtspe-methodology/active/idtspe-core/resolution/continuation/RESOLUTION-CARRY-FORWARD-PROJECTION.md",
-    "planning/documentation/idtspe-methodology/active/idtspe-core/resolution/findings/FINDING-DISPOSITION.md"
+    "planning/documentation/idtspe-methodology/active/idtspe-core/resolution/findings/FINDING-DISPOSITION.md",
+    "planning/documentation/idtspe-methodology/active/idtspe-core/target-modules/TM-PROPOSAL-WORKUP.md"
   ],
   "expectedOutput": "Material Proposals requested from current context or supplied Findings are formed and reviewable with truthful relation to their driver/owner and selectable/blocked state. Findings have linked Proposals without requiring persisted files; RE-3 remains BLOCKED_BY_REVALIDATION; semantic-change candidates remain UNSELECTED until actual authority selects them.",
   "permissionMode": "read-only-planning-unless-separately-authorized",
@@ -109,6 +110,14 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
       "anchor": "resolution-carry-forward",
       "why": "Retains only surviving material open/deferred/residual continuation after Proposal work.",
       "role": "VALIDATION_HANDOFF",
+      "readMode": "ON_DEMAND"
+    },
+    {
+      "responsibilityId": "TM-PROPOSAL-WORKUP",
+      "path": "planning/documentation/idtspe-methodology/active/idtspe-core/target-modules/TM-PROPOSAL-WORKUP.md",
+      "anchor": "tm-proposal-workup",
+      "why": "Optional independently useful bounded candidate-resolution Target result; ordinary Proposal work does not require it.",
+      "role": "POSSIBLE_DESTINATION",
       "readMode": "ON_DEMAND"
     },
     {

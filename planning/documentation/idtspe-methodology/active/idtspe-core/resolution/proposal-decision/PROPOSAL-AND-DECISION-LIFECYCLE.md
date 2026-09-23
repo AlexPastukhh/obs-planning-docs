@@ -296,11 +296,12 @@ The provenance records **which reusable evaluators were applied**, not their ful
 
 A retained material Proposal whose required review has not yet happened must remain visibly unresolved (for example `Review Provenance: pending required Resolution Context review`) rather than looking reviewed by omission. Routine transient conversational Proposals that are not retained do not need durable Lens provenance.
 
+<a id="proposal-semantic-change-impact-review"></a>
 ## 5A. Proposal Semantic Change Impact Review
 
 Every **material Proposal** receives a proportional semantic-impact review as part of Candidate Review, regardless of whether it came from a Finding, USER input, AI reasoning, Target Module discovery aid or ordinary Unit Resolution.
 
-Resolve only the dimensions that are material:
+Check upstream and downstream consequence applicability for every material Proposal, including deterministic corrections. Expand only material dimensions; a bounded, supported no-change conclusion is valid, while an unknown or uninspected consequence remains explicit:
 
 ```text
 Affected Unit / semantic subject
@@ -331,6 +332,28 @@ Proposal review
 ```
 
 A Proposal does not "rewrite a Source". It may conflict with a Source, require additional Evidence, challenge Source authority/currentness, or propose changing upstream semantic owner meaning whose later accepted result becomes a downstream Source.
+
+<a id="resolution-claim-grounding"></a>
+### Evidence-backed resolution conclusions
+
+Material resolution conclusions presented to the USER MUST carry an inspectable basis and a concise public rationale. This applies to Proposal impact/selection conclusions and to Finding classification/consequence conclusions through [Finding Disposition](../findings/FINDING-DISPOSITION.md#finding-classification-consequence-basis). The supporting reference and the argument play different roles:
+
+```text
+checked reference / explicit USER statement
+→ the specific accepted meaning or observed fact it supports
+→ concise explanation connecting that basis to this candidate/conclusion
+→ conclusion, bounded scope and any material uncertainty
+```
+
+Use a direct document section/anchor, Requirement/Decision/Source subject, relevant Evidence, or an identifiable USER statement. For a USER statement, cite an existing message/permalink/log entry when available; otherwise reproduce the relevant exact excerpt with enough conversation context to identify it. Do not invent message IDs, links or logs, and do not create a log merely to satisfy this rule. A shared basis reference may support several conclusions when each connection is clear. Retained conclusions preserve enough of that basis to be recovered later, without requiring a new file or copying whole documents.
+
+A methodology rule proves which evaluation criterion applies; it does not by itself prove the affected project's accepted meaning or dependency facts. An AI recommendation, prior AI assertion, unselected Proposal or the changed draft being justified cannot establish its own prior acceptance. A rationale is not independent Evidence. If USER instruction and current documentation differ, expose their scope/order and the selected authority; do not silently claim they already agree.
+
+For upstream consequences, identify the accepted owner meaning/Requirement/Decision that is preserved, challenged or proposed to change, with its basis. For downstream consequences, identify the affected consumers/results and the dependency that requires preservation, update, revalidation or invalidation. Distinguish the current defect/exposure from the conditional effects of each candidate if selected. A no-impact conclusion names the inspected boundary and the reason it holds there; absence of a found reference is not proof of absence of impact.
+
+Claims such as **"no new semantic decision is needed"**, **"already implied"**, **"continues the USER's direction"** or **"no upstream/downstream consequence"** MUST satisfy this same basis rule. Cite what already determines the meaning and explain why the candidate stays within it. General intent alone does not establish a unique implementation route; distinguish no new semantic selection from any remaining local realization choice. No new semantic selection is also distinct from whether an existing Decision trace should be retained and whether actual mutation is authorized.
+
+When support is missing, mark the particular conclusion provisional/unknown and state the smallest source check, Evidence need or USER-only clarification required. Do not present unsupported certainty as review completion or manufacture a new approval gate when current authority is already established. Impact review may reuse a supplied Finding's checked diagnosis by reference; candidate-specific or changed-basis consequences still require their own review.
 
 <a id="resolution-decision-retention"></a>
 ## Decision retention and integration

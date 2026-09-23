@@ -140,7 +140,9 @@ Each declared Result Unit is a Module-defined Unit Definition under the canonica
 
 **Purpose.** Provide an independently reviewable update plan when planning value justifies a separate pre-update Target, without turning the plan into implementation authority.
 
-**Result Content Contract.** One actionable plan that states the accepted basis, intended change scope, material preserve/must-not-change boundaries, dependencies/order when material, verification/checks and consequential unresolved issues.
+**Result Content Contract.** One actionable plan that states the accepted basis, intended change scope, material preserve/must-not-change boundaries, dependencies/order when material, verification/checks and consequential unresolved issues. When the destination is a set of files or other addressable artifacts, express the intended changes as reviewable proposed operation entries: exact affected path/identity (source and destination for `MOVE`), `ADD` / `CHANGE` / `REPLACE` / `DELETE` / `MOVE` as applicable, natural owner, intended content or semantic delta, driver (accepted meaning, Finding, or linked Proposal), material preservation boundary, and the check that would establish the result. Keep a stable local entry reference when an entry must be discussed, revised or traced across review. An entry proposes a destination operation; it is not automatically a formal IDTSPE Proposal or permission to perform that operation.
+
+**Collection Definition — `PUPDATE-OPERATIONS`.** For addressable file/artifact destinations, the proposed operation entries above form one Collection (`0..N`) with that common Item Contract. Preserve a stable local Item Key when an operation is independently referenced. A checked no-change plan may establish zero operations; unknown operations keep the result unresolved and must not be reported as an established empty set. Shared basis, order and overall preservation/verification remain ordinary plan content. Other destination kinds use the same bounded plan responsibility without manufacturing file entries.
 
 This Unit is simple by default and does not require a Unit Resolution Set merely because the plan has several content headings. Introduce terminal Slots only if one sub-responsibility actually needs independent status/guidance/reopen tracking while remaining inside this same plan Responsibility.
 
@@ -150,7 +152,7 @@ Apply the Core [`Unit Applicability / Materiality / Disposition Contract`](../ru
 
 | Result Unit | Substantive resolution is material when | Target/Unit disposition when not material |
 |---|---|---|
-| `RU-PUPDATE-01` | always once a Pre-Update Plan Target is formed | no Unit-level omission: if a separate reviewable plan has no independent value, the Target-level activation gate fails and the Target should not be formed |
+| `RU-PUPDATE-01` | when the concrete update plan requires substantive resolution in the current context | keep the formed Unit visible with explicit omission and its reason when not applicable/material, under Core disposition; before Target formation, the activation gate may instead conclude that no separate Target is useful |
 
 When this Target is formed, its Module-defined Unit remains declared. Do not use a bare `N/A`; if substantive Unit work is not material, record a concise explicit omission disposition. The whole Target may still be skipped when its Target-level activation gate is not met.
 
@@ -162,12 +164,16 @@ Current basis / accepted meaning used
 Change scope
 Preserve / must-not-change boundary
 Planned changes
+  For files/artifacts: proposed operation entries with destination, action, delta,
+  basis/driver, preservation boundary and verification
 Order / dependency only when material
 Verification / checks after update
 Open material issue only when unresolved and consequential
 ```
 
 These are useful content prompts, not mandatory form fields. A tiny plan may be a few bullets.
+
+One formal IDTSPE Proposal may justify several proposed operation entries, and one operation entry may depend on more than one accepted decision. Link the entries to formal Proposals when those Proposals exist; do not manufacture one Proposal or Decision per file.
 
 
 ### Explicit Unit Checkpoint Placement
@@ -196,7 +202,7 @@ Apply ordinary Q/R/P/Evidence + Proposals/Decision only where a real choice, unc
 
 ### 4. Produce the concrete plan
 
-Prefer actionable planned changes over another layer of abstract methodology prose.
+Prefer actionable planned changes over another layer of abstract methodology prose. For a file destination, name the concrete file operations before mutation; if an exact path cannot yet be known, expose the unresolved basis and identify the bounded path-selection rule rather than inventing a path.
 
 Bad:
 
@@ -215,6 +221,15 @@ Better:
 4. replace provider-specific integration fixture
 5. run adapter integration tests + payment Slice tests
 ```
+
+File-destination projection of the same plan:
+
+| Entry | Action | Destination / owner | Proposed delta and basis | Preserve | Verify |
+|---|---|---|---|---|---|
+| `PUP-01` | `CHANGE` | `src/adapters/PaymentGatewayAdapter.ts` / adapter owner | replace provider implementation under the accepted port contract | service-owned transaction boundary | adapter integration tests |
+| `PUP-02` | `CHANGE` | `src/wiring/payments.ts` / composition owner | bind the new adapter selected by the same accepted meaning | existing service API | payment Slice tests |
+
+These are proposed file operations inside `RU-PUPDATE-01`, not separate formal Proposals and not an exact patch.
 
 ### 5. Stop before mutation
 
@@ -274,7 +289,7 @@ PERSISTENCE_GUIDANCE: OPTIONAL
 PLACEMENT_DIRECTIVE: EMBED_OR_PLACE
 SEMANTIC_OWNER: current Pre-Update Plan Target / existing change owner when one exists
 REPRESENTATION: CONVERSATIONAL_BY_DEFAULT_OR_EXISTING_OWNER
-CONTENT: concrete intended changes + preserve boundary + material verification/open issue; no exact code mirror
+CONTENT: concrete intended changes, including addressable proposed file/artifact operations when applicable, + preserve boundary + material verification/open issue; no exact code mirror
 GUIDANCE_SOURCE: TARGET_MODULE
 RESOLVER: P-14 / PERSISTENCE_ADDRESSABILITY
 ```
@@ -304,3 +319,7 @@ accepted Pre-Update Plan
 material newly discovered semantic/architecture conflict
 → Finding Candidate / Core Finding Disposition / upstream revalidation as needed
 ```
+
+## Further worked example
+
+Read the [bounded worked case](../examples/review-proposal-pre-update/pre-update-plan.example.md) for Sources, Unit results, consequences and completion boundaries. Its declared historical/illustrative basis remains explanatory, not current semantic authority.

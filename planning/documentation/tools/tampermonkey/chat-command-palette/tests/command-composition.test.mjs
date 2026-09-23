@@ -377,14 +377,14 @@ test('P-02 exposes review coverage control-plane without becoming coverage autho
   assert.match(trace,/do \*\*not\*\* make P-02 the owner of Review Coverage/i);
 });
 
-test('pre-update review resolves plan before Validation and Lens work with distinct coverage mode',()=>{
-  const review=byId.get('idtspe.review.pre_update');
-  assert.ok(review);
-  const expanded=catalog.expandCommandComposition(commands,[review.id]);
-  const at=(id)=>expanded.order.indexOf(id);
-  assert.ok(at('tmcmd.pre.update')>=0);
-  assert.ok(at('tmcmd.pre.update')<at('idtspe.port.validation'));
-  assert.ok(at('tmcmd.pre.update')<at('idtspe.lenses.apply-selected'));
-  assert.ok(at('idtspe.port.validation')<at(review.id));
-  assert.deepEqual(expanded.contributions.filter((item)=>item.kind==='REVIEW_COVERAGE_MODE').map((item)=>item.value),['PRE_UPDATE_BASIS']);
+test('Pre-Update planning, Finding analysis and Proposal workup remain independent command routes',()=>{
+  assert.equal(byId.has('idtspe.review.pre_update'),false);
+  const pre=catalog.expandCommandComposition(commands,['tmcmd.pre.update']);
+  assert.ok(!pre.contributions.some((item)=>item.kind==='REVIEW_COVERAGE_MODE'));
+  const findings=catalog.expandCommandComposition(commands,['tmcmd.review.findings']);
+  assert.ok(!findings.order.includes('tmcmd.pre.update'));
+  assert.ok(findings.contributions.some((item)=>item.kind==='REVIEW_COVERAGE_MODE'&&item.value==='CURRENT_BASIS'));
+  const proposals=catalog.expandCommandComposition(commands,['tmcmd.proposal.workup']);
+  assert.ok(!proposals.order.includes('tmcmd.pre.update'));
+  assert.ok(!proposals.order.includes('tmcmd.review.findings'));
 });

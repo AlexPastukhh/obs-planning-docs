@@ -86,7 +86,7 @@ The record is transient by default. P-14 Persistence may preserve the same recor
 <a id="review-coverage-working-context"></a>
 ## 2B. Pre-Execution Review Coverage Working Context
 
-Command composition may know the requested review mode before any dependency semantic action executes. `idtspe.review` and current-basis specialized reviews such as `idtspe.review_consistency` contribute `REVIEW_COVERAGE_MODE=CURRENT_BASIS`; `idtspe.review.recheck` contributes `REVIEW_COVERAGE_MODE=LOCAL_AFFECTED_RECHECK`; a focused pre-update review contributes `REVIEW_COVERAGE_MODE=PRE_UPDATE_BASIS` after a bounded Pre-Update Plan subject has been resolved. After the command DAG is fully expanded and pre-execution contributions are collected, but **before** P-12 Validation or P-06 Lens dependency actions execute, establish/refresh one bounded Review Coverage working context:
+Command composition may know the requested review mode before any dependency semantic action executes. `idtspe.review`, `tmcmd.review.findings` and current-basis specialized reviews such as `idtspe.review_consistency` contribute `REVIEW_COVERAGE_MODE=CURRENT_BASIS`; `idtspe.review.recheck` contributes `REVIEW_COVERAGE_MODE=LOCAL_AFFECTED_RECHECK`. After the command DAG is fully expanded and pre-execution contributions are collected, but **before** P-12 Validation or P-06 Lens dependency actions execute, establish/refresh one bounded Review Coverage working context:
 
 ```text
 Review Subject / Scope
@@ -98,11 +98,9 @@ Review Subject / Scope
 → P-06 alone resolves Lens applicability/supported operation and forms executable selected Lens Applications
 ```
 
-For `PRE_UPDATE_BASIS`, DAG expansion may collect the mode declaratively before work executes, but the **review coverage context and P-12/P-06 semantic review actions must wait until the ordered `plan-pre-update` dependency has resolved/reused a bounded plan subject and its destination basis**. If that dependency cannot resolve, report a blocker instead of deriving review cells from an imaginary plan. This is an ordered dependency within one review command, not a second Review lifecycle.
+An existing Pre-Update Plan may be explicitly selected as the bounded Review Subject under `CURRENT_BASIS`, with affected owners/dependencies and destination facts included when materially relevant. Review does not create that plan as an ordered prerequisite. If the requested subject does not exist, report the missing basis rather than deriving cells from an imagined plan. `CURRENT_BASIS` derives current-basis review obligations/intents and reusable coverage candidates. `LOCAL_AFFECTED_RECHECK` compares prior/current basis and derives stale, partial, invalidated, newly exposed or previously blocked obligations while preserving only justified reusable prior coverage. These are coverage requirements, not a second Lens-applicability decision: `REVIEW.STRATEGY-COVERAGE` may request a perspective/operation, but P-06 Lens Meta-Model/Registry owns whether a Lens applies, which supported operation is valid, and the final selected `(Lens Model, Analysis Surface, Operation, basis)` application. If no trustworthy prior record exists, `LOCAL_AFFECTED_RECHECK` falls back to initial current-basis derivation instead of inventing a delta. When both modes are contributed for the same bounded review context, the effective mode is normalized to `LOCAL_AFFECTED_RECHECK`; do not execute parallel current-basis and recheck contexts for the same subject.
 
-`PRE_UPDATE_BASIS` derives pre-mutation review cells from a resolved/reused Pre-Update Plan, current affected owners/dependencies and destination basis. It uses ordinary validators/Lens operations, material Findings, Finding Disposition, linked Proposals and the same final coverage self-check; it creates no new Finding type or lifecycle. An unresolved plan subject is a blocker before review dependencies execute. `CURRENT_BASIS` derives current-basis review obligations/intents and reusable coverage candidates. `LOCAL_AFFECTED_RECHECK` compares prior/current basis and derives stale, partial, invalidated, newly exposed or previously blocked obligations while preserving only justified reusable prior coverage. These are coverage requirements, not a second Lens-applicability decision: `REVIEW.STRATEGY-COVERAGE` may request a perspective/operation, but P-06 Lens Meta-Model/Registry owns whether a Lens applies, which supported operation is valid, and the final selected `(Lens Model, Analysis Surface, Operation, basis)` application. If no trustworthy prior record exists, `LOCAL_AFFECTED_RECHECK` falls back to initial current-basis derivation instead of inventing a delta. When both modes are contributed for the same bounded review context, the effective mode is normalized to `LOCAL_AFFECTED_RECHECK`; do not execute parallel current-basis and recheck contexts for the same subject.
-
-This working context is not another command, Shell port, persisted state kind or second review lifecycle. It is the pre-execution form of the same Review Coverage Record owned here. The selected review command's later own action completes Finding Disposition, coverage update and the final coverage self-check after its Validation/Lens dependencies have produced results.
+This working context is not another command, Shell port, persisted state kind or second review lifecycle. It is the pre-execution form of the same Review Coverage Record owned here. A selected command requesting a full review completes Finding Disposition, linked Proposal work, coverage update and final self-check after its Validation/Lens dependencies. A diagnostic-only TM-REVIEW-FINDINGS action completes its declared analysis/handoff result and updates diagnostic coverage; it preserves pending Proposal obligations and does not claim full-review completion.
 
 ## 3. Current-Pass Completeness
 
@@ -236,6 +234,8 @@ refresh strategy/coverage
 
 There is no normal complete `idtspe.review` mode that leaves its own produced Finding Candidates undispositioned. If disposition is blocked/deferred, record that explicitly.
 
+Finding discovery/diagnosis and Proposal formation are distinct actions. Optional Core [`TM-REVIEW-FINDINGS`](../idtspe-core/target-modules/TM-REVIEW-FINDINGS.md) may present an independently useful diagnostic Target result, and [`TM-PROPOSAL-WORKUP`](../idtspe-core/target-modules/TM-PROPOSAL-WORKUP.md) may present a separate bounded candidate-resolution result. Neither Target is mandatory for a complete review: the canonical Finding/Proposal lifecycles still execute directly when a separate Target would add no value. An intermediate Finding analysis with pending Proposal handoffs is not a completed review pass.
+
 Need Candidate collection is **not** a mandatory review stage. Needs are grounded wanted outcomes from USER/Source context and use their own collection/disposition owners. A review may incidentally notice uncollected USER/Source wanted outcome, but it routes that to Need collection rather than treating Need intake as review output by default.
 
 Before a review pass completes, perform a **coverage self-check** against the current Review Subject, Scope and Basis:
@@ -247,6 +247,9 @@ re-evaluate applicable validators / review perspectives
 → distinguish EXECUTED_THIS_PASS from REUSED_FROM_PRIOR coverage
    and preserve reuse basis/justification
 → confirm all produced material Finding Candidates reached Finding Disposition
+→ check each material Finding's Priority/RE and upstream/downstream/USER-attention
+   conclusions have the required rationale and inspectable basis; keep unsupported
+   conclusions explicitly unresolved rather than claiming no impact or no new decision
 → confirm each material Finding has a linked Proposal in the current Work Context,
    including BLOCKED_BY_REVALIDATION state when RE-3 is unresolved
 → record remaining material coverage / blockers / scope escalation
@@ -254,6 +257,8 @@ re-evaluate applicable validators / review perspectives
 ```
 
 This self-check is intrinsic to Review Strategy/Coverage and is not a separate command or responsibility.
+
+The diagnostic obligation is owned by [Finding classification and consequence basis](../idtspe-core/resolution/findings/FINDING-DISPOSITION.md#finding-classification-consequence-basis); candidate-specific consequences and evidence-backed no-new-selection claims are owned by [Proposal Semantic Change Impact Review](../idtspe-core/resolution/proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md#proposal-semantic-change-impact-review). Reused conclusions retain their checked basis; a label or link without its supporting connection is not sufficient review evidence.
 
 <a id="review-recheck-operation"></a>
 ## 9. Recheck Operation

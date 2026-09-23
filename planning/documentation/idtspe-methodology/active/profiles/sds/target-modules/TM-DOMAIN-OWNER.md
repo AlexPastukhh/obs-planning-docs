@@ -186,3 +186,7 @@ FBS-* / BR-* realized
 ```
 
 Do not turn the owner into a generic code state/lifecycle catalog. Domain-owned `ERR-IMP-DOMAIN-*` exist only for expected failures created by the selected Domain mechanism.
+
+## Copied project example
+
+[Study Tab Launcher — Доменные значения и инварианты](../examples/study-tab-launcher/project/planning/documentation/domain/local-project-selector.md). Read the [case guide and capture limits](../examples/study-tab-launcher/README.md) with the current module contract; the copied project is a dated example, not live application authority.

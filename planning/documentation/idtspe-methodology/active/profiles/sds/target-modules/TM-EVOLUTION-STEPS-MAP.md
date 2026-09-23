@@ -198,3 +198,7 @@ Start-readiness projection ≠ realization authority
 vague future idea ≠ Step merely because a Map could list it
 realized predecessor reference ≠ duplicated historical target state
 ```
+
+## Copied project example
+
+[Study Tab Launcher — Текущая/будущая/realized lineage навигация](../examples/study-tab-launcher/project/planning/documentation/evolution-steps.md). Read the [case guide and capture limits](../examples/study-tab-launcher/README.md) with the current module contract; the copied project is a dated example, not live application authority.

@@ -1,7 +1,7 @@
 # OBS Planning Helper — Developer / Build Entry
 
 Status: active modular Tampermonkey helper implementation
-Version: `0.39.5`
+Version: `0.39.8`
 Scope: local-first, GitHub-backed **semantic command projection** with canonical methodology working Scenarios, reusable Prompts, explicit repository recovery/publish actions, editable ordered presentation groups, sidebar category/group navigation, canonical `Контекст / Результат / Суть` explanations plus visible command traversal/owner contracts, Favorites, direct Prompt position ordering and a wide/resizable browser UI.
 
 <a id="planning-helper-semantic-projection"></a>
@@ -16,6 +16,8 @@ Responsibility ID: `HELPER.SEMANTIC-PROJECTION`
 The Helper owns projection/runtime mechanics only. Semantic command meaning and process stay with direct command definitions plus the projected methodology/repository owners. Registered command `includes` are canonical command-file-path edges forming a reproducible USER-invocation composition guarantee over those existing owners; they do not make Helper UI, generated seeds, numeric Shell ports or presentation groups methodology authority. Generated `seed/*.json`, userscript bytes, scenario-command reverse indexes and presentation groups are derived artifacts.
 
 ## Read Order
+
+SDS planning start: [Application Definition resolution](application-definition.resolution.md) and its [candidate Application Definition](application-definition.proposal.md). These files retain proposal/Q/R/P/decision state separately from the current implementation and Scenario owners below.
 
 1. `planning/command-routing.md` — executable-command and projection policy.
 2. `planning/commands/README.md` — direct Planning Command authority.
@@ -365,3 +367,9 @@ npm run verify
 ```
 
 `verify` proves current semantic projection parity, command/alias validity, Scenario projection/reverse-index behavior, compatibility-route safety, local/repository boundaries, generated-script freshness and Helper application-Scenario traceability.
+
+## Reading methodology examples
+
+Use `прочитай примеры методологии` / `read methodology examples` for a bounded read-only pass through examples linked by the selected owner. Command, Use Case, Target Module and Lens bodies expose the Documentation Example Reading contract in adaptive and full modes. Examples remain explanatory and do not authorize execution. Core Target Module cards now retain all registry aliases, including the multiword Planning Resolution State alias.
+
+For a connected project overview, use `посмотри полный пример документации` / `read full documentation example`. This separate read-only command explicitly opens the copied Study Tab Launcher case guide and project documentation entry, then follows their owner relationships.

@@ -90,6 +90,8 @@ selection readiness / unresolved USER authority
 
 Then return to the lifecycle owner for canonical Proposal Semantic Change Impact Review and selection handling. A newly discovered contradiction/unsupported assumption/owner conflict becomes a Finding Candidate rather than Lens-owned State.
 
+Check that the lifecycle owner's [evidence-backed resolution conclusions](../../resolution/proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md#resolution-claim-grounding) are satisfied: what inspected reference/USER statement supports each material upstream/downstream or no-new-selection conclusion, and why does that support apply to this candidate? An unknown consequence stays explicit. The Lens evaluates this obligation without owning a second grounding or Finding-classification contract.
+
 ### Decision Qualification / Integration Operation
 
 Operationalize existing lifecycle rules:

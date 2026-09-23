@@ -1,0 +1,117 @@
+{
+  "kind": "historical-review-basis",
+  "captured": "2026-09-24",
+  "authority": "Evidence only; .txt files preserve pre-repair bytes, not active methodology.",
+  "files": [
+    {
+      "source": "planning/documentation/idtspe-methodology/active/idtspe-core/target-modules/TM-REVIEW-FINDINGS.md",
+      "file": "01-TM-REVIEW-FINDINGS.md.txt",
+      "sha256": "5aae9127c57f70dbdab8a3eefa18ed06df07cb7473e5b3d2295ff3aa6a9505b9"
+    },
+    {
+      "source": "planning/documentation/idtspe-methodology/active/idtspe-core/target-modules/TM-PROPOSAL-WORKUP.md",
+      "file": "02-TM-PROPOSAL-WORKUP.md.txt",
+      "sha256": "c947cb475014500f4eaea23327da02f71602d6c5f8234b9c685ea59c94cf9de6"
+    },
+    {
+      "source": "planning/documentation/idtspe-methodology/active/idtspe-core/target-modules/TM-PRE-UPDATE-PLAN.md",
+      "file": "03-TM-PRE-UPDATE-PLAN.md.txt",
+      "sha256": "2f4559a36f478bd00a250454b6e533ec5fd8e24a159eede115e8943dd4569d22"
+    },
+    {
+      "source": "planning/documentation/idtspe-methodology/active/idtspe-core/target-modules/TARGET-MODULE-REGISTRY.md",
+      "file": "04-TARGET-MODULE-REGISTRY.md.txt",
+      "sha256": "835f0db64d91de1a7388d96c40d51d5e7fdaf575f6fdec536fd2bdb4bb0caac2"
+    },
+    {
+      "source": "planning/documentation/idtspe-methodology/active/idtspe-core/target-modules/TM-PLANNING-RESOLUTION-STATE.md",
+      "file": "05-TM-PLANNING-RESOLUTION-STATE.md.txt",
+      "sha256": "c3501d30ea9d7a0abe08e3d6b4dd28fe89b9bc9e475d990dd541329774763e7d"
+    },
+    {
+      "source": "planning/documentation/idtspe-methodology/active/idtspe-core/runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md",
+      "file": "06-UNIT-AND-TARGET-STEP-RESULT-MODEL.md.txt",
+      "sha256": "ae5ef5e1bf9ac8dae5d833b9261cdee5ed9ec4075ef84c8b6273a72b33c5c70a"
+    },
+    {
+      "source": "planning/documentation/idtspe-methodology/active/ai-reviewability/REVIEW-STRATEGY-AND-COVERAGE-CONTRACT.md",
+      "file": "07-REVIEW-STRATEGY-AND-COVERAGE-CONTRACT.md.txt",
+      "sha256": "f873080d70fe121c59ed5af929ea3e29aa2fef507108712e95de769b6c38b55e"
+    },
+    {
+      "source": "planning/documentation/idtspe-methodology/active/profiles/sds/registries/TARGET-MODULE-REGISTRY.md",
+      "file": "08-TARGET-MODULE-REGISTRY.md.txt",
+      "sha256": "1295da7bea09072e3ea98d80882ca269fbec01f5eb7ef5f32d50b8af0e9ff41e"
+    },
+    {
+      "source": "planning/commands/bootstrap-application-sds-planning.command.md",
+      "file": "09-bootstrap-application-sds-planning.command.md.txt",
+      "sha256": "5a4ed7e2cd7898d951c6ad45bae8be33036bbeaf8bf440ee1cf03f1f3d224702"
+    },
+    {
+      "source": "planning/documentation/tools/tampermonkey/chat-command-palette/build-chat-command-palette.mjs",
+      "file": "10-build-chat-command-palette.mjs.txt",
+      "sha256": "a54263079dd534465a4dc65cebf1b8b595424260a1dacf4459c8ca3d1192e31c"
+    },
+    {
+      "source": "planning/documentation/tools/tampermonkey/chat-command-palette/seed/semantic-components.json",
+      "file": "11-semantic-components.json.txt",
+      "sha256": "0e7406c79d079d09f67c3037ad70c93fbc032ecc01642583c738211ca7b10051"
+    },
+    {
+      "source": "planning/documentation/idtspe-methodology/active/idtspe-core/resolution/findings/FINDING-DISPOSITION.md",
+      "file": "12-FINDING-DISPOSITION.md.txt",
+      "sha256": "917c152019c070ebd957343ae42c840089a3e61814ab22603da006260d4c237a"
+    },
+    {
+      "source": "planning/documentation/idtspe-methodology/active/idtspe-core/resolution/proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md",
+      "file": "13-PROPOSAL-AND-DECISION-LIFECYCLE.md.txt",
+      "sha256": "1fd151349a54e62eb3dca4e2a06f5429de4b4ef176d84947e5cfefe21eb6d28b"
+    },
+    {
+      "source": "planning/documentation/idtspe-methodology/active/ai-reviewability/AI-OUTPUT-REVIEWABILITY.md",
+      "file": "14-AI-OUTPUT-REVIEWABILITY.md.txt",
+      "sha256": "8fbae5786b4ee1a46a6d810224fa6f67ce5a142d6cf882a8c86f40d8287c77cc"
+    },
+    {
+      "source": "planning/documentation/idtspe-methodology/active/idtspe-core/target-modules/TARGET-MODULE-MODEL.md",
+      "file": "15-TARGET-MODULE-MODEL.md.txt",
+      "sha256": "9fa6f1650061c220cd0f0588d9a53d2159a20f04e72bbcddf2665deba0cdcd14"
+    },
+    {
+      "source": "planning/documentation/idtspe-methodology/active/profiles/sds/representation/ARTIFACT-PLACEMENT-MAP.md",
+      "file": "16-ARTIFACT-PLACEMENT-MAP.md.txt",
+      "sha256": "018891d55c44f10e13ce115d8b073ca25f584dff855eb1426aeee12b129cb3bc"
+    },
+    {
+      "source": "planning/commands/review-findings.command.md",
+      "file": "17-review-findings.command.md.txt",
+      "sha256": "4243cec76ef757939c457c8e25d36e985fad198932d4d513f5737873f6e77bfd"
+    },
+    {
+      "source": "planning/documentation/tools/tampermonkey/chat-command-palette/README.md",
+      "file": "18-README.md.txt",
+      "sha256": "49891218add887ac1f3fbafd0dec55bbd89c225707fb28d1baf7af9d01e0a658"
+    },
+    {
+      "source": "planning/commands/plan-pre-update.command.md",
+      "file": "19-plan-pre-update.command.md.txt",
+      "sha256": "21258a9b3194d165be06118905e43be5762a8dd60c80f4e035dd3e38c7450d1d"
+    },
+    {
+      "source": "planning/use-cases/UC-REPO-PLAN-UPDATE.md",
+      "file": "20-UC-REPO-PLAN-UPDATE.md.txt",
+      "sha256": "dd52d4f53a8179046ea389f328bd668ff2cbdbb2311322062cff220dd08770e7"
+    },
+    {
+      "source": "planning/documentation/tools/tampermonkey/chat-command-palette/src/semantic-projections.js",
+      "file": "21-semantic-projections.js.txt",
+      "sha256": "18a1908dfc64a0468b01597a98c400d28596807376f8df5e2d55d1fae3e3fdce"
+    },
+    {
+      "source": "planning/documentation/tools/tampermonkey/chat-command-palette/tests/semantic-navigation.test.mjs",
+      "file": "22-semantic-navigation.test.mjs.txt",
+      "sha256": "0af4deef1341091f0b2901c7ec95ca0eebbdc10d0b53d1f5354fa4142a8e35f2"
+    }
+  ]
+}

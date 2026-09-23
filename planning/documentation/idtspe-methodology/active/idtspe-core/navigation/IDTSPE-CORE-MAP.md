@@ -131,6 +131,8 @@ Use-Case/component routing
 Canonical Lens responsibility routing: [`lenses/RESPONSIBILITY-MAP.md`](../lenses/RESPONSIBILITY-MAP.md).
 Resolution lifecycle routing: [`resolution/RESPONSIBILITY-MAP.md`](../resolution/RESPONSIBILITY-MAP.md); Finding Disposition remains the destination owner for Finding lifecycle/Resolution Escalation.
 
+Optional [`TM-REVIEW-FINDINGS`](../target-modules/TM-REVIEW-FINDINGS.md) gives bounded Finding discovery and diagnosis an independently useful Target result when warranted. It does not make every Review a Target or complete the required linked Proposal handoff on its own.
+
 ## 7. Need / Proposal / Q-R-P / Decision / Evidence
 
 ```text
@@ -150,6 +152,8 @@ material driver + concrete candidate answer
 Resolution lifecycle routing for Need / Proposal / Decision / Q/R/P / Branch / continuation concerns: [`resolution/RESPONSIBILITY-MAP.md`](../resolution/RESPONSIBILITY-MAP.md). The routed destination file remains the semantic owner.
 State kind/addressability semantics remain in the Unit model.
 
+Optional [`TM-PROPOSAL-WORKUP`](../target-modules/TM-PROPOSAL-WORKUP.md) provides a bounded candidate-resolution brief when proposal development/comparison itself merits a Target. Canonical Proposal State stays with the Proposal/Decision lifecycle and the affected natural subject.
+
 ## 8. Integration / Revalidation
 
 ```text
@@ -164,17 +168,17 @@ Finding / Evidence / accepted upstream change / redirect
 
 Canonical orchestration routing: [`use-cases/RESPONSIBILITY-MAP.md`](../use-cases/RESPONSIBILITY-MAP.md). Integration and Revalidation remain distinct Use-Case owners; the semantic mechanisms they invoke stay with their routed owners.
 
-## 9. Exact / Pre-Update
+## 9. Pre-Update / Exact
 
 ```text
-separate reviewable mutation plan useful
+separate reviewable intended-change plan useful
 → optional TM-PRE-UPDATE-PLAN
 
 literal/directly-integrable result useful and upstream meaning sufficient
 → TM-EXACT-REALIZATION
 ```
 
-These are Target Module routes, not mandatory planning phases or USER gates.
+These are independent Target Module routes, not mandatory planning phases or USER gates. Pre-Update is not a Review stage.
 
 ## 10. Representation
 

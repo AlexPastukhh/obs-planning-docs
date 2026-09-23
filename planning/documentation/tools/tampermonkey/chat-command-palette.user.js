@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Reusable Chat Planning Helper
 // @namespace    https://github.com/AlexPastukhh/obs/reusable-docs
-// @version      0.39.5-repository-command-registry
+// @version      0.39.8-repository-command-registry
 // @description  RAM-first OBS Planning Helper with semantic Commands, canonical Scenarios, prompts and explicit repository actions.
 // @author       Reusable docs layer
 // @match        https://chatgpt.com/*
@@ -121,7 +121,7 @@
     assert(allowed.has(kind),`compositionContributions[${index}].kind is invalid.`);
     const value=singleLine(raw.value,`compositionContributions[${index}].value`);
     if(kind==='REVIEW_COVERAGE_MODE'){
-      const modes=new Set(['CURRENT_BASIS','LOCAL_AFFECTED_RECHECK','PRE_UPDATE_BASIS']);
+      const modes=new Set(['CURRENT_BASIS','LOCAL_AFFECTED_RECHECK']);
       assert(modes.has(value),`compositionContributions[${index}].value is invalid for REVIEW_COVERAGE_MODE.`);
     }
     return{kind,value,why:singleLine(raw.why,`compositionContributions[${index}].why`)};
@@ -591,6 +591,10 @@
       '',
       ...commandReadBlock(definition, mode),
       '',
+      'example_read_rule:',
+      '  Follow planning/documentation/principles-and-terminology.md#doc-example-reading: inspect relevant inline/linked examples of the selected owner before producing its result; reuse current reading with basis, or state that none applies. Examples do not override contracts or authorize execution.',
+
+      '',
       'key_reminders:',
       ...(definition.keyReminders || []).map((item) => `  - ${item}`),
       '',
@@ -649,6 +653,7 @@
       '',
       'route_read_rule:',
       `  ${full?'Read the complete relevant current owner route for this UC.':'Read or reread the selected UC route when it is not current, remembered or certain.'}`,
+      '  Follow planning/documentation/principles-and-terminology.md#doc-example-reading for relevant inline/linked examples; examples remain non-authoritative.',
       '  Do not expand permissions merely because the UC is selected.',
       '',
       'key_reminders:',
@@ -734,7 +739,7 @@
   }
   function normalizeScenarios(values){const out=(Array.isArray(values)?values:[]).map(normalizeScenario),ids=out.map((x)=>x.id);if(new Set(ids).size!==ids.length)throw new TypeError('Duplicate scenario ids.');return out;}
 
-  function readRule(mode,kind){if(mode===MODE.FULL)return [`Full ${kind} reading is required for this invocation.`,'Read every listed source, resolve the selected current entry and follow the complete relevant owner route.','Read materially defining principles/workflows/templates/integration rules reached by that route.','Do not expand into unrelated families.','Full changes read depth only; it does not expand permissions.'];return [`Use remembered ${kind} context only while clearly sufficient.`,'Resolve/read listed sources and the current owner route when not current, uncertain, changed or challenged.','Do not rely only on this compact prompt when ownership/status/boundaries are uncertain.'];}
+  function readRule(mode,kind){const exampleRule='Follow planning/documentation/principles-and-terminology.md#doc-example-reading: read/reuse relevant inline/linked owner examples and check basis; examples remain non-authoritative.';if(mode===MODE.FULL)return [exampleRule,`Full ${kind} reading is required for this invocation.`,'Read every listed source, resolve the selected current entry and follow the complete relevant owner route.','Read materially defining principles/workflows/templates/integration rules reached by that route.','Do not expand into unrelated families.','Full changes read depth only; it does not expand permissions.'];return [exampleRule,`Use remembered ${kind} context only while clearly sufficient.`,'Resolve/read listed sources and the current owner route when not current, uncertain, changed or challenged.','Do not rely only on this compact prompt when ownership/status/boundaries are uncertain.'];}
   function buildSemanticBody(kind,definition,mode){
     const normalized=kind==='use_case'?normalizeUseCaseDefinition(definition):normalizeSemanticComponent(definition),marker=kind==='use_case'?'PLANNING_USE_CASE':'PLANNING_SEMANTIC_ENTRY',idField=kind==='use_case'?'use_case_id':`${kind}_id`;
     const lines=[`[${marker}]`,`${idField}:`,`  ${normalized.id}`,'',`${kind}:`,`  ${normalized.label}`,'','mode:',`  ${mode}`];

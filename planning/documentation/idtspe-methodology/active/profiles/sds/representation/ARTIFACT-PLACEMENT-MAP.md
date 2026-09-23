@@ -53,6 +53,10 @@ Selected Discovery Working Plan Result Content with continuing pre-realization h
 
 Physical persistence of a working artifact remains proportional and is distinct from semantic Result hosting. Exact internal working plans remain transient by default.
 
+## Generic Core review, Proposal and update results
+
+The optional generic Core results usable under SDS retain their own artifact guidance: [`AP-RFIND-01`](../../../idtspe-core/target-modules/TM-REVIEW-FINDINGS.md#artifact--representation-contract) for Review Finding Analysis, [`AP-PWORK-01`](../../../idtspe-core/target-modules/TM-PROPOSAL-WORKUP.md#artifact--representation-contract) for a bounded Proposal Workup, and [`AP-PUPDATE-01`](../../../idtspe-core/target-modules/TM-PRE-UPDATE-PLAN.md#artifact--file-contract) for a Pre-Update Plan. Each is conversational by default and may be embedded in an existing natural owner when P-14 finds continuing value. This SDS projection creates no profile-specific file requirement or second Proposal/Finding register. Proposed file operations in a Pre-Update Plan remain plan content until separately authorized realization.
+
 ## Typical Owner Representation
 
 ### Application Definition

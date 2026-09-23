@@ -1,7 +1,7 @@
 # Application Concept Draft Template
 
 Status: active reusable recommended template for the canonical SDS `RU-APP-05 Application Concept`
-Purpose: keep one Application Concept short and understandable. This template is **not** the whole Application Definition and must not absorb Benefits, alternatives, feasibility, detailed behavior or architecture.
+Purpose: keep the first Application Definition Result Unit, `RU-APP-05`, short and understandable. Stable Application identity and upstream references remain ordinary document/Target context; no separate Identity / Selected Contribution Unit is created. This template is **not** the whole Application Definition and must not absorb Benefits, alternatives, feasibility, detailed behavior or architecture.
 
 Canonical owner:
 - [`../../idtspe-methodology/active/profiles/sds/target-modules/TM-APPLICATION-DEFINITION.md`](../../idtspe-methodology/active/profiles/sds/target-modules/TM-APPLICATION-DEFINITION.md)

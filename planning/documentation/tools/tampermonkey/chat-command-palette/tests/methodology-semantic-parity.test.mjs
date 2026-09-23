@@ -147,11 +147,12 @@ test('Planning Resolution State declares addressable collection items and formal
   assert.equal((prs.match(/\*\*Item Contract:\*\*/g)||[]).length,2);
 });
 
-test('generic command surface includes plan-first PRE_UPDATE_BASIS and mode ambiguity handling',()=>{
+test('generic command surface separates Review Findings, Proposal Workup and Pre-Update Plan',()=>{
   const contract=read('planning/documentation/idtspe-methodology/active/idtspe-core/commands/IDTSPE-COMMAND-SURFACE-CONTRACT.md');
-  assert.match(contract,/`idtspe\.review\.pre_update` contributes `PRE_UPDATE_BASIS`/);
-  assert.match(contract,/`plan-pre-update` dependency must first resolve or reuse/);
-  assert.match(contract,/report an ambiguity before semantic execution/);
+  assert.match(contract,/`tmcmd\.review\.findings` invokes optional Core/);
+  assert.match(contract,/`tmcmd\.proposal\.workup` invokes optional Core/);
+  assert.match(contract,/A previously formed Pre-Update Plan can be the explicit Review Subject/);
+  assert.doesNotMatch(contract,/PRE_UPDATE_BASIS/);
 });
 
 test('Proposal Target Result forms an ordinary candidate Target Instance before semantic selection without granting realization authority',()=>{
@@ -284,8 +285,8 @@ test('Application Definition keeps Target formation gates outside Unit omission 
   const app=read('planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-APPLICATION-DEFINITION.md');
   const domain=read('planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-DOMAIN-DISCOVERY.md');
   assert.doesNotMatch(app,/omit only if the module itself is not needed|omit only when no Application Definition Target is justified/i);
-  assert.match(app,/RU-APP-01[\s\S]*no Unit-level omission after Target formation/i);
-  assert.match(app,/RU-APP-04[\s\S]*no Unit-level omission after Target formation/i);
+  assert.match(app,/\| `RU-APP-05` \|[^\n]*no Unit-level omission after Target formation/i);
+  assert.match(app,/\| `RU-APP-04` \|[^\n]*OMITTED/i);
   assert.match(domain,/relevant concrete candidate\/selected Evolution Steps, preserving their planning position/i);
 });
 
@@ -466,7 +467,7 @@ test('generic Decision capture command never grants selection authority and Prop
   assert.match(decisions,/"id": "idtspe.decisions.capture"/);
   assert.match(decisions,/Only actual material selections become Decision semantics|actual selected material Decisions/i);
   assert.match(decisions,/never grants selection authority|does not grant AI selection authority/i);
-  assert.match(surface,/Primary User Convenience Surface Inventory — 18/);
+  assert.match(surface,/Primary User Convenience Surface Inventory — 19/);
   assert.match(surface,/idtspe\.decisions\.capture/);
 });
 
@@ -540,7 +541,7 @@ test('SDS Unit materiality tables use whole-Unit dispositions rather than inner-
 
 test('Exact Realization separates Target activation from formed Unit existence',()=>{
   const exact=read('planning/documentation/idtspe-methodology/active/idtspe-core/target-modules/TM-EXACT-REALIZATION.md');
-  const table=(exact.match(/\| Result Unit \| Substantive resolution is material when \| Target\/Unit disposition when not material \|\n\|---\|---\|---\|\n([\s\S]*?)(?=\n\n)/)||[])[1]||'';
+  const table=(exact.match(/\| Result Unit \| Substantive resolution is material when \| Target\/Unit disposition when not material \|\r?\n\|---\|---\|---\|\r?\n([\s\S]*?)(?=\r?\n\r?\n)/)||[])[1]||'';
   const row=table.split('\n').find((line)=>line.includes('| `RU-REAL-01` |'))??'';
   assert.match(row,/always once an Exact Realization Target is formed/);
   assert.match(row,/no Unit-level omission after Target formation/);

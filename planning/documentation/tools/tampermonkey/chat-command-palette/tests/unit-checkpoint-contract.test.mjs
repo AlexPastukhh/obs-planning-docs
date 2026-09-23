@@ -26,7 +26,7 @@ test('generic Result Unit contract owns Opening/In-Unit/Closing applicability se
 
 test('every current Target Module explicitly wraps every processing-envelope Result Unit with Opening and Closing checkpoints',()=>{
   const modules=components.filter((component)=>component.kind==='TARGET_MODULE');
-  assert.equal(modules.length,30);
+  assert.equal(modules.length,32);
   for(const component of modules){
     const owner=component.sources.at(-1),text=readRepo(owner);
     const inventory=(text.match(/## Module-defined Unit Inventory\s*\n([\s\S]*?)(?=\n## )/)||[])[1]||'';

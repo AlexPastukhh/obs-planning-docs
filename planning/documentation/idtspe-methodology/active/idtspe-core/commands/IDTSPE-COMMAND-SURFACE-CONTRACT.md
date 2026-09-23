@@ -48,7 +48,7 @@ All command surfaces execute under the thin Session interaction contract once th
 
 This is **inheritance, not routing**. A command routes directly to its current semantic owner; it must not insert `Session → IDTSPE/profile owner` as an obligatory semantic hop merely to obtain progress, steering or authorization behavior. Session is reloaded only when the interaction context/rules cannot be reconstructed safely.
 
-## Primary User Convenience Surface Inventory — 18
+## Primary User Convenience Surface Inventory — 19
 
 ```text
 idtspe.bootstrap
@@ -96,9 +96,17 @@ idtspe.findings.disposition
 → разбери файндинги <findings/context>
 → classify material findings by impact plus Resolution Escalation and route them through Finding Disposition/Revalidation
 
+tmcmd.review.findings
+→ разбери находки ревью <subject>
+→ optional `TM-REVIEW-FINDINGS`; evidence-backed Finding discovery and diagnosis, with Proposal handoff still required for a complete review
+
+tmcmd.proposal.workup
+→ подготовь пропозалы <driver/subject>
+→ optional `TM-PROPOSAL-WORKUP`; bounded candidate-resolution brief when Proposal work itself merits a Target
+
 tmcmd.pre.update
 → составь предапдейт план <scope>
-→ generic `TM-PRE-UPDATE-PLAN`; concrete read-only change plan before actual mutation
+→ generic `TM-PRE-UPDATE-PLAN`; concrete read-only proposed destination operations before actual mutation
 
 tmcmd.exact.realization
 → реализуй код <scope>
@@ -115,7 +123,7 @@ lenscmd.documentation.representation.check
 
 ```
 
-These are **17 primary user convenience surfaces**, not the complete direct-command/composition inventory. Hidden/base `idtspe.port.*`, composition prefixes and additional operation surfaces may exist to guarantee canonical traversal without becoming new methodology owners. Installed profiles contribute additional surfaces; current total command/card counts are tooling projections, not Core ontology.
+These are **19 primary user convenience surfaces**, not the complete direct-command/composition inventory. Hidden/base `idtspe.port.*`, composition prefixes and additional operation surfaces may exist to guarantee canonical traversal without becoming new methodology owners. Installed profiles contribute additional surfaces; current total command/card counts are tooling projections, not Core ontology.
 
 ## Bootstrap / Work Boundary
 
@@ -154,7 +162,7 @@ selected command/component roots
 
 Declarative contributions are collected **before** the first semantic command action. A named `idtspe.port.*` node therefore contributes its `EXPLICIT_REQUIREMENT` during composition planning even though the node's runtime check/traversal occurs later. Concrete TM/Lens semantic leaves contribute selected component identity at the same pre-execution stage. This lets Port Composition Refresh see the full intended pass before it runs.
 
-For Review commands, `REVIEW_COVERAGE_MODE` is also a pre-execution contribution. `idtspe.review` and current-basis specialized reviews such as `idtspe.review_consistency` contribute `CURRENT_BASIS`; `idtspe.review.recheck` contributes `LOCAL_AFFECTED_RECHECK`; `idtspe.review.pre_update` contributes `PRE_UPDATE_BASIS`. Before Validation/Lens dependency semantic actions, resolve the bounded Review Subject/Scope/Basis and establish/refresh one Review Coverage working context from [`REVIEW.STRATEGY-COVERAGE`](../../ai-reviewability/REVIEW-STRATEGY-AND-COVERAGE-CONTRACT.md#review-coverage-working-context). For `PRE_UPDATE_BASIS`, the ordered `plan-pre-update` dependency must first resolve or reuse the bounded plan subject and destination basis; block the review dependencies if it cannot. The strategy derives review obligations/intents and reusable prior coverage; it does **not** become a second Lens selector. P-06 remains the owner of Lens applicability, supported-operation resolution and final selected `(Lens Model, Analysis Surface, Operation, basis)` applications. The selected root review action later completes Finding Disposition, coverage update and self-check. Effective contribution normalization MUST collapse `CURRENT_BASIS + LOCAL_AFFECTED_RECHECK` for the same bounded subject/basis to `LOCAL_AFFECTED_RECHECK` before semantic execution. If `PRE_UPDATE_BASIS` is contributed alongside a current-basis or recheck review root, preserve distinct bounded subjects/bases as separate contexts; for one identical subject/basis require the selected root's explicit review intent to determine one effective mode, or report an ambiguity before semantic execution. Do not silently derive competing coverage contexts for the same subject/basis.
+For Review commands, `REVIEW_COVERAGE_MODE` is also a pre-execution contribution. `idtspe.review`, `tmcmd.review.findings` and current-basis specialized reviews such as `idtspe.review_consistency` contribute `CURRENT_BASIS`; `idtspe.review.recheck` contributes `LOCAL_AFFECTED_RECHECK`. Before Validation/Lens dependency semantic actions, resolve the bounded Review Subject/Scope/Basis and establish/refresh one Review Coverage working context from [`REVIEW.STRATEGY-COVERAGE`](../../ai-reviewability/REVIEW-STRATEGY-AND-COVERAGE-CONTRACT.md#review-coverage-working-context). A previously formed Pre-Update Plan can be the explicit Review Subject under ordinary current-basis review, but the Review command does not create it. The strategy derives review obligations/intents and reusable prior coverage; it does **not** become a second Lens selector. P-06 remains the owner of Lens applicability, supported-operation resolution and final selected `(Lens Model, Analysis Surface, Operation, basis)` applications. A complete selected root review action later completes Finding Disposition, linked Proposal formation, coverage update and self-check; the Finding Analysis Target alone is an intermediate diagnostic result. Effective contribution normalization MUST collapse `CURRENT_BASIS + LOCAL_AFFECTED_RECHECK` for the same bounded subject/basis to `LOCAL_AFFECTED_RECHECK` before semantic execution.
 
 Several intents that require the same port, registry/meta-model or other shared prefix must not recursively launch several independent `idtspe.work` passes. Shared prefixes are one DAG node and are performed/reused once per current subject/basis/operation.
 
@@ -264,6 +272,12 @@ idtspe lens <alias> <context>
 
 Resolution order is exact semantic ID first, then explicit namespace alias, then a unique bare alias. Ambiguous/unknown selectors are not guessed. Registry aliases are navigation only; repository command IDs and historical `tmcmd.*` keys are compatibility/implementation details.
 
+## Review Findings and Proposal Workup Surfaces
+
+`tmcmd.review.findings` invokes optional Core [`TM-REVIEW-FINDINGS`](../target-modules/TM-REVIEW-FINDINGS.md). It produces an evidence-backed diagnostic Target result with separate Finding discovery and canonical Finding Disposition/`Review Priority`/`RE-*` analysis. It does not create correction Proposals inside the Finding Unit. Material Findings pass to the ordinary Proposal lifecycle, optionally through `tmcmd.proposal.workup` when a separate bounded candidate-resolution brief is useful. An intermediate diagnosis with Proposal handoffs pending is not a complete `idtspe.review` result.
+
+`tmcmd.proposal.workup` invokes optional Core [`TM-PROPOSAL-WORKUP`](../target-modules/TM-PROPOSAL-WORKUP.md). It provides a bounded reviewable candidate-resolution result for one material driver/subject when no existing Target/Unit naturally owns that *workup result*. Canonical Proposals remain Core State at their affected natural subjects; the workup is not a Target-level Proposal Space. `idtspe.proposal` remains the ordinary operation for explicit Proposal requests that do not justify a separate Target. Neither command selects candidates or mutates destinations by itself.
+
 ## Pre-Update Plan Surface
 
 `tmcmd.pre.update` invokes generic Core [`TM-PRE-UPDATE-PLAN`](../target-modules/TM-PRE-UPDATE-PLAN.md).
@@ -271,11 +285,11 @@ Resolution order is exact semantic ID first, then explicit namespace alias, then
 ```text
 current request + accepted prior meaning + necessary current-state facts
 → ordinary IDTSPE Q/R/P/Evidence + formal Proposal/Decision only when a real choice/uncertainty exists
-→ RU-PUPDATE-01 Pre-Update Plan
+→ RU-PUPDATE-01 Pre-Update Plan with addressable proposed destination operations when applicable
 → stop before mutation
 ```
 
-The Target is optional. It is useful when the user wants a concrete reviewable plan before actual update; it is not the generic detailed-planning level for Exact Realization. Exact may perform transient internal exact planning without creating this Target. A tiny/obvious change may go directly to Exact Realization. The command is read-only planning and never grants mutation/test/commit/push authority.
+For file/artifact destinations, proposed operations state path/owner, action, intended delta, driver, preservation boundary and verification. They are plan entries, not automatically separate formal IDTSPE Proposals. The Target is optional. It is useful when the user wants a concrete reviewable plan before actual update; it is not a Review stage or the generic detailed-planning level for Exact Realization. Exact may perform transient internal exact planning without creating this Target. A tiny/obvious change may go directly to Exact Realization. The command is read-only planning and never grants mutation/test/commit/push authority.
 
 ## Exact Realization Surface
 

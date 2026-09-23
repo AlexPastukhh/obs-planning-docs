@@ -294,7 +294,7 @@ Core may disposition it as an existing/new Question, Risk, Decision input or ano
 <a id="resolution-escalation"></a>
 ## 6A. Resolution Escalation Projection
 
-When a material Finding is surfaced for review, expose **how far semantic resolution must escalate** when that distinction helps the USER understand whether the correction is deterministic, local, owner-semantic, or upstream-affecting.
+When a material Finding is surfaced for review, expose its Review Priority, **how far semantic resolution must escalate**, and its upstream/downstream consequences with the supported rationale required below. A concise presentation is sufficient; material uncertainty must remain explicit rather than being replaced by an unsupported category.
 
 `Resolution Escalation` is a derived Finding-disposition/review projection. It is **not** a new State Unit, lifecycle, planning level, approval state, priority scale or semantic owner. It complements — and must not be collapsed into — AI Reviewability `Review Priority`.
 
@@ -363,6 +363,52 @@ Does the finding instead challenge a dependency/assumption owned upstream?
 
 The **most-upstream affected owner** controls escalation. Do not hide `RE-3` / `RE-4` by compensating in a downstream implementation detail. Revalidate through `UC-IDTSPE-REVALIDATE-CURRENT-WORK` and preserve unaffected accepted meaning.
 
+<a id="finding-classification-consequence-basis"></a>
+### Required classification and consequence basis
+
+For each material Finding presented for review, the AI MUST provide the following diagnostic meaning, using [evidence-backed resolution conclusions](../proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md#resolution-claim-grounding) for references and concise public rationale:
+
+| Conclusion | Required justification |
+|---|---|
+| Review Priority | Explain the concrete cost/blast radius if the Finding is handled incorrectly and identify the affected subject/consumers. Use the AI Reviewability scale; severity is not inferred from RE or technical vocabulary. |
+| Resolution Escalation | Identify the current natural owner, the accepted meaning at stake and why the selected RE category fits the checked decision surface. State what remains unchanged or must change; do not merely repeat the category definition. |
+| Upstream consequence | Identify the earliest implicated owner/Requirement/Decision/Source and the supported preserve/challenge/change/revalidation consequence. If none is implicated within the checked scope, explain the checked boundary and basis. |
+| Downstream consequence | Identify the material consumers/results, the dependency or usage Evidence, and the current exposure/needed recheck. Separate that finding-level consequence from conditional effects of a particular later Proposal. |
+| USER attention / decision consequence | State what the USER actually needs to inspect, answer or select and why; a claim that no new semantic selection is needed must cite already accepted meaning or an explicit USER statement. |
+
+`RE-0` requires positive support that the correction's meaning is already entailed; `RE-1` requires support that remaining choices stay inside the accepted semantic boundary. For `RE-2`/`RE-4`, cite the existing meaning and explain the required semantic difference. For `RE-3`, cite the challenged upstream assumption/owner and the Evidence exposing the uncertainty; do not assert that upstream change is already established.
+
+Do not default an unsupported classification to `RE-0`, low priority, or no impact. Keep the uncertain conclusion provisional/unresolved and name the missing discriminator. Missing local information alone does not establish `RE-3`; upstream exposure must itself have a basis. Revisit classification when the relevant meaning, dependency or Evidence changes.
+
+This is diagnostic justification, not a requirement to prepare correction payloads during Finding discovery. It may state the kind/boundary of resolution needed while leaving candidate formation to the subsequent Proposal action. The linked Proposal later reviews its own candidate-specific effects under [Proposal Semantic Change Impact Review](../proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md#proposal-semantic-change-impact-review). A shared checked basis can be referenced without duplicating it.
+
+#### Worked diagnostic boundary
+
+```text
+Observed basis (illustrative case):
+  accepted Rule R-1 in owner O says only CURRENT_BASIS is valid here;
+  command C declares LEGACY_MODE;
+  consumer H derives its command projection from C.
+
+Finding diagnosis, before correction payload:
+  RE-0: R-1 already determines the required meaning; C contradicts it.
+  Upstream: preserve O/R-1; the checked evidence does not require a new mode.
+  Downstream: H must be rechecked because it derives this value from C.
+  Priority Normal: the demonstrated exposure is bounded to C and H;
+    there is no evidence in this case for a wider consumer claim.
+  USER: no new semantic choice about valid modes; R-1 already settles it.
+
+Later Proposal:
+  change C to CURRENT_BASIS, then refresh/check H; cite R-1 and the C→H basis.
+
+If R-1 cannot be read or its acceptance is unknown:
+  the deterministic classification is not established; resolve that source gap.
+If the only USER statement is "improve command handling":
+  quote it as intent, but do not use it as proof that this exact mode was selected.
+```
+
+Real review output replaces these illustrative labels with actual document/subject references or identifiable USER excerpts. The example demonstrates that a supported RE-0 may still have downstream work.
+
 ### Proposal / Decision Boundary
 
 Interaction gating and formal Core semantics remain distinct, but a material Finding is not considered fully dispositioned for review/output purposes until it has a linked Proposal representation of its current resolution route.
@@ -428,19 +474,21 @@ Core does not define a universal numeric architecture/Requirement depth. A profi
 Useful transient review fields when material:
 
 ```text
-Review Priority: Critical | High | Normal | Low
-Resolution Escalation: RE-0 | RE-1 | RE-2 | RE-3 | RE-4
+Review Priority: Critical | High | Normal | Low + concrete impact rationale / basis
+Resolution Escalation: RE-0 | RE-1 | RE-2 | RE-3 | RE-4 + decision-surface rationale / basis
 Review Category: <architecture / engineering / product / ... when useful>
 Current semantic owner / affected meaning: ...
 Most-upstream affected owner / depth: ...
+Upstream consequence / basis: preserved | challenged | change needed | unresolved ...
 Decision / Requirement impact: NONE | LOCAL-DETAIL | CURRENT-OWNER | UPSTREAM
 Upstream revalidation: NONE | POSSIBLE | REQUIRED
 Proposed correction / Proposal status: ...
-Downstream consequence if accepted: NONE | REVALIDATE ... | INVALIDATE ...
-USER review: <compact statement of what the USER actually needs to inspect/select>
+Downstream current exposure / dependency basis: ...
+Candidate-specific downstream consequence, when a Proposal exists: preserve | update | revalidate | invalidate | unresolved ...
+USER review: <what the USER needs to inspect/select, why, and accepted basis if no new semantic selection is needed>
 ```
 
-These fields are a projection over existing Finding, Proposal/Decision, Q/R/P and Revalidation semantics. Do not persist all of them by default.
+These fields are a projection over existing Finding, Proposal/Decision, Q/R/P and Revalidation semantics. Field labels/formatting and persistence remain proportional; the required classification/consequence basis above must be recoverable even in a compact conversational result.
 
 ---
 

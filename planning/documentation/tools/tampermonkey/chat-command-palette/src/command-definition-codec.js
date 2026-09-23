@@ -97,7 +97,7 @@
     assert(allowed.has(kind),`compositionContributions[${index}].kind is invalid.`);
     const value=singleLine(raw.value,`compositionContributions[${index}].value`);
     if(kind==='REVIEW_COVERAGE_MODE'){
-      const modes=new Set(['CURRENT_BASIS','LOCAL_AFFECTED_RECHECK','PRE_UPDATE_BASIS']);
+      const modes=new Set(['CURRENT_BASIS','LOCAL_AFFECTED_RECHECK']);
       assert(modes.has(value),`compositionContributions[${index}].value is invalid for REVIEW_COVERAGE_MODE.`);
     }
     return{kind,value,why:singleLine(raw.why,`compositionContributions[${index}].why`)};

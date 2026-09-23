@@ -276,3 +276,7 @@ consumer binding ≠ copied Slice Requirement
 Shared capability owns reusable mechanics and `IR-SHARED-*`, not Feature/Scenario behavior meaning. The same shared mechanism may realize several behavior owners without becoming their semantic owner.
 
 Expected failures created only by that mechanism may be `ERR-IMP-SHARED-*`. Shared typed-result transport must preserve consumer-defined error semantics instead of creating one global application error ontology.
+
+## Copied project example
+
+[Study Tab Launcher — Shared owner и честный OPEN P-STL-HANDOFF-01](../examples/study-tab-launcher/project/planning/documentation/shared/prepared-project-handoff.md). Read the [case guide and capture limits](../examples/study-tab-launcher/README.md) with the current module contract; the copied project is a dated example, not live application authority.

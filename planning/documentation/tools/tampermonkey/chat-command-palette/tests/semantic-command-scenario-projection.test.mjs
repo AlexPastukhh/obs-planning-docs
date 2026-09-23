@@ -82,9 +82,9 @@ test('scenario-to-command projection is precise and keeps show-next distinct fro
 test('critical-review scenario separates challenge, finding disposition, semantic proposal and revalidation',()=>{
   const m=memory(),scn03=m.scenarioEntries.find((scenario)=>scenario.id==='SCN-03');
   assert.ok(scn03);
-  assert.deepEqual(equivalentIds(scn03.steps.find((step)=>step.id==='SCN-03-S1')),['critical_review.apply','lens:LENS-AUTHORITY-SOT-REUSE','lens:LENS-DEPENDENCY-CHANGE-IMPACT','lens:LENS-NEED-VALUE-SCOPE','lens:LENS-UNCERTAINTY-ASSUMPTION-REVERSIBILITY']);
-  assert.deepEqual(equivalentIds(scn03.steps.find((step)=>step.id==='SCN-03-S1D')),['idtspe.findings.disposition']);
-  assert.deepEqual(equivalentIds(scn03.steps.find((step)=>step.id==='SCN-03-S1P')),['idtspe.proposal']);
+  assert.deepEqual(equivalentIds(scn03.steps.find((step)=>step.id==='SCN-03-S1')),['critical_review.apply','lens:LENS-AUTHORITY-SOT-REUSE','lens:LENS-DEPENDENCY-CHANGE-IMPACT','lens:LENS-NEED-VALUE-SCOPE','lens:LENS-UNCERTAINTY-ASSUMPTION-REVERSIBILITY','tm:TM-REVIEW-FINDINGS']);
+  assert.deepEqual(equivalentIds(scn03.steps.find((step)=>step.id==='SCN-03-S1D')),['idtspe.findings.disposition','tm:TM-REVIEW-FINDINGS']);
+  assert.deepEqual(equivalentIds(scn03.steps.find((step)=>step.id==='SCN-03-S1P')),['idtspe.proposal','tm:TM-PROPOSAL-WORKUP']);
   assert.deepEqual(equivalentIds(scn03.steps.find((step)=>step.id==='SCN-03-S2')),['idtspe.review_consistency','uc:UC-IDTSPE-REVALIDATE-CURRENT-WORK']);
   assert.deepEqual(equivalentIds(scn03.steps.find((step)=>step.id==='SCN-03-S3')),['idtspe.review.recheck']);
 });
