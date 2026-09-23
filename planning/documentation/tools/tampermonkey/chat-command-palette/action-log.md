@@ -551,3 +551,22 @@ Logging starts only after explicit user instruction; no pre-start history is rec
 **ChangeSet:** `7b533b10-54d8-4430-ad9e-9f23e2810427`  
 **Package:** `fa29fc1d-b4e6-4d9d-990c-6312faea54bc`  
 **Reason:** the full-repository Review retires the Linked Notes Lens/command and Reference Object bootstrap prompts from the active Helper projection, updates navigation counts/tests, and regenerates canonical seeds/userscript. Full semantic rationale and Review disposition are owned by the reusable-documentation log entry.
+
+
+### LOG-PH-017 — Apply sidebar command contract and stable Prompt ordering
+
+**Type:** APPLIED  
+**Source:** explicit USER selection of the B / Sidebar Groups prototype plus follow-up ordering requirements  
+**ChangeSet:** `62ef9b58-6409-43eb-8c8c-6bae77224b16`  
+**Package:** `df5f3df0-9055-4e20-929e-8b08d75fd597`  
+
+**Target-State Result:** after successful Apply of this package:
+- Planning Helper `0.39.5` moves Commands classifications and presentation groups into a left sidebar so the command list/detail workspace owns most vertical height without changing command, scenario, storage, GitHub or methodology semantics;
+- selected command detail visibly projects the already-owned direct-command contract: `includes[]`, structured `ownerRefs` with `responsibilityId / role / readMode / path#anchor / why`, and direct command source; generic semantic projections state when only semantic source paths exist instead of fabricating direct metadata;
+- Prompt cards keep `↑` / `↓` fine ordering and add direct 1-based `№` position movement over the same catalog-order state;
+- reorder preserves Prompt selection and viewport; arrow moves do not jump to the list top, while large numeric moves use nearest visibility only;
+- repository persistence remains explicit through `Save order GitHub`; semantic owners, command DAG meaning and Prompt contents are unchanged.
+
+**Verification:** focused runtime/UI regressions cover 1-based direct ordering, sidebar/contract projection and stable viewport behavior; canonical Scenario-owner regression also requires `SCN-PH-USE` to retain the `includes`/`ownerRefs` projection boundary and `SCN-PH-MANAGE-LOCAL` to retain numeric-reorder/selection/viewport semantics. Full Helper tests/build/verify must remain green and generated userscript parity must hold.
+
+**Review correction:** package `df5f3df0-9055-4e20-929e-8b08d75fd597` supersedes the un-applied technical draft `2b555855-45fc-49d5-a018-b8c2f618d06b`. The correction does not change the selected UI behavior; it completes the two active canonical Scenario behavior owners so implementation, manual acceptance and semantic ownership describe the same target state.

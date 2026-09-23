@@ -19,6 +19,15 @@ function def(id='a',command=id){return codec.normalizeCommandDefinition({schemaV
 function helperItem(kind,id,text='text'){return helper.normalizeHelperLibraryItem({kind,id,title:`${kind} ${id}`,text,createdAt:'2026-08-16T00:00:00Z',updatedAt:'2026-08-16T00:00:00Z'})}
 function snapshot(){const a=def('a'),hc=helperItem('command','hc'),p=helperItem('prompt','p');return state.normalizePlanningHelperLocalSnapshot({schemaVersion:state.LOCAL_SNAPSHOT_SCHEMA_VERSION,savedAt:'2026-08-16T00:00:00Z',planningCommands:[state.normalizeCommandRecord({definition:a,repositoryKnown:true,repositorySha:'sha-a'})],helperItems:[state.normalizeHelperRecord({item:hc,repositoryKnown:false}),state.normalizeHelperRecord({item:p,repositoryKnown:true,repositorySha:'sha-p'})],useCases:currentUseCases,useCaseCatalogSha:'uc-sha',semanticComponents:currentSemanticComponents,semanticComponentCatalogSha:'semantic-sha',scenarios:currentScenarios,scenarioCatalogSha:'scenario-sha',catalogOrder:{}})}
 
+
+
+test('direct catalog position move uses 1-based clamped target positions',()=>{
+  const current=['a','b','c','d'];
+  assert.deepEqual(runtime.moveIdToPosition([],current,'c',1),['c','a','b','d']);
+  assert.deepEqual(runtime.moveIdToPosition([],current,'b',99),['a','c','d','b']);
+  assert.deepEqual(runtime.moveIdToPosition([],current,'a',0),['a','b','c','d']);
+  assert.throws(()=>runtime.moveIdToPosition([],current,'a','not-a-number'),/finite number/);
+});
 test('repository inventory compares commands, Use Cases and prompts without fetching bodies',()=>{const local=snapshot();const inventory=runtime.compareRepositoryInventory(local,{commands:[{kind:'planning-command',path:'planning/commands/a.command.md',sha:'sha-a'},{kind:'planning-command',path:'planning/commands/b.command.md',sha:'sha-b'}],useCases:currentUseCases,useCaseSha:'uc-sha',helperItems:[{kind:'command',path:'planning/helper-library/commands/remote.helper-command.md',sha:'x'},{kind:'prompt',path:'planning/helper-library/prompts/p.prompt.md',sha:'sha-p'}]});assert.equal(inventory.planningCommands.local,1);assert.equal(inventory.planningCommands.remote,2);assert.deepEqual(inventory.planningCommands.remoteOnly,['planning/commands/b.command.md']);assert.equal(inventory.useCases.common,currentUseCases.length);assert.deepEqual(inventory.helperCommands.localOnly,['planning/helper-library/commands/hc.helper-command.md']);assert.equal(inventory.prompts.common,1)});
 
 test('repository inventory reports known catalog SHA changes',()=>{const inventory=runtime.compareRepositoryInventory(snapshot(),{commands:[{kind:'planning-command',path:'planning/commands/a.command.md',sha:'changed'}],useCases:currentUseCases,useCaseSha:'new-uc',helperItems:[{kind:'prompt',path:'planning/helper-library/prompts/p.prompt.md',sha:'sha-p'}]});assert.deepEqual(inventory.planningCommands.knownChanged,['planning/commands/a.command.md']);assert.deepEqual(inventory.useCases.knownChanged,['seed/use-cases.json'])});

@@ -20,6 +20,24 @@ test('composer insertion remains direct Range insertion',()=>{const source=read(
 
 test('Planning Helper Scenario catalog remains canonical application behavior owner',()=>{const registry=read('scenarios/README.md');for(const id of ['SCN-PH-DISCOVER','SCN-PH-USE','SCN-PH-MANAGE-LOCAL','SCN-PH-IMPORT','SCN-PH-CHECK-REPOSITORY','SCN-PH-SYNC','SCN-PH-PUBLISH','SCN-PH-RECOVER'])assert.match(registry,new RegExp(id));const scenario=read('scenarios/SCN-PH-DISCOVER.md');assert.match(scenario,/Primary implementation/);assert.match(scenario,/Automated evidence/);assert.match(scenario,/Manual acceptance/)});
 
+
+test('current Scenario owners retain sidebar command-contract and stable Prompt-order behavior',()=>{
+  const use=read('scenarios/SCN-PH-USE.md');
+  assert.match(use,/compact left sidebar/);
+  assert.match(use,/Command Contract/);
+  assert.match(use,/includes\[\].*command-DAG/s);
+  assert.match(use,/ownerRefs.*responsibilityId \/ role \/ readMode \/ path#anchor \/ why/s);
+  assert.match(use,/includes\[\].*distinct from `ownerRefs`/s);
+  assert.match(use,/presentation\/projection surface, not a semantic authority/);
+  const manage=read('scenarios/SCN-PH-MANAGE-LOCAL.md');
+  assert.match(manage,/direct 1-based `№` target-position moves/);
+  assert.match(manage,/empty position performs no move/);
+  assert.match(manage,/preserves the currently selected Prompt and the list viewport/);
+  assert.match(manage,/Arrow moves restore the prior `scrollTop`/);
+  assert.match(manage,/nearest scrolling rather than resetting the list to the top/);
+  assert.match(manage,/local reorder itself performs no implicit repository write/);
+});
+
 test('Planning Helper repository navigation reaches current Scenario and Use-Case owners without a Direction layer',()=>{const planning=fs.readFileSync(path.join(repoRoot,'planning/README.md'),'utf8');const scenarios=read('scenarios/README.md');assert.doesNotMatch(planning,/direction-registry\.md/);assert.match(scenarios,/SCN-PH-DISCOVER/);assert.ok(fs.existsSync(path.join(repoRoot,'planning/use-case-registry.md')))});
 
 test('UI inventory/conflict messaging distinguishes remote failure from verified-write local-persistence warning',()=>{const ui=read('src/planning-helper-ui.js');assert.match(ui,/current remote content could not be verified/);assert.match(ui,/nothing was overwritten/);assert.match(ui,/repositorySaveFailureMessage/);assert.match(ui,/succeeded, but local snapshot refresh failed/);assert.doesNotMatch(ui,/Directions/);assert.match(ui,/Semantic component projection/);assert.match(ui,/Canonical scenario projection/);assert.match(ui,/Catalog order changed/)});

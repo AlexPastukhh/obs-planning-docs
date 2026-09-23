@@ -41,7 +41,8 @@ Canonical application semantics: [`scenarios/README.md`](scenarios/README.md). A
 - Hide/delete a direct Command locally; confirm repository authority remains untouched.
 - Favorite/unfavorite semantic Command IDs and confirm persistence.
 - Start from a legacy snapshot where a direct TM command ID is favorited; confirm materialization shows the corresponding stable semantic card as favorite and the next favorite change stores the semantic ID.
-- Move Commands, Scenarios and Prompts with `↑` / `↓`; confirm immediate local order and zero GitHub requests.
+- Move Commands, Scenarios and Prompts with `↑` / `↓`; confirm immediate local order and zero GitHub requests. While scrolled deep in Prompts, move several cards with arrows and confirm the viewport and selected card do not jump to the top.
+- In Prompts, enter a target 1-based position in the `№` field and press Enter (or blur); confirm the card moves directly to that position, remains selected, and the list scrolls only as needed to keep it visible. Confirm values below/above range clamp to first/last and no GitHub request occurs until **Save order GitHub**.
 - Resize/drag the panel; reopen and confirm `left/top/width/height` persist and remain viewport-clamped.
 - On desktop confirm wide content/action layout; on a narrow viewport confirm actions wrap below content.
 
@@ -85,6 +86,8 @@ Canonical application semantics: [`scenarios/README.md`](scenarios/README.md). A
 - Exercise real conflicting bytes; confirm no automatic overwrite.
 - Force local snapshot persistence failure after verified remote success; confirm UI reports remote success plus local-metadata warning.
 - In every normal Commands classification, confirm the group navigator lists all groups immediately. From `All groups`, click one group and confirm it is isolated; select a second group and confirm both remain visible. Switch away/back and reload the page; confirm the selected-group filter is preserved for that classification.
+- Confirm Commands classifications and Groups render in the left sidebar, while the command list and selected-command detail remain visible side-by-side on a wide panel; the old stacked horizontal group strip must not consume working height.
+- Select a direct-backed command with `includes` and structured `ownerRefs`; confirm detail shows **Includes · command DAG**, each canonical reference with `responsibilityId / role / readMode / path#anchor / why`, and **Command source**. Select a generic semantic projection and confirm the UI does not fabricate missing direct `ownerRefs`.
 - Collapse and expand individual groups, switch tabs/reopen Helper/reload the page, and confirm collapsed/expanded state is preserved per group. `Expand` / `Collapse` affect only currently visible groups.
 - Use **Manage groups** to create, rename, reorder and delete a group. Confirm there is no Primary/Advanced level control and delete moves cards to `Other / Ungrouped`. Run `Save order GitHub` and verify only `catalog-order.json` changes with intended stable IDs/group metadata/membership.
 - Edit `catalog-order.json` order/groups directly in GitHub, then Hard Reload; confirm durable GitHub order/groups become the local layout.
@@ -136,6 +139,9 @@ Canonical application semantics: [`scenarios/README.md`](scenarios/README.md). A
 - [ ] Every compact command card has a `Run` button that uses the same ordinary invocation path as detail-pane `Run`.
 - [ ] Selecting a command card updates the selected state/detail pane without rebuilding the command list; after scrolling deep in a group, repeated selections do not jump the list back to the top.
 - [ ] Selecting every command card opens a detail pane with non-empty `Контекст / Результат / Суть` projected from canonical command/semantic owners.
+- [ ] Commands use the sidebar layout: classifications + groups on the left, cards in the center, detail on the right at wide sizes; the legacy stacked group navigator does not reduce working height.
+- [ ] Direct-backed command detail shows `includes[]`, structured `ownerRefs` (`responsibilityId`, `role`, `readMode`, `path#anchor`, `why`) and the direct source path without changing command semantics.
+- [ ] Prompt cards expose `↑`, `№`, `↓`; numeric movement is 1-based and bounded, arrow movement preserves viewport, and large numeric moves keep the selected card visible without resetting to the list top.
 - [ ] `Body` is available for every command card; direct-backed Body identifies its source file and includes canonical `context / result / essence`, while generic Body identifies its semantic owner/generic route.
 - [ ] `Собрать review-only proposal archive` Body is self-contained enough to state proposal purpose/boundary/result and contains Markdown links to `UC-DOC-PLAN-DOCUMENTATION-CHANGE` and the canonical Use Case definition.
 - [ ] Detail-pane `Group` changes card membership only; `Manage groups` can create / rename / reorder / delete groups; delete moves cards to `Other / Ungrouped`; no Primary/Advanced/Semantic level control exists; `Save order GitHub` persists presentation layout through schema-v4 `catalog-order.json`.

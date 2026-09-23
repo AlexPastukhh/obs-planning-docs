@@ -1,8 +1,8 @@
 # OBS Planning Helper — Developer / Build Entry
 
 Status: active modular Tampermonkey helper implementation
-Version: `0.39.4`
-Scope: local-first, GitHub-backed **semantic command projection** with canonical methodology working Scenarios, reusable Prompts, explicit repository recovery/publish actions, editable ordered presentation groups, per-tab group navigation/filter state, canonical `Контекст / Результат / Суть` explanations, Favorites and a wide/resizable browser UI.
+Version: `0.39.5`
+Scope: local-first, GitHub-backed **semantic command projection** with canonical methodology working Scenarios, reusable Prompts, explicit repository recovery/publish actions, editable ordered presentation groups, sidebar category/group navigation, canonical `Контекст / Результат / Суть` explanations plus visible command traversal/owner contracts, Favorites, direct Prompt position ordering and a wide/resizable browser UI.
 
 <a id="planning-helper-semantic-projection"></a>
 ## Projection Authority
@@ -67,6 +67,9 @@ A command card is compact browse/navigation UI. The card itself exposes a fast *
 ```text
 <Action> · <Scope/Kind> · <Canonical ID>
 Контекст / Результат / Суть
+Includes · command DAG
+Canonical references · semantic owners
+Command source
 [Run] [Body] [Scenarios N] [Favorite]
 Group: <current presentation group>
 ```
@@ -80,6 +83,8 @@ Domain Modeling / DDD · SDS Lens · LENS-DOMAIN-MODELING-DDD
 ```
 
 - Selecting a command card opens the detail pane. The detail pane shows **Контекст**, **Результат**, **Суть** projected from canonical authority rather than maintained as Helper-only prose. Direct commands project `activeContextBehavior / expectedOutput / meaning`; Use Cases project `Situation / Result / Purpose`; Target Modules and Lenses project the corresponding owner sections.
+- The Commands workspace uses a left sidebar for semantic classifications and presentation groups, leaving the vertical working area to the card list and detail pane rather than stacking categories/groups above the list.
+- For a direct-backed command, the detail pane also renders the command definition contract without inventing new semantics: `includes[]` as canonical `planning/commands/*.command.md` DAG edges; every structured `ownerRef` as `responsibilityId · role · readMode → path#anchor` plus its `why`; and the direct command source path. Generic semantic projections show their semantic source paths and explicitly state when no direct `ownerRefs` metadata exists.
 - **Run** on either the compact card or the detail pane inserts the same current canonical invocation body.
 - Direct-command **Body** also carries the same canonical `context / result / essence` fields plus its registered `command_includes` composition. Include command-file paths expand declaratively, shared prefixes deduplicate, and an IDTSPE composition produces one effective Shell pass rather than recursively executing several independent passes.
 - **Body** shows the exact adaptive invocation body, optional full-read body, semantic binding, provenance, permissions/sources and the direct source file when one exists.
@@ -210,6 +215,13 @@ Canonical methodology-use source is [`planning/documentation/use-case-registry-m
 ### Prompts
 
 Prompt working content remains local-first and independently GitHub-backed through deterministic files in `planning/helper-library/prompts/*.prompt.md`.
+
+Prompt cards expose two presentation-only ordering mechanisms over the same durable `catalog-order.json` prompt order:
+
+- `↑` / `↓` moves one position;
+- `№` accepts a 1-based target position and moves directly to that slot, clamped to the current list bounds.
+
+Reorder preserves the selected Prompt and current list viewport. Arrow moves never reset the list to the top; a large numeric jump scrolls only enough (`nearest`) to keep the moved card visible. No GitHub write occurs until explicit **Save order GitHub**.
 
 Hard Reload of direct/semantic/scenario catalogs does **not** overwrite local Prompt content.
 
