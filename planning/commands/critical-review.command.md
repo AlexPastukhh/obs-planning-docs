@@ -31,7 +31,7 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
     "Treat target as hypothesis, not accepted truth.",
     "This is a lightweight critique shortcut, not an alias for idtspe.review and not evidence of complete Review Coverage.",
     "Use idtspe.review for the complete Review Strategy/Coverage → Validation/Lenses → Finding Disposition lifecycle.",
-    "Use Proposal candidate review for material answer-seeking corrective alternatives; do not manufacture Proposals for mechanical concerns.",
+    "Do not manufacture Finding/Proposal State for non-material mechanical concerns. If a material issue enters the complete Review lifecycle, canonical Finding Disposition forms its linked Proposal; semantic selection remains proportional to the RE route.",
     "When the target is a ReviewDiff, distinguish technical integrity from semantic correctness and follow the ReviewDiff semantic-review workflow.",
     "Surface material Q/R/P through the Core contract; AI review may recommend technical/logical routes when justified but must not invent user-owned preferences or mark them selected.",
     "Do not edit files, create archives, commit or push."
@@ -50,6 +50,22 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
       "why": "Defines the reviewability principles and material-review boundary used by critical review.",
       "role": "PRIMARY_OWNER",
       "readMode": "REQUIRED"
+    },
+    {
+      "responsibilityId": "RESOLUTION.FINDING-DISPOSITION",
+      "path": "planning/documentation/idtspe-methodology/active/idtspe-core/resolution/findings/FINDING-DISPOSITION.md",
+      "anchor": "resolution-finding-disposition",
+      "why": "Owns material Finding disposition and the linked-Proposal handoff when a lightweight critique escalates into the complete Review lifecycle.",
+      "role": "VALIDATION_HANDOFF",
+      "readMode": "ON_DEMAND"
+    },
+    {
+      "responsibilityId": "RESOLUTION.PROPOSAL-DECISION-LIFECYCLE",
+      "path": "planning/documentation/idtspe-methodology/active/idtspe-core/resolution/proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md",
+      "anchor": "resolution-proposal-decision-lifecycle",
+      "why": "Owns linked Proposal identity, review/selection and persistence separation after a material Finding is admitted.",
+      "role": "VALIDATION_HANDOFF",
+      "readMode": "ON_DEMAND"
     }
   ]
 }

@@ -18,14 +18,15 @@ Scope: one concrete OBS Planning command route. Reusable semantics remain in lin
     "recheck idtspe review"
   ],
   "description": "Recheck stale, partial, invalidated, newly exposed or previously blocked Review Coverage after the review basis changed; fall back to initial current-basis review when no reliable prior coverage exists.",
-  "meaning": "Use the same complete review lifecycle as idtspe.review but select work from the resolved prior/current Review Coverage Record: changed subjects, stale/partial/invalidated cells, newly exposed semantic surfaces, materially affected dependents and resolved blockers. Default to LOCAL_AFFECTED scope, preserve trustworthy unchanged coverage, and disposition all new Finding Candidates before completion. If no trustworthy prior Review Coverage Record/evidence exists, perform initial current-basis review semantics instead of inventing a review delta.",
+  "meaning": "Use the same complete review lifecycle as idtspe.review but select work from the resolved prior/current Review Coverage Record: changed subjects, stale/partial/invalidated cells, newly exposed semantic surfaces, materially affected dependents and resolved blockers. Default to LOCAL_AFFECTED scope, preserve trustworthy unchanged coverage, and disposition all new Finding Candidates plus form/refine a linked Proposal for every material Finding before completion. If no trustworthy prior Review Coverage Record/evidence exists, perform initial current-basis review semantics instead of inventing a review delta.",
   "activeContextBehavior": "During composition planning, resolve the previous Review Coverage Record/basis when available, compare it with current meaning/Evidence and establish the LOCAL_AFFECTED_RECHECK working context before dependency semantic actions begin. Recheck affected/new/weak coverage rather than blindly replaying everything. If no reliable prior record exists, derive initial current-basis cells for the bounded subject. If local review reveals materially broader scope, record/defer it or obtain USER intent before silently expanding globally.",
   "traversalReadMode": "Read Review Strategy/Coverage and reliable prior coverage evidence first when present; then use current Validation/Lens owners for selected recheck cells and Finding Disposition for produced Findings. Do not reconstruct a prior coverage claim from unsupported memory.",
   "ownerFiles": [
     "planning/documentation/idtspe-methodology/active/idtspe-core/commands/IDTSPE-COMMAND-SURFACE-CONTRACT.md",
     "planning/documentation/idtspe-methodology/active/ai-reviewability/AI-OUTPUT-REVIEWABILITY.md",
     "planning/documentation/idtspe-methodology/active/ai-reviewability/REVIEW-STRATEGY-AND-COVERAGE-CONTRACT.md",
-    "planning/documentation/idtspe-methodology/active/idtspe-core/resolution/findings/FINDING-DISPOSITION.md"
+    "planning/documentation/idtspe-methodology/active/idtspe-core/resolution/findings/FINDING-DISPOSITION.md",
+    "planning/documentation/idtspe-methodology/active/idtspe-core/resolution/proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md"
   ],
   "ownerRefs": [
     {
@@ -59,9 +60,17 @@ Scope: one concrete OBS Planning command route. Reusable semantics remain in lin
       "why": "All new material Finding Candidates produced by the recheck are dispositioned before completion.",
       "role": "VALIDATION_HANDOFF",
       "readMode": "REQUIRED"
+    },
+    {
+      "responsibilityId": "RESOLUTION.PROPOSAL-DECISION-LIFECYCLE",
+      "path": "planning/documentation/idtspe-methodology/active/idtspe-core/resolution/proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md",
+      "anchor": "resolution-proposal-decision-lifecycle",
+      "why": "Owns linked IDTSPE Proposal identity, candidate/repair-route semantics, review, selection boundary and retention/persistence separation.",
+      "role": "VALIDATION_HANDOFF",
+      "readMode": "REQUIRED"
     }
   ],
-  "expectedOutput": "Updated Review Coverage Record for affected/new cells, explicit prior-vs-current delta when reliable prior coverage exists, new Finding Candidates dispositioned, and unchanged trustworthy coverage marked REUSED_FROM_PRIOR with prior-cell/basis reference and reuse justification; any remaining blocker/scope escalation is stated explicitly.",
+  "expectedOutput": "A LOCAL_AFFECTED Review Coverage update (or truthful initial current-basis fallback) with executed-vs-reused provenance, all new material Findings dispositioned, each material Finding linked to a Proposal with selectable or BLOCKED_BY_REVALIDATION state, and remaining blockers/scope escalation explicit; Proposal persistence is not required.",
   "permissionMode": "read-only-planning",
   "keyReminders": [
     "This command does not include or execute idtspe.review first; both commands use the same Review Strategy/Coverage contract with different coverage selection.",
@@ -71,7 +80,8 @@ Scope: one concrete OBS Planning command route. Reusable semantics remain in lin
     "A changed basis can legitimately expose issues invisible in the previous pass.",
     "Do not present unchanged mechanical repetition as new review progress.",
     "If no trustworthy prior Review Coverage Record/evidence exists, run initial current-basis review semantics rather than inventing a review delta.",
-    "Distinguish cells EXECUTED_THIS_PASS from REUSED_FROM_PRIOR; reuse is not a fresh check."
+    "Distinguish cells EXECUTED_THIS_PASS from REUSED_FROM_PRIOR; reuse is not a fresh check.",
+    "Recheck-created material Findings receive the same linked Proposal formation as normal Review; do not require a file/register merely because a Proposal exists."
   ],
   "userTarget": "<previous review / changed subject / current coverage to recheck>",
   "palette": true,

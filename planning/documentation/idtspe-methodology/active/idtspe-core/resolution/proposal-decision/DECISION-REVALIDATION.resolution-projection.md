@@ -3,7 +3,7 @@
 Status: active generic helper model
 Role: preserve the minimum decision-oriented signals needed to notice when an accepted Decision may have become worse, invalid, or worth reopening.
 
-This is a helper/projection attached to an accepted material Decision.
+This is an optional helper/projection attached to a deliberately retained accepted Decision. A retained Decision may have no residual Q/R/P. This helper neither qualifies nor determines retention and never owns PRS or Q/R/P state.
 
 It is not a new semantic authority and not a new Decision type.
 
@@ -101,7 +101,7 @@ Notes
 
 ---
 
-# 3. Residual Q/R/P Drives The Helper
+# 3. Revalidation Triggers, Including Optional Residual Q/R/P
 
 Residual Question:
 

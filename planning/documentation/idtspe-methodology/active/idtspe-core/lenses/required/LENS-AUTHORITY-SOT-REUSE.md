@@ -1,3 +1,4 @@
+<a id="lens-authority-sot-reuse"></a>
 # LENS-AUTHORITY-SOT-REUSE — Authority / Source-of-Truth / Reuse
 
 Lens ID: `LENS-AUTHORITY-SOT-REUSE`

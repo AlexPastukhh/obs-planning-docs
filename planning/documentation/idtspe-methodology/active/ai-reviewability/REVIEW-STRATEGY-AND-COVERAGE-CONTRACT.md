@@ -25,6 +25,7 @@ This responsibility controls **review coverage**, not semantic product/planning 
 > - `CONTEXTUALIZES` [`AI Reviewability`](AI-OUTPUT-REVIEWABILITY.md) — `AI.REVIEWABILITY`
 > - `CONTEXTUALIZES` [`Lens Model`](../idtspe-core/lenses/LENS-MODEL.md#lens-meta-model) — `LENS.META-MODEL`
 > - `CONTEXTUALIZES` [`Finding Disposition`](../idtspe-core/resolution/findings/FINDING-DISPOSITION.md#resolution-finding-disposition) — `RESOLUTION.FINDING-DISPOSITION`
+> - `CONTEXTUALIZES` [`Proposal / Decision Lifecycle`](../idtspe-core/resolution/proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md#resolution-proposal-decision-lifecycle) — `RESOLUTION.PROPOSAL-DECISION-LIFECYCLE`
 
 ## 2. Coverage Unit
 
@@ -85,7 +86,7 @@ The record is transient by default. P-14 Persistence may preserve the same recor
 <a id="review-coverage-working-context"></a>
 ## 2B. Pre-Execution Review Coverage Working Context
 
-Command composition may know the requested review mode before any dependency semantic action executes. `idtspe.review` and current-basis specialized reviews such as `idtspe.review_consistency` contribute `REVIEW_COVERAGE_MODE=CURRENT_BASIS`; `idtspe.review.recheck` contributes `REVIEW_COVERAGE_MODE=LOCAL_AFFECTED_RECHECK`. After the command DAG is fully expanded and pre-execution contributions are collected, but **before** P-12 Validation or P-06 Lens dependency actions execute, establish/refresh one bounded Review Coverage working context:
+Command composition may know the requested review mode before any dependency semantic action executes. `idtspe.review` and current-basis specialized reviews such as `idtspe.review_consistency` contribute `REVIEW_COVERAGE_MODE=CURRENT_BASIS`; `idtspe.review.recheck` contributes `REVIEW_COVERAGE_MODE=LOCAL_AFFECTED_RECHECK`; a focused pre-update review contributes `REVIEW_COVERAGE_MODE=PRE_UPDATE_BASIS` after a bounded Pre-Update Plan subject has been resolved. After the command DAG is fully expanded and pre-execution contributions are collected, but **before** P-12 Validation or P-06 Lens dependency actions execute, establish/refresh one bounded Review Coverage working context:
 
 ```text
 Review Subject / Scope
@@ -97,7 +98,9 @@ Review Subject / Scope
 → P-06 alone resolves Lens applicability/supported operation and forms executable selected Lens Applications
 ```
 
-`CURRENT_BASIS` derives current-basis review obligations/intents and reusable coverage candidates. `LOCAL_AFFECTED_RECHECK` compares prior/current basis and derives stale, partial, invalidated, newly exposed or previously blocked obligations while preserving only justified reusable prior coverage. These are coverage requirements, not a second Lens-applicability decision: `REVIEW.STRATEGY-COVERAGE` may request a perspective/operation, but P-06 Lens Meta-Model/Registry owns whether a Lens applies, which supported operation is valid, and the final selected `(Lens Model, Analysis Surface, Operation, basis)` application. If no trustworthy prior record exists, `LOCAL_AFFECTED_RECHECK` falls back to initial current-basis derivation instead of inventing a delta. When both modes are contributed for the same bounded review context, the effective mode is normalized to `LOCAL_AFFECTED_RECHECK`; do not execute parallel current-basis and recheck contexts for the same subject.
+For `PRE_UPDATE_BASIS`, DAG expansion may collect the mode declaratively before work executes, but the **review coverage context and P-12/P-06 semantic review actions must wait until the ordered `plan-pre-update` dependency has resolved/reused a bounded plan subject and its destination basis**. If that dependency cannot resolve, report a blocker instead of deriving review cells from an imaginary plan. This is an ordered dependency within one review command, not a second Review lifecycle.
+
+`PRE_UPDATE_BASIS` derives pre-mutation review cells from a resolved/reused Pre-Update Plan, current affected owners/dependencies and destination basis. It uses ordinary validators/Lens operations, material Findings, Finding Disposition, linked Proposals and the same final coverage self-check; it creates no new Finding type or lifecycle. An unresolved plan subject is a blocker before review dependencies execute. `CURRENT_BASIS` derives current-basis review obligations/intents and reusable coverage candidates. `LOCAL_AFFECTED_RECHECK` compares prior/current basis and derives stale, partial, invalidated, newly exposed or previously blocked obligations while preserving only justified reusable prior coverage. These are coverage requirements, not a second Lens-applicability decision: `REVIEW.STRATEGY-COVERAGE` may request a perspective/operation, but P-06 Lens Meta-Model/Registry owns whether a Lens applies, which supported operation is valid, and the final selected `(Lens Model, Analysis Surface, Operation, basis)` application. If no trustworthy prior record exists, `LOCAL_AFFECTED_RECHECK` falls back to initial current-basis derivation instead of inventing a delta. When both modes are contributed for the same bounded review context, the effective mode is normalized to `LOCAL_AFFECTED_RECHECK`; do not execute parallel current-basis and recheck contexts for the same subject.
 
 This working context is not another command, Shell port, persisted state kind or second review lifecycle. It is the pre-execution form of the same Review Coverage Record owned here. The selected review command's later own action completes Finding Disposition, coverage update and the final coverage self-check after its Validation/Lens dependencies have produced results.
 
@@ -227,6 +230,7 @@ refresh strategy/coverage
 → Validation / selected `(Lens, Analysis Surface, Operation, basis)` applications
 → material Finding Candidates
 → Finding Disposition
+→ linked Proposal formation/refinement for every material Finding
 → coverage update
 ```
 
@@ -243,6 +247,8 @@ re-evaluate applicable validators / review perspectives
 → distinguish EXECUTED_THIS_PASS from REUSED_FROM_PRIOR coverage
    and preserve reuse basis/justification
 → confirm all produced material Finding Candidates reached Finding Disposition
+→ confirm each material Finding has a linked Proposal in the current Work Context,
+   including BLOCKED_BY_REVALIDATION state when RE-3 is unresolved
 → record remaining material coverage / blockers / scope escalation
 → only then complete the pass
 ```
@@ -260,6 +266,7 @@ previous coverage + current basis
 → targeted validation / selected Lens Application checks
 → Finding Candidates
 → Finding Disposition
+→ linked Proposal formation/refinement for every material Finding
 → coverage update
 ```
 

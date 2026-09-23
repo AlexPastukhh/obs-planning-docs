@@ -21,7 +21,7 @@ Target Formation determines that REUSABLE_TARGET_MODEL_CHECK is required
 → scan this registry / installed family registries at summary level
 → open only plausible Target Module Models
 → each concrete Model applies its own Entry Point / Source prerequisites
-→ Target Formation records APPLIED(TM-X) or NO_APPLICABLE_TARGET_MODULE
+→ Target Formation records the zero-or-more compatible applied Model set, or NO_APPLICABLE_TARGET_MODULE
 ```
 
 A registry scan does not create a Target, Requirement, Unit, Collection or Slot. `NO_APPLICABLE_TARGET_MODULE` is a valid routing outcome. Recheck conditions belong to the Target Formation owner rather than being independently redefined here.
@@ -30,8 +30,9 @@ For semantic boundaries within this area, see [`RESPONSIBILITY-MAP.md`](RESPONSI
 
 ## Installed Generic Core Target Modules
 
-IDTSPE Core installs two profile-independent concrete Target Modules:
+IDTSPE Core installs three profile-independent concrete Target Modules:
 
+- [`TM-PLANNING-RESOLUTION-STATE`](TM-PLANNING-RESOLUTION-STATE.md) — bounded active planning and deliberately retained Decisions in two Collection Units.
 - [`TM-PRE-UPDATE-PLAN`](TM-PRE-UPDATE-PLAN.md) — optional concrete reviewable plan of intended changes before actual mutation; one `RU-PUPDATE-01`.
 - [`TM-EXACT-REALIZATION`](TM-EXACT-REALIZATION.md) — produce one exact directly integrable realization; codebase realization is the primary/default archetype, with optional transient internal detailed exact planning and explicitly authorized integration/verification/repair.
 
@@ -44,6 +45,9 @@ This does not introduce Scenario/Domain/Slice semantics into Core. Profiles may 
 Canonical semantic identity remains the `TM-*` ID. The generic dispatcher also accepts:
 
 ```text
+idtspe planning resolution state <scope>
+→ TM-PLANNING-RESOLUTION-STATE
+
 idtspe pre-update <scope>
 → TM-PRE-UPDATE-PLAN
 

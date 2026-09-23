@@ -65,28 +65,27 @@ test('normal IDTSPE work exposes trace, UC recheck and Port Composition recheck 
   assert.deepEqual(byId.get('idtspe.work').includes,paths(['idtspe.port.trace','methodology.use_cases.recheck','idtspe.compose-current-work','idtspe.port-composition.recheck']));
 });
 
-test('specialized IDTSPE commands expose the base frame directly, not only transitively',()=>{
-  const excluded=new Set(['idtspe.work','idtspe.port.trace','idtspe.compose-current-work','idtspe.port-composition.recheck','idtspe.trace.inline','idtspe.trace.artifact','idtspe.bootstrap']);
+test('specialized IDTSPE commands reach the shared frame transitively',()=>{
   for(const command of commands){
     const binding=command.methodologyBinding||{};
-    if(binding.methodologyRuntime!=='IDTSPE'||excluded.has(command.id)||binding.surfaceKind==='BOOTSTRAP')continue;
-    for(const id of base)assert.ok(command.includes.includes(commandPath(id)),`${command.id} missing ${id}`);
+    if(binding.methodologyRuntime!=='IDTSPE'||!['TARGET_MODULE','LENS'].includes(binding.surfaceKind))continue;
+    const expanded=catalog.expandCommandComposition(commands,[command.id]);
+    const ids=new Set(expanded.order);
+    for(const id of base)assert.ok(ids.has(id),`${command.id} missing transitive ${id}`);
   }
 });
 
-test('Target Module and Lens prefixes expose full base plus their named port/meta-model path',()=>{
+test('Target Module and Lens apply roots include their named port once',()=>{
   assert.deepEqual(byId.get('idtspe.port.target').includes,paths(base));
-  assert.deepEqual(byId.get('idtspe.target-module.apply').includes,paths([...base,'idtspe.port.target']));
+  assert.deepEqual(byId.get('idtspe.target-module.apply').includes,paths(['idtspe.port.target']));
   assert.deepEqual(byId.get('idtspe.port.lens').includes,paths(base));
-  assert.deepEqual(byId.get('idtspe.lens.apply').includes,paths([...base,'idtspe.port.lens']));
-  assert.deepEqual(byId.get('idtspe.lenses.select').includes,paths([...base,'idtspe.port.lens']));
+  assert.deepEqual(byId.get('idtspe.lens.apply').includes,paths(['idtspe.port.lens']));
   for(const command of commands){
-    const binding=command.methodologyBinding||{};
-    if(['TARGET_MODULE','TARGET_MODULE_FOCUSED'].includes(binding.surfaceKind)){
-      for(const id of [...base,'idtspe.port.target','idtspe.target-module.apply'])assert.ok(command.includes.includes(commandPath(id)),`${command.id} missing ${id}`);
-    }
-    if(binding.surfaceKind==='LENS'){
-      for(const id of [...base,'idtspe.port.lens','idtspe.lens.apply'])assert.ok(command.includes.includes(commandPath(id)),`${command.id} missing ${id}`);
+    const kind=command.methodologyBinding?.surfaceKind;
+    if(kind==='TARGET_MODULE'||kind==='LENS'){
+      const rootId=kind==='LENS'?'idtspe.lens.apply':'idtspe.target-module.apply';
+      assert.ok(command.includes.includes(commandPath(rootId)),`${command.id} missing ${rootId}`);
+      for(const id of base)assert.ok(!command.includes.includes(commandPath(id)),`${command.id} duplicates ${id}`);
     }
   }
 });
@@ -149,6 +148,19 @@ test('review lifecycle uses existing Validation/Lens prerequisites, completes it
   const consistency=byId.get('idtspe.review_consistency');
   assert.equal(consistency.methodologyBinding.hostTargetPolicy,'NONE');
   assert.ok(!consistency.includes.includes(commandPath('idtspe.findings.disposition')));
+});
+
+test('focused Documentation ownership review routes Semantic DRY, owner dependencies, stable anchors and Responsibility Maps to canonical owners',()=>{
+  const command=byId.get('documentation.ownership.review');
+  assert.ok(command);
+  for(const rid of ['UC-DOC-REVIEW-DOCUMENTATION','DOC.SEMANTIC-DRY','DOC.SEMANTIC-OWNER-DEPENDENCY','DOC.RESPONSIBILITY-MAP','DOC.EXPLICIT-STABLE-SEMANTIC-ANCHOR']){
+    assert.ok(command.ownerRefs.some((ref)=>ref.responsibilityId===rid),rid);
+  }
+  assert.match(command.meaning,/contextual quotation\/restatement\/clarification is allowed/i);
+  assert.match(command.meaning,/Semantic Owner Dependency/i);
+  assert.match(command.meaning,/stable owner anchor/i);
+  assert.match(command.meaning,/Responsibility Maps as routing-only/i);
+  assert.match(command.expectedOutput,/material Findings with (?:their )?linked Proposal/i);
 });
 
 test('selected Lens application preserves operation identity after selection',()=>{
@@ -363,4 +375,16 @@ test('P-02 exposes review coverage control-plane without becoming coverage autho
   assert.match(trace,/REVIEW_CELL_EXECUTED/);
   assert.match(trace,/REVIEW_CELL_REUSED/);
   assert.match(trace,/do \*\*not\*\* make P-02 the owner of Review Coverage/i);
+});
+
+test('pre-update review resolves plan before Validation and Lens work with distinct coverage mode',()=>{
+  const review=byId.get('idtspe.review.pre_update');
+  assert.ok(review);
+  const expanded=catalog.expandCommandComposition(commands,[review.id]);
+  const at=(id)=>expanded.order.indexOf(id);
+  assert.ok(at('tmcmd.pre.update')>=0);
+  assert.ok(at('tmcmd.pre.update')<at('idtspe.port.validation'));
+  assert.ok(at('tmcmd.pre.update')<at('idtspe.lenses.apply-selected'));
+  assert.ok(at('idtspe.port.validation')<at(review.id));
+  assert.deepEqual(expanded.contributions.filter((item)=>item.kind==='REVIEW_COVERAGE_MODE').map((item)=>item.value),['PRE_UPDATE_BASIS']);
 });

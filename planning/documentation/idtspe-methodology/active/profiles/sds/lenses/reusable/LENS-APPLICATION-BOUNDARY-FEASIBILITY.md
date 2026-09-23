@@ -3,14 +3,13 @@
 Lens ID: `LENS-APPLICATION-BOUNDARY-FEASIBILITY`
 Activation: `TARGET_PROFILE_REUSABLE`
 
-> Semantic Owner Dependency
-> Type: `EXTENDS`
-> Responsibility: `LENS.META-MODEL`
-> Owner: [Lens Meta-Model](../../../../idtspe-core/lenses/LENS-MODEL.md#lens-meta-model)
+> Semantic Owner Dependencies
+> - Type: `EXTENDS`; Responsibility: `LENS.META-MODEL`; Owner: [Lens Meta-Model](../../../../idtspe-core/lenses/LENS-MODEL.md#lens-meta-model)
+> - Type: `CONTEXTUALIZES`; Responsibility: `SDS.APPLICATION-BENEFIT-BOUNDARY-CONSTRAINTS`; Owner: [Application Benefit Responsibility Boundary / Constraints](../../target-modules/TM-APPLICATION-DEFINITION.md#sds-application-benefit-boundary-constraints)
 
 ## Purpose
 
-Evaluate whether an own Application is justified, which real-world contribution it should own, what existing alternatives teach us, which Benefits justify it, whether each Benefit has a truthful Responsibility Boundary, whether representative real-life situations make those Benefits concrete, whether the concise Application Concept is understandable, and whether the concept/Benefit boundaries are plausibly realizable.
+Evaluate whether an own Application is justified, which real-world contribution it should own, what existing alternatives teach us, which Benefits justify it, whether each Benefit has truthful Responsibility Boundary / Constraints, whether representative real-life situations make those Benefits concrete, whether the concise Application Concept is understandable, and whether the concept/Benefit boundaries are plausibly realizable.
 
 ## Applicability Gate
 
@@ -90,7 +89,7 @@ For serious external/commercial products, market/competitor/user/adoption/pricin
 
 Reference products are Evidence/Proposal sources, not authority.
 
-Deep guide: `../../shared/application-definition-existing-solutions-market-reference-research.md`.
+Deep guide: [`RU-APP-02 Existing-Solution / Reference Position guidance`](../../target-module-support/application-definition/RU-APP-02-EXISTING-SOLUTION-REFERENCE-POSITION.unit-guidance.md).
 
 ## Whole-Solution Contribution
 
@@ -104,15 +103,15 @@ Check proportionally:
 
 ```text
 Do selected/possible Benefits state a real User Need and what the user receives?
-Does each substantive Benefit state its own Responsibility Boundary: what the Application owns/provides for that Benefit and what remains outside?
+Does each substantive Benefit state its own Responsibility Boundary / Constraints: what the Application owns/provides for that Benefit, what remains outside, and which material Benefit-local constraints/non-goals limit that promise?
 Is Additional Info only proportional free-form clarification rather than a forced schema?
 Do representative RLS examples make the Benefits understandable through concrete real-life situations?
 Is the bounded [Target contribution] explicit enough to avoid responsibility creep?
 Do surrounding RLS steps remain surrounding workflow rather than selected Application behavior?
-Are AB-* manifestation/closure markers truthful and many-to-many where useful?
+Are `AB-*` manifestation/closure markers truthful and many-to-many where useful, and when only one owned boundary/constraint clause is actually evidenced, would the more precise `AB-* / BC-*` reference avoid implying whole-Benefit realization?
 ```
 
-Supporting refinement guide: `../../shared/application-definition-representative-real-life-scenario-guide.md`.
+Supporting refinement guide: [`RU-APP-04 Representative Real-Life Scenarios guidance`](../../target-module-support/application-definition/RU-APP-04-REPRESENTATIVE-REAL-LIFE-SCENARIOS.unit-guidance.md).
 
 ## Concept Sufficiency
 
@@ -125,9 +124,9 @@ Do not require Feature decomposition, detailed behavior or architecture merely t
 
 ## Benefit Responsibility Boundaries
 
-Check Responsibility Boundary on the affected `AB-*` items rather than creating or evaluating a standalone Responsibility Boundary Result Unit.
+Check Responsibility Boundary / Constraints on the affected `AB-*` items rather than creating or evaluating a standalone Responsibility Boundary Result Unit.
 
-For each material Benefit, distinguish what the Application owns/provides from actor/manual/external-system/shared-handoff responsibility and information merely consumed/displayed/forwarded/derived. Cross-Benefit consistency is a review concern; authoritative boundary meaning remains on each Benefit.
+For each material Benefit, distinguish what the Application owns/provides from actor/manual/external-system/shared-handoff responsibility and information merely consumed/displayed/forwarded/derived. When downstream context points only to one addressable Benefit boundary/constraint clause, check whether `AB-* / BC-*` precision would be clearer than a whole-Benefit reference. Cross-Benefit consistency is a review concern; authoritative boundary meaning remains on each Benefit.
 
 ## Information / State Ownership
 
@@ -257,9 +256,10 @@ The Lens helps refine the relevant Benefit itself:
 User Receives:
   fast temporary capture + later review support
 
-Responsibility Boundary:
+Responsibility Boundary / Constraints:
   Application owns capture + temporary review support.
   Permanent knowledge management remains outside.
+  Capture must not require leaving the active reading flow merely to preserve the fragment.
 ```
 
 It also checks whether the concise Application Concept remains understandable and whether the needed browser/platform integration is realistically possible.
@@ -311,4 +311,4 @@ Pre-Lens Application lenses + later market/reference + representative real-life 
 
 ## Upstream Application Definition Rule
 
-Evaluate Selected/Possible `AB-*`, each Benefit's Responsibility Boundary, the concise Application Concept, and whole real-life solution routes. Application Definition may lead realization; not-yet-implemented intent does not become a Target Application Body.
+Evaluate Selected/Possible `AB-*`, each Benefit's Responsibility Boundary / Constraints, the concise Application Concept, and whole real-life solution routes. Application Definition may lead realization; not-yet-implemented intent does not become a Target Application Body.

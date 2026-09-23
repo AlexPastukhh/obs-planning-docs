@@ -17,8 +17,8 @@ Target Work Unit
 │  reusable Unit Definition prepared by IDTSPE Core
 │  instantiated only when applicable
 ├─ Module-defined Unit
-│  reusable Unit Definition prepared by the selected Target Module Model
-│  complete selected-module inventory is instantiated
+│  reusable Unit Definition prepared by one applied Target Module Model
+│  complete inventory is instantiated for each applied Model portion
 └─ Contextual Unit
    locally defined for this concrete Target when no prepared Unit sufficiently covers
    a bounded material responsibility

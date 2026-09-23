@@ -5,10 +5,9 @@ Module ID: `TM-FEATURE`
 Entry Point: `tm.feature`
 Role: primary application behavior Target Module
 
-> Semantic Owner Dependency
-> Type: `EXTENDS`
-> Responsibility: `TARGET-MODULE.META-MODEL`
-> Owner: [Target Module Meta-Model](../../../idtspe-core/target-modules/TARGET-MODULE-MODEL.md#target-module-meta-model)
+> Semantic Owner Dependencies
+> - Type: `EXTENDS`; Responsibility: `TARGET-MODULE.META-MODEL`; Owner: [Target Module Meta-Model](../../../idtspe-core/target-modules/TARGET-MODULE-MODEL.md#target-module-meta-model)
+> - Type: `CONTEXTUALIZES`; Responsibility: `SDS.APPLICATION-BENEFIT-BOUNDARY-CONSTRAINTS`; Owner: [Application Benefit Boundary / Constraints](TM-APPLICATION-DEFINITION.md#sds-application-benefit-boundary-constraints)
 
 ## Purpose
 
@@ -45,7 +44,7 @@ Do not create a Feature merely because there is another button, endpoint, transp
 
 Possible sources, selected proportionally by current work:
 
-- Need / Benefit / selected application contribution;
+- Need / Benefit / selected application contribution; when only a bounded Benefit boundary/constraint clause is the real Feature driver, prefer the precise `AB-* / BC-*` reference if available rather than implying that the Feature realizes the whole Benefit;
 - Scenario journey pressure;
 - Screen interaction/spatial pressure;
 - current implementation and Evidence;

@@ -137,6 +137,10 @@ Slice Implementation Requirement | Type | Plain implementation requirement | Rea
 
 When owner-local `PFR-*` is material, use the shared exact `Proof Requirement | Type | Plain proof-realization requirement | Protects / verifies | QRPE / Examples` schema from the same contract.
 
+### Commodity realization without Shared owner
+
+When the [commodity Shared no-owner gate](TM-SHARED-IMPLEMENTATION-CAPABILITY.md#sds-commodity-shared-no-owner) applies, retain each `IR-SLICE-*` at its Slice. Adjacent to that requirement write `Selected implementation realization: library/module/symbol X` and, optionally, `Coordination Decision: D-X` referencing one retained selection across consumers. Multiple Slices may reference the same realization or Decision. Do not put a library or Decision in the `Realizes` column, which traces upstream realized behavior, and do not call it a `Capability binding` unless a real Shared Capability owner exists. The Decision's retention horizon is user controlled; it does not own the requirement.
+
 ### RU-SOWN-03 — Evolution Impact
 
 This Slice owner-local Unit specializes the shared [Current-Owner Evolution Impact Projection Contract](../profile-contracts/evolution/CURRENT-OWNER-EVOLUTION-IMPACT-PROJECTION.md). Its local affected surface is **Slice responsibility/boundary**. The shared contract owns inclusion threshold across candidate/selected/conditional/deferred Steps, truthful planning-position projection, depth/no-copy rules and post-realization removal from active future impact. This Target Module owns only the Unit identity, Slice owner-specific materiality test and local revalidation/handoff use.

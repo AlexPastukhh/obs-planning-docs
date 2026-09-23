@@ -21,7 +21,7 @@
       "ownerRef": {
         "semanticId": "LENS-CONSTRUCTION-FIDELITY-CONSISTENCY",
         "path": "planning/documentation/idtspe-methodology/active/profiles/visual-production-2d/lenses/frequent/LENS-CONSTRUCTION-FIDELITY-CONSISTENCY.md",
-        "anchor": "lens-construction-fidelity-consistency-realization-fidelity",
+        "anchor": "lens-construction-fidelity-consistency",
         "why": "Concrete Lens Model semantics selected by this card; shared Meta-Model/registry/port references come from included commands.",
         "role": "PRIMARY_OWNER",
         "readMode": "REQUIRED"
@@ -48,7 +48,7 @@
       "ownerRef": {
         "semanticId": "LENS-REPRESENTATION-EDITABILITY-ECONOMY",
         "path": "planning/documentation/idtspe-methodology/active/profiles/visual-production-2d/lenses/reusable/LENS-REPRESENTATION-EDITABILITY-ECONOMY.md",
-        "anchor": "lens-representation-editability-economy-source-representation-economy",
+        "anchor": "lens-representation-editability-economy",
         "why": "Concrete Lens Model semantics selected by this card; shared Meta-Model/registry/port references come from included commands.",
         "role": "PRIMARY_OWNER",
         "readMode": "REQUIRED"
@@ -75,7 +75,7 @@
       "ownerRef": {
         "semanticId": "LENS-VISUAL-UNIT-NEED-AND-SOURCE-COVERAGE",
         "path": "planning/documentation/idtspe-methodology/active/profiles/visual-production-2d/lenses/frequent/LENS-VISUAL-UNIT-NEED-AND-SOURCE-COVERAGE.md",
-        "anchor": "lens-visual-unit-need-and-source-coverage-unit-need-visual-source-coverage",
+        "anchor": "lens-visual-unit-need-and-source-coverage",
         "why": "Concrete Lens Model semantics selected by this card; shared Meta-Model/registry/port references come from included commands.",
         "role": "PRIMARY_OWNER",
         "readMode": "REQUIRED"
@@ -102,7 +102,7 @@
       "ownerRef": {
         "semanticId": "LENS-WHOLE-VISUAL-COHERENCE",
         "path": "planning/documentation/idtspe-methodology/active/profiles/visual-production-2d/lenses/frequent/LENS-WHOLE-VISUAL-COHERENCE.md",
-        "anchor": "lens-whole-visual-coherence-whole-result-coherence",
+        "anchor": "lens-whole-visual-coherence",
         "why": "Concrete Lens Model semantics selected by this card; shared Meta-Model/registry/port references come from included commands.",
         "role": "PRIMARY_OWNER",
         "readMode": "REQUIRED"
@@ -128,7 +128,14 @@
       "aliases": [
         "representation"
       ],
-      "ownerRef": null,
+      "ownerRef": {
+        "semanticId": "LENS-ARTIFACT-BOUNDARY-ADDRESSABILITY",
+        "path": "planning/documentation/idtspe-methodology/active/idtspe-core/lenses/required/LENS-ARTIFACT-BOUNDARY-ADDRESSABILITY.md",
+        "anchor": "lens-artifact-boundary-addressability",
+        "why": "Concrete Lens Model semantics selected by this card; shared Meta-Model/registry/port references come from included commands.",
+        "role": "PRIMARY_OWNER",
+        "readMode": "REQUIRED"
+      },
       "commandId": "",
       "invocation": "idtspe lens representation <target/context>",
       "target": "<Documentation / Representation analysis surface>"
@@ -150,7 +157,14 @@
       "aliases": [
         "authority"
       ],
-      "ownerRef": null,
+      "ownerRef": {
+        "semanticId": "LENS-AUTHORITY-SOT-REUSE",
+        "path": "planning/documentation/idtspe-methodology/active/idtspe-core/lenses/required/LENS-AUTHORITY-SOT-REUSE.md",
+        "anchor": "lens-authority-sot-reuse",
+        "why": "Concrete Lens Model semantics selected by this card; shared Meta-Model/registry/port references come from included commands.",
+        "role": "PRIMARY_OWNER",
+        "readMode": "REQUIRED"
+      },
       "commandId": "",
       "invocation": "idtspe lens authority <target/context>",
       "target": "<Authority / Source of Truth / Reuse analysis surface>"
@@ -172,7 +186,14 @@
       "aliases": [
         "dependency"
       ],
-      "ownerRef": null,
+      "ownerRef": {
+        "semanticId": "LENS-DEPENDENCY-CHANGE-IMPACT",
+        "path": "planning/documentation/idtspe-methodology/active/idtspe-core/lenses/frequent/LENS-DEPENDENCY-CHANGE-IMPACT.md",
+        "anchor": "lens-dependency-change-impact",
+        "why": "Concrete Lens Model semantics selected by this card; shared Meta-Model/registry/port references come from included commands.",
+        "role": "PRIMARY_OWNER",
+        "readMode": "REQUIRED"
+      },
       "commandId": "",
       "invocation": "idtspe lens dependency <target/context>",
       "target": "<Dependency / Change Impact analysis surface>"
@@ -194,7 +215,14 @@
       "aliases": [
         "need"
       ],
-      "ownerRef": null,
+      "ownerRef": {
+        "semanticId": "LENS-NEED-VALUE-SCOPE",
+        "path": "planning/documentation/idtspe-methodology/active/idtspe-core/lenses/required/LENS-NEED-VALUE-SCOPE.md",
+        "anchor": "lens-need-value-scope",
+        "why": "Concrete Lens Model semantics selected by this card; shared Meta-Model/registry/port references come from included commands.",
+        "role": "PRIMARY_OWNER",
+        "readMode": "REQUIRED"
+      },
       "commandId": "",
       "invocation": "idtspe lens need <target/context>",
       "target": "<Need / Value / Scope analysis surface>"
@@ -216,7 +244,14 @@
       "aliases": [
         "practical-evidence"
       ],
-      "ownerRef": null,
+      "ownerRef": {
+        "semanticId": "LENS-PRACTICAL-EVIDENCE",
+        "path": "planning/documentation/idtspe-methodology/active/idtspe-core/lenses/reusable/LENS-PRACTICAL-EVIDENCE.md",
+        "anchor": "lens-practical-evidence",
+        "why": "Concrete Lens Model semantics selected by this card; shared Meta-Model/registry/port references come from included commands.",
+        "role": "PRIMARY_OWNER",
+        "readMode": "REQUIRED"
+      },
       "commandId": "",
       "invocation": "idtspe lens practical-evidence <target/context>",
       "target": "<Prototype / Practical Evidence analysis surface>"
@@ -238,7 +273,14 @@
       "aliases": [
         "proposal-decision"
       ],
-      "ownerRef": null,
+      "ownerRef": {
+        "semanticId": "LENS-PROPOSAL-DECISION-RESOLUTION-CONTEXT",
+        "path": "planning/documentation/idtspe-methodology/active/idtspe-core/lenses/required/LENS-PROPOSAL-DECISION-RESOLUTION-CONTEXT.md",
+        "anchor": "lens-proposal-decision-resolution-context",
+        "why": "Concrete Lens Model semantics selected by this card; shared Meta-Model/registry/port references come from included commands.",
+        "role": "PRIMARY_OWNER",
+        "readMode": "REQUIRED"
+      },
       "commandId": "",
       "invocation": "idtspe lens proposal-decision <target/context>",
       "target": "<Proposal / Decision Resolution Context analysis surface>"
@@ -260,7 +302,14 @@
       "aliases": [
         "quality-risk"
       ],
-      "ownerRef": null,
+      "ownerRef": {
+        "semanticId": "LENS-QUALITY-RISK-MATERIALITY",
+        "path": "planning/documentation/idtspe-methodology/active/idtspe-core/lenses/frequent/LENS-QUALITY-RISK-MATERIALITY.md",
+        "anchor": "lens-quality-risk-materiality",
+        "why": "Concrete Lens Model semantics selected by this card; shared Meta-Model/registry/port references come from included commands.",
+        "role": "PRIMARY_OWNER",
+        "readMode": "REQUIRED"
+      },
       "commandId": "",
       "invocation": "idtspe lens quality-risk <target/context>",
       "target": "<Quality / Risk / Materiality analysis surface>"
@@ -282,7 +331,14 @@
       "aliases": [
         "shared-crosscut"
       ],
-      "ownerRef": null,
+      "ownerRef": {
+        "semanticId": "LENS-SHARED-CROSS-CUTTING-RESPONSIBILITY",
+        "path": "planning/documentation/idtspe-methodology/active/idtspe-core/lenses/reusable/LENS-SHARED-CROSS-CUTTING-RESPONSIBILITY.md",
+        "anchor": "lens-shared-cross-cutting-responsibility",
+        "why": "Concrete Lens Model semantics selected by this card; shared Meta-Model/registry/port references come from included commands.",
+        "role": "PRIMARY_OWNER",
+        "readMode": "REQUIRED"
+      },
       "commandId": "",
       "invocation": "idtspe lens shared-crosscut <target/context>",
       "target": "<Shared / Cross-Cutting Ownership analysis surface>"
@@ -302,7 +358,14 @@
         "planning/documentation/idtspe-methodology/active/idtspe-core/lenses/frequent/LENS-TARGET-RESOLUTION-COVERAGE.md"
       ],
       "aliases": [],
-      "ownerRef": null,
+      "ownerRef": {
+        "semanticId": "LENS-TARGET-RESOLUTION-COVERAGE",
+        "path": "planning/documentation/idtspe-methodology/active/idtspe-core/lenses/frequent/LENS-TARGET-RESOLUTION-COVERAGE.md",
+        "anchor": "lens-target-resolution-coverage",
+        "why": "Concrete Lens Model semantics selected by this card; shared Meta-Model/registry/port references come from included commands.",
+        "role": "PRIMARY_OWNER",
+        "readMode": "REQUIRED"
+      },
       "commandId": "",
       "invocation": "idtspe lens LENS-TARGET-RESOLUTION-COVERAGE <target/context>",
       "target": "<Target Resolution Coverage analysis surface>"
@@ -324,7 +387,14 @@
       "aliases": [
         "test-proof"
       ],
-      "ownerRef": null,
+      "ownerRef": {
+        "semanticId": "LENS-TEST-PROOF-EVIDENCE",
+        "path": "planning/documentation/idtspe-methodology/active/idtspe-core/lenses/reusable/LENS-TEST-PROOF-EVIDENCE.md",
+        "anchor": "lens-test-proof-evidence",
+        "why": "Concrete Lens Model semantics selected by this card; shared Meta-Model/registry/port references come from included commands.",
+        "role": "PRIMARY_OWNER",
+        "readMode": "REQUIRED"
+      },
       "commandId": "",
       "invocation": "idtspe lens test-proof <target/context>",
       "target": "<Test Proof / Evidence Quality analysis surface>"
@@ -346,7 +416,14 @@
       "aliases": [
         "uncertainty"
       ],
-      "ownerRef": null,
+      "ownerRef": {
+        "semanticId": "LENS-UNCERTAINTY-ASSUMPTION-REVERSIBILITY",
+        "path": "planning/documentation/idtspe-methodology/active/idtspe-core/lenses/required/LENS-UNCERTAINTY-ASSUMPTION-REVERSIBILITY.md",
+        "anchor": "lens-uncertainty-assumption-reversibility",
+        "why": "Concrete Lens Model semantics selected by this card; shared Meta-Model/registry/port references come from included commands.",
+        "role": "PRIMARY_OWNER",
+        "readMode": "REQUIRED"
+      },
       "commandId": "",
       "invocation": "idtspe lens uncertainty <target/context>",
       "target": "<Uncertainty / Assumptions / Reversibility analysis surface>"
@@ -368,7 +445,14 @@
       "aliases": [
         "operability"
       ],
-      "ownerRef": null,
+      "ownerRef": {
+        "semanticId": "LENS-VERIFIABILITY-OBSERVABILITY-OPERABILITY",
+        "path": "planning/documentation/idtspe-methodology/active/idtspe-core/lenses/frequent/LENS-VERIFIABILITY-OBSERVABILITY-OPERABILITY.md",
+        "anchor": "lens-verifiability-observability-operability",
+        "why": "Concrete Lens Model semantics selected by this card; shared Meta-Model/registry/port references come from included commands.",
+        "role": "PRIMARY_OWNER",
+        "readMode": "REQUIRED"
+      },
       "commandId": "",
       "invocation": "idtspe lens operability <target/context>",
       "target": "<Verifiability / Observability / Operability analysis surface>"
@@ -391,7 +475,7 @@
       "ownerRef": {
         "semanticId": "LENS-RK-ENTRY-IDENTITY-AND-DUPLICATION",
         "path": "planning/documentation/idtspe-methodology/active/profiles/reference-knowledge/lenses/LENS-RK-ENTRY-IDENTITY-AND-DUPLICATION.md",
-        "anchor": "entry-identity-duplication",
+        "anchor": "lens-rk-entry-identity-and-duplication",
         "why": "Concrete Lens Model semantics selected by this card; shared Meta-Model/registry/port references come from included commands.",
         "role": "PRIMARY_OWNER",
         "readMode": "REQUIRED"
@@ -418,7 +502,7 @@
       "ownerRef": {
         "semanticId": "LENS-RK-LANDSCAPE-EVIDENCE-ADEQUACY",
         "path": "planning/documentation/idtspe-methodology/active/profiles/reference-knowledge/lenses/LENS-RK-LANDSCAPE-EVIDENCE-ADEQUACY.md",
-        "anchor": "landscape-evidence-adequacy",
+        "anchor": "lens-rk-landscape-evidence-adequacy",
         "why": "Concrete Lens Model semantics selected by this card; shared Meta-Model/registry/port references come from included commands.",
         "role": "PRIMARY_OWNER",
         "readMode": "REQUIRED"
@@ -445,7 +529,7 @@
       "ownerRef": {
         "semanticId": "LENS-RK-TAG-QUALITY-AND-TAXONOMY",
         "path": "planning/documentation/idtspe-methodology/active/profiles/reference-knowledge/lenses/LENS-RK-TAG-QUALITY-AND-TAXONOMY.md",
-        "anchor": "tag-quality-taxonomy",
+        "anchor": "lens-rk-tag-quality-and-taxonomy",
         "why": "Concrete Lens Model semantics selected by this card; shared Meta-Model/registry/port references come from included commands.",
         "role": "PRIMARY_OWNER",
         "readMode": "REQUIRED"
@@ -463,7 +547,7 @@
       "description": "own-Application contribution/boundary/feasibility is unsettled",
       "context": "Primary for TM-APPLICATION-DEFINITION.",
       "result": "TM-APPLICATION-DEFINITION: RU-APP-01, RU-APP-02, RU-APP-03, RU-APP-04, RU-APP-05, RU-APP-07 (RU-APP-06 is intentionally not a standalone Unit)",
-      "essence": "Evaluate whether an own Application is justified, which real-world contribution it should own, what existing alternatives teach us, which Benefits justify it, whether each Benefit has a truthful Responsibility Boundary, whether representative real-life situations make those Benefits concrete, whether the concise Application Concept is understandable, and whether the concept/Benefit boundaries are plausibly realizable.",
+      "essence": "Evaluate whether an own Application is justified, which real-world contribution it should own, what existing alternatives teach us, which Benefits justify it, whether each Benefit has truthful Responsibility Boundary / Constraints, whether representative real-life situations make those Benefits concrete, whether the concise Application Concept is understandable, and whether the concept/Benefit boundaries are plausibly realizable.",
       "sources": [
         "planning/documentation/idtspe-methodology/active/profiles/sds/registries/LENS-REGISTRY.md",
         "planning/documentation/idtspe-methodology/active/profiles/sds/lenses/reusable/LENS-APPLICATION-BOUNDARY-FEASIBILITY.md"
@@ -705,7 +789,7 @@
       "ownerRef": {
         "semanticId": "TM-2D-10-VISUAL-REQUIREMENTS",
         "path": "planning/documentation/idtspe-methodology/active/profiles/visual-production-2d/target-modules/TM-2D-10-VISUAL-REQUIREMENTS.md",
-        "anchor": "tm-2d-10-visual-requirements-visual-outcome-requirement-owner",
+        "anchor": "tm-2d-10-visual-requirements",
         "why": "Concrete Target Module Model semantics selected by this card; shared Meta-Model/registry/port references come from included commands.",
         "role": "PRIMARY_OWNER",
         "readMode": "REQUIRED"
@@ -732,7 +816,7 @@
       "ownerRef": {
         "semanticId": "TM-2D-15-PREPARED-VISUAL-MATERIAL-SET",
         "path": "planning/documentation/idtspe-methodology/active/profiles/visual-production-2d/target-modules/TM-2D-15-PREPARED-VISUAL-MATERIAL-SET.md",
-        "anchor": "tm-2d-15-prepared-visual-material-set-prepared-visual-material-set",
+        "anchor": "tm-2d-15-prepared-visual-material-set",
         "why": "Concrete Target Module Model semantics selected by this card; shared Meta-Model/registry/port references come from included commands.",
         "role": "PRIMARY_OWNER",
         "readMode": "REQUIRED"
@@ -759,7 +843,7 @@
       "ownerRef": {
         "semanticId": "TM-2D-20-WHOLE-VISUAL-DESIGN",
         "path": "planning/documentation/idtspe-methodology/active/profiles/visual-production-2d/target-modules/TM-2D-20-WHOLE-VISUAL-DESIGN.md",
-        "anchor": "tm-2d-20-whole-visual-design-coherent-whole-visual-solution",
+        "anchor": "tm-2d-20-whole-visual-design",
         "why": "Concrete Target Module Model semantics selected by this card; shared Meta-Model/registry/port references come from included commands.",
         "role": "PRIMARY_OWNER",
         "readMode": "REQUIRED"
@@ -786,7 +870,7 @@
       "ownerRef": {
         "semanticId": "TM-2D-30-VISUAL-CONSTRUCTION",
         "path": "planning/documentation/idtspe-methodology/active/profiles/visual-production-2d/target-modules/TM-2D-30-VISUAL-CONSTRUCTION.md",
-        "anchor": "tm-2d-30-visual-construction-material-multi-route-construction-composition",
+        "anchor": "tm-2d-30-visual-construction",
         "why": "Concrete Target Module Model semantics selected by this card; shared Meta-Model/registry/port references come from included commands.",
         "role": "PRIMARY_OWNER",
         "readMode": "REQUIRED"
@@ -813,7 +897,7 @@
       "ownerRef": {
         "semanticId": "TM-2D-31-EDITABLE-RASTER-CONSTRUCTION",
         "path": "planning/documentation/idtspe-methodology/active/profiles/visual-production-2d/target-modules/TM-2D-31-EDITABLE-RASTER-CONSTRUCTION.md",
-        "anchor": "tm-2d-31-editable-raster-construction-structured-layered-raster-construction",
+        "anchor": "tm-2d-31-editable-raster-construction",
         "why": "Concrete Target Module Model semantics selected by this card; shared Meta-Model/registry/port references come from included commands.",
         "role": "PRIMARY_OWNER",
         "readMode": "REQUIRED"
@@ -840,7 +924,7 @@
       "ownerRef": {
         "semanticId": "TM-2D-31-PAINTERLY-RASTER-CONSTRUCTION",
         "path": "planning/documentation/idtspe-methodology/active/profiles/visual-production-2d/target-modules/TM-2D-31-PAINTERLY-RASTER-CONSTRUCTION.md",
-        "anchor": "tm-2d-31-painterly-raster-construction-painterly-raster-construction",
+        "anchor": "tm-2d-31-painterly-raster-construction",
         "why": "Concrete Target Module Model semantics selected by this card; shared Meta-Model/registry/port references come from included commands.",
         "role": "PRIMARY_OWNER",
         "readMode": "REQUIRED"
@@ -867,7 +951,7 @@
       "ownerRef": {
         "semanticId": "TM-2D-31-PIXEL-ART-CONSTRUCTION",
         "path": "planning/documentation/idtspe-methodology/active/profiles/visual-production-2d/target-modules/TM-2D-31-PIXEL-ART-CONSTRUCTION.md",
-        "anchor": "tm-2d-31-pixel-art-construction-native-pixel-grid-construction",
+        "anchor": "tm-2d-31-pixel-art-construction",
         "why": "Concrete Target Module Model semantics selected by this card; shared Meta-Model/registry/port references come from included commands.",
         "role": "PRIMARY_OWNER",
         "readMode": "REQUIRED"
@@ -894,7 +978,7 @@
       "ownerRef": {
         "semanticId": "TM-2D-31-PROCEDURAL-CONSTRUCTION",
         "path": "planning/documentation/idtspe-methodology/active/profiles/visual-production-2d/target-modules/TM-2D-31-PROCEDURAL-CONSTRUCTION.md",
-        "anchor": "tm-2d-31-procedural-construction-deterministic-procedural-2d-construction",
+        "anchor": "tm-2d-31-procedural-construction",
         "why": "Concrete Target Module Model semantics selected by this card; shared Meta-Model/registry/port references come from included commands.",
         "role": "PRIMARY_OWNER",
         "readMode": "REQUIRED"
@@ -921,7 +1005,7 @@
       "ownerRef": {
         "semanticId": "TM-2D-31-VECTOR-CONSTRUCTION",
         "path": "planning/documentation/idtspe-methodology/active/profiles/visual-production-2d/target-modules/TM-2D-31-VECTOR-CONSTRUCTION.md",
-        "anchor": "tm-2d-31-vector-construction-semantic-vector-shape-construction",
+        "anchor": "tm-2d-31-vector-construction",
         "why": "Concrete Target Module Model semantics selected by this card; shared Meta-Model/registry/port references come from included commands.",
         "role": "PRIMARY_OWNER",
         "readMode": "REQUIRED"
@@ -948,7 +1032,7 @@
       "ownerRef": {
         "semanticId": "TM-2D-50-DELIVERY-ADAPTATION",
         "path": "planning/documentation/idtspe-methodology/active/profiles/visual-production-2d/target-modules/TM-2D-50-DELIVERY-ADAPTATION.md",
-        "anchor": "tm-2d-50-delivery-adaptation-visually-material-output-adaptation",
+        "anchor": "tm-2d-50-delivery-adaptation",
         "why": "Concrete Target Module Model semantics selected by this card; shared Meta-Model/registry/port references come from included commands.",
         "role": "PRIMARY_OWNER",
         "readMode": "REQUIRED"
@@ -972,10 +1056,44 @@
         "planning/documentation/idtspe-methodology/active/idtspe-core/target-modules/TM-EXACT-REALIZATION.md"
       ],
       "aliases": [],
-      "ownerRef": null,
+      "ownerRef": {
+        "semanticId": "TM-EXACT-REALIZATION",
+        "path": "planning/documentation/idtspe-methodology/active/idtspe-core/target-modules/TM-EXACT-REALIZATION.md",
+        "anchor": "tm-exact-realization",
+        "why": "Concrete Target Module Model semantics selected by this card; shared Meta-Model/registry/port references come from included commands.",
+        "role": "PRIMARY_OWNER",
+        "readMode": "REQUIRED"
+      },
       "commandId": "",
       "invocation": "idtspe tm TM-EXACT-REALIZATION <target>",
       "target": "<Точная реализация target>"
+    },
+    {
+      "id": "TM-PLANNING-RESOLUTION-STATE",
+      "kind": "TARGET_MODULE",
+      "scope": "Core",
+      "label": "Planning Resolution State",
+      "actionLabel": "Planning Resolution State",
+      "description": "bounded active planning and deliberately retained Decisions in two Collection Units.",
+      "context": "bounded active planning and deliberately retained Decisions in two Collection Units.",
+      "result": "**Target Step Result:** Planning Resolution State Exactly two Module-defined Units, each a Collection Unit under the Target Work Unit/Collection/Slot contract: | Result Unit | Collection | Meaning | |---|---|---| | RU-PRS-01 | Active Planning Items | Bounded unresolved or selected-for-current-resolution work | | RU-PRS-02 | Tracked Decision Items | Accepted selections deliberately retained for coordination, revalidation, checkpoint or user-chosen history | The repeated entries are **Collection Items**, not peer Units. Target Ref, optional Unit Ref and optional Unit Slot Ref address the *subject* inside an item; they are not decomposition of PRS itself. An item can reference more than one natural subject where one decision spans owners. Use stable local item keys and external refs only where needed for unambiguous navigation. ### RU-PRS-01 — Active Planning UNIT_WIDE Slot: CURRENT-FOCU…",
+      "essence": "bounded active planning and deliberately retained Decisions in two Collection Units.",
+      "sources": [
+        "planning/documentation/idtspe-methodology/active/idtspe-core/target-modules/TARGET-MODULE-REGISTRY.md",
+        "planning/documentation/idtspe-methodology/active/idtspe-core/target-modules/TM-PLANNING-RESOLUTION-STATE.md"
+      ],
+      "aliases": [],
+      "ownerRef": {
+        "semanticId": "TM-PLANNING-RESOLUTION-STATE",
+        "path": "planning/documentation/idtspe-methodology/active/idtspe-core/target-modules/TM-PLANNING-RESOLUTION-STATE.md",
+        "anchor": "tm-planning-resolution-state",
+        "why": "Concrete Target Module Model semantics selected by this card; shared Meta-Model/registry/port references come from included commands.",
+        "role": "PRIMARY_OWNER",
+        "readMode": "REQUIRED"
+      },
+      "commandId": "",
+      "invocation": "idtspe tm TM-PLANNING-RESOLUTION-STATE <target>",
+      "target": "<Planning Resolution State target>"
     },
     {
       "id": "TM-PRE-UPDATE-PLAN",
@@ -992,7 +1110,14 @@
         "planning/documentation/idtspe-methodology/active/idtspe-core/target-modules/TM-PRE-UPDATE-PLAN.md"
       ],
       "aliases": [],
-      "ownerRef": null,
+      "ownerRef": {
+        "semanticId": "TM-PRE-UPDATE-PLAN",
+        "path": "planning/documentation/idtspe-methodology/active/idtspe-core/target-modules/TM-PRE-UPDATE-PLAN.md",
+        "anchor": "tm-pre-update-plan",
+        "why": "Concrete Target Module Model semantics selected by this card; shared Meta-Model/registry/port references come from included commands.",
+        "role": "PRIMARY_OWNER",
+        "readMode": "REQUIRED"
+      },
       "commandId": "",
       "invocation": "idtspe tm TM-PRE-UPDATE-PLAN <target>",
       "target": "<План обновления target>"
@@ -1015,7 +1140,7 @@
       "ownerRef": {
         "semanticId": "TM-RK-05-BANK-FORMATION",
         "path": "planning/documentation/idtspe-methodology/active/profiles/reference-knowledge/target-modules/TM-RK-05-BANK-FORMATION.md",
-        "anchor": "bank-formation",
+        "anchor": "tm-rk-05-bank-formation",
         "why": "Concrete Target Module Model semantics selected by this card; shared Meta-Model/registry/port references come from included commands.",
         "role": "PRIMARY_OWNER",
         "readMode": "REQUIRED"
@@ -1042,7 +1167,7 @@
       "ownerRef": {
         "semanticId": "TM-RK-10-ENTRY",
         "path": "planning/documentation/idtspe-methodology/active/profiles/reference-knowledge/target-modules/TM-RK-10-ENTRY.md",
-        "anchor": "entry",
+        "anchor": "tm-rk-10-entry",
         "why": "Concrete Target Module Model semantics selected by this card; shared Meta-Model/registry/port references come from included commands.",
         "role": "PRIMARY_OWNER",
         "readMode": "REQUIRED"
@@ -1069,7 +1194,7 @@
       "ownerRef": {
         "semanticId": "TM-RK-20-VOCABULARY-EVOLUTION",
         "path": "planning/documentation/idtspe-methodology/active/profiles/reference-knowledge/target-modules/TM-RK-20-VOCABULARY-EVOLUTION.md",
-        "anchor": "vocabulary-evolution",
+        "anchor": "tm-rk-20-vocabulary-evolution",
         "why": "Concrete Target Module Model semantics selected by this card; shared Meta-Model/registry/port references come from included commands.",
         "role": "PRIMARY_OWNER",
         "readMode": "REQUIRED"
@@ -1096,7 +1221,7 @@
       "ownerRef": {
         "semanticId": "TM-RK-50-LANDSCAPE-ANALYSIS",
         "path": "planning/documentation/idtspe-methodology/active/profiles/reference-knowledge/target-modules/TM-RK-50-LANDSCAPE-ANALYSIS.md",
-        "anchor": "landscape-analysis",
+        "anchor": "tm-rk-50-landscape-analysis",
         "why": "Concrete Target Module Model semantics selected by this card; shared Meta-Model/registry/port references come from included commands.",
         "role": "PRIMARY_OWNER",
         "readMode": "REQUIRED"
@@ -1113,8 +1238,8 @@
       "actionLabel": "Определить приложение",
       "description": "conditional own-Application contribution / boundary / feasibility",
       "context": "A person doing research repeatedly finds useful fragments in articles. Existing bookmarks are too coarse, copying into a notes app interrupts reading, and the team is considering building a small capture application. At this point there is a real Need and a selected real-life problem space, but it is still unclear whether custom software is justified and what the application should actually own.",
-      "result": "The result is a coherent Application Definition containing: ``text why custom software is still justified Application Benefits, each with its own Responsibility Boundary Representative Real-Life Scenarios that make Benefits concrete through real examples concise Application Concept, including a short explanation of how it roughly works owned vs merely consumed information/state as expressed by the affected Benefit boundaries material feasibility findings `` When this walkthrough describes desired Application intent that is not yet realized downstream, the Application Definition may still state that selected intent directly. Concrete unrealized downstream behavior/realization changes are then planned in Evolution Steps and may use this definition as an upstream driver.",
-      "essence": "Define one coherent own-application contribution: ``text what application/contribution we are building why custom software is still justified which Application Benefits are selected/possible what responsibility boundary belongs to each Benefit which representative real-life situations show those Benefits in context what concise Application Concept explains the Application and how it roughly works whether the concept/Benefit boundaries are plausibly realizable `` Application Benefits and Representative Real-Life Scenarios are separate responsibilities. Each Benefit owns independently addressable user-value meaning **and its own Responsibility Boundary** for that Benefit. Representative RLS instances are many-to-many examples of how one or several Benefits may manifest in a larger real-world path. RLS surrounding steps do not become selected Application behavior merely because they are…",
+      "result": "The result is a coherent Application Definition containing: ``text why custom software is still justified Application Benefits, each with its own Responsibility Boundary / Constraints Representative Real-Life Scenarios that make Benefits concrete through real examples concise Application Concept, including a short explanation of how it roughly works owned vs merely consumed information/state as expressed by the affected Benefit boundaries material feasibility findings `` When this walkthrough describes desired Application intent that is not yet realized downstream, the Application Definition may still state that selected intent directly. Concrete unrealized downstream behavior/realization changes are then planned in Evolution Steps and may use this definition as an upstream driver.",
+      "essence": "Define one coherent own-application contribution: ``text what application/contribution we are building why custom software is still justified which Application Benefits are selected/possible what Responsibility Boundary / Constraints belong to each Benefit which representative real-life situations show those Benefits in context what concise Application Concept explains the Application and how it roughly works whether the concept/Benefit boundaries are plausibly realizable `` Application Benefits and Representative Real-Life Scenarios are separate responsibilities. Each Benefit owns independently addressable user-value meaning **and its own Responsibility Boundary / Constraints** for that Benefit. Representative RLS instances are many-to-many examples of how one or several Benefits may manifest in a larger real-world path. RLS surrounding steps do not become selected Application behavi…",
       "sources": [
         "planning/documentation/idtspe-methodology/active/profiles/sds/registries/TARGET-MODULE-REGISTRY.md",
         "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-APPLICATION-DEFINITION.md"
@@ -1200,8 +1325,8 @@
       "label": "Evolution Step",
       "actionLabel": "Спланировать Evolution Step",
       "description": "canonical bounded unrealized future transition / target-state planning owner",
-      "context": "Unit presence/disposition mechanics follow the Core Unit Applicability / Materiality / Disposition Contract. The table below owns only Evolution-Step-specific substantive-materiality and omission-rationale triggers. | Result Unit | Substantive resolution is material when | Unit disposition when substantive resolution is not material | |---|---|---| | RU-EVO-01 | always once a concrete Evolution Step Target is formed; it owns Step identity/boundary/driver/relations | no Unit-level omission: vague speculative pressure that does not deserve Step identity fails the Target-level Step formation gate, so no Evolution Step Target should be formed | | RU-EVO-02 | one or more Scenario/Screen/Domain/Slice/Shared/OPEN responsibilities are materially affected and bounded impact resolution helps planning | OMITTED — no material peer/supporting-owner impact subjects; keep no placeholder Impact items…",
-      "result": "**Target Step Result:** Evolution Step Future-State Plan | Result Unit | Meaning | |---|---| | RU-EVO-01 | Step Frame / Semantic Relations — Step identity/boundary/driver/kinds, Driven By, direct Entering From, and composition/index of post-Step Target Owner Bodies without copying their bodies | | RU-EVO-02 | Evolution Impacts — coherent 0..N collection of bounded future consequences for material Scenario/Screen/Domain/Slice/Shared or unresolved ownership/responsibility subjects, all governed by one Unit contract | | RU-EVO-03 | Step-wide Implementation Concerns — cross-owner realization/proof/integration pressure whose natural subject is the transition as a whole; owner-local concerns are referenced, not copied | | RU-EVO-04 | Target Owner Materialization Set — planned CREATE / REPLACE / RETIRE semantic authority transitions after successful realization/proof | | RU-EVO-05 | Transiti…",
+      "context": "Unit presence/disposition mechanics follow the Core Unit Applicability / Materiality / Disposition Contract. The table below owns only Evolution-Step-specific substantive-materiality and omission-rationale triggers. | Result Unit | Substantive resolution is material when | Unit disposition when substantive resolution is not material | |---|---|---| | RU-EVO-01 | always once a concrete Evolution Step Target is formed; it owns Step identity/boundary/driver/relations | no Unit-level omission: vague speculative pressure that does not deserve Step identity fails the Target-level Step formation gate, so no Evolution Step Target should be formed | | RU-EVO-02 | one or more Feature/Scenario/Screen/Domain/Slice/Shared/OPEN responsibilities are materially affected and bounded impact resolution helps planning | OMITTED — no material peer/supporting-owner impact subjects; keep no placeholder Impa…",
+      "result": "**Target Step Result:** Evolution Step Future-State Plan | Result Unit | Meaning | |---|---| | RU-EVO-01 | Step Frame / Semantic Relations — Step identity/boundary/driver/kinds, Driven By, direct Entering From, and composition/index of post-Step Target Owner Bodies without copying their bodies | | RU-EVO-02 | Evolution Impacts — coherent 0..N collection of bounded future consequences for material Feature/Scenario/Screen/Domain/Slice/Shared or unresolved ownership/responsibility subjects, all governed by one Unit contract | | RU-EVO-03 | Step-wide Implementation Concerns — cross-owner realization/proof/integration pressure whose natural subject is the transition as a whole; owner-local concerns are referenced, not copied | | RU-EVO-04 | Target Owner Materialization Set — planned CREATE / REPLACE / RETIRE semantic authority transitions after successful realization/proof | | RU-EVO-05 |…",
       "essence": "Own one coherent **not-yet-realized** qualitative transition toward one or more concrete candidate/selected future target-state routes. An Evolution Step is the canonical SDS semantic owner for materially planned future downstream state. Current natural owners remain authority for accepted current semantic contracts until the represented transition is implemented and the required proof/revalidation succeeds. A Step may be Behavioral, Implementation or Mixed. Material downstream consequences for Feature, Scenario, Screen, Domain, Slice and Shared are represented through complete Target Owner Bodies plus the bounded RU-EVO-02 Impact collection without turning the Step into a duplicate owner catalog. ``text current natural owners + actual implementation / Evidence transition driver / constraints direct semantic predecessor relation(s) future Target Owner Bodies / bounded Impacts Step-wid…",
       "sources": [
         "planning/documentation/idtspe-methodology/active/profiles/sds/registries/TARGET-MODULE-REGISTRY.md",
@@ -1829,10 +1954,10 @@
       "scope": "Documentation",
       "label": "Review Repository Documentation",
       "actionLabel": "Проверить документацию",
-      "description": "Material documentation findings are tied to their real semantic owners, verified and unverified areas are distinguished, and each required correction has a narrow current repair/change route without the review itself becoming new semantic authority. ### Audit-style Review A documentation **audit** is this same Review performed with an explicitly declared bounded scope and coverage claim. It uses the same review basis, findings, owner routing, Finding Disposition and repair/change routes; it is not a separate methodology lifecycle or semantic authority. Audit-specific reports/evidence may be retained when useful for the reviewed invocation, but no permanent audit-coverage ledger is required or maintained as methodology state.",
+      "description": "Material documentation findings are tied to their real semantic owners, verified and unverified areas are distinguished, and each material Finding has a linked Proposal that makes its current correction/change/revalidation route explicit without the review itself becoming new semantic authority. Proposal persistence is separate and remains proportional. ### Audit-style Review A documentation **audit** is this same Review performed with an explicitly declared bounded scope and coverage claim. It uses the same review basis, findings, owner routing, Finding Disposition and repair/change routes; it is not a separate methodology lifecycle or semantic authority. Audit-specific reports/evidence may be retained when useful for the reviewed invocation, but no permanent audit-coverage ledger is required or maintained as methodology state.",
       "context": "The current repository documentation may contain stale routes, duplicate semantic authority, orphan methodology/supporting files, unclear Use-Case boundaries, misleading navigation, or inconsistent application of the current documentation contracts.",
-      "result": "Material documentation findings are tied to their real semantic owners, verified and unverified areas are distinguished, and each required correction has a narrow current repair/change route without the review itself becoming new semantic authority. ### Audit-style Review A documentation **audit** is this same Review performed with an explicitly declared bounded scope and coverage claim. It uses the same review basis, findings, owner routing, Finding Disposition and repair/change routes; it is not a separate methodology lifecycle or semantic authority. Audit-specific reports/evidence may be retained when useful for the reviewed invocation, but no permanent audit-coverage ledger is required or maintained as methodology state.",
-      "essence": "Material documentation findings are tied to their real semantic owners, verified and unverified areas are distinguished, and each required correction has a narrow current repair/change route without the review itself becoming new semantic authority. ### Audit-style Review A documentation **audit** is this same Review performed with an explicitly declared bounded scope and coverage claim. It uses the same review basis, findings, owner routing, Finding Disposition and repair/change routes; it is not a separate methodology lifecycle or semantic authority. Audit-specific reports/evidence may be retained when useful for the reviewed invocation, but no permanent audit-coverage ledger is required or maintained as methodology state.",
+      "result": "Material documentation findings are tied to their real semantic owners, verified and unverified areas are distinguished, and each material Finding has a linked Proposal that makes its current correction/change/revalidation route explicit without the review itself becoming new semantic authority. Proposal persistence is separate and remains proportional. ### Audit-style Review A documentation **audit** is this same Review performed with an explicitly declared bounded scope and coverage claim. It uses the same review basis, findings, owner routing, Finding Disposition and repair/change routes; it is not a separate methodology lifecycle or semantic authority. Audit-specific reports/evidence may be retained when useful for the reviewed invocation, but no permanent audit-coverage ledger is required or maintained as methodology state.",
+      "essence": "Material documentation findings are tied to their real semantic owners, verified and unverified areas are distinguished, and each material Finding has a linked Proposal that makes its current correction/change/revalidation route explicit without the review itself becoming new semantic authority. Proposal persistence is separate and remains proportional. ### Audit-style Review A documentation **audit** is this same Review performed with an explicitly declared bounded scope and coverage claim. It uses the same review basis, findings, owner routing, Finding Disposition and repair/change routes; it is not a separate methodology lifecycle or semantic authority. Audit-specific reports/evidence may be retained when useful for the reviewed invocation, but no permanent audit-coverage ledger is required or maintained as methodology state.",
       "sources": [
         "planning/documentation/use-case-registry-map.md",
         "planning/documentation/use-case-registry.md"

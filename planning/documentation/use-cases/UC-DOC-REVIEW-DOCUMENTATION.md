@@ -1,3 +1,4 @@
+<a id="uc-doc-review-documentation"></a>
 # UC-DOC-REVIEW-DOCUMENTATION — Review Repository Documentation
 
 ## Situation
@@ -6,7 +7,7 @@ The current repository documentation may contain stale routes, duplicate semanti
 
 ## Result
 
-Material documentation findings are tied to their real semantic owners, verified and unverified areas are distinguished, and each required correction has a narrow current repair/change route without the review itself becoming new semantic authority.
+Material documentation findings are tied to their real semantic owners, verified and unverified areas are distinguished, and each material Finding has a linked Proposal that makes its current correction/change/revalidation route explicit without the review itself becoming new semantic authority. Proposal persistence is separate and remains proportional.
 
 ### Audit-style Review
 
@@ -36,14 +37,17 @@ A documentation **audit** is this same Review performed with an explicitly decla
 > - `CONTEXTUALIZES` [`Explicit Stable Semantic Anchor`](../principles-and-terminology.md#doc-explicit-stable-semantic-anchor) — `DOC.EXPLICIT-STABLE-SEMANTIC-ANCHOR`
 > - `CONTEXTUALIZES` [`Semantic Owner Dependency`](../principles-and-terminology.md#doc-semantic-owner-dependency) — `DOC.SEMANTIC-OWNER-DEPENDENCY`
 > - `CONTEXTUALIZES` [`Markdown Link Navigation Rule`](../principles-and-terminology.md#doc-markdown-link-navigation) — `DOC.MARKDOWN-LINK-NAVIGATION`
+> - `CONTEXTUALIZES` [`Finding Disposition`](../idtspe-methodology/active/idtspe-core/resolution/findings/FINDING-DISPOSITION.md#resolution-finding-disposition) — `RESOLUTION.FINDING-DISPOSITION`
+> - `CONTEXTUALIZES` [`Proposal / Decision Lifecycle`](../idtspe-methodology/active/idtspe-core/resolution/proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md#resolution-proposal-decision-lifecycle) — `RESOLUTION.PROPOSAL-DECISION-LIFECYCLE`
 
 15. Check for competing semantic owners, stale routes, unnecessary file splits, and supporting files that no current Use Case needs. Apply the Semantic DRY test: one normative responsibility has one canonical owner; a synchronized-looking duplicate is still a defect when it can independently drift.
-16. For normative-looking meaning in a non-owner, check whether it is legitimately local. Material restatements/contextualizations/extensions/representations/migrations should carry a tracked `Semantic Owner Dependency` with a direct link to the canonical owner; untracked independent normative copies are ownership findings.
-17. Check Responsibility Maps proportionally: they should route responsibility → one canonical owner, may route hierarchically only when useful, and must not copy the semantic contract body. Use [`UC-DOC-MAINTAIN-RESPONSIBILITY-MAP`](UC-DOC-MAINTAIN-RESPONSIBILITY-MAP.md) for material map repair.
+16. For normative-looking meaning in a non-owner, check whether it is legitimately local. Material quotation/restatement/clarification/contextualization/extension/representation/migration is allowed for local comprehension, but it must carry a tracked `Semantic Owner Dependency` with a direct canonical-owner link; when it targets one semantic section, use that section's stable explicit anchor. The dependent passage may own only its local delta/consequence, not the repeated base meaning. Untracked independent normative copies are ownership findings.
+17. Check Responsibility Maps proportionally: they should route responsibility → one canonical owner, may route hierarchically only when useful, and must not copy the semantic contract body. Also challenge map entries or surrounding prose that silently become second owners of routed meaning. Use [`UC-DOC-MAINTAIN-RESPONSIBILITY-MAP`](UC-DOC-MAINTAIN-RESPONSIBILITY-MAP.md) for material map repair.
 18. Use mechanical link/path checks as supporting evidence only; they do not prove semantic correctness or useful Use-Case boundaries. For Markdown documentation, also check useful direct relative links, fragment validity, misleading links to stale/non-authoritative artifacts, and important bare path/ID references that force unnecessary manual search.
 19. Treat ordinary Markdown links as navigation/addressability only; do not infer semantic ownership, synchronization or review-on-change authority from link existence. For explicit stable semantic anchors, check inbound references: zero inbound refs are a warning that requires a broken/misspelled/stale-reference audit before removing the anchor. When a reviewed semantic section already has an explicit stable anchor, flag section-specific inbound links that still rely on its generated heading fragment and migrate them to the explicit anchor unless a declared compatibility reason requires the old route.
 20. When a reviewed semantic owner changed, use [`SEMANTIC-OWNER-CHANGE-REVALIDATION`](../processes/SEMANTIC-OWNER-CHANGE-REVALIDATION.process.md) to review tracked dependents and affected projections.
-21. Route each material finding to the real current owner and the appropriate current change/maintenance Use Case.
-22. Use [`UC-DOC-PLAN-DOCUMENTATION-CHANGE`](UC-DOC-PLAN-DOCUMENTATION-CHANGE.md) when a material repair first needs semantic planning.
+21. Route each material Finding through canonical Finding Disposition to the real current owner and the appropriate current change/maintenance Use Case.
+22. For every material Finding, form or refine a linked IDTSPE Proposal that records the current candidate correction/result/realization route. `RE-0` may use a deterministic-correction Proposal; `RE-3` uses a non-selectable revalidation-gated Proposal until upstream revalidation completes; `RE-2`/`RE-4` use the formal semantic-change Proposal required before selection. Do not require a dedicated file merely because the Proposal exists.
+23. Use [`UC-DOC-PLAN-DOCUMENTATION-CHANGE`](UC-DOC-PLAN-DOCUMENTATION-CHANGE.md) when a material repair first needs semantic planning.
 
 Shared review rules: [`../principles-and-terminology.md`](../principles-and-terminology.md)

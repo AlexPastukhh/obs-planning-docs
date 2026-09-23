@@ -6,6 +6,8 @@ Responsibility ID: `VISUAL2D.UNIT-DISPOSITION-LENS-CHECKPOINTS`
 > Semantic Owner Dependencies
 > - `CONTEXTUALIZES` [Unit Applicability / Disposition](../../../idtspe-core/runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md#twu-applicability-disposition) — `TWU.APPLICABILITY-DISPOSITION`
 > - `CONTEXTUALIZES` [Lens Meta-Model](../../../idtspe-core/lenses/LENS-MODEL.md#lens-meta-model) — `LENS.META-MODEL`
+> - `CONTEXTUALIZES` [Finding Disposition](../../../idtspe-core/resolution/findings/FINDING-DISPOSITION.md#resolution-finding-disposition) — `RESOLUTION.FINDING-DISPOSITION`
+> - `CONTEXTUALIZES` [Proposal / Decision Lifecycle](../../../idtspe-core/resolution/proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md#resolution-proposal-decision-lifecycle) — `RESOLUTION.PROPOSAL-DECISION-LIFECYCLE`
 
 ## Module-defined Unit Disposition / Materiality Review
 
@@ -15,7 +17,8 @@ When a Target Module is formed, its complete Module-defined Unit inventory is in
 complete Module-defined Unit inventory
 → Unit Need / Visual Source Coverage
 → AI recommendation + rationale for every Unit
-→ normal Proposal/Decision authority only when the disposition itself is a material unresolved choice
+→ if a material Finding exists: linked Proposal follows canonical Finding/Proposal lifecycle
+→ semantic Decision/selection only when the RE route actually contains a material unresolved choice
 → Unit result disposition / work depth
 → substantive Unit Resolution only where material
 ```
@@ -71,7 +74,8 @@ Other Core/profile Lenses remain registry-selected by their own gates.
 Finding / Evidence / Target-scope change
 → Unit Need / Visual Source Coverage
 → AI recommendation + rationale
-→ Proposal/Decision only when a material unresolved choice actually exists
+→ material Finding: linked Proposal under canonical lifecycle
+→ Decision/selection only when the RE route actually requires a material choice
 → updated Unit disposition / resolution depth
 ```
 

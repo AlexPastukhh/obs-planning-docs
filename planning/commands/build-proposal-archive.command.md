@@ -16,17 +16,21 @@ Canonical supporting concepts: [UC-DOC-PLAN-DOCUMENTATION-CHANGE](../documentati
     "дай архив proposal",
     "дай архив пропозал",
     "собери proposal archive",
-    "proposal archive"
+    "proposal archive",
+    "давай пропозал архив",
+    "сделай пропозал архив",
+    "собери пропозал архив"
   ],
   "description": "produce one review-only proposal ZIP",
-  "meaning": "Package the currently selected proposal/planning target into one review-only ZIP that is easy to inspect, discuss and compare. The archive is descriptive planning output, not an executable repository transition: it MUST NOT contain PACKAGE.json, base-files/replacement-files replacement protocol payloads or OBS-ACTION apply instructions. Preserve enough README/navigation/context inside the archive for a reviewer to understand what is proposed, what is intentionally not current truth, and which questions or migration consequences remain open.",
+  "meaning": "Create one review-only coherent candidate workspace view from an explicit or smallest useful bounded scope and current Planning Resolution State. Select a compatible Proposal set; render candidate and accepted artifacts at their intended final workspace paths. A PRS authority projection identifies ACCEPTED vs PROPOSED per Target/Unit/Unit Slot, with Proposal identity, status, scope/view identity and snapshot/branch/commit basis. File path or physical persistence does not confer semantic acceptance. Conflicting versions of one path need separate views. This ZIP is never a Replacement Package and MUST NOT contain PACKAGE.json, base-files/, replacement-files/ or OBS-ACTION apply.",
   "activeContextBehavior": "Use the active selected proposal scope and current checked source/context needed to make that proposal self-contained. Do not silently convert accepted current repository state into a proposal or a proposal into accepted current semantic authority. When the proposal concerns documentation change, route its semantic planning through [UC-DOC-PLAN-DOCUMENTATION-CHANGE](../documentation/use-cases/UC-DOC-PLAN-DOCUMENTATION-CHANGE.md) and keep Documentation Change Coverage when the change is substantial. A Use Case is a Situation + independently useful Result + Process capability; see [Use Case — Situation + Result + Process](../documentation/principles-and-terminology.md#doc-use-case) rather than inventing a new Use Case merely because a proposal archive is being produced.",
   "traversalReadMode": "Targeted/full depending on proposal scope and whether the review archive must include multiple owners/projections.",
   "ownerFiles": [
     "planning/documentation/use-cases/UC-DOC-PLAN-DOCUMENTATION-CHANGE.md",
-    "planning/documentation/principles-and-terminology.md"
+    "planning/documentation/principles-and-terminology.md",
+    "planning/documentation/idtspe-methodology/active/idtspe-core/target-modules/TM-PLANNING-RESOLUTION-STATE.md"
   ],
-  "expectedOutput": "One review-only proposal ZIP with clear proposal status/readme and the complete selected proposal artifacts needed for review. No PACKAGE.json, no replacement-package base/replacement payloads, no apply/finalize/commit/push instructions and no claim that proposed target meaning is already current.",
+  "expectedOutput": "One review-only Proposal Workspace Archive: coherent final-shaped workspace paths, PRS with semantic status and recursive Proposal/Q/R/P graph, view identity/basis/scope, and navigation. No Replacement Package payload or automatic selection/persistence.",
   "permissionMode": "artifact-no-commit-push",
   "keyReminders": [
     "This command produces a review artifact, not a Replacement Package.",
@@ -51,6 +55,14 @@ Canonical supporting concepts: [UC-DOC-PLAN-DOCUMENTATION-CHANGE](../documentati
       "anchor": "uc-doc-plan-documentation-change-plan-repository-documentation-change",
       "why": "Owns planning of a documentation change before a proposal archive is packaged; the command must preserve that planning boundary.",
       "role": "PRIMARY_OWNER",
+      "readMode": "REQUIRED"
+    },
+    {
+      "responsibilityId": "TM-PLANNING-RESOLUTION-STATE",
+      "path": "planning/documentation/idtspe-methodology/active/idtspe-core/target-modules/TM-PLANNING-RESOLUTION-STATE.md",
+      "anchor": "tm-planning-resolution-state",
+      "why": "Defines the authority projection for candidate workspace view.",
+      "role": "SUPPORTING_CONTRACT",
       "readMode": "REQUIRED"
     }
   ]

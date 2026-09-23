@@ -222,7 +222,7 @@ Do not silently relabel legacy IDs into current IR/PFR authority.
 
 ## Reusable guidance relation
 
-Use the shared `reusable-guidance-model.md` semantics. `RR-*`/`RRC-*`/principles/patterns are discovery sources only. A selected local `IR-*` is independent natural-owner authority and never live-inherits future reusable-guidance edits.
+Use the shared [`SDS.REUSABLE-GUIDANCE-MODEL`](../../profile-contracts/reusable-guidance/REUSABLE-GUIDANCE-MODEL.md) semantics. `RR-*`/`RRC-*`/principles/patterns are discovery sources only. A selected local `IR-*` is independent natural-owner authority and never live-inherits future reusable-guidance edits.
 
 ## Guards
 

@@ -19,24 +19,15 @@ This map routes the repository command system, IDTSPE command surfaces and Plann
 | Planning Helper semantic-command/scenario projection/runtime | [`../documentation/tools/tampermonkey/chat-command-palette/README.md`](../documentation/tools/tampermonkey/chat-command-palette/README.md#planning-helper-semantic-projection) — `HELPER.SEMANTIC-PROJECTION` | Projects current Commands/UCs/TMs/Lenses/Scenarios; generated seeds/UI/grouping never become semantic authority |
 | Prompt and legacy helper-command record format/compatibility | [`../helper-library/README.md`](../helper-library/README.md#planning-helper-library-contract) — `HELPER.LIBRARY-COMPATIBILITY` | Legacy insertion/prompt storage only; never registers a Planning Command |
 
-## Command Composition Invariant
 
-```text
-explicit command / semantic card roots
-→ COMMAND.ROOT-ROUTING resolves registered roots
-→ fully expand ALL transitive `includes` before semantic execution
-→ merge one DAG; reject cycles/unresolved command paths; deduplicate shared nodes
-→ collect declarative intent/capability/component/trace/permission contributions from every node
-→ establish one dependencies-first execution plan
-→ establish/reuse the one P-02 working trace
-→ `planning/commands/recheck-methodology-use-cases.command.md` / DOC.USE-CASE-APPLICABILITY-RESOLUTION always reaffirms UC-IDTSPE-AI-WORKING-BOUNDARY and rechecks the registry applicability surface
-→ current selected Use-Case composition
-→ when normal IDTSPE work is involved, IDTSPE.PORT-COMPOSITION-REFRESH sees all collected explicit requirements and refreshes/reaffirms the technical Port Requirement Set
-→ dependencies execute before dependents; each selected root action executes last on its branch
-→ one Shell pass executes the resulting current composition
-→ Planning Helper only projects/invokes the same registered composition/semantic route
-```
+## Composition Route Note
 
-`methodologyBinding` is semantic projection/dispatch metadata, not an embedded copy of Use-Case, Target Module, Lens or Shell-port semantics. Planning Commands are USER↔AI invocation/traversal guarantees; the AI does not use the command graph as an internal methodology language. No reusable semantic rule may be command-only. `ownerFiles` are canonical read routes; structured `ownerRefs` may point to exact Responsibility/anchor purpose added by the command and MUST NOT repeat references inherited through includes. `includes` is a declarative dependency graph whose edges are canonical repository paths to registered direct command definitions and exists to guarantee the same canonical route an informed AI agent could follow directly from methodology owners/hand-offs.
+This map does not own command composition algorithms or field invariants. Follow the routed canonical owners above:
 
-Command composition MUST NOT encode a parallel numeric-port topology: no durable `requiredPorts`, `portRequirements` or file-execution lists. Named `idtspe.port.*` commands contribute explicit named capability requirements during the **pre-execution composition stage**; the runtime composition owner resolves those requirements against the current Shell topology. The command node's later runtime action performs/checks the capability; it does not reveal the requirement for the first time.
+- `COMMAND.ROOT-ROUTING` for root resolution/governance;
+- `COMMAND.DEFINITION-CONTRACT` for direct command schema including `includes`, `ownerFiles`, `ownerRefs` and `methodologyBinding`;
+- `IDTSPE.COMMAND-SURFACE` for generic semantic command composition and review/proposal invocation behavior;
+- current Documentation Use-Case applicability resolution plus `IDTSPE.PORT-COMPOSITION-REFRESH` for runtime methodology/port composition;
+- `HELPER.SEMANTIC-PROJECTION` for Helper rendering/invocation only.
+
+Any algorithmic detail belongs to those owners and is linked from this routing projection rather than copied here.

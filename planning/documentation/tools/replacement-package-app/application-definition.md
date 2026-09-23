@@ -39,7 +39,7 @@ This challenge applies to both Selected Benefits and material Possible Benefits 
 
 **User Receives:** Repository work created by AI can be realized locally and remotely quickly and dependably, with automation where it reduces mechanical effort and with explicit control where it matters.
 
-**Responsibility Boundary:** The Application owns selected mechanical package/repository realization operations and truthful operation results. The AI/human actor remains responsible for semantic repository-work intent, semantic edits, review/selection decisions and the exact authoritative handoff that asks the Application to realize work.
+**Responsibility Boundary / Constraints:** The Application owns selected mechanical package/repository realization operations and truthful operation results. The AI/human actor remains responsible for semantic repository-work intent, semantic edits, review/selection decisions and the exact authoritative handoff that asks the Application to realize work.
 
 <a id="ab-rpkg-know-repository-work-outcome-02"></a>
 ### AB-RPKG-KNOW-REPOSITORY-WORK-OUTCOME-02 — Know Repository Work Outcome
@@ -50,7 +50,7 @@ This challenge applies to both Selected Benefits and material Possible Benefits 
 
 **User Receives:** AI/user can distinguish proven completion, expected rejection and unresolved uncertainty rather than guessing what happened.
 
-**Responsibility Boundary:** The Application owns truthful mechanical/proof outcomes and attention signals for operations it performs. The AI/human actor owns semantic interpretation, follow-up choice and any decision about whether the work is acceptable.
+**Responsibility Boundary / Constraints:** The Application owns truthful mechanical/proof outcomes and attention signals for operations it performs. The AI/human actor owns semantic interpretation, follow-up choice and any decision about whether the work is acceptable.
 
 <a id="ab-rpkg-keep-work-documented-03"></a>
 ### AB-RPKG-KEEP-WORK-DOCUMENTED-03 — Keep Work Documented For Reuse
@@ -61,7 +61,7 @@ This challenge applies to both Selected Benefits and material Possible Benefits 
 
 **User Receives:** One logical Work has durable GitHub Issue/comment history that can act as practical log/context for the same AI, another AI or a person when work must be resumed or understood.
 
-**Responsibility Boundary:** GitHub and the AI/human actor remain responsible for creating and semantically maintaining Issue/comment history. The Application may consume/expose repository-context conveniences selected downstream, but it does not become the semantic owner of Work narrative/history merely because that context is used by package/repository operations.
+**Responsibility Boundary / Constraints:** GitHub and the AI/human actor remain responsible for creating and semantically maintaining Issue/comment history. The Application may consume/expose repository-context conveniences selected downstream, but it does not become the semantic owner of Work narrative/history merely because that context is used by package/repository operations.
 
 <a id="ab-rpkg-delegate-mechanical-repository-work-04"></a>
 ### AB-RPKG-DELEGATE-MECHANICAL-REPOSITORY-WORK-04 — Delegate Mechanical Repository Work
@@ -72,7 +72,7 @@ This challenge applies to both Selected Benefits and material Possible Benefits 
 
 **User Receives:** AI can delegate mechanically derivable package/repository operations instead of spending semantic attention and interaction steps on protocol construction or repetitive repository mechanics.
 
-**Responsibility Boundary:** The Application owns the selected deterministic/mechanical operations and their validation. The AI remains responsible for methodology-driven semantic work, orchestration intent and choices that require semantic authority.
+**Responsibility Boundary / Constraints:** The Application owns the selected deterministic/mechanical operations and their validation. The AI remains responsible for methodology-driven semantic work, orchestration intent and choices that require semantic authority.
 
 <a id="ab-rpkg-review-ai-work-efficiently-05"></a>
 ### AB-RPKG-REVIEW-AI-WORK-EFFICIENTLY-05 — Review AI Work Efficiently
@@ -83,11 +83,11 @@ This challenge applies to both Selected Benefits and material Possible Benefits 
 
 **User Receives:** AI-created work can be reviewed by the producing AI and, when useful, another AI using exact resulting artifacts/diffs, with good review quality and reasonable time/steps.
 
-**Responsibility Boundary:** The Application may provide exact package/result/diff/repository context and related mechanical review surfaces selected downstream. The producing/reviewing AI or human remains responsible for semantic review findings, recommendations, Proposals and Decisions.
+**Responsibility Boundary / Constraints:** The Application may provide exact package/result/diff/repository context and related mechanical review surfaces selected downstream. The producing/reviewing AI or human remains responsible for semantic review findings, recommendations, Proposals and Decisions.
 
 A newly surfaced Benefit may be retained here with `Planning position: Possible` before selection. `Possible` does not create a future Step or authorize implementation.
 
-Application Benefits are upstream value meaning, not Requirements. A Benefit may be realized jointly by actor actions, Scenarios, Features, Screens and external participants; each Benefit keeps its own Responsibility Boundary rather than relying on one standalone Application-wide boundary unit.
+Application Benefits are upstream value meaning, not Requirements. A Benefit may be realized jointly by actor actions, Scenarios, Features, Screens and external participants; each Benefit keeps its own Responsibility Boundary / Constraints rather than relying on one standalone Application-wide boundary unit.
 
 ## RU-APP-04 — Representative Real-Life Scenarios
 
@@ -118,7 +118,7 @@ This is selected Application intent even where current implementation has not ye
 
 Existing Builder/App code demonstrates useful feasibility and implementation candidates, but implementation existence does not settle downstream semantic contracts. Exact downstream planning may keep, modify or replace existing implementation.
 
-Feasibility revalidation must preserve truthful uncertainty and continue challenging whether custom Application scope can shrink through existing/hybrid tools or whether any selected Benefit Responsibility Boundary should narrow.
+Feasibility revalidation must preserve truthful uncertainty and continue challenging whether custom Application scope can shrink through existing/hybrid tools or whether any selected Benefit Responsibility Boundary / Constraints should narrow.
 
 ## Temporal / Evolution guard
 

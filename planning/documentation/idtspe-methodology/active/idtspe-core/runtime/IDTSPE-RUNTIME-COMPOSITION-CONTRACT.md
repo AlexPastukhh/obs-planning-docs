@@ -28,9 +28,9 @@ IDTSPE Work Context
       + applicable universal Core Target Requirements
     + required REUSABLE_TARGET_MODEL_CHECK during formation
     + governing path:
-      Target Module Model + Target Module Instance when reusable coverage is useful
-        + complete Module-defined Unit inventory
-      or Local Target Contract
+      0..N applied Target Module Model + Target Module Instance portions when reusable coverage is useful
+        + complete Module-defined Unit inventory for each applied Model portion
+      or Local Target Contract when no reusable Model applies
         + no Module-defined Unit inventory
     + applicable Core-defined Target Work Units
     + Contextual Units only when locally defined/formed
@@ -168,10 +168,10 @@ current task/problem/Sources
 → applicable Core Target Requirements
    + explicit/already-obvious task Requirements
 → REUSABLE_TARGET_MODEL_CHECK
-   → Target Module Instance when suitable
-      → prepared analysis recognizes/formulates actual grounded Requirements
-      → prepared Module Unit coverage
-   or Local Target Contract
+   → 0..N compatible Target Module Instance portions when suitable Models apply
+      → each applied Model's prepared analysis recognizes/formulates actual grounded Requirements
+      → prepared Module Unit coverage from all applied Model portions
+   or Local Target Contract when no reusable Model applies
       → contextual scope/Requirement analysis
 → prepared Core/Module coverage + contextual completion
 ```

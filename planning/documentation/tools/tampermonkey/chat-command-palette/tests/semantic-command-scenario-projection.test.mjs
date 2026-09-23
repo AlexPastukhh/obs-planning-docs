@@ -99,11 +99,11 @@ test('need-candidate scenario entry projects the dedicated Need review command b
   assert.deepEqual(needs.scenarioUses.map((use)=>use.stepId).sort(),['SCN-01-S1N','SCN-02-S0N']);
 });
 
-test('finding-escalation scenario keeps deterministic repair command-free and separates RE-3 revalidation from RE-4 selection',()=>{
+test('finding-escalation scenario gives every material Finding a linked Proposal and separates RE-3 revalidation from RE-4 selection',()=>{
   const m=memory(),scn07=m.scenarioEntries.find((scenario)=>scenario.id==='SCN-07');
   assert.ok(scn07);
   assert.deepEqual(equivalentIds(scn07.steps.find((step)=>step.id==='SCN-07-S1')),['idtspe.findings.disposition']);
-  assert.deepEqual(equivalentIds(scn07.steps.find((step)=>step.id==='SCN-07-S2')),[]);
+  assert.deepEqual(equivalentIds(scn07.steps.find((step)=>step.id==='SCN-07-S2')),['idtspe.proposal']);
   assert.deepEqual(equivalentIds(scn07.steps.find((step)=>step.id==='SCN-07-S3')),['idtspe.proposal']);
   assert.deepEqual(equivalentIds(scn07.steps.find((step)=>step.id==='SCN-07-S4')),['uc:UC-IDTSPE-REVALIDATE-CURRENT-WORK']);
   assert.deepEqual(equivalentIds(scn07.steps.find((step)=>step.id==='SCN-07-S4P')),['idtspe.proposal']);

@@ -206,7 +206,7 @@ Lens decision pressure ≠ direct owner mutation
 
 ## Reusable Guidance Semantics
 
-This Lens follows `../../shared/reusable-guidance-model.md`: reusable questions / `RG-*` / `RR-*` / `RRC-*` / patterns are discovery guidance only; selected owner-local `IR-*` meaning is independently approved in the correct current/future owner state and never live-inherits later reusable-guidance edits.
+This Lens follows [`SDS.REUSABLE-GUIDANCE-MODEL`](../../profile-contracts/reusable-guidance/REUSABLE-GUIDANCE-MODEL.md): reusable questions / `RG-*` / `RR-*` / `RRC-*` / patterns are discovery guidance only; selected owner-local `IR-*` meaning is independently approved in the correct current/future owner state and never live-inherits later reusable-guidance edits.
 
 ## Behavioral Coverage
 

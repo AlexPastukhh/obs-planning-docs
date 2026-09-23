@@ -333,3 +333,7 @@ residual Risk/Problem may remain after related Question closes
 one logical Q/R/P body ≠ copied full body in every related owner
 Q/R/P storage topology ≠ semantic ownership
 ```
+
+## Recursive candidate linkage
+
+Each material Q/R/P may have `0..N` addressing Proposals; each Proposal may carry `0..N` Q/R/P that can themselves elicit Proposals. This recursive relation retains subject/driver refs and does not require a new tree ontology. The [Proposal/Decision Lifecycle](../proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md#resolution-recursive-proposal-qrp) owns selection of compatible proposals; this contract continues to own Question/Risk/Problem meaning and review.

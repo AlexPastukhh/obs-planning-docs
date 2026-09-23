@@ -667,3 +667,7 @@ Generic handoff/Methodology Direction is exposed through Shell `P-13` and the ac
 ## Navigation Placement Projection
 
 When material, P-14 may record `Primary Entry`, `Required Outgoing`, `Return / Coordinator`, and `Derived Navigation: GENERATED | EXPLICIT | NONE`. These guide representation only; links/indexes never create semantic ownership.
+
+## Planning Resolution State and Proposal Archive representation
+
+A transient Work Context, local working file and persisted checkpoint can represent one [Planning Resolution State](../target-modules/TM-PLANNING-RESOLUTION-STATE.md#tm-planning-resolution-state). A final-shaped path in a Proposal Workspace Archive does not grant acceptance. The PRS authority projection identifies accepted vs proposed meaning per Target/Unit/Slot independently of physical persistence. A review-only Proposal Archive and an executable Replacement Package remain distinct artifacts; the latter contains only semantically accepted changes. Placement never redefines candidate/Decision authority.

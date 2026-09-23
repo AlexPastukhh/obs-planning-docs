@@ -58,8 +58,8 @@ test('proposal archive command body is self-contained and links existing Use-Cas
   assert.ok(proposal);
   const text=commandBody.buildCommandBody(proposal,commandBody.MODE.ADAPTIVE);
   assert.ok(text.includes('context:\n  Use the active selected proposal scope'));
-  assert.ok(text.includes('result:\n  One review-only proposal ZIP'));
-  assert.ok(text.includes('essence:\n  Package the currently selected proposal'));
+  assert.ok(text.includes('result:\n  One review-only Proposal Workspace Archive'));
+  assert.ok(text.includes('essence:\n  Create one review-only coherent candidate workspace view'));
   assert.ok(text.includes('[UC-DOC-PLAN-DOCUMENTATION-CHANGE](../documentation/use-cases/UC-DOC-PLAN-DOCUMENTATION-CHANGE.md)'));
   assert.ok(text.includes('[Use Case — Situation + Result + Process](../documentation/principles-and-terminology.md#doc-use-case)'));
   assert.match(text,/Never include PACKAGE\.json/);

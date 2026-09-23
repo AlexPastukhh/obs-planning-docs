@@ -26,10 +26,10 @@ activate applicable universal Core Target Requirements
 + preserve explicit/already-obvious task Requirements
 ↓
 REUSABLE_TARGET_MODEL_CHECK
-├─ suitable Target Module Model
-│  → apply Model
-│  → Target Module Instance
-│  → prepared recurring-scope analysis recognizes/formulates
+├─ zero or more mutually compatible suitable Target Module Models
+│  → apply each Model whose responsibility belongs inside this bounded Target
+│  → one Target Module Instance portion per applied Model
+│  → each Model's prepared recurring-scope analysis recognizes/formulates
 │     actual Requirements grounded in this task/scope/Sources
 │  → map them to prepared Module-defined Unit Definitions
 └─ NO_APPLICABLE_TARGET_MODULE

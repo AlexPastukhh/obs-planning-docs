@@ -1,3 +1,4 @@
+<a id="lens-verifiability-observability-operability"></a>
 # LENS-VERIFIABILITY-OBSERVABILITY-OPERABILITY — Proof / Observation / Diagnosis / Operation
 
 Lens ID: `LENS-VERIFIABILITY-OBSERVABILITY-OPERABILITY`

@@ -1,3 +1,4 @@
+<a id="tm-exact-realization"></a>
 # TM-EXACT-REALIZATION — Exact Realization / Integration
 
 Entry Point: `tm.exact.realization`
@@ -139,7 +140,7 @@ Concrete Questions/Problems/Proposals/Q/R/P/Decisions/Evidence remain generic Co
 > Responsibility: `TWU.UNIT-CONTRACT`
 > Owner: [Target Work Unit contract](../runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md#twu-unit-contract)
 
-Each declared Result Unit is a Module-defined Unit Definition under the canonical Target Work Unit contract. This concrete Module owns only its Target-family-specific Unit definitions/deltas; generic simple/composite/runtime projection and Core State semantics remain with their Core owners. A material Proposal selection has Decision semantics, while a separate durable Decision trace is retained only when it adds future review/revalidation value.
+Each declared Result Unit is a Module-defined Unit Definition under the canonical Target Work Unit contract. This concrete Module owns only its Target-family-specific Unit definitions/deltas; generic simple/composite/runtime projection and Core State semantics remain with their Core owners. A material Proposal selection has Decision semantics, while a separate Decision trace is retained according to user choice or material coordination/revalidation/dependency value.
 
 ## Target Step-Result Contract
 

@@ -1,3 +1,4 @@
+<a id="ai-reviewability-peer-cross-cutting-concern"></a>
 # AI Reviewability — Peer Cross-Cutting Concern
 
 Status: active independent cross-cutting concern
@@ -142,6 +143,7 @@ Review/QRP Priority
 
 Review Order is navigation only. It does not become a work queue, second priority field or semantic authority.
 
+<a id="built-in-pre-return-recheck"></a>
 ## Built-In Pre-Return Recheck
 
 Before returning a material planning/development result, perform a proportional self-recheck:

@@ -25,6 +25,10 @@ Resolution Carry-Forward
 → one canonical projection per useful coordination scope
 ```
 
+## Relation to Planning Resolution State
+
+[TM-PLANNING-RESOLUTION-STATE](../../target-modules/TM-PLANNING-RESOLUTION-STATE.md#tm-planning-resolution-state) owns the bounded coordination result with Active Planning and Tracked Decisions. Carry-Forward projects the relevant references/status for continuation, handoff and checkpoints; it does not maintain a second independent item schema, global backlog or acceptance authority. A durable PRS checkpoint can itself be the discoverable coordination representation when it meets the materialization threshold below; do not persist a duplicate Carry-Forward register. Its priority view belongs to PRS and does not turn this projection into a priority owner.
+
 ## Qualifying State
 
 Include proportionally when material to continuation, handoff or re-entry:
@@ -98,7 +102,7 @@ those items are not already discoverable together through one existing canonical
 
 This is especially expected when surviving state spans several natural owners or combines OPEN/DEFERRED Proposal, accepted Decision anchors, residual QRPE, deferred Problems/Risks, Evidence Needs or reconsider triggers.
 
-The requirement is for **one discoverable coordination representation**, not for a second semantic owner. Prefer an existing canonical coordination artifact/register when it already provides the right scope; otherwise materialize a dedicated Carry-Forward artifact for that scope. Do not create several hand-maintained registers for the same surviving state.
+The requirement is for **one discoverable coordination representation**, not for a second semantic owner. Prefer an existing canonical coordination artifact/register when it already provides the right scope; otherwise materialize the appropriate PRS checkpoint or a dedicated Carry-Forward projection for that scope. Do not create several hand-maintained registers for the same surviving state.
 
 A single local item that is already obvious at its natural owner, or transient state that will not survive the current context, does not cross this threshold.
 

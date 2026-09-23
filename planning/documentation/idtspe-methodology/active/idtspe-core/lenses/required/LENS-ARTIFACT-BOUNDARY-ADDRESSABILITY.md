@@ -1,3 +1,4 @@
+<a id="lens-artifact-boundary-addressability"></a>
 # LENS-ARTIFACT-BOUNDARY-ADDRESSABILITY — Documentation / Representation / Artifact Boundary
 
 Lens ID: `LENS-ARTIFACT-BOUNDARY-ADDRESSABILITY`

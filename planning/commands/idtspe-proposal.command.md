@@ -17,11 +17,14 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
     "idtspe пропозалы",
     "дай пропозалы",
     "дай пропозалы по текущему контексту",
-    "разбери пропозал"
+    "разбери пропозал",
+    "сделай пропозалы",
+    "сформируй пропозалы",
+    "сделай proposals"
   ],
-  "description": "Discover, form, review and refine material IDTSPE Proposals from the current context through canonical Proposal/Decision lifecycle + Resolution Context Lens under USER-gated selection.",
-  "meaning": "Use the current IDTSPE Work Context to discover/form only material candidate Proposals or review/refine a supplied Proposal. Canonical Proposal/Decision lifecycle owns candidate/selection semantics; LENS-PROPOSAL-DECISION-RESOLUTION-CONTEXT evaluates each material Proposal/Decision context and checks optional related QRPE; Proposal Semantic Change Impact remains lifecycle-owned. Keep candidates UNSELECTED until actual USER/authorized selection, integrate selected meaning into its natural/temporal owner, and refresh Resolution Carry-Forward only for surviving material open/deferred/residual state.",
-  "activeContextBehavior": "Reuse current Sources, accepted Results, Decisions and Carry-Forward references first. Resolve genuinely required USER-only grounding before presenting the affected material candidate. For each material Proposal run the Resolution Context Lens, surface only material QRPE, then perform canonical Proposal Semantic Change Impact Review. AI recommendation is not selection. After valid selection, disposition Proposal QRPE into Decision context, integrate selected meaning into the natural owner and update Carry-Forward for surviving state. Under SDS, unrealized selected future meaning remains Evolution Step/Target Body hosted until realization/materialization.",
+  "description": "Explicitly discover, form, review and refine material IDTSPE Proposals from current context, supplied Findings or a supplied Proposal through the canonical Proposal/Decision lifecycle under USER-gated selection.",
+  "meaning": "Use the current IDTSPE Work Context to discover/form material candidate Proposals, form linked Proposals for supplied material Findings, or review/refine a supplied Proposal. When Findings are the input, preserve their Finding Disposition/RE-* state: deterministic/local candidates remain inside accepted meaning, RE-3 stays BLOCKED_BY_REVALIDATION, and RE-2/RE-4 remain semantic-change candidates requiring normal selection. Canonical Proposal/Decision lifecycle owns candidate/selection semantics; Proposal existence never implies persistence. Keep candidates UNSELECTED unless their route is an already-entailed RE-0 correction that needs no semantic selection, and integrate actually selected semantic change only through normal authority.",
+  "activeContextBehavior": "Reuse current Sources, accepted Results, Decisions, Findings and Carry-Forward references first. If explicit Proposal formation targets Findings, consume their current Finding Disposition rather than rerunning Review; form/refine the smallest linked candidate and preserve revalidation blocks. Resolve genuinely required USER-only grounding before presenting a selectable material candidate. For each material selectable Proposal run the Resolution Context Lens and canonical Proposal Semantic Change Impact Review proportionally. AI recommendation is not selection. Retention/file persistence is a separate proportional decision.",
   "traversalReadMode": "Reuse current reliable Core governance. Otherwise read the current composition/state model plus canonical Proposal/Decision and Q/R/P lifecycle owners, and the Session USER-gated interaction owner. Load profile/Target/Lens detail only when the current composition makes it applicable.",
   "ownerFiles": [
     "planning/documentation/idtspe-methodology/active/idtspe-core/commands/IDTSPE-COMMAND-SURFACE-CONTRACT.md",
@@ -34,12 +37,15 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
     "planning/session/principles-and-terminology.md",
     "planning/session/session-runtime-contract.md",
     "planning/documentation/idtspe-methodology/active/idtspe-core/lenses/required/LENS-PROPOSAL-DECISION-RESOLUTION-CONTEXT.md",
-    "planning/documentation/idtspe-methodology/active/idtspe-core/resolution/continuation/RESOLUTION-CARRY-FORWARD-PROJECTION.md"
+    "planning/documentation/idtspe-methodology/active/idtspe-core/resolution/continuation/RESOLUTION-CARRY-FORWARD-PROJECTION.md",
+    "planning/documentation/idtspe-methodology/active/idtspe-core/resolution/findings/FINDING-DISPOSITION.md"
   ],
-  "expectedOutput": "Material Proposals from the current context are reviewable but remain UNSELECTED until actual authority selects them; optional related QRPE is evaluated/dispositioned, selected meaning integrates into its natural/temporal owner, and only surviving material open/deferred/residual state is projected into Resolution Carry-Forward.",
+  "expectedOutput": "Material Proposals requested from current context or supplied Findings are formed and reviewable with truthful relation to their driver/owner and selectable/blocked state. Findings have linked Proposals without requiring persisted files; RE-3 remains BLOCKED_BY_REVALIDATION; semantic-change candidates remain UNSELECTED until actual authority selects them.",
   "permissionMode": "read-only-planning-unless-separately-authorized",
   "keyReminders": [
     "Lifecycle contracts own Proposal/Decision/Q/R/P/Evidence semantics; the Resolution Context Lens is the operational evaluator and QRPE is only a compact view.",
+    "An explicit “сделай/дай пропозалы” request uses this same canonical lifecycle; when Findings are supplied, form linked Proposals from their current disposition rather than creating a second proposal mechanism.",
+    "Formal/linked Proposal existence does not imply dedicated file, register entry or other physical persistence.",
     "AI recommendation is not selection; do not convert nearby AI suggestions into Decisions.",
     "Use \"none material\" when no related QRPE exists; do not force an empty QRPE form.",
     "After selection, disposition Proposal QRPE individually rather than copying it mechanically into Decision context.",
@@ -103,6 +109,14 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
       "anchor": "resolution-carry-forward",
       "why": "Retains only surviving material open/deferred/residual continuation after Proposal work.",
       "role": "VALIDATION_HANDOFF",
+      "readMode": "ON_DEMAND"
+    },
+    {
+      "responsibilityId": "RESOLUTION.FINDING-DISPOSITION",
+      "path": "planning/documentation/idtspe-methodology/active/idtspe-core/resolution/findings/FINDING-DISPOSITION.md",
+      "anchor": "resolution-finding-disposition",
+      "why": "When explicit Proposal formation starts from Findings, preserves their materiality, natural subject and RE-* revalidation/selection state.",
+      "role": "SUPPORTING_CONTRACT",
       "readMode": "ON_DEMAND"
     }
   ]

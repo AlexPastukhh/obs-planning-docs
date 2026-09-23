@@ -329,8 +329,12 @@ test('Finding review surface separates impact priority from semantic resolution 
   for(const token of ['RE-0 DETERMINISTIC-CORRECTION','RE-1 LOCAL-REALIZATION-CHOICE','RE-2 CURRENT-OWNER-SEMANTIC-CHANGE','RE-3 UPSTREAM-REVALIDATION','RE-4 UPSTREAM-SEMANTIC-CHANGE'])assert.match(finding,new RegExp(token));
   assert.match(finding,/Review Priority[\s\S]*cost \/ blast radius[\s\S]*Resolution Escalation[\s\S]*semantic distance \/ authority change required/);
   assert.match(finding,/A detail at architecture depth is not automatically an architecture Decision/);
-  assert.match(finding,/RE-2 current-owner semantic change[\s\S]*MUST form or refine a formal IDTSPE Proposal/i);
-  assert.match(finding,/RE-4 upstream semantic change[\s\S]*MUST form or refine a formal IDTSPE Proposal/i);
+  assert.match(finding,/material Finding[\s\S]*form or refine at least one linked IDTSPE Proposal/i);
+  assert.match(finding,/RE-0 deterministic[\s\S]*deterministic-correction Proposal/i);
+  assert.match(finding,/RE-3 upstream revalidation[\s\S]*BLOCKED_BY_REVALIDATION/i);
+  assert.match(finding,/RE-2 current-owner semantic change[\s\S]*formal IDTSPE Proposal/i);
+  assert.match(finding,/RE-4 upstream semantic change[\s\S]*formal IDTSPE Proposal/i);
+  assert.match(finding,/Proposal existence is independent of persistence/i);
   assert.match(finding,/GIP[\s\S]*not.*substitute[\s\S]*IDTSPE Proposal/is);
   const unit=read('planning/documentation/idtspe-methodology/active/idtspe-core/runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md');
   assert.match(unit,/Resolution Escalation.*not.*State Unit/is);
@@ -361,7 +365,8 @@ test('Review Strategy/Coverage supports distinct Lens checks and local affected 
   assert.equal(recheck.methodologyBinding.surfaceKind,'ORCHESTRATION');
   assert.equal(recheck.methodologyBinding.hostTargetPolicy,'NONE');
   assert.ok(!recheck.includes.includes('planning/commands/review-idtspe.command.md'));
-  assert.match(review.meaning,/Finding Disposition before the review is semantically complete/i);
+  assert.match(review.meaning,/Finding Disposition[\s\S]*linked IDTSPE Proposal before the review is semantically complete/i);
+  assert.match(review.meaning,/Proposal existence does not imply persistence or selection/i);
   assert.match(review.meaning,/Need collection is not a mandatory review stage/i);
 });
 
@@ -381,10 +386,13 @@ test('Proposal lifecycle owns semantic impact while RE categories remain Finding
   assert.match(proposal,/## 5A\. Proposal Semantic Change Impact Review/);
   assert.match(proposal,/Resolution Escalation RE-0\.\.RE-4.*belongs to Finding Disposition only/is);
   assert.match(proposal,/Finding-to-Proposal Handoff/);
-  assert.match(proposal,/material candidate semantic resolution[\s\S]*MUST form or refine a formal IDTSPE Proposal/i);
+  assert.match(proposal,/every \*\*material Finding\*\*[\s\S]*MUST form or refine at least one linked IDTSPE Proposal/i);
+  assert.match(proposal,/RE-3[\s\S]*BLOCKED_BY_REVALIDATION/i);
+  assert.match(proposal,/does \*\*not\*\* imply physical persistence/i);
   assert.match(proposal,/GIP[\s\S]*never substitutes for it/is);
-  assert.match(finding,/`RE-\*` categorizes the Finding's semantic resolution distance, not a Proposal/);
+  assert.match(finding,/`RE-\*` categorizes the Finding's semantic resolution distance, not the Proposal itself/);
   assert.match(command.activeContextBehavior,/Proposal Semantic Change Impact Review/);
+  assert.match(command.activeContextBehavior,/Retention\/file persistence is a separate proportional decision/i);
 });
 
 test('ReviewDiff delegates RE taxonomy to Finding owner instead of copying definitions',()=>{
@@ -392,6 +400,17 @@ test('ReviewDiff delegates RE taxonomy to Finding owner instead of copying defin
   assert.match(review,/RE-0\.\.RE-4.*owned \*\*only there\*\*/s);
   assert.doesNotMatch(review,/RE-0 DETERMINISTIC-CORRECTION/);
   assert.match(review,/Proposal Semantic Change Impact/);
+});
+
+test('Target Formation consumes the 0..N applied Target Module contract without narrowing to one Model',()=>{
+  const formation=read('planning/documentation/idtspe-methodology/active/idtspe-core/runtime/target-work/RESOLUTION-SLOT-AND-TARGET-FORMATION-SET.md');
+  const compose=read('planning/documentation/idtspe-methodology/active/idtspe-core/use-cases/compose-current-work/UC-IDTSPE-COMPOSE-CURRENT-WORK.md');
+  const runtime=read('planning/documentation/idtspe-methodology/active/idtspe-core/runtime/IDTSPE-RUNTIME-COMPOSITION-CONTRACT.md');
+  assert.match(formation,/zero or more mutually compatible applicable Models/i);
+  assert.match(formation,/0\.\.N Target Module Instance portions/i);
+  assert.doesNotMatch(formation,/→ APPLIED\(TM-X\)/);
+  assert.match(compose,/apply zero or more mutually compatible useful Target Module Models/i);
+  assert.match(runtime,/0\.\.N applied Target Module Model \+ Target Module Instance portions/i);
 });
 
 test('Knowledge Basis supports Unit consumers and keeps reference-only vs applied bridge freedom',()=>{
