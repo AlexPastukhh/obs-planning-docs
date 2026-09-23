@@ -94,17 +94,14 @@ test('Session interaction contract is ambient bootstrap, not a mandatory command
   assert.match(registryMap,/is\s+\*\*not\*\*\s+another row in this functional methodology-routing map/i);
 });
 
-test('Evolution Step keeps Feature target state direct and Evolution Impact bounded to peer/supporting subjects',()=>{
+test('Evolution horizon keeps near changed Feature complete and later Feature Impact bounded',()=>{
   const evo=read('planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-EVOLUTION-STEP.md');
-  assert.match(evo,/`RU-EVO-02` \| Evolution Impact/);
-  assert.match(evo,/Every represented `NEW` or `CHANGED` Feature on the active candidate\/selected Step route uses the ordinary complete `TM-FEATURE` \*\*Feature Definition\*\* contract/);
-  assert.match(evo,/Feature does not use `RU-EVO-02` as its primary future mechanism/);
-  const ruLine=evo.split('\n').find((line)=>line.includes('| `RU-EVO-02` |')) ?? '';
-  assert.match(ruLine,/Scenario\/Screen\/Domain\/Slice\/Shared/);
-  assert.doesNotMatch(ruLine,/Feature|Application/);
+  assert.match(evo,/REALIZATION_NEAR.*complete Target Owner Body/);
+  assert.match(evo,/LATER_HORIZON.*bounded Evolution Impact/);
+  assert.match(evo,/Feature at LATER_HORIZON when a bounded Impact suffices/);
+  assert.match(evo,/Never keep two competing copies of the same Feature future meaning/);
+  assert.match(evo,/REALIZATION_NEAR `NEW` or `CHANGED` Feature.*complete `TM-FEATURE`/);
 });
-
-
 
 test('Proposal Target Result forms an ordinary candidate Target Instance before semantic selection without granting realization authority',()=>{
   const proposal=read('planning/documentation/idtspe-methodology/active/idtspe-core/resolution/proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md');
@@ -299,7 +296,8 @@ test('Visual and Reference profiles use fixed Module-defined Unit inventory rath
   }
   const visualRule=read('planning/documentation/idtspe-methodology/active/profiles/visual-production-2d/runtime/UNIT-DISPOSITION-AND-LENS-CHECKPOINTS.md');
   assert.match(visualRule,/do not decide whether the Unit exists/);
-  assert.match(visualRule,/normal Proposal\/Decision authority only when the disposition itself is a material unresolved choice/);
+  assert.match(visualRule,/material Finding exists: linked Proposal follows canonical Finding\/Proposal lifecycle/);
+  assert.match(visualRule,/semantic Decision\/selection only when the RE route actually contains a material unresolved choice/);
   assert.doesNotMatch(visualRule,/USER selection when not already current/);
 });
 
@@ -370,8 +368,14 @@ test('Application Definition keeps Responsibility Boundary inside each Benefit a
   assert.doesNotMatch(app,/\| `RU-APP-06` \| Responsibility Boundary \|/);
   assert.doesNotMatch(app,/#### `RU-APP-06` processing envelope/);
   assert.match(app,/User Need[\s\S]*User Receives[\s\S]*Responsibility Boundary[\s\S]*Additional Info/);
-  assert.match(app,/Responsibility Boundary` is \*\*Benefit-local\*\*/);
+  assert.match(app,/Responsibility Boundary \/ Constraints` is \*\*Benefit-local\*\*/);
   assert.match(app,/Summary:[\s\S]*why it is needed \/ what overall Benefit it provides[\s\S]*How it roughly works:/i);
+  assert.match(app,/How it roughly works — required; short, conceptual, not detailed behavior\/architecture/i);
+  assert.match(app,/SDS\.APPLICATION-BENEFIT-BOUNDARY-CONSTRAINTS/);
+  assert.match(app,/AB-X \/ BC-Y/);
+  const feature=read('planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-FEATURE.md');
+  assert.match(feature,/AB-\* \/ BC-\*/);
+  assert.doesNotMatch(app,/How it roughly works — required when needed for comprehension/i);
   assert.match(app,/primary purpose is to make one or several Application Benefits understandable through concrete real-life situations/i);
   assert.match(app,/one Benefit may appear in several Representative RLS|One Benefit may appear in several Representative RLS/i);
   assert.match(app,/RLS must not decompose Target internals/i);
@@ -379,10 +383,11 @@ test('Application Definition keeps Responsibility Boundary inside each Benefit a
   assert.match(scenario,/Benefit manifestation \/ closure/);
   assert.match(scenario,/Benefits remain upstream Application Definition authority/);
   assert.match(lens,/Canonical Benefit\/RLS schemas and authority are owned by/);
-  assert.match(lens,/Benefit Responsibility Boundaries/);
+  assert.match(lens,/SDS\.APPLICATION-BENEFIT-BOUNDARY-CONSTRAINTS/);
+  assert.match(lens,/Responsibility Boundary \/ Constraints/);
   assert.doesNotMatch(lens,/TM-APPLICATION-DEFINITION`: `RU-APP-01\.\.RU-APP-07`/);
   assert.doesNotMatch(local,/## RU-APP-0?6 .*Responsibility Boundary/);
-  assert.match(local,/## RU-APP-03 — Application Benefits[\s\S]*Responsibility Boundary:/);
+  assert.match(local,/## RU-APP-03 — Application Benefits[\s\S]*Responsibility Boundary \/ Constraints:/);
   assert.match(local,/## RU-APP-05 — Application Concept[\s\S]*\*\*Summary:\*\*[\s\S]*\*\*How it roughly works:\*\*/);
 });
 

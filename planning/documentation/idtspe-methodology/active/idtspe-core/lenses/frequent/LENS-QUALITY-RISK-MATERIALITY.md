@@ -1,3 +1,4 @@
+<a id="lens-quality-risk-materiality"></a>
 # LENS-QUALITY-RISK-MATERIALITY — Cross-Cutting Quality / Risk Materiality
 
 Lens ID: `LENS-QUALITY-RISK-MATERIALITY`

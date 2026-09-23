@@ -12,6 +12,10 @@ planning/documentation/idtspe-methodology/active/ai-reviewability/AI-OUTPUT-REVI
 selected current semantic/documentation/application owners affected by the diff
 ```
 
+> Semantic Owner Dependencies
+> - `CONTEXTUALIZES` [`Finding Disposition`](idtspe-methodology/active/idtspe-core/resolution/findings/FINDING-DISPOSITION.md#resolution-finding-disposition) — `RESOLUTION.FINDING-DISPOSITION`
+> - `CONTEXTUALIZES` [`Proposal / Decision Lifecycle`](idtspe-methodology/active/idtspe-core/resolution/proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md#resolution-proposal-decision-lifecycle) — `RESOLUTION.PROPOSAL-DECISION-LIFECYCLE`
+
 Practical example: [`examples/REVIEW-DIFF-PRACTICAL-EXAMPLE.md`](examples/REVIEW-DIFF-PRACTICAL-EXAMPLE.md)
 
 ## 1. Core Distinction
@@ -39,22 +43,22 @@ If the diff or required owners are incomplete, report the missing evidence inste
 
 ## 3. Finding And Proposal Boundary
 
-Do not manufacture a Proposal for every typo or mechanical defect.
+Do not manufacture a **material Finding** for every typo or non-material mechanical defect.
 
 ```text
-confirmed mechanical defect
-→ factual finding
-→ direct corrective recommendation when one route is clearly justified;
+non-material typo / mechanical cleanup
+→ factual correction
+→ no Finding/Proposal ceremony required
 
-material answer-seeking uncertainty / alternative correction
-→ ordinary Proposal candidate(s)
-→ canonical Proposal Candidate Review;
+material Finding
+→ canonical Finding Disposition
+→ linked IDTSPE Proposal under the canonical Proposal lifecycle
 
-unresolved product / architecture / ownership choice
-→ explicit user-decision candidate only when evidence cannot justify one route safely.
+material unresolved semantic/local choice
+→ Proposal review/selection only to the depth justified by the RE route
 ```
 
-A confirmed problem is not itself automatically a Proposal. A proposed semantic correction can be a Proposal and is reviewed through the canonical Proposal lifecycle; the legacy `собери идеи` alias routes to the same current semantics.
+A confirmed problem is not selection authority. Once a problem is admitted as a **material Finding**, its linked Proposal exists even for deterministic `RE-0`; that Proposal records the correction/result route without inventing a new semantic Decision. Proposal persistence remains separate.
 
 ### 3A. Finding Resolution Escalation
 
@@ -72,7 +76,7 @@ Resolution Escalation
 
 Route the finding to the smallest correct subject. For target-result findings prefer the affected Unit Resolution when that Unit owns the responsibility; use a Contextual Unit only for a new independently useful bounded local responsibility; use Target Formation/another owner directly when appropriate.
 
-Under USER-gated interaction the next corrective action may still be shown as a Generic AI Proposal (GIP) at any RE category. Do not manufacture formal Proposal State for an obvious deterministic correction.
+Under USER-gated interaction the next corrective action may still be shown as a Generic AI Proposal (GIP) at any RE category. The GIP presents/references the linked IDTSPE Proposal when one exists; for deterministic `RE-0`, the linked Proposal records the already-implied correction and does not create a new semantic selection/Decision surface.
 
 ## 4. Candidate Review For Material Corrective Proposals
 

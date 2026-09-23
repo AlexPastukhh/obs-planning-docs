@@ -1,3 +1,4 @@
+<a id="lens-dependency-change-impact"></a>
 # LENS-DEPENDENCY-CHANGE-IMPACT — Dependency / Change Surface / Blast Radius
 
 Lens ID: `LENS-DEPENDENCY-CHANGE-IMPACT`

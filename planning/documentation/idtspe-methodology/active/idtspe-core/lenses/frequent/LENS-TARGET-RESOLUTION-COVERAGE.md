@@ -1,3 +1,4 @@
+<a id="lens-target-resolution-coverage"></a>
 # LENS-TARGET-RESOLUTION-COVERAGE — Target Resolution Coverage
 
 Lens ID: `LENS-TARGET-RESOLUTION-COVERAGE`
@@ -30,8 +31,8 @@ Use only material current context, proportionally:
 Target purpose / desired result
 Target scope/problem surface
 current task-derived + universal Core Target Resolution Requirements
-selected Target Module Model / Target Module Instance when present
-Module-defined Unit inventory and dispositions
+applied Target Module Models / 0..N Target Module Instance portions when present
+Module-defined Unit inventories and dispositions for each applied Model
 applicable Core-defined Units
 actually formed Contextual Units
 open material concerns / Findings / Q/R/P
@@ -65,7 +66,7 @@ Is every material Requirement sufficiently covered or explicitly OPEN/BLOCKED/DE
 Does any material question/concern reveal a missing or poorly formed Requirement?
 Does any Requirement need bounded work but have no suitable Unit responsibility?
 Does a Unit exist without a material responsibility it can justify?
-Does the selected Target Module cover the recurring part of the current scope well enough to remain useful?
+Does each applied Target Module cover a compatible recurring part of the current scope well enough to remain useful, without hiding an independent responsibility that belongs on another Target?
 Should uncovered meaning use an applicable Core-defined Unit, a Contextual Unit, or a scope split/new Target?
 Are any material concerns being lost because their natural owner/destination is unclear?
 ```

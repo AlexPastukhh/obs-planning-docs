@@ -417,24 +417,26 @@ current task/Sources
 → scan the applicable Target Module Registry
 → inspect plausible Target Module Models
 → apply applicability / Entry Point / Source prerequisites
-→ APPLIED(TM-X)
+→ collect zero or more mutually compatible applicable Models
+   whose responsibilities belong inside this bounded Target
+→ APPLIED(TM-A, TM-B, ...)
    or NO_APPLICABLE_TARGET_MODULE
 ```
 
 This is **not a task Requirement**. It is a Target Formation operation/rule whose observable state may reopen when scope/Sources/material requirements change.
 
-When a reusable Model is applied:
+When one or more reusable Models are applied:
 
 ```text
-Target Module Model
-→ Target Module Instance
-→ use prepared recurring-scope analysis to recognize/formulate
+for each applied Target Module Model
+→ one Target Module Instance portion for this Target/basis
+→ use that Model's prepared recurring-scope analysis to recognize/formulate
    actual Requirements grounded in the current task/scope/Sources
-→ map those Requirements to prepared Module-defined Unit Definitions
-→ instantiate the complete Module-defined Unit inventory
+→ map those Requirements to that Model's prepared Module-defined Unit Definitions
+→ instantiate that applied Model's complete Module-defined Unit inventory
 ```
 
-When no reusable Model applies, contextual analysis performs that scope/Requirement decomposition locally. A selected Model does not need to cover the whole concrete Target; contextual/Core completion handles the remainder.
+Several distinct Models may contribute to the same bounded Target when their responsibilities are mutually compatible and naturally belong inside that Target. A Model whose responsibility is actually independent belongs on its natural separate Target rather than being hidden as another portion. When no reusable Model applies, contextual analysis performs the scope/Requirement decomposition locally. Applied Models do not need to cover the whole concrete Target; contextual/Core completion handles the remainder.
 
 ---
 
@@ -444,8 +446,8 @@ When no reusable Model applies, contextual analysis performs that scope/Requirem
 
 ```text
 current task/scope exposes Requirement R
-→ selected Target Module recognizes R-like need
-→ prepared Module-defined Unit U covers that responsibility
+→ one applied Target Module recognizes R-like need
+→ prepared Module-defined Unit U from that Model covers that responsibility
 → instantiate the complete Module-defined Unit inventory
 → execute substantive Unit Resolution only where material
 → Current Result Content contributes to Requirement coverage
@@ -554,7 +556,7 @@ Target identity
 + purpose/result intent
 + bounded scope
 + Source/Relation basis
-+ Target Module Instance when reusable coverage applies
++ 0..N Target Module Instance portions when reusable coverage applies
 + applicable Core-defined Unit instances
 + defined Contextual Unit responsibilities when already known
 + applicable/open Target Resolution Requirements
@@ -611,7 +613,7 @@ A reusable Target Resolution Coverage Lens may inspect:
 ```text
 Target scope
 material Requirements
-Target Module prepared coverage
+applied Target Module prepared coverage
 Core-defined Unit coverage
 Contextual Unit coverage
 open material concerns
@@ -658,7 +660,7 @@ Target Module Model = prepared reusable analysis/recognition/coverage, not seman
 Requirement ≠ Unit
 Lens ≠ Requirement coverage owner by itself
 prepared Unit reference ≠ automatic Unit execution
-Module-defined Unit inventory = complete for selected Target Module Instance
+Module-defined Unit inventory = complete for each applied Target Module Instance portion
 Core-defined Unit inventory = applicability-driven, not globally predeclared
 Contextual Unit = DEFINE locally, then EXECUTE
 Contextual Unit ≠ automatically reusable

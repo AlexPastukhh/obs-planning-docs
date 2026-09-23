@@ -1,3 +1,4 @@
+<a id="lens-shared-cross-cutting-responsibility"></a>
 # LENS-SHARED-CROSS-CUTTING-RESPONSIBILITY — Shared / Cross-Cutting Ownership
 
 Lens ID: `LENS-SHARED-CROSS-CUTTING-RESPONSIBILITY`

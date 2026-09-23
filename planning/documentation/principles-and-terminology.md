@@ -324,7 +324,7 @@ non-owner
 → must not silently become a second authority for the base meaning
 ```
 
-Contextual repetition is allowed when local comprehension or execution materially benefits from seeing the meaning in place. When that repeated/clarified passage could reasonably be mistaken for an independent rule, it MUST identify the canonical owner through a tracked `Semantic Owner Dependency` rather than relying on prose similarity.
+Contextual repetition, quotation, paraphrase and clarification are allowed when local comprehension or execution materially benefits from seeing the meaning in place. A **material non-owner passage that repeats or clarifies normative owner meaning MUST identify the canonical owner through a tracked `Semantic Owner Dependency` with a direct owner link**; when it targets one semantic section, use that section's stable explicit anchor. The local passage owns only its context-specific delta/consequence, never the repeated base meaning. Incidental non-normative mentions do not require dependency ceremony.
 
 If changing one semantic rule repeatedly requires synchronized normative edits across several apparent owners, treat that as an ownership smell: first check whether the meaning is duplicated and should be consolidated under one owner. Do not mechanically synchronize competing normative copies merely to make current wording match.
 

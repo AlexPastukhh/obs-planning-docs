@@ -39,11 +39,11 @@ A Target Module therefore packages reusable analysis/coverage; it does not seman
 
 ## Module-Defined Unit Inventory Projection
 
-Applying a Target Module Model forms a Target Module Instance with the complete Module-defined Unit inventory required by the Meta-Model. Each reusable Unit Definition conforms to the canonical Target Work Unit contract; this projection does not restate Collection/Slot/simple-composite/runtime-set rules.
+Applying one Target Module Model forms one Target Module Instance portion with the complete Module-defined Unit inventory required by the Meta-Model. Several distinct compatible Models may be applied to the same bounded Target; this rule describes the contribution of each applied Model independently. Each reusable Unit Definition conforms to the canonical Target Work Unit contract; this projection does not restate Collection/Slot/simple-composite/runtime-set rules.
 
 ```text
-selected Target Module Model
-→ Target Module Instance
+each applied Target Module Model
+→ one Target Module Instance portion
 → complete Module-defined Unit inventory
 → each Unit follows the canonical Target Work Unit contract
 ```
@@ -68,7 +68,7 @@ Reusable questions remain guidance on the natural Requirement/Unit/Slot subject.
 
 ## Contextual Completion
 
-A selected Target Module may cover only part of the concrete Target. Missing material needs remain visible and are completed through the canonical Target Formation flow: direct coverage where sufficient, applicable Core-defined Units, Contextual Slot only when the missing formal role remains inside one Unit responsibility, or Contextual Unit when a distinct bounded responsibility remains.
+An applied Target Module may cover only part of the concrete Target. Missing material needs remain visible and are completed through the canonical Target Formation flow: direct coverage where sufficient, applicable Core-defined Units, Contextual Slot only when the missing formal role remains inside one Unit responsibility, or Contextual Unit when a distinct bounded responsibility remains.
 
 ## Target Step Result Projection
 

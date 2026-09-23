@@ -23,6 +23,13 @@ TM-EVOLUTION-STEP owns: unrealized SDS target-state planning when state is expec
 this guide owns: cross-component temporal/semantic relationships and readiness guidance
 ```
 
+<a id="sds-semantic-traversal-order"></a>
+## SDS semantic traversal / presentation order
+
+Responsibility ID: `SDS.SEMANTIC-TRAVERSAL-ORDER`
+
+When orienting a bounded SDS state or displaying either Planning Resolution State Collection, group applicable subjects in this order: Application Definition → Feature / Scenario / Screen → Domain → Slice → Shared → Evolution → Exact. This is semantic traversal/presentation orientation, not a phase workflow, approval ladder, creation order or requirement to populate every family. The PRS `CURRENT-FOCUS / PRIORITY PROJECTION` separately calls attention to P1/P2/P3 items without changing this Collection grouping.
+
 ## 1. Temporal Authority First
 
 Before deciding which SDS component should produce meaning, first ask whether the subject is upstream Application intent or a downstream owner state. Then classify downstream owner meaning as current-realized vs future-unrealized target state.
@@ -58,7 +65,7 @@ current realized downstream owners / implementation / Evidence
 → direct `Entering From` semantic predecessor relation(s), or None
 → proportionate downstream future-state production:
      one or more Feature target states
-       NEW/CHANGED → complete Target Feature Body
+       REALIZATION_NEAR NEW/CHANGED → complete Target Feature Body; LATER_HORIZON may retain bounded Feature Impact
        unchanged → current Feature reference
      Scenario / Screen / Domain / Slice / Shared Evolution Impacts as material
      Domain / Slice discovery when useful
@@ -105,7 +112,7 @@ Scenario = journey composition / linking / continuity / Benefit manifestation/cl
 Screen   = spatial/navigation composition / Feature presence / routes
 ```
 
-When a Behavioral/Mixed Step represents changed Feature behavior, every represented NEW/CHANGED Feature on the active candidate/selected route uses one complete Target Feature Body while unchanged Feature behavior is referenced. Scenario and Screen consequences are first represented through bounded Step `Evolution Impact` Units; when the requested candidate/selected Target Result depth needs complete changed journey/spatial meaning, form the complete post-Step Target Scenario/Screen Body. Candidate bodies remain under their enclosing Proposal/branch authority until selected; canonical integration/materialization still requires normal selection. Implementation-only foundation Steps need not invent a Feature target. A finding in one proposes/revalidates another owner; it never silently edits another.
+When a Behavioral/Mixed Step represents changed Feature behavior, every REALIZATION_NEAR NEW/CHANGED Feature on the active candidate/selected route uses one complete Target Feature Body; later-horizon Feature work may remain a bounded Impact until complete Body depth is needed while unchanged Feature behavior is referenced. Scenario and Screen consequences are first represented through bounded Step `Evolution Impact` Units; when the requested candidate/selected Target Result depth needs complete changed journey/spatial meaning, form the complete post-Step Target Scenario/Screen Body. Candidate bodies remain under their enclosing Proposal/branch authority until selected; canonical integration/materialization still requires normal selection. Implementation-only foundation Steps need not invent a Feature target. A finding in one proposes/revalidates another owner; it never silently edits another.
 
 When reviewing implemented current truth, the existing current owners remain the direct authorities.
 

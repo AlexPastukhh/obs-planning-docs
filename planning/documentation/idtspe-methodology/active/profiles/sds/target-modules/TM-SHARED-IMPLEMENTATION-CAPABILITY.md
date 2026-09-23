@@ -39,6 +39,11 @@ A prepare-now seam in current implementation requires its own current justificat
 
 Reject extraction for common utility dumping, superficial duplication, one-Slice concern without real reuse/evolution pressure, Slice-specific policy, Domain semantics, or framework technique without independently coherent responsibility.
 
+<a id="sds-commodity-shared-no-owner"></a>
+## Commodity shared no-owner gate
+
+Shared reuse alone does not justify a Shared semantic owner. When the realization is **commodity/obvious**, has **low independent complexity**, and has **non-custom semantics**, prefer no Shared Capability owner even if several Slices use it. Examples: a simple string parser, thin wrapper, routine helper or library/framework feature. Form a Shared owner only when it has independent durable responsibility such as custom policy/invariant, nontrivial failure/recovery, compatibility/evolution boundary, security/operability guarantee or applicability/bypass policy. Preserve the natural `IR-SLICE-*` owner and use an adjacent selected implementation realization reference. One optional retained Decision may coordinate a common selected library/module for several Slice requirements, for as long as the USER finds it useful; this is a selection trace, never a surrogate Shared owner.
+
 ## Source Contract
 
 Primary sources are selected `IR-SLICE-*` identities and concrete consumer Slices **in the state being represented**: current realized Slices for a current Shared owner, or current/Target Slice Bodies for a future Target Shared Body. Feature/Domain/Evolution/current implementation evidence may help classify ownership but do not replace the consumer requirement trace.

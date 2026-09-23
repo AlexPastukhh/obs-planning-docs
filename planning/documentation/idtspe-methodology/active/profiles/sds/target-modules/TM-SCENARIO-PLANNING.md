@@ -6,10 +6,9 @@ Entry Point: `tm.scenario`
 Role: journey-composition Target Module
 Compatibility rule: canonical ID/path `TM-SCENARIO-PLANNING` is retained; the semantic owner is Scenario Journey Composition.
 
-> Semantic Owner Dependency
-> Type: `EXTENDS`
-> Responsibility: `TARGET-MODULE.META-MODEL`
-> Owner: [Target Module Meta-Model](../../../idtspe-core/target-modules/TARGET-MODULE-MODEL.md#target-module-meta-model)
+> Semantic Owner Dependencies
+> - Type: `EXTENDS`; Responsibility: `TARGET-MODULE.META-MODEL`; Owner: [Target Module Meta-Model](../../../idtspe-core/target-modules/TARGET-MODULE-MODEL.md#target-module-meta-model)
+> - Type: `CONTEXTUALIZES`; Responsibility: `SDS.APPLICATION-BENEFIT-BOUNDARY-CONSTRAINTS`; Owner: [Application Benefit Boundary / Constraints](TM-APPLICATION-DEFINITION.md#sds-application-benefit-boundary-constraints)
 
 ## Purpose
 
@@ -43,7 +42,7 @@ A Scenario may own proportionally:
 
 Typical sources:
 
-- Application Definition / Need / one or more `AB-*` Benefits when applicable;
+- Application Definition / Need / one or more `AB-*` Benefits when applicable; when a journey step manifests only a bounded Benefit boundary/constraint clause, the Scenario may prefer a precise `AB-* / BC-*` reference if available without claiming whole-Benefit realization;
 - selected Features;
 - Screen topology;
 - external actor/system facts;
@@ -135,11 +134,11 @@ A compact representation may look like:
 ```text
 Scenario: <ID / name>
 Actor / context: ...
-Benefit refs: <AB-* ...>   # one or several when material
+Benefit refs: <AB-* [ / BC-* ] ...>   # whole Benefit, or an addressable boundary/constraint clause when that is the real scope
 
 Journey:
   Feature A result
-    → [AB-01 manifests/closes]   # optional path-step annotation when useful
+    → [AB-01 manifests/closes] or [AB-01 / BC-02 manifests]   # optional; use clause precision only when it is the real scope
   → actor/external linking action
   → Feature B result
   ├─ branch ...
@@ -156,7 +155,7 @@ E2E Proof Intent: optional
 ```
 
 
-Application Benefits remain upstream Application Definition authority. A Scenario may manifest/close one or several `AB-*` items across different `SPS-*` path steps or at the terminal journey result. Those markers express where the user experiences upstream value; they do not transfer Benefit semantics into the Scenario.
+Application Benefits remain upstream Application Definition authority. A Scenario may manifest/close one or several `AB-*` items across different `SPS-*` path steps or at the terminal journey result. When only one owned boundary/constraint clause is evidenced at a step, a precise `AB-* / BC-*` reference may be used if available; it does not claim that the Scenario/step realizes the whole Benefit. Those markers express where the user experiences upstream value; they do not transfer Benefit semantics into the Scenario.
 
 ## Peer Boundaries
 
@@ -178,7 +177,7 @@ The same Feature may participate in several Scenarios. A Scenario may traverse s
 Prefer selected semantic owners and current Evidence over stale copied scenario prose.
 
 ```text
-Application Definition / Need / one or more `AB-*` Benefits when relevant
+Application Definition / Need / one or more `AB-*` Benefits when relevant; use `AB-* / BC-*` when only an addressable Benefit boundary/constraint clause is the real source
 + selected Feature results
 + selected Screen/external context
 + current implementation/Evidence

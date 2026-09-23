@@ -68,7 +68,9 @@ A material formal Proposal is an explicit candidate answer/solution/approach tha
 Proposal
 → addresses → current Target Goal / Desired Outcome context
              | Question
+             | Risk
              | Problem
+             | Finding / correction driver
 ```
 
 For approval-relevant formal Proposals, the motivating Question and/or Problem must be visible explicitly, inline or by reference. A missing material driver is an unresolved planning gap rather than a free-floating Proposal.
@@ -96,20 +98,40 @@ A GIP can exist with no IDTSPE Proposal. An IDTSPE Proposal can exist without be
 
 ### Finding-to-Proposal Handoff
 
-[`Finding Disposition`](../findings/FINDING-DISPOSITION.md#resolution-finding-disposition) owns whether a Finding is deterministic/local, needs revalidation, or establishes a material semantic-change surface. When that disposition establishes a **material candidate semantic resolution** — canonically `RE-2` or `RE-4`, or an equivalent routed case — the AI MUST form or refine a formal IDTSPE Proposal under this lifecycle before semantic selection/integration. Preserve the Finding as driver/provenance and target the smallest natural affected owner/subject.
+[`Finding Disposition`](../findings/FINDING-DISPOSITION.md#resolution-finding-disposition) owns whether a Finding is deterministic/local, needs revalidation, or establishes a material semantic-change surface. For every **material Finding** that reaches disposition, the AI MUST form or refine at least one linked IDTSPE Proposal under this lifecycle so the candidate correction/result/realization route is explicit and addressable in the current Work Context. Preserve the Finding as driver/provenance and target the smallest natural affected owner/subject.
 
 ```text
-Finding Disposition establishes material semantic change
-→ formal IDTSPE Proposal
+material Finding
+→ Finding Disposition / RE-* classification
+→ linked IDTSPE Proposal
+→ proportional Proposal review appropriate to its current state
+
+RE-0
+→ deterministic-correction Proposal
+→ accepted semantic meaning is already fixed; Proposal records the repair/result route
+
+RE-1
+→ local-realization Proposal(s)
+→ compare/select only when local alternatives materially differ
+
+RE-2 / RE-4
+→ formal semantic-change Proposal at the affected owner
 → Proposal Semantic Change Impact Review
-→ normal selection / Decision authority
+→ normal selection / Decision authority before semantic integration
+
+RE-3
+→ revalidation-gated Proposal
+→ BLOCKED_BY_REVALIDATION / not selectable
+→ upstream revalidation refines or reclassifies it before selection
 
 GIP, if useful
-→ presents/references that IDTSPE Proposal
+→ presents/references the linked IDTSPE Proposal
 → never substitutes for it
 ```
 
-`RE-0` deterministic/current-semantic completion does not gain a Proposal merely for ceremony. `RE-3` revalidates first; it enters this Proposal lifecycle only if revalidation establishes an actual candidate semantic change. `RE-1` remains inside accepted meaning unless the local candidate independently needs formal Core lifecycle/addressability.
+This handoff does not make every Finding a new Decision surface. A deterministic `RE-0` Proposal can record an already-implied correction without requiring semantic selection; `RE-3` can carry a blocked candidate direction without pretending the upstream change is already known. The Proposal lifecycle supplies candidate identity/review/addressability; Finding Disposition still owns RE classification.
+
+A formal or linked IDTSPE Proposal does **not** imply physical persistence. It may exist only in current Work Context/conversation. Retention beyond the immediate turn and any dedicated file/register representation remain separate proportional decisions under this lifecycle and Representation / P-14.
 
 ## 3A. Proposal Payload And Unit Resolution
 
@@ -209,6 +231,13 @@ Use a Planning Branch only when an alternative needs a materially deep downstrea
 
 Several merely related Proposals do not require a named group. Use ordinary relations/review grouping unless a compatible candidate bundle actually represents one selectable approach.
 
+<a id="resolution-recursive-proposal-qrp"></a>
+## Recursive Proposal / Q/R/P Resolution Graph
+
+A subject may have `0..N` Proposals; a Proposal may expose or address `0..N` Questions/Risks/Problems; each Q/R/P may in turn be addressed by `0..N` Proposals, recursively. Keep links and driver provenance at the smallest meaningful subject. The graph does not require a new ProposalTree/ResolutionGraph State kind or Planning Branch for every recursion. Selection may accept one Proposal, multiple mutually compatible Proposals, or a compatible subgraph/Candidate Bundle. Check dependencies and conflicting candidates before selection; never infer acceptance for adjacent nodes merely because one branch was accepted.
+
+A Proposal file may be a completely ordinary candidate Target Instance at its intended final path. The enclosing Proposal/PRS state determines authority, down to a Target, Unit or Unit Slot where one file contains mixed statuses; physical persistence alone determines neither Proposal status nor acceptance.
+
 ## 4A. Proposal Grounding Before Presentation
 
 A material Proposal should not be presented as adequately formed when a missing **material USER-only fact, preference, constraint or USER-owned choice** can materially change the candidate itself.
@@ -303,6 +332,13 @@ Proposal review
 
 A Proposal does not "rewrite a Source". It may conflict with a Source, require additional Evidence, challenge Source authority/currentness, or propose changing upstream semantic owner meaning whose later accepted result becomes a downstream Source.
 
+<a id="resolution-decision-retention"></a>
+## Decision retention and integration
+
+Accepted selected meaning flows to its natural owner. Retain a Tracked Decision when the USER requests it or its choice/context has continuing coordination, library/dependency, revalidation, migration, checkpoint or residual-Q/R/P value. `Q/R/P = 0..N`; residual Q/R/P is neither a prerequisite nor a retention deadline. The USER determines whether a Decision persists for one Step, to a checkpoint, long term, indefinitely or only through integration. A retained Decision traces selection and coordination without becoming a second owner of accepted Requirements or owner content. A Decision can disappear from active state when retention has no value and the USER has not requested it.
+
+[Planning Resolution State](../../target-modules/TM-PLANNING-RESOLUTION-STATE.md#tm-planning-resolution-state) holds bounded active planning and deliberately retained decisions as Collection Items. [Carry-Forward](../continuation/RESOLUTION-CARRY-FORWARD-PROJECTION.md#resolution-carry-forward) is a continuation projection over that state.
+
 ## 6. Selection Outcomes
 
 Material Proposal review may lead to:
@@ -314,7 +350,7 @@ REVISE
 DEFER
 ```
 
-These are working lifecycle outcomes; they do not require persisted status metadata on every Proposal.
+These are working lifecycle outcomes; they do not require persisted status metadata on every Proposal. Likewise, merely forming a Finding-linked or explicitly requested Proposal does not require a dedicated Proposal file or register entry.
 
 Selection is exact and partial when necessary:
 
@@ -359,7 +395,7 @@ A Question may be answered and integrated into Result Content without any Decisi
 
 Accepted material selection becomes authoritative for the planning/semantic state being represented through normal Decision semantics and integration into the affected Unit/Target/natural owner. Selection never implies realization when the active profile has a temporal-host boundary.
 
-A separate explicit/durable Decision record is proportional. Retain it when removing the Decision and keeping only Result Content would lose material future value, for example:
+A separate explicit/durable Decision record is proportional. Retain it whenever the USER asks or the selection has useful coordination/history value, even without residual Q/R/P. Examples of useful retained context:
 
 ```text
 why a non-obvious choice was made

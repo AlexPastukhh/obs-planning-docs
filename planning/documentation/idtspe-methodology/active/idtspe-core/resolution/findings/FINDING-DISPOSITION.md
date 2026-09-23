@@ -365,27 +365,44 @@ The **most-upstream affected owner** controls escalation. Do not hide `RE-3` / `
 
 ### Proposal / Decision Boundary
 
-Interaction gating and formal Core semantics remain distinct:
+Interaction gating and formal Core semantics remain distinct, but a material Finding is not considered fully dispositioned for review/output purposes until it has a linked Proposal representation of its current resolution route.
 
 ```text
-Finding
-→ RE-0 deterministic/current-semantic completion
-   → resolve without manufacturing a formal Proposal
-→ RE-1 local realization choice inside accepted meaning
-   → formal Proposal only when the local candidate itself needs Core lifecycle/addressability
-→ RE-2 current-owner semantic change
-   → AI MUST form or refine a formal IDTSPE Proposal before semantic selection
-→ RE-3 upstream revalidation
-   → revalidate first; do not pre-emptively propose an upstream semantic change
-→ RE-4 upstream semantic change
-   → AI MUST form or refine a formal IDTSPE Proposal at the affected upstream owner before semantic selection
+material Finding
+→ Finding Disposition / RE-* classification
+→ form or refine at least one linked IDTSPE Proposal
+   that preserves the Finding as driver/provenance
+
+RE-0 deterministic/current-semantic completion
+→ linked deterministic-correction Proposal
+→ candidate Result/repair route is already implied by accepted meaning
+→ no new semantic selection/Decision is required merely to establish that meaning
+
+RE-1 local realization choice inside accepted meaning
+→ linked local-realization Proposal(s)
+→ selection is needed only when several local routes materially differ
+
+RE-2 current-owner semantic change
+→ linked formal IDTSPE Proposal at the current natural owner
+→ MUST be reviewed/selected before semantic integration
+
+RE-3 upstream revalidation
+→ linked revalidation-gated Proposal
+→ state is BLOCKED_BY_REVALIDATION / not selectable
+→ revalidate earliest affected upstream owner, then refine/reclassify the Proposal
+
+RE-4 upstream semantic change
+→ linked formal IDTSPE Proposal at the affected upstream owner
+→ MUST be reviewed/selected before semantic integration
 ```
 
-`RE-*` categorizes the Finding's semantic resolution distance, not a Proposal. Whenever disposition establishes a **material candidate semantic resolution** rather than an already-determined correction, the candidate MUST enter the canonical formal **IDTSPE Proposal** lifecycle before it can be selected or integrated. The AI is responsible for forming/refining that Proposal with the smallest natural semantic subject, driver/provenance and candidate meaning needed by the Proposal owner. That Proposal receives the canonical Proposal Semantic Change Impact Review before material selection.
+`RE-*` categorizes the Finding's semantic resolution distance, not the Proposal itself. The linked Proposal records the candidate correction/result/realization route appropriate to that classification. For `RE-0`, this is an addressable deterministic correction proposal rather than a new semantic-choice surface. For `RE-3`, it is an explicitly blocked continuation candidate rather than a premature upstream semantic selection. For `RE-2`/`RE-4`, it is the formal semantic-change candidate required before selection/integration.
 
-A Session Generic AI Proposal (`GIP`) is **not** a substitute for this semantic handoff. A GIP may present/reference the formal IDTSPE Proposal when an interaction-level action/authorization surface is useful, but the semantic candidate itself remains the IDTSPE Proposal and the GIP must not duplicate or replace its authority.
+The AI is responsible for forming/refining the linked Proposal with the smallest natural semantic subject, Finding driver/provenance and candidate meaning/route needed by the Proposal owner. Every material Proposal receives the canonical Proposal Semantic Change Impact Review proportionally; a blocked `RE-3` Proposal may defer material selection review until revalidation makes its candidate selectable.
 
-A deterministic `RE-0` correction must not manufacture a formal Proposal/Decision surface solely for ceremony. `RE-3` establishes revalidation pressure, not a Proposal, until revalidation proves that semantic change is actually required. A material `RE-2`/`RE-4` requires the formal IDTSPE Proposal handoff above; exact Proposal retention/Decision semantics remain owned by the Proposal/Decision contract.
+A Session Generic AI Proposal (`GIP`) is **not** a substitute for this semantic handoff. A GIP may present/reference the IDTSPE Proposal when an interaction-level action/authorization surface is useful, but the semantic candidate itself remains the IDTSPE Proposal and the GIP must not duplicate or replace its authority.
+
+Proposal existence is independent of persistence. A linked Finding Proposal may remain transient in the current Work Context/conversation; neither `RE-0..RE-4` nor "formal IDTSPE Proposal" implies a dedicated file, register entry or other physical persistence. Retention/physical representation remains owned by the Proposal/Decision lifecycle plus Representation / P-14.
 
 ### Temporal Authority Specialization
 

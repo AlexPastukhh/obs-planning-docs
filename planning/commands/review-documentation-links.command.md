@@ -25,7 +25,7 @@ Scope: focused read-only documentation-navigation review routed through the exis
     "planning/documentation/principles-and-terminology.md",
     "planning/documentation/idtspe-methodology/active/idtspe-core/lenses/required/LENS-ARTIFACT-BOUNDARY-ADDRESSABILITY.md"
   ],
-  "expectedOutput": "One compact Documentation Link Review containing scope, Broken Links, Missing Useful Direct Links, Misleading/Stale Links, Wrong Navigation Mechanism when material, and verdict OK or NEEDS_CORRECTION. Distinguish mechanical link validity from semantic/navigation correctness.",
+  "expectedOutput": "One compact Documentation Link Review containing scope, Broken Links, Missing Useful Direct Links, Misleading/Stale Links, Wrong Navigation Mechanism when material, material Findings with their linked Proposal(s), and verdict OK or NEEDS_CORRECTION. Distinguish mechanical link validity from semantic/navigation correctness.",
   "permissionMode": "read-only",
   "keyReminders": [
     "Ordinary relative Markdown links are the default lightweight navigation mechanism when direct traversal is materially useful.",
@@ -34,6 +34,7 @@ Scope: focused read-only documentation-navigation review routed through the exis
     "Flag important plain-text references that should be direct links when readers otherwise must search manually.",
     "Flag links that technically resolve but lead to stale, legacy or non-authoritative destinations when a current owner exists.",
     "Use stable explicit anchors when fragment-level addressability is useful, and a registry when a many-owner overview is more useful than many direct links.",
+    "When this review surfaces a material Finding, complete canonical Finding Disposition and expose its linked Proposal; Proposal persistence remains separate.",
     "Do not mutate repository files under this command."
   ],
   "userTarget": "<documentation file/folder/scope to review>",
@@ -46,7 +47,7 @@ Scope: focused read-only documentation-navigation review routed through the exis
     {
       "responsibilityId": "UC-DOC-REVIEW-DOCUMENTATION",
       "path": "planning/documentation/use-cases/UC-DOC-REVIEW-DOCUMENTATION.md",
-      "anchor": "uc-doc-review-documentation-review-repository-documentation",
+      "anchor": "uc-doc-review-documentation",
       "why": "Owns repository documentation review; link/addressability checks are performed inside that review route.",
       "role": "PRIMARY_OWNER",
       "readMode": "REQUIRED"

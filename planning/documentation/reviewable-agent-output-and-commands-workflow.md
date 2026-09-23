@@ -181,6 +181,21 @@ Do not apply this boundary to package-producer commands that explicitly stop at 
 
 ## IDTSPE Review / Recheck Coverage Projection
 
+> Semantic Owner Dependency
+> Type: `CONTEXTUALIZES`
+> Responsibility: `REVIEW.STRATEGY-COVERAGE`
+> Owner: [Review Strategy / Coverage](idtspe-methodology/active/ai-reviewability/REVIEW-STRATEGY-AND-COVERAGE-CONTRACT.md#review-strategy-coverage)
+
+> Semantic Owner Dependency
+> Type: `CONTEXTUALIZES`
+> Responsibility: `RESOLUTION.FINDING-DISPOSITION`
+> Owner: [Finding Disposition](idtspe-methodology/active/idtspe-core/resolution/findings/FINDING-DISPOSITION.md#resolution-finding-disposition)
+
+> Semantic Owner Dependency
+> Type: `CONTEXTUALIZES`
+> Responsibility: `RESOLUTION.PROPOSAL-DECISION-LIFECYCLE`
+> Owner: [Proposal / Decision Lifecycle](idtspe-methodology/active/idtspe-core/resolution/proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md#resolution-proposal-decision-lifecycle)
+
 When `idtspe.review` or `idtspe.review.recheck` is selected, expose proportionally from the current Review Coverage Record:
 
 ```text
@@ -188,6 +203,7 @@ Review Subject / Scope / Basis
 Checked / Validly Reused
 Partial / Blocked / Remaining Material Coverage
 Material Findings + Finding Disposition results
+Linked Finding Proposals + selectable / blocked-by-revalidation state
 Newly Exposed Surfaces
 Review Delta vs reliable prior basis   # recheck only, when prior coverage exists
 Next Required Recheck / Scope Escalation, if any

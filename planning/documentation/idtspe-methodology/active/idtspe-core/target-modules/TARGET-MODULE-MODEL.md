@@ -72,6 +72,8 @@ A Module-defined Unit Definition is the primary reusable **Target Work Unit** pr
 > - `CONTEXTUALIZES` [`Unit Resolution Slot contract`](../runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md#twu-slot-contract) — `TWU.SLOT-CONTRACT`
 > - `CONTEXTUALIZES` [`Unit runtime projection`](../runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md#twu-runtime-projection) — `TWU.RUNTIME-PROJECTION`
 > - `CONTEXTUALIZES` [`Target Formation requirement/coverage`](../runtime/target-work/RESOLUTION-SLOT-AND-TARGET-FORMATION-SET.md#target-formation-requirement-coverage) — `TARGET-FORMATION.REQUIREMENT-COVERAGE`
+> - `CONTEXTUALIZES` [`Finding Disposition`](../resolution/findings/FINDING-DISPOSITION.md#resolution-finding-disposition) — `RESOLUTION.FINDING-DISPOSITION`
+> - `CONTEXTUALIZES` [`Proposal / Decision Lifecycle`](../resolution/proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md#resolution-proposal-decision-lifecycle) — `RESOLUTION.PROPOSAL-DECISION-LIFECYCLE`
 - `CONTEXTUALIZES` [`Lens Meta-Model`](../lenses/LENS-MODEL.md#lens-meta-model) — `LENS.META-MODEL`
 - `CONTEXTUALIZES` [`Knowledge Basis Contract`](../knowledge-bases/KNOWLEDGE-BASIS-CONTRACT.md#knowledge-basis-contract) — `KNOWLEDGE.BASIS`
 - `CONTEXTUALIZES` [`Artifact Placement / Persistence`](../representation/ARTIFACT-PLACEMENT-AND-IDTSPE-RESPONSE-CONTRACT.md#representation-artifact-placement) — `REPRESENTATION.ARTIFACT-PLACEMENT`
@@ -586,7 +588,7 @@ LENS-QUALITY-RISK-MATERIALITY
 LENS-TARGET-RESOLUTION-COVERAGE
 ```
 
-Lens operations may contribute explanatory Broad Discussion/Key Points without creating State. When they surface a material semantic consequence needing ownership/State/lifecycle disposition, that meaning becomes a Finding Candidate; Core Finding Disposition resolves it into normal generic Proposals / Evidence / Q/R/P / Decision inputs / revalidation or another owner as appropriate.
+Lens operations may contribute explanatory Broad Discussion/Key Points without creating State. When they surface a material semantic consequence needing ownership/State/lifecycle disposition, that meaning becomes a Finding Candidate; Core Finding Disposition resolves the material Finding and its `RE-*` route; the canonical Proposal lifecycle supplies the linked Proposal, while Evidence / Q/R/P / Decision inputs / revalidation or another owner remain separate consequences as applicable.
 
 ```text
 Lens ≠ Target Module

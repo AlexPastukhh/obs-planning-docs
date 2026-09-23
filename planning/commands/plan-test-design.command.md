@@ -45,10 +45,6 @@ Scope: historical invocation alias redirected to current IDTSPE/SDS authority; h
     "hostTargetPolicy": "RESOLVE_OR_REUSE_TARGET"
   },
   "includes": [
-    "planning/commands/work-through-idtspe.command.md",
-    "planning/commands/recheck-idtspe-port-composition.command.md",
-    "planning/commands/include-idtspe-trace-port.command.md",
-    "planning/commands/idtspe-port-lens.command.md",
     "planning/commands/apply-idtspe-lens.command.md"
   ],
   "ownerRefs": [

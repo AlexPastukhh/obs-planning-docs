@@ -1,3 +1,4 @@
+<a id="tm-pre-update-plan"></a>
 # TM-PRE-UPDATE-PLAN — Pre-Update Plan
 
 Entry Point: `tm.pre.update`
@@ -123,7 +124,7 @@ Generic Questions/Proposals/Q/R/P/Decisions/Evidence remain Core State. Do not c
 > Responsibility: `TWU.UNIT-CONTRACT`
 > Owner: [Target Work Unit contract](../runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md#twu-unit-contract)
 
-Each declared Result Unit is a Module-defined Unit Definition under the canonical Target Work Unit contract. This concrete Module owns only its Target-family-specific Unit definitions/deltas; generic simple/composite/runtime projection and Core State semantics remain with their Core owners. A material Proposal selection has Decision semantics, while a separate durable Decision trace is retained only when it adds future review/revalidation value.
+Each declared Result Unit is a Module-defined Unit Definition under the canonical Target Work Unit contract. This concrete Module owns only its Target-family-specific Unit definitions/deltas; generic simple/composite/runtime projection and Core State semantics remain with their Core owners. A material Proposal selection has Decision semantics, while a separate Decision trace is retained according to user choice or material coordination/revalidation/dependency value.
 
 ## Target Step-Result Contract
 

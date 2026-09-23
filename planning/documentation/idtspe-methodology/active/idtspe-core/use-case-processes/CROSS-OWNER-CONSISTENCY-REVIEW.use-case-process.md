@@ -10,6 +10,7 @@ This is no longer a standalone runtime Use Case. Its independently useful effect
 
 Check only the owners/relations/projections plausibly affected by a material change and surface real semantic/projection drift for normal Finding Disposition/revalidation.
 
+<a id="idtspe-cross-owner-consistency-review-process"></a>
 ## Process
 
 > Semantic Owner Dependency

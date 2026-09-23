@@ -13,15 +13,16 @@ Scope: one concrete OBS Planning command route. Reusable semantics remain in lin
   "commandFamily": [
     "проведи idtspe review"
   ],
-  "description": "Run one complete current-basis review pass: plan proportional coverage, validate/apply useful Lenses, disposition all produced Finding Candidates, self-check coverage completeness, and update the Review Coverage Record.",
-  "meaning": "Review the bounded current semantic subject through Review Strategy/Coverage, applicable Validation and selected Lens operations. Catch all materially applicable checks already visible on the current basis rather than intentionally deferring them. Every material Finding Candidate produced by this review is passed through canonical Finding Disposition before the review is semantically complete, unless disposition is explicitly blocked/deferred. Before completion, self-check current coverage against applicable validators/perspectives and record remaining material gaps/blockers. Need collection is not a mandatory review stage.",
+  "description": "Run one complete current-basis review pass: plan proportional coverage, validate/apply useful Lenses, disposition all produced Finding Candidates, form linked Proposals for every material Finding, self-check coverage completeness, and update the Review Coverage Record.",
+  "meaning": "Review the bounded current semantic subject through Review Strategy/Coverage, applicable Validation and selected Lens operations. Catch all materially applicable checks already visible on the current basis rather than intentionally deferring them. Every material Finding Candidate produced by this review is passed through canonical Finding Disposition and receives a linked IDTSPE Proposal before the review is semantically complete; RE-3 proposals remain blocked by revalidation and Proposal existence does not imply persistence or selection. Before completion, self-check current coverage against applicable validators/perspectives and record remaining material gaps/blockers. Need collection is not a mandatory review stage.",
   "activeContextBehavior": "Use current basis and prior coverage when available. During composition planning, establish/refresh the Review Coverage working context for CURRENT_BASIS before dependency semantic actions begin, so Validation/Lens selection consume already-derived current review cells. Reuse trustworthy unchanged checks only when they actually satisfy the current coverage cell; apply materially distinct useful Lens/validator checks now and complete with Finding Disposition plus a coverage self-check.",
   "traversalReadMode": "Read this command own canonical references plus included-command references proportionally. Do not duplicate reads already satisfied by an unchanged trustworthy shared prefix.",
   "ownerFiles": [
     "planning/documentation/idtspe-methodology/active/idtspe-core/commands/IDTSPE-COMMAND-SURFACE-CONTRACT.md",
     "planning/documentation/idtspe-methodology/active/ai-reviewability/REVIEW-STRATEGY-AND-COVERAGE-CONTRACT.md",
     "planning/documentation/idtspe-methodology/active/ai-reviewability/AI-OUTPUT-REVIEWABILITY.md",
-    "planning/documentation/idtspe-methodology/active/idtspe-core/resolution/findings/FINDING-DISPOSITION.md"
+    "planning/documentation/idtspe-methodology/active/idtspe-core/resolution/findings/FINDING-DISPOSITION.md",
+    "planning/documentation/idtspe-methodology/active/idtspe-core/resolution/proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md"
   ],
   "ownerRefs": [
     {
@@ -55,6 +56,14 @@ Scope: one concrete OBS Planning command route. Reusable semantics remain in lin
       "why": "Finding Disposition is an intrinsic completion stage for material Finding Candidates produced by this review.",
       "role": "VALIDATION_HANDOFF",
       "readMode": "REQUIRED"
+    },
+    {
+      "responsibilityId": "RESOLUTION.PROPOSAL-DECISION-LIFECYCLE",
+      "path": "planning/documentation/idtspe-methodology/active/idtspe-core/resolution/proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md",
+      "anchor": "resolution-proposal-decision-lifecycle",
+      "why": "Owns linked IDTSPE Proposal identity, candidate/repair-route semantics, review, selection boundary and retention/persistence separation.",
+      "role": "VALIDATION_HANDOFF",
+      "readMode": "REQUIRED"
     }
   ],
   "includes": [
@@ -64,7 +73,7 @@ Scope: one concrete OBS Planning command route. Reusable semantics remain in lin
     "planning/commands/idtspe-port-validation.command.md",
     "planning/commands/apply-selected-idtspe-lenses.command.md"
   ],
-  "expectedOutput": "An updated Review Coverage Record for the current basis, with coverage origin distinguishing EXECUTED_THIS_PASS from REUSED_FROM_PRIOR (including reuse basis/justification), a truthful statement of blocked/remaining material coverage, and all material review-produced Findings dispositioned to natural owners/lifecycles; no implicit Need collection.",
+  "expectedOutput": "An updated Review Coverage Record for the current basis, with coverage origin distinguishing EXECUTED_THIS_PASS from REUSED_FROM_PRIOR (including reuse basis/justification), a truthful statement of blocked/remaining material coverage, all material review-produced Findings dispositioned to natural owners/lifecycles, and one or more linked Proposals per material Finding with truthful selectable/blocked state; no implicit Need collection and no mandatory Proposal file.",
   "permissionMode": "read-only-planning",
   "keyReminders": [
     "Review is an operation over existing P-12 Validation/P-06 Lens capabilities, not a new Shell port.",
@@ -74,7 +83,8 @@ Scope: one concrete OBS Planning command route. Reusable semantics remain in lin
     "Every material Finding Candidate produced by this review must reach Finding Disposition before review completion unless explicitly blocked/deferred.",
     "Need collection is separate and USER/Source-grounded; AI improvement ideas are GIPs/Proposals, not Needs.",
     "Before completion, perform the Review Strategy/Coverage self-check; do not leave a materially applicable current-basis review cell silently unexamined.",
-    "Do not report reused prior coverage as if it executed in this pass; preserve prior-cell/basis reference and reuse justification."
+    "Do not report reused prior coverage as if it executed in this pass; preserve prior-cell/basis reference and reuse justification.",
+    "Every material review Finding gets a linked IDTSPE Proposal; RE-0 may be deterministic, RE-3 stays BLOCKED_BY_REVALIDATION, and Proposal persistence remains separate."
   ],
   "userTarget": "<current IDTSPE subject/context>",
   "palette": true,

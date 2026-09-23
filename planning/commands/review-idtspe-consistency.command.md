@@ -23,13 +23,13 @@ Scope: one concrete OBS Planning command route. Reusable semantics remain in lin
     "planning/documentation/idtspe-methodology/active/idtspe-core/use-cases/USE-CASE-REGISTRY.md",
     "planning/documentation/idtspe-methodology/active/idtspe-core/commands/IDTSPE-COMMAND-SURFACE-CONTRACT.md"
   ],
-  "expectedOutput": "Material consistency findings plus precise affected-owner/revalidation routes; no separate Consistency-Review Target or runtime Use Case is created.",
+  "expectedOutput": "Material consistency findings plus their linked Proposal(s) and precise affected-owner/revalidation routes; no separate Consistency-Review Target or runtime Use Case is created.",
   "permissionMode": "read-only-planning",
   "keyReminders": [
     "Consistency review runs through Validation; it is not a new Shell port.",
     "REVIEW_COVERAGE_MODE=CURRENT_BASIS is established before P-12 so consistency coverage is planned before validation executes.",
     "Cross-owner consistency review is not Target-bound; use Target context only when the selected semantic surface naturally belongs to Target work.",
-    "Material Finding Candidates produced by this review are dispositioned as part of the completed review operation, not modeled as prerequisite includes.",
+    "Material Finding Candidates produced by this review are dispositioned and receive linked Proposal(s) as part of the completed review operation, not modeled as prerequisite includes.",
     "Do not silently mutate semantic owners from a consistency observation; route material findings through canonical Finding Disposition."
   ],
   "userTarget": "<current plan / cross-owner consistency surface>",
@@ -62,7 +62,7 @@ Scope: one concrete OBS Planning command route. Reusable semantics remain in lin
     {
       "responsibilityId": "IDTSPE.CROSS-OWNER-CONSISTENCY-REVIEW",
       "path": "planning/documentation/idtspe-methodology/active/idtspe-core/use-case-processes/CROSS-OWNER-CONSISTENCY-REVIEW.use-case-process.md",
-      "anchor": "process",
+      "anchor": "idtspe-cross-owner-consistency-review-process",
       "why": "Runs the dedicated cross-owner consistency review process over current accepted/planned meaning.",
       "role": "PRIMARY_OWNER",
       "readMode": "REQUIRED"

@@ -19,15 +19,15 @@ Define one coherent own-application contribution:
 what application/contribution we are building
 + why custom software is still justified
 + which Application Benefits are selected/possible
-+ what responsibility boundary belongs to each Benefit
++ what Responsibility Boundary / Constraints belong to each Benefit
 + which representative real-life situations show those Benefits in context
 + what concise Application Concept explains the Application and how it roughly works
 + whether the concept/Benefit boundaries are plausibly realizable
 ```
 
-Application Benefits and Representative Real-Life Scenarios are separate responsibilities. Each Benefit owns independently addressable user-value meaning **and its own Responsibility Boundary** for that Benefit. Representative RLS instances are many-to-many examples of how one or several Benefits may manifest in a larger real-world path. RLS surrounding steps do not become selected Application behavior merely because they are shown.
+Application Benefits and Representative Real-Life Scenarios are separate responsibilities. Each Benefit owns independently addressable user-value meaning **and its own Responsibility Boundary / Constraints** for that Benefit. Representative RLS instances are many-to-many examples of how one or several Benefits may manifest in a larger real-world path. RLS surrounding steps do not become selected Application behavior merely because they are shown.
 
-Use this Target when Application need/value/contribution, Benefit set, one or more Benefit responsibility boundaries, Application Concept or feasibility is materially unsettled or challenged. Application Definition is upstream intent/value authority and may intentionally lead downstream realization.
+Use this Target when Application need/value/contribution, Benefit set, one or more Benefit Responsibility Boundary / Constraints, Application Concept or feasibility is materially unsettled or challenged. Application Definition is upstream intent/value authority and may intentionally lead downstream realization.
 
 ## Temporal Authority / Evolution-Step Hosting
 
@@ -35,7 +35,7 @@ Application Definition is the upstream **need/value/contribution authority**. It
 
 ```text
 Application Definition
-= selected + possible Application needs / Benefits / contribution / per-Benefit boundary intent
+= selected + possible Application needs / Benefits / contribution / per-Benefit boundary/constraint intent
 
 Selected Application intent
 ≠ downstream capability already realized
@@ -49,7 +49,7 @@ Use stable addressable `AB-*` when independent downstream reference is useful. E
 
 When Application meaning changes, refine this owner **directly**. Do not route it through `Evolution Impact`, `Target Application Body`, `CREATE/REPLACE/RETIRE` materialization or current-owner reverse Step references.
 
-Evolution Steps may record `Driven By` references to selected `AB-*` / contribution / per-Benefit boundary intent, but Application Definition is neither semantic Entry State nor a Step-owned Target Body.
+Evolution Steps may record `Driven By` references to selected `AB-*` / contribution / per-Benefit boundary/constraint intent, but Application Definition is neither semantic Entry State nor a Step-owned Target Body.
 
 ## High-Level Example — Self-Contained Walkthrough
 
@@ -109,9 +109,10 @@ User Need:
 User Receives:
   temporary capture with enough source context to review later
 
-Responsibility Boundary:
-  Application owns low-friction temporary capture and review/triage support.
-  Long-term knowledge management and replacement of the user's existing notes system remain outside.
+Responsibility Boundary / Constraints:
+  BC-01 — Application owns low-friction temporary capture and review/triage support.
+  BC-02 — Long-term knowledge management and replacement of the user's existing notes system remain outside.
+  BC-03 — Capture must not require leaving the active reading flow merely to preserve the fragment.
 ```
 
 A feasibility check may confirm that capturing selected text and source context is technically realistic without yet designing the final architecture.
@@ -122,7 +123,7 @@ The result is a coherent Application Definition containing:
 
 ```text
 why custom software is still justified
-Application Benefits, each with its own Responsibility Boundary
+Application Benefits, each with its own Responsibility Boundary / Constraints
 Representative Real-Life Scenarios that make Benefits concrete through real examples
 concise Application Concept, including a short explanation of how it roughly works
 owned vs merely consumed information/state as expressed by the affected Benefit boundaries
@@ -193,18 +194,19 @@ RU-APP-02 Existing-Solution / Reference Position
     Does an existing solution already satisfy the Need well enough?
     Which substitutes/references matter, and is build/buy/adapt/integrate/hybrid justified?
   Knowledge Basis:
-    application-definition-existing-solutions-market-reference-research.md
+    [RU-APP-02 Existing-Solution / Reference Position guidance](../target-module-support/application-definition/RU-APP-02-EXISTING-SOLUTION-REFERENCE-POSITION.unit-guidance.md)
 
 RU-APP-03 Application Benefits
   Drivers:
     Which independently addressable user needs/value outcomes justify the Application?
     What does the user receive when each Benefit is achieved?
     What exactly does the Application own for this Benefit, and what remains with the actor/process/external system?
+    Which Benefit-local constraints, non-goals or responsibility must-holds materially limit that promise?
     Is optional free-form clarification materially useful?
   Exact Benefit contract:
     User Need — required
     User Receives — required
-    Responsibility Boundary — required and specific to this Benefit
+    Responsibility Boundary / Constraints — required and specific to this Benefit; state the owned/outside boundary and any material Benefit-local constraints/non-goals without inventing empty constraints
     Additional Info — optional free-form; no mandatory internal schema
 
 RU-APP-04 Representative Real-Life Scenarios
@@ -213,7 +215,7 @@ RU-APP-04 Representative Real-Life Scenarios
     Where exactly is the bounded Application Target contribution inside the larger path?
     Which AB-* items manifest/close at which real-world steps?
   Knowledge Basis:
-    application-definition-representative-real-life-scenario-guide.md when stronger representative-path guidance is useful
+    [RU-APP-04 Representative Real-Life Scenarios guidance](../target-module-support/application-definition/RU-APP-04-REPRESENTATIVE-REAL-LIFE-SCENARIOS.unit-guidance.md) when stronger representative-path guidance is useful
 
 RU-APP-05 Application Concept
   Drivers:
@@ -222,14 +224,14 @@ RU-APP-05 Application Concept
     How does it roughly work, stated only as a small internal concept point?
   Exact Concept contract:
     Summary — required; what the Application is + why it exists / overall Benefit
-    How it roughly works — required when needed for comprehension; short, conceptual, not detailed behavior/architecture
+    How it roughly works — required; short, conceptual, not detailed behavior/architecture
   Knowledge Basis:
     selected outputs of RU-APP-01..04 + embedded Application-definition principles
 
 RU-APP-07 Realization Feasibility
   Drivers:
     Can representative Target contribution be realized without pathological complexity?
-    Which persistence/integration/consistency/performance/operational constraints can change the concept or one or more Benefit responsibility boundaries?
+    Which persistence/integration/consistency/performance/operational constraints can change the concept or one or more Benefit Responsibility Boundary / Constraints?
     Does Evidence narrow/broaden/reject the selected contribution?
   Knowledge Basis:
     applicable implementation/evolution/proof Lenses and Evidence; no separate theory load when they add no value
@@ -265,7 +267,7 @@ Default reusable production path:
 ```text
 stabilize selected real-world contribution
 → research existing solutions/references proportionally
-→ form/refine Application Benefits, including each Benefit's own Responsibility Boundary
+→ form/refine Application Benefits, including each Benefit's own Responsibility Boundary / Constraints
 → form only representative RLS examples that materially clarify Benefits through concrete real-life context
 → define the concise Application Concept
 → test realization feasibility of the concept and affected Benefit boundaries
@@ -290,7 +292,7 @@ The six Module-defined Result Units below are the complete Application Definitio
 |---|---|---|
 | `RU-APP-01` | Application Identity / Selected Contribution | Application Definition Identity |
 | `RU-APP-02` | Existing-Solution / Reference Position | Existing Solutions / Market / Reference Research |
-| `RU-APP-03` | Application Benefits | addressable `AB-*` user-value responsibilities, each with its own Responsibility Boundary |
+| `RU-APP-03` | Application Benefits | addressable `AB-*` user-value responsibilities, each with its own Responsibility Boundary / Constraints |
 | `RU-APP-04` | Representative Real-Life Scenarios | representative `RLS-*` examples that make Benefits concrete, with bounded Target contribution + optional Benefit manifestation/closure markers |
 | `RU-APP-05` | Application Concept | concise summary of what the Application is, why it is needed / overall Benefit, and briefly how it roughly works |
 | `RU-APP-07` | Realization Feasibility | proportional feasibility findings |
@@ -303,10 +305,10 @@ Unit presence/disposition mechanics follow the Core [`Unit Applicability / Mater
 |---|---|---|
 | `RU-APP-01` | always once an Application Definition Target is formed; its identity/contribution anchors the Target | no Unit-level omission after Target formation; keep minimum identity/contribution meaning and use `OPEN` if materially unresolved |
 | `RU-APP-02` | build/buy/adapt/integrate/reference position can change selected contribution, Benefit set or feasibility | `OMITTED` when trusted existing-solution context is already sufficient and adds no decision value |
-| `RU-APP-03` | always once an Application Definition Target is formed; Application Benefits are the independently addressable value responsibilities that justify downstream planning, and each substantive Benefit needs its own Responsibility Boundary | no Unit-level omission after Target formation; if Benefit or Benefit-boundary meaning is not sufficiently resolved, keep `OPEN` rather than inventing placeholder Benefits/boundaries |
-| `RU-APP-04` | representative examples materially clarify user/value context, Benefit manifestation/closure or one or more Benefit responsibility boundaries | `OMITTED` when Benefits and their boundaries are already understandable without a representative RLS; the Unit remains present |
+| `RU-APP-03` | always once an Application Definition Target is formed; Application Benefits are the independently addressable value responsibilities that justify downstream planning, and each substantive Benefit needs its own Responsibility Boundary / Constraints | no Unit-level omission after Target formation; if Benefit or Benefit-boundary/constraint meaning is not sufficiently resolved, keep `OPEN` rather than inventing placeholder Benefits/boundaries |
+| `RU-APP-04` | representative examples materially clarify user/value context, Benefit manifestation/closure or one or more Benefit Responsibility Boundary / Constraints | `OMITTED` when Benefits and their boundaries are already understandable without a representative RLS; the Unit remains present |
 | `RU-APP-05` | always once an Application Definition Target is formed; a concise understandable Application Concept is a core responsibility | no Unit-level omission after Target formation; unresolved concept remains `OPEN` |
-| `RU-APP-07` | feasibility can change concept, one or more Benefit responsibility boundaries, Benefit credibility or build/adapt/integrate position | `OMITTED` when feasibility is routine/trusted and cannot materially change selected Application meaning |
+| `RU-APP-07` | feasibility can change concept, one or more Benefit Responsibility Boundary / Constraints, Benefit credibility or build/adapt/integrate position | `OMITTED` when feasibility is routine/trusted and cannot materially change selected Application meaning |
 
 ### Application Definition Identity
 
@@ -332,18 +334,38 @@ User Need:
 User Receives:
 <required value/result the user receives>
 
-Responsibility Boundary:
-<required boundary for this Benefit: what the Application owns/provides for the Benefit, and what remains with the actor/manual process/external system or is merely consumed/displayed/forwarded/derived>
+Responsibility Boundary / Constraints:
+<required Benefit-local boundary: what the Application owns/provides, what remains with the actor/manual process/external system or is merely consumed/displayed/forwarded/derived, plus any material Benefit-local constraints/non-goals/responsibility must-holds; do not invent constraints when none are material>
 
 Additional Info:
 <optional free-form clarification; omit field entirely when no extra meaning is useful>
 ```
 
-`Responsibility Boundary` is **Benefit-local**. Do not create a second standalone Application-level Responsibility Boundary Result Unit. Cross-Benefit consistency may be reviewed, but the authoritative boundary meaning remains on the affected `AB-*` items.
+<a id="sds-application-benefit-boundary-constraints"></a>
+#### Benefit-local Responsibility Boundary / Constraints
 
-`Additional Info` has **no mandatory internal schema**. It may clarify context, constraints, examples, scope or other material meaning, but do not force `Context`, `Trigger`, `Constraint` or similar fields for every Benefit.
+Responsibility ID: `SDS.APPLICATION-BENEFIT-BOUNDARY-CONSTRAINTS`
 
-One Benefit may appear in several Representative RLS; one Representative RLS may demonstrate several Benefits. RLS does not own Benefit semantics or the Benefit's Responsibility Boundary.
+`Responsibility Boundary / Constraints` is **Benefit-local**. It states the Application's promise boundary for that Benefit **and** the material Benefit-local constraints/non-goals/responsibility must-holds that limit that promise. Do not create a second standalone Application-level Responsibility Boundary Result Unit, and do not pull downstream Feature/Scenario/implementation Requirements into this slot merely because they are related. Cross-Benefit consistency may be reviewed, but the authoritative boundary/constraint meaning remains on the affected `AB-*` items.
+
+When downstream precision is useful, individual boundary/constraint clauses may receive small Benefit-local labels such as `BC-01`, `BC-02`. These labels are addressability inside the `AB-*` owner, **not a new Requirement family or new semantic owner**.
+
+```text
+whole Benefit is the real driver
+→ reference AB-X
+
+only one bounded boundary/constraint clause is the real driver
+→ prefer AB-X / BC-Y when that clause is addressable
+
+AB-X / BC-Y reference
+≠ claim that the downstream consumer realizes the whole Benefit
+```
+
+Plain `AB-*` references remain valid when the whole Benefit is relevant or finer precision adds no value. This precision rule is optional and exists to avoid overstating downstream coverage, not to force clause IDs everywhere.
+
+`Additional Info` has **no mandatory internal schema**. It may clarify context, examples, scope or other material meaning that does not belong in the required boundary/constraint slot; do not force extra fields for every Benefit.
+
+One Benefit may appear in several Representative RLS; one Representative RLS may demonstrate several Benefits. RLS does not own Benefit semantics or the Benefit's Responsibility Boundary / Constraints.
 
 ### Representative Real-Life Scenarios
 
@@ -397,7 +419,7 @@ How it roughly works:
 
 Do not turn Application Concept into Feature decomposition, detailed interaction behavior, architecture, Domain design or implementation planning. Those details belong to their natural downstream owners.
 
-Responsibility boundaries are not a separate Result Unit. They are required inside the affected `AB-*` items in `RU-APP-03`; Representative RLS surroundings and feasibility Evidence may challenge/refine those per-Benefit boundaries but do not create a second boundary owner.
+Benefit Responsibility Boundary / Constraints are not a separate Result Unit. They are required inside the affected `AB-*` items in `RU-APP-03`; Representative RLS surroundings and feasibility Evidence may challenge/refine those per-Benefit boundaries but do not create a second boundary owner.
 
 ### Realization Feasibility
 
@@ -464,7 +486,7 @@ PLACEMENT_DIRECTIVE: PLACE
 SEMANTIC_OWNER: TM-APPLICATION-DEFINITION / Application Definition owner
 REPRESENTATION: CURRENT_OWNER_OR_EVOLUTION_STEP_REPRESENTATION
 FILE_OR_ARTIFACT: <application-definition-owner-or-evolution-step-owner>
-CONTENT: concise Application Concept; Application Benefits including per-Benefit Responsibility Boundaries; build/buy/adapt/integrate position; representative real-life scenario inventory with bounded Target-contribution / Benefit relations where material; feasibility conclusion
+CONTENT: concise Application Concept; Application Benefits including per-Benefit Responsibility Boundary / Constraints; build/buy/adapt/integrate position; representative real-life scenario inventory with bounded Target-contribution / Benefit relations where material; feasibility conclusion
 GUIDANCE_SOURCE: TARGET_MODULE
 RESOLVER: P-14 / PERSISTENCE_ADDRESSABILITY
 ```
@@ -510,7 +532,7 @@ Shell placement semantics: [`planning/documentation/idtspe-methodology/active/id
 
 **OPTIONAL separate artifact** — one or several Representative Real-Life Scenarios may be embedded in the Application Definition or receive separate addressability when independently reused/reviewed. Separate representation does not turn RLS into Application Scenario authority or Benefit authority.
 
-**Keep embedded by default** — concise Application Concept, Application Benefits with their Responsibility Boundaries, and feasibility conclusion belong to the Application Definition owner rather than separate files per field.
+**Keep embedded by default** — concise Application Concept, Application Benefits with their Responsibility Boundary / Constraints, and feasibility conclusion belong to the Application Definition owner rather than separate files per field.
 
 `P-14` must show the exact/logical destination of each accepted/supporting item and mark unresolved placement explicitly.
 
@@ -520,7 +542,7 @@ Shell placement semantics: [`planning/documentation/idtspe-methodology/active/id
 traces to Fundamental Need + Step-02 contribution
 obvious existing solutions were proportionally checked
 custom build remains knowingly justified or a material challenge is dispositioned to Step-02 revalidation/reopen
-Application Benefits state User Need + User Receives + a Benefit-specific Responsibility Boundary; Additional Info remains optional free-form
+Application Benefits state User Need + User Receives + Benefit-specific Responsibility Boundary / Constraints; Additional Info remains optional free-form
 no standalone Responsibility Boundary Result Unit is introduced; cross-Benefit consistency review returns meaning to the affected AB-* owners
 Representative RLS examples make Benefits understandable through concrete real-life situations and remain examples rather than Benefit or Application Scenario authority
 RLS surrounding steps do not silently expand any selected Benefit responsibility boundary

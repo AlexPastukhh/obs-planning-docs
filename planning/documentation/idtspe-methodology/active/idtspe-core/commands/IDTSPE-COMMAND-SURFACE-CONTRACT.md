@@ -13,6 +13,13 @@ Responsibility ID: `IDTSPE.COMMAND-SURFACE`
 > - `CONTEXTUALIZES` [`Planning Command Definition Contract`](../../../../../commands/README.md#planning-command-definition-contract) — `COMMAND.DEFINITION-CONTRACT`
 > - `CONTEXTUALIZES` [`IDTSPE Use-Case Orchestration`](../use-cases/RESPONSIBILITY-MAP.md)
 > - `CONTEXTUALIZES` [`Port Composition Refresh`](../runtime/IDTSPE-RUNTIME-COMPOSITION-CONTRACT.md#idtspe-port-composition-refresh) — `IDTSPE.PORT-COMPOSITION-REFRESH`
+> - `CONTEXTUALIZES` [`Review Strategy / Coverage`](../../ai-reviewability/REVIEW-STRATEGY-AND-COVERAGE-CONTRACT.md#review-strategy-coverage) — `REVIEW.STRATEGY-COVERAGE`
+> - `CONTEXTUALIZES` [`Finding Disposition`](../resolution/findings/FINDING-DISPOSITION.md#resolution-finding-disposition) — `RESOLUTION.FINDING-DISPOSITION`
+> - `CONTEXTUALIZES` [`Proposal / Decision Lifecycle`](../resolution/proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md#resolution-proposal-decision-lifecycle) — `RESOLUTION.PROPOSAL-DECISION-LIFECYCLE`
+> - `CONTEXTUALIZES` [`Need Candidate Collection`](../resolution/needs/NEED-CANDIDATE-COLLECTION.md#resolution-need-candidate-collection) — `RESOLUTION.NEED-CANDIDATE-COLLECTION`
+> - `CONTEXTUALIZES` [`Need Candidate Disposition`](../resolution/needs/NEED-CANDIDATE-DISPOSITION.md#resolution-need-candidate-disposition) — `RESOLUTION.NEED-CANDIDATE-DISPOSITION`
+> - `CONTEXTUALIZES` [`Q/R/P Lifecycle`](../resolution/qrp/QRP-LIFECYCLE-AND-REVIEW.md#resolution-qrp-lifecycle) — `RESOLUTION.QRP-LIFECYCLE`
+> - `CONTEXTUALIZES` [`USER Input / Decision / Answer Intake`](../runtime/interaction/USER-INPUT-DECISION-AND-ANSWER-INTAKE-RULE.md#idtspe-user-input-intake) — `IDTSPE.USER-INPUT-INTAKE`
 
 Define the **generic IDTSPE invocation surface** without making repository command files, palette UI or an installed profile a second Core authority.
 
@@ -60,7 +67,7 @@ idtspe.continue
 
 idtspe.review
 → проведи idtspe review
-→ complete current-basis Review Strategy/Coverage pass with Validation/Lenses, Finding Disposition and coverage self-check
+→ complete current-basis Review Strategy/Coverage pass with Validation/Lenses, Finding Disposition, linked Finding Proposal formation and coverage self-check
 
 idtspe.review.recheck
 → перепроверь
@@ -70,8 +77,8 @@ idtspe.review_consistency
 → проверь консистентность плана
 
 idtspe.proposal
-→ idtspe пропозал
-→ discover/form/review material Proposals from current context through canonical lifecycle + Proposal/Decision Resolution Context Lens; optional QRPE is checked and selection remains USER/authority-gated
+→ idtspe пропозал / сделай пропозалы
+→ explicitly discover/form/review material Proposals from current context or supplied Findings through the same canonical Proposal lifecycle; optional QRPE is checked and selection remains USER/authority-gated
 
 idtspe.decisions.capture
 → зафиксируй решения
@@ -407,7 +414,7 @@ idtspe пропозал
 → includes Proposal grounding + Candidate Review + Proposal Semantic Change Impact + selection gating
 
 разбери файндинги
-→ Finding Disposition + RE-* + correct owner/Unit/revalidation routing
+→ Finding Disposition + RE-* + linked Proposal formation + correct owner/Unit/revalidation routing
 ```
 
 Need Collection and Need Disposition are separate command surfaces; neither creates one command per downstream Need outcome. Do not create a mandatory separate Proposal-impact command merely because impact review is an explicit lifecycle step. A focused shortcut is justified only if practice demonstrates an independently useful recurring USER intent.
@@ -417,13 +424,14 @@ Unit Resolution, Result Content, Decision trace, Q/R/P, Finding Inbox, Requireme
 
 ### Review Operation Ordering
 
-Generic Review is a cross-port operation, not a Shell port. Prerequisite analysis/validation/Lens application may be composed through `includes`. Material Finding Candidates produced by review are an intrinsic downstream stage of the complete review lifecycle and reach Finding Disposition before review completion. Need intake is separate: review does not manufacture Need Candidates from AI critique. If review notices an explicit USER/Source wanted outcome that was not yet collected, it hands that provenance to Need Candidate Collection as a separate intake route.
+Generic Review is a cross-port operation, not a Shell port. Prerequisite analysis/validation/Lens application may be composed through `includes`. Material Finding Candidates produced by review are an intrinsic downstream stage of the complete review lifecycle: they reach Finding Disposition and each receives a linked Proposal before review completion. Proposal formation does not imply Proposal persistence or selection. Need intake is separate: review does not manufacture Need Candidates from AI critique. If review notices an explicit USER/Source wanted outcome that was not yet collected, it hands that provenance to Need Candidate Collection as a separate intake route.
 
 ```text
 validation / selected Lens Application prerequisites
 → review own action
 → material Finding Candidate(s), when any
 → canonical Finding Disposition
+→ linked Proposal formation/refinement for every material Finding
 → coverage self-check/update
 → Port Composition refresh when disposition makes new downstream capabilities material
 

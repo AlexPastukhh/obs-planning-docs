@@ -18,6 +18,10 @@ Requirement
 
 There is no baseline `TM-REQUIREMENT`.
 
+## Application Benefit boundary and constraint addressability
+
+Application Benefit owns its Responsibility Boundary / Constraints under [TM-APPLICATION-DEFINITION](../../target-modules/TM-APPLICATION-DEFINITION.md). Optional `AB-*` / `BC-*` refs address accepted Benefit/constraint meaning inside that natural owner; `BC-*` does not create a new Requirement family, Target Module or peer owner. Downstream owners reference the relevant Benefit/constraint instead of copying its authority.
+
 ## Temporal Authority — Current vs Future Requirements
 
 Requirement ownership is resolved against the **owner state being represented**.
