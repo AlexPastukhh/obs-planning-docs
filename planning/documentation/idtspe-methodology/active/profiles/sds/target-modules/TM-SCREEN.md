@@ -25,7 +25,7 @@ Screen does not own Feature behavior, Domain meaning or implementation topology.
 
 ## Temporal Authority / Evolution-Step Hosting
 
-A canonical Screen owner describes realized/current spatial/navigation truth. Planned but unrealized Screen changes are expressed as a **Target Screen Body** inside `TM-EVOLUTION-STEP` using this same module contract.
+A canonical Screen owner describes realized/current spatial/navigation truth. Planned but unrealized Screen changes are expressed as a **Target Screen Body** inside `TM-EVOLUTION-STEP` using this same module contract. For the particular next Step for realization, a `CREATE`/`REPLACE` Screen requires a complete ordinary post-Step Target Screen Body with all applicable Screen Units resolved or justifiably omitted; the Step may link it from a separate file.
 
 Selection of a future Screen body does not rewrite the current Screen Map/Drafts. Materialization follows actual realization + required proof/revalidation.
 

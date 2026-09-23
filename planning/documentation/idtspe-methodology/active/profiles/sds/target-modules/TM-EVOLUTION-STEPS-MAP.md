@@ -97,8 +97,10 @@ Entering From direct semantic predecessor Step(s)
 derived enables navigation
 alternative / mutually-exclusive / conditional relation projection
 planning horizon / candidate vs selected vs deferred visibility
+intended next Step for realization on the chosen route, when identified; this is a relative planning position, not selection authority
 Step-wide Implementation Concern status/reference
 Planning Completeness: COMPLETE | INCOMPLETE
+Planning Completeness explanation / concise resolved-and-missing inventory or Step-owned rationale reference
 Realization Start Readiness: READY | BLOCKED
 compact uncertainty/confidence basis when material
 cycle / contradiction pressure
@@ -127,10 +129,11 @@ Principal Target Owners / Target Resolution
 Enters From
 Step-wide Implementation Concerns
 Planning Completeness
+Planning Completeness explanation or Step rationale reference
 Realization Start Readiness
 ```
 
-Planning Position, Target Resolution, Planning Completeness, Start Readiness and Realization are independent. `Probable ≠ Selected`; `Complete Target ≠ Start Ready`; `Start Ready ≠ Realized`. Project an accounted but incompletely planned distant Step as `INCOMPLETE`, and the next Step as `READY` only after the Step-owned `RU-EVO-06` verifies its full target state and reciprocal impact references for other concrete Steps. The Map does not invent an `ACCOUNTED` completion status.
+Planning Position, Target Resolution, Planning Completeness, Start Readiness and Realization are independent. `Probable ≠ Selected`; `Complete Target ≠ Start Ready`; `Start Ready ≠ Realized`. "Next for realization" identifies the particular intended implementation Step on the chosen route; `REALIZATION_NEAR` can cover more than that Step. Project an accounted but incompletely planned distant Step as `INCOMPLETE` with a concise explanation of what is resolved and missing. Project `COMPLETE` with a reference to the Step's all-Unit and all-affected-owner Target Body explanation. The next Step is `READY` only after Step-owned `RU-EVO-06` verifies those complete bodies, all Unit dispositions, predecessors and reciprocal references to other concrete Steps. The Map does not invent an `ACCOUNTED` completion status or copy the complete Step plan.
 
 For non-trivial branching include a compact derived semantic DAG/read-path view. `Entering From` edges are semantic predecessor edges; do not create a second technical-foundation DAG. Detailed reasons/Q/R/P remain in each Step.
 

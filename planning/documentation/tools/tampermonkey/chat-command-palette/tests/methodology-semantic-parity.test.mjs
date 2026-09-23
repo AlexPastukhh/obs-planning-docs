@@ -110,12 +110,31 @@ test('Evolution planning completion and next-step readiness preserve reciprocal 
   const reverse=read(base+'profile-contracts/evolution/CURRENT-OWNER-EVOLUTION-IMPACT-PROJECTION.md');
   const map=read(base+'target-modules/TM-EVOLUTION-STEPS-MAP.md');
   assert.match(evo,/every `NEW`\/`CHANGED` Feature has one complete ordinary `TM-FEATURE` Target Feature Body/);
-  assert.match(evo,/Planning Completeness: COMPLETE, including complete Target Feature Bodies/);
+  assert.match(evo,/Planning Completeness: COMPLETE, with a documented complete Unit inventory and full Target Bodies/);
   assert.match(evo,/`LATER_HORIZON` Step may remain `INCOMPLETE` while accounted for/);
   assert.match(evo,/no question or blocker that prevents trustworthy realization is left unresolved/);
   assert.match(feature,/This is mandatory before marking that Step `Planning Completeness: COMPLETE`/);
   assert.match(reverse,/owner-local reverse entry identifying that Step for every affected current realized owner/);
   assert.match(map,/accounted but incompletely planned distant Step as `INCOMPLETE`/);
+});
+
+test('next-for-realization Step requires complete Step Units and all changing owner bodies, with linked-file hosting',()=>{
+  const base='planning/documentation/idtspe-methodology/active/profiles/sds/';
+  const evo=read(base+'target-modules/TM-EVOLUTION-STEP.md');
+  const map=read(base+'target-modules/TM-EVOLUTION-STEPS-MAP.md');
+  const sds=read(base+'profile-contracts/SDS-SEMANTIC-COMPOSITION-AND-READINESS.md');
+  assert.match(evo,/next Step for realization.*particular intended Step whose implementation will start next/);
+  assert.match(evo,/`RU-EVO-01` through `RU-EVO-06` have each reached their applicable resolved or justified `OMITTED` disposition/);
+  assert.match(evo,/every other materially `CREATE`d\/`REPLACE`d natural owner has a complete ordinary Target Scenario\/Screen\/Domain\/Slice\/Shared Body/);
+  assert.match(evo,/For `INCOMPLETE`, state the units\/bodies\/decisions already resolved and the specific missing or open work/);
+  assert.match(evo,/`planning\/evolution\/steps\/unrealized\/<Step-ID>\/STEP\.md` can link to `TARGET-FEATURE\.md`, `TARGET-DOMAIN\.md` and `TARGET-SLICE\.md`/);
+  assert.match(evo,/bounded `RU-EVO-02` Impact \*\*or\*\* complete Target Owner Body \/ `RU-EVO-04` retirement transition/);
+  for(const [file,name] of [['TM-DOMAIN-OWNER.md','Domain'],['TM-SLICE-OWNER.md','Slice']]){
+    const owner=read(base+'target-modules/'+file);
+    assert.match(owner,new RegExp('next Step for realization.*complete ordinary post-Step '+name+' Body'));
+  }
+  assert.match(map,/Planning Completeness explanation or Step rationale reference/);
+  assert.match(sds,/Application Definition provides upstream application intent and Planning Resolution State coordinates planning/);
 });
 
 test('Planning Resolution State declares addressable collection items and formally scoped slots for both Units',()=>{
@@ -344,7 +363,8 @@ test('Artifact Lens references Documentation link authority instead of re-owning
 test('Evolution materialization Unit accepts candidate selected and branch-assumed represented routes',()=>{
   const evo=read('planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-EVOLUTION-STEP.md');
   assert.match(evo,/represented candidate\/selected\/assumed route Target Owner Bodies/);
-  assert.match(evo,/represented candidate\/selected\/assumed route planning needs them/);
+  assert.match(evo,/For unresolved alternatives, output remains Proposal\/Planning-Branch scoped/);
+  assert.match(evo,/next Step for realization\*\*, form the complete ordinary post-Step Target Body/);
 });
 
 test('Target Module model references Core runtime disposition semantics instead of re-owning them',()=>{

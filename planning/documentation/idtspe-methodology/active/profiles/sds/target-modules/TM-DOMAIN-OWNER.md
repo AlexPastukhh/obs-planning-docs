@@ -18,7 +18,7 @@ Transient `TM-DOMAIN-DISCOVERY` may be a Source, but never remains authority mer
 
 ## Temporal Authority / Evolution-Step Hosting
 
-A canonical Domain owner describes the Domain semantics that are currently realized. If Domain meaning is being created/changed for an unrealized future state, use this module as supporting methodology inside `TM-EVOLUTION-STEP` and produce a **Target Domain Body**.
+A canonical Domain owner describes the Domain semantics that are currently realized. If Domain meaning is being created/changed for an unrealized future state, use this module as supporting methodology inside `TM-EVOLUTION-STEP` and produce a **Target Domain Body**. For the particular next Step for realization, every `CREATE`/`REPLACE` Domain needs a complete ordinary post-Step Domain Body, with all applicable Domain Units resolved or justifiably omitted and the owner-local constraints/invariants needed for realization. The Step may link to a separate complete Domain file; its path remains Step-owned future authority until materialization.
 
 Future `IR-DOMAIN-*` / owner-local `PFR-*` remain inside that Target Domain Body. Selection alone does not replace the current Domain owner. After realization + required proof/revalidation, Target Owner Materialization may `CREATE`, `REPLACE` or `RETIRE` the current Domain owner.
 
@@ -143,7 +143,7 @@ Domain unit proof belongs with the Domain realization and proves semantic rules/
 
 ## Evolution
 
-Relevant concrete Evolution Steps are Sources for revalidation and are exposed proportionally through `RU-DOWN-03`. Future Domain impact belongs to Step-side `RU-EVO-02`; a sufficiently resolved candidate/selected post-Step Domain contract may be represented by the Step Target Domain Body at the requested Target Result depth, while actual selection remains required for canonical integration/materialization. Current Domain owner remains current semantic authority until realization and Target Owner Materialization change it. Physical representation promotion/demotion remains a separate P-14 concern.
+Relevant concrete Evolution Steps are Sources for revalidation and are exposed proportionally through `RU-DOWN-03`. Unresolved distant future Domain impact may be bounded in Step-side `RU-EVO-02`; a complete post-Step Domain contract belongs in the Step Target Domain Body, mandatory for a `CREATE`/`REPLACE` Domain in the next Step for realization. No duplicate full body is kept in `RU-EVO-02`; actual selection remains required for canonical integration/materialization. Current Domain owner remains current semantic authority until realization and Target Owner Materialization change it. Physical representation promotion/demotion remains a separate P-14 concern.
 
 ## Validators / Handoff
 

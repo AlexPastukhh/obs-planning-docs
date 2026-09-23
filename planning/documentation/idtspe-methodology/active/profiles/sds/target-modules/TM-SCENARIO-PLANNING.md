@@ -230,10 +230,12 @@ A Scenario may reference Feature-owned `FDO-*` to make inter-step data/result co
 
 Scenario does not own a second future roadmap. `RU-SCEN-02` exposes only current-owner reverse navigation/revalidation; the applicable Evolution Step owns the future impact.
 
+If the particular next Step for realization will `CREATE`/`REPLACE` this Scenario, it must link a complete ordinary post-Step Target Scenario Body with all applicable Scenario Units resolved or justifiably omitted. A bounded Impact is adequate for a distant incompletely planned Step, not as a substitute for that Body at `Planning Completeness: COMPLETE`.
+
 ```text
 known future journey/capability change
 → TM-EVOLUTION-STEP / RU-EVO-02 Scenario impact
-→ optional complete Target Scenario Body when candidate/selected journey meaning is sufficiently resolved for the requested Target Result depth; selection is still required for canonical integration/materialization
+→ complete Target Scenario Body for CREATE/REPLACE in the next Step for realization; optional earlier for a candidate/selected distant route; selection is still required for canonical integration/materialization
 → RU-SCEN-02 in current Scenario references that Step when useful
 → realization/materialization updates current Scenario authority
 ```

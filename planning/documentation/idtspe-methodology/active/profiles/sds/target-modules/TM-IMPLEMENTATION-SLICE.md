@@ -190,7 +190,7 @@ selected useful whole-path Result Content for unrealized work
 → applicable TM-EVOLUTION-STEP / RU-EVO-02 Slice/Domain/Shared Impact(s)
 
 selected durable post-Step responsibility/boundary
-→ corresponding Target Slice/Domain/Shared Body when sufficiently resolved
+→ corresponding Target Slice/Domain/Shared Body when sufficiently resolved for distant planning; complete Body required for each CREATE/REPLACE owner in the next Step for realization
 
 exact literal classes/methods/files/tests
 → Core Exact/code
@@ -244,10 +244,10 @@ selected durable Slice implementation constraints
 → same temporal routing for RU-SOWN-02
 
 reusable non-end-to-end responsibility with genuine consumers
-→ selected planning consequence into Shared Evolution Impact; Target Shared Body when sufficiently resolved, or current Shared owner when already realized
+→ selected planning consequence into Shared Evolution Impact for distant incomplete planning; complete Target Shared Body for CREATE/REPLACE in the next Step for realization, or current Shared owner when already realized
 
 semantic Domain meaning
-→ selected planning consequence into Domain Evolution Impact; Target Domain Body when sufficiently resolved, or current TM-DOMAIN-OWNER when revalidating realized truth
+→ selected planning consequence into Domain Evolution Impact for distant incomplete planning; complete Target Domain Body for CREATE/REPLACE in the next Step for realization, or current TM-DOMAIN-OWNER when revalidating realized truth
 ```
 
 ## Guards
