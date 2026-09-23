@@ -32,7 +32,7 @@ Navigation can change while background work is running.
 
 ## Tests
 
-`CoreTests` + Swing source contracts for current/global/history projection, ordering, unavailable target representation and exact target/ChangeSet selection without mutation.
+Swing source contracts remain current implementation evidence. The former `CoreTests` source is legacy historical evidence under `legacy/tests/` and is not current passing regression proof.
 
 ## Evolution Impact
 

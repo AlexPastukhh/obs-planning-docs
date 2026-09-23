@@ -47,7 +47,7 @@ Bridge/extension agents from an obsolete runtime generation or instance must not
 
 ## Tests / Evidence
 
-`ChatBridgeTests` and browser-adapter tests remain implementation Evidence for these mechanics. A passing Snapshot-related test proves code behavior only; it does not materialize Snapshot Feature/Scenario/Slice semantics.
+The former `ChatBridgeTests` source is preserved under `legacy/tests/` as historical evidence only and is not current passing regression proof. Current executable evidence is limited to tests compiled by `build.cmd` plus the browser-adapter tests and current source/contracts. A passing Snapshot-related test proves code behavior only; it does not materialize Snapshot Feature/Scenario/Slice semantics.
 
 ## Evolution Impact
 

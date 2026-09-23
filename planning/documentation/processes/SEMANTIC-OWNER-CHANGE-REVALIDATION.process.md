@@ -24,7 +24,6 @@ All known semantic dependents and relevant navigation/projection surfaces affect
 > - `CONTEXTUALIZES` [`Responsibility Map`](../principles-and-terminology.md#doc-responsibility-map) — `DOC.RESPONSIBILITY-MAP`
 > - `CONTEXTUALIZES` [`Explicit Stable Semantic Anchor`](../principles-and-terminology.md#doc-explicit-stable-semantic-anchor) — `DOC.EXPLICIT-STABLE-SEMANTIC-ANCHOR`
 > - `CONTEXTUALIZES` [`Semantic Owner Dependency`](../principles-and-terminology.md#doc-semantic-owner-dependency) — `DOC.SEMANTIC-OWNER-DEPENDENCY`
-> - `CONTEXTUALIZES` [`Responsibility / Anchor Audit Coverage`](../principles-and-terminology.md#doc-responsibility-anchor-audit-coverage) — `DOC.RESPONSIBILITY-ANCHOR-AUDIT-COVERAGE`
 
 
 1. Identify which semantic responsibility/Responsibilities changed. Distinguish semantic meaning change from purely editorial/layout/path work.
@@ -36,7 +35,7 @@ All known semantic dependents and relevant navigation/projection surfaces affect
 7. Search proportionally for **untracked normative-looking duplicates** of the changed meaning, especially `MUST`/`REQUIRED` rules, qualification criteria, state vocabularies, exact identity/address grammars or copied schemas. Treat a discovered competing owner as an ownership finding, not as another copy to synchronize automatically.
 8. Validate owner paths/fragments. When an affected semantic section has an explicit stable anchor, detect section-specific inbound links that still use its generated heading fragment and migrate those reviewed links to the explicit anchor unless a declared compatibility route is required. An explicit anchor with zero inbound references produces a warning: first audit misspelled, stale, broken or incorrectly routed links. Remove the anchor only when it is genuinely unused; retain compatibility anchors only with an explicit compatibility purpose.
 9. Update responsibility/navigation routing when the canonical owner moved or the responsibility boundary changed. Do not duplicate the semantic contract in the routing map.
-10. Report unresolved dependency/ownership ambiguity back to the calling Documentation Use Case rather than inventing authority inside this Process. When the caller is performing a dedicated scoped responsibility/anchor audit, provide enough scope/result information for the caller to update the audit coverage evidence; this Process does not mark zones closed by itself.
+10. Report unresolved dependency/ownership ambiguity back to the calling Documentation Use Case rather than inventing authority inside this Process.
 
 ## Reuse Boundary
 

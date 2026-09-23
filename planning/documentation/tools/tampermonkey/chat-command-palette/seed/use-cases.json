@@ -147,7 +147,7 @@
     {
       "id": "UC-DOC-REVIEW-DOCUMENTATION",
       "label": "Review Repository Documentation",
-      "description": "Material documentation findings are tied to their real semantic owners, verified and unverified areas are distinguished, and each required correction has a narrow current repair/change route without the review itself becoming new semantic authority.",
+      "description": "Material documentation findings are tied to their real semantic owners, verified and unverified areas are distinguished, and each required correction has a narrow current repair/change route without the review itself becoming new semantic authority. ### Audit-style Review A documentation **audit** is this same Review performed with an explicitly declared bounded scope and coverage claim. It uses the same review basis, findings, owner routing, Finding Disposition and repair/change routes; it is not a separate methodology lifecycle or semantic authority. Audit-specific reports/evidence may be retained when useful for the reviewed invocation, but no permanent audit-coverage ledger is required or maintained as methodology state.",
       "sources": [
         "planning/documentation/use-case-registry-map.md",
         "planning/documentation/use-case-registry.md"
@@ -156,7 +156,7 @@
       "target": "<Review Repository Documentation target>",
       "manualInvocation": true,
       "trigger": "The current repository documentation may contain stale routes, duplicate semantic authority, orphan methodology/supporting files, unclear Use-Case boundaries, misleading navigation, or inconsistent application of the current documentation contracts.",
-      "result": "Material documentation findings are tied to their real semantic owners, verified and unverified areas are distinguished, and each required correction has a narrow current repair/change route without the review itself becoming new semantic authority."
+      "result": "Material documentation findings are tied to their real semantic owners, verified and unverified areas are distinguished, and each required correction has a narrow current repair/change route without the review itself becoming new semantic authority. ### Audit-style Review A documentation **audit** is this same Review performed with an explicitly declared bounded scope and coverage claim. It uses the same review basis, findings, owner routing, Finding Disposition and repair/change routes; it is not a separate methodology lifecycle or semantic authority. Audit-specific reports/evidence may be retained when useful for the reviewed invocation, but no permanent audit-coverage ledger is required or maintained as methodology state."
     },
     {
       "id": "UC-DOC-USE-REPOSITORY-GUIDANCE",

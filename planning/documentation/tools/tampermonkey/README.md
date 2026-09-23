@@ -32,27 +32,10 @@ planning/documentation/tools/tampermonkey/planning-pattern-capture.user.js
   It also provides the one-click 10/20/30-minute session timer, sound/system notifications,
   and one-click finished-session capture into the shared pending outbox.
 
-planning/documentation/tools/tampermonkey/linked-notes/linked-notes-prototype.user.js
-  project-local `0.8.0-prototype` repository documentation helper generated from linked-notes/src/**;
-  currently includes Workspaces, Notes, Files, Categories, repository templates, materialized Reference Objects, Ordered Reference Lists, stale-use diagnostics, Chat Response Reader and Full App State diagnostics;
-  ordinary Files/Categories/Reference Object/Ordered List changes are local-first and publish through explicit Update current / one-commit Update all boundaries, while compound Note/image transfer flows retain their documented paths;
-  never runs local git, commit or push and does not accept a production architecture.
+
 ```
 
-Linked Notes current semantics/product state/implementation documentation are intentionally owned inside its own directory instead of being duplicated in this shared tools index:
-
-```text
-planning/documentation/tools/tampermonkey/linked-notes/README.md
-  → scenarios/README.md
-  → use-case-registry.md
-  → APP-OVERVIEW.md
-  → ARCHITECTURE.md
-  → DATA-AND-STATE.md
-  → KNOWN-ISSUES.md
-  → ROADMAP.md
-```
-
-`planning/areas/documentation-workbench/` remains broader planning/history/compatibility context for Linked Notes, not its current semantic owner.
+Linked Notes is retired from the active Tampermonkey tool surface. Cross-file documentation navigation uses ordinary Markdown links and stable explicit anchors.
 
 Do not create competing tracked copies of the same script.
 
@@ -61,9 +44,7 @@ Do not create competing tracked copies of the same script.
 ```text
 Repo Markdown files are durable source of truth.
 Tampermonkey scripts are browser-side capture, projection or explicitly bounded prototype tools.
-By default they do not write repository files or perform external network calls. Linked Notes remains an explicitly bounded repository client. Planning Helper normal runtime is RAM/local-only; GitHub access is limited to explicit Check GitHub, Sync missing, Reload GitHub and Save GitHub actions for its bounded repository-backed entities.
-The repository documentation prototype is the narrow test-only exception: after explicit user actions it may perform bounded GitHub operations under the current Linked Notes contracts. Ordinary pending repository-file changes use `Update current file` for one Contents-API path or `Update all` for one Git Data tree/commit/ref transition with verification; compound Note/image-transfer paths retain their documented verified behavior.
-The Linked Notes Prototype never runs local git, commit or push. Runtime code does not define command meaning, and current application semantic entries are owned by `linked-notes/scenarios/README.md` and its Scenario owners, not inferred from implementation alone.
+By default they do not write repository files or perform external network calls. Planning Helper normal runtime is RAM/local-only; GitHub access is limited to explicit Check GitHub, Sync missing, Reload GitHub and Save GitHub actions for its bounded repository-backed entities.
 A pending-session JSON export becomes repo state only after a reviewed replacement archive is applied.
 Tampermonkey command projection does not define command meaning. The root Command Routing is the command-system entry and direct `planning/commands/*.command.md` files own individual commands.
 Dashboard planning field meanings and the local JSON contract are owned by the Dashboard userscript/UI, not by Command Routing commands.
@@ -122,14 +103,8 @@ Planning Helper legacy migration inputs only:
   obsPlanningHelper:v1:localLibrary
   obsPlanningHelper:v1:repositoryLibraryCache
 
-Linked Notes Prototype private GM storage:
-  see linked-notes/DATA-AND-STATE.md for current application-owned GM namespaces and persistence ownership.
 
-Linked Notes Prototype IndexedDB:
-  database: obsLinkedNotesPrototype
-  store: notes
 
-  database: obsLinkedNotesPrototypeAssets
   store: assets
 ```
 
@@ -157,8 +132,6 @@ Rules:
 - Pending records clear only after reviewed repository application plus reconciliation, or explicit user action.
 - Conflict records block additional Finish actions until resolved.
 - Planning Helper warm startup reads one unified GM snapshot, then search/Insert/Copy/edit/import operate from RAM/local state. GitHub reads/writes occur only after explicit Check GitHub, Sync missing, Reload GitHub or Save GitHub actions; Sync missing never overwrites a same-path local record.
-- Linked Notes current storage/state ownership is documented in `linked-notes/DATA-AND-STATE.md`; this shared tools index does not duplicate the complete application persistence contract.
-- chatgpt.com and chat.openai.com are different IndexedDB origins; use chatgpt.com as the canonical Linked Notes IndexedDB origin.
 ```
 
 ## 4. Local server
@@ -327,7 +300,7 @@ Then install the generated `../chat-command-palette.user.js`. Do not edit that g
 Alt+F1  open/close Planning Pattern Capture.
 Alt+F2  open/close Command Palette.
 Alt+F3  open/close Planning Dashboard.
-Escape  close Tools first, then the active Dashboard/Capture/Command panel without clearing state; an idle Linked Notes panel also persists its current draft and closes, while an active remote operation remains visible.
+Escape  close Tools first, then the active Dashboard/Capture/Command panel without clearing state.
 Ctrl+Alt+P  emergency show/reset for Pattern Capture.
 ```
 
@@ -483,8 +456,7 @@ Before enabling or adapting the reusable helper for another project, verify:
 - Do not add a `Docs` refinement when the standalone documentation-principles command exists.
 - Do not retain removed creation-wording command IDs, labels or aliases.
 - Do not use Full to expand reading beyond the command's required route.
-- Except for the explicitly documented Linked Notes boundary and Planning Helper explicit repository-action boundary, do not use helpers to write repository files or perform external network calls. Planning Helper GitHub access is limited to explicit Check GitHub, Sync missing, Reload GitHub and Save GitHub over direct `planning/commands/*.command.md`, `planning/helper-library/commands/*.helper-command.md` and `planning/helper-library/prompts/*.prompt.md` targets; normal insertion/import remains network-independent.
-- Linked Notes semantic entries and detailed behavior/traceability are owned under `linked-notes/scenarios/README.md` and its Scenario owners plus focused current-state docs; legacy Documentation Workbench Linked Notes workflows are compatibility/planning history only.
+- Except for the Planning Helper explicit repository-action boundary, do not use helpers to write repository files or perform external network calls. Planning Helper GitHub access is limited to explicit Check GitHub, Sync missing, Reload GitHub and Save GitHub over direct `planning/commands/*.command.md`, `planning/helper-library/commands/*.helper-command.md` and `planning/helper-library/prompts/*.prompt.md` targets; normal insertion/import remains network-independent.
 ```
 
 

@@ -391,9 +391,9 @@ Feature behavior / BR-* and Scenario journey must-holds
 
 A Slice may use a local proof/verification representation when independently useful. If proof coordination grows across several project owners, the sibling Testing Planning family may be used as **project-local supporting coordination**, not as an SDS `TM-TEST-STRATEGY` Target. Literal tests route through Exact Realization; executed checks become Evidence only after they are actually run against the stated subject/state/environment. Tests do not redefine Feature/Scenario/Domain/Slice truth merely because a test currently expects something.
 
-## 10. Cross-File Links And Reference Object Candidates
+## 10. Cross-File Links And Stable Anchors
 
-Ordinary semantic relationships use ordinary repository links.
+Ordinary semantic relationships use ordinary repository links to the canonical owner.
 
 Examples:
 
@@ -405,79 +405,18 @@ Domain / Slice / Shared → owner-local IR-* / rare PFR-* when material
 legacy Scenario-DATA / Behavior-item references → supporting compatibility only, never current SDS ownership
 ```
 
-These relations alone are not Linked Notes Reference Objects.
+When a consumer needs a stable fragment rather than only a file-level route, add an explicit stable anchor in the canonical owner and link directly to it. The anchor gives addressability only; it does not create a second definition, synchronization layer, or automatic dependency state.
 
-### Reference Object Candidate
-
-A `Reference Object Candidate` is canonical literal meaning/value that:
-
-1. is established in one defining file and that file's semantic context;
-2. is the result of real planning/reasoning/decision work there;
-3. may need to be materially reproduced in one or more other files;
-4. consumers need to rely on exactly that canonical literal value rather than an independently rewritten approximation; and
-5. if the definition changes, it is useful to identify which materialized copies may now be stale and require explicit review/update.
-
-Practical test:
+Prefer this order:
 
 ```text
-If I change this definition here tomorrow,
-could several other files silently keep an old literal copy,
-and would I want tooling to tell me exactly which copies need review?
-
-Yes → strong Reference Object Candidate.
-No  → ordinary link or context-specific prose is usually better.
+canonical owner file
+→ explicit stable anchor only when fragment-level addressability is useful
+→ direct Markdown link from consumers
+→ normal affected-owner Review when upstream meaning changes materially
 ```
 
-A whole Scenario/Data/Behavior object is not automatically a live Reference Object. Often only one stable literal fragment is a useful candidate.
-
-A context-specific paraphrase may intentionally differ and should not be forced into literal synchronization.
-
-### Consumer-Side Candidate Discovery
-
-A consuming file may be the first place where exact cross-file reuse becomes visible. When useful, record the dependency proportionally:
-
-```text
-Source Owner:
-  <canonical semantic owner>
-
-Canonical Meaning / Fragment:
-  <identify the source meaning; do not redefine it here>
-
-Use Here:
-  <why this owner consumes it>
-
-Usage Mode:
-  semantic link / intentional paraphrase / exact-literal candidate
-
-Reference Object Candidate:
-  yes / no
-
-Materialized Linked Notes RO:
-  no / existing ro_* when actually applicable
-```
-
-A consumer-side candidate note does not create a second canonical definition. Prefer an ordinary link or intentional paraphrase unless exact literal equality and stale-copy review are genuinely valuable.
-
-### Linked Notes Materialization
-
-When a candidate genuinely needs literal stale-copy detection/synchronization, it may be materialized with the repository Linked Notes Reference Object mechanism.
-
-Read only the repository-facing contract unless Linked Notes development itself is in scope:
-
-1. [`../../../../.linked-notes/AGENT-GUIDE.md`](../../../../.linked-notes/AGENT-GUIDE.md)
-2. [`../../../../.linked-notes/REFERENCE-OBJECTS.md`](../../../../.linked-notes/REFERENCE-OBJECTS.md)
-3. inspect [`../../../../.linked-notes/reference-objects.json`](../../../../.linked-notes/reference-objects.json) only when current live registry state matters.
-
-Minimal marker syntax:
-
-```html
-<!-- obs-ref:def id="ro_example" -->VALUE<!-- /obs-ref:def -->
-<!-- obs-ref:use id="ro_example" -->VALUE<!-- /obs-ref:use -->
-```
-
-The definition inner text is the canonical literal value. Use inner text is a materialized literal copy. Definition changes do not auto-update uses; Check identifies stale copies and update is separate/explicit. The registry stores routing/index metadata, not the canonical literal value.
-
-Do not invent an ID for an existing object or create a new live RO without the one-definition + registry contract.
+Do not copy canonical wording into consumers merely to avoid following a link. If local explanatory prose is useful, keep it clearly contextual and preserve the direct link to the real owner.
 
 ## 11. Integration And Change Review
 
@@ -496,12 +435,12 @@ An upstream change does not silently rewrite downstream owners, and a downstream
 ## 12. Repository Boundaries
 
 - Git/history records document revision; Variant is not document revision.
-- Keep ordinary semantic links distinct from literal-sync Reference Objects.
+- Use direct links to canonical owners and stable explicit anchors when fragment-level addressability is useful.
 - Do not introduce `versions/` merely to store edit history.
 
-## Cross-Owner Review Dependencies
+## Cross-Owner Impact Review
 
-When one owner semantically derives meaning from another and an upstream change should require explicit downstream review, configure a Review Dependency through the reusable Documentation capability. Exact synchronized canonical fragments remain Reference Objects; ordinary navigation remains an ordinary link. Do not duplicate stale tracking for a materialized Reference Object use.
+When one owner materially derives from another, preserve a direct link to the canonical owner and include affected consumers in normal Documentation/IDTSPE Review when upstream meaning changes. Do not create a separate synchronization registry merely to remember a relation that is already addressable through owner links and anchors.
 
 ## Testing Planning Handoff
 

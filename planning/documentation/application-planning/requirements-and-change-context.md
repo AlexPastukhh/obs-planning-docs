@@ -281,6 +281,6 @@ Domain / Slice finding
 
 This is progressive planning, not one-way waterfall.
 
-## 10. Reference Object Boundary
+## 10. Link / Anchor Boundary
 
-Requirement/Change-Axis identity and ordinary dependencies use normal repository links by default. A literal Requirement or other canonical fragment becomes a `Reference Object Candidate` only when exact materialized copies and stale-copy checking are genuinely valuable under the existing Linked Notes contract.
+Requirement/Change-Axis identity and ordinary dependencies use normal repository links. When a specific canonical fragment needs durable fragment-level addressability, add a stable explicit anchor in the canonical owner and link to it directly. Do not create a synchronized duplicate merely to make the fragment reachable.

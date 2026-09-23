@@ -74,7 +74,6 @@
     "lens:LENS-TEST-PROOF-EVIDENCE",
     "lens:LENS-VERIFIABILITY-OBSERVABILITY-OPERABILITY",
     "lens:LENS-ARTIFACT-BOUNDARY-ADDRESSABILITY",
-    "lens:LENS-LINKED-NOTES-USAGE-JUSTIFICATION",
     "lens:LENS-APPLICATION-BOUNDARY-FEASIBILITY",
     "lens:LENS-DOMAIN-MODELING-DDD",
     "lens:LENS-TERMS-UBIQUITOUS-LANGUAGE",
@@ -170,8 +169,6 @@
     "helper-library:prompt:gdoc-zip-1rueqqi",
     "helper-library:prompt:item-1ir0x2w-197y55w",
     "helper-library:prompt:item-1jiipnz-9dozvu",
-    "helper-library:prompt:item-1oe3zh1-rfospb",
-    "helper-library:prompt:item-kljpu8-f7wgiu",
     "helper-library:prompt:item-p9hbng-10cvt92",
     "helper-library:prompt:item-rx5n6l-4f7nod",
     "helper-library:prompt:item-z84fhr-1ynaeie",
@@ -551,8 +548,7 @@
       "label": "Representation / Navigation",
       "order": 30,
       "items": [
-        "lens:LENS-ARTIFACT-BOUNDARY-ADDRESSABILITY",
-        "lens:LENS-LINKED-NOTES-USAGE-JUSTIFICATION"
+        "lens:LENS-ARTIFACT-BOUNDARY-ADDRESSABILITY"
       ]
     },
     {

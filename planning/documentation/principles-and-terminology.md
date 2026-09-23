@@ -280,24 +280,6 @@ A Responsibility Map may be manually maintained when small, but its critical own
 
 Responsibility Maps may be hierarchical when a scope contains several sibling semantic owners: a parent map may route to a narrower child map, which then routes to the canonical owner. Do **not** create a Responsibility Map for every folder by default. Create one when it materially reduces ownership inference, competing routes or semantic duplication. Map entries should state the responsibility, owner and useful boundary/routing distinction; they must not copy the owned contract body.
 
-<a id="doc-responsibility-anchor-audit-coverage"></a>
-## Responsibility / Anchor Audit Coverage
-
-Responsibility ID: `DOC.RESPONSIBILITY-ANCHOR-AUDIT-COVERAGE`
-
-A **Responsibility / Anchor Audit Coverage** artifact is non-normative evidence that records which declared methodology scopes have actually received a responsibility-owner / Responsibility Map / stable-anchor / inbound-link audit. It exists so later work can distinguish a closed audited zone from an area that merely happened to be touched by a package.
-
-```text
-coverage evidence
-→ audited scope
-→ responsibility/map checks performed
-→ anchor/link checks performed
-→ repair/closeout result
-→ explicit exclusions / future zones
-```
-
-The coverage artifact does not become a semantic owner or Responsibility Map. A zone may be marked closed only for its declared scope; profile/link-only migrations do not imply that the profile's own semantic responsibilities were audited. Update the coverage evidence when a dedicated responsibility/anchor audit closes or materially reopens a zone.
-
 ## Principles & Terminology
 
 A **Principles & Terminology** file defines the vocabulary and stable semantic rules of an area.
@@ -594,7 +576,7 @@ tracked Semantic Owner Dependency
 → semantic owner change requires revalidation
 ```
 
-Do not turn every textual mention into a link and do not turn every heading into an explicit anchor. When a non-owner materially restates/contextualizes/extends/represents/migrates owner semantics, use a Semantic Owner Dependency declaration with a direct owner link rather than expecting an ordinary link to imply revalidation. Use a shallow registry when a many-owner overview is more useful than many direct relations, and use Linked Notes or another tracked relation only when its stronger behavior is independently justified. A broken path or fragment is a documentation defect, while a mechanically valid link may still be misleading when it points to stale, legacy or non-authoritative material.
+Do not turn every textual mention into a link and do not turn every heading into an explicit anchor. When a non-owner materially restates/contextualizes/extends/represents/migrates owner semantics, use a Semantic Owner Dependency declaration with a direct owner link rather than expecting an ordinary link to imply revalidation. Use a stable explicit anchor when fragment-level addressability is independently useful, and use a shallow registry when a many-owner overview is more useful than many direct relations. Ordinary Markdown links/anchors remain navigation/addressability; they do not create synchronization or semantic authority. A broken path or fragment is a documentation defect, while a mechanically valid link may still be misleading when it points to stale, legacy or non-authoritative material.
 
 ## Progressive Complexity Principle
 

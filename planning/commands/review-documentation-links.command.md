@@ -33,7 +33,7 @@ Scope: focused read-only documentation-navigation review routed through the exis
     "Broken paths or fragments are documentation defects, but zero broken links does not prove useful navigation.",
     "Flag important plain-text references that should be direct links when readers otherwise must search manually.",
     "Flag links that technically resolve but lead to stale, legacy or non-authoritative destinations when a current owner exists.",
-    "Use a registry for useful many-owner overview and Linked Notes/tracked relations only when their stronger behavior is justified.",
+    "Use stable explicit anchors when fragment-level addressability is useful, and a registry when a many-owner overview is more useful than many direct links.",
     "Do not mutate repository files under this command."
   ],
   "userTarget": "<documentation file/folder/scope to review>",

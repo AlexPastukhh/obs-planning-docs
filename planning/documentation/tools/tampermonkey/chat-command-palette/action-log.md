@@ -542,3 +542,12 @@ Logging starts only after explicit user instruction; no pre-start history is rec
 **ChangeSet:** `c62ec40a-8ad4-45ef-8034-cd0ad6daf247`  
 **Package:** `b915ba9c-76c5-4c29-bcf1-0b96cdac7aea`  
 **Reason:** Planning Helper participates by resolving command `includes` through canonical `planning/commands/*.command.md` paths, projecting the mandatory Use-Case recheck / fundamental AI Working Boundary traversal, regenerating catalogs/userscript, and adding regression coverage. Reusable AI authority and Finding→formal IDTSPE Proposal semantics remain owned by methodology, not Helper runtime.
+
+### XREF-039 — Retire Linked Notes / Reference Object helper projections
+
+**Type:** CROSS-SCOPE REFERENCE  
+**Canonical Log:** `planning/documentation/action-log.md`  
+**Entry:** `2026-09-23 — v14 full-consistency Review correction: retire Linked Notes / Reference Objects and close active-surface drift`  
+**ChangeSet:** `7b533b10-54d8-4430-ad9e-9f23e2810427`  
+**Package:** `fa29fc1d-b4e6-4d9d-990c-6312faea54bc`  
+**Reason:** the full-repository Review retires the Linked Notes Lens/command and Reference Object bootstrap prompts from the active Helper projection, updates navigation counts/tests, and regenerates canonical seeds/userscript. Full semantic rationale and Review disposition are owned by the reusable-documentation log entry.

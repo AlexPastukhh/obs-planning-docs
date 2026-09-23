@@ -690,63 +690,6 @@
     },
     {
       "schemaVersion": 1,
-      "id": "lenscmd.linked-notes.justify",
-      "file": "check-linked-notes-justification.command.md",
-      "command": "проверь оправданы ли linked notes",
-      "englishName": "check linked notes justification",
-      "commandFamily": [
-        "проверь оправданы ли linked notes"
-      ],
-      "description": "direct IDTSPE Lens check",
-      "meaning": "Resolve/reuse the natural host Target and apply LENS-LINKED-NOTES-USAGE-JUSTIFICATION without creating a Lens-owned Target.",
-      "activeContextBehavior": "Resolve or reuse the natural current IDTSPE Target/context; infer CREATE/REFINE/EXTEND/REVALIDATE/REPAIR from current state. Do not create a fake Target when the module/lens gate fails.",
-      "traversalReadMode": "Reuse current reliable IDTSPE/SDS governance; targeted refresh of the selected owner route when uncertain; full bootstrap only when no reliable sufficient governance context exists.",
-      "ownerFiles": [
-        "planning/documentation/idtspe-methodology/active/idtspe-core/lenses/reusable/LENS-LINKED-NOTES-USAGE-JUSTIFICATION.md",
-        "planning/documentation/idtspe-methodology/active/idtspe-core/commands/IDTSPE-COMMAND-SURFACE-CONTRACT.md"
-      ],
-      "ownerRefs": [
-        {
-          "responsibilityId": "LENS-LINKED-NOTES-USAGE-JUSTIFICATION",
-          "path": "planning/documentation/idtspe-methodology/active/idtspe-core/lenses/reusable/LENS-LINKED-NOTES-USAGE-JUSTIFICATION.md",
-          "anchor": "lens-linked-notes-usage-justification-linked-notes-possible-usage-justification",
-          "why": "Concrete Lens Model semantics selected by this command; shared port/registry/Meta-Model references are inherited from included commands.",
-          "role": "PRIMARY_OWNER",
-          "readMode": "REQUIRED"
-        }
-      ],
-      "includes": [
-        "planning/commands/work-through-idtspe.command.md",
-        "planning/commands/recheck-idtspe-port-composition.command.md",
-        "planning/commands/include-idtspe-trace-port.command.md",
-        "planning/commands/idtspe-port-lens.command.md",
-        "planning/commands/apply-idtspe-lens.command.md"
-      ],
-      "compositionContributions": [],
-      "expectedOutput": "JUSTIFIED / NOT_JUSTIFIED / route-to-reference-object with the concrete navigation job; no notes storage tree.",
-      "permissionMode": "read-only-planning",
-      "keyReminders": [
-        "Resolve or reuse the natural IDTSPE Target/owner context before applying the Lens.",
-        "A direct Lens command never creates a Lens-owned Target or a parallel runtime.",
-        "Return findings to the natural semantic owner and use P-14 only after representation/placement is actually needed.",
-        "This command is read-only planning; it does not mutate repository files, commit or push."
-      ],
-      "userTarget": "<target/result>",
-      "palette": true,
-      "helperPresentation": null,
-      "methodologyBinding": {
-        "methodologyRuntime": "IDTSPE",
-        "profile": null,
-        "surfaceKind": "LENS",
-        "targetModuleId": null,
-        "lensId": "LENS-LINKED-NOTES-USAGE-JUSTIFICATION",
-        "parentSurface": null,
-        "hostTargetPolicy": "RESOLVE_OR_REUSE_TARGET"
-      },
-      "refinements": []
-    },
-    {
-      "schemaVersion": 1,
       "id": "lenscmd.simplicity.check",
       "file": "check-simplicity.command.md",
       "command": "проверь можно ли упростить",
@@ -5885,7 +5828,7 @@
         "Broken paths or fragments are documentation defects, but zero broken links does not prove useful navigation.",
         "Flag important plain-text references that should be direct links when readers otherwise must search manually.",
         "Flag links that technically resolve but lead to stale, legacy or non-authoritative destinations when a current owner exists.",
-        "Use a registry for useful many-owner overview and Linked Notes/tracked relations only when their stronger behavior is justified.",
+        "Use stable explicit anchors when fragment-level addressability is useful, and a registry when a many-owner overview is more useful than many direct links.",
         "Do not mutate repository files under this command."
       ],
       "userTarget": "<documentation file/folder/scope to review>",

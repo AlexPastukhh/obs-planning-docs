@@ -523,20 +523,9 @@ L5 Evolution / Change Isolation
 
 A Lens does not own a global evolution map, current global architecture position or target-local evolution artifact. Representation follows the natural owner after accepted meaning exists.
 
-## 13. Linked Notes Boundary
+## 13. Cross-Owner Navigation Boundary
 
-Linked Notes are evaluated as a **usage/navigation capability**, not as a file family.
-
-```text
-existing canonical owners / stable IDs / relations
-+ material cross-owner navigation/query need
-→ LENS-LINKED-NOTES-USAGE-JUSTIFICATION
-→ linked-notes-usage Finding Candidate carrying JUSTIFIED_LINKED_NOTES / NOT_JUSTIFIED / existing-mechanism / likely-owner context
-→ Core Finding Disposition resolves accepted Decision/State input + semantic owner/lifecycle consequence
-→ Documentation / Representation + P-14 / PERSISTENCE_ADDRESSABILITY only when durable representation/placement is useful
-```
-
-The Lens must not create `notes/` or `linked-notes/` trees or route semantic ownership itself.
+Cross-owner navigation uses direct links to canonical owners and stable explicit anchors when fragment-level addressability is useful. Navigation/addressability does not create a new Lens, semantic owner, synchronization mechanism, or separate artifact family.
 
 ## 14. Revalidation Is Not A Peer Lens
 

@@ -732,55 +732,20 @@ Customer rejection does not automatically create a new Service Request.
 
 The Domain links the Scenarios that establish this meaning; it does not replace their behavioral flow.
 
-## 17. Reference Object Candidate
+## 17. Stable Link / Anchor Example
 
-The Domain invariant above is defined through real Scenario/Domain work and may need to appear literally in:
+The Domain invariant above is canonical in the Domain owner. Consumers such as a Slice, test-plan note, or integration document should link to that owner rather than copy a synchronized literal.
 
-```text
-SCN-ACCEPT-RESULT
-DOM-SERVICE-REQUEST
-SL-CUSTOMER-ACCEPTANCE
-verification plan
-manual acceptance documentation
-```
-
-If those consumers merely need the semantic owner, use ordinary Markdown links.
-
-If they intentionally need the exact literal statement and it would be harmful for ten copied versions to drift after the Domain definition changes, that literal becomes a strong `Reference Object Candidate`.
-
-Practical question:
+If consumers need to address the exact invariant fragment repeatedly, add one stable explicit anchor at the invariant in the Domain owner and link to that anchor:
 
 ```text
-If I change the canonical invariant tomorrow,
-do I want tooling to identify every materialized literal copy
-that might still contain the old value?
+Domain invariant owner + stable anchor
+→ Slice link
+→ proof-planning link
+→ integration-review link
 ```
 
-If yes, materializing that fragment through Linked Notes RO may be justified. The relation `Slice → Domain` itself is not an RO.
-
-A consumer may discover the candidate first. For example, the Slice can record:
-
-```text
-Source Owner:
-  DOM-SERVICE-REQUEST
-
-Canonical Meaning / Fragment:
-  customer rejection keeps the same Service Request
-
-Use Here:
-  SL-CUSTOMER-ACCEPTANCE verification target
-
-Usage Mode:
-  exact-literal candidate
-
-Reference Object Candidate:
-  yes
-
-Materialized Linked Notes RO:
-  no
-```
-
-This consumer-side note is not a second definition. The Domain remains the canonical source of the invariant until/unless the exact literal is intentionally materialized through the Linked Notes contract.
+The consumer may add local explanatory prose, but that prose is contextual and does not become a second definition. When the Domain invariant changes materially, affected consumers are reviewed through normal impact/revalidation work.
 
 ## 18. Slice Strategy And Implementation Slices
 
@@ -950,7 +915,7 @@ Problem / Need
 → transient vertical Slice Discovery (`TM-IMPLEMENTATION-SLICE`)
    → optional durable Slice Owner only when independent persistence value exists
 → proof route / Exact Realization / executed Evidence as material
-→ cross-file dependency / Reference Object Candidate review
+→ cross-file owner-link / stable-anchor review
 → repeated integration review
    → Application Concept / real-world workflow / Whole Solution when material
 ```

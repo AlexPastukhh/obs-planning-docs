@@ -132,7 +132,7 @@ External delivery state is independent from repository mutation and finalization
 
 ## Referenced Evolution Step
 
-This legacy Scenario is affected by the canonical [`EVO-RPKG-DOWNGRADE-CURRENT-CHANGE-TO-DIAGNOSTIC`](SCN-RPKG-COMPLETE-REPOSITORY-WORK.md#evo-rpkg-downgrade-current-change-to-diagnostic) step owned by `SCN-RPKG-COMPLETE-REPOSITORY-WORK`.
+This legacy Scenario records local impact from the named `EVO-RPKG-DOWNGRADE-CURRENT-CHANGE-TO-DIAGNOSTIC` transition. No separate canonical Evolution Step owner for that name is materialized in the current document set, so this Scenario must not route to the removed/missing fragment as authority.
 
 Local impact when that step is realized:
 - this standalone Scenario leaves the ordinary target workflow once no legacy ChangeSet requires its review/finalize authority;

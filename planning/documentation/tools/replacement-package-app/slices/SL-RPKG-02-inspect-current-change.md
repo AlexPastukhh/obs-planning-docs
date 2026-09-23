@@ -32,13 +32,12 @@ Current Change calculation must use an isolated derivation mechanism when Git in
 
 ## Tests
 
-Current responsibility: `CoreTests` for cumulative ReviewDiff identity, temporary-index isolation, persistence/freshness and captured-ChangeSet ownership.
+The former `CoreTests` source is preserved under `legacy/tests/` as historical proof intent and is not current executable evidence. Current proof claims must be limited to tests compiled by `build.cmd` plus current source/contracts; no passing regression claim is made here for legacy-only cases.
 
 ## Evolution Impact
 
 ### EVO-RPKG-DOWNGRADE-CURRENT-CHANGE-TO-DIAGNOSTIC
-Canonical Scenario step:
-[`EVO-RPKG-DOWNGRADE-CURRENT-CHANGE-TO-DIAGNOSTIC`](../scenarios/SCN-RPKG-COMPLETE-REPOSITORY-WORK.md#evo-rpkg-downgrade-current-change-to-diagnostic)
+Canonical Evolution Step owner: **not separately materialized in the current document set**. This Slice section records only the local impact of the named transition.
 
 Target BI references:
 - `BI-RPKG-CURRENT-CHANGE-GIT-DERIVED`

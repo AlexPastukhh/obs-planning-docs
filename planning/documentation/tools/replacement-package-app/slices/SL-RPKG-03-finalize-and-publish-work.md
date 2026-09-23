@@ -31,13 +31,13 @@ Legacy Finalize staging must be constrained to the exact current ChangeSet-owned
 
 ## Tests
 
-Current responsibility: `CoreTests` for review-baseline freshness, owned-only staging, commit/push/Publication Pending recovery and all-or-nothing Reopen ownership reacquisition.
+The former `CoreTests` source is preserved under `legacy/tests/` as historical proof intent and is not current executable evidence. Current proof claims must be limited to tests compiled by `build.cmd` plus current source/contracts; no passing regression claim is made here for legacy-only cases.
 
 ## Evolution Impact
 
 ### EVO-RPKG-INTRODUCE-WORK-FINALIZATION
 Canonical Scenario step:
-[`EVO-RPKG-INTRODUCE-WORK-FINALIZATION`](../scenarios/SCN-RPKG-COMPLETE-REPOSITORY-WORK.md#evo-rpkg-adopt-reviewed-result-workflow)
+[`EVO-RPKG-INTRODUCE-WORK-FINALIZATION`](../evolution-steps/EVO-RPKG-INTRODUCE-WORK-FINALIZATION.md)
 
 Target BI references:
 - `BI-RPKG-FINALIZE-ONLY-APPROVED-PUBLISHED-REVISION`

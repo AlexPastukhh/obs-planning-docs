@@ -387,3 +387,12 @@ No material unresolved issues identified for this selected documentation/methodo
 **Canonical Log:** `planning/documentation/action-log.md`  
 **Entry:** `2026-09-22 — v12 Application Definition Benefit-boundary and Concept normalization`  
 **Reason:** active Application Planning terminology/workflow/template projections are aligned with canonical SDS `TM-APPLICATION-DEFINITION`: per-Benefit Responsibility Boundaries, no standalone boundary Result Unit, concise Application Concept, and Representative RLS as concrete Benefit examples. Canonical Target semantics remain owned by the SDS Target Module.
+
+### XREF-012 — Replace Reference Object planning projections with links / stable anchors
+
+**Type:** CROSS-SCOPE REFERENCE  
+**Canonical Log:** `planning/documentation/action-log.md`  
+**Entry:** `2026-09-23 — v14 full-consistency Review correction: retire Linked Notes / Reference Objects and close active-surface drift`  
+**ChangeSet:** `7b533b10-54d8-4430-ad9e-9f23e2810427`  
+**Package:** `fa29fc1d-b4e6-4d9d-990c-6312faea54bc`  
+**Reason:** detailed Application Planning no longer projects a Reference Object Candidate/review-dependency mechanism. Cross-owner navigation uses direct canonical links and stable explicit anchors; semantic impact remains with normal owner Review/revalidation.

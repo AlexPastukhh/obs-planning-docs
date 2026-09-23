@@ -77,8 +77,7 @@ When the canonical Evolution Step is implemented:
 No step-specific Domain impact entries are populated by this methodology package. Later Scenario/Domain/Slice integration should derive them from canonical Scenario-owned Evolution Steps and actual Domain discovery rather than guessing owners/class boundaries in advance.
 
 ## EVO-RPKG-RETIRE-CHANGESET-AGGREGATE — Split central ChangeSet state into natural owners
-Canonical Scenario step:
-[`SCN-RPKG-COMPLETE-REPOSITORY-WORK`](scenarios/SCN-RPKG-COMPLETE-REPOSITORY-WORK.md#evo-rpkg-retire-changeset-aggregate)
+Canonical Evolution Step owner: **not separately materialized in the current document set**. This section records the current cross-owner transition pressure; do not treat the old missing Scenario fragment as authority.
 
 Affected owners:
 - ChangeSet → Retirement

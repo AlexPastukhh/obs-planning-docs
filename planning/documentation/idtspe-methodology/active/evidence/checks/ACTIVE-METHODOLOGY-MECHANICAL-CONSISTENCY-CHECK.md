@@ -7,41 +7,37 @@ Revalidated against the current Core plus all three installed profile registries
 This file reports observed registry/projection parity. Semantic authority remains in the owning registries/contracts.
 
 ```text
-active_core_target_modules = 2
-active_sds_target_modules = 13
-active_visual_2d_target_modules = 10
-active_reference_knowledge_target_modules = 4
-installed_active_target_modules = 29
+current registries
+→ resolve their declared owner files
+→ expose unique semantic IDs
+→ keep retired compatibility stubs out of active registries
 
-retired_sds_target_compatibility_stubs = 5
-  (excluded from the active SDS registry)
+current methodology Use-Case registries
+→ resolve current Use-Case owners
 
-core_lenses = 13
-sds_lenses = 8
-visual_2d_lenses = 4
-reference_knowledge_lenses = 3
-installed_lenses = 28
+current Planning Command catalog
+→ parses all direct command definitions
+→ resolves path-addressed includes
+→ remains acyclic
 
-methodology_use_cases = 18
-  = 12 Documentation + 6 IDTSPE + 0 SDS-runtime
-
-planning_command_definitions = 99
-  = 73 palette-visible + 26 hidden compatibility/infrastructure
+Planning Helper generated projections
+→ are regenerated from current owners
+→ pass build/test parity
 ```
 
 Checks:
 
-- Core Target Module registry/file parity: **2 / 2 PASS**
-- SDS **active registry rows** resolve to active Target Module files: **13 / 13 PASS**
-- retired SDS Target compatibility files are absent from the active registry: **5 / 5 PASS**
-- Core Lens registry/file parity: **13 / 13 PASS**
-- SDS Lens registry/file parity: **8 / 8 PASS**
-- 2D Visual Target Module registry/file parity: **10 / 10 PASS**
-- 2D Visual Lens registry/file parity: **4 / 4 PASS**
-- Reference Knowledge Target Module registry/file parity: **4 / 4 PASS**
-- Reference Knowledge Lens registry/file parity: **3 / 3 PASS**
+- Core Target Module registry/file parity: **PASS**
+- SDS **active registry rows** resolve to active Target Module files: **PASS**
+- retired SDS Target compatibility files are absent from the active registry: **PASS**
+- Core Lens registry/file parity: **PASS**
+- SDS Lens registry/file parity: **PASS**
+- 2D Visual Target Module registry/file parity: **PASS**
+- 2D Visual Lens registry/file parity: **PASS**
+- Reference Knowledge Target Module registry/file parity: **PASS**
+- Reference Knowledge Lens registry/file parity: **PASS**
 - Reference Knowledge Domain Pack registry: **0 installed concrete packs / PASS**
-- Methodology Use-Case Registry Map projects only current Documentation/IDTSPE runtime UCs: **18 PASS**
+- Methodology Use-Case Registry Map projects only current Documentation/IDTSPE runtime UCs and every projected route resolves: **PASS**
 - SDS runtime methodology-use UC count: **0 PASS**
 - current Planning Helper command definitions parse and generated projections are verified by the palette test suite: **PASS**
 - numbered SDS workflow files remain retired; one semantic composition/readiness guide remains: **PASS**
@@ -68,33 +64,32 @@ Checks:
 - Resolution Responsibility Map routing check: Need Candidate Collection / Need Candidate Disposition / Finding Disposition / Q/R/P / Proposal-Decision / Decision Revalidation projection / Planning Branch / Branch Comparison / Carry-Forward route to one canonical owner anchor each; parent methodology/Core maps route through the child map rather than duplicating those lifecycle rows: **PASS**
 - Resolution owner-anchor check: audited Core resolution owner sections use explicit stable anchors; all reviewed fragment references into those audited sections resolve, including the existing `#resolution-escalation` scenario references: **PASS**
 - Resolution consumer-dependency check: Proposal/Decision Resolution Context Lens, USER intake, Compose/Revalidate/Integrate/Maintain-State UCs, AI Reviewability and Scenario Map declare tracked dependencies where they contextualize/represent audited resolution-owner semantics: **PASS**
-- Lens Responsibility Map routing check: `LENS.META-MODEL` and `LENS.DISCOVERY` route to distinct explicit owner anchors; all **13 / 13** concrete generic Core Lens files retain a unique `Lens ID`, and parent methodology/Core maps route through the child Lens map rather than duplicating Meta-Model/Registry ownership: **PASS**
+- Lens Responsibility Map routing check: `LENS.META-MODEL` and `LENS.DISCOVERY` route to distinct explicit owner anchors; all registered concrete generic Core Lens files retain a unique `Lens ID`, and parent methodology/Core maps route through the child Lens map rather than duplicating Meta-Model/Registry ownership: **PASS**
 - Knowledge/Source/Evidence boundary check: `KNOWLEDGE.BASIS`, `KNOWLEDGE.PRACTICAL-EVIDENCE`, `KNOWLEDGE.TESTING` and `KNOWLEDGE.UBIQUITOUS-LANGUAGE` have distinct canonical owners; Source State remains routed to `TARGET.INSTANCE-SOURCE-RELATION`, while generic `Evidence / Evidence Need` stays in the existing Core State boundary rather than acquiring a second Knowledge owner: **PASS**
 - Representation/Persistence responsibility check: artifact placement/P-14 response semantics, Broad Discussion/Integration Checkpoint projection, deep artifact-boundary/file-realization method and Target Evolution companion guidance route to distinct `REPRESENTATION.*` owners; Lens/Target-Module representation handshakes are explicit extensions rather than competing Meta-Model definitions: **PASS**
 - Lens/Knowledge/Representation stable-anchor check: all audited owner anchors have inbound references, reviewed fragment links into these Core zones resolve to explicit anchors, and no generated-heading fragment migration was required because no pre-existing cross-file fragment targets existed in the audited zones: **PASS**
 - Pass-1 profile-boundary check: profile-specific Lens, Knowledge and representation semantics remain semantically unaudited; this Core closeout changes no profile semantic owner and does not claim profile conformance: **PASS**
 - Runtime/Core-State Responsibility Map routing check: Work Context/Shell composition, port refresh, Pass Trace, contextual application/recheck, default work mode, Core State Unit, Methodology Usage State and USER intake route to distinct canonical responsibilities; co-located Core State sections are explicitly outside Target Work ownership: **PASS**
-- Core State / orchestration owner-uniqueness check: `CORE.STATE-UNIT`, `CORE.METHODOLOGY-USAGE-STATE`, `IDTSPE.RUNTIME-COMPOSITION`, `IDTSPE.PASS-TRACE`, `IDTSPE.CONTEXTUAL-APPLICATION`, `IDTSPE.DEFAULT-WORK-MODE`, `IDTSPE.USER-INPUT-INTAKE` and the six `IDTSPE.UC.*` responsibilities have one declaration each: **PASS**
+- Core State / orchestration owner-uniqueness check: `CORE.STATE-UNIT`, `CORE.METHODOLOGY-USAGE-STATE`, `IDTSPE.RUNTIME-COMPOSITION`, `IDTSPE.PASS-TRACE`, `IDTSPE.CONTEXTUAL-APPLICATION`, `IDTSPE.DEFAULT-WORK-MODE`, `IDTSPE.USER-INPUT-INTAKE` and all current `IDTSPE.UC.*` responsibilities have one declaration each: **PASS**
 - IDTSPE Use-Case orchestration map check: Use-Case Registry owns discovery/routing metadata only; Compose/Maintain-State/Integrate/Revalidate/Maintain-Target-Module/Maintain-Lens each own functional orchestration only and do not absorb the semantic contracts they invoke: **PASS**
 - Pass-2 stable-anchor check: all new runtime/state/use-case owner anchors are addressed by their child Responsibility Maps or direct consumers, and reviewed fragment links into these audited owners resolve to explicit anchors: **PASS**
 - Pass-2 profile boundary check: generic Core runtime/orchestration is closed without claiming profile-specific orchestration semantics or Helper/command implementation ownership: **PASS**
 - Installed-profile responsibility routing check: `IDTSPE.PROFILE-DISCOVERY` routes installed-profile applicability/bootstrap entry and `profiles/RESPONSIBILITY-MAP.md` routes SDS / 2D Visual / Reference Knowledge child maps without copying profile semantic bodies: **PASS**
-- SDS profile ownership check: bootstrap/methodology discovery/Target Module discovery/Lens discovery/readiness/Requirement/guidance/knowledge/representation responsibilities route through `profiles/sds/RESPONSIBILITY-MAP.md`; all **13 / 13** concrete SDS Target Modules expose unique `Module ID` and all **8 / 8** SDS Lenses expose unique `Lens ID`, with explicit Core Meta-Model inheritance: **PASS**
-- 2D Visual profile ownership check: invariants, Unit checkpoints, visual Source/material preparation, construction support and representation responsibilities route through `profiles/visual-production-2d/RESPONSIBILITY-MAP.md`; all **10 / 10** concrete Target Modules expose unique `Module ID` and all **4 / 4** Lenses expose unique `Lens ID`: **PASS**
-- Reference Knowledge ownership check: Bank/Object/Vocabulary/change-authority/Domain-Pack/Landscape/consumer-Source/representation responsibilities route through `profiles/reference-knowledge/RESPONSIBILITY-MAP.md`; all **4 / 4** Target Modules and **3 / 3** Lenses expose unique IDs: **PASS**
+- SDS profile ownership check: bootstrap/methodology discovery/Target Module discovery/Lens discovery/readiness/Requirement/guidance/knowledge/representation responsibilities route through `profiles/sds/RESPONSIBILITY-MAP.md`; all registered concrete SDS Target Modules expose unique `Module ID` and all registered SDS Lenses expose unique `Lens ID`, with explicit Core Meta-Model inheritance: **PASS**
+- 2D Visual profile ownership check: invariants, Unit checkpoints, visual Source/material preparation, construction support and representation responsibilities route through `profiles/visual-production-2d/RESPONSIBILITY-MAP.md`; all registered concrete Target Modules expose unique `Module ID` and all registered Lenses expose unique `Lens ID`: **PASS**
+- Reference Knowledge ownership check: Bank/Object/Vocabulary/change-authority/Domain-Pack/Landscape/consumer-Source/representation responsibilities route through `profiles/reference-knowledge/RESPONSIBILITY-MAP.md`; all registered Target Modules and Lenses expose unique IDs: **PASS**
 - Pass-3 Core-boundary check: profile Target Modules/Lenses explicitly extend the Core Meta-Models; profile representation extends Core artifact placement; visual/reference consumer Source semantics contextualize `TARGET.INSTANCE-SOURCE-RELATION` rather than creating second Core Source authority: **PASS**
 - Pass-3 stable-anchor/link check: profile-level Responsibility owners are routed through explicit stable anchors; reviewed profile fragment links resolve to explicit anchors; examples/templates remain supporting/non-owner projections: **PASS**
 - Pass-3 command boundary preservation check: SDS/profile command-surface and Helper composition ownership were intentionally deferred by Pass 3 and are now closed by the dedicated Pass-4 command/helper audit rather than retroactively absorbed into profile semantic ownership: **PASS**
 - Command/Helper Responsibility Map check: root routing, direct command-definition contract, command-maintenance Use Case, Core IDTSPE command surface, SDS command extension, Helper semantic projection and legacy Helper-library compatibility route through [`planning/commands/RESPONSIBILITY-MAP.md`](../../../../../commands/RESPONSIBILITY-MAP.md) to distinct owners: **PASS**
 - command-composition ownership check: `methodologyBinding` remains projection/dispatch metadata and `ownerFiles` remain read/owner routes; registered `includes` form a semantic command-prefix graph, while technical port topology is still derived/refreshed through `IDTSPE.PORT-COMPOSITION-REFRESH`; no parallel durable numeric `requiredPorts` / `portRequirements` ontology exists: **PASS**
-- strict command-catalog check: all **99 / 99** direct `planning/commands/*.command.md` definitions parse under the current schema; **288** `ownerFiles` references resolve; command IDs are unique; registered `includes` resolve in the complete repository catalog and are acyclic; unsupported durable numeric `requiredPorts` / `portRequirements` and file-execution `includeFiles` fields are absent: **PASS**
-- Planning Helper generated-projection check: final `npm run build` succeeds; generated catalogs expose **18** methodology Use Cases, **29** Target Modules, **28** Lenses and **9** canonical Scenarios; normal Helper navigation contains **124** primary command cards across `General`, `IDTSPE Pass`, `Use Cases`, `Target Modules`, `Lenses` and `Tools / Repository`, and `catalog-order` groups cover every current card exactly once: **PASS**
-- Planning Helper regression suite: final `npm test` result is **240 / 240 PASS**, including command-include graph, mandatory UC recheck, P-02 working-trace orientation, methodology-navigation, semantic-parity, command/scenario reverse projection and Unit-checkpoint contracts: **PASS**
-- final scoped responsibility/dependency check: across the active methodology plus direct Documentation / Session / Planning Command / Helper projections, **112** Responsibility IDs are unique and all **304** tracked Semantic Owner Dependency responsibility targets resolve: **PASS**
+- strict command-catalog check: all direct `planning/commands/*.command.md` definitions parse under the current schema; command owner references resolve; command IDs are unique; registered path-addressed `includes` resolve in the complete repository catalog and are acyclic; unsupported durable numeric `requiredPorts` / `portRequirements` and file-execution `includeFiles` fields are absent: **PASS**
+- Planning Helper generated-projection check: final `npm run build` succeeds; generated catalogs expose the current methodology Use Cases, Target Modules, Lenses and canonical Scenarios; normal Helper navigation/catalog ordering covers every current card exactly once: **PASS**
+- Planning Helper regression suite: final `npm test` passes, including command-include graph, mandatory UC recheck and fundamental AI Working Boundary, P-02 working-trace orientation, methodology-navigation, semantic-parity, command/scenario reverse projection and Unit-checkpoint contracts: **PASS**
+- final scoped responsibility/dependency check: across the active methodology plus direct Documentation / Session / Planning Command / Helper projections, Responsibility IDs are unique and tracked Semantic Owner Dependency responsibility targets resolve: **PASS**
 - final scoped link/fragment check: current active-methodology plus direct Documentation / Session / Planning Command / Helper projections pass the scoped local-path/fragment checks with no known missing local paths, bad fragments or generated-heading cross-file fragment dependencies in the audited surface: **PASS**
 - fenced-example link-hygiene check: path-like placeholders in Markdown examples are not encoded as repository links; the Methodology binding example uses explicit non-link placeholder notation instead of the nonexistent `../../shared` path: **PASS**
-- final explicit-anchor check: **24** premature/orphan profile anchors with no real inbound `#anchor` consumer were removed as link hygiene without reopening profile semantics; the remaining **225** explicit anchors in the scoped closeout have **0** zero-inbound anchors: **PASS**
-- responsibility/anchor audit-coverage evidence check: all four planned passes and all listed audit zones are recorded `CLOSED` in [`SEMANTIC-RESPONSIBILITY-ANCHOR-AUDIT-COVERAGE.md`](../audits/SEMANTIC-RESPONSIBILITY-ANCHOR-AUDIT-COVERAGE.md); explicit exclusions now describe only out-of-scope repository/application/history surfaces and the separate deferred Collection/Slot profile migration: **PASS**
+- final explicit-anchor check: reviewed explicit stable anchors have valid inbound routing where required; compatibility/addressability anchors are retained only where they serve a real current route: **PASS**
 - legacy profile migration status: broad SDS/other-profile lower-contract migration to explicit Collections/Slots is intentionally **DEFERRED / NOT CLAIMED**; migration constraints and discovered candidates are recorded in [`TARGET-WORK-UNIT-COLLECTION-SLOT-MIGRATION-NOTES.md`](../migration-notes/TARGET-WORK-UNIT-COLLECTION-SLOT-MIGRATION-NOTES.md)
 
 

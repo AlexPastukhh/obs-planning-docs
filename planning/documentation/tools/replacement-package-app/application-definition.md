@@ -30,6 +30,7 @@ This challenge applies to both Selected Benefits and material Possible Benefits 
 
 `Planning position` expresses whether the Application value/need is selected or merely possible; it does **not** claim realization.
 
+<a id="ab-rpkg-realize-ai-repository-work-01"></a>
 ### AB-RPKG-REALIZE-AI-REPOSITORY-WORK-01 — Realize AI-Created Repository Work
 
 **Planning position:** Selected
@@ -40,6 +41,7 @@ This challenge applies to both Selected Benefits and material Possible Benefits 
 
 **Responsibility Boundary:** The Application owns selected mechanical package/repository realization operations and truthful operation results. The AI/human actor remains responsible for semantic repository-work intent, semantic edits, review/selection decisions and the exact authoritative handoff that asks the Application to realize work.
 
+<a id="ab-rpkg-know-repository-work-outcome-02"></a>
 ### AB-RPKG-KNOW-REPOSITORY-WORK-OUTCOME-02 — Know Repository Work Outcome
 
 **Planning position:** Selected
@@ -50,6 +52,7 @@ This challenge applies to both Selected Benefits and material Possible Benefits 
 
 **Responsibility Boundary:** The Application owns truthful mechanical/proof outcomes and attention signals for operations it performs. The AI/human actor owns semantic interpretation, follow-up choice and any decision about whether the work is acceptable.
 
+<a id="ab-rpkg-keep-work-documented-03"></a>
 ### AB-RPKG-KEEP-WORK-DOCUMENTED-03 — Keep Work Documented For Reuse
 
 **Planning position:** Selected
@@ -60,6 +63,7 @@ This challenge applies to both Selected Benefits and material Possible Benefits 
 
 **Responsibility Boundary:** GitHub and the AI/human actor remain responsible for creating and semantically maintaining Issue/comment history. The Application may consume/expose repository-context conveniences selected downstream, but it does not become the semantic owner of Work narrative/history merely because that context is used by package/repository operations.
 
+<a id="ab-rpkg-delegate-mechanical-repository-work-04"></a>
 ### AB-RPKG-DELEGATE-MECHANICAL-REPOSITORY-WORK-04 — Delegate Mechanical Repository Work
 
 **Planning position:** Selected
@@ -70,6 +74,7 @@ This challenge applies to both Selected Benefits and material Possible Benefits 
 
 **Responsibility Boundary:** The Application owns the selected deterministic/mechanical operations and their validation. The AI remains responsible for methodology-driven semantic work, orchestration intent and choices that require semantic authority.
 
+<a id="ab-rpkg-review-ai-work-efficiently-05"></a>
 ### AB-RPKG-REVIEW-AI-WORK-EFFICIENTLY-05 — Review AI Work Efficiently
 
 **Planning position:** Selected

@@ -110,4 +110,4 @@ Return the selected planning depth plus the current optional Q/R/P register/inde
 
 Start from Real-Life Basis + the candidate/current useful result. Reuse the existing UC when it already owns the Need/result. A separate UC is justified when its result is independently useful/reusable, not merely because a check repeats.
 
-Only after the semantic owner is grounded may a material Q/R/P item become active under the Core Q/R/P contract; group related Q/R/P by shared resolution surface, preserve residual state/retained trace, and do not invent user-owned preferences in AI review. Step 3 identifies Target Dependencies before selecting exact Linked Notes/file realization when material.
+Only after the semantic owner is grounded may a material Q/R/P item become active under the Core Q/R/P contract; group related Q/R/P by shared resolution surface, preserve residual state/retained trace, and do not invent user-owned preferences in AI review. Step 3 identifies Target Dependencies before selecting the narrowest useful file/link/anchor realization when material.

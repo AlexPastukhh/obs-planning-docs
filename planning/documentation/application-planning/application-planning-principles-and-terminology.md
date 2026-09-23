@@ -278,13 +278,13 @@ A Current Decision records a material selected choice that is already integrated
 
 User-visible/scenario-relevant values needed to understand or validate behavior. Not automatically DTO/API/database/UI state.
 
-Scenario DATA may be addressable through a dedicated file or shared registry. It may become a Reference Object Candidate when a canonical literal value genuinely needs exact cross-file materialization/synchronization.
+Scenario DATA may be addressable through a dedicated file or shared registry. When a specific fragment needs durable cross-file addressability, give the canonical fragment a stable explicit anchor and link to it directly.
 
 ## Behavior Item
 
 Stable addressable unit of required behavior inside a Scenario. It is not automatically an implementation task or Slice.
 
-A Behavior Item may become a Reference Object Candidate when its canonical literal meaning genuinely needs exact materialized copies elsewhere; ordinary semantic references use ordinary links.
+A Behavior Item may expose a stable explicit anchor when fragment-level addressability is useful; consumers use ordinary links to the canonical owner rather than literal synchronized copies.
 
 ## Screen
 
@@ -343,23 +343,24 @@ A Slice may use a product-facing feature label without introducing a mandatory F
 
 When physical organization helps, use `solution-and-application/` for solution/concept/prototype/current behavior/spatial requirements and `domain-and-implementation/` for Domain/Slice implementation planning. Legacy root proposal/Requirements/Change-Axis intake may act as intake before promotion to a narrower owner. Folder placement does not itself create semantic ownership. See [`requirements-and-change-context.md`](requirements-and-change-context.md).
 
-## Reference Object Candidate
+## Stable Link / Anchor Candidate
 
-A Reference Object Candidate is canonical literal meaning/value established in one defining file/context through real planning/reasoning/decision work and likely to be intentionally materialized in other files where exact equality matters.
+A stable-link/anchor candidate is canonical meaning that consumers need to address directly and durably across files.
 
-Strong signal:
+Use the narrowest route:
 
 ```text
-If the definition changes here,
-would I want tooling to identify materialized literal copies
-that may now be stale and need explicit review/update?
+file-level owner is enough
+→ direct Markdown link to the owner file
+
+specific fragment is independently useful/addressable
+→ explicit stable anchor in the canonical owner
+→ direct Markdown link to that anchor
 ```
 
-If yes, it may be a good candidate for the Linked Notes Reference Object mechanism. Semantic dependency, ownership relation, or ordinary cross-file linking alone is not sufficient.
+The anchor does not duplicate the canonical meaning and does not create synchronization state. If upstream meaning changes materially, affected consumers are reviewed through the normal owner/revalidation process.
 
-A consuming planning file may be the place where candidate synchronization need is discovered. It may record the source owner, meaning used, local use and whether exact literal equality is needed; that consumer note does **not** become a second canonical definition.
-
-Detailed rules and Linked Notes route: [`detailed-planning/README.md`](detailed-planning/README.md).
+Detailed rules: [`detailed-planning/README.md`](detailed-planning/README.md).
 
 ## Optional Application-Level Views
 

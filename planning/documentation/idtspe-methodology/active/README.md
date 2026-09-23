@@ -40,8 +40,7 @@ A profile may add Target Modules, Lenses, runtime specialization, commands, Know
 
 ## Evidence / Checks
 
-- [`evidence/audits/`](evidence/audits/) — dated consistency/audit evidence.
-- [`evidence/audits/SEMANTIC-RESPONSIBILITY-ANCHOR-AUDIT-COVERAGE.md`](evidence/audits/SEMANTIC-RESPONSIBILITY-ANCHOR-AUDIT-COVERAGE.md) — persistent coverage ledger for responsibility-owner / Responsibility Map / stable-anchor / inbound-link audits; evidence only, not semantic authority.
+- [`evidence/audits/`](evidence/audits/) — dated evidence produced by bounded audit-style Review passes when retaining such evidence is useful; this is not persistent methodology coverage state.
 - [`evidence/checks/`](evidence/checks/) — mechanical or bounded consistency checks.
 
 Evidence and checks do not become semantic authority. Current Use Cases, runtime contracts, Target Modules, Lenses, Knowledge Bases, profile contracts and representation owners remain authoritative for their own Natural Subjects.

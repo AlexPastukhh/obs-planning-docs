@@ -488,7 +488,7 @@ implementation-native representation
 existing owner section
 ```
 
-If exact literal duplication across files is intentionally required and equality/staleness checking matters, treat it as a Reference Object concern rather than ordinary duplicated prose. When semantic ownership is material, surface a Finding Candidate; Core Finding Disposition resolves the owner while the Reference Object / representation mechanism handles equality and staleness.
+Avoid exact literal duplication across files as a synchronization strategy. Keep canonical meaning in one owner; use a direct Markdown link to that owner, and add a stable explicit anchor only when fragment-level addressability is independently useful. When semantic ownership is unclear, surface a Finding Candidate and let Core Finding Disposition resolve the owner.
 
 ## Part 12 — Handoff To Artifact Placement
 
@@ -632,7 +632,7 @@ Documentation / Representation Lens
 ↓
 P-14 / Artifact Placement
 ↓
-Linked Notes Lens only when cross-owner navigation/query is additionally proposed
+direct owner links / stable anchors when cross-owner addressability is useful
 ```
 
 L4/L5/Simplicity findings are useful inputs because representation should not create unnecessary understanding/change cost. This Lens does not replace Simplicity of the solution itself.

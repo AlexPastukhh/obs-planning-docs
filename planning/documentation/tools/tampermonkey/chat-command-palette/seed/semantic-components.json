@@ -178,28 +178,6 @@
       "target": "<Dependency / Change Impact analysis surface>"
     },
     {
-      "id": "LENS-LINKED-NOTES-USAGE-JUSTIFICATION",
-      "kind": "LENS",
-      "scope": "Core",
-      "label": "Linked Notes Possible Usage / Justification",
-      "actionLabel": "Linked Notes Possible Usage / Justification",
-      "description": "justify linked-note/backlink/query behavior without creating notes storage or duplicate semantic authority; direct surface lenscmd.linked-notes.justify",
-      "context": "Use when someone proposes or implicitly needs one of these: ``text cross-owner backlink/navigation \"show me everything related to X\" query/view over distributed owners one concept/Decision/QRP referenced from several places relationship discovery without copying source bodies review traversal across several current owners `` Do not activate merely because two Markdown files can link to each other.",
-      "result": "``text usage justification: YES / NO concrete navigation/query job owners/objects to connect why ordinary links are insufficient (when YES) required stable IDs/relations anti-duplication guard implementation/tooling assumptions Reference Object handoff when relevant revalidation trigger ``",
-      "essence": "Decide whether **Linked Notes behavior is actually justified** for a selected Target/artifact/owner set without creating a second semantic owner, duplicate content, or a new notes/ persistence tree. ``text Linked Notes = linking / backlink / query / cross-owner navigation behavior over already existing canonical owners and addressable objects Linked Notes ≠ semantic owner Linked Notes ≠ Target Module Linked Notes ≠ separate planning artifact family Linked Notes ≠ default physical storage `` The default result is **NOT_JUSTIFIED** until a concrete navigation/review/query need is shown.",
-      "sources": [
-        "planning/documentation/idtspe-methodology/active/idtspe-core/lenses/LENS-REGISTRY.md",
-        "planning/documentation/idtspe-methodology/active/idtspe-core/lenses/reusable/LENS-LINKED-NOTES-USAGE-JUSTIFICATION.md"
-      ],
-      "aliases": [
-        "linked-notes"
-      ],
-      "ownerRef": null,
-      "commandId": "",
-      "invocation": "idtspe lens linked-notes <target/context>",
-      "target": "<Linked Notes Possible Usage / Justification analysis surface>"
-    },
-    {
       "id": "LENS-NEED-VALUE-SCOPE",
       "kind": "LENS",
       "scope": "Core",
@@ -1851,10 +1829,10 @@
       "scope": "Documentation",
       "label": "Review Repository Documentation",
       "actionLabel": "Проверить документацию",
-      "description": "Material documentation findings are tied to their real semantic owners, verified and unverified areas are distinguished, and each required correction has a narrow current repair/change route without the review itself becoming new semantic authority.",
+      "description": "Material documentation findings are tied to their real semantic owners, verified and unverified areas are distinguished, and each required correction has a narrow current repair/change route without the review itself becoming new semantic authority. ### Audit-style Review A documentation **audit** is this same Review performed with an explicitly declared bounded scope and coverage claim. It uses the same review basis, findings, owner routing, Finding Disposition and repair/change routes; it is not a separate methodology lifecycle or semantic authority. Audit-specific reports/evidence may be retained when useful for the reviewed invocation, but no permanent audit-coverage ledger is required or maintained as methodology state.",
       "context": "The current repository documentation may contain stale routes, duplicate semantic authority, orphan methodology/supporting files, unclear Use-Case boundaries, misleading navigation, or inconsistent application of the current documentation contracts.",
-      "result": "Material documentation findings are tied to their real semantic owners, verified and unverified areas are distinguished, and each required correction has a narrow current repair/change route without the review itself becoming new semantic authority.",
-      "essence": "Material documentation findings are tied to their real semantic owners, verified and unverified areas are distinguished, and each required correction has a narrow current repair/change route without the review itself becoming new semantic authority.",
+      "result": "Material documentation findings are tied to their real semantic owners, verified and unverified areas are distinguished, and each required correction has a narrow current repair/change route without the review itself becoming new semantic authority. ### Audit-style Review A documentation **audit** is this same Review performed with an explicitly declared bounded scope and coverage claim. It uses the same review basis, findings, owner routing, Finding Disposition and repair/change routes; it is not a separate methodology lifecycle or semantic authority. Audit-specific reports/evidence may be retained when useful for the reviewed invocation, but no permanent audit-coverage ledger is required or maintained as methodology state.",
+      "essence": "Material documentation findings are tied to their real semantic owners, verified and unverified areas are distinguished, and each required correction has a narrow current repair/change route without the review itself becoming new semantic authority. ### Audit-style Review A documentation **audit** is this same Review performed with an explicitly declared bounded scope and coverage claim. It uses the same review basis, findings, owner routing, Finding Disposition and repair/change routes; it is not a separate methodology lifecycle or semantic authority. Audit-specific reports/evidence may be retained when useful for the reviewed invocation, but no permanent audit-coverage ledger is required or maintained as methodology state.",
       "sources": [
         "planning/documentation/use-case-registry-map.md",
         "planning/documentation/use-case-registry.md"

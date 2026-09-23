@@ -57,7 +57,6 @@ The required Core Pack is part of every material IDTSPE lifecycle **when its cor
 | [`LENS-SHARED-CROSS-CUTTING-RESPONSIBILITY`](reusable/LENS-SHARED-CROSS-CUTTING-RESPONSIBILITY.md) | shared ownership / applicability / local integration | `INLINE` |
 | [`LENS-TEST-PROOF-EVIDENCE`](reusable/LENS-TEST-PROOF-EVIDENCE.md) | proof-layer/evidence quality | `HYBRID` → detailed testing theory on demand |
 | [`LENS-PRACTICAL-EVIDENCE`](reusable/LENS-PRACTICAL-EVIDENCE.md) | minimum practical experiment / observed Evidence | `HYBRID` |
-| [`LENS-LINKED-NOTES-USAGE-JUSTIFICATION`](reusable/LENS-LINKED-NOTES-USAGE-JUSTIFICATION.md) | justify linked-note/backlink/query behavior without creating notes storage or duplicate semantic authority; direct surface `lenscmd.linked-notes.justify` | `INLINE` |
 
 These lenses are not SDS-specific and may be reused by future profiles.
 
@@ -73,7 +72,7 @@ idtspe.lens.apply
 → apply one selected registered Lens through an explicit/resolved supported operation to the bounded Analysis Surface; resolve/reuse Target context only when naturally part of that surface
 ```
 
-The existing Documentation / Representation and Linked Notes commands remain convenience shortcuts for stable recurring intents. The generic operations are Analysis-Surface-first: they do not create Lens-owned Targets, do not create a Target merely to host a Lens, and do not turn all Lens registry entries into separate command files.
+The existing Documentation / Representation command remains a convenience shortcut for a stable recurring intent. The generic operations are Analysis-Surface-first: they do not create Lens-owned Targets, do not create a Target merely to host a Lens, and do not turn all Lens registry entries into separate command files.
 
 ## 3A. Generic `idtspe` Lens Aliases
 
@@ -91,7 +90,6 @@ quality-risk     → LENS-QUALITY-RISK-MATERIALITY
 shared-crosscut  → LENS-SHARED-CROSS-CUTTING-RESPONSIBILITY
 test-proof       → LENS-TEST-PROOF-EVIDENCE
 practical-evidence → LENS-PRACTICAL-EVIDENCE
-linked-notes     → LENS-LINKED-NOTES-USAGE-JUSTIFICATION
 ```
 
 Use `idtspe lens <alias> <target>` when explicit Lens selection is intended.

@@ -106,11 +106,9 @@ idtspe.lens.apply
 lenscmd.documentation.representation.check
 → проверь как лучше зафиксировать <target/result>
 
-lenscmd.linked-notes.justify
-→ проверь оправданы ли linked notes <target>
 ```
 
-These are **18 primary user convenience surfaces**, not the complete direct-command/composition inventory. Hidden/base `idtspe.port.*`, composition prefixes and additional operation surfaces may exist to guarantee canonical traversal without becoming new methodology owners. Installed profiles contribute additional surfaces; current total command/card counts are tooling projections, not Core ontology.
+These are **17 primary user convenience surfaces**, not the complete direct-command/composition inventory. Hidden/base `idtspe.port.*`, composition prefixes and additional operation surfaces may exist to guarantee canonical traversal without becoming new methodology owners. Installed profiles contribute additional surfaces; current total command/card counts are tooling projections, not Core ontology.
 
 ## Bootstrap / Work Boundary
 
@@ -338,11 +336,10 @@ This generic surface also uses `hostTargetPolicy: NONE`. It is a generic dispatc
 
 A registered Lens does **not** receive a dedicated command automatically. Every registered Lens remains reachable through `idtspe.lens.apply`; a fixed shortcut is justified only for a stable recurring user intent.
 
-Current generic Core shortcuts are:
+Current generic Core shortcut is:
 
 ```text
 lenscmd.documentation.representation.check
-lenscmd.linked-notes.justify
 ```
 
 Profile-specific shortcuts belong to that profile's command-surface extension.

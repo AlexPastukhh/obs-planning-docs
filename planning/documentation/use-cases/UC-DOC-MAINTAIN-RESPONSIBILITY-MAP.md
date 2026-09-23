@@ -14,7 +14,6 @@ The smallest useful current Responsibility Map routes each material responsibili
 > - `CONTEXTUALIZES` [`Responsibility Map`](../principles-and-terminology.md#doc-responsibility-map) — `DOC.RESPONSIBILITY-MAP`
 > - `CONTEXTUALIZES` [`Semantic DRY Principle`](../principles-and-terminology.md#doc-semantic-dry) — `DOC.SEMANTIC-DRY`
 > - `CONTEXTUALIZES` [`Semantic Owner`](../principles-and-terminology.md#doc-semantic-owner) — `DOC.SEMANTIC-OWNER`
-> - `CONTEXTUALIZES` [`Responsibility / Anchor Audit Coverage`](../principles-and-terminology.md#doc-responsibility-anchor-audit-coverage) — `DOC.RESPONSIBILITY-ANCHOR-AUDIT-COVERAGE`
 
 
 1. Define the map scope and the ownership/navigation problem it needs to solve. Do not create a map merely because a folder exists.
@@ -25,6 +24,5 @@ The smallest useful current Responsibility Map routes each material responsibili
 6. When owner location/boundary changed, use [`SEMANTIC-OWNER-CHANGE-REVALIDATION`](../processes/SEMANTIC-OWNER-CHANGE-REVALIDATION.process.md) proportionally for affected inbound/dependent routes.
 7. Check parity with README structural navigation and functional Use-Case registries where they touch the same owners; preserve the distinction between structural, functional and cross-cutting semantic routing.
 8. Remove stale map entries and collapse unnecessary map layers when direct routing is clearer.
-9. When this maintenance is part of a dedicated scoped ownership/anchor audit, update the audit coverage evidence after routing/link checks are complete; map maintenance alone does not prove the surrounding zone is fully audited.
 
 Shared meaning: [`Responsibility Map`](../principles-and-terminology.md#doc-responsibility-map), [`Semantic DRY Principle`](../principles-and-terminology.md#doc-semantic-dry), and [`Semantic Owner`](../principles-and-terminology.md#doc-semantic-owner).

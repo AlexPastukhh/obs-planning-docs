@@ -585,4 +585,4 @@ The modular helper may migrate legacy page-local/GM command-library caches into 
 
 Every Insert starts copying the exact body to the system clipboard before composer mutation and inserts that same exact RAM string. If direct insertion fails, the clipboard already contains the body for manual paste. Browser synthetic clipboard paste is not relied on.
 
-Testing Planning Workspace UCs and `UC-DOC-CONFIGURE-REVIEW-DEPENDENCIES` are valid semantic projections. Planning Helper and Linked Notes application behavior is routed through their Scenario Catalogs rather than projected as Workspace Use Cases. Replacement Package App remains an explicit unmigrated exception until separately selected.
+Testing Planning Workspace UCs are valid semantic projections. Cross-file documentation addressability uses ordinary Markdown links and stable explicit anchors. Planning Helper behavior is routed through its current command/helper-library owners rather than projected as Workspace Use Cases. Replacement Package App remains an explicit unmigrated exception until separately selected.

@@ -244,7 +244,7 @@ as supporting evidence.
 Does it need a stable path/ID for:
   cross-file links
   commands
-  linked-note/backlink/query traversal when justified by `LENS-LINKED-NOTES-USAGE-JUSTIFICATION`
+  cross-file navigation through direct owner links / stable anchors
   dependency tracking
   Q/R/P
   Decisions
@@ -618,7 +618,7 @@ Are required Source/proof/WEUC relations present?
 Are registry/index routes updated?
 Are stable links/IDs valid?
 Are generated views still derived?
-Are Reference Objects / Review Dependencies used only where their real obligation exists?
+Are direct owner links and stable anchors sufficient for the required addressability?
 ```
 
 ---
@@ -870,7 +870,7 @@ Selected behavior:
 ```text
 distributed canonical Decision traces
 +
-justified Linked Notes query/view over their existing IDs/relations
+direct links to their existing IDs/anchors
 ```
 
 No `notes/` file or copied Decision portfolio is created. If tooling needs a technical index/cache, that implementation remains non-semantic infrastructure; canonical Decision/QRP bodies stay in their existing owners.
@@ -1027,7 +1027,7 @@ Before splitting/merging:
 which links break?
 which registries update?
 which consumers depend on paths?
-which Reference Objects / Review Dependencies change?
+which linked consumers / stable anchors / routes change?
 which generated indexes need refresh?
 ```
 
@@ -1245,11 +1245,9 @@ How much file-shape guidance belongs in existing templates/workflows versus a se
 
 Which current Full-profile file requirements are true hard representation contracts versus defaults that should become conditional after this discovery model?
 
-## Linked Notes
+## Links And Anchors
 
-Use [`LENS-LINKED-NOTES-USAGE-JUSTIFICATION`](../../lenses/reusable/LENS-LINKED-NOTES-USAGE-JUSTIFICATION.md) when a cross-owner backlink/query/navigation capability is proposed.
-
-Linked Notes do not create a methodology storage tree. The question here is only whether relations/views over existing owners materially improve navigation/review without copying semantic truth. Technical Reference Object registry/index infrastructure, if later justified, is a separate implementation concern.
+Use direct Markdown links to canonical owners for cross-owner navigation. Add stable explicit anchors only when fragment-level addressability is independently useful. These routes do not create copied semantic authority or hidden synchronization state.
 
 ## Automation
 

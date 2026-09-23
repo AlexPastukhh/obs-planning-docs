@@ -52,9 +52,9 @@ Inspect affected files/artifacts/modules/classes/interfaces/methods/schemas/pers
 ```text
 Which dependent truly needs review?
 Which relation is only navigation?
-Which relation creates a material backlink/query/navigation need that should be checked through the Linked Notes Usage Lens?
-Which needs exact Reference Object synchronization instead?
-Which needs bounded-fragment vs whole-file review?
+Which canonical owner should be linked directly?
+Which fragment needs a stable explicit anchor for durable addressability?
+Which affected consumer needs normal semantic revalidation after the upstream change?
 ```
 
 ## Blast-Radius / Migration Facet
@@ -144,7 +144,7 @@ Do not make a dependency map semantic authority for the things it references.
 
 ## Guards
 
-Structural dependency ≠ semantic authority. Semantic relation ≠ automatic whole-file review dependency.
+Structural dependency ≠ semantic authority. A link/anchor provides addressability only; material semantic impact is resolved through normal affected-owner review/revalidation.
 
 ## Composition
 

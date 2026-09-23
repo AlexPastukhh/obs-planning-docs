@@ -2577,3 +2577,37 @@ No `TM-EXACT-REALIZATION` workflow, repair authority, Domain/Slice/Test boundary
 - align the reusable Application planning terminology/template/workflow projections with the canonical SDS Target owner;
 - migrate the active Replacement Package App Application Definition consumer from a standalone responsibility section to Benefit-local boundaries and the concise Concept shape;
 - update Lens/test/helper projections so the retired standalone boundary Unit cannot regress.
+
+## 2026-09-22 — v13 Responsibility-audit retirement and documentation consistency closeout
+
+**Type:** TARGET-STATE / NEW CHANGESET CLOSEOUT  
+**ChangeSet:** `7b533b10-54d8-4430-ad9e-9f23e2810427`  
+**Package:** `f2a464c6-31cc-4640-b0ae-b7400371ae7b`
+
+- retire the completed `SEMANTIC-RESPONSIBILITY-ANCHOR-AUDIT-COVERAGE.md` persistent ledger and remove the dedicated `DOC.RESPONSIBILITY-ANCHOR-AUDIT-COVERAGE` documentation role; a documentation audit remains a bounded Documentation Review with explicit scope/coverage, normal Findings/Disposition/repair routing, and optional invocation evidence, but without a permanent coverage register;
+- remove live-ledger update obligations from Responsibility Map maintenance and Semantic Owner Change Revalidation, while preserving their owner-routing and dependent-revalidation responsibilities;
+- normalize the active mechanical consistency evidence so it states current invariants/results without fragile historical catalog-count assertions that immediately drift after legitimate command/Use-Case growth;
+- restore the five stable `AB-RPKG-*` anchors lost when the Replacement Package App Application Definition moved from tabular Benefits to Benefit-local sections in v12;
+- repair the identified active Markdown navigation problems: Linked Notes Chat Response Reader/App State section numbers, Finalization evolution routing, and stale links that claimed missing canonical Evolution Step fragments; where no standalone canonical Evolution Step owner is currently materialized, state that truth instead of manufacturing an owner or compatibility fragment;
+- preserve all v10-v12 Review/Need/Finding, AI Working Boundary, formal IDTSPE Proposal, path-addressed command-composition and SDS Application Definition semantics unchanged; this package is a documentation/evidence/addressability closeout only.
+
+
+## 2026-09-23 — v14 full-consistency Review correction: retire Linked Notes / Reference Objects and close active-surface drift
+
+**Type:** REVIEW DIFF / OPEN-CHANGESET CONTINUATION  
+**ChangeSet:** `7b533b10-54d8-4430-ad9e-9f23e2810427`  
+**ChangeSet Label:** `responsibility-audit-review-consistency-closeout-v13`  
+**Prior Package:** `f2a464c6-31cc-4640-b0ae-b7400371ae7b`  
+**Reviewed Result:** `NEEDS CORRECTION`  
+**Correction Package:** `fa29fc1d-b4e6-4d9d-990c-6312faea54bc`
+
+**Full-repository Review findings / selected corrections:**
+- retire Linked Notes and the repository Reference Object / Review Dependency mechanism from the active methodology/tool surface; current cross-file navigation/addressability is direct Markdown links plus stable explicit anchors, while semantic change impact continues through normal Documentation Review/revalidation;
+- remove the retired Linked Notes userscript/runtime, registries/markers/tests, dedicated Linked Notes Lens/command and helper prompts/projections rather than repairing the obsolete mechanism;
+- remove the orphan React `local-planning-dashboard/` scaffold found by the Review; this does not retire the separate current `planning/dashboard/` data surface or its existing viewer/capture tooling;
+- remove fragile volatile catalog counts from the active mechanical-consistency evidence and keep durable invariant-oriented evidence;
+- make the replacement-package producer read the canonical `tools/replacement-package-app/PACKAGE-PROTOCOL.md` directly and require `targetBranch` according to that owner instead of maintaining a copied Reference Object protocol body;
+- move obsolete Replacement Package App `CoreTests` / `ChatBridgeTests` out of the active test tree into `legacy/tests/`, delete tracked generated `build/` output, ignore regenerated build output, and make `run-app.cmd` rebuild current source before launch; current proof is limited to the tests actually compiled/run by the current build plus current browser-adapter tests;
+- keep historical Planning Item / old audit provenance as historical evidence only; historical mentions of Linked Notes / Reference Objects do not restore current authority.
+
+**Target-State Result:** after successful Apply of the correction package, no active semantic/runtime path depends on Linked Notes, Reference Objects or Review Dependency registries; ordinary links + stable anchors are the current addressability mechanism, current methodology/command/helper projections agree, generated Helper artifacts match source, and Replacement Package App current source/tests/build-launch path are internally consistent.

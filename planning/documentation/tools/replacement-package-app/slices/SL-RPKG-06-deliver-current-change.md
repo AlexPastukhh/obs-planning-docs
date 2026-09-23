@@ -29,7 +29,7 @@ Copy/Open/Send operations must use the exact persisted Current Change source for
 
 ## Tests
 
-`ChatBridgeTests` + Node DOM regression + relevant source contracts for exact `.diff` task, binding/token/title resolution, guarded Send, runtime-agent fencing and uncertainty truth.
+Current browser-adapter/DOM regression + relevant source contracts provide executable proof for the active delivery adapter. The former `ChatBridgeTests` source is legacy historical evidence under `legacy/tests/` and must not be cited as current passing proof.
 
 ## Evolution Impact
 

@@ -8,6 +8,10 @@ The current repository documentation may contain stale routes, duplicate semanti
 
 Material documentation findings are tied to their real semantic owners, verified and unverified areas are distinguished, and each required correction has a narrow current repair/change route without the review itself becoming new semantic authority.
 
+### Audit-style Review
+
+A documentation **audit** is this same Review performed with an explicitly declared bounded scope and coverage claim. It uses the same review basis, findings, owner routing, Finding Disposition and repair/change routes; it is not a separate methodology lifecycle or semantic authority. Audit-specific reports/evidence may be retained when useful for the reviewed invocation, but no permanent audit-coverage ledger is required or maintained as methodology state.
+
 ## Process
 
 1. Select the review scope. Do not broaden it merely to inspect every file.
@@ -32,7 +36,6 @@ Material documentation findings are tied to their real semantic owners, verified
 > - `CONTEXTUALIZES` [`Explicit Stable Semantic Anchor`](../principles-and-terminology.md#doc-explicit-stable-semantic-anchor) — `DOC.EXPLICIT-STABLE-SEMANTIC-ANCHOR`
 > - `CONTEXTUALIZES` [`Semantic Owner Dependency`](../principles-and-terminology.md#doc-semantic-owner-dependency) — `DOC.SEMANTIC-OWNER-DEPENDENCY`
 > - `CONTEXTUALIZES` [`Markdown Link Navigation Rule`](../principles-and-terminology.md#doc-markdown-link-navigation) — `DOC.MARKDOWN-LINK-NAVIGATION`
-> - `CONTEXTUALIZES` [`Responsibility / Anchor Audit Coverage`](../principles-and-terminology.md#doc-responsibility-anchor-audit-coverage) — `DOC.RESPONSIBILITY-ANCHOR-AUDIT-COVERAGE`
 
 15. Check for competing semantic owners, stale routes, unnecessary file splits, and supporting files that no current Use Case needs. Apply the Semantic DRY test: one normative responsibility has one canonical owner; a synchronized-looking duplicate is still a defect when it can independently drift.
 16. For normative-looking meaning in a non-owner, check whether it is legitimately local. Material restatements/contextualizations/extensions/representations/migrations should carry a tracked `Semantic Owner Dependency` with a direct link to the canonical owner; untracked independent normative copies are ownership findings.
@@ -41,7 +44,6 @@ Material documentation findings are tied to their real semantic owners, verified
 19. Treat ordinary Markdown links as navigation/addressability only; do not infer semantic ownership, synchronization or review-on-change authority from link existence. For explicit stable semantic anchors, check inbound references: zero inbound refs are a warning that requires a broken/misspelled/stale-reference audit before removing the anchor. When a reviewed semantic section already has an explicit stable anchor, flag section-specific inbound links that still rely on its generated heading fragment and migrate them to the explicit anchor unless a declared compatibility reason requires the old route.
 20. When a reviewed semantic owner changed, use [`SEMANTIC-OWNER-CHANGE-REVALIDATION`](../processes/SEMANTIC-OWNER-CHANGE-REVALIDATION.process.md) to review tracked dependents and affected projections.
 21. Route each material finding to the real current owner and the appropriate current change/maintenance Use Case.
-22. When the review is a dedicated responsibility/Responsibility-Map/anchor audit with a declared scope, update the non-normative [`Semantic Responsibility / Anchor Audit Coverage`](../idtspe-methodology/active/evidence/audits/SEMANTIC-RESPONSIBILITY-ANCHOR-AUDIT-COVERAGE.md) with the audited zone, closeout state and explicit exclusions. Do not infer whole-repository coverage from ordinary documentation edits.
-23. Use [`UC-DOC-PLAN-DOCUMENTATION-CHANGE`](UC-DOC-PLAN-DOCUMENTATION-CHANGE.md) when a material repair first needs semantic planning.
+22. Use [`UC-DOC-PLAN-DOCUMENTATION-CHANGE`](UC-DOC-PLAN-DOCUMENTATION-CHANGE.md) when a material repair first needs semantic planning.
 
 Shared review rules: [`../principles-and-terminology.md`](../principles-and-terminology.md)

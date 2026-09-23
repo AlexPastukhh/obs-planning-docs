@@ -118,15 +118,15 @@ Check Markdown/link integrity, exact changed path scope and the literal Git diff
 | Transfer | temporary expanded copy | expansion is bounded, sourced and non-mutating |
 | Diff | complete file transition | exact change approved |
 
-## 7. Relationship To Linked Notes
+## 7. Links And Anchors
 
-[`Linked Notes scenarios/README.md`](../../documentation/tools/tampermonkey/linked-notes/scenarios/README.md) now owns current Linked Notes Note semantics (`SCN-LN-NOTES`), including creation, editing, reconciliation and save verification. The former local `linked-notes-end-to-end-workflow.md` is retained only as planning/compatibility history.
+This workflow owns repository-document changes and link/impact review. Cross-file navigation uses direct Markdown links. When a specific fragment needs stable addressability, use an explicit stable anchor in the canonical owner and link to that anchor directly.
 
-This workflow owns repository-document changes and link/impact review. A Note workflow may hand a repository-owned Note or link change into this workflow for validation and diff review. Neither workflow owns a mandatory hidden middle of the other.
+A link or anchor is navigation/addressability only: it does not create a second semantic owner, automatic synchronization, or hidden dependency state. Material semantic impact is handled through the normal Documentation Review / affected-owner revalidation route.
 
 ## 8. Boundaries
 
-This workflow does not require a managed Reference Object runtime, custom editor, Semantic Home, object-field schema, App Memory or automatic dependency graph.
+This workflow does not require a custom managed-object runtime, custom editor, App Memory or automatic dependency graph. Cross-file addressability remains ordinary Markdown links plus stable explicit anchors where needed.
 
 Possible helpers are Implementation Ideas. Their output does not become canonical until reviewed into repository Markdown.
 

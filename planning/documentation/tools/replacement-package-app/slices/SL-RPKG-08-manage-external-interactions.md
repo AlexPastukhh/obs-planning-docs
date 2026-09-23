@@ -28,7 +28,7 @@ Once Send may have occurred and cannot be confirmed, later cancellation/dismissa
 
 ## Tests
 
-`ChatBridgeTests` remain current proof for the retained interaction mechanics. Snapshot-related cases are Evidence/reuse candidates until Snapshot target realization.
+The former `ChatBridgeTests` source is legacy historical evidence under `legacy/tests/`, not current executable proof. Current interaction behavior is evidenced by the active source/contracts and browser-adapter tests that are actually run; Snapshot-related historical cases remain reuse candidates only.
 
 ## Evolution Impact
 

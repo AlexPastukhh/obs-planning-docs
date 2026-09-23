@@ -1947,3 +1947,33 @@ Logging starts only after explicit user instruction; no pre-start history is rec
 - retain Realization Feasibility under stable canonical `RU-APP-07`.
 
 **Authority boundary:** this entry does not independently redefine reusable Application Definition methodology; `TM-APPLICATION-DEFINITION` is the semantic owner and this project-local file is a consumer.
+
+### LOG-RPKG-083 — Repair v12 Application Definition addressability and stale evolution routes
+
+**Type:** CROSS-SCOPE CONSISTENCY CLOSEOUT  
+**Canonical Cross-Scope Owner:** `planning/documentation/action-log.md` — v13 Responsibility-audit retirement and documentation consistency closeout  
+**ChangeSet:** `7b533b10-54d8-4430-ad9e-9f23e2810427`  
+**Package:** `f2a464c6-31cc-4640-b0ae-b7400371ae7b`
+
+**Selected correction:**
+- restore explicit stable anchors for all five `AB-RPKG-*` Benefit sections so existing Feature/Evolution/Scenario routes remain valid after the v12 representation migration;
+- route `EVO-RPKG-INTRODUCE-WORK-FINALIZATION` directly to its current canonical Evolution Step file;
+- stop routing `EVO-RPKG-RETIRE-CHANGESET-AGGREGATE` and `EVO-RPKG-DOWNGRADE-CURRENT-CHANGE-TO-DIAGNOSTIC` to non-existent Scenario fragments; the affected local files now state when no standalone canonical Evolution Step owner for that name is materialized instead of presenting a broken route as authority.
+
+**Authority boundary:** this entry repairs project-local navigation/addressability and truthfulness only. It does not create a new Evolution Step, alter accepted Benefit semantics, or redefine reusable SDS methodology.
+
+
+### LOG-RPKG-084 — Align current executable proof/build surface after full consistency Review
+
+**Type:** CROSS-SCOPE CONSISTENCY CORRECTION  
+**Canonical Cross-Scope Owner:** `planning/documentation/action-log.md` — v14 full-consistency Review correction  
+**ChangeSet:** `7b533b10-54d8-4430-ad9e-9f23e2810427`  
+**Package:** `fa29fc1d-b4e6-4d9d-990c-6312faea54bc`
+
+**Selected correction:**
+- producer documentation reads canonical `PACKAGE-PROTOCOL.md` directly instead of a copied Reference Object protocol body and explicitly follows its `targetBranch` requirement;
+- former `CoreTests.java` and `ChatBridgeTests.java` are preserved under `legacy/tests/` as historical proof intent only and are not cited as current passing tests;
+- tracked generated `build/` output is removed and ignored; `run-app.cmd` now invokes `build.cmd` before launching `build\replacement-package-app.jar`, matching the current source-first launch contract;
+- current executable proof remains the tests compiled by `build.cmd` / invoked by `run-tests.cmd` plus the current browser-adapter DOM regression.
+
+**Authority boundary:** no Replacement Package product Feature/Scenario/Domain meaning changes here. This entry corrects current-vs-legacy implementation evidence, build materialization and producer-protocol routing only.

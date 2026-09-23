@@ -17,4 +17,4 @@ Current Use Cases:
 
 `current-context.md` is concise orientation only. `historical-current-context.md`, `planning-item-register.md` and `retired-planning-items.md` are historical provenance/migration sources, not current planning ontology.
 
-Linked Notes current semantics live in `planning/documentation/tools/tampermonkey/linked-notes/`.
+Linked Notes is retired from the active repository surface. Current documentation navigation/addressability uses ordinary Markdown links plus stable explicit anchors where fragment-level addressability is useful. Historical Linked Notes/Reference Object material remains available through Git history and explicitly historical provenance files only.
