@@ -211,8 +211,11 @@ Do not copy predecessor Target Owner Body state into a separately authored Entry
 Feature is the primary behavioral owner when Feature behavior is created/changed by the Step.
 
 ```text
-NEW/CHANGED Feature
+NEW/CHANGED Feature in a fully planned Step
 → complete ordinary TM-FEATURE Target Feature Body
+
+NEW/CHANGED Feature in a not-yet-complete LATER_HORIZON Step
+→ bounded RU-EVO-02 Feature Impact until the complete Body is formed
 
 Feature behavior intentionally unchanged
 → reference retained current/precedessor-realized Feature behavior
@@ -226,7 +229,9 @@ Every REALIZATION_NEAR `NEW` or `CHANGED` Feature on the active candidate/select
 <a id="sds-evolution-horizon-depth"></a>
 ## Evolution horizon / target depth
 
-In a `REALIZATION_NEAR` Step, a CREATE/REPLACE owner subject needs a complete Target Owner Body at the selected route's useful depth; RETIRE needs explicit retirement/transition and consumer consequences; affected but unchanged owners can be references/Impacts. In a `LATER_HORIZON` Step, a bounded Evolution Impact may be sufficient until the complete owner Body is needed or resolved. Do not force distant speculative implementation detail. Feature may be a material Impact subject when its changed state is not yet a complete target; the Step's Feature authority and RU-EVO-02 must not duplicate the same complete Feature body. Persistence may place dedicated Step artifacts under `planning/evolution/steps/unrealized/` or `realized/` when useful, without requiring one file per Step. Horizon is planning depth, not permission to omit material near-term owner consequences.
+In a `REALIZATION_NEAR` Step, a CREATE/REPLACE owner subject needs a complete Target Owner Body at the selected route's useful depth; RETIRE needs explicit retirement/transition and consumer consequences; affected but unchanged owners can be references/Impacts. In a `LATER_HORIZON` Step, a bounded Evolution Impact may be sufficient to account for the Step while its planning remains `INCOMPLETE`. Do not force distant speculative implementation detail. Feature may be a material Impact subject when its changed state is not yet a complete target; the Step's Feature authority and RU-EVO-02 must not duplicate the same complete Feature body. Persistence may place dedicated Step artifacts under `planning/evolution/steps/unrealized/` or `realized/` when useful, without requiring one file per Step. Horizon is planning depth, not permission to omit material near-term owner consequences.
+
+Before realizing the next Step, account for every other concrete unrealized Step known to affect the owners in scope: its Step-side `RU-EVO-02` must identify each material affected subject and a truthful bounded consequence/revalidation basis, and each affected **current realized** owner's local Evolution Impact projection must expose a reference back to that Step under the shared projection contract. This applies to candidate, conditional, deferred and later-horizon Steps as well as selected ones. Reconcile missing/mismatched Step-side and owner-side links before the near Step is marked start-ready. An affected future Target Owner Body is still Step-owned; its later consequences must remain traceable through the later Step and must be reprojected into the resulting current owner upon materialization. A vague idea without concrete Step identity does not qualify as an accounted Step.
 
 ## `RU-EVO-02` — Evolution Impacts
 
@@ -408,16 +413,19 @@ Maintain two different conclusions.
 Planning Completeness: COMPLETE | INCOMPLETE
 ```
 
-`COMPLETE` means the Step is sufficiently and coherently planned for the requested planning depth:
+`COMPLETE` means the Step's full target state is coherently planned, regardless of its horizon or the depth requested for an interim planning pass:
 
 - Step boundary/driver/relations are resolved enough;
 - direct `Entering From` predecessor identity is correct;
-- material Target Owner Bodies/Impacts are resolved deeply enough for the requested planning purpose;
-- Step-wide implementation concerns and transition/proof obligations are resolved or explicitly OPEN at an acceptable planning boundary;
+- every `NEW`/`CHANGED` Feature has one complete ordinary `TM-FEATURE` Target Feature Body representing its entire post-Step behavior; a bounded Feature Impact alone cannot establish `COMPLETE`;
+- other material CREATE/REPLACE Target Owner Bodies and RETIRE/transition consequences are resolved to the target depth required to realize this Step; unchanged owners are referenced rather than copied;
+- Step-wide implementation concerns and transition/proof obligations are resolved, or explicitly retained as tolerable for realization with their disposition and follow-up;
 - materialization intent is truthful;
-- blocking planning Q/R/P are resolved or explicitly retained as known blockers rather than hidden.
+- every material planning Q/R/P is resolved or deliberately retained with explicit disposition; no question or blocker that prevents trustworthy realization is left unresolved under `COMPLETE`.
 
 A predecessor may still be selected/planned but unrealized. That does **not** by itself make planning incomplete.
+
+An implementation-only Step that preserves Feature behavior has no `NEW`/`CHANGED` Feature Body to complete; it still needs complete applicable owner target state and transition meaning. Never invent a Feature merely to satisfy this rule. A concrete `LATER_HORIZON` Step may remain `INCOMPLETE` while accounted for by bounded Step-side Impacts and the reciprocal current-owner references. `INCOMPLETE` is the truthful planning status even if its impacts are sufficiently planned for the horizon. Before such a Step becomes the next realization Step, complete its Target Bodies and all other planning obligations, then recompute `RU-EVO-06`.
 
 ### Realization Start Readiness
 
@@ -429,15 +437,16 @@ Realization Start Readiness: READY | BLOCKED
 
 ```text
 every direct Entering From predecessor realized/materialized
-+ required Target Bodies sufficiently resolved
++ Planning Completeness: COMPLETE, including complete Target Feature Bodies for every NEW/CHANGED Feature
 + Step-wide Implementation Concerns resolved/tolerated/routed deeply enough
 + transition/proof obligations sufficiently resolved
 + no blocking Q/R/P for implementation start
++ other concrete unrealized Steps affecting owners in scope accounted for in Step-side Impacts and current-owner reverse projections
 ```
 
 Selection/authorization is intentionally not stored as an internal readiness blocker inside a Proposal Target Result; candidate/selected authority belongs to the enclosing Proposal/Step boundary. Actual realization execution still requires the applicable external selection/authorization in addition to `READY`.
 
-`READY ≠ REALIZED`. A Step may be `Planning Completeness: COMPLETE` and `Realization Start Readiness: BLOCKED` solely because a predecessor has not yet been realized.
+`READY ≠ REALIZED`. A Step may be `Planning Completeness: COMPLETE` and `Realization Start Readiness: BLOCKED` solely because a predecessor has not yet been realized. An explicitly retained open Q/R/P can coexist with `COMPLETE`/`READY` only when its accepted disposition makes it nonblocking for the planned target and realization start; an undispositioned or blocking open question cannot.
 
 The Steps Map may project both compact statuses; detailed reasons stay in the Step.
 
@@ -503,7 +512,9 @@ Step is concrete enough to deserve future-transition ownership
 no separately maintained Expected Entry State shadows predecessor authority
 Entering From uses smallest sufficient direct semantic predecessor Step set
 Planning Completeness is independent of predecessor realization
+COMPLETE requires a complete Target Feature Body for every NEW/CHANGED Feature, regardless of horizon; accounted LATER_HORIZON Impacts alone remain INCOMPLETE
 Realization Start Readiness requires all direct predecessors realized/materialized
+READY requires COMPLETE and reciprocal links for other concrete Steps affecting current owners in scope
 REALIZATION_NEAR NEW/CHANGED Feature uses one complete TM-FEATURE Target Feature Body
 unchanged Feature is referenced rather than copied
 current owners remain current semantic authority until realization/materialization

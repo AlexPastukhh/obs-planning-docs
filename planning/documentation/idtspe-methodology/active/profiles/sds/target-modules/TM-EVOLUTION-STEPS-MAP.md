@@ -130,7 +130,7 @@ Planning Completeness
 Realization Start Readiness
 ```
 
-Planning Position, Target Resolution, Planning Completeness, Start Readiness and Realization are independent. `Probable ≠ Selected`; `Complete Target ≠ Start Ready`; `Start Ready ≠ Realized`.
+Planning Position, Target Resolution, Planning Completeness, Start Readiness and Realization are independent. `Probable ≠ Selected`; `Complete Target ≠ Start Ready`; `Start Ready ≠ Realized`. Project an accounted but incompletely planned distant Step as `INCOMPLETE`, and the next Step as `READY` only after the Step-owned `RU-EVO-06` verifies its full target state and reciprocal impact references for other concrete Steps. The Map does not invent an `ACCOUNTED` completion status.
 
 For non-trivial branching include a compact derived semantic DAG/read-path view. `Entering From` edges are semantic predecessor edges; do not create a second technical-foundation DAG. Detailed reasons/Q/R/P remain in each Step.
 

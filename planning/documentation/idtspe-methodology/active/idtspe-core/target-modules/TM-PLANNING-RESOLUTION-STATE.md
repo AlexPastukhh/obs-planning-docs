@@ -27,11 +27,19 @@ Exactly two Module-defined Units, each a Collection Unit under the [Target Work 
 | `RU-PRS-01` | Active Planning Items | Bounded unresolved or selected-for-current-resolution work |
 | `RU-PRS-02` | Tracked Decision Items | Accepted selections deliberately retained for coordination, revalidation, checkpoint or user-chosen history |
 
-The repeated entries are **Collection Items**, not peer Units. `Target Ref`, optional `Unit Ref` and optional `Unit Slot Ref` address the *subject* inside an item; they are not decomposition of PRS itself. An item can reference more than one natural subject where one decision spans owners. Use stable local item keys and external refs only where needed for unambiguous navigation.
+The repeated entries are **Collection Items**, not peer Units. `Target Ref`, optional `Unit Ref` and optional `Unit Slot Ref` address the *subject* inside an item; they are not decomposition of PRS itself. An item can reference more than one natural subject where one decision spans owners. The stable PRS-local Item Key identifies an entry across reordering and priority changes; it does not replace the referenced natural owner or Proposal/Decision identity. A PER_ITEM formal reference follows `PRS Target → RU-PRS-0x → Collection ID → Item Key → Slot ID`; the UNIT_WIDE focus Slot is addressed as `PRS Target → RU-PRS-01 → PRS-ACTIVE-CURRENT-FOCUS` without a Collection or Item segment.
 
 ### RU-PRS-01 — Active Planning
 
-`UNIT_WIDE` Slot: `CURRENT-FOCUS / PRIORITY PROJECTION`. It points to the same Collection Items and does not copy their Proposal/Q/R/P bodies. In SDS context, present the Collection itself by [SDS semantic traversal](../../profiles/sds/profile-contracts/SDS-SEMANTIC-COMPOSITION-AND-READINESS.md#sds-semantic-traversal-order); priority is a separate attention view.
+**Responsibility.** Maintain the bounded unresolved or selected-for-current-resolution planning items and their current attention order.
+
+**Purpose.** Keep linked Proposal/Q/R/P work navigable across owners without replacing their authority or creating a global backlog.
+
+**Applicability.** Resolve this Unit for a formed PRS; its Collection may contain zero items when only retained decisions remain.
+
+**Result Content Contract.** One `Active Planning Items` Collection (`Collection ID: PRS-ACTIVE-ITEMS`, cardinality `0..N`). **Item Contract:** one coherent current planning subject with its driver, linked candidate Proposals, related Q/R/P and Evidence as material, allowing recursive links without copying source bodies. **Item Key / Subject:** a unique, stable PRS-local item key (`PRS-ACTIVE-*`) with natural owner/Target/Unit/Slot references carried in its `SUBJECT` Slot; keep the key stable while that item is active.
+
+`UNIT_WIDE` Slot `PRS-ACTIVE-CURRENT-FOCUS` — `CURRENT-FOCUS / PRIORITY PROJECTION`. It points to the same Collection Item Keys and does not copy their Proposal/Q/R/P bodies. In SDS context, present the Collection itself by [SDS semantic traversal](../../profiles/sds/profile-contracts/SDS-SEMANTIC-COMPOSITION-AND-READINESS.md#sds-semantic-traversal-order); priority is a separate attention view. The Slot is Unit-wide, not a member of the Collection.
 
 Default focus bands (override for a user instruction, blocker, dependency or material risk):
 
@@ -43,27 +51,35 @@ Local item keys suffice for priority references when unambiguous. No separate Pr
 
 `PER_ITEM` Slots:
 
-| Slot | Meaning |
-|---|---|
-| `SUBJECT` | Natural Target Ref; Unit Ref / Unit Slot Ref when needed. |
-| `DRIVER` | Goal/Desired Outcome, Question, Risk, Problem, Finding, or combination. |
-| `PROPOSALS` | Zero or more candidate Proposal refs/compact bodies, including compatible groups and recursive links. |
-| `QRP` | Zero or more Question/Risk/Problem refs and relations, including Q/R/P that have their own addressing Proposals. |
-| `EVIDENCE` | Zero or more material supporting/needed Evidence references. |
+| Slot ID | Slot | Meaning |
+|---|---|---|
+| `PRS-ACTIVE-SUBJECT` | `SUBJECT` | Natural Target Ref; Unit Ref / Unit Slot Ref when needed. |
+| `PRS-ACTIVE-DRIVER` | `DRIVER` | Goal/Desired Outcome, Question, Risk, Problem, Finding, or combination. |
+| `PRS-ACTIVE-PROPOSALS` | `PROPOSALS` | Zero or more candidate Proposal refs/compact bodies, including compatible groups and recursive links. |
+| `PRS-ACTIVE-QRP` | `QRP` | Zero or more Question/Risk/Problem refs and relations, including Q/R/P that have their own addressing Proposals. |
+| `PRS-ACTIVE-EVIDENCE` | `EVIDENCE` | Zero or more material supporting/needed Evidence references. |
 
 Keep the Proposal ↔ Q/R/P graph recursive and addressable; do not flatten it into one selected answer or invent a mandatory Proposal Tree ontology. An item may be blocked/deferred, or may remain open after some compatible Proposals are selected.
 
 ### RU-PRS-02 — Tracked Decisions
 
+**Responsibility.** Maintain accepted selections deliberately retained for coordination and revalidation after owner integration.
+
+**Purpose.** Preserve the user-chosen decision trace and its integration destination independently of whether residual Q/R/P remain open.
+
+**Applicability.** Resolve this Unit for a formed PRS; its Collection may contain zero items when the user retains no accepted decisions.
+
+**Result Content Contract.** One `Tracked Decision Items` Collection (`Collection ID: PRS-TRACKED-DECISIONS`, cardinality `0..N`). **Item Contract:** one accepted selection or compatible selected set deliberately retained with its natural integration destination, retention reason/horizon and optional residual Q/R/P and Evidence. **Item Key / Subject:** a unique, stable PRS-local item key (`PRS-DECISION-*`) for each retained decision entry, even if a selection spans several owners; the natural destination is in its `SUBJECT / INTEGRATED-INTO` Slot.
+
 `PER_ITEM` Slots:
 
-| Slot | Meaning |
-|---|---|
-| `SUBJECT / INTEGRATED-INTO` | Natural owner/Target/Unit/Slot and accepted content destination. |
-| `ACCEPTED-SELECTION` | Exact selected Proposal, compatible set or bounded selected meaning. |
-| `RETENTION / COORDINATION VALUE` | User-chosen horizon and reason to retain this trace. |
-| `QRP` | Zero or more residual/reconsideration Question/Risk/Problem refs. |
-| `EVIDENCE` | Zero or more supporting/revalidation Evidence refs. |
+| Slot ID | Slot | Meaning |
+|---|---|---|
+| `PRS-DECISION-SUBJECT` | `SUBJECT / INTEGRATED-INTO` | Natural owner/Target/Unit/Slot and accepted content destination. |
+| `PRS-DECISION-SELECTION` | `ACCEPTED-SELECTION` | Exact selected Proposal, compatible set or bounded selected meaning. |
+| `PRS-DECISION-RETENTION` | `RETENTION / COORDINATION VALUE` | User-chosen horizon and reason to retain this trace. |
+| `PRS-DECISION-QRP` | `QRP` | Zero or more residual/reconsideration Question/Risk/Problem refs. |
+| `PRS-DECISION-EVIDENCE` | `EVIDENCE` | Zero or more supporting/revalidation Evidence refs. |
 
 Residual Q/R/P is **not required** for retention. The user may keep a Decision for a chosen duration, including indefinitely; useful reasons include cross-owner coordination, a selected library/framework dependency, future migration/revalidation, and checkpoint value. Accepted meaning belongs in its natural owner even if the Decision trace stays. Closing Q/R/P never silently deletes a user-retained Decision. A Decision need not be retained when the owner content alone suffices.
 

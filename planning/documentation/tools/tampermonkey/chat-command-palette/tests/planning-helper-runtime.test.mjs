@@ -19,6 +19,23 @@ function def(id='a',command=id){return codec.normalizeCommandDefinition({schemaV
 function helperItem(kind,id,text='text'){return helper.normalizeHelperLibraryItem({kind,id,title:`${kind} ${id}`,text,createdAt:'2026-08-16T00:00:00Z',updatedAt:'2026-08-16T00:00:00Z'})}
 function snapshot(){const a=def('a'),hc=helperItem('command','hc'),p=helperItem('prompt','p');return state.normalizePlanningHelperLocalSnapshot({schemaVersion:state.LOCAL_SNAPSHOT_SCHEMA_VERSION,savedAt:'2026-08-16T00:00:00Z',planningCommands:[state.normalizeCommandRecord({definition:a,repositoryKnown:true,repositorySha:'sha-a'})],helperItems:[state.normalizeHelperRecord({item:hc,repositoryKnown:false}),state.normalizeHelperRecord({item:p,repositoryKnown:true,repositorySha:'sha-p'})],useCases:currentUseCases,useCaseCatalogSha:'uc-sha',semanticComponents:currentSemanticComponents,semanticComponentCatalogSha:'semantic-sha',scenarios:currentScenarios,scenarioCatalogSha:'scenario-sha',catalogOrder:{}})}
 
+test('generic TM/Lens and direct TM cards retain their structured semantic owner independently of command refs',()=>{
+  const direct=require('../seed/commands.json').items.find((item)=>item.methodologyBinding?.targetModuleId==='TM-PRE-UPDATE-PLAN');
+  assert.ok(direct);
+  const local=snapshot();local.planningCommands.push(state.normalizeCommandRecord({definition:direct,repositoryKnown:true}));
+  const cards=runtime.materializeSnapshot(local).commandEntries;
+  for(const id of ['TM-PLANNING-RESOLUTION-STATE','LENS-WORKSPACE-EVOLUTION-ARCHITECTURE','TM-PRE-UPDATE-PLAN']){
+    const component=currentSemanticComponents.find((item)=>item.id===id),card=cards.find((item)=>item.canonicalId===id);
+    assert.ok(card,`${id}: card`);
+    assert.deepEqual(card.semanticOwnerRef,component.ownerRef);
+    assert.equal(card.semanticOwnerRef.semanticId,id);
+    assert.ok(card.semanticOwnerRef.path&&card.semanticOwnerRef.anchor);
+  }
+  assert.equal(cards.find((item)=>item.canonicalId==='TM-PLANNING-RESOLUTION-STATE').definition,null);
+  assert.equal(cards.find((item)=>item.canonicalId==='LENS-WORKSPACE-EVOLUTION-ARCHITECTURE').definition,null);
+  assert.equal(cards.find((item)=>item.canonicalId==='TM-PRE-UPDATE-PLAN').directCommandId,direct.id);
+});
+
 
 
 test('direct catalog position move uses 1-based clamped target positions',()=>{
@@ -118,4 +135,3 @@ test('Import rejects UC semantic-component edits plus duplicate and conflicting 
 test('retired hidden markers cannot keep an explicitly present or upserted command invisible',()=>{const command=def('visible.after.upsert','visible after upsert'),local=state.normalizePlanningHelperLocalSnapshot({...snapshot(),planningCommands:[state.normalizeCommandRecord({definition:command,repositoryKnown:true})],hiddenCommandIds:[command.id],hiddenUseCaseIds:['UC-X']});assert.equal('hiddenCommandIds' in local,false);assert.ok(runtime.materializeSnapshot(local).commandEntries.some((entry)=>entry.id===command.id));const updated={...command,description:'updated'};const merged=runtime.mergeChatImport(local,{definitions:[updated],helperItems:[],patch:null},'import');assert.ok(runtime.materializeSnapshot(merged.snapshot).commandEntries.some((entry)=>entry.id===command.id));});
 
 test('capability delete and backing-command upsert are independent explicit CRUD operations',()=>{const tmId='TM-PRE-UPDATE-PLAN',tmDirect=require('../seed/commands.json').items.find((item)=>item.methodologyBinding?.targetModuleId===tmId),ucId='UC-IDTSPE-COMPOSE-CURRENT-WORK',ucDirect=require('../seed/commands.json').items.find((item)=>item.id==='plan.now');assert.ok(tmDirect);assert.ok(ucDirect);const local=state.normalizePlanningHelperLocalSnapshot({...snapshot(),planningCommands:[state.normalizeCommandRecord({definition:tmDirect,repositoryKnown:true}),state.normalizeCommandRecord({definition:ucDirect,repositoryKnown:true})]}),tmMerged=runtime.mergeChatImport(local,{definitions:[],helperItems:[],patch:{schemaVersion:1,upsert:{commands:[tmDirect],helperItems:[],useCases:[],semanticComponents:[],scenarios:[]},delete:{commands:[],helperItems:[],useCases:[],semanticComponents:[tmId],scenarios:[]},catalogOrder:null}},'import'),tmMemory=runtime.materializeSnapshot(tmMerged.snapshot);assert.equal(tmMemory.commandEntries.some((entry)=>entry.canonicalId===tmId),false);assert.ok(tmMemory.commandEntries.some((entry)=>entry.id===tmDirect.id&&entry.canonicalId===''));const ucMerged=runtime.mergeChatImport(local,{definitions:[],helperItems:[],patch:{schemaVersion:1,upsert:{commands:[ucDirect],helperItems:[],useCases:[],semanticComponents:[],scenarios:[]},delete:{commands:[],helperItems:[],useCases:[ucId],semanticComponents:[],scenarios:[]},catalogOrder:null}},'import'),ucMemory=runtime.materializeSnapshot(ucMerged.snapshot);assert.equal(ucMemory.commandEntries.some((entry)=>entry.canonicalId===ucId),false);assert.ok(ucMemory.commandEntries.some((entry)=>entry.id==='plan.now'&&entry.canonicalId===''))});
-

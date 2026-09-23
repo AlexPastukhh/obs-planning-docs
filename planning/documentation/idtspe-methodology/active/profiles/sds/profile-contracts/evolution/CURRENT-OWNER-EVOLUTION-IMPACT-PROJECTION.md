@@ -28,6 +28,8 @@ The reverse projection never becomes a second future roadmap or Target Owner Bod
 
 For a current realized owner, include every **concrete unrealized Evolution Step** whose current Step-side planning contains material meaning about that owner.
 
+For a later-horizon Step whose planning is still `INCOMPLETE`, being accounted for requires both a truthful bounded Step-side Impact for each materially affected subject and an owner-local reverse entry identifying that Step for every affected current realized owner. Before the next Step is realized, check these reciprocal links for other concrete unrealized Steps affecting owners in its scope. An Impact with no matching current-owner Step reference, or an owner-local reference with no corresponding Step-side material meaning, is a consistency gap to reconcile. Projection may be stored, generated or derived, but the affected owner's view must expose the Step reference. A future Target Owner Body remains Step-owned until materialization; on materialization, re-evaluate the resulting current owner's reverse entries against still-unrealized Steps.
+
 ```text
 Selected
 Probable / candidate

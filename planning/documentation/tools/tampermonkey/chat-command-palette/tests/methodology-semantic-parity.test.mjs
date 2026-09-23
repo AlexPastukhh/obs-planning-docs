@@ -103,6 +103,38 @@ test('Evolution horizon keeps near changed Feature complete and later Feature Im
   assert.match(evo,/REALIZATION_NEAR `NEW` or `CHANGED` Feature.*complete `TM-FEATURE`/);
 });
 
+test('Evolution planning completion and next-step readiness preserve reciprocal distant impacts',()=>{
+  const base='planning/documentation/idtspe-methodology/active/profiles/sds/';
+  const evo=read(base+'target-modules/TM-EVOLUTION-STEP.md');
+  const feature=read(base+'target-modules/TM-FEATURE.md');
+  const reverse=read(base+'profile-contracts/evolution/CURRENT-OWNER-EVOLUTION-IMPACT-PROJECTION.md');
+  const map=read(base+'target-modules/TM-EVOLUTION-STEPS-MAP.md');
+  assert.match(evo,/every `NEW`\/`CHANGED` Feature has one complete ordinary `TM-FEATURE` Target Feature Body/);
+  assert.match(evo,/Planning Completeness: COMPLETE, including complete Target Feature Bodies/);
+  assert.match(evo,/`LATER_HORIZON` Step may remain `INCOMPLETE` while accounted for/);
+  assert.match(evo,/no question or blocker that prevents trustworthy realization is left unresolved/);
+  assert.match(feature,/This is mandatory before marking that Step `Planning Completeness: COMPLETE`/);
+  assert.match(reverse,/owner-local reverse entry identifying that Step for every affected current realized owner/);
+  assert.match(map,/accounted but incompletely planned distant Step as `INCOMPLETE`/);
+});
+
+test('Planning Resolution State declares addressable collection items and formally scoped slots for both Units',()=>{
+  const prs=read('planning/documentation/idtspe-methodology/active/idtspe-core/target-modules/TM-PLANNING-RESOLUTION-STATE.md');
+  for(const id of ['PRS-ACTIVE-ITEMS','PRS-TRACKED-DECISIONS']) assert.match(prs,new RegExp('Collection ID: '+id));
+  for(const key of ['PRS-ACTIVE-*','PRS-DECISION-*']) assert.ok(prs.includes(key));
+  for(const id of ['PRS-ACTIVE-CURRENT-FOCUS','PRS-ACTIVE-SUBJECT','PRS-ACTIVE-DRIVER','PRS-ACTIVE-PROPOSALS','PRS-ACTIVE-QRP','PRS-ACTIVE-EVIDENCE','PRS-DECISION-SUBJECT','PRS-DECISION-SELECTION','PRS-DECISION-RETENTION','PRS-DECISION-QRP','PRS-DECISION-EVIDENCE']) assert.equal(prs.split('`'+id+'`').length-1,1,id);
+  assert.equal((prs.match(/\*\*Responsibility\.\*\*/g)||[]).length,2);
+  assert.equal((prs.match(/\*\*Purpose\.\*\*/g)||[]).length,2);
+  assert.equal((prs.match(/\*\*Item Contract:\*\*/g)||[]).length,2);
+});
+
+test('generic command surface includes plan-first PRE_UPDATE_BASIS and mode ambiguity handling',()=>{
+  const contract=read('planning/documentation/idtspe-methodology/active/idtspe-core/commands/IDTSPE-COMMAND-SURFACE-CONTRACT.md');
+  assert.match(contract,/`idtspe\.review\.pre_update` contributes `PRE_UPDATE_BASIS`/);
+  assert.match(contract,/`plan-pre-update` dependency must first resolve or reuse/);
+  assert.match(contract,/report an ambiguity before semantic execution/);
+});
+
 test('Proposal Target Result forms an ordinary candidate Target Instance before semantic selection without granting realization authority',()=>{
   const proposal=read('planning/documentation/idtspe-methodology/active/idtspe-core/resolution/proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md');
   const target=read('planning/documentation/idtspe-methodology/active/idtspe-core/runtime/target-work/TARGET-CONTRACT-INSTANCE-SOURCE-RELATION-MODEL.md');
