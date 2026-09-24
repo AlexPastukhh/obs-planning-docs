@@ -57,13 +57,13 @@ Logical/semantic retention of a Decision/Proposal/Result Unit does not by itself
 > Semantic Owner Dependency
 > Type: `EXTENDS`
 > Responsibility: `RESOLUTION.CARRY-FORWARD`
-> Owner: [Resolution Carry-Forward](../resolution/continuation/RESOLUTION-CARRY-FORWARD-PROJECTION.md#resolution-carry-forward)
+> Owner: [Planning Resolution State / Resolution Carry-Forward](../target-modules/TM-PLANNING-RESOLUTION-STATE.md#tm-planning-resolution-state)
 
-This representation contract owns the physical-placement/materialization delta only; the qualifying continuation state and threshold semantics remain Carry-Forward-owned.
+This representation contract owns the physical-placement/materialization delta only; membership and threshold semantics belong to the single PRS/RCF Target Module contract.
 
-[`Resolution Carry-Forward`](../resolution/continuation/RESOLUTION-CARRY-FORWARD-PROJECTION.md#resolution-carry-forward) is a projection/navigation owner. When its continuation value is material, Documentation / Representation + P-14 may place it inline in an Integration Checkpoint, in an existing coordination register/artifact, or as a generated view. Placement never transfers Proposal/Decision/Q/R/P/Evidence authority into the aggregate.
+[`Resolution Carry-Forward`](../target-modules/TM-PLANNING-RESOLUTION-STATE.md#tm-planning-resolution-state) names the same result as Planning Resolution State. When its continuation value is material, Documentation / Representation + P-14 may place it inline in an Integration Checkpoint, in an existing coordination register/artifact, or as a generated view. Placement never transfers Proposal/Decision/Q/R/P/Evidence authority into the aggregate.
 
-When the Carry-Forward contract's **Durable Coordination Materialization Threshold** is crossed, P-14 must choose one durable discoverable representation for that coordination scope. Reuse an existing canonical coordination artifact/register when it already gives stable re-entry; otherwise create a dedicated Carry-Forward artifact (default descriptive name `RESOLUTION-CARRY-FORWARD.md` or an equivalent profile/workspace name). In-context-only projection remains valid only below that threshold.
+When the [PRS/RCF materialization threshold](../target-modules/TM-PLANNING-RESOLUTION-STATE.md#prs-rcf-materialization) is crossed, P-14 must choose one durable discoverable representation for that coordination scope. Reuse an existing canonical coordination artifact/register when it already gives stable re-entry; otherwise create a dedicated Carry-Forward artifact (default descriptive name `RESOLUTION-CARRY-FORWARD.md` or an equivalent profile/workspace name). In-context-only projection remains valid only below that threshold.
 
 ## 2. Semantic Owner vs Artifact Owner
 

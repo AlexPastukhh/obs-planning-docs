@@ -6,7 +6,7 @@ remain host evidence.
 
 ## RU-FEAT-01 — Identity / Intent / Principal Result / Semantic Entry
 
-**Methodology:** [RU-FEAT-01 Unit Definition](../idtspe-methodology/active/profiles/sds/target-modules/TM-FEATURE.md#ru-feat-01--identity--intent--principal-result--semantic-entry).
+**Methodology:** [RU-FEAT-01 Unit Definition](../../../../../../target-modules/TM-FEATURE.md#ru-feat-01--identity--intent--principal-result--semantic-entry).
 
 Feature ID: `F-STL-OPEN-LINKED-CONTEXT`.
 
@@ -42,7 +42,7 @@ boundary](../application-definition.md#ab-stl-01-boundary-external-authority).
 
 ## RU-FEAT-02 — Semantic Data
 
-**Methodology:** [RU-FEAT-02 Unit Definition](../idtspe-methodology/active/profiles/sds/target-modules/TM-FEATURE.md#ru-feat-02--semantic-data).
+**Methodology:** [RU-FEAT-02 Unit Definition](../../../../../../target-modules/TM-FEATURE.md#ru-feat-02--semantic-data).
 
 Target value semantics belong to
 [D-STL-LOCAL-FILE-TARGET](../domain/local-file-target.md).
@@ -58,7 +58,7 @@ come from the selected semantic action, not from path text.
 
 ## RU-FEAT-03 — Feature Behavior
 
-**Methodology:** [RU-FEAT-03 Unit Definition](../idtspe-methodology/active/profiles/sds/target-modules/TM-FEATURE.md#ru-feat-03--feature-behavior).
+**Methodology:** [RU-FEAT-03 Unit Definition](../../../../../../target-modules/TM-FEATURE.md#ru-feat-03--feature-behavior).
 
 ### Main Path
 
@@ -105,7 +105,7 @@ come from the selected semantic action, not from path text.
 
 ## RU-FEAT-04 — Implementation Concerns
 
-**Methodology:** [RU-FEAT-04 Unit Definition](../idtspe-methodology/active/profiles/sds/target-modules/TM-FEATURE.md#ru-feat-04--implementation-concerns).
+**Methodology:** [RU-FEAT-04 Unit Definition](../../../../../../target-modules/TM-FEATURE.md#ru-feat-04--implementation-concerns).
 
 Current realized limitation: cancellation during `closeOthers` cannot roll back
 unrelated tabs VS Code already closed before the user retained another dirty
@@ -118,7 +118,7 @@ implementation-native.
 
 ## RU-FEAT-05 — Feature / Slice Boundary
 
-**Methodology:** [RU-FEAT-05 Unit Definition](../idtspe-methodology/active/profiles/sds/target-modules/TM-FEATURE.md#ru-feat-05--feature--slice-boundary).
+**Methodology:** [RU-FEAT-05 Unit Definition](../../../../../../target-modules/TM-FEATURE.md#ru-feat-05--feature--slice-boundary).
 
 Selected boundary: one Feature and one end-to-end implementation Slice with
 one/set cardinality branches. Validation, canonical resolution, tab
@@ -155,7 +155,7 @@ Feature behavior authority.
 
 ## RU-FEAT-06 — Evolution Impact
 
-**Methodology:** [RU-FEAT-06 Unit Definition](../idtspe-methodology/active/profiles/sds/target-modules/TM-FEATURE.md#ru-feat-06--evolution-impact).
+**Methodology:** [RU-FEAT-06 Unit Definition](../../../../../../target-modules/TM-FEATURE.md#ru-feat-06--evolution-impact).
 
 Disposition: `OMITTED`.
 

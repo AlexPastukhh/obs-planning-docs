@@ -1,5 +1,7 @@
 # Study Tab Launcher — SDS Documentation Audit
 
+> **2026-09-24 — PRS/RCF contract revision.** This is a historical audit. Its former carry-forward shape and Decision-membership statements are superseded by the current [Planning Resolution State / Resolution Carry-Forward](resolution-carry-forward.md). PRS and RCF are one result; active Decisions require qualifying related Q/R/P. Historical observations and source basis below are preserved.
+
 Status: completed bounded audit and applied repair record. This file is
 review/coordination evidence, not application semantic authority. Canonical
 application meaning remains in the natural owners referenced below; current

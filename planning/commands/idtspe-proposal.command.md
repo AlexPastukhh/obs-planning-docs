@@ -37,7 +37,7 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
     "planning/session/principles-and-terminology.md",
     "planning/session/session-runtime-contract.md",
     "planning/documentation/idtspe-methodology/active/idtspe-core/lenses/required/LENS-PROPOSAL-DECISION-RESOLUTION-CONTEXT.md",
-    "planning/documentation/idtspe-methodology/active/idtspe-core/resolution/continuation/RESOLUTION-CARRY-FORWARD-PROJECTION.md",
+    "planning/documentation/idtspe-methodology/active/idtspe-core/target-modules/TM-PLANNING-RESOLUTION-STATE.md",
     "planning/documentation/idtspe-methodology/active/idtspe-core/resolution/findings/FINDING-DISPOSITION.md",
     "planning/documentation/idtspe-methodology/active/idtspe-core/target-modules/TM-PROPOSAL-WORKUP.md"
   ],
@@ -106,8 +106,8 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
     },
     {
       "responsibilityId": "RESOLUTION.CARRY-FORWARD",
-      "path": "planning/documentation/idtspe-methodology/active/idtspe-core/resolution/continuation/RESOLUTION-CARRY-FORWARD-PROJECTION.md",
-      "anchor": "resolution-carry-forward",
+      "path": "planning/documentation/idtspe-methodology/active/idtspe-core/target-modules/TM-PLANNING-RESOLUTION-STATE.md",
+      "anchor": "tm-planning-resolution-state",
       "why": "Retains only surviving material open/deferred/residual continuation after Proposal work.",
       "role": "VALIDATION_HANDOFF",
       "readMode": "ON_DEMAND"

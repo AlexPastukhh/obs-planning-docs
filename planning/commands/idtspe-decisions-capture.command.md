@@ -28,7 +28,7 @@ Scope: generic Core Decision capture/review entry; it never grants selection aut
     "planning/documentation/idtspe-methodology/active/idtspe-core/resolution/qrp/QRP-LIFECYCLE-AND-REVIEW.md",
     "planning/documentation/idtspe-methodology/active/idtspe-core/lenses/required/LENS-PROPOSAL-DECISION-RESOLUTION-CONTEXT.md",
     "planning/documentation/idtspe-methodology/active/idtspe-core/resolution/proposal-decision/DECISION-REVALIDATION.resolution-projection.md",
-    "planning/documentation/idtspe-methodology/active/idtspe-core/resolution/continuation/RESOLUTION-CARRY-FORWARD-PROJECTION.md",
+    "planning/documentation/idtspe-methodology/active/idtspe-core/target-modules/TM-PLANNING-RESOLUTION-STATE.md",
     "planning/documentation/idtspe-methodology/active/idtspe-core/use-cases/maintain-current-work-state/UC-IDTSPE-MAINTAIN-CURRENT-WORK-STATE.md"
   ],
   "expectedOutput": "Actual selected material Decisions are identified without promoting AI-only candidates, their exact selected meaning/integration owner and material QRPE disposition are clear, proportional retained Decision traces are preserved only when useful, and surviving residual/revalidation state is discoverable through Carry-Forward.",
@@ -85,8 +85,8 @@ Scope: generic Core Decision capture/review entry; it never grants selection aut
     },
     {
       "responsibilityId": "RESOLUTION.CARRY-FORWARD",
-      "path": "planning/documentation/idtspe-methodology/active/idtspe-core/resolution/continuation/RESOLUTION-CARRY-FORWARD-PROJECTION.md",
-      "anchor": "resolution-carry-forward",
+      "path": "planning/documentation/idtspe-methodology/active/idtspe-core/target-modules/TM-PLANNING-RESOLUTION-STATE.md",
+      "anchor": "tm-planning-resolution-state",
       "why": "Carries only surviving residual/revalidation work after selected meaning is integrated.",
       "role": "VALIDATION_HANDOFF",
       "readMode": "ON_DEMAND"

@@ -5,7 +5,7 @@ coverage. Live browser-to-VS Code and dirty-editor observation remains pending.
 
 ## RU-SCEN-01 — Journey Composition
 
-**Methodology:** [RU-SCEN-01 Unit Definition](../idtspe-methodology/active/profiles/sds/target-modules/TM-SCENARIO-PLANNING.md#ru-scen-01-processing-envelope), [Journey Shape](../idtspe-methodology/active/profiles/sds/target-modules/TM-SCENARIO-PLANNING.md#journey-shape).
+**Methodology:** [RU-SCEN-01 Unit Definition](../../../../../../target-modules/TM-SCENARIO-PLANNING.md#ru-scen-01-processing-envelope), [Journey Shape](../../../../../../target-modules/TM-SCENARIO-PLANNING.md#journey-shape).
 
 Scenario ID: `SCN-STL-OPEN-LINKED-FILE-CONTEXT`.
 
@@ -53,7 +53,7 @@ receiving-window foreground, dirty cancellation and truthful terminal status.
 
 ## RU-SCEN-02 — Evolution Impact
 
-**Methodology:** [RU-SCEN-02 Unit Definition](../idtspe-methodology/active/profiles/sds/target-modules/TM-SCENARIO-PLANNING.md#ru-scen-02--evolution-impact).
+**Methodology:** [RU-SCEN-02 Unit Definition](../../../../../../target-modules/TM-SCENARIO-PLANNING.md#ru-scen-02--evolution-impact).
 
 Disposition: `OMITTED`.
 
@@ -64,7 +64,7 @@ journey composition.
 
 ## RU-SCEN-03 — Journey Realization Concerns
 
-**Methodology:** [RU-SCEN-03 Unit Definition](../idtspe-methodology/active/profiles/sds/target-modules/TM-SCENARIO-PLANNING.md#ru-scen-03--journey-realization-concerns).
+**Methodology:** [RU-SCEN-03 Unit Definition](../../../../../../target-modules/TM-SCENARIO-PLANNING.md#ru-scen-03--journey-realization-concerns).
 
 Current journey-wide concern: browser clipboard permission, external-protocol
 confirmation, VS Code topmost-window routing and Windows foreground policy

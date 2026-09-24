@@ -17,7 +17,7 @@ Canonical semantic/lifecycle owners remain:
 > - `CONTEXTUALIZES` [`Proposal / Decision Lifecycle`](../../resolution/proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md#resolution-proposal-decision-lifecycle) — `RESOLUTION.PROPOSAL-DECISION-LIFECYCLE`
 > - `CONTEXTUALIZES` [`Q/R/P Lifecycle`](../../resolution/qrp/QRP-LIFECYCLE-AND-REVIEW.md#resolution-qrp-lifecycle) — `RESOLUTION.QRP-LIFECYCLE`
 > - `CONTEXTUALIZES` [`Decision Revalidation Projection`](../../resolution/proposal-decision/DECISION-REVALIDATION.resolution-projection.md#resolution-decision-revalidation-projection) — `RESOLUTION.DECISION-REVALIDATION-PROJECTION`
-> - `CONTEXTUALIZES` [`Resolution Carry-Forward`](../../resolution/continuation/RESOLUTION-CARRY-FORWARD-PROJECTION.md#resolution-carry-forward) — `RESOLUTION.CARRY-FORWARD`
+> - `CONTEXTUALIZES` [`Resolution Carry-Forward`](../../target-modules/TM-PLANNING-RESOLUTION-STATE.md#tm-planning-resolution-state) — `RESOLUTION.CARRY-FORWARD`
 
 - [`USER Input Decision / Answer Intake`](../../runtime/interaction/USER-INPUT-DECISION-AND-ANSWER-INTAKE-RULE.md) owns USER-input classification;
 - Evidence remains ordinary Core Evidence State.
@@ -125,7 +125,7 @@ Evidence → still material to accepted basis/revalidation?
 Decision → exposes any new Q/R/P?
 ```
 
-Surviving open/deferred/residual items remain with their canonical lifecycle/natural owners and may be projected into [`Resolution Carry-Forward`](../../resolution/continuation/RESOLUTION-CARRY-FORWARD-PROJECTION.md#resolution-carry-forward) when continuation value is material.
+Surviving open/deferred/residual items remain with their canonical lifecycle/natural owners and may be kept with their related resolution context in [`Resolution Carry-Forward`](../../target-modules/TM-PLANNING-RESOLUTION-STATE.md#tm-planning-resolution-state) when continuation value is material.
 
 ## Composition With Existing Lenses
 

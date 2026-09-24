@@ -1074,12 +1074,12 @@
       "id": "TM-PLANNING-RESOLUTION-STATE",
       "kind": "TARGET_MODULE",
       "scope": "Core",
-      "label": "Planning Resolution State",
-      "actionLabel": "Planning Resolution State",
-      "description": "bounded active planning and deliberately retained Decisions in two Collection Units.",
-      "context": "bounded active planning and deliberately retained Decisions in two Collection Units.",
-      "result": "**Target Step Result:** Planning Resolution State Exactly two Module-defined Units, each a Collection Unit under the Target Work Unit/Collection/Slot contract: | Result Unit | Collection | Meaning | |---|---|---| | RU-PRS-01 | Active Planning Items | Bounded unresolved or selected-for-current-resolution work | | RU-PRS-02 | Tracked Decision Items | Accepted selections deliberately retained for coordination, revalidation, checkpoint or user-chosen history | The repeated entries are **Collection Items**, not peer Units. Target Ref, optional Unit Ref and optional Unit Slot Ref address the *subject* inside an item; they are not decomposition of PRS itself. An item can reference more than one natural subject where one decision spans owners. The stable PRS-local Item Key identifies an entry across reordering and priority changes; it does not replace the referenced natural owner or Proposal/…",
-      "essence": "bounded active planning and deliberately retained Decisions in two Collection Units.",
+      "label": "Planning Resolution State / Resolution Carry-Forward",
+      "actionLabel": "Planning Resolution State / Resolution Carry-Forward",
+      "description": "Planning Resolution State / Resolution Carry-Forward: open Proposal/Q/R/P work and Decisions with qualifying Q/R/P in two Collection Units.",
+      "context": "Planning Resolution State / Resolution Carry-Forward: open Proposal/Q/R/P work and Decisions with qualifying Q/R/P in two Collection Units.",
+      "result": "**Target Step Result:** Planning Resolution State Exactly two Module-defined Units, each a Collection Unit under the Target Work Unit/Collection/Slot contract: | Result Unit | Collection | Meaning | |---|---|---| | RU-PRS-01 | Active Planning Items | Bounded unresolved or selected-for-current-resolution work | | RU-PRS-02 | Tracked Decision Items | Accepted selections carried forward with their material unresolved/residual Q/R/P | The repeated entries are **Collection Items**, not peer Units. Target Ref, optional Unit Ref and optional Unit Slot Ref address the *subject* inside an item; they are not decomposition of PRS itself. An item can reference more than one natural subject where one decision spans owners. The stable PRS-local Item Key identifies an entry across reordering and priority changes; it does not replace the referenced natural owner or Proposal/Decision identity. A PER_I…",
+      "essence": "Planning Resolution State / Resolution Carry-Forward: open Proposal/Q/R/P work and Decisions with qualifying Q/R/P in two Collection Units.",
       "sources": [
         "planning/documentation/idtspe-methodology/active/idtspe-core/target-modules/TARGET-MODULE-REGISTRY.md",
         "planning/documentation/idtspe-methodology/active/idtspe-core/target-modules/TM-PLANNING-RESOLUTION-STATE.md"
@@ -1097,7 +1097,7 @@
       },
       "commandId": "",
       "invocation": "idtspe tm TM-PLANNING-RESOLUTION-STATE <target>",
-      "target": "<Planning Resolution State target>"
+      "target": "<Planning Resolution State / Resolution Carry-Forward target>"
     },
     {
       "id": "TM-PRE-UPDATE-PLAN",

@@ -9,7 +9,7 @@ selected unrealized downstream meaning remains inside its Evolution Step.
 
 ## RU-APP-05 — Application Concept
 
-**Methodology:** [RU-APP-05 Unit Definition](idtspe-methodology/active/profiles/sds/target-modules/TM-APPLICATION-DEFINITION.md#application-concept).
+**Methodology:** [RU-APP-05 Unit Definition](../../../../../target-modules/TM-APPLICATION-DEFINITION.md#application-concept).
 
 **Summary:** Study Tab Launcher is a small local bridge that removes repeated
 navigation between an externally selected file/project reference and the
@@ -26,7 +26,7 @@ The contribution stays limited to explicitly selected local context; choosing wo
 
 ## RU-APP-02 — Existing-solution / reference position
 
-**Methodology:** [RU-APP-02 Unit Definition](idtspe-methodology/active/profiles/sds/target-modules/TM-APPLICATION-DEFINITION.md#existing-solutions--market--reference-research).
+**Methodology:** [RU-APP-02 Unit Definition](../../../../../target-modules/TM-APPLICATION-DEFINITION.md#existing-solutions--market--reference-research).
 
 Disposition: resolved and kept in this owner; a separate comparison artifact
 would add no current decision value for this local utility.
@@ -41,7 +41,7 @@ native trust/dirty-editor authority does not.
 <a id="ru-app-03--application-benefits"></a>
 ## RU-APP-03 — Application Benefits
 
-**Methodology:** [RU-APP-03 Unit Definition](idtspe-methodology/active/profiles/sds/target-modules/TM-APPLICATION-DEFINITION.md#application-benefits).
+**Methodology:** [RU-APP-03 Unit Definition](../../../../../target-modules/TM-APPLICATION-DEFINITION.md#application-benefits).
 
 Each Benefit owns its own boundary and Benefit-specific constraints. Links to
 a Benefit may target an exact boundary/constraint anchor when a downstream
@@ -201,7 +201,7 @@ until implementation and proof justify materialization.
 
 ## RU-APP-04 — Representative Real-Life Scenarios
 
-**Methodology:** [RU-APP-04 Unit Definition](idtspe-methodology/active/profiles/sds/target-modules/TM-APPLICATION-DEFINITION.md#representative-real-life-scenarios).
+**Methodology:** [RU-APP-04 Unit Definition](../../../../../target-modules/TM-APPLICATION-DEFINITION.md#representative-real-life-scenarios).
 
 <a id="rls-stl-01"></a>
 ### RLS-STL-01 — Continue from a selected file context
@@ -266,7 +266,7 @@ Feature or Scenario behavior.
 
 ## RU-APP-07 — Realization Feasibility
 
-**Methodology:** [RU-APP-07 Unit Definition](idtspe-methodology/active/profiles/sds/target-modules/TM-APPLICATION-DEFINITION.md#realization-feasibility).
+**Methodology:** [RU-APP-07 Unit Definition](../../../../../target-modules/TM-APPLICATION-DEFINITION.md#realization-feasibility).
 
 Current extension/userscript representation supplies downstream realization
 for the file, folder, ZIP, adaptive-project and trusted-publication Benefits,

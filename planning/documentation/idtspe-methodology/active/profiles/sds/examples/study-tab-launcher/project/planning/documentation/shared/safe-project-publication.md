@@ -5,7 +5,7 @@ archive, adaptive-project and trusted-copy Slices.
 
 ## RU-SHARED-01 — Shared Capability Contract
 
-**Methodology:** [RU-SHARED-01 Unit Definition](../idtspe-methodology/active/profiles/sds/target-modules/TM-SHARED-IMPLEMENTATION-CAPABILITY.md#ru-shared-01--shared-capability-contract).
+**Methodology:** [RU-SHARED-01 Unit Definition](../../../../../../target-modules/TM-SHARED-IMPLEMENTATION-CAPABILITY.md#ru-shared-01--shared-capability-contract).
 
 Capability ID: `SH-STL-SAFE-PROJECT-PUBLICATION`.
 
@@ -29,7 +29,7 @@ and Feature outcome mapping. This capability owns no Workspace Trust meaning.
 
 ## RU-SHARED-02 — Consumer Requirement Bindings
 
-**Methodology:** [RU-SHARED-02 Unit Definition](../idtspe-methodology/active/profiles/sds/target-modules/TM-SHARED-IMPLEMENTATION-CAPABILITY.md#ru-shared-02--consumer-requirement-bindings).
+**Methodology:** [RU-SHARED-02 Unit Definition](../../../../../../target-modules/TM-SHARED-IMPLEMENTATION-CAPABILITY.md#ru-shared-02--consumer-requirement-bindings).
 
 | Consumer Slice | Consumer requirement | Role | Participation |
 |---|---|---|---|
@@ -39,7 +39,7 @@ and Feature outcome mapping. This capability owns no Workspace Trust meaning.
 
 ## RU-SHARED-03 — Shared Capability Implementation Requirements
 
-**Methodology:** [RU-SHARED-03 Unit Definition](../idtspe-methodology/active/profiles/sds/target-modules/TM-SHARED-IMPLEMENTATION-CAPABILITY.md#ru-shared-03--shared-capability-implementation-requirements).
+**Methodology:** [RU-SHARED-03 Unit Definition](../../../../../../target-modules/TM-SHARED-IMPLEMENTATION-CAPABILITY.md#ru-shared-03--shared-capability-implementation-requirements).
 
 | Shared Implementation Requirement | Type | Plain implementation requirement | Realizes / protects | Related expected errors | QRPE / Examples |
 |---|---|---|---|---|---|
@@ -53,7 +53,7 @@ failures retain the consuming Feature's behavior-level meanings.
 
 ## RU-SHARED-04 — Evolution Impact
 
-**Methodology:** [RU-SHARED-04 Unit Definition](../idtspe-methodology/active/profiles/sds/target-modules/TM-SHARED-IMPLEMENTATION-CAPABILITY.md#ru-shared-04--evolution-impact).
+**Methodology:** [RU-SHARED-04 Unit Definition](../../../../../../target-modules/TM-SHARED-IMPLEMENTATION-CAPABILITY.md#ru-shared-04--evolution-impact).
 
 Disposition: `OMITTED`.
 

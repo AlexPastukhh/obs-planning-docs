@@ -6,7 +6,7 @@ this Step is current Feature, Scenario, Domain, Slice or Shared behavior.
 
 ## RU-EVO-01 — Step Frame / Semantic Relations
 
-**Methodology:** [RU-EVO-01 Unit Definition](../../idtspe-methodology/active/profiles/sds/target-modules/TM-EVOLUTION-STEP.md#ru-evo-01--step-frame--semantic-relations).
+**Methodology:** [RU-EVO-01 Unit Definition](../../../../../../../target-modules/TM-EVOLUTION-STEP.md#ru-evo-01--step-frame--semantic-relations).
 
 Step kind: `Expansion`.
 
@@ -61,7 +61,7 @@ current Feature owner only after implementation, proof and materialization.
 
 ### RU-FEAT-01 — Identity / Intent / Principal Result / Semantic Entry
 
-**Methodology:** [RU-FEAT-01 Unit Definition](../../idtspe-methodology/active/profiles/sds/target-modules/TM-FEATURE.md#ru-feat-01--identity--intent--principal-result--semantic-entry).
+**Methodology:** [RU-FEAT-01 Unit Definition](../../../../../../../target-modules/TM-FEATURE.md#ru-feat-01--identity--intent--principal-result--semantic-entry).
 
 Feature ID: `F-STL-APPLY-PROJECT-SUCCESSION`.
 
@@ -96,7 +96,7 @@ constraints.
 
 ### RU-FEAT-02 — Semantic Data
 
-**Methodology:** [RU-FEAT-02 Unit Definition](../../idtspe-methodology/active/profiles/sds/target-modules/TM-FEATURE.md#ru-feat-02--semantic-data).
+**Methodology:** [RU-FEAT-02 Unit Definition](../../../../../../../target-modules/TM-FEATURE.md#ru-feat-02--semantic-data).
 
 Manifest value semantics belong to the Target Domain Body below.
 
@@ -124,7 +124,7 @@ outcome object is created for a failed primary project open.
 
 ### RU-FEAT-03 — Feature Behavior
 
-**Methodology:** [RU-FEAT-03 Unit Definition](../../idtspe-methodology/active/profiles/sds/target-modules/TM-FEATURE.md#ru-feat-03--feature-behavior).
+**Methodology:** [RU-FEAT-03 Unit Definition](../../../../../../../target-modules/TM-FEATURE.md#ru-feat-03--feature-behavior).
 
 #### Main Path
 
@@ -166,7 +166,7 @@ outcome object is created for a failed primary project open.
 
 ### RU-FEAT-04 — Implementation Concerns
 
-**Methodology:** [RU-FEAT-04 Unit Definition](../../idtspe-methodology/active/profiles/sds/target-modules/TM-FEATURE.md#ru-feat-04--implementation-concerns).
+**Methodology:** [RU-FEAT-04 Unit Definition](../../../../../../../target-modules/TM-FEATURE.md#ru-feat-04--implementation-concerns).
 
 Feature-local concern: candidate discovery and cleanup outcome must remain
 secondary to the current project-opening result. The coordinator's existing
@@ -176,7 +176,7 @@ and must not be widened by succession work.
 
 ### RU-FEAT-05 — Feature / Slice Boundary
 
-**Methodology:** [RU-FEAT-05 Unit Definition](../../idtspe-methodology/active/profiles/sds/target-modules/TM-FEATURE.md#ru-feat-05--feature--slice-boundary).
+**Methodology:** [RU-FEAT-05 Unit Definition](../../../../../../../target-modules/TM-FEATURE.md#ru-feat-05--feature--slice-boundary).
 
 Selected boundary: one peer post-open Feature and one end-to-end succession
 Slice. Current project Features own source resolution/extraction/publication
@@ -187,7 +187,7 @@ owns declaration validity/name semantics.
 
 ### RU-FEAT-06 — Evolution Impact
 
-**Methodology:** [RU-FEAT-06 Unit Definition](../../idtspe-methodology/active/profiles/sds/target-modules/TM-FEATURE.md#ru-feat-06--evolution-impact).
+**Methodology:** [RU-FEAT-06 Unit Definition](../../../../../../../target-modules/TM-FEATURE.md#ru-feat-06--evolution-impact).
 
 Disposition: `OMITTED`.
 
@@ -196,7 +196,7 @@ owner reverse projection is not applicable until materialization.
 
 ## RU-EVO-02 — Evolution Impacts
 
-**Methodology:** [RU-EVO-02 Unit Definition](../../idtspe-methodology/active/profiles/sds/target-modules/TM-EVOLUTION-STEP.md#ru-evo-02--evolution-impacts).
+**Methodology:** [RU-EVO-02 Unit Definition](../../../../../../../target-modules/TM-EVOLUTION-STEP.md#ru-evo-02--evolution-impacts).
 
 The collection contains one bounded subject: revalidation of the current
 prepared-handoff Shared owner. The seven complete CREATE/REPLACE Target Owner
@@ -249,7 +249,7 @@ project succession declaration and exact sibling-name semantics.
 
 #### RU-DOWN-01 — Domain Semantic Contract
 
-**Methodology:** [RU-DOWN-01 Unit Definition](../../idtspe-methodology/active/profiles/sds/target-modules/TM-DOMAIN-OWNER.md#ru-down-01--domain-semantic-contract).
+**Methodology:** [RU-DOWN-01 Unit Definition](../../../../../../../target-modules/TM-DOMAIN-OWNER.md#ru-down-01--domain-semantic-contract).
 
 `ProjectSuccessionManifest` is the bounded value read only from
 `<final-project-root>/.study-tab-launcher.json`:
@@ -291,7 +291,7 @@ eligible to close and grants no archive/file deletion authority.
 
 #### RU-DOWN-02 — Domain Implementation Requirements
 
-**Methodology:** [RU-DOWN-02 Unit Definition](../../idtspe-methodology/active/profiles/sds/target-modules/TM-DOMAIN-OWNER.md#ru-down-02--domain-implementation-requirements).
+**Methodology:** [RU-DOWN-02 Unit Definition](../../../../../../../target-modules/TM-DOMAIN-OWNER.md#ru-down-02--domain-implementation-requirements).
 
 | Domain Implementation Requirement | Type | Plain implementation requirement | Realizes | Related expected errors | QRPE / Examples |
 |---|---|---|---|---|---|
@@ -301,7 +301,7 @@ eligible to close and grants no archive/file deletion authority.
 
 #### RU-DOWN-03 — Evolution Impact
 
-**Methodology:** [RU-DOWN-03 Unit Definition](../../idtspe-methodology/active/profiles/sds/target-modules/TM-DOMAIN-OWNER.md#ru-down-03--evolution-impact).
+**Methodology:** [RU-DOWN-03 Unit Definition](../../../../../../../target-modules/TM-DOMAIN-OWNER.md#ru-down-03--evolution-impact).
 
 Disposition: `OMITTED`; current-owner reverse projection is not applicable
 inside this future Target Domain Body.
@@ -319,7 +319,7 @@ decision, participating-window coordination and truthful secondary result.
 
 #### RU-SOWN-01 — Slice Responsibility / Boundary Contract
 
-**Methodology:** [RU-SOWN-01 Unit Definition](../../idtspe-methodology/active/profiles/sds/target-modules/TM-SLICE-OWNER.md#ru-sown-01--slice-responsibility--boundary-contract).
+**Methodology:** [RU-SOWN-01 Unit Definition](../../../../../../../target-modules/TM-SLICE-OWNER.md#ru-sown-01--slice-responsibility--boundary-contract).
 
 Responsibility: realize one succession operation from successful final-root
 context through manifest interpretation, exact participant matching, explicit
@@ -343,7 +343,7 @@ truthfulness rather than private call order.
 
 #### RU-SOWN-02 — Slice Implementation Requirements
 
-**Methodology:** [RU-SOWN-02 Unit Definition](../../idtspe-methodology/active/profiles/sds/target-modules/TM-SLICE-OWNER.md#ru-sown-02--slice-implementation-requirements).
+**Methodology:** [RU-SOWN-02 Unit Definition](../../../../../../../target-modules/TM-SLICE-OWNER.md#ru-sown-02--slice-implementation-requirements).
 
 | Slice Implementation Requirement | Type | Plain implementation requirement | Realizes | Related expected errors | QRPE / Examples |
 |---|---|---|---|---|---|
@@ -355,7 +355,7 @@ truthfulness rather than private call order.
 
 #### RU-SOWN-03 — Evolution Impact
 
-**Methodology:** [RU-SOWN-03 Unit Definition](../../idtspe-methodology/active/profiles/sds/target-modules/TM-SLICE-OWNER.md#ru-sown-03--evolution-impact).
+**Methodology:** [RU-SOWN-03 Unit Definition](../../../../../../../target-modules/TM-SLICE-OWNER.md#ru-sown-03--evolution-impact).
 
 Disposition: `OMITTED`; current-owner reverse projection is not applicable
 inside this future Target Slice Body.
@@ -368,7 +368,7 @@ and whole-path proof establish the represented body.
 
 #### RU-SCEN-01 — Journey Composition
 
-**Methodology:** [RU-SCEN-01 Unit Definition](../../idtspe-methodology/active/profiles/sds/target-modules/TM-SCENARIO-PLANNING.md#ru-scen-01-processing-envelope), [Journey Shape](../../idtspe-methodology/active/profiles/sds/target-modules/TM-SCENARIO-PLANNING.md#journey-shape).
+**Methodology:** [RU-SCEN-01 Unit Definition](../../../../../../../target-modules/TM-SCENARIO-PLANNING.md#ru-scen-01-processing-envelope), [Journey Shape](../../../../../../../target-modules/TM-SCENARIO-PLANNING.md#journey-shape).
 
 Actor/context: the user opens one selected folder/ZIP project and may then
 choose whether exact declared participating predecessor windows remain open.
@@ -411,13 +411,13 @@ previous windows, including one dirty cancellation and partial-result display.
 
 #### RU-SCEN-02 — Evolution Impact
 
-**Methodology:** [RU-SCEN-02 Unit Definition](../../idtspe-methodology/active/profiles/sds/target-modules/TM-SCENARIO-PLANNING.md#ru-scen-02--evolution-impact).
+**Methodology:** [RU-SCEN-02 Unit Definition](../../../../../../../target-modules/TM-SCENARIO-PLANNING.md#ru-scen-02--evolution-impact).
 
 Disposition: `OMITTED`; this is the future replacement body owned by the Step.
 
 #### RU-SCEN-03 — Journey Realization Concerns
 
-**Methodology:** [RU-SCEN-03 Unit Definition](../../idtspe-methodology/active/profiles/sds/target-modules/TM-SCENARIO-PLANNING.md#ru-scen-03--journey-realization-concerns).
+**Methodology:** [RU-SCEN-03 Unit Definition](../../../../../../../target-modules/TM-SCENARIO-PLANNING.md#ru-scen-03--journey-realization-concerns).
 
 Live proof must correlate browser handoff, replacement-window registration,
 modal placement, target self-revalidation, dirty prompts and final focus.
@@ -427,7 +427,7 @@ modal placement, target self-revalidation, dirty prompts and final focus.
 
 #### RU-SCEN-01 — Journey Composition
 
-**Methodology:** [RU-SCEN-01 Unit Definition](../../idtspe-methodology/active/profiles/sds/target-modules/TM-SCENARIO-PLANNING.md#ru-scen-01-processing-envelope), [Journey Shape](../../idtspe-methodology/active/profiles/sds/target-modules/TM-SCENARIO-PLANNING.md#journey-shape).
+**Methodology:** [RU-SCEN-01 Unit Definition](../../../../../../../target-modules/TM-SCENARIO-PLANNING.md#ru-scen-01-processing-envelope), [Journey Shape](../../../../../../../target-modules/TM-SCENARIO-PLANNING.md#journey-shape).
 
 Actor/context: the user opens an exact selected local directory and optionally
 retires declared exact participating sibling project windows afterward.
@@ -464,13 +464,13 @@ manifest, no-match, Open Only, successful and dirty-cancelled target branches.
 
 #### RU-SCEN-02 — Evolution Impact
 
-**Methodology:** [RU-SCEN-02 Unit Definition](../../idtspe-methodology/active/profiles/sds/target-modules/TM-SCENARIO-PLANNING.md#ru-scen-02--evolution-impact).
+**Methodology:** [RU-SCEN-02 Unit Definition](../../../../../../../target-modules/TM-SCENARIO-PLANNING.md#ru-scen-02--evolution-impact).
 
 Disposition: `OMITTED`; this is the future replacement body owned by the Step.
 
 #### RU-SCEN-03 — Journey Realization Concerns
 
-**Methodology:** [RU-SCEN-03 Unit Definition](../../idtspe-methodology/active/profiles/sds/target-modules/TM-SCENARIO-PLANNING.md#ru-scen-03--journey-realization-concerns).
+**Methodology:** [RU-SCEN-03 Unit Definition](../../../../../../../target-modules/TM-SCENARIO-PLANNING.md#ru-scen-03--journey-realization-concerns).
 
 Host existing-window selection and foreground/modal placement require live
 multi-window observation.
@@ -480,7 +480,7 @@ multi-window observation.
 
 #### RU-SCEN-01 — Journey Composition
 
-**Methodology:** [RU-SCEN-01 Unit Definition](../../idtspe-methodology/active/profiles/sds/target-modules/TM-SCENARIO-PLANNING.md#ru-scen-01-processing-envelope), [Journey Shape](../../idtspe-methodology/active/profiles/sds/target-modules/TM-SCENARIO-PLANNING.md#journey-shape).
+**Methodology:** [RU-SCEN-01 Unit Definition](../../../../../../../target-modules/TM-SCENARIO-PLANNING.md#ru-scen-01-processing-envelope), [Journey Shape](../../../../../../../target-modules/TM-SCENARIO-PLANNING.md#journey-shape).
 
 Actor/context: the user opens a downloaded ZIP project, then may retire exact
 participating predecessors declared by the actual reused/extracted final root.
@@ -517,13 +517,13 @@ and reuse, verifying manifest source, preservation and partial cleanup.
 
 #### RU-SCEN-02 — Evolution Impact
 
-**Methodology:** [RU-SCEN-02 Unit Definition](../../idtspe-methodology/active/profiles/sds/target-modules/TM-SCENARIO-PLANNING.md#ru-scen-02--evolution-impact).
+**Methodology:** [RU-SCEN-02 Unit Definition](../../../../../../../target-modules/TM-SCENARIO-PLANNING.md#ru-scen-02--evolution-impact).
 
 Disposition: `OMITTED`; this is the future replacement body owned by the Step.
 
 #### RU-SCEN-03 — Journey Realization Concerns
 
-**Methodology:** [RU-SCEN-03 Unit Definition](../../idtspe-methodology/active/profiles/sds/target-modules/TM-SCENARIO-PLANNING.md#ru-scen-03--journey-realization-concerns).
+**Methodology:** [RU-SCEN-03 Unit Definition](../../../../../../../target-modules/TM-SCENARIO-PLANNING.md#ru-scen-03--journey-realization-concerns).
 
 Live proof must show final-root identity remains correct across extraction,
 existing-directory reuse and new-window routing.
@@ -533,7 +533,7 @@ existing-directory reuse and new-window routing.
 
 #### RU-SCEN-01 — Journey Composition
 
-**Methodology:** [RU-SCEN-01 Unit Definition](../../idtspe-methodology/active/profiles/sds/target-modules/TM-SCENARIO-PLANNING.md#ru-scen-01-processing-envelope), [Journey Shape](../../idtspe-methodology/active/profiles/sds/target-modules/TM-SCENARIO-PLANNING.md#journey-shape).
+**Methodology:** [RU-SCEN-01 Unit Definition](../../../../../../../target-modules/TM-SCENARIO-PLANNING.md#ru-scen-01-processing-envelope), [Journey Shape](../../../../../../../target-modules/TM-SCENARIO-PLANNING.md#journey-shape).
 
 Actor/context: the user publishes/reuses a final child below the configured
 parent and optionally retires exact participating predecessors declared by
@@ -573,20 +573,20 @@ previous-window cancellation.
 
 #### RU-SCEN-02 — Evolution Impact
 
-**Methodology:** [RU-SCEN-02 Unit Definition](../../idtspe-methodology/active/profiles/sds/target-modules/TM-SCENARIO-PLANNING.md#ru-scen-02--evolution-impact).
+**Methodology:** [RU-SCEN-02 Unit Definition](../../../../../../../target-modules/TM-SCENARIO-PLANNING.md#ru-scen-02--evolution-impact).
 
 Disposition: `OMITTED`; this is the future replacement body owned by the Step.
 
 #### RU-SCEN-03 — Journey Realization Concerns
 
-**Methodology:** [RU-SCEN-03 Unit Definition](../../idtspe-methodology/active/profiles/sds/target-modules/TM-SCENARIO-PLANNING.md#ru-scen-03--journey-realization-concerns).
+**Methodology:** [RU-SCEN-03 Unit Definition](../../../../../../../target-modules/TM-SCENARIO-PLANNING.md#ru-scen-03--journey-realization-concerns).
 
 Live proof must distinguish publication confirmation, Workspace Trust and the
 later optional cleanup confirmation across the correct VS Code windows.
 
 ## RU-EVO-03 — Step-wide Implementation Concerns
 
-**Methodology:** [RU-EVO-03 Unit Definition](../../idtspe-methodology/active/profiles/sds/target-modules/TM-EVOLUTION-STEP.md#ru-evo-03--step-wide-implementation-concerns).
+**Methodology:** [RU-EVO-03 Unit Definition](../../../../../../../target-modules/TM-EVOLUTION-STEP.md#ru-evo-03--step-wide-implementation-concerns).
 
 - Recheck how the existing acknowledgement/redemption ownership Problem
   [`P-STL-HANDOFF-01`](../../shared/prepared-project-handoff.md#p-stl-handoff-01)
@@ -605,7 +605,7 @@ later optional cleanup confirmation across the correct VS Code windows.
 
 ## RU-EVO-04 — Target Owner Materialization Set
 
-**Methodology:** [RU-EVO-04 Unit Definition](../../idtspe-methodology/active/profiles/sds/target-modules/TM-EVOLUTION-STEP.md#ru-evo-04--target-owner-materialization-set).
+**Methodology:** [RU-EVO-04 Unit Definition](../../../../../../../target-modules/TM-EVOLUTION-STEP.md#ru-evo-04--target-owner-materialization-set).
 
 | Operation | Target owner | Materialize only when |
 |---|---|---|
@@ -623,7 +623,7 @@ prepared-handoff Shared owner is revalidated, not replaced.
 
 ## RU-EVO-05 — Transition / Proof Obligations
 
-**Methodology:** [RU-EVO-05 Unit Definition](../../idtspe-methodology/active/profiles/sds/target-modules/TM-EVOLUTION-STEP.md#ru-evo-05--transition--proof-obligations).
+**Methodology:** [RU-EVO-05 Unit Definition](../../../../../../../target-modules/TM-EVOLUTION-STEP.md#ru-evo-05--transition--proof-obligations).
 
 | Obligation | Transition-wide must-hold |
 |---|---|
@@ -641,7 +641,7 @@ planned by
 
 ## RU-EVO-06 — Planning Completeness / Realization Start Readiness
 
-**Methodology:** [RU-EVO-06 Unit Definition](../../idtspe-methodology/active/profiles/sds/target-modules/TM-EVOLUTION-STEP.md#ru-evo-06--planning-completeness--realization-start-readiness).
+**Methodology:** [RU-EVO-06 Unit Definition](../../../../../../../target-modules/TM-EVOLUTION-STEP.md#ru-evo-06--planning-completeness--realization-start-readiness).
 
 Planning Completeness: `COMPLETE` for the selected first increment.
 

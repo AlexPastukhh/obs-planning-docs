@@ -4,7 +4,7 @@ Status: planned Practical Test owner; execution evidence is not yet recorded.
 
 ## RU-PTEST-01 — Practical Test Target / Property
 
-**Methodology:** [RU-PTEST-01 Unit Definition](../idtspe-methodology/active/profiles/sds/target-modules/TM-PRACTICAL-TEST.md#ru-ptest-01-processing-envelope), [Practical Test Result Contract](../idtspe-methodology/active/profiles/sds/target-modules/TM-PRACTICAL-TEST.md#target-step-result-contract).
+**Methodology:** [RU-PTEST-01 Unit Definition](../../../../../../target-modules/TM-PRACTICAL-TEST.md#ru-ptest-01-processing-envelope), [Practical Test Result Contract](../../../../../../target-modules/TM-PRACTICAL-TEST.md#target-step-result-contract).
 
 Target ID: `PTEST-STL-INSTALLED-HANDOFF`.
 
@@ -25,7 +25,7 @@ Properties to establish:
 
 ## RU-PTEST-02 — Practical Test Plan
 
-**Methodology:** [RU-PTEST-02 Unit Definition](../idtspe-methodology/active/profiles/sds/target-modules/TM-PRACTICAL-TEST.md#ru-ptest-02-processing-envelope), [Practical Test Result Contract](../idtspe-methodology/active/profiles/sds/target-modules/TM-PRACTICAL-TEST.md#target-step-result-contract).
+**Methodology:** [RU-PTEST-02 Unit Definition](../../../../../../target-modules/TM-PRACTICAL-TEST.md#ru-ptest-02-processing-envelope), [Practical Test Result Contract](../../../../../../target-modules/TM-PRACTICAL-TEST.md#target-step-result-contract).
 
 Record browser, Tampermonkey, userscript, VS Code, extension, Windows and
 workspace configuration versions before execution. Use disposable fixtures and
@@ -45,7 +45,7 @@ retain screenshots/logs sufficient to relate observation to the exact build.
 
 ## RU-PTEST-03 — Result / Evidence
 
-**Methodology:** [RU-PTEST-03 Unit Definition](../idtspe-methodology/active/profiles/sds/target-modules/TM-PRACTICAL-TEST.md#ru-ptest-03-processing-envelope), [Practical Test Result Contract](../idtspe-methodology/active/profiles/sds/target-modules/TM-PRACTICAL-TEST.md#target-step-result-contract).
+**Methodology:** [RU-PTEST-03 Unit Definition](../../../../../../target-modules/TM-PRACTICAL-TEST.md#ru-ptest-03-processing-envelope), [Practical Test Result Contract](../../../../../../target-modules/TM-PRACTICAL-TEST.md#target-step-result-contract).
 
 Result: `OPEN`.
 

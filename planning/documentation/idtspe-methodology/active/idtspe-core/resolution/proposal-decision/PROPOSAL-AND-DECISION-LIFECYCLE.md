@@ -358,9 +358,9 @@ When support is missing, mark the particular conclusion provisional/unknown and 
 <a id="resolution-decision-retention"></a>
 ## Decision retention and integration
 
-Accepted selected meaning flows to its natural owner. Retain a Tracked Decision when the USER requests it or its choice/context has continuing coordination, library/dependency, revalidation, migration, checkpoint or residual-Q/R/P value. `Q/R/P = 0..N`; residual Q/R/P is neither a prerequisite nor a retention deadline. The USER determines whether a Decision persists for one Step, to a checkpoint, long term, indefinitely or only through integration. A retained Decision traces selection and coordination without becoming a second owner of accepted Requirements or owner content. A Decision can disappear from active state when retention has no value and the USER has not requested it.
+Accepted selected meaning flows to its natural owner. A durable Decision trace may remain there for useful rationale, history or an explicit USER retention request. Active coordination membership is narrower: [Planning Resolution State / Resolution Carry-Forward](../../target-modules/TM-PLANNING-RESOLUTION-STATE.md#ru-prs-02--tracked-decisions) includes a Decision only with one or more qualifying related Q/R/P. Removing a completed active entry preserves accepted content and any historical trace.
 
-[Planning Resolution State](../../target-modules/TM-PLANNING-RESOLUTION-STATE.md#tm-planning-resolution-state) holds bounded active planning and deliberately retained decisions as Collection Items. [Carry-Forward](../continuation/RESOLUTION-CARRY-FORWARD-PROJECTION.md#resolution-carry-forward) is a continuation projection over that state.
+Planning Resolution State and Carry-Forward are names for one bounded result. Its Target Module owns membership, linked context, ordering and continuation materialization. Selection and integration remain owned here.
 
 ## 6. Selection Outcomes
 
@@ -418,7 +418,7 @@ A Question may be answered and integrated into Result Content without any Decisi
 
 Accepted material selection becomes authoritative for the planning/semantic state being represented through normal Decision semantics and integration into the affected Unit/Target/natural owner. Selection never implies realization when the active profile has a temporal-host boundary.
 
-A separate explicit/durable Decision record is proportional. Retain it whenever the USER asks or the selection has useful coordination/history value, even without residual Q/R/P. Examples of useful retained context:
+A separate explicit/durable Decision record is proportional. Retain it whenever the USER asks or the selection has useful coordination/history value, even without residual Q/R/P; that natural-owner/history record does not qualify for active PRS/RCF membership by itself. Examples of useful retained context:
 
 ```text
 why a non-obvious choice was made
@@ -471,9 +471,9 @@ Semantic retention does not imply a dedicated file. Physical persistence is reso
 
 A useful Proposal discovered outside the current Target does not require a global Idea/Future-Idea ontology or mandatory inbox. When retaining it has independent continuation/review value, keep it as ordinary Proposal State with enough context to recover its driver/provenance and let Documentation / Representation choose a natural owner, existing register/inbox, another selected owner, or no physical persistence. A register is navigation/retention infrastructure only; it does not select the Proposal or make it backlog/product authority.
 
-### Carry-Forward Projection Integration
+### Carry-Forward / Planning Resolution State Integration
 
-Open/deferred Proposals, materially retained non-selected alternatives, residual Decision Q/R/P/Evidence needs and reconsider triggers may feed the canonical [`Resolution Carry-Forward`](../continuation/RESOLUTION-CARRY-FORWARD-PROJECTION.md) projection when continuation/handoff value is material. The projection stores compact routing/status/reference entries only; Proposal/Decision semantic bodies remain owned here and by their natural owners.
+Open/deferred Proposals and their Q/R/P, unresolved subjects awaiting candidate work, and accepted Decisions with qualifying related Q/R/P feed the single [PRS/RCF result](../../target-modules/TM-PLANNING-RESOLUTION-STATE.md#tm-planning-resolution-state) when continuation value is material. Carry their material Evidence and resolution relations together. The Target Module owns active membership and representation shape; Proposal/Decision semantic bodies remain owned here and by their natural owners.
 
 ## 10. Durable Decision Protection Under Proposal Review
 

@@ -7,7 +7,7 @@ Workspace Trust observation remains pending. Materialized from
 
 ## RU-SCEN-01 — Journey Composition
 
-**Methodology:** [RU-SCEN-01 Unit Definition](../idtspe-methodology/active/profiles/sds/target-modules/TM-SCENARIO-PLANNING.md#ru-scen-01-processing-envelope), [Journey Shape](../idtspe-methodology/active/profiles/sds/target-modules/TM-SCENARIO-PLANNING.md#journey-shape).
+**Methodology:** [RU-SCEN-01 Unit Definition](../../../../../../target-modules/TM-SCENARIO-PLANNING.md#ru-scen-01-processing-envelope), [Journey Shape](../../../../../../target-modules/TM-SCENARIO-PLANNING.md#journey-shape).
 
 Scenario ID: `SCN-STL-COPY-TRUSTED-PROJECT`.
 
@@ -65,7 +65,7 @@ Trust UI.
 
 ## RU-SCEN-02 — Evolution Impact
 
-**Methodology:** [RU-SCEN-02 Unit Definition](../idtspe-methodology/active/profiles/sds/target-modules/TM-SCENARIO-PLANNING.md#ru-scen-02--evolution-impact).
+**Methodology:** [RU-SCEN-02 Unit Definition](../../../../../../target-modules/TM-SCENARIO-PLANNING.md#ru-scen-02--evolution-impact).
 
 The selected
 [EVO-STL-CLOSE-SUPERSEDED-PROJECT-WINDOWS](../evolution/unrealized/close-superseded-project-windows.md)
@@ -79,7 +79,7 @@ current.
 
 ## RU-SCEN-03 — Journey Realization Concerns
 
-**Methodology:** [RU-SCEN-03 Unit Definition](../idtspe-methodology/active/profiles/sds/target-modules/TM-SCENARIO-PLANNING.md#ru-scen-03--journey-realization-concerns).
+**Methodology:** [RU-SCEN-03 Unit Definition](../../../../../../target-modules/TM-SCENARIO-PLANNING.md#ru-scen-03--journey-realization-concerns).
 
 Current journey-wide concern: browser protocol confirmation, coordinator-owner
 selection, VS Code modal placement, new-window selection and Workspace Trust

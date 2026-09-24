@@ -6,7 +6,7 @@ readiness; each Step owns its own target-state meaning.
 
 ## RU-EVOMAP-01 — Step Registry
 
-**Methodology:** [RU-EVOMAP-01 Unit Definition](idtspe-methodology/active/profiles/sds/target-modules/TM-EVOLUTION-STEPS-MAP.md#ru-evomap-01--registry--routing).
+**Methodology:** [RU-EVOMAP-01 Unit Definition](../../../../../target-modules/TM-EVOLUTION-STEPS-MAP.md#ru-evomap-01--registry--routing).
 
 ### Unrealized Steps
 
@@ -37,7 +37,7 @@ not to historical Step bodies.
 
 ## RU-EVOMAP-02 — Relations / Readiness / Planning Horizon
 
-**Methodology:** [RU-EVOMAP-02 Unit Definition](idtspe-methodology/active/profiles/sds/target-modules/TM-EVOLUTION-STEPS-MAP.md#ru-evomap-02--semantic-relations--concerns--planning-completeness--start-readiness).
+**Methodology:** [RU-EVOMAP-02 Unit Definition](../../../../../target-modules/TM-EVOLUTION-STEPS-MAP.md#ru-evomap-02--semantic-relations--concerns--planning-completeness--start-readiness).
 
 ```text
 TRUSTED-PROJECT-COPY

@@ -2615,3 +2615,19 @@ No `TM-EXACT-REALIZATION` workflow, repair authority, Domain/Slice/Test boundary
 ## 2026-09-24 — Application Definition Concept first
 
 USER requested Concept as the first Unit, removing duplicate identity/contribution work. `RU-APP-05` retains its stable ID and now leads the five-Unit result; `RU-APP-01` is retired. Identity/Sources are ordinary context; Benefit promises/boundaries remain Benefit-local. Updated production/read order, inventories/checkpoints, natural Lens projection, Concept template and active Application Definition consumers. Launcher and its independent example are deliberately revised together, with provenance/hash history retained. No Application Benefit or selection/realization state is changed by this structural migration.
+
+## 2026-09-24 — Deduplicate methodology inside the Launcher example
+
+USER requested same-repository methodology links, with redirection checked before removal. Preserved application documentation and supporting application Evidence; redirected methodology/provenance links, recorded explicit manifest revisions, then removed the duplicate pinned methodology and surrounding source-context. Historical capture and prior packaging remain identifiable through archive hash and Git commit. Canonical Core review source-basis is a separate review Evidence artifact and is retained.
+
+### 2026-09-24 — Unify Planning Resolution State and Resolution Carry-Forward
+
+**Source:** current USER clarification: «планнинг рез стейт это и есть ркф»; preceding instruction: «в нем должны быть десижены, только когда для них есть qrp», «открытые пропозалы с их qrp», «порядок определенный».
+
+**Applied meaning:** one canonical PRS/RCF result contract in TM-PLANNING-RESOLUTION-STATE; existing RCF path forwards to it. Active Decisions require material related Q/R/P. Natural-owner accepted content/history remains valid. Preserve linked open Proposal/Q/R/P graphs, two stable Collection Units, SDS semantic grouping and separate priority attention. Update lifecycle, integration, representation, dependency/navigation consumers and copied Launcher example; preserve historical audits/source-basis captures.
+
+### 2026-09-24 — Complete PRS/RCF owner migration and reconcile Launcher
+
+**Source:** USER: «надо завершить перенос, исправитьт пример полность чтобы все было норм и в реальном проекте из которого пример также».
+
+**Applied:** direct canonical TM references in commands, lifecycle, lenses and navigation; remove the former compatibility file and duplicate map row. Reconcile the independent copied example and live Launcher PRS/RCF, its local governing contracts and provenance. Preserve current/future boundaries, accepted owner records and historical evidence.

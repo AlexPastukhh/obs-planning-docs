@@ -6,7 +6,7 @@ The separately materialized trusted-copy action is not part of this Feature.
 
 ## RU-FEAT-01 — Identity / Intent / Principal Result / Semantic Entry
 
-**Methodology:** [RU-FEAT-01 Unit Definition](../idtspe-methodology/active/profiles/sds/target-modules/TM-FEATURE.md#ru-feat-01--identity--intent--principal-result--semantic-entry).
+**Methodology:** [RU-FEAT-01 Unit Definition](../../../../../../target-modules/TM-FEATURE.md#ru-feat-01--identity--intent--principal-result--semantic-entry).
 
 Feature ID: `F-STL-OPEN-LOCAL-PROJECT`.
 
@@ -49,7 +49,7 @@ constraint](../application-definition.md#ab-stl-02-constraint-safe-project-effec
 
 ## RU-FEAT-02 — Semantic Data
 
-**Methodology:** [RU-FEAT-02 Unit Definition](../idtspe-methodology/active/profiles/sds/target-modules/TM-FEATURE.md#ru-feat-02--semantic-data).
+**Methodology:** [RU-FEAT-02 Unit Definition](../../../../../../target-modules/TM-FEATURE.md#ru-feat-02--semantic-data).
 
 `ProjectSelector` validity and resolution semantics belong to
 [D-STL-LOCAL-PROJECT-SELECTOR](../domain/local-project-selector.md). This
@@ -68,7 +68,7 @@ authority beyond the resulting validated request.
 
 ## RU-FEAT-03 — Feature Behavior
 
-**Methodology:** [RU-FEAT-03 Unit Definition](../idtspe-methodology/active/profiles/sds/target-modules/TM-FEATURE.md#ru-feat-03--feature-behavior).
+**Methodology:** [RU-FEAT-03 Unit Definition](../../../../../../target-modules/TM-FEATURE.md#ru-feat-03--feature-behavior).
 
 Correctness-critical order is normative for the browser-coordinated path. A
 direct VS Code command/URI caller enters with VS Code already active and may
@@ -121,7 +121,7 @@ above reference the error identities where handling is behaviorally relevant.
 <a id="ru-feat-04"></a>
 ## RU-FEAT-04 — Implementation Concerns
 
-**Methodology:** [RU-FEAT-04 Unit Definition](../idtspe-methodology/active/profiles/sds/target-modules/TM-FEATURE.md#ru-feat-04--implementation-concerns).
+**Methodology:** [RU-FEAT-04 Unit Definition](../../../../../../target-modules/TM-FEATURE.md#ru-feat-04--implementation-concerns).
 
 Current realized concern: the canonical
 [`P-STL-HANDOFF-01 — Coordinator acknowledgement/redemption race`](../shared/prepared-project-handoff.md#p-stl-handoff-01)
@@ -137,7 +137,7 @@ test mechanics remain implementation-native rather than Feature semantics.
 
 ## RU-FEAT-05 — Feature / Slice Boundary
 
-**Methodology:** [RU-FEAT-05 Unit Definition](../idtspe-methodology/active/profiles/sds/target-modules/TM-FEATURE.md#ru-feat-05--feature--slice-boundary).
+**Methodology:** [RU-FEAT-05 Unit Definition](../../../../../../target-modules/TM-FEATURE.md#ru-feat-05--feature--slice-boundary).
 
 Selected boundary: one adaptive project-opening Feature composes the existing
 folder and archive Features. It owns source selection, bounded arrival,
@@ -154,7 +154,7 @@ its Evolution Step rather than widening this current Feature/Slice boundary.
 
 ## RU-FEAT-06 — Evolution Impact
 
-**Methodology:** [RU-FEAT-06 Unit Definition](../idtspe-methodology/active/profiles/sds/target-modules/TM-FEATURE.md#ru-feat-06--evolution-impact).
+**Methodology:** [RU-FEAT-06 Unit Definition](../../../../../../target-modules/TM-FEATURE.md#ru-feat-06--evolution-impact).
 
 Disposition: `OMITTED`.
 

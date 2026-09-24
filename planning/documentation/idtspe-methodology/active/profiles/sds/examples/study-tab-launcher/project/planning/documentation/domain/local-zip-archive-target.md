@@ -5,7 +5,7 @@ adaptive-project and trusted-project Slices.
 
 ## RU-DOWN-01 — Domain Semantic Contract
 
-**Methodology:** [RU-DOWN-01 Unit Definition](../idtspe-methodology/active/profiles/sds/target-modules/TM-DOMAIN-OWNER.md#ru-down-01--domain-semantic-contract).
+**Methodology:** [RU-DOWN-01 Unit Definition](../../../../../../target-modules/TM-DOMAIN-OWNER.md#ru-down-01--domain-semantic-contract).
 
 `ZipArchiveTarget` represents one explicitly addressed existing local regular
 ZIP file eligible as a project source.
@@ -41,7 +41,7 @@ Invariants:
 
 ## RU-DOWN-02 — Domain Implementation Requirements
 
-**Methodology:** [RU-DOWN-02 Unit Definition](../idtspe-methodology/active/profiles/sds/target-modules/TM-DOMAIN-OWNER.md#ru-down-02--domain-implementation-requirements).
+**Methodology:** [RU-DOWN-02 Unit Definition](../../../../../../target-modules/TM-DOMAIN-OWNER.md#ru-down-02--domain-implementation-requirements).
 
 | Domain Implementation Requirement | Type | Plain implementation requirement | Realizes | Related expected errors | QRPE / Examples |
 |---|---|---|---|---|---|
@@ -56,7 +56,7 @@ the source Value Object.
 
 ## RU-DOWN-03 — Evolution Impact
 
-**Methodology:** [RU-DOWN-03 Unit Definition](../idtspe-methodology/active/profiles/sds/target-modules/TM-DOMAIN-OWNER.md#ru-down-03--evolution-impact).
+**Methodology:** [RU-DOWN-03 Unit Definition](../../../../../../target-modules/TM-DOMAIN-OWNER.md#ru-down-03--evolution-impact).
 
 Disposition: `OMITTED`.
 

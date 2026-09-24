@@ -6,7 +6,7 @@ remains visible below.
 
 ## RU-SHARED-01 — Shared Capability Contract
 
-**Methodology:** [RU-SHARED-01 Unit Definition](../idtspe-methodology/active/profiles/sds/target-modules/TM-SHARED-IMPLEMENTATION-CAPABILITY.md#ru-shared-01--shared-capability-contract).
+**Methodology:** [RU-SHARED-01 Unit Definition](../../../../../../target-modules/TM-SHARED-IMPLEMENTATION-CAPABILITY.md#ru-shared-01--shared-capability-contract).
 
 Capability ID: `SH-STL-PREPARED-PROJECT-HANDOFF`.
 
@@ -31,7 +31,7 @@ Feature behavior nor Workspace Trust.
 
 ## RU-SHARED-02 — Consumer Requirement Bindings
 
-**Methodology:** [RU-SHARED-02 Unit Definition](../idtspe-methodology/active/profiles/sds/target-modules/TM-SHARED-IMPLEMENTATION-CAPABILITY.md#ru-shared-02--consumer-requirement-bindings).
+**Methodology:** [RU-SHARED-02 Unit Definition](../../../../../../target-modules/TM-SHARED-IMPLEMENTATION-CAPABILITY.md#ru-shared-02--consumer-requirement-bindings).
 
 | Consumer Slice | Consumer requirement | Role | Participation |
 |---|---|---|---|
@@ -40,7 +40,7 @@ Feature behavior nor Workspace Trust.
 
 ## RU-SHARED-03 — Shared Capability Implementation Requirements
 
-**Methodology:** [RU-SHARED-03 Unit Definition](../idtspe-methodology/active/profiles/sds/target-modules/TM-SHARED-IMPLEMENTATION-CAPABILITY.md#ru-shared-03--shared-capability-implementation-requirements).
+**Methodology:** [RU-SHARED-03 Unit Definition](../../../../../../target-modules/TM-SHARED-IMPLEMENTATION-CAPABILITY.md#ru-shared-03--shared-capability-implementation-requirements).
 
 | Shared Implementation Requirement | Type | Plain implementation requirement | Realizes / protects | Related expected errors | QRPE / Examples |
 |---|---|---|---|---|---|
@@ -80,6 +80,7 @@ own boundary.
 - **Integrated Into:** [`IR-SHARED-STL-HANDOFF-03`](#ir-shared-stl-handoff-03),
   [`IR-SHARED-STL-HANDOFF-04`](#ir-shared-stl-handoff-04) and both current
   consumer Slice bindings.
+- **Related Q/R/P:** [P-STL-HANDOFF-01](#p-stl-handoff-01) remains `OPEN` against the accepted acknowledgement/redemption guarantee; its evidence and closure condition stay at that Problem owner.
 - **Reconsider when:** the browser-to-installed-application focus boundary or
   the single coordinator-owner topology is intentionally replaced.
 - **Review provenance:** accepted conclusions from the former project-opening
@@ -88,7 +89,7 @@ own boundary.
 
 ## RU-SHARED-04 — Evolution Impact
 
-**Methodology:** [RU-SHARED-04 Unit Definition](../idtspe-methodology/active/profiles/sds/target-modules/TM-SHARED-IMPLEMENTATION-CAPABILITY.md#ru-shared-04--evolution-impact).
+**Methodology:** [RU-SHARED-04 Unit Definition](../../../../../../target-modules/TM-SHARED-IMPLEMENTATION-CAPABILITY.md#ru-shared-04--evolution-impact).
 
 The selected
 [EVO-STL-CLOSE-SUPERSEDED-PROJECT-WINDOWS](../evolution/unrealized/close-superseded-project-windows.md)

@@ -68,7 +68,7 @@ Retirement removes baseline Target-family authority, not useful semantic guidanc
 
 ## Inherited Generic Core Target Modules
 
-- Core [`TM-PLANNING-RESOLUTION-STATE`](../../../idtspe-core/target-modules/TM-PLANNING-RESOLUTION-STATE.md) — optional bounded coordination of active planning and deliberately retained Decisions, including SDS context.
+- Core [`TM-PLANNING-RESOLUTION-STATE`](../../../idtspe-core/target-modules/TM-PLANNING-RESOLUTION-STATE.md) — optional bounded PRS/RCF coordination of open Proposal/Q/R/P work and Decisions with qualifying Q/R/P, including SDS context.
 
 - Core `TM-REVIEW-FINDINGS` — optional bounded finding discovery/diagnosis when a separate Review Finding Analysis result is useful; full review still requires the canonical linked Proposal handoff.
 - Core `TM-PROPOSAL-WORKUP` — optional bounded candidate-resolution brief; canonical Proposals remain Core State at the affected natural subjects.

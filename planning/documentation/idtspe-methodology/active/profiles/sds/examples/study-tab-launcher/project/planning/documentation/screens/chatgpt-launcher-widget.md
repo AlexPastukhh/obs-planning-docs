@@ -6,7 +6,7 @@ and Scenario owners retain action semantics and journey meaning.
 
 ## RU-SCREEN-01 — Screen map
 
-**Methodology:** [RU-SCREEN-01 Unit Definition](../idtspe-methodology/active/profiles/sds/target-modules/TM-SCREEN.md#ru-screen-01--screen-map).
+**Methodology:** [RU-SCREEN-01 Unit Definition](../../../../../../target-modules/TM-SCREEN.md#ru-screen-01--screen-map).
 
 The userscript adds one floating widget to supported ChatGPT pages. It contains:
 
@@ -36,7 +36,7 @@ The selected future succession Step adds no widget action or Screen route.
 
 ## RU-SCREEN-02 — Current drafts and interaction rules
 
-**Methodology:** [RU-SCREEN-02 Unit Definition](../idtspe-methodology/active/profiles/sds/target-modules/TM-SCREEN.md#ru-screen-02--screen-draft-set).
+**Methodology:** [RU-SCREEN-02 Unit Definition](../../../../../../target-modules/TM-SCREEN.md#ru-screen-02--screen-draft-set).
 
 Expanded is the normal working state. Clicking the header collapses the body;
 clicking it again restores the body. The header and Settings control remain
@@ -63,7 +63,7 @@ the copied text does not have to encode extension logic.
 
 ## RU-SCREEN-03 — Current-owner Evolution Impact
 
-**Methodology:** [RU-SCREEN-03 Unit Definition](../idtspe-methodology/active/profiles/sds/target-modules/TM-SCREEN.md#ru-screen-03--evolution-impact).
+**Methodology:** [RU-SCREEN-03 Unit Definition](../../../../../../target-modules/TM-SCREEN.md#ru-screen-03--evolution-impact).
 
 Disposition: `OMITTED`.
 

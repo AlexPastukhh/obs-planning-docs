@@ -5,7 +5,7 @@ coverage. Live installed browser/VS Code window evidence remains pending.
 
 ## RU-FEAT-01 — Identity / Intent / Principal Result / Semantic Entry
 
-**Methodology:** [RU-FEAT-01 Unit Definition](../idtspe-methodology/active/profiles/sds/target-modules/TM-FEATURE.md#ru-feat-01--identity--intent--principal-result--semantic-entry).
+**Methodology:** [RU-FEAT-01 Unit Definition](../../../../../../target-modules/TM-FEATURE.md#ru-feat-01--identity--intent--principal-result--semantic-entry).
 
 Feature ID: `F-STL-EXTRACT-OPEN-ARCHIVE`.
 
@@ -35,7 +35,7 @@ this Feature.
 
 ## RU-FEAT-02 — Semantic Data
 
-**Methodology:** [RU-FEAT-02 Unit Definition](../idtspe-methodology/active/profiles/sds/target-modules/TM-FEATURE.md#ru-feat-02--semantic-data).
+**Methodology:** [RU-FEAT-02 Unit Definition](../../../../../../target-modules/TM-FEATURE.md#ru-feat-02--semantic-data).
 
 Archive source identity and eligibility belong to
 [D-STL-LOCAL-ZIP-ARCHIVE-TARGET](../domain/local-zip-archive-target.md).
@@ -51,7 +51,7 @@ not caller-provided authority.
 
 ## RU-FEAT-03 — Feature Behavior
 
-**Methodology:** [RU-FEAT-03 Unit Definition](../idtspe-methodology/active/profiles/sds/target-modules/TM-FEATURE.md#ru-feat-03--feature-behavior).
+**Methodology:** [RU-FEAT-03 Unit Definition](../../../../../../target-modules/TM-FEATURE.md#ru-feat-03--feature-behavior).
 
 ### Main Path
 
@@ -93,7 +93,7 @@ not caller-provided authority.
 
 ## RU-FEAT-04 — Implementation Concerns
 
-**Methodology:** [RU-FEAT-04 Unit Definition](../idtspe-methodology/active/profiles/sds/target-modules/TM-FEATURE.md#ru-feat-04--implementation-concerns).
+**Methodology:** [RU-FEAT-04 Unit Definition](../../../../../../target-modules/TM-FEATURE.md#ru-feat-04--implementation-concerns).
 
 Disposition: `OMITTED`.
 
@@ -103,7 +103,7 @@ staging names and tests remain implementation-native.
 
 ## RU-FEAT-05 — Feature / Slice Boundary
 
-**Methodology:** [RU-FEAT-05 Unit Definition](../idtspe-methodology/active/profiles/sds/target-modules/TM-FEATURE.md#ru-feat-05--feature--slice-boundary).
+**Methodology:** [RU-FEAT-05 Unit Definition](../../../../../../target-modules/TM-FEATURE.md#ru-feat-05--feature--slice-boundary).
 
 Selected boundary: archive validation, bounded staged extraction, atomic
 publication/reuse, folder handoff and outcome mapping form one end-to-end
@@ -118,7 +118,7 @@ behavior authority here.
 
 ## RU-FEAT-06 — Evolution Impact
 
-**Methodology:** [RU-FEAT-06 Unit Definition](../idtspe-methodology/active/profiles/sds/target-modules/TM-FEATURE.md#ru-feat-06--evolution-impact).
+**Methodology:** [RU-FEAT-06 Unit Definition](../../../../../../target-modules/TM-FEATURE.md#ru-feat-06--evolution-impact).
 
 Disposition: `OMITTED`.
 

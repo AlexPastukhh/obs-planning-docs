@@ -35,7 +35,7 @@ test('example-reading command and adaptive/full owner invocations preserve read-
 test('dated Launcher copy and frozen review basis match their recorded hashes',()=>{
  const manifest=JSON.parse(read(snapshot+'snapshot-manifest.json'));
  const docs=manifest.files.filter(f=>f.kind==='live'&&f.source.startsWith('planning/documentation/'));
- assert.equal(docs.length,318);assert.equal(new Set(manifest.files.map(f=>f.file)).size,manifest.files.length);
+ assert.equal(docs.length,38);assert.equal(new Set(manifest.files.map(f=>f.file)).size,manifest.files.length);
  for(const f of manifest.files){const bytes=fs.readFileSync(path.join(root,snapshot,f.file));assert.equal(sha(bytes),f.copiedSha256,f.file);if(!f.linkRewrites&&!f.editorialRevisions?.length)assert.equal(f.sourceSha256,f.copiedSha256,f.file);if(f.editorialRevisions?.length)assert.equal(f.editorialRevisions.at(-1).afterSha256,f.copiedSha256,f.file);}
  for(const f of JSON.parse(read(sample+'source-basis/manifest.json')).files)assert.equal(sha(fs.readFileSync(path.join(root,sample,'source-basis',f.file))),f.sha256,f.file);
  // Historical embedded modules must not become duplicate active cards.
@@ -47,12 +47,23 @@ test('new example entry paths and copied application owner links resolve locally
  const files=[...walk(path.join(root,sample)).filter(p=>p.endsWith('.md')),path.join(root,active,'profiles/sds/examples/README.md'),path.join(root,snapshot,'README.md'),...walk(path.join(root,snapshot,'project/planning/documentation')).filter(p=>p.endsWith('.md')&&!p.includes(path.join('documentation','idtspe-methodology')))];
  const errors=files.flatMap(f=>checkLinks(f));assert.deepEqual(errors,[]);
  const owners=[...walk(path.join(root,core,'target-modules')),...walk(path.join(root,active,'profiles/sds/target-modules'))].filter(p=>p.endsWith('.md')&&fs.readFileSync(p,'utf8').includes('examples/study-tab-launcher')||p.endsWith('.md')&&fs.readFileSync(p,'utf8').includes('examples/review-proposal-pre-update'));
- assert.equal(owners.length,13);assert.deepEqual(owners.flatMap(f=>checkLinks(f)),[]);
+ assert.equal(owners.length,14);assert.ok(owners.some(f=>f.endsWith('TM-PLANNING-RESOLUTION-STATE.md')));assert.deepEqual(owners.flatMap(f=>checkLinks(f)),[]);
 });
 
-test('historical copied local links retain declared source exceptions without live workspace dependencies',()=>{
+test('copied application links resolve to canonical repository owners without nested methodology',()=>{
  const manifest=JSON.parse(read(snapshot+'snapshot-manifest.json'));
- const errors=manifest.files.filter(f=>f.file.endsWith('.md')).flatMap(f=>checkLinks(path.join(root,snapshot,f.file),{historical:true}));
+ assert.equal(manifest.methodologyBinding.mode,'same-repository-canonical-owners');
+ assert.ok(!fs.existsSync(path.join(root,snapshot,'project/planning/documentation/idtspe-methodology')));
+ assert.ok(!fs.existsSync(path.join(root,snapshot,'source-context')));
+ for(const f of manifest.files.filter(f=>f.file.endsWith('.md'))){
+  const full=path.join(root,snapshot,f.file);
+  for(const href of hrefs(fs.readFileSync(full,'utf8'))){
+   if(/^(?:[a-z][a-z0-9+.-]*:|#)/i.test(href))continue;
+   const target=path.resolve(path.dirname(full),decodeURI(href.split('#')[0]));
+   if(target.includes(path.join('documentation','idtspe-methodology'))&&!target.startsWith(path.join(root,snapshot)))assert.ok(target.startsWith(path.join(root,'planning/documentation/idtspe-methodology')),href);
+  }
+ }
+ const errors=manifest.files.filter(f=>f.file.endsWith('.md')).flatMap(f=>checkLinks(path.join(root,snapshot,f.file)));
  assert.deepEqual(errors,[]);
 });
 
@@ -74,7 +85,7 @@ test('full documentation example command exposes both copied entry points withou
 test('Concept-first Application Definition inventory agrees across active models, consumers and example',()=>{
  const expected=['05','02','03','04','07'];
  const modulePath=active+'profiles/sds/target-modules/TM-APPLICATION-DEFINITION.md';
- for(const file of [modulePath,snapshot+'project/'+modulePath]){
+ for(const file of [modulePath]){
   const text=read(file),inventory=text.slice(text.indexOf('| Result Unit | Meaning |'),text.indexOf('### Result Unit Applicability'));
   assert.deepEqual([...inventory.matchAll(/^\| `RU-APP-(\d+)`/gm)].map(m=>m[1]),expected,file);
   assert.deepEqual([...text.matchAll(/^#### `RU-APP-(\d+)` processing envelope/gm)].map(m=>m[1]),expected,file);

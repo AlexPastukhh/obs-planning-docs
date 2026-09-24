@@ -5,7 +5,7 @@ Step; execution is blocked on implementation, not on planning.
 
 ## RU-PTEST-01 — Practical Test Target / Property
 
-**Methodology:** [RU-PTEST-01 Unit Definition](../idtspe-methodology/active/profiles/sds/target-modules/TM-PRACTICAL-TEST.md#ru-ptest-01-processing-envelope), [Practical Test Result Contract](../idtspe-methodology/active/profiles/sds/target-modules/TM-PRACTICAL-TEST.md#target-step-result-contract).
+**Methodology:** [RU-PTEST-01 Unit Definition](../../../../../../target-modules/TM-PRACTICAL-TEST.md#ru-ptest-01-processing-envelope), [Practical Test Result Contract](../../../../../../target-modules/TM-PRACTICAL-TEST.md#target-step-result-contract).
 
 Target ID: `PTEST-STL-PROJECT-SUCCESSION-MULTI-WINDOW`.
 
@@ -22,7 +22,7 @@ open and every secondary result remains truthful.
 
 ## RU-PTEST-02 — Practical Test Plan
 
-**Methodology:** [RU-PTEST-02 Unit Definition](../idtspe-methodology/active/profiles/sds/target-modules/TM-PRACTICAL-TEST.md#ru-ptest-02-processing-envelope), [Practical Test Result Contract](../idtspe-methodology/active/profiles/sds/target-modules/TM-PRACTICAL-TEST.md#target-step-result-contract).
+**Methodology:** [RU-PTEST-02 Unit Definition](../../../../../../target-modules/TM-PRACTICAL-TEST.md#ru-ptest-02-processing-envelope), [Practical Test Result Contract](../../../../../../target-modules/TM-PRACTICAL-TEST.md#target-step-result-contract).
 
 Use disposable sibling project roots and record build/environment identity.
 Exercise at least:
@@ -43,7 +43,7 @@ recording tokens/secrets as durable documentation.
 
 ## RU-PTEST-03 — Result / Evidence
 
-**Methodology:** [RU-PTEST-03 Unit Definition](../idtspe-methodology/active/profiles/sds/target-modules/TM-PRACTICAL-TEST.md#ru-ptest-03-processing-envelope), [Practical Test Result Contract](../idtspe-methodology/active/profiles/sds/target-modules/TM-PRACTICAL-TEST.md#target-step-result-contract).
+**Methodology:** [RU-PTEST-03 Unit Definition](../../../../../../target-modules/TM-PRACTICAL-TEST.md#ru-ptest-03-processing-envelope), [Practical Test Result Contract](../../../../../../target-modules/TM-PRACTICAL-TEST.md#target-step-result-contract).
 
 Result: `OPEN — implementation absent`.
 

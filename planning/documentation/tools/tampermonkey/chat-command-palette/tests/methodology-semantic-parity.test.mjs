@@ -444,19 +444,21 @@ test('Application Definition keeps Responsibility Boundary inside each Benefit a
   assert.match(local,/## RU-APP-05 — Application Concept[\s\S]*\*\*Summary:\*\*[\s\S]*\*\*How it roughly works:\*\*/);
 });
 
-test('Proposal Decision Resolution Context Lens is operational evaluator, QRPE is a view, and Carry-Forward is projection-only',()=>{
+test('Proposal Decision Resolution Context Lens is operational evaluator, QRPE is a view, and PRS and Carry-Forward have a single owner',()=>{
   const lens=read('planning/documentation/idtspe-methodology/active/idtspe-core/lenses/required/LENS-PROPOSAL-DECISION-RESOLUTION-CONTEXT.md');
   const life=read('planning/documentation/idtspe-methodology/active/idtspe-core/resolution/proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md');
   const qrp=read('planning/documentation/idtspe-methodology/active/idtspe-core/resolution/qrp/QRP-LIFECYCLE-AND-REVIEW.md');
-  const carry=read('planning/documentation/idtspe-methodology/active/idtspe-core/resolution/continuation/RESOLUTION-CARRY-FORWARD-PROJECTION.md');
   assert.match(lens,/Activation: `REQUIRED_CORE` on a material Proposal \/ Decision surface/);
   assert.match(lens,/QRPE.*not.*new Core State kind/is);
   assert.match(lens,/Lens ≠ Proposal\/Decision lifecycle owner/);
   assert.match(life,/Candidate Review \/ Resolution Context Handoff/);
   assert.doesNotMatch(life,/Driver \/ Need fit[\s\S]*Necessity \/ Better Route/);
   assert.match(qrp,/Proposal \/ Decision QRPE Navigation/);
-  assert.match(carry,/projection \/ aggregate navigation owner/);
-  assert.match(carry,/Carry-Forward ≠ semantic owner/);
+  const prs=read('planning/documentation/idtspe-methodology/active/idtspe-core/target-modules/TM-PLANNING-RESOLUTION-STATE.md');
+  assert.match(prs,/Decision membership requires qualifying related Q\/R\/P \(1..N\)/);
+  assert.match(prs,/Present Active Planning first, then Tracked Decisions/);
+  assert.doesNotMatch(prs,/Residual Q\/R\/P is \*\*not required\*\*/);
+  assert.match(prs,/Planning Resolution State \(PRS\) and Resolution Carry-Forward \(RCF\) name the same bounded coordination result/);
 });
 
 test('generic Decision capture command never grants selection authority and Proposal command uses Resolution Context Lens',()=>{

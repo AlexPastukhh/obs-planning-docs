@@ -6,7 +6,7 @@ multi-window observation remain live evidence.
 
 ## RU-FEAT-01 — Identity / Intent / Principal Result / Semantic Entry
 
-**Methodology:** [RU-FEAT-01 Unit Definition](../idtspe-methodology/active/profiles/sds/target-modules/TM-FEATURE.md#ru-feat-01--identity--intent--principal-result--semantic-entry).
+**Methodology:** [RU-FEAT-01 Unit Definition](../../../../../../target-modules/TM-FEATURE.md#ru-feat-01--identity--intent--principal-result--semantic-entry).
 
 Feature ID: `F-STL-COPY-TRUSTED-PROJECT`.
 
@@ -45,7 +45,7 @@ Trust with the user/VS Code.
 
 ## RU-FEAT-02 — Semantic Data
 
-**Methodology:** [RU-FEAT-02 Unit Definition](../idtspe-methodology/active/profiles/sds/target-modules/TM-FEATURE.md#ru-feat-02--semantic-data).
+**Methodology:** [RU-FEAT-02 Unit Definition](../../../../../../target-modules/TM-FEATURE.md#ru-feat-02--semantic-data).
 
 The Feature references
 [`FDO-STL-PROJECT-OPEN-REQUEST`](open-local-project.md#fdo-stl-project-open-request)
@@ -62,7 +62,7 @@ browser state and does not itself prove that VS Code currently trusts it.
 
 ## RU-FEAT-03 — Feature Behavior
 
-**Methodology:** [RU-FEAT-03 Unit Definition](../idtspe-methodology/active/profiles/sds/target-modules/TM-FEATURE.md#ru-feat-03--feature-behavior).
+**Methodology:** [RU-FEAT-03 Unit Definition](../../../../../../target-modules/TM-FEATURE.md#ru-feat-03--feature-behavior).
 
 ### Main Path
 
@@ -105,7 +105,7 @@ browser state and does not itself prove that VS Code currently trusts it.
 
 ## RU-FEAT-04 — Implementation Concerns
 
-**Methodology:** [RU-FEAT-04 Unit Definition](../idtspe-methodology/active/profiles/sds/target-modules/TM-FEATURE.md#ru-feat-04--implementation-concerns).
+**Methodology:** [RU-FEAT-04 Unit Definition](../../../../../../target-modules/TM-FEATURE.md#ru-feat-04--implementation-concerns).
 
 Disposition: `OMITTED`.
 
@@ -117,7 +117,7 @@ implementation-native.
 
 ## RU-FEAT-05 — Feature / Slice Boundary
 
-**Methodology:** [RU-FEAT-05 Unit Definition](../idtspe-methodology/active/profiles/sds/target-modules/TM-FEATURE.md#ru-feat-05--feature--slice-boundary).
+**Methodology:** [RU-FEAT-05 Unit Definition](../../../../../../target-modules/TM-FEATURE.md#ru-feat-05--feature--slice-boundary).
 
 Selected boundary: one trusted-publication Feature and one end-to-end
 implementation Slice with folder and ZIP source branches. Destination
@@ -132,7 +132,7 @@ leaving behavior and Workspace Trust authority outside it.
 
 ## RU-FEAT-06 — Evolution Impact
 
-**Methodology:** [RU-FEAT-06 Unit Definition](../idtspe-methodology/active/profiles/sds/target-modules/TM-FEATURE.md#ru-feat-06--evolution-impact).
+**Methodology:** [RU-FEAT-06 Unit Definition](../../../../../../target-modules/TM-FEATURE.md#ru-feat-06--evolution-impact).
 
 Disposition: `OMITTED`.
 

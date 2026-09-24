@@ -5,7 +5,7 @@ Status: active realized/current durable Slice owner for
 
 ## RU-SOWN-01 — Slice Responsibility / Boundary Contract
 
-**Methodology:** [RU-SOWN-01 Unit Definition](../idtspe-methodology/active/profiles/sds/target-modules/TM-SLICE-OWNER.md#ru-sown-01--slice-responsibility--boundary-contract).
+**Methodology:** [RU-SOWN-01 Unit Definition](../../../../../../target-modules/TM-SLICE-OWNER.md#ru-sown-01--slice-responsibility--boundary-contract).
 
 Responsibility: realize one complete folder-open operation from a typed
 command/URI request through canonical local-directory resolution, one forced
@@ -33,7 +33,7 @@ folder and truthful gateway-failure reporting.
 
 ## RU-SOWN-02 — Slice Implementation Requirements
 
-**Methodology:** [RU-SOWN-02 Unit Definition](../idtspe-methodology/active/profiles/sds/target-modules/TM-SLICE-OWNER.md#ru-sown-02--slice-implementation-requirements).
+**Methodology:** [RU-SOWN-02 Unit Definition](../../../../../../target-modules/TM-SLICE-OWNER.md#ru-sown-02--slice-implementation-requirements).
 
 | Slice Implementation Requirement | Type | Plain implementation requirement | Realizes | Related expected errors | QRPE / Examples |
 |---|---|---|---|---|---|
@@ -42,7 +42,7 @@ folder and truthful gateway-failure reporting.
 
 ## RU-SOWN-03 — Evolution Impact
 
-**Methodology:** [RU-SOWN-03 Unit Definition](../idtspe-methodology/active/profiles/sds/target-modules/TM-SLICE-OWNER.md#ru-sown-03--evolution-impact).
+**Methodology:** [RU-SOWN-03 Unit Definition](../../../../../../target-modules/TM-SLICE-OWNER.md#ru-sown-03--evolution-impact).
 
 Disposition: `OMITTED`.
 

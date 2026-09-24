@@ -304,9 +304,9 @@ When distributed durable Q/R/P is materially expensive to navigate, an area-leve
 
 Physical choices such as inline section vs area-root register vs no separate materialization are resolved by Documentation / Representation and P-14. Canonical placement owner: [`planning/documentation/idtspe-methodology/active/idtspe-core/representation/ARTIFACT-PLACEMENT-AND-IDTSPE-RESPONSE-CONTRACT.md`](../../representation/ARTIFACT-PLACEMENT-AND-IDTSPE-RESPONSE-CONTRACT.md).
 
-### Resolution Carry-Forward Projection
+### Resolution Carry-Forward / Planning Resolution State
 
-Material open/deferred/residual Q/R/P that must survive continuation/handoff may be referenced by [`Resolution Carry-Forward`](../continuation/RESOLUTION-CARRY-FORWARD-PROJECTION.md). The aggregate owns only compact routing/status entries; detailed Q/R/P bodies and lifecycle remain here and at their natural subjects.
+Material open/deferred/residual Q/R/P that must survive continuation/handoff may be referenced by [`Resolution Carry-Forward`](../../target-modules/TM-PLANNING-RESOLUTION-STATE.md#tm-planning-resolution-state). The single PRS/RCF result keeps the Q/R/P linked with their related Proposals or accepted Decisions, with status and material Evidence; detailed Q/R/P bodies and lifecycle remain here and at their natural subjects. Its Target Module owns membership and presentation.
 
 ## 14. Revalidation
 

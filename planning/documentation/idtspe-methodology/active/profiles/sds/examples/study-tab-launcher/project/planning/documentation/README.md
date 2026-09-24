@@ -2,17 +2,17 @@
 
 Status: current semantic-owner and future-transition navigation.
 
-Methodology bindings in the owner files resolve to the pinned
-[IDTSPE/SDS snapshot `(100)`](idtspe-methodology/SNAPSHOT-PROVENANCE.md)
-copied from the user-supplied archive. The snapshot is reference governance;
-application meaning remains in the owners listed here.
+Methodology bindings in these copied owner files resolve to the current IDTSPE/SDS
+methodology in this same repository. See the [example provenance](../../../README.md#provenance)
+for the original capture and subsequent revisions. Application meaning remains
+in the copied owners listed here; methodology rules remain with their canonical owners.
 
 > Semantic Owner Dependency
 > Type: `CONTEXTUALIZES`
 > Owner: [Application Definition](application-definition.md),
 > [selected Evolution Step](evolution/unrealized/close-superseded-project-windows.md),
-> [SDS Application Definition method](idtspe-methodology/active/profiles/sds/target-modules/TM-APPLICATION-DEFINITION.md),
-> [SDS Evolution Step method](idtspe-methodology/active/profiles/sds/target-modules/TM-EVOLUTION-STEP.md)
+> [SDS Application Definition method](../../../../../target-modules/TM-APPLICATION-DEFINITION.md),
+> [SDS Evolution Step method](../../../../../target-modules/TM-EVOLUTION-STEP.md)
 
 The Application Definition owns application need, selected/possible Benefits,
 contribution and Benefit-local responsibility boundaries/constraints. Current
@@ -26,8 +26,8 @@ they realize or manifest the whole relevant Benefit contribution. When they
 realize only a branch or must preserve one particular limit, they additionally
 link the exact `Responsibility Boundary / Constraints` anchor in the
 [Application Definition](application-definition.md#ru-app-03--application-benefits).
-Benefit-local boundary/constraint meaning is required by the pinned SDS
-[`TM-APPLICATION-DEFINITION`](idtspe-methodology/active/profiles/sds/target-modules/TM-APPLICATION-DEFINITION.md#sds-application-benefit-boundary-constraints).
+Benefit-local boundary/constraint meaning is required by the current repository SDS
+[`TM-APPLICATION-DEFINITION`](../../../../../target-modules/TM-APPLICATION-DEFINITION.md#sds-application-benefit-boundary-constraints).
 The additional exact-anchor linking convention is local representation
 practice for this repository.
 
@@ -92,9 +92,9 @@ implementation requirements.
 
 ## Resolution and practical evidence navigation
 
-- [Resolution Carry-Forward](resolution-carry-forward.md) projects open Q/R/P,
-  Practical Test needs and durable accepted Decision links without becoming a
-  competing owner.
+- [Planning Resolution State / Resolution Carry-Forward](resolution-carry-forward.md)
+  is one coordination result for open Proposal/Q/R/P work, Practical Test needs
+  and accepted Decisions with qualifying related Q/R/P; natural owners keep their meaning.
 - [Installed browser-to-VS Code handoff](practical-tests/installed-browser-vscode-handoff.md)
   owns the current real-system evidence plan/result.
 - [Installed superseded-window cleanup](practical-tests/project-succession-multi-window.md)

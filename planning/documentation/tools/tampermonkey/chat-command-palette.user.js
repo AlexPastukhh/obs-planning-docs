@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Reusable Chat Planning Helper
 // @namespace    https://github.com/AlexPastukhh/obs/reusable-docs
-// @version      0.39.8-repository-command-registry
+// @version      0.39.9-repository-command-registry
 // @description  RAM-first OBS Planning Helper with semantic Commands, canonical Scenarios, prompts and explicit repository actions.
 // @author       Reusable docs layer
 // @match        https://chatgpt.com/*

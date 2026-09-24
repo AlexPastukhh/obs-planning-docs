@@ -589,3 +589,9 @@ Logging starts only after explicit user instruction; no pre-start history is rec
 - Regenerated Application-boundary Lens metadata from the revised five-Unit inventory.
 - Migrated the unselected Helper Application Definition candidate and Q/R/P subject references, preserving selection gates and historical review provenance.
 - Snapshot checks recognize explicit editorial revisions while retaining original capture hashes.
+
+## 2026-09-24 — 0.39.9: same-repository example methodology links
+
+- The full-example command follows current canonical methodology owners in this repository.
+- Copied Launcher documentation retains provenance without embedded methodology/source-context duplicates.
+- Navigation and manifest tests enforce the current package boundary.
