@@ -21,15 +21,11 @@
     "architecture_path.trace",
     "architecture_pressure.review",
     "architecture_decision.plan",
-    "documentation.links.use",
     "documentation.links.review",
-    "documentation.ownership.review",
     "idtspe.lenses.select",
     "idtspe.bootstrap",
     "application_sds.bootstrap",
     "documentation_principles.read",
-    "documentation.examples.read",
-    "documentation.example.full.read",
     "governance.development",
     "current_state.report",
     "command.plan",
@@ -52,9 +48,6 @@
     "uc:UC-DOC-MAINTAIN-EXAMPLE",
     "uc:UC-DOC-MAINTAIN-README",
     "uc:UC-DOC-MAINTAIN-RESPONSIBILITY-MAP",
-    "tm:TM-PLANNING-RESOLUTION-STATE",
-    "tm:TM-REVIEW-FINDINGS",
-    "tm:TM-PROPOSAL-WORKUP",
     "tm:TM-PRE-UPDATE-PLAN",
     "tm:TM-EXACT-REALIZATION",
     "tm:TM-APPLICATION-DEFINITION",
@@ -81,6 +74,7 @@
     "lens:LENS-TEST-PROOF-EVIDENCE",
     "lens:LENS-VERIFIABILITY-OBSERVABILITY-OPERABILITY",
     "lens:LENS-ARTIFACT-BOUNDARY-ADDRESSABILITY",
+    "lens:LENS-LINKED-NOTES-USAGE-JUSTIFICATION",
     "lens:LENS-APPLICATION-BOUNDARY-FEASIBILITY",
     "lens:LENS-DOMAIN-MODELING-DDD",
     "lens:LENS-TERMS-UBIQUITOUS-LANGUAGE",
@@ -169,6 +163,7 @@
     "idtspe.decisions.capture"
   ],
   "prompts": [
+    "helper-library:prompt:file-link-filename-block",
     "helper-library:prompt:item-nl3amm-1bfixd6",
     "helper-library:prompt:commands-onboarding-1kge1i0",
     "helper-library:prompt:deep-semantic-traceability-extension-20260821",
@@ -176,6 +171,8 @@
     "helper-library:prompt:gdoc-zip-1rueqqi",
     "helper-library:prompt:item-1ir0x2w-197y55w",
     "helper-library:prompt:item-1jiipnz-9dozvu",
+    "helper-library:prompt:item-1oe3zh1-rfospb",
+    "helper-library:prompt:item-kljpu8-f7wgiu",
     "helper-library:prompt:item-p9hbng-10cvt92",
     "helper-library:prompt:item-rx5n6l-4f7nod",
     "helper-library:prompt:item-z84fhr-1ynaeie",
@@ -183,7 +180,9 @@
     "helper-library:prompt:planning-4je394",
     "helper-library:prompt:planning-zip-dif-1jskeny",
     "helper-library:prompt:replacement-arch-bootstr-s3labd",
-    "idtspe.decisions.capture"
+    "helper-library:prompt:item-rdl7av-1y97ll2",
+    "helper-library:prompt:item-1iy9b3g-8grcmz",
+    "helper-library:prompt:item-znt1b6-90rtdk"
   ],
   "commandGroups": [
     {
@@ -232,9 +231,7 @@
       "label": "Documentation",
       "order": 50,
       "items": [
-        "documentation.links.use",
-        "documentation.links.review",
-        "documentation.ownership.review"
+        "documentation.links.review"
       ]
     },
     {
@@ -276,8 +273,6 @@
         "idtspe.bootstrap",
         "application_sds.bootstrap",
         "documentation_principles.read",
-        "documentation.examples.read",
-        "documentation.example.full.read",
         "governance.development"
       ]
     },
@@ -447,9 +442,6 @@
       "label": "Core Lifecycle",
       "order": 10,
       "items": [
-        "tm:TM-PLANNING-RESOLUTION-STATE",
-        "tm:TM-REVIEW-FINDINGS",
-        "tm:TM-PROPOSAL-WORKUP",
         "tm:TM-PRE-UPDATE-PLAN",
         "tm:TM-EXACT-REALIZATION"
       ]
@@ -562,7 +554,8 @@
       "label": "Representation / Navigation",
       "order": 30,
       "items": [
-        "lens:LENS-ARTIFACT-BOUNDARY-ADDRESSABILITY"
+        "lens:LENS-ARTIFACT-BOUNDARY-ADDRESSABILITY",
+        "lens:LENS-LINKED-NOTES-USAGE-JUSTIFICATION"
       ]
     },
     {
