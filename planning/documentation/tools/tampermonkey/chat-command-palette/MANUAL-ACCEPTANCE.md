@@ -14,7 +14,10 @@ Canonical application semantics: [`scenarios/README.md`](scenarios/README.md). A
 - On a fresh/empty GitHub-backed catalog snapshot, confirm the user is directed to `Hard Reload GitHub` instead of silently receiving a hard-coded bundled catalog.
 - After Hard Reload, confirm direct Commands, semantic components and canonical working Scenarios are restored from GitHub-backed projections.
 - Confirm representative primary cards include the full semantic identity, for example `План обновления · Core TM · TM-PRE-UPDATE-PLAN` and `Исследовать Domain · SDS TM · TM-DOMAIN-DISCOVERY`.
-- Favorite a semantic TM/Lens card; confirm `★ Favorites` duplicates the same stable semantic row while the original remains in its normal group.
+- Favorite a semantic TM/Lens card; confirm `★ Favorites` is the first group and duplicates the same stable semantic row while the original remains in its normal group. Switch category and group filters: Favorites stays first and retains favorites from other categories; search filters its cards. Remove all favorites: the first group remains with an empty-state hint.
+- Collapse Favorites, switch category, then reopen the helper/reload: confirm its collapse state persists globally. Expand it, select either copy of a card and confirm both copies share selection, Run and favorite state.
+- Collapse/reopen sidebar Categories and Groups, then reload: confirm their states persist independently. Scroll the left panel down and select a category, group or All groups: its position stays where possible, clamped only for shorter content.
+- Select a command: Context, Result and Essence start collapsed; expand each with mouse/keyboard and confirm content is readable. Selecting another command starts its sections collapsed; returning to the first retains its section state in this UI session.
 
 <a id="scn-ph-use"></a>
 ## `SCN-PH-USE`

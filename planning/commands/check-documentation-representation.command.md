@@ -48,7 +48,7 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
     {
       "responsibilityId": "LENS-ARTIFACT-BOUNDARY-ADDRESSABILITY",
       "path": "planning/documentation/idtspe-methodology/active/idtspe-core/lenses/required/LENS-ARTIFACT-BOUNDARY-ADDRESSABILITY.md",
-      "anchor": "lens-artifact-boundary-addressability-documentation-representation-artifact-boundary",
+      "anchor": "lens-artifact-boundary-addressability",
       "why": "Concrete Lens Model semantics selected by this command; shared port/registry/Meta-Model references are inherited from included commands.",
       "role": "PRIMARY_OWNER",
       "readMode": "REQUIRED"

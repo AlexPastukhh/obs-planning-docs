@@ -1,3 +1,4 @@
+<a id="tm-evolution-step"></a>
 # TM-EVOLUTION-STEP — Evolution Step
 
 Module ID: `TM-EVOLUTION-STEP`
@@ -188,6 +189,7 @@ Each material Unit inherits the Core [`Unit Applicability Envelope`](../../../id
 2. **Unit Work — `RU-EVO-06`** — resolve **Planning Completeness** independently from **Realization Start Readiness**.
 3. **Closing Unit Checkpoint — `RU-EVO-06`** — planning completeness is not blocked merely by unrealized predecessors; Start Readiness is not marked READY until every direct predecessor is realized/materialized and other start conditions are satisfied.
 
+<a id="ru-evo-01--step-frame--semantic-relations"></a>
 ## `RU-EVO-01` — Step Frame / Semantic Relations
 
 Own only transition-wide framing/relations:
@@ -233,6 +235,7 @@ In a `REALIZATION_NEAR` Step, a CREATE/REPLACE owner subject needs a complete Ta
 
 Here **next Step for realization** means the particular intended Step whose implementation will start next on the chosen route, not every Step marked `REALIZATION_NEAR` or every direct successor in a branch. This role is relative to the current realization decision; horizon alone cannot establish readiness. Before realizing it, account for every other concrete unrealized Step known to affect the owners in scope: that other Step must identify each materially affected subject in its bounded `RU-EVO-02` Impact **or** complete Target Owner Body / `RU-EVO-04` retirement transition as appropriate, with a truthful consequence/revalidation basis; each affected **current realized** owner's local Evolution Impact projection must expose a reference back to that Step under the shared projection contract. A complete Feature/Domain/Slice/other Body must not be duplicated just to create an Impact item. This applies to candidate, conditional, deferred and later-horizon Steps as well as selected ones. Reconcile missing/mismatched Step-side and owner-side links before the next Step is marked start-ready. An affected future Target Owner Body is still Step-owned; its later consequences must remain traceable through the later Step and must be reprojected into the resulting current owner upon materialization. A vague idea without concrete Step identity does not qualify as an accounted Step.
 
+<a id="ru-evo-02--evolution-impacts"></a>
 ## `RU-EVO-02` — Evolution Impacts
 
 **Responsibility.** Resolve the material bounded downstream/supporting-owner consequences of this Evolution Step for Feature/Scenario/Screen/Domain/Slice/Shared/OPEN-responsibility subjects without turning those subjects into peer Step Units or using this Unit as the Feature target-state owner.
@@ -315,6 +318,7 @@ Unaffected owners are referenced rather than copied.
 
 Selected Current Result Content may have continuing pre-realization value. In that case integrate/project only that useful selected meaning into the applicable `RU-EVO-02` and/or Target Owner Body; do not retain the whole discovery Target as competing authority.
 
+<a id="ru-evo-03--step-wide-implementation-concerns"></a>
 ## `RU-EVO-03` — Step-wide Implementation Concerns
 
 This Unit replaces the former `Realization Prerequisite` concept. It does **not** own a list of technical foundations that must already exist before implementation. It owns only material realization/proof/integration pressure whose natural subject is the **whole transition**.
@@ -368,6 +372,7 @@ one-time transition/proof must-hold whose natural subject is the Step
 
 Do not duplicate owner-local concern prose or duplicate an established `RU-EVO-05` obligation back into the concern as a second authority. References/navigation do not transfer ownership.
 
+<a id="ru-evo-04--target-owner-materialization-set"></a>
 ## `RU-EVO-04` — Target Owner Materialization Set
 
 For each materially affected downstream owner whose represented post-Step authority would change under this Step result, state the semantic transition required after successful realization:
@@ -390,6 +395,7 @@ This set is semantic authority planning. It is distinct from physical file opera
 
 The enclosing Proposal/Step planning boundary owns candidate/selected status. `CREATE / REPLACE / RETIRE` describes the represented post-realization authority transition and does not itself select the Step.
 
+<a id="ru-evo-05--transition--proof-obligations"></a>
 ## `RU-EVO-05` — Transition / Proof Obligations
 
 Own established one-time must-holds of the represented transition. `RU-EVO-03` may discover/analyze pressure that resolves into this Unit, but once an obligation is established its canonical Step-wide must-hold meaning lives here rather than in both Units.
@@ -407,6 +413,7 @@ transition-wide proof/materialization observation needed to establish what was r
 
 Do not move steady-state Feature behavior, Scenario must-holds or durable Domain/Slice/Shared Requirements here merely because they become relevant during the transition. Owner-local proof-realization requirements remain owner-local `PFR-*`; literal tests remain Exact/code.
 
+<a id="ru-evo-06--planning-completeness--realization-start-readiness"></a>
 ## `RU-EVO-06` — Planning Completeness / Realization Start Readiness
 
 Maintain two different conclusions.

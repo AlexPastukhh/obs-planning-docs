@@ -1,5 +1,9 @@
 # Methodology Use-Case Scenario Map
 
+> Semantic Owner Dependencies
+> - `CONTEXTUALIZES` [Decision record retention](../resolution/proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md#resolution-decision-retention) — `RESOLUTION.PROPOSAL-DECISION-LIFECYCLE`.
+> - `CONTEXTUALIZES` [PRS Decision admission / exit](../target-modules/TM-PLANNING-RESOLUTION-STATE.md#ru-prs-02--tracked-decisions) — `RESOLUTION.CARRY-FORWARD`.
+
 Status: active **design / evaluation / orientation** artifact; non-authoritative at runtime
 
 Purpose: provide realistic scenarios of **working with the methodology itself**, decompose them into current Use Cases, and test whether the Use-Case topology is complete, non-duplicative and efficient.
@@ -547,7 +551,7 @@ A root scenario begins from the ordinary functional entry route. A focused scena
 
 **Trigger / Situation:** The Proposal is material enough that selection consequences may affect current/upstream/downstream meaning.
 **AI Action:** Run canonical Proposal Semantic Change Impact Review proportionally; use applicable Lenses only as evaluators.
-**Method / Mechanics:** Check affected Unit/owner, accepted-meaning change, upstream owner, Requirement/Source/Evidence/downstream/revalidation/temporal consequences and whether durable Decision trace would add future value. Do not assign `RE-*` to the Proposal.
+**Method / Mechanics:** Check affected Unit/owner, accepted-meaning change, upstream owner, Requirement/Source/Evidence/downstream/revalidation/temporal consequences and whether a separate Decision record satisfies the Core retention contract and has independent value. Do not assign `RE-*` to the Proposal.
 **Possible Result:** A reviewed candidate with known consequences, or newly surfaced Finding Candidate(s).
 **Derived From / Owners:** `planning/documentation/idtspe-methodology/active/idtspe-core/resolution/proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md`, `planning/documentation/idtspe-methodology/active/idtspe-core/lenses/LENS-REGISTRY.md`.
 
@@ -563,8 +567,8 @@ A root scenario begins from the ordinary functional entry route. A focused scena
 
 **Trigger / Situation:** Candidate meaning is sufficiently reviewed and applicable selection authority is available.
 **AI Action:** Select/revise/reject/defer through the canonical Proposal lifecycle; integrate selected meaning into affected Current Result Content / owner.
-**Method / Mechanics:** Material selection has Decision semantics. Retain a separate explicit/durable Decision trace only when rationale/trade-off/revalidation value should survive. Under SDS, selected but unrealized **downstream owner** meaning remains in the applicable Evolution Step Target Body until realization/materialization. Application Definition is the explicit upstream exception and is refined directly.
-**Possible Result:** Current Result Content / selected future result meaning plus only useful retained resolution trace.
+**Method / Mechanics:** Material selection has Decision semantics. Apply the linked Core retention contract before representing any separate Decision record. Under SDS, selected but unrealized **downstream owner** meaning remains in the applicable Evolution Step Target Body until realization/materialization. Application Definition is the explicit upstream exception and is refined directly.
+**Possible Result:** Current Result Content / selected future result meaning plus only admissible useful retained resolution context.
 **Derived From / Owners:** `planning/documentation/idtspe-methodology/active/idtspe-core/resolution/proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md`, `planning/documentation/idtspe-methodology/active/idtspe-core/runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md`.
 
 [METHODOLOGY_SCENARIO]

@@ -52,7 +52,7 @@ Scope: thin read-only shortcut for current methodology/documentation guidance; s
     {
       "responsibilityId": "DOC.USE-CASE-REGISTRY-MAP",
       "path": "planning/documentation/use-case-registry-map.md",
-      "anchor": "methodology-use-case-registry-map",
+      "anchor": "doc-use-case-registry-map",
       "why": "Provides the current methodology-use routing entry before reading repository documentation principles/guidance.",
       "role": "PRIMARY_OWNER",
       "readMode": "REQUIRED"

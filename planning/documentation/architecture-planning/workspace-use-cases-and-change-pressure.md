@@ -38,7 +38,11 @@ verify
 
 Frequency/repeatability is architecture-analysis evidence, not a reason to redefine UC identity. Record frequency/relevance only when it changes architecture reasoning.
 
-Application Scenarios remain application-behavior owners in Application Planning; Workspace Use Cases describe work with the Workspace itself.
+> Semantic Owner Dependencies
+> - `CONTEXTUALIZES` [Feature behavioral ownership](../idtspe-methodology/active/profiles/sds/target-modules/TM-FEATURE.md#tm-feature) — `TM-FEATURE`.
+> - `CONTEXTUALIZES` [Scenario journey composition](../idtspe-methodology/active/profiles/sds/target-modules/TM-SCENARIO-PLANNING.md#tm-scenario-planning) — `TM-SCENARIO-PLANNING`.
+
+Application Features own capability behavior; Scenarios own actor/external journey composition, its journey-level must-holds and optional E2E Proof Intent. Architecture consumes both as runtime/change evidence. Workspace Use Cases describe work with the Workspace itself.
 
 ## Architecture Objective: Keep Important Work Economical And Correct
 

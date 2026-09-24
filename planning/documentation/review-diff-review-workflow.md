@@ -62,7 +62,7 @@ A confirmed problem is not selection authority. Once a problem is admitted as a 
 
 ### 3A. Finding Resolution Escalation
 
-For each material finding, invoke the canonical [`Finding Disposition Contract`](idtspe-methodology/active/idtspe-core/resolution/findings/FINDING-DISPOSITION.md#6a-resolution-escalation-projection). `RE-0..RE-4` definitions and the Decision-Surface Test are owned **only there**; this ReviewDiff workflow must not maintain a second normative copy.
+For each material finding, invoke the canonical [`Finding Disposition Contract`](idtspe-methodology/active/idtspe-core/resolution/findings/FINDING-DISPOSITION.md#resolution-escalation). `RE-0..RE-4` definitions and the Decision-Surface Test are owned **only there**; this ReviewDiff workflow must not maintain a second normative copy.
 
 ReviewDiff adds only review context:
 

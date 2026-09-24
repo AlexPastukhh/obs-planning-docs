@@ -25,7 +25,7 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
     {
       "responsibilityId": "IDTSPE.PASS-TRACE",
       "path": "planning/documentation/idtspe-methodology/active/idtspe-core/runtime/PASS-TRACE-AND-VISIBILITY-CONTRACT.md",
-      "anchor": "1-boundary",
+      "anchor": "idtspe-pass-trace",
       "why": "Owns the one incremental-first methodology-runtime trace, its working-orientation use, reuse evidence and final visibility projection.",
       "role": "PRIMARY_OWNER",
       "readMode": "REQUIRED"

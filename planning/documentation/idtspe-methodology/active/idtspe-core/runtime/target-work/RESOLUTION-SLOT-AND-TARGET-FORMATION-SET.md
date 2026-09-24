@@ -440,6 +440,7 @@ Several distinct Models may contribute to the same bounded Target when their res
 
 ---
 
+<a id="target-formation-prepared-coverage"></a>
 ## 8. Prepared Coverage Versus Contextual Completion
 
 ### Prepared Module Coverage Exists

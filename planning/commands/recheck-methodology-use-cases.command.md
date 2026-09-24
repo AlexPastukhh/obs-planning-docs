@@ -39,7 +39,7 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
     {
       "responsibilityId": "DOC.USE-CASE-APPLICABILITY-RESOLUTION",
       "path": "planning/documentation/use-cases/UC-DOC-RESOLVE-CURRENT-USE-CASES.md",
-      "anchor": "process",
+      "anchor": "doc-use-case-applicability-process",
       "why": "Owns the registry-level applicability recheck that every Planning Command performs without executing every Use Case.",
       "role": "PRIMARY_OWNER",
       "readMode": "REQUIRED"
@@ -55,7 +55,7 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
     {
       "responsibilityId": "DOC.USE-CASE-REGISTRY-MAP",
       "path": "planning/documentation/use-case-registry-map.md",
-      "anchor": "methodology-use-case-registry-map",
+      "anchor": "doc-use-case-registry-map",
       "why": "Routes the applicability scan to only plausibly relevant scoped registries.",
       "role": "ROUTING",
       "readMode": "REQUIRED"

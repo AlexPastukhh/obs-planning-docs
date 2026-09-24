@@ -1,6 +1,10 @@
 <a id="sds-artifact-placement"></a>
 # SDS Artifact Placement Map — Owner / Representation Guidance
 
+> Semantic Owner Dependencies
+> - `CONTEXTUALIZES` [Decision record retention](../../../idtspe-core/resolution/proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md#resolution-decision-retention) — `RESOLUTION.PROPOSAL-DECISION-LIFECYCLE`.
+> - `CONTEXTUALIZES` [PRS Decision admission / exit](../../../idtspe-core/target-modules/TM-PLANNING-RESOLUTION-STATE.md#ru-prs-02--tracked-decisions) — `RESOLUTION.CARRY-FORWARD`.
+
 Responsibility ID: `SDS.ARTIFACT-PLACEMENT`
 
 Status: active SDS profile placement guidance
@@ -111,7 +115,7 @@ Keep current realized owner-local Requirements (`BR-*`, `SR-*`, `IR-*`, `PFR-*`)
 
 Literal test code stays implementation-native. Executed Evidence may remain tool/run output or a retained reference/summary when continuing review/revalidation/Decision value exists.
 
-A separate cross-owner proof-policy artifact is exceptional. If genuinely useful, establish its semantic owner explicitly (for example a scoped Decision/supporting architecture owner); do not assume a baseline Test Strategy Target.
+A separate cross-owner proof-policy artifact is exceptional. If genuinely useful, establish its semantic owner explicitly (for example a resolved natural supporting-policy Unit (with any retained selection record referenced from PRS)); do not assume a baseline Test Strategy Target.
 
 ## Optional Cross-Slice Coordination View
 

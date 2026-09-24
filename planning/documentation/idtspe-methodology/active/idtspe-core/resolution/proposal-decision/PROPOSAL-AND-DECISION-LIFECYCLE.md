@@ -1,5 +1,8 @@
 # Proposal And Decision Lifecycle Contract
 
+> Semantic Owner Dependencies
+> - `CONTEXTUALIZES` [PRS Decision admission / exit](../../target-modules/TM-PLANNING-RESOLUTION-STATE.md#ru-prs-02--tracked-decisions) — `RESOLUTION.CARRY-FORWARD`.
+
 Status: active generic IDTSPE Core owner
 Purpose: define the canonical candidate-to-selection semantics for material Proposals and Decisions without coupling that lifecycle to any one conversation surface, Target Module, Lens, compatibility vocabulary or persistence representation.
 
@@ -313,7 +316,7 @@ Source / Evidence consequence
 Downstream consumer consequence
 Revalidation consequence
 Temporal-host consequence when current vs unrealized meaning differs
-Whether the selection deserves explicit retained Decision trace
+Whether an explicit retained Decision record is admissible under the Decision retention contract and has independent retention value
 ```
 
 Do not create a second `RE-*` scale for Proposals. `Resolution Escalation RE-0..RE-4` belongs to Finding Disposition only.
@@ -358,7 +361,9 @@ When support is missing, mark the particular conclusion provisional/unknown and 
 <a id="resolution-decision-retention"></a>
 ## Decision retention and integration
 
-Accepted selected meaning flows to its natural owner. A durable Decision trace may remain there for useful rationale, history or an explicit USER retention request. Active coordination membership is narrower: [Planning Resolution State / Resolution Carry-Forward](../../target-modules/TM-PLANNING-RESOLUTION-STATE.md#ru-prs-02--tracked-decisions) includes a Decision only with one or more qualifying related Q/R/P. Removing a completed active entry preserves accepted content and any historical trace.
+Accepted selected meaning is integrated into normal Result Content at its natural Unit/temporal owner. **An explicit retained Decision record is permitted only within a bounded PRS/RCF result**, when an actual authorized selection has independent retention value and satisfies [PRS admission / exit](../../target-modules/TM-PLANNING-RESOLUTION-STATE.md#ru-prs-02--tracked-decisions). Retention value alone is insufficient. This restriction governs the representation of existing Core Decision State; it does not transfer Decision semantics, selection authority or lifecycle to the PRS Target Module.
+
+The natural owner may retain useful rationale, constraints and Evidence as ordinary Unit content; it must not keep a separate active Decision body, ADR or history register as an alternative retention location. Do not invent Q/R/P to retain a choice or require a Decision for every Q/R/P. An immutable historical snapshot remains Evidence, not an alternative current Decision owner. Physical files remain a Representation/P-14 concern; a transient Work Context can represent the same PRS.
 
 Planning Resolution State and Carry-Forward are names for one bounded result. Its Target Module owns membership, linked context, ordering and continuation materialization. Selection and integration remain owned here.
 
@@ -406,7 +411,7 @@ Decision semantics
 = actual material selection under applicable authority
 
 explicit/durable Decision State / retained trace
-= addressable record retained when selection/rationale/revalidation value is independently useful
+= addressable Core Decision record represented under the Decision retention contract
 
 Current Result Content
 = normalized current answer/output of the affected Unit after selected or safely derived meaning is integrated
@@ -418,7 +423,7 @@ A Question may be answered and integrated into Result Content without any Decisi
 
 Accepted material selection becomes authoritative for the planning/semantic state being represented through normal Decision semantics and integration into the affected Unit/Target/natural owner. Selection never implies realization when the active profile has a temporal-host boundary.
 
-A separate explicit/durable Decision record is proportional. Retain it whenever the USER asks or the selection has useful coordination/history value, even without residual Q/R/P; that natural-owner/history record does not qualify for active PRS/RCF membership by itself. Examples of useful retained context:
+Apply the [Decision record retention contract](#resolution-decision-retention) before keeping a separate record. The following are examples of potentially useful selection context, not exemptions from that contract:
 
 ```text
 why a non-obvious choice was made
@@ -473,7 +478,7 @@ A useful Proposal discovered outside the current Target does not require a globa
 
 ### Carry-Forward / Planning Resolution State Integration
 
-Open/deferred Proposals and their Q/R/P, unresolved subjects awaiting candidate work, and accepted Decisions with qualifying related Q/R/P feed the single [PRS/RCF result](../../target-modules/TM-PLANNING-RESOLUTION-STATE.md#tm-planning-resolution-state) when continuation value is material. Carry their material Evidence and resolution relations together. The Target Module owns active membership and representation shape; Proposal/Decision semantic bodies remain owned here and by their natural owners.
+Open/deferred Proposals and their Q/R/P, unresolved subjects awaiting candidate work, and qualifying retained Decisions feed the single [PRS/RCF result](../../target-modules/TM-PLANNING-RESOLUTION-STATE.md#tm-planning-resolution-state). This lifecycle owns Proposal/Decision semantics and selection/integration; the Target Module owns Collection/Slot representation, admission, membership/order and exit. A retained Decision is represented there as existing Core State, with integration references to the natural Units. Proposal/Q/R/P/Evidence retain their own lifecycle/natural owners; PRS does not copy their full semantic bodies.
 
 ## 10. Durable Decision Protection Under Proposal Review
 

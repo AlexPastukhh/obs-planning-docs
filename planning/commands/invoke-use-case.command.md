@@ -42,7 +42,7 @@ Scope: generic manual invocation route for one selected current canonical Use Ca
     {
       "responsibilityId": "DOC.USE-CASE-REGISTRY-MAP",
       "path": "planning/documentation/use-case-registry-map.md",
-      "anchor": "methodology-use-case-registry-map",
+      "anchor": "doc-use-case-registry-map",
       "why": "Routes a requested Use Case to the current scoped registry and canonical Use-Case owner.",
       "role": "PRIMARY_OWNER",
       "readMode": "REQUIRED"

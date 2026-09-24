@@ -1,6 +1,9 @@
 <a id="tm-planning-resolution-state"></a>
 # TM-PLANNING-RESOLUTION-STATE — Planning Resolution State / Resolution Carry-Forward
 
+> Semantic Owner Dependencies
+> - `CONTEXTUALIZES` [Decision record retention](../resolution/proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md#resolution-decision-retention) — `RESOLUTION.PROPOSAL-DECISION-LIFECYCLE`.
+
 Entry Point: `tm.planning.resolution.state`
 Role: generic Core Target Module for bounded planning coordination
 Target family / archetype: `PLANNING_RESOLUTION_STATE`
@@ -18,7 +21,7 @@ The result keeps open/deferred Proposals together with their related Q/R/P, and 
 > Responsibility: `TARGET-MODULE.META-MODEL`
 > Owner: [Target Module Meta-Model](TARGET-MODULE-MODEL.md#target-module-meta-model)
 
-This Target Module owns the **coordination/result shape** of one bounded Planning Resolution State (PRS). Proposal and Decision selection remains with [Proposal and Decision Lifecycle](../resolution/proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md#resolution-proposal-decision-lifecycle); Question/Risk/Problem semantics remain with [Q/R/P Lifecycle](../resolution/qrp/QRP-LIFECYCLE-AND-REVIEW.md#resolution-qrp-lifecycle). Natural Target/Requirement owners retain accepted content. PRS is a Target result, not another Core State kind, semantic owner for every referenced item, mandatory global backlog, or phase workflow.
+This Target Module owns the **coordination/result shape** of one bounded Planning Resolution State (PRS). Its retained Decision items represent existing Core Decision State under the [Decision record retention contract](../resolution/proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md#resolution-decision-retention); this module does not define a second Decision type, field semantics or selection lifecycle. Proposal and Decision selection remains with [Proposal and Decision Lifecycle](../resolution/proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md#resolution-proposal-decision-lifecycle); Question/Risk/Problem semantics remain with [Q/R/P Lifecycle](../resolution/qrp/QRP-LIFECYCLE-AND-REVIEW.md#resolution-qrp-lifecycle). Natural Target/Requirement owners retain accepted content. PRS is a Target result, not another Core State kind, semantic owner for every referenced item, mandatory global backlog, or phase workflow.
 
 Form/reuse a PRS/RCF when open Proposal/Q/R/P work, accepted Decisions with material related Q/R/P, or a cross-owner resolution handoff needs one coherent view. Its absence does not imply the underlying state is absent. The representation may be transient Work Context, a local working file, or a persisted checkpoint; these are representations of the same semantic result, not separate authorities.
 
@@ -71,7 +74,7 @@ Keep the Proposal ↔ Q/R/P graph recursive and addressable; do not flatten it i
 <a id="ru-prs-02--tracked-decisions"></a>
 ### RU-PRS-02 — Tracked Decisions
 
-**Responsibility.** Maintain accepted selections together with their material unresolved/residual Q/R/P after owner integration.
+**Responsibility.** Represent qualifying retained Core Decisions together with their material unresolved/residual Q/R/P after integration of accepted meaning into natural Units.
 
 **Purpose.** Keep unresolved consequences and revalidation work attached to the accepted selection and its integration destination.
 
@@ -84,14 +87,27 @@ Keep the Proposal ↔ Q/R/P graph recursive and addressable; do not flatten it i
 | Slot ID | Slot | Meaning |
 |---|---|---|
 | `PRS-DECISION-SUBJECT` | `SUBJECT / INTEGRATED-INTO` | Natural owner/Target/Unit/Slot and accepted content destination. |
-| `PRS-DECISION-SELECTION` | `ACCEPTED-SELECTION` | Exact selected Proposal, compatible set or bounded selected meaning. |
+| `PRS-DECISION-SELECTION` | `ACCEPTED-SELECTION` | Selected Proposal/set reference or concise bounded selection context under the Core lifecycle; link to integrated Unit content rather than copying a full normative owner body. |
 | `PRS-DECISION-RETENTION` | `RETENTION / COORDINATION VALUE` | Related Q/R/P that qualify this entry and the condition for leaving active carry-forward. |
 | `PRS-DECISION-QRP` | `QRP` | One or more material unresolved/residual Question/Risk/Problem refs, with status and their relation to this Decision. |
 | `PRS-DECISION-EVIDENCE` | `EVIDENCE` | Zero or more supporting/revalidation Evidence refs. |
 
 **Decision membership requires qualifying related Q/R/P (1..N).** Open/deferred Questions or Problems and material accepted/mitigated residual Risks or accepted limitations qualify while continuation value remains. Fully resolved Q/R/P, a generic future reconsider condition, historical interest or an Evidence link alone do not qualify a Decision. Name the actual related Q/R/P and why it remains material; do not manufacture one to retain a choice.
 
-When the last qualifying Q/R/P closes or ceases to be material, remove the Decision from active PRS/RCF. Preserve accepted owner content and any independently retained historical Decision record at its natural location. This membership change does not reverse selection, erase history or close unrelated Q/R/P. A user's request to preserve history is fulfilled at the historical/natural owner rather than by maintaining a second PRS collection without Q/R/P.
+When the last qualifying Q/R/P closes or ceases to be material, remove the separate retained Decision record from the current PRS/RCF result. Preserve accepted Unit content and useful ordinary rationale/Evidence at their natural owners. Do not move the record to an independent Decision/ADR/history owner. This exit does not reverse selection, erase immutable historical Evidence or close unrelated Q/R/P.
+
+### Worked admission / exit cases
+
+These cases demonstrate this module and the linked Core retention contract; they do not add a separate lifecycle.
+
+| Case | Representation |
+|---|---|
+| Authorized selected meaning, no qualifying Q/R/P | Normal Unit content; no separate retained Decision record. |
+| Authorized selection, qualifying Q/R/P and independent retention value | One retained Core Decision item in this PRS, with selected context and integration/QRP references. |
+| Last qualifying Q/R/P closes | Remove the retained Decision item; preserve accepted Unit content. |
+| Unselected candidate with Q/R/P | Proposal/question context; Q/R/P does not establish selection. |
+| One choice spans several owners | Each Unit owns its accepted meaning; one representation of the same retained Decision in its coordination scope. |
+| Historical interest without qualifying Q/R/P | Useful ordinary context or immutable historical Evidence; no manufactured Q/R/P or alternative current Decision register. |
 
 ## Unit processing envelope
 
@@ -107,7 +123,7 @@ Both Units follow the generic Opening / In-Unit / Closing Lens applicability env
 
 1. **Opening Unit Checkpoint — `RU-PRS-02`**: resolve accepted selection, natural owner and qualifying related Q/R/P.
 2. **Unit Work — `RU-PRS-02`**: maintain Decision items with required related Q/R/P and material Evidence.
-3. **Closing Unit Checkpoint — `RU-PRS-02`**: recheck integration refs and Q/R/P membership; remove completed active entries while preserving their natural owner records.
+3. **Closing Unit Checkpoint — `RU-PRS-02`**: recheck integration refs and Q/R/P membership; remove completed retained Decision entries while preserving accepted Unit content and ordinary context.
 
 <a id="prs-rcf-presentation"></a>
 ## Presentation and linked resolution context

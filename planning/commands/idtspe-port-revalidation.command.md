@@ -58,7 +58,7 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
     {
       "responsibilityId": "IDTSPE.UC.REVALIDATE-CURRENT-WORK",
       "path": "planning/documentation/idtspe-methodology/active/idtspe-core/use-cases/revalidate-current-work/UC-IDTSPE-REVALIDATE-CURRENT-WORK.md",
-      "anchor": "process",
+      "anchor": "uc-idtspe-revalidate-current-work-process",
       "why": "Defines evidence/change-driven narrow revalidation and reopening of affected meaning only.",
       "role": "SUPPORTING_CONTRACT",
       "readMode": "REQUIRED"

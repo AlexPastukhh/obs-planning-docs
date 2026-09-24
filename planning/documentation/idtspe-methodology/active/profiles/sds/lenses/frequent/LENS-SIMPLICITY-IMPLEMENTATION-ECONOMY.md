@@ -1,4 +1,9 @@
+<a id="lens-simplicity-implementation-economy"></a>
 # LENS-SIMPLICITY-IMPLEMENTATION-ECONOMY — Simplicity / Implementation Economy / Evolution-Safe Simplification
+
+> Semantic Owner Dependencies
+> - `CONTEXTUALIZES` [Decision record retention](../../../../idtspe-core/resolution/proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md#resolution-decision-retention) — `RESOLUTION.PROPOSAL-DECISION-LIFECYCLE`.
+> - `CONTEXTUALIZES` [PRS Decision admission / exit](../../../../idtspe-core/target-modules/TM-PLANNING-RESOLUTION-STATE.md#ru-prs-02--tracked-decisions) — `RESOLUTION.CARRY-FORWARD`.
 
 Lens ID: `LENS-SIMPLICITY-IMPLEMENTATION-ECONOMY`
 Short name: `Simplicity Lens`
@@ -22,7 +27,7 @@ WEUC Lens / L5
 
 Simplicity Lens
 = whether the current candidate can be made materially simpler now
-  while still respecting accepted evolution constraints from current map/Decision owners
+  while still respecting accepted evolution constraints from current map and natural Unit owners (with applicable PRS selection references)
   and any L5-derived meaning accepted through Core Finding Disposition
 ```
 
@@ -407,7 +412,7 @@ PLACEMENT_DIRECTIVE: PLACE
 SEMANTIC_OWNER: current Target only when Core Finding Disposition resolves the accepted simplification/retained-complexity meaning there; otherwise resolved owner
 REPRESENTATION: EMBED_CURRENT_OWNER
 FILE_OR_ARTIFACT: <current-idtspe-owner>
-CONTENT: accepted simplification/retained-complexity Decision; removed/merged/deferred structure; justification; evolution constraints that must remain; reconsider trigger when relevant
+CONTENT: accepted simplification/retained-complexity Unit content; removed/merged/deferred structure; justification; evolution constraints that must remain; reconsider trigger when relevant
 GUIDANCE_SOURCE: LENS
 RESOLVER: P-14 / PERSISTENCE_ADDRESSABILITY
 ```
@@ -560,7 +565,7 @@ The simpler candidate therefore removes four unpaid layers while preserving the 
 
 ### Result
 
-The Slice Decision records:
+The Slice Unit content records:
 
 ```text
 REMOVE CaptureFacade

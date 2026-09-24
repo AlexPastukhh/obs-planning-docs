@@ -44,3 +44,7 @@
 Application Concept (стабильный `RU-APP-05`) стоит первым; дублирующий `RU-APP-01` снят. Benefits и их границы остаются в `RU-APP-03`. Эта ранее согласованная редакция сохранена. Новое перенаправление меняет методологическую навигацию и provenance; статусы приложения и его результаты остаются прежними.
 
 [Core Review / Workup / Pre-Update examples](../../../../idtspe-core/examples/review-proposal-pre-update/README.md) показывают другие Target results. Для обновления примера используйте UC-DOC-MAINTAIN-EXAMPLE.
+
+## 2026-09-24 — Decision retention representation
+
+The example now keeps accepted boundary meaning as ordinary natural Unit content. The one retained handoff Decision is represented in [PRS](project/planning/documentation/resolution-carry-forward.md#dec-stl-prepared-handoff-01) with its actual open Problem. No separate Decision body remains at a Feature/Domain/Slice/Shared owner. This editorial revision follows the current Core retention/PRS contracts; it does not close proof or implement the future Step. The snapshot manifest preserves original source hashes and records revised copied hashes.

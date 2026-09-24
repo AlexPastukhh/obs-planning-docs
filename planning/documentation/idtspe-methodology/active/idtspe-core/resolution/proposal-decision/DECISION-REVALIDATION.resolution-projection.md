@@ -1,9 +1,13 @@
 # Decision Revalidation Helper
 
+> Semantic Owner Dependencies
+> - `CONTEXTUALIZES` [Decision record retention](PROPOSAL-AND-DECISION-LIFECYCLE.md#resolution-decision-retention) — `RESOLUTION.PROPOSAL-DECISION-LIFECYCLE`.
+> - `CONTEXTUALIZES` [PRS Decision admission / exit](../../target-modules/TM-PLANNING-RESOLUTION-STATE.md#ru-prs-02--tracked-decisions) — `RESOLUTION.CARRY-FORWARD`.
+
 Status: active generic helper model
 Role: preserve the minimum decision-oriented signals needed to notice when an accepted Decision may have become worse, invalid, or worth reopening.
 
-This is an optional helper/projection attached to a deliberately retained accepted Decision. A natural-owner historical Decision may have no residual Q/R/P; active PRS/RCF membership requires qualifying Q/R/P under its Target Module. This helper neither qualifies nor determines membership and never owns PRS or Q/R/P state.
+This optional helper/projection supports revalidation of a retained Core Decision under the linked lifecycle and PRS admission/exit contracts. It evaluates reconsideration context; it neither creates an alternative Decision owner nor qualifies membership or owns Q/R/P state. Accepted meaning remains integrated in natural Units.
 
 It is not a new semantic authority and not a new Decision type.
 

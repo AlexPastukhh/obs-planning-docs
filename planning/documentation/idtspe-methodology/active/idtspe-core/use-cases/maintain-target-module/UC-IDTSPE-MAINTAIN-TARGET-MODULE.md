@@ -1,5 +1,9 @@
 # UC-IDTSPE-MAINTAIN-TARGET-MODULE — Create / Review / Integrate Target Module
 
+> Semantic Owner Dependencies
+> - `CONTEXTUALIZES` [Decision record retention](../../resolution/proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md#resolution-decision-retention) — `RESOLUTION.PROPOSAL-DECISION-LIFECYCLE`.
+> - `CONTEXTUALIZES` [PRS Decision admission / exit](../../target-modules/TM-PLANNING-RESOLUTION-STATE.md#ru-prs-02--tracked-decisions) — `RESOLUTION.CARRY-FORWARD`.
+
 Status: active methodology Use Case proposal
 
 <a id="uc-idtspe-maintain-target-module"></a>
@@ -74,7 +78,7 @@ Module coverage design:
   which questions/guidance/Lenses/validators help resolve each Unit
   how Unit results compose the Target Step Result
 
-Material choices use ordinary Decisions identified by their natural Subject when a durable selection/rationale/revalidation trace is useful. There is no special Target-Scope / Question-Set / Answer Decision taxonomy.
+Material choices use ordinary Core Decision semantics; any separate record follows the linked retention contract and keeps its natural Subject/integration references. There is no special Target-Scope / Question-Set / Answer Decision taxonomy.
 ```
 
 Material alternatives may use Planning Branches.
@@ -103,7 +107,7 @@ Material alternatives may use Planning Branches.
 17. keep useful references/provenance and add consumer-specific interpretation when raw theory is too broad
 18. define Lens Profile: reuse Lens Library first; keep only genuinely local Lens prompts; add applicability gates
 19. define recurring Q/R/P discovery hints only when target-specific
-20. define material selection surfaces; use ordinary Decisions by natural Subject only when durable selection/rationale/revalidation value is useful
+20. define material selection surfaces; use ordinary Core Decision semantics and apply the linked retention contract to any separate record
 21. define semantic output/projection schema and Target Step Result composition when useful
 22. define Internal Object Contracts / supporting module composition
 23. for every proposed Supporting Target Module, prove it can also be a coherent standalone recurring Target family; otherwise keep the meaning inside the natural Unit's Result Content Contract / Internal Object Contract / shared Unit method

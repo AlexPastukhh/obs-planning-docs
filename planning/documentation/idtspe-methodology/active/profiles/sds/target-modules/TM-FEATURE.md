@@ -1,3 +1,4 @@
+<a id="tm-feature"></a>
 # TM-FEATURE — Feature Behavioral Owner
 
 Module ID: `TM-FEATURE`
@@ -18,6 +19,12 @@ A Feature is the primary behavioral authority. Scenario composes Features into a
 Feature formation is implementation-aware but not an exact implementation plan. The same Feature/Slice Boundary Method from `LENS-SLICE-VERTICALITY-INTEGRATION` is used here at lighter evidence depth and later during Slice Discovery with stronger evidence.
 
 ## Temporal Authority / Evolution-Step Hosting
+
+> Semantic Owner Dependencies
+> - `CONTEXTUALIZES` [Step planning completeness / start readiness](TM-EVOLUTION-STEP.md#ru-evo-06--planning-completeness--realization-start-readiness) — `TM-EVOLUTION-STEP / RU-EVO-06`.
+> - `CONTEXTUALIZES` [Target Owner Materialization](TM-EVOLUTION-STEP.md#ru-evo-04--target-owner-materialization-set) — `TM-EVOLUTION-STEP / RU-EVO-04`.
+>
+> This section explains the Feature-local complete-body and current/future consequences of the Step contracts; Step completeness, start readiness and materialization remain Step-owned.
 
 A canonical Feature owner describes realized/current behavior. When the behavior being planned is not yet implemented, apply this module in a supporting role inside `TM-EVOLUTION-STEP` and produce a **Target Feature Body** using the same `Feature Definition` contract.
 
@@ -184,6 +191,7 @@ Each material Unit below inherits the generic [`Unit Applicability Envelope`](..
 2. **Unit Work — `RU-FEAT-06`** — produce the Feature-local reverse navigation/revalidation projection under that shared contract.
 3. **Closing Unit Checkpoint — `RU-FEAT-06`** — validate Feature-local revalidation/handoff needs and the shared projection-contract guards.
 
+<a id="ru-feat-01--identity--intent--principal-result--semantic-entry"></a>
 ### RU-FEAT-01 — Identity / Intent / Principal Result / Semantic Entry
 
 Capture proportionally:
@@ -198,10 +206,12 @@ important preconditions/context
 
 Transport variants do not automatically define separate semantic entries.
 
+<a id="ru-feat-02--semantic-data"></a>
 ### RU-FEAT-02 — Semantic Data
 
 Own addressable Feature Data Objects as `FDO-*` when behavior-facing data/result identity needs stable reference across FBS/Scenario/realization. Do not duplicate Domain state ownership or storage schema.
 
+<a id="ru-feat-03--feature-behavior"></a>
 ### RU-FEAT-03 — Feature Behavior
 
 Feature owns stable Feature-local `FBS-*` identities for addressable semantic behavior actions/transitions when useful.
@@ -233,6 +243,7 @@ Correctness-critical order is normative. If order is partial or OPEN, state that
 
 Branch/order/path are selected solution structure, not Requirements by existence. Keep actor/user/AI free-form reasoning in Scenario when the application merely consumes supplied input.
 
+<a id="ru-feat-04--implementation-concerns"></a>
 ### RU-FEAT-04 — Implementation Concerns
 
 This RU is primarily a **future Target Feature Body / active planning** surface. Capture only material concerns needed to shape the not-yet-realized Feature result, for example:
@@ -270,10 +281,12 @@ Evidence shows Feature/BR/boundary itself is wrong
 
 Removal/material reinterpretation of existing current Feature meaning is proposal-first when it changes accepted semantics; selection of the correction still does not make that correction current truth before realization.
 
+<a id="ru-feat-05--feature--slice-boundary"></a>
 ### RU-FEAT-05 — Feature / Slice Boundary
 
 Record the selected behavioral/locality boundary. The detailed implementation topology is discovered later and may challenge/reframe this boundary through Proposal/revalidation.
 
+<a id="ru-feat-06--evolution-impact"></a>
 ### RU-FEAT-06 — Evolution Impact
 
 This Feature-local Unit specializes the shared [Current-Owner Evolution Impact Projection Contract](../profile-contracts/evolution/CURRENT-OWNER-EVOLUTION-IMPACT-PROJECTION.md). Its local affected surface is **Feature behavior/target meaning**. The shared contract owns inclusion threshold across candidate/selected/conditional/deferred Steps, truthful planning-position projection, depth/no-copy rules and post-realization removal from active future impact. This Target Module owns only the Unit identity, Feature-specific materiality test and local revalidation/handoff use.

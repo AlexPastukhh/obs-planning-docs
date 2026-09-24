@@ -1,4 +1,9 @@
+<a id="tm-slice-owner"></a>
 # TM-SLICE-OWNER — Durable End-to-End Slice Owner
+
+> Semantic Owner Dependencies
+> - `CONTEXTUALIZES` [Decision record retention](../../../idtspe-core/resolution/proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md#resolution-decision-retention) — `RESOLUTION.PROPOSAL-DECISION-LIFECYCLE`.
+> - `CONTEXTUALIZES` [PRS Decision admission / exit](../../../idtspe-core/target-modules/TM-PLANNING-RESOLUTION-STATE.md#ru-prs-02--tracked-decisions) — `RESOLUTION.CARRY-FORWARD`.
 
 Module ID: `TM-SLICE-OWNER`
 
@@ -88,6 +93,7 @@ Each material Unit below inherits the generic [`Unit Applicability Envelope`](..
 2. **Unit Work — `RU-SOWN-03`** — produce the Slice-local reverse navigation/revalidation projection under that shared contract.
 3. **Closing Unit Checkpoint — `RU-SOWN-03`** — validate Slice-local revalidation/handoff needs and the shared projection-contract guards.
 
+<a id="ru-sown-01--slice-responsibility--boundary-contract"></a>
 ### RU-SOWN-01 — Slice Responsibility / Boundary Contract
 
 Own proportionally:
@@ -106,6 +112,7 @@ durable module / branch / adapter boundary meaning when material
 
 Do not own Feature behavior itself and do not freeze volatile class/call topology as durable contract.
 
+<a id="ru-sown-02--slice-implementation-requirements"></a>
 ### RU-SOWN-02 — Slice Implementation Requirements
 
 Own durable must-hold implementation constraints natural to this Slice:
@@ -139,8 +146,9 @@ When owner-local `PFR-*` is material, use the shared exact `Proof Requirement | 
 
 ### Commodity realization without Shared owner
 
-When the [commodity Shared no-owner gate](TM-SHARED-IMPLEMENTATION-CAPABILITY.md#sds-commodity-shared-no-owner) applies, retain each `IR-SLICE-*` at its Slice. Adjacent to that requirement write `Selected implementation realization: library/module/symbol X` and, optionally, `Coordination Decision: D-X` referencing one retained selection across consumers. Multiple Slices may reference the same realization or Decision. Do not put a library or Decision in the `Realizes` column, which traces upstream realized behavior, and do not call it a `Capability binding` unless a real Shared Capability owner exists. The Decision's retention horizon is user controlled; it does not own the requirement.
+When the [commodity Shared no-owner gate](TM-SHARED-IMPLEMENTATION-CAPABILITY.md#sds-commodity-shared-no-owner) applies, retain each `IR-SLICE-*` at its Slice. Adjacent to that requirement write `Selected implementation realization: library/module/symbol X` and, optionally, `Coordination Decision: D-X` linking to one admissible retained PRS selection across consumers. Multiple Slices may reference the same realization or Decision. Do not put a library or Decision in the `Realizes` column, which traces upstream realized behavior, and do not call it a `Capability binding` unless a real Shared Capability owner exists. Apply the linked Core retention/PRS contracts; the coordination record does not own the requirement.
 
+<a id="ru-sown-03--evolution-impact"></a>
 ### RU-SOWN-03 — Evolution Impact
 
 This Slice owner-local Unit specializes the shared [Current-Owner Evolution Impact Projection Contract](../profile-contracts/evolution/CURRENT-OWNER-EVOLUTION-IMPACT-PROJECTION.md). Its local affected surface is **Slice responsibility/boundary**. The shared contract owns inclusion threshold across candidate/selected/conditional/deferred Steps, truthful planning-position projection, depth/no-copy rules and post-realization removal from active future impact. This Target Module owns only the Unit identity, Slice owner-specific materiality test and local revalidation/handoff use.

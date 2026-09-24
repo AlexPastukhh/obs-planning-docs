@@ -61,7 +61,7 @@ Scope: generic IDTSPE work-mode and installed-component dispatcher.
     {
       "responsibilityId": "IDTSPE.DEFAULT-WORK-MODE",
       "path": "planning/documentation/idtspe-methodology/active/idtspe-core/runtime/IDTSPE-DEFAULT-WORK-MODE.md",
-      "anchor": "core-rule",
+      "anchor": "idtspe-default-work-mode",
       "why": "Defines the normal proportional meaning of working through IDTSPE; broad discussion can remain sufficient.",
       "role": "PRIMARY_OWNER",
       "readMode": "REQUIRED"
@@ -69,7 +69,7 @@ Scope: generic IDTSPE work-mode and installed-component dispatcher.
     {
       "responsibilityId": "IDTSPE.CONTEXTUAL-APPLICATION",
       "path": "planning/documentation/idtspe-methodology/active/idtspe-core/runtime/applicability/CONTEXTUAL-METHODOLOGY-APPLICATION-CONTRACT.md",
-      "anchor": "1-core-invariant",
+      "anchor": "idtspe-contextual-application",
       "why": "Defines contextual methodology activation/deactivation and guards against forcing optional structure.",
       "role": "SUPPORTING_CONTRACT",
       "readMode": "REQUIRED"
@@ -77,7 +77,7 @@ Scope: generic IDTSPE work-mode and installed-component dispatcher.
     {
       "responsibilityId": "IDTSPE.UC.COMPOSE-CURRENT-WORK",
       "path": "planning/documentation/idtspe-methodology/active/idtspe-core/use-cases/compose-current-work/UC-IDTSPE-COMPOSE-CURRENT-WORK.md",
-      "anchor": "process",
+      "anchor": "uc-idtspe-compose-current-work-process",
       "why": "Composes the currently useful IDTSPE work after the mandatory Use-Case applicability recheck.",
       "role": "SUPPORTING_CONTRACT",
       "readMode": "REQUIRED"

@@ -25,7 +25,7 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
     {
       "responsibilityId": "IDTSPE.UC.REVALIDATE-CURRENT-WORK",
       "path": "planning/documentation/idtspe-methodology/active/idtspe-core/use-cases/revalidate-current-work/UC-IDTSPE-REVALIDATE-CURRENT-WORK.md",
-      "anchor": "process",
+      "anchor": "uc-idtspe-revalidate-current-work-process",
       "why": "Owns the revalidation process and typical revalidation chain.",
       "role": "PRIMARY_OWNER",
       "readMode": "REQUIRED"
@@ -33,7 +33,7 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
     {
       "responsibilityId": "TWU.SUBJECT-REFERENCE",
       "path": "planning/documentation/idtspe-methodology/active/idtspe-core/runtime/target-work/TARGET-WORK-SUBJECT-REFERENCE-CONTRACT.md",
-      "anchor": "canonical-target-work-subject-reference",
+      "anchor": "target-work-subject-reference",
       "why": "Allows revalidation to reopen the narrowest exact Target Work subject rather than broadening scope mechanically.",
       "role": "SUPPORTING_CONTRACT",
       "readMode": "ON_DEMAND"

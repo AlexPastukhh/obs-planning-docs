@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {createRequire} from 'node:module';
 const require=createRequire(import.meta.url);
-const {repositorySaveFailureMessage,favoriteEntries}=require('../src/planning-helper-ui.js');
+const {repositorySaveFailureMessage,favoriteEntries,commandDisplayGroups}=require('../src/planning-helper-ui.js');
 
 test('conflict with verified different remote reports confirmed divergence',()=>{
   const message=repositorySaveFailureMessage({kind:'conflict',message:'GitHub content changed since it was read and now differs from the intended file; nothing was overwritten.',details:{remoteSha:'fresh'}});
@@ -29,9 +29,19 @@ test('command grouping UI exposes target group navigator and management without 
 test('command cards avoid repeating group names outside All commands while detail keeps Tab to Group path',async()=>{const fs=await import('node:fs');const source=fs.readFileSync(new URL('../src/planning-helper-ui.js',import.meta.url),'utf8');assert.match(source,/activeMethodologyView===ALL_METHODOLOGY_VIEW/);assert.match(source,/command-card-context/);assert.match(source,/nav\?\.viewLabel,nav\?\.sectionLabel/);assert.doesNotMatch(source,/Group:\s*\$\{group\.label\}/);});
 
 
-test('Favorites is a command filter rather than a duplicated synthetic group',async()=>{const fs=await import('node:fs');const source=fs.readFileSync(new URL('../src/planning-helper-ui.js',import.meta.url),'utf8');assert.match(source,/favoritesOnly/);assert.match(source,/Favorites/);assert.doesNotMatch(source,/favorite-group/);});
+test('Favorites is first across group filters and duplicates stable command identities without changing membership',()=>{
+  const a={id:'a'},b={id:'b'},hidden={id:'hidden',palette:false};
+  const groups=[{id:'g',entries:[a]}];
+  const projected=commandDisplayGroups(groups,[a,b,hidden],['a','b','hidden','stale']);
+  assert.equal(projected[0].label,'Favorites');
+  assert.deepEqual(projected[0].entries,[a,b]);
+  assert.equal(projected[0].entries[0],groups[0].entries[0]);
+  assert.equal(projected[1],groups[0]);
+  assert.deepEqual(groups,[{id:'g',entries:[a]}]);
+  assert.deepEqual(commandDisplayGroups([],[],[])[0].entries,[]);
+});
 
-test('selecting a command updates only selection/detail and does not rerender the command list',async()=>{const fs=await import('node:fs');const source=fs.readFileSync(new URL('../src/planning-helper-ui.js',import.meta.url),'utf8');const match=source.match(/function selectCommand\(entry\)\{([^}]|}(?!\s*function commandCard))*}/);assert.ok(match);assert.match(match[0],/renderCommandDetail/);assert.doesNotMatch(match[0],/renderEntries/);assert.match(source,/commandCardNodes\.set\(entry\.id,row\)/)});
+test('selecting a command updates only selection/detail and does not rerender the command list',async()=>{const fs=await import('node:fs');const source=fs.readFileSync(new URL('../src/planning-helper-ui.js',import.meta.url),'utf8');const match=source.match(/function selectCommand\(entry\)\{([^}]|}(?!\s*function commandCard))*}/);assert.ok(match);assert.match(match[0],/renderCommandDetail/);assert.doesNotMatch(match[0],/renderEntries/);assert.match(source,/commandCardNodes\.set\(row,entry\.id\)/)});
 
 test('compact command cards expose the same ordinary Run path as the detail pane',async()=>{const fs=await import('node:fs');const source=fs.readFileSync(new URL('../src/planning-helper-ui.js',import.meta.url),'utf8');const start=source.indexOf('function commandCard('),end=source.indexOf('function renderCommandDetail(',start),cardSource=source.slice(start,end);assert.match(cardSource,/button\('Run','run-action'/);assert.match(cardSource,/insertBody\(entry\.adaptiveBody\|\|entry\.text/);assert.match(cardSource,/commandExecutionId\(entry\)/)});
 

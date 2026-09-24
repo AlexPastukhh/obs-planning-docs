@@ -1,5 +1,9 @@
 # IDTSPE Target Work Unit Definition, Resolution, And Target Step Result Model
 
+> Semantic Owner Dependencies
+> - `CONTEXTUALIZES` [Decision record retention](../../resolution/proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md#resolution-decision-retention) — `RESOLUTION.PROPOSAL-DECISION-LIFECYCLE`.
+> - `CONTEXTUALIZES` [PRS Decision admission / exit](../../target-modules/TM-PLANNING-RESOLUTION-STATE.md#ru-prs-02--tracked-decisions) — `RESOLUTION.CARRY-FORWARD`.
+
 Status: active generic methodology owner
 Purpose: define how one Target Work Unit is **defined and executed**, including its Responsibility, Purpose, Result Content Contract, direct resolution for simple work, exactly one terminal Unit Resolution Set for composite work, Current Result Content, relation to generic Core State Units, and contribution to the Target Step Result.
 
@@ -116,7 +120,7 @@ trusted Source / Evidence
 
 is valid; Proposal/Decision ceremony is not mandatory when no material choice exists.
 
-A material Proposal that is actually selected still has **Decision semantics** under the canonical Proposal/Decision lifecycle. A separate explicit/durable Decision State Unit or retained Decision trace is required only when the selection/rationale/trade-off/revalidation meaning has independent future value.
+A materially selected Proposal has **Decision semantics** under the Core lifecycle. A separate explicit Decision State record follows the linked retention contract; it is not another natural-owner Unit merely because its rationale is useful. Normal Current Result Content retains integrated accepted meaning.
 
 `IDTSPE Step Output` remains an explanatory umbrella for the material semantic output of one work/integration pass. It may contain the `Target Step Result` (the Target Module Instance contribution when present, plus applicable Core-defined Unit contributions and any formed Contextual Units) plus material Core State Units/Core Resolution State and handoff/revalidation consequences. It is not a new semantic owner and does not imply one persisted record.
 
@@ -819,8 +823,7 @@ material Proposal selected under applicable authority
 = Decision semantics occurred
 
 explicit/durable Decision Unit/trace
-= retain when later work/review/revalidation benefits from
-  knowing the selection/rationale/trade-off/reconsider condition
+= a record retained under the linked Core Decision retention contract
 
 Current Result Content
 = normalized current Unit answer after selected or safely derived meaning is integrated
@@ -1575,7 +1578,7 @@ Unit Resolution may exist while Current Result Content is absent
 Candidate Result Content ≠ Current Result Content
 Proposal ≠ Decision ≠ Result Content
 material Proposal selection has Decision semantics
-explicit/durable Decision trace is proportional, not mandatory for every derived result
+explicit/durable Decision record follows the Core retention contract; derived Result Content needs no manufactured Decision
 Question answered by trusted Source/Evidence may update Result Content without Decision
 Core State Unit / Core Resolution State keeps its lifecycle/addressability while attaching to the smallest correct Requirement/Slot/Unit/Target/other subject
 Finding Candidate ≠ Unit automatically

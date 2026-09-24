@@ -66,7 +66,7 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
     {
       "responsibilityId": "LENS.DISCOVERY",
       "path": "planning/documentation/idtspe-methodology/active/idtspe-core/lenses/LENS-REGISTRY.md",
-      "anchor": "registry-scan-guide",
+      "anchor": "lens-discovery-registry",
       "why": "Provides compact registry metadata and profile routing for the applicability scan.",
       "role": "REGISTRY",
       "readMode": "REQUIRED"

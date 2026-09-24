@@ -15,7 +15,8 @@ Scope: local draft/Favorite/order/layout work without implicit repository mutati
 - the detail-pane Group selector changes only presentation membership in `catalogOrder.commandGroups`; it never changes semantic identity;
 - presentation groups form one ordered list per Commands classification and can be created, renamed, reordered and deleted locally; deleting a group moves its cards to `Other / Ungrouped`; there is no Primary/Advanced/Semantic tier;
 - each Commands classification remembers its selected-group filter locally; first selection from All isolates one group and further selections build a multi-group filter;
-- each group remembers collapsed/expanded state locally; these personal UI states are not part of `catalog-order.json`;
+- each ordinary group remembers collapsed/expanded state per classification locally; the top Favorites group has one shared collapsed/expanded state across classifications, and sidebar Categories/Groups remember their own state; these personal UI states are not part of `catalog-order.json`;
+- choosing a category/group, searching or toggling a Favorite preserves the sidebar scroll position across list refreshes, clamped only if the refreshed sidebar is shorter; collapsing a list group updates it in place;
 - Prompt ordering uses the same local `catalogOrder.prompts` state for both fine-grained `↑` / `↓` moves and direct 1-based `№` target-position moves; entering an empty position performs no move, and entered values are constrained to the current `1..N` range;
 - Prompt reorder preserves the currently selected Prompt and the list viewport. Arrow moves restore the prior `scrollTop` instead of jumping to the beginning; after a large numeric move the selected card is brought into view only with nearest scrolling rather than resetting the list to the top;
 - `Save order GitHub` is required for durable repository order/group layout; local reorder itself performs no implicit repository write;

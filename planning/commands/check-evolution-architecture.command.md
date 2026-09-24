@@ -48,7 +48,7 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
     {
       "responsibilityId": "LENS-WORKSPACE-EVOLUTION-ARCHITECTURE",
       "path": "planning/documentation/idtspe-methodology/active/profiles/sds/lenses/frequent/LENS-WORKSPACE-EVOLUTION-ARCHITECTURE.md",
-      "anchor": "lens-workspace-evolution-architecture-evolution-impact-change-isolation",
+      "anchor": "lens-workspace-evolution-architecture",
       "why": "Concrete Lens Model semantics selected by this command; shared port/registry/Meta-Model references are inherited from included commands.",
       "role": "PRIMARY_OWNER",
       "readMode": "REQUIRED"

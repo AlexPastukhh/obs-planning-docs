@@ -1,3 +1,4 @@
+<a id="doc-use-case-registry-map"></a>
 # Methodology Use-Case Registry Map
 
 Status: active functional-entry map

@@ -45,24 +45,21 @@ handoff and truthful disposition/failure.
 | <a id="ir-slice-stl-archive-02"></a>`IR-SLICE-STL-ARCHIVE-02 — Use bounded no-overwrite publication` | Safety, Consistency | Existing safe directories are reused unchanged; absent destinations are delegated to the selected staged publication capability, and every conflict/failure remains non-overwriting. | [`FBS-STL-ARCHIVE-03`](../features/extract-open-archive.md#fbs-stl-archive-03), [`FBS-STL-ARCHIVE-04`](../features/extract-open-archive.md#fbs-stl-archive-04), [`FBS-STL-ARCHIVE-05`](../features/extract-open-archive.md#fbs-stl-archive-05), [`BR-STL-ARCHIVE-03`](../features/extract-open-archive.md#br-stl-archive-03), [`BR-STL-ARCHIVE-04`](../features/extract-open-archive.md#br-stl-archive-04), [`BR-STL-ARCHIVE-05`](../features/extract-open-archive.md#br-stl-archive-05), [`BR-STL-ARCHIVE-06`](../features/extract-open-archive.md#br-stl-archive-06) | [`ERR-BEH-STL-ARCHIVE-DESTINATION-CONFLICT-03`](../features/extract-open-archive.md#err-beh-stl-archive-destination-conflict-03), [`ERR-BEH-STL-ARCHIVE-CONTENT-UNSAFE-04`](../features/extract-open-archive.md#err-beh-stl-archive-content-unsafe-04), [`ERR-BEH-STL-ARCHIVE-LIMIT-EXCEEDED-05`](../features/extract-open-archive.md#err-beh-stl-archive-limit-exceeded-05), [`ERR-BEH-STL-ARCHIVE-EXTRACTION-FAILED-06`](../features/extract-open-archive.md#err-beh-stl-archive-extraction-failed-06) | Selected capability: [`SH-STL-SAFE-PROJECT-PUBLICATION`](../shared/safe-project-publication.md). |
 | <a id="ir-slice-stl-archive-03"></a>`IR-SLICE-STL-ARCHIVE-03 — Open only a final directory and retain disposition` | Effect Scope, Truthfulness | Call the project-window gateway only after safe reuse/publication yields a final directory; preserve `extracted` versus `reusedExisting` and retained folder identity in the terminal result. | [`FBS-STL-ARCHIVE-06`](../features/extract-open-archive.md#fbs-stl-archive-06), [`FBS-STL-ARCHIVE-07`](../features/extract-open-archive.md#fbs-stl-archive-07), [`BR-STL-ARCHIVE-07`](../features/extract-open-archive.md#br-stl-archive-07), [`BR-STL-ARCHIVE-08`](../features/extract-open-archive.md#br-stl-archive-08) | [`ERR-BEH-STL-ARCHIVE-WINDOW-OPEN-FAILED-07`](../features/extract-open-archive.md#err-beh-stl-archive-window-open-failed-07) | Window failure does not delete the final folder. |
 
+<!-- Compatibility anchor: earlier references now resolve to ordinary Unit content, not a retained Decision body. -->
 <a id="dec-stl-archive-publication-01"></a>
-### DEC-STL-ARCHIVE-PUBLICATION-01 — Derive and atomically publish one sibling destination
+### Publication boundary rationale
 
-- **Status:** `ACCEPTED`.
-- **Decision:** the extension derives the sibling destination from the ZIP,
-  reuses an eligible existing directory unchanged, or stages bounded safe
-  extraction and publishes by final rename; it never merges or overwrites.
-- **Addresses:** caller-controlled read/write combinations, partial visible
-  destinations and destructive refresh of an already materialized project.
-- **Rationale:** derivation keeps destination authority local while
-  staging/rename supplies a complete publication boundary and safe retry.
-- **Integrated Into:** [`IR-SLICE-STL-ARCHIVE-01`](#ir-slice-stl-archive-01),
-  [`IR-SLICE-STL-ARCHIVE-02`](#ir-slice-stl-archive-02) and
-  [SH-STL-SAFE-PROJECT-PUBLICATION](../shared/safe-project-publication.md).
-- **Reconsider when:** an explicit separately authorized destination or
-  versioned refresh/merge outcome is introduced as new behavior.
-- **Review provenance:** accepted conclusions from the former archive-opening
-  design-selection record, revalidated by the SDS audit on 2026-09-23.
+The extension derives the sibling destination from the ZIP, reuses an eligible existing directory unchanged, or stages bounded safe extraction and publishes by final rename; it never merges or overwrites.
+
+Derivation keeps destination authority local while staging/rename supplies a complete publication boundary and safe retry.
+
+This boundary addresses caller-controlled read/write combinations, partial visible destinations and destructive refresh of an already materialized project.
+
+Related requirements and realization: [`IR-SLICE-STL-ARCHIVE-01`](#ir-slice-stl-archive-01), [`IR-SLICE-STL-ARCHIVE-02`](#ir-slice-stl-archive-02) and [SH-STL-SAFE-PROJECT-PUBLICATION](../shared/safe-project-publication.md).
+
+Revisit this boundary when an explicit separately authorized destination or versioned refresh/merge outcome is introduced as new behavior.
+
+Source context: accepted conclusions from the former archive-opening design-selection record, revalidated by the SDS audit on 2026-09-23.
 
 ## RU-SOWN-03 — Evolution Impact
 

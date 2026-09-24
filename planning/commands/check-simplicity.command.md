@@ -48,7 +48,7 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
     {
       "responsibilityId": "LENS-SIMPLICITY-IMPLEMENTATION-ECONOMY",
       "path": "planning/documentation/idtspe-methodology/active/profiles/sds/lenses/frequent/LENS-SIMPLICITY-IMPLEMENTATION-ECONOMY.md",
-      "anchor": "lens-simplicity-implementation-economy-simplicity-implementation-economy-evolution-safe-simplification",
+      "anchor": "lens-simplicity-implementation-economy",
       "why": "Concrete Lens Model semantics selected by this command; shared port/registry/Meta-Model references are inherited from included commands.",
       "role": "PRIMARY_OWNER",
       "readMode": "REQUIRED"

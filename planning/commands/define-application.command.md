@@ -48,7 +48,7 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
     {
       "responsibilityId": "TM-APPLICATION-DEFINITION",
       "path": "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-APPLICATION-DEFINITION.md",
-      "anchor": "tm-application-definition-application-definition",
+      "anchor": "tm-application-definition",
       "why": "Concrete Target Module Model semantics selected by this command; shared port/registry/Meta-Model references are inherited from included commands.",
       "role": "PRIMARY_OWNER",
       "readMode": "REQUIRED"

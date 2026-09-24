@@ -51,7 +51,7 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
     {
       "responsibilityId": "UC-REPO-BUILD-REPLACEMENT-PACKAGE",
       "path": "planning/use-cases/UC-REPO-BUILD-REPLACEMENT-PACKAGE.md",
-      "anchor": "uc-repo-build-replacement-package-build-replacement-package",
+      "anchor": "uc-repo-build-replacement-package",
       "why": "Owns the repository replacement-package workflow this command executes.",
       "role": "PRIMARY_OWNER",
       "readMode": "REQUIRED"

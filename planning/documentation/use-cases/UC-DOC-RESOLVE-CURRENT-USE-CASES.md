@@ -26,6 +26,7 @@ The fundamental [`UC-IDTSPE-AI-WORKING-BOUNDARY`](../idtspe-methodology/active/i
 
 The fundamental AI working authority boundary is current and the current applicable Use-Case composition is known: still-applicable current Use Cases are retained, newly applicable Use Cases are added, no-longer-applicable assumptions are released, and only owner detail needed for the next material action is loaded.
 
+<a id="doc-use-case-applicability-process"></a>
 ## Process
 
 1. Start from the current USER request, current material work state, active methodology/profile scope and any still-trustworthy applicability result.

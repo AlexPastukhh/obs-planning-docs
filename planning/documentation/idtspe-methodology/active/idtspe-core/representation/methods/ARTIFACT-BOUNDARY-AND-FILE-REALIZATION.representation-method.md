@@ -1,5 +1,9 @@
 # Artifact Boundary Discovery And File Realization Pack
 
+> Semantic Owner Dependencies
+> - `CONTEXTUALIZES` [Decision record retention](../../resolution/proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md#resolution-decision-retention) — `RESOLUTION.PROPOSAL-DECISION-LIFECYCLE`.
+> - `CONTEXTUALIZES` [PRS Decision admission / exit](../../target-modules/TM-PLANNING-RESOLUTION-STATE.md#ru-prs-02--tracked-decisions) — `RESOLUTION.CARRY-FORWARD`.
+
 <a id="representation-artifact-boundary-method"></a>
 
 Responsibility ID: `REPRESENTATION.ARTIFACT-BOUNDARY-METHOD`
@@ -861,19 +865,19 @@ copy every Decision into one manually maintained decisions.md
 Artifact Discovery sees:
 
 ```text
-canonical Decision traces are distributed
+accepted normative content is distributed across natural Units
 overview/query is independently useful
 ```
 
 Selected behavior:
 
 ```text
-distributed canonical Decision traces
+qualifying Core Decision records represented in the bounded PRS
 +
 direct links to their existing IDs/anchors
 ```
 
-No `notes/` file or copied Decision portfolio is created. If tooling needs a technical index/cache, that implementation remains non-semantic infrastructure; canonical Decision/QRP bodies stay in their existing owners.
+No `notes/` file or copied Decision portfolio is created. If tooling needs a technical index/cache, that implementation remains non-semantic infrastructure; accepted Unit content and Q/R/P bodies stay at their natural owners; any separate retained Decision record is represented in PRS under the linked Core contract.
 
 ---
 

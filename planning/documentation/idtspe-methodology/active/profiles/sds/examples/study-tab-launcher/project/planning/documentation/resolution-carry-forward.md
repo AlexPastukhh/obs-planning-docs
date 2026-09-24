@@ -1,12 +1,12 @@
 # Study Tab Launcher — Planning Resolution State / Resolution Carry-Forward
 
-Status: current application-scope coordination result. PRS and RCF name this same result. Proposal/Decision/Q/R/P meaning and evidence stay at the linked natural owners.
+Status: current application-scope coordination result. PRS and RCF name this same result. Core owns Proposal/Decision/Q/R/P lifecycle semantics. Accepted meaning stays in the natural Units; this result represents any qualifying retained Decision record and links its Q/R/P/Evidence owners.
 
 **Methodology:** [PRS/RCF result contract](../../../../../../../idtspe-core/target-modules/TM-PLANNING-RESOLUTION-STATE.md#tm-planning-resolution-state), [linked context and order](../../../../../../../idtspe-core/target-modules/TM-PLANNING-RESOLUTION-STATE.md#prs-rcf-presentation), [SDS traversal](../../../../../profile-contracts/SDS-SEMANTIC-COMPOSITION-AND-READINESS.md#sds-semantic-traversal-order).
 
 ## Membership contract
 
-Carry open/deferred Proposals with their Q/R/P and material Evidence, unresolved subjects awaiting a Proposal, and accepted Decisions only with qualifying related Q/R/P. Reconcile statuses with natural owners. Closing the last qualifying Q/R/P removes the active Decision entry while its accepted content and historical trace remain at the owner. [Evolution Steps Map](evolution-steps.md) owns planning position.
+Carry open/deferred Proposals with their Q/R/P and material Evidence, unresolved subjects awaiting a Proposal, and accepted Decisions only with qualifying related Q/R/P. Reconcile statuses with natural owners. Closing the last qualifying Q/R/P removes the separate retained Decision entry while accepted Unit content and ordinary useful context remain at their natural owners. [Evolution Steps Map](evolution-steps.md) owns planning position.
 
 ## RU-PRS-01 — Active Planning
 
@@ -40,8 +40,13 @@ Collection ID: `PRS-TRACKED-DECISIONS`. Only the following accepted selection ha
 
 ### Shared — prepared-project handoff
 
-| Item key / accepted selection | Subject / integrated into | Qualifying QRP and relation | Retention / evidence |
-|---|---|---|---|
-| `PRS-DECISION-STL-HANDOFF` — [DEC-STL-PREPARED-HANDOFF-01](shared/prepared-project-handoff.md#dec-stl-prepared-handoff-01) / `ACCEPTED` | [IR-SHARED-STL-HANDOFF-03](shared/prepared-project-handoff.md#ir-shared-stl-handoff-03), [IR-SHARED-STL-HANDOFF-04](shared/prepared-project-handoff.md#ir-shared-stl-handoff-04) | [P-STL-HANDOFF-01](shared/prepared-project-handoff.md#p-stl-handoff-01) / `OPEN`: the selected owner-acknowledged, at-most-once handoff remains accepted; its concurrent acknowledgement/redemption proof is nondeterministic. | Carry while this Problem qualifies. Evidence and closure are owned by the Problem. After closure remove this active entry and preserve the Decision at its Shared owner. |
+<a id="dec-stl-prepared-handoff-01"></a>
+#### DEC-STL-PREPARED-HANDOFF-01 — Owner-acknowledged prepared handoff
 
-Other accepted boundary decisions remain at their Feature/Domain/Slice/Step owners. Their previous presence in this file does not justify active membership without related qualifying Q/R/P. No Q/R/P is invented to keep those entries.
+- **Item key / status:** `PRS-DECISION-STL-HANDOFF` / `ACCEPTED`.
+- **Selected context:** token-only browser focus transfer; the coordinator owner acknowledges focus before at-most-once redemption. The authoritative guarantees are [IR-SHARED-STL-HANDOFF-03](shared/prepared-project-handoff.md#ir-shared-stl-handoff-03) and [IR-SHARED-STL-HANDOFF-04](shared/prepared-project-handoff.md#ir-shared-stl-handoff-04).
+- **Rationale / integration:** retain the choice while its acknowledgement/redemption proof is unresolved; the [Shared Unit rationale](shared/prepared-project-handoff.md#dec-stl-prepared-handoff-01) explains the authority boundary and references its current consumers.
+- **Qualifying Q/R/P:** [P-STL-HANDOFF-01](shared/prepared-project-handoff.md#p-stl-handoff-01) / `OPEN`: nondeterministic concurrency proof against this accepted guarantee. The Problem owns Evidence, status and closure.
+- **Exit:** when that Problem is no longer qualifying, remove this separate retained record. Preserve the integrated Shared/consumer meaning and ordinary rationale; do not relocate the Decision body to another owner.
+
+Other accepted boundaries are ordinary content of their Feature/Domain/Slice/Step Units. No qualifying Q/R/P is established for another separate Decision record in this scope; none is invented to retain one.

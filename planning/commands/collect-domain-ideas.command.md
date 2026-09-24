@@ -42,7 +42,7 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
     {
       "responsibilityId": "TM-DOMAIN-DISCOVERY",
       "path": "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-DOMAIN-DISCOVERY.md",
-      "anchor": "tm-domain-discovery-transient-domain-discovery",
+      "anchor": "tm-domain-discovery",
       "why": "Defines transient Domain discovery semantics used when collecting domain ideas.",
       "role": "PRIMARY_OWNER",
       "readMode": "REQUIRED"

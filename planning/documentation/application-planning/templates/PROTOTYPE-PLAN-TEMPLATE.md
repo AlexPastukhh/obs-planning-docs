@@ -158,8 +158,13 @@ Prototype evidence updates only owners that actually depend on the tested uncert
 throwaway / evolutionary / non-code / not applicable
 ```
 
-## Current Decisions
-<Selected prototype-plan choices when material; use the shared generic Decision trace fields only as useful.>
+## Selected Meaning / Handoff
+
+> Semantic Owner Dependencies
+> - `REPRESENTS` [Decision retention / integration](../../idtspe-methodology/active/idtspe-core/resolution/proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md#resolution-decision-retention) — `RESOLUTION.PROPOSAL-DECISION-LIFECYCLE`.
+> - `REPRESENTS` [PRS Decision admission / exit](../../idtspe-methodology/active/idtspe-core/target-modules/TM-PLANNING-RESOLUTION-STATE.md#ru-prs-02--tracked-decisions) — `RESOLUTION.CARRY-FORWARD`.
+
+<Integrate selected prototype-plan choices and useful rationale into their natural Unit content. Link a separate retained Decision record only when it qualifies under the Core retention / PRS contracts; this template does not create a Decision register.>
 
 ## Q/R/P Register / Index — When Material
 <Inline/link the prototype-area register if material concerns need durable addressability.>

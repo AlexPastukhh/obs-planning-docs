@@ -105,7 +105,7 @@
         {
           "responsibilityId": "LENS.DISCOVERY",
           "path": "planning/documentation/idtspe-methodology/active/idtspe-core/lenses/LENS-REGISTRY.md",
-          "anchor": "registry-scan-guide",
+          "anchor": "lens-discovery-registry",
           "why": "Resolves the selected registered Lens and active profile pack without scanning unrelated Lens bodies.",
           "role": "REGISTRY",
           "readMode": "REQUIRED"
@@ -178,7 +178,7 @@
         {
           "responsibilityId": "TARGET-MODULE.DISCOVERY",
           "path": "planning/documentation/idtspe-methodology/active/idtspe-core/target-modules/TARGET-MODULE-REGISTRY.md",
-          "anchor": "registry-responsibility",
+          "anchor": "target-module-discovery-registry",
           "why": "Resolves the selected concrete TM-* Model/family/alias without scanning every model body.",
           "role": "REGISTRY",
           "readMode": "REQUIRED"
@@ -186,7 +186,7 @@
         {
           "responsibilityId": "TARGET-FORMATION.REUSABLE-MODEL-CHECK",
           "path": "planning/documentation/idtspe-methodology/active/idtspe-core/runtime/target-work/RESOLUTION-SLOT-AND-TARGET-FORMATION-SET.md",
-          "anchor": "7-required-reusable-target-model-check",
+          "anchor": "target-formation-reusable-model-check",
           "why": "Requires checking whether a reusable Model is the appropriate governing path versus a Local Target Contract.",
           "role": "SUPPORTING_CONTRACT",
           "readMode": "REQUIRED"
@@ -547,7 +547,7 @@
         {
           "responsibilityId": "UC-REPO-BUILD-REPLACEMENT-PACKAGE",
           "path": "planning/use-cases/UC-REPO-BUILD-REPLACEMENT-PACKAGE.md",
-          "anchor": "uc-repo-build-replacement-package-build-replacement-package",
+          "anchor": "uc-repo-build-replacement-package",
           "why": "Owns the repository replacement-package workflow this command executes.",
           "role": "PRIMARY_OWNER",
           "readMode": "REQUIRED"
@@ -601,7 +601,7 @@
         {
           "responsibilityId": "LENS-ARTIFACT-BOUNDARY-ADDRESSABILITY",
           "path": "planning/documentation/idtspe-methodology/active/idtspe-core/lenses/required/LENS-ARTIFACT-BOUNDARY-ADDRESSABILITY.md",
-          "anchor": "lens-artifact-boundary-addressability-documentation-representation-artifact-boundary",
+          "anchor": "lens-artifact-boundary-addressability",
           "why": "Concrete Lens Model semantics selected by this command; shared port/registry/Meta-Model references are inherited from included commands.",
           "role": "PRIMARY_OWNER",
           "readMode": "REQUIRED"
@@ -654,7 +654,7 @@
         {
           "responsibilityId": "LENS-WORKSPACE-EVOLUTION-ARCHITECTURE",
           "path": "planning/documentation/idtspe-methodology/active/profiles/sds/lenses/frequent/LENS-WORKSPACE-EVOLUTION-ARCHITECTURE.md",
-          "anchor": "lens-workspace-evolution-architecture-evolution-impact-change-isolation",
+          "anchor": "lens-workspace-evolution-architecture",
           "why": "Concrete Lens Model semantics selected by this command; shared port/registry/Meta-Model references are inherited from included commands.",
           "role": "PRIMARY_OWNER",
           "readMode": "REQUIRED"
@@ -707,7 +707,7 @@
         {
           "responsibilityId": "LENS-SIMPLICITY-IMPLEMENTATION-ECONOMY",
           "path": "planning/documentation/idtspe-methodology/active/profiles/sds/lenses/frequent/LENS-SIMPLICITY-IMPLEMENTATION-ECONOMY.md",
-          "anchor": "lens-simplicity-implementation-economy-simplicity-implementation-economy-evolution-safe-simplification",
+          "anchor": "lens-simplicity-implementation-economy",
           "why": "Concrete Lens Model semantics selected by this command; shared port/registry/Meta-Model references are inherited from included commands.",
           "role": "PRIMARY_OWNER",
           "readMode": "REQUIRED"
@@ -810,7 +810,7 @@
         {
           "responsibilityId": "TM-DOMAIN-DISCOVERY",
           "path": "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-DOMAIN-DISCOVERY.md",
-          "anchor": "tm-domain-discovery-transient-domain-discovery",
+          "anchor": "tm-domain-discovery",
           "why": "Defines transient Domain discovery semantics used when collecting domain ideas.",
           "role": "PRIMARY_OWNER",
           "readMode": "REQUIRED"
@@ -1019,7 +1019,7 @@
         {
           "responsibilityId": "TM-SCENARIO-PLANNING",
           "path": "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-SCENARIO-PLANNING.md",
-          "anchor": "tm-scenario-planning-scenario-journey-composition",
+          "anchor": "tm-scenario-planning",
           "why": "Defines the Scenario planning model whose concerns are collected by this command.",
           "role": "PRIMARY_OWNER",
           "readMode": "REQUIRED"
@@ -1066,7 +1066,7 @@
         {
           "responsibilityId": "TM-IMPLEMENTATION-SLICE",
           "path": "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-IMPLEMENTATION-SLICE.md",
-          "anchor": "tm-implementation-slice-slice-discovery-non-persistent-slice-planning",
+          "anchor": "tm-implementation-slice",
           "why": "Defines the implementation-slice model whose candidate concerns are collected by this command.",
           "role": "PRIMARY_OWNER",
           "readMode": "REQUIRED"
@@ -1233,7 +1233,7 @@
         {
           "responsibilityId": "IDTSPE.PASS-TRACE",
           "path": "planning/documentation/idtspe-methodology/active/idtspe-core/runtime/PASS-TRACE-AND-VISIBILITY-CONTRACT.md",
-          "anchor": "3-trace-contract",
+          "anchor": "idtspe-pass-trace-contract",
           "why": "Refines the already-required P-02 Trace Contract with an explicit visibility/persistence preference; it does not create another trace.",
           "role": "PRIMARY_OWNER",
           "readMode": "REQUIRED"
@@ -1290,7 +1290,7 @@
         {
           "responsibilityId": "IDTSPE.PASS-TRACE",
           "path": "planning/documentation/idtspe-methodology/active/idtspe-core/runtime/PASS-TRACE-AND-VISIBILITY-CONTRACT.md",
-          "anchor": "3-trace-contract",
+          "anchor": "idtspe-pass-trace-contract",
           "why": "Refines the already-required P-02 Trace Contract with an explicit visibility/persistence preference; it does not create another trace.",
           "role": "PRIMARY_OWNER",
           "readMode": "REQUIRED"
@@ -1463,7 +1463,7 @@
         {
           "responsibilityId": "TM-APPLICATION-DEFINITION",
           "path": "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-APPLICATION-DEFINITION.md",
-          "anchor": "tm-application-definition-application-definition",
+          "anchor": "tm-application-definition",
           "why": "Concrete Target Module Model semantics selected by this command; shared port/registry/Meta-Model references are inherited from included commands.",
           "role": "PRIMARY_OWNER",
           "readMode": "REQUIRED"
@@ -1516,7 +1516,7 @@
         {
           "responsibilityId": "TARGET-FORMATION.REQUIREMENT-COVERAGE",
           "path": "planning/documentation/idtspe-methodology/active/idtspe-core/runtime/target-work/RESOLUTION-SLOT-AND-TARGET-FORMATION-SET.md",
-          "anchor": "8-prepared-coverage-versus-contextual-completion",
+          "anchor": "target-formation-prepared-coverage",
           "why": "Determines that the material requirement is not already covered directly or by a prepared Module/Core Unit.",
           "role": "PRIMARY_OWNER",
           "readMode": "REQUIRED"
@@ -1556,7 +1556,7 @@
         {
           "responsibilityId": "TWU.SUBJECT-REFERENCE",
           "path": "planning/documentation/idtspe-methodology/active/idtspe-core/runtime/target-work/TARGET-WORK-SUBJECT-REFERENCE-CONTRACT.md",
-          "anchor": "canonical-target-work-subject-reference",
+          "anchor": "target-work-subject-reference",
           "why": "Provides exact addressability when later work must refer to this Unit/Collection/item/Slot without changing semantic ownership.",
           "role": "SUPPORTING_CONTRACT",
           "readMode": "ON_DEMAND"
@@ -1611,7 +1611,7 @@
         {
           "responsibilityId": "TM-IMPLEMENTATION-SLICE",
           "path": "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-IMPLEMENTATION-SLICE.md",
-          "anchor": "tm-implementation-slice-slice-discovery-non-persistent-slice-planning",
+          "anchor": "tm-implementation-slice",
           "why": "Concrete Target Module Model semantics selected by this command; shared port/registry/Meta-Model references are inherited from included commands.",
           "role": "PRIMARY_OWNER",
           "readMode": "REQUIRED"
@@ -1720,7 +1720,7 @@
         {
           "responsibilityId": "TM-SCENARIO-PLANNING",
           "path": "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-SCENARIO-PLANNING.md",
-          "anchor": "tm-scenario-planning-scenario-journey-composition",
+          "anchor": "tm-scenario-planning",
           "why": "Concrete Target Module Model semantics selected by this command; shared port/registry/Meta-Model references are inherited from included commands.",
           "role": "PRIMARY_OWNER",
           "readMode": "REQUIRED"
@@ -1778,7 +1778,7 @@
         {
           "responsibilityId": "TM-DOMAIN-DISCOVERY",
           "path": "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-DOMAIN-DISCOVERY.md",
-          "anchor": "tm-domain-discovery-transient-domain-discovery",
+          "anchor": "tm-domain-discovery",
           "why": "Concrete Target Module Model semantics selected by this command; shared port/registry/Meta-Model references are inherited from included commands.",
           "role": "PRIMARY_OWNER",
           "readMode": "REQUIRED"
@@ -2104,7 +2104,7 @@
         {
           "responsibilityId": "TM-APPLICATION-DEFINITION",
           "path": "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-APPLICATION-DEFINITION.md",
-          "anchor": "tm-application-definition-application-definition",
+          "anchor": "tm-application-definition",
           "why": "Concrete Target Module Model semantics selected by this command; shared port/registry/Meta-Model references are inherited from included commands.",
           "role": "PRIMARY_OWNER",
           "readMode": "REQUIRED"
@@ -2160,7 +2160,7 @@
         {
           "responsibilityId": "RESOLUTION.PLANNING-BRANCH",
           "path": "planning/documentation/idtspe-methodology/active/idtspe-core/resolution/branches/PLANNING-BRANCH-COUNTERFACTUAL-EXPLORATION.md",
-          "anchor": "5-branch-exploration-contract",
+          "anchor": "resolution-branch-exploration-contract",
           "why": "Owns bounded counterfactual exploration, branch-local consequences and comparison/rejoin semantics.",
           "role": "PRIMARY_OWNER",
           "readMode": "REQUIRED"
@@ -2271,7 +2271,7 @@
         "idtspe decisions"
       ],
       "description": "Extract and review actual selected material Decisions from current context without inventing selection authority.",
-      "meaning": "Classify current USER/context meaning through the canonical USER Input Decision And Answer Intake Rule. Only actual material selections become Decision semantics; AI-only candidates/suggestions remain Proposal/Source/Answer/unresolved state as appropriate. Review each material Decision through the Proposal/Decision Resolution Context Lens, disposition related QRPE, retain a separate Decision trace only when it has independent future value, integrate selected meaning into its natural/temporal owner, and refresh Resolution Carry-Forward for surviving material residual/reconsider state.",
+      "meaning": "Classify current USER/context meaning through the canonical USER Input Decision And Answer Intake Rule. Only actual material selections become Decision semantics; AI-only candidates/suggestions remain Proposal/Source/Answer/unresolved state as appropriate. Review each material Decision through the Proposal/Decision Resolution Context Lens, disposition related QRPE, apply the canonical Decision retention contract and PRS admission before keeping a separate record, integrate selected meaning into its natural/temporal owner, and refresh Resolution Carry-Forward for surviving material residual/reconsider state.",
       "activeContextBehavior": "Reuse current context and existing Decisions first. Extract exact selected meaning only where actual USER/applicable authority selection exists; never select unresolved alternatives on the USER's behalf. Run LENS-PROPOSAL-DECISION-RESOLUTION-CONTEXT for material captured/reviewed Decisions, classify residual QRPE through canonical lifecycle owners, integrate selected meaning into the correct owner, and project surviving continuation/revalidation items into Resolution Carry-Forward when useful.",
       "traversalReadMode": "Read USER-input intake + Proposal/Decision lifecycle + Resolution Context Lens first; use Q/R/P, Decision Revalidation Helper, Carry-Forward and natural owner/Target detail only where the captured Decision requires them.",
       "ownerFiles": [
@@ -2296,8 +2296,8 @@
         {
           "responsibilityId": "RESOLUTION.PROPOSAL-DECISION-LIFECYCLE",
           "path": "planning/documentation/idtspe-methodology/active/idtspe-core/resolution/proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md",
-          "anchor": "resolution-proposal-decision-lifecycle",
-          "why": "Owns actual Decision formation, integration and proportional retained trace.",
+          "anchor": "resolution-decision-retention",
+          "why": "Owns Decision semantics and the retention boundary; this command only projects the current rule.",
           "role": "PRIMARY_OWNER",
           "readMode": "REQUIRED"
         },
@@ -2312,10 +2312,10 @@
         {
           "responsibilityId": "RESOLUTION.CARRY-FORWARD",
           "path": "planning/documentation/idtspe-methodology/active/idtspe-core/target-modules/TM-PLANNING-RESOLUTION-STATE.md",
-          "anchor": "tm-planning-resolution-state",
-          "why": "Carries only surviving residual/revalidation work after selected meaning is integrated.",
+          "anchor": "ru-prs-02--tracked-decisions",
+          "why": "Owns qualifying Decision admission, representation and exit; no command-local eligibility rule.",
           "role": "VALIDATION_HANDOFF",
-          "readMode": "ON_DEMAND"
+          "readMode": "REQUIRED"
         }
       ],
       "includes": [
@@ -2325,13 +2325,13 @@
         "planning/commands/idtspe-port-decision.command.md"
       ],
       "compositionContributions": [],
-      "expectedOutput": "Actual selected material Decisions are identified without promoting AI-only candidates, their exact selected meaning/integration owner and material QRPE disposition are clear, proportional retained Decision traces are preserved only when useful, and surviving residual/revalidation state is discoverable through Carry-Forward.",
+      "expectedOutput": "Actual selected material Decisions are identified without promoting AI-only candidates, their exact selected meaning/integration owner and material QRPE disposition are clear, separate Decision records are represented only as admitted PRS items under the Core retention contract, and surviving residual/revalidation state is discoverable through Carry-Forward.",
       "permissionMode": "read-only-planning-unless-separately-authorized",
       "keyReminders": [
         "Actual material selection is required; this command does not grant AI selection authority.",
         "USER facts/preferences/corrections/candidates are not Decisions unless the intake/lifecycle rules establish actual selection.",
         "QRPE is a review view over canonical Q/R/P/Evidence owners, not a new State kind.",
-        "A separate durable Decision trace is proportional; selected meaning still integrates into its natural owner.",
+        "A separate Decision record follows Core retention and PRS admission/exit. Selected meaning integrates into normal natural Unit content; this command defines no alternate Decision owner.",
         "This command does not itself grant repository/file/application mutation, commit or push permission."
       ],
       "userTarget": "<current context / selected Decisions to capture or review>",
@@ -2442,7 +2442,7 @@
         {
           "responsibilityId": "RESOLUTION.PLANNING-BRANCH",
           "path": "planning/documentation/idtspe-methodology/active/idtspe-core/resolution/branches/PLANNING-BRANCH-COUNTERFACTUAL-EXPLORATION.md",
-          "anchor": "1-core-concept",
+          "anchor": "resolution-planning-branch",
           "why": "Defines counterfactual downstream exploration and rejoin/comparison semantics.",
           "role": "SUPPORTING_CONTRACT",
           "readMode": "REQUIRED"
@@ -3063,7 +3063,7 @@
         {
           "responsibilityId": "IDTSPE.UC.REVALIDATE-CURRENT-WORK",
           "path": "planning/documentation/idtspe-methodology/active/idtspe-core/use-cases/revalidate-current-work/UC-IDTSPE-REVALIDATE-CURRENT-WORK.md",
-          "anchor": "process",
+          "anchor": "uc-idtspe-revalidate-current-work-process",
           "why": "Defines evidence/change-driven narrow revalidation and reopening of affected meaning only.",
           "role": "SUPPORTING_CONTRACT",
           "readMode": "REQUIRED"
@@ -3201,7 +3201,7 @@
         {
           "responsibilityId": "TARGET-FORMATION.REQUIREMENT-COVERAGE",
           "path": "planning/documentation/idtspe-methodology/active/idtspe-core/runtime/target-work/RESOLUTION-SLOT-AND-TARGET-FORMATION-SET.md",
-          "anchor": "3-target-resolution-requirement",
+          "anchor": "target-formation-requirement-coverage",
           "why": "Defines bounded Target requirements/coverage and the prepared/Core/contextual coverage route.",
           "role": "SUPPORTING_CONTRACT",
           "readMode": "REQUIRED"
@@ -3460,7 +3460,7 @@
         {
           "responsibilityId": "IDTSPE.PASS-TRACE",
           "path": "planning/documentation/idtspe-methodology/active/idtspe-core/runtime/PASS-TRACE-AND-VISIBILITY-CONTRACT.md",
-          "anchor": "1-boundary",
+          "anchor": "idtspe-pass-trace",
           "why": "Owns the one incremental-first methodology-runtime trace, its working-orientation use, reuse evidence and final visibility projection.",
           "role": "PRIMARY_OWNER",
           "readMode": "REQUIRED"
@@ -3528,7 +3528,7 @@
         {
           "responsibilityId": "LENS-WORKSPACE-EVOLUTION-ARCHITECTURE",
           "path": "planning/documentation/idtspe-methodology/active/profiles/sds/lenses/frequent/LENS-WORKSPACE-EVOLUTION-ARCHITECTURE.md",
-          "anchor": "lens-workspace-evolution-architecture-evolution-impact-change-isolation",
+          "anchor": "lens-workspace-evolution-architecture",
           "why": "Defines the workspace-evolution architecture Lens applied by this interpretation command.",
           "role": "PRIMARY_OWNER",
           "readMode": "REQUIRED"
@@ -3575,7 +3575,7 @@
         {
           "responsibilityId": "DOC.USE-CASE-REGISTRY-MAP",
           "path": "planning/documentation/use-case-registry-map.md",
-          "anchor": "methodology-use-case-registry-map",
+          "anchor": "doc-use-case-registry-map",
           "why": "Routes a requested Use Case to the current scoped registry and canonical Use-Case owner.",
           "role": "PRIMARY_OWNER",
           "readMode": "REQUIRED"
@@ -3621,7 +3621,7 @@
         {
           "responsibilityId": "TM-APPLICATION-DEFINITION",
           "path": "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-APPLICATION-DEFINITION.md",
-          "anchor": "tm-application-definition-application-definition",
+          "anchor": "tm-application-definition",
           "why": "Concrete Target Module Model semantics selected by this command; shared port/registry/Meta-Model references are inherited from included commands.",
           "role": "PRIMARY_OWNER",
           "readMode": "REQUIRED"
@@ -3679,7 +3679,7 @@
         {
           "responsibilityId": "TM-SCENARIO-PLANNING",
           "path": "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-SCENARIO-PLANNING.md",
-          "anchor": "tm-scenario-planning-scenario-journey-composition",
+          "anchor": "tm-scenario-planning",
           "why": "Concrete Target Module Model semantics selected by this command; shared port/registry/Meta-Model references are inherited from included commands.",
           "role": "PRIMARY_OWNER",
           "readMode": "REQUIRED"
@@ -3733,7 +3733,7 @@
         {
           "responsibilityId": "TM-IMPLEMENTATION-SLICE",
           "path": "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-IMPLEMENTATION-SLICE.md",
-          "anchor": "tm-implementation-slice-slice-discovery-non-persistent-slice-planning",
+          "anchor": "tm-implementation-slice",
           "why": "Concrete Target Module Model semantics selected by this command; shared port/registry/Meta-Model references are inherited from included commands.",
           "role": "PRIMARY_OWNER",
           "readMode": "REQUIRED"
@@ -3793,13 +3793,29 @@
           "why": "Owns the architecture-decision planning process used by this command.",
           "role": "PRIMARY_OWNER",
           "readMode": "REQUIRED"
+        },
+        {
+          "responsibilityId": "RESOLUTION.PROPOSAL-DECISION-LIFECYCLE",
+          "path": "planning/documentation/idtspe-methodology/active/idtspe-core/resolution/proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md",
+          "anchor": "resolution-decision-retention",
+          "why": "Owns Decision semantics and the retention boundary; this command only projects the current rule.",
+          "role": "SUPPORTING_CONTRACT",
+          "readMode": "ON_DEMAND"
+        },
+        {
+          "responsibilityId": "RESOLUTION.CARRY-FORWARD",
+          "path": "planning/documentation/idtspe-methodology/active/idtspe-core/target-modules/TM-PLANNING-RESOLUTION-STATE.md",
+          "anchor": "ru-prs-02--tracked-decisions",
+          "why": "Owns qualifying Decision admission, representation and exit; no command-local eligibility rule.",
+          "role": "SUPPORTING_CONTRACT",
+          "readMode": "ON_DEMAND"
         }
       ],
       "includes": [
         "planning/commands/recheck-methodology-use-cases.command.md"
       ],
       "compositionContributions": [],
-      "expectedOutput": "Selected Architecture Decision + affected-path conclusion + rejected complexity/revisit trigger when useful.",
+      "expectedOutput": "Selected architecture meaning for natural Unit integration + affected-path conclusion + rejected complexity/revisit trigger when useful; a separate retained record follows Core retention/PRS contracts.",
       "permissionMode": "read-only",
       "keyReminders": [
         "Resolve the matching current canonical Use Case and follow its complete current owner route; the command is invocation/orchestration only.",
@@ -3895,7 +3911,7 @@
         {
           "responsibilityId": "TM-SHARED-IMPLEMENTATION-CAPABILITY",
           "path": "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-SHARED-IMPLEMENTATION-CAPABILITY.md",
-          "anchor": "tm-shared-implementation-capability-durable-shared-implementation-capability",
+          "anchor": "tm-shared-implementation-capability",
           "why": "Concrete Target Module Model semantics selected by this command; shared port/registry/Meta-Model references are inherited from included commands.",
           "role": "PRIMARY_OWNER",
           "readMode": "REQUIRED"
@@ -3950,7 +3966,7 @@
         {
           "responsibilityId": "LENS-TEST-PROOF-EVIDENCE",
           "path": "planning/documentation/idtspe-methodology/active/idtspe-core/lenses/reusable/LENS-TEST-PROOF-EVIDENCE.md",
-          "anchor": "lens-test-proof-evidence-test-proof-evidence-quality",
+          "anchor": "lens-test-proof-evidence",
           "why": "Concrete Lens Model semantics selected by this command; shared port/registry/Meta-Model references are inherited from included commands.",
           "role": "PRIMARY_OWNER",
           "readMode": "REQUIRED"
@@ -4005,7 +4021,7 @@
         {
           "responsibilityId": "TM-DOMAIN-OWNER",
           "path": "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-DOMAIN-OWNER.md",
-          "anchor": "tm-domain-owner-durable-domain-semantic-owner",
+          "anchor": "tm-domain-owner",
           "why": "Concrete Target Module Model semantics selected by this command; shared port/registry/Meta-Model references are inherited from included commands.",
           "role": "PRIMARY_OWNER",
           "readMode": "REQUIRED"
@@ -4063,7 +4079,7 @@
         {
           "responsibilityId": "TM-IMPLEMENTATION-SLICE",
           "path": "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-IMPLEMENTATION-SLICE.md",
-          "anchor": "tm-implementation-slice-slice-discovery-non-persistent-slice-planning",
+          "anchor": "tm-implementation-slice",
           "why": "Provides the concrete slice model that hosts frontend realization planning; the frontend Lens remains supporting guidance.",
           "role": "PRIMARY_OWNER",
           "readMode": "REQUIRED"
@@ -4157,7 +4173,7 @@
         {
           "responsibilityId": "TM-PRACTICAL-TEST",
           "path": "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-PRACTICAL-TEST.md",
-          "anchor": "tm-practical-test-implemented-practical-evidence-acceptance",
+          "anchor": "tm-practical-test",
           "why": "Concrete Target Module Model semantics selected by this command; shared port/registry/Meta-Model references are inherited from included commands.",
           "role": "PRIMARY_OWNER",
           "readMode": "REQUIRED"
@@ -4221,7 +4237,7 @@
         {
           "responsibilityId": "TM-PRE-UPDATE-PLAN",
           "path": "planning/documentation/idtspe-methodology/active/idtspe-core/target-modules/TM-PRE-UPDATE-PLAN.md",
-          "anchor": "tm-pre-update-plan-pre-update-plan",
+          "anchor": "tm-pre-update-plan",
           "why": "Concrete Target Module Model semantics selected by this command; shared port/registry/Meta-Model references are inherited from included commands.",
           "role": "PRIMARY_OWNER",
           "readMode": "REQUIRED"
@@ -4277,7 +4293,7 @@
         {
           "responsibilityId": "TM-SCREEN",
           "path": "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-SCREEN.md",
-          "anchor": "tm-screen-screen-spatial-owner",
+          "anchor": "tm-screen",
           "why": "Concrete Target Module Model semantics selected by this command; shared port/registry/Meta-Model references are inherited from included commands.",
           "role": "PRIMARY_OWNER",
           "readMode": "REQUIRED"
@@ -4332,7 +4348,7 @@
         {
           "responsibilityId": "LENS-IMPLEMENTATION-REQUIREMENTS-DISCOVERY",
           "path": "planning/documentation/idtspe-methodology/active/profiles/sds/lenses/reusable/LENS-IMPLEMENTATION-REQUIREMENTS-DISCOVERY.md",
-          "anchor": "lens-implementation-requirements-discovery-owner-local-implementation-requirements-discovery",
+          "anchor": "lens-implementation-requirements-discovery",
           "why": "Concrete Lens Model semantics selected by this command; shared port/registry/Meta-Model references are inherited from included commands.",
           "role": "PRIMARY_OWNER",
           "readMode": "REQUIRED"
@@ -4385,7 +4401,7 @@
         {
           "responsibilityId": "TM-SCREEN",
           "path": "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-SCREEN.md",
-          "anchor": "tm-screen-screen-spatial-owner",
+          "anchor": "tm-screen",
           "why": "Concrete Target Module Model semantics selected by this command; shared port/registry/Meta-Model references are inherited from included commands.",
           "role": "PRIMARY_OWNER",
           "readMode": "REQUIRED"
@@ -4444,7 +4460,7 @@
         {
           "responsibilityId": "TM-IMPLEMENTATION-SLICE",
           "path": "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-IMPLEMENTATION-SLICE.md",
-          "anchor": "tm-implementation-slice-slice-discovery-non-persistent-slice-planning",
+          "anchor": "tm-implementation-slice",
           "why": "Concrete Target Module Model semantics selected by this command; shared port/registry/Meta-Model references are inherited from included commands.",
           "role": "PRIMARY_OWNER",
           "readMode": "REQUIRED"
@@ -4499,7 +4515,7 @@
         {
           "responsibilityId": "LENS-TEST-PROOF-EVIDENCE",
           "path": "planning/documentation/idtspe-methodology/active/idtspe-core/lenses/reusable/LENS-TEST-PROOF-EVIDENCE.md",
-          "anchor": "lens-test-proof-evidence-test-proof-evidence-quality",
+          "anchor": "lens-test-proof-evidence",
           "why": "Concrete Lens Model semantics selected by this command; shared port/registry/Meta-Model references are inherited from included commands.",
           "role": "PRIMARY_OWNER",
           "readMode": "REQUIRED"
@@ -4602,7 +4618,7 @@
         {
           "responsibilityId": "LENS-TEST-PROOF-EVIDENCE",
           "path": "planning/documentation/idtspe-methodology/active/idtspe-core/lenses/reusable/LENS-TEST-PROOF-EVIDENCE.md",
-          "anchor": "lens-test-proof-evidence-test-proof-evidence-quality",
+          "anchor": "lens-test-proof-evidence",
           "why": "Concrete Lens Model semantics selected by this command; shared port/registry/Meta-Model references are inherited from included commands.",
           "role": "PRIMARY_OWNER",
           "readMode": "REQUIRED"
@@ -4658,7 +4674,7 @@
         {
           "responsibilityId": "LENS-TEST-PROOF-EVIDENCE",
           "path": "planning/documentation/idtspe-methodology/active/idtspe-core/lenses/reusable/LENS-TEST-PROOF-EVIDENCE.md",
-          "anchor": "lens-test-proof-evidence-test-proof-evidence-quality",
+          "anchor": "lens-test-proof-evidence",
           "why": "Defines reusable test/proof/evidence analysis used to shape testing strategy.",
           "role": "PRIMARY_OWNER",
           "readMode": "REQUIRED"
@@ -4718,13 +4734,29 @@
           "why": "Owns review of current architecture state before positioning a workspace-evolution concern.",
           "role": "PRIMARY_OWNER",
           "readMode": "REQUIRED"
+        },
+        {
+          "responsibilityId": "RESOLUTION.PROPOSAL-DECISION-LIFECYCLE",
+          "path": "planning/documentation/idtspe-methodology/active/idtspe-core/resolution/proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md",
+          "anchor": "resolution-decision-retention",
+          "why": "Owns Decision semantics and the retention boundary; this command only projects the current rule.",
+          "role": "SUPPORTING_CONTRACT",
+          "readMode": "ON_DEMAND"
+        },
+        {
+          "responsibilityId": "RESOLUTION.CARRY-FORWARD",
+          "path": "planning/documentation/idtspe-methodology/active/idtspe-core/target-modules/TM-PLANNING-RESOLUTION-STATE.md",
+          "anchor": "ru-prs-02--tracked-decisions",
+          "why": "Owns qualifying Decision admission, representation and exit; no command-local eligibility rule.",
+          "role": "SUPPORTING_CONTRACT",
+          "readMode": "ON_DEMAND"
         }
       ],
       "includes": [
         "planning/commands/recheck-methodology-use-cases.command.md"
       ],
       "compositionContributions": [],
-      "expectedOutput": "Current Architecture State/Decision result with applicability, rationale and revalidation trigger; no permanent TM-WEUC global owner.",
+      "expectedOutput": "Current Architecture State/selected meaning with applicability, rationale and revalidation trigger at natural owners; any separate retained record follows Core retention/PRS contracts; no permanent TM-WEUC global owner.",
       "permissionMode": "read-only-planning",
       "keyReminders": [
         "Compatibility alias only; there is no permanent TM-WEUC or canonical SDS Workspace Evolution Map.",
@@ -4928,7 +4960,7 @@
         {
           "responsibilityId": "TM-PROTOTYPE",
           "path": "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-PROTOTYPE.md",
-          "anchor": "tm-prototype-prototype-experiment",
+          "anchor": "tm-prototype",
           "why": "Concrete Target Module Model semantics selected by this command; shared port/registry/Meta-Model references are inherited from included commands.",
           "role": "PRIMARY_OWNER",
           "readMode": "REQUIRED"
@@ -4992,7 +5024,7 @@
         {
           "responsibilityId": "DOC.USE-CASE-REGISTRY-MAP",
           "path": "planning/documentation/use-case-registry-map.md",
-          "anchor": "methodology-use-case-registry-map",
+          "anchor": "doc-use-case-registry-map",
           "why": "Provides the current methodology-use routing entry before reading repository documentation principles/guidance.",
           "role": "PRIMARY_OWNER",
           "readMode": "REQUIRED"
@@ -5136,7 +5168,7 @@
         {
           "responsibilityId": "TM-EXACT-REALIZATION",
           "path": "planning/documentation/idtspe-methodology/active/idtspe-core/target-modules/TM-EXACT-REALIZATION.md",
-          "anchor": "tm-exact-realization-exact-realization-integration",
+          "anchor": "tm-exact-realization",
           "why": "Concrete Target Module Model semantics selected by this command; shared port/registry/Meta-Model references are inherited from included commands.",
           "role": "PRIMARY_OWNER",
           "readMode": "REQUIRED"
@@ -5345,7 +5377,7 @@
         {
           "responsibilityId": "IDTSPE.PORT-COMPOSITION-REFRESH",
           "path": "planning/documentation/idtspe-methodology/active/idtspe-core/runtime/IDTSPE-RUNTIME-COMPOSITION-CONTRACT.md",
-          "anchor": "port-composition-refresh-rule",
+          "anchor": "idtspe-port-composition-refresh",
           "why": "Owns refresh/reaffirmation of the current Port Requirement Set for every normal Shell pass.",
           "role": "PRIMARY_OWNER",
           "readMode": "REQUIRED"
@@ -5353,7 +5385,7 @@
         {
           "responsibilityId": "IDTSPE.METHODOLOGY-COMPOSITION-RECHECK",
           "path": "planning/documentation/idtspe-methodology/active/idtspe-core/runtime/applicability/CONTEXTUAL-METHODOLOGY-APPLICATION-CONTRACT.md",
-          "anchor": "8-recheck-rule",
+          "anchor": "idtspe-methodology-composition-recheck",
           "why": "Defines when contextual methodology composition must be reaffirmed or changed as work evolves.",
           "role": "SUPPORTING_CONTRACT",
           "readMode": "REQUIRED"
@@ -5361,7 +5393,7 @@
         {
           "responsibilityId": "IDTSPE.UC.COMPOSE-CURRENT-WORK",
           "path": "planning/documentation/idtspe-methodology/active/idtspe-core/use-cases/compose-current-work/UC-IDTSPE-COMPOSE-CURRENT-WORK.md",
-          "anchor": "process",
+          "anchor": "uc-idtspe-compose-current-work-process",
           "why": "Provides the current IDTSPE methodology composition whose required capabilities are projected into the Port Requirement Set.",
           "role": "SUPPORTING_CONTRACT",
           "readMode": "REQUIRED"
@@ -5416,7 +5448,7 @@
         {
           "responsibilityId": "DOC.USE-CASE-APPLICABILITY-RESOLUTION",
           "path": "planning/documentation/use-cases/UC-DOC-RESOLVE-CURRENT-USE-CASES.md",
-          "anchor": "process",
+          "anchor": "doc-use-case-applicability-process",
           "why": "Owns the registry-level applicability recheck that every Planning Command performs without executing every Use Case.",
           "role": "PRIMARY_OWNER",
           "readMode": "REQUIRED"
@@ -5432,7 +5464,7 @@
         {
           "responsibilityId": "DOC.USE-CASE-REGISTRY-MAP",
           "path": "planning/documentation/use-case-registry-map.md",
-          "anchor": "methodology-use-case-registry-map",
+          "anchor": "doc-use-case-registry-map",
           "why": "Routes the applicability scan to only plausibly relevant scoped registries.",
           "role": "ROUTING",
           "readMode": "REQUIRED"
@@ -5615,7 +5647,7 @@
         {
           "responsibilityId": "TWU.SUBJECT-REFERENCE",
           "path": "planning/documentation/idtspe-methodology/active/idtspe-core/runtime/target-work/TARGET-WORK-SUBJECT-REFERENCE-CONTRACT.md",
-          "anchor": "canonical-target-work-subject-reference",
+          "anchor": "target-work-subject-reference",
           "why": "Provides stable reference to the exact Unit/Collection/Slot subject being resolved.",
           "role": "SUPPORTING_CONTRACT",
           "readMode": "REQUIRED"
@@ -5670,7 +5702,7 @@
         {
           "responsibilityId": "IDTSPE.UC.REVALIDATE-CURRENT-WORK",
           "path": "planning/documentation/idtspe-methodology/active/idtspe-core/use-cases/revalidate-current-work/UC-IDTSPE-REVALIDATE-CURRENT-WORK.md",
-          "anchor": "process",
+          "anchor": "uc-idtspe-revalidate-current-work-process",
           "why": "Owns the revalidation process and typical revalidation chain.",
           "role": "PRIMARY_OWNER",
           "readMode": "REQUIRED"
@@ -5678,7 +5710,7 @@
         {
           "responsibilityId": "TWU.SUBJECT-REFERENCE",
           "path": "planning/documentation/idtspe-methodology/active/idtspe-core/runtime/target-work/TARGET-WORK-SUBJECT-REFERENCE-CONTRACT.md",
-          "anchor": "canonical-target-work-subject-reference",
+          "anchor": "target-work-subject-reference",
           "why": "Allows revalidation to reopen the narrowest exact Target Work subject rather than broadening scope mechanically.",
           "role": "SUPPORTING_CONTRACT",
           "readMode": "ON_DEMAND"
@@ -6122,8 +6154,8 @@
         "разбери находки ревью",
         "review findings analysis"
       ],
-      "description": "Produce an optional bounded Review Finding Analysis Target that separates evidence-backed observations from impact and escalation diagnosis.",
-      "meaning": "Apply generic Core TM-REVIEW-FINDINGS only when a separately addressable diagnostic result is useful. Establish CURRENT_BASIS Review Coverage before Validation/Lens checks, then resolve RU-RFIND-01 observed Finding Candidates and RU-RFIND-02 canonical materiality, Review Priority, RE-* escalation, natural owner and USER-attention analysis. Hand material Findings to the Proposal lifecycle as a separate action. This diagnostic result does not by itself complete idtspe.review when linked Proposals remain pending.",
+      "description": "Produce an optional bounded Review Finding Analysis Target with one Collection Unit: each evidence-backed observation is followed immediately by its impact and escalation diagnosis.",
+      "meaning": "Apply generic Core TM-REVIEW-FINDINGS only when a separately addressable diagnostic result is useful. Establish CURRENT_BASIS Review Coverage before Validation/Lens checks, then resolve the single RU-RFIND-01 / RFIND-FINDINGS Collection. Within each Finding item, present its observation and Evidence followed immediately by canonical materiality, Review Priority, RE-* escalation, natural owner, upstream/downstream consequences and USER-attention diagnosis. Hand material Findings to the Proposal lifecycle as a separate action; its candidate may be presented immediately after that Finding's diagnosis. This diagnostic result does not by itself complete idtspe.review when linked Proposals remain pending.",
       "activeContextBehavior": "Use the current bounded Review Subject/Scope/Basis and trustworthy prior coverage. Do not create a Pre-Update Plan or reinterpret an existing plan as a required review stage. Reuse valid prior checks with provenance and inspect materially applicable current cells; form or reuse a Review Findings Target only when its result has independent value.",
       "traversalReadMode": "Read the selected TM and Review Strategy/coverage owner plus included command references proportionally. Inspect only current authoritative Sources needed for the bounded subject and checks.",
       "ownerFiles": [
@@ -6145,7 +6177,7 @@
           "responsibilityId": "TM-REVIEW-FINDINGS",
           "path": "planning/documentation/idtspe-methodology/active/idtspe-core/target-modules/TM-REVIEW-FINDINGS.md",
           "anchor": "tm-review-findings",
-          "why": "Owns the optional bounded diagnostic Target result and the separate Finding discovery/analysis Units.",
+          "why": "Owns the optional bounded diagnostic Target result and its single Unit pairing each Finding with its diagnosis.",
           "role": "PRIMARY_OWNER",
           "readMode": "REQUIRED"
         },
@@ -6178,11 +6210,11 @@
           "why": "Derive bounded current-basis review cells before Validation/Lens semantic actions execute."
         }
       ],
-      "expectedOutput": "RU-RFIND-01 evidence-backed Finding Candidates and RU-RFIND-02 materiality/Review Priority/RE-* /natural-owner diagnosis with explicit Proposal handoff status; the canonical Review Coverage Record remains separate and full review completion waits for linked Proposals.",
+      "expectedOutput": "One RU-RFIND-01 / RFIND-FINDINGS Collection, each item ordered observation/Evidence, diagnosis with grounded Priority/RE/owner/consequences, and explicit Proposal handoff; a related Core Proposal may follow the item; the canonical Review Coverage Record remains separate and full review completion waits for linked Proposals.",
       "permissionMode": "read-only-planning",
       "keyReminders": [
         "This is an optional Review Finding Analysis Target, not a mandatory Target for every review.",
-        "Keep observations distinct from proposed corrections; Review Priority and RE-* answer different questions.",
+        "Present each observation immediately followed by its diagnosis; a related Proposal may follow as separate Core State. Review Priority and RE-* answer different questions.",
         "Do not report a complete idtspe.review while a material Finding lacks its required linked Proposal.",
         "No destination mutation, tests, commit or push is authorized."
       ],
@@ -6355,7 +6387,7 @@
         {
           "responsibilityId": "TM-PRACTICAL-TEST",
           "path": "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-PRACTICAL-TEST.md",
-          "anchor": "tm-practical-test-implemented-practical-evidence-acceptance",
+          "anchor": "tm-practical-test",
           "why": "Concrete Target Module Model semantics selected by this command; shared port/registry/Meta-Model references are inherited from included commands.",
           "role": "PRIMARY_OWNER",
           "readMode": "REQUIRED"
@@ -6412,10 +6444,26 @@
         {
           "responsibilityId": "TM-PROTOTYPE",
           "path": "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-PROTOTYPE.md",
-          "anchor": "tm-prototype-prototype-experiment",
+          "anchor": "tm-prototype",
           "why": "Concrete Target Module Model semantics selected by this command; shared port/registry/Meta-Model references are inherited from included commands.",
           "role": "PRIMARY_OWNER",
           "readMode": "REQUIRED"
+        },
+        {
+          "responsibilityId": "RESOLUTION.PROPOSAL-DECISION-LIFECYCLE",
+          "path": "planning/documentation/idtspe-methodology/active/idtspe-core/resolution/proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md",
+          "anchor": "resolution-decision-retention",
+          "why": "Owns Decision semantics and the retention boundary; this command only projects the current rule.",
+          "role": "SUPPORTING_CONTRACT",
+          "readMode": "ON_DEMAND"
+        },
+        {
+          "responsibilityId": "RESOLUTION.CARRY-FORWARD",
+          "path": "planning/documentation/idtspe-methodology/active/idtspe-core/target-modules/TM-PLANNING-RESOLUTION-STATE.md",
+          "anchor": "ru-prs-02--tracked-decisions",
+          "why": "Owns qualifying Decision admission, representation and exit; no command-local eligibility rule.",
+          "role": "SUPPORTING_CONTRACT",
+          "readMode": "ON_DEMAND"
         }
       ],
       "includes": [
@@ -6426,7 +6474,7 @@
         "planning/commands/apply-idtspe-target-module.command.md"
       ],
       "compositionContributions": [],
-      "expectedOutput": "Prototype Results / Evidence interpretation against the original questions, limitations, residual uncertainty and revalidation/follow-up; Decisions remain with natural owners.",
+      "expectedOutput": "Prototype Results / Evidence interpretation against the original questions, limitations, residual uncertainty and revalidation/follow-up; accepted meaning remains in natural Units; any separate Decision record follows Core retention/PRS contracts.",
       "permissionMode": "read-only-planning",
       "keyReminders": [
         "SDS is an IDTSPE profile, not a second runtime.",
@@ -6469,7 +6517,7 @@
         {
           "responsibilityId": "LENS-TEST-PROOF-EVIDENCE",
           "path": "planning/documentation/idtspe-methodology/active/idtspe-core/lenses/reusable/LENS-TEST-PROOF-EVIDENCE.md",
-          "anchor": "lens-test-proof-evidence-test-proof-evidence-quality",
+          "anchor": "lens-test-proof-evidence",
           "why": "Concrete Lens Model semantics selected by this command; shared port/registry/Meta-Model references are inherited from included commands.",
           "role": "PRIMARY_OWNER",
           "readMode": "REQUIRED"
@@ -6525,7 +6573,7 @@
         {
           "responsibilityId": "DOC.USE-CASE-REGISTRY-MAP",
           "path": "planning/documentation/use-case-registry-map.md",
-          "anchor": "methodology-use-case-registry-map",
+          "anchor": "doc-use-case-registry-map",
           "why": "Owns top-level routing across methodology Use-Case registries for a registry traversal scan.",
           "role": "PRIMARY_OWNER",
           "readMode": "REQUIRED"
@@ -6582,7 +6630,7 @@
         {
           "responsibilityId": "LENS.DISCOVERY",
           "path": "planning/documentation/idtspe-methodology/active/idtspe-core/lenses/LENS-REGISTRY.md",
-          "anchor": "registry-scan-guide",
+          "anchor": "lens-discovery-registry",
           "why": "Provides compact registry metadata and profile routing for the applicability scan.",
           "role": "REGISTRY",
           "readMode": "REQUIRED"
@@ -6768,6 +6816,81 @@
     },
     {
       "schemaVersion": 1,
+      "id": "documentation.links.use",
+      "file": "use-relevant-links.command.md",
+      "command": "используй ссылки",
+      "englishName": "use relevant links",
+      "commandFamily": [
+        "используй ссылки",
+        "активно используй ссылки",
+        "используй ссылки где уместно",
+        "use relevant links"
+      ],
+      "description": "Actively use useful direct links in the current work under the existing methodology rules.",
+      "meaning": "Apply DOC.MARKDOWN-LINK-NAVIGATION and the applicable stable-anchor, semantic-owner-dependency and evidence-backed resolution rules to the current result. Prefer useful direct links to relevant current owners, requirements, Decisions, Findings, Proposals, examples and Evidence over bare IDs or path mentions when the reader benefits from direct traversal. For a material resolution conclusion, connect its checked basis to the claim with a concise rationale. Keep this as contextual application of existing owner contracts; it does not introduce a new linking policy or a separate link-review task.",
+      "activeContextBehavior": "Preserve the current Use-Case-driven Work Context, subject, accepted meaning and work already authorized. Apply the instruction to the current response and subsequent work in that context until the USER changes it. For repository documentation already authorized for editing, use portable relative Markdown links to the relevant owner/section. For conversational output, use working links supported by the current interface. Existing task scope and permissions determine whether files may be edited; this invocation alone does not start a repository rewrite, Target, review or persistence operation.",
+      "traversalReadMode": "Read or validly reuse the current navigation rule. Follow stable-anchor, Semantic Owner Dependency and resolution-grounding owners only where their analysis surface applies. Resolve the destinations actually cited in the current result, check their authority/currentness and relevant path/fragment, and use existing useful navigation rather than crawling the repository or manufacturing link targets.",
+      "ownerFiles": [
+        "planning/documentation/principles-and-terminology.md",
+        "planning/documentation/idtspe-methodology/active/idtspe-core/resolution/proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md"
+      ],
+      "ownerRefs": [
+        {
+          "responsibilityId": "DOC.MARKDOWN-LINK-NAVIGATION",
+          "path": "planning/documentation/principles-and-terminology.md",
+          "anchor": "doc-markdown-link-navigation",
+          "why": "Owns useful direct Markdown navigation, current destinations and the boundary between navigation and stronger relations.",
+          "role": "PRIMARY_OWNER",
+          "readMode": "REQUIRED"
+        },
+        {
+          "responsibilityId": "DOC.EXPLICIT-STABLE-SEMANTIC-ANCHOR",
+          "path": "planning/documentation/principles-and-terminology.md",
+          "anchor": "doc-explicit-stable-semantic-anchor",
+          "why": "Owns stable section-level addressing when a real consumer needs it, including existing inbound-reference migration.",
+          "role": "SUPPORTING_CONTRACT",
+          "readMode": "ON_DEMAND"
+        },
+        {
+          "responsibilityId": "DOC.SEMANTIC-OWNER-DEPENDENCY",
+          "path": "planning/documentation/principles-and-terminology.md",
+          "anchor": "doc-semantic-owner-dependency",
+          "why": "Owns explicit semantic dependence when a non-owner materially uses owner meaning; an ordinary hyperlink cannot substitute for it.",
+          "role": "SUPPORTING_CONTRACT",
+          "readMode": "ON_DEMAND"
+        },
+        {
+          "responsibilityId": "RESOLUTION.PROPOSAL-DECISION-LIFECYCLE",
+          "path": "planning/documentation/idtspe-methodology/active/idtspe-core/resolution/proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md",
+          "anchor": "resolution-claim-grounding",
+          "why": "Owns inspectable accepted/Evidence basis and public rationale for material resolution claims, including Finding classifications and consequences.",
+          "role": "SUPPORTING_CONTRACT",
+          "readMode": "ON_DEMAND"
+        }
+      ],
+      "includes": [
+        "planning/commands/recheck-methodology-use-cases.command.md"
+      ],
+      "compositionContributions": [],
+      "expectedOutput": "Continue the requested work with useful inspectable links next to the relevant references and conclusions. Use direct section links when warranted, keep the relationship or supporting rationale readable, and state a material missing/unverifiable destination honestly. If no substantive output is currently requested, acknowledge the instruction compactly and apply it to the continuing context; no standalone link report is required.",
+      "permissionMode": "read-only",
+      "keyReminders": [
+        "Use links actively where they help navigation, ownership discovery or evidence inspection; do not link every repeated mention or replace explanations with link lists.",
+        "Repository Markdown uses relative links by default; link to the current canonical owner and a stable explicit semantic anchor when section-level addressability is useful.",
+        "An ordinary link provides navigation/addressability only. Material restatement, contextualization, extension, representation or migration of owner meaning follows the existing Semantic Owner Dependency contract.",
+        "A valid path or fragment does not establish authority or prove a claim. State the specific accepted meaning or observed fact and explain its connection to the conclusion.",
+        "Use an existing USER message/log reference when available; otherwise cite the identifiable statement directly. Do not invent a message ID, link, log, Evidence or target artifact.",
+        "Use a registry when a many-owner overview is more useful than many direct links; create anchors only for real addressability needs within authorized edits.",
+        "Preserve the current task and authorization. This command itself grants no file mutation, test, commit or push permission and does not invoke the separate documentation-link review."
+      ],
+      "userTarget": "<current response / continuing work / already-authorized documentation scope>",
+      "palette": true,
+      "helperPresentation": null,
+      "methodologyBinding": null,
+      "refinements": []
+    },
+    {
+      "schemaVersion": 1,
       "id": "application_sds.full",
       "file": "work-full-sds.command.md",
       "command": "фулл сдс",
@@ -6943,7 +7066,7 @@
         {
           "responsibilityId": "IDTSPE.DEFAULT-WORK-MODE",
           "path": "planning/documentation/idtspe-methodology/active/idtspe-core/runtime/IDTSPE-DEFAULT-WORK-MODE.md",
-          "anchor": "core-rule",
+          "anchor": "idtspe-default-work-mode",
           "why": "Defines the normal proportional meaning of working through IDTSPE; broad discussion can remain sufficient.",
           "role": "PRIMARY_OWNER",
           "readMode": "REQUIRED"
@@ -6951,7 +7074,7 @@
         {
           "responsibilityId": "IDTSPE.CONTEXTUAL-APPLICATION",
           "path": "planning/documentation/idtspe-methodology/active/idtspe-core/runtime/applicability/CONTEXTUAL-METHODOLOGY-APPLICATION-CONTRACT.md",
-          "anchor": "1-core-invariant",
+          "anchor": "idtspe-contextual-application",
           "why": "Defines contextual methodology activation/deactivation and guards against forcing optional structure.",
           "role": "SUPPORTING_CONTRACT",
           "readMode": "REQUIRED"
@@ -6959,7 +7082,7 @@
         {
           "responsibilityId": "IDTSPE.UC.COMPOSE-CURRENT-WORK",
           "path": "planning/documentation/idtspe-methodology/active/idtspe-core/use-cases/compose-current-work/UC-IDTSPE-COMPOSE-CURRENT-WORK.md",
-          "anchor": "process",
+          "anchor": "uc-idtspe-compose-current-work-process",
           "why": "Composes the currently useful IDTSPE work after the mandatory Use-Case applicability recheck.",
           "role": "SUPPORTING_CONTRACT",
           "readMode": "REQUIRED"

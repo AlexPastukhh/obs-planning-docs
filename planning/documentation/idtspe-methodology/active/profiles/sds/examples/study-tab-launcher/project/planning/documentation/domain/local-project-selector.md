@@ -61,25 +61,21 @@ Selected implementation relation: reusable local-path mechanics come from
 [SH-STL-LOCAL-PATH-AUTHORITY](../shared/local-path-authority.md). Polling and
 browser/VS Code continuity belong to Slice/Shared realization, not this Domain.
 
+<!-- Compatibility anchor: earlier references now resolve to ordinary Unit content, not a retained Decision body. -->
 <a id="dec-stl-project-selector-01"></a>
-### DEC-STL-PROJECT-SELECTOR-01 — Use one neutral exact selector with one implicit ZIP candidate
+### Exact-selector rationale
 
-- **Status:** `ACCEPTED`.
-- **Decision:** the request supplies one neutral local selector. Resolution
-  considers its exact path and, only for an absent extensionless exact path,
-  one `.zip` candidate; an exact directory wins and an exact collision blocks
-  fallback.
-- **Addresses:** browser inability to inspect the local filesystem without
-  forcing ChatGPT/userscript input to encode folder-versus-archive logic.
-- **Rationale:** the closed candidate set supports short arrival polling and
-  deterministic behavior without recursive/fuzzy discovery.
-- **Integrated Into:** Domain invariants 2–6,
-  [`IR-DOMAIN-STL-PROJECT-02`](#ir-domain-stl-project-02) and both consuming
-  project Slices.
-- **Reconsider when:** user-selected search semantics intentionally expand
-  beyond the exact path plus one suffix candidate.
-- **Review provenance:** accepted conclusions from the former adaptive-project
-  design-selection record, revalidated by the SDS audit on 2026-09-23.
+The request supplies one neutral local selector. Resolution considers its exact path and, only for an absent extensionless exact path, one `.zip` candidate; an exact directory wins and an exact collision blocks fallback.
+
+The closed candidate set supports short arrival polling and deterministic behavior without recursive/fuzzy discovery.
+
+This boundary addresses browser inability to inspect the local filesystem without forcing ChatGPT/userscript input to encode folder-versus-archive logic.
+
+Related requirements and realization: Domain invariants 2–6, [`IR-DOMAIN-STL-PROJECT-02`](#ir-domain-stl-project-02) and both consuming project Slices.
+
+Revisit this boundary when user-selected search semantics intentionally expand beyond the exact path plus one suffix candidate.
+
+Source context: accepted conclusions from the former adaptive-project design-selection record, revalidated by the SDS audit on 2026-09-23.
 
 ## RU-DOWN-03 — Evolution Impact
 

@@ -25,7 +25,7 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
     {
       "responsibilityId": "TARGET-FORMATION.REQUIREMENT-COVERAGE",
       "path": "planning/documentation/idtspe-methodology/active/idtspe-core/runtime/target-work/RESOLUTION-SLOT-AND-TARGET-FORMATION-SET.md",
-      "anchor": "8-prepared-coverage-versus-contextual-completion",
+      "anchor": "target-formation-prepared-coverage",
       "why": "Determines that the material requirement is not already covered directly or by a prepared Module/Core Unit.",
       "role": "PRIMARY_OWNER",
       "readMode": "REQUIRED"
@@ -65,7 +65,7 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
     {
       "responsibilityId": "TWU.SUBJECT-REFERENCE",
       "path": "planning/documentation/idtspe-methodology/active/idtspe-core/runtime/target-work/TARGET-WORK-SUBJECT-REFERENCE-CONTRACT.md",
-      "anchor": "canonical-target-work-subject-reference",
+      "anchor": "target-work-subject-reference",
       "why": "Provides exact addressability when later work must refer to this Unit/Collection/item/Slot without changing semantic ownership.",
       "role": "SUPPORTING_CONTRACT",
       "readMode": "ON_DEMAND"

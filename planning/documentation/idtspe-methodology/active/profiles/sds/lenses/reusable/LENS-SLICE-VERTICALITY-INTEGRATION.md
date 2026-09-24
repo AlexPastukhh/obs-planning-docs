@@ -1,3 +1,4 @@
+<a id="lens-slice-verticality-integration"></a>
 # LENS-SLICE-VERTICALITY-INTEGRATION — Vertical Slice / Integration
 
 Lens ID: `LENS-SLICE-VERTICALITY-INTEGRATION`

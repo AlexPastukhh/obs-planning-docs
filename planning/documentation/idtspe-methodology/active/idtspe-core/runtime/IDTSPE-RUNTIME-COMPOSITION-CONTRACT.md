@@ -1,5 +1,9 @@
 # IDTSPE Shell — Generic Planning Runtime / Composition Contract
 
+> Semantic Owner Dependencies
+> - `CONTEXTUALIZES` [Decision record retention](../resolution/proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md#resolution-decision-retention) — `RESOLUTION.PROPOSAL-DECISION-LIFECYCLE`.
+> - `CONTEXTUALIZES` [PRS Decision admission / exit](../target-modules/TM-PLANNING-RESOLUTION-STATE.md#ru-prs-02--tracked-decisions) — `RESOLUTION.CARRY-FORWARD`.
+
 Status: active generic methodology owner
 Purpose: define the generic technical IDTSPE runtime/composition contract used inside an always-active **IDTSPE Work Context**. A Work Context may remain Broad Discussion with zero Targets, or coordinate one or several bounded Targets with typed Sources, Core State Units, reusable Lenses, Target Step Result projection, validation, persistence and revalidation without hard-coding any domain/application module.
 
@@ -215,7 +219,7 @@ Carries material unresolved Question/Risk/Problem meaning attached to its natura
 <a id="idtspe-port-p10"></a>
 ### P-10 Decision Port
 
-Connects material selection semantics into the affected subject. Durable Decision state/trace is proportional; straightforward non-decision derivation does not require a Decision record.
+Connects material selection semantics into the affected subject. Any separate Decision record follows the linked Core retention contract; straightforward non-decision derivation does not require a Decision record.
 
 <a id="idtspe-port-p11"></a>
 ### P-11 Target Step Result Projection Port

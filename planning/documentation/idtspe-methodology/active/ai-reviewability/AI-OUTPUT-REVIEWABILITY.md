@@ -48,6 +48,7 @@ Stable `KP-*` IDs are optional and mainly useful for long-lived review/discussio
 
 Key Points are a review/navigation projection, not State and not a second semantic owner.
 
+<a id="review-priority"></a>
 ## Review Priority
 
 `Review Priority` expresses the cost/blast radius of being wrong. It is not confidence, prose complexity, lifecycle status or execution order.

@@ -1,3 +1,4 @@
+<a id="tm-scenario-planning"></a>
 # TM-SCENARIO-PLANNING — Scenario Journey Composition
 
 Module ID: `TM-SCENARIO-PLANNING`
@@ -99,6 +100,7 @@ Unit presence/disposition mechanics follow the Core [`Unit Applicability / Mater
 
 Each material Unit below inherits the generic [`Unit Applicability Envelope`](../../../idtspe-core/runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md#twu-applicability-envelope). Opening/Closing are mandatory logical applicability boundaries; registries may also be checked during Unit work whenever new material pressure appears.
 
+<a id="ru-scen-01-processing-envelope"></a>
 #### `RU-SCEN-01` processing envelope
 
 1. **Opening Unit Checkpoint — `RU-SCEN-01`** — resolve/reuse current applicable Core + active-profile Lens registry candidates and any Unit-triggered supporting registry pressure before material work.
@@ -117,16 +119,19 @@ Each material Unit below inherits the generic [`Unit Applicability Envelope`](..
 2. **Unit Work — `RU-SCEN-03`** — retain only Scenario-wide realization/proof/integration pressure that can change journey feasibility/continuity/proof; route owner-local concerns to their owners and literal mechanisms to Exact.
 3. **Closing Unit Checkpoint — `RU-SCEN-03`** — ensure concern meaning does not become a duplicate Feature implementation concern, Slice plan or exact mechanism.
 
+<a id="ru-scen-02--evolution-impact"></a>
 ### RU-SCEN-02 — Evolution Impact
 
 This Scenario-local Unit specializes the shared [Current-Owner Evolution Impact Projection Contract](../profile-contracts/evolution/CURRENT-OWNER-EVOLUTION-IMPACT-PROJECTION.md). Its local affected surface is **journey composition**. The shared contract owns inclusion threshold across candidate/selected/conditional/deferred Steps, truthful planning-position projection, depth/no-copy rules and post-realization removal from active future impact. This Target Module owns only the Unit identity, Scenario-specific materiality test and local revalidation/handoff use.
 
+<a id="ru-scen-03--journey-realization-concerns"></a>
 ### RU-SCEN-03 — Journey Realization Concerns
 
 Own only material realization/proof/integration concerns whose smallest natural subject is the Scenario journey as a whole, for example cross-Feature correlation/continuity pressure, whole-journey observability/proof pressure or external-context handoff constraints that can change Scenario feasibility.
 
 Do not copy one Feature's `RU-FEAT-04`, one owner-local IR/PFR or exact transport/mechanism detail. Reference those owners. A future Target Scenario Body carries future Scenario-wide concerns; a current Scenario keeps only currently realized concerns with independent semantic value.
 
+<a id="journey-shape"></a>
 ## Journey Shape
 
 A compact representation may look like:

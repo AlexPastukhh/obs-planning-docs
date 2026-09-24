@@ -3,6 +3,13 @@
 
 Responsibility ID: `VISUAL2D.PRODUCTION-INVARIANTS`
 
+> Semantic Owner Dependencies
+> - `CONTEXTUALIZES` [Target Work Unit contract](../../../idtspe-core/runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md#twu-unit-contract) — `TWU.UNIT-CONTRACT`.
+> - `CONTEXTUALIZES` [Unit applicability / materiality / disposition](../../../idtspe-core/runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md#twu-applicability-disposition) — `TWU.APPLICABILITY-DISPOSITION`.
+> - `CONTEXTUALIZES` [Proposal / Decision authority](../../../idtspe-core/resolution/proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md#resolution-proposal-decision-lifecycle) — `RESOLUTION.PROPOSAL-DECISION-LIFECYCLE`.
+>
+> Rules 1 and 4–6 apply these Core contracts to visual work. This profile owns the responsibility-specific visual Source/reference coverage and its local explanation, not a second Unit or selection lifecycle.
+
 1. **Module-defined Unit identity is fixed by the formed Target Module.** Every Module-defined Unit exists/addressable in the concrete Target result; current situation and visual Source/reference coverage determine substantive resolution depth/disposition, not Unit existence.
 2. **Visual Source/reference coverage is responsibility-specific.** A Source may strongly cover one Unit responsibility and poorly cover another; avoid global labels such as “the reference covers everything”.
 3. **Strong visual Sources reduce invention.** Preserve trustworthy source-covered identity, form, pose, composition, appearance or other relevant information unless the selected change explicitly overrides it.

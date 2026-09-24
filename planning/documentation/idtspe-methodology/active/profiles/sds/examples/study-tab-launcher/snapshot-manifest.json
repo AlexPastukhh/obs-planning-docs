@@ -67,7 +67,7 @@
       "kind": "live",
       "file": "project/planning/documentation/domain/local-project-selector.md",
       "sourceSha256": "7efb5ce829b739d5c75edbbc517a00faff72e976a9564897479ab820778281a4",
-      "copiedSha256": "aea9371d103cf1c778959bbaa51c95f2b85170ba78931e40e2ff0dd74b2079f6",
+      "copiedSha256": "1f02ea009acb658dd887be40c968483c58c169f7c33f3c3b00c01a4a12135828",
       "linkRewrites": 0,
       "editorialRevisions": [
         {
@@ -75,6 +75,12 @@
           "reason": "Redirect methodology navigation to canonical same-repository owners and clarify historical provenance.",
           "beforeSha256": "7efb5ce829b739d5c75edbbc517a00faff72e976a9564897479ab820778281a4",
           "afterSha256": "aea9371d103cf1c778959bbaa51c95f2b85170ba78931e40e2ff0dd74b2079f6"
+        },
+        {
+          "date": "2026-09-24",
+          "reason": "USER-selected Decision retention: natural Unit content plus qualifying Core Decision record represented only in PRS; preserve product semantics and open proof.",
+          "beforeSha256": "aea9371d103cf1c778959bbaa51c95f2b85170ba78931e40e2ff0dd74b2079f6",
+          "afterSha256": "1f02ea009acb658dd887be40c968483c58c169f7c33f3c3b00c01a4a12135828"
         }
       ]
     },
@@ -147,7 +153,7 @@
       "kind": "live",
       "file": "project/planning/documentation/evolution/unrealized/close-superseded-project-windows.md",
       "sourceSha256": "9b9ba052dd81c05286def961d2dccf7f698ba1421d1130fc026b804568faebf6",
-      "copiedSha256": "13718c68140507405afe548010185d61874051a95e3f6fc9bbf7dd89ae204830",
+      "copiedSha256": "881d4f0f8f7a51b1217fc54c1d2ff8f4b471990625f1984b603e6a0be66a5cf4",
       "linkRewrites": 0,
       "editorialRevisions": [
         {
@@ -155,6 +161,12 @@
           "reason": "Redirect methodology navigation to canonical same-repository owners and clarify historical provenance.",
           "beforeSha256": "9b9ba052dd81c05286def961d2dccf7f698ba1421d1130fc026b804568faebf6",
           "afterSha256": "13718c68140507405afe548010185d61874051a95e3f6fc9bbf7dd89ae204830"
+        },
+        {
+          "date": "2026-09-24",
+          "reason": "Apply reviewed methodology consistency update: integrate succession Shared-boundary selection as ordinary future Unit rationale, retain its compatibility anchor and declare the existing Step proof-section address explicitly. Preserve accepted behavior, readiness and open proof gates.",
+          "beforeSha256": "13718c68140507405afe548010185d61874051a95e3f6fc9bbf7dd89ae204830",
+          "afterSha256": "881d4f0f8f7a51b1217fc54c1d2ff8f4b471990625f1984b603e6a0be66a5cf4"
         }
       ]
     },
@@ -211,7 +223,7 @@
       "kind": "live",
       "file": "project/planning/documentation/features/open-linked-file-context.md",
       "sourceSha256": "5f65a8bf4ae8c2dbce2e9acc3bbbd0d849426c3d5e8c39fad0b291bf79696eb2",
-      "copiedSha256": "8b5c7e9938226568023c0ad4a967f506298f235688098334b4f7927c847e3a3d",
+      "copiedSha256": "61bc4064d48497cbc2d109dd82ea2bd62a5edf8bc74c01a555a66742a144ffdd",
       "linkRewrites": 0,
       "editorialRevisions": [
         {
@@ -219,6 +231,12 @@
           "reason": "Redirect methodology navigation to canonical same-repository owners and clarify historical provenance.",
           "beforeSha256": "5f65a8bf4ae8c2dbce2e9acc3bbbd0d849426c3d5e8c39fad0b291bf79696eb2",
           "afterSha256": "8b5c7e9938226568023c0ad4a967f506298f235688098334b4f7927c847e3a3d"
+        },
+        {
+          "date": "2026-09-24",
+          "reason": "USER-selected Decision retention: natural Unit content plus qualifying Core Decision record represented only in PRS; preserve product semantics and open proof.",
+          "beforeSha256": "8b5c7e9938226568023c0ad4a967f506298f235688098334b4f7927c847e3a3d",
+          "afterSha256": "61bc4064d48497cbc2d109dd82ea2bd62a5edf8bc74c01a555a66742a144ffdd"
         }
       ]
     },
@@ -227,7 +245,7 @@
       "kind": "live",
       "file": "project/planning/documentation/features/open-linked-folder-window.md",
       "sourceSha256": "0b14ca6c184468e50223b8807faf512cd00cb5985867efcae7b44f24995f86d7",
-      "copiedSha256": "fc9484e2328480a549ed64bbc0e1d5c47bdc64b0adf76379a8ad26980422b5f3",
+      "copiedSha256": "ed2a7285fa69bb7a40b804dc8fc22d69bfaad93879227b3c4023f22ddb88574e",
       "linkRewrites": 0,
       "editorialRevisions": [
         {
@@ -235,6 +253,12 @@
           "reason": "Redirect methodology navigation to canonical same-repository owners and clarify historical provenance.",
           "beforeSha256": "0b14ca6c184468e50223b8807faf512cd00cb5985867efcae7b44f24995f86d7",
           "afterSha256": "fc9484e2328480a549ed64bbc0e1d5c47bdc64b0adf76379a8ad26980422b5f3"
+        },
+        {
+          "date": "2026-09-24",
+          "reason": "USER-selected Decision retention: natural Unit content plus qualifying Core Decision record represented only in PRS; preserve product semantics and open proof.",
+          "beforeSha256": "fc9484e2328480a549ed64bbc0e1d5c47bdc64b0adf76379a8ad26980422b5f3",
+          "afterSha256": "ed2a7285fa69bb7a40b804dc8fc22d69bfaad93879227b3c4023f22ddb88574e"
         }
       ]
     },
@@ -313,7 +337,7 @@
       "kind": "live",
       "file": "project/planning/documentation/resolution-carry-forward.md",
       "sourceSha256": "30179db0502994dfc7f04e37e5c0c9a151252dd023cfab73c2183a60e6314bb5",
-      "copiedSha256": "3787d050e017fb40f32849ffa4a6da10f5440c7abe3e86caf61a97ded7b6e51d",
+      "copiedSha256": "52bbe90a3eddc7bf25dd220e70dfa4a1b0dc4219086e9dd8b7462c4adeed3516",
       "linkRewrites": 0,
       "editorialRevisions": [
         {
@@ -327,6 +351,12 @@
           "reason": "Use the same current application wording in the independent example and real source project.",
           "beforeSha256": "6f9f146663893291c4c9a5943124107265b65a683f719506bcdd112ed5ff7cb0",
           "afterSha256": "3787d050e017fb40f32849ffa4a6da10f5440c7abe3e86caf61a97ded7b6e51d"
+        },
+        {
+          "date": "2026-09-24",
+          "reason": "USER-selected Decision retention: natural Unit content plus qualifying Core Decision record represented only in PRS; preserve product semantics and open proof.",
+          "beforeSha256": "3787d050e017fb40f32849ffa4a6da10f5440c7abe3e86caf61a97ded7b6e51d",
+          "afterSha256": "52bbe90a3eddc7bf25dd220e70dfa4a1b0dc4219086e9dd8b7462c4adeed3516"
         }
       ]
     },
@@ -485,7 +515,7 @@
       "kind": "live",
       "file": "project/planning/documentation/shared/prepared-project-handoff.md",
       "sourceSha256": "dffa8ac035ebadaf33c628111ed2077c40aaa238bcc8b0ad2d537871283cfd2f",
-      "copiedSha256": "30fefbeefd8067904fd4e0449c0be72072f7d4294df8b024e02b73a35075ab1b",
+      "copiedSha256": "6368175865dc870b9c0ce4bf375dedd010458a88dab1e6cb3bcd72281015af9b",
       "linkRewrites": 0,
       "editorialRevisions": [
         {
@@ -499,6 +529,12 @@
           "reason": "Complete PRS/RCF migration, explicit Decision-QRP relation and historical audit supersession; reconcile the live source project.",
           "beforeSha256": "643ac7bf59910d4a77072a924460972b1da00e95bea3b38ee4877015630a80a4",
           "afterSha256": "30fefbeefd8067904fd4e0449c0be72072f7d4294df8b024e02b73a35075ab1b"
+        },
+        {
+          "date": "2026-09-24",
+          "reason": "USER-selected Decision retention: natural Unit content plus qualifying Core Decision record represented only in PRS; preserve product semantics and open proof.",
+          "beforeSha256": "30fefbeefd8067904fd4e0449c0be72072f7d4294df8b024e02b73a35075ab1b",
+          "afterSha256": "6368175865dc870b9c0ce4bf375dedd010458a88dab1e6cb3bcd72281015af9b"
         }
       ]
     },
@@ -539,7 +575,7 @@
       "kind": "live",
       "file": "project/planning/documentation/slices/extract-open-archive.md",
       "sourceSha256": "a3cd4edfa163831c5fed5af5361b79b63962910921a408371506b8ad48d0bc58",
-      "copiedSha256": "cf774f7272e96e129973615fe24713d59c7ef1c458d09a12e97f0625b8105832",
+      "copiedSha256": "51cd806e626f30ba9ddfea196cd5f1b9f13a7fbf3c4942dd5e3232a15f2bdc54",
       "linkRewrites": 0,
       "editorialRevisions": [
         {
@@ -547,6 +583,12 @@
           "reason": "Redirect methodology navigation to canonical same-repository owners and clarify historical provenance.",
           "beforeSha256": "a3cd4edfa163831c5fed5af5361b79b63962910921a408371506b8ad48d0bc58",
           "afterSha256": "cf774f7272e96e129973615fe24713d59c7ef1c458d09a12e97f0625b8105832"
+        },
+        {
+          "date": "2026-09-24",
+          "reason": "USER-selected Decision retention: natural Unit content plus qualifying Core Decision record represented only in PRS; preserve product semantics and open proof.",
+          "beforeSha256": "cf774f7272e96e129973615fe24713d59c7ef1c458d09a12e97f0625b8105832",
+          "afterSha256": "51cd806e626f30ba9ddfea196cd5f1b9f13a7fbf3c4942dd5e3232a15f2bdc54"
         }
       ]
     },

@@ -1,5 +1,9 @@
 # UC-IDTSPE-MAINTAIN-CURRENT-WORK-STATE — Maintain Current IDTSPE Work State
 
+> Semantic Owner Dependencies
+> - `CONTEXTUALIZES` [Decision record retention](../../resolution/proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md#resolution-decision-retention) — `RESOLUTION.PROPOSAL-DECISION-LIFECYCLE`.
+> - `CONTEXTUALIZES` [PRS Decision admission / exit](../../target-modules/TM-PLANNING-RESOLUTION-STATE.md#ru-prs-02--tracked-decisions) — `RESOLUTION.CARRY-FORWARD`.
+
 Status: active IDTSPE runtime Use Case
 
 <a id="uc-idtspe-maintain-current-work-state"></a>
@@ -41,7 +45,7 @@ The smallest useful current Work Context is represented coherently around materi
 
 5. Keep Core Resolution State attached to the smallest correct semantic subject. When that subject is a Target Work Collection/item/Slot, use `TWU.SUBJECT-REFERENCE`; other Unit-local state belongs with the parent Unit Resolution, while cross-Unit/Target/Work-Context state stays at that broader subject when natural.
 6. Promote working meaning into explicit Question/QRP/Proposal/Decision/Evidence/etc only when lifecycle/addressability/continuation/revalidation value is material.
-7. Retain explicit/durable Decision trace when the USER chooses to keep it or selection/coordination/dependency/revalidation value should survive; material selection semantics remain governed by the Proposal/Decision lifecycle even when no separate Decision record persists.
+7. Apply the linked Core Decision retention contract to any separate record. Integrate accepted meaning into natural Unit content independently; a retained record does not create another owner for that meaning.
 8. When a material Proposal itself is retained for continuation/review/handoff/revalidation, preserve its proportional Proposal `Review Provenance`: required Resolution Context Lens operation plus other materially applied Lens operations, directly or by reference to Methodology Usage State. Do not retain the full reasoning transcript.
 9. A transient pending Finding inbox may be used as local working representation, but findings should be dispositioned into their real subjects/owners when useful; the inbox is not a second Finding lifecycle.
 10. Mark invalidated/revalidation-needed dependent meaning without reopening unaffected accepted meaning.

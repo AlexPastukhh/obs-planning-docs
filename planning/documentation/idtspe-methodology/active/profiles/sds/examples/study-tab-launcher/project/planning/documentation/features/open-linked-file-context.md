@@ -133,25 +133,21 @@ maps every `FBS-*`, the material Scenario requirements, the
 [path-authority capability](../shared/local-path-authority.md) without copying
 Feature behavior authority.
 
+<!-- Compatibility anchor: earlier references now resolve to ordinary Unit content, not a retained Decision body. -->
 <a id="dec-stl-file-context-boundary-01"></a>
-### DEC-STL-FILE-CONTEXT-BOUNDARY-01 — Keep cardinality and tab policy inside one Feature/Slice boundary
+### Cardinality and action-policy rationale
 
-- **Status:** `ACCEPTED`.
-- **Decision:** one-file and ordered-set remain distinct semantic entries of
-  one Feature and one durable Slice; the selected action, not copied text,
-  supplies cardinality and `add | closeOthers` policy.
-- **Addresses:** unambiguous single/set contracts without creating four
-  behavior owners or letting path text smuggle editor policy.
-- **Rationale:** both entries share intent, authority, principal result,
-  validation and realization; their cardinality difference is material but
-  not a separate Feature outcome.
-- **Integrated Into:** [`FBS-STL-FILE-01`](#fbs-stl-file-01),
-  [`BR-STL-02`](#br-stl-02), [`BR-STL-02A`](#br-stl-02a) and
-  [SL-STL-OPEN-LINKED-CONTEXT](../slices/open-linked-file-context.md).
-- **Reconsider when:** a cardinality branch gains a different user outcome,
-  authority boundary or independently deployable end-to-end realization.
-- **Review provenance:** accepted conclusions from the former file-opening
-  design-selection record, revalidated by the SDS audit on 2026-09-23.
+One-file and ordered-set remain distinct semantic entries of one Feature and one durable Slice; the selected action, not copied text, supplies cardinality and `add | closeOthers` policy.
+
+Both entries share intent, authority, principal result, validation and realization; their cardinality difference is material but not a separate Feature outcome.
+
+This boundary addresses unambiguous single/set contracts without creating four behavior owners or letting path text smuggle editor policy.
+
+Related requirements and realization: [`FBS-STL-FILE-01`](#fbs-stl-file-01), [`BR-STL-02`](#br-stl-02), [`BR-STL-02A`](#br-stl-02a) and [SL-STL-OPEN-LINKED-CONTEXT](../slices/open-linked-file-context.md).
+
+Revisit this boundary when a cardinality branch gains a different user outcome, authority boundary or independently deployable end-to-end realization.
+
+Source context: accepted conclusions from the former file-opening design-selection record, revalidated by the SDS audit on 2026-09-23.
 
 ## RU-FEAT-06 — Evolution Impact
 

@@ -1,6 +1,10 @@
 <a id="lens-test-proof-evidence"></a>
 # LENS-TEST-PROOF-EVIDENCE — Test Proof / Evidence Quality
 
+> Semantic Owner Dependencies
+> - `CONTEXTUALIZES` [Decision record retention](../../resolution/proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md#resolution-decision-retention) — `RESOLUTION.PROPOSAL-DECISION-LIFECYCLE`.
+> - `CONTEXTUALIZES` [PRS Decision admission / exit](../../target-modules/TM-PLANNING-RESOLUTION-STATE.md#ru-prs-02--tracked-decisions) — `RESOLUTION.CARRY-FORWARD`.
+
 Lens ID: `LENS-TEST-PROOF-EVIDENCE`
 Activation: `TARGET_PROFILE_REUSABLE`
 
@@ -416,7 +420,7 @@ WHEN: selected proof design must survive for later realization/review
 GUIDANCE: PROFILE_DEFAULT
 PERSISTENCE_GUIDANCE: PREFERRED
 PLACEMENT_DIRECTIVE: PLACE
-SEMANTIC_OWNER: nearest natural semantic/implementation owner or scoped Core Decision/supporting owner when independently cross-owner
+SEMANTIC_OWNER: nearest natural semantic/implementation owner or resolved natural supporting-policy Unit when independently cross-owner
 REPRESENTATION: EMBED_OR_EXISTING_ARTIFACT
 CONTENT: property-to-proof design; layer; setup/action/observation; required assertions/signals
 GUIDANCE_SOURCE: LENS
@@ -453,7 +457,7 @@ GUIDANCE_SOURCE: LENS
 RESOLVER: P-14 / PERSISTENCE_ADDRESSABILITY
 ```
 
-Planned proof that must survive for later implementation should live with the nearest natural owner or a scoped explicitly selected cross-owner Decision/supporting owner when independent coordination value exists. No generic Test Design/Strategy Target is assumed.
+Planned proof that must survive for later implementation should live with the nearest natural owner or a resolved natural cross-owner policy Unit when independent coordination value exists. No generic Test Design/Strategy Target is assumed.
 
 Actual test files/run artifacts remain Evidence Sources/supporting representation, not product-semantic authority. Mere existence or successful execution of automated/practical Evidence does **not** by itself require a second durable Evidence document/reference; retain/persist it only when continuing review, revalidation, traceability, Decision support or another material downstream use warrants that survival.
 

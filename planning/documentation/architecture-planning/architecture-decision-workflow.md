@@ -1,6 +1,10 @@
 <a id="architecture-decision-workflow"></a>
 # Architecture Decision Workflow
 
+> Semantic Owner Dependencies
+> - `CONTEXTUALIZES` [Decision record retention](../idtspe-methodology/active/idtspe-core/resolution/proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md#resolution-decision-retention) — `RESOLUTION.PROPOSAL-DECISION-LIFECYCLE`.
+> - `CONTEXTUALIZES` [PRS Decision admission / exit](../idtspe-methodology/active/idtspe-core/target-modules/TM-PLANNING-RESOLUTION-STATE.md#ru-prs-02--tracked-decisions) — `RESOLUTION.CARRY-FORWARD`.
+
 Responsibility ID: `ARCH.DECISION-WORKFLOW`
 
 Status: active reusable workflow
@@ -96,7 +100,7 @@ Selected meaning belongs in the narrowest real semantic/architecture **planning 
 
 ## Concern / Decision Trace — When Material
 
-Architecture choice remains owned here or in the narrower semantic owner according to Decision Scope. Use the Core Q/R/P lifecycle contract for supporting Q/R/P:
+This workflow owns architecture-choice analysis, not the accepted application meaning or a separate Decision lifecycle. Integrate the actual choice in its natural semantic owner according to Decision Scope. Use the Core Q/R/P lifecycle contract for supporting Q/R/P:
 
 ```text
 Architecture Q/R/P / Q/R/P Group
@@ -105,7 +109,7 @@ Architecture Q/R/P / Q/R/P Group
 → selected Architecture Decision only when actually chosen
 → Addresses Concerns / Introduced-Exposed Concerns when useful
 → residual Risk/Problem remains active
-→ material rationale/Decision trace retained when useful
+→ useful ordinary rationale at the natural Unit; any separate record under Core retention/PRS contracts
 ```
 
 Do not infer product/user priority or risk tolerance merely because one architecture route is technically cleaner. If user-owned input is missing, keep it explicit in AI Comment.
@@ -153,4 +157,4 @@ Implementation Slice
 Workspace / Cross-cutting Architecture
 ```
 
-Materialize selected meaning in the narrowest real semantic owner by default. Keep a separate Architecture Decision owner only when the decision is genuinely cross-owner or needs independent review/history/navigation. Temporary analysis need not persist as a separate artifact.
+Materialize selected meaning as normal Result Content in the narrowest real semantic/temporal owner. A separate retained record follows the linked Core retention and PRS contracts; cross-owner scope or historical interest does not establish an independent Architecture Decision/ADR owner. Temporary analysis need not persist as a separate artifact.

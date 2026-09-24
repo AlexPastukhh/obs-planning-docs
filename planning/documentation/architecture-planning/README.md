@@ -1,5 +1,9 @@
 # Workspace Architecture Planning Documentation Index
 
+> Semantic Owner Dependencies
+> - `REPRESENTS` [Decision record retention](../idtspe-methodology/active/idtspe-core/resolution/proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md#resolution-decision-retention) — `RESOLUTION.PROPOSAL-DECISION-LIFECYCLE`.
+> - `REPRESENTS` [PRS Decision admission / exit](../idtspe-methodology/active/idtspe-core/target-modules/TM-PLANNING-RESOLUTION-STATE.md#ru-prs-02--tracked-decisions) — `RESOLUTION.CARRY-FORWARD`.
+
 Status: active reusable methodology-family index
 Scope: understand, evaluate and evolve the architecture of an evolving Workspace through the work it must support, using the least complexity justified by current correctness, important Workspace work, representative Application runtime constraints and evidence-backed change pressure.
 
@@ -129,7 +133,7 @@ Change-Axis consideration ≠ Change-Axis document
 Architecture Decision consideration ≠ ADR ceremony
 ```
 
-Plan as deeply as the decision requires; materialize only what benefits from stable independent ownership, reuse or review.
+Plan as deeply as the decision requires. Integrate accepted meaning into natural Units; apply the linked Core retention/PRS contracts to any separate selection record. Architecture analysis/templates do not establish a standalone Decision owner.
 
 ## Contextual Workspace Evolution Use-Case Discovery
 

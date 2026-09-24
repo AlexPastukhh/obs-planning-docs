@@ -58,7 +58,7 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
     {
       "responsibilityId": "TARGET-FORMATION.REQUIREMENT-COVERAGE",
       "path": "planning/documentation/idtspe-methodology/active/idtspe-core/runtime/target-work/RESOLUTION-SLOT-AND-TARGET-FORMATION-SET.md",
-      "anchor": "3-target-resolution-requirement",
+      "anchor": "target-formation-requirement-coverage",
       "why": "Defines bounded Target requirements/coverage and the prepared/Core/contextual coverage route.",
       "role": "SUPPORTING_CONTRACT",
       "readMode": "REQUIRED"

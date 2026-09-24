@@ -26,7 +26,7 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
     {
       "responsibilityId": "IDTSPE.PORT-COMPOSITION-REFRESH",
       "path": "planning/documentation/idtspe-methodology/active/idtspe-core/runtime/IDTSPE-RUNTIME-COMPOSITION-CONTRACT.md",
-      "anchor": "port-composition-refresh-rule",
+      "anchor": "idtspe-port-composition-refresh",
       "why": "Owns refresh/reaffirmation of the current Port Requirement Set for every normal Shell pass.",
       "role": "PRIMARY_OWNER",
       "readMode": "REQUIRED"
@@ -34,7 +34,7 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
     {
       "responsibilityId": "IDTSPE.METHODOLOGY-COMPOSITION-RECHECK",
       "path": "planning/documentation/idtspe-methodology/active/idtspe-core/runtime/applicability/CONTEXTUAL-METHODOLOGY-APPLICATION-CONTRACT.md",
-      "anchor": "8-recheck-rule",
+      "anchor": "idtspe-methodology-composition-recheck",
       "why": "Defines when contextual methodology composition must be reaffirmed or changed as work evolves.",
       "role": "SUPPORTING_CONTRACT",
       "readMode": "REQUIRED"
@@ -42,7 +42,7 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
     {
       "responsibilityId": "IDTSPE.UC.COMPOSE-CURRENT-WORK",
       "path": "planning/documentation/idtspe-methodology/active/idtspe-core/use-cases/compose-current-work/UC-IDTSPE-COMPOSE-CURRENT-WORK.md",
-      "anchor": "process",
+      "anchor": "uc-idtspe-compose-current-work-process",
       "why": "Provides the current IDTSPE methodology composition whose required capabilities are projected into the Port Requirement Set.",
       "role": "SUPPORTING_CONTRACT",
       "readMode": "REQUIRED"

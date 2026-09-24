@@ -1,5 +1,9 @@
 # Broad Discussion And Integration Checkpoint Model
 
+> Semantic Owner Dependencies
+> - `CONTEXTUALIZES` [Decision record retention](../../resolution/proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md#resolution-decision-retention) — `RESOLUTION.PROPOSAL-DECISION-LIFECYCLE`.
+> - `CONTEXTUALIZES` [PRS Decision admission / exit](../../target-modules/TM-PLANNING-RESOLUTION-STATE.md#ru-prs-02--tracked-decisions) — `RESOLUTION.CARRY-FORWARD`.
+
 <a id="representation-discussion-checkpoint"></a>
 
 Responsibility ID: `REPRESENTATION.DISCUSSION-CHECKPOINT`
@@ -253,7 +257,7 @@ Integration Checkpoint carries whole-state integration; Broad Discussion Summary
 Target Goal / Desired Outcome remains Target/scope context unless Target Formation changes it.
 Core Resolution State preserves material decision-space meaning through existing Core kinds and attaches to the smallest correct subject.
 Current Result Content shows the normalized current answer for resolved bounded responsibilities. For a module-backed Target, the Target Step Result declares the complete Module-defined Unit inventory with resolved / OPEN / explicit-omission dispositions and proportional content; for any Target it also includes applicable Core-defined Unit contributions and Contextual Unit contributions through their Result Destinations.
-Decisions retain accepted choices by default; material non-selected alternatives remain a user-controlled retention choice.
+Accepted choices remain integrated in normal Unit content. Separate Decision records follow the linked Core retention contract; material non-selected alternatives remain a user-controlled retention choice.
 Physical persistence remains a separate representation decision.
 ```
 

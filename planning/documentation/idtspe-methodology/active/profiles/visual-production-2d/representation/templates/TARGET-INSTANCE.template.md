@@ -1,6 +1,16 @@
 <a id="template-target-instance"></a>
 # <Target ID / Name>
 
+> Semantic Owner Dependencies
+> - `REPRESENTS` [Unit contract](../../../../idtspe-core/runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md#twu-unit-contract) — `TWU.UNIT-CONTRACT`.
+> - `REPRESENTS` [Collection contract](../../../../idtspe-core/runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md#twu-collection-contract) — `TWU.COLLECTION-CONTRACT`.
+> - `REPRESENTS` [Slot contract](../../../../idtspe-core/runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md#twu-slot-contract) — `TWU.SLOT-CONTRACT`.
+> - `REPRESENTS` [Unit runtime projection](../../../../idtspe-core/runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md#twu-runtime-projection) — `TWU.RUNTIME-PROJECTION`.
+> - `REPRESENTS` [Unit applicability / disposition](../../../../idtspe-core/runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md#twu-applicability-disposition) — `TWU.APPLICABILITY-DISPOSITION`.
+> - `REPRESENTS` [Target Step Result](../../../../idtspe-core/runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md#twu-target-step-result) — `TWU.TARGET-STEP-RESULT`.
+>
+> The fields below project the governing Core contracts. Keep only applicable runtime structure; this template does not declare new Units, Collections, Slots or lifecycle rules.
+
 Governing path: `TARGET_MODULE | LOCAL_TARGET_CONTRACT`
 Target Module: `<TM-ID | NONE — Local Target Contract>`
 Invocation: `CREATE | REFINE | EXTEND | REVALIDATE | REPAIR`

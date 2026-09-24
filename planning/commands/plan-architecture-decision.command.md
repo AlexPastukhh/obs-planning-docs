@@ -24,7 +24,7 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
     "planning/documentation/architecture-planning/architecture-decision-workflow.md",
     "planning/documentation/architecture-planning/templates/ARCHITECTURE-DECISION-TEMPLATE.md"
   ],
-  "expectedOutput": "Selected Architecture Decision + affected-path conclusion + rejected complexity/revisit trigger when useful.",
+  "expectedOutput": "Selected architecture meaning for natural Unit integration + affected-path conclusion + rejected complexity/revisit trigger when useful; a separate retained record follows Core retention/PRS contracts.",
   "permissionMode": "read-only",
   "keyReminders": [
     "Resolve the matching current canonical Use Case and follow its complete current owner route; the command is invocation/orchestration only.",
@@ -47,6 +47,22 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
       "why": "Owns the architecture-decision planning process used by this command.",
       "role": "PRIMARY_OWNER",
       "readMode": "REQUIRED"
+    },
+    {
+      "responsibilityId": "RESOLUTION.PROPOSAL-DECISION-LIFECYCLE",
+      "path": "planning/documentation/idtspe-methodology/active/idtspe-core/resolution/proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md",
+      "anchor": "resolution-decision-retention",
+      "why": "Owns Decision semantics and the retention boundary; this command only projects the current rule.",
+      "role": "SUPPORTING_CONTRACT",
+      "readMode": "ON_DEMAND"
+    },
+    {
+      "responsibilityId": "RESOLUTION.CARRY-FORWARD",
+      "path": "planning/documentation/idtspe-methodology/active/idtspe-core/target-modules/TM-PLANNING-RESOLUTION-STATE.md",
+      "anchor": "ru-prs-02--tracked-decisions",
+      "why": "Owns qualifying Decision admission, representation and exit; no command-local eligibility rule.",
+      "role": "SUPPORTING_CONTRACT",
+      "readMode": "ON_DEMAND"
     }
   ]
 }

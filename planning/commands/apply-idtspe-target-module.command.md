@@ -56,7 +56,7 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
     {
       "responsibilityId": "TARGET-MODULE.DISCOVERY",
       "path": "planning/documentation/idtspe-methodology/active/idtspe-core/target-modules/TARGET-MODULE-REGISTRY.md",
-      "anchor": "registry-responsibility",
+      "anchor": "target-module-discovery-registry",
       "why": "Resolves the selected concrete TM-* Model/family/alias without scanning every model body.",
       "role": "REGISTRY",
       "readMode": "REQUIRED"
@@ -64,7 +64,7 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
     {
       "responsibilityId": "TARGET-FORMATION.REUSABLE-MODEL-CHECK",
       "path": "planning/documentation/idtspe-methodology/active/idtspe-core/runtime/target-work/RESOLUTION-SLOT-AND-TARGET-FORMATION-SET.md",
-      "anchor": "7-required-reusable-target-model-check",
+      "anchor": "target-formation-reusable-model-check",
       "why": "Requires checking whether a reusable Model is the appropriate governing path versus a Local Target Contract.",
       "role": "SUPPORTING_CONTRACT",
       "readMode": "REQUIRED"

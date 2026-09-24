@@ -1,6 +1,10 @@
 <a id="sds-target-module-discovery"></a>
 # SDS Target Module Catalog
 
+> Semantic Owner Dependencies
+> - `CONTEXTUALIZES` [Decision record retention](../../../idtspe-core/resolution/proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md#resolution-decision-retention) — `RESOLUTION.PROPOSAL-DECISION-LIFECYCLE`.
+> - `CONTEXTUALIZES` [PRS Decision admission / exit](../../../idtspe-core/target-modules/TM-PLANNING-RESOLUTION-STATE.md#ru-prs-02--tracked-decisions) — `RESOLUTION.CARRY-FORWARD`.
+
 Responsibility ID: `SDS.TARGET-MODULE-DISCOVERY`
 
 Status: active synchronized SDS Target registry
@@ -62,7 +66,7 @@ Cross-owner current-vs-future hosting/readiness is routed to the SDS [Semantic C
 | `TM-SLICE-STRATEGY` | RETIRE — portfolio/coverage/Domain-use/owner-bridge meaning becomes workflow/Lens/derived coordination |
 | `TM-CROSS-CUTTING-CONCERN` | RETIRE — unified into `TM-SHARED-IMPLEMENTATION-CAPABILITY` |
 | `TM-TEST-DESIGN` | RETIRE — non-trivial proof design is transient natural-owner planning evaluated by Core Test Proof Lens |
-| `TM-TEST-STRATEGY` | RETIRE — cross-owner proof coordination is transient/Decision/supporting representation unless future independent owner pressure passes a new Target gate |
+| `TM-TEST-STRATEGY` | RETIRE — cross-owner proof coordination uses transient context or a natural supporting-policy Unit; separate Decision records follow the Core retention/PRS contracts unless future independent owner pressure passes a new Target gate |
 
 Retirement removes baseline Target-family authority, not useful semantic guidance. Old semantics are explicitly moved/subsumed in the S4 regression ledger.
 

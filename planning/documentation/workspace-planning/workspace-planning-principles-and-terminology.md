@@ -79,7 +79,11 @@ Need / source / discussion
 → verification
 ```
 
-Application actor-visible behavior remains Scenario-owned; Application SDS is a sibling specialization of the same directed planning idea.
+> Semantic Owner Dependencies
+> - `CONTEXTUALIZES` [Feature behavioral ownership](../idtspe-methodology/active/profiles/sds/target-modules/TM-FEATURE.md#tm-feature) — `TM-FEATURE`.
+> - `CONTEXTUALIZES` [Scenario journey composition](../idtspe-methodology/active/profiles/sds/target-modules/TM-SCENARIO-PLANNING.md#tm-scenario-planning) — `TM-SCENARIO-PLANNING`.
+
+Application capability behavior remains Feature-owned. Scenario owns actor/external journey composition, including journey-level must-holds and optional E2E Proof Intent. Application SDS is a sibling specialization of the same directed planning idea.
 
 ## 4. Directed Planning And Stability Before Handoff
 

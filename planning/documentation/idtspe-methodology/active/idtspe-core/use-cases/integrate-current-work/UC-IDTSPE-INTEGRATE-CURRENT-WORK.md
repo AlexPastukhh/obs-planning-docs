@@ -1,5 +1,9 @@
 # UC-IDTSPE-INTEGRATE-CURRENT-WORK — Integrate Current IDTSPE Work
 
+> Semantic Owner Dependencies
+> - `CONTEXTUALIZES` [Decision record retention](../../resolution/proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md#resolution-decision-retention) — `RESOLUTION.PROPOSAL-DECISION-LIFECYCLE`.
+> - `CONTEXTUALIZES` [PRS Decision admission / exit](../../target-modules/TM-PLANNING-RESOLUTION-STATE.md#ru-prs-02--tracked-decisions) — `RESOLUTION.CARRY-FORWARD`.
+
 Status: active IDTSPE runtime Use Case
 
 <a id="uc-idtspe-integrate-current-work"></a>
@@ -49,7 +53,7 @@ An **IDTSPE Integration Checkpoint** reconciles material Broad Discussion into t
 2. **Relate** — attach Questions/Problems/Proposals/QRP/Evidence/Decisions/Findings to the smallest correct Unit, Collection, Collection item or Unit Resolution Slot subject when local, using `TWU.SUBJECT-REFERENCE` for Target Work references. Keep genuinely cross-Unit/Target/Work-Context state at its natural broader subject. Preserve canonical Proposal/Decision/Q/R/P relations instead of reconstructing them from prose.
 3. **Disposition Findings** — route material Finding Candidates to the smallest correct subject/owner; use an applicable prepared Core Unit when it owns the bounded responsibility; otherwise DEFINE a Contextual Unit only when independently useful bounded work remains; use a Contextual Unit Resolution Slot instead only when the new sub-responsibility remains inside an existing Unit Responsibility/coherent result and does not need its own formal decomposition.
 4. **Maintain current state** — use `UC-IDTSPE-MAINTAIN-CURRENT-WORK-STATE`; preserve Current Result Content separately from unresolved/candidate Unit Resolution meaning, unresolved alternatives and revalidation signals; when a Target Module Instance exists, ensure every Module-defined Unit has a resolved / OPEN / explicit-omission disposition; under a Local Target Contract, reconcile applicable Core-defined Units plus Contextual Units that actually formed.
-5. **Integrate selections/derivations** — integrate safely derived answers and materially selected Proposal meaning into affected Result Content/owners under normal authority. Explicit Decision trace remains proportional.
+5. **Integrate selections/derivations** — integrate safely derived answers and materially selected Proposal meaning into affected Result Content/owners under normal authority. Any separate Decision record follows the linked Core retention contract.
 6. **Check** — apply only currently applicable Lens/consistency/validation checks needed to judge whether the integrated whole fits together. `no material finding` is valid. For any retained material Proposal, ensure its proportional Review Provenance makes the materially applied Lens operations/recheck state recoverable without copying the reasoning transcript.
 7. **Resolve representation separately** — if physical persistence/placement is material, invoke the canonical Artifact/Representation path. A checkpoint may remain context-only when persistence adds no value, except when the Resolution Carry-Forward Durable Coordination Materialization Threshold requires one durable discoverable coordination representation.
 8. **Protect coherence** — new material Proposal/Question/Problem/Evidence/Decision consequence surfaced while rendering must be integrated into the same checkpoint or marked explicitly as post-checkpoint exploration.
@@ -64,7 +68,7 @@ Canonical supporting owners:
 
 ## Resolution Carry-Forward Reconciliation
 
-At a useful Integration Checkpoint / handoff, reconcile the applicable [`Resolution Carry-Forward`](../../target-modules/TM-PLANNING-RESOLUTION-STATE.md#tm-planning-resolution-state): keep surviving open/deferred Proposals and their Q/R/P, unresolved subjects and only Decisions with qualifying related Q/R/P. Preserve linked context and the canonical presentation order; remove completed active entries while preserving accepted content/history at natural owners. A separate representation may be omitted when no continuation value exists, but when its Durable Coordination Materialization Threshold is crossed the checkpoint must leave one durable discoverable representation for the coordination scope.
+At a useful Integration Checkpoint / handoff, reconcile the applicable [`Resolution Carry-Forward`](../../target-modules/TM-PLANNING-RESOLUTION-STATE.md#tm-planning-resolution-state): keep surviving open/deferred Proposals and their Q/R/P, unresolved subjects and only Decisions with qualifying related Q/R/P. Preserve linked context and the canonical presentation order; remove completed retained Decision entries while preserving accepted Unit content and ordinary useful context. A separate representation may be omitted when no continuation value exists, but when its Durable Coordination Materialization Threshold is crossed the checkpoint must leave one durable discoverable representation for the coordination scope.
 
 ## Boundary
 

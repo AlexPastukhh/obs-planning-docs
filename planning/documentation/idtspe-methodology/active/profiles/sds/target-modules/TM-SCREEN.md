@@ -1,3 +1,4 @@
+<a id="tm-screen"></a>
 # TM-SCREEN — Screen / Spatial Owner
 
 Module ID: `TM-SCREEN`
@@ -105,6 +106,7 @@ Each material Unit below inherits the generic [`Unit Applicability Envelope`](..
 2. **Unit Work — `RU-SCREEN-03`** — produce the Screen-local reverse navigation/revalidation projection under that shared contract.
 3. **Closing Unit Checkpoint — `RU-SCREEN-03`** — validate Screen-local revalidation/handoff needs and the shared projection-contract guards.
 
+<a id="ru-screen-01--screen-map"></a>
 ### RU-SCREEN-01 — Screen Map
 
 Prefer relations such as:
@@ -118,6 +120,7 @@ Screen / surface
   global spatial constraints
 ```
 
+<a id="ru-screen-02--screen-draft-set"></a>
 ### RU-SCREEN-02 — Screen Draft Set
 
 For a Screen needing depth:
@@ -134,6 +137,7 @@ screen-specific contextual constraints
 
 Do not copy canonical Feature behavior text into Screen drafts. Reference Feature/BR identity when addressability helps.
 
+<a id="ru-screen-03--evolution-impact"></a>
 ### RU-SCREEN-03 — Evolution Impact
 
 This Screen-local Unit specializes the shared [Current-Owner Evolution Impact Projection Contract](../profile-contracts/evolution/CURRENT-OWNER-EVOLUTION-IMPACT-PROJECTION.md). Its local affected surface is **spatial/navigation composition**. The shared contract owns inclusion threshold across candidate/selected/conditional/deferred Steps, truthful planning-position projection, depth/no-copy rules and post-realization removal from active future impact. This Target Module owns only the Unit identity, Screen-specific materiality test and local revalidation/handoff use.

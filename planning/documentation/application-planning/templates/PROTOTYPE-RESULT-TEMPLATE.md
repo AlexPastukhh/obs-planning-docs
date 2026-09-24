@@ -105,10 +105,15 @@ Prototype artifacts do not remain a hidden second authority after selected meani
 ## Follow-Up Experiment — When Material
 <Only if another evidence gap genuinely warrants it.>
 
-## Current Decisions
-<Selected evidence-backed conclusions; use shared Decision trace fields when material and integrate selected semantic meaning into its real owner.>
+## Selected Meaning / Handoff
+
+> Semantic Owner Dependencies
+> - `REPRESENTS` [Decision retention / integration](../../idtspe-methodology/active/idtspe-core/resolution/proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md#resolution-decision-retention) — `RESOLUTION.PROPOSAL-DECISION-LIFECYCLE`.
+> - `REPRESENTS` [PRS Decision admission / exit](../../idtspe-methodology/active/idtspe-core/target-modules/TM-PLANNING-RESOLUTION-STATE.md#ru-prs-02--tracked-decisions) — `RESOLUTION.CARRY-FORWARD`.
+
+<Integrate supported conclusions and selected meaning into their natural Unit/temporal owners, retaining useful rationale and Evidence. Link a separate retained Decision record only when it qualifies under the Core retention / PRS contracts.>
 
 ## Q/R/P
-<Use the Core Q/R/P lifecycle contract. An experiment may answer a Question while leaving a residual Risk/Problem active; retain material answer/Decision trace when useful. AI review must distinguish evidence from user-owned preference. If none: `No material unresolved issues identified.`>
+<Use the Core Q/R/P lifecycle contract. An experiment may answer a Question while leaving a residual Risk/Problem active; retain the answer as ordinary Unit content and link qualifying PRS selection context when material. AI review must distinguish evidence from user-owned preference. If none: `No material unresolved issues identified.`>
 
 This template does not authorize repository edits, archive creation, commit or push.

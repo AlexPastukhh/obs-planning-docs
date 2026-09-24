@@ -104,26 +104,21 @@ Durable realization ownership is explicit in
 owner remains concise but addressably relates the folder Domain contract,
 reusable path mechanics, external window effect and whole-Slice proof boundary.
 
+<!-- Compatibility anchor: earlier references now resolve to ordinary Unit content, not a retained Decision body. -->
 <a id="dec-stl-folder-window-boundary-01"></a>
-### DEC-STL-FOLDER-WINDOW-BOUNDARY-01 — Keep folder opening separate and force a project window
+### Folder-window boundary rationale
 
-- **Status:** `ACCEPTED`.
-- **Decision:** existing-directory opening is a separate Feature/Slice from
-  file-context opening and always requests VS Code's forced-new-window folder
-  operation; it performs no delayed refocus of the previous window.
-- **Addresses:** workspace replacement/focus ambiguity and accidental mixing
-  of directory opening with file-tab or ZIP-publication semantics.
-- **Rationale:** a folder creates a project-window result with different
-  validation and host effects; caller-selected window policy would weaken that
-  invariant.
-- **Integrated Into:** [`FBS-STL-FOLDER-03`](#fbs-stl-folder-03),
-  [`BR-STL-FOLDER-03`](#br-stl-folder-03),
-  [`BR-STL-FOLDER-04`](#br-stl-folder-04) and
-  [SL-STL-OPEN-FOLDER-WINDOW](../slices/open-linked-folder-window.md).
-- **Reconsider when:** the application deliberately supports in-place
-  workspace replacement as another explicit user result.
-- **Review provenance:** accepted conclusions from the former folder-opening
-  design-selection record, revalidated by the SDS audit on 2026-09-23.
+Existing-directory opening is a separate Feature/Slice from file-context opening and always requests VS Code's forced-new-window folder operation; it performs no delayed refocus of the previous window.
+
+A folder creates a project-window result with different validation and host effects; caller-selected window policy would weaken that invariant.
+
+This boundary addresses workspace replacement/focus ambiguity and accidental mixing of directory opening with file-tab or ZIP-publication semantics.
+
+Related requirements and realization: [`FBS-STL-FOLDER-03`](#fbs-stl-folder-03), [`BR-STL-FOLDER-03`](#br-stl-folder-03), [`BR-STL-FOLDER-04`](#br-stl-folder-04) and [SL-STL-OPEN-FOLDER-WINDOW](../slices/open-linked-folder-window.md).
+
+Revisit this boundary when the application deliberately supports in-place workspace replacement as another explicit user result.
+
+Source context: accepted conclusions from the former folder-opening design-selection record, revalidated by the SDS audit on 2026-09-23.
 
 ## RU-FEAT-06 — Evolution Impact
 

@@ -1,3 +1,4 @@
+<a id="tm-application-definition"></a>
 # TM-APPLICATION-DEFINITION — Application Definition
 
 Module ID: `TM-APPLICATION-DEFINITION`
@@ -302,6 +303,8 @@ Unit presence/disposition mechanics follow the Core [`Unit Applicability / Mater
 | `RU-APP-04` | representative examples materially clarify user/value context, Benefit manifestation/closure or one or more Benefit Responsibility Boundary / Constraints | `OMITTED` when Benefits and their boundaries are already understandable without a representative RLS; the Unit remains present |
 | `RU-APP-07` | feasibility can change concept, one or more Benefit Responsibility Boundary / Constraints, Benefit credibility or build/adapt/integrate position | `OMITTED` when feasibility is routine/trusted and cannot materially change selected Application meaning |
 
+<a id="application-concept"></a>
+<!-- Compatibility anchor: existing Application Identity references address this Application Concept Unit. -->
 <a id="application-definition-identity"></a>
 ### Application Concept
 
@@ -321,10 +324,12 @@ The stable Application name/ID belongs in the document/Target heading, and Need 
 
 Concept Summary owns only the concise whole-application explanation and selected contribution. Refer to `AB-*` for detailed User Need, User Receives and Benefit-local boundaries; do not repeat their catalog or constraints. Refer to `RU-APP-02` for alternative-route justification, `RU-APP-04` for representative paths, and `RU-APP-07` for feasibility.
 
+<a id="existing-solutions--market--reference-research"></a>
 ### Existing Solutions / Market / Reference Research
 
 Keep proportional evidence and interpretation about build/buy/adapt/integrate/hybrid alternatives only when it can change the Application Definition. Reference products are Evidence/Proposal inputs, not semantic authority.
 
+<a id="application-benefits"></a>
 ### Application Benefits
 
 `RU-APP-03` owns independently addressable `AB-*` items. Minimum exact representation:
@@ -372,6 +377,7 @@ Plain `AB-*` references remain valid when the whole Benefit is relevant or finer
 
 One Benefit may appear in several Representative RLS; one Representative RLS may demonstrate several Benefits. RLS does not own Benefit semantics or the Benefit's Responsibility Boundary / Constraints.
 
+<a id="representative-real-life-scenarios"></a>
 ### Representative Real-Life Scenarios
 
 `RU-APP-04` owns literal representative examples whose primary purpose is to make one or several Application Benefits understandable through concrete real-life situations. It does not own Application Scenario journey authority.
@@ -410,6 +416,7 @@ Benefit markers
 
 RLS must not decompose Target internals into Feature behavior, Screens, Domain objects, internal Application handoffs, architecture or exact mechanisms. Those belong to downstream Target Modules / realization owners.
 
+<a id="realization-feasibility"></a>
 ### Realization Feasibility
 
 Use proportional Evidence about representative runtime feasibility, persistence/integration/consistency/performance/operability/cost only when it can change Application meaning. Literal mechanism selection remains downstream/Exact unless the mechanism itself becomes selected durable semantic meaning.

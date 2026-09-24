@@ -558,7 +558,7 @@
       "ownerRef": {
         "semanticId": "LENS-APPLICATION-BOUNDARY-FEASIBILITY",
         "path": "planning/documentation/idtspe-methodology/active/profiles/sds/lenses/reusable/LENS-APPLICATION-BOUNDARY-FEASIBILITY.md",
-        "anchor": "lens-application-boundary-feasibility-application-definition-benefits-boundary-feasibility",
+        "anchor": "lens-application-boundary-feasibility",
         "why": "Concrete Lens Model semantics selected by this card; shared Meta-Model/registry/port references come from included commands.",
         "role": "PRIMARY_OWNER",
         "readMode": "REQUIRED"
@@ -587,7 +587,7 @@
       "ownerRef": {
         "semanticId": "LENS-DOMAIN-MODELING-DDD",
         "path": "planning/documentation/idtspe-methodology/active/profiles/sds/lenses/reusable/LENS-DOMAIN-MODELING-DDD.md",
-        "anchor": "lens-domain-modeling-ddd-domain-modeling-ddd",
+        "anchor": "lens-domain-modeling-ddd",
         "why": "Concrete Lens Model semantics selected by this card; shared Meta-Model/registry/port references come from included commands.",
         "role": "PRIMARY_OWNER",
         "readMode": "REQUIRED"
@@ -616,7 +616,7 @@
       "ownerRef": {
         "semanticId": "LENS-IMPLEMENTATION-REQUIREMENTS-DISCOVERY",
         "path": "planning/documentation/idtspe-methodology/active/profiles/sds/lenses/reusable/LENS-IMPLEMENTATION-REQUIREMENTS-DISCOVERY.md",
-        "anchor": "lens-implementation-requirements-discovery-owner-local-implementation-requirements-discovery",
+        "anchor": "lens-implementation-requirements-discovery",
         "why": "Concrete Lens Model semantics selected by this card; shared Meta-Model/registry/port references come from included commands.",
         "role": "PRIMARY_OWNER",
         "readMode": "REQUIRED"
@@ -634,7 +634,7 @@
       "description": "complexity/implementation economy/evolution-safe simplification is material",
       "context": "Activate when a Domain/Slice/proof/UI/Shared/architecture candidate contains material structural choice, especially when one or more of these are present: ``text several abstraction layers / wrappers / interfaces long orchestration or call chain many owners/entities for one useful result repeated mappings or representation changes several state owners several files/artifacts for one small responsibility multiple test layers/fixtures for the same property speculative extension seams ceremonial Domain patterns configuration/indirection that is hard to explain locally ` Also activate when a reviewer/agent has the concrete question: `text “Have we over-designed this?” “Can we implement the same thing with fewer moving parts?” “Can we remove a layer without making the next known change worse?” ``",
       "result": "semantic selectors over selected Domain/Slice/proof/UI/Shared/architecture Result Units whose implementation cost/complexity is material",
-      "essence": "Search for a **simpler, cheaper and easier-to-understand way to realize the same accepted meaning** without creating a predictable evolution/change problem. This Lens is deliberately different from the WEUC Lens: ``text WEUC Lens / L5 = how architecture/Target structure behaves under current + future change; which seams/paths/global architecture positions are justified Simplicity Lens = whether the current candidate can be made materially simpler now while still respecting accepted evolution constraints from current map/Decision owners and any L5-derived meaning accepted through Core Finding Disposition `` The Lens is not “minimize file count” or “remove abstractions by default”. It asks whether each abstraction, owner, hop, mapping, test layer or mechanism **earns its cost**.",
+      "essence": "Search for a **simpler, cheaper and easier-to-understand way to realize the same accepted meaning** without creating a predictable evolution/change problem. This Lens is deliberately different from the WEUC Lens: ``text WEUC Lens / L5 = how architecture/Target structure behaves under current + future change; which seams/paths/global architecture positions are justified Simplicity Lens = whether the current candidate can be made materially simpler now while still respecting accepted evolution constraints from current map and natural Unit owners (with applicable PRS selection references) and any L5-derived meaning accepted through Core Finding Disposition `` The Lens is not “minimize file count” or “remove abstractions by default”. It asks whether each abstraction, owner, hop, mapping, test layer or mechanism **earns its cost**.",
       "sources": [
         "planning/documentation/idtspe-methodology/active/profiles/sds/registries/LENS-REGISTRY.md",
         "planning/documentation/idtspe-methodology/active/profiles/sds/lenses/frequent/LENS-SIMPLICITY-IMPLEMENTATION-ECONOMY.md"
@@ -645,7 +645,7 @@
       "ownerRef": {
         "semanticId": "LENS-SIMPLICITY-IMPLEMENTATION-ECONOMY",
         "path": "planning/documentation/idtspe-methodology/active/profiles/sds/lenses/frequent/LENS-SIMPLICITY-IMPLEMENTATION-ECONOMY.md",
-        "anchor": "lens-simplicity-implementation-economy-simplicity-implementation-economy-evolution-safe-simplification",
+        "anchor": "lens-simplicity-implementation-economy",
         "why": "Concrete Lens Model semantics selected by this card; shared Meta-Model/registry/port references come from included commands.",
         "role": "PRIMARY_OWNER",
         "readMode": "REQUIRED"
@@ -674,7 +674,7 @@
       "ownerRef": {
         "semanticId": "LENS-SLICE-VERTICALITY-INTEGRATION",
         "path": "planning/documentation/idtspe-methodology/active/profiles/sds/lenses/reusable/LENS-SLICE-VERTICALITY-INTEGRATION.md",
-        "anchor": "lens-slice-verticality-integration-vertical-slice-integration",
+        "anchor": "lens-slice-verticality-integration",
         "why": "Concrete Lens Model semantics selected by this card; shared Meta-Model/registry/port references come from included commands.",
         "role": "PRIMARY_OWNER",
         "readMode": "REQUIRED"
@@ -703,7 +703,7 @@
       "ownerRef": {
         "semanticId": "LENS-TERMS-UBIQUITOUS-LANGUAGE",
         "path": "planning/documentation/idtspe-methodology/active/profiles/sds/lenses/reusable/LENS-TERMS-UBIQUITOUS-LANGUAGE.md",
-        "anchor": "lens-terms-ubiquitous-language-terms-ubiquitous-language",
+        "anchor": "lens-terms-ubiquitous-language",
         "why": "Concrete Lens Model semantics selected by this card; shared Meta-Model/registry/port references come from included commands.",
         "role": "PRIMARY_OWNER",
         "readMode": "REQUIRED"
@@ -732,7 +732,7 @@
       "ownerRef": {
         "semanticId": "LENS-UI-SPATIAL-FRONTEND-REALIZATION",
         "path": "planning/documentation/idtspe-methodology/active/profiles/sds/lenses/reusable/LENS-UI-SPATIAL-FRONTEND-REALIZATION.md",
-        "anchor": "lens-ui-spatial-frontend-realization-screen-ui-frontend-realization",
+        "anchor": "lens-ui-spatial-frontend-realization",
         "why": "Concrete Lens Model semantics selected by this card; shared Meta-Model/registry/port references come from included commands.",
         "role": "PRIMARY_OWNER",
         "readMode": "REQUIRED"
@@ -762,7 +762,7 @@
       "ownerRef": {
         "semanticId": "LENS-WORKSPACE-EVOLUTION-ARCHITECTURE",
         "path": "planning/documentation/idtspe-methodology/active/profiles/sds/lenses/frequent/LENS-WORKSPACE-EVOLUTION-ARCHITECTURE.md",
-        "anchor": "lens-workspace-evolution-architecture-evolution-impact-change-isolation",
+        "anchor": "lens-workspace-evolution-architecture",
         "why": "Concrete Lens Model semantics selected by this card; shared Meta-Model/registry/port references come from included commands.",
         "role": "PRIMARY_OWNER",
         "readMode": "REQUIRED"
@@ -1163,10 +1163,10 @@
       "scope": "Core",
       "label": "Review Finding Analysis",
       "actionLabel": "Review Finding Analysis",
-      "description": "optional bounded evidence-backed Finding discovery and diagnosis before candidate correction work; two RU-RFIND-* Units.",
-      "context": "optional bounded evidence-backed Finding discovery and diagnosis before candidate correction work; two RU-RFIND-* Units.",
-      "result": "optional bounded evidence-backed Finding discovery and diagnosis before candidate correction work; two RU-RFIND-* Units.",
-      "essence": "optional bounded evidence-backed Finding discovery and diagnosis before candidate correction work; two RU-RFIND-* Units.",
+      "description": "optional bounded evidence-backed Finding analysis; one RU-RFIND-01 Collection Unit pairs each observation with its diagnosis before any adjacent Core Proposal.",
+      "context": "optional bounded evidence-backed Finding analysis; one RU-RFIND-01 Collection Unit pairs each observation with its diagnosis before any adjacent Core Proposal.",
+      "result": "optional bounded evidence-backed Finding analysis; one RU-RFIND-01 Collection Unit pairs each observation with its diagnosis before any adjacent Core Proposal.",
+      "essence": "optional bounded evidence-backed Finding analysis; one RU-RFIND-01 Collection Unit pairs each observation with its diagnosis before any adjacent Core Proposal.",
       "sources": [
         "planning/documentation/idtspe-methodology/active/idtspe-core/target-modules/TARGET-MODULE-REGISTRY.md",
         "planning/documentation/idtspe-methodology/active/idtspe-core/target-modules/TM-REVIEW-FINDINGS.md"
@@ -1314,7 +1314,7 @@
       "ownerRef": {
         "semanticId": "TM-APPLICATION-DEFINITION",
         "path": "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-APPLICATION-DEFINITION.md",
-        "anchor": "tm-application-definition-application-definition",
+        "anchor": "tm-application-definition",
         "why": "Concrete Target Module Model semantics selected by this card; shared Meta-Model/registry/port references come from included commands.",
         "role": "PRIMARY_OWNER",
         "readMode": "REQUIRED"
@@ -1344,7 +1344,7 @@
       "ownerRef": {
         "semanticId": "TM-DOMAIN-DISCOVERY",
         "path": "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-DOMAIN-DISCOVERY.md",
-        "anchor": "tm-domain-discovery-transient-domain-discovery",
+        "anchor": "tm-domain-discovery",
         "why": "Concrete Target Module Model semantics selected by this card; shared Meta-Model/registry/port references come from included commands.",
         "role": "PRIMARY_OWNER",
         "readMode": "REQUIRED"
@@ -1373,7 +1373,7 @@
       "ownerRef": {
         "semanticId": "TM-DOMAIN-OWNER",
         "path": "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-DOMAIN-OWNER.md",
-        "anchor": "tm-domain-owner-durable-domain-semantic-owner",
+        "anchor": "tm-domain-owner",
         "why": "Concrete Target Module Model semantics selected by this card; shared Meta-Model/registry/port references come from included commands.",
         "role": "PRIMARY_OWNER",
         "readMode": "REQUIRED"
@@ -1402,7 +1402,7 @@
       "ownerRef": {
         "semanticId": "TM-EVOLUTION-STEP",
         "path": "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-EVOLUTION-STEP.md",
-        "anchor": "tm-evolution-step-evolution-step",
+        "anchor": "tm-evolution-step",
         "why": "Concrete Target Module Model semantics selected by this card; shared Meta-Model/registry/port references come from included commands.",
         "role": "PRIMARY_OWNER",
         "readMode": "REQUIRED"
@@ -1431,7 +1431,7 @@
       "ownerRef": {
         "semanticId": "TM-EVOLUTION-STEPS-MAP",
         "path": "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-EVOLUTION-STEPS-MAP.md",
-        "anchor": "tm-evolution-steps-map-evolution-steps-map",
+        "anchor": "tm-evolution-steps-map",
         "why": "Concrete Target Module Model semantics selected by this card; shared Meta-Model/registry/port references come from included commands.",
         "role": "PRIMARY_OWNER",
         "readMode": "REQUIRED"
@@ -1460,7 +1460,7 @@
       "ownerRef": {
         "semanticId": "TM-FEATURE",
         "path": "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-FEATURE.md",
-        "anchor": "tm-feature-feature-behavioral-owner",
+        "anchor": "tm-feature",
         "why": "Concrete Target Module Model semantics selected by this card; shared Meta-Model/registry/port references come from included commands.",
         "role": "PRIMARY_OWNER",
         "readMode": "REQUIRED"
@@ -1489,7 +1489,7 @@
       "ownerRef": {
         "semanticId": "TM-IMPLEMENTATION-SLICE",
         "path": "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-IMPLEMENTATION-SLICE.md",
-        "anchor": "tm-implementation-slice-slice-discovery-non-persistent-slice-planning",
+        "anchor": "tm-implementation-slice",
         "why": "Concrete Target Module Model semantics selected by this card; shared Meta-Model/registry/port references come from included commands.",
         "role": "PRIMARY_OWNER",
         "readMode": "REQUIRED"
@@ -1518,7 +1518,7 @@
       "ownerRef": {
         "semanticId": "TM-PRACTICAL-TEST",
         "path": "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-PRACTICAL-TEST.md",
-        "anchor": "tm-practical-test-implemented-practical-evidence-acceptance",
+        "anchor": "tm-practical-test",
         "why": "Concrete Target Module Model semantics selected by this card; shared Meta-Model/registry/port references come from included commands.",
         "role": "PRIMARY_OWNER",
         "readMode": "REQUIRED"
@@ -1547,7 +1547,7 @@
       "ownerRef": {
         "semanticId": "TM-PROTOTYPE",
         "path": "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-PROTOTYPE.md",
-        "anchor": "tm-prototype-prototype-experiment",
+        "anchor": "tm-prototype",
         "why": "Concrete Target Module Model semantics selected by this card; shared Meta-Model/registry/port references come from included commands.",
         "role": "PRIMARY_OWNER",
         "readMode": "REQUIRED"
@@ -1576,7 +1576,7 @@
       "ownerRef": {
         "semanticId": "TM-SCENARIO-PLANNING",
         "path": "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-SCENARIO-PLANNING.md",
-        "anchor": "tm-scenario-planning-scenario-journey-composition",
+        "anchor": "tm-scenario-planning",
         "why": "Concrete Target Module Model semantics selected by this card; shared Meta-Model/registry/port references come from included commands.",
         "role": "PRIMARY_OWNER",
         "readMode": "REQUIRED"
@@ -1605,7 +1605,7 @@
       "ownerRef": {
         "semanticId": "TM-SCREEN",
         "path": "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-SCREEN.md",
-        "anchor": "tm-screen-screen-spatial-owner",
+        "anchor": "tm-screen",
         "why": "Concrete Target Module Model semantics selected by this card; shared Meta-Model/registry/port references come from included commands.",
         "role": "PRIMARY_OWNER",
         "readMode": "REQUIRED"
@@ -1634,7 +1634,7 @@
       "ownerRef": {
         "semanticId": "TM-SHARED-IMPLEMENTATION-CAPABILITY",
         "path": "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-SHARED-IMPLEMENTATION-CAPABILITY.md",
-        "anchor": "tm-shared-implementation-capability-durable-shared-implementation-capability",
+        "anchor": "tm-shared-implementation-capability",
         "why": "Concrete Target Module Model semantics selected by this card; shared Meta-Model/registry/port references come from included commands.",
         "role": "PRIMARY_OWNER",
         "readMode": "REQUIRED"
@@ -1663,7 +1663,7 @@
       "ownerRef": {
         "semanticId": "TM-SLICE-OWNER",
         "path": "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-SLICE-OWNER.md",
-        "anchor": "tm-slice-owner-durable-end-to-end-slice-owner",
+        "anchor": "tm-slice-owner",
         "why": "Concrete Target Module Model semantics selected by this card; shared Meta-Model/registry/port references come from included commands.",
         "role": "PRIMARY_OWNER",
         "readMode": "REQUIRED"

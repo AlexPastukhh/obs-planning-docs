@@ -1,4 +1,9 @@
+<a id="tm-shared-implementation-capability"></a>
 # TM-SHARED-IMPLEMENTATION-CAPABILITY — Durable Shared Implementation Capability
+
+> Semantic Owner Dependencies
+> - `CONTEXTUALIZES` [Decision record retention](../../../idtspe-core/resolution/proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md#resolution-decision-retention) — `RESOLUTION.PROPOSAL-DECISION-LIFECYCLE`.
+> - `CONTEXTUALIZES` [PRS Decision admission / exit](../../../idtspe-core/target-modules/TM-PLANNING-RESOLUTION-STATE.md#ru-prs-02--tracked-decisions) — `RESOLUTION.CARRY-FORWARD`.
 
 Module ID: `TM-SHARED-IMPLEMENTATION-CAPABILITY`
 
@@ -42,7 +47,7 @@ Reject extraction for common utility dumping, superficial duplication, one-Slice
 <a id="sds-commodity-shared-no-owner"></a>
 ## Commodity shared no-owner gate
 
-Shared reuse alone does not justify a Shared semantic owner. When the realization is **commodity/obvious**, has **low independent complexity**, and has **non-custom semantics**, prefer no Shared Capability owner even if several Slices use it. Examples: a simple string parser, thin wrapper, routine helper or library/framework feature. Form a Shared owner only when it has independent durable responsibility such as custom policy/invariant, nontrivial failure/recovery, compatibility/evolution boundary, security/operability guarantee or applicability/bypass policy. Preserve the natural `IR-SLICE-*` owner and use an adjacent selected implementation realization reference. One optional retained Decision may coordinate a common selected library/module for several Slice requirements, for as long as the USER finds it useful; this is a selection trace, never a surrogate Shared owner.
+Shared reuse alone does not justify a Shared semantic owner. When the realization is **commodity/obvious**, has **low independent complexity**, and has **non-custom semantics**, prefer no Shared Capability owner even if several Slices use it. Examples: a simple string parser, thin wrapper, routine helper or library/framework feature. Form a Shared owner only when it has independent durable responsibility such as custom policy/invariant, nontrivial failure/recovery, compatibility/evolution boundary, security/operability guarantee or applicability/bypass policy. Preserve the natural `IR-SLICE-*` owner and use an adjacent selected implementation realization reference. Slices may reference the same selected library/module. Any separately retained coordination Decision follows the linked Core retention/PRS contracts; it is never a surrogate Shared owner.
 
 ## Source Contract
 
@@ -112,6 +117,7 @@ Each material Unit below inherits the generic [`Unit Applicability Envelope`](..
 2. **Unit Work — `RU-SHARED-04`** — produce the Shared-local reverse navigation/revalidation projection under that shared contract.
 3. **Closing Unit Checkpoint — `RU-SHARED-04`** — validate Shared-local revalidation/handoff needs and the shared projection-contract guards.
 
+<a id="ru-shared-01--shared-capability-contract"></a>
 ### RU-SHARED-01 — Shared Capability Contract
 
 Own proportionally:
@@ -125,6 +131,7 @@ Own proportionally:
 
 Exact class/method/framework mechanism is not Target authority unless separately contractual.
 
+<a id="ru-shared-02--consumer-requirement-bindings"></a>
 ### RU-SHARED-02 — Consumer Requirement Bindings
 
 Canonical relation:
@@ -158,6 +165,7 @@ Participation:
 
 Do not require a closed participation enum. One capability may have different participation shapes across bindings while its semantic responsibility remains coherent. Do not copy canonical Slice Requirement prose here.
 
+<a id="ru-shared-03--shared-capability-implementation-requirements"></a>
 ### RU-SHARED-03 — Shared Capability Implementation Requirements
 
 Own only durable constraints naturally owned by the Shared Capability:
@@ -172,6 +180,7 @@ Do not duplicate consumer `IR-SLICE-*`. Use the shared [`Requirement Classificat
 Shared Implementation Requirement | Type | Plain implementation requirement | Realizes / protects | Related expected errors | QRPE / Examples
 ```
 
+<a id="ru-shared-04--evolution-impact"></a>
 ### RU-SHARED-04 — Evolution Impact
 
 This Shared owner-local Unit specializes the shared [Current-Owner Evolution Impact Projection Contract](../profile-contracts/evolution/CURRENT-OWNER-EVOLUTION-IMPACT-PROJECTION.md). Its local affected surface is **Shared capability/consumer bindings**. The shared contract owns inclusion threshold across candidate/selected/conditional/deferred Steps, truthful planning-position projection, depth/no-copy rules and post-realization removal from active future impact. This Target Module owns only the Unit identity, Shared owner-specific materiality test and local revalidation/handoff use.

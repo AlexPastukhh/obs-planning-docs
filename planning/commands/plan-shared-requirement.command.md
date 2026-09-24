@@ -50,7 +50,7 @@ Scope: historical invocation alias redirected to current IDTSPE/SDS authority; h
     {
       "responsibilityId": "LENS-IMPLEMENTATION-REQUIREMENTS-DISCOVERY",
       "path": "planning/documentation/idtspe-methodology/active/profiles/sds/lenses/reusable/LENS-IMPLEMENTATION-REQUIREMENTS-DISCOVERY.md",
-      "anchor": "lens-implementation-requirements-discovery-owner-local-implementation-requirements-discovery",
+      "anchor": "lens-implementation-requirements-discovery",
       "why": "Concrete Lens Model semantics selected by this command; shared port/registry/Meta-Model references are inherited from included commands.",
       "role": "PRIMARY_OWNER",
       "readMode": "REQUIRED"

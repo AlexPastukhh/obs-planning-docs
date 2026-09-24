@@ -2,6 +2,8 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
+import os from 'node:os';
+import {semanticOwnerRef} from '../build-chat-command-palette.mjs';
 import {fileURLToPath} from 'node:url';
 import {createRequire} from 'node:module';
 const require=createRequire(import.meta.url);
@@ -38,6 +40,46 @@ function canonicalMethodologyUcIds(){
   return ids;
 }
 function exactCaseExists(rel){let current=repoRoot;for(const segment of rel.split('/')){if(!fs.existsSync(current))return false;const names=fs.readdirSync(current);if(!names.includes(segment))return false;current=path.join(current,segment)}return fs.existsSync(current)}
+
+test('generated component ownerRefs select their declared semantic identity, including late anchors',t=>{
+  const root=fs.mkdtempSync(path.join(os.tmpdir(),'obs-owner-anchor-'));
+  const file=path.join(root,'owner.md');
+  t.after(()=>{if(fs.existsSync(file))fs.unlinkSync(file);fs.rmdirSync(root);});
+  fs.writeFileSync(file,'<a id="unrelated-section"></a>\n# TM-DEMO — Owner\n'+'\n'.repeat(20)+'<a id="tm-demo"></a>\n');
+  assert.equal(semanticOwnerRef('owner.md','TM-DEMO','TARGET_MODULE',root).anchor,'tm-demo');
+  for(const source of [
+    '# TM-DEMO\n',
+    '<a id="unrelated-section"></a>\n# TM-DEMO\n',
+    '<!-- <a id="tm-demo"></a> -->\n# TM-DEMO\n',
+    '```md\n<a id="tm-demo"></a>\n```\n# TM-DEMO\n',
+    '<a id="tm-demo"></a>\n<a id="tm-demo"></a>\n'
+  ]){
+    fs.writeFileSync(file,source);
+    assert.throws(()=>semanticOwnerRef('owner.md','TM-DEMO','TARGET_MODULE',root),/Expected one explicit component owner anchor/);
+  }
+});
+
+test('generated card explanations exclude navigation anchor markup',()=>{
+  for(const seed of ['use-cases.json','semantic-components.json']){
+    const items=JSON.parse(fs.readFileSync(path.join(moduleRoot,'seed',seed),'utf8')).items;
+    for(const item of items)for(const field of ['description','trigger','context','result','essence']){
+      assert.doesNotMatch(item[field]||'',/<a\b[^>]*>/i,`${seed}: ${item.id}.${field}`);
+    }
+  }
+});
+
+test('every generated TM/Lens card points to its explicit component owner anchor',()=>{
+  const components=JSON.parse(fs.readFileSync(path.join(moduleRoot,'seed/semantic-components.json'),'utf8')).items;
+  for(const component of components.filter(item=>item.kind==='TARGET_MODULE'||item.kind==='LENS')){
+    const ref=component.ownerRef;
+    assert.ok(ref,component.id);
+    assert.equal(ref.semanticId,component.id);
+    assert.equal(ref.anchor,component.id.toLowerCase());
+    assert.ok(exactCaseExists(ref.path),ref.path);
+    const declarations=[...read(ref.path).matchAll(/<a\s+id=["']([^"']+)["']\s*>\s*<\/a>/gi)];
+    assert.equal(declarations.filter(match=>match[1]===ref.anchor).length,1,`${ref.path}#${ref.anchor}`);
+  }
+});
 
 test('generated Use-Case seed contains exactly the current methodology Use Cases mapped by Registry Map',()=>{const expected=canonicalMethodologyUcIds(),actual=useCases.map((u)=>u.id);assert.equal(new Set(actual).size,actual.length);assert.deepEqual([...actual].sort(),[...expected].sort());assert.equal(actual.length,19);assert.equal(actual.filter((id)=>id.startsWith('UC-DOC-')).length,12);assert.equal(actual.filter((id)=>id.startsWith('UC-IDTSPE-')).length,7);for(const id of actual)assert.ok(id.startsWith('UC-DOC-')||id.startsWith('UC-IDTSPE-'),`${id}: project/profile planning UC leaked into methodology projection`)});
 
@@ -378,7 +420,7 @@ test('Unit model is resolution-centric and keeps Contextual Unit result destinat
   assert.match(unit,/Contextual Unit[\s\S]*Result Destination/);
   assert.match(unit,/Unit-centric does not mean Unit-exclusive/);
   assert.match(unit,/material Proposal selection has Decision semantics/);
-  assert.match(unit,/explicit\/durable Decision trace is proportional/);
+  assert.match(unit,/explicit\/durable Decision record follows the Core retention contract/);
 });
 
 test('Proposal lifecycle owns semantic impact while RE categories remain Finding-only',()=>{

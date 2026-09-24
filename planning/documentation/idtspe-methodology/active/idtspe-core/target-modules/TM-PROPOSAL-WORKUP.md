@@ -110,6 +110,7 @@ Contextual completion:
   its candidate Target Instance supplies that body; this workup only links it.
 ```
 
+<a id="artifact--representation-contract"></a>
 ## Artifact / representation contract
 
 ```text

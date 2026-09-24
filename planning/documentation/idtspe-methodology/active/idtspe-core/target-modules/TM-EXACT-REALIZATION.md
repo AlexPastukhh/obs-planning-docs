@@ -1,6 +1,10 @@
 <a id="tm-exact-realization"></a>
 # TM-EXACT-REALIZATION — Exact Realization / Integration
 
+> Semantic Owner Dependencies
+> - `CONTEXTUALIZES` [Decision record retention](../resolution/proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md#resolution-decision-retention) — `RESOLUTION.PROPOSAL-DECISION-LIFECYCLE`.
+> - `CONTEXTUALIZES` [PRS Decision admission / exit](TM-PLANNING-RESOLUTION-STATE.md#ru-prs-02--tracked-decisions) — `RESOLUTION.CARRY-FORWARD`.
+
 Entry Point: `tm.exact.realization`
 Role: generic Core primary/supporting Target Module
 Target family / archetype: `EXACT_REALIZATION`
@@ -140,7 +144,7 @@ Concrete Questions/Problems/Proposals/Q/R/P/Decisions/Evidence remain generic Co
 > Responsibility: `TWU.UNIT-CONTRACT`
 > Owner: [Target Work Unit contract](../runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md#twu-unit-contract)
 
-Each declared Result Unit is a Module-defined Unit Definition under the canonical Target Work Unit contract. This concrete Module owns only its Target-family-specific Unit definitions/deltas; generic simple/composite/runtime projection and Core State semantics remain with their Core owners. A material Proposal selection has Decision semantics, while a separate Decision trace is retained according to user choice or material coordination/revalidation/dependency value.
+Each declared Result Unit is a Module-defined Unit Definition under the canonical Target Work Unit contract. This concrete Module owns only its Target-family-specific Unit definitions/deltas; generic simple/composite/runtime projection and Core State semantics remain with their Core owners. A material Proposal selection has Core Decision semantics. Any separate record follows the linked Core retention contract; this Target Module owns only its result shape, not another Decision lifecycle.
 
 ## Target Step-Result Contract
 

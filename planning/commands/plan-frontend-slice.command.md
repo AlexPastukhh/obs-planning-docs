@@ -41,7 +41,7 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
     {
       "responsibilityId": "TM-IMPLEMENTATION-SLICE",
       "path": "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-IMPLEMENTATION-SLICE.md",
-      "anchor": "tm-implementation-slice-slice-discovery-non-persistent-slice-planning",
+      "anchor": "tm-implementation-slice",
       "why": "Provides the concrete slice model that hosts frontend realization planning; the frontend Lens remains supporting guidance.",
       "role": "PRIMARY_OWNER",
       "readMode": "REQUIRED"

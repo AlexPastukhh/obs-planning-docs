@@ -73,7 +73,7 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
     {
       "responsibilityId": "TWU.SUBJECT-REFERENCE",
       "path": "planning/documentation/idtspe-methodology/active/idtspe-core/runtime/target-work/TARGET-WORK-SUBJECT-REFERENCE-CONTRACT.md",
-      "anchor": "canonical-target-work-subject-reference",
+      "anchor": "target-work-subject-reference",
       "why": "Provides stable reference to the exact Unit/Collection/Slot subject being resolved.",
       "role": "SUPPORTING_CONTRACT",
       "readMode": "REQUIRED"

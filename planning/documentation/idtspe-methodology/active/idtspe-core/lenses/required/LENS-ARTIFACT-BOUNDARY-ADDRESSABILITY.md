@@ -1,6 +1,10 @@
 <a id="lens-artifact-boundary-addressability"></a>
 # LENS-ARTIFACT-BOUNDARY-ADDRESSABILITY — Documentation / Representation / Artifact Boundary
 
+> Semantic Owner Dependencies
+> - `CONTEXTUALIZES` [Decision record retention](../../resolution/proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md#resolution-decision-retention) — `RESOLUTION.PROPOSAL-DECISION-LIFECYCLE`.
+> - `CONTEXTUALIZES` [PRS Decision admission / exit](../../target-modules/TM-PLANNING-RESOLUTION-STATE.md#ru-prs-02--tracked-decisions) — `RESOLUTION.CARRY-FORWARD`.
+
 Lens ID: `LENS-ARTIFACT-BOUNDARY-ADDRESSABILITY`
 Working name: **Documentation / Representation Lens**
 Activation: `REQUIRED_CORE`
@@ -404,7 +408,7 @@ Names such as `SLICE-COORDINATION.md` or `PROOF-POLICY.md` are illustrative supp
 
 A coordinator may contain the complete planning residue for several small logical owners.
 
-Cross-owner proof policy is a useful boundary example: code is canonical for concrete test classes/suites/setups/fixtures/helpers, while a small supporting proof-policy artifact may be justified when several owners need one shared proof-layer, non-duplication, environment or harness policy that is not otherwise obvious. Such a representation needs an explicitly selected semantic owner (for example a scoped Decision/supporting architecture owner); it does not imply a generic Test Strategy Target. Do not persist a hand-maintained class/helper inventory merely to mirror code. A generated/reference topology view is acceptable only when the cross-owner relation is independently large/reused and the representation has value beyond shadowing implementation.
+Cross-owner proof policy is a useful boundary example: code is canonical for concrete test classes/suites/setups/fixtures/helpers, while a small supporting proof-policy artifact may be justified when several owners need one shared proof-layer, non-duplication, environment or harness policy that is not otherwise obvious. Such a representation needs an explicitly selected semantic owner (for example a resolved natural supporting-policy Unit (with any retained selection record referenced from PRS)); it does not imply a generic Test Strategy Target. Do not persist a hand-maintained class/helper inventory merely to mirror code. A generated/reference topology view is acceptable only when the cross-owner relation is independently large/reused and the representation has value beyond shadowing implementation.
 
 Therefore:
 

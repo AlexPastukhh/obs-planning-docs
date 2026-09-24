@@ -1,3 +1,4 @@
+<a id="lens-domain-modeling-ddd"></a>
 # LENS-DOMAIN-MODELING-DDD — Domain Modeling / DDD
 
 Lens ID: `LENS-DOMAIN-MODELING-DDD`

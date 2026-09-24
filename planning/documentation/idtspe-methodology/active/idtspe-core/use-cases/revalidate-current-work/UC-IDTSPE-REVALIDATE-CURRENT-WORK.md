@@ -13,6 +13,7 @@ Existing working/accepted meaning may no longer be reliable because a Finding, E
 
 The narrowest affected semantic subject and relevant methodology-use surface are rechecked; stale/dependent Unit Resolution, Result Content or broader owner meaning is invalidated/reopened only where warranted; unaffected accepted meaning remains stable; and a precise re-entry route is known.
 
+<a id="uc-idtspe-revalidate-current-work-process"></a>
 ## Process
 
 > Semantic Owner Dependency

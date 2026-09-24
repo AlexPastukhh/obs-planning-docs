@@ -46,7 +46,7 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
     {
       "responsibilityId": "IDTSPE.PASS-TRACE",
       "path": "planning/documentation/idtspe-methodology/active/idtspe-core/runtime/PASS-TRACE-AND-VISIBILITY-CONTRACT.md",
-      "anchor": "3-trace-contract",
+      "anchor": "idtspe-pass-trace-contract",
       "why": "Refines the already-required P-02 Trace Contract with an explicit visibility/persistence preference; it does not create another trace.",
       "role": "PRIMARY_OWNER",
       "readMode": "REQUIRED"

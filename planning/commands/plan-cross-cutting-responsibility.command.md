@@ -49,7 +49,7 @@ Scope: historical invocation alias redirected to current IDTSPE/SDS authority; h
     {
       "responsibilityId": "TM-SHARED-IMPLEMENTATION-CAPABILITY",
       "path": "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-SHARED-IMPLEMENTATION-CAPABILITY.md",
-      "anchor": "tm-shared-implementation-capability-durable-shared-implementation-capability",
+      "anchor": "tm-shared-implementation-capability",
       "why": "Concrete Target Module Model semantics selected by this command; shared port/registry/Meta-Model references are inherited from included commands.",
       "role": "PRIMARY_OWNER",
       "readMode": "REQUIRED"

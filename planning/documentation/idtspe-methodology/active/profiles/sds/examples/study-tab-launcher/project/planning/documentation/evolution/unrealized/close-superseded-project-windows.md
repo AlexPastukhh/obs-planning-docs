@@ -213,23 +213,24 @@ consumer bindings and current project token meaning remain unchanged. Recheck
 ingress isolation, token namespaces, coordinator ownership and disposal under
 the added load; do not make succession a third current consumer binding.
 
+<!-- Compatibility anchor: earlier Decision references now resolve to ordinary future Unit content, not a retained Decision body. -->
 <a id="dec-stl-succession-shared-boundary-01"></a>
-**Decision `DEC-STL-SUCCESSION-SHARED-BOUNDARY-01 — Keep succession outside
-the prepared-handoff Shared contract`.**
+#### Shared capability boundary rationale
 
-- Status: `ACCEPTED`.
-- Addresses: whether reusing the same loopback server requires replacing
-  `SH-STL-PREPARED-PROJECT-HANDOFF`.
-- Decision: the new succession Slice owns registration/callback semantics; the
-  existing Shared capability is revalidated but not replaced.
-- Rationale: process/port reuse is implementation topology, while source
-  arrival/focus/redemption and post-open cross-window retirement have different
-  semantic consumers and lifecycle.
-- Integrated Into: Target Slice Body, this Shared Impact and `RU-EVO-04`.
-- Reconsider When: succession must change current prepared-token meaning,
-  current consumer bindings or the durable Shared capability contract.
-- Review Provenance: resolved while reconstructing the selected Step during
-  the SDS documentation audit on 2026-09-23.
+The selected succession plan keeps registration/callback semantics in the new
+succession Slice. The existing `SH-STL-PREPARED-PROJECT-HANDOFF` capability is
+revalidated but not replaced merely because both use the same loopback server.
+
+Process/port reuse is implementation topology. Source arrival/focus/redemption
+and post-open cross-window retirement have different semantic consumers and
+lifecycle. This boundary is integrated into the Target Slice Body, this Shared
+Impact and `RU-EVO-04`.
+
+Revisit the boundary when succession must change current prepared-token
+meaning, current consumer bindings or the durable Shared capability contract.
+
+Source context: the accepted boundary was resolved while reconstructing the
+selected Step during the SDS documentation audit on 2026-09-23.
 
 Materialization consequence: none for the current Shared owner.
 
@@ -621,6 +622,7 @@ Application Definition/navigation maintenance and Step compaction follow
 realization but are not semantic materialization operations. The current
 prepared-handoff Shared owner is revalidated, not replaced.
 
+<a id="ru-evo-05--transition--proof-obligations"></a>
 ## RU-EVO-05 — Transition / Proof Obligations
 
 **Methodology:** [RU-EVO-05 Unit Definition](../../../../../../../target-modules/TM-EVOLUTION-STEP.md#ru-evo-05--transition--proof-obligations).
@@ -651,7 +653,7 @@ resolves cross-owner implementation concerns; `RU-EVO-04` names seven
 `CREATE`/`REPLACE` transitions; `RU-EVO-05` states transition/proof obligations;
 and this `RU-EVO-06` records separate planning and start conclusions. The full
 Target Feature, Domain, Slice and four Scenario Bodies are present in this Step, and
-the Shared boundary Decision is accepted. The open Shared-owner
+the selected Shared boundary is integrated in those Units. The open Shared-owner
 [`P-STL-HANDOFF-01`](../../shared/prepared-project-handoff.md#p-stl-handoff-01)
 has an explicit `TO-STL-SUCCESSION-07` proof/materialization gate; it does not
 block planning or realization start. Remote/multi-root/cross-platform case

@@ -1,5 +1,9 @@
 # IDTSPE Core Command Surface Contract
 
+> Semantic Owner Dependencies
+> - `CONTEXTUALIZES` [Decision record retention](../resolution/proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md#resolution-decision-retention) — `RESOLUTION.PROPOSAL-DECISION-LIFECYCLE`.
+> - `CONTEXTUALIZES` [PRS Decision admission / exit](../target-modules/TM-PLANNING-RESOLUTION-STATE.md#ru-prs-02--tracked-decisions) — `RESOLUTION.CARRY-FORWARD`.
+
 Status: active generic IDTSPE Core command-surface owner
 Scope: generic user-level invocation surfaces that remain valid independently of any one installed profile.
 
@@ -399,7 +403,7 @@ idtspe.decisions.capture
    no → do not manufacture Decision
    yes → Decision semantics
 → Resolution Context Lens + QRPE disposition
-→ proportional retained Decision trace
+→ apply Core Decision retention contract to any separate record
 → natural/temporal-owner integration
 → Carry-Forward refresh
 ```

@@ -8,6 +8,8 @@ Compatibility path: `directed-methodology-workflow-and-next-step-resolution.md`
 
 > Semantic Owner Dependencies
 > - `CONTEXTUALIZES` [Contextual Methodology Application](../../../idtspe-core/runtime/applicability/CONTEXTUAL-METHODOLOGY-APPLICATION-CONTRACT.md#idtspe-contextual-application) — `IDTSPE.CONTEXTUAL-APPLICATION`
+> - `CONTEXTUALIZES` [Step planning completeness / start readiness](../target-modules/TM-EVOLUTION-STEP.md#ru-evo-06--planning-completeness--realization-start-readiness) — `TM-EVOLUTION-STEP / RU-EVO-06`; the readiness statements below explain cross-owner consequences of this Step-owned contract.
+> - `CONTEXTUALIZES` [Target Owner Materialization](../target-modules/TM-EVOLUTION-STEP.md#ru-evo-04--target-owner-materialization-set) — `TM-EVOLUTION-STEP / RU-EVO-04`; downstream current/future routing does not define another materialization gate.
 
 ## Purpose
 

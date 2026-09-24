@@ -20,6 +20,17 @@ test('rejects duplicate or unsafe command includes',()=>{assert.throws(()=>codec
 
 
 test('normalizes and serializes structured command ownerRefs with why/role/readMode',()=>{const ownerRefs=[{responsibilityId:'TEST.OWNER',path:'planning/test.md',anchor:'owner-anchor',why:'Needed for the command-specific owner contract.',role:'PRIMARY_OWNER',readMode:'REQUIRED'}];const d=codec.normalizeCommandDefinition({...base,ownerRefs});assert.deepEqual(d.ownerRefs,ownerRefs);const parsed=codec.parseCommandDefinitionDocument(codec.renderCommandDefinitionDocument(d));assert.deepEqual(parsed.ownerRefs,ownerRefs);});
+
+test('whole-file ownerRefs round-trip without manufacturing an anchor',()=>{
+  const ref={responsibilityId:'TEST.WHOLE-FILE',path:'planning/test.md',why:'The complete owner contract is relevant.',role:'PRIMARY_OWNER',readMode:'REQUIRED'};
+  for(const ownerRef of [ref,{...ref,anchor:''}]){
+    const definition=codec.normalizeCommandDefinition({...base,ownerRefs:[ownerRef]});
+    assert.equal(codec.parseCommandDefinitionDocument(block({...base,ownerRefs:[ownerRef]})).ownerRefs[0].anchor,'');
+    assert.equal(definition.ownerRefs[0].anchor,'');
+    const roundTrip=codec.parseCommandDefinitionDocument(codec.renderCommandDefinitionDocument(definition));
+    assert.deepEqual(roundTrip.ownerRefs,definition.ownerRefs);
+  }
+});
 test('rejects invalid ownerRefs roles and unsafe anchors',()=>{assert.throws(()=>codec.normalizeCommandDefinition({...base,ownerRefs:[{responsibilityId:'X',path:'planning/x.md',anchor:'bad anchor',why:'why',role:'PRIMARY_OWNER',readMode:'REQUIRED'}]}),/anchor/);assert.throws(()=>codec.normalizeCommandDefinition({...base,ownerRefs:[{responsibilityId:'X',path:'planning/x.md',anchor:'x',why:'why',role:'BAD',readMode:'REQUIRED'}]}),/role/);});
 
 

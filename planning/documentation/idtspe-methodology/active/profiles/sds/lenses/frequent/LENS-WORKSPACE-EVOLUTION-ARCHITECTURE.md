@@ -1,3 +1,4 @@
+<a id="lens-workspace-evolution-architecture"></a>
 # LENS-WORKSPACE-EVOLUTION-ARCHITECTURE — Evolution Impact / Change Isolation
 
 Lens ID: `LENS-WORKSPACE-EVOLUTION-ARCHITECTURE`

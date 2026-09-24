@@ -1,4 +1,8 @@
-# Architecture Decision
+# Architecture Choice — Analysis and Integration
+
+> Semantic Owner Dependencies
+> - `REPRESENTS` [Decision record retention](../../idtspe-methodology/active/idtspe-core/resolution/proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md#resolution-decision-retention) — `RESOLUTION.PROPOSAL-DECISION-LIFECYCLE`.
+> - `REPRESENTS` [PRS Decision admission / exit](../../idtspe-methodology/active/idtspe-core/target-modules/TM-PLANNING-RESOLUTION-STATE.md#ru-prs-02--tracked-decisions) — `RESOLUTION.CARRY-FORWARD`.
 
 Status: reusable recommended template
 Generic Proposal/Decision semantics: [`../../idtspe-methodology/active/idtspe-core/resolution/proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md`](../../idtspe-methodology/active/idtspe-core/resolution/proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md)
@@ -59,10 +63,11 @@ Recommendation when justified:
 
 Do not turn a technical recommendation into a selected Decision until the applicable authority/context has actually selected it.
 
-## Selected Proposal / Decision
+## Selected Meaning / Natural Unit Integration
 
 ```text
-Selected:
+Selected Proposal reference or bounded selected meaning:
+Integration destination / natural Unit:
 Architecture Intent:
 Why it pays for itself now:
 Driving WEUC instance IDs / evidence:
@@ -71,6 +76,10 @@ Addresses Q/R/P — when useful:
 Introduced / Exposed Q/R/P — when useful:
 Residual Q/R/P / accepted risks — when material:
 ```
+
+## Optional PRS Record Reference
+
+Use the linked Core retention/PRS contracts to determine whether a separate Decision record is appropriate. Reference that PRS item here when useful; do not instantiate an independent Decision body from this template. The natural Unit owns accepted architecture meaning, while candidate analysis keeps its Proposal authority until actually selected.
 
 ## Rejected Complexity
 

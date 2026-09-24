@@ -22,7 +22,7 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
     "planning/documentation/architecture-planning/architecture-decision-workflow.md",
     "planning/documentation/architecture-planning/use-case-registry.md"
   ],
-  "expectedOutput": "Current Architecture State/Decision result with applicability, rationale and revalidation trigger; no permanent TM-WEUC global owner.",
+  "expectedOutput": "Current Architecture State/selected meaning with applicability, rationale and revalidation trigger at natural owners; any separate retained record follows Core retention/PRS contracts; no permanent TM-WEUC global owner.",
   "permissionMode": "read-only-planning",
   "keyReminders": [
     "Compatibility alias only; there is no permanent TM-WEUC or canonical SDS Workspace Evolution Map.",
@@ -45,6 +45,22 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
       "why": "Owns review of current architecture state before positioning a workspace-evolution concern.",
       "role": "PRIMARY_OWNER",
       "readMode": "REQUIRED"
+    },
+    {
+      "responsibilityId": "RESOLUTION.PROPOSAL-DECISION-LIFECYCLE",
+      "path": "planning/documentation/idtspe-methodology/active/idtspe-core/resolution/proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md",
+      "anchor": "resolution-decision-retention",
+      "why": "Owns Decision semantics and the retention boundary; this command only projects the current rule.",
+      "role": "SUPPORTING_CONTRACT",
+      "readMode": "ON_DEMAND"
+    },
+    {
+      "responsibilityId": "RESOLUTION.CARRY-FORWARD",
+      "path": "planning/documentation/idtspe-methodology/active/idtspe-core/target-modules/TM-PLANNING-RESOLUTION-STATE.md",
+      "anchor": "ru-prs-02--tracked-decisions",
+      "why": "Owns qualifying Decision admission, representation and exit; no command-local eligibility rule.",
+      "role": "SUPPORTING_CONTRACT",
+      "readMode": "ON_DEMAND"
     }
   ]
 }

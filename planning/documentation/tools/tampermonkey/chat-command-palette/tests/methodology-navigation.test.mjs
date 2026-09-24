@@ -82,7 +82,7 @@ test('every visible command card has canonical Context, Result and Essence proje
 
 test('every command card belongs to one normal tab/group and All commands is only a cross-tab projection',()=>{
   const views=navigation.methodologyViewDefinitions(entries);
-  assert.deepEqual(views.map((view)=>[view.id,view.count]),[['GENERAL',22],['IDTSPE_PASS',37],['USE_CASES',19],['TARGET_MODULES',32],['LENSES',27],['TOOLS',4]]);
+  assert.deepEqual(views.map((view)=>[view.id,view.count]),[['GENERAL',23],['IDTSPE_PASS',37],['USE_CASES',19],['TARGET_MODULES',32],['LENSES',27],['TOOLS',4]]);
   const normalGroups=views.flatMap((view)=>navigation.buildMethodologyViewGroups(entries,view.id));
   assert.equal(normalGroups.reduce((sum,group)=>sum+group.entries.length,0),entries.length);
   const all=navigation.buildAllMethodologyGroups(entries);

@@ -30,28 +30,23 @@ The concrete Target's `SOURCE_AUTHORITY` Requirement remains authoritative. [Rev
 
 **Target Step Result:** `Review Finding Analysis`
 
-Both Module-defined Units follow the [Target Work Unit contract](../runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md#twu-unit-contract). The Target carries one bounded Review Subject/Scope/Basis and a reference to the canonical Review Coverage Record; that record is not a third Unit.
+The single Module-defined Unit follows the [Target Work Unit contract](../runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md#twu-unit-contract). The Target carries one bounded Review Subject/Scope/Basis and a reference to the canonical Review Coverage Record; that record is Target context rather than another Unit.
 
 | Result Unit | Responsibility | Result |
 |---|---|---|
-| `RU-RFIND-01` | discover and evidence Finding Candidates without embedding a remedy in the observation | addressable `RFIND-CANDIDATES` Collection, `0..N` |
-| `RU-RFIND-02` | analyze materiality, impact, owner and Resolution Escalation through canonical Finding Disposition | one diagnosis/disposition for each candidate, including non-material/duplicate disposition |
+| `RU-RFIND-01` | discover and evidence each Finding, then diagnose its materiality, owner, impact and Resolution Escalation in the same item | addressable `RFIND-FINDINGS` Collection, `0..N`, each item containing observation followed by diagnosis and Proposal handoff |
 
-### `RU-RFIND-01` — Finding discovery
+### `RU-RFIND-01` — Finding and diagnosis
 
-**Purpose.** Let the actual observations be inspected before proposed corrections are formed.
+**Purpose.** Make one problem reviewable as a coherent item: the reader encounters its observation and Evidence, then its diagnosis, before any candidate correction. Discovery and diagnosis are distinct reasoning responsibilities within the same Unit/item.
 
-**Item Contract.** One potentially material Finding Candidate observed on the declared basis, with a stable local or natural Finding reference, affected semantic subject, specific contradiction/gap, source/Evidence references, and review cell/check that exposed it. The Collection Item Key remains stable across diagnosis and later Proposal handoff. A duplicate or non-material candidate may remain as a concise disposition reference when traceability is useful.
+**Collection Definition — `RFIND-FINDINGS`.** One item per observed Finding Candidate on the declared basis, including concise duplicate/non-material dispositions when traceability is useful; `0..N`. The Item Key is the stable local or natural Finding reference. Observation and diagnosis use the same key and are not separate Collections or formal Slots merely because they have separate fields. A pending diagnosis is explicit within its item.
 
-**Result Content Contract.** A bounded, evidence-backed finding set or an explicit zero-finding result. Reference the canonical Review Coverage Record for checked, reused, blocked and remaining cells; a finding count or file count is not a coverage claim. Keep observation text separate from possible resolution routes.
+**Item Contract — observation.** Identify the affected semantic subject, specific contradiction/gap, authoritative source and observed Evidence references, and review cell/check that exposed it. Present the actual observation before its diagnosis; keep any candidate remedy out of the observation.
 
-### `RU-RFIND-02` — Finding diagnosis and disposition
+**Item Contract — diagnosis.** Immediately after that item's observation, use [Core Finding Disposition](../resolution/findings/FINDING-DISPOSITION.md#resolution-finding-disposition) to resolve materiality, duplicate/previously represented status, smallest natural subject/owner, distinct `RE-0..RE-4` Resolution Escalation, the most-upstream affected owner, decision/revalidation consequence, and actual USER attention. Use [AI Reviewability](../../ai-reviewability/AI-OUTPUT-REVIEWABILITY.md#review-priority) for `Review Priority` (`Critical`/`High`/`Normal`/`Low`) when material. State uncertainty honestly; `RE-3` is an upstream revalidation exposure, not a selected downstream fix. Priority measures cost/blast radius; `RE-*` measures semantic resolution distance.
 
-**Purpose.** Establish what each candidate means for the current methodology and what attention or escalation it requires, before forming its Proposal.
-
-**Collection Definition — `RFIND-DIAGNOSES`.** One diagnosis item per `RFIND-CANDIDATES` item, including explicit non-material/duplicate outcomes; `0..N`. The Item Key is the referenced Finding Candidate key. The common Item Contract is the diagnosis, rationale/basis and handoff content defined below. A pending diagnosis is explicit rather than a missing item. This Unit is simple unless a concrete context independently justifies formal Slots.
-
-**Result Content Contract.** For each `RU-RFIND-01` item, use [Core Finding Disposition](../resolution/findings/FINDING-DISPOSITION.md#resolution-finding-disposition) to resolve materiality, duplicate/previously represented status, smallest natural subject/owner, distinct `RE-0..RE-4` Resolution Escalation, the most-upstream affected owner, decision/revalidation consequence, and the actual USER attention needed. Use [AI Reviewability](../../ai-reviewability/AI-OUTPUT-REVIEWABILITY.md#review-priority) for `Review Priority` (`Critical`/`High`/`Normal`/`Low`) when material. State uncertainty honestly; `RE-3` is an upstream revalidation exposure, not a selected downstream fix. The Review Priority measures cost/blast radius; `RE-*` measures semantic resolution distance. They must not be collapsed into one score.
+**Result Content Contract.** A bounded evidence-backed Collection of findings with their diagnoses/handoffs, or an explicit zero-finding result. Reference the canonical Review Coverage Record for checked, reused, blocked and remaining cells; finding count or file count is not a coverage claim. A concise navigation index may reference items but must not replace their adjacent observation/diagnosis content.
 
 For each material Finding, record a local descriptive Proposal handoff label as `LINKED` with one or more Proposal references, or `PENDING`/`BLOCKED` with the explicit reason and natural destination. Proposal payload and selection remain with the [Proposal / Decision Lifecycle](../resolution/proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md#resolution-proposal-decision-lifecycle) and, when separately useful, `TM-PROPOSAL-WORKUP`. These labels project link availability/continuation only; they are not a second canonical lifecycle. In particular, an existing BLOCKED_BY_REVALIDATION Proposal is LINKED even while selection is blocked. This Unit diagnoses and routes; it does not itself invent a fix or copy a Proposal body.
 
@@ -61,12 +56,11 @@ The analysis may be shared as an **intermediate** result while Proposal work con
 
 ### Unit applicability and checkpoints
 
-Apply [Unit Applicability / Materiality / Disposition](../runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md#twu-applicability-disposition) and the [Unit Applicability Envelope](../runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md#twu-applicability-envelope). Both Units remain declared for a formed Review Finding Analysis Target. A zero-item Collection or an explicit no-material-Finding diagnosis is a substantive result, not an omitted Unit.
+Apply [Unit Applicability / Materiality / Disposition](../runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md#twu-applicability-disposition) and the [Unit Applicability Envelope](../runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md#twu-applicability-envelope). The Unit remains declared for a formed Review Finding Analysis Target. A zero-item Collection or an explicit no-material-Finding result is substantive content, not an omitted Unit.
 
 | Unit | Opening checkpoint | In-Unit work | Closing checkpoint |
 |---|---|---|---|
-| `RU-RFIND-01` | resolve subject/basis, review cells and applicable Core/profile Lens/validator candidates | inspect Sources through selected checks; capture observed candidates and Evidence | recheck material coverage and observation provenance; hand candidates to diagnosis |
-| `RU-RFIND-02` | resolve candidate references and canonical Finding owner; recheck applicability when analysis surface changed | diagnose materiality, priority, `RE-*`, natural owner and attention without composing Proposal payload | check every candidate has honest disposition/handoff state; mark full-review Proposal obligations still open |
+| `RU-RFIND-01` | resolve subject/basis, review cells, natural ownership and applicable Core/profile Lens/validator candidates | inspect Sources; for each item record observation/Evidence, then diagnosis, classification basis and handoff | check coverage, every item\'s observation/diagnosis provenance and honest handoff; mark pending diagnosis/Proposal obligations explicitly |
 
 Registry checks may reuse trustworthy current metadata. No checkpoint demands every Lens or another full pass.
 
@@ -74,11 +68,30 @@ Registry checks may reuse trustworthy current metadata. No checkpoint demands ev
 
 1. Establish the exact subject, scope, basis, mode and prior coverage from existing current material.
 2. Use Review Strategy/Coverage to derive materially applicable cells; P-12/P-06 perform or validly reuse checks. Record observed candidates and Evidence in `RU-RFIND-01`.
-3. Analyze every candidate through Core Finding Disposition. Show `Review Priority`, `RE-*`, owner, upstream reach and USER attention separately in `RU-RFIND-02`; do not infer the remedy from the severity label.
+3. Diagnose each candidate through Core Finding Disposition in the same `RU-RFIND-01` item, immediately after its observation. Show `Review Priority`, `RE-*`, owner, upstream/downstream consequences and USER attention with their basis; do not infer the remedy from the severity label.
 4. Hand each material Finding to the canonical Proposal lifecycle. Use `TM-PROPOSAL-WORKUP` only when a separate bounded Proposal workup is independently useful. When it is not, form the linked Proposal directly as ordinary Core State.
 5. Update and self-check diagnostic coverage at handoff. Full review completion additionally requires the canonical linked Proposal for every material Finding; an explicit blocker allows a truthful incomplete report, not a substitute for that obligation. If a correction changes the basis, recheck affected cells instead of replaying unchanged checks.
 
-The two Units separate finding discovery from diagnosis. Proposal formation is a subsequent action, whether or not it forms its own Target. An intermediate finding analysis must not be labelled a complete `idtspe.review` pass.
+The Unit pairs observation and diagnosis per Finding. Proposal formation remains a subsequent Core action for that Finding, whether or not it forms its own Target. It may follow that item's diagnosis before the next item is presented; there is no required global pass of all observations, then all diagnoses, then all Proposals. Complete-review coverage and linked-Proposal obligations still apply to the whole declared scope. An intermediate finding analysis must not be labelled a complete `idtspe.review` pass.
+
+### Per-Finding presentation
+
+Use the following reading order in the same report or conversation:
+
+```text
+Finding F-1
+  Observation + Sources / Evidence
+  Diagnosis + Priority / RE rationale + owner / consequences / USER attention
+  Proposal handoff
+  Optional adjacent Core Proposal P-1, with its own candidate authority/review
+
+Finding F-2
+  Observation ...
+  Diagnosis ...
+  ...
+```
+
+The adjacent Proposal body is ordinary Core State presented after the diagnostic item; its payload is not a new responsibility or mandatory subfield of this Unit. A diagnostic-only invocation may end each item with an explicit pending handoff. An existing linked Proposal may be referenced rather than copied. Physical adjacency does not select a candidate or make its future effects current facts.
 
 ## Lens profile and validation
 
@@ -98,16 +111,15 @@ Review subject/basis:
   the command projection from C;
   Review Coverage records the executed contract check and remaining cells.
 
-RU-RFIND-01:
-  F-1: C declares LEGACY_MODE contrary to O/R-1;
-       cite both current source sections, the C-to-H dependency and review cell.
-
-RU-RFIND-02:
-  F-1 is material; Review Priority Normal because observed impact is bounded
-  to C and H; RE-0 because accepted R-1 already determines the required meaning.
-  C is the affected owner; upstream O/R-1 stays unchanged; downstream H needs
-  recheck because it derives this value from C. No new semantic selection is
-  needed about valid modes, with R-1 as the cited basis; Proposal PENDING.
+RU-RFIND-01 / RFIND-FINDINGS / F-1:
+  Observation: C declares LEGACY_MODE contrary to O/R-1;
+    cite both current source sections, the C-to-H dependency and review cell.
+  Diagnosis: material; Review Priority Normal because observed impact is
+    bounded to C and H; RE-0 because accepted R-1 determines the meaning.
+    C is the affected owner; upstream O/R-1 stays unchanged; downstream H
+    needs recheck because it derives this value from C. No new semantic
+    selection about valid modes is needed, with R-1 as basis.
+  Proposal handoff: PENDING until the next Core action forms P-1.
 
 Next action:
   form/refine a linked deterministic-correction Proposal in ordinary Core
@@ -118,6 +130,7 @@ Contextual completion:
   treating the missing declaration as a local wording fix.
 ```
 
+<a id="artifact--representation-contract"></a>
 ## Artifact / representation contract
 
 ```text
@@ -130,7 +143,7 @@ PERSISTENCE_GUIDANCE: OPTIONAL
 PLACEMENT_DIRECTIVE: EMBED_OR_PLACE
 SEMANTIC_OWNER: current Review Finding Analysis Target; canonical Finding/Proposal semantics retain their Core owners
 REPRESENTATION: CONVERSATIONAL_BY_DEFAULT_OR_EXISTING_OWNER
-CONTENT: bounded subject/basis + Review Coverage reference + RU-RFIND-01 observations + RU-RFIND-02 diagnoses/handoff states + honest gaps; no duplicate lifecycle register
+CONTENT: bounded subject/basis + Review Coverage reference + RU-RFIND-01 finding items, each with observation followed by diagnosis/handoff + honest gaps; an adjacent linked Core Proposal retains its own authority; no duplicate lifecycle register
 GUIDANCE_SOURCE: TARGET_MODULE
 RESOLVER: P-14 / PERSISTENCE_ADDRESSABILITY
 ```

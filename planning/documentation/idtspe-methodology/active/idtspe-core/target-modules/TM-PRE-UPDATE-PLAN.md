@@ -1,6 +1,10 @@
 <a id="tm-pre-update-plan"></a>
 # TM-PRE-UPDATE-PLAN — Pre-Update Plan
 
+> Semantic Owner Dependencies
+> - `CONTEXTUALIZES` [Decision record retention](../resolution/proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md#resolution-decision-retention) — `RESOLUTION.PROPOSAL-DECISION-LIFECYCLE`.
+> - `CONTEXTUALIZES` [PRS Decision admission / exit](TM-PLANNING-RESOLUTION-STATE.md#ru-prs-02--tracked-decisions) — `RESOLUTION.CARRY-FORWARD`.
+
 Entry Point: `tm.pre.update`
 Role: generic Core optional Target Module
 Target family / archetype: `PRE_UPDATE_PLAN`
@@ -104,7 +108,7 @@ Proposal B:
 Risk B:
   changes accepted architecture responsibility
 
-Decision:
+Selected meaning (Decision semantics; no separate retained record in this example):
   A
 
 Pre-Update Plan:
@@ -124,7 +128,7 @@ Generic Questions/Proposals/Q/R/P/Decisions/Evidence remain Core State. Do not c
 > Responsibility: `TWU.UNIT-CONTRACT`
 > Owner: [Target Work Unit contract](../runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md#twu-unit-contract)
 
-Each declared Result Unit is a Module-defined Unit Definition under the canonical Target Work Unit contract. This concrete Module owns only its Target-family-specific Unit definitions/deltas; generic simple/composite/runtime projection and Core State semantics remain with their Core owners. A material Proposal selection has Decision semantics, while a separate Decision trace is retained according to user choice or material coordination/revalidation/dependency value.
+Each declared Result Unit is a Module-defined Unit Definition under the canonical Target Work Unit contract. This concrete Module owns only its Target-family-specific Unit definitions/deltas; generic simple/composite/runtime projection and Core State semantics remain with their Core owners. A material Proposal selection has Core Decision semantics. Any separate record follows the linked Core retention contract; this Target Module owns only its result shape, not another Decision lifecycle.
 
 ## Target Step-Result Contract
 
@@ -277,6 +281,7 @@ The generic exact-planning procedure used while developing an Exact Realization 
 
 Use this Target only when its own result is useful: a concrete reviewable plan of intended changes before update. Exact Realization may perform deeper transient implementation planning internally without producing `RU-PUPDATE-01`.
 
+<a id="artifact--file-contract"></a>
 ## Artifact / File Contract
 
 ```text

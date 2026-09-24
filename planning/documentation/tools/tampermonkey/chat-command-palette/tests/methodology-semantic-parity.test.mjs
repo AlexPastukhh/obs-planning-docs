@@ -579,3 +579,61 @@ test('Application Definition no longer classifies representative RLS as core sur
   assert.doesNotMatch(app,/core\/surrounding\/alternative representative real-life scenario inventory/i);
   assert.match(app,/representative real-life scenario inventory with bounded Target-contribution \/ Benefit relations/);
 });
+
+
+test('Decision retention keeps Core authority and a single PRS representation gate',()=>{
+  const core='planning/documentation/idtspe-methodology/active/idtspe-core/';
+  const life=read(core+'resolution/proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md');
+  const prs=read(core+'target-modules/TM-PLANNING-RESOLUTION-STATE.md');
+  assert.match(life,/explicit retained Decision record is permitted only within a bounded PRS\/RCF result/);
+  assert.match(life,/actual authorized selection has independent retention value and satisfies \[PRS admission \/ exit\]/);
+  assert.match(life,/does not transfer Decision semantics, selection authority or lifecycle/);
+  assert.doesNotMatch(life,/even without residual Q\/R\/P|A durable Decision trace may remain there/);
+  assert.match(prs,/does not define a second Decision type, field semantics or selection lifecycle/);
+  assert.match(prs,/remove the separate retained Decision record from the current PRS\/RCF result/);
+  assert.match(prs,/Do not move the record to an independent Decision\/ADR\/history owner/);
+  for(const phrase of ['Authorized selected meaning, no qualifying Q/R/P','Authorized selection, qualifying Q/R/P and independent retention value','Last qualifying Q/R/P closes','Unselected candidate with Q/R/P','One choice spans several owners','Historical interest without qualifying Q/R/P'])assert.ok(prs.includes(phrase),phrase);
+});
+
+test('retention consumers depend on the canonical owner instead of keeping independent exemptions',()=>{
+  const core='planning/documentation/idtspe-methodology/active/idtspe-core/';
+  const files=[
+    core+'runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md',
+    core+'target-modules/TM-PRE-UPDATE-PLAN.md',
+    core+'target-modules/TM-EXACT-REALIZATION.md',
+    core+'lenses/required/LENS-PROPOSAL-DECISION-RESOLUTION-CONTEXT.md',
+    core+'representation/methods/ARTIFACT-BOUNDARY-AND-FILE-REALIZATION.representation-method.md',
+    'planning/documentation/architecture-planning/architecture-decision-workflow.md',
+    'planning/documentation/architecture-planning/templates/ARCHITECTURE-DECISION-TEMPLATE.md',
+    'planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-SHARED-IMPLEMENTATION-CAPABILITY.md',
+    'planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-SLICE-OWNER.md'
+  ];
+  for(const file of files){
+    const text=read(file);
+    assert.match(text,/Semantic Owner Dependencies/);
+    assert.match(text,/#resolution-decision-retention/);
+    assert.match(text,/#ru-prs-02--tracked-decisions/);
+    assert.doesNotMatch(text,/Keep a separate Architecture Decision owner only|canonical Decision traces are distributed|for as long as the USER finds it useful|Decision's retention horizon is user controlled/);
+  }
+  const command=commands.find(c=>c.id==='idtspe.decisions.capture');
+  assert.ok(command.ownerRefs.some(r=>r.anchor==='resolution-decision-retention'&&r.readMode==='REQUIRED'));
+  assert.ok(command.ownerRefs.some(r=>r.anchor==='ru-prs-02--tracked-decisions'&&r.readMode==='REQUIRED'));
+});
+
+test('Launcher example integrates ordinary boundaries and retains only its qualifying handoff Decision in PRS',()=>{
+  const base='planning/documentation/idtspe-methodology/active/profiles/sds/examples/study-tab-launcher/project/planning/documentation/';
+  for(const file of ['features/open-linked-file-context.md','features/open-linked-folder-window.md','domain/local-project-selector.md','slices/extract-open-archive.md','shared/prepared-project-handoff.md']){
+    const text=read(base+file);
+    assert.doesNotMatch(text,/^#{2,6} DEC-STL-/m);
+    assert.doesNotMatch(text,/- \*\*Decision:\*\*/);
+    assert.match(text,/rationale/);
+  }
+  assert.match(read(base+'features/open-linked-file-context.md'),/one-file and ordered-set remain distinct semantic entries/i);
+  assert.match(read(base+'domain/local-project-selector.md'),/an exact directory wins and an exact collision blocks/);
+  const prs=read(base+'resolution-carry-forward.md');
+  assert.equal([...prs.matchAll(/^#### DEC-STL-/gm)].length,1);
+  assert.match(prs,/id="dec-stl-prepared-handoff-01"/);
+  assert.match(prs,/P-STL-HANDOFF-01[\s\S]*OPEN/);
+  assert.match(prs,/remove this separate retained record/);
+  assert.doesNotMatch(prs,/preserve the Decision at its Shared owner/);
+});

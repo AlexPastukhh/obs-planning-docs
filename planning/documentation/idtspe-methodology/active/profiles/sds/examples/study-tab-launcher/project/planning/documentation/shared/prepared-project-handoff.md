@@ -65,27 +65,25 @@ This is an owner-local realization Problem, not another behavior requirement.
 Consumer Features and Scenarios link here only for the consequence at their
 own boundary.
 
+<!-- Compatibility anchor: earlier references now resolve to ordinary Unit content, not a retained Decision body. -->
 <a id="dec-stl-prepared-handoff-01"></a>
-### DEC-STL-PREPARED-HANDOFF-01 — Keep browser focus transfer token-only and owner-acknowledged
+### Handoff authority rationale
 
-- **Status:** `ACCEPTED`.
-- **Decision:** the browser-visible focus route carries only opaque prepared
-  authority. The coordinator-owning VS Code instance acknowledges focus before
-  one at-most-once redemption dispatches the fixed prepared operation.
-- **Addresses:** browser-selected foreground transfer without granting the
-  receiving URI host project, destination, command or trust authority.
-- **Rationale:** putting project data or a general command in the external URI
-  would widen browser authority; dispatch before owner acknowledgement would
-  allow prompts/effects in the wrong window.
-- **Integrated Into:** [`IR-SHARED-STL-HANDOFF-03`](#ir-shared-stl-handoff-03),
-  [`IR-SHARED-STL-HANDOFF-04`](#ir-shared-stl-handoff-04) and both current
-  consumer Slice bindings.
-- **Related Q/R/P:** [P-STL-HANDOFF-01](#p-stl-handoff-01) remains `OPEN` against the accepted acknowledgement/redemption guarantee; its evidence and closure condition stay at that Problem owner.
-- **Reconsider when:** the browser-to-installed-application focus boundary or
-  the single coordinator-owner topology is intentionally replaced.
-- **Review provenance:** accepted conclusions from the former project-opening
-  design-selection record, revalidated by the SDS documentation audit on
-  2026-09-23.
+The browser-visible focus route carries only opaque prepared authority. The coordinator-owning VS Code instance acknowledges focus before one at-most-once redemption dispatches the fixed prepared operation.
+
+Putting project data or a general command in the external URI would widen browser authority; dispatch before owner acknowledgement would allow prompts/effects in the wrong window.
+
+This boundary addresses browser-selected foreground transfer without granting the receiving URI host project, destination, command or trust authority.
+
+Related requirements and realization: [`IR-SHARED-STL-HANDOFF-03`](#ir-shared-stl-handoff-03), [`IR-SHARED-STL-HANDOFF-04`](#ir-shared-stl-handoff-04) and both current consumer Slice bindings.
+
+Revisit this boundary when the browser-to-installed-application focus boundary or the single coordinator-owner topology is intentionally replaced.
+
+Source context: accepted conclusions from the former project-opening design-selection record, revalidated by the SDS documentation audit on 2026-09-23.
+
+Related open work: [P-STL-HANDOFF-01](#p-stl-handoff-01) remains `OPEN` against the accepted acknowledgement/redemption guarantee; its evidence and closure condition stay at that Problem owner.
+
+[Retained selection context in PRS](../resolution-carry-forward.md#dec-stl-prepared-handoff-01).
 
 ## RU-SHARED-04 — Evolution Impact
 

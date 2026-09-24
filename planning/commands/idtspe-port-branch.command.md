@@ -58,7 +58,7 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
     {
       "responsibilityId": "RESOLUTION.PLANNING-BRANCH",
       "path": "planning/documentation/idtspe-methodology/active/idtspe-core/resolution/branches/PLANNING-BRANCH-COUNTERFACTUAL-EXPLORATION.md",
-      "anchor": "1-core-concept",
+      "anchor": "resolution-planning-branch",
       "why": "Defines counterfactual downstream exploration and rejoin/comparison semantics.",
       "role": "SUPPORTING_CONTRACT",
       "readMode": "REQUIRED"

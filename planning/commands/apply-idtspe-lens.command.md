@@ -62,7 +62,7 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
     {
       "responsibilityId": "LENS.DISCOVERY",
       "path": "planning/documentation/idtspe-methodology/active/idtspe-core/lenses/LENS-REGISTRY.md",
-      "anchor": "registry-scan-guide",
+      "anchor": "lens-discovery-registry",
       "why": "Resolves the selected registered Lens and active profile pack without scanning unrelated Lens bodies.",
       "role": "REGISTRY",
       "readMode": "REQUIRED"

@@ -53,7 +53,7 @@ Scope: historical invocation alias redirected to current IDTSPE/SDS authority; h
     {
       "responsibilityId": "LENS-TEST-PROOF-EVIDENCE",
       "path": "planning/documentation/idtspe-methodology/active/idtspe-core/lenses/reusable/LENS-TEST-PROOF-EVIDENCE.md",
-      "anchor": "lens-test-proof-evidence-test-proof-evidence-quality",
+      "anchor": "lens-test-proof-evidence",
       "why": "Defines reusable test/proof/evidence analysis used to shape testing strategy.",
       "role": "PRIMARY_OWNER",
       "readMode": "REQUIRED"

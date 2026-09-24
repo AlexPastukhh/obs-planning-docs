@@ -51,6 +51,7 @@ selected commands/components
 
 Do not defer trace construction until the end merely to summarize from memory. If the active sink cannot be physically updated at every transition, retain the structured trace in the current runtime/work context and flush it at the nearest permitted checkpoint. The methodology-runtime event must still be retained when it occurs.
 
+<a id="idtspe-pass-trace-contract"></a>
 ## 3. Trace Contract
 
 Resolve proportionally:

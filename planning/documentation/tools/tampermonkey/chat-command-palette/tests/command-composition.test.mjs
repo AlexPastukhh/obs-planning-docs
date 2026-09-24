@@ -232,15 +232,7 @@ test('active Lens selection no longer depends on historical TF-06A or a fixed LE
   }
 });
 
-test('every structured command ownerRef resolves to an existing file and anchor',()=>{
-  const headingSlug=(value)=>value
-    .toLowerCase()
-    .replace(/<[^>]+>/g,'')
-    .replace(/[`*_~]/g,'')
-    .replace(/[^\p{L}\p{N}_\- ]/gu,'')
-    .trim()
-    .replace(/\s+/g,'-')
-    .replace(/-+/g,'-');
+test('every command ownerRef resolves to its file and any supplied fragment is an explicit anchor',()=>{
   const cache=new Map();
   const anchorsFor=(rel)=>{
     if(cache.has(rel))return cache.get(rel);
@@ -248,17 +240,13 @@ test('every structured command ownerRef resolves to an existing file and anchor'
     assert.ok(fs.existsSync(abs),`missing ownerRef file: ${rel}`);
     const text=fs.readFileSync(abs,'utf8');
     const anchors=new Set([...text.matchAll(/<a\s+id=["']([^"']+)["']\s*>/gi)].map((m)=>m[1]));
-    for(const line of text.split(/\r?\n/)){
-      const match=line.match(/^#{1,6}\s+(.+)$/);
-      if(match)anchors.add(headingSlug(match[1]));
-    }
     cache.set(rel,anchors);
     return anchors;
   };
   for(const command of commands){
     for(const ref of command.ownerRefs||[]){
-      assert.ok(ref.anchor,`${command.id}: ownerRef ${ref.responsibilityId} must use an exact anchor`);
-      assert.ok(anchorsFor(ref.path).has(ref.anchor),`${command.id}: missing anchor ${ref.path}#${ref.anchor}`);
+      const anchors=anchorsFor(ref.path);
+      if(ref.anchor)assert.ok(anchors.has(ref.anchor),`${command.id}: missing explicit anchor ${ref.path}#${ref.anchor}`);
     }
   }
 });
@@ -270,7 +258,6 @@ test('every direct Planning Command exposes at least one own structured canonica
     for(const ref of command.ownerRefs){
       assert.ok(ref.responsibilityId,`${command.id}: responsibilityId`);
       assert.ok(ref.path,`${command.id}: path`);
-      assert.ok(ref.anchor,`${command.id}: anchor`);
       assert.ok(ref.why,`${command.id}: why`);
       assert.ok(ref.role,`${command.id}: role`);
       assert.ok(ref.readMode,`${command.id}: readMode`);

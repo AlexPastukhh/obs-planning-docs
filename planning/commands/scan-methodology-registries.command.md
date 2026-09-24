@@ -42,7 +42,7 @@ Scope: focused read-only invocation of the existing Documentation methodology-us
     {
       "responsibilityId": "DOC.USE-CASE-REGISTRY-MAP",
       "path": "planning/documentation/use-case-registry-map.md",
-      "anchor": "methodology-use-case-registry-map",
+      "anchor": "doc-use-case-registry-map",
       "why": "Owns top-level routing across methodology Use-Case registries for a registry traversal scan.",
       "role": "PRIMARY_OWNER",
       "readMode": "REQUIRED"

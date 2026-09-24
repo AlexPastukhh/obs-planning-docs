@@ -18,7 +18,7 @@ Scope: generic Core Decision capture/review entry; it never grants selection aut
     "idtspe decisions"
   ],
   "description": "Extract and review actual selected material Decisions from current context without inventing selection authority.",
-  "meaning": "Classify current USER/context meaning through the canonical USER Input Decision And Answer Intake Rule. Only actual material selections become Decision semantics; AI-only candidates/suggestions remain Proposal/Source/Answer/unresolved state as appropriate. Review each material Decision through the Proposal/Decision Resolution Context Lens, disposition related QRPE, retain a separate Decision trace only when it has independent future value, integrate selected meaning into its natural/temporal owner, and refresh Resolution Carry-Forward for surviving material residual/reconsider state.",
+  "meaning": "Classify current USER/context meaning through the canonical USER Input Decision And Answer Intake Rule. Only actual material selections become Decision semantics; AI-only candidates/suggestions remain Proposal/Source/Answer/unresolved state as appropriate. Review each material Decision through the Proposal/Decision Resolution Context Lens, disposition related QRPE, apply the canonical Decision retention contract and PRS admission before keeping a separate record, integrate selected meaning into its natural/temporal owner, and refresh Resolution Carry-Forward for surviving material residual/reconsider state.",
   "activeContextBehavior": "Reuse current context and existing Decisions first. Extract exact selected meaning only where actual USER/applicable authority selection exists; never select unresolved alternatives on the USER's behalf. Run LENS-PROPOSAL-DECISION-RESOLUTION-CONTEXT for material captured/reviewed Decisions, classify residual QRPE through canonical lifecycle owners, integrate selected meaning into the correct owner, and project surviving continuation/revalidation items into Resolution Carry-Forward when useful.",
   "traversalReadMode": "Read USER-input intake + Proposal/Decision lifecycle + Resolution Context Lens first; use Q/R/P, Decision Revalidation Helper, Carry-Forward and natural owner/Target detail only where the captured Decision requires them.",
   "ownerFiles": [
@@ -31,13 +31,13 @@ Scope: generic Core Decision capture/review entry; it never grants selection aut
     "planning/documentation/idtspe-methodology/active/idtspe-core/target-modules/TM-PLANNING-RESOLUTION-STATE.md",
     "planning/documentation/idtspe-methodology/active/idtspe-core/use-cases/maintain-current-work-state/UC-IDTSPE-MAINTAIN-CURRENT-WORK-STATE.md"
   ],
-  "expectedOutput": "Actual selected material Decisions are identified without promoting AI-only candidates, their exact selected meaning/integration owner and material QRPE disposition are clear, proportional retained Decision traces are preserved only when useful, and surviving residual/revalidation state is discoverable through Carry-Forward.",
+  "expectedOutput": "Actual selected material Decisions are identified without promoting AI-only candidates, their exact selected meaning/integration owner and material QRPE disposition are clear, separate Decision records are represented only as admitted PRS items under the Core retention contract, and surviving residual/revalidation state is discoverable through Carry-Forward.",
   "permissionMode": "read-only-planning-unless-separately-authorized",
   "keyReminders": [
     "Actual material selection is required; this command does not grant AI selection authority.",
     "USER facts/preferences/corrections/candidates are not Decisions unless the intake/lifecycle rules establish actual selection.",
     "QRPE is a review view over canonical Q/R/P/Evidence owners, not a new State kind.",
-    "A separate durable Decision trace is proportional; selected meaning still integrates into its natural owner.",
+    "A separate Decision record follows Core retention and PRS admission/exit. Selected meaning integrates into normal natural Unit content; this command defines no alternate Decision owner.",
     "This command does not itself grant repository/file/application mutation, commit or push permission."
   ],
   "userTarget": "<current context / selected Decisions to capture or review>",
@@ -70,8 +70,8 @@ Scope: generic Core Decision capture/review entry; it never grants selection aut
     {
       "responsibilityId": "RESOLUTION.PROPOSAL-DECISION-LIFECYCLE",
       "path": "planning/documentation/idtspe-methodology/active/idtspe-core/resolution/proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md",
-      "anchor": "resolution-proposal-decision-lifecycle",
-      "why": "Owns actual Decision formation, integration and proportional retained trace.",
+      "anchor": "resolution-decision-retention",
+      "why": "Owns Decision semantics and the retention boundary; this command only projects the current rule.",
       "role": "PRIMARY_OWNER",
       "readMode": "REQUIRED"
     },
@@ -86,10 +86,10 @@ Scope: generic Core Decision capture/review entry; it never grants selection aut
     {
       "responsibilityId": "RESOLUTION.CARRY-FORWARD",
       "path": "planning/documentation/idtspe-methodology/active/idtspe-core/target-modules/TM-PLANNING-RESOLUTION-STATE.md",
-      "anchor": "tm-planning-resolution-state",
-      "why": "Carries only surviving residual/revalidation work after selected meaning is integrated.",
+      "anchor": "ru-prs-02--tracked-decisions",
+      "why": "Owns qualifying Decision admission, representation and exit; no command-local eligibility rule.",
       "role": "VALIDATION_HANDOFF",
-      "readMode": "ON_DEMAND"
+      "readMode": "REQUIRED"
     }
   ]
 }

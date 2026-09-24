@@ -1,6 +1,10 @@
 <a id="sds-reusable-guidance-model"></a>
 # Reusable Guidance Model — SDS Shared Contract
 
+> Semantic Owner Dependencies
+> - `CONTEXTUALIZES` [Decision record retention](../../../../idtspe-core/resolution/proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md#resolution-decision-retention) — `RESOLUTION.PROPOSAL-DECISION-LIFECYCLE`.
+> - `CONTEXTUALIZES` [PRS Decision admission / exit](../../../../idtspe-core/target-modules/TM-PLANNING-RESOLUTION-STATE.md#ru-prs-02--tracked-decisions) — `RESOLUTION.CARRY-FORWARD`.
+
 Responsibility ID: `SDS.REUSABLE-GUIDANCE-MODEL`
 
 Role: common methodology-guidance semantics for reusable SDS lenses/knowledge bases
@@ -87,7 +91,7 @@ A ready-to-consider implementation shape that may satisfy one or more selected n
 
 ### Local Decision
 
-The selected answer belongs to the natural consuming owner/context, not to this reusable file. It may remain code-native, live temporarily in discovery, become an owner-local Requirement/Decision, or become an ADR only when cross-owner/long-lived architectural rationale warrants it.
+The selected answer belongs to the natural consuming owner/context, not to this reusable file. Integrate selected semantics as ordinary content/constraints at that owner. Any separate selection record follows the linked Core retention/PRS contracts; cross-owner rationale does not create an independent ADR owner.
 
 ## Local adoption / authority rule
 
@@ -116,7 +120,7 @@ Valid local outcomes include:
 - derive a new owner-local IR/PFR;
 - refine/replace/retire an existing owner Requirement;
 - select code-level realization with no durable documentation;
-- select a durable Decision because rationale/risk/question/problem must survive;
+- integrate selected meaning at its natural owner and evaluate any separate record under the linked Core retention contract;
 - decide that nothing should change;
 - reopen behavior/boundary/Domain ownership when the issue is upstream.
 

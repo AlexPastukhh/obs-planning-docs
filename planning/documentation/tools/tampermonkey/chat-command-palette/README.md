@@ -1,7 +1,7 @@
 # OBS Planning Helper — Developer / Build Entry
 
 Status: active modular Tampermonkey helper implementation
-Version: `0.39.9`
+Version: `0.39.10`
 Scope: local-first, GitHub-backed **semantic command projection** with canonical methodology working Scenarios, reusable Prompts, explicit repository recovery/publish actions, editable ordered presentation groups, sidebar category/group navigation, canonical `Контекст / Результат / Суть` explanations plus visible command traversal/owner contracts, Favorites, direct Prompt position ordering and a wide/resizable browser UI.
 
 <a id="planning-helper-semantic-projection"></a>
@@ -349,7 +349,7 @@ For `replacement_archive.create` (`давай архив`), the token captures t
 
 ## UI Layout / Safety Boundary
 
-Desktop default is a wide panel (about 980px). The panel is resizable, persists `left/top/width/height`, clamps to the viewport and uses a command list + detail pane on wide screens. On narrow screens the detail pane yields to the command list. Commands navigation persists the active command classification, selected-group filter per classification, and each group's collapsed/expanded state in browser-local storage. Selecting a command updates only card selection + the detail pane, so the command-list scroll position does not jump to the beginning.
+Desktop default is a wide panel (about 980px). The panel is resizable, persists `left/top/width/height`, clamps to the viewport and uses a command list + detail pane on wide screens. On narrow screens the detail pane yields to the command list. Commands navigation persists the active command classification, selected-group filter per classification, and each group's collapsed/expanded state in browser-local storage. Selecting a command updates all visible copies of its card + the detail pane, so the command-list scroll position does not jump to the beginning. Sidebar Categories/Groups can be collapsed; list refreshes preserve sidebar scroll position. Favorites is always the first collapsible group across classifications and group filters, including when empty; search applies to it, and the same cards remain in their ordinary groups. Context, Result and Essence start collapsed. Detailed behavior: [SCN-PH-DISCOVER](scenarios/SCN-PH-DISCOVER.md) and [SCN-PH-MANAGE-LOCAL](scenarios/SCN-PH-MANAGE-LOCAL.md).
 
 - normal browse/group-filter/group-collapse/command selection/Run/Body/group/reorder/local edit is local-only;
 - all repository reads/writes are explicit UI actions;
@@ -373,3 +373,7 @@ npm run verify
 Use `прочитай примеры методологии` / `read methodology examples` for a bounded read-only pass through examples linked by the selected owner. Command, Use Case, Target Module and Lens bodies expose the Documentation Example Reading contract in adaptive and full modes. Examples remain explanatory and do not authorize execution. Core Target Module cards now retain all registry aliases, including the multiword Planning Resolution State alias.
 
 For a connected project overview, use `посмотри полный пример документации` / `read full documentation example`. This separate read-only command explicitly opens the copied Study Tab Launcher case guide and project documentation entry, then follows their owner relationships.
+
+### Browser UI regression checks
+
+With Playwright and its Chromium browser available, run `npm run test:browser`. `PLANNING_HELPER_PLAYWRIGHT_PATH` can point to an existing Playwright package; `PLANNING_HELPER_BROWSER_CHANNEL=msedge` selects installed Microsoft Edge. The suite uses a local fixture and checks Favorites ordering/duplicates/actions, category and group filtering, sidebar scroll preservation, collapsed meaning sections, persistence and keyboard controls. It is separate from the dependency-free `npm run verify` gate. The behavior owners remain [SCN-PH-DISCOVER](scenarios/SCN-PH-DISCOVER.md) and [SCN-PH-MANAGE-LOCAL](scenarios/SCN-PH-MANAGE-LOCAL.md).

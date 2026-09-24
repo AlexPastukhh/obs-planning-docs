@@ -21,6 +21,7 @@
     "architecture_path.trace",
     "architecture_pressure.review",
     "architecture_decision.plan",
+    "documentation.links.use",
     "documentation.links.review",
     "documentation.ownership.review",
     "idtspe.lenses.select",
@@ -231,6 +232,7 @@
       "label": "Documentation",
       "order": 50,
       "items": [
+        "documentation.links.use",
         "documentation.links.review",
         "documentation.ownership.review"
       ]

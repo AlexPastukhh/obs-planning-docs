@@ -1,3 +1,4 @@
+<a id="tm-practical-test"></a>
 # TM-PRACTICAL-TEST — Implemented Practical Evidence / Acceptance
 
 Module ID: `TM-PRACTICAL-TEST`
@@ -109,6 +110,7 @@ Existing telemetry/logging is Evidence Source. This Target does not own permanen
 
 This module specializes the Core [Target Module Model](../../../idtspe-core/target-modules/TARGET-MODULE-MODEL.md) and [Unit / Target Step Result Model](../../../idtspe-core/runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md). The Core owners define generic Unit lifecycle, complete-inventory/disposition and Proposal/Core-State semantics; this module defines only its SDS-specific Unit responsibilities, local materiality, production guidance, validators and handoffs below.
 
+<a id="target-step-result-contract"></a>
 ## Target Step-Result Contract
 
 **Target Step Result:** `Implemented Practical Evidence Result`
@@ -139,18 +141,21 @@ The shared method's detailed inquiry fields are guidance, not a mandatory duplic
 
 Each material Unit below inherits the generic [`Unit Applicability Envelope`](../../../idtspe-core/runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md#twu-applicability-envelope). Opening/Closing are mandatory logical applicability boundaries; registries may also be checked during Unit work whenever new material pressure appears.
 
+<a id="ru-ptest-01-processing-envelope"></a>
 #### `RU-PTEST-01` processing envelope
 
 1. **Opening Unit Checkpoint — `RU-PTEST-01`** — resolve/reuse current applicable Core + active-profile Lens registry candidates and any Unit-triggered supporting registry pressure before material work.
 2. **Unit Work — `RU-PTEST-01`** — produce/refine only the material meaning owned by this Result Unit; run additional applicability checks immediately when the Analysis Surface changes materially.
 3. **Closing Unit Checkpoint — `RU-PTEST-01`** — evaluate the actual candidate Unit result, disposition material Findings/owner consequences, and reopen/refine narrowly when needed before treating the Unit as current-for-handoff.
 
+<a id="ru-ptest-02-processing-envelope"></a>
 #### `RU-PTEST-02` processing envelope
 
 1. **Opening Unit Checkpoint — `RU-PTEST-02`** — resolve/reuse current applicable Core + active-profile Lens registry candidates and any Unit-triggered supporting registry pressure before material work.
 2. **Unit Work — `RU-PTEST-02`** — produce/refine only the material meaning owned by this Result Unit; run additional applicability checks immediately when the Analysis Surface changes materially.
 3. **Closing Unit Checkpoint — `RU-PTEST-02`** — evaluate the actual candidate Unit result, disposition material Findings/owner consequences, and reopen/refine narrowly when needed before treating the Unit as current-for-handoff.
 
+<a id="ru-ptest-03-processing-envelope"></a>
 #### `RU-PTEST-03` processing envelope
 
 1. **Opening Unit Checkpoint — `RU-PTEST-03`** — resolve/reuse current applicable Core + active-profile Lens registry candidates and any Unit-triggered supporting registry pressure before material work.

@@ -1,5 +1,9 @@
 # LENS-PROPOSAL-DECISION-RESOLUTION-CONTEXT — Proposal / Decision Resolution Context
 
+> Semantic Owner Dependencies
+> - `CONTEXTUALIZES` [Decision record retention](../../resolution/proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md#resolution-decision-retention) — `RESOLUTION.PROPOSAL-DECISION-LIFECYCLE`.
+> - `CONTEXTUALIZES` [PRS Decision admission / exit](../../target-modules/TM-PLANNING-RESOLUTION-STATE.md#ru-prs-02--tracked-decisions) — `RESOLUTION.CARRY-FORWARD`.
+
 Lens ID: `LENS-PROPOSAL-DECISION-RESOLUTION-CONTEXT`
 
 <a id="lens-proposal-decision-resolution-context"></a>
@@ -109,9 +113,11 @@ exact selected meaning identifiable?
 where is selected meaning integrated?
 → natural Unit / Target / temporal owner
 
-would a separate retained Decision trace preserve independent future value?
-→ retain proportionally
+does a separate record satisfy the linked Core retention contract and PRS admission, with independent retention value?
+→ if yes: represent the record in PRS; if no: preserve ordinary Unit content without a separate record
 ```
+
+Also check that this Lens/consumer has not become a competing retention authority: Decision semantics remain Core-owned, PRS owns its result/admission/exit, and accepted meaning remains with the integrated Units. Check exit against the PRS owner rather than inventing a Lens-specific closure rule.
 
 ### Proposal → Decision QRPE Disposition
 

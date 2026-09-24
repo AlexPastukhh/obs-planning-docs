@@ -129,6 +129,7 @@ BR-RC-CUSTOM-01
 
 ---
 
+<a id="resolution-branch-exploration-contract"></a>
 # 5. Branch Exploration Contract
 
 Before exploring deeply, establish:

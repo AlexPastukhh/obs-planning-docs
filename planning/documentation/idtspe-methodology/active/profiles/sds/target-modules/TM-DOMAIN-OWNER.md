@@ -1,3 +1,4 @@
+<a id="tm-domain-owner"></a>
 # TM-DOMAIN-OWNER — Durable Domain Semantic Owner
 
 Module ID: `TM-DOMAIN-OWNER`
@@ -86,6 +87,7 @@ Each material Unit below inherits the generic [`Unit Applicability Envelope`](..
 2. **Unit Work — `RU-DOWN-03`** — produce the Domain-local reverse navigation/revalidation projection under that shared contract.
 3. **Closing Unit Checkpoint — `RU-DOWN-03`** — validate Domain-local revalidation/handoff needs and the shared projection-contract guards.
 
+<a id="ru-down-01--domain-semantic-contract"></a>
 ### RU-DOWN-01 — Domain Semantic Contract
 
 Own proportionally:
@@ -103,6 +105,7 @@ useful neighbor / consumer relations
 
 Exact class/file layout is not part of this RU unless independently contractual.
 
+<a id="ru-down-02--domain-implementation-requirements"></a>
 ### RU-DOWN-02 — Domain Implementation Requirements
 
 Own durable must-hold constraints whose natural implementation owner is this Domain owner:
@@ -120,6 +123,7 @@ Domain Implementation Requirement | Type | Plain implementation requirement | Re
 
 When owner-local `PFR-*` is material, use the shared exact `Proof Requirement | Type | Plain proof-realization requirement | Protects / verifies | QRPE / Examples` schema from the same contract.
 
+<a id="ru-down-03--evolution-impact"></a>
 ### RU-DOWN-03 — Evolution Impact
 
 This Domain owner-local Unit specializes the shared [Current-Owner Evolution Impact Projection Contract](../profile-contracts/evolution/CURRENT-OWNER-EVOLUTION-IMPACT-PROJECTION.md). Its local affected surface is **Domain semantics/responsibility**. The shared contract owns inclusion threshold across candidate/selected/conditional/deferred Steps, truthful planning-position projection, depth/no-copy rules and post-realization removal from active future impact. This Target Module owns only the Unit identity, Domain owner-specific materiality test and local revalidation/handoff use.

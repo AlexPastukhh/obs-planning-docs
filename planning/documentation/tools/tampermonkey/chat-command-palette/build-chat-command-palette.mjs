@@ -38,9 +38,23 @@ function readCommands(){
 function splitRow(line){return line.trim().replace(/^\|/,'').replace(/\|$/,'').split('|').map((v)=>v.trim());}
 function cleanCell(v){return String(v||'').replace(/`/g,'').trim();}
 function plainCell(v){return cleanCell(String(v||'').replace(/\[([^\]]+)\]\([^)]+\)/g,'$1'));}
-function markdownHeadingSlug(value){return String(value||'').toLowerCase().replace(/<[^>]+>/g,'').replace(/[`*_~]/g,'').replace(/[^\p{L}\p{N}_\- ]/gu,'').trim().replace(/\s+/g,'-').replace(/-+/g,'-');}
-function semanticOwnerRef(rel,id,kind){const lines=fs.readFileSync(path.join(repoRoot,rel),'utf8').split(/\r?\n/),heading=(lines.find((line)=>/^#\s+/.test(line))||`# ${id}`).replace(/^#\s+/,'').trim();return{semanticId:id,path:rel,anchor:(lines.slice(0,12).join('\n').match(/<a id="([^"]+)"><\/a>/)||[])[1]||markdownHeadingSlug(heading),why:`Concrete ${kind==='TARGET_MODULE'?'Target Module Model':'Lens Model'} semantics selected by this card; shared Meta-Model/registry/port references come from included commands.`,role:'PRIMARY_OWNER',readMode:'REQUIRED'};}
-function compactMarkdown(v){return String(v||'').replace(/<!--.*?-->/gs,' ').replace(/`([^`]+)`/g,'$1').replace(/\[([^\]]+)\]\([^)]+\)/g,'$1').replace(/^[ \t]*[-*+]\s+/gm,'').replace(/^[ \t]*\d+\.\s+/gm,'').replace(/\s+/g,' ').trim();}
+export function semanticOwnerRef(rel,id,kind,ownerRoot=repoRoot){
+  const anchor=id.toLowerCase(),source=fs.readFileSync(path.join(ownerRoot,rel),'utf8').replace(/<!--[\s\S]*?-->/g,'');
+  let fence=null,matches=0;
+  for(const line of source.split(/\r?\n/)){
+    const marker=line.match(/^\s{0,3}(`{3,}|~{3,})/);
+    if(marker){
+      if(!fence)fence={char:marker[1][0],length:marker[1].length};
+      else if(marker[1][0]===fence.char&&marker[1].length>=fence.length&&line.slice(marker[0].length).trim()==='')fence=null;
+      continue;
+    }
+    if(fence)continue;
+    for(const match of line.matchAll(/<a\s+id=["']([^"']+)["']\s*>\s*<\/a>/gi))if(match[1]===anchor)matches++;
+  }
+  if(matches!==1)throw new Error('Expected one explicit component owner anchor '+rel+'#'+anchor+'; found '+matches+'.');
+  return{semanticId:id,path:rel,anchor,why:`Concrete ${kind==='TARGET_MODULE'?'Target Module Model':'Lens Model'} semantics selected by this card; shared Meta-Model/registry/port references come from included commands.`,role:'PRIMARY_OWNER',readMode:'REQUIRED'};
+}
+function compactMarkdown(v){return String(v||'').replace(/<!--.*?-->/gs,' ').replace(/<a\b[^>]*>\s*<\/a>/gi,' ').replace(/`([^`]+)`/g,'$1').replace(/\[([^\]]+)\]\([^)]+\)/g,'$1').replace(/^[ \t]*[-*+]\s+/gm,'').replace(/^[ \t]*\d+\.\s+/gm,'').replace(/\s+/g,' ').trim();}
 function commandIdForCell(cell,commands){const text=cleanCell(cell).toLowerCase();if(!text||text==='none'||text.startsWith('none ')||text.startsWith('supports '))return'';const matches=[];for(const def of commands)for(const aliasRaw of def.commandFamily||[]){const alias=String(aliasRaw).trim().toLowerCase();if(!alias)continue;if(text===alias||text.startsWith(`${alias} `)||text.startsWith(`${alias}.`)||text.startsWith(`${alias},`)||text.startsWith(`${alias};`)||text.startsWith(`${alias}:`))matches.push({id:def.id,alias});}matches.sort((a,b)=>b.alias.length-a.alias.length||a.id.localeCompare(b.id));return matches[0]?.id||'';}
 function markdownLinkTargets(cell){const out=[];for(const match of String(cell||'').matchAll(/\[[^\]]+\]\(([^)]+)\)/g)){const target=String(match[1]||'').trim().split('#')[0];if(target&&!out.includes(target))out.push(target);}return out;}
 function resolveRegistryTarget(rel,target){const value=String(target||'').trim().split('#')[0];if(!value)return'';const registryAbs=path.join(repoRoot,rel),resolved=path.resolve(path.dirname(registryAbs),value);const relative=path.relative(repoRoot,resolved).replaceAll(path.sep,'/');return relative.startsWith('../')?'':relative;}
@@ -257,6 +271,8 @@ function build(){
   return header+modules+bootstrap;
 }
 
-const expected=build();
-if(check){const current=fs.existsSync(outputPath)?fs.readFileSync(outputPath,'utf8'):'';if(current!==expected)throw new Error('Generated Planning Helper userscript is stale.');console.log('Generated userscript and GitHub-backed Command/Semantic/Scenario catalogs match current sources.');}
-else{fs.writeFileSync(outputPath,expected,'utf8');console.log(`Built ${path.relative(repoRoot,outputPath)} and GitHub-backed Command/Semantic/Scenario catalogs.`);}
+if(process.argv[1]&&path.resolve(process.argv[1])===fileURLToPath(import.meta.url)){
+  const expected=build();
+  if(check){const current=fs.existsSync(outputPath)?fs.readFileSync(outputPath,'utf8'):'';if(current!==expected)throw new Error('Generated Planning Helper userscript is stale.');console.log('Generated userscript and GitHub-backed Command/Semantic/Scenario catalogs match current sources.');}
+  else{fs.writeFileSync(outputPath,expected,'utf8');console.log(`Built ${path.relative(repoRoot,outputPath)} and GitHub-backed Command/Semantic/Scenario catalogs.`);}
+}
