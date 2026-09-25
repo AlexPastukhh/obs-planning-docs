@@ -175,7 +175,8 @@ separate reviewable intended-change plan useful
 → optional TM-PRE-UPDATE-PLAN
 
 literal/directly-integrable result useful and upstream meaning sufficient
-→ TM-EXACT-REALIZATION
+→ narrower active-profile realization owner when one applies
+→ otherwise Core TM-EXACT-REALIZATION
 ```
 
 These are independent Target Module routes, not mandatory planning phases or USER gates. Pre-Update is not a Review stage.

@@ -36,13 +36,13 @@ IDTSPE Core installs five profile-independent concrete Target Modules:
 - [`TM-REVIEW-FINDINGS`](TM-REVIEW-FINDINGS.md) — optional bounded evidence-backed Finding analysis; one `RU-RFIND-01` Collection Unit pairs each observation with its diagnosis before any adjacent Core Proposal.
 - [`TM-PROPOSAL-WORKUP`](TM-PROPOSAL-WORKUP.md) — optional bounded candidate-resolution workup and review/handoff when that result is independently useful; canonical Proposals remain Core State at their natural subjects.
 - [`TM-PRE-UPDATE-PLAN`](TM-PRE-UPDATE-PLAN.md) — optional concrete reviewable plan of intended changes before actual mutation; one `RU-PUPDATE-01`.
-- [`TM-EXACT-REALIZATION`](TM-EXACT-REALIZATION.md) — produce one exact directly integrable realization; codebase realization is the primary/default archetype, with optional transient internal detailed exact planning and explicitly authorized integration/verification/repair.
+- [`TM-EXACT-REALIZATION`](TM-EXACT-REALIZATION.md) — generic/profile-neutral owner for one exact directly integrable realization when no narrower active-profile realization owner applies; supports optional transient internal detailed exact planning and explicitly authorized integration/verification/repair.
 
 `TM-PRE-UPDATE-PLAN` is not a mandatory stage before Exact and is not the owner of generic exact-planning depth. Exact may use transient internal planning without instantiating a Pre-Update Target.
 
 Review Findings, Proposal Workup and Pre-Update Plan are distinct optional Target families. A complete review still follows the canonical Finding-to-Proposal handoff; it does not require a separate Target for either family. A Pre-Update Plan is independently formed to propose destination changes, not as a review stage.
 
-This does not introduce Scenario/Domain/Slice semantics into Core. Profiles may hand sufficiently determined semantic/design results to this reusable realization family instead of duplicating code-production modules.
+This does not introduce Scenario/Domain/Slice semantics into Core. Profiles may reuse this broad realization family, or define a narrower realization Target for a profile-owned artifact family. When such a narrower active-profile owner applies, it takes the realization handoff; Core `TM-EXACT-REALIZATION` remains the generic fallback. Under SDS, source/test/codebase realization is owned by `TM-CODE-REALIZATION`.
 
 ## Generic `idtspe` Invocation Aliases
 

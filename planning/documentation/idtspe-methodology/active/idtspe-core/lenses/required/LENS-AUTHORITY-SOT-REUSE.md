@@ -3,18 +3,56 @@
 
 Lens ID: `LENS-AUTHORITY-SOT-REUSE`
 Legacy alias: `L2`
-Activation: `REQUIRED_CORE`
 
 ## Purpose
 
 Use canonical truth, preserve one-directional planning, avoid duplicate semantic authority and reuse valid accepted work instead of re-planning it.
 
-## Applicability Gate
+## Analysis Surface
 
-Always check for a material IDTSPE choice.
+This Lens evaluates the bounded planning/implementation surface where the following concern is materially present:
 
-## Target Inputs / Evidence
+> A material choice can create/change semantic authority, Source of Truth, reuse, or duplicate truth.
 
+Context may inform the evaluation, but context availability alone does not make the entire context part of this Lens's Analysis Surface.
+
+## Applicability & Temporal Triggers
+
+### Base Applicability / Usefulness
+
+A material choice can create/change semantic authority, Source of Truth, reuse, or duplicate truth.
+
+### Opening Triggers
+
+The Unit may create/change durable meaning, select an owner/destination, reuse existing authority, or introduce another representation of existing truth.
+
+### During-work Recheck / Invalidation Triggers
+
+Owner, destination, reuse strategy, source/reference relation, persistence location, generated projection, or duplicate-truth risk changes.
+
+### Closing Triggers / Revalidation Conditions
+
+The final Unit result establishes or changes durable meaning, owner/SoT, reuse relation, or a representation that might be mistaken for authority.
+
+### Confident-False / Stop Conditions
+
+No semantic ownership/SoT/reuse/duplicate-truth consequence is possible on the current bounded surface.
+
+### False-negative Risks
+
+Supporting artifacts, generated projections, or copied requirements can become accidental second authorities.
+
+Trigger semantics follow the canonical Lens Model:
+
+```text
+TRUE      → APPLY
+FALSE     → NOT_APPLICABLE
+UNCERTAIN → APPLY
+```
+
+A Unit-level `REQUIRED [phase]` attachment bypasses the apply/skip decision at that phase and requires this Lens to cover the current Analysis Surface. These Lens-owned triggers still govern useful earlier application and recheck/invalidation.
+
+## Inputs / Evidence
 ```text
 Source Contract
 canonical owners
@@ -24,6 +62,10 @@ repository/workspace owners
 history/projections/generated artifacts
 Evidence
 ```
+
+## Evaluation Contract
+
+Apply only the dimensions material to the current question. The domain-specific questions, methods, facets, checks, examples, and pattern guidance below constitute this Lens's evaluation workflow; they are not mandatory checklist items unless the current Analysis Surface makes them material.
 
 ## At Need / Target / Source Resolution
 
@@ -73,7 +115,15 @@ Operationally ask:
 
 Physical file location, a planning table/Step or a Markdown link is evidence about representation/navigation only, not ownership.
 
-## Findings / Outputs
+## Findings / Outcomes
+
+Valid invocation outcomes:
+
+```text
+APPLIED — no material finding
+APPLIED — one or more material Finding Candidates
+NOT_APPLICABLE — short confident-FALSE reason when application is not forced at this checkpoint
+```
 
 ```text
 canonical owner
@@ -85,7 +135,9 @@ owner/revalidation finding
 projection/history-only classification
 ```
 
-## Typical Consumers
+## Non-Normative Navigation — Typical Surfaces
+
+This section is navigation only. It does not create or strengthen Unit attachment; normative predictable attachment belongs beside the natural Unit and registry discovery remains projection-only.
 
 All material Targets, Target Formation, Artifact/File planning, branch comparison and reconciliation.
 
@@ -138,15 +190,12 @@ L2 often changes **placement/reference**, not semantic content.
 
 Do not create a separate L2 artifact by default.
 
-## Guards
-
+## Guards / Boundaries
 Name/path similarity is not proof of semantic equivalence.
 
-## Composition
+## Finding / Lifecycle Boundary
 
-L4 evaluates structural dependency/change impact. L2 evaluates semantic-authority/SOT/reuse questions. Neither Lens owns the referenced project semantics; Core Finding Disposition resolves accepted owner/State/lifecycle consequences.
-
-## Escalation / Revalidation
+Temporal revalidation timing is owned by `Applicability & Temporal Triggers` above. The remaining guidance here concerns Finding/lifecycle routing rather than checkpoint trigger ownership.
 
 A materially contradicted trusted Source produces a Finding Candidate rather than being silently overridden. Core Finding Disposition resolves whether Source/owner revalidation or reopen is required.
 

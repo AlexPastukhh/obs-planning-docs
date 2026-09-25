@@ -57,6 +57,7 @@ Cross-owner current-vs-future hosting/readiness is routed to the SDS [Semantic C
 | [`TM-EVOLUTION-STEP`](../target-modules/TM-EVOLUTION-STEP.md) | `evolution-step` | canonical bounded unrealized future transition / target-state planning owner |
 | [`TM-EVOLUTION-STEPS-MAP`](../target-modules/TM-EVOLUTION-STEPS-MAP.md) | `evolution-map` | registry/routing/selection-relation/readiness map for concrete Step candidates/selections |
 | [`TM-PRACTICAL-TEST`](../target-modules/TM-PRACTICAL-TEST.md) | `practical-test` | implemented real-subject practical Evidence |
+| [`TM-CODE-REALIZATION`](../target-modules/TM-CODE-REALIZATION.md) | `code-realization` / `code` | exact SDS codebase realization / integration of sufficiently accepted meaning |
 
 ## Retired / Subsumed Baseline Modules
 
@@ -77,7 +78,7 @@ Retirement removes baseline Target-family authority, not useful semantic guidanc
 - Core `TM-REVIEW-FINDINGS` — optional bounded finding discovery/diagnosis when a separate Review Finding Analysis result is useful; full review still requires the canonical linked Proposal handoff.
 - Core `TM-PROPOSAL-WORKUP` — optional bounded candidate-resolution brief; canonical Proposals remain Core State at the affected natural subjects.
 - Core `TM-PRE-UPDATE-PLAN` — optional reviewable plan before mutation when that result is useful.
-- Core `TM-EXACT-REALIZATION` — exact directly-integrable/literal result; may use transient internal exact planning.
+- Core `TM-EXACT-REALIZATION` — broad/profile-neutral exact directly-integrable/literal result, especially non-code artifact realization under SDS; SDS codebase realization is owned by `TM-CODE-REALIZATION`.
 
 These Core modules are available independently under their own activation gates. Pre-Update is not a mandatory predecessor of Exact or a Review stage.
 
@@ -119,6 +120,6 @@ Durable SDS Requirement → reusable Requirement Type classification only when t
 rare durable proof-realization HOW constraint → owner-local PFR-*
 ```
 
-Proof design normally remains transient. Literal tests are Exact/code. Executed checks become Evidence only when actually run against the stated subject/state/environment.
+Proof design normally remains transient. Literal test code is owned by `TM-CODE-REALIZATION` when SDS is active. Executed checks become Evidence only when actually run against the stated subject/state/environment.
 
 Cross-module semantic relationships/readiness guidance lives in [`../profile-contracts/SDS-SEMANTIC-COMPOSITION-AND-READINESS.md`](../profile-contracts/SDS-SEMANTIC-COMPOSITION-AND-READINESS.md). Runtime composition remains Use-Case-driven.

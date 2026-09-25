@@ -77,6 +77,12 @@ Each material Unit inherits the Core [`Unit Applicability Envelope`](../../../id
 <a id="ru-evomap-01--registry--routing"></a>
 ## `RU-EVOMAP-01` — Registry / Routing
 
+**Lens Attachments**
+
+- **Core Lens Pack:** `INHERITED` via [`Core Lens Pack`](../../../idtspe-core/lenses/LENS-REGISTRY.md)
+- **TRIGGERED:**
+  - [`LENS-WORKSPACE-EVOLUTION-ARCHITECTURE`](../lenses/frequent/LENS-WORKSPACE-EVOLUTION-ARCHITECTURE.md)
+
 For each registered Step keep enough navigation to find its authority:
 
 ```text
@@ -92,6 +98,14 @@ A shallow Step may be embedded when independent artifact depth adds no value. A 
 
 <a id="ru-evomap-02--semantic-relations--concerns--planning-completeness--start-readiness"></a>
 ## `RU-EVOMAP-02` — Semantic Relations / Concerns / Planning Completeness / Start Readiness
+
+**Lens Attachments**
+
+- **Core Lens Pack:** `INHERITED` via [`Core Lens Pack`](../../../idtspe-core/lenses/LENS-REGISTRY.md)
+- **TRIGGERED:**
+  - [`LENS-WORKSPACE-EVOLUTION-ARCHITECTURE`](../lenses/frequent/LENS-WORKSPACE-EVOLUTION-ARCHITECTURE.md)
+  - [`LENS-DEPENDENCY-CHANGE-IMPACT`](../../../idtspe-core/lenses/frequent/LENS-DEPENDENCY-CHANGE-IMPACT.md)
+  - [`LENS-TARGET-RESOLUTION-COVERAGE`](../../../idtspe-core/lenses/frequent/LENS-TARGET-RESOLUTION-COVERAGE.md)
 
 Own compact coordination projections such as:
 

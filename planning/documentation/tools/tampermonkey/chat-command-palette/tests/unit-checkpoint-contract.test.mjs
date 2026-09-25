@@ -20,13 +20,13 @@ test('generic Result Unit contract owns Opening/In-Unit/Closing applicability se
   assert.match(text,/Closing Unit Checkpoint/);
   assert.match(text,/not the only moments|not.*only.*moments|may be repeated.*during/i);
   assert.match(text,/cached|reuse/i);
-  assert.match(text,/NO_ADDITIONAL_LENS|mandatory Lens selection/i);
+  assert.match(text,/Unit-local Lens Attachments|Lens Attachments|Core Lens Pack/i);
   assert.match(text,/reopen|refine/i);
 });
 
 test('every current Target Module explicitly wraps every processing-envelope Result Unit with Opening and Closing checkpoints',()=>{
   const modules=components.filter((component)=>component.kind==='TARGET_MODULE');
-  assert.equal(modules.length,32);
+  assert.equal(modules.length,33);
   for(const component of modules){
     const owner=component.sources.at(-1),text=readRepo(owner);
     const inventory=(text.match(/## Module-defined Unit Inventory\s*\n([\s\S]*?)(?=\n## )/)||[])[1]||'';

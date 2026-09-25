@@ -2,7 +2,6 @@
 # LENS-UI-SPATIAL-FRONTEND-REALIZATION — Screen / UI / Frontend Realization
 
 Lens ID: `LENS-UI-SPATIAL-FRONTEND-REALIZATION`
-Activation: `TARGET_PROFILE_REUSABLE`
 
 > Semantic Owner Dependency
 > Type: `EXTENDS`
@@ -13,46 +12,62 @@ Activation: `TARGET_PROFILE_REUSABLE`
 
 Evaluate spatial/UI/frontend realization while preserving Scenario/DATA/Behavior/Screen/Slice authority. The Lens does not require a universal frontend architecture or a dedicated Frontend Target family.
 
-## Applicability Gate
-
-Primary for Screen; supporting for UI-heavy Implementation Slice and other Targets where UI/frontend realization is material.
-
-## Target Inputs / Evidence
-
-Feature behavior/Data, Scenario journey composition, Screen Map/Drafts, Screen/journey must-holds, Prototype/usability Evidence, current frontend and platform/design-system constraints.
-
-
-
 ## Analysis Surface
 
-### Primary Result Units / Semantic Selectors
+This Lens evaluates selected/current meaning about:
+- Screen participation and composition;
+- spatial zones and visibility;
+- navigation/routes/transitions/window topology;
+- frontend state ownership, synchronization and invalidation;
+- async/loading/error/retry/offline behavior;
+- component/composition boundaries when they affect selected UI semantics;
+- design-system, responsive and accessibility constraints;
+- UI/frontend realization of Feature/Slice/Scenario behavior when that behavior materially depends on these concerns.
 
-- `TM-SCREEN`: `RU-SCREEN-01..RU-SCREEN-02`
+Unit attachment remains owned by the relevant Target Module Unit definitions; this Analysis Surface does not create routing authority.
 
-### Conditional Result Units / Semantic Selectors
+## Applicability & Temporal Triggers
 
-- UI-heavy `TM-IMPLEMENTATION-SLICE`: `RU-SLICE-01..RU-SLICE-04`
-- `TM-IMPLEMENTATION-SLICE / RU-SLICE-05` when an Evolution Step materially changes UI/frontend realization
+### Base Applicability / Usefulness
 
-### Relevant State Units
+Selected/current meaning depends on Screen composition/participation, spatial zones, navigation, frontend state/synchronization, async/loading/error/offline behavior, frontend behavior ownership, or accessibility/design-system constraints.
+
+### Opening Triggers
+
+The Unit starts with Screen/spatial/navigation/frontend-state meaning or a Slice/Scenario whose accepted behavior visibly depends on those UI/frontend concerns.
+
+### During-work Recheck / Invalidation Triggers
+
+Screens/zones/routes/transitions, frontend state ownership, synchronization/invalidation/optimistic behavior, loading/error/retry/offline states, accessibility/responsive/design-system constraints, or Feature/Scenario participation changes.
+
+### Closing Triggers / Revalidation Conditions
+
+The result changes UI-facing behavior, Screen map/draft, spatial/navigation contract, frontend state semantics, or UI-heavy Slice realization.
+
+### Confident-False / Stop Conditions
+
+Frontend is only passive rendering detail and none of Screen/spatial/navigation/state/sync/async/accessibility meaning changes.
+
+### False-negative Risks
+
+“UI-heavy” is too subjective; use observable frontend semantics rather than amount of UI code.
+
+Trigger semantics follow the canonical Lens Model:
 
 ```text
-Questions
-Proposals / Planning Branches when comparison is material
-Q/R/P
-Decisions
-Evidence / Evidence Needs
-Revalidation state
+TRUE      → APPLY
+FALSE     → NOT_APPLICABLE
+UNCERTAIN → APPLY
 ```
 
-### Context
+A Unit-level `REQUIRED [phase]` attachment bypasses the apply/skip decision at that phase and requires this Lens to cover the current Analysis Surface. These Lens-owned triggers still govern useful earlier application and recheck/invalidation.
 
-- Feature behavior/Data + Scenario journey composition
-- selected Screen meaning
-- shared frontend concerns
-- current frontend implementation/workspace
+## Inputs / Evidence
+Feature behavior/Data, Scenario journey composition, Screen Map/Drafts, Screen/journey must-holds, Prototype/usability Evidence, current frontend and platform/design-system constraints.
 
-Context availability does not mean this Lens audits all context. The deliberate focus remains the Result/State meaning named above.
+## Evaluation Contract
+
+Apply only the dimensions material to the current question. The domain-specific questions, methods, facets, checks, examples, and pattern guidance below constitute this Lens's evaluation workflow; they are not mandatory checklist items unless the current Analysis Surface makes them material.
 
 ## Supported Operations
 
@@ -119,7 +134,7 @@ repository/gateway-like server integration boundary
 shared transport helper
 ```
 
-Select/reject them through Scope + L4/L5/L6 + normal Decisions. They are not mandatory Enman conventions.
+Select/reject them against accepted scope and any already-available dependency/change, evolution, operability/quality evidence plus normal Decisions. This Lens does not invoke other Lenses. They are not mandatory Enman conventions.
 
 ## Frontend Change Paths
 
@@ -130,6 +145,17 @@ Examples for L4/L5: moving behavior, changing DATA presentation/navigation/valid
 placement, state ownership, navigation, synchronization, component responsibility, async/failure behavior, architecture pattern candidates/Proposals and Q/R/P.
 
 
+## Findings / Outcomes
+
+Valid invocation outcomes are:
+
+```text
+APPLIED — no material finding
+APPLIED — one or more material Finding Candidates
+NOT_APPLICABLE — short confident-FALSE reason when application is not forced at this checkpoint
+```
+
+A Finding Candidate does not directly mutate authoritative Result/State meaning; normal Core Finding Disposition resolves lifecycle/owner consequences.
 
 ## Finding Contract
 
@@ -150,7 +176,9 @@ Core [`Finding Disposition`](../../../../idtspe-core/resolution/findings/FINDING
 
 This Lens does not define new Result Units or target-result fields. If repeated findings reveal missing target-result meaning, revise the appropriate Target Module/Local Target Contract or let Core disposition the finding to another owner.
 
-## Typical Consumers
+## Non-Normative Navigation — Typical Surfaces
+
+This section is navigation only. It does not create or strengthen Unit attachment; normative predictable attachment belongs beside the natural Unit and registry discovery remains projection-only.
 
 Screen, UI-heavy Slice, Scenario handoff, Prototype/Practical Evidence and Local Targets where UI realization is material.
 
@@ -158,17 +186,14 @@ Screen, UI-heavy Slice, Scenario handoff, Prototype/Practical Evidence and Local
 
 `NONE_DIRECT / NO_DISTINCT_SUPPORTING_ARTIFACT`. Current realized Screen/UI meaning is represented through the current Screen/Slice/natural owner. Selected but unrealized future Screen/UI meaning belongs to the corresponding Evolution Step Target Screen/Slice Body. This Lens owns reusable evaluation, not a duplicate artifact contract.
 
-Future UI/frontend change is evaluated through the applicable `TM-EVOLUTION-STEP` + L5 when material; the Lens does not own an evolution companion or map and does not write future meaning into current owners.
+Future UI/frontend change is evaluated against the applicable `TM-EVOLUTION-STEP` and already-available accepted evolution meaning when material; this Lens does not invoke another Lens, own an evolution companion/map, or write future meaning into current owners.
 
-## Guards
-
+## Guards / Boundaries
 Screen owns spatial meaning; Feature owns behavior and Feature semantic Data; Scenario owns journey composition; frontend realizes those selected meanings.
 
-## Composition
+## Finding / Lifecycle Boundary
 
-L4 structural impact; L5 recurring frontend evolution/architecture; L6 proof/diagnosis/operation; Quality/Risk for UX/accessibility/performance/etc.
-
-## Escalation / Revalidation
+Temporal revalidation timing is owned by `Applicability & Temporal Triggers` above. The remaining guidance here concerns Finding/lifecycle routing rather than checkpoint trigger ownership.
 
 Frontend-specific reasoning normally stays inside the Slice. When it becomes independently substantial, surface a normal Target Formation candidate for a Local Target Contract/other suitable owner; do not manufacture a Frontend Slice merely because frontend code exists.
 

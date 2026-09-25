@@ -7,7 +7,6 @@
 
 Lens ID: `LENS-SIMPLICITY-IMPLEMENTATION-ECONOMY`
 Short name: `Simplicity Lens`
-Activation: `FREQUENT_CONDITIONAL`
 
 > Semantic Owner Dependency
 > Type: `EXTENDS`
@@ -33,58 +32,13 @@ Simplicity Lens
 
 The Lens is not “minimize file count” or “remove abstractions by default”. It asks whether each abstraction, owner, hop, mapping, test layer or mechanism **earns its cost**.
 
-## Applicability Gate
-
-Activate when a Domain/Slice/proof/UI/Shared/architecture candidate contains material structural choice, especially when one or more of these are present:
-
-```text
-several abstraction layers / wrappers / interfaces
-long orchestration or call chain
-many owners/entities for one useful result
-repeated mappings or representation changes
-several state owners
-several files/artifacts for one small responsibility
-multiple test layers/fixtures for the same property
-speculative extension seams
-ceremonial Domain patterns
-configuration/indirection that is hard to explain locally
-```
-
-Also activate when a reviewer/agent has the concrete question:
-
-```text
-“Have we over-designed this?”
-“Can we implement the same thing with fewer moving parts?”
-“Can we remove a layer without making the next known change worse?”
-```
-
-## Target Inputs / Evidence
-
-```text
-current Target + accepted semantic owners
-candidate Proposals / implementation plan / transient proof design
-current implementation/workspace when available
-accepted current architecture Decisions from natural owners
-relevant concrete Evolution Step target-state meaning / Planning Branches
-relevant selected/candidate Evolution Steps + current Slice/Shared implemented truth
-Step Target Owner Bodies and Step representation only when materially relevant
-L4 dependency/change surface
-L5 Evolution / Change Isolation findings
-L6 proof/operation findings
-observed implementation friction when available
-```
-
-Evolution Step meaning is future-state planning authority/evidence for simplification; it does not become current Scenario/Domain/Slice/Shared truth before realization/materialization.
-
-
-
 ## Analysis Surface
 
-### Primary Result Units / Semantic Selectors
+### Direct Analysis Surface
 
 - semantic selectors over selected Domain/Slice/proof/UI/Shared/architecture Result Units whose implementation cost/complexity is material
 
-### Conditional Result Units / Semantic Selectors
+### Supporting / Contextual Inputs
 
 - current Domain Discovery/Owner, Slice Discovery/Owner, Shared Capability and natural-owner proof semantics as applicable
 
@@ -107,6 +61,63 @@ Revalidation state
 - Evidence about implementation/operational cost
 
 Context availability does not mean this Lens audits all context. The deliberate focus remains the Result/State meaning named above.
+
+## Applicability & Temporal Triggers
+
+### Base Applicability / Usefulness
+
+A material realization/proof/UI/Shared/architecture candidate has structural cost not forced by accepted semantics, with abstraction/indirection/owner/handoff/mapping/state/configuration/proof-layer/generalization/hop pressure or a concrete simpler equivalent.
+
+### Opening Triggers
+
+The Unit starts with a structurally non-trivial candidate/current realization or an explicit “over-designed / can this be simpler?” question.
+
+### During-work Recheck / Invalidation Triggers
+
+Layers, wrappers, interfaces, adapters, seams, owners, mappings, state owners, files, configuration, runtime hops, shared extraction, or proof layers are added/removed/rearranged; known evolution evidence changes the justification for them.
+
+### Closing Triggers / Revalidation Conditions
+
+The final realization/architecture/proof structure retains material complexity; verify each costly structure earns its cost and no simpler equivalent preserves semantics/evolution.
+
+### Confident-False / Stop Conditions
+
+Structure is directly required by accepted semantics/platform constraints and no credible simpler equivalent preserves known constraints.
+
+### False-negative Risks
+
+One large speculative abstraction can be enough; do not require “several/multiple” smells.
+
+Trigger semantics follow the canonical Lens Model:
+
+```text
+TRUE      → APPLY
+FALSE     → NOT_APPLICABLE
+UNCERTAIN → APPLY
+```
+
+A Unit-level `REQUIRED [phase]` attachment bypasses the apply/skip decision at that phase and requires this Lens to cover the current Analysis Surface. These Lens-owned triggers still govern useful earlier application and recheck/invalidation.
+
+## Inputs / Evidence
+```text
+current Target + accepted semantic owners
+candidate Proposals / implementation plan / transient proof design
+current implementation/workspace when available
+accepted current architecture Decisions from natural owners
+relevant concrete Evolution Step target-state meaning / Planning Branches
+relevant selected/candidate Evolution Steps + current Slice/Shared implemented truth
+Step Target Owner Bodies and Step representation only when materially relevant
+relevant already-available dependency/change findings or accepted meaning, when present
+relevant already-available Evolution / Change Isolation findings or accepted meaning, when present
+relevant already-available proof/operation findings or Evidence, when present
+observed implementation friction when available
+```
+
+Evolution Step meaning is future-state planning authority/evidence for simplification; it does not become current Scenario/Domain/Slice/Shared truth before realization/materialization.
+
+## Evaluation Contract
+
+Apply only the dimensions material to the current question. The domain-specific questions, methods, facets, checks, examples, and pattern guidance below constitute this Lens's evaluation workflow; they are not mandatory checklist items unless the current Analysis Surface makes them material.
 
 ## Supported Operations
 
@@ -366,6 +377,17 @@ revalidation trigger when deferred complexity may become justified
 ```
 
 
+## Findings / Outcomes
+
+Valid invocation outcomes are:
+
+```text
+APPLIED — no material finding
+APPLIED — one or more material Finding Candidates
+NOT_APPLICABLE — short confident-FALSE reason when application is not forced at this checkpoint
+```
+
+A Finding Candidate does not directly mutate authoritative Result/State meaning; normal Core Finding Disposition resolves lifecycle/owner consequences.
 
 ## Finding Contract
 
@@ -386,7 +408,9 @@ Core [`Finding Disposition`](../../../../idtspe-core/resolution/findings/FINDING
 
 This Lens does not define new Result Units or target-result fields. If repeated findings reveal missing target-result meaning, revise the appropriate Target Module/Local Target Contract or let Core disposition the finding to another owner.
 
-## Typical Consumers
+## Non-Normative Navigation — Typical Surfaces
+
+This section is navigation only. It does not create or strengthen Unit attachment; normative predictable attachment belongs beside the natural Unit and registry discovery remains projection-only.
 
 ```text
 TM-DOMAIN-DISCOVERY / TM-DOMAIN-OWNER
@@ -421,8 +445,7 @@ Shell placement semantics: [`planning/documentation/idtspe-methodology/active/id
 
 The Lens does not create a dedicated “simplicity file” by default. Accepted conclusions belong with the Target whose plan changed. If simplification exposes a genuinely cross-owner architecture question, surface a Finding Candidate. Core Finding Disposition keeps local meaning with its natural owner or routes an independently substantial workspace-wide problem through ordinary Target Formation / a Local Target Contract.
 
-## Guards
-
+## Guards / Boundaries
 ```text
 simpler ≠ fewer files at any cost
 simpler ≠ procedural/anemic Domain by default
@@ -433,36 +456,9 @@ current implementation convenience ≠ semantic authority
 Lens finding ≠ project-global architecture authority
 ```
 
-## Composition
+## Finding / Lifecycle Boundary
 
-```text
-L4
-→ what depends on what / blast radius
-
-WEUC Lens / L5
-→ global + local evolution/change fitness and justified architecture seams
-
-Simplicity Lens
-→ search for the lowest-cost structure that still satisfies those constraints
-
-L6
-→ ensure the simplified candidate remains provable/observable/operable
-```
-
-The lenses may be applied iteratively:
-
-```text
-candidate
-→ L5 evaluates evolution pressure and may surface a Finding Candidate
-→ Core Finding Disposition resolves any accepted evolution constraint / Decision input
-→ Simplicity evaluates unpaid structure and may surface a simplification Finding Candidate
-→ Core Finding Disposition resolves retained/removable-complexity meaning
-→ L6 evaluates proof/operation and may surface a Finding Candidate
-→ Core Finding Disposition
-→ Decision only when the relevant State/owner consequence is resolved
-```
-
-## Escalation / Revalidation
+Temporal revalidation timing is owned by `Applicability & Temporal Triggers` above. The remaining guidance here concerns Finding/lifecycle routing rather than checkpoint trigger ownership.
 
 If simplification exposes a genuinely workspace-wide architecture consequence, surface a Finding Candidate; Core disposition/Target Formation resolves the natural owner or bounded Local Target when independently material.
 

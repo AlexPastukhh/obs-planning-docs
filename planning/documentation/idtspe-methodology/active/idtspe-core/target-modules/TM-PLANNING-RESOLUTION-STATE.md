@@ -41,6 +41,10 @@ The repeated entries are **Collection Items**, not peer Units. `Target Ref`, opt
 <a id="ru-prs-01--active-planning"></a>
 ### RU-PRS-01 — Active Planning
 
+**Lens Attachments**
+
+- **Core Lens Pack:** `INHERITED` via [`Core Lens Pack`](../lenses/LENS-REGISTRY.md)
+
 **Responsibility.** Maintain the bounded unresolved or selected-for-current-resolution planning items and their current attention order.
 
 **Purpose.** Keep linked Proposal/Q/R/P work navigable across owners without replacing their authority or creating a global backlog.
@@ -73,6 +77,10 @@ Keep the Proposal ↔ Q/R/P graph recursive and addressable; do not flatten it i
 
 <a id="ru-prs-02--tracked-decisions"></a>
 ### RU-PRS-02 — Tracked Decisions
+
+**Lens Attachments**
+
+- **Core Lens Pack:** `INHERITED` via [`Core Lens Pack`](../lenses/LENS-REGISTRY.md)
 
 **Responsibility.** Represent qualifying retained Core Decisions together with their material unresolved/residual Q/R/P after integration of accepted meaning into natural Units.
 

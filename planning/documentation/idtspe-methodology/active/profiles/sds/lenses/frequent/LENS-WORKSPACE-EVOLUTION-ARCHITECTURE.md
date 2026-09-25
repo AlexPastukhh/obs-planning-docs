@@ -3,8 +3,7 @@
 
 Lens ID: `LENS-WORKSPACE-EVOLUTION-ARCHITECTURE`
 
-Role: reusable all-Target Evolution lens
-Applicability: when any concrete unrealized Evolution Step may materially change a current owner/boundary/realization or future Target Body decision
+Role: reusable Evolution evaluation Lens
 
 > Semantic Owner Dependency
 > Type: `EXTENDS`
@@ -19,30 +18,54 @@ This Lens does not own Evolution plans. `TM-EVOLUTION-STEPS-MAP` routes to `TM-E
 
 ## Analysis Surface
 
-**Primary:** current owner/Result choices or Evolution Step Target Bodies whose boundary, realization or compatibility may be affected by concrete unrealized Evolution.
-**Conditional:** relevant Evolution Step target states/branches, Steps Map relations, owner/dependency relations, current implementation/Evidence, assumptions and accepted Decisions.
+**Direct Analysis Surface:** current owner/Result choices or Evolution Step Target Bodies whose boundary, realization or compatibility may be affected by concrete unrealized Evolution.
+**Supporting / Contextual Inputs:** relevant Evolution Step target states/branches, Steps Map relations, owner/dependency relations, current implementation/Evidence, assumptions and accepted Decisions.
 **Context:** active Use Case/Target/profile, current materialized owner state and direct `Entering From` predecessor lineage when relevant.
 
-## Supported Operations
+## Applicability & Temporal Triggers
+
+### Base Applicability / Usefulness
+
+At least one concrete unrealized Evolution Step may affect current/future owner semantics, boundary/realization, requirement/proof obligation, dependency/migration, Target Body decision, Step relation, or readiness.
+
+### Opening Triggers
+
+The Unit begins with a concrete relevant unrealized Step, current-owner Evolution Impact/Open pressure, Step/map relation, Target Body, migration/compatibility question, or readiness claim.
+
+### During-work Recheck / Invalidation Triggers
+
+Relevant Step set/planning position, predecessor relation, Target Body, owner/dependency boundary, compatibility/migration assumption, readiness conclusion, or current implementation/evidence used for evolution changes.
+
+### Closing Triggers / Revalidation Conditions
+
+The result records/changes Evolution impact, Step relation/body/readiness, current seam/defer decision, migration/compatibility obligation, or current-owner projection that must remain consistent with concrete Steps.
+
+### Confident-False / Stop Conditions
+
+No concrete unrealized Step is relevant to the current surface; pure hypothetical someday-change is insufficient.
+
+### False-negative Risks
+
+Deferred/candidate Steps can still be relevant; “not selected yet” must not suppress known evolution pressure.
+
+Trigger semantics follow the canonical Lens Model:
 
 ```text
-ANALYZE   — trace known Evolution pressure and change locality
-CHECK     — test current choice against current materialized/predecessor state, Target-State and migration constraints
-REFINE    — improve a current owner/boundary/seam choice without changing semantic authority
-CHALLENGE — surface a Finding Candidate when the current choice is materially inconsistent or needlessly migration-prone
+TRUE      → APPLY
+FALSE     → NOT_APPLICABLE
+UNCERTAIN → APPLY
 ```
 
-Registry selection is not execution; confirm this Analysis Surface is material before applying the Lens.
+A Unit-level `REQUIRED [phase]` attachment bypasses the apply/skip decision at that phase and requires this Lens to cover the current Analysis Surface. These Lens-owned triggers still govern useful earlier application and recheck/invalidation.
 
-## Inputs
-
+## Inputs / Evidence
 - current Target / Result Unit under review;
 - Steps Map registry/routing;
 - relevant concrete unrealized Evolution Step target states/branches, with truthful planning position;
 - actual current implementation/Evidence when realization pressure matters;
 - known owner/dependency boundaries.
 
-## Operational Evaluation Contract
+## Evaluation Contract
 
 ### 1. Lazy relevance scan
 
@@ -93,6 +116,17 @@ Finding Candidate for another natural owner
 
 There is no generic `TM-EVOLUTION-IMPACT`. Step-side future impact/Target Body semantics remain owned by `TM-EVOLUTION-STEP` and natural-owner Target Modules. Current-owner reverse navigation/revalidation follows the shared [Current-Owner Evolution Impact Projection Contract](../../profile-contracts/evolution/CURRENT-OWNER-EVOLUTION-IMPACT-PROJECTION.md). The Lens only evaluates whether those owners/projections are consistent and appropriately isolated.
 
+## Supported Operations
+
+```text
+ANALYZE   — trace known Evolution pressure and change locality
+CHECK     — test current choice against current materialized/predecessor state, Target-State and migration constraints
+REFINE    — improve a current owner/boundary/seam choice without changing semantic authority
+CHALLENGE — surface a Finding Candidate when the current choice is materially inconsistent or needlessly migration-prone
+```
+
+Registry selection is not execution; confirm this Analysis Surface is material before applying the Lens.
+
 ## Questions
 
 - Which concrete unrealized Steps are actually relevant to this Target, regardless of planning position?
@@ -105,8 +139,7 @@ There is no generic `TM-EVOLUTION-IMPACT`. Step-side future impact/Target Body s
 - Is current abstraction supported by current/selected future evidence?
 - Does any `Entering From` cycle reveal a bad Step decomposition?
 
-## Guards
-
+## Guards / Boundaries
 ```text
 known future ≠ current behavior
 Evolution Lens ≠ Evolution owner
@@ -156,6 +189,18 @@ Step / current owner question
 
 Current realized meaning stays with the affected current owner. Future impact and any selected retained Domain/Slice discovery Result Content remain Step-owned; exact implementation outlook belongs to Exact or transient working reasoning unless independently selected into an Impact.
 
+## Findings / Outcomes
+
+Valid invocation outcomes are:
+
+```text
+APPLIED — no material finding
+APPLIED — one or more material Finding Candidates
+NOT_APPLICABLE — short confident-FALSE reason when application is not forced at this checkpoint
+```
+
+A Finding Candidate does not directly mutate authoritative Result/State meaning; normal Core Finding Disposition resolves lifecycle/owner consequences.
+
 ## Finding Contract
 
 Material findings should identify:
@@ -184,7 +229,3 @@ The Steps Map, selected Evolution Steps, implementation state and Evidence remai
 `NONE_DIRECT` by default.
 
 Persist only natural-owner/Step/Decision meaning that independently needs addressability. Do not create a Lens-output evolution document merely because analysis occurred.
-
-## Composition
-
-Compose with dependency/change impact, simplicity/economy, DDD, Vertical Slice, Programming Principles knowledge, IR Discovery and proof/operability Lenses as the current problem requires.

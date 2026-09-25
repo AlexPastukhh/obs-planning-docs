@@ -256,7 +256,7 @@ Test Coverage → how selected behavior/outcomes are proved
 
 For non-trivial work, record material related behavior that is **not** implemented by this Slice, its owner/destination and reason. This protects vertical Slice boundaries from scope creep.
 
-When proof allocation is material, apply Core `LENS-TEST-PROOF-EVIDENCE`; keep non-trivial proof planning transient with the natural owner and route literal tests through Exact Realization. A vague `covered by integration tests` statement is not sufficient Evidence.
+When proof allocation is material, apply Core `LENS-TEST-PROOF-EVIDENCE`; keep non-trivial proof planning transient with the natural owner and route literal tests through the applicable realization owner (under SDS, `TM-CODE-REALIZATION`; otherwise a narrower active-profile owner when defined or Core `TM-EXACT-REALIZATION` as fallback). A vague `covered by integration tests` statement is not sufficient Evidence.
 
 ## Target Dependencies / Practical Acceptance Handoff
 

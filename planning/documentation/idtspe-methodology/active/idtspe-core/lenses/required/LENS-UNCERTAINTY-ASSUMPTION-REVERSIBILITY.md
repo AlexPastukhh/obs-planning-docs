@@ -3,7 +3,6 @@
 
 Lens ID: `LENS-UNCERTAINTY-ASSUMPTION-REVERSIBILITY`
 Legacy alias: `L3`
-Activation: `REQUIRED_CORE`
 
 ## Purpose
 
@@ -11,12 +10,51 @@ Before choosing, distinguish established basis from assumption/unknown, decide w
 
 This is prospective planning, not revalidation.
 
-## Applicability Gate
+## Analysis Surface
 
-Check every material choice. If no material unknown can change the answer, resolve `no material uncertainty` and do no extra work.
+This Lens evaluates the bounded planning/implementation surface where the following concern is materially present:
 
-## Target Inputs / Evidence
+> A material choice exists and an unknown, assumption, evidence gap, or reversibility/stakes question could alter it.
 
+Context may inform the evaluation, but context availability alone does not make the entire context part of this Lens's Analysis Surface.
+
+## Applicability & Temporal Triggers
+
+### Base Applicability / Usefulness
+
+A material choice exists and an unknown, assumption, evidence gap, or reversibility/stakes question could alter it.
+
+### Opening Triggers
+
+The Unit starts from assumptions/unknowns, incomplete Evidence, irreversible/high-cost consequences, or a choice whose confidence matters.
+
+### During-work Recheck / Invalidation Triggers
+
+Evidence, assumptions, unknowns, reversibility, cost of error, dependency, or decision confidence changes materially.
+
+### Closing Triggers / Revalidation Conditions
+
+The final result still depends on an uncertainty/assumption or makes a commitment whose reversibility and confidence must be explicit.
+
+### Confident-False / Stop Conditions
+
+No material unknown/assumption can change the answer and the choice is safely reversible at the relevant stakes.
+
+### False-negative Risks
+
+Implicit assumptions often disappear from prose after a decision seems obvious; closing must still detect them.
+
+Trigger semantics follow the canonical Lens Model:
+
+```text
+TRUE      → APPLY
+FALSE     → NOT_APPLICABLE
+UNCERTAIN → APPLY
+```
+
+A Unit-level `REQUIRED [phase]` attachment bypasses the apply/skip decision at that phase and requires this Lens to cover the current Analysis Surface. These Lens-owned triggers still govern useful earlier application and recheck/invalidation.
+
+## Inputs / Evidence
 ```text
 candidate Target / RQ / Proposal / Branch
 available Evidence
@@ -26,6 +64,10 @@ timing/horizon
 possible research/prototype routes
 reversal/migration context
 ```
+
+## Evaluation Contract
+
+Apply only the dimensions material to the current question. The domain-specific questions, methods, facets, checks, examples, and pattern guidance below constitute this Lens's evaluation workflow; they are not mandatory checklist items unless the current Analysis Surface makes them material.
 
 ## Prompts
 
@@ -41,7 +83,15 @@ What is migration/reversal cost?
 What revalidation signal should be preserved?
 ```
 
-## Findings / Outputs
+## Findings / Outcomes
+
+Valid invocation outcomes:
+
+```text
+APPLIED — no material finding
+APPLIED — one or more material Finding Candidates
+NOT_APPLICABLE — short confident-FALSE reason when application is not forced at this checkpoint
+```
 
 ```text
 assumption/unknown classification
@@ -53,7 +103,9 @@ Q/R/P
 revalidation signal
 ```
 
-## Typical Consumers
+## Non-Normative Navigation — Typical Surfaces
+
+This section is navigation only. It does not create or strengthen Unit attachment; normative predictable attachment belongs beside the natural Unit and registry discovery remains projection-only.
 
 All material IDTSPE Targets; especially Prototype, Application Definition, Scenario, Domain, Slice and branch comparison.
 
@@ -106,15 +158,12 @@ Normally **NO_DISTINCT_SUPPORTING_ARTIFACT**: the Lens surfaces a Finding Candid
 
 Do not create one file per assumption.
 
-## Guards
-
+## Guards / Boundaries
 Do not invent numeric probabilities. Do not research harmless unknowns.
 
-## Composition
+## Finding / Lifecycle Boundary
 
-Practical Evidence may execute Evidence acquisition. L5 evaluates future Workspace pressure. Revalidation later consumes preserved signals but is not this Lens.
-
-## Escalation / Revalidation
+Temporal revalidation timing is owned by `Applicability & Temporal Triggers` above. The remaining guidance here concerns Finding/lifecycle routing rather than checkpoint trigger ownership.
 
 An independently substantial uncertainty may surface a Target Formation candidate. Target Formation decides whether to reuse an existing Target, hand off/reference an owner, or form a new bounded Target.
 

@@ -228,7 +228,7 @@ TM-IP-07 BRANCHING
   runtime Branch semantics remain owned by P-08
 
 TM-IP-08 LENSES_PATTERNS
-  Lens Profile referencing canonical Lens owners + local attachment guidance
+  Unit-local Lens Attachments referencing canonical Lens owners; rare Target-wide Lens Attachments only when genuinely cross-Unit
 
 TM-IP-09 OUTPUT
   Target Step Result composition/schema guidance
@@ -360,6 +360,11 @@ Unit Definitions
   one entry per reusable Module-defined Unit responsibility
   stable exact Unit Definition owner/reachability
   Target-family-specific applicability / inputs / guidance / validators / consumers / revalidation / representation delta as useful
+  Lens Attachments
+    Core Lens Pack: INHERITED
+    MUST be present for every Module-defined Unit for visual/review reliability, even when there are no additional predictable Lens relationships
+    REQUIRED — reusable Lens ref + mandatory checkpoint phase(s)
+    TRIGGERED — reusable Lens ref only; no copied trigger logic
   MUST conform to TWU.UNIT-CONTRACT, TWU.COLLECTION-CONTRACT, TWU.SLOT-CONTRACT and TWU.RUNTIME-PROJECTION rather than copying their generic schema
 
 Unit / Result Field Explanation Rule
@@ -382,13 +387,11 @@ Shared / Target-Wide Proposal Discovery [when useful]
   only genuinely cross-Unit / Target-composition candidate patterns
   Unit-specific Proposal discovery belongs in Unit Definitions or the relevant Unit Resolution Slot
 
-Lens Profile / Patterns
-  required/frequent reusable Lens refs
-  which target-specific Result Units/fields are normal analysis subjects when useful
-  target-profile reusable Lens refs
-  local-only evaluation prompts when genuinely local
-  known target-specific patterns / anti-patterns
-  applicability gates
+Rare Target-Wide Lens Attachments / Patterns [when useful]
+  only Lens relationships whose Analysis Surface is genuinely Target-wide and cannot be represented truthfully on natural Units
+  reusable Lens refs only; trigger logic remains owned by the concrete Lens
+  known Target-wide patterns / anti-patterns when genuinely cross-Unit
+  Unit-specific Lens relationships belong in Unit Definitions
 
 Optional Target-Specific Concern Hints
   only recurring domain-specific concern categories when they add value;
@@ -541,54 +544,67 @@ The module must include applicability prompts/anti-patterns so pattern libraries
 
 Proposal discovery aids should likewise live at the Unit Definition when they are Unit-specific. Runtime Proposals attach to their natural Unit/Requirement/Target subject through `P-07 Proposal`; there is no separate Target-level `PROPOSAL_SPACE` semantic owner.
 
-# 10. Lens Profile And Reusable Lens Library
+# 10. Unit Lens Attachments And Reusable Lens Library
 
 Reusable Lens knowledge is not owned by a Target Module merely because the module first used it.
 
-Canonical owner:
+Canonical Lens owners:
+
 ```text
-active/idtspe-core/lenses/ + active/profiles/<profile>/lenses/
+active/idtspe-core/lenses/
+active/profiles/<profile>/lenses/
 ```
 
-A Target Module declares a concise `Lens Profile` / attachment policy:
+Predictable attachment normally belongs on the smallest natural Module-defined Unit:
+
 ```text
-required generic Lens inheritance
-primary TARGET_PROFILE_REUSABLE Lens Pack(s)
-frequent conditional Lens refs + gates
-local-only Lens prompts — only when truly non-reusable
+Unit Definition
+→ Lens Attachments
+   Core Lens Pack: INHERITED
+
+   REQUIRED
+   - <Lens> [checkpoint phase(s)]
+
+   TRIGGERED
+   - <Lens>
 ```
 
-The module owns **that/when** those Lenses attach to this recurring Target family. The reusable Lens owner controls its Analysis Surface, supported operations, evaluation workflow, Typical Findings and Knowledge Basis. Normal `P-06 Lens` applicability scanning may additionally discover registered Lenses that the module did not pre-list.
+Selected rules:
 
-Selected rule:
 ```text
-reusable Lens knowledge → Lens Library
-Target Module → Lens Profile
+reusable Lens semantics
+→ canonical Lens owner
+
+predictable relationship to one Unit
+→ that Unit's Lens Attachments
+
+genuinely Target-wide predictable relationship
+→ rare Target-wide Lens Attachment
+
+unexpected/context-emergent Lens need
+→ registry discovery
 ```
 
-If a local Lens appears in a second Target family or repeatedly outside its original module, review it for promotion into the Lens Library.
+`REQUIRED` / `TRIGGERED` semantics are canonical in the Lens Model. A Unit never embeds concrete Lens condition logic. `TRIGGERED` delegates applicability to the concrete Lens's Opening / During-work / Closing trigger contract.
 
-Generic required Core Pack:
+Every Module-defined Unit MUST visibly project its inherited Core Pack through a local `Lens Attachments` block. Empty additional attachment sets are represented by the Core line alone rather than by omitting the block.
+
+Smallest-natural-Unit invariant:
+
 ```text
-LENS-NEED-VALUE-SCOPE
-LENS-AUTHORITY-SOT-REUSE
-LENS-UNCERTAINTY-ASSUMPTION-REVERSIBILITY
-LENS-PROPOSAL-DECISION-RESOLUTION-CONTEXT
-  required through registry only when a material Proposal/Decision surface exists
-LENS-ARTIFACT-BOUNDARY-ADDRESSABILITY
-  Documentation / Representation check at output/materialization
+if a Lens relationship can be expressed truthfully on a natural Unit
+→ it MUST NOT remain only as a Target-level attachment
+
+Target-level attachment
+→ requires a genuinely Target-wide Analysis Surface
+  that cannot be reduced without semantic loss
 ```
 
-Frequent conditional Lenses include:
-```text
-LENS-DEPENDENCY-CHANGE-IMPACT
-LENS-WORKSPACE-EVOLUTION-ARCHITECTURE
-LENS-VERIFIABILITY-OBSERVABILITY-OPERABILITY
-LENS-QUALITY-RISK-MATERIALITY
-LENS-TARGET-RESOLUTION-COVERAGE
-```
+Every material Unit inherits the Core Lens Pack. Membership is owned by the Core Lens Registry; Target Modules do not manually redefine that inventory.
 
-Lens operations may contribute explanatory Broad Discussion/Key Points without creating State. When they surface a material semantic consequence needing ownership/State/lifecycle disposition, that meaning becomes a Finding Candidate; Core Finding Disposition resolves the material Finding and its `RE-*` route; the canonical Proposal lifecycle supplies the linked Proposal, while Evidence / Q/R/P / Decision inputs / revalidation or another owner remain separate consequences as applicable.
+Normal applicability scanning may additionally discover registered Generic Core/profile Lenses that the Unit did not pre-list. A predictable Unit attachment never disables discovery.
+
+Lens operations may contribute explanatory Broad Discussion/Key Points without creating State. When they surface a material semantic consequence needing ownership/State/lifecycle disposition, that meaning becomes a Finding Candidate; Core Finding Disposition resolves the material Finding and its `RE-*` route.
 
 ```text
 Lens ≠ Target Module
@@ -691,7 +707,12 @@ theory/reference provenance is retained at an economical granularity when materi
 applied interpretation is present when raw theory alone does not explain how it should guide this Target family
 RQ candidates are distinguishable from user questions
 Proposal/pattern prompts do not auto-select answers
-specialized Lenses have applicability gates
+every Unit Lens Attachment resolves to a registered Lens owner
+REQUIRED Lens Attachments declare mandatory checkpoint phase(s)
+TRIGGERED Lens Attachments contain no local condition logic
+Lens-specific temporal triggers remain owned by the concrete Lens
+Core Lens Pack inheritance is not manually redefined per module
+Target-wide Lens Attachments are justified by a genuinely Target-wide surface
 output schema has one semantic authority story
 submodule composition is explicit
 validators cover omission/authority/boundary risks
@@ -726,7 +747,7 @@ Core Proposal/QRP/Decision/Evidence/Findings/Revalidation remain Core semantics 
 
 ```text
 reusable Lens knowledge ≠ Target Module ownership
-Lens activation ≠ new Target Instance
+Lens application / attachment ≠ new Target Instance
 Architecture Decision subject ≠ dedicated Architecture Target Module automatically
 ```
 
@@ -734,6 +755,16 @@ Architecture Decision subject ≠ dedicated Architecture Target Module automatic
 ## Migration Compatibility For Installed Modules
 
 Existing installed Modules remain valid during the staged conformance migration.
+
+
+Existing `## Lens Profile` sections remain readable as migration inputs until each installed Target Module receives an explicit Unit-level Lens Attachment migration. Do not mechanically map old `primary` / `conditional` labels into new statuses. Resolve each relationship from the actual Analysis Surface as one of:
+
+```text
+REQUIRED [phase(s)]
+TRIGGERED
+no predictable attachment
+rare Target-wide attachment
+```
 
 Interpret current:
 

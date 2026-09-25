@@ -113,7 +113,7 @@ DOWNSTREAM_MATERIALITY
 → same port contract
 ```
 
-An explicit requirement forces a real applicability/traversal check but not a positive semantic result. `NOT_APPLICABLE`, `CHECKED_NO_RESULT`, `CHECKED_NO_CHANGE` and `REUSED` remain valid outcomes.
+An explicit **port/capability requirement** forces a real applicability/traversal check but not a positive semantic result. `NOT_APPLICABLE`, `CHECKED_NO_RESULT`, `CHECKED_NO_CHANGE` and `REUSED` remain valid port outcomes. This does **not** override a later semantic root action whose user intent is itself `APPLY / USE <named Lens>`: once P-06 has resolved that registered Lens and bounded surface, the explicit Lens-apply action executes one real Lens Application even when normal Lens applicability is confidently false. In that case the semantic Lens result may simply be `APPLIED — no material finding / no useful change`; the port requirement and the root semantic action are distinct obligations.
 
 <a id="idtspe-port-composition-refresh"></a>
 ## Port Composition Refresh Rule
@@ -195,7 +195,7 @@ Supports the `OWNER_RELATIONS` Requirement and Target topology/natural-owner rel
 <a id="idtspe-port-p06"></a>
 ### P-06 Lens Port
 
-Owns normal Lens applicability/selection/application over the current bounded Analysis Surface. Target Modules/Requirements/Units and P-12 Validation may request or reuse Lens evaluation, but P-06 owns the actual Lens applicability/operation/application lifecycle and there is no fixed Target Lens Set field.
+Owns normal Lens applicability/selection/application over the current bounded Analysis Surface. Target Modules/Requirements/Units and P-12 Validation may request or reuse Lens evaluation, but P-06 owns the actual Lens applicability/operation/application lifecycle and there is no fixed Target Lens Set field. An explicit semantic `APPLY / USE <named Lens>` request is a forced one-shot Lens Application after registry/surface/operation resolution: applicability remains explanatory context but cannot replace that requested application with `NOT_APPLICABLE`.
 
 The Target Resolution Coverage Lens may evaluate scope/Requirement/Unit coverage and surface Finding Candidates; Target Formation/Resolution owns composition changes.
 

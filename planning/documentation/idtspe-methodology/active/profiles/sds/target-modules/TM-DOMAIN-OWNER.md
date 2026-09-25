@@ -33,12 +33,6 @@ Possible sources:
 - known Evolution Step(s);
 - accepted Proposal payload.
 
-## Lens Profile
-
-Required primary lens: `LENS-DOMAIN-MODELING-DDD`.
-
-Conditional: Evolution, Implementation Requirements Discovery, quality/verifiability and Representation Lenses, plus selected [`RG-PRG-*`](../knowledge-bases/programming-principles/README.md) knowledge when material.
-
 ## Unit Definition Conformance
 
 This module specializes the Core [Target Module Model](../../../idtspe-core/target-modules/TARGET-MODULE-MODEL.md) and [Unit / Target Step Result Model](../../../idtspe-core/runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md). The Core owners define generic Unit lifecycle, complete-inventory/disposition and Proposal/Core-State semantics; this module defines only its SDS-specific Unit responsibilities, local materiality, production guidance, validators and handoffs below.
@@ -90,6 +84,14 @@ Each material Unit below inherits the generic [`Unit Applicability Envelope`](..
 <a id="ru-down-01--domain-semantic-contract"></a>
 ### RU-DOWN-01 — Domain Semantic Contract
 
+**Lens Attachments**
+
+- **Core Lens Pack:** `INHERITED` via [`Core Lens Pack`](../../../idtspe-core/lenses/LENS-REGISTRY.md)
+- **REQUIRED [CLOSING]:**
+  - [`LENS-DOMAIN-MODELING-DDD`](../lenses/reusable/LENS-DOMAIN-MODELING-DDD.md)
+- **TRIGGERED:**
+  - [`LENS-TERMS-UBIQUITOUS-LANGUAGE`](../lenses/reusable/LENS-TERMS-UBIQUITOUS-LANGUAGE.md)
+
 Own proportionally:
 
 ```text
@@ -108,6 +110,18 @@ Exact class/file layout is not part of this RU unless independently contractual.
 <a id="ru-down-02--domain-implementation-requirements"></a>
 ### RU-DOWN-02 — Domain Implementation Requirements
 
+**Lens Attachments**
+
+- **Core Lens Pack:** `INHERITED` via [`Core Lens Pack`](../../../idtspe-core/lenses/LENS-REGISTRY.md)
+- **REQUIRED [CLOSING]:**
+  - [`LENS-IMPLEMENTATION-REQUIREMENTS-DISCOVERY`](../lenses/reusable/LENS-IMPLEMENTATION-REQUIREMENTS-DISCOVERY.md)
+- **TRIGGERED:**
+  - [`LENS-DOMAIN-MODELING-DDD`](../lenses/reusable/LENS-DOMAIN-MODELING-DDD.md)
+  - [`LENS-TERMS-UBIQUITOUS-LANGUAGE`](../lenses/reusable/LENS-TERMS-UBIQUITOUS-LANGUAGE.md)
+  - [`LENS-QUALITY-RISK-MATERIALITY`](../../../idtspe-core/lenses/frequent/LENS-QUALITY-RISK-MATERIALITY.md)
+  - [`LENS-VERIFIABILITY-OBSERVABILITY-OPERABILITY`](../../../idtspe-core/lenses/frequent/LENS-VERIFIABILITY-OBSERVABILITY-OPERABILITY.md)
+  - [`LENS-TEST-PROOF-EVIDENCE`](../../../idtspe-core/lenses/reusable/LENS-TEST-PROOF-EVIDENCE.md)
+
 Own durable must-hold constraints whose natural implementation owner is this Domain owner:
 
 ```text
@@ -125,6 +139,15 @@ When owner-local `PFR-*` is material, use the shared exact `Proof Requirement | 
 
 <a id="ru-down-03--evolution-impact"></a>
 ### RU-DOWN-03 — Evolution Impact
+
+**Lens Attachments**
+
+- **Core Lens Pack:** `INHERITED` via [`Core Lens Pack`](../../../idtspe-core/lenses/LENS-REGISTRY.md)
+- **REQUIRED [CLOSING]:**
+  - [`LENS-DOMAIN-MODELING-DDD`](../lenses/reusable/LENS-DOMAIN-MODELING-DDD.md)
+  - [`LENS-WORKSPACE-EVOLUTION-ARCHITECTURE`](../lenses/frequent/LENS-WORKSPACE-EVOLUTION-ARCHITECTURE.md)
+- **TRIGGERED:**
+  - [`LENS-DEPENDENCY-CHANGE-IMPACT`](../../../idtspe-core/lenses/frequent/LENS-DEPENDENCY-CHANGE-IMPACT.md)
 
 This Domain owner-local Unit specializes the shared [Current-Owner Evolution Impact Projection Contract](../profile-contracts/evolution/CURRENT-OWNER-EVOLUTION-IMPACT-PROJECTION.md). Its local affected surface is **Domain semantics/responsibility**. The shared contract owns inclusion threshold across candidate/selected/conditional/deferred Steps, truthful planning-position projection, depth/no-copy rules and post-realization removal from active future impact. This Target Module owns only the Unit identity, Domain owner-specific materiality test and local revalidation/handoff use.
 
@@ -161,6 +184,10 @@ representation preserves discoverability of material non-code meaning
 ```
 
 Consumers reference this owner from Slice/Shared relations. Material owner changes trigger dependent revalidation through Core consistency/finding mechanics.
+
+## Knowledge Basis
+
+Selected [`RG-PRG-*`](../knowledge-bases/programming-principles/README.md) entries may inform an applied natural evaluator when their registry triggers materially match. Programming Principle knowledge does not create Lens attachment by itself.
 
 ## Representation
 

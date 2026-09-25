@@ -203,7 +203,7 @@ Result Unit:
 
 In this Target family, literal future code may itself be the desired Result Unit rather than an example inside a planning document.
 
-Generic Core now installs [`TM-EXACT-REALIZATION`](../../target-modules/TM-EXACT-REALIZATION.md) for this recurring profile-independent result family. Profiles may reuse it directly and add only genuinely profile-specific semantic/design Targets around it.
+Generic Core installs [`TM-EXACT-REALIZATION`](../../target-modules/TM-EXACT-REALIZATION.md) as the generic/profile-neutral owner for this recurring directly-integrable result family. An active profile may define a narrower realization owner for a profile-owned artifact family; when that narrower owner applies, it takes the handoff and Core Exact remains the fallback. Under SDS, source/test/codebase realization is owned by `TM-CODE-REALIZATION`.
 
 ---
 
@@ -1083,17 +1083,43 @@ Core State remains sparse because Core State kinds are not a predeclared Target-
 
 Responsibility ID: `TWU.APPLICABILITY-ENVELOPE`
 
-Every **material Target Step Result Unit** is processed inside a lightweight applicability envelope. The envelope is a responsibility boundary around Unit work, not a new Result Unit, State Unit, phase, persisted status or execution log.
+Every **material Target Step Result Unit** is processed inside a lightweight applicability envelope. The envelope is a responsibility boundary around Unit work, not a new Result Unit, State Unit, phase, persisted status or mandatory execution log.
 
 ```text
 current Work Context + Target + accepted State
 → Opening Unit Checkpoint — <RU-ID>
 → Unit Work — <RU-ID>
-   ↕ In-Unit Applicability Check whenever material
+   ↕ In-Unit Applicability Check whenever the Analysis Surface changes materially
 → candidate Current Result Content
 → Closing Unit Checkpoint — <RU-ID>
 → Current Result Content / narrow re-entry when needed
 ```
+
+Lens participation can come from four sources:
+
+```text
+Inherited
+→ Core Lens Pack
+
+Predictable
+→ Unit-local REQUIRED / TRIGGERED Lens Attachments
+→ rare Target-wide attachment when explicitly defined
+
+Discovered
+→ Generic Core + every active-profile Lens Registry
+
+Explicit
+→ user/agent-requested Lens
+```
+
+Lightweight visibility is sufficient:
+
+```text
+APPLIED — <short reason/result>
+NOT_APPLICABLE — <short reason>
+```
+
+Internal execution may transiently track `PENDING` / `STALE`, but Unit closure may not leave an applicable mandatory Lens obligation unsatisfied.
 
 ### Opening Unit Checkpoint
 
@@ -1105,52 +1131,47 @@ Module-defined Unit  → Module-defined Unit Definition
 Contextual Unit      → locally established Contextual Unit Definition
 ```
 
+Opening Lens applicability:
+
 ```text
 material Unit becomes current work subject
-→ resolve/reuse the exact governing Unit Definition anchor as the primary method owner
-→ resolve the smallest sufficient additional reusable owner set already known to be material
-→ when an authorized working representation is being authored, write the concise Methodology binding before substantive Unit content
-→ otherwise retain the binding in current working context until/if representation is materialized
-→ if the substantive Unit is composite, establish/reuse the actual Unit Resolution Set as the runtime projection of the applicable prepared/contextual Slot Definitions for this Unit; project UNIT_WIDE roles once and PER_ITEM roles only for existing items of their owning Collections
-→ then begin substantive Unit Resolution
+→ recognize inherited Core Lens Pack
+→ load Unit-local / rare Target-wide Lens Attachments
+→ perform Generic Core + every active-profile registry discovery scan
+→ for REQUIRED [OPENING]
+   apply unconditionally to the current Analysis Surface
+→ for every other currently participating Lens
+   — inherited Core, Unit REQUIRED for another phase, Unit TRIGGERED, and retained discovered/explicit Lens —
+   evaluate the concrete Lens's Opening Trigger
+   TRUE / UNCERTAIN → APPLY
+   confident FALSE  → NOT_APPLICABLE
+→ record lightweight visibility
+→ begin substantive Unit Resolution
 ```
 
-> Semantic Owner Dependency
-> Type: `CONTEXTUALIZES`
-> Responsibility: `DOC.METHODOLOGY-CONTEXTUAL-ANNOTATION`
-> Owner: [Methodology / Contextual Annotation Principle](../../../../../principles-and-terminology.md#doc-methodology-contextual-annotation)
-
-The persisted binding form follows that Documentation owner; normally:
-
-```md
-**Methodology:** {link to exact reusable owner}
-```
-
-The braces above are placeholder notation, not a repository path. Replace them with a real Markdown link to the exact reusable owner. Do not copy the method after that owner link. If a reusable owner should exist but is missing, ambiguous or conflicting, surface an OPEN methodology-owner resolution / Finding instead of pretending the block is merely Contextual.
-
-After the primary binding is established:
-
-```text
-current Unit Analysis Surface
-→ logically check Core Lens Registry applicability
-→ logically check active-profile Lens Registry applicability when a profile is active
-→ reuse trustworthy current registry summaries when nothing material changed
-→ open/apply only plausible Lenses at useful depth
-→ consult other component registries only when this Unit exposes a material trigger for them
-```
-
-`Opening Unit Checkpoint` is mandatory for a material Unit. A valid result is `NO_ADDITIONAL_LENS` / no new supporting component. Mandatory checkpoint does **not** mean mandatory full-file reread, exhaustive registry traversal, Lens execution or Finding creation. Supporting methodology discovered later is bound/referenced before that supporting method is applied; it need not all be predicted at the opening checkpoint.
+Opening is a mandatory applicability boundary, not a requirement to execute every Lens or manufacture a Finding. Supporting methodology discovered later is bound/referenced before that supporting method is applied; it need not all be predicted at Opening.
 
 ### In-Unit Applicability Check
 
-Opening and Closing checkpoints are minimum boundaries, not the only moments when registries may be consulted. During Unit work, re-evaluate applicability immediately when new Evidence, Finding pressure, ownership/dependency change, representation pressure, profile change or another material Analysis-Surface change makes another evaluator/supporting component plausibly useful.
+Opening and Closing are minimum boundaries, not the only moments when Lens applicability changes. During Unit work, run an In-Unit Applicability Check whenever the Lens-relevant Analysis Surface changes materially.
 
 ```text
-Opening/Closing checkpoint
-≠ exclusive registry-consultation window
+material Analysis-Surface change
+→ determine which Lens surfaces may have changed
+→ for REQUIRED [DURING]
+   apply unconditionally at this material In-Unit checkpoint
+→ for every other affected currently participating Lens
+   — inherited Core, Unit REQUIRED for another phase, Unit TRIGGERED, and retained discovered/explicit Lens —
+   evaluate the concrete Lens's During-work Recheck / Invalidation Trigger
+→ re-scan registries when the change could expose new perspectives
+→ TRUE / UNCERTAIN
+   apply / reapply and refresh stale coverage
+→ confident FALSE
+   preserve prior valid application when still current, or record NOT_APPLICABLE where no current application is required
+→ update lightweight visibility / stale state
 ```
 
-Do not wait for Closing merely to preserve ceremony when a material issue is already visible.
+The Unit does not encode Lens-specific invalidation rules. Do not wait for Closing merely to preserve ceremony when a material issue is already visible.
 
 ### Closing Unit Checkpoint
 
@@ -1158,23 +1179,32 @@ After candidate Current Result Content exists, evaluate the **actual resulting U
 
 ```text
 candidate Current Result Content
-→ for a composite Unit, verify material Slot dispositions/content and unresolved gaps are coherent with the parent Result Content Contract
-→ recheck Core Lens Registry applicability
-→ recheck active-profile Lens Registry applicability when active
-→ apply newly material checks at useful depth
+→ verify composite Slot dispositions/content when applicable
+→ re-evaluate inherited Core Pack + Unit attachments + active-profile discovery
+→ for REQUIRED [CLOSING]
+   apply against the final resulting Analysis Surface regardless of trigger
+→ for every other currently participating Lens
+   — inherited Core, Unit REQUIRED for another phase, Unit TRIGGERED, and retained discovered/explicit Lens —
+   evaluate the concrete Lens's Closing Trigger
+   TRUE / UNCERTAIN → APPLY
+   confident FALSE  → NOT_APPLICABLE
+→ apply any newly discovered materially applicable Lens
 → disposition material Findings through normal Core ownership/lifecycle
 → resolve newly material owner / Target / revalidation / representation consequences
+→ verify every mandatory applicable Lens obligation covers the current final surface
+→ if any mandatory obligation remains PENDING / STALE
+   block Unit closure and refine/reopen as needed
 → Current Result Content
 ```
 
-A Closing checkpoint may reopen/refine the same Unit or route upstream/downstream work and then run again. It is not a one-way approval gate.
+A Closing checkpoint may reopen/refine the same Unit or route upstream/downstream work and then run again. It is not a one-way approval gate. A Unit cannot close with an unapplied `REQUIRED [CLOSING]` Lens.
 
 ### Registry Read Economy
 
 ```text
 mandatory logical checkpoint
 ≠ mandatory physical reread
-≠ mandatory Lens selection
+≠ mandatory execution of every Lens
 ≠ mandatory Finding
 ≠ mandatory deeper methodology
 ```
@@ -1191,7 +1221,20 @@ Unit Work — RU-...
 Closing Unit Checkpoint — RU-...
 ```
 
-A module may add primary/frequent Lens candidates or local triggers for that Unit, but must not copy/redefine this generic algorithm. This explicit placement makes Unit processing reviewable without turning checkpoints into extra Result Units.
+Every Module-defined Unit visibly declares its inherited Core Pack in a local block; additional predictable Lens relationships are added there when present:
+
+```text
+Lens Attachments
+Core Lens Pack: INHERITED
+
+REQUIRED
+- <Lens> [checkpoint phase(s)]
+
+TRIGGERED
+- <Lens>
+```
+
+The Unit may not copy/redefine concrete Lens trigger logic. Unlisted Lenses remain discoverable through registry scans.
 
 ## 6. Lens / Finding Boundary
 

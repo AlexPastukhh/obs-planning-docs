@@ -7,11 +7,67 @@
 Lens ID: `LENS-PROPOSAL-DECISION-RESOLUTION-CONTEXT`
 
 <a id="lens-proposal-decision-resolution-context"></a>
-Activation: `REQUIRED_CORE` on a material Proposal / Decision surface
 
 ## Purpose
 
 Operationally evaluate one material Proposal/Decision resolution context through the existing Core lifecycle owners without creating a second Proposal, Decision, Q/R/P or Evidence lifecycle.
+
+## Analysis Surface
+
+```text
+Proposal identity / subject / driver
+candidate Result Meaning
+candidate Resolution / Realization Route when material
+actual/claimed Decision selection
+related Q/R/P + Evidence
+natural owner / affected owners
+accepted Result / current temporal-host meaning
+residual/revalidation context
+```
+
+## Applicability & Temporal Triggers
+
+### Base Applicability / Usefulness
+
+A material Proposal or Decision surface exists.
+
+### Opening Triggers
+
+Competing alternatives, an active Proposal, or an unresolved/retained Decision is already part of the Unit context.
+
+### During-work Recheck / Invalidation Triggers
+
+Proposal set, comparison basis, Evidence, selection, Decision status, rationale, or supersession relation changes.
+
+### Closing Triggers / Revalidation Conditions
+
+The Unit creates/retains/resolves a Proposal or Decision, or its final meaning depends on one whose resolution context must remain truthful.
+
+### Confident-False / Stop Conditions
+
+No material Proposal/Decision surface exists.
+
+### False-negative Risks
+
+Informal “we chose X” language can be a Decision surface even if no explicit Decision record existed at opening.
+
+Trigger semantics follow the canonical Lens Model:
+
+```text
+TRUE      → APPLY
+FALSE     → NOT_APPLICABLE
+UNCERTAIN → APPLY
+```
+
+A Unit-level `REQUIRED [phase]` attachment bypasses the apply/skip decision at that phase and requires this Lens to cover the current Analysis Surface. These Lens-owned triggers still govern useful earlier application and recheck/invalidation.
+
+## Inputs / Evidence
+
+Current Proposal/Decision surface; candidate alternatives; decisive Evidence; related Q/R/P/E state; authority/owner context; integration/reconsideration context when material.
+
+## Evaluation Contract
+
+Apply only the dimensions material to the current question. The domain-specific questions, methods, facets, checks, examples, and pattern guidance below constitute this Lens's evaluation workflow; they are not mandatory checklist items unless the current Analysis Surface makes them material.
 
 ## Authority Boundary
 
@@ -28,18 +84,6 @@ Canonical semantic/lifecycle owners remain:
 
 This Lens owns only the reusable **operational evaluation** of a concrete Proposal/Decision context. It does not duplicate the linked lifecycle/projection contracts.
 
-## Applicability Gate
-
-```text
-material Proposal / material Decision surface exists
-→ REQUIRED_CORE check
-
-no material Proposal/Decision surface
-→ Lens not selected merely for ceremony
-```
-
-Ordinary Target Modules reach this Lens through Opening/In-Unit/Closing registry scans. A Target Module should not directly attach this Lens mechanically unless recurring specialized value justifies it.
-
 ## QRPE View
 
 `QRPE` is a compact view, **not** a new Core State kind:
@@ -54,19 +98,6 @@ Proposal / Decision
 ```
 
 The obligation is to check applicability. `none material` is a valid result; do not force an empty four-field form.
-
-## Analysis Surface
-
-```text
-Proposal identity / subject / driver
-candidate Result Meaning
-candidate Resolution / Realization Route when material
-actual/claimed Decision selection
-related Q/R/P + Evidence
-natural owner / affected owners
-accepted Result / current temporal-host meaning
-residual/revalidation context
-```
 
 ## Supported Operations
 
@@ -133,18 +164,15 @@ Decision → exposes any new Q/R/P?
 
 Surviving open/deferred/residual items remain with their canonical lifecycle/natural owners and may be kept with their related resolution context in [`Resolution Carry-Forward`](../../target-modules/TM-PLANNING-RESOLUTION-STATE.md#tm-planning-resolution-state) when continuation value is material.
 
-## Composition With Existing Lenses
+## Findings / Outcomes
 
-Reuse peer Lens theory rather than copying it:
+Valid invocation outcomes:
 
-- `LENS-AUTHORITY-SOT-REUSE` — owner/authority/duplicate-truth questions;
-- `LENS-UNCERTAINTY-ASSUMPTION-REVERSIBILITY` — assumptions, Evidence need, defer/reversibility, cost of being wrong;
-- `LENS-DEPENDENCY-CHANGE-IMPACT` — affected owners/consumers/blast radius;
-- `LENS-QUALITY-RISK-MATERIALITY` — material risk dimensions.
-
-This Lens coordinates the Proposal/Decision context; peer Lenses retain their own evaluation authority.
-
-## Findings / Outputs
+```text
+APPLIED — no material finding
+APPLIED — one or more material Finding Candidates
+NOT_APPLICABLE — short confident-FALSE reason when application is not forced at this checkpoint
+```
 
 ```text
 reviewed Proposal/Decision context
@@ -159,8 +187,7 @@ Finding Candidate when a new contradiction/authority problem is discovered
 
 This Lens creates no dedicated artifact by default. Material accepted semantic consequences remain with canonical lifecycle/natural owners. When review state or surviving residual context needs persistence, use ordinary Documentation / Representation + P-14 and, when applicable, the Resolution Carry-Forward projection rather than a Lens-owned semantic body.
 
-## Guards
-
+## Guards / Boundaries
 ```text
 QRPE ≠ new Core State kind
 Lens ≠ Proposal/Decision lifecycle owner
@@ -169,7 +196,9 @@ AI recommendation ≠ selection
 reviewed candidate Target Instance ≠ canonical integration / realization authority
 ```
 
-## Revalidation
+## Finding / Lifecycle Boundary
+
+Temporal revalidation timing is owned by `Applicability & Temporal Triggers` above. The remaining guidance here concerns Finding/lifecycle routing rather than checkpoint trigger ownership.
 
 Re-run only when the material Proposal/Decision surface, decisive Evidence, related QRPE, authority, integration owner or reconsider context changes materially.
 
@@ -177,4 +206,4 @@ Re-run only when the material Proposal/Decision surface, decisive Evidence, rela
 
 Mode: `REFERENCED`
 
-This Lens intentionally references rather than copies the Proposal/Decision lifecycle, Q/R/P lifecycle, USER-input intake, Decision Revalidation Helper and peer Lenses. Those owners remain the reusable semantic/evaluation knowledge authorities for their respective responsibilities.
+This Lens intentionally references rather than copies the Proposal/Decision lifecycle, Q/R/P lifecycle, USER-input intake and Decision Revalidation Helper. Those owners remain the reusable semantic/evaluation knowledge authorities for their respective responsibilities.

@@ -84,8 +84,8 @@
         "используй линзу"
       ],
       "description": "Apply one named registered Lens through an explicit/resolved supported operation to a bounded IDTSPE Analysis Surface; Target context is optional and resolved only when natural.",
-      "meaning": "Resolve the named Lens from the Core/active-profile registry, resolve the bounded Analysis Surface and the supported Lens operation requested or naturally required by the caller, read its Operational Evaluation Contract and Knowledge Basis according to its load policy, and execute that `(Lens Model, Analysis Surface, Operation, basis)` application inside the current IDTSPE lifecycle. Do not create or resolve a Target merely to host a Lens over broader semantic meaning. The command itself is a generic dispatcher and does not own the selected Lens semantics.",
-      "activeContextBehavior": "Use the natural current Analysis Surface; it may be Target work, Core Resolution State, a cross-owner semantic subject, or another bounded context. Resolve/reuse Target context only when the surface naturally belongs to Target work. Explicit user selection may activate a registered Lens, but material Lens output remains a Finding Candidate until Core Finding Disposition resolves the actual State/owner/lifecycle consequence; Lens activation never creates a Lens-owned Target.",
+      "meaning": "Resolve the named Lens from the Core/active-profile registry, resolve the bounded Analysis Surface and the supported Lens operation requested or naturally required by the caller, read its Operational Evaluation Contract and Knowledge Basis according to its load policy, and execute that `(Lens Model, Analysis Surface, Operation, basis)` application inside the current IDTSPE lifecycle. This command is explicit APPLY intent: the Lens is applied even when its Base Applicability / Usefulness is confidently false; that assessment remains explanatory relevance context and the valid result may simply be `APPLIED — no material finding / no useful change`. Do not create or resolve a Target merely to host a Lens over broader semantic meaning. The command itself is a generic dispatcher and does not own the selected Lens semantics.",
+      "activeContextBehavior": "Use the natural current Analysis Surface; it may be Target work, Core Resolution State, a cross-owner semantic subject, or another bounded context. Resolve/reuse Target context only when the surface naturally belongs to Target work. Explicit APPLY/USE of a registered Lens creates a one-shot application obligation on the current bounded surface even when the Lens would otherwise report confident non-applicability. Inside Unit work this does not create or strengthen a persistent Unit Lens Attachment. Material Lens output remains a Finding Candidate until Core Finding Disposition resolves the actual State/owner/lifecycle consequence; Lens application never creates a Lens-owned Target.",
       "traversalReadMode": "Resolve the requested Lens through current Core/profile registries, then read that Lens body and only the referenced Knowledge Basis owners required by its Reference Load Policy. Refresh Target/profile governance proportionally when uncertain.",
       "ownerFiles": [
         "planning/documentation/idtspe-methodology/active/idtspe-core/lenses/LENS-MODEL.md",
@@ -123,11 +123,11 @@
         "planning/commands/idtspe-port-lens.command.md"
       ],
       "compositionContributions": [],
-      "expectedOutput": "Selected Lens applicability/disposition plus explanatory analysis and material Finding Candidates for the bounded Analysis Surface. Core Finding Disposition resolves any Evidence/Proposal/Q-R-P/Decision/owner/revalidation consequences; no Target is manufactured merely to host the Lens.",
+      "expectedOutput": "`APPLIED` result for the explicitly requested Lens operation over the bounded Analysis Surface, including explanatory relevance/applicability context and any material Finding Candidates. `APPLIED — no material finding / no useful change` is valid even when Base Applicability would otherwise be confidently false. Core Finding Disposition resolves any Evidence/Proposal/Q-R-P/Decision/owner/revalidation consequences; no Target is manufactured merely to host the Lens.",
       "permissionMode": "read-only-planning",
       "keyReminders": [
         "This is a dispatcher to the selected registered Lens; command text never becomes Lens authority.",
-        "A Lens may be explicitly applied to any bounded Analysis Surface supported by the Lens; Target context is optional rather than mandatory.",
+        "A named registered Lens requested through explicit APPLY/USE is actually applied to the current bounded Analysis Surface; low or confidently false normal applicability does not turn the requested application into NOT_APPLICABLE.",
         "Preserve the selected supported operation; do not silently treat CHECK, REFINE and CHALLENGE as the same application.",
         "Resolve/reuse a Target only when the Analysis Surface naturally belongs to Target work.",
         "Knowledge Basis references are read according to the Lens load policy and remain separate knowledge owners.",
@@ -292,8 +292,8 @@
         "apply selected idtspe lenses"
       ],
       "description": "Apply the currently selected Lens Application requests through one shared Lens Port/Meta-Model prefix.",
-      "meaning": "After canonical Lens applicability/selection has resolved selected Lens Application requests `(Lens Model, Analysis Surface, supported Operation, relevant basis)`, execute those applications proportionally through the Lens Meta-Model. Target context is resolved only when that Analysis Surface naturally belongs to Target work. Preserve materially distinct operations such as CHECK versus CHALLENGE; do not collapse them into one operation-less Lens execution. Do not apply NOT_MATERIAL / NOT_APPLICABLE / DEFERRED entries and do not manufacture Findings.",
-      "activeContextBehavior": "Use the current selected Lens Application requests for the bounded Analysis Surface. If selection is stale or absent, the included selection command refreshes it first. Reuse one Lens Port/Meta-Model prefix for several selected applications on an equivalent analysis surface/basis, while executing each materially distinct selected operation; do not create a Target merely to host selection/application.",
+      "meaning": "After canonical Lens applicability/selection has resolved selected Lens Application requests `(Lens Model, Analysis Surface, supported Operation, relevant basis)`, execute those applications proportionally through the Lens Meta-Model. Target context is resolved only when that Analysis Surface naturally belongs to Target work. Preserve materially distinct operations such as CHECK versus CHALLENGE; do not collapse them into one operation-less Lens execution. Execute only selected Lens Application requests. Normally confident `NOT_APPLICABLE` candidates are not selected; an explicitly forced APPLY/USE request preserved by selection is still executed and may validly finish with no material Finding. Do not manufacture Findings.",
+      "activeContextBehavior": "Use the current selected Lens Application requests for the bounded Analysis Surface. If selection is stale or absent, the included selection command refreshes it first. For a direct non-Unit surface this remains one bounded application pass; do not synthesize Unit checkpoints. Reuse one Lens Port/Meta-Model prefix for several selected applications on an equivalent analysis surface/basis, while executing each materially distinct selected operation; do not create a Target merely to host selection/application.",
       "traversalReadMode": "Read the included Lens selection route plus Lens Meta-Model application/Finding boundary. Load each selected concrete Lens body and its Knowledge Basis only according to its own load policy.",
       "ownerFiles": [
         "planning/documentation/idtspe-methodology/active/idtspe-core/lenses/LENS-MODEL.md",
@@ -332,6 +332,7 @@
         "The Analysis Surface is primary; Target context is optional and resolved only when natural.",
         "Several selected Lens Applications reuse the shared Lens Port/Meta-Model prefix, but materially distinct selected operations still execute as distinct applications.",
         "A Lens may finish with no Finding Candidate.",
+        "A forced explicit APPLY/USE request remains an application even when normal applicability is confidently false; report the low/non-relevance context and allow a no-finding result.",
         "Finding Candidates never become accepted owner meaning directly."
       ],
       "userTarget": "<current selected Lens applications + analysis surface>",
@@ -360,7 +361,7 @@
         "bootstrap SDS planning"
       ],
       "description": "Load the SDS profile over IDTSPE Core.",
-      "meaning": "Refresh SDS governance over always-active IDTSPE Core: the 13 active SDS Target Modules plus optional inherited generic Core TM-PLANNING-RESOLUTION-STATE, TM-REVIEW-FINDINGS, TM-PROPOSAL-WORKUP, TM-PRE-UPDATE-PLAN and TM-EXACT-REALIZATION, the current SDS Lens pack, profile registry directory, semantic composition/readiness guidance and representation/materialization policy. This is governance bootstrap, not task-specific planning execution.",
+      "meaning": "Refresh SDS governance over always-active IDTSPE Core: the 14 active SDS Target Modules plus optional inherited generic Core TM-PLANNING-RESOLUTION-STATE, TM-REVIEW-FINDINGS, TM-PROPOSAL-WORKUP, TM-PRE-UPDATE-PLAN and TM-EXACT-REALIZATION, the current SDS Lens pack, profile registry directory, semantic composition/readiness guidance and representation/materialization policy. This is governance bootstrap, not task-specific planning execution.",
       "activeContextBehavior": "Load or refresh SDS profile governance only. The SDS README assumes the primary bootstrap is current; if not, follow its prerequisite back to planning/README.md first. Preserve current Use-Case-driven Work Context if one exists. Do not perform Target Formation, select a Target, infer CREATE/REFINE/EXTEND/REVALIDATE/REPAIR, or execute a Target Module merely because bootstrap was requested.",
       "traversalReadMode": "Reuse current reliable SDS governance and current IDTSPE Core context; targeted refresh of the selected owner route when uncertain; full SDS governance preflight only when no reliable sufficient governance context exists.",
       "ownerFiles": [
@@ -385,7 +386,7 @@
       "permissionMode": "read-only",
       "keyReminders": [
         "Bootstrap is governance orientation only; IDTSPE is already active.",
-        "The active SDS baseline has 13 profile Target Modules plus 5 optional inherited generic Core Target Modules.",
+        "The active SDS baseline has 14 profile Target Modules plus 5 optional inherited generic Core Target Modules.",
         "SDS has no separate runtime methodology Use Cases in the current baseline; IDTSPE Use Cases compose SDS components.",
         "Do not infer a fixed Mini/Modular/Full workflow or mandatory Target sequence.",
         "This command grants no repository mutation, implementation, test, commit or push permission."
@@ -3953,7 +3954,7 @@
         "спланируй тесты домена"
       ],
       "description": "legacy compatibility shortcut for Domain-focused proof evaluation/planning",
-      "meaning": "Legacy Domain Test Design shortcut. TM-TEST-DESIGN is retired; apply LENS-TEST-PROOF-EVIDENCE to the current Domain proof need and keep any non-trivial proof plan transient with the Domain owner. Literal test realization routes to TM-EXACT-REALIZATION when requested/authorized.",
+      "meaning": "Legacy Domain Test Design shortcut. TM-TEST-DESIGN is retired; apply LENS-TEST-PROOF-EVIDENCE to the current Domain proof need and keep any non-trivial proof plan transient with the Domain owner. Literal test realization routes to TM-CODE-REALIZATION when requested/authorized.",
       "activeContextBehavior": "Treat this legacy trigger as explicit compatibility intent inside always-active IDTSPE. Re-evaluate current Use-Case composition and route only to the current owners listed here; preserve local applicability/materiality gates and do not revive the retired Target family.",
       "traversalReadMode": "Reuse current reliable IDTSPE/SDS governance; targeted refresh of the selected owner route when uncertain; full bootstrap only when no reliable sufficient governance context exists.",
       "ownerFiles": [
@@ -3976,7 +3977,7 @@
         "planning/commands/apply-idtspe-lens.command.md"
       ],
       "compositionContributions": [],
-      "expectedOutput": "Domain-focused proof finding/plan at the natural owner, optionally followed by Exact test realization; no Test Design Target.",
+      "expectedOutput": "Domain-focused proof finding/plan at the natural owner, optionally followed by Code test realization; no Test Design Target.",
       "permissionMode": "read-only-planning",
       "keyReminders": [
         "Legacy compatibility alias only; do not expose as a primary methodology surface.",
@@ -4225,7 +4226,7 @@
       ],
       "description": "Concrete reviewable update plan before mutation",
       "meaning": "Run generic Core TM-PRE-UPDATE-PLAN. Produce one optional, separately reviewable RU-PUPDATE-01 from current accepted meaning and the current destination facts the intended change actually depends on. The Unit inherits mandatory Opening/In-Unit/Closing applicability checkpoints, including Core Lens Registry and active-profile Lens Registry applicability at the Unit boundaries. Do not turn the result into a mandatory stage, Current Plan/Idea shell, mutation permission, or a second repository-planning ontology.",
-      "activeContextBehavior": "Create or reuse the natural bounded Pre-Update Plan Target only when reviewing the intended changes before mutation is independently useful. Skip the module for a tiny/obvious change when the user asks for direct realization. The result may hand off to TM-EXACT-REALIZATION but does not authorize repository/destination mutation.",
+      "activeContextBehavior": "Create or reuse the natural bounded Pre-Update Plan Target only when reviewing the intended changes before mutation is independently useful. Skip the module for a tiny/obvious change when the user asks for direct realization. The result may hand off to the applicable realization owner (a narrower active-profile owner when defined, otherwise Core TM-EXACT-REALIZATION) but does not authorize repository/destination mutation.",
       "traversalReadMode": "Reuse current reliable IDTSPE governance and accepted prior context; inspect only the exact current code/files/configuration/owner state the update plan materially depends on. Surface a real missing-source Question instead of guessing current state.",
       "ownerFiles": [
         "planning/documentation/idtspe-methodology/active/idtspe-core/target-modules/TM-PRE-UPDATE-PLAN.md",
@@ -4255,7 +4256,7 @@
         "Use ordinary Q/R/P/Evidence + Proposals/Decisions only where they help resolve a real consequential choice; do not dump a mandatory QRPE form.",
         "Proposed file/artifact operation entries are reviewable plan content, not automatically formal IDTSPE Proposals or permission to mutate.",
         "Inspect current destination state only as needed for a concrete safe plan and never guess consequential missing source facts.",
-        "The plan does not mutate files, execute tests, create a replacement package, commit or push; actual mutation authority belongs to the later host/Exact workflow.",
+        "The plan does not mutate files, execute tests, create a replacement package, commit or push; actual mutation authority belongs to the later host/applicable realization workflow.",
         "Skip this Target when the change is trivial/obvious and the user explicitly wants direct realization."
       ],
       "userTarget": "<update scope>",
@@ -4502,7 +4503,7 @@
         "спланируй тесты слайса"
       ],
       "description": "legacy compatibility shortcut for Slice-focused proof evaluation/planning",
-      "meaning": "Legacy Slice Test Design shortcut. TM-TEST-DESIGN is retired; apply LENS-TEST-PROOF-EVIDENCE to the current Slice integration/behavior proof need and keep non-trivial proof planning transient with the Slice owner. Literal tests route to TM-EXACT-REALIZATION when requested/authorized.",
+      "meaning": "Legacy Slice Test Design shortcut. TM-TEST-DESIGN is retired; apply LENS-TEST-PROOF-EVIDENCE to the current Slice integration/behavior proof need and keep non-trivial proof planning transient with the Slice owner. Literal tests route to TM-CODE-REALIZATION when requested/authorized.",
       "activeContextBehavior": "Treat this legacy trigger as explicit compatibility intent inside always-active IDTSPE. Re-evaluate current Use-Case composition and route only to the current owners listed here; preserve local applicability/materiality gates and do not revive the retired Target family.",
       "traversalReadMode": "Reuse current reliable IDTSPE/SDS governance; targeted refresh of the selected owner route when uncertain; full bootstrap only when no reliable sufficient governance context exists.",
       "ownerFiles": [
@@ -4525,7 +4526,7 @@
         "planning/commands/apply-idtspe-lens.command.md"
       ],
       "compositionContributions": [],
-      "expectedOutput": "Slice-focused proof finding/plan at the natural owner, optionally followed by Exact test realization; no Test Design Target.",
+      "expectedOutput": "Slice-focused proof finding/plan at the natural owner, optionally followed by Code test realization; no Test Design Target.",
       "permissionMode": "read-only-planning",
       "keyReminders": [
         "Legacy compatibility alias only; do not expose as a primary methodology surface.",
@@ -4605,12 +4606,12 @@
         "спланируй проверку поведения"
       ],
       "description": "legacy compatibility shortcut for natural-owner proof planning/evaluation",
-      "meaning": "Legacy Test Design shortcut. TM-TEST-DESIGN is retired. Use LENS-TEST-PROOF-EVIDENCE to evaluate the selected property/proof route; retain a transient proof plan only when how-to-prove is independently non-trivial, and route literal tests to TM-EXACT-REALIZATION. No standalone Test Design Target is created.",
+      "meaning": "Legacy Test Design shortcut. TM-TEST-DESIGN is retired. Use LENS-TEST-PROOF-EVIDENCE to evaluate the selected property/proof route; retain a transient proof plan only when how-to-prove is independently non-trivial, and route literal tests to TM-CODE-REALIZATION. No standalone Test Design Target is created.",
       "activeContextBehavior": "Treat this legacy trigger as explicit compatibility intent inside always-active IDTSPE. Re-evaluate current Use-Case composition and route only to the current owners listed here; preserve local applicability/materiality gates and do not revive the retired Target family.",
       "traversalReadMode": "Reuse current reliable IDTSPE/SDS governance; targeted refresh of the selected owner route when uncertain; full bootstrap only when no reliable sufficient governance context exists.",
       "ownerFiles": [
         "planning/documentation/idtspe-methodology/active/idtspe-core/lenses/reusable/LENS-TEST-PROOF-EVIDENCE.md",
-        "planning/documentation/idtspe-methodology/active/idtspe-core/target-modules/TM-EXACT-REALIZATION.md",
+        "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-CODE-REALIZATION.md",
         "planning/documentation/idtspe-methodology/active/idtspe-core/commands/IDTSPE-COMMAND-SURFACE-CONTRACT.md",
         "planning/documentation/idtspe-methodology/active/profiles/sds/commands/SDS-COMMAND-SURFACE-EXTENSION.md"
       ],
@@ -4628,7 +4629,7 @@
         "planning/commands/apply-idtspe-lens.command.md"
       ],
       "compositionContributions": [],
-      "expectedOutput": "A material proof evaluation/transient natural-owner proof plan, or direct Exact-test route when obvious; no Test Design Target.",
+      "expectedOutput": "A material proof evaluation/transient natural-owner proof plan, or direct Code-test route when obvious; no Test Design Target.",
       "permissionMode": "read-only-planning",
       "keyReminders": [
         "Legacy compatibility alias only; do not expose as a primary methodology surface.",
@@ -5147,19 +5148,76 @@
     },
     {
       "schemaVersion": 1,
-      "id": "tmcmd.exact.realization",
-      "file": "realize-exact-result.command.md",
+      "id": "tmcmd.sds.code.realization",
+      "file": "realize-code.command.md",
       "command": "реализуй код",
-      "englishName": "exact realization",
+      "englishName": "SDS code realization",
       "commandFamily": [
         "реализуй код",
+        "сделай реализацию кода",
+        "code realization"
+      ],
+      "description": "Produce the exact SDS codebase realization of sufficiently accepted meaning.",
+      "meaning": "Run SDS TM-CODE-REALIZATION. Produce the exact project-native source/test/codebase candidate first. Integrate/build/test only under explicit user authority for the selected environment; automatically repair only when explicitly authorized and only for local/minor in-scope defects that do not change accepted Feature/Domain/Slice/Shared semantics, Evolution meaning or material upstream Decisions. Material semantic/ownership/out-of-scope problems go through normal Finding Disposition/revalidation instead of silent repair.",
+      "activeContextBehavior": "Resolve or reuse the natural bounded SDS Code Realization Target from sufficiently determined upstream SDS meaning and current codebase Sources. A direct small code change may form this Target without separate Slice/Domain discovery when no upstream semantic work is needed. Exact-code review may stop before integration. Purely non-code broad literal artifacts route to Core TM-EXACT-REALIZATION instead.",
+      "traversalReadMode": "Reuse current reliable IDTSPE + SDS governance; read TM-CODE-REALIZATION completely, inspect the exact current codebase Sources needed for the bounded result, and refresh applicable upstream owners/Lenses proportionally when material.",
+      "ownerFiles": [
+        "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-CODE-REALIZATION.md",
+        "planning/documentation/idtspe-methodology/active/profiles/sds/commands/SDS-COMMAND-SURFACE-EXTENSION.md"
+      ],
+      "ownerRefs": [
+        {
+          "responsibilityId": "TM-CODE-REALIZATION",
+          "path": "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-CODE-REALIZATION.md",
+          "anchor": "tm-code-realization",
+          "why": "Concrete SDS code-realization Target Module selected by this command; shared Core runtime/Target Module contracts are inherited through included commands.",
+          "role": "PRIMARY_OWNER",
+          "readMode": "REQUIRED"
+        }
+      ],
+      "includes": [
+        "planning/commands/apply-idtspe-target-module.command.md"
+      ],
+      "compositionContributions": [],
+      "expectedOutput": "RU-CODE-01 Exact Code Realization: a complete directly integrable project-native codebase candidate, plus only the build/test/runtime Evidence, bounded repairs, Findings/revalidation and final code review requested/authorized for this invocation.",
+      "permissionMode": "exact-realization-explicit-authority-no-commit-push",
+      "keyReminders": [
+        "Literal SDS source/test code and codebase-integral implementation wiring belong to TM-CODE-REALIZATION, not Core TM-EXACT-REALIZATION.",
+        "Producing the code candidate does not itself authorize repository mutation, build/test execution or automatic repair.",
+        "With repair authority, fix only local/minor in-scope defects that preserve accepted Feature/Domain/Slice/Shared/Evolution semantics and material upstream Decisions.",
+        "A material semantic/ownership/out-of-scope conflict becomes a Finding Candidate/Problem for Core disposition and upstream SDS revalidation when needed.",
+        "Executed build/test/runtime checks are Evidence; planned or unavailable checks are not passing Evidence.",
+        "Do not commit, push, deploy or release unless a separate explicit host workflow grants that authority."
+      ],
+      "userTarget": "<bounded SDS codebase realization scope>",
+      "palette": true,
+      "helperPresentation": null,
+      "methodologyBinding": {
+        "methodologyRuntime": "IDTSPE",
+        "profile": "SDS",
+        "surfaceKind": "TARGET_MODULE",
+        "targetModuleId": "TM-CODE-REALIZATION",
+        "lensId": null,
+        "parentSurface": null,
+        "hostTargetPolicy": "CREATE_OR_REUSE_TARGET"
+      },
+      "refinements": []
+    },
+    {
+      "schemaVersion": 1,
+      "id": "tmcmd.exact.realization",
+      "file": "realize-exact-result.command.md",
+      "command": "сделай точную реализацию",
+      "englishName": "exact realization",
+      "commandFamily": [
         "сделай точную реализацию",
+        "реализуй точный результат",
         "exact realization"
       ],
-      "description": "Produce an exact directly integrable realization; code is the default archetype.",
-      "meaning": "Run generic Core TM-EXACT-REALIZATION. Produce the exact candidate result first. For code, default to literal project-native code/test/config payloads rather than another implementation plan. Integrate/build/test only under explicit user authority for the selected environment; automatically repair only when explicitly authorized and only for local/minor in-scope defects that do not change accepted architecture, Domain/product semantics or material upstream decisions. Material semantic/architectural/out-of-scope problems go through normal Finding Disposition/revalidation instead of silent repair.",
-      "activeContextBehavior": "Resolve or reuse the natural bounded Exact Realization Target from sufficiently determined upstream meaning and current destination/codebase Sources. A direct small code/config change may form this Target without a Slice/Domain Target when no upstream semantic work is needed. Exact-result review may stop before integration. Integration attempts may be scratch, staging, user-local or the intended destination according to explicit authority; do not invent a mandatory temporary-then-final pair.",
-      "traversalReadMode": "Reuse current reliable IDTSPE governance; read TM-EXACT-REALIZATION completely, inspect the exact current destination/codebase Sources needed for the bounded result, and refresh applicable upstream owners/Lenses proportionally when material.",
+      "description": "Produce a broad/profile-neutral exact directly integrable realization.",
+      "meaning": "Run generic Core TM-EXACT-REALIZATION for a sufficiently determined literal/directly-integrable artifact. Produce the exact candidate first; integrate/validate/execute only under explicit authority for the selected environment, and repair only within the bounded minor-repair rule. Active profiles may define a narrower realization owner for specialized artifact families; when such an owner applies, route there instead of treating Core Exact as the specialized owner.",
+      "activeContextBehavior": "Resolve or reuse the natural bounded Exact Realization Target from sufficiently determined upstream meaning and current destination Sources. Use it for broad/profile-neutral literal artifact realization; under SDS, codebase-oriented realization routes to TM-CODE-REALIZATION. Exact-result review may stop before integration. Integration attempts depend on explicit authority and do not imply commit/push/deploy/release.",
+      "traversalReadMode": "Reuse current reliable IDTSPE governance; read TM-EXACT-REALIZATION completely, inspect the exact current destination Sources needed for the bounded result, and refresh applicable upstream owners/Lenses proportionally when material.",
       "ownerFiles": [
         "planning/documentation/idtspe-methodology/active/idtspe-core/target-modules/TM-EXACT-REALIZATION.md",
         "planning/documentation/idtspe-methodology/active/idtspe-core/commands/IDTSPE-COMMAND-SURFACE-CONTRACT.md"
@@ -5169,7 +5227,7 @@
           "responsibilityId": "TM-EXACT-REALIZATION",
           "path": "planning/documentation/idtspe-methodology/active/idtspe-core/target-modules/TM-EXACT-REALIZATION.md",
           "anchor": "tm-exact-realization",
-          "why": "Concrete Target Module Model semantics selected by this command; shared port/registry/Meta-Model references are inherited from included commands.",
+          "why": "Concrete generic Target Module semantics selected by this command; shared port/registry/Meta-Model references are inherited from included commands.",
           "role": "PRIMARY_OWNER",
           "readMode": "REQUIRED"
         }
@@ -5178,17 +5236,16 @@
         "planning/commands/apply-idtspe-target-module.command.md"
       ],
       "compositionContributions": [],
-      "expectedOutput": "RU-REAL-01 Exact Realization: a complete directly integrable current candidate (code-first by default), plus only the integration/build/test Evidence, bounded repairs, Findings/revalidation and final exact review requested/authorized for this invocation.",
+      "expectedOutput": "RU-REAL-01 Exact Realization: a complete broad/profile-neutral directly integrable current candidate, plus only the integration/validation Evidence, bounded repairs, Findings/revalidation and final exact review requested/authorized for this invocation.",
       "permissionMode": "exact-realization-explicit-authority-no-commit-push",
       "keyReminders": [
-        "Code is the primary/default archetype: exact method bodies/files/patches belong here, not in TM-IMPLEMENTATION-SLICE.",
-        "Producing the exact candidate does not itself authorize destination mutation, build/test execution or automatic repair.",
-        "With repair authority, fix only local/minor in-scope defects that preserve accepted architecture, Domain/product semantics and material upstream Decisions; never change out-of-scope owners silently.",
+        "Core Exact Realization is broad/profile-neutral; do not force specialized code semantics into it when an active profile defines a narrower realization owner.",
+        "Producing the exact candidate does not itself authorize destination mutation, validation/execution or automatic repair.",
+        "With repair authority, fix only local/minor in-scope defects that preserve accepted upstream semantics and material Decisions; never change out-of-scope owners silently.",
         "A material semantic/architectural/out-of-scope conflict becomes a Finding Candidate/Problem for Core disposition and possible upstream revalidation/user Decision.",
-        "Candidate build/automated-test verification is Core Evidence inside Exact Realization; it is not automatically TM-PRACTICAL-TEST.",
         "Do not commit, push, deploy or release unless a separate explicit host workflow grants that authority."
       ],
-      "userTarget": "<code or other exact directly integrable realization scope>",
+      "userTarget": "<broad/profile-neutral exact directly integrable realization scope>",
       "palette": true,
       "helperPresentation": null,
       "methodologyBinding": {
@@ -6609,8 +6666,8 @@
         "выбери линзы"
       ],
       "description": "Run the proportional IDTSPE Lens Applicability Scan for a bounded Analysis Surface and select materially useful supported Lens operations; a Target is optional context, not a prerequisite.",
-      "meaning": "Resolve the bounded current Analysis Surface and run the canonical Lens applicability/selection mechanism across required Core perspectives, active Target Module attachment guidance when a Target Module is actually relevant, registered Core/profile Lens gates and explicit user/agent Lens choices. For each selected Lens, preserve the materially useful supported operation(s) and relevant basis as selected Lens Application requests `(Lens Model, Analysis Surface, Operation, basis)`. Do not create or resolve a Target merely to select Lenses for a broader semantic subject; there is no fixed Target Lens Set field.",
-      "activeContextBehavior": "Use the natural current Analysis Surface, which may be Target work, Core Resolution State, a cross-owner semantic subject, or another bounded context. Resolve/reuse Target context only when that surface naturally belongs to Target work. Re-evaluate Lens applicability when the relevant surface, Sources, Requirements, Unit/Target meaning or explicit selection context changes materially.",
+      "meaning": "Resolve the bounded current Analysis Surface and run the canonical Lens applicability/selection mechanism across the inherited Core pack, Unit-local/rare Target-wide Lens Attachments when Unit/Target work is relevant, registered Generic Core/profile Lens discovery and explicit user/agent Lens choices. Explicit CONSIDER/SELECT choices follow normal applicability. If the caller carries an explicit APPLY/USE instruction for a named Lens, preserve it as a forced one-shot Lens Application request: evaluate applicability as relevance context, but do not reject the requested application merely because applicability is confidently false. For each selected/forced Lens, preserve the supported operation(s) and relevant basis as Lens Application requests `(Lens Model, Analysis Surface, Operation, basis)`. Do not create or resolve a Target merely to select Lenses for a broader semantic subject; there is no fixed Target Lens Set field.",
+      "activeContextBehavior": "Use the natural current Analysis Surface, which may be Target work, Core Resolution State, a cross-owner semantic subject, or another bounded context. Resolve/reuse Target context only when that surface naturally belongs to Target work. Inside Unit work, use the Unit Opening / During-change / Closing lifecycle. Outside Unit work, perform one bounded direct applicability pass using Base Applicability / Usefulness; no synthetic Unit checkpoints are created.",
       "traversalReadMode": "Read current Core/profile Lens registries and applicability summaries first; read full Lens bodies and referenced Knowledge Basis only for selected or plausibly applicable candidates. Reuse current reliable IDTSPE/profile governance; targeted refresh when uncertain.",
       "ownerFiles": [
         "planning/documentation/idtspe-methodology/active/idtspe-core/lenses/LENS-MODEL.md",
@@ -6643,14 +6700,15 @@
         "planning/commands/idtspe-port-lens.command.md"
       ],
       "compositionContributions": [],
-      "expectedOutput": "Lens Applicability View over the bounded Analysis Surface with REQUIRED_CORE / REQUIRED_BY_TARGET_PROFILE / APPLICABLE / NOT_MATERIAL / NOT_APPLICABLE / EXPLICITLY_REQUESTED / DEFERRED dispositions plus selected Lens Application requests `(Lens Model, Analysis Surface, supported Operation, relevant basis)`; no fake Target and no fixed Target Lens Set field.",
+      "expectedOutput": "Lens Applicability View over the bounded Analysis Surface showing candidate source — INHERITED_CORE / UNIT_REQUIRED[phase] / UNIT_TRIGGERED / REGISTRY_DISCOVERED / EXPLICIT_REQUEST — separately from applicability result and explicit intent. Emit Lens Application requests `(Lens Model, Analysis Surface, supported Operation, relevant basis)` for applicable candidates and forced explicit APPLY/USE requests. Emit `NOT_APPLICABLE — <short reason>` only for candidates whose application is not explicitly forced; no fake Target and no fixed Target Lens Set field.",
       "permissionMode": "read-only-planning",
       "keyReminders": [
         "The Analysis Surface is primary; Target context is resolved only when the reviewed/analyzed surface naturally belongs to Target work.",
-        "The active Target Module is one Lens-selection source when present, not the whole Lens universe.",
+        "Unit-local / rare Target-wide attachments are one Lens-selection source when present, not the whole Lens universe.",
         "A Local Target Contract may use any registered applicable Core/profile Lens, but non-Target semantic surfaces may use the same Lens registry without creating a Target.",
         "Registry discovery does not mean loading or applying every Lens body.",
         "Selection must preserve supported operation(s); CHECK and CHALLENGE over the same Lens/surface remain distinct when both are materially useful.",
+        "Explicit APPLY/USE intent forces that named Lens application for the current bounded surface; confident low/non-applicability may explain a no-finding outcome but does not cancel the requested application.",
         "Knowledge Basis references are Lens knowledge dependencies, not Target Sources.",
         "This command is read-only planning; it does not mutate repository files, commit or push."
       ],

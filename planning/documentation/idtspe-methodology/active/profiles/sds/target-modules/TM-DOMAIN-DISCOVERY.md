@@ -25,12 +25,6 @@ Use when a Feature/Slice/current implementation reaches material Domain question
 
 Do not create Domain discovery merely because implementation contains data or classes.
 
-## Lens Profile
-
-Required primary lens: `LENS-DOMAIN-MODELING-DDD`.
-
-Compose with Evolution, Implementation Requirements Discovery or other thematic Lenses when those concerns are material; use selected [`RG-PRG-*`](../knowledge-bases/programming-principles/README.md) knowledge through the natural evaluator rather than a Programming Principles Lens.
-
 ## Production Method
 
 ```text
@@ -106,6 +100,14 @@ Each material Unit below inherits the generic [`Unit Applicability Envelope`](..
 
 ### RU-DOM-01 — Ownership / Classification
 
+**Lens Attachments**
+
+- **Core Lens Pack:** `INHERITED` via [`Core Lens Pack`](../../../idtspe-core/lenses/LENS-REGISTRY.md)
+- **REQUIRED [CLOSING]:**
+  - [`LENS-DOMAIN-MODELING-DDD`](../lenses/reusable/LENS-DOMAIN-MODELING-DDD.md)
+- **TRIGGERED:**
+  - [`LENS-TERMS-UBIQUITOUS-LANGUAGE`](../lenses/reusable/LENS-TERMS-UBIQUITOUS-LANGUAGE.md)
+
 Capture candidate semantic owners and classification decisions proportionally:
 
 - what is Domain meaning vs application orchestration/infrastructure;
@@ -114,6 +116,15 @@ Capture candidate semantic owners and classification decisions proportionally:
 - explicit `no Domain owner` outcome when correct.
 
 ### RU-DOM-02 — Semantic State / Lifecycle / Consistency
+
+**Lens Attachments**
+
+- **Core Lens Pack:** `INHERITED` via [`Core Lens Pack`](../../../idtspe-core/lenses/LENS-REGISTRY.md)
+- **REQUIRED [CLOSING]:**
+  - [`LENS-DOMAIN-MODELING-DDD`](../lenses/reusable/LENS-DOMAIN-MODELING-DDD.md)
+- **TRIGGERED:**
+  - [`LENS-IMPLEMENTATION-REQUIREMENTS-DISCOVERY`](../lenses/reusable/LENS-IMPLEMENTATION-REQUIREMENTS-DISCOVERY.md)
+  - [`LENS-TERMS-UBIQUITOUS-LANGUAGE`](../lenses/reusable/LENS-TERMS-UBIQUITOUS-LANGUAGE.md)
 
 Explore:
 
@@ -125,6 +136,20 @@ Explore:
 - persistence/concurrency semantics only to the degree they affect Domain meaning.
 
 ### RU-DOM-03 — Candidate Realization + Domain Unit Proof
+
+**Lens Attachments**
+
+- **Core Lens Pack:** `INHERITED` via [`Core Lens Pack`](../../../idtspe-core/lenses/LENS-REGISTRY.md)
+- **REQUIRED [CLOSING]:**
+  - [`LENS-DOMAIN-MODELING-DDD`](../lenses/reusable/LENS-DOMAIN-MODELING-DDD.md)
+- **TRIGGERED:**
+  - [`LENS-IMPLEMENTATION-REQUIREMENTS-DISCOVERY`](../lenses/reusable/LENS-IMPLEMENTATION-REQUIREMENTS-DISCOVERY.md)
+  - [`LENS-WORKSPACE-EVOLUTION-ARCHITECTURE`](../lenses/frequent/LENS-WORKSPACE-EVOLUTION-ARCHITECTURE.md)
+  - [`LENS-SIMPLICITY-IMPLEMENTATION-ECONOMY`](../lenses/frequent/LENS-SIMPLICITY-IMPLEMENTATION-ECONOMY.md)
+  - [`LENS-DEPENDENCY-CHANGE-IMPACT`](../../../idtspe-core/lenses/frequent/LENS-DEPENDENCY-CHANGE-IMPACT.md)
+  - [`LENS-QUALITY-RISK-MATERIALITY`](../../../idtspe-core/lenses/frequent/LENS-QUALITY-RISK-MATERIALITY.md)
+  - [`LENS-VERIFIABILITY-OBSERVABILITY-OPERABILITY`](../../../idtspe-core/lenses/frequent/LENS-VERIFIABILITY-OBSERVABILITY-OPERABILITY.md)
+  - [`LENS-TEST-PROOF-EVIDENCE`](../../../idtspe-core/lenses/reusable/LENS-TEST-PROOF-EVIDENCE.md)
 
 Working detail may include:
 
@@ -141,6 +166,15 @@ alternatives / trade-offs
 These details are not durable authority merely because they were useful during discovery. Selected portions may nevertheless be retained as Step-owned `Evolution Impact` Result Content when continuation/realization/review/revalidation still depends on them; that retention does not make them Domain owner authority or exact implementation commitment.
 
 ### RU-DOM-04 — Evolution / OPEN Domain Pressure
+
+**Lens Attachments**
+
+- **Core Lens Pack:** `INHERITED` via [`Core Lens Pack`](../../../idtspe-core/lenses/LENS-REGISTRY.md)
+- **REQUIRED [CLOSING]:**
+  - [`LENS-DOMAIN-MODELING-DDD`](../lenses/reusable/LENS-DOMAIN-MODELING-DDD.md)
+  - [`LENS-WORKSPACE-EVOLUTION-ARCHITECTURE`](../lenses/frequent/LENS-WORKSPACE-EVOLUTION-ARCHITECTURE.md)
+- **TRIGGERED:**
+  - [`LENS-IMPLEMENTATION-REQUIREMENTS-DISCOVERY`](../lenses/reusable/LENS-IMPLEMENTATION-REQUIREMENTS-DISCOVERY.md)
 
 Record known Step pressure, unresolved ownership/model questions and which future evidence could discriminate alternatives. Do not turn hypothetical future change into current implementation requirements.
 
@@ -179,8 +213,11 @@ zero owner/body outcome
 already-realized current-state revalidation
 → current Domain owner through normal accepted correction semantics
 
-exact literal realization
-→ Core Exact/code/tests
+literal source/test/codebase realization
+→ SDS TM-CODE-REALIZATION
+
+broad/profile-neutral non-code exact realization
+→ Core TM-EXACT-REALIZATION
 ```
 
 Retaining selected planning meaning in a Step does not promote the discovery artifact or candidate implementation shape into Domain semantic authority.

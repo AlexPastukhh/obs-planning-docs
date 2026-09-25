@@ -21,11 +21,15 @@
     "architecture_path.trace",
     "architecture_pressure.review",
     "architecture_decision.plan",
+    "documentation.links.use",
     "documentation.links.review",
+    "documentation.ownership.review",
     "idtspe.lenses.select",
     "idtspe.bootstrap",
     "application_sds.bootstrap",
     "documentation_principles.read",
+    "documentation.examples.read",
+    "documentation.example.full.read",
     "governance.development",
     "current_state.report",
     "command.plan",
@@ -48,6 +52,9 @@
     "uc:UC-DOC-MAINTAIN-EXAMPLE",
     "uc:UC-DOC-MAINTAIN-README",
     "uc:UC-DOC-MAINTAIN-RESPONSIBILITY-MAP",
+    "tm:TM-PLANNING-RESOLUTION-STATE",
+    "tm:TM-REVIEW-FINDINGS",
+    "tm:TM-PROPOSAL-WORKUP",
     "tm:TM-PRE-UPDATE-PLAN",
     "tm:TM-EXACT-REALIZATION",
     "tm:TM-APPLICATION-DEFINITION",
@@ -63,6 +70,7 @@
     "tm:TM-EVOLUTION-STEPS-MAP",
     "tm:TM-PROTOTYPE",
     "tm:TM-PRACTICAL-TEST",
+    "tm:TM-CODE-REALIZATION",
     "lens:LENS-NEED-VALUE-SCOPE",
     "lens:LENS-AUTHORITY-SOT-REUSE",
     "lens:LENS-DEPENDENCY-CHANGE-IMPACT",
@@ -74,7 +82,6 @@
     "lens:LENS-TEST-PROOF-EVIDENCE",
     "lens:LENS-VERIFIABILITY-OBSERVABILITY-OPERABILITY",
     "lens:LENS-ARTIFACT-BOUNDARY-ADDRESSABILITY",
-    "lens:LENS-LINKED-NOTES-USAGE-JUSTIFICATION",
     "lens:LENS-APPLICATION-BOUNDARY-FEASIBILITY",
     "lens:LENS-DOMAIN-MODELING-DDD",
     "lens:LENS-TERMS-UBIQUITOUS-LANGUAGE",
@@ -231,7 +238,9 @@
       "label": "Documentation",
       "order": 50,
       "items": [
-        "documentation.links.review"
+        "documentation.links.use",
+        "documentation.links.review",
+        "documentation.ownership.review"
       ]
     },
     {
@@ -273,6 +282,8 @@
         "idtspe.bootstrap",
         "application_sds.bootstrap",
         "documentation_principles.read",
+        "documentation.examples.read",
+        "documentation.example.full.read",
         "governance.development"
       ]
     },
@@ -442,6 +453,9 @@
       "label": "Core Lifecycle",
       "order": 10,
       "items": [
+        "tm:TM-PLANNING-RESOLUTION-STATE",
+        "tm:TM-REVIEW-FINDINGS",
+        "tm:TM-PROPOSAL-WORKUP",
         "tm:TM-PRE-UPDATE-PLAN",
         "tm:TM-EXACT-REALIZATION"
       ]
@@ -468,7 +482,8 @@
         "tm:TM-DOMAIN-OWNER",
         "tm:TM-IMPLEMENTATION-SLICE",
         "tm:TM-SLICE-OWNER",
-        "tm:TM-SHARED-IMPLEMENTATION-CAPABILITY"
+        "tm:TM-SHARED-IMPLEMENTATION-CAPABILITY",
+        "tm:TM-CODE-REALIZATION"
       ]
     },
     {
@@ -554,8 +569,7 @@
       "label": "Representation / Navigation",
       "order": 30,
       "items": [
-        "lens:LENS-ARTIFACT-BOUNDARY-ADDRESSABILITY",
-        "lens:LENS-LINKED-NOTES-USAGE-JUSTIFICATION"
+        "lens:LENS-ARTIFACT-BOUNDARY-ADDRESSABILITY"
       ]
     },
     {

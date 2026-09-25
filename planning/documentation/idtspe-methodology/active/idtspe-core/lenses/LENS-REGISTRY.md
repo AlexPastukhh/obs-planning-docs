@@ -12,69 +12,53 @@ Responsibility ID: `LENS.DISCOVERY`
 > - `CONTEXTUALIZES` [`Lens Meta-Model`](LENS-MODEL.md#lens-meta-model) — `LENS.META-MODEL`
 > - `CONTEXTUALIZES` [`Knowledge Basis Contract`](../knowledge-bases/KNOWLEDGE-BASIS-CONTRACT.md#knowledge-basis-contract) — `KNOWLEDGE.BASIS`
 
-
-The Lens Registry is normally reached from an applicable Use-Case Process (especially `UC-IDTSPE-COMPOSE-CURRENT-WORK`) when current meaning may benefit from evaluation/check/refinement/challenge.
+The Core Lens Registry is the normal universal registry entry point.
 
 ```text
-current bounded Analysis Surface + Work Context
-→ optionally use natural Target/Target Module/profile context when present
-→ scan registry applicability summaries
-→ include required Core perspectives whose material surface exists
-→ include only plausible conditional/profile candidates
-→ open concrete Lens body
-→ confirm its local Applicability Gate + supported operation(s)
-→ select Lens Application request(s) `(Lens, Analysis Surface, Operation, basis)`
-→ execute only selected Lens Applications
+current material Unit / bounded Analysis Surface + active profile context
+→ inherit Core Lens Pack
+→ load predictable Unit attachments when a Unit is active
+→ scan Generic Lens Registry
+→ scan every active-profile Lens Registry
+→ include explicit Lens requests
+→ open only plausible concrete Lens
+→ evaluate the concrete Lens's own checkpoint trigger / applicability
+→ execute only required/applicable Lens Applications
 ```
 
-A registry scan may select **zero additional Lenses**. Selecting a row does not itself execute the Lens or create a Finding. When execution is intended, the selection result preserves the supported operation(s) and Analysis Surface as selected Lens Application request(s); an operation-less Lens ID is insufficient to represent materially distinct review cells. Recheck only when the Lens's Analysis Surface, relevant Decisions/Evidence, active Target/profile or declared revalidation conditions change materially.
+A registry row is lightweight candidate-routing metadata. Selecting a row does not itself execute the Lens, create a Finding or create a Unit attachment. A scan may select zero additional Lenses.
 
-## 1. Required Core Lenses
+## 1. Inherited Core Lens Pack
 
-The required Core Pack is part of every material IDTSPE lifecycle **when its corresponding material surface exists**, but it is not rerun ceremonially on every conversational turn. L1–L3 check material choice surfaces; the Documentation / Representation Lens is a required materialization-stage check when material output may persist. Any required check may resolve with no material finding.
+Membership in this section — not a concrete Lens `Activation:` field — defines automatic Core inheritance.
+
+Every material Unit inherits this pack. Core-pack membership guarantees that each Core Lens is considered through the Unit applicability lifecycle; actual application follows that concrete Core Lens's own applicability / temporal trigger contract. A check may resolve with no material Finding.
 
 | Lens | Role / applicability summary | Current KB representation |
 |---|---|---|
 | [`LENS-NEED-VALUE-SCOPE`](required/LENS-NEED-VALUE-SCOPE.md) | L1 — Need/value/right bounded Target | `INLINE` |
 | [`LENS-AUTHORITY-SOT-REUSE`](required/LENS-AUTHORITY-SOT-REUSE.md) | L2 — canonical owner/Source/reuse/no duplicate truth | `INLINE` |
 | [`LENS-UNCERTAINTY-ASSUMPTION-REVERSIBILITY`](required/LENS-UNCERTAINTY-ASSUMPTION-REVERSIBILITY.md) | L3 — assumptions/Evidence/reversibility/cost of being wrong | `INLINE` |
-| [`LENS-ARTIFACT-BOUNDARY-ADDRESSABILITY`](required/LENS-ARTIFACT-BOUNDARY-ADDRESSABILITY.md) | Documentation / Representation — persist or not; code vs prose; existing owner vs dedicated artifact; consolidate vs split; handoff to P-14; direct surface `lenscmd.documentation.representation.check` | `HYBRID` |
-| [`LENS-PROPOSAL-DECISION-RESOLUTION-CONTEXT`](required/LENS-PROPOSAL-DECISION-RESOLUTION-CONTEXT.md) | Proposal / Decision Resolution Context — required when a material Proposal/Decision surface exists; operational QRPE/qualification/disposition evaluator, not lifecycle owner | `INLINE` |
+| [`LENS-ARTIFACT-BOUNDARY-ADDRESSABILITY`](required/LENS-ARTIFACT-BOUNDARY-ADDRESSABILITY.md) | Documentation / Representation — persist or not; code vs prose; existing owner vs dedicated artifact; consolidate vs split; handoff to P-14 | `HYBRID` |
+| [`LENS-PROPOSAL-DECISION-RESOLUTION-CONTEXT`](required/LENS-PROPOSAL-DECISION-RESOLUTION-CONTEXT.md) | Proposal / Decision Resolution Context — material Proposal/Decision qualification/disposition evaluator, not lifecycle owner | `INLINE` |
 
-## 2. Generic Frequent Conditional Lenses
+## 2. Generic Lens Registry
 
-| Lens | Applicability summary | Current KB representation |
+These generic Core Lens are discoverable from the Core registry and may also be predictably attached by Unit Definitions. Registry presence alone does not imply attachment or application.
+
+| Lens | Discovery / applicability summary | Current KB representation |
 |---|---|---|
-| [`LENS-DEPENDENCY-CHANGE-IMPACT`](frequent/LENS-DEPENDENCY-CHANGE-IMPACT.md) | L4 — dependency/change surface/consumers/blast radius | `INLINE` |
-| [`LENS-VERIFIABILITY-OBSERVABILITY-OPERABILITY`](frequent/LENS-VERIFIABILITY-OBSERVABILITY-OPERABILITY.md) | L6 — proof/observation/diagnosis/operation | `INLINE` |
+| [`LENS-DEPENDENCY-CHANGE-IMPACT`](frequent/LENS-DEPENDENCY-CHANGE-IMPACT.md) | dependency/change surface/consumers/blast radius | `INLINE` |
+| [`LENS-VERIFIABILITY-OBSERVABILITY-OPERABILITY`](frequent/LENS-VERIFIABILITY-OBSERVABILITY-OPERABILITY.md) | proof/observation/diagnosis/operation | `INLINE` |
 | [`LENS-QUALITY-RISK-MATERIALITY`](frequent/LENS-QUALITY-RISK-MATERIALITY.md) | material quality/risk categories | `INLINE` |
 | [`LENS-TARGET-RESOLUTION-COVERAGE`](frequent/LENS-TARGET-RESOLUTION-COVERAGE.md) | Target scope/Requirement/Unit coverage sufficiency; prepared vs contextual completion | `INLINE` |
-
-## 3. Generic Reusable Lenses
-
-| Lens | Typical use / applicability summary | Current KB representation |
-|---|---|---|
 | [`LENS-SHARED-CROSS-CUTTING-RESPONSIBILITY`](reusable/LENS-SHARED-CROSS-CUTTING-RESPONSIBILITY.md) | shared ownership / applicability / local integration | `INLINE` |
 | [`LENS-TEST-PROOF-EVIDENCE`](reusable/LENS-TEST-PROOF-EVIDENCE.md) | proof-layer/evidence quality | `HYBRID` → detailed testing theory on demand |
 | [`LENS-PRACTICAL-EVIDENCE`](reusable/LENS-PRACTICAL-EVIDENCE.md) | minimum practical experiment / observed Evidence | `HYBRID` |
 
-These lenses are not SDS-specific and may be reused by future profiles.
+Specific Lens shortcut commands are exceptional, but every registered Lens remains explicitly reachable through the generic Lens operations. Registry discovery remains Analysis-Surface-first and does not create Lens-owned Targets.
 
-Specific Lens shortcut commands are exceptional, but **every registered Lens is explicitly reachable** through the generic Lens operations:
-
-```text
-idtspe.lenses.select
-→ подбери линзы <analysis surface / target / context>
-→ run the proportional Lens Applicability Scan through P-06 without manufacturing a Target; resolve selected `(Lens, Analysis Surface, Operation, basis)` application requests
-
-idtspe.lens.apply
-→ примени линзу <lens> к <analysis surface / target / context>
-→ apply one selected registered Lens through an explicit/resolved supported operation to the bounded Analysis Surface; resolve/reuse Target context only when naturally part of that surface
-```
-
-The existing Documentation / Representation command remains a convenience shortcut for a stable recurring intent. The generic operations are Analysis-Surface-first: they do not create Lens-owned Targets, do not create a Target merely to host a Lens, and do not turn all Lens registry entries into separate command files.
-
-## 3A. Generic `idtspe` Lens Aliases
+## 3. Generic `idtspe` Lens Aliases
 
 Canonical semantic identity remains the `LENS-*` ID. The dispatcher accepts exact IDs and these unique short aliases:
 
@@ -94,7 +78,7 @@ practical-evidence → LENS-PRACTICAL-EVIDENCE
 
 Use `idtspe lens <alias> <target>` when explicit Lens selection is intended.
 
-## 4. Installed Profile Lens Packs
+## 4. Installed / Active Profile Lens Registries
 
 ### SDS
 
@@ -108,28 +92,26 @@ Profile registry: [`../../profiles/visual-production-2d/registries/LENS-REGISTRY
 
 Profile registry: [`../../profiles/reference-knowledge/registries/LENS-REGISTRY.md`](../../profiles/reference-knowledge/registries/LENS-REGISTRY.md)
 
-Each profile registry owns its current Lens inventory, names and attachment policy. Core indexes the registries but does not duplicate mutable profile Lens counts/lists or encode profile-specific Analysis Surface assumptions here.
+Each profile registry owns its current profile Lens inventory and discovery summaries. Core indexes the registries but does not duplicate mutable profile Lens counts/lists or encode profile-specific Analysis Surface assumptions here. When a profile is active, its Lens Registry MUST be included in checkpoint discovery in addition to the inherited/generic Core Lens. A profile registry adds candidates; it never replaces Core registry content and never becomes Unit attachment authority.
 
 ## 5. Composition / Applicability Scan Rule
 
-Lens applicability performs the proportional Lens Applicability Scan before selecting/applying active Lenses. It combines required Core checks, the active Target Module Lens Profile when any, plausible Core/profile conditional Lenses and explicit user/agent Lens selection, then preserves the materially useful supported operation(s) in selected Lens Application requests. Full Lens/Knowledge-Basis bodies are read only for selected or plausibly applicable candidates.
+At a Unit checkpoint, Lens applicability combines four sources without collapsing their ownership:
 
 ```text
-P-06 Lens Port
-→ Lens Applicability Scan
-→ required Core Pack
-  L1/L2/L3 at material choices
-  + Proposal / Decision Resolution Context when a material Proposal/Decision surface exists
-  + Documentation / Representation at materialization
-+ Target Module Lens Profile
-+ applicable generic conditional/reusable lenses
-+ applicable profile-specific lenses
-+ exceptional local-only lens
-→ selected Lens Application requests
-  `(Lens Model, Analysis Surface, supported Operation, relevant basis)`
+Unit checkpoint
+→ inherited Core Lens Pack
++ Unit REQUIRED / TRIGGERED Lens Attachments
++ Generic Core registry candidates
++ every active-profile registry candidate
++ explicit Lens requests
+→ concrete Lens-owned applicability / temporal-trigger evaluation
+→ selected Lens Applications
 ```
 
-A Lens analyzes an explicit/implicit Analysis Surface through reusable operations such as `ANALYZE / CHECK / REFINE / CHALLENGE` and surfaces findings. Generic Core Finding Disposition resolves those findings into the appropriate State/lifecycle/owner destination; accepted resolution may later update already-declared Result Units. A Lens does not define State Unit kinds, Target Result Unit kinds, target output schema or semantic authority.
+`REQUIRED [phase]` attachments execute unconditionally at the named phase. `TRIGGERED` attachments carry no local condition logic and delegate the apply/skip decision to the concrete Lens checkpoint trigger. Unlisted Lens remain discoverable.
+
+A Lens analyzes an explicit/implicit Analysis Surface through reusable operations such as `ANALYZE / CHECK / REFINE / CHALLENGE` and surfaces Findings. Generic Core Finding Disposition resolves those Findings into the appropriate State/lifecycle/owner destination; accepted resolution may later update already-declared Result Units. A Lens does not define State Unit kinds, Target Result Unit kinds, target output schema or semantic authority.
 
 ## 6. Knowledge / Representation Metadata Boundary
 

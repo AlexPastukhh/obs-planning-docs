@@ -45,7 +45,7 @@ unrealized planned downstream target state
 = representation of TM-EVOLUTION-STEP / its Target Owner Bodies
 ```
 
-Do not create/update current-owner artifacts merely because a future Target Body has been selected. After Exact Realization + required proof/revalidation, `TM-EVOLUTION-STEP` resolves semantic Target Owner Materialization; only then does P-14/PERSISTENCE_ADDRESSABILITY resolve the physical create/update/move/split/merge needed for the new current owner representation.
+Do not create/update current-owner artifacts merely because a future Target Body has been selected. After Code Realization / broad Exact Realization + required proof/revalidation, `TM-EVOLUTION-STEP` resolves semantic Target Owner Materialization; only then does P-14/PERSISTENCE_ADDRESSABILITY resolve the physical create/update/move/split/merge needed for the new current owner representation.
 
 `Target Owner Materialization` is therefore distinct from representation promotion/demotion (for example embedded → dedicated file).
 

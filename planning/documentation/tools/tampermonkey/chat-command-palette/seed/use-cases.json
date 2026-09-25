@@ -231,7 +231,7 @@
     {
       "id": "UC-IDTSPE-MAINTAIN-LENS",
       "label": "Create / Review / Integrate Reusable Lens",
-      "description": "``text one canonical Lens/Lens Pack owner registry entry / applicability summary activation class/gate Operational Evaluation Contract explicit Analysis Surface / supported operations / Finding Contract Knowledge Basis / theory-reference links when useful consumer/profile mapping migrated duplicate knowledge/guidance consistency checks ``",
+      "description": "``text one canonical Lens/Lens Pack owner registry entry / discovery summary complete Operational Evaluation Contract explicit Analysis Surface / supported operations Applicability & Temporal Trigger Contract Findings / Outcomes contract Knowledge Basis / theory-reference links when useful non-authoritative attachment-consumer/discovery references when useful migrated duplicate knowledge/guidance consistency checks ``",
       "sources": [
         "planning/documentation/use-case-registry-map.md",
         "planning/documentation/idtspe-methodology/active/idtspe-core/use-cases/USE-CASE-REGISTRY.md"
@@ -240,12 +240,12 @@
       "target": "<Create / Review / Integrate Reusable Lens target>",
       "manualInvocation": true,
       "trigger": "Use when: ``text one evaluation perspective repeats across Target families an existing Target Module embeds reusable Lens knowledge frequent cross-cutting reasoning has no stable owner several Lens names overlap/duplicate one reasoning loop an existing Lens has unclear applicability/output/escalation ``",
-      "result": "``text one canonical Lens/Lens Pack owner registry entry / applicability summary activation class/gate Operational Evaluation Contract explicit Analysis Surface / supported operations / Finding Contract Knowledge Basis / theory-reference links when useful consumer/profile mapping migrated duplicate knowledge/guidance consistency checks ``"
+      "result": "``text one canonical Lens/Lens Pack owner registry entry / discovery summary complete Operational Evaluation Contract explicit Analysis Surface / supported operations Applicability & Temporal Trigger Contract Findings / Outcomes contract Knowledge Basis / theory-reference links when useful non-authoritative attachment-consumer/discovery references when useful migrated duplicate knowledge/guidance consistency checks ``"
     },
     {
       "id": "UC-IDTSPE-MAINTAIN-TARGET-MODULE",
       "label": "Create / Review / Integrate Target Module",
-      "description": "``text one Target Module owner catalog entry stable Entry Point integration map Target Step-Result family / Module-defined Unit inventory and Target-family-specific Unit deltas conforming to the canonical Target Work owners stable per-Unit methodology-owner binding points Module-specific applicability/checkpoint guidance conforming to the canonical Unit applicability envelope complete Module-defined Unit inventory/composition contract without duplicated generic Unit/Collection/Slot/runtime semantics Resolution / Production Method output schema/projection when useful validators provenance mapping command/Tampermonkey readiness route ` If reuse already covers the need: `text no new module → integrate/reuse existing one `` ---",
+      "description": "``text one Target Module owner catalog entry stable Entry Point integration map Target Step-Result family / Module-defined Unit inventory and Target-family-specific Unit deltas conforming to the canonical Target Work owners stable per-Unit methodology-owner binding points Module-specific applicability/checkpoint guidance conforming to the canonical Unit applicability envelope Unit-local Lens Attachments / rare Target-wide Lens Attachments with no duplicated Lens trigger logic complete Module-defined Unit inventory/composition contract without duplicated generic Unit/Collection/Slot/runtime semantics Resolution / Production Method output schema/projection when useful validators provenance mapping command/Tampermonkey readiness route ` If reuse already covers the need: `text no new module → integrate/reuse existing one `` ---",
       "sources": [
         "planning/documentation/use-case-registry-map.md",
         "planning/documentation/idtspe-methodology/active/idtspe-core/use-cases/USE-CASE-REGISTRY.md"
@@ -254,7 +254,7 @@
       "target": "<Create / Review / Integrate Target Module target>",
       "manualInvocation": true,
       "trigger": "Use when: ``text a recurring Target class has no reusable contract an existing UC/workflow/template family should become IDTSPE-addressable a Target Module is incomplete/stale/overlapping several modules need composition/entry-point reconciliation `` ---",
-      "result": "``text one Target Module owner catalog entry stable Entry Point integration map Target Step-Result family / Module-defined Unit inventory and Target-family-specific Unit deltas conforming to the canonical Target Work owners stable per-Unit methodology-owner binding points Module-specific applicability/checkpoint guidance conforming to the canonical Unit applicability envelope complete Module-defined Unit inventory/composition contract without duplicated generic Unit/Collection/Slot/runtime semantics Resolution / Production Method output schema/projection when useful validators provenance mapping command/Tampermonkey readiness route ` If reuse already covers the need: `text no new module → integrate/reuse existing one `` ---"
+      "result": "``text one Target Module owner catalog entry stable Entry Point integration map Target Step-Result family / Module-defined Unit inventory and Target-family-specific Unit deltas conforming to the canonical Target Work owners stable per-Unit methodology-owner binding points Module-specific applicability/checkpoint guidance conforming to the canonical Unit applicability envelope Unit-local Lens Attachments / rare Target-wide Lens Attachments with no duplicated Lens trigger logic complete Module-defined Unit inventory/composition contract without duplicated generic Unit/Collection/Slot/runtime semantics Resolution / Production Method output schema/projection when useful validators provenance mapping command/Tampermonkey readiness route ` If reuse already covers the need: `text no new module → integrate/reuse existing one `` ---"
     },
     {
       "id": "UC-IDTSPE-REVALIDATE-CURRENT-WORK",

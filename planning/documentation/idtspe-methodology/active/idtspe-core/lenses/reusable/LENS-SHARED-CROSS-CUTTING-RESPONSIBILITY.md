@@ -2,19 +2,61 @@
 # LENS-SHARED-CROSS-CUTTING-RESPONSIBILITY — Shared / Cross-Cutting Ownership
 
 Lens ID: `LENS-SHARED-CROSS-CUTTING-RESPONSIBILITY`
-Activation: `TARGET_PROFILE_REUSABLE`
 
 ## Purpose
 
 Determine whether a responsibility is genuinely shared and how consumers integrate it without duplicating authority or prematurely building a framework.
 
-## Applicability Gate
+## Analysis Surface
 
-Reusable when the same implementation responsibility appears across several consumers and genuine shared ownership is uncertain. It does not imply a dedicated Cross-Cutting Target family.
+This Lens evaluates the bounded planning/implementation surface where the following concern is materially present:
 
-## Target Inputs / Evidence
+> The same responsibility/guarantee appears across multiple consumers and genuine sharedness, canonical ownership, applicability/exceptions, integration contract or continued shared ownership is uncertain/changing.
 
+Context may inform the evaluation, but context availability alone does not make the entire context part of this Lens's Analysis Surface.
+
+## Applicability & Temporal Triggers
+
+### Base Applicability / Usefulness
+
+The same responsibility/guarantee appears across multiple consumers and genuine sharedness, canonical ownership, applicability/exceptions, integration contract or continued shared ownership is uncertain/changing.
+
+### Opening Triggers
+
+A new Shared candidate, reclassification question, duplicate responsibility across consumers, or renewed canonical-ownership doubt exists.
+
+### During-work Recheck / Invalidation Triggers
+
+Consumer set/requirements, responsibility semantics, shared-vs-local boundary, applicability matrix, exceptions/bypasses, integration contract, or canonical owner changes.
+
+### Closing Triggers / Revalidation Conditions
+
+The result forms/reclassifies/changes a Shared responsibility or bindings in a way that could alter genuine sharedness/canonical ownership; revalidate before closing.
+
+### Confident-False / Stop Conditions
+
+Similarity is superficial, semantics differ by consumer, or responsibility is naturally Domain-owned/Slice-local.
+
+### False-negative Risks
+
+Common utility code is not proof of common semantic responsibility; trigger on guarantee/responsibility, not code reuse.
+
+Trigger semantics follow the canonical Lens Model:
+
+```text
+TRUE      → APPLY
+FALSE     → NOT_APPLICABLE
+UNCERTAIN → APPLY
+```
+
+A Unit-level `REQUIRED [phase]` attachment bypasses the apply/skip decision at that phase and requires this Lens to cover the current Analysis Surface. These Lens-owned triggers still govern useful earlier application and recheck/invalidation.
+
+## Inputs / Evidence
 Shared policies/must-hold conditions, affected Scenarios/Slices, current duplicated/shared implementation, incidents/operational Evidence and evolution context.
+
+## Evaluation Contract
+
+Apply only the dimensions material to the current question. The domain-specific questions, methods, facets, checks, examples, and pattern guidance below constitute this Lens's evaluation workflow; they are not mandatory checklist items unless the current Analysis Surface makes them material.
 
 ## Sharedness
 
@@ -34,7 +76,7 @@ Define consumer obligations without transferring shared authority.
 
 ## Generalization Pressure
 
-Require Evidence before building a common framework; compose with L5 for evolution pressure.
+Require Evidence before building a common framework. Concrete known evolution pressure may be consumed as input when available; this Lens does not invoke another Lens to establish it.
 
 ## Runtime / Failure / Bypass
 
@@ -42,11 +84,11 @@ Trace shared mechanism behavior and bypass/failure paths.
 
 ## Operability
 
-Compose with L6 for logs/metrics/traces/audit/diagnosis/recovery when material.
+When logs/metrics/traces/audit/diagnosis/recovery are part of the shared-responsibility question, evaluate their ownership/integration implications here. Already-available operability findings may be consumed as evidence; this Lens does not invoke another Lens.
 
 ## Quality Dimensions
 
-Compose with Quality/Risk for security/privacy/reliability/compliance/etc.
+When security/privacy/reliability/compliance/etc. materially affect shared responsibility, evaluate their ownership/integration implications here. Already-available quality/risk findings may be consumed as evidence; this Lens does not invoke another Lens.
 
 
 ## Domain Interaction Guard
@@ -57,11 +99,21 @@ A shared concern may reference/consume Domain identity, events or selected seman
 
 When selected future Shared capability meaning changes, `TM-EVOLUTION-STEP` owns that future target state. Current Shared/Slice owners reference the Step and keep only current meaning/local impact; they do not duplicate a second evolution roadmap.
 
-## Findings / Outputs
+## Findings / Outcomes
+
+Valid invocation outcomes:
+
+```text
+APPLIED — no material finding
+APPLIED — one or more material Finding Candidates
+NOT_APPLICABLE — short confident-FALSE reason when application is not forced at this checkpoint
+```
 
 sharedness, canonical owner, applicability matrix, local integration contract, exceptions/bypass, shared mechanism Proposals and Q/R/P.
 
-## Typical Consumers
+## Non-Normative Navigation — Typical Surfaces
+
+This section is navigation only. It does not create or strengthen Unit attachment; normative predictable attachment belongs beside the natural Unit and registry discovery remains projection-only.
 
 Shared Capability, Slice, architecture/evolution and proof-coordination evaluation where shared ownership is material.
 
@@ -112,15 +164,12 @@ Consumer artifacts store only local integration obligations + references.
 
 If sharedness is not established, keep content local and do not manufacture a common file.
 
-## Guards
-
+## Guards / Boundaries
 Generic Q/R/P Concern ≠ Shared Implementation Capability.
 
-## Composition
+## Finding / Lifecycle Boundary
 
-L4/L5/L6 and Quality/Risk are frequent companions.
-
-## Escalation / Revalidation
+Temporal revalidation timing is owned by `Applicability & Temporal Triggers` above. The remaining guidance here concerns Finding/lifecycle routing rather than checkpoint trigger ownership.
 
 Repeated local concern becomes shared only when canonical ownership adds real value.
 

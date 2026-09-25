@@ -30,7 +30,7 @@ ordinary IDTSPE Questions / Risks / Problems / Proposals / Evidence only where u
 ↓
 RU-PUPDATE-01 Pre-Update Plan
 ↓ optional
-TM-EXACT-REALIZATION / another actual update mechanism
+applicable realization owner / another actual update mechanism
 ```
 
 ## Activation / Scope Gate
@@ -43,7 +43,7 @@ Use when the useful requested result is approximately:
 "show the planned changes first"
 ```
 
-Skip it when the requested change is already sufficiently tiny/obvious and the user wants direct Exact Realization/application.
+Skip it when the requested change is already sufficiently tiny/obvious and the user wants direct realization/application.
 
 Do not use it as a mandatory gate before every implementation.
 
@@ -140,6 +140,15 @@ Each declared Result Unit is a Module-defined Unit Definition under the canonica
 
 ### `RU-PUPDATE-01` Unit Definition
 
+**Lens Attachments**
+
+- **Core Lens Pack:** `INHERITED` via [`Core Lens Pack`](../lenses/LENS-REGISTRY.md)
+- **TRIGGERED:**
+  - [`LENS-DEPENDENCY-CHANGE-IMPACT`](../lenses/frequent/LENS-DEPENDENCY-CHANGE-IMPACT.md)
+  - [`LENS-QUALITY-RISK-MATERIALITY`](../lenses/frequent/LENS-QUALITY-RISK-MATERIALITY.md)
+  - [`LENS-VERIFIABILITY-OBSERVABILITY-OPERABILITY`](../lenses/frequent/LENS-VERIFIABILITY-OBSERVABILITY-OPERABILITY.md)
+  - [`LENS-TEST-PROOF-EVIDENCE`](../lenses/reusable/LENS-TEST-PROOF-EVIDENCE.md)
+
 **Responsibility.** Resolve the concrete bounded set of intended changes, preserves and verification implications before mutation.
 
 **Purpose.** Provide an independently reviewable update plan when planning value justifies a separate pre-update Target, without turning the plan into implementation authority.
@@ -182,7 +191,7 @@ One formal IDTSPE Proposal may justify several proposed operation entries, and o
 
 ### Explicit Unit Checkpoint Placement
 
-Each material Unit below inherits the generic [`Unit Applicability Envelope`](../runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md#twu-applicability-envelope). Opening/Closing are mandatory logical applicability boundaries; registries may also be checked during Unit work whenever new material pressure appears. For `RU-PUPDATE-01`, both boundaries explicitly scan/reuse the Core Lens Registry and any active-profile Lens Registry; frequent Lens candidates remain those named in this module's Lens Profile.
+Each material Unit below inherits the generic [`Unit Applicability Envelope`](../runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md#twu-applicability-envelope). Opening/Closing are mandatory logical applicability boundaries; registries may also be checked during Unit work whenever new material pressure appears. For `RU-PUPDATE-01`, both boundaries explicitly scan/reuse the Core Lens Registry and every active-profile Lens Registry in addition to the Unit-local Lens Attachments above.
 
 #### `RU-PUPDATE-01` processing envelope
 
@@ -237,27 +246,18 @@ These are proposed file operations inside `RU-PUPDATE-01`, not separate formal P
 
 ### 5. Stop before mutation
 
-The Pre-Update Plan itself is read-only planning. Actual mutation belongs to Exact Realization or another explicitly authorized host/update workflow.
+The Pre-Update Plan itself is read-only planning. Actual mutation belongs to the applicable realization owner or another explicitly authorized host/update workflow.
 
-## Lens Profile
-
-Generic required Core Lens pack is inherited from the Core Lens Registry.
-
-Frequent conditional Core Lenses:
-- [`LENS-DEPENDENCY-CHANGE-IMPACT`](../lenses/frequent/LENS-DEPENDENCY-CHANGE-IMPACT.md) — when change impact/dependencies are material.
-- [`LENS-VERIFIABILITY-OBSERVABILITY-OPERABILITY`](../lenses/frequent/LENS-VERIFIABILITY-OBSERVABILITY-OPERABILITY.md) — when credible post-update checks/observation need thought.
-- [`LENS-QUALITY-RISK-MATERIALITY`](../lenses/frequent/LENS-QUALITY-RISK-MATERIALITY.md) — when the update carries a material quality/risk dimension.
-
-An installed profile may add its own simplicity/domain/UI/etc Lens when actually applicable. No special Pre-Update Lens is required.
-
-## Relationship To Exact Realization
+## Relationship To Realization
 
 ```text
 TM-PRE-UPDATE-PLAN
 → what concrete changes we intend to make
 
-TM-EXACT-REALIZATION
+applicable realization owner
 → exact code/patch/artifact that makes those changes real
+→ narrower active-profile realization owner when one applies
+→ otherwise Core TM-EXACT-REALIZATION
 ```
 
 Example:
@@ -270,16 +270,16 @@ Pre-Update Plan:
   add regression integration proof
   build/test
 
-Exact Realization:
+Applicable Realization:
   literal changed files / patch / exact tests
 ```
 
-A Pre-Update Plan may hand off to Exact Realization, but neither Target is mandatory merely because the other exists.
+A Pre-Update Plan may hand off to the applicable realization owner, but neither Target is mandatory merely because the other exists.
 
 
-The generic exact-planning procedure used while developing an Exact Realization does **not** automatically instantiate `TM-PRE-UPDATE-PLAN`.
+The transient exact-planning procedure used while developing a realization does **not** automatically instantiate `TM-PRE-UPDATE-PLAN`.
 
-Use this Target only when its own result is useful: a concrete reviewable plan of intended changes before update. Exact Realization may perform deeper transient implementation planning internally without producing `RU-PUPDATE-01`.
+Use this Target only when its own result is useful: a concrete reviewable plan of intended changes before update. The applicable realization owner may perform deeper transient implementation planning internally without producing `RU-PUPDATE-01`.
 
 <a id="artifact--file-contract"></a>
 ## Artifact / File Contract
@@ -318,8 +318,9 @@ missing consequential source ≠ permission to guess
 
 ```text
 accepted Pre-Update Plan
-→ TM-EXACT-REALIZATION when an exact directly integrable result is next
-→ another explicit update mechanism when the subject is not Exact Realization work
+→ narrower active-profile realization owner when one applies
+→ otherwise Core TM-EXACT-REALIZATION for broad/profile-neutral exact work
+→ another explicit update mechanism when the subject is not realization work
 
 material newly discovered semantic/architecture conflict
 → Finding Candidate / Core Finding Disposition / upstream revalidation as needed

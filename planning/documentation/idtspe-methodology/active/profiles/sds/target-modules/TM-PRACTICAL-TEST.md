@@ -59,7 +59,7 @@ support/incident/real-data learning
 
 Do not create this Target merely because a feature shipped or because automated tests ran.
 
-Build/compile/unit/integration/E2E checks performed while realizing code remain Core Evidence in `TM-EXACT-REALIZATION` unless a separately useful real operated Evidence inquiry exists.
+Build/compile/unit/integration/E2E checks performed while realizing code remain Core Evidence around SDS `TM-CODE-REALIZATION` unless a separately useful real operated Evidence inquiry exists.
 
 ## Upstream Source Contract
 
@@ -75,19 +75,12 @@ privacy/safety/window/reset constraints
 
 Current `SOURCE_AUTHORITY` Requirement remains authority.
 
-## Knowledge Basis / Lens Profile
+## Knowledge Basis
 
 Shared method/Knowledge Basis:
 - [`Practical Evidence Method`](../../../idtspe-core/knowledge-bases/PRACTICAL-EVIDENCE.knowledge-basis.md)
 
-Primary Lens:
-- [`LENS-PRACTICAL-EVIDENCE`](../../../idtspe-core/lenses/reusable/LENS-PRACTICAL-EVIDENCE.md)
-
-Conditional:
-- [`LENS-TEST-PROOF-EVIDENCE`](../../../idtspe-core/lenses/reusable/LENS-TEST-PROOF-EVIDENCE.md) when acceptance/proof is primary.
-- Verifiability/Observability/Operability when the real result is hard to observe/diagnose.
-- Quality/Risk/Materiality when representative quality/risk behavior is the subject.
-
+Lens applicability is owned by the Unit-local `Lens Attachments` and concrete Lens temporal trigger contracts; this Knowledge Basis does not create another attachment rule.
 ## Resolution / Production Method
 
 Use the shared Practical Evidence Method rather than restating collection mechanics here.
@@ -104,7 +97,7 @@ establish what real implemented subject/property must be accepted or learned fro
 → send material consequences through Core Finding Disposition / Decision Revalidation
 ```
 
-Existing telemetry/logging is Evidence Source. This Target does not own permanent observability architecture; missing observability becomes a Finding Candidate for the natural Slice/Shared/implementation owner or Exact Realization when warranted.
+Existing telemetry/logging is Evidence Source. This Target does not own permanent observability architecture; missing observability becomes a Finding Candidate for the natural Slice/Shared/implementation owner or SDS Code Realization when warranted.
 
 ## Unit Definition Conformance
 
@@ -144,6 +137,16 @@ Each material Unit below inherits the generic [`Unit Applicability Envelope`](..
 <a id="ru-ptest-01-processing-envelope"></a>
 #### `RU-PTEST-01` processing envelope
 
+**Lens Attachments**
+
+- **Core Lens Pack:** `INHERITED` via [`Core Lens Pack`](../../../idtspe-core/lenses/LENS-REGISTRY.md)
+- **REQUIRED [CLOSING]:**
+  - [`LENS-PRACTICAL-EVIDENCE`](../../../idtspe-core/lenses/reusable/LENS-PRACTICAL-EVIDENCE.md)
+- **TRIGGERED:**
+  - [`LENS-QUALITY-RISK-MATERIALITY`](../../../idtspe-core/lenses/frequent/LENS-QUALITY-RISK-MATERIALITY.md)
+  - [`LENS-VERIFIABILITY-OBSERVABILITY-OPERABILITY`](../../../idtspe-core/lenses/frequent/LENS-VERIFIABILITY-OBSERVABILITY-OPERABILITY.md)
+  - [`LENS-TEST-PROOF-EVIDENCE`](../../../idtspe-core/lenses/reusable/LENS-TEST-PROOF-EVIDENCE.md)
+
 1. **Opening Unit Checkpoint — `RU-PTEST-01`** — resolve/reuse current applicable Core + active-profile Lens registry candidates and any Unit-triggered supporting registry pressure before material work.
 2. **Unit Work — `RU-PTEST-01`** — produce/refine only the material meaning owned by this Result Unit; run additional applicability checks immediately when the Analysis Surface changes materially.
 3. **Closing Unit Checkpoint — `RU-PTEST-01`** — evaluate the actual candidate Unit result, disposition material Findings/owner consequences, and reopen/refine narrowly when needed before treating the Unit as current-for-handoff.
@@ -151,12 +154,32 @@ Each material Unit below inherits the generic [`Unit Applicability Envelope`](..
 <a id="ru-ptest-02-processing-envelope"></a>
 #### `RU-PTEST-02` processing envelope
 
+**Lens Attachments**
+
+- **Core Lens Pack:** `INHERITED` via [`Core Lens Pack`](../../../idtspe-core/lenses/LENS-REGISTRY.md)
+- **REQUIRED [CLOSING]:**
+  - [`LENS-PRACTICAL-EVIDENCE`](../../../idtspe-core/lenses/reusable/LENS-PRACTICAL-EVIDENCE.md)
+- **TRIGGERED:**
+  - [`LENS-QUALITY-RISK-MATERIALITY`](../../../idtspe-core/lenses/frequent/LENS-QUALITY-RISK-MATERIALITY.md)
+  - [`LENS-VERIFIABILITY-OBSERVABILITY-OPERABILITY`](../../../idtspe-core/lenses/frequent/LENS-VERIFIABILITY-OBSERVABILITY-OPERABILITY.md)
+  - [`LENS-TEST-PROOF-EVIDENCE`](../../../idtspe-core/lenses/reusable/LENS-TEST-PROOF-EVIDENCE.md)
+
 1. **Opening Unit Checkpoint — `RU-PTEST-02`** — resolve/reuse current applicable Core + active-profile Lens registry candidates and any Unit-triggered supporting registry pressure before material work.
 2. **Unit Work — `RU-PTEST-02`** — produce/refine only the material meaning owned by this Result Unit; run additional applicability checks immediately when the Analysis Surface changes materially.
 3. **Closing Unit Checkpoint — `RU-PTEST-02`** — evaluate the actual candidate Unit result, disposition material Findings/owner consequences, and reopen/refine narrowly when needed before treating the Unit as current-for-handoff.
 
 <a id="ru-ptest-03-processing-envelope"></a>
 #### `RU-PTEST-03` processing envelope
+
+**Lens Attachments**
+
+- **Core Lens Pack:** `INHERITED` via [`Core Lens Pack`](../../../idtspe-core/lenses/LENS-REGISTRY.md)
+- **REQUIRED [CLOSING]:**
+  - [`LENS-PRACTICAL-EVIDENCE`](../../../idtspe-core/lenses/reusable/LENS-PRACTICAL-EVIDENCE.md)
+- **TRIGGERED:**
+  - [`LENS-QUALITY-RISK-MATERIALITY`](../../../idtspe-core/lenses/frequent/LENS-QUALITY-RISK-MATERIALITY.md)
+  - [`LENS-VERIFIABILITY-OBSERVABILITY-OPERABILITY`](../../../idtspe-core/lenses/frequent/LENS-VERIFIABILITY-OBSERVABILITY-OPERABILITY.md)
+  - [`LENS-TEST-PROOF-EVIDENCE`](../../../idtspe-core/lenses/reusable/LENS-TEST-PROOF-EVIDENCE.md)
 
 1. **Opening Unit Checkpoint — `RU-PTEST-03`** — resolve/reuse current applicable Core + active-profile Lens registry candidates and any Unit-triggered supporting registry pressure before material work.
 2. **Unit Work — `RU-PTEST-03`** — produce/refine only the material meaning owned by this Result Unit; run additional applicability checks immediately when the Analysis Surface changes materially.
@@ -217,13 +240,14 @@ Evidence Results / Interpretation
 → natural Application/Feature/Scenario/Screen/Domain/Slice/Shared/other owner when warranted
 
 simple missing automated proof
-→ TM-EXACT-REALIZATION
+→ TM-CODE-REALIZATION for codebase repair/realization
+→ Core TM-EXACT-REALIZATION for broad non-code exact repair/realization
 
 non-trivial proof-design problem
 → Core LENS-TEST-PROOF-EVIDENCE + transient natural-owner proof planning / Exact handoff
 
 missing durable observability
-→ natural Slice/Shared implementation owner or Exact Realization candidate through normal disposition
+→ natural Slice/Shared implementation owner or Code Realization candidate through normal disposition
 ```
 
 ## Copied project example

@@ -36,9 +36,9 @@
       "scope": "2D Visual Production",
       "label": "Source Representation Economy",
       "actionLabel": "Source Representation Economy",
-      "description": "construction route selection, structured source architecture, local-revision pressure",
+      "description": "Profile checkpoint routing is owned by Unit Selection And Lens Checkpoints.",
       "context": "Apply when choosing/reviewing pixel/vector/raster/procedural route, semantic part/layer structure, hybrid composition or when source complexity/editability becomes a material concern.",
-      "result": "construction route selection, structured source architecture, local-revision pressure",
+      "result": "Profile checkpoint routing is owned by Unit Selection And Lens Checkpoints.",
       "essence": "Evaluate whether the selected editable representation/structure/tool route is economical for the required visual meaning, local revision, reuse and outputs.",
       "sources": [
         "planning/documentation/idtspe-methodology/active/profiles/visual-production-2d/registries/LENS-REGISTRY.md",
@@ -117,9 +117,9 @@
       "scope": "Core",
       "label": "Documentation / Representation / Artifact Boundary",
       "actionLabel": "Documentation / Representation",
-      "description": "Documentation / Representation — persist or not; code vs prose; existing owner vs dedicated artifact; consolidate vs split; handoff to P-14; direct surface lenscmd.documentation.representation.check",
-      "context": "This is a required Core **check** whenever an IDTSPE iteration has a material result that might persist, alter an existing representation or affect artifact/file topology. It may close cheaply: ``text no material result to preserve → NO_PERSISTENCE_NEEDED `` Do not manufacture a documentation task merely because this Lens is required.",
-      "result": "``text NO_PERSISTENCE_NEEDED IMPLEMENTATION_NATIVE EXISTING_OWNER_SECTION REGISTRY_OR_CATALOG STRATEGY_OR_DISCOVERY_ARTIFACT DEDICATED_TARGET_OWNER_ARTIFACT SPECIALIZED_COMPANION_ARTIFACT GLOBAL_OR_CROSS_OWNER_ARTIFACT GENERATED_OR_DERIVED_VIEW UNRESOLVED what meaning is worth preserving resolved semantic-owner context, or likely-owner ambiguity requiring Core Finding Disposition what stays in code/tests/schema/config what planning residue remains textual duplication/staleness risk split/promotion trigger when relevant P-14 placement input ``",
+      "description": "Documentation / Representation — persist or not; code vs prose; existing owner vs dedicated artifact; consolidate vs split; handoff to P-14",
+      "context": "Documentation / Representation — persist or not; code vs prose; existing owner vs dedicated artifact; consolidate vs split; handoff to P-14",
+      "result": "Documentation / Representation — persist or not; code vs prose; existing owner vs dedicated artifact; consolidate vs split; handoff to P-14",
       "essence": "Choose the **smallest effective representation** for material Target meaning. The Lens exists to prevent a false equation: ``text IDTSPE Target exists → a dedicated Markdown file must exist ` The correct model is: `text IDTSPE = planning runtime semantic result → decide whether anything deserves durable persistence → choose the most natural representation → reuse an existing owner before creating another artifact → prefer consolidation before split → let representation grow only when real review/addressability/lifecycle pressure appears → then hand the selected representation to P-14 / PERSISTENCE_ADDRESSABILITY for concrete placement `` The Lens deliberately treats source code, types, tests, schemas, configuration, names, package/module structure and carefully chosen comments as possible **natural representations** of current meaning. It also recognizes the classes of knowledge that…",
       "sources": [
         "planning/documentation/idtspe-methodology/active/idtspe-core/lenses/LENS-REGISTRY.md",
@@ -147,8 +147,8 @@
       "label": "Authority / Source-of-Truth / Reuse",
       "actionLabel": "Authority / Source of Truth / Reuse",
       "description": "L2 — canonical owner/Source/reuse/no duplicate truth",
-      "context": "Always check for a material IDTSPE choice.",
-      "result": "``text canonical owner Source role classification reuse decision authority conflict duplicate-truth finding owner/revalidation finding projection/history-only classification ``",
+      "context": "A Scenario defines semantic information: ``text Source Context = where captured material came from ` Later the implementation contains: `text CaptureRequest.sourceUrl database.source_url UI field source ``",
+      "result": "L2 produces: ``text canonical owner Source roles reuse/reference route duplicate-truth/conflict finding if present ``",
       "essence": "Use canonical truth, preserve one-directional planning, avoid duplicate semantic authority and reuse valid accepted work instead of re-planning it.",
       "sources": [
         "planning/documentation/idtspe-methodology/active/idtspe-core/lenses/LENS-REGISTRY.md",
@@ -175,9 +175,9 @@
       "scope": "Core",
       "label": "Dependency / Change Surface / Blast Radius",
       "actionLabel": "Dependency / Change Impact",
-      "description": "L4 — dependency/change surface/consumers/blast radius",
-      "context": "Activate when a Target/Proposal changes a structured system with meaningful dependency/consumer/change relations: ``text repository/documentation codebase/modules/packages API/schema/messages files/artifacts data/storage integration graph generated projections ``",
-      "result": "``text dependency graph subset change surface consumer impact freshness/review obligations migration/rollback concerns projected structural change impact Q/R/P ``",
+      "description": "dependency/change surface/consumers/blast radius",
+      "context": "A team proposes changing the response contract returned by a capture API. They know the change is small in one server file but do not know the real system impact.",
+      "result": "L4 can produce: ``text affected consumers change surface migration/compatibility obligations blast-radius risk ``",
       "essence": "Evaluate structural dependency topology and concrete impact surface created by a choice.",
       "sources": [
         "planning/documentation/idtspe-methodology/active/idtspe-core/lenses/LENS-REGISTRY.md",
@@ -205,8 +205,8 @@
       "label": "Need / Value / Scope",
       "actionLabel": "Need / Value / Scope",
       "description": "L1 — Need/value/right bounded Target",
-      "context": "Always check for a material IDTSPE choice. Trusted upstream Need/scope may satisfy it without reopening.",
-      "result": "``text Need/value basis scope correction split/merge/defer candidate inside/outside clarification unnecessary RQ finding unsupported-solution finding Q/R/P when material ``",
+      "context": "A team opens a planning session with the proposed Target: ``text \"design a repository layer\" `` No user/business result is mentioned.",
+      "result": "L1 produces a scope/value finding: ``text current Target is implementation-shaped too early reframe around durable capture result ``",
       "essence": "Keep planning tied to a real Need/useful result and choose the right bounded Target/question/answer rather than allowing a proposed solution to justify itself.",
       "sources": [
         "planning/documentation/idtspe-methodology/active/idtspe-core/lenses/LENS-REGISTRY.md",
@@ -234,8 +234,8 @@
       "label": "Prototype / Implemented Practical Evidence",
       "actionLabel": "Prototype / Practical Evidence",
       "description": "minimum practical experiment / observed Evidence",
-      "context": "Primary for TM-PROTOTYPE and TM-PRACTICAL-TEST; supporting when another Target needs practical observation/acceptance Evidence.",
-      "result": "Typical Finding Candidates include: ``text prototype cannot credibly answer a question requiring real integration collection plan does not observe the claimed property data is available but irrelevant to the question critical real/simulated or version/environment boundary is hidden sample/window/environment makes the conclusion too broad interpretation is presented as observation required post-implementation evidence cannot currently be observed `` Core Finding Disposition selects any owner/revalidation consequence.",
+      "context": "minimum practical experiment / observed Evidence",
+      "result": "minimum practical experiment / observed Evidence",
       "essence": "Evaluate whether practical Evidence before or after implementation is capable of answering the material question credibly, economically and with honest limits.",
       "sources": [
         "planning/documentation/idtspe-methodology/active/idtspe-core/lenses/LENS-REGISTRY.md",
@@ -262,9 +262,9 @@
       "scope": "Core",
       "label": "Proposal / Decision Resolution Context",
       "actionLabel": "Proposal / Decision Resolution Context",
-      "description": "Proposal / Decision Resolution Context — required when a material Proposal/Decision surface exists; operational QRPE/qualification/disposition evaluator, not lifecycle owner",
-      "context": "``text material Proposal / material Decision surface exists → REQUIRED_CORE check no material Proposal/Decision surface → Lens not selected merely for ceremony `` Ordinary Target Modules reach this Lens through Opening/In-Unit/Closing registry scans. A Target Module should not directly attach this Lens mechanically unless recurring specialized value justifies it.",
-      "result": "``text reviewed Proposal/Decision context related QRPE applicability/disposition Decision qualification finding owner/integration finding residual/revalidation finding Finding Candidate when a new contradiction/authority problem is discovered ``",
+      "description": "Proposal / Decision Resolution Context — material Proposal/Decision qualification/disposition evaluator, not lifecycle owner",
+      "context": "Proposal / Decision Resolution Context — material Proposal/Decision qualification/disposition evaluator, not lifecycle owner",
+      "result": "Proposal / Decision Resolution Context — material Proposal/Decision qualification/disposition evaluator, not lifecycle owner",
       "essence": "Operationally evaluate one material Proposal/Decision resolution context through the existing Core lifecycle owners without creating a second Proposal, Decision, Q/R/P or Evidence lifecycle.",
       "sources": [
         "planning/documentation/idtspe-methodology/active/idtspe-core/lenses/LENS-REGISTRY.md",
@@ -292,8 +292,8 @@
       "label": "Cross-Cutting Quality / Risk Materiality",
       "actionLabel": "Quality / Risk / Materiality",
       "description": "material quality/risk categories",
-      "context": "Check candidates for material differences in: ``text security privacy performance / capacity reliability / availability safety compliance / auditability UX / accessibility business/economic cost `` Operability/observability as a realization property is primarily L6.",
-      "result": "``text material quality condition/ref risk/failure mode comparison dimension Evidence need likely-owner / lifecycle hint Q/R/P revalidation signal ``",
+      "context": "The same methodology is used for two products: ``text A: personal local research prototype B: production payment workflow ``",
+      "result": "The Lens produces only material quality/risk findings, Evidence-need meaning, likely-owner/lifecycle hints and Q/R/P-relevant observations; Core Finding Disposition resolves actual State/owner consequences.",
       "essence": "Activate only quality/risk dimensions capable of changing the answer; avoid both omission and universal NFR ceremony.",
       "sources": [
         "planning/documentation/idtspe-methodology/active/idtspe-core/lenses/LENS-REGISTRY.md",
@@ -321,8 +321,8 @@
       "label": "Shared / Cross-Cutting Ownership",
       "actionLabel": "Shared / Cross-Cutting Ownership",
       "description": "shared ownership / applicability / local integration",
-      "context": "Reusable when the same implementation responsibility appears across several consumers and genuine shared ownership is uncertain. It does not imply a dedicated Cross-Cutting Target family.",
-      "result": "sharedness, canonical owner, applicability matrix, local integration contract, exceptions/bypass, shared mechanism Proposals and Q/R/P.",
+      "context": "Five Slices all contain logging code. The team considers creating one global Logging Concern.",
+      "result": "The Lens can identify: ``text sharedness likely canonical-owner hint applicability matrix local integration contract exceptions ``",
       "essence": "Determine whether a responsibility is genuinely shared and how consumers integrate it without duplicating authority or prematurely building a framework.",
       "sources": [
         "planning/documentation/idtspe-methodology/active/idtspe-core/lenses/LENS-REGISTRY.md",
@@ -350,8 +350,8 @@
       "label": "Target Resolution Coverage",
       "actionLabel": "Target Resolution Coverage",
       "description": "Target scope/Requirement/Unit coverage sufficiency; prepared vs contextual completion",
-      "context": "Apply proportionally when a Target exists and one or more of these are material: ``text Target scope is still being formed/refined Target Module coverage is partial or uncertain Core/Module/Contextual Unit responsibilities overlap or leave gaps an open material question/concern may reveal a missing Requirement Target completion/readiness depends on whether coverage is sufficient ` NO_MATERIAL_COVERAGE_ISSUE` is a valid outcome. Do not run the Lens merely because a Target exists.",
-      "result": "Typical Finding Candidates include: ``text MISSING_REQUIREMENT_COVERAGE MISSING_UNIT_RESPONSIBILITY OVERLAPPING_UNIT_RESPONSIBILITY TARGET_MODULE_PARTIAL_COVERAGE SCOPE_TOO_BROAD SCOPE_TOO_NARROW UNROUTED_MATERIAL_CONCERN PREPARED_UNIT_NOT_ACTUALLY_APPLICABLE `` The Lens surfaces Finding Candidates. It does not itself change Target scope, create Units, apply Target Modules or own Requirement coverage. Core Finding Disposition plus Target Formation/Resolution owns those consequences.",
+      "context": "Target scope/Requirement/Unit coverage sufficiency; prepared vs contextual completion",
+      "result": "Target scope/Requirement/Unit coverage sufficiency; prepared vs contextual completion",
       "essence": "Evaluate whether the current Target scope, material Target Resolution Requirements and actual work composition provide sufficient coverage without inventing duplicate semantic owners or silently losing material needs.",
       "sources": [
         "planning/documentation/idtspe-methodology/active/idtspe-core/lenses/LENS-REGISTRY.md",
@@ -377,8 +377,8 @@
       "label": "Test Proof / Evidence Quality",
       "actionLabel": "Test Proof / Evidence Quality",
       "description": "proof-layer/evidence quality",
-      "context": "Primary when: ``text a test/proof is being designed shared proof strategy is being selected actual current tests/Evidence are being reviewed an Exact Realization needs to decide what automated proof is credible `` Supporting when another Target needs a concrete testing perspective.",
-      "result": "Typical Lens output is concise Finding/Key-Point material such as: ``text property mismatch wrong/over-expensive proof layer weak assertion / missing no-mutation observation false-confidence escape path refactor-fragile implementation coupling duplicated proof representative-case gap cross-side proof gap isolation/reproducibility problem stale/missing Evidence Practical Evidence handoff `` Only material semantic/lifecycle consequences cross Finding Candidate → Core Finding Disposition.",
+      "context": "proof-layer/evidence quality",
+      "result": "proof-layer/evidence quality",
       "essence": "Evaluate whether a proposed or actual test/proof **credibly establishes the selected semantic property without unnecessary cost, false confidence or implementation coupling**. This Lens is the common operational authority for: ``text proof-design evaluation shared testing-strategy evaluation actual test/Evidence coverage review proof gaps / stale Evidence review `` It does not create a Test Coverage Target. Coverage review is an application of this Lens to current semantics + actual Evidence.",
       "sources": [
         "planning/documentation/idtspe-methodology/active/idtspe-core/lenses/LENS-REGISTRY.md",
@@ -406,8 +406,8 @@
       "label": "Uncertainty / Assumption / Reversibility",
       "actionLabel": "Uncertainty / Assumptions / Reversibility",
       "description": "L3 — assumptions/Evidence/reversibility/cost of being wrong",
-      "context": "Check every material choice. If no material unknown can change the answer, resolve no material uncertainty and do no extra work.",
-      "result": "``text assumption/unknown classification Evidence need research/prototype candidate reversible/deferred choice confidence basis Q/R/P revalidation signal ``",
+      "context": "A team likes the idea: ``text use a floating capture overlay `` but has never tested whether users actually find it faster or clearer.",
+      "result": "L3 may produce: ``text material assumption prototype Evidence need reversible/defer recommendation revalidation signal ``",
       "essence": "Before choosing, distinguish established basis from assumption/unknown, decide whether Evidence is worth acquiring and avoid expensive irreversible commitment before it is justified. This is prospective planning, not revalidation.",
       "sources": [
         "planning/documentation/idtspe-methodology/active/idtspe-core/lenses/LENS-REGISTRY.md",
@@ -434,9 +434,9 @@
       "scope": "Core",
       "label": "Proof / Observation / Diagnosis / Operation",
       "actionLabel": "Verifiability / Observability / Operability",
-      "description": "L6 — proof/observation/diagnosis/operation",
-      "context": "Activate when correctness/failure/state must be demonstrably checked or safely operated, especially for Slices, integrations, runtime workflows, critical automation, shared mechanisms and failure-prone architecture.",
-      "result": "``text Q/R/P proof/Evidence requirements observability/diagnosis requirements operation/recovery requirements Test/Practical Evidence handoff Decision rationale ``",
+      "description": "proof/observation/diagnosis/operation",
+      "context": "A background import job processes hundreds of items asynchronously. Two architecture candidates both appear functionally correct.",
+      "result": "L6 may surface a Finding Candidate that candidate B has substantially better verification/diagnosis/operation characteristics. Core Finding Disposition may resolve that accepted meaning as input to the current Decision when the current Target/Decision is the actual owner.",
       "essence": "Ask whether correctness/failure/state can be credibly proved, observed, diagnosed and operated at acceptable cost before accepting a realization/architecture/result. Broader than test/proof design: it also covers observability, diagnosis, operation and recovery.",
       "sources": [
         "planning/documentation/idtspe-methodology/active/idtspe-core/lenses/LENS-REGISTRY.md",
@@ -545,8 +545,8 @@
       "label": "Application Definition / Benefits / Boundary / Feasibility",
       "actionLabel": "Application Boundary / Alternatives / Feasibility",
       "description": "own-Application contribution/boundary/feasibility is unsettled",
-      "context": "Primary for TM-APPLICATION-DEFINITION.",
-      "result": "TM-APPLICATION-DEFINITION: RU-APP-05, RU-APP-02, RU-APP-03, RU-APP-04, RU-APP-07 (RU-APP-01 is retired; RU-APP-06 is intentionally not a standalone Unit) Concept-first CHECK: verify that the opening Concept gives a concise whole-application explanation and basic working idea, while detailed Benefit promises/boundaries, alternative-route justification, RLS paths and feasibility remain in their natural Units. Document identity/source context must not recreate a separate contribution body.",
+      "context": "A team wants to build a specialized research-capture application because current tools feel cumbersome. They have a Fundamental Need, but custom software may not be the best route.",
+      "result": "The Lens surfaces Finding Candidates about: ``text build/buy/adapt/integrate position representative real-life situation concept sufficiency Benefit responsibility/state boundary feasibility `` Core Finding Disposition decides whether accepted meaning becomes/refines Application Definition State/Decision input or belongs to another owner.",
       "essence": "Evaluate whether an own Application is justified, which real-world contribution it should own, what existing alternatives teach us, which Benefits justify it, whether each Benefit has truthful Responsibility Boundary / Constraints, whether representative real-life situations make those Benefits concrete, whether the concise Application Concept is understandable, and whether the concept/Benefit boundaries are plausibly realizable.",
       "sources": [
         "planning/documentation/idtspe-methodology/active/profiles/sds/registries/LENS-REGISTRY.md",
@@ -574,8 +574,8 @@
       "label": "Domain Modeling / DDD",
       "actionLabel": "Domain Modeling / DDD",
       "description": "Domain identity/state/lifecycle/consistency/ownership questions are material",
-      "context": "Use when a material concern involves semantic state, identity, lifecycle, invariant, consistency, Domain policy/operation, Domain failure/result semantics, persistence boundary tied to semantic ownership, concurrency/atomicity tied to invariants, Domain proof or known Domain evolution. Stop proportionally when the concern is merely UI/transport/filesystem/Git/database/framework orchestration with no selected Domain meaning.",
-      "result": "The Lens may produce Findings, alternatives, candidate reusable/local Requirements or Proposal pressure. It does not directly mutate accepted owner results. Selected owner-local requirements are independently approved in the natural owner **state being represented**: current owner for realized truth or the corresponding Evolution Step Target Domain Body for unrealized future state.",
+      "context": "Domain identity/state/lifecycle/consistency/ownership questions are material",
+      "result": "Domain identity/state/lifecycle/consistency/ownership questions are material",
       "essence": "Provide the reusable DDD question/requirement/solution corpus for deciding whether meaning belongs in Domain and, when it does, how identity, ownership, lifecycle, consistency, semantic operations, persistence, failure, proof and known evolution should be shaped. This Lens/Knowledge Basis never contains the current project-specific Domain model and never creates DDD patterns by ceremony.",
       "sources": [
         "planning/documentation/idtspe-methodology/active/profiles/sds/registries/LENS-REGISTRY.md",
@@ -603,9 +603,9 @@
       "label": "Owner-Local Implementation Requirements Discovery",
       "actionLabel": "Implementation Requirements",
       "description": "reasoning may need to become/change/retire durable owner-local IR/PFR meaning",
-      "context": "Use when current implementation/proof reasoning may need to become, change, move, merge, retire or explicitly *not become* durable owner-local IR/PFR meaning. Do not apply merely because implementation planning exists.",
+      "context": "reasoning may need to become/change/retire durable owner-local IR/PFR meaning",
       "result": "reasoning may need to become/change/retire durable owner-local IR/PFR meaning",
-      "essence": "reasoning may need to become/change/retire durable owner-local IR/PFR meaning",
+      "essence": "Discover whether a material implementation/proof concern should become, change, move, merge, retire, or explicitly not become durable owner-local Implementation/Proof Requirement meaning, and route durable meaning to its natural owner without owning the Requirement itself.",
       "sources": [
         "planning/documentation/idtspe-methodology/active/profiles/sds/registries/LENS-REGISTRY.md",
         "planning/documentation/idtspe-methodology/active/profiles/sds/lenses/reusable/LENS-IMPLEMENTATION-REQUIREMENTS-DISCOVERY.md"
@@ -632,8 +632,8 @@
       "label": "Simplicity / Implementation Economy / Evolution-Safe Simplification",
       "actionLabel": "Simplicity / Implementation Economy",
       "description": "complexity/implementation economy/evolution-safe simplification is material",
-      "context": "Activate when a Domain/Slice/proof/UI/Shared/architecture candidate contains material structural choice, especially when one or more of these are present: ``text several abstraction layers / wrappers / interfaces long orchestration or call chain many owners/entities for one useful result repeated mappings or representation changes several state owners several files/artifacts for one small responsibility multiple test layers/fixtures for the same property speculative extension seams ceremonial Domain patterns configuration/indirection that is hard to explain locally ` Also activate when a reviewer/agent has the concrete question: `text “Have we over-designed this?” “Can we implement the same thing with fewer moving parts?” “Can we remove a layer without making the next known change worse?” ``",
-      "result": "semantic selectors over selected Domain/Slice/proof/UI/Shared/architecture Result Units whose implementation cost/complexity is material",
+      "context": "A Capture Slice has this proposed implementation path: ``text CaptureController → CaptureCommandHandler → CaptureFacade → CaptureOrchestrator → CaptureWorkflowService → CaptureDomainService → CaptureRepository ` There is one current capture operation. Accepted Scenario/Slice future meaning says: `text PDF capture is planned. New sources should reuse core capture behavior. A source-normalization seam is a prepared extension point. Review behavior should not change when capture source changes. `` The local Slice evolution plan expects PDF input to enter through the same application capture route.",
+      "result": "The Slice Unit content records: ``text REMOVE CaptureFacade REMOVE CaptureOrchestrator REMOVE CaptureWorkflowService KEEP one application orchestration owner KEEP source normalization seam DEFER additional source abstraction machinery until a concrete trigger requires it ``",
       "essence": "Search for a **simpler, cheaper and easier-to-understand way to realize the same accepted meaning** without creating a predictable evolution/change problem. This Lens is deliberately different from the WEUC Lens: ``text WEUC Lens / L5 = how architecture/Target structure behaves under current + future change; which seams/paths/global architecture positions are justified Simplicity Lens = whether the current candidate can be made materially simpler now while still respecting accepted evolution constraints from current map and natural Unit owners (with applicable PRS selection references) and any L5-derived meaning accepted through Core Finding Disposition `` The Lens is not “minimize file count” or “remove abstractions by default”. It asks whether each abstraction, owner, hop, mapping, test layer or mechanism **earns its cost**.",
       "sources": [
         "planning/documentation/idtspe-methodology/active/profiles/sds/registries/LENS-REGISTRY.md",
@@ -662,7 +662,7 @@
       "actionLabel": "Slice Verticality / Integration",
       "description": "Feature/Slice boundary, end-to-end realization, behavior coverage or change locality is material",
       "context": "Feature/Slice boundary, end-to-end realization, behavior coverage or change locality is material",
-      "result": "The Lens may KEEP, REFINE, CHALLENGE or leave OPEN a boundary, surface Shared/Domain pressure or produce Finding/Proposal pressure. It does not directly mutate accepted Feature/Slice owner meaning. When the selected boundary is future/unrealized, its semantic destination is the Evolution Step Target Body; current owner mutation waits for realization/materialization.",
+      "result": "Feature/Slice boundary, end-to-end realization, behavior coverage or change locality is material",
       "essence": "Own the reusable Feature/Slice Boundary Method and end-to-end realization questions. Optimize for locality of responsibility/change and coherent Feature proof, not dependency absence or technical-layer isolation. The same method is used at two evidence depths:",
       "sources": [
         "planning/documentation/idtspe-methodology/active/profiles/sds/registries/LENS-REGISTRY.md",
@@ -690,9 +690,9 @@
       "label": "Terms / Ubiquitous Language",
       "actionLabel": "Terms / Ubiquitous Language",
       "description": "durable terminology/definition consistency is material, especially for Requirements/errors",
-      "context": "Strongly check changed SR-*, BR-*, IR-*, PFR-*, ERR-BEH-*, ERR-IMP-*; proportionally check AB/SPS/FBS/FDO/owner/result names.",
+      "context": "durable terminology/definition consistency is material, especially for Requirements/errors",
       "result": "durable terminology/definition consistency is material, especially for Requirements/errors",
-      "essence": "durable terminology/definition consistency is material, especially for Requirements/errors",
+      "essence": "Evaluate whether durable semantic terms, requirement/error language, owner/result names, and recurring concepts remain understandable, canonical, owner-aligned, and consistent across the planning surface without leaking incidental implementation jargon into product meaning.",
       "sources": [
         "planning/documentation/idtspe-methodology/active/profiles/sds/registries/LENS-REGISTRY.md",
         "planning/documentation/idtspe-methodology/active/profiles/sds/lenses/reusable/LENS-TERMS-UBIQUITOUS-LANGUAGE.md"
@@ -719,8 +719,8 @@
       "label": "Screen / UI / Frontend Realization",
       "actionLabel": "Screen / UI / Frontend Realization",
       "description": "Screen/spatial/UI/frontend realization questions are material",
-      "context": "Primary for Screen; supporting for UI-heavy Implementation Slice and other Targets where UI/frontend realization is material.",
-      "result": "TM-SCREEN: RU-SCREEN-01..RU-SCREEN-02",
+      "context": "Scenario says: ``text user can capture selected material `` Screen planning places capture on a reading overlay. Frontend implementation still must decide how state/data/server interaction should work.",
+      "result": "The Lens surfaces Finding Candidates about: ``text state ownership data flow/synchronization navigation async/failure handling component/feature boundaries server integration boundary `` Core Finding Disposition decides whether accepted meaning becomes/refines local Proposal/Q/R/P/Answer-Decision input or belongs to another owner.",
       "essence": "Evaluate spatial/UI/frontend realization while preserving Scenario/DATA/Behavior/Screen/Slice authority. The Lens does not require a universal frontend architecture or a dedicated Frontend Target family.",
       "sources": [
         "planning/documentation/idtspe-methodology/active/profiles/sds/registries/LENS-REGISTRY.md",
@@ -1047,10 +1047,10 @@
       "scope": "Core",
       "label": "Exact Realization / Integration",
       "actionLabel": "Точная реализация",
-      "description": "produce one exact directly integrable realization; codebase realization is the primary/default archetype, with optional transient internal detailed exact planning and explicitly authorized integration/verification/repair.",
+      "description": "generic/profile-neutral owner for one exact directly integrable realization when no narrower active-profile realization owner applies; supports optional transient internal detailed exact planning and explicitly authorized integration/verification/repair.",
       "context": "Use this Target Module when all are materially true: ``text a bounded thing is ready to be realized upstream semantic/planning meaning is sufficient for exact realization a concrete destination/current-state context can be inspected or explicitly represented the useful result is the exact directly integrable payload itself `` Do not use it merely to hide unresolved product/Domain/architecture choices inside code or another artifact. If the main work is still choosing behavior, Domain meaning, architecture, Slice structure, proof intent or another independently substantial semantic answer, keep/resolve that work in its natural Target first. A small implementation-local choice may remain inside Exact Realization when it does not change accepted upstream meaning or escape the Target scope. A purely mechanical application of an already exact accepted payload does not require a new Exact R…",
       "result": "**Target Step Result:** Exact Realization | Result Unit | Meaning | |---|---| | RU-REAL-01 | Exact Realization — the current complete directly integrable candidate result for the selected bounded scope | ### RU-REAL-01 Unit Definition **Responsibility.** Produce the complete exact directly integrable realization for the selected bounded scope. **Purpose.** Convert sufficiently accepted semantics into an exact candidate that can be reviewed/applied/verified without another material design pass. **Result Content Contract.** One complete current exact payload for the bounded realization, including the exact file/object/config/schema/test material needed for direct integration and the baseline/destination identity required to interpret it safely. This Unit is simple by default. Verification observations, repair reasoning, Questions, Problems, Proposals, Decisions and Evidence remain Core…",
-      "essence": "Produce the **exact current candidate realization** of already-sufficient upstream meaning in a form that can be directly integrated into a selected destination/environment without another material design pass. The module is generic: an Exact Realization may be code, test code, configuration, a migration, schema, workflow, manifest, exact documentation replacement or another directly integrable artifact. The **primary/default archetype is codebase realization**. When the user asks to implement code, use the code workflow in this module by default unless the user explicitly asks for a shorter depth such as exact code only with no integration/build/test attempt. ``text accepted upstream meaning current destination state bounded realization scope ↓ RU-REAL-01 Exact Realization ↓ optional / explicitly authorized Integration Attempt into selected environment ↓ Evidence / Lens analysis ↓ mi…",
+      "essence": "Produce the **exact current candidate realization** of already-sufficient upstream meaning in a form that can be directly integrated into a selected destination/environment without another material design pass. The module is generic: an Exact Realization may be code, test code, configuration, a migration, schema, workflow, manifest, exact documentation replacement or another directly integrable artifact. Under active SDS, codebase-oriented realization is owned by SDS TM-CODE-REALIZATION; this Core module remains the broad/profile-neutral exact-realization owner and continues to serve non-code literal work. The module remains deliberately broad and profile-neutral. An active profile may define a narrower realization Target Module for a specialized artifact family. When such a profile owner applies, use that narrower owner rather than treating this generic module as the specialized sema…",
       "sources": [
         "planning/documentation/idtspe-methodology/active/idtspe-core/target-modules/TARGET-MODULE-REGISTRY.md",
         "planning/documentation/idtspe-methodology/active/idtspe-core/target-modules/TM-EXACT-REALIZATION.md"
@@ -1106,9 +1106,9 @@
       "label": "Pre-Update Plan",
       "actionLabel": "План обновления",
       "description": "optional concrete reviewable plan of intended changes before actual mutation; one RU-PUPDATE-01.",
-      "context": "Use when the useful requested result is approximately: ``text \"before changing it, tell me exactly what you plan to update\" \"make a pre-update plan\" \"show the planned changes first\" `` Skip it when the requested change is already sufficiently tiny/obvious and the user wants direct Exact Realization/application. Do not use it as a mandatory gate before every implementation.",
-      "result": "**Target Step Result:** Pre-Update Plan | Result Unit | Meaning | |---|---| | RU-PUPDATE-01 | Pre-Update Plan — concrete planned changes derived from current accepted meaning/current state, sufficient for review before actual update | ### RU-PUPDATE-01 Unit Definition **Responsibility.** Resolve the concrete bounded set of intended changes, preserves and verification implications before mutation. **Purpose.** Provide an independently reviewable update plan when planning value justifies a separate pre-update Target, without turning the plan into implementation authority. **Result Content Contract.** One actionable plan that states the accepted basis, intended change scope, material preserve/must-not-change boundaries, dependencies/order when material, verification/checks and consequential unresolved issues. When the destination is a set of files or other addressable artifacts, express…",
-      "essence": "Before actually changing code/files/configuration/another destination, produce one **concrete update plan** from the current accepted context and current state. The module is intentionally light. It does not reopen already-settled design merely to make a plan and it does not require a new taxonomy of planning fields. ``text current request accepted prior meaning / Decisions / principles relevant current destination state ↓ ordinary IDTSPE Questions / Risks / Problems / Proposals / Evidence only where useful ↓ RU-PUPDATE-01 Pre-Update Plan ↓ optional TM-EXACT-REALIZATION / another actual update mechanism ``",
+      "context": "Use when the useful requested result is approximately: ``text \"before changing it, tell me exactly what you plan to update\" \"make a pre-update plan\" \"show the planned changes first\" `` Skip it when the requested change is already sufficiently tiny/obvious and the user wants direct realization/application. Do not use it as a mandatory gate before every implementation.",
+      "result": "**Target Step Result:** Pre-Update Plan | Result Unit | Meaning | |---|---| | RU-PUPDATE-01 | Pre-Update Plan — concrete planned changes derived from current accepted meaning/current state, sufficient for review before actual update | ### RU-PUPDATE-01 Unit Definition **Lens Attachments** **Core Lens Pack:** INHERITED via Core Lens Pack **TRIGGERED:** LENS-DEPENDENCY-CHANGE-IMPACT LENS-QUALITY-RISK-MATERIALITY LENS-VERIFIABILITY-OBSERVABILITY-OPERABILITY LENS-TEST-PROOF-EVIDENCE **Responsibility.** Resolve the concrete bounded set of intended changes, preserves and verification implications before mutation. **Purpose.** Provide an independently reviewable update plan when planning value justifies a separate pre-update Target, without turning the plan into implementation authority. **Result Content Contract.** One actionable plan that states the accepted basis, intended change scope, m…",
+      "essence": "Before actually changing code/files/configuration/another destination, produce one **concrete update plan** from the current accepted context and current state. The module is intentionally light. It does not reopen already-settled design merely to make a plan and it does not require a new taxonomy of planning fields. ``text current request accepted prior meaning / Decisions / principles relevant current destination state ↓ ordinary IDTSPE Questions / Risks / Problems / Proposals / Evidence only where useful ↓ RU-PUPDATE-01 Pre-Update Plan ↓ optional applicable realization owner / another actual update mechanism ``",
       "sources": [
         "planning/documentation/idtspe-methodology/active/idtspe-core/target-modules/TARGET-MODULE-REGISTRY.md",
         "planning/documentation/idtspe-methodology/active/idtspe-core/target-modules/TM-PRE-UPDATE-PLAN.md"
@@ -1324,6 +1324,36 @@
       "target": "<Определить приложение target>"
     },
     {
+      "id": "TM-CODE-REALIZATION",
+      "kind": "TARGET_MODULE",
+      "scope": "SDS",
+      "label": "Code Realization / Integration",
+      "actionLabel": "Реализовать код",
+      "description": "exact SDS codebase realization / integration of sufficiently accepted meaning",
+      "context": "Use this Target Module when all are materially true: ``text SDS profile is active a bounded codebase implementation result is requested/useful upstream semantic/planning meaning is sufficient for exact code realization the relevant current codebase/project state can be inspected or explicitly bounded the useful result is the exact codebase candidate itself `` Do not use this module merely to encode unresolved design choices as code. Small implementation-local choices may remain inside Code Realization when they do not alter accepted upstream meaning, natural-owner boundaries or material Decisions.",
+      "result": "**Target Step Result:** Code Realization | Result Unit | Meaning | |---|---| | RU-CODE-01 | Exact Code Realization — the current complete directly-integrable codebase candidate for the selected bounded scope | ### RU-CODE-01 Unit Definition **Responsibility.** Produce the complete exact codebase realization for the selected bounded scope without silently redefining accepted upstream SDS meaning. **Purpose.** Convert sufficiently accepted SDS semantics into project-native source/test/implementation material that can be reviewed, integrated and verified without another material semantic/design pass. **Result Content Contract.** One complete current exact codebase candidate, including the source/test code and codebase-integral wiring needed for direct integration, plus enough baseline/destination identity to interpret/apply it safely. This Unit is simple by default. Questions, Problems,…",
+      "essence": "Produce the **exact current codebase realization** of sufficiently accepted SDS meaning in a form that can be reviewed and, when authorized, directly integrated into the selected codebase/environment without another material semantic/design pass. This module is the SDS owner for code-oriented realization: ``text accepted SDS meaning / selected Evolution Step body current codebase state bounded code realization scope ↓ RU-CODE-01 Exact Code Realization ↓ optional / explicitly authorized integration + build/test/static/runtime Evidence ↓ minor in-scope repair OR material Finding / upstream revalidation ↓ updated RU-CODE-01 `` The module owns **literal implementation realization**, not upstream product/Domain/Slice/Shared semantics. If the work is still materially deciding behavior, Domain ownership, Slice responsibility, Shared extraction, durable requirements or future target state, re…",
+      "sources": [
+        "planning/documentation/idtspe-methodology/active/profiles/sds/registries/TARGET-MODULE-REGISTRY.md",
+        "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-CODE-REALIZATION.md"
+      ],
+      "aliases": [
+        "code-realization",
+        "code"
+      ],
+      "ownerRef": {
+        "semanticId": "TM-CODE-REALIZATION",
+        "path": "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-CODE-REALIZATION.md",
+        "anchor": "tm-code-realization",
+        "why": "Concrete Target Module Model semantics selected by this card; shared Meta-Model/registry/port references come from included commands.",
+        "role": "PRIMARY_OWNER",
+        "readMode": "REQUIRED"
+      },
+      "commandId": "",
+      "invocation": "idtspe tm code-realization <target>",
+      "target": "<Реализовать код target>"
+    },
+    {
       "id": "TM-DOMAIN-DISCOVERY",
       "kind": "TARGET_MODULE",
       "scope": "SDS",
@@ -1505,7 +1535,7 @@
       "label": "Implemented Practical Evidence / Acceptance",
       "actionLabel": "Спланировать Practical Test",
       "description": "implemented real-subject practical Evidence",
-      "context": "Use when the real implementation/environment is materially necessary to answer the acceptance/learning question credibly, for example: ``text real interaction/usability real provider/integration behavior operational diagnosis production/staging telemetry patterns performance under representative conditions support/incident/real-data learning ` Do not create this Target merely because a feature shipped or because automated tests ran. Build/compile/unit/integration/E2E checks performed while realizing code remain Core Evidence in TM-EXACT-REALIZATION` unless a separately useful real operated Evidence inquiry exists.",
+      "context": "Use when the real implementation/environment is materially necessary to answer the acceptance/learning question credibly, for example: ``text real interaction/usability real provider/integration behavior operational diagnosis production/staging telemetry patterns performance under representative conditions support/incident/real-data learning ` Do not create this Target merely because a feature shipped or because automated tests ran. Build/compile/unit/integration/E2E checks performed while realizing code remain Core Evidence around SDS TM-CODE-REALIZATION` unless a separately useful real operated Evidence inquiry exists.",
       "result": "**Target Step Result:** Implemented Practical Evidence Result | Result Unit | Meaning | |---|---| | RU-PTEST-01 | Evidence Intent / Real Subject — what real implementation/property will be observed and why real Evidence is needed | | RU-PTEST-02 | Observation / Data Collection Plan — proportional planned observation against the intended/actual real subject | | RU-PTEST-03 | Evidence Results / Interpretation — actual real-subject Evidence refs, material limitations and acceptance/learning interpretation | ### Result Unit Applicability / Materiality Unit presence/disposition mechanics follow the Core Unit Applicability / Materiality / Disposition Contract. The table below owns only this module's local substantive-materiality and omission-rationale triggers. | Result Unit | Substantive resolution is material when | Unit disposition when substantive resolution is not material | |---|---|-…",
       "essence": "Own one practical Evidence inquiry whose **actual Evidence subject is the real implemented system/environment**, for acceptance and/or post-implementation learning. The Target may be planned before realization so implementation can make later observation possible. Actual Evidence/results begin only when the real implemented subject exists. Shared inquiry/collection mechanics are owned by Practical Evidence Method; this module should not duplicate that method.",
       "sources": [
@@ -1758,10 +1788,10 @@
       "scope": "Core",
       "label": "Create / Review / Integrate Reusable Lens",
       "actionLabel": "Поддерживать reusable Lens",
-      "description": "``text one canonical Lens/Lens Pack owner registry entry / applicability summary activation class/gate Operational Evaluation Contract explicit Analysis Surface / supported operations / Finding Contract Knowledge Basis / theory-reference links when useful consumer/profile mapping migrated duplicate knowledge/guidance consistency checks ``",
+      "description": "``text one canonical Lens/Lens Pack owner registry entry / discovery summary complete Operational Evaluation Contract explicit Analysis Surface / supported operations Applicability & Temporal Trigger Contract Findings / Outcomes contract Knowledge Basis / theory-reference links when useful non-authoritative attachment-consumer/discovery references when useful migrated duplicate knowledge/guidance consistency checks ``",
       "context": "Use when: ``text one evaluation perspective repeats across Target families an existing Target Module embeds reusable Lens knowledge frequent cross-cutting reasoning has no stable owner several Lens names overlap/duplicate one reasoning loop an existing Lens has unclear applicability/output/escalation ``",
-      "result": "``text one canonical Lens/Lens Pack owner registry entry / applicability summary activation class/gate Operational Evaluation Contract explicit Analysis Surface / supported operations / Finding Contract Knowledge Basis / theory-reference links when useful consumer/profile mapping migrated duplicate knowledge/guidance consistency checks ``",
-      "essence": "``text one canonical Lens/Lens Pack owner registry entry / applicability summary activation class/gate Operational Evaluation Contract explicit Analysis Surface / supported operations / Finding Contract Knowledge Basis / theory-reference links when useful consumer/profile mapping migrated duplicate knowledge/guidance consistency checks ``",
+      "result": "``text one canonical Lens/Lens Pack owner registry entry / discovery summary complete Operational Evaluation Contract explicit Analysis Surface / supported operations Applicability & Temporal Trigger Contract Findings / Outcomes contract Knowledge Basis / theory-reference links when useful non-authoritative attachment-consumer/discovery references when useful migrated duplicate knowledge/guidance consistency checks ``",
+      "essence": "``text one canonical Lens/Lens Pack owner registry entry / discovery summary complete Operational Evaluation Contract explicit Analysis Surface / supported operations Applicability & Temporal Trigger Contract Findings / Outcomes contract Knowledge Basis / theory-reference links when useful non-authoritative attachment-consumer/discovery references when useful migrated duplicate knowledge/guidance consistency checks ``",
       "sources": [
         "planning/documentation/use-case-registry-map.md",
         "planning/documentation/idtspe-methodology/active/idtspe-core/use-cases/USE-CASE-REGISTRY.md"
@@ -1778,10 +1808,10 @@
       "scope": "Core",
       "label": "Create / Review / Integrate Target Module",
       "actionLabel": "Поддерживать Target Module",
-      "description": "``text one Target Module owner catalog entry stable Entry Point integration map Target Step-Result family / Module-defined Unit inventory and Target-family-specific Unit deltas conforming to the canonical Target Work owners stable per-Unit methodology-owner binding points Module-specific applicability/checkpoint guidance conforming to the canonical Unit applicability envelope complete Module-defined Unit inventory/composition contract without duplicated generic Unit/Collection/Slot/runtime semantics Resolution / Production Method output schema/projection when useful validators provenance mapping command/Tampermonkey readiness route ` If reuse already covers the need: `text no new module → integrate/reuse existing one `` ---",
+      "description": "``text one Target Module owner catalog entry stable Entry Point integration map Target Step-Result family / Module-defined Unit inventory and Target-family-specific Unit deltas conforming to the canonical Target Work owners stable per-Unit methodology-owner binding points Module-specific applicability/checkpoint guidance conforming to the canonical Unit applicability envelope Unit-local Lens Attachments / rare Target-wide Lens Attachments with no duplicated Lens trigger logic complete Module-defined Unit inventory/composition contract without duplicated generic Unit/Collection/Slot/runtime semantics Resolution / Production Method output schema/projection when useful validators provenance mapping command/Tampermonkey readiness route ` If reuse already covers the need: `text no new module → integrate/reuse existing one `` ---",
       "context": "Use when: ``text a recurring Target class has no reusable contract an existing UC/workflow/template family should become IDTSPE-addressable a Target Module is incomplete/stale/overlapping several modules need composition/entry-point reconciliation `` ---",
-      "result": "``text one Target Module owner catalog entry stable Entry Point integration map Target Step-Result family / Module-defined Unit inventory and Target-family-specific Unit deltas conforming to the canonical Target Work owners stable per-Unit methodology-owner binding points Module-specific applicability/checkpoint guidance conforming to the canonical Unit applicability envelope complete Module-defined Unit inventory/composition contract without duplicated generic Unit/Collection/Slot/runtime semantics Resolution / Production Method output schema/projection when useful validators provenance mapping command/Tampermonkey readiness route ` If reuse already covers the need: `text no new module → integrate/reuse existing one `` ---",
-      "essence": "``text one Target Module owner catalog entry stable Entry Point integration map Target Step-Result family / Module-defined Unit inventory and Target-family-specific Unit deltas conforming to the canonical Target Work owners stable per-Unit methodology-owner binding points Module-specific applicability/checkpoint guidance conforming to the canonical Unit applicability envelope complete Module-defined Unit inventory/composition contract without duplicated generic Unit/Collection/Slot/runtime semantics Resolution / Production Method output schema/projection when useful validators provenance mapping command/Tampermonkey readiness route ` If reuse already covers the need: `text no new module → integrate/reuse existing one `` ---",
+      "result": "``text one Target Module owner catalog entry stable Entry Point integration map Target Step-Result family / Module-defined Unit inventory and Target-family-specific Unit deltas conforming to the canonical Target Work owners stable per-Unit methodology-owner binding points Module-specific applicability/checkpoint guidance conforming to the canonical Unit applicability envelope Unit-local Lens Attachments / rare Target-wide Lens Attachments with no duplicated Lens trigger logic complete Module-defined Unit inventory/composition contract without duplicated generic Unit/Collection/Slot/runtime semantics Resolution / Production Method output schema/projection when useful validators provenance mapping command/Tampermonkey readiness route ` If reuse already covers the need: `text no new module → integrate/reuse existing one `` ---",
+      "essence": "``text one Target Module owner catalog entry stable Entry Point integration map Target Step-Result family / Module-defined Unit inventory and Target-family-specific Unit deltas conforming to the canonical Target Work owners stable per-Unit methodology-owner binding points Module-specific applicability/checkpoint guidance conforming to the canonical Unit applicability envelope Unit-local Lens Attachments / rare Target-wide Lens Attachments with no duplicated Lens trigger logic complete Module-defined Unit inventory/composition contract without duplicated generic Unit/Collection/Slot/runtime semantics Resolution / Production Method output schema/projection when useful validators provenance mapping command/Tampermonkey readiness route ` If reuse already covers the need: `text no new module → integrate/reuse existing one `` ---",
       "sources": [
         "planning/documentation/use-case-registry-map.md",
         "planning/documentation/idtspe-methodology/active/idtspe-core/use-cases/USE-CASE-REGISTRY.md"

@@ -2,7 +2,6 @@
 # LENS-PRACTICAL-EVIDENCE — Prototype / Implemented Practical Evidence
 
 Lens ID: `LENS-PRACTICAL-EVIDENCE`
-Activation: `TARGET_PROFILE_REUSABLE`
 
 > Semantic Owner Dependencies
 > - `CONTEXTUALIZES` [`Knowledge Basis Contract`](../../knowledge-bases/KNOWLEDGE-BASIS-CONTRACT.md#knowledge-basis-contract) — `KNOWLEDGE.BASIS`
@@ -12,13 +11,56 @@ Activation: `TARGET_PROFILE_REUSABLE`
 
 Evaluate whether practical Evidence before or after implementation is capable of answering the material question credibly, economically and with honest limits.
 
-## Applicability Gate
+## Analysis Surface
 
-Primary for `TM-PROTOTYPE` and `TM-PRACTICAL-TEST`; supporting when another Target needs practical observation/acceptance Evidence.
+This Lens evaluates the bounded planning/implementation surface where the following concern is materially present:
 
-## Target Inputs / Evidence
+> A material question/acceptance claim requires observing a real or intentionally simulated subject/environment because Sources/reasoning/automated proof alone cannot credibly resolve it.
 
+Context may inform the evaluation, but context availability alone does not make the entire context part of this Lens's Analysis Surface.
+
+## Applicability & Temporal Triggers
+
+### Base Applicability / Usefulness
+
+A material question/acceptance claim requires observing a real or intentionally simulated subject/environment because Sources/reasoning/automated proof alone cannot credibly resolve it.
+
+### Opening Triggers
+
+Prototype/Practical Test work starts, or the question depends on real environment/platform/integration behavior, human usability, empirical performance/resource behavior, alternative discrimination, or post-implementation observation.
+
+### During-work Recheck / Invalidation Triggers
+
+Question/property, subject, real-vs-simulated boundary, version/environment/data/sample/window, collection method, acceptance criterion, or observed Evidence changes; new Evidence contradicts assumptions.
+
+### Closing Triggers / Revalidation Conditions
+
+The result proposes/uses practical Evidence or claims learning/acceptance from observation; validate subject strength, collection relevance, provenance, limits and interpretation.
+
+### Confident-False / Stop Conditions
+
+Question is credibly resolved from existing authoritative Sources, reasoning, or cheaper automated proof.
+
+### False-negative Risks
+
+“More confidence” is not enough; practical observation must answer a specific discriminating/acceptance question.
+
+Trigger semantics follow the canonical Lens Model:
+
+```text
+TRUE      → APPLY
+FALSE     → NOT_APPLICABLE
+UNCERTAIN → APPLY
+```
+
+A Unit-level `REQUIRED [phase]` attachment bypasses the apply/skip decision at that phase and requires this Lens to cover the current Analysis Surface. These Lens-owned triggers still govern useful earlier application and recheck/invalidation.
+
+## Inputs / Evidence
 Material question/property, affected owner/Decision, subject under observation, Scenario/context, actor/environment/data constraints, existing Evidence and intended collection method.
+
+## Evaluation Contract
+
+Apply only the dimensions material to the current question. The domain-specific questions, methods, facets, checks, examples, and pattern guidance below constitute this Lens's evaluation workflow; they are not mandatory checklist items unless the current Analysis Surface makes them material.
 
 ## Evaluation
 
@@ -45,7 +87,15 @@ Acceptance may use explicit proof signals / PASS-FAIL interpretation. Explorator
 
 When useful, preserve the question, Scenario/task/context, key observations and known limitations so the same concern can later be checked against the real implementation.
 
-## Findings / Outputs
+## Findings / Outcomes
+
+Valid invocation outcomes:
+
+```text
+APPLIED — no material finding
+APPLIED — one or more material Finding Candidates
+NOT_APPLICABLE — short confident-FALSE reason when application is not forced at this checkpoint
+```
 
 Typical Finding Candidates include:
 
@@ -61,7 +111,9 @@ required post-implementation evidence cannot currently be observed
 
 Core Finding Disposition selects any owner/revalidation consequence.
 
-## Typical Consumers
+## Non-Normative Navigation — Typical Surfaces
+
+This section is navigation only. It does not create or strengthen Unit attachment; normative predictable attachment belongs beside the natural Unit and registry discovery remains projection-only.
 
 Prototype, implemented practical Evidence, and Application/Feature/Scenario/Screen/Domain/Slice/Shared proof planning when practical observation matters.
 
@@ -101,8 +153,7 @@ RESOLVER: P-14 / PERSISTENCE_ADDRESSABILITY
 
 Persist only evidence necessary for traceability/review and permitted by privacy/safety constraints. More retained data is not automatically better evidence.
 
-## Guards
-
+## Guards / Boundaries
 ```text
 prototype success ≠ proof final implementation works
 planned collection ≠ actual Evidence
@@ -111,11 +162,9 @@ Evidence ≠ semantic authority
 TM-PRACTICAL-TEST ≠ permanent telemetry/logging owner
 ```
 
-## Composition
+## Finding / Lifecycle Boundary
 
-L3 helps identify material uncertainty. L6 helps when implemented observation/diagnosis is difficult. Test Proof/Evidence Lens joins when acceptance/proof is the primary purpose.
-
-## Escalation / Revalidation
+Temporal revalidation timing is owned by `Applicability & Temporal Triggers` above. The remaining guidance here concerns Finding/lifecycle routing rather than checkpoint trigger ownership.
 
 Unexpected Evidence or missing observability surfaces a Finding Candidate. Core Finding Disposition may select Decision/Scope/owner revalidation or implementation work; this Lens does not perform those transitions itself.
 

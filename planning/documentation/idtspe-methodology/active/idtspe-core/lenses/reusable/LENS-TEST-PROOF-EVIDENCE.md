@@ -6,7 +6,6 @@
 > - `CONTEXTUALIZES` [PRS Decision admission / exit](../../target-modules/TM-PLANNING-RESOLUTION-STATE.md#ru-prs-02--tracked-decisions) — `RESOLUTION.CARRY-FORWARD`.
 
 Lens ID: `LENS-TEST-PROOF-EVIDENCE`
-Activation: `TARGET_PROFILE_REUSABLE`
 
 > Semantic Owner Dependencies
 > - `CONTEXTUALIZES` [`Knowledge Basis Contract`](../../knowledge-bases/KNOWLEDGE-BASIS-CONTRACT.md#knowledge-basis-contract) — `KNOWLEDGE.BASIS`
@@ -27,21 +26,51 @@ proof gaps / stale Evidence review
 
 It does not create a Test Coverage Target. Coverage review is an application of this Lens to current semantics + actual Evidence.
 
-## Applicability Gate
+## Analysis Surface
 
-Primary when:
+This Lens evaluates the bounded planning/implementation surface where the following concern is materially present:
+
+> A concrete test/proof is being designed, proof layer/boundary/shared strategy selected, actual tests/Evidence reviewed, proof gap/false-confidence/refactor-fragility assessed, or Exact Realization must decide automated proof.
+
+Context may inform the evaluation, but context availability alone does not make the entire context part of this Lens's Analysis Surface.
+
+## Applicability & Temporal Triggers
+
+### Base Applicability / Usefulness
+
+A concrete test/proof is being designed, proof layer/boundary/shared strategy selected, actual tests/Evidence reviewed, proof gap/false-confidence/refactor-fragility assessed, or Exact Realization must decide automated proof.
+
+### Opening Triggers
+
+The Unit begins with a proof/test design/review question, selected semantic property needing automated proof, or actual tests/Evidence whose adequacy/freshness is under review.
+
+### During-work Recheck / Invalidation Triggers
+
+Selected property/negative guarantee, public boundary, realization path/effects, proof layer, setup/action/observation, assertions/signals, isolation/data/environment, implementation coupling, or Evidence freshness changes.
+
+### Closing Triggers / Revalidation Conditions
+
+The result claims proof adequacy, chooses a proof strategy/layer, or creates/changes/reviews tests/Evidence; validate property alignment, cheapest credible layer, assertion strength, escape paths, resilience and freshness.
+
+### Confident-False / Stop Conditions
+
+No concrete test/proof design, selection, implementation or review question exists.
+
+### False-negative Risks
+
+A green test or existing test file can be stale/weak/wrong-layer; existence is not credible proof.
+
+Trigger semantics follow the canonical Lens Model:
 
 ```text
-a test/proof is being designed
-shared proof strategy is being selected
-actual current tests/Evidence are being reviewed
-an Exact Realization needs to decide what automated proof is credible
+TRUE      → APPLY
+FALSE     → NOT_APPLICABLE
+UNCERTAIN → APPLY
 ```
 
-Supporting when another Target needs a concrete testing perspective.
+A Unit-level `REQUIRED [phase]` attachment bypasses the apply/skip decision at that phase and requires this Lens to cover the current Analysis Surface. These Lens-owned triggers still govern useful earlier application and recheck/invalidation.
 
-## Target Inputs / Evidence
-
+## Inputs / Evidence
 ```text
 selected Scenario / Requirement / Domain / Slice / other semantic property
 negative / must-not-change guarantees
@@ -52,7 +81,7 @@ current implementation/destination boundaries when relevant
 
 Tests and Evidence remain downstream of semantic truth. A green test does not become product behavior authority.
 
-## Operational Evaluation Contract
+## Evaluation Contract
 
 Apply only the dimensions material to the current question. The examples are calibration examples, not mandatory templates.
 
@@ -375,8 +404,10 @@ These are review vocabulary, not required enums.
 Material gaps become Finding Candidates. Core Finding Disposition resolves the real destination, commonly:
 
 ```text
-TM-EXACT-REALIZATION
+applicable literal/test realization owner
   → simple missing/incorrect exact test implementation
+  → Core TM-EXACT-REALIZATION when no narrower active-profile owner applies
+  → SDS TM-CODE-REALIZATION for source/test/codebase realization
 
 natural semantic owner / transient proof design
   → proof method itself is independently non-trivial and must be reasoned with the owner before literal realization
@@ -390,7 +421,15 @@ upstream semantic owner
 
 If a durable coverage matrix is independently useful, Documentation / Representation may persist the selected property→Evidence map. That representation does not require a separate Test Coverage Target family.
 
-## Findings / Outputs
+## Findings / Outcomes
+
+Valid invocation outcomes:
+
+```text
+APPLIED — no material finding
+APPLIED — one or more material Finding Candidates
+NOT_APPLICABLE — short confident-FALSE reason when application is not forced at this checkpoint
+```
 
 Typical Lens output is concise Finding/Key-Point material such as:
 
@@ -465,13 +504,6 @@ A durable property→Evidence coverage map is optional and justified by continui
 
 Do not create one proof file per property when code + existing owner context is sufficient.
 
-## Composition
-
-- L6 Verifiability/Observability/Operability asks whether the result can be credibly observed/proved/operated at all.
-- this Lens evaluates concrete testing/proof quality.
-- `LENS-PRACTICAL-EVIDENCE` evaluates practical observation/collection when real/simulated subject quality matters.
-- Exact Realization owns literal test code and actual authorized automated execution during realization.
-
 ## Knowledge Basis
 
 Canonical deeper theory/reference owner:
@@ -480,8 +512,7 @@ Canonical deeper theory/reference owner:
 
 The Knowledge Basis owns reusable theory/mechanics such as public-boundary testing, API/integration patterns, E2E selection, test-object patterns, no-mutation mechanics, isolation and representative proof. This Lens owns the operational **evaluation questions** above; Target Modules own only independently useful concrete planning/evidence results.
 
-## Guards
-
+## Guards / Boundaries
 ```text
 test plan ≠ implemented test
 implemented test ≠ executed Evidence

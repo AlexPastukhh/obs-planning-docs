@@ -23,12 +23,6 @@ Use when Feature meaning is sufficiently selected but exact end-to-end realizati
 
 Do not create a Slice discovery plan merely to restate Feature behavior.
 
-## Lens Profile
-
-Required primary lens: `LENS-SLICE-VERTICALITY-INTEGRATION`.
-
-Conditional Lenses include DDD, Evolution, Implementation Requirements Discovery, UI/spatial and quality/verifiability perspectives; selected [`RG-PRG-*`](../knowledge-bases/programming-principles/README.md) knowledge may support their evaluation when material.
-
 ## Production Method
 
 ```text
@@ -114,13 +108,52 @@ Each material Unit below inherits the generic [`Unit Applicability Envelope`](..
 
 ### RU-SLICE-01 — Whole-Slice Responsibility / Candidate Structure
 
+**Lens Attachments**
+
+- **Core Lens Pack:** `INHERITED` via [`Core Lens Pack`](../../../idtspe-core/lenses/LENS-REGISTRY.md)
+- **REQUIRED [CLOSING]:**
+  - [`LENS-SLICE-VERTICALITY-INTEGRATION`](../lenses/reusable/LENS-SLICE-VERTICALITY-INTEGRATION.md)
+- **TRIGGERED:**
+  - [`LENS-DOMAIN-MODELING-DDD`](../lenses/reusable/LENS-DOMAIN-MODELING-DDD.md)
+  - [`LENS-UI-SPATIAL-FRONTEND-REALIZATION`](../lenses/reusable/LENS-UI-SPATIAL-FRONTEND-REALIZATION.md)
+  - [`LENS-WORKSPACE-EVOLUTION-ARCHITECTURE`](../lenses/frequent/LENS-WORKSPACE-EVOLUTION-ARCHITECTURE.md)
+  - [`LENS-SIMPLICITY-IMPLEMENTATION-ECONOMY`](../lenses/frequent/LENS-SIMPLICITY-IMPLEMENTATION-ECONOMY.md)
+  - [`LENS-DEPENDENCY-CHANGE-IMPACT`](../../../idtspe-core/lenses/frequent/LENS-DEPENDENCY-CHANGE-IMPACT.md)
+  - [`LENS-SHARED-CROSS-CUTTING-RESPONSIBILITY`](../../../idtspe-core/lenses/reusable/LENS-SHARED-CROSS-CUTTING-RESPONSIBILITY.md)
+
 Capture the Feature-local end-to-end responsibility and enough candidate structure to reason about locality. Evaluate module/branch/entry-adapter/shared-extraction alternatives using the Vertical Slice Lens.
 
 ### RU-SLICE-02 — Semantic Application Entry / Result Boundary
 
+**Lens Attachments**
+
+- **Core Lens Pack:** `INHERITED` via [`Core Lens Pack`](../../../idtspe-core/lenses/LENS-REGISTRY.md)
+- **REQUIRED [CLOSING]:**
+  - [`LENS-SLICE-VERTICALITY-INTEGRATION`](../lenses/reusable/LENS-SLICE-VERTICALITY-INTEGRATION.md)
+- **TRIGGERED:**
+  - [`LENS-DOMAIN-MODELING-DDD`](../lenses/reusable/LENS-DOMAIN-MODELING-DDD.md)
+  - [`LENS-UI-SPATIAL-FRONTEND-REALIZATION`](../lenses/reusable/LENS-UI-SPATIAL-FRONTEND-REALIZATION.md)
+  - [`LENS-TERMS-UBIQUITOUS-LANGUAGE`](../lenses/reusable/LENS-TERMS-UBIQUITOUS-LANGUAGE.md)
+
 Prefer explicit semantic typed entry/result boundaries. A button, route, endpoint or CLI adapter is not automatically a distinct semantic application operation.
 
 ### RU-SLICE-03 — Step-by-Step End-to-End Realization
+
+**Lens Attachments**
+
+- **Core Lens Pack:** `INHERITED` via [`Core Lens Pack`](../../../idtspe-core/lenses/LENS-REGISTRY.md)
+- **REQUIRED [CLOSING]:**
+  - [`LENS-SLICE-VERTICALITY-INTEGRATION`](../lenses/reusable/LENS-SLICE-VERTICALITY-INTEGRATION.md)
+- **TRIGGERED:**
+  - [`LENS-DOMAIN-MODELING-DDD`](../lenses/reusable/LENS-DOMAIN-MODELING-DDD.md)
+  - [`LENS-UI-SPATIAL-FRONTEND-REALIZATION`](../lenses/reusable/LENS-UI-SPATIAL-FRONTEND-REALIZATION.md)
+  - [`LENS-IMPLEMENTATION-REQUIREMENTS-DISCOVERY`](../lenses/reusable/LENS-IMPLEMENTATION-REQUIREMENTS-DISCOVERY.md)
+  - [`LENS-WORKSPACE-EVOLUTION-ARCHITECTURE`](../lenses/frequent/LENS-WORKSPACE-EVOLUTION-ARCHITECTURE.md)
+  - [`LENS-SIMPLICITY-IMPLEMENTATION-ECONOMY`](../lenses/frequent/LENS-SIMPLICITY-IMPLEMENTATION-ECONOMY.md)
+  - [`LENS-DEPENDENCY-CHANGE-IMPACT`](../../../idtspe-core/lenses/frequent/LENS-DEPENDENCY-CHANGE-IMPACT.md)
+  - [`LENS-QUALITY-RISK-MATERIALITY`](../../../idtspe-core/lenses/frequent/LENS-QUALITY-RISK-MATERIALITY.md)
+  - [`LENS-VERIFIABILITY-OBSERVABILITY-OPERABILITY`](../../../idtspe-core/lenses/frequent/LENS-VERIFIABILITY-OBSERVABILITY-OPERABILITY.md)
+  - [`LENS-SHARED-CROSS-CUTTING-RESPONSIBILITY`](../../../idtspe-core/lenses/reusable/LENS-SHARED-CROSS-CUTTING-RESPONSIBILITY.md)
 
 Concrete plan may include:
 
@@ -140,9 +173,33 @@ Keep Feature-specific policy local. Extract Shared capability only for coherent 
 
 ### RU-SLICE-04 — Feature Integration Proof
 
+**Lens Attachments**
+
+- **Core Lens Pack:** `INHERITED` via [`Core Lens Pack`](../../../idtspe-core/lenses/LENS-REGISTRY.md)
+- **REQUIRED [CLOSING]:**
+  - [`LENS-SLICE-VERTICALITY-INTEGRATION`](../lenses/reusable/LENS-SLICE-VERTICALITY-INTEGRATION.md)
+  - [`LENS-VERIFIABILITY-OBSERVABILITY-OPERABILITY`](../../../idtspe-core/lenses/frequent/LENS-VERIFIABILITY-OBSERVABILITY-OPERABILITY.md)
+  - [`LENS-TEST-PROOF-EVIDENCE`](../../../idtspe-core/lenses/reusable/LENS-TEST-PROOF-EVIDENCE.md)
+- **TRIGGERED:**
+  - [`LENS-UI-SPATIAL-FRONTEND-REALIZATION`](../lenses/reusable/LENS-UI-SPATIAL-FRONTEND-REALIZATION.md)
+  - [`LENS-IMPLEMENTATION-REQUIREMENTS-DISCOVERY`](../lenses/reusable/LENS-IMPLEMENTATION-REQUIREMENTS-DISCOVERY.md)
+  - [`LENS-SIMPLICITY-IMPLEMENTATION-ECONOMY`](../lenses/frequent/LENS-SIMPLICITY-IMPLEMENTATION-ECONOMY.md)
+  - [`LENS-QUALITY-RISK-MATERIALITY`](../../../idtspe-core/lenses/frequent/LENS-QUALITY-RISK-MATERIALITY.md)
+
 Define whole-Feature proof through the semantic application boundary. Keep real Domain behavior real where useful; fake expensive/incidental external mechanics proportionally. Assert meaningful Feature result, important effects and forbidden effects rather than private call sequence.
 
 ### RU-SLICE-05 — Evolution / OPEN Slice Pressure
+
+**Lens Attachments**
+
+- **Core Lens Pack:** `INHERITED` via [`Core Lens Pack`](../../../idtspe-core/lenses/LENS-REGISTRY.md)
+- **REQUIRED [CLOSING]:**
+  - [`LENS-SLICE-VERTICALITY-INTEGRATION`](../lenses/reusable/LENS-SLICE-VERTICALITY-INTEGRATION.md)
+  - [`LENS-WORKSPACE-EVOLUTION-ARCHITECTURE`](../lenses/frequent/LENS-WORKSPACE-EVOLUTION-ARCHITECTURE.md)
+- **TRIGGERED:**
+  - [`LENS-DOMAIN-MODELING-DDD`](../lenses/reusable/LENS-DOMAIN-MODELING-DDD.md)
+  - [`LENS-UI-SPATIAL-FRONTEND-REALIZATION`](../lenses/reusable/LENS-UI-SPATIAL-FRONTEND-REALIZATION.md)
+  - [`LENS-IMPLEMENTATION-REQUIREMENTS-DISCOVERY`](../lenses/reusable/LENS-IMPLEMENTATION-REQUIREMENTS-DISCOVERY.md)
 
 Record known Evolution Steps and unresolved realization/boundary pressure. Known evolution is evidence; speculative future behavior is not current scope.
 
@@ -161,7 +218,7 @@ Use proportionally:
 
 ## Knowledge Basis
 
-`LENS-SLICE-VERTICALITY-INTEGRATION` owns the reusable Feature/Slice/end-to-end discovery method. DDD and IR Discovery Lenses plus selected [`RG-PRG-*`](../knowledge-bases/programming-principles/README.md) knowledge are composed only when material.
+`LENS-SLICE-VERTICALITY-INTEGRATION` owns reusable Feature/Slice/end-to-end evaluation knowledge. Selected [`RG-PRG-*`](../knowledge-bases/programming-principles/README.md) knowledge may inform the currently applied natural evaluator when materially matched; Programming Principle knowledge does not create Lens attachment by itself.
 
 ## Behavioral Coverage / Old Strategy Semantics
 
@@ -228,7 +285,8 @@ Domain semantics unclear
 → TM-DOMAIN-DISCOVERY / TM-DOMAIN-OWNER
 
 literal implementation ready
-→ Core TM-EXACT-REALIZATION
+→ SDS TM-CODE-REALIZATION for literal codebase implementation
+→ Core TM-EXACT-REALIZATION for broad non-code literal realization
 
 stronger Evidence contradicts Feature/Slice boundary
 → Finding → Feature/owner revalidation

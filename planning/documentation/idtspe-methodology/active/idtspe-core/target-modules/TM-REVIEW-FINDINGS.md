@@ -38,6 +38,14 @@ The single Module-defined Unit follows the [Target Work Unit contract](../runtim
 
 ### `RU-RFIND-01` — Finding and diagnosis
 
+**Lens Attachments**
+
+- **Core Lens Pack:** `INHERITED` via [`Core Lens Pack`](../lenses/LENS-REGISTRY.md)
+- **TRIGGERED:**
+  - [`LENS-DEPENDENCY-CHANGE-IMPACT`](../lenses/frequent/LENS-DEPENDENCY-CHANGE-IMPACT.md)
+  - [`LENS-QUALITY-RISK-MATERIALITY`](../lenses/frequent/LENS-QUALITY-RISK-MATERIALITY.md)
+  - [`LENS-VERIFIABILITY-OBSERVABILITY-OPERABILITY`](../lenses/frequent/LENS-VERIFIABILITY-OBSERVABILITY-OPERABILITY.md)
+
 **Purpose.** Make one problem reviewable as a coherent item: the reader encounters its observation and Evidence, then its diagnosis, before any candidate correction. Discovery and diagnosis are distinct reasoning responsibilities within the same Unit/item.
 
 **Collection Definition — `RFIND-FINDINGS`.** One item per observed Finding Candidate on the declared basis, including concise duplicate/non-material dispositions when traceability is useful; `0..N`. The Item Key is the stable local or natural Finding reference. Observation and diagnosis use the same key and are not separate Collections or formal Slots merely because they have separate fields. A pending diagnosis is explicit within its item.
@@ -93,12 +101,9 @@ Finding F-2
 
 The adjacent Proposal body is ordinary Core State presented after the diagnostic item; its payload is not a new responsibility or mandatory subfield of this Unit. A diagnostic-only invocation may end each item with an explicit pending handoff. An existing linked Proposal may be referenced rather than copied. Physical adjacency does not select a candidate or make its future effects current facts.
 
-## Lens profile and validation
-
-Use the generic required Core Lens pack and active-profile Lens Registry through normal applicability. Conditional candidates include [Authority / Source of Truth / Reuse](../lenses/required/LENS-AUTHORITY-SOT-REUSE.md), [Dependency / Change Impact](../lenses/frequent/LENS-DEPENDENCY-CHANGE-IMPACT.md), and [Quality / Risk / Materiality](../lenses/frequent/LENS-QUALITY-RISK-MATERIALITY.md) when their actual Analysis Surfaces exist. Review Strategy requests useful perspectives; P-06 resolves executable Lens applications.
+## Validation
 
 Check that the subject/scope/basis matches the Review Coverage Record, each candidate cites current Evidence and a review cell, every candidate receives an explicit materiality/owner disposition, Priority and `RE-*` remain distinct, and no Proposal/Decision is presented as already selected by diagnostic classification.
-
 ## Worked acceptance example
 
 ```text

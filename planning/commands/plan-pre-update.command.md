@@ -24,7 +24,7 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
   ],
   "description": "Concrete reviewable update plan before mutation",
   "meaning": "Run generic Core TM-PRE-UPDATE-PLAN. Produce one optional, separately reviewable RU-PUPDATE-01 from current accepted meaning and the current destination facts the intended change actually depends on. The Unit inherits mandatory Opening/In-Unit/Closing applicability checkpoints, including Core Lens Registry and active-profile Lens Registry applicability at the Unit boundaries. Do not turn the result into a mandatory stage, Current Plan/Idea shell, mutation permission, or a second repository-planning ontology.",
-  "activeContextBehavior": "Create or reuse the natural bounded Pre-Update Plan Target only when reviewing the intended changes before mutation is independently useful. Skip the module for a tiny/obvious change when the user asks for direct realization. The result may hand off to TM-EXACT-REALIZATION but does not authorize repository/destination mutation.",
+  "activeContextBehavior": "Create or reuse the natural bounded Pre-Update Plan Target only when reviewing the intended changes before mutation is independently useful. Skip the module for a tiny/obvious change when the user asks for direct realization. The result may hand off to the applicable realization owner (a narrower active-profile owner when defined, otherwise Core TM-EXACT-REALIZATION) but does not authorize repository/destination mutation.",
   "traversalReadMode": "Reuse current reliable IDTSPE governance and accepted prior context; inspect only the exact current code/files/configuration/owner state the update plan materially depends on. Surface a real missing-source Question instead of guessing current state.",
   "ownerFiles": [
     "planning/documentation/idtspe-methodology/active/idtspe-core/target-modules/TM-PRE-UPDATE-PLAN.md",
@@ -40,7 +40,7 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
     "Use ordinary Q/R/P/Evidence + Proposals/Decisions only where they help resolve a real consequential choice; do not dump a mandatory QRPE form.",
     "Proposed file/artifact operation entries are reviewable plan content, not automatically formal IDTSPE Proposals or permission to mutate.",
     "Inspect current destination state only as needed for a concrete safe plan and never guess consequential missing source facts.",
-    "The plan does not mutate files, execute tests, create a replacement package, commit or push; actual mutation authority belongs to the later host/Exact workflow.",
+    "The plan does not mutate files, execute tests, create a replacement package, commit or push; actual mutation authority belongs to the later host/applicable realization workflow.",
     "Skip this Target when the change is trivial/obvious and the user explicitly wants direct realization."
   ],
   "userTarget": "<update scope>",

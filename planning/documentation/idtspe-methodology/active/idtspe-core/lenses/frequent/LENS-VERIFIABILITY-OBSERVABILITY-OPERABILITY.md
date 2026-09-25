@@ -3,7 +3,6 @@
 
 Lens ID: `LENS-VERIFIABILITY-OBSERVABILITY-OPERABILITY`
 Legacy alias: `L6`
-Activation: `FREQUENT_CONDITIONAL`
 
 ## Purpose
 
@@ -11,12 +10,51 @@ Ask whether correctness/failure/state can be credibly proved, observed, diagnose
 
 Broader than test/proof design: it also covers observability, diagnosis, operation and recovery.
 
-## Applicability Gate
+## Analysis Surface
 
-Activate when correctness/failure/state must be demonstrably checked or safely operated, especially for Slices, integrations, runtime workflows, critical automation, shared mechanisms and failure-prone architecture.
+This Lens evaluates the bounded planning/implementation surface where the following concern is materially present:
 
-## Target Inputs / Evidence
+> Runtime correctness/failure/state/effects must be demonstrated, observed, diagnosed, recovered, retried, operated, or their operational cost can change acceptance/architecture.
 
+Context may inform the evaluation, but context availability alone does not make the entire context part of this Lens's Analysis Surface.
+
+## Applicability & Temporal Triggers
+
+### Base Applicability / Usefulness
+
+Runtime correctness/failure/state/effects must be demonstrated, observed, diagnosed, recovered, retried, operated, or their operational cost can change acceptance/architecture.
+
+### Opening Triggers
+
+The Unit starts with runtime/integration/shared behavior, external/irreversible effect, failure/recovery/retry path, operator/user diagnostic need, or proof requiring observation of actual state/effect.
+
+### During-work Recheck / Invalidation Triggers
+
+Runtime path/effect, failure mode, state visibility, telemetry/diagnostic context, retry/recovery/rollback, operator constraints, external outcome uncertainty, or proof boundary changes.
+
+### Closing Triggers / Revalidation Conditions
+
+The result establishes runtime/integration/automation/shared behavior or a proof/operation claim whose success/failure/state must be credibly observable, diagnosable and operable.
+
+### Confident-False / Stop Conditions
+
+Surface is purely static semantic classification and no runtime proof/observation/diagnosis/operation/recovery property is at issue.
+
+### False-negative Risks
+
+Happy-path tests can hide inability to detect uncertain external outcomes or recover safely.
+
+Trigger semantics follow the canonical Lens Model:
+
+```text
+TRUE      → APPLY
+FALSE     → NOT_APPLICABLE
+UNCERTAIN → APPLY
+```
+
+A Unit-level `REQUIRED [phase]` attachment bypasses the apply/skip decision at that phase and requires this Lens to cover the current Analysis Surface. These Lens-owned triggers still govern useful earlier application and recheck/invalidation.
+
+## Inputs / Evidence
 ```text
 selected behavior/result/invariants
 runtime path
@@ -25,6 +63,10 @@ failure/recovery expectations
 environment/operator constraints
 existing tests/telemetry/operational evidence
 ```
+
+## Evaluation Contract
+
+Apply only the dimensions material to the current question. The domain-specific questions, methods, facets, checks, examples, and pattern guidance below constitute this Lens's evaluation workflow; they are not mandatory checklist items unless the current Analysis Surface makes them material.
 
 ## Verifiability
 
@@ -52,7 +94,15 @@ Can a human/tool operate and recover safely? What rollback/manual burden exists?
 
 Does this choice make proof disproportionately expensive? Would another boundary make verification/diagnosis simpler?
 
-## Findings / Outputs
+## Findings / Outcomes
+
+Valid invocation outcomes:
+
+```text
+APPLIED — no material finding
+APPLIED — one or more material Finding Candidates
+NOT_APPLICABLE — short confident-FALSE reason when application is not forced at this checkpoint
+```
 
 ```text
 Q/R/P
@@ -63,7 +113,9 @@ Test/Practical Evidence handoff
 Decision rationale
 ```
 
-## Typical Consumers
+## Non-Normative Navigation — Typical Surfaces
+
+This section is navigation only. It does not create or strengthen Unit attachment; normative predictable attachment belongs beside the natural Unit and registry discovery remains projection-only.
 
 Feature/Slice/Domain/Shared/Scenario/Screen work, Architecture/WEUC decisions, Exact Realization, Practical Test and critical tooling decisions.
 
@@ -114,15 +166,12 @@ Normally **NO_DISTINCT_SUPPORTING_ARTIFACT**: L6 surfaces Finding Candidates; wh
 
 If L6 exposes a genuinely shared implementation responsibility, surface a Finding Candidate with the Cross-Cutting/shared family as a likely owner hint. Core Finding Disposition and, when needed, Target Formation resolve the real owner before placement; do not create an unnamed “L6 file”.
 
-## Guards
-
+## Guards / Boundaries
 Proof/telemetry mechanism does not become semantic authority.
 
-## Composition
+## Finding / Lifecycle Boundary
 
-Test Proof/Evidence specializes concrete proof. L5 consumes L6 findings when architecture changes operation/diagnosis cost.
-
-## Escalation / Revalidation
+Temporal revalidation timing is owned by `Applicability & Temporal Triggers` above. The remaining guidance here concerns Finding/lifecycle routing rather than checkpoint trigger ownership.
 
 A materially independent observability/operation subsystem may surface a Target Formation candidate through Core Finding Disposition; Target Formation decides whether a Cross-Cutting/shared or bounded local Target is warranted.
 

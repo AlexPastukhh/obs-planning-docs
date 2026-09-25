@@ -192,6 +192,12 @@ Each material Unit inherits the Core [`Unit Applicability Envelope`](../../../id
 <a id="ru-evo-01--step-frame--semantic-relations"></a>
 ## `RU-EVO-01` — Step Frame / Semantic Relations
 
+**Lens Attachments**
+
+- **Core Lens Pack:** `INHERITED` via [`Core Lens Pack`](../../../idtspe-core/lenses/LENS-REGISTRY.md)
+- **REQUIRED [CLOSING]:**
+  - [`LENS-WORKSPACE-EVOLUTION-ARCHITECTURE`](../lenses/frequent/LENS-WORKSPACE-EVOLUTION-ARCHITECTURE.md)
+
 Own only transition-wide framing/relations:
 
 ```text
@@ -238,6 +244,17 @@ Here **next Step for realization** means the particular intended Step whose impl
 <a id="ru-evo-02--evolution-impacts"></a>
 ## `RU-EVO-02` — Evolution Impacts
 
+**Lens Attachments**
+
+- **Core Lens Pack:** `INHERITED` via [`Core Lens Pack`](../../../idtspe-core/lenses/LENS-REGISTRY.md)
+- **REQUIRED [CLOSING]:**
+  - [`LENS-WORKSPACE-EVOLUTION-ARCHITECTURE`](../lenses/frequent/LENS-WORKSPACE-EVOLUTION-ARCHITECTURE.md)
+- **TRIGGERED:**
+  - [`LENS-DOMAIN-MODELING-DDD`](../lenses/reusable/LENS-DOMAIN-MODELING-DDD.md)
+  - [`LENS-SLICE-VERTICALITY-INTEGRATION`](../lenses/reusable/LENS-SLICE-VERTICALITY-INTEGRATION.md)
+  - [`LENS-DEPENDENCY-CHANGE-IMPACT`](../../../idtspe-core/lenses/frequent/LENS-DEPENDENCY-CHANGE-IMPACT.md)
+  - [`LENS-SHARED-CROSS-CUTTING-RESPONSIBILITY`](../../../idtspe-core/lenses/reusable/LENS-SHARED-CROSS-CUTTING-RESPONSIBILITY.md)
+
 **Responsibility.** Resolve the material bounded downstream/supporting-owner consequences of this Evolution Step for Feature/Scenario/Screen/Domain/Slice/Shared/OPEN-responsibility subjects without turning those subjects into peer Step Units or using this Unit as the Feature target-state owner.
 
 **Purpose.** Keep Step-local impact planning coherent and proportional while routing durable owner-local future meaning toward the natural Target Owner Body/Decision instead of duplicating owner authority inside the Step.
@@ -281,7 +298,7 @@ materialization consequence reference when resolved
 
 An Impact item may remain intentionally shallow when that is enough to guide current planning. For new/redistributed responsibility, keep owner outcome `OPEN` until supporting discovery/decision resolves natural owners.
 
-Selected implementation-shaped planning detail is not automatically `BR-*`, `SR-*`, `IR-*`, `PFR-*`, a Decision or an exact implementation commitment. Durable owner-local future must-holds converge into the corresponding Target Owner Body. Literal files/code/tests/config/schema remain Core Exact Realization territory.
+Selected implementation-shaped planning detail is not automatically `BR-*`, `SR-*`, `IR-*`, `PFR-*`, a Decision or an exact implementation commitment. Durable owner-local future must-holds converge into the corresponding Target Owner Body. Literal source/test code is SDS `TM-CODE-REALIZATION` territory; broad non-code literal files/config/schema/workflow artifacts remain Core `TM-EXACT-REALIZATION` territory unless inseparable codebase implementation consequences belong with the code Target.
 
 ## Target Owner Bodies
 
@@ -321,6 +338,21 @@ Selected Current Result Content may have continuing pre-realization value. In th
 <a id="ru-evo-03--step-wide-implementation-concerns"></a>
 ## `RU-EVO-03` — Step-wide Implementation Concerns
 
+**Lens Attachments**
+
+- **Core Lens Pack:** `INHERITED` via [`Core Lens Pack`](../../../idtspe-core/lenses/LENS-REGISTRY.md)
+- **REQUIRED [CLOSING]:**
+  - [`LENS-WORKSPACE-EVOLUTION-ARCHITECTURE`](../lenses/frequent/LENS-WORKSPACE-EVOLUTION-ARCHITECTURE.md)
+- **TRIGGERED:**
+  - [`LENS-DOMAIN-MODELING-DDD`](../lenses/reusable/LENS-DOMAIN-MODELING-DDD.md)
+  - [`LENS-SLICE-VERTICALITY-INTEGRATION`](../lenses/reusable/LENS-SLICE-VERTICALITY-INTEGRATION.md)
+  - [`LENS-IMPLEMENTATION-REQUIREMENTS-DISCOVERY`](../lenses/reusable/LENS-IMPLEMENTATION-REQUIREMENTS-DISCOVERY.md)
+  - [`LENS-SIMPLICITY-IMPLEMENTATION-ECONOMY`](../lenses/frequent/LENS-SIMPLICITY-IMPLEMENTATION-ECONOMY.md)
+  - [`LENS-DEPENDENCY-CHANGE-IMPACT`](../../../idtspe-core/lenses/frequent/LENS-DEPENDENCY-CHANGE-IMPACT.md)
+  - [`LENS-QUALITY-RISK-MATERIALITY`](../../../idtspe-core/lenses/frequent/LENS-QUALITY-RISK-MATERIALITY.md)
+  - [`LENS-VERIFIABILITY-OBSERVABILITY-OPERABILITY`](../../../idtspe-core/lenses/frequent/LENS-VERIFIABILITY-OBSERVABILITY-OPERABILITY.md)
+  - [`LENS-TEST-PROOF-EVIDENCE`](../../../idtspe-core/lenses/reusable/LENS-TEST-PROOF-EVIDENCE.md)
+
 This Unit replaces the former `Realization Prerequisite` concept. It does **not** own a list of technical foundations that must already exist before implementation. It owns only material realization/proof/integration pressure whose natural subject is the **whole transition**.
 
 Before writing Step-wide concern meaning, inspect affected reusable owner surfaces where defined:
@@ -346,7 +378,7 @@ whose subject is the whole transition
 → reference contributing owner-local concerns
 
 literal GitHub Action / file / class / config / schema / call sequence
-→ Exact Realization / transient exact planning
+→ SDS Code Realization for code / Core Exact Realization for broad non-code literal work / transient exact planning
 ```
 
 Examples of possible Step-wide concerns include cross-owner deployment/order pressure, compatibility-foundation uncertainty, whole-transition observability/proof coordination pressure or integration sequencing that cannot be understood as one owner's steady-state concern.
@@ -375,6 +407,14 @@ Do not duplicate owner-local concern prose or duplicate an established `RU-EVO-0
 <a id="ru-evo-04--target-owner-materialization-set"></a>
 ## `RU-EVO-04` — Target Owner Materialization Set
 
+**Lens Attachments**
+
+- **Core Lens Pack:** `INHERITED` via [`Core Lens Pack`](../../../idtspe-core/lenses/LENS-REGISTRY.md)
+- **REQUIRED [CLOSING]:**
+  - [`LENS-WORKSPACE-EVOLUTION-ARCHITECTURE`](../lenses/frequent/LENS-WORKSPACE-EVOLUTION-ARCHITECTURE.md)
+- **TRIGGERED:**
+  - [`LENS-DEPENDENCY-CHANGE-IMPACT`](../../../idtspe-core/lenses/frequent/LENS-DEPENDENCY-CHANGE-IMPACT.md)
+
 For each materially affected downstream owner whose represented post-Step authority would change under this Step result, state the semantic transition required after successful realization:
 
 ```text
@@ -398,6 +438,18 @@ The enclosing Proposal/Step planning boundary owns candidate/selected status. `C
 <a id="ru-evo-05--transition--proof-obligations"></a>
 ## `RU-EVO-05` — Transition / Proof Obligations
 
+**Lens Attachments**
+
+- **Core Lens Pack:** `INHERITED` via [`Core Lens Pack`](../../../idtspe-core/lenses/LENS-REGISTRY.md)
+- **REQUIRED [CLOSING]:**
+  - [`LENS-WORKSPACE-EVOLUTION-ARCHITECTURE`](../lenses/frequent/LENS-WORKSPACE-EVOLUTION-ARCHITECTURE.md)
+- **TRIGGERED:**
+  - [`LENS-IMPLEMENTATION-REQUIREMENTS-DISCOVERY`](../lenses/reusable/LENS-IMPLEMENTATION-REQUIREMENTS-DISCOVERY.md)
+  - [`LENS-DEPENDENCY-CHANGE-IMPACT`](../../../idtspe-core/lenses/frequent/LENS-DEPENDENCY-CHANGE-IMPACT.md)
+  - [`LENS-QUALITY-RISK-MATERIALITY`](../../../idtspe-core/lenses/frequent/LENS-QUALITY-RISK-MATERIALITY.md)
+  - [`LENS-VERIFIABILITY-OBSERVABILITY-OPERABILITY`](../../../idtspe-core/lenses/frequent/LENS-VERIFIABILITY-OBSERVABILITY-OPERABILITY.md)
+  - [`LENS-TEST-PROOF-EVIDENCE`](../../../idtspe-core/lenses/reusable/LENS-TEST-PROOF-EVIDENCE.md)
+
 Own established one-time must-holds of the represented transition. `RU-EVO-03` may discover/analyze pressure that resolves into this Unit, but once an obligation is established its canonical Step-wide must-hold meaning lives here rather than in both Units.
 
 Keep transition-only meaning separate from steady-state owner meaning. Examples:
@@ -411,10 +463,19 @@ one-time bridge/reconciliation
 transition-wide proof/materialization observation needed to establish what was realized
 ```
 
-Do not move steady-state Feature behavior, Scenario must-holds or durable Domain/Slice/Shared Requirements here merely because they become relevant during the transition. Owner-local proof-realization requirements remain owner-local `PFR-*`; literal tests remain Exact/code.
+Do not move steady-state Feature behavior, Scenario must-holds or durable Domain/Slice/Shared Requirements here merely because they become relevant during the transition. Owner-local proof-realization requirements remain owner-local `PFR-*`; literal source/test code realization belongs to SDS `TM-CODE-REALIZATION`.
 
 <a id="ru-evo-06--planning-completeness--realization-start-readiness"></a>
 ## `RU-EVO-06` — Planning Completeness / Realization Start Readiness
+
+**Lens Attachments**
+
+- **Core Lens Pack:** `INHERITED` via [`Core Lens Pack`](../../../idtspe-core/lenses/LENS-REGISTRY.md)
+- **REQUIRED [CLOSING]:**
+  - [`LENS-WORKSPACE-EVOLUTION-ARCHITECTURE`](../lenses/frequent/LENS-WORKSPACE-EVOLUTION-ARCHITECTURE.md)
+  - [`LENS-TARGET-RESOLUTION-COVERAGE`](../../../idtspe-core/lenses/frequent/LENS-TARGET-RESOLUTION-COVERAGE.md)
+- **TRIGGERED:**
+  - [`LENS-QUALITY-RISK-MATERIALITY`](../../../idtspe-core/lenses/frequent/LENS-QUALITY-RISK-MATERIALITY.md)
 
 Maintain two different conclusions.
 
@@ -482,7 +543,7 @@ material unrealized transition
 → resolve RU-EVO-04 Materialization Set
 → resolve RU-EVO-05 transition/proof obligations
 → resolve RU-EVO-06 Planning Completeness with an explicit completed/missing inventory explanation, separately from Realization Start Readiness
-→ enter Exact Realization only when selected/accepted upstream meaning is sufficient and realization-start conditions are satisfied
+→ enter SDS Code Realization for code, or broad Core Exact Realization for non-code literal work, only when selected/accepted upstream meaning is sufficient and realization-start conditions are satisfied
 ```
 
 One Step may contain several Target Owner Bodies when only their composition creates a usable transition. Several commits/packages may realize one Step; implementation packaging does not define application Evolution Step boundaries.
@@ -544,7 +605,7 @@ materialization set identifies CREATE / REPLACE / RETIRE semantics where needed
 physical representation operations are not confused with semantic materialization
 ```
 
-Handoff to Core Exact Realization uses the selected/accepted Step future-state plan as upstream planning authority only when `RU-EVO-06` says realization may start for the requested scope. After proof/materialization, retain the Step as transition/decision lineage; it does not remain a competing current-state semantic owner. Surface changed Step identity/`Entering From`/planning-completeness/start-readiness/addressability consequences back to `TM-EVOLUTION-STEPS-MAP` without copying full Step meaning there.
+Handoff to SDS Code Realization or broad Core Exact Realization uses the selected/accepted Step future-state plan as upstream planning authority only when `RU-EVO-06` says realization may start for the requested scope. After proof/materialization, retain the Step as transition/decision lineage; it does not remain a competing current-state semantic owner. Surface changed Step identity/`Entering From`/planning-completeness/start-readiness/addressability consequences back to `TM-EVOLUTION-STEPS-MAP` without copying full Step meaning there.
 
 ## Evolution Impact Evaluation
 

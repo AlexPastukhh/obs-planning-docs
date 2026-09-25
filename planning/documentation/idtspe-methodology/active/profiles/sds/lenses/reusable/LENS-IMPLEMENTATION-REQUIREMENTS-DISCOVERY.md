@@ -4,24 +4,67 @@
 Lens ID: `LENS-IMPLEMENTATION-REQUIREMENTS-DISCOVERY`
 
 Role: reusable discovery/evaluation Lens
-Purpose: discover whether a material implementation/proof concern should become, change or retire a durable owner-local Implementation Requirement.
 
-This Lens **does not own Requirements**. It is composed with thematic evaluators and reusable knowledge such as DDD, Vertical Slice, selected Programming Principles `RG-PRG-*` entries, Evolution, quality, trust/security or operability. The thematic evaluator explains the concern; this Lens classifies durable must-hold meaning and routes it to the natural implementation owner.
+This Lens **does not own Requirements**. A material concern may arrive from Domain/Slice/UI/quality/proof/evolution reasoning or selected Programming Principles `RG-PRG-*` knowledge. Those sources remain independent; this Lens does not invoke or satisfy them. It classifies whether the supplied concern is durable must-hold meaning and routes accepted durable meaning to the natural implementation owner.
 
 > Semantic Owner Dependency
 > Type: `EXTENDS`
 > Responsibility: `LENS.META-MODEL`
 > Owner: [Lens Meta-Model](../../../../idtspe-core/lenses/LENS-MODEL.md#lens-meta-model)
 
-## Applicability
+## Purpose
 
-Use when current implementation/proof reasoning may need to become, change, move, merge, retire or explicitly *not become* durable owner-local IR/PFR meaning. Do not apply merely because implementation planning exists.
+Discover whether a material implementation/proof concern should become, change, move, merge, retire, or explicitly not become durable owner-local Implementation/Proof Requirement meaning, and route durable meaning to its natural owner without owning the Requirement itself.
 
 ## Analysis Surface
 
-**Primary:** a material implementation/proof concern plus the relevant natural Domain/Slice/Shared owner family, its current realized IR/PFR set and/or the active Evolution Step Target Body when future state is being planned.
-**Conditional:** Feature behavior, Scenario must-holds, selected Evolution, thematic Lens findings, selected `RG/RR/RRC` guidance, accepted Decisions/Risks/Questions and proof Evidence.
+**Direct Analysis Surface:** a material implementation/proof concern plus the relevant natural Domain/Slice/Shared owner family, its current realized IR/PFR set and/or the active Evolution Step Target Body when future state is being planned.
+**Supporting / Contextual Inputs:** Feature behavior, Scenario must-holds, selected Evolution, thematic Lens findings, selected `RG/RR/RRC` guidance, accepted Decisions/Risks/Questions and proof Evidence.
 **Context:** current Work Context/Target and requirement-ownership rules.
+
+## Applicability & Temporal Triggers
+
+### Base Applicability / Usefulness
+
+An implementation/proof constraint may be durable must-hold owner-local meaning, may need IR/PFR add/change/move/retire, or its natural owner/durability is unclear.
+
+### Opening Triggers
+
+The Unit begins with existing IR/PFR, implementation/proof concerns, findings that may constrain realization durably, or future selected constraints in an Evolution Target Body.
+
+### During-work Recheck / Invalidation Triggers
+
+A new implementation/proof constraint emerges; an existing one changes/merges/moves/retires; repeated reliance suggests durability; ownership changes; or a concern becomes independent of the current mechanism.
+
+### Closing Triggers / Revalidation Conditions
+
+Material implementation/proof concerns or IR/PFR changes remain; each must be dispositioned as durable owner-local meaning, transient tactic, moved/retired requirement, or explicit no-requirement.
+
+### Confident-False / Stop Conditions
+
+Concern is only today’s mechanism/local tactic and no durable must-hold owner-local meaning is plausibly at stake.
+
+### False-negative Risks
+
+Agents can invoke IRD too late if they first need IRD to recognize durability; cheap pre-signals must include “must survive refactor/mechanism substitution” and “violation makes realization unacceptable”.
+
+Trigger semantics follow the canonical Lens Model:
+
+```text
+TRUE      → APPLY
+FALSE     → NOT_APPLICABLE
+UNCERTAIN → APPLY
+```
+
+A Unit-level `REQUIRED [phase]` attachment bypasses the apply/skip decision at that phase and requires this Lens to cover the current Analysis Surface. These Lens-owned triggers still govern useful earlier application and recheck/invalidation.
+
+## Inputs / Evidence
+
+Current material implementation/proof concern; current Domain/Slice/Shared owner state and IR/PFR set; active Evolution Step Target Body when future meaning is selected; relevant Feature/Scenario behavior, Findings, Decisions/Risks/Questions, reusable guidance, and proof Evidence.
+
+## Evaluation Contract
+
+Apply only the dimensions material to the current question. The domain-specific questions, methods, facets, checks, examples, and pattern guidance below constitute this Lens's evaluation workflow; they are not mandatory checklist items unless the current Analysis Surface makes them material.
 
 ## Supported Operations
 
@@ -97,7 +140,7 @@ The PROOF column does not imply a PFR. Most answers are ordinary test/proof desi
 
 ```text
 material implementation/proof concern
-→ apply relevant thematic Lens(es)
+→ start from the concrete implementation/proof concern and its available rationale/Evidence
 → ask whether the concern is durable + must-hold + owner-local
 → classify natural owner
 → compare with accepted current owner meaning + existing owner Requirements
@@ -225,8 +268,7 @@ Do not silently relabel legacy IDs into current IR/PFR authority.
 
 Use the shared [`SDS.REUSABLE-GUIDANCE-MODEL`](../../profile-contracts/reusable-guidance/REUSABLE-GUIDANCE-MODEL.md) semantics. `RR-*`/`RRC-*`/principles/patterns are discovery sources only. A selected local `IR-*` is independent natural-owner authority and never live-inherits future reusable-guidance edits.
 
-## Guards
-
+## Guards / Boundaries
 ```text
 IR Discovery Lens ≠ Requirement owner
 candidate IR ≠ selected IR
@@ -237,6 +279,18 @@ accepted risk ≠ silent violation permission
 transient discovery ≠ durable authority
 ```
 
+
+## Findings / Outcomes
+
+Valid invocation outcomes are:
+
+```text
+APPLIED — no material finding
+APPLIED — one or more material Finding Candidates
+NOT_APPLICABLE — short confident-FALSE reason when application is not forced at this checkpoint
+```
+
+A Finding Candidate does not directly mutate authoritative Result/State meaning; normal Core Finding Disposition resolves lifecycle/owner consequences.
 
 ## Finding Contract
 
@@ -249,9 +303,11 @@ The Lens may produce zero or more Finding Candidates such as:
 
 The Lens stops at the Finding Candidate. Core Finding Disposition owns lifecycle/state/owner consequences and any accepted owner mutation.
 
-## Typical Consumers
+## Non-Normative Navigation — Typical Surfaces
 
-`TM-DOMAIN-DISCOVERY` / `TM-DOMAIN-OWNER`, `TM-IMPLEMENTATION-SLICE` / `TM-SLICE-OWNER`, `TM-SHARED-IMPLEMENTATION-CAPABILITY`, Feature implementation-concern reasoning, Core Integrate/Revalidate Use Cases, and Exact Realization when a durable constraint question is discovered upstream.
+This section is navigation only. It does not create or strengthen Unit attachment; normative predictable attachment belongs beside the natural Unit and registry discovery remains projection-only.
+
+`TM-DOMAIN-DISCOVERY` / `TM-DOMAIN-OWNER`, `TM-IMPLEMENTATION-SLICE` / `TM-SLICE-OWNER`, `TM-SHARED-IMPLEMENTATION-CAPABILITY`, Feature implementation-concern reasoning, Core Integrate/Revalidate Use Cases, and SDS Code Realization when code work surfaces a durable constraint question upstream.
 
 ## Knowledge Basis
 
@@ -267,9 +323,9 @@ Candidate guidance from these sources remains non-authoritative until the natura
 
 No dedicated Requirement artifact is implied. Selected durable IR/PFR stays with exactly one natural owner according to [`../../profile-contracts/requirements/REQUIREMENT-OWNERSHIP-AND-NATURAL-OWNER.md`](../../profile-contracts/requirements/REQUIREMENT-OWNERSHIP-AND-NATURAL-OWNER.md). Transient discovery remains non-persistent unless independent representation value passes Core representation checks.
 
-## Revalidation / Composition
+## Finding / Lifecycle Boundary
 
-Reapply only when the concern, natural owner, accepted behavior/Domain/Slice/Shared boundary, selected Evolution, reusable guidance or relevant proof Evidence changes materially. Compose with the thematic evaluator that explains the concern; do not use this Lens as a substitute for DDD, Vertical Slice, authority/trust, operability, quality or programming-principle reasoning.
+Temporal revalidation is owned by `Applicability & Temporal Triggers` above. This Lens classifies durable requirement meaning but does not invoke or satisfy thematic evaluators. A concern may arrive from thematic/reusable-guidance reasoning as input; those perspectives retain their own independent obligations.
 
 ## BR / IR Routing Rule
 

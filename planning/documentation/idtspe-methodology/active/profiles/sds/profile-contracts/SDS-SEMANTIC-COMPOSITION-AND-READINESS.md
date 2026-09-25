@@ -77,7 +77,7 @@ current realized downstream owners / implementation / Evidence
      Step-wide Implementation Concerns referencing owner-local concern/feasibility/IR surfaces
      Target Owner Materialization Set + transition/proof obligations
      Planning Completeness + its completed/missing inventory explanation + Realization Start Readiness according to `TM-EVOLUTION-STEP / RU-EVO-06` (all Step Units and affected-owner Target Bodies for COMPLETE; reciprocal later-Step meaning checked for READY)
-→ Exact Realization when selected meaning is sufficient and realization-start conditions are met
+→ SDS Code Realization for code / broad Core Exact Realization for non-code literal work when selected meaning is sufficient and realization-start conditions are met
 → implementation / build / test / Evidence as authorized
 → targeted revalidation
 → Target Owner Materialization
@@ -116,7 +116,7 @@ Screen   = spatial/navigation composition / Feature presence / routes
 
 When a Behavioral/Mixed Step represents changed Feature behavior, every NEW/CHANGED Feature in a fully planned Step uses one complete Target Feature Body. The **particular next Step for realization** cannot start until all `RU-EVO-01..06` obligations are resolved/disposed and every owner whose post-Step authority is created/replaced has a complete Target Body, especially Domain and Slice as well as Feature, Scenario, Screen and Shared. Their ordinary owner-specific Target Modules shape those complete bodies; the Step indexes them and may link separate files rather than embed them. A distant Step may retain bounded Impacts while truthfully reporting `INCOMPLETE` with its resolved/missing planning explained and each material current-owner impact reverse-linked. Scenario/Screen/Domain/Slice/Shared consequences can first be represented through bounded Step `Evolution Impact` items; they must converge into complete corresponding post-Step Target Bodies when those owners are created/replaced by the next Step. Current owners unchanged by the Step are referenced, and retirements specify transition/consumer consequences. Candidate bodies remain under their enclosing Proposal/branch authority until selected; canonical integration/materialization still requires normal selection. Implementation-only foundation Steps need not invent a Feature target. A finding in one proposes/revalidates another owner; it never silently edits another.
 
-Application Definition provides upstream application intent and Planning Resolution State coordinates planning; neither is materialized as a downstream natural owner by an Evolution Step. For the downstream materializable Feature/Scenario/Screen/Domain/Slice/Shared owner families, the selected Step's complete post-Step bodies guide Exact Realization. Only after implementation, required proof and revalidation does `RU-EVO-04` materialize their realized `CREATE`/`REPLACE`/`RETIRE` state into current natural owners. Discovery Targets remain working inputs rather than additional post-Step owner bodies.
+Application Definition provides upstream application intent and Planning Resolution State coordinates planning; neither is materialized as a downstream natural owner by an Evolution Step. For the downstream materializable Feature/Scenario/Screen/Domain/Slice/Shared owner families, the selected Step's complete post-Step bodies guide SDS Code Realization or broad Core Exact Realization, according to the artifact being realized. Only after implementation, required proof and revalidation does `RU-EVO-04` materialize their realized `CREATE`/`REPLACE`/`RETIRE` state into current natural owners. Discovery Targets remain working inputs rather than additional post-Step owner bodies.
 
 When reviewing implemented current truth, the existing current owners remain the direct authorities.
 
@@ -224,7 +224,7 @@ The internal `RU-EVO-03` concern-analysis and `RU-EVO-05` transition-obligation 
 
 ## 13. Proof / Evidence
 
-Testing is not a later semantic phase. Future planning records proof obligations in the relevant Step Target Bodies / transition obligations; literal tests remain Exact/code.
+Testing is not a later semantic phase. Future planning records proof obligations in the relevant Step Target Bodies / transition obligations; literal test code is realized through `TM-CODE-REALIZATION` under SDS.
 
 After implementation, executed checks provide Evidence for what was actually realized. That Evidence is part of the gate before Target Owner Materialization when it can materially distinguish success from an incorrect/partial realization.
 
@@ -240,9 +240,9 @@ Use `LENS-WORKSPACE-EVOLUTION-ARCHITECTURE` when change isolation, prepare-now-v
 
 No generic `TM-EVOLUTION-IMPACT` Target is created. `TM-EVOLUTION-STEP` owns Step-side `RU-EVO-02` future Impact semantics; current realized Feature/Scenario/Screen/Domain/Slice/Shared reverse navigation/revalidation is governed by the shared [Current-Owner Evolution Impact Projection Contract](evolution/CURRENT-OWNER-EVOLUTION-IMPACT-PROJECTION.md). This guide only routes between those owners.
 
-## 15. Exact Realization / Recommended Planning Depth
+## 15. Code / Exact Realization / Recommended Planning Depth
 
-Enter Core `TM-EXACT-REALIZATION` when selected upstream Step/current meaning is sufficient for literal/directly-integrable work. `TM-PRE-UPDATE-PLAN` is optional when a separate reviewable intended-change result is useful; it is not a mandatory level.
+Enter SDS `TM-CODE-REALIZATION` when selected upstream Step/current meaning is sufficient for literal codebase work. Use Core `TM-EXACT-REALIZATION` for broad/profile-neutral non-code directly-integrable realization. `TM-PRE-UPDATE-PLAN` is optional when a separate reviewable intended-change result is useful; it is not a mandatory level.
 
 The SDS depth ladder is profile guidance for reasoning/readiness. It is not a one-active-level state machine, phase sequence or approval ladder; several levels may participate together.
 
@@ -251,8 +251,8 @@ The SDS depth ladder is profile guidance for reasoning/readiness. It is not a on
 | `PL-L0-BEHAVIOR-AND-OWNER` | application/behavioral meaning and semantic ownership | Application/Feature/Scenario/Screen/Domain semantic questions; future meaning hosted in Step bodies |
 | `PL-L1-IMPLEMENTATION-REQUIREMENTS` | durable implementation/proof constraints | future owner-local `IR-*`/rare `PFR-*` inside target bodies or current-owner revalidation |
 | `PL-L2-IMPLEMENTATION-ARCHITECTURE` | implementation responsibility/boundary/relations | Domain/Slice/Shared target bodies, dependencies/change locality, proof boundary |
-| `PL-L3-EXACT-IMPLEMENTATION-PLAN` | transient exact working plan | Core `TM-EXACT-REALIZATION` internal production reasoning |
-| `PL-L4-LITERAL-CODE-AND-PACKAGE` | literal directly-integrable result | Core `RU-REAL-01`; package/app materialization where applicable |
+| `PL-L3-EXACT-IMPLEMENTATION-PLAN` | transient exact working plan | SDS `TM-CODE-REALIZATION` internal production reasoning for code; Core `TM-EXACT-REALIZATION` for broad non-code realization |
+| `PL-L4-LITERAL-CODE-AND-PACKAGE` | literal directly-integrable result | SDS `RU-CODE-01` for code; Core `RU-REAL-01` for broad non-code literal results; package/app materialization where applicable |
 
 Ordinary depth movement is not a USER gate and is not automatically orchestrated by this guide. The USER/current methodology composition chooses the useful depth/work concern.
 
@@ -270,7 +270,7 @@ When this guide is consulted, ask only questions material to the current owner/S
 8. Are Feature/Scenario/Screen peer bodies inconsistent, or merely expressing different responsibilities?
 9. Would Domain/Slice discovery add bounded value, and if so which selected Result Content must remain in the owning Evolution Impact until realization?
 10. Does a candidate Domain/Slice/Shared body represent independently useful post-Step responsibility?
-11. Are remaining unknowns local enough that Exact Realization can resolve them safely, or do they require Proposal/Question/Evidence first?
+11. Are remaining unknowns local enough that Code/Exact Realization can resolve them safely, or do they require Proposal/Question/Evidence first?
 12. Is the Step selected but still unrealized, and has any text accidentally treated selection as current-owner authority?
 13. After implementation, does Evidence establish the planned body strongly enough for materialization, or is revalidation required?
 

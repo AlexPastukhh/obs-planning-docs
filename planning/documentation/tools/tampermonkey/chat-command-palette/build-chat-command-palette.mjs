@@ -117,6 +117,7 @@ const ACTION_LABELS=Object.freeze({
   'TM-EVOLUTION-STEP':'Спланировать Evolution Step',
   'TM-EVOLUTION-STEPS-MAP':'Спланировать Evolution Map',
   'TM-PRACTICAL-TEST':'Спланировать Practical Test',
+  'TM-CODE-REALIZATION':'Реализовать код',
   'LENS-NEED-VALUE-SCOPE':'Need / Value / Scope',
   'LENS-AUTHORITY-SOT-REUSE':'Authority / Source of Truth / Reuse',
   'LENS-UNCERTAINTY-ASSUMPTION-REVERSIBILITY':'Uncertainty / Assumptions / Reversibility',

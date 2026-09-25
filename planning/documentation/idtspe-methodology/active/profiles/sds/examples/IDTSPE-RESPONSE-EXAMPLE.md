@@ -164,7 +164,7 @@ Target Slice / Feature / Domain Bodies
 → not copied into current owner artifacts before realization
 
 exact classes/methods/files/tests
-→ implementation-native / TM-EXACT-REALIZATION
+→ implementation-native / TM-CODE-REALIZATION
 ```
 
 No `SLICE-STRATEGY.md`, current-owner rewrite or mandatory dedicated Slice file is implied.
@@ -173,7 +173,7 @@ No `SLICE-STRATEGY.md`, current-owner rewrite or mandatory dedicated Slice file 
 
 ```text
 selected Step meaning sufficient
-→ TM-EXACT-REALIZATION
+→ TM-CODE-REALIZATION
 → authorized integration/proof Evidence
 → reconcile any material mismatch
 → Target Owner Materialization:

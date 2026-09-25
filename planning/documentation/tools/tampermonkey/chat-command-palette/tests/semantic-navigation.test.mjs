@@ -205,7 +205,7 @@ test('generic Lens commands expose applicability scan and selected-Lens dispatch
   assert.match(apply.meaning,/Knowledge Basis/);assert.match(apply.keyReminders.join(' '),/does not create a Lens-owned Target/);
   assert.match(apply.meaning,/supported Lens operation/i);
   const model=read('planning/documentation/idtspe-methodology/active/idtspe-core/lenses/LENS-MODEL.md');
-  assert.match(model,/Current bounded Analysis Surface[\s\S]*optional natural Target/);
+  assert.match(model,/Current material Unit \/ bounded Analysis Surface[\s\S]*active profile context/);
   assert.match(model,/Selected Lens Application[\s\S]*Lens Model, Analysis Surface, Operation, relevant basis/i);
 });
 
@@ -235,7 +235,7 @@ test('idtspe is one registry-driven dispatcher for ordinary work, Target Modules
   const sdsTm=read('planning/documentation/idtspe-methodology/active/profiles/sds/registries/TARGET-MODULE-REGISTRY.md');
   const coreLens=read('planning/documentation/idtspe-methodology/active/idtspe-core/lenses/LENS-REGISTRY.md');
   const sdsLens=read('planning/documentation/idtspe-methodology/active/profiles/sds/registries/LENS-REGISTRY.md');
-  for(const alias of ['application','scenario','domain','slice','shared','evolution-step','evolution-map','practical-test'])assert.match(sdsTm,new RegExp('`'+alias+'`'));const activeTm=sdsTm.split('## Retired / Subsumed Baseline Modules')[0];for(const retired of ['slice-strategy','crosscut'])assert.doesNotMatch(activeTm,new RegExp('`'+retired+'`'));
+  for(const alias of ['application','scenario','domain','slice','shared','evolution-step','evolution-map','practical-test','code-realization','code'])assert.match(sdsTm,new RegExp('`'+alias+'`'));const activeTm=sdsTm.split('## Retired / Subsumed Baseline Modules')[0];for(const retired of ['slice-strategy','crosscut'])assert.doesNotMatch(activeTm,new RegExp('`'+retired+'`'));
   for(const alias of ['representation','dependency','test-proof','ddd','ui','l5','simplicity'])assert.match(coreLens+sdsLens,new RegExp('\\b'+alias.replace('-','\\-')+'\\b'));
 });
 
@@ -257,7 +257,7 @@ test('all installed idtspe Target Module and Lens aliases are globally unique an
     if(!m)continue;
     for(const a of m[2].matchAll(/`([a-z0-9-]+)`/g))add(a[1],m[1],'SDS Target Module registry');
   }
-  assert.equal(aliases.filter((x)=>x.source==='SDS Target Module registry').length,14);
+  assert.equal(aliases.filter((x)=>x.source==='SDS Target Module registry').length,16);
 
   const coreTm=read('planning/documentation/idtspe-methodology/active/idtspe-core/target-modules/TARGET-MODULE-REGISTRY.md');
   for(const m of coreTm.matchAll(/^idtspe ([a-z0-9][a-z0-9 -]*) <scope>\r?\n→ (TM-[A-Z0-9-]+)$/gm))add(m[1],m[2],'Core Target Module registry');
@@ -281,7 +281,7 @@ test('all installed idtspe Target Module and Lens aliases are globally unique an
     assert.equal(prior,undefined,`idtspe alias collision: ${item.alias} -> ${prior?.id} / ${item.id}`);
     byAlias.set(item.alias,item);
   }
-  assert.equal(byAlias.size,39);
+  assert.equal(byAlias.size,41);
 
   for(const [alias,id] of [
     ['scenario','TM-SCENARIO-PLANNING'],

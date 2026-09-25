@@ -3,28 +3,56 @@
 
 Lens ID: `LENS-DEPENDENCY-CHANGE-IMPACT`
 Legacy alias: `L4`
-Activation: `FREQUENT_CONDITIONAL`
 
 ## Purpose
 
 Evaluate structural dependency topology and concrete impact surface created by a choice.
 
-## Applicability Gate
+## Analysis Surface
 
-Activate when a Target/Proposal changes a structured system with meaningful dependency/consumer/change relations:
+This Lens evaluates the bounded planning/implementation surface where the following concern is materially present:
+
+> Work creates/removes/redirects/moves/renames/version-changes/migrates a dependency/consumer relation or changes a provider contract/topology with potentially affected dependents.
+
+Context may inform the evaluation, but context availability alone does not make the entire context part of this Lens's Analysis Surface.
+
+## Applicability & Temporal Triggers
+
+### Base Applicability / Usefulness
+
+Work creates/removes/redirects/moves/renames/version-changes/migrates a dependency/consumer relation or changes a provider contract/topology with potentially affected dependents.
+
+### Opening Triggers
+
+The Unit starts with known consumers/dependencies or changes to shared contracts, bindings, APIs/schemas/messages, storage, generated projections, files/modules, or workspace structure.
+
+### During-work Recheck / Invalidation Triggers
+
+Dependency direction, consumer set, provider contract, schema/interface, owner relation, generated projection, migration/compatibility plan, or review obligation changes.
+
+### Closing Triggers / Revalidation Conditions
+
+The final result changes a provider/consumer contract/binding/topology or claims an impact/migration; affected consumers, revalidation and migration obligations must be current.
+
+### Confident-False / Stop Conditions
+
+Change is structurally/semantically isolated and no consumer/dependency/review/migration relation can change.
+
+### False-negative Risks
+
+Indirect/generated consumers and review/reference dependencies are easy to miss when only code imports are inspected.
+
+Trigger semantics follow the canonical Lens Model:
 
 ```text
-repository/documentation
-codebase/modules/packages
-API/schema/messages
-files/artifacts
-data/storage
-integration graph
-generated projections
+TRUE      → APPLY
+FALSE     → NOT_APPLICABLE
+UNCERTAIN → APPLY
 ```
 
-## Target Inputs / Evidence
+A Unit-level `REQUIRED [phase]` attachment bypasses the apply/skip decision at that phase and requires this Lens to cover the current Analysis Surface. These Lens-owned triggers still govern useful earlier application and recheck/invalidation.
 
+## Inputs / Evidence
 ```text
 current owner/dependency graph
 consumers
@@ -33,6 +61,10 @@ candidate responsibility/seam
 migration/compatibility constraints
 review/reference relations
 ```
+
+## Evaluation Contract
+
+Apply only the dimensions material to the current question. The domain-specific questions, methods, facets, checks, examples, and pattern guidance below constitute this Lens's evaluation workflow; they are not mandatory checklist items unless the current Analysis Surface makes them material.
 
 ## Dependency Facet
 
@@ -74,11 +106,19 @@ DRY/SRP/OCP/cohesion/coupling/DIP are risk detectors, not laws:
 observe structural problem
 → surface a Finding Candidate carrying an optional structural-pattern proposal
 → Core Finding Disposition resolves whether accepted meaning becomes/refines Proposal / Q/R/P / Decision input or another State/lifecycle consequence
-→ re-evaluate the accepted candidate through L4 when needed
-→ add L5 when recurring Workspace work/evolution matters
+→ re-evaluate the accepted candidate through this Lens when the dependency/change surface changes materially
+→ consume relevant already-available evolution meaning/findings as evidence when present; this Lens does not invoke another Lens
 ```
 
-## Findings / Outputs
+## Findings / Outcomes
+
+Valid invocation outcomes:
+
+```text
+APPLIED — no material finding
+APPLIED — one or more material Finding Candidates
+NOT_APPLICABLE — short confident-FALSE reason when application is not forced at this checkpoint
+```
 
 ```text
 dependency graph subset
@@ -90,7 +130,9 @@ projected structural change impact
 Q/R/P
 ```
 
-## Typical Consumers
+## Non-Normative Navigation — Typical Surfaces
+
+This section is navigation only. It does not create or strengthen Unit attachment; normative predictable attachment belongs beside the natural Unit and registry discovery remains projection-only.
 
 Application/workspace review, Domain, Slice, Frontend, Cross-Cutting, Artifact/File, API/schema and documentation planning.
 
@@ -143,15 +185,12 @@ Normally **NO_DISTINCT_SUPPORTING_ARTIFACT**: dependency/change output is a Find
 
 Do not make a dependency map semantic authority for the things it references.
 
-## Guards
-
+## Guards / Boundaries
 Structural dependency ≠ semantic authority. A link/anchor provides addressability only; material semantic impact is resolved through normal affected-owner review/revalidation.
 
-## Composition
+## Finding / Lifecycle Boundary
 
-L2 evaluates semantic-authority/SOT/reuse questions. L5 evaluates planned/probable future-change interaction and change isolation. L6 evaluates proof/operation implications. None of these Lenses owns the resulting project semantic authority/State; Core Finding Disposition resolves accepted meaning/owner/lifecycle consequences.
-
-## Escalation / Revalidation
+Temporal revalidation timing is owned by `Applicability & Temporal Triggers` above. The remaining guidance here concerns Finding/lifecycle routing rather than checkpoint trigger ownership.
 
 A large independently substantial migration/dependency finding may surface a Target Formation candidate through Core Finding Disposition. Target Formation decides whether a separate bounded Target is warranted.
 
