@@ -55,7 +55,7 @@ A material finding against Feature/Domain/Shared meaning returns through Core Fi
 
 ## Proof Boundary
 
-`RU-SLICE-04` states integration-proof intent/meaning for the Slice result. Non-trivial proof allocation is evaluated through Core `LENS-TEST-PROOF-EVIDENCE`; literal tests belong to Exact/code. `TM-PRACTICAL-TEST` is used only when evidence requires the real implemented subject/environment.
+`RU-SLICE-04` states integration-proof intent/meaning for the Slice result. Non-trivial proof allocation is evaluated through Core `LENS-TEST-PROOF-EVIDENCE`; literal tests belong to the applicable realization owner (under SDS, `TM-CODE-REALIZATION`; otherwise a narrower active-profile owner when defined or Core `TM-EXACT-REALIZATION` as fallback). `TM-PRACTICAL-TEST` is used only when evidence requires the real implemented subject/environment.
 
 ## Representation
 

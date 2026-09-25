@@ -72,7 +72,7 @@ Feature / Scenario / Screen / Domain / Slice / Shared
 Evolution Step
 = canonical semantic owner of materially planned but unrealized downstream target state
 
-Exact Realization + required proof/revalidation
+Code Realization / broad Exact Realization + required proof/revalidation
 → Target Owner Materialization
 → downstream current natural owners are created/replaced/retired to match what is now realized
 ```

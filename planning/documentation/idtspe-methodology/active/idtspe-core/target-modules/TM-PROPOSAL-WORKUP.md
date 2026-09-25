@@ -44,6 +44,10 @@ Candidate formation and candidate evaluation are separate Unit responsibilities 
 
 ### `RU-PWORK-01` — Candidate formation
 
+**Lens Attachments**
+
+- **Core Lens Pack:** `INHERITED` via [`Core Lens Pack`](../lenses/LENS-REGISTRY.md)
+
 **Purpose.** Present candidate answers or routes separately from the driver, current accepted meaning and each other.
 
 **Item Contract.** One canonical IDTSPE Proposal reference/compact candidate with its preserved driver, smallest natural affected subject/owner, proposed Result Meaning and/or Resolution/Realization Route, relevant source/Evidence basis, and material relations to competing/complementary/dependent candidates. The canonical Proposal identity is the Collection Item Key when available. The Proposal body and candidate authority remain with the Core lifecycle and affected natural subject; the workup item is a linked view, not a second copy of accepted meaning.
@@ -53,6 +57,10 @@ Candidate formation and candidate evaluation are separate Unit responsibilities 
 For Finding drivers, preserve the Finding reference and canonical `RE-*` disposition. Each material Finding must ultimately have at least one linked Proposal: `RE-0` can be deterministic; `RE-3` remains `BLOCKED_BY_REVALIDATION`; `RE-2`/`RE-4` are semantic-change candidates requiring normal selection. `RE-*` is not a Proposal scale and is not recomputed here.
 
 ### `RU-PWORK-02` — Candidate review and handoff
+
+**Lens Attachments**
+
+- **Core Lens Pack:** `INHERITED` via [`Core Lens Pack`](../lenses/LENS-REGISTRY.md)
 
 **Purpose.** Make the proposed routes reviewable without treating recommendation, file placement or AI analysis as selection.
 

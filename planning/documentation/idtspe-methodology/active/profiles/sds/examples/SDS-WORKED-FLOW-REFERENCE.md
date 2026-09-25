@@ -284,14 +284,14 @@ selected
 
 The Step remains the future-state semantic owner.
 
-## 11. Exact Realization / Evidence
+## 11. Code Realization / Evidence
 
 When the selected Step meaning is sufficient:
 
 ```text
 EVO-INITIAL-CAPTURE selected target state
 + actual destination codebase/project state
-→ TM-EXACT-REALIZATION
+→ TM-CODE-REALIZATION
 → literal code/tests/config/result
 ```
 

@@ -2,7 +2,6 @@
 # LENS-APPLICATION-BOUNDARY-FEASIBILITY — Application Definition / Benefits / Boundary / Feasibility
 
 Lens ID: `LENS-APPLICATION-BOUNDARY-FEASIBILITY`
-Activation: `TARGET_PROFILE_REUSABLE`
 
 > Semantic Owner Dependencies
 > - Type: `EXTENDS`; Responsibility: `LENS.META-MODEL`; Owner: [Lens Meta-Model](../../../../idtspe-core/lenses/LENS-MODEL.md#lens-meta-model)
@@ -12,12 +11,55 @@ Activation: `TARGET_PROFILE_REUSABLE`
 
 Evaluate whether an own Application is justified, which real-world contribution it should own, what existing alternatives teach us, which Benefits justify it, whether each Benefit has truthful Responsibility Boundary / Constraints, whether representative real-life situations make those Benefits concrete, whether the concise Application Concept is understandable, and whether the concept/Benefit boundaries are plausibly realizable.
 
-## Applicability Gate
+## Analysis Surface
 
-Primary for `TM-APPLICATION-DEFINITION`.
+This Lens evaluates Application-level semantic meaning about:
+- the application's selected real-world contribution;
+- existing-solution/reference position;
+- Benefits and their responsibility boundaries/constraints;
+- representative real-life framing used to make Benefits concrete;
+- concise Application Concept sufficiency;
+- realization feasibility at a proportional, pre-architecture depth.
 
-## Target Inputs / Evidence
+Scenario/Domain/Slice/current-implementation context is supporting Evidence only when it can materially challenge that Application-level meaning. Unit attachment remains owned by the relevant Target Module Unit definitions.
 
+## Applicability & Temporal Triggers
+
+### Base Applicability / Usefulness
+
+Application contribution, Benefit boundary/constraint, Concept, alternative sufficiency, representative real-life framing, or feasibility is being created/changed/challenged; or downstream evidence contradicts it.
+
+### Opening Triggers
+
+The Unit begins with existing/candidate Application Concept, Benefits/boundaries, alternatives/references, representative situations, feasibility assumptions, or downstream contradiction evidence.
+
+### During-work Recheck / Invalidation Triggers
+
+Selected Benefit/contribution/boundary, alternative/reference evidence, representative scenario framing, feasibility assumptions/constraints, or downstream Scenario/Domain/Slice evidence changes.
+
+### Closing Triggers / Revalidation Conditions
+
+The result creates/changes Application contribution, Benefit/boundary, Concept, representative real-life framing, alternative position, or feasibility; or downstream work now relies on that meaning.
+
+### Confident-False / Stop Conditions
+
+Concern is local downstream realization and cannot change Application contribution, Benefit boundary, Concept, alternatives position, or feasibility.
+
+### False-negative Risks
+
+Downstream implementation evidence may reveal responsibility creep or that an external/existing solution already suffices.
+
+Trigger semantics follow the canonical Lens Model:
+
+```text
+TRUE      → APPLY
+FALSE     → NOT_APPLICABLE
+UNCERTAIN → APPLY
+```
+
+A Unit-level `REQUIRED [phase]` attachment bypasses the apply/skip decision at that phase and requires this Lens to cover the current Analysis Surface. These Lens-owned triggers still govern useful earlier application and recheck/invalidation.
+
+## Inputs / Evidence
 ```text
 Fundamental Need
 Step-02 solution / own-software contribution
@@ -28,39 +70,9 @@ current application/workspace
 later Scenario/Domain/Slice Evidence
 ```
 
+## Evaluation Contract
 
-
-## Analysis Surface
-
-### Primary Result Units / Semantic Selectors
-
-- `TM-APPLICATION-DEFINITION`: `RU-APP-05`, `RU-APP-02`, `RU-APP-03`, `RU-APP-04`, `RU-APP-07` (`RU-APP-01` is retired; `RU-APP-06` is intentionally not a standalone Unit)
-
-Concept-first CHECK: verify that the opening Concept gives a concise whole-application explanation and basic working idea, while detailed Benefit promises/boundaries, alternative-route justification, RLS paths and feasibility remain in their natural Units. Document identity/source context must not recreate a separate contribution body.
-
-### Conditional Result Units / Semantic Selectors
-
-- `TM-SCENARIO-PLANNING`: `RU-SCEN-01` when Application-boundary findings materially challenge one Scenario journey boundary/composition
-
-### Relevant State Units
-
-```text
-Questions
-Proposals / Planning Branches when comparison is material
-Q/R/P
-Decisions
-Evidence / Evidence Needs
-Revalidation state
-```
-
-### Context
-
-- Need / real-life solution Sources
-- market/reference Evidence
-- current Application/Scenario state
-- current implementation constraints when feasibility is material
-
-Context availability does not mean this Lens audits all context. The deliberate focus remains the Result/State meaning named above.
+Apply only the dimensions material to the current question. The domain-specific questions, methods, facets, checks, examples, and pattern guidance below constitute this Lens's evaluation workflow; they are not mandatory checklist items unless the current Analysis Surface makes them material.
 
 ## Supported Operations
 
@@ -158,10 +170,6 @@ rough ownership/cost
 
 Do not turn Application Definition into detailed Domain/Architecture/Slice planning.
 
-## Later Revalidation
-
-Recheck when Scenario/Domain/Slice/current implementation Evidence challenges the definition.
-
 ## Typical Findings
 
 ```text
@@ -176,6 +184,17 @@ Q/R/P / revalidation signal
 ```
 
 
+## Findings / Outcomes
+
+Valid invocation outcomes are:
+
+```text
+APPLIED — no material finding
+APPLIED — one or more material Finding Candidates
+NOT_APPLICABLE — short confident-FALSE reason when application is not forced at this checkpoint
+```
+
+A Finding Candidate does not directly mutate authoritative Result/State meaning; normal Core Finding Disposition resolves lifecycle/owner consequences.
 
 ## Finding Contract
 
@@ -196,7 +215,9 @@ Core [`Finding Disposition`](../../../../idtspe-core/resolution/findings/FINDING
 
 This Lens does not define new Result Units or target-result fields. If repeated findings reveal missing target-result meaning, revise the appropriate Target Module/Local Target Contract or let Core disposition the finding to another owner.
 
-## Typical Consumers
+## Non-Normative Navigation — Typical Surfaces
+
+This section is navigation only. It does not create or strengthen Unit attachment; normative predictable attachment belongs beside the natural Unit and registry discovery remains projection-only.
 
 Application Definition; accepted outputs feed Prototype/Scenario/Screen.
 
@@ -208,15 +229,12 @@ This Lens evaluates Application boundary/feasibility but does not independently 
 
 If this Lens exposes a genuinely independent Evidence or planning problem outside that Target result, surface the Finding Candidate with likely owner/evidence hints. Core Finding Disposition handles the actual Evidence path and may surface a Target Formation candidate; the Lens does not create a second Application artifact authority.
 
-## Guards
-
+## Guards / Boundaries
 Competitor feature ≠ our requirement. Representative Real-Life Scenario ≠ Application Scenario. Feasibility ≠ detailed architecture plan.
 
-## Composition
+## Finding / Lifecycle Boundary
 
-L1–L3 always; L4/L5/L6 when current workspace/dependency/evolution/proof materially affects feasibility.
-
-## Escalation / Revalidation
+Temporal revalidation timing is owned by `Applicability & Temporal Triggers` above. The remaining guidance here concerns Finding/lifecycle routing rather than checkpoint trigger ownership.
 
 Independent feasibility/architecture choice spaces surface Finding Candidates; Core Finding Disposition may surface a Target Formation candidate, and Target Formation decides whether a bounded child/local Target is warranted.
 

@@ -61,19 +61,6 @@ Possible sources, selected proportionally by current work:
 
 Source discovery remains evidence-driven. A source may trigger re-evaluation without becoming Feature authority.
 
-## Lens Profile
-
-Required Core lenses apply through the Core Lens Registry.
-
-Primary SDS lens:
-- `LENS-SLICE-VERTICALITY-INTEGRATION` — select/validate the Feature/Slice boundary and implementation-concern shape.
-
-Conditional lenses:
-- `LENS-WORKSPACE-EVOLUTION-ARCHITECTURE` when known change matters;
-- UI/spatial lens when Screen realization materially affects the boundary;
-- DDD lens when semantic state/invariants may belong to Domain;
-- quality/verifiability lenses when material.
-
 ## Production Method
 
 The Result Units are co-formable; this is not a waterfall.
@@ -194,6 +181,14 @@ Each material Unit below inherits the generic [`Unit Applicability Envelope`](..
 <a id="ru-feat-01--identity--intent--principal-result--semantic-entry"></a>
 ### RU-FEAT-01 — Identity / Intent / Principal Result / Semantic Entry
 
+**Lens Attachments**
+
+- **Core Lens Pack:** `INHERITED` via [`Core Lens Pack`](../../../idtspe-core/lenses/LENS-REGISTRY.md)
+- **REQUIRED [CLOSING]:**
+  - [`LENS-SLICE-VERTICALITY-INTEGRATION`](../lenses/reusable/LENS-SLICE-VERTICALITY-INTEGRATION.md)
+- **TRIGGERED:**
+  - [`LENS-TERMS-UBIQUITOUS-LANGUAGE`](../lenses/reusable/LENS-TERMS-UBIQUITOUS-LANGUAGE.md)
+
 Capture proportionally:
 
 ```text
@@ -209,10 +204,25 @@ Transport variants do not automatically define separate semantic entries.
 <a id="ru-feat-02--semantic-data"></a>
 ### RU-FEAT-02 — Semantic Data
 
+**Lens Attachments**
+
+- **Core Lens Pack:** `INHERITED` via [`Core Lens Pack`](../../../idtspe-core/lenses/LENS-REGISTRY.md)
+- **TRIGGERED:**
+  - [`LENS-DOMAIN-MODELING-DDD`](../lenses/reusable/LENS-DOMAIN-MODELING-DDD.md)
+  - [`LENS-TERMS-UBIQUITOUS-LANGUAGE`](../lenses/reusable/LENS-TERMS-UBIQUITOUS-LANGUAGE.md)
+
 Own addressable Feature Data Objects as `FDO-*` when behavior-facing data/result identity needs stable reference across FBS/Scenario/realization. Do not duplicate Domain state ownership or storage schema.
 
 <a id="ru-feat-03--feature-behavior"></a>
 ### RU-FEAT-03 — Feature Behavior
+
+**Lens Attachments**
+
+- **Core Lens Pack:** `INHERITED` via [`Core Lens Pack`](../../../idtspe-core/lenses/LENS-REGISTRY.md)
+- **TRIGGERED:**
+  - [`LENS-SLICE-VERTICALITY-INTEGRATION`](../lenses/reusable/LENS-SLICE-VERTICALITY-INTEGRATION.md)
+  - [`LENS-TERMS-UBIQUITOUS-LANGUAGE`](../lenses/reusable/LENS-TERMS-UBIQUITOUS-LANGUAGE.md)
+  - [`LENS-QUALITY-RISK-MATERIALITY`](../../../idtspe-core/lenses/frequent/LENS-QUALITY-RISK-MATERIALITY.md)
 
 Feature owns stable Feature-local `FBS-*` identities for addressable semantic behavior actions/transitions when useful.
 
@@ -245,6 +255,21 @@ Branch/order/path are selected solution structure, not Requirements by existence
 
 <a id="ru-feat-04--implementation-concerns"></a>
 ### RU-FEAT-04 — Implementation Concerns
+
+**Lens Attachments**
+
+- **Core Lens Pack:** `INHERITED` via [`Core Lens Pack`](../../../idtspe-core/lenses/LENS-REGISTRY.md)
+- **REQUIRED [CLOSING]:**
+  - [`LENS-IMPLEMENTATION-REQUIREMENTS-DISCOVERY`](../lenses/reusable/LENS-IMPLEMENTATION-REQUIREMENTS-DISCOVERY.md)
+- **TRIGGERED:**
+  - [`LENS-DOMAIN-MODELING-DDD`](../lenses/reusable/LENS-DOMAIN-MODELING-DDD.md)
+  - [`LENS-SLICE-VERTICALITY-INTEGRATION`](../lenses/reusable/LENS-SLICE-VERTICALITY-INTEGRATION.md)
+  - [`LENS-UI-SPATIAL-FRONTEND-REALIZATION`](../lenses/reusable/LENS-UI-SPATIAL-FRONTEND-REALIZATION.md)
+  - [`LENS-WORKSPACE-EVOLUTION-ARCHITECTURE`](../lenses/frequent/LENS-WORKSPACE-EVOLUTION-ARCHITECTURE.md)
+  - [`LENS-DEPENDENCY-CHANGE-IMPACT`](../../../idtspe-core/lenses/frequent/LENS-DEPENDENCY-CHANGE-IMPACT.md)
+  - [`LENS-QUALITY-RISK-MATERIALITY`](../../../idtspe-core/lenses/frequent/LENS-QUALITY-RISK-MATERIALITY.md)
+  - [`LENS-VERIFIABILITY-OBSERVABILITY-OPERABILITY`](../../../idtspe-core/lenses/frequent/LENS-VERIFIABILITY-OBSERVABILITY-OPERABILITY.md)
+  - [`LENS-TEST-PROOF-EVIDENCE`](../../../idtspe-core/lenses/reusable/LENS-TEST-PROOF-EVIDENCE.md)
 
 This RU is primarily a **future Target Feature Body / active planning** surface. Capture only material concerns needed to shape the not-yet-realized Feature result, for example:
 
@@ -284,10 +309,27 @@ Removal/material reinterpretation of existing current Feature meaning is proposa
 <a id="ru-feat-05--feature--slice-boundary"></a>
 ### RU-FEAT-05 — Feature / Slice Boundary
 
+**Lens Attachments**
+
+- **Core Lens Pack:** `INHERITED` via [`Core Lens Pack`](../../../idtspe-core/lenses/LENS-REGISTRY.md)
+- **REQUIRED [CLOSING]:**
+  - [`LENS-SLICE-VERTICALITY-INTEGRATION`](../lenses/reusable/LENS-SLICE-VERTICALITY-INTEGRATION.md)
+- **TRIGGERED:**
+  - [`LENS-DOMAIN-MODELING-DDD`](../lenses/reusable/LENS-DOMAIN-MODELING-DDD.md)
+  - [`LENS-WORKSPACE-EVOLUTION-ARCHITECTURE`](../lenses/frequent/LENS-WORKSPACE-EVOLUTION-ARCHITECTURE.md)
+
 Record the selected behavioral/locality boundary. The detailed implementation topology is discovered later and may challenge/reframe this boundary through Proposal/revalidation.
 
 <a id="ru-feat-06--evolution-impact"></a>
 ### RU-FEAT-06 — Evolution Impact
+
+**Lens Attachments**
+
+- **Core Lens Pack:** `INHERITED` via [`Core Lens Pack`](../../../idtspe-core/lenses/LENS-REGISTRY.md)
+- **REQUIRED [CLOSING]:**
+  - [`LENS-WORKSPACE-EVOLUTION-ARCHITECTURE`](../lenses/frequent/LENS-WORKSPACE-EVOLUTION-ARCHITECTURE.md)
+- **TRIGGERED:**
+  - [`LENS-SLICE-VERTICALITY-INTEGRATION`](../lenses/reusable/LENS-SLICE-VERTICALITY-INTEGRATION.md)
 
 This Feature-local Unit specializes the shared [Current-Owner Evolution Impact Projection Contract](../profile-contracts/evolution/CURRENT-OWNER-EVOLUTION-IMPACT-PROJECTION.md). Its local affected surface is **Feature behavior/target meaning**. The shared contract owns inclusion threshold across candidate/selected/conditional/deferred Steps, truthful planning-position projection, depth/no-copy rules and post-realization removal from active future impact. This Target Module owns only the Unit identity, Feature-specific materiality test and local revalidation/handoff use.
 
@@ -403,7 +445,7 @@ selected Feature
 ↕ optional TM-DOMAIN-DISCOVERY when semantic ownership needs discovery
 → when work is unrealized, integrate selected durable Domain/Slice/Shared meaning into the active Evolution Step Target Bodies
 → when reviewing already-realized truth, revalidate current TM-SLICE-OWNER / TM-DOMAIN-OWNER / Shared owners directly as applicable
-→ Exact Realization when the selected Step/current meaning is sufficient
+→ SDS Code Realization for code, or broad Core Exact Realization for non-code literal work, when the selected Step/current meaning is sufficient
 ```
 
 ## Copied project example

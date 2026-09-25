@@ -7,7 +7,6 @@
 
 Lens ID: `LENS-ARTIFACT-BOUNDARY-ADDRESSABILITY`
 Working name: **Documentation / Representation Lens**
-Activation: `REQUIRED_CORE`
 
 > Semantic Owner Dependencies
 > - `CONTEXTUALIZES` [`Artifact Placement / Persistence`](../../representation/ARTIFACT-PLACEMENT-AND-IDTSPE-RESPONSE-CONTRACT.md#representation-artifact-placement) — `REPRESENTATION.ARTIFACT-PLACEMENT`
@@ -44,6 +43,66 @@ semantic result
 ```
 
 The Lens deliberately treats source code, types, tests, schemas, configuration, names, package/module structure and carefully chosen comments as possible **natural representations** of current meaning. It also recognizes the classes of knowledge that implementation represents poorly and therefore usually deserve planning/catalog/strategy/global artifacts.
+
+## Analysis Surface
+
+This Lens evaluates the bounded planning/implementation surface where the following concern is materially present:
+
+> A material result may persist, change an existing representation, or alter artifact/file topology.
+
+Context may inform the evaluation, but context availability alone does not make the entire context part of this Lens's Analysis Surface.
+
+## Applicability & Temporal Triggers
+
+### Base Applicability / Usefulness
+
+A material result may persist, change an existing representation, or alter artifact/file topology.
+
+### Opening Triggers
+
+Persistence/representation/topology is already part of the Unit question, or an existing durable representation is being revised.
+
+### During-work Recheck / Invalidation Triggers
+
+Transient meaning becomes durable; split/merge/new-file/inline/generated representation becomes plausible; addressability or artifact topology changes.
+
+### Closing Triggers / Revalidation Conditions
+
+The resulting material meaning may persist or change representation/topology, so the natural representation and addressability must be resolved.
+
+### Confident-False / Stop Conditions
+
+Result remains transient and changes no durable representation/topology.
+
+### False-negative Risks
+
+A result can become persistence-worthy late in the Unit; an opening-only check is insufficient.
+
+Trigger semantics follow the canonical Lens Model:
+
+```text
+TRUE      → APPLY
+FALSE     → NOT_APPLICABLE
+UNCERTAIN → APPLY
+```
+
+A Unit-level `REQUIRED [phase]` attachment bypasses the apply/skip decision at that phase and requires this Lens to cover the current Analysis Surface. These Lens-owned triggers still govern useful earlier application and recheck/invalidation.
+
+## Inputs / Evidence
+```text
+current Target/result and semantic owner(s)
+accepted Decisions / Q-R-P / Evidence that may need durable representation
+current implementation/code/types/tests/schema/config/comments when available
+existing planning/documentation owners, registries and generated views
+current workspace/profile placement conventions
+material consumers / review / handoff / revalidation needs
+```
+
+These are current-instance inputs. They are distinct from the Lens `Knowledge Basis`, which owns/references the principles and realization rules used to evaluate representation.
+
+## Evaluation Contract
+
+Apply only the dimensions material to the current question. The domain-specific questions, methods, facets, checks, examples, and pattern guidance below constitute this Lens's evaluation workflow; they are not mandatory checklist items unless the current Analysis Surface makes them material.
 
 ## Direct Invocation Boundary
 
@@ -84,32 +143,6 @@ separate file
 ```
 
 A Target Module may be valuable almost every time it is invoked even when the correct persistence result is `NO_SEPARATE_MATERIALIZATION` or `IMPLEMENTATION_NATIVE`.
-
-## Applicability Gate
-
-This is a required Core **check** whenever an IDTSPE iteration has a material result that might persist, alter an existing representation or affect artifact/file topology.
-
-It may close cheaply:
-
-```text
-no material result to preserve
-→ NO_PERSISTENCE_NEEDED
-```
-
-Do not manufacture a documentation task merely because this Lens is required.
-
-## Target Inputs / Evidence
-
-```text
-current Target/result and semantic owner(s)
-accepted Decisions / Q-R-P / Evidence that may need durable representation
-current implementation/code/types/tests/schema/config/comments when available
-existing planning/documentation owners, registries and generated views
-current workspace/profile placement conventions
-material consumers / review / handoff / revalidation needs
-```
-
-These are current-instance inputs. They are distinct from the Lens `Knowledge Basis`, which owns/references the principles and realization rules used to evaluate representation.
 
 ## Part 1 — Persistence Necessity
 
@@ -540,7 +573,15 @@ P-14:
   domain/CaptureItem.md
 ```
 
-## Findings / Outputs
+## Findings / Outcomes
+
+Valid invocation outcomes:
+
+```text
+APPLIED — no material finding
+APPLIED — one or more material Finding Candidates
+NOT_APPLICABLE — short confident-FALSE reason when application is not forced at this checkpoint
+```
 
 ```text
 NO_PERSISTENCE_NEEDED
@@ -563,7 +604,9 @@ UNRESOLVED
 + P-14 placement input
 ```
 
-## Typical Consumers
+## Non-Normative Navigation — Typical Surfaces
+
+This section is navigation only. It does not create or strengthen Unit attachment; normative predictable attachment belongs beside the natural Unit and registry discovery remains projection-only.
 
 All material IDTSPE Targets at output/materialization time, Artifact Placement, SDS physical-topology resolution, methodology/repository file planning, and future profiles.
 
@@ -609,8 +652,7 @@ Shell placement semantics: [`planning/documentation/idtspe-methodology/active/id
 
 SDS annotated materialization projection: [`../../../profiles/sds/representation/ARTIFACT-PLACEMENT-MAP.md`](../../../profiles/sds/representation/ARTIFACT-PLACEMENT-MAP.md).
 
-## Guards / Anti-Patterns
-
+## Guards / Boundaries
 Do not:
 
 ```text
@@ -625,24 +667,9 @@ make code implementation authority over upstream Scenario/product behavior
 use a new file to avoid resolving semantic ownership
 ```
 
-## Composition
+## Finding / Lifecycle Boundary
 
-```text
-L1 Need / Value / Scope
-L2 Authority / SoT / Reuse
-L3 Uncertainty / Assumption / Reversibility
-+ Target/Lens planning
-↓
-Documentation / Representation Lens
-↓
-P-14 / Artifact Placement
-↓
-direct owner links / stable anchors when cross-owner addressability is useful
-```
-
-L4/L5/Simplicity findings are useful inputs because representation should not create unnecessary understanding/change cost. This Lens does not replace Simplicity of the solution itself.
-
-## Escalation / Revalidation
+Temporal revalidation timing is owned by `Applicability & Temporal Triggers` above. The remaining guidance here concerns Finding/lifecycle routing rather than checkpoint trigger ownership.
 
 Re-run or deepen this Lens when:
 

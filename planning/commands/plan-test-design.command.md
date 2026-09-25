@@ -15,16 +15,16 @@ Scope: historical invocation alias redirected to current IDTSPE/SDS authority; h
     "спланируй проверку поведения"
   ],
   "description": "legacy compatibility shortcut for natural-owner proof planning/evaluation",
-  "meaning": "Legacy Test Design shortcut. TM-TEST-DESIGN is retired. Use LENS-TEST-PROOF-EVIDENCE to evaluate the selected property/proof route; retain a transient proof plan only when how-to-prove is independently non-trivial, and route literal tests to TM-EXACT-REALIZATION. No standalone Test Design Target is created.",
+  "meaning": "Legacy Test Design shortcut. TM-TEST-DESIGN is retired. Use LENS-TEST-PROOF-EVIDENCE to evaluate the selected property/proof route; retain a transient proof plan only when how-to-prove is independently non-trivial, and route literal tests to TM-CODE-REALIZATION. No standalone Test Design Target is created.",
   "activeContextBehavior": "Treat this legacy trigger as explicit compatibility intent inside always-active IDTSPE. Re-evaluate current Use-Case composition and route only to the current owners listed here; preserve local applicability/materiality gates and do not revive the retired Target family.",
   "traversalReadMode": "Reuse current reliable IDTSPE/SDS governance; targeted refresh of the selected owner route when uncertain; full bootstrap only when no reliable sufficient governance context exists.",
   "ownerFiles": [
     "planning/documentation/idtspe-methodology/active/idtspe-core/lenses/reusable/LENS-TEST-PROOF-EVIDENCE.md",
-    "planning/documentation/idtspe-methodology/active/idtspe-core/target-modules/TM-EXACT-REALIZATION.md",
+    "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-CODE-REALIZATION.md",
     "planning/documentation/idtspe-methodology/active/idtspe-core/commands/IDTSPE-COMMAND-SURFACE-CONTRACT.md",
     "planning/documentation/idtspe-methodology/active/profiles/sds/commands/SDS-COMMAND-SURFACE-EXTENSION.md"
   ],
-  "expectedOutput": "A material proof evaluation/transient natural-owner proof plan, or direct Exact-test route when obvious; no Test Design Target.",
+  "expectedOutput": "A material proof evaluation/transient natural-owner proof plan, or direct Code-test route when obvious; no Test Design Target.",
   "permissionMode": "read-only-planning",
   "keyReminders": [
     "Legacy compatibility alias only; do not expose as a primary methodology surface.",

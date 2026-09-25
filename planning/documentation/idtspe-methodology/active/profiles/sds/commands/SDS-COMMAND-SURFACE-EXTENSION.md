@@ -113,6 +113,16 @@ Therefore direct commands such as Feature/Scenario/Screen/Domain/Slice/Shared pl
 
 Dedicated repository commands may remain useful for stable recurring intents, including project/application-specific capabilities that are not methodology Use Cases. They are optional shortcuts to current semantic owners/capabilities. A new Target Module or Lens does not automatically require a command, and a command does not create a new Use Case.
 
+### SDS Code Realization Surface
+
+```text
+tmcmd.sds.code.realization
+→ реализуй код <scope>
+→ SDS TM-CODE-REALIZATION
+```
+
+This is the canonical SDS codebase-realization shortcut. It selects the narrower SDS code owner rather than generic Core `TM-EXACT-REALIZATION`. Purely broad/non-code literal realization remains on the Core `tmcmd.exact.realization / сделай точную реализацию` surface.
+
 The S6 item-by-item cleanup also distinguishes **methodology Use-Case projection** from other project-local Use Cases: Planning Helper's methodology Use-Case catalog is derived from the repository [`../../../../../use-case-registry-map.md`](../../../../../use-case-registry-map.md), not from filesystem discovery of every file named `use-case-registry.md`.
 
 ## Compatibility Representation Modes

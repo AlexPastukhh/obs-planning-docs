@@ -8,32 +8,31 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
   "schemaVersion": 1,
   "id": "tmcmd.exact.realization",
   "file": "realize-exact-result.command.md",
-  "command": "реализуй код",
+  "command": "сделай точную реализацию",
   "englishName": "exact realization",
   "commandFamily": [
-    "реализуй код",
     "сделай точную реализацию",
+    "реализуй точный результат",
     "exact realization"
   ],
-  "description": "Produce an exact directly integrable realization; code is the default archetype.",
-  "meaning": "Run generic Core TM-EXACT-REALIZATION. Produce the exact candidate result first. For code, default to literal project-native code/test/config payloads rather than another implementation plan. Integrate/build/test only under explicit user authority for the selected environment; automatically repair only when explicitly authorized and only for local/minor in-scope defects that do not change accepted architecture, Domain/product semantics or material upstream decisions. Material semantic/architectural/out-of-scope problems go through normal Finding Disposition/revalidation instead of silent repair.",
-  "activeContextBehavior": "Resolve or reuse the natural bounded Exact Realization Target from sufficiently determined upstream meaning and current destination/codebase Sources. A direct small code/config change may form this Target without a Slice/Domain Target when no upstream semantic work is needed. Exact-result review may stop before integration. Integration attempts may be scratch, staging, user-local or the intended destination according to explicit authority; do not invent a mandatory temporary-then-final pair.",
-  "traversalReadMode": "Reuse current reliable IDTSPE governance; read TM-EXACT-REALIZATION completely, inspect the exact current destination/codebase Sources needed for the bounded result, and refresh applicable upstream owners/Lenses proportionally when material.",
+  "description": "Produce a broad/profile-neutral exact directly integrable realization.",
+  "meaning": "Run generic Core TM-EXACT-REALIZATION for a sufficiently determined literal/directly-integrable artifact. Produce the exact candidate first; integrate/validate/execute only under explicit authority for the selected environment, and repair only within the bounded minor-repair rule. Active profiles may define a narrower realization owner for specialized artifact families; when such an owner applies, route there instead of treating Core Exact as the specialized owner.",
+  "activeContextBehavior": "Resolve or reuse the natural bounded Exact Realization Target from sufficiently determined upstream meaning and current destination Sources. Use it for broad/profile-neutral literal artifact realization; under SDS, codebase-oriented realization routes to TM-CODE-REALIZATION. Exact-result review may stop before integration. Integration attempts depend on explicit authority and do not imply commit/push/deploy/release.",
+  "traversalReadMode": "Reuse current reliable IDTSPE governance; read TM-EXACT-REALIZATION completely, inspect the exact current destination Sources needed for the bounded result, and refresh applicable upstream owners/Lenses proportionally when material.",
   "ownerFiles": [
     "planning/documentation/idtspe-methodology/active/idtspe-core/target-modules/TM-EXACT-REALIZATION.md",
     "planning/documentation/idtspe-methodology/active/idtspe-core/commands/IDTSPE-COMMAND-SURFACE-CONTRACT.md"
   ],
-  "expectedOutput": "RU-REAL-01 Exact Realization: a complete directly integrable current candidate (code-first by default), plus only the integration/build/test Evidence, bounded repairs, Findings/revalidation and final exact review requested/authorized for this invocation.",
+  "expectedOutput": "RU-REAL-01 Exact Realization: a complete broad/profile-neutral directly integrable current candidate, plus only the integration/validation Evidence, bounded repairs, Findings/revalidation and final exact review requested/authorized for this invocation.",
   "permissionMode": "exact-realization-explicit-authority-no-commit-push",
   "keyReminders": [
-    "Code is the primary/default archetype: exact method bodies/files/patches belong here, not in TM-IMPLEMENTATION-SLICE.",
-    "Producing the exact candidate does not itself authorize destination mutation, build/test execution or automatic repair.",
-    "With repair authority, fix only local/minor in-scope defects that preserve accepted architecture, Domain/product semantics and material upstream Decisions; never change out-of-scope owners silently.",
+    "Core Exact Realization is broad/profile-neutral; do not force specialized code semantics into it when an active profile defines a narrower realization owner.",
+    "Producing the exact candidate does not itself authorize destination mutation, validation/execution or automatic repair.",
+    "With repair authority, fix only local/minor in-scope defects that preserve accepted upstream semantics and material Decisions; never change out-of-scope owners silently.",
     "A material semantic/architectural/out-of-scope conflict becomes a Finding Candidate/Problem for Core disposition and possible upstream revalidation/user Decision.",
-    "Candidate build/automated-test verification is Core Evidence inside Exact Realization; it is not automatically TM-PRACTICAL-TEST.",
     "Do not commit, push, deploy or release unless a separate explicit host workflow grants that authority."
   ],
-  "userTarget": "<code or other exact directly integrable realization scope>",
+  "userTarget": "<broad/profile-neutral exact directly integrable realization scope>",
   "palette": true,
   "refinements": [],
   "methodologyBinding": {
@@ -53,7 +52,7 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
       "responsibilityId": "TM-EXACT-REALIZATION",
       "path": "planning/documentation/idtspe-methodology/active/idtspe-core/target-modules/TM-EXACT-REALIZATION.md",
       "anchor": "tm-exact-realization",
-      "why": "Concrete Target Module Model semantics selected by this command; shared port/registry/Meta-Model references are inherited from included commands.",
+      "why": "Concrete generic Target Module semantics selected by this command; shared port/registry/Meta-Model references are inherited from included commands.",
       "role": "PRIMARY_OWNER",
       "readMode": "REQUIRED"
     }

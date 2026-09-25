@@ -82,7 +82,7 @@ test('full documentation example command exposes both copied entry points withou
  assert.match(command.expectedOutput,/do not claim all files were read/);
 });
 
-test('Concept-first Application Definition inventory agrees across active models, consumers and example',()=>{
+test('Concept-first Application Definition inventory agrees across active models and examples while Lens stays routing-neutral',()=>{
  const expected=['05','02','03','04','07'];
  const modulePath=active+'profiles/sds/target-modules/TM-APPLICATION-DEFINITION.md';
  for(const file of [modulePath]){
@@ -95,6 +95,7 @@ test('Concept-first Application Definition inventory agrees across active models
  const proposal=read('planning/documentation/tools/tampermonkey/chat-command-palette/application-definition.proposal.md');
  assert.match(proposal,/OPEN \/ unselected/);
  assert.doesNotMatch(proposal,/APP-PH \/ RU-APP-01/);
- const lens=items.find(i=>i.id==='LENS-APPLICATION-BOUNDARY-FEASIBILITY');
- assert.ok(lens.result.includes('RU-APP-05, RU-APP-02, RU-APP-03, RU-APP-04, RU-APP-07'));
+ const lensText=read('planning/documentation/idtspe-methodology/active/profiles/sds/lenses/reusable/LENS-APPLICATION-BOUNDARY-FEASIBILITY.md');
+ assert.match(lensText,/Unit attachment remains owned by the relevant Target Module Unit definitions/);
+ assert.doesNotMatch(lensText,/RU-APP-05, RU-APP-02, RU-APP-03, RU-APP-04, RU-APP-07/,'Lens must not own the concrete Application Unit inventory');
 });

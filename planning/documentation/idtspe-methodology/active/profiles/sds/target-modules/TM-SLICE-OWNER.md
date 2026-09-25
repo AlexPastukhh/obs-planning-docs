@@ -39,12 +39,6 @@ Possible sources:
 - known Evolution Step(s);
 - accepted Proposal payload.
 
-## Lens Profile
-
-Required primary lens: `LENS-SLICE-VERTICALITY-INTEGRATION`.
-
-Conditional: DDD, Evolution, Implementation Requirements Discovery, UI/spatial, quality/verifiability and Representation Lenses, plus selected [`RG-PRG-*`](../knowledge-bases/programming-principles/README.md) knowledge when material.
-
 ## Unit Definition Conformance
 
 This module specializes the Core [Target Module Model](../../../idtspe-core/target-modules/TARGET-MODULE-MODEL.md) and [Unit / Target Step Result Model](../../../idtspe-core/runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md). The Core owners define generic Unit lifecycle, complete-inventory/disposition and Proposal/Core-State semantics; this module defines only its SDS-specific Unit responsibilities, local materiality, production guidance, validators and handoffs below.
@@ -96,6 +90,19 @@ Each material Unit below inherits the generic [`Unit Applicability Envelope`](..
 <a id="ru-sown-01--slice-responsibility--boundary-contract"></a>
 ### RU-SOWN-01 — Slice Responsibility / Boundary Contract
 
+**Lens Attachments**
+
+- **Core Lens Pack:** `INHERITED` via [`Core Lens Pack`](../../../idtspe-core/lenses/LENS-REGISTRY.md)
+- **REQUIRED [CLOSING]:**
+  - [`LENS-SLICE-VERTICALITY-INTEGRATION`](../lenses/reusable/LENS-SLICE-VERTICALITY-INTEGRATION.md)
+- **TRIGGERED:**
+  - [`LENS-DOMAIN-MODELING-DDD`](../lenses/reusable/LENS-DOMAIN-MODELING-DDD.md)
+  - [`LENS-UI-SPATIAL-FRONTEND-REALIZATION`](../lenses/reusable/LENS-UI-SPATIAL-FRONTEND-REALIZATION.md)
+  - [`LENS-TERMS-UBIQUITOUS-LANGUAGE`](../lenses/reusable/LENS-TERMS-UBIQUITOUS-LANGUAGE.md)
+  - [`LENS-DEPENDENCY-CHANGE-IMPACT`](../../../idtspe-core/lenses/frequent/LENS-DEPENDENCY-CHANGE-IMPACT.md)
+  - [`LENS-VERIFIABILITY-OBSERVABILITY-OPERABILITY`](../../../idtspe-core/lenses/frequent/LENS-VERIFIABILITY-OBSERVABILITY-OPERABILITY.md)
+  - [`LENS-SHARED-CROSS-CUTTING-RESPONSIBILITY`](../../../idtspe-core/lenses/reusable/LENS-SHARED-CROSS-CUTTING-RESPONSIBILITY.md)
+
 Own proportionally:
 
 ```text
@@ -114,6 +121,20 @@ Do not own Feature behavior itself and do not freeze volatile class/call topolog
 
 <a id="ru-sown-02--slice-implementation-requirements"></a>
 ### RU-SOWN-02 — Slice Implementation Requirements
+
+**Lens Attachments**
+
+- **Core Lens Pack:** `INHERITED` via [`Core Lens Pack`](../../../idtspe-core/lenses/LENS-REGISTRY.md)
+- **REQUIRED [CLOSING]:**
+  - [`LENS-IMPLEMENTATION-REQUIREMENTS-DISCOVERY`](../lenses/reusable/LENS-IMPLEMENTATION-REQUIREMENTS-DISCOVERY.md)
+- **TRIGGERED:**
+  - [`LENS-DOMAIN-MODELING-DDD`](../lenses/reusable/LENS-DOMAIN-MODELING-DDD.md)
+  - [`LENS-SLICE-VERTICALITY-INTEGRATION`](../lenses/reusable/LENS-SLICE-VERTICALITY-INTEGRATION.md)
+  - [`LENS-UI-SPATIAL-FRONTEND-REALIZATION`](../lenses/reusable/LENS-UI-SPATIAL-FRONTEND-REALIZATION.md)
+  - [`LENS-TERMS-UBIQUITOUS-LANGUAGE`](../lenses/reusable/LENS-TERMS-UBIQUITOUS-LANGUAGE.md)
+  - [`LENS-QUALITY-RISK-MATERIALITY`](../../../idtspe-core/lenses/frequent/LENS-QUALITY-RISK-MATERIALITY.md)
+  - [`LENS-VERIFIABILITY-OBSERVABILITY-OPERABILITY`](../../../idtspe-core/lenses/frequent/LENS-VERIFIABILITY-OBSERVABILITY-OPERABILITY.md)
+  - [`LENS-TEST-PROOF-EVIDENCE`](../../../idtspe-core/lenses/reusable/LENS-TEST-PROOF-EVIDENCE.md)
 
 Own durable must-hold implementation constraints natural to this Slice:
 
@@ -151,6 +172,16 @@ When the [commodity Shared no-owner gate](TM-SHARED-IMPLEMENTATION-CAPABILITY.md
 <a id="ru-sown-03--evolution-impact"></a>
 ### RU-SOWN-03 — Evolution Impact
 
+**Lens Attachments**
+
+- **Core Lens Pack:** `INHERITED` via [`Core Lens Pack`](../../../idtspe-core/lenses/LENS-REGISTRY.md)
+- **REQUIRED [CLOSING]:**
+  - [`LENS-WORKSPACE-EVOLUTION-ARCHITECTURE`](../lenses/frequent/LENS-WORKSPACE-EVOLUTION-ARCHITECTURE.md)
+- **TRIGGERED:**
+  - [`LENS-DOMAIN-MODELING-DDD`](../lenses/reusable/LENS-DOMAIN-MODELING-DDD.md)
+  - [`LENS-SLICE-VERTICALITY-INTEGRATION`](../lenses/reusable/LENS-SLICE-VERTICALITY-INTEGRATION.md)
+  - [`LENS-DEPENDENCY-CHANGE-IMPACT`](../../../idtspe-core/lenses/frequent/LENS-DEPENDENCY-CHANGE-IMPACT.md)
+
 This Slice owner-local Unit specializes the shared [Current-Owner Evolution Impact Projection Contract](../profile-contracts/evolution/CURRENT-OWNER-EVOLUTION-IMPACT-PROJECTION.md). Its local affected surface is **Slice responsibility/boundary**. The shared contract owns inclusion threshold across candidate/selected/conditional/deferred Steps, truthful planning-position projection, depth/no-copy rules and post-realization removal from active future impact. This Target Module owns only the Unit identity, Slice owner-specific materiality test and local revalidation/handoff use.
 
 ## Production / Revalidation Method
@@ -187,6 +218,10 @@ known change can be revalidated without hidden duplicate roadmap
 ```
 
 Handoff to Shared, Domain, Exact, Practical Test or affected upstream owners follows normal workflow/Findings.
+
+## Knowledge Basis
+
+Selected [`RG-PRG-*`](../knowledge-bases/programming-principles/README.md) entries may inform an applied natural evaluator when their registry triggers materially match. Programming Principle knowledge does not create Lens attachment by itself.
 
 ## Representation
 

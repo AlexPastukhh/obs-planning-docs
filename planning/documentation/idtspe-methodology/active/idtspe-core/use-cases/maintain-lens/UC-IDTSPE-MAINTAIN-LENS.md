@@ -22,7 +22,7 @@ an existing Lens has unclear applicability/output/escalation
 Read proportionally:
 ```text
 active/lenses registry/model
-Target Module Lens Profiles
+Unit-local / rare Target-wide Lens Attachments
 embedded Specialized Lens sections/prompts
 Generic Phase Lenses
 Branch comparison dimensions
@@ -37,49 +37,49 @@ real repeated planning cases
 1. identify the reusable evaluation perspective
 2. prove it is a Lens rather than RQ/Validator/Guard/Rule/Target
 3. decide single Lens vs cohesive Lens Pack
-4. classify activation:
-     REQUIRED_CORE
-     FREQUENT_CONDITIONAL
-     TARGET_PROFILE_REUSABLE
-     LOCAL_ONLY
-5. define applicability gate
-6. define Analysis Surface:
-     Primary / Conditional Result Units or semantic selectors
-     Relevant State Units
-     Context
+4. define Purpose / evaluation objective
+5. define Analysis Surface
+6. define Applicability & Temporal Trigger Contract:
+     Base Applicability / Usefulness
+     Opening Triggers
+     During-work Invalidators / Recheck Triggers
+     Closing Triggers
+     Confident-False / Stop Conditions
+     False-negative Risks
 7. define supported Lens operations:
      ANALYZE
      CHECK
      REFINE
      CHALLENGE
-8. define prompts/sublenses/evaluation workflow
-9. define Typical Findings / Finding Contract
-10. keep likely owner/materiality/lifecycle fields as hints, not authority
-11. verify that findings hand off to the generic Finding Disposition contract
-12. identify reusable theory/reference knowledge that materially supports the Lens, when any
-13. retain useful references/provenance and interpret the relevant theory for this Lens when raw theory is too broad
-14. define Target/profile consumers
-15. define composition with other Lenses
-16. define guards/anti-patterns
-17. define Artifact/File Implications; add AG only for Lens-produced supporting meaning
-18. migrate duplicate embedded knowledge / duplicate Target-result artifact guidance
-19. update Lens Registry + applicability summary
-20. update Target Module Lens Profiles when attachment policy changes
-21. update phase/command/projection routes when needed
-22. run mechanical Lens consistency audit
+8. define evaluation questions / workflow / dimensions where useful
+9. define Typical Findings / Findings-and-Outcomes contract
+10. verify `APPLIED — no material finding` is valid
+11. verify `NOT_APPLICABLE` semantics wherever application is not forced
+12. keep likely owner/materiality/lifecycle fields as hints, not authority
+13. verify material findings hand off to generic Finding Disposition
+14. identify reusable theory/reference knowledge that materially supports the Lens, when any
+15. retain useful references/provenance and interpret broad theory when the Lens needs an applied bridge
+16. define guards / anti-patterns / representation implications
+17. update registry discovery summary; registry metadata remains routing projection only
+18. review Unit/Target attachment consumers for stale references without moving attachment authority into the Lens
+19. migrate duplicate embedded Lens knowledge / duplicate Target-result artifact guidance
+20. update aliases / command / projection routes when needed
+21. run temporal-trigger + registry + attachment consistency audit
 ```
 
+Cross-Lens composition consistency is a separate audit concern. One Lens must remain independently executable and does not call another Lens merely because their concerns overlap.
 
 ## Result
 
 ```text
 one canonical Lens/Lens Pack owner
-+ registry entry / applicability summary
-+ activation class/gate
-+ Operational Evaluation Contract
-+ explicit Analysis Surface / supported operations / Finding Contract
++ registry entry / discovery summary
++ complete Operational Evaluation Contract
++ explicit Analysis Surface / supported operations
++ Applicability & Temporal Trigger Contract
++ Findings / Outcomes contract
 + Knowledge Basis / theory-reference links when useful
-+ consumer/profile mapping
++ non-authoritative attachment-consumer/discovery references when useful
 + migrated duplicate knowledge/guidance
 + consistency checks
 ```

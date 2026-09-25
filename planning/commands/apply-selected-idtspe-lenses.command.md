@@ -15,8 +15,8 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
     "apply selected idtspe lenses"
   ],
   "description": "Apply the currently selected Lens Application requests through one shared Lens Port/Meta-Model prefix.",
-  "meaning": "After canonical Lens applicability/selection has resolved selected Lens Application requests `(Lens Model, Analysis Surface, supported Operation, relevant basis)`, execute those applications proportionally through the Lens Meta-Model. Target context is resolved only when that Analysis Surface naturally belongs to Target work. Preserve materially distinct operations such as CHECK versus CHALLENGE; do not collapse them into one operation-less Lens execution. Do not apply NOT_MATERIAL / NOT_APPLICABLE / DEFERRED entries and do not manufacture Findings.",
-  "activeContextBehavior": "Use the current selected Lens Application requests for the bounded Analysis Surface. If selection is stale or absent, the included selection command refreshes it first. Reuse one Lens Port/Meta-Model prefix for several selected applications on an equivalent analysis surface/basis, while executing each materially distinct selected operation; do not create a Target merely to host selection/application.",
+  "meaning": "After canonical Lens applicability/selection has resolved selected Lens Application requests `(Lens Model, Analysis Surface, supported Operation, relevant basis)`, execute those applications proportionally through the Lens Meta-Model. Target context is resolved only when that Analysis Surface naturally belongs to Target work. Preserve materially distinct operations such as CHECK versus CHALLENGE; do not collapse them into one operation-less Lens execution. Execute only selected Lens Application requests. Normally confident `NOT_APPLICABLE` candidates are not selected; an explicitly forced APPLY/USE request preserved by selection is still executed and may validly finish with no material Finding. Do not manufacture Findings.",
+  "activeContextBehavior": "Use the current selected Lens Application requests for the bounded Analysis Surface. If selection is stale or absent, the included selection command refreshes it first. For a direct non-Unit surface this remains one bounded application pass; do not synthesize Unit checkpoints. Reuse one Lens Port/Meta-Model prefix for several selected applications on an equivalent analysis surface/basis, while executing each materially distinct selected operation; do not create a Target merely to host selection/application.",
   "traversalReadMode": "Read the included Lens selection route plus Lens Meta-Model application/Finding boundary. Load each selected concrete Lens body and its Knowledge Basis only according to its own load policy.",
   "ownerFiles": [
     "planning/documentation/idtspe-methodology/active/idtspe-core/lenses/LENS-MODEL.md",
@@ -55,6 +55,7 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
     "The Analysis Surface is primary; Target context is optional and resolved only when natural.",
     "Several selected Lens Applications reuse the shared Lens Port/Meta-Model prefix, but materially distinct selected operations still execute as distinct applications.",
     "A Lens may finish with no Finding Candidate.",
+    "A forced explicit APPLY/USE request remains an application even when normal applicability is confidently false; report the low/non-relevance context and allow a no-finding result.",
     "Finding Candidates never become accepted owner meaning directly."
   ],
   "userTarget": "<current selected Lens applications + analysis surface>",

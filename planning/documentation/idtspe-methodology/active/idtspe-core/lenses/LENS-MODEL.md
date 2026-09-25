@@ -72,8 +72,8 @@ Use-Case Process / methodology registry routing
 → decides whether the Lens Registry should be consulted
 → selects plausibly relevant Lens entry
 
-concrete Lens Applicability Gate
-→ confirms local applicability
+concrete Lens applicability / temporal trigger contract
+→ confirms local applicability and recheck need
 
 Lens Operational Evaluation Contract
 → owns how to analyze/check/refine/challenge the selected surface
@@ -91,8 +91,24 @@ This separation prevents a Lens from becoming an unstructured dump of theory whi
 ```text
 reusable generic Lens operational knowledge → active/idtspe-core/lenses/
 profile-specific Lens operational knowledge → active/profiles/<profile>/lenses/
-Target Module → Lens Profile / attachment policy
-local-only Lens → module only while genuinely non-reusable
+
+concrete Lens
+→ owns its Analysis Surface
+→ owns applicability + temporal trigger logic
+→ owns evaluation workflow / questions / dimensions
+→ owns Findings / Outcomes and Lens-specific guards
+
+Target Module Unit Definition
+→ owns predictable Unit-local Lens Attachments
+→ REQUIRED [checkpoint phase(s)]
+→ TRIGGERED
+
+Target-wide Lens attachment
+→ allowed only when the Analysis Surface is genuinely Target-wide
+  and cannot be represented truthfully on natural Units
+
+Lens Registry
+→ owns lightweight discovery/routing projection only
 
 Knowledge Basis
 → may be embedded in the Lens
@@ -100,93 +116,90 @@ Knowledge Basis
 → or combine both
 ```
 
-A Target Module may say **that** a Lens is required/conditional for its Target family. The Lens owns **what applying that perspective means**.
+Invariant:
 
-If a local Lens becomes useful in a second Target family, review it for extraction.
+```text
+Unit attachment says THAT a Lens participates here.
+Concrete Lens says WHEN / WHY it is useful and WHAT applying it means.
+Unit never copies Lens trigger logic.
+```
+
+Every material Unit inherits the Core Lens Pack through the generic Unit applicability runtime. A local Lens Attachment block declares only additional predictable Lens relationships. If a reusable Lens perspective becomes useful in a second Target family, review it for extraction/promotion rather than duplicating its evaluation logic.
 
 ## Registry Selection Boundary
 
-A registry row is only lightweight routing metadata. Selecting a Lens row does not execute the Lens and does not force a Finding. Read/execute the concrete Lens body only when the active Use-Case Process and the Lens's own applicability gate make it relevant. `NO_MATERIAL_LENS` is a normal proportional outcome.
+A registry row is only lightweight routing metadata. Selecting a Lens row does not execute the Lens and does not force a Finding. Read/execute the concrete Lens body only when the active Use-Case Process and the Lens's own applicability / temporal trigger contract makes it relevant. `NO_MATERIAL_LENS` is a normal proportional outcome.
 
-## 3. Activation Classes
+## 3. Core-Pack Membership / Attachment Boundary
 
-### REQUIRED_CORE
+There is no Lens-level `Activation` enum in the normative Lens contract.
 
-Required Core checks are part of every material IDTSPE lifecycle, but not all run at the same moment. L1–L3 check material choice surfaces; Proposal / Decision Resolution Context is required only when a material Proposal/Decision surface exists; Documentation / Representation is the required output/materialization check. Required does not mean that a finding must be manufactured.
-
-Valid outcomes:
+Three separate concerns must not be collapsed:
 
 ```text
-inherited / satisfied
-no material issue
-material finding
+Core-pack membership
+→ owned by the Core Lens Registry + Unit runtime
+
+predictable Unit attachment strength
+→ owned by the Unit Definition
+→ REQUIRED [phase(s)] | TRIGGERED
+
+generic/profile discovery availability
+→ owned by registries
+→ registered / discoverable ≠ attached
 ```
 
-Current Core Pack:
-
-```text
-L1 Need / Value / Scope
-L2 Authority / Source-of-Truth / Reuse
-L3 Uncertainty / Assumption / Reversibility
-Proposal / Decision Resolution Context — when a material Proposal/Decision surface exists
-Documentation / Representation / Artifact Boundary
-```
-
-L3 may close as `no material uncertainty`. Proposal / Decision Resolution Context is `NOT_APPLICABLE` when no material Proposal/Decision surface exists. Documentation / Representation may close as `NO_PERSISTENCE_NEEDED` or `IMPLEMENTATION_NATIVE`; it does not force file creation.
-
-### FREQUENT_CONDITIONAL
-
-Applicability gate is checked proportionally when the context makes the perspective plausible.
-
-Core frequent-conditional set:
-
-```text
-L4 Dependency & Change Impact
-L6 Verifiability / Observability / Operability
-Quality / Risk Materiality
-Target Resolution Coverage
-```
-
-Installed profiles may contribute additional frequent/reusable Lenses. Current profile inventories and activation summaries are owned by the selected profile responsibility map/registry:
-
-- [`SDS`](../../profiles/sds/RESPONSIBILITY-MAP.md);
-- [`2D Visual Production`](../../profiles/visual-production-2d/RESPONSIBILITY-MAP.md);
-- [`Reference Knowledge`](../../profiles/reference-knowledge/RESPONSIBILITY-MAP.md).
-
-Core does not duplicate those mutable profile Lens inventories here.
-
-### TARGET_PROFILE_REUSABLE
-
-Reusable Lens Pack associated with one or several Target families. Target Modules reference it but do not own its prompts or Knowledge Basis.
-
-### LOCAL_ONLY
-
-May stay inside one module while genuinely unique. Reuse is a promotion signal.
+`REQUIRED_CORE`, `FREQUENT_CONDITIONAL`, `TARGET_PROFILE_REUSABLE` and `LOCAL_ONLY` are legacy migration vocabulary only. Existing concrete Lens files may retain old `Activation:` fields until their dedicated migration pass; those fields are not normative under this model.
 
 ## 4. Operational Evaluation Contract
 
-Every reusable Lens file explains proportionally:
+Every reusable Lens explains proportionally:
 
 ```text
-Lens ID / Name
-Activation
-Purpose / Evaluation Objective
-Applicability Gate
-Target Inputs / Evidence
-Prompts / Sublenses / Evaluation Workflow
-Broad Discussion / Key Points contribution when useful
-Findings / Outputs
-Typical Consumers
-Guards / Anti-patterns
-Composition
-Escalation / Revalidation
-Artifact / File Implications
-Knowledge Basis
-Provenance
+Identity
+  Lens ID / canonical name / short description
+
+Purpose
+  reusable evaluation objective
+
+Analysis Surface
+  meaning this Lens is capable of evaluating
+
+Applicability & Temporal Triggers
+  Base Applicability / Usefulness
+  Opening Triggers
+  During-work Recheck / Invalidation Triggers
+  Closing Triggers / Revalidation Conditions
+  Confident-False / Stop Conditions
+  False-negative Risks
+
+Inputs / Evidence
+  current planning / implementation material consumed by this evaluation
+
+Evaluation Contract
+  Evaluation Questions
+  Workflow when order matters
+  Sublenses / Dimensions when useful
+  Supported Operations
+
+Findings / Outcomes
+  Typical Findings
+  `APPLIED — no material finding` is valid
+  `NOT_APPLICABLE — <short reason>` is valid when application is not forced
+  material Finding Candidates hand off to Core Finding Disposition
+
+Guards / Boundaries
+
+Artifact / Representation Implications
+
+Knowledge Basis — when useful
+
+Optional governance metadata — only when materially useful
 ```
 
-`Target Inputs / Evidence` means current planning/implementation material consumed by the Lens. It is intentionally distinct from the Lens's own `Knowledge Basis`.
+`Inputs / Evidence` means current planning/implementation material consumed by the Lens. It is intentionally distinct from the Lens's own `Knowledge Basis`.
 
+`Discovery Metadata` is not a mandatory concrete-Lens section. Compact discovery hints belong in Lens registries. `Provenance` is optional governance metadata. `Composition` is not a required operational Lens section, and `Typical Consumers` is not normative attachment authority.
 
 ## 4A. Analysis Surface / Operations / Finding Contract
 
@@ -202,16 +215,68 @@ The operational contract must make clear:
 Canonical Unit model: [`../runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md`](../runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md).
 Canonical producer/Core bridge: [`../resolution/findings/FINDING-DISPOSITION.md`](../resolution/findings/FINDING-DISPOSITION.md).
 
+### Applicability & Temporal Trigger Contract
+
+The concrete Lens owns the criteria that make its perspective useful at each Unit checkpoint.
+
+```text
+Base Applicability / Usefulness
+→ what kind of situation this Lens can materially evaluate
+
+Opening Trigger
+→ what existing surface makes early application useful
+
+During-work Recheck / Invalidation Trigger
+→ what material change can make an earlier Lens application stale
+
+Closing Trigger / Revalidation Condition
+→ what final/resulting surface requires a final applicability/revalidation check
+
+Confident-False / Stop Condition
+→ when the Lens can safely conclude that application is not useful now
+
+False-negative Risk
+→ characteristic way the gate could miss a materially useful application
+```
+
+Canonical trigger semantics:
+
+```text
+TRUE      → APPLY
+FALSE     → NOT_APPLICABLE
+UNCERTAIN → APPLY
+```
+
+For a Unit attachment `REQUIRED [phase]`, the apply/skip decision is bypassed at that phase: the Lens is applied unconditionally to the current Analysis Surface. Lens-owned triggers still matter at other checkpoints and may require earlier/repeated application.
+
+For a Unit attachment `TRIGGERED`, the Unit stores no condition logic. The Lens-owned checkpoint trigger decides whether to apply.
+
+Outcomes remain distinct:
+
+```text
+NOT_APPLICABLE
+→ Lens did not need to run at this checkpoint
+
+APPLIED — no material finding
+→ Lens ran and found nothing requiring disposition
+
+APPLIED — material Finding(s)
+→ Lens ran and surfaced Finding Candidates
+```
+
 ### Analysis Surface
 
 Use proportionally:
 
 ```text
-Primary Units / Current Result Content / Unit Resolution subjects
-Unit Resolution Slots when one terminal formal sub-responsibility is the smallest useful Analysis Surface
-Conditional Units / Result fields
-Relevant Core Resolution State
-Target / cross-owner Context
+Direct Analysis Surface
+→ Units / Current Result Content / Unit Resolution subjects the Lens can directly evaluate
+→ Unit Resolution Slots when one terminal formal sub-responsibility is the smallest useful surface
+
+Supporting / Contextual Inputs
+→ relevant Result fields
+→ relevant Core Resolution State
+→ Target / cross-owner Context
 ```
 
 A target/profile-specific Lens should name known Module-defined Units/fields when practical. A generic Core Lens may use semantic selectors because it cannot know every profile schema. Context availability does not imply auditing all of it.
@@ -360,86 +425,119 @@ Lens → owns applicability + evaluation + findings
 Knowledge owner → owns referenced principle/rule/theory meaning
 ```
 
-Knowledge may stay inline, point to theory files/folders/sections, use a separate applied Knowledge Basis, or combine these forms. Existing `INLINE / REFERENCED / HYBRID` labels remain compatible representation only. If material cannot yet be reduced to a stable evaluation objective + applicability gate + findings contract, keep it as theory/reference material instead of pretending it is already a Lens.
+Knowledge may stay inline, point to theory files/folders/sections, use a separate applied Knowledge Basis, or combine these forms. Existing `INLINE / REFERENCED / HYBRID` labels remain compatible representation only. If material cannot yet be reduced to a stable evaluation objective + applicability / temporal trigger contract + findings contract, keep it as theory/reference material instead of pretending it is already a Lens.
 
 <a id="lens-applicability-scan"></a>
 ## 6. Lens Applicability Scan / Lens applicability/selection
 
-IDTSPE does **not** select Lenses only through a Target Module.
-
-Lens applicability/selection owns one proportional **Lens Applicability Scan**:
+IDTSPE uses one proportional Lens Applicability Scan around the current material Unit / bounded Analysis Surface.
 
 ```text
-Current bounded Analysis Surface
-+ optional natural Target / Target Module / profile context when applicable
+Current material Unit / bounded Analysis Surface
++ active profile context
 ↓
-1. include/check REQUIRED_CORE Lenses
+1. load inherited Core Lens Pack
 ↓
-2. apply active Target Module Lens Profile when a module is used
-   REQUIRED_BY_TARGET_PROFILE
-   + module-declared conditional Lens gates
+2. load predictable Unit-local Lens Attachments
+   - REQUIRED [phase(s)]
+   - TRIGGERED
+   plus any rare justified Target-wide attachment
 ↓
-3. scan registered Core Lens Library by applicability summary/gate
+3. at the current Unit checkpoint
+   - satisfy REQUIRED obligations whose mandatory phase is the current checkpoint
+   - for every other currently participating Lens — inherited Core, Unit REQUIRED for another phase, Unit TRIGGERED, and retained discovered/explicit Lens — evaluate that Lens's checkpoint trigger
 ↓
-4. scan active-profile Lens registries by applicability summary/gate
+4. scan registered Generic Core Lens summaries for additional plausible candidates
 ↓
-5. include explicitly requested Lens perspectives
+5. scan every active-profile Lens Registry for additional plausible candidates
 ↓
-6. for each selected/plausibly applicable Lens, read enough of its
-   Applicability Gate + Supported Operations to resolve the materially useful
-   operation(s) for this Analysis Surface and caller intent
+6. include explicitly requested Lens perspectives
+   - explicit CONSIDER / SELECT intent follows normal applicability
+   - explicit APPLY / USE intent creates a forced one-shot Lens Application
+     for the bounded current surface
 ↓
-7. form selected Lens Application requests
+7. for discovered/explicit candidates, read enough of the concrete Lens
+   to evaluate its own applicability/temporal trigger + supported operation(s)
+   - for forced explicit APPLY / USE, applicability is still evaluated as
+     explanatory relevance context but cannot cancel this requested application
+↓
+8. form/execute selected Lens Application requests
    `(Lens Model, Analysis Surface, Operation, relevant basis)`
 ↓
-8. load the selected Lens operational detail / referenced Knowledge Basis
-   only to the depth required by those selected applications
-↓
-9. resolve Lens applicability/application selection
+9. retain lightweight visibility
+   `APPLIED — <short result/reason>`
+   `NOT_APPLICABLE — <short reason>`
 ```
 
-Useful applicability outcomes:
+Important boundaries:
 
 ```text
-REQUIRED_CORE
-REQUIRED_BY_TARGET_PROFILE
-APPLICABLE
-NOT_MATERIAL
-NOT_APPLICABLE
-EXPLICITLY_REQUESTED
-DEFERRED
-```
-
-The scan is evaluative, not a ritual to run every Lens body.
-
-```text
+registry discovery does not create Unit attachment
+Unit attachment does not suppress registry discovery
+one Lens never satisfies another Lens obligation
 registered Lens exists ≠ apply it
 Lens considered ≠ full Lens body must be read
 Lens applicable ≠ Lens finding must be manufactured
 ```
 
-Lens/application selection itself may become a material Resolution Question when the Analysis Surface, perspective or operation is high-impact/ambiguous. Simple cases inherit required/module-attached Lenses mechanically, scan plausible conditional candidates and choose only supported operations that match the current review/analysis intent. Do not silently collapse materially distinct `CHECK` and `CHALLENGE` coverage into one operation-less Lens selection.
+The scan is evaluative, not a ritual to run every Lens body. Lens/application selection may itself become a material Resolution Question when the Analysis Surface, perspective or operation is high-impact/ambiguous. Do not silently collapse materially distinct `CHECK` and `CHALLENGE` coverage into one operation-less Lens selection.
 
-## 7. Lens Profile In A Target Module
+### Direct / Non-Unit Lens Application
 
-A Target Module contains one concise `Lens Profile` with direct relative links to reusable Lens files. It does not duplicate full reusable prompts or Knowledge Basis.
+A bounded Lens Application does not require a synthetic Target or Unit. When the Analysis Surface is outside an active Unit lifecycle, distinguish **consider/select intent** from **explicit apply intent**:
 
 ```text
-P-06 Lens Port
-→ Lens applicability/selection
-→ Lens Applicability Scan over the bounded Analysis Surface
-→ required Core Pack
-    L1/L2/L3 across material choice surfaces
-    + Proposal / Decision Resolution Context when a material Proposal/Decision surface exists
-    + Documentation / Representation at materialization
-  + Target Module Lens Profile when a reusable module is active
-  + applicable frequent/reusable Core Lenses
-  + applicable profile-specific Lenses
-  + explicitly requested Lens
-  + exceptional local-only Lens when genuinely needed
+bounded non-Unit Analysis Surface
++ CONSIDER / SELECT intent
+→ evaluate Base Applicability / Usefulness for this one application moment
+→ TRUE / UNCERTAIN → form/select the Lens Application
+→ confident FALSE  → NOT_APPLICABLE
+
+bounded non-Unit Analysis Surface
++ explicit APPLY / USE intent for a named registered Lens
+→ evaluate Base Applicability / Usefulness as explanatory relevance context
+→ apply the requested supported operation once even when applicability is confidently FALSE
+→ valid outcome may be `APPLIED — no material finding / no useful change`
 ```
 
-Lens applicability/application selection is recomputed when the bounded Analysis Surface, relevant basis, caller intent, supported operations or natural Target/profile context changes materially. The result is a contextual set of selected Lens Applications, not a fixed Target Lens Set ritual.
+Opening / During-work / Closing triggers are Unit-lifecycle temporal semantics and are not fabricated for direct application. If the bounded surface changes materially later, run a new applicability/application pass rather than inventing a fake Unit checkpoint lifecycle.
+
+The same distinction applies inside Unit work: an explicit APPLY / USE instruction forces a one-shot application to the current bounded Analysis Surface, but **does not create or strengthen a persistent Unit Lens Attachment**. Normal Unit attachments and later checkpoint obligations continue to follow their canonical `REQUIRED` / `TRIGGERED` contracts.
+
+`NOT_APPLICABLE` is therefore valid for discovered, triggered, or explicit **consider/select** candidates, but not as a substitute for an explicitly requested **apply/use** operation. A forced explicit application may still conclude with no Finding Candidate.
+
+## 7. Unit Lens Attachments / Rare Target-Wide Attachment
+
+Predictable Lens attachment normally belongs beside the smallest natural Module-defined Unit.
+
+Canonical local shape:
+
+```text
+Lens Attachments
+
+Core Lens Pack: INHERITED
+
+REQUIRED
+- <Lens> [OPENING | DURING | CLOSING combinations as justified]
+
+TRIGGERED
+- <Lens>
+```
+
+Rules:
+
+1. every material Unit inherits the Core Lens Pack;
+2. every Module-defined Unit shows a local `Lens Attachments` block for visibility, even when it has no additional predictable Lens relationships;
+3. `REQUIRED [phase(s)]` means unconditional Lens application at those Unit checkpoint phases;
+4. `TRIGGERED` carries no condition logic in the Unit;
+5. the concrete Lens owns Opening / During-work invalidation / Closing trigger logic;
+6. Lens-owned triggers may require additional early/repeated application even when a phase is not mandatory;
+7. every local Lens Attachment block displays `Core Lens Pack: INHERITED` for visibility;
+8. when there are no additional predictable Lens relationships, the block contains only the inherited Core Pack line;
+9. a Target-wide attachment is exceptional and requires a genuinely Target-wide Analysis Surface that cannot be reduced without semantic loss;
+10. unlisted Lenses remain discoverable through Generic Core + active-profile registry scans.
+
+A Target Module does not duplicate reusable Lens prompts, Knowledge Basis or trigger logic.
 
 ## 8. Target Module / Local Target Contract Relation
 
@@ -457,7 +555,7 @@ both
 → P-06 Lens Applicability Scan
 ```
 
-A Local Target Contract may select any registered Core/profile Lens whose applicability gate is satisfied. It does not need a fake Target Module merely to gain access to reusable Lenses.
+A Local Target Contract may select any registered Core/profile Lens whose applicability / temporal trigger contract is satisfied. It does not need a fake Target Module merely to gain access to reusable Lenses.
 
 ## 9. Choice-Lifecycle Participation
 
@@ -480,7 +578,7 @@ Typical Lens packs may attach at different choice surfaces, but that attachment 
 A Lens stops at explanatory analysis or a Finding Candidate. Canonical ownership/State/lifecycle disposition, handoff and Target Formation consequences are owned by [`../resolution/findings/FINDING-DISPOSITION.md`](../resolution/findings/FINDING-DISPOSITION.md).
 
 ```text
-Lens activation ≠ new Target Instance
+Lens application / attachment ≠ new Target Instance
 Lens finding ≠ accepted Decision
 Lens finding ≠ Result Unit mutation
 Finding Candidate ≠ automatic child Target
@@ -544,6 +642,19 @@ Suppose a Scenario Target uses `TM-SCENARIO-PLANNING`. Required Core Lenses are 
 
 ## Migration Compatibility
 
+
+Legacy concrete Lens `Activation:` fields and Target Module `Lens Profile` sections remain readable during staged migration, but they are migration evidence only.
+
+```text
+legacy Activation metadata
+≠ normative attachment strength
+
+legacy primary / conditional Lens Profile wording
+≠ mechanical REQUIRED / TRIGGERED conversion
+```
+
+Each installed Lens/Target Module must be migrated from its actual Analysis Surface and accepted Unit/Lens audit. New or materially revised Lens files must use the temporal trigger contract; new or materially revised Target Modules must use Unit-local Lens Attachments / rare justified Target-wide attachments.
+
 The Lens contract separates `Analysis Surface + Lens operations + Findings` from Core Finding Disposition.
 
 Current conformance is **registry-driven rather than count-driven**:
@@ -598,7 +709,7 @@ new/materially revised Lens declares Analysis Surface + Supported Operations + F
 Lens does not define State Unit kinds or Target Result Unit kinds
 zero or more AG-* records are allowed
 every AG-* describes Lens-produced supporting / artifact-placement meaning rather than duplicating Target-result AP
-Target Module Lens Profiles resolve to registered Lens owners
+Unit-local / rare Target-wide Lens Attachment refs resolve to registered Lens owners
 P-06 Lens applicability can discover applicable registered Lenses even without a Target Module
 selected Lens execution preserves `(Lens Model, Analysis Surface, Operation, relevant basis)` rather than dropping the operation
 ```

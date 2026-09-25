@@ -4,7 +4,6 @@
 Lens ID: `LENS-DOMAIN-MODELING-DDD`
 
 Role: reusable thematic Domain modeling lens
-Primary use: Domain Discovery, durable Domain owner formation/review, owner-local Domain requirement discovery
 
 > Semantic Owner Dependency
 > Type: `EXTENDS`
@@ -19,9 +18,53 @@ This Lens/Knowledge Basis never contains the current project-specific Domain mod
 
 ## Analysis Surface
 
-**Primary:** current Feature/Slice/Domain Result Units or owner questions involving semantic identity, state, lifecycle, invariant, consistency, operations, failure/result meaning, persistence ownership, concurrency/atomicity, Domain proof or selected Evolution.
-**Conditional:** related BR/IR/PFR, accepted Decisions, Evidence, relevant Slice/Shared relations and selected `RG-PRG-*` knowledge entries.
+**Direct Analysis Surface:** current Feature/Slice/Domain Result Units or owner questions involving semantic identity, state, lifecycle, invariant, consistency, operations, failure/result meaning, persistence ownership, concurrency/atomicity, Domain proof or selected Evolution.
+**Supporting / Contextual Inputs:** related BR/IR/PFR, accepted Decisions, Evidence, relevant Slice/Shared relations and selected `RG-PRG-*` knowledge entries.
 **Context:** active Work Context/Target and natural-owner candidates.
+
+## Applicability & Temporal Triggers
+
+### Base Applicability / Usefulness
+
+A material concern involves semantic identity/equality, state/lifecycle, invariant, consistency, Domain operation/policy, failure/result meaning, semantic ownership of persistence, invariant-related concurrency/atomicity, Domain proof, or known Domain evolution.
+
+### Opening Triggers
+
+The Unit starts with any such semantic concern, current Domain contract, candidate Domain realization, or evolution pressure on Domain meaning.
+
+### During-work Recheck / Invalidation Triggers
+
+Identity/equality, state transition, invariant, consistency boundary/timing, operation/policy, failure/result semantics, semantic ownership, persistence meaning, atomicity/concurrency, Domain proof, or Domain evolution changes.
+
+### Closing Triggers / Revalidation Conditions
+
+The final result establishes/changes Domain semantic contract, Domain classification/boundary/realization, Domain-owned requirement/proof meaning, or Domain evolution impact.
+
+### Confident-False / Stop Conditions
+
+Concern is only UI/transport/filesystem/Git/database/framework orchestration and no selected Domain meaning is implicated.
+
+### False-negative Risks
+
+Persistence/transaction concerns may be prematurely labeled “infrastructure” even when they encode invariants/consistency.
+
+Trigger semantics follow the canonical Lens Model:
+
+```text
+TRUE      → APPLY
+FALSE     → NOT_APPLICABLE
+UNCERTAIN → APPLY
+```
+
+A Unit-level `REQUIRED [phase]` attachment bypasses the apply/skip decision at that phase and requires this Lens to cover the current Analysis Surface. These Lens-owned triggers still govern useful earlier application and recheck/invalidation.
+
+## Inputs / Evidence
+
+Current Feature/Slice/Domain meaning; candidate/current Domain owner contract; BR/IR/PFR and accepted Decisions; persistence/concurrency/proof Evidence when semantically relevant; concrete Evolution pressure on Domain meaning.
+
+## Evaluation Contract
+
+Apply only the dimensions material to the current question. The domain-specific questions, methods, facets, checks, examples, and pattern guidance below constitute this Lens's evaluation workflow; they are not mandatory checklist items unless the current Analysis Surface makes them material.
 
 ## Supported Operations
 
@@ -33,12 +76,6 @@ CHALLENGE — surface a Finding Candidate when current ownership/modeling is mat
 ```
 
 The Lens may finish with no material Domain issue and no durable Domain owner.
-
-## Applicability
-
-Use when a material concern involves semantic state, identity, lifecycle, invariant, consistency, Domain policy/operation, Domain failure/result semantics, persistence boundary tied to semantic ownership, concurrency/atomicity tied to invariants, Domain proof or known Domain evolution.
-
-Stop proportionally when the concern is merely UI/transport/filesystem/Git/database/framework orchestration with no selected Domain meaning.
 
 ## Tactical / Strategic Pattern Rule
 
@@ -194,12 +231,19 @@ Slice realization
 
 A Feature may use zero, one or several Domain owners. A Slice may coordinate several Domain owners and Shared capabilities without owning their semantic rules.
 
-## Output / Disposition
+## Findings / Outcomes
+
+Valid invocation outcomes:
+
+```text
+APPLIED — no material finding
+APPLIED — one or more material Finding Candidates
+NOT_APPLICABLE — short confident-FALSE reason when application is not forced at this checkpoint
+```
 
 The Lens may produce Findings, alternatives, candidate reusable/local Requirements or Proposal pressure. It does not directly mutate accepted owner results. Selected owner-local requirements are independently approved in the natural owner **state being represented**: current owner for realized truth or the corresponding Evolution Step Target Domain Body for unrealized future state.
 
-## Guards
-
+## Guards / Boundaries
 ```text
 DDD pattern ≠ mandatory architecture
 Domain object ≠ data wrapper
@@ -225,7 +269,9 @@ A material DDD finding should state:
 
 The Lens does not directly create/modify Domain owner authority.
 
-## Typical Consumers
+## Non-Normative Navigation — Typical Surfaces
+
+This section is navigation only. It does not create or strengthen Unit attachment; normative predictable attachment belongs beside the natural Unit and registry discovery remains projection-only.
 
 Feature boundary review, Domain Discovery, durable Domain owner, Slice Discovery/owner, Shared classification, Evolution review and Exact planning when Domain semantics affect realization.
 
@@ -244,20 +290,6 @@ This Lens body is the current operational evaluation contract. The R2 source is 
 `NONE_DIRECT` by default.
 
 If durable Domain responsibility is selected, representation follows the correct temporal host: current Domain owner for realized truth or Evolution Step Target Domain Body for unrealized future state. Selected Domain Discovery Result Content with continuing pre-realization value may be retained by the applicable Step Evolution Impact without becoming Domain authority. Working discovery artifact/resolution remains non-persistent by default. Core Artifact Boundary Lens resolves physical representation.
-
-## Composition / Escalation
-
-```text
-Domain question
-→ DDD Lens
-→ local answer / OPEN
-  OR TM-DOMAIN-DISCOVERY
-  OR Finding/Proposal for Feature/Slice/Shared/Domain boundary
-→ selected planning consequence → Step Domain Evolution Impact for unrealized work
-→ selected durable Domain meaning → current TM-DOMAIN-OWNER only for realized truth, otherwise Target Domain Body in TM-EVOLUTION-STEP when sufficiently resolved
-```
-
-Compose with Vertical Slice for end-to-end ownership, IR Discovery for durable constraints, Programming Principles knowledge for generic implementation-quality concerns, Evolution for known change and Test Proof for proof quality.
 
 ## Behavior / Language Alignment
 

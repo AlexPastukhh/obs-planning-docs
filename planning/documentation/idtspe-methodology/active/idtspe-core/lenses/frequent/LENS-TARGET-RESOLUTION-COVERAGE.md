@@ -2,29 +2,57 @@
 # LENS-TARGET-RESOLUTION-COVERAGE — Target Resolution Coverage
 
 Lens ID: `LENS-TARGET-RESOLUTION-COVERAGE`
-Activation: `FREQUENT_CONDITIONAL`
 Status: active frequent-conditional Core Lens
 
-## Purpose / Evaluation Objective
+## Purpose
 
 Evaluate whether the current Target scope, material Target Resolution Requirements and actual work composition provide sufficient coverage without inventing duplicate semantic owners or silently losing material needs.
 
-## Applicability Gate
+## Analysis Surface
 
-Apply proportionally when a Target exists and one or more of these are material:
+This Lens evaluates the bounded planning/implementation surface where the following concern is materially present:
+
+> Target scope/coverage is being formed/refined, Unit/Module responsibilities may overlap/gap, a material concern may be unrouted, or completion/readiness depends on sufficient coverage.
+
+Context may inform the evaluation, but context availability alone does not make the entire context part of this Lens's Analysis Surface.
+
+## Applicability & Temporal Triggers
+
+### Base Applicability / Usefulness
+
+Target scope/coverage is being formed/refined, Unit/Module responsibilities may overlap/gap, a material concern may be unrouted, or completion/readiness depends on sufficient coverage.
+
+### Opening Triggers
+
+The Unit begins with partial/uncertain coverage, scope formation/refinement, open material concerns without destinations, or an explicit completeness/readiness question.
+
+### During-work Recheck / Invalidation Triggers
+
+Target scope, Requirements, applied Target Modules, Unit responsibilities/dispositions, Contextual Units, open concerns, or applicability changes enough to alter coverage.
+
+### Closing Triggers / Revalidation Conditions
+
+The result makes a completeness/readiness/coverage claim or closes/reframes scope; verify all material Requirements/concerns are covered or explicitly OPEN/BLOCKED/DEFERRED.
+
+### Confident-False / Stop Conditions
+
+Coverage is explicit/coherent and no gap/overlap/unrouted concern/readiness question exists.
+
+### False-negative Risks
+
+“Ready” can be asserted from local completion while another Requirement/Unit remains uncovered; closing must inspect target-wide coverage evidence.
+
+Trigger semantics follow the canonical Lens Model:
 
 ```text
-Target scope is still being formed/refined
-Target Module coverage is partial or uncertain
-Core/Module/Contextual Unit responsibilities overlap or leave gaps
-an open material question/concern may reveal a missing Requirement
-Target completion/readiness depends on whether coverage is sufficient
+TRUE      → APPLY
+FALSE     → NOT_APPLICABLE
+UNCERTAIN → APPLY
 ```
 
-`NO_MATERIAL_COVERAGE_ISSUE` is a valid outcome. Do not run the Lens merely because a Target exists.
+A Unit-level `REQUIRED [phase]` attachment bypasses the apply/skip decision at that phase and requires this Lens to cover the current Analysis Surface. These Lens-owned triggers still govern useful earlier application and recheck/invalidation.
 
-## Target Inputs / Evidence
-
+## Inputs / Evidence
 Use only material current context, proportionally:
 
 ```text
@@ -38,6 +66,10 @@ actually formed Contextual Units
 open material concerns / Findings / Q/R/P
 relevant Sources / Decisions
 ```
+
+## Evaluation Contract
+
+Apply only the dimensions material to the current question. The domain-specific questions, methods, facets, checks, examples, and pattern guidance below constitute this Lens's evaluation workflow; they are not mandatory checklist items unless the current Analysis Surface makes them material.
 
 ## Supported Operations / Evaluation Workflow
 
@@ -75,7 +107,15 @@ Are any material concerns being lost because their natural owner/destination is 
 
 When useful, summarize only the material coverage gap/overlap and the smallest next resolution consequence. Do not manufacture a full Target inventory when no such review is needed.
 
-## Findings / Outputs
+## Findings / Outcomes
+
+Valid invocation outcomes:
+
+```text
+APPLIED — no material finding
+APPLIED — one or more material Finding Candidates
+NOT_APPLICABLE — short confident-FALSE reason when application is not forced at this checkpoint
+```
 
 Typical Finding Candidates include:
 
@@ -92,7 +132,9 @@ PREPARED_UNIT_NOT_ACTUALLY_APPLICABLE
 
 The Lens surfaces Finding Candidates. It does not itself change Target scope, create Units, apply Target Modules or own Requirement coverage. Core Finding Disposition plus Target Formation/Resolution owns those consequences.
 
-## Typical Consumers
+## Non-Normative Navigation — Typical Surfaces
+
+This section is navigation only. It does not create or strengthen Unit attachment; normative predictable attachment belongs beside the natural Unit and registry discovery remains projection-only.
 
 ```text
 Target Formation / Resolution
@@ -102,8 +144,7 @@ Target Module maintenance/refinement when recurring coverage gaps are discovered
 Integration/checkpoint readiness when unresolved coverage is material
 ```
 
-## Guards / Anti-Patterns
-
+## Guards / Boundaries
 ```text
 Lens result ≠ Requirement coverage by itself
 Lens Finding ≠ automatic scope change
@@ -112,11 +153,9 @@ prepared Unit exists ≠ Unit is actually applicable to the current Requirement
 coverage review ≠ permission to duplicate semantic ownership
 ```
 
-## Composition
+## Finding / Lifecycle Boundary
 
-Combine with L1 Need / Value / Scope when the Target boundary itself is in question, L2 Authority / Source-of-Truth / Reuse when owner/Source authority is material, and L4 Dependency / Change Impact when a scope/coverage choice crosses dependent owners. Target Module Lens Profiles may add family-specific perspectives without replacing this generic coverage check.
-
-## Escalation / Revalidation
+Temporal revalidation timing is owned by `Applicability & Temporal Triggers` above. The remaining guidance here concerns Finding/lifecycle routing rather than checkpoint trigger ownership.
 
 A material coverage Finding is routed through Core Finding Disposition. Target Formation/Resolution may then refine scope, reopen/clarify a Requirement, apply/reject prepared coverage, define a Contextual Unit, or surface a new Target candidate. Material scope/Source/Requirement changes may justify reapplying this Lens.
 

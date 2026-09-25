@@ -15,23 +15,24 @@ Lenses discover/evaluate/refine/challenge meaning. They never become the semanti
 
 ## Registry Scan Guide
 
-Reach this registry from an applicable IDTSPE Use-Case Process or Target Module Lens Profile when an SDS-specific evaluation perspective may be useful.
+The Core Lens Registry is the normal universal entry point. When SDS is active, Core checkpoint discovery includes this registry in addition to inherited/generic Core Lens.
 
 ```text
-current Analysis Surface + active Use Case/Target
-→ scan applicability summaries
-→ select zero or more plausible SDS Lenses
-→ open Lens body
-→ confirm local Applicability + Analysis Surface + Supported Operation
-→ perform evaluation
-→ Core Finding Disposition handles any material Finding Candidate
+current SDS Analysis Surface
+→ scan SDS discovery summaries
+→ open zero or more plausible concrete SDS Lens
+→ evaluate each Lens's own checkpoint trigger / applicability
+→ apply only required/applicable Lens Applications
+→ Core Finding Disposition handles material Finding Candidates
 ```
 
-A scan may return `NO_ADDITIONAL_SDS_LENS`. Do not run every profile Lens as ceremony. Recheck only after material changes to Analysis Surface, relevant Decisions/Evidence, Target/profile meaning or Lens-specific revalidation conditions.
+A scan may return `NO_ADDITIONAL_SDS_LENS`. Do not run every profile Lens as ceremony. Recheck through the generic Unit applicability envelope after relevant material Analysis-Surface changes.
 
-## Inherited Core Lens Pack
+## Core Lens Availability
 
-Use [`../../../idtspe-core/lenses/LENS-REGISTRY.md`](../../../idtspe-core/lenses/LENS-REGISTRY.md) for generic required/frequent/reusable Lenses, including proof, authority/SOT, dependency/change impact, verifiability/observability/operability, quality/risk, uncertainty/reversibility and representation/addressability.
+SDS adds profile-owned Lens. The inherited Core Lens Pack and Generic Core Lens remain available through [`../../../idtspe-core/lenses/LENS-REGISTRY.md`](../../../idtspe-core/lenses/LENS-REGISTRY.md) and are not duplicated here.
+
+This registry is additive to Core; it never replaces Core registry content or owns Unit attachment strength.
 
 ## SDS-Specific Lens Registry
 
@@ -68,21 +69,11 @@ terms                       → LENS-TERMS-UBIQUITOUS-LANGUAGE
 
 Attachment and composition notes below are registry-level routing projections only. Concrete Lens files own operational evaluation semantics; Programming Principles remain Knowledge Basis content rather than Lens definitions.
 
-## Typical Attachment / Consumption
+## Lens Attachment Projection
 
-- Application Definition → Application Boundary/Feasibility primary when that material exists.
-- Feature → Vertical Slice at light evidence depth when Feature/Slice boundary is material.
-- Scenario → no mandatory SDS Lens; Vertical/UI/Test-Proof/Evolution only when raised by current journey meaning.
-- Screen → UI/Spatial when spatial/frontend realization is material.
-- Domain Discovery/Owner → DDD is the primary Domain evaluator when Domain reasoning is material.
-- Slice Discovery/Owner → Vertical Slice is the primary Slice evaluator when Slice reasoning is material.
-- Shared Capability → Vertical Slice/sharedness/dependency/evolution/simplicity/quality/representation proportionally; no Shared-specific Lens.
-- owner-local IR/PFR formation/revalidation → Implementation Requirements Discovery.
-- known selected future change → Evolution Lens.
-- proof selection/coverage → inherited Core Test Proof Lens.
-- real/simulated observation quality → inherited Core Practical Evidence Lens.
+Predictable SDS Unit attachments are projected in [`LENS-ATTACHMENT-MAP.md`](LENS-ATTACHMENT-MAP.md#sds-lens-attachment-map). The map is navigation/audit projection only: normative attachment remains beside the natural `RU-*` owner, and concrete Lens files own temporal trigger logic.
 
-`required` or `primary` means required **for the corresponding material Analysis Surface**, not required on every turn or merely because the profile is active.
+The Core Lens Pack remains inherited by every material Unit. Unlisted profile/Core Lens remain discoverable through normal registry scans.
 
 ## Programming-Principle Knowledge Composition
 

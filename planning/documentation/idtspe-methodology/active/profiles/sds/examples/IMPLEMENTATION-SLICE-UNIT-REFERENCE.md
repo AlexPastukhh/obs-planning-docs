@@ -112,7 +112,7 @@ retry after uncertain transport outcome
 → does not create an unintended duplicate payment
 ```
 
-`LENS-TEST-PROOF-EVIDENCE` may refine proof selection if layer/setup/assertion choices are non-trivial. Literal test code belongs to Exact Realization.
+`LENS-TEST-PROOF-EVIDENCE` may refine proof selection if layer/setup/assertion choices are non-trivial. Literal test code belongs to SDS Code Realization.
 
 ## RU-SLICE-05 — Evolution / OPEN Slice Pressure
 
@@ -190,7 +190,7 @@ Those State Units support the Step/current Target; they do not become extra `RU-
 
 ```text
 selected EVO-PAYMENT target state
-→ TM-EXACT-REALIZATION
+→ TM-CODE-REALIZATION
 → code/tests/config
 → actual Evidence
 → if realized/proven:

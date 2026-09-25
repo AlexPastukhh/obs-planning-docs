@@ -113,8 +113,8 @@ tmcmd.pre.update
 → generic `TM-PRE-UPDATE-PLAN`; concrete read-only proposed destination operations before actual mutation
 
 tmcmd.exact.realization
-→ реализуй код <scope>
-→ generic `TM-EXACT-REALIZATION`; code is the default archetype, while `сделай точную реализацию` remains a generic alias
+→ сделай точную реализацию <scope>
+→ generic `TM-EXACT-REALIZATION`; broad/profile-neutral literal/directly-integrable realization
 
 idtspe.lenses.select
 → подбери линзы <analysis surface / target / context>
@@ -170,7 +170,7 @@ For Review commands, `REVIEW_COVERAGE_MODE` is also a pre-execution contribution
 
 Several intents that require the same port, registry/meta-model or other shared prefix must not recursively launch several independent `idtspe.work` passes. Shared prefixes are one DAG node and are performed/reused once per current subject/basis/operation.
 
-An explicit requirement means **perform a real applicability/traversal check**; it does not manufacture a positive result. `NOT_APPLICABLE`, `CHECKED_NO_RESULT`, `CHECKED_NO_CHANGE` and `REUSED` remain valid outcomes. Automatic composition, explicit requirement and downstream materiality all enter the same port contract; only P-02 trace `origin` differs.
+An explicit **port/capability requirement** means **perform a real applicability/traversal check**; it does not manufacture a positive result. `NOT_APPLICABLE`, `CHECKED_NO_RESULT`, `CHECKED_NO_CHANGE` and `REUSED` remain valid port outcomes. Automatic composition, explicit port requirement and downstream materiality all enter the same port contract; only P-02 trace `origin` differs. A user-facing semantic root action such as `примени линзу <Lens>` is stronger than merely requiring P-06 traversal: after the shared Lens prefix resolves the registered Lens, bounded Analysis Surface and supported operation, that root action executes the named Lens once even if normal applicability is confidently false; `APPLIED — no material finding / no useful change` is then a valid semantic result.
 
 Concrete direct commands MAY carry declarative `includes` so the same canonical route is guaranteed when the USER invokes work through the Helper. `includes` reference canonical repository paths to registered direct Planning Command definitions; they remain command→command edges and MUST NOT point directly to methodology/Use-Case/owner files or become a parallel numeric `requiredPorts`/file-execution ontology. `ownerFiles` / structured owner references remain read routes, not executable includes. The AI itself works through methodology owners/references/handoffs rather than invoking commands internally.
 
@@ -254,7 +254,7 @@ IDTSPE composition
 → Lens Application execution(s)
 ```
 
-Concrete `LENS-*` models remain Lens registry/components, not Shell-port definitions. Lens selection and named Lens application are distinct operations that may share the same port/meta-model prefix.
+Concrete `LENS-*` models remain Lens registry/components, not Shell-port definitions. Lens selection and named Lens application are distinct operations that may share the same port/meta-model prefix. Selection/consideration may conclude `NOT_APPLICABLE`; an explicit named Lens **apply/use** action cannot use `NOT_APPLICABLE` as a substitute for executing the requested Lens operation.
 
 ## Generic Component Dispatch
 
@@ -297,7 +297,7 @@ For file/artifact destinations, proposed operations state path/owner, action, in
 
 ## Exact Realization Surface
 
-`tmcmd.exact.realization` invokes the generic Core [`TM-EXACT-REALIZATION`](../target-modules/TM-EXACT-REALIZATION.md). The canonical practical phrase is code-first because code is the primary/default archetype, while the same module may realize another exact directly integrable artifact when the Target scope says so.
+`tmcmd.exact.realization` invokes the generic Core [`TM-EXACT-REALIZATION`](../target-modules/TM-EXACT-REALIZATION.md) for broad/profile-neutral literal directly-integrable realization. Active profiles may define narrower realization surfaces for specialized artifact families; such profile surfaces do not change Core ownership and take precedence only inside their active profile scope.
 
 The surface has an explicit authority boundary:
 
@@ -336,7 +336,7 @@ selected Lens Application requests `(Lens Model, Analysis Surface, Operation, ba
 
 This generic surface uses `hostTargetPolicy: NONE`. The Analysis Surface is primary; Target context is resolved/reused only when the selected surface naturally belongs to Target work. Lens selection must not create a Target merely to host a broader semantic review/analysis surface. When the natural surface is Target Formation / a Local Target Contract, ordinary Target semantics still apply through that natural route.
 
-It does not execute every Lens body. Registry summaries/applicability gates are scanned first; full Lens and referenced Knowledge Basis bodies are loaded only for selected/plausibly applicable candidates.
+It does not execute every Lens body. Registry discovery summaries and concrete Lens applicability / temporal trigger contracts are used proportionally; full Lens and referenced Knowledge Basis bodies are loaded only for selected/plausibly applicable candidates.
 
 ### `idtspe.lens.apply`
 
@@ -355,7 +355,7 @@ material Finding Candidate(s) only when semantic disposition is needed
 Core Finding Disposition resolves actual semantic owner / State / lifecycle consequence
 ```
 
-This generic surface also uses `hostTargetPolicy: NONE`. It is a generic dispatcher, has no fixed `lensId`, never creates a Lens-owned Target and never creates/resolves a Target merely to host a Lens. Concrete/profile shortcuts may still require Target context when their own natural semantic surface is Target work.
+This generic surface also uses `hostTargetPolicy: NONE`. It is a generic dispatcher, has no fixed `lensId`, never creates a Lens-owned Target and never creates/resolves a Target merely to host a Lens. Its `apply` verb is literal: once the named registered Lens / bounded Analysis Surface / supported operation are resolved, the Lens is actually applied. Base Applicability / Usefulness may explain that the perspective is weak or normally unnecessary, but it does not cancel the explicit application; a no-finding/no-useful-change result is valid. Concrete/profile shortcuts may still require Target context when their own natural semantic surface is Target work.
 
 ## Specialized Lens Shortcut Rule
 

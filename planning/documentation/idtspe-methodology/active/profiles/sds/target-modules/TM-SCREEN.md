@@ -41,12 +41,6 @@ Typical sources:
 - Prototype/UI/usability Evidence;
 - relevant Evolution Step(s).
 
-## Lens Profile
-
-Primary reusable lens: `LENS-UI-SPATIAL-FRONTEND-REALIZATION`.
-
-Conditional Core lenses include Verifiability/Observability/Operability, Quality/Risk/Materiality, Evolution and Representation when material.
-
 ## Production Method
 
 ```text
@@ -109,6 +103,15 @@ Each material Unit below inherits the generic [`Unit Applicability Envelope`](..
 <a id="ru-screen-01--screen-map"></a>
 ### RU-SCREEN-01 — Screen Map
 
+**Lens Attachments**
+
+- **Core Lens Pack:** `INHERITED` via [`Core Lens Pack`](../../../idtspe-core/lenses/LENS-REGISTRY.md)
+- **REQUIRED [CLOSING]:**
+  - [`LENS-UI-SPATIAL-FRONTEND-REALIZATION`](../lenses/reusable/LENS-UI-SPATIAL-FRONTEND-REALIZATION.md)
+- **TRIGGERED:**
+  - [`LENS-TERMS-UBIQUITOUS-LANGUAGE`](../lenses/reusable/LENS-TERMS-UBIQUITOUS-LANGUAGE.md)
+  - [`LENS-QUALITY-RISK-MATERIALITY`](../../../idtspe-core/lenses/frequent/LENS-QUALITY-RISK-MATERIALITY.md)
+
 Prefer relations such as:
 
 ```text
@@ -122,6 +125,17 @@ Screen / surface
 
 <a id="ru-screen-02--screen-draft-set"></a>
 ### RU-SCREEN-02 — Screen Draft Set
+
+**Lens Attachments**
+
+- **Core Lens Pack:** `INHERITED` via [`Core Lens Pack`](../../../idtspe-core/lenses/LENS-REGISTRY.md)
+- **REQUIRED [CLOSING]:**
+  - [`LENS-UI-SPATIAL-FRONTEND-REALIZATION`](../lenses/reusable/LENS-UI-SPATIAL-FRONTEND-REALIZATION.md)
+- **TRIGGERED:**
+  - [`LENS-TERMS-UBIQUITOUS-LANGUAGE`](../lenses/reusable/LENS-TERMS-UBIQUITOUS-LANGUAGE.md)
+  - [`LENS-SIMPLICITY-IMPLEMENTATION-ECONOMY`](../lenses/frequent/LENS-SIMPLICITY-IMPLEMENTATION-ECONOMY.md)
+  - [`LENS-QUALITY-RISK-MATERIALITY`](../../../idtspe-core/lenses/frequent/LENS-QUALITY-RISK-MATERIALITY.md)
+  - [`LENS-VERIFIABILITY-OBSERVABILITY-OPERABILITY`](../../../idtspe-core/lenses/frequent/LENS-VERIFIABILITY-OBSERVABILITY-OPERABILITY.md)
 
 For a Screen needing depth:
 
@@ -139,6 +153,13 @@ Do not copy canonical Feature behavior text into Screen drafts. Reference Featur
 
 <a id="ru-screen-03--evolution-impact"></a>
 ### RU-SCREEN-03 — Evolution Impact
+
+**Lens Attachments**
+
+- **Core Lens Pack:** `INHERITED` via [`Core Lens Pack`](../../../idtspe-core/lenses/LENS-REGISTRY.md)
+- **REQUIRED [CLOSING]:**
+  - [`LENS-UI-SPATIAL-FRONTEND-REALIZATION`](../lenses/reusable/LENS-UI-SPATIAL-FRONTEND-REALIZATION.md)
+  - [`LENS-WORKSPACE-EVOLUTION-ARCHITECTURE`](../lenses/frequent/LENS-WORKSPACE-EVOLUTION-ARCHITECTURE.md)
 
 This Screen-local Unit specializes the shared [Current-Owner Evolution Impact Projection Contract](../profile-contracts/evolution/CURRENT-OWNER-EVOLUTION-IMPACT-PROJECTION.md). Its local affected surface is **spatial/navigation composition**. The shared contract owns inclusion threshold across candidate/selected/conditional/deferred Steps, truthful planning-position projection, depth/no-copy rules and post-realization removal from active future impact. This Target Module owns only the Unit identity, Screen-specific materiality test and local revalidation/handoff use.
 

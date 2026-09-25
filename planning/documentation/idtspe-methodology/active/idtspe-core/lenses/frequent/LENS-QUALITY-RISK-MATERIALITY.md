@@ -2,32 +2,61 @@
 # LENS-QUALITY-RISK-MATERIALITY — Cross-Cutting Quality / Risk Materiality
 
 Lens ID: `LENS-QUALITY-RISK-MATERIALITY`
-Activation: `FREQUENT_CONDITIONAL`
 
 ## Purpose
 
 Activate only quality/risk dimensions capable of changing the answer; avoid both omission and universal NFR ceremony.
 
-## Applicability Gate
+## Analysis Surface
 
-Check candidates for material differences in:
+This Lens evaluates the bounded planning/implementation surface where the following concern is materially present:
+
+> Observable security/privacy/performance-capacity/reliability-availability/safety/compliance-auditability/accessibility/UX/economic-cost signals could change selection, acceptance, ownership, realization or proof burden.
+
+Context may inform the evaluation, but context availability alone does not make the entire context part of this Lens's Analysis Surface.
+
+## Applicability & Temporal Triggers
+
+### Base Applicability / Usefulness
+
+Observable security/privacy/performance-capacity/reliability-availability/safety/compliance-auditability/accessibility/UX/economic-cost signals could change selection, acceptance, ownership, realization or proof burden.
+
+### Opening Triggers
+
+Any explicit quality constraint/risk source or hard signal exists: trust/authority boundary, sensitive data, scale/budget, failure tolerance/durability, harm path, external obligation, accessibility interaction constraint, or material recurring/operating cost.
+
+### During-work Recheck / Invalidation Triggers
+
+Design/behavior/environment changes trust boundary, privilege, sensitive-data handling, load/latency/resource exposure, durability/recovery, harm path, compliance obligation, accessibility/interaction, or material cost.
+
+### Closing Triggers / Revalidation Conditions
+
+The final result introduces/changes a quality/risk exposure or acceptance claim; dimensions capable of changing the answer must be resolved or explicitly bounded.
+
+### Confident-False / Stop Conditions
+
+No observable dimension signal is present, or the present dimension cannot change selection/acceptance/ownership/proof/realization.
+
+### False-negative Risks
+
+Security/privacy/safety/compliance signals can be hidden inside “implementation details”; uncertainty should APPLY rather than skip.
+
+Trigger semantics follow the canonical Lens Model:
 
 ```text
-security
-privacy
-performance / capacity
-reliability / availability
-safety
-compliance / auditability
-UX / accessibility
-business/economic cost
+TRUE      → APPLY
+FALSE     → NOT_APPLICABLE
+UNCERTAIN → APPLY
 ```
 
-Operability/observability as a realization property is primarily L6.
+A Unit-level `REQUIRED [phase]` attachment bypasses the apply/skip decision at that phase and requires this Lens to cover the current Analysis Surface. These Lens-owned triggers still govern useful earlier application and recheck/invalidation.
 
-## Target Inputs / Evidence
-
+## Inputs / Evidence
 Need/Scenario/Requirement, external constraints, incidents/performance data, target environment/scale, user/accessibility and economic evidence.
+
+## Evaluation Contract
+
+Apply only the dimensions material to the current question. The domain-specific questions, methods, facets, checks, examples, and pattern guidance below constitute this Lens's evaluation workflow; they are not mandatory checklist items unless the current Analysis Surface makes them material.
 
 ## Prompts
 
@@ -40,7 +69,15 @@ Who owns the must-hold condition?
 What evidence shows adequacy?
 ```
 
-## Findings / Outputs
+## Findings / Outcomes
+
+Valid invocation outcomes:
+
+```text
+APPLIED — no material finding
+APPLIED — one or more material Finding Candidates
+NOT_APPLICABLE — short confident-FALSE reason when application is not forced at this checkpoint
+```
 
 ```text
 material quality condition/ref
@@ -52,7 +89,9 @@ Q/R/P
 revalidation signal
 ```
 
-## Typical Consumers
+## Non-Normative Navigation — Typical Surfaces
+
+This section is navigation only. It does not create or strengthen Unit attachment; normative predictable attachment belongs beside the natural Unit and registry discovery remains projection-only.
 
 Application, Scenario, Screen, Domain, Slice, Frontend, Cross-Cutting, Testing and L5 architecture evaluation.
 
@@ -103,15 +142,12 @@ After Core Finding Disposition resolves a material quality/risk finding, persist
 
 Do not create one file per quality dimension or generic NFR checklist by default.
 
-## Guards
-
+## Guards / Boundaries
 Do not turn every quality word into a framework, Target or mandatory checklist.
 
-## Composition
+## Finding / Lifecycle Boundary
 
-Often combines with L3, L5, L6 and target-profile packs.
-
-## Escalation / Revalidation
+Temporal revalidation timing is owned by `Applicability & Temporal Triggers` above. The remaining guidance here concerns Finding/lifecycle routing rather than checkpoint trigger ownership.
 
 An independently material quality concern with no natural existing owner may surface a Target Formation candidate through Core Finding Disposition. Target Formation decides whether a separate Target is needed.
 

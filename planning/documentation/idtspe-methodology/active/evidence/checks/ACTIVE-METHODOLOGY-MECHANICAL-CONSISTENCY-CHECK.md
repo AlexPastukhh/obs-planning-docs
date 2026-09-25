@@ -1,8 +1,8 @@
 # Active Methodology Mechanical Consistency Check
 
-Status: **current revised post-Pass4 command-composition / Helper closeout snapshot; mechanical facts only**
+Status: **HISTORICAL post-Pass4 command-composition / Helper closeout snapshot; mechanical facts only — superseded for current assembled-methodology evidence by `../audits/POST-PASS12-CONSISTENCY-AUDIT.md`**
 
-Revalidated against the current Core plus all three installed profile registries after the corrected PASS-4 command-composition / Helper closeout. The corrected closeout adds registered semantic command includes, ambient every-work-entry Use-Case registry recheck, mandatory normal-Shell port-composition refresh, P-02 working-trace orientation and the `IDTSPE Pass` Helper projection without making Helper UI semantic authority. Broad lower-contract Unit Collection / Slot migration remains intentionally deferred and is not claimed here.
+This snapshot was revalidated against the Core plus all three installed profile registries at the corrected PASS-4 command-composition / Helper closeout point. The corrected closeout adds registered semantic command includes, ambient every-work-entry Use-Case registry recheck, mandatory normal-Shell port-composition refresh, P-02 working-trace orientation and the `IDTSPE Pass` Helper projection without making Helper UI semantic authority. Broad lower-contract Unit Collection / Slot migration remains intentionally deferred and is not claimed here.
 
 This file reports observed registry/projection parity. Semantic authority remains in the owning registries/contracts.
 

@@ -105,7 +105,7 @@ Material alternatives may use Planning Branches.
 15. define Source Contract archetypes; runtime Sources remain concrete accepted Source Subjects/bindings
 16. identify reusable theory/reference knowledge and place/reference it at Target Module, Unit Definition, Unit Resolution Slot or Lens level according to its real consumer
 17. keep useful references/provenance and add consumer-specific interpretation when raw theory is too broad
-18. define Lens Profile: reuse Lens Library first; keep only genuinely local Lens prompts; add applicability gates
+18. define a visible `Lens Attachments` block on every Module-defined Unit: always show `Core Lens Pack: INHERITED`; add predictable relationships on the smallest natural Unit as REQUIRED + mandatory checkpoint phase(s) or TRIGGERED with no copied condition logic; use rare Target-wide attachment only for a genuinely Target-wide Analysis Surface; rely on registry discovery for unexpected/context-emergent Lens needs
 19. define recurring Q/R/P discovery hints only when target-specific
 20. define material selection surfaces; use ordinary Core Decision semantics and apply the linked retention contract to any separate record
 21. define semantic output/projection schema and Target Step Result composition when useful
@@ -131,6 +131,7 @@ one Target Module owner
 + Target Step-Result family / Module-defined Unit inventory and Target-family-specific Unit deltas conforming to the canonical Target Work owners
 + stable per-Unit methodology-owner binding points
 + Module-specific applicability/checkpoint guidance conforming to the canonical Unit applicability envelope
++ Unit-local Lens Attachments / rare Target-wide Lens Attachments with no duplicated Lens trigger logic
 + complete Module-defined Unit inventory/composition contract without duplicated generic Unit/Collection/Slot/runtime semantics
 + Resolution / Production Method
 + output schema/projection when useful
@@ -193,7 +194,7 @@ Module-defined Unit Definitions
 Target Module Knowledge Basis
   via shared Knowledge Basis Contract when useful
 
-Lens Profile / Proposal aids / Branch triggers
+Unit-local Lens Attachments / rare Target-wide Lens Attachments / Proposal aids / Branch triggers
   ordinary reusable/runtime mechanisms on natural subjects
 
 Output Projection / Target Step Result composition

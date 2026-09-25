@@ -59,10 +59,10 @@ test('Slice RU schema stays in parity across TM, Core example and supporting tem
   }
 });
 
-test('active SDS registries expose 13 Target Modules and 8 Lenses, excluding retired stubs',()=>{
+test('active SDS registries expose 14 Target Modules and 8 Lenses, excluding retired stubs',()=>{
   const tm=read('planning/documentation/idtspe-methodology/active/profiles/sds/registries/TARGET-MODULE-REGISTRY.md');
   const activeTms=[...tm.matchAll(/^\| \[`(TM-[^`]+)`\]\([^)]+\.md\)/gm)].map((m)=>m[1]);
-  assert.equal(activeTms.length,13);
+  assert.equal(activeTms.length,14);
   const lens=read('planning/documentation/idtspe-methodology/active/profiles/sds/registries/LENS-REGISTRY.md');
   const activeLenses=[...lens.matchAll(/^\| \[`(LENS-[^`]+)`\]\([^)]+\.md\)/gm)].map((m)=>m[1]);
   assert.equal(activeLenses.length,8);
@@ -448,7 +448,9 @@ test('Proposal Decision Resolution Context Lens is operational evaluator, QRPE i
   const lens=read('planning/documentation/idtspe-methodology/active/idtspe-core/lenses/required/LENS-PROPOSAL-DECISION-RESOLUTION-CONTEXT.md');
   const life=read('planning/documentation/idtspe-methodology/active/idtspe-core/resolution/proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md');
   const qrp=read('planning/documentation/idtspe-methodology/active/idtspe-core/resolution/qrp/QRP-LIFECYCLE-AND-REVIEW.md');
-  assert.match(lens,/Activation: `REQUIRED_CORE` on a material Proposal \/ Decision surface/);
+  assert.match(lens,/Base Applicability \/ Usefulness[\s\S]*material Proposal or Decision surface exists/i);
+  const registry=read('planning/documentation/idtspe-methodology/active/idtspe-core/lenses/LENS-REGISTRY.md');
+  assert.match(registry,/Inherited Core Lens Pack[\s\S]*LENS-PROPOSAL-DECISION-RESOLUTION-CONTEXT/);
   assert.match(lens,/QRPE.*not.*new Core State kind/is);
   assert.match(lens,/Lens ≠ Proposal\/Decision lifecycle owner/);
   assert.match(life,/Candidate Review \/ Resolution Context Handoff/);
@@ -494,9 +496,10 @@ test('formed Target Units stay present: reverse Impact, Practical Test evidence 
 test('required Core Lens Pack includes Proposal Decision Resolution Context only on material Proposal Decision surfaces',()=>{
   const model=read('planning/documentation/idtspe-methodology/active/idtspe-core/lenses/LENS-MODEL.md');
   const registry=read('planning/documentation/idtspe-methodology/active/idtspe-core/lenses/LENS-REGISTRY.md');
-  assert.match(model,/Proposal \/ Decision Resolution Context — when a material Proposal\/Decision surface exists/);
-  assert.match(model,/Proposal \/ Decision Resolution Context is `NOT_APPLICABLE` when no material Proposal\/Decision surface exists/);
-  assert.match(registry,/required Core Pack[\s\S]*Proposal \/ Decision Resolution Context when a material Proposal\/Decision surface exists/);
+  assert.match(model,/every material Unit inherits the Core Lens Pack/i);
+  assert.match(read('planning/documentation/idtspe-methodology/active/idtspe-core/lenses/required/LENS-PROPOSAL-DECISION-RESOLUTION-CONTEXT.md'),/Base Applicability \/ Usefulness[\s\S]*material Proposal or Decision surface exists/i);
+  assert.match(registry,/Inherited Core Lens Pack[\s\S]*LENS-PROPOSAL-DECISION-RESOLUTION-CONTEXT/);
+  assert.match(read('planning/documentation/idtspe-methodology/active/idtspe-core/lenses/required/LENS-PROPOSAL-DECISION-RESOLUTION-CONTEXT.md'),/Confident-False \/ Stop Conditions[\s\S]*No material Proposal\/Decision surface exists/i);
 });
 
 test('Scenario command and representation surfaces use multi-Benefit manifestation closure rather than terminal-Benefit shorthand',()=>{

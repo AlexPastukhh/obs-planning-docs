@@ -103,6 +103,15 @@ Each material Unit below inherits the generic [`Unit Applicability Envelope`](..
 <a id="ru-scen-01-processing-envelope"></a>
 #### `RU-SCEN-01` processing envelope
 
+**Lens Attachments**
+
+- **Core Lens Pack:** `INHERITED` via [`Core Lens Pack`](../../../idtspe-core/lenses/LENS-REGISTRY.md)
+- **TRIGGERED:**
+  - [`LENS-SLICE-VERTICALITY-INTEGRATION`](../lenses/reusable/LENS-SLICE-VERTICALITY-INTEGRATION.md)
+  - [`LENS-UI-SPATIAL-FRONTEND-REALIZATION`](../lenses/reusable/LENS-UI-SPATIAL-FRONTEND-REALIZATION.md)
+  - [`LENS-TERMS-UBIQUITOUS-LANGUAGE`](../lenses/reusable/LENS-TERMS-UBIQUITOUS-LANGUAGE.md)
+  - [`LENS-TEST-PROOF-EVIDENCE`](../../../idtspe-core/lenses/reusable/LENS-TEST-PROOF-EVIDENCE.md)
+
 1. **Opening Unit Checkpoint — `RU-SCEN-01`** — resolve/reuse current applicable Core + active-profile Lens registry candidates and any Unit-triggered supporting registry pressure before material work.
 2. **Unit Work — `RU-SCEN-01`** — produce/refine only the material meaning owned by this Result Unit; run additional applicability checks immediately when the Analysis Surface changes materially.
 3. **Closing Unit Checkpoint — `RU-SCEN-01`** — evaluate the actual candidate Unit result, disposition material Findings/owner consequences, and reopen/refine narrowly when needed before treating the Unit as current-for-handoff.
@@ -122,10 +131,28 @@ Each material Unit below inherits the generic [`Unit Applicability Envelope`](..
 <a id="ru-scen-02--evolution-impact"></a>
 ### RU-SCEN-02 — Evolution Impact
 
+**Lens Attachments**
+
+- **Core Lens Pack:** `INHERITED` via [`Core Lens Pack`](../../../idtspe-core/lenses/LENS-REGISTRY.md)
+- **REQUIRED [CLOSING]:**
+  - [`LENS-WORKSPACE-EVOLUTION-ARCHITECTURE`](../lenses/frequent/LENS-WORKSPACE-EVOLUTION-ARCHITECTURE.md)
+
 This Scenario-local Unit specializes the shared [Current-Owner Evolution Impact Projection Contract](../profile-contracts/evolution/CURRENT-OWNER-EVOLUTION-IMPACT-PROJECTION.md). Its local affected surface is **journey composition**. The shared contract owns inclusion threshold across candidate/selected/conditional/deferred Steps, truthful planning-position projection, depth/no-copy rules and post-realization removal from active future impact. This Target Module owns only the Unit identity, Scenario-specific materiality test and local revalidation/handoff use.
 
 <a id="ru-scen-03--journey-realization-concerns"></a>
 ### RU-SCEN-03 — Journey Realization Concerns
+
+**Lens Attachments**
+
+- **Core Lens Pack:** `INHERITED` via [`Core Lens Pack`](../../../idtspe-core/lenses/LENS-REGISTRY.md)
+- **TRIGGERED:**
+  - [`LENS-SLICE-VERTICALITY-INTEGRATION`](../lenses/reusable/LENS-SLICE-VERTICALITY-INTEGRATION.md)
+  - [`LENS-UI-SPATIAL-FRONTEND-REALIZATION`](../lenses/reusable/LENS-UI-SPATIAL-FRONTEND-REALIZATION.md)
+  - [`LENS-IMPLEMENTATION-REQUIREMENTS-DISCOVERY`](../lenses/reusable/LENS-IMPLEMENTATION-REQUIREMENTS-DISCOVERY.md)
+  - [`LENS-DEPENDENCY-CHANGE-IMPACT`](../../../idtspe-core/lenses/frequent/LENS-DEPENDENCY-CHANGE-IMPACT.md)
+  - [`LENS-QUALITY-RISK-MATERIALITY`](../../../idtspe-core/lenses/frequent/LENS-QUALITY-RISK-MATERIALITY.md)
+  - [`LENS-VERIFIABILITY-OBSERVABILITY-OPERABILITY`](../../../idtspe-core/lenses/frequent/LENS-VERIFIABILITY-OBSERVABILITY-OPERABILITY.md)
+  - [`LENS-TEST-PROOF-EVIDENCE`](../../../idtspe-core/lenses/reusable/LENS-TEST-PROOF-EVIDENCE.md)
 
 Own only material realization/proof/integration concerns whose smallest natural subject is the Scenario journey as a whole, for example cross-Feature correlation/continuity pressure, whole-journey observability/proof pressure or external-context handoff constraints that can change Scenario feasibility.
 
@@ -191,17 +218,6 @@ Application Definition / Need / one or more `AB-*` Benefits when relevant; use `
 ```
 
 A current implementation fact may challenge the journey but does not become Scenario authority merely because it exists.
-
-## Lens Profile
-
-Required Core Lens pack applies.
-
-Conditional SDS/Core Lenses:
-- UI/Spatial when Screen participation/navigation is material;
-- Vertical Slice when the journey exposes a missing/merged/split Feature or weak Feature/Slice boundary;
-- Test Proof when E2E proof intent/allocation is non-trivial;
-- Evolution when known Steps change journey composition;
-- Representation when persistence/addressability is material.
 
 ## Journey Constraint Identity
 

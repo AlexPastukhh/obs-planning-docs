@@ -4,7 +4,6 @@
 Lens ID: `LENS-SLICE-VERTICALITY-INTEGRATION`
 
 Role: reusable thematic Slice-boundary and end-to-end integration lens
-Primary use: Feature boundary formation, transient Slice Discovery, durable Slice owner review
 
 > Semantic Owner Dependency
 > Type: `EXTENDS`
@@ -19,9 +18,53 @@ The same method is used at two evidence depths:
 
 ## Analysis Surface
 
-**Primary:** Feature/Slice boundary meaning, transient Slice Discovery results, durable Slice-owner responsibility and whole-path realization/proof surfaces.
-**Conditional:** Feature BR, Scenario/Screen participation, Domain/Shared dependencies, side effects/failure/recovery, accepted Decisions/Evidence, selected Evolution and relevant `RG-PRG-*` knowledge entries.
+**Direct Analysis Surface:** Feature/Slice boundary meaning, transient Slice Discovery results, durable Slice-owner responsibility and whole-path realization/proof surfaces.
+**Supporting / Contextual Inputs:** Feature BR, Scenario/Screen participation, Domain/Shared dependencies, side effects/failure/recovery, accepted Decisions/Evidence, selected Evolution and relevant `RG-PRG-*` knowledge entries.
 **Context:** active Work Context/Target and current evidence depth.
+
+## Applicability & Temporal Triggers
+
+### Base Applicability / Usefulness
+
+Feature↔Slice boundary, semantic entry/result, whole-path realization, behavior coverage, side-effect/failure/recovery integration, whole-path proof, or change locality/shared extraction is being formed/changed/revalidated.
+
+### Opening Triggers
+
+The Unit begins with Feature/Slice identity/boundary, a whole-path realization/proof question, semantic entry/result selection, or a possible Shared extraction from Slice responsibility.
+
+### During-work Recheck / Invalidation Triggers
+
+Intent/principal result, semantic entry/result, path steps, Domain/Shared dependency, side effect/failure/recovery/retry, Scenario/Screen participation, proof boundary, or change-locality/split/merge/shared-extraction shape changes.
+
+### Closing Triggers / Revalidation Conditions
+
+The result claims a coherent Feature/Slice boundary, whole-path realization/proof, behavior coverage, or Shared extraction that must still preserve end-to-end responsibility.
+
+### Confident-False / Stop Conditions
+
+Concern is purely local inside an already coherent owner and cannot change Feature/Slice boundary, whole path, coverage, proof boundary, or change locality.
+
+### False-negative Risks
+
+A “small adapter change” can still alter semantic entry/result or failure/effect path and therefore verticality.
+
+Trigger semantics follow the canonical Lens Model:
+
+```text
+TRUE      → APPLY
+FALSE     → NOT_APPLICABLE
+UNCERTAIN → APPLY
+```
+
+A Unit-level `REQUIRED [phase]` attachment bypasses the apply/skip decision at that phase and requires this Lens to cover the current Analysis Surface. These Lens-owned triggers still govern useful earlier application and recheck/invalidation.
+
+## Inputs / Evidence
+
+Current Feature/Slice meaning; semantic entry/result; Scenario/Screen participation; Domain/Shared dependencies; side effects/failure/recovery/retry semantics; whole-path realization/proof Evidence; selected Evolution context when material.
+
+## Evaluation Contract
+
+Apply only the dimensions material to the current question. The domain-specific questions, methods, facets, checks, examples, and pattern guidance below constitute this Lens's evaluation workflow; they are not mandatory checklist items unless the current Analysis Surface makes them material.
 
 ## Supported Operations
 
@@ -190,12 +233,19 @@ Use mainly intent/result boundary, semantic-entry vs transport distinction, roug
 
 Walk the whole concrete path and repeat the same method with stronger evidence. The outcome may confirm, module, branch, split, merge or reframe the Feature/Slice boundary through normal Proposal/revalidation.
 
-## Output / Disposition
+## Findings / Outcomes
+
+Valid invocation outcomes:
+
+```text
+APPLIED — no material finding
+APPLIED — one or more material Finding Candidates
+NOT_APPLICABLE — short confident-FALSE reason when application is not forced at this checkpoint
+```
 
 The Lens may KEEP, REFINE, CHALLENGE or leave OPEN a boundary, surface Shared/Domain pressure or produce Finding/Proposal pressure. It does not directly mutate accepted Feature/Slice owner meaning. When the selected boundary is future/unrealized, its semantic destination is the Evolution Step Target Body; current owner mutation waits for realization/materialization.
 
-## Guards
-
+## Guards / Boundaries
 ```text
 vertical Slice ≠ technical layer
 Slice independence ≠ zero dependencies
@@ -253,7 +303,9 @@ Material findings may include:
 
 Route them through Core Finding Disposition to the natural owner.
 
-## Typical Consumers
+## Non-Normative Navigation — Typical Surfaces
+
+This section is navigation only. It does not create or strengthen Unit attachment; normative predictable attachment belongs beside the natural Unit and registry discovery remains projection-only.
 
 Feature formation, Slice Discovery, durable Slice owner, Shared extraction/classification, Domain interaction review, Evolution review and implementation/proof planning.
 
@@ -272,10 +324,6 @@ Accepted Feature/Domain/Shared/Evolution meaning and current implementation evid
 `NONE_DIRECT` by default.
 
 Working Slice Discovery Target/artifact is non-persistent by default. Selected Slice Discovery Result Content with continuing pre-realization value may be retained by the applicable Step Evolution Impact without becoming durable Slice authority. Durable Slice/Shared meaning is represented in the current owner only when realized; sufficiently resolved unrealized owner meaning is represented in the corresponding Step Target Owner Body. Core Artifact Boundary Lens resolves physical representation. A cross-Slice coverage/map view may be generated/embedded when independently useful but remains derived.
-
-## Composition / Escalation
-
-Compose with DDD for semantic Domain ownership, IR Discovery for durable constraints, Programming Principles knowledge for generic implementation quality, UI/spatial for frontend realization, Evolution for known change, Simplicity for cost and Test Proof for proof quality.
 
 ## Behavior Realization Coverage
 

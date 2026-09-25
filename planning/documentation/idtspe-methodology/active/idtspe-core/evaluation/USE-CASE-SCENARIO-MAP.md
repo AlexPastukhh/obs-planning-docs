@@ -182,11 +182,11 @@ A root scenario begins from the ordinary functional entry route. A focused scena
 ### Step `SCN-01-S4` — realize exactly when meaning is sufficient
 
 **Trigger / Situation:** The selected meaning is sufficiently determined for a literal/integrable result.
-**AI Action:** Enter Exact Realization directly, or first produce an optional separately reviewable Pre-Update Plan when that has independent value.
-**Why This Step:** Exact work should not wait for a ceremonial pre-update phase, while risky/material mutation may benefit from a reviewable intended-change boundary.
+**AI Action:** Enter the applicable realization owner directly, or first produce an optional separately reviewable Pre-Update Plan when that has independent value. Prefer a narrower active-profile realization owner when it applies; otherwise use Core Exact Realization.
+**Why This Step:** Realization work should not wait for a ceremonial pre-update phase, while risky/material mutation may benefit from a reviewable intended-change boundary.
 **Method / Mechanics:** Preserve accepted meaning, use transient exact reasoning as needed, respect mutation authority, and verify/repair only under the applicable host authority.
 **Possible Result:** A directly integrable literal result, or an optional reviewed intended-change plan followed by that result.
-**Derived From / Owners:** `TM-PRE-UPDATE-PLAN`, `TM-EXACT-REALIZATION`.
+**Derived From / Owners:** `TM-PRE-UPDATE-PLAN`, Core `TARGET-MODULE-REGISTRY`, active-profile Target Module registry when a narrower realization owner applies.
 
 ### Step `SCN-01-S4M` — materialize future owner truth only after realization/proof
 
@@ -221,7 +221,7 @@ A root scenario begins from the ordinary functional entry route. A focused scena
     {"id":"SCN-01-S3","title":"Evaluate material surfaces","semanticRefs":["planning/documentation/idtspe-methodology/active/idtspe-core/runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md","planning/documentation/idtspe-methodology/active/idtspe-core/lenses/LENS-REGISTRY.md"]},
     {"id":"SCN-01-S3R","title":"Challenge current meaning when independent review is useful","semanticRefs":["planning/documentation/review-diff-review-workflow.md"]},
     {"id":"SCN-01-S3F","title":"Disposition material findings before choosing the correction route","semanticRefs":["planning/documentation/idtspe-methodology/active/idtspe-core/resolution/findings/FINDING-DISPOSITION.md#resolution-escalation","planning/documentation/idtspe-methodology/active/ai-reviewability/AI-OUTPUT-REVIEWABILITY.md"]},
-    {"id":"SCN-01-S4","title":"Realize exactly when meaning is sufficient","semanticRefs":["TM-PRE-UPDATE-PLAN","TM-EXACT-REALIZATION"]},
+    {"id":"SCN-01-S4","title":"Realize exactly when meaning is sufficient","semanticRefs":["TM-PRE-UPDATE-PLAN","planning/documentation/idtspe-methodology/active/idtspe-core/target-modules/TARGET-MODULE-REGISTRY.md","planning/documentation/idtspe-methodology/active/profiles/PROFILE-REGISTRY.md"]},
     {"id":"SCN-01-S4M","title":"Materialize future owner truth only after realization/proof","semanticRefs":["TM-EVOLUTION-STEP","LENS-ARTIFACT-BOUNDARY-ADDRESSABILITY"]},
     {"id":"SCN-01-S5","title":"Revalidate only affected meaning","semanticRefs":["UC-IDTSPE-REVALIDATE-CURRENT-WORK","planning/documentation/idtspe-methodology/active/idtspe-core/use-case-processes/CROSS-OWNER-CONSISTENCY-REVIEW.use-case-process.md"]}
   ]
@@ -387,11 +387,11 @@ A root scenario begins from the ordinary functional entry route. A focused scena
 ### Step `SCN-04-S2` — realize the accepted meaning literally
 
 **Trigger / Situation:** Exact/literal output is requested and host authority permits the applicable realization actions.
-**AI Action:** Use Exact Realization; plan transient details internally as needed.
-**Why This Step:** Literal integration belongs to Exact, not to a persistent planning shell.
+**AI Action:** Use the applicable realization owner; choose a narrower active-profile realization Target when one applies, otherwise Core Exact Realization. Plan transient details internally as needed.
+**Why This Step:** Literal integration belongs to the applicable realization owner, not to a persistent planning shell.
 **Method / Mechanics:** Preserve accepted meaning, produce the directly integrable result, verify/repair within authority, and surface conflicts as Findings/Revalidation rather than silently redesigning.
-**Possible Result:** Exact code/config/docs/package result and supporting Evidence where executed.
-**Derived From / Owners:** `TM-EXACT-REALIZATION`.
+**Possible Result:** Exact directly-integrable result (for example code under a profile-owned code realization module, or config/docs/package under the applicable broad owner) and supporting Evidence where executed.
+**Derived From / Owners:** Core `TARGET-MODULE-REGISTRY`, active-profile Target Module registry when a narrower realization owner applies.
 
 ### Step `SCN-04-S2M` — materialize SDS target bodies only when realization is established
 
@@ -412,7 +412,7 @@ A root scenario begins from the ordinary functional entry route. A focused scena
 **Derived From / Owners:** `UC-IDTSPE-REVALIDATE-CURRENT-WORK`.
 
 [METHODOLOGY_SCENARIO]
-{"id":"SCN-04","type":"FOCUSED","title":"Решения готовы — хочу перейти к точной реализации","entryRoute":"Starts after accepted meaning is sufficiently determined","assumptions":["Mutation authority remains owned by the active host/session contract"],"steps":[{"id":"SCN-04-S1","title":"Optionally review the intended update","semanticRefs":["TM-PRE-UPDATE-PLAN"]},{"id":"SCN-04-S1R","title":"Resolve representation only when persistence is material","semanticRefs":["LENS-ARTIFACT-BOUNDARY-ADDRESSABILITY"]},{"id":"SCN-04-S2","title":"Realize the accepted meaning literally","semanticRefs":["TM-EXACT-REALIZATION"]},{"id":"SCN-04-S2M","title":"Materialize SDS target bodies only when realization is established","semanticRefs":["TM-EVOLUTION-STEP","LENS-ARTIFACT-BOUNDARY-ADDRESSABILITY"]},{"id":"SCN-04-S3","title":"Revalidate material contradiction only","semanticRefs":["UC-IDTSPE-REVALIDATE-CURRENT-WORK"]}]}
+{"id":"SCN-04","type":"FOCUSED","title":"Решения готовы — хочу перейти к точной реализации","entryRoute":"Starts after accepted meaning is sufficiently determined","assumptions":["Mutation authority remains owned by the active host/session contract"],"steps":[{"id":"SCN-04-S1","title":"Optionally review the intended update","semanticRefs":["TM-PRE-UPDATE-PLAN"]},{"id":"SCN-04-S1R","title":"Resolve representation only when persistence is material","semanticRefs":["LENS-ARTIFACT-BOUNDARY-ADDRESSABILITY"]},{"id":"SCN-04-S2","title":"Realize the accepted meaning literally","semanticRefs":["planning/documentation/idtspe-methodology/active/idtspe-core/target-modules/TARGET-MODULE-REGISTRY.md","planning/documentation/idtspe-methodology/active/profiles/PROFILE-REGISTRY.md"]},{"id":"SCN-04-S2M","title":"Materialize SDS target bodies only when realization is established","semanticRefs":["TM-EVOLUTION-STEP","LENS-ARTIFACT-BOUNDARY-ADDRESSABILITY"]},{"id":"SCN-04-S3","title":"Revalidate material contradiction only","semanticRefs":["UC-IDTSPE-REVALIDATE-CURRENT-WORK"]}]}
 [/METHODOLOGY_SCENARIO]
 
 ## 9. `SCN-05` MAINTENANCE — Я меняю саму методологию или документацию

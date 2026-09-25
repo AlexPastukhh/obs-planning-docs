@@ -21,7 +21,9 @@ Produce the **exact current candidate realization** of already-sufficient upstre
 
 The module is generic: an Exact Realization may be code, test code, configuration, a migration, schema, workflow, manifest, exact documentation replacement or another directly integrable artifact.
 
-The **primary/default archetype is codebase realization**. When the user asks to implement code, use the code workflow in this module by default unless the user explicitly asks for a shorter depth such as exact code only with no integration/build/test attempt.
+Under active SDS, codebase-oriented realization is owned by SDS `TM-CODE-REALIZATION`; this Core module remains the broad/profile-neutral exact-realization owner and continues to serve non-code literal work.
+
+The module remains deliberately broad and profile-neutral. An active profile may define a narrower realization Target Module for a specialized artifact family. When such a profile owner applies, use that narrower owner rather than treating this generic module as the specialized semantic authority.
 
 ```text
 accepted upstream meaning
@@ -67,19 +69,19 @@ Depending on the active profile/subject:
 ```text
 accepted Target Result Units / Decisions that define what must become real
 accepted `RU-PUPDATE-01 Pre-Update Plan` when the user chose a reviewed pre-update plan first
-accepted Scenario / Domain / Slice / Screen / Requirement / architecture meaning when applicable
-selected natural-owner proof intent/obligations and approved transient proof design when tests are in scope
-selected configuration/schema/workflow/documentation meaning for non-code realization
+accepted profile/domain/application meaning when applicable
+selected natural-owner proof intent/obligations when the exact payload includes proof material
+selected configuration/schema/workflow/documentation/manifest or other literal meaning
 ```
 
 ### Current-State Sources
 
 ```text
-current codebase / files / project structure
-existing APIs, types, tests, conventions and dependencies
+current destination files/objects/project structure
+existing interfaces/contracts/conventions/dependencies relevant to the payload
 current destination/environment state
-existing build/test/runtime configuration
-known implementation Evidence / failures when refining or repairing
+existing validation/integration/runtime configuration
+known realization Evidence / failures when refining or repairing
 ```
 
 ### Constraint / Planning-State Sources
@@ -189,19 +191,28 @@ Each material Unit below inherits the generic [`Unit Applicability Envelope`](..
 
 ### RU-REAL-01 — Exact Realization
 
+**Lens Attachments**
+
+- **Core Lens Pack:** `INHERITED` via [`Core Lens Pack`](../lenses/LENS-REGISTRY.md)
+- **TRIGGERED:**
+  - [`LENS-DEPENDENCY-CHANGE-IMPACT`](../lenses/frequent/LENS-DEPENDENCY-CHANGE-IMPACT.md)
+  - [`LENS-QUALITY-RISK-MATERIALITY`](../lenses/frequent/LENS-QUALITY-RISK-MATERIALITY.md)
+  - [`LENS-VERIFIABILITY-OBSERVABILITY-OPERABILITY`](../lenses/frequent/LENS-VERIFIABILITY-OBSERVABILITY-OPERABILITY.md)
+  - [`LENS-TEST-PROOF-EVIDENCE`](../lenses/reusable/LENS-TEST-PROOF-EVIDENCE.md)
+
 The Result Unit contains enough exact representation to attempt direct integration without another material design pass.
 
-For code this normally means, proportionally:
+Typical broad/profile-neutral realizations may include, proportionally:
 
 ```text
-exact added/changed/deleted file scope
-complete exact code or an exact applicable patch/payload
-exact test code when tests belong to the realization scope
-required exact config/migration/schema changes in the same bounded realization
+exact added/changed/deleted file/object scope
+complete exact payload or applicable patch
+config / migration / schema / workflow / manifest material
+exact documentation replacement
 current destination/baseline identity needed to interpret the payload safely
 ```
 
-For non-code realization, use the equivalent exact directly integrable representation.
+When an active profile defines a narrower realization owner for a specialized artifact family, route that specialized result there rather than duplicating profile semantics in this generic Unit.
 
 `RU-REAL-01` is **versioned by meaning during the Target**, not by mandatory persisted version objects. If an Integration Attempt causes a repair:
 
@@ -217,7 +228,7 @@ The old candidate may remain in conversation/review history when useful, but the
 
 ### Internal exact planning before the literal Result
 
-When `RU-REAL-01` cannot be produced responsibly in one direct pass, use a transient **exact implementation working plan** inside this Target.
+When `RU-REAL-01` cannot be produced responsibly in one direct pass, use a transient **exact realization working plan** inside this Target.
 
 This is production reasoning around the Result, not another Result Unit and not `TM-PRE-UPDATE-PLAN`.
 
@@ -225,14 +236,13 @@ Its proportional working content may include:
 
 ```text
 approved upstream authority / selected approach
-significant modules/classes and responsibilities
+significant payload parts and responsibilities
 inputs / outputs / side effects / dependencies
-exact state/data flow
-failure / retry / uncertainty flow
-file add/replace/delete/move intent
-candidate methods/signatures
-literal call flow when useful
-exact tests/proof
+exact state/data flow when applicable
+failure / retry / uncertainty flow when applicable
+file/object add/replace/delete/move intent
+exact interfaces/fields/steps when useful
+exact validation/proof material when in scope
 reusable guidance used during planning — optional working provenance when materially useful
 open literal details
 risks / Known Problems
@@ -260,7 +270,7 @@ what is being realized
 accepted upstream meaning that must not drift
 current destination/current-state Sources
 what is explicitly inside vs outside scope
-what exact artifact/code state would count as the result
+what exact artifact/destination state would count as the result
 ```
 
 Do not silently broaden scope merely because adjacent changes would be convenient.
@@ -269,7 +279,7 @@ Do not silently broaden scope merely because adjacent changes would be convenien
 
 Create `RU-REAL-01` as a directly integrable candidate.
 
-For code, prefer exact project-native files/patches and real current owner/API names over prose pseudocode. If a material name/API/architecture choice is still unresolved, keep that uncertainty explicit instead of pretending the code is final.
+Prefer exact destination-native files/objects/patches/payloads over prose placeholders. If a material semantic/interface/architecture choice is still unresolved, keep that uncertainty explicit instead of pretending the literal result is final.
 
 ### 3. Exact-result review is a normal stopping point
 
@@ -324,15 +334,17 @@ another concrete integration environment
 
 Do **not** hard-code a required `temporary integration → final integration` pair. One Integration Attempt may be verification-only or may also be the actual intended application, depending on destination + user authority + reversibility/consequences.
 
-For code, checks may include as material/available:
+Checks depend on the artifact/environment and may include, as materially available:
 
 ```text
-build / compile
-automated unit/integration/E2E tests
-static/type/lint checks
-focused runtime/startup checks
-selected scenario/behavior checks
+parse / validate / load / dry-run
+schema or compatibility validation
+focused integration/runtime checks
+artifact-specific automated checks
+selected behavior/acceptance checks
 ```
+
+A profile-specific realization module may define a richer specialized check set.
 
 Record facts as Evidence. Never claim a check passed when it was not actually run or when the environment could not perform it.
 
@@ -354,7 +366,7 @@ missing/wrong import
 local wiring mistake
 obvious current-API signature mismatch
 mechanical serialization/configuration mismatch
-local implementation bug that directly contradicts the accepted exact intent
+local realization defect that directly contradicts the accepted exact intent
 ```
 
 A user instruction such as “исправляй ошибки” is **not** permission to silently make new architecture/Domain/product Decisions or expand the scope.
@@ -409,163 +421,13 @@ Exact Realization does not imply Git commit/push, deployment, production release
 
 When a coherent final-literal review/integration state is useful after proof, `UC-IDTSPE-INTEGRATE-CURRENT-WORK` may invoke the Core Integration Checkpoint. This Target does not own a second checkpoint lifecycle, and no checkpoint is required merely because Exact Realization completed.
 
-## Code-First Default Walkthrough — Self-Contained
-
-### Situation
-
-Assume an upstream Domain Target has already accepted:
-
-```text
-CaptureItem
-  has stable CaptureItemId
-  requires non-null SourceContext
-  must not silently weaken that invariant
-```
-
-The current Java project already contains `CaptureItemId` and `SourceContext`. The user says:
-
-> реализуй код агрегата; сначала покажи точную реализацию и ничего не запускай.
-
-### Exact code candidate
-
-`RU-REAL-01` is literal code, not another implementation plan.
-
-`src/main/java/example/capture/CaptureItem.java`:
-
-```java
-package example.capture;
-
-import java.util.Objects;
-
-public final class CaptureItem {
-    private final CaptureItemId id;
-    private final SourceContext sourceContext;
-
-    private CaptureItem(CaptureItemId id, SourceContext sourceContext) {
-        this.id = Objects.requireNonNull(id, "id");
-        this.sourceContext = Objects.requireNonNull(sourceContext, "sourceContext");
-    }
-
-    public static CaptureItem create(CaptureItemId id, SourceContext sourceContext) {
-        return new CaptureItem(id, sourceContext);
-    }
-
-    public CaptureItemId id() {
-        return id;
-    }
-
-    public SourceContext sourceContext() {
-        return sourceContext;
-    }
-}
-```
-
-When exact test realization is in scope, the same Result may include exact test code, for example:
-
-`src/test/java/example/capture/CaptureItemTest.java`:
-
-```java
-package example.capture;
-
-import static org.junit.jupiter.api.Assertions.assertThrows;
-
-import org.junit.jupiter.api.Test;
-
-final class CaptureItemTest {
-    @Test
-    void rejectsMissingSourceContext() {
-        CaptureItemId id = CaptureItemId.newId();
-        assertThrows(NullPointerException.class, () -> CaptureItem.create(id, null));
-    }
-}
-```
-
-This example is illustrative; a real Target must use the actual current project types/APIs/tests rather than inventing these names when the codebase says otherwise.
-
-### Review before execution
-
-The assistant shows the complete exact candidate. The user may accept it, change it, or stop here.
-
-Suppose the user then says:
-
-> вариант устраивает. Примени в своей доступной копии проекта, собери и прогони тесты. Minor ошибки исправляй сам, но архитектуру и Domain decisions не меняй.
-
-That grants an Integration Attempt plus bounded minor-repair authority.
-
-### Minor repair example
-
-Suppose compilation reveals that the existing project factory is `CaptureItemId.create()` rather than `newId()` in the test.
-
-That is a local current-API mismatch. Under the granted repair authority:
-
-```text
-Evidence: compile error
-→ repair test call to CaptureItemId.create()
-→ RU-REAL-01 v2
-→ build/test retry
-```
-
-No upstream semantics changed.
-
-### Material Finding example
-
-Suppose an integration test instead reveals that the current persistence reconstruction can produce `SourceContext = null`, while the accepted Domain invariant forbids it.
-
-Do not silently weaken the Aggregate or redesign persistence merely to get green tests.
-
-A useful explicit loop may be:
-
-```text
-Problem:
-  existing persisted representation can reconstruct a state forbidden by accepted Domain meaning
-
-Evidence:
-  integration test fails when legacy record has no SourceContext
-
-Proposal A:
-  migrate persisted data / make representation non-null
-
-Proposal B:
-  introduce explicit legacy-state handling outside CaptureItem
-
-Risk:
-  migration may affect existing stored data
-```
-
-That material issue goes through Core Finding Disposition and the appropriate user/upstream Decision before `RU-REAL-01` changes.
-
-### Final review and destination
-
-After authorized repairs and successful practical checks, the user may request the complete current exact code again before applying it elsewhere. The reviewed final code is the same current `RU-REAL-01` intended for handoff/application.
-
-If the selected integration environment was already the intended local destination and mutation was authorized there, the successful Integration Attempt may already be the actual application. The methodology does not invent another mandatory copy step.
-
-## Lens Profile
-
-Generic required Core Pack is inherited from the [`Lens Registry`](../lenses/LENS-REGISTRY.md):
-
-- [`LENS-NEED-VALUE-SCOPE`](../lenses/required/LENS-NEED-VALUE-SCOPE.md)
-- [`LENS-AUTHORITY-SOT-REUSE`](../lenses/required/LENS-AUTHORITY-SOT-REUSE.md)
-- [`LENS-UNCERTAINTY-ASSUMPTION-REVERSIBILITY`](../lenses/required/LENS-UNCERTAINTY-ASSUMPTION-REVERSIBILITY.md)
-- [`LENS-ARTIFACT-BOUNDARY-ADDRESSABILITY`](../lenses/required/LENS-ARTIFACT-BOUNDARY-ADDRESSABILITY.md)
-
-The required Core [`LENS-PROPOSAL-DECISION-RESOLUTION-CONTEXT`](../lenses/required/LENS-PROPOSAL-DECISION-RESOLUTION-CONTEXT.md) is selected through the registry/checkpoint path only when a material Proposal/Decision surface exists; it is not a fixed Target-family attachment.
-
-Frequent conditional Core Lenses:
-
-- [`LENS-DEPENDENCY-CHANGE-IMPACT`](../lenses/frequent/LENS-DEPENDENCY-CHANGE-IMPACT.md) — destination/change surface.
-- [`LENS-VERIFIABILITY-OBSERVABILITY-OPERABILITY`](../lenses/frequent/LENS-VERIFIABILITY-OBSERVABILITY-OPERABILITY.md) — credible checks/diagnosis/operability.
-- [`LENS-QUALITY-RISK-MATERIALITY`](../lenses/frequent/LENS-QUALITY-RISK-MATERIALITY.md) — material quality/risk dimensions.
-
-The active profile may add Domain/DDD, UI/frontend, simplicity or other applicable Lenses through normal Lens applicability/selection resolution. Lens analysis may remain explanatory Broad Discussion; only material newly surfaced meaning that needs ownership/State/lifecycle disposition becomes a Finding Candidate.
-
 ## Validators / Guards
 
 ```text
 exact candidate is directly integrable at the chosen representation granularity
 accepted upstream meaning is not silently redefined
 current destination/current-state Sources were actually inspected or explicitly bounded
-integration/build/test activity occurred only under explicit authority
+integration/validation/execution activity occurred only under explicit authority
 repair occurred only when repair authority existed
 minor repair did not change architecture/Domain/product semantics/material upstream Decisions
 minor repair did not change out-of-scope owners
@@ -591,17 +453,18 @@ TM-PRACTICAL-TEST or another Evidence Target
 → may later study the real implemented subject/environment for acceptance/learning
 ```
 
-Candidate build/compile/static/automated/runtime checks performed while integrating `RU-REAL-01` are Core Evidence inside this Target. They do not automatically create an implemented-practical-Evidence Target.
+Candidate artifact-specific validation/integration/runtime checks performed while integrating `RU-REAL-01` are Core Evidence inside this Target. They do not automatically create an implemented-practical-Evidence Target.
 
 ## Artifact / File Contract
 
 The natural representation of `RU-REAL-01` is usually **implementation-native**:
 
 ```text
-code files / exact patch
+exact files / patch / payload
 config / schema / migration
 workflow / manifest
-exact destination artifact
+exact documentation replacement
+other exact destination artifact
 ```
 
 Do not create a Markdown planning file merely because this Target exists. Documentation / Representation + P-14 / PERSISTENCE_ADDRESSABILITY decides whether Decisions, rationale, unresolved Problems or review material need durable supporting representation beyond the implementation-native result.

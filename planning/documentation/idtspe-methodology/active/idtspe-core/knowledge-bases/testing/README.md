@@ -10,7 +10,7 @@ Responsibility ID: `KNOWLEDGE.TESTING`
 > Owner: [`Knowledge Basis Contract`](../KNOWLEDGE-BASIS-CONTRACT.md#knowledge-basis-contract)
 
 Status: active reusable theoretical Knowledge Basis
-Consumers: `LENS-TEST-PROOF-EVIDENCE`, natural owner-local proof planning, `TM-EXACT-REALIZATION`, and `TM-PRACTICAL-TEST` when real-subject evidence is required
+Consumers: `LENS-TEST-PROOF-EVIDENCE`, natural owner-local proof planning, the applicable literal/test realization owner (`TM-EXACT-REALIZATION` as generic fallback; a narrower active-profile owner when defined), and `TM-PRACTICAL-TEST` when real-subject evidence is required
 
 ## Purpose
 
@@ -27,8 +27,10 @@ Natural owner-local proof planning
 → may retain only independently useful proof intent/coordination
 → does not create a baseline Test Design/Test Strategy Target
 
-TM-EXACT-REALIZATION
+applicable literal/test realization owner
 → owns literal test code + authorized execution/repair
+→ generic/profile-neutral fallback: TM-EXACT-REALIZATION
+→ SDS source/test/codebase realization: TM-CODE-REALIZATION
 
 Core Evidence
 → owns what actually happened

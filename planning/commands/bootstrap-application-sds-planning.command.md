@@ -16,7 +16,7 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
     "bootstrap SDS planning"
   ],
   "description": "Load the SDS profile over IDTSPE Core.",
-  "meaning": "Refresh SDS governance over always-active IDTSPE Core: the 13 active SDS Target Modules plus optional inherited generic Core TM-PLANNING-RESOLUTION-STATE, TM-REVIEW-FINDINGS, TM-PROPOSAL-WORKUP, TM-PRE-UPDATE-PLAN and TM-EXACT-REALIZATION, the current SDS Lens pack, profile registry directory, semantic composition/readiness guidance and representation/materialization policy. This is governance bootstrap, not task-specific planning execution.",
+  "meaning": "Refresh SDS governance over always-active IDTSPE Core: the 14 active SDS Target Modules plus optional inherited generic Core TM-PLANNING-RESOLUTION-STATE, TM-REVIEW-FINDINGS, TM-PROPOSAL-WORKUP, TM-PRE-UPDATE-PLAN and TM-EXACT-REALIZATION, the current SDS Lens pack, profile registry directory, semantic composition/readiness guidance and representation/materialization policy. This is governance bootstrap, not task-specific planning execution.",
   "activeContextBehavior": "Load or refresh SDS profile governance only. The SDS README assumes the primary bootstrap is current; if not, follow its prerequisite back to planning/README.md first. Preserve current Use-Case-driven Work Context if one exists. Do not perform Target Formation, select a Target, infer CREATE/REFINE/EXTEND/REVALIDATE/REPAIR, or execute a Target Module merely because bootstrap was requested.",
   "traversalReadMode": "Reuse current reliable SDS governance and current IDTSPE Core context; targeted refresh of the selected owner route when uncertain; full SDS governance preflight only when no reliable sufficient governance context exists.",
   "ownerFiles": [
@@ -27,7 +27,7 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
   "permissionMode": "read-only",
   "keyReminders": [
     "Bootstrap is governance orientation only; IDTSPE is already active.",
-    "The active SDS baseline has 13 profile Target Modules plus 5 optional inherited generic Core Target Modules.",
+    "The active SDS baseline has 14 profile Target Modules plus 5 optional inherited generic Core Target Modules.",
     "SDS has no separate runtime methodology Use Cases in the current baseline; IDTSPE Use Cases compose SDS components.",
     "Do not infer a fixed Mini/Modular/Full workflow or mandatory Target sequence.",
     "This command grants no repository mutation, implementation, test, commit or push permission."

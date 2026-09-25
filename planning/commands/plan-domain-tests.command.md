@@ -14,7 +14,7 @@ Scope: historical invocation alias redirected to current IDTSPE/SDS authority; h
     "спланируй тесты домена"
   ],
   "description": "legacy compatibility shortcut for Domain-focused proof evaluation/planning",
-  "meaning": "Legacy Domain Test Design shortcut. TM-TEST-DESIGN is retired; apply LENS-TEST-PROOF-EVIDENCE to the current Domain proof need and keep any non-trivial proof plan transient with the Domain owner. Literal test realization routes to TM-EXACT-REALIZATION when requested/authorized.",
+  "meaning": "Legacy Domain Test Design shortcut. TM-TEST-DESIGN is retired; apply LENS-TEST-PROOF-EVIDENCE to the current Domain proof need and keep any non-trivial proof plan transient with the Domain owner. Literal test realization routes to TM-CODE-REALIZATION when requested/authorized.",
   "activeContextBehavior": "Treat this legacy trigger as explicit compatibility intent inside always-active IDTSPE. Re-evaluate current Use-Case composition and route only to the current owners listed here; preserve local applicability/materiality gates and do not revive the retired Target family.",
   "traversalReadMode": "Reuse current reliable IDTSPE/SDS governance; targeted refresh of the selected owner route when uncertain; full bootstrap only when no reliable sufficient governance context exists.",
   "ownerFiles": [
@@ -23,7 +23,7 @@ Scope: historical invocation alias redirected to current IDTSPE/SDS authority; h
     "planning/documentation/idtspe-methodology/active/idtspe-core/commands/IDTSPE-COMMAND-SURFACE-CONTRACT.md",
     "planning/documentation/idtspe-methodology/active/profiles/sds/commands/SDS-COMMAND-SURFACE-EXTENSION.md"
   ],
-  "expectedOutput": "Domain-focused proof finding/plan at the natural owner, optionally followed by Exact test realization; no Test Design Target.",
+  "expectedOutput": "Domain-focused proof finding/plan at the natural owner, optionally followed by Code test realization; no Test Design Target.",
   "permissionMode": "read-only-planning",
   "keyReminders": [
     "Legacy compatibility alias only; do not expose as a primary methodology surface.",
