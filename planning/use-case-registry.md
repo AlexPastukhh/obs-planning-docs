@@ -30,3 +30,12 @@ A scan does not execute a Use Case. Reuse current registry metadata while trustw
 Session ambient interaction rules are established through [`session/README.md`](session/README.md); Session currently owns no methodology-use UC family. Generic Documentation capabilities are discovered through [`documentation/`](documentation/) and its scoped registry. IDTSPE/SDS and other specialized areas own their own current semantic navigation and are not aggregated here.
 
 The exact pre-fundamental repository registry remains at [`legacy/use-case-registry.pre-fundamental-uc.md`](legacy/use-case-registry.pre-fundamental-uc.md) as provenance only.
+
+<a id="documentation-change-integration"></a>
+## Documentation Change Integration
+
+Routing entry for planned or applied documentation/methodology edits in this Helper repository, including small direct corrections. The linked Use Case owns the required assessment, no-impact closure and reuse criteria; scanning this registry selects applicable work without executing it.
+
+| ID | Use Case | Situation summary | Result summary | Owner |
+|---|---|---|---|---|
+| `UC-REPO-CHECK-HELPER-IMPACT` | Check Helper Impact | documentation/methodology files, identities, anchors or semantics change; explicit Helper-impact check | grounded no-impact result or affected projections/command candidates/update checks | [`use-cases/UC-REPO-CHECK-HELPER-IMPACT.md`](use-cases/UC-REPO-CHECK-HELPER-IMPACT.md) |

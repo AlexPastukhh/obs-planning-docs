@@ -104,7 +104,7 @@ The JSON is intentionally strict so repository writes, build-time validation and
 - `methodologyBinding` is optional **projection/dispatch metadata** for the current semantic surface (`IDTSPE`, profile, UC/TM/Lens surface kind, host-target policy). It never becomes a second semantic owner and does not encode Shell-port contracts.
 - `ownerFiles` are canonical owner/read routes, not command includes. `ownerRefs` refine that read route with exact Responsibility/anchor purpose; they still do not become executable includes.
 - `includes` paths are executable **command→command** dependency references only. They MUST resolve under `planning/commands/` to direct `.command.md` definitions. Do not place methodology/Use-Case/owner files in `includes`; those remain `ownerFiles` / `ownerRefs` / methodology handoffs.
-- `includes` is the only canonical command dependency relation. Do not add a second `extends`/inheritance graph for behavior already represented by dependency composition. Helper may derive `included by` from reverse include edges; commands sharing semantic lifecycle without prerequisite execution should point to the same owner/contracts instead.
+- `includes` is the canonical prerequisite relation. `processCalls` binds a called command to an explicit point of the caller’s canonical process under [Process Calls](#planning-command-process-calls). It is not inheritance or another prerequisite graph. Reverse `included by` remains derived only from `includes`. Shared lifecycle meaning stays in its natural owner.
 - `includes` is a declarative **command-composition dependency graph**. A command MUST NOT begin its own semantic action while its registered composition is still being discovered. Expand **all selected root commands/components and every transitive include first**, merge one DAG, reject cycles/unresolved command paths, deduplicate shared nodes, collect declarative contributions from every node, and only then execute dependencies before dependents. `includes` never means recursively run several independent passes.
 - Command composition MUST NOT maintain a parallel Shell-port ontology. Do not add durable numeric `requiredPorts`, `portRequirements`, `includeFiles` or similar lists. Named port/capability commands may contribute explicit requirements; `IDTSPE.PORT-COMPOSITION-REFRESH` resolves those requirements against the current Shell topology.
 
@@ -180,6 +180,46 @@ LENS-* command/card
 Named `idtspe.port.*` commands contribute an explicit named capability requirement. Generic `idtspe.target-module.apply` / `idtspe.lens.apply` contribute the reusable Meta-Model/registry/Unit-or-Finding machinery. Concrete TM/Lens cards add only their own selected Model reference; references inherited from the shared prefixes are not copied into every leaf card.
 
 The methodology remains independently executable without Helper/command projection: Use Cases, semantic owners and their natural handoffs define the process. Command composition is a reproducible traversal guarantee over those canonical owners, not a second source of methodology meaning.
+
+<a id="planning-command-process-calls"></a>
+## Calls Within A Process
+
+Responsibility: `COMMAND.DEFINITION-CONTRACT`. This section owns command invocation mechanics; the referenced processes continue to own applicability, order and semantic outcomes.
+
+Use `includes` for actions required before the caller’s own action. Use optional `processCalls` for explicit traversal at a point *within* that action, including result-dependent checks before handoff. A normal owner link remains sufficient for methodology execution; adding a process call guarantees the selected USER invocation follows that command’s complete route at the named point.
+
+```json
+{
+"processCalls": [{
+  "id": "helper-impact",
+  "commandPath": "planning/commands/check-helper-impact.command.md",
+  "at": {
+    "path": "planning/use-cases/UC-REPO-PLAN-UPDATE.md",
+    "anchor": "helper-impact-before-plan-handoff"
+  },
+  "when": "Apply the documentation/methodology destination gate at the referenced owner point.",
+  "context": "Use the current proposed file operations and their planning basis; incorporate the assessment before plan handoff."
+}]
+}
+```
+
+### Definition And Discovery
+
+- Each item requires exactly `id`, `commandPath`, `at {path, anchor}`, `when` and `context`. IDs are stable and unique within the caller; command paths resolve to direct registered definitions. The owner point is an existing unique explicit anchor. Conditions/context summarize the owner’s gate and current-input binding; they cannot introduce another algorithm or contradict the owner.
+- Fully discover and validate all reachable `includes` and `processCalls` before semantic work. Reject unresolved paths, self-calls and cycles in the union of both relations, including mixed cycles. Partial local caches may retain unresolved links, but an unresolved invocation must be resolved before execution.
+- Build the initial dependency DAG using only `includes`. Inventory deferred calls from every reachable command, including included commands and nested called commands. Do not put their actions or contributions into the initial DAG. Owner-process order determines when points are reached; multiple calls at the same point follow their array order.
+- Two different call IDs/points may call the same command. They remain separate invocation occurrences; static inventory deduplication of a definition does not skip later occurrences or pre-mark them complete.
+
+### Execute At The Owner Point, Then Resume
+
+1. On reaching the named point in an active caller occurrence, read/reuse its current owner contract and evaluate its gate. A required applicable call must complete before passing that point. A gate that cannot be resolved is `BLOCKED`. An inapplicable branch records `NOT_APPLICABLE` with basis. A point not reached is `NOT_REACHED`, never a successful check.
+2. Bind the current subject, scope, requested operation, input/output state and basis from the caller under `context`. Do not silently reuse stale user placeholders, select unrelated Targets or mix a proposed basis with an applied basis.
+3. Expand the called command’s complete transitive `includes` DAG, collect its contributions before its dependency actions, and execute dependencies before its own action. Its own nested process calls remain deferred until their points are reached. Follow every required owner/read route; an earlier prose link is not proof that work executed.
+4. Share the current Work Context and working trace. Reconcile newly selected capabilities at this boundary through their current owners. Child contributions apply to this child scope; they do not retroactively alter completed parent actions or leak child-only selection into the resumed caller. Root authority and user constraints remain the ceiling; child constraints may narrow them. No command edge grants mutation/commit/push permission.
+5. Reuse actual prior work only with evidence that subject, scope, operation, basis, applicable owners and coverage still match. This also covers required nested calls at reached points. A prior command ID or a previously read file alone is insufficient. Shared prerequisite checks can be reused proportionally; a changed basis requires the affected refresh. Avoid duplicate passes when the natural owner route already performed the same work.
+6. Record caller/call identity, point, effective context/basis, outcome (`EXECUTED`, `REUSED`, `NOT_APPLICABLE`, `BLOCKED` or `NOT_REACHED`) and evidence in the existing appropriate trace/result. Consume the result, restore the caller’s active context, and resume after the point. Reentering a point after material change reevaluates it; definition-level deduplication is not execution reuse.
+
+For example, the Pre-Update route invokes Helper Impact on **proposed** changes before closing the plan. After authorized realization, the natural projection workflow checks the **applied** basis. The first result does not prove the second. This declaration creates no extra review/pre-update coupling.
 
 ## Planning Helper Semantic Projection
 

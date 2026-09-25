@@ -51,6 +51,18 @@
       "includes": [
         "planning/commands/recheck-methodology-use-cases.command.md"
       ],
+      "processCalls": [
+        {
+          "id": "helper-impact",
+          "commandPath": "planning/commands/check-helper-impact.command.md",
+          "at": {
+            "path": "planning/use-cases/UC-REPO-MAINTAIN-PLANNING-COMMAND.md",
+            "anchor": "helper-impact-before-command-handoff"
+          },
+          "when": "Apply the Helper repository documentation/methodology change gate at this owner point; record an evidenced NOT_APPLICABLE only when that gate does not apply.",
+          "context": "Use the concrete command delta and its current planned or applied basis; incorporate the impact result into projection synchronization and handoff."
+        }
+      ],
       "compositionContributions": [],
       "expectedOutput": "One valid current direct Planning Command with the correct semantic owner route, aliases, permissions and output contract; only the affected Planning Helper projection/runtime classification is changed where needed, generated artifacts are rebuilt rather than hand-edited, and catalog/build/test/verify checks pass.",
       "permissionMode": "bounded-repository-write-no-commit-push",
@@ -122,6 +134,7 @@
       "includes": [
         "planning/commands/idtspe-port-lens.command.md"
       ],
+      "processCalls": [],
       "compositionContributions": [],
       "expectedOutput": "`APPLIED` result for the explicitly requested Lens operation over the bounded Analysis Surface, including explanatory relevance/applicability context and any material Finding Candidates. `APPLIED — no material finding / no useful change` is valid even when Base Applicability would otherwise be confidently false. Core Finding Disposition resolves any Evidence/Proposal/Q-R-P/Decision/owner/revalidation consequences; no Target is manufactured merely to host the Lens.",
       "permissionMode": "read-only-planning",
@@ -259,6 +272,7 @@
       "includes": [
         "planning/commands/idtspe-port-target.command.md"
       ],
+      "processCalls": [],
       "compositionContributions": [],
       "expectedOutput": "Selected Target Module Model application through the current Target, including the resulting model-defined Target Module Instance portion when the Model is actually applied.",
       "permissionMode": "read-only-planning",
@@ -324,6 +338,7 @@
         "planning/commands/idtspe-port-lens.command.md",
         "planning/commands/select-idtspe-lenses.command.md"
       ],
+      "processCalls": [],
       "compositionContributions": [],
       "expectedOutput": "Proportional results for the currently selected `(Lens Model, Analysis Surface, Operation, basis)` applications, including only material Finding Candidates and their canonical disposition handoff.",
       "permissionMode": "read-only-planning",
@@ -381,6 +396,7 @@
       "includes": [
         "planning/commands/recheck-methodology-use-cases.command.md"
       ],
+      "processCalls": [],
       "compositionContributions": [],
       "expectedOutput": "Compact SDS profile assimilation with current/next owner context when any; no task-specific Target is invented.",
       "permissionMode": "read-only",
@@ -436,6 +452,7 @@
       "includes": [
         "planning/commands/recheck-methodology-use-cases.command.md"
       ],
+      "processCalls": [],
       "compositionContributions": [],
       "expectedOutput": "Primary bootstrap current through IDTSPE Core, with Session/Documentation/Core boundaries understood and no profile selected by bootstrap.",
       "permissionMode": "read-only-planning",
@@ -505,6 +522,7 @@
       "includes": [
         "planning/commands/recheck-methodology-use-cases.command.md"
       ],
+      "processCalls": [],
       "compositionContributions": [],
       "expectedOutput": "One review-only Proposal Workspace Archive: coherent final-shaped workspace paths, PRS with semantic status and recursive Proposal/Q/R/P graph, view identity/basis/scope, and navigation. No Replacement Package payload or automatic selection/persistence.",
       "permissionMode": "artifact-no-commit-push",
@@ -557,6 +575,7 @@
       "includes": [
         "planning/commands/recheck-methodology-use-cases.command.md"
       ],
+      "processCalls": [],
       "compositionContributions": [],
       "expectedOutput": "One full replacement ZIP plus one short structured OBS-ACTION containing action, name, archive and packageId; for new independent target-mode work include exact PACKAGE.json workIntent and exact targetBranch so the consumer can automatically ensure GitHub Work Intent → workspace → Apply → Commit → Publish. A continuation of an already-existing legacy ChangeSet may omit targetBranch for compatibility. packageId matches PACKAGE.json; chatTabTitle is included only when an exact intended title was explicitly supplied/selected; complete replacement/base payloads required by the package contract; no local apply/diff/finalization commands.",
       "permissionMode": "package-no-commit-push",
@@ -611,6 +630,7 @@
       "includes": [
         "planning/commands/apply-idtspe-lens.command.md"
       ],
+      "processCalls": [],
       "compositionContributions": [],
       "expectedOutput": "NO_PERSISTENCE / IMPLEMENTATION_NATIVE / existing owner / consolidated artifact / justified split / generated-derived decision, then P-14 placement.",
       "permissionMode": "read-only-planning",
@@ -664,6 +684,7 @@
       "includes": [
         "planning/commands/apply-idtspe-lens.command.md"
       ],
+      "processCalls": [],
       "compositionContributions": [],
       "expectedOutput": "Evolution / Change-Isolation findings routed through Core Finding Disposition to the natural owner; independently material workspace-architecture work routes to normal Architecture Planning / Target Formation.",
       "permissionMode": "read-only-planning",
@@ -685,6 +706,53 @@
         "parentSurface": null,
         "hostTargetPolicy": "RESOLVE_OR_REUSE_TARGET"
       },
+      "refinements": []
+    },
+    {
+      "schemaVersion": 1,
+      "id": "helper.impact.check",
+      "file": "check-helper-impact.command.md",
+      "command": "проверь влияние изменений на хелпер",
+      "englishName": "check helper impact",
+      "commandFamily": [
+        "проверь влияние изменений на хелпер",
+        "проверь влияние документации на хелпер",
+        "check helper impact"
+      ],
+      "description": "Assess documentation changes against Helper routes and projections",
+      "meaning": "Execute UC-REPO-CHECK-HELPER-IMPACT on the supplied proposed/applied change basis.",
+      "activeContextBehavior": "Reuse the bounded current change context; state plan-versus-applied basis and missing evidence. Do not require a new Target.",
+      "traversalReadMode": "Read the impact Use Case and inspect only affected command/registry/owner/projection inputs required by its process.",
+      "ownerFiles": [
+        "planning/use-cases/UC-REPO-CHECK-HELPER-IMPACT.md"
+      ],
+      "ownerRefs": [
+        {
+          "responsibilityId": "HELPER.CHANGE-IMPACT",
+          "path": "planning/use-cases/UC-REPO-CHECK-HELPER-IMPACT.md",
+          "anchor": "uc-repo-check-helper-impact",
+          "why": "Owns impact assessment, command-candidate routing, no-impact evidence and actual-change recheck.",
+          "role": "PRIMARY_OWNER",
+          "readMode": "REQUIRED"
+        }
+      ],
+      "includes": [
+        "planning/commands/recheck-methodology-use-cases.command.md"
+      ],
+      "processCalls": [],
+      "compositionContributions": [],
+      "expectedOutput": "Evidence-backed no-impact result or concrete affected references/catalogs, useful command candidates and update/verification requirements; distinguish planned and executed checks.",
+      "permissionMode": "read-only-planning",
+      "keyReminders": [
+        "Check both existing references and reachability of newly introduced capabilities.",
+        "Apply the linked process; do not duplicate its checklist in this command.",
+        "No new command, rebuild, repository mutation, commit or push is automatically authorized.",
+        "Documentation mutation processes call the impact owner by a process link, not by a prerequisite includes edge."
+      ],
+      "userTarget": "<proposed/applied documentation change, diff or file scope>",
+      "palette": true,
+      "helperPresentation": null,
+      "methodologyBinding": null,
       "refinements": []
     },
     {
@@ -717,6 +785,7 @@
       "includes": [
         "planning/commands/apply-idtspe-lens.command.md"
       ],
+      "processCalls": [],
       "compositionContributions": [],
       "expectedOutput": "REMOVE/MERGE/INLINE/REUSE/DEFER/MOVE candidates and retained-complexity rationale in the natural owner.",
       "permissionMode": "read-only-planning",
@@ -735,6 +804,60 @@
         "surfaceKind": "LENS",
         "targetModuleId": null,
         "lensId": "LENS-SIMPLICITY-IMPLEMENTATION-ECONOMY",
+        "parentSurface": null,
+        "hostTargetPolicy": "RESOLVE_OR_REUSE_TARGET"
+      },
+      "refinements": []
+    },
+    {
+      "schemaVersion": 1,
+      "id": "lenscmd.unit.centric.presentation.check",
+      "file": "check-unit-centric-presentation.command.md",
+      "command": "проверь представление таргета",
+      "englishName": "check target presentation",
+      "commandFamily": [
+        "проверь представление таргета",
+        "проверь юнит-центричность",
+        "check target presentation"
+      ],
+      "description": "Check Unit visibility and supporting-context disclosure",
+      "meaning": "Apply LENS-UNIT-CENTRIC-PRESENTATION with CHECK to the supplied Target presentation; return located findings and proposed formatting adjustments under its criteria.",
+      "activeContextBehavior": "Reuse the supplied Target presentation/owner context. Do not create a Target merely to check formatting. Preserve accepted content and authority.",
+      "traversalReadMode": "Read the selected Lens and its required owner references; reuse current shared governance from the included Lens dispatcher.",
+      "ownerFiles": [
+        "planning/documentation/idtspe-methodology/active/idtspe-core/lenses/frequent/LENS-UNIT-CENTRIC-PRESENTATION.md"
+      ],
+      "ownerRefs": [
+        {
+          "responsibilityId": "LENS-UNIT-CENTRIC-PRESENTATION",
+          "path": "planning/documentation/idtspe-methodology/active/idtspe-core/lenses/frequent/LENS-UNIT-CENTRIC-PRESENTATION.md",
+          "anchor": "lens-unit-centric-presentation",
+          "why": "Owns the presentation criteria and CHECK method; shared Lens lifecycle/registry routes are inherited from the dispatcher.",
+          "role": "PRIMARY_OWNER",
+          "readMode": "REQUIRED"
+        }
+      ],
+      "includes": [
+        "planning/commands/apply-idtspe-lens.command.md"
+      ],
+      "processCalls": [],
+      "compositionContributions": [],
+      "expectedOutput": "Presentation check with precise locations, suggested corrections and any renderer uncertainty; a checked no-change result is valid.",
+      "permissionMode": "read-only-planning",
+      "keyReminders": [
+        "Use CHECK for this shortcut; generic Lens invocation remains available for other supported operations.",
+        "All disclosure criteria are owned by the linked Lens.",
+        "Do not create a Target or mutate files under this check command."
+      ],
+      "userTarget": "<Target presentation / document / chat result>",
+      "palette": true,
+      "helperPresentation": null,
+      "methodologyBinding": {
+        "methodologyRuntime": "IDTSPE",
+        "profile": null,
+        "surfaceKind": "LENS",
+        "targetModuleId": null,
+        "lensId": "LENS-UNIT-CENTRIC-PRESENTATION",
         "parentSurface": null,
         "hostTargetPolicy": "RESOLVE_OR_REUSE_TARGET"
       },
@@ -773,6 +896,7 @@
       "includes": [
         "planning/commands/recheck-methodology-use-cases.command.md"
       ],
+      "processCalls": [],
       "compositionContributions": [],
       "expectedOutput": "Current IDTSPE/SDS owner updates/findings for the selected Application context, with material Q/R/P/Decisions and downstream handoffs; no legacy Application Current Plan accumulator.",
       "permissionMode": "read-only-planning",
@@ -820,6 +944,7 @@
       "includes": [
         "planning/commands/recheck-methodology-use-cases.command.md"
       ],
+      "processCalls": [],
       "compositionContributions": [],
       "expectedOutput": "Transient Domain discovery plus the correct temporal handoff: Evolution Step Target Domain Body for selected-but-unrealized meaning, or current Domain-owner revalidation for realized truth. No legacy Domain-Ideas accumulator or shallow/deep family split.",
       "permissionMode": "read-only-planning",
@@ -867,6 +992,7 @@
       "includes": [
         "planning/commands/recheck-methodology-use-cases.command.md"
       ],
+      "processCalls": [],
       "compositionContributions": [],
       "expectedOutput": "The smallest useful IDTSPE response to the supplied material: Broad Discussion/Key Points and material State/Target consequences only when useful. No legacy Current Plan or collect-ideas ledger.",
       "permissionMode": "read-only-planning",
@@ -926,6 +1052,7 @@
         "planning/commands/recheck-idtspe-port-composition.command.md",
         "planning/commands/include-idtspe-trace-port.command.md"
       ],
+      "processCalls": [],
       "compositionContributions": [],
       "expectedOutput": "A grounded set of Need Candidates with exact USER/Source provenance and normalized wanted outcome, without premature owner/solution selection.",
       "permissionMode": "read-only-planning",
@@ -983,6 +1110,7 @@
       "includes": [
         "planning/commands/recheck-methodology-use-cases.command.md"
       ],
+      "processCalls": [],
       "compositionContributions": [],
       "expectedOutput": "Normal current IDTSPE/SDS results for the material Application Targets plus representation/placement decisions when useful; no Modular Current Plan accumulator.",
       "permissionMode": "read-only-planning",
@@ -1029,6 +1157,7 @@
       "includes": [
         "planning/commands/recheck-methodology-use-cases.command.md"
       ],
+      "processCalls": [],
       "compositionContributions": [],
       "expectedOutput": "Current Scenario Journey Composition with actor/context, Feature/result links, journey order/branches/re-entry, continuity, one-or-more Benefit manifestation/closure points when material and only material journey-level must-holds/E2E intent; no legacy Scenario-Ideas accumulator or duplicated Feature behavior/data.",
       "permissionMode": "read-only-planning",
@@ -1076,6 +1205,7 @@
       "includes": [
         "planning/commands/recheck-methodology-use-cases.command.md"
       ],
+      "processCalls": [],
       "compositionContributions": [],
       "expectedOutput": "Current Broad Discussion or transient Slice Discovery result with material dependencies/proof/evolution handoffs; no legacy Slice Strategy/Ideas accumulator.",
       "permissionMode": "read-only-planning",
@@ -1131,6 +1261,7 @@
         "planning/commands/include-idtspe-trace-port.command.md",
         "planning/commands/recheck-methodology-use-cases.command.md"
       ],
+      "processCalls": [],
       "compositionContributions": [],
       "expectedOutput": "A current proportional IDTSPE methodology composition ready for Port Composition Refresh; this may validly remain Broad Discussion only.",
       "permissionMode": "read-only-planning",
@@ -1194,6 +1325,7 @@
         "planning/commands/include-idtspe-trace-port.command.md",
         "planning/commands/idtspe-port-result.command.md"
       ],
+      "processCalls": [],
       "compositionContributions": [],
       "expectedOutput": "Current Target Step Result projection with complete applicable Unit inventory/dispositions and coherent result content.",
       "permissionMode": "read-only-planning",
@@ -1243,6 +1375,7 @@
       "includes": [
         "planning/commands/include-idtspe-trace-port.command.md"
       ],
+      "processCalls": [],
       "compositionContributions": [
         {
           "kind": "TRACE_SINK_PREFERENCE",
@@ -1300,6 +1433,7 @@
       "includes": [
         "planning/commands/include-idtspe-trace-port.command.md"
       ],
+      "processCalls": [],
       "compositionContributions": [
         {
           "kind": "TRACE_SINK_PREFERENCE",
@@ -1378,6 +1512,7 @@
       "includes": [
         "planning/commands/recheck-methodology-use-cases.command.md"
       ],
+      "processCalls": [],
       "compositionContributions": [],
       "expectedOutput": "A bounded adversarial critique grounded in checked owners/evidence. It may surface candidate concerns, Proposals or Q/R/P as appropriate, but it must not claim complete IDTSPE Review Coverage or completed Finding Disposition unless that lifecycle was explicitly entered. ReviewDiff targets still follow the ReviewDiff semantic-review workflow.",
       "permissionMode": "read-only",
@@ -1427,6 +1562,7 @@
       "includes": [
         "planning/commands/recheck-methodology-use-cases.command.md"
       ],
+      "processCalls": [],
       "compositionContributions": [],
       "expectedOutput": "Concise current state separating repo, local and unknown, plus next safe action.",
       "permissionMode": "read-only",
@@ -1473,6 +1609,7 @@
       "includes": [
         "planning/commands/apply-idtspe-target-module.command.md"
       ],
+      "processCalls": [],
       "compositionContributions": [],
       "expectedOutput": "Application Definition with selected contribution, Application Benefits each carrying its own Responsibility Boundary, representative real-life examples when useful, a concise Application Concept, proportional feasibility, and material Q/R/P/Decisions.",
       "permissionMode": "read-only-planning",
@@ -1569,6 +1706,7 @@
         "planning/commands/include-idtspe-trace-port.command.md",
         "planning/commands/idtspe-port-target.command.md"
       ],
+      "processCalls": [],
       "compositionContributions": [],
       "expectedOutput": "One justified Contextual Unit Definition or an explicit decision not to create one because existing coverage/responsibility is sufficient.",
       "permissionMode": "read-only-planning",
@@ -1625,6 +1763,7 @@
         "planning/commands/idtspe-port-target.command.md",
         "planning/commands/apply-idtspe-target-module.command.md"
       ],
+      "processCalls": [],
       "compositionContributions": [],
       "expectedOutput": "Refined semantic application entry/result boundary, concrete step-by-step end-to-end realization, Feature integration proof and material Evolution/OPEN pressure for the same Slice Discovery Target; no new Target identity.",
       "permissionMode": "read-only-planning",
@@ -1683,6 +1822,7 @@
       "includes": [
         "planning/commands/recheck-methodology-use-cases.command.md"
       ],
+      "processCalls": [],
       "compositionContributions": [],
       "expectedOutput": "Established development governance route: selected planning Workspace Use Case and/or application Scenario/current owner plus documentation owner when docs are affected; no mutation permission implied.",
       "permissionMode": "read-only",
@@ -1734,6 +1874,7 @@
         "planning/commands/idtspe-port-target.command.md",
         "planning/commands/apply-idtspe-target-module.command.md"
       ],
+      "processCalls": [],
       "compositionContributions": [],
       "expectedOutput": "Scenario Target candidates/boundary decisions and selected/reused TM-SCENARIO-PLANNING owners; any catalog/index is navigation only.",
       "permissionMode": "read-only-planning",
@@ -1788,6 +1929,7 @@
       "includes": [
         "planning/commands/apply-idtspe-target-module.command.md"
       ],
+      "processCalls": [],
       "compositionContributions": [],
       "expectedOutput": "Domain Discovery Working Plan with proportional findings/candidates, material rules/invariants/boundaries and Core State. For unrealized work, selected useful Result Content hands off to the applicable Evolution Impact(s) in the active Evolution Step; zero/one/several Target Domain Bodies are formed only when durable post-Step Domain meaning is sufficiently resolved. Direct current Domain-owner handoff applies only to realized/current-state revalidation. A zero-owner/body result remains valid.",
       "permissionMode": "read-only-planning",
@@ -1842,6 +1984,7 @@
       "includes": [
         "planning/commands/recheck-methodology-use-cases.command.md"
       ],
+      "processCalls": [],
       "compositionContributions": [],
       "expectedOutput": "Contextual future-change instances, likelihood/horizon/value/confidence and expected change-path/friction evidence for Architecture Planning.",
       "permissionMode": "read-only-planning",
@@ -1891,6 +2034,7 @@
       "includes": [
         "planning/commands/recheck-methodology-use-cases.command.md"
       ],
+      "processCalls": [],
       "compositionContributions": [],
       "expectedOutput": "Important current canonical Workspace UCs + architecture-relevant candidate useful results/types + relevance/frequency/importance/cost evidence when useful + canonical Workspace Planning handoff when establishment/change/topology is required.",
       "permissionMode": "read-only",
@@ -1951,6 +2095,7 @@
         "planning/commands/recheck-idtspe-port-composition.command.md",
         "planning/commands/include-idtspe-trace-port.command.md"
       ],
+      "processCalls": [],
       "compositionContributions": [],
       "expectedOutput": "Each existing Finding Candidate is dispositioned, merged/marked non-material, blocked/deferred explicitly, or routed to its natural owner/lifecycle; every material Finding has a linked IDTSPE Proposal. RE-0 proposals record deterministic correction routes, RE-1 proposals record local realization candidates, RE-2/RE-4 carry formal semantic-change candidates, and RE-3 proposals remain BLOCKED_BY_REVALIDATION until revalidation refines them. Proposal persistence is not required and no producer review is rerun merely to disposition it.",
       "permissionMode": "read-only-planning",
@@ -2010,6 +2155,7 @@
         "planning/commands/recheck-idtspe-port-composition.command.md",
         "planning/commands/include-idtspe-trace-port.command.md"
       ],
+      "processCalls": [],
       "compositionContributions": [],
       "expectedOutput": "Each collected Need Candidate has a grounded interpretation, current-coverage result, smallest plausible semantic owner and canonical next route or explicit unresolved/blocking state.",
       "permissionMode": "read-only-planning",
@@ -2067,6 +2213,7 @@
       "includes": [
         "planning/commands/recheck-methodology-use-cases.command.md"
       ],
+      "processCalls": [],
       "compositionContributions": [],
       "expectedOutput": "Full replacement archive containing only the active operational-day file plus apply/diff commands; user pastes diff before commit.",
       "permissionMode": "package-no-commit-push",
@@ -2118,6 +2265,7 @@
         "planning/commands/idtspe-port-target.command.md",
         "planning/commands/apply-idtspe-target-module.command.md"
       ],
+      "processCalls": [],
       "compositionContributions": [],
       "expectedOutput": "Refinement of Responsibility Boundary on the affected Application Benefit(s), including cross-Benefit consistency when material, without creating a standalone Responsibility Boundary Result Unit.",
       "permissionMode": "read-only-planning",
@@ -2173,6 +2321,7 @@
         "planning/commands/include-idtspe-trace-port.command.md",
         "planning/commands/idtspe-port-branch.command.md"
       ],
+      "processCalls": [],
       "compositionContributions": [],
       "expectedOutput": "Bounded Branch exploration/comparison result or CHECKED_NO_RESULT when branch depth is not justified.",
       "permissionMode": "read-only-planning",
@@ -2235,6 +2384,7 @@
         "planning/commands/recheck-idtspe-port-composition.command.md",
         "planning/commands/include-idtspe-trace-port.command.md"
       ],
+      "processCalls": [],
       "compositionContributions": [],
       "expectedOutput": "The smallest useful ordinary methodology action is performed under current permissions; optional Target/Unit/Lens/Checkpoint structure is introduced only when material.",
       "permissionMode": "read-only-planning",
@@ -2325,6 +2475,7 @@
         "planning/commands/include-idtspe-trace-port.command.md",
         "planning/commands/idtspe-port-decision.command.md"
       ],
+      "processCalls": [],
       "compositionContributions": [],
       "expectedOutput": "Actual selected material Decisions are identified without promoting AI-only candidates, their exact selected meaning/integration owner and material QRPE disposition are clear, separate Decision records are represented only as admitted PRS items under the Core retention contract, and surviving residual/revalidation state is discoverable through Carry-Forward.",
       "permissionMode": "read-only-planning-unless-separately-authorized",
@@ -2390,6 +2541,7 @@
         "planning/commands/recheck-idtspe-port-composition.command.md",
         "planning/commands/include-idtspe-trace-port.command.md"
       ],
+      "processCalls": [],
       "compositionContributions": [],
       "expectedOutput": "One grounded Generic AI Proposal (GIP) for the smallest useful next methodology action, with concise basis/alternatives/recheck trigger only when useful; no proposed action executed. Any route visibility comes from P-02.",
       "permissionMode": "read-only-planning",
@@ -2454,6 +2606,7 @@
         "planning/commands/recheck-idtspe-port-composition.command.md",
         "planning/commands/include-idtspe-trace-port.command.md"
       ],
+      "processCalls": [],
       "compositionContributions": [
         {
           "kind": "PORT_CAPABILITY_REQUIREMENT",
@@ -2523,6 +2676,7 @@
         "planning/commands/recheck-idtspe-port-composition.command.md",
         "planning/commands/include-idtspe-trace-port.command.md"
       ],
+      "processCalls": [],
       "compositionContributions": [
         {
           "kind": "PORT_CAPABILITY_REQUIREMENT",
@@ -2592,6 +2746,7 @@
         "planning/commands/recheck-idtspe-port-composition.command.md",
         "planning/commands/include-idtspe-trace-port.command.md"
       ],
+      "processCalls": [],
       "compositionContributions": [
         {
           "kind": "PORT_CAPABILITY_REQUIREMENT",
@@ -2661,6 +2816,7 @@
         "planning/commands/recheck-idtspe-port-composition.command.md",
         "planning/commands/include-idtspe-trace-port.command.md"
       ],
+      "processCalls": [],
       "compositionContributions": [
         {
           "kind": "PORT_CAPABILITY_REQUIREMENT",
@@ -2730,6 +2886,7 @@
         "planning/commands/recheck-idtspe-port-composition.command.md",
         "planning/commands/include-idtspe-trace-port.command.md"
       ],
+      "processCalls": [],
       "compositionContributions": [
         {
           "kind": "PORT_CAPABILITY_REQUIREMENT",
@@ -2799,6 +2956,7 @@
         "planning/commands/recheck-idtspe-port-composition.command.md",
         "planning/commands/include-idtspe-trace-port.command.md"
       ],
+      "processCalls": [],
       "compositionContributions": [
         {
           "kind": "PORT_CAPABILITY_REQUIREMENT",
@@ -2868,6 +3026,7 @@
         "planning/commands/recheck-idtspe-port-composition.command.md",
         "planning/commands/include-idtspe-trace-port.command.md"
       ],
+      "processCalls": [],
       "compositionContributions": [
         {
           "kind": "PORT_CAPABILITY_REQUIREMENT",
@@ -2937,6 +3096,7 @@
         "planning/commands/recheck-idtspe-port-composition.command.md",
         "planning/commands/include-idtspe-trace-port.command.md"
       ],
+      "processCalls": [],
       "compositionContributions": [
         {
           "kind": "PORT_CAPABILITY_REQUIREMENT",
@@ -3006,6 +3166,7 @@
         "planning/commands/recheck-idtspe-port-composition.command.md",
         "planning/commands/include-idtspe-trace-port.command.md"
       ],
+      "processCalls": [],
       "compositionContributions": [
         {
           "kind": "PORT_CAPABILITY_REQUIREMENT",
@@ -3075,6 +3236,7 @@
         "planning/commands/recheck-idtspe-port-composition.command.md",
         "planning/commands/include-idtspe-trace-port.command.md"
       ],
+      "processCalls": [],
       "compositionContributions": [
         {
           "kind": "PORT_CAPABILITY_REQUIREMENT",
@@ -3144,6 +3306,7 @@
         "planning/commands/recheck-idtspe-port-composition.command.md",
         "planning/commands/include-idtspe-trace-port.command.md"
       ],
+      "processCalls": [],
       "compositionContributions": [
         {
           "kind": "PORT_CAPABILITY_REQUIREMENT",
@@ -3213,6 +3376,7 @@
         "planning/commands/recheck-idtspe-port-composition.command.md",
         "planning/commands/include-idtspe-trace-port.command.md"
       ],
+      "processCalls": [],
       "compositionContributions": [
         {
           "kind": "PORT_CAPABILITY_REQUIREMENT",
@@ -3283,6 +3447,7 @@
         "planning/commands/recheck-idtspe-port-composition.command.md",
         "planning/commands/include-idtspe-trace-port.command.md"
       ],
+      "processCalls": [],
       "compositionContributions": [
         {
           "kind": "PORT_CAPABILITY_REQUIREMENT",
@@ -3413,6 +3578,7 @@
         "planning/commands/include-idtspe-trace-port.command.md",
         "planning/commands/idtspe-port-proposal.command.md"
       ],
+      "processCalls": [],
       "compositionContributions": [],
       "expectedOutput": "Material Proposals requested from current context or supplied Findings are formed and reviewable with truthful relation to their driver/owner and selectable/blocked state. Findings have linked Proposals without requiring persisted files; RE-3 remains BLOCKED_BY_REVALIDATION; semantic-change candidates remain UNSELECTED until actual authority selects them.",
       "permissionMode": "read-only-planning-unless-separately-authorized",
@@ -3478,6 +3644,7 @@
       "includes": [
         "planning/commands/recheck-methodology-use-cases.command.md"
       ],
+      "processCalls": [],
       "compositionContributions": [
         {
           "kind": "WORKING_TRACE_REQUIRED",
@@ -3538,6 +3705,7 @@
       "includes": [
         "planning/commands/recheck-methodology-use-cases.command.md"
       ],
+      "processCalls": [],
       "compositionContributions": [],
       "expectedOutput": "Target-local planned-evolution/change-isolation findings, or an explicit handoff to Workspace Architecture Planning when the scope is independently global.",
       "permissionMode": "read-only-planning",
@@ -3585,6 +3753,7 @@
       "includes": [
         "planning/commands/recheck-methodology-use-cases.command.md"
       ],
+      "processCalls": [],
       "compositionContributions": [],
       "expectedOutput": "The selected current methodology Use-Case Result for the user target, with owner-route semantics and permission boundary preserved.",
       "permissionMode": "read-only-unless-selected-uc-route-explicitly-authorizes-more",
@@ -3635,6 +3804,7 @@
         "planning/commands/idtspe-port-target.command.md",
         "planning/commands/apply-idtspe-target-module.command.md"
       ],
+      "processCalls": [],
       "compositionContributions": [],
       "expectedOutput": "Concept-focused Application Definition refinement: a concise summary of what the Application is, why it is needed / its overall Benefit, and briefly how it roughly works, with material Q/R/P only when needed.",
       "permissionMode": "read-only-planning",
@@ -3689,6 +3859,7 @@
       "includes": [
         "planning/commands/apply-idtspe-target-module.command.md"
       ],
+      "processCalls": [],
       "compositionContributions": [],
       "expectedOutput": "One Scenario Journey Composition (RU-SCEN-01): actor/context, participating Feature/result links, journey order/branches/re-entry, continuity, one-or-more Benefit manifestation/closure points when material, only material journey must-holds and optional E2E Proof Intent, plus proportional Core State.",
       "permissionMode": "read-only-planning",
@@ -3743,6 +3914,7 @@
       "includes": [
         "planning/commands/apply-idtspe-target-module.command.md"
       ],
+      "processCalls": [],
       "compositionContributions": [],
       "expectedOutput": "Applicable Slice Discovery Working Plan projection: RU-SLICE-01 Whole-Slice Responsibility / Candidate Structure; RU-SLICE-02 Semantic Application Entry / Result Boundary; RU-SLICE-03 Step-by-Step End-to-End Realization; RU-SLICE-04 Feature Integration Proof; RU-SLICE-05 Evolution / OPEN Slice Pressure. For unrealized work, selected useful Result Content hands off to applicable Slice/Domain/Shared Evolution Impact(s); Target Slice/Domain/Shared Bodies are formed only when durable post-Step responsibility is sufficiently resolved. For already-realized truth, route to current-owner revalidation.",
       "permissionMode": "read-only-planning",
@@ -3815,6 +3987,7 @@
       "includes": [
         "planning/commands/recheck-methodology-use-cases.command.md"
       ],
+      "processCalls": [],
       "compositionContributions": [],
       "expectedOutput": "Selected architecture meaning for natural Unit integration + affected-path conclusion + rejected complexity/revisit trigger when useful; a separate retained record follows Core retention/PRS contracts.",
       "permissionMode": "read-only",
@@ -3874,6 +4047,7 @@
       "includes": [
         "planning/commands/recheck-methodology-use-cases.command.md"
       ],
+      "processCalls": [],
       "compositionContributions": [],
       "expectedOutput": "A command family/type/name/owner/registry/example/projection plan; hand off to TM-PRE-UPDATE-PLAN only when a separately reviewable concrete repository transition is actually useful.",
       "permissionMode": "plan-only",
@@ -3921,6 +4095,7 @@
       "includes": [
         "planning/commands/apply-idtspe-target-module.command.md"
       ],
+      "processCalls": [],
       "compositionContributions": [],
       "expectedOutput": "A Shared Capability result in the correct temporal host: current owner for realized reusable responsibility or Target Shared Body for unrealized future responsibility; otherwise a natural-owner/local result. No retired Cross-Cutting Target is created.",
       "permissionMode": "read-only-planning",
@@ -3942,6 +4117,66 @@
         "parentSurface": null,
         "hostTargetPolicy": "CREATE_OR_REUSE_TARGET"
       },
+      "refinements": []
+    },
+    {
+      "schemaVersion": 1,
+      "id": "documentation.change.plan",
+      "file": "plan-documentation-change.command.md",
+      "command": "спланируй изменение документации",
+      "englishName": "plan documentation change",
+      "commandFamily": [
+        "спланируй изменение документации",
+        "спланируй изменение методологии",
+        "plan documentation change",
+        "plan methodology change"
+      ],
+      "description": "Plan a documentation or methodology change through its existing Use Case",
+      "meaning": "Invoke UC-DOC-PLAN-DOCUMENTATION-CHANGE through its current owner Process. Resolve documentation meaning, ownership and affected projections to the depth needed for exact realization; the Use Case remains semantic authority.",
+      "activeContextBehavior": "Use the current documentation/methodology change need and accepted context. Follow UC-DOC-PLAN-DOCUMENTATION-CHANGE, including its applicability and proportionality. Preserve the current IDTSPE Work Context. This is planning; do not invent a separate Target or restart settled upstream work merely because a command was selected.",
+      "traversalReadMode": "Resolve the current UC through the Methodology Use-Case Registry Map and its documentation registry, then read/reuse the owner and relevant downstream contracts proportionally.",
+      "ownerFiles": [
+        "planning/documentation/use-cases/UC-DOC-PLAN-DOCUMENTATION-CHANGE.md"
+      ],
+      "ownerRefs": [
+        {
+          "responsibilityId": "UC-DOC-PLAN-DOCUMENTATION-CHANGE",
+          "path": "planning/documentation/use-cases/UC-DOC-PLAN-DOCUMENTATION-CHANGE.md",
+          "anchor": "uc-doc-plan-documentation-change-plan-repository-documentation-change",
+          "why": "Owns documentation/methodology change planning, semantic boundaries and downstream handoffs.",
+          "role": "PRIMARY_OWNER",
+          "readMode": "REQUIRED"
+        }
+      ],
+      "includes": [
+        "planning/commands/recheck-methodology-use-cases.command.md"
+      ],
+      "processCalls": [
+        {
+          "id": "helper-impact",
+          "commandPath": "planning/commands/check-helper-impact.command.md",
+          "at": {
+            "path": "planning/documentation/use-cases/UC-DOC-PLAN-DOCUMENTATION-CHANGE.md",
+            "anchor": "doc-helper-impact-before-handoff"
+          },
+          "when": "Apply the Planning Helper repository applicability gate at this owner point before handing off the documentation change.",
+          "context": "Use the current proposed documentation/methodology delta, affected owners and planning basis. Consume concrete Helper consequences or evidenced no-impact before realization handoff; reuse a matching assessment already completed through owner revalidation. Actual post-realization verification remains a later applied-basis check."
+        }
+      ],
+      "compositionContributions": [],
+      "expectedOutput": "Documentation change meaning and affected owners/projections resolved proportionally under UC-DOC-PLAN-DOCUMENTATION-CHANGE, with its Helper impact obligation completed/reused or explicitly inapplicable on evidence, ready for the authorized realization route.",
+      "permissionMode": "read-only-planning",
+      "keyReminders": [
+        "The UC owns the process; this command supplies explicit invocation and traversal only.",
+        "Invoke Helper Impact at its declared process point, not as a prerequisite before the documentation delta is known.",
+        "A matching assessment reached through the owner links can be reused with evidence; reading a link alone is not execution.",
+        "Proposed-change assessment does not prove verification of the later applied change.",
+        "This invocation grants no mutation, build/test, commit or push permission."
+      ],
+      "userTarget": "<documentation or methodology change need and current context>",
+      "palette": true,
+      "helperPresentation": null,
+      "methodologyBinding": null,
       "refinements": []
     },
     {
@@ -3976,6 +4211,7 @@
       "includes": [
         "planning/commands/apply-idtspe-lens.command.md"
       ],
+      "processCalls": [],
       "compositionContributions": [],
       "expectedOutput": "Domain-focused proof finding/plan at the natural owner, optionally followed by Code test realization; no Test Design Target.",
       "permissionMode": "read-only-planning",
@@ -4035,6 +4271,7 @@
         "planning/commands/idtspe-port-target.command.md",
         "planning/commands/apply-idtspe-target-module.command.md"
       ],
+      "processCalls": [],
       "compositionContributions": [],
       "expectedOutput": "Durable Domain Owner Contract: RU-DOWN-01 Domain Semantic Contract and, only when material, RU-DOWN-02 owner-local IR-DOMAIN-*/PFR-* constraints; representation may remain implementation-native.",
       "permissionMode": "read-only-planning",
@@ -4089,6 +4326,7 @@
       "includes": [
         "planning/commands/recheck-methodology-use-cases.command.md"
       ],
+      "processCalls": [],
       "compositionContributions": [],
       "expectedOutput": "Frontend-specific realization meaning resolved inside the current vertical Slice, or a normal Local Target Formation candidate when independently substantial.",
       "permissionMode": "read-only-planning",
@@ -4135,6 +4373,7 @@
       "includes": [
         "planning/commands/recheck-methodology-use-cases.command.md"
       ],
+      "processCalls": [],
       "compositionContributions": [],
       "expectedOutput": "The smallest useful next planning action/composition for current context, including Broad Discussion/no structural change when that is sufficient.",
       "permissionMode": "plan-only",
@@ -4183,6 +4422,7 @@
       "includes": [
         "planning/commands/apply-idtspe-target-module.command.md"
       ],
+      "processCalls": [],
       "compositionContributions": [],
       "expectedOutput": "Implemented Practical Evidence Intent/Real Subject + proportional Observation Plan and, only after real implementation exists, actual Evidence Results/Interpretation for acceptance and/or learning.",
       "permissionMode": "read-only-planning",
@@ -4247,6 +4487,18 @@
       "includes": [
         "planning/commands/apply-idtspe-target-module.command.md"
       ],
+      "processCalls": [
+        {
+          "id": "helper-impact",
+          "commandPath": "planning/commands/check-helper-impact.command.md",
+          "at": {
+            "path": "planning/use-cases/UC-REPO-PLAN-UPDATE.md",
+            "anchor": "helper-impact-before-plan-handoff"
+          },
+          "when": "Apply the Helper repository documentation/methodology change gate at this owner point; record an evidenced NOT_APPLICABLE only when that gate does not apply.",
+          "context": "Use current proposed file operations and the planning basis; incorporate projection operations/checks or evidenced no-impact before plan handoff."
+        }
+      ],
       "compositionContributions": [],
       "expectedOutput": "RU-PUPDATE-01 Pre-Update Plan: concrete intended changes, including addressable proposed operations by path/owner/action/delta/basis/check for file or artifact destinations, preserve boundary, material dependencies/order and verification, after proportional registry/Lens applicability checks; unresolved material issues only when they actually remain.",
       "permissionMode": "read-only-planning",
@@ -4303,6 +4555,7 @@
       "includes": [
         "planning/commands/apply-idtspe-target-module.command.md"
       ],
+      "processCalls": [],
       "compositionContributions": [],
       "expectedOutput": "Screen/Spatial Model: material Screen inventory/purpose, Feature/Scenario participation, routes/transitions/global spatial constraints and only independently useful Screen/zone draft detail; may validly conclude no Screen Target is justified.",
       "permissionMode": "read-only-planning",
@@ -4358,6 +4611,7 @@
       "includes": [
         "planning/commands/apply-idtspe-lens.command.md"
       ],
+      "processCalls": [],
       "compositionContributions": [],
       "expectedOutput": "Owner-family IR/PFR disposition in the correct temporal host: current realized owner or Evolution Step Target Body, plus a Shared Capability binding only when independently justified. No standalone Requirement Target.",
       "permissionMode": "read-only-planning",
@@ -4415,6 +4669,7 @@
         "planning/commands/idtspe-port-target.command.md",
         "planning/commands/apply-idtspe-target-module.command.md"
       ],
+      "processCalls": [],
       "compositionContributions": [],
       "expectedOutput": "One Screen Draft scope within the same Screen Target family.",
       "permissionMode": "read-only-planning",
@@ -4470,6 +4725,7 @@
       "includes": [
         "planning/commands/apply-idtspe-target-module.command.md"
       ],
+      "processCalls": [],
       "compositionContributions": [],
       "expectedOutput": "Current transient Slice Discovery result using TM-IMPLEMENTATION-SLICE, or no Slice Target when its Entry Point is not material. No Slice Strategy Target.",
       "permissionMode": "read-only-planning",
@@ -4525,6 +4781,7 @@
       "includes": [
         "planning/commands/apply-idtspe-lens.command.md"
       ],
+      "processCalls": [],
       "compositionContributions": [],
       "expectedOutput": "Slice-focused proof finding/plan at the natural owner, optionally followed by Code test realization; no Test Design Target.",
       "permissionMode": "read-only-planning",
@@ -4580,6 +4837,7 @@
       "includes": [
         "planning/commands/recheck-methodology-use-cases.command.md"
       ],
+      "processCalls": [],
       "compositionContributions": [],
       "expectedOutput": "Current whole Solution/Workflow Variant + integration conclusion.",
       "permissionMode": "read-only",
@@ -4628,6 +4886,7 @@
       "includes": [
         "planning/commands/apply-idtspe-lens.command.md"
       ],
+      "processCalls": [],
       "compositionContributions": [],
       "expectedOutput": "A material proof evaluation/transient natural-owner proof plan, or direct Code-test route when obvious; no Test Design Target.",
       "permissionMode": "read-only-planning",
@@ -4686,6 +4945,7 @@
         "planning/commands/recheck-idtspe-port-composition.command.md",
         "planning/commands/include-idtspe-trace-port.command.md"
       ],
+      "processCalls": [],
       "compositionContributions": [],
       "expectedOutput": "Local proof route by default; only material transient cross-owner proof coordination or a separately justified Shared Capability. No Test Strategy Target.",
       "permissionMode": "read-only-planning",
@@ -4756,6 +5016,7 @@
       "includes": [
         "planning/commands/recheck-methodology-use-cases.command.md"
       ],
+      "processCalls": [],
       "compositionContributions": [],
       "expectedOutput": "Current Architecture State/selected meaning with applicability, rationale and revalidation trigger at natural owners; any separate retained record follows Core retention/PRS contracts; no permanent TM-WEUC global owner.",
       "permissionMode": "read-only-planning",
@@ -4802,6 +5063,7 @@
       "includes": [
         "planning/commands/recheck-methodology-use-cases.command.md"
       ],
+      "processCalls": [],
       "compositionContributions": [],
       "expectedOutput": "Evidence-backed Workspace change/path/evolution planning at the depth justified by the architecture question.",
       "permissionMode": "read-only-planning",
@@ -4867,6 +5129,7 @@
         "planning/commands/apply-idtspe-target-module.command.md",
         "planning/commands/idtspe-port-proposal.command.md"
       ],
+      "processCalls": [],
       "compositionContributions": [],
       "expectedOutput": "A bounded Proposal Workup with grounded canonical Proposal references, affected natural subjects, material alternatives/dependencies, proportionate review and truthful selectable/blocked/USER-selection handoff; no implied acceptance or file persistence.",
       "permissionMode": "read-only-planning",
@@ -4922,6 +5185,7 @@
       "includes": [
         "planning/commands/recheck-methodology-use-cases.command.md"
       ],
+      "processCalls": [],
       "compositionContributions": [],
       "expectedOutput": "The current task is explicitly USER-gated: cheap GIP-framing research may proceed autonomously; material USER-only grounding gaps are resolved through the minimum useful clarification before the affected Proposal; then each material decision/direction/costly-work/artifact/mutation Proposal is surfaced for USER selection and only the selected Proposal scope proceeds.",
       "permissionMode": "interaction-policy-only-no-mutation-grant",
@@ -4970,6 +5234,7 @@
       "includes": [
         "planning/commands/apply-idtspe-target-module.command.md"
       ],
+      "processCalls": [],
       "compositionContributions": [],
       "expectedOutput": "Prototype Intent / Questions, Prototype Plan, and—when run—Prototype Results / Evidence with limitations and revalidation handoff; may validly conclude no prototype is justified.",
       "permissionMode": "read-only-planning",
@@ -5034,6 +5299,7 @@
       "includes": [
         "planning/commands/recheck-methodology-use-cases.command.md"
       ],
+      "processCalls": [],
       "compositionContributions": [],
       "expectedOutput": "Compact read-only methodology guidance orientation: current applicable methodology Use Case(s), relevant owners/registries, contextual applicability/adaptation notes and any unresolved authority question; no forced Target and no repository mutation.",
       "permissionMode": "read-only",
@@ -5084,6 +5350,7 @@
       "includes": [
         "planning/commands/recheck-methodology-use-cases.command.md"
       ],
+      "processCalls": [],
       "compositionContributions": [],
       "expectedOutput": "A compact linked map of the full documentation example: its document families and relationships, which Target Modules it illustrates, one connected owner path, current versus unrealized meaning, and open Problems/practical evidence. Identify what was read or reused and any task-relevant deeper reading still needed; do not claim all files were read merely from reading the index.",
       "permissionMode": "read-only",
@@ -5132,6 +5399,7 @@
       "includes": [
         "planning/commands/recheck-methodology-use-cases.command.md"
       ],
+      "processCalls": [],
       "compositionContributions": [],
       "expectedOutput": "Relevant example references and basis/status, concise mapping to the current result/Units, material adaptation or stale-example Finding when present, or an explicit no-applicable-example result.",
       "permissionMode": "read-only",
@@ -5178,6 +5446,7 @@
       "includes": [
         "planning/commands/apply-idtspe-target-module.command.md"
       ],
+      "processCalls": [],
       "compositionContributions": [],
       "expectedOutput": "RU-CODE-01 Exact Code Realization: a complete directly integrable project-native codebase candidate, plus only the build/test/runtime Evidence, bounded repairs, Findings/revalidation and final code review requested/authorized for this invocation.",
       "permissionMode": "exact-realization-explicit-authority-no-commit-push",
@@ -5235,6 +5504,7 @@
       "includes": [
         "planning/commands/apply-idtspe-target-module.command.md"
       ],
+      "processCalls": [],
       "compositionContributions": [],
       "expectedOutput": "RU-REAL-01 Exact Realization: a complete broad/profile-neutral directly integrable current candidate, plus only the integration/validation Evidence, bounded repairs, Findings/revalidation and final exact review requested/authorized for this invocation.",
       "permissionMode": "exact-realization-explicit-authority-no-commit-push",
@@ -5290,6 +5560,7 @@
       "includes": [
         "planning/commands/recheck-methodology-use-cases.command.md"
       ],
+      "processCalls": [],
       "compositionContributions": [],
       "expectedOutput": "Corrected current answer/review only when material new findings exist; otherwise a compact confirmation that no material omission was found.",
       "permissionMode": "read-only",
@@ -5378,6 +5649,7 @@
         "planning/commands/idtspe-port-validation.command.md",
         "planning/commands/apply-selected-idtspe-lenses.command.md"
       ],
+      "processCalls": [],
       "compositionContributions": [
         {
           "kind": "REVIEW_COVERAGE_MODE",
@@ -5461,6 +5733,7 @@
         "planning/commands/recheck-methodology-use-cases.command.md",
         "planning/commands/compose-current-idtspe-work.command.md"
       ],
+      "processCalls": [],
       "compositionContributions": [],
       "expectedOutput": "A refreshed/reaffirmed Port Requirement Set with explicit/automatic/downstream origins available to the same P-02 trace.",
       "permissionMode": "read-only-planning",
@@ -5528,6 +5801,7 @@
         }
       ],
       "includes": [],
+      "processCalls": [],
       "compositionContributions": [],
       "expectedOutput": "Reaffirmed fundamental AI working authority boundary plus the current selected methodology Use-Case composition and any material selection/release changes; specialized Use-Case work is not executed merely by the scan.",
       "permissionMode": "read-only-planning",
@@ -5574,6 +5848,7 @@
       "includes": [
         "planning/commands/recheck-methodology-use-cases.command.md"
       ],
+      "processCalls": [],
       "compositionContributions": [],
       "expectedOutput": "Refreshed contextual change-pressure/evolution evidence and any resulting Architecture Planning handoff; no mandatory global map.",
       "permissionMode": "read-only-planning",
@@ -5620,6 +5895,7 @@
       "includes": [
         "planning/commands/recheck-methodology-use-cases.command.md"
       ],
+      "processCalls": [],
       "compositionContributions": [],
       "expectedOutput": "Checked alternatives/evidence + disposition for solution choice.",
       "permissionMode": "read-only",
@@ -5716,6 +5992,7 @@
         "planning/commands/include-idtspe-trace-port.command.md",
         "planning/commands/idtspe-port-target.command.md"
       ],
+      "processCalls": [],
       "compositionContributions": [],
       "expectedOutput": "Current Unit applicability/disposition and proportionate resolution content, ready to contribute to the Target Step Result.",
       "permissionMode": "read-only-planning",
@@ -5779,6 +6056,7 @@
         "planning/commands/include-idtspe-trace-port.command.md",
         "planning/commands/idtspe-port-revalidation.command.md"
       ],
+      "processCalls": [],
       "compositionContributions": [],
       "expectedOutput": "Revalidation result identifying still-valid meaning, reopened narrow subjects and any newly required downstream work.",
       "permissionMode": "read-only-planning",
@@ -5832,6 +6110,7 @@
       "includes": [
         "planning/commands/recheck-methodology-use-cases.command.md"
       ],
+      "processCalls": [],
       "compositionContributions": [],
       "expectedOutput": "Representative realization picture/comparison + material feasibility/cost/upstream findings.",
       "permissionMode": "read-only",
@@ -5879,6 +6158,7 @@
       "includes": [
         "planning/commands/recheck-methodology-use-cases.command.md"
       ],
+      "processCalls": [],
       "compositionContributions": [],
       "expectedOutput": "Change Pressure picture + evidence-backed Change Axes/confidence + hot paths/findings.",
       "permissionMode": "read-only",
@@ -5982,6 +6262,7 @@
         "planning/commands/idtspe-port-validation.command.md",
         "planning/commands/apply-selected-idtspe-lenses.command.md"
       ],
+      "processCalls": [],
       "compositionContributions": [
         {
           "kind": "REVIEW_COVERAGE_MODE",
@@ -6048,6 +6329,7 @@
       "includes": [
         "planning/commands/recheck-methodology-use-cases.command.md"
       ],
+      "processCalls": [],
       "compositionContributions": [],
       "expectedOutput": "Checked Current Reality relevant to the selected Need/solution choice.",
       "permissionMode": "read-only",
@@ -6097,6 +6379,7 @@
       "includes": [
         "planning/commands/recheck-methodology-use-cases.command.md"
       ],
+      "processCalls": [],
       "compositionContributions": [],
       "expectedOutput": "One compact Documentation Link Review containing scope, Broken Links, Missing Useful Direct Links, Misleading/Stale Links, Wrong Navigation Mechanism when material, material Findings with their linked Proposal(s), and verdict OK or NEEDS_CORRECTION. Distinguish mechanical link validity from semantic/navigation correctness.",
       "permissionMode": "read-only",
@@ -6183,6 +6466,7 @@
       "includes": [
         "planning/commands/recheck-methodology-use-cases.command.md"
       ],
+      "processCalls": [],
       "compositionContributions": [],
       "expectedOutput": "One compact Documentation Ownership Review: canonical responsibilities/owners checked, contextual duplicate/clarification passages and dependency status, Responsibility Map routing/body findings, unstable/missing owner-anchor findings, material Findings with linked Proposal(s), and verdict OK or NEEDS_CORRECTION.",
       "permissionMode": "read-only",
@@ -6260,6 +6544,7 @@
         "planning/commands/idtspe-port-validation.command.md",
         "planning/commands/apply-selected-idtspe-lenses.command.md"
       ],
+      "processCalls": [],
       "compositionContributions": [
         {
           "kind": "REVIEW_COVERAGE_MODE",
@@ -6340,6 +6625,7 @@
         "planning/commands/include-idtspe-trace-port.command.md",
         "planning/commands/idtspe-port-validation.command.md"
       ],
+      "processCalls": [],
       "compositionContributions": [
         {
           "kind": "REVIEW_COVERAGE_MODE",
@@ -6402,6 +6688,7 @@
         "planning/commands/include-idtspe-trace-port.command.md",
         "planning/commands/idtspe-port-qrp.command.md"
       ],
+      "processCalls": [],
       "compositionContributions": [],
       "expectedOutput": "Current material Q/R/P lifecycle state with resolved/deferred/escalated items routed correctly.",
       "permissionMode": "read-only-planning",
@@ -6457,6 +6744,7 @@
         "planning/commands/idtspe-port-target.command.md",
         "planning/commands/apply-idtspe-target-module.command.md"
       ],
+      "processCalls": [],
       "compositionContributions": [],
       "expectedOutput": "Evidence Results / Interpretation: acceptance and/or learning, limitations/confounders, residual questions and revalidation/follow-up; not restricted to pass/fail.",
       "permissionMode": "read-only-planning",
@@ -6530,6 +6818,7 @@
         "planning/commands/idtspe-port-target.command.md",
         "planning/commands/apply-idtspe-target-module.command.md"
       ],
+      "processCalls": [],
       "compositionContributions": [],
       "expectedOutput": "Prototype Results / Evidence interpretation against the original questions, limitations, residual uncertainty and revalidation/follow-up; accepted meaning remains in natural Units; any separate Decision record follows Core retention/PRS contracts.",
       "permissionMode": "read-only-planning",
@@ -6583,6 +6872,7 @@
       "includes": [
         "planning/commands/apply-idtspe-lens.command.md"
       ],
+      "processCalls": [],
       "compositionContributions": [],
       "expectedOutput": "Test Proof Lens review: property→actual Evidence mapping, material strong/partial/missing/stale/wrong-layer/weak-assertion findings and natural correction/revalidation destinations; no separate Coverage Target.",
       "permissionMode": "read-only-planning",
@@ -6639,6 +6929,7 @@
       "includes": [
         "planning/commands/recheck-methodology-use-cases.command.md"
       ],
+      "processCalls": [],
       "compositionContributions": [],
       "expectedOutput": "Registry Traversal Trace with context, scanned registries and reasons, applicable Use Cases/components, skipped registries, unresolved applicability, and Execution: NONE.",
       "permissionMode": "read-only",
@@ -6699,6 +6990,7 @@
         "planning/commands/include-idtspe-trace-port.command.md",
         "planning/commands/idtspe-port-lens.command.md"
       ],
+      "processCalls": [],
       "compositionContributions": [],
       "expectedOutput": "Lens Applicability View over the bounded Analysis Surface showing candidate source — INHERITED_CORE / UNIT_REQUIRED[phase] / UNIT_TRIGGERED / REGISTRY_DISCOVERED / EXPLICIT_REQUEST — separately from applicability result and explicit intent. Emit Lens Application requests `(Lens Model, Analysis Surface, supported Operation, relevant basis)` for applicable candidates and forced explicit APPLY/USE requests. Emit `NOT_APPLICABLE — <short reason>` only for candidates whose application is not explicitly forced; no fake Target and no fixed Target Lens Set field.",
       "permissionMode": "read-only-planning",
@@ -6759,6 +7051,7 @@
       "includes": [
         "planning/commands/recheck-methodology-use-cases.command.md"
       ],
+      "processCalls": [],
       "compositionContributions": [],
       "expectedOutput": "A current proportional work composition: one line when sufficient, or explicit multi-Target/Planning-Branch structure when independently useful. No fixed Scope Registry/action-log runtime.",
       "permissionMode": "read-only",
@@ -6807,6 +7100,7 @@
       "includes": [
         "planning/commands/recheck-methodology-use-cases.command.md"
       ],
+      "processCalls": [],
       "compositionContributions": [],
       "expectedOutput": "Checked Workspace Change/Understanding/Runtime path + qualitative architecture findings.",
       "permissionMode": "read-only",
@@ -6856,6 +7150,7 @@
       "includes": [
         "planning/commands/recheck-methodology-use-cases.command.md"
       ],
+      "processCalls": [],
       "compositionContributions": [],
       "expectedOutput": "Answer/review/plan from the selected archive; no replacement package unless separately requested.",
       "permissionMode": "read-only",
@@ -6929,6 +7224,7 @@
       "includes": [
         "planning/commands/recheck-methodology-use-cases.command.md"
       ],
+      "processCalls": [],
       "compositionContributions": [],
       "expectedOutput": "Continue the requested work with useful inspectable links next to the relevant references and conclusions. Use direct section links when warranted, keep the relationship or supporting rationale readable, and state a material missing/unverifiable destination honestly. If no substantive output is currently requested, acknowledge the instruction compactly and apply it to the continuing context; no standalone link report is required.",
       "permissionMode": "read-only",
@@ -6980,6 +7276,7 @@
       "includes": [
         "planning/commands/recheck-methodology-use-cases.command.md"
       ],
+      "processCalls": [],
       "compositionContributions": [],
       "expectedOutput": "A representation recommendation/update for the same semantic owners using the COMPLEX topology as an example, with any promotion/demotion justified by addressability/review/lifecycle pressure.",
       "permissionMode": "read-only",
@@ -7029,6 +7326,7 @@
       "includes": [
         "planning/commands/recheck-methodology-use-cases.command.md"
       ],
+      "processCalls": [],
       "compositionContributions": [],
       "expectedOutput": "A representation recommendation/update for the same semantic owners using the LIGHT topology as an example, with any promotion/demotion justified by addressability/review/lifecycle pressure.",
       "permissionMode": "read-only",
@@ -7081,6 +7379,7 @@
       "includes": [
         "planning/commands/recheck-methodology-use-cases.command.md"
       ],
+      "processCalls": [],
       "compositionContributions": [],
       "expectedOutput": "A representation recommendation/update for the same semantic owners using the MIXED / ASYMMETRIC topology as an example, with any promotion/demotion justified by addressability/review/lifecycle pressure.",
       "permissionMode": "read-only",
@@ -7160,6 +7459,7 @@
         "planning/commands/compose-current-idtspe-work.command.md",
         "planning/commands/recheck-idtspe-port-composition.command.md"
       ],
+      "processCalls": [],
       "compositionContributions": [],
       "expectedOutput": "The refreshed/reaffirmed Use-Case and Port Requirement composition plus one shared current IDTSPE Shell pass in which the selected dependent operations/models run, followed by the smallest useful resulting IDTSPE output (including a valid Broad-Discussion-only result). No command invocation makes optional structure mandatory.",
       "permissionMode": "read-only-planning",

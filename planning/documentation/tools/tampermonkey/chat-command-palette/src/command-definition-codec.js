@@ -13,7 +13,7 @@
     'schemaVersion', 'id', 'file', 'command', 'englishName', 'commandFamily',
     'description', 'meaning', 'activeContextBehavior', 'traversalReadMode',
     'ownerFiles', 'ownerRefs', 'expectedOutput', 'permissionMode', 'keyReminders',
-    'userTarget', 'palette', 'refinements', 'helperPresentation', 'methodologyBinding', 'includes', 'compositionContributions'
+    'userTarget', 'palette', 'refinements', 'helperPresentation', 'methodologyBinding', 'includes', 'compositionContributions', 'processCalls'
   ]);
 
   function assert(condition, message) {
@@ -88,6 +88,16 @@
     };
   }
 
+
+  function normalizeProcessCall(raw,index){
+    const field='processCalls['+index+']';
+    assert(raw&&typeof raw==='object'&&!Array.isArray(raw),field+' must be an object.');
+    const known=new Set(['id','commandPath','at','when','context']);for(const key of Object.keys(raw))assert(known.has(key),'Unknown '+field+' field: '+key);
+    assert(raw.at&&typeof raw.at==='object'&&!Array.isArray(raw.at),field+'.at must be an owner point.');
+    for(const key of Object.keys(raw.at))assert(['path','anchor'].includes(key),'Unknown '+field+'.at field: '+key);
+    const anchor=singleLine(raw.at.anchor,field+'.at.anchor');assert(/^[A-Za-z0-9._-]+$/.test(anchor),field+'.at.anchor must be a safe explicit anchor.');
+    return{id:validateId(raw.id,field+'.id'),commandPath:validateCommandIncludePath(raw.commandPath,field+'.commandPath'),at:{path:validateRepositoryPath(raw.at.path,field+'.at.path'),anchor},when:singleLine(raw.when,field+'.when'),context:singleLine(raw.context,field+'.context')};
+  }
 
   function normalizeCompositionContribution(raw,index){
     assert(raw&&typeof raw==='object'&&!Array.isArray(raw),`compositionContributions[${index}] must be an object.`);
@@ -197,6 +207,8 @@
     assert(new Set(refinements.map((item) => item.id)).size === refinements.length, 'refinement ids must be unique within a command.');
     const includes = raw.includes == null ? [] : stringArray(raw.includes, 'includes').map((path, index) => validateCommandIncludePath(path, `includes[${index}]`));
     assert(new Set(includes).size === includes.length, 'includes must not contain duplicate command paths.');
+    const callsRaw=raw.processCalls==null?[]:raw.processCalls;assert(Array.isArray(callsRaw),'processCalls must be an array.');
+    const processCalls=callsRaw.map(normalizeProcessCall);assert(new Set(processCalls.map(call=>call.id)).size===processCalls.length,'processCalls ids must be unique within a command.');
     const contributionsRaw=raw.compositionContributions==null?[]:raw.compositionContributions;
     assert(Array.isArray(contributionsRaw),'compositionContributions must be an array.');
     const compositionContributions=contributionsRaw.map(normalizeCompositionContribution);
@@ -222,6 +234,7 @@
       ownerFiles: stringArray(raw.ownerFiles, 'ownerFiles').map((path, index) => validateRepositoryPath(path, `ownerFiles[${index}]`)),
       ownerRefs,
       includes,
+      processCalls,
       compositionContributions,
       expectedOutput: singleLine(raw.expectedOutput, 'expectedOutput'),
       permissionMode: singleLine(raw.permissionMode, 'permissionMode'),
@@ -300,6 +313,7 @@
       ownerFiles: normalized.ownerFiles,
       ownerRefs: normalized.ownerRefs,
       includes: normalized.includes,
+      ...(normalized.processCalls.length?{processCalls:normalized.processCalls}:{}),
       compositionContributions: normalized.compositionContributions,
       expectedOutput: normalized.expectedOutput,
       permissionMode: normalized.permissionMode,

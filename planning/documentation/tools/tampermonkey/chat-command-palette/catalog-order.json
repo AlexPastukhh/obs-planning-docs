@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 4,
+  "schemaVersion": 5,
   "kind": "planning-helper-catalog-order",
   "commands": [
     "methodology.use_cases.recheck",
@@ -82,6 +82,7 @@
     "lens:LENS-TEST-PROOF-EVIDENCE",
     "lens:LENS-VERIFIABILITY-OBSERVABILITY-OPERABILITY",
     "lens:LENS-ARTIFACT-BOUNDARY-ADDRESSABILITY",
+    "lens:LENS-UNIT-CENTRIC-PRESENTATION",
     "lens:LENS-APPLICATION-BOUNDARY-FEASIBILITY",
     "lens:LENS-DOMAIN-MODELING-DDD",
     "lens:LENS-TERMS-UBIQUITOUS-LANGUAGE",
@@ -94,6 +95,7 @@
     "proposal_archive.create",
     "archive_source.use",
     "helper.command.add",
+    "helper.impact.check",
     "tm:TM-2D-10-VISUAL-REQUIREMENTS",
     "tm:TM-2D-15-PREPARED-VISUAL-MATERIAL-SET",
     "tm:TM-2D-20-WHOLE-VISUAL-DESIGN",
@@ -569,7 +571,8 @@
       "label": "Representation / Navigation",
       "order": 30,
       "items": [
-        "lens:LENS-ARTIFACT-BOUNDARY-ADDRESSABILITY"
+        "lens:LENS-ARTIFACT-BOUNDARY-ADDRESSABILITY",
+        "lens:LENS-UNIT-CENTRIC-PRESENTATION"
       ]
     },
     {
@@ -628,8 +631,42 @@
       "label": "Helper / Commands",
       "order": 20,
       "items": [
-        "helper.command.add"
+        "helper.command.add",
+        "helper.impact.check"
       ]
     }
-  ]
+  ],
+  "categories": [
+    {
+      "id": "GENERAL",
+      "label": "General",
+      "order": 0
+    },
+    {
+      "id": "IDTSPE_PASS",
+      "label": "IDTSPE Pass",
+      "order": 10
+    },
+    {
+      "id": "USE_CASES",
+      "label": "Use Cases",
+      "order": 20
+    },
+    {
+      "id": "TARGET_MODULES",
+      "label": "Target Modules",
+      "order": 30
+    },
+    {
+      "id": "LENSES",
+      "label": "Lenses",
+      "order": 40
+    },
+    {
+      "id": "TOOLS",
+      "label": "Tools / Repository",
+      "order": 50
+    }
+  ],
+  "fallbackCategoryId": "GENERAL"
 }

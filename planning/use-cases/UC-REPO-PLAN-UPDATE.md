@@ -22,3 +22,13 @@ One concrete repository update plan exists with the affected current owners/path
 - [`../commands/plan-pre-update.command.md`](../commands/plan-pre-update.command.md) — current explicit Pre-Update command route.
 
 Within the always-active IDTSPE work context, Core `TM-PRE-UPDATE-PLAN` is the reusable methodology component for a separately useful Pre-Update result; this repository Use Case supplies repository-specific file-transition semantics and does not create a competing planning runtime.
+
+<a id="helper-impact-before-plan-handoff"></a>
+## Documentation / Methodology Projection Consequences
+
+For documentation/methodology destinations in this Helper repository, invoke or reuse [Check Helper Impact](UC-REPO-CHECK-HELPER-IMPACT.md#uc-repo-check-helper-impact) before closing the update plan. Incorporate its concrete projection operations/checks or evidenced no-impact result. The later authorized realization flow verifies the actual basis through that same owner. This requirement does not force a separate Pre-Update Target for direct corrections.
+
+> Semantic Owner Dependency
+> Type: `CONTEXTUALIZES`
+> Responsibility: `HELPER.CHANGE-IMPACT`
+> Owner: [Check Helper Impact](UC-REPO-CHECK-HELPER-IMPACT.md#uc-repo-check-helper-impact)

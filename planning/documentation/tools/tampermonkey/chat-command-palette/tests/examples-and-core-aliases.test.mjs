@@ -89,7 +89,7 @@ test('Concept-first Application Definition inventory agrees across active models
   const text=read(file),inventory=text.slice(text.indexOf('| Result Unit | Meaning |'),text.indexOf('### Result Unit Applicability'));
   assert.deepEqual([...inventory.matchAll(/^\| `RU-APP-(\d+)`/gm)].map(m=>m[1]),expected,file);
   assert.deepEqual([...text.matchAll(/^#### `RU-APP-(\d+)` processing envelope/gm)].map(m=>m[1]),expected,file);
-  assert.match(text,/<a id="application-definition-identity"><\/a>\n### Application Concept/);
+  assert.match(text,/<a id="application-definition-identity"><\/a>\r?\n### Application Concept/);
  }
  for(const file of [snapshot+'project/planning/documentation/application-definition.md','planning/documentation/tools/replacement-package-app/application-definition.md','planning/documentation/tools/tampermonkey/chat-command-palette/application-definition.proposal.md'])assert.deepEqual([...read(file).matchAll(/^## RU-APP-(\d+)/gm)].map(m=>m[1]),expected,file);
  const proposal=read('planning/documentation/tools/tampermonkey/chat-command-palette/application-definition.proposal.md');

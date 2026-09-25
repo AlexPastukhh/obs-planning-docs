@@ -98,3 +98,12 @@ SELECTED ≠ EXECUTED
 Do not globally scan every Target/Lens/theory/component registry. Downstream registries are reached only through the selected Use-Case Processes that need them.
 
 Shared meaning: [`Use-Case Applicability Scan`](../principles-and-terminology.md#doc-use-case-applicability-scan), [`Registry Scan`](../principles-and-terminology.md#doc-registry-scan), and [`Functional Routing Ownership Chain`](../principles-and-terminology.md#doc-functional-routing-ownership).
+
+## Repository Projection Integration
+
+For planned/applied documentation or methodology edits in a repository using Planning Helper, also consult the [repository Use-Case registry](../../use-case-registry.md#documentation-change-integration). Return [Check Helper Impact](../../use-cases/UC-REPO-CHECK-HELPER-IMPACT.md#uc-repo-check-helper-impact) as a required downstream check in the active change composition. The caller must execute or validly reuse that check before handing off the planned/applied change, including direct/local corrections; this applicability resolver only selects the work and does not execute it. The linked owner defines no-impact closure and changed-basis revalidation. This repository integration route adds no Helper dependency to IDTSPE Core and does not rerun the applicability resolver recursively.
+
+> Semantic Owner Dependency
+> Type: `CONTEXTUALIZES`
+> Responsibility: `HELPER.CHANGE-IMPACT`
+> Owner: [Check Helper Impact](../../use-cases/UC-REPO-CHECK-HELPER-IMPACT.md#uc-repo-check-helper-impact)

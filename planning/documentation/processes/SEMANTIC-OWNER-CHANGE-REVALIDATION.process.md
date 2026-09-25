@@ -42,3 +42,12 @@ All known semantic dependents and relevant navigation/projection surfaces affect
 This Process is reusable from Documentation planning/review/maintenance Use Cases. It owns the owner-change **revalidation flow**, not the semantic responsibility being changed, the Responsibility Map body, or concrete Helper/command implementation.
 
 Shared rules: [`Semantic Owner`](../principles-and-terminology.md#doc-semantic-owner), [`Semantic DRY Principle`](../principles-and-terminology.md#doc-semantic-dry), [`Responsibility Map`](../principles-and-terminology.md#doc-responsibility-map), [`Explicit Stable Semantic Anchor`](../principles-and-terminology.md#doc-explicit-stable-semantic-anchor), and [`Semantic Owner Dependency`](../principles-and-terminology.md#doc-semantic-owner-dependency).
+
+## Planning Helper Change-Impact Check
+
+When this repository uses Planning Helper, invoke [Check Helper Impact](../../use-cases/UC-REPO-CHECK-HELPER-IMPACT.md#uc-repo-check-helper-impact) as part of resolving the change's downstream consequences and before handoff. Record/reuse the proposed-change assessment during planning and verify the actual basis after authorized realization. This applies to direct corrections as well as separately planned changes. The linked Use Case owns scope, no-impact closure and command-candidate criteria; this is an explicit process call, not a command include or a second checklist.
+
+> Semantic Owner Dependency
+> Type: `CONTEXTUALIZES`
+> Responsibility: `HELPER.CHANGE-IMPACT`
+> Owner: [Check Helper Impact](../../use-cases/UC-REPO-CHECK-HELPER-IMPACT.md#uc-repo-check-helper-impact)

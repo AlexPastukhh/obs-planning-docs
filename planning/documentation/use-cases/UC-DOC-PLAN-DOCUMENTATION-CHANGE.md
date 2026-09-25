@@ -47,9 +47,19 @@ The target documentation meaning is resolved to the needed depth, affected Use C
 
 11. For every **semantic responsibility whose meaning changes**, resolve its canonical owner and run [`SEMANTIC-OWNER-CHANGE-REVALIDATION`](../processes/SEMANTIC-OWNER-CHANGE-REVALIDATION.process.md) proportionally. Use tracked Semantic Owner Dependencies to find known contextual repetitions/projections, then search proportionally for untracked competing normative copies instead of assuming grep-visible copies should all be synchronized.
 12. When a non-owner needs to repeat or clarify owner semantics for local comprehension/execution, create a tracked `Semantic Owner Dependency` (`RESTATES` / `CONTEXTUALIZES` / `EXTENDS` / `REPRESENTS` / `MIGRATES`) and link to the canonical owner. If this is the first real need for a stable section-level reference, add an explicit stable semantic anchor to the owner; do not mass-create anchors for unrelated headings. When an already-referenced section gains that explicit anchor, migrate the reviewed section-specific inbound links from generated heading fragments to the explicit anchor in the same change unless a declared compatibility reason requires retaining the old route.
-13. Before exact realization, identify **derived projections/examples/integration surfaces** whose projected meaning may change because the semantic owner changed: Responsibility Maps, registries/navigation, command routes, Planning Helper semantic-command projection, methodology scenarios, generated catalogs, templates, examples and tests. Update only affected projections; do not create a new semantic owner merely for a projection.
+13. Before exact realization, identify **derived projections/examples/integration surfaces** whose projected meaning may change because the semantic owner changed: Responsibility Maps, registries/navigation, command routes, Planning Helper semantic-command projection, methodology scenarios, generated catalogs, templates, examples and tests. Update only affected projections; do not create a new semantic owner merely for a projection. For a repository using Planning Helper, complete or validly reuse the [Helper impact assessment](#doc-helper-impact-before-handoff) at this point before realization handoff.
 14. When an owner referenced by a canonical methodology scenario changes materially, rerun the affected scenario as an explanatory/integration test and update scenario prose only when its illustrated composition actually changed.
 15. When exact repository changes are selected, hand off to the applicable exact-realization/update mechanism rather than inventing a Documentation-specific transport lifecycle.
 16. Route downstream contradictions or implementation discoveries back to the real semantic owner and re-plan narrowly when accepted meaning must change.
 
 This Use Case does not require a new Use Case for every file, navigation row, dependency, template, example, command, or Process step.
+
+<a id="doc-helper-impact-before-handoff"></a>
+## Planning Helper Change-Impact Check
+
+When this repository uses Planning Helper, invoke [Check Helper Impact](../../use-cases/UC-REPO-CHECK-HELPER-IMPACT.md#uc-repo-check-helper-impact) as part of resolving the change's downstream consequences and before handoff. Record/reuse the proposed-change assessment during planning and verify the actual basis after authorized realization. This applies to direct corrections as well as separately planned changes. The linked Use Case owns scope, no-impact closure and command-candidate criteria; this is an explicit process call, not a command include or a second checklist.
+
+> Semantic Owner Dependency
+> Type: `CONTEXTUALIZES`
+> Responsibility: `HELPER.CHANGE-IMPACT`
+> Owner: [Check Helper Impact](../../use-cases/UC-REPO-CHECK-HELPER-IMPACT.md#uc-repo-check-helper-impact)

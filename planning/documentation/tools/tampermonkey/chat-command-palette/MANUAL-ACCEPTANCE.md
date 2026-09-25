@@ -43,6 +43,7 @@ Canonical application semantics: [`scenarios/README.md`](scenarios/README.md). A
 - Confirm generic/generated semantic UC/TM/Lens cards do not expose direct-command Edit/Save/Reload/Delete actions.
 - Hide/delete a direct Command locally; confirm repository authority remains untouched.
 - Favorite/unfavorite semantic Command IDs and confirm persistence.
+- Reorder Favorites with ↑ / ↓ using mouse or keyboard; check disabled boundary arrows, preserved selection/scroll, and the same order after changing categories and restarting. With search active, swap visible neighbors and clear search: hidden Favorites retain their positions and ordinary groups keep their order.
 - Start from a legacy snapshot where a direct TM command ID is favorited; confirm materialization shows the corresponding stable semantic card as favorite and the next favorite change stores the semantic ID.
 - Move Commands, Scenarios and Prompts with `↑` / `↓`; confirm immediate local order and zero GitHub requests. While scrolled deep in Prompts, move several cards with arrows and confirm the viewport and selected card do not jump to the top.
 - In Prompts, enter a target 1-based position in the `№` field and press Enter (or blur); confirm the card moves directly to that position, remains selected, and the list scrolls only as needed to keep it visible. Confirm values below/above range clamp to first/last and no GitHub request occurs until **Save order GitHub**.

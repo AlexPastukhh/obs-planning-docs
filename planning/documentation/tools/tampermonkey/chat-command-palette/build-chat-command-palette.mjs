@@ -33,24 +33,16 @@ function readCommands(){
   const definitions=files.map((file)=>codec.parseCommandDefinitionDocument(fs.readFileSync(path.join(commandsDir,file),'utf8'),{path:`planning/commands/${file}`}));
   catalog.validateCommandCatalog(definitions);if(!definitions.length)throw new Error('No repository command definitions found.');
   for(const definition of definitions)for(const owner of catalog.commandReferencePaths(definition))if(!fs.existsSync(path.join(repoRoot,owner)))throw new Error(`Missing owner/refinement path for ${definition.id}: ${owner}`);
+  for(const definition of definitions)for(const call of definition.processCalls||[]){
+    catalog.validateProcessCallPoint(fs.readFileSync(path.join(repoRoot,call.at.path),'utf8'),call.at);
+  }
   return definitions.map(catalog.stripRuntimeCommandMetadata);
 }
 function splitRow(line){return line.trim().replace(/^\|/,'').replace(/\|$/,'').split('|').map((v)=>v.trim());}
 function cleanCell(v){return String(v||'').replace(/`/g,'').trim();}
 function plainCell(v){return cleanCell(String(v||'').replace(/\[([^\]]+)\]\([^)]+\)/g,'$1'));}
 export function semanticOwnerRef(rel,id,kind,ownerRoot=repoRoot){
-  const anchor=id.toLowerCase(),source=fs.readFileSync(path.join(ownerRoot,rel),'utf8').replace(/<!--[\s\S]*?-->/g,'');
-  let fence=null,matches=0;
-  for(const line of source.split(/\r?\n/)){
-    const marker=line.match(/^\s{0,3}(`{3,}|~{3,})/);
-    if(marker){
-      if(!fence)fence={char:marker[1][0],length:marker[1].length};
-      else if(marker[1][0]===fence.char&&marker[1].length>=fence.length&&line.slice(marker[0].length).trim()==='')fence=null;
-      continue;
-    }
-    if(fence)continue;
-    for(const match of line.matchAll(/<a\s+id=["']([^"']+)["']\s*>\s*<\/a>/gi))if(match[1]===anchor)matches++;
-  }
+  const anchor=id.toLowerCase(),matches=catalog.explicitAnchorCount(fs.readFileSync(path.join(ownerRoot,rel),'utf8'),anchor);
   if(matches!==1)throw new Error('Expected one explicit component owner anchor '+rel+'#'+anchor+'; found '+matches+'.');
   return{semanticId:id,path:rel,anchor,why:`Concrete ${kind==='TARGET_MODULE'?'Target Module Model':'Lens Model'} semantics selected by this card; shared Meta-Model/registry/port references come from included commands.`,role:'PRIMARY_OWNER',readMode:'REQUIRED'};
 }

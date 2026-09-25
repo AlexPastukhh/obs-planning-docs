@@ -69,6 +69,18 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
       "role": "SUPPORTING_CONTRACT",
       "readMode": "REQUIRED"
     }
+  ],
+  "processCalls": [
+    {
+      "id": "helper-impact",
+      "commandPath": "planning/commands/check-helper-impact.command.md",
+      "at": {
+        "path": "planning/use-cases/UC-REPO-MAINTAIN-PLANNING-COMMAND.md",
+        "anchor": "helper-impact-before-command-handoff"
+      },
+      "when": "Apply the Helper repository documentation/methodology change gate at this owner point; record an evidenced NOT_APPLICABLE only when that gate does not apply.",
+      "context": "Use the concrete command delta and its current planned or applied basis; incorporate the impact result into projection synchronization and handoff."
+    }
   ]
 }
 [/PLANNING_COMMAND_DEFINITION]

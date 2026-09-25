@@ -52,6 +52,7 @@ These generic Core Lens are discoverable from the Core registry and may also be 
 | [`LENS-VERIFIABILITY-OBSERVABILITY-OPERABILITY`](frequent/LENS-VERIFIABILITY-OBSERVABILITY-OPERABILITY.md) | proof/observation/diagnosis/operation | `INLINE` |
 | [`LENS-QUALITY-RISK-MATERIALITY`](frequent/LENS-QUALITY-RISK-MATERIALITY.md) | material quality/risk categories | `INLINE` |
 | [`LENS-TARGET-RESOLUTION-COVERAGE`](frequent/LENS-TARGET-RESOLUTION-COVERAGE.md) | Target scope/Requirement/Unit coverage sufficiency; prepared vs contextual completion | `INLINE` |
+| [`LENS-UNIT-CENTRIC-PRESENTATION`](frequent/LENS-UNIT-CENTRIC-PRESENTATION.md) | User-facing Target presentation: visible Units, proportional disclosure of supporting context, essential state/action visibility; chat or documents | `INLINE` |
 | [`LENS-SHARED-CROSS-CUTTING-RESPONSIBILITY`](reusable/LENS-SHARED-CROSS-CUTTING-RESPONSIBILITY.md) | shared ownership / applicability / local integration | `INLINE` |
 | [`LENS-TEST-PROOF-EVIDENCE`](reusable/LENS-TEST-PROOF-EVIDENCE.md) | proof-layer/evidence quality | `HYBRID` → detailed testing theory on demand |
 | [`LENS-PRACTICAL-EVIDENCE`](reusable/LENS-PRACTICAL-EVIDENCE.md) | minimum practical experiment / observed Evidence | `HYBRID` |

@@ -578,6 +578,8 @@ Formation ↔ Resolution
 
 ---
 
+When creating or materially revising the user-facing presentation of a Target, check applicability of [Unit-Centric Presentation](../../lenses/frequent/LENS-UNIT-CENTRIC-PRESENTATION.md#lens-unit-centric-presentation) through P-06 and apply/reuse it when its gate is met, including non-persisted chat results. The Lens owns disclosure criteria; this route adds no Target Requirement, Unit kind or completion status.
+
 ## 11. Questions, Proposals, Branches And Lenses Are Mechanisms, Not Fixed Target Fields
 
 The former prepared/contextual question guidance on the natural Requirement/Unit subject, Lens applicability/selection, Proposal lifecycle on the natural subject and Branch applicability on the natural subject are no longer fixed Target Formation fields.

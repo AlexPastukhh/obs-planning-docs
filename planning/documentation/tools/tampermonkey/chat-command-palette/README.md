@@ -13,7 +13,7 @@ Responsibility ID: `HELPER.SEMANTIC-PROJECTION`
 > - `REPRESENTS` [`Planning Command Definition Contract`](../../../../commands/README.md#planning-command-definition-contract) — `COMMAND.DEFINITION-CONTRACT`
 > - `CONTEXTUALIZES` [`IDTSPE Command Surface`](../../../idtspe-methodology/active/idtspe-core/commands/IDTSPE-COMMAND-SURFACE-CONTRACT.md#idtspe-command-surface) — `IDTSPE.COMMAND-SURFACE`
 
-The Helper owns projection/runtime mechanics only. Semantic command meaning and process stay with direct command definitions plus the projected methodology/repository owners. Registered command `includes` are canonical command-file-path edges forming a reproducible USER-invocation composition guarantee over those existing owners; they do not make Helper UI, generated seeds, numeric Shell ports or presentation groups methodology authority. Generated `seed/*.json`, userscript bytes, scenario-command reverse indexes and presentation groups are derived artifacts.
+The Helper owns projection/runtime mechanics only. Semantic command meaning and process stay with direct command definitions plus the projected methodology/repository owners. Registered command `includes` are canonical command-file-path edges forming a reproducible USER-invocation composition guarantee over those existing owners; they do not make Helper UI, generated seeds, numeric Shell ports or presentation groups methodology authority. Generated `seed/*.json`, userscript bytes and scenario-command reverse indexes are derived artifacts. Categories and presentation groups are editable presentation configuration, with no methodology authority.
 
 ## Read Order
 
@@ -50,7 +50,7 @@ canonical methodology/repository owners
   Commands / Scenarios / Prompts UI
 ```
 
-Use Cases, Target Modules and Lenses are **classifications of semantic Commands**, not peer runtime surfaces competing with Commands. `IDTSPE Pass` is a direct-command classification for generic Shell/composition controls only; concrete `TM-*` and `LENS-*` semantic cards remain in their dedicated classifications.
+Use Cases, Target Modules and Lenses are **classifications of semantic Commands**, not peer runtime surfaces competing with Commands. `IDTSPE Pass` is a direct-command classification for generic Shell/composition controls only; concrete `TM-*` and `LENS-*` semantic cards start in their respective categories and can be moved without changing semantic identity.
 
 A semantic component has one stable primary card identity:
 
@@ -179,7 +179,7 @@ useCases[] + useCaseCatalogSha
 semanticComponents[] + semanticComponentCatalogSha
 scenarios[] + scenarioCatalogSha
 helperItems[]
-catalogOrder { commands[], commandGroups[], scenarios[], prompts[] }
+catalogOrder { categories[], fallbackCategoryId, commands[], commandGroups[], scenarios[], prompts[] }
 catalogOrderSha
 suppressedRepository { commands[], helperItems[], useCases[], semanticComponents[], scenarios[] }
 favoriteCommandIds[]
@@ -202,7 +202,7 @@ Direct commands may be created/edited locally as drafts. `Save GitHub` is explic
 
 `seed/semantic-components.json` projects current methodology Use Cases, Target Modules and Lenses from their authoritative registries/owners. Runtime creates **one primary command card per current semantic component**.
 
-Specific Lens cards are projected from the Lens Registry and remain in `Lenses`. The generic `примени линзу` dispatcher is a visible `IDTSPE Pass` composition surface, not another primary Lens card. Lens operations (`ANALYZE/CHECK/REFINE/CHALLENGE`) and Target Module Units are selected by AI/context and do not become separate buttons. Concrete Target Module cards likewise remain in `Target Modules`; the generic `Apply Target Module` command is a shared-prefix composition surface in `IDTSPE Pass`.
+Specific Lens cards are projected from the Lens Registry and initially placed in `Lenses`; category/group edits can move them. The generic `примени линзу` dispatcher is a visible `IDTSPE Pass` composition surface, not another primary Lens card. Lens operations (`ANALYZE/CHECK/REFINE/CHALLENGE`) and Target Module Units are selected by AI/context and do not become separate buttons. Concrete Target Module cards likewise remain in `Target Modules`; the generic `Apply Target Module` command is a shared-prefix composition surface in `IDTSPE Pass`.
 
 The bare `idtspe` direct command is a visible `IDTSPE Pass` work-entry route. It remains distinct from the semantic `UC-IDTSPE-COMPOSE-CURRENT-WORK` card: the command guarantees invocation/composition, while the Use Case remains methodology authority for the process.
 
@@ -235,7 +235,7 @@ Durable order source:
 planning/documentation/tools/tampermonkey/chat-command-palette/catalog-order.json
 ```
 
-It stores ordered stable IDs for Commands, Scenarios and Prompts plus `commandGroups[]`. Groups are **presentation-only** subdivisions inside the Commands classifications (`General`, `IDTSPE Pass`, `Use Cases`, `Target Modules`, `Lenses`, `Tools / Repository`). Each classification has one ordered group list; there is no separate Primary/Advanced/Semantic presentation tier. Groups never become methodology owners. Command order/group membership uses semantic IDs for UC/TM/Lens cards and direct IDs only for General/Tool capabilities without a semantic owner ID. Every current visible command card belongs to exactly one ordinary classification/group; `All commands` is only a cross-tab overview.
+Schema 5 stores ordered stable IDs for Commands, Scenarios and Prompts plus `categories[]`, `fallbackCategoryId` and `commandGroups[]`. Versions 1–4 migrate locally without network access, preserving groups/membership/order and recognizing custom legacy category IDs. Each category has a stable `id`, editable `label` and `order`; group `viewId` must resolve to one category. Empty categories remain visible. Groups are **presentation-only** subdivisions inside the Commands classifications (`General`, `IDTSPE Pass`, `Use Cases`, `Target Modules`, `Lenses`, `Tools / Repository`). Each classification has one ordered group list; there is no separate Primary/Advanced/Semantic presentation tier. Groups never become methodology owners. Command order/group membership uses semantic IDs for UC/TM/Lens cards and direct IDs only for General/Tool capabilities without a semantic owner ID. Every current visible command card belongs to exactly one ordinary classification/group; `All commands` is only a cross-tab overview.
 
 When a Commands classification opens, Helper shows all of its groups immediately in a group navigator. `All groups` is the default; the first group selection isolates that group and subsequent selections build a multi-group filter. Selection is remembered per classification. Group containers remain ordered below the navigator and each container has independently persisted collapsed/expanded state. In normal classification view the group name is shown in the navigator and once on the group container, not repeated on every command card; `All commands` may show `Tab › Group` context because it intentionally mixes classifications.
 
@@ -323,10 +323,11 @@ Repository delete remains unsupported. Local Delete and Import `DELETE` make zer
 
 ## Commands Navigation
 
-The Commands surface keeps five semantic/tool classifications:
+The initial catalog supplies these editable presentation categories (semantic kind/scope remains independent):
 
 ```text
 General
+IDTSPE Pass
 Use Cases
 Target Modules
 Lenses
@@ -337,7 +338,7 @@ Inside each classification, `catalog-order.json#commandGroups` supplies smaller 
 
 `src/methodology-navigation.js` combines stable semantic identity (`semanticKind`, `semanticScope`, tool/general classification) with the optional GitHub-backed presentation group. If a current card has no group yet, compatibility/fallback grouping keeps it visible rather than dropping it. `helperPresentation.navigation` remains compatibility-only input for old cached records and is not a current semantic source.
 
-The generic `idtspe` and `примени линзу` dispatchers remain registered for expert/direct invocation but use `palette: false`; the primary catalog is built from current semantic owners rather than a second Helper-only hidden-command list.
+The generic `idtspe` and `примени линзу` dispatchers are visible composition controls in the initial `IDTSPE Pass` category. Moving their cards changes presentation only.
 
 ## Command Invocation Side Effects
 
@@ -349,7 +350,7 @@ For `replacement_archive.create` (`давай архив`), the token captures t
 
 ## UI Layout / Safety Boundary
 
-Desktop default is a wide panel (about 980px). The panel is resizable, persists `left/top/width/height`, clamps to the viewport and uses a command list + detail pane on wide screens. On narrow screens the detail pane yields to the command list. Commands navigation persists the active command classification, selected-group filter per classification, and each group's collapsed/expanded state in browser-local storage. Selecting a command updates all visible copies of its card + the detail pane, so the command-list scroll position does not jump to the beginning. Sidebar Categories/Groups can be collapsed; list refreshes preserve sidebar scroll position. Favorites is always the first collapsible group across classifications and group filters, including when empty; search applies to it, and the same cards remain in their ordinary groups. Context, Result and Essence start collapsed. Detailed behavior: [SCN-PH-DISCOVER](scenarios/SCN-PH-DISCOVER.md) and [SCN-PH-MANAGE-LOCAL](scenarios/SCN-PH-MANAGE-LOCAL.md).
+Desktop default is a wide panel (about 980px). The panel is resizable, persists `left/top/width/height`, clamps to the viewport and uses a command list + detail pane on wide screens. On narrow screens the detail pane yields to the command list. Commands navigation persists the active command classification, selected-group filter per classification, and each group's collapsed/expanded state in browser-local storage. Selecting a command updates all visible copies of its card + the detail pane, so the command-list scroll position does not jump to the beginning. Sidebar Categories/Groups can be collapsed; list refreshes preserve sidebar scroll position. Favorites is always the first collapsible group across classifications and group filters, including when empty; search applies to it, and the same cards remain in their ordinary groups. Use ↑ / ↓ on Favorite cards to set their personal order; it is saved automatically on this browser and shared across categories. With search active, arrows swap neighboring visible Favorites while hidden Favorites retain their positions. Reordering preserves selection and scroll position. Context, Result and Essence start collapsed. Detailed behavior: [SCN-PH-DISCOVER](scenarios/SCN-PH-DISCOVER.md) and [SCN-PH-MANAGE-LOCAL](scenarios/SCN-PH-MANAGE-LOCAL.md).
 
 - normal browse/group-filter/group-collapse/command selection/Run/Body/group/reorder/local edit is local-only;
 - all repository reads/writes are explicit UI actions;
@@ -376,4 +377,14 @@ For a connected project overview, use `посмотри полный приме�
 
 ### Browser UI regression checks
 
-With Playwright and its Chromium browser available, run `npm run test:browser`. `PLANNING_HELPER_PLAYWRIGHT_PATH` can point to an existing Playwright package; `PLANNING_HELPER_BROWSER_CHANNEL=msedge` selects installed Microsoft Edge. The suite uses a local fixture and checks Favorites ordering/duplicates/actions, category and group filtering, sidebar scroll preservation, collapsed meaning sections, persistence and keyboard controls. It is separate from the dependency-free `npm run verify` gate. The behavior owners remain [SCN-PH-DISCOVER](scenarios/SCN-PH-DISCOVER.md) and [SCN-PH-MANAGE-LOCAL](scenarios/SCN-PH-MANAGE-LOCAL.md).
+With Playwright and its Chromium browser available, run `npm run test:browser`. `PLANNING_HELPER_PLAYWRIGHT_PATH` can point to an existing Playwright package; `PLANNING_HELPER_BROWSER_CHANNEL=msedge` selects installed Microsoft Edge. The suites use local fixtures and check Favorites ordering/duplicates/actions, category/group filtering, sidebar scroll preservation, collapsed meaning sections and keyboard controls, plus category CRUD, card/group moves, real runtime snapshot persistence and deferred-call inspection. It is separate from the dependency-free `npm run verify` gate. The behavior owners remain [SCN-PH-DISCOVER](scenarios/SCN-PH-DISCOVER.md) and [SCN-PH-MANAGE-LOCAL](scenarios/SCN-PH-MANAGE-LOCAL.md).
+
+### Editable Categories And Process Call Projection
+
+**Manage categories** creates, renames and reorders categories. Deleting requires another destination and moves every group/card there; the last category cannot be deleted. Category IDs remain stable across rename. **Manage groups** can move a whole group to another category; the detail pane’s **Category** selector moves an individual card. **All commands** and **Favorites** remain automatic views. Renaming/deleting/moving preserves command identity, Favorites and semantic ownership.
+
+Categories, groups and membership share the local snapshot and explicit **Save order GitHub** / **Hard Reload GitHub** path. Editing categories requires no source change, rebuild or network request. Newly discovered unassigned cards use their available default semantic category, otherwise the declared fallback. Deleted categories are not recreated from a card’s semantic kind. Static default labels in compatibility migration are not a whitelist.
+
+The **Body** and contract inspector distinguish initial `includes` from deferred `processCalls`. The [command owner](../../../../commands/README.md#planning-command-process-calls) defines execution semantics. The Helper validates and projects calls and their dependency plans; it does not execute semantic AI work in the browser. Command JSON editing/import/export and repository save retain this field.
+
+The existing **Спланировать изменение документации** Use-Case card is backed by [plan-documentation-change.command.md](../../../../commands/plan-documentation-change.command.md), with a deferred Helper Impact call at the UC’s downstream-consequence point. Its semantic card identity and group remain unchanged. **Save GitHub** checks the edited command’s reachable process-point files/unique explicit anchors before any write, using the same anchor reader as the build; a local draft can still be incomplete.

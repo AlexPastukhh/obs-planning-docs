@@ -19,3 +19,30 @@ test('save updates by current remote SHA and no-ops when exact bytes already mat
 test('save refuses a command that would make the remote command catalog ambiguous',async()=>{const a=def('a','shared'),{client,calls}=fakeClient([remoteRecord(a,'s1')]);const b=def('b','shared');await assert.rejects(()=>new RepositoryCommandService(client).save(b),/Duplicate canonical command/);assert.equal(calls.save.length,0)});
 
 test('save propagates same-content conflict recovery evidence',async()=>{const a=def('a','a'),row=remoteRecord(a,'s1'),{client}=fakeClient([row]);client.saveVerified=async(input)=>({path:input.path,sha:'fresh',content:input.content,recoveredAfterConflict:true});const changed={...a,description:'changed'};const result=await new RepositoryCommandService(client).save(changed);assert.equal(result.recoveredAfterConflict,true);assert.equal(result.sha,'fresh')});
+
+test('save rejects missing, duplicate and example-only process points before repository mutation',async()=>{
+  const b=def('b','b'),a={...def('a','a'),processCalls:[{id:'check',commandPath:'planning/commands/b.command.md',at:{path:'planning/process.md',anchor:'handoff'},when:'At handoff',context:'Current basis'}]};
+  const anchor='<a id="handoff"></a>';
+  for(const content of [null,'# No anchor',anchor+'\n'+anchor,'~~~~md\n'+anchor+'\n~~~~','````md\n'+anchor+'\n````','    '+anchor,'`'+anchor+'`']){
+    const {client,calls}=fakeClient([remoteRecord(b)]),read=client.read;
+    client.read=async path=>path==='planning/process.md'&&content!==null?{content,sha:'owner'}:read(path);
+    await assert.rejects(()=>new RepositoryCommandService(client).save(a),/missing|Expected one process-call owner anchor/);
+    assert.equal(calls.save.length,0);
+  }
+});
+
+test('save validates process points, preserves calls and reads a shared owner once',async()=>{
+  const point={path:'planning/process.md',anchor:'handoff'},call={id:'first',commandPath:'planning/commands/b.command.md',at:point,when:'At handoff',context:'Current basis'},a={...def('a','a'),processCalls:[call,{...call,id:'second',at:{...point,anchor:'after'}}]},b=def('b','b');
+  const {client,calls}=fakeClient([remoteRecord(b)]),read=client.read;let ownerReads=0;
+  client.read=async path=>{if(path!=='planning/process.md')return read(path);ownerReads++;return{content:'<a id="handoff"></a>\n<a id="after"></a>',sha:'owner'};};
+  const result=await new RepositoryCommandService(client).save(a);
+  assert.equal(result.action,'create');assert.equal(ownerReads,1);assert.equal(calls.save.length,1);
+  assert.deepEqual(codec.parseCommandDefinitionDocument(calls.save[0].content).processCalls,a.processCalls);
+});
+
+test('save validates deferred points inherited from reachable included commands',async()=>{
+  const c=def('c','c'),b={...def('b','b'),processCalls:[{id:'nested',commandPath:'planning/commands/c.command.md',at:{path:'planning/missing.md',anchor:'handoff'},when:'At handoff',context:'Current basis'}]},a={...def('a','a'),includes:['planning/commands/b.command.md']};
+  const {client,calls}=fakeClient([remoteRecord(b),remoteRecord(c)]);
+  await assert.rejects(()=>new RepositoryCommandService(client).save(a),/missing/);
+  assert.equal(calls.save.length,0);
+});

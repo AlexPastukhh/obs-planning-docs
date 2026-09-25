@@ -12,5 +12,5 @@ test('command body derives included-by from the canonical include DAG without a 
   const child={...d,id:'child.cmd',file:'child.command.md',includes:['planning/commands/base.command.md']};
   const text=body.buildCommandBody(base,body.MODE.ADAPTIVE,{definitions:[base,child]});
   assert.match(text,/included_by_derived:[\s\S]*child\.cmd/);
-  assert.match(text,/`includes` remains the single canonical command dependency relation/);
+  assert.match(text,/`includes` remains the single canonical prerequisite relation/);
 });
