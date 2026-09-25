@@ -1,8 +1,8 @@
 (function (root, factory) {
-  const api = factory();
+  const api = factory(typeof require==='function'?require('./command-catalog.js'):(root.ObsPlanningHelper||{}));
   if (typeof module === 'object' && module.exports) module.exports = api;
   root.ObsPlanningHelper = Object.assign(root.ObsPlanningHelper || {}, api);
-})(typeof globalThis !== 'undefined' ? globalThis : this, function () {
+})(typeof globalThis !== 'undefined' ? globalThis : this, function (deps) {
   'use strict';
 
   const MODE = Object.freeze({ ADAPTIVE: 'adaptive', FULL: 'full' });
@@ -43,7 +43,23 @@
 
   function contributionLines(items){const list=items||[];if(!list.length)return['  - none'];return list.map((item)=>`  - ${item.kind}: ${item.value}${item.sourceCommandId?' | source: '+item.sourceCommandId:''} | why: ${item.why}`);}
 
-  function compositionPlan(definition,definitions){if(!Array.isArray(definitions)||!definitions.length)return{order:[],contributions:[]};try{const byPath=new Map(definitions.map((d)=>[commandPath(d),d])),seen=new Set(),order=[],contributions=[];function visit(current){if(seen.has(current.id))return;for(const includedPath of current.includes||[]){const included=byPath.get(includedPath);if(!included)throw new Error(`Unknown included command path: ${includedPath}`);visit(included);}seen.add(current.id);order.push({id:current.id,path:commandPath(current)});for(const item of current.compositionContributions||[])contributions.push({...item,sourceCommandId:current.id});const binding=current.methodologyBinding||{};if(binding.targetModuleId)contributions.push({kind:'SELECTED_TARGET_MODULE',value:binding.targetModuleId,why:'Registered Target Module selection contributed by command methodologyBinding before semantic execution.',sourceCommandId:current.id});if(binding.lensId)contributions.push({kind:'SELECTED_LENS',value:binding.lensId,why:'Registered Lens selection contributed by command methodologyBinding before semantic execution.',sourceCommandId:current.id});}visit(definition);const unique=[],keys=new Set();for(const item of contributions){const key=`${item.kind}|${item.value}|${item.sourceCommandId}`;if(!keys.has(key)){keys.add(key);unique.push(item);}}const hasAffectedRecheck=unique.some((item)=>item.kind==='REVIEW_COVERAGE_MODE'&&item.value==='LOCAL_AFFECTED_RECHECK');const effective=hasAffectedRecheck?unique.filter((item)=>!(item.kind==='REVIEW_COVERAGE_MODE'&&item.value==='CURRENT_BASIS')):unique;return{order,contributions:effective};}catch(_){return{order:[],contributions:[]};}}
+  function compositionPlan(definition,definitions){
+    if(!Array.isArray(definitions)||!definitions.length)return{order:[],contributions:[],processCalls:[]};
+    try{const plan=deps.expandCommandInvocation(definitions,[definition.id]);return{order:plan.initial.nodes.map(d=>({id:d.id,path:commandPath(d)})),contributions:plan.initial.contributions,processCalls:plan.processCalls};}
+    catch(error){return{order:[],contributions:[],processCalls:[],error:error.message};}
+  }
+  function processCallLines(plan,definition){
+    const calls=plan.processCalls.length?plan.processCalls:(definition.processCalls||[]).map(call=>({...call,callerId:definition.id}));
+    if(!calls.length)return['  - none'];
+    return calls.flatMap(call=>[
+      '  - '+call.callerId+'/'+call.id+' → '+call.commandPath,
+      '    at: '+call.at.path+'#'+call.at.anchor,
+      '    when: '+call.when,
+      '    context/basis: '+call.context,
+      '    deferred includes, dependencies first: '+(call.composition?.paths.join(' → ')||'resolve from current catalog at invocation'),
+      '    deferred contributions: '+(call.composition?.contributions.map(item=>item.kind+': '+item.value).join('; ')||'none / resolve at invocation')
+    ]);
+  }
 
 
   function buildCommandBody(definition, mode = MODE.ADAPTIVE, options = {}) {
@@ -79,8 +95,15 @@
       '',
       'included_by_derived:',
       ...includedByLines(definition,options.definitions),
-      '  Derived reverse projection only; `includes` remains the single canonical command dependency relation.',
+      '  Derived reverse projection only; `includes` remains the single canonical prerequisite relation; `processCalls` declares calls at owner process points.',
       '  Expand ALL selected roots and transitive includes before semantic execution. Merge them into one DAG, reject cycles, deduplicate shared nodes, collect declarative contributions from every node, then execute dependencies before dependents. The selected/root command action runs last on its branch.',
+      '',
+      'process_calls_deferred:',
+      ...processCallLines(plan,definition),
+      '  Discover/validate all includes and processCalls before work; reject unresolved paths and mixed cycles. Do not flatten deferred calls into the initial DAG or merge their contributions early.',
+      '  At each reached owner point evaluate its gate, bind the current subject/scope/operation/basis, expand the called command and all its includes, collect its contributions, execute dependencies first, then resume the caller. Follow the full child owner/read route.',
+      '  Reuse only evidenced compatible coverage on the current basis, including reached nested calls. A prior command id alone is not reuse evidence. Record EXECUTED / REUSED / NOT_APPLICABLE with basis; BLOCKED or NOT_REACHED is incomplete required work. Preserve caller permissions and Work Context.',
+      ...(plan.error?['  INVALID / INCOMPLETE CATALOG: '+plan.error+'. Resolve before any command execution.']:[]),
       '',
       'own_composition_contributions_pre_execution:',
       ...contributionLines(definition.compositionContributions||[]),

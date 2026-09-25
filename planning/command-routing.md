@@ -40,7 +40,7 @@ Planning Helper
 
 A command may link to the applicable semantic entry/current owner defined by the selected area, but never owns or replaces that meaning.
 
-Planning Commands are a USER↔AI invocation surface. The AI follows methodology owners/references/handoffs directly during methodology work and does not invoke Planning Commands as an internal execution mechanism. Command composition exists to make a USER-requested traversal reproducible/mandatory, not to create methodology meaning.
+Planning Commands are a USER↔AI invocation surface. The AI follows methodology owners/references/handoffs directly during methodology work. Within a USER-selected command invocation, declared `processCalls` guarantee traversal at the referenced owner points under [the Process Call contract](commands/README.md#planning-command-process-calls); the AI does not invent command calls as an alternative methodology runtime. Command composition exists to make a USER-requested traversal reproducible/mandatory, not to create methodology meaning.
 
 ## Command Resolution
 
@@ -48,13 +48,14 @@ Planning Commands are a USER↔AI invocation surface. The AI follows methodology
 1. Start here for an explicit command.
 2. Resolve the direct `planning/commands/*.command.md` whose `commandFamily` contains the trigger.
 3. Read that complete command definition and **fully expand all selected command/component roots and every registered transitive `includes` command-file path edge before semantic execution begins**.
-4. Merge one dependency DAG, reject unresolved command paths/cycles, deduplicate shared nodes, and collect declarative contributions (explicit capability requirements, selected semantic components, trace configuration, target/context selectors, permission constraints) from every node.
+4. Discover/validate reachable processCalls too, including mixed cycles; retain them as deferred point calls. Merge one dependency DAG from includes only, reject unresolved command paths/cycles, deduplicate shared nodes, and collect declarative contributions (explicit capability requirements, selected semantic components, trace configuration, target/context selectors, permission constraints) from every node.
 5. Establish the dependencies-first execution plan. Included command actions are dependencies, not recursive independent passes; each selected root action executes only after its dependencies completed or were validly `REUSED`.
 6. For normal IDTSPE work, establish/reuse the one P-02 working trace early enough to record the following composition events incrementally.
 7. Run/reaffirm the command at `planning/commands/recheck-methodology-use-cases.command.md`, which applies `UC-DOC-RESOLVE-CURRENT-USE-CASES` plus its mandatory `UC-IDTSPE-AI-WORKING-BOUNDARY` companion, for **every Planning Command invocation**. This is a compact fundamental authority/applicability pass, not execution of every Use Case.
 8. For normal IDTSPE Shell work, refresh/reaffirm the Port Requirement Set before P-01 through `IDTSPE.PORT-COMPOSITION-REFRESH`, using the already-collected explicit leaf requirements.
 9. Execute the resulting DAG dependencies before dependents while following each node's own `ownerRefs` / `ownerFiles` and current selected Use-Case owners. References inherited through included commands need not be repeated on the dependent command.
-10. Preserve the selected root command permission boundary. Semantic-entry activation or included command traversal never expands mutation/commit/push permission.
+10. At each reached processCalls owner point, bind the current context/basis, execute or validly reuse the child composition and consume its result before resuming; follow the Process Call contract.
+11. Preserve the selected root command permission boundary. Semantic-entry activation or included command traversal never expands mutation/commit/push permission.
 ```
 
 Do not reconstruct commands from memory, helper output, examples or historical files when the command definition is readable.

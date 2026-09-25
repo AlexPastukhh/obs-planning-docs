@@ -170,7 +170,7 @@ test('all reusable Lenses separate Target Inputs from explicit Knowledge Basis',
     'planning/documentation/idtspe-methodology/active/profiles/sds/lenses/reusable'
   ];
   const files=roots.flatMap((rel)=>fs.readdirSync(path.join(repoRoot,rel)).filter((name)=>/^LENS-.*\.md$/.test(name)).map((name)=>`${rel}/${name}`));
-  assert.equal(files.length,20);
+  assert.equal(files.length,21);
   for(const rel of files){const text=read(rel);assert.equal((text.match(/^## Knowledge Basis$/gm)||[]).length,1,rel);assert.match(text,/^## Artifact \/ File Implications$/m,rel);}
   const proof=read('planning/documentation/idtspe-methodology/active/idtspe-core/lenses/reusable/LENS-TEST-PROOF-EVIDENCE.md');
   assert.match(proof,/Testing Knowledge Basis/);assert.match(proof,/knowledge-bases\/testing\/README\.md/);

@@ -16,9 +16,9 @@ test('readOrder treats absent GitHub order as an empty valid order',async()=>{co
 test('saveOrder exact no-op performs no write',async()=>{let writes=0;const existing=repo.renderCatalogOrder({commands:['a']});const client={async read(){return{sha:'s1',content:existing}},async saveVerified(){writes++;throw new Error('unexpected')}};const service=new repo.RepositoryCatalogService(client);const result=await service.saveOrder({commands:['a']});assert.equal(result.action,'noop');assert.equal(writes,0)});
 
 
-test('catalog order schema v4 removes legacy presentation levels while upgrading v2/v3 groups',()=>{
+test('catalog order schema v5 removes legacy presentation levels while upgrading v2/v3 groups',()=>{
   const value=repo.normalizeCatalogOrder({schemaVersion:3,commands:['A','B'],commandGroups:[{id:'g.one',viewId:'GENERAL',label:'One',level:'ADVANCED',order:0,items:['A']},{id:'g.two',viewId:'USE_CASES',label:'Two',level:'SEMANTIC_COMPONENT',order:1,items:['B']}]});
-  assert.equal(value.schemaVersion,4);
+  assert.equal(value.schemaVersion,5);
   assert.deepEqual(value.commandGroups.map((group)=>group.id),['g.one','g.two']);
   assert.ok(value.commandGroups.every((group)=>!('level' in group)));
   const parsed=repo.parseCatalogOrder(repo.renderCatalogOrder(value));

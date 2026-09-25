@@ -586,3 +586,12 @@ The modular helper may migrate legacy page-local/GM command-library caches into 
 Every Insert starts copying the exact body to the system clipboard before composer mutation and inserts that same exact RAM string. If direct insertion fails, the clipboard already contains the body for manual paste. Browser synthetic clipboard paste is not relied on.
 
 Testing Planning Workspace UCs are valid semantic projections. Cross-file documentation addressability uses ordinary Markdown links and stable explicit anchors. Planning Helper behavior is routed through its current command/helper-library owners rather than projected as Workspace Use Cases. Replacement Package App remains an explicit unmigrated exception until separately selected.
+
+## Change-Impact Integration Check
+
+Before declaring documentation/methodology projection synchronization complete, invoke or reuse [Check Helper Impact](../use-cases/UC-REPO-CHECK-HELPER-IMPACT.md#uc-repo-check-helper-impact) against the actual applied change basis. Consume its affected surfaces and verification result; reopen the assessment if implementation changed the expected impact. Do not count an earlier planned check as applied verification. This is a linked process step, not a prerequisite command include. The impact Use Case owns scope/command-candidate assessment; this workflow continues to own projection synchronization mechanics.
+
+> Semantic Owner Dependency
+> Type: `CONTEXTUALIZES`
+> Responsibility: `HELPER.CHANGE-IMPACT`
+> Owner: [Check Helper Impact](../use-cases/UC-REPO-CHECK-HELPER-IMPACT.md#uc-repo-check-helper-impact)

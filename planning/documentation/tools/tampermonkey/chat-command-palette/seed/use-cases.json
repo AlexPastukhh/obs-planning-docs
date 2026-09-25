@@ -127,7 +127,8 @@
       "target": "<Plan Repository Documentation Change target>",
       "manualInvocation": true,
       "trigger": "A repository documentation capability, semantic owner structure, navigation model, dependency, or methodology needs a material change that cannot be resolved by simply reading a known owner or placing a file in an obvious existing responsibility.",
-      "result": "The target documentation meaning is resolved to the needed depth, affected Use Cases and semantic owners are clear, and the change is ready for exact repository realization without implementation having to invent semantic decisions."
+      "result": "The target documentation meaning is resolved to the needed depth, affected Use Cases and semantic owners are clear, and the change is ready for exact repository realization without implementation having to invent semantic decisions.",
+      "commandId": "documentation.change.plan"
     },
     {
       "id": "UC-DOC-RESOLVE-CURRENT-USE-CASES",

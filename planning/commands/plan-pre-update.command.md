@@ -67,6 +67,18 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
       "role": "PRIMARY_OWNER",
       "readMode": "REQUIRED"
     }
+  ],
+  "processCalls": [
+    {
+      "id": "helper-impact",
+      "commandPath": "planning/commands/check-helper-impact.command.md",
+      "at": {
+        "path": "planning/use-cases/UC-REPO-PLAN-UPDATE.md",
+        "anchor": "helper-impact-before-plan-handoff"
+      },
+      "when": "Apply the Helper repository documentation/methodology change gate at this owner point; record an evidenced NOT_APPLICABLE only when that gate does not apply.",
+      "context": "Use current proposed file operations and the planning basis; incorporate projection operations/checks or evidenced no-impact before plan handoff."
+    }
   ]
 }
 [/PLANNING_COMMAND_DEFINITION]

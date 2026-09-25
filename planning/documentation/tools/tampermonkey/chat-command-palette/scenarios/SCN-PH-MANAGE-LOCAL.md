@@ -3,7 +3,7 @@
 Status: active current behavior owner
 Scope: local draft/Favorite/order/layout work without implicit repository mutation.
 
-**Trigger/input:** local direct Command/Prompt create/edit/delete, Favorite toggle, command presentation-group change, **Manage groups** create/rename/reorder/delete, group filter selection, group collapse/expand, Prompt `↑` / `↓` reorder or direct `№` position entry, panel drag or resize.
+**Trigger/input:** local direct Command/Prompt create/edit/delete, Favorite toggle or ↑ / ↓ reorder, command presentation-group change, **Manage groups** create/rename/reorder/delete, group filter selection, group collapse/expand, Prompt `↑` / `↓` reorder or direct `№` position entry, panel drag or resize.
 
 **Successful result:** selected Helper-local content/preferences/order/layout change in RAM/local persistence only; canonical GitHub content remains untouched until an explicit repository action.
 
@@ -12,6 +12,7 @@ Scope: local draft/Favorite/order/layout work without implicit repository mutati
 - only real direct Planning Commands are editable command drafts;
 - generic/generated semantic UC/TM/Lens cards are projection-only;
 - semantic Command Favorites use stable `uc:/tm:/lens:` IDs; legacy direct favorite/order IDs are recognized during migration;
+- Favorites follow the personal `favoriteCommandIds` order across categories; ↑ / ↓ swap adjacent visible Favorites, with boundary arrows disabled. Search-hidden Favorites retain their slots. Changes persist locally across restart, preserve command selection and list/sidebar/detail scroll, and leave ordinary group/catalog order unchanged;
 - the detail-pane Group selector changes only presentation membership in `catalogOrder.commandGroups`; it never changes semantic identity;
 - presentation groups form one ordered list per Commands classification and can be created, renamed, reordered and deleted locally; deleting a group moves its cards to `Other / Ungrouped`; there is no Primary/Advanced/Semantic tier;
 - each Commands classification remembers its selected-group filter locally; first selection from All isolates one group and further selections build a multi-group filter;
@@ -29,5 +30,12 @@ Scope: local draft/Favorite/order/layout work without implicit repository mutati
 
 - **Product / behavior:** [`README.md#unified-local-snapshot`](../README.md#unified-local-snapshot), [`README.md#catalog-order`](../README.md#catalog-order), [`README.md#ui-layout--safety-boundary`](../README.md#ui-layout--safety-boundary).
 - **Primary implementation:** [`src/planning-helper-state.js`](../src/planning-helper-state.js), [`src/planning-helper-runtime.js`](../src/planning-helper-runtime.js), [`src/planning-helper-ui.js`](../src/planning-helper-ui.js).
-- **Automated evidence:** [`tests/planning-helper-state.test.mjs`](../tests/planning-helper-state.test.mjs), [`tests/planning-helper-runtime.test.mjs`](../tests/planning-helper-runtime.test.mjs), [`tests/planning-helper-ui.test.mjs`](../tests/planning-helper-ui.test.mjs).
+- **Automated evidence:** [`tests/planning-helper-state.test.mjs`](../tests/planning-helper-state.test.mjs), [`tests/planning-helper-runtime.test.mjs`](../tests/planning-helper-runtime.test.mjs), [`tests/planning-helper-ui.test.mjs`](../tests/planning-helper-ui.test.mjs), [`tests/editable-categories.test.mjs`](../tests/editable-categories.test.mjs), [`tests/editable-categories.browser.mjs`](../tests/editable-categories.browser.mjs).
 - **Manual acceptance:** [`MANUAL-ACCEPTANCE.md#scn-ph-manage-local`](../MANUAL-ACCEPTANCE.md#scn-ph-manage-local).
+
+## Category Management
+
+- Create an empty category; it appears immediately. Rename and reorder it without changing its stable ID.
+- Move a card using Category, or a complete group through Manage groups. Semantic identity and Favorites remain intact.
+- Delete a category into a chosen existing destination; all groups/cards remain discoverable. Block deletion of the last category.
+- Save locally, restart and verify; explicit Save order GitHub / Hard Reload GitHub preserves the same category/group catalog. No category management action implicitly accesses GitHub.

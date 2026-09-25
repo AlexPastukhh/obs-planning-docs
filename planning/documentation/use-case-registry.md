@@ -18,10 +18,10 @@ This registry is one scope reached through the [`Methodology Use-Case Registry M
 
 ### Documentation Change / Review
 
-| ID | Use Case | Situation summary | Result summary | Owner |
-|---|---|---|---|---|
-| `UC-DOC-PLAN-DOCUMENTATION-CHANGE` | Plan Repository Documentation Change | documentation capability/owner/navigation/methodology needs material semantic change | exact realization-ready documentation meaning and affected owners | [`use-cases/UC-DOC-PLAN-DOCUMENTATION-CHANGE.md`](use-cases/UC-DOC-PLAN-DOCUMENTATION-CHANGE.md) |
-| `UC-DOC-REVIEW-DOCUMENTATION` | Review Repository Documentation | documentation may be stale, duplicated, orphaned or inconsistent | material findings tied to real owners and narrow repair routes | [`use-cases/UC-DOC-REVIEW-DOCUMENTATION.md`](use-cases/UC-DOC-REVIEW-DOCUMENTATION.md) |
+| ID | Use Case | Situation summary | Result summary | Owner | Related command |
+|---|---|---|---|---|---|
+| `UC-DOC-PLAN-DOCUMENTATION-CHANGE` | Plan Repository Documentation Change | documentation capability/owner/navigation/methodology needs material semantic change | exact realization-ready documentation meaning and affected owners | [`use-cases/UC-DOC-PLAN-DOCUMENTATION-CHANGE.md`](use-cases/UC-DOC-PLAN-DOCUMENTATION-CHANGE.md) | спланируй изменение документации |
+| `UC-DOC-REVIEW-DOCUMENTATION` | Review Repository Documentation | documentation may be stale, duplicated, orphaned or inconsistent | material findings tied to real owners and narrow repair routes | [`use-cases/UC-DOC-REVIEW-DOCUMENTATION.md`](use-cases/UC-DOC-REVIEW-DOCUMENTATION.md) | |
 
 ### Documentation Type Maintenance
 

@@ -58,3 +58,9 @@ test('sidebar shows the component owner even without a direct command and separa
 });
 
 test('prompt ordering exposes direct numeric position and preserves viewport on arrow or position moves',async()=>{const fs=await import('node:fs');const source=fs.readFileSync(new URL('../src/planning-helper-ui.js',import.meta.url),'utf8');assert.match(source,/position-input/);assert.match(source,/№ позиции/);assert.match(source,/onMoveCatalogItemToPosition/);assert.match(source,/captureListViewport/);assert.match(source,/restoreListViewport/);assert.match(source,/scroller\.scrollTop=viewport\.scrollTop/);assert.match(source,/scrollIntoView\(\{block:'nearest'\}\)/);assert.match(source,/selectedPromptId=entry\.id/);});
+
+test('Favorites use personal order independently of catalog order and tolerate stale or duplicate IDs',()=>{
+  const entries=[{id:'a'},{id:'b'},{id:'c'}];
+  assert.deepEqual(favoriteEntries(entries,['c','missing','b','c','a']).map(e=>e.id),['c','b','a']);
+  assert.deepEqual(entries.map(e=>e.id),['a','b','c']);
+});

@@ -135,3 +135,61 @@ test('Import rejects UC semantic-component edits plus duplicate and conflicting 
 test('retired hidden markers cannot keep an explicitly present or upserted command invisible',()=>{const command=def('visible.after.upsert','visible after upsert'),local=state.normalizePlanningHelperLocalSnapshot({...snapshot(),planningCommands:[state.normalizeCommandRecord({definition:command,repositoryKnown:true})],hiddenCommandIds:[command.id],hiddenUseCaseIds:['UC-X']});assert.equal('hiddenCommandIds' in local,false);assert.ok(runtime.materializeSnapshot(local).commandEntries.some((entry)=>entry.id===command.id));const updated={...command,description:'updated'};const merged=runtime.mergeChatImport(local,{definitions:[updated],helperItems:[],patch:null},'import');assert.ok(runtime.materializeSnapshot(merged.snapshot).commandEntries.some((entry)=>entry.id===command.id));});
 
 test('capability delete and backing-command upsert are independent explicit CRUD operations',()=>{const tmId='TM-PRE-UPDATE-PLAN',tmDirect=require('../seed/commands.json').items.find((item)=>item.methodologyBinding?.targetModuleId===tmId),ucId='UC-IDTSPE-COMPOSE-CURRENT-WORK',ucDirect=require('../seed/commands.json').items.find((item)=>item.id==='plan.now');assert.ok(tmDirect);assert.ok(ucDirect);const local=state.normalizePlanningHelperLocalSnapshot({...snapshot(),planningCommands:[state.normalizeCommandRecord({definition:tmDirect,repositoryKnown:true}),state.normalizeCommandRecord({definition:ucDirect,repositoryKnown:true})]}),tmMerged=runtime.mergeChatImport(local,{definitions:[],helperItems:[],patch:{schemaVersion:1,upsert:{commands:[tmDirect],helperItems:[],useCases:[],semanticComponents:[],scenarios:[]},delete:{commands:[],helperItems:[],useCases:[],semanticComponents:[tmId],scenarios:[]},catalogOrder:null}},'import'),tmMemory=runtime.materializeSnapshot(tmMerged.snapshot);assert.equal(tmMemory.commandEntries.some((entry)=>entry.canonicalId===tmId),false);assert.ok(tmMemory.commandEntries.some((entry)=>entry.id===tmDirect.id&&entry.canonicalId===''));const ucMerged=runtime.mergeChatImport(local,{definitions:[],helperItems:[],patch:{schemaVersion:1,upsert:{commands:[ucDirect],helperItems:[],useCases:[],semanticComponents:[],scenarios:[]},delete:{commands:[],helperItems:[],useCases:[ucId],semanticComponents:[],scenarios:[]},catalogOrder:null}},'import'),ucMemory=runtime.materializeSnapshot(ucMerged.snapshot);assert.equal(ucMemory.commandEntries.some((entry)=>entry.canonicalId===ucId),false);assert.ok(ucMemory.commandEntries.some((entry)=>entry.id==='plan.now'&&entry.canonicalId===''))});
+
+
+test('presentation check projects to one Lens card with CHECK, current owner and a complete dependency DAG',()=>{
+  const definitions=require('../seed/commands.json').items;
+  const local=snapshot();
+  local.catalogOrder=require('../catalog-order.json');
+  local.planningCommands=definitions.map((definition)=>state.normalizeCommandRecord({definition,repositoryKnown:true}));
+  const cards=runtime.materializeSnapshot(local).commandEntries;
+  const matches=cards.filter((card)=>card.canonicalId==='LENS-UNIT-CENTRIC-PRESENTATION');
+  assert.equal(matches.length,1);
+  const card=matches[0];
+  assert.equal(card.directCommandId,'lenscmd.unit.centric.presentation.check');
+  assert.equal(cards.some((entry)=>entry.id==='lenscmd.unit.centric.presentation.check'),false);
+  assert.equal(card.semanticOwnerRef.anchor,'lens-unit-centric-presentation');
+  assert.equal(card.semanticOwnerRef.readMode,'REQUIRED');
+  assert.equal(card.presentationGroup.id,'lens.representation-navigation');
+  assert.match(card.adaptiveBody,/CHECK/);
+  assert.match(card.adaptiveBody,/lens-unit-centric-presentation/);
+  const dag=catalog.expandCommandComposition(definitions,[card.directCommandId]);
+  assert.equal(dag.order.at(-1),card.directCommandId);
+  assert.equal(dag.order.filter((id)=>id==='idtspe.lens.apply').length,1);
+  assert.equal(dag.contributions.filter((item)=>item.kind==='SELECTED_LENS'&&item.value==='LENS-UNIT-CENTRIC-PRESENTATION').length,1);
+});
+
+test('helper impact is a read-only repository tool and never an added prerequisite of mutation commands',()=>{
+  const definitions=require('../seed/commands.json').items;
+  const local=snapshot();
+  local.catalogOrder=require('../catalog-order.json');
+  local.planningCommands=definitions.map((definition)=>state.normalizeCommandRecord({definition,repositoryKnown:true}));
+  const card=runtime.materializeSnapshot(local).commandEntries.find((item)=>item.id==='helper.impact.check');
+  assert.ok(card);
+  assert.equal(card.commandCategory,'TOOL');
+  assert.equal(card.presentationGroup.id,'tools.helper-commands');
+  assert.equal(card.definition.permissionMode,'read-only-planning');
+  assert.equal(card.definition.ownerRefs[0].responsibilityId,'HELPER.CHANGE-IMPACT');
+  assert.match(card.adaptiveBody,/uc-repo-check-helper-impact/);
+  assert.equal(definitions.some((d)=>(d.includes||[]).includes('planning/commands/check-helper-impact.command.md')),false);
+});
+
+test('Favorite arrows persist personal order while preserving hidden slots and ordinary catalog membership',()=>{
+  const local=state.normalizePlanningHelperLocalSnapshot({...snapshot(),planningCommands:['a','b','c'].map(id=>state.normalizeCommandRecord({definition:def(id)})),favoriteCommandIds:['a','b','c']});
+  const moved=runtime.moveFavoriteCommandInSnapshot(local,'c',-1,['a','c']);
+  assert.deepEqual(moved.favoriteCommandIds,['c','b','a']);
+  assert.deepEqual(moved.catalogOrder,local.catalogOrder);
+  assert.deepEqual(moved.planningCommands,local.planningCommands);
+  assert.deepEqual(local.favoriteCommandIds,['a','b','c']);
+  assert.deepEqual(runtime.moveFavoriteCommandInSnapshot(moved,'c',1).favoriteCommandIds,['b','c','a']);
+  assert.deepEqual(runtime.moveFavoriteCommandInSnapshot(moved,'c',-1).favoriteCommandIds,['c','b','a']);
+  assert.deepEqual(runtime.moveFavoriteCommandInSnapshot(moved,'a',1).favoriteCommandIds,['c','b','a']);
+  assert.throws(()=>runtime.moveFavoriteCommandInSnapshot(moved,'missing',1),/not found/);
+  assert.throws(()=>runtime.moveFavoriteCommandInSnapshot(moved,'a',0),/direction/);
+});
+test('Favorite moves normalize legacy direct IDs and keep unavailable Favorites in place',()=>{
+  const pre=require('../seed/commands.json').items.find(d=>d.id==='tmcmd.pre.update');
+  const local=state.normalizePlanningHelperLocalSnapshot({...snapshot(),planningCommands:[...snapshot().planningCommands,state.normalizeCommandRecord({definition:pre})],favoriteCommandIds:['tmcmd.pre.update','unavailable','a']});
+  const moved=runtime.moveFavoriteCommandInSnapshot(local,'tm:TM-PRE-UPDATE-PLAN',1);
+  assert.deepEqual(moved.favoriteCommandIds,['a','unavailable','tm:TM-PRE-UPDATE-PLAN']);
+});

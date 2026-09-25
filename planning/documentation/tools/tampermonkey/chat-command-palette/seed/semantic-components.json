@@ -429,6 +429,33 @@
       "target": "<Uncertainty / Assumptions / Reversibility analysis surface>"
     },
     {
+      "id": "LENS-UNIT-CENTRIC-PRESENTATION",
+      "kind": "LENS",
+      "scope": "Core",
+      "label": "Unit-Centric Presentation",
+      "actionLabel": "Unit-Centric Presentation",
+      "description": "User-facing Target presentation: visible Units, proportional disclosure of supporting context, essential state/action visibility; chat or documents",
+      "context": "Select this Lens when creating or materially revising a user-facing Target presentation with substantial supporting content outside its Units, or when the user requests a presentation check. Apply equally to chat output, Markdown documents and checkpoint projections; persistence is not a prerequisite. Target context must already exist or be naturally supplied by the analysis surface; do not manufacture a Target to run this Lens. For automatic presentation-boundary checks, select CHECK when this gate is met, or reuse a current check for the same operation, surface and relevant basis. Explicit applications preserve the selected supported operation (ANALYZE, CHECK, REFINE or CHALLENGE); automatic CHECK does not replace it or count as coverage of another operation. A compact presentation may be NOT_APPLICABLE for automatic selection when no material presentation issue exists. An explicit…",
+      "result": "Return a proportional presentation assessment with precise affected locations and suggested adjustments. Typical Finding Candidates: supporting context obscures Units; essential status/action is hidden; Unit content is incorrectly collapsed or displaced; disclosure loses content/addressability; rendering makes details inaccessible. A checked presentation may have no material findings. Candidates use Core Finding Disposition for owner, priority, resolution and downstream consequences; this Lens does not create another lifecycle. Applying the Lens does not grant mutation permission. REFINE can supply a proposed presentation; writing files follows the active authorized update workflow.",
+      "essence": "Keep Units as the main visible reading path of a Target presentation. Evaluate and refine progressive disclosure of supporting context without changing content ownership, completeness or resolution semantics. This Lens owns its presentation criteria and embedded Knowledge Basis. > Semantic Owner Dependencies > - CONTEXTUALIZES Lens Meta-Model — LENS.META-MODEL. > - CONTEXTUALIZES Target Work Unit — TWU.UNIT-CONTRACT. > - CONTEXTUALIZES Finding Disposition — RESOLUTION.FINDING-DISPOSITION.",
+      "sources": [
+        "planning/documentation/idtspe-methodology/active/idtspe-core/lenses/LENS-REGISTRY.md",
+        "planning/documentation/idtspe-methodology/active/idtspe-core/lenses/frequent/LENS-UNIT-CENTRIC-PRESENTATION.md"
+      ],
+      "aliases": [],
+      "ownerRef": {
+        "semanticId": "LENS-UNIT-CENTRIC-PRESENTATION",
+        "path": "planning/documentation/idtspe-methodology/active/idtspe-core/lenses/frequent/LENS-UNIT-CENTRIC-PRESENTATION.md",
+        "anchor": "lens-unit-centric-presentation",
+        "why": "Concrete Lens Model semantics selected by this card; shared Meta-Model/registry/port references come from included commands.",
+        "role": "PRIMARY_OWNER",
+        "readMode": "REQUIRED"
+      },
+      "commandId": "",
+      "invocation": "idtspe lens LENS-UNIT-CENTRIC-PRESENTATION <target/context>",
+      "target": "<Unit-Centric Presentation analysis surface>"
+    },
+    {
       "id": "LENS-VERIFIABILITY-OBSERVABILITY-OPERABILITY",
       "kind": "LENS",
       "scope": "Core",
@@ -2018,7 +2045,7 @@
       ],
       "aliases": [],
       "ownerRef": null,
-      "commandId": "",
+      "commandId": "documentation.change.plan",
       "invocation": "",
       "target": "<Plan Repository Documentation Change target>"
     },

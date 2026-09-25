@@ -9,6 +9,8 @@
   function assert(condition, message) { if (!condition) throw new TypeError(message); }
   function commandPath(definition){return `${COMMANDS_PATH}/${definition.file}`;}
 
+  function commandExecutionReferences(definition){return[...(definition?.includes||[]),...(definition?.processCalls||[]).map(call=>call.commandPath)];}
+
   function validateCommandCatalog(definitions, options = {}) {
     assert(Array.isArray(definitions), 'Command catalog must be an array.');
     const byId = new Map();
@@ -35,21 +37,21 @@
       }
     }
     const allowMissingIncludes = options.allowMissingIncludes === true;
-    for (const definition of definitions) for (const includedPath of definition.includes || []) {
+    for (const definition of definitions) for (const includedPath of commandExecutionReferences(definition)) {
       const included=byPath.get(includedPath);
       if (!included) {
-        if (!allowMissingIncludes) throw new TypeError(`Unknown included command path ${includedPath} in ${definition.id}`);
+        if (!allowMissingIncludes) throw new TypeError(`Unknown included command path or process call ${includedPath} in ${definition.id}`);
         continue;
       }
-      if (included.id === definition.id) throw new TypeError(`Command ${definition.id} cannot include itself.`);
+      if (included.id === definition.id) throw new TypeError(`Command ${definition.id} cannot include or call itself.`);
     }
     const visiting=new Set(),visited=new Set();
     function visit(id,stack=[]){
       if(visited.has(id))return;
-      if(visiting.has(id))throw new TypeError(`Command include cycle: ${[...stack,id].join(' -> ')}`);
+      if(visiting.has(id))throw new TypeError(`Command include cycle / process-call cycle: ${[...stack,id].join(' -> ')}`);
       visiting.add(id);
       const definition=byId.get(id);
-      for(const includedPath of definition?.includes||[]){const included=byPath.get(includedPath);if(included)visit(included.id,[...stack,id]);}
+      for(const includedPath of commandExecutionReferences(definition)){const included=byPath.get(includedPath);if(included)visit(included.id,[...stack,id]);}
       visiting.delete(id);visited.add(id);
     }
     for(const definition of definitions)visit(definition.id);
@@ -75,9 +77,18 @@
   }
 
   function expandCommandComposition(definitions,rootIds){
-    const catalog=validateCommandCatalog(definitions);
+    const catalog=validateCommandCatalog(definitions,{allowMissingIncludes:true});
     const roots=[...new Set((Array.isArray(rootIds)?rootIds:[rootIds]).map(String).filter(Boolean))];
     for(const id of roots)assert(catalog.byId.has(id),`Unknown composition root command id: ${id}`);
+    // Unrelated incomplete local drafts do not invalidate a fully resolved invocation.
+    const checked=new Set();
+    function checkReachable(definition){
+      if(checked.has(definition.id))return;checked.add(definition.id);
+      for(const path of commandExecutionReferences(definition)){
+        const child=catalog.byPath.get(path);assert(child,`Unknown command execution path ${path} in ${definition.id}`);checkReachable(child);
+      }
+    }
+    for(const id of roots)checkReachable(catalog.byId.get(id));
     const seen=new Set(),order=[];
     function visit(definition){
       if(seen.has(definition.id))return;
@@ -99,8 +110,33 @@
     return{rootIds:roots,order,nodes,contributions:effective,byId:catalog.byId,byPath:catalog.byPath,paths:nodes.map(commandPath)};
   }
 
+  // Inventory is fully discovered before execution; child plans remain deferred.
+  // Each call occurrence is activated by the executor at its owner point, not by this projection.
+  function expandCommandInvocation(definitions,rootIds){
+    const initial=expandCommandComposition(definitions,rootIds),processCalls=[],seen=new Set();
+    function scan(plan){for(const node of plan.nodes){if(seen.has(node.id))continue;seen.add(node.id);
+      for(const call of node.processCalls||[]){const child=initial.byPath.get(call.commandPath),composition=expandCommandComposition(definitions,[child.id]);processCalls.push({...call,callerId:node.id,composition});scan(composition);}
+    }}scan(initial);return{initial,processCalls};
+  }
+
+  function explicitAnchorCount(source,anchor){
+    const text=String(source||'').replace(/<!--[\s\S]*?-->/g,'');let fence=null,count=0;
+    for(const line of text.split(/\r?\n/)){
+      const marker=line.match(/^ {0,3}(\x60{3,}|~{3,})/);
+      if(marker){if(!fence)fence={char:marker[1][0],length:marker[1].length};else if(marker[1][0]===fence.char&&marker[1].length>=fence.length&&line.slice(marker[0].length).trim()==='')fence=null;continue;}
+      if(fence||/^(?: {4}|\t)/.test(line))continue;
+      const visible=line.replace(/(\x60+).*?\1/g,'');
+      for(const match of visible.matchAll(/(?<!\\)<a\s+id=["']([^"']+)["']\s*>\s*<\/a>/gi))if(match[1]===anchor)count++;
+    }return count;
+  }
+  function validateProcessCallPoint(source,at){
+    const count=explicitAnchorCount(source,at.anchor);
+    assert(count===1,'Expected one process-call owner anchor '+at.path+'#'+at.anchor+'; found '+count+'.');
+  }
+
   function commandReferencePaths(definition) {
     const paths = new Set();
+    for (const call of definition?.processCalls || []) paths.add(call.at.path);
     for (const owner of definition?.ownerFiles || []) paths.add(owner);
     for (const ref of definition?.ownerRefs || []) if(ref?.path) paths.add(ref.path);
     for (const refinement of definition?.refinements || []) {
@@ -109,5 +145,5 @@
     return [...paths].sort();
   }
 
-  return { validateCommandCatalog, visibleCommandDefinitions, stripRuntimeCommandMetadata, replaceDefinitionsByFile, expandCommandComposition, commandReferencePaths };
+  return { validateCommandCatalog, visibleCommandDefinitions, stripRuntimeCommandMetadata, replaceDefinitionsByFile, expandCommandComposition, expandCommandInvocation, explicitAnchorCount, validateProcessCallPoint, commandReferencePaths };
 });
