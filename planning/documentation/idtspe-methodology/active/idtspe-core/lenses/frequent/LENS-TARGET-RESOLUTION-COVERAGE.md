@@ -1,6 +1,9 @@
 <a id="lens-target-resolution-coverage"></a>
 # LENS-TARGET-RESOLUTION-COVERAGE — Target Resolution Coverage
 
+> Semantic Owner Dependency
+> - `EXTENDS` [Lens Meta-Model](../LENS-MODEL.md#lens-meta-model) — `LENS.META-MODEL`.
+
 Lens ID: `LENS-TARGET-RESOLUTION-COVERAGE`
 Status: active frequent-conditional Core Lens
 

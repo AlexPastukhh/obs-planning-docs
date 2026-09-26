@@ -1,9 +1,10 @@
 <a id="tm-exact-realization"></a>
 # TM-EXACT-REALIZATION — Exact Realization / Integration
 
+Responsibility ID: `TARGET-MODULE.EXACT-REALIZATION`
+
 > Semantic Owner Dependencies
-> - `CONTEXTUALIZES` [Decision record retention](../resolution/proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md#resolution-decision-retention) — `RESOLUTION.PROPOSAL-DECISION-LIFECYCLE`.
-> - `CONTEXTUALIZES` [PRS Decision admission / exit](TM-PLANNING-RESOLUTION-STATE.md#ru-prs-02--tracked-decisions) — `RESOLUTION.CARRY-FORWARD`.
+> - `CONTEXTUALIZES` [Resolution Carry-Forward contract](../resolution/RESOLUTION-CARRY-FORWARD-CONTRACT.md#resolution-carry-forward) — `RESOLUTION.CARRY-FORWARD`.
 
 Entry Point: `tm.exact.realization`
 Role: generic Core primary/supporting Target Module

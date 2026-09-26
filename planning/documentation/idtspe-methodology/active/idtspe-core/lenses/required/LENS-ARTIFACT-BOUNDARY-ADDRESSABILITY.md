@@ -1,9 +1,11 @@
 <a id="lens-artifact-boundary-addressability"></a>
 # LENS-ARTIFACT-BOUNDARY-ADDRESSABILITY — Documentation / Representation / Artifact Boundary
 
+> Semantic Owner Dependency
+> - `EXTENDS` [Lens Meta-Model](../LENS-MODEL.md#lens-meta-model) — `LENS.META-MODEL`.
+
 > Semantic Owner Dependencies
-> - `CONTEXTUALIZES` [Decision record retention](../../resolution/proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md#resolution-decision-retention) — `RESOLUTION.PROPOSAL-DECISION-LIFECYCLE`.
-> - `CONTEXTUALIZES` [PRS Decision admission / exit](../../target-modules/TM-PLANNING-RESOLUTION-STATE.md#ru-prs-02--tracked-decisions) — `RESOLUTION.CARRY-FORWARD`.
+> - `CONTEXTUALIZES` [Resolution Carry-Forward contract](../../resolution/RESOLUTION-CARRY-FORWARD-CONTRACT.md#resolution-carry-forward) — `RESOLUTION.CARRY-FORWARD`.
 
 Lens ID: `LENS-ARTIFACT-BOUNDARY-ADDRESSABILITY`
 Working name: **Documentation / Representation Lens**

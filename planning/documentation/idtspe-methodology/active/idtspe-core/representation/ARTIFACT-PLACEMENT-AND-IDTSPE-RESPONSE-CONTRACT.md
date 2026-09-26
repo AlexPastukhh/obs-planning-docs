@@ -2,7 +2,7 @@
 
 > Semantic Owner Dependencies
 > - `CONTEXTUALIZES` [Decision record retention](../resolution/proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md#resolution-decision-retention) — `RESOLUTION.PROPOSAL-DECISION-LIFECYCLE`.
-> - `CONTEXTUALIZES` [PRS Decision admission / exit](../target-modules/TM-PLANNING-RESOLUTION-STATE.md#ru-prs-02--tracked-decisions) — `RESOLUTION.CARRY-FORWARD`.
+> - `CONTEXTUALIZES` [Resolution Carry-Forward contract](../resolution/RESOLUTION-CARRY-FORWARD-CONTRACT.md#resolution-carry-forward) — `RESOLUTION.CARRY-FORWARD`.
 
 Status: active generic methodology owner
 
@@ -58,16 +58,28 @@ Logical/semantic retention of a Decision/Proposal/Result Unit does not by itself
 
 ## 1B. Resolution Carry-Forward Representation
 
-> Semantic Owner Dependency
-> Type: `EXTENDS`
-> Responsibility: `RESOLUTION.CARRY-FORWARD`
-> Owner: [Planning Resolution State / Resolution Carry-Forward](../target-modules/TM-PLANNING-RESOLUTION-STATE.md#tm-planning-resolution-state)
+This representation contract owns the physical-placement/materialization delta only; membership and threshold semantics belong to the standalone `RESOLUTION.CARRY-FORWARD` contract, while `TM-PLANNING-RESOLUTION-STATE` owns only its concrete bounded Target-result representation.
 
-This representation contract owns the physical-placement/materialization delta only; membership and threshold semantics belong to the single PRS/RCF Target Module contract.
+[`Resolution Carry-Forward`](../resolution/RESOLUTION-CARRY-FORWARD-CONTRACT.md#resolution-carry-forward) owns generic continuation/materialization qualification; [`TM-PLANNING-RESOLUTION-STATE`](../target-modules/TM-PLANNING-RESOLUTION-STATE.md#tm-planning-resolution-state) is its reusable bounded Target-result realization. When its continuation value is material, Documentation / Representation + P-14 may place it inline in an Integration Checkpoint, in an existing coordination register/artifact, or as a generated view. Physical placement does not transfer Core lifecycle or natural Unit authority. PRS represents retained Core Decision State under the linked retention/admission contracts; it does not define another State lifecycle or copy complete owner bodies.
 
-[`Resolution Carry-Forward`](../target-modules/TM-PLANNING-RESOLUTION-STATE.md#tm-planning-resolution-state) names the same result as Planning Resolution State. When its continuation value is material, Documentation / Representation + P-14 may place it inline in an Integration Checkpoint, in an existing coordination register/artifact, or as a generated view. Physical placement does not transfer Core lifecycle or natural Unit authority. PRS represents retained Core Decision State under the linked retention/admission contracts; it does not define another State lifecycle or copy complete owner bodies.
+When the [Carry-Forward materialization threshold](../resolution/RESOLUTION-CARRY-FORWARD-CONTRACT.md#resolution-carry-forward-materialization) is crossed, P-14 must choose one durable discoverable representation for that coordination scope. Reuse an existing canonical coordination artifact/register when it already gives stable re-entry; otherwise create a dedicated PRS representation (for example `PRS.md` or an equivalent profile/workspace name). A legacy filename such as `RESOLUTION-CARRY-FORWARD.md` is only a representation name and does not make Carry-Forward a second Target result. In-context-only projection remains valid only below that threshold.
 
-When the [PRS/RCF materialization threshold](../target-modules/TM-PLANNING-RESOLUTION-STATE.md#prs-rcf-materialization) is crossed, P-14 must choose one durable discoverable representation for that coordination scope. Reuse an existing canonical coordination artifact/register when it already gives stable re-entry; otherwise create a dedicated Carry-Forward artifact (default descriptive name `RESOLUTION-CARRY-FORWARD.md` or an equivalent profile/workspace name). In-context-only projection remains valid only below that threshold.
+<a id="representation-proposal-workspace-archive"></a>
+## 1C. Proposal Workspace Archive Representation
+
+A **Proposal Workspace Archive** is a portable physical representation of one bounded proposal-planning workspace. It does not own Proposal, Q/R/P, Decision, Carry-Forward or PRS semantics. Those meanings remain with their existing Core owners; this section owns only archive materialization/navigation rules.
+
+When such an archive is produced for continued work:
+
+- expose one obvious **Planning Resolution State** entry point (`PRS.md` is the default portable name unless an already-established equivalent is reused);
+- let that PRS link to the addressable Proposal and workspace artifacts needed by its current bounded scope rather than copying their semantic bodies into an archive-specific register;
+- preserve any useful archive basis/scope/navigation metadata as representation metadata only;
+- a Proposal artifact may use its intended final-shaped workspace path or another P-14-selected path, but path/persistence never grants acceptance;
+- archive contents may grow or change as ordinary methodology work changes the underlying PRS/Proposal/workspace state; opening the current archive and reading PRS is sufficient for re-entry — no archive-specific continuation lifecycle or command is required;
+- creating or rematerializing the portable archive does not itself select a Proposal, close Q/R/P, create a Decision or determine PRS membership;
+- keep Proposal Workspace Archive packaging distinct from the executable Replacement Package protocol.
+
+If the archive is supplied as the current read/work source, begin with its PRS entry point, follow canonical references to the actual Proposal/Q/R/P/Decision owners, and continue the normal selected methodology. Representation may be repackaged when a new portable archive artifact is requested; semantic continuation is not gated on that packaging step.
 
 ## 2. Semantic Owner vs Artifact Owner
 
@@ -672,6 +684,6 @@ Generic handoff/Methodology Direction is exposed through Shell `P-13` and the ac
 
 When material, P-14 may record `Primary Entry`, `Required Outgoing`, `Return / Coordinator`, and `Derived Navigation: GENERATED | EXPLICIT | NONE`. These guide representation only; links/indexes never create semantic ownership.
 
-## Planning Resolution State and Proposal Archive representation
+## Planning Resolution State representation
 
-A transient Work Context, local working file and persisted checkpoint can represent one [Planning Resolution State](../target-modules/TM-PLANNING-RESOLUTION-STATE.md#tm-planning-resolution-state). A final-shaped path in a Proposal Workspace Archive does not grant acceptance. The PRS authority projection identifies accepted vs proposed meaning per Target/Unit/Slot independently of physical persistence. A review-only Proposal Archive and an executable Replacement Package remain distinct artifacts; the latter contains only semantically accepted changes. Placement never redefines candidate/Decision authority.
+A transient Work Context, local working file and persisted checkpoint can represent one [Planning Resolution State](../target-modules/TM-PLANNING-RESOLUTION-STATE.md#tm-planning-resolution-state). Placement never redefines Proposal/Q/R/P/Decision authority or Carry-Forward qualification. Portable Proposal Workspace Archive rules are owned by [§1C](#representation-proposal-workspace-archive); an executable Replacement Package remains a distinct artifact containing only semantically accepted changes.

@@ -143,7 +143,7 @@ Current Work Context is the default representation. P-14 chooses persistence onl
 ```text
 TM-REVIEW-FINDINGS → analyzes Finding evidence, impact and RE-* disposition
 TM-PROPOSAL-WORKUP → optionally develops linked candidate route(s)
-TM-PLANNING-RESOLUTION-STATE → optionally maintains the single PRS/RCF result: open Proposals with Q/R/P and Decisions with qualifying related Q/R/P
+TM-PLANNING-RESOLUTION-STATE → optionally maintains a bounded PRS result: open Proposals with Q/R/P and Decisions with qualifying related Q/R/P
 ```
 
 These modules may be composed when their distinct results are useful; no fixed sequence or one-Target-per-Proposal rule follows.

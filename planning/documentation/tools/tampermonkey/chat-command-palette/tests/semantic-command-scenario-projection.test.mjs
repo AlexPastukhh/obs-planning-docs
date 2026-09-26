@@ -112,6 +112,15 @@ test('finding-escalation scenario gives every material Finding a linked Proposal
   assert.equal(equivalentIds(scn07.steps.find((step)=>step.id==='SCN-07-S2')).includes('session.proposal_driven'),false);
 });
 
+test('generated Scenario prose is LF-normalized for cross-platform build parity',()=>{
+  const scenarios=require('../seed/scenarios.json').items;
+  assert.ok(scenarios.length>0);
+  for(const scenario of scenarios){
+    assert.doesNotMatch(scenario.canonicalIntro||'',/\r/,`${scenario.id}: canonicalIntro contains CR`);
+    for(const step of scenario.steps||[])assert.doesNotMatch(step.canonicalText||'',/\r/,`${step.id}: canonicalText contains CR`);
+  }
+});
+
 test('tool/repository scenario is repository-owned and archive read-source remains an explicit conditional branch',()=>{
   const m=memory();
   const scn06=m.scenarioEntries.find((scenario)=>scenario.id==='SCN-06');

@@ -54,6 +54,8 @@ When several concrete Target Module Models are explicitly or automatically appli
 
 A `Target Module Model` (short form: `Target Module` where unambiguous) is a reusable IDTSPE methodology component for a recurring class of bounded Target production. It remains a **Target-family contract**, not merely a bag of Units and not current project authority.
 
+Every active concrete `TM-*` Model MUST declare exactly one `Semantic Owner Dependency` with `EXTENDS` → `TARGET-MODULE.META-MODEL`. Generic Proposal/Decision, Unit, Finding, Knowledge and Representation semantics reached through the Meta-Model do not need to be redeclared by every concrete Target Module; add a direct dependency only when the concrete module materially depends on a more specific owner contract.
+
 ```text
 Target Module Model
 =
@@ -778,6 +780,14 @@ Artifact / File Contract
 as the implicit Step-Result Contract + Result Unit/field projection by meaning.
 
 New or materially revised Modules MUST make reusable Module Unit Definitions explicit and conform them to the canonical Target Work Unit / Collection / Slot contracts linked above. Installed legacy lower-level schemas remain compatibility inputs until an explicit migration pass; that migration must preserve established Unit boundaries, lower-level item semantics and representation requirements rather than creating methodology objects merely to fit the current Core model. Detailed migration guidance remains non-normative in [`TARGET-WORK-UNIT-COLLECTION-SLOT-MIGRATION-NOTES.md`](../../evidence/migration-notes/TARGET-WORK-UNIT-COLLECTION-SLOT-MIGRATION-NOTES.md).
+
+## Terms / Ubiquitous Language Reference Integration Point
+
+A concrete Target result/owner artifact MAY expose a `## Terms / Ubiquitous Language` reference section when recurring canonical vocabulary materially improves navigation or prevents repeated definitions. This is a **representation/content reference surface, not a Module-defined Unit, Contextual Unit, Collection or Slot** and therefore never receives an `RU-*` identity or enters the Unit inventory.
+
+The section follows [`KNOWLEDGE.UBIQUITOUS-LANGUAGE`](../knowledge-bases/TERMS-AND-UBIQUITOUS-LANGUAGE.md#knowledge-ubiquitous-language-reference-section): link each materially used Term to its canonical scoped definition (commonly a `TERMS.md` entry), do not copy the canonical definition locally, and keep the Term's natural semantic owner/reference explicit at the canonical vocabulary surface.
+
+Target Module guidance may state when such a reference section is useful for its result family, but it must not invent a Terms lifecycle, Terms Target Module or vocabulary-owned duplicate meaning.
 
 ## Artifact / File Proposal Integration Point
 

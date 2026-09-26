@@ -2,7 +2,7 @@
 
 > Semantic Owner Dependencies
 > - `CONTEXTUALIZES` [Decision record retention](../../resolution/proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md#resolution-decision-retention) — `RESOLUTION.PROPOSAL-DECISION-LIFECYCLE`.
-> - `CONTEXTUALIZES` [PRS Decision admission / exit](../../target-modules/TM-PLANNING-RESOLUTION-STATE.md#ru-prs-02--tracked-decisions) — `RESOLUTION.CARRY-FORWARD`.
+> - `CONTEXTUALIZES` [Resolution Carry-Forward contract](../../resolution/RESOLUTION-CARRY-FORWARD-CONTRACT.md#resolution-carry-forward) — `RESOLUTION.CARRY-FORWARD`.
 
 Status: active generic methodology owner
 Purpose: define how one Target Work Unit is **defined and executed**, including its Responsibility, Purpose, Result Content Contract, direct resolution for simple work, exactly one terminal Unit Resolution Set for composite work, Current Result Content, relation to generic Core State Units, and contribution to the Target Step Result.

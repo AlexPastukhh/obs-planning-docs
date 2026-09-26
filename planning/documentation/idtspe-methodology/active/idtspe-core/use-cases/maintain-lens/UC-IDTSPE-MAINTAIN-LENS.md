@@ -29,7 +29,25 @@ Branch comparison dimensions
 WEUC/change/architecture models
 Artifact/Test/Practical packs
 real repeated planning cases
+active Target Module / Lens dependency projection when present
+applicable active-profile Unit→Lens attachment projection when present
 ```
+
+## Pre-change Projection Impact Check
+
+Before materially changing Lens identity, Analysis Surface, applicability/temporal triggers, registry identity, retirement, or cross-owner dependency semantics:
+
+```text
+consult the active Target Module / Lens Dependency Map
+  → declared semantic coupling / reverse-impact index
+
+consult applicable active-profile Unit→Lens attachment projection(s)
+  → predictable attachment surfaces only
+
+then follow projected edges/rows to normative Lens / Unit / dependency owners
+```
+
+These maps are impact/discovery projections, not authority. The attachment projection is not an exhaustive Lens-consumer graph; context-emergent applicability remains discoverable through active Lens registries and the Lens's own applicability contract.
 
 ## Process
 
@@ -61,7 +79,7 @@ real repeated planning cases
 15. retain useful references/provenance and interpret broad theory when the Lens needs an applied bridge
 16. define guards / anti-patterns / representation implications
 17. update registry discovery summary; registry metadata remains routing projection only
-18. review Unit/Target attachment consumers for stale references without moving attachment authority into the Lens
+18. review predictable Unit/Target attachment consumers using applicable active-profile attachment projection(s), then follow rows to normative Unit owners; also retain registry/applicability discovery for context-emergent consumers, without moving attachment authority into the Lens or map
 19. migrate duplicate embedded Lens knowledge / duplicate Target-result artifact guidance
 20. update aliases / command / projection routes when needed
 21. run temporal-trigger + registry + attachment consistency audit
@@ -118,6 +136,16 @@ Only when the problem has independent useful output + distinct Sources/revalidat
 → Target Formation candidate
 → Target Formation decides reuse existing Target / handoff existing owner / form new bounded local Target
 ```
+
+## Semantic Dependency Projection Handoff
+
+Consult the active [Target Module / Lens Dependency Map](../../../navigation/TARGET-MODULE-LENS-DEPENDENCY-MAP.md#idtspe-tm-lens-dependency-map) before material Lens change when declared dependency impact matters. When the Lens adds, removes or changes a material cross-owner `Semantic Owner Dependency`, update/recheck that map and its integrity contract after the normative declaration is accepted. The declaration in the Lens remains normative; the map is projection only. Ordinary Markdown links remain navigation and do not create dependency edges. Merely consulting the map for impact discovery does not require rewriting it.
+
+## Lens Attachment Projection Handoff
+
+When the active profile provides a Unit→Lens attachment projection, consult it before material Lens change to identify **predictable** attached Unit/Target surfaces. Discover the projection through active-profile registry routing rather than hard-coding one profile path. Follow relevant rows to concrete Unit `Lens Attachments` blocks and this Lens's canonical owner.
+
+After an accepted change, update/recheck the applicable attachment projection and its integrity owner only when projection inputs can have changed, including Lens identity/registry changes, attachment-reference migration/retirement, or normative Unit/Target attachment changes performed as part of the integration. Concrete Unit attachment owners remain normative; the map remains projection only. Context-emergent/unexpected Lens use remains outside the predictable attachment projection and continues through registry discovery + applicability checks.
 
 ## Artifact Placement Integration
 

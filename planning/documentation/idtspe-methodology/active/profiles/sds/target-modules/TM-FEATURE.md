@@ -9,6 +9,7 @@ Role: primary application behavior Target Module
 > Semantic Owner Dependencies
 > - Type: `EXTENDS`; Responsibility: `TARGET-MODULE.META-MODEL`; Owner: [Target Module Meta-Model](../../../idtspe-core/target-modules/TARGET-MODULE-MODEL.md#target-module-meta-model)
 > - Type: `CONTEXTUALIZES`; Responsibility: `SDS.APPLICATION-BENEFIT-BOUNDARY-CONSTRAINTS`; Owner: [Application Benefit Boundary / Constraints](TM-APPLICATION-DEFINITION.md#sds-application-benefit-boundary-constraints)
+> - Type: `CONTEXTUALIZES`; Responsibility: `SDS.SEMANTIC-COMPOSITION-READINESS`; Owner: [SDS Semantic Composition / Readiness](../profile-contracts/SDS-SEMANTIC-COMPOSITION-AND-READINESS.md#sds-semantic-composition-readiness)
 
 ## Purpose
 
@@ -20,11 +21,7 @@ Feature formation is implementation-aware but not an exact implementation plan. 
 
 ## Temporal Authority / Evolution-Step Hosting
 
-> Semantic Owner Dependencies
-> - `CONTEXTUALIZES` [Step planning completeness / start readiness](TM-EVOLUTION-STEP.md#ru-evo-06--planning-completeness--realization-start-readiness) — `TM-EVOLUTION-STEP / RU-EVO-06`.
-> - `CONTEXTUALIZES` [Target Owner Materialization](TM-EVOLUTION-STEP.md#ru-evo-04--target-owner-materialization-set) — `TM-EVOLUTION-STEP / RU-EVO-04`.
->
-> This section explains the Feature-local complete-body and current/future consequences of the Step contracts; Step completeness, start readiness and materialization remain Step-owned.
+This section applies the profile-level [SDS Semantic Composition / Readiness](../profile-contracts/SDS-SEMANTIC-COMPOSITION-AND-READINESS.md#sds-semantic-composition-readiness) contract to Feature-local current/future consequences. The profile contract routes Step completeness/start-readiness/materialization semantics to their natural Evolution-Step owners, so Feature does not depend directly on Evolution Unit internals.
 
 A canonical Feature owner describes realized/current behavior. When the behavior being planned is not yet implemented, apply this module in a supporting role inside `TM-EVOLUTION-STEP` and produce a **Target Feature Body** using the same `Feature Definition` contract.
 

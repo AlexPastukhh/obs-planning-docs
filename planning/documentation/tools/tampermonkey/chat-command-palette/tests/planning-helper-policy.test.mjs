@@ -53,15 +53,22 @@ test('command-maintenance helper command is projected as Tools / Repository',()=
 });
 
 
-test('proposal archive command body is self-contained and links existing Use-Case authority',()=>{
+test('proposal archive command materializes a PRS-centered workspace without re-owning resolution semantics',()=>{
   const proposal=JSON.parse(read('seed/commands.json')).items.find((item)=>item.id==='proposal_archive.create');
   assert.ok(proposal);
   const text=commandBody.buildCommandBody(proposal,commandBody.MODE.ADAPTIVE);
-  assert.ok(text.includes('context:\n  Use the active selected proposal scope'));
-  assert.ok(text.includes('result:\n  One review-only Proposal Workspace Archive'));
-  assert.ok(text.includes('essence:\n  Create one review-only coherent candidate workspace view'));
+  assert.ok(text.includes('context:\n  Use the current bounded workspace/PRS'));
+  assert.ok(text.includes('result:\n  One portable Proposal Workspace Archive'));
+  assert.ok(text.includes('essence:\n  Materialize the current bounded proposal workspace'));
+  assert.match(text,/PRS is the planning\/resume surface/);
+  assert.match(text,/If no PRS exists/);
+  assert.match(text,/Carry-Forward qualification/);
+  assert.match(text,/never create an empty PRS merely to satisfy archive layout/);
+  assert.match(text,/no separate 'continue archive' command is required/);
+  assert.ok(proposal.ownerRefs.some((r)=>r.responsibilityId==='RESOLUTION.CARRY-FORWARD'&&r.anchor==='resolution-carry-forward-qualification'&&r.readMode==='REQUIRED'));
+  assert.ok(proposal.ownerRefs.some((r)=>r.responsibilityId==='TARGET-MODULE.PLANNING-RESOLUTION-STATE'&&r.readMode==='REQUIRED'));
+  assert.match(text,/never reclassifies them|do not restate or replace those rules here/);
   assert.ok(text.includes('[UC-DOC-PLAN-DOCUMENTATION-CHANGE](../documentation/use-cases/UC-DOC-PLAN-DOCUMENTATION-CHANGE.md)'));
-  assert.ok(text.includes('[Use Case — Situation + Result + Process](../documentation/principles-and-terminology.md#doc-use-case)'));
   assert.match(text,/Never include PACKAGE\.json/);
   assert.match(text,/Do not apply locally, commit or push/);
 });

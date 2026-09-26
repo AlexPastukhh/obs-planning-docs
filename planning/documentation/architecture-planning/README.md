@@ -2,7 +2,7 @@
 
 > Semantic Owner Dependencies
 > - `REPRESENTS` [Decision record retention](../idtspe-methodology/active/idtspe-core/resolution/proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md#resolution-decision-retention) — `RESOLUTION.PROPOSAL-DECISION-LIFECYCLE`.
-> - `REPRESENTS` [PRS Decision admission / exit](../idtspe-methodology/active/idtspe-core/target-modules/TM-PLANNING-RESOLUTION-STATE.md#ru-prs-02--tracked-decisions) — `RESOLUTION.CARRY-FORWARD`.
+> - `REPRESENTS` [Resolution Carry-Forward contract](../idtspe-methodology/active/idtspe-core/resolution/RESOLUTION-CARRY-FORWARD-CONTRACT.md#resolution-carry-forward) — `RESOLUTION.CARRY-FORWARD`.
 
 Status: active reusable methodology-family index
 Scope: understand, evaluate and evolve the architecture of an evolving Workspace through the work it must support, using the least complexity justified by current correctness, important Workspace work, representative Application runtime constraints and evidence-backed change pressure.

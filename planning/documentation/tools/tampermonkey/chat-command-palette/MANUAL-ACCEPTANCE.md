@@ -147,7 +147,7 @@ Canonical application semantics: [`scenarios/README.md`](scenarios/README.md). A
 - [ ] Direct-backed command detail shows `includes[]`, structured `ownerRefs` (`responsibilityId`, `role`, `readMode`, `path#anchor`, `why`) and the direct source path without changing command semantics.
 - [ ] Prompt cards expose `↑`, `№`, `↓`; numeric movement is 1-based and bounded, arrow movement preserves viewport, and large numeric moves keep the selected card visible without resetting to the list top.
 - [ ] `Body` is available for every command card; direct-backed Body identifies its source file and includes canonical `context / result / essence`, while generic Body identifies its semantic owner/generic route.
-- [ ] `Собрать review-only proposal archive` Body is self-contained enough to state proposal purpose/boundary/result and contains Markdown links to `UC-DOC-PLAN-DOCUMENTATION-CHANGE` and the canonical Use Case definition.
+- [ ] `Создать proposal workspace archive` Body makes PRS the planning/resume surface, keeps archive packaging representation-only, preserves the conditional `UC-DOC-PLAN-DOCUMENTATION-CHANGE` route, and does not redefine Proposal/Q/R/P/Decision semantics.
 - [ ] Detail-pane `Group` changes card membership only; `Manage groups` can create / rename / reorder / delete groups; delete moves cards to `Other / Ungrouped`; no Primary/Advanced/Semantic level control exists; `Save order GitHub` persists presentation layout through schema-v4 `catalog-order.json`.
 - [ ] `Scenarios N` is available for every command card and matches the reverse index derived from canonical Scenario semantic refs.
 - [ ] Scenario view shows canonical prose plus derived command equivalents; canonical Scenario source contains no command IDs/triggers/Helper labels.

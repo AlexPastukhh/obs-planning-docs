@@ -4,7 +4,7 @@
 > Semantic Owner Dependencies
 > - `EXTENDS` [Target Module Meta-Model](../../../idtspe-core/target-modules/TARGET-MODULE-MODEL.md#target-module-meta-model) — `TARGET-MODULE.META-MODEL`.
 > - `CONTEXTUALIZES` [SDS Semantic Composition / Readiness](../profile-contracts/SDS-SEMANTIC-COMPOSITION-AND-READINESS.md#sds-semantic-composition-readiness) — `SDS.SEMANTIC-COMPOSITION-READINESS`.
-> - `CONTEXTUALIZES` [Core Exact Realization](../../../idtspe-core/target-modules/TM-EXACT-REALIZATION.md#tm-exact-realization) — generic literal/directly-integrable realization outside the narrower SDS code owner.
+> - `EXTENDS` [Core Exact Realization](../../../idtspe-core/target-modules/TM-EXACT-REALIZATION.md#tm-exact-realization) — `TARGET-MODULE.EXACT-REALIZATION`; SDS owns the explicit code/source/test/codebase-local specialization delta.
 
 Entry Point: `tm.sds.code.realization`
 Role: SDS profile Target Module

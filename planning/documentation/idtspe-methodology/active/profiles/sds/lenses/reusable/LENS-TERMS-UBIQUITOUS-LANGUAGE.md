@@ -97,4 +97,4 @@ A Finding Candidate does not directly mutate authoritative Result/State meaning;
 
 ## Artifact / File Implications
 
-`NONE_DIRECT` by default. When a real recurring semantic concept needs durable canonical definition, route the finding to the applicable Terms Unit/natural owner. Do not create a Lens-owned terminology artifact.
+`NONE_DIRECT` by default. When a real recurring semantic concept needs a durable canonical definition, route the finding to its natural semantic owner and, when repeated cross-artifact use justifies it, the shared canonical Terms representation defined by `KNOWLEDGE.UBIQUITOUS-LANGUAGE`. Do not create a Lens-owned terminology artifact or a synthetic Terms Unit.

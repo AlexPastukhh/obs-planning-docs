@@ -1,6 +1,9 @@
 <a id="lens-shared-cross-cutting-responsibility"></a>
 # LENS-SHARED-CROSS-CUTTING-RESPONSIBILITY — Shared / Cross-Cutting Ownership
 
+> Semantic Owner Dependency
+> - `EXTENDS` [Lens Meta-Model](../LENS-MODEL.md#lens-meta-model) — `LENS.META-MODEL`.
+
 Lens ID: `LENS-SHARED-CROSS-CUTTING-RESPONSIBILITY`
 
 ## Purpose

@@ -1,6 +1,9 @@
 <a id="lens-quality-risk-materiality"></a>
 # LENS-QUALITY-RISK-MATERIALITY — Cross-Cutting Quality / Risk Materiality
 
+> Semantic Owner Dependency
+> - `EXTENDS` [Lens Meta-Model](../LENS-MODEL.md#lens-meta-model) — `LENS.META-MODEL`.
+
 Lens ID: `LENS-QUALITY-RISK-MATERIALITY`
 
 ## Purpose

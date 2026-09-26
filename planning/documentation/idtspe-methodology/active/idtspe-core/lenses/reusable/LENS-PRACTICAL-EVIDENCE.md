@@ -1,6 +1,9 @@
 <a id="lens-practical-evidence"></a>
 # LENS-PRACTICAL-EVIDENCE — Prototype / Implemented Practical Evidence
 
+> Semantic Owner Dependency
+> - `EXTENDS` [Lens Meta-Model](../LENS-MODEL.md#lens-meta-model) — `LENS.META-MODEL`.
+
 Lens ID: `LENS-PRACTICAL-EVIDENCE`
 
 > Semantic Owner Dependencies

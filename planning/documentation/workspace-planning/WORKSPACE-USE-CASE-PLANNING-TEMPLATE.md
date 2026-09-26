@@ -128,7 +128,7 @@ Track completion/current-next position only when useful; do not create history i
 
 > Semantic Owner Dependencies
 > - `REPRESENTS` [Decision retention / integration](../idtspe-methodology/active/idtspe-core/resolution/proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md#resolution-decision-retention) — `RESOLUTION.PROPOSAL-DECISION-LIFECYCLE`.
-> - `REPRESENTS` [PRS Decision admission / exit](../idtspe-methodology/active/idtspe-core/target-modules/TM-PLANNING-RESOLUTION-STATE.md#ru-prs-02--tracked-decisions) — `RESOLUTION.CARRY-FORWARD`.
+> - `REPRESENTS` [Resolution Carry-Forward contract](../idtspe-methodology/active/idtspe-core/resolution/RESOLUTION-CARRY-FORWARD-CONTRACT.md#resolution-carry-forward) — `RESOLUTION.CARRY-FORWARD`.
 
 - UCDS = **UC** (Use Case) → **D** (Domain/Rules) → **S** (Vertical Slice/Realization); Step 1/2/3 remain depths of the selected Workspace UC planning.
 - Mini and Modular have the same semantic correctness; Modular is a review/navigation split.
@@ -136,7 +136,7 @@ Track completion/current-next position only when useful; do not create history i
 - Keep shared Proposals once; affected UCs reference local impact.
 - Stabilize upstream meaning before dependent downstream planning; later-step insight may be Carry-Forward context but not silent upstream authority.
 - Keep Planning State explicit enough to distinguish reviewed upstream meaning from partial/not-selected downstream depth; Execution Order does not replace this state.
-- Use the Core Q/R/P lifecycle contract: active/residual Q/R/P stays owner-attached; one-resolution-surface Q/R/P items are grouped; resolved answers, accepted meaning and useful rationale remain ordinary content at their natural Units. Any separate retained Decision record follows the linked Core retention and PRS admission/exit contracts; no concrete owner/current planned state means no active concern.
+- Use the Core Q/R/P lifecycle contract: active/residual Q/R/P stays owner-attached; one-resolution-surface Q/R/P items are grouped; resolved answers, accepted meaning and useful rationale remain ordinary content at their natural Units. Any separate retained Decision record follows the linked Core retention and Carry-Forward admission/exit contracts and is represented in PRS only when admitted; no concrete owner/current planned state means no active concern.
 - Keep Priority and Review Category distinct; AI review does not invent user-owned Need/preferences/risk tolerance; Recommendation is optional and Decision requires actual selection.
 - One logical Q/R/P item/group has one detailed representation; an optional register/index preserves distributed addressability.
 - Review Order is derived from concern priority + dependency/blocking/blast-radius/timing, never the primary planning queue.

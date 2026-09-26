@@ -106,8 +106,8 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
     },
     {
       "responsibilityId": "RESOLUTION.CARRY-FORWARD",
-      "path": "planning/documentation/idtspe-methodology/active/idtspe-core/target-modules/TM-PLANNING-RESOLUTION-STATE.md",
-      "anchor": "tm-planning-resolution-state",
+      "path": "planning/documentation/idtspe-methodology/active/idtspe-core/resolution/RESOLUTION-CARRY-FORWARD-CONTRACT.md",
+      "anchor": "resolution-carry-forward-decision-retention",
       "why": "Retains only surviving material open/deferred/residual continuation after Proposal work.",
       "role": "VALIDATION_HANDOFF",
       "readMode": "ON_DEMAND"

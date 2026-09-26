@@ -56,7 +56,7 @@ no Target / Lens / Target Module / Checkpoint / persisted State is useful yet.
 > - `CONTEXTUALIZES` [`Unit applicability / materiality / disposition`](../../runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md#twu-applicability-disposition) — `TWU.APPLICABILITY-DISPOSITION`
 > - `CONTEXTUALIZES` [`Need Candidate Collection`](../../resolution/needs/NEED-CANDIDATE-COLLECTION.md#resolution-need-candidate-collection) — `RESOLUTION.NEED-CANDIDATE-COLLECTION`
 > - `CONTEXTUALIZES` [`Need Candidate Disposition`](../../resolution/needs/NEED-CANDIDATE-DISPOSITION.md#resolution-need-candidate-disposition) — `RESOLUTION.NEED-CANDIDATE-DISPOSITION`
-> - `CONTEXTUALIZES` [`Resolution Carry-Forward`](../../target-modules/TM-PLANNING-RESOLUTION-STATE.md#tm-planning-resolution-state) — `RESOLUTION.CARRY-FORWARD`
+> - `CONTEXTUALIZES` [Resolution Carry-Forward contract](../../resolution/RESOLUTION-CARRY-FORWARD-CONTRACT.md#resolution-carry-forward) — `RESOLUTION.CARRY-FORWARD`
 - `CONTEXTUALIZES` [`Lens Discovery`](../../lenses/LENS-REGISTRY.md#lens-discovery-registry) — `LENS.DISCOVERY`
 - `CONTEXTUALIZES` [`Knowledge Basis Contract`](../../knowledge-bases/KNOWLEDGE-BASIS-CONTRACT.md#knowledge-basis-contract) — `KNOWLEDGE.BASIS`
 - `CONTEXTUALIZES` [`Artifact Placement / Persistence`](../../representation/ARTIFACT-PLACEMENT-AND-IDTSPE-RESPONSE-CONTRACT.md#representation-artifact-placement) — `REPRESENTATION.ARTIFACT-PLACEMENT`

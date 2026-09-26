@@ -1,15 +1,15 @@
 <a id="domain-rpkg-replacement-package-state"></a>
 # Replacement Package State — Aggregate Domain Owner
 
-## RU-DOWN-TERMS — Terms / Ubiquitous Language
+## Terms / Ubiquitous Language
 
-| Canonical term | Plain definition |
-|---|---|
-| [Replacement Package State](../TERMS.md#term-rpkg-replacement-package-state-05) | The durable domain record of which Apply, Commit, and Publish results have been proven for one exact Work and Package Identity, including publication uncertainty when needed. |
-| [Package Identity](../TERMS.md#term-rpkg-package-identity-04) | The exact identity of one Replacement Package realization: packageId plus archive SHA-256. |
-| [Proven Result](../TERMS.md#term-rpkg-proven-result-06) | A result the application has enough exact evidence to treat as true, rather than merely attempted or assumed. |
-| [Publication Uncertainty](../TERMS.md#term-rpkg-publication-uncertainty-07) | A publish may have happened, but the application cannot yet prove the exact remote result. |
-| [Reconciliation](../TERMS.md#term-rpkg-reconciliation-08) | Observe current external facts after an uncertain effect before deciding whether any effect must be repeated. |
+Canonical definitions: [`TERMS.md`](../TERMS.md). This non-Unit section lists only vocabulary used by this artifact.
+
+- [Replacement Package State](../TERMS.md#term-rpkg-replacement-package-state-05)
+- [Package Identity](../TERMS.md#term-rpkg-package-identity-04)
+- [Proven Result](../TERMS.md#term-rpkg-proven-result-06)
+- [Publication Uncertainty](../TERMS.md#term-rpkg-publication-uncertainty-07)
+- [Reconciliation](../TERMS.md#term-rpkg-reconciliation-08)
 
 ## RU-DOWN-01 — Domain Behavior Realization Contract
 

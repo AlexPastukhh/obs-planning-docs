@@ -306,7 +306,7 @@ Physical choices such as inline section vs area-root register vs no separate mat
 
 ### Resolution Carry-Forward / Planning Resolution State
 
-Material open/deferred/residual Q/R/P that must survive continuation/handoff may be referenced by [`Resolution Carry-Forward`](../../target-modules/TM-PLANNING-RESOLUTION-STATE.md#tm-planning-resolution-state). The single PRS/RCF result keeps the Q/R/P linked with their related Proposals or accepted Decisions, with status and material Evidence; detailed Q/R/P bodies and lifecycle remain here and at their natural subjects. Its Target Module owns membership and presentation.
+Material open/deferred/residual Q/R/P that must survive continuation/handoff are governed by the [`Resolution Carry-Forward` contract](../RESOLUTION-CARRY-FORWARD-CONTRACT.md#resolution-carry-forward). When one bounded coordination Target result is useful, [`TM-PLANNING-RESOLUTION-STATE`](../../target-modules/TM-PLANNING-RESOLUTION-STATE.md#tm-planning-resolution-state) represents those qualifying items with their related Proposals or accepted Decisions, status and material Evidence. Detailed Q/R/P bodies and lifecycle remain here and at their natural subjects; the Target Module owns only its concrete result schema/presentation.
 
 ## 14. Revalidation
 

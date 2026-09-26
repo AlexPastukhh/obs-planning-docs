@@ -10,7 +10,7 @@ Status: active generic Core Lens
 Keep Units as the main visible reading path of a Target presentation. Evaluate and refine progressive disclosure of supporting context without changing content ownership, completeness or resolution semantics. This Lens owns its presentation criteria and embedded Knowledge Basis.
 
 > Semantic Owner Dependencies
-> - `CONTEXTUALIZES` [Lens Meta-Model](../LENS-MODEL.md#lens-meta-model) — `LENS.META-MODEL`.
+> - `EXTENDS` [Lens Meta-Model](../LENS-MODEL.md#lens-meta-model) — `LENS.META-MODEL`.
 > - `CONTEXTUALIZES` [Target Work Unit](../../runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md#twu-unit-contract) — `TWU.UNIT-CONTRACT`.
 > - `CONTEXTUALIZES` [Finding Disposition](../../resolution/findings/FINDING-DISPOSITION.md#resolution-finding-disposition) — `RESOLUTION.FINDING-DISPOSITION`.
 
