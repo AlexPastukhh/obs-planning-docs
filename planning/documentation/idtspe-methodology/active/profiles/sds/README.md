@@ -25,19 +25,27 @@ SDS extends always-active IDTSPE with profile-specific **Target Modules, Lenses,
 
 This `README.md` is the canonical SDS profile bootstrap entry. SDS bootstrap is **incremental**: it assumes the primary bootstrap from [`planning/README.md`](../../../../../README.md) already established Session, Documentation and IDTSPE Core. If that prerequisite is not reliable, perform the primary bootstrap first, then return here.
 
-For the SDS portion, read in order:
+### Required orientation spine
+
+For the SDS portion, read in order when the profile context is cold or unreliable:
 
 1. this `README.md`;
 2. [`RESPONSIBILITY-MAP.md`](RESPONSIBILITY-MAP.md) — profile-local responsibility routing;
 3. [`registries/METHODOLOGY-REGISTRY-DIRECTORY.md`](registries/METHODOLOGY-REGISTRY-DIRECTORY.md);
 4. [`registries/TARGET-MODULE-REGISTRY.md`](registries/TARGET-MODULE-REGISTRY.md);
 5. [`registries/LENS-REGISTRY.md`](registries/LENS-REGISTRY.md);
-6. [`profile-contracts/SDS-SEMANTIC-COMPOSITION-AND-READINESS.md`](profile-contracts/SDS-SEMANTIC-COMPOSITION-AND-READINESS.md);
-7. [`profile-contracts/requirements/REQUIREMENT-OWNERSHIP-AND-NATURAL-OWNER.md`](profile-contracts/requirements/REQUIREMENT-OWNERSHIP-AND-NATURAL-OWNER.md);
-8. [`profile-contracts/reusable-guidance/REUSABLE-GUIDANCE-MODEL.md`](profile-contracts/reusable-guidance/REUSABLE-GUIDANCE-MODEL.md);
-9. [`representation/ARTIFACT-PLACEMENT-MAP.md`](representation/ARTIFACT-PLACEMENT-MAP.md).
+6. [`profile-contracts/SDS-SEMANTIC-COMPOSITION-AND-READINESS.md`](profile-contracts/SDS-SEMANTIC-COMPOSITION-AND-READINESS.md) — enough to orient cross-owner selection and readiness.
 
-Specific Target Modules, Lenses, Programming Principle details, examples and supporting knowledge remain lazy/conditional reads after registry selection and local applicability. Profile bootstrap does not create an SDS-specific runtime Use Case or select a Target merely by being read.
+### Conditional deep reads
+
+After the orientation spine, read the narrowest owner needed by the current concern:
+
+- requirement meaning or natural-owner allocation → [`profile-contracts/requirements/REQUIREMENT-OWNERSHIP-AND-NATURAL-OWNER.md`](profile-contracts/requirements/REQUIREMENT-OWNERSHIP-AND-NATURAL-OWNER.md);
+- reusable guidance creation or use → [`profile-contracts/reusable-guidance/REUSABLE-GUIDANCE-MODEL.md`](profile-contracts/reusable-guidance/REUSABLE-GUIDANCE-MODEL.md);
+- artifact placement, representation or materialization → [`representation/ARTIFACT-PLACEMENT-MAP.md`](representation/ARTIFACT-PLACEMENT-MAP.md);
+- a selected Target Module, Lens, Programming Principle or example → its registry-routed owner, only when applicable.
+
+Reuse a current reliable SDS orientation instead of rereading the spine on every command. Profile bootstrap does not create or select a Target, execute a Target Module or Lens, create an SDS-specific runtime Use Case, or mutate the repository merely by being read.
 
 ## Authority Boundary
 

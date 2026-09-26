@@ -1,7 +1,7 @@
 # Testing Strategy Workflow
 
 Status: historical compatibility workflow; current authority is in active IDTSPE Core/SDS owners
-Owner Use Case: `UC-PLAN-TEST-STRATEGY`
+Former Owner Use Case: `UC-PLAN-TEST-STRATEGY` (retired; algorithm below is provenance, not a current command route)
 
 ## Algorithm
 
@@ -15,4 +15,4 @@ Owner Use Case: `UC-PLAN-TEST-STRATEGY`
 8. Define evidence states/reporting: planned, implemented, checked-current, executed/passed, manual acceptance.
 9. Record material gaps/risks/revisit triggers.
 
-A project-local testing owner/workspace is justified when this responsibility becomes independently cross-Slice; trivial projects can keep strategy inline.
+This older workflow allowed a project-local testing workspace for cross-Slice coordination. Current proof coordination stays with the applicable natural owner and Core Test-Proof route; it does not establish a separate Test Strategy Target.

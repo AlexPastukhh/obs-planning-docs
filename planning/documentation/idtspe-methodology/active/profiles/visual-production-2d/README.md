@@ -26,19 +26,25 @@ The profile is representation-aware but tool-agnostic. Ordinary image generators
 
 This `README.md` is the canonical profile entry. It assumes the primary Documentation / IDTSPE bootstrap is already current.
 
-For the 2D visual-production portion, read in order:
+### Required orientation spine
+
+For the 2D visual-production portion, read in order when the profile context is cold or unreliable:
 
 1. this `README.md`;
 2. [Responsibility Map](RESPONSIBILITY-MAP.md);
 3. [Visual Production Invariants](profile-contracts/VISUAL-PRODUCTION-INVARIANTS.md#visual2d-production-invariants);
 4. [2D Visual Production Target Module Registry](registries/TARGET-MODULE-REGISTRY.md#registry-2d-target-modules);
-5. [2D Visual Lens Registry](registries/LENS-REGISTRY.md#registry-2d-lenses);
-6. [Unit Disposition / Materiality Review And Lens Checkpoints](runtime/UNIT-DISPOSITION-AND-LENS-CHECKPOINTS.md#shared-unit-selection-and-lens-checkpoints);
-7. [Construction Route Selection](target-module-support/construction/CONSTRUCTION-ROUTE-SELECTION.target-module-guidance.md#shared-construction-route-selection);
-8. [Construction Review Loop Checkpoint](target-module-support/construction/CONSTRUCTION-REVIEW-LOOP.target-module-checkpoint.md#shared-construction-review-loop);
-9. [Artifact Placement Map](representation/ARTIFACT-PLACEMENT-MAP.md#artifact-placement-map).
+5. [2D Visual Lens Registry](registries/LENS-REGISTRY.md#registry-2d-lenses).
 
-Concrete Target Modules, Lenses, templates and examples remain lazy reads after registry selection and local applicability.
+### Conditional deep reads
+
+- Unit disposition, materiality or Lens checkpoints → [Unit Disposition / Materiality Review And Lens Checkpoints](runtime/UNIT-DISPOSITION-AND-LENS-CHECKPOINTS.md#shared-unit-selection-and-lens-checkpoints);
+- choosing a concrete construction route → [Construction Route Selection](target-module-support/construction/CONSTRUCTION-ROUTE-SELECTION.target-module-guidance.md#shared-construction-route-selection);
+- reviewing/re-entering construction → [Construction Review Loop Checkpoint](target-module-support/construction/CONSTRUCTION-REVIEW-LOOP.target-module-checkpoint.md#shared-construction-review-loop);
+- representing or placing an artifact → [Artifact Placement Map](representation/ARTIFACT-PLACEMENT-MAP.md#artifact-placement-map);
+- selected Target Modules, Lenses, templates or examples → only the applicable registry-routed owner.
+
+Reuse current reliable profile orientation. Reading this profile does not create or select a Target, execute a Target Module or Lens, or mutate the repository.
 
 ## Profile Scope
 

@@ -1,6 +1,6 @@
 # E2E Testing Guidance
 
-Status: active reusable supporting guidance
+Status: historical supporting guidance; current proof route is through Core Test-Proof and applicable realization owners
 
 E2E proves selected **critical cross-layer actor paths**, not every branch already owned by API/component tests.
 

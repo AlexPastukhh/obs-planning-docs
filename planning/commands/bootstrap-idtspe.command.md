@@ -3,6 +3,8 @@
 Status: active project command definition
 Scope: one concrete OBS Planning command route. Reusable behavior remains in linked owner files.
 
+Repository: [obs-planning-docs](https://github.com/AlexPastukhh/obs-planning-docs). The user's bootstrap message may include an attached repository snapshot; check for it and identify its revision before treating it as current repository state.
+
 [PLANNING_COMMAND_DEFINITION]
 {
   "schemaVersion": 1,
@@ -25,6 +27,7 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
   "expectedOutput": "Primary bootstrap current through IDTSPE Core, with Session/Documentation/Core boundaries understood and no profile selected by bootstrap.",
   "permissionMode": "read-only-planning",
   "keyReminders": [
+    "The user may have attached a repository snapshot to the bootstrap message. Check for it and identify its revision before treating it as current repository state; the repository URL is https://github.com/AlexPastukhh/obs-planning-docs.",
     "SDS is an IDTSPE profile, not a second runtime.",
     "AI-proposed material candidates are Proposals by default; selection makes them accepted planning meaning only through normal authority. Under SDS, unrealized selected future meaning stays in the applicable Evolution Step/Target Body until realization/materialization rather than becoming current-owner truth merely by selection.",
     "Do not infer a dedicated file from Target identity; use Documentation / Representation and P-14 when persistence is material.",

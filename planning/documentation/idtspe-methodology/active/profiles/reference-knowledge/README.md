@@ -54,23 +54,26 @@ examples/
 
 This profile assumes the primary Documentation / IDTSPE bootstrap is already current.
 
-Read in order:
+### Required orientation spine
+
+Read in order when the profile context is cold or unreliable:
 
 1. this `README.md`;
 2. [Responsibility Map](RESPONSIBILITY-MAP.md) — profile-local responsibility routing;
-3. [Reference Knowledge Object Model](models/REFERENCE-KNOWLEDGE-OBJECT-MODEL.md#reference-knowledge-object-model);
-4. [Bank Principles](models/BANK-PRINCIPLES.md#bank-principles);
-5. [Vocabulary Model](models/VOCABULARY-MODEL.md#vocabulary-model);
-6. [Reference Knowledge Representation Model](representation/REFERENCE-KNOWLEDGE-REPRESENTATION-MODEL.md#reference-knowledge-representation-model);
-7. [Target Module Registry](registries/TARGET-MODULE-REGISTRY.md#reference-knowledge-target-module-registry);
-8. [Lens Registry](registries/LENS-REGISTRY.md#reference-knowledge-lens-registry);
-9. [Domain Pack Model And Derivation Guidance](domain-packs/DOMAIN-PACK-MODEL-AND-DERIVATION-GUIDANCE.md#domain-pack-model-and-derivation-guidance);
-10. [Domain Pack Registry](registries/DOMAIN-PACK-REGISTRY.md#reference-knowledge-domain-pack-registry);
-11. [Consumer / Source Integration](integration/CONSUMER-SOURCE-INTEGRATION.md#consumer-source-integration);
-12. [Bank Change Authority](profile-contracts/BANK-CHANGE-AUTHORITY.md#bank-change-authority);
-13. [Artifact Placement Map](representation/ARTIFACT-PLACEMENT-MAP.md#reference-knowledge-artifact-placement-map).
+3. [Reference Knowledge Object Model](models/REFERENCE-KNOWLEDGE-OBJECT-MODEL.md#reference-knowledge-object-model) — profile-wide object vocabulary;
+4. [Target Module Registry](registries/TARGET-MODULE-REGISTRY.md#reference-knowledge-target-module-registry);
+5. [Lens Registry](registries/LENS-REGISTRY.md#reference-knowledge-lens-registry).
 
-Read concrete Domain Packs, Target Modules, Lenses and examples only when selected/applicable. No concrete Domain Packs are currently installed.
+### Conditional deep reads
+
+- Bank invariants or change → [Bank Principles](models/BANK-PRINCIPLES.md#bank-principles) and, when changing a Bank, [Bank Change Authority](profile-contracts/BANK-CHANGE-AUTHORITY.md#bank-change-authority);
+- Vocabulary meaning or change → [Vocabulary Model](models/VOCABULARY-MODEL.md#vocabulary-model);
+- representation or artifact placement → [Reference Knowledge Representation Model](representation/REFERENCE-KNOWLEDGE-REPRESENTATION-MODEL.md#reference-knowledge-representation-model) and [Artifact Placement Map](representation/ARTIFACT-PLACEMENT-MAP.md#reference-knowledge-artifact-placement-map) as applicable;
+- Domain Pack derivation or selection → [Domain Pack Model And Derivation Guidance](domain-packs/DOMAIN-PACK-MODEL-AND-DERIVATION-GUIDANCE.md#domain-pack-model-and-derivation-guidance) and [Domain Pack Registry](registries/DOMAIN-PACK-REGISTRY.md#reference-knowledge-domain-pack-registry);
+- consumer/source integration → [Consumer / Source Integration](integration/CONSUMER-SOURCE-INTEGRATION.md#consumer-source-integration);
+- selected Target Module, Lens or example → its applicable registry-routed owner.
+
+No concrete Domain Packs are currently installed. Reuse current reliable profile orientation. Reading this profile does not create or select a Target, execute a Target Module or Lens, or mutate the repository.
 
 ## Core Shape
 

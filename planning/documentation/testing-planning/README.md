@@ -2,7 +2,7 @@
 
 Status: historical compatibility / provenance area; **not** active methodology authority
 
-Purpose: preserve legacy project-local proof-planning workflows/templates and provenance after their useful reusable semantics were absorbed by the active Core Test-Proof / Testing Knowledge / Methodology Integrity contracts. Generic methodology proof evaluation is owned by the [Core Test-Proof Lens](../idtspe-methodology/active/idtspe-core/lenses/reusable/LENS-TEST-PROOF-EVIDENCE.md#lens-test-proof-evidence); literal test realization belongs to the applicable realization owner — under SDS, [Code Realization](../idtspe-methodology/active/profiles/sds/target-modules/TM-CODE-REALIZATION.md#tm-code-realization), otherwise a narrower active-profile owner when defined or Core [Exact Realization](../idtspe-methodology/active/idtspe-core/target-modules/TM-EXACT-REALIZATION.md#tm-exact-realization) as fallback; [Practical Test](../idtspe-methodology/active/profiles/sds/target-modules/TM-PRACTICAL-TEST.md#tm-practical-test) is used only when evidence requires the real implemented subject/environment.
+Purpose: preserve legacy project-local proof-planning workflows/templates and provenance after their useful reusable semantics were absorbed by the active Core Test-Proof / Testing Knowledge contracts. Generic proof evaluation is owned by the [Core Test-Proof Lens](../idtspe-methodology/active/idtspe-core/lenses/reusable/LENS-TEST-PROOF-EVIDENCE.md#lens-test-proof-evidence); literal test realization belongs to the applicable realization owner — under SDS, [Code Realization](../idtspe-methodology/active/profiles/sds/target-modules/TM-CODE-REALIZATION.md#tm-code-realization), otherwise a narrower active-profile owner when defined or Core [Exact Realization](../idtspe-methodology/active/idtspe-core/target-modules/TM-EXACT-REALIZATION.md#tm-exact-realization) as fallback; [Practical Test](../idtspe-methodology/active/profiles/sds/target-modules/TM-PRACTICAL-TEST.md#tm-practical-test) is used only when evidence requires the real implemented subject/environment.
 
 ## Current Route
 
@@ -10,8 +10,7 @@ Do not bootstrap or route current methodology work through this folder. Use:
 
 1. [Core Test-Proof Lens](../idtspe-methodology/active/idtspe-core/lenses/reusable/LENS-TEST-PROOF-EVIDENCE.md#lens-test-proof-evidence).
 2. [Testing Knowledge Basis](../idtspe-methodology/active/idtspe-core/knowledge-bases/testing/README.md#knowledge-testing-basis).
-3. [Methodology Integrity Testing Contract](../idtspe-methodology/active/idtspe-core/knowledge-bases/testing/METHODOLOGY-INTEGRITY-TESTING-CONTRACT.md#testing-methodology-integrity) for methodology/projection hard guards.
-4. Applicable Exact Realization / Practical Evidence owner for literal realization or real-subject Evidence.
+3. Applicable Exact Realization / Practical Evidence owner for literal realization or real-subject Evidence.
 
 The files below remain compatibility/provenance material only. They do not own current Testing Strategy, Test Design, Coverage, Testing Plan or methodology-integrity semantics.
 

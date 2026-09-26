@@ -4,7 +4,7 @@ test('adaptive body points through root Command Routing and command definition',
 test('full body requires fresh full route',()=>assert.match(body.buildCommandBody(d,body.MODE.FULL),/Full route reading is required/));
 
 
-test('generated UC invocation body routes through generic command and exact current methodology UC',()=>{const generic={file:'invoke-use-case.command.md',keyReminders:['Keep authority in UC owner.']};const uc={id:'UC-IDTSPE-MAINTAIN-METHODOLOGY-INTEGRITY-TESTS',label:'Maintain Methodology Integrity Tests',description:'integrity guard maintenance',sources:['planning/documentation/idtspe-methodology/active/idtspe-core/use-cases/USE-CASE-REGISTRY.md'],target:'<integrity test target>'};const text=body.buildUseCaseInvocationBody(generic,uc,'adaptive');assert.match(text,/planning\/commands\/invoke-use-case\.command\.md/);assert.match(text,/UC-IDTSPE-MAINTAIN-METHODOLOGY-INTEGRITY-TESTS/);assert.match(text,/idtspe-core\/use-cases\/USE-CASE-REGISTRY\.md/);});
+test('generated UC invocation body routes through generic command and supplied UC',()=>{const generic={file:'invoke-use-case.command.md',keyReminders:['Keep authority in UC owner.']};const uc={id:'UC-EXAMPLE-REVIEW',label:'Review Example',description:'example review',sources:['planning/example-registry.md'],target:'<example target>'};const text=body.buildUseCaseInvocationBody(generic,uc,'adaptive');assert.match(text,/planning\/commands\/invoke-use-case\.command\.md/);assert.match(text,/UC-EXAMPLE-REVIEW/);assert.match(text,/planning\/example-registry\.md/);});
 
 
 test('command body derives included-by from the canonical include DAG without a second relation',()=>{

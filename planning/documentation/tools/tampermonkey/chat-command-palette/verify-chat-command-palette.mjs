@@ -48,12 +48,6 @@ const defs = fs.readdirSync(commandsDir)
 
 catalog.validateCommandCatalog(defs);
 if (!defs.length) throw new Error('No repository command definitions found.');
-for (const definition of defs) {
-  for (const owner of catalog.commandReferencePaths(definition)) {
-    if (!fs.existsSync(path.join(repoRoot, owner))) throw new Error(`Missing owner/refinement path for ${definition.id}: ${owner}`);
-  }
-}
-
 runTests();
 runNode([path.join(moduleRoot, 'build-chat-command-palette.mjs'), '--check']);
 console.log(`Planning Helper verify passed: ${defs.length} command definitions, ${sources.length} source modules, ${tests.length} test files.`);

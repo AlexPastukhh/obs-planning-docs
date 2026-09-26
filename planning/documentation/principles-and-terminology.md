@@ -401,6 +401,7 @@ A compact declaration should identify at least the dependency type and canonical
 ```
 
 The concrete relative path depends on the consumer location; the stable anchor/Responsibility ID are the durable semantic reference surfaces.
+For a consumer in a separate project repository, use the project-specific GitHub baseline rule under [Methodology / Contextual Annotation](#doc-methodology-contextual-annotation) instead of assuming a local methodology copy.
 
 ```text
 ordinary Markdown link
@@ -473,6 +474,8 @@ Rules:
 - add another annotation only when a child block materially uses a different reusable method or has an independently useful contextual reason;
 - do not mechanically annotate every Requirement, behavior/path row or table cell;
 - annotation/navigation does not transfer semantic ownership of the produced result.
+
+For documentation kept in a **separate project repository**, link `Methodology:` annotations and other direct reusable-method owner references (including `Semantic Owner Dependency` declarations) to the exact file and section in a **project-specific baseline branch** of `https://github.com/AlexPastukhh/obs-planning-docs`. Use a full GitHub URL of the form `https://github.com/AlexPastukhh/obs-planning-docs/blob/<project-baseline-branch>/planning/.../<owner>.md#<owner-anchor>`. Record the branch name and its starting commit in the project's methodology provenance/navigation so the baseline is identifiable. Do not use a relative path into an assumed local methodology copy or a moving `main` link for a separate project's persisted result. Keep that project's baseline branch stable; advance it only after reviewing affected project results and links, and record the new basis. Projects can therefore remain on their reviewed methodology branch while `main` continues to evolve. A branch name alone is not an immutable snapshot: when exact historical bytes must be guaranteed, record or link the commit SHA as well. Within this methodology repository, ordinary relative links to current local owners remain appropriate.
 
 Methodology-owner binding is an execution concern of the applicable production method (for IDTSPE Target Units, the Core Unit contract). This principle owns the concise persisted representation, not the runtime lookup algorithm.
 

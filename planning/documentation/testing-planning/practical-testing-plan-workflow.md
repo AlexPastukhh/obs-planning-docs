@@ -1,13 +1,13 @@
 # Practical Testing / Acceptance Plan Workflow
 
 Status: historical compatibility workflow; current authority is in active IDTSPE Core/SDS owners
-Owner Use Case: `UC-PLAN-TEST-PLAN`
+Former Owner Use Case: `UC-PLAN-TEST-PLAN` (retired; plan shape below is provenance, not a current command route)
 
 ## Result
 
 A proportional practical verification plan for one meaningful application/change result, ready to be operated by a human, AI-operated environment or E2E/tool route.
 
-For Application SDS this is a **pre-implementation Step 3 verification-planning responsibility** after selected Scenario/Domain/Slice meaning is grounded enough. It plans the operated acceptance pass/campaign that Step 4 may later execute; it does not claim implementation or evidence already exists.
+Historically, Application SDS described this as a pre-implementation verification-planning responsibility after selected Scenario/Domain/Slice meaning was grounded. Current work follows the natural owner and the applicable Test-Proof / Practical Test route; a plan does not claim implementation or evidence already exists.
 
 ```text
 selected Scenario / Requirements / Domain / Slice meaning
@@ -38,4 +38,4 @@ Do not create a card for every trivial assertion. Prefer a few representative en
 
 ## Boundary
 
-`UC-PLAN-TEST-PLAN` plans practical execution. It does not claim execution happened. `UC-PLAN-TEST-COVERAGE` reviews actual executed/current evidence. `UC-PLAN-TEST-DESIGN` still owns how one selected behavior is best proved; the Practical Testing Plan composes those proof choices into a real operated pass/campaign. Product semantics remain upstream.
+In the retired model, `UC-PLAN-TEST-PLAN` planned practical execution, `UC-PLAN-TEST-COVERAGE` reviewed evidence and `UC-PLAN-TEST-DESIGN` planned selected proof. These are historical roles, not current owners. Current selected product meaning stays upstream; actual proof and Evidence follow the applicable Core/SDS owners.

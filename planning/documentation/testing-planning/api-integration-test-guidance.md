@@ -1,8 +1,8 @@
 # API / Integration Test Guidance
 
-Status: active reusable supporting guidance
+Status: historical supporting guidance; current proof route is through Core Test-Proof and applicable realization owners
 
-Use from `UC-PLAN-TEST-DESIGN` / `UC-PLAN-TEST-STRATEGY` when public server/application boundaries and persistence effects matter.
+This historical guidance can inform a current owner-local proof plan when public server/application boundaries and persistence effects matter. Route proof evaluation through `LENS-TEST-PROOF-EVIDENCE` and literal test realization through the applicable Code/Exact Realization owner; the retired `UC-PLAN-TEST-*` entries do not own current work.
 
 ## Read / Query Behavior
 

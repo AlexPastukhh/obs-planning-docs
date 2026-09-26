@@ -444,7 +444,7 @@ When one owner materially derives from another, preserve a direct link to the ca
 
 ## Testing Planning Handoff
 
-Slice-local verification may remain compact, but material proof design routes to sibling `../testing-planning/` through `UC-PLAN-TEST-DESIGN`. Shared/cross-Slice test architecture routes to `UC-PLAN-TEST-STRATEGY`; checking whether actual current tests prove selected meaning routes to `UC-PLAN-TEST-COVERAGE`. Tests remain evidence, never Scenario/Requirement/Domain semantic authority.
+Slice-local verification may remain compact. For material proof design or review of current coverage, keep selected meaning with its natural Scenario/Requirement/Domain/Slice owner and apply the [Core Test-Proof Lens](../../idtspe-methodology/active/idtspe-core/lenses/reusable/LENS-TEST-PROOF-EVIDENCE.md#lens-test-proof-evidence). Use the applicable Code/Exact Realization owner for literal tests and [Practical Test](../../idtspe-methodology/active/profiles/sds/target-modules/TM-PRACTICAL-TEST.md#tm-practical-test) only for qualifying real-subject Evidence. The former `UC-PLAN-TEST-*` workflows in `testing-planning/` are historical. Tests remain evidence, never Scenario/Requirement/Domain semantic authority.
 
 ## Q/R/P Handoff
 

@@ -378,19 +378,17 @@ but it was last executed before the Scenario/API changed
 
 That file is not automatically fresh Evidence for the current meaning.
 
-### 12A. Methodology Integrity Proof — Conditional
+### 12A. Methodology Relation Review — Conditional
 
-When the proof subject is the methodology itself (registries, typed owner references, bootstrap routes, generated projections/maps or Helper methodology projections), apply the canonical [`Methodology Integrity Testing Contract`](../../knowledge-bases/testing/METHODOLOGY-INTEGRITY-TESTING-CONTRACT.md#testing-methodology-integrity).
+When the subject is the methodology itself (registries, typed owner references, bootstrap routes or Helper projections), inspect the current owner declarations and affected consumers directly. Use the applicable Documentation/IDTSPE review and Finding routes for inconsistencies. A temporary dependency or attachment audit is a sourced review aid for the material read, not an automated proof of completeness.
 
-The key proof question becomes:
+Ask:
 
 ```text
-Can accidental partial change escape?
-Can legitimate semantic-preserving evolution fail?
-Is expected state derived from canonical authority rather than frozen in the test?
+Which canonical owner declares the current meaning?
+Which consumers are affected by the change?
+What was actually read and checked, and what remains uncertain?
 ```
-
-Use [`UC-IDTSPE-MAINTAIN-METHODOLOGY-INTEGRITY-TESTS`](../../use-cases/maintain-methodology-integrity-tests/UC-IDTSPE-MAINTAIN-METHODOLOGY-INTEGRITY-TESTS.md#uc-idtspe-maintain-methodology-integrity-tests) when the integrity-test guard itself needs creation/review/maintenance as an independently useful methodology-use result.
 
 ### 13. Automated vs Practical Evidence
 

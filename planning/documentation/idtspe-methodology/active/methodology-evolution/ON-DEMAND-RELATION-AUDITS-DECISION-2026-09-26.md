@@ -1,6 +1,6 @@
 # On-demand Relation Audits — 2026-09-26
 
-Status: current design decision for the candidate snapshot; not a claim that the repository has been integrated.
+Status: current design decision; implemented in repository commands and Helper projections.
 
 The two standing Target Module/Lens dependency and SDS Lens attachment maps are retired. No one maintains their Markdown rows, and no build step generates replacement map files. Typed `Semantic Owner Dependency` declarations and concrete Unit `Lens Attachments` remain in their natural owner files.
 
@@ -8,4 +8,4 @@ The existing read-only Planning Commands `check-tm-lens-dependency-map` and `che
 
 For command cards, Planning Helper displays the command's own explicitly declared `ownerRefs` and suppresses the extra semantic-component owner card. A generic semantic-component card without a direct command may still display its component owner. Do not add nested dependency/attachment links or compute such links from methodology documents. The previous v45 proposal to duplicate owner relations under every command is withdrawn.
 
-Automated product checks may verify command parsing and rendering, but a temporary AI audit is not an automated integrity oracle. The broader retirement of methodology-specific tests and their UC/Contract/Process remains a separate cleanup; a green current test run still includes old methodology assertions until that cleanup is completed. Review any retained references to the retired maps as part of repository integration.
+Automated product checks verify command parsing, rendering and build behavior, but a temporary AI audit is not an automated integrity oracle. The former methodology-specific hard-test architecture and its UC/Contract/Process were retired in the follow-up cleanup; current owner relations are reviewed against their source declarations when work requires it. A green product suite does not certify their semantic completeness.

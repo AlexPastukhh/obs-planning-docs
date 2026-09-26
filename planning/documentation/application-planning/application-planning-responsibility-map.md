@@ -9,7 +9,7 @@ Status: active reusable nested responsibility map
 | Older whole-solution / Scenario supporting heuristics | `solution-and-scenario-planning-workflow.md`; current behavior authority remains `TM-FEATURE`, current journey authority `TM-SCENARIO-PLANNING` |
 | Supporting requirement/change-context heuristics | `requirements-and-change-context.md`; durable requirements are owned by current Feature/Domain/Slice/Shared natural owners |
 | Generic Workspace Architecture Work-Cost / Workspace UC/WEUC / Change Pressure / Change Axis semantics | sibling `../architecture-planning/workspace-use-cases-and-change-pressure.md` + Architecture UCs |
-| Project-local proof coordination/design guidance | sibling `../testing-planning/` supporting owners; generic proof evaluation is Core `LENS-TEST-PROOF-EVIDENCE`, literal proof is Exact, real-subject Evidence may use `TM-PRACTICAL-TEST` |
+| Project-local proof coordination/design guidance | current natural semantic owner + Core [`LENS-TEST-PROOF-EVIDENCE`](../idtspe-methodology/active/idtspe-core/lenses/reusable/LENS-TEST-PROOF-EVIDENCE.md#lens-test-proof-evidence); literal proof uses applicable Code/Exact Realization, real-subject Evidence may use `TM-PRACTICAL-TEST`. The sibling `../testing-planning/` remains historical guidance only |
 | Interaction/workflow Prototype planning | `prototype-planning-workflow.md` |
 | Shared detailed planning/workspace/Variant/draft-state/reference-candidate contract | `detailed-planning/README.md` |
 | Domain evidence/candidate discovery algorithm | `domain-discovery-workflow.md` |

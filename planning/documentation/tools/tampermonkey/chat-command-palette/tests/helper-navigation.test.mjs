@@ -17,7 +17,6 @@ Object.assign(globalThis.ObsPlanningHelper,state);
 const runtime=require('../src/planning-helper-runtime.js');
 
 const moduleRoot=path.resolve(import.meta.dirname,'..');
-const repoRoot=path.resolve(moduleRoot,'../../../../..');
 const commands=JSON.parse(fs.readFileSync(path.join(moduleRoot,'seed','commands.json'),'utf8')).items;
 const useCases=JSON.parse(fs.readFileSync(path.join(moduleRoot,'seed','use-cases.json'),'utf8')).items;
 const components=JSON.parse(fs.readFileSync(path.join(moduleRoot,'seed','semantic-components.json'),'utf8')).items;
@@ -44,32 +43,6 @@ test('command navigation is derived from semantic identity and exposes UC/TM/Len
   assert.equal(navigation.methodologyPrimaryIds(entries,'USE_CASES').length,useCases.length);
   assert.equal(navigation.methodologyPrimaryIds(entries,'TARGET_MODULES').length,components.filter((item)=>item.kind==='TARGET_MODULE').length);
   assert.equal(navigation.methodologyPrimaryIds(entries,'LENSES').length,components.filter((item)=>item.kind==='LENS').length);
-});
-
-test('every current semantic component projects to exactly one primary command card',()=>{
-  for(const component of components){
-    const id=semantic.semanticCardId(component),matches=entries.filter((entry)=>entry.id===id);
-    assert.equal(matches.length,1,component.id);
-    assert.equal(matches[0].canonicalId,component.id,component.id);
-    assert.match(matches[0].label,new RegExp(component.id.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')));
-    assert.ok(['DIRECT CURRENT','GENERIC CURRENT'].includes(matches[0].stateLabel),component.id);
-  }
-});
-
-test('GitHub-backed presentation groups refine views without replacing semantic identity',()=>{
-  const tm=navigation.buildMethodologyViewGroups(entries,'TARGET_MODULES');
-  assert.deepEqual(tm.map((section)=>section.label),['Core Lifecycle','Application Behavior','Domain / Realization Structure','Evolution','Evidence / Experiments','2D Visual Production','Reference Knowledge']);
-  const lenses=navigation.buildMethodologyViewGroups(entries,'LENSES');
-  assert.deepEqual(lenses.map((section)=>section.label),['Meaning / Ownership','Risk / Uncertainty / Proof','Representation / Navigation','SDS Product / Realization','2D Visual Production','Reference Knowledge']);
-  for(const entry of entries.filter((item)=>item.semanticKind)){
-    assert.ok(entry.semanticScope,entry.id);
-    assert.ok(entry.presentationGroup?.id,entry.id);
-  }
-  const source=fs.readFileSync(path.join(moduleRoot,'src','methodology-navigation.js'),'utf8');
-  assert.match(source,/presentationGroup/);
-  assert.match(source,/semanticKind/);
-  assert.match(source,/semanticScope/);
-  assert.match(source,/Compatibility fallbacks are read-only/);
 });
 
 test('every visible command card has canonical Context, Result and Essence projection',()=>{
@@ -104,54 +77,4 @@ test('group navigation selection supports isolate, multi-select and return to al
   selected=navigation.toggleSelectedGroupId(groups,selected,groups[1].id);
   assert.deepEqual(selected,[groups[3].id]);
   assert.equal(navigation.normalizeSelectedGroupIds(groups,groups.map((group)=>group.id)),null);
-});
-
-test('catalog-order command groups cover every current command card exactly once',()=>{
-  const grouped=order.commandGroups.flatMap((group)=>group.items);
-  assert.equal(new Set(grouped).size,grouped.length);
-  assert.deepEqual(new Set(grouped),new Set(entries.map((entry)=>entry.id)));
-});
-
-test('generic Lens dispatcher is exposed only through IDTSPE Pass while concrete registered Lenses remain primary Lens cards',()=>{
-  assert.equal(entries.some((entry)=>entry.id==='idtspe.lens.apply'),true);
-  assert.equal(entries.find((entry)=>entry.id==='idtspe.lens.apply')?.presentationGroup?.viewId,'IDTSPE_PASS');
-  assert.equal(entries.some((entry)=>entry.id==='idtspe.lenses.select'),true);
-  assert.equal(entries.find((entry)=>entry.id==='idtspe.lenses.select')?.presentationGroup?.viewId,'IDTSPE_PASS');
-  assert.equal(navigation.methodologyPrimaryIds(entries,'LENSES').every((id)=>id.startsWith('lens:LENS-')),true);
-  const ddd=entries.find((entry)=>entry.id==='lens:LENS-DOMAIN-MODELING-DDD');
-  assert.ok(ddd);
-  assert.match(ddd.label,/SDS Lens · LENS-DOMAIN-MODELING-DDD/);
-  assert.equal(navigation.methodologyPrimaryIds(entries,'IDTSPE_PASS').some((id)=>id.startsWith('tm:')||id.startsWith('lens:')),false);
-});
-
-test('Target Module aliases come only from explicit registry alias declarations',()=>{
-  const domain=components.find((component)=>component.id==='TM-DOMAIN-DISCOVERY');
-  assert.ok(domain);
-  assert.deepEqual(domain.aliases,['domain-discovery','domain']);
-  const evolution=components.find((component)=>component.id==='TM-EVOLUTION-STEP');
-  assert.ok(evolution);
-  assert.deepEqual(evolution.aliases,['evolution-step']);
-  const visualComposition=components.find((component)=>component.id==='TM-2D-30-VISUAL-CONSTRUCTION');
-  assert.ok(visualComposition);
-  assert.deepEqual(visualComposition.aliases,[]);
-  assert.equal(components.some((component)=>component.aliases?.includes('material')),false);
-  assert.equal(components.some((component)=>component.aliases?.includes('materially')),false);
-});
-
-test('preferred command order uses stable semantic IDs and contains one Pre-Update identity',()=>{
-  assert.equal(new Set(order.commands).size,order.commands.length);
-  const ids=new Set(entries.map((entry)=>entry.id));
-  for(const id of order.commands)assert.ok(ids.has(id),`preferred order references unknown command ${id}`);
-  assert.equal(order.commands.filter((id)=>id==='tm:TM-PRE-UPDATE-PLAN').length,1);
-  assert.equal(order.commands.includes('file_update.plan'),false);
-  assert.equal(entries.filter((entry)=>entry.canonicalId==='TM-PRE-UPDATE-PLAN').length,1);
-});
-
-test('integration workspace is provenance-only and contains no superseded current-navigation plans',()=>{
-  const dir=path.join(repoRoot,'planning/documentation/idtspe-methodology/integration');
-  assert.deepEqual(fs.readdirSync(dir).sort(),['README.md']);
-  const readme=fs.readFileSync(path.join(dir,'README.md'),'utf8');
-  assert.match(readme,/historical migration\/provenance index/i);
-  assert.match(readme,/Git history/);
-  assert.match(readme,/not.*current methodology/i);
 });

@@ -3,7 +3,6 @@ import assert from 'node:assert/strict';
 import {createRequire} from 'node:module';
 const require=createRequire(import.meta.url);
 const codec=require('../src/command-definition-codec.js'),catalog=require('../src/command-catalog.js'),body=require('../src/command-body.js');
-const seed=require('../seed/commands.json').items;
 function def(id,extra={}){return codec.normalizeCommandDefinition({schemaVersion:1,id,file:id+'.command.md',command:id,englishName:id,commandFamily:[id],description:id,meaning:id,activeContextBehavior:'current subject',traversalReadMode:'adaptive',ownerFiles:[],expectedOutput:'result',permissionMode:'read only',keyReminders:['Preserve permissions.'],userTarget:'<subject>',palette:true,...extra});}
 function call(id,target){return{id,commandPath:'planning/commands/'+target+'.command.md',at:{path:'planning/process.md',anchor:'before-handoff'},when:'When the owner gate applies.',context:'Current result and basis.'};}
 
@@ -33,14 +32,4 @@ test('deferred child contributions stay out of initial composition; repeated poi
   const calls=plan.processCalls.filter(c=>c.callerId==='a');assert.equal(calls.length,2);
   for(const c of calls){assert.deepEqual(c.composition.order,['common','late','b']);assert.deepEqual(c.composition.contributions.map(c=>c.value),['LOCAL_AFFECTED_RECHECK']);}
   assert.ok(plan.processCalls.some(c=>c.callerId==='b'&&c.id==='nested'));
-});
-
-test('pre-update projects helper impact at its owner point, without making it a prerequisite or review mode',()=>{
-  const d=seed.find(d=>d.id==='tmcmd.pre.update'),plan=catalog.expandCommandInvocation(seed,[d.id]);
-  assert.ok(!plan.initial.order.includes('helper.impact.check'));
-  assert.ok(!plan.initial.contributions.some(c=>c.kind==='REVIEW_COVERAGE_MODE'));
-  assert.ok(plan.processCalls.some(c=>c.composition.order.includes('helper.impact.check')));
-  const text=body.buildCommandBody(d,body.MODE.FULL,{definitions:seed});
-  assert.match(text,/helper-impact-before-plan-handoff/);assert.match(text,/deferred includes, dependencies first:/);
-  assert.match(text,/REUSED.*NOT_APPLICABLE/);assert.match(text,/NOT_REACHED is incomplete/);
 });

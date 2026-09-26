@@ -1,6 +1,6 @@
 # Test Object Patterns
 
-Status: active reusable supporting guidance
+Status: historical supporting guidance; current proof route is through Core Test-Proof and applicable realization owners
 
 Test objects reduce repeated mechanics without hiding the Scenario story or moving behavior authority into helpers.
 

@@ -2,7 +2,9 @@
 
 Status: historical audit of the v44 test surface. Its proposed parser/fixture/generator rewrite was superseded by [`ON-DEMAND-RELATION-AUDITS-DECISION-2026-09-26.md`](ON-DEMAND-RELATION-AUDITS-DECISION-2026-09-26.md). **The manual decision is not yet implemented.** This audit is not runtime methodology authority.
 
-Purpose: audit the current methodology-facing automated tests together with `UC-IDTSPE-MAINTAIN-METHODOLOGY-INTEGRITY-TESTS`, `TESTING.METHODOLOGY-INTEGRITY` and the Methodology Integrity Test Maintenance Process, then identify which tests should stay hard, be derived from canonical declarations, receive independent parser fixtures, move to lint/review, or be removed as duplicate/stale authority.
+Status: historical audit of the former hard-test architecture. Its recommendations to retain or expand methodology integrity tests were superseded by the on-demand audit decision and subsequent retirement. Paths and test names below describe the older snapshot, not current files.
+
+Purpose: record the earlier audit of methodology-facing automated tests together with `UC-IDTSPE-MAINTAIN-METHODOLOGY-INTEGRITY-TESTS`, `TESTING.METHODOLOGY-INTEGRITY` and the Methodology Integrity Test Maintenance Process. The earlier proposed disposition below is provenance only.
 
 This audit was prompted by the relation-projection question:
 

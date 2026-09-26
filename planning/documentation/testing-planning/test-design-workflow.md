@@ -1,7 +1,7 @@
 # Test Design Workflow
 
 Status: historical compatibility workflow; current authority is in active IDTSPE Core/SDS owners
-Owner Use Case: `UC-PLAN-TEST-DESIGN`
+Former Owner Use Case: `UC-PLAN-TEST-DESIGN` (retired; algorithm below is provenance, not a current command route)
 
 ## Primary Rule
 
@@ -46,4 +46,4 @@ Read/query proof emphasizes projection correctness, access/filtering and absence
 
 ## Practical Acceptance Choice
 
-During proof design, explicitly consider whether a material property is better demonstrated through Practical Acceptance. Select that proof style when operated behavior/evidence gives stronger meaningful proof than forcing a brittle narrow automated test; when a practical operated pass/campaign is independently useful, hand the selected proof meaning to `UC-PLAN-TEST-PLAN` rather than treating Test Design as the plan owner. Preserve negative guarantees (for example “must not mutate”) as explicit observable/pass-fail conditions.
+During proof design, explicitly consider whether a material property is better demonstrated through Practical Acceptance. Select that proof style when operated behavior/evidence gives stronger meaningful proof than forcing a brittle narrow automated test; when a practical operated pass/campaign is independently useful, route it through the current natural owner and conditional `TM-PRACTICAL-TEST`, not the retired `UC-PLAN-TEST-PLAN`. Preserve negative guarantees (for example “must not mutate”) as explicit observable/pass-fail conditions.

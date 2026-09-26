@@ -420,8 +420,7 @@
       "order": 20,
       "items": [
         "uc:UC-IDTSPE-MAINTAIN-TARGET-MODULE",
-        "uc:UC-IDTSPE-MAINTAIN-LENS",
-        "uc:UC-IDTSPE-MAINTAIN-METHODOLOGY-INTEGRITY-TESTS"
+        "uc:UC-IDTSPE-MAINTAIN-LENS"
       ]
     },
     {

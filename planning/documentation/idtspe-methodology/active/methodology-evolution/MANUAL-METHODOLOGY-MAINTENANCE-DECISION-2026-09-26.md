@@ -1,6 +1,6 @@
 # Manual Methodology Maintenance Decision — 2026-09-26
 
-Status: superseded by [`ON-DEMAND-RELATION-AUDITS-DECISION-2026-09-26.md`](ON-DEMAND-RELATION-AUDITS-DECISION-2026-09-26.md). Historical decision only; **not yet implemented in the runtime, tests, commands or maps**. This decision supersedes the proposed parser/fixture/generator rewrite in `METHODOLOGY-INTEGRITY-TEST-AUDIT-2026-09-26.md`.
+Status: historical proposal superseded by [`ON-DEMAND-RELATION-AUDITS-DECISION-2026-09-26.md`](ON-DEMAND-RELATION-AUDITS-DECISION-2026-09-26.md). Its manual stored-map and nested-owner design was never adopted. The later on-demand audit and direct-owner design is implemented. This decision superseded the earlier parser/fixture/generator proposal in `METHODOLOGY-INTEGRITY-TEST-AUDIT-2026-09-26.md`.
 
 ## Decision
 

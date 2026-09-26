@@ -1830,26 +1830,6 @@
       "target": "<Create / Review / Integrate Reusable Lens target>"
     },
     {
-      "id": "UC-IDTSPE-MAINTAIN-METHODOLOGY-INTEGRITY-TESTS",
-      "kind": "USE_CASE",
-      "scope": "Core",
-      "label": "Create / Review / Maintain Methodology Integrity Tests",
-      "actionLabel": "Create / Review / Maintain Methodology Integrity Tests",
-      "description": "``text one current methodology-integrity guard design/maintenance result canonical authority/projection direction made explicit hard-vs-lint classification minimal derived invariant(s) direct/inherited/delegated proof boundaries when relevant shared resolver/parser boundary when relevant positive + negative controls proportional to risk actionable failure diagnostics/comment contract exact realization + verification consequences `` The independently useful result is the **maintained methodology integrity guard contract and its integration consequences**, not a generic Test Design artifact.",
-      "context": "Use when one or more of these are materially true: ``text a methodology map/catalog/Helper projection needs a hard parity guard command ownerRefs or another typed reference needs canonical identity checking bootstrap/registry routing needs structural integrity protection an existing methodology test has frozen counts, prose regex coupling or another false-failure risk shared path/anchor/owner-resolution test mechanics are duplicated/inconsistent a methodology change broke an integrity test and intent vs accidental drift must be distinguished a new methodology relation requires positive/negative regression controls `` Do not use merely because ordinary product/application code needs tests. That remains normal Test Proof + realization work.",
-      "result": "``text one current methodology-integrity guard design/maintenance result canonical authority/projection direction made explicit hard-vs-lint classification minimal derived invariant(s) direct/inherited/delegated proof boundaries when relevant shared resolver/parser boundary when relevant positive + negative controls proportional to risk actionable failure diagnostics/comment contract exact realization + verification consequences `` The independently useful result is the **maintained methodology integrity guard contract and its integration consequences**, not a generic Test Design artifact.",
-      "essence": "``text one current methodology-integrity guard design/maintenance result canonical authority/projection direction made explicit hard-vs-lint classification minimal derived invariant(s) direct/inherited/delegated proof boundaries when relevant shared resolver/parser boundary when relevant positive + negative controls proportional to risk actionable failure diagnostics/comment contract exact realization + verification consequences `` The independently useful result is the **maintained methodology integrity guard contract and its integration consequences**, not a generic Test Design artifact.",
-      "sources": [
-        "planning/documentation/use-case-registry-map.md",
-        "planning/documentation/idtspe-methodology/active/idtspe-core/use-cases/USE-CASE-REGISTRY.md"
-      ],
-      "aliases": [],
-      "ownerRef": null,
-      "commandId": "",
-      "invocation": "",
-      "target": "<Create / Review / Maintain Methodology Integrity Tests target>"
-    },
-    {
       "id": "UC-IDTSPE-MAINTAIN-TARGET-MODULE",
       "kind": "USE_CASE",
       "scope": "Core",

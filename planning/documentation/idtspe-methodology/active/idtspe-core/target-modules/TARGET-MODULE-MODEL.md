@@ -118,6 +118,8 @@ Local Target Contract
 
 A supporting owner discovered during Unit work is bound/referenced before that supporting method is applied. This requirement does not create a second runtime State Unit or methodology-lookup phase.
 
+The persisted `Methodology:` link follows Documentation's [Methodology / Contextual Annotation Principle](../../../../principles-and-terminology.md#doc-methodology-contextual-annotation): a result kept in another project repository points to the exact owner in that project's dedicated methodology baseline branch on GitHub, while results in this repository can use relative owner links. The Unit Definition's identity and binding requirements are the same in either location.
+
 ### Natural Subject Conformance
 
 > Semantic Owner Dependency

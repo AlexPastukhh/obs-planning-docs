@@ -19,7 +19,6 @@ This map routes IDTSPE methodology-use/orchestration responsibilities. Use Cases
 | Targeted affected-meaning revalidation orchestration | [`revalidate-current-work/UC-IDTSPE-REVALIDATE-CURRENT-WORK.md`](revalidate-current-work/UC-IDTSPE-REVALIDATE-CURRENT-WORK.md#uc-idtspe-revalidate-current-work) — `IDTSPE.UC.REVALIDATE-CURRENT-WORK` | Re-enters real owners narrowly; does not become a peer semantic lifecycle |
 | Reusable Target Module maintenance/orchestration | [`maintain-target-module/UC-IDTSPE-MAINTAIN-TARGET-MODULE.md`](maintain-target-module/UC-IDTSPE-MAINTAIN-TARGET-MODULE.md#uc-idtspe-maintain-target-module) — `IDTSPE.UC.MAINTAIN-TARGET-MODULE` | Target Module Meta-Model and Target Work contracts remain authoritative |
 | Reusable Lens maintenance/orchestration | [`maintain-lens/UC-IDTSPE-MAINTAIN-LENS.md`](maintain-lens/UC-IDTSPE-MAINTAIN-LENS.md#uc-idtspe-maintain-lens) — `IDTSPE.UC.MAINTAIN-LENS` | Lens Meta-Model/concrete Lens owners remain authoritative |
-| Methodology integrity-test maintenance/orchestration | [`maintain-methodology-integrity-tests/UC-IDTSPE-MAINTAIN-METHODOLOGY-INTEGRITY-TESTS.md`](maintain-methodology-integrity-tests/UC-IDTSPE-MAINTAIN-METHODOLOGY-INTEGRITY-TESTS.md#uc-idtspe-maintain-methodology-integrity-tests) — `IDTSPE.UC.MAINTAIN-METHODOLOGY-INTEGRITY-TESTS` | `TESTING.METHODOLOGY-INTEGRITY` owns hard-integrity rules; protected methodology owners remain semantic authority; literal test code belongs to Exact Realization |
 
 Guards:
 

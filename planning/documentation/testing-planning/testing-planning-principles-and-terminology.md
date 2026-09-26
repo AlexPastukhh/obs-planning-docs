@@ -1,6 +1,6 @@
 # Testing Planning Principles And Terminology
 
-Status: active reusable canonical owner
+Status: historical supporting guidance; current proof authority is in IDTSPE Core and the applicable natural owner
 
 ## Semantic Authority Boundary
 
