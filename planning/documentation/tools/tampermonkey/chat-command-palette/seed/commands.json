@@ -3900,6 +3900,212 @@
     },
     {
       "schemaVersion": 1,
+      "id": "idtspe.current-work.manifest.maintain",
+      "file": "maintain-current-work-manifest.command.md",
+      "command": "веди сессионный манифест",
+      "englishName": "maintain current work manifest",
+      "commandFamily": [
+        "веди сессионный манифест",
+        "обнови сессионный манифест",
+        "синхронизируй сессионный манифест",
+        "веди current work manifest",
+        "maintain session manifest",
+        "maintain current work manifest"
+      ],
+      "description": "Maintain the central cross-pass Current Work Manifest and re-entry route for substantial IDTSPE work.",
+      "meaning": "Maintain/reuse the Current Work Manifest owned by UC-IDTSPE-MAINTAIN-CURRENT-WORK-STATE. Synchronize the current USER goal/wanted-outcome references, current focus, cross-pass planned actions, material artifact inventory, Need Set / PRS / Review Coverage / Revalidation / recent P-02 references, blockers and re-entry route without copying those owners' semantic bodies. Route the physical Manifest representation through P-14; the command does not turn the Manifest into a Need Set, PRS, Review authority, P-02 trace or Session-owned planning runtime.",
+      "activeContextBehavior": "Use the current Work Context and current canonical owner state. Reuse an existing trustworthy Manifest when present; refresh only materially changed coordination/inventory/re-entry information. Current USER input and canonical owner state override stale Manifest projections. When no dedicated Manifest is material, report NOT_APPLICABLE/CHECKED_NO_CHANGE rather than inventing one for tiny one-pass work.",
+      "traversalReadMode": "Read Maintain Current Work State plus only the current owner/artifact references needed to synchronize the Manifest. Do not reread or duplicate full Need/PRS/Review/P-02 bodies when compact canonical references are sufficient.",
+      "ownerFiles": [
+        "planning/documentation/idtspe-methodology/active/idtspe-core/use-cases/maintain-current-work-state/UC-IDTSPE-MAINTAIN-CURRENT-WORK-STATE.md",
+        "planning/documentation/idtspe-methodology/active/idtspe-core/representation/ARTIFACT-PLACEMENT-AND-IDTSPE-RESPONSE-CONTRACT.md"
+      ],
+      "ownerRefs": [
+        {
+          "responsibilityId": "IDTSPE.UC.MAINTAIN-CURRENT-WORK-STATE",
+          "path": "planning/documentation/idtspe-methodology/active/idtspe-core/use-cases/maintain-current-work-state/UC-IDTSPE-MAINTAIN-CURRENT-WORK-STATE.md",
+          "anchor": "current-work-manifest",
+          "why": "Owns the Current Work Manifest as cross-pass coordination/navigation projection while preserving the natural semantic owners it references.",
+          "role": "PRIMARY_OWNER",
+          "readMode": "REQUIRED"
+        },
+        {
+          "responsibilityId": "REPRESENTATION.ARTIFACT-PLACEMENT",
+          "path": "planning/documentation/idtspe-methodology/active/idtspe-core/representation/ARTIFACT-PLACEMENT-AND-IDTSPE-RESPONSE-CONTRACT.md",
+          "anchor": "representation-artifact-placement",
+          "why": "Owns the Manifest's physical representation, placement/reuse/update and persistence permission boundary.",
+          "role": "SUPPORTING_CONTRACT",
+          "readMode": "REQUIRED"
+        }
+      ],
+      "includes": [
+        "planning/commands/work-through-idtspe.command.md",
+        "planning/commands/recheck-idtspe-port-composition.command.md",
+        "planning/commands/include-idtspe-trace-port.command.md",
+        "planning/commands/idtspe-port-persistence.command.md"
+      ],
+      "processCalls": [],
+      "compositionContributions": [],
+      "expectedOutput": "A synchronized Current Work Manifest or an explicit no-change/not-applicable result. When material, the Manifest exposes current cross-pass goals/actions, compact owner/artifact inventory, revalidation/review/P-02 references and a usable re-entry route without duplicating their semantic ownership.",
+      "permissionMode": "artifact-no-commit-push",
+      "keyReminders": [
+        "Current Work Manifest is coordination/navigation, not a global semantic owner or backlog.",
+        "Reference Need Set, PRS, Review Coverage, Revalidation Impact and P-02 instead of copying their semantic bodies.",
+        "Current USER/canonical owner state wins over stale Manifest projection.",
+        "Use P-14 for the physical representation; this command grants no commit/push authority."
+      ],
+      "userTarget": "<current substantial Work Context / session continuity scope>",
+      "palette": true,
+      "helperPresentation": null,
+      "methodologyBinding": {
+        "methodologyRuntime": "IDTSPE",
+        "profile": null,
+        "surfaceKind": "ORCHESTRATION",
+        "targetModuleId": null,
+        "lensId": null,
+        "parentSurface": null,
+        "hostTargetPolicy": "NONE"
+      },
+      "refinements": []
+    },
+    {
+      "schemaVersion": 1,
+      "id": "idtspe.current-work.artifacts.archive",
+      "file": "maintain-session-artifacts-archive.command.md",
+      "command": "веди сессионные артефакты в архиве",
+      "englishName": "maintain current work artifacts in archive",
+      "commandFamily": [
+        "веди сессионные артефакты в архиве",
+        "веди артефакты сессии в архиве",
+        "обнови архив сессионных артефактов",
+        "синхронизируй архив сессионных артефактов",
+        "maintain session artifacts in archive",
+        "maintain current work artifacts archive"
+      ],
+      "description": "Maintain the current work artifact set and materialize/rematerialize it as one portable Work Context Bundle/archive.",
+      "meaning": "Run normal current-work artifact maintenance first, then require a portable P-14 Work Context Bundle/archive representation for the resulting material artifact set. Reuse/update the existing bundle when suitable; otherwise materialize/rematerialize one with the Current Work Manifest (normally `WORK-MANIFEST.md` or an established equivalent) as the primary entry point. Archive membership is representation only and never changes Need/PRS/Review/P-02/Revalidation semantic authority.",
+      "activeContextBehavior": "Use the artifact set/inventory produced by the included session-artifact maintenance command. If a current suitable Work Context Bundle already exists, update/rematerialize it rather than creating parallel archives. Include only materially useful working artifacts/evidence and canonical references needed for portable re-entry. When archive writing/placement is unavailable, report BLOCKED/DEFERRED while preserving the synchronized loose-artifact state.",
+      "traversalReadMode": "After the included artifact-maintenance route completes, read the P-14 Work Context Bundle representation section and the synchronized Manifest/inventory. Inspect only artifact bytes/references needed to produce or refresh the portable bundle.",
+      "ownerFiles": [
+        "planning/documentation/idtspe-methodology/active/idtspe-core/representation/ARTIFACT-PLACEMENT-AND-IDTSPE-RESPONSE-CONTRACT.md",
+        "planning/documentation/idtspe-methodology/active/idtspe-core/use-cases/maintain-current-work-state/UC-IDTSPE-MAINTAIN-CURRENT-WORK-STATE.md"
+      ],
+      "ownerRefs": [
+        {
+          "responsibilityId": "REPRESENTATION.ARTIFACT-PLACEMENT",
+          "path": "planning/documentation/idtspe-methodology/active/idtspe-core/representation/ARTIFACT-PLACEMENT-AND-IDTSPE-RESPONSE-CONTRACT.md",
+          "anchor": "work-context-bundle",
+          "why": "Owns the portable Work Context Bundle/archive representation, primary Manifest entry, member-role labeling and rematerialization boundary.",
+          "role": "PRIMARY_OWNER",
+          "readMode": "REQUIRED"
+        },
+        {
+          "responsibilityId": "IDTSPE.UC.MAINTAIN-CURRENT-WORK-STATE",
+          "path": "planning/documentation/idtspe-methodology/active/idtspe-core/use-cases/maintain-current-work-state/UC-IDTSPE-MAINTAIN-CURRENT-WORK-STATE.md",
+          "anchor": "current-work-manifest",
+          "why": "Provides the primary cross-pass Manifest/inventory entry that the portable archive exposes without taking over its semantic coordination role.",
+          "role": "SUPPORTING_CONTRACT",
+          "readMode": "REQUIRED"
+        }
+      ],
+      "includes": [
+        "planning/commands/maintain-session-artifacts.command.md"
+      ],
+      "processCalls": [],
+      "compositionContributions": [],
+      "expectedOutput": "A synchronized current-work artifact set plus one current portable Work Context Bundle/archive with an obvious Manifest primary entry, materially useful members/references, explicit representation roles and no semantic-authority transfer. If archive materialization is unavailable, explicit BLOCKED/DEFERRED rather than false archive success.",
+      "permissionMode": "artifact-no-commit-push",
+      "keyReminders": [
+        "This command includes normal session-artifact maintenance; do not reimplement its inventory/currentness semantics.",
+        "Archive representation is additional to artifact maintenance, not a new semantic lifecycle.",
+        "Prefer update/rematerialization of one existing suitable Work Context Bundle over parallel archives.",
+        "The Manifest is the portable entry point; bundle membership never establishes semantic authority.",
+        "Do not commit or push."
+      ],
+      "userTarget": "<current Work Context artifact set to keep in a portable archive>",
+      "palette": true,
+      "helperPresentation": null,
+      "methodologyBinding": {
+        "methodologyRuntime": "IDTSPE",
+        "profile": null,
+        "surfaceKind": "ORCHESTRATION",
+        "targetModuleId": null,
+        "lensId": null,
+        "parentSurface": null,
+        "hostTargetPolicy": "NONE"
+      },
+      "refinements": []
+    },
+    {
+      "schemaVersion": 1,
+      "id": "idtspe.current-work.artifacts.maintain",
+      "file": "maintain-session-artifacts.command.md",
+      "command": "веди сессионные артефакты",
+      "englishName": "maintain current work artifacts",
+      "commandFamily": [
+        "веди сессионные артефакты",
+        "обнови сессионные артефакты",
+        "синхронизируй сессионные артефакты",
+        "веди артефакты текущей работы",
+        "maintain session artifacts",
+        "maintain current work artifacts"
+      ],
+      "description": "Synchronize the material artifact set, inventory, currentness and placement for the current work context.",
+      "meaning": "Maintain the material working artifacts for the current Work Context through P-14 Persistence / Artifact Maintenance. First synchronize the Current Work Manifest/inventory, then reconcile material artifact identity, currentness, placement, reuse/update/rematerialization and canonical references. This command does not require an archive representation by itself and never transfers semantic authority from Need/PRS/Review/P-02/Revalidation owners to P-14 or the Manifest.",
+      "activeContextBehavior": "Use the current Work Context and synchronized Current Work Manifest as the inventory/navigation entry. Maintain only materially useful artifacts; mark current/historical/stale/superseded representation state proportionally, repair missing/stale placement/navigation where authorized, and preserve canonical owner references. Do not create duplicate artifacts merely to satisfy a layout. Archive/bundle materialization is not forced by this command; use the archive-specific command when an archive is explicitly required.",
+      "traversalReadMode": "Read P-14 Artifact Placement/Maintenance and the synchronized Manifest inventory, then inspect only artifacts whose representation/currentness/placement may need action. Follow semantic owners only when needed to avoid stale/misleading representation.",
+      "ownerFiles": [
+        "planning/documentation/idtspe-methodology/active/idtspe-core/representation/ARTIFACT-PLACEMENT-AND-IDTSPE-RESPONSE-CONTRACT.md",
+        "planning/documentation/idtspe-methodology/active/idtspe-core/use-cases/maintain-current-work-state/UC-IDTSPE-MAINTAIN-CURRENT-WORK-STATE.md"
+      ],
+      "ownerRefs": [
+        {
+          "responsibilityId": "REPRESENTATION.ARTIFACT-PLACEMENT",
+          "path": "planning/documentation/idtspe-methodology/active/idtspe-core/representation/ARTIFACT-PLACEMENT-AND-IDTSPE-RESPONSE-CONTRACT.md",
+          "anchor": "work-context-bundle",
+          "why": "Owns artifact maintenance, inventory-location reconciliation, representation reuse/update/rematerialization and optional Work Context Bundle selection.",
+          "role": "PRIMARY_OWNER",
+          "readMode": "REQUIRED"
+        },
+        {
+          "responsibilityId": "IDTSPE.UC.MAINTAIN-CURRENT-WORK-STATE",
+          "path": "planning/documentation/idtspe-methodology/active/idtspe-core/use-cases/maintain-current-work-state/UC-IDTSPE-MAINTAIN-CURRENT-WORK-STATE.md",
+          "anchor": "current-work-manifest",
+          "why": "Provides the current cross-pass artifact inventory/navigation projection that artifact maintenance synchronizes rather than replacing.",
+          "role": "SUPPORTING_CONTRACT",
+          "readMode": "REQUIRED"
+        }
+      ],
+      "includes": [
+        "planning/commands/maintain-current-work-manifest.command.md"
+      ],
+      "processCalls": [],
+      "compositionContributions": [],
+      "expectedOutput": "A synchronized material artifact set and Current Work Manifest inventory: artifacts are discoverable, currentness/representation roles are explicit, stale/superseded representations are not misleading, and placement/reuse/update/rematerialization actions are completed or explicitly BLOCKED/DEFERRED. No archive is required solely by invoking this generic maintenance command.",
+      "permissionMode": "artifact-no-commit-push",
+      "keyReminders": [
+        "Artifact maintenance is representation work; semantic owners remain authoritative.",
+        "Synchronize the Current Work Manifest/inventory before relying on it for artifact maintenance.",
+        "Do not duplicate files merely to satisfy a session layout.",
+        "This generic command does not force archive materialization.",
+        "Physical writes remain bounded by current host/user authority; do not commit or push."
+      ],
+      "userTarget": "<current Work Context artifact set>",
+      "palette": true,
+      "helperPresentation": null,
+      "methodologyBinding": {
+        "methodologyRuntime": "IDTSPE",
+        "profile": null,
+        "surfaceKind": "ORCHESTRATION",
+        "targetModuleId": null,
+        "lensId": null,
+        "parentSurface": null,
+        "hostTargetPolicy": "NONE"
+      },
+      "refinements": []
+    },
+    {
+      "schemaVersion": 1,
       "id": "application_concept.plan",
       "file": "plan-application-concept.command.md",
       "command": "план концепции приложения",
