@@ -69,9 +69,9 @@ terms                       → LENS-TERMS-UBIQUITOUS-LANGUAGE
 
 Attachment and composition notes below are registry-level routing projections only. Concrete Lens files own operational evaluation semantics; Programming Principles remain Knowledge Basis content rather than Lens definitions.
 
-## Lens Attachment Projection
+## Lens Attachments
 
-Predictable SDS Unit attachments are projected in [`LENS-ATTACHMENT-MAP.md`](LENS-ATTACHMENT-MAP.md#sds-lens-attachment-map). The map is navigation/audit projection only: normative attachment remains beside the natural `RU-*` owner, and concrete Lens files own temporal trigger logic.
+Predictable attachments are declared beside the concrete `RU-*` owner. A temporary audit table can be requested with `planning/commands/check-lens-attachment-map.command.md`; there is no maintained attachment map. Concrete Lens files own temporal trigger logic.
 
 The Core Lens Pack remains inherited by every material Unit. Unlisted profile/Core Lens remain discoverable through normal registry scans.
 

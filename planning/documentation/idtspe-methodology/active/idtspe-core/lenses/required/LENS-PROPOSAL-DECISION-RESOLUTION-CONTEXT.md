@@ -4,7 +4,7 @@
 > - `EXTENDS` [Lens Meta-Model](../LENS-MODEL.md#lens-meta-model) — `LENS.META-MODEL`.
 
 > Semantic Owner Dependencies
-> - `CONTEXTUALIZES` [Decision record retention](../../resolution/proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md#resolution-decision-retention) — `RESOLUTION.PROPOSAL-DECISION-LIFECYCLE`.
+> - `CONTEXTUALIZES` [Decision record retention](../../resolution/proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md#resolution-proposal-decision-lifecycle) — `RESOLUTION.PROPOSAL-DECISION-LIFECYCLE`.
 > - `CONTEXTUALIZES` [Resolution Carry-Forward contract](../../resolution/RESOLUTION-CARRY-FORWARD-CONTRACT.md#resolution-carry-forward) — `RESOLUTION.CARRY-FORWARD`.
 
 Lens ID: `LENS-PROPOSAL-DECISION-RESOLUTION-CONTEXT`
@@ -77,7 +77,6 @@ Apply only the dimensions material to the current question. The domain-specific 
 Canonical semantic/lifecycle owners remain:
 
 > Semantic Owner Dependencies
-> - `CONTEXTUALIZES` [`Proposal / Decision Lifecycle`](../../resolution/proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md#resolution-proposal-decision-lifecycle) — `RESOLUTION.PROPOSAL-DECISION-LIFECYCLE`
 > - `CONTEXTUALIZES` [`Q/R/P Lifecycle`](../../resolution/qrp/QRP-LIFECYCLE-AND-REVIEW.md#resolution-qrp-lifecycle) — `RESOLUTION.QRP-LIFECYCLE`
 > - `CONTEXTUALIZES` [`Decision Revalidation Projection`](../../resolution/proposal-decision/DECISION-REVALIDATION.resolution-projection.md#resolution-decision-revalidation-projection) — `RESOLUTION.DECISION-REVALIDATION-PROJECTION`
 > - `CONTEXTUALIZES` [Resolution Carry-Forward contract](../../resolution/RESOLUTION-CARRY-FORWARD-CONTRACT.md#resolution-carry-forward) — `RESOLUTION.CARRY-FORWARD`

@@ -7,29 +7,29 @@ Status: active project command definition; semantic behavior remains in linked o
   "schemaVersion": 1,
   "id": "idtspe.tm_lens_dependency_map.check",
   "file": "check-tm-lens-dependency-map.command.md",
-  "command": "проверь карту зависимостей линз и таргет модулей",
-  "englishName": "check target module lens dependency map",
+  "command": "составь карту зависимостей таргет модулей и линз",
+  "englishName": "build target module lens dependency audit map",
   "commandFamily": [
+    "составь карту зависимостей таргет модулей и линз",
+    "покажи зависимости таргет модулей и линз",
     "проверь карту зависимостей линз и таргет модулей",
-    "проверь зависимости линз и таргет модулей",
-    "check target module lens dependency map"
+    "build target module lens dependency audit map"
   ],
-  "description": "Check current Target Module/Lens Semantic Owner Dependency projection parity",
-  "meaning": "Execute IDTSPE.TM-LENS-DEPENDENCY-PROJECTION-INTEGRITY against every current Target Module and Lens plus the active dependency projection.",
-  "activeContextBehavior": "Use the current repository basis or explicitly supplied snapshot/archive basis. Do not form a Target; report exact dependency parity, incoming/outgoing impact or concrete drift.",
-  "traversalReadMode": "Read the integrity owner, dependency map, current active TM/Lens owners and DOC.SEMANTIC-OWNER-DEPENDENCY as required to prove exact parity.",
+  "description": "Build a temporary Target Module/Lens semantic-dependency audit map",
+  "meaning": "Read current Target Module/Lens Semantic Owner Dependency declarations and render an on-demand audit table and reverse lookup in the answer. No maintained dependency map file exists.",
+  "activeContextBehavior": "Use the current repository or an explicitly supplied snapshot and state its identity and scope. Distinguish typed dependencies from ordinary links. Report sources and unresolved references. This is read-only; do not form a Target or update a map file.",
+  "traversalReadMode": "Read current Core and active-profile Target Module/Lens registries, then the concrete owners in scope and DOC.SEMANTIC-OWNER-DEPENDENCY. Do not read a stored dependency map.",
   "ownerFiles": [
-    "planning/documentation/idtspe-methodology/active/navigation/TARGET-MODULE-LENS-DEPENDENCY-MAP-INTEGRITY.md",
-    "planning/documentation/idtspe-methodology/active/navigation/TARGET-MODULE-LENS-DEPENDENCY-MAP.md"
+    "planning/documentation/principles-and-terminology.md"
   ],
-  "expectedOutput": "PASS with component/dependency/direct-edge counts, or precise DRIFT records by consumer and owner edge; when asked for impact, list the exact current incoming/outgoing declared semantic dependencies. BLOCKED only when required basis is unreadable.",
+  "expectedOutput": "Temporary table: dependent TM/Lens, dependency type, Responsibility ID, canonical owner link and source declaration link; optional reverse index. State basis, coverage, unknown IDs/links and unreadable sources. Do not claim completeness for unread files. Nothing is saved unless separately requested.",
   "permissionMode": "read-only-planning",
   "keyReminders": [
-    "Component Semantic Owner Dependency declarations are normative; the map is projection only.",
-    "Ordinary Markdown links are navigation and must not be promoted to dependency edges.",
-    "Keep Unit-to-Lens attachment/applicability topology in its own attachment projection.",
-    "Treat direct concrete TM/Lens dependencies as exceptional; prefer stable shared contracts when a reusable responsibility is the real dependency.",
-    "No repair, rebuild, file mutation, commit or push is authorized by this check command."
+    "Only explicit typed Semantic Owner Dependency declarations form edges; ordinary Markdown links do not.",
+    "For a full-scope request, enumerate every active Core/profile Target Module and Lens from registries, account for every typed declaration, then recheck each output row against its source link before answering.",
+    "Show source links and unresolved or ambiguous references; do not hide uncertainty behind a PASS label.",
+    "Keep Unit-to-Lens attachments out of this dependency view.",
+    "No repair, file mutation, commit or push is authorized by this read-only command."
   ],
   "userTarget": "<current repository/snapshot, component, owner responsibility or bounded dependency scope>",
   "palette": true,
@@ -39,27 +39,11 @@ Status: active project command definition; semantic behavior remains in linked o
   ],
   "ownerRefs": [
     {
-      "responsibilityId": "IDTSPE.TM-LENS-DEPENDENCY-PROJECTION-INTEGRITY",
-      "path": "planning/documentation/idtspe-methodology/active/navigation/TARGET-MODULE-LENS-DEPENDENCY-MAP-INTEGRITY.md",
-      "anchor": "idtspe-tm-lens-dependency-projection-integrity",
-      "why": "Owns exact component-declaration-to-map parity, dependency-edge validation and recheck conditions.",
-      "role": "PRIMARY_OWNER",
-      "readMode": "REQUIRED"
-    },
-    {
-      "responsibilityId": "IDTSPE.TM-LENS-DEPENDENCY-PROJECTION",
-      "path": "planning/documentation/idtspe-methodology/active/navigation/TARGET-MODULE-LENS-DEPENDENCY-MAP.md",
-      "anchor": "idtspe-tm-lens-dependency-map",
-      "why": "The cross-Core/profile dependency projection and direct component topology being checked.",
-      "role": "REGISTRY",
-      "readMode": "REQUIRED"
-    },
-    {
       "responsibilityId": "DOC.SEMANTIC-OWNER-DEPENDENCY",
       "path": "planning/documentation/principles-and-terminology.md",
       "anchor": "doc-semantic-owner-dependency",
-      "why": "Defines which explicit relations are semantic dependencies and why ordinary links do not create edges.",
-      "role": "SUPPORTING_CONTRACT",
+      "why": "Defines the typed dependency relation and distinguishes it from ordinary links.",
+      "role": "PRIMARY_OWNER",
       "readMode": "REQUIRED"
     }
   ]

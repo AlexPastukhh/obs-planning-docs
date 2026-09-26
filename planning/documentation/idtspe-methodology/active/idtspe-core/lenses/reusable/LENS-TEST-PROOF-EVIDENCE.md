@@ -283,6 +283,20 @@ E2E:
   only critical actor path when materially useful
 ```
 
+### 8A. Delegated / Not-Proved-Here Boundary
+
+When material, record what this proof intentionally does **not** establish because another owner/layer proves it.
+
+Example:
+
+```text
+this integration test proves command → persistence outcome
+it does not exhaustively prove the pure validation rule space
+that rule space is delegated to Domain/unit proof
+```
+
+This is a duplication/coverage boundary, not a transfer of semantic authority.
+
 ### 9. Representative Sufficiency
 
 Ask whether representative cases convincingly prove a stable rule without matrix explosion.
@@ -329,6 +343,20 @@ each proof creates/references explicit reproducible state
 + reset/isolation rules where the environment is shared/mutable
 ```
 
+### 11A. Shared / Cross-Owner Proof Coordination — Conditional
+
+When several semantic owners genuinely share proof infrastructure/policy, coordinate only the cross-owner concerns that need one shared answer, for example:
+
+```text
+layer responsibility / non-duplication boundary
+shared test data / fixtures / reset / isolation / concurrency policy
+shared harness/helper boundary without hiding Scenario/proof outcomes
+critical cross-layer paths and explicit non-E2E boundaries
+Evidence state/reporting conventions
+```
+
+Keep owner-local proof local when possible. Shared coordination does not create a generic Test Strategy Target by default.
+
 ### 12. Evidence Actuality / Freshness / Drift
 
 Keep distinct:
@@ -349,6 +377,20 @@ but it was last executed before the Scenario/API changed
 ```
 
 That file is not automatically fresh Evidence for the current meaning.
+
+### 12A. Methodology Integrity Proof — Conditional
+
+When the proof subject is the methodology itself (registries, typed owner references, bootstrap routes, generated projections/maps or Helper methodology projections), apply the canonical [`Methodology Integrity Testing Contract`](../../knowledge-bases/testing/METHODOLOGY-INTEGRITY-TESTING-CONTRACT.md#testing-methodology-integrity).
+
+The key proof question becomes:
+
+```text
+Can accidental partial change escape?
+Can legitimate semantic-preserving evolution fail?
+Is expected state derived from canonical authority rather than frozen in the test?
+```
+
+Use [`UC-IDTSPE-MAINTAIN-METHODOLOGY-INTEGRITY-TESTS`](../../use-cases/maintain-methodology-integrity-tests/UC-IDTSPE-MAINTAIN-METHODOLOGY-INTEGRITY-TESTS.md#uc-idtspe-maintain-methodology-integrity-tests) when the integrity-test guard itself needs creation/review/maintenance as an independently useful methodology-use result.
 
 ### 13. Automated vs Practical Evidence
 
@@ -463,7 +505,7 @@ PERSISTENCE_GUIDANCE: PREFERRED
 PLACEMENT_DIRECTIVE: PLACE
 SEMANTIC_OWNER: nearest natural semantic/implementation owner or resolved natural supporting-policy Unit when independently cross-owner
 REPRESENTATION: EMBED_OR_EXISTING_ARTIFACT
-CONTENT: property-to-proof design; layer; setup/action/observation; required assertions/signals
+CONTENT: property-to-proof design; layer; setup/action/observation; required assertions/signals; delegated/not-proved-here boundary when material
 GUIDANCE_SOURCE: LENS
 RESOLVER: P-14 / PERSISTENCE_ADDRESSABILITY
 ```

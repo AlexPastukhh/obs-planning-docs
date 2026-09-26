@@ -602,7 +602,10 @@ later optional cleanup confirmation across the correct VS Code windows.
   unavailability follows successful project opening; the durable secondary
   outcome belongs to [the succession Feature](#br-stl-succession-09), and
   transition proof is held in [TO-STL-SUCCESSION-01](#to-stl-succession-01).
-- Literal endpoint/class/config/test topology remains Core Exact territory.
+- Literal source/test implementation and codebase-local wiring belong to SDS
+  [`TM-CODE-REALIZATION`](../../../../../../../target-modules/TM-CODE-REALIZATION.md);
+  independently substantial broad/profile-neutral non-code exact artifacts remain
+  Core Exact Realization territory.
 
 ## RU-EVO-04 — Target Owner Materialization Set
 
@@ -637,8 +640,9 @@ prepared-handoff Shared owner is revalidated, not replaced.
 | `TO-STL-SUCCESSION-06 — Real installed proof` | Installed multi-window observation includes absent/invalid manifest, no match, Open Only, successful close, dirty cancellation, partial failure, replacement focus and Workspace Trust neutrality. |
 | `TO-STL-SUCCESSION-07 — Resolve prepared-handoff proof dependency` | Before Step proof and owner materialization pass, resolve [`P-STL-HANDOFF-01`](../../shared/prepared-project-handoff.md#p-stl-handoff-01) against its Shared-owner closure conditions while preserving at-most-once authority. |
 
-Literal test cases/files belong to Core Exact. Real-environment collection is
-planned by
+Literal test cases/files that are part of the codebase realization belong to SDS
+[`TM-CODE-REALIZATION`](../../../../../../../target-modules/TM-CODE-REALIZATION.md).
+Real-environment collection is planned by
 [`PTEST-STL-PROJECT-SUCCESSION-MULTI-WINDOW`](../../practical-tests/project-succession-multi-window.md).
 
 ## RU-EVO-06 — Planning Completeness / Realization Start Readiness

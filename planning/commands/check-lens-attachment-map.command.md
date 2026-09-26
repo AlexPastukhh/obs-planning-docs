@@ -7,30 +7,32 @@ Status: active project command definition; semantic behavior remains in linked o
   "schemaVersion": 1,
   "id": "sds.lens_attachment_map.check",
   "file": "check-lens-attachment-map.command.md",
-  "command": "проверь карту атачментов линз",
-  "englishName": "check lens attachment map",
+  "command": "составь карту атачментов линз",
+  "englishName": "build lens attachment audit map",
   "commandFamily": [
+    "составь карту атачментов линз",
+    "покажи атачменты линз",
     "проверь карту атачментов линз",
-    "проверь корректность карты атачментов линз",
-    "check lens attachment map"
+    "build lens attachment audit map"
   ],
-  "description": "Check SDS Unit-to-Lens attachment projection parity",
-  "meaning": "Execute SDS.LENS-ATTACHMENT-PROJECTION-INTEGRITY against the current Core+SDS Target Module Unit owners, Lens registries and SDS Lens Attachment Map.",
-  "activeContextBehavior": "Use the current repository basis or explicitly supplied snapshot/archive basis. Do not form a Target; report exact projection parity or concrete drift.",
-  "traversalReadMode": "Read the integrity owner, current SDS Lens Attachment Map, current Core+SDS Target Module owners and the Core+SDS Lens registries required to prove exact parity.",
+  "description": "Build a temporary Unit-to-Lens attachment audit map from current declarations",
+  "meaning": "Read current Core and SDS Target Module Unit Lens Attachments and relevant Lens registries; produce an on-demand audit table in the answer. No maintained map file exists.",
+  "activeContextBehavior": "Use the current repository or an explicitly supplied snapshot and state its identity and scope. Read concrete Unit declarations, resolve Lens links, and report findings with source links. This is a read-only audit, not a Target or file update.",
+  "traversalReadMode": "Read current Core/SDS Target Module registries and selected concrete Target Module Unit Lens Attachments; use Lens registries and concrete Lens owners to interpret identities and triggers. Do not read a stored attachment map.",
   "ownerFiles": [
-    "planning/documentation/idtspe-methodology/active/profiles/sds/registries/LENS-ATTACHMENT-MAP-INTEGRITY.md",
-    "planning/documentation/idtspe-methodology/active/profiles/sds/registries/LENS-ATTACHMENT-MAP.md"
+    "planning/documentation/idtspe-methodology/active/idtspe-core/target-modules/TARGET-MODULE-MODEL.md",
+    "planning/documentation/idtspe-methodology/active/profiles/sds/registries/LENS-REGISTRY.md"
   ],
-  "expectedOutput": "PASS with module/unit/REQUIRED/TRIGGERED counts, or precise DRIFT records by TM/RU showing owner expectation versus projection and defect kind; BLOCKED only when required basis is unreadable.",
+  "expectedOutput": "Temporary table grouped by Target Module and Unit: Unit source link, Lens ID/link, REQUIRED checkpoint phases or TRIGGERED strength, and any broken/ambiguous declaration. State basis, coverage and unreadable sources. Do not claim completeness for unread files. Nothing is saved unless separately requested.",
   "permissionMode": "read-only-planning",
   "keyReminders": [
-    "Unit owners are normative; the map is projection only.",
-    "Compare exact attachment membership and strength, not counts alone.",
-    "Validate every projected Lens identity against current Core/SDS registries.",
-    "No repair, rebuild, file mutation, commit or push is authorized by this check command."
+    "Unit Lens Attachments are the source; this command creates only a temporary audit view.",
+    "For a full-scope request, enumerate every active Core/SDS Target Module from registries, account for every Unit Lens Attachments block, then recheck each output row against its source link before answering.",
+    "Keep REQUIRED and TRIGGERED distinct and do not turn registry discovery into an attachment.",
+    "Include source links for every row and identify unreadable or ambiguous sources.",
+    "No repair, file mutation, commit or push is authorized by this read-only command."
   ],
-  "userTarget": "<current repository/snapshot or bounded map/owner scope>",
+  "userTarget": "<current repository/snapshot or bounded Target Module, Unit or Lens scope>",
   "palette": true,
   "refinements": [],
   "includes": [
@@ -38,20 +40,20 @@ Status: active project command definition; semantic behavior remains in linked o
   ],
   "ownerRefs": [
     {
-      "responsibilityId": "SDS.LENS-ATTACHMENT-PROJECTION-INTEGRITY",
-      "path": "planning/documentation/idtspe-methodology/active/profiles/sds/registries/LENS-ATTACHMENT-MAP-INTEGRITY.md",
-      "anchor": "sds-lens-attachment-projection-integrity",
-      "why": "Owns the exact Unit-owner-to-map parity algorithm, result contract and recheck conditions.",
+      "responsibilityId": "TARGET-MODULE.META-MODEL",
+      "path": "planning/documentation/idtspe-methodology/active/idtspe-core/target-modules/TARGET-MODULE-MODEL.md",
+      "anchor": "target-module-meta-model",
+      "why": "Defines Unit-local and rare Target-wide Lens Attachments.",
       "role": "PRIMARY_OWNER",
       "readMode": "REQUIRED"
     },
     {
-      "responsibilityId": "SDS.LENS-ATTACHMENT-MAP",
-      "path": "planning/documentation/idtspe-methodology/active/profiles/sds/registries/LENS-ATTACHMENT-MAP.md",
-      "anchor": "sds-lens-attachment-map",
-      "why": "The projection being checked; never used as normative attachment authority.",
+      "responsibilityId": "SDS.LENS-DISCOVERY",
+      "path": "planning/documentation/idtspe-methodology/active/profiles/sds/registries/LENS-REGISTRY.md",
+      "anchor": "sds-lens-discovery",
+      "why": "Routes SDS Lens identity and applicability checks.",
       "role": "REGISTRY",
-      "readMode": "REQUIRED"
+      "readMode": "ON_DEMAND"
     }
   ]
 }

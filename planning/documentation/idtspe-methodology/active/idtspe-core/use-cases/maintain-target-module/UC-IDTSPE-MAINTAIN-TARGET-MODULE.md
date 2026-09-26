@@ -85,21 +85,9 @@ Material alternatives may use Planning Branches.
 
 ---
 
-## Pre-change Projection Impact Check
+## Pre-change Relation Review
 
-Before materially changing a Target Module, its Module-defined Unit inventory, Unit identities, Lens Attachments, registry identity, owner anchors, or cross-owner dependency semantics:
-
-```text
-consult the active Target Module / Lens Dependency Map
-  → declared semantic coupling / reverse-impact index
-
-consult applicable active-profile Unit→Lens attachment projection(s)
-  → predictable Unit↔Lens attachment surfaces only
-
-then follow projected edges/rows to normative Target Module / Unit / Lens / dependency owners
-```
-
-These maps are impact/discovery projections, not authority. An attachment projection is not an exhaustive Lens-applicability graph; unexpected/context-emergent Lens needs still come from active Lens registry discovery and concrete applicability checks.
+Before a material Target Module, Unit, Lens attachment or owner-dependency change, inspect the affected current owner declarations and relevant registries. A read-only command may assemble a temporary attachment or dependency table for a bounded audit, with source links and stated coverage. There is no standing attachment or dependency map to consult or update. Registry discovery remains necessary for unexpected/context-emergent Lens applicability.
 
 ## Process
 
@@ -121,7 +109,7 @@ These maps are impact/discovery projections, not authority. An attachment projec
 15. define Source Contract archetypes; runtime Sources remain concrete accepted Source Subjects/bindings
 16. identify reusable theory/reference knowledge and place/reference it at Target Module, Unit Definition, Unit Resolution Slot or Lens level according to its real consumer
 17. keep useful references/provenance and add consumer-specific interpretation when raw theory is too broad
-18. define a visible `Lens Attachments` block on every Module-defined Unit: always show `Core Lens Pack: INHERITED`; add predictable relationships on the smallest natural Unit as REQUIRED + mandatory checkpoint phase(s) or TRIGGERED with no copied condition logic; use rare Target-wide attachment only for a genuinely Target-wide Analysis Surface; consult the applicable active-profile attachment projection for current predictable relationships and follow it back to normative Unit/Lens owners; rely on registry discovery for unexpected/context-emergent Lens needs
+18. define a visible `Lens Attachments` block on every Module-defined Unit: always show `Core Lens Pack: INHERITED`; add predictable relationships on the smallest natural Unit as REQUIRED + mandatory checkpoint phase(s) or TRIGGERED with no copied condition logic; use rare Target-wide attachment only for a genuinely Target-wide Analysis Surface; inspect current concrete Unit/Lens owners for predictable relationships; an on-demand attachment audit may help with a wider scope; rely on registry discovery for unexpected/context-emergent Lens needs
 19. define recurring Q/R/P discovery hints only when target-specific
 20. define material selection surfaces; use ordinary Core Decision semantics and apply the linked retention contract to any separate record
 21. define semantic output/projection schema and Target Step Result composition when useful
@@ -255,15 +243,9 @@ current repo workflow/template diverges from module contract
 commands route around the semantic entry point
 ```
 
-## Semantic Dependency Projection Handoff
+## Dependency And Attachment Review
 
-Consult the active [Target Module / Lens Dependency Map](../../../navigation/TARGET-MODULE-LENS-DEPENDENCY-MAP.md#idtspe-tm-lens-dependency-map) before material Target Module change when declared dependency impact matters. When the Target Module adds, removes or changes a material cross-owner `Semantic Owner Dependency`, update/recheck that map and its integrity contract after the normative declaration is accepted. The declaration in the Target Module remains normative; the map is projection only. Ordinary Markdown links remain navigation and do not create dependency edges. Merely consulting the map for impact discovery does not require rewriting it.
-
-## Lens Attachment Projection Handoff
-
-When the active profile provides a Unit→Lens attachment projection, consult it before material Target Module/Unit change to identify current **predictable** Unit↔Lens relationships and affected Lens surfaces. Discover the projection through active-profile registry routing rather than hard-coding one profile path. Follow relevant rows to the concrete Unit `Lens Attachments` blocks and Lens owners.
-
-After an accepted change, update/recheck the applicable attachment projection and its integrity owner when projection inputs can have changed, including Module-defined Unit inventory/identity, Unit-local or rare Target-wide Lens Attachments, attachment strength/phase, Lens identity referenced by the module, or relevant registry identity. The Unit attachment declaration remains normative; the map remains projection only. Registry discovery remains required for unexpected/context-emergent Lens applicability.
+When a Target Module adds or changes a material cross-owner `Semantic Owner Dependency`, review affected inbound declarations in the current scope and revalidate their consumers. Ordinary Markdown links remain navigation only. When a Module-defined Unit or rare Target-wide `Lens Attachments` block changes, inspect the concrete Unit and Lens owners and affected consumers. Use a temporary on-demand audit table when a wider view is useful; no standing dependency or attachment map requires maintenance. Registry discovery remains necessary for unexpected Lens applicability.
 
 ## Artifact Placement Integration
 

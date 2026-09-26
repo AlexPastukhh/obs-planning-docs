@@ -174,7 +174,7 @@ test('helper impact is a read-only repository tool and never an added prerequisi
   assert.equal(definitions.some((d)=>(d.includes||[]).includes('planning/commands/check-helper-impact.command.md')),false);
 });
 
-test('Lens attachment map integrity check is a read-only Methodology Integrity tool',()=>{
+test('attachment audit command builds an on-demand view without a stored map',()=>{
   const definitions=require('../seed/commands.json').items;
   const local=snapshot();
   local.catalogOrder=require('../catalog-order.json');
@@ -182,14 +182,14 @@ test('Lens attachment map integrity check is a read-only Methodology Integrity t
   const card=runtime.materializeSnapshot(local).commandEntries.find((item)=>item.id==='sds.lens_attachment_map.check');
   assert.ok(card);
   assert.equal(card.commandCategory,'TOOL');
-  assert.equal(card.presentationGroup.id,'tools.methodology-integrity');
+  assert.equal(card.presentationGroup.id,'tools.methodology-audits');
   assert.equal(card.definition.permissionMode,'read-only-planning');
-  assert.equal(card.definition.ownerRefs[0].responsibilityId,'SDS.LENS-ATTACHMENT-PROJECTION-INTEGRITY');
-  assert.match(card.adaptiveBody,/sds-lens-attachment-projection-integrity/);
-  assert.match(card.adaptiveBody,/LENS-ATTACHMENT-MAP/);
+  assert.equal(card.definition.ownerRefs[0].responsibilityId,'TARGET-MODULE.META-MODEL');
+  assert.match(card.adaptiveBody,/target-module-meta-model/);
+  assert.match(card.adaptiveBody,/temporary audit view/);
 });
 
-test('TM/Lens dependency map integrity check is a read-only Methodology Integrity tool',()=>{
+test('dependency audit command builds an on-demand view without a stored map',()=>{
   const definitions=require('../seed/commands.json').items;
   const local=snapshot();
   local.catalogOrder=require('../catalog-order.json');
@@ -197,11 +197,11 @@ test('TM/Lens dependency map integrity check is a read-only Methodology Integrit
   const card=runtime.materializeSnapshot(local).commandEntries.find((item)=>item.id==='idtspe.tm_lens_dependency_map.check');
   assert.ok(card);
   assert.equal(card.commandCategory,'TOOL');
-  assert.equal(card.presentationGroup.id,'tools.methodology-integrity');
+  assert.equal(card.presentationGroup.id,'tools.methodology-audits');
   assert.equal(card.definition.permissionMode,'read-only-planning');
-  assert.equal(card.definition.ownerRefs[0].responsibilityId,'IDTSPE.TM-LENS-DEPENDENCY-PROJECTION-INTEGRITY');
-  assert.match(card.adaptiveBody,/idtspe-tm-lens-dependency-projection-integrity/);
-  assert.match(card.adaptiveBody,/TARGET-MODULE-LENS-DEPENDENCY-MAP/);
+  assert.equal(card.definition.ownerRefs[0].responsibilityId,'DOC.SEMANTIC-OWNER-DEPENDENCY');
+  assert.match(card.adaptiveBody,/doc-semantic-owner-dependency/);
+  assert.match(card.adaptiveBody,/on-demand audit table/);
 });
 
 test('Favorite arrows persist personal order while preserving hidden slots and ordinary catalog membership',()=>{

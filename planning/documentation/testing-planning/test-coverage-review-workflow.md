@@ -1,6 +1,6 @@
 # Current Test Coverage / Evidence Review Workflow
 
-Status: active reusable workflow
+Status: historical compatibility workflow; current authority is in active IDTSPE Core/SDS owners
 Owner Use Case: `UC-PLAN-TEST-COVERAGE`
 
 ## Purpose

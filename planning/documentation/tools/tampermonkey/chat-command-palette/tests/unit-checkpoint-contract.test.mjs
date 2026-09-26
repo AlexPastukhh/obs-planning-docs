@@ -3,6 +3,15 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
 import {createRequire} from 'node:module';
+/*
+ * METHODOLOGY REGRESSION NOTE
+ *
+ * These assertions protect declared Unit/checkpoint contracts. On failure, inspect the canonical
+ * owner and decide whether the semantic change was intentional before editing the test. Do not
+ * preserve an obsolete assertion merely because it is encoded here, and do not weaken the guard
+ * merely to make it pass. See TESTING.METHODOLOGY-INTEGRITY.
+ */
+
 const require=createRequire(import.meta.url);
 
 const moduleRoot=path.resolve(import.meta.dirname,'..');

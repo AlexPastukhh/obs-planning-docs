@@ -99,3 +99,34 @@ test('Concept-first Application Definition inventory agrees across active models
  assert.match(lensText,/Unit attachment remains owned by the relevant Target Module Unit definitions/);
  assert.doesNotMatch(lensText,/RU-APP-05, RU-APP-02, RU-APP-03, RU-APP-04, RU-APP-07/,'Lens must not own the concrete Application Unit inventory');
 });
+
+test('Study Tab Launcher live SDS example stays aligned with current realization and Practical Evidence contracts',()=>{
+ const base=snapshot+'project/planning/documentation/';
+ const practicalModel=read(active+'profiles/sds/target-modules/TM-PRACTICAL-TEST.md');
+ const inventory=practicalModel.slice(practicalModel.indexOf('| Result Unit | Meaning |'),practicalModel.indexOf('### Result Unit Applicability'));
+ const expectedHeadings=[...inventory.matchAll(/^\| `RU-PTEST-(\d+)` \| ([^|]+?) \|$/gm)].map(([,id,meaning])=>`RU-PTEST-${id} — ${meaning.split(' — ')[0].trim()}`);
+ const campaignBlock=(practicalModel.match(/When repeated variants\/environments form a material practical campaign[\s\S]*?```text\r?\n([\s\S]*?)```/)||[])[1]||'';
+ const campaignFields=campaignBlock.split(/\r?\n/).map(s=>s.trim()).filter(Boolean);
+ assert.ok(campaignFields.length>=4,'TM-PRACTICAL-TEST should declare the material campaign boundary fields');
+ for(const file of ['practical-tests/installed-browser-vscode-handoff.md','practical-tests/project-succession-multi-window.md']){
+  const text=read(base+file);
+  const headings=[...text.matchAll(/^## (RU-PTEST-\d+ — .+)$/gm)].map(m=>m[1]);
+  assert.deepEqual(headings,expectedHeadings,file);
+  assert.match(text,/^### Campaign boundary$/m,file);
+  for(const field of campaignFields){
+   const escaped=field.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
+   assert.match(text,new RegExp(`\\*\\*${escaped}:\\*\\*`,'i'),`${file}: missing campaign field ${field}`);
+  }
+ }
+ const evolution=read(base+'evolution/unrealized/close-superseded-project-windows.md');
+ assert.match(evolution,/TM-CODE-REALIZATION\.md/);
+ assert.doesNotMatch(evolution,/Literal endpoint\/class\/config\/test topology remains Core Exact territory|Literal test cases\/files belong to Core Exact/);
+ const projectReadme=read(base+'README.md');
+ assert.match(projectReadme,/Latest retained historical SDS methodology conformance review/);
+ assert.doesNotMatch(projectReadme,/\[Current SDS methodology conformance review\]/);
+ assert.doesNotMatch(projectReadme,/live as `DEC-\*` blocks in their natural Feature, Domain, Slice or Shared owners/);
+ assert.match(projectReadme,/separate Decision record is retained only when the Core Carry-Forward/);
+ const exampleReadme=read(snapshot+'README.md');
+ assert.match(exampleReadme,/TM-CODE-REALIZATION/);
+ assert.match(exampleReadme,/TM-CODE-REALIZATION[\s\S]{0,500}source\/test code[\s\S]{0,200}Code Realization Target/i);
+});

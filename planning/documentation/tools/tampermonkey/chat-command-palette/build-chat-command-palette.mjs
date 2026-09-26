@@ -25,6 +25,8 @@ const check=process.argv.includes('--check');
 const codec=require('./src/command-definition-codec.js');
 const catalog=require('./src/command-catalog.js');
 const semantic=require('./src/semantic-projections.js');
+function normalizeLf(text){return String(text).replace(/\r\n?/g,'\n');}
+
 const pkg=JSON.parse(fs.readFileSync(path.join(moduleRoot,'package.json'),'utf8'));
 const sourceFiles=['src/command-definition-codec.js','src/command-catalog.js','src/command-body.js','src/semantic-projections.js','src/helper-library-codec.js','src/chat-recovery.js','src/github-contents-client.js','src/repository-command-service.js','src/repository-helper-library-service.js','src/repository-catalog-service.js','src/planning-helper-state.js','src/composer-insertion.js','src/methodology-navigation.js','src/command-side-effects.js','src/planning-helper-ui.js','src/planning-helper-runtime.js'];
 
@@ -238,7 +240,7 @@ function readCanonicalSemanticComponents(commands,useCases){
 function readCanonicalScenarios(){
   const items=[],seen=new Set();
   for(const scenarioSourcePath of scenarioSourcePaths){
-    const text=fs.readFileSync(path.join(repoRoot,scenarioSourcePath),'utf8').replace(/\r\n?/g,'\n'),presentation=new Map();
+    const text=normalizeLf(fs.readFileSync(path.join(repoRoot,scenarioSourcePath),'utf8')),presentation=new Map();
     for(const section of text.matchAll(/^##\s+(?:\d+\.\s+)?`(SCN-[A-Z0-9-]+)`[^\n]*\n([\s\S]*?)(?=^##\s+(?:\d+\.\s+)?`SCN-|(?![\s\S]))/gm)){
       const scenarioId=section[1],sectionText=section[0],firstStep=sectionText.search(/^### Step /m),marker=sectionText.search(/^\[(?:METHODOLOGY_SCENARIO|WORKING_SCENARIO)\]/m),introEnd=firstStep>=0?firstStep:(marker>=0?marker:sectionText.length),canonicalIntro=sectionText.slice(0,introEnd).trim(),steps=new Map();
       for(const step of sectionText.matchAll(/^### Step `([^`]+)`[^\n]*\n[\s\S]*?(?=^### Step |^\[(?:METHODOLOGY_SCENARIO|WORKING_SCENARIO)\]|(?![\s\S]))/gm))steps.set(step[1],step[0].trim());
@@ -259,7 +261,7 @@ function build(){
   ensureSeed(semanticComponentSeedPath,seedText('semantic-component-seed',semanticComponents));
   ensureSeed(scenarioSeedPath,seedText('scenario-seed',scenarios));
   const header=`// ==UserScript==\n// @name         Reusable Chat Planning Helper\n// @namespace    https://github.com/AlexPastukhh/obs/reusable-docs\n// @version      ${pkg.version}-repository-command-registry\n// @description  RAM-first OBS Planning Helper with semantic Commands, canonical Scenarios, prompts and explicit repository actions.\n// @author       Reusable docs layer\n// @match        https://chatgpt.com/*\n// @match        https://chat.openai.com/*\n// @run-at       document-idle\n// @grant        GM_getValue\n// @grant        GM_setValue\n// @grant        GM_xmlhttpRequest\n// @connect      api.github.com\n// ==/UserScript==\n\n// GENERATED FILE — DO NOT EDIT MANUALLY.\n// Runtime source: planning/documentation/tools/tampermonkey/chat-command-palette/src/**\n// GitHub command authority: planning/commands/*.command.md\n// GitHub Use-Case projection root: planning/documentation/use-case-registry-map.md -> mapped current scoped methodology Use-Case registries only.\n// seed/use-cases.json is the build-verified GitHub-backed Use-Case projection used for explicit Hard Reload.\n// GitHub UI-order source: planning/documentation/tools/tampermonkey/chat-command-palette/catalog-order.json\n// Local snapshot is the working cache; current command/semantic/scenario catalogs are not embedded in this userscript.\n// Build: node planning/documentation/tools/tampermonkey/chat-command-palette/build-chat-command-palette.mjs\n\n`;
-  const modules=sourceFiles.map((relative)=>fs.readFileSync(path.join(moduleRoot,relative),'utf8').trimEnd()).join('\n\n');
+  const modules=sourceFiles.map((relative)=>normalizeLf(fs.readFileSync(path.join(moduleRoot,relative),'utf8')).trimEnd()).join('\n\n');
   const bootstrap=`\n\n(function(){\n  'use strict';\n  const api=globalThis.ObsPlanningHelper;if(!api||typeof api.startPlanningHelper!=='function')throw new Error('OBS Planning Helper runtime was not built correctly.');api.startPlanningHelper().catch((error)=>console.error('[OBS Planning Helper startup]',error));\n})();\n`;
   return header+modules+bootstrap;
 }

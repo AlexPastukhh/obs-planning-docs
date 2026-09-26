@@ -8,7 +8,6 @@ This README routes to current canonical owners; it does not duplicate their sema
 ## Generic IDTSPE Core
 
 - [`navigation/METHODOLOGY-RESPONSIBILITY-MAP.md`](navigation/METHODOLOGY-RESPONSIBILITY-MAP.md) — cross-Core/profile responsibility → current canonical owner routing; the destination owner remains semantic authority.
-- [`navigation/TARGET-MODULE-LENS-DEPENDENCY-MAP.md`](navigation/TARGET-MODULE-LENS-DEPENDENCY-MAP.md#idtspe-tm-lens-dependency-map) — projection of current declared Semantic Owner Dependencies for every active Target Module/Lens; ordinary Markdown links are not dependency edges.
 - [`idtspe-core/README.md`](idtspe-core/README.md) — generic IDTSPE Core bootstrap/navigation.
 - [`idtspe-core/runtime/IDTSPE-RUNTIME-COMPOSITION-CONTRACT.md`](idtspe-core/runtime/IDTSPE-RUNTIME-COMPOSITION-CONTRACT.md) — generic runtime composition/completeness envelope for bounded IDTSPE work.
 - [`idtspe-core/use-cases/USE-CASE-REGISTRY.md`](idtspe-core/use-cases/USE-CASE-REGISTRY.md) — IDTSPE methodology-use Use Cases.

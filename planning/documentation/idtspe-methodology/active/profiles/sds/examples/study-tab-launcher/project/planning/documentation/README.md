@@ -102,13 +102,16 @@ implementation requirements.
 - [SDS documentation audit](sds-documentation-audit.md) records conformance
   review and repair history against methodology snapshot `(94)`; it is working
   evidence, not current methodology status or application semantic authority.
-- [Current SDS methodology conformance review](sds-methodology-conformance-review.md)
-  records Findings and repair dispositions against snapshot `(100)`.
+- [Latest retained historical SDS methodology conformance review](sds-methodology-conformance-review.md)
+  records Findings and repair dispositions against snapshot `(100)`; it is retained
+  audit evidence, not a current methodology-status certificate.
 
-Accepted design selections formerly held in standalone provenance drafts now
-live as `DEC-*` blocks in their natural Feature, Domain, Slice or Shared owners
-and are projected by Carry-Forward. The retired Slice Strategy artifact is not
-part of the current SDS document set.
+Accepted boundary meaning formerly held in standalone provenance drafts is now
+integrated into ordinary content of the natural Feature, Domain, Slice or Shared
+owners. A separate Decision record is retained only when the Core Carry-Forward
+contract admits it; this example currently retains the prepared-handoff Decision
+in PRS while its related Problem remains open. The retired Slice Strategy artifact
+is not part of the current SDS document set.
 
 ## Representation boundary
 

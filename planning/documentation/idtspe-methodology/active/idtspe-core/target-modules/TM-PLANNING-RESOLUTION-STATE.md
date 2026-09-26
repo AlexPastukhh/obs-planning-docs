@@ -2,7 +2,7 @@
 # TM-PLANNING-RESOLUTION-STATE — Planning Resolution State
 
 > Semantic Owner Dependencies
-> - `CONTEXTUALIZES` [Decision record retention](../resolution/proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md#resolution-decision-retention) — `RESOLUTION.PROPOSAL-DECISION-LIFECYCLE`.
+> - `CONTEXTUALIZES` [Decision record retention](../resolution/proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md#resolution-proposal-decision-lifecycle) — `RESOLUTION.PROPOSAL-DECISION-LIFECYCLE`.
 > - `CONTEXTUALIZES` [Resolution Carry-Forward contract](../resolution/RESOLUTION-CARRY-FORWARD-CONTRACT.md#resolution-carry-forward) — `RESOLUTION.CARRY-FORWARD`.
 
 Entry Point: `tm.planning.resolution.state`
@@ -22,7 +22,7 @@ The result keeps open/deferred Proposals together with their related Q/R/P, and 
 > Responsibility: `TARGET-MODULE.META-MODEL`
 > Owner: [Target Module Meta-Model](TARGET-MODULE-MODEL.md#target-module-meta-model)
 
-This Target Module owns the **coordination/result shape** of one bounded Planning Resolution State (PRS). Its retained Decision items represent existing Core Decision State under the [Decision record retention contract](../resolution/proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md#resolution-decision-retention); this module does not define a second Decision type, field semantics or selection lifecycle. Proposal and Decision selection remains with [Proposal and Decision Lifecycle](../resolution/proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md#resolution-proposal-decision-lifecycle); Question/Risk/Problem semantics remain with [Q/R/P Lifecycle](../resolution/qrp/QRP-LIFECYCLE-AND-REVIEW.md#resolution-qrp-lifecycle). Natural Target/Requirement owners retain accepted content. PRS is a Target result, not another Core State kind, semantic owner for every referenced item, mandatory global backlog, or phase workflow.
+This Target Module owns the **coordination/result shape** of one bounded Planning Resolution State (PRS). Its retained Decision items represent existing Core Decision State under the [Decision record retention contract](../resolution/proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md#resolution-proposal-decision-lifecycle); this module does not define a second Decision type, field semantics or selection lifecycle. Proposal and Decision selection remains with [Proposal and Decision Lifecycle](../resolution/proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md#resolution-proposal-decision-lifecycle); Question/Risk/Problem semantics remain with [Q/R/P Lifecycle](../resolution/qrp/QRP-LIFECYCLE-AND-REVIEW.md#resolution-qrp-lifecycle). Natural Target/Requirement owners retain accepted content. PRS is a Target result, not another Core State kind, semantic owner for every referenced item, mandatory global backlog, or phase workflow.
 
 Form/reuse a PRS when the [Carry-Forward qualification contract](../resolution/RESOLUTION-CARRY-FORWARD-CONTRACT.md#resolution-carry-forward-qualification) says surviving resolution state needs one coherent bounded coordination result. Its absence does not imply the underlying state is absent. The representation may be transient Work Context, a local working file, or a persisted checkpoint; these are representations of the same semantic result, not separate authorities.
 

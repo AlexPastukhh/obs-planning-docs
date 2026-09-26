@@ -3,6 +3,15 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
 import {createRequire} from 'node:module';
+/*
+ * METHODOLOGY REGRESSION NOTE
+ *
+ * Command-composition failures may expose either a broken typed command contract or an intentional
+ * methodology change that has not been propagated. Verify canonical command/owner declarations
+ * before changing assertions. Tests guard declared composition; they do not become its authority.
+ * See TESTING.METHODOLOGY-INTEGRITY for methodology-facing hard-integrity rules.
+ */
+
 const require=createRequire(import.meta.url);
 const catalog=require('../src/command-catalog.js');
 const bodyApi=require('../src/command-body.js');

@@ -46,15 +46,15 @@ test('selecting a command updates only selection/detail and does not rerender th
 test('compact command cards expose the same ordinary Run path as the detail pane',async()=>{const fs=await import('node:fs');const source=fs.readFileSync(new URL('../src/planning-helper-ui.js',import.meta.url),'utf8');const start=source.indexOf('function commandCard('),end=source.indexOf('function renderCommandDetail(',start),cardSource=source.slice(start,end);assert.match(cardSource,/button\('Run','run-action'/);assert.match(cardSource,/insertBody\(entry\.adaptiveBody\|\|entry\.text/);assert.match(cardSource,/commandExecutionId\(entry\)/)});
 
 
-test('sidebar command workspace exposes command contract from includes and structured ownerRefs',async()=>{const fs=await import('node:fs');const source=fs.readFileSync(new URL('../src/planning-helper-ui.js',import.meta.url),'utf8');assert.match(source,/command-sidebar/);assert.match(source,/Categories/);assert.match(source,/Groups/);assert.match(source,/Effective command DAG/);assert.match(source,/Semantic owner/);assert.match(source,/definition\?\.includes/);assert.match(source,/definition\?\.ownerRefs/);assert.match(source,/responsibilityId/);assert.match(source,/readMode/);assert.match(source,/ref\.why/);assert.match(source,/Direct component-specific command/);});
+test('sidebar command workspace exposes command contract from includes and structured ownerRefs',async()=>{const fs=await import('node:fs');const source=fs.readFileSync(new URL('../src/planning-helper-ui.js',import.meta.url),'utf8');assert.match(source,/command-sidebar/);assert.match(source,/Categories/);assert.match(source,/Groups/);assert.match(source,/Effective command DAG/);assert.match(source,/Direct command owners/);assert.match(source,/definition\?\.includes/);assert.match(source,/definition\?\.ownerRefs/);assert.match(source,/responsibilityId/);assert.match(source,/readMode/);assert.match(source,/ref\.why/);assert.match(source,/Direct component-specific command/);});
 
-test('sidebar shows the component owner even without a direct command and separates command references',async()=>{
+test('sidebar shows only direct command owners when a definition exists and a component owner otherwise',async()=>{
   const fs=await import('node:fs');const source=fs.readFileSync(new URL('../src/planning-helper-ui.js',import.meta.url),'utf8');
-  assert.match(source,/semanticOwner=entry\?\.semanticOwnerRef\|\|null/);
+  assert.match(source,/semanticOwner=definition\?null:/);
   assert.match(source,/id\.textContent=semanticOwner\.semanticId/);
   assert.match(source,/semanticOwner\.path.*semanticOwner\.anchor/);
-  assert.match(source,/Supporting command references/);
-  assert.match(source,/else if\(!semanticOwner\)/);
+  assert.match(source,/Direct command owners/);
+  assert.match(source,/sources=definition\?\[\]:/);
 });
 
 test('prompt ordering exposes direct numeric position and preserves viewport on arrow or position moves',async()=>{const fs=await import('node:fs');const source=fs.readFileSync(new URL('../src/planning-helper-ui.js',import.meta.url),'utf8');assert.match(source,/position-input/);assert.match(source,/№ позиции/);assert.match(source,/onMoveCatalogItemToPosition/);assert.match(source,/captureListViewport/);assert.match(source,/restoreListViewport/);assert.match(source,/scroller\.scrollTop=viewport\.scrollTop/);assert.match(source,/scrollIntoView\(\{block:'nearest'\}\)/);assert.match(source,/selectedPromptId=entry\.id/);});

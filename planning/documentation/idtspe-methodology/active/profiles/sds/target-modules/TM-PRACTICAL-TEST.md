@@ -99,6 +99,17 @@ establish what real implemented subject/property must be accepted or learned fro
 
 Existing telemetry/logging is Evidence Source. This Target does not own permanent observability architecture; missing observability becomes a Finding Candidate for the natural Slice/Shared/implementation owner or SDS Code Realization when warranted.
 
+When repeated variants/environments form a material practical campaign, make the campaign boundary explicit and proportional:
+
+```text
+representative variants / environments
+minimum sufficient Evidence set
+stop / pass criterion
+conditions that require expanding the campaign
+```
+
+A planned campaign boundary is not executed Evidence.
+
 ## Unit Definition Conformance
 
 This module specializes the Core [Target Module Model](../../../idtspe-core/target-modules/TARGET-MODULE-MODEL.md) and [Unit / Target Step Result Model](../../../idtspe-core/runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md). The Core owners define generic Unit lifecycle, complete-inventory/disposition and Proposal/Core-State semantics; this module defines only its SDS-specific Unit responsibilities, local materiality, production guidance, validators and handoffs below.

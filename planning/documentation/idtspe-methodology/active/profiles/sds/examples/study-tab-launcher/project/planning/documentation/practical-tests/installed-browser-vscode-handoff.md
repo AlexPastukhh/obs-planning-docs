@@ -2,7 +2,7 @@
 
 Status: planned Practical Test owner; execution evidence is not yet recorded.
 
-## RU-PTEST-01 — Practical Test Target / Property
+## RU-PTEST-01 — Evidence Intent / Real Subject
 
 **Methodology:** [RU-PTEST-01 Unit Definition](../../../../../../target-modules/TM-PRACTICAL-TEST.md#ru-ptest-01-processing-envelope), [Practical Test Result Contract](../../../../../../target-modules/TM-PRACTICAL-TEST.md#target-step-result-contract).
 
@@ -23,7 +23,7 @@ Properties to establish:
 - dirty-editor cancellation, existing-destination reuse and failures are
   visible and do not become false success.
 
-## RU-PTEST-02 — Practical Test Plan
+## RU-PTEST-02 — Observation / Data Collection Plan
 
 **Methodology:** [RU-PTEST-02 Unit Definition](../../../../../../target-modules/TM-PRACTICAL-TEST.md#ru-ptest-02-processing-envelope), [Practical Test Result Contract](../../../../../../target-modules/TM-PRACTICAL-TEST.md#target-step-result-contract).
 
@@ -43,7 +43,28 @@ retain screenshots/logs sufficient to relate observation to the exact build.
 5. Compare visible state/result with the current Feature and Scenario owners;
    record every mismatch as a Q/R/P in its natural owner.
 
-## RU-PTEST-03 — Result / Evidence
+### Campaign boundary
+
+This is a material repeated real-environment campaign. The plan is bounded as
+follows; these are planning criteria, not executed Evidence:
+
+- **Representative variants / environments:** the file, folder, ZIP,
+  adaptive-project and trusted-copy routes listed above across the recorded
+  installed browser/Tampermonkey/VS Code/Windows configuration, including the
+  adverse and recovery cases already named in this Unit.
+- **Minimum sufficient Evidence set:** at least one attributable observation for
+  every property in `RU-PTEST-01`, including one normal path and the material
+  adverse/recovery cases that can falsify that property.
+- **Stop / pass criterion:** stop with a passing interpretation only when every
+  required property has attributable real-system Evidence, no required adverse
+  case contradicts it, and any mismatch has been dispositioned rather than
+  ignored.
+- **Conditions that require expanding the campaign:** results differ materially by
+  route/window/environment, an observed failure is not explained by the current
+  owner model, or current Evidence is too sparse to distinguish host variance
+  from an application defect.
+
+## RU-PTEST-03 — Evidence Results / Interpretation
 
 **Methodology:** [RU-PTEST-03 Unit Definition](../../../../../../target-modules/TM-PRACTICAL-TEST.md#ru-ptest-03-processing-envelope), [Practical Test Result Contract](../../../../../../target-modules/TM-PRACTICAL-TEST.md#target-step-result-contract).
 

@@ -1,16 +1,21 @@
 # Testing Planning
 
-Status: active project-local/supporting proof-planning family; **not** SDS Target-family authority
+Status: historical compatibility / provenance area; **not** active methodology authority
 
-Purpose: provide project-local proof coordination/design guidance without transferring semantic authority from Feature, Scenario, Domain, Slice, Shared or other natural owners. Generic methodology proof evaluation is owned by the [Core Test-Proof Lens](../idtspe-methodology/active/idtspe-core/lenses/reusable/LENS-TEST-PROOF-EVIDENCE.md#lens-test-proof-evidence); literal test realization belongs to the applicable realization owner — under SDS, [Code Realization](../idtspe-methodology/active/profiles/sds/target-modules/TM-CODE-REALIZATION.md#tm-code-realization), otherwise a narrower active-profile owner when defined or Core [Exact Realization](../idtspe-methodology/active/idtspe-core/target-modules/TM-EXACT-REALIZATION.md#tm-exact-realization) as fallback; [Practical Test](../idtspe-methodology/active/profiles/sds/target-modules/TM-PRACTICAL-TEST.md#tm-practical-test) is used only when evidence requires the real implemented subject/environment.
+Purpose: preserve legacy project-local proof-planning workflows/templates and provenance after their useful reusable semantics were absorbed by the active Core Test-Proof / Testing Knowledge / Methodology Integrity contracts. Generic methodology proof evaluation is owned by the [Core Test-Proof Lens](../idtspe-methodology/active/idtspe-core/lenses/reusable/LENS-TEST-PROOF-EVIDENCE.md#lens-test-proof-evidence); literal test realization belongs to the applicable realization owner — under SDS, [Code Realization](../idtspe-methodology/active/profiles/sds/target-modules/TM-CODE-REALIZATION.md#tm-code-realization), otherwise a narrower active-profile owner when defined or Core [Exact Realization](../idtspe-methodology/active/idtspe-core/target-modules/TM-EXACT-REALIZATION.md#tm-exact-realization) as fallback; [Practical Test](../idtspe-methodology/active/profiles/sds/target-modules/TM-PRACTICAL-TEST.md#tm-practical-test) is used only when evidence requires the real implemented subject/environment.
 
-## Read Order
+## Current Route
 
-1. [Use-Case Registry](use-case-registry.md).
-2. [Testing Principles And Terminology](testing-planning-principles-and-terminology.md).
-3. [Responsibility Map](testing-planning-responsibility-map.md), then the applicable workflow/template linked there.
+Do not bootstrap or route current methodology work through this folder. Use:
 
-This supporting area may retain project-local Testing Strategy/Test Design coordination capabilities where independently useful. They are **not** baseline IDTSPE/SDS Targets. Current generic routing is natural-owner proof need → Core Test-Proof Lens → transient owner-local proof planning when non-trivial → applicable literal/test realization owner; under SDS that is `TM-CODE-REALIZATION`, while Core `TM-EXACT-REALIZATION` remains the generic fallback. Practical Test is a separate real-subject Evidence capability. Test layers are techniques/responsibility zones, not semantic owners.
+1. [Core Test-Proof Lens](../idtspe-methodology/active/idtspe-core/lenses/reusable/LENS-TEST-PROOF-EVIDENCE.md#lens-test-proof-evidence).
+2. [Testing Knowledge Basis](../idtspe-methodology/active/idtspe-core/knowledge-bases/testing/README.md#knowledge-testing-basis).
+3. [Methodology Integrity Testing Contract](../idtspe-methodology/active/idtspe-core/knowledge-bases/testing/METHODOLOGY-INTEGRITY-TESTING-CONTRACT.md#testing-methodology-integrity) for methodology/projection hard guards.
+4. Applicable Exact Realization / Practical Evidence owner for literal realization or real-subject Evidence.
+
+The files below remain compatibility/provenance material only. They do not own current Testing Strategy, Test Design, Coverage, Testing Plan or methodology-integrity semantics.
+
+Historical project-local Testing Strategy/Test Design material may still be useful as provenance or examples, but current routing is natural-owner proof need → Core Test-Proof Lens → transient owner-local proof planning when non-trivial → applicable literal/test realization owner; under SDS that is `TM-CODE-REALIZATION`, while Core `TM-EXACT-REALIZATION` remains the generic fallback. Practical Test is a separate real-subject Evidence capability. Test layers are techniques/responsibility zones, not semantic owners.
 
 ## Supporting Guidance
 
@@ -18,6 +23,6 @@ This supporting area may retain project-local Testing Strategy/Test Design coord
 - [E2E guidance](e2e-testing-guidance.md) — critical cross-layer actor-path proof.
 - [Test Object patterns](test-object-patterns.md) — Page/Component Object boundaries without hiding Scenario outcomes.
 
-## Testing Plan / Practical Acceptance
+## Historical Testing Plan / Practical Acceptance
 
-Use [`templates/TESTING-PLAN-TEMPLATE.md`](templates/TESTING-PLAN-TEMPLATE.md) as the lightweight project-local baseline. [`UC-PLAN-TEST-PLAN`](practical-testing-plan-workflow.md) owns the independently useful practical operated-plan result; it composes current Strategy/Design meaning and hands executed evidence to Coverage rather than replacing those UCs. Practical Acceptance is a planned operated proof route for properties/negative guarantees that are most credibly verified by human/AI/E2E operation.
+[`templates/TESTING-PLAN-TEMPLATE.md`](templates/TESTING-PLAN-TEMPLATE.md) and [`UC-PLAN-TEST-PLAN`](practical-testing-plan-workflow.md) are retained only as historical compatibility/provenance material. They do not own a current methodology result. For current practical operated proof, use the active Test-Proof / Practical Evidence route above.

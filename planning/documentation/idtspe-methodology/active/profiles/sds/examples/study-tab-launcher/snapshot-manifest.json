@@ -153,7 +153,7 @@
       "kind": "live",
       "file": "project/planning/documentation/evolution/unrealized/close-superseded-project-windows.md",
       "sourceSha256": "9b9ba052dd81c05286def961d2dccf7f698ba1421d1130fc026b804568faebf6",
-      "copiedSha256": "881d4f0f8f7a51b1217fc54c1d2ff8f4b471990625f1984b603e6a0be66a5cf4",
+      "copiedSha256": "a0cb37b987c4b5a1709455b25db47f0c7819ca7b8fd335419f84ecb0991f37cd",
       "linkRewrites": 0,
       "editorialRevisions": [
         {
@@ -167,6 +167,12 @@
           "reason": "Apply reviewed methodology consistency update: integrate succession Shared-boundary selection as ordinary future Unit rationale, retain its compatibility anchor and declare the existing Step proof-section address explicitly. Preserve accepted behavior, readiness and open proof gates.",
           "beforeSha256": "13718c68140507405afe548010185d61874051a95e3f6fc9bbf7dd89ae204830",
           "afterSha256": "881d4f0f8f7a51b1217fc54c1d2ff8f4b471990625f1984b603e6a0be66a5cf4"
+        },
+        {
+          "date": "2026-09-26",
+          "reason": "Refresh live Evolution Step realization routing so literal source/test code is owned by SDS TM-CODE-REALIZATION while broad/profile-neutral non-code exact artifacts remain Core Exact.",
+          "beforeSha256": "881d4f0f8f7a51b1217fc54c1d2ff8f4b471990625f1984b603e6a0be66a5cf4",
+          "afterSha256": "a0cb37b987c4b5a1709455b25db47f0c7819ca7b8fd335419f84ecb0991f37cd"
         }
       ]
     },
@@ -283,7 +289,7 @@
       "kind": "live",
       "file": "project/planning/documentation/practical-tests/installed-browser-vscode-handoff.md",
       "sourceSha256": "ffa282043f5c284a604ea9170a6e32481cc2de96b3ecc9fbad98b1d41af2d2da",
-      "copiedSha256": "4c0961065f67e5f817c256a2744821eda0fd7b11a56540ba36f7e63e59321a50",
+      "copiedSha256": "e3b0345016a0cc7539506c774f324e8bc29fad6601f1a76ee4656f15a0a133c7",
       "linkRewrites": 0,
       "editorialRevisions": [
         {
@@ -291,6 +297,12 @@
           "reason": "Redirect methodology navigation to canonical same-repository owners and clarify historical provenance.",
           "beforeSha256": "ffa282043f5c284a604ea9170a6e32481cc2de96b3ecc9fbad98b1d41af2d2da",
           "afterSha256": "4c0961065f67e5f817c256a2744821eda0fd7b11a56540ba36f7e63e59321a50"
+        },
+        {
+          "date": "2026-09-26",
+          "reason": "Refresh Practical Test Unit display names and add the current material-campaign boundary: representative variants, minimum sufficient Evidence, stop/pass criterion and expansion triggers.",
+          "beforeSha256": "4c0961065f67e5f817c256a2744821eda0fd7b11a56540ba36f7e63e59321a50",
+          "afterSha256": "e3b0345016a0cc7539506c774f324e8bc29fad6601f1a76ee4656f15a0a133c7"
         }
       ]
     },
@@ -299,7 +311,7 @@
       "kind": "live",
       "file": "project/planning/documentation/practical-tests/project-succession-multi-window.md",
       "sourceSha256": "118c5e917b2509c2a90ad06064847cb75e0bd6e8c793050404e2fae7abaf3a19",
-      "copiedSha256": "09b0a2a1d7fc71f6fa25225c56c997bf11fbe423942e19078bf1af81e67dbe17",
+      "copiedSha256": "6e85342c5b67f82171e161a9f65c1424680ba5e816f74b1c33d449e6efa6f06a",
       "linkRewrites": 0,
       "editorialRevisions": [
         {
@@ -307,6 +319,12 @@
           "reason": "Redirect methodology navigation to canonical same-repository owners and clarify historical provenance.",
           "beforeSha256": "118c5e917b2509c2a90ad06064847cb75e0bd6e8c793050404e2fae7abaf3a19",
           "afterSha256": "09b0a2a1d7fc71f6fa25225c56c997bf11fbe423942e19078bf1af81e67dbe17"
+        },
+        {
+          "date": "2026-09-26",
+          "reason": "Refresh Practical Test Unit display names and add the current material-campaign boundary: representative variants, minimum sufficient Evidence, stop/pass criterion and expansion triggers.",
+          "beforeSha256": "09b0a2a1d7fc71f6fa25225c56c997bf11fbe423942e19078bf1af81e67dbe17",
+          "afterSha256": "6e85342c5b67f82171e161a9f65c1424680ba5e816f74b1c33d449e6efa6f06a"
         }
       ]
     },
@@ -315,7 +333,7 @@
       "kind": "live",
       "file": "project/planning/documentation/README.md",
       "sourceSha256": "46070cc29307b10730eb216f3936dbee5a0206088fbc35add5a75a74edfa121e",
-      "copiedSha256": "f9b759923f43913ae38c6966bce7b57dbff0c83d331c224d1a52ab8efd6ca4cc",
+      "copiedSha256": "cdb723358b56ab02b15d3cc04b6329d928425594813e44894327603563fbff34",
       "linkRewrites": 0,
       "editorialRevisions": [
         {
@@ -329,6 +347,12 @@
           "reason": "USER clarified PRS and RCF are one result; restore linked QRP membership and semantic presentation order.",
           "beforeSha256": "e0590834790a3bef2a7d91da151e6c52e3b5158621033577682d7c6a685474ad",
           "afterSha256": "f9b759923f43913ae38c6966bce7b57dbff0c83d331c224d1a52ab8efd6ca4cc"
+        },
+        {
+          "date": "2026-09-26",
+          "reason": "Refresh live example navigation to current Carry-Forward/PRS Decision retention semantics and mark the retained SDS conformance review as historical audit evidence.",
+          "beforeSha256": "f9b759923f43913ae38c6966bce7b57dbff0c83d331c224d1a52ab8efd6ca4cc",
+          "afterSha256": "cdb723358b56ab02b15d3cc04b6329d928425594813e44894327603563fbff34"
         }
       ]
     },

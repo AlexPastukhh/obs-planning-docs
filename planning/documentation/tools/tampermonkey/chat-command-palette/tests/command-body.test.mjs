@@ -4,7 +4,7 @@ test('adaptive body points through root Command Routing and command definition',
 test('full body requires fresh full route',()=>assert.match(body.buildCommandBody(d,body.MODE.FULL),/Full route reading is required/));
 
 
-test('generated UC invocation body routes through generic command and exact UC',()=>{const generic={file:'invoke-use-case.command.md',keyReminders:['Keep authority in UC owner.']};const uc={id:'UC-PLAN-TEST-PLAN',label:'Plan Practical Testing / Acceptance',description:'practical plan',sources:['planning/documentation/testing-planning/use-case-registry.md'],target:'<test target>'};const text=body.buildUseCaseInvocationBody(generic,uc,'adaptive');assert.match(text,/planning\/commands\/invoke-use-case\.command\.md/);assert.match(text,/UC-PLAN-TEST-PLAN/);assert.match(text,/testing-planning\/use-case-registry\.md/);});
+test('generated UC invocation body routes through generic command and exact current methodology UC',()=>{const generic={file:'invoke-use-case.command.md',keyReminders:['Keep authority in UC owner.']};const uc={id:'UC-IDTSPE-MAINTAIN-METHODOLOGY-INTEGRITY-TESTS',label:'Maintain Methodology Integrity Tests',description:'integrity guard maintenance',sources:['planning/documentation/idtspe-methodology/active/idtspe-core/use-cases/USE-CASE-REGISTRY.md'],target:'<integrity test target>'};const text=body.buildUseCaseInvocationBody(generic,uc,'adaptive');assert.match(text,/planning\/commands\/invoke-use-case\.command\.md/);assert.match(text,/UC-IDTSPE-MAINTAIN-METHODOLOGY-INTEGRITY-TESTS/);assert.match(text,/idtspe-core\/use-cases\/USE-CASE-REGISTRY\.md/);});
 
 
 test('command body derives included-by from the canonical include DAG without a second relation',()=>{

@@ -2,7 +2,7 @@
 
 Status: active reusable supporting guidance
 
-Use from `UC-PLAN-TEST-DESIGN` / `UC-PLAN-TEST-STRATEGY` when public server/application boundaries and persistence effects matter.
+Use from `LENS-TEST-PROOF-EVIDENCE` and the natural semantic/implementation owner when public server/application boundaries and persistence effects matter.
 
 ## Read / Query Behavior
 

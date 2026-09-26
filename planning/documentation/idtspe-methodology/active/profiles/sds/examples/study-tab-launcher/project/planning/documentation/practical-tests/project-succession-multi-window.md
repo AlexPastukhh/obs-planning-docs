@@ -3,7 +3,7 @@
 Status: planned Practical Test owner for the selected unrealized Evolution
 Step; execution is blocked on implementation, not on planning.
 
-## RU-PTEST-01 — Practical Test Target / Property
+## RU-PTEST-01 — Evidence Intent / Real Subject
 
 **Methodology:** [RU-PTEST-01 Unit Definition](../../../../../../target-modules/TM-PRACTICAL-TEST.md#ru-ptest-01-processing-envelope), [Practical Test Result Contract](../../../../../../target-modules/TM-PRACTICAL-TEST.md#target-step-result-contract).
 
@@ -20,7 +20,7 @@ confirmation and replacement-instance continuity; each target revalidates
 itself and retains VS Code dirty/save/cancel authority; the replacement stays
 open and every secondary result remains truthful.
 
-## RU-PTEST-02 — Practical Test Plan
+## RU-PTEST-02 — Observation / Data Collection Plan
 
 **Methodology:** [RU-PTEST-02 Unit Definition](../../../../../../target-modules/TM-PRACTICAL-TEST.md#ru-ptest-02-processing-envelope), [Practical Test Result Contract](../../../../../../target-modules/TM-PRACTICAL-TEST.md#target-step-result-contract).
 
@@ -41,7 +41,32 @@ Exercise at least:
 Retain screenshots, extension output and bounded coordinator evidence without
 recording tokens/secrets as durable documentation.
 
-## RU-PTEST-03 — Result / Evidence
+### Campaign boundary
+
+This planned installed multi-window observation is a material repeated
+campaign. The boundary is explicit even though execution remains blocked on
+implementation:
+
+- **Representative variants / environments:** the absent/empty/invalid
+  declaration, no-match, Open Only, successful close, dirty cancellation,
+  partial result, stale/wrong-root/remote/multi-root exclusion, replay/expiry,
+  replacement-window and Workspace Trust cases listed above in the real
+  installed multi-window environment.
+- **Minimum sufficient Evidence set:** attributable observation of every
+  transition-wide property in `RU-PTEST-01`, including at least one successful
+  close path plus the material no-op, exclusion, cancellation and partial-result
+  paths.
+- **Stop / pass criterion:** the campaign can support a passing interpretation
+  only when the final child remains truthful/open, all required authority and
+  exclusion properties are observed, every attempted predecessor result is
+  bounded/truthful, and no unresolved observation contradicts the Step proof
+  obligations.
+- **Conditions that require expanding the campaign:** behavior varies by window topology or
+  environment, callback/registration races remain unexplained, a previously
+  unrepresented authority boundary appears, or the collected Evidence cannot
+  distinguish application behavior from host/VS Code behavior.
+
+## RU-PTEST-03 — Evidence Results / Interpretation
 
 **Methodology:** [RU-PTEST-03 Unit Definition](../../../../../../target-modules/TM-PRACTICAL-TEST.md#ru-ptest-03-processing-envelope), [Practical Test Result Contract](../../../../../../target-modules/TM-PRACTICAL-TEST.md#target-step-result-contract).
 

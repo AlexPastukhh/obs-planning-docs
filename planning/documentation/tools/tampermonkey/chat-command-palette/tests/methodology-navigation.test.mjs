@@ -41,9 +41,9 @@ test('command navigation is derived from semantic identity and exposes UC/TM/Len
     {id:'LENSES',label:'Lenses'},
     {id:'TOOLS',label:'Tools / Repository'}
   ]);
-  assert.equal(navigation.methodologyPrimaryIds(entries,'USE_CASES').length,19);
-  assert.equal(navigation.methodologyPrimaryIds(entries,'TARGET_MODULES').length,33);
-  assert.equal(navigation.methodologyPrimaryIds(entries,'LENSES').length,28);
+  assert.equal(navigation.methodologyPrimaryIds(entries,'USE_CASES').length,useCases.length);
+  assert.equal(navigation.methodologyPrimaryIds(entries,'TARGET_MODULES').length,components.filter((item)=>item.kind==='TARGET_MODULE').length);
+  assert.equal(navigation.methodologyPrimaryIds(entries,'LENSES').length,components.filter((item)=>item.kind==='LENS').length);
 });
 
 test('every current semantic component projects to exactly one primary command card',()=>{
@@ -82,7 +82,11 @@ test('every visible command card has canonical Context, Result and Essence proje
 
 test('every command card belongs to one normal tab/group and All commands is only a cross-tab projection',()=>{
   const views=navigation.methodologyViewDefinitions(entries);
-  assert.deepEqual(views.map((view)=>[view.id,view.count]),[['GENERAL',23],['IDTSPE_PASS',37],['USE_CASES',19],['TARGET_MODULES',33],['LENSES',28],['TOOLS',7]]);
+  const countByView=new Map(views.map((view)=>[view.id,view.count]));
+  assert.equal(countByView.get('USE_CASES'),useCases.length);
+  assert.equal(countByView.get('TARGET_MODULES'),components.filter((item)=>item.kind==='TARGET_MODULE').length);
+  assert.equal(countByView.get('LENSES'),components.filter((item)=>item.kind==='LENS').length);
+  assert.equal([...countByView.values()].reduce((sum,count)=>sum+count,0),entries.length);
   const normalGroups=views.flatMap((view)=>navigation.buildMethodologyViewGroups(entries,view.id));
   assert.equal(normalGroups.reduce((sum,group)=>sum+group.entries.length,0),entries.length);
   const all=navigation.buildAllMethodologyGroups(entries);

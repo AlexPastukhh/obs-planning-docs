@@ -43,6 +43,7 @@ The Knowledge Basis is not a workflow authority and does not create Targets/Deci
 Use the linked bodies when their detail is material:
 
 - [Testing Planning Principles And Terminology](testing-planning-principles-and-terminology.md) — semantic-authority boundary, evidence states, layer responsibility, public-boundary proof, no-mutation proof, Escape/Refactor Risk, representative/paired proof, abstraction and isolation principles.
+- [Methodology Integrity Testing Contract](METHODOLOGY-INTEGRITY-TESTING-CONTRACT.md#testing-methodology-integrity) — authority-derived hard-integrity tests, typed reference identity/projection rules, positive/negative controls, diagnostics and anti-second-authority guards.
 - [API / Integration Test Guidance](api-integration-test-guidance.md) — public server/application proof, persistence/result-state assertions, failure/no-mutation, idempotency and boundary regression guards.
 - [E2E Testing Guidance](e2e-testing-guidance.md) — when cross-layer actor proof is worthwhile, semantic locators, environment/isolation, setup and final outcome checks.
 - [Test Object Patterns](test-object-patterns.md) — Page/Component Object abstraction boundaries and keeping the Scenario/proof story visible.
@@ -87,6 +88,7 @@ Current processed operational authority is:
 
 ```text
 LENS-TEST-PROOF-EVIDENCE
++ Methodology Integrity Testing Contract when methodology/projection guards are the proof subject
 + natural semantic/implementation owner
 + Core Exact Realization / Evidence semantics
 + TM-PRACTICAL-TEST only when real implemented subject/environment evidence is materially required

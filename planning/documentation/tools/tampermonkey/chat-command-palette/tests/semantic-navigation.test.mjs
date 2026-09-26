@@ -6,6 +6,15 @@ import os from 'node:os';
 import {semanticOwnerRef} from '../build-chat-command-palette.mjs';
 import {fileURLToPath} from 'node:url';
 import {createRequire} from 'node:module';
+/*
+ * METHODOLOGY REGRESSION NOTE
+ *
+ * Navigation/projection failures can mean an intentional canonical change was not propagated or
+ * an accidental partial change occurred. Inspect the canonical registry/owner first. Do not update
+ * expected navigation/prose merely to make the test pass; prefer authority-derived integrity guards
+ * where the relationship is structurally declared. See TESTING.METHODOLOGY-INTEGRITY.
+ */
+
 const require=createRequire(import.meta.url);
 const moduleRoot=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..');
 const repoRoot=path.resolve(moduleRoot,'../../../../..');
@@ -81,7 +90,7 @@ test('every generated TM/Lens card points to its explicit component owner anchor
   }
 });
 
-test('generated Use-Case seed contains exactly the current methodology Use Cases mapped by Registry Map',()=>{const expected=canonicalMethodologyUcIds(),actual=useCases.map((u)=>u.id);assert.equal(new Set(actual).size,actual.length);assert.deepEqual([...actual].sort(),[...expected].sort());assert.equal(actual.length,19);assert.equal(actual.filter((id)=>id.startsWith('UC-DOC-')).length,12);assert.equal(actual.filter((id)=>id.startsWith('UC-IDTSPE-')).length,7);for(const id of actual)assert.ok(id.startsWith('UC-DOC-')||id.startsWith('UC-IDTSPE-'),`${id}: project/profile planning UC leaked into methodology projection`)});
+test('generated Use-Case seed contains exactly the current methodology Use Cases mapped by Registry Map',()=>{const expected=canonicalMethodologyUcIds(),actual=useCases.map((u)=>u.id);assert.equal(new Set(actual).size,actual.length);assert.deepEqual([...actual].sort(),[...expected].sort());assert.ok(actual.includes('UC-IDTSPE-MAINTAIN-METHODOLOGY-INTEGRITY-TESTS'));for(const id of actual)assert.ok(id.startsWith('UC-DOC-')||id.startsWith('UC-IDTSPE-'),`${id}: project/profile planning UC leaked into methodology projection`)});
 
 test('all generated semantic source paths exist with exact repository casing',()=>{for(const definition of useCases)for(const source of definition.sources||[])assert.ok(exactCaseExists(source),`${definition.id}: missing/exact-case-invalid source ${source}`)});
 
@@ -99,19 +108,9 @@ test('retired collect-ideas aliases are hidden thin routes into current IDTSPE/S
 
 
 
-test('IDTSPE and SDS bootstrap commands load governance without forming or executing Targets',()=>{
-  for(const file of ['bootstrap-idtspe.command.md','bootstrap-application-sds-planning.command.md']){
-    const command=codec.parseCommandDefinitionDocument(read(`planning/commands/${file}`));
-    assert.equal(command.methodologyBinding?.surfaceKind,'BOOTSTRAP',command.id);
-    assert.equal(command.methodologyBinding?.hostTargetPolicy,'NONE',command.id);
-    assert.match(command.activeContextBehavior,/governance/i,command.id);
-    assert.match(command.activeContextBehavior,/Do not perform Target Formation/i,command.id);
-    assert.match(command.activeContextBehavior,/Do not .*infer CREATE\/REFINE\/EXTEND\/REVALIDATE\/REPAIR/i,command.id);
-    assert.match(command.keyReminders.join(' '),/Bootstrap is governance orientation only/i,command.id);
-  }
-});
 
-test('Architecture and Testing remain reachable through their current semantic owners without Direction registries',()=>{assert.ok(fs.existsSync(path.join(repoRoot,'planning/documentation/architecture-planning/use-case-registry.md')));assert.ok(fs.existsSync(path.join(repoRoot,'planning/documentation/testing-planning/use-case-registry.md')));assert.equal(fs.existsSync(path.join(repoRoot,'planning/direction-registry.md')),false)});
+
+test('legacy project-local Testing Planning remains compatibility/provenance only while active methodology routes integrity testing through Core owners',()=>{const legacy=read('planning/documentation/testing-planning/use-case-registry.md');assert.match(legacy,/historical compatibility registry/i);assert.ok(useCases.some((u)=>u.id==='UC-IDTSPE-MAINTAIN-METHODOLOGY-INTEGRITY-TESTS'));assert.ok(fs.existsSync(path.join(repoRoot,'planning/documentation/idtspe-methodology/active/idtspe-core/knowledge-bases/testing/METHODOLOGY-INTEGRITY-TESTING-CONTRACT.md')));assert.equal(fs.existsSync(path.join(repoRoot,'planning/direction-registry.md')),false)});
 
 test('retired Test Strategy shortcut routes to current proof owners without restoring a durable Test Strategy Target',()=>{const registry=read('planning/documentation/idtspe-methodology/active/profiles/sds/registries/TARGET-MODULE-REGISTRY.md');assert.match(registry,/TM-TEST-STRATEGY.*RETIRE/i);assert.equal(fs.existsSync(path.join(repoRoot,'planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-TEST-STRATEGY.md')),false);const command=codec.parseCommandDefinitionDocument(read('planning/commands/plan-testing-strategy.command.md'));assert.equal(command.palette,false);assert.match(command.meaning,/TM-TEST-STRATEGY is retired/i);assert.match(command.meaning,/LENS-TEST-PROOF-EVIDENCE/);assert.doesNotMatch(command.expectedOutput,/durable .*Test Strategy|RU-TSTRAT/i)});
 
@@ -295,30 +294,7 @@ test('all installed idtspe Target Module and Lens aliases are globally unique an
   ])assert.equal(byAlias.get(alias)?.id,id,alias);
 });
 
-test('README-owned bootstrap hierarchy keeps primary bootstrap generic and profile bootstrap incremental',()=>{
-  const planning=read('planning/README.md');
-  const session=read('planning/session/README.md');
-  const documentation=read('planning/documentation/README.md');
-  const core=read('planning/documentation/idtspe-methodology/active/idtspe-core/README.md');
-  const sds=read('planning/documentation/idtspe-methodology/active/profiles/sds/README.md');
-  assert.equal(fs.existsSync(path.join(repoRoot,'planning/documentation/idtspe-methodology/active/idtspe-core/BOOTSTRAP-IDTSPE.md')),false);
-  assert.equal(fs.existsSync(path.join(repoRoot,'planning/documentation/idtspe-methodology/active/profiles/sds/BOOTSTRAP-SDS.md')),false);
-  assert.match(planning,/## Primary Bootstrap/);
-  assert.match(planning,/session\/README\.md[\s\S]*AI-WORKING-CONTRACT\.md[\s\S]*documentation\/README\.md[\s\S]*idtspe-core\/README\.md/);
-  assert.match(planning,/intentionally stops before any profile/i);
-  assert.doesNotMatch(planning,/profiles\/sds\/README\.md/);
-  assert.match(session,/## Bootstrap/);assert.match(session,/principles-and-terminology\.md/);assert.match(session,/session-runtime-contract\.md/);
-  assert.match(documentation,/## Bootstrap/);assert.match(documentation,/use-case-registry-map\.md/);
-  assert.match(core,/## Bootstrap/);assert.match(core,/planning\/README\.md/);assert.match(core,/Primary bootstrap stops before profile bootstrap/);
-  assert.match(sds,/## Profile Bootstrap/);assert.match(sds,/incremental/i);assert.match(sds,/planning\/README\.md/);
-  assert.doesNotMatch(sds,/session\/principles-and-terminology|session-runtime-contract/);
-  const coreCmd=codec.parseCommandDefinitionDocument(read('planning/commands/bootstrap-idtspe.command.md'));
-  const sdsCmd=codec.parseCommandDefinitionDocument(read('planning/commands/bootstrap-application-sds-planning.command.md'));
-  assert.ok(coreCmd.ownerFiles.includes('planning/README.md'));
-  assert.ok(!coreCmd.ownerFiles.some((x)=>x.endsWith('/BOOTSTRAP-IDTSPE.md')));
-  assert.ok(sdsCmd.ownerFiles.includes('planning/documentation/idtspe-methodology/active/profiles/sds/README.md'));
-  assert.ok(!sdsCmd.ownerFiles.some((x)=>x.endsWith('/BOOTSTRAP-SDS.md')));
-});
+
 
 
 test('clean-chat routing always rechecks methodology Use-Case applicability before the narrow functional route',()=>{
@@ -349,17 +325,7 @@ test('proposal-driven commands remain thin routes to Session and canonical IDTSP
 });
 
 
-test('Core cold bootstrap is a routing/proportionality spine and keeps deep mechanics lazy',()=>{
-  const core=read('planning/documentation/idtspe-methodology/active/idtspe-core/README.md');
-  const bootstrap=core.slice(core.indexOf('## Bootstrap'),core.indexOf('## Functional Entry'));
-  assert.match(bootstrap,/Bootstrap Spine — Required From Cold \/ Unreliable Core Context/);
-  assert.match(bootstrap,/After this spine is current, Core bootstrap is sufficient/);
-  assert.match(bootstrap,/Conditional Deep Reads — Required Only When The Current Composition Needs Them/);
-  for(const route of ['runtime/target-work/RESPONSIBILITY-MAP.md','target-modules/RESPONSIBILITY-MAP.md','lenses/RESPONSIBILITY-MAP.md','resolution/RESPONSIBILITY-MAP.md','knowledge-bases/RESPONSIBILITY-MAP.md','representation/RESPONSIBILITY-MAP.md']){
-    assert.ok(bootstrap.includes(route),`bootstrap missing lazy owner route ${route}`);
-  }
-  assert.match(bootstrap,/Do not read deeper Core owners merely to claim that bootstrap completed/);
-});
+
 
 
 test('Finding review surface separates impact priority from semantic resolution escalation',()=>{

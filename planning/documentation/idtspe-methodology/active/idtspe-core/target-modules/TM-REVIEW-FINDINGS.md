@@ -8,7 +8,7 @@ Target family / archetype: `REVIEW_FINDINGS_ANALYSIS`
 > Semantic Owner Dependencies
 > - `EXTENDS` [Target Module Meta-Model](TARGET-MODULE-MODEL.md#target-module-meta-model) — `TARGET-MODULE.META-MODEL`
 > - `CONTEXTUALIZES` [Review Strategy and Coverage](../../ai-reviewability/REVIEW-STRATEGY-AND-COVERAGE-CONTRACT.md#review-strategy-coverage) — `REVIEW.STRATEGY-COVERAGE`
-> - `CONTEXTUALIZES` [AI Reviewability](../../ai-reviewability/AI-OUTPUT-REVIEWABILITY.md#review-priority) — `AI.REVIEWABILITY`
+> - `CONTEXTUALIZES` [AI Reviewability](../../ai-reviewability/AI-OUTPUT-REVIEWABILITY.md#ai-reviewability-peer-cross-cutting-concern) — `AI.REVIEWABILITY`
 > - `CONTEXTUALIZES` [Finding Disposition](../resolution/findings/FINDING-DISPOSITION.md#resolution-finding-disposition) — `RESOLUTION.FINDING-DISPOSITION`
 > - `CONTEXTUALIZES` [Proposal / Decision Lifecycle](../resolution/proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md#resolution-proposal-decision-lifecycle) — `RESOLUTION.PROPOSAL-DECISION-LIFECYCLE`
 
@@ -52,7 +52,7 @@ The single Module-defined Unit follows the [Target Work Unit contract](../runtim
 
 **Item Contract — observation.** Identify the affected semantic subject, specific contradiction/gap, authoritative source and observed Evidence references, and review cell/check that exposed it. Present the actual observation before its diagnosis; keep any candidate remedy out of the observation.
 
-**Item Contract — diagnosis.** Immediately after that item's observation, use [Core Finding Disposition](../resolution/findings/FINDING-DISPOSITION.md#resolution-finding-disposition) to resolve materiality, duplicate/previously represented status, smallest natural subject/owner, distinct `RE-0..RE-4` Resolution Escalation, the most-upstream affected owner, decision/revalidation consequence, and actual USER attention. Use [AI Reviewability](../../ai-reviewability/AI-OUTPUT-REVIEWABILITY.md#review-priority) for `Review Priority` (`Critical`/`High`/`Normal`/`Low`) when material. State uncertainty honestly; `RE-3` is an upstream revalidation exposure, not a selected downstream fix. Priority measures cost/blast radius; `RE-*` measures semantic resolution distance.
+**Item Contract — diagnosis.** Immediately after that item's observation, use [Core Finding Disposition](../resolution/findings/FINDING-DISPOSITION.md#resolution-finding-disposition) to resolve materiality, duplicate/previously represented status, smallest natural subject/owner, distinct `RE-0..RE-4` Resolution Escalation, the most-upstream affected owner, decision/revalidation consequence, and actual USER attention. Use [AI Reviewability](../../ai-reviewability/AI-OUTPUT-REVIEWABILITY.md#ai-reviewability-peer-cross-cutting-concern) for `Review Priority` (`Critical`/`High`/`Normal`/`Low`) when material. State uncertainty honestly; `RE-3` is an upstream revalidation exposure, not a selected downstream fix. Priority measures cost/blast radius; `RE-*` measures semantic resolution distance.
 
 **Result Content Contract.** A bounded evidence-backed Collection of findings with their diagnoses/handoffs, or an explicit zero-finding result. Reference the canonical Review Coverage Record for checked, reused, blocked and remaining cells; finding count or file count is not a coverage claim. A concise navigation index may reference items but must not replace their adjacent observation/diagnosis content.
 

@@ -4,6 +4,15 @@ import fs from 'node:fs';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
 
+/*
+ * METHODOLOGY REGRESSION NOTE
+ *
+ * This file mixes structural guards with semantic/prose regression guards. A failure is a prompt
+ * to inspect the canonical methodology owner first; it is not an instruction to rewrite expected
+ * text or weaken the assertion just to restore green status. Where a rule can be derived from a
+ * structured declaration, prefer TESTING.METHODOLOGY-INTEGRITY hard-integrity/parity checks.
+ */
+
 const moduleRoot=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..');
 const repoRoot=path.resolve(moduleRoot,'../../../../..');
 const commands=JSON.parse(fs.readFileSync(path.join(moduleRoot,'seed','commands.json'),'utf8')).items;

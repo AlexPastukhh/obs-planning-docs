@@ -28,7 +28,11 @@
 - [P-STL-HANDOFF-01](project/planning/documentation/shared/prepared-project-handoff.md#p-stl-handoff-01) остаётся OPEN: sample нестабилен. Копирование не закрывает Problem и не доказывает runtime success.
 - [Installed practical test](project/planning/documentation/practical-tests/installed-browser-vscode-handoff.md) остаётся OPEN; исторические тестовые числа не являются новым прогоном.
 - Снимок показывает документирование текущего результата, будущего изменения и незакрытых Evidence. Это не сертификат полной готовности приложения и не образец успешно завершённого Practical Test.
-- TM-DOMAIN-DISCOVERY, TM-IMPLEMENTATION-SLICE и TM-PROTOTYPE не получили искусственных результатов: в исходной документации нет самостоятельных полных примеров именно этих Targets.
+- TM-DOMAIN-DISCOVERY, TM-IMPLEMENTATION-SLICE, TM-PROTOTYPE и
+  TM-CODE-REALIZATION не получили искусственных результатов: в исходной
+  документации нет самостоятельных полных примеров именно этих Targets.
+  Наличие скопированного source/test code само по себе не формирует отдельный
+  Code Realization Target.
 
 <a id="provenance"></a>
 ## Provenance / история редакций
@@ -48,3 +52,12 @@ Application Concept (стабильный `RU-APP-05`) стоит первым; 
 ## 2026-09-24 — Decision retention representation
 
 The example now keeps accepted boundary meaning as ordinary natural Unit content. The one retained handoff Decision is represented in [PRS](project/planning/documentation/resolution-carry-forward.md#dec-stl-prepared-handoff-01) with its actual open Problem. No separate Decision body remains at a Feature/Domain/Slice/Shared owner. This editorial revision follows the current Core retention/PRS contracts; it does not close proof or implement the future Step. The snapshot manifest preserves original source hashes and records revised copied hashes.
+
+## 2026-09-26 — Current SDS alignment refresh
+
+The live copied example was revalidated against the current SDS/Core methodology.
+Literal source/test realization is now routed to SDS `TM-CODE-REALIZATION`, the
+Practical Test examples use the current Unit names and material-campaign boundary,
+and current navigation reflects Carry-Forward/PRS Decision retention. Historical
+audits keep their original snapshot basis and wording; this refresh does not turn
+them into current conformance certificates or claim new runtime Evidence.
