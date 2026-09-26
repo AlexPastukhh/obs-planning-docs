@@ -41,7 +41,7 @@ The following Core mechanics may be invoked by the Use Cases above but do not re
 - Lens Applicability Scan / Lens operations;
 - Finding Disposition;
 - Proposal/Decision lifecycle ([`planning/documentation/idtspe-methodology/active/idtspe-core/resolution/proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md`](../resolution/proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md)), Proposal/Decision Resolution Context Lens and optional Q/R/P grouping/priority;
-- Planning Resolution State / Resolution Carry-Forward result ([`planning/documentation/idtspe-methodology/active/idtspe-core/target-modules/TM-PLANNING-RESOLUTION-STATE.md`](../target-modules/TM-PLANNING-RESOLUTION-STATE.md#tm-planning-resolution-state)) for material continuation/handoff routing;
+- Planning Resolution State result ([`planning/documentation/idtspe-methodology/active/idtspe-core/target-modules/TM-PLANNING-RESOLUTION-STATE.md`](../target-modules/TM-PLANNING-RESOLUTION-STATE.md#tm-planning-resolution-state)) for material continuation/handoff routing;
 - consistency review;
 - registry traversal;
 - Broad Discussion / Key Points;

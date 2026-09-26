@@ -189,4 +189,6 @@ Core `TM-EXACT-REALIZATION / RU-REAL-01` remains broad/profile-neutral and keeps
 
 ## Projection Integrity
 
+Canonical parity/audit method: [`LENS-ATTACHMENT-MAP-INTEGRITY.md`](LENS-ATTACHMENT-MAP-INTEGRITY.md#sds-lens-attachment-projection-integrity) — `SDS.LENS-ATTACHMENT-PROJECTION-INTEGRITY`.
+
 When this map disagrees with a concrete Unit owner, the Unit owner wins and this projection is repaired. The map never defines attachment strength, Core-pack membership or Lens trigger logic.

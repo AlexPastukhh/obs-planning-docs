@@ -481,9 +481,11 @@
       "schemaVersion": 1,
       "id": "proposal_archive.create",
       "file": "build-proposal-archive.command.md",
-      "command": "дай архив proposal",
-      "englishName": "build proposal archive",
+      "command": "создай архив пропозалов",
+      "englishName": "create proposal workspace archive",
       "commandFamily": [
+        "создай архив пропозалов",
+        "создай архив с пропозалами",
         "дай архив proposal",
         "дай архив пропозал",
         "собери proposal archive",
@@ -492,31 +494,48 @@
         "сделай пропозал архив",
         "собери пропозал архив"
       ],
-      "description": "produce one review-only proposal ZIP",
-      "meaning": "Create one review-only coherent candidate workspace view from an explicit or smallest useful bounded scope and current Planning Resolution State. Select a compatible Proposal set; render candidate and accepted artifacts at their intended final workspace paths. A PRS authority projection identifies ACCEPTED vs PROPOSED per Target/Unit/Unit Slot, with Proposal identity, status, scope/view identity and snapshot/branch/commit basis. File path or physical persistence does not confer semantic acceptance. Conflicting versions of one path need separate views. This ZIP is never a Replacement Package and MUST NOT contain PACKAGE.json, base-files/, replacement-files/ or OBS-ACTION apply.",
-      "activeContextBehavior": "Use the active selected proposal scope and current checked source/context needed to make that proposal self-contained. Do not silently convert accepted current repository state into a proposal or a proposal into accepted current semantic authority. When the proposal concerns documentation change, route its semantic planning through [UC-DOC-PLAN-DOCUMENTATION-CHANGE](../documentation/use-cases/UC-DOC-PLAN-DOCUMENTATION-CHANGE.md) and keep Documentation Change Coverage when the change is substantial. A Use Case is a Situation + independently useful Result + Process capability; see [Use Case — Situation + Result + Process](../documentation/principles-and-terminology.md#doc-use-case) rather than inventing a new Use Case merely because a proposal archive is being produced.",
-      "traversalReadMode": "Targeted/full depending on proposal scope and whether the review archive must include multiple owners/projections.",
+      "description": "materialize one portable PRS-centered proposal workspace archive",
+      "meaning": "Materialize the current bounded proposal workspace into one portable archive. Reuse the current Planning Resolution State as the archive's planning/resume surface. If no PRS is currently formed, resolve that absence through the existing Carry-Forward qualification and TM-PLANNING-RESOLUTION-STATE owner: form/reuse a PRS only when the canonical owners say the bounded surviving state needs one; otherwise do not invent an empty PRS or second archive register. Include only the addressable Proposal/workspace artifacts needed by the resulting PRS and selected scope. Proposal, Q/R/P, Decision and carry-forward membership/status remain owned by their existing semantic owners; this command never reclassifies them. Archive paths, persistence and packaging are representation only and never imply acceptance. A Proposal Workspace Archive is not a Replacement Package and MUST NOT use PACKAGE.json, base-files/, replacement-files/ or OBS-ACTION apply protocol structure.",
+      "activeContextBehavior": "Use the current bounded workspace/PRS and checked source basis. When no PRS exists, first follow RESOLUTION.CARRY-FORWARD qualification and TM-PLANNING-RESOLUTION-STATE formation/reuse instead of fabricating archive-local planning state; materialize only after a canonical PRS exists for the bounded workspace. If an existing Proposal Workspace Archive is the selected source, read its PRS entry point and continue ordinary methodology work from the current semantic state; no separate 'continue archive' command is required. Invoke this command only when a portable archive artifact must be created or rematerialized. When the underlying proposal concerns documentation change, route that semantic work through [UC-DOC-PLAN-DOCUMENTATION-CHANGE](../documentation/use-cases/UC-DOC-PLAN-DOCUMENTATION-CHANGE.md); archive creation itself creates no new Use Case or lifecycle.",
+      "traversalReadMode": "Read the current PRS plus only the proposal/workspace artifacts and representation context required by the selected archive scope.",
       "ownerFiles": [
-        "planning/documentation/use-cases/UC-DOC-PLAN-DOCUMENTATION-CHANGE.md",
-        "planning/documentation/principles-and-terminology.md",
-        "planning/documentation/idtspe-methodology/active/idtspe-core/target-modules/TM-PLANNING-RESOLUTION-STATE.md"
+        "planning/documentation/idtspe-methodology/active/idtspe-core/resolution/RESOLUTION-CARRY-FORWARD-CONTRACT.md",
+        "planning/documentation/idtspe-methodology/active/idtspe-core/target-modules/TM-PLANNING-RESOLUTION-STATE.md",
+        "planning/documentation/idtspe-methodology/active/idtspe-core/representation/ARTIFACT-PLACEMENT-AND-IDTSPE-RESPONSE-CONTRACT.md",
+        "planning/documentation/use-cases/UC-DOC-PLAN-DOCUMENTATION-CHANGE.md"
       ],
       "ownerRefs": [
         {
-          "responsibilityId": "UC-DOC-PLAN-DOCUMENTATION-CHANGE",
-          "path": "planning/documentation/use-cases/UC-DOC-PLAN-DOCUMENTATION-CHANGE.md",
-          "anchor": "uc-doc-plan-documentation-change-plan-repository-documentation-change",
-          "why": "Owns planning of a documentation change before a proposal archive is packaged; the command must preserve that planning boundary.",
+          "responsibilityId": "RESOLUTION.CARRY-FORWARD",
+          "path": "planning/documentation/idtspe-methodology/active/idtspe-core/resolution/RESOLUTION-CARRY-FORWARD-CONTRACT.md",
+          "anchor": "resolution-carry-forward-qualification",
+          "why": "Owns whether surviving bounded resolution state qualifies for continuation and whether a PRS should be formed/reused before archive materialization.",
+          "role": "VALIDATION_HANDOFF",
+          "readMode": "REQUIRED"
+        },
+        {
+          "responsibilityId": "TARGET-MODULE.PLANNING-RESOLUTION-STATE",
+          "path": "planning/documentation/idtspe-methodology/active/idtspe-core/target-modules/TM-PLANNING-RESOLUTION-STATE.md",
+          "anchor": "tm-planning-resolution-state",
+          "why": "Owns the bounded PRS result used as the proposal workspace planning/resume surface; archive materialization must consume rather than redefine it.",
           "role": "PRIMARY_OWNER",
           "readMode": "REQUIRED"
         },
         {
-          "responsibilityId": "TM-PLANNING-RESOLUTION-STATE",
-          "path": "planning/documentation/idtspe-methodology/active/idtspe-core/target-modules/TM-PLANNING-RESOLUTION-STATE.md",
-          "anchor": "tm-planning-resolution-state",
-          "why": "Defines the authority projection for candidate workspace view.",
+          "responsibilityId": "REPRESENTATION.ARTIFACT-PLACEMENT",
+          "path": "planning/documentation/idtspe-methodology/active/idtspe-core/representation/ARTIFACT-PLACEMENT-AND-IDTSPE-RESPONSE-CONTRACT.md",
+          "anchor": "representation-proposal-workspace-archive",
+          "why": "Owns the physical Proposal Workspace Archive representation boundary, navigation and non-authority rules.",
           "role": "SUPPORTING_CONTRACT",
           "readMode": "REQUIRED"
+        },
+        {
+          "responsibilityId": "UC-DOC-PLAN-DOCUMENTATION-CHANGE",
+          "path": "planning/documentation/use-cases/UC-DOC-PLAN-DOCUMENTATION-CHANGE.md",
+          "anchor": "uc-doc-plan-documentation-change-plan-repository-documentation-change",
+          "why": "Conditional semantic route when the proposal workspace concerns a documentation change; archive creation itself is not documentation-change authority.",
+          "role": "SUPPORTING_CONTRACT",
+          "readMode": "ON_DEMAND"
         }
       ],
       "includes": [
@@ -524,19 +543,19 @@
       ],
       "processCalls": [],
       "compositionContributions": [],
-      "expectedOutput": "One review-only Proposal Workspace Archive: coherent final-shaped workspace paths, PRS with semantic status and recursive Proposal/Q/R/P graph, view identity/basis/scope, and navigation. No Replacement Package payload or automatic selection/persistence.",
+      "expectedOutput": "One portable Proposal Workspace Archive with an obvious PRS planning/resume entry point, addressable Proposal/workspace artifacts required by the current PRS/scope, and representation-only archive basis/navigation. No duplicated Proposal/Q/R/P/Decision lifecycle, no semantic acceptance inferred from file paths, and no Replacement Package payload.",
       "permissionMode": "artifact-no-commit-push",
       "keyReminders": [
-        "This command produces a review artifact, not a Replacement Package.",
+        "PRS is the planning/resume surface; do not invent a second archive planning register.",
+        "If no PRS exists, use Carry-Forward qualification and the PRS Target Module to decide formation/reuse before materialization; never create an empty PRS merely to satisfy archive layout.",
+        "Read Proposal/Q/R/P/Decision status and retention from their existing semantic owners through PRS; do not restate or replace those rules here.",
+        "Archive layout/persistence is representation only; a proposal file or final-shaped path does not become accepted authority by being present.",
+        "When an archive is already the selected source, ordinary methodology work resumes from PRS without a special continuation command.",
+        "This command creates/rematerializes a Proposal Workspace Archive, not a Replacement Package.",
         "Never include PACKAGE.json or replacement-package base-files/replacement-files protocol structure.",
-        "State clearly that the archive is REVIEW-ONLY / PROPOSAL when that is the selected meaning.",
-        "Include enough navigation/context that a reviewer can understand the proposal without relying on hidden chat context.",
-        "A proposal archive does not create a new Use Case; reuse current semantic owners and Use Cases.",
-        "Documentation-change route: [UC-DOC-PLAN-DOCUMENTATION-CHANGE](../documentation/use-cases/UC-DOC-PLAN-DOCUMENTATION-CHANGE.md).",
-        "Use Case definition/reference: [Use Case — Situation + Result + Process](../documentation/principles-and-terminology.md#doc-use-case).",
         "Do not apply locally, commit or push."
       ],
-      "userTarget": "<proposal/planning scope to package for review>",
+      "userTarget": "<current PRS / proposal-workspace scope to materialize>",
       "palette": true,
       "helperPresentation": null,
       "methodologyBinding": null,
@@ -757,6 +776,62 @@
     },
     {
       "schemaVersion": 1,
+      "id": "sds.lens_attachment_map.check",
+      "file": "check-lens-attachment-map.command.md",
+      "command": "проверь карту атачментов линз",
+      "englishName": "check lens attachment map",
+      "commandFamily": [
+        "проверь карту атачментов линз",
+        "проверь корректность карты атачментов линз",
+        "check lens attachment map"
+      ],
+      "description": "Check SDS Unit-to-Lens attachment projection parity",
+      "meaning": "Execute SDS.LENS-ATTACHMENT-PROJECTION-INTEGRITY against the current Core+SDS Target Module Unit owners, Lens registries and SDS Lens Attachment Map.",
+      "activeContextBehavior": "Use the current repository basis or explicitly supplied snapshot/archive basis. Do not form a Target; report exact projection parity or concrete drift.",
+      "traversalReadMode": "Read the integrity owner, current SDS Lens Attachment Map, current Core+SDS Target Module owners and the Core+SDS Lens registries required to prove exact parity.",
+      "ownerFiles": [
+        "planning/documentation/idtspe-methodology/active/profiles/sds/registries/LENS-ATTACHMENT-MAP-INTEGRITY.md",
+        "planning/documentation/idtspe-methodology/active/profiles/sds/registries/LENS-ATTACHMENT-MAP.md"
+      ],
+      "ownerRefs": [
+        {
+          "responsibilityId": "SDS.LENS-ATTACHMENT-PROJECTION-INTEGRITY",
+          "path": "planning/documentation/idtspe-methodology/active/profiles/sds/registries/LENS-ATTACHMENT-MAP-INTEGRITY.md",
+          "anchor": "sds-lens-attachment-projection-integrity",
+          "why": "Owns the exact Unit-owner-to-map parity algorithm, result contract and recheck conditions.",
+          "role": "PRIMARY_OWNER",
+          "readMode": "REQUIRED"
+        },
+        {
+          "responsibilityId": "SDS.LENS-ATTACHMENT-MAP",
+          "path": "planning/documentation/idtspe-methodology/active/profiles/sds/registries/LENS-ATTACHMENT-MAP.md",
+          "anchor": "sds-lens-attachment-map",
+          "why": "The projection being checked; never used as normative attachment authority.",
+          "role": "REGISTRY",
+          "readMode": "REQUIRED"
+        }
+      ],
+      "includes": [
+        "planning/commands/recheck-methodology-use-cases.command.md"
+      ],
+      "processCalls": [],
+      "compositionContributions": [],
+      "expectedOutput": "PASS with module/unit/REQUIRED/TRIGGERED counts, or precise DRIFT records by TM/RU showing owner expectation versus projection and defect kind; BLOCKED only when required basis is unreadable.",
+      "permissionMode": "read-only-planning",
+      "keyReminders": [
+        "Unit owners are normative; the map is projection only.",
+        "Compare exact attachment membership and strength, not counts alone.",
+        "Validate every projected Lens identity against current Core/SDS registries.",
+        "No repair, rebuild, file mutation, commit or push is authorized by this check command."
+      ],
+      "userTarget": "<current repository/snapshot or bounded map/owner scope>",
+      "palette": true,
+      "helperPresentation": null,
+      "methodologyBinding": null,
+      "refinements": []
+    },
+    {
+      "schemaVersion": 1,
       "id": "lenscmd.simplicity.check",
       "file": "check-simplicity.command.md",
       "command": "проверь можно ли упростить",
@@ -807,6 +882,71 @@
         "parentSurface": null,
         "hostTargetPolicy": "RESOLVE_OR_REUSE_TARGET"
       },
+      "refinements": []
+    },
+    {
+      "schemaVersion": 1,
+      "id": "idtspe.tm_lens_dependency_map.check",
+      "file": "check-tm-lens-dependency-map.command.md",
+      "command": "проверь карту зависимостей линз и таргет модулей",
+      "englishName": "check target module lens dependency map",
+      "commandFamily": [
+        "проверь карту зависимостей линз и таргет модулей",
+        "проверь зависимости линз и таргет модулей",
+        "check target module lens dependency map"
+      ],
+      "description": "Check current Target Module/Lens Semantic Owner Dependency projection parity",
+      "meaning": "Execute IDTSPE.TM-LENS-DEPENDENCY-PROJECTION-INTEGRITY against every current Target Module and Lens plus the active dependency projection.",
+      "activeContextBehavior": "Use the current repository basis or explicitly supplied snapshot/archive basis. Do not form a Target; report exact dependency parity, incoming/outgoing impact or concrete drift.",
+      "traversalReadMode": "Read the integrity owner, dependency map, current active TM/Lens owners and DOC.SEMANTIC-OWNER-DEPENDENCY as required to prove exact parity.",
+      "ownerFiles": [
+        "planning/documentation/idtspe-methodology/active/navigation/TARGET-MODULE-LENS-DEPENDENCY-MAP-INTEGRITY.md",
+        "planning/documentation/idtspe-methodology/active/navigation/TARGET-MODULE-LENS-DEPENDENCY-MAP.md"
+      ],
+      "ownerRefs": [
+        {
+          "responsibilityId": "IDTSPE.TM-LENS-DEPENDENCY-PROJECTION-INTEGRITY",
+          "path": "planning/documentation/idtspe-methodology/active/navigation/TARGET-MODULE-LENS-DEPENDENCY-MAP-INTEGRITY.md",
+          "anchor": "idtspe-tm-lens-dependency-projection-integrity",
+          "why": "Owns exact component-declaration-to-map parity, dependency-edge validation and recheck conditions.",
+          "role": "PRIMARY_OWNER",
+          "readMode": "REQUIRED"
+        },
+        {
+          "responsibilityId": "IDTSPE.TM-LENS-DEPENDENCY-PROJECTION",
+          "path": "planning/documentation/idtspe-methodology/active/navigation/TARGET-MODULE-LENS-DEPENDENCY-MAP.md",
+          "anchor": "idtspe-tm-lens-dependency-map",
+          "why": "The cross-Core/profile dependency projection and direct component topology being checked.",
+          "role": "REGISTRY",
+          "readMode": "REQUIRED"
+        },
+        {
+          "responsibilityId": "DOC.SEMANTIC-OWNER-DEPENDENCY",
+          "path": "planning/documentation/principles-and-terminology.md",
+          "anchor": "doc-semantic-owner-dependency",
+          "why": "Defines which explicit relations are semantic dependencies and why ordinary links do not create edges.",
+          "role": "SUPPORTING_CONTRACT",
+          "readMode": "REQUIRED"
+        }
+      ],
+      "includes": [
+        "planning/commands/recheck-methodology-use-cases.command.md"
+      ],
+      "processCalls": [],
+      "compositionContributions": [],
+      "expectedOutput": "PASS with component/dependency/direct-edge counts, or precise DRIFT records by consumer and owner edge; when asked for impact, list the exact current incoming/outgoing declared semantic dependencies. BLOCKED only when required basis is unreadable.",
+      "permissionMode": "read-only-planning",
+      "keyReminders": [
+        "Component Semantic Owner Dependency declarations are normative; the map is projection only.",
+        "Ordinary Markdown links are navigation and must not be promoted to dependency edges.",
+        "Keep Unit-to-Lens attachment/applicability topology in its own attachment projection.",
+        "Treat direct concrete TM/Lens dependencies as exceptional; prefer stable shared contracts when a reusable responsibility is the real dependency.",
+        "No repair, rebuild, file mutation, commit or push is authorized by this check command."
+      ],
+      "userTarget": "<current repository/snapshot, component, owner responsibility or bounded dependency scope>",
+      "palette": true,
+      "helperPresentation": null,
+      "methodologyBinding": null,
       "refinements": []
     },
     {
@@ -2422,7 +2562,7 @@
         "idtspe decisions"
       ],
       "description": "Extract and review actual selected material Decisions from current context without inventing selection authority.",
-      "meaning": "Classify current USER/context meaning through the canonical USER Input Decision And Answer Intake Rule. Only actual material selections become Decision semantics; AI-only candidates/suggestions remain Proposal/Source/Answer/unresolved state as appropriate. Review each material Decision through the Proposal/Decision Resolution Context Lens, disposition related QRPE, apply the canonical Decision retention contract and PRS admission before keeping a separate record, integrate selected meaning into its natural/temporal owner, and refresh Resolution Carry-Forward for surviving material residual/reconsider state.",
+      "meaning": "Classify current USER/context meaning through the canonical USER Input Decision And Answer Intake Rule. Only actual material selections become Decision semantics; AI-only candidates/suggestions remain Proposal/Source/Answer/unresolved state as appropriate. Review each material Decision through the Proposal/Decision Resolution Context Lens, disposition related QRPE, apply the canonical Decision retention contract and Carry-Forward admission before keeping a separate carried record, integrate selected meaning into its natural/temporal owner, and refresh Resolution Carry-Forward for surviving material residual/reconsider state.",
       "activeContextBehavior": "Reuse current context and existing Decisions first. Extract exact selected meaning only where actual USER/applicable authority selection exists; never select unresolved alternatives on the USER's behalf. Run LENS-PROPOSAL-DECISION-RESOLUTION-CONTEXT for material captured/reviewed Decisions, classify residual QRPE through canonical lifecycle owners, integrate selected meaning into the correct owner, and project surviving continuation/revalidation items into Resolution Carry-Forward when useful.",
       "traversalReadMode": "Read USER-input intake + Proposal/Decision lifecycle + Resolution Context Lens first; use Q/R/P, Decision Revalidation Helper, Carry-Forward and natural owner/Target detail only where the captured Decision requires them.",
       "ownerFiles": [
@@ -2462,9 +2602,9 @@
         },
         {
           "responsibilityId": "RESOLUTION.CARRY-FORWARD",
-          "path": "planning/documentation/idtspe-methodology/active/idtspe-core/target-modules/TM-PLANNING-RESOLUTION-STATE.md",
-          "anchor": "ru-prs-02--tracked-decisions",
-          "why": "Owns qualifying Decision admission, representation and exit; no command-local eligibility rule.",
+          "path": "planning/documentation/idtspe-methodology/active/idtspe-core/resolution/RESOLUTION-CARRY-FORWARD-CONTRACT.md",
+          "anchor": "resolution-carry-forward-decision-retention",
+          "why": "Owns qualifying Decision admission/exit and continuation eligibility; concrete PRS representation remains a downstream realization.",
           "role": "VALIDATION_HANDOFF",
           "readMode": "REQUIRED"
         }
@@ -2477,13 +2617,13 @@
       ],
       "processCalls": [],
       "compositionContributions": [],
-      "expectedOutput": "Actual selected material Decisions are identified without promoting AI-only candidates, their exact selected meaning/integration owner and material QRPE disposition are clear, separate Decision records are represented only as admitted PRS items under the Core retention contract, and surviving residual/revalidation state is discoverable through Carry-Forward.",
+      "expectedOutput": "Actual selected material Decisions are identified without promoting AI-only candidates, their exact selected meaning/integration owner and material QRPE disposition are clear, separate carried Decision records are represented in PRS only after Carry-Forward admission under the Core retention contract, and surviving residual/revalidation state is discoverable through Carry-Forward.",
       "permissionMode": "read-only-planning-unless-separately-authorized",
       "keyReminders": [
         "Actual material selection is required; this command does not grant AI selection authority.",
         "USER facts/preferences/corrections/candidates are not Decisions unless the intake/lifecycle rules establish actual selection.",
         "QRPE is a review view over canonical Q/R/P/Evidence owners, not a new State kind.",
-        "A separate Decision record follows Core retention and PRS admission/exit. Selected meaning integrates into normal natural Unit content; this command defines no alternate Decision owner.",
+        "A separate carried Decision record follows Core retention and Carry-Forward admission/exit; PRS only represents admitted bounded state. Selected meaning integrates into normal natural Unit content; this command defines no alternate Decision owner.",
         "This command does not itself grant repository/file/application mutation, commit or push permission."
       ],
       "userTarget": "<current context / selected Decisions to capture or review>",
@@ -2734,8 +2874,8 @@
         },
         {
           "responsibilityId": "RESOLUTION.CARRY-FORWARD",
-          "path": "planning/documentation/idtspe-methodology/active/idtspe-core/target-modules/TM-PLANNING-RESOLUTION-STATE.md",
-          "anchor": "tm-planning-resolution-state",
+          "path": "planning/documentation/idtspe-methodology/active/idtspe-core/resolution/RESOLUTION-CARRY-FORWARD-CONTRACT.md",
+          "anchor": "resolution-carry-forward-decision-retention",
           "why": "Keeps surviving open/deferred/residual continuation discoverable across handoff without duplicating semantic owners.",
           "role": "SUPPORTING_CONTRACT",
           "readMode": "REQUIRED"
@@ -3549,8 +3689,8 @@
         },
         {
           "responsibilityId": "RESOLUTION.CARRY-FORWARD",
-          "path": "planning/documentation/idtspe-methodology/active/idtspe-core/target-modules/TM-PLANNING-RESOLUTION-STATE.md",
-          "anchor": "tm-planning-resolution-state",
+          "path": "planning/documentation/idtspe-methodology/active/idtspe-core/resolution/RESOLUTION-CARRY-FORWARD-CONTRACT.md",
+          "anchor": "resolution-carry-forward-decision-retention",
           "why": "Retains only surviving material open/deferred/residual continuation after Proposal work.",
           "role": "VALIDATION_HANDOFF",
           "readMode": "ON_DEMAND"
@@ -3977,9 +4117,9 @@
         },
         {
           "responsibilityId": "RESOLUTION.CARRY-FORWARD",
-          "path": "planning/documentation/idtspe-methodology/active/idtspe-core/target-modules/TM-PLANNING-RESOLUTION-STATE.md",
-          "anchor": "ru-prs-02--tracked-decisions",
-          "why": "Owns qualifying Decision admission, representation and exit; no command-local eligibility rule.",
+          "path": "planning/documentation/idtspe-methodology/active/idtspe-core/resolution/RESOLUTION-CARRY-FORWARD-CONTRACT.md",
+          "anchor": "resolution-carry-forward-decision-retention",
+          "why": "Owns qualifying Decision admission/exit and continuation eligibility; concrete PRS representation remains a downstream realization.",
           "role": "SUPPORTING_CONTRACT",
           "readMode": "ON_DEMAND"
         }
@@ -5006,9 +5146,9 @@
         },
         {
           "responsibilityId": "RESOLUTION.CARRY-FORWARD",
-          "path": "planning/documentation/idtspe-methodology/active/idtspe-core/target-modules/TM-PLANNING-RESOLUTION-STATE.md",
-          "anchor": "ru-prs-02--tracked-decisions",
-          "why": "Owns qualifying Decision admission, representation and exit; no command-local eligibility rule.",
+          "path": "planning/documentation/idtspe-methodology/active/idtspe-core/resolution/RESOLUTION-CARRY-FORWARD-CONTRACT.md",
+          "anchor": "resolution-carry-forward-decision-retention",
+          "why": "Owns qualifying Decision admission/exit and continuation eligibility; concrete PRS representation remains a downstream realization.",
           "role": "SUPPORTING_CONTRACT",
           "readMode": "ON_DEMAND"
         }
@@ -6804,9 +6944,9 @@
         },
         {
           "responsibilityId": "RESOLUTION.CARRY-FORWARD",
-          "path": "planning/documentation/idtspe-methodology/active/idtspe-core/target-modules/TM-PLANNING-RESOLUTION-STATE.md",
-          "anchor": "ru-prs-02--tracked-decisions",
-          "why": "Owns qualifying Decision admission, representation and exit; no command-local eligibility rule.",
+          "path": "planning/documentation/idtspe-methodology/active/idtspe-core/resolution/RESOLUTION-CARRY-FORWARD-CONTRACT.md",
+          "anchor": "resolution-carry-forward-decision-retention",
+          "why": "Owns qualifying Decision admission/exit and continuation eligibility; concrete PRS representation remains a downstream realization.",
           "role": "SUPPORTING_CONTRACT",
           "readMode": "ON_DEMAND"
         }

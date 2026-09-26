@@ -1,6 +1,9 @@
 <a id="lens-authority-sot-reuse"></a>
 # LENS-AUTHORITY-SOT-REUSE — Authority / Source-of-Truth / Reuse
 
+> Semantic Owner Dependency
+> - `EXTENDS` [Lens Meta-Model](../LENS-MODEL.md#lens-meta-model) — `LENS.META-MODEL`.
+
 Lens ID: `LENS-AUTHORITY-SOT-REUSE`
 Legacy alias: `L2`
 

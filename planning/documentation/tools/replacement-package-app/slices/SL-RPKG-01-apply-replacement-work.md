@@ -1,14 +1,14 @@
 <a id="slice-rpkg-package-realization"></a>
 # SL-RPKG-01 — Replacement Package Realization
 
-## RU-SOWN-TERMS — Terms / Ubiquitous Language
+## Terms / Ubiquitous Language
 
-| Canonical term | Plain definition |
-|---|---|
-| [Replacement Package](../TERMS.md#term-rpkg-replacement-package-03) | One archive/manifest describing the exact repository file changes to realize. |
-| [Package Identity](../TERMS.md#term-rpkg-package-identity-04) | The exact identity of one Replacement Package realization: packageId plus archive SHA-256. |
-| [Proven Result](../TERMS.md#term-rpkg-proven-result-06) | A result the application has enough exact evidence to treat as true, rather than merely attempted or assumed. |
-| [Reconciliation](../TERMS.md#term-rpkg-reconciliation-08) | Observe current external facts after an uncertain effect before deciding whether any effect must be repeated. |
+Canonical definitions: [`TERMS.md`](../TERMS.md). This non-Unit section lists only vocabulary used by this artifact.
+
+- [Replacement Package](../TERMS.md#term-rpkg-replacement-package-03)
+- [Package Identity](../TERMS.md#term-rpkg-package-identity-04)
+- [Proven Result](../TERMS.md#term-rpkg-proven-result-06)
+- [Reconciliation](../TERMS.md#term-rpkg-reconciliation-08)
 
 ## RU-SOWN-01 — Behavior Realization Contract
 

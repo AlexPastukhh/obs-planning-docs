@@ -109,7 +109,7 @@ Prototype artifacts do not remain a hidden second authority after selected meani
 
 > Semantic Owner Dependencies
 > - `REPRESENTS` [Decision retention / integration](../../idtspe-methodology/active/idtspe-core/resolution/proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md#resolution-decision-retention) — `RESOLUTION.PROPOSAL-DECISION-LIFECYCLE`.
-> - `REPRESENTS` [PRS Decision admission / exit](../../idtspe-methodology/active/idtspe-core/target-modules/TM-PLANNING-RESOLUTION-STATE.md#ru-prs-02--tracked-decisions) — `RESOLUTION.CARRY-FORWARD`.
+> - `REPRESENTS` [Resolution Carry-Forward contract](../../idtspe-methodology/active/idtspe-core/resolution/RESOLUTION-CARRY-FORWARD-CONTRACT.md#resolution-carry-forward) — `RESOLUTION.CARRY-FORWARD`.
 
 <Integrate supported conclusions and selected meaning into their natural Unit/temporal owners, retaining useful rationale and Evidence. Link a separate retained Decision record only when it qualifies under the Core retention / PRS contracts.>
 

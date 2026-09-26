@@ -3,7 +3,7 @@
 
 > Semantic Owner Dependencies
 > - `CONTEXTUALIZES` [Decision record retention](../idtspe-methodology/active/idtspe-core/resolution/proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md#resolution-decision-retention) — `RESOLUTION.PROPOSAL-DECISION-LIFECYCLE`.
-> - `CONTEXTUALIZES` [PRS Decision admission / exit](../idtspe-methodology/active/idtspe-core/target-modules/TM-PLANNING-RESOLUTION-STATE.md#ru-prs-02--tracked-decisions) — `RESOLUTION.CARRY-FORWARD`.
+> - `CONTEXTUALIZES` [Resolution Carry-Forward contract](../idtspe-methodology/active/idtspe-core/resolution/RESOLUTION-CARRY-FORWARD-CONTRACT.md#resolution-carry-forward) — `RESOLUTION.CARRY-FORWARD`.
 
 Responsibility ID: `ARCH.DECISION-WORKFLOW`
 
@@ -157,4 +157,4 @@ Implementation Slice
 Workspace / Cross-cutting Architecture
 ```
 
-Materialize selected meaning as normal Result Content in the narrowest real semantic/temporal owner. A separate retained record follows the linked Core retention and PRS contracts; cross-owner scope or historical interest does not establish an independent Architecture Decision/ADR owner. Temporary analysis need not persist as a separate artifact.
+Materialize selected meaning as normal Result Content in the narrowest real semantic/temporal owner. A separate retained record follows the linked Core retention and Carry-Forward contracts and is represented in PRS only when admitted; cross-owner scope or historical interest does not establish an independent Architecture Decision/ADR owner. Temporary analysis need not persist as a separate artifact.

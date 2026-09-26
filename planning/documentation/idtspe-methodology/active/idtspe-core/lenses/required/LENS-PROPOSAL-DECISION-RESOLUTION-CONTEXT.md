@@ -1,8 +1,11 @@
 # LENS-PROPOSAL-DECISION-RESOLUTION-CONTEXT — Proposal / Decision Resolution Context
 
+> Semantic Owner Dependency
+> - `EXTENDS` [Lens Meta-Model](../LENS-MODEL.md#lens-meta-model) — `LENS.META-MODEL`.
+
 > Semantic Owner Dependencies
 > - `CONTEXTUALIZES` [Decision record retention](../../resolution/proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md#resolution-decision-retention) — `RESOLUTION.PROPOSAL-DECISION-LIFECYCLE`.
-> - `CONTEXTUALIZES` [PRS Decision admission / exit](../../target-modules/TM-PLANNING-RESOLUTION-STATE.md#ru-prs-02--tracked-decisions) — `RESOLUTION.CARRY-FORWARD`.
+> - `CONTEXTUALIZES` [Resolution Carry-Forward contract](../../resolution/RESOLUTION-CARRY-FORWARD-CONTRACT.md#resolution-carry-forward) — `RESOLUTION.CARRY-FORWARD`.
 
 Lens ID: `LENS-PROPOSAL-DECISION-RESOLUTION-CONTEXT`
 
@@ -77,7 +80,7 @@ Canonical semantic/lifecycle owners remain:
 > - `CONTEXTUALIZES` [`Proposal / Decision Lifecycle`](../../resolution/proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md#resolution-proposal-decision-lifecycle) — `RESOLUTION.PROPOSAL-DECISION-LIFECYCLE`
 > - `CONTEXTUALIZES` [`Q/R/P Lifecycle`](../../resolution/qrp/QRP-LIFECYCLE-AND-REVIEW.md#resolution-qrp-lifecycle) — `RESOLUTION.QRP-LIFECYCLE`
 > - `CONTEXTUALIZES` [`Decision Revalidation Projection`](../../resolution/proposal-decision/DECISION-REVALIDATION.resolution-projection.md#resolution-decision-revalidation-projection) — `RESOLUTION.DECISION-REVALIDATION-PROJECTION`
-> - `CONTEXTUALIZES` [`Resolution Carry-Forward`](../../target-modules/TM-PLANNING-RESOLUTION-STATE.md#tm-planning-resolution-state) — `RESOLUTION.CARRY-FORWARD`
+> - `CONTEXTUALIZES` [Resolution Carry-Forward contract](../../resolution/RESOLUTION-CARRY-FORWARD-CONTRACT.md#resolution-carry-forward) — `RESOLUTION.CARRY-FORWARD`
 
 - [`USER Input Decision / Answer Intake`](../../runtime/interaction/USER-INPUT-DECISION-AND-ANSWER-INTAKE-RULE.md) owns USER-input classification;
 - Evidence remains ordinary Core Evidence State.
@@ -144,11 +147,11 @@ exact selected meaning identifiable?
 where is selected meaning integrated?
 → natural Unit / Target / temporal owner
 
-does a separate record satisfy the linked Core retention contract and PRS admission, with independent retention value?
-→ if yes: represent the record in PRS; if no: preserve ordinary Unit content without a separate record
+does a separate record satisfy the linked Core retention contract and Carry-Forward admission, with independent continuation/revalidation value?
+→ if yes: represent the admitted record in PRS when a bounded PRS is formed; if no: preserve ordinary Unit content without a separate carried record
 ```
 
-Also check that this Lens/consumer has not become a competing retention authority: Decision semantics remain Core-owned, PRS owns its result/admission/exit, and accepted meaning remains with the integrated Units. Check exit against the PRS owner rather than inventing a Lens-specific closure rule.
+Also check that this Lens/consumer has not become a competing retention authority: Decision semantics remain Core-owned, [`RESOLUTION.CARRY-FORWARD`](../../resolution/RESOLUTION-CARRY-FORWARD-CONTRACT.md#resolution-carry-forward-decision-retention) owns carried-Decision admission/exit and continuation eligibility, PRS owns only its concrete result representation, and accepted meaning remains with the integrated Units. Check exit against Carry-Forward rather than inventing a Lens-specific closure rule.
 
 ### Proposal → Decision QRPE Disposition
 
@@ -162,7 +165,7 @@ Evidence → still material to accepted basis/revalidation?
 Decision → exposes any new Q/R/P?
 ```
 
-Surviving open/deferred/residual items remain with their canonical lifecycle/natural owners and may be kept with their related resolution context in [`Resolution Carry-Forward`](../../target-modules/TM-PLANNING-RESOLUTION-STATE.md#tm-planning-resolution-state) when continuation value is material.
+Surviving open/deferred/residual items remain with their canonical lifecycle/natural owners and may be kept with their related resolution context when [`RESOLUTION.CARRY-FORWARD`](../../resolution/RESOLUTION-CARRY-FORWARD-CONTRACT.md#resolution-carry-forward) qualifies continuation; a formed PRS may represent that bounded state.
 
 ## Findings / Outcomes
 

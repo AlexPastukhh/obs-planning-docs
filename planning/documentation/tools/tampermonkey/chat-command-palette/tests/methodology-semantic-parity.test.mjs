@@ -444,10 +444,11 @@ test('Application Definition keeps Responsibility Boundary inside each Benefit a
   assert.match(local,/## RU-APP-05 — Application Concept[\s\S]*\*\*Summary:\*\*[\s\S]*\*\*How it roughly works:\*\*/);
 });
 
-test('Proposal Decision Resolution Context Lens is operational evaluator, QRPE is a view, and PRS and Carry-Forward have a single owner',()=>{
+test('Proposal Decision Resolution Context Lens is operational evaluator while Carry-Forward and PRS keep separate responsibilities',()=>{
   const lens=read('planning/documentation/idtspe-methodology/active/idtspe-core/lenses/required/LENS-PROPOSAL-DECISION-RESOLUTION-CONTEXT.md');
   const life=read('planning/documentation/idtspe-methodology/active/idtspe-core/resolution/proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md');
   const qrp=read('planning/documentation/idtspe-methodology/active/idtspe-core/resolution/qrp/QRP-LIFECYCLE-AND-REVIEW.md');
+  const carry=read('planning/documentation/idtspe-methodology/active/idtspe-core/resolution/RESOLUTION-CARRY-FORWARD-CONTRACT.md');
   assert.match(lens,/Base Applicability \/ Usefulness[\s\S]*material Proposal or Decision surface exists/i);
   const registry=read('planning/documentation/idtspe-methodology/active/idtspe-core/lenses/LENS-REGISTRY.md');
   assert.match(registry,/Inherited Core Lens Pack[\s\S]*LENS-PROPOSAL-DECISION-RESOLUTION-CONTEXT/);
@@ -456,11 +457,40 @@ test('Proposal Decision Resolution Context Lens is operational evaluator, QRPE i
   assert.match(life,/Candidate Review \/ Resolution Context Handoff/);
   assert.doesNotMatch(life,/Driver \/ Need fit[\s\S]*Necessity \/ Better Route/);
   assert.match(qrp,/Proposal \/ Decision QRPE Navigation/);
+  assert.match(carry,/Responsibility ID: `RESOLUTION\.CARRY-FORWARD`/);
+  assert.match(carry,/qualification \/ admission \/ exit \/ durable-materialization threshold/);
   const prs=read('planning/documentation/idtspe-methodology/active/idtspe-core/target-modules/TM-PLANNING-RESOLUTION-STATE.md');
-  assert.match(prs,/Decision membership requires qualifying related Q\/R\/P \(1..N\)/);
+  assert.match(prs,/Responsibility ID: `TARGET-MODULE\.PLANNING-RESOLUTION-STATE`/);
+  assert.match(prs,/reusable Core Target-result realization of the generic Resolution Carry-Forward contract/);
+  assert.match(prs,/Decision membership is delegated to \[`RESOLUTION\.CARRY-FORWARD`\]/);
   assert.match(prs,/Present Active Planning first, then Tracked Decisions/);
-  assert.doesNotMatch(prs,/Residual Q\/R\/P is \*\*not required\*\*/);
-  assert.match(prs,/Planning Resolution State \(PRS\) and Resolution Carry-Forward \(RCF\) name the same bounded coordination result/);
+  assert.doesNotMatch(prs,/single canonical owner for membership, Collection\/Slot shape/);
+});
+
+test('Terms references are non-Unit links to canonical definitions and Proposal Archive delegates resolution semantics',()=>{
+  const terms=read('planning/documentation/idtspe-methodology/active/idtspe-core/knowledge-bases/TERMS-AND-UBIQUITOUS-LANGUAGE.md');
+  const tm=read('planning/documentation/idtspe-methodology/active/idtspe-core/target-modules/TARGET-MODULE-MODEL.md');
+  const rep=read('planning/documentation/idtspe-methodology/active/idtspe-core/representation/ARTIFACT-PLACEMENT-AND-IDTSPE-RESPONSE-CONTRACT.md');
+  const prs=read('planning/documentation/idtspe-methodology/active/idtspe-core/target-modules/TM-PLANNING-RESOLUTION-STATE.md');
+  assert.match(terms,/ordinary non-Unit section named `Terms \/ Ubiquitous Language`/);
+  assert.match(terms,/Do not repeat the canonical definition in every consumer file/);
+  assert.match(tm,/not a Module-defined Unit, Contextual Unit, Collection or Slot/);
+  assert.match(rep,/Proposal Workspace Archive Representation[\s\S]*Planning Resolution State.*entry point/);
+  assert.match(rep,/no archive-specific continuation lifecycle or command is required/);
+  const termsLens=read('planning/documentation/idtspe-methodology/active/profiles/sds/lenses/reusable/LENS-TERMS-UBIQUITOUS-LANGUAGE.md');
+  assert.match(termsLens,/natural semantic owner.*canonical Terms representation/is);
+  assert.doesNotMatch(termsLens,/applicable Terms Unit/);
+  assert.doesNotMatch(prs,/Workspace Authority Projection|archive view has a bounded scope/i);
+  for(const file of [
+    'planning/documentation/tools/replacement-package-app/slices/SL-RPKG-01-apply-replacement-work.md',
+    'planning/documentation/tools/replacement-package-app/domain/replacement-package-state.md',
+    'planning/documentation/tools/replacement-package-app/domain/work-id.md']){
+    const text=read(file);
+    assert.match(text,/## Terms \/ Ubiquitous Language/);
+    assert.doesNotMatch(text,/## RU-[A-Z0-9-]+.*Terms \/ Ubiquitous Language/);
+    assert.match(text,/\]\(\.\.\/TERMS\.md#term-/);
+    assert.doesNotMatch(text,/\| Canonical term \| Plain definition \|/);
+  }
 });
 
 test('generic Decision capture command never grants selection authority and Proposal command uses Resolution Context Lens',()=>{
@@ -584,21 +614,25 @@ test('Application Definition no longer classifies representative RLS as core sur
 });
 
 
-test('Decision retention keeps Core authority and a single PRS representation gate',()=>{
+test('Decision retention keeps Core authority while Carry-Forward owns admission-exit and PRS owns concrete representation',()=>{
   const core='planning/documentation/idtspe-methodology/active/idtspe-core/';
   const life=read(core+'resolution/proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md');
+  const carry=read(core+'resolution/RESOLUTION-CARRY-FORWARD-CONTRACT.md');
   const prs=read(core+'target-modules/TM-PLANNING-RESOLUTION-STATE.md');
-  assert.match(life,/explicit retained Decision record is permitted only within a bounded PRS\/RCF result/);
-  assert.match(life,/actual authorized selection has independent retention value and satisfies \[PRS admission \/ exit\]/);
+  assert.match(life,/explicit separately carried Decision record is permitted only when/);
+  assert.match(life,/Resolution Carry-Forward Decision admission \/ exit contract/);
   assert.match(life,/does not transfer Decision semantics, selection authority or lifecycle/);
   assert.doesNotMatch(life,/even without residual Q\/R\/P|A durable Decision trace may remain there/);
+  assert.match(carry,/Accepted Decision Admission \/ Exit/);
+  assert.match(carry,/at least one material qualifying related Q\/R\/P remains/);
+  assert.match(carry,/last qualifying Q\/R\/P closes or ceases to be material/);
   assert.match(prs,/does not define a second Decision type, field semantics or selection lifecycle/);
-  assert.match(prs,/remove the separate retained Decision record from the current PRS\/RCF result/);
-  assert.match(prs,/Do not move the record to an independent Decision\/ADR\/history owner/);
-  for(const phrase of ['Authorized selected meaning, no qualifying Q/R/P','Authorized selection, qualifying Q/R/P and independent retention value','Last qualifying Q/R/P closes','Unselected candidate with Q/R/P','One choice spans several owners','Historical interest without qualifying Q/R/P'])assert.ok(prs.includes(phrase),phrase);
+  assert.match(prs,/Decision membership is delegated to \[`RESOLUTION\.CARRY-FORWARD`\]/);
+  assert.match(prs,/does not restate which Q\/R\/P qualify, the admission rule, or the exit rule/);
+  assert.doesNotMatch(prs,/Authorized selected meaning, no qualifying Q\/R\/P|Historical interest without qualifying Q\/R\/P/);
 });
 
-test('retention consumers depend on the canonical owner instead of keeping independent exemptions',()=>{
+test('retention consumers use the generic Carry-Forward owner instead of PRS Unit internals',()=>{
   const core='planning/documentation/idtspe-methodology/active/idtspe-core/';
   const files=[
     core+'runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md',
@@ -614,13 +648,37 @@ test('retention consumers depend on the canonical owner instead of keeping indep
   for(const file of files){
     const text=read(file);
     assert.match(text,/Semantic Owner Dependencies/);
-    assert.match(text,/#resolution-decision-retention/);
-    assert.match(text,/#ru-prs-02--tracked-decisions/);
+    assert.match(text,/RESOLUTION-CARRY-FORWARD-CONTRACT\.md#resolution-carry-forward/);
+    assert.doesNotMatch(text,/Semantic Owner Dependenc(?:y|ies)[\s\S]{0,600}TM-PLANNING-RESOLUTION-STATE\.md#ru-prs-02--tracked-decisions[\s\S]{0,100}RESOLUTION\.CARRY-FORWARD/);
     assert.doesNotMatch(text,/Keep a separate Architecture Decision owner only|canonical Decision traces are distributed|for as long as the USER finds it useful|Decision's retention horizon is user controlled/);
   }
   const command=commands.find(c=>c.id==='idtspe.decisions.capture');
   assert.ok(command.ownerRefs.some(r=>r.anchor==='resolution-decision-retention'&&r.readMode==='REQUIRED'));
-  assert.ok(command.ownerRefs.some(r=>r.anchor==='ru-prs-02--tracked-decisions'&&r.readMode==='REQUIRED'));
+  assert.ok(command.ownerRefs.some(r=>r.responsibilityId==='RESOLUTION.CARRY-FORWARD'&&r.anchor==='resolution-carry-forward-decision-retention'&&r.readMode==='REQUIRED'));
+  assert.ok(!command.ownerRefs.some(r=>r.anchor==='ru-prs-02--tracked-decisions'));
+});
+
+
+
+test('Carry-Forward remains the sole admission/exit owner while PRS is representation only',()=>{
+  const files=[
+    'planning/documentation/idtspe-methodology/active/idtspe-core/lenses/required/LENS-PROPOSAL-DECISION-RESOLUTION-CONTEXT.md',
+    'planning/documentation/idtspe-methodology/active/idtspe-core/resolution/proposal-decision/DECISION-REVALIDATION.resolution-projection.md',
+    'planning/commands/idtspe-decisions-capture.command.md',
+    'planning/documentation/architecture-planning/architecture-decision-workflow.md',
+    'planning/documentation/workspace-planning/WORKSPACE-USE-CASE-PLANNING-TEMPLATE.md'
+  ];
+  for(const file of files){
+    const text=read(file);
+    assert.doesNotMatch(text,/PRS admission(?:\/exit)?|PRS owns its result\/admission\/exit|exit against the PRS owner|PRS admission\/exit contracts/i);
+    assert.match(text,/Carry-Forward|RESOLUTION\.CARRY-FORWARD/);
+  }
+  const lens=read('planning/documentation/idtspe-methodology/active/idtspe-core/lenses/required/LENS-PROPOSAL-DECISION-RESOLUTION-CONTEXT.md');
+  assert.match(lens,/Carry-Forward admission/);
+  assert.match(lens,/PRS owns only its concrete result representation/);
+  const helper=read('planning/documentation/idtspe-methodology/active/idtspe-core/resolution/proposal-decision/DECISION-REVALIDATION.resolution-projection.md');
+  assert.match(helper,/Carry-Forward admission\/exit contract/);
+  assert.match(helper,/formed PRS only represents admitted bounded state/);
 });
 
 test('Launcher example integrates ordinary boundaries and retains only its qualifying handoff Decision in PRS',()=>{

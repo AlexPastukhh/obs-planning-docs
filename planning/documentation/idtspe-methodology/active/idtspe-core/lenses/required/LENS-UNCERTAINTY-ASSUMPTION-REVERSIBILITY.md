@@ -1,6 +1,9 @@
 <a id="lens-uncertainty-assumption-reversibility"></a>
 # LENS-UNCERTAINTY-ASSUMPTION-REVERSIBILITY — Uncertainty / Assumption / Reversibility
 
+> Semantic Owner Dependency
+> - `EXTENDS` [Lens Meta-Model](../LENS-MODEL.md#lens-meta-model) — `LENS.META-MODEL`.
+
 Lens ID: `LENS-UNCERTAINTY-ASSUMPTION-REVERSIBILITY`
 Legacy alias: `L3`
 

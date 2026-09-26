@@ -1,12 +1,12 @@
 <a id="domain-rpkg-work-id"></a>
 # WorkId — Shared Domain Owner
 
-## RU-DOWN-TERMS — Terms / Ubiquitous Language
+## Terms / Ubiquitous Language
 
-| Canonical term | Plain definition |
-|---|---|
-| [Work](../TERMS.md#term-rpkg-work-01) | One logical repository change effort identified by one exact WorkId. |
-| [WorkId](../TERMS.md#term-rpkg-workid-02) | The exact semantic identity of one Work. A title, recency, or current UI selection does not replace it. |
+Canonical definitions: [`TERMS.md`](../TERMS.md). This non-Unit section lists only vocabulary used by this artifact.
+
+- [Work](../TERMS.md#term-rpkg-work-01)
+- [WorkId](../TERMS.md#term-rpkg-workid-02)
 
 ## RU-DOWN-01 — Shared Domain Behavior Realization Contract
 

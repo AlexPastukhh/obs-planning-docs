@@ -96,6 +96,8 @@
     "archive_source.use",
     "helper.command.add",
     "helper.impact.check",
+    "sds.lens_attachment_map.check",
+    "idtspe.tm_lens_dependency_map.check",
     "tm:TM-2D-10-VISUAL-REQUIREMENTS",
     "tm:TM-2D-15-PREPARED-VISUAL-MATERIAL-SET",
     "tm:TM-2D-20-WHOLE-VISUAL-DESIGN",
@@ -633,6 +635,16 @@
       "items": [
         "helper.command.add",
         "helper.impact.check"
+      ]
+    },
+    {
+      "id": "tools.methodology-integrity",
+      "viewId": "TOOLS",
+      "label": "Methodology Integrity",
+      "order": 30,
+      "items": [
+        "sds.lens_attachment_map.check",
+        "idtspe.tm_lens_dependency_map.check"
       ]
     }
   ],

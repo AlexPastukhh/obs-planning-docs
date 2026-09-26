@@ -370,7 +370,7 @@ The existence of an explicit anchor signals that inbound references are expected
 
 Responsibility ID: `DOC.SEMANTIC-OWNER-DEPENDENCY`
 
-A **Semantic Owner Dependency** records that a non-owner passage materially depends on semantic meaning owned elsewhere and therefore requires revalidation when that owner meaning changes. The dependency is declared next to the dependent passage and links to the canonical owner/explicit anchor; reverse dependency indexes are derived mechanically rather than maintained as a second manual Source of Truth.
+A **Semantic Owner Dependency** records that a non-owner passage materially depends on semantic meaning owned elsewhere and therefore requires revalidation when that owner meaning changes. The dependency is declared next to the dependent passage and links to the canonical owner/explicit anchor; reverse dependency indexes are derived mechanically rather than maintained as a second manual Source of Truth. The active IDTSPE Target Module/Lens projection is [`idtspe-methodology/active/navigation/TARGET-MODULE-LENS-DEPENDENCY-MAP.md`](idtspe-methodology/active/navigation/TARGET-MODULE-LENS-DEPENDENCY-MAP.md#idtspe-tm-lens-dependency-map); it projects declarations only and never upgrades ordinary Markdown links into dependency edges.
 
 Use the smallest useful dependency type:
 

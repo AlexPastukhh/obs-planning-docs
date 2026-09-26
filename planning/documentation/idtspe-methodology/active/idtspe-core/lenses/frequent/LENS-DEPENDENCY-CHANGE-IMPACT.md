@@ -1,6 +1,9 @@
 <a id="lens-dependency-change-impact"></a>
 # LENS-DEPENDENCY-CHANGE-IMPACT — Dependency / Change Surface / Blast Radius
 
+> Semantic Owner Dependency
+> - `EXTENDS` [Lens Meta-Model](../LENS-MODEL.md#lens-meta-model) — `LENS.META-MODEL`.
+
 Lens ID: `LENS-DEPENDENCY-CHANGE-IMPACT`
 Legacy alias: `L4`
 

@@ -1,8 +1,9 @@
 <a id="tm-planning-resolution-state"></a>
-# TM-PLANNING-RESOLUTION-STATE — Planning Resolution State / Resolution Carry-Forward
+# TM-PLANNING-RESOLUTION-STATE — Planning Resolution State
 
 > Semantic Owner Dependencies
 > - `CONTEXTUALIZES` [Decision record retention](../resolution/proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md#resolution-decision-retention) — `RESOLUTION.PROPOSAL-DECISION-LIFECYCLE`.
+> - `CONTEXTUALIZES` [Resolution Carry-Forward contract](../resolution/RESOLUTION-CARRY-FORWARD-CONTRACT.md#resolution-carry-forward) — `RESOLUTION.CARRY-FORWARD`.
 
 Entry Point: `tm.planning.resolution.state`
 Role: generic Core Target Module for bounded planning coordination
@@ -10,9 +11,9 @@ Target family / archetype: `PLANNING_RESOLUTION_STATE`
 
 ## Authority and activation
 
-Responsibility ID: `RESOLUTION.CARRY-FORWARD`
+Responsibility ID: `TARGET-MODULE.PLANNING-RESOLUTION-STATE`
 
-**Planning Resolution State (PRS) and Resolution Carry-Forward (RCF) name the same bounded coordination result.** This module is their single canonical owner for membership, Collection/Slot shape, presentation order and continuation materialization. The existing TM, Unit and Slot IDs remain stable. All consumers reference this owner directly.
+**Planning Resolution State (PRS) is the reusable Core Target-result realization of the generic Resolution Carry-Forward contract.** [`RESOLUTION.CARRY-FORWARD`](../resolution/RESOLUTION-CARRY-FORWARD-CONTRACT.md#resolution-carry-forward) owns qualification, Decision admission/exit and the durable-materialization threshold. This module owns the concrete bounded Target-result shape: its two Units, Collection/Slot contracts, item addressing, presentation/composition and PRS-local reconciliation. Consumers of generic carry-forward semantics depend on the resolution contract; consumers of this concrete result schema depend on this Target Module.
 
 The result keeps open/deferred Proposals together with their related Q/R/P, and accepted Decisions only while material related Q/R/P require continuation. It may also keep unresolved subjects whose addressing Proposal has not yet been formed. Do not invent a Proposal or Q/R/P just to fill the representation.
 
@@ -23,7 +24,7 @@ The result keeps open/deferred Proposals together with their related Q/R/P, and 
 
 This Target Module owns the **coordination/result shape** of one bounded Planning Resolution State (PRS). Its retained Decision items represent existing Core Decision State under the [Decision record retention contract](../resolution/proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md#resolution-decision-retention); this module does not define a second Decision type, field semantics or selection lifecycle. Proposal and Decision selection remains with [Proposal and Decision Lifecycle](../resolution/proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md#resolution-proposal-decision-lifecycle); Question/Risk/Problem semantics remain with [Q/R/P Lifecycle](../resolution/qrp/QRP-LIFECYCLE-AND-REVIEW.md#resolution-qrp-lifecycle). Natural Target/Requirement owners retain accepted content. PRS is a Target result, not another Core State kind, semantic owner for every referenced item, mandatory global backlog, or phase workflow.
 
-Form/reuse a PRS/RCF when open Proposal/Q/R/P work, accepted Decisions with material related Q/R/P, or a cross-owner resolution handoff needs one coherent view. Its absence does not imply the underlying state is absent. The representation may be transient Work Context, a local working file, or a persisted checkpoint; these are representations of the same semantic result, not separate authorities.
+Form/reuse a PRS when the [Carry-Forward qualification contract](../resolution/RESOLUTION-CARRY-FORWARD-CONTRACT.md#resolution-carry-forward-qualification) says surviving resolution state needs one coherent bounded coordination result. Its absence does not imply the underlying state is absent. The representation may be transient Work Context, a local working file, or a persisted checkpoint; these are representations of the same semantic result, not separate authorities.
 
 ## Target Step Result
 
@@ -100,22 +101,7 @@ Keep the Proposal ↔ Q/R/P graph recursive and addressable; do not flatten it i
 | `PRS-DECISION-QRP` | `QRP` | One or more material unresolved/residual Question/Risk/Problem refs, with status and their relation to this Decision. |
 | `PRS-DECISION-EVIDENCE` | `EVIDENCE` | Zero or more supporting/revalidation Evidence refs. |
 
-**Decision membership requires qualifying related Q/R/P (1..N).** Open/deferred Questions or Problems and material accepted/mitigated residual Risks or accepted limitations qualify while continuation value remains. Fully resolved Q/R/P, a generic future reconsider condition, historical interest or an Evidence link alone do not qualify a Decision. Name the actual related Q/R/P and why it remains material; do not manufacture one to retain a choice.
-
-When the last qualifying Q/R/P closes or ceases to be material, remove the separate retained Decision record from the current PRS/RCF result. Preserve accepted Unit content and useful ordinary rationale/Evidence at their natural owners. Do not move the record to an independent Decision/ADR/history owner. This exit does not reverse selection, erase immutable historical Evidence or close unrelated Q/R/P.
-
-### Worked admission / exit cases
-
-These cases demonstrate this module and the linked Core retention contract; they do not add a separate lifecycle.
-
-| Case | Representation |
-|---|---|
-| Authorized selected meaning, no qualifying Q/R/P | Normal Unit content; no separate retained Decision record. |
-| Authorized selection, qualifying Q/R/P and independent retention value | One retained Core Decision item in this PRS, with selected context and integration/QRP references. |
-| Last qualifying Q/R/P closes | Remove the retained Decision item; preserve accepted Unit content. |
-| Unselected candidate with Q/R/P | Proposal/question context; Q/R/P does not establish selection. |
-| One choice spans several owners | Each Unit owns its accepted meaning; one representation of the same retained Decision in its coordination scope. |
-| Historical interest without qualifying Q/R/P | Useful ordinary context or immutable historical Evidence; no manufactured Q/R/P or alternative current Decision register. |
+**Decision membership is delegated to [`RESOLUTION.CARRY-FORWARD`](../resolution/RESOLUTION-CARRY-FORWARD-CONTRACT.md#resolution-carry-forward-decision-retention).** `RU-PRS-02` represents only Decisions currently admitted by that contract and carries the qualifying Q/R/P references required by its Item Contract. This Target Module does not restate which Q/R/P qualify, the admission rule, or the exit rule. When Carry-Forward removes a Decision from current continuation, remove its PRS Collection Item while preserving the natural-owner meaning governed by the underlying lifecycle owners.
 
 ## Unit processing envelope
 
@@ -131,7 +117,7 @@ Both Units follow the generic Opening / In-Unit / Closing Lens applicability env
 
 1. **Opening Unit Checkpoint — `RU-PRS-02`**: resolve accepted selection, natural owner and qualifying related Q/R/P.
 2. **Unit Work — `RU-PRS-02`**: maintain Decision items with required related Q/R/P and material Evidence.
-3. **Closing Unit Checkpoint — `RU-PRS-02`**: recheck integration refs and Q/R/P membership; remove completed retained Decision entries while preserving accepted Unit content and ordinary context.
+3. **Closing Unit Checkpoint — `RU-PRS-02`**: recheck integration refs and current membership through the Carry-Forward owner; remove Collection Items no longer admitted without changing natural-owner content.
 
 <a id="prs-rcf-presentation"></a>
 ## Presentation and linked resolution context
@@ -143,25 +129,23 @@ Show the current-focus/priority view separately by reference to the same item ke
 Within each subject show its open/deferred Proposals with their related Q/R/P, statuses, material Evidence and resolution relations. A Decision entry shows the accepted selection, qualifying Q/R/P and integration destination together. Links or compact bodies are valid; all links must reach the actual context. A flat list of Decisions, Proposals or Q/R/P that hides their material relations is insufficient. Preserve many-to-many and recursive Proposal ↔ Q/R/P relations, including addressing Proposals for a Q/R/P; one canonical item may be linked from several entries. A Proposal may have no material Q/R/P; state that proportionally without inventing content. Unresolved subjects may precede candidate formation.
 
 <a id="prs-rcf-materialization"></a>
-## Durable Coordination Materialization Threshold
+## Durable Coordination Materialization
 
-One discoverable durable representation is REQUIRED when the Work Context survives the immediate conversation/session, multiple material qualifying items must survive continuation/handoff/re-entry, and those items are not already discoverable together through an existing coordination representation. Reuse that representation where available. A transient context below this threshold needs no separate file.
+The generic threshold is owned by [`RESOLUTION.CARRY-FORWARD`](../resolution/RESOLUTION-CARRY-FORWARD-CONTRACT.md#resolution-carry-forward-materialization). When that threshold is met and this Target Module is the selected reusable realization, maintain one discoverable PRS result for the useful coordination scope. Representation/P-14 chooses physical placement; a persisted `PRS.md` (or an already-established equivalent name) is only a representation of this Target result, not another semantic owner.
 
-The persisted PRS checkpoint and an artifact named `RESOLUTION-CARRY-FORWARD.md` represent the same result. Keep one maintained result per useful coordination scope. Representation/P-14 chooses the physical location; it creates no second RCF register. Reconcile after material lifecycle boundaries: keep surviving open/deferred Proposals and their Q/R/P, retain only qualifying Decision entries, and remove closed transient state. Re-entry reads this same result and follows its natural owner references.
+Reconcile PRS membership using the carry-forward admission/exit contract after material lifecycle boundaries while preserving this module's Collection/item identities for surviving entries.
 
-## Representation, checkpoint and archive
+## Representation and checkpoint
 
-An active PRS may live in the current conversation or local working file without persistence. A proportionate checkpoint preserves open Proposal/Q/R/P graphs, Decisions with qualifying Q/R/P, blockers and material Evidence/revalidation relations needed for re-entry. Physical file presence does not determine semantic acceptance.
-
-For a Proposal Workspace Archive, a derived, non-owning `Workspace Authority Projection` may list final workspace path plus Target/Unit/Slot subject, `ACCEPTED` or `PROPOSED` status, and Proposal identity/status for proposed meaning. One file may contain mixed subject statuses. An archive view has a bounded scope, basis and identity and contains only mutually compatible candidate versions at each final-shaped path. ZIP creation does not select, accept or persist its contents. A Replacement Package carries only semantically accepted changes.
+An active PRS may live in the current conversation or local working file without persistence. A proportionate checkpoint preserves the PRS result needed for re-entry. Physical file presence does not determine semantic acceptance. Physical placement, including Proposal Workspace Archive representation, is owned by [Documentation / Representation + P-14](../representation/ARTIFACT-PLACEMENT-AND-IDTSPE-RESPONSE-CONTRACT.md#representation-artifact-placement); this Target Module does not define archive layout or packaging.
 
 ## Example
 
-The [Study Tab Launcher PRS/RCF](../../profiles/sds/examples/study-tab-launcher/project/planning/documentation/resolution-carry-forward.md) demonstrates an unresolved current Problem, separate evidence work, a future Step dependency and an accepted Decision carried with its actual related Problem. Its current basis has no open candidate Proposal; that absence is explicit.
+The [Study Tab Launcher PRS](../../profiles/sds/examples/study-tab-launcher/project/planning/documentation/resolution-carry-forward.md) demonstrates an unresolved current Problem, separate evidence work, a future Step dependency and an accepted Decision carried with its actual related Problem. Its current basis has no open candidate Proposal; that absence is explicit.
 
 ## Relations and guards
 
-- PRS and RCF use one result, membership contract and item schema at this owner.
-- [Decision Revalidation](../resolution/proposal-decision/DECISION-REVALIDATION.resolution-projection.md#resolution-decision-revalidation-projection) is an optional review view for an accepted Decision; active PRS/RCF membership follows this module.
+- `RESOLUTION.CARRY-FORWARD` owns generic continuation qualification/admission/exit; this module owns the concrete PRS result schema when a bounded PRS is formed.
+- [Decision Revalidation](../resolution/proposal-decision/DECISION-REVALIDATION.resolution-projection.md#resolution-decision-revalidation-projection) is an optional review view for an accepted Decision; active carry-forward qualification follows the Core Carry-Forward contract and this module represents the resulting bounded PRS membership.
 - [Proposal/Decision lifecycle](../resolution/proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md#resolution-proposal-decision-lifecycle) owns selection and integration. PRS does not turn a proposal file at a final path into accepted current truth.
 - Under SDS, accepted but unrealized downstream meaning remains in its Evolution Step/Target Body until realization/materialization.

@@ -58,9 +58,9 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
     },
     {
       "responsibilityId": "RESOLUTION.CARRY-FORWARD",
-      "path": "planning/documentation/idtspe-methodology/active/idtspe-core/target-modules/TM-PLANNING-RESOLUTION-STATE.md",
-      "anchor": "ru-prs-02--tracked-decisions",
-      "why": "Owns qualifying Decision admission, representation and exit; no command-local eligibility rule.",
+      "path": "planning/documentation/idtspe-methodology/active/idtspe-core/resolution/RESOLUTION-CARRY-FORWARD-CONTRACT.md",
+      "anchor": "resolution-carry-forward-decision-retention",
+      "why": "Owns qualifying Decision admission/exit and continuation eligibility; concrete PRS representation remains a downstream realization.",
       "role": "SUPPORTING_CONTRACT",
       "readMode": "ON_DEMAND"
     }

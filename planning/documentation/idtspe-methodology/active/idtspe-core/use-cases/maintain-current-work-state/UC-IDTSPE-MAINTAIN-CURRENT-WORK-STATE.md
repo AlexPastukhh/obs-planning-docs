@@ -2,7 +2,7 @@
 
 > Semantic Owner Dependencies
 > - `CONTEXTUALIZES` [Decision record retention](../../resolution/proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md#resolution-decision-retention) — `RESOLUTION.PROPOSAL-DECISION-LIFECYCLE`.
-> - `CONTEXTUALIZES` [PRS Decision admission / exit](../../target-modules/TM-PLANNING-RESOLUTION-STATE.md#ru-prs-02--tracked-decisions) — `RESOLUTION.CARRY-FORWARD`.
+> - `CONTEXTUALIZES` [Resolution Carry-Forward contract](../../resolution/RESOLUTION-CARRY-FORWARD-CONTRACT.md#resolution-carry-forward) — `RESOLUTION.CARRY-FORWARD`.
 
 Status: active IDTSPE runtime Use Case
 
@@ -32,7 +32,7 @@ The smallest useful current Work Context is represented coherently around materi
 > Semantic Owner Dependency
 > Type: `CONTEXTUALIZES`
 > Responsibility: `RESOLUTION.CARRY-FORWARD`
-> Owner: [Planning Resolution State / Resolution Carry-Forward](../../target-modules/TM-PLANNING-RESOLUTION-STATE.md#tm-planning-resolution-state)
+> Owner: [Planning Resolution State](../../target-modules/TM-PLANNING-RESOLUTION-STATE.md#tm-planning-resolution-state)
 
 1. Start from current Broad Discussion, previous integrated state, current Units/Target Results and accepted owner meaning.
 2. Apply the Unit applicability/materiality/disposition contract: every Module-defined Unit of a formed Target remains visible as RESOLVED / OPEN / explicit omission; Core-defined Units remain present only when instantiated by applicability; Contextual Units remain present only when actually defined/formed.

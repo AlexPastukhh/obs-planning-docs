@@ -32,7 +32,7 @@ For semantic boundaries within this area, see [`RESPONSIBILITY-MAP.md`](RESPONSI
 
 IDTSPE Core installs five profile-independent concrete Target Modules:
 
-- [`TM-PLANNING-RESOLUTION-STATE`](TM-PLANNING-RESOLUTION-STATE.md) — Planning Resolution State / Resolution Carry-Forward: open Proposal/Q/R/P work and Decisions with qualifying Q/R/P in two Collection Units.
+- [`TM-PLANNING-RESOLUTION-STATE`](TM-PLANNING-RESOLUTION-STATE.md) — Planning Resolution State: bounded active planning items and retained Decisions with qualifying Q/R/P in two Collection Units; generic continuation qualification remains owned by Resolution Carry-Forward.
 - [`TM-REVIEW-FINDINGS`](TM-REVIEW-FINDINGS.md) — optional bounded evidence-backed Finding analysis; one `RU-RFIND-01` Collection Unit pairs each observation with its diagnosis before any adjacent Core Proposal.
 - [`TM-PROPOSAL-WORKUP`](TM-PROPOSAL-WORKUP.md) — optional bounded candidate-resolution workup and review/handoff when that result is independently useful; canonical Proposals remain Core State at their natural subjects.
 - [`TM-PRE-UPDATE-PLAN`](TM-PRE-UPDATE-PLAN.md) — optional concrete reviewable plan of intended changes before actual mutation; one `RU-PUPDATE-01`.

@@ -1,6 +1,9 @@
 <a id="lens-verifiability-observability-operability"></a>
 # LENS-VERIFIABILITY-OBSERVABILITY-OPERABILITY — Proof / Observation / Diagnosis / Operation
 
+> Semantic Owner Dependency
+> - `EXTENDS` [Lens Meta-Model](../LENS-MODEL.md#lens-meta-model) — `LENS.META-MODEL`.
+
 Lens ID: `LENS-VERIFIABILITY-OBSERVABILITY-OPERABILITY`
 Legacy alias: `L6`
 

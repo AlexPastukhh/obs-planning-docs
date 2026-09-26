@@ -246,7 +246,7 @@ Do not retain creation-wording IDs, labels or aliases after the accepted reposit
 
 ### Proposal archive command
 
-The `дай архив proposal` route is review-only. Its direct invocation body must remain self-contained enough to communicate the selected proposal scope, review-only result and non-apply boundary through canonical `context / result / essence`. It must also preserve repository Markdown references to the existing [documentation-change Use Case](use-cases/UC-DOC-PLAN-DOCUMENTATION-CHANGE.md) and [Use Case definition](principles-and-terminology.md#doc-use-case); producing a proposal archive does not create a new Use Case.
+The `создай архив пропозалов` / `proposal archive` route materializes a portable PRS-centered Proposal Workspace Archive. Its direct invocation body must remain self-contained enough to communicate that PRS is the resume surface, archive packaging is representation-only, existing Proposal/Q/R/P/Decision owners remain authoritative, and the result is not a Replacement Package. When the proposal concerns documentation change, preserve the repository Markdown reference to the existing [documentation-change Use Case](use-cases/UC-DOC-PLAN-DOCUMENTATION-CHANGE.md); producing an archive creates no new Use Case or continuation lifecycle.
 
 ### Replacement archive command
 

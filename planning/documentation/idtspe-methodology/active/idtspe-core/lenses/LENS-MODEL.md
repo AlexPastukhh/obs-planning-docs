@@ -33,6 +33,8 @@ Selected Lens Application
 
 A Lens Application is an execution/application event, not a new semantic owner and not necessarily a durable `Lens Instance`. Selection must preserve the operation: `LENS-X + CHECK` and `LENS-X + CHALLENGE` are distinct Lens Applications when both are materially useful. Several selected Lens Applications in one pass share the same Meta-Model/applicability machinery; unchanged shared work should be reused rather than reread/re-executed per application. Pass-level reuse/trace semantics are owned by [`../runtime/PASS-TRACE-AND-VISIBILITY-CONTRACT.md`](../runtime/PASS-TRACE-AND-VISIBILITY-CONTRACT.md).
 
+Every active concrete `LENS-*` Model MUST declare exactly one `Semantic Owner Dependency` with `EXTENDS` → `LENS.META-MODEL`. This makes generic Lens semantics an explicit vertical dependency and lets concrete Lens files keep only their perspective-specific delta plus any genuinely specialized owner dependencies.
+
 ## 1. Definition
 
 ```text

@@ -1,6 +1,9 @@
 <a id="lens-need-value-scope"></a>
 # LENS-NEED-VALUE-SCOPE — Need / Value / Scope
 
+> Semantic Owner Dependency
+> - `EXTENDS` [Lens Meta-Model](../LENS-MODEL.md#lens-meta-model) — `LENS.META-MODEL`.
+
 Lens ID: `LENS-NEED-VALUE-SCOPE`
 Legacy alias: `L1`
 

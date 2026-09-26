@@ -238,7 +238,7 @@ function readCanonicalSemanticComponents(commands,useCases){
 function readCanonicalScenarios(){
   const items=[],seen=new Set();
   for(const scenarioSourcePath of scenarioSourcePaths){
-    const text=fs.readFileSync(path.join(repoRoot,scenarioSourcePath),'utf8'),presentation=new Map();
+    const text=fs.readFileSync(path.join(repoRoot,scenarioSourcePath),'utf8').replace(/\r\n?/g,'\n'),presentation=new Map();
     for(const section of text.matchAll(/^##\s+(?:\d+\.\s+)?`(SCN-[A-Z0-9-]+)`[^\n]*\n([\s\S]*?)(?=^##\s+(?:\d+\.\s+)?`SCN-|(?![\s\S]))/gm)){
       const scenarioId=section[1],sectionText=section[0],firstStep=sectionText.search(/^### Step /m),marker=sectionText.search(/^\[(?:METHODOLOGY_SCENARIO|WORKING_SCENARIO)\]/m),introEnd=firstStep>=0?firstStep:(marker>=0?marker:sectionText.length),canonicalIntro=sectionText.slice(0,introEnd).trim(),steps=new Map();
       for(const step of sectionText.matchAll(/^### Step `([^`]+)`[^\n]*\n[\s\S]*?(?=^### Step |^\[(?:METHODOLOGY_SCENARIO|WORKING_SCENARIO)\]|(?![\s\S]))/gm))steps.set(step[1],step[0].trim());

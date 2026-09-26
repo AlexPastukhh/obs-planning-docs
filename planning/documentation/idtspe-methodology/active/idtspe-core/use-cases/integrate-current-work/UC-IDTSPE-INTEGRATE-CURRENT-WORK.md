@@ -2,7 +2,7 @@
 
 > Semantic Owner Dependencies
 > - `CONTEXTUALIZES` [Decision record retention](../../resolution/proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md#resolution-decision-retention) — `RESOLUTION.PROPOSAL-DECISION-LIFECYCLE`.
-> - `CONTEXTUALIZES` [PRS Decision admission / exit](../../target-modules/TM-PLANNING-RESOLUTION-STATE.md#ru-prs-02--tracked-decisions) — `RESOLUTION.CARRY-FORWARD`.
+> - `CONTEXTUALIZES` [Resolution Carry-Forward contract](../../resolution/RESOLUTION-CARRY-FORWARD-CONTRACT.md#resolution-carry-forward) — `RESOLUTION.CARRY-FORWARD`.
 
 Status: active IDTSPE runtime Use Case
 
@@ -42,7 +42,7 @@ An **IDTSPE Integration Checkpoint** reconciles material Broad Discussion into t
 > Semantic Owner Dependency
 > Type: `CONTEXTUALIZES`
 > Responsibility: `RESOLUTION.CARRY-FORWARD`
-> Owner: [Planning Resolution State / Resolution Carry-Forward](../../target-modules/TM-PLANNING-RESOLUTION-STATE.md#tm-planning-resolution-state)
+> Owner: [Planning Resolution State](../../target-modules/TM-PLANNING-RESOLUTION-STATE.md#tm-planning-resolution-state)
 
 1. **Collect** — start from the previous coherent state and collect only material changed/new meaning plus current authoritative Sources/owner results needed for coherence.
 > Semantic Owner Dependency
