@@ -4,7 +4,7 @@
 Module ID: `TM-EVOLUTION-STEPS-MAP`
 
 Entry Point: `tm.evolution_steps_map`
-Role: persistent registry/coordination Target
+Role: central accepted Application-development manifest / registry Target
 
 > Semantic Owner Dependency
 > Type: `EXTENDS`
@@ -13,7 +13,7 @@ Role: persistent registry/coordination Target
 
 ## Purpose
 
-Provide discoverable routing across **concrete known future transitions** without duplicating each Evolution Step's complete future-state plan or Target Owner Bodies.
+Own the accepted Application-development manifest: concrete known future transitions, their routing/readiness and coverage of accepted Application intent/Benefits, without duplicating each Evolution Step's complete future-state plan or Target Owner Bodies.
 
 The Map coordinates discoverable **projections** of Step identity, planning position, relations, target-resolution visibility, concern/readiness state and compact uncertainty. `TM-EVOLUTION-STEP` owns those Step semantics; the Map owns only registry/routing/projection behavior.
 
@@ -47,6 +47,7 @@ This module specializes the Core [Target Module Model](../../../idtspe-core/targ
 |---|---|
 | `RU-EVOMAP-01` | Registry / Routing — concrete Step identity, authority/navigation, purpose and planning-position projection |
 | `RU-EVOMAP-02` | Semantic Relations / Concerns / Planning Completeness / Start Readiness — direct `Entering From`, alternative/condition/horizon, compact Step-wide concern status and the two distinct readiness conclusions |
+| `RU-EVOMAP-03` | Application Intent / Benefit Driver Coverage — accepted `AB-*` intent routed to concrete Steps/current realized coverage or explicitly uncovered when material |
 
 ### Result Unit Applicability / Materiality
 
@@ -56,6 +57,7 @@ Unit presence/disposition mechanics follow the Core [`Unit Applicability / Mater
 |---|---|---|
 | `RU-EVOMAP-01` | one or more concrete Steps need discoverable registry/routing visibility | `OMITTED` — no concrete Evolution Step currently deserves registry identity |
 | `RU-EVOMAP-02` | predecessor/alternative/condition/horizon/concern/readiness/uncertainty projection materially affects navigation, realization ordering or review | `OMITTED` with a concise reason when no cross-Step relation/readiness detail is material beyond the registry rows |
+| `RU-EVOMAP-03` | accepted Application Definition intent/Benefit drivers need coverage trace or an explicit uncovered gap | `OMITTED` only when no Application-intent coverage relation is material yet |
 
 
 ### Explicit Unit Checkpoint Placement
@@ -73,6 +75,19 @@ Each material Unit inherits the Core [`Unit Applicability Envelope`](../../../id
 1. **Opening Unit Checkpoint — `RU-EVOMAP-02`** — load only relation/concern/readiness/uncertainty dimensions material to current navigation/review.
 2. **Unit Work — `RU-EVOMAP-02`** — project direct semantic predecessor relations, Step-wide concern status and both readiness conclusions without copying Target Bodies/concerns.
 3. **Closing Unit Checkpoint — `RU-EVOMAP-02`** — verify the projected relation/concern/readiness values resolve to the Step authority and do not invent or recompute Step semantics locally.
+
+#### `RU-EVOMAP-03` processing envelope
+
+1. **Opening Unit Checkpoint — `RU-EVOMAP-03`** — read the relevant accepted Application Definition/Benefit drivers and realized coverage.
+2. **Unit Work — `RU-EVOMAP-03`** — route each material accepted driver to concrete Step authority or current realized coverage; expose uncovered accepted intent truthfully.
+3. **Closing Unit Checkpoint — `RU-EVOMAP-03`** — verify refs and avoid promoting vague pressure into a fake Step.
+
+<a id="ru-evomap-03--application-intent--benefit-driver-coverage"></a>
+## `RU-EVOMAP-03` — Application Intent / Benefit Driver Coverage
+
+The Application Definition owns upstream intent and Benefit promise boundaries. This Map owns the development-plan coverage projection: `AB-*` or precise `BC-*` driver → current realized coverage and/or concrete planned Step → Step-owned authority. Keep materially accepted uncovered intent visible, including when the later planning horizon is `UNESTABLISHED`. Do not copy the Benefit body or Step Target Bodies. A candidate Map remains candidate under Proposal/PRS until selected; Map acceptance does not make a registered Step planning-complete or realization-ready.
+
+One concrete next Step is a valid rolling-horizon manifest. Later work may be `UNESTABLISHED`; speculative ideas remain outside the Step registry until concrete enough to deserve identity.
 
 <a id="ru-evomap-01--registry--routing"></a>
 ## `RU-EVOMAP-01` — Registry / Routing

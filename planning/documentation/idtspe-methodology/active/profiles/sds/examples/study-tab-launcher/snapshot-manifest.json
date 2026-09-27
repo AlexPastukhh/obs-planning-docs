@@ -12,7 +12,7 @@
       "kind": "live",
       "file": "project/planning/documentation/application-definition.md",
       "sourceSha256": "313db714b4d3c55beab4e841070e42d1ea6c3d20e8ba6d44957130d57395209b",
-      "copiedSha256": "e1af2bc9e745564c42cb1ffd7362b72b33504f698e83d84e65363d62da104b13",
+      "copiedSha256": "d133c7b304a46924bec3af363f6a35dbfe41dd793412ba26452971ef56be02ea",
       "linkRewrites": 0,
       "editorialRevisions": [
         {
@@ -27,6 +27,12 @@
           "reason": "Redirect methodology navigation to canonical same-repository owners and clarify historical provenance.",
           "beforeSha256": "725153bb64a5912685c03aab953e4473c0b354a5cf29876da3d3fb5eb5bb46ce",
           "afterSha256": "e1af2bc9e745564c42cb1ffd7362b72b33504f698e83d84e65363d62da104b13"
+        },
+        {
+          "date": "2026-09-28",
+          "reason": "Align copied example with Scenario ownership and Evolution Map Benefit-driver coverage; preserve original captured source and unresolved proof.",
+          "beforeSha256": "e1af2bc9e745564c42cb1ffd7362b72b33504f698e83d84e65363d62da104b13",
+          "afterSha256": "d133c7b304a46924bec3af363f6a35dbfe41dd793412ba26452971ef56be02ea"
         }
       ]
     },
@@ -181,7 +187,7 @@
       "kind": "live",
       "file": "project/planning/documentation/evolution-steps.md",
       "sourceSha256": "a3d5ba301dd875fb49f9c919c2a02e18749af6683b31f94ad5c0904c6a819dd2",
-      "copiedSha256": "2aaa7c0cea6cf82ad28989e57d1be088717d48dfb1a13fe02de186687919d5d3",
+      "copiedSha256": "9e0046342465733c24f4af556badd47bee0c938ae3d4409c32b0199fa4c37282",
       "linkRewrites": 0,
       "editorialRevisions": [
         {
@@ -189,6 +195,12 @@
           "reason": "Redirect methodology navigation to canonical same-repository owners and clarify historical provenance.",
           "beforeSha256": "a3d5ba301dd875fb49f9c919c2a02e18749af6683b31f94ad5c0904c6a819dd2",
           "afterSha256": "2aaa7c0cea6cf82ad28989e57d1be088717d48dfb1a13fe02de186687919d5d3"
+        },
+        {
+          "date": "2026-09-28",
+          "reason": "Align copied example with Scenario ownership and Evolution Map Benefit-driver coverage; preserve original captured source and unresolved proof.",
+          "beforeSha256": "2aaa7c0cea6cf82ad28989e57d1be088717d48dfb1a13fe02de186687919d5d3",
+          "afterSha256": "9e0046342465733c24f4af556badd47bee0c938ae3d4409c32b0199fa4c37282"
         }
       ]
     },

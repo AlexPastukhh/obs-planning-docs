@@ -141,6 +141,10 @@ This is routing orientation only, not a mandatory phase sequence or a duplicate 
 - Behavioral/Mixed Evolution Steps are grounded by affected Feature/Scenario behavior as material. Implementation-focused Steps may exist without inventing new Feature behavior when concrete transition-wide implementation pressure exists and `Behavior Change: None intended`; exact mechanism still belongs to Exact.
 - Step-side future Impact/Target Body semantics stay with `TM-EVOLUTION-STEP`; current-owner reverse Evolution Impact follows the shared `current-owner-evolution-impact-projection-contract.md` rather than a README-local rule.
 
+## Application development orientation
+
+`Application Definition → Evolution Steps Map → concrete Evolution Step → Step-owned downstream Target Bodies → realization/proof/Target Owner Materialization → current natural owners` is the default orientation when material future application development is planned. Application Definition is the upstream temporal exception and keeps Benefit promise intent; Map is the accepted development manifest/coverage projection; Step owns the bounded future transition. Scenario can be formed before Feature resolution. A Map with one concrete next Step and later `UNESTABLISHED` is valid. None of these relations mandates creating every component for every task.
+
 ## Canonical SDS Owners
 
 - [`profile-contracts/SDS-SEMANTIC-COMPOSITION-AND-READINESS.md`](profile-contracts/SDS-SEMANTIC-COMPOSITION-AND-READINESS.md) — cross-owner semantic composition, temporal hosting/readiness, upstream/downstream direction and planning-depth guidance.

@@ -580,6 +580,10 @@ Formation ↔ Resolution
 
 When creating or materially revising the user-facing presentation of a Target, check applicability of [Unit-Centric Presentation](../../lenses/frequent/LENS-UNIT-CENTRIC-PRESENTATION.md#lens-unit-centric-presentation) through P-06 and apply/reuse it when its gate is met, including non-persisted chat results. The Lens owns disclosure criteria; this route adds no Target Requirement, Unit kind or completion status.
 
+### Contextual material-Question derivation
+
+For the current task, accepted Sources, scope and Target maturity, review materially relevant existing state and reuse known resolved/open Questions. Actively derive any **missing** material Questions needed to form or assess the current Target; prepared prompts are guidance, not an exhaustive questionnaire or automatic USER interview. Integrate material answers into the natural planning owners before rechecking completeness/readiness. A material plan/Target change may reopen affected Resolution Slots and require another Question derivation pass. Keep USER-owned choices within the existing intake/gate lifecycle.
+
 ## 11. Questions, Proposals, Branches And Lenses Are Mechanisms, Not Fixed Target Fields
 
 The former prepared/contextual question guidance on the natural Requirement/Unit subject, Lens applicability/selection, Proposal lifecycle on the natural subject and Branch applicability on the natural subject are no longer fixed Target Formation fields.

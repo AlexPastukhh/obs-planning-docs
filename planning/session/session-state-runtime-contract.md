@@ -25,13 +25,15 @@ context/          PRS-selected carried contextual material
 
 ## Default physical shape
 
+The tree below is illustrative navigation, **not a mandatory directory checklist**. A bounded Session State may have no `PRS-CONTEXT-*` items, no `context/` folder and no separate contextual files. `context/` is created only when PRS-selected material must be carried as file-backed content; `REFERENCE_ONLY` material may remain external. Review relevant existing state on re-entry regardless of whether a context file is retained.
+
 ```text
 session-state/
 ├── README.md
 ├── WORK-MANIFEST.md
 ├── inputs/
 ├── work-records/
-├── context/
+├── context/          # only when material file-backed context is carried
 ├── needs/
 ├── resolution/
 │   └── PRS.md

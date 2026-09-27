@@ -110,23 +110,21 @@ Deep guide: [`RU-APP-02 Existing-Solution / Reference Position guidance`](../../
 
 Application exists to realize an already selected real-world solution contribution, not to justify itself after the fact.
 
-## Benefit / Representative Real-Life Scenario Evaluation
+## Benefit / Scenario Coverage Evaluation
 
-Canonical Benefit/RLS schemas and authority are owned by [`TM-APPLICATION-DEFINITION`](../../target-modules/TM-APPLICATION-DEFINITION.md). This Lens evaluates them; it does not redefine them.
+Canonical Benefit and `RU-APP-04` coverage semantics belong to [`TM-APPLICATION-DEFINITION`](../../target-modules/TM-APPLICATION-DEFINITION.md). This Lens evaluates them; Scenario owns real-life journey and Application Contributions.
 
 Check proportionally:
 
 ```text
 Do selected/possible Benefits state a real User Need and what the user receives?
-Does each substantive Benefit state its own Responsibility Boundary / Constraints: what the Application owns/provides for that Benefit, what remains outside, and which material Benefit-local constraints/non-goals limit that promise?
-Is Additional Info only proportional free-form clarification rather than a forced schema?
-Do representative RLS examples make the Benefits understandable through concrete real-life situations?
-Is the bounded [Target contribution] explicit enough to avoid responsibility creep?
-Do surrounding RLS steps remain surrounding workflow rather than selected Application behavior?
-Are `AB-*` manifestation/closure markers truthful and many-to-many where useful, and when only one owned boundary/constraint clause is actually evidenced, would the more precise `AB-* / BC-*` reference avoid implying whole-Benefit realization?
+Does each substantive Benefit state its own Responsibility Boundary / Constraints: what the Application owns/provides, what remains outside, and material Benefit-local limits?
+Is Additional Info proportional free-form clarification?
+Does RU-APP-04 route to actual current or Step-owned Scenario/Evolution coverage and state material accepted-intent gaps without embedding journey bodies?
+Are materially distinct real-life Application Contribution variants reviewed by the Scenario owner rather than hidden by Benefit-level coverage?
 ```
 
-Supporting refinement guide: [`RU-APP-04 Representative Real-Life Scenarios guidance`](../../target-module-support/application-definition/RU-APP-04-REPRESENTATIVE-REAL-LIFE-SCENARIOS.unit-guidance.md).
+Supporting refinement guide: [`RU-APP-04 Scenario / Evolution Coverage`](../../target-module-support/application-definition/RU-APP-04-REPRESENTATIVE-REAL-LIFE-SCENARIOS.unit-guidance.md).
 
 ## Concept Sufficiency
 
@@ -175,7 +173,7 @@ Do not turn Application Definition into detailed Domain/Architecture/Slice plann
 ```text
 build/buy/adapt/integrate/hybrid finding
 reference/market Evidence
-Benefit sufficiency / Representative RLS boundary findings
+Benefit sufficiency / Scenario coverage boundary findings
 truthful Target-contribution boundary
 concept sufficiency
 Benefit responsibility/state boundary
@@ -230,7 +228,7 @@ This Lens evaluates Application boundary/feasibility but does not independently 
 If this Lens exposes a genuinely independent Evidence or planning problem outside that Target result, surface the Finding Candidate with likely owner/evidence hints. Core Finding Disposition handles the actual Evidence path and may surface a Target Formation candidate; the Lens does not create a second Application artifact authority.
 
 ## Guards / Boundaries
-Competitor feature ≠ our requirement. Representative Real-Life Scenario ≠ Application Scenario. Feasibility ≠ detailed architecture plan.
+Competitor feature ≠ our requirement. Application Definition coverage ≠ Scenario journey body. Feasibility ≠ detailed architecture plan.
 
 ## Finding / Lifecycle Boundary
 

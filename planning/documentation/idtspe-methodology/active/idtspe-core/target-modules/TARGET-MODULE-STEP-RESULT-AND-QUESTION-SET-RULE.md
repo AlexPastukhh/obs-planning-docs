@@ -66,6 +66,8 @@ One Unit may cover several Requirements and one Requirement may require several 
 
 Reusable questions remain guidance on the natural Requirement/Unit/Slot subject. Preset prompts do not automatically become Question State Units or USER-facing interview questions. There is no standalone `Target Question Set` semantic owner.
 
+Reusable module Questions/Drivers guide recognition of grounded Requirements for this current Target/Unit. They are not a standalone fixed Target Question Set, do not automatically become USER questions and do not bound discovery of a missing material Question. Current Sources, existing state, scope and maturity determine which Questions matter; material changes trigger re-derivation where affected.
+
 ## Contextual Completion
 
 An applied Target Module may cover only part of the concrete Target. Missing material needs remain visible and are completed through the canonical Target Formation flow: direct coverage where sufficient, applicable Core-defined Units, Contextual Slot only when the missing formal role remains inside one Unit responsibility, or Contextual Unit when a distinct bounded responsibility remains.

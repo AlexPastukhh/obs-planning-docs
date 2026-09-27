@@ -30,6 +30,12 @@ This map routes SDS profile responsibilities only. It does not duplicate concret
 | Concrete SDS evaluation perspective | selected `lenses/**/LENS-*.md`, identified by its `Lens ID` | Each concrete Lens `EXTENDS LENS.META-MODEL`; Finding disposition stays Core-owned |
 | SDS-specific command-surface / compatibility extension | [`commands/SDS-COMMAND-SURFACE-EXTENSION.md`](commands/SDS-COMMAND-SURFACE-EXTENSION.md#sds-command-surface) — `SDS.COMMAND-SURFACE` | Extends Core command surface only; direct repository command files/Helper remain projections |
 
+| Upstream Application promise intent and downstream coverage refs | [`TM-APPLICATION-DEFINITION`](target-modules/TM-APPLICATION-DEFINITION.md) | No duplicated full real-life Scenario body in `RU-APP-04` |
+| Accepted Application-development manifest and Benefit-driver coverage | [`TM-EVOLUTION-STEPS-MAP`](target-modules/TM-EVOLUTION-STEPS-MAP.md) | Map projects concrete Steps and uncovered intent without owning their Target Bodies |
+| Materially planned unrealized downstream state and planning/readiness loop | [`TM-EVOLUTION-STEP`](target-modules/TM-EVOLUTION-STEP.md) | Step hosts Scenario/Feature/etc future Target Bodies until materialization |
+| Real-life journey, Application Contributions and Feature discovery pressure | [`TM-SCENARIO-PLANNING`](target-modules/TM-SCENARIO-PLANNING.md) | Feature may remain OPEN; one Scenario identity matures |
+| Canonical coherent resolved Application behavior | [`TM-FEATURE`](target-modules/TM-FEATURE.md) | Does not require premature Feature file before boundary resolution |
+
 Examples and Target-Module support files are contextual/supporting projections of the owners above.
 
 SDS traversal presentation/orientation is owned by [`SDS.SEMANTIC-TRAVERSAL-ORDER`](profile-contracts/SDS-SEMANTIC-COMPOSITION-AND-READINESS.md#sds-semantic-traversal-order); the [Shared commodity no-owner gate](target-modules/TM-SHARED-IMPLEMENTATION-CAPABILITY.md#sds-commodity-shared-no-owner) leaves owner-local Slice requirements with their Slices. These are routing notes, not second contracts.

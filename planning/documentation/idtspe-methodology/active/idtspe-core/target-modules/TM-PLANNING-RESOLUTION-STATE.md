@@ -26,6 +26,10 @@ This Target Module owns the **coordination/result shape** of one bounded Plannin
 
 Form/reuse a PRS when the [Carry-Forward qualification contract](../resolution/RESOLUTION-CARRY-FORWARD-CONTRACT.md#resolution-carry-forward-qualification) says surviving resolution state needs one coherent bounded coordination result. Its absence does not imply the underlying state is absent. The representation may be transient Work Context, a local working file, or a persisted checkpoint; these are representations of the same semantic result, not separate authorities.
 
+PRS is the bounded **resolution routing and resume surface** for current basis, Proposal, candidate target-state refs, Q/R/P, Decisions, Evidence, integration/revalidation and material context. A final-shaped candidate file is not accepted merely because PRS points to it. PRS may expose a material Scenario-family coverage Decision in Active Planning or Tracked Decisions; selected durable coverage meaning integrates into the natural Scenario/Evolution owner.
+
+The current PRS Question entries are reusable evidence, not the boundary of Question discovery. Before affected execution or Evolution-Step readiness, derive missing material Questions from the current subject, maturity, relevant existing owners and sources. `RU-PRS-03` may have **zero** contextual items and no separate context files. Review relevant existing state even in that case; retain a contextual item only when its scope, recheck or maintenance value warrants carry-forward.
+
 ## Target Step Result
 
 **Target Step Result:** `Planning Resolution State`

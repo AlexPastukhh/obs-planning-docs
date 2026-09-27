@@ -375,7 +375,7 @@
         "bootstrap SDS planning"
       ],
       "description": "Load the SDS profile over IDTSPE Core.",
-      "meaning": "Refresh SDS governance over always-active IDTSPE Core: the current profile Target Module and Lens registries, profile registry directory and semantic composition/readiness guidance. Resolve optional inherited Core components and representation/materialization policy from their current owners only when applicable. This is governance bootstrap, not task-specific planning execution.",
+      "meaning": "Refresh SDS governance over always-active IDTSPE Core: the current profile Target Module and Lens registries, profile registry directory and semantic composition/readiness guidance. Resolve optional inherited Core components and representation/materialization policy from their current owners only when applicable. This is governance bootstrap, not task-specific planning execution. When concrete future downstream planning exists, orient through Application Definition and Evolution Map before/while forming Step identities; no ceremonial Map or speculative Step when none is material.",
       "activeContextBehavior": "Load or refresh SDS profile governance only. The SDS README assumes the primary bootstrap is current; if not, follow its prerequisite back to planning/README.md first. Preserve current Use-Case-driven Work Context if one exists. Do not perform Target Formation, select a Target, infer CREATE/REFINE/EXTEND/REVALIDATE/REPAIR, or execute a Target Module merely because bootstrap was requested.",
       "traversalReadMode": "Reuse current reliable SDS governance and current IDTSPE Core context; targeted refresh of the selected owner route when uncertain; full SDS governance preflight only when no reliable sufficient governance context exists.",
       "ownerFiles": [
@@ -496,7 +496,7 @@
         "собери пропозал архив"
       ],
       "description": "materialize one portable PRS-centered proposal workspace archive",
-      "meaning": "Materialize the current bounded proposal workspace into one portable archive. Reuse the current Planning Resolution State as the archive's planning/resume surface. If no PRS is currently formed, resolve that absence through the existing Carry-Forward qualification and TM-PLANNING-RESOLUTION-STATE owner: form/reuse a PRS only when the canonical owners say the bounded surviving state needs one; otherwise do not invent an empty PRS or second archive register. Include only the addressable Proposal/workspace artifacts needed by the resulting PRS and selected scope. Proposal, Q/R/P, Decision and carry-forward membership/status remain owned by their existing semantic owners; this command never reclassifies them. Archive paths, persistence and packaging are representation only and never imply acceptance. A Proposal Workspace Archive is not a Replacement Package and MUST NOT use PACKAGE.json, base-files/, replacement-files/ or OBS-ACTION apply protocol structure.",
+      "meaning": "Materialize the current bounded proposal workspace into one portable archive. Reuse the current Planning Resolution State as the archive's planning/resume surface. If no PRS is currently formed, resolve that absence through the existing Carry-Forward qualification and TM-PLANNING-RESOLUTION-STATE owner: form/reuse a PRS only when the canonical owners say the bounded surviving state needs one; otherwise do not invent an empty PRS or second archive register. Include only the addressable Proposal/workspace artifacts needed by the resulting PRS and selected scope. Proposal, Q/R/P, Decision and carry-forward membership/status remain owned by their existing semantic owners; this command never reclassifies them. Archive paths, persistence and packaging are representation only and never imply acceptance. A Proposal Workspace Archive is not a Replacement Package and MUST NOT use PACKAGE.json, base-files/, replacement-files/ or OBS-ACTION apply protocol structure. Archive membership is scope-driven; Needs, Pre-Update, DISCOVERY.md and context files are optional. SDS downstream future Target Bodies remain Evolution-Step-owned.",
       "activeContextBehavior": "Use the current bounded workspace/PRS and checked source basis. When no PRS exists, first follow RESOLUTION.CARRY-FORWARD qualification and TM-PLANNING-RESOLUTION-STATE formation/reuse instead of fabricating archive-local planning state; materialize only after a canonical PRS exists for the bounded workspace. If an existing Proposal Workspace Archive is the selected source, read its PRS entry point and continue ordinary methodology work from the current semantic state; no separate 'continue archive' command is required. Invoke this command only when a portable archive artifact must be created or rematerialized. When the underlying proposal concerns documentation change, route that semantic work through [UC-DOC-PLAN-DOCUMENTATION-CHANGE](../documentation/use-cases/UC-DOC-PLAN-DOCUMENTATION-CHANGE.md); archive creation itself creates no new Use Case or lifecycle.",
       "traversalReadMode": "Read the current PRS plus only the proposal/workspace artifacts and representation context required by the selected archive scope.",
       "ownerFiles": [
@@ -1322,7 +1322,7 @@
         "scenario ideas"
       ],
       "description": "legacy compatibility alias; Scenario ideas routed into current Scenario Planning",
-      "meaning": "Legacy alias for current Scenario planning. Reuse/resolve the natural Scenario context; use TM-SCENARIO-PLANNING for a selected Scenario and normal Target Formation when another Scenario boundary is discovered. Treat supplied legacy-idea/candidate material as normal IDTSPE Proposal/Q/R/P material; do not run the former collect-ideas shell.",
+      "meaning": "Legacy alias for current Scenario planning. Reuse/resolve the natural Scenario context; use TM-SCENARIO-PLANNING for a selected Scenario and normal Target Formation when another Scenario boundary is discovered. Treat supplied legacy-idea/candidate material as normal IDTSPE Proposal/Q/R/P material; do not run the former collect-ideas shell. Route candidate ideas into Step-owned Scenario planning without a Feature-first prerequisite.",
       "activeContextBehavior": "Use the selected/current Scenario when clear; otherwise resolve the Scenario boundary through Target Formation. Keep Domain/Slice implications as downstream handoffs unless the user expands the Target.",
       "traversalReadMode": "Reuse current reliable IDTSPE/SDS governance; refresh the selected Scenario owner/module route when uncertain.",
       "ownerFiles": [
@@ -1789,7 +1789,7 @@
         "определи приложение"
       ],
       "description": "application definition",
-      "meaning": "Run TM-APPLICATION-DEFINITION through current Use-Case-driven IDTSPE composition and the selected Target Module entry point for the selected target.",
+      "meaning": "Run TM-APPLICATION-DEFINITION through current Use-Case-driven IDTSPE composition and the selected Target Module entry point for the selected target. Output Benefit promise boundaries and Scenario/Evolution coverage refs in Application Definition; full real-life journeys belong to Scenario.",
       "activeContextBehavior": "Treat the explicit command as selected invocation intent inside always-active IDTSPE. Re-evaluate current Use-Case composition, resolve/reuse a natural Target/context only when useful, confirm the selected Target Module Entry Point/local applicability gate, and then resolve CREATE/REFINE/EXTEND/REVALIDATE/REPAIR from actual current Target state. Do not create a Target or Result Unit merely because the command exists.",
       "traversalReadMode": "Reuse current reliable IDTSPE/SDS governance; targeted refresh of the selected owner route when uncertain; full bootstrap only when no reliable sufficient governance context exists.",
       "ownerFiles": [
@@ -1811,7 +1811,7 @@
       ],
       "processCalls": [],
       "compositionContributions": [],
-      "expectedOutput": "Application Definition with selected contribution, Application Benefits each carrying its own Responsibility Boundary, representative real-life examples when useful, a concise Application Concept, proportional feasibility, and material Q/R/P/Decisions.",
+      "expectedOutput": "Application Definition with Benefit promise boundaries, feasibility and Scenario/Evolution coverage references rather than journey bodies.",
       "permissionMode": "read-only-planning",
       "keyReminders": [
         "SDS is an IDTSPE profile, not a second runtime.",
@@ -2048,7 +2048,7 @@
         "собери сценарии приложения"
       ],
       "description": "scenario boundary discovery",
-      "meaning": "Focused Scenario-boundary entry: inspect Application responsibility plus selected Feature results/Benefits for independently meaningful actor/external journey boundaries and Benefit manifestation/closure paths, surface Scenario Target candidates through normal Target Formation, and use TM-SCENARIO-PLANNING for each selected Scenario. Do not create a separate Scenario Discovery result/catalog authority.",
+      "meaning": "Focused Scenario-boundary entry: inspect Application responsibility plus selected Feature results/Benefits for independently meaningful actor/external journey boundaries and Benefit manifestation/closure paths, surface Scenario Target candidates through normal Target Formation, and use TM-SCENARIO-PLANNING for each selected Scenario. Do not create a separate Scenario Discovery result/catalog authority. Discover materially distinct real-life paths and Application Contributions; Step-owned Scenario Target Bodies may have Feature Resolution OPEN. Representative equivalent families need explicit coverage rationale/Decision.",
       "activeContextBehavior": "Treat the explicit command as selected invocation intent inside always-active IDTSPE. Re-evaluate current Use-Case composition, resolve/reuse a natural Target/context only when useful, confirm the selected Target Module Entry Point/local applicability gate, and then resolve CREATE/REFINE/EXTEND/REVALIDATE/REPAIR from actual current Target state. Do not create a Target or Result Unit merely because the command exists.",
       "traversalReadMode": "Reuse current reliable IDTSPE/SDS governance; targeted refresh of the selected owner route when uncertain; full bootstrap only when no reliable sufficient governance context exists.",
       "ownerFiles": [
@@ -2073,7 +2073,7 @@
       ],
       "processCalls": [],
       "compositionContributions": [],
-      "expectedOutput": "Scenario Target candidates/boundary decisions and selected/reused TM-SCENARIO-PLANNING owners; any catalog/index is navigation only.",
+      "expectedOutput": "Materially distinct Step-owned Scenario Target candidates, Application Contributions and explicit family coverage decisions; unresolved Feature refs remain OPEN.",
       "permissionMode": "read-only-planning",
       "keyReminders": [
         "SDS is an IDTSPE profile, not a second runtime.",
@@ -2436,7 +2436,7 @@
         "определи ответственность приложения"
       ],
       "description": "focused SDS target",
-      "meaning": "Run focused TM-APPLICATION-DEFINITION intent without creating a new Target type.",
+      "meaning": "Run focused TM-APPLICATION-DEFINITION intent without creating a new Target type. Keep Benefit responsibility at promise boundary and route real-life/Application behavior pressure to Scenario/Evolution planning.",
       "activeContextBehavior": "Treat the explicit command as selected invocation intent inside always-active IDTSPE. Re-evaluate current Use-Case composition, resolve/reuse a natural Target/context only when useful, confirm the selected Target Module Entry Point/local applicability gate, and then resolve CREATE/REFINE/EXTEND/REVALIDATE/REPAIR from actual current Target state. Do not create a Target or Result Unit merely because the command exists.",
       "traversalReadMode": "Reuse current reliable IDTSPE/SDS governance; targeted refresh of the selected owner route when uncertain; full bootstrap only when no reliable sufficient governance context exists.",
       "ownerFiles": [
@@ -3686,7 +3686,7 @@
         "сделай proposals"
       ],
       "description": "Explicitly discover, form, review and refine material IDTSPE Proposals from current context, supplied Findings or a supplied Proposal through the canonical Proposal/Decision lifecycle under USER-gated selection.",
-      "meaning": "Use the current IDTSPE Work Context to discover/form material candidate Proposals, form linked Proposals for supplied material Findings, or review/refine a supplied Proposal. When Findings are the input, preserve their Finding Disposition/RE-* state: deterministic/local candidates remain inside accepted meaning, RE-3 stays BLOCKED_BY_REVALIDATION, and RE-2/RE-4 remain semantic-change candidates requiring normal selection. Canonical Proposal/Decision lifecycle owns candidate/selection semantics; Proposal existence never implies persistence. Keep candidates UNSELECTED unless their route is an already-entailed RE-0 correction that needs no semantic selection, and integrate actually selected semantic change only through normal authority.",
+      "meaning": "Use the current IDTSPE Work Context to discover/form material candidate Proposals, form linked Proposals for supplied material Findings, or review/refine a supplied Proposal. When Findings are the input, preserve their Finding Disposition/RE-* state: deterministic/local candidates remain inside accepted meaning, RE-3 stays BLOCKED_BY_REVALIDATION, and RE-2/RE-4 remain semantic-change candidates requiring normal selection. Canonical Proposal/Decision lifecycle owns candidate/selection semantics; Proposal existence never implies persistence. Keep candidates UNSELECTED unless their route is an already-entailed RE-0 correction that needs no semantic selection, and integrate actually selected semantic change only through normal authority. Complete target-shaped candidate Target/result/file content is required when one is produced, with or without an archive; lifecycle status stays in Proposal/PRS.",
       "activeContextBehavior": "Reuse current Sources, accepted Results, Decisions, Findings and Carry-Forward references first. If explicit Proposal formation targets Findings, consume their current Finding Disposition rather than rerunning Review; form/refine the smallest linked candidate and preserve revalidation blocks. Resolve genuinely required USER-only grounding before presenting a selectable material candidate. For each material selectable Proposal run the Resolution Context Lens and canonical Proposal Semantic Change Impact Review proportionally. Use optional TM-PROPOSAL-WORKUP only when a bounded candidate-resolution brief has independent Target value; ordinary transient Proposal work remains this operation. AI recommendation is not selection. Retention/file persistence is a separate proportional decision.",
       "traversalReadMode": "Reuse current reliable Core governance. Otherwise read the current composition/state model plus canonical Proposal/Decision and Q/R/P lifecycle owners, and the Session USER-gated interaction owner. Load profile/Target/Lens detail only when the current composition makes it applicable.",
       "ownerFiles": [
@@ -3951,6 +3951,60 @@
       "palette": false,
       "helperPresentation": null,
       "methodologyBinding": null,
+      "refinements": []
+    },
+    {
+      "schemaVersion": 1,
+      "id": "application_evolution_map.maintain",
+      "file": "maintain-application-evolution-map.command.md",
+      "command": "веди карту эволюции приложения",
+      "englishName": "maintain application evolution map",
+      "commandFamily": [
+        "веди карту эволюции приложения"
+      ],
+      "description": "Direct SDS evolution-map planning route",
+      "meaning": "Maintain the accepted Application-development manifest, Benefit-driver coverage and concrete Step routing/readiness without copying Step Target Bodies.",
+      "activeContextBehavior": "Treat the explicit command as selected invocation intent inside always-active IDTSPE. Re-evaluate current Use-Case composition, resolve/reuse a natural Target/context only when useful, confirm the selected Target Module Entry Point/local applicability gate, and then resolve CREATE/REFINE/EXTEND/REVALIDATE/REPAIR from actual current Target state. Do not create a Target or Result Unit merely because the command exists.",
+      "traversalReadMode": "Reuse current reliable IDTSPE/SDS governance; targeted refresh of the selected owner route when uncertain; full bootstrap only when no reliable sufficient governance context exists.",
+      "ownerFiles": [
+        "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-EVOLUTION-STEPS-MAP.md",
+        "planning/documentation/idtspe-methodology/active/profiles/sds/commands/SDS-COMMAND-SURFACE-EXTENSION.md"
+      ],
+      "ownerRefs": [
+        {
+          "responsibilityId": "TM-EVOLUTION-STEPS-MAP",
+          "path": "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-EVOLUTION-STEPS-MAP.md",
+          "anchor": "tm-evolution-steps-map",
+          "why": "Direct route to the natural SDS Target Module owner.",
+          "role": "PRIMARY_OWNER",
+          "readMode": "REQUIRED"
+        }
+      ],
+      "includes": [
+        "planning/commands/apply-idtspe-target-module.command.md"
+      ],
+      "processCalls": [],
+      "compositionContributions": [],
+      "expectedOutput": "One bounded Evolution Steps Map with driver coverage, concrete Step refs and later UNESTABLISHED horizon when applicable.",
+      "permissionMode": "read-only-planning",
+      "keyReminders": [
+        "SDS is an IDTSPE profile, not a second runtime.",
+        "AI-proposed material candidates are Proposals by default; selection makes them accepted planning meaning only through normal authority. Under SDS, unrealized selected future meaning stays in the applicable Evolution Step/Target Body until realization/materialization rather than becoming current-owner truth merely by selection.",
+        "Do not infer a dedicated file from Target identity; use Documentation / Representation and P-14 when persistence is material.",
+        "This command plans/reviews only; it does not edit repository files, implement, test, commit or push."
+      ],
+      "userTarget": "<Application development / concrete evolution-map context>",
+      "palette": true,
+      "helperPresentation": null,
+      "methodologyBinding": {
+        "methodologyRuntime": "IDTSPE",
+        "profile": "SDS",
+        "surfaceKind": "TARGET_MODULE",
+        "targetModuleId": "TM-EVOLUTION-STEPS-MAP",
+        "lensId": null,
+        "parentSurface": null,
+        "hostTargetPolicy": "CREATE_OR_REUSE_TARGET"
+      },
       "refinements": []
     },
     {
@@ -4337,6 +4391,60 @@
     },
     {
       "schemaVersion": 1,
+      "id": "application_evolution_step.plan",
+      "file": "plan-application-evolution-step.command.md",
+      "command": "спланируй шаг эволюции приложения",
+      "englishName": "plan application evolution step",
+      "commandFamily": [
+        "спланируй шаг эволюции приложения"
+      ],
+      "description": "Direct SDS evolution-step planning route",
+      "meaning": "Form/refine one concrete Evolution Step, including Step-owned future Target Bodies and iterative contextual planning stabilization before realization.",
+      "activeContextBehavior": "Treat the explicit command as selected invocation intent inside always-active IDTSPE. Re-evaluate current Use-Case composition, resolve/reuse a natural Target/context only when useful, confirm the selected Target Module Entry Point/local applicability gate, and then resolve CREATE/REFINE/EXTEND/REVALIDATE/REPAIR from actual current Target state. Do not create a Target or Result Unit merely because the command exists.",
+      "traversalReadMode": "Reuse current reliable IDTSPE/SDS governance; targeted refresh of the selected owner route when uncertain; full bootstrap only when no reliable sufficient governance context exists.",
+      "ownerFiles": [
+        "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-EVOLUTION-STEP.md",
+        "planning/documentation/idtspe-methodology/active/profiles/sds/commands/SDS-COMMAND-SURFACE-EXTENSION.md"
+      ],
+      "ownerRefs": [
+        {
+          "responsibilityId": "TM-EVOLUTION-STEP",
+          "path": "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-EVOLUTION-STEP.md",
+          "anchor": "tm-evolution-step",
+          "why": "Direct route to the natural SDS Target Module owner.",
+          "role": "PRIMARY_OWNER",
+          "readMode": "REQUIRED"
+        }
+      ],
+      "includes": [
+        "planning/commands/apply-idtspe-target-module.command.md"
+      ],
+      "processCalls": [],
+      "compositionContributions": [],
+      "expectedOutput": "One concrete Evolution Step with truthful Planning Completeness and separate Start Readiness, Step-owned Target Bodies and material Questions.",
+      "permissionMode": "read-only-planning",
+      "keyReminders": [
+        "SDS is an IDTSPE profile, not a second runtime.",
+        "AI-proposed material candidates are Proposals by default; selection makes them accepted planning meaning only through normal authority. Under SDS, unrealized selected future meaning stays in the applicable Evolution Step/Target Body until realization/materialization rather than becoming current-owner truth merely by selection.",
+        "Do not infer a dedicated file from Target identity; use Documentation / Representation and P-14 when persistence is material.",
+        "This command plans/reviews only; it does not edit repository files, implement, test, commit or push."
+      ],
+      "userTarget": "<Application development / concrete evolution-step context>",
+      "palette": true,
+      "helperPresentation": null,
+      "methodologyBinding": {
+        "methodologyRuntime": "IDTSPE",
+        "profile": "SDS",
+        "surfaceKind": "TARGET_MODULE",
+        "targetModuleId": "TM-EVOLUTION-STEP",
+        "lensId": null,
+        "parentSurface": null,
+        "hostTargetPolicy": "CREATE_OR_REUSE_TARGET"
+      },
+      "refinements": []
+    },
+    {
+      "schemaVersion": 1,
       "id": "application_scenario.plan",
       "file": "plan-application-scenario.command.md",
       "command": "спланируй сценарий",
@@ -4345,8 +4453,8 @@
         "спланируй сценарий",
         "план сценария приложения"
       ],
-      "description": "Scenario journey composition across selected Feature results",
-      "meaning": "Run TM-SCENARIO-PLANNING for one actor/external journey in which one or more upstream Application Benefits may manifest or close. Compose selected Feature results, actor/external linking actions, order/branch/convergence/re-entry, continuity, material Screen/external participation, sparse journey-level must-holds and optional E2E Proof Intent. Feature behavior and Feature semantic data remain TM-FEATURE authority; Benefit semantics remain Application Definition authority.",
+      "description": "Scenario journey and Application Contribution planning with Feature OPEN or resolved",
+      "meaning": "Run TM-SCENARIO-PLANNING for one actor/external journey in which one or more upstream Application Benefits may manifest or close. Compose selected Feature results, actor/external linking actions, order/branch/convergence/re-entry, continuity, material Screen/external participation, sparse journey-level must-holds and optional E2E Proof Intent. Feature behavior and Feature semantic data remain TM-FEATURE authority; Benefit semantics remain Application Definition authority. Plan one Scenario identity through OPEN contribution/discovery and later Feature-resolved refs; keep its represented family boundary and remove duplicated detailed behavior after Feature resolution.",
       "activeContextBehavior": "Treat the explicit command as selected invocation intent inside always-active IDTSPE. Re-evaluate current Use-Case composition, resolve/reuse a natural Target/context only when useful, confirm the selected Target Module Entry Point/local applicability gate, and then resolve CREATE/REFINE/EXTEND/REVALIDATE/REPAIR from actual current Target state. Do not create a Target or Result Unit merely because the command exists.",
       "traversalReadMode": "Reuse current reliable IDTSPE/SDS governance; targeted refresh of the selected owner route when uncertain; full bootstrap only when no reliable sufficient governance context exists.",
       "ownerFiles": [
@@ -4368,7 +4476,7 @@
       ],
       "processCalls": [],
       "compositionContributions": [],
-      "expectedOutput": "One Scenario Journey Composition (RU-SCEN-01): actor/context, participating Feature/result links, journey order/branches/re-entry, continuity, one-or-more Benefit manifestation/closure points when material, only material journey must-holds and optional E2E Proof Intent, plus proportional Core State.",
+      "expectedOutput": "One Step-owned or current Scenario journey with actor/external/Application path, contribution set, Feature OPEN or resolved refs, material coverage boundary, continuity and applicable Unit dispositions.",
       "permissionMode": "read-only-planning",
       "keyReminders": [
         "SDS is an IDTSPE profile, not a second runtime.",
@@ -5594,7 +5702,7 @@
         "proposal workup"
       ],
       "description": "Produce an optional bounded candidate-resolution brief when Proposal development and review have independent Target value.",
-      "meaning": "Apply generic Core TM-PROPOSAL-WORKUP only when a bounded candidate-resolution result is independently useful. Form or refine canonical IDTSPE Proposals for grounded Goal/Q/R/P/Finding drivers at the smallest natural affected subjects, then review material candidates through the Resolution Context Lens and Proposal Semantic Change Impact Review. Keep recommendation distinct from USER/owner selection and preserve blocked RE-3 state.",
+      "meaning": "Apply generic Core TM-PROPOSAL-WORKUP only when a bounded candidate-resolution result is independently useful. Form or refine canonical IDTSPE Proposals for grounded Goal/Q/R/P/Finding drivers at the smallest natural affected subjects, then review material candidates through the Resolution Context Lens and Proposal Semantic Change Impact Review. Keep recommendation distinct from USER/owner selection and preserve blocked RE-3 state. Proposal workup uses complete intended target-state shape for candidate Target Instances; keep selection/lifecycle in Proposal/PRS.",
       "activeContextBehavior": "Reuse current accepted meaning, Sources, Findings and their RE-* dispositions. Do not rerun Finding discovery merely because a Finding drives a Proposal; do not form a Target for a trivial/transient candidate when ordinary idtspe.proposal work suffices. If the affected semantic subject is unresolved, surface an ownership Question instead of using this Target as a substitute owner.",
       "traversalReadMode": "Read TM-PROPOSAL-WORKUP and canonical Proposal/Decision lifecycle plus included shared Target/Proposal routes. Open profile/affected owner and Lens detail only where material to the bounded candidate review.",
       "ownerFiles": [

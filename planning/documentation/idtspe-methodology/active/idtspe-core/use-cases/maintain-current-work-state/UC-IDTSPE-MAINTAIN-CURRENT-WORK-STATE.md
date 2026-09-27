@@ -144,6 +144,12 @@ local snapshot ≠ Session-owned second ontology
 ```
 
 <a id="current-work-manifest-selected-contract"></a>
+## In-turn stabilization and rolling horizon
+
+One accepted current action and optionally one concrete next action are enough for a truthful Session Manifest; later work may remain `UNESTABLISHED`. Do not fill the Manifest with speculative long-range work merely to make a list look complete.
+
+When a material answer/Decision affects the current `WR-3` subject, maintain current work state during `WR-5` so the next contextual sweep sees it. Update PRS and accepted Manifest for exact USER-selected/factual or authorized decomposition meaning with revision/history trace. If the prospective target meaning must still be AI-derived, preserve the accepted Manifest and form/reuse a Proposal plus complete candidate target Manifest; use the existing USER review boundary. A change in tentative candidate/route invalidates previous readiness. `WR-6` finally reconciles Manifest, PRS, TWR, pointers and archive after in-turn changes.
+
 ## Accepted Session Work Manifest contract
 
 Substantive Session State normally maintains one accepted `WORK-MANIFEST.md` as a session-scale Evolving Work Record. It may carry stable hierarchical action IDs, current/next work, Need→action coverage (including `UNPLANNED`), current/recent Turn Work Record refs, bounded PRS navigation, artifact/context/review/revalidation dependencies and re-entry route.

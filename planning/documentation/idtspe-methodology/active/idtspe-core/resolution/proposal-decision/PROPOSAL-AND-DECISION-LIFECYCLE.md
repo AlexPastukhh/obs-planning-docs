@@ -185,6 +185,8 @@ When a Target Module uses `selected` / `accepted` wording only to describe the *
 
 A single candidate Target Instance does not require a Planning Branch. Use a Planning Branch when counterfactual downstream exploration beyond that proposed Target is materially useful for comparison.
 
+A candidate Target/result/file produced by any Proposal route, with or without a portable archive, has the **complete intended post-selection semantic and structural shape** at the relevant resolution depth. Its ordinary content and path do not need Proposal-specific prefixes, conditional wording or placeholder status fields when the enclosing Proposal/PRS relation makes authority unambiguous. A complete candidate is still unselected; Decision, integration, temporal hosting and proof govern later authority. A control artifact such as `PROPOSAL.md` may state candidate status and alternatives explicitly.
+
 ## 3C. Smallest Sufficient Planning-State Boundary
 
 `Proposal`, `Selected`, `Current` and analogous planning authority are written at the smallest enclosing scope that makes the contained meaning unambiguous.

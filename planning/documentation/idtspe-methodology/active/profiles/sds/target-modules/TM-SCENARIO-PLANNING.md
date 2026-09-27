@@ -13,9 +13,7 @@ Compatibility rule: canonical ID/path `TM-SCENARIO-PLANNING` is retained; the se
 
 ## Purpose
 
-Own one coherent actor/external journey composition across Feature results, Screens and external contexts, including where one or more upstream Application Benefits manifest or close.
-
-Scenario does **not** own Feature behavior, Feature semantic data, implementation Slice topology, Domain semantics or target-state implementation requirements.
+Own one coherent real-life actor/external/Application journey, including where upstream Benefits manifest or close. It may exist with **zero resolved Features**. While Feature ownership is `OPEN`, bounded Application Contributions and provisional behavior planning belong here as discovery pressure. Once a Feature boundary is resolved, canonical detailed Application behavior, semantic data and Feature-local failures belong to `TM-FEATURE`; Scenario keeps the journey, contribution and resolved Feature/result references. Scenario never owns implementation Slice topology or Domain semantics.
 
 ## Temporal Authority / Evolution-Step Hosting
 
@@ -28,7 +26,9 @@ Selected future journey meaning remains Step-owned until realization/materializa
 A Scenario may own proportionally:
 
 - participating actor(s) / external parties;
-- participating Features and contextual links;
+- Application Contributions with `Feature Resolution: OPEN | RESOLVED(ref)` and contextual links;
+- participating Features/results when resolved;
+- provisional outcome/behavior/failure/continuity pressure while Feature ownership is OPEN;
 - linking actor/external actions between Feature results;
 - ordering, branching, convergence, optional paths and re-entry;
 - result/context continuity from one step to the next;
@@ -44,7 +44,7 @@ A Scenario may own proportionally:
 Typical sources:
 
 - Application Definition / Need / one or more `AB-*` Benefits when applicable; when a journey step manifests only a bounded Benefit boundary/constraint clause, the Scenario may prefer a precise `AB-* / BC-*` reference if available without claiming whole-Benefit realization;
-- selected Features;
+- selected Features when already resolved; no Feature prerequisite for Scenario discovery;
 - Screen topology;
 - external actor/system facts;
 - current implementation/Evidence;
@@ -55,8 +55,10 @@ Typical sources:
 ## Production Method
 
 ```text
-identify actor + Benefit manifestation/closure
-→ select/reconcile participating Feature results
+identify actor/external/Application path + Benefit manifestation/closure
+→ form bounded Application Contributions and material variants
+→ discover provisional behavior and candidate capability boundaries while Feature Resolution is OPEN
+→ resolve Features when enough evidence exists; then reference their results and move detailed behavior to the Feature owner
 → establish order / branch / convergence / re-entry
 → preserve result/context continuity
 → map material Screen/external participation
@@ -78,7 +80,7 @@ This module specializes the Core [Target Module Model](../../../idtspe-core/targ
 
 | Result Unit | Meaning |
 |---|---|
-| `RU-SCEN-01` | Journey Composition — actor/external participation, Feature/context links, order/branch/convergence/re-entry, continuity, Benefit manifestation/closure, sparse journey must-holds and optional E2E Proof Intent |
+| `RU-SCEN-01` | Real-life Journey / Application Contributions — actor/external/Application path, Feature OPEN or resolved links, provisional behavior planning while OPEN, order/branch/re-entry, continuity, Benefit manifestation and optional E2E Proof Intent |
 | `RU-SCEN-02` | Evolution Impact — Scenario-local current-owner reverse navigation/revalidation under the shared projection contract |
 | `RU-SCEN-03` | Journey Realization Concerns — Scenario-wide realization/proof/integration pressure without exact mechanism ownership |
 
@@ -88,7 +90,7 @@ Unit presence/disposition mechanics follow the Core [`Unit Applicability / Mater
 
 | Result Unit | Substantive resolution is material when | Unit disposition when substantive resolution is not material |
 |---|---|---|
-| `RU-SCEN-01` | when journey composition across actors/features/screens/external steps has independent planning value | `OMITTED` when no independently material journey-composition result is needed beyond referenced owner meaning |
+| `RU-SCEN-01` | when a materially distinct real-life path or Application Contribution needs independent planning, including before Feature resolution | `OMITTED` when no independently material journey-composition result is needed beyond referenced owner meaning |
 | `RU-SCEN-02` | for a current realized Scenario, when any concrete unrealized Step materially affects its journey composition; depth follows what that Step has actually resolved | use `OMITTED` with a concise reason when no concrete unrealized Step materially affects this Scenario; in a future Target Scenario Body keep `RU-SCEN-02` present but `OMITTED` because current-owner reverse projection is not applicable inside Step-owned future meaning |
 | `RU-SCEN-03` | when a journey-wide realization/proof/integration concern can materially change feasibility, continuity or proof allocation and is not owned by one Feature/Screen/Domain/Slice/Shared owner | `OMITTED` with a concise reason when no Scenario-wide realization/proof/integration concern exists |
 
@@ -169,10 +171,10 @@ Actor / context: ...
 Benefit refs: <AB-* [ / BC-* ] ...>   # whole Benefit, or an addressable boundary/constraint clause when that is the real scope
 
 Journey:
-  Feature A result
-    → [AB-01 manifests/closes] or [AB-01 / BC-02 manifests]   # optional; use clause precision only when it is the real scope
+  Application Contribution A [Feature Resolution: OPEN | RESOLVED(F-*)]
+    → [AB-01 manifests/closes] or [AB-01 / BC-02 manifests]
   → actor/external linking action
-  → Feature B result
+  → Application Contribution B [Feature Resolution: OPEN | RESOLVED(F-*)]
   ├─ branch ...
   └─ branch ...
   → convergence / re-entry ...
@@ -193,10 +195,10 @@ Application Benefits remain upstream Application Definition authority. A Scenari
 
 ```text
 Feature
-  owns behavior and principal result semantics
+  owns canonical behavior and principal result semantics once resolved
 
 Scenario
-  owns journey composition across those results
+  owns real-life journey and Application Contributions; provisional behavior planning is local only while Feature ownership is OPEN
 
 Screen
   owns spatial/navigation composition and Feature presence
@@ -210,14 +212,20 @@ Prefer selected semantic owners and current Evidence over stale copied scenario 
 
 ```text
 Application Definition / Need / one or more `AB-*` Benefits when relevant; use `AB-* / BC-*` when only an addressable Benefit boundary/constraint clause is the real source
-+ selected Feature results
-+ selected Screen/external context
++ resolved Feature results when they exist; OPEN contributions otherwise
++ material Screen/external context
 + current implementation/Evidence
 + relevant Evolution Steps
 → current Scenario journey question
 ```
 
 A current implementation fact may challenge the journey but does not become Scenario authority merely because it exists.
+
+## Maturity and coverage boundary
+
+`Discovery / provisional behavior planning` and `Feature-resolved` are maturity positions of **one Scenario identity**. Before resolution, a contribution may describe its required Application outcome, provisional behavior and failure/continuity pressure, and candidate Feature boundary reasoning. After resolution, replace copied detailed behavior with Feature/result refs while preserving the real-life journey and contribution. A Feature may satisfy several Scenarios; one Scenario may use several Features. There is no separate durable Feature Discovery file or Scenario type.
+
+Review every materially distinct actor/external/Application path, user experience, branch/re-entry and Application-Contribution set. One Scenario per Benefit is insufficient when these differ. When repetitions differ only by nonmaterial data/identity instances, one representative Scenario family may cover them; route the equivalence/coverage Decision through PRS while material and integrate durable rationale into Scenario/Evolution coverage. Do not enumerate indefinitely many equivalent instances.
 
 ## Journey Constraint Identity
 
@@ -270,13 +278,13 @@ Valid forms include:
 - several small Scenarios in one owner file;
 - dedicated Scenario file when independently reviewed/reused.
 
-Preserve Scenario identity, actor/context where material, Feature references, branch/convergence/re-entry, continuity, Screen/external participation and Benefit manifestation/closure. Do not turn a journey representation into a second Feature behavior catalog.
+Preserve Scenario identity, actor/external/Application context, Application Contributions, OPEN or resolved Feature references, branch/convergence/re-entry, continuity, Screen/external participation and Benefit manifestation/closure. Do not turn a journey representation into a second Feature behavior catalog.
 
 ## Validators
 
 ```text
 journey boundary has coherent starting context + truthful Benefit manifestation/closure and journey result
-participating Feature results are truthful references to Feature authority
+Feature references are truthful when resolved; zero resolved Features is valid; OPEN contributions carry useful provisional behavior without fake Feature identity
 linking actor/external actions are explicit when they matter
 branch paths converge/re-enter/stop explicitly
 continuity identity/Data/context is preserved across steps
@@ -296,7 +304,7 @@ When current repository/app examples are used as Evidence, retain enough source 
 ## Guards
 
 ```text
-Scenario ≠ behavior catalog
+Scenario ≠ a second resolved-Feature behavior catalog
 Scenario ≠ data owner
 Scenario ≠ Screen flowchart only
 Scenario ≠ implementation Slice
@@ -306,7 +314,7 @@ E2E Proof Intent ≠ mandatory test catalog
 
 ## Handoff
 
-Scenario findings route to the natural owner through Proposal/revalidation. Implementation work starts from selected Feature meaning; Scenario remains a source when whole-journey continuity, `RU-SCEN-03` realization concerns or E2E proof matters. Evolution Step `RU-EVO-03` may reference Scenario realization concerns when their composition creates Step-wide pressure.
+Scenario findings route to the natural owner through Proposal/revalidation. Implementation work starts from sufficiently resolved Step-owned Target Bodies; Scenario remains a source when whole-journey continuity, `RU-SCEN-03` realization concerns or E2E proof matters. Evolution Step `RU-EVO-03` may reference Scenario realization concerns when their composition creates Step-wide pressure.
 
 ## Copied project example
 

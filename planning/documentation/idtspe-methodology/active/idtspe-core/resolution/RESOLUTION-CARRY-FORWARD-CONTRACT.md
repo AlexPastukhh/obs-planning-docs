@@ -113,6 +113,8 @@ Do not:
 - infer selection/approval from persistence or continued visibility.
 
 <a id="carry-forward-contextual-material"></a>
+Carry-Forward qualifies surviving resolution state and owns its admission/exit. PRS represents and routes that bounded state; it neither creates a second carry store nor owns the semantic lifecycle of a referenced Proposal, Decision, Q/R/P or context artifact. A contextual Question newly discovered for the current subject enters normal resolution and carry-forward qualification when it survives the current pass.
+
 ## Contextual-material continuation
 
 Carry file/result-changing Proposal current-basis + candidate-target relations whenever the Proposal survives for review/re-entry. Independently qualify `RU-PRS-03` contextual material when losing its ref/currentness/handling obligation would materially harm planning, handoff, re-entry, maintenance or recheck. A bounded PRS may therefore continue with only contextual material and no active Proposal/QRP/Decision item. Context does not manufacture Proposal/QRP/Decision state and cannot retain Decision State outside its existing qualifying Q/R/P admission/exit rules.

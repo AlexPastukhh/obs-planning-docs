@@ -370,6 +370,14 @@ subject to the same USER/Proposal/permission gates.
 **Compatibility note:** IDTSPE remains always applicable as the methodology authority boundary, while this contract owns current `DIRECT | SHELL | NO_EXECUTION` routing. Legacy P-01/P-02 wording is retained only through compatibility surfaces.
 
 <a id="work-record-execution"></a>
+### Pre-execution contextual stabilization
+
+`WR-3` keeps one bounded primary substantive subject. The accepted Manifest action under it is a **tentative execution candidate**: a material answer can preserve, refine, reorder or replace that candidate without silently starting a different primary subject. Before affected business execution, review materially relevant existing owners, Sources, evidence, Manifest and PRS state for this subject; reuse still-material known Questions and actively derive missing material Questions from the current maturity and applicable contracts. No fixed Question checklist or context-file inventory is required. An empty PRS or contextual Collection is not readiness evidence by itself.
+
+During `WR-5`, resolve what existing authority permits. An unanswered USER-owned material choice invokes the existing User Decision Gate and `USER_REVIEW_REQUIRED`; a missing prerequisite/evidence yields `BLOCKED`. Integrate a material answer/Decision consequence into PRS and accepted Manifest **during WR-5** when current authority permits and the next pass needs it. An AI-derived prospective Manifest change remains a Proposal with a complete candidate target Manifest; accepted Manifest stays current pending selection. Re-establish tentative candidate, route and readiness, then repeat the contextual Question sweep after material change. A former readiness conclusion is stale. Business execution begins only at a stable fixed point; `DIRECT` escalates to `SHELL` when material ambiguity appears. If the new action would cross the original `WR-3` subject, stop/review instead of silently replacing the turn's subject.
+
+`WR-6` performs the final Session State, current-pointer/history and archive reconciliation after all in-turn integration; it is not the only possible synchronization moment.
+
 ## 7. Execution/refinement principle — WR-5
 
 `WR-5` begins generic and expands only after the primary subject and route are known.

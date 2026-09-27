@@ -14,7 +14,7 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
     "определи ответственность приложения"
   ],
   "description": "focused SDS target",
-  "meaning": "Run focused TM-APPLICATION-DEFINITION intent without creating a new Target type.",
+  "meaning": "Run focused TM-APPLICATION-DEFINITION intent without creating a new Target type. Keep Benefit responsibility at promise boundary and route real-life/Application behavior pressure to Scenario/Evolution planning.",
   "activeContextBehavior": "Treat the explicit command as selected invocation intent inside always-active IDTSPE. Re-evaluate current Use-Case composition, resolve/reuse a natural Target/context only when useful, confirm the selected Target Module Entry Point/local applicability gate, and then resolve CREATE/REFINE/EXTEND/REVALIDATE/REPAIR from actual current Target state. Do not create a Target or Result Unit merely because the command exists.",
   "traversalReadMode": "Reuse current reliable IDTSPE/SDS governance; targeted refresh of the selected owner route when uncertain; full bootstrap only when no reliable sufficient governance context exists.",
   "ownerFiles": [

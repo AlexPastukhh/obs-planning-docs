@@ -44,10 +44,10 @@ Cross-owner current-vs-future hosting/readiness is routed to the SDS [Semantic C
 
 | Module ID | Alias | Role / Result |
 |---|---|---|
-| [`TM-APPLICATION-DEFINITION`](../target-modules/TM-APPLICATION-DEFINITION.md) | `application` | conditional own-Application contribution / boundary / feasibility |
-| [`TM-FEATURE`](../target-modules/TM-FEATURE.md) | `feature` | primary Feature behavior + Feature/Slice boundary owner |
+| [`TM-APPLICATION-DEFINITION`](../target-modules/TM-APPLICATION-DEFINITION.md) | `application` | upstream Application intent / Benefits / promise boundaries / feasibility and Scenario/Evolution coverage |
+| [`TM-FEATURE`](../target-modules/TM-FEATURE.md) | `feature` | canonical resolved Feature behavior + Feature/Slice boundary owner; formed after sufficient Scenario contribution discovery |
 | [`TM-PROTOTYPE`](../target-modules/TM-PROTOTYPE.md) | `prototype` | transient empirical pre-commit inquiry |
-| [`TM-SCENARIO-PLANNING`](../target-modules/TM-SCENARIO-PLANNING.md) | `scenario` | Scenario journey composition; compatibility ID/path retained |
+| [`TM-SCENARIO-PLANNING`](../target-modules/TM-SCENARIO-PLANNING.md) | `scenario` | real-life journey / Application Contributions with Feature OPEN or resolved; compatibility ID/path retained |
 | [`TM-SCREEN`](../target-modules/TM-SCREEN.md) | `screen` | Screen/spatial/navigation composition |
 | [`TM-DOMAIN-DISCOVERY`](../target-modules/TM-DOMAIN-DISCOVERY.md) | `domain-discovery` / `domain` | transient bounded Domain discovery |
 | [`TM-DOMAIN-OWNER`](../target-modules/TM-DOMAIN-OWNER.md) | `domain-owner` | durable Domain semantic contract + Domain IR |
@@ -55,7 +55,7 @@ Cross-owner current-vs-future hosting/readiness is routed to the SDS [Semantic C
 | [`TM-SLICE-OWNER`](../target-modules/TM-SLICE-OWNER.md) | `slice-owner` | durable end-to-end Slice responsibility + Slice IR |
 | [`TM-SHARED-IMPLEMENTATION-CAPABILITY`](../target-modules/TM-SHARED-IMPLEMENTATION-CAPABILITY.md) | `shared` | durable reusable non-end-to-end implementation capability |
 | [`TM-EVOLUTION-STEP`](../target-modules/TM-EVOLUTION-STEP.md) | `evolution-step` | canonical bounded unrealized future transition / target-state planning owner |
-| [`TM-EVOLUTION-STEPS-MAP`](../target-modules/TM-EVOLUTION-STEPS-MAP.md) | `evolution-map` | registry/routing/selection-relation/readiness map for concrete Step candidates/selections |
+| [`TM-EVOLUTION-STEPS-MAP`](../target-modules/TM-EVOLUTION-STEPS-MAP.md) | `evolution-map` | accepted Application-development manifest: concrete Step routing/readiness and Benefit-driver coverage |
 | [`TM-PRACTICAL-TEST`](../target-modules/TM-PRACTICAL-TEST.md) | `practical-test` | implemented real-subject practical Evidence |
 | [`TM-CODE-REALIZATION`](../target-modules/TM-CODE-REALIZATION.md) | `code-realization` / `code` | exact SDS codebase realization / integration of sufficiently accepted meaning |
 

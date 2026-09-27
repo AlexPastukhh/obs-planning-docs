@@ -21,11 +21,11 @@ concise Application Concept: what we are building, why / overall value, and how 
 + why custom software is still justified
 + which Application Benefits are selected/possible
 + what Responsibility Boundary / Constraints belong to each Benefit
-+ which representative real-life situations show those Benefits in context
++ which Scenario/Evolution coverage references make those Benefits traceable
 + whether the concept/Benefit boundaries are plausibly realizable
 ```
 
-Application Benefits and Representative Real-Life Scenarios are separate responsibilities. Each Benefit owns independently addressable user-value meaning **and its own Responsibility Boundary / Constraints** for that Benefit. Representative RLS instances are many-to-many examples of how one or several Benefits may manifest in a larger real-world path. RLS surrounding steps do not become selected Application behavior merely because they are shown.
+Each Benefit owns independently addressable user-value meaning **and its own Responsibility Boundary / Constraints**. `RU-APP-04` keeps only coverage/navigation to the Scenario and Evolution owners that develop or realize that intent, including known gaps. Full actor/external/Application journeys belong to Scenario, not to Application Definition.
 
 Use this Target when Application need/value/contribution, Benefit set, one or more Benefit Responsibility Boundary / Constraints, Application Concept or feasibility is materially unsettled or challenged. Application Definition is upstream intent/value authority and may intentionally lead downstream realization.
 
@@ -88,14 +88,12 @@ hybrid: existing tool + small integration
 
 Suppose the evidence shows that existing tools save material, but all require enough context switching that they fail the accepted low-interruption Need.
 
-The Application Definition may then capture the Benefit, that Benefit's own responsibility boundary, and one representative real-life situation:
+The Application Definition may then capture the Benefit, that Benefit's own responsibility boundary, and a concise source situation that can drive a separately owned Scenario:
 
 ```text
-user notices a useful fragment
-→ preserves fragment + source context quickly
-→ continues reading
-→ later returns to a temporary review inbox
-→ decides what deserves long-term storage
+Source situation: a reader needs to preserve a useful fragment without losing reading flow.
+Scenario coverage: OPEN until a real-life actor/external/Application journey is separately formed.
+Evolution coverage: OPEN until a concrete downstream transition deserves Step identity.
 ```
 
 For example, the relevant Benefit can carry its own boundary:
@@ -125,7 +123,7 @@ The result is a coherent Application Definition containing:
 concise Application Concept, including a short explanation of how it roughly works
 why custom software is still justified
 Application Benefits, each with its own Responsibility Boundary / Constraints
-Representative Real-Life Scenarios that make Benefits concrete through real examples
+Scenario/Evolution coverage references that locate real-life journeys and planned transitions
 owned vs merely consumed information/state as expressed by the affected Benefit boundaries
 material feasibility findings
 ```
@@ -213,13 +211,13 @@ RU-APP-03 Application Benefits
     Responsibility Boundary / Constraints — required and specific to this Benefit; state the owned/outside boundary and any material Benefit-local constraints/non-goals without inventing empty constraints
     Additional Info — optional free-form; no mandatory internal schema
 
-RU-APP-04 Representative Real-Life Scenarios
+RU-APP-04 Scenario / Evolution Coverage
   Drivers:
-    Which concrete real-world situations make selected/possible Benefits understandable?
-    Where exactly is the bounded Application Target contribution inside the larger path?
-    Which AB-* items manifest/close at which real-world steps?
+    Which natural Scenario owners or planned Step-owned Scenario bodies cover each accepted Benefit?
+    Which accepted intent remains uncovered or awaits concrete Step identity?
+    Which Scenario/Step reference carries the real-life path rather than copying it here?
   Knowledge Basis:
-    [RU-APP-04 Representative Real-Life Scenarios guidance](../target-module-support/application-definition/RU-APP-04-REPRESENTATIVE-REAL-LIFE-SCENARIOS.unit-guidance.md) when stronger representative-path guidance is useful
+    [RU-APP-04 Scenario / Evolution Coverage guidance](../target-module-support/application-definition/RU-APP-04-REPRESENTATIVE-REAL-LIFE-SCENARIOS.unit-guidance.md) when stronger representative-path guidance is useful
 
 RU-APP-07 Realization Feasibility
   Drivers:
@@ -244,13 +242,13 @@ Default reusable production path:
 sketch the concise Application Concept from trusted Need/contribution Sources
 → research existing solutions/references proportionally
 → form/refine Application Benefits, including each Benefit's own Responsibility Boundary / Constraints
-→ form only representative RLS examples that materially clarify Benefits through concrete real-life context
+→ route materially distinct real-life paths into Scenario planning and record Scenario/Evolution coverage references without copying their bodies
 → refine the opening Application Concept from the resolved value/boundary context
 → test realization feasibility of the concept and affected Benefit boundaries
 → resolve material alternatives through normal Proposal/Branch/Decision state
 ```
 
-Benefit semantics do not belong to one RLS, and an RLS may demonstrate several Benefits. Surrounding real-world steps before/after the Target contribution remain explanatory context rather than silently expanding selected Application behavior.
+A Benefit may be covered by several Scenarios and a Scenario may manifest several Benefits. Record coverage and unresolved gaps; do not restate the Scenario journey as Application Definition content.
 
 Material alternative comparisons are Resolution/Production state until selected; they are not a separate Result Unit by default. A Lens may surface Finding Candidates while this method runs; Core Finding Disposition owns their State/lifecycle/owner destination.
 
@@ -269,7 +267,7 @@ The five Module-defined Result Units below are the complete Application Definiti
 | `RU-APP-05` | Application Concept | concise summary of what the Application is, why it is needed / overall Benefit, and briefly how it roughly works |
 | `RU-APP-02` | Existing-Solution / Reference Position | Existing Solutions / Market / Reference Research |
 | `RU-APP-03` | Application Benefits | addressable `AB-*` user-value responsibilities, each with its own Responsibility Boundary / Constraints |
-| `RU-APP-04` | Representative Real-Life Scenarios | representative `RLS-*` examples that make Benefits concrete, with bounded Target contribution + optional Benefit manifestation/closure markers |
+| `RU-APP-04` | Scenario / Evolution Coverage | references from accepted/possible Benefits to current or Step-owned Scenario and Evolution coverage, with material uncovered intent explicit |
 | `RU-APP-07` | Realization Feasibility | proportional feasibility findings |
 
 ### Result Unit Applicability / Materiality
@@ -281,7 +279,7 @@ Unit presence/disposition mechanics follow the Core [`Unit Applicability / Mater
 | `RU-APP-05` | always once an Application Definition Target is formed; a concise understandable Application Concept is a core responsibility | no Unit-level omission after Target formation; unresolved concept remains `OPEN` |
 | `RU-APP-02` | build/buy/adapt/integrate/reference position can change selected contribution, Benefit set or feasibility | `OMITTED` when trusted existing-solution context is already sufficient and adds no decision value |
 | `RU-APP-03` | always once an Application Definition Target is formed; Application Benefits are the independently addressable value responsibilities that justify downstream planning, and each substantive Benefit needs its own Responsibility Boundary / Constraints | no Unit-level omission after Target formation; if Benefit or Benefit-boundary/constraint meaning is not sufficiently resolved, keep `OPEN` rather than inventing placeholder Benefits/boundaries |
-| `RU-APP-04` | representative examples materially clarify user/value context, Benefit manifestation/closure or one or more Benefit Responsibility Boundary / Constraints | `OMITTED` when Benefits and their boundaries are already understandable without a representative RLS; the Unit remains present |
+| `RU-APP-04` | accepted/possible Benefits need downstream coverage/navigation or an explicit gap | `OMITTED` only when no Scenario/Evolution coverage is yet material; keep accepted intent and its gap truthful |
 | `RU-APP-07` | feasibility can change concept, one or more Benefit Responsibility Boundary / Constraints, Benefit credibility or build/adapt/integrate position | `OMITTED` when feasibility is routine/trusted and cannot materially change selected Application meaning |
 
 <a id="application-concept"></a>
@@ -303,7 +301,7 @@ Do not turn Application Concept into Feature decomposition, detailed interaction
 
 The stable Application name/ID belongs in the document/Target heading, and Need / upstream driver references belong in ordinary source context. They do not require a Result Unit. The legacy `application-definition-identity` anchor routes here for old references; it does not restore retired `RU-APP-01`.
 
-Concept Summary owns only the concise whole-application explanation and selected contribution. Refer to `AB-*` for detailed User Need, User Receives and Benefit-local boundaries; do not repeat their catalog or constraints. Refer to `RU-APP-02` for alternative-route justification, `RU-APP-04` for representative paths, and `RU-APP-07` for feasibility.
+Concept Summary owns only the concise whole-application explanation and selected contribution. Refer to `AB-*` for detailed User Need, User Receives and Benefit-local boundaries; do not repeat their catalog or constraints. Refer to `RU-APP-02` for alternative-route justification, `RU-APP-04` for Scenario/Evolution coverage, and `RU-APP-07` for feasibility.
 
 Terminology at Application Definition may still be immature. A one-off broad label does not require forced canonicalization; when a recurring or behavior-significant concept is already sufficiently clear, it may establish/refine canonical vocabulary here. If later Feature work sharpens the meaning, preserve the vocabulary lineage rather than silently replacing the earlier concept with an unrelated synonym.
 
@@ -358,46 +356,19 @@ Plain `AB-*` references remain valid when the whole Benefit is relevant or finer
 
 `Additional Info` has **no mandatory internal schema**. It may clarify context, examples, scope or other material meaning that does not belong in the required boundary/constraint slot; do not force extra fields for every Benefit.
 
-One Benefit may appear in several Representative RLS; one Representative RLS may demonstrate several Benefits. RLS does not own Benefit semantics or the Benefit's Responsibility Boundary / Constraints.
+One Benefit may relate to several Scenarios and one Scenario may manifest several Benefits. The Scenario owns the real-life journey and Application Contributions; this Unit owns only coverage/navigation.
 
 <a id="representative-real-life-scenarios"></a>
-### Representative Real-Life Scenarios
+<!-- Compatibility anchor for earlier RU-APP-04 references. -->
+### Scenario / Evolution Coverage
 
-`RU-APP-04` owns literal representative examples whose primary purpose is to make one or several Application Benefits understandable through concrete real-life situations. It does not own Application Scenario journey authority.
-
-A proportional RLS may use:
-
-```text
-RLS-<id> — <representative situation>
-Actor / real-world situation: ...
-
-1. <surrounding real-world step>
-2. <surrounding real-world step>
-3. [Target contribution]
-   <bounded Application contribution>
-   [AB-01 manifests/closes]
-   [AB-02 manifests]
-4. <surrounding continuation>
-
-Real-world result / continuation: ...   # when useful
-```
-
-Rules:
+`RU-APP-04` identifies natural current Scenario owners or Step-owned future Scenario Target Bodies that address accepted/possible `AB-*` intent. It may point to a concrete Evolution Step, note an uncovered Benefit, or keep a coverage relation unresolved. It does not contain the actor/external/Application path, provisional Feature behavior or a second Scenario body. Coverage is not proven merely by one Scenario per Benefit: materially distinct real-life experience and Application-Contribution variants are checked by the Scenario owner.
 
 ```text
-RLS surrounding steps
-→ explanatory real-world workflow context
-→ do not become selected Feature/Scenario/Screen/Domain/internal behavior automatically
-
-Target contribution marker
-→ identifies only the bounded Application contribution
-
-Benefit markers
-→ show where an upstream AB-* manifests/closes
-→ do not transfer Benefit authority to RLS
+AB-* / BC-* → current Scenario ref | Step-owned future Scenario ref | OPEN coverage
 ```
 
-RLS must not decompose Target internals into Feature behavior, Screens, Domain objects, internal Application handoffs, architecture or exact mechanisms. Those belong to downstream Target Modules / realization owners.
+Application Definition remains the upstream temporal exception: it may carry accepted future intent before the corresponding Step or downstream owner is realized. `RU-APP-04` does not force a speculative Step identity to fill a roadmap.
 
 <a id="realization-feasibility"></a>
 ### Realization Feasibility
@@ -406,7 +377,7 @@ Use proportional Evidence about representative runtime feasibility, persistence/
 
 ### Alternatives / Comparison
 
-Material Application alternatives remain ordinary Proposal / Planning Branch / Decision state until selected. Benefit/RLS content is not a substitute for candidate comparison.
+Material Application alternatives remain ordinary Proposal / Planning Branch / Decision state until selected. Benefit/coverage content is not a substitute for candidate comparison.
 
 ### Explicit Unit Checkpoint Placement
 
@@ -526,15 +497,15 @@ RESOLVER: P-14 / PERSISTENCE_ADDRESSABILITY
 ```text
 ARTIFACT_PROPOSAL
 ID: AP-APP-03
-CONTENT_KIND: REPRESENTATIVE_REAL_LIFE_SCENARIO
-WHEN: one or several Representative RLS examples are reused/reviewed independently
+CONTENT_KIND: SCENARIO_EVOLUTION_COVERAGE
+WHEN: independent Scenario/Evolution coverage navigation is materially useful
 GUIDANCE: OPTIONAL
 PERSISTENCE_GUIDANCE: OPTIONAL
 PLACEMENT_DIRECTIVE: PLACE
 SEMANTIC_OWNER: Application Definition / RU-APP-04
-REPRESENTATION: EMBED_OR_SEPARATE_ADDRESSABLE_ARTIFACT
-FILE_OR_ARTIFACT: <application-definition-owner> or <representative-r-l-s-artifact>
-CONTENT: representative real-world situation; bounded Target contribution marker; optional AB-* manifestation/closure refs; surrounding workflow context
+REPRESENTATION: EMBED_OR_SEPARATE_COVERAGE_PROJECTION
+FILE_OR_ARTIFACT: <application-definition-owner> or <coverage-projection>
+CONTENT: AB-* / BC-* to current Scenario or Step-owned future Scenario references; accepted intent coverage gaps
 GUIDANCE_SOURCE: TARGET_MODULE
 RESOLVER: P-14 / PERSISTENCE_ADDRESSABILITY
 ```
@@ -546,7 +517,7 @@ Shell placement semantics: [`planning/documentation/idtspe-methodology/active/id
 
 **PREFERRED** — substantial market/reference research may use a supporting Evidence artifact when it is too large/volatile for the canonical Application Definition. Research observations surface Finding Candidates; Core Finding Disposition may resolve accepted material as Evidence/Proposals or another appropriate State, but never as a second application-semantic owner merely because it came from reference research.
 
-**OPTIONAL separate artifact** — one or several Representative Real-Life Scenarios may be embedded in the Application Definition or receive separate addressability when independently reused/reviewed. Separate representation does not turn RLS into Application Scenario authority or Benefit authority.
+**OPTIONAL separate artifact** — a compact coverage projection may be separate when independently reused/reviewed. It references Scenario/Evolution owners and never becomes a second journey authority.
 
 **Keep embedded by default** — concise Application Concept, Application Benefits with their Responsibility Boundary / Constraints, and feasibility conclusion belong to the Application Definition owner rather than separate files per field.
 
@@ -560,9 +531,8 @@ obvious existing solutions were proportionally checked
 custom build remains knowingly justified or a material challenge is dispositioned to Step-02 revalidation/reopen
 Application Benefits state User Need + User Receives + Benefit-specific Responsibility Boundary / Constraints; Additional Info remains optional free-form
 no standalone Responsibility Boundary Result Unit is introduced; cross-Benefit consistency review returns meaning to the affected AB-* owners
-Representative RLS examples make Benefits understandable through concrete real-life situations and remain examples rather than Benefit or Application Scenario authority
-RLS surrounding steps do not silently expand any selected Benefit responsibility boundary
-Benefit ↔ RLS relation may be many-to-many through references/manifestation markers
+RU-APP-04 references natural Scenario/Evolution authorities and makes uncovered accepted Benefit intent visible without copying real-life journeys
+Benefit ↔ Scenario coverage may be many-to-many, including materially distinct path/contribution variants
 Application Concept is a concise summary of what the Application is, why it is needed / overall Benefit, and briefly how it roughly works
 concept + Benefits/boundaries + feasibility form one coherent Application Definition owner
 references seed Evidence/Proposals rather than requirements

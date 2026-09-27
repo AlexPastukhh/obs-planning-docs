@@ -6,7 +6,7 @@
 
 1. Прочитать текущий Target Module из таблицы.
 2. Открыть соответствующий скопированный документ и учесть его status, Sources и дату.
-3. Пройти связи Feature → Scenario → Slice и границу current/future owners. Документы приложения объясняют конкретный результат; текущая методология владеет reusable contracts.
+3. Пройти связи Application Definition → Evolution Map → Step-owned future Target Bodies и текущие Scenario/Feature/Slice owners. Документы приложения объясняют конкретный результат; текущая методология владеет reusable contracts.
 
 | Current owner | Скопированный документ | Что показывает |
 |---|---|---|
@@ -21,6 +21,8 @@
 | [TM-EVOLUTION-STEPS-MAP](../../target-modules/TM-EVOLUTION-STEPS-MAP.md) | [evolution-steps.md](project/planning/documentation/evolution-steps.md) | Текущая/будущая/realized lineage навигация |
 | [TM-PLANNING-RESOLUTION-STATE](../../../../idtspe-core/target-modules/TM-PLANNING-RESOLUTION-STATE.md) | [resolution-carry-forward.md](project/planning/documentation/resolution-carry-forward.md) | Единый PRS/RCF: открытая работа и Decisions со связанными QRP; порядок и приоритет разделены |
 | [TM-PRACTICAL-TEST](../../target-modules/TM-PRACTICAL-TEST.md) | [practical-tests/installed-browser-vscode-handoff.md](project/planning/documentation/practical-tests/installed-browser-vscode-handoff.md) | План практического доказательства с OPEN, не выдуманный success |
+
+`RU-APP-04` in the copied Application Definition now links to the current Scenario journeys and the unrealized Step instead of repeating four miniature journeys. The Map projects `AB-STL-01..04` driver coverage; it does not claim future behavior or installed proof has been realized.
 
 ## Status / authority boundary
 

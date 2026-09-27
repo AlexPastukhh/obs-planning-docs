@@ -21,6 +21,10 @@ After these reads, the Session interaction contract remains ambient across ordin
 - [`use-case-registry.md`](use-case-registry.md) — compatibility routes from the former Session Use Cases to their current Documentation/IDTSPE owners.
 - [`methodological-working-scenarios.md`](methodological-working-scenarios.md) — compatibility route to the IDTSPE Methodology Use-Case Scenario Map.
 
+## Worked example
+
+[Session State worked example](examples/SESSION-STATE-WORKED-EXAMPLE.md) shows one bounded turn with no contextual files and a separate material-answer turn whose planning state changes during `WR-5`. It is illustrative, not a required file tree. This Session package owns physical continuity; Core [Work Runtime](../documentation/idtspe-methodology/active/idtspe-core/runtime/WORK-RECORD-PRINCIPLES.md) and [PRS](../documentation/idtspe-methodology/active/idtspe-core/target-modules/TM-PLANNING-RESOLUTION-STATE.md) own their semantic boundaries.
+
 ## Ownership Boundary
 
 ```text

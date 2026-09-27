@@ -199,70 +199,18 @@ target state remains in
 [EVO-STL-CLOSE-SUPERSEDED-PROJECT-WINDOWS](evolution/unrealized/close-superseded-project-windows.md)
 until implementation and proof justify materialization.
 
-## RU-APP-04 — Representative Real-Life Scenarios
+## RU-APP-04 — Scenario / Evolution Coverage
 
-**Methodology:** [RU-APP-04 Unit Definition](../../../../../target-modules/TM-APPLICATION-DEFINITION.md#representative-real-life-scenarios).
+**Methodology:** [RU-APP-04 Unit Definition](../../../../../target-modules/TM-APPLICATION-DEFINITION.md#representative-real-life-scenarios). The four former mini journeys are now coverage references. Their real-life path, branch and Application Contribution meaning belongs to the linked Scenario owners and selected Evolution Step.
 
-<a id="rls-stl-01"></a>
-### RLS-STL-01 — Continue from a selected file context
+| Benefit driver | Current Scenario coverage | Future Step-owned coverage / gap |
+|---|---|---|
+| [`AB-STL-01`](#ab-stl-01--open-selected-file-context) | [Open linked file context](scenarios/open-selected-study-files.md), including selected file-group context | No separate concrete Step for an additional path currently established |
+| [`AB-STL-02`](#ab-stl-02--open-a-local-project-source) | [Open selected project](scenarios/open-selected-project.md), [folder](scenarios/open-selected-folder.md) and [downloaded archive](scenarios/open-downloaded-archive.md) cover materially distinct source paths | [Close superseded windows](evolution/unrealized/close-superseded-project-windows.md) preserves replacement opening before optional cleanup |
+| [`AB-STL-03`](#ab-stl-03--publish-under-a-chosen-parent) | [Copy trusted project](scenarios/copy-trusted-project.md) covers safe child publication/open; Workspace Trust remains host-owned | No claim of new realized trust behavior |
+| [`AB-STL-04`](#ab-stl-04--retire-superseded-project-windows) | No current Scenario owns realized close behavior | The [selected unrealized Step](evolution/unrealized/close-superseded-project-windows.md) owns Target Scenario Bodies for replacement and optional bounded predecessor-window retirement |
 
-**Actor / real-world situation:** a user receives one Markdown path or an
-ordered group in a chat and wants to inspect that exact context locally.
-
-1. The user selects and copies the intended path text.
-2. **[Target contribution]** The user chooses one explicit file-context action;
-   the application validates and exposes the selected context in VS Code.
-   **[[AB-STL-01](#ab-stl-01--open-selected-file-context) manifests/closes
-   for this invocation.]**
-3. The user continues work or corrects a visible non-success.
-
-<a id="rls-stl-02"></a>
-### RLS-STL-02 — Open an arriving downloaded project
-
-**Actor / real-world situation:** a user knows the name/path of a downloaded
-folder or ZIP, which may still be arriving.
-
-1. The user supplies the selector and chooses project opening.
-2. **[Target contribution]** The application checks or boundedly waits for the
-   exact source, opens the folder or safely materializes and opens the ZIP.
-   **[[AB-STL-02](#ab-stl-02--open-a-local-project-source)
-   manifests/closes on an actual open.]**
-3. The user continues in the project while the previous context remains under
-   VS Code control.
-
-<a id="rls-stl-03"></a>
-### RLS-STL-03 — Establish a separate working child
-
-**Actor / real-world situation:** a user wants to retain a downloaded source
-but work from a child below a locally configured parent.
-
-1. The user selects the source and has already configured the parent in VS
-   Code.
-2. **[Target contribution]** The application reuses a safe existing child or
-   asks before publishing an absent child, then opens the final directory.
-   **[[AB-STL-03](#ab-stl-03--publish-under-a-chosen-parent)
-   manifests/closes on an actual open.]**
-3. VS Code exposes its actual Workspace Trust state; the application does not
-   claim to have granted trust.
-
-<a id="rls-stl-04"></a>
-### RLS-STL-04 — Replace a versioned project and optionally retire predecessors
-
-**Actor / real-world situation:** a newly downloaded project version declares
-exact earlier sibling projects that it supersedes.
-
-1. **[Target contribution]** The application first opens the replacement under
-   the ordinary project Benefit.
-   **[[AB-STL-02](#ab-stl-02--open-a-local-project-source) manifests.]**
-2. **[Future Target contribution]** If exact participating previous windows
-   match, the application offers Open Only or confirmed bounded close attempts.
-   **[[AB-STL-04](#ab-stl-04--retire-superseded-project-windows)
-   manifests/closes after the user's choice and truthful result.]**
-3. The replacement stays open regardless of optional cleanup outcome.
-
-This final RLS demonstrates selected future value; it does not state current
-Feature or Scenario behavior.
-
+Coverage is many-to-many and path-sensitive; these refs do not duplicate Scenario journey bodies. The accepted AB-STL-04 promise precedes its downstream realization; current installed proof remains pending.
 
 ## RU-APP-07 — Realization Feasibility
 

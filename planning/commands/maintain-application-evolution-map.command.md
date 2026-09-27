@@ -1,27 +1,27 @@
-# Define Application
+# Maintain Application Evolution Map
 
 Status: active project command definition
-Scope: one concrete OBS Planning command route. Reusable behavior remains in linked owner files.
+Scope: one concrete OBS Planning command route.
 
 [PLANNING_COMMAND_DEFINITION]
 {
   "schemaVersion": 1,
-  "id": "tmcmd.application.definition",
-  "file": "define-application.command.md",
-  "command": "определи приложение",
-  "englishName": "define application",
+  "id": "application_evolution_map.maintain",
+  "file": "maintain-application-evolution-map.command.md",
+  "command": "веди карту эволюции приложения",
+  "englishName": "maintain application evolution map",
   "commandFamily": [
-    "определи приложение"
+    "веди карту эволюции приложения"
   ],
-  "description": "application definition",
-  "meaning": "Run TM-APPLICATION-DEFINITION through current Use-Case-driven IDTSPE composition and the selected Target Module entry point for the selected target. Output Benefit promise boundaries and Scenario/Evolution coverage refs in Application Definition; full real-life journeys belong to Scenario.",
+  "description": "Direct SDS evolution-map planning route",
+  "meaning": "Maintain the accepted Application-development manifest, Benefit-driver coverage and concrete Step routing/readiness without copying Step Target Bodies.",
   "activeContextBehavior": "Treat the explicit command as selected invocation intent inside always-active IDTSPE. Re-evaluate current Use-Case composition, resolve/reuse a natural Target/context only when useful, confirm the selected Target Module Entry Point/local applicability gate, and then resolve CREATE/REFINE/EXTEND/REVALIDATE/REPAIR from actual current Target state. Do not create a Target or Result Unit merely because the command exists.",
   "traversalReadMode": "Reuse current reliable IDTSPE/SDS governance; targeted refresh of the selected owner route when uncertain; full bootstrap only when no reliable sufficient governance context exists.",
   "ownerFiles": [
-    "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-APPLICATION-DEFINITION.md",
+    "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-EVOLUTION-STEPS-MAP.md",
     "planning/documentation/idtspe-methodology/active/profiles/sds/commands/SDS-COMMAND-SURFACE-EXTENSION.md"
   ],
-  "expectedOutput": "Application Definition with Benefit promise boundaries, feasibility and Scenario/Evolution coverage references rather than journey bodies.",
+  "expectedOutput": "One bounded Evolution Steps Map with driver coverage, concrete Step refs and later UNESTABLISHED horizon when applicable.",
   "permissionMode": "read-only-planning",
   "keyReminders": [
     "SDS is an IDTSPE profile, not a second runtime.",
@@ -29,14 +29,14 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
     "Do not infer a dedicated file from Target identity; use Documentation / Representation and P-14 when persistence is material.",
     "This command plans/reviews only; it does not edit repository files, implement, test, commit or push."
   ],
-  "userTarget": "<one Application Definition>",
+  "userTarget": "<Application development / concrete evolution-map context>",
   "palette": true,
   "refinements": [],
   "methodologyBinding": {
     "methodologyRuntime": "IDTSPE",
     "profile": "SDS",
     "surfaceKind": "TARGET_MODULE",
-    "targetModuleId": "TM-APPLICATION-DEFINITION",
+    "targetModuleId": "TM-EVOLUTION-STEPS-MAP",
     "lensId": null,
     "parentSurface": null,
     "hostTargetPolicy": "CREATE_OR_REUSE_TARGET"
@@ -46,10 +46,10 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
   ],
   "ownerRefs": [
     {
-      "responsibilityId": "TM-APPLICATION-DEFINITION",
-      "path": "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-APPLICATION-DEFINITION.md",
-      "anchor": "tm-application-definition",
-      "why": "Concrete Target Module Model semantics selected by this command; shared port/registry/Meta-Model references are inherited from included commands.",
+      "responsibilityId": "TM-EVOLUTION-STEPS-MAP",
+      "path": "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-EVOLUTION-STEPS-MAP.md",
+      "anchor": "tm-evolution-steps-map",
+      "why": "Direct route to the natural SDS Target Module owner.",
       "role": "PRIMARY_OWNER",
       "readMode": "REQUIRED"
     }

@@ -132,6 +132,8 @@ dependency/readiness notes
 
 This view may be embedded in an existing planning index or generated from owners. It does not become a competing semantic authority.
 
+Step-owned Scenario Target Bodies may be separately addressable files while Feature refs remain `OPEN`; no Feature file is required until its boundary is resolved. A later Step-owned Feature Target Body is complete at the required Step depth, not current Feature authority. Application Definition remains upstream. The Evolution Map links concrete Steps and Benefit drivers without copying their bodies. A Proposal archive's optional context files and target-shaped candidate paths have no independent acceptance authority.
+
 ## Worked Physical Topologies
 
 These are examples, not required trees.

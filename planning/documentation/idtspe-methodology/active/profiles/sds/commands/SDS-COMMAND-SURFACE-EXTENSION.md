@@ -125,6 +125,8 @@ This is the canonical SDS codebase-realization shortcut. It selects the narrower
 
 The S6 item-by-item cleanup also distinguishes **methodology Use-Case projection** from other project-local Use Cases: Planning Helper's methodology Use-Case catalog is derived from the repository [`../../../../../use-case-registry-map.md`](../../../../../use-case-registry-map.md), not from filesystem discovery of every file named `use-case-registry.md`.
 
+The direct `maintain-application-evolution-map` route selects `TM-EVOLUTION-STEPS-MAP` for accepted development-manifest/driver coverage work. The direct `plan-application-evolution-step` route selects `TM-EVOLUTION-STEP` for a concrete transition and its contextual Question/Target Body stabilization. `discover-application-scenarios` can start from Application Contributions with `Feature Resolution: OPEN`; it does not require existing Features. These direct routes remain optional invocation projections inside the same IDTSPE Work Context.
+
 ## Compatibility Representation Modes
 
 Legacy Mini/Modular/Full SDS names, where retained, are hidden representation preferences only:

@@ -525,6 +525,14 @@ Selection/authorization is intentionally not stored as an internal readiness blo
 
 The Steps Map may project both compact statuses; detailed reasons stay in the Step.
 
+## Contextual Step planning stabilization
+
+A concrete Step identity may be established from Purpose, `Driven By` and `Entering From` even while downstream Target Bodies are partly `OPEN`, `Planning Completeness = INCOMPLETE` and `Realization Start Readiness = BLOCKED`. Select the material existing Application/owner/PRS/evidence state for this Step and maturity; reuse known Questions, derive missing material Questions, resolve or route them through existing authority, and integrate consequences into the Step, its Target Bodies, PRS and Map. Re-establish the current Step planning subject and repeat after material changes until planning stabilizes or an existing USER review/blocker applies. No fixed global questionnaire is required.
+
+Step-owned Scenario Target Bodies may be formed first with Application Contributions and `Feature Resolution: OPEN`; Feature Target Bodies appear only when their identity/boundary is sufficiently resolved. Domain, Screen, Slice, Shared and proof Targets are discovered/refined contextually when material. All materially planned unrealized downstream meaning stays Step-owned until realization, required proof/revalidation and Target Owner Materialization. Current-owner reverse impact Units remain `OMITTED` in future bodies where their current-owner role does not apply.
+
+Planning Completeness asks whether the Step's material target meaning and obligations are sufficiently resolved. Start Readiness separately considers predecessors, authority, prerequisites and evidence. An unrealized predecessor blocks starting a Step but does not by itself make its target plan incomplete.
+
 ## Production Method
 
 ```text

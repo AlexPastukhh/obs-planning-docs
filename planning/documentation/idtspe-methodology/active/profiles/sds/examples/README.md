@@ -1,5 +1,8 @@
 # SDS examples
 
+
+- [Application Evolution Proposal Workspace](sds-application-proposal-workspace/README.md) — current upstream intent, unselected Map/Steps and Step-owned Scenarios before Feature resolution; its tree is illustrative and contextual files are optional.
+
 Read the current Target Module contract before using an example. These documents explain outcomes and boundaries; their filenames and historical decisions do not become rules for another application.
 
 | Example | Use |
