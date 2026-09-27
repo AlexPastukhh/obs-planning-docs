@@ -50,7 +50,7 @@ UC-IDTSPE-COMPOSE-CURRENT-WORK
 ↓
 P-01 Invocation
 ↓
-P-02 Pass Trace / Visibility
+P-02 Pass Work Plan / State / Trace / Visibility
 ↓
 Broad Discussion
   + only material explicit Core State

@@ -1,4 +1,4 @@
-# Include Idtspe Persistence / Artifact Capability Port Capability
+# Include IDTSPE Persistence / Artifact Maintenance Capability Port
 
 Status: active project command definition
 Scope: one concrete OBS Planning command route. Reusable behavior remains in linked owner files.
@@ -9,15 +9,15 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
   "commandFamily": [
     "включи порт persistence"
   ],
-  "description": "Check/traverse persistence/artifact-placement work required by the current composition.",
-  "meaning": "Require the named Persistence capability to receive a real applicability/traversal check in the current normal IDTSPE Shell pass. The command expresses an explicit semantic requirement; current Shell topology resolves it to the canonical port. A positive semantic result is not required.",
+  "description": "Check/traverse persistence, artifact-maintenance, placement and bundling work required by the current composition.",
+  "meaning": "Require the named Persistence capability to receive a real P-14 Persistence / Artifact Maintenance applicability/traversal check in the current normal IDTSPE Shell pass, including placement, representation reuse/update, inventory reconciliation or Work Context Bundle consequences when material. The command grants no mutation authority and a positive semantic result is not required.",
   "activeContextBehavior": "Compose into the current/next normal IDTSPE Shell pass. If equivalent Persistence work already exists for the same subject/basis/operation, reuse it instead of repeating it.",
   "traversalReadMode": "Read the included command route and canonical owner files proportionally. Reuse current trustworthy owner/process context; reread only stale, uncertain or newly material owners.",
   "ownerFiles": [
     "planning/documentation/idtspe-methodology/active/idtspe-core/runtime/IDTSPE-RUNTIME-COMPOSITION-CONTRACT.md",
     "planning/documentation/idtspe-methodology/active/idtspe-core/representation/ARTIFACT-PLACEMENT-AND-IDTSPE-RESPONSE-CONTRACT.md"
   ],
-  "expectedOutput": "Persistence capability traversal outcome using the normal P-02 vocabulary, including APPLIED / CHECKED_NO_CHANGE / CHECKED_NO_RESULT / NOT_APPLICABLE / REUSED / BLOCKED / DEFERRED as applicable.",
+  "expectedOutput": "Persistence / Artifact Maintenance traversal outcome using the normal P-02 vocabulary, including placement/reuse/update/inventory/bundle consequences when material and APPLIED / CHECKED_NO_CHANGE / CHECKED_NO_RESULT / NOT_APPLICABLE / REUSED / BLOCKED / DEFERRED as applicable.",
   "permissionMode": "read-only-planning",
   "keyReminders": [
     "This is a named capability requirement, not a parallel numeric-port ontology.",
@@ -31,7 +31,7 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
   "id": "idtspe.port.persistence",
   "file": "idtspe-port-persistence.command.md",
   "command": "включи порт persistence",
-  "englishName": "include IDTSPE persistence / artifact capability port capability",
+  "englishName": "include IDTSPE persistence / artifact maintenance capability port",
   "includes": [
     "planning/commands/work-through-idtspe.command.md",
     "planning/commands/recheck-idtspe-port-composition.command.md",
@@ -51,7 +51,7 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
       "responsibilityId": "IDTSPE.RUNTIME-COMPOSITION",
       "path": "planning/documentation/idtspe-methodology/active/idtspe-core/runtime/IDTSPE-RUNTIME-COMPOSITION-CONTRACT.md",
       "anchor": "idtspe-port-p14",
-      "why": "Defines the canonical Shell connector for P-14 Persistence; the command explicitly requires this capability to receive a real check.",
+      "why": "Defines the canonical Shell connector for P-14 Persistence / Artifact Maintenance; the command explicitly requires this capability to receive a real check.",
       "role": "RUNTIME_ENTRY",
       "readMode": "REQUIRED"
     },
@@ -59,7 +59,7 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
       "responsibilityId": "REPRESENTATION.ARTIFACT-PLACEMENT",
       "path": "planning/documentation/idtspe-methodology/active/idtspe-core/representation/ARTIFACT-PLACEMENT-AND-IDTSPE-RESPONSE-CONTRACT.md",
       "anchor": "representation-artifact-placement",
-      "why": "Separates semantic ownership from physical artifact placement/addressability.",
+      "why": "Separates semantic ownership from physical artifact placement/addressability and owns artifact-maintenance / Work Context Bundle representation behavior.",
       "role": "SUPPORTING_CONTRACT",
       "readMode": "REQUIRED"
     }

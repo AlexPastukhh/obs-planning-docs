@@ -31,7 +31,7 @@ should a separate owner/file/register/companion exist?
 what content still has unresolved persistence/placement?
 ```
 
-This is the lightweight projection of `P-14 Persistence / Artifact Port` and the Target `PERSISTENCE_ADDRESSABILITY` Requirement when physical persistence/representation is material. Semantic retention at an Integration Checkpoint is distinct from this physical placement decision.
+This is the lightweight projection of `P-14 Persistence / Artifact Maintenance Port` and the Target `PERSISTENCE_ADDRESSABILITY` Requirement when physical persistence/representation is material. Semantic retention at an Integration Checkpoint is distinct from this physical placement decision.
 
 The deeper `Artifact / File Realization Pack` remains conditional for non-trivial layout/reorganization decisions.
 
@@ -80,6 +80,52 @@ When such an archive is produced for continued work:
 - keep Proposal Workspace Archive packaging distinct from the executable Replacement Package protocol.
 
 If the archive is supplied as the current read/work source, begin with its PRS entry point, follow canonical references to the actual Proposal/Q/R/P/Decision owners, and continue the normal selected methodology. Representation may be repackaged when a new portable archive artifact is requested; semantic continuation is not gated on that packaging step.
+
+<a id="work-context-bundle"></a>
+## 1D. Artifact Maintenance / Work Context Bundle Representation
+
+P-14 also owns the physical **maintenance of current work representations** when artifact currentness/placement/packaging is material. This is representation maintenance only: semantic owners still decide the meaning and lifecycle of Needs, Review Coverage, P-02, Proposals/Decisions, Evidence and other content.
+
+At a useful authorized checkpoint P-14 may answer proportionally:
+
+```text
+what material work artifacts currently exist?
+where are they?
+which representation is current / historical / stale?
+which artifact is the primary re-entry point?
+should an existing artifact be reused/updated/rematerialized?
+should several working artifacts be bundled for safe handoff?
+```
+
+Artifact maintenance is checkpoint/pass-driven, not a background-write promise. Refresh placement/inventory when material artifacts are created/updated/moved/rematerialized, at an Integration Checkpoint, explicit persistence/packaging request, pass close where cross-pass inventory changed, or handoff/re-entry preparation. Physical mutation still requires the current host/USER authority; `BLOCKED` / `DEFERRED` remain valid outcomes.
+
+When several independently useful working artifacts must survive session/handoff and loose-file fragmentation creates material loss/discoverability risk, P-14 may select/reuse a **Work Context Bundle**. Below that threshold one Current Work Manifest plus a few loose artifacts is valid; there is no fixed numeric file-count threshold.
+
+Portable bundle convention:
+
+```text
+Work Context Bundle
+→ primary entry: WORK-MANIFEST.md or an already established equivalent
+→ related working representations grouped for portability/discoverability
+→ canonical external semantic owners linked, not silently duplicated as equal authorities
+```
+
+The physical form may be an editable directory/workspace during active work and a portable archive at persistence/handoff boundaries. The methodology does not require in-place archive mutation after every event.
+
+Each material member must remain distinguishable as one of:
+
+```text
+canonical semantic owner artifact
+coordination projection
+historical evidence
+generated projection
+copied external/source snapshot
+reference to an external canonical owner
+```
+
+Archive membership never establishes acceptance or semantic authority. Repacking/rematerializing the bundle changes representation only unless a natural semantic owner separately changes.
+
+If a Work Context Bundle is the supplied continuation source, start from its Manifest/primary entry, resolve current goal/basis/artifact inventory and canonical refs, then continue normal `Compose Current Work` / Port Composition / P-02 execution. Do not infer semantic truth merely from bundle membership.
 
 ## 2. Semantic Owner vs Artifact Owner
 

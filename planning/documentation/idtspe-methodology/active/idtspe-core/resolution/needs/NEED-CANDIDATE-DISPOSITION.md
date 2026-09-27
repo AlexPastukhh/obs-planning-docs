@@ -233,3 +233,17 @@ Persistence does not make the Need Candidate a semantic owner. After disposition
 ## 9. Command / Scenario Boundary
 
 `idtspe.needs.disposition` is the reusable orchestration surface over this contract. `idtspe.needs.collect` is separately owned by Need Candidate Collection and stops before disposition. Neither command creates a second lifecycle. Canonical methodology scenarios may reference these owners semantically; Planning Helper may derive command equivalents from those semantic references. Scenario prose must remain command-free.
+
+
+## 10. Need Set Coordination Handoff
+
+When a dispositioned Need is tracked by an existing Need Set, update only the coordination references owned by [`Need Set Coordination`](NEED-SET-COORDINATION.md#resolution-need-set-coordination): disposition result/destination, current downstream references and later fulfillment Evidence as applicable.
+
+```text
+Need Candidate Disposition
+→ canonical destination / existing lifecycle
+→ Need Set records a reference to that result
+→ downstream owner remains semantic authority
+```
+
+Do not copy downstream Requirement/Feature/Proposal/Decision/Evolution/realization bodies into a Need-owned shadow lifecycle. Need Set item tracking status is fulfillment/explicit-stop coordination only and does not replace this contract's disposition state or the destination owner's lifecycle.

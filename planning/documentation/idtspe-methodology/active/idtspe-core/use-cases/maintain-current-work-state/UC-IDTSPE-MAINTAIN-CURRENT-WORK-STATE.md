@@ -3,6 +3,7 @@
 > Semantic Owner Dependencies
 > - `CONTEXTUALIZES` [Decision record retention](../../resolution/proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md#resolution-decision-retention) — `RESOLUTION.PROPOSAL-DECISION-LIFECYCLE`.
 > - `CONTEXTUALIZES` [Resolution Carry-Forward contract](../../resolution/RESOLUTION-CARRY-FORWARD-CONTRACT.md#resolution-carry-forward) — `RESOLUTION.CARRY-FORWARD`.
+> - `CONTEXTUALIZES` [Need Set Coordination](../../resolution/needs/NEED-SET-COORDINATION.md#resolution-need-set-coordination) — `RESOLUTION.NEED-SET-COORDINATION`.
 
 Status: active IDTSPE runtime Use Case
 
@@ -48,10 +49,85 @@ The smallest useful current Work Context is represented coherently around materi
 7. Apply the linked Core Decision retention contract to any separate record. Integrate accepted meaning into natural Unit content independently; a retained record does not create another owner for that meaning.
 8. When a material Proposal itself is retained for continuation/review/handoff/revalidation, preserve its proportional Proposal `Review Provenance`: required Resolution Context Lens operation plus other materially applied Lens operations, directly or by reference to Methodology Usage State. Do not retain the full reasoning transcript.
 9. A transient pending Finding inbox may be used as local working representation, but findings should be dispositioned into their real subjects/owners when useful; the inbox is not a second Finding lifecycle.
-10. Mark invalidated/revalidation-needed dependent meaning without reopening unaffected accepted meaning.
-11. Use the smallest useful representation: context-only, inline state, one local file, several natural owners, or another placement chosen through representation rules.
-12. Refresh the applicable [`Resolution Carry-Forward`](../../target-modules/TM-PLANNING-RESOLUTION-STATE.md#tm-planning-resolution-state) only when material open/deferred/residual continuation state changed; add/remove compact references without copying canonical semantic bodies. When its Durable Coordination Materialization Threshold is crossed, ensure one durable discoverable coordination representation exists for the scope before handoff/re-entry.
-13. Remove/supersede stale duplicate working representation when current state makes it misleading.
+10. When one or more [`Need Sets`](../../resolution/needs/NEED-SET-COORDINATION.md#resolution-need-set-coordination) have material continuation value, retain/reuse their compact coordination state or canonical ledger reference without copying downstream semantic bodies. Keep Collection/Disposition/downstream owners authoritative; Need Set tracking only preserves wanted-outcome continuity and fulfillment/explicit-stop state.
+11. Mark invalidated/revalidation-needed dependent meaning without reopening unaffected accepted meaning.
+12. Use the smallest useful representation: context-only, inline state, one local file, several natural owners, or another placement chosen through representation rules. When the USER explicitly requires a durable Needs ledger, route its exact physical placement through P-14 rather than inventing a universal Core path.
+13. Refresh the applicable [`Resolution Carry-Forward`](../../target-modules/TM-PLANNING-RESOLUTION-STATE.md#tm-planning-resolution-state) only when material open/deferred/residual continuation state changed; add/remove compact references without copying canonical semantic bodies. When its Durable Coordination Materialization Threshold is crossed, ensure one durable discoverable coordination representation exists for the scope before handoff/re-entry. Need Set Coordination remains separate from Carry-Forward/PRS.
+14. Remove/supersede stale duplicate working representation when current state makes it misleading.
+
+<a id="current-work-manifest"></a>
+## Current Work Manifest — Cross-Pass Coordination Projection
+
+When work is materially multi-pass, multi-artifact, handoff-sensitive or explicitly requested to remain visible across messages/sessions, maintain/reuse one compact **Current Work Manifest** as the primary current-work coordination and re-entry projection.
+
+The Manifest is not a new semantic owner. It references the natural owners and keeps only enough cross-pass orientation to resume safely:
+
+```text
+Current Work Manifest
+  bounded Work Context / current basis
+  USER Goal / wanted-outcome refs
+  current focus
+  cross-pass planned actions
+  material Artifact Inventory
+  Need Set refs when material
+  PRS / QRP / Proposal / Decision refs when material
+  Review Coverage refs
+  Revalidation Impact / pending-recheck refs
+  current/recent P-02 Pass Working Record refs
+  blockers / permissions / external dependencies
+  re-entry / next-action route
+```
+
+Activation is proportional. A tiny one-pass task may remain P-02-only. A Manifest becomes material when current work is expected to span several passes/messages, several independently useful artifacts must stay coordinated, revalidation/review work must survive a pass boundary, cross-session/handoff re-entry is material, or the USER explicitly requests central work tracking.
+
+### Goal / action ownership boundary
+
+A concise USER Goal may be projected here, but a grounded durable Need remains owned by Need Candidate Collection / Need Set Coordination. AI-generated candidate work remains Finding/Q/R/P/Proposal/etc. and is not promoted to a USER Goal merely because it appears in the Manifest.
+
+Manifest actions are cross-pass coordination. One current Shell pass selects only the bounded useful subset into P-02; the Manifest is not copied wholesale into the Pass Working Record.
+
+### Artifact Inventory
+
+For material work artifacts, retain proportionally:
+
+```text
+artifact identity / role
+semantic owner
+physical location or Work Context Bundle member
+representation role:
+  authoritative owner artifact
+  coordination projection
+  historical evidence
+  generated projection
+  external canonical reference / copied snapshot
+currentness:
+  CURRENT
+  HISTORICAL
+  STALE / REVALIDATION_NEEDED
+  SUPERSEDED_REPRESENTATION
+last synchronized basis/pass/checkpoint when useful
+important outgoing canonical refs
+```
+
+These are representation/currentness observations only; they do not redefine Need, Proposal/Decision, Review Coverage, P-02 or semantic-owner lifecycle states.
+
+### P-02 / P-14 / P-15 handshake
+
+```text
+Current Work Manifest
++ current USER input
++ canonical owner state
+→ Compose Current Work
+→ bounded work for this pass
+→ P-02 Initial Work Plan
+→ execute / reconcile
+→ refresh Manifest when cross-pass state materially changed
+→ P-14 updates/rematerializes its representation when material and authorized
+```
+
+When P-15 identifies material revalidation that will not be completed in the current pass, retain a compact reference/next action in the Manifest before handoff. Do not copy the full Revalidation Impact Set or P-02 execution history when a reference is sufficient.
+
+When several material work artifacts must survive handoff and loose-file fragmentation creates loss/discoverability risk, route the Manifest and related representations through P-14's `Work Context Bundle` pattern rather than inventing a second archive owner.
 
 ## Boundary
 
@@ -62,5 +138,7 @@ Slot RESOLVED ≠ parent Unit/Target Requirement automatically resolved
 Unit exists ≠ separate file required
 Contextual Unit existed ≠ durable CU result section required
 local Work Context snapshot ≠ semantic authority
+Current Work Manifest ≠ Need Set / PRS / Review Coverage / P-02
+Current Work Manifest ≠ Session-owned second planning runtime
 local snapshot ≠ Session-owned second ontology
 ```

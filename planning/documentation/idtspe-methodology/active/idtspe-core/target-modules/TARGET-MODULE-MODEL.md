@@ -241,7 +241,7 @@ TM-IP-09 OUTPUT
 
 TM-IP-09A ARTIFACT_FILE_CONTRACT
   target-profile persistence/representation requirements/preferences
-  consumed through P-14 Persistence / Artifact and PERSISTENCE_ADDRESSABILITY
+  consumed through P-14 Persistence / Artifact Maintenance and PERSISTENCE_ADDRESSABILITY
 
 TM-IP-10 VALIDATION
   completeness/consistency/projection validators

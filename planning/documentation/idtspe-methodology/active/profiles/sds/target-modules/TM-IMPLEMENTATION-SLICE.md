@@ -148,6 +148,7 @@ Prefer explicit semantic typed entry/result boundaries. A button, route, endpoin
   - [`LENS-DOMAIN-MODELING-DDD`](../lenses/reusable/LENS-DOMAIN-MODELING-DDD.md)
   - [`LENS-UI-SPATIAL-FRONTEND-REALIZATION`](../lenses/reusable/LENS-UI-SPATIAL-FRONTEND-REALIZATION.md)
   - [`LENS-IMPLEMENTATION-REQUIREMENTS-DISCOVERY`](../lenses/reusable/LENS-IMPLEMENTATION-REQUIREMENTS-DISCOVERY.md)
+  - [`LENS-TERMS-UBIQUITOUS-LANGUAGE`](../lenses/reusable/LENS-TERMS-UBIQUITOUS-LANGUAGE.md)
   - [`LENS-WORKSPACE-EVOLUTION-ARCHITECTURE`](../lenses/frequent/LENS-WORKSPACE-EVOLUTION-ARCHITECTURE.md)
   - [`LENS-SIMPLICITY-IMPLEMENTATION-ECONOMY`](../lenses/frequent/LENS-SIMPLICITY-IMPLEMENTATION-ECONOMY.md)
   - [`LENS-DEPENDENCY-CHANGE-IMPACT`](../../../idtspe-core/lenses/frequent/LENS-DEPENDENCY-CHANGE-IMPACT.md)
@@ -170,6 +171,8 @@ candidate classes / methods / calls / signatures
 ```
 
 Keep Feature-specific policy local. Extract Shared capability only for coherent reusable non-end-to-end responsibility.
+
+When semantic application operations, result/failure names or candidate classes/methods/calls/signatures represent established Feature/Domain concepts, keep their vocabulary recognizably aligned with those upstream concepts. Technical adapter/infrastructure names may remain project-native technical vocabulary when they do not represent an accepted semantic concept. A discovered need to rename the concept itself routes through a terminology Finding/upstream revalidation rather than silent drift.
 
 ### RU-SLICE-04 — Feature Integration Proof
 

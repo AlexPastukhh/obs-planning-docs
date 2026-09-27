@@ -17,6 +17,23 @@ implementation jargon in AB/SR/BR → express product meaning; route mechanism t
 
 Terms do not create a second semantic owner. A canonical Term definition points to the natural semantic owner/reference for the concept it names; the vocabulary surface stabilizes language and navigation rather than replacing that owner.
 
+<a id="knowledge-ubiquitous-language-continuity"></a>
+## Downstream vocabulary continuity
+
+When an accepted semantic concept is materially represented downstream, keep that concept **recognizably named across planning and realization** while preserving the natural semantic owner.
+
+```text
+accepted semantic concept
+→ natural semantic owner remains authority
+→ canonical Term stabilizes the language
+→ downstream representation / realization that materially represents
+  the same concept keeps a recognizable vocabulary lineage
+```
+
+Recognizable continuity does not require literal string identity. Representation-native casing, grammar, idiom and meaningful specialization are valid when the relation remains clear. A genuinely new or more-specific concept may receive a new Term; an unexplained different label for the same concept is synonym-drift pressure and should be reviewed rather than silently accepted.
+
+This shared contract is representation-neutral. It does not prescribe classes, methods, schemas, tests or any other profile-specific implementation shape, and it never implies `Feature = class`, `Scenario = method`, `Requirement = method` or an equivalent artifact-to-symbol mapping.
+
 <a id="knowledge-ubiquitous-language-canonical-terms"></a>
 ## Canonical Terms representation
 

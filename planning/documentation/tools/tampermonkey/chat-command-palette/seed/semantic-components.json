@@ -716,10 +716,10 @@
       "scope": "SDS",
       "label": "Terms / Ubiquitous Language",
       "actionLabel": "Terms / Ubiquitous Language",
-      "description": "durable terminology/definition consistency is material, especially for Requirements/errors",
-      "context": "durable terminology/definition consistency is material, especially for Requirements/errors",
-      "result": "durable terminology/definition consistency is material, especially for Requirements/errors",
-      "essence": "Evaluate whether durable semantic terms, requirement/error language, owner/result names, and recurring concepts remain understandable, canonical, owner-aligned, and consistent across the planning surface without leaking incidental implementation jargon into product meaning.",
+      "description": "durable terminology/definition consistency, cross-owner vocabulary lineage, or planning→Domain/Slice/code/test semantic vocabulary continuity is material",
+      "context": "durable terminology/definition consistency, cross-owner vocabulary lineage, or planning→Domain/Slice/code/test semantic vocabulary continuity is material",
+      "result": "durable terminology/definition consistency, cross-owner vocabulary lineage, or planning→Domain/Slice/code/test semantic vocabulary continuity is material",
+      "essence": "Evaluate whether durable semantic terms and recurring concepts remain understandable, canonical, owner-aligned and recognizably continuous from planning through downstream Domain/Slice/code/test realization, without leaking incidental implementation jargon into product meaning or forcing artificial artifact-to-code mappings.",
       "sources": [
         "planning/documentation/idtspe-methodology/active/profiles/sds/registries/LENS-REGISTRY.md",
         "planning/documentation/idtspe-methodology/active/profiles/sds/lenses/reusable/LENS-TERMS-UBIQUITOUS-LANGUAGE.md"
@@ -1868,6 +1868,26 @@
       "commandId": "",
       "invocation": "",
       "target": "<Revalidate Current IDTSPE Work target>"
+    },
+    {
+      "id": "UC-DOC-ESTABLISH-PROJECT-METHODOLOGY-BASELINE",
+      "kind": "USE_CASE",
+      "scope": "Documentation",
+      "label": "Establish / Advance Project Methodology Baseline",
+      "actionLabel": "Зафиксировать baseline методологии проекта",
+      "description": "The project has one identifiable project-specific methodology baseline branch in the methodology repository, bound to an exact reviewed methodology commit, and the project planning/documentation entry point prominently exposes the methodology basis used by persisted planning. For an established baseline: ``text Baseline branch Starting commit Current baseline commit project Planning / Methodology Basis block direct methodology-owner links through the stable baseline branch ` For an advanced baseline, the **same baseline identity** is retained, the Starting commit remains historical provenance, and Current baseline commit` changes only after affected project planning/documentation has been reviewed/revalidated against the candidate new methodology revision.",
+      "context": "Planning/documentation is persisted in a **separate project repository** and needs a stable, reviewable methodology basis instead of links to moving methodology main; or an already established project methodology baseline must be **explicitly advanced** to a newer reviewed methodology revision. This Use Case owns one baseline capability with two explicit operations: ``text ESTABLISH ADVANCE ` ADVANCE is an operation of this same Use Case, not a second Use Case and never an automatic consequence of methodology main` moving.",
+      "result": "The project has one identifiable project-specific methodology baseline branch in the methodology repository, bound to an exact reviewed methodology commit, and the project planning/documentation entry point prominently exposes the methodology basis used by persisted planning. For an established baseline: ``text Baseline branch Starting commit Current baseline commit project Planning / Methodology Basis block direct methodology-owner links through the stable baseline branch ` For an advanced baseline, the **same baseline identity** is retained, the Starting commit remains historical provenance, and Current baseline commit` changes only after affected project planning/documentation has been reviewed/revalidated against the candidate new methodology revision.",
+      "essence": "The project has one identifiable project-specific methodology baseline branch in the methodology repository, bound to an exact reviewed methodology commit, and the project planning/documentation entry point prominently exposes the methodology basis used by persisted planning. For an established baseline: ``text Baseline branch Starting commit Current baseline commit project Planning / Methodology Basis block direct methodology-owner links through the stable baseline branch ` For an advanced baseline, the **same baseline identity** is retained, the Starting commit remains historical provenance, and Current baseline commit` changes only after affected project planning/documentation has been reviewed/revalidated against the candidate new methodology revision.",
+      "sources": [
+        "planning/documentation/use-case-registry-map.md",
+        "planning/documentation/use-case-registry.md"
+      ],
+      "aliases": [],
+      "ownerRef": null,
+      "commandId": "documentation.methodology-baseline.maintain",
+      "invocation": "",
+      "target": "<Establish / Advance Project Methodology Baseline target>"
     },
     {
       "id": "UC-DOC-MAINTAIN-EXAMPLE",

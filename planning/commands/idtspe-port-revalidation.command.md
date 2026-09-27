@@ -9,7 +9,7 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
   "commandFamily": [
     "включи порт evidence / revalidation"
   ],
-  "description": "Check/traverse evidence/revalidation work required by the current composition.",
+  "description": "Check/traverse evidence/revalidation and changed-basis impact-discovery work required by the current composition.",
   "meaning": "Require the named Evidence / Revalidation capability to receive a real applicability/traversal check in the current normal IDTSPE Shell pass. The command expresses an explicit semantic requirement; current Shell topology resolves it to the canonical port. A positive semantic result is not required.",
   "activeContextBehavior": "Compose into the current/next normal IDTSPE Shell pass. If equivalent Evidence / Revalidation work already exists for the same subject/basis/operation, reuse it instead of repeating it.",
   "traversalReadMode": "Read the included command route and canonical owner files proportionally. Reuse current trustworthy owner/process context; reread only stale, uncertain or newly material owners.",
@@ -17,7 +17,7 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
     "planning/documentation/idtspe-methodology/active/idtspe-core/runtime/IDTSPE-RUNTIME-COMPOSITION-CONTRACT.md",
     "planning/documentation/idtspe-methodology/active/idtspe-core/use-cases/revalidate-current-work/UC-IDTSPE-REVALIDATE-CURRENT-WORK.md"
   ],
-  "expectedOutput": "Evidence / Revalidation capability traversal outcome using the normal P-02 vocabulary, including APPLIED / CHECKED_NO_CHANGE / CHECKED_NO_RESULT / NOT_APPLICABLE / REUSED / BLOCKED / DEFERRED as applicable.",
+  "expectedOutput": "Evidence / Revalidation capability traversal outcome using the normal P-02 vocabulary; when material this includes/reuses a Revalidation Impact Set with definitely affected, potentially affected, reuse candidates and required follow-up, plus APPLIED / CHECKED_NO_CHANGE / CHECKED_NO_RESULT / NOT_APPLICABLE / REUSED / BLOCKED / DEFERRED as applicable.",
   "permissionMode": "read-only-planning",
   "keyReminders": [
     "This is a named capability requirement, not a parallel numeric-port ontology.",
@@ -59,7 +59,7 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
       "responsibilityId": "IDTSPE.UC.REVALIDATE-CURRENT-WORK",
       "path": "planning/documentation/idtspe-methodology/active/idtspe-core/use-cases/revalidate-current-work/UC-IDTSPE-REVALIDATE-CURRENT-WORK.md",
       "anchor": "uc-idtspe-revalidate-current-work-process",
-      "why": "Defines evidence/change-driven narrow revalidation and reopening of affected meaning only.",
+      "why": "Defines evidence/change-driven narrow revalidation, Revalidation Impact Set projection and reopening of affected meaning only.",
       "role": "SUPPORTING_CONTRACT",
       "readMode": "REQUIRED"
     }

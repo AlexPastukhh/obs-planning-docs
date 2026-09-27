@@ -24,7 +24,7 @@ This responsibility owns the **technical** Work Context/Shell composition and po
 IDTSPE Work Context
 + current Use-Case composition
 + Broad Discussion / Key Points
-+ P-02 Pass Trace / Visibility Contract
++ P-02 Pass Work Plan / State / Trace / Visibility Contract
 + zero or more bounded Targets
   each Target when present:
     Target Resolution Requirements
@@ -55,7 +55,7 @@ Requirements come from the current task/scope/Sources plus universal Core Target
 
 A Target-specific shell pass still operates on one primary bounded Target at a time, while the Work Context may contain zero/several Targets. Target Work Units and Core State Units remain distinct compositional roles.
 
-The current `P-01..P-15` labels are technical runtime navigation, not a second ontology. `P-01 Invocation` and `P-02 Pass Trace / Visibility` are REQUIRED in every normal Shell pass; other ports remain applicability/materiality/explicit-requirement driven.
+The current `P-01..P-15` labels are technical runtime navigation, not a second ontology. `P-01 Invocation` and `P-02 Pass Work Plan / State / Trace / Visibility` are REQUIRED in every normal Shell pass; other ports remain applicability/materiality/explicit-requirement driven.
 
 ### Port-Number Migration Compatibility
 
@@ -76,14 +76,14 @@ legacy P-10 Decision      → canonical P-10 Decision
 legacy P-11 Result        → canonical P-11 Target Step Result
 legacy P-12 Validation    → canonical P-12 Validation
 legacy P-13 Handoff       → canonical P-13 Handoff / Methodology Direction
-legacy P-14 Persistence   → canonical P-14 Persistence / Artifact
+legacy P-14 Persistence   → canonical P-14 Persistence / Artifact Maintenance
 legacy P-15 Revalidation  → canonical P-15 Evidence / Revalidation
 ```
 
 Previous Trace-enabled numbering (`1fe3` generation, before standalone Question removal):
 
 ```text
-previous P-02 Trace                 → canonical P-02 Trace / Visibility
+previous P-02 Trace                 → canonical P-02 Work Plan / State / Trace / Visibility
 previous P-03 Target                → canonical P-03 Target
 previous P-04 Source                → canonical P-04 Source
 previous P-05 Relation              → canonical P-05 Relation
@@ -96,7 +96,7 @@ previous P-11 Decision              → canonical P-10 Decision
 previous P-12 Target Step Result    → canonical P-11 Target Step Result
 previous P-13 Validation            → canonical P-12 Validation
 previous P-14 Handoff / Direction   → canonical P-13 Handoff / Methodology Direction
-previous P-15 Persistence / Artifact→ canonical P-14 Persistence / Artifact
+previous P-15 Persistence / Artifact→ canonical P-14 Persistence / Artifact Maintenance
 previous P-16 Evidence/Revalidation → canonical P-15 Evidence / Revalidation
 ```
 
@@ -155,9 +155,9 @@ The Shell does not define Decision types. A material Decision is identified by i
 Routes the selected Use-Case composition into one normal Shell pass. It may validly route no Target-specific work when Broad Discussion remains sufficient.
 
 <a id="idtspe-port-p02"></a>
-### P-02 Pass Trace / Visibility Port — REQUIRED
+### P-02 Pass Work Plan / State / Trace / Visibility Port — REQUIRED
 
-Adopts/continues the one structured working trace already established during invocation preparation so earlier command-composition / Use-Case / Port-Composition events were recorded incrementally. Establishes the canonical Shell Pass Trace / Visibility Contract before substantive non-baseline work and records observable methodology/runtime facts incrementally. The same structured trace is the working orientation surface for completed/pending/reusable traversal during the pass and the source for final visibility. Trace may be rendered or persisted; persistence does not give it a Target lifecycle or replace mandatory Use-Case/Port Composition rechecks.
+Adopts/continues the one structured Pass Working Record already established during invocation preparation so earlier command-composition / Use-Case / Port-Composition facts were retained incrementally. Before substantive non-baseline work, P-02 materializes the smallest useful immutable Initial Work Plan from the current authorized composition, then maintains Current Work State / Current Plan, observable execution events, Plan Delta / bounded local execution decisions, and the final Plan-vs-Actual reconciliation in that same record. When multiple state snapshots are retained, they use ordered execution-local IDs and one explicit current-state pointer; earlier snapshots remain historical evidence rather than competing “current” views. The P-02 owner selects the working backing store (normally ephemeral `TEMP_TRACE_FILE` when the host permits, otherwise explicit `RUNTIME_CONTEXT` fallback); visibility projection is separate. For Review, `REVIEW.STRATEGY-COVERAGE` remains authority for obligations/cells and P-02 records their executable projection/state only. Durable retention/placement remains a P-14 concern. Persistence does not give P-02 a Target lifecycle, review authority or permission expansion and does not replace mandatory Use-Case/Port Composition rechecks.
 
 Canonical owner: [`PASS-TRACE-AND-VISIBILITY-CONTRACT.md`](PASS-TRACE-AND-VISIBILITY-CONTRACT.md).
 
@@ -249,9 +249,9 @@ Orchestrates proportional Unit/Slot validators, authority/user guards, cross-own
 For a Target, supports the conditional `HANDOFF_CONTINUATION` Requirement: downstream consumer/source binding and readiness. The same port also exposes Work-Context Methodology Direction, including zero-Target Broad Discussion; therefore the port is broader than the Target Requirement.
 
 <a id="idtspe-port-p14"></a>
-### P-14 Persistence / Artifact Port
+### P-14 Persistence / Artifact Maintenance Port
 
-Generic persistence/representation bridge. For a Target, it supports the conditional `PERSISTENCE_ADDRESSABILITY` Requirement. It also applies to non-Target retained meaning such as Pass Trace, Proposal/Decision or Work-Context state.
+Generic persistence/representation and artifact-maintenance bridge. For a Target, it supports the conditional `PERSISTENCE_ADDRESSABILITY` Requirement. It also applies to non-Target retained meaning such as Pass Working Records, Proposal/Decision, Current Work Manifest or Work-Context state. When representation continuity is material, P-14 may reconcile artifact inventory/location, reuse/update/rematerialize representations, and select/reuse a Work Context Bundle/archive without taking semantic ownership.
 
 ```text
 semantic retention ≠ physical persistence
@@ -268,7 +268,25 @@ Canonical owner: [`../representation/ARTIFACT-PLACEMENT-AND-IDTSPE-RESPONSE-CONT
 > Responsibility: `TWU.SUBJECT-REFERENCE`
 > Owner: [Target Work Subject Reference Contract](target-work/TARGET-WORK-SUBJECT-REFERENCE-CONTRACT.md#target-work-subject-reference)
 
-Connects post-choice Evidence/revalidation signals to accepted meaning without making Evidence lifecycle authority. Reopen the narrowest correct Requirement/Collection/Collection item/Unit Resolution Slot/Unit/Decision/Target scope when material challenge is accepted. When the selected subject is inside Target Work, use `TWU.SUBJECT-REFERENCE` so revalidation does not accidentally broaden or narrow the challenged scope.
+Connects post-choice Evidence/revalidation signals to accepted meaning without making Evidence lifecycle authority. Reopen the narrowest correct Requirement/Collection/Collection item/Unit Resolution Slot/Unit/Decision/Target scope when material challenge is accepted. When prior accepted/reviewed/dependent meaning may be stale, P-15 also owns discovering/reusing a bounded Revalidation Impact Set through `UC-IDTSPE-REVALIDATE-CURRENT-WORK`: definitely affected subjects, potentially affected subjects, reuse candidates and required follow-up. When the selected subject is inside Target Work, use `TWU.SUBJECT-REFERENCE` so revalidation does not accidentally broaden or narrow the challenged scope.
+
+A material mutation/change pass must not silently carry forward a prior review PASS whose basis may have changed. Revalidate proportionally now, or retain explicit revalidation work/reference in the Current Work Manifest before handoff.
+
+## Current Work Manifest / Pass Boundary
+
+For materially multi-pass work, `UC-IDTSPE-MAINTAIN-CURRENT-WORK-STATE` may retain a Current Work Manifest as cross-pass coordination. The Manifest is current-work orientation, not sticky authority.
+
+```text
+Current Work Manifest + current USER/canonical owner state
+→ Compose Current Work
+→ current Port Requirement Set
+→ P-02 bounded Pass Working Record
+→ Final Plan-vs-Actual
+→ refresh Manifest when cross-pass state materially changed
+```
+
+P-02 remains pass-scoped; the Manifest remains cross-pass. Current USER input, canonical owner state or revalidation may invalidate stale Manifest projections.
+
 
 ## Integration Checkpoint / Representation Handoff
 
@@ -398,7 +416,7 @@ not become a second semantic authority.
 
 ## Exit Condition
 
-The Pass Trace is closed from recorded runtime events rather than reconstructed after the fact. An IDTSPE instance is ready to hand off when proportionally:
+The P-02 Pass Working Record is closed from its recorded Initial Plan, ordered/current state (with a final state snapshot when historical snapshots are retained), execution events and plan deltas rather than reconstructed after the fact; material passes reconcile Final Plan-vs-Actual before completion. An IDTSPE instance is ready to hand off when proportionally:
 
 ```text
 Target purpose/scope and applicable Target Resolution Requirements are sufficiently formed for this checkpoint

@@ -178,6 +178,7 @@ Relevant concrete Evolution Steps are Sources for revalidation and are exposed p
 semantic responsibility is independently coherent
 Feature BR refs are sources, not duplicated behavior authority
 identity/lifecycle/invariants/operations agree
+shared upstream concepts retain recognizable canonical vocabulary in Domain identity/state/operations/results/failures; genuinely Domain-specific concepts may introduce a more-specific term
 IR-DOMAIN-* are only durable natural-owner constraints
 proof can observe Domain semantics without unnecessary UI/network coupling
 representation preserves discoverability of material non-code meaning

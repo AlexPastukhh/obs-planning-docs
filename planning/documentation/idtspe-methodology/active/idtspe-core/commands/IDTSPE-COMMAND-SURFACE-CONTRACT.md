@@ -22,6 +22,7 @@ Responsibility ID: `IDTSPE.COMMAND-SURFACE`
 > - `CONTEXTUALIZES` [`Proposal / Decision Lifecycle`](../resolution/proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md#resolution-proposal-decision-lifecycle) — `RESOLUTION.PROPOSAL-DECISION-LIFECYCLE`
 > - `CONTEXTUALIZES` [`Need Candidate Collection`](../resolution/needs/NEED-CANDIDATE-COLLECTION.md#resolution-need-candidate-collection) — `RESOLUTION.NEED-CANDIDATE-COLLECTION`
 > - `CONTEXTUALIZES` [`Need Candidate Disposition`](../resolution/needs/NEED-CANDIDATE-DISPOSITION.md#resolution-need-candidate-disposition) — `RESOLUTION.NEED-CANDIDATE-DISPOSITION`
+> - `CONTEXTUALIZES` [`Need Set Coordination`](../resolution/needs/NEED-SET-COORDINATION.md#resolution-need-set-coordination) — `RESOLUTION.NEED-SET-COORDINATION`
 > - `CONTEXTUALIZES` [`Q/R/P Lifecycle`](../resolution/qrp/QRP-LIFECYCLE-AND-REVIEW.md#resolution-qrp-lifecycle) — `RESOLUTION.QRP-LIFECYCLE`
 > - `CONTEXTUALIZES` [`USER Input / Decision / Answer Intake`](../runtime/interaction/USER-INPUT-DECISION-AND-ANSWER-INTAKE-RULE.md#idtspe-user-input-intake) — `IDTSPE.USER-INPUT-INTAKE`
 
@@ -52,7 +53,7 @@ All command surfaces execute under the thin Session interaction contract once th
 
 This is **inheritance, not routing**. A command routes directly to its current semantic owner; it must not insert `Session → IDTSPE/profile owner` as an obligatory semantic hop merely to obtain progress, steering or authorization behavior. Session is reloaded only when the interaction context/rules cannot be reconstructed safely.
 
-## Primary User Convenience Surface Inventory — 19
+## Primary User Convenience Surface Inventory — 22
 
 ```text
 idtspe.bootstrap
@@ -95,6 +96,18 @@ idtspe.needs.collect
 idtspe.needs.disposition
 → диспозируй idtspe needs
 → route already collected Need Candidates to natural existing owners/lifecycles without recollecting or prematurely manufacturing a solution/Requirement/Feature/Evolution Step
+
+idtspe.needs.set.start
+→ начни новый набор нидов
+→ establish one new ACTIVE Need Set and its P-14-selected durable coordination representation when persistence is material; do not invent Needs or retire unresolved items
+
+idtspe.needs.set.sync
+→ веди текущие ниды / синхронизируй текущий набор нидов
+→ run canonical Need Collection/Disposition as needed for the selected context, then synchronize tracking references and fulfillment Evidence into the current Need Set under explicit write authority
+
+idtspe.needs.set.close
+→ закрой текущий набор нидов
+→ close the current Set for new intake while preserving non-terminal tracked Needs and their downstream references
 
 idtspe.findings.disposition
 → разбери файндинги <findings/context>
@@ -140,7 +153,7 @@ Bootstrap must not silently select a Target, infer a Target invocation mode or e
 
 `idtspe.next` and `idtspe.continue` are explicit navigation/convenience surfaces, not approval gates between natural AI work steps. Thin Session Runtime allows automatic progression through ordinary in-scope interaction steps, while IDTSPE Use Cases own methodology composition.
 
-`idtspe.next` does **not** own Shell visibility. `P-02 Pass Trace / Visibility` owns observability for a normal Shell pass. `idtspe.next` resolves the smallest useful next methodology action from current methodology + current Work Context and presents that action as a **Generic AI Proposal (GIP)**, then stops without executing it. When a current P-13 Handoff / Methodology Direction result exists it may inform that GIP, but Handoff is not required: `idtspe.next` remains valid in Broad Discussion with zero Targets.
+`idtspe.next` does **not** own Shell visibility. `P-02 Pass Work Plan / State / Trace / Visibility` owns observability for a normal Shell pass. `idtspe.next` resolves the smallest useful next methodology action from current methodology + current Work Context and presents that action as a **Generic AI Proposal (GIP)**, then stops without executing it. When a current P-13 Handoff / Methodology Direction result exists it may inform that GIP, but Handoff is not required: `idtspe.next` remains valid in Broad Discussion with zero Targets.
 
 
 ## Shell Port Requirement Composition
@@ -223,7 +236,7 @@ idtspe.lenses.apply-selected
   → material Finding Candidates cross Finding Disposition
 ```
 
-User-level/specialized IDTSPE commands expose `idtspe.work`, Port Composition Recheck and P-02 Trace directly in their composition even when those nodes are also transitively reachable. Duplicate dependency edges are intentional declaration and are deduplicated before execution.
+User-level/specialized IDTSPE commands expose `idtspe.work`, Port Composition Recheck and P-02 Pass Working Record directly in their composition even when those nodes are also transitively reachable. Duplicate dependency edges are intentional declaration and are deduplicated before execution.
 
 The methodology remains independently executable without Helper/command projection: current Use Cases, owners and natural handoffs determine the same process. The command DAG is a reproducibility/guarantee surface only.
 
@@ -428,6 +441,10 @@ idtspe.needs.collect
 idtspe.needs.disposition
 → already collected Need Candidates → current/Proposal/Finding/Q-R-P/profile temporal-owner routing
 
+idtspe.needs.set.start / idtspe.needs.set.sync / idtspe.needs.set.close
+→ explicit persistent coordination operations over `RESOLUTION.NEED-SET-COORDINATION`
+→ they reuse Collection/Disposition/downstream owners and never become a second Need lifecycle
+
 idtspe пропозал
 → includes Proposal grounding + Candidate Review + Proposal Semantic Change Impact + selection gating
 
@@ -435,7 +452,7 @@ idtspe пропозал
 → Finding Disposition + RE-* + linked Proposal formation + correct owner/Unit/revalidation routing
 ```
 
-Need Collection and Need Disposition are separate command surfaces; neither creates one command per downstream Need outcome. Do not create a mandatory separate Proposal-impact command merely because impact review is an explicit lifecycle step. A focused shortcut is justified only if practice demonstrates an independently useful recurring USER intent.
+Need Collection and Need Disposition are separate read-only command surfaces; neither creates one command per downstream Need outcome. Need Set start/sync/close are separately useful explicit coordination/persistence operations and do not redefine Collection or Disposition. Do not create a mandatory separate Proposal-impact command merely because impact review is an explicit lifecycle step. A focused shortcut is justified only if practice demonstrates an independently useful recurring USER intent.
 
 Unit Resolution, Result Content, Decision trace, Q/R/P, Finding Inbox, Requirement impact and Source impact do not each require standalone direct commands by ontology.
 

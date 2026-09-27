@@ -13,6 +13,9 @@
     "idtspe.findings.disposition",
     "idtspe.needs.collect",
     "idtspe.needs.disposition",
+    "idtspe.needs.set.start",
+    "idtspe.needs.set.sync",
+    "idtspe.needs.set.close",
     "application_reality.review",
     "application_research.research",
     "application_solution.plan",
@@ -24,6 +27,7 @@
     "documentation.links.use",
     "documentation.links.review",
     "documentation.ownership.review",
+    "documentation.methodology-baseline.maintain",
     "idtspe.lenses.select",
     "idtspe.bootstrap",
     "application_sds.bootstrap",
@@ -43,6 +47,7 @@
     "uc:UC-DOC-USE-REPOSITORY-GUIDANCE",
     "uc:UC-DOC-RESOLVE-CURRENT-USE-CASES",
     "uc:UC-DOC-PLAN-DOCUMENTATION-CHANGE",
+    "uc:UC-DOC-ESTABLISH-PROJECT-METHODOLOGY-BASELINE",
     "uc:UC-DOC-REVIEW-DOCUMENTATION",
     "uc:UC-DOC-MAINTAIN-USE-CASE",
     "uc:UC-DOC-MAINTAIN-USE-CASE-REGISTRY",
@@ -157,6 +162,7 @@
     "UC-IDTSPE-INTEGRATE-CURRENT-WORK",
     "UC-IDTSPE-REVALIDATE-CURRENT-WORK",
     "UC-DOC-PLAN-DOCUMENTATION-CHANGE",
+    "UC-DOC-ESTABLISH-PROJECT-METHODOLOGY-BASELINE",
     "UC-DOC-REVIEW-DOCUMENTATION",
     "UC-DOC-MAINTAIN-USE-CASE",
     "UC-DOC-MAINTAIN-USE-CASE-REGISTRY",
@@ -244,7 +250,8 @@
       "items": [
         "documentation.links.use",
         "documentation.links.review",
-        "documentation.ownership.review"
+        "documentation.ownership.review",
+        "documentation.methodology-baseline.maintain"
       ]
     },
     {
@@ -432,6 +439,7 @@
         "uc:UC-DOC-USE-REPOSITORY-GUIDANCE",
         "uc:UC-DOC-RESOLVE-CURRENT-USE-CASES",
         "uc:UC-DOC-PLAN-DOCUMENTATION-CHANGE",
+        "uc:UC-DOC-ESTABLISH-PROJECT-METHODOLOGY-BASELINE",
         "uc:UC-DOC-REVIEW-DOCUMENTATION"
       ]
     },

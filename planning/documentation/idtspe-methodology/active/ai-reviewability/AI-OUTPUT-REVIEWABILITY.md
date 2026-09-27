@@ -26,12 +26,12 @@ AI Reviewability may require presentation/recheck behavior, but it does not sele
 > Semantic Owner Dependency
 > - `CONTEXTUALIZES` [`Review Strategy And Coverage`](REVIEW-STRATEGY-AND-COVERAGE-CONTRACT.md#review-strategy-coverage) — `REVIEW.STRATEGY-COVERAGE`
 
-## Pass Trace / Visibility Boundary
+## Pass Work Plan / State / Trace / Visibility Boundary
 
-IDTSPE `P-02 Pass Trace / Visibility` records the methodology route and runtime outcomes as they occur. AI Reviewability does not own that trace. `Key Points` may summarize material content/results from the trace and semantic owners, while Session Work Steps/Progress Updates may project its progress conversationally.
+IDTSPE `P-02 Pass Work Plan / State / Trace / Visibility` records the methodology route and runtime outcomes as they occur. AI Reviewability does not own that trace. `Key Points` may summarize material content/results from the trace and semantic owners, while Session Work Steps/Progress Updates may project its progress conversationally.
 
 ```text
-P-02 Pass Trace = what methodology route/events occurred
+P-02 Pass Working Record = what was planned for execution, current work state, what methodology route/events actually occurred, and how plan vs actual reconciled
 Key Points = what material content the reviewer should understand
 Work Steps / Progress Updates = what AI is doing/has established over time
 ```

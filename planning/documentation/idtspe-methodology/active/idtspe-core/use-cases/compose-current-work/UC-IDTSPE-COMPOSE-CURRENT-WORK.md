@@ -56,6 +56,7 @@ no Target / Lens / Target Module / Checkpoint / persisted State is useful yet.
 > - `CONTEXTUALIZES` [`Unit applicability / materiality / disposition`](../../runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md#twu-applicability-disposition) — `TWU.APPLICABILITY-DISPOSITION`
 > - `CONTEXTUALIZES` [`Need Candidate Collection`](../../resolution/needs/NEED-CANDIDATE-COLLECTION.md#resolution-need-candidate-collection) — `RESOLUTION.NEED-CANDIDATE-COLLECTION`
 > - `CONTEXTUALIZES` [`Need Candidate Disposition`](../../resolution/needs/NEED-CANDIDATE-DISPOSITION.md#resolution-need-candidate-disposition) — `RESOLUTION.NEED-CANDIDATE-DISPOSITION`
+> - `CONTEXTUALIZES` [`Need Set Coordination`](../../resolution/needs/NEED-SET-COORDINATION.md#resolution-need-set-coordination) — `RESOLUTION.NEED-SET-COORDINATION`
 > - `CONTEXTUALIZES` [Resolution Carry-Forward contract](../../resolution/RESOLUTION-CARRY-FORWARD-CONTRACT.md#resolution-carry-forward) — `RESOLUTION.CARRY-FORWARD`
 - `CONTEXTUALIZES` [`Lens Discovery`](../../lenses/LENS-REGISTRY.md#lens-discovery-registry) — `LENS.DISCOVERY`
 - `CONTEXTUALIZES` [`Knowledge Basis Contract`](../../knowledge-bases/KNOWLEDGE-BASIS-CONTRACT.md#knowledge-basis-contract) — `KNOWLEDGE.BASIS`
@@ -66,7 +67,7 @@ This Use Case owns current-work **orchestration/composition** only; the linked o
 1. Start from the actual USER request/current Work Concern and the current integrated state if one exists. Reuse known facts, accepted Decisions and existing owner results; when an applicable [`Resolution Carry-Forward`](../../target-modules/TM-PLANNING-RESOLUTION-STATE.md#tm-planning-resolution-state) exists, scan its compact surviving-state references for orientation and open only the canonical items that are material now.
 2. Apply the [`Contextual Methodology Application Contract`](../../runtime/applicability/CONTEXTUAL-METHODOLOGY-APPLICATION-CONTRACT.md). Do not treat IDTSPE always-on status as a reason to instantiate every mechanism. Preserve explicit USER/component intent that requires a particular Shell port to be checked; explicit requirement affects port admission, not the truth of that port's result.
 3. Prefer Broad Discussion while it remains the clearest and least costly working surface. Use Key Points proportionally for material logical structure.
-4. When USER/Source context expresses a wanted outcome whose semantic home/solution/temporal destination is not yet sufficiently resolved, first use [`Need Candidate Collection`](../../resolution/needs/NEED-CANDIDATE-COLLECTION.md#resolution-need-candidate-collection) to preserve provenance and form a grounded Need Candidate without selecting its destination. Then use [`Need Candidate Disposition`](../../resolution/needs/NEED-CANDIDATE-DISPOSITION.md#resolution-need-candidate-disposition) proportionally to determine current coverage, smallest natural subject/owner and the existing route into current-owner / Finding / Proposal / Q-R-P / Target/profile semantics. A Need Candidate alone does not justify a Feature, Requirement or Evolution Step.
+4. When USER/Source context expresses a wanted outcome whose semantic home/solution/temporal destination is not yet sufficiently resolved, first use [`Need Candidate Collection`](../../resolution/needs/NEED-CANDIDATE-COLLECTION.md#resolution-need-candidate-collection) to preserve provenance and form a grounded Need Candidate without selecting its destination. Then use [`Need Candidate Disposition`](../../resolution/needs/NEED-CANDIDATE-DISPOSITION.md#resolution-need-candidate-disposition) proportionally to determine current coverage, smallest natural subject/owner and the existing route into current-owner / Finding / Proposal / Q-R-P / Target/profile semantics. A Need Candidate alone does not justify a Feature, Requirement or Evolution Step. When an `ACTIVE` [`Need Set`](../../resolution/needs/NEED-SET-COORDINATION.md#resolution-need-set-coordination) exists for the current coordination scope, keep the grounded candidate and later disposition/downstream references synchronized there without letting the Need Set reinterpret intake or routing. A `CLOSED` Set may continue tracking its existing items but receives no newly surfaced Needs.
 5. Decide whether any current meaning now deserves explicit Core State lifecycle/addressability (`Question`, `Proposal`, Q/R/P, `Decision`, `Evidence`, `Revalidation Signal`, `Methodology Usage State`, etc.). If so, use [`UC-IDTSPE-MAINTAIN-CURRENT-WORK-STATE`](../maintain-current-work-state/UC-IDTSPE-MAINTAIN-CURRENT-WORK-STATE.md) proportionally.
 6. Decide whether a bounded Target/result boundary is independently useful. Derive enough provisional purpose/scope/problem surface to test reusable structure; activate applicable universal Core Target Requirements and preserve any explicit/already-obvious task Requirements. Use [`DYNAMIC-TARGET-FORMATION`](../../runtime/target-work/projections/DYNAMIC-TARGET-FORMATION.explanatory-projection.md); `no new Target` is a normal outcome.
 7. As soon as that provisional Target shape is sufficient, run the required `REUSABLE_TARGET_MODEL_CHECK`: traverse the appropriate Target Module Registry and apply zero or more mutually compatible useful Target Module Models whose responsibilities naturally belong inside the same bounded Target; otherwise use a Local Target Contract. Each applied Model contributes one Target Module Instance portion for the current Target/basis and uses its prepared recurring-scope analysis to recognize/formulate actual Requirements grounded in the current task/scope/Sources and map them to prepared Module Unit Definitions. When no Model applies, derive/clarify those Requirements contextually. Applied Models may cover only part of the current Target; a genuinely independent Model responsibility belongs on its natural separate Target.
@@ -83,16 +84,32 @@ This Use Case owns current-work **orchestration/composition** only; the linked o
 > Owner: [`Port Composition Refresh Rule`](../../runtime/IDTSPE-RUNTIME-COMPOSITION-CONTRACT.md#idtspe-port-composition-refresh)
 
 14. **Before every normal Shell pass**, refresh or reaffirm the current Port Requirement Set from the selected Use-Case composition, explicit USER/component port requirements, current downstream materiality and still-material defer/recheck obligations. Reuse an unchanged prior determination when its basis remains trustworthy. Previous-pass admission alone does not make a port sticky/automatically active in the next pass. Automatic refresh does not impose a focused subset; explicit USER intent is required to intentionally focus/narrow the port composition. Technical admission/reuse semantics are owned by the Shell runtime contract.
-15. Hand the current selected composition + refreshed/reaffirmed Port Requirement Set to the IDTSPE Shell. `P-01 Invocation` routes that composition and `P-02 Pass Trace / Visibility` establishes the incremental working trace before substantive non-baseline port work. The same trace is updated as methodology-runtime events occur, is used during the pass to orient completed/pending/reusable traversal, and becomes the source for final P-02 visibility; it does not replace the mandatory Use-Case or port-composition rechecks. Session Runtime still owns Work Steps/Progress Updates; P-02 owns methodology-route observability/orientation only.
+15. Hand the current selected composition + refreshed/reaffirmed Port Requirement Set to the IDTSPE Shell. `P-01 Invocation` routes that composition and `P-02 Pass Work Plan / State / Trace / Visibility` establishes/continues the one Pass Working Record, materializes the smallest useful Initial Work Plan before substantive non-baseline port work, then updates Current Work State / execution events / bounded plan deltas as work proceeds and derives final plan-vs-actual visibility from that same record; it does not replace mandatory Use-Case or port-composition rechecks. Session Runtime still owns Work Steps/Progress Updates; P-02 owns methodology execution-plan/state/route observability only.
 16. Continue automatically through ordinary methodology work while inside USER-authorized scope and no real interaction gate exists. A port that becomes newly material during a pass may be admitted through normal downstream-materiality routing without restarting the full methodology route.
 17. Re-evaluate this Use Case when the canonical [`Methodology Composition Recheck Rule`](../../runtime/applicability/CONTEXTUAL-METHODOLOGY-APPLICATION-CONTRACT.md#idtspe-methodology-composition-recheck) is triggered. Reuse current registry metadata and already-resolved shared runtime prefixes where trustworthy.
+
+## Current Work Manifest Input / Staleness Rule
+
+When `UC-IDTSPE-MAINTAIN-CURRENT-WORK-STATE` has a material Current Work Manifest, treat it as cross-pass orientation/input alongside the current USER request and canonical owner state.
+
+```text
+Current Work Manifest
++ current USER input
++ current canonical owners / Evidence / revalidation state
+→ compare currentness
+→ reuse trustworthy orientation
+→ stale/contradictory refs trigger narrow revalidation rather than blind replay
+→ select only the bounded current-pass work that is useful now
+```
+
+The Manifest is not sticky authority and does not force every listed action into the current pass. Current USER intent and canonical owner state take precedence. After composition, normal Port Composition refresh still runs before P-01; the Manifest never bypasses that refresh.
 
 ## Methodology Composition — What This Use Case May Select
 
 ```text
 Broad Discussion / Key Points
 explicit Shell port requirements when supplied
-P-02 Pass Trace / Visibility (included by the Shell, not an optional semantic component)
+P-02 Pass Work Plan / State / Trace / Visibility (included by the Shell, not an optional semantic component)
 Core State Units
 Target Formation
 Target Module / Local Target Contract

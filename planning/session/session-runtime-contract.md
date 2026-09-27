@@ -73,7 +73,18 @@ Do not ask "continue?" merely because another ordinary step begins.
 
 If one meaningful step runs long enough that the USER would otherwise lose orientation, provide an occasional concise update describing useful partial progress and current focus.
 
-Progress updates are transient interaction signals, not State Units or Checkpoints. During IDTSPE work they may project facts already recorded by `P-02 Pass Trace / Visibility`, but Session owns the conversational timing/shape while P-02 owns methodology-route trace semantics.
+Progress updates are transient interaction signals, not State Units or Checkpoints. During IDTSPE work they may project facts already recorded by `P-02 Pass Work Plan / State / Trace / Visibility`, but Session owns the conversational timing/shape while P-02 owns the observable methodology execution-plan/state/trace semantics.
+
+## 4A. Current Work Manifest Re-entry Projection
+
+For substantial multi-pass/session work, Session may expose the IDTSPE-owned **Current Work Manifest** as the primary re-entry/navigation artifact: current USER goal/focus, cross-pass planned actions, material artifact inventory, review/revalidation refs and next action.
+
+Session does not own or independently mutate the Manifest semantics. It projects/uses the current IDTSPE work-context state and may provide conversational progress from it. Progress Updates remain transient interaction signals; the Manifest is retained cross-pass coordination when material.
+
+```text
+Session Runtime ≠ Current Work Manifest semantic owner
+Session Runtime ≠ second planning runtime
+```
 
 ## 5. USER Steering
 
@@ -120,6 +131,6 @@ A depth transition is not an approval gate by itself.
 
 ## 8. IDTSPE Integration
 
-Broad Discussion, planning state, Targets, Lenses and Integration Checkpoints are IDTSPE-owned. Session runtime governs Work Steps/Progress Updates and USER steering. IDTSPE `P-02 Pass Trace / Visibility` owns the observable methodology route; Session may project that trace conversationally without becoming its semantic owner.
+Broad Discussion, planning state, Targets, Lenses and Integration Checkpoints are IDTSPE-owned. Session runtime governs Work Steps/Progress Updates and USER steering. IDTSPE `P-02 Pass Work Plan / State / Trace / Visibility` owns the observable methodology work plan/state/route; Session may project that trace conversationally without becoming its semantic owner.
 
 A situational IDTSPE Integration Checkpoint may be performed whenever its Use Case applies; Session does not maintain a competing generic Checkpoint object.

@@ -305,6 +305,8 @@ The stable Application name/ID belongs in the document/Target heading, and Need 
 
 Concept Summary owns only the concise whole-application explanation and selected contribution. Refer to `AB-*` for detailed User Need, User Receives and Benefit-local boundaries; do not repeat their catalog or constraints. Refer to `RU-APP-02` for alternative-route justification, `RU-APP-04` for representative paths, and `RU-APP-07` for feasibility.
 
+Terminology at Application Definition may still be immature. A one-off broad label does not require forced canonicalization; when a recurring or behavior-significant concept is already sufficiently clear, it may establish/refine canonical vocabulary here. If later Feature work sharpens the meaning, preserve the vocabulary lineage rather than silently replacing the earlier concept with an unrelated synonym.
+
 <a id="existing-solutions--market--reference-research"></a>
 ### Existing Solutions / Market / Reference Research
 
@@ -417,6 +419,8 @@ Each material Unit inherits the generic [`Unit Applicability Envelope`](../../..
 - **Core Lens Pack:** `INHERITED` via [`Core Lens Pack`](../../../idtspe-core/lenses/LENS-REGISTRY.md)
 - **REQUIRED [CLOSING]:**
   - [`LENS-APPLICATION-BOUNDARY-FEASIBILITY`](../lenses/reusable/LENS-APPLICATION-BOUNDARY-FEASIBILITY.md)
+- **TRIGGERED:**
+  - [`LENS-TERMS-UBIQUITOUS-LANGUAGE`](../lenses/reusable/LENS-TERMS-UBIQUITOUS-LANGUAGE.md)
 
 1. **Opening Unit Checkpoint — `RU-APP-05`** — bind the exact reusable Unit owner(s)/methodology before substantive work and resolve/reuse current applicable Core + active-profile Lens/registry pressure.
 2. **Unit Work — `RU-APP-05`** — produce/refine only the meaning owned by this Result Unit; run additional applicability checks when the Analysis Surface changes materially.

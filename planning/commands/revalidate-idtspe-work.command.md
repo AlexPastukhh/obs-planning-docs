@@ -13,8 +13,8 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
   "commandFamily": [
     "перевалидируй idtspe работу"
   ],
-  "description": "Run narrow evidence/change-driven revalidation of current accepted IDTSPE work.",
-  "meaning": "Use the revalidation Use Case to compare new evidence/change against the accepted basis, identify the narrowest affected natural subjects and reopen only impacted meaning/capabilities.",
+  "description": "Run narrow evidence/change-driven revalidation of current accepted IDTSPE work and discover bounded changed-basis impact.",
+  "meaning": "Use the revalidation Use Case to compare new evidence/change against the accepted basis, identify the narrowest affected natural subjects, derive/reuse a Revalidation Impact Set when material, and reopen/recheck only impacted meaning/capabilities while preserving justified unaffected work.",
   "activeContextBehavior": "Compose with the current command set. Fully expand and merge all selected roots before semantic execution; reuse equivalent current work and follow the resulting dependencies-first plan.",
   "traversalReadMode": "Read this command own canonical references plus included-command references proportionally. Do not duplicate reads already satisfied by an unchanged trustworthy shared prefix.",
   "ownerFiles": [
@@ -45,7 +45,7 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
     "planning/commands/include-idtspe-trace-port.command.md",
     "planning/commands/idtspe-port-revalidation.command.md"
   ],
-  "expectedOutput": "Revalidation result identifying still-valid meaning, reopened narrow subjects and any newly required downstream work.",
+  "expectedOutput": "Narrow affected subject plus Revalidation Impact Set when material (definitely affected / potentially affected / reuse candidates / required follow-up), revised selected meaning or justified reuse, downstream/review recheck obligations, and Current Work Manifest continuation reference when material work remains; no write authority.",
   "permissionMode": "read-only-planning",
   "keyReminders": [
     "Revalidation is not a peer Lens.",
