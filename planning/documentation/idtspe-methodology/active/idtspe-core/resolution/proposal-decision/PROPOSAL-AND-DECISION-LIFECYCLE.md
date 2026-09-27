@@ -527,3 +527,8 @@ selected meaning ≠ automatic persistence
 accepted semantic change ≠ automatic repository mutation
 selected future meaning ≠ realized/current-owner truth unless the active owner contract says realization has occurred
 ```
+
+<a id="proposal-complete-target-state"></a>
+## Complete candidate target-state relation
+
+When a Proposal changes an existing file/result, retain/reference the complete candidate target-state representation that would exist if selected, together with the current basis/result ref in PRS. `DELETE` uses explicit target state `ABSENT`; `ADD` may use the candidate file itself. If the whole candidate file is already the Proposal Target Result, it is the target-state representation and no duplicate is required. Persistence at a final-shaped path never makes candidate meaning accepted; normal selection/integration remains authoritative.

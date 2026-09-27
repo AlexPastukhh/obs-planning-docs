@@ -17,13 +17,14 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
     "planning/documentation/idtspe-methodology/active/idtspe-core/runtime/IDTSPE-RUNTIME-COMPOSITION-CONTRACT.md",
     "planning/documentation/idtspe-methodology/active/idtspe-core/resolution/proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md"
   ],
-  "expectedOutput": "Proposal capability traversal outcome using the normal P-02 vocabulary, including APPLIED / CHECKED_NO_CHANGE / CHECKED_NO_RESULT / NOT_APPLICABLE / REUSED / BLOCKED / DEFERRED as applicable.",
+  "expectedOutput": "Proposal capability traversal outcome with observable admission/traversal facts recorded in the current Turn Work Record, including APPLIED / CHECKED_NO_CHANGE / CHECKED_NO_RESULT / NOT_APPLICABLE / REUSED / BLOCKED / DEFERRED as applicable.",
   "permissionMode": "read-only-planning",
   "keyReminders": [
     "This is a named capability requirement, not a parallel numeric-port ontology.",
     "Explicit inclusion requires a real check, not a manufactured positive result.",
     "Shared prefixes and equivalent current work are reused.",
-    "P-02 records admission origin and traversal result incrementally."
+    "the current Turn Work Record records admission origin and traversal result incrementally.",
+    "The current Turn Work Record records admission origin, observable traversal result and reuse evidence; the named capability remains the semantic owner of its work."
   ],
   "userTarget": "<current IDTSPE subject/context>",
   "palette": true,
@@ -34,8 +35,7 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
   "englishName": "include IDTSPE formal IDTSPE Proposal capability port capability",
   "includes": [
     "planning/commands/work-through-idtspe.command.md",
-    "planning/commands/recheck-idtspe-port-composition.command.md",
-    "planning/commands/include-idtspe-trace-port.command.md"
+    "planning/commands/recheck-idtspe-port-composition.command.md"
   ],
   "methodologyBinding": {
     "methodologyRuntime": "IDTSPE",

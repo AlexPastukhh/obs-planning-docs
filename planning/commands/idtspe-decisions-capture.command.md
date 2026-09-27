@@ -55,7 +55,6 @@ Scope: generic Core Decision capture/review entry; it never grants selection aut
   "includes": [
     "planning/commands/work-through-idtspe.command.md",
     "planning/commands/recheck-idtspe-port-composition.command.md",
-    "planning/commands/include-idtspe-trace-port.command.md",
     "planning/commands/idtspe-port-decision.command.md"
   ],
   "ownerRefs": [

@@ -28,10 +28,10 @@ AI Reviewability may require presentation/recheck behavior, but it does not sele
 
 ## Pass Work Plan / State / Trace / Visibility Boundary
 
-IDTSPE `P-02 Pass Work Plan / State / Trace / Visibility` records the methodology route and runtime outcomes as they occur. AI Reviewability does not own that trace. `Key Points` may summarize material content/results from the trace and semantic owners, while Session Work Steps/Progress Updates may project its progress conversationally.
+IDTSPE `Turn Work Record` records the methodology route and runtime outcomes as they occur. AI Reviewability does not own that trace. `Key Points` may summarize material content/results from the trace and semantic owners, while Session Work Steps/Progress Updates may project its progress conversationally.
 
 ```text
-P-02 Pass Working Record = what was planned for execution, current work state, what methodology route/events actually occurred, and how plan vs actual reconciled
+Turn Work Record = what was planned for execution, current work state, what methodology route/events actually occurred, and how plan vs actual reconciled
 Key Points = what material content the reviewer should understand
 Work Steps / Progress Updates = what AI is doing/has established over time
 ```
@@ -234,3 +234,8 @@ planning/documentation/planning-concerns-and-decisions-model.md
 ```
 
 Those compatibility files no longer own current reviewability/Q/R/P semantics.
+
+<a id="turn-work-record-review-projection"></a>
+## Turn Work Record review projection
+
+Review Strategy/Coverage remains authority for review obligations/cells. Executable review plan/state/actions/deltas are projected into the current Turn Work Record. The Work Record never becomes a second review lifecycle or Review Coverage owner.

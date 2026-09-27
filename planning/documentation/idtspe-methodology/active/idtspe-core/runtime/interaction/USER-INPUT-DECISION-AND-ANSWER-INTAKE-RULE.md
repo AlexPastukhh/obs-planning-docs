@@ -539,3 +539,8 @@ If a material formal Proposal is opened, preserve the Proposal identity and its 
 If the USER already supplies rationale, alternative-retention preference, amendment or explicit acceptance/rejection meaning, capture that input and pass it to the canonical Proposal/Decision lifecycle. Do not re-ask it at a checkpoint.
 
 This rule does not decide **whether** rationale or non-selected alternatives should be retained; it only prevents loss/duplication of retention-related USER input.
+
+<a id="work-runtime-input-handoff"></a>
+## Turn Work Record handoff
+
+Input classification/provenance is recorded under `WR-1`. One or more `inputs/*` representations may preserve material provenance without creating a third planning hierarchy. If intake exposes substantive unresolved work, hand it to `WR-3` as a candidate primary subject rather than resolving it invisibly inside intake.

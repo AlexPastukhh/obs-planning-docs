@@ -45,3 +45,8 @@ A natural-language USER request is sufficient. The USER does not need to enable 
 
 A richer chat-sandbox/workspace operating model is intentionally deferred. The current Session meta-files remain ambient bootstrap material and are **not** given current Session Use Cases merely because they participate in bootstrap. Future design topics—local methodology cache/mirror, repository snapshots and freshness, work-directory lifecycle, MUST-READ bootstrap files and work handoff—are tracked in [`../documentation/idtspe-methodology/active/methodology-evolution/METHODOLOGY-EVOLUTION-STEPS.md`](../documentation/idtspe-methodology/active/methodology-evolution/METHODOLOGY-EVOLUTION-STEPS.md).
 
+
+<a id="session-state-bootstrap-navigation"></a>
+## Session State bootstrap / navigation
+
+For substantive work also read [`session-state-runtime-contract.md`](session-state-runtime-contract.md#session-state-runtime). The normal workspace entrypoints are `README.md`, accepted `WORK-MANIFEST.md`, bounded `resolution/PRS.md`, retained inputs, Turn Work Records, contextual material and history/segment refs. These are runtime/navigation surfaces; natural methodology owners remain authoritative.

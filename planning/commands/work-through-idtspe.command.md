@@ -15,9 +15,9 @@ Scope: generic IDTSPE work-mode and installed-component dispatcher.
     "работай через idtspe",
     "режим idtspe"
   ],
-  "description": "Explicit navigation/dispatch shortcut inside the always-active proportional IDTSPE work context.",
-  "meaning": "IDTSPE is already active. Bare `idtspe` explicitly refreshes/reaffirms the current methodology Use-Case applicability, composes current IDTSPE work through `UC-IDTSPE-COMPOSE-CURRENT-WORK`, ALWAYS refreshes/reaffirms the current Port Requirement Set through `IDTSPE.PORT-COMPOSITION-REFRESH`, and establishes/enters one shared normal Shell pass with the smallest useful current composition, which may remain Broad Discussion only. Specialized dependent command nodes perform their named operations inside that same pass; pass finalization happens only after the selected leaf/root actions have completed or been validly REUSED. Explicit registered Target Module/Lens selectors remain subject to current applicability/materiality gates.",
-  "activeContextBehavior": "Treat bare `idtspe` as ordinary current-work continuation. `idtspe <TM-ID|LENS-ID|tm alias|lens alias> <context>` contributes explicit registered component intent before composition refresh; exact `TM-*` / `LENS-*` IDs always work, registry aliases resolve only when unique, and ambiguous or unknown selectors are not guessed.",
+  "description": "Explicitly force/reaffirm the SHELL execution route for the current selected primary subject inside the ambient Work Runtime.",
+  "meaning": "IDTSPE methodology remains always applicable, but Work Runtime now exists above DIRECT/SHELL. Bare `idtspe` reuses the current Turn Work Record, passes through input/Manifest/primary-subject gates, sets or reaffirms `ExecutionRoute=SHELL`, refreshes applicable task-specific Use Cases and the Port Requirement Set, and executes the smallest useful Shell composition in that same Turn Work Record.",
+  "activeContextBehavior": "Treat bare `idtspe` as explicit SHELL-route intent for the current primary subject. Registered TM/Lens selectors contribute intent after Work Runtime/Manifest gates and remain subject to applicability/materiality.",
   "traversalReadMode": "Read current Core/profile Target Module and Lens registry summaries first. For an exact/unique selector, read only the selected component body plus the minimum Core/profile governance it requires. Do not scan/load every module or Lens body. Reuse current reliable governance; targeted refresh when uncertain.",
   "ownerFiles": [
     "planning/documentation/idtspe-methodology/active/idtspe-core/use-cases/compose-current-work/UC-IDTSPE-COMPOSE-CURRENT-WORK.md",
@@ -27,17 +27,14 @@ Scope: generic IDTSPE work-mode and installed-component dispatcher.
     "planning/documentation/idtspe-methodology/active/profiles/PROFILE-REGISTRY.md",
     "planning/documentation/idtspe-methodology/active/idtspe-core/commands/IDTSPE-COMMAND-SURFACE-CONTRACT.md"
   ],
-  "expectedOutput": "The refreshed/reaffirmed Use-Case and Port Requirement composition plus one shared current IDTSPE Shell pass in which the selected dependent operations/models run, followed by the smallest useful resulting IDTSPE output (including a valid Broad-Discussion-only result). No command invocation makes optional structure mandatory.",
+  "expectedOutput": "The current Turn Work Record shows `ExecutionRoute=SHELL`, refreshed task-specific Use-Case/Port composition and observable Shell traversal/results; no second pass trace is created.",
   "permissionMode": "read-only-planning",
   "keyReminders": [
-    "IDTSPE is always active in this methodology environment; this command is a convenience/navigation surface, not a mode switch.",
-    "Every normal Shell pass refreshes/reaffirms the Port Requirement Set even when the prior composition is reusable.",
-    "`idtspe.work` establishes/enters the shared normal Shell pass; specialized dependent nodes execute their named operations inside that pass, and the pass finalizes after selected leaf actions complete or are validly REUSED.",
-    "Canonical semantic selectors are TM-* Target Module IDs and LENS-* Lens IDs; short aliases are registry navigation only.",
-    "An explicit component selector is strong invocation intent but still respects Use-Case/context composition plus the component local applicability/materiality gate.",
-    "A Lens surfaces Finding Candidates; Core Finding Disposition resolves actual State/owner/lifecycle consequences.",
-    "Broad Discussion may remain sufficient; do not create a Target, State Unit or Checkpoint merely because `idtspe` was invoked.",
-    "This command plans/reviews only; it does not edit repository files, implement, test, commit or push."
+    "Work Runtime and the Turn Work Record exist before Shell route selection.",
+    "This command explicitly selects/reaffirms SHELL; it is not the reason Session State or the Work Record exists.",
+    "P-01/P-02 are retired/reserved compatibility labels; active Shell capabilities retain P-03..P-15 numbering.",
+    "Broad Discussion may remain sufficient; do not force optional semantic structure.",
+    "This command plans/reviews only and does not grant repository mutation."
   ],
   "userTarget": "<optional TM/LENS selector + target/context, or current planning work>",
   "palette": true,
@@ -52,7 +49,6 @@ Scope: generic IDTSPE work-mode and installed-component dispatcher.
     "hostTargetPolicy": "NONE"
   },
   "includes": [
-    "planning/commands/include-idtspe-trace-port.command.md",
     "planning/commands/recheck-methodology-use-cases.command.md",
     "planning/commands/compose-current-idtspe-work.command.md",
     "planning/commands/recheck-idtspe-port-composition.command.md"
@@ -85,8 +81,8 @@ Scope: generic IDTSPE work-mode and installed-component dispatcher.
     {
       "responsibilityId": "IDTSPE.RUNTIME-COMPOSITION",
       "path": "planning/documentation/idtspe-methodology/active/idtspe-core/runtime/IDTSPE-RUNTIME-COMPOSITION-CONTRACT.md",
-      "anchor": "idtspe-port-p01",
-      "why": "Defines normal Shell invocation and the runtime frame entered after composition refresh.",
+      "anchor": "idtspe-runtime-composition",
+      "why": "Defines the Shell composition entered only after the current Turn Work Record selects ExecutionRoute=SHELL.",
       "role": "RUNTIME_ENTRY",
       "readMode": "REQUIRED"
     }

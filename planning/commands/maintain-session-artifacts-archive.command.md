@@ -19,7 +19,7 @@ Scope: one direct portable Work Context Bundle/archive maintenance route built o
     "maintain current work artifacts archive"
   ],
   "description": "Maintain the current work artifact set and materialize/rematerialize it as one portable Work Context Bundle/archive.",
-  "meaning": "Run normal current-work artifact maintenance first, then require a portable P-14 Work Context Bundle/archive representation for the resulting material artifact set. Reuse/update the existing bundle when suitable; otherwise materialize/rematerialize one with the Current Work Manifest (normally `WORK-MANIFEST.md` or an established equivalent) as the primary entry point. Archive membership is representation only and never changes Need/PRS/Review/P-02/Revalidation semantic authority.",
+  "meaning": "Rematerialize the current portable Session State archive for handoff/re-entry. Include current Manifest, PRS, current Turn Work Record and materially carried session-owned files. P-14 may contribute external/durable artifact members when applicable but does not own Session State existence.",
   "activeContextBehavior": "Use the artifact set/inventory produced by the included session-artifact maintenance command. If a current suitable Work Context Bundle already exists, update/rematerialize it rather than creating parallel archives. Include only materially useful working artifacts/evidence and canonical references needed for portable re-entry. When archive writing/placement is unavailable, report BLOCKED/DEFERRED while preserving the synchronized loose-artifact state.",
   "traversalReadMode": "After the included artifact-maintenance route completes, read the P-14 Work Context Bundle representation section and the synchronized Manifest/inventory. Inspect only artifact bytes/references needed to produce or refresh the portable bundle.",
   "ownerFiles": [
@@ -44,7 +44,7 @@ Scope: one direct portable Work Context Bundle/archive maintenance route built o
       "readMode": "REQUIRED"
     }
   ],
-  "expectedOutput": "A synchronized current-work artifact set plus one current portable Work Context Bundle/archive with an obvious Manifest primary entry, materially useful members/references, explicit representation roles and no semantic-authority transfer. If archive materialization is unavailable, explicit BLOCKED/DEFERRED rather than false archive success.",
+  "expectedOutput": "A current portable Session State archive is materialized without promoting candidate Proposal/target files to accepted meaning.",
   "permissionMode": "artifact-no-commit-push",
   "keyReminders": [
     "This command includes normal session-artifact maintenance; do not reimplement its inventory/currentness semantics.",

@@ -55,3 +55,8 @@ Create a profile-specific Use Case later only if a recurring situation requires 
 ## Applicability Recheck Route
 
 Re-evaluation timing/triggers belong to [`UC-DOC-RESOLVE-CURRENT-USE-CASES`](use-cases/UC-DOC-RESOLVE-CURRENT-USE-CASES.md). Whenever that owner requires an applicability refresh, this map supplies current cross-scope routing metadata; it does not maintain a second trigger list.
+
+<a id="session-state-use-case-navigation"></a>
+## Session State / Work Runtime navigation
+
+Session State and the Turn Work Record are ambient runtime infrastructure. Use-Case applicability may help establish the current primary subject/route before Shell; when SHELL is selected, task-specific Use Cases and the Port Requirement Set are reaffirmed under the same Turn Work Record.

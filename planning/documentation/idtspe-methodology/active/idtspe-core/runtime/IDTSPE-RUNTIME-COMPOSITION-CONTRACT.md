@@ -24,7 +24,6 @@ This responsibility owns the **technical** Work Context/Shell composition and po
 IDTSPE Work Context
 + current Use-Case composition
 + Broad Discussion / Key Points
-+ P-02 Pass Work Plan / State / Trace / Visibility Contract
 + zero or more bounded Targets
   each Target when present:
     Target Resolution Requirements
@@ -55,7 +54,7 @@ Requirements come from the current task/scope/Sources plus universal Core Target
 
 A Target-specific shell pass still operates on one primary bounded Target at a time, while the Work Context may contain zero/several Targets. Target Work Units and Core State Units remain distinct compositional roles.
 
-The current `P-01..P-15` labels are technical runtime navigation, not a second ontology. `P-01 Invocation` and `P-02 Pass Work Plan / State / Trace / Visibility` are REQUIRED in every normal Shell pass; other ports remain applicability/materiality/explicit-requirement driven.
+The current port labels are technical runtime navigation, not a second ontology. `P-01` and `P-02` are retired/reserved compatibility labels: invocation/work-record behavior moved above Shell into Work Runtime. Active Shell capability labels remain `P-03..P-15` and are applicability/materiality/explicit-requirement driven.
 
 ### Port-Number Migration Compatibility
 
@@ -104,7 +103,7 @@ A removed Question port is routed by meaning to Requirement guidance, Unit Resol
 
 ## Work-Context Proportionality
 
-The Shell is subordinate to Use-Case/contextual composition. `P-01` and `P-02` are REQUIRED; all other ports are traversed only when composition/materiality or explicit requirements call for them.
+The Shell is subordinate to Work Runtime plus Use-Case/contextual composition. Shell starts only when the current Turn Work Record selects `ExecutionRoute=SHELL`; active `P-03..P-15` capabilities are traversed only when composition/materiality or explicit requirements call for them.
 
 ```text
 AUTO_COMPOSITION
@@ -120,9 +119,9 @@ An explicit **port/capability requirement** forces a real applicability/traversa
 
 Responsibility ID: `IDTSPE.PORT-COMPOSITION-REFRESH`
 
-This section owns the technical refresh/admission/reuse semantics for the Port Requirement Set. `UC-IDTSPE-COMPOSE-CURRENT-WORK` invokes the refresh as orchestration; the Contextual Methodology Application Contract contextualizes when it is required; P-02 represents its observable trace.
+This section owns the technical refresh/admission/reuse semantics for the Port Requirement Set. `UC-IDTSPE-COMPOSE-CURRENT-WORK` invokes the refresh when the current Turn Work Record selects SHELL; the Contextual Methodology Application Contract contextualizes applicability; the Turn Work Record represents observable routing/admission facts.
 
-Each **normal Shell pass** consumes one current Port Requirement Set. Before **every** normal pass enters `P-01`, current Use-Case applicability is reaffirmed, `UC-IDTSPE-COMPOSE-CURRENT-WORK` composes/reaffirms the current proportional IDTSPE methodology work, and only then `IDTSPE.PORT-COMPOSITION-REFRESH` refreshes/reaffirms the Port Requirement Set from that composition plus all pre-collected command/component contributions. This runtime applies the resulting admission/reuse contract. A prior P-02 trace may be consulted as retained orientation/evidence, but it never permits skipping the refresh.
+Each **SHELL execution** consumes one current Port Requirement Set. Work Runtime first establishes the current Turn Work Record, primary subject and route. When `WR-4=SHELL`, current Use-Case applicability and task-specific composition are reaffirmed and only then `IDTSPE.PORT-COMPOSITION-REFRESH` refreshes/reaffirms the Port Requirement Set from that composition plus pre-collected command/component contributions. Prior Turn Work Record history may be consulted as orientation/evidence, but never permits skipping the refresh.
 
 ```text
 current Use-Case applicability composition
@@ -132,7 +131,7 @@ current Use-Case applicability composition
 + EXPLICIT_REQUIREMENTs collected from the fully expanded command/component DAG BEFORE semantic command execution
 + current DOWNSTREAM_MATERIALITY
 + still-material defer/recheck obligations
-+ current P-02 working-trace orientation/evidence (never sticky authority)
++ current Turn Work Record orientation/evidence (never sticky authority)
 → refresh / reaffirm Port Requirement Set
 → one normal Shell pass
 ```
@@ -150,18 +149,10 @@ The Shell does not define Decision types. A material Decision is identified by i
 ## Shell Ports
 
 <a id="idtspe-port-p01"></a>
-### P-01 Invocation Port — REQUIRED
+### P-01 / P-02 — RETIRED / RESERVED COMPATIBILITY LABELS
 
-Routes the selected Use-Case composition into one normal Shell pass. It may validly route no Target-specific work when Broad Discussion remains sufficient.
+`P-01 Invocation` behavior is owned by Work Runtime entry (`WR-1..WR-4`). `P-02 Pass Work Plan / State / Trace / Visibility` behavior is owned by the Turn Work Record and retained only through the legacy compatibility contract. Neither label is admitted as an active Shell port. Their numbers are intentionally not reused in this migration.
 
-<a id="idtspe-port-p02"></a>
-### P-02 Pass Work Plan / State / Trace / Visibility Port — REQUIRED
-
-Adopts/continues the one structured Pass Working Record already established during invocation preparation so earlier command-composition / Use-Case / Port-Composition facts were retained incrementally. Before substantive non-baseline work, P-02 materializes the smallest useful immutable Initial Work Plan from the current authorized composition, then maintains Current Work State / Current Plan, observable execution events, Plan Delta / bounded local execution decisions, and the final Plan-vs-Actual reconciliation in that same record. When multiple state snapshots are retained, they use ordered execution-local IDs and one explicit current-state pointer; earlier snapshots remain historical evidence rather than competing “current” views. The P-02 owner selects the working backing store (normally ephemeral `TEMP_TRACE_FILE` when the host permits, otherwise explicit `RUNTIME_CONTEXT` fallback); visibility projection is separate. For Review, `REVIEW.STRATEGY-COVERAGE` remains authority for obligations/cells and P-02 records their executable projection/state only. Durable retention/placement remains a P-14 concern. Persistence does not give P-02 a Target lifecycle, review authority or permission expansion and does not replace mandatory Use-Case/Port Composition rechecks.
-
-Canonical owner: [`PASS-TRACE-AND-VISIBILITY-CONTRACT.md`](PASS-TRACE-AND-VISIBILITY-CONTRACT.md).
-
-<a id="idtspe-port-p03"></a>
 ### P-03 Target Port
 
 Connects Target Formation/Resolution when a bounded Target is useful.
@@ -251,7 +242,7 @@ For a Target, supports the conditional `HANDOFF_CONTINUATION` Requirement: downs
 <a id="idtspe-port-p14"></a>
 ### P-14 Persistence / Artifact Maintenance Port
 
-Generic persistence/representation and artifact-maintenance bridge. For a Target, it supports the conditional `PERSISTENCE_ADDRESSABILITY` Requirement. It also applies to non-Target retained meaning such as Pass Working Records, Proposal/Decision, Current Work Manifest or Work-Context state. When representation continuity is material, P-14 may reconcile artifact inventory/location, reuse/update/rematerialize representations, and select/reuse a Work Context Bundle/archive without taking semantic ownership.
+Generic persistence/representation and artifact-maintenance bridge. For a Target, it supports the conditional `PERSISTENCE_ADDRESSABILITY` Requirement. It also applies to non-Target retained meaning such as Turn Work Records, Proposal/Decision, Current Work Manifest or Work-Context state. When representation continuity is material, P-14 may reconcile artifact inventory/location, reuse/update/rematerialize representations, and select/reuse a Work Context Bundle/archive without taking semantic ownership.
 
 ```text
 semantic retention ≠ physical persistence
@@ -280,12 +271,12 @@ For materially multi-pass work, `UC-IDTSPE-MAINTAIN-CURRENT-WORK-STATE` may reta
 Current Work Manifest + current USER/canonical owner state
 → Compose Current Work
 → current Port Requirement Set
-→ P-02 bounded Pass Working Record
+→ current Turn Work Record
 → Final Plan-vs-Actual
 → refresh Manifest when cross-pass state materially changed
 ```
 
-P-02 remains pass-scoped; the Manifest remains cross-pass. Current USER input, canonical owner state or revalidation may invalidate stale Manifest projections.
+The Turn Work Record remains turn-scoped; the Manifest remains session-scale accepted work. Current USER input, canonical owner state or revalidation may invalidate stale projections.
 
 
 ## Integration Checkpoint / Representation Handoff
@@ -416,7 +407,7 @@ not become a second semantic authority.
 
 ## Exit Condition
 
-The P-02 Pass Working Record is closed from its recorded Initial Plan, ordered/current state (with a final state snapshot when historical snapshots are retained), execution events and plan deltas rather than reconstructed after the fact; material passes reconcile Final Plan-vs-Actual before completion. An IDTSPE instance is ready to hand off when proportionally:
+The Turn Work Record is closed through WR-7 from its immutable S0/kernel, current/refined work state, observable events and explicit adjustments rather than reconstructed after the fact; substantive turns reconcile final plan-vs-actual before completion. An IDTSPE instance is ready to hand off when proportionally:
 
 ```text
 Target purpose/scope and applicable Target Resolution Requirements are sufficiently formed for this checkpoint

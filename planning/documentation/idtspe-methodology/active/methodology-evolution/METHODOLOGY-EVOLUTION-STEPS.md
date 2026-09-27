@@ -116,3 +116,8 @@ Browser execution is outside this cleanup. It is not a gate for A, B or D. The H
 ### Integration record
 
 The v47 cumulative package was applied to `main` as commit `18d81a59d14f974d0436415a82f73c96a708c4eb`, tree `a0e88be7ce6f881bcd18ebd1a7518b0c8c4ea4f5`. This follow-up is a separate changeset based on that commit. Verify its build/product checks and source routes before applying it; do not treat the old “before final repository integration” sequencing as an unfulfilled gate for the already published v47 commit.
+
+<a id="me-001-session-state-realized-subset"></a>
+### ME-001 realized subset — Session State workspace lifecycle
+
+The Session State directory/archive, continuation/re-entry, Turn Work Record and portable handoff subset is now selected/realized by `SESSION.STATE-RUNTIME` + `IDTSPE.WORK-RUNTIME`. Repository mirror/cache/freshness/loading concerns remain deferred where not required by Session State. This does not claim the entire historical ME-001 horizon is implemented.

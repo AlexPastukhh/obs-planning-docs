@@ -22,3 +22,8 @@ Neighboring owners:
 - Target Formation / requirement coverage: [`../runtime/target-work/RESOLUTION-SLOT-AND-TARGET-FORMATION-SET.md`](../runtime/target-work/RESOLUTION-SLOT-AND-TARGET-FORMATION-SET.md#target-formation-requirement-coverage)
 - Target Work Unit/Collection/Slot semantics: [`../runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md`](../runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md#twu-unit-contract)
 - Target Work subject reference grammar: [`../runtime/target-work/TARGET-WORK-SUBJECT-REFERENCE-CONTRACT.md`](../runtime/target-work/TARGET-WORK-SUBJECT-REFERENCE-CONTRACT.md#target-work-subject-reference)
+
+<a id="prs-contextual-target-projection"></a>
+## Planning Resolution State current projection
+
+`TM-PLANNING-RESOLUTION-STATE` now contains `RU-PRS-01 Active Planning`, `RU-PRS-02 Tracked Decisions` and `RU-PRS-03 Contextual Material Coordination`. `RU-PRS-01` exposes required Proposal→Current Basis→complete Candidate Target-State relations for file/result-changing Proposals. `RU-PRS-03` owns only contextual-material handling metadata through Collection `PRS-CONTEXTUAL-MATERIAL`; natural semantic owners remain authoritative.

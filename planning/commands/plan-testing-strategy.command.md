@@ -46,8 +46,7 @@ Scope: historical invocation alias redirected to current IDTSPE/SDS authority; h
   },
   "includes": [
     "planning/commands/work-through-idtspe.command.md",
-    "planning/commands/recheck-idtspe-port-composition.command.md",
-    "planning/commands/include-idtspe-trace-port.command.md"
+    "planning/commands/recheck-idtspe-port-composition.command.md"
   ],
   "ownerRefs": [
     {

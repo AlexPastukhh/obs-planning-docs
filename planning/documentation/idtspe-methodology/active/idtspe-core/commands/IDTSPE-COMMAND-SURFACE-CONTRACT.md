@@ -153,7 +153,7 @@ Bootstrap must not silently select a Target, infer a Target invocation mode or e
 
 `idtspe.next` and `idtspe.continue` are explicit navigation/convenience surfaces, not approval gates between natural AI work steps. Thin Session Runtime allows automatic progression through ordinary in-scope interaction steps, while IDTSPE Use Cases own methodology composition.
 
-`idtspe.next` does **not** own Shell visibility. `P-02 Pass Work Plan / State / Trace / Visibility` owns observability for a normal Shell pass. `idtspe.next` resolves the smallest useful next methodology action from current methodology + current Work Context and presents that action as a **Generic AI Proposal (GIP)**, then stops without executing it. When a current P-13 Handoff / Methodology Direction result exists it may inform that GIP, but Handoff is not required: `idtspe.next` remains valid in Broad Discussion with zero Targets.
+`idtspe.next` does **not** own Shell visibility. `Turn Work Record` owns observability for a normal Shell pass. `idtspe.next` resolves the smallest useful next methodology action from current methodology + current Work Context and presents that action as a **Generic AI Proposal (GIP)**, then stops without executing it. When a current P-13 Handoff / Methodology Direction result exists it may inform that GIP, but Handoff is not required: `idtspe.next` remains valid in Broad Discussion with zero Targets.
 
 
 ## Shell Port Requirement Composition
@@ -183,7 +183,7 @@ For Review commands, `REVIEW_COVERAGE_MODE` is also a pre-execution contribution
 
 Several intents that require the same port, registry/meta-model or other shared prefix must not recursively launch several independent `idtspe.work` passes. Shared prefixes are one DAG node and are performed/reused once per current subject/basis/operation.
 
-An explicit **port/capability requirement** means **perform a real applicability/traversal check**; it does not manufacture a positive result. `NOT_APPLICABLE`, `CHECKED_NO_RESULT`, `CHECKED_NO_CHANGE` and `REUSED` remain valid port outcomes. Automatic composition, explicit port requirement and downstream materiality all enter the same port contract; only P-02 trace `origin` differs. A user-facing semantic root action such as `примени линзу <Lens>` is stronger than merely requiring P-06 traversal: after the shared Lens prefix resolves the registered Lens, bounded Analysis Surface and supported operation, that root action executes the named Lens once even if normal applicability is confidently false; `APPLIED — no material finding / no useful change` is then a valid semantic result.
+An explicit **port/capability requirement** means **perform a real applicability/traversal check**; it does not manufacture a positive result. `NOT_APPLICABLE`, `CHECKED_NO_RESULT`, `CHECKED_NO_CHANGE` and `REUSED` remain valid port outcomes. Automatic composition, explicit port requirement and downstream materiality all enter the same port contract; only the Turn Work Record admission-origin fact differs. A user-facing semantic root action such as `примени линзу <Lens>` is stronger than merely requiring P-06 traversal: after the shared Lens prefix resolves the registered Lens, bounded Analysis Surface and supported operation, that root action executes the named Lens once even if normal applicability is confidently false; `APPLIED — no material finding / no useful change` is then a valid semantic result.
 
 Concrete direct commands MAY carry declarative `includes` so the same canonical route is guaranteed when the USER invokes work through the Helper. `includes` reference canonical repository paths to registered direct Planning Command definitions; they remain command→command edges and MUST NOT point directly to methodology/Use-Case/owner files or become a parallel numeric `requiredPorts`/file-execution ontology. `ownerFiles` / structured owner references remain read routes, not executable includes. The AI itself works through methodology owners/references/handoffs rather than invoking commands internally.
 
@@ -193,7 +193,7 @@ Concrete direct commands MAY carry declarative `includes` so the same canonical 
 idtspe.port.trace
   → includes `planning/commands/recheck-methodology-use-cases.command.md` but intentionally does not include `planning/commands/work-through-idtspe.command.md` (cycle guard)
   → composition-time contribution establishes/reuses the one incremental working trace before dependency actions start
-  → runtime node confirms/continues the canonical P-02 capability
+  → Work Runtime records/continues the current Turn Work Record
 
 methodology.use_cases.recheck
   → mandatory registry-level Use-Case applicability recheck
@@ -236,7 +236,7 @@ idtspe.lenses.apply-selected
   → material Finding Candidates cross Finding Disposition
 ```
 
-User-level/specialized IDTSPE commands expose `idtspe.work`, Port Composition Recheck and P-02 Pass Working Record directly in their composition even when those nodes are also transitively reachable. Duplicate dependency edges are intentional declaration and are deduplicated before execution.
+User-level/specialized IDTSPE commands expose `idtspe.work`, Port Composition Recheck and Turn Work Record directly in their composition even when those nodes are also transitively reachable. Duplicate dependency edges are intentional declaration and are deduplicated before execution.
 
 The methodology remains independently executable without Helper/command projection: current Use Cases, owners and natural handoffs determine the same process. The command DAG is a reproducibility/guarantee surface only.
 
@@ -427,7 +427,7 @@ Both are explicit entries into the same canonical Core lifecycle. The architectu
 
 Repository command definitions carry concrete aliases plus stable `methodologyBinding` and helper-presentation metadata. The Helper is a metadata-driven projection only.
 
-The `IDTSPE Pass` Helper view may project the registered generic composition prefixes (`idtspe.work`, named port requirements, Target Module/Lens generic apply and P-02 sink configuration). Concrete `TM-*` and `LENS-*` semantic cards remain in their dedicated views. Changing tabs/groups/order must not silently redefine Core command semantics, Target ownership, Lens ownership or host-target policy.
+The `IDTSPE Pass` Helper view may project the registered generic composition prefixes (`idtspe.work`, named port requirements, Target Module/Lens generic apply and legacy trace visibility configuration). Concrete `TM-*` and `LENS-*` semantic cards remain in their dedicated views. Changing tabs/groups/order must not silently redefine Core command semantics, Target ownership, Lens ownership or host-target policy.
 
 
 ## Need / Proposal / Finding Command Coverage
@@ -476,3 +476,8 @@ explicit USER/Source wanted outcome noticed during review
 ```
 
 `idtspe.lenses.select` selects applicable Lens Models **and the materially useful supported operation(s) for the current bounded Analysis Surface**, producing selected Lens Application requests rather than an operation-less Lens list. Selection alone is not application. Review that depends on Lens analysis uses `idtspe.lenses.apply-selected` (or an equivalent natural Lens application route) so each selected `(Lens, Analysis Surface, Operation, basis)` application is actually executed before the review result is finalized.
+
+<a id="work-runtime-command-surface"></a>
+## Work Runtime command projection
+
+Commands project into the current Turn Work Record. `idtspe.port.trace` is a legacy compatibility visibility surface and no longer a required composition contribution. Explicit `idtspe.work` selects/reaffirms `ExecutionRoute=SHELL` for the already-established primary subject after Work Runtime/Manifest gates. Command UI remains a projection, not methodology authority.

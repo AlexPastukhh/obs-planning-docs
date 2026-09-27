@@ -33,7 +33,6 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
   "includes": [
     "planning/commands/work-through-idtspe.command.md",
     "planning/commands/recheck-idtspe-port-composition.command.md",
-    "planning/commands/include-idtspe-trace-port.command.md",
     "planning/commands/idtspe-port-qrp.command.md"
   ],
   "expectedOutput": "Current material Q/R/P lifecycle state with resolved/deferred/escalated items routed correctly.",

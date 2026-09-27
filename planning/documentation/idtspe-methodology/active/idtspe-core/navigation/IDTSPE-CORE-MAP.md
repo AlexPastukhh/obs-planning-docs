@@ -22,7 +22,9 @@ relevant specialized Documentation + IDTSPE Use Cases
 ↓
 UC-IDTSPE-COMPOSE-CURRENT-WORK      [default continuously relevant]
 ↓
-P-01 Invocation → P-02 Pass Work Plan / State / Trace / Visibility [included in every normal Shell pass]
+Turn Work Record: WR-3 primary subject → WR-4 route
+↓ when SHELL
+active P-03..P-15 Shell capability graph
 ↓
 smallest useful IDTSPE projection / dynamic Shell route
 ├─ Broad Discussion only
@@ -115,7 +117,7 @@ bounded responsibility/result becomes useful
 Target Work / Target Formation ownership routing: [`runtime/target-work/RESPONSIBILITY-MAP.md`](../runtime/target-work/RESPONSIBILITY-MAP.md).
 Target Module Meta-Model / discovery ownership routing: [`target-modules/RESPONSIBILITY-MAP.md`](../target-modules/RESPONSIBILITY-MAP.md).
 
-Pass Work Plan / State / Trace / Visibility owner: [`runtime/PASS-TRACE-AND-VISIBILITY-CONTRACT.md`](../runtime/PASS-TRACE-AND-VISIBILITY-CONTRACT.md).
+Work Runtime / Turn Work Record owner: [`runtime/WORK-RECORD-PRINCIPLES.md`](../runtime/WORK-RECORD-PRINCIPLES.md#idtspe-work-runtime). Legacy P-02 compatibility: [`runtime/PASS-TRACE-AND-VISIBILITY-CONTRACT.md`](../runtime/PASS-TRACE-AND-VISIBILITY-CONTRACT.md#idtspe-pass-trace).
 
 ## 6. Lens System / Findings
 
@@ -216,3 +218,8 @@ It never owns runtime `when/why` routing when a current Use Case/component contr
 - [`runtime/target-work/RESOLUTION-SLOT-AND-TARGET-FORMATION-SET.md`](../runtime/target-work/RESOLUTION-SLOT-AND-TARGET-FORMATION-SET.md) — generic Resolution Slot boundary + canonical Target Resolution Requirements, reusable-model check and prepared/contextual coverage flow.
 - [`runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md`](../runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md) — canonical Unit Definition/authoring model, Core-defined / Module-defined / Contextual Units, terminal Unit Resolution Slots for composite Units and Target Step Result composition.
 - [`lenses/frequent/LENS-TARGET-RESOLUTION-COVERAGE.md`](../lenses/frequent/LENS-TARGET-RESOLUTION-COVERAGE.md) — frequent-conditional coverage evaluation Lens.
+
+<a id="work-runtime-core-map"></a>
+## Work Runtime map
+
+`IDTSPE.WORK-RUNTIME` is the current runtime entry above Shell. It owns the Turn Work Record and `DIRECT | SHELL | NO_EXECUTION` routing. When SHELL is selected, active capability IDs remain P-03..P-15. Core PRS exposes `RU-PRS-01 Active Planning`, `RU-PRS-02 Tracked Decisions` and `RU-PRS-03 Contextual Material Coordination`.

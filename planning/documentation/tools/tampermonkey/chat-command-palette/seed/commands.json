@@ -334,7 +334,6 @@
       "includes": [
         "planning/commands/work-through-idtspe.command.md",
         "planning/commands/recheck-idtspe-port-composition.command.md",
-        "planning/commands/include-idtspe-trace-port.command.md",
         "planning/commands/idtspe-port-lens.command.md",
         "planning/commands/select-idtspe-lenses.command.md"
       ],
@@ -1024,7 +1023,6 @@
       "includes": [
         "planning/commands/work-through-idtspe.command.md",
         "planning/commands/recheck-idtspe-port-composition.command.md",
-        "planning/commands/include-idtspe-trace-port.command.md",
         "planning/commands/idtspe-port-persistence.command.md"
       ],
       "processCalls": [],
@@ -1237,8 +1235,7 @@
       ],
       "includes": [
         "planning/commands/work-through-idtspe.command.md",
-        "planning/commands/recheck-idtspe-port-composition.command.md",
-        "planning/commands/include-idtspe-trace-port.command.md"
+        "planning/commands/recheck-idtspe-port-composition.command.md"
       ],
       "processCalls": [],
       "compositionContributions": [],
@@ -1446,7 +1443,6 @@
         }
       ],
       "includes": [
-        "planning/commands/include-idtspe-trace-port.command.md",
         "planning/commands/recheck-methodology-use-cases.command.md"
       ],
       "processCalls": [],
@@ -1510,7 +1506,6 @@
       "includes": [
         "planning/commands/work-through-idtspe.command.md",
         "planning/commands/recheck-idtspe-port-composition.command.md",
-        "planning/commands/include-idtspe-trace-port.command.md",
         "planning/commands/idtspe-port-result.command.md"
       ],
       "processCalls": [],
@@ -1539,29 +1534,37 @@
       "id": "idtspe.trace.artifact",
       "file": "configure-idtspe-trace-artifact.command.md",
       "command": "веди трассу idtspe в trace-файле",
-      "englishName": "configure IDTSPE Pass Working Record artifact",
+      "englishName": "configure IDTSPE Turn Work Record artifact",
       "commandFamily": [
         "веди трассу idtspe в trace-файле"
       ],
-      "description": "Configure P-02 for explicitly retained Pass Working Record file/archive output and require the persistence capability to be checked without granting mutation authority.",
-      "meaning": "Set/refresh durable/file/archive retention intent for the current P-02 Pass Working Record. The one incrementally maintained Initial Plan + Current State + Execution Trace/Plan Delta + Final Plan-vs-Actual record remains the working orientation and final visibility source; this command pre-composes Persistence so P-14 can resolve permitted durable placement. It does not create another record or independently grant file mutation.",
-      "activeContextBehavior": "Apply to the current/next pass. Runtime working backing still follows the P-02 owner (normally TEMP_TRACE_FILE when the host permits). Durable retention is attempted only through the active permission/output contract and P-14; if persistence cannot be permitted/resolved, retain the runtime Pass Working Record and report the durable request as BLOCKED/DEFERRED rather than false success.",
+      "description": "Request retained/external artifact representation of the current Turn Work Record when material and authorized.",
+      "meaning": "Keep the current Turn Work Record canonical. When durable/external retention beyond ambient Session State is requested, route physical placement through P-14 without creating a second semantic trace or expanding target mutation permission.",
+      "activeContextBehavior": "Apply to the current Turn Work Record. Ambient working backing follows Session State; this command changes only visibility/retention intent. External/durable retention is attempted through P-14/current permission and reports BLOCKED/DEFERRED when unavailable.",
       "traversalReadMode": "Read the included command route and canonical owner files proportionally. Reuse current trustworthy owner/process context; reread only stale, uncertain or newly material owners.",
       "ownerFiles": [
+        "planning/documentation/idtspe-methodology/active/idtspe-core/runtime/WORK-RECORD-PRINCIPLES.md",
         "planning/documentation/idtspe-methodology/active/idtspe-core/runtime/PASS-TRACE-AND-VISIBILITY-CONTRACT.md"
       ],
       "ownerRefs": [
         {
+          "responsibilityId": "IDTSPE.WORK-RUNTIME",
+          "path": "planning/documentation/idtspe-methodology/active/idtspe-core/runtime/WORK-RECORD-PRINCIPLES.md",
+          "anchor": "idtspe-work-runtime",
+          "why": "Owns the canonical Turn Work Record and visibility/retention discipline.",
+          "role": "PRIMARY_OWNER",
+          "readMode": "REQUIRED"
+        },
+        {
           "responsibilityId": "IDTSPE.PASS-TRACE",
           "path": "planning/documentation/idtspe-methodology/active/idtspe-core/runtime/PASS-TRACE-AND-VISIBILITY-CONTRACT.md",
-          "anchor": "idtspe-pass-trace-contract",
-          "why": "Refines the already-required P-02 Pass Working Record with an explicit retention preference; it does not create another record.",
-          "role": "PRIMARY_OWNER",
+          "anchor": "idtspe-pass-trace",
+          "why": "Preserves legacy trace vocabulary as a compatibility projection only.",
+          "role": "SUPPORTING_CONTRACT",
           "readMode": "REQUIRED"
         }
       ],
       "includes": [
-        "planning/commands/include-idtspe-trace-port.command.md",
         "planning/commands/idtspe-port-persistence.command.md"
       ],
       "processCalls": [],
@@ -1569,16 +1572,16 @@
         {
           "kind": "TRACE_SINK_PREFERENCE",
           "value": "TRACE_FILE_OR_ARCHIVE_FILE",
-          "why": "Prefer retained file/archive visibility/output for the already-required one P-02 Pass Working Record; working-store selection remains with the P-02 owner and persistence authority remains with P-14."
+          "why": "Prefer retained file/archive visibility/output for the already-required one Turn Work Record; working-store selection remains with the P-02 owner and persistence authority remains with P-14."
         }
       ],
-      "expectedOutput": "P-02 keeps one Pass Working Record and prefers a retained TRACE_FILE/ARCHIVE_FILE projection when P-14 and current permission permit it; otherwise durable retention is explicitly BLOCKED/DEFERRED while runtime trace continuity remains truthful.",
+      "expectedOutput": "The current Turn Work Record remains canonical and an external/durable representation is placed or explicitly BLOCKED/DEFERRED through normal P-14 rules.",
       "permissionMode": "interaction-policy-only-no-mutation-grant",
       "keyReminders": [
-        "Use one Pass Working Record; durable retention never creates a second working trace/plan record.",
-        "TEMP_TRACE_FILE is the normal ephemeral working backing when the host permits; this command concerns retained file/archive intent.",
-        "P-14 owns durable placement/persistence and this command grants no mutation, commit or push permission.",
-        "Maintain plan/state/execution incrementally; post-hoc reconstruction of the work route is recovery-only."
+        "Artifact retention is representation, not a second trace.",
+        "Ambient Session-State files do not automatically invoke P-14.",
+        "External/durable placement follows P-14 and current permission authority.",
+        "Do not report durable retention as successful when placement is blocked."
       ],
       "userTarget": "<current/next IDTSPE pass>",
       "palette": true,
@@ -1603,41 +1606,47 @@
       "commandFamily": [
         "показывай трассу idtspe в ответе"
       ],
-      "description": "Configure P-02 to project the accumulated Pass Working Record inline.",
-      "meaning": "Set/refresh the current P-02 visibility projection so the accumulated one Pass Working Record (plan/state/trace/final reconciliation) is shown proportionally inline. INLINE is a projection preference only: it neither selects RUNTIME_CONTEXT as the working backing nor prohibits TEMP_TRACE_FILE.",
-      "activeContextBehavior": "Apply to the current/next IDTSPE pass. The one Pass Working Record remains the execution-plan/state orientation surface and final visibility source; its working backing is selected by the P-02 owner independently of this inline projection preference.",
+      "description": "Configure inline visibility for the current Turn Work Record without selecting a separate working store.",
+      "meaning": "Prefer an inline conversational projection of the current Turn Work Record. The record may still be file-backed by Session State; INLINE controls visibility, not canonical ownership or working storage.",
+      "activeContextBehavior": "Apply to the current Turn Work Record. Ambient working backing follows Session State; this command changes only visibility/retention intent. Inline projection does not constrain file-backed Session-State backing.",
       "traversalReadMode": "Read the included command route and canonical owner files proportionally. Reuse current trustworthy owner/process context; reread only stale, uncertain or newly material owners.",
       "ownerFiles": [
+        "planning/documentation/idtspe-methodology/active/idtspe-core/runtime/WORK-RECORD-PRINCIPLES.md",
         "planning/documentation/idtspe-methodology/active/idtspe-core/runtime/PASS-TRACE-AND-VISIBILITY-CONTRACT.md"
       ],
       "ownerRefs": [
         {
+          "responsibilityId": "IDTSPE.WORK-RUNTIME",
+          "path": "planning/documentation/idtspe-methodology/active/idtspe-core/runtime/WORK-RECORD-PRINCIPLES.md",
+          "anchor": "idtspe-work-runtime",
+          "why": "Owns the canonical Turn Work Record and visibility/retention discipline.",
+          "role": "PRIMARY_OWNER",
+          "readMode": "REQUIRED"
+        },
+        {
           "responsibilityId": "IDTSPE.PASS-TRACE",
           "path": "planning/documentation/idtspe-methodology/active/idtspe-core/runtime/PASS-TRACE-AND-VISIBILITY-CONTRACT.md",
-          "anchor": "idtspe-pass-trace-contract",
-          "why": "Refines the already-required P-02 Pass Working Record with an explicit visibility preference; it does not create another trace or plan record.",
-          "role": "PRIMARY_OWNER",
+          "anchor": "idtspe-pass-trace",
+          "why": "Preserves legacy trace vocabulary as a compatibility projection only.",
+          "role": "SUPPORTING_CONTRACT",
           "readMode": "REQUIRED"
         }
       ],
-      "includes": [
-        "planning/commands/include-idtspe-trace-port.command.md"
-      ],
+      "includes": [],
       "processCalls": [],
       "compositionContributions": [
         {
           "kind": "TRACE_SINK_PREFERENCE",
           "value": "INLINE",
-          "why": "Prefer inline visibility for the already-required P-02 Pass Working Record; this does not select or constrain the P-02 working backing store."
+          "why": "Prefer inline visibility for the already-required Turn Work Record; this does not select or constrain the P-02 working backing store."
         }
       ],
-      "expectedOutput": "P-02 prefers INLINE visibility for the whole Pass Working Record while retaining incremental-first plan/state/trace semantics and independent working-store selection.",
+      "expectedOutput": "The current Turn Work Record uses INLINE visibility proportionally; no independent P-02 record is created.",
       "permissionMode": "read-only-planning",
       "keyReminders": [
-        "P-02 is already included in every normal Shell pass.",
-        "INLINE configures visibility only; it does not select RUNTIME_CONTEXT and does not prohibit TEMP_TRACE_FILE.",
-        "This command does not create a second trace or semantic owner.",
-        "Final inline visibility is derived from the same plan/state/trace record maintained and consulted during work."
+        "INLINE is a visibility projection, not a second trace.",
+        "A substantive Turn Work Record may remain file-backed in Session State.",
+        "Do not force P-14 solely for an ambient Session-State working file."
       ],
       "userTarget": "<current/next IDTSPE pass>",
       "palette": true,
@@ -1894,7 +1903,6 @@
       "includes": [
         "planning/commands/work-through-idtspe.command.md",
         "planning/commands/recheck-idtspe-port-composition.command.md",
-        "planning/commands/include-idtspe-trace-port.command.md",
         "planning/commands/idtspe-port-target.command.md"
       ],
       "processCalls": [],
@@ -1950,7 +1958,6 @@
       "includes": [
         "planning/commands/work-through-idtspe.command.md",
         "planning/commands/recheck-idtspe-port-composition.command.md",
-        "planning/commands/include-idtspe-trace-port.command.md",
         "planning/commands/idtspe-port-target.command.md",
         "planning/commands/apply-idtspe-target-module.command.md"
       ],
@@ -2061,7 +2068,6 @@
       "includes": [
         "planning/commands/work-through-idtspe.command.md",
         "planning/commands/recheck-idtspe-port-composition.command.md",
-        "planning/commands/include-idtspe-trace-port.command.md",
         "planning/commands/idtspe-port-target.command.md",
         "planning/commands/apply-idtspe-target-module.command.md"
       ],
@@ -2283,8 +2289,7 @@
       ],
       "includes": [
         "planning/commands/work-through-idtspe.command.md",
-        "planning/commands/recheck-idtspe-port-composition.command.md",
-        "planning/commands/include-idtspe-trace-port.command.md"
+        "planning/commands/recheck-idtspe-port-composition.command.md"
       ],
       "processCalls": [],
       "compositionContributions": [],
@@ -2343,8 +2348,7 @@
       ],
       "includes": [
         "planning/commands/work-through-idtspe.command.md",
-        "planning/commands/recheck-idtspe-port-composition.command.md",
-        "planning/commands/include-idtspe-trace-port.command.md"
+        "planning/commands/recheck-idtspe-port-composition.command.md"
       ],
       "processCalls": [],
       "compositionContributions": [],
@@ -2452,7 +2456,6 @@
       "includes": [
         "planning/commands/work-through-idtspe.command.md",
         "planning/commands/recheck-idtspe-port-composition.command.md",
-        "planning/commands/include-idtspe-trace-port.command.md",
         "planning/commands/idtspe-port-target.command.md",
         "planning/commands/apply-idtspe-target-module.command.md"
       ],
@@ -2509,7 +2512,6 @@
       "includes": [
         "planning/commands/work-through-idtspe.command.md",
         "planning/commands/recheck-idtspe-port-composition.command.md",
-        "planning/commands/include-idtspe-trace-port.command.md",
         "planning/commands/idtspe-port-branch.command.md"
       ],
       "processCalls": [],
@@ -2572,8 +2574,7 @@
       ],
       "includes": [
         "planning/commands/work-through-idtspe.command.md",
-        "planning/commands/recheck-idtspe-port-composition.command.md",
-        "planning/commands/include-idtspe-trace-port.command.md"
+        "planning/commands/recheck-idtspe-port-composition.command.md"
       ],
       "processCalls": [],
       "compositionContributions": [],
@@ -2663,7 +2664,6 @@
       "includes": [
         "planning/commands/work-through-idtspe.command.md",
         "planning/commands/recheck-idtspe-port-composition.command.md",
-        "planning/commands/include-idtspe-trace-port.command.md",
         "planning/commands/idtspe-port-decision.command.md"
       ],
       "processCalls": [],
@@ -2701,7 +2701,7 @@
         "что дальше по методологии"
       ],
       "description": "Show the currently useful methodology action without executing it.",
-      "meaning": "Recheck current methodology Use-Case applicability, refresh/reaffirm current IDTSPE composition and Port Requirement Set, then resolve the smallest useful next methodology action from the current Work Context and surface that action as a Generic AI Proposal (GIP). Stop without executing the proposed action. P-02 owns Shell visibility; this command does not.",
+      "meaning": "Recheck current methodology Use-Case applicability, refresh/reaffirm current IDTSPE composition and Port Requirement Set, then resolve the smallest useful next methodology action from the current Work Context and surface that action as a Generic AI Proposal (GIP). Stop without executing the proposed action. the current Turn Work Record owns observable route visibility; this command does not.",
       "activeContextBehavior": "Use current Work Context plus mandatory current Use-Case/port-composition rechecks. Do not invent a Target or component to satisfy a fixed sequence. Produce a GIP only for the next useful action/direction and preserve USER steering and permission boundaries.",
       "traversalReadMode": "Reuse current reliable IDTSPE/SDS governance; targeted refresh of the selected owner route when uncertain; full bootstrap only when no reliable sufficient governance context exists.",
       "ownerFiles": [
@@ -2729,19 +2729,18 @@
       ],
       "includes": [
         "planning/commands/work-through-idtspe.command.md",
-        "planning/commands/recheck-idtspe-port-composition.command.md",
-        "planning/commands/include-idtspe-trace-port.command.md"
+        "planning/commands/recheck-idtspe-port-composition.command.md"
       ],
       "processCalls": [],
       "compositionContributions": [],
-      "expectedOutput": "One grounded Generic AI Proposal (GIP) for the smallest useful next methodology action, with concise basis/alternatives/recheck trigger only when useful; no proposed action executed. Any route visibility comes from P-02.",
+      "expectedOutput": "One grounded Generic AI Proposal (GIP) for the smallest useful next methodology action, with concise basis/alternatives/recheck trigger only when useful; no proposed action executed. Any route visibility comes from the current Turn Work Record.",
       "permissionMode": "read-only-planning",
       "keyReminders": [
         "IDTSPE is already active; this shortcut does not enable a mode.",
         "Use Cases compose methodology use; Target Modules/Lenses own specialized work.",
         "Broad Discussion or NO_ADDITIONAL_STRUCTURE is a valid proportional outcome.",
         "Ordinary in-scope progression is not an approval gate; explicit mutation/commit/push permissions remain separate.",
-        "This command produces a GIP recommendation/action proposal; it does not own P-02 visibility and does not itself create a formal IDTSPE Proposal."
+        "This command produces a GIP recommendation/action proposal; it does not own Turn Work Record visibility and does not itself create a formal IDTSPE Proposal."
       ],
       "userTarget": "<current planning state>",
       "palette": true,
@@ -2794,8 +2793,7 @@
       ],
       "includes": [
         "planning/commands/work-through-idtspe.command.md",
-        "planning/commands/recheck-idtspe-port-composition.command.md",
-        "planning/commands/include-idtspe-trace-port.command.md"
+        "planning/commands/recheck-idtspe-port-composition.command.md"
       ],
       "processCalls": [],
       "compositionContributions": [
@@ -2805,13 +2803,14 @@
           "why": "Explicitly require the BRANCH capability to receive a real applicability/traversal check in the merged current Shell composition."
         }
       ],
-      "expectedOutput": "Branch capability traversal outcome using the normal P-02 vocabulary, including APPLIED / CHECKED_NO_CHANGE / CHECKED_NO_RESULT / NOT_APPLICABLE / REUSED / BLOCKED / DEFERRED as applicable.",
+      "expectedOutput": "Branch capability traversal outcome with observable admission/traversal facts recorded in the current Turn Work Record, including APPLIED / CHECKED_NO_CHANGE / CHECKED_NO_RESULT / NOT_APPLICABLE / REUSED / BLOCKED / DEFERRED as applicable.",
       "permissionMode": "read-only-planning",
       "keyReminders": [
         "This is a named capability requirement, not a parallel numeric-port ontology.",
         "Explicit inclusion requires a real check, not a manufactured positive result.",
         "Shared prefixes and equivalent current work are reused.",
-        "P-02 records admission origin and traversal result incrementally."
+        "the current Turn Work Record records admission origin and traversal result incrementally.",
+        "The current Turn Work Record records admission origin, observable traversal result and reuse evidence; the named capability remains the semantic owner of its work."
       ],
       "userTarget": "<current IDTSPE subject/context>",
       "palette": true,
@@ -2864,8 +2863,7 @@
       ],
       "includes": [
         "planning/commands/work-through-idtspe.command.md",
-        "planning/commands/recheck-idtspe-port-composition.command.md",
-        "planning/commands/include-idtspe-trace-port.command.md"
+        "planning/commands/recheck-idtspe-port-composition.command.md"
       ],
       "processCalls": [],
       "compositionContributions": [
@@ -2875,13 +2873,14 @@
           "why": "Explicitly require the DECISION capability to receive a real applicability/traversal check in the merged current Shell composition."
         }
       ],
-      "expectedOutput": "Decision capability traversal outcome using the normal P-02 vocabulary, including APPLIED / CHECKED_NO_CHANGE / CHECKED_NO_RESULT / NOT_APPLICABLE / REUSED / BLOCKED / DEFERRED as applicable.",
+      "expectedOutput": "Decision capability traversal outcome with observable admission/traversal facts recorded in the current Turn Work Record, including APPLIED / CHECKED_NO_CHANGE / CHECKED_NO_RESULT / NOT_APPLICABLE / REUSED / BLOCKED / DEFERRED as applicable.",
       "permissionMode": "read-only-planning",
       "keyReminders": [
         "This is a named capability requirement, not a parallel numeric-port ontology.",
         "Explicit inclusion requires a real check, not a manufactured positive result.",
         "Shared prefixes and equivalent current work are reused.",
-        "P-02 records admission origin and traversal result incrementally."
+        "the current Turn Work Record records admission origin and traversal result incrementally.",
+        "The current Turn Work Record records admission origin, observable traversal result and reuse evidence; the named capability remains the semantic owner of its work."
       ],
       "userTarget": "<current IDTSPE subject/context>",
       "palette": true,
@@ -2934,8 +2933,7 @@
       ],
       "includes": [
         "planning/commands/work-through-idtspe.command.md",
-        "planning/commands/recheck-idtspe-port-composition.command.md",
-        "planning/commands/include-idtspe-trace-port.command.md"
+        "planning/commands/recheck-idtspe-port-composition.command.md"
       ],
       "processCalls": [],
       "compositionContributions": [
@@ -2945,13 +2943,14 @@
           "why": "Explicitly require the HANDOFF capability to receive a real applicability/traversal check in the merged current Shell composition."
         }
       ],
-      "expectedOutput": "Handoff capability traversal outcome using the normal P-02 vocabulary, including APPLIED / CHECKED_NO_CHANGE / CHECKED_NO_RESULT / NOT_APPLICABLE / REUSED / BLOCKED / DEFERRED as applicable.",
+      "expectedOutput": "Handoff capability traversal outcome with observable admission/traversal facts recorded in the current Turn Work Record, including APPLIED / CHECKED_NO_CHANGE / CHECKED_NO_RESULT / NOT_APPLICABLE / REUSED / BLOCKED / DEFERRED as applicable.",
       "permissionMode": "read-only-planning",
       "keyReminders": [
         "This is a named capability requirement, not a parallel numeric-port ontology.",
         "Explicit inclusion requires a real check, not a manufactured positive result.",
         "Shared prefixes and equivalent current work are reused.",
-        "P-02 records admission origin and traversal result incrementally."
+        "the current Turn Work Record records admission origin and traversal result incrementally.",
+        "The current Turn Work Record records admission origin, observable traversal result and reuse evidence; the named capability remains the semantic owner of its work."
       ],
       "userTarget": "<current IDTSPE subject/context>",
       "palette": true,
@@ -3004,8 +3003,7 @@
       ],
       "includes": [
         "planning/commands/work-through-idtspe.command.md",
-        "planning/commands/recheck-idtspe-port-composition.command.md",
-        "planning/commands/include-idtspe-trace-port.command.md"
+        "planning/commands/recheck-idtspe-port-composition.command.md"
       ],
       "processCalls": [],
       "compositionContributions": [
@@ -3015,13 +3013,14 @@
           "why": "Explicitly require the LENS capability to receive a real applicability/traversal check in the merged current Shell composition."
         }
       ],
-      "expectedOutput": "Lens capability traversal outcome using the normal P-02 vocabulary, including APPLIED / CHECKED_NO_CHANGE / CHECKED_NO_RESULT / NOT_APPLICABLE / REUSED / BLOCKED / DEFERRED as applicable.",
+      "expectedOutput": "Lens capability traversal outcome with observable admission/traversal facts recorded in the current Turn Work Record, including APPLIED / CHECKED_NO_CHANGE / CHECKED_NO_RESULT / NOT_APPLICABLE / REUSED / BLOCKED / DEFERRED as applicable.",
       "permissionMode": "read-only-planning",
       "keyReminders": [
         "This is a named capability requirement, not a parallel numeric-port ontology.",
         "Explicit inclusion requires a real check, not a manufactured positive result.",
         "Shared prefixes and equivalent current work are reused.",
-        "P-02 records admission origin and traversal result incrementally."
+        "the current Turn Work Record records admission origin and traversal result incrementally.",
+        "The current Turn Work Record records admission origin, observable traversal result and reuse evidence; the named capability remains the semantic owner of its work."
       ],
       "userTarget": "<current IDTSPE subject/context>",
       "palette": true,
@@ -3074,8 +3073,7 @@
       ],
       "includes": [
         "planning/commands/work-through-idtspe.command.md",
-        "planning/commands/recheck-idtspe-port-composition.command.md",
-        "planning/commands/include-idtspe-trace-port.command.md"
+        "planning/commands/recheck-idtspe-port-composition.command.md"
       ],
       "processCalls": [],
       "compositionContributions": [
@@ -3085,13 +3083,14 @@
           "why": "Explicitly require the PERSISTENCE capability to receive a real applicability/traversal check in the merged current Shell composition."
         }
       ],
-      "expectedOutput": "Persistence / Artifact Maintenance traversal outcome using the normal P-02 vocabulary, including placement/reuse/update/inventory/bundle consequences when material and APPLIED / CHECKED_NO_CHANGE / CHECKED_NO_RESULT / NOT_APPLICABLE / REUSED / BLOCKED / DEFERRED as applicable.",
+      "expectedOutput": "Persistence / Artifact Maintenance traversal outcome with observable admission/traversal facts recorded in the current Turn Work Record, including placement/reuse/update/inventory/bundle consequences when material and APPLIED / CHECKED_NO_CHANGE / CHECKED_NO_RESULT / NOT_APPLICABLE / REUSED / BLOCKED / DEFERRED as applicable.",
       "permissionMode": "read-only-planning",
       "keyReminders": [
         "This is a named capability requirement, not a parallel numeric-port ontology.",
         "Explicit inclusion requires a real check, not a manufactured positive result.",
         "Shared prefixes and equivalent current work are reused.",
-        "P-02 records admission origin and traversal result incrementally."
+        "the current Turn Work Record records admission origin and traversal result incrementally.",
+        "The current Turn Work Record records admission origin, observable traversal result and reuse evidence; the named capability remains the semantic owner of its work."
       ],
       "userTarget": "<current IDTSPE subject/context>",
       "palette": true,
@@ -3144,8 +3143,7 @@
       ],
       "includes": [
         "planning/commands/work-through-idtspe.command.md",
-        "planning/commands/recheck-idtspe-port-composition.command.md",
-        "planning/commands/include-idtspe-trace-port.command.md"
+        "planning/commands/recheck-idtspe-port-composition.command.md"
       ],
       "processCalls": [],
       "compositionContributions": [
@@ -3155,13 +3153,14 @@
           "why": "Explicitly require the PROPOSAL capability to receive a real applicability/traversal check in the merged current Shell composition."
         }
       ],
-      "expectedOutput": "Proposal capability traversal outcome using the normal P-02 vocabulary, including APPLIED / CHECKED_NO_CHANGE / CHECKED_NO_RESULT / NOT_APPLICABLE / REUSED / BLOCKED / DEFERRED as applicable.",
+      "expectedOutput": "Proposal capability traversal outcome with observable admission/traversal facts recorded in the current Turn Work Record, including APPLIED / CHECKED_NO_CHANGE / CHECKED_NO_RESULT / NOT_APPLICABLE / REUSED / BLOCKED / DEFERRED as applicable.",
       "permissionMode": "read-only-planning",
       "keyReminders": [
         "This is a named capability requirement, not a parallel numeric-port ontology.",
         "Explicit inclusion requires a real check, not a manufactured positive result.",
         "Shared prefixes and equivalent current work are reused.",
-        "P-02 records admission origin and traversal result incrementally."
+        "the current Turn Work Record records admission origin and traversal result incrementally.",
+        "The current Turn Work Record records admission origin, observable traversal result and reuse evidence; the named capability remains the semantic owner of its work."
       ],
       "userTarget": "<current IDTSPE subject/context>",
       "palette": true,
@@ -3214,8 +3213,7 @@
       ],
       "includes": [
         "planning/commands/work-through-idtspe.command.md",
-        "planning/commands/recheck-idtspe-port-composition.command.md",
-        "planning/commands/include-idtspe-trace-port.command.md"
+        "planning/commands/recheck-idtspe-port-composition.command.md"
       ],
       "processCalls": [],
       "compositionContributions": [
@@ -3225,13 +3223,14 @@
           "why": "Explicitly require the QRP capability to receive a real applicability/traversal check in the merged current Shell composition."
         }
       ],
-      "expectedOutput": "Q/R/P capability traversal outcome using the normal P-02 vocabulary, including APPLIED / CHECKED_NO_CHANGE / CHECKED_NO_RESULT / NOT_APPLICABLE / REUSED / BLOCKED / DEFERRED as applicable.",
+      "expectedOutput": "Q/R/P capability traversal outcome with observable admission/traversal facts recorded in the current Turn Work Record, including APPLIED / CHECKED_NO_CHANGE / CHECKED_NO_RESULT / NOT_APPLICABLE / REUSED / BLOCKED / DEFERRED as applicable.",
       "permissionMode": "read-only-planning",
       "keyReminders": [
         "This is a named capability requirement, not a parallel numeric-port ontology.",
         "Explicit inclusion requires a real check, not a manufactured positive result.",
         "Shared prefixes and equivalent current work are reused.",
-        "P-02 records admission origin and traversal result incrementally."
+        "the current Turn Work Record records admission origin and traversal result incrementally.",
+        "The current Turn Work Record records admission origin, observable traversal result and reuse evidence; the named capability remains the semantic owner of its work."
       ],
       "userTarget": "<current IDTSPE subject/context>",
       "palette": true,
@@ -3284,8 +3283,7 @@
       ],
       "includes": [
         "planning/commands/work-through-idtspe.command.md",
-        "planning/commands/recheck-idtspe-port-composition.command.md",
-        "planning/commands/include-idtspe-trace-port.command.md"
+        "planning/commands/recheck-idtspe-port-composition.command.md"
       ],
       "processCalls": [],
       "compositionContributions": [
@@ -3295,13 +3293,14 @@
           "why": "Explicitly require the RELATION capability to receive a real applicability/traversal check in the merged current Shell composition."
         }
       ],
-      "expectedOutput": "Relation capability traversal outcome using the normal P-02 vocabulary, including APPLIED / CHECKED_NO_CHANGE / CHECKED_NO_RESULT / NOT_APPLICABLE / REUSED / BLOCKED / DEFERRED as applicable.",
+      "expectedOutput": "Relation capability traversal outcome with observable admission/traversal facts recorded in the current Turn Work Record, including APPLIED / CHECKED_NO_CHANGE / CHECKED_NO_RESULT / NOT_APPLICABLE / REUSED / BLOCKED / DEFERRED as applicable.",
       "permissionMode": "read-only-planning",
       "keyReminders": [
         "This is a named capability requirement, not a parallel numeric-port ontology.",
         "Explicit inclusion requires a real check, not a manufactured positive result.",
         "Shared prefixes and equivalent current work are reused.",
-        "P-02 records admission origin and traversal result incrementally."
+        "the current Turn Work Record records admission origin and traversal result incrementally.",
+        "The current Turn Work Record records admission origin, observable traversal result and reuse evidence; the named capability remains the semantic owner of its work."
       ],
       "userTarget": "<current IDTSPE subject/context>",
       "palette": true,
@@ -3354,8 +3353,7 @@
       ],
       "includes": [
         "planning/commands/work-through-idtspe.command.md",
-        "planning/commands/recheck-idtspe-port-composition.command.md",
-        "planning/commands/include-idtspe-trace-port.command.md"
+        "planning/commands/recheck-idtspe-port-composition.command.md"
       ],
       "processCalls": [],
       "compositionContributions": [
@@ -3365,13 +3363,14 @@
           "why": "Explicitly require the TARGET_STEP_RESULT capability to receive a real applicability/traversal check in the merged current Shell composition."
         }
       ],
-      "expectedOutput": "Target Step Result capability traversal outcome using the normal P-02 vocabulary, including APPLIED / CHECKED_NO_CHANGE / CHECKED_NO_RESULT / NOT_APPLICABLE / REUSED / BLOCKED / DEFERRED as applicable.",
+      "expectedOutput": "Target Step Result capability traversal outcome with observable admission/traversal facts recorded in the current Turn Work Record, including APPLIED / CHECKED_NO_CHANGE / CHECKED_NO_RESULT / NOT_APPLICABLE / REUSED / BLOCKED / DEFERRED as applicable.",
       "permissionMode": "read-only-planning",
       "keyReminders": [
         "This is a named capability requirement, not a parallel numeric-port ontology.",
         "Explicit inclusion requires a real check, not a manufactured positive result.",
         "Shared prefixes and equivalent current work are reused.",
-        "P-02 records admission origin and traversal result incrementally."
+        "the current Turn Work Record records admission origin and traversal result incrementally.",
+        "The current Turn Work Record records admission origin, observable traversal result and reuse evidence; the named capability remains the semantic owner of its work."
       ],
       "userTarget": "<current IDTSPE subject/context>",
       "palette": true,
@@ -3424,8 +3423,7 @@
       ],
       "includes": [
         "planning/commands/work-through-idtspe.command.md",
-        "planning/commands/recheck-idtspe-port-composition.command.md",
-        "planning/commands/include-idtspe-trace-port.command.md"
+        "planning/commands/recheck-idtspe-port-composition.command.md"
       ],
       "processCalls": [],
       "compositionContributions": [
@@ -3435,13 +3433,14 @@
           "why": "Explicitly require the REVALIDATION capability to receive a real applicability/traversal check in the merged current Shell composition."
         }
       ],
-      "expectedOutput": "Evidence / Revalidation capability traversal outcome using the normal P-02 vocabulary; when material this includes/reuses a Revalidation Impact Set with definitely affected, potentially affected, reuse candidates and required follow-up, plus APPLIED / CHECKED_NO_CHANGE / CHECKED_NO_RESULT / NOT_APPLICABLE / REUSED / BLOCKED / DEFERRED as applicable.",
+      "expectedOutput": "Evidence / Revalidation capability traversal outcome with observable admission/traversal facts recorded in the current Turn Work Record; when material this includes/reuses a Revalidation Impact Set with definitely affected, potentially affected, reuse candidates and required follow-up, plus APPLIED / CHECKED_NO_CHANGE / CHECKED_NO_RESULT / NOT_APPLICABLE / REUSED / BLOCKED / DEFERRED as applicable.",
       "permissionMode": "read-only-planning",
       "keyReminders": [
         "This is a named capability requirement, not a parallel numeric-port ontology.",
         "Explicit inclusion requires a real check, not a manufactured positive result.",
         "Shared prefixes and equivalent current work are reused.",
-        "P-02 records admission origin and traversal result incrementally."
+        "the current Turn Work Record records admission origin and traversal result incrementally.",
+        "The current Turn Work Record records admission origin, observable traversal result and reuse evidence; the named capability remains the semantic owner of its work."
       ],
       "userTarget": "<current IDTSPE subject/context>",
       "palette": true,
@@ -3494,8 +3493,7 @@
       ],
       "includes": [
         "planning/commands/work-through-idtspe.command.md",
-        "planning/commands/recheck-idtspe-port-composition.command.md",
-        "planning/commands/include-idtspe-trace-port.command.md"
+        "planning/commands/recheck-idtspe-port-composition.command.md"
       ],
       "processCalls": [],
       "compositionContributions": [
@@ -3505,13 +3503,14 @@
           "why": "Explicitly require the SOURCE capability to receive a real applicability/traversal check in the merged current Shell composition."
         }
       ],
-      "expectedOutput": "Source capability traversal outcome using the normal P-02 vocabulary, including APPLIED / CHECKED_NO_CHANGE / CHECKED_NO_RESULT / NOT_APPLICABLE / REUSED / BLOCKED / DEFERRED as applicable.",
+      "expectedOutput": "Source capability traversal outcome with observable admission/traversal facts recorded in the current Turn Work Record, including APPLIED / CHECKED_NO_CHANGE / CHECKED_NO_RESULT / NOT_APPLICABLE / REUSED / BLOCKED / DEFERRED as applicable.",
       "permissionMode": "read-only-planning",
       "keyReminders": [
         "This is a named capability requirement, not a parallel numeric-port ontology.",
         "Explicit inclusion requires a real check, not a manufactured positive result.",
         "Shared prefixes and equivalent current work are reused.",
-        "P-02 records admission origin and traversal result incrementally."
+        "the current Turn Work Record records admission origin and traversal result incrementally.",
+        "The current Turn Work Record records admission origin, observable traversal result and reuse evidence; the named capability remains the semantic owner of its work."
       ],
       "userTarget": "<current IDTSPE subject/context>",
       "palette": true,
@@ -3564,8 +3563,7 @@
       ],
       "includes": [
         "planning/commands/work-through-idtspe.command.md",
-        "planning/commands/recheck-idtspe-port-composition.command.md",
-        "planning/commands/include-idtspe-trace-port.command.md"
+        "planning/commands/recheck-idtspe-port-composition.command.md"
       ],
       "processCalls": [],
       "compositionContributions": [
@@ -3575,13 +3573,14 @@
           "why": "Explicitly require the TARGET capability to receive a real applicability/traversal check in the merged current Shell composition."
         }
       ],
-      "expectedOutput": "Target capability traversal outcome using the normal P-02 vocabulary, including APPLIED / CHECKED_NO_CHANGE / CHECKED_NO_RESULT / NOT_APPLICABLE / REUSED / BLOCKED / DEFERRED as applicable.",
+      "expectedOutput": "Target capability traversal outcome with observable admission/traversal facts recorded in the current Turn Work Record, including APPLIED / CHECKED_NO_CHANGE / CHECKED_NO_RESULT / NOT_APPLICABLE / REUSED / BLOCKED / DEFERRED as applicable.",
       "permissionMode": "read-only-planning",
       "keyReminders": [
         "This is a named capability requirement, not a parallel numeric-port ontology.",
         "Explicit inclusion requires a real check, not a manufactured positive result.",
         "Shared prefixes and equivalent current work are reused.",
-        "P-02 records admission origin and traversal result incrementally."
+        "the current Turn Work Record records admission origin and traversal result incrementally.",
+        "The current Turn Work Record records admission origin, observable traversal result and reuse evidence; the named capability remains the semantic owner of its work."
       ],
       "userTarget": "<current IDTSPE subject/context>",
       "palette": true,
@@ -3635,8 +3634,7 @@
       ],
       "includes": [
         "planning/commands/work-through-idtspe.command.md",
-        "planning/commands/recheck-idtspe-port-composition.command.md",
-        "planning/commands/include-idtspe-trace-port.command.md"
+        "planning/commands/recheck-idtspe-port-composition.command.md"
       ],
       "processCalls": [],
       "compositionContributions": [
@@ -3646,13 +3644,14 @@
           "why": "Explicitly require the VALIDATION capability to receive a real applicability/traversal check in the merged current Shell composition."
         }
       ],
-      "expectedOutput": "Validation capability traversal outcome using the normal P-02 vocabulary, including APPLIED / CHECKED_NO_CHANGE / CHECKED_NO_RESULT / NOT_APPLICABLE / REUSED / BLOCKED / DEFERRED as applicable.",
+      "expectedOutput": "Validation capability traversal outcome with observable admission/traversal facts recorded in the current Turn Work Record, including APPLIED / CHECKED_NO_CHANGE / CHECKED_NO_RESULT / NOT_APPLICABLE / REUSED / BLOCKED / DEFERRED as applicable.",
       "permissionMode": "read-only-planning",
       "keyReminders": [
         "This is a named capability requirement, not a parallel numeric-port ontology.",
         "Explicit inclusion requires a real check, not a manufactured positive result.",
         "Shared prefixes and equivalent current work are reused.",
-        "P-02 records admission origin and traversal result incrementally."
+        "the current Turn Work Record records admission origin and traversal result incrementally.",
+        "The current Turn Work Record records admission origin, observable traversal result and reuse evidence; the named capability remains the semantic owner of its work."
       ],
       "userTarget": "<current IDTSPE subject/context>",
       "palette": true,
@@ -3766,7 +3765,6 @@
       "includes": [
         "planning/commands/work-through-idtspe.command.md",
         "planning/commands/recheck-idtspe-port-composition.command.md",
-        "planning/commands/include-idtspe-trace-port.command.md",
         "planning/commands/idtspe-port-proposal.command.md"
       ],
       "processCalls": [],
@@ -3806,29 +3804,29 @@
       "commandFamily": [
         "включи порт trace"
       ],
-      "description": "Establish the generic required P-02 Pass Work Plan / State / Trace / Visibility capability without selecting a concrete sink.",
-      "meaning": "Establish/open the one incremental-first P-02 Pass Working Record early enough to retain command-composition, Use-Case applicability and Port Composition facts. Once current composition is sufficiently known, materialize the smallest useful Initial Work Plan before substantive non-baseline work; maintain Current Work State, ordered historical state snapshots plus one explicit current-state pointer when multiple state views are retained, execution events and bounded plan deltas in the same record, then publish a final current-state snapshot and derive final plan-vs-actual visibility from it. Context chooses the proportional sink unless explicitly refined.",
-      "activeContextBehavior": "Compose with the current command set. Fully expand and merge all selected roots before semantic execution; reuse equivalent current work and follow the resulting dependencies-first plan.",
+      "description": "Ensure/reuse the current Turn Work Record trace visibility while preserving the legacy P-02 compatibility entry surface.",
+      "meaning": "Reuse the already-existing Turn Work Record established by Work Runtime. This command no longer admits an active Shell port and does not create a second record. It exposes the legacy P-02 compatibility projection for Shell-specific observable events/visibility when explicitly requested.",
+      "activeContextBehavior": "Operate on the current Turn Work Record. Reuse current state/history and do not open a separate pass ledger or force Shell solely because this compatibility command was invoked.",
       "traversalReadMode": "Read this command own canonical references plus included-command references proportionally. Do not duplicate reads already satisfied by an unchanged trustworthy shared prefix.",
       "ownerFiles": [
-        "planning/documentation/idtspe-methodology/active/idtspe-core/runtime/PASS-TRACE-AND-VISIBILITY-CONTRACT.md",
-        "planning/documentation/idtspe-methodology/active/idtspe-core/runtime/IDTSPE-RUNTIME-COMPOSITION-CONTRACT.md"
+        "planning/documentation/idtspe-methodology/active/idtspe-core/runtime/WORK-RECORD-PRINCIPLES.md",
+        "planning/documentation/idtspe-methodology/active/idtspe-core/runtime/PASS-TRACE-AND-VISIBILITY-CONTRACT.md"
       ],
       "ownerRefs": [
         {
-          "responsibilityId": "IDTSPE.PASS-TRACE",
-          "path": "planning/documentation/idtspe-methodology/active/idtspe-core/runtime/PASS-TRACE-AND-VISIBILITY-CONTRACT.md",
-          "anchor": "idtspe-pass-trace",
-          "why": "Owns the one incremental-first Pass Working Record: initial work plan, current state, execution trace/plan deltas, reuse evidence and final plan-vs-actual visibility projection.",
+          "responsibilityId": "IDTSPE.WORK-RUNTIME",
+          "path": "planning/documentation/idtspe-methodology/active/idtspe-core/runtime/WORK-RECORD-PRINCIPLES.md",
+          "anchor": "idtspe-work-runtime",
+          "why": "Owns the canonical Turn Work Record plan/state/trace and its execution visibility.",
           "role": "PRIMARY_OWNER",
           "readMode": "REQUIRED"
         },
         {
-          "responsibilityId": "IDTSPE.RUNTIME-COMPOSITION",
-          "path": "planning/documentation/idtspe-methodology/active/idtspe-core/runtime/IDTSPE-RUNTIME-COMPOSITION-CONTRACT.md",
-          "anchor": "idtspe-port-p02",
-          "why": "Places the Pass Working Record capability in the normal Shell as required P-02 while allowing the record to be established during invocation preparation.",
-          "role": "RUNTIME_ENTRY",
+          "responsibilityId": "IDTSPE.PASS-TRACE",
+          "path": "planning/documentation/idtspe-methodology/active/idtspe-core/runtime/PASS-TRACE-AND-VISIBILITY-CONTRACT.md",
+          "anchor": "idtspe-pass-trace",
+          "why": "Preserves the legacy P-02 compatibility projection for Shell-specific observable events.",
+          "role": "SUPPORTING_CONTRACT",
           "readMode": "REQUIRED"
         }
       ],
@@ -3836,20 +3834,14 @@
         "planning/commands/recheck-methodology-use-cases.command.md"
       ],
       "processCalls": [],
-      "compositionContributions": [
-        {
-          "kind": "WORKING_TRACE_REQUIRED",
-          "value": "P-02",
-          "why": "Establish or reuse the one incremental Pass Working Record during composition preparation; materialize its Initial Work Plan before dependency substantive actions begin."
-        }
-      ],
-      "expectedOutput": "One current P-02 Pass Working Record exists with an established Initial Work Plan/current state ready for incremental execution tracking; when multiple state views are retained they have ordered snapshot IDs and one explicit current-state pointer so historical PENDING values cannot be mistaken for current work; no particular visibility/retention sink is forced unless current context or an explicit trace command requires one.",
+      "compositionContributions": [],
+      "expectedOutput": "The current Turn Work Record remains the single plan/state/trace; any requested legacy P-02 view is a compatibility visibility projection of Shell-specific observable events only.",
       "permissionMode": "read-only-planning",
       "keyReminders": [
-        "This is base infrastructure and intentionally does not include idtspe.work, preventing a composition cycle; it does include the mandatory global Use-Case registry recheck.",
-        "The working record is established during composition preparation; once composition is sufficiently known, its Initial Work Plan is materialized before substantive non-baseline work and canonical P-02 continues the same record.",
-        "Do not create a second watch/to-do/ledger/review-plan file merely to remember execution state.",
-        "Post-hoc reconstruction is recovery-only."
+        "P-02 is retired/reserved as an active Shell-port label in the selected Work Runtime topology.",
+        "Do not create a second pass ledger; the Turn Work Record is canonical.",
+        "This compatibility surface does not grant repository mutation permission.",
+        "Keep private reasoning out of the observable record."
       ],
       "userTarget": "<current IDTSPE subject/context>",
       "palette": true,
@@ -3975,10 +3967,10 @@
         "maintain session manifest",
         "maintain current work manifest"
       ],
-      "description": "Maintain the central cross-pass Current Work Manifest and re-entry route for substantial IDTSPE work.",
-      "meaning": "Maintain/reuse the Current Work Manifest owned by UC-IDTSPE-MAINTAIN-CURRENT-WORK-STATE. Synchronize the current USER goal/wanted-outcome references, current focus, cross-pass planned actions, material artifact inventory, Need Set / PRS / Review Coverage / Revalidation / recent P-02 references, blockers and re-entry route without copying those owners' semantic bodies. Route the physical Manifest representation through P-14; the command does not turn the Manifest into a Need Set, PRS, Review authority, P-02 trace or Session-owned planning runtime.",
+      "description": "Maintain/reconcile the accepted Session State Current Work Manifest and its re-entry/navigation projection.",
+      "meaning": "Maintain the accepted WORK-MANIFEST.md owned by UC-IDTSPE-MAINTAIN-CURRENT-WORK-STATE. Synchronize factual execution consequences and cross-turn coordination directly, while material AI-derived prospective plan changes remain Proposal-first through Core PRS/Proposal semantics. Session State supplies the ambient representation; P-14 is not the reason the Manifest exists.",
       "activeContextBehavior": "Use the current Work Context and current canonical owner state. Reuse an existing trustworthy Manifest when present; refresh only materially changed coordination/inventory/re-entry information. Current USER input and canonical owner state override stale Manifest projections. When no dedicated Manifest is material, report NOT_APPLICABLE/CHECKED_NO_CHANGE rather than inventing one for tiny one-pass work.",
-      "traversalReadMode": "Read Maintain Current Work State plus only the current owner/artifact references needed to synchronize the Manifest. Do not reread or duplicate full Need/PRS/Review/P-02 bodies when compact canonical references are sufficient.",
+      "traversalReadMode": "Read Maintain Current Work State plus only the current owner/artifact references needed to synchronize the Manifest. Do not reread or duplicate full Need/PRS/Review/Turn-Work-Record bodies when compact canonical references are sufficient.",
       "ownerFiles": [
         "planning/documentation/idtspe-methodology/active/idtspe-core/use-cases/maintain-current-work-state/UC-IDTSPE-MAINTAIN-CURRENT-WORK-STATE.md",
         "planning/documentation/idtspe-methodology/active/idtspe-core/representation/ARTIFACT-PLACEMENT-AND-IDTSPE-RESPONSE-CONTRACT.md"
@@ -4004,18 +3996,18 @@
       "includes": [
         "planning/commands/work-through-idtspe.command.md",
         "planning/commands/recheck-idtspe-port-composition.command.md",
-        "planning/commands/include-idtspe-trace-port.command.md",
         "planning/commands/idtspe-port-persistence.command.md"
       ],
       "processCalls": [],
       "compositionContributions": [],
-      "expectedOutput": "A synchronized Current Work Manifest or an explicit no-change/not-applicable result. When material, the Manifest exposes current cross-pass goals/actions, compact owner/artifact inventory, revalidation/review/P-02 references and a usable re-entry route without duplicating their semantic ownership.",
+      "expectedOutput": "The accepted Current Work Manifest is synchronized or a formal Proposal + complete candidate target Manifest + PRS review state is produced when prospective accepted-plan meaning would change.",
       "permissionMode": "artifact-no-commit-push",
       "keyReminders": [
-        "Current Work Manifest is coordination/navigation, not a global semantic owner or backlog.",
-        "Reference Need Set, PRS, Review Coverage, Revalidation Impact and P-02 instead of copying their semantic bodies.",
-        "Current USER/canonical owner state wins over stale Manifest projection.",
-        "Use P-14 for the physical representation; this command grants no commit/push authority."
+        "The Manifest is accepted session-scale work state, not a semantic super-owner.",
+        "Exact USER-selected prospective meaning may integrate directly with authority trace and prior-revision preservation.",
+        "AI-derived material prospective change is Proposal-first.",
+        "Every accepted Manifest write preserves a recoverable previous revision.",
+        "Session State representation is ambient; external/durable artifact placement remains a P-14 concern."
       ],
       "userTarget": "<current substantial Work Context / session continuity scope>",
       "palette": true,
@@ -4110,7 +4102,7 @@
         "maintain current work artifacts archive"
       ],
       "description": "Maintain the current work artifact set and materialize/rematerialize it as one portable Work Context Bundle/archive.",
-      "meaning": "Run normal current-work artifact maintenance first, then require a portable P-14 Work Context Bundle/archive representation for the resulting material artifact set. Reuse/update the existing bundle when suitable; otherwise materialize/rematerialize one with the Current Work Manifest (normally `WORK-MANIFEST.md` or an established equivalent) as the primary entry point. Archive membership is representation only and never changes Need/PRS/Review/P-02/Revalidation semantic authority.",
+      "meaning": "Rematerialize the current portable Session State archive for handoff/re-entry. Include current Manifest, PRS, current Turn Work Record and materially carried session-owned files. P-14 may contribute external/durable artifact members when applicable but does not own Session State existence.",
       "activeContextBehavior": "Use the artifact set/inventory produced by the included session-artifact maintenance command. If a current suitable Work Context Bundle already exists, update/rematerialize it rather than creating parallel archives. Include only materially useful working artifacts/evidence and canonical references needed for portable re-entry. When archive writing/placement is unavailable, report BLOCKED/DEFERRED while preserving the synchronized loose-artifact state.",
       "traversalReadMode": "After the included artifact-maintenance route completes, read the P-14 Work Context Bundle representation section and the synchronized Manifest/inventory. Inspect only artifact bytes/references needed to produce or refresh the portable bundle.",
       "ownerFiles": [
@@ -4140,7 +4132,7 @@
       ],
       "processCalls": [],
       "compositionContributions": [],
-      "expectedOutput": "A synchronized current-work artifact set plus one current portable Work Context Bundle/archive with an obvious Manifest primary entry, materially useful members/references, explicit representation roles and no semantic-authority transfer. If archive materialization is unavailable, explicit BLOCKED/DEFERRED rather than false archive success.",
+      "expectedOutput": "A current portable Session State archive is materialized without promoting candidate Proposal/target files to accepted meaning.",
       "permissionMode": "artifact-no-commit-push",
       "keyReminders": [
         "This command includes normal session-artifact maintenance; do not reimplement its inventory/currentness semantics.",
@@ -4178,7 +4170,7 @@
         "maintain current work artifacts"
       ],
       "description": "Synchronize the material artifact set, inventory, currentness and placement for the current work context.",
-      "meaning": "Maintain the material working artifacts for the current Work Context through P-14 Persistence / Artifact Maintenance. First synchronize the Current Work Manifest/inventory, then reconcile material artifact identity, currentness, placement, reuse/update/rematerialization and canonical references. This command does not require an archive representation by itself and never transfers semantic authority from Need/PRS/Review/P-02/Revalidation owners to P-14 or the Manifest.",
+      "meaning": "Maintain materially useful artifacts referenced by the current Session State/Manifest through P-14 when external/durable representation work is actually material. The Session State directory, Manifest, PRS and Turn Work Records exist independently of P-14.",
       "activeContextBehavior": "Use the current Work Context and synchronized Current Work Manifest as the inventory/navigation entry. Maintain only materially useful artifacts; mark current/historical/stale/superseded representation state proportionally, repair missing/stale placement/navigation where authorized, and preserve canonical owner references. Do not create duplicate artifacts merely to satisfy a layout. Archive/bundle materialization is not forced by this command; use the archive-specific command when an archive is explicitly required.",
       "traversalReadMode": "Read P-14 Artifact Placement/Maintenance and the synchronized Manifest inventory, then inspect only artifacts whose representation/currentness/placement may need action. Follow semantic owners only when needed to avoid stale/misleading representation.",
       "ownerFiles": [
@@ -4208,7 +4200,7 @@
       ],
       "processCalls": [],
       "compositionContributions": [],
-      "expectedOutput": "A synchronized material artifact set and Current Work Manifest inventory: artifacts are discoverable, currentness/representation roles are explicit, stale/superseded representations are not misleading, and placement/reuse/update/rematerialization actions are completed or explicitly BLOCKED/DEFERRED. No archive is required solely by invoking this generic maintenance command.",
+      "expectedOutput": "Material artifact representations are synchronized through P-14 as applicable while the ambient Session State remains the re-entry/workspace substrate.",
       "permissionMode": "artifact-no-commit-push",
       "keyReminders": [
         "Artifact maintenance is representation work; semantic owners remain authoritative.",
@@ -4229,6 +4221,61 @@
         "parentSurface": null,
         "hostTargetPolicy": "NONE"
       },
+      "refinements": []
+    },
+    {
+      "schemaVersion": 1,
+      "id": "session.work.maintain",
+      "file": "maintain-session-work.command.md",
+      "command": "веди сессионную работу",
+      "englishName": "maintain session work",
+      "commandFamily": [
+        "веди сессионную работу",
+        "maintain session work"
+      ],
+      "description": "Force/reaffirm the normal Session State + Turn Work Record runtime for the current input and return a current portable Session State archive.",
+      "meaning": "Bootstrap/reuse Session State, establish/reuse the Turn Work Record from S0, intake current input, check the accepted Manifest and Core PRS/context, establish one primary substantive subject, choose DIRECT or SHELL proportionally, execute within the same record, synchronize material Session State consequences, finalize plan-vs-actual and rematerialize the current archive. Formal Proposal/USER-review gates remain authoritative.",
+      "activeContextBehavior": "Normal substantive work should already follow this runtime automatically. This command is a force/diagnostic surface and must not create a second Session State or second Work Record.",
+      "traversalReadMode": "Read Session State Runtime, Work Record Principles and natural owners reached by the current subject proportionally.",
+      "ownerFiles": [
+        "planning/session/session-state-runtime-contract.md",
+        "planning/documentation/idtspe-methodology/active/idtspe-core/runtime/WORK-RECORD-PRINCIPLES.md"
+      ],
+      "ownerRefs": [
+        {
+          "responsibilityId": "SESSION.STATE-RUNTIME",
+          "path": "planning/session/session-state-runtime-contract.md",
+          "anchor": "session-state-runtime",
+          "why": "Owns the ambient Session State workspace/archive lifecycle.",
+          "role": "PRIMARY_OWNER",
+          "readMode": "REQUIRED"
+        },
+        {
+          "responsibilityId": "IDTSPE.WORK-RUNTIME",
+          "path": "planning/documentation/idtspe-methodology/active/idtspe-core/runtime/WORK-RECORD-PRINCIPLES.md",
+          "anchor": "idtspe-work-runtime",
+          "why": "Owns the Turn Work Record kernel, route and finalization discipline.",
+          "role": "SUPPORTING_CONTRACT",
+          "readMode": "REQUIRED"
+        }
+      ],
+      "includes": [
+        "planning/commands/recheck-methodology-use-cases.command.md"
+      ],
+      "processCalls": [],
+      "compositionContributions": [],
+      "expectedOutput": "One current Session State with one Turn Work Record for the turn, truthful DIRECT/SHELL/NO_EXECUTION routing, synchronized Manifest/PRS/context consequences and a current portable Session State archive.",
+      "permissionMode": "read-only-planning",
+      "keyReminders": [
+        "Session State writes do not grant repository/target mutation.",
+        "One Turn Work Record spans input through finalization; Shell traversal is nested under WR-5 when selected.",
+        "Material AI-derived Manifest replanning is Proposal-first unless exact target meaning is already USER-selected.",
+        "Do not create parallel Need/PRS/Proposal semantics."
+      ],
+      "userTarget": "<current USER input / session work>",
+      "palette": true,
+      "helperPresentation": null,
+      "methodologyBinding": null,
       "refinements": []
     },
     {
@@ -4261,7 +4308,6 @@
       "includes": [
         "planning/commands/work-through-idtspe.command.md",
         "planning/commands/recheck-idtspe-port-composition.command.md",
-        "planning/commands/include-idtspe-trace-port.command.md",
         "planning/commands/idtspe-port-target.command.md",
         "planning/commands/apply-idtspe-target-module.command.md"
       ],
@@ -4728,7 +4774,6 @@
       "includes": [
         "planning/commands/work-through-idtspe.command.md",
         "planning/commands/recheck-idtspe-port-composition.command.md",
-        "planning/commands/include-idtspe-trace-port.command.md",
         "planning/commands/idtspe-port-target.command.md",
         "planning/commands/apply-idtspe-target-module.command.md"
       ],
@@ -5126,7 +5171,6 @@
       "includes": [
         "planning/commands/work-through-idtspe.command.md",
         "planning/commands/recheck-idtspe-port-composition.command.md",
-        "planning/commands/include-idtspe-trace-port.command.md",
         "planning/commands/idtspe-port-target.command.md",
         "planning/commands/apply-idtspe-target-module.command.md"
       ],
@@ -5403,8 +5447,7 @@
       ],
       "includes": [
         "planning/commands/work-through-idtspe.command.md",
-        "planning/commands/recheck-idtspe-port-composition.command.md",
-        "planning/commands/include-idtspe-trace-port.command.md"
+        "planning/commands/recheck-idtspe-port-composition.command.md"
       ],
       "processCalls": [],
       "compositionContributions": [],
@@ -6050,7 +6093,7 @@
         "сделай idtspe recheck",
         "recheck idtspe review"
       ],
-      "description": "Recheck stale, partial, invalidated, newly exposed or previously blocked Review Coverage from an observable P-02 Review Execution Plan; expose reused-vs-to-execute cells before substantive checks and fall back to initial current-basis review when no reliable prior coverage exists.",
+      "description": "Recheck stale, partial, invalidated, newly exposed or previously blocked Review Coverage from an observable Turn Work Record Review Execution Plan; expose reused-vs-to-execute cells before substantive checks and fall back to initial current-basis review when no reliable prior coverage exists.",
       "meaning": "Use the same complete review lifecycle as idtspe.review but select work from the resolved prior/current Review Coverage Record: changed subjects, stale/partial/invalidated cells, newly exposed semantic surfaces, materially affected dependents and resolved blockers. Default to LOCAL_AFFECTED scope, preserve trustworthy unchanged coverage, and disposition all new Finding Candidates plus form/refine a linked Proposal for every material Finding before completion. If no trustworthy prior Review Coverage Record/evidence exists, perform initial current-basis review semantics instead of inventing a review delta.",
       "activeContextBehavior": "During composition planning, resolve the previous Review Coverage Record/basis when available, compare it with current meaning/Evidence and establish the LOCAL_AFFECTED_RECHECK working context before dependency semantic actions begin. Recheck affected/new/weak coverage rather than blindly replaying everything. If no reliable prior record exists, derive initial current-basis cells for the bounded subject. If local review reveals materially broader scope, record/defer it or obtain USER intent before silently expanding globally.",
       "traversalReadMode": "Read Review Strategy/Coverage and reliable prior coverage evidence first when present; then use current Validation/Lens owners for selected recheck cells and Finding Disposition for produced Findings. Do not reconstruct a prior coverage claim from unsupported memory.",
@@ -6107,7 +6150,6 @@
       "includes": [
         "planning/commands/work-through-idtspe.command.md",
         "planning/commands/recheck-idtspe-port-composition.command.md",
-        "planning/commands/include-idtspe-trace-port.command.md",
         "planning/commands/idtspe-port-revalidation.command.md",
         "planning/commands/idtspe-port-validation.command.md",
         "planning/commands/apply-selected-idtspe-lenses.command.md"
@@ -6120,12 +6162,12 @@
           "why": "Resolve prior/current Review Coverage and derive stale/partial/invalidated/newly exposed LOCAL_AFFECTED review cells before Validation/Lens dependency semantic actions execute."
         }
       ],
-      "expectedOutput": "One P-02 Pass Working Record whose initial recheck plan exposes planned fresh execution vs justified reuse before substantive checks, tracks ordered retained state snapshots/current-state pointer and plan changes, and ends with a final current-state snapshot plus plan-vs-actual reconciliation, plus a LOCAL_AFFECTED Review Coverage update (optionally consuming a trustworthy current Revalidation Impact Set, or using the existing prior/current-basis delta / truthful initial current-basis fallback) with executed-vs-reused provenance, all new material Findings dispositioned, linked Proposals and remaining blockers/scope escalation explicit; Review Coverage remains authority and Proposal persistence is not required.",
+      "expectedOutput": "One Turn Work Record whose initial recheck plan exposes planned fresh execution vs justified reuse before substantive checks, tracks ordered retained state snapshots/current-state pointer and plan changes, and ends with a final current-state snapshot plus plan-vs-actual reconciliation, plus a LOCAL_AFFECTED Review Coverage update (optionally consuming a trustworthy current Revalidation Impact Set, or using the existing prior/current-basis delta / truthful initial current-basis fallback) with executed-vs-reused provenance, all new material Findings dispositioned, linked Proposals and remaining blockers/scope escalation explicit; Review Coverage remains authority and Proposal persistence is not required.",
       "permissionMode": "read-only-planning",
       "keyReminders": [
         "This command does not include or execute idtspe.review first; both commands use the same Review Strategy/Coverage contract with different coverage selection.",
         "REVIEW_COVERAGE_MODE=LOCAL_AFFECTED_RECHECK is a pre-execution contribution: derive the affected review cells before Validation/Lens dependency actions, not in the root action after them.",
-        "Before P-12/P-06 substantive recheck actions, project fresh-vs-reused current obligations into the same P-02 Pass Working Record; preserve the initial recheck plan, retain ordered state snapshots/current-state pointer when historical state views are kept, and record later plan deltas instead of silently rewriting it.",
+        "Before P-12/P-06 substantive recheck actions, project fresh-vs-reused current obligations into the same Turn Work Record; preserve the initial recheck plan, retain ordered state snapshots/current-state pointer when historical state views are kept, and record later plan deltas instead of silently rewriting it.",
         "Generic `перепроверь` routes here in IDTSPE review context; this is semantic review recheck, not a separate coverage-audit command.",
         "Default repeated-review scope is LOCAL_AFFECTED, not global replay.",
         "A trustworthy Revalidation Impact Set is useful changed-basis input but is not required; absence of one must not block the existing prior/current-basis delta or truthful fallback.",
@@ -6159,7 +6201,7 @@
         "перепроверь композицию портов"
       ],
       "description": "Refresh/reaffirm the current IDTSPE Port Requirement Set before a normal Shell pass.",
-      "meaning": "Using the fully expanded command DAG contributions, current selected Use Cases, the already resolved current IDTSPE methodology composition, Work Context, downstream materiality and current P-02 orientation state, refresh/reaffirm which Shell capabilities are currently required. Previous state is evidence/cache, never sticky authority.",
+      "meaning": "When the current Turn Work Record has selected `ExecutionRoute=SHELL`, refresh/reaffirm the Port Requirement Set for the selected primary subject/current basis. Prior Turn Work Record orientation may be reused as evidence but never as sticky admission authority.",
       "activeContextBehavior": "Compose with the current command set. Fully expand and merge all selected roots before semantic execution; reuse equivalent current work and follow the resulting dependencies-first plan.",
       "traversalReadMode": "Read this command own canonical references plus included-command references proportionally. Do not duplicate reads already satisfied by an unchanged trustworthy shared prefix.",
       "ownerFiles": [
@@ -6194,13 +6236,12 @@
         }
       ],
       "includes": [
-        "planning/commands/include-idtspe-trace-port.command.md",
         "planning/commands/recheck-methodology-use-cases.command.md",
         "planning/commands/compose-current-idtspe-work.command.md"
       ],
       "processCalls": [],
       "compositionContributions": [],
-      "expectedOutput": "A refreshed/reaffirmed Port Requirement Set with explicit/automatic/downstream origins available to the same P-02 trace.",
+      "expectedOutput": "A refreshed/reaffirmed Shell Port Requirement Set for the selected subject is recorded in the current Turn Work Record.",
       "permissionMode": "read-only-planning",
       "keyReminders": [
         "This is a mandatory normal-Shell recheck, not an optional optimization.",
@@ -6454,7 +6495,6 @@
       "includes": [
         "planning/commands/work-through-idtspe.command.md",
         "planning/commands/recheck-idtspe-port-composition.command.md",
-        "planning/commands/include-idtspe-trace-port.command.md",
         "planning/commands/idtspe-port-target.command.md"
       ],
       "processCalls": [],
@@ -6518,7 +6558,6 @@
       "includes": [
         "planning/commands/work-through-idtspe.command.md",
         "planning/commands/recheck-idtspe-port-composition.command.md",
-        "planning/commands/include-idtspe-trace-port.command.md",
         "planning/commands/idtspe-port-revalidation.command.md"
       ],
       "processCalls": [],
@@ -6649,9 +6688,9 @@
       "commandFamily": [
         "проведи idtspe review"
       ],
-      "description": "Run one complete current-basis review pass from an observable P-02 Review Execution Plan: establish proportional Review Coverage, materialize its executable obligations before substantive checks, validate/apply useful Lenses, disposition all produced Finding Candidates, form linked Proposals for every material Finding, self-check coverage completeness, and reconcile initial plan vs actual execution.",
+      "description": "Run one complete current-basis review pass from an observable Turn Work Record Review Execution Plan: establish proportional Review Coverage, materialize its executable obligations before substantive checks, validate/apply useful Lenses, disposition all produced Finding Candidates, form linked Proposals for every material Finding, self-check coverage completeness, and reconcile initial plan vs actual execution.",
       "meaning": "Review the bounded current semantic subject through Review Strategy/Coverage, applicable Validation and selected Lens operations. Catch all materially applicable checks already visible on the current basis rather than intentionally deferring them. Every material Finding Candidate produced by this review is passed through canonical Finding Disposition and receives a linked IDTSPE Proposal before the review is semantically complete; RE-3 proposals remain blocked by revalidation and Proposal existence does not imply persistence or selection. Before completion, self-check current coverage against applicable validators/perspectives and record remaining material gaps/blockers. Need collection is not a mandatory review stage.",
-      "activeContextBehavior": "Use current basis and prior coverage when available. During composition planning, establish/refresh the Review Coverage working context for CURRENT_BASIS before dependency semantic actions begin; then materialize the smallest useful ordered Review Execution Plan into the current P-02 Pass Working Record before P-12/P-06 substantive checks, so Validation/Lens selection consume already-derived current review cells and execution state is observable from the start. Reuse trustworthy unchanged checks only when they actually satisfy the current coverage cell; apply materially distinct useful Lens/validator checks now. Keep Finding discovery/diagnosis distinct from linked Proposal formation; optional TM-REVIEW-FINDINGS and TM-PROPOSAL-WORKUP Targets are used only when their own results have independent value. Complete with canonical Finding/Proposal handoff and a coverage self-check.",
+      "activeContextBehavior": "Use current basis and prior coverage when available. During composition planning, establish/refresh the Review Coverage working context for CURRENT_BASIS before dependency semantic actions begin; then materialize the smallest useful ordered Review Execution Plan into the current Turn Work Record before P-12/P-06 substantive checks, so Validation/Lens selection consume already-derived current review cells and execution state is observable from the start. Reuse trustworthy unchanged checks only when they actually satisfy the current coverage cell; apply materially distinct useful Lens/validator checks now. Keep Finding discovery/diagnosis distinct from linked Proposal formation; optional TM-REVIEW-FINDINGS and TM-PROPOSAL-WORKUP Targets are used only when their own results have independent value. Complete with canonical Finding/Proposal handoff and a coverage self-check.",
       "traversalReadMode": "Read this command own canonical references plus included-command references proportionally. Do not duplicate reads already satisfied by an unchanged trustworthy shared prefix.",
       "ownerFiles": [
         "planning/documentation/idtspe-methodology/active/idtspe-core/commands/IDTSPE-COMMAND-SURFACE-CONTRACT.md",
@@ -6723,7 +6762,6 @@
       "includes": [
         "planning/commands/work-through-idtspe.command.md",
         "planning/commands/recheck-idtspe-port-composition.command.md",
-        "planning/commands/include-idtspe-trace-port.command.md",
         "planning/commands/idtspe-port-validation.command.md",
         "planning/commands/apply-selected-idtspe-lenses.command.md"
       ],
@@ -6735,12 +6773,12 @@
           "why": "Establish or refresh the bounded Review Coverage working context and candidate current-basis review cells before Validation/Lens dependency semantic actions execute."
         }
       ],
-      "expectedOutput": "One P-02 Pass Working Record containing the observable initial/current Review Execution Plan, ordered retained state snapshots with an explicit current-state pointer when multiple state views are preserved, execution-state/plan-delta events and final plan-vs-actual reconciliation, plus an updated Review Coverage Record for the current basis with EXECUTED_THIS_PASS vs REUSED_FROM_PRIOR provenance, blockers/remaining coverage, all material Findings dispositioned and linked Proposals formed; P-02 does not replace Review Coverage authority, no implicit Need collection, and no mandatory Proposal file.",
+      "expectedOutput": "One Turn Work Record containing the observable initial/current Review Execution Plan, ordered retained state snapshots with an explicit current-state pointer when multiple state views are preserved, execution-state/plan-delta events and final plan-vs-actual reconciliation, plus an updated Review Coverage Record for the current basis with EXECUTED_THIS_PASS vs REUSED_FROM_PRIOR provenance, blockers/remaining coverage, all material Findings dispositioned and linked Proposals formed; the Turn Work Record does not replace Review Coverage authority, no implicit Need collection, and no mandatory Proposal file.",
       "permissionMode": "read-only-planning",
       "keyReminders": [
         "Review is an operation over existing P-12 Validation/P-06 Lens capabilities, not a new Shell port.",
         "REVIEW_COVERAGE_MODE=CURRENT_BASIS is a pre-execution contribution: establish the Review Coverage working context before Validation/Lens dependency actions, not in the root action after them.",
-        "Before P-12/P-06 substantive review actions, project the current executable review obligations into the same P-02 Pass Working Record; preserve the initial plan, use ordered state snapshots/current-state pointer when retaining multiple state views, record plan deltas/local bounded execution decisions, publish a final current-state snapshot, and reconcile plan-vs-actual at completion.",
+        "Before P-12/P-06 substantive review actions, project the current executable review obligations into the same Turn Work Record; preserve the initial plan, use ordered state snapshots/current-state pointer when retaining multiple state views, record plan deltas/local bounded execution decisions, publish a final current-state snapshot, and reconcile plan-vs-actual at completion.",
         "Catch materially applicable checks visible on the current basis now; do not manufacture extra passes by intentionally deferring obvious checks.",
         "The same semantic surface may be checked through several materially distinct Lenses/operations.",
         "Every material Finding Candidate produced by this review must reach Finding Disposition before review completion unless explicitly blocked/deferred.",
@@ -7088,7 +7126,6 @@
       "includes": [
         "planning/commands/work-through-idtspe.command.md",
         "planning/commands/recheck-idtspe-port-composition.command.md",
-        "planning/commands/include-idtspe-trace-port.command.md",
         "planning/commands/idtspe-port-validation.command.md"
       ],
       "processCalls": [],
@@ -7151,7 +7188,6 @@
       "includes": [
         "planning/commands/work-through-idtspe.command.md",
         "planning/commands/recheck-idtspe-port-composition.command.md",
-        "planning/commands/include-idtspe-trace-port.command.md",
         "planning/commands/idtspe-port-qrp.command.md"
       ],
       "processCalls": [],
@@ -7206,7 +7242,6 @@
       "includes": [
         "planning/commands/work-through-idtspe.command.md",
         "planning/commands/recheck-idtspe-port-composition.command.md",
-        "planning/commands/include-idtspe-trace-port.command.md",
         "planning/commands/idtspe-port-target.command.md",
         "planning/commands/apply-idtspe-target-module.command.md"
       ],
@@ -7280,7 +7315,6 @@
       "includes": [
         "planning/commands/work-through-idtspe.command.md",
         "planning/commands/recheck-idtspe-port-composition.command.md",
-        "planning/commands/include-idtspe-trace-port.command.md",
         "planning/commands/idtspe-port-target.command.md",
         "planning/commands/apply-idtspe-target-module.command.md"
       ],
@@ -7453,7 +7487,6 @@
       "includes": [
         "planning/commands/work-through-idtspe.command.md",
         "planning/commands/recheck-idtspe-port-composition.command.md",
-        "planning/commands/include-idtspe-trace-port.command.md",
         "planning/commands/idtspe-port-lens.command.md"
       ],
       "processCalls": [],
@@ -7517,7 +7550,6 @@
       "includes": [
         "planning/commands/work-through-idtspe.command.md",
         "planning/commands/recheck-idtspe-port-composition.command.md",
-        "planning/commands/include-idtspe-trace-port.command.md",
         "planning/commands/idtspe-port-persistence.command.md"
       ],
       "processCalls": [],
@@ -7629,7 +7661,6 @@
       "includes": [
         "planning/commands/work-through-idtspe.command.md",
         "planning/commands/recheck-idtspe-port-composition.command.md",
-        "planning/commands/include-idtspe-trace-port.command.md",
         "planning/commands/idtspe-port-persistence.command.md"
       ],
       "processCalls": [],
@@ -7997,9 +8028,9 @@
         "работай через idtspe",
         "режим idtspe"
       ],
-      "description": "Explicit navigation/dispatch shortcut inside the always-active proportional IDTSPE work context.",
-      "meaning": "IDTSPE is already active. Bare `idtspe` explicitly refreshes/reaffirms the current methodology Use-Case applicability, composes current IDTSPE work through `UC-IDTSPE-COMPOSE-CURRENT-WORK`, ALWAYS refreshes/reaffirms the current Port Requirement Set through `IDTSPE.PORT-COMPOSITION-REFRESH`, and establishes/enters one shared normal Shell pass with the smallest useful current composition, which may remain Broad Discussion only. Specialized dependent command nodes perform their named operations inside that same pass; pass finalization happens only after the selected leaf/root actions have completed or been validly REUSED. Explicit registered Target Module/Lens selectors remain subject to current applicability/materiality gates.",
-      "activeContextBehavior": "Treat bare `idtspe` as ordinary current-work continuation. `idtspe <TM-ID|LENS-ID|tm alias|lens alias> <context>` contributes explicit registered component intent before composition refresh; exact `TM-*` / `LENS-*` IDs always work, registry aliases resolve only when unique, and ambiguous or unknown selectors are not guessed.",
+      "description": "Explicitly force/reaffirm the SHELL execution route for the current selected primary subject inside the ambient Work Runtime.",
+      "meaning": "IDTSPE methodology remains always applicable, but Work Runtime now exists above DIRECT/SHELL. Bare `idtspe` reuses the current Turn Work Record, passes through input/Manifest/primary-subject gates, sets or reaffirms `ExecutionRoute=SHELL`, refreshes applicable task-specific Use Cases and the Port Requirement Set, and executes the smallest useful Shell composition in that same Turn Work Record.",
+      "activeContextBehavior": "Treat bare `idtspe` as explicit SHELL-route intent for the current primary subject. Registered TM/Lens selectors contribute intent after Work Runtime/Manifest gates and remain subject to applicability/materiality.",
       "traversalReadMode": "Read current Core/profile Target Module and Lens registry summaries first. For an exact/unique selector, read only the selected component body plus the minimum Core/profile governance it requires. Do not scan/load every module or Lens body. Reuse current reliable governance; targeted refresh when uncertain.",
       "ownerFiles": [
         "planning/documentation/idtspe-methodology/active/idtspe-core/use-cases/compose-current-work/UC-IDTSPE-COMPOSE-CURRENT-WORK.md",
@@ -8037,31 +8068,27 @@
         {
           "responsibilityId": "IDTSPE.RUNTIME-COMPOSITION",
           "path": "planning/documentation/idtspe-methodology/active/idtspe-core/runtime/IDTSPE-RUNTIME-COMPOSITION-CONTRACT.md",
-          "anchor": "idtspe-port-p01",
-          "why": "Defines normal Shell invocation and the runtime frame entered after composition refresh.",
+          "anchor": "idtspe-runtime-composition",
+          "why": "Defines the Shell composition entered only after the current Turn Work Record selects ExecutionRoute=SHELL.",
           "role": "RUNTIME_ENTRY",
           "readMode": "REQUIRED"
         }
       ],
       "includes": [
-        "planning/commands/include-idtspe-trace-port.command.md",
         "planning/commands/recheck-methodology-use-cases.command.md",
         "planning/commands/compose-current-idtspe-work.command.md",
         "planning/commands/recheck-idtspe-port-composition.command.md"
       ],
       "processCalls": [],
       "compositionContributions": [],
-      "expectedOutput": "The refreshed/reaffirmed Use-Case and Port Requirement composition plus one shared current IDTSPE Shell pass in which the selected dependent operations/models run, followed by the smallest useful resulting IDTSPE output (including a valid Broad-Discussion-only result). No command invocation makes optional structure mandatory.",
+      "expectedOutput": "The current Turn Work Record shows `ExecutionRoute=SHELL`, refreshed task-specific Use-Case/Port composition and observable Shell traversal/results; no second pass trace is created.",
       "permissionMode": "read-only-planning",
       "keyReminders": [
-        "IDTSPE is always active in this methodology environment; this command is a convenience/navigation surface, not a mode switch.",
-        "Every normal Shell pass refreshes/reaffirms the Port Requirement Set even when the prior composition is reusable.",
-        "`idtspe.work` establishes/enters the shared normal Shell pass; specialized dependent nodes execute their named operations inside that pass, and the pass finalizes after selected leaf actions complete or are validly REUSED.",
-        "Canonical semantic selectors are TM-* Target Module IDs and LENS-* Lens IDs; short aliases are registry navigation only.",
-        "An explicit component selector is strong invocation intent but still respects Use-Case/context composition plus the component local applicability/materiality gate.",
-        "A Lens surfaces Finding Candidates; Core Finding Disposition resolves actual State/owner/lifecycle consequences.",
-        "Broad Discussion may remain sufficient; do not create a Target, State Unit or Checkpoint merely because `idtspe` was invoked.",
-        "This command plans/reviews only; it does not edit repository files, implement, test, commit or push."
+        "Work Runtime and the Turn Work Record exist before Shell route selection.",
+        "This command explicitly selects/reaffirms SHELL; it is not the reason Session State or the Work Record exists.",
+        "P-01/P-02 are retired/reserved compatibility labels; active Shell capabilities retain P-03..P-15 numbering.",
+        "Broad Discussion may remain sufficient; do not force optional semantic structure.",
+        "This command plans/reviews only and does not grant repository mutation."
       ],
       "userTarget": "<optional TM/LENS selector + target/context, or current planning work>",
       "palette": true,

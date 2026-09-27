@@ -14,7 +14,7 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
     "перепроверь композицию портов"
   ],
   "description": "Refresh/reaffirm the current IDTSPE Port Requirement Set before a normal Shell pass.",
-  "meaning": "Using the fully expanded command DAG contributions, current selected Use Cases, the already resolved current IDTSPE methodology composition, Work Context, downstream materiality and current P-02 orientation state, refresh/reaffirm which Shell capabilities are currently required. Previous state is evidence/cache, never sticky authority.",
+  "meaning": "When the current Turn Work Record has selected `ExecutionRoute=SHELL`, refresh/reaffirm the Port Requirement Set for the selected primary subject/current basis. Prior Turn Work Record orientation may be reused as evidence but never as sticky admission authority.",
   "activeContextBehavior": "Compose with the current command set. Fully expand and merge all selected roots before semantic execution; reuse equivalent current work and follow the resulting dependencies-first plan.",
   "traversalReadMode": "Read this command own canonical references plus included-command references proportionally. Do not duplicate reads already satisfied by an unchanged trustworthy shared prefix.",
   "ownerFiles": [
@@ -49,11 +49,10 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
     }
   ],
   "includes": [
-    "planning/commands/include-idtspe-trace-port.command.md",
     "planning/commands/recheck-methodology-use-cases.command.md",
     "planning/commands/compose-current-idtspe-work.command.md"
   ],
-  "expectedOutput": "A refreshed/reaffirmed Port Requirement Set with explicit/automatic/downstream origins available to the same P-02 trace.",
+  "expectedOutput": "A refreshed/reaffirmed Shell Port Requirement Set for the selected subject is recorded in the current Turn Work Record.",
   "permissionMode": "read-only-planning",
   "keyReminders": [
     "This is a mandatory normal-Shell recheck, not an optional optimization.",

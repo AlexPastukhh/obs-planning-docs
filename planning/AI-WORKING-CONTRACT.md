@@ -119,3 +119,8 @@ historical record ≠ current ontology
 ## Authority
 
 This contract routes to canonical owners. If it conflicts with a linked canonical principle/workflow owner, the canonical owner wins and this contract must be corrected.
+
+<a id="manifest-formal-proposal-boundary"></a>
+## Manifest prospective-change boundary
+
+Broad AI-derived prospective Manifest meaning is not accepted merely because AI proposed it conversationally. When exact target meaning is not already USER-selected, material accepted-Manifest replanning uses the formal Core Proposal + complete candidate target Manifest + PRS route and stops at `USER_REVIEW_REQUIRED` unless prior authority covers continuation. Exact USER-selected target meaning may integrate directly with an authority trace and recoverable previous revision.

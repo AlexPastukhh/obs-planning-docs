@@ -153,3 +153,8 @@ This module does not own a new Proposal lifecycle, bypass natural owners, select
 ## Further worked example
 
 Read the [bounded worked case](../examples/review-proposal-pre-update/proposal-workup.example.md) for Sources, Unit results, consequences and completion boundaries. Its declared historical/illustrative basis remains explanatory, not current semantic authority.
+
+<a id="prs-contextual-target-projection"></a>
+## Planning Resolution State current projection
+
+`TM-PLANNING-RESOLUTION-STATE` now contains `RU-PRS-01 Active Planning`, `RU-PRS-02 Tracked Decisions` and `RU-PRS-03 Contextual Material Coordination`. `RU-PRS-01` exposes required Proposal→Current Basis→complete Candidate Target-State relations for file/result-changing Proposals. `RU-PRS-03` owns only contextual-material handling metadata through Collection `PRS-CONTEXTUAL-MATERIAL`; natural semantic owners remain authoritative.

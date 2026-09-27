@@ -50,7 +50,7 @@ Planning Commands are a USER↔AI invocation surface. The AI follows methodology
 3. Read that complete command definition and **fully expand all selected command/component roots and every registered transitive `includes` command-file path edge before semantic execution begins**.
 4. Discover/validate reachable processCalls too, including mixed cycles; retain them as deferred point calls. Merge one dependency DAG from includes only, reject unresolved command paths/cycles, deduplicate shared nodes, and collect declarative contributions (explicit capability requirements, selected semantic components, trace configuration, target/context selectors, permission constraints) from every node.
 5. Establish the dependencies-first execution plan. Included command actions are dependencies, not recursive independent passes; each selected root action executes only after its dependencies completed or were validly `REUSED`.
-6. For normal IDTSPE work, establish/reuse the one P-02 working trace early enough to record the following composition events incrementally.
+6. For substantive command work, establish/reuse the ambient Turn Work Record from S0/WR-1 so command-composition and methodology-routing facts are recorded incrementally before substantive execution.
 7. Run/reaffirm the command at `planning/commands/recheck-methodology-use-cases.command.md`, which applies `UC-DOC-RESOLVE-CURRENT-USE-CASES` plus its mandatory `UC-IDTSPE-AI-WORKING-BOUNDARY` companion, for **every Planning Command invocation**. This is a compact fundamental authority/applicability pass, not execution of every Use Case.
 8. For normal IDTSPE Shell work, refresh/reaffirm the Port Requirement Set before P-01 through `IDTSPE.PORT-COMPOSITION-REFRESH`, using the already-collected explicit leaf requirements.
 9. Execute the resulting DAG dependencies before dependents while following each node's own `ownerRefs` / `ownerFiles` and current selected Use-Case owners. References inherited through included commands need not be repeated on the dependent command.
@@ -160,3 +160,23 @@ Generated Helper artifacts, semantic card labels, scenario-command mappings and 
 ## Example reading on the selected owner route
 
 For methodology work, apply [DOC.EXAMPLE-READING](documentation/principles-and-terminology.md#doc-example-reading) to relevant inline/linked examples before producing the selected owner's result. The explicit [read-methodology-examples command](commands/read-methodology-examples.command.md) offers the same bounded read operation without Target formation. Reading guidance does not add a hidden includes edge or expand the selected root's permission.
+
+<a id="work-runtime-command-order"></a>
+## Work Runtime command order
+
+```text
+raw USER input
+→ bootstrap/reuse Session State
+→ create Turn Work Record S0
+→ WR-1 classify input + resolve command roots/aliases
+→ expand/merge include DAG + collect declarative contributions
+→ Use-Case applicability
+→ WR-2 Manifest/PRS/context check
+→ WR-3 primary subject
+→ WR-4 DIRECT | SHELL | NO_EXECUTION
+→ if SHELL: reaffirm task-specific Use Cases + Port Requirement Set
+→ execute dependency/semantic actions beneath WR-5
+→ WR-6 / WR-7
+```
+
+P-02 is not a command-global bootstrap dependency. Command graph discovery is observable WR-1 work and does not itself require Shell.

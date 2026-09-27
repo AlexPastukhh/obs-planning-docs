@@ -13,42 +13,42 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
   "commandFamily": [
     "включи порт trace"
   ],
-  "description": "Establish the generic required P-02 Pass Work Plan / State / Trace / Visibility capability without selecting a concrete sink.",
-  "meaning": "Establish/open the one incremental-first P-02 Pass Working Record early enough to retain command-composition, Use-Case applicability and Port Composition facts. Once current composition is sufficiently known, materialize the smallest useful Initial Work Plan before substantive non-baseline work; maintain Current Work State, ordered historical state snapshots plus one explicit current-state pointer when multiple state views are retained, execution events and bounded plan deltas in the same record, then publish a final current-state snapshot and derive final plan-vs-actual visibility from it. Context chooses the proportional sink unless explicitly refined.",
-  "activeContextBehavior": "Compose with the current command set. Fully expand and merge all selected roots before semantic execution; reuse equivalent current work and follow the resulting dependencies-first plan.",
+  "description": "Ensure/reuse the current Turn Work Record trace visibility while preserving the legacy P-02 compatibility entry surface.",
+  "meaning": "Reuse the already-existing Turn Work Record established by Work Runtime. This command no longer admits an active Shell port and does not create a second record. It exposes the legacy P-02 compatibility projection for Shell-specific observable events/visibility when explicitly requested.",
+  "activeContextBehavior": "Operate on the current Turn Work Record. Reuse current state/history and do not open a separate pass ledger or force Shell solely because this compatibility command was invoked.",
   "traversalReadMode": "Read this command own canonical references plus included-command references proportionally. Do not duplicate reads already satisfied by an unchanged trustworthy shared prefix.",
   "ownerFiles": [
-    "planning/documentation/idtspe-methodology/active/idtspe-core/runtime/PASS-TRACE-AND-VISIBILITY-CONTRACT.md",
-    "planning/documentation/idtspe-methodology/active/idtspe-core/runtime/IDTSPE-RUNTIME-COMPOSITION-CONTRACT.md"
+    "planning/documentation/idtspe-methodology/active/idtspe-core/runtime/WORK-RECORD-PRINCIPLES.md",
+    "planning/documentation/idtspe-methodology/active/idtspe-core/runtime/PASS-TRACE-AND-VISIBILITY-CONTRACT.md"
   ],
   "ownerRefs": [
     {
-      "responsibilityId": "IDTSPE.PASS-TRACE",
-      "path": "planning/documentation/idtspe-methodology/active/idtspe-core/runtime/PASS-TRACE-AND-VISIBILITY-CONTRACT.md",
-      "anchor": "idtspe-pass-trace",
-      "why": "Owns the one incremental-first Pass Working Record: initial work plan, current state, execution trace/plan deltas, reuse evidence and final plan-vs-actual visibility projection.",
+      "responsibilityId": "IDTSPE.WORK-RUNTIME",
+      "path": "planning/documentation/idtspe-methodology/active/idtspe-core/runtime/WORK-RECORD-PRINCIPLES.md",
+      "anchor": "idtspe-work-runtime",
+      "why": "Owns the canonical Turn Work Record plan/state/trace and its execution visibility.",
       "role": "PRIMARY_OWNER",
       "readMode": "REQUIRED"
     },
     {
-      "responsibilityId": "IDTSPE.RUNTIME-COMPOSITION",
-      "path": "planning/documentation/idtspe-methodology/active/idtspe-core/runtime/IDTSPE-RUNTIME-COMPOSITION-CONTRACT.md",
-      "anchor": "idtspe-port-p02",
-      "why": "Places the Pass Working Record capability in the normal Shell as required P-02 while allowing the record to be established during invocation preparation.",
-      "role": "RUNTIME_ENTRY",
+      "responsibilityId": "IDTSPE.PASS-TRACE",
+      "path": "planning/documentation/idtspe-methodology/active/idtspe-core/runtime/PASS-TRACE-AND-VISIBILITY-CONTRACT.md",
+      "anchor": "idtspe-pass-trace",
+      "why": "Preserves the legacy P-02 compatibility projection for Shell-specific observable events.",
+      "role": "SUPPORTING_CONTRACT",
       "readMode": "REQUIRED"
     }
   ],
   "includes": [
     "planning/commands/recheck-methodology-use-cases.command.md"
   ],
-  "expectedOutput": "One current P-02 Pass Working Record exists with an established Initial Work Plan/current state ready for incremental execution tracking; when multiple state views are retained they have ordered snapshot IDs and one explicit current-state pointer so historical PENDING values cannot be mistaken for current work; no particular visibility/retention sink is forced unless current context or an explicit trace command requires one.",
+  "expectedOutput": "The current Turn Work Record remains the single plan/state/trace; any requested legacy P-02 view is a compatibility visibility projection of Shell-specific observable events only.",
   "permissionMode": "read-only-planning",
   "keyReminders": [
-    "This is base infrastructure and intentionally does not include idtspe.work, preventing a composition cycle; it does include the mandatory global Use-Case registry recheck.",
-    "The working record is established during composition preparation; once composition is sufficiently known, its Initial Work Plan is materialized before substantive non-baseline work and canonical P-02 continues the same record.",
-    "Do not create a second watch/to-do/ledger/review-plan file merely to remember execution state.",
-    "Post-hoc reconstruction is recovery-only."
+    "P-02 is retired/reserved as an active Shell-port label in the selected Work Runtime topology.",
+    "Do not create a second pass ledger; the Turn Work Record is canonical.",
+    "This compatibility surface does not grant repository mutation permission.",
+    "Keep private reasoning out of the observable record."
   ],
   "userTarget": "<current IDTSPE subject/context>",
   "palette": true,
@@ -62,12 +62,6 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
     "parentSurface": null,
     "hostTargetPolicy": "NONE"
   },
-  "compositionContributions": [
-    {
-      "kind": "WORKING_TRACE_REQUIRED",
-      "value": "P-02",
-      "why": "Establish or reuse the one incremental Pass Working Record during composition preparation; materialize its Initial Work Plan before dependency substantive actions begin."
-    }
-  ]
+  "compositionContributions": []
 }
 [/PLANNING_COMMAND_DEFINITION]
