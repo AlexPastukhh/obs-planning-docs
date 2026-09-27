@@ -97,7 +97,8 @@ Use [`navigation/IDTSPE-CORE-MAP.md`](navigation/IDTSPE-CORE-MAP.md) for a compa
 - [`target-modules/RESPONSIBILITY-MAP.md`](target-modules/RESPONSIBILITY-MAP.md) — Target Module Meta-Model/discovery/supporting-projection routing.
 - [`target-modules/TARGET-MODULE-MODEL.md`](target-modules/TARGET-MODULE-MODEL.md#target-module-meta-model) — Target Module Meta-Model; concrete `TM-*` owners are Target Module Models and form Target Module Instances inside concrete Targets when applied.
 - [`lenses/RESPONSIBILITY-MAP.md`](lenses/RESPONSIBILITY-MAP.md) — Lens Meta-Model/discovery/concrete-Lens responsibility routing.
-- [`runtime/PASS-TRACE-AND-VISIBILITY-CONTRACT.md`](runtime/PASS-TRACE-AND-VISIBILITY-CONTRACT.md) — included Shell Pass Work Plan / State / Trace / Visibility and runtime execution-orientation/reuse/observability contract.
+- [`runtime/WORK-RECORD-PRINCIPLES.md`](runtime/WORK-RECORD-PRINCIPLES.md#idtspe-work-runtime) — canonical Work Runtime / Turn Work Record contract above DIRECT/SHELL.
+- [`runtime/PASS-TRACE-AND-VISIBILITY-CONTRACT.md`](runtime/PASS-TRACE-AND-VISIBILITY-CONTRACT.md#idtspe-pass-trace) — legacy P-02 compatibility visibility projection only.
 - [`navigation/METHODOLOGY-REGISTRY-DIRECTORY.md`](navigation/METHODOLOGY-REGISTRY-DIRECTORY.md) — supporting registry-family router used from selected Use-Case Processes.
 - [`knowledge-bases/RESPONSIBILITY-MAP.md`](knowledge-bases/RESPONSIBILITY-MAP.md) — Knowledge Basis/theory/Source-Evidence boundary routing.
 - [`runtime/target-work/RESOLUTION-SLOT-AND-TARGET-FORMATION-SET.md`](runtime/target-work/RESOLUTION-SLOT-AND-TARGET-FORMATION-SET.md) — Target Formation/resolution mechanics.
@@ -123,3 +124,20 @@ The current installed profiles define no separate runtime methodology-use Use Ca
 ## Target Resolution / Prepared Coverage
 
 Target work derives material Requirements from the current task/scope/Sources plus universal Core Target requirements. Target Module Models provide prepared reusable recognition/coverage and Module-defined Unit Definitions; Core-defined Units provide cross-target prepared coverage; uncovered bounded work is completed by locally defined Contextual Units. Canonical detail: [`runtime/target-work/RESOLUTION-SLOT-AND-TARGET-FORMATION-SET.md`](runtime/target-work/RESOLUTION-SLOT-AND-TARGET-FORMATION-SET.md).
+
+<a id="work-runtime-core-entry"></a>
+## Current Work Runtime entry
+
+```text
+USER input
+→ Session State / Turn Work Record
+→ WR-1 intake
+→ WR-2 Manifest/PRS/context check
+→ WR-3 primary subject
+→ WR-4 DIRECT | SHELL | NO_EXECUTION
+→ WR-5 execution (Shell traversal nested here when selected)
+→ WR-6 Session State consequences
+→ WR-7 finalization/archive
+```
+
+Core PRS now has `RU-PRS-03 Contextual Material Coordination` in addition to Active Planning and Tracked Decisions. P-01/P-02 are compatibility labels rather than active Shell ports.

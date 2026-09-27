@@ -83,3 +83,8 @@ Integration Checkpoint ≠ periodic timer event
 ```
 
 Session Runtime may expose or request the checkpoint, but Session does not own a competing generic Checkpoint semantic object.
+
+<a id="integrate-contextual-prs"></a>
+## PRS contextual reconciliation
+
+At Integration Checkpoint/re-entry, reconcile `RU-PRS-03` alongside Active Planning/Tracked Decisions: retain material contextual refs/obligations, update current-basis/currentness relations when required, and exit entries whose Review/Exit Trigger is satisfied. Never rewrite a `PINNED_SNAPSHOT` in place or turn contextual persistence into semantic acceptance.

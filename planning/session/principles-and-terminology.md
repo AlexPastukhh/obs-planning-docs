@@ -128,3 +128,14 @@ IDTSPE active
 ```
 
 The active IDTSPE Use Cases and component applicability/materiality contracts decide what structure is useful now.
+
+<a id="session-state-term"></a>
+## Session State and Work Runtime terms
+
+- **Session State** — ambient continuity/workspace representation; not a semantic owner.
+- **Session State Archive** — portable representation of current Session State; not a Replacement Package and not acceptance authority.
+- **Turn Work Record** — one-turn evolving plan/state/trace from input through finalization.
+- **Execution Route** — `DIRECT | SHELL | NO_EXECUTION`.
+- **Continuation Gate** — `CONTINUE_ALLOWED | USER_REVIEW_REQUIRED | BLOCKED`; never an execution route.
+
+When material prospective Manifest meaning is not already exactly USER-selected, formal Core Proposal/PRS semantics are required; a GIP may only present/reference them.

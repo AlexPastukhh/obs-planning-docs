@@ -66,3 +66,8 @@ Documentation fundamental-UC identity reconciliation is complete. The former rep
 Exact pre-fundamental root navigation snapshots remain under [`legacy/`](legacy/) as provenance, not current semantic owners.
 
 README owns structural/bootstrap navigation only. Functional capability meaning belongs in the applicable current semantic owner.
+
+<a id="session-state-planning-navigation"></a>
+## Session State navigation
+
+Substantive USER↔AI work may use the file-backed Session State runtime under [`planning/session/session-state-runtime-contract.md`](session/session-state-runtime-contract.md#session-state-runtime). Session State is continuity infrastructure above DIRECT/SHELL routing and does not replace IDTSPE/SDS semantic owners.

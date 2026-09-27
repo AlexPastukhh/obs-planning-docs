@@ -1,4 +1,4 @@
-# Configure IDTSPE Pass Working Record Artifact
+# Configure IDTSPE Turn Work Record Artifact
 
 Status: active project command definition
 Scope: one concrete OBS Planning command route. Reusable behavior remains in linked owner files.
@@ -9,20 +9,21 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
   "commandFamily": [
     "веди трассу idtspe в trace-файле"
   ],
-  "description": "Configure P-02 for explicitly retained Pass Working Record file/archive output and require the persistence capability to be checked without granting mutation authority.",
-  "meaning": "Set/refresh durable/file/archive retention intent for the current P-02 Pass Working Record. The one incrementally maintained Initial Plan + Current State + Execution Trace/Plan Delta + Final Plan-vs-Actual record remains the working orientation and final visibility source; this command pre-composes Persistence so P-14 can resolve permitted durable placement. It does not create another record or independently grant file mutation.",
-  "activeContextBehavior": "Apply to the current/next pass. Runtime working backing still follows the P-02 owner (normally TEMP_TRACE_FILE when the host permits). Durable retention is attempted only through the active permission/output contract and P-14; if persistence cannot be permitted/resolved, retain the runtime Pass Working Record and report the durable request as BLOCKED/DEFERRED rather than false success.",
+  "description": "Request retained/external artifact representation of the current Turn Work Record when material and authorized.",
+  "meaning": "Keep the current Turn Work Record canonical. When durable/external retention beyond ambient Session State is requested, route physical placement through P-14 without creating a second semantic trace or expanding target mutation permission.",
+  "activeContextBehavior": "Apply to the current Turn Work Record. Ambient working backing follows Session State; this command changes only visibility/retention intent. External/durable retention is attempted through P-14/current permission and reports BLOCKED/DEFERRED when unavailable.",
   "traversalReadMode": "Read the included command route and canonical owner files proportionally. Reuse current trustworthy owner/process context; reread only stale, uncertain or newly material owners.",
   "ownerFiles": [
+    "planning/documentation/idtspe-methodology/active/idtspe-core/runtime/WORK-RECORD-PRINCIPLES.md",
     "planning/documentation/idtspe-methodology/active/idtspe-core/runtime/PASS-TRACE-AND-VISIBILITY-CONTRACT.md"
   ],
-  "expectedOutput": "P-02 keeps one Pass Working Record and prefers a retained TRACE_FILE/ARCHIVE_FILE projection when P-14 and current permission permit it; otherwise durable retention is explicitly BLOCKED/DEFERRED while runtime trace continuity remains truthful.",
+  "expectedOutput": "The current Turn Work Record remains canonical and an external/durable representation is placed or explicitly BLOCKED/DEFERRED through normal P-14 rules.",
   "permissionMode": "interaction-policy-only-no-mutation-grant",
   "keyReminders": [
-    "Use one Pass Working Record; durable retention never creates a second working trace/plan record.",
-    "TEMP_TRACE_FILE is the normal ephemeral working backing when the host permits; this command concerns retained file/archive intent.",
-    "P-14 owns durable placement/persistence and this command grants no mutation, commit or push permission.",
-    "Maintain plan/state/execution incrementally; post-hoc reconstruction of the work route is recovery-only."
+    "Artifact retention is representation, not a second trace.",
+    "Ambient Session-State files do not automatically invoke P-14.",
+    "External/durable placement follows P-14 and current permission authority.",
+    "Do not report durable retention as successful when placement is blocked."
   ],
   "userTarget": "<current/next IDTSPE pass>",
   "palette": true,
@@ -30,9 +31,8 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
   "id": "idtspe.trace.artifact",
   "file": "configure-idtspe-trace-artifact.command.md",
   "command": "веди трассу idtspe в trace-файле",
-  "englishName": "configure IDTSPE Pass Working Record artifact",
+  "englishName": "configure IDTSPE Turn Work Record artifact",
   "includes": [
-    "planning/commands/include-idtspe-trace-port.command.md",
     "planning/commands/idtspe-port-persistence.command.md"
   ],
   "methodologyBinding": {
@@ -46,11 +46,19 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
   },
   "ownerRefs": [
     {
+      "responsibilityId": "IDTSPE.WORK-RUNTIME",
+      "path": "planning/documentation/idtspe-methodology/active/idtspe-core/runtime/WORK-RECORD-PRINCIPLES.md",
+      "anchor": "idtspe-work-runtime",
+      "why": "Owns the canonical Turn Work Record and visibility/retention discipline.",
+      "role": "PRIMARY_OWNER",
+      "readMode": "REQUIRED"
+    },
+    {
       "responsibilityId": "IDTSPE.PASS-TRACE",
       "path": "planning/documentation/idtspe-methodology/active/idtspe-core/runtime/PASS-TRACE-AND-VISIBILITY-CONTRACT.md",
-      "anchor": "idtspe-pass-trace-contract",
-      "why": "Refines the already-required P-02 Pass Working Record with an explicit retention preference; it does not create another record.",
-      "role": "PRIMARY_OWNER",
+      "anchor": "idtspe-pass-trace",
+      "why": "Preserves legacy trace vocabulary as a compatibility projection only.",
+      "role": "SUPPORTING_CONTRACT",
       "readMode": "REQUIRED"
     }
   ],
@@ -58,7 +66,7 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
     {
       "kind": "TRACE_SINK_PREFERENCE",
       "value": "TRACE_FILE_OR_ARCHIVE_FILE",
-      "why": "Prefer retained file/archive visibility/output for the already-required one P-02 Pass Working Record; working-store selection remains with the P-02 owner and persistence authority remains with P-14."
+      "why": "Prefer retained file/archive visibility/output for the already-required one Turn Work Record; working-store selection remains with the P-02 owner and persistence authority remains with P-14."
     }
   ]
 }

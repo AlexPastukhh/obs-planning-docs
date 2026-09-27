@@ -13,7 +13,7 @@ Target family / archetype: `PLANNING_RESOLUTION_STATE`
 
 Responsibility ID: `TARGET-MODULE.PLANNING-RESOLUTION-STATE`
 
-**Planning Resolution State (PRS) is the reusable Core Target-result realization of the generic Resolution Carry-Forward contract.** [`RESOLUTION.CARRY-FORWARD`](../resolution/RESOLUTION-CARRY-FORWARD-CONTRACT.md#resolution-carry-forward) owns qualification, Decision admission/exit and the durable-materialization threshold. This module owns the concrete bounded Target-result shape: its two Units, Collection/Slot contracts, item addressing, presentation/composition and PRS-local reconciliation. Consumers of generic carry-forward semantics depend on the resolution contract; consumers of this concrete result schema depend on this Target Module.
+**Planning Resolution State (PRS) is the reusable Core Target-result realization of the generic Resolution Carry-Forward contract.** [`RESOLUTION.CARRY-FORWARD`](../resolution/RESOLUTION-CARRY-FORWARD-CONTRACT.md#resolution-carry-forward) owns qualification, Decision admission/exit and the durable-materialization threshold. This module owns the concrete bounded Target-result shape: its three Units, Collection/Slot contracts, item addressing, presentation/composition and PRS-local reconciliation. Consumers of generic carry-forward semantics depend on the resolution contract; consumers of this concrete result schema depend on this Target Module.
 
 The result keeps open/deferred Proposals together with their related Q/R/P, and accepted Decisions only while material related Q/R/P require continuation. It may also keep unresolved subjects whose addressing Proposal has not yet been formed. Do not invent a Proposal or Q/R/P just to fill the representation.
 
@@ -30,12 +30,13 @@ Form/reuse a PRS when the [Carry-Forward qualification contract](../resolution/R
 
 **Target Step Result:** `Planning Resolution State`
 
-Exactly two Module-defined Units, each a Collection Unit under the [Target Work Unit/Collection/Slot contract](../runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md#twu-collection-contract):
+Exactly three Module-defined Units, each a Collection Unit under the [Target Work Unit/Collection/Slot contract](../runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md#twu-collection-contract):
 
 | Result Unit | Collection | Meaning |
 |---|---|---|
 | `RU-PRS-01` | Active Planning Items | Bounded unresolved or selected-for-current-resolution work |
 | `RU-PRS-02` | Tracked Decision Items | Accepted selections carried forward with their material unresolved/residual Q/R/P |
+| `RU-PRS-03` | Contextual Material | Non-canonical material retained/carried/rechecked/maintained for bounded planning/re-entry coordination |
 
 The repeated entries are **Collection Items**, not peer Units. `Target Ref`, optional `Unit Ref` and optional `Unit Slot Ref` address the *subject* inside an item; they are not decomposition of PRS itself. An item can reference more than one natural subject where one decision spans owners. The stable PRS-local Item Key identifies an entry across reordering and priority changes; it does not replace the referenced natural owner or Proposal/Decision identity. A PER_ITEM formal reference follows `PRS Target → RU-PRS-0x → Collection ID → Item Key → Slot ID`; the UNIT_WIDE focus Slot is addressed as `PRS Target → RU-PRS-01 → PRS-ACTIVE-CURRENT-FOCUS` without a Collection or Item segment.
 
@@ -73,6 +74,7 @@ Local item keys suffice for priority references when unambiguous. No separate Pr
 | `PRS-ACTIVE-PROPOSALS` | `PROPOSALS` | Zero or more candidate Proposal refs/compact bodies, including compatible groups and recursive links. |
 | `PRS-ACTIVE-QRP` | `QRP` | Zero or more Question/Risk/Problem refs and relations, including Q/R/P that have their own addressing Proposals. |
 | `PRS-ACTIVE-EVIDENCE` | `EVIDENCE` | Zero or more material supporting/needed Evidence references. |
+| `PRS-ACTIVE-CANDIDATE-TARGETS` | `CANDIDATE TARGET STATE` | Zero or more Proposal→Current Basis→complete Candidate Target-State relations. Required for file/result-changing Proposals; `DELETE` uses `ABSENT`. |
 
 Keep the Proposal ↔ Q/R/P graph recursive and addressable; do not flatten it into one selected answer or invent a mandatory Proposal Tree ontology. An item may be blocked/deferred, or may remain open after some compatible Proposals are selected.
 
@@ -103,9 +105,34 @@ Keep the Proposal ↔ Q/R/P graph recursive and addressable; do not flatten it i
 
 **Decision membership is delegated to [`RESOLUTION.CARRY-FORWARD`](../resolution/RESOLUTION-CARRY-FORWARD-CONTRACT.md#resolution-carry-forward-decision-retention).** `RU-PRS-02` represents only Decisions currently admitted by that contract and carries the qualifying Q/R/P references required by its Item Contract. This Target Module does not restate which Q/R/P qualify, the admission rule, or the exit rule. When Carry-Forward removes a Decision from current continuation, remove its PRS Collection Item while preserving the natural-owner meaning governed by the underlying lifecycle owners.
 
+
+<a id="ru-prs-03--contextual-material-coordination"></a>
+### RU-PRS-03 — Contextual Material Coordination
+
+**Lens Attachments**
+
+- **Core Lens Pack:** `INHERITED` via [`Core Lens Pack`](../lenses/LENS-REGISTRY.md)
+
+**Responsibility.** Maintain bounded coordination/handling metadata for non-canonical material that must be remembered, carried, rechecked or maintained for planning/re-entry.
+
+**Purpose.** Keep material context available without turning persistence into semantic authority or inventing another resolution lifecycle. This Unit may be material even when Active Planning and Tracked Decisions have zero items.
+
+**Result Content Contract.** One `Contextual Material` Collection (`Collection ID: PRS-CONTEXTUAL-MATERIAL`, cardinality `0..N`). **Item Key:** stable PRS-local `PRS-CONTEXT-*`. **Item Contract:**
+
+- `Material Ref`;
+- `Applies-To / Scope`;
+- `Why Retained`;
+- `Authority / Role`;
+- `Retention = REFERENCE_ONLY | CARRY_CURRENT | PINNED_SNAPSHOT`;
+- `Maintenance = NONE | RECHECK | MAINTAIN`;
+- `Current Basis / Version / Hash` when material;
+- `Review / Exit Trigger`.
+
+These are ordinary Collection Item fields, not repeated UNIT_WIDE/PER_ITEM Slot families. `PRS-CONTEXT-*` provides PRS-local addressability only. A context item may scope to active-item/decision keys, natural owner/Target refs or the bounded PRS/session scope. PRS owns handling coordination only; natural content/representation owners remain authoritative. `PINNED_SNAPSHOT` is immutable; maintenance creates a new current/snapshot basis rather than rewriting the pin.
+
 ## Unit processing envelope
 
-Both Units follow the generic Opening / In-Unit / Closing Lens applicability envelope. Selected Lenses and checks act on current bounded subjects; no mandatory all-Lenses pass is implied.
+All three Units follow the generic Opening / In-Unit / Closing Lens applicability envelope. Selected Lenses and checks act on current bounded subjects; no mandatory all-Lenses pass is implied.
 
 #### `RU-PRS-01` processing envelope
 
@@ -119,10 +146,16 @@ Both Units follow the generic Opening / In-Unit / Closing Lens applicability env
 2. **Unit Work — `RU-PRS-02`**: maintain Decision items with required related Q/R/P and material Evidence.
 3. **Closing Unit Checkpoint — `RU-PRS-02`**: recheck integration refs and current membership through the Carry-Forward owner; remove Collection Items no longer admitted without changing natural-owner content.
 
+#### `RU-PRS-03` processing envelope
+
+1. **Opening Unit Checkpoint — `RU-PRS-03`**: resolve material refs, scope/role and retention/maintenance obligations.
+2. **Unit Work — `RU-PRS-03`**: maintain contextual Collection Items and current basis/ref metadata without copying semantic bodies.
+3. **Closing Unit Checkpoint — `RU-PRS-03`**: recheck materiality/currentness/exit triggers; keep, refresh relation or exit entries without changing natural-owner content.
+
 <a id="prs-rcf-presentation"></a>
 ## Presentation and linked resolution context
 
-Present Active Planning first, then Tracked Decisions. Within each Collection, group entries by their natural semantic subject. Under SDS use [SDS semantic traversal](../../profiles/sds/profile-contracts/SDS-SEMANTIC-COMPOSITION-AND-READINESS.md#sds-semantic-traversal-order): Application Definition → Feature / Scenario / Screen → Domain → Slice → Shared → Evolution → Exact. Other profiles supply their own applicable traversal; Core does not impose SDS families universally. Future Step-owned subjects keep their temporal owner explicit.
+Present Active Planning first, then Tracked Decisions, then Contextual Material when material. Within each Collection, group entries by their natural semantic subject. Under SDS use [SDS semantic traversal](../../profiles/sds/profile-contracts/SDS-SEMANTIC-COMPOSITION-AND-READINESS.md#sds-semantic-traversal-order): Application Definition → Feature / Scenario / Screen → Domain → Slice → Shared → Evolution → Exact. Other profiles supply their own applicable traversal; Core does not impose SDS families universally. Future Step-owned subjects keep their temporal owner explicit.
 
 Show the current-focus/priority view separately by reference to the same item keys; it must not reorder semantic grouping or copy item bodies. Default P1/P2/P3 bands remain the Active Planning focus contract above. Do not invent empty family groups.
 
@@ -133,7 +166,7 @@ Within each subject show its open/deferred Proposals with their related Q/R/P, s
 
 The generic threshold is owned by [`RESOLUTION.CARRY-FORWARD`](../resolution/RESOLUTION-CARRY-FORWARD-CONTRACT.md#resolution-carry-forward-materialization). When that threshold is met and this Target Module is the selected reusable realization, maintain one discoverable PRS result for the useful coordination scope. Representation/P-14 chooses physical placement; a persisted `PRS.md` (or an already-established equivalent name) is only a representation of this Target result, not another semantic owner.
 
-Reconcile PRS membership using the carry-forward admission/exit contract after material lifecycle boundaries while preserving this module's Collection/item identities for surviving entries.
+Reconcile PRS membership using Carry-Forward after material lifecycle boundaries while preserving Collection/item identities for surviving entries. Context-only `RU-PRS-03` may remain as the sole material Unit when losing its handling/currentness state would harm continuation.
 
 ## Representation and checkpoint
 

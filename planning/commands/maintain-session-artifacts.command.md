@@ -19,7 +19,7 @@ Scope: one direct artifact-maintenance route for the current substantial work/se
     "maintain current work artifacts"
   ],
   "description": "Synchronize the material artifact set, inventory, currentness and placement for the current work context.",
-  "meaning": "Maintain the material working artifacts for the current Work Context through P-14 Persistence / Artifact Maintenance. First synchronize the Current Work Manifest/inventory, then reconcile material artifact identity, currentness, placement, reuse/update/rematerialization and canonical references. This command does not require an archive representation by itself and never transfers semantic authority from Need/PRS/Review/P-02/Revalidation owners to P-14 or the Manifest.",
+  "meaning": "Maintain materially useful artifacts referenced by the current Session State/Manifest through P-14 when external/durable representation work is actually material. The Session State directory, Manifest, PRS and Turn Work Records exist independently of P-14.",
   "activeContextBehavior": "Use the current Work Context and synchronized Current Work Manifest as the inventory/navigation entry. Maintain only materially useful artifacts; mark current/historical/stale/superseded representation state proportionally, repair missing/stale placement/navigation where authorized, and preserve canonical owner references. Do not create duplicate artifacts merely to satisfy a layout. Archive/bundle materialization is not forced by this command; use the archive-specific command when an archive is explicitly required.",
   "traversalReadMode": "Read P-14 Artifact Placement/Maintenance and the synchronized Manifest inventory, then inspect only artifacts whose representation/currentness/placement may need action. Follow semantic owners only when needed to avoid stale/misleading representation.",
   "ownerFiles": [
@@ -44,7 +44,7 @@ Scope: one direct artifact-maintenance route for the current substantial work/se
       "readMode": "REQUIRED"
     }
   ],
-  "expectedOutput": "A synchronized material artifact set and Current Work Manifest inventory: artifacts are discoverable, currentness/representation roles are explicit, stale/superseded representations are not misleading, and placement/reuse/update/rematerialization actions are completed or explicitly BLOCKED/DEFERRED. No archive is required solely by invoking this generic maintenance command.",
+  "expectedOutput": "Material artifact representations are synchronized through P-14 as applicable while the ambient Session State remains the re-entry/workspace substrate.",
   "permissionMode": "artifact-no-commit-push",
   "keyReminders": [
     "Artifact maintenance is representation work; semantic owners remain authoritative.",

@@ -221,17 +221,17 @@ On re-entry:
 
 Need Set Coordination is not [`Resolution Carry-Forward`](../RESOLUTION-CARRY-FORWARD-CONTRACT.md#resolution-carry-forward) / PRS and must not be used as a global Proposal/Q-R-P/Decision backlog. The same Need may reference canonical carry-forward/PRS state when that state is independently applicable.
 
-## 8. P-02 Boundary
+## 8. Turn Work Record Boundary
 
 ```text
-P-02 Pass Working Record
+Turn Work Record
 = what execution was planned/current plus what methodology runtime/traversal actually happened in the current pass
 
 Need Set Coordination
 = which USER-grounded wanted outcomes remain tracked across passes/messages/sessions
 ```
 
-P-02 may record Need Set start/sync/close events and Collection/Disposition traversal, but P-02 is not the Need Set authority. A Need Set may survive after the P-02 Pass Working Record ends.
+The Turn Work Record may record Need Set start/sync/close events and Collection/Disposition traversal, but it is not the Need Set authority. A Need Set may survive after the Turn Work Record ends.
 
 ## 9. Command Surface Boundary
 
@@ -244,3 +244,8 @@ close current Need Set
 ```
 
 Those commands remain thin invocation surfaces over this owner plus existing Collection/Disposition/Persistence owners. They must not reimplement Need detection or semantic routing. Repository/artifact writes require an explicit mutation-capable command/host permission boundary; the existing `idtspe.needs.collect` and `idtspe.needs.disposition` commands remain read-only.
+
+<a id="need-manifest-coverage"></a>
+## Manifest planning coverage
+
+Need Set may project `Need → Manifest Action(s)` coverage, including explicit `UNPLANNED`. Compact Needs may be represented inline in Session State or by `NEEDS.md`; Need ownership/satisfaction remains here and with provenance/evidence. Turn Work Record completion or Manifest action completion never by itself marks a Need satisfied.

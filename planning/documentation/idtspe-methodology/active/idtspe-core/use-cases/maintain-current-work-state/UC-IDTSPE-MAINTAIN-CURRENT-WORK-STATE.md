@@ -73,18 +73,18 @@ Current Work Manifest
   PRS / QRP / Proposal / Decision refs when material
   Review Coverage refs
   Revalidation Impact / pending-recheck refs
-  current/recent P-02 Pass Working Record refs
+  current/recent Turn Work Record refs
   blockers / permissions / external dependencies
   re-entry / next-action route
 ```
 
-Activation is proportional. A tiny one-pass task may remain P-02-only. A Manifest becomes material when current work is expected to span several passes/messages, several independently useful artifacts must stay coordinated, revalidation/review work must survive a pass boundary, cross-session/handoff re-entry is material, or the USER explicitly requests central work tracking.
+Activation is proportional. A tiny one-pass task may remain Turn-Work-Record-only. A Manifest becomes material when current work is expected to span several passes/messages, several independently useful artifacts must stay coordinated, revalidation/review work must survive a pass boundary, cross-session/handoff re-entry is material, or the USER explicitly requests central work tracking.
 
 ### Goal / action ownership boundary
 
 A concise USER Goal may be projected here, but a grounded durable Need remains owned by Need Candidate Collection / Need Set Coordination. AI-generated candidate work remains Finding/Q/R/P/Proposal/etc. and is not promoted to a USER Goal merely because it appears in the Manifest.
 
-Manifest actions are cross-pass coordination. One current Shell pass selects only the bounded useful subset into P-02; the Manifest is not copied wholesale into the Pass Working Record.
+Manifest actions are cross-pass coordination. One current turn selects only the bounded useful subset into the Turn Work Record; the Manifest is not copied wholesale into the turn record.
 
 ### Artifact Inventory
 
@@ -109,9 +109,9 @@ last synchronized basis/pass/checkpoint when useful
 important outgoing canonical refs
 ```
 
-These are representation/currentness observations only; they do not redefine Need, Proposal/Decision, Review Coverage, P-02 or semantic-owner lifecycle states.
+These are representation/currentness observations only; they do not redefine Need, Proposal/Decision, Review Coverage, Turn Work Record or semantic-owner lifecycle states.
 
-### P-02 / P-14 / P-15 handshake
+### Work Runtime / P-14 / P-15 handshake
 
 ```text
 Current Work Manifest
@@ -119,13 +119,13 @@ Current Work Manifest
 + canonical owner state
 → Compose Current Work
 → bounded work for this pass
-→ P-02 Initial Work Plan
+→ Turn Work Record selected/refined work
 → execute / reconcile
 → refresh Manifest when cross-pass state materially changed
 → P-14 updates/rematerializes its representation when material and authorized
 ```
 
-When P-15 identifies material revalidation that will not be completed in the current pass, retain a compact reference/next action in the Manifest before handoff. Do not copy the full Revalidation Impact Set or P-02 execution history when a reference is sufficient.
+When P-15 identifies material revalidation that will not be completed in the current pass, retain a compact reference/next action in the Manifest before handoff. Do not copy the full Revalidation Impact Set or Turn Work Record execution history when a reference is sufficient.
 
 When several material work artifacts must survive handoff and loose-file fragmentation creates loss/discoverability risk, route the Manifest and related representations through P-14's `Work Context Bundle` pattern rather than inventing a second archive owner.
 
@@ -138,7 +138,33 @@ Slot RESOLVED ≠ parent Unit/Target Requirement automatically resolved
 Unit exists ≠ separate file required
 Contextual Unit existed ≠ durable CU result section required
 local Work Context snapshot ≠ semantic authority
-Current Work Manifest ≠ Need Set / PRS / Review Coverage / P-02
-Current Work Manifest ≠ Session-owned second planning runtime
+Current Work Manifest ≠ Need Set / PRS / Review Coverage / Turn Work Record
+Current Work Manifest ≠ Session State / Work Runtime semantic owner
 local snapshot ≠ Session-owned second ontology
 ```
+
+<a id="current-work-manifest-selected-contract"></a>
+## Accepted Session Work Manifest contract
+
+Substantive Session State normally maintains one accepted `WORK-MANIFEST.md` as a session-scale Evolving Work Record. It may carry stable hierarchical action IDs, current/next work, Need→action coverage (including `UNPLANNED`), current/recent Turn Work Record refs, bounded PRS navigation, artifact/context/review/revalidation dependencies and re-entry route.
+
+Classification of accepted-Manifest writes:
+
+```text
+exact USER-selected prospective meaning
+→ integrate directly + authority trace + prior revision
+
+factual synchronization
+→ direct + prior revision
+
+pure task-local decomposition
+→ keep in Turn Work Record by default
+
+cross-turn pure decomposition
+→ direct Manifest refinement when useful + prior revision
+
+AI-derived/not-yet-selected prospective meaning
+→ formal Proposal + complete target Manifest + bounded Core PRS + USER_REVIEW_REQUIRED
+```
+
+Every accepted Manifest write preserves a recoverable prior revision/snapshot. A first-session Manifest may bootstrap exact USER-authorized current facts; broad prompts that require AI to derive the future plan do not count as exact target selection. Contextual-material handling remains in PRS; the Manifest carries only accepted navigation/dependency consequences.

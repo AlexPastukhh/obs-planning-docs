@@ -73,7 +73,7 @@ Do not ask "continue?" merely because another ordinary step begins.
 
 If one meaningful step runs long enough that the USER would otherwise lose orientation, provide an occasional concise update describing useful partial progress and current focus.
 
-Progress updates are transient interaction signals, not State Units or Checkpoints. During IDTSPE work they may project facts already recorded by `P-02 Pass Work Plan / State / Trace / Visibility`, but Session owns the conversational timing/shape while P-02 owns the observable methodology execution-plan/state/trace semantics.
+Progress updates are transient interaction signals, not State Units or Checkpoints. During IDTSPE work they may project facts already recorded by `Turn Work Record`, but Session owns the conversational timing/shape while `IDTSPE.WORK-RUNTIME` owns the observable Turn Work Record plan/state/trace semantics.
 
 ## 4A. Current Work Manifest Re-entry Projection
 
@@ -131,6 +131,17 @@ A depth transition is not an approval gate by itself.
 
 ## 8. IDTSPE Integration
 
-Broad Discussion, planning state, Targets, Lenses and Integration Checkpoints are IDTSPE-owned. Session runtime governs Work Steps/Progress Updates and USER steering. IDTSPE `P-02 Pass Work Plan / State / Trace / Visibility` owns the observable methodology work plan/state/route; Session may project that trace conversationally without becoming its semantic owner.
+Broad Discussion, planning state, Targets, Lenses and Integration Checkpoints are IDTSPE-owned. Session runtime governs Work Steps/Progress Updates and USER steering. IDTSPE `Turn Work Record` owns the observable methodology work plan/state/route; Session may project that trace conversationally without becoming its semantic owner.
 
 A situational IDTSPE Integration Checkpoint may be performed whenever its Use Case applies; Session does not maintain a competing generic Checkpoint object.
+
+<a id="session-state-runtime-integration"></a>
+## Session State / Turn Work Record integration
+
+For substantive work, Session bootstraps/reuses [`SESSION.STATE-RUNTIME`](session-state-runtime-contract.md#session-state-runtime) and one current Turn Work Record before substantive execution. Progress Updates remain transient conversational projections of observable facts already present in that record.
+
+Re-entry order is `README.md` → accepted `WORK-MANIFEST.md` → bounded `resolution/PRS.md` when present → current/retained Work Record/context refs. Session owns interaction timing/shape only.
+
+Material prospective Manifest meaning that AI derives and the USER has not already selected requires the formal Core Proposal + complete candidate target Manifest + PRS route. A Generic AI Proposal may present/reference that formal state but never substitutes for it. Exact USER-selected target meaning may integrate directly with authority trace and recoverable prior revision.
+
+Response completion for substantive Session-State work follows `WR-7` and normally rematerializes the portable Session State archive.

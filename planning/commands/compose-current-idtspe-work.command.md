@@ -41,7 +41,6 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
     }
   ],
   "includes": [
-    "planning/commands/include-idtspe-trace-port.command.md",
     "planning/commands/recheck-methodology-use-cases.command.md"
   ],
   "compositionContributions": [],

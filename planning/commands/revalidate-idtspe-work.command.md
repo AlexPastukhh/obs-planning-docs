@@ -42,7 +42,6 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
   "includes": [
     "planning/commands/work-through-idtspe.command.md",
     "planning/commands/recheck-idtspe-port-composition.command.md",
-    "planning/commands/include-idtspe-trace-port.command.md",
     "planning/commands/idtspe-port-revalidation.command.md"
   ],
   "expectedOutput": "Narrow affected subject plus Revalidation Impact Set when material (definitely affected / potentially affected / reuse candidates / required follow-up), revised selected meaning or justified reuse, downstream/review recheck obligations, and Current Work Manifest continuation reference when material work remains; no write authority.",

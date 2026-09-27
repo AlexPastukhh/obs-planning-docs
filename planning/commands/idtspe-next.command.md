@@ -14,7 +14,7 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
     "что дальше по методологии"
   ],
   "description": "Show the currently useful methodology action without executing it.",
-  "meaning": "Recheck current methodology Use-Case applicability, refresh/reaffirm current IDTSPE composition and Port Requirement Set, then resolve the smallest useful next methodology action from the current Work Context and surface that action as a Generic AI Proposal (GIP). Stop without executing the proposed action. P-02 owns Shell visibility; this command does not.",
+  "meaning": "Recheck current methodology Use-Case applicability, refresh/reaffirm current IDTSPE composition and Port Requirement Set, then resolve the smallest useful next methodology action from the current Work Context and surface that action as a Generic AI Proposal (GIP). Stop without executing the proposed action. the current Turn Work Record owns observable route visibility; this command does not.",
   "activeContextBehavior": "Use current Work Context plus mandatory current Use-Case/port-composition rechecks. Do not invent a Target or component to satisfy a fixed sequence. Produce a GIP only for the next useful action/direction and preserve USER steering and permission boundaries.",
   "traversalReadMode": "Reuse current reliable IDTSPE/SDS governance; targeted refresh of the selected owner route when uncertain; full bootstrap only when no reliable sufficient governance context exists.",
   "ownerFiles": [
@@ -22,14 +22,14 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
     "planning/documentation/idtspe-methodology/active/idtspe-core/use-cases/USE-CASE-REGISTRY.md",
     "planning/documentation/idtspe-methodology/active/idtspe-core/commands/IDTSPE-COMMAND-SURFACE-CONTRACT.md"
   ],
-  "expectedOutput": "One grounded Generic AI Proposal (GIP) for the smallest useful next methodology action, with concise basis/alternatives/recheck trigger only when useful; no proposed action executed. Any route visibility comes from P-02.",
+  "expectedOutput": "One grounded Generic AI Proposal (GIP) for the smallest useful next methodology action, with concise basis/alternatives/recheck trigger only when useful; no proposed action executed. Any route visibility comes from the current Turn Work Record.",
   "permissionMode": "read-only-planning",
   "keyReminders": [
     "IDTSPE is already active; this shortcut does not enable a mode.",
     "Use Cases compose methodology use; Target Modules/Lenses own specialized work.",
     "Broad Discussion or NO_ADDITIONAL_STRUCTURE is a valid proportional outcome.",
     "Ordinary in-scope progression is not an approval gate; explicit mutation/commit/push permissions remain separate.",
-    "This command produces a GIP recommendation/action proposal; it does not own P-02 visibility and does not itself create a formal IDTSPE Proposal."
+    "This command produces a GIP recommendation/action proposal; it does not own Turn Work Record visibility and does not itself create a formal IDTSPE Proposal."
   ],
   "userTarget": "<current planning state>",
   "palette": true,
@@ -45,8 +45,7 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
   },
   "includes": [
     "planning/commands/work-through-idtspe.command.md",
-    "planning/commands/recheck-idtspe-port-composition.command.md",
-    "planning/commands/include-idtspe-trace-port.command.md"
+    "planning/commands/recheck-idtspe-port-composition.command.md"
   ],
   "ownerRefs": [
     {

@@ -61,3 +61,8 @@ USER Planning Command
 ```
 
 Commands are a USER↔AI invocation surface. The AI does not call Planning Commands as an internal methodology mechanism. Command composition guarantees a reproducible traversal of canonical methodology that must already be navigable through its own references, responsibility maps and handoffs.
+
+<a id="session-state-authority-plane"></a>
+## Session-State authority plane
+
+Target/repository mutation authority and Session-State workspace authority are independent. A read-only target operation may still maintain Session State/Turn Work Record/Manifest/PRS/archive. Session-State writes never grant target/repository mutation. Current work is handed into `IDTSPE.WORK-RUNTIME`; USER choice/mutation gates remain unchanged.

@@ -123,3 +123,8 @@ rare durable proof-realization HOW constraint → owner-local PFR-*
 Proof design normally remains transient. Literal test code is owned by `TM-CODE-REALIZATION` when SDS is active. Executed checks become Evidence only when actually run against the stated subject/state/environment.
 
 Cross-module semantic relationships/readiness guidance lives in [`../profile-contracts/SDS-SEMANTIC-COMPOSITION-AND-READINESS.md`](../profile-contracts/SDS-SEMANTIC-COMPOSITION-AND-READINESS.md). Runtime composition remains Use-Case-driven.
+
+<a id="sds-core-prs-contextual-material"></a>
+## Core PRS candidate-target/contextual-material projection
+
+SDS inherits Core PRS unchanged: file/result-changing Proposals expose current-basis + complete candidate target-state relations, while current SDS owner state remains authoritative until normal selection/integration. SDS planning may use Core `RU-PRS-03 / PRS-CONTEXTUAL-MATERIAL` for legacy notes, external constraints, exploratory analyses, examples, screenshots/data samples or other material that must influence work but is not a natural SDS owner artifact. PRS records scope/role/retention/maintenance; contextual files never become Feature/Scenario/Domain/Slice/Shared/Evolution/etc authority merely by persistence. When contextual meaning becomes canonical, integrate it through the natural SDS owner and update/exit the context entry.

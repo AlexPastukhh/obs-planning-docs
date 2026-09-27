@@ -26,7 +26,7 @@ Generic Documentation semantics for a `Responsibility Map` are owned by [`../../
 | Installed-profile discovery/applicability and profile-local responsibility routing | [`profiles/RESPONSIBILITY-MAP.md`](../profiles/RESPONSIBILITY-MAP.md) | root profile map routes `IDTSPE.PROFILE-DISCOVERY` and the SDS / 2D Visual / Reference Knowledge child maps without duplicating profile semantic bodies |
 | Generic IDTSPE command surface / command→Use-Case/component→port-composition handshake | [`idtspe-core/commands/IDTSPE-COMMAND-SURFACE-CONTRACT.md`](../idtspe-core/commands/IDTSPE-COMMAND-SURFACE-CONTRACT.md#idtspe-command-surface) — `IDTSPE.COMMAND-SURFACE` | repository command/helper ownership routes through [`../../../../commands/RESPONSIBILITY-MAP.md`](../../../../commands/RESPONSIBILITY-MAP.md) |
 | AI output reviewability / pre-return omission-contradiction review guidance | [`ai-reviewability/AI-OUTPUT-REVIEWABILITY.md`](../ai-reviewability/AI-OUTPUT-REVIEWABILITY.md) — `AI.REVIEWABILITY` | Peer concern only; does not own semantic planning state or Review Coverage |
-| Review strategy / coverage record / repeated-review invalidation and recheck scope | [`ai-reviewability/REVIEW-STRATEGY-AND-COVERAGE-CONTRACT.md`](../ai-reviewability/REVIEW-STRATEGY-AND-COVERAGE-CONTRACT.md#review-strategy-coverage) — `REVIEW.STRATEGY-COVERAGE` | Controls review coverage over bounded semantic subjects; P-02 remains execution trace and Finding/Need lifecycles remain separate |
+| Review strategy / coverage record / repeated-review invalidation and recheck scope | [`ai-reviewability/REVIEW-STRATEGY-AND-COVERAGE-CONTRACT.md`](../ai-reviewability/REVIEW-STRATEGY-AND-COVERAGE-CONTRACT.md#review-strategy-coverage) — `REVIEW.STRATEGY-COVERAGE` | Controls review coverage over bounded semantic subjects; the Turn Work Record remains execution trace and Finding/Need lifecycles remain separate |
 | SDS profile semantics / Target Modules / Lenses / requirements / knowledge / representation / command extension | [`profiles/sds/RESPONSIBILITY-MAP.md`](../profiles/sds/RESPONSIBILITY-MAP.md) | child map routes concrete SDS owners including the `SDS.COMMAND-SURFACE` extension |
 | 2D Visual Production profile semantics / Target Modules / Lenses / material / construction / representation | [`profiles/visual-production-2d/RESPONSIBILITY-MAP.md`](../profiles/visual-production-2d/RESPONSIBILITY-MAP.md) | child map routes profile-local owners while retaining Core Target/Lens/Source/Representation boundaries |
 | Reference Knowledge Bank/Entry/Vocabulary/Landscape semantics / discovery / representation | [`profiles/reference-knowledge/RESPONSIBILITY-MAP.md`](../profiles/reference-knowledge/RESPONSIBILITY-MAP.md) | child map routes Bank/Vocabulary/Domain-Pack/consumer-integration owners while Core Source authority remains separate |
@@ -42,3 +42,11 @@ repository path/name ≠ semantic authority by itself
 ```
 
 When a responsibility moves, update the canonical owner first, then this routing projection and its semantic-parity checks.
+
+<a id="work-runtime-methodology-map"></a>
+## Work Runtime / Session State projection
+
+- `SESSION.STATE-RUNTIME` — file-backed continuity/archive representation; no semantic ownership.
+- `IDTSPE.WORK-RUNTIME` — Turn Work Record / execution-route discipline above Shell.
+- `IDTSPE.PASS-TRACE` — legacy compatibility projection only.
+- `TARGET-MODULE.PLANNING-RESOLUTION-STATE` — bounded Core PRS including `RU-PRS-03 Contextual Material Coordination`.

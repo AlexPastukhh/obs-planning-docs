@@ -88,3 +88,8 @@ Current Reference Knowledge Target Module inventory is owned by:
 [`../../profiles/reference-knowledge/registries/TARGET-MODULE-REGISTRY.md`](../../profiles/reference-knowledge/registries/TARGET-MODULE-REGISTRY.md)
 
 Core does not hard-code mutable profile module counts. Installed profiles may expose different Target Module sets; their existence must not force one profile's specialized semantics into Core or another profile.
+
+<a id="prs-contextual-target-projection"></a>
+## Planning Resolution State current projection
+
+`TM-PLANNING-RESOLUTION-STATE` now contains `RU-PRS-01 Active Planning`, `RU-PRS-02 Tracked Decisions` and `RU-PRS-03 Contextual Material Coordination`. `RU-PRS-01` exposes required Proposal→Current Basis→complete Candidate Target-State relations for file/result-changing Proposals. `RU-PRS-03` owns only contextual-material handling metadata through Collection `PRS-CONTEXTUAL-MATERIAL`; natural semantic owners remain authoritative.

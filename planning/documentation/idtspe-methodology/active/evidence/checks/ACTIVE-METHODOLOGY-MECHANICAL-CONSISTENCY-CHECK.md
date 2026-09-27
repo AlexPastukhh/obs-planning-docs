@@ -2,7 +2,7 @@
 
 Status: **HISTORICAL post-Pass4 command-composition / Helper closeout snapshot; mechanical facts only — superseded for current assembled-methodology evidence by `../audits/POST-PASS12-CONSISTENCY-AUDIT.md`**
 
-This snapshot was revalidated against the Core plus all three installed profile registries at the corrected PASS-4 command-composition / Helper closeout point. The corrected closeout adds registered semantic command includes, ambient every-work-entry Use-Case registry recheck, mandatory normal-Shell port-composition refresh, P-02 working-trace orientation and the `IDTSPE Pass` Helper projection without making Helper UI semantic authority. Broad lower-contract Unit Collection / Slot migration remains intentionally deferred and is not claimed here.
+This snapshot was revalidated against the Core plus all three installed profile registries at the corrected PASS-4 command-composition / Helper closeout point. The corrected closeout adds registered semantic command includes, ambient every-work-entry Use-Case registry recheck, mandatory normal-Shell port-composition refresh, Turn Work Record orientation and the `IDTSPE Pass` Helper projection without making Helper UI semantic authority. Broad lower-contract Unit Collection / Slot migration remains intentionally deferred and is not claimed here.
 
 This file reports observed registry/projection parity. Semantic authority remains in the owning registries/contracts.
 
@@ -85,7 +85,7 @@ Checks:
 - command-composition ownership check: `methodologyBinding` remains projection/dispatch metadata and `ownerFiles` remain read/owner routes; registered `includes` form a semantic command-prefix graph, while technical port topology is still derived/refreshed through `IDTSPE.PORT-COMPOSITION-REFRESH`; no parallel durable numeric `requiredPorts` / `portRequirements` ontology exists: **PASS**
 - strict command-catalog check: all direct `planning/commands/*.command.md` definitions parse under the current schema; command owner references resolve; command IDs are unique; registered path-addressed `includes` resolve in the complete repository catalog and are acyclic; unsupported durable numeric `requiredPorts` / `portRequirements` and file-execution `includeFiles` fields are absent: **PASS**
 - Planning Helper generated-projection check: final `npm run build` succeeds; generated catalogs expose the current methodology Use Cases, Target Modules, Lenses and canonical Scenarios; normal Helper navigation/catalog ordering covers every current card exactly once: **PASS**
-- Planning Helper regression suite: final `npm test` passes, including command-include graph, mandatory UC recheck and fundamental AI Working Boundary, P-02 working-trace orientation, methodology-navigation, semantic-parity, command/scenario reverse projection and Unit-checkpoint contracts: **PASS**
+- Planning Helper regression suite: final `npm test` passes, including command-include graph, mandatory UC recheck and fundamental AI Working Boundary, Turn Work Record orientation, methodology-navigation, semantic-parity, command/scenario reverse projection and Unit-checkpoint contracts: **PASS**
 - final scoped responsibility/dependency check: across the active methodology plus direct Documentation / Session / Planning Command / Helper projections, Responsibility IDs are unique and tracked Semantic Owner Dependency responsibility targets resolve: **PASS**
 - final scoped link/fragment check: current active-methodology plus direct Documentation / Session / Planning Command / Helper projections pass the scoped local-path/fragment checks with no known missing local paths, bad fragments or generated-heading cross-file fragment dependencies in the audited surface: **PASS**
 - fenced-example link-hygiene check: path-like placeholders in Markdown examples are not encoded as repository links; the Methodology binding example uses explicit non-link placeholder notation instead of the nonexistent `../../shared` path: **PASS**
@@ -112,3 +112,8 @@ hard-coded N / N
 ```
 
 because active module/Lens counts may legitimately change while the contract remains the same.
+
+<a id="work-runtime-mechanical-checks"></a>
+## Work Runtime consistency checks
+
+Current active consistency includes: `IDTSPE.WORK-RUNTIME` resolvable; P-01/P-02 absent from active Port Requirement Set; P-03..P-15 IDs stable; no command prerequisite `WORKING_TRACE_REQUIRED:P-02`; one Turn Work Record exists before route selection; Session State/target permission planes remain distinct; Core PRS has conformant `RU-PRS-03 / PRS-CONTEXTUAL-MATERIAL` Collection; generated Helper projections are current.

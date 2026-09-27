@@ -111,3 +111,10 @@ Do not:
 - make every unresolved item durable;
 - require consumers of generic carry-forward semantics to depend on PRS Unit internals;
 - infer selection/approval from persistence or continued visibility.
+
+<a id="carry-forward-contextual-material"></a>
+## Contextual-material continuation
+
+Carry file/result-changing Proposal current-basis + candidate-target relations whenever the Proposal survives for review/re-entry. Independently qualify `RU-PRS-03` contextual material when losing its ref/currentness/handling obligation would materially harm planning, handoff, re-entry, maintenance or recheck. A bounded PRS may therefore continue with only contextual material and no active Proposal/QRP/Decision item. Context does not manufacture Proposal/QRP/Decision state and cannot retain Decision State outside its existing qualifying Q/R/P admission/exit rules.
+
+At re-entry/integration keep entries whose scope/handling value survives, refresh current-basis relations when required, and exit entries whose trigger is satisfied. `PINNED_SNAPSHOT` is immutable.
