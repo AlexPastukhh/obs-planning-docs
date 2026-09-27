@@ -144,6 +144,7 @@ Explore:
   - [`LENS-DOMAIN-MODELING-DDD`](../lenses/reusable/LENS-DOMAIN-MODELING-DDD.md)
 - **TRIGGERED:**
   - [`LENS-IMPLEMENTATION-REQUIREMENTS-DISCOVERY`](../lenses/reusable/LENS-IMPLEMENTATION-REQUIREMENTS-DISCOVERY.md)
+  - [`LENS-TERMS-UBIQUITOUS-LANGUAGE`](../lenses/reusable/LENS-TERMS-UBIQUITOUS-LANGUAGE.md)
   - [`LENS-WORKSPACE-EVOLUTION-ARCHITECTURE`](../lenses/frequent/LENS-WORKSPACE-EVOLUTION-ARCHITECTURE.md)
   - [`LENS-SIMPLICITY-IMPLEMENTATION-ECONOMY`](../lenses/frequent/LENS-SIMPLICITY-IMPLEMENTATION-ECONOMY.md)
   - [`LENS-DEPENDENCY-CHANGE-IMPACT`](../../../idtspe-core/lenses/frequent/LENS-DEPENDENCY-CHANGE-IMPACT.md)
@@ -164,6 +165,8 @@ alternatives / trade-offs
 ```
 
 These details are not durable authority merely because they were useful during discovery. Selected portions may nevertheless be retained as Step-owned `Evolution Impact` Result Content when continuation/realization/review/revalidation still depends on them; that retention does not make them Domain owner authority or exact implementation commitment.
+
+When candidate classes/types/methods/signatures represent an already established Application/Feature/Domain concept, use recognizable canonical upstream vocabulary by default. A different candidate name is appropriate only when it represents a genuinely different/more-specific concept or is explicitly testing an alternative semantic model. If downstream modeling shows the upstream term itself is misleading, surface a terminology Finding and revalidate the natural upstream owner rather than silently creating a permanent synonym.
 
 ### RU-DOM-04 — Evolution / OPEN Domain Pressure
 
@@ -239,6 +242,7 @@ zero/one/several durable owner outcome is allowed
 identity/equality/state/lifecycle/invariant/consistency meaning is coherent
 persistence/concurrency details are included only where semantic or useful to candidate realization
 candidate realization is concrete enough to test the model
+candidate semantic classes/types/methods/signatures preserve upstream vocabulary lineage unless a real specialization/alternative model is explicit
 Domain unit proof targets semantic rules rather than private structure
 durable IR/PFR candidates are routed to natural durable owner
 working plan is not retained as competing durable authority

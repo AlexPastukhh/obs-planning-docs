@@ -209,6 +209,7 @@ Unresolved distant future Slice impact may be bounded in the applicable `TM-EVOL
 ```text
 responsibility realizes selected Feature meaning without owning Feature behavior
 semantic entry/result is coherent
+semantic entry/result and durable owner vocabulary do not introduce unexplained synonym drift relative to established Feature/Domain terms for the same concepts
 Domain/Shared dependencies and ownership are explicit
 IR-SLICE-* are truly durable/natural to this Slice
 Shared realization bindings do not replace the Slice IR meaning

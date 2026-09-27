@@ -76,6 +76,18 @@ selected proof intent / durable PFR-* when applicable
 
 Selected unrealized future meaning remains Step-owned planning authority until implementation/proof/materialization establishes the new current-owner state.
 
+### Vocabulary / Terminology Context
+
+When the bounded realization materially represents recurring semantic concepts, consume the current canonical vocabulary as **supporting terminology context**, not as accepted semantic authority:
+
+```text
+canonical Terms definitions / labels
+aliases or wording to avoid when useful
+relevant upstream terminology references
+```
+
+The Feature/Scenario/Domain/Slice/Requirement/etc. owners above still own meaning. Vocabulary context only stabilizes how that accepted meaning remains recognizable in project-native code/tests.
+
 ### Current codebase sources
 
 ```text
@@ -124,6 +136,7 @@ Apply the Core [`Unit Applicability / Materiality / Disposition Contract`](../..
   - [`LENS-DOMAIN-MODELING-DDD`](../lenses/reusable/LENS-DOMAIN-MODELING-DDD.md)
   - [`LENS-SLICE-VERTICALITY-INTEGRATION`](../lenses/reusable/LENS-SLICE-VERTICALITY-INTEGRATION.md)
   - [`LENS-IMPLEMENTATION-REQUIREMENTS-DISCOVERY`](../lenses/reusable/LENS-IMPLEMENTATION-REQUIREMENTS-DISCOVERY.md)
+  - [`LENS-TERMS-UBIQUITOUS-LANGUAGE`](../lenses/reusable/LENS-TERMS-UBIQUITOUS-LANGUAGE.md)
   - [`LENS-WORKSPACE-EVOLUTION-ARCHITECTURE`](../lenses/frequent/LENS-WORKSPACE-EVOLUTION-ARCHITECTURE.md)
   - [`LENS-SIMPLICITY-IMPLEMENTATION-ECONOMY`](../lenses/frequent/LENS-SIMPLICITY-IMPLEMENTATION-ECONOMY.md)
   - [`LENS-DEPENDENCY-CHANGE-IMPACT`](../../../idtspe-core/lenses/frequent/LENS-DEPENDENCY-CHANGE-IMPACT.md)
@@ -154,6 +167,7 @@ Establish:
 accepted upstream meaning that must not drift
 current codebase files/APIs/types/dependencies that constrain realization
 files/modules/owners explicitly inside and outside scope
+material canonical vocabulary / terminology references that should remain recognizable in code/tests
 what exact codebase state counts as completion
 which proof/checks are required or materially useful
 ```
@@ -246,6 +260,7 @@ future selected meaning is not treated as current-owner truth before realization
 build/test/runtime claims distinguish executed Evidence from planned/not-runnable checks
 repair stays inside explicit authority and bounded scope
 current RU-CODE-01 reflects accepted repairs/revalidation
+applicable Terms Lens work is resolved and material terminology Findings are dispositioned before handoff; this module does not duplicate the Lens evaluation algorithm
 commit/push/deploy/release is never implied
 ```
 

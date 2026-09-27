@@ -39,10 +39,42 @@ The narrowest affected semantic subject and relevant methodology-use surface are
 6. When the methodology-use situation itself changed, re-evaluate affected Use Cases through the Use-Case Registry Map. Re-evaluate only affected registry/component applicability and reuse trustworthy unaffected scans/components whose recheck conditions did not change.
 7. Route newly surfaced material meaning through Finding Disposition; form a Contextual Unit only when a new bounded local responsibility is independently useful.
 8. Reopen/revise affected Result Content or Core Resolution State through its normal owner/lifecycle. Preserve unaffected Current Result Content, Decisions and Core Resolution State.
-9. Re-run only materially affected validators/Lenses/consumer checks.
-10. Record material revalidation/recheck state when continuation, handoff or future re-entry benefits from it.
-11. Integrate revised selected/derived meaning and resume from the narrowest useful Slot/Unit/depth/owner rather than restarting the whole methodology.
-12. Invoke an Integration Checkpoint only when a coherent whole-state view is now useful; revalidation does not imply one automatically.
+9. Derive/reuse a proportional `Revalidation Impact Set` when affected work is non-trivial: classify direct/current-basis changes as **Definitely Affected**, materially plausible transitive/consumer impact as **Potentially Affected**, and prior results that may remain valid as **Reuse Candidates**. Unknown impact is not silently treated as reusable.
+10. For Potentially Affected subjects, perform the smallest useful basis/dependency impact check and either promote them to Definitely Affected or record an unchanged-basis justification. Reuse Candidates are reusable only with explicit provenance/justification.
+11. Re-run only materially affected validators/Lenses/consumer checks. When prior Review Coverage exists, hand the Impact Set/current basis to `REVIEW.STRATEGY-COVERAGE`; that owner decides which review cells are invalidated, freshly executed or `REUSED_FROM_PRIOR`. The Impact Set is useful input, not a prerequisite for Review Recheck.
+12. Record material revalidation/recheck state when continuation, handoff or future re-entry benefits from it. If material revalidation cannot complete in the current pass, retain a compact pending revalidation reference/next action in the Current Work Manifest before handoff.
+13. Integrate revised selected/derived meaning and resume from the narrowest useful Slot/Unit/depth/owner rather than restarting the whole methodology.
+14. Invoke an Integration Checkpoint only when a coherent whole-state view is now useful; revalidation does not imply one automatically.
+
+<a id="revalidation-impact-set"></a>
+## Revalidation Impact Set
+
+The Revalidation Impact Set is an addressable **working projection**, not a new Core State kind or lifecycle.
+
+```text
+Trigger / changed basis
+
+Definitely Affected
+  direct owner/basis/dependency changed
+  → revalidation/recheck required
+
+Potentially Affected
+  material relation may be affected
+  → impact check required
+  → then affected OR explicitly unchanged
+
+Reuse Candidates
+  prior meaning/check may remain valid
+  → reuse only with prior basis/provenance + unchanged-basis justification
+
+Required Follow-Up
+  owner / validator / review cell / consumer
+  next action / current result ref
+```
+
+A small Impact Set may remain inside current Work Context/Manifest/P-02 references. A material multi-pass Impact Set may receive a P-14-selected representation; the Current Work Manifest keeps only a compact reference and next action when that is sufficient.
+
+No Impact Set is reconstructed merely to satisfy a template. If a trustworthy set does not exist, revalidation derives the affected subject from current Evidence/change, and Review Recheck retains its own truthful prior/current-basis fallback.
 
 ## Typical Revalidation Chain
 

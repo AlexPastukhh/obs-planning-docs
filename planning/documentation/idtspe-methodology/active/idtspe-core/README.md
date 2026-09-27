@@ -18,7 +18,7 @@ IDTSPE Core
 = always-active proportional planning/resolution work context
   Broad Discussion / Core State / Targets / Target Modules / Lenses /
   Proposal-Q/R/P-Decision-Evidence-Finding / Integration / Revalidation / Representation
-  + included Shell Pass Trace / Visibility runtime observability
+  + included Shell Pass Work Plan / State / Trace / Visibility runtime orientation/observability
 
 Installed Profiles
 = specialized Target Modules, Lenses, registries, knowledge and planning semantics layered on Core
@@ -97,7 +97,7 @@ Use [`navigation/IDTSPE-CORE-MAP.md`](navigation/IDTSPE-CORE-MAP.md) for a compa
 - [`target-modules/RESPONSIBILITY-MAP.md`](target-modules/RESPONSIBILITY-MAP.md) — Target Module Meta-Model/discovery/supporting-projection routing.
 - [`target-modules/TARGET-MODULE-MODEL.md`](target-modules/TARGET-MODULE-MODEL.md#target-module-meta-model) — Target Module Meta-Model; concrete `TM-*` owners are Target Module Models and form Target Module Instances inside concrete Targets when applied.
 - [`lenses/RESPONSIBILITY-MAP.md`](lenses/RESPONSIBILITY-MAP.md) — Lens Meta-Model/discovery/concrete-Lens responsibility routing.
-- [`runtime/PASS-TRACE-AND-VISIBILITY-CONTRACT.md`](runtime/PASS-TRACE-AND-VISIBILITY-CONTRACT.md) — included Shell Pass Trace / Visibility and runtime reuse/observability contract.
+- [`runtime/PASS-TRACE-AND-VISIBILITY-CONTRACT.md`](runtime/PASS-TRACE-AND-VISIBILITY-CONTRACT.md) — included Shell Pass Work Plan / State / Trace / Visibility and runtime execution-orientation/reuse/observability contract.
 - [`navigation/METHODOLOGY-REGISTRY-DIRECTORY.md`](navigation/METHODOLOGY-REGISTRY-DIRECTORY.md) — supporting registry-family router used from selected Use-Case Processes.
 - [`knowledge-bases/RESPONSIBILITY-MAP.md`](knowledge-bases/RESPONSIBILITY-MAP.md) — Knowledge Basis/theory/Source-Evidence boundary routing.
 - [`runtime/target-work/RESOLUTION-SLOT-AND-TARGET-FORMATION-SET.md`](runtime/target-work/RESOLUTION-SLOT-AND-TARGET-FORMATION-SET.md) — Target Formation/resolution mechanics.

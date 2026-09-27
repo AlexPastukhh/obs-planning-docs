@@ -4,6 +4,21 @@
   "generatedFrom": "planning/documentation/use-case-registry-map.md -> mapped current scoped methodology Use-Case registries only",
   "items": [
     {
+      "id": "UC-DOC-ESTABLISH-PROJECT-METHODOLOGY-BASELINE",
+      "label": "Establish / Advance Project Methodology Baseline",
+      "description": "The project has one identifiable project-specific methodology baseline branch in the methodology repository, bound to an exact reviewed methodology commit, and the project planning/documentation entry point prominently exposes the methodology basis used by persisted planning. For an established baseline: ``text Baseline branch Starting commit Current baseline commit project Planning / Methodology Basis block direct methodology-owner links through the stable baseline branch ` For an advanced baseline, the **same baseline identity** is retained, the Starting commit remains historical provenance, and Current baseline commit` changes only after affected project planning/documentation has been reviewed/revalidated against the candidate new methodology revision.",
+      "sources": [
+        "planning/documentation/use-case-registry-map.md",
+        "planning/documentation/use-case-registry.md"
+      ],
+      "instruction": "Resolve UC-DOC-ESTABLISH-PROJECT-METHODOLOGY-BASELINE through planning/documentation/use-case-registry-map.md, then the mapped scoped registry and current owner route (planning/documentation/use-cases/UC-DOC-ESTABLISH-PROJECT-METHODOLOGY-BASELINE.md). Preserve its methodology-use boundary and permission model; this Helper projection is invocation/navigation only.",
+      "target": "<Establish / Advance Project Methodology Baseline target>",
+      "manualInvocation": true,
+      "trigger": "Planning/documentation is persisted in a **separate project repository** and needs a stable, reviewable methodology basis instead of links to moving methodology main; or an already established project methodology baseline must be **explicitly advanced** to a newer reviewed methodology revision. This Use Case owns one baseline capability with two explicit operations: ``text ESTABLISH ADVANCE ` ADVANCE is an operation of this same Use Case, not a second Use Case and never an automatic consequence of methodology main` moving.",
+      "result": "The project has one identifiable project-specific methodology baseline branch in the methodology repository, bound to an exact reviewed methodology commit, and the project planning/documentation entry point prominently exposes the methodology basis used by persisted planning. For an established baseline: ``text Baseline branch Starting commit Current baseline commit project Planning / Methodology Basis block direct methodology-owner links through the stable baseline branch ` For an advanced baseline, the **same baseline identity** is retained, the Starting commit remains historical provenance, and Current baseline commit` changes only after affected project planning/documentation has been reviewed/revalidated against the candidate new methodology revision.",
+      "commandId": "documentation.methodology-baseline.maintain"
+    },
+    {
       "id": "UC-DOC-MAINTAIN-EXAMPLE",
       "label": "Maintain Documentation Example",
       "description": "A current non-authoritative example demonstrates the intended result/process/shape/behavior and is reachable from the semantic owner it illustrates.",

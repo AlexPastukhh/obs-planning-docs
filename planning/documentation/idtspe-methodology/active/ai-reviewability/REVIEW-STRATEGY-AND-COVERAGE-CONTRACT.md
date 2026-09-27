@@ -102,6 +102,29 @@ An existing Pre-Update Plan may be explicitly selected as the bounded Review Sub
 
 This working context is not another command, Shell port, persisted state kind or second review lifecycle. It is the pre-execution form of the same Review Coverage Record owned here. A selected command requesting a full review completes Finding Disposition, linked Proposal work, coverage update and final self-check after its Validation/Lens dependencies. A diagnostic-only TM-REVIEW-FINDINGS action completes its declared analysis/handoff result and updates diagnostic coverage; it preserves pending Proposal obligations and does not claim full-review completion.
 
+<a id="review-execution-plan-projection"></a>
+## 2C. Review Execution Plan Projection into P-02
+
+Once the bounded Review Coverage working context has established the current obligations, but **before P-12 Validation / P-06 Lens substantive review actions execute**, project the smallest useful ordered executable review plan into the current P-02 Pass Working Record.
+
+```text
+REVIEW.STRATEGY-COVERAGE
+→ owns Review Subject / Scope / Basis, coverage mode, obligations/cells and sufficiency
+
+P-02 Pass Working Record
+→ projects those current obligations as executable work items
+→ records planned / started / executed / reused / blocked / deferred state
+→ when multiple state views are retained, records them as ordered state snapshots with one explicit current-state pointer
+→ records plan deltas when coverage obligations materially change
+→ reconciles initial plan with actual execution at pass completion
+```
+
+The projection may include cell IDs, semantic surfaces, requested validator/Lens operations already resolved, expected Finding/Proposal closure work and final coverage self-check. It is operational orientation, not a second source of review sufficiency. P-06 still owns actual Lens applicability/operation selection.
+
+The Review Coverage Record and P-02 Pass Working Record may be physically co-located in the same file-backed scratch record when useful, but each section MUST identify its owner/boundary. Physical co-location never transfers Review Coverage authority to P-02.
+
+If new Evidence, invalidation, dependency or Finding changes current coverage obligations during the pass, update the Review Coverage Record under this owner and record the corresponding `PLAN_ADJUSTED` / current work-state change in P-02 without overwriting the original Initial Review Plan. When a new retained state snapshot is useful, capture the next ordered snapshot and make the former snapshot explicitly historical; before review completion, the final current-state pointer must identify the final review state rather than an earlier snapshot containing stale `PENDING` work.
+
 ## 3. Current-Pass Completeness
 
 A review pass MUST NOT intentionally defer a materially applicable check merely to create another pass. It should catch everything materially reviewable from the current basis rather than reserving obvious checks for later.
@@ -176,6 +199,28 @@ change
 ```
 
 A previously checked cell may remain reusable when its semantic basis and relevant dependencies did not change. Reuse MUST preserve provenance: do not present a prior check as if it executed in the current pass.
+
+### 6A. Revalidation Impact Set Handshake
+
+When a trustworthy current [`Revalidation Impact Set`](../idtspe-core/use-cases/revalidate-current-work/UC-IDTSPE-REVALIDATE-CURRENT-WORK.md#revalidation-impact-set) exists, Review Strategy/Coverage may use it as changed-basis/impact input:
+
+```text
+Definitely Affected
+→ relevant prior review cells become stale/invalidated
+→ fresh execution required
+
+Potentially Affected
+→ check whether each cell's relevant basis/dependencies changed
+→ fresh execution OR justified reuse
+
+Reuse Candidate
+→ REUSED_FROM_PRIOR only with prior cell/basis reference
+   + explicit unchanged-basis justification
+```
+
+The Impact Set does not own review-cell validity. Review Coverage remains authoritative for coverage state, provenance and sufficiency.
+
+The Impact Set is also **not a prerequisite** for `LOCAL_AFFECTED_RECHECK`. If none exists, derive the current affected delta from trustworthy prior Review Coverage + current basis as usual; when no trustworthy prior Review Coverage exists, use the truthful current-basis fallback. Never preserve a prior `PASS` merely because no one explicitly invalidated it after its material basis changed.
 
 <a id="review-coverage-provenance"></a>
 ### 6A. Coverage Provenance
@@ -282,7 +327,7 @@ At recheck start, compare the resolved prior Review Coverage Record/basis with t
 ## 10. P-02 Boundary
 
 ```text
-P-02 Pass Trace
+P-02 Pass Work Plan / State / Trace / Visibility
 = what methodology-runtime events actually occurred.
 
 Review Coverage

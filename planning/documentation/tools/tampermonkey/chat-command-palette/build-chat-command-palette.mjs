@@ -94,6 +94,7 @@ const ACTION_LABELS=Object.freeze({
   'UC-IDTSPE-MAINTAIN-LENS':'Поддерживать reusable Lens',
   'UC-IDTSPE-REVALIDATE-CURRENT-WORK':'Перевалидировать текущую работу',
   'UC-DOC-PLAN-DOCUMENTATION-CHANGE':'Спланировать изменение документации',
+  'UC-DOC-ESTABLISH-PROJECT-METHODOLOGY-BASELINE':'Зафиксировать baseline методологии проекта',
   'UC-DOC-REVIEW-DOCUMENTATION':'Проверить документацию',
   'UC-DOC-USE-REPOSITORY-GUIDANCE':'Подобрать repository guidance',
   'TM-PRE-UPDATE-PLAN':'План обновления',

@@ -21,6 +21,7 @@ This registry is one scope reached through the [`Methodology Use-Case Registry M
 | ID | Use Case | Situation summary | Result summary | Owner | Related command |
 |---|---|---|---|---|---|
 | `UC-DOC-PLAN-DOCUMENTATION-CHANGE` | Plan Repository Documentation Change | documentation capability/owner/navigation/methodology needs material semantic change | exact realization-ready documentation meaning and affected owners | [`use-cases/UC-DOC-PLAN-DOCUMENTATION-CHANGE.md`](use-cases/UC-DOC-PLAN-DOCUMENTATION-CHANGE.md) | спланируй изменение документации |
+| `UC-DOC-ESTABLISH-PROJECT-METHODOLOGY-BASELINE` | Establish / Advance Project Methodology Baseline | separate-project planning needs a stable methodology basis, or an established baseline is explicitly advanced after review/revalidation | project-specific baseline branch at an exact reviewed commit + prominent project methodology basis + stable methodology-owner links | [`use-cases/UC-DOC-ESTABLISH-PROJECT-METHODOLOGY-BASELINE.md`](use-cases/UC-DOC-ESTABLISH-PROJECT-METHODOLOGY-BASELINE.md) | зафиксируй baseline методологии проекта |
 | `UC-DOC-REVIEW-DOCUMENTATION` | Review Repository Documentation | documentation may be stale, duplicated, orphaned or inconsistent | material findings tied to real owners and narrow repair routes | [`use-cases/UC-DOC-REVIEW-DOCUMENTATION.md`](use-cases/UC-DOC-REVIEW-DOCUMENTATION.md) | |
 
 ### Documentation Type Maintenance

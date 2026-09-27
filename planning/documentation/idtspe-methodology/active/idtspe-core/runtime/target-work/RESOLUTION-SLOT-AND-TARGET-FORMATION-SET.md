@@ -379,7 +379,7 @@ Typical coverage: Target Handoff state, downstream Source binding and active pro
 
 Need: material meaning that should survive the current pass has sufficient semantic ownership and representation/addressability.
 
-Typical coverage: Documentation / Representation analysis plus generic `P-14 Persistence / Artifact` machinery, including `NO_PERSISTENCE_NEEDED` when appropriate.
+Typical coverage: Documentation / Representation analysis plus generic `P-14 Persistence / Artifact Maintenance` machinery, including `NO_PERSISTENCE_NEEDED` when appropriate.
 
 This Requirement is Target-level completeness; `P-14` remains a Core-wide resolver also usable for non-Target meaning such as Pass Trace, Proposal/Decision or Work-Context state.
 

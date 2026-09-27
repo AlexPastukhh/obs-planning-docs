@@ -22,7 +22,7 @@ relevant specialized Documentation + IDTSPE Use Cases
 ↓
 UC-IDTSPE-COMPOSE-CURRENT-WORK      [default continuously relevant]
 ↓
-P-01 Invocation → P-02 Pass Trace / Visibility [included in every normal Shell pass]
+P-01 Invocation → P-02 Pass Work Plan / State / Trace / Visibility [included in every normal Shell pass]
 ↓
 smallest useful IDTSPE projection / dynamic Shell route
 ├─ Broad Discussion only
@@ -115,7 +115,7 @@ bounded responsibility/result becomes useful
 Target Work / Target Formation ownership routing: [`runtime/target-work/RESPONSIBILITY-MAP.md`](../runtime/target-work/RESPONSIBILITY-MAP.md).
 Target Module Meta-Model / discovery ownership routing: [`target-modules/RESPONSIBILITY-MAP.md`](../target-modules/RESPONSIBILITY-MAP.md).
 
-Pass Trace / Visibility owner: [`runtime/PASS-TRACE-AND-VISIBILITY-CONTRACT.md`](../runtime/PASS-TRACE-AND-VISIBILITY-CONTRACT.md).
+Pass Work Plan / State / Trace / Visibility owner: [`runtime/PASS-TRACE-AND-VISIBILITY-CONTRACT.md`](../runtime/PASS-TRACE-AND-VISIBILITY-CONTRACT.md).
 
 ## 6. Lens System / Findings
 

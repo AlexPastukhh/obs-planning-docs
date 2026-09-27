@@ -13,7 +13,7 @@ This map routes generic Core runtime, Work Context/Core State, methodology-compo
 |---|---|---|
 | Generic technical IDTSPE Work Context / Shell composition and port semantics | [`IDTSPE-RUNTIME-COMPOSITION-CONTRACT.md`](IDTSPE-RUNTIME-COMPOSITION-CONTRACT.md#idtspe-runtime-composition) — `IDTSPE.RUNTIME-COMPOSITION` | Technical composition only; Use Cases own functional orchestration and semantic components own their own meaning |
 | Per-pass Port Requirement Set refresh/admission/reuse semantics | [`IDTSPE-RUNTIME-COMPOSITION-CONTRACT.md`](IDTSPE-RUNTIME-COMPOSITION-CONTRACT.md#idtspe-port-composition-refresh) — `IDTSPE.PORT-COMPOSITION-REFRESH` | Compose Current Work invokes this contract; it does not redefine technical admission/reuse |
-| Observable methodology-route trace / P-02 visibility semantics | [`PASS-TRACE-AND-VISIBILITY-CONTRACT.md`](PASS-TRACE-AND-VISIBILITY-CONTRACT.md#idtspe-pass-trace) — `IDTSPE.PASS-TRACE` | Observability projection only; not semantic planning authority or private reasoning |
+| Per-pass work plan / current state / execution trace / P-02 visibility semantics | [`PASS-TRACE-AND-VISIBILITY-CONTRACT.md`](PASS-TRACE-AND-VISIBILITY-CONTRACT.md#idtspe-pass-trace) — `IDTSPE.PASS-TRACE` | Execution-orientation/observability only; not semantic planning/review authority or private reasoning |
 | Contextual/proportional methodology application | [`applicability/CONTEXTUAL-METHODOLOGY-APPLICATION-CONTRACT.md`](applicability/CONTEXTUAL-METHODOLOGY-APPLICATION-CONTRACT.md#idtspe-contextual-application) — `IDTSPE.CONTEXTUAL-APPLICATION` | Governs proportional methodology composition; local component owners still decide local applicability/materiality |
 | Methodology-composition recheck trigger/contract | [`applicability/CONTEXTUAL-METHODOLOGY-APPLICATION-CONTRACT.md`](applicability/CONTEXTUAL-METHODOLOGY-APPLICATION-CONTRACT.md#idtspe-methodology-composition-recheck) — `IDTSPE.METHODOLOGY-COMPOSITION-RECHECK` | Recheck semantics only; functional applicability resolution remains Documentation-owned |
 | Always-on/default work-model and `idtspe.work` compatibility meaning | [`IDTSPE-DEFAULT-WORK-MODE.md`](IDTSPE-DEFAULT-WORK-MODE.md#idtspe-default-work-mode) — `IDTSPE.DEFAULT-WORK-MODE` | Compatibility/default projection; actual composition is resolved through the Use-Case layer and contextual-application owner |
@@ -27,7 +27,7 @@ Guards:
 ```text
 Work Context composition ≠ one persisted state object
 Core State Unit ≠ Target Work Unit
-Pass Trace ≠ Work Context semantic owner
+Pass Working Record ≠ Work Context semantic owner
 Port admission ≠ positive semantic result
 Use Case orchestration ≠ component semantic ownership
 input classification ≠ lifecycle authority

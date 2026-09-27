@@ -123,7 +123,7 @@ A root scenario begins from the ordinary functional entry route. A focused scena
 ### Step `SCN-01-S1P` — enter the Shell and establish the pass trace
 
 **Trigger / Situation:** The smallest useful composition is known for the current invocation.
-**AI Action:** Route that composition through `P-01 Invocation`, establish `P-02 Pass Trace / Visibility`, and record subsequent port admission/results as they occur.
+**AI Action:** Route that composition through `P-01 Invocation`, establish `P-02 Pass Work Plan / State / Trace / Visibility`, materialize the smallest useful execution plan once composition is known, and record subsequent work-state/port results as they occur.
 **Why This Step:** Composition and Shell routing are different responsibilities, and a reliable trace should be accumulated during execution rather than reconstructed at the end.
 **Method / Mechanics:** `P-01` translates the selected composition/explicit requirements into the current technical route. `P-02` selects the allowed visibility sink/detail, records `PASS_STARTED`, and then records `AUTO_COMPOSITION`, `EXPLICIT_REQUIREMENT` or `DOWNSTREAM_MATERIALITY` port origins plus result statuses. Shared prefixes are reused for unchanged subject/basis/operation.
 **Possible Result:** A traceable pass that may remain Broad Discussion-only or dynamically enter any subset of later ports without manufacturing work for untouched ports.

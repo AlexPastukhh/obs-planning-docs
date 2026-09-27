@@ -64,3 +64,16 @@ reported/discovered contradiction or defect against accepted meaning
 ```
 
 If a collected Need later proves already required by accepted meaning but contradicted by realization/Evidence, Need Disposition may route the semantic consequence through Finding Disposition.
+
+
+## 5. Need Set Coordination Handoff
+
+When the current Work Context contains an `ACTIVE` Need Set whose coordination scope includes this USER/Source material, the already-formed grounded Need Candidate may be registered/referenced through [`Need Set Coordination`](NEED-SET-COORDINATION.md#resolution-need-set-coordination).
+
+```text
+Need Candidate Collection
+→ grounded candidate + provenance
+→ optional Need Set tracking reference
+```
+
+This handoff does not change Collection responsibility. The Need Set MUST reuse the exact provenance + normalized wanted outcome produced here; it does not independently decide whether text is a Need, invent AI-authored needs, or choose the candidate's semantic destination. Destination/routing remains owned by Need Candidate Disposition.

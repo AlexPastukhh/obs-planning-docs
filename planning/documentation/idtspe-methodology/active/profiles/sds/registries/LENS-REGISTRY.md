@@ -45,7 +45,7 @@ This registry is additive to Core; it never replaces Core registry content or ow
 | [`LENS-SLICE-VERTICALITY-INTEGRATION`](../lenses/reusable/LENS-SLICE-VERTICALITY-INTEGRATION.md) | Feature/Slice boundary, end-to-end realization, behavior coverage or change locality is material |
 | [`LENS-UI-SPATIAL-FRONTEND-REALIZATION`](../lenses/reusable/LENS-UI-SPATIAL-FRONTEND-REALIZATION.md) | Screen/spatial/UI/frontend realization questions are material |
 | [`LENS-IMPLEMENTATION-REQUIREMENTS-DISCOVERY`](../lenses/reusable/LENS-IMPLEMENTATION-REQUIREMENTS-DISCOVERY.md) | reasoning may need to become/change/retire durable owner-local IR/PFR meaning |
-| [`LENS-TERMS-UBIQUITOUS-LANGUAGE`](../lenses/reusable/LENS-TERMS-UBIQUITOUS-LANGUAGE.md) | durable terminology/definition consistency is material, especially for Requirements/errors |
+| [`LENS-TERMS-UBIQUITOUS-LANGUAGE`](../lenses/reusable/LENS-TERMS-UBIQUITOUS-LANGUAGE.md) | durable terminology/definition consistency, cross-owner vocabulary lineage, or planning→Domain/Slice/code/test semantic vocabulary continuity is material |
 
 There is **no Programming Principles Lens**. The complete 22-group reusable corpus is routed through [`../knowledge-bases/programming-principles/README.md`](../knowledge-bases/programming-principles/README.md); selected groups are evaluated by their natural Core/SDS Lens or Target Production owner.
 

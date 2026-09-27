@@ -80,6 +80,19 @@ current-owner Evolution Impact reverse projection when applicable
 ↺ Proposal / USER review / targeted lenses when meaning changes
 ```
 
+### Terminology stabilization / downstream handoff
+
+Feature is the normal **strong vocabulary-stabilization checkpoint** for behavior-facing concepts. Before Feature meaning is treated as sufficiently resolved for Domain/Slice planning, a material recurring semantic concept used in Feature identity, semantic data or behavior should normally have stable canonical vocabulary or retain an explicit unresolved terminology ambiguity.
+
+```text
+same concept continues downstream
+→ Domain / Slice starts from the established Feature vocabulary
+→ refine/specialize only when the downstream concept is genuinely more precise
+→ do not restart naming from scratch merely because classes/types/methods are being designed
+```
+
+This does not require exact class/method mapping and does not transfer Feature behavior authority to Terms or downstream implementation owners.
+
 ### Boundary method
 
 Use the shared Vertical Slice method across four signal groups:
@@ -430,6 +443,7 @@ Scenario/Screen peer constraints were reconciled where material
 known Evolution was considered proportionally
 current Feature reverse impact includes every concrete materially relevant unrealized Step without promoting non-selected planning position
 future Feature authority remains in the Step Target Feature Body rather than RU-FEAT-06
+material recurring Feature concepts are canonically named for downstream planning or retain explicit unresolved terminology ambiguity
 no exact class/call topology is frozen as Feature truth
 ```
 
