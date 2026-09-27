@@ -5,7 +5,7 @@ Scope: legacy/supporting detailed application planning after meaningful Feature/
 
 Parent family: [`../README.md`](../README.md)
 
-> **Current SDS boundary.** Feature is the primary behavior owner; Scenario owns actor/external journey composition with Benefit manifestation/closure; Screen owns spatial/navigation composition; Domain/Slice use transient Discovery plus optional durable Owner modules; requirements are natural-owner `BR-*` / `IR-*` / rare `PFR-*`; there is no active Slice Strategy Target. When this older workspace guidance conflicts with current IDTSPE/SDS owners, the current Target Module/Lens registries and contracts win.
+> **Current SDS boundary.** Scenario owns the real-life actor/external/Application journey and Application Contributions, including bounded provisional behavior while Feature ownership is OPEN. Once resolved, Feature owns canonical behavior and semantic data; unrealized downstream bodies remain Evolution-Step-owned. Screen owns spatial/navigation composition; Domain/Slice use transient Discovery plus optional durable Owner modules; requirements remain with natural owners. The fixed `SCN-X/ideas/data/behavior/visual` tree and Scenario-as-permanent-behavior-owner language below are historical workspace examples, not current SDS requirements or authority. Use the current Target Module/Lens registries and contracts for active work.
 
 
 Q/R/P lifecycle owner: [`../../idtspe-methodology/active/idtspe-core/resolution/qrp/QRP-LIFECYCLE-AND-REVIEW.md`](../../idtspe-methodology/active/idtspe-core/resolution/qrp/QRP-LIFECYCLE-AND-REVIEW.md)

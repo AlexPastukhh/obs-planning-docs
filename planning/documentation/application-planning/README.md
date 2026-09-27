@@ -26,14 +26,21 @@ Useful supporting owners here include current-reality review, whole-solution com
 optional Need / Solution Discovery
 → TM-APPLICATION-DEFINITION when an own-Application boundary is material
 → optional TM-PROTOTYPE
-→ TM-FEATURE as primary behavior owner
-→ TM-SCENARIO-PLANNING when actor/external journey composition with Benefit manifestation/closure is independently useful
+→ TM-EVOLUTION-STEPS-MAP / TM-EVOLUTION-STEP for materially planned unrealized downstream meaning
+→ TM-SCENARIO-PLANNING for materially distinct real-life journeys and Application Contributions, including Feature Resolution OPEN
+↔ TM-FEATURE once a coherent Feature boundary is resolved; it then owns canonical Application behavior
 → TM-SCREEN when spatial/navigation composition is independently useful
 → TM-DOMAIN-DISCOVERY → optional TM-DOMAIN-OWNER
 ↔ TM-IMPLEMENTATION-SLICE → optional TM-SLICE-OWNER
 → TM-SHARED-IMPLEMENTATION-CAPABILITY only under genuine reuse pressure
 → Exact Realization / Evidence; Practical Test only when a real implemented subject/environment is required
 ```
+
+This is routing orientation, not a mandatory order. A Scenario may exist with
+zero resolved Features; already-realized Feature results may also inform a
+Scenario. Future downstream Target Bodies remain Step-owned until realization,
+proof and materialization. Supporting older workflows below do not require
+Scenario behavior files or current-owner truth for an unrealized transition.
 
 Screens are conditional as defined by the current Target Module registry. There is no standalone Requirement, Cross-Cutting, Test Design or Test Strategy baseline Target: durable requirements stay in their natural Feature/Domain/Slice/Shared owner, shared implementation responsibility uses `TM-SHARED-IMPLEMENTATION-CAPABILITY`, and proof routes through the Core Test-Proof Lens / Exact / Practical Test as applicable.
 

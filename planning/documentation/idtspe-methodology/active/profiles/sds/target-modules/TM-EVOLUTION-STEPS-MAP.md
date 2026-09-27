@@ -85,6 +85,10 @@ Each material Unit inherits the Core [`Unit Applicability Envelope`](../../../id
 <a id="ru-evomap-03--application-intent--benefit-driver-coverage"></a>
 ## `RU-EVOMAP-03` — Application Intent / Benefit Driver Coverage
 
+**Lens Attachments**
+
+- **Core Lens Pack:** `INHERITED` via [`Core Lens Pack`](../../../idtspe-core/lenses/LENS-REGISTRY.md)
+
 The Application Definition owns upstream intent and Benefit promise boundaries. This Map owns the development-plan coverage projection: `AB-*` or precise `BC-*` driver → current realized coverage and/or concrete planned Step → Step-owned authority. Keep materially accepted uncovered intent visible, including when the later planning horizon is `UNESTABLISHED`. Do not copy the Benefit body or Step Target Bodies. A candidate Map remains candidate under Proposal/PRS until selected; Map acceptance does not make a registered Step planning-complete or realization-ready.
 
 One concrete next Step is a valid rolling-horizon manifest. Later work may be `UNESTABLISHED`; speculative ideas remain outside the Step registry until concrete enough to deserve identity.
@@ -169,6 +173,8 @@ Planning Position, Target Resolution, Planning Completeness, Start Readiness and
 
 For non-trivial branching include a compact derived semantic DAG/read-path view. `Entering From` edges are semantic predecessor edges; do not create a second technical-foundation DAG. Detailed reasons/Q/R/P remain in each Step.
 
+When `RU-EVOMAP-03` is material, represent its `AB-*` / `BC-*` driver coverage as a compact projection beside or linked from the registry. Each relation points to current realized coverage, a concrete Step authority, or an explicit uncovered gap. The registry's Step rows need not duplicate the Application Definition or Scenario bodies.
+
 ## Post-Realization Projection
 
 After successful realization + required proof/revalidation + Target Owner Materialization, a Step is no longer an active unrealized future transition. Remove it from the active candidate/selected/deferred/start-readiness projection.
@@ -195,6 +201,7 @@ Current-owner reverse Evolution Impact projection lifecycle follows the shared [
 ```text
 every listed Step resolves to one Step authority
 planning position is truthful
+material accepted Application/Benefit drivers resolve to current coverage, concrete Step authority or an explicit uncovered gap
 projected Entering From / concern / readiness values resolve to and match the Step authority
 enables remains derived navigation
 no copied Expected Entry State or concern/readiness authority exists in the Map

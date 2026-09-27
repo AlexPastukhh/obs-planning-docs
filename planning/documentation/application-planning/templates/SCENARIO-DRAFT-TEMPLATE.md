@@ -2,7 +2,7 @@
 
 Status: active supporting template; canonical semantic contract is SDS `TM-SCENARIO-PLANNING`.
 
-Use this shape only when a human-readable Scenario representation is useful. A Scenario owns **actor/external journey composition across selected Feature results, including Benefit manifestation/closure points**. It does not own the upstream Benefit semantics, Feature behavior, Feature semantic data, implementation topology or Domain semantics.
+Use this shape only when a human-readable Scenario representation is useful. A Scenario owns one **real-life actor/external/Application journey and its Application Contributions**, including Benefit manifestation/closure points. It can be formed with zero resolved Features. While Feature ownership is `OPEN`, bounded provisional behavior planning stays in the Step-owned Scenario Target Body. After resolution, detailed behavior and semantic data belong to the Feature; the Scenario retains its journey, contributions and Feature/result references. Upstream Benefit, implementation topology and Domain meaning retain their natural owners.
 
 Canonical owner:
 `../../idtspe-methodology/active/profiles/sds/target-modules/TM-SCENARIO-PLANNING.md`
@@ -22,14 +22,18 @@ Scenario ID / name
 Actor / external participants
 Context / entry when material
 Benefit refs / manifestation-closure (`AB-*`, one or several when material)
+Represented real-life path / family boundary when material
 
-Participating Feature results
-  FEAT-* / BR-* references as useful
+Application Contributions
+  required Application outcome and Feature Resolution: OPEN | RESOLVED(ref)
+  while OPEN: bounded provisional behavior/failure/continuity pressure
+  when RESOLVED: Feature/result refs; no copied detailed Feature behavior
 
 Journey
-  Feature result
+  actor/external action
+  → Application Contribution [OPEN or resolved Feature/result]
   → actor/external linking action
-  → next Feature result
+  → next Application Contribution when material
   ├─ material branch
   └─ alternate branch
   → convergence / re-entry
@@ -49,13 +53,14 @@ E2E Proof Intent
   <optional; only when whole-journey proof has independent value>
 ```
 
-Blank sections are not requirements. One broad RU is intentional because actor participation, Feature links, branch/re-entry, continuity and Benefit closure jointly define one journey graph.
+Blank sections are not requirements. One broad RU is intentional because actor/external/Application participation, contributions, branch/re-entry, continuity and Benefit closure jointly define one journey graph. Equivalent recurring instances may share one representative Scenario family only when their path, experience, contribution and resolved Feature participation do not materially differ; retain the coverage rationale/Decision at the natural owner.
 
 ## Peer Ownership
 
 ```text
-Feature  → behavior + principal result semantics
-Scenario → journey composition across Feature results
+Feature  → canonical behavior + principal result semantics once resolved
+Scenario → real-life journey + Application Contributions;
+           provisional behavior planning only while Feature OPEN
 Screen   → spatial/navigation composition + Feature presence
 ```
 

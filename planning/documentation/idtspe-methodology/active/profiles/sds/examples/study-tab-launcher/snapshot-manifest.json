@@ -12,7 +12,7 @@
       "kind": "live",
       "file": "project/planning/documentation/application-definition.md",
       "sourceSha256": "313db714b4d3c55beab4e841070e42d1ea6c3d20e8ba6d44957130d57395209b",
-      "copiedSha256": "d133c7b304a46924bec3af363f6a35dbfe41dd793412ba26452971ef56be02ea",
+      "copiedSha256": "4e7ec03d92a5f9eabe461d77a847c86bb778fe49aa38fd09033006c3de14aea2",
       "linkRewrites": 0,
       "editorialRevisions": [
         {
@@ -33,6 +33,12 @@
           "reason": "Align copied example with Scenario ownership and Evolution Map Benefit-driver coverage; preserve original captured source and unresolved proof.",
           "beforeSha256": "e1af2bc9e745564c42cb1ffd7362b72b33504f698e83d84e65363d62da104b13",
           "afterSha256": "d133c7b304a46924bec3af363f6a35dbfe41dd793412ba26452971ef56be02ea"
+        },
+        {
+          "date": "2026-09-28",
+          "reason": "Recheck AB-STL-01..04 Benefit promise boundaries against current Scenario/Feature owners and the selected unrealized Step; remove Feature-local mechanism details while preserving anchors and source capture.",
+          "beforeSha256": "d133c7b304a46924bec3af363f6a35dbfe41dd793412ba26452971ef56be02ea",
+          "afterSha256": "4e7ec03d92a5f9eabe461d77a847c86bb778fe49aa38fd09033006c3de14aea2"
         }
       ]
     },

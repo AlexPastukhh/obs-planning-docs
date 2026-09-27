@@ -473,7 +473,7 @@ PLACEMENT_DIRECTIVE: PLACE
 SEMANTIC_OWNER: TM-APPLICATION-DEFINITION / Application Definition owner
 REPRESENTATION: CURRENT_OWNER_OR_EVOLUTION_STEP_REPRESENTATION
 FILE_OR_ARTIFACT: <application-definition-owner-or-evolution-step-owner>
-CONTENT: concise Application Concept; Application Benefits including per-Benefit Responsibility Boundary / Constraints; build/buy/adapt/integrate position; representative real-life scenario inventory with bounded Target-contribution / Benefit relations where material; feasibility conclusion
+CONTENT: concise Application Concept; Application Benefits including per-Benefit Responsibility Boundary / Constraints; build/buy/adapt/integrate position; Scenario/Evolution coverage references and accepted-intent gaps where material (not journey bodies or Application-Contribution semantics); feasibility conclusion
 GUIDANCE_SOURCE: TARGET_MODULE
 RESOLVER: P-14 / PERSISTENCE_ADDRESSABILITY
 ```

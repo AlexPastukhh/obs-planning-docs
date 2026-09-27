@@ -14,14 +14,14 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
     "собери сценарии приложения"
   ],
   "description": "scenario boundary discovery",
-  "meaning": "Focused Scenario-boundary entry: inspect Application responsibility plus selected Feature results/Benefits for independently meaningful actor/external journey boundaries and Benefit manifestation/closure paths, surface Scenario Target candidates through normal Target Formation, and use TM-SCENARIO-PLANNING for each selected Scenario. Do not create a separate Scenario Discovery result/catalog authority. Discover materially distinct real-life paths and Application Contributions; Step-owned Scenario Target Bodies may have Feature Resolution OPEN. Representative equivalent families need explicit coverage rationale/Decision.",
+  "meaning": "Focused Scenario-boundary entry: inspect Application Definition/Benefit intent, actor and external paths, current evidence and any already-resolved Feature results for independently meaningful real-life journeys. Discover every materially distinct Application Contribution and Benefit manifestation/closure path; form each selected Scenario Target through normal Target Formation and TM-SCENARIO-PLANNING. A Step-owned Scenario Target Body may carry provisional behavior planning with Feature Resolution OPEN and zero resolved Features; no Feature identity or separate Scenario Discovery catalog is required first. When Feature ownership is resolved, reference the Feature/result without copying its detailed behavior. Represent equivalent recurring instances as a Scenario family only with explicit coverage rationale/Decision.",
   "activeContextBehavior": "Treat the explicit command as selected invocation intent inside always-active IDTSPE. Re-evaluate current Use-Case composition, resolve/reuse a natural Target/context only when useful, confirm the selected Target Module Entry Point/local applicability gate, and then resolve CREATE/REFINE/EXTEND/REVALIDATE/REPAIR from actual current Target state. Do not create a Target or Result Unit merely because the command exists.",
   "traversalReadMode": "Reuse current reliable IDTSPE/SDS governance; targeted refresh of the selected owner route when uncertain; full bootstrap only when no reliable sufficient governance context exists.",
   "ownerFiles": [
     "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-SCENARIO-PLANNING.md",
     "planning/documentation/idtspe-methodology/active/profiles/sds/commands/SDS-COMMAND-SURFACE-EXTENSION.md"
   ],
-  "expectedOutput": "Materially distinct Step-owned Scenario Target candidates, Application Contributions and explicit family coverage decisions; unresolved Feature refs remain OPEN.",
+  "expectedOutput": "Materially distinct Scenario Target candidates and Application Contributions, Step-owned when unrealized; unresolved Feature refs remain OPEN and equivalent-family coverage Decisions are recorded when material.",
   "permissionMode": "read-only-planning",
   "keyReminders": [
     "SDS is an IDTSPE profile, not a second runtime.",

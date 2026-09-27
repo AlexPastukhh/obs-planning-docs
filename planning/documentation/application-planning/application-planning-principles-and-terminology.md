@@ -1,6 +1,6 @@
 # Solution And Application Planning Principles And Terminology
 
-> **Compatibility vocabulary boundary.** This supporting file preserves older application-planning discovery/workspace heuristics. Terms such as `Scenario DATA`, `Behavior Items`, standalone `Requirement`, or `Slice Strategy` below do not define current SDS owner identities. Current authority is the active SDS Target/Lens registries: Feature owns behavior/semantic data, Scenario owns actor/external journey composition with Benefit manifestation/closure, requirements stay with natural Feature/Domain/Slice/Shared owners, and Slice Strategy is not an active Target family. Use older terms only as supporting heuristics where they do not conflict with current owners.
+> **Compatibility vocabulary boundary.** This supporting file preserves older application-planning discovery/workspace heuristics. Terms such as `Scenario DATA`, `Behavior Items`, standalone `Requirement`, or `Slice Strategy` below do not define current SDS owner identities. Current authority is the active SDS Target/Lens registries: Feature owns behavior/semantic data, Scenario owns the real-life actor/external/Application journey and Application Contributions (including provisional behavior while Feature ownership is OPEN), requirements stay with natural Feature/Domain/Slice/Shared owners, and Slice Strategy is not an active Target family. Use older terms only as supporting heuristics where they do not conflict with current owners.
 
 
 Status: active reusable canonical owner
@@ -83,7 +83,7 @@ The short “how it roughly works” point must not expand into detailed Feature
 
 Existing-solution comparison, individual Application Benefits, Benefit-specific Responsibility Boundaries and proportional feasibility remain neighboring Application Definition responsibilities rather than fields inside Application Concept. Candidate alternatives remain normal Proposal/Decision/branch state until selected.
 
-Do not create a mandatory `Application Concept Feature` layer. If a capability hypothesis is really user value, keep it with the relevant Application Benefit/Proposal; if it becomes selected downstream behavior, route it to the natural Feature/Scenario owner.
+Do not create a mandatory `Application Concept Feature` layer. If a capability hypothesis is really user value, keep it with the relevant Application Benefit/Proposal. Provisional behavior planning may live in a Step-owned Scenario while Feature ownership is OPEN; resolved detailed behavior goes to the natural Feature owner.
 
 ## Application Responsibility
 
@@ -94,7 +94,7 @@ When a custom concept is selected, derive the Application responsibility from th
 
 ## Scenario
 
-A Scenario is one coherent **user/actor-visible behavioral unit** in which a meaningful user-world Need motivates interaction with the Application and the behavior reaches an independently meaningful observable result.
+A Scenario is one coherent **real-life actor/external/Application journey** in which a meaningful user-world Need meets one or more Application Contributions and an independently meaningful outcome. It may be planned in an Evolution Step before any Feature identity is resolved.
 
 Primary boundary test:
 
@@ -208,10 +208,10 @@ Application Definition / Benefit responsibility boundaries
    → Prototype Scenarios
    → Prototype Screens
    → candidate Requirements
-   → candidate Scenario DATA / Behavior
+   → candidate Application Contribution / behavior pressure
    → Future Scenario Proposals / Change Axes when material
 → Scenario Discovery
-→ current detailed Scenario / Screen owners
+→ Step-owned Scenario Target Bodies when unrealized; current owners only after materialization
 ```
 
 Prototype artifacts are provisional. `PSCN-*` does not become canonical `SCN-*` authority and `PSCR-*` does not become canonical `SCR-*` authority merely because the prototype exists; promotion may split, merge, reject or rework provisional meaning.
@@ -223,7 +223,7 @@ Canonical workflow: [`prototype-planning-workflow.md`](prototype-planning-workfl
 
 ## Scenario Draft
 
-A detailed Scenario Draft is the canonical behavioral owner plus its workspace. Standard workspace areas are `ideas/`, `data/`, `behavior/` and `visual/`; shared material for several Scenarios belongs at their collection level.
+A Scenario Target owns the real-life journey and its Application Contributions. It may contain bounded provisional behavior planning while Feature Resolution is OPEN; after Feature resolution, detailed canonical behavior and semantic data belong to Feature. Separate `ideas/`, `data/`, `behavior/` and `visual/` workspace areas are older optional heuristics, not a current SDS file-tree requirement.
 
 Recommended semantic Scenario body:
 
@@ -235,8 +235,8 @@ Entry Points / Preconditions
 Main Flow
 Branches / Invariants
 Outcomes / Acceptance
-Scenario DATA references
-Behavior Item references
+Application Contributions with Feature Resolution OPEN or resolved Feature/result refs
+Provisional behavior/failure/continuity pressure only while OPEN
 Related Requirements
 Relevant Change Axes / Future Scenario Proposals when material
 Visual / Screen references
@@ -276,13 +276,17 @@ A Current Decision records a material selected choice that is already integrated
 
 ## Scenario DATA
 
-User-visible/scenario-relevant values needed to understand or validate behavior. Not automatically DTO/API/database/UI state.
+This is older supporting vocabulary for values observed along a real-life journey. Canonical Feature semantic data and detailed behavior belong to `TM-FEATURE` after Feature resolution; Scenario may retain only the continuity/result references needed for its journey. Not automatically DTO/API/database/UI state.
 
-Scenario DATA may be addressable through a dedicated file or shared registry. When a specific fragment needs durable cross-file addressability, give the canonical fragment a stable explicit anchor and link to it directly.
+While Feature ownership is OPEN, material provisional information may be
+addressed inside the Step-owned Scenario Target Body. After resolution, use
+the Feature's semantic data owner and link from the Scenario only where
+real-life continuity needs it. A dedicated file is a representation choice,
+not another canonical Scenario DATA owner.
 
 ## Behavior Item
 
-Stable addressable unit of required behavior inside a Scenario. It is not automatically an implementation task or Slice.
+This older term can describe provisional Scenario-local behavior pressure while Feature ownership is OPEN. Once a coherent Feature boundary is resolved, required detailed behavior belongs to the Feature owner; it is not a permanent second Scenario behavior catalog or automatically an implementation task/Slice.
 
 A Behavior Item may expose a stable explicit anchor when fragment-level addressability is useful; consumers use ordinary links to the canonical owner rather than literal synchronized copies.
 
@@ -292,13 +296,13 @@ A Screen is an optional spatial/visual owner for one application surface.
 
 ```text
 Scenario
-→ behavioral flow / actor understanding / observable result / acceptance
+→ real-life actor/external/Application journey, contributions and continuity
 
 Screen
 → spatial boundary / zones / composition / visual states
 ```
 
-A Screen may list Scenarios that use it without becoming their behavioral authority. Every material Scenario↔Screen relation should be discoverable from both owners: the Scenario identifies the Screen and its behavioral role/range, while the Screen identifies the Scenario and relevant zones/states. This is one relationship with reciprocal navigation, not duplicate behavioral ownership. Screen planning does not require `data/` or `behavior/` folders. Spatial requirements such as zone hierarchy, placement, visibility/arrangement and layout state belong to Screen; behavioral conditions/transitions remain Scenario/Behavior truth; frontend Slice plans own the implementation mechanism that realizes selected requirements.
+A Screen may list Scenarios that use it without becoming their behavioral authority. Every material Scenario↔Screen relation should be discoverable from both owners: the Scenario identifies the Screen and its behavioral role/range, while the Screen identifies the Scenario and relevant zones/states. This is one relationship with reciprocal navigation, not duplicate behavioral ownership. Screen planning does not require `data/` or `behavior/` folders. Spatial requirements such as zone hierarchy, placement, visibility/arrangement and layout state belong to Screen; resolved detailed behavioral conditions/transitions belong to Feature; Scenario retains journey continuity and provisional behavior only while Feature ownership is OPEN; frontend Slice plans own the implementation mechanism that realizes selected requirements.
 
 ## Planning Unit Variant
 
@@ -316,7 +320,7 @@ Do not create explicit VAR-A ceremony while only one integrated design exists. W
 
 ## Domain / Slice Strategy / Slice
 
-`Domain Discovery` is optional evidence-driven semantic discovery before Domain selection. It extracts identity/lifecycle/relationship/rule/invariant/policy/consistency candidates from current Scenario DATA/Behavior/Requirements, including Value Object and Aggregate/Root/ownership candidates only when evidence justifies them, and may form integrated Domain Variants when material. Canonical algorithm: [`domain-discovery-workflow.md`](domain-discovery-workflow.md).
+`Domain Discovery` is optional evidence-driven semantic discovery before Domain selection. It may consume current Feature semantic data/behavior, Scenario Application Contributions and provisional pressure while OPEN, natural-owner Requirements and relevant evidence. It extracts identity/lifecycle/relationship/rule/invariant/policy/consistency candidates only when justified. Canonical algorithm: [`domain-discovery-workflow.md`](domain-discovery-workflow.md).
 
 Domain is an optional selected conceptual model/language/lifecycle/rules/boundary owner when separate ownership improves planning. Domain planning aims for the simplest model that supports current selected meaning plus **justified** likely evolution: stable semantics explicit, likely variation localized when useful, speculative possibilities prevented from forcing premature abstraction. Canonical selection/review algorithm: [`domain-planning-workflow.md`](domain-planning-workflow.md).
 

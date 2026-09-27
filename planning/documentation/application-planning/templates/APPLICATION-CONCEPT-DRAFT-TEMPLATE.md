@@ -21,7 +21,7 @@ Canonical owner:
 ```text
 Application Definition / selected contribution: <link/ref>
 Application Benefits: <AB-* refs>
-Representative Real-Life Scenarios: <RLS-* refs when material>
+Scenario / Evolution coverage: <current Scenario or Step-owned future Scenario refs when material; no journey bodies here>
 Material Proposal/Decision/Q/R/P: <refs only when useful>
 ```
 
@@ -41,6 +41,6 @@ Application Concept
 ≠ implementation plan
 ```
 
-Each substantive Application Benefit carries its own Responsibility Boundary in `RU-APP-03`. Existing-solution position, Representative Real-Life Scenarios and Realization Feasibility remain their own Application Definition Result Units.
+Each substantive Application Benefit carries its own Responsibility Boundary in `RU-APP-03`. Existing-solution position, Scenario/Evolution coverage (`RU-APP-04`) and Realization Feasibility remain their own Application Definition Result Units. `RU-APP-04` contains navigation and uncovered intent, not real-life Scenario bodies.
 
 If the Concept needs extensive mechanics to be understandable, keep only the short conceptual explanation here and route the detail to its natural downstream owner.

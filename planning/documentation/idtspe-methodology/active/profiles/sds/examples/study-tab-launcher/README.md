@@ -63,3 +63,15 @@ Practical Test examples use the current Unit names and material-campaign boundar
 and current navigation reflects Carry-Forward/PRS Decision retention. Historical
 audits keep their original snapshot basis and wording; this refresh does not turn
 them into current conformance certificates or claim new runtime Evidence.
+
+## 2026-09-28 — Benefit boundary recheck
+
+`AB-STL-01..04` were reviewed clause by clause against the five linked current
+Scenario journeys, their five current Feature owners and the selected unrealized
+succession Step. The copied Application Definition now keeps the Benefit promise,
+external authority and material safety limits; source lookup, ZIP preparation,
+window matching and close coordination stay in the linked Scenario/Feature/Step
+bodies. Existing clause anchors and their downstream references remain stable.
+No new current behavior, Feature identity, completed installed proof or realized
+Step is inferred from this editorial revision. The snapshot manifest records
+its copied-file digest while preserving the original capture digest.

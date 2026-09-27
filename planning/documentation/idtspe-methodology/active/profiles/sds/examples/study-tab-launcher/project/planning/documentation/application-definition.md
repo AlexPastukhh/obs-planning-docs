@@ -63,9 +63,9 @@ actual result.
 **Responsibility Boundary / Constraints:**
 
 - <a id="ab-stl-01-boundary-owned-handoff"></a>**Application-owned
-  contribution:** preserve the explicit target set/order, validate eligible
-  local files, apply the selected one/set and tab-policy action, hand the
-  request to VS Code and report completion or non-success truthfully.
+  contribution:** provide the explicitly selected local file context in its
+  intended order under the selected tab policy, with a truthful result. The
+  exact file-opening behavior belongs to the linked Feature owners.
 - <a id="ab-stl-01-boundary-external-authority"></a>**External authority:**
   the user/external producer chooses the file context; VS Code owns dirty-file
   decisions, editor associations and physical tab layout; browser/OS policy
@@ -96,18 +96,16 @@ result.
 **Responsibility Boundary / Constraints:**
 
 - <a id="ab-stl-02-boundary-selector-resolution"></a>**Application-owned
-  contribution — selector continuity:** preserve one explicit selector,
-  resolve only its permitted folder/ZIP candidates, optionally await pure
-  absence for the configured bound and keep the browser-to-VS Code operation
-  correlated through completion.
+  contribution — selector continuity:** use only the explicitly selected
+  permitted local project source, allow a bounded wait for its arrival when
+  requested, and report the result for that same selection.
 - <a id="ab-stl-02-boundary-folder-branch"></a>**Application-owned
-  contribution — folder branch:** validate the resolved local directory and
-  request that VS Code open it as a project without replacing the previous
-  workspace.
+  contribution — folder source:** an eligible selected directory becomes a
+  project context without replacing the previous workspace.
 - <a id="ab-stl-02-boundary-archive-branch"></a>**Application-owned
-  contribution — archive branch:** preserve the ZIP, safely reuse an existing
-  eligible sibling or publish a complete bounded extraction, then request that
-  VS Code open the final directory.
+  contribution — archive source:** an eligible selected ZIP yields a usable
+  project context while the source archive remains intact and unsafe or
+  conflicting destinations are not overwritten.
 - <a id="ab-stl-02-boundary-external-authority"></a>**External authority:**
   the user/external producer supplies the selector and chooses the action; the
   user configures browser search/wait preferences; VS Code and the OS retain
@@ -136,10 +134,9 @@ path and actual outcome retained when useful.
 **Responsibility Boundary / Constraints:**
 
 - <a id="ab-stl-03-boundary-owned-publication"></a>**Application-owned
-  contribution:** resolve the selected source, derive one child below the
-  machine-configured parent, obtain publication confirmation when the child is
-  absent, safely reuse or publish it, open the final child and report the
-  actual disposition.
+  contribution:** provide a separate usable project child below the chosen
+  parent from the explicitly selected source, with required confirmation,
+  source preservation and a truthful open/result disposition.
 - <a id="ab-stl-03-boundary-external-authority"></a>**External authority:**
   the user selects the source, configures the parent in VS Code and confirms
   absent-child publication; the user and VS Code remain authoritative for
@@ -171,13 +168,14 @@ while the replacement remains open and partial cleanup stays truthful.
 **Responsibility Boundary / Constraints:**
 
 - <a id="ab-stl-04-boundary-manifest-candidates"></a>**Application-owned
-  contribution — bounded candidates:** read only the fixed declaration in the
-  final project root, normalize exact sibling project names and match only
-  eligible participating VS Code windows.
+  contribution — bounded candidates:** offer only exact eligible
+  participating predecessor project windows declared by the opened replacement;
+  no general window or path selection authority is granted.
 - <a id="ab-stl-04-boundary-confirmed-coordination"></a>**Application-owned
-  contribution — confirmed coordination:** after successful replacement open,
-  show exact matches, honor Open Only/dismissal, and coordinate authenticated
-  close attempts only after explicit Open and Close Previous confirmation.
+  contribution — confirmed cleanup:** only after the replacement opens, let
+  the user retain the eligible predecessor windows or explicitly request
+  bounded close attempts; report their actual outcome without undoing the
+  replacement result.
 - <a id="ab-stl-04-boundary-external-authority"></a>**External authority:**
   the package author may declare exact sibling names but cannot close windows;
   the user chooses whether cleanup proceeds, and each target VS Code instance

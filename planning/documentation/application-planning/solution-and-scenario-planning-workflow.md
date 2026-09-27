@@ -3,7 +3,7 @@
 
 Responsibility ID: `APP.SOLUTION-SCENARIO-PLANNING`
 
-> **Compatibility vocabulary boundary.** This supporting file preserves older application-planning discovery/workspace heuristics. Terms such as `Scenario DATA`, `Behavior Items`, standalone `Requirement`, or `Slice Strategy` below do not define current SDS owner identities. Current authority is the active SDS Target/Lens registries: Feature owns behavior/semantic data, Scenario owns actor/external journey composition with Benefit manifestation/closure, requirements stay with natural Feature/Domain/Slice/Shared owners, and Slice Strategy is not an active Target family. Use older terms only as supporting heuristics where they do not conflict with current owners.
+> **Compatibility vocabulary boundary.** This supporting file preserves older application-planning discovery/workspace heuristics. Terms such as `Scenario DATA`, `Behavior Items`, standalone `Requirement`, or `Slice Strategy` below do not define current SDS owner identities. Current authority is the active SDS Target/Lens registries: Feature owns behavior/semantic data, Scenario owns the real-life actor/external/Application journey and Application Contributions (including provisional behavior while Feature ownership is OPEN), requirements stay with natural Feature/Domain/Slice/Shared owners, and Slice Strategy is not an active Target family. Use older terms only as supporting heuristics where they do not conflict with current owners.
 
 
 Status: active reusable workflow
@@ -64,7 +64,7 @@ Keep the responsibilities separate:
 existing-solution / alternative-route position
 Application Benefits
   + Responsibility Boundary inside each Benefit
-Representative Real-Life Scenarios when concrete examples improve understanding
+Scenario / Evolution coverage refs (`RU-APP-04`) when material; journey bodies belong to Scenario
 Application Concept
   = short summary of what the Application is
   + why it is needed / overall Benefit
@@ -81,38 +81,30 @@ An own-Application route can still be rejected in favor of an existing/process r
 When the selected whole solution includes own Application responsibility, or that responsibility is already explicitly confirmed:
 
 ```text
-selected/current Application Definition
-→ selected Benefits with their own Responsibility Boundaries
-→ concise Application Concept
-→ candidate/current Application Scenarios grounded in real-world Needs/results
+selected/current Application Definition and Benefit promise boundaries
 → Prototype Planning when material interaction/workflow/spatial uncertainty remains
-   → Prototype Scenarios
-   → Prototype Screens
-   → candidate Requirements
-   → candidate Scenario DATA / Behavior
-   → Future Scenario Proposals / Change Axes when material
-→ discover independently meaningful current Scenarios
-→ validate / split / merge Application Scenarios from prototype/discovered Scenario coverage
-→ create detailed Scenario Draft workspaces
-   + shared/local Proposals
-   + Scenario DATA
-   + Behavior Items
-   + Scenario visual material
-   + Related Requirements
-→ add canonical Screen spatial owners when useful
-→ add Domain owners when useful
-→ add Slice Strategy when implementation decomposition/order materially helps
-→ add individual Implementation Slices when useful
-→ derive verification/testing evidence proportionally
-→ review cross-Scenario / Screen / Requirement / Domain / Slice / whole-application consistency
-→ return to Application Definition / real-world workflow / whole solution when material
+   → provisional Prototype Scenarios / Screens and evidence
+→ discover materially distinct real-life Scenario journeys and Application Contributions
+   → Step-owned Scenario Target Bodies while downstream meaning is unrealized
+   → Feature Resolution OPEN with provisional behavior planning when needed
+   → resolve coherent Features when the boundary is supported; move detailed behavior there
+→ register concrete Evolution Steps and Application-intent/Benefit coverage in the Map
+→ add Screen, Domain, Slice and Shared Target Bodies when materially required
+→ realization, proof/revalidation and Target Owner Materialization
+→ current natural Scenario/Feature/etc owners
+↺ recheck coverage and return to Application Definition / whole solution when material
 ```
+
+The sequence is an orientation, not a compulsory waterfall. A Scenario may
+have no resolved Feature and one concrete Step may have an `UNESTABLISHED`
+later horizon. Future downstream bodies do not become current owners merely
+because their Proposal or Step is selected.
 
 If application responsibility is externally mandated, do not manufacture a custom-vs-existing decision merely to satisfy the flow; still ground the Concept, real-world Need coverage and application boundary.
 
 Prototype workflow: [`prototype-planning-workflow.md`](prototype-planning-workflow.md).
 
-Shared detailed-planning contract: [`detailed-planning/README.md`](detailed-planning/README.md).
+Older physical-workspace heuristics only: [`detailed-planning/README.md`](detailed-planning/README.md). Its fixed Scenario folders and Scenario-as-behavior-owner language are not current SDS contracts.
 
 ## Prototype Planning
 
@@ -133,7 +125,10 @@ concrete user situation
 
 ## Scenario Discovery
 
-Use selected Concept/Application responsibility, candidate/current Application Scenarios and prototype evidence when present.
+Use accepted Application Definition/Benefit intent, actor/external context,
+existing Scenario/Feature evidence when present and prototype evidence when
+material. Do not wait for a Feature identity before forming a Step-owned
+Scenario Target with Application Contributions.
 
 For each candidate current boundary ask:
 
@@ -170,44 +165,59 @@ Change Axes
 → not authorization to generalize now
 ```
 
-## Scenario ↔ DATA ↔ Behavior Discovery Loop
+## Scenario Contribution ↔ Feature Boundary Discovery Loop
 
-Scenario planning is iterative. Do not wait for a supposedly final Scenario before decomposing DATA and Behavior, and do not treat DATA/Behavior as passive documentation written only after the Scenario is settled.
+Scenario planning is iterative. Use real-life path and Application Contribution
+pressure before assuming Feature identity. While ownership is OPEN, provisional
+behavior and data pressure may be explored in the Step-owned Scenario; once a
+coherent Feature boundary is selected, detailed behavior and semantic data move
+to its Step-owned Feature Target Body.
 
 ```text
-Real-Life Need / selected Application responsibility
-→ candidate Scenario boundary
-→ Scenario DATA discovery
-→ Behavior Item discovery
-→ missing information / branch / invariant / outcome becomes visible
-→ refine / split / merge Scenario when evidence requires
-→ refine DATA / Behavior
-→ repeat until the selected Scenario boundary and its addressable meaning are coherent enough for the current planning depth
+Real-Life Need / Application Definition intent
+→ candidate real-life Scenario path / Application Contributions
+→ provisional behavior, information, failure and continuity pressure while Feature OPEN
+→ refine / split / merge materially distinct Scenario paths
+→ resolve coherent Feature/result owner when supported
+→ move detailed behavior/data to Feature; keep Scenario journey/contribution refs
+→ repeat coverage and maturity review after material change
 ```
 
 Useful feedback examples:
 
 ```text
-Behavior needs information the Scenario never obtains
-→ Scenario/DATA gap
+Application Contribution needs information the journey never supplies
+→ Scenario path / external-boundary gap
 
-DATA appears only because an implementation schema has a field
-→ remove from Scenario DATA unless user/scenario meaning requires it
+Information appears only because an implementation schema has a field
+→ omit from Scenario journey; keep Feature/Domain detail with its owner
 
-Behavior branch produces a separately meaningful Need/result
+Contribution branch produces a materially different real-life path/result
 → re-evaluate Scenario split
 
-several Behavior Items depend on one must-hold rule
+several contributions or Features depend on one must-hold rule
 → preserve it for Requirement/Domain discovery instead of hiding it in prose
 ```
 
-The loop refines one current plan. It does not authorize implementation details to redefine user-visible behavior.
+The loop refines one bounded Step plan when meaning is unrealized. It does not
+authorize implementation details to redefine upstream Benefit intent or
+materialize future Target Bodies as current truth.
 
 ## Application Scenario Registration
 
-Every independently useful current application Need/result boundary is represented by an Application Scenario with stable identity, status and owner route in the application's Scenario Catalog. Ground Scenario identity in real user/work outcomes rather than merely application commands, screens or implementation operations.
+Every materially distinct real-life path/experience/Application-Contribution
+boundary should be covered by a Scenario identity and an authority route.
+Step-owned future Target Bodies remain in their Evolution Step; current
+Scenario owners represent only materialized meaning. A separate mandatory
+Scenario Catalog is not required. Ground identity in the real-world journey,
+not application commands, screens or implementation operations.
 
-Candidate Scenarios may come from the selected Concept, be explored by Prototype Scenarios and then be validated/split/merged during current Scenario discovery. Detailed behavior and trigger/context/result/boundaries stay in the Scenario owner; do not add a parallel Application Use-Case alias layer.
+Candidate Scenarios may be informed by Application intent and Prototype
+Scenarios, then split/merged by material path differences. Their Application
+Contributions and provisional behavior stay in the Scenario while Feature
+ownership is OPEN; resolved detailed behavior moves to Feature. Do not add a
+parallel Application Use-Case alias layer or require one Scenario per repeating
+equivalent instance.
 
 ## Requirements
 
@@ -217,7 +227,11 @@ Use [`requirements-and-change-context.md`](requirements-and-change-context.md) f
 
 ## Detailed Scenario Work
 
-Each detailed Scenario uses one workspace with standard `ideas/`, `data/`, `behavior/`, `visual/` areas. Meaning shared by several Scenarios belongs at the Scenario collection level rather than being copied into every Scenario.
+Use one Scenario Target Instance and only the representation needed for its
+journey, Application Contributions and material resolution state. No standard
+`ideas/`, `data/`, `behavior/`, `visual/` directory tree is required. While
+Feature ownership is OPEN, bounded provisional behavior may remain in the
+Step-owned Scenario; once resolved, detailed behavior/data move to Feature.
 
 Detailed owner state follows:
 
@@ -297,9 +311,9 @@ A simple project may skip explicit strategy and/or separate Slice owners. Fronte
 Verification derives from current semantic owners:
 
 ```text
-Scenario Acceptance
-+ Behavior Items
-+ Requirements
+Scenario journey / Contribution coverage
++ resolved Feature behavior when present
++ natural-owner Requirements
 + Domain invariants when present
 + Slice verification target
 → planned verification evidence
