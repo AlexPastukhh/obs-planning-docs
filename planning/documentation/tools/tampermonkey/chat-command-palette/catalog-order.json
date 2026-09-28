@@ -1,6 +1,39 @@
 {
   "schemaVersion": 5,
   "kind": "planning-helper-catalog-order",
+  "categories": [
+    {
+      "id": "GENERAL",
+      "label": "General",
+      "order": 0
+    },
+    {
+      "id": "IDTSPE_PASS",
+      "label": "IDTSPE Pass",
+      "order": 10
+    },
+    {
+      "id": "USE_CASES",
+      "label": "Use Cases",
+      "order": 20
+    },
+    {
+      "id": "TARGET_MODULES",
+      "label": "Target Modules",
+      "order": 30
+    },
+    {
+      "id": "LENSES",
+      "label": "Lenses",
+      "order": 40
+    },
+    {
+      "id": "TOOLS",
+      "label": "Tools / Repository",
+      "order": 50
+    }
+  ],
+  "fallbackCategoryId": "GENERAL",
   "commands": [
     "methodology.use_cases.recheck",
     "session.work.maintain",
@@ -193,6 +226,7 @@
   ],
   "prompts": [
     "helper-library:prompt:file-link-filename-block",
+    "helper-library:prompt:item-s6z4se-dhvwzb",
     "helper-library:prompt:item-nl3amm-1bfixd6",
     "helper-library:prompt:commands-onboarding-1kge1i0",
     "helper-library:prompt:deep-semantic-traceability-extension-20260821",
@@ -211,7 +245,8 @@
     "helper-library:prompt:replacement-arch-bootstr-s3labd",
     "helper-library:prompt:item-rdl7av-1y97ll2",
     "helper-library:prompt:item-1iy9b3g-8grcmz",
-    "helper-library:prompt:item-znt1b6-90rtdk"
+    "helper-library:prompt:item-znt1b6-90rtdk",
+    "helper-library:prompt:item-10n7n2t-1xxpe9b"
   ],
   "commandGroups": [
     {
@@ -685,38 +720,5 @@
         "session.turn.finalize"
       ]
     }
-  ],
-  "categories": [
-    {
-      "id": "GENERAL",
-      "label": "General",
-      "order": 0
-    },
-    {
-      "id": "IDTSPE_PASS",
-      "label": "IDTSPE Pass",
-      "order": 10
-    },
-    {
-      "id": "USE_CASES",
-      "label": "Use Cases",
-      "order": 20
-    },
-    {
-      "id": "TARGET_MODULES",
-      "label": "Target Modules",
-      "order": 30
-    },
-    {
-      "id": "LENSES",
-      "label": "Lenses",
-      "order": 40
-    },
-    {
-      "id": "TOOLS",
-      "label": "Tools / Repository",
-      "order": 50
-    }
-  ],
-  "fallbackCategoryId": "GENERAL"
+  ]
 }
