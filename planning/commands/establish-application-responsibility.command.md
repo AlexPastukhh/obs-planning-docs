@@ -14,14 +14,14 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
     "определи ответственность приложения"
   ],
   "description": "focused SDS target",
-  "meaning": "Run focused TM-APPLICATION-DEFINITION intent without creating a new Target type. Keep Benefit responsibility at promise boundary and route real-life/Application behavior pressure to Scenario/Evolution planning.",
+  "meaning": "Run focused TM-APPLICATION-DEFINITION intent without creating a new Target type. Clarify why an own Application is warranted, what responsibility/contribution it should own, and which key Application behavior should remain the value/focus boundary; route real-life journey details to Scenario and downstream realization ownership to Feature/Screen/Domain/Slice as applicable.",
   "activeContextBehavior": "Treat the explicit command as selected invocation intent inside always-active IDTSPE. Re-evaluate current Use-Case composition, resolve/reuse a natural Target/context only when useful, confirm the selected Target Module Entry Point/local applicability gate, and then resolve CREATE/REFINE/EXTEND/REVALIDATE/REPAIR from actual current Target state. Do not create a Target or Result Unit merely because the command exists.",
   "traversalReadMode": "Reuse current reliable IDTSPE/SDS governance; targeted refresh of the selected owner route when uncertain; full bootstrap only when no reliable sufficient governance context exists.",
   "ownerFiles": [
     "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-APPLICATION-DEFINITION.md",
     "planning/documentation/idtspe-methodology/active/profiles/sds/commands/SDS-COMMAND-SURFACE-EXTENSION.md"
   ],
-  "expectedOutput": "Refinement of Responsibility Boundary on the affected Application Benefit(s), including cross-Benefit consistency when material, without creating a standalone Responsibility Boundary Result Unit.",
+  "expectedOutput": "Focused refinement of Own-Application Justification / Key Behavior Focus, including the owned-vs-external contribution boundary and any material challenge from existing solutions or feasibility evidence.",
   "permissionMode": "read-only-planning",
   "keyReminders": [
     "SDS is an IDTSPE profile, not a second runtime.",
@@ -29,7 +29,7 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
     "Do not infer a dedicated file from Target identity; use Documentation / Representation and P-14 when persistence is material.",
     "This command plans/reviews only; it does not edit repository files, implement, test, commit or push."
   ],
-  "userTarget": "<Application Benefit responsibility boundary focus>",
+  "userTarget": "<own-Application responsibility / key behavior focus>",
   "palette": true,
   "refinements": [],
   "methodologyBinding": {

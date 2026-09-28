@@ -70,9 +70,11 @@ SDS separates **realized downstream owner truth** from **unrealized downstream t
 
 ```text
 Application Definition
-= selected / possible need, value, contribution and boundary intent
-= may legitimately lead current realization
-= refined directly when that intent changes
+= concise Application Concept + existing-solution position
++ own-Application justification / key behavior focus
++ realization feasibility / early application-level implementation planning
+= may legitimately lead downstream planning
+= refined directly when that proposition changes
 
 Feature / Scenario / Screen / Domain / Slice / Shared
 = realized / implemented current owner truth when materialized
@@ -111,7 +113,7 @@ This README owns the SDS bootstrap/read-set boundary, not the profile responsibi
 
 ```text
 Application Definition
-→ upstream intent/value/contribution/boundary owner
+→ upstream Application proposition / key behavior focus / early realization-pressure owner
 
 realized downstream Feature/Scenario/Screen/Domain/Slice/Shared
 → current natural owners
@@ -126,7 +128,7 @@ This is routing orientation only, not a mandatory phase sequence or a duplicate 
 
 ## Key Profile Invariants
 
-- Application Definition is upstream intent/value authority and may lead realization; Feature/Scenario/Screen/Domain/Slice/Shared current owners describe realized/current downstream truth, while selected-but-unrealized downstream meaning stays in an Evolution Step.
+- Application Definition is upstream Application proposition/value-focus authority and may lead downstream planning; Feature/Scenario/Screen/Domain/Slice/Shared current owners describe realized/current downstream truth, while selected-but-unrealized downstream meaning stays in an Evolution Step.
 - Evolution Step Target Owner Bodies reuse natural owner contracts without creating `FutureFeature`, `FutureDomain`, `FutureSlice` or another parallel owner ontology.
 - Target Owner Materialization is a semantic authority transition after realization/proof; it is distinct from physical representation promotion/demotion or file placement under P-14/PERSISTENCE_ADDRESSABILITY.
 - Feature, Scenario and Screen are peer semantic owner families; none silently edits another.
@@ -143,7 +145,7 @@ This is routing orientation only, not a mandatory phase sequence or a duplicate 
 
 ## Application development orientation
 
-`Application Definition → Evolution Steps Map → concrete Evolution Step → Step-owned downstream Target Bodies → realization/proof/Target Owner Materialization → current natural owners` is the default orientation when material future application development is planned. Application Definition is the upstream temporal exception and keeps Benefit promise intent; Map is the accepted development manifest/coverage projection; Step owns the bounded future transition. Scenario can be formed before Feature resolution. A focused `проведи Question sweep для Evolution Step` command projects the existing Step contextual stabilization and `RU-EVO-06` before a selected Step enters realization when applicable; it is not a new Target Module or a requirement on unrelated code changes. A Map with one concrete next Step and later `UNESTABLISHED` is valid. None of these relations mandates creating every component for every task.
+`Application Definition → Evolution Steps Map → concrete Evolution Step → Step-owned downstream Target Bodies → realization/proof/Target Owner Materialization → current natural owners` is the default orientation when material future application development is planned. Application Definition is the upstream temporal exception and keeps the selected Application Concept / own-Application justification / key behavior focus / early realization pressure; Map is the accepted development manifest/driver-coverage projection; Step owns the bounded future transition. Scenario can be formed before Application Definition or Feature resolution when real-life evidence gives the clearer starting point. A focused `проведи Question sweep для Evolution Step` command projects the existing Step contextual stabilization and `RU-EVO-06` before a selected Step enters realization when applicable; it is not a new Target Module or a requirement on unrelated code changes. A Map with one concrete next Step and later `UNESTABLISHED` is valid. None of these relations mandates creating every component for every task.
 
 ## Canonical SDS Owners
 

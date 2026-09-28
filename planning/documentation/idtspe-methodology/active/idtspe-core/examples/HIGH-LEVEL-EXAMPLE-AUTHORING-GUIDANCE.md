@@ -97,13 +97,13 @@ Situation:
 
 Why Scenario Planning:
   Feature owners already define the capture and review behaviors/results,
-  but the actor/external journey composition and Benefit manifestation/closure across those Feature results are not yet owned.
+  but the actor/external journey composition, normative Scenario steps and journey must-holds across those Feature results are not yet owned.
 
 Walkthrough:
   select participating Feature results;
   define actor/external linking actions;
   preserve context continuity;
-  make branch/re-entry/Benefit manifestation/closure explicit;
+  make branch/re-entry, Scenario completion and material SPS/SR meaning explicit;
   add only journey-level must-holds that are not copied Feature BRs.
 
 Result:

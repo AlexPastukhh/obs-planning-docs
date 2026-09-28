@@ -14,15 +14,15 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
     "спланируй сценарий",
     "план сценария приложения"
   ],
-  "description": "Scenario journey and Application Contribution planning with Feature OPEN or resolved",
-  "meaning": "Run TM-SCENARIO-PLANNING for one real-life actor/external/Application journey in which upstream Application Benefits may manifest or close. Compose actor/external actions, Application Contributions, order/branch/convergence/re-entry, continuity, material Screen/external participation, sparse journey-level must-holds and optional E2E Proof Intent. While Feature ownership is OPEN, plan the required Application outcome and bounded provisional behavior inside the same Step-owned Scenario Target Body without requiring a Feature file. When ownership is resolved, reference the selected Feature/result and move detailed Feature behavior and semantic data to TM-FEATURE; Benefit promise meaning stays in Application Definition. Keep one Scenario identity and its represented family/coverage boundary through that maturity change.",
+  "description": "Scenario journey, normative SPS/SR and Application Contribution planning with Feature OPEN or resolved",
+  "meaning": "Run TM-SCENARIO-PLANNING for one real-life actor/external/Application journey. Compose normative SPS steps across actor/external/Application participation, Application Contributions, order/branch/convergence/re-entry, continuity, material Screen/external participation, step-attached and Scenario-wide SR must-holds, and optional E2E Proof Intent. While Feature ownership is OPEN, plan the required Application outcome and bounded provisional behavior inside the same Step-owned Scenario Target Body without requiring a Feature file. Prefer a separate external-event SPS and Application trigger/entry SPS when that distinction materially clarifies downstream realization. When ownership is resolved, reference the selected Feature/result and move detailed Feature behavior and semantic data to TM-FEATURE. Keep one Scenario identity and its represented family/coverage boundary through that maturity change.",
   "activeContextBehavior": "Treat the explicit command as selected invocation intent inside always-active IDTSPE. Re-evaluate current Use-Case composition, resolve/reuse a natural Target/context only when useful, confirm the selected Target Module Entry Point/local applicability gate, and then resolve CREATE/REFINE/EXTEND/REVALIDATE/REPAIR from actual current Target state. Do not create a Target or Result Unit merely because the command exists.",
   "traversalReadMode": "Reuse current reliable IDTSPE/SDS governance; targeted refresh of the selected owner route when uncertain; full bootstrap only when no reliable sufficient governance context exists.",
   "ownerFiles": [
     "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-SCENARIO-PLANNING.md",
     "planning/documentation/idtspe-methodology/active/profiles/sds/commands/SDS-COMMAND-SURFACE-EXTENSION.md"
   ],
-  "expectedOutput": "One Step-owned or current Scenario journey with actor/external/Application path, contribution set, Feature OPEN or resolved refs, material coverage boundary, continuity and applicable Unit dispositions.",
+  "expectedOutput": "One Step-owned or current Scenario journey with normative SPS path, Application Contributions, step-attached and Scenario-wide SRs when material, Feature OPEN or resolved refs, Screen/external participation, continuity and applicable Unit dispositions.",
   "permissionMode": "read-only-planning",
   "keyReminders": [
     "SDS is an IDTSPE profile, not a second runtime.",

@@ -65,7 +65,7 @@ The optional generic Core results usable under SDS retain their own artifact gui
 
 ### Application Definition
 
-Application Definition is upstream need/value/contribution authority and may lead current downstream realization. Keep one durable discoverable canonical representation when persistence is material. Do not place a selected future Application body inside an Evolution Step; Steps reference Application Definition as driver and own only unrealized downstream owner target state.
+Application Definition is upstream Application-proposition authority: concise Concept, Existing-Solution / Reference Position, Own-Application Justification / Key Behavior Focus, and Realization Feasibility / Early Implementation Planning. Keep one durable discoverable canonical representation when persistence is material. Do not place a selected future Application body inside an Evolution Step; Steps reference the material Application driver and own only unrealized downstream owner target state.
 
 ### Feature
 
@@ -75,11 +75,11 @@ Several small Features may share one document if Feature/BR identities remain cl
 
 ### Scenario
 
-Scenario journey meaning may be embedded or dedicated. Preserve Scenario identity, Feature references, path/branch/convergence/re-entry, continuity and Benefit manifestation/closure without copying Feature BR prose. Current-owner `Evolution Impact` may be stored or derived as compact Step navigation/revalidation; full future Scenario meaning remains Step-owned.
+Scenario journey meaning may be embedded or dedicated. Preserve Scenario identity, normative `SPS-*` path/branch/convergence/re-entry, continuity, Application Contributions / resolved Feature references, step-attached and Scenario-wide `SR-*`, and journey-significant Screen/external participation without copying Feature BR prose. Current-owner `Evolution Impact` may be stored or derived as compact Step navigation/revalidation; full future Scenario meaning remains Step-owned.
 
 ### Screen
 
-A compact application may use one Screen Map. Promote Screen Drafts to independently addressable sections/files only when their review/reuse pressure justifies it. Current-owner `Evolution Impact` is reverse Step navigation/revalidation, not a second Screen roadmap.
+A compact application may use one Screen Map with embedded Screen Drafts. When a Screen participates in Scenarios, preserve per-Scenario `SPS-*` participation, any step-local `SCR-*`, Screen-wide `SCR-G-*`, and the selected spatial presentation without copying Scenario `SR-*` authority. Promote Screen Drafts to independently addressable sections/files only when their review/reuse pressure justifies it. Current-owner `Evolution Impact` is reverse Step navigation/revalidation, not a second Screen roadmap.
 
 ### Domain
 
@@ -132,7 +132,7 @@ dependency/readiness notes
 
 This view may be embedded in an existing planning index or generated from owners. It does not become a competing semantic authority.
 
-Step-owned Scenario Target Bodies may be separately addressable files while Feature refs remain `OPEN`; no Feature file is required until its boundary is resolved. A later Step-owned Feature Target Body is complete at the required Step depth, not current Feature authority. Application Definition remains upstream. The Evolution Map links concrete Steps and Benefit drivers without copying their bodies. A Proposal archive's optional context files and target-shaped candidate paths have no independent acceptance authority.
+Step-owned Scenario Target Bodies may be separately addressable files while Feature refs remain `OPEN`; no Feature file is required until its boundary is resolved. A later Step-owned Feature Target Body is complete at the required Step depth, not current Feature authority. Application Definition remains upstream. The Evolution Map links concrete Steps and material Application/Scenario drivers without copying their bodies. A Proposal archive's optional context files and target-shaped candidate paths have no independent acceptance authority.
 
 ## Worked Physical Topologies
 

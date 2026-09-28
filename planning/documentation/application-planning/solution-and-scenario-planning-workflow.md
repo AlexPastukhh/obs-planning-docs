@@ -56,55 +56,38 @@ Do not let checked existing solutions disappear merely because a custom idea app
 
 ## Application Definition / Concept Review
 
-Use current SDS Application Definition planning when own software is a material candidate, or when application creation is already confirmed but value/contribution/feasibility is not grounded.
+Use current SDS Application Definition planning when own software is a material candidate, or when application creation is already confirmed but its justification/focus/feasibility is not grounded.
 
 Keep the responsibilities separate:
 
 ```text
-existing-solution / alternative-route position
-Application Benefits
-  + Responsibility Boundary inside each Benefit
-Scenario / Evolution coverage refs (`RU-APP-04`) when material; journey bodies belong to Scenario
-Application Concept
-  = short summary of what the Application is
-  + why it is needed / overall Benefit
-  + brief concept-level "how it roughly works"
-Realization Feasibility
+RU-APP-05 — concise Application Concept
+RU-APP-02 — Existing-Solution / Reference Position
+RU-APP-08 — Own-Application Justification / Key Behavior Focus
+RU-APP-07 — Realization Feasibility / Early Implementation Planning
 ```
 
-Do not put Concept Features, detailed interaction hypotheses, architecture, effort-model internals or implementation planning inside the Application Concept summary. Material alternatives remain Proposal/Decision/branch state; technical uncertainty belongs to proportional feasibility/research/prototype evidence according to its natural owner.
-
-An own-Application route can still be rejected in favor of an existing/process route. That is a successful result.
-
-## Application Handoff
+The Application Definition does not own full real-life journeys or a Benefit→Scenario coverage catalog. `KBF-*` is optional addressability for key behavior focus, not a Feature or Requirement.
 
 When the selected whole solution includes own Application responsibility, or that responsibility is already explicitly confirmed:
 
 ```text
-selected/current Application Definition and Benefit promise boundaries
+selected/current Application Definition when material
+↕ real-life Need/workflow evidence may also form Scenario first
 → Prototype Planning when material interaction/workflow/spatial uncertainty remains
-   → provisional Prototype Scenarios / Screens and evidence
-→ discover materially distinct real-life Scenario journeys and Application Contributions
-   → Step-owned Scenario Target Bodies while downstream meaning is unrealized
+→ discover materially distinct real-life Scenario journeys
+   → normative SPS-* path + Application Contributions
+   → step-attached / Scenario-wide SR-* when independently useful
    → Feature Resolution OPEN with provisional behavior planning when needed
-   → resolve coherent Features when the boundary is supported; move detailed behavior there
-→ register concrete Evolution Steps and Application-intent/Benefit coverage in the Map
-→ add Screen, Domain, Slice and Shared Target Bodies when materially required
+   → resolve coherent Features when supported; Features record realized SPS/SR meaning
+→ Screen planning maps participating SPS to spatial presentation and Screen-local SCR-* / SCR-G-*
+→ register concrete Evolution Steps and material Application/Scenario driver coverage in the Map
+→ add Domain, Slice and Shared Target Bodies when materially required
 → realization, proof/revalidation and Target Owner Materialization
-→ current natural Scenario/Feature/etc owners
-↺ recheck coverage and return to Application Definition / whole solution when material
+↺ evidence may revalidate Scenario, Application Definition and neighboring owners
 ```
 
-The sequence is an orientation, not a compulsory waterfall. A Scenario may
-have no resolved Feature and one concrete Step may have an `UNESTABLISHED`
-later horizon. Future downstream bodies do not become current owners merely
-because their Proposal or Step is selected.
-
-If application responsibility is externally mandated, do not manufacture a custom-vs-existing decision merely to satisfy the flow; still ground the Concept, real-world Need coverage and application boundary.
-
-Prototype workflow: [`prototype-planning-workflow.md`](prototype-planning-workflow.md).
-
-Older physical-workspace heuristics only: [`detailed-planning/README.md`](detailed-planning/README.md). Its fixed Scenario folders and Scenario-as-behavior-owner language are not current SDS contracts.
+The sequence is orientation, not a compulsory waterfall. Scenario may precede Application Definition or Feature when the real-life path is already grounded.
 
 ## Prototype Planning
 
@@ -125,7 +108,7 @@ concrete user situation
 
 ## Scenario Discovery
 
-Use accepted Application Definition/Benefit intent, actor/external context,
+Use Need/workflow evidence, material Application Definition key-behavior/feasibility pressure when available, actor/external context,
 existing Scenario/Feature evidence when present and prototype evidence when
 material. Do not wait for a Feature identity before forming a Step-owned
 Scenario Target with Application Contributions.
@@ -174,7 +157,7 @@ coherent Feature boundary is selected, detailed behavior and semantic data move
 to its Step-owned Feature Target Body.
 
 ```text
-Real-Life Need / Application Definition intent
+Real-Life Need / Application Definition key-behavior pressure
 → candidate real-life Scenario path / Application Contributions
 → provisional behavior, information, failure and continuity pressure while Feature OPEN
 → refine / split / merge materially distinct Scenario paths
@@ -200,7 +183,7 @@ several contributions or Features depend on one must-hold rule
 ```
 
 The loop refines one bounded Step plan when meaning is unrealized. It does not
-authorize implementation details to redefine upstream Benefit intent or
+authorize implementation details to redefine upstream Application proposition/focus or
 materialize future Target Bodies as current truth.
 
 ## Application Scenario Registration

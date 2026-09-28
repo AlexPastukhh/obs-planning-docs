@@ -21,7 +21,7 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
     "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-SCREEN.md",
     "planning/documentation/idtspe-methodology/active/profiles/sds/commands/SDS-COMMAND-SURFACE-EXTENSION.md"
   ],
-  "expectedOutput": "One Screen Draft scope within the same Screen Target family.",
+  "expectedOutput": "One Screen Draft within the same Screen Target family, including each participating Scenario SPS that actually occurs on the Screen, optional step-local SCR-* references, applicable Screen-wide SCR-G-* meaning, and the resulting Screen participation / spatial presentation.",
   "permissionMode": "read-only-planning",
   "keyReminders": [
     "SDS is an IDTSPE profile, not a second runtime.",

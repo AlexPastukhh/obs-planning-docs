@@ -8,14 +8,14 @@ Role: primary application behavior Target Module
 
 > Semantic Owner Dependencies
 > - Type: `EXTENDS`; Responsibility: `TARGET-MODULE.META-MODEL`; Owner: [Target Module Meta-Model](../../../idtspe-core/target-modules/TARGET-MODULE-MODEL.md#target-module-meta-model)
-> - Type: `CONTEXTUALIZES`; Responsibility: `SDS.APPLICATION-BENEFIT-BOUNDARY-CONSTRAINTS`; Owner: [Application Benefit Boundary / Constraints](TM-APPLICATION-DEFINITION.md#sds-application-benefit-boundary-constraints)
+> - Type: `CONTEXTUALIZES`; Responsibility: `TM-SCENARIO-PLANNING`; Owner: [Scenario Journey / Requirement Owner](TM-SCENARIO-PLANNING.md#tm-scenario-planning)
 > - Type: `CONTEXTUALIZES`; Responsibility: `SDS.SEMANTIC-COMPOSITION-READINESS`; Owner: [SDS Semantic Composition / Readiness](../profile-contracts/SDS-SEMANTIC-COMPOSITION-AND-READINESS.md#sds-semantic-composition-readiness)
 
 ## Purpose
 
 Own one coherent application/user capability boundary and the behavior that makes its principal result true.
 
-A Feature is the primary behavioral authority. Scenario composes Features into a journey; Screen owns spatial/navigation composition; Slice owns durable implementation responsibility. None of those owners duplicates Feature behavior.
+A Feature is the primary behavioral authority. Scenario owns the real-life journey and references participating Feature results once Feature ownership is resolved; Screen owns spatial/navigation composition; Slice owns durable implementation responsibility. None of those owners duplicates Feature behavior.
 
 Feature formation is implementation-aware but not an exact implementation plan. The same Feature/Slice Boundary Method from `LENS-SLICE-VERTICALITY-INTEGRATION` is used here at lighter evidence depth and later during Slice Discovery with stronger evidence.
 
@@ -38,7 +38,7 @@ Future `BR-*` belongs to the Target Feature Body until materialization. Do not c
 
 For every represented `NEW` or `CHANGED` Feature in a **fully planned** Evolution Step, the Target Feature Body is the **complete** ordinary `Feature Definition` expected after the Step, not a delta. This is mandatory before marking that Step `Planning Completeness: COMPLETE` or starting its realization, including when a previously distant Step becomes next. A concrete `LATER_HORIZON` Step may remain `INCOMPLETE` with only a bounded Step-side Feature Evolution Impact, provided its material owner impacts and reverse current-owner Step references are accounted for under `TM-EVOLUTION-STEP / RU-EVO-06`. `[EXISTING]/[NEW]/[CHANGED]/[REMOVED]` annotations may aid review but never substitute for a required complete body. Candidate authority stays on the enclosing Proposal/Step boundary until normal selection. If a Step preserves Feature behavior unchanged (for example a pure Refactoring/Forced Migration), reference the current Feature as retained target behavior rather than copying it. Future Feature authority is represented directly by the Step Feature target state/Target Feature Body when formed. The **current realized Feature** additionally owns `RU-FEAT-06 — Evolution Impact`, specializing the shared Current-Owner Evolution Impact Projection Contract for Feature-local impact/revalidation; this reverse Unit never becomes a second future Feature body.
 
-Feature Discovery may begin in a Step-owned Scenario before this Target Module is active. A Scenario's `Application Contribution` and provisional behavior are material inputs to Feature boundary resolution alongside Benefit/current-owner Evidence. Do not form an empty Feature Target Body merely to give an OPEN contribution a name. When a coherent Feature boundary is resolved, this module owns the complete planned behavior in the same Evolution Step; remove duplicated detailed behavior from the Scenario and retain contribution/result references there. Many-to-many Scenario↔Feature relations are valid.
+Feature Discovery may begin in a Step-owned Scenario before this Target Module is active. Applicable `SPS-*` steps, step-attached / Scenario-wide `SR-*` Requirements, the Scenario's `Application Contribution`, trigger/entry context and provisional behavior are the primary upstream inputs to Feature boundary resolution alongside current-owner Evidence. Do not form an empty Feature Target Body merely to give an OPEN contribution a name. When a coherent Feature boundary is resolved, this module owns the complete planned behavior in the same Evolution Step; remove duplicated detailed behavior from the Scenario and retain contribution/result references there. Many-to-many Scenario↔Feature relations are valid.
 
 ## Activation / Scope Gate
 
@@ -50,8 +50,8 @@ Do not create a Feature merely because there is another button, endpoint, transp
 
 Possible sources, selected proportionally by current work:
 
-- Need / Benefit / selected application contribution; when only a bounded Benefit boundary/constraint clause is the real Feature driver, prefer the precise `AB-* / BC-*` reference if available rather than implying that the Feature realizes the whole Benefit;
-- Scenario journey pressure;
+- Scenario realization meaning relevant to this Feature: applicable `SPS-*` steps, step-attached `SR-*`, Scenario-wide `SR-*`, selected Application Contributions and material trigger/entry context;
+- Scenario journey pressure and Scenario examples/evidence relevant to that realization meaning;
 - Screen interaction/spatial pressure;
 - current implementation and Evidence;
 - Prototype findings;
@@ -65,7 +65,7 @@ Source discovery remains evidence-driven. A source may trigger re-evaluation wit
 The Result Units are co-formable; this is not a waterfall.
 
 ```text
-Need / Benefit / current concern
+Scenario realization meaning / selected Application Contribution / current concern
 ↕
 identity + intent + principal result + semantic entry
 ↕
@@ -423,6 +423,36 @@ A Unit may reach the referenced Lens/Knowledge Basis without copying that theory
 
 ## Representation / Artifact Contract
 
+At the start of a Feature representation, record the upstream **Scenario Realization** meaning this Feature materially realizes when such coverage exists. This replaces Benefit-first realization listing at the Feature boundary; it does not otherwise change the Feature Result Units or FBS/BR contract.
+
+```text
+Scenario Realization
+
+Scenario: <SCN-*>
+Preceding / Trigger Context:         <0..N contextual SPS refs not realized by this Feature>
+Realized Scenario Steps:              <0..N SPS-* refs>
+Realized Scenario Requirements:       <0..N step-attached SR-* refs>
+Realized Scenario-wide Requirements:  <0..N Scenario-wide SR-* refs>
+```
+
+Rules:
+
+- one Feature may realize **one or several `SPS-*` steps** from the same Scenario;
+- one Feature may realize Scenario meaning from several Scenarios when the Feature boundary remains coherent;
+- one `SPS-*` may be jointly realized by several Features when the step materially spans several coherent Application capabilities;
+- Feature participation in a Scenario does **not** imply that the Feature realizes every `SPS-*` in that Scenario;
+- normally list only Application-relevant `SPS-*` under `Realized Scenario Steps`; actor-only / external-only steps should usually remain Scenario context;
+- an outside-Application `SPS-*` **may** still be listed as realized when its selected step meaning genuinely includes Feature-realized Application responsibility and splitting the step would reduce clarity, but this is the exception rather than the default;
+- a preceding actor/external `SPS-*` may be referenced under `Preceding / Trigger Context` when it materially explains why/when the Feature starts, **only when that SPS is not realized by this Feature**; prefer a separate Application trigger/entry `SPS-*` in the Scenario when that distinction is materially useful;
+- the same `SPS-*` SHOULD NOT appear under both `Preceding / Trigger Context` and `Realized Scenario Steps` for the same Feature; an Application entry step that the Feature realizes belongs under `Realized Scenario Steps`;
+- `Realized Scenario Requirements` / `Realized Scenario-wide Requirements` reference Scenario-owned `SR-*`; they do not copy or transfer SR authority into Feature;
+- Feature realization of an `SR-*` means this Feature materially contributes to satisfying it, not necessarily that this Feature alone exhausts the Scenario obligation;
+- a visual `SR-*` may appear here when Feature behavior/result realizes it; visuality does not imply Screen ownership.
+
+Repeat the `Scenario:` block per Scenario when one Feature realizes meaning from several Scenarios; do not flatten unrelated Scenario obligations into one anonymous list.
+
+This block is a coverage/reference projection, not another Feature Unit and not copied Scenario authority.
+
 Feature identity/behavior used downstream needs durable discoverable ownership, but not one file per Feature.
 
 Valid forms:
@@ -435,6 +465,11 @@ Canonical BR prose stays in the Feature owner. Scenario/Screen/Slice/Domain refe
 ## Validators
 
 ```text
+Scenario realization coverage is referenced at the Feature boundary where applicable
+one Feature may realize several SPS-* and one SPS-* may be jointly realized by several Features
+actor/external-only SPS are normally preceding/trigger context rather than falsely claimed Feature-realized steps
+contextual SPS refs are not duplicated under Realized Scenario Steps for the same Feature
+realized SR-* references preserve Scenario authority and may represent partial/shared realization
 one coherent intent + principal result is explicit
 semantic entry is not merely transport naming
 Feature semantic Data does not steal Domain state authority
@@ -463,4 +498,4 @@ selected Feature
 
 ## Copied project example
 
-[Study Tab Launcher — Benefit slices и связь с Scenario/Slice](../examples/study-tab-launcher/project/planning/documentation/features/open-local-project.md). Read the [case guide and capture limits](../examples/study-tab-launcher/README.md) with the current module contract; the copied project is a dated example, not live application authority.
+[Study Tab Launcher — dated Feature / Scenario / Slice project example](../examples/study-tab-launcher/project/planning/documentation/features/open-local-project.md). Read the [case guide and capture limits](../examples/study-tab-launcher/README.md) with the current module contract; the copied project is a dated example, not live application authority.

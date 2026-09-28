@@ -1,87 +1,48 @@
 # SCN-MW-MAINTAIN-AND-VERIFY-KNOWLEDGE
 
 Feature Resolution: `OPEN` — Scenario-local discovery / behavior planning; no Feature Target Body yet.
+Optional Application source: `APP-METHODOLOGY-WORKSPACE / KBF-MW-01`, `KBF-MW-02`.
 
-## RU-SCEN-01 — Real-Life Usage Journey
+## RU-SCEN-01 — Scenario Path
 
-**Actor / real-world situation:**  
-A methodology maintainer changes one methodology relationship in an ordinary repository workflow, needs invalid structure prevented from becoming accepted repository truth, reviews the resulting Git/GitHub state, and then verifies the structural consequence without losing ordinary Markdown navigation.
+**Actor / situation:** a methodology maintainer changes canonical methodology meaning, needs invalid structure prevented from becoming accepted truth, reviews the repository delta, then verifies a structural consequence with provenance.
 
-**Benefit refs:** `AB-01`, `AB-02`
+| Scenario Path Step | Required action / interaction | Participant | Screen / Surface | Application Contribution / Feature | Data / result / continuity | Attached Scenario Requirements | Related Application expected errors | QRPE / Examples |
+|---|---|---|---|---|---|---|---|---|
+| `SPS-MW-01 — Select canonical change` | Decide which canonical methodology subject/relationship must change. | Actor | Editor / repository navigation | — | changed-subject identity begins | `SR-MW-01` | — | Target Good Example: select `TM-FEATURE.lens_attachments` as the changed subject. |
+| `SPS-MW-02 — Edit canonical source` | Open and edit the repository source that owns the selected meaning. | Actor / external editor | IDE/editor | Preceding / Trigger Context | intended changed source exists | `SR-MW-01` | — | Boundary Example: editor UI remains outside Application ownership. |
+| `SPS-MW-03 — Maintain valid synchronized state` | Validate the requested change and establish either valid synchronized repository output or truthful failure. | Application | background / status surface OPEN | `AC-MW-01-MAINTAIN` / Feature `OPEN` | changed subject + publication basis | `SR-MW-01`; `SR-MW-02` | `InvalidReference`; `ValidationFailure`; `PublicationFailure` | Problem Example: invalid ref is published as success. |
+| `SPS-MW-04 — Repair rejected change` | On failure, inspect diagnostics, repair canonical source and re-enter validation. | Actor / external editor | IDE/editor | — | failed subject identity preserved | `SR-MW-02` | — | None material |
+| `SPS-MW-05 — Review repository delta` | Review the accepted source/generated delta. | Actor / external Git | Git diff | — | reviewable delta corresponds to publication basis | `SR-MW-03` | — | None material |
+| `SPS-MW-06 — Request structural verification` | Ask a cross-cutting question about the changed/published subject. | Actor / AI | GitHub/command surface | Preceding / Trigger Context | inspection intent bound to published subject | `SR-MW-03` | — | None material |
+| `SPS-MW-07 — Verify with provenance` | Return structural verification grounded in the accepted basis with provenance to canonical owners. | Application | inspection surface OPEN | `AC-MW-01-INSPECT` / Feature `OPEN` | structural result + provenance | `SR-MW-04` | `InspectionUnavailable`; `StaleBasis`; `UnresolvedReference` | Target Good Example: result points back to canonical owner. |
+| `SPS-MW-08 — Continue Markdown reasoning` | Follow provenance and continue semantic review in ordinary Markdown. | Actor / AI + GitHub | GitHub Markdown | — | inspection result → canonical owner | `SR-MW-04`; `SR-MW-05` | — | None material |
 
-### Scenario Path
+## RU-SCEN-04 — Scenario Requirements
 
-| Step | Boundary / participant | Real-world action / interaction | Application Contribution | Feature ref / result | Continuity / data | Benefit | Attached SR |
-|---|---|---|---|---|---|---|---|
-| `SPS-MW-01` | `ACTOR — Maintainer` | Decides to change one canonical methodology relationship, e.g. a Target Module Lens Attachment. | — | — | changed subject identity begins | — | `SR-MW-01` |
-| `SPS-MW-02` | `EXTERNAL — Editor` | Opens and edits the repository source that carries the canonical authored meaning. | — | — | edited source + intended subject | — | `SR-MW-01` |
-| `SPS-MW-03` | `APPLICATION` | **`AC-MW-01-MAINTAIN` — establish a valid synchronized methodology state for the requested change.** | required | `OPEN — Feature boundary unresolved` | same changed subject + publication basis | `AB-01` manifests; closes on success | `SR-MW-01`, `SR-MW-02` |
-| `SPS-MW-03F` | `ACTOR + EXTERNAL — Maintainer / Editor` | If the Application returns failure, the maintainer reads diagnostics, repairs the canonical source in the editor, and re-enters `SPS-MW-03`. | — | consumes Application failure result only; Feature ownership remains unresolved | failed subject identity preserved across retry | `AB-01` remains open | `SR-MW-02` |
-| `SPS-MW-04` | `EXTERNAL — Git` | Shows the accepted source/generated diff for human review. | — | — | reviewable repository delta corresponds to publication basis | `AB-01` visible in ordinary repo workflow | `SR-MW-03` |
-| `SPS-MW-05` | `EXTERNAL — GitHub` | Stores/serves the repository and ordinary Markdown representation. | — | — | repository basis remains addressable | `AB-01` continuation | `SR-MW-03`, `SR-MW-05` |
-| `SPS-MW-06` | `ACTOR — Human/AI` | Requests a structural verification of the changed relationship / cross-cutting consequence. | — | — | inspection question refers to the changed/published subject | `AB-02` begins to manifest | `SR-MW-03` |
-| `SPS-MW-07` | `APPLICATION` | **`AC-MW-01-INSPECT` — provide trustworthy structural verification with provenance for the published basis.** | required | `OPEN — Feature boundary unresolved` | same semantic subject / repository basis + provenance | `AB-02` manifests | `SR-MW-03`, `SR-MW-04` |
-| `SPS-MW-08` | `ACTOR + EXTERNAL — Human/AI / GitHub` | Follows provenance to the ordinary Markdown owner and continues semantic review/reasoning there. | — | — | inspection result → canonical owner | `AB-02` closes while Markdown path remains first-class | `SR-MW-04`, `SR-MW-05` |
+### Step-attached Requirements
 
-## Scenario-local Feature Discovery / Application Behavior Planning
+| Scenario Requirement | Type | Plain required Scenario meaning | Attached Scenario Steps | QRPE / Examples |
+|---|---|---|---|---|
+| `SR-MW-01 — Preserve changed-subject identity` | Identity / Continuity | The selected canonical subject remains the same through edit and Application validation/publication. | `SPS-MW-01..03` | Target Good Example: the requested Lens-attachment subject stays bound. |
+| `SR-MW-02 — Failure cannot cross as success` | Recovery / Truthfulness | Failed validation/publication returns to repair or stops; invalid output is not represented as accepted. | `SPS-MW-03`, `SPS-MW-04` | Problem Example: broken ref reaches review as accepted output. |
+| `SR-MW-04 — Preserve provenance across Application/external boundary` | Truthfulness / Continuity | Structural verification exposes enough provenance to navigate to the canonical owner. | `SPS-MW-07`, `SPS-MW-08` | Target Good Example: structural result identifies owner path/identity. |
+| `SR-MW-05 — Preserve ordinary Markdown continuation` | Scope / Continuity | Structured Application participation does not make CUE/tool-specific reading mandatory for semantic continuation. | `SPS-MW-08` | Boundary Example: GitHub Markdown remains sufficient for reading owner meaning. |
 
-Feature ownership is currently unresolved. This Scenario is therefore in the `DISCOVERY / BEHAVIOR-PLANNING` maturity position.
+### Scenario-wide Requirements
 
-### `AC-MW-01-MAINTAIN`
-
-**Required Application outcome:** turn the requested canonical methodology edit into either a valid synchronized repository state or a truthful failure that does not publish invalid truth.
-
-**Feature Resolution:** `OPEN`
-
-**Current behavior-planning pressure:**
-1. bind the requested edit to the intended canonical semantic/prose source;
-2. resolve structured identities/references and validate the source meaning;
-3. on invalid input, return repairable diagnostics and stop publication;
-4. on valid input, render ordinary Markdown owner documents / configured derived projections;
-5. establish a synchronized publication outcome attributable to the validated basis.
-
-**Boundary hypothesis, not yet Feature authority:** these actions appear cohesive around one principal result — maintained methodology knowledge becomes a truthful readable repository state. A later Feature Target Body may adopt this boundary if revalidation keeps it coherent.
-
-### `AC-MW-01-INSPECT`
-
-**Required Application outcome:** verify the structural consequence of the accepted publication basis and return provenance to canonical owners.
-
-**Feature Resolution:** `OPEN`
-
-**Current behavior-planning pressure:**
-1. bind the structural inspection question;
-2. resolve applicable validated structural facts / derived projection;
-3. return the result with authority/provenance;
-4. allow continuation into ordinary Markdown owners for semantic reasoning.
-
-**Cross-Scenario reuse pressure:** `SCN-MW-INSPECT-METHODOLOGY` requires materially similar inspection behavior. This is evidence for one reusable capability boundary, but no Feature ID/owner is selected yet.
-
-### Maturity transition rule for this Scenario
-
-When Feature ownership is resolved:
-- replace each `Feature Ref: OPEN` with the selected Feature/result reference;
-- move canonical detailed Feature behavior into the Step-owned Feature Target Body;
-- retain only Scenario-owned journey, contribution, boundary, continuity, Benefit manifestation and Feature/result navigation here.
-
-### Scenario Requirements
-
-| Scenario Requirement | Type | Plain required real-life journey meaning | QRPE / Example |
+| Scenario-wide Requirement | Type | Plain required Scenario meaning | QRPE / Examples |
 |---|---|---|---|
-| `SR-MW-01 — Preserve changed-subject identity` | Identity / Continuity | The real-life path must retain which canonical methodology subject is being changed from actor intent through the Application publication result. | `TM-FEATURE.lens_attachments` remains the subject. |
-| `SR-MW-02 — Failure cannot cross the boundary as success` | Recovery / Truthfulness | A failed Application contribution returns to actor repair/re-entry or stops; external Git/GitHub review must not proceed as though invalid content were accepted. | Broken Lens ref forces repair. |
-| `SR-MW-03 — Preserve repository-basis continuity` | Continuity / Proof | Git review, GitHub state, and later structural verification must correspond closely enough to the same accepted publication basis to avoid validating stale output. | revision/hash mechanism remains implementation-owned. |
-| `SR-MW-04 — Preserve provenance across Application/external boundaries` | Continuity / Truthfulness | Structural verification must allow the actor to navigate to the canonical methodology owner whose meaning supports the returned fact. | Lens map row → Target Module owner. |
-| `SR-MW-05 — Preserve ordinary Markdown continuation` | Scope / Continuity | After structured Application participation, the journey can continue through ordinary GitHub Markdown without requiring CUE-specific reading. | AI opens owner Markdown directly. |
+| `SR-MW-03 — Preserve repository-basis continuity` | Continuity / Proof | Review and later structural verification correspond closely enough to the same accepted publication basis to avoid validating stale output. | Problem Example: verification silently uses a pre-change basis. |
 
-**E2E Proof Intent:** exercise one valid relationship change plus one invalid-reference repair path across Editor → Application → Git/GitHub → Application inspection → GitHub Markdown continuation. The proof should observe boundary results rather than copy Feature internals into the Scenario.
+## Feature Discovery / realization handoff
+
+`SPS-MW-02` and `SPS-MW-06` are normally preceding/trigger context. A future Feature may realize one or several Application SPS (`SPS-MW-03`, `SPS-MW-07`) plus applicable SRs; one SPS may also require several Features. Feature boundary remains `OPEN`.
 
 ## RU-SCEN-02 — Evolution Impact
 
-`OMITTED` — this is a future Target Scenario Body owned by `EVO-MW-01-STRUCTURED-KNOWLEDGE`. Current-owner reverse impact projection is not applicable here. Feature Resolution remains `OPEN`; no current Scenario or Feature owner is implied.
+`OMITTED` — future Target Scenario Body; current-owner reverse impact is not applicable.
 
 ## RU-SCEN-03 — Journey Realization Concerns
 
-- publication and later inspection need a sufficiently common repository/source basis to avoid stale verification;
-- exact revision/hash/provenance mechanism remains implementation-owned.
-
----
+Publication and later inspection need a sufficiently common repository/source basis; exact revision/provenance mechanism remains downstream realization-owned.

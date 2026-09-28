@@ -1408,7 +1408,7 @@
       ],
       "processCalls": [],
       "compositionContributions": [],
-      "expectedOutput": "One current or Step-owned Scenario journey with actor/external/Application path, Application Contributions, Feature Resolution OPEN or resolved Feature/result refs, journey order/branches/re-entry, continuity, material Benefit manifestation/closure and only journey-level must-holds/E2E intent; no legacy Scenario-Ideas accumulator or duplicated resolved-Feature behavior/data.",
+      "expectedOutput": "One current or Step-owned Scenario journey with normative SPS path, Application Contributions, Feature Resolution OPEN or resolved Feature/result refs, journey order/branches/re-entry, continuity, material step-attached or Scenario-wide SRs and optional E2E intent; no legacy Scenario-Ideas accumulator or duplicated resolved-Feature behavior/data.",
       "permissionMode": "read-only-planning",
       "keyReminders": [
         "Legacy compatibility alias only; the canonical material-planning runtime is IDTSPE.",
@@ -1855,7 +1855,7 @@
         "определи приложение"
       ],
       "description": "application definition",
-      "meaning": "Run TM-APPLICATION-DEFINITION through current Use-Case-driven IDTSPE composition and the selected Target Module entry point for the selected target. Output Benefit promise boundaries and Scenario/Evolution coverage refs in Application Definition; full real-life journeys belong to Scenario.",
+      "meaning": "Run TM-APPLICATION-DEFINITION through current Use-Case-driven IDTSPE composition and the selected Target Module entry point for the selected target. Resolve the concise Application Concept, Existing-Solution / Reference Position, Own-Application Justification / Key Behavior Focus, and material Realization Feasibility / Early Implementation Planning. Full real-life journeys and downstream behavioral/spatial requirements belong to Scenario/Feature/Screen owners.",
       "activeContextBehavior": "Treat the explicit command as selected invocation intent inside always-active IDTSPE. Re-evaluate current Use-Case composition, resolve/reuse a natural Target/context only when useful, confirm the selected Target Module Entry Point/local applicability gate, and then resolve CREATE/REFINE/EXTEND/REVALIDATE/REPAIR from actual current Target state. Do not create a Target or Result Unit merely because the command exists.",
       "traversalReadMode": "Reuse current reliable IDTSPE/SDS governance; targeted refresh of the selected owner route when uncertain; full bootstrap only when no reliable sufficient governance context exists.",
       "ownerFiles": [
@@ -1877,7 +1877,7 @@
       ],
       "processCalls": [],
       "compositionContributions": [],
-      "expectedOutput": "Application Definition with Benefit promise boundaries, feasibility and Scenario/Evolution coverage references rather than journey bodies.",
+      "expectedOutput": "Application Definition with concise Concept, Existing-Solution / Reference Position, Own-Application Justification / Key Behavior Focus, and material Realization Feasibility / Early Implementation Planning rather than Scenario/Feature/Screen bodies.",
       "permissionMode": "read-only-planning",
       "keyReminders": [
         "SDS is an IDTSPE profile, not a second runtime.",
@@ -2114,7 +2114,7 @@
         "собери сценарии приложения"
       ],
       "description": "scenario boundary discovery",
-      "meaning": "Focused Scenario-boundary entry: inspect Application Definition/Benefit intent, actor and external paths, current evidence and any already-resolved Feature results for independently meaningful real-life journeys. Discover every materially distinct Application Contribution and Benefit manifestation/closure path; form each selected Scenario Target through normal Target Formation and TM-SCENARIO-PLANNING. A Step-owned Scenario Target Body may carry provisional behavior planning with Feature Resolution OPEN and zero resolved Features; no Feature identity or separate Scenario Discovery catalog is required first. When Feature ownership is resolved, reference the Feature/result without copying its detailed behavior. Represent equivalent recurring instances as a Scenario family only with explicit coverage rationale/Decision.",
+      "meaning": "Focused Scenario-boundary entry: inspect Need / real-life workflow, material Application Definition key-behavior or feasibility pressure when available, actor/external paths, current evidence and any already-resolved Feature results for independently meaningful real-life journeys. Discover materially distinct Scenario paths and Application Contributions; form each selected Scenario Target through normal Target Formation and TM-SCENARIO-PLANNING. A Step-owned Scenario Target Body may own normative SPS steps, Scenario SR must-holds and provisional behavior planning with Feature Resolution OPEN and zero resolved Features; no Feature identity or separate Scenario Discovery catalog is required first. When Feature ownership is resolved, reference the Feature/result without copying its detailed behavior. Represent equivalent recurring instances as a Scenario family only with explicit coverage rationale/Decision.",
       "activeContextBehavior": "Treat the explicit command as selected invocation intent inside always-active IDTSPE. Re-evaluate current Use-Case composition, resolve/reuse a natural Target/context only when useful, confirm the selected Target Module Entry Point/local applicability gate, and then resolve CREATE/REFINE/EXTEND/REVALIDATE/REPAIR from actual current Target state. Do not create a Target or Result Unit merely because the command exists.",
       "traversalReadMode": "Reuse current reliable IDTSPE/SDS governance; targeted refresh of the selected owner route when uncertain; full bootstrap only when no reliable sufficient governance context exists.",
       "ownerFiles": [
@@ -2139,7 +2139,7 @@
       ],
       "processCalls": [],
       "compositionContributions": [],
-      "expectedOutput": "Materially distinct Scenario Target candidates and Application Contributions, Step-owned when unrealized; unresolved Feature refs remain OPEN and equivalent-family coverage Decisions are recorded when material.",
+      "expectedOutput": "Materially distinct Scenario Target candidates with normative SPS paths, Application Contributions and material Scenario SR must-holds; Step-owned when unrealized, unresolved Feature refs remain OPEN, and equivalent-family coverage Decisions are recorded when material.",
       "permissionMode": "read-only-planning",
       "keyReminders": [
         "SDS is an IDTSPE profile, not a second runtime.",
@@ -2502,7 +2502,7 @@
         "определи ответственность приложения"
       ],
       "description": "focused SDS target",
-      "meaning": "Run focused TM-APPLICATION-DEFINITION intent without creating a new Target type. Keep Benefit responsibility at promise boundary and route real-life/Application behavior pressure to Scenario/Evolution planning.",
+      "meaning": "Run focused TM-APPLICATION-DEFINITION intent without creating a new Target type. Clarify why an own Application is warranted, what responsibility/contribution it should own, and which key Application behavior should remain the value/focus boundary; route real-life journey details to Scenario and downstream realization ownership to Feature/Screen/Domain/Slice as applicable.",
       "activeContextBehavior": "Treat the explicit command as selected invocation intent inside always-active IDTSPE. Re-evaluate current Use-Case composition, resolve/reuse a natural Target/context only when useful, confirm the selected Target Module Entry Point/local applicability gate, and then resolve CREATE/REFINE/EXTEND/REVALIDATE/REPAIR from actual current Target state. Do not create a Target or Result Unit merely because the command exists.",
       "traversalReadMode": "Reuse current reliable IDTSPE/SDS governance; targeted refresh of the selected owner route when uncertain; full bootstrap only when no reliable sufficient governance context exists.",
       "ownerFiles": [
@@ -2527,7 +2527,7 @@
       ],
       "processCalls": [],
       "compositionContributions": [],
-      "expectedOutput": "Refinement of Responsibility Boundary on the affected Application Benefit(s), including cross-Benefit consistency when material, without creating a standalone Responsibility Boundary Result Unit.",
+      "expectedOutput": "Focused refinement of Own-Application Justification / Key Behavior Focus, including the owned-vs-external contribution boundary and any material challenge from existing solutions or feasibility evidence.",
       "permissionMode": "read-only-planning",
       "keyReminders": [
         "SDS is an IDTSPE profile, not a second runtime.",
@@ -2535,7 +2535,7 @@
         "Do not infer a dedicated file from Target identity; use Documentation / Representation and P-14 when persistence is material.",
         "This command plans/reviews only; it does not edit repository files, implement, test, commit or push."
       ],
-      "userTarget": "<Application Benefit responsibility boundary focus>",
+      "userTarget": "<own-Application responsibility / key behavior focus>",
       "palette": true,
       "helperPresentation": null,
       "methodologyBinding": {
@@ -4157,7 +4157,7 @@
         "веди карту эволюции приложения"
       ],
       "description": "Direct SDS evolution-map planning route",
-      "meaning": "Maintain the accepted Application-development manifest, Benefit-driver coverage and concrete Step routing/readiness without copying Step Target Bodies.",
+      "meaning": "Maintain the accepted Application-development manifest, material Application/Scenario driver coverage and concrete Step routing/readiness without copying Step Target Bodies.",
       "activeContextBehavior": "Treat the explicit command as selected invocation intent inside always-active IDTSPE. Re-evaluate current Use-Case composition, resolve/reuse a natural Target/context only when useful, confirm the selected Target Module Entry Point/local applicability gate, and then resolve CREATE/REFINE/EXTEND/REVALIDATE/REPAIR from actual current Target state. Do not create a Target or Result Unit merely because the command exists.",
       "traversalReadMode": "Reuse current reliable IDTSPE/SDS governance; targeted refresh of the selected owner route when uncertain; full bootstrap only when no reliable sufficient governance context exists.",
       "ownerFiles": [
@@ -4568,7 +4568,7 @@
       ],
       "processCalls": [],
       "compositionContributions": [],
-      "expectedOutput": "Concept-focused Application Definition refinement: a concise summary of what the Application is, why it is needed / its overall Benefit, and briefly how it roughly works, with material Q/R/P only when needed.",
+      "expectedOutput": "Concept-focused Application Definition refinement: a concise summary of what the Application is, why it exists / what value it targets, and briefly how it roughly works, with material Q/R/P only when needed.",
       "permissionMode": "read-only-planning",
       "keyReminders": [
         "SDS is an IDTSPE profile, not a second runtime.",
@@ -4654,8 +4654,8 @@
         "спланируй сценарий",
         "план сценария приложения"
       ],
-      "description": "Scenario journey and Application Contribution planning with Feature OPEN or resolved",
-      "meaning": "Run TM-SCENARIO-PLANNING for one real-life actor/external/Application journey in which upstream Application Benefits may manifest or close. Compose actor/external actions, Application Contributions, order/branch/convergence/re-entry, continuity, material Screen/external participation, sparse journey-level must-holds and optional E2E Proof Intent. While Feature ownership is OPEN, plan the required Application outcome and bounded provisional behavior inside the same Step-owned Scenario Target Body without requiring a Feature file. When ownership is resolved, reference the selected Feature/result and move detailed Feature behavior and semantic data to TM-FEATURE; Benefit promise meaning stays in Application Definition. Keep one Scenario identity and its represented family/coverage boundary through that maturity change.",
+      "description": "Scenario journey, normative SPS/SR and Application Contribution planning with Feature OPEN or resolved",
+      "meaning": "Run TM-SCENARIO-PLANNING for one real-life actor/external/Application journey. Compose normative SPS steps across actor/external/Application participation, Application Contributions, order/branch/convergence/re-entry, continuity, material Screen/external participation, step-attached and Scenario-wide SR must-holds, and optional E2E Proof Intent. While Feature ownership is OPEN, plan the required Application outcome and bounded provisional behavior inside the same Step-owned Scenario Target Body without requiring a Feature file. Prefer a separate external-event SPS and Application trigger/entry SPS when that distinction materially clarifies downstream realization. When ownership is resolved, reference the selected Feature/result and move detailed Feature behavior and semantic data to TM-FEATURE. Keep one Scenario identity and its represented family/coverage boundary through that maturity change.",
       "activeContextBehavior": "Treat the explicit command as selected invocation intent inside always-active IDTSPE. Re-evaluate current Use-Case composition, resolve/reuse a natural Target/context only when useful, confirm the selected Target Module Entry Point/local applicability gate, and then resolve CREATE/REFINE/EXTEND/REVALIDATE/REPAIR from actual current Target state. Do not create a Target or Result Unit merely because the command exists.",
       "traversalReadMode": "Reuse current reliable IDTSPE/SDS governance; targeted refresh of the selected owner route when uncertain; full bootstrap only when no reliable sufficient governance context exists.",
       "ownerFiles": [
@@ -4677,7 +4677,7 @@
       ],
       "processCalls": [],
       "compositionContributions": [],
-      "expectedOutput": "One Step-owned or current Scenario journey with actor/external/Application path, contribution set, Feature OPEN or resolved refs, material coverage boundary, continuity and applicable Unit dispositions.",
+      "expectedOutput": "One Step-owned or current Scenario journey with normative SPS path, Application Contributions, step-attached and Scenario-wide SRs when material, Feature OPEN or resolved refs, Screen/external participation, continuity and applicable Unit dispositions.",
       "permissionMode": "read-only-planning",
       "keyReminders": [
         "SDS is an IDTSPE profile, not a second runtime.",
@@ -5372,7 +5372,7 @@
       ],
       "processCalls": [],
       "compositionContributions": [],
-      "expectedOutput": "Screen/Spatial Model: material Screen inventory/purpose, Feature/Scenario participation, routes/transitions/global spatial constraints and only independently useful Screen/zone draft detail; may validly conclude no Screen Target is justified.",
+      "expectedOutput": "Screen/Spatial Model: material Screen inventory/purpose, routes/transitions/global spatial constraints, and per-Scenario SPS participation for each Screen with optional step-local SCR-* plus Screen-wide SCR-G-* shaping the selected spatial presentation; no copied Scenario SR authority; may validly conclude no Screen Target is justified.",
       "permissionMode": "read-only-planning",
       "keyReminders": [
         "SDS is an IDTSPE profile, not a second runtime.",
@@ -5485,7 +5485,7 @@
       ],
       "processCalls": [],
       "compositionContributions": [],
-      "expectedOutput": "One Screen Draft scope within the same Screen Target family.",
+      "expectedOutput": "One Screen Draft within the same Screen Target family, including each participating Scenario SPS that actually occurs on the Screen, optional step-local SCR-* references, applicable Screen-wide SCR-G-* meaning, and the resulting Screen participation / spatial presentation.",
       "permissionMode": "read-only-planning",
       "keyReminders": [
         "SDS is an IDTSPE profile, not a second runtime.",

@@ -75,22 +75,27 @@ It answers:
 
 ```text
 what this Application is
-why it is needed / what overall Benefit it provides
+why it exists / what value it targets
 how it roughly works — briefly, at concept level
 ```
 
-The short “how it roughly works” point must not expand into detailed Feature/Scenario behavior, architecture, Domain design or implementation planning.
+Neighboring Application Definition responsibilities remain separate:
 
-Existing-solution comparison, individual Application Benefits, Benefit-specific Responsibility Boundaries and proportional feasibility remain neighboring Application Definition responsibilities rather than fields inside Application Concept. Candidate alternatives remain normal Proposal/Decision/branch state until selected.
+```text
+RU-APP-02 — Existing-Solution / Reference Position
+RU-APP-08 — Own-Application Justification / Key Behavior Focus
+RU-APP-07 — Realization Feasibility / Early Implementation Planning
+```
 
-Do not create a mandatory `Application Concept Feature` layer. If a capability hypothesis is really user value, keep it with the relevant Application Benefit/Proposal. Provisional behavior planning may live in a Step-owned Scenario while Feature ownership is OPEN; resolved detailed behavior goes to the natural Feature owner.
+`KBF-*` may be used for stable addressability when key behavior focus needs downstream reference. It is not a Feature identity or Requirement family. `RU-APP-07` may contain early Application-level implementation planning that later Scenario/Feature/Screen/Domain/Slice work consumes and refines; it must not pre-own exact downstream topology.
+
+Do not create a mandatory `Application Concept Feature` layer. Real-life journey meaning belongs to Scenario; resolved detailed Application behavior belongs to Feature.
 
 ## Application Responsibility
 
-Do not create one standalone Application Responsibility/Boundary unit in the canonical SDS Application Definition. Each substantive Application Benefit carries its own `Responsibility Boundary`: what the Application owns/provides for that Benefit and what remains with actors, manual process or external systems. Cross-Benefit consistency may be reviewed, but authoritative boundary meaning remains on the affected Benefits.
+Do not create one generic Benefit catalog or one free-floating responsibility register merely to bridge planning levels. The selected Application responsibility is expressed by the coherent combination of Concept, Existing-Solution position, Own-Application Justification / Key Behavior Focus and feasibility/early-realization boundaries.
 
-When a custom concept is selected, derive the Application responsibility from the selected Concept + whole-solution boundary rather than silently expanding it. Keep people/process/existing tools/external services outside when the selected whole solution leaves them outside.
-
+When a custom concept is selected, keep people/process/existing tools/external services outside where the whole solution leaves them outside. Scenario planning then makes the real-life actor/external/Application boundary concrete through `SPS-*`, Application Contributions and `SR-*`.
 
 ## Scenario
 

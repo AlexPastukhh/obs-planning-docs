@@ -18,9 +18,11 @@ Requirement
 
 There is no baseline `TM-REQUIREMENT`.
 
-## Application Benefit boundary and constraint addressability
+## Application Definition upstream meaning is not a Requirement family
 
-Application Benefit owns its Responsibility Boundary / Constraints under [TM-APPLICATION-DEFINITION](../../target-modules/TM-APPLICATION-DEFINITION.md). Optional `AB-*` / `BC-*` refs address accepted Benefit/constraint meaning inside that natural owner; `BC-*` does not create a new Requirement family, Target Module or peer owner. Downstream owners reference the relevant Benefit/constraint instead of copying its authority.
+[TM-APPLICATION-DEFINITION](../../target-modules/TM-APPLICATION-DEFINITION.md) may own application-level proposition/focus meaning such as `KBF-*` addressable Key Behavior Focus and early realization pressure. That upstream meaning is **not** a universal Requirement family. Downstream Scenario/Feature/Screen/Domain/Slice owners consume it as Source and form their own natural-owner `SR-*` / `BR-*` / `SCR-*` / `IR-*` meaning only when the corresponding must-hold genuinely belongs there.
+
+`KBF-*` therefore does not become a Requirement merely because a downstream owner references it, and a downstream Requirement does not copy equal authority back into Application Definition.
 
 ## Temporal Authority — Current vs Future Requirements
 
@@ -82,11 +84,13 @@ Canonical `BR-*` text stays with the Feature behavior/branch it constrains when 
 
 ### Scenario Requirement — `SR-*`
 
-A durable journey-level must-hold whose natural owner is the Scenario belongs to the Scenario as `SR-*`. A Scenario may legitimately have zero `SR-*` Requirements when no journey-level must-hold needs independent durable addressability.
+A durable Scenario-natural must-hold belongs to the Scenario as `SR-*`. It may constrain one `SPS-*`, several `SPS-*`, or the Scenario as a whole. A Scenario may legitimately have zero `SR-*` Requirements when no Scenario must-hold needs independent durable addressability.
+
+`SPS-*` is normative Scenario path meaning in its own right and may itself be a downstream realization obligation; it does not need an `SR-*` merely to become realizable. Downstream Feature/Screen owners may reference applicable SPS/SR meaning while keeping canonical SR authority in Scenario.
 
 Scenario-specific formation, `SR-*` identity, SR↔SPS relation, SR↔BR duplication guards, exact representation and validators are owned by [`TM-SCENARIO-PLANNING`](../../target-modules/TM-SCENARIO-PLANNING.md).
 
-A journey must-hold must not duplicate Feature BR text.
+A Scenario must-hold must not duplicate Feature BR text.
 
 ### Domain Implementation Requirement — `IR-DOMAIN-*`
 
@@ -108,7 +112,7 @@ Rare owner-local durable non-obvious constraint on **how proof itself must be re
 
 ## Other Owner-Local Must-Holds
 
-Application Definition and Screen may own material responsibility/spatial/accessibility/platform must-holds as part of their own selected result. Stable addressability may be added when useful without creating a universal Requirement Target family.
+Application Definition may own application-level proposition/focus constraints as part of its selected result without turning `KBF-*` into a Requirement family. Screen may own material spatial/navigation/accessibility/platform must-holds; `TM-SCREEN` may use local `SCR-*` / `SCR-G-*` addressability for those Screen-owned obligations without creating a universal cross-owner Requirement family.
 
 ## Classification / Representation
 

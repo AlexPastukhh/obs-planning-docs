@@ -8,7 +8,7 @@ Role: persistent bounded future-transition planning owner
 
 > Semantic Owner Dependencies
 > - Type: `EXTENDS`; Responsibility: `TARGET-MODULE.META-MODEL`; Owner: [Target Module Meta-Model](../../../idtspe-core/target-modules/TARGET-MODULE-MODEL.md#target-module-meta-model)
-> - Type: `CONTEXTUALIZES`; Responsibility: `SDS.APPLICATION-BENEFIT-BOUNDARY-CONSTRAINTS`; Owner: [Application Benefit Boundary / Constraints](TM-APPLICATION-DEFINITION.md#sds-application-benefit-boundary-constraints)
+> - Type: `CONTEXTUALIZES`; Responsibility: `TM-APPLICATION-DEFINITION`; Owner: [Application Definition](TM-APPLICATION-DEFINITION.md#tm-application-definition)
 
 ## Purpose
 
@@ -117,7 +117,7 @@ The kind describes transition character; it does not replace the target-state co
 
 This module specializes the Core [Target Module Model](../../../idtspe-core/target-modules/TARGET-MODULE-MODEL.md) and [Unit / Target Step Result Model](../../../idtspe-core/runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md). Core owns generic Unit lifecycle/presence/disposition semantics; this module owns the Evolution-Step-specific Unit identities, dependencies, materiality, production guidance, validators and handoffs below.
 
-When `Driven By` references Application Definition value intent, a plain `AB-*` reference remains valid for a whole-Benefit driver. If only a bounded Benefit Responsibility Boundary / Constraint clause actually drives the Step, prefer the more precise `AB-* / BC-*` reference when that clause is addressable. This is reference precision only; the Evolution Step does not become owner of the Benefit or claim whole-Benefit realization.
+When `Driven By` references upstream application/journey meaning, use the smallest useful accepted driver reference. A whole Application Definition or Scenario reference is valid when that whole subject materially drives the Step; prefer precise `KBF-*`, `SPS-*` or `SR-*` refs when one addressable item is the real driver. This is reference precision only: the Evolution Step does not become owner of Application Definition or Scenario meaning and does not claim full realization merely by referencing it.
 
 `RU-EVO-02` is one Module-defined Unit responsibility in every formed Step inventory. Its Result Content Contract declares the `Evolution Impacts` Collection with `0..N` bounded Impact items governed by the same existing Impact item meaning. Impact items are runtime result values inside this Unit, not child Target Work Units and not Unit Resolution Slots merely by count. This Module defines a stricter domain-specific rule than generic Collection semantics: if there are no material Impact subjects left after full Target Bodies and other Step Units own their natural meaning, `RU-EVO-02` carries its Unit-level omission disposition and no placeholder items are manufactured. This does not redefine a generic empty Collection result as omission for other Units. The other Step Units likewise represent their own distinct Step-level responsibilities.
 
@@ -360,8 +360,8 @@ Before writing Step-wide concern meaning, inspect affected reusable owner surfac
 ```text
 Target Feature Body / RU-FEAT-04 Implementation Concerns
 Target Scenario Body / RU-SCEN-03 Journey Realization Concerns
-Application Definition / RU-APP-07 Realization Feasibility
-  when upstream feasibility still materially constrains this Step
+Application Definition / RU-APP-07 Realization Feasibility / Early Implementation Planning
+  when upstream feasibility or early application-level realization pressure still materially constrains this Step
 Target Domain / Slice / Shared owner-local IR/PFR and relevant owner constraints
 Screen/spatial constraints when they materially affect cross-owner realization
 ```

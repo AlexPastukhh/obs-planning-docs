@@ -1,7 +1,7 @@
 # Application Concept Draft Template
 
 Status: active reusable recommended template for the canonical SDS `RU-APP-05 Application Concept`
-Purpose: keep the first Application Definition Result Unit, `RU-APP-05`, short and understandable. Stable Application identity and upstream references remain ordinary document/Target context; no separate Identity / Selected Contribution Unit is created. This template is **not** the whole Application Definition and must not absorb Benefits, alternatives, feasibility, detailed behavior or architecture.
+Purpose: keep the first Application Definition Result Unit, `RU-APP-05`, short and understandable. Stable Application identity and upstream references remain ordinary document/Target context; no separate Identity / Selected Contribution Unit is created. This template is **not** the whole Application Definition and must not absorb Existing-Solution position, Own-Application Justification / Key Behavior Focus, feasibility/early implementation planning, detailed behavior or architecture.
 
 Canonical owner:
 - [`../../idtspe-methodology/active/profiles/sds/target-modules/TM-APPLICATION-DEFINITION.md`](../../idtspe-methodology/active/profiles/sds/target-modules/TM-APPLICATION-DEFINITION.md)
@@ -10,7 +10,7 @@ Canonical owner:
 
 ### Summary
 
-<In a short paragraph: what this Application is, why it is needed, and what overall Benefit it provides.>
+<In a short paragraph: what this Application is, why it exists, and what overall value it targets.>
 
 ### How It Roughly Works
 
@@ -20,8 +20,8 @@ Canonical owner:
 
 ```text
 Application Definition / selected contribution: <link/ref>
-Application Benefits: <AB-* refs>
-Scenario / Evolution coverage: <current Scenario or Step-owned future Scenario refs when material; no journey bodies here>
+Key Behavior Focus: <KBF-* refs when stable addressability is useful>
+Downstream Scenario / Evolution drivers: <refs when materially useful; no journey bodies here>
 Material Proposal/Decision/Q/R/P: <refs only when useful>
 ```
 
@@ -31,16 +31,15 @@ These references provide context; their bodies remain with their natural owners.
 
 ```text
 Application Concept
-≠ Application Benefits
-≠ standalone Application Responsibility Boundary
+≠ Own-Application Justification / Key Behavior Focus
 ≠ existing-solution comparison
-≠ Realization Feasibility
+≠ Realization Feasibility / Early Implementation Planning
 ≠ Feature decomposition
 ≠ Scenario
 ≠ architecture specification
 ≠ implementation plan
 ```
 
-Each substantive Application Benefit carries its own Responsibility Boundary in `RU-APP-03`. Existing-solution position, Scenario/Evolution coverage (`RU-APP-04`) and Realization Feasibility remain their own Application Definition Result Units. `RU-APP-04` contains navigation and uncovered intent, not real-life Scenario bodies.
+Existing-Solution position remains `RU-APP-02`; own-Application justification/key behavior remains `RU-APP-08`; feasibility/early implementation planning remains `RU-APP-07`. Real-life Scenario bodies belong to `TM-SCENARIO-PLANNING` and are only referenced when useful.
 
 If the Concept needs extensive mechanics to be understandable, keep only the short conceptual explanation here and route the detail to its natural downstream owner.

@@ -41,9 +41,9 @@ accepted current owner contract for a materialized state
 → work directly with the current natural owner when review/revalidation is needed
 → actual implementation/Evidence may confirm or contradict that contract without silently rewriting it
 
-Application need/value/contribution/boundary intent changes
+Application Concept / own-Application justification / Key Behavior Focus / application-level feasibility or early implementation planning changes
 → refine TM-APPLICATION-DEFINITION directly
-→ selected Application intent may drive downstream Evolution
+→ selected Application meaning may drive downstream Scenario/Evolution planning
 
 material downstream desired state is not yet realized
 → host that future downstream state in TM-EVOLUTION-STEP
@@ -60,7 +60,11 @@ For unrealized software change, the normal orientation is:
 
 ```text
 Application Definition
-→ selected upstream driver when material
+→ selected upstream Application proposition / Key Behavior Focus / early realization pressure when material
+
+Need / real-life evidence
+→ may also form Scenario first when that is the clearer natural subject
+→ Scenario result/path/SR Evidence may revalidate Application Definition
 
 current realized downstream owners / implementation / Evidence
 → Evolution Step
@@ -90,35 +94,41 @@ This direction is orientation, not a phase sequence. Several planning depths/mod
 
 ## Contextual Evolution-Step planning and readiness
 
-The accepted Evolution Steps Map routes concrete Steps and Application-intent/Benefit coverage without copying Step bodies. A concrete next Step may be named and selected while its target plan is `INCOMPLETE` and its realization start is `BLOCKED`. For that Step, review materially relevant current state, reuse known Questions, derive missing material Questions from current maturity, resolve or route USER-owned choices through existing gates, integrate consequences into Step/Targets/PRS/Map, then rederive after any material change. Repeat until a stable planning conclusion or existing review/blocker. Planning Completeness and Start Readiness are separate Step-owned conclusions; neither follows merely from an empty PRS Question list.
+The accepted Evolution Steps Map routes concrete Steps and material Application-driver coverage without copying Step bodies. A concrete next Step may be named and selected while its target plan is `INCOMPLETE` and its realization start is `BLOCKED`. For that Step, review materially relevant current state, reuse known Questions, derive missing material Questions from current maturity, resolve or route USER-owned choices through existing gates, integrate consequences into Step/Targets/PRS/Map, then rederive after any material change. Repeat until a stable planning conclusion or existing review/blocker. Planning Completeness and Start Readiness are separate Step-owned conclusions; neither follows merely from an empty PRS Question list.
 
 ## 3. Application Definition
 
-Application Definition is the conditional upstream semantic form when own-Application contribution/boundary/feasibility can materially change downstream meaning.
+Application Definition is the conditional upstream semantic form when the own-Application proposition/focus/feasibility can materially change downstream meaning.
 
 ```text
-review/refine Application need/value/contribution/boundary intent
+review/refine Application Concept
++ Existing-Solution / Reference Position
++ Own-Application Justification / Key Behavior Focus
++ Realization Feasibility / Early Implementation Planning
 → work directly with TM-APPLICATION-DEFINITION
-→ classify addressable Benefits as Selected or Possible
 
-selected Application intent requires unrealized downstream change
-→ Evolution Step references that intent through `Driven By`
+selected Application meaning requires unrealized downstream change
+→ Scenario may develop the real-life SPS/SR obligations
+→ Evolution Step references the material Application/Scenario drivers through `Driven By`
 → Step owns only downstream Target Owner Bodies
+
+Scenario formed first from Need / real-life evidence
+→ may provide Evidence back to refine Application Definition
 ```
 
-The exact activation/skip gate remains owned by [`../target-modules/TM-APPLICATION-DEFINITION.md`](../target-modules/TM-APPLICATION-DEFINITION.md).
+There is no mandatory Application-Definition-before-Scenario creation order. The exact activation/skip gate remains owned by [`../target-modules/TM-APPLICATION-DEFINITION.md`](../target-modules/TM-APPLICATION-DEFINITION.md).
 
 ## 4. Feature ↔ Scenario ↔ Screen Peer Formation
 
 These are peer semantic owner families:
 
 ```text
-Feature  = canonical coherent behavior + semantic Feature Data + BR-* once resolved
-Scenario = real-life actor/external/Application journey, Application Contributions and provisional behavior planning while Feature is OPEN; resolved Feature/result refs later
-Screen   = spatial/navigation composition / Feature presence / routes
+Scenario = normative real-life SPS path + Application Contributions + Scenario-owned SR-*; Feature may remain OPEN
+Feature  = canonical coherent application behavior + semantic Feature Data + BR-*; records which Scenario SPS/SR meaning it realizes
+Screen   = application-owned spatial/navigation composition; gathers per-Scenario SPS participation + Screen-local SCR-* / SCR-G-* without copying SR authority
 ```
 
-A Scenario may be formed with zero resolved Features. When Feature identity becomes sufficiently resolved, move canonical detailed behavior into a complete Target Feature Body and retain only contribution/result links in that Scenario. When a Behavioral/Mixed Step represents changed resolved Feature behavior, every NEW/CHANGED Feature in a fully planned Step uses one complete Target Feature Body. The **particular next Step for realization** cannot start until all `RU-EVO-01..06` obligations are resolved/disposed and every owner whose post-Step authority is created/replaced has a complete Target Body, especially Domain and Slice as well as Feature, Scenario, Screen and Shared. Their ordinary owner-specific Target Modules shape those complete bodies; the Step indexes them and may link separate files rather than embed them. A distant Step may retain bounded Impacts while truthfully reporting `INCOMPLETE` with its resolved/missing planning explained and each material current-owner impact reverse-linked. Scenario/Screen/Domain/Slice/Shared consequences can first be represented through bounded Step `Evolution Impact` items; they must converge into complete corresponding post-Step Target Bodies when those owners are created/replaced by the next Step. Current owners unchanged by the Step are referenced, and retirements specify transition/consumer consequences. Candidate bodies remain under their enclosing Proposal/branch authority until selected; canonical integration/materialization still requires normal selection. Implementation-only foundation Steps need not invent a Feature target. A finding in one proposes/revalidates another owner; it never silently edits another.
+A Scenario may be formed with zero resolved Features and may itself supply downstream realization obligations through `SPS-*`, step-attached `SR-*` and Scenario-wide `SR-*`. One Feature may realize several SPS steps; one SPS may be jointly realized by several Features. Actor/external-only SPS normally remain preceding/trigger context rather than Feature-realized behavior. When Feature identity becomes sufficiently resolved, move canonical detailed behavior into a complete Target Feature Body and retain Scenario path/contribution/Feature-result relations without copying FBS/BR detail. When a Behavioral/Mixed Step represents changed resolved Feature behavior, every NEW/CHANGED Feature in a fully planned Step uses one complete Target Feature Body. The **particular next Step for realization** cannot start until all `RU-EVO-01..06` obligations are resolved/disposed and every owner whose post-Step authority is created/replaced has a complete Target Body, especially Domain and Slice as well as Feature, Scenario, Screen and Shared. Their ordinary owner-specific Target Modules shape those complete bodies; the Step indexes them and may link separate files rather than embed them. A distant Step may retain bounded Impacts while truthfully reporting `INCOMPLETE` with its resolved/missing planning explained and each material current-owner impact reverse-linked. Scenario/Screen/Domain/Slice/Shared consequences can first be represented through bounded Step `Evolution Impact` items; they must converge into complete corresponding post-Step Target Bodies when those owners are created/replaced by the next Step. Current owners unchanged by the Step are referenced, and retirements specify transition/consumer consequences. Candidate bodies remain under their enclosing Proposal/branch authority until selected; canonical integration/materialization still requires normal selection. Implementation-only foundation Steps need not invent a Feature target. A finding in one proposes/revalidates another owner; it never silently edits another.
 
 Application Definition provides upstream application intent and Planning Resolution State coordinates planning; neither is materialized as a downstream natural owner by an Evolution Step. For the downstream materializable Feature/Scenario/Screen/Domain/Slice/Shared owner families, the selected Step's complete post-Step bodies guide SDS Code Realization or broad Core Exact Realization, according to the artifact being realized. Only after implementation, required proof and revalidation does `RU-EVO-04` materialize their realized `CREATE`/`REPLACE`/`RETIRE` state into current natural owners. Discovery Targets remain working inputs rather than additional post-Step owner bodies.
 

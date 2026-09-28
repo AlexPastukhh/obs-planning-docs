@@ -13,7 +13,7 @@ Role: central accepted Application-development manifest / registry Target
 
 ## Purpose
 
-Own the accepted Application-development manifest: concrete known future transitions, their routing/readiness and coverage of accepted Application intent/Benefits, without duplicating each Evolution Step's complete future-state plan or Target Owner Bodies.
+Own the accepted Application-development manifest: concrete known future transitions, their routing/readiness and coverage of accepted material Application drivers, without duplicating each Evolution Step's complete future-state plan or Target Owner Bodies.
 
 The Map coordinates discoverable **projections** of Step identity, planning position, relations, target-resolution visibility, concern/readiness state and compact uncertainty. `TM-EVOLUTION-STEP` owns those Step semantics; the Map owns only registry/routing/projection behavior.
 
@@ -47,7 +47,7 @@ This module specializes the Core [Target Module Model](../../../idtspe-core/targ
 |---|---|
 | `RU-EVOMAP-01` | Registry / Routing — concrete Step identity, authority/navigation, purpose and planning-position projection |
 | `RU-EVOMAP-02` | Semantic Relations / Concerns / Planning Completeness / Start Readiness — direct `Entering From`, alternative/condition/horizon, compact Step-wide concern status and the two distinct readiness conclusions |
-| `RU-EVOMAP-03` | Application Intent / Benefit Driver Coverage — accepted `AB-*` intent routed to concrete Steps/current realized coverage or explicitly uncovered when material |
+| `RU-EVOMAP-03` | Application Driver Coverage — material Application Definition / Scenario drivers routed to concrete Steps/current realized coverage or explicitly uncovered when material |
 
 ### Result Unit Applicability / Materiality
 
@@ -57,7 +57,7 @@ Unit presence/disposition mechanics follow the Core [`Unit Applicability / Mater
 |---|---|---|
 | `RU-EVOMAP-01` | one or more concrete Steps need discoverable registry/routing visibility | `OMITTED` — no concrete Evolution Step currently deserves registry identity |
 | `RU-EVOMAP-02` | predecessor/alternative/condition/horizon/concern/readiness/uncertainty projection materially affects navigation, realization ordering or review | `OMITTED` with a concise reason when no cross-Step relation/readiness detail is material beyond the registry rows |
-| `RU-EVOMAP-03` | accepted Application Definition intent/Benefit drivers need coverage trace or an explicit uncovered gap | `OMITTED` only when no Application-intent coverage relation is material yet |
+| `RU-EVOMAP-03` | material Application Definition / Scenario drivers need coverage trace or an explicit uncovered gap | `OMITTED` only when no Application-driver coverage relation is material yet |
 
 
 ### Explicit Unit Checkpoint Placement
@@ -78,18 +78,18 @@ Each material Unit inherits the Core [`Unit Applicability Envelope`](../../../id
 
 #### `RU-EVOMAP-03` processing envelope
 
-1. **Opening Unit Checkpoint — `RU-EVOMAP-03`** — read the relevant accepted Application Definition/Benefit drivers and realized coverage.
+1. **Opening Unit Checkpoint — `RU-EVOMAP-03`** — read the relevant accepted Application Definition / Scenario drivers and realized coverage.
 2. **Unit Work — `RU-EVOMAP-03`** — route each material accepted driver to concrete Step authority or current realized coverage; expose uncovered accepted intent truthfully.
 3. **Closing Unit Checkpoint — `RU-EVOMAP-03`** — verify refs and avoid promoting vague pressure into a fake Step.
 
 <a id="ru-evomap-03--application-intent--benefit-driver-coverage"></a>
-## `RU-EVOMAP-03` — Application Intent / Benefit Driver Coverage
+## `RU-EVOMAP-03` — Application Driver Coverage
 
 **Lens Attachments**
 
 - **Core Lens Pack:** `INHERITED` via [`Core Lens Pack`](../../../idtspe-core/lenses/LENS-REGISTRY.md)
 
-The Application Definition owns upstream intent and Benefit promise boundaries. This Map owns the development-plan coverage projection: `AB-*` or precise `BC-*` driver → current realized coverage and/or concrete planned Step → Step-owned authority. Keep materially accepted uncovered intent visible, including when the later planning horizon is `UNESTABLISHED`. Do not copy the Benefit body or Step Target Bodies. A candidate Map remains candidate under Proposal/PRS until selected; Map acceptance does not make a registered Step planning-complete or realization-ready.
+Application Definition owns upstream Application proposition/focus meaning and Scenario owns normative SPS/SR journey meaning. This Map owns only the development-plan driver-coverage projection: material Application Definition or Scenario driver reference → current realized coverage and/or concrete planned Step → Step-owned authority. Prefer precise `KBF-*`, `SPS-*` or `SR-*` refs when they are the actual driver; whole-owner references remain valid when finer precision adds no value. Keep materially accepted uncovered intent visible, including when the later planning horizon is `UNESTABLISHED`. Do not copy Application/Scenario bodies or Step Target Bodies. A candidate Map remains candidate under Proposal/PRS until selected; Map acceptance does not make a registered Step planning-complete or realization-ready.
 
 One concrete next Step is a valid rolling-horizon manifest. Later work may be `UNESTABLISHED`; speculative ideas remain outside the Step registry until concrete enough to deserve identity.
 
@@ -173,7 +173,7 @@ Planning Position, Target Resolution, Planning Completeness, Start Readiness and
 
 For non-trivial branching include a compact derived semantic DAG/read-path view. `Entering From` edges are semantic predecessor edges; do not create a second technical-foundation DAG. Detailed reasons/Q/R/P remain in each Step.
 
-When `RU-EVOMAP-03` is material, represent its `AB-*` / `BC-*` driver coverage as a compact projection beside or linked from the registry. Each relation points to current realized coverage, a concrete Step authority, or an explicit uncovered gap. The registry's Step rows need not duplicate the Application Definition or Scenario bodies.
+When `RU-EVOMAP-03` is material, represent its Application/Scenario driver coverage as a compact projection beside or linked from the registry. Each relation points to current realized coverage, a concrete Step authority, or an explicit uncovered gap. The registry's Step rows need not duplicate the Application Definition or Scenario bodies.
 
 ## Post-Realization Projection
 
@@ -201,7 +201,7 @@ Current-owner reverse Evolution Impact projection lifecycle follows the shared [
 ```text
 every listed Step resolves to one Step authority
 planning position is truthful
-material accepted Application/Benefit drivers resolve to current coverage, concrete Step authority or an explicit uncovered gap
+material accepted Application/Scenario drivers resolve to current coverage, concrete Step authority or an explicit uncovered gap
 projected Entering From / concern / readiness values resolve to and match the Step authority
 enables remains derived navigation
 no copied Expected Entry State or concern/readiness authority exists in the Map

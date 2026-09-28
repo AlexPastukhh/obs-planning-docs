@@ -1,10 +1,10 @@
 # Prototype Planning Workflow
 
-> **Compatibility vocabulary boundary.** This supporting file preserves older application-planning discovery/workspace heuristics. Terms such as `Scenario DATA`, `Behavior Items`, standalone `Requirement`, or `Slice Strategy` below do not define current SDS owner identities. Current authority is the active SDS Target/Lens registries: Feature owns behavior/semantic data, Scenario owns actor/external journey composition with Benefit manifestation/closure, requirements stay with natural Feature/Domain/Slice/Shared owners, and Slice Strategy is not an active Target family. Use older terms only as supporting heuristics where they do not conflict with current owners.
+> **Compatibility vocabulary boundary.** This supporting file preserves older application-planning discovery/workspace heuristics. Terms such as `Scenario DATA`, `Behavior Items`, standalone `Requirement`, or `Slice Strategy` below do not define current SDS owner identities. Current authority is the active SDS Target/Lens registries: Application Definition owns Concept / own-Application justification + key behavior focus / feasibility + early implementation planning; Scenario owns normative real-life `SPS-*` journey meaning and `SR-*`; Feature owns behavior/semantic data and records the Scenario meaning it realizes; Screen owns spatial/navigation composition with local `SCR-*` / `SCR-G-*`; downstream implementation requirements stay with their natural Domain/Slice/Shared owners; Slice Strategy is not an active Target family. Use older terms only as supporting heuristics where they do not conflict with current owners.
 
 
 Status: active reusable workflow
-Scope: interaction/workflow prototype planning between a selected/current Application Definition (Benefits with their Responsibility Boundaries + concise Application Concept) and canonical detailed Scenario/Screen planning.
+Scope: interaction/workflow prototype planning between a selected/current Application Definition (Concept + own-Application/key-behavior focus + feasibility/early planning when material) and canonical detailed Scenario/Screen planning.
 
 Canonical cross-cutting context: [`requirements-and-change-context.md`](requirements-and-change-context.md)
 
@@ -18,9 +18,10 @@ Recommended plan/evidence shapes:
 Prototype planning cheaply tests and clarifies **how the selected application concept may actually work for users** before detailed Scenario/Screen meaning is treated as current authority.
 
 ```text
-selected/current Application Definition
-+ selected Application Benefits with their Responsibility Boundaries
+selected/current Application Definition when material
 + concise Application Concept
++ Own-Application Justification / Key Behavior Focus
++ relevant feasibility / early implementation planning
 + candidate/current Application Scenarios
 ↓
 Prototype Planning

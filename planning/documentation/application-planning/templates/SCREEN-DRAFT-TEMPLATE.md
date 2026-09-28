@@ -50,8 +50,8 @@ Do not copy canonical Feature behavior into Screen drafts. Reference Feature/`BR
 
 ```text
 Feature  → behavior / principal result
-Scenario → actor/external journey composition + Benefit manifestation/closure
-Screen   → spatial/navigation composition, Feature presence and screen-specific constraints
+Scenario → normative SPS journey + Scenario-owned SR must-holds
+Screen   → spatial/navigation composition, per-Scenario SPS participation and Screen-local SCR/SCR-G requirements
 ```
 
 Changing where a Feature is exposed usually changes Screen composition, not Feature behavior identity.

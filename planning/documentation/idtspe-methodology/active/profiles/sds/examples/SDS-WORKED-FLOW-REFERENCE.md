@@ -80,7 +80,7 @@ Upstream Application Definition:
 
 The Step is the semantic owner of the future **downstream** target state. Application Definition is refined upstream and may drive the Step; supporting downstream SDS modules shape Target Owner Bodies **inside this Step**.
 
-## 4. Application Definition driver — only when own-software boundary is material
+## 4. Application Definition driver — only when own-software proposition is material
 
 Existing alternatives are compared proportionally:
 
@@ -91,33 +91,57 @@ manual copy
 small own capture application
 ```
 
-Suppose the selected future contribution is:
+Suppose the selected application proposition is:
 
 ```text
-very fast temporary capture
-+ later review/triage
+Application Concept:
+  very fast temporary capture + later review/triage
 
-outside:
-  full long-term knowledge management
+Own-Application Justification / Key Behavior Focus:
+  KBF-CAPTURE-FAST — preserve selected material + source context
+  without forcing the actor out of the active reading flow;
+  existing manual/general-note routes do not satisfy that focus well enough.
+
+Realization Feasibility / Early Implementation Planning:
+  capture needs a low-friction entry path and durable acceptance boundary;
+  exact transport/storage/UI topology remains downstream.
 ```
 
-`TM-APPLICATION-DEFINITION` is refined directly:
+`TM-APPLICATION-DEFINITION` is refined directly. `EVO-INITIAL-CAPTURE` may reference `KBF-CAPTURE-FAST` as a precise driver, but does not copy Application Definition into a Target Application Body.
+
+A real-life Scenario may also be formed first from Need/workflow evidence and later revalidate this Application Definition; the direction is not a mandatory phase order.
+
+## 5. Scenario → Feature / Screen target bodies
+
+Supporting peer planning may produce the following **partial semantic excerpts** of complete Target Scenario/Feature/Screen Bodies:
 
 ```text
-Application Definition
-  AB-CAPTURE-FAST-TEMPORARY-CAPTURE — Selected
-  own contribution / boundary / feasibility meaning
-```
+Target Scenario Body: SCN-CAPTURE-THEN-REVIEW
 
-`EVO-INITIAL-CAPTURE` records that selected Application meaning under `Driven By`, but does not copy it into a Target Application Body.
+  Scenario Path:
+    SPS-CAP-01 — actor identifies useful material while reading
+    SPS-CAP-02 — actor invokes application capture entry
+    SPS-CAP-03 — application accepts selected material + source context
+    SPS-CAP-04 — actor continues reading
+    SPS-CAP-05 — actor later opens review
+    SPS-CAP-06 — application presents the captured item for triage
 
-## 5. Feature / Scenario / Screen target bodies
+  Step-attached SR:
+    SR-CAP-01 — SPS-CAP-03 must not report success before durable acceptance
 
-Supporting peer planning may produce the following **partial semantic excerpts** of complete Target Feature/Scenario/Screen Bodies:
+  Scenario-wide SR:
+    SR-CAP-G-01 — capture/review continuity preserves the same captured-item identity
 
-```text
 Target Feature Body: FEAT-CAPTURE-ITEM
-  # complete TM-FEATURE Feature Definition for the selected post-Step state; change annotations never substitute for this body
+  Scenario Realization:
+    Preceding / Trigger Context:
+      SPS-CAP-01
+    Realized Scenario Steps:
+      SPS-CAP-02
+      SPS-CAP-03
+    Realized Scenario Requirements:
+      SR-CAP-01
+
   Principal Result:
     selected material + source context is durably accepted
     and the application returns a truthful success/failure result
@@ -126,30 +150,37 @@ Target Feature Body: FEAT-CAPTURE-ITEM
     success is returned only after durable acceptance
 
 Target Feature Body: FEAT-REVIEW-ITEM
+  Scenario Realization:
+    Realized Scenario Steps:
+      SPS-CAP-05
+      SPS-CAP-06
+    Realized Scenario-wide Requirements:
+      SR-CAP-G-01
+
   Principal Result:
     a previously captured item can be reviewed and triaged
 
-  BR-REV-01:
-    review operates on the stored captured-item meaning
+Target Screen Body: SCREEN-REVIEW
+  Scenario: SCN-CAPTURE-THEN-REVIEW
+    SPS-CAP-05
+      Step-local Screen Requirements: SCR-REV-01
+      Screen participation / spatial presentation:
+        review entry exposes the captured-item list/detail path
+    SPS-CAP-06
+      Step-local Screen Requirements: —
+      Screen participation / spatial presentation:
+        selected captured-item meaning and triage actions are presented
 
-Target Scenario Body: SCN-CAPTURE-THEN-REVIEW
-  Journey:
-    FEAT-CAPTURE-ITEM result
-    → actor continues reading
-    → later returns
-    → FEAT-REVIEW-ITEM result
+  Step-local Screen Requirement:
+    SCR-REV-01 — review entry keeps the selected captured-item context visible
 
-  Benefit manifestation / closure:
-    useful material is preserved without interrupting reading
-    and can be intentionally reviewed later
-
-Target Screen Body:
-  SCREEN-CAPTURE
-    exposes FEAT-CAPTURE-ITEM
-  SCREEN-REVIEW
-    exposes FEAT-REVIEW-ITEM
-    supports list/detail/re-entry
+  Screen-wide Requirement:
+    SCR-G-REV-01 — list/detail navigation preserves selected-item context
 ```
+
+`SPS-*` is itself normative Scenario meaning and may be a downstream realization obligation even with no attached `SR-*`. One Feature may realize several Scenario steps; one Scenario step may require several Features. Actor/external-only steps normally remain preceding/trigger context rather than being claimed as Feature-realized.
+
+Scenario `SR-*` remains Scenario authority. Feature and Screen record their realization/participation without copying that authority. Visuality alone does not make a must-hold Screen-owned: a visual Scenario requirement may be behaviorally realized by Feature, spatially supported by Screen, or both.
 
 Feature/Scenario/Screen remain peer owner families. Their **future bodies** are Step-owned until the application is actually realized.
 
