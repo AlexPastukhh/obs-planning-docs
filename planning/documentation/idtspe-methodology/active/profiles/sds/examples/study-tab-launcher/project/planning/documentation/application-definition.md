@@ -1,235 +1,56 @@
 # APP-STL — Study Tab Launcher Application Definition
 
-Status: selected upstream application intent. This owner may state selected or
-possible Application Benefits before downstream realization. Current Feature,
-Scenario, Screen, Domain, Slice and Shared owners retain realized meaning;
-selected unrealized downstream meaning remains inside its Evolution Step.
+Status: selected upstream Application intent. This owner may lead downstream realization; current Feature/Scenario/Screen/Domain/Slice/Shared owners remain realized truth, and selected unrealized succession meaning remains in its Evolution Step. This is a dated independent copied example, not live Launcher authority.
 
-**Need / upstream driver refs:** trusted explicit user intent in this repository: reduce repeated local navigation while preserving explicit user authority. The Benefit-local boundaries below state the detailed promises and constraints.
+**Need / trusted intent:** reduce repeated navigation from one explicitly selected local file/project reference to its VS Code context while preserving user, host and external-producer authority.
 
 ## RU-APP-05 — Application Concept
 
-**Methodology:** [RU-APP-05 Unit Definition](../../../../../target-modules/TM-APPLICATION-DEFINITION.md#application-concept).
+**Methodology:** [Application Concept](../../../../../target-modules/TM-APPLICATION-DEFINITION.md#application-concept).
 
-**Summary:** Study Tab Launcher is a small local bridge that removes repeated
-navigation between an externally selected file/project reference and the
-corresponding VS Code context while preserving explicit user and host
-authority.
+**Summary:** Study Tab Launcher is a small local bridge between an externally selected file/project reference and its corresponding VS Code context; it removes repeated navigation without choosing the person's work.
 
-**How it roughly works:** an optional browser helper turns copied plain paths or one
-project selector into one of a small fixed set of actions. The VS Code
-extension validates local authority, performs the selected safe file/project
-operation and reports what actually happened. Optional future post-open
-cleanup may coordinate only exact participating superseded project windows.
+**How it roughly works:** an optional browser helper turns copied plain paths or a project selector into a small fixed set of explicit actions. The VS Code extension validates local authority, performs the selected safe operation and reports what happened. A selected but unrealized future transition may coordinate exact superseded project windows only after a replacement opens.
 
-The contribution stays limited to explicitly selected local context; choosing work, inspecting study content, scheduling study or mutating planning state is outside it. Detailed authority and safety constraints remain with the [Application Benefits](#ru-app-03--application-benefits).
+Choosing work, inspecting study content, scheduling study and mutating planning state remain outside the Application.
 
-## RU-APP-02 — Existing-solution / reference position
+## RU-APP-02 — Existing-Solution / Reference Position
 
-**Methodology:** [RU-APP-02 Unit Definition](../../../../../target-modules/TM-APPLICATION-DEFINITION.md#existing-solutions--market--reference-research).
+**Methodology:** [Existing-Solution / Reference Position](../../../../../target-modules/TM-APPLICATION-DEFINITION.md#existing-solutions--market--reference-research).
 
-Disposition: resolved and kept in this owner; a separate comparison artifact
-would add no current decision value for this local utility.
+The selected contribution composes browser clipboard access, VS Code extension URIs, a loopback-only coordinator and VS Code's file/window/trust facilities. Each covers part of the route; none alone preserves the explicit selection-to-local-context handoff described here. A small integration remains justified without replacing ChatGPT, VS Code, its native trust/dirty-editor authority or the user's selection. This is the existing local utility's evidence-backed position, not a general market-uniqueness claim.
 
-The selected contribution composes browser clipboard access, VS Code extension
-URIs, a loopback-only coordinator and VS Code's own file/window/trust
-facilities. Each existing facility covers part of the route, but none alone
-preserves the complete explicit selection-to-local-context handoff. A small
-integration therefore remains justified; replacing VS Code, ChatGPT or their
-native trust/dirty-editor authority does not.
+<a id="own-application-justification-key-behavior-focus"></a>
+## RU-APP-08 — Own-Application Justification / Key Behavior Focus
 
-<a id="ru-app-03--application-benefits"></a>
-## RU-APP-03 — Application Benefits
+**Methodology:** [Own-Application Justification / Key Behavior Focus](../../../../../target-modules/TM-APPLICATION-DEFINITION.md#own-application-justification-key-behavior-focus).
 
-**Methodology:** [RU-APP-03 Unit Definition](../../../../../target-modules/TM-APPLICATION-DEFINITION.md#application-benefits).
+**Own-Application Justification:** the actor already selects useful local context elsewhere but repeated navigation, ambiguous folder/ZIP state and safe local handoff require coordination across browser, OS and VS Code facilities. The small own Application contributes exact, explicit and truthful handoff while leaving file choice and host decisions outside it. Its future succession coordination is a selected extension of the same bounded local-context purpose, not current behavior.
 
-Each Benefit owns its own boundary and Benefit-specific constraints. Links to
-a Benefit may target an exact boundary/constraint anchor when a downstream
-owner realizes only part of the Benefit.
+<a id="kbf-stl-selected-local-context-01"></a>
+### KBF-STL-SELECTED-LOCAL-CONTEXT-01 — Establish explicitly selected local context
 
-<a id="ab-stl-01--open-selected-file-context"></a>
-### AB-STL-01 — Open selected file context
+The central selected contribution is to carry one externally chosen file or ordered file set, folder or ZIP project selector through a user-chosen action to the intended VS Code context with a truthful outcome. The Application does not infer or rank files, choose an arbitrary command from clipboard text, widen exact bounded source discovery, grant Workspace Trust, decide dirty-editor policy or guarantee OS foreground. [File](scenarios/open-selected-study-files.md), [project](scenarios/open-selected-project.md), [folder](scenarios/open-selected-folder.md) and [archive](scenarios/open-downloaded-archive.md) Scenarios own the distinct normative paths; their Features own detailed behavior.
 
-**Planning position:** `Selected`.
+<a id="kbf-stl-safe-project-publication-02"></a>
+### KBF-STL-SAFE-PROJECT-PUBLICATION-02 — Preserve a source while publishing a chosen child
 
-**User Need:** after selecting one local file or an ordered file set in an
-external context, avoid locating the same files manually in VS Code and retain
-the intended order and action choice.
+For a separately selected trusted-copy action, reuse an exact safe existing child unchanged or require visible user confirmation before publishing a complete child below a locally configured parent, then open that result truthfully. The source stays intact; browser/request data cannot choose the parent or trust state; no merge/overwrite or implicit trust grant occurs. [Copy trusted project](scenarios/copy-trusted-project.md) owns the journey and its Feature/Shared/Domain owners own realization.
 
-**User Receives:** one explicit action establishes the selected file context in
-a receiving VS Code window under a button-selected tab policy and reports the
-actual result.
+<a id="kbf-stl-bounded-succession-03"></a>
+### KBF-STL-BOUNDED-SUCCESSION-03 — Optional post-open predecessor-window retirement
 
-**Responsibility Boundary / Constraints:**
+Selected upstream intent permits a user, after a replacement project has opened, to retain exact eligible participating predecessor windows or explicitly request bounded close attempts. The replacement remains open and partial cleanup remains truthful. Package authors may declare exact sibling candidates but cannot close arbitrary windows; user and each VS Code instance retain confirmation, root/dirty-state authority. This focus is **unrealized**: its complete future Scenario/Feature/Domain/Slice Target Bodies remain in [EVO-STL-CLOSE-SUPERSEDED-PROJECT-WINDOWS](evolution/unrealized/close-superseded-project-windows.md). It does not create a current close capability.
 
-- <a id="ab-stl-01-boundary-owned-handoff"></a>**Application-owned
-  contribution:** provide the explicitly selected local file context in its
-  intended order under the selected tab policy, with a truthful result. The
-  exact file-opening behavior belongs to the linked Feature owners.
-- <a id="ab-stl-01-boundary-external-authority"></a>**External authority:**
-  the user/external producer chooses the file context; VS Code owns dirty-file
-  decisions, editor associations and physical tab layout; browser/OS policy
-  may govern visible foreground transfer.
-- <a id="ab-stl-01-constraint-explicit-selection"></a>**Benefit constraint —
-  explicit selection only:** the application does not discover, rank, infer or
-  inspect files to choose the user's context, and copied text cannot select an
-  arbitrary command or hidden policy.
-- <a id="ab-stl-01-constraint-local-file-scope"></a>**Benefit constraint —
-  local-file scope:** an explicitly addressed existing regular local file may
-  be outside this repository; directories, missing/remote targets and an
-  invalid member of a requested set do not produce a falsely complete result.
+These three focuses explain why this own Application is retained; they do not predetermine Feature boundaries. The former `AB-STL-01..04` source clauses were re-expressed into these focuses and the linked natural downstream owners (file + project → KBF-01; trusted-copy publication → KBF-02; selected future succession → KBF-03). Former Benefit IDs/anchors are dated source history, not current Application drivers or a duplicate Benefit catalog. Detailed path/branch/continuity and independently needed `SR-*` belong to the Scenario owners. Driver coverage belongs to the [Evolution Steps Map](evolution-steps.md#ru-evomap-03--application-driver-coverage), not an `RU-APP-04` Unit.
 
-<a id="ab-stl-02--open-a-local-project-source"></a>
-### AB-STL-02 — Open a local project source
+## RU-APP-07 — Realization Feasibility / Early Implementation Planning
 
-**Planning position:** `Selected`.
+**Methodology:** [Realization Feasibility](../../../../../target-modules/TM-APPLICATION-DEFINITION.md#realization-feasibility).
 
-**User Need:** open a downloaded or otherwise known local project without
-manually determining whether its usable source is an existing directory or a
-ZIP that has arrived or will arrive shortly.
+Current extension/userscript representation demonstrates file, folder, ZIP, adaptive-project and trusted-publication realization with substantial automated coverage. Browser external-protocol confirmation, Windows foreground policy, VS Code multi-window routing and Workspace Trust remain host-owned constraints requiring [installed observation](practical-tests/installed-browser-vscode-handoff.md).
 
-**User Receives:** one explicit project action resolves the exact permitted
-source, waits for bounded delayed arrival when requested, and opens the folder
-or a safely materialized ZIP project in a project window with a truthful
-result.
-
-**Responsibility Boundary / Constraints:**
-
-- <a id="ab-stl-02-boundary-selector-resolution"></a>**Application-owned
-  contribution — selector continuity:** use only the explicitly selected
-  permitted local project source, allow a bounded wait for its arrival when
-  requested, and report the result for that same selection.
-- <a id="ab-stl-02-boundary-folder-branch"></a>**Application-owned
-  contribution — folder source:** an eligible selected directory becomes a
-  project context without replacing the previous workspace.
-- <a id="ab-stl-02-boundary-archive-branch"></a>**Application-owned
-  contribution — archive source:** an eligible selected ZIP yields a usable
-  project context while the source archive remains intact and unsafe or
-  conflicting destinations are not overwritten.
-- <a id="ab-stl-02-boundary-external-authority"></a>**External authority:**
-  the user/external producer supplies the selector and chooses the action; the
-  user configures browser search/wait preferences; VS Code and the OS retain
-  final window, foreground, dirty-editor and Workspace Trust authority.
-- <a id="ab-stl-02-constraint-exact-bounded-discovery"></a>**Benefit
-  constraint — exact bounded discovery:** search is neither recursive nor
-  fuzzy and does not widen beyond the exact selector and its single permitted
-  implicit `.zip` candidate.
-- <a id="ab-stl-02-constraint-safe-project-effect"></a>**Benefit constraint —
-  safe project effect:** extraction does not merge/overwrite or escape its
-  bounded destination, opening does not grant Workspace Trust, and preparation
-  or focus acceptance alone is not reported as a completed project open.
-
-<a id="ab-stl-03--publish-under-a-chosen-parent"></a>
-### AB-STL-03 — Publish under a chosen parent
-
-**Planning position:** `Selected`.
-
-**User Need:** preserve a downloaded folder/ZIP source while obtaining a
-separate usable project child below a locally chosen parent.
-
-**User Receives:** an existing safe child is reopened unchanged, or an absent
-child is explicitly confirmed, completely published and opened, with the final
-path and actual outcome retained when useful.
-
-**Responsibility Boundary / Constraints:**
-
-- <a id="ab-stl-03-boundary-owned-publication"></a>**Application-owned
-  contribution:** provide a separate usable project child below the chosen
-  parent from the explicitly selected source, with required confirmation,
-  source preservation and a truthful open/result disposition.
-- <a id="ab-stl-03-boundary-external-authority"></a>**External authority:**
-  the user selects the source, configures the parent in VS Code and confirms
-  absent-child publication; the user and VS Code remain authoritative for
-  whether that location is trusted and for dirty/window decisions.
-- <a id="ab-stl-03-constraint-destination-authority"></a>**Benefit constraint
-  — destination authority:** browser/request/workspace input cannot override
-  the machine-configured parent, derived child or trust policy.
-- <a id="ab-stl-03-constraint-source-preservation"></a>**Benefit constraint —
-  source preservation:** publication preserves the source, never merges or
-  overwrites the child and reuses only an exact safe existing directory
-  unchanged.
-- <a id="ab-stl-03-constraint-trust-neutrality"></a>**Benefit constraint —
-  trust neutrality:** the application neither grants nor claims Workspace
-  Trust; inherited trust-by-location remains a VS Code/user decision.
-
-<a id="ab-stl-04--retire-superseded-project-windows"></a>
-### AB-STL-04 — Retire superseded project windows
-
-**Planning position:** `Selected`.
-
-**User Need:** after successfully opening a replacement project package, avoid
-manually finding and closing exact older project windows that the replacement
-declares obsolete.
-
-**User Receives:** when exact eligible participating windows exist, the user
-can explicitly choose whether to retain them or request bounded close attempts,
-while the replacement remains open and partial cleanup stays truthful.
-
-**Responsibility Boundary / Constraints:**
-
-- <a id="ab-stl-04-boundary-manifest-candidates"></a>**Application-owned
-  contribution — bounded candidates:** offer only exact eligible
-  participating predecessor project windows declared by the opened replacement;
-  no general window or path selection authority is granted.
-- <a id="ab-stl-04-boundary-confirmed-coordination"></a>**Application-owned
-  contribution — confirmed cleanup:** only after the replacement opens, let
-  the user retain the eligible predecessor windows or explicitly request
-  bounded close attempts; report their actual outcome without undoing the
-  replacement result.
-- <a id="ab-stl-04-boundary-external-authority"></a>**External authority:**
-  the package author may declare exact sibling names but cannot close windows;
-  the user chooses whether cleanup proceeds, and each target VS Code instance
-  owns root revalidation and dirty/save confirmation.
-- <a id="ab-stl-04-constraint-no-general-close"></a>**Benefit constraint — no
-  general close authority:** declarations cannot name arbitrary paths,
-  commands, non-participating windows, remote/multi-root contexts or a
-  different target at callback time.
-- <a id="ab-stl-04-constraint-secondary-cleanup"></a>**Benefit constraint —
-  secondary cleanup:** failed current-project handoff closes nothing; absent or
-  invalid metadata, no matches, dismissal and partial close failure do not turn
-  a successful replacement open into failure.
-- <a id="ab-stl-04-constraint-trust-neutrality"></a>**Benefit constraint —
-  trust neutrality:** succession metadata grants neither Workspace Trust nor
-  authority to delete archives/files.
-
-**Additional Info:** downstream realization is not current. Its complete
-target state remains in
-[EVO-STL-CLOSE-SUPERSEDED-PROJECT-WINDOWS](evolution/unrealized/close-superseded-project-windows.md)
-until implementation and proof justify materialization.
-
-## RU-APP-04 — Scenario / Evolution Coverage
-
-**Methodology:** [RU-APP-04 Unit Definition](../../../../../target-modules/TM-APPLICATION-DEFINITION.md#representative-real-life-scenarios). The four former mini journeys are now coverage references. Their real-life path, branch and Application Contribution meaning belongs to the linked Scenario owners and selected Evolution Step.
-
-| Benefit driver | Current Scenario coverage | Future Step-owned coverage / gap |
-|---|---|---|
-| [`AB-STL-01`](#ab-stl-01--open-selected-file-context) | [Open linked file context](scenarios/open-selected-study-files.md), including selected file-group context | No separate concrete Step for an additional path currently established |
-| [`AB-STL-02`](#ab-stl-02--open-a-local-project-source) | [Open selected project](scenarios/open-selected-project.md), [folder](scenarios/open-selected-folder.md) and [downloaded archive](scenarios/open-downloaded-archive.md) cover materially distinct source paths | [Close superseded windows](evolution/unrealized/close-superseded-project-windows.md) preserves replacement opening before optional cleanup |
-| [`AB-STL-03`](#ab-stl-03--publish-under-a-chosen-parent) | [Copy trusted project](scenarios/copy-trusted-project.md) covers safe child publication/open; Workspace Trust remains host-owned | No claim of new realized trust behavior |
-| [`AB-STL-04`](#ab-stl-04--retire-superseded-project-windows) | No current Scenario owns realized close behavior | The [selected unrealized Step](evolution/unrealized/close-superseded-project-windows.md) owns Target Scenario Bodies for replacement and optional bounded predecessor-window retirement |
-
-Coverage is many-to-many and path-sensitive; these refs do not duplicate Scenario journey bodies. The accepted AB-STL-04 promise precedes its downstream realization; current installed proof remains pending.
-
-## RU-APP-07 — Realization Feasibility
-
-**Methodology:** [RU-APP-07 Unit Definition](../../../../../target-modules/TM-APPLICATION-DEFINITION.md#realization-feasibility).
-
-Current extension/userscript representation supplies downstream realization
-for the file, folder, ZIP, adaptive-project and trusted-publication Benefits,
-with substantial automated coverage. Browser external-protocol confirmation,
-Windows foreground policy, VS Code multi-window routing and Workspace Trust
-remain host-owned constraints requiring live observation through
-[`PTEST-STL-INSTALLED-HANDOFF`](practical-tests/installed-browser-vscode-handoff.md).
-
-Current coordinator proof exposes the canonical
-[`P-STL-HANDOFF-01 — Coordinator acknowledgement/redemption race`](shared/prepared-project-handoff.md#p-stl-handoff-01),
-so deterministic prepared-handoff realization remains an explicit
-correction/proof obligation rather than a blanket green claim.
-
-The selected superseded-window Benefit is plausibly realizable only through
-bounded cooperation between participating extension instances. It is not
-represented as current behavior before its implementation, deterministic
-proof and installed multi-window observation exist.
+The current coordinator proof exposes [P-STL-HANDOFF-01 — Coordinator acknowledgement/redemption race](shared/prepared-project-handoff.md#p-stl-handoff-01). Deterministic prepared-handoff realization remains an explicit correction/proof obligation, not blanket green status. Bounded future succession appears plausible through cooperating extension instances, but implementation, deterministic proof and installed multi-window evidence are pending; no future Target Body becomes current by selection alone.
 
 ## Owner routes
 
@@ -261,5 +82,5 @@ proof and installed multi-window observation exist.
 
 Exact wire formats, parsing, path normalization and executable evidence remain
 implementation-native. This Application Definition owns application-level
-need, Benefits and Benefit-local boundary/constraint meaning, not those literal
+Concept, own-Application justification, key behavior focus and feasibility meaning, not those literal
 details or downstream realized behavior.

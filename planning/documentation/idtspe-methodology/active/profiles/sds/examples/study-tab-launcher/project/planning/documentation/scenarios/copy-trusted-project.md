@@ -7,7 +7,7 @@ Workspace Trust observation remains pending. Materialized from
 
 ## RU-SCEN-01 — Journey Composition
 
-**Methodology:** [RU-SCEN-01 Unit Definition](../../../../../../target-modules/TM-SCENARIO-PLANNING.md#ru-scen-01-processing-envelope), [Journey Shape](../../../../../../target-modules/TM-SCENARIO-PLANNING.md#journey-shape).
+**Methodology:** [RU-SCEN-01 Unit Definition](../../../../../../target-modules/TM-SCENARIO-PLANNING.md#ru-scen-01--scenario-path), [Journey Shape](../../../../../../target-modules/TM-SCENARIO-PLANNING.md#ru-scen-01--scenario-path).
 
 Scenario ID: `SCN-STL-COPY-TRUSTED-PROJECT`.
 
@@ -26,30 +26,32 @@ Participating owners/parties:
 - browser/OS external-protocol handling, VS Code modal interaction and VS Code
   Workspace Trust.
 
-Benefit reference: [`AB-STL-03 — Publish under a chosen
-parent`](../application-definition.md#ab-stl-03--publish-under-a-chosen-parent),
-especially its [application-owned publication
-boundary](../application-definition.md#ab-stl-03-boundary-owned-publication),
-[destination-authority
-constraint](../application-definition.md#ab-stl-03-constraint-destination-authority),
-[source-preservation
-constraint](../application-definition.md#ab-stl-03-constraint-source-preservation)
-and [trust-neutrality
-constraint](../application-definition.md#ab-stl-03-constraint-trust-neutrality).
+Application driver: [`KBF-STL-SAFE-PROJECT-PUBLICATION-02 — Publish under a chosen
+parent`](../application-definition.md#kbf-stl-safe-project-publication-02),
+especially its application-owned publication
+boundary,
+destination-authority
+constraint,
+source-preservation
+constraint
+and trust-neutrality
+constraint.
 
 ### Journey Path
 
-| Scenario Path Step | Actor / application interaction | Feature / participant | Data/result | Benefit manifestation / closure | Attached SR | QRPE / Examples |
+| Scenario Path Step | Actor / application interaction | Feature / participant | Data/result | Application Contribution / outcome | Attached SR | QRPE / Examples |
 |---|---|---|---|---|---|---|
-| <a id="sps-stl-trust-01"></a>`SPS-STL-TRUST-01 — Supply one project selector` | ChatGPT emits one project name/relative path or one absolute local selector; the user copies it. | External producer / user | Plain selector text; `.zip` optional | Benefit not yet manifested | [`SR-STL-TRUST-01`](#sr-stl-trust-01) | No destination, trust flag or extension URI is required from ChatGPT. |
-| <a id="sps-stl-trust-02"></a>`SPS-STL-TRUST-02 — Invoke trusted-copy opening` | The user selects **Скопировать в доверенные · открыть**; the Screen combines the copied selector with saved source-root/wait preferences while the destination remains machine-configured in VS Code. | [Screen](../screens/chatgpt-launcher-widget.md); user | [`FDO-STL-PROJECT-OPEN-REQUEST`](../features/open-local-project.md#fdo-stl-project-open-request) plus trusted-copy action identity | Benefit not yet manifested | [`SR-STL-TRUST-01`](#sr-stl-trust-01), [`SR-STL-TRUST-02`](#sr-stl-trust-02) | Browser input cannot override the destination parent or trust policy. |
-| <a id="sps-stl-trust-03"></a>`SPS-STL-TRUST-03 — Await and prepare the exact source` | The application checks or boundedly awaits the folder/ZIP and prepares one correlated launch only after discovery while ChatGPT remains foreground. | [Trusted-copy source step](../features/copy-trusted-project.md#fbs-stl-trust-01); [ProjectSelector Domain](../domain/local-project-selector.md); [prepared handoff Shared capability](../shared/prepared-project-handoff.md) | Eligible resolved source and opaque prepared authority, or truthful rejection/timeout | Benefit not yet manifested | [`SR-STL-TRUST-01`](#sr-stl-trust-01), [`SR-STL-TRUST-03`](#sr-stl-trust-03) | Collision or I/O failure does not masquerade as waiting. |
-| <a id="sps-stl-trust-04"></a>`SPS-STL-TRUST-04 — Cross into the owning VS Code window` | The browser invokes the token-only focus link; browser/OS may confirm the protocol, and VS Code establishes the owning-window handoff before single redemption. | Browser/OS; [trusted-copy Feature](../features/copy-trusted-project.md#fbs-stl-trust-01); [prepared handoff Shared capability](../shared/prepared-project-handoff.md); VS Code | Acknowledged single-use authority or visible recoverable handoff failure | Benefit not yet manifested | [`SR-STL-TRUST-01`](#sr-stl-trust-01), [`SR-STL-TRUST-03`](#sr-stl-trust-03) | Retry/copy controls preserve the same prepared operation without exposing project data in the URI. |
-| <a id="sps-stl-trust-05"></a>`SPS-STL-TRUST-05 — Establish destination and publication decision` | VS Code derives the child below its configured parent. An existing safe child proceeds unchanged; an absent child requires the user to confirm the displayed canonical source, destination and trust warning. | [Destination step](../features/copy-trusted-project.md#fbs-stl-trust-02) and [decision step](../features/copy-trusted-project.md#fbs-stl-trust-03); user | [`FDO-STL-TRUSTED-DESTINATION`](../features/copy-trusted-project.md#fdo-stl-trusted-destination) and confirm/cancel decision where applicable | Benefit not yet manifested; cancellation closes without publication | [`SR-STL-TRUST-02`](#sr-stl-trust-02), [`SR-STL-TRUST-03`](#sr-stl-trust-03) | Safe existing-child reuse skips the copy-specific confirmation because no publication occurs. |
-| <a id="sps-stl-trust-06"></a>`SPS-STL-TRUST-06 — Reuse or publish and open the child` | VS Code leaves a safe-existing child unchanged or publishes a complete folder/ZIP-derived child, then hands that final directory to a forced project window. | [Publication step](../features/copy-trusted-project.md#fbs-stl-trust-04) and [window step](../features/copy-trusted-project.md#fbs-stl-trust-05); VS Code | [`FDO-STL-TRUSTED-PROJECT-OUTCOME`](../features/copy-trusted-project.md#fdo-stl-trusted-project-outcome) | [`AB-STL-03`](../application-definition.md#ab-stl-03--publish-under-a-chosen-parent) manifests on `opened`; retained path remains visible after window failure | [`SR-STL-TRUST-02`](#sr-stl-trust-02), [`SR-STL-TRUST-03`](#sr-stl-trust-03) | The source remains intact; no merge, overwrite or automatic trust grant occurs. |
+| <a id="sps-stl-trust-01"></a>`SPS-STL-TRUST-01 — Supply one project selector` | ChatGPT emits one project name/relative path or one absolute local selector; the user copies it. | External producer / user | Plain selector text; `.zip` optional | Application contribution pending | [`SR-STL-TRUST-01`](#sr-stl-trust-01) | No destination, trust flag or extension URI is required from ChatGPT. |
+| <a id="sps-stl-trust-02"></a>`SPS-STL-TRUST-02 — Invoke trusted-copy opening` | The user selects **Скопировать в доверенные · открыть**; the Screen combines the copied selector with saved source-root/wait preferences while the destination remains machine-configured in VS Code. | [Screen](../screens/chatgpt-launcher-widget.md); user | [`FDO-STL-PROJECT-OPEN-REQUEST`](../features/open-local-project.md#fdo-stl-project-open-request) plus trusted-copy action identity | Application contribution pending | [`SR-STL-TRUST-01`](#sr-stl-trust-01), [`SR-STL-TRUST-02`](#sr-stl-trust-02) | Browser input cannot override the destination parent or trust policy. |
+| <a id="sps-stl-trust-03"></a>`SPS-STL-TRUST-03 — Await and prepare the exact source` | The application checks or boundedly awaits the folder/ZIP and prepares one correlated launch only after discovery while ChatGPT remains foreground. | [Trusted-copy source step](../features/copy-trusted-project.md#fbs-stl-trust-01); [ProjectSelector Domain](../domain/local-project-selector.md); [prepared handoff Shared capability](../shared/prepared-project-handoff.md) | Eligible resolved source and opaque prepared authority, or truthful rejection/timeout | Application contribution pending | [`SR-STL-TRUST-01`](#sr-stl-trust-01), [`SR-STL-TRUST-03`](#sr-stl-trust-03) | Collision or I/O failure does not masquerade as waiting. |
+| <a id="sps-stl-trust-04"></a>`SPS-STL-TRUST-04 — Cross into the owning VS Code window` | The browser invokes the token-only focus link; browser/OS may confirm the protocol, and VS Code establishes the owning-window handoff before single redemption. | Browser/OS; [trusted-copy Feature](../features/copy-trusted-project.md#fbs-stl-trust-01); [prepared handoff Shared capability](../shared/prepared-project-handoff.md); VS Code | Acknowledged single-use authority or visible recoverable handoff failure | Application contribution pending | [`SR-STL-TRUST-01`](#sr-stl-trust-01), [`SR-STL-TRUST-03`](#sr-stl-trust-03) | Retry/copy controls preserve the same prepared operation without exposing project data in the URI. |
+| <a id="sps-stl-trust-05"></a>`SPS-STL-TRUST-05 — Establish destination and publication decision` | VS Code derives the child below its configured parent. An existing safe child proceeds unchanged; an absent child requires the user to confirm the displayed canonical source, destination and trust warning. | [Destination step](../features/copy-trusted-project.md#fbs-stl-trust-02) and [decision step](../features/copy-trusted-project.md#fbs-stl-trust-03); user | [`FDO-STL-TRUSTED-DESTINATION`](../features/copy-trusted-project.md#fdo-stl-trusted-destination) and confirm/cancel decision where applicable | Application contribution pending; cancellation closes without publication | [`SR-STL-TRUST-02`](#sr-stl-trust-02), [`SR-STL-TRUST-03`](#sr-stl-trust-03) | Safe existing-child reuse skips the copy-specific confirmation because no publication occurs. |
+| <a id="sps-stl-trust-06"></a>`SPS-STL-TRUST-06 — Reuse or publish and open the child` | VS Code leaves a safe-existing child unchanged or publishes a complete folder/ZIP-derived child, then hands that final directory to a forced project window. | [Publication step](../features/copy-trusted-project.md#fbs-stl-trust-04) and [window step](../features/copy-trusted-project.md#fbs-stl-trust-05); VS Code | [`FDO-STL-TRUSTED-PROJECT-OUTCOME`](../features/copy-trusted-project.md#fdo-stl-trusted-project-outcome) | [`KBF-STL-SAFE-PROJECT-PUBLICATION-02`](../application-definition.md#kbf-stl-safe-project-publication-02) manifests on `opened`; retained path remains visible after window failure | [`SR-STL-TRUST-02`](#sr-stl-trust-02), [`SR-STL-TRUST-03`](#sr-stl-trust-03) | The source remains intact; no merge, overwrite or automatic trust grant occurs. |
 | <a id="sps-stl-trust-07"></a>`SPS-STL-TRUST-07 — Continue in the final child` | The user continues in the resulting project window and observes VS Code's actual Workspace Trust state, or acts on a truthful cancellation/rejection/failure. | User; VS Code Workspace Trust | Final child context and visible terminal result | Journey closes for this invocation | [`SR-STL-TRUST-03`](#sr-stl-trust-03) | Parent trust configuration and final foreground placement remain user/host-owned. |
 
-### Scenario Requirements
+## RU-SCEN-04 — Scenario Requirements
+
+**Methodology:** [RU-SCEN-04 Unit Definition](../../../../../../target-modules/TM-SCENARIO-PLANNING.md#ru-scen-04--scenario-requirements).
 
 | Scenario Requirement | Type | Plain required interaction/journey meaning | QRPE / Examples |
 |---|---|---|---|

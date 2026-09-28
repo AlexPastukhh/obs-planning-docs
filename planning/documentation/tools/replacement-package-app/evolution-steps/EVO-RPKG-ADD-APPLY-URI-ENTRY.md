@@ -6,9 +6,9 @@ Planning Position: **Probable — not selected**
 Target Resolution: **Substantial Target (candidate)**
 Change Surface: **Mixed**  
 
-## Driven By Application Definition
-- [Realize AI-Created Repository Work](../application-definition.md#ab-rpkg-realize-ai-repository-work-01)
-- [Delegate Mechanical Repository Work](../application-definition.md#ab-rpkg-delegate-mechanical-repository-work-04)
+## Driven by Application Definition
+- [Exact delegated realization](../application-definition.md#kbf-rpkg-exact-realization-01)
+- [Exact delegated realization](../application-definition.md#kbf-rpkg-exact-realization-01)
 
 ## Entering From
 - [Enable Automatic Finalization](EVO-RPKG-ENABLE-AUTOMATIC-FINALIZATION.md) realized/materialized
@@ -37,8 +37,8 @@ URI adapter parses/validates/normalizes only; it does not own Work/Feature seman
 # F-RPKG-APPLY-REPLACEMENT-PACKAGE — Apply Replacement Package
 
 ## Realizes Upstream Meaning
-- [Realize AI-Created Repository Work](../application-definition.md#ab-rpkg-realize-ai-repository-work-01)
-- [Know Repository Work Outcome](../application-definition.md#ab-rpkg-know-repository-work-outcome-02)
+- [Exact delegated realization](../application-definition.md#kbf-rpkg-exact-realization-01)
+- [Truthful operation outcomes](../application-definition.md#kbf-rpkg-truthful-outcome-02)
 
 ## RU-FEAT-02 — Semantic Data
 | Feature Data Object | Plain meaning |
@@ -97,9 +97,9 @@ Apply → Commit → Publish are the selected Feature path; correctness-critical
 <a id="scn-rpkg-complete-repository-work-target"></a>
 # SCN-RPKG-COMPLETE-REPOSITORY-WORK — Complete Repository Work (post-Step target)
 
-## Realizes Application Benefits
-- [Realize AI-Created Repository Work](../application-definition.md#ab-rpkg-realize-ai-repository-work-01)
-- [Know Repository Work Outcome](../application-definition.md#ab-rpkg-know-repository-work-outcome-02)
+## Upstream Application drivers
+- [Exact delegated realization](../application-definition.md#kbf-rpkg-exact-realization-01)
+- [Truthful operation outcomes](../application-definition.md#kbf-rpkg-truthful-outcome-02)
 
 ## Scenario Requirements
 | SR | Plain meaning |
@@ -140,11 +140,15 @@ If selected later, the current candidate direction implies:
 - applicable realization Scenario — likely `REPLACE`;
 - URI entry adapter Slice/Screen integration — still requires a complete natural-owner Target Body before any `CREATE`/`REPLACE` consequence can be declared.
 
-## Step Readiness
+## RU-EVO-06 — Planning Completeness / Realization Start Readiness
 
-Readiness: **NOT_READY**
+Planning Completeness: **INCOMPLETE**
 
-The Step is Probable/unselected, its semantic predecessor is unrealized, and no Materialization Set is active.
+Planning Completeness explanation: This Step is Probable and unselected; URI-equivalence target is substantial but the complete changed Feature/Scenario/adapter bodies, transitions and proof remain open. Its semantic predecessor Automatic Finalization and typed-result foundation are unrealized. Selection is external to this readiness result.
+
+Realization Start Readiness: **BLOCKED**
+
+Start-readiness explanation: BLOCKED by the missing Step/Target Body/proof work and any unrealized prerequisites described above. An enclosing selection/implementation authorization is a separate gate; this status does not authorize realization.
 
 ### Step Q/R/P
 - P [BLOCKING]: select the Step through normal Core selection before realization.

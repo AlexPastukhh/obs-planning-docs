@@ -8,9 +8,9 @@ Evolution Role: **Foundation / evolution-enabling**
 Target Resolution: **Complete Target**  
 Behavior Change: **None intended**
 
-## Driven By Application Definition
-- [Know Repository Work Outcome](../application-definition.md#ab-rpkg-know-repository-work-outcome-02)
-- [Delegate Mechanical Repository Work](../application-definition.md#ab-rpkg-delegate-mechanical-repository-work-04)
+## Driven by Application Definition
+- [Truthful operation outcomes](../application-definition.md#kbf-rpkg-truthful-outcome-02)
+- [Exact delegated realization](../application-definition.md#kbf-rpkg-exact-realization-01)
 
 ## Entering From
 - current realized product semantics
@@ -72,11 +72,26 @@ Consumer existence does not move semantic errors into this Shared owner.
 
 Downstream Steps list this as a **Realization prerequisite** where their implementation should consume the foundation. They do not inherit its IRs as product behavior.
 
-## Step Readiness
+## Step Unit disposition / transition proof
 
-Readiness: **READY**
+| Unit | Disposition / owner evidence |
+|---|---|
+| `RU-EVO-01` Step Frame | RESOLVED — selected implementation foundation, current predecessor, no semantic behavior change and target Shared owner above. |
+| `RU-EVO-02` Evolution Impacts | RESOLVED — NEW Shared capability, unchanged Feature/Scenario semantics and conditional existing implementation reconciliation under Owner Impacts. |
+| `RU-EVO-03` Step-wide Implementation Concerns | OMITTED — the typed-result constraints and error-boundary concerns are fully expressed as Shared Target Body IRs; no separate Step-wide concern remains. |
+| `RU-EVO-04` Target Owner Materialization Set | RESOLVED — CREATE the one Shared capability only after exact realization/proof; no Feature/Scenario materialization. |
+| `RU-EVO-05` Transition / Proof Obligations | RESOLVED for planning — inspect existing result mechanics, KEEP/MODIFY/REPLACE against all six Shared IRs; prove typed expected outcomes, consumer-owned errors and uncertainty at representative operation boundaries before materializing. Actual proof remains execution work. |
+| `RU-EVO-06` Planning/Start readiness | Resolved separately below. |
 
-Current semantic Entry State is available, there is no realization prerequisite, and the Shared Target Body plus Materialization Set are complete enough to begin Exact Realization.
+## RU-EVO-06 — Planning Completeness / Realization Start Readiness
+
+Planning Completeness: **COMPLETE**
+
+Planning Completeness explanation: Step frame and current predecessor are established; Owner Impacts identify the NEW Shared capability and unchanged Feature/Scenario behavior; the complete Shared Target Body and Materialization Set are present. RU-EVO-03 has no independent Step-wide concern beyond the Shared IRs; RU-EVO-05 uses exact existing-mechanism comparison and IR proof during realization. No blocking Q/R/P or prerequisite is recorded. Exact API names remain nonblocking.
+
+Realization Start Readiness: **READY**
+
+Start-readiness explanation: Current semantic predecessor is available, there is no unrealized realization prerequisite, the Step target and proof route above are complete enough to start authorized Exact Realization; READY is not proof of realization.
 
 ### Step Q/R/P
 - No blocking Q/R/P currently.

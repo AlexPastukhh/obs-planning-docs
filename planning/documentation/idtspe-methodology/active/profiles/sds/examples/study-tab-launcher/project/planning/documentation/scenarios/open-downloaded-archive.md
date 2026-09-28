@@ -5,7 +5,7 @@ segment coverage. Complete installed browser/VS Code evidence remains pending.
 
 ## RU-SCEN-01 — Journey Composition
 
-**Methodology:** [RU-SCEN-01 Unit Definition](../../../../../../target-modules/TM-SCENARIO-PLANNING.md#ru-scen-01-processing-envelope), [Journey Shape](../../../../../../target-modules/TM-SCENARIO-PLANNING.md#journey-shape).
+**Methodology:** [RU-SCEN-01 Unit Definition](../../../../../../target-modules/TM-SCENARIO-PLANNING.md#ru-scen-01--scenario-path), [Journey Shape](../../../../../../target-modules/TM-SCENARIO-PLANNING.md#ru-scen-01--scenario-path).
 
 Scenario ID: `SCN-STL-OPEN-DOWNLOADED-ARCHIVE`.
 
@@ -20,29 +20,31 @@ Participating owners/parties:
 - [ChatGPT launcher Screen](../screens/chatgpt-launcher-widget.md);
 - local filesystem, browser/OS external protocol and VS Code project windows.
 
-Benefit reference: the [selector-continuity
-contribution](../application-definition.md#ab-stl-02-boundary-selector-resolution)
-and [archive
-branch](../application-definition.md#ab-stl-02-boundary-archive-branch) of
-[`AB-STL-02 — Open a local project
-source`](../application-definition.md#ab-stl-02--open-a-local-project-source),
-under its [exact bounded discovery
-constraint](../application-definition.md#ab-stl-02-constraint-exact-bounded-discovery)
-and [safe-project-effect
-constraint](../application-definition.md#ab-stl-02-constraint-safe-project-effect).
+Application driver: the selector-continuity
+contribution
+and archive
+branch of
+[`KBF-STL-SELECTED-LOCAL-CONTEXT-01 — Open a local project
+source`](../application-definition.md#kbf-stl-selected-local-context-01),
+under its exact bounded discovery
+constraint
+and safe-project-effect
+constraint.
 
 ### Journey Path
 
-| Scenario Path Step | Actor / application interaction | Feature / participant | Data/result | Benefit manifestation / closure | Attached SR | QRPE / Examples |
+| Scenario Path Step | Actor / application interaction | Feature / participant | Data/result | Application Contribution / outcome | Attached SR | QRPE / Examples |
 |---|---|---|---|---|---|---|
-| <a id="sps-stl-archive-01"></a>`SPS-STL-ARCHIVE-01 — Supply one archive selector` | ChatGPT emits a ZIP stem/name/relative path under the configured root or an absolute ZIP path; the user copies it. | External producer / user | Plain selector text; `.zip` optional | Benefit not yet manifested | [`SR-STL-ARCHIVE-01`](#sr-stl-archive-01) | No extraction destination or trust flag is supplied. |
-| <a id="sps-stl-archive-02"></a>`SPS-STL-ARCHIVE-02 — Invoke adaptive project opening` | The user selects **Папка / ZIP · открыть**; the Screen applies saved root/wait context. | [Screen](../screens/chatgpt-launcher-widget.md); user | [`FDO-STL-PROJECT-OPEN-REQUEST`](../features/open-local-project.md#fdo-stl-project-open-request) | Benefit not yet manifested | [`SR-STL-ARCHIVE-01`](#sr-stl-archive-01), [`SR-STL-ARCHIVE-02`](#sr-stl-archive-02) | The browser does not inspect the ZIP. |
-| <a id="sps-stl-archive-03"></a>`SPS-STL-ARCHIVE-03 — Await and prepare the ZIP source` | The application checks exact/implicit ZIP candidates and polls only absence while ChatGPT remains foreground; a found ZIP produces prepared handoff authority. | [Project source-resolution step](../features/open-local-project.md#fbs-stl-project-02) and [preparation step](../features/open-local-project.md#fbs-stl-project-03) | Prepared archive-source handoff or visible non-success | Benefit not yet manifested | [`SR-STL-ARCHIVE-02`](#sr-stl-archive-02) | Unsafe/ineligible existing sources fail rather than waiting. |
-| <a id="sps-stl-archive-04"></a>`SPS-STL-ARCHIVE-04 — Cross into VS Code` | Browser/OS protocol handling activates VS Code and establishes coordinator-owner continuity before single redemption. | Browser/OS; [focus-transfer step](../features/open-local-project.md#fbs-stl-project-04) and [redemption step](../features/open-local-project.md#fbs-stl-project-05); VS Code | [`FDO-STL-PREPARED-PROJECT-LAUNCH`](../features/open-local-project.md#fdo-stl-prepared-project-launch) | Benefit not yet manifested | [`SR-STL-ARCHIVE-01`](#sr-stl-archive-01), [`SR-STL-ARCHIVE-02`](#sr-stl-archive-02) | Retry/copy remains available if automatic protocol launch is blocked. |
-| <a id="sps-stl-archive-05"></a>`SPS-STL-ARCHIVE-05 — Materialize and open the project directory` | The archive branch reuses an existing sibling unchanged or safely stages/publishes extraction, then hands the final directory to VS Code. | [Archive Main Path](../features/extract-open-archive.md#fbs-stl-archive-01); filesystem; VS Code | [`FDO-STL-ARCHIVE-OPEN-OUTCOME`](../features/extract-open-archive.md#fdo-stl-archive-open-outcome) composed into project outcome | The [`AB-STL-02` archive contribution](../application-definition.md#ab-stl-02-boundary-archive-branch) manifests on `opened` | [`SR-STL-ARCHIVE-03`](#sr-stl-archive-03) | Source ZIP remains intact; Workspace Trust is unchanged. |
+| <a id="sps-stl-archive-01"></a>`SPS-STL-ARCHIVE-01 — Supply one archive selector` | ChatGPT emits a ZIP stem/name/relative path under the configured root or an absolute ZIP path; the user copies it. | External producer / user | Plain selector text; `.zip` optional | Application contribution pending | [`SR-STL-ARCHIVE-01`](#sr-stl-archive-01) | No extraction destination or trust flag is supplied. |
+| <a id="sps-stl-archive-02"></a>`SPS-STL-ARCHIVE-02 — Invoke adaptive project opening` | The user selects **Папка / ZIP · открыть**; the Screen applies saved root/wait context. | [Screen](../screens/chatgpt-launcher-widget.md); user | [`FDO-STL-PROJECT-OPEN-REQUEST`](../features/open-local-project.md#fdo-stl-project-open-request) | Application contribution pending | [`SR-STL-ARCHIVE-01`](#sr-stl-archive-01), [`SR-STL-ARCHIVE-02`](#sr-stl-archive-02) | The browser does not inspect the ZIP. |
+| <a id="sps-stl-archive-03"></a>`SPS-STL-ARCHIVE-03 — Await and prepare the ZIP source` | The application checks exact/implicit ZIP candidates and polls only absence while ChatGPT remains foreground; a found ZIP produces prepared handoff authority. | [Project source-resolution step](../features/open-local-project.md#fbs-stl-project-02) and [preparation step](../features/open-local-project.md#fbs-stl-project-03) | Prepared archive-source handoff or visible non-success | Application contribution pending | [`SR-STL-ARCHIVE-02`](#sr-stl-archive-02) | Unsafe/ineligible existing sources fail rather than waiting. |
+| <a id="sps-stl-archive-04"></a>`SPS-STL-ARCHIVE-04 — Cross into VS Code` | Browser/OS protocol handling activates VS Code and establishes coordinator-owner continuity before single redemption. | Browser/OS; [focus-transfer step](../features/open-local-project.md#fbs-stl-project-04) and [redemption step](../features/open-local-project.md#fbs-stl-project-05); VS Code | [`FDO-STL-PREPARED-PROJECT-LAUNCH`](../features/open-local-project.md#fdo-stl-prepared-project-launch) | Application contribution pending | [`SR-STL-ARCHIVE-01`](#sr-stl-archive-01), [`SR-STL-ARCHIVE-02`](#sr-stl-archive-02) | Retry/copy remains available if automatic protocol launch is blocked. |
+| <a id="sps-stl-archive-05"></a>`SPS-STL-ARCHIVE-05 — Materialize and open the project directory` | The archive branch reuses an existing sibling unchanged or safely stages/publishes extraction, then hands the final directory to VS Code. | [Archive Main Path](../features/extract-open-archive.md#fbs-stl-archive-01); filesystem; VS Code | [`FDO-STL-ARCHIVE-OPEN-OUTCOME`](../features/extract-open-archive.md#fdo-stl-archive-open-outcome) composed into project outcome | The `KBF-STL-SELECTED-LOCAL-CONTEXT-01` archive contribution manifests on `opened` | [`SR-STL-ARCHIVE-03`](#sr-stl-archive-03) | Source ZIP remains intact; Workspace Trust is unchanged. |
 | <a id="sps-stl-archive-06"></a>`SPS-STL-ARCHIVE-06 — Continue in the archive project` | The user continues in the opened/reused project window or corrects/retries a visible safety, extraction or handoff error. | User; VS Code | Project context or actionable non-success | Journey closes for this invocation | [`SR-STL-ARCHIVE-03`](#sr-stl-archive-03) | Extraction disposition remains visible. |
 
-### Scenario Requirements
+## RU-SCEN-04 — Scenario Requirements
+
+**Methodology:** [RU-SCEN-04 Unit Definition](../../../../../../target-modules/TM-SCENARIO-PLANNING.md#ru-scen-04--scenario-requirements).
 
 | Scenario Requirement | Type | Plain required interaction/journey meaning | QRPE / Examples |
 |---|---|---|---|

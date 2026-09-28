@@ -5,7 +5,7 @@ The full browser-to-installed-VS Code journey remains live evidence.
 
 ## RU-SCEN-01 — Journey Composition
 
-**Methodology:** [RU-SCEN-01 Unit Definition](../../../../../../target-modules/TM-SCENARIO-PLANNING.md#ru-scen-01-processing-envelope), [Journey Shape](../../../../../../target-modules/TM-SCENARIO-PLANNING.md#journey-shape).
+**Methodology:** [RU-SCEN-01 Unit Definition](../../../../../../target-modules/TM-SCENARIO-PLANNING.md#ru-scen-01--scenario-path), [Journey Shape](../../../../../../target-modules/TM-SCENARIO-PLANNING.md#ru-scen-01--scenario-path).
 
 Scenario ID: `SCN-STL-OPEN-SELECTED-FOLDER`.
 
@@ -19,29 +19,31 @@ Participating owners/parties:
 - [ChatGPT launcher Screen](../screens/chatgpt-launcher-widget.md);
 - browser/OS external-protocol handling and VS Code project windows.
 
-Benefit reference: the [selector-continuity
-contribution](../application-definition.md#ab-stl-02-boundary-selector-resolution)
-and [folder
-branch](../application-definition.md#ab-stl-02-boundary-folder-branch) of
-[`AB-STL-02 — Open a local project
-source`](../application-definition.md#ab-stl-02--open-a-local-project-source),
-under its [exact bounded discovery
-constraint](../application-definition.md#ab-stl-02-constraint-exact-bounded-discovery)
-and [safe-project-effect
-constraint](../application-definition.md#ab-stl-02-constraint-safe-project-effect).
+Application driver: the selector-continuity
+contribution
+and folder
+branch of
+[`KBF-STL-SELECTED-LOCAL-CONTEXT-01 — Open a local project
+source`](../application-definition.md#kbf-stl-selected-local-context-01),
+under its exact bounded discovery
+constraint
+and safe-project-effect
+constraint.
 
 ### Journey Path
 
-| Scenario Path Step | Actor / application interaction | Feature / participant | Data/result | Benefit manifestation / closure | Attached SR | QRPE / Examples |
+| Scenario Path Step | Actor / application interaction | Feature / participant | Data/result | Application Contribution / outcome | Attached SR | QRPE / Examples |
 |---|---|---|---|---|---|---|
-| <a id="sps-stl-folder-01"></a>`SPS-STL-FOLDER-01 — Supply one folder selector` | ChatGPT emits a folder name/relative path under the configured root or one absolute local directory path; the user copies it. | External producer / user | Plain selector text | Benefit not yet manifested | [`SR-STL-FOLDER-01`](#sr-stl-folder-01) | The value contains no VS Code policy. |
-| <a id="sps-stl-folder-02"></a>`SPS-STL-FOLDER-02 — Invoke the adaptive action` | The user selects **Папка / ZIP · открыть**; the Screen combines the text with saved root/wait context. | [Screen](../screens/chatgpt-launcher-widget.md); user | [`FDO-STL-PROJECT-OPEN-REQUEST`](../features/open-local-project.md#fdo-stl-project-open-request) | Benefit not yet manifested | [`SR-STL-FOLDER-01`](#sr-stl-folder-01), [`SR-STL-FOLDER-02`](#sr-stl-folder-02) | Same-origin tabs share current Screen preferences. |
-| <a id="sps-stl-folder-03"></a>`SPS-STL-FOLDER-03 — Await and prepare the directory source` | The application checks/polls only absence while ChatGPT stays foreground; a found directory produces prepared handoff authority. | [Project source-resolution step](../features/open-local-project.md#fbs-stl-project-02) and [preparation step](../features/open-local-project.md#fbs-stl-project-03) | Prepared folder-source handoff or visible non-success | Benefit not yet manifested | [`SR-STL-FOLDER-02`](#sr-stl-folder-02) | A regular-file collision fails rather than waiting. |
-| <a id="sps-stl-folder-04"></a>`SPS-STL-FOLDER-04 — Cross into VS Code` | The browser invokes the token-only focus URI and VS Code establishes coordinator-owner continuity before single redemption. | Browser/OS; [focus-transfer step](../features/open-local-project.md#fbs-stl-project-04) and [redemption step](../features/open-local-project.md#fbs-stl-project-05); VS Code | [`FDO-STL-PREPARED-PROJECT-LAUNCH`](../features/open-local-project.md#fdo-stl-prepared-project-launch) | Benefit not yet manifested | [`SR-STL-FOLDER-01`](#sr-stl-folder-01), [`SR-STL-FOLDER-02`](#sr-stl-folder-02) | Retry/copy remains available if automatic launch is blocked. |
-| <a id="sps-stl-folder-05"></a>`SPS-STL-FOLDER-05 — Open the directory project` | The folder branch validates the final directory and hands it to VS Code under forced-new-window policy. | [Folder Main Path](../features/open-linked-folder-window.md#fbs-stl-folder-01); VS Code | [`FDO-STL-FOLDER-OPEN-OUTCOME`](../features/open-linked-folder-window.md#fdo-stl-folder-open-outcome) composed into project outcome | The [`AB-STL-02` folder contribution](../application-definition.md#ab-stl-02-boundary-folder-branch) manifests on `opened` | [`SR-STL-FOLDER-03`](#sr-stl-folder-03) | Directory content is unchanged. |
+| <a id="sps-stl-folder-01"></a>`SPS-STL-FOLDER-01 — Supply one folder selector` | ChatGPT emits a folder name/relative path under the configured root or one absolute local directory path; the user copies it. | External producer / user | Plain selector text | Application contribution pending | [`SR-STL-FOLDER-01`](#sr-stl-folder-01) | The value contains no VS Code policy. |
+| <a id="sps-stl-folder-02"></a>`SPS-STL-FOLDER-02 — Invoke the adaptive action` | The user selects **Папка / ZIP · открыть**; the Screen combines the text with saved root/wait context. | [Screen](../screens/chatgpt-launcher-widget.md); user | [`FDO-STL-PROJECT-OPEN-REQUEST`](../features/open-local-project.md#fdo-stl-project-open-request) | Application contribution pending | [`SR-STL-FOLDER-01`](#sr-stl-folder-01), [`SR-STL-FOLDER-02`](#sr-stl-folder-02) | Same-origin tabs share current Screen preferences. |
+| <a id="sps-stl-folder-03"></a>`SPS-STL-FOLDER-03 — Await and prepare the directory source` | The application checks/polls only absence while ChatGPT stays foreground; a found directory produces prepared handoff authority. | [Project source-resolution step](../features/open-local-project.md#fbs-stl-project-02) and [preparation step](../features/open-local-project.md#fbs-stl-project-03) | Prepared folder-source handoff or visible non-success | Application contribution pending | [`SR-STL-FOLDER-02`](#sr-stl-folder-02) | A regular-file collision fails rather than waiting. |
+| <a id="sps-stl-folder-04"></a>`SPS-STL-FOLDER-04 — Cross into VS Code` | The browser invokes the token-only focus URI and VS Code establishes coordinator-owner continuity before single redemption. | Browser/OS; [focus-transfer step](../features/open-local-project.md#fbs-stl-project-04) and [redemption step](../features/open-local-project.md#fbs-stl-project-05); VS Code | [`FDO-STL-PREPARED-PROJECT-LAUNCH`](../features/open-local-project.md#fdo-stl-prepared-project-launch) | Application contribution pending | [`SR-STL-FOLDER-01`](#sr-stl-folder-01), [`SR-STL-FOLDER-02`](#sr-stl-folder-02) | Retry/copy remains available if automatic launch is blocked. |
+| <a id="sps-stl-folder-05"></a>`SPS-STL-FOLDER-05 — Open the directory project` | The folder branch validates the final directory and hands it to VS Code under forced-new-window policy. | [Folder Main Path](../features/open-linked-folder-window.md#fbs-stl-folder-01); VS Code | [`FDO-STL-FOLDER-OPEN-OUTCOME`](../features/open-linked-folder-window.md#fdo-stl-folder-open-outcome) composed into project outcome | The `KBF-STL-SELECTED-LOCAL-CONTEXT-01` folder contribution manifests on `opened` | [`SR-STL-FOLDER-03`](#sr-stl-folder-03) | Directory content is unchanged. |
 | <a id="sps-stl-folder-06"></a>`SPS-STL-FOLDER-06 — Continue in the folder project` | The user continues in the selected project window while the prior workspace stays available, or corrects/retries the reported failure. | User; VS Code | Opened folder project or actionable non-success | Journey closes for this invocation | [`SR-STL-FOLDER-03`](#sr-stl-folder-03) | Final window placement/foreground remains external. |
 
-### Scenario Requirements
+## RU-SCEN-04 — Scenario Requirements
+
+**Methodology:** [RU-SCEN-04 Unit Definition](../../../../../../target-modules/TM-SCENARIO-PLANNING.md#ru-scen-04--scenario-requirements).
 
 | Scenario Requirement | Type | Plain required interaction/journey meaning | QRPE / Examples |
 |---|---|---|---|

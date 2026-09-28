@@ -35,18 +35,17 @@ materialized-owner navigation and still-relevant evidence boundaries. Current
 Feature/Scenario/Domain/Slice/Shared meaning belongs to those current owners,
 not to historical Step bodies.
 
-## RU-EVOMAP-03 — Application Intent / Benefit Driver Coverage
+## RU-EVOMAP-03 — Application Driver Coverage
 
 **Methodology:** [RU-EVOMAP-03 Unit Definition](../../../../../target-modules/TM-EVOLUTION-STEPS-MAP.md#ru-evomap-03--application-intent--benefit-driver-coverage).
 
 | Accepted Application driver | Current realized coverage | Concrete planned transition / remaining gap |
 |---|---|---|
-| [AB-STL-01](application-definition.md#ab-stl-01--open-selected-file-context) | Current file-context Feature/Scenario owners | No additional concrete Step established |
-| [AB-STL-02](application-definition.md#ab-stl-02--open-a-local-project-source) | Current project/folder/archive Feature/Scenario owners | [EVO-STL-CLOSE-SUPERSEDED-PROJECT-WINDOWS](evolution/unrealized/close-superseded-project-windows.md) retains replacement opening as the primary result |
-| [AB-STL-03](application-definition.md#ab-stl-03--publish-under-a-chosen-parent) | Current trusted-child publication Feature/Scenario owners | No invented later Step; host-owned Workspace Trust remains an evidence boundary |
-| [AB-STL-04](application-definition.md#ab-stl-04--retire-superseded-project-windows) | No current close behavior | The selected unrealized Step owns optional exact predecessor-window retirement; implementation/proof/materialization remain pending |
+| [KBF-STL-SELECTED-LOCAL-CONTEXT-01](application-definition.md#kbf-stl-selected-local-context-01) | Current file, project, folder and archive Scenario/Feature owners | The selected succession Step retains replacement opening as the primary result; no separate later Step is established |
+| [KBF-STL-SAFE-PROJECT-PUBLICATION-02](application-definition.md#kbf-stl-safe-project-publication-02) | Current trusted child publication Scenario/Feature | Host owned Workspace Trust remains a live evidence boundary |
+| [KBF-STL-BOUNDED-SUCCESSION-03](application-definition.md#kbf-stl-bounded-succession-03) | No current close behavior | [Selected unrealized Step](evolution/unrealized/close-superseded-project-windows.md) owns optional exact predecessor window retirement; implementation, proof and materialization remain pending |
 
-Later horizon: `UNESTABLISHED`; this does not force a vague Step row. Benefit coverage here is a Map projection, not a copy of target Scenario/Feature bodies or a claim of realized AB-STL-04 behavior.
+Later horizon: `UNESTABLISHED`. Driver coverage is a Map projection, not a copy of Scenario/Feature bodies or a claim that future behavior is realized.
 
 ## RU-EVOMAP-02 — Relations / Readiness / Planning Horizon
 

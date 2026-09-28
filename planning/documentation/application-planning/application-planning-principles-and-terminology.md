@@ -205,10 +205,10 @@ Implementation answer candidates that appear during solution/concept/prototype/S
 
 ## Prototype Planning
 
-`Prototype Planning` is proportional provisional interaction/workflow design and evidence collection between a selected/current Application Definition (Benefits with their Responsibility Boundaries + concise Application Concept) and canonical detailed Scenario/Screen planning.
+`Prototype Planning` is proportional provisional interaction/workflow design and evidence collection between a selected/current Application Definition (Concept, own-Application justification / key behavior focus and feasibility pressure) and canonical detailed Scenario/Screen planning.
 
 ```text
-Application Definition / Benefit responsibility boundaries
+Application Definition / own-Application justification and key behavior focus
 → Prototype Planning when material uncertainty remains
    → Prototype Scenarios
    → Prototype Screens

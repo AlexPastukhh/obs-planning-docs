@@ -47,7 +47,7 @@ documentation-templates.md
 
 ```text
 APPLICATION CONTEXT
-Application Benefit / desired result
+Application Concept / own-Application justification / key behavior focus or a direct real-life Scenario
         ↓
 FEATURE ↔ SCENARIO ↔ SCREEN EXPLORATION
         ↓
@@ -95,9 +95,9 @@ Behavior or architecture already accepted as implemented. Current product owners
 
 Selected future meaning that is not current implementation truth yet. It remains visibly planned until realization/proof are reconciled and promoted.
 
-### Application Benefit / desired result
+### Application Definition / real-life Scenario driver
 
-Useful application/user result that justifies behavior.
+Upstream own-Application rationale and key behavior pressure under `TM-APPLICATION-DEFINITION`; a real-life Scenario may also start directly from Need/workflow evidence. Concrete `SPS-*` path and independently necessary `SR-*` remain Scenario authority.
 
 ### Feature
 
@@ -113,7 +113,7 @@ Implementation-independent must-hold Feature behavior. Durable Feature Requireme
 
 ### Scenario / Scenario Requirement
 
-Scenario owns real journey/composition/continuity across Features, Screens and contexts. `SR-*` exists only for genuine cross-Feature/cross-Screen/cross-context must-hold journey constraints.
+Scenario owns the real journey, its `SPS-*` path and independently useful Scenario-natural must-holds. An `SR-*` may attach to a step or span the whole Scenario when stable separate addressability adds value; crossing multiple Features or Screens is one possible reason, not a prerequisite. Feature-local behavior remains `BR-*`, and Screen-natural spatial/navigation meaning remains `SCR-*` or `SCR-G-*`.
 
 ### Screen
 
@@ -174,7 +174,7 @@ Feature owner
 → canonical Feature Behavior Requirement text
 
 Scenario owner
-→ canonical cross-Feature Scenario Requirement text
+→ canonical Scenario-natural Requirement text (step-attached or Scenario-wide)
 
 Slice owner
 → Slice-specific end-to-end IRs

@@ -6,9 +6,9 @@ Planning Position: **Selected / Planned**
 Target Resolution: **Partial Target**
 Change Surface: **Mixed**  
 
-## Driven By Application Definition
-- [Review AI Work Efficiently](../application-definition.md#ab-rpkg-review-ai-work-efficiently-05)
-- [Delegate Mechanical Repository Work](../application-definition.md#ab-rpkg-delegate-mechanical-repository-work-04)
+## Driven by Application Definition
+- [Inspectable review context](../application-definition.md#kbf-rpkg-inspectable-review-03)
+- [Exact delegated realization](../application-definition.md#kbf-rpkg-exact-realization-01)
 
 ## Entering From
 - current realized downstream owner state; Snapshot is semantically independent of Work-orchestration ownership transfer
@@ -51,8 +51,8 @@ These terms are Step-owned future vocabulary until this Step is realized/materia
 # SCN-RPKG-PROVIDE-REPOSITORY-SNAPSHOT-TO-AI — Provide Repository Snapshot To AI
 
 Realizes:
-- [Delegate Mechanical Repository Work](../application-definition.md#ab-rpkg-delegate-mechanical-repository-work-04)
-- [Review AI Work Efficiently](../application-definition.md#ab-rpkg-review-ai-work-efficiently-05)
+- [Exact delegated realization](../application-definition.md#kbf-rpkg-exact-realization-01)
+- [Inspectable review context](../application-definition.md#kbf-rpkg-inspectable-review-03)
 
 | SPS | Actor/application interaction | Screen/context | Feature used | Result |
 |---|---|---|---|---|
@@ -116,11 +116,15 @@ This Step exposes ready/failure result in application truth. OS/background notif
 - Snapshot source-selection Screen/interaction composition — impact identified but **not yet in the Materialization Set**; add `CREATE`/`REPLACE` only after a complete Target Screen/owner body is selected;
 - natural Domain/Slice/Shared owners — unresolved impacts, **not yet in the Materialization Set**; add `CREATE`/`REPLACE` only after discovery resolves durable responsibilities and complete Target Owner Bodies.
 
-## Step Readiness
+## RU-EVO-06 — Planning Completeness / Realization Start Readiness
 
-Readiness: **NOT_READY**
+Planning Completeness: **INCOMPLETE**
 
-Typed Operation Results is not yet realized and Screen/Domain/Slice/Shared realization ownership remains unresolved.
+Planning Completeness explanation: Snapshot target/branch-selection impacts are partial. Complete the NEW Feature, context Scenario, Screen/adapter bodies and RU-EVO-04/05 obligations; typed-result foundation is unrealized. Existing CLI/code is Evidence, not a completed target.
+
+Realization Start Readiness: **BLOCKED**
+
+Start-readiness explanation: BLOCKED by the missing Step/Target Body/proof work and any unrealized prerequisites described above. An enclosing selection/implementation authorization is a separate gate; this status does not authorize realization.
 
 ### Step Q/R/P
 - Q [BLOCKING]: resolve durable owner(s) for Snapshot storage/materialization and source-selection interaction where independently material.

@@ -6,10 +6,10 @@ Planning Position: **Selected / Planned**
 Change Surface: **Mixed — behavior target + implementation conformance**  
 Target Resolution: **Complete Target**
 
-## Driven By Application Definition
-- [Realize AI-Created Repository Work](../application-definition.md#ab-rpkg-realize-ai-repository-work-01)
-- [Delegate Mechanical Repository Work](../application-definition.md#ab-rpkg-delegate-mechanical-repository-work-04)
-- [Review AI Work Efficiently](../application-definition.md#ab-rpkg-review-ai-work-efficiently-05)
+## Driven by Application Definition
+- [Exact delegated realization](../application-definition.md#kbf-rpkg-exact-realization-01)
+- [Exact delegated realization](../application-definition.md#kbf-rpkg-exact-realization-01)
+- [Inspectable review context](../application-definition.md#kbf-rpkg-inspectable-review-03)
 
 ## Entering From
 - current accepted downstream owner state; existing Builder implementation is Source/Evidence, not accepted Feature authority
@@ -40,7 +40,7 @@ Exact implementation allocation remains an Exact-realization concern unless an i
 # F-RPKG-BUILD-REPLACEMENT-PACKAGE — Build Replacement Package
 
 ## Realizes Upstream Meaning
-- [Delegate Mechanical Repository Work](../application-definition.md#ab-rpkg-delegate-mechanical-repository-work-04)
+- [Exact delegated realization](../application-definition.md#kbf-rpkg-exact-realization-01)
 
 ## Feature Data
 
@@ -97,11 +97,15 @@ Target Feature Body above
 
 - Builder `F-RPKG-BUILD-REPLACEMENT-PACKAGE` — `CREATE` after Exact Realization + proof/revalidation.
 
-## Step Readiness
+## RU-EVO-06 — Planning Completeness / Realization Start Readiness
 
-Readiness: **NOT_READY**
+Planning Completeness: **INCOMPLETE**
 
-Target Feature meaning is complete, but the selected Typed Operation Results foundation has not yet been realized.
+Planning Completeness explanation: The selected Step frame, Builder Feature Target Body, current implementation evidence and CREATE transition are substantial. Complete all applicable Step Unit dispositions, transition/proof obligations and target-body conformance review; the typed-result foundation is still unrealized. Do not infer completeness from the Feature-shaped body alone.
+
+Realization Start Readiness: **BLOCKED**
+
+Start-readiness explanation: BLOCKED by the missing Step/Target Body/proof work and any unrealized prerequisites described above. An enclosing selection/implementation authorization is a separate gate; this status does not authorize realization.
 
 ### Step Q/R/P
 - P [BLOCKING]: realize `EVO-RPKG-STANDARDIZE-OPERATION-RESULTS` before Builder conformance realization.

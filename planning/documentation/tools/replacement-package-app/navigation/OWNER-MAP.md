@@ -4,7 +4,7 @@ Navigation projection only; it does not create owners.
 
 | Concern | Current authority / subject | Notes |
 |---|---|---|
-| Application intent / Benefits / contribution boundary | [APP-RPKG](../application-definition.md) | upstream authority; may lead current realization and is not an Evolution materialization target |
+| Application Concept / own-Application justification / key behavior focus | [APP-RPKG](../application-definition.md) | upstream authority; may lead current realization and is not an Evolution materialization target |
 | Current repository-work journey | [SCN-RPKG-COMPLETE-REPOSITORY-WORK](../scenarios/SCN-RPKG-COMPLETE-REPOSITORY-WORK.md) | future ownership split remains Step-owned |
 | Apply behavior | [F-RPKG-APPLY-REPLACEMENT-PACKAGE](../features/F-RPKG-APPLY-REPLACEMENT-PACKAGE.md) | behavior authority |
 | Apply realization | [SL-RPKG-01](../slices/SL-RPKG-01-apply-replacement-work.md) + Domain owners | current realization responsibility |

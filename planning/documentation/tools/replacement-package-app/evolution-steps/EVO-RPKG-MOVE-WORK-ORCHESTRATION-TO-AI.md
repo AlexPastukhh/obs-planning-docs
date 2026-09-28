@@ -6,10 +6,10 @@ Planning Position: **Selected / Planned**
 Target Resolution: **Partial Target**
 Change Surface: **Behavioral / boundary realization**  
 
-## Driven By Application Definition
-- [Keep Work Documented For Reuse](../application-definition.md#ab-rpkg-keep-work-documented-03)
-- [Delegate Mechanical Repository Work](../application-definition.md#ab-rpkg-delegate-mechanical-repository-work-04)
-- [Review AI Work Efficiently](../application-definition.md#ab-rpkg-review-ai-work-efficiently-05)
+## Driven by Application Definition
+- [Actor-owned Work history context](../application-definition.md#own-application-justification-key-behavior-focus)
+- [Exact delegated realization](../application-definition.md#kbf-rpkg-exact-realization-01)
+- [Inspectable review context](../application-definition.md#kbf-rpkg-inspectable-review-03)
 - selected Application boundary intent: AI owns semantic Work orchestration; Application owns bounded mechanical capabilities.
 
 ## Entering From
@@ -39,10 +39,10 @@ Current Apply behavior already consumes exact Work/package/branch context. This 
 <a id="scn-rpkg-develop-and-review-repository-work"></a>
 # SCN-RPKG-DEVELOP-AND-REVIEW-REPOSITORY-WORK — Develop And Review Repository Work
 
-## Realizes Application Benefits
-- [Keep Work Documented For Reuse](../application-definition.md#ab-rpkg-keep-work-documented-03)
-- [Delegate Mechanical Repository Work](../application-definition.md#ab-rpkg-delegate-mechanical-repository-work-04)
-- [Review AI Work Efficiently](../application-definition.md#ab-rpkg-review-ai-work-efficiently-05)
+## Upstream Application drivers
+- [Actor-owned Work history context](../application-definition.md#own-application-justification-key-behavior-focus)
+- [Exact delegated realization](../application-definition.md#kbf-rpkg-exact-realization-01)
+- [Inspectable review context](../application-definition.md#kbf-rpkg-inspectable-review-03)
 
 ## Scenario Requirements
 | SR | Type | Plain meaning | QRPE / Examples |
@@ -72,9 +72,9 @@ The branch is a Scenario solution, not a Requirement.
 <a id="scn-rpkg-realize-reviewed-repository-work"></a>
 # SCN-RPKG-REALIZE-REVIEWED-REPOSITORY-WORK — Realize Reviewed Repository Work
 
-## Realizes Application Benefits
-- [Realize AI-Created Repository Work](../application-definition.md#ab-rpkg-realize-ai-repository-work-01)
-- [Know Repository Work Outcome](../application-definition.md#ab-rpkg-know-repository-work-outcome-02)
+## Upstream Application drivers
+- [Exact delegated realization](../application-definition.md#kbf-rpkg-exact-realization-01)
+- [Truthful operation outcomes](../application-definition.md#kbf-rpkg-truthful-outcome-02)
 
 ## Scenario Requirements
 | SR | Plain meaning |
@@ -98,11 +98,15 @@ The branch is a Scenario solution, not a Requirement.
 
 This Step is not materialization-ready while the Workspace Slice change remains only impact-level meaning. `Partial Target` must remain truthful.
 
-## Step Readiness
+## RU-EVO-06 — Planning Completeness / Realization Start Readiness
 
-Readiness: **NOT_READY**
+Planning Completeness: **INCOMPLETE**
 
-The package-construction semantic predecessor is not yet realized and the Workspace Slice target boundary remains incomplete.
+Planning Completeness explanation: The AI/Application responsibility split and partial target Scenario/WorkIntent/Workspace impacts are established. Complete the post-Step owner bodies, transitions and proof/QRP; direct predecessor Package Construction and any realization foundation are unrealized.
+
+Realization Start Readiness: **BLOCKED**
+
+Start-readiness explanation: BLOCKED by the missing Step/Target Body/proof work and any unrealized prerequisites described above. An enclosing selection/implementation authorization is a separate gate; this status does not authorize realization.
 
 ### Step Q/R/P
 - P [BLOCKING]: realize Establish Replacement Package Construction.

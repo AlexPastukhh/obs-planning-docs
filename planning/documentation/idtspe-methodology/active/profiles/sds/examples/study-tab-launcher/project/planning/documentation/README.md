@@ -14,22 +14,9 @@ in the copied owners listed here; methodology rules remain with their canonical 
 > [SDS Application Definition method](../../../../../target-modules/TM-APPLICATION-DEFINITION.md),
 > [SDS Evolution Step method](../../../../../target-modules/TM-EVOLUTION-STEP.md)
 
-The Application Definition owns application need, selected/possible Benefits,
-contribution and Benefit-local responsibility boundaries/constraints. Current
-Feature, Scenario, Screen, Domain, Slice and Shared files describe only
-realized downstream meaning. Materially selected but unrealized behavior stays
-in an Evolution Step until implementation and proof justify owner
-materialization.
+The [Application Definition](application-definition.md) owns the need, Application Concept, key behavior focuses and feasibility. Current Scenario, Feature, Screen, Domain, Slice and Shared files own realized downstream meaning. The [Evolution Map](evolution-steps.md) projects driver coverage and readiness; its selected unrealized Step owns future Target bodies until implementation and proof justify materialization.
 
-Benefit-reference convention: downstream owners link the complete `AB-*` when
-they realize or manifest the whole relevant Benefit contribution. When they
-realize only a branch or must preserve one particular limit, they additionally
-link the exact `Responsibility Boundary / Constraints` anchor in the
-[Application Definition](application-definition.md#ru-app-03--application-benefits).
-Benefit-local boundary/constraint meaning is required by the current repository SDS
-[`TM-APPLICATION-DEFINITION`](../../../../../target-modules/TM-APPLICATION-DEFINITION.md#sds-application-benefit-boundary-constraints).
-The additional exact-anchor linking convention is local representation
-practice for this repository.
+Read this full application alongside the two current examples: [SDS Application Evolution Proposal Workspace](../../../../sds-application-proposal-workspace/README.md) for detailed Scenario and Step-owned Target bodies, and [SDS Worked Flow Reference](../../../../SDS-WORKED-FLOW-REFERENCE.md) for compact Scenario → Feature → Screen composition. Their examples do not replace the [Scenario](../../../../../target-modules/TM-SCENARIO-PLANNING.md) and [Screen](../../../../../target-modules/TM-SCREEN.md) Target Module contracts.
 
 ## Canonical current owners
 

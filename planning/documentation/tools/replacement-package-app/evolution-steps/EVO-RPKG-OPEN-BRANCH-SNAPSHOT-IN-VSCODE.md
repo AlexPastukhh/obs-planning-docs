@@ -6,9 +6,9 @@ Planning Position: **Selected / Planned**
 Target Resolution: **Impact Identified**
 Change Surface: **Mixed**  
 
-## Driven By Application Definition
-- [Review AI Work Efficiently](../application-definition.md#ab-rpkg-review-ai-work-efficiently-05)
-- [Delegate Mechanical Repository Work](../application-definition.md#ab-rpkg-delegate-mechanical-repository-work-04)
+## Driven by Application Definition
+- [Inspectable review context](../application-definition.md#kbf-rpkg-inspectable-review-03)
+- [Exact delegated realization](../application-definition.md#kbf-rpkg-exact-realization-01)
 
 ## Entering From
 Both predecessor target states must be **realized/materialized**:
@@ -64,11 +64,15 @@ These are target pressures to route to natural owners, not yet a complete owner 
 ## Materialization Set
 None yet. This Step has selected intent and concrete prerequisites, but Target Resolution is only **Impact Identified**. Add `CREATE/REPLACE` consequences only after the Snapshot-folder owner boundary and complete affected Target Bodies are resolved.
 
-## Step Readiness
+## RU-EVO-06 — Planning Completeness / Realization Start Readiness
 
-Readiness: **NOT_READY**
+Planning Completeness: **INCOMPLETE**
 
-Both semantic predecessors are unrealized and Snapshot-folder representation/lifetime plus affected owner bodies remain open.
+Planning Completeness explanation: Combination impact is identified but complete post-Step owner/adapter target state, materialization and proof are open. Both Snapshot and Open Folder predecessors plus typed-result foundation are unrealized.
+
+Realization Start Readiness: **BLOCKED**
+
+Start-readiness explanation: BLOCKED by the missing Step/Target Body/proof work and any unrealized prerequisites described above. An enclosing selection/implementation authorization is a separate gate; this status does not authorize realization.
 
 ### Step Q/R/P
 - Q [BLOCKING]: what exact materialized Snapshot-folder representation/lifetime is opened?

@@ -11,10 +11,24 @@ Scope: canonical detailed application behavior owner for discovering current Hel
 
 **Registry parity invariant:** every current projected methodology UC/TM/Lens appears exactly once as a primary semantic Command card; retired compatibility entries do not become current semantic cards. The build fails on projection/seed parity drift.
 
+## RU-SCEN-01 — Scenario Path
+
+The path below is the normative current journey. The detailed trigger, result and boundary above elaborate these steps. Feature resolution remains open where the Helper has no independently accepted Feature owner; implementation files in Traceability are evidence, not Feature identities.
+
+| Scenario Path Step | Actor / application interaction | Participant / Feature resolution | Data / result | Attached SR | QRPE / Examples |
+|---|---|---|---|---|---|
+| <a id="sps-ph-discover-01"></a>`SPS-PH-DISCOVER-01 — Enter a current surface` | User opens Commands, Scenarios or Prompts. | User and Helper; Feature resolution `OPEN` | selected catalog view | — | See the boundaries and traceability below; this step alone does not prove external effects. |
+| <a id="sps-ph-discover-02"></a>`SPS-PH-DISCOVER-02 — Navigate and filter` | Helper displays groups, classifications, favorites and search over materialized current state. | User and Helper; Feature resolution `OPEN` | matching cards and group context | — | See the boundaries and traceability below; this step alone does not prove external effects. |
+| <a id="sps-ph-discover-03"></a>`SPS-PH-DISCOVER-03 — Inspect selected content` | User opens a Command, Scenario or Prompt detail. | User and Helper; Feature resolution `OPEN` | current content with its source identity | — | See the boundaries and traceability below; this step alone does not prove external effects. |
+
+## RU-SCEN-04 — Scenario Requirements
+
+Disposition: `OMITTED`; the selected SPS path and existing detailed boundaries suffice here. No independent Scenario-natural `SR-*` identity has been accepted for this current owner.
+
 **Traceability:**
 
 - **Product / behavior:** [`README.md#projection-model`](../README.md#projection-model), [`README.md#unified-local-snapshot`](../README.md#unified-local-snapshot), [`README.md#commands-navigation`](../README.md#commands-navigation).
 - **Focused / durable contract:** planning-command authority starts at [`planning/commands/README.md`](../../../../../commands/README.md); semantic authority remains in current methodology registries/owners; helper files use [`planning/helper-library/README.md`](../../../../../helper-library/README.md).
 - **Primary implementation:** [`src/planning-helper-state.js`](../src/planning-helper-state.js), [`src/planning-helper-runtime.js`](../src/planning-helper-runtime.js), [`src/planning-helper-ui.js`](../src/planning-helper-ui.js), [`src/semantic-projections.js`](../src/semantic-projections.js), [`src/methodology-navigation.js`](../src/methodology-navigation.js).
-- **Automated evidence:** [`tests/planning-helper-state.test.mjs`](../tests/planning-helper-state.test.mjs), [`tests/planning-helper-runtime.test.mjs`](../tests/planning-helper-runtime.test.mjs), [`tests/methodology-navigation.test.mjs`](../tests/methodology-navigation.test.mjs), [`tests/planning-helper-policy.test.mjs`](../tests/planning-helper-policy.test.mjs).
+- **Automated evidence:** [`tests/planning-helper-state.test.mjs`](../tests/planning-helper-state.test.mjs), [`tests/planning-helper-runtime.test.mjs`](../tests/planning-helper-runtime.test.mjs), [`tests/helper-navigation.test.mjs`](../tests/helper-navigation.test.mjs), [`tests/planning-helper-policy.test.mjs`](../tests/planning-helper-policy.test.mjs).
 - **Manual acceptance:** [`MANUAL-ACCEPTANCE.md#scn-ph-discover`](../MANUAL-ACCEPTANCE.md#scn-ph-discover).

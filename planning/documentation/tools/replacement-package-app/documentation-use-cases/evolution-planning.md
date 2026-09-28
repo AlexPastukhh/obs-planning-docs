@@ -13,7 +13,7 @@ Represent meaningful future application evolution early enough to influence curr
 ### Process
 
 1. Capture a new Evolution Step as soon as a material future capability/journey/migration change is known. Early representation may be shallow.
-2. Record affected Benefits/Features/Scenarios as they become known and classify material transition nature with one or more Evolution Kinds: Introduction, Expansion, Refactoring, Forced Migration, Retirement.
+2. Record affected `KBF-*`/Scenario `SPS-*/SR-*` drivers, Features and Scenarios as they become known and classify material transition nature with one or more Evolution Kinds: Introduction, Expansion, Refactoring, Forced Migration, Retirement.
 3. Use the Step during every relevant Discovery rather than waiting for late architecture review.
 4. Represent a new Feature directly as Introduction in the Step target; do not invent a pre-existing Evolution Impact merely to explain its creation.
 5. When an existing Feature changes and enough detail is known, show the full target Feature with `[EXISTING]`, `[NEW]`, `[CHANGED]`, `[REMOVED]` (or equivalent) rather than only a detached delta.

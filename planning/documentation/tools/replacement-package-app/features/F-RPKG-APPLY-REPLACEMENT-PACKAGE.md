@@ -1,9 +1,15 @@
 # F-RPKG-APPLY-REPLACEMENT-PACKAGE — Apply Replacement Package
 
-## Realizes Upstream Meaning
+## Scenario Realization
 
-- [Realize AI-Created Repository Work](../application-definition.md#ab-rpkg-realize-ai-repository-work-01)
-- [Know Repository Work Outcome](../application-definition.md#ab-rpkg-know-repository-work-outcome-02)
+Scenario: [SCN-RPKG-COMPLETE-REPOSITORY-WORK](../scenarios/SCN-RPKG-COMPLETE-REPOSITORY-WORK.md)
+
+- **Preceding / Trigger Context:** [`SPS-RPKG-SUPPLY-CURRENT-REALIZATION-REQUEST-01`](../scenarios/SCN-RPKG-COMPLETE-REPOSITORY-WORK.md#sps-rpkg-supply-current-realization-request-01) — actor/automation supplies exact context; the Application validates/binds it on entry.
+- **Realized Scenario Steps:** [`SPS-RPKG-REQUEST-CURRENT-PACKAGE-REALIZATION-02`](../scenarios/SCN-RPKG-COMPLETE-REPOSITORY-WORK.md#sps-rpkg-request-current-package-realization-02), [`SPS-RPKG-OBSERVE-CURRENT-REALIZATION-OUTCOME-03`](../scenarios/SCN-RPKG-COMPLETE-REPOSITORY-WORK.md#sps-rpkg-observe-current-realization-outcome-03) for the App-produced result, not the actor's interpretation.
+- **Realized Scenario Requirements:** [`SR-RPKG-KEEP-WORK-CONTEXT-STABLE-01`](../scenarios/SCN-RPKG-COMPLETE-REPOSITORY-WORK.md#sr-rpkg-keep-work-context-stable-01), [`SR-RPKG-SHOW-OPERATION-CONTEXT-AT-USER-DECISIONS-02`](../scenarios/SCN-RPKG-COMPLETE-REPOSITORY-WORK.md#sr-rpkg-show-operation-context-at-user-decisions-02) where a user effect is requested, and [`SR-RPKG-KEEP-TERMINAL-OUTCOME-UNDERSTANDABLE-03`](../scenarios/SCN-RPKG-COMPLETE-REPOSITORY-WORK.md#sr-rpkg-keep-terminal-outcome-understandable-03) for truthful returned meaning. Screen owns spatial presentation.
+- **Realized Scenario-wide Requirements:** —; the listed `SR-*` are the applicable journey constraints above and remain Scenario authority.
+
+The upstream [exact realization](../application-definition.md#kbf-rpkg-exact-realization-01) and [truthful outcome](../application-definition.md#kbf-rpkg-truthful-outcome-02) focuses explain why this Feature matters; they do not substitute for SPS/SR coverage.
 
 Current Feature does not own Issue/comments or AI semantic branch decisions. Selected future owner changes are referenced below.
 

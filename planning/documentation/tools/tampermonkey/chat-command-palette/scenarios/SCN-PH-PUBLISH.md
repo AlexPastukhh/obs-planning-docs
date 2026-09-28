@@ -11,6 +11,20 @@ Scope: canonical detailed application behavior owner for explicit Helper→GitHu
 
 **Semantic boundary:** order/group persistence changes presentation only; it does not change Command/Scenario/UC/TM/Lens meaning. Commands order uses stable semantic IDs for UC/TM/Lens cards.
 
+## RU-SCEN-01 — Scenario Path
+
+The path below is the normative current journey. The detailed trigger, result and boundary above elaborate these steps. Feature resolution remains open where the Helper has no independently accepted Feature owner; implementation files in Traceability are evidence, not Feature identities.
+
+| Scenario Path Step | Actor / application interaction | Participant / Feature resolution | Data / result | Attached SR | QRPE / Examples |
+|---|---|---|---|---|---|
+| <a id="sps-ph-publish-01"></a>`SPS-PH-PUBLISH-01 — Request explicit repository save` | User chooses Save GitHub for a direct record or Save order GitHub. | User and Helper; Feature resolution `OPEN` | exact record or catalog-order target | — | See the boundaries and traceability below; this step alone does not prove external effects. |
+| <a id="sps-ph-publish-02"></a>`SPS-PH-PUBLISH-02 — Verify target and publish` | Helper checks remote SHA, writes only intended bytes when needed, and verifies read-back. | User and Helper; Feature resolution `OPEN` | created, updated, exact-no-op or conflict | — | See the boundaries and traceability below; this step alone does not prove external effects. |
+| <a id="sps-ph-publish-03"></a>`SPS-PH-PUBLISH-03 — Observe terminal result` | User sees verified success or conflict/uncertainty. | User and Helper; Feature resolution `OPEN` | repository result distinct from local metadata | — | See the boundaries and traceability below; this step alone does not prove external effects. |
+
+## RU-SCEN-04 — Scenario Requirements
+
+Disposition: `OMITTED`; the selected SPS path and existing detailed boundaries suffice here. No independent Scenario-natural `SR-*` identity has been accepted for this current owner.
+
 **Traceability:**
 
 - **Product / behavior:** [`README.md#save-github--save-order-github`](../README.md#save-github--save-order-github).

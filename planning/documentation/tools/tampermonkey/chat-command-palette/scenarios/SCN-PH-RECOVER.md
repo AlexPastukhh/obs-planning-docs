@@ -27,9 +27,24 @@ The UI confirms before replacement because unsaved local direct Command drafts a
 
 **Boundary:** Hard Reload is explicit and performs repository reads only after confirmation. It does not mutate GitHub, does not overwrite local Prompt content and does not imply commit/push. Generated use-case/semantic/scenario seeds are build-verified repository projections; canonical meaning remains in current methodology/repository owners.
 
+## RU-SCEN-01 — Scenario Path
+
+The path below is the normative current journey. The detailed trigger, result and boundary above elaborate these steps. Feature resolution remains open where the Helper has no independently accepted Feature owner; implementation files in Traceability are evidence, not Feature identities.
+
+| Scenario Path Step | Actor / application interaction | Participant / Feature resolution | Data / result | Attached SR | QRPE / Examples |
+|---|---|---|---|---|---|
+| <a id="sps-ph-recover-01"></a>`SPS-PH-RECOVER-01 — Request recovery` | User chooses Hard Reload GitHub or supplies complete pasted repository marker evidence. | User and Helper; Feature resolution `OPEN` | repository-backed candidate catalog | — | See the boundaries and traceability below; this step alone does not prove external effects. |
+| <a id="sps-ph-recover-02"></a>`SPS-PH-RECOVER-02 — Confirm and validate` | For Hard Reload the user confirms replacement; Helper reads and validates catalogs. | User and Helper; Feature resolution `OPEN` | accepted complete repository state or failure | — | See the boundaries and traceability below; this step alone does not prove external effects. |
+| <a id="sps-ph-recover-03"></a>`SPS-PH-RECOVER-03 — Replace eligible local projections` | Helper restores repository-backed direct/semantic/scenario/order state, pruning stale IDs while preserving Prompt content. | User and Helper; Feature resolution `OPEN` | recovered local catalog | — | See the boundaries and traceability below; this step alone does not prove external effects. |
+| <a id="sps-ph-recover-04"></a>`SPS-PH-RECOVER-04 — Inspect recovered state` | User sees the recovered catalog and preserved local Prompt content. | User and Helper; Feature resolution `OPEN` | repository reads without GitHub mutation | — | See the boundaries and traceability below; this step alone does not prove external effects. |
+
+## RU-SCEN-04 — Scenario Requirements
+
+Disposition: `OMITTED`; the selected SPS path and existing detailed boundaries suffice here. No independent Scenario-natural `SR-*` identity has been accepted for this current owner.
+
 **Traceability:**
 
 - **Product / behavior:** [`README.md#hard-reload-github`](../README.md#hard-reload-github), [`README.md#source--cache-model`](../README.md#source--cache-model).
 - **Primary implementation:** [`src/repository-catalog-service.js`](../src/repository-catalog-service.js), [`src/repository-command-service.js`](../src/repository-command-service.js), [`src/chat-recovery.js`](../src/chat-recovery.js), [`src/planning-helper-runtime.js`](../src/planning-helper-runtime.js), [`src/planning-helper-state.js`](../src/planning-helper-state.js), [`src/planning-helper-ui.js`](../src/planning-helper-ui.js).
-- **Automated evidence:** [`tests/planning-helper-runtime.test.mjs`](../tests/planning-helper-runtime.test.mjs), [`tests/planning-helper-state.test.mjs`](../tests/planning-helper-state.test.mjs), [`tests/chat-recovery.test.mjs`](../tests/chat-recovery.test.mjs), [`tests/semantic-navigation.test.mjs`](../tests/semantic-navigation.test.mjs).
+- **Automated evidence:** [`tests/planning-helper-runtime.test.mjs`](../tests/planning-helper-runtime.test.mjs), [`tests/planning-helper-state.test.mjs`](../tests/planning-helper-state.test.mjs), [`tests/chat-recovery.test.mjs`](../tests/chat-recovery.test.mjs), [`tests/helper-navigation.test.mjs`](../tests/helper-navigation.test.mjs).
 - **Manual acceptance:** [`MANUAL-ACCEPTANCE.md#scn-ph-recover`](../MANUAL-ACCEPTANCE.md#scn-ph-recover).

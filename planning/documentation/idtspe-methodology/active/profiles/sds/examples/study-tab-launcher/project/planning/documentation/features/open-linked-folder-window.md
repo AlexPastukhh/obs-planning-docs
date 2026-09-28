@@ -24,13 +24,16 @@ studyTabLauncher.openFolder(OpenFolderRequest) -> OpenFolderOutcome
 The direct command/URI entry and composition through the adaptive project
 Feature are transport/composition variants of this same behavior.
 
-Application Benefit contribution: this Feature realizes only the [folder
-branch](../application-definition.md#ab-stl-02-boundary-folder-branch) of
-[`AB-STL-02`](../application-definition.md#ab-stl-02--open-a-local-project-source)
-and protects its [safe-project-effect
-constraint](../application-definition.md#ab-stl-02-constraint-safe-project-effect).
-Selector resolution/waiting and the archive branch remain separate Benefit
-contributions owned by their current Features.
+Scenario Realization — [SCN-STL-FOLDER](../scenarios/open-selected-folder.md):
+
+- **Preceding / Trigger Context:** [`SPS-STL-FOLDER-04 — Cross into VS Code`](../scenarios/open-selected-folder.md#sps-stl-folder-04). These steps are not claimed as Feature realization.
+- **Realized Scenario Steps:** [`SPS-STL-FOLDER-05 — Open the directory project`](../scenarios/open-selected-folder.md#sps-stl-folder-05).
+- **Realized Scenario Requirements:** [`SR-STL-FOLDER-01 — Preserve folder-selector correlation`](../scenarios/open-selected-folder.md#sr-stl-folder-01), [`SR-STL-FOLDER-03 — Preserve workspace continuity`](../scenarios/open-selected-folder.md#sr-stl-folder-03).
+- **Realized Scenario-wide Requirements:** —.
+
+The Feature validates the received folder identity and preserves the previous workspace; delayed browser handoff (`SR-STL-FOLDER-02`) remains with the adaptive project/Screen participants.
+
+Application contribution: [KBF-STL-SELECTED-LOCAL-CONTEXT-01](../application-definition.md#kbf-stl-selected-local-context-01) is served by this Feature within its Scenario; the outcome and actor/external authority remain in the Scenario and Application Definition.
 
 ## RU-FEAT-02 — Semantic Data
 

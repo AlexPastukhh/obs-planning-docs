@@ -9,18 +9,18 @@ This group owns Feature / Scenario / Screen planning process. Detailed Feature/S
 
 ### Goal
 
-Keep one selected Scenario understandable as a real user/application journey through independently owned Features, actors, Screens and external contexts; verify their composition closes an Application Benefit; own genuine cross-Feature / cross-Screen Scenario Requirements without duplicating Feature internals.
+Keep one selected Scenario understandable as a real user/application journey through independently owned Features, actors, Screens and external contexts; verify their normative `SPS-*` path and any independent `SR-*` reach the intended journey outcome; own genuine Scenario-owned requirements only when independently needed without duplicating Feature internals.
 
 ### Process
 
-1. Start from a selected/current or planned real journey that contributes to an Application Benefit.
-2. Record the Feature sequence/composition and only the journey-level meaning needed to connect it: actor/interaction decision when material, input/starting context, visible Feature behavior/Result, continuity handed to later Features, Screen/external context and terminal Benefit closure.
+1. Start from a selected/current or planned real journey that may be driven by Application key behavior focus or directly by real-life Need/evidence.
+2. Record normative `SPS-*` path/branches and the Feature sequence/composition needed to realize it: actor/interaction decision when material, input/starting context, visible Feature behavior/Result, continuity handed to later Features, Screen/external context and terminal Scenario outcome.
 3. Keep actor-owned wording, selection and interpretation in Scenario when the application merely consumes it. AI/ChatGPT may be the actor/user.
 4. Keep detailed Feature-local behavior with the Feature owner. Scenario may repeat/summarize a Feature Result or visible effect when needed for composition, but must not restate the Feature's validation/recovery algorithm or canonical `BR-*` text.
 5. For a material journey decision, state one exact question and represent one table column per path. Continue each path vertically until explicit convergence, re-entry, Success or Stop.
-6. Discover Scenario Requirements only for behavior genuinely cross-Feature/cross-Screen/cross-context. Put `SR-*` beside the journey behavior it constrains where practical rather than in a detached catalog.
+6. Discover Scenario Requirements only for behavior genuinely Scenario-natural step or whole-journey. Attach `SR-*` to the affected `SPS-*` when step-local, or keep it Scenario-wide when its must-hold spans the journey; `SPS-*` remains normative even without an SR.
 7. Check that Feature preconditions can arise, Feature Results are truthful, continuity identity/Data/context is preserved, and later Features consume the intended prior Result.
-8. Check that the journey reaches the terminal Result / closes the intended Application Benefit.
+8. Check that the journey reaches the terminal Scenario outcome.
 9. Check selected Screens/external contexts support the journey while Screen remains spatial/window authority.
 10. If the journey exposes a missing/merged/split Feature or poor Slice boundary, return to DOC-UC-13 and re-run the Feature/Slice Boundary Method from the reusable Vertical Slice guide.
 11. Define E2E proof intent from the Scenario; tests remain proof rather than Scenario authority.
@@ -45,7 +45,7 @@ Explore candidate use-case boundaries and real journeys far enough to select coh
 
 ### Process
 
-1. Start from an Application Benefit / desired result, an existing Scenario, a Feature candidate or a Screen/interaction problem.
+1. Start from an Application justification / key behavior focus or direct real-life Need, an existing Scenario, a Feature candidate or a Screen/interaction problem.
 2. Sketch the smallest candidate Feature set and real journey needed to understand the intended application result.
 3. For each non-obvious Feature candidate, use DOC-UC-13 far enough to expose intent, principal Result, meaningful behavior, Feature Data and material implementation concerns.
 4. Compare Feature boundaries using the reusable four-group Feature/Slice Boundary Method; do not finalize boundaries merely from labels, screens, transports or current class structure.
@@ -73,8 +73,8 @@ Keep durable spatial/window/UI meaning explicit while allowing Features and Scen
 ### Process
 
 1. Maintain the Screen Map and important Screen responsibilities.
-2. Map Features/Scenarios to Screens only where spatial context matters.
-3. Keep Screen-owned behavior/UI constraints in the Screen owner.
+2. For each Screen, list every `SPS-*` that occurs there in a per-Scenario participation table; derive step-local `SCR-*` and Screen-wide `SCR-G-*` only for independently Screen-natural spatial must-holds.
+3. Compute Screen participation / spatial presentation for each participating SPS from its meaning plus applicable local/global Screen requirements; keep Feature behavior and Scenario SR authority in their owners.
 4. Use DOC-UC-01 / DOC-UC-07 Scenario planning to validate real transitions between Screens.
 5. Feed Screen constraints back into Feature/Scenario planning when they expose impossible or confusing behavior.
 6. Inspect relevant Evolution Steps.
@@ -95,8 +95,8 @@ Define one coherent Feature as the primary behavioral authority, using a compact
 
 ### Process
 
-1. Start from relevant Application Benefit/task or a Feature candidate discovered through Scenario/Screen work; use DOC-UC-07 while alternatives remain unresolved.
-2. State one Feature `Intent` and one principal meaningful `Result` / Result family.
+1. Start from relevant Scenario `SPS-*/SR-*` obligations or task or a Feature candidate discovered through Scenario/Screen work; use DOC-UC-07 while alternatives remain unresolved.
+2. Record Scenario Realization with non-overlapping preceding/trigger context and realized `SPS-*/SR-*` references when Scenario coverage exists. State one Feature `Intent` and one principal meaningful `Result` / Result family.
 3. Under `Expected application behavior`, record the smallest useful semantic Data representation, normally one compact Data table.
 4. Make the numbered **Main path** the primary Feature representation:
 
@@ -134,7 +134,7 @@ One row is one semantic behavior step. A row may own one or several `BR-*`.
 
 ### Owners used by this process
 
-- app-level Benefit/context owner where present;
+- Application Definition as upstream driver when material;
 - the Feature owner itself;
 - relevant Scenario and Screen owners;
 - known Evolution Step owner/map;

@@ -6,8 +6,8 @@ Planning Position: **Selected / Planned**
 Target Resolution: **Impact Identified**
 Change Surface: **Mixed**  
 
-## Driven By Application Definition
-- [Know Repository Work Outcome](../application-definition.md#ab-rpkg-know-repository-work-outcome-02)
+## Driven by Application Definition
+- [Truthful operation outcomes](../application-definition.md#kbf-rpkg-truthful-outcome-02)
 
 ## Entering From
 - current realized state; independent of other selected Steps
@@ -43,11 +43,15 @@ A notification adapter may be a Screen/shared implementation responsibility. Exa
 ## Materialization readiness
 Do not claim Complete Target until exact affected Scenario SR allocation, notification content/context identity, adapter owner and recovery/duplication behavior are selected.
 
-## Step Readiness
+## RU-EVO-06 — Planning Completeness / Realization Start Readiness
 
-Readiness: **NOT_READY**
+Planning Completeness: **INCOMPLETE**
 
-Target resolution is only Impact Identified; the exact notification adapter/content policy and affected target owner bodies are not complete.
+Planning Completeness explanation: Affected operation-result/attention surfaces are identified but full Scenario/Screen/adapter Target Bodies, materialization and proof are not. Typed-result foundation remains unrealized.
+
+Realization Start Readiness: **BLOCKED**
+
+Start-readiness explanation: BLOCKED by the missing Step/Target Body/proof work and any unrealized prerequisites described above. An enclosing selection/implementation authorization is a separate gate; this status does not authorize realization.
 
 ### Step Q/R/P
 - Q [BLOCKING]: which outcomes warrant notification and what content is safe/useful?

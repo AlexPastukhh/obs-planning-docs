@@ -10,8 +10,8 @@
 
 | Current owner | Скопированный документ | Что показывает |
 |---|---|---|
-| [TM-APPLICATION-DEFINITION](../../target-modules/TM-APPLICATION-DEFINITION.md) | [application-definition.md](project/planning/documentation/application-definition.md) | Need/Benefits могут предшествовать realization; selected AB-STL-04 не превращает будущее поведение в current |
-| [TM-FEATURE](../../target-modules/TM-FEATURE.md) | [features/open-local-project.md](project/planning/documentation/features/open-local-project.md) | Benefit slices и связь с Scenario/Slice |
+| [TM-APPLICATION-DEFINITION](../../target-modules/TM-APPLICATION-DEFINITION.md) | [application-definition.md](project/planning/documentation/application-definition.md) | Need/Key Behavior Focus могут предшествовать realization; selected KBF-STL-BOUNDED-SUCCESSION-03 не превращает будущее поведение в current |
+| [TM-FEATURE](../../target-modules/TM-FEATURE.md) | [features/open-local-project.md](project/planning/documentation/features/open-local-project.md) | Scenario Realization и связь с Scenario/Slice |
 | [TM-SCENARIO-PLANNING](../../target-modules/TM-SCENARIO-PLANNING.md) | [scenarios/open-selected-project.md](project/planning/documentation/scenarios/open-selected-project.md) | Сценарный путь, SPS/SR и результат |
 | [TM-SCREEN](../../target-modules/TM-SCREEN.md) | [screens/chatgpt-launcher-widget.md](project/planning/documentation/screens/chatgpt-launcher-widget.md) | UI actions → Features / Scenarios |
 | [TM-DOMAIN-OWNER](../../target-modules/TM-DOMAIN-OWNER.md) | [domain/local-project-selector.md](project/planning/documentation/domain/local-project-selector.md) | Доменные значения и инварианты |
@@ -22,7 +22,7 @@
 | [TM-PLANNING-RESOLUTION-STATE](../../../../idtspe-core/target-modules/TM-PLANNING-RESOLUTION-STATE.md) | [resolution-carry-forward.md](project/planning/documentation/resolution-carry-forward.md) | Единый PRS/RCF: открытая работа и Decisions со связанными QRP; порядок и приоритет разделены |
 | [TM-PRACTICAL-TEST](../../target-modules/TM-PRACTICAL-TEST.md) | [practical-tests/installed-browser-vscode-handoff.md](project/planning/documentation/practical-tests/installed-browser-vscode-handoff.md) | План практического доказательства с OPEN, не выдуманный success |
 
-`RU-APP-04` in the copied Application Definition now links to the current Scenario journeys and the unrealized Step instead of repeating four miniature journeys. The Map projects `AB-STL-01..04` driver coverage; it does not claim future behavior or installed proof has been realized.
+The current Application Definition uses `RU-APP-05/02/08/07`; Scenario journeys live with Scenario owners and driver coverage lives in the Map.
 
 ## Status / authority boundary
 
@@ -47,7 +47,7 @@
 
 ### Редакция Concept-first
 
-Application Concept (стабильный `RU-APP-05`) стоит первым; дублирующий `RU-APP-01` снят. Benefits и их границы остаются в `RU-APP-03`. Эта ранее согласованная редакция сохранена. Новое перенаправление меняет методологическую навигацию и provenance; статусы приложения и его результаты остаются прежними.
+Application Concept remains `RU-APP-05`. The current copy follows `RU-APP-05/02/08/07`; the former Benefit representation is dated history only.
 
 [Core Review / Workup / Pre-Update examples](../../../../idtspe-core/examples/review-proposal-pre-update/README.md) показывают другие Target results. Для обновления примера используйте UC-DOC-MAINTAIN-EXAMPLE.
 
@@ -64,14 +64,20 @@ and current navigation reflects Carry-Forward/PRS Decision retention. Historical
 audits keep their original snapshot basis and wording; this refresh does not turn
 them into current conformance certificates or claim new runtime Evidence.
 
-## 2026-09-28 — Benefit boundary recheck
+## 2026-09-28 — earlier Benefit boundary recheck (dated provenance)
 
-`AB-STL-01..04` were reviewed clause by clause against the five linked current
+three KBF drivers were reviewed clause by clause against the five linked current
 Scenario journeys, their five current Feature owners and the selected unrealized
 succession Step. The copied Application Definition now keeps the Benefit promise,
 external authority and material safety limits; source lookup, ZIP preparation,
 window matching and close coordination stay in the linked Scenario/Feature/Step
-bodies. Existing clause anchors and their downstream references remain stable.
+bodies. That earlier revision preserved clause anchors at its own basis; the later current migration supersedes their live navigation.
 No new current behavior, Feature identity, completed installed proof or realized
 Step is inferred from this editorial revision. The snapshot manifest records
 its copied-file digest while preserving the original capture digest.
+
+## 2026-09-28 — Current Scenario and Screen migration
+
+The current copied owners follow the four-Unit Application Definition, SPS and SR Scenario authority, Feature Scenario Realization, and per-SPS Screen participation. The Map carries the three accepted KBF drivers and separate Step completeness/start readiness. Original capture hashes and dated audits remain unchanged; [snapshot-manifest.json](snapshot-manifest.json) records each revised copied document.
+
+Read this full application alongside two current examples: the [SDS Application Evolution Proposal Workspace](../sds-application-proposal-workspace/README.md) for detailed Scenario and Step-owned Target bodies, and the [SDS Worked Flow Reference](../SDS-WORKED-FLOW-REFERENCE.md) for compact Scenario → Feature → Screen composition. The [Scenario](../../target-modules/TM-SCENARIO-PLANNING.md) and [Screen](../../target-modules/TM-SCREEN.md) Target Modules remain the reusable methodology owners.

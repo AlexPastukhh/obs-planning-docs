@@ -48,7 +48,7 @@ Keep two uses distinct:
 
 ```text
 technical feasibility spike
-→ used inside Application Definition feasibility/research when the question is whether the concept or a Benefit boundary is technically feasible/costly
+→ used inside Application Definition feasibility/research when the question is whether the Concept or a key behavior focus is technically feasible/costly
 
 interaction/workflow prototype
 → UC-PLAN-PROTOTYPE

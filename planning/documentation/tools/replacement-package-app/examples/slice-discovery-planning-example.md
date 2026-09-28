@@ -6,7 +6,7 @@ This file previously illustrated the pre-v14 Replacement Package product model, 
 
 Use current authorities instead:
 
-- [`../application-definition.md`](../application-definition.md) — upstream Application Benefits/contribution/boundary intent;
+- [`../application-definition.md`](../application-definition.md) — upstream Concept, own-Application justification, key behavior focus and feasibility;
 - [`../navigation/README.md`](../navigation/README.md) — current RPKG navigation;
 - [`../navigation/EVOLUTION-STEPS-MAP.md`](../navigation/EVOLUTION-STEPS-MAP.md) — selected/probable future transitions;
 - [`../evolution-steps/EVO-RPKG-ESTABLISH-REPLACEMENT-PACKAGE-CONSTRUCTION.md`](../evolution-steps/EVO-RPKG-ESTABLISH-REPLACEMENT-PACKAGE-CONSTRUCTION.md) — Builder package-construction target before semantic acceptance;

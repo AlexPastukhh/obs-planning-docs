@@ -25,13 +25,16 @@ studyTabLauncher.openArchive(OpenArchiveRequest) -> OpenArchiveOutcome
 Direct command/URI entry and composition through the adaptive project Feature
 are entry variants of this same behavior.
 
-Application Benefit contribution: this Feature realizes only the [archive
-branch](../application-definition.md#ab-stl-02-boundary-archive-branch) of
-[`AB-STL-02`](../application-definition.md#ab-stl-02--open-a-local-project-source)
-and protects its [safe-project-effect
-constraint](../application-definition.md#ab-stl-02-constraint-safe-project-effect).
-Selector choice/waiting and host-owned window/trust authority remain outside
-this Feature.
+Scenario Realization — [SCN-STL-ARCHIVE](../scenarios/open-downloaded-archive.md):
+
+- **Preceding / Trigger Context:** [`SPS-STL-ARCHIVE-04 — Cross into VS Code`](../scenarios/open-downloaded-archive.md#sps-stl-archive-04). These steps are not claimed as Feature realization.
+- **Realized Scenario Steps:** [`SPS-STL-ARCHIVE-05 — Materialize and open the project directory`](../scenarios/open-downloaded-archive.md#sps-stl-archive-05).
+- **Realized Scenario Requirements:** [`SR-STL-ARCHIVE-01 — Preserve archive-selector correlation`](../scenarios/open-downloaded-archive.md#sr-stl-archive-01), [`SR-STL-ARCHIVE-03 — Preserve source and project-window continuity`](../scenarios/open-downloaded-archive.md#sr-stl-archive-03).
+- **Realized Scenario-wide Requirements:** —.
+
+The Feature retains the selected archive/final-destination correlation and source/project-window safety; delayed browser handoff (`SR-STL-ARCHIVE-02`) remains with the adaptive project/Screen participants.
+
+Application contribution: [KBF-STL-SELECTED-LOCAL-CONTEXT-01](../application-definition.md#kbf-stl-selected-local-context-01) is served by this Feature within its Scenario; the outcome and actor/external authority remain in the Scenario and Application Definition.
 
 ## RU-FEAT-02 — Semantic Data
 

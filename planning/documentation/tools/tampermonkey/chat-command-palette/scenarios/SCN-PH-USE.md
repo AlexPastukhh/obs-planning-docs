@@ -11,10 +11,24 @@ Scope: canonical detailed application behavior owner for grouped command navigat
 
 **Manual invocation invariant:** each current UC/TM/Lens has one primary semantic Command card. Direct/focused aliases do not create duplicate primary cards. Specific Lenses appear as cards; generic Lens apply and Lens operation variants remain infrastructure/internal selection.
 
+## RU-SCEN-01 — Scenario Path
+
+The path below is the normative current journey. The detailed trigger, result and boundary above elaborate these steps. Feature resolution remains open where the Helper has no independently accepted Feature owner; implementation files in Traceability are evidence, not Feature identities.
+
+| Scenario Path Step | Actor / application interaction | Participant / Feature resolution | Data / result | Attached SR | QRPE / Examples |
+|---|---|---|---|---|---|
+| <a id="sps-ph-use-01"></a>`SPS-PH-USE-01 — Navigate to content` | User selects a classification/group and one Command or Prompt. | User and Helper; Feature resolution `OPEN` | selected card and source identity | — | See the boundaries and traceability below; this step alone does not prove external effects. |
+| <a id="sps-ph-use-02"></a>`SPS-PH-USE-02 — Inspect and invoke` | Helper shows projected detail/body and user invokes a supported action or copies text. | User and Helper; Feature resolution `OPEN` | selected command or prompt action | — | See the boundaries and traceability below; this step alone does not prove external effects. |
+| <a id="sps-ph-use-03"></a>`SPS-PH-USE-03 — Continue in target context` | User sees insertion/result in chat or local UI and retains source context. | User and Helper; Feature resolution `OPEN` | visible result without semantic-authority transfer | — | See the boundaries and traceability below; this step alone does not prove external effects. |
+
+## RU-SCEN-04 — Scenario Requirements
+
+Disposition: `OMITTED`; the selected SPS path and existing detailed boundaries suffice here. No independent Scenario-natural `SR-*` identity has been accepted for this current owner.
+
 **Traceability:**
 
 - **Product / behavior:** [`README.md#command-card-contract`](../README.md#command-card-contract), [`README.md#canonical-scenario-contract`](../README.md#canonical-scenario-contract), [`README.md#command-invocation-side-effects`](../README.md#command-invocation-side-effects).
 - **Focused / durable contract:** direct bodies derive from [`planning/commands/*.command.md`](../../../../../commands/README.md); semantic bodies derive from current UC/TM/Lens owners; Scenario prose derives from canonical Scenario owners.
 - **Primary implementation:** [`src/composer-insertion.js`](../src/composer-insertion.js), [`src/command-side-effects.js`](../src/command-side-effects.js), [`src/planning-helper-runtime.js`](../src/planning-helper-runtime.js), [`src/planning-helper-ui.js`](../src/planning-helper-ui.js), [`src/semantic-projections.js`](../src/semantic-projections.js).
-- **Automated evidence:** [`tests/composer-insertion.test.mjs`](../tests/composer-insertion.test.mjs), [`tests/command-side-effects.test.mjs`](../tests/command-side-effects.test.mjs), [`tests/planning-helper-runtime.test.mjs`](../tests/planning-helper-runtime.test.mjs), [`tests/planning-helper-ui.test.mjs`](../tests/planning-helper-ui.test.mjs), [`tests/methodology-navigation.test.mjs`](../tests/methodology-navigation.test.mjs).
+- **Automated evidence:** [`tests/composer-insertion.test.mjs`](../tests/composer-insertion.test.mjs), [`tests/command-side-effects.test.mjs`](../tests/command-side-effects.test.mjs), [`tests/planning-helper-runtime.test.mjs`](../tests/planning-helper-runtime.test.mjs), [`tests/planning-helper-ui.test.mjs`](../tests/planning-helper-ui.test.mjs), [`tests/helper-navigation.test.mjs`](../tests/helper-navigation.test.mjs).
 - **Manual acceptance:** [`MANUAL-ACCEPTANCE.md#scn-ph-use`](../MANUAL-ACCEPTANCE.md#scn-ph-use).

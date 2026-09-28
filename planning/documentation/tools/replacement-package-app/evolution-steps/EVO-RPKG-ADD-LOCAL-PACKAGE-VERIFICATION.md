@@ -6,10 +6,10 @@ Planning Position: **Selected / Planned**
 Change Surface: **Mixed**  
 Target Resolution: **Partial Target**
 
-## Driven By Application Definition
-- [Know Repository Work Outcome](../application-definition.md#ab-rpkg-know-repository-work-outcome-02)
-- [Review AI Work Efficiently](../application-definition.md#ab-rpkg-review-ai-work-efficiently-05)
-- [Delegate Mechanical Repository Work](../application-definition.md#ab-rpkg-delegate-mechanical-repository-work-04)
+## Driven by Application Definition
+- [Truthful operation outcomes](../application-definition.md#kbf-rpkg-truthful-outcome-02)
+- [Inspectable review context](../application-definition.md#kbf-rpkg-inspectable-review-03)
+- [Exact delegated realization](../application-definition.md#kbf-rpkg-exact-realization-01)
 
 ## Entering From
 - realized/materialized [`Establish Replacement Package Construction`](EVO-RPKG-ESTABLISH-REPLACEMENT-PACKAGE-CONSTRUCTION.md)
@@ -93,11 +93,15 @@ Both consumers use one underlying package-application implementation mechanism f
 - affected Scenario — impact identified only until its complete Target Scenario Body is resolved against actual Entry State;
 - Shared Package Apply capability — not yet CREATE/REPLACE until a complete natural-owner Target Body is resolved.
 
-## Step Readiness
+## RU-EVO-06 — Planning Completeness / Realization Start Readiness
 
-Readiness: **NOT_READY**
+Planning Completeness: **INCOMPLETE**
 
-The Builder construction predecessor and Typed Operation Results foundation are not yet realized; the shared Apply mechanism owner body is also incomplete.
+Planning Completeness explanation: Verification intent and partial Builder/review/Shared impacts exist. Complete the Target Feature and Scenario bodies, local proof/transition obligations and unresolved exact-result semantics. Package Construction predecessor and typed-result foundation are unrealized.
+
+Realization Start Readiness: **BLOCKED**
+
+Start-readiness explanation: BLOCKED by the missing Step/Target Body/proof work and any unrealized prerequisites described above. An enclosing selection/implementation authorization is a separate gate; this status does not authorize realization.
 
 ### Step Q/R/P
 - P [BLOCKING]: realize package construction and Typed Operation Results.

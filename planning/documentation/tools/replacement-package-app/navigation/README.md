@@ -6,7 +6,7 @@ Use it when you do not yet know the exact semantic owner, need future planning, 
 
 ## Navigation artifacts
 
-- [`EVOLUTION-STEPS-MAP.md`](EVOLUTION-STEPS-MAP.md) — planned/probable future transitions, visual semantic DAG, target resolution, semantic/realization prerequisites and compact `READY | NOT_READY` projection.
+- [`EVOLUTION-STEPS-MAP.md`](EVOLUTION-STEPS-MAP.md) — planned/probable future transitions, visual semantic DAG, target resolution, semantic/realization prerequisites and separate Planning Completeness and Realization Start Readiness projections.
 - [`FEATURE-REGISTRY.md`](FEATURE-REGISTRY.md) — current accepted Feature authorities only; future Target Features remain in Evolution Steps until materialization.
 - [`SCENARIO-REGISTRY.md`](SCENARIO-REGISTRY.md) — current accepted Scenario authorities only.
 - [`OWNER-MAP.md`](OWNER-MAP.md) — compact current cross-owner/navigation view, including implementation subjects that do not yet have accepted semantic owner status.

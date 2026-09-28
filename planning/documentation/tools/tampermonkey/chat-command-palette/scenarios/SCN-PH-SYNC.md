@@ -9,6 +9,20 @@ Scope: non-authoritative incremental repository→local acquisition and one-dire
 
 **Boundary:** `Sync missing` is additive, suppression-aware, and not a complete freshness reset. Complete repository→local recovery of GitHub-backed projections/order belongs to `SCN-PH-RECOVER`. Neither branch publishes local content.
 
+## RU-SCEN-01 — Scenario Path
+
+The path below is the normative current journey. The detailed trigger, result and boundary above elaborate these steps. Feature resolution remains open where the Helper has no independently accepted Feature owner; implementation files in Traceability are evidence, not Feature identities.
+
+| Scenario Path Step | Actor / application interaction | Participant / Feature resolution | Data / result | Attached SR | QRPE / Examples |
+|---|---|---|---|---|---|
+| <a id="sps-ph-sync-01"></a>`SPS-PH-SYNC-01 — Choose additive sync` | User selects Sync missing or Reload on a direct-backed Command. | User and Helper; Feature resolution `OPEN` | selected sync scope | — | See the boundaries and traceability below; this step alone does not prove external effects. |
+| <a id="sps-ph-sync-02"></a>`SPS-PH-SYNC-02 — Read repository state` | Helper obtains current supported records for that scope. | User and Helper; Feature resolution `OPEN` | remote candidates | — | See the boundaries and traceability below; this step alone does not prove external effects. |
+| <a id="sps-ph-sync-03"></a>`SPS-PH-SYNC-03 — Reconcile eligible local entries` | Sync missing adds absent, suppression-aware entries; Reload refreshes the selected direct record. | User and Helper; Feature resolution `OPEN` | local result without repository write | — | See the boundaries and traceability below; this step alone does not prove external effects. |
+
+## RU-SCEN-04 — Scenario Requirements
+
+Disposition: `OMITTED`; the selected SPS path and existing detailed boundaries suffice here. No independent Scenario-natural `SR-*` identity has been accepted for this current owner.
+
 **Traceability:**
 
 - **Product / behavior:** [`README.md#sync-missing`](../README.md#sync-missing), [`README.md#reload-one-direct-command`](../README.md#reload-one-direct-command).

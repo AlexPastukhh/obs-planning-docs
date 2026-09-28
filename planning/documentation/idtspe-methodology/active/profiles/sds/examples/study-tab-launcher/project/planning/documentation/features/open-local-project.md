@@ -35,17 +35,16 @@ Important context and preconditions:
 - Workspace Trust and final window placement remain owned by VS Code and the
   user.
 
-Application Benefit contribution: this Feature is the primary realization of
-[`AB-STL-02`](../application-definition.md#ab-stl-02--open-a-local-project-source).
-It owns the Benefit's [selector-continuity
-contribution](../application-definition.md#ab-stl-02-boundary-selector-resolution)
-and [exact bounded discovery
-constraint](../application-definition.md#ab-stl-02-constraint-exact-bounded-discovery),
-then composes the separately owned [folder
-branch](../application-definition.md#ab-stl-02-boundary-folder-branch) or
-[archive branch](../application-definition.md#ab-stl-02-boundary-archive-branch)
-while preserving the [safe-project-effect
-constraint](../application-definition.md#ab-stl-02-constraint-safe-project-effect).
+Scenario Realization — [SCN-STL-PROJECT](../scenarios/open-selected-project.md):
+
+- **Preceding / Trigger Context:** [`SPS-STL-PROJECT-02 — Invoke adaptive project opening`](../scenarios/open-selected-project.md#sps-stl-project-02). These steps are not claimed as Feature realization.
+- **Realized Scenario Steps:** [`SPS-STL-PROJECT-03 — Remain in ChatGPT while the source is awaited`](../scenarios/open-selected-project.md#sps-stl-project-03), [`SPS-STL-PROJECT-04 — Cross the browser-to-VS Code boundary`](../scenarios/open-selected-project.md#sps-stl-project-04), [`SPS-STL-PROJECT-05 — Open the selected project branch`](../scenarios/open-selected-project.md#sps-stl-project-05).
+- **Realized Scenario Requirements:** [`SR-STL-PROJECT-01 — Preserve selected-project correlation`](../scenarios/open-selected-project.md#sr-stl-project-01), [`SR-STL-PROJECT-02 — Preserve recoverable deferred handoff`](../scenarios/open-selected-project.md#sr-stl-project-02), [`SR-STL-PROJECT-03 — Preserve project-window continuity`](../scenarios/open-selected-project.md#sr-stl-project-03).
+- **Realized Scenario-wide Requirements:** —.
+
+The Feature resolves the source, prepares and redeems the handoff, then composes the selected branch result; browser/OS participation in `SPS-STL-PROJECT-04` remains external.
+
+Application contribution: [KBF-STL-SELECTED-LOCAL-CONTEXT-01](../application-definition.md#kbf-stl-selected-local-context-01) is served by this Feature within its Scenario; the outcome and actor/external authority remain in the Scenario and Application Definition.
 
 ## RU-FEAT-02 — Semantic Data
 

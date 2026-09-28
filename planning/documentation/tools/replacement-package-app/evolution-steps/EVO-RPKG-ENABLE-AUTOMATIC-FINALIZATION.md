@@ -6,9 +6,9 @@ Planning Position: **Selected / Planned**
 Target Resolution: **Partial Target**
 Change Surface: **Mixed**  
 
-## Driven By Application Definition
-- [Realize AI-Created Repository Work](../application-definition.md#ab-rpkg-realize-ai-repository-work-01)
-- [Delegate Mechanical Repository Work](../application-definition.md#ab-rpkg-delegate-mechanical-repository-work-04)
+## Driven by Application Definition
+- [Exact delegated realization](../application-definition.md#kbf-rpkg-exact-realization-01)
+- [Exact delegated realization](../application-definition.md#kbf-rpkg-exact-realization-01)
 
 ## Entering From
 - [Parameterize Apply Handoff](EVO-RPKG-PARAMETERIZE-APPLY-HANDOFF.md) realized/materialized
@@ -35,8 +35,8 @@ Adds one-way orchestration from eligible Apply result to separate Finalize Featu
 # F-RPKG-APPLY-REPLACEMENT-PACKAGE — Apply Replacement Package
 
 ## Realizes Upstream Meaning
-- [Realize AI-Created Repository Work](../application-definition.md#ab-rpkg-realize-ai-repository-work-01)
-- [Know Repository Work Outcome](../application-definition.md#ab-rpkg-know-repository-work-outcome-02)
+- [Exact delegated realization](../application-definition.md#kbf-rpkg-exact-realization-01)
+- [Truthful operation outcomes](../application-definition.md#kbf-rpkg-truthful-outcome-02)
 
 ## RU-FEAT-02 — Semantic Data
 | Feature Data Object | Plain meaning |
@@ -95,9 +95,9 @@ Use the realized/materialized Finalize Feature from `EVO-RPKG-INTRODUCE-WORK-FIN
 <a id="scn-rpkg-complete-repository-work-target"></a>
 # SCN-RPKG-COMPLETE-REPOSITORY-WORK — Complete Repository Work (post-Step target)
 
-## Realizes Application Benefits
-- [Realize AI-Created Repository Work](../application-definition.md#ab-rpkg-realize-ai-repository-work-01)
-- [Know Repository Work Outcome](../application-definition.md#ab-rpkg-know-repository-work-outcome-02)
+## Upstream Application drivers
+- [Exact delegated realization](../application-definition.md#kbf-rpkg-exact-realization-01)
+- [Truthful operation outcomes](../application-definition.md#kbf-rpkg-truthful-outcome-02)
 
 ## Scenario Requirements
 | SR | Plain meaning |
@@ -131,11 +131,15 @@ Issue/comment authoring remains actor/AI responsibility when that ownership Step
 - applicable realization Scenario — `REPLACE`;
 - orchestration Slice — impact identified but **not yet in the Materialization Set**; add `REPLACE` only after a complete Target Slice Body/IR contract is resolved.
 
-## Step Readiness
+## RU-EVO-06 — Planning Completeness / Realization Start Readiness
 
-Readiness: **NOT_READY**
+Planning Completeness: **INCOMPLETE**
 
-Both semantic predecessors are unrealized, Typed Operation Results is unrealized, and orchestration Slice target meaning is incomplete.
+Planning Completeness explanation: Immediate/deferred composition is described, but changed Apply Feature, realization Scenario and Slice Target Bodies and proof remain partial. Both direct semantic predecessors (Apply parameterization and Finalization) plus typed-result foundation are unrealized.
+
+Realization Start Readiness: **BLOCKED**
+
+Start-readiness explanation: BLOCKED by the missing Step/Target Body/proof work and any unrealized prerequisites described above. An enclosing selection/implementation authorization is a separate gate; this status does not authorize realization.
 
 ### Step Q/R/P
 - P [BLOCKING]: realize Parameterize Apply Handoff and Introduce Work Finalization.

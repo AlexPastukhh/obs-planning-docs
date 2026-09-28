@@ -28,17 +28,16 @@ studyTabLauncher.openFiles(OpenFilesRequest) -> OpenOutcome
 They are cardinality variants of one Feature because they share intent,
 authority, behavior and result family.
 
-Application Benefit contribution: this Feature realizes the
-[application-owned handoff
-boundary](../application-definition.md#ab-stl-01-boundary-owned-handoff) of
-[`AB-STL-01`](../application-definition.md#ab-stl-01--open-selected-file-context),
-including its [explicit-selection
-constraint](../application-definition.md#ab-stl-01-constraint-explicit-selection)
-and [local-file scope
-constraint](../application-definition.md#ab-stl-01-constraint-local-file-scope).
-User/producer selection and VS Code/host authority remain outside this Feature
-as stated by the Benefit's [external-authority
-boundary](../application-definition.md#ab-stl-01-boundary-external-authority).
+Scenario Realization — [SCN-STL-FILE](../scenarios/open-selected-study-files.md):
+
+- **Preceding / Trigger Context:** [`SPS-STL-FILE-02 — Select the file-context action`](../scenarios/open-selected-study-files.md#sps-stl-file-02). These steps are not claimed as Feature realization.
+- **Realized Scenario Steps:** [`SPS-STL-FILE-03 — Hand the request to VS Code`](../scenarios/open-selected-study-files.md#sps-stl-file-03), [`SPS-STL-FILE-04 — Establish the file context`](../scenarios/open-selected-study-files.md#sps-stl-file-04).
+- **Realized Scenario Requirements:** [`SR-STL-FILE-01 — Preserve selection continuity`](../scenarios/open-selected-study-files.md#sr-stl-file-01), [`SR-STL-FILE-02 — Keep local effects explicitly user-initiated`](../scenarios/open-selected-study-files.md#sr-stl-file-02), [`SR-STL-FILE-03 — Keep handoff status recoverable and truthful`](../scenarios/open-selected-study-files.md#sr-stl-file-03).
+- **Realized Scenario-wide Requirements:** —.
+
+The Feature handles the receiving request, ordered targets and truthful result; `SPS-STL-FILE-03` is jointly realized with the browser adapter.
+
+Application contribution: [KBF-STL-SELECTED-LOCAL-CONTEXT-01](../application-definition.md#kbf-stl-selected-local-context-01) is served by this Feature within its Scenario; the outcome and actor/external authority remain in the Scenario and Application Definition.
 
 ## RU-FEAT-02 — Semantic Data
 

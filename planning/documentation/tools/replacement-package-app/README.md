@@ -20,7 +20,7 @@ Status: proposed documentation/navigation view over upstream Application intent,
 
 | Area | Responsibility |
 |---|---|
-| [`application-definition.md`](application-definition.md) | upstream Application intent/value, Selected/Possible Benefits and contribution/boundary intent |
+| [`application-definition.md`](application-definition.md) | upstream Application intent/value, own-Application justification, key behavior focus and feasibility |
 | [`TERMS.md`](TERMS.md) | current selected application vocabulary only; future Step-owned terms stay in their Step until materialization |
 | [`navigation/`](navigation/README.md) | non-authoritative maps/registries and read paths; use this to find authority |
 | [`features/`](features/) | current accepted Feature behavior owners |

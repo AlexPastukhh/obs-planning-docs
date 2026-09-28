@@ -2,11 +2,31 @@
 
 Status: legacy current Scenario owner
 
-## Application Benefit / Desired Result
+## Application Contribution / Desired Result
 
 Give one intended ordinary ChatGPT conversation the exact cumulative current change of one **legacy** logical ChangeSet without manual large-diff handling, while preserving truthful delivery state when browser automation fails or becomes uncertain.
 
 This Scenario remains current only for the legacy Current Change/ReviewDiff workflow. Git-backed target-mode work is intentionally fail-closed from this authority until `EVO-RPKG-DOWNGRADE-CURRENT-CHANGE-TO-DIAGNOSTIC` is realized.
+
+The [inspectable review-context focus](../application-definition.md#kbf-rpkg-inspectable-review-03) is upstream pressure, not an assertion that the target Git-backed inspection flow already exists. Feature Resolution for this legacy journey is OPEN: the process specification below describes current application behavior but is not a selected new Feature Target Body.
+
+## RU-SCEN-01 — Normative legacy Scenario Path
+
+| Scenario Path Step | Actor / Application participation | Result / continuity | Attached Scenario Requirement |
+|---|---|---|---|
+| <a id="sps-rpkg-current-change-01"></a>`SPS-RPKG-CURRENT-CHANGE-01` — Request legacy Current Change | Actor selects one exact legacy ChangeSet/Repository Target and requests the current cumulative change. | Exact legacy scope is bound; Git-backed target mode is rejected. | [`SR-RPKG-CURRENT-CHANGE-01`](#sr-rpkg-current-change-01) |
+| <a id="sps-rpkg-current-change-02"></a>`SPS-RPKG-CURRENT-CHANGE-02` — Materialize cumulative ReviewDiff | Application derives exact cumulative bytes with non-mutating temporary-index mechanics, or reports NoChanges/unavailability. | Persisted ReviewDiff identity/freshness is tied to the bound ChangeSet. | [`SR-RPKG-CURRENT-CHANGE-01`](#sr-rpkg-current-change-01) |
+| <a id="sps-rpkg-current-change-03"></a>`SPS-RPKG-CURRENT-CHANGE-03` — Choose exact review destination | Actor requests delivery only for a non-empty exact ReviewDiff and one resolved conversation; otherwise the journey stops or repeats support. | Destination and artifact are frozen before possible Send. | [`SR-RPKG-CURRENT-CHANGE-02`](#sr-rpkg-current-change-02) |
+| <a id="sps-rpkg-current-change-04"></a>`SPS-RPKG-CURRENT-CHANGE-04` — Deliver or preserve uncertainty | Application attempts exact attachment/Send and reports confirmed delivery, clean pre-send failure, or possible-send uncertainty without blind retry. | Browser result does not authorize repository effects. | [`SR-RPKG-CURRENT-CHANGE-02`](#sr-rpkg-current-change-02) |
+
+## RU-SCEN-04 — Scenario Requirements
+
+| Scenario Requirement | Scope | Plain must-hold |
+|---|---|---|
+| <a id="sr-rpkg-current-change-01"></a>`SR-RPKG-CURRENT-CHANGE-01` — Same legacy work/diff | Steps 01–02 | The cumulative diff and freshness evidence stay bound to the exact selected Repository Target/legacy ChangeSet without changing repository truth. |
+| <a id="sr-rpkg-current-change-02"></a>`SR-RPKG-CURRENT-CHANGE-02` — Same artifact/destination/uncertainty | Steps 03–04 | Delivery keeps the exact persisted diff and destination; possible Send remains uncertain, and browser delivery never becomes repository mutation authority. |
+
+The existing `FI-*`/`BI-*` process specification is retained below as current detail/evidence. The `SPS-*` path is the normative Scenario journey; these `SR-*` state cross-interaction continuity without duplicating the detailed process mechanics.
 
 ## Process Specification
 

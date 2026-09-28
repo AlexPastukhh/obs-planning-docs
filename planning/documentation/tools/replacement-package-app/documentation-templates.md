@@ -23,6 +23,9 @@ Target semantic types include `Feature`, `Behavior Requirement`, `Scenario Requi
 ```markdown
 # F-RPKG-<SEMANTIC-NAME> — <readable Feature name>
 
+## Scenario Realization
+<preceding/trigger SPS refs not realized by this Feature; realized SPS and SR refs>
+
 ## Intent
 <one application/user intent>
 
@@ -64,18 +67,21 @@ Decision after Step 2: **<one exact question>?**
 
 Status: <current | planned target | migration>
 
-## Need / Application Benefit
+## Application Contribution / driver
 ...
 
 ## Starting context
 ...
 
-## Main journey
-| Journey step | Actor / interaction | Feature / visible behavior | Result / continuity | Requirement(s) |
+## RU-SCEN-01 — Scenario Path
+| Scenario Path Step (`SPS-*`) | Actor / Application participation | Feature / Screen or external context | Result / continuity | Attached `SR-*` when independently needed |
 |---|---|---|---|---|
-| **1. ...** | ... | `F-RPKG-...` | ... | `SR-RPKG-...` when genuinely cross-Feature |
+| `SPS-RPKG-...-01 — <short name>` | ... | `F-RPKG-...` or unresolved participant | ... | `SR-RPKG-...` only when Scenario-natural and separately useful |
 
-## Terminal Result / Benefit closure
+## RU-SCEN-04 — Scenario Requirements
+<step-attached or Scenario-wide `SR-*` must-holds, only if independently useful; otherwise OMITTED. Crossing Feature/Screen boundaries is not required.>
+
+## Terminal Scenario outcome
 ...
 
 ## E2E Proof Intent
@@ -93,20 +99,23 @@ Status: <current | planned target | migration>
 ## Screen Map
 ...
 
-## Scenario × Screen
-| Scenario | Screen/context | Role |
-|---|---|---|
-
-## Feature × Screen
-| Feature | Screen/context | Interaction role |
-|---|---|---|
-
-## <Screen readable name>
+## <Screen readable name> — Screen Draft
 Responsibility:
 ...
 
-Screen-owned behavior / UI constraints:
+## Per-Scenario participation (repeat for each Scenario that uses this Screen)
+Scenario: `SCN-RPKG-...`
+| Scenario Step (`SPS-*` occurring on this Screen) | Step-local Screen Requirements (`SCR-*` or —) | Feature / Application participation | Screen participation / spatial presentation | QRPE / Examples |
+|---|---|---|---|---|
+| `SPS-RPKG-...` | — | ... | <resolved Screen result for this SPS> | ... |
+
+Step-local Screen Requirements (`SCR-*`) only for independently useful spatial/navigation must-holds attached to specific SPS:
 - ...
+
+Screen-wide Requirements (`SCR-G-*`) only for independently Screen-natural composition/navigation must-holds, not copied from Scenario obligations:
+- ...
+
+Resolve each row's Screen participation / spatial presentation from its SPS meaning, applicable step-local SCRs and applicable Screen-wide SCR-G requirements. An SPS may have no step-local SCR.
 
 ## Evolution Impact
 - ...
@@ -402,7 +411,7 @@ Evolution Kinds:
 - <Introduction | Expansion | Refactoring | Forced Migration | Retirement>
 
 Likely affected:
-- Benefit: ...
+- Application driver (`KBF-*`) or direct Scenario Need: ...
 - Feature(s): ...
 - Scenario(s): ...
 

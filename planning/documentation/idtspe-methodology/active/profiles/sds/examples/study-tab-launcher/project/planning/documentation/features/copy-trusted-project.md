@@ -28,20 +28,16 @@ studyTabLauncher.copyProjectToTrusted(OpenProjectRequest)
 The request carries no destination parent or trust flag. Those authorities
 remain local to VS Code settings and the user decision.
 
-Application Benefit contribution: this Feature realizes the
-[application-owned publication
-boundary](../application-definition.md#ab-stl-03-boundary-owned-publication) of
-[`AB-STL-03`](../application-definition.md#ab-stl-03--publish-under-a-chosen-parent)
-and protects its [destination-authority
-constraint](../application-definition.md#ab-stl-03-constraint-destination-authority),
-[source-preservation
-constraint](../application-definition.md#ab-stl-03-constraint-source-preservation)
-and [trust-neutrality
-constraint](../application-definition.md#ab-stl-03-constraint-trust-neutrality).
-The Benefit's [external-authority
-boundary](../application-definition.md#ab-stl-03-boundary-external-authority)
-keeps parent configuration, publication confirmation and actual Workspace
-Trust with the user/VS Code.
+Scenario Realization — [SCN-STL-TRUST](../scenarios/copy-trusted-project.md):
+
+- **Preceding / Trigger Context:** [`SPS-STL-TRUST-02 — Invoke trusted-copy opening`](../scenarios/copy-trusted-project.md#sps-stl-trust-02). These steps are not claimed as Feature realization.
+- **Realized Scenario Steps:** [`SPS-STL-TRUST-03 — Await and prepare the exact source`](../scenarios/copy-trusted-project.md#sps-stl-trust-03), [`SPS-STL-TRUST-04 — Cross into the owning VS Code window`](../scenarios/copy-trusted-project.md#sps-stl-trust-04), [`SPS-STL-TRUST-05 — Establish destination and publication decision`](../scenarios/copy-trusted-project.md#sps-stl-trust-05), [`SPS-STL-TRUST-06 — Reuse or publish and open the child`](../scenarios/copy-trusted-project.md#sps-stl-trust-06).
+- **Realized Scenario Requirements:** [`SR-STL-TRUST-01 — Preserve source and action correlation`](../scenarios/copy-trusted-project.md#sr-stl-trust-01), [`SR-STL-TRUST-02 — Keep publication authority locally visible`](../scenarios/copy-trusted-project.md#sr-stl-trust-02), [`SR-STL-TRUST-03 — Preserve recoverable project continuity`](../scenarios/copy-trusted-project.md#sr-stl-trust-03).
+- **Realized Scenario-wide Requirements:** —.
+
+The Feature contributes source/action correlation, local publication authority and recoverable result; browser/OS and the user retain their portions of the journey.
+
+Application contribution: [KBF-STL-SAFE-PROJECT-PUBLICATION-02](../application-definition.md#kbf-stl-safe-project-publication-02) is served by this Feature within its Scenario; the outcome and actor/external authority remain in the Scenario and Application Definition.
 
 ## RU-FEAT-02 — Semantic Data
 

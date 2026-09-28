@@ -26,6 +26,20 @@ Scope: local draft/Favorite/order/layout work without implicit repository mutati
 - local Delete physically removes the selected local direct Command or Use Case and records same-entity suppression so ordinary `Sync missing` does not immediately restore it; there is no hidden-row tombstone layer;
 - local content/order changes make zero GitHub requests.
 
+## RU-SCEN-01 — Scenario Path
+
+The path below is the normative current journey. The detailed trigger, result and boundary above elaborate these steps. Feature resolution remains open where the Helper has no independently accepted Feature owner; implementation files in Traceability are evidence, not Feature identities.
+
+| Scenario Path Step | Actor / application interaction | Participant / Feature resolution | Data / result | Attached SR | QRPE / Examples |
+|---|---|---|---|---|---|
+| <a id="sps-ph-manage-local-01"></a>`SPS-PH-MANAGE-LOCAL-01 — Choose local edit` | User creates, edits, deletes, favorites, reorders or changes presentation groups. | User and Helper; Feature resolution `OPEN` | chosen local item or preference | — | See the boundaries and traceability below; this step alone does not prove external effects. |
+| <a id="sps-ph-manage-local-02"></a>`SPS-PH-MANAGE-LOCAL-02 — Apply local change` | Helper updates the selected local catalog or layout in RAM/persistence. | User and Helper; Feature resolution `OPEN` | local state result | — | See the boundaries and traceability below; this step alone does not prove external effects. |
+| <a id="sps-ph-manage-local-03"></a>`SPS-PH-MANAGE-LOCAL-03 — Inspect changed view` | User sees the changed content, order or visibility. | User and Helper; Feature resolution `OPEN` | local result; repository unchanged | — | See the boundaries and traceability below; this step alone does not prove external effects. |
+
+## RU-SCEN-04 — Scenario Requirements
+
+Disposition: `OMITTED`; the selected SPS path and existing detailed boundaries suffice here. No independent Scenario-natural `SR-*` identity has been accepted for this current owner.
+
 **Traceability:**
 
 - **Product / behavior:** [`README.md#unified-local-snapshot`](../README.md#unified-local-snapshot), [`README.md#catalog-order`](../README.md#catalog-order), [`README.md#ui-layout--safety-boundary`](../README.md#ui-layout--safety-boundary).

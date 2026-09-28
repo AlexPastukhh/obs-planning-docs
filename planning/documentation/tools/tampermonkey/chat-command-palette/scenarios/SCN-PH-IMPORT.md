@@ -9,6 +9,20 @@ Scope: canonical detailed application behavior owner; this Scenario owns its tri
 
 **Boundary:** Import performs zero GitHub requests and does not imply repository persistence or semantic ownership. Direct Command/Prompt persistence keeps its explicit Save GitHub path; semantic projections remain local until their canonical repository owners/build route changes. Hard Reload clears Import suppression only for the catalogs it reloads; helper-library suppression remains with the preserved Prompt/helper-library local state.
 
+## RU-SCEN-01 — Scenario Path
+
+The path below is the normative current journey. The detailed trigger, result and boundary above elaborate these steps. Feature resolution remains open where the Helper has no independently accepted Feature owner; implementation files in Traceability are evidence, not Feature identities.
+
+| Scenario Path Step | Actor / application interaction | Participant / Feature resolution | Data / result | Attached SR | QRPE / Examples |
+|---|---|---|---|---|---|
+| <a id="sps-ph-import-01"></a>`SPS-PH-IMPORT-01 — Supply candidate marker blocks` | User invokes Import from ChatGPT with supported blocks. | User and Helper; Feature resolution `OPEN` | candidate direct records or patch | — | See the boundaries and traceability below; this step alone does not prove external effects. |
+| <a id="sps-ph-import-02"></a>`SPS-PH-IMPORT-02 — Validate complete candidate` | Helper validates all blocks, collisions and operation conflicts atomically. | User and Helper; Feature resolution `OPEN` | accepted set or rejection | — | See the boundaries and traceability below; this step alone does not prove external effects. |
+| <a id="sps-ph-import-03"></a>`SPS-PH-IMPORT-03 — Merge local state` | On acceptance Helper updates local snapshot and RAM state. | User and Helper; Feature resolution `OPEN` | local changed result without GitHub write | — | See the boundaries and traceability below; this step alone does not prove external effects. |
+
+## RU-SCEN-04 — Scenario Requirements
+
+Disposition: `OMITTED`; the selected SPS path and existing detailed boundaries suffice here. No independent Scenario-natural `SR-*` identity has been accepted for this current owner.
+
 **Traceability:**
 
 - **Product / behavior:** [`README.md#chatgpt-import-and-recovery`](../README.md#chatgpt-import-and-recovery).

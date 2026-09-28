@@ -6,9 +6,9 @@ Planning Position: **Selected / Planned**
 Target Resolution: **Partial Target**
 Change Surface: **Mixed**  
 
-## Driven By Application Definition
-- [Review AI Work Efficiently](../application-definition.md#ab-rpkg-review-ai-work-efficiently-05)
-- [Delegate Mechanical Repository Work](../application-definition.md#ab-rpkg-delegate-mechanical-repository-work-04)
+## Driven by Application Definition
+- [Inspectable review context](../application-definition.md#kbf-rpkg-inspectable-review-03)
+- [Exact delegated realization](../application-definition.md#kbf-rpkg-exact-realization-01)
 
 ## Entering From
 - current realized downstream owner state; independent of Apply/Finalize/Snapshot evolution
@@ -36,7 +36,7 @@ A reusable VS Code folder-opening mechanism is expected so later branch-Snapshot
 # F-RPKG-OPEN-FOLDER-IN-VSCODE — Open Folder In VS Code
 
 ## Realizes Upstream Meaning
-- [Delegate Mechanical Repository Work](../application-definition.md#ab-rpkg-delegate-mechanical-repository-work-04)
+- [Exact delegated realization](../application-definition.md#kbf-rpkg-exact-realization-01)
 
 ## Intent / Principal Result
 Given one exact application-selected folder context, request VS Code to open **that same folder**, without repository mutation or silent retargeting.
@@ -69,11 +69,15 @@ The folder-opening mechanism should be reusable by later capabilities, especiall
 - Screen/Scenario exposure — impact identified, but add `REPLACE` only after complete changed owner body is resolved where independently material;
 - Shared VS Code folder-opening capability — impact identified but **not yet in the Materialization Set** until a complete natural-owner Target Body exists.
 
-## Step Readiness
+## RU-EVO-06 — Planning Completeness / Realization Start Readiness
 
-Readiness: **NOT_READY**
+Planning Completeness: **INCOMPLETE**
 
-Typed Operation Results is not yet realized and the reusable VS Code opening implementation owner/body is incomplete.
+Planning Completeness explanation: Open-folder intent and partial Feature/Screen/integration meaning exist. Complete all materially CREATE/REPLACE owner bodies and transition/proof details; typed-result foundation remains unrealized.
+
+Realization Start Readiness: **BLOCKED**
+
+Start-readiness explanation: BLOCKED by the missing Step/Target Body/proof work and any unrealized prerequisites described above. An enclosing selection/implementation authorization is a separate gate; this status does not authorize realization.
 
 ### Step Q/R/P
 - Q [BLOCKING]: resolve the natural Shared/adapter owner and exact cross-platform process/handoff contract.

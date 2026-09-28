@@ -252,7 +252,7 @@ Feature Planning is not exact class design, but it is implementation-aware enoug
 DOC-UC-13 should use Vertical Slice guidance before the Slice exists as a detailed implementation plan:
 
 ```text
-Benefit / candidate behavior
+Scenario `SPS-*/SR-*` obligation / candidate behavior
 → Intent
 → Principal Result
 → behavior + BR

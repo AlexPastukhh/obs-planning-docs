@@ -12,7 +12,7 @@
       "kind": "live",
       "file": "project/planning/documentation/application-definition.md",
       "sourceSha256": "313db714b4d3c55beab4e841070e42d1ea6c3d20e8ba6d44957130d57395209b",
-      "copiedSha256": "4e7ec03d92a5f9eabe461d77a847c86bb778fe49aa38fd09033006c3de14aea2",
+      "copiedSha256": "c0289a49f359b66c9db1e826ccf1212ab0b9bc6e7fbe40ff3949965e25b30c9e",
       "linkRewrites": 0,
       "editorialRevisions": [
         {
@@ -39,6 +39,12 @@
           "reason": "Recheck AB-STL-01..04 Benefit promise boundaries against current Scenario/Feature owners and the selected unrealized Step; remove Feature-local mechanism details while preserving anchors and source capture.",
           "beforeSha256": "d133c7b304a46924bec3af363f6a35dbfe41dd793412ba26452971ef56be02ea",
           "afterSha256": "4e7ec03d92a5f9eabe461d77a847c86bb778fe49aa38fd09033006c3de14aea2"
+        },
+        {
+          "date": "2026-09-28",
+          "reason": "Migrate the current copied application owners to four-Unit Application Definition, Scenario SPS/SR, Feature Scenario Realization, Screen participation and Map driver/readiness while retaining source capture and unresolved proof.",
+          "beforeSha256": "4e7ec03d92a5f9eabe461d77a847c86bb778fe49aa38fd09033006c3de14aea2",
+          "afterSha256": "c0289a49f359b66c9db1e826ccf1212ab0b9bc6e7fbe40ff3949965e25b30c9e"
         }
       ]
     },
@@ -165,7 +171,7 @@
       "kind": "live",
       "file": "project/planning/documentation/evolution/unrealized/close-superseded-project-windows.md",
       "sourceSha256": "9b9ba052dd81c05286def961d2dccf7f698ba1421d1130fc026b804568faebf6",
-      "copiedSha256": "a0cb37b987c4b5a1709455b25db47f0c7819ca7b8fd335419f84ecb0991f37cd",
+      "copiedSha256": "e51b2e2c73c74e2e81cf2dc16d51326c947e726ef760007d9baf7e7fa92d88ea",
       "linkRewrites": 0,
       "editorialRevisions": [
         {
@@ -185,6 +191,18 @@
           "reason": "Refresh live Evolution Step realization routing so literal source/test code is owned by SDS TM-CODE-REALIZATION while broad/profile-neutral non-code exact artifacts remain Core Exact.",
           "beforeSha256": "881d4f0f8f7a51b1217fc54c1d2ff8f4b471990625f1984b603e6a0be66a5cf4",
           "afterSha256": "a0cb37b987c4b5a1709455b25db47f0c7819ca7b8fd335419f84ecb0991f37cd"
+        },
+        {
+          "date": "2026-09-28",
+          "reason": "Migrate the current copied application owners to four-Unit Application Definition, Scenario SPS/SR, Feature Scenario Realization, Screen participation and Map driver/readiness while retaining source capture and unresolved proof.",
+          "beforeSha256": "a0cb37b987c4b5a1709455b25db47f0c7819ca7b8fd335419f84ecb0991f37cd",
+          "afterSha256": "5bd652b5b2052d88bf0a7d0fd11a33a43e4c3701b707c43cb9a718af4213e858"
+        },
+        {
+          "date": "2026-09-28",
+          "reason": "Correct exact Feature Scenario Realization references and link this full example to both current SDS worked examples.",
+          "beforeSha256": "5bd652b5b2052d88bf0a7d0fd11a33a43e4c3701b707c43cb9a718af4213e858",
+          "afterSha256": "e51b2e2c73c74e2e81cf2dc16d51326c947e726ef760007d9baf7e7fa92d88ea"
         }
       ]
     },
@@ -193,7 +211,7 @@
       "kind": "live",
       "file": "project/planning/documentation/evolution-steps.md",
       "sourceSha256": "a3d5ba301dd875fb49f9c919c2a02e18749af6683b31f94ad5c0904c6a819dd2",
-      "copiedSha256": "9e0046342465733c24f4af556badd47bee0c938ae3d4409c32b0199fa4c37282",
+      "copiedSha256": "b0dc31eef5b01092ef93a685b3775fa92e7e853913e60dfdeb47402277f1f61c",
       "linkRewrites": 0,
       "editorialRevisions": [
         {
@@ -207,6 +225,12 @@
           "reason": "Align copied example with Scenario ownership and Evolution Map Benefit-driver coverage; preserve original captured source and unresolved proof.",
           "beforeSha256": "2aaa7c0cea6cf82ad28989e57d1be088717d48dfb1a13fe02de186687919d5d3",
           "afterSha256": "9e0046342465733c24f4af556badd47bee0c938ae3d4409c32b0199fa4c37282"
+        },
+        {
+          "date": "2026-09-28",
+          "reason": "Migrate the current copied application owners to four-Unit Application Definition, Scenario SPS/SR, Feature Scenario Realization, Screen participation and Map driver/readiness while retaining source capture and unresolved proof.",
+          "beforeSha256": "9e0046342465733c24f4af556badd47bee0c938ae3d4409c32b0199fa4c37282",
+          "afterSha256": "b0dc31eef5b01092ef93a685b3775fa92e7e853913e60dfdeb47402277f1f61c"
         }
       ]
     },
@@ -215,7 +239,7 @@
       "kind": "live",
       "file": "project/planning/documentation/features/copy-trusted-project.md",
       "sourceSha256": "171c70e14e952538a1a4825986eccf480faddbb5b1f78d608948adbf8f8e8aea",
-      "copiedSha256": "47178bf8bb9164348b05050408320d388ced3b55791b8a0269f476293e3ca6de",
+      "copiedSha256": "75bd3fe526173ee1b52bbfed1af40966e67db6df15e48deae8aa22e70f06bcff",
       "linkRewrites": 0,
       "editorialRevisions": [
         {
@@ -223,6 +247,18 @@
           "reason": "Redirect methodology navigation to canonical same-repository owners and clarify historical provenance.",
           "beforeSha256": "171c70e14e952538a1a4825986eccf480faddbb5b1f78d608948adbf8f8e8aea",
           "afterSha256": "47178bf8bb9164348b05050408320d388ced3b55791b8a0269f476293e3ca6de"
+        },
+        {
+          "date": "2026-09-28",
+          "reason": "Migrate the current copied application owners to four-Unit Application Definition, Scenario SPS/SR, Feature Scenario Realization, Screen participation and Map driver/readiness while retaining source capture and unresolved proof.",
+          "beforeSha256": "47178bf8bb9164348b05050408320d388ced3b55791b8a0269f476293e3ca6de",
+          "afterSha256": "09c43b0a5ad6285444bec9b0f013f5a9ef02f6dd6405e213021472bd2d60c4b2"
+        },
+        {
+          "date": "2026-09-28",
+          "reason": "Correct exact Feature Scenario Realization references and link this full example to both current SDS worked examples.",
+          "beforeSha256": "09c43b0a5ad6285444bec9b0f013f5a9ef02f6dd6405e213021472bd2d60c4b2",
+          "afterSha256": "75bd3fe526173ee1b52bbfed1af40966e67db6df15e48deae8aa22e70f06bcff"
         }
       ]
     },
@@ -231,7 +267,7 @@
       "kind": "live",
       "file": "project/planning/documentation/features/extract-open-archive.md",
       "sourceSha256": "ea63c87bba67dfa3d293d565f1df3c7cc4d5ec6c89a91e69c931276412e955c6",
-      "copiedSha256": "584b65da5a3d9d8aaf3a11d35b6aa915cfe4323db2e2274550b147f3db6dd55b",
+      "copiedSha256": "d8cf246e4d350f713db9c39ca614dd3b07dc49e3e5d008838c1b0f848444cf43",
       "linkRewrites": 0,
       "editorialRevisions": [
         {
@@ -239,6 +275,18 @@
           "reason": "Redirect methodology navigation to canonical same-repository owners and clarify historical provenance.",
           "beforeSha256": "ea63c87bba67dfa3d293d565f1df3c7cc4d5ec6c89a91e69c931276412e955c6",
           "afterSha256": "584b65da5a3d9d8aaf3a11d35b6aa915cfe4323db2e2274550b147f3db6dd55b"
+        },
+        {
+          "date": "2026-09-28",
+          "reason": "Migrate the current copied application owners to four-Unit Application Definition, Scenario SPS/SR, Feature Scenario Realization, Screen participation and Map driver/readiness while retaining source capture and unresolved proof.",
+          "beforeSha256": "584b65da5a3d9d8aaf3a11d35b6aa915cfe4323db2e2274550b147f3db6dd55b",
+          "afterSha256": "64f8d810a53293e6945f295deec81bfbe9ef51007a326f2ac520527faa5d7cc9"
+        },
+        {
+          "date": "2026-09-28",
+          "reason": "Correct exact Feature Scenario Realization references and link this full example to both current SDS worked examples.",
+          "beforeSha256": "64f8d810a53293e6945f295deec81bfbe9ef51007a326f2ac520527faa5d7cc9",
+          "afterSha256": "d8cf246e4d350f713db9c39ca614dd3b07dc49e3e5d008838c1b0f848444cf43"
         }
       ]
     },
@@ -247,7 +295,7 @@
       "kind": "live",
       "file": "project/planning/documentation/features/open-linked-file-context.md",
       "sourceSha256": "5f65a8bf4ae8c2dbce2e9acc3bbbd0d849426c3d5e8c39fad0b291bf79696eb2",
-      "copiedSha256": "61bc4064d48497cbc2d109dd82ea2bd62a5edf8bc74c01a555a66742a144ffdd",
+      "copiedSha256": "de50f58fd9bfd14ec25a3f2d4b2747a31450bf084e8d4e212c28979128500047",
       "linkRewrites": 0,
       "editorialRevisions": [
         {
@@ -261,6 +309,18 @@
           "reason": "USER-selected Decision retention: natural Unit content plus qualifying Core Decision record represented only in PRS; preserve product semantics and open proof.",
           "beforeSha256": "8b5c7e9938226568023c0ad4a967f506298f235688098334b4f7927c847e3a3d",
           "afterSha256": "61bc4064d48497cbc2d109dd82ea2bd62a5edf8bc74c01a555a66742a144ffdd"
+        },
+        {
+          "date": "2026-09-28",
+          "reason": "Migrate the current copied application owners to four-Unit Application Definition, Scenario SPS/SR, Feature Scenario Realization, Screen participation and Map driver/readiness while retaining source capture and unresolved proof.",
+          "beforeSha256": "61bc4064d48497cbc2d109dd82ea2bd62a5edf8bc74c01a555a66742a144ffdd",
+          "afterSha256": "bd8f333972093824f29299b9792f9bd1ce886510bafd08315e35fc91fcc4031e"
+        },
+        {
+          "date": "2026-09-28",
+          "reason": "Correct exact Feature Scenario Realization references and link this full example to both current SDS worked examples.",
+          "beforeSha256": "bd8f333972093824f29299b9792f9bd1ce886510bafd08315e35fc91fcc4031e",
+          "afterSha256": "de50f58fd9bfd14ec25a3f2d4b2747a31450bf084e8d4e212c28979128500047"
         }
       ]
     },
@@ -269,7 +329,7 @@
       "kind": "live",
       "file": "project/planning/documentation/features/open-linked-folder-window.md",
       "sourceSha256": "0b14ca6c184468e50223b8807faf512cd00cb5985867efcae7b44f24995f86d7",
-      "copiedSha256": "ed2a7285fa69bb7a40b804dc8fc22d69bfaad93879227b3c4023f22ddb88574e",
+      "copiedSha256": "fc3e60b6d84730081102695dcbc80f48e822e11e880ce9ac25b5fe2450633918",
       "linkRewrites": 0,
       "editorialRevisions": [
         {
@@ -283,6 +343,18 @@
           "reason": "USER-selected Decision retention: natural Unit content plus qualifying Core Decision record represented only in PRS; preserve product semantics and open proof.",
           "beforeSha256": "fc9484e2328480a549ed64bbc0e1d5c47bdc64b0adf76379a8ad26980422b5f3",
           "afterSha256": "ed2a7285fa69bb7a40b804dc8fc22d69bfaad93879227b3c4023f22ddb88574e"
+        },
+        {
+          "date": "2026-09-28",
+          "reason": "Migrate the current copied application owners to four-Unit Application Definition, Scenario SPS/SR, Feature Scenario Realization, Screen participation and Map driver/readiness while retaining source capture and unresolved proof.",
+          "beforeSha256": "ed2a7285fa69bb7a40b804dc8fc22d69bfaad93879227b3c4023f22ddb88574e",
+          "afterSha256": "676ccb281d506bc7b8ce276a8964068ab5b61b1bb5dba004e4d085f1c3e8f84e"
+        },
+        {
+          "date": "2026-09-28",
+          "reason": "Correct exact Feature Scenario Realization references and link this full example to both current SDS worked examples.",
+          "beforeSha256": "676ccb281d506bc7b8ce276a8964068ab5b61b1bb5dba004e4d085f1c3e8f84e",
+          "afterSha256": "fc3e60b6d84730081102695dcbc80f48e822e11e880ce9ac25b5fe2450633918"
         }
       ]
     },
@@ -291,7 +363,7 @@
       "kind": "live",
       "file": "project/planning/documentation/features/open-local-project.md",
       "sourceSha256": "0a588762bdd301a13cc766820f279c78d5c7028b159d60cf324414d1361a04f6",
-      "copiedSha256": "3e28b26a866d3b47034cfa0c2a77626885659e8fc7cad82543efc0445f5e02d7",
+      "copiedSha256": "0f67c16f8d039232ce222b0dc7b4af37b0a0ea81805f3a6c15fbcd7b022c1765",
       "linkRewrites": 0,
       "editorialRevisions": [
         {
@@ -299,6 +371,18 @@
           "reason": "Redirect methodology navigation to canonical same-repository owners and clarify historical provenance.",
           "beforeSha256": "0a588762bdd301a13cc766820f279c78d5c7028b159d60cf324414d1361a04f6",
           "afterSha256": "3e28b26a866d3b47034cfa0c2a77626885659e8fc7cad82543efc0445f5e02d7"
+        },
+        {
+          "date": "2026-09-28",
+          "reason": "Migrate the current copied application owners to four-Unit Application Definition, Scenario SPS/SR, Feature Scenario Realization, Screen participation and Map driver/readiness while retaining source capture and unresolved proof.",
+          "beforeSha256": "3e28b26a866d3b47034cfa0c2a77626885659e8fc7cad82543efc0445f5e02d7",
+          "afterSha256": "a986f4e83172b9df077620c9c7b934e6f19091afe80c45b8fde27a3b01ea77d7"
+        },
+        {
+          "date": "2026-09-28",
+          "reason": "Correct exact Feature Scenario Realization references and link this full example to both current SDS worked examples.",
+          "beforeSha256": "a986f4e83172b9df077620c9c7b934e6f19091afe80c45b8fde27a3b01ea77d7",
+          "afterSha256": "0f67c16f8d039232ce222b0dc7b4af37b0a0ea81805f3a6c15fbcd7b022c1765"
         }
       ]
     },
@@ -351,7 +435,7 @@
       "kind": "live",
       "file": "project/planning/documentation/README.md",
       "sourceSha256": "46070cc29307b10730eb216f3936dbee5a0206088fbc35add5a75a74edfa121e",
-      "copiedSha256": "cdb723358b56ab02b15d3cc04b6329d928425594813e44894327603563fbff34",
+      "copiedSha256": "6603e78194eb01efd76d26fc75e86ff131cab0834b51731d44cb7caa322f1722",
       "linkRewrites": 0,
       "editorialRevisions": [
         {
@@ -371,6 +455,18 @@
           "reason": "Refresh live example navigation to current Carry-Forward/PRS Decision retention semantics and mark the retained SDS conformance review as historical audit evidence.",
           "beforeSha256": "f9b759923f43913ae38c6966bce7b57dbff0c83d331c224d1a52ab8efd6ca4cc",
           "afterSha256": "cdb723358b56ab02b15d3cc04b6329d928425594813e44894327603563fbff34"
+        },
+        {
+          "date": "2026-09-28",
+          "reason": "Migrate the current copied application owners to four-Unit Application Definition, Scenario SPS/SR, Feature Scenario Realization, Screen participation and Map driver/readiness while retaining source capture and unresolved proof.",
+          "beforeSha256": "cdb723358b56ab02b15d3cc04b6329d928425594813e44894327603563fbff34",
+          "afterSha256": "217603681de08042cc7e19bb7453edde46cf20c91a9a3f319e0c4905c44442a8"
+        },
+        {
+          "date": "2026-09-28",
+          "reason": "Correct exact Feature Scenario Realization references and link this full example to both current SDS worked examples.",
+          "beforeSha256": "217603681de08042cc7e19bb7453edde46cf20c91a9a3f319e0c4905c44442a8",
+          "afterSha256": "6603e78194eb01efd76d26fc75e86ff131cab0834b51731d44cb7caa322f1722"
         }
       ]
     },
@@ -407,7 +503,7 @@
       "kind": "live",
       "file": "project/planning/documentation/scenarios/copy-trusted-project.md",
       "sourceSha256": "df7a1577f4b9241d7b05976b386b7b1d208e9887b830f2d92a58d194c857cbff",
-      "copiedSha256": "dd72dc778aa4c1f3ccf62fb4fbeb9a80ca830e5a157ef1bc4bb1cc1c8eafac9e",
+      "copiedSha256": "5bfb4eedb6d94650446543a79705fc8390809417892bcee8a290cde2ab68244d",
       "linkRewrites": 0,
       "editorialRevisions": [
         {
@@ -415,6 +511,12 @@
           "reason": "Redirect methodology navigation to canonical same-repository owners and clarify historical provenance.",
           "beforeSha256": "df7a1577f4b9241d7b05976b386b7b1d208e9887b830f2d92a58d194c857cbff",
           "afterSha256": "dd72dc778aa4c1f3ccf62fb4fbeb9a80ca830e5a157ef1bc4bb1cc1c8eafac9e"
+        },
+        {
+          "date": "2026-09-28",
+          "reason": "Migrate the current copied application owners to four-Unit Application Definition, Scenario SPS/SR, Feature Scenario Realization, Screen participation and Map driver/readiness while retaining source capture and unresolved proof.",
+          "beforeSha256": "dd72dc778aa4c1f3ccf62fb4fbeb9a80ca830e5a157ef1bc4bb1cc1c8eafac9e",
+          "afterSha256": "5bfb4eedb6d94650446543a79705fc8390809417892bcee8a290cde2ab68244d"
         }
       ]
     },
@@ -423,7 +525,7 @@
       "kind": "live",
       "file": "project/planning/documentation/scenarios/open-downloaded-archive.md",
       "sourceSha256": "ab447faa76230a5788fc54b7eaba1b8e8d40b4f3ccc8afc24f6471996bcd37b0",
-      "copiedSha256": "e2606e0197c1ff9f14248e44b699fb4781d69a23fe6a2254e860fed72c657051",
+      "copiedSha256": "4e20617b3a8a6c162bb75f077929d7ff8d9188040d966c252c447a832aca1d89",
       "linkRewrites": 0,
       "editorialRevisions": [
         {
@@ -431,6 +533,12 @@
           "reason": "Redirect methodology navigation to canonical same-repository owners and clarify historical provenance.",
           "beforeSha256": "ab447faa76230a5788fc54b7eaba1b8e8d40b4f3ccc8afc24f6471996bcd37b0",
           "afterSha256": "e2606e0197c1ff9f14248e44b699fb4781d69a23fe6a2254e860fed72c657051"
+        },
+        {
+          "date": "2026-09-28",
+          "reason": "Migrate the current copied application owners to four-Unit Application Definition, Scenario SPS/SR, Feature Scenario Realization, Screen participation and Map driver/readiness while retaining source capture and unresolved proof.",
+          "beforeSha256": "e2606e0197c1ff9f14248e44b699fb4781d69a23fe6a2254e860fed72c657051",
+          "afterSha256": "4e20617b3a8a6c162bb75f077929d7ff8d9188040d966c252c447a832aca1d89"
         }
       ]
     },
@@ -439,7 +547,7 @@
       "kind": "live",
       "file": "project/planning/documentation/scenarios/open-selected-folder.md",
       "sourceSha256": "6642001b80acf69bb46886d8cc21e93797f1224b8e23a11886eb5b5f38060cc8",
-      "copiedSha256": "7d43ba1e87dd2bda5a0664a0973c7a88280dbed993eb591eceb6dcd09733708e",
+      "copiedSha256": "0fc28a44b43f46e22de59bbd398d8ccc296bb834c0e5b03f10c03d4051e842a6",
       "linkRewrites": 0,
       "editorialRevisions": [
         {
@@ -447,6 +555,12 @@
           "reason": "Redirect methodology navigation to canonical same-repository owners and clarify historical provenance.",
           "beforeSha256": "6642001b80acf69bb46886d8cc21e93797f1224b8e23a11886eb5b5f38060cc8",
           "afterSha256": "7d43ba1e87dd2bda5a0664a0973c7a88280dbed993eb591eceb6dcd09733708e"
+        },
+        {
+          "date": "2026-09-28",
+          "reason": "Migrate the current copied application owners to four-Unit Application Definition, Scenario SPS/SR, Feature Scenario Realization, Screen participation and Map driver/readiness while retaining source capture and unresolved proof.",
+          "beforeSha256": "7d43ba1e87dd2bda5a0664a0973c7a88280dbed993eb591eceb6dcd09733708e",
+          "afterSha256": "0fc28a44b43f46e22de59bbd398d8ccc296bb834c0e5b03f10c03d4051e842a6"
         }
       ]
     },
@@ -455,7 +569,7 @@
       "kind": "live",
       "file": "project/planning/documentation/scenarios/open-selected-project.md",
       "sourceSha256": "1b12e231ee530b0be28d031a50eda2c6f320f1ae8ac35b4f70246d3c4df9b12b",
-      "copiedSha256": "904eeafd44d77ba5834f6ae32aa0810dab67cda551c01b90f11e89c8119bbc73",
+      "copiedSha256": "061849b21a90370f2039bdc357c2cff68c88dcc86c4724c6de66eca68a143cff",
       "linkRewrites": 0,
       "editorialRevisions": [
         {
@@ -463,6 +577,12 @@
           "reason": "Redirect methodology navigation to canonical same-repository owners and clarify historical provenance.",
           "beforeSha256": "1b12e231ee530b0be28d031a50eda2c6f320f1ae8ac35b4f70246d3c4df9b12b",
           "afterSha256": "904eeafd44d77ba5834f6ae32aa0810dab67cda551c01b90f11e89c8119bbc73"
+        },
+        {
+          "date": "2026-09-28",
+          "reason": "Migrate the current copied application owners to four-Unit Application Definition, Scenario SPS/SR, Feature Scenario Realization, Screen participation and Map driver/readiness while retaining source capture and unresolved proof.",
+          "beforeSha256": "904eeafd44d77ba5834f6ae32aa0810dab67cda551c01b90f11e89c8119bbc73",
+          "afterSha256": "061849b21a90370f2039bdc357c2cff68c88dcc86c4724c6de66eca68a143cff"
         }
       ]
     },
@@ -471,7 +591,7 @@
       "kind": "live",
       "file": "project/planning/documentation/scenarios/open-selected-study-files.md",
       "sourceSha256": "d79a9e7959c2df814201bc5fe5a26f9aa5324dce48aafa4ab8e2839611648379",
-      "copiedSha256": "a2ea1505cc6d52f98e8f0225094e8594aa4c4a58025d319331e5393cb4c295b9",
+      "copiedSha256": "efae934a3808bb43a672838a8e01c9340e1d0c3108ede8fb55f961e6530ec843",
       "linkRewrites": 0,
       "editorialRevisions": [
         {
@@ -479,6 +599,12 @@
           "reason": "Redirect methodology navigation to canonical same-repository owners and clarify historical provenance.",
           "beforeSha256": "d79a9e7959c2df814201bc5fe5a26f9aa5324dce48aafa4ab8e2839611648379",
           "afterSha256": "a2ea1505cc6d52f98e8f0225094e8594aa4c4a58025d319331e5393cb4c295b9"
+        },
+        {
+          "date": "2026-09-28",
+          "reason": "Migrate the current copied application owners to four-Unit Application Definition, Scenario SPS/SR, Feature Scenario Realization, Screen participation and Map driver/readiness while retaining source capture and unresolved proof.",
+          "beforeSha256": "a2ea1505cc6d52f98e8f0225094e8594aa4c4a58025d319331e5393cb4c295b9",
+          "afterSha256": "efae934a3808bb43a672838a8e01c9340e1d0c3108ede8fb55f961e6530ec843"
         }
       ]
     },
@@ -487,7 +613,7 @@
       "kind": "live",
       "file": "project/planning/documentation/screens/chatgpt-launcher-widget.md",
       "sourceSha256": "bdf3beefa6a4824c243cde1b2c17f7fc89079ad7bb968bc522251b529fa16918",
-      "copiedSha256": "15a345b18e3a372be9c86c6cf59b7ca29a2fcd4c0df039ac67b8e6ea287d7e9e",
+      "copiedSha256": "863d63f361075560868e55a5077087d3fa48fb4ccea0876ac7e946bd72ad5cbf",
       "linkRewrites": 0,
       "editorialRevisions": [
         {
@@ -495,6 +621,12 @@
           "reason": "Redirect methodology navigation to canonical same-repository owners and clarify historical provenance.",
           "beforeSha256": "bdf3beefa6a4824c243cde1b2c17f7fc89079ad7bb968bc522251b529fa16918",
           "afterSha256": "15a345b18e3a372be9c86c6cf59b7ca29a2fcd4c0df039ac67b8e6ea287d7e9e"
+        },
+        {
+          "date": "2026-09-28",
+          "reason": "Migrate the current copied application owners to four-Unit Application Definition, Scenario SPS/SR, Feature Scenario Realization, Screen participation and Map driver/readiness while retaining source capture and unresolved proof.",
+          "beforeSha256": "15a345b18e3a372be9c86c6cf59b7ca29a2fcd4c0df039ac67b8e6ea287d7e9e",
+          "afterSha256": "863d63f361075560868e55a5077087d3fa48fb4ccea0876ac7e946bd72ad5cbf"
         }
       ]
     },

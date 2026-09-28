@@ -1,131 +1,57 @@
 # APP-RPKG — Replacement Package Application Definition
 
-Status: proposed **upstream Application intent/value definition** spanning the Builder and realization App parts. It is not a current-state snapshot and is not materialized by Evolution Steps.
-
-Downstream implementation may lag this definition. That gap is planned through Evolution Steps.
+Status: selected upstream Application intent spanning the Builder and realization App parts. This is not a current-state snapshot or an Evolution Step Target Body. Downstream realization may lag this selected intent.
 
 ## RU-APP-05 — Application Concept
 
-**Summary:** A focused Replacement Package Application that supports AI-driven repository work by taking over bounded mechanical package/repository/context operations while leaving semantic repository-work authority with the AI/human actor. Its overall Benefit is dependable realization, truthful outcomes, reusable context and lower mechanical interaction cost around AI-created repository work.
+**Methodology:** [Application Concept](../../idtspe-methodology/active/profiles/sds/target-modules/TM-APPLICATION-DEFINITION.md#application-concept).
 
-**How it roughly works:** AI/external actors provide semantic intent/context and explicit handoffs; Builder/App parts perform selected mechanical preparation, realization, publication/context operations and return truthful results; shared implementation supplies reusable mechanics without becoming Application value authority.
+**Summary:** One focused Application supports AI-driven repository work with bounded mechanical package, repository and context operations, while the AI/human actor retains semantic work authority. It exists to make exact realization, truthful outcomes and reviewable results less mechanically costly.
 
-This is selected Application intent even where current implementation has not yet conformed to it. Detailed Features, Scenarios, Screens, Domain and implementation mechanics remain downstream owners rather than Application Concept content.
+**How it roughly works:** The AI/external actor provides semantic intent, complete desired content and explicit handoffs. Builder/App parts validate and perform selected mechanical preparation, realization, publication and context operations, then return truthful results. Shared implementation supplies reusable mechanics, not independent Application value authority.
 
-### Concept clarification — Application parts
+This selected intent does not claim every downstream capability is already realized. Builder's existing implementation is evidence pending its selected Evolution Step; the App owns current realization where current Scenario/Feature owners say so. GitHub Issue/comments, ChatGPT, the repository host and VS Code remain external participants. Detailed journeys, behaviors, Screens, Domain and implementation belong to their natural owners.
 
-| Part | Selected Application role |
-|---|---|
-| **Replacement Package Builder** | Mechanical package preparation and verification support for AI-produced repository changes. Existing implementation is evidence; accepted downstream Feature semantics are established through Evolution planning/proof. |
-| **Replacement Package App** | Authoritative repository realization plus useful repository-context interaction surfaces. |
-| **replacement-package-common / shared implementation** | Reusable mechanics used by parts; not a separate Application and not owner of AB/SR/BR semantics. |
+## RU-APP-02 — Existing-Solution / Reference Position
 
-The AI/human actor, GitHub Issue/comments, repository host, ChatGPT and VS Code are external participants unless a selected downstream owner explicitly says otherwise.
+**Methodology:** [Existing-Solution / Reference Position](../../idtspe-methodology/active/profiles/sds/target-modules/TM-APPLICATION-DEFINITION.md#existing-solutions--market--reference-research).
 
+**Position:** existing Git/IDE/GitHub, AI tooling, hosted review, manual and hybrid routes can cover parts of the work. Exact package/result identity across AI handoff and local/remote effects is the selected reason to retain bounded own-software mechanics. This is a provisional comparative position, not a claim of unique capability established by market research.
 
-## RU-APP-02 — Existing-Solution / Alternative-Route Position
+**Evidence still needed:** compare complete routes at the same actor/authority boundary, including a smaller hybrid or no custom Application, before treating breadth or cost as settled. A route that sufficiently preserves exactness and truthful outcomes may narrow this Application.
 
-Compare complete routes for the same Benefits, including existing Git/IDE/GitHub workflows, AI tooling, hosted review/integration, hybrid routes and no-custom-software routes. Intentionally search for a route that lets the custom Application shrink or disappear. Do not compare only feature lists.
+<a id="own-application-justification-key-behavior-focus"></a>
+## RU-APP-08 — Own-Application Justification / Key Behavior Focus
 
-This challenge applies to both Selected Benefits and material Possible Benefits under evaluation.
+**Methodology:** [Own-Application Justification / Key Behavior Focus](../../idtspe-methodology/active/profiles/sds/target-modules/TM-APPLICATION-DEFINITION.md#own-application-justification-key-behavior-focus).
 
-## RU-APP-03 — Application Benefits
+**Own-Application Justification:** AI-created repository changes need exact, inspectable handoff and dependable mechanical realization without transferring semantic edit/review authority to software. Existing general tools supply parts of this route; the selected Application composes the bounded package/result/Work identity and effect proof that the current workflow needs. The comparative sufficiency of smaller or external routes remains subject to the RU-APP-02 evidence above.
 
-`Planning position` expresses whether the Application value/need is selected or merely possible; it does **not** claim realization.
+<a id="kbf-rpkg-exact-realization-01"></a>
+### KBF-RPKG-EXACT-REALIZATION-01 — Exact delegated realization
 
-<a id="ab-rpkg-realize-ai-repository-work-01"></a>
-### AB-RPKG-REALIZE-AI-REPOSITORY-WORK-01 — Realize AI-Created Repository Work
+The Application validates an exact package/source/Work request and performs only authorized mechanical package/repository effects, including recovery and publication, while returning the exact proven result or a truthful non-success. This is central because manual protocol construction and ambiguous effects undermine the selected AI repository-work route. The AI/human actor still owns semantic edits, review and the decision to hand off.
 
-**Planning position:** Selected
+<a id="kbf-rpkg-truthful-outcome-02"></a>
+### KBF-RPKG-TRUTHFUL-OUTCOME-02 — Truthful operation outcomes
 
-**User Need:** AI-created repository work needs to reach the intended local/remote repository result without brittle manual package/repository mechanics dominating the interaction.
+For its own operations, the Application distinguishes proven completion, expected rejection and unresolved uncertainty and exposes enough exact Work/package context for the next action. It does not decide whether the semantic work is acceptable. This focus can be realized across several current and future Scenarios/Features; it is not one Feature identity.
 
-**User Receives:** Repository work created by AI can be realized locally and remotely quickly and dependably, with automation where it reduces mechanical effort and with explicit control where it matters.
+<a id="kbf-rpkg-inspectable-review-03"></a>
+### KBF-RPKG-INSPECTABLE-REVIEW-03 — Inspectable exact review context
 
-**Responsibility Boundary / Constraints:** The Application owns selected mechanical package/repository realization operations and truthful operation results. The AI/human actor remains responsible for semantic repository-work intent, semantic edits, review/selection decisions and the exact authoritative handoff that asks the Application to realize work.
+The Application may provide exact package/result/diff or repository context that lets the AI/human review the intended work without reconstructing effects manually. Semantic findings, recommendations and selection remain actor-owned. The planned Builder verification, Snapshot and VS Code routes are concrete downstream transitions, not already-realized current behavior merely because they serve this focus.
 
-<a id="ab-rpkg-know-repository-work-outcome-02"></a>
-### AB-RPKG-KNOW-REPOSITORY-WORK-OUTCOME-02 — Know Repository Work Outcome
+**Actor-owned surrounding context:** durable GitHub Issue/comment history is useful for continuation and review, but the AI/human and GitHub create and semantically maintain that narrative. The Application may consume or expose its identifiers through selected downstream owners. This source proposition is retained without inventing a fourth Application-owned key behavior or an App-owned Issue-writing capability.
 
-**Planning position:** Selected
+**Source migration trace:** former selected Benefit propositions about realization and delegation inform `KBF-RPKG-EXACT-REALIZATION-01`; truthful outcomes inform `KBF-RPKG-TRUTHFUL-OUTCOME-02`; review efficiency informs `KBF-RPKG-INSPECTABLE-REVIEW-03`; documented Work remains actor-owned context. Former `AB-RPKG-*` IDs are historical source references, not live Application drivers or a second Benefit catalog. Concrete `SPS-*` journeys and `SR-*` must-holds live in Scenario owners; Feature/Screen owners state their realization and spatial participation.
 
-**User Need:** After a repository operation, the AI/user needs to know what was actually proven, rejected or left uncertain rather than infer success from partial signals.
+## RU-APP-07 — Realization Feasibility / Early Implementation Planning
 
-**User Receives:** AI/user can distinguish proven completion, expected rejection and unresolved uncertainty rather than guessing what happened.
+**Methodology:** [Realization Feasibility](../../idtspe-methodology/active/profiles/sds/target-modules/TM-APPLICATION-DEFINITION.md#realization-feasibility).
 
-**Responsibility Boundary / Constraints:** The Application owns truthful mechanical/proof outcomes and attention signals for operations it performs. The AI/human actor owns semantic interpretation, follow-up choice and any decision about whether the work is acceptable.
+Existing Builder/App code demonstrates feasible mechanics and supplies candidates for exact realization, but implementation presence does not accept future Builder/Scenario/Screen product meaning. Keep exact source/package identity, effect isolation, crash/uncertainty recovery, truthful remote proof and inspectable result context as material application-level planning pressures. Downstream Features, Scenarios, Domain, Slices and Shared capabilities own their durable details; Exact Realization may keep, modify or replace the existing implementation. Revalidate whether smaller existing/hybrid tools can narrow the custom scope.
 
-<a id="ab-rpkg-keep-work-documented-03"></a>
-### AB-RPKG-KEEP-WORK-DOCUMENTED-03 — Keep Work Documented For Reuse
+## Temporal and owner route
 
-**Planning position:** Selected
-
-**User Need:** Repository work may span sessions/reviewers, so useful context/history needs to remain available for continuation and understanding.
-
-**User Receives:** One logical Work has durable GitHub Issue/comment history that can act as practical log/context for the same AI, another AI or a person when work must be resumed or understood.
-
-**Responsibility Boundary / Constraints:** GitHub and the AI/human actor remain responsible for creating and semantically maintaining Issue/comment history. The Application may consume/expose repository-context conveniences selected downstream, but it does not become the semantic owner of Work narrative/history merely because that context is used by package/repository operations.
-
-<a id="ab-rpkg-delegate-mechanical-repository-work-04"></a>
-### AB-RPKG-DELEGATE-MECHANICAL-REPOSITORY-WORK-04 — Delegate Mechanical Repository Work
-
-**Planning position:** Selected
-
-**User Need:** Mechanically derivable package/repository operations should not consume AI semantic attention or require repetitive protocol construction.
-
-**User Receives:** AI can delegate mechanically derivable package/repository operations instead of spending semantic attention and interaction steps on protocol construction or repetitive repository mechanics.
-
-**Responsibility Boundary / Constraints:** The Application owns the selected deterministic/mechanical operations and their validation. The AI remains responsible for methodology-driven semantic work, orchestration intent and choices that require semantic authority.
-
-<a id="ab-rpkg-review-ai-work-efficiently-05"></a>
-### AB-RPKG-REVIEW-AI-WORK-EFFICIENTLY-05 — Review AI Work Efficiently
-
-**Planning position:** Selected
-
-**User Need:** AI-produced repository changes need exact, inspectable result/diff context so review can focus on semantics rather than reconstructing what changed.
-
-**User Receives:** AI-created work can be reviewed by the producing AI and, when useful, another AI using exact resulting artifacts/diffs, with good review quality and reasonable time/steps.
-
-**Responsibility Boundary / Constraints:** The Application may provide exact package/result/diff/repository context and related mechanical review surfaces selected downstream. The producing/reviewing AI or human remains responsible for semantic review findings, recommendations, Proposals and Decisions.
-
-A newly surfaced Benefit may be retained here with `Planning position: Possible` before selection. `Possible` does not create a future Step or authorize implementation.
-
-Application Benefits are upstream value meaning, not Requirements. A Benefit may be realized jointly by actor actions, Scenarios, Features, Screens and external participants; each Benefit keeps its own Responsibility Boundary / Constraints rather than relying on one standalone Application-wide boundary unit.
-
-## RU-APP-04 — Representative Real-Life Scenarios
-
-**Detailed representative real-life scenario: NOT SELECTED / NOT CURRENTLY REPRESENTATIVE.**
-
-Reason: the Application supports several AI repository-work contexts. A single detailed surrounding real-life route would either overfit one AI workflow or leak downstream application interaction into Application Definition.
-
-Stable real-life anchors:
-- AI/human repository work exists;
-- durable Work context/history is useful across iterations/sessions/reviewers;
-- mechanically derivable repository operations should not consume semantic AI attention unnecessarily;
-- exact review artifacts improve review quality and reduce ambiguity;
-- accepted work eventually needs dependable local/remote realization.
-
-These anchors explain the selected Benefits through real-world context but do not become Application Scenario behavior.
-
-`Apply → Commit → Publish`, package wait, Finalize branching, Snapshot generation, VS Code opening and Screen placement are **not** Representative Real-Life Scenario content here; they belong to downstream Scenario/Feature/Screen planning.
-
-
-## RU-APP-07 — Realization Feasibility / Evidence Position
-
-Existing Builder/App code demonstrates useful feasibility and implementation candidates, but implementation existence does not settle downstream semantic contracts. Exact downstream planning may keep, modify or replace existing implementation.
-
-Feasibility revalidation must preserve truthful uncertainty and continue challenging whether custom Application scope can shrink through existing/hybrid tools or whether any selected Benefit Responsibility Boundary / Constraints should narrow.
-
-## Temporal / Evolution guard
-
-Application Definition is refined directly when selected/possible need, contribution, Benefit or Benefit-boundary understanding changes.
-
-```text
-Application Definition
-≠ current-state owner
-≠ Evolution Impact host
-≠ Target Application Body
-≠ Step Materialization target
-```
-
-Evolution Steps reference the relevant `AB-*` / selected contribution intent and realize it through Scenario/Feature/Screen/Domain/Slice/Shared target states.
+Application Definition is refined directly when Concept, own-Application justification, key behavior or feasibility changes. It is not a current-state owner, reverse Evolution Impact host, Step materialization target or Target Application Body. [Current Scenarios](navigation/SCENARIO-REGISTRY.md), [Features](navigation/FEATURE-REGISTRY.md) and [Evolution Steps Map](navigation/EVOLUTION-STEPS-MAP.md) own their respective journey, behavior and future-transition projections. Steps reference the relevant `KBF-*` or concrete `SPS-*/SR-*` driver without copying this upstream authority.
