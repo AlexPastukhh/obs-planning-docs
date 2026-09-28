@@ -21,7 +21,7 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
     "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-SCREEN.md",
     "planning/documentation/idtspe-methodology/active/profiles/sds/commands/SDS-COMMAND-SURFACE-EXTENSION.md"
   ],
-  "expectedOutput": "Screen/Spatial Model: material Screen inventory/purpose, Feature/Scenario participation, routes/transitions/global spatial constraints and only independently useful Screen/zone draft detail; may validly conclude no Screen Target is justified.",
+  "expectedOutput": "Screen/Spatial Model: material Screen inventory/purpose, routes/transitions/global spatial constraints, and per-Scenario SPS participation for each Screen with optional step-local SCR-* plus Screen-wide SCR-G-* shaping the selected spatial presentation; no copied Scenario SR authority; may validly conclude no Screen Target is justified.",
   "permissionMode": "read-only-planning",
   "keyReminders": [
     "SDS is an IDTSPE profile, not a second runtime.",

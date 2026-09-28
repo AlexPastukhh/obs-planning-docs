@@ -1,6 +1,6 @@
 # Requirements And Change Context
 
-> **Compatibility vocabulary boundary.** This supporting file preserves older application-planning discovery/workspace heuristics. Terms such as `Scenario DATA`, `Behavior Items`, standalone `Requirement`, or `Slice Strategy` below do not define current SDS owner identities. Current authority is the active SDS Target/Lens registries: Feature owns behavior/semantic data, Scenario owns actor/external journey composition with Benefit manifestation/closure, requirements stay with natural Feature/Domain/Slice/Shared owners, and Slice Strategy is not an active Target family. Use older terms only as supporting heuristics where they do not conflict with current owners.
+> **Compatibility vocabulary boundary.** This supporting file preserves older application-planning discovery/workspace heuristics. Terms such as `Scenario DATA`, `Behavior Items`, standalone `Requirement`, or `Slice Strategy` below do not define current SDS owner identities. Current authority is the active SDS Target/Lens registries: Application Definition owns Concept / own-Application justification + key behavior focus / feasibility + early implementation planning; Scenario owns normative real-life `SPS-*` journey meaning and `SR-*`; Feature owns behavior/semantic data and records the Scenario meaning it realizes; Screen owns spatial/navigation composition with local `SCR-*` / `SCR-G-*`; downstream implementation requirements stay with their natural Domain/Slice/Shared owners; Slice Strategy is not an active Target family. Use older terms only as supporting heuristics where they do not conflict with current owners.
 
 
 Status: active reusable canonical owner
@@ -90,14 +90,17 @@ unknown
 Use the narrowest real canonical owner:
 
 ```text
-application-wide/shared or not-yet-localized Requirement
-→ shared application Requirements owner/registry
+journey must-hold whose natural subject is Scenario
+→ Scenario `SR-*`
 
-true only for one Scenario
-→ Scenario-local Requirement or linked requirement owner
+Feature behavior/result must-hold
+→ Feature `BR-*`
 
-spatial meaning true only for one Screen
-→ Screen owner
+spatial/navigation must-hold whose natural subject is one Screen
+→ Screen-local `SCR-*` / `SCR-G-*` addressability
+
+Application Definition KBF / early-planning pressure
+→ not a Requirement family by itself; downstream owners form requirements when natural
 
 Domain invariant
 → Domain owner

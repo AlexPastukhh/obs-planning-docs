@@ -14,14 +14,14 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
     "определи приложение"
   ],
   "description": "application definition",
-  "meaning": "Run TM-APPLICATION-DEFINITION through current Use-Case-driven IDTSPE composition and the selected Target Module entry point for the selected target. Output Benefit promise boundaries and Scenario/Evolution coverage refs in Application Definition; full real-life journeys belong to Scenario.",
+  "meaning": "Run TM-APPLICATION-DEFINITION through current Use-Case-driven IDTSPE composition and the selected Target Module entry point for the selected target. Resolve the concise Application Concept, Existing-Solution / Reference Position, Own-Application Justification / Key Behavior Focus, and material Realization Feasibility / Early Implementation Planning. Full real-life journeys and downstream behavioral/spatial requirements belong to Scenario/Feature/Screen owners.",
   "activeContextBehavior": "Treat the explicit command as selected invocation intent inside always-active IDTSPE. Re-evaluate current Use-Case composition, resolve/reuse a natural Target/context only when useful, confirm the selected Target Module Entry Point/local applicability gate, and then resolve CREATE/REFINE/EXTEND/REVALIDATE/REPAIR from actual current Target state. Do not create a Target or Result Unit merely because the command exists.",
   "traversalReadMode": "Reuse current reliable IDTSPE/SDS governance; targeted refresh of the selected owner route when uncertain; full bootstrap only when no reliable sufficient governance context exists.",
   "ownerFiles": [
     "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-APPLICATION-DEFINITION.md",
     "planning/documentation/idtspe-methodology/active/profiles/sds/commands/SDS-COMMAND-SURFACE-EXTENSION.md"
   ],
-  "expectedOutput": "Application Definition with Benefit promise boundaries, feasibility and Scenario/Evolution coverage references rather than journey bodies.",
+  "expectedOutput": "Application Definition with concise Concept, Existing-Solution / Reference Position, Own-Application Justification / Key Behavior Focus, and material Realization Feasibility / Early Implementation Planning rather than Scenario/Feature/Screen bodies.",
   "permissionMode": "read-only-planning",
   "keyReminders": [
     "SDS is an IDTSPE profile, not a second runtime.",

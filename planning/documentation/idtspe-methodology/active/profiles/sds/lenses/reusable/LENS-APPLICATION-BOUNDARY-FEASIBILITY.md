@@ -1,53 +1,76 @@
 <a id="lens-application-boundary-feasibility"></a>
-# LENS-APPLICATION-BOUNDARY-FEASIBILITY — Application Definition / Benefits / Boundary / Feasibility
+# LENS-APPLICATION-BOUNDARY-FEASIBILITY — Application Definition / Justification / Feasibility
 
 Lens ID: `LENS-APPLICATION-BOUNDARY-FEASIBILITY`
 
 > Semantic Owner Dependencies
 > - Type: `EXTENDS`; Responsibility: `LENS.META-MODEL`; Owner: [Lens Meta-Model](../../../../idtspe-core/lenses/LENS-MODEL.md#lens-meta-model)
-> - Type: `CONTEXTUALIZES`; Responsibility: `SDS.APPLICATION-BENEFIT-BOUNDARY-CONSTRAINTS`; Owner: [Application Benefit Responsibility Boundary / Constraints](../../target-modules/TM-APPLICATION-DEFINITION.md#sds-application-benefit-boundary-constraints)
+> - Type: `CONTEXTUALIZES`; Responsibility: `TM-APPLICATION-DEFINITION`; Owner: [Application Definition](../../target-modules/TM-APPLICATION-DEFINITION.md#tm-application-definition)
 
 ## Purpose
 
-Evaluate whether an own Application is justified, which real-world contribution it should own, what existing alternatives teach us, which Benefits justify it, whether each Benefit has truthful Responsibility Boundary / Constraints, whether representative real-life situations make those Benefits concrete, whether the concise Application Concept is understandable, and whether the concept/Benefit boundaries are plausibly realizable.
+Evaluate whether the Application proposition is coherent and sufficiently grounded:
+
+- what the Application is and how it roughly works;
+- whether existing/manual/external alternatives already satisfy the need sufficiently;
+- why an own Application is warranted;
+- which key Application behavior/contribution carries the central justification/value focus;
+- whether the proposition is realistically realizable;
+- which application-level implementation concerns or early planning are already important enough to constrain downstream work.
+
+The Lens does not create Application Benefits, Feature boundaries, Scenario journeys or detailed architecture.
 
 ## Analysis Surface
 
-This Lens evaluates Application-level semantic meaning about:
-- the application's selected real-world contribution;
-- existing-solution/reference position;
-- Benefits and their responsibility boundaries/constraints;
-- representative real-life framing used to make Benefits concrete;
-- concise Application Concept sufficiency;
-- realization feasibility at a proportional, pre-architecture depth.
+This Lens evaluates Application-level meaning owned by `TM-APPLICATION-DEFINITION`:
 
-Scenario/Domain/Slice/current-implementation context is supporting Evidence only when it can materially challenge that Application-level meaning. Unit attachment remains owned by the relevant Target Module Unit definitions.
+- `RU-APP-05` Application Concept;
+- `RU-APP-02` Existing-Solution / Reference Position;
+- `RU-APP-08` Own-Application Justification / Key Behavior Focus;
+- `RU-APP-07` Realization Feasibility / Early Implementation Planning.
+
+Scenario/Feature/Screen/Domain/Slice/current-implementation material is supporting Evidence when it can materially revalidate that Application proposition. Downstream natural-owner meaning remains downstream authority.
 
 ## Applicability & Temporal Triggers
 
 ### Base Applicability / Usefulness
 
-Application contribution, Benefit boundary/constraint, Concept, alternative sufficiency, representative real-life framing, or feasibility is being created/changed/challenged; or downstream evidence contradicts it.
+Apply when Application Concept, alternative sufficiency, own-Application justification, Key Behavior Focus, feasibility or application-level realization pressure is being created, changed, challenged or materially relied upon downstream.
 
 ### Opening Triggers
 
-The Unit begins with existing/candidate Application Concept, Benefits/boundaries, alternatives/references, representative situations, feasibility assumptions, or downstream contradiction evidence.
+The Unit begins with one or more of:
+
+```text
+Need / real-world problem
+candidate/current Application Concept
+existing/manual/external alternatives
+candidate/current own-Application justification
+candidate/current Key Behavior Focus
+feasibility assumptions / early realization concerns
+downstream contradiction Evidence
+```
 
 ### During-work Recheck / Invalidation Triggers
 
-Selected Benefit/contribution/boundary, alternative/reference evidence, representative scenario framing, feasibility assumptions/constraints, or downstream Scenario/Domain/Slice evidence changes.
+Recheck when alternative/reference Evidence, Scenario evidence, current implementation, platform/integration constraints or downstream realization findings materially change the basis of the Application proposition.
 
 ### Closing Triggers / Revalidation Conditions
 
-The result creates/changes Application contribution, Benefit/boundary, Concept, representative real-life framing, alternative position, or feasibility; or downstream work now relies on that meaning.
+The result establishes or materially changes Concept, alternative position, own-Application justification, Key Behavior Focus, feasibility or early application-level implementation planning; or downstream work now depends on that meaning.
 
 ### Confident-False / Stop Conditions
 
-Concern is local downstream realization and cannot change Application contribution, Benefit boundary, Concept, alternatives position, or feasibility.
+Do not apply when the concern is purely local downstream realization and cannot materially change the Application proposition/focus/feasibility.
 
 ### False-negative Risks
 
-Downstream implementation evidence may reveal responsibility creep or that an external/existing solution already suffices.
+Downstream evidence may show that:
+
+- an external/existing solution now suffices;
+- the supposed differentiating behavior is not actually valuable or necessary;
+- implementation burden makes the selected Application proposition pathological;
+- a downstream Scenario reveals that the key behavior focus is misframed.
 
 Trigger semantics follow the canonical Lens Model:
 
@@ -57,22 +80,25 @@ FALSE     → NOT_APPLICABLE
 UNCERTAIN → APPLY
 ```
 
-A Unit-level `REQUIRED [phase]` attachment bypasses the apply/skip decision at that phase and requires this Lens to cover the current Analysis Surface. These Lens-owned triggers still govern useful earlier application and recheck/invalidation.
+A Unit-level `REQUIRED [phase]` attachment bypasses the apply/skip decision at that phase and requires this Lens to cover the current Analysis Surface.
 
 ## Inputs / Evidence
+
 ```text
-Fundamental Need
-Step-02 solution / own-software contribution
+Fundamental Need / wanted outcome
+current real-world workflow
 manual/existing/external alternatives
 market/reference research
-Prototype Evidence
-current application/workspace
-later Scenario/Domain/Slice Evidence
+Prototype / Practical Test Evidence
+current application/workspace Evidence
+Scenario path/result/SR Evidence
+Feature/Screen/Domain/Slice/Shared/Exact realization Evidence
+platform/integration/persistence/consistency/performance/operational constraints
 ```
 
 ## Evaluation Contract
 
-Apply only the dimensions material to the current question. The domain-specific questions, methods, facets, checks, examples, and pattern guidance below constitute this Lens's evaluation workflow; they are not mandatory checklist items unless the current Analysis Surface makes them material.
+Apply only the dimensions material to the current question. The questions/checks below are evaluation guidance, not a mandatory global checklist.
 
 ## Supported Operations
 
@@ -83,104 +109,143 @@ REFINE
 CHALLENGE
 ```
 
-- `ANALYZE` inspects the Analysis Surface through this Lens perspective.
-- `CHECK` evaluates current meaning against this Lens's criteria/guards.
-- `REFINE` surfaces a proposal for more precise/missing meaning where the semantic destination is already understood.
+- `ANALYZE` inspects the current Application proposition through this Lens.
+- `CHECK` evaluates current meaning against the criteria/guards below.
+- `REFINE` surfaces candidate clarification where the semantic destination is already understood.
 - `CHALLENGE` surfaces reasons selected/accepted meaning may be weak, stale, unsupported or wrong.
 
 `REOPEN`, State-Unit creation/refinement, cross-owner handoff and Result Unit update after resolution are Core Finding-Disposition/lifecycle consequences, not Lens methods.
 
-## Existing-Solution Sufficiency / Market Reference
+## Existing-Solution Sufficiency / Reference Position
 
 ```text
-Does an existing solution satisfy Need + constraints well enough?
+Does an existing/manual/external solution satisfy the Need well enough?
 Should we use/buy/adapt/integrate/hybrid instead?
 What research depth is proportional?
 Which direct alternatives/substitutes/adjacent references matter?
 What should be borrowed or avoided?
 ```
 
-For serious external/commercial products, market/competitor/user/adoption/pricing Evidence is included only when decision-relevant.
-
 Reference products are Evidence/Proposal sources, not authority.
 
 Deep guide: [`RU-APP-02 Existing-Solution / Reference Position guidance`](../../target-module-support/application-definition/RU-APP-02-EXISTING-SOLUTION-REFERENCE-POSITION.unit-guidance.md).
 
-## Whole-Solution Contribution
+## Application Concept Sufficiency
 
-Application exists to realize an already selected real-world solution contribution, not to justify itself after the fact.
+Is the Application Concept a short, immediately understandable summary of:
 
-## Benefit / Scenario Coverage Evaluation
+- what the Application is;
+- why it exists at a high level;
+- briefly how it roughly works?
 
-Canonical Benefit and `RU-APP-04` coverage semantics belong to [`TM-APPLICATION-DEFINITION`](../../target-modules/TM-APPLICATION-DEFINITION.md). This Lens evaluates them; Scenario owns real-life journey and Application Contributions.
+Do not require Feature decomposition, detailed Scenario paths or architecture merely to satisfy Concept sufficiency.
+
+## Own-Application Justification / Key Behavior Focus
 
 Check proportionally:
 
 ```text
-Do selected/possible Benefits state a real User Need and what the user receives?
-Does each substantive Benefit state its own Responsibility Boundary / Constraints: what the Application owns/provides, what remains outside, and material Benefit-local limits?
-Is Additional Info proportional free-form clarification?
-Does RU-APP-04 route to actual current or Step-owned Scenario/Evolution coverage and state material accepted-intent gaps without embedding journey bodies?
-Are materially distinct real-life Application Contribution variants reviewed by the Scenario owner rather than hidden by Benefit-level coverage?
+Why is an own Application warranted rather than the best existing/manual/external route?
+What material gap remains after alternatives are considered?
+Which Application behavior/contribution carries the central value/justification?
+Would losing that behavior materially weaken the reason for this Application to exist?
+Is the focus stated at Application level rather than as premature Feature decomposition?
+If several key behaviors are independently useful to reference, are KBF-* identities helpful rather than ceremonial?
 ```
 
-Supporting refinement guide: [`RU-APP-04 Scenario / Evolution Coverage`](../../target-module-support/application-definition/RU-APP-04-REPRESENTATIVE-REAL-LIFE-SCENARIOS.unit-guidance.md).
+`KBF-*` is optional Application-local addressability, not a Requirement family and not a Feature identity.
 
-## Concept Sufficiency
+## Responsibility / Scope Boundary
 
-Is the Application Concept a short, immediately understandable summary of:
-- what the Application is;
-- why it is needed / what overall Benefit it provides;
-- briefly how it roughly works?
+For the selected Application proposition, distinguish:
 
-Do not require Feature decomposition, detailed behavior or architecture merely to satisfy Concept sufficiency.
+```text
+what the Application must contribute
+what remains actor/manual/external-system responsibility
+what information is merely consumed/displayed/forwarded/derived
+what is explicitly outside the Application proposition
+```
 
-## Benefit Responsibility Boundaries
+Do not create a second generic Responsibility Boundary Unit solely to restate `RU-APP-08` / `RU-APP-07` meaning.
 
-Check Responsibility Boundary / Constraints on the affected `AB-*` items rather than creating or evaluating a standalone Responsibility Boundary Result Unit.
+## Realization Feasibility / Early Implementation Planning
 
-For each material Benefit, distinguish what the Application owns/provides from actor/manual/external-system/shared-handoff responsibility and information merely consumed/displayed/forwarded/derived. When downstream context points only to one addressable Benefit boundary/constraint clause, check whether `AB-* / BC-*` precision would be clearer than a whole-Benefit reference. Cross-Benefit consistency is a review concern; authoritative boundary meaning remains on each Benefit.
-
-## Information / State Ownership
-
-Distinguish Application-owned semantic state from information merely consumed/displayed/forwarded/derived.
-
-## Alternative Sufficiency
-
-Keep viable alternatives alive until Evidence makes them inferior.
-
-## Responsibility Creep
-
-Detect responsibilities added because technically convenient rather than required by the selected whole solution.
-
-## Realization Feasibility
-
-Use only proportional technical Evidence:
+Use proportional technical Evidence to ask whether the Application proposition is realistically supportable and what downstream planning already needs to know:
 
 ```text
 representative runtime feasibility
-persistence/integration constraints
-consistency/transaction pressure
-performance/data-volume/algorithm pressure
-operability/maintenance burden
+persistence / integration constraints
+consistency / synchronization / transaction pressure
+performance / data-volume / algorithm pressure
+security / operability / maintenance burden
+platform limitations
 rough ownership/cost
+material early realization mechanisms/constraints that can shape downstream planning
 ```
 
-Do not turn Application Definition into detailed Domain/Architecture/Slice planning.
+`RU-APP-07` may retain early application-level implementation planning when it materially helps later Scenario/Feature/Screen/Domain/Slice work. This is allowed even before exact downstream ownership is resolved.
+
+Boundary:
+
+```text
+application-level realization pressure / feasibility planning
+→ Application Definition / RU-APP-07
+
+Scenario path or Scenario must-hold
+→ TM-SCENARIO-PLANNING
+
+resolved Feature behavior / BR
+→ TM-FEATURE
+
+Screen spatial/navigation obligation
+→ TM-SCREEN
+
+durable Domain/Slice/Shared implementation responsibility
+→ corresponding owner
+
+literal class/file/config/call sequence
+→ Exact / Code Realization / transient exact planning
+```
+
+Do not freeze exact implementation topology merely because early planning is useful.
+
+## Scenario Revalidation Relation
+
+Scenario is neither prerequisite nor subordinate evidence only.
+
+```text
+Application Definition meaning
+→ may seed Scenario planning
+
+Scenario path/result/SR Evidence
+→ may challenge/refine Application Concept, own-Application justification,
+   Key Behavior Focus or feasibility/early implementation planning
+```
+
+The Lens checks that feedback loop without moving Scenario authority into Application Definition.
+
+## Responsibility Creep
+
+Detect responsibilities added because technically convenient rather than required by the selected Application proposition/key behavior focus.
+
+## Alternative Sufficiency
+
+Keep viable alternatives alive until Evidence makes them inferior for the selected Need/proposition.
 
 ## Typical Findings
 
 ```text
 build/buy/adapt/integrate/hybrid finding
 reference/market Evidence
-Benefit sufficiency / Scenario coverage boundary findings
-truthful Target-contribution boundary
-concept sufficiency
-Benefit responsibility/state boundary
+concept sufficiency finding
+own-Application justification weakness
+Key Behavior Focus ambiguity / overbreadth / missing focus
+application responsibility/scope creep
 feasibility finding
+early realization-pressure finding
+Scenario/downstream contradiction signal
 Q/R/P / revalidation signal
 ```
-
 
 ## Findings / Outcomes
 
@@ -196,8 +261,6 @@ A Finding Candidate does not directly mutate authoritative Result/State meaning;
 
 ## Finding Contract
 
-The items above are `Finding Candidates`, not Lens-owned State Unit kinds or direct Result mutations.
-
 A material finding may expose proportionally:
 
 ```text
@@ -209,99 +272,79 @@ Likely semantic owner — optional hint
 Suggested lifecycle consequence — optional hint
 ```
 
-Core [`Finding Disposition`](../../../../idtspe-core/resolution/findings/FINDING-DISPOSITION.md) resolves the actual State/lifecycle/owner destination. Normal authority/resolution must occur before accepted Result Unit meaning changes.
+Core [`Finding Disposition`](../../../../idtspe-core/resolution/findings/FINDING-DISPOSITION.md) resolves the actual State/lifecycle/owner destination.
 
 This Lens does not define new Result Units or target-result fields. If repeated findings reveal missing target-result meaning, revise the appropriate Target Module/Local Target Contract or let Core disposition the finding to another owner.
 
 ## Non-Normative Navigation — Typical Surfaces
 
-This section is navigation only. It does not create or strengthen Unit attachment; normative predictable attachment belongs beside the natural Unit and registry discovery remains projection-only.
-
-Application Definition; accepted outputs feed Prototype/Scenario/Screen.
+Application Definition; material findings may revalidate Scenario/Feature/Screen/Domain/Slice or be informed by them.
 
 ## Artifact / File Implications
 
-`NONE_DIRECT / NO_DISTINCT_SUPPORTING_ARTIFACT`. Core Finding Disposition may resolve Application meaning back to the current Application Target; this Lens does not perform that semantic return.
+`NONE_DIRECT / NO_DISTINCT_SUPPORTING_ARTIFACT`.
 
-This Lens evaluates Application boundary/feasibility but does not independently prescribe the representation of the Application Definition result or its target-intrinsic supporting research/route material. Findings dispositioned as Application meaning are represented through `TM-APPLICATION-DEFINITION`, whose `AP-APP-*` proposals own current Application/result representation.
-
-If this Lens exposes a genuinely independent Evidence or planning problem outside that Target result, surface the Finding Candidate with likely owner/evidence hints. Core Finding Disposition handles the actual Evidence path and may surface a Target Formation candidate; the Lens does not create a second Application artifact authority.
+This Lens evaluates Application proposition/feasibility but does not independently prescribe Application Definition representation. `TM-APPLICATION-DEFINITION` owns current Application/result representation. Independent Evidence remains Evidence and may use separate supporting artifacts when materially useful.
 
 ## Guards / Boundaries
-Competitor feature ≠ our requirement. Application Definition coverage ≠ Scenario journey body. Feasibility ≠ detailed architecture plan.
+
+```text
+competitor feature ≠ our Requirement
+KBF-* ≠ Feature
+KBF-* ≠ Requirement family
+Application Definition ≠ Scenario journey body
+Application early implementation planning ≠ detailed architecture/exact topology authority
+feasibility finding ≠ automatic downstream owner mutation
+```
 
 ## Finding / Lifecycle Boundary
 
-Temporal revalidation timing is owned by `Applicability & Temporal Triggers` above. The remaining guidance here concerns Finding/lifecycle routing rather than checkpoint trigger ownership.
-
-Independent feasibility/architecture choice spaces surface Finding Candidates; Core Finding Disposition may surface a Target Formation candidate, and Target Formation decides whether a bounded child/local Target is warranted.
+Temporal revalidation timing is owned by `Applicability & Temporal Triggers` above. Independent feasibility/architecture choice spaces surface Finding Candidates; Core Finding Disposition may surface a Target Formation candidate, and Target Formation decides whether a bounded downstream Target is warranted.
 
 ## High-Level Example — Self-Contained Walkthrough
 
 ### Situation
 
-A team wants to build a specialized research-capture application because current tools feel cumbersome.
-
-They have a Fundamental Need, but custom software may not be the best route.
-
-### Why This Lens
-
-This Application-profile Lens examines alternatives, representative real-life situations, Benefit-specific responsibility boundaries and proportional feasibility before the app concept hardens.
+A team wants a methodology workspace that keeps ordinary Markdown readable but also needs synchronized, structurally checked dependency projections during active work.
 
 ### Walkthrough
 
 Compare:
 
 ```text
-manual copy/paste
-read-later tool
-note/highlight product
-custom application
-hybrid integration
+plain Markdown + Git only
+generic config/schema tools
+manual generated maps
+custom methodology-specific integration layer
+hybrid existing structured tool + thin application integration
 ```
 
-Suppose custom software remains justified only for:
+Suppose generic tools can validate data but do not provide the selected active-work behavior: after canonical methodology meaning changes, all materially affected projections must be brought to a truthful current state or report failure before dependent work trusts them.
+
+The Lens checks whether this is strong enough to justify an own Application and whether the Key Behavior Focus is stated at the right level:
 
 ```text
-fast temporary capture
-later review
+KBF-MW-01
+Synchronize materially affected methodology projections from canonical meaning
+and expose truthful current/failure state during active local work.
 ```
 
-while long-term knowledge organization is already served well by existing tools.
-
-The Lens helps refine the relevant Benefit itself:
+It then tests feasibility and may retain early planning pressure such as:
 
 ```text
-User Receives:
-  fast temporary capture + later review support
-
-Responsibility Boundary / Constraints:
-  Application owns capture + temporary review support.
-  Permanent knowledge management remains outside.
-  Capture must not require leaving the active reading flow merely to preserve the fragment.
+stable semantic identity
+change detection / explicit synchronization entry
+reverse dependency discovery
+coherent source basis
+projection derivation / publication
+truthful synchronization status
 ```
 
-It also checks whether the concise Application Concept remains understandable and whether the needed browser/platform integration is realistically possible.
-
-### Result
-
-The Lens surfaces Finding Candidates about:
-
-```text
-build/buy/adapt/integrate position
-representative real-life situation
-concept sufficiency
-Benefit responsibility/state boundary
-feasibility
-```
-
-Core Finding Disposition decides whether accepted meaning becomes/refines Application Definition State/Decision input or belongs to another owner.
+Those items guide downstream planning but do not yet define Feature/Slice/Domain topology.
 
 ### Boundary / Lesson
 
-The Lens does not design final Screens, Scenarios or architecture.
-
-Existing products provide Evidence/Proposal pressure, not authority over our product semantics.
+The Lens does not design final Scenario paths, Features, Screens or implementation classes. Existing products provide Evidence/Proposal pressure, not product authority.
 
 ## Knowledge Basis
 
@@ -309,8 +352,9 @@ Mode: `INLINE`
 
 **Embedded Principles / Rules / Theory:**
 
-- Build/use/adapt/buy/integrate alternatives should be compared against the real-life Need before custom software responsibility is accepted.
-- Feasibility evidence may constrain Application boundary but must not replace product/Need authority.
+- Compare build/use/adapt/buy/integrate routes against the real Need before accepting own-Application responsibility.
+- The own Application should have a material key contribution that remains valuable after alternatives are considered.
+- Feasibility and early implementation Evidence may constrain Application focus without stealing downstream natural-owner authority.
 
 **Referenced Knowledge Owners:**
 
@@ -320,14 +364,10 @@ Mode: `INLINE`
 
 No external knowledge body is required for normal use.
 
-**Operationalization Notes:**
-
-Market/reference/implementation facts are Target Inputs/Evidence; the Application boundary/feasibility evaluation is owned here.
-
 ## Provenance
 
-Pre-Lens Application lenses + later market/reference + representative real-life scenario boundary decisions.
+Evolved from the earlier Application Definition / Benefit-boundary Lens after Application Benefits and the dedicated Benefit→Scenario coverage Unit were retired from `TM-APPLICATION-DEFINITION`.
 
 ## Upstream Application Definition Rule
 
-Evaluate Selected/Possible `AB-*`, each Benefit's Responsibility Boundary / Constraints, the concise Application Concept, and whole real-life solution routes. Application Definition may lead realization; not-yet-implemented intent does not become a Target Application Body.
+Evaluate `RU-APP-05`, `RU-APP-02`, `RU-APP-08` and `RU-APP-07` proportionally. Application Definition may seed downstream planning and may also be revalidated by Scenario/downstream Evidence; not-yet-implemented downstream meaning does not become a Target Application Body.

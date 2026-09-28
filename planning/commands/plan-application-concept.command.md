@@ -21,7 +21,7 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
     "planning/documentation/idtspe-methodology/active/profiles/sds/target-modules/TM-APPLICATION-DEFINITION.md",
     "planning/documentation/idtspe-methodology/active/profiles/sds/commands/SDS-COMMAND-SURFACE-EXTENSION.md"
   ],
-  "expectedOutput": "Concept-focused Application Definition refinement: a concise summary of what the Application is, why it is needed / its overall Benefit, and briefly how it roughly works, with material Q/R/P only when needed.",
+  "expectedOutput": "Concept-focused Application Definition refinement: a concise summary of what the Application is, why it exists / what value it targets, and briefly how it roughly works, with material Q/R/P only when needed.",
   "permissionMode": "read-only-planning",
   "keyReminders": [
     "SDS is an IDTSPE profile, not a second runtime.",

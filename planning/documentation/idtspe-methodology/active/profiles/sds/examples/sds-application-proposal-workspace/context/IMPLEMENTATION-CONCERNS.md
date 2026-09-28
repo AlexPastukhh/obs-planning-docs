@@ -1,17 +1,17 @@
 # Implementation Concerns — Structured Knowledge / Hybrid B
 
-Semantic role: implementation/feasibility exploration supporting the Application Definition; **not** an additional `TM-APPLICATION-DEFINITION` Result Unit.
+Semantic role: detailed supporting material for `RU-APP-07 — Realization Feasibility / Early Implementation Planning` and the affected Evolution Steps. The canonical Application-level conclusion remains in `RU-APP-07`; this file elaborates evidence/planning without becoming another semantic owner.
 
 Related:
 - [Application Definition](../application/APPLICATION-DEFINITION.md)
 - [Planning Resolution State](../planning/PRS.md)
 
-Benefit mapping:
-- `AB-01` — controlled structured knowledge without losing Markdown;
-- `AB-02` — reliable AI inspection and verification;
-- `AB-03` — deterministic composition of AI commands.
+Application-driver mapping:
+- `KBF-MW-01` — structured maintenance / synchronized readable projections;
+- `KBF-MW-02` — trustworthy structural inspection/provenance;
+- `KBF-MW-03` — later deterministic command composition.
 
-Derived views, validation, reverse dependencies, rendering, and similar items below are implementation mechanisms or scenario enablers, not additional Application Benefits.
+Derived views, validation, reverse dependencies, rendering and command-composition mechanisms below are early realization planning / Scenario enablers. They do not create additional `KBF-*`, Features or durable downstream owner meaning merely by being listed here.
 
 ## Trial direction for evidence
 
@@ -86,7 +86,7 @@ Different behaviors may be needed:
 
 Do not overload one `$ref` concept until the required semantics are clear.
 
-## IC-05 — Derived Markdown views (supports AB-01 / AB-02)
+## IC-05 — Derived Markdown views (supports KBF-MW-01 / KBF-MW-02)
 
 The first useful derived view should be the Lens Attachment Map:
 
@@ -119,7 +119,7 @@ Open choice:
 
 Domain logic should stay out of templates where possible.
 
-## IC-07 — Build and validation pipeline (supports AB-01)
+## IC-07 — Build and validation pipeline (supports KBF-MW-01)
 
 Expected baseline:
 
@@ -154,7 +154,7 @@ The spike should test:
 - whether error messages identify the real semantic location;
 - whether one normal change touches a reasonable number of source files.
 
-## IC-09 — Reverse dependencies / impact analysis (supports AB-01 / AB-02)
+## IC-09 — Reverse dependencies / impact analysis (supports KBF-MW-01 / KBF-MW-02)
 
 CUE provides evaluation and validation primitives, but our desired UX may eventually require an additional index for questions such as:
 
@@ -166,7 +166,7 @@ which commands consume this contract?
 
 Do not build this upfront. First establish whether the structured model exposes enough stable dependency information to derive it cheaply.
 
-## IC-10 — AI inspection / consumption (supports AB-02)
+## IC-10 — AI inspection / consumption (supports KBF-MW-02)
 
 The baseline AI path should remain:
 
@@ -184,7 +184,7 @@ Optional later additions:
 
 These are enhancements, not prerequisites for the first useful repository.
 
-## IC-11 — Command composition is a later consumer of the same substrate (supports AB-03)
+## IC-11 — Command composition is a later consumer of the same substrate (supports KBF-MW-03)
 
 Command Composition should reuse the same structured identity/reference foundation but remain a distinct implementation area.
 

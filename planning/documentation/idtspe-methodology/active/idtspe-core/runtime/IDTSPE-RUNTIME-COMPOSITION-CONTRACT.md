@@ -460,7 +460,7 @@ Requirement/Unit drivers:
   who/what starts the journey?
   which Feature/context actions participate and in what order?
   where do branches/convergence/re-entry occur?
-  what Benefit manifestation/closure/result closes the journey?
+  what selected Scenario result / completion condition closes the journey?
 
 P-07 Proposals:
   direct capture → confirmation
@@ -475,7 +475,7 @@ P-11 Output:
   actor/external participation
   Feature/Screen participation
   branch/convergence/re-entry
-  Benefit manifestation/closure + journey must-hold meaning
+  normative SPS path + step-attached / Scenario-wide SR meaning
 
 P-13 Handoff:
   Feature revalidation when behavior is unresolved

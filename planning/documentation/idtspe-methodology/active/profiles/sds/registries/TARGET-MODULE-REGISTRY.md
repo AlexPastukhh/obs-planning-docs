@@ -44,7 +44,7 @@ Cross-owner current-vs-future hosting/readiness is routed to the SDS [Semantic C
 
 | Module ID | Alias | Role / Result |
 |---|---|---|
-| [`TM-APPLICATION-DEFINITION`](../target-modules/TM-APPLICATION-DEFINITION.md) | `application` | upstream Application intent / Benefits / promise boundaries / feasibility and Scenario/Evolution coverage |
+| [`TM-APPLICATION-DEFINITION`](../target-modules/TM-APPLICATION-DEFINITION.md) | `application` | upstream Application Concept / existing-solution position / own-Application justification + key behavior focus / feasibility + early implementation planning |
 | [`TM-FEATURE`](../target-modules/TM-FEATURE.md) | `feature` | canonical resolved Feature behavior + Feature/Slice boundary owner; formed after sufficient Scenario contribution discovery |
 | [`TM-PROTOTYPE`](../target-modules/TM-PROTOTYPE.md) | `prototype` | transient empirical pre-commit inquiry |
 | [`TM-SCENARIO-PLANNING`](../target-modules/TM-SCENARIO-PLANNING.md) | `scenario` | real-life journey / Application Contributions with Feature OPEN or resolved; compatibility ID/path retained |
@@ -55,7 +55,7 @@ Cross-owner current-vs-future hosting/readiness is routed to the SDS [Semantic C
 | [`TM-SLICE-OWNER`](../target-modules/TM-SLICE-OWNER.md) | `slice-owner` | durable end-to-end Slice responsibility + Slice IR |
 | [`TM-SHARED-IMPLEMENTATION-CAPABILITY`](../target-modules/TM-SHARED-IMPLEMENTATION-CAPABILITY.md) | `shared` | durable reusable non-end-to-end implementation capability |
 | [`TM-EVOLUTION-STEP`](../target-modules/TM-EVOLUTION-STEP.md) | `evolution-step` | canonical bounded unrealized future transition / target-state planning owner |
-| [`TM-EVOLUTION-STEPS-MAP`](../target-modules/TM-EVOLUTION-STEPS-MAP.md) | `evolution-map` | accepted Application-development manifest: concrete Step routing/readiness and Benefit-driver coverage |
+| [`TM-EVOLUTION-STEPS-MAP`](../target-modules/TM-EVOLUTION-STEPS-MAP.md) | `evolution-map` | accepted Application-development manifest: concrete Step routing/readiness and Application-driver coverage |
 | [`TM-PRACTICAL-TEST`](../target-modules/TM-PRACTICAL-TEST.md) | `practical-test` | implemented real-subject practical Evidence |
 | [`TM-CODE-REALIZATION`](../target-modules/TM-CODE-REALIZATION.md) | `code-realization` / `code` | exact SDS codebase realization / integration of sufficiently accepted meaning |
 
@@ -91,10 +91,10 @@ TM-FEATURE
   behavior / semantic Feature Data / BR-* / implementation concerns / Feature-Slice boundary / owner-local reverse Impact Unit
 
 TM-SCENARIO-PLANNING
-  journey composition / continuity / Benefit manifestation/closure / SR-* / optional E2E proof intent / journey realization concerns / owner-local reverse Impact Unit
+  normative SPS journey / Application Contributions / continuity / step-attached + Scenario-wide SR-* / Screen-surface participation / optional E2E proof intent / journey realization concerns / owner-local reverse Impact Unit
 
 TM-SCREEN
-  spatial/navigation composition / Feature presence / routes / Screen-specific constraints
+  spatial/navigation composition / per-Scenario SPS participation / step-local SCR-* / Screen-wide SCR-G-* / Feature presence / routes
 ```
 
 These are peer owners and may be formed/revalidated together.

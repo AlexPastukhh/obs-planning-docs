@@ -1,321 +1,552 @@
 <a id="tm-scenario-planning"></a>
-# TM-SCENARIO-PLANNING — Scenario Journey Composition
+# TM-SCENARIO-PLANNING — Scenario Journey / Requirement Owner
 
 Module ID: `TM-SCENARIO-PLANNING`
 
-Entry Point: `tm.scenario`
-Role: journey-composition Target Module
-Compatibility rule: canonical ID/path `TM-SCENARIO-PLANNING` is retained; the semantic owner is Scenario Journey Composition.
+Entry Point: `tm.scenario`  
+Role: real-life Scenario Target Module  
 
 > Semantic Owner Dependencies
 > - Type: `EXTENDS`; Responsibility: `TARGET-MODULE.META-MODEL`; Owner: [Target Module Meta-Model](../../../idtspe-core/target-modules/TARGET-MODULE-MODEL.md#target-module-meta-model)
-> - Type: `CONTEXTUALIZES`; Responsibility: `SDS.APPLICATION-BENEFIT-BOUNDARY-CONSTRAINTS`; Owner: [Application Benefit Boundary / Constraints](TM-APPLICATION-DEFINITION.md#sds-application-benefit-boundary-constraints)
+> - Type: `CONTEXTUALIZES`; Responsibility: `SDS.REQUIREMENT-OWNERSHIP`; Owner: [Requirement Ownership / Natural Owner](../profile-contracts/requirements/REQUIREMENT-OWNERSHIP-AND-NATURAL-OWNER.md#sds-requirement-ownership)
+> - Type: `CONTEXTUALIZES`; Responsibility: `SDS.SEMANTIC-COMPOSITION-READINESS`; Owner: [SDS Semantic Composition / Readiness](../profile-contracts/SDS-SEMANTIC-COMPOSITION-AND-READINESS.md#sds-semantic-composition-readiness)
 
 ## Purpose
 
-Own one coherent real-life actor/external/Application journey, including where upstream Benefits manifest or close. It may exist with **zero resolved Features**. While Feature ownership is `OPEN`, bounded Application Contributions and provisional behavior planning belong here as discovery pressure. Once a Feature boundary is resolved, canonical detailed Application behavior, semantic data and Feature-local failures belong to `TM-FEATURE`; Scenario keeps the journey, contribution and resolved Feature/result references. Scenario never owns implementation Slice topology or Domain semantics.
+Own one coherent real-life Scenario describing how actors, external systems/surfaces and the Application participate in reaching a meaningful real-world result.
+
+Scenario may be formed before Application Definition, Features or application Screens are fully resolved. It may start directly from Need / real-life evidence, or consume Application Concept / Key Behavior Focus when those already exist.
+
+It owns the selected real-life path, Scenario-natural must-holds, Application Contributions, and Scenario-facing Screen/surface participation. Once Feature ownership is resolved, Feature owns detailed canonical application behavior; once an application Screen owner is resolved, `TM-SCREEN` owns its spatial/navigation composition.
+
+A Scenario may validly contain:
+
+```text
+zero resolved Features
+zero application-owned Screens
+one or many external surfaces
+zero independently addressable SR-* Requirements
+```
+
+when the Scenario path itself is still meaningful and complete enough for the current planning purpose.
 
 ## Temporal Authority / Evolution-Step Hosting
 
-A canonical Scenario owner describes the realized/current journey composition. For a journey that is only planned, changed or newly introduced in an unrealized future state, use this module inside `TM-EVOLUTION-STEP` to produce a **Target Scenario Body**.
+A current Scenario owner describes realized/current Scenario meaning.
 
-Selected future journey meaning remains Step-owned until realization/materialization. Current Scenario `RU-SCEN-02` specializes the shared Current-Owner Evolution Impact Projection Contract for journey-composition revalidation; it does not own a second future roadmap.
+A planned/unrealized Scenario uses this same Target Module contract inside `TM-EVOLUTION-STEP` as a **Target Scenario Body**.
+
+```text
+Target Scenario Body selected
+≠ current Scenario owner updated
+
+Step realized + required proof/revalidation
+→ Target Owner Materialization
+→ current Scenario reflects the realized Scenario body
+```
+
+Feature Resolution may start `OPEN`. Resolving Feature ownership later matures the same Scenario identity; it does not require a second Scenario type.
+
+## Activation / Scope Gate
+
+Use when one coherent real-life path is independently useful for understanding what must happen across actor/external/Application participation.
+
+Typical signals:
+
+- a USER/Source describes a real-world outcome or workflow;
+- the Application boundary must be discovered from concrete use;
+- several actor/external/Application steps compose one meaningful outcome;
+- Application Contributions exist before Feature ownership is clear;
+- cross-step Scenario must-holds need stable identity;
+- screens/surfaces materially affect the real-life path.
+
+Do not create a Scenario merely because one Feature has several internal behavior steps, one endpoint exists, one implementation workflow exists, or one Screen exists.
 
 ## Owned Meaning
 
 A Scenario may own proportionally:
 
-- participating actor(s) / external parties;
-- Application Contributions with `Feature Resolution: OPEN | RESOLVED(ref)` and contextual links;
-- participating Features/results when resolved;
-- provisional outcome/behavior/failure/continuity pressure while Feature ownership is OPEN;
-- linking actor/external actions between Feature results;
-- ordering, branching, convergence, optional paths and re-entry;
-- result/context continuity from one step to the next;
-- Screen/external-system participation when journey-significant;
-- Benefit manifestation/closure / what makes the journey complete;
-- stable `SR-*` Scenario Requirements for journey-level must-holds that are not merely copied Feature behavior;
-- optional stable `SPS-*` Scenario Path Step identities when a path step needs independent cross-reference/revalidation;
-- optional E2E Proof Intent when whole-journey proof is independently useful;
-- journey-wide realization/proof/integration concerns whose natural subject is the Scenario rather than one Feature or exact implementation mechanism.
+- Scenario intent / meaningful real-world result;
+- participating actor(s), external systems and external surfaces;
+- `SPS-*` Scenario Path Steps;
+- Application Contributions with Feature Resolution `OPEN | RESOLVED(ref)`;
+- step ordering, branch, convergence, optional path and re-entry;
+- data/result/context continuity between SPS steps;
+- step-attached `SR-*` Scenario Requirements;
+- Scenario-wide `SR-*` Scenario Requirements;
+- direct SPS → Screen / Surface mapping;
+- material path examples, inline when compact or in an optional post-table Path Examples collection when long/multiple/reused;
+- optional E2E proof intent when whole-Scenario proof has independent value;
+- current-owner Evolution Impact and journey-wide realization concerns through their preserved Units when applicable.
+
+Scenario does not own:
+
+- detailed resolved Feature behavior / Feature semantic data / `BR-*`;
+- application Screen zones/layout/navigation internals;
+- external UI behavior such as GitHub or IDE behavior;
+- Domain semantics;
+- Slice topology;
+- exact synchronization/transport/implementation mechanism.
 
 ## Source Contract
 
-Typical sources:
+Typical sources, selected proportionally:
 
-- Application Definition / Need / one or more `AB-*` Benefits when applicable; when a journey step manifests only a bounded Benefit boundary/constraint clause, the Scenario may prefer a precise `AB-* / BC-*` reference if available without claiming whole-Benefit realization;
-- selected Features when already resolved; no Feature prerequisite for Scenario discovery;
-- Screen topology;
-- external actor/system facts;
-- current implementation/Evidence;
+- USER Need / wanted outcome;
+- current real-world workflow;
+- actor actions and surrounding responsibilities;
+- external systems/tools/surfaces;
+- current implementation / Evidence;
 - Prototype / Practical Test findings;
-- relevant Evolution Step(s);
-- accepted Proposal/Decision material affecting journey composition.
+- Application Definition Concept / Own-Application Justification / Key Behavior Focus (`KBF-*` when addressable) when already available;
+- resolved Features/results when already available;
+- resolved application Screens when already available;
+- relevant Evolution Step;
+- accepted Proposal/Decision material.
+
+Application Definition is not a prerequisite for Scenario formation. Scenario path/result/SR evidence may later drive or refine Application Concept, Own-Application Justification, Key Behavior Focus or application-level feasibility/early implementation planning.
 
 ## Production Method
 
 ```text
-identify actor/external/Application path + Benefit manifestation/closure
-→ form bounded Application Contributions and material variants
-→ discover provisional behavior and candidate capability boundaries while Feature Resolution is OPEN
-→ resolve Features when enough evidence exists; then reference their results and move detailed behavior to the Feature owner
-→ establish order / branch / convergence / re-entry
-→ preserve result/context continuity
-→ map material Screen/external participation
-→ capture sparse journey must-holds
-→ optionally capture E2E Proof Intent
-→ resolve journey-wide realization/proof/integration concerns when material
-↺ reconcile with Feature / Screen peers
+identify one meaningful real-world result
+→ identify actor / external / Application participants
+→ establish the selected Scenario path as SPS-* steps
+→ identify Application Contributions; keep Feature Resolution OPEN when needed
+→ capture order / branch / convergence / re-entry / continuity
+→ form independently useful step-attached SR-* must-holds
+→ form independently useful Scenario-wide SR-* must-holds
+→ identify the Screen / Surface for each SPS when material
+→ retain any worthwhile path examples; keep compact examples inline and externalize long/multiple/reused examples into the RU-SCEN-01 Path Examples collection
+→ resolve Features when coherent boundaries become clear; reference Feature/result and stop copying detailed behavior
+→ resolve application Screen owners when spatial/navigation composition has independent value
+↺ revalidate Scenario path/Requirements when downstream evidence contradicts them
 ```
 
-Scenario formation is non-linear. A finding in journey composition may challenge a Feature or Screen through normal Proposal/revalidation; it does not directly mutate them.
+This is not a mandatory waterfall. Discovering a Requirement, surface or Feature boundary may reopen the Scenario path.
 
 ## Unit Definition Conformance
 
-This module specializes the Core [Target Module Model](../../../idtspe-core/target-modules/TARGET-MODULE-MODEL.md) and [Unit / Target Step Result Model](../../../idtspe-core/runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md). The Core owners define generic Unit lifecycle, complete-inventory/disposition and Proposal/Core-State semantics; this module defines only its SDS-specific Unit responsibilities, local materiality, production guidance, validators and handoffs below.
+This module specializes the Core [Target Module Model](../../../idtspe-core/target-modules/TARGET-MODULE-MODEL.md) and the Core Unit / Target Step Result contracts. Generic Unit lifecycle/disposition remains Core-owned; this module owns only the complete Scenario-family Unit inventory, local production rules, validators, composition boundaries and handoffs.
 
-## Target Step-Result Contract
+## Target Step Result Contract
 
 **Target Step Result:** `Scenario Journey Composition`
 
+Complete Module-defined Unit inventory:
+
 | Result Unit | Meaning |
 |---|---|
-| `RU-SCEN-01` | Real-life Journey / Application Contributions — actor/external/Application path, Feature OPEN or resolved links, provisional behavior planning while OPEN, order/branch/re-entry, continuity, Benefit manifestation and optional E2E Proof Intent |
-| `RU-SCEN-02` | Evolution Impact — Scenario-local current-owner reverse navigation/revalidation under the shared projection contract |
-| `RU-SCEN-03` | Journey Realization Concerns — Scenario-wide realization/proof/integration pressure without exact mechanism ownership |
+| `RU-SCEN-01` | Scenario Path — SPS path, participants, Application Contributions, OPEN/resolved Feature refs, ordering/branch/re-entry, continuity and optional addressable path examples |
+| `RU-SCEN-04` | Scenario Requirements — step-attached and Scenario-wide Scenario-owned `SR-*` must-holds |
+| `RU-SCEN-02` | Evolution Impact — preserved current-owner reverse navigation/revalidation under the shared projection contract |
+| `RU-SCEN-03` | Journey Realization Concerns — preserved Scenario-wide realization/proof/integration pressure without exact mechanism ownership |
 
-### Result Unit Applicability / Materiality
+New Unit IDs are used for new responsibilities. Existing `RU-SCEN-02` / `RU-SCEN-03` are not repurposed.
 
-Unit presence/disposition mechanics follow the Core [`Unit Applicability / Materiality / Disposition Contract`](../../../idtspe-core/runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md#twu-applicability-disposition). The table below owns only this module's local substantive-materiality and omission-rationale triggers.
+## Result Unit Applicability / Materiality
 
-| Result Unit | Substantive resolution is material when | Unit disposition when substantive resolution is not material |
+| Result Unit | Substantive resolution is material when | Otherwise |
 |---|---|---|
-| `RU-SCEN-01` | when a materially distinct real-life path or Application Contribution needs independent planning, including before Feature resolution | `OMITTED` when no independently material journey-composition result is needed beyond referenced owner meaning |
-| `RU-SCEN-02` | for a current realized Scenario, when any concrete unrealized Step materially affects its journey composition; depth follows what that Step has actually resolved | use `OMITTED` with a concise reason when no concrete unrealized Step materially affects this Scenario; in a future Target Scenario Body keep `RU-SCEN-02` present but `OMITTED` because current-owner reverse projection is not applicable inside Step-owned future meaning |
-| `RU-SCEN-03` | when a journey-wide realization/proof/integration concern can materially change feasibility, continuity or proof allocation and is not owned by one Feature/Screen/Domain/Slice/Shared owner | `OMITTED` with a concise reason when no Scenario-wide realization/proof/integration concern exists |
+| `RU-SCEN-01` | always once a Scenario Target is formed; the path/result/boundary is the core responsibility | keep `OPEN` when path meaning is not sufficiently resolved; do not invent steps |
+| `RU-SCEN-04` | one or more Scenario-natural must-holds need stable independent addressability | `OMITTED` when selected SPS/path meaning is sufficient and no separate SR identity adds value |
+| `RU-SCEN-02` | for a current realized Scenario, a concrete unrealized Step materially affects current Scenario meaning | preserve current shared Evolution Impact rules; `OMITTED` in a future Target Scenario Body |
+| `RU-SCEN-03` | a journey-wide realization/proof/integration concern has Scenario as its smallest natural subject | `OMITTED` when all material realization concerns belong to Feature/Screen/Domain/Slice/Shared/Exact owners |
 
+Zero `SR-*` requirements is valid. Zero application-owned Screens is valid. External surfaces alone do not make `TM-SCREEN` applicable.
 
-`RU-SCEN-01` is intentionally broad because its journey aspects jointly define one graph. `RU-SCEN-02` is separate because current-owner evolution navigation/revalidation has a different responsibility. `RU-SCEN-03` is separate because journey-wide realization/proof pressure is not journey composition itself and can be consumed by Step-wide implementation-concern analysis. Internal journey objects/steps/branches remain addressable within `RU-SCEN-01` when useful without becoming separate target-state Result Units.
+---
 
+<a id="ru-scen-01--scenario-path"></a>
+## RU-SCEN-01 — Scenario Path
 
-### Explicit Unit Checkpoint Placement
+### Responsibility
 
-Each material Unit below inherits the generic [`Unit Applicability Envelope`](../../../idtspe-core/runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md#twu-applicability-envelope). Opening/Closing are mandatory logical applicability boundaries; registries may also be checked during Unit work whenever new material pressure appears.
+Own the selected real-life path and its stable step identities.
 
-<a id="ru-scen-01-processing-envelope"></a>
-#### `RU-SCEN-01` processing envelope
+### Purpose
 
-**Lens Attachments**
-
-- **Core Lens Pack:** `INHERITED` via [`Core Lens Pack`](../../../idtspe-core/lenses/LENS-REGISTRY.md)
-- **TRIGGERED:**
-  - [`LENS-SLICE-VERTICALITY-INTEGRATION`](../lenses/reusable/LENS-SLICE-VERTICALITY-INTEGRATION.md)
-  - [`LENS-UI-SPATIAL-FRONTEND-REALIZATION`](../lenses/reusable/LENS-UI-SPATIAL-FRONTEND-REALIZATION.md)
-  - [`LENS-TERMS-UBIQUITOUS-LANGUAGE`](../lenses/reusable/LENS-TERMS-UBIQUITOUS-LANGUAGE.md)
-  - [`LENS-TEST-PROOF-EVIDENCE`](../../../idtspe-core/lenses/reusable/LENS-TEST-PROOF-EVIDENCE.md)
-
-1. **Opening Unit Checkpoint — `RU-SCEN-01`** — resolve/reuse current applicable Core + active-profile Lens registry candidates and any Unit-triggered supporting registry pressure before material work.
-2. **Unit Work — `RU-SCEN-01`** — produce/refine only the material meaning owned by this Result Unit; run additional applicability checks immediately when the Analysis Surface changes materially.
-3. **Closing Unit Checkpoint — `RU-SCEN-01`** — evaluate the actual candidate Unit result, disposition material Findings/owner consequences, and reopen/refine narrowly when needed before treating the Unit as current-for-handoff.
-
-#### `RU-SCEN-02` processing envelope
-
-1. **Opening Unit Checkpoint — `RU-SCEN-02`** — determine whether this Scenario's journey composition is materially affected, then apply the shared [Current-Owner Evolution Impact Projection Contract](../profile-contracts/evolution/CURRENT-OWNER-EVOLUTION-IMPACT-PROJECTION.md).
-2. **Unit Work — `RU-SCEN-02`** — produce the Scenario-local reverse navigation/revalidation projection under that shared contract.
-3. **Closing Unit Checkpoint — `RU-SCEN-02`** — validate Scenario-local revalidation/handoff needs and the shared projection-contract guards.
-
-#### `RU-SCEN-03` processing envelope
-
-1. **Opening Unit Checkpoint — `RU-SCEN-03`** — inspect journey composition plus owner-local Feature/Screen/Domain/Slice/Shared concerns and proof pressure; bind supporting methods before applying them.
-2. **Unit Work — `RU-SCEN-03`** — retain only Scenario-wide realization/proof/integration pressure that can change journey feasibility/continuity/proof; route owner-local concerns to their owners and literal mechanisms to Exact.
-3. **Closing Unit Checkpoint — `RU-SCEN-03`** — ensure concern meaning does not become a duplicate Feature implementation concern, Slice plan or exact mechanism.
-
-<a id="ru-scen-02--evolution-impact"></a>
-### RU-SCEN-02 — Evolution Impact
-
-**Lens Attachments**
-
-- **Core Lens Pack:** `INHERITED` via [`Core Lens Pack`](../../../idtspe-core/lenses/LENS-REGISTRY.md)
-- **REQUIRED [CLOSING]:**
-  - [`LENS-WORKSPACE-EVOLUTION-ARCHITECTURE`](../lenses/frequent/LENS-WORKSPACE-EVOLUTION-ARCHITECTURE.md)
-
-This Scenario-local Unit specializes the shared [Current-Owner Evolution Impact Projection Contract](../profile-contracts/evolution/CURRENT-OWNER-EVOLUTION-IMPACT-PROJECTION.md). Its local affected surface is **journey composition**. The shared contract owns inclusion threshold across candidate/selected/conditional/deferred Steps, truthful planning-position projection, depth/no-copy rules and post-realization removal from active future impact. This Target Module owns only the Unit identity, Scenario-specific materiality test and local revalidation/handoff use.
-
-<a id="ru-scen-03--journey-realization-concerns"></a>
-### RU-SCEN-03 — Journey Realization Concerns
-
-**Lens Attachments**
-
-- **Core Lens Pack:** `INHERITED` via [`Core Lens Pack`](../../../idtspe-core/lenses/LENS-REGISTRY.md)
-- **TRIGGERED:**
-  - [`LENS-SLICE-VERTICALITY-INTEGRATION`](../lenses/reusable/LENS-SLICE-VERTICALITY-INTEGRATION.md)
-  - [`LENS-UI-SPATIAL-FRONTEND-REALIZATION`](../lenses/reusable/LENS-UI-SPATIAL-FRONTEND-REALIZATION.md)
-  - [`LENS-IMPLEMENTATION-REQUIREMENTS-DISCOVERY`](../lenses/reusable/LENS-IMPLEMENTATION-REQUIREMENTS-DISCOVERY.md)
-  - [`LENS-DEPENDENCY-CHANGE-IMPACT`](../../../idtspe-core/lenses/frequent/LENS-DEPENDENCY-CHANGE-IMPACT.md)
-  - [`LENS-QUALITY-RISK-MATERIALITY`](../../../idtspe-core/lenses/frequent/LENS-QUALITY-RISK-MATERIALITY.md)
-  - [`LENS-VERIFIABILITY-OBSERVABILITY-OPERABILITY`](../../../idtspe-core/lenses/frequent/LENS-VERIFIABILITY-OBSERVABILITY-OPERABILITY.md)
-  - [`LENS-TEST-PROOF-EVIDENCE`](../../../idtspe-core/lenses/reusable/LENS-TEST-PROOF-EVIDENCE.md)
-
-Own only material realization/proof/integration concerns whose smallest natural subject is the Scenario journey as a whole, for example cross-Feature correlation/continuity pressure, whole-journey observability/proof pressure or external-context handoff constraints that can change Scenario feasibility.
-
-Do not copy one Feature's `RU-FEAT-04`, one owner-local IR/PFR or exact transport/mechanism detail. Reference those owners. A future Target Scenario Body carries future Scenario-wide concerns; a current Scenario keeps only currently realized concerns with independent semantic value.
-
-<a id="journey-shape"></a>
-## Journey Shape
-
-A compact representation may look like:
+Make the desired real-life journey directly addressable for downstream realization without forcing every normative Scenario step to become a separate Requirement.
 
 ```text
-Scenario: <ID / name>
-Actor / context: ...
-Benefit refs: <AB-* [ / BC-* ] ...>   # whole Benefit, or an addressable boundary/constraint clause when that is the real scope
-
-Journey:
-  Application Contribution A [Feature Resolution: OPEN | RESOLVED(F-*)]
-    → [AB-01 manifests/closes] or [AB-01 / BC-02 manifests]
-  → actor/external linking action
-  → Application Contribution B [Feature Resolution: OPEN | RESOLVED(F-*)]
-  ├─ branch ...
-  └─ branch ...
-  → convergence / re-entry ...
-
-Continuity:
-  <what context/result survives between steps>
-
-Journey must-holds:
-  <only constraints natural to the whole journey>
-
-E2E Proof Intent: optional
+SPS-* = selected Scenario path step / action / interaction
 ```
 
+A selected `SPS-*` is itself normative Scenario result content and may be a direct downstream realization obligation. It does **not** need an `SR-*` identity merely to be implemented/realized.
 
-Application Benefits remain upstream Application Definition authority. A Scenario may manifest/close one or several `AB-*` items across different `SPS-*` path steps or at the terminal journey result. When only one owned boundary/constraint clause is evidenced at a step, a precise `AB-* / BC-*` reference may be used if available; it does not claim that the Scenario/step realizes the whole Benefit. Those markers express where the user experiences upstream value; they do not transfer Benefit semantics into the Scenario.
+An SPS may represent:
+
+- actor action;
+- external-system interaction;
+- external-surface interaction;
+- Application interaction / Application Contribution;
+- result handoff;
+- branch / convergence / re-entry step.
+
+Like an `FBS-*`, an `SPS-*` does not need a Requirement merely to be selected Scenario meaning.
+
+### Result Content Contract / Collections
+
+`RU-SCEN-01` owns two repeated result-contract families inside the same Unit:
+
+```text
+COL-SCEN-PATH-STEPS
+  Item Key / Subject: SPS-*
+  Item Contract: the exact Scenario Path row below
+
+COL-SCEN-PATH-EXAMPLES
+  Item Key / Subject: EX-*
+  Item Contract: Path Example | Kind | Applies To | Example
+  Cardinality: 0..N
+```
+
+These are Collections inside `RU-SCEN-01`, not peer Units. `COL-SCEN-PATH-EXAMPLES` is also **not a formal Unit Resolution Slot** by default: examples do not need independent resolution state merely because they are numerous or represented after the path table. Promote/form a formal Slot only if a future contract gives examples an independently tracked terminal resolution responsibility under the Core Slot criteria.
+
+### Exact path representation
+
+```text
+Scenario Path Step
+| Required action / interaction
+| Participant
+| Screen / Surface
+| Application Contribution / Feature
+| Data / result / continuity
+| Attached Scenario Requirements
+| Related Application expected errors
+| QRPE / Examples
+```
+
+`Attached Scenario Requirements` contains stable ID **and short name**, not opaque IDs alone.
+
+`Screen / Surface` identifies where the step is experienced/performed when a journey-significant surface exists. It may name an application-owned Screen, an unresolved application surface, or an external surface such as GitHub, an IDE/editor, browser or terminal. Use `—` for background/non-surface steps.
+
+### `QRPE / Examples` usage
+
+Every `QRPE / Examples` column in this module uses the shared SDS Requirement classification/representation semantics as an adjacency surface, including when the column appears beside an SPS row rather than a Requirement row. Preserve **any worthwhile concrete example** that materially improves understanding, challenge, verification or boundary interpretation. Common labels include, but are not limited to:
+
+```text
+Q: <material open Question / ref>
+R: <material Risk / ref>
+P: <material Problem / ref>
+E: <material Evidence / ref or concise projection>
+Target Good Example: <concrete conforming case>
+Problem Example: <concrete violating/misleading case>
+Boundary Example: <concrete scope/ownership/boundary case>
+Edge Example: <concrete edge/rare case>
+Recovery Example: <concrete recovery/continuation case>
+Representative Example: <concrete representative case>
+```
+
+The example labels are descriptive, not a closed enum. A useful example should not be discarded merely because it is neither a good, problem nor boundary example.
+
+Keep a concise example inline in the SPS row when it remains readable. When examples are numerous, long, reused by several SPS rows, or materially disrupt the path table, move them to the post-table `Path Examples` collection and place `EX-* — <short name>` references in the SPS `QRPE / Examples` cell. QRPE refs and example refs may coexist in one cell.
+
+Use `None material` when no such adjacency/example is useful. Do **not** use this column as a miscellaneous notes field for unresolved implementation choices, ordinary rationale, downstream-owner reminders or generic commentary; keep those in their natural Scenario/Requirement/Proposal fields instead.
+
+### Path Examples collection — optional post-table representation
+
+Render this section immediately after the Scenario Path table when one or more examples are externalized:
+
+```text
+Path Example
+| Kind
+| Applies To
+| Example
+```
+
+`Path Example` uses stable/recoverable `EX-*` identity when referenced from one or more SPS rows. `Applies To` lists the relevant `SPS-*` identities. The collection may contain good, problem, boundary, edge, recovery, representative or other materially useful concrete examples. Do not create an `EX-*` item for a trivial one-line case that is clearer inline.
+
+### External trigger / Application entry guidance
+
+When an actor/external event causes Application behavior and the distinction is materially useful, prefer representing the external event and the Application trigger/entry as **separate `SPS-*` steps**.
+
+```text
+actor / external event
+→ outside-Application SPS
+
+Application receives / detects / is invoked by that event
+→ Application-relevant SPS
+```
+
+This keeps downstream Feature realization precise: the Feature can realize the Application entry/behavior step without pretending to realize the actor's or external system's action. Do not split trivial events when the distinction adds no planning value.
+
+### Expected-error invariant
+
+`Related Application expected errors` is used only when the SPS contains Application behavior for which an expected failure/result is meaningful.
+
+```text
+APPLICATION step
+→ expected Application errors may be listed
+
+ACTOR-only / EXTERNAL-only step
+→ Related Application expected errors = —
+```
+
+Do not invent Application errors for actions outside Application responsibility.
+
+### Feature OPEN / resolved boundary
+
+While Feature Resolution is OPEN, the SPS/Application Contribution may express the required Application outcome and bounded provisional behavior pressure needed for Feature discovery.
+
+Once Feature ownership is resolved, detailed Feature behavior moves to `TM-FEATURE`; Scenario retains SPS meaning plus Feature/result references.
+
+### Unit checkpoints
+
+Opening: confirm one coherent Scenario boundary and relevant Source subset.  
+Work: establish/revise only path/participants/contributions/continuity owned here.  
+Closing: verify path coherence, Feature no-copy boundary, Requirement handoff to `RU-SCEN-04`, and that examples are retained at the smallest readable representation scope (inline or referenced post-table collection).
+
+---
+
+<a id="ru-scen-04--scenario-requirements"></a>
+## RU-SCEN-04 — Scenario Requirements
+
+### Responsibility
+
+Own independently useful Scenario-natural must-holds.
+
+### Purpose
+
+Give Scenario-level must-holds durable addressability when the normative `SPS-*` path alone is not sufficient for downstream realization, proof or revalidation.
+
+```text
+SR-* = independently addressable Scenario Requirement
+```
+
+### Result Content Contract / Collection
+
+`RU-SCEN-04` owns one Scenario Requirement collection:
+
+```text
+COL-SCEN-REQUIREMENTS
+  Item Key / Subject: SR-*
+  Item meaning: independently addressable Scenario-natural must-hold
+  Scope: one or several SPS-* | SCENARIO_WIDE
+  Cardinality: 0..N
+```
+
+Step-attached and Scenario-wide tables below are two readable projections of this same `SR-*` collection, not separate Requirement families.
+
+The relation intentionally mirrors Feature:
+
+```text
+FBS-* = selected Feature behavior step
+BR-*  = independently useful Feature must-hold
+
+SPS-* = selected Scenario path step
+SR-*  = independently useful Scenario must-hold
+```
+
+An SPS may have zero, one or several attached SRs. An SR may constrain one or several SPS steps or the Scenario as a whole.
+
+### Step-attached Scenario Requirement representation
+
+```text
+Scenario Requirement
+| Type
+| Plain required Scenario meaning
+| Attached Scenario Steps
+| QRPE / Examples
+```
+
+### Scenario-wide Requirement representation
+
+```text
+Scenario-wide Requirement
+| Type
+| Plain required Scenario meaning
+| QRPE / Examples
+```
+
+Scenario-wide placement does not create another Requirement family. `SR-G-*` is only a Scenario-local naming convention for readability.
+
+### Natural-owner boundary
+
+Scenario-natural examples include:
+
+- cross-step continuity;
+- whole-Scenario consistency/integrity;
+- Scenario result observability;
+- timeliness required by the real-life journey;
+- authority/integrity constraints spanning several capabilities;
+- actor/Application handoff constraints whose natural subject is the journey.
+
+Feature-local behavior must-holds belong to `BR-*`. Do not copy canonical SR prose into BR merely to show coverage.
+
+Visuality alone does not change Requirement ownership. A visual Scenario must-hold remains `SR-*` when its natural subject is the Scenario; it may be realized by a Feature when the obligation is behavioral/result-oriented. Only independently spatial/navigation meaning belongs to `TM-SCREEN`.
+
+### Downstream realization surface
+
+Scenario can provide three kinds of normative input to downstream Feature realization:
+
+```text
+SPS-*
+→ required Scenario step/action/interaction
+
+step-attached SR-*
+→ independently addressable must-hold around one or several SPS-*
+
+Scenario-wide SR-*
+→ independently addressable must-hold spanning the Scenario
+```
+
+A Feature may realize any applicable combination of those meanings. One Feature may realize **one or several `SPS-*` steps** from the same Scenario, plus any applicable step-attached or Scenario-wide `SR-*`. One `SPS-*` may also require realization by several Features when the Scenario step materially spans several coherent Application capabilities.
+
+Feature participation in a Scenario does **not** mean the Feature realizes every Scenario step. Actor-only and external-only `SPS-*` should normally remain Scenario context rather than appear as Feature-realized steps. They may still be referenced as `Preceding / Trigger Context` when they materially explain why/when the Feature starts, provided that the same SPS is not also listed as realized by that Feature. An outside-Application SPS may exceptionally be listed as Feature-realized when the selected step itself genuinely includes Feature-realized Application responsibility and splitting would reduce clarity; the preferred form is still to separate outside event from Application entry when that distinction is material.
+
+Realizing an `SR-*` means the Feature materially contributes to satisfying that Scenario-owned obligation; it does not transfer SR authority to the Feature and does not imply that one Feature alone exhausts the SR when Screen/other Feature participation is also material.
+
+### Unit checkpoints
+
+Opening: test candidate must-holds against Scenario vs Feature/Screen/other natural owners.  
+Work: create only independently useful stable SR identities.  
+Closing: remove duplicates, verify step/Scenario-wide scope and downstream referenceability.
+
+---
+
+---
+
+<a id="ru-scen-02--evolution-impact"></a>
+## RU-SCEN-02 — Evolution Impact
+
+Preserve the current Scenario-local specialization of the shared Current-Owner Evolution Impact Projection Contract.
+
+Its local affected surface is Scenario journey/Requirement/surface participation meaning. In a future Target Scenario Body the Unit is present but `OMITTED`, because current-owner reverse projection is not applicable inside Step-owned future meaning.
+
+---
+
+<a id="ru-scen-03--journey-realization-concerns"></a>
+## RU-SCEN-03 — Journey Realization Concerns
+
+Preserve the current responsibility: only material realization/proof/integration concerns whose smallest natural subject is the Scenario as a whole.
+
+Do not copy Feature implementation concerns, Screen spatial design, Slice plans, Domain rules or exact mechanisms.
+
+---
 
 ## Peer Boundaries
 
 ```text
-Feature
-  owns canonical behavior and principal result semantics once resolved
-
 Scenario
-  owns real-life journey and Application Contributions; provisional behavior planning is local only while Feature ownership is OPEN
+→ real-life desired path / SPS-*
+→ Scenario-natural SR-*
+→ Application Contributions
+→ application/external Screen & surface participation
+
+Feature
+→ coherent application capability
+→ canonical detailed application behavior / FBS-*
+→ Feature-local BR-*
+→ semantic data / principal result
 
 Screen
-  owns spatial/navigation composition and Feature presence
+→ application-owned spatial/navigation composition
+→ zones / routes / Feature presence / screen-local constraints
+
+External Surface
+→ journey participant/context only
+→ never becomes TM-SCREEN merely because it appears in Scenario
 ```
 
-The same Feature may participate in several Scenarios. A Scenario may traverse several Screens. Neither relationship transfers semantic authority.
+Many-to-many Scenario↔Feature and Scenario↔Screen relations remain valid.
 
-## Source Discovery Rule
+## Scenario-first downstream handoff
 
-Prefer selected semantic owners and current Evidence over stale copied scenario prose.
+This module allows:
 
 ```text
-Application Definition / Need / one or more `AB-*` Benefits when relevant; use `AB-* / BC-*` when only an addressable Benefit boundary/constraint clause is the real source
-+ resolved Feature results when they exist; OPEN contributions otherwise
-+ material Screen/external context
-+ current implementation/Evidence
-+ relevant Evolution Steps
-→ current Scenario journey question
+Need / real-life evidence
+→ Scenario Path + SRs + surface participation + Application Contributions
 ```
 
-A current implementation fact may challenge the journey but does not become Scenario authority merely because it exists.
-
-## Maturity and coverage boundary
-
-`Discovery / provisional behavior planning` and `Feature-resolved` are maturity positions of **one Scenario identity**. Before resolution, a contribution may describe its required Application outcome, provisional behavior and failure/continuity pressure, and candidate Feature boundary reasoning. After resolution, replace copied detailed behavior with Feature/result refs while preserving the real-life journey and contribution. A Feature may satisfy several Scenarios; one Scenario may use several Features. There is no separate durable Feature Discovery file or Scenario type.
-
-Review every materially distinct actor/external/Application path, user experience, branch/re-entry and Application-Contribution set. One Scenario per Benefit is insufficient when these differ. When repetitions differ only by nonmaterial data/identity instances, one representative Scenario family may cover them; route the equivalence/coverage Decision through PRS while material and integrate durable rationale into Scenario/Evolution coverage. Do not enumerate indefinitely many equivalent instances.
-
-## Journey Constraint Identity
-
-Scenario owns a stable `SR-*` Requirement family for independently useful journey-level must-holds. Use the shared [`Requirement Classification And Representation Contract`](../profile-contracts/requirements/REQUIREMENT-CLASSIFICATION-AND-REPRESENTATION.md) for Type/QRPE semantics.
-
-When addressable Scenario Requirements are material, use the exact reusable table schema:
+Then, as applicable:
 
 ```text
-Scenario Requirement | Type | Plain required interaction/journey meaning | QRPE / Examples
+Scenario result / path / SR evidence
+→ Application Definition Concept / Own-Application Justification / Key Behavior Focus / feasibility revalidation when material
+
+Application Contributions + applicable SPS-* + step-attached SR-* + Scenario-wide SR-*
+→ Feature Discovery / TM-FEATURE
+
+application-owned Screen / Surface participation + applicable SPS-* + relevant SR-* pressure
+→ TM-SCREEN step-local Screen requirements / spatial presentation
 ```
 
-When stable `SPS-*` identities are material, use the exact reusable path schema:
+Application Definition and the SDS semantic-composition guide own their respective upstream/cross-owner semantics; this module owns only the Scenario-local handoff meaning above.
 
-```text
-Scenario Path Step | Actor / application interaction | Feature / participant | Data/result | Benefit manifestation / closure | Attached SR | QRPE / Examples
-```
+## Representation / Artifact Guidance
 
-```text
-journey must-hold natural to the Scenario
-→ SR-*
+A compact Scenario may remain one document containing the applicable Unit sections.
 
-Feature behavior must-hold
-→ BR-* in Feature; Scenario references it rather than copying it
-```
-
-Use stable `SPS-*` identities for Scenario path steps only when cross-reference/revalidation benefits from identity. Order/branch/path structure may itself be selected normative journey structure without becoming an SR merely by existing.
-
-A Scenario may reference Feature-owned `FDO-*` to make inter-step data/result continuity explicit.
-
-## Evolution / Change Outlook
-
-Scenario does not own a second future roadmap. `RU-SCEN-02` exposes only current-owner reverse navigation/revalidation; the applicable Evolution Step owns the future impact.
-
-If the particular next Step for realization will `CREATE`/`REPLACE` this Scenario, it must link a complete ordinary post-Step Target Scenario Body with all applicable Scenario Units resolved or justifiably omitted. A bounded Impact is adequate for a distant incompletely planned Step, not as a substitute for that Body at `Planning Completeness: COMPLETE`.
-
-```text
-known future journey/capability change
-→ TM-EVOLUTION-STEP / RU-EVO-02 Scenario impact
-→ complete Target Scenario Body for CREATE/REPLACE in the next Step for realization; optional earlier for a candidate/selected distant route; selection is still required for canonical integration/materialization
-→ RU-SCEN-02 in current Scenario references that Step when useful
-→ realization/materialization updates current Scenario authority
-```
-
-## Representation / Artifact Contract
-
-Use Core Artifact Boundary/Addressability rules.
-
-Valid forms include:
-- inline Scenario section;
-- several small Scenarios in one owner file;
-- dedicated Scenario file when independently reviewed/reused.
-
-Preserve Scenario identity, actor/external/Application context, Application Contributions, OPEN or resolved Feature references, branch/convergence/re-entry, continuity, Screen/external participation and Benefit manifestation/closure. Do not turn a journey representation into a second Feature behavior catalog.
+Promote Scenario Requirements or surface information to separate files only when independent lifecycle/addressability pressure justifies it. Do not create one file per SPS, SR or Screen by default.
 
 ## Validators
 
-```text
-journey boundary has coherent starting context + truthful Benefit manifestation/closure and journey result
-Feature references are truthful when resolved; zero resolved Features is valid; OPEN contributions carry useful provisional behavior without fake Feature identity
-linking actor/external actions are explicit when they matter
-branch paths converge/re-enter/stop explicitly
-continuity identity/Data/context is preserved across steps
-Screen participation is spatial/contextual, not behavior ownership
-journey must-holds are truly cross-Feature/context and do not duplicate BRs
-optional E2E proof intent remains proof intent, not test catalog
-known future change is routed through Evolution Step rather than hidden here
-current-owner reverse impact includes every concrete materially relevant unrealized Step with truthful planning position
-journey realization concerns are Scenario-wide rather than copied owner-local/exact mechanism detail
-representation remains proportional/addressable
-```
+A Scenario candidate is coherent when:
 
-## Repository / Source Provenance
-
-When current repository/app examples are used as Evidence, retain enough source identity/version/context for later revalidation. Provenance supports the Scenario; it is not the journey authority.
+- one meaningful real-life result/boundary is understandable;
+- actor / external / Application participation is explicit where material;
+- selected path is represented by coherent SPS steps;
+- materially useful path examples are preserved rather than dropped merely because they are not good/problem/boundary cases;
+- long/multiple/reused path examples are moved to `COL-SCEN-PATH-EXAMPLES` and referenced by `EX-*` from SPS rows instead of bloating the path table;
+- examples remain ordinary RU-SCEN-01 result content/collection items unless independent formal resolution responsibility genuinely justifies a Core Slot;
+- Application Contributions are explicit where Application participation is not yet Feature-resolved;
+- attached SR references show both ID and short name;
+- SPS does not require an SR merely to be selected meaning or a downstream realization obligation;
+- Scenario-wide SRs are not artificially attached to one step;
+- SRs have Scenario as natural owner and do not duplicate Feature BRs;
+- application expected errors appear only on Application behavior steps;
+- actor/external-only steps do not receive invented Application errors;
+- every material SPS has its Screen / Surface stated directly when journey-significant;
+- external surfaces are not mistaken for application Screens;
+- application Screen participation hands off SPS meaning plus relevant SR pressure to `TM-SCREEN`; Screen derives only Screen-natural step-local/global requirements without copying SR authority;
+- Feature Resolution OPEN is allowed;
+- outside-Application SPS are normally kept as Scenario/trigger context rather than falsely claimed as Feature-realized behavior;
+- when an external event and Application entry are materially distinct, separate SPS identities are preferred;
+- one Feature may realize several SPS steps and one SPS may be jointly realized by several Features;
+- resolved Feature behavior is referenced rather than copied;
+- current/future temporal hosting remains truthful.
 
 ## Guards
 
 ```text
-Scenario ≠ a second resolved-Feature behavior catalog
-Scenario ≠ data owner
-Scenario ≠ Screen flowchart only
-Scenario ≠ implementation Slice
-journey must-hold ≠ copied Feature BR
-E2E Proof Intent ≠ mandatory test catalog
+SPS ≠ automatically SR
+SPS may itself be a downstream realization obligation
+SR ≠ BR
+SR-G-* ≠ new Requirement family
+Feature participation in Scenario ≠ Feature realizes every SPS
+
+Scenario Surface ≠ automatically Application Screen
+GitHub / IDE / browser / terminal ≠ TM-SCREEN owner
+
+Scenario ≠ Feature
+Scenario ≠ Screen
+
+Feature Resolution OPEN = valid
+zero SR = valid
+zero application Screens = valid
 ```
 
 ## Handoff
 
-Scenario findings route to the natural owner through Proposal/revalidation. Implementation work starts from sufficiently resolved Step-owned Target Bodies; Scenario remains a source when whole-journey continuity, `RU-SCEN-03` realization concerns or E2E proof matters. Evolution Step `RU-EVO-03` may reference Scenario realization concerns when their composition creates Step-wide pressure.
+Primary consumers:
 
-## Copied project example
+- Application Definition — Scenario outcome/path/SR evidence when Application Concept, Own-Application Justification, Key Behavior Focus or application-level feasibility/early planning should be revalidated;
+- `TM-FEATURE` — Application Contributions plus applicable `SPS-*`, step-attached `SR-*` and Scenario-wide `SR-*` for Feature discovery and explicit Scenario realization coverage;
+- `TM-SCREEN` — application-owned Screen references from SPS plus relevant Scenario requirement pressure needed to derive Screen-local step requirements/spatial presentation without copying Scenario authority;
+- Evolution Step — future Target Scenario Body and later materialization;
+- Domain / Slice / Shared / Exact — only through their natural downstream questions.
 
-[Study Tab Launcher — Сценарный путь, SPS/SR и результат](../examples/study-tab-launcher/project/planning/documentation/scenarios/open-selected-project.md). Read the [case guide and capture limits](../examples/study-tab-launcher/README.md) with the current module contract; the copied project is a dated example, not live application authority.
+No downstream owner receives copied Scenario authority merely because it consumes the Scenario.
+
+## Revalidation Signals
+
+Revalidate the affected Scenario Units when material evidence changes:
+
+- actor/external path or real-world result;
+- Application boundary / Contribution;
+- Feature ownership or Feature principal result;
+- application Screen identity or external-surface participation;
+- an SR's natural owner;
+- branch/re-entry/continuity;
+- actual implementation/proof contradicts Scenario meaning.

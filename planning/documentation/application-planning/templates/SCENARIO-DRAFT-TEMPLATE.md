@@ -1,91 +1,56 @@
-# Scenario Journey Supporting Template
+# Scenario Draft Template
 
 Status: active supporting template; canonical semantic contract is SDS `TM-SCENARIO-PLANNING`.
 
-Use this shape only when a human-readable Scenario representation is useful. A Scenario owns one **real-life actor/external/Application journey and its Application Contributions**, including Benefit manifestation/closure points. It can be formed with zero resolved Features. While Feature ownership is `OPEN`, bounded provisional behavior planning stays in the Step-owned Scenario Target Body. After resolution, detailed behavior and semantic data belong to the Feature; the Scenario retains its journey, contributions and Feature/result references. Upstream Benefit, implementation topology and Domain meaning retain their natural owners.
+Use this shape only when a human-readable Scenario representation is useful. A Scenario owns one real-life actor/external/Application journey, normative `SPS-*` path meaning, Application Contributions and independently useful `SR-*` must-holds. It can be formed with zero resolved Features.
 
 Canonical owner:
 `../../idtspe-methodology/active/profiles/sds/target-modules/TM-SCENARIO-PLANNING.md`
 
-Every formed Scenario Target keeps all three Module-defined Units below. Use `RESOLVED`, `OPEN`, or `OMITTED — <concise reason>` at each heading; do not delete a Unit because its substantive work is not material.
-
-## RU-SCEN-01 — Journey Composition
-
-**Methodology:** [TM-SCENARIO-PLANNING](../../idtspe-methodology/active/profiles/sds/target-modules/TM-SCENARIO-PLANNING.md)
-
-Disposition: `RESOLVED | OPEN | OMITTED — <reason>`
-
-Represent proportionally:
+## Scenario context
 
 ```text
 Scenario ID / name
 Actor / external participants
 Context / entry when material
-Benefit refs / manifestation-closure (`AB-*`, one or several when material)
-Represented real-life path / family boundary when material
-
+Optional Application Definition source: KBF-* / RU-APP-07 refs when actually useful
+Represented real-life path / family boundary
 Application Contributions
-  required Application outcome and Feature Resolution: OPEN | RESOLVED(ref)
-  while OPEN: bounded provisional behavior/failure/continuity pressure
-  when RESOLVED: Feature/result refs; no copied detailed Feature behavior
-
-Journey
-  actor/external action
-  → Application Contribution [OPEN or resolved Feature/result]
-  → actor/external linking action
-  → next Application Contribution when material
-  ├─ material branch
-  └─ alternate branch
-  → convergence / re-entry
-  → Benefit manifestation / closure
-
-Continuity
-  <what result/context must survive between steps>
-
-Screen / external-system participation
-  <only when journey-significant>
-
-Journey must-holds
-  <only constraints naturally owned by the whole journey;
-   do not copy Feature BR-*>
-
-E2E Proof Intent
-  <optional; only when whole-journey proof has independent value>
+Feature Resolution: OPEN | RESOLVED(ref)
 ```
 
-Blank sections are not requirements. One broad RU is intentional because actor/external/Application participation, contributions, branch/re-entry, continuity and Benefit closure jointly define one journey graph. Equivalent recurring instances may share one representative Scenario family only when their path, experience, contribution and resolved Feature participation do not materially differ; retain the coverage rationale/Decision at the natural owner.
-
-## Peer Ownership
+## Scenario Path
 
 ```text
-Feature  → canonical behavior + principal result semantics once resolved
-Scenario → real-life journey + Application Contributions;
-           provisional behavior planning only while Feature OPEN
-Screen   → spatial/navigation composition + Feature presence
+Scenario Path Step
+| Required action / interaction
+| Participant
+| Screen / Surface
+| Application Contribution / Feature
+| Data / result / continuity
+| Attached Scenario Requirements
+| Related Application expected errors
+| QRPE / Examples
 ```
 
-A finding in the journey may challenge Feature or Screen meaning through normal Proposal/Finding/revalidation mechanics; the Scenario does not mutate peers directly.
+`SPS-*` is normative Scenario meaning and may itself be a downstream realization obligation. One SPS may have zero, one or several attached `SR-*`; Scenario-wide SRs are not forced onto a single SPS. Actor/external-only SPS normally have no Application expected errors. When useful, separate an external event SPS from the Application trigger/entry SPS.
 
-## RU-SCEN-02 — Evolution Impact
+## Scenario Requirements
 
-**Methodology:** [TM-SCENARIO-PLANNING](../../idtspe-methodology/active/profiles/sds/target-modules/TM-SCENARIO-PLANNING.md)
+Step-attached:
 
-Disposition: `RESOLVED | OPEN | OMITTED — <reason>`
+```text
+Scenario Requirement | Type | Plain required Scenario meaning | Attached Scenario Steps | QRPE / Examples
+```
 
-When material, reference concrete unrealized Evolution Steps that affect this current realized Scenario. In a future Target Scenario Body this Unit remains present but is `OMITTED` because reverse current-owner projection is not applicable there.
+Scenario-wide:
 
-## RU-SCEN-03 — Journey Realization Concerns
+```text
+Scenario-wide Requirement | Type | Plain required Scenario meaning | QRPE / Examples
+```
 
-**Methodology:** [TM-SCENARIO-PLANNING](../../idtspe-methodology/active/profiles/sds/target-modules/TM-SCENARIO-PLANNING.md)
+A visual `SR-*` remains Scenario-owned when its natural subject is the journey/result; Feature and/or Screen may participate in its realization without copying authority.
 
-Disposition: `RESOLVED | OPEN | OMITTED — <reason>`
+## Path Examples
 
-Keep only journey-wide realization/proof/integration pressure whose natural subject is the Scenario; reference owner-local concerns instead of copying them.
-
-## Evolution / Proof
-
-Known future change is routed through Evolution Step/Map; do not create a durable Scenario Change Outlook roadmap. Whole-journey proof questions may invoke Core `LENS-TEST-PROOF-EVIDENCE`; executed evidence remains Evidence, not Scenario authority.
-
-## Representation
-
-A dedicated Scenario file/folder is optional. Use Core Representation/Addressability rules; stable identity does not imply a mandatory artifact tree.
+Keep concise useful examples inline. When examples are numerous/large/reused, use the optional post-table `COL-SCEN-PATH-EXAMPLES` collection and reference stable `EX-*` items from path rows. Do not manufacture examples when none are material.

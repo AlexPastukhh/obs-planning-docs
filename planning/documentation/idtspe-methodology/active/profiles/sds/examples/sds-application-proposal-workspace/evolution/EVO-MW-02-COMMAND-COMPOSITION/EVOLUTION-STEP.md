@@ -5,7 +5,8 @@
 **Transition purpose:** add deterministic composition of selected planning commands before external AI semantic execution.
 
 **Driven By:**
-- `APP-METHODOLOGY-WORKSPACE / AB-03`
+- `APP-METHODOLOGY-WORKSPACE / KBF-MW-03`
+- material `SPS-*` / `SR-*` from `SCN-MW-COMPOSE-COMMANDS-FOR-AI` when planning becomes more precise
 
 **Entering From:** `EVO-MW-01-STRUCTURED-KNOWLEDGE`
 
@@ -17,17 +18,12 @@
 
 ## RU-EVO-02 — Evolution Impacts
 
-### Scenario impact
 - CREATE planned Scenario `SCN-MW-COMPOSE-COMMANDS-FOR-AI`.
-
-### Feature / responsibility impact
-Scenario-local discovery indicates one likely coherent deterministic command-composition capability, but Feature ownership remains `OPEN`.
+- Scenario-local discovery indicates one likely coherent deterministic command-composition capability, but Feature ownership remains `OPEN`.
 
 ## RU-EVO-03 — Step-wide Implementation Concerns
 
-The later Step may reuse structured identities/schema/reference infrastructure proven in `EVO-MW-01`, but shared implementation reuse does not itself define a Feature.
-
-Exact command schema / typed merge / renderer/API topology remains open.
+The later Step may reuse structured identities/schema/reference infrastructure proven in `EVO-MW-01`, but shared implementation reuse does not itself define a Feature. Exact command schema / typed merge / renderer/API topology remains open.
 
 ## RU-EVO-04 — Target Owner Materialization Set
 
@@ -45,13 +41,13 @@ Exact command schema / typed merge / renderer/API topology remains open.
 
 ## Deferred planning recheck
 
-Before this Step becomes next for realization, reuse its current Scenario/PRS state and re-derive material planning Questions against the then-realized predecessor and accepted AB-03 intent. Do not infer readiness from the current Question list alone.
+Before this Step becomes next for realization, reuse its Scenario/PRS state and re-derive material planning Questions against the then-realized predecessor, `KBF-MW-03`, and current Scenario `SPS/SR` meaning. Do not infer readiness from the current Question list alone.
 
 ## RU-EVO-06 — Planning Completeness / Realization Start Readiness
 
 **Planning Completeness:** `INCOMPLETE`
 
-Reason: Feature ownership and complete Target Bodies remain unresolved; exact command-definition schema and realization/proof route are intentionally deferred. The unrealized predecessor does not itself make this Step planning-incomplete.
+Reason: Feature ownership and complete Target Bodies remain unresolved; exact command-definition schema and realization/proof route are intentionally deferred.
 
 **Realization Start Readiness:** `BLOCKED`
 

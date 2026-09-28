@@ -645,7 +645,7 @@ Scenario SCN-CAPTURE owns:
   actor/external participation
   FEAT-CAPTURE invocation order
   retry/re-entry branch
-  Benefit manifestation / closure
+  normative SPS path + Scenario completion / SR meaning
 
 Proposal:
   maybe use a floating capture window later
