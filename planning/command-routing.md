@@ -49,7 +49,7 @@ Planning Commands are a USER↔AI invocation surface. The AI follows methodology
 2. Resolve the direct planning/commands/*.command.md definition whose commandFamily contains the trigger.
 3. Fully expand all selected roots and transitive includes; discover reachable processCalls as deferred point calls. Validate paths and mixed cycles, merge/deduplicate the include DAG and collect pre-execution contributions before any command action.
 4. Establish dependencies-first order. Execute the deepest methodology Use-Case recheck, then early session.work.maintain activation, WR-1 confirmation, automatic WR-2 triage, WR-3 subject and WR-4 execution route before the ordinary selected leaf.
-5. If WR-4=SHELL, reaffirm the subject-specific Use Cases and Port Requirement Set, then execute idtspe.work and admitted capabilities beneath WR-5. DIRECT follows its selected direct owner; NO_EXECUTION preserves the actual gate.
+5. At WR-5, before affected execution of a tentative current Manifest task, perform/reuse the contextual session-task Question sweep and repeat after material candidate/route change until readiness or a real gate. This is semantic current-work behavior, not a universal early command include or a second WR-2. If WR-4=SHELL, reaffirm the subject-specific Use Cases and Port Requirement Set, then execute idtspe.work and admitted capabilities; DIRECT follows its selected direct owner and escalates to SHELL if the sweep reveals material ambiguity. NO_EXECUTION preserves the actual gate. A selected SDS Evolution Step has an additional Step-owned readiness sweep at its realization handoff.
 6. At each reached processCalls owner point evaluate the gate, bind the current basis and execute/reuse the complete child composition before resuming. Keep one Work Context and root permission boundary.
 7. After the selected root's WR-5 work, follow the fundamental current-work Use Case through WR-6 synchronization and WR-7 Work Record/archive closure. WR-6/WR-7 are not prerequisite includes of the leaf action.
 ```
@@ -170,6 +170,7 @@ raw USER input
 → WR-2 automatic Manifest/PRS/context triage (no direct command)
 → WR-3 primary subject
 → WR-4 DIRECT | SHELL | NO_EXECUTION
+→ WR-5 contextual session-task Question sweep before affected Manifest execution; repeat after material change
 → if SHELL: reaffirm task-specific Use Cases + Port Requirement Set
 → execute dependency/semantic actions beneath WR-5
 → WR-6 / WR-7 through the current-work Use Case after the selected root action

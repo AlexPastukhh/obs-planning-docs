@@ -144,7 +144,7 @@ Recent TWR: TWR-21 (in progress)
 Prior accepted revision: manifest-history/M-20.md
 ```
 
-`TWR-21` records the `WR-5` transition `M-20/P-20 → M-21/P-21`, the I-21 authority and the invalidation of A-20's prior readiness. The next contextual sweep now reads **M-21/P-21**, checks Scenario coverage, Step ownership and still-material Questions on this new maturity basis, and re-evaluates readiness. It does not silently start a different `WR-3` subject. In this illustration no further blocker appears, so the authorized Scenario planning continues through the selected Shell route. The Scenario Target Body remains Step-owned; the example does not invent a Feature owner.
+`TWR-21` records the `WR-5` transition `M-20/P-20 → M-21/P-21`, the I-21 authority and the invalidation of A-20's prior readiness. The next **session-task contextual sweep** now reads **M-21/P-21**, checks Scenario coverage, Step ownership and still-material Questions on this new maturity basis, and re-evaluates readiness. It does not silently start a different `WR-3` subject. In this illustration no further blocker appears, so the authorized Scenario planning continues through the selected Shell route. The Scenario Target Body remains Step-owned; the example does not invent a Feature owner. EVO-1 is not being handed to realization in this turn; its separate SDS Evolution Step sweep and `RU-EVO-06` start-readiness conclusion are not substituted by this session-task check.
 
 At `WR-6`, resolved Q-21 has no remaining carry-forward value. PRS **P-22** removes `PRS-ACTIVE-21` after its answer and Manifest consequence are recorded in TWR-21 and M-21:
 

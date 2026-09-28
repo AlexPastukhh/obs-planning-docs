@@ -159,6 +159,8 @@ methodology.use_cases.recheck
 
 When the selected route is `SHELL`, `idtspe.compose-current-work` and `idtspe.port-composition.recheck` precede `idtspe.work`'s semantic action at WR-5. `DIRECT` does not manufacture a Shell pass. The one structured Turn Work Record already exists above either route, so no active P-02 or separate trace prerequisite is needed. `idtspe.port.trace` remains an explicit legacy compatibility visibility command only.
 
+Before affected execution of a tentative current Manifest task, the fundamental current-work Use Case performs the contextual Question sweep under WR-5 on either route; a material ambiguity escalates DIRECT to SHELL. The direct `session.current_work.question_sweep` shortcut includes the early chain through WR-4 and exposes that existing check without executing the task. It is separate from the SDS Evolution Step sweep, which checks one selected Step and `RU-EVO-06` at its own handoff. Neither sweep is a renamed WR-2 command or a second Question lifecycle.
+
 User-level/specialized IDTSPE operations reuse this chain and, when Shell is selected, the same current Work Context and Port Requirement Set. Shared dependencies and equivalent work are deduplicated in the merged DAG; WR-6/WR-7 occur after selected leaf/root work under the fundamental current-work Use Case.
 
 ```text

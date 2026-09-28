@@ -109,12 +109,15 @@ Helper shows projection provenance separately from semantic meaning:
 
 Ordinary substantive Planning Commands share the early current-work prefix: methodology Use-Case recheck, Session State/archive and S0, WR-1 intake, automatic WR-2 triage, WR-3 primary subject and WR-4 route choice. The deepest command prerequisite is the Use-Case recheck; S0 infrastructure is established before semantic command execution. WR-6/WR-7 close the turn after the selected root action, not as its includes.
 
+Before affected execution of a current Manifest task, the fundamental current-work Use Case performs the contextual WR-5 Question sweep, including in-turn answer/Manifest/PRS integration and recheck after material change. `session.current_work.question_sweep` is its focused direct card in `IDTSPE Pass → Сессия · текущая работа`, after WR-4 and before the `idtspe.work` card; it does not rename WR-2 or become a universal early include. The SDS Evolution Step Question sweep remains a separate focused card in `Target Modules → Evolution` and is conditionally called at a selected Step's realization handoff. They may reuse evidence but retain separate readiness conclusions.
+
 For `WR-4=SHELL`, the command graph composes current work and refreshes the Port Requirement Set before `idtspe.work` performs admitted Shell work beneath WR-5. `DIRECT` does not enter Shell. The registered `idtspe.port.trace` compatibility command does not provide an active P-02 prerequisite.
 
 ```text
 methodology.use_cases.recheck
 → session.work.maintain → session.input.intake
 → session.current_work.select → session.route.choose
+→ WR-5 contextual session-task Question sweep before affected Manifest execution
 → if SHELL: idtspe.compose-current-work → idtspe.port-composition.recheck → idtspe.work
 → named P-03..P-15 capabilities when admitted
 → WR-6 / WR-7 under the fundamental current-work Use Case

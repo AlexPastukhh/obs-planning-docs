@@ -39,3 +39,13 @@ test('selected SDS Step realization calls the focused sweep conditionally at exi
   assert.ok(direct.order.includes('session.route.choose'));
   assert.ok(!direct.contributions.some(x=>x.kind==='SELECTED_TARGET_MODULE'&&x.value==='TM-EVOLUTION-STEP'));
 });
+
+test('session-task sweep is a distinct WR-5 shortcut over the common WR entry chain',()=>{
+  const session=catalog.expandCommandComposition(definitions,['session.current_work.question_sweep']);
+  assert.deepEqual(session.order.slice(0,common.length),common);
+  assert.equal(session.order.at(-1),'session.current_work.question_sweep');
+  assert.ok(!session.order.includes('sds.evolution_step.question_sweep'));
+  assert.ok(!session.order.includes('idtspe.work'));
+  const step=catalog.expandCommandComposition(definitions,['sds.evolution_step.question_sweep']);
+  assert.ok(!step.order.includes('session.current_work.question_sweep'));
+});
