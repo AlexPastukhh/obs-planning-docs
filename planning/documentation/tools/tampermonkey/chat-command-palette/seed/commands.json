@@ -1002,7 +1002,7 @@
         "choose current work route"
       ],
       "description": "Choose DIRECT, SHELL or NO_EXECUTION at WR-4.",
-      "meaning": "Record the execution route for the WR-3 subject separately from ContinuationGate. DIRECT requires resolved deterministic work; SHELL enters task-specific composition; NO_EXECUTION preserves the real gate or absence of executable work.",
+      "meaning": "Record DIRECT, SHELL or NO_EXECUTION for the WR-3 subject separately from ContinuationGate. Reaffirm/revise the same route on preparation recheck or continuation when basis changes; DIRECT requires resolved deterministic work, SHELL enters task-specific composition, and NO_EXECUTION preserves a real gate. A prepared archive pause is neither a route nor a USER_REVIEW_REQUIRED decision.",
       "activeContextBehavior": "Operate only at the reached current Work Record stage; reuse the same Session State and record.",
       "traversalReadMode": "Read the fundamental current-work Use Case and the reached Session/Work Record owner proportionally; reuse current trustworthy state.",
       "ownerFiles": [
@@ -1482,7 +1482,7 @@
       ],
       "description": "Compose/reaffirm the currently useful IDTSPE methodology work from the current selected Use Cases before Shell Port Composition refresh.",
       "meaning": "Use the already refreshed current Use-Case applicability composition to resolve/reuse UC-IDTSPE-COMPOSE-CURRENT-WORK and establish the proportional current IDTSPE methodology composition. This command does not itself refresh the Shell Port Requirement Set; that is the next canonical dependency owned by IDTSPE.PORT-COMPOSITION-REFRESH.",
-      "activeContextBehavior": "Use current Work Context, selected Use Cases and a Current Work Manifest when material. Reuse trustworthy Manifest orientation, but current USER input/canonical owner state wins over stale projections; route stale Manifest refs through narrow revalidation rather than blind replay. Select only bounded work useful for this pass. Broad Discussion only remains a valid result.",
+      "activeContextBehavior": "Use current Work Context, selected Use Cases and a Current Work Manifest when material. Reuse trustworthy Manifest orientation, but current USER input/canonical owner state wins over stale projections; route stale Manifest refs through narrow revalidation rather than blind replay. Select only bounded work useful for this pass. Broad Discussion only remains a valid result. When included by generic preparation for a DIRECT subject, do not instantiate a Shell composition or Port Requirement Set; record the route-specific non-applicability while the direct owner remains authoritative.",
       "traversalReadMode": "Read the Compose Current Work Use Case and contextual methodology application owner proportionally; do not scan unrelated component bodies before the composition selects them.",
       "ownerFiles": [
         "planning/documentation/idtspe-methodology/active/idtspe-core/use-cases/compose-current-work/UC-IDTSPE-COMPOSE-CURRENT-WORK.md",
@@ -2613,7 +2613,7 @@
         "finalize turn work record and archive"
       ],
       "description": "Finalize WR-7 and rematerialize the portable Session State archive.",
-      "meaning": "Close the same Turn Work Record with plan-versus-actual and unresolved gates, then rematerialize the Session State archive. A separately requested Proposal Workspace Archive stays a separate PRS-centered output. This command does not make WR-6 a static include prerequisite; the fundamental Use Case performs it at the proper time.",
+      "meaning": "Close the same Work Record at WR-7 only after the bounded selected subject actually ends or is explicitly stopped; reconcile preparation and execution plan-versus-actual and unresolved gates, then rematerialize Session State archive. A preparation/recheck response instead checkpoints an open record. This command does not make WR-6 a static include prerequisite.",
       "activeContextBehavior": "Operate only at the reached current Work Record stage; reuse the same Session State and record.",
       "traversalReadMode": "Read the fundamental current-work Use Case and the reached Session/Work Record owner proportionally; reuse current trustworthy state.",
       "ownerFiles": [
@@ -2649,7 +2649,8 @@
       "keyReminders": [
         "One current Session State and Turn Work Record; no duplicate planning hierarchy.",
         "Keep target/repository authority separate from Session State write authority.",
-        "No command invocation selects a Proposal, grants mutation, commit or push."
+        "No command invocation selects a Proposal, grants mutation, commit or push.",
+        "Do not finalize merely because a preparation archive was issued or the USER asked to recheck Questions."
       ],
       "userTarget": "<current bounded work turn>",
       "palette": true,
@@ -2676,7 +2677,7 @@
       ],
       "description": "Continue with the currently useful methodology action.",
       "meaning": "Re-evaluate the current Use-Case set and `UC-IDTSPE-COMPOSE-CURRENT-WORK`, then perform the smallest useful ordinary in-scope methodology action. This may continue Broad Discussion, refine current State, invoke an applicable Target Module/Lens, or integrate/revalidate when triggered; it does not require a next Target.",
-      "activeContextBehavior": "Use current Work Context and current/re-evaluated Use-Case applicability. Do not invent a Target or invoke a component only to satisfy a fixed sequence; preserve USER steering and permission boundaries.",
+      "activeContextBehavior": "If current USER intent is to continue an already prepared open subject, reuse its exact Work Record/S0, verify current basis and execute its pending selected action under the existing permission boundary. If no such subject exists, use the current Work Context and re-evaluated Use-Case applicability to select a useful subject for default preparation; do not invent a Target or invoke a component only to satisfy a fixed sequence.",
       "traversalReadMode": "Reuse current reliable IDTSPE/SDS governance; targeted refresh of the selected owner route when uncertain; full bootstrap only when no reliable sufficient governance context exists.",
       "ownerFiles": [
         "planning/documentation/idtspe-methodology/active/idtspe-core/use-cases/compose-current-work/UC-IDTSPE-COMPOSE-CURRENT-WORK.md",
@@ -2713,7 +2714,8 @@
         "IDTSPE is already active; this shortcut does not enable a mode.",
         "Use Cases compose methodology use; Target Modules/Lenses own specialized work.",
         "Broad Discussion or NO_ADDITIONAL_STRUCTURE is a valid proportional outcome.",
-        "Ordinary in-scope progression is not an approval gate; explicit mutation/commit/push permissions remain separate."
+        "Ordinary in-scope progression is not an approval gate; explicit mutation/commit/push permissions remain separate.",
+        "A continuation signal crosses the prepared-task pause only after basis/Question/port recheck; it does not create another Work Record for the same subject."
       ],
       "userTarget": "<current planning state>",
       "palette": true,
@@ -3997,7 +3999,7 @@
         "intake session input"
       ],
       "description": "Record current USER input/material and command composition as WR-1.",
-      "meaning": "Confirm the input basis and bounded USER fact/answer/decision intake at WR-1; record root/alias recognition and full DAG discovery already performed after S0. Route contextual-material candidates to the later PRS/WR-6 disposition without silently making them authority.",
+      "meaning": "Confirm the initial input basis and bounded USER fact/answer/decision intake at WR-1; record root/alias recognition and complete DAG discovery already performed after S0. On a later preparation review or continuation of the same subject, append the actual new input/command-basis event without overwriting WR-1 or allocating another S0. Route contextual-material candidates to later PRS/Session disposition.",
       "activeContextBehavior": "Operate only at the reached current Work Record stage; reuse the same Session State and record.",
       "traversalReadMode": "Read the fundamental current-work Use Case and the reached Session/Work Record owner proportionally; reuse current trustworthy state.",
       "ownerFiles": [
@@ -4028,7 +4030,7 @@
       ],
       "processCalls": [],
       "compositionContributions": [],
-      "expectedOutput": "Reuse S0; input provenance, classification and command-graph facts are current at WR-1.",
+      "expectedOutput": "New S0 or evidenced reuse of the still-open record; initial WR-1 and any later continuation-input provenance/classification/command-graph facts are current.",
       "permissionMode": "read-only-planning",
       "keyReminders": [
         "One current Session State and Turn Work Record; no duplicate planning hierarchy.",
@@ -4214,7 +4216,7 @@
         "maintain current work manifest"
       ],
       "description": "Maintain/reconcile the accepted Session State Current Work Manifest and its re-entry/navigation projection.",
-      "meaning": "Maintain the accepted WORK-MANIFEST.md owned by UC-IDTSPE-MAINTAIN-CURRENT-WORK-STATE. Synchronize factual execution consequences and cross-turn coordination directly, while material AI-derived prospective plan changes remain Proposal-first through Core PRS/Proposal semantics. Session State supplies the ambient representation; P-14 is not the reason the Manifest exists.",
+      "meaning": "Maintain/reconcile the accepted WORK-MANIFEST.md under its natural owner. When substantive Manifest reconciliation is the selected WR-3 subject, route it through SHELL preparation, Question sweep and the default archive/continuation boundary before forming a Proposal and complete candidate target Manifest. Factual/exact selected synchronization remains governed by its own direct owner and the same default preparation boundary when it is a selected task; ambient WR-2 triage is not a separate Manifest task. Session State supplies representation; AI-derived prospective changes remain Proposal-first.",
       "activeContextBehavior": "Use the current Session State and canonical owner state. Reuse the accepted Manifest and synchronize only established consequences; if a new Session State needs its minimal accepted orientation, follow the Work Record bootstrap rule. A tiny turn does not force substantive Manifest replanning or a P-14 Work Context Bundle. Current USER input and canonical owner state override stale projections.",
       "traversalReadMode": "Read Maintain Current Work State plus only the current owner/artifact references needed to synchronize the Manifest. Do not reread or duplicate full Need/PRS/Review/Turn-Work-Record bodies when compact canonical references are sufficient.",
       "ownerFiles": [
@@ -4240,18 +4242,19 @@
         }
       ],
       "includes": [
-        "planning/commands/choose-current-work-route.command.md"
+        "planning/commands/sweep-session-work-questions.command.md"
       ],
       "processCalls": [],
       "compositionContributions": [],
-      "expectedOutput": "The accepted Current Work Manifest is synchronized or a formal Proposal + complete candidate target Manifest + PRS review state is produced when prospective accepted-plan meaning would change.",
+      "expectedOutput": "After verified preparation and continuation, the accepted Manifest is synchronized or a formal Proposal + complete candidate target Manifest + PRS review state is produced; the preparation response itself reports only checked coverage and archive.",
       "permissionMode": "artifact-no-commit-push",
       "keyReminders": [
         "The Manifest is accepted session-scale work state, not a semantic super-owner.",
         "Exact USER-selected prospective meaning may integrate directly with authority trace and prior-revision preservation.",
         "AI-derived material prospective change is Proposal-first.",
         "Every accepted Manifest write preserves a recoverable previous revision.",
-        "Session State representation is ambient; external/durable artifact placement remains a P-14 concern."
+        "Session State representation is ambient; external/durable artifact placement remains a P-14 concern.",
+        "This root action and execution-bearing dependencies wait after the default preparation archive until USER continuation; includes alone do not create that pause."
       ],
       "userTarget": "<current substantial Work Context / session continuity scope>",
       "palette": true,
@@ -4476,8 +4479,8 @@
         "веди сессионную работу",
         "maintain session work"
       ],
-      "description": "Reaffirm ambient Session State/S0 early; as a direct invocation conduct the whole current turn.",
-      "meaning": "When included, bootstrap/reuse the Session State and archive identity, establish/reuse S0 and an initial portable archive snapshot with the immutable WR-1..WR-7 kernel and current authority/retention references, then hand the current Work Record to subsequent dependencies/selected root. When invoked as a root, conduct the complete turn under UC-IDTSPE-CONDUCT-CURRENT-WORK through WR-7. A dependency never performs WR-5..WR-7 before its caller.",
+      "description": "Reaffirm ambient Session State/S0 early; as a direct invocation conduct preparation and later continuation of the bounded subject.",
+      "meaning": "When included, bootstrap/reuse Session State and archive identity, establish S0 for a new bounded subject or reuse the same open record on continuation, and create/reuse a truthful portable snapshot with the immutable WR-1..WR-7 kernel. As a root, follow UC-IDTSPE-CONDUCT-CURRENT-WORK through default preparation/checkpoint, then resume the same record on USER continuation and reach WR-7 only after the subject ends. A dependency never executes the pending subject or finalizes before its caller.",
       "activeContextBehavior": "Normal substantive work follows the fundamental current-work Use Case even without a command. Reaffirm one Session State and one Work Record; physical bootstrap observations made before the command DAG are reconciled into S0.",
       "traversalReadMode": "Read Session State Runtime, Work Record Principles and natural owners reached by the current subject proportionally.",
       "ownerFiles": [
@@ -4516,11 +4519,11 @@
       ],
       "processCalls": [],
       "compositionContributions": [],
-      "expectedOutput": "Included: current Session State/archive basis and S0. Direct root: one completed bounded work turn and current Session State archive, or an explicit host limitation.",
+      "expectedOutput": "Included: current Session State/archive basis and new S0 or evidenced resumed open record. Direct root: verified preparation checkpoint/archive or later bounded result/final archive, with explicit host limitation when necessary.",
       "permissionMode": "read-only-planning",
       "keyReminders": [
-        "Included dependency activates/reaffirms S0 only; the selected root and fundamental Use Case finish the turn afterward.",
-        "One Turn Work Record spans input through finalization; Shell traversal is nested under WR-5 when selected.",
+        "Included dependency activates/reaffirms Session State and S0 or an existing open record; the selected root follows the preparation gate.",
+        "One open Work Record spans preparation, rechecks and execution of one bounded subject; Shell traversal is nested under WR-5 when selected.",
         "Material AI-derived Manifest replanning is Proposal-first unless exact target meaning is already USER-selected.",
         "Do not create parallel Need/PRS/Proposal semantics."
       ],
@@ -5891,6 +5894,106 @@
     },
     {
       "schemaVersion": 1,
+      "id": "session.current_work.prepare",
+      "file": "prepare-current-work-record.command.md",
+      "command": "подготовь Work Record текущей задачи",
+      "englishName": "prepare current work record",
+      "commandFamily": [
+        "подготовь Work Record текущей задачи",
+        "prepare current work record"
+      ],
+      "description": "Prepare the selected subject's route, owner/component reads and observable Work Record coverage before Question sweep.",
+      "meaning": "After S0, WR-2 triage, WR-3 subject and WR-4 route, prepare the same Work Record under Work Record Principles. For SHELL, reuse Compose Current Work and Port Composition Refresh; for DIRECT use the relevant direct owner and treat Shell-only requirements as not applicable. Read the selected Core/profile registries and necessary Lens/Target Module/owner bodies, record actual reads, applicability and basis, and expose material Question candidates. Do not execute the selected subject, apply a Lens merely because it was read, or close the record. The contextual Question sweep and final preparation audit/checkpoint follow this action.",
+      "activeContextBehavior": "When included, perform only preparation before the caller's Question sweep. When invoked directly, the fundamental current-work Use Case still performs the subsequent sweep/audit/archive checkpoint for this same open subject. On a request to revisit preparation, reuse compatible coverage and recheck only the affected basis; never allocate a new S0 for the same subject.",
+      "traversalReadMode": "Read current scoped Use-Case/Target Module/Lens registry summaries, then only selected component bodies and material owners. Record exact read/reuse/omission evidence. Do not scan all component bodies or infer a Target merely to prepare.",
+      "ownerFiles": [
+        "planning/documentation/idtspe-methodology/active/idtspe-core/runtime/WORK-RECORD-PRINCIPLES.md",
+        "planning/documentation/idtspe-methodology/active/idtspe-core/runtime/IDTSPE-RUNTIME-COMPOSITION-CONTRACT.md",
+        "planning/session/session-state-runtime-contract.md",
+        "planning/documentation/idtspe-methodology/active/profiles/PROFILE-REGISTRY.md",
+        "planning/documentation/idtspe-methodology/active/idtspe-core/target-modules/TARGET-MODULE-REGISTRY.md",
+        "planning/documentation/idtspe-methodology/active/idtspe-core/lenses/LENS-REGISTRY.md"
+      ],
+      "ownerRefs": [
+        {
+          "responsibilityId": "IDTSPE.WORK-RUNTIME",
+          "path": "planning/documentation/idtspe-methodology/active/idtspe-core/runtime/WORK-RECORD-PRINCIPLES.md",
+          "anchor": "work-record-preparation",
+          "why": "Owns selected-subject preparation, actual coverage, recheck and the default pause before execution.",
+          "role": "PRIMARY_OWNER",
+          "readMode": "REQUIRED"
+        },
+        {
+          "responsibilityId": "IDTSPE.PORT-COMPOSITION-REFRESH",
+          "path": "planning/documentation/idtspe-methodology/active/idtspe-core/runtime/IDTSPE-RUNTIME-COMPOSITION-CONTRACT.md",
+          "anchor": "idtspe-port-composition-refresh",
+          "why": "Owns the conditional SHELL Port Requirement Set refresh before component reads and later execution.",
+          "role": "SUPPORTING_CONTRACT",
+          "readMode": "ON_DEMAND"
+        },
+        {
+          "responsibilityId": "SESSION.STATE-RUNTIME",
+          "path": "planning/session/session-state-runtime-contract.md",
+          "anchor": "session-state-runtime",
+          "why": "Carries the prepared open record through archive checkpoints and re-entry.",
+          "role": "SUPPORTING_CONTRACT",
+          "readMode": "REQUIRED"
+        },
+        {
+          "responsibilityId": "IDTSPE.PROFILE-DISCOVERY",
+          "path": "planning/documentation/idtspe-methodology/active/profiles/PROFILE-REGISTRY.md",
+          "anchor": "idtspe-profile-discovery",
+          "why": "Select only profiles relevant to the current subject before profile-local registry reads.",
+          "role": "SUPPORTING_CONTRACT",
+          "readMode": "ON_DEMAND"
+        },
+        {
+          "responsibilityId": "TARGET-MODULE.DISCOVERY",
+          "path": "planning/documentation/idtspe-methodology/active/idtspe-core/target-modules/TARGET-MODULE-REGISTRY.md",
+          "anchor": "target-module-discovery-registry",
+          "why": "Route plausible reusable Target Module Models when Target Formation or explicit selection is material.",
+          "role": "SUPPORTING_CONTRACT",
+          "readMode": "ON_DEMAND"
+        },
+        {
+          "responsibilityId": "LENS.DISCOVERY",
+          "path": "planning/documentation/idtspe-methodology/active/idtspe-core/lenses/LENS-REGISTRY.md",
+          "anchor": "lens-discovery-registry",
+          "why": "Route current Lens candidates and selected operations without treating a registry scan as application.",
+          "role": "SUPPORTING_CONTRACT",
+          "readMode": "ON_DEMAND"
+        }
+      ],
+      "includes": [
+        "planning/commands/recheck-idtspe-port-composition.command.md"
+      ],
+      "processCalls": [],
+      "compositionContributions": [],
+      "expectedOutput": "The open Work Record records the selected subject/route, current SHELL Port Requirement Set when applicable, selected/read owners/components with basis and outstanding preparation/Question candidates; no task action or WR-7 closure occurs.",
+      "permissionMode": "read-only-planning",
+      "keyReminders": [
+        "S0 exists before Manifest triage; this command prepares the already-selected WR-3 subject.",
+        "SHELL-only composition is conditional; DIRECT does not create a Shell pass.",
+        "Registry scan, component selection/read and Lens application are different facts.",
+        "Question sweep follows material reads and may send affected preparation back for recheck.",
+        "The preparation archive/continuation pause is owned by Work Runtime, not by the include edge alone."
+      ],
+      "userTarget": "<current bounded WR-3 subject, including Manifest work>",
+      "palette": true,
+      "helperPresentation": null,
+      "methodologyBinding": {
+        "methodologyRuntime": "IDTSPE",
+        "profile": null,
+        "surfaceKind": "ORCHESTRATION",
+        "targetModuleId": null,
+        "lensId": null,
+        "parentSurface": null,
+        "hostTargetPolicy": "NONE"
+      },
+      "refinements": []
+    },
+    {
+      "schemaVersion": 1,
       "id": "tmcmd.proposal.workup",
       "file": "prepare-idtspe-proposals.command.md",
       "command": "подготовь пропозалы",
@@ -6528,8 +6631,8 @@
       "commandFamily": [
         "перепроверь композицию портов"
       ],
-      "description": "Refresh/reaffirm the current IDTSPE Port Requirement Set before a normal Shell pass.",
-      "meaning": "When the current Turn Work Record has selected `ExecutionRoute=SHELL`, refresh/reaffirm the Port Requirement Set for the selected primary subject/current basis. Prior Turn Work Record orientation may be reused as evidence but never as sticky admission authority.",
+      "description": "Refresh/reaffirm the current SHELL Port Requirement Set during preparation and again before execution on continuation.",
+      "meaning": "When WR-4=SHELL, refresh/reaffirm the Port Requirement Set for the selected primary subject/current basis during preparation. On continuation, refresh/reaffirm the current Set and reuse compatible admitted/read coverage only with evidence; prior records or the preparation archive are not sticky authority. When WR-4=DIRECT and this command is reached only through the generic preparation prefix, record evidenced NOT_APPLICABLE for Shell port refresh.",
       "activeContextBehavior": "Compose with the current command set. Fully expand and merge all selected roots before semantic execution; reuse equivalent current work and follow the resulting dependencies-first plan.",
       "traversalReadMode": "Read this command own canonical references plus included-command references proportionally. Do not duplicate reads already satisfied by an unchanged trustworthy shared prefix.",
       "ownerFiles": [
@@ -6569,10 +6672,10 @@
       ],
       "processCalls": [],
       "compositionContributions": [],
-      "expectedOutput": "A refreshed/reaffirmed Shell Port Requirement Set for the selected subject is recorded in the current Turn Work Record.",
+      "expectedOutput": "A current SHELL Port Requirement Set and admission basis are recorded/reaffirmed in the open Work Record, or an evidenced NOT_APPLICABLE for DIRECT.",
       "permissionMode": "read-only-planning",
       "keyReminders": [
-        "This is a mandatory normal-Shell recheck, not an optional optimization.",
+        "This is a mandatory normal-SHELL recheck at preparation and execution; DIRECT does not force Shell ports.",
         "Collect declarative contributions from ALL expanded command nodes before performing this recheck.",
         "Do not infer positive applicability merely because a capability was explicitly requested; explicit request requires a real check."
       ],
@@ -7783,8 +7886,8 @@
         "выбери работу на текущий ход",
         "select current turn work"
       ],
-      "description": "Select one bounded primary work subject at WR-3.",
-      "meaning": "After automatic WR-2 triage, select one primary substantive subject from required Manifest reconciliation, an accepted current action or the current input, under the natural owner. Do not execute a second unrelated subject by default.",
+      "description": "Select one bounded primary work subject at WR-3 in the open Work Record.",
+      "meaning": "After automatic WR-2 triage, select one primary substantive subject from required Manifest reconciliation, an accepted current action or current input. On continuation of the same still-open subject, reaffirm it without allocating another record; a distinct subject requires a new S0. Do not execute a second unrelated subject by default.",
       "activeContextBehavior": "Operate only at the reached current Work Record stage; reuse the same Session State and record.",
       "traversalReadMode": "Read the fundamental current-work Use Case and the reached Session/Work Record owner proportionally; reuse current trustworthy state.",
       "ownerFiles": [
@@ -8097,9 +8200,9 @@
         "проведи Question sweep текущей задачи",
         "sweep current session work questions"
       ],
-      "description": "Recheck material Questions and readiness before executing the tentative current Manifest task.",
-      "meaning": "At WR-5, for the bounded WR-3 subject and tentative accepted Manifest action, perform the contextual pre-execution stabilization owned by Work Record Principles. Review material owner/Source/Evidence/Manifest/PRS state; reuse answered Questions, derive missing material Questions, route unresolved USER choices and missing prerequisites through existing gates, integrate permitted answer/Decision consequences during WR-5, and repeat after any material candidate/route change until a stable readiness conclusion or real gate. Do not turn WR-2 triage into substantive reconciliation, change the WR-1..WR-7 kernel, or begin business execution within this focused command.",
-      "activeContextBehavior": "Use one current Session State and Turn Work Record. A Manifest action is a tentative execution candidate under the same WR-3 primary subject. If no accepted current task is ready for execution, report the actual subject/gate rather than inventing one. The fundamental current-work Use Case applies this stabilization before affected business execution even without an explicit command invocation.",
+      "description": "Check material Questions and readiness after the current subject has been prepared.",
+      "meaning": "At WR-5, after selected-subject preparation and material owner/component reads, perform the contextual Question sweep for the bounded WR-3 subject, including Manifest reconciliation when selected. Reuse answered Questions, derive new material Questions, route USER-owned choices and missing prerequisites through their natural gates, and repeat affected preparation/sweep after a material candidate, route or port change until stable readiness or a real gate. Do not turn WR-2 triage into substantive reconciliation or execute the selected task within this focused command.",
+      "activeContextBehavior": "Use the same open Session State and Work Record. A request to verify whether all material Questions were found, supply answers or complete preparation repeats affected coverage and produces another checkpoint/archive without executing the pending task. The fundamental current-work Use Case applies this sweep for every selected subject even without explicit command invocation.",
       "traversalReadMode": "Read the reached Work Record pre-execution owner and only the material Manifest/PRS/Question/answer/decision and task-owner sources. Reuse current trustworthy answers and avoid a fixed questionnaire.",
       "ownerFiles": [
         "planning/documentation/idtspe-methodology/active/idtspe-core/runtime/WORK-RECORD-PRINCIPLES.md",
@@ -8111,7 +8214,7 @@
           "responsibilityId": "IDTSPE.WORK-RUNTIME",
           "path": "planning/documentation/idtspe-methodology/active/idtspe-core/runtime/WORK-RECORD-PRINCIPLES.md",
           "anchor": "work-record-pre-execution-question-sweep",
-          "why": "Owns contextual Question derivation, answer integration, repeat and readiness before executing the tentative current Manifest task.",
+          "why": "Owns material Question derivation, answer integration and iterative readiness for every prepared selected subject.",
           "role": "PRIMARY_OWNER",
           "readMode": "REQUIRED"
         },
@@ -8119,7 +8222,7 @@
           "responsibilityId": "IDTSPE.UC.CONDUCT-CURRENT-WORK",
           "path": "planning/documentation/idtspe-methodology/active/idtspe-core/use-cases/conduct-current-work/UC-IDTSPE-CONDUCT-CURRENT-WORK.md",
           "anchor": "uc-idtspe-conduct-current-work",
-          "why": "Keeps this focused check inside the single S0–WR-7 turn rather than a parallel task workflow.",
+          "why": "Coordinates preparation checkpoints and later execution in the same open Work Record.",
           "role": "SUPPORTING_CONTRACT",
           "readMode": "REQUIRED"
         },
@@ -8133,19 +8236,20 @@
         }
       ],
       "includes": [
-        "planning/commands/choose-current-work-route.command.md"
+        "planning/commands/prepare-current-work-record.command.md"
       ],
       "processCalls": [],
       "compositionContributions": [],
-      "expectedOutput": "Current Question/answer dispositions and one stable candidate/route/readiness conclusion for the bounded session task, or USER_REVIEW_REQUIRED/BLOCKED with existing PRS/Manifest consequences and the next recheck condition.",
+      "expectedOutput": "Actual Question/answer dispositions and stable current candidate/route/readiness or a USER_REVIEW_REQUIRED/BLOCKED recheck condition, recorded before the preparation archive checkpoint; no task execution.",
       "permissionMode": "read-only-planning",
       "keyReminders": [
-        "This is the session-wide current-task sweep beneath WR-5, not the automatic WR-2 Manifest triage.",
-        "It is distinct from the SDS Evolution Step sweep: that focused owner checks one Step and RU-EVO-06 before selected-Step realization; reuse overlapping evidence without merging their readiness conclusions.",
+        "This is the current-subject WR-5 sweep after preparation, not WR-2 Manifest triage.",
+        "It is distinct from the SDS Evolution Step sweep and RU-EVO-06; evidence may be reused but readiness conclusions remain separate.",
         "An empty PRS is not readiness proof; already answered USER input is not asked again.",
-        "Exact USER-selected/factual Manifest consequences may synchronize under Session State authority; AI-derived prospective changes remain Proposal-first. This command does not authorize target/repository mutation or execute the task."
+        "A changed route or material Question triggers affected preparation/port recheck on the new basis.",
+        "This command does not authorize target/repository mutation or execute the pending task."
       ],
-      "userTarget": "<current bounded Manifest task / WR-3 subject>",
+      "userTarget": "<current bounded WR-3 subject, including Manifest work>",
       "palette": true,
       "helperPresentation": null,
       "methodologyBinding": {
@@ -8232,8 +8336,8 @@
         "синхронизируй Session State",
         "synchronize session state"
       ],
-      "description": "Synchronize material Session State consequences at WR-6.",
-      "meaning": "After the current subject work, synchronize accepted Manifest, PRS/context/input and material artifact references, preserving prior accepted revision. AI-derived prospective Manifest meaning remains Proposal-first. This is a focused direct invocation, not a prerequisite of WR-5.",
+      "description": "Synchronize material Session State consequences at a preparation checkpoint or final WR-6.",
+      "meaning": "Synchronize material Manifest, PRS/context/input, open Work Record and artifact references at preparation/review checkpoints, preserving accepted history; at the end of the bounded subject perform final WR-6 reconciliation. This focused direct invocation does not close the Work Record or become a prerequisite of WR-5.",
       "activeContextBehavior": "Operate only at the reached current Work Record stage; reuse the same Session State and record.",
       "traversalReadMode": "Read the fundamental current-work Use Case and the reached Session/Work Record owner proportionally; reuse current trustworthy state.",
       "ownerFiles": [
@@ -8264,7 +8368,7 @@
       ],
       "processCalls": [],
       "compositionContributions": [],
-      "expectedOutput": "Current Session State consequences recorded under WR-6 without premature acceptance.",
+      "expectedOutput": "Current Session State consequences and archive checkpoint or final WR-6 reconciliation without premature acceptance/record closure.",
       "permissionMode": "artifact-no-commit-push",
       "keyReminders": [
         "One current Session State and Turn Work Record; no duplicate planning hierarchy.",
@@ -8626,7 +8730,7 @@
         "режим idtspe"
       ],
       "description": "Explicitly force/reaffirm the SHELL execution route for the current selected primary subject inside the ambient Work Runtime.",
-      "meaning": "IDTSPE methodology remains always applicable, but Work Runtime now exists above DIRECT/SHELL. Bare `idtspe` reuses the current Turn Work Record, passes through input/Manifest/primary-subject gates, sets or reaffirms `ExecutionRoute=SHELL`, refreshes applicable task-specific Use Cases and the Port Requirement Set, and executes the smallest useful Shell composition in that same Turn Work Record.",
+      "meaning": "IDTSPE remains always applicable. Bare `idtspe` selects/reaffirms SHELL for the current WR-3 subject, uses the same S0 Work Record, and traverses the preparation include chain (current Use Cases, Port Requirement Set, selected owner/component reads and Question sweep). The semantic Shell action waits after the default preparation archive until USER continuation unless continuous work was explicitly requested. On continuation, refresh/reaffirm affected composition and execute admitted capabilities in that same record.",
       "activeContextBehavior": "Treat bare `idtspe` as explicit SHELL-route intent for the current primary subject. Registered TM/Lens selectors contribute intent after Work Runtime/Manifest gates and remain subject to applicability/materiality.",
       "traversalReadMode": "Read current Core/profile Target Module and Lens registry summaries first. For an exact/unique selector, read only the selected component body plus the minimum Core/profile governance it requires. Do not scan/load every module or Lens body. Reuse current reliable governance; targeted refresh when uncertain.",
       "ownerFiles": [
@@ -8672,20 +8776,19 @@
         }
       ],
       "includes": [
-        "planning/commands/choose-current-work-route.command.md",
-        "planning/commands/compose-current-idtspe-work.command.md",
-        "planning/commands/recheck-idtspe-port-composition.command.md"
+        "planning/commands/sweep-session-work-questions.command.md"
       ],
       "processCalls": [],
       "compositionContributions": [],
-      "expectedOutput": "The current Turn Work Record shows `ExecutionRoute=SHELL`, refreshed task-specific Use-Case/Port composition and observable Shell traversal/results; no second pass trace is created.",
+      "expectedOutput": "A preparation archive with recorded SHELL route, current Use-Case/Port composition and actual read/Question coverage; after continuation, observable admitted Shell traversal/results in the same record.",
       "permissionMode": "read-only-planning",
       "keyReminders": [
         "Work Runtime and the Turn Work Record exist before Shell route selection.",
         "This command explicitly selects/reaffirms SHELL; it is not the reason Session State or the Work Record exists.",
         "P-01/P-02 are retired/reserved compatibility labels; active Shell capabilities retain P-03..P-15 numbering.",
         "Broad Discussion may remain sufficient; do not force optional semantic structure.",
-        "This command plans/reviews only and does not grant repository mutation."
+        "This command plans/reviews only and does not grant repository mutation.",
+        "The SHELL semantic action is pending at the default preparation checkpoint, including when this command is included by another root."
       ],
       "userTarget": "<optional TM/LENS selector + target/context, or current planning work>",
       "palette": true,

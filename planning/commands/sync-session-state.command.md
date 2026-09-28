@@ -13,8 +13,8 @@ Status: active direct Planning Command; current meaning remains in the linked Us
     "синхронизируй Session State",
     "synchronize session state"
   ],
-  "description": "Synchronize material Session State consequences at WR-6.",
-  "meaning": "After the current subject work, synchronize accepted Manifest, PRS/context/input and material artifact references, preserving prior accepted revision. AI-derived prospective Manifest meaning remains Proposal-first. This is a focused direct invocation, not a prerequisite of WR-5.",
+  "description": "Synchronize material Session State consequences at a preparation checkpoint or final WR-6.",
+  "meaning": "Synchronize material Manifest, PRS/context/input, open Work Record and artifact references at preparation/review checkpoints, preserving accepted history; at the end of the bounded subject perform final WR-6 reconciliation. This focused direct invocation does not close the Work Record or become a prerequisite of WR-5.",
   "activeContextBehavior": "Operate only at the reached current Work Record stage; reuse the same Session State and record.",
   "traversalReadMode": "Read the fundamental current-work Use Case and the reached Session/Work Record owner proportionally; reuse current trustworthy state.",
   "ownerFiles": [
@@ -22,7 +22,7 @@ Status: active direct Planning Command; current meaning remains in the linked Us
     "planning/documentation/idtspe-methodology/active/idtspe-core/runtime/WORK-RECORD-PRINCIPLES.md",
     "planning/session/session-state-runtime-contract.md"
   ],
-  "expectedOutput": "Current Session State consequences recorded under WR-6 without premature acceptance.",
+  "expectedOutput": "Current Session State consequences and archive checkpoint or final WR-6 reconciliation without premature acceptance/record closure.",
   "permissionMode": "artifact-no-commit-push",
   "keyReminders": [
     "One current Session State and Turn Work Record; no duplicate planning hierarchy.",

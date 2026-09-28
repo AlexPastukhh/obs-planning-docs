@@ -10,7 +10,7 @@ Session State is the ambient file-backed continuity/workspace representation for
 
 ## Bootstrap and re-entry
 
-For substantive work, create/reuse Session State and establish/reuse its portable archive identity before methodology execution; materialize the current Turn Work Record S0 as early as the host permits, then create/reuse an initial portable archive snapshot containing available navigation and S0 before substantive execution when writable with the immutable WR-1…WR-7 kernel and reconstructable authority/methodology/retention references as early as the host permits. The fundamental [current-work Use Case](../documentation/idtspe-methodology/active/idtspe-core/use-cases/conduct-current-work/UC-IDTSPE-CONDUCT-CURRENT-WORK.md#uc-idtspe-conduct-current-work) coordinates the turn after this minimal allocation. If the accepted Manifest is not yet formed, the initial snapshot marks it pending rather than fabricating accepted content. The archive is rematerialized from actual current state at WR-7. Re-entry reads:
+For substantive work, create/reuse Session State and establish/reuse its portable archive identity before methodology execution; materialize the current Turn Work Record S0 as early as the host permits for a new bounded primary subject, then create/reuse an initial portable archive snapshot containing available navigation and S0 before substantive execution when writable with the immutable WR-1…WR-7 kernel and reconstructable authority/methodology/retention references as early as the host permits. The fundamental [current-work Use Case](../documentation/idtspe-methodology/active/idtspe-core/use-cases/conduct-current-work/UC-IDTSPE-CONDUCT-CURRENT-WORK.md#uc-idtspe-conduct-current-work) coordinates preparation and later continuation of that subject. If the accepted Manifest is not yet formed, the initial snapshot marks it pending rather than fabricating accepted content. Rematerialize the archive from actual current state at every response checkpoint and at WR-7. Re-entry reads:
 
 ```text
 README.md        navigation/responsibilities
@@ -22,6 +22,8 @@ context/          PRS-selected carried contextual material
 ```
 
 `README.md` is navigation only; `WORK-MANIFEST.md` is the accepted session-scale work projection; Core PRS remains the bounded resolution/context result.
+
+On re-entry, a USER request to continue, answer preparation Questions or recheck preparation of the same still-open subject reuses its exact Work Record and original S0. Append the new input/answer and any changed command-composition basis as a new event, retaining the earlier observations. Read the current Manifest, PRS, Work Record and relevant material before deciding what coverage is reusable. A separate primary subject starts a separate record; preserve the old record's explicit suspended/stop disposition and Manifest navigation. An archive does not make prior port admissions or owner readings current by itself.
 
 ## Default physical shape
 
@@ -74,7 +76,7 @@ A current Manifest/PRS/Proposal/Need reference may not be silently pruned. `PINN
 
 ## Archive closure
 
-Every substantive Session-State turn normally rematerializes a portable archive before response/handoff completion. The archive contains current Manifest, current Turn Work Record, current PRS when material, and material session-owned files required for re-entry. External repository/source trees remain basis refs by default and are not recursively copied merely because cited.
+Every substantive preparation, review or execution response normally rematerializes a portable archive before response/handoff completion. The archive contains current Manifest, the same open/current Work Record (or its final closed state), current PRS when material, and material session-owned files required for re-entry. A preparation checkpoint carries the selected subject/root, route, checked Port Requirement Set when SHELL, selected/read component refs and basis, material Question dispositions, actual-versus-planned preparation, deferred actions and continuation/recheck condition. It is a truthful checkpoint, not WR-7 closure or authorization to accept a candidate. External repository/source trees remain basis refs by default and are not recursively copied merely because cited.
 
 The Session State archive has `WORK-MANIFEST.md` as its re-entry entry point and is distinct from a separately requested PRS-centered Proposal Workspace Archive, including an SDS Application planning archive. Produce separate archive artifacts rather than making one ZIP serve both purposes or nesting the Proposal archive inside Session State by default. Record the separate Proposal archive identity/basis as a reference where needed; overlapping semantic state must point to the same canonical owner instead of becoming divergent independent PRS meanings. The Session State archive is not a Replacement Package and does not promote Proposal candidates to accepted/current meaning. P-14 remains the external/durable artifact-placement owner when placement outside ambient Session State is material.
 

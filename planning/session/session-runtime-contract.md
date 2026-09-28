@@ -69,6 +69,8 @@ current work step reaches its exit condition
 
 Do not ask "continue?" merely because another ordinary step begins.
 
+The [Work Record preparation checkpoint](../documentation/idtspe-methodology/active/idtspe-core/runtime/WORK-RECORD-PRINCIPLES.md#work-record-preparation) is a deliberate exception for every selected executable task by default, including Manifest work: prepare, check Questions and actual coverage, synchronize a Session archive and return a truthful preparation result before task execution. This is a specified two-response workflow boundary, not a request to re-authorize work already authorized. If the USER explicitly requests continuous preparation and execution, progress in one response when the usual real gates permit. On "continue/do it", reuse the same open record and revalidate affected preparation. On "check all Questions/reprepare", stay in preparation and issue another checkpoint. Ordinary steps within either stage continue automatically.
+
 ## 4. Progress Visibility
 
 If one meaningful step runs long enough that the USER would otherwise lose orientation, provide an occasional concise update describing useful partial progress and current focus.

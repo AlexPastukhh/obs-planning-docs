@@ -13,24 +13,25 @@ Status: active focused Core current-work command; it invokes the existing WR-5 p
     "проведи Question sweep текущей задачи",
     "sweep current session work questions"
   ],
-  "description": "Recheck material Questions and readiness before executing the tentative current Manifest task.",
-  "meaning": "At WR-5, for the bounded WR-3 subject and tentative accepted Manifest action, perform the contextual pre-execution stabilization owned by Work Record Principles. Review material owner/Source/Evidence/Manifest/PRS state; reuse answered Questions, derive missing material Questions, route unresolved USER choices and missing prerequisites through existing gates, integrate permitted answer/Decision consequences during WR-5, and repeat after any material candidate/route change until a stable readiness conclusion or real gate. Do not turn WR-2 triage into substantive reconciliation, change the WR-1..WR-7 kernel, or begin business execution within this focused command.",
-  "activeContextBehavior": "Use one current Session State and Turn Work Record. A Manifest action is a tentative execution candidate under the same WR-3 primary subject. If no accepted current task is ready for execution, report the actual subject/gate rather than inventing one. The fundamental current-work Use Case applies this stabilization before affected business execution even without an explicit command invocation.",
+  "description": "Check material Questions and readiness after the current subject has been prepared.",
+  "meaning": "At WR-5, after selected-subject preparation and material owner/component reads, perform the contextual Question sweep for the bounded WR-3 subject, including Manifest reconciliation when selected. Reuse answered Questions, derive new material Questions, route USER-owned choices and missing prerequisites through their natural gates, and repeat affected preparation/sweep after a material candidate, route or port change until stable readiness or a real gate. Do not turn WR-2 triage into substantive reconciliation or execute the selected task within this focused command.",
+  "activeContextBehavior": "Use the same open Session State and Work Record. A request to verify whether all material Questions were found, supply answers or complete preparation repeats affected coverage and produces another checkpoint/archive without executing the pending task. The fundamental current-work Use Case applies this sweep for every selected subject even without explicit command invocation.",
   "traversalReadMode": "Read the reached Work Record pre-execution owner and only the material Manifest/PRS/Question/answer/decision and task-owner sources. Reuse current trustworthy answers and avoid a fixed questionnaire.",
   "ownerFiles": [
     "planning/documentation/idtspe-methodology/active/idtspe-core/runtime/WORK-RECORD-PRINCIPLES.md",
     "planning/documentation/idtspe-methodology/active/idtspe-core/use-cases/conduct-current-work/UC-IDTSPE-CONDUCT-CURRENT-WORK.md",
     "planning/documentation/idtspe-methodology/active/idtspe-core/use-cases/maintain-current-work-state/UC-IDTSPE-MAINTAIN-CURRENT-WORK-STATE.md"
   ],
-  "expectedOutput": "Current Question/answer dispositions and one stable candidate/route/readiness conclusion for the bounded session task, or USER_REVIEW_REQUIRED/BLOCKED with existing PRS/Manifest consequences and the next recheck condition.",
+  "expectedOutput": "Actual Question/answer dispositions and stable current candidate/route/readiness or a USER_REVIEW_REQUIRED/BLOCKED recheck condition, recorded before the preparation archive checkpoint; no task execution.",
   "permissionMode": "read-only-planning",
   "keyReminders": [
-    "This is the session-wide current-task sweep beneath WR-5, not the automatic WR-2 Manifest triage.",
-    "It is distinct from the SDS Evolution Step sweep: that focused owner checks one Step and RU-EVO-06 before selected-Step realization; reuse overlapping evidence without merging their readiness conclusions.",
+    "This is the current-subject WR-5 sweep after preparation, not WR-2 Manifest triage.",
+    "It is distinct from the SDS Evolution Step sweep and RU-EVO-06; evidence may be reused but readiness conclusions remain separate.",
     "An empty PRS is not readiness proof; already answered USER input is not asked again.",
-    "Exact USER-selected/factual Manifest consequences may synchronize under Session State authority; AI-derived prospective changes remain Proposal-first. This command does not authorize target/repository mutation or execute the task."
+    "A changed route or material Question triggers affected preparation/port recheck on the new basis.",
+    "This command does not authorize target/repository mutation or execute the pending task."
   ],
-  "userTarget": "<current bounded Manifest task / WR-3 subject>",
+  "userTarget": "<current bounded WR-3 subject, including Manifest work>",
   "palette": true,
   "refinements": [],
   "methodologyBinding": {
@@ -43,14 +44,14 @@ Status: active focused Core current-work command; it invokes the existing WR-5 p
     "hostTargetPolicy": "NONE"
   },
   "includes": [
-    "planning/commands/choose-current-work-route.command.md"
+    "planning/commands/prepare-current-work-record.command.md"
   ],
   "ownerRefs": [
     {
       "responsibilityId": "IDTSPE.WORK-RUNTIME",
       "path": "planning/documentation/idtspe-methodology/active/idtspe-core/runtime/WORK-RECORD-PRINCIPLES.md",
       "anchor": "work-record-pre-execution-question-sweep",
-      "why": "Owns contextual Question derivation, answer integration, repeat and readiness before executing the tentative current Manifest task.",
+      "why": "Owns material Question derivation, answer integration and iterative readiness for every prepared selected subject.",
       "role": "PRIMARY_OWNER",
       "readMode": "REQUIRED"
     },
@@ -58,7 +59,7 @@ Status: active focused Core current-work command; it invokes the existing WR-5 p
       "responsibilityId": "IDTSPE.UC.CONDUCT-CURRENT-WORK",
       "path": "planning/documentation/idtspe-methodology/active/idtspe-core/use-cases/conduct-current-work/UC-IDTSPE-CONDUCT-CURRENT-WORK.md",
       "anchor": "uc-idtspe-conduct-current-work",
-      "why": "Keeps this focused check inside the single S0–WR-7 turn rather than a parallel task workflow.",
+      "why": "Coordinates preparation checkpoints and later execution in the same open Work Record.",
       "role": "SUPPORTING_CONTRACT",
       "readMode": "REQUIRED"
     },

@@ -113,7 +113,7 @@ The JSON is intentionally strict so repository writes, build-time validation and
 <a id="planning-command-composition"></a>
 ## Command Composition / Includes
 
-Every Planning Command invocation includes the canonical methodology Use-Case applicability recheck, either directly or transitively through its registered command composition. For ordinary substantive roots, the dependencies-first chain is `WR-4 → WR-3 → WR-1 → session.work.maintain → methodology.use_cases.recheck`; foundational roots within the chain are valid partial entries. S0 and root/alias recognition occur physically before full DAG expansion and are reconciled into the same record; the WR-1 command action confirms/records them, then automatic WR-2 triage occurs before WR-3. WR-6/WR-7 close after the selected root action under the fundamental current-work Use Case, never as mandatory includes of WR-5. The recheck scans the Methodology Use-Case Registry Map and only plausibly applicable scoped registry rows; it does **not** execute every Use Case.
+Every Planning Command invocation includes the canonical methodology Use-Case applicability recheck, either directly or transitively through its registered command composition. For ordinary substantive roots, the dependencies-first chain is `WR-4 → WR-3 → WR-1 → session.work.maintain → methodology.use_cases.recheck`; foundational roots within the chain are valid partial entries. S0 and root/alias recognition occur physically before full DAG expansion and are reconciled into the same record; the WR-1 command action confirms/records them, then automatic WR-2 triage occurs before WR-3. A continuation of the same open subject reuses S0 and appends its actual input/command-basis event. WR-6/WR-7 close only after the subject ends, never as mandatory includes of WR-5; an intermediate preparation response synchronizes and archives the still-open record. The recheck scans the Methodology Use-Case Registry Map and only plausibly applicable scoped registry rows; it does **not** execute every Use Case.
 
 ### Expand First, Execute Dependencies Before Dependents
 
@@ -129,7 +129,7 @@ all selected root commands / semantic component cards
 → establish the dependencies-first execution plan
 → execute deepest/shared dependencies first
 → execute each dependent only after its requirements completed or were validly REUSED
-→ selected root/leaf action executes last on its own branch
+→ selected root/leaf action executes last on its own branch after the preparation gate opens
 ```
 
 Declarative contributions are known at composition time rather than waiting for the node's later runtime action. The Helper/command resolver projects and merges the structured `compositionContributions` from every expanded node plus registered TM/Lens selection metadata before dependency semantic actions begin. They include, when applicable:
@@ -157,22 +157,26 @@ methodology.use_cases.recheck
 → session.route.choose (WR-4)
 ```
 
-When the selected route is `SHELL`, `idtspe.compose-current-work` and `idtspe.port-composition.recheck` precede `idtspe.work`'s semantic action at WR-5. `DIRECT` does not manufacture a Shell pass. The one structured Turn Work Record already exists above either route, so no active P-02 or separate trace prerequisite is needed. `idtspe.port.trace` remains an explicit legacy compatibility visibility command only.
+The preparation dependency chain is `session.route.choose → idtspe.compose-current-work → idtspe.port-composition.recheck → session.current_work.prepare → session.current_work.question_sweep` when `SHELL` is selected. For `DIRECT`, the included Shell-only port refresh is `NOT_APPLICABLE` with basis and preparation uses the relevant direct owner/inputs; current Use-Case orientation may still be reaffirmed without manufacturing a Shell pass. The one structured Work Record already exists above either route, so no active P-02 or separate trace prerequisite is needed. `idtspe.port.trace` remains an explicit legacy compatibility visibility command only.
 
-Before affected execution of a tentative current Manifest task, the fundamental current-work Use Case performs the contextual Question sweep under WR-5 on either route; a material ambiguity escalates DIRECT to SHELL. The direct `session.current_work.question_sweep` shortcut includes the early chain through WR-4 and exposes that existing check without executing the task. It is separate from the SDS Evolution Step sweep, which checks one selected Step and `RU-EVO-06` at its own handoff. Neither sweep is a renamed WR-2 command or a second Question lifecycle.
+Before execution of **any** selected subject, including Manifest reconciliation, the fundamental current-work Use Case performs the contextual Question sweep under WR-5 after material owner/component reads. The direct `session.current_work.question_sweep` shortcut includes `session.current_work.prepare`, which transitively includes the early chain and Shell composition; an affected ambiguity may escalate DIRECT to SHELL and repeat preparation on the changed basis. The sweep is separate from the SDS Evolution Step sweep, which checks one selected Step and `RU-EVO-06` at its own handoff. Neither sweep is a renamed WR-2 command or a second Question lifecycle.
 
-User-level/specialized IDTSPE operations reuse this chain and, when Shell is selected, the same current Work Context and Port Requirement Set. Shared dependencies and equivalent work are deduplicated in the merged DAG; WR-6/WR-7 occur after selected leaf/root work under the fundamental current-work Use Case.
+The full selected root DAG and contributions are resolved before semantic command execution. By default, the common runtime executes preparatory dependencies through the sweep, audits actual coverage, synchronizes an archive checkpoint and **defers** `idtspe.work`, the selected semantic root and any other execution-bearing nodes until a later USER continuation of the same record. A directly requested preparation/sweep or a request to recheck its completeness also checkpoints without executing the pending task. A USER request for a continuous run may cross the gate in the same response. At re-entry, check the saved DAG/basis and re-evaluate affected nodes; a prior command ID or ZIP is not sticky reuse evidence. Deferred `processCalls` remain at their owner points. This phase gate is owned by the Work Runtime/Use Case, including for ordinary language that has no command include; do not implement it by making WR-6/WR-7 dependencies or by executing a leaf root in the preparation response.
+
+User-level/specialized IDTSPE operations reuse this chain and, when Shell is selected, the same current Work Context and Port Requirement Set. Shared dependencies and equivalent work are deduplicated in the merged DAG; final WR-6/WR-7 occur after selected leaf/root work under the fundamental current-work Use Case.
 
 ```text
 TM-* command/card
 → current-work prefix through WR-4
-→ idtspe.compose-current-work + idtspe.port-composition.recheck
+→ idtspe.compose-current-work + idtspe.port-composition.recheck + session.current_work.prepare + Question sweep
+→ preparation checkpoint / USER continuation
 → idtspe.work + idtspe.port.target
 → idtspe.target-module.apply + selected TM-* Model
 
 LENS-* command/card
 → current-work prefix through WR-4
-→ idtspe.compose-current-work + idtspe.port-composition.recheck
+→ idtspe.compose-current-work + idtspe.port-composition.recheck + session.current_work.prepare + Question sweep
+→ preparation checkpoint / USER continuation
 → idtspe.work + idtspe.port.lens
 → idtspe.lens.apply + selected Lens Application
 ```

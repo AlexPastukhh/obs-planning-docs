@@ -228,7 +228,7 @@ idtspe.target-module.apply / idtspe.lens.apply
   → resolve the selected registered model and its natural meta-model/owner
 ```
 
-Ordinary command roots inherit the current-turn entry chain through WR-4 after S0 and the fundamental Use-Case recheck. For a selected SHELL route, `idtspe.work` reaffirms Port Composition and executes only the needed named capabilities beneath WR-5. Duplicate compatible dependency edges are deduplicated; WR-6/WR-7 occur through the current-work Use Case after leaf work rather than as `includes` prerequisites.
+Ordinary command roots inherit the current-subject entry chain through WR-4 after S0 and the fundamental Use-Case recheck. The `session.current_work.prepare` dependency traverses proportional owner/component reads after current work/Port composition, and `session.current_work.question_sweep` follows it for the selected subject. The default preparation checkpoint archives the same open Work Record and defers execution-bearing nodes, including `idtspe.work`, until a USER continuation; an explicit continuous-run instruction may proceed without the pause. On a selected SHELL route, continuation reaffirms Port Composition and executes only needed admitted capabilities beneath WR-5. Duplicate compatible dependency edges are deduplicated on their current basis; final WR-6/WR-7 occur through the current-work Use Case after the subject ends rather than as `includes` prerequisites.
 
 The methodology remains independently executable without Helper/command projection: current Use Cases, owners and natural handoffs determine the same process. The command DAG is a reproducibility/guarantee surface only.
 

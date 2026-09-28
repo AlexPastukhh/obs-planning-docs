@@ -121,7 +121,7 @@ Responsibility ID: `IDTSPE.PORT-COMPOSITION-REFRESH`
 
 This section owns the technical refresh/admission/reuse semantics for the Port Requirement Set. `UC-IDTSPE-COMPOSE-CURRENT-WORK` invokes the refresh when the current Turn Work Record selects SHELL; the Contextual Methodology Application Contract contextualizes applicability; the Turn Work Record represents observable routing/admission facts.
 
-Each **SHELL execution** consumes one current Port Requirement Set. Work Runtime first establishes the current Turn Work Record, primary subject and route. When `WR-4=SHELL`, current Use-Case applicability and task-specific composition are reaffirmed and only then `IDTSPE.PORT-COMPOSITION-REFRESH` refreshes/reaffirms the Port Requirement Set from that composition plus pre-collected command/component contributions. Prior Turn Work Record history may be consulted as orientation/evidence, but never permits skipping the refresh.
+Each **SHELL execution** consumes one current Port Requirement Set. Work Runtime first establishes the current Turn Work Record, primary subject and route. When `WR-4=SHELL`, preparation reaffirms current Use-Case applicability and task-specific composition and only then `IDTSPE.PORT-COMPOSITION-REFRESH` refreshes/reaffirms the Port Requirement Set from that composition plus pre-collected command/component contributions. The preparatory Port Requirement Set, actual registry/component reads and admission basis are recorded in the still-open Work Record before its archive checkpoint. On later continuation, refresh/reaffirm the Set on the current basis before executing Shell; compatible preparatory determinations and reads may be `REUSED` with evidence, but neither the archive nor a previous Work Record permits skipping the refresh.
 
 ```text
 current Use-Case applicability composition
@@ -136,7 +136,7 @@ current Use-Case applicability composition
 → one normal Shell pass
 ```
 
-A previous pass's admitted/non-admitted port set is **not sticky authority** for the next pass. When the subject/basis/operation and all material requirement inputs remain equivalent, the previous determination may be `REUSED`; otherwise recompute only the affected admission decisions.
+A preparation checkpoint's or previous pass's admitted/non-admitted port set is **not sticky authority** for the next pass. When the subject/basis/operation and all material requirement inputs remain equivalent, the previous determination may be `REUSED`; otherwise recompute only the affected admission decisions. Reading a selected Lens/Target Module body during preparation is observable owner coverage, not Lens application or Target realization; P-06 and Target-local semantic gates still govern actual execution.
 
 Automatic refresh is not automatic focus. Intentionally narrowing/focusing work to a selected subset of ports requires explicit USER intent; ordinary refresh must still admit a newly material prerequisite/port when the current composition requires it.
 
@@ -407,7 +407,7 @@ not become a second semantic authority.
 
 ## Exit Condition
 
-The Turn Work Record is closed through WR-7 from its immutable S0/kernel, current/refined work state, observable events and explicit adjustments rather than reconstructed after the fact; substantive turns reconcile final plan-vs-actual before completion. An IDTSPE instance is ready to hand off when proportionally:
+The Turn Work Record is checkpointed during preparation and closed through WR-7 only when its bounded subject ends, using its immutable S0/kernel, current/refined work state, observable events and explicit adjustments rather than reconstructing them after the fact; substantive work reconciles final plan-vs-actual before completion. An IDTSPE instance is ready to hand off when proportionally:
 
 ```text
 Target purpose/scope and applicable Target Resolution Requirements are sufficiently formed for this checkpoint

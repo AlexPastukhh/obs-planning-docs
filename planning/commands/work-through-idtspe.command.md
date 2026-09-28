@@ -16,7 +16,7 @@ Scope: generic IDTSPE work-mode and installed-component dispatcher.
     "режим idtspe"
   ],
   "description": "Explicitly force/reaffirm the SHELL execution route for the current selected primary subject inside the ambient Work Runtime.",
-  "meaning": "IDTSPE methodology remains always applicable, but Work Runtime now exists above DIRECT/SHELL. Bare `idtspe` reuses the current Turn Work Record, passes through input/Manifest/primary-subject gates, sets or reaffirms `ExecutionRoute=SHELL`, refreshes applicable task-specific Use Cases and the Port Requirement Set, and executes the smallest useful Shell composition in that same Turn Work Record.",
+  "meaning": "IDTSPE remains always applicable. Bare `idtspe` selects/reaffirms SHELL for the current WR-3 subject, uses the same S0 Work Record, and traverses the preparation include chain (current Use Cases, Port Requirement Set, selected owner/component reads and Question sweep). The semantic Shell action waits after the default preparation archive until USER continuation unless continuous work was explicitly requested. On continuation, refresh/reaffirm affected composition and execute admitted capabilities in that same record.",
   "activeContextBehavior": "Treat bare `idtspe` as explicit SHELL-route intent for the current primary subject. Registered TM/Lens selectors contribute intent after Work Runtime/Manifest gates and remain subject to applicability/materiality.",
   "traversalReadMode": "Read current Core/profile Target Module and Lens registry summaries first. For an exact/unique selector, read only the selected component body plus the minimum Core/profile governance it requires. Do not scan/load every module or Lens body. Reuse current reliable governance; targeted refresh when uncertain.",
   "ownerFiles": [
@@ -27,14 +27,15 @@ Scope: generic IDTSPE work-mode and installed-component dispatcher.
     "planning/documentation/idtspe-methodology/active/profiles/PROFILE-REGISTRY.md",
     "planning/documentation/idtspe-methodology/active/idtspe-core/commands/IDTSPE-COMMAND-SURFACE-CONTRACT.md"
   ],
-  "expectedOutput": "The current Turn Work Record shows `ExecutionRoute=SHELL`, refreshed task-specific Use-Case/Port composition and observable Shell traversal/results; no second pass trace is created.",
+  "expectedOutput": "A preparation archive with recorded SHELL route, current Use-Case/Port composition and actual read/Question coverage; after continuation, observable admitted Shell traversal/results in the same record.",
   "permissionMode": "read-only-planning",
   "keyReminders": [
     "Work Runtime and the Turn Work Record exist before Shell route selection.",
     "This command explicitly selects/reaffirms SHELL; it is not the reason Session State or the Work Record exists.",
     "P-01/P-02 are retired/reserved compatibility labels; active Shell capabilities retain P-03..P-15 numbering.",
     "Broad Discussion may remain sufficient; do not force optional semantic structure.",
-    "This command plans/reviews only and does not grant repository mutation."
+    "This command plans/reviews only and does not grant repository mutation.",
+    "The SHELL semantic action is pending at the default preparation checkpoint, including when this command is included by another root."
   ],
   "userTarget": "<optional TM/LENS selector + target/context, or current planning work>",
   "palette": true,
@@ -49,9 +50,7 @@ Scope: generic IDTSPE work-mode and installed-component dispatcher.
     "hostTargetPolicy": "NONE"
   },
   "includes": [
-    "planning/commands/choose-current-work-route.command.md",
-    "planning/commands/compose-current-idtspe-work.command.md",
-    "planning/commands/recheck-idtspe-port-composition.command.md"
+    "planning/commands/sweep-session-work-questions.command.md"
   ],
   "ownerRefs": [
     {

@@ -19,7 +19,7 @@ Scope: one direct cross-pass current-work coordination route. Reusable semantics
     "maintain current work manifest"
   ],
   "description": "Maintain/reconcile the accepted Session State Current Work Manifest and its re-entry/navigation projection.",
-  "meaning": "Maintain the accepted WORK-MANIFEST.md owned by UC-IDTSPE-MAINTAIN-CURRENT-WORK-STATE. Synchronize factual execution consequences and cross-turn coordination directly, while material AI-derived prospective plan changes remain Proposal-first through Core PRS/Proposal semantics. Session State supplies the ambient representation; P-14 is not the reason the Manifest exists.",
+  "meaning": "Maintain/reconcile the accepted WORK-MANIFEST.md under its natural owner. When substantive Manifest reconciliation is the selected WR-3 subject, route it through SHELL preparation, Question sweep and the default archive/continuation boundary before forming a Proposal and complete candidate target Manifest. Factual/exact selected synchronization remains governed by its own direct owner and the same default preparation boundary when it is a selected task; ambient WR-2 triage is not a separate Manifest task. Session State supplies representation; AI-derived prospective changes remain Proposal-first.",
   "activeContextBehavior": "Use the current Session State and canonical owner state. Reuse the accepted Manifest and synchronize only established consequences; if a new Session State needs its minimal accepted orientation, follow the Work Record bootstrap rule. A tiny turn does not force substantive Manifest replanning or a P-14 Work Context Bundle. Current USER input and canonical owner state override stale projections.",
   "traversalReadMode": "Read Maintain Current Work State plus only the current owner/artifact references needed to synchronize the Manifest. Do not reread or duplicate full Need/PRS/Review/Turn-Work-Record bodies when compact canonical references are sufficient.",
   "ownerFiles": [
@@ -44,14 +44,15 @@ Scope: one direct cross-pass current-work coordination route. Reusable semantics
       "readMode": "REQUIRED"
     }
   ],
-  "expectedOutput": "The accepted Current Work Manifest is synchronized or a formal Proposal + complete candidate target Manifest + PRS review state is produced when prospective accepted-plan meaning would change.",
+  "expectedOutput": "After verified preparation and continuation, the accepted Manifest is synchronized or a formal Proposal + complete candidate target Manifest + PRS review state is produced; the preparation response itself reports only checked coverage and archive.",
   "permissionMode": "artifact-no-commit-push",
   "keyReminders": [
     "The Manifest is accepted session-scale work state, not a semantic super-owner.",
     "Exact USER-selected prospective meaning may integrate directly with authority trace and prior-revision preservation.",
     "AI-derived material prospective change is Proposal-first.",
     "Every accepted Manifest write preserves a recoverable previous revision.",
-    "Session State representation is ambient; external/durable artifact placement remains a P-14 concern."
+    "Session State representation is ambient; external/durable artifact placement remains a P-14 concern.",
+    "This root action and execution-bearing dependencies wait after the default preparation archive until USER continuation; includes alone do not create that pause."
   ],
   "userTarget": "<current substantial Work Context / session continuity scope>",
   "palette": true,
@@ -66,7 +67,7 @@ Scope: one direct cross-pass current-work coordination route. Reusable semantics
     "hostTargetPolicy": "NONE"
   },
   "includes": [
-    "planning/commands/choose-current-work-route.command.md"
+    "planning/commands/sweep-session-work-questions.command.md"
   ]
 }
 [/PLANNING_COMMAND_DEFINITION]

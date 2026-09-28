@@ -14,7 +14,7 @@ Status: active direct Planning Command; current meaning remains in the linked Us
     "finalize turn work record and archive"
   ],
   "description": "Finalize WR-7 and rematerialize the portable Session State archive.",
-  "meaning": "Close the same Turn Work Record with plan-versus-actual and unresolved gates, then rematerialize the Session State archive. A separately requested Proposal Workspace Archive stays a separate PRS-centered output. This command does not make WR-6 a static include prerequisite; the fundamental Use Case performs it at the proper time.",
+  "meaning": "Close the same Work Record at WR-7 only after the bounded selected subject actually ends or is explicitly stopped; reconcile preparation and execution plan-versus-actual and unresolved gates, then rematerialize Session State archive. A preparation/recheck response instead checkpoints an open record. This command does not make WR-6 a static include prerequisite.",
   "activeContextBehavior": "Operate only at the reached current Work Record stage; reuse the same Session State and record.",
   "traversalReadMode": "Read the fundamental current-work Use Case and the reached Session/Work Record owner proportionally; reuse current trustworthy state.",
   "ownerFiles": [
@@ -27,7 +27,8 @@ Status: active direct Planning Command; current meaning remains in the linked Us
   "keyReminders": [
     "One current Session State and Turn Work Record; no duplicate planning hierarchy.",
     "Keep target/repository authority separate from Session State write authority.",
-    "No command invocation selects a Proposal, grants mutation, commit or push."
+    "No command invocation selects a Proposal, grants mutation, commit or push.",
+    "Do not finalize merely because a preparation archive was issued or the USER asked to recheck Questions."
   ],
   "userTarget": "<current bounded work turn>",
   "palette": true,

@@ -14,7 +14,7 @@ Status: active direct Planning Command; current meaning remains in the linked Us
     "intake session input"
   ],
   "description": "Record current USER input/material and command composition as WR-1.",
-  "meaning": "Confirm the input basis and bounded USER fact/answer/decision intake at WR-1; record root/alias recognition and full DAG discovery already performed after S0. Route contextual-material candidates to the later PRS/WR-6 disposition without silently making them authority.",
+  "meaning": "Confirm the initial input basis and bounded USER fact/answer/decision intake at WR-1; record root/alias recognition and complete DAG discovery already performed after S0. On a later preparation review or continuation of the same subject, append the actual new input/command-basis event without overwriting WR-1 or allocating another S0. Route contextual-material candidates to later PRS/Session disposition.",
   "activeContextBehavior": "Operate only at the reached current Work Record stage; reuse the same Session State and record.",
   "traversalReadMode": "Read the fundamental current-work Use Case and the reached Session/Work Record owner proportionally; reuse current trustworthy state.",
   "ownerFiles": [
@@ -22,7 +22,7 @@ Status: active direct Planning Command; current meaning remains in the linked Us
     "planning/documentation/idtspe-methodology/active/idtspe-core/runtime/WORK-RECORD-PRINCIPLES.md",
     "planning/session/session-state-runtime-contract.md"
   ],
-  "expectedOutput": "Reuse S0; input provenance, classification and command-graph facts are current at WR-1.",
+  "expectedOutput": "New S0 or evidenced reuse of the still-open record; initial WR-1 and any later continuation-input provenance/classification/command-graph facts are current.",
   "permissionMode": "read-only-planning",
   "keyReminders": [
     "One current Session State and Turn Work Record; no duplicate planning hierarchy.",
