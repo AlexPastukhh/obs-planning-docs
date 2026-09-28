@@ -23,7 +23,7 @@ After these reads, the Session interaction contract remains ambient across ordin
 
 ## Worked example
 
-[Session State worked example](examples/SESSION-STATE-WORKED-EXAMPLE.md) shows one bounded turn with no contextual files and a separate material-answer turn whose planning state changes during `WR-5`. It is illustrative, not a required file tree. This Session package owns physical continuity; Core [Work Runtime](../documentation/idtspe-methodology/active/idtspe-core/runtime/WORK-RECORD-PRINCIPLES.md) and [PRS](../documentation/idtspe-methodology/active/idtspe-core/target-modules/TM-PLANNING-RESOLUTION-STATE.md) own their semantic boundaries.
+[Session State worked example](examples/SESSION-STATE-WORKED-EXAMPLE.md) shows cold S0/archive bootstrap, a bounded turn with no contextual files and a separate material-answer turn whose planning state changes during `WR-5`. It is illustrative, not a required file tree. This Session package owns physical continuity; Core [Work Runtime](../documentation/idtspe-methodology/active/idtspe-core/runtime/WORK-RECORD-PRINCIPLES.md) and [PRS](../documentation/idtspe-methodology/active/idtspe-core/target-modules/TM-PLANNING-RESOLUTION-STATE.md) own their semantic boundaries.
 
 ## Ownership Boundary
 
@@ -53,4 +53,4 @@ A richer chat-sandbox/workspace operating model is intentionally deferred. The c
 <a id="session-state-bootstrap-navigation"></a>
 ## Session State bootstrap / navigation
 
-For substantive work also read [`session-state-runtime-contract.md`](session-state-runtime-contract.md#session-state-runtime). The normal workspace entrypoints are `README.md`, accepted `WORK-MANIFEST.md`, bounded `resolution/PRS.md`, retained inputs, Turn Work Records, contextual material and history/segment refs. These are runtime/navigation surfaces; natural methodology owners remain authoritative.
+For substantive work first read [`session-state-runtime-contract.md`](session-state-runtime-contract.md#session-state-runtime). The normal workspace entrypoints are `README.md`, accepted `WORK-MANIFEST.md`, bounded `resolution/PRS.md`, retained inputs, Turn Work Records, contextual material and history/segment refs. These are runtime/navigation surfaces; natural methodology owners remain authoritative. The [fundamental current-work Use Case](../documentation/idtspe-methodology/active/idtspe-core/use-cases/conduct-current-work/UC-IDTSPE-CONDUCT-CURRENT-WORK.md#uc-idtspe-conduct-current-work) coordinates S0/WR-1…WR-7. At bootstrap establish/reuse the Session archive identity and S0 kernel; WR-7 rematerializes that same archive. A separately requested PRS-centered Proposal Workspace Archive is a separate output, linked by identity/basis rather than silently nested.

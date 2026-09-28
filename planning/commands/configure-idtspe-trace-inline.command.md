@@ -31,7 +31,9 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
   "file": "configure-idtspe-trace-inline.command.md",
   "command": "показывай трассу idtspe в ответе",
   "englishName": "configure IDTSPE trace inline visibility",
-  "includes": [],
+  "includes": [
+    "planning/commands/choose-current-work-route.command.md"
+  ],
   "methodologyBinding": {
     "methodologyRuntime": "IDTSPE",
     "profile": null,

@@ -53,6 +53,7 @@
 
 
   const DIRECT_PRESENTATION=Object.freeze({
+    'sds.evolution_step.question_sweep':{actionLabel:'Проведи Question sweep для Evolution Step',tail:'SDS · Evolution Step operation',category:'TARGET_MODULES'},
     'critical_review.apply':{actionLabel:'Критически проверить',tail:'General · Critical Review',scenarioRefs:['planning/documentation/review-diff-review-workflow.md']},
     'idtspe.next':{actionLabel:'Показать следующий methodology action',tail:'General · IDTSPE Next',scenarioRefs:['UC-IDTSPE-COMPOSE-CURRENT-WORK']},
     'idtspe.continue':{actionLabel:'Продолжить methodology work',tail:'General · IDTSPE Continue',scenarioRefs:['UC-IDTSPE-COMPOSE-CURRENT-WORK']},

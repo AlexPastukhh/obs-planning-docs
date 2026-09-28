@@ -40,6 +40,11 @@ Use Core [`TM-EXACT-REALIZATION`](../../../idtspe-core/target-modules/TM-EXACT-R
 
 A code change may incidentally include build/project configuration, local migration/wiring or schema-adjacent material when that material is an inseparable implementation consequence of the bounded code change. If the non-code artifact is independently substantial, form/use its natural owner or Core Exact Realization instead of hiding it inside Code Realization.
 
+<a id="code-selected-step-readiness-handoff"></a>
+## Selected-Step readiness handoff
+
+When the bounded code realization is the realization of a selected SDS Evolution Step, perform/reuse the contextual Step Question sweep at this owner point, consume its current `RU-EVO-06` Planning Completeness and Realization Start Readiness, and proceed only with the existing selection, sufficient accepted meaning and actual realization authority. Route material missing Questions/answers to the Step/PRS owners. When no selected Step governs this bounded change, the Step-specific sweep is not applicable; do not force a Step for small current-state code changes.
+
 ## Activation / Scope Gate
 
 Use this Target Module when all are materially true:

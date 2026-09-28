@@ -51,7 +51,7 @@ All command surfaces execute under the thin Session interaction contract once th
 - [`planning/session/principles-and-terminology.md`](../../../../../session/principles-and-terminology.md)
 - [`planning/session/session-runtime-contract.md`](../../../../../session/session-runtime-contract.md)
 
-This is **inheritance, not routing**. A command routes directly to its current semantic owner; it must not insert `Session → IDTSPE/profile owner` as an obligatory semantic hop merely to obtain progress, steering or authorization behavior. Session is reloaded only when the interaction context/rules cannot be reconstructed safely.
+The thin interaction contract remains ambient. Separately, the fundamental current-work Use Case establishes/reuses Session State and S0 before substantive execution; direct command includes guarantee its early WR prefix. This prerequisite does not transfer a selected IDTSPE/profile owner's semantic responsibility to Session. Reload interaction guidance only when the current context/rules cannot be reconstructed safely.
 
 ## Primary User Convenience Surface Inventory — 22
 
@@ -60,7 +60,7 @@ idtspe.bootstrap
 → бутстреп idtspe
 
 idtspe.work
-→ compatibility/navigation shortcut: refresh/reaffirm/apply the current Use-Case-driven proportional IDTSPE composition
+→ explicit SHELL route for the selected primary subject under the current Turn Work Record
 → `idtspe [optional TM/LENS selector + context]` may still dispatch an explicitly selected component
 
 idtspe.next
@@ -140,13 +140,13 @@ lenscmd.documentation.representation.check
 
 ```
 
-These are **19 primary user convenience surfaces**, not the complete direct-command/composition inventory. Hidden/base `idtspe.port.*`, composition prefixes and additional operation surfaces may exist to guarantee canonical traversal without becoming new methodology owners. Installed profiles contribute additional surfaces; current total command/card counts are tooling projections, not Core ontology.
+These are **22 primary user convenience surfaces**, not the complete direct-command/composition inventory. Hidden/base `idtspe.port.*`, composition prefixes and additional operation surfaces may exist to guarantee canonical traversal without becoming new methodology owners. Installed profiles contribute additional surfaces; current total command/card counts are tooling projections, not Core ontology.
 
 ## Bootstrap / Work Boundary
 
 `idtspe.bootstrap` is the helper surface for the primary bootstrap owned by `planning/README.md`; it is governance orientation only, stops before profile bootstrap, and has `hostTargetPolicy=NONE`.
 
-IDTSPE is already active; `idtspe.work` does **not** enable a mode. It is a compatibility/navigation shortcut that refreshes or explicitly reapplies the current Use-Case-driven proportional composition. Bare `idtspe` means continue ordinary work under that composition. `idtspe <TM-ID|LENS-ID|registry alias> <context>` may explicitly request a registered component, but the component still passes normal Use-Case/context routing and its local applicability gate. Broad Discussion may remain sufficient indefinitely; Integration Checkpoints are situational and invoked through the current IDTSPE Use Cases when a coherent whole-state view is useful.
+IDTSPE is already active; `idtspe.work` does **not** enable a mode. Bare `idtspe` explicitly selects/reaffirms `ExecutionRoute=SHELL` for the WR-3 primary subject after Session State, S0 and WR-1..WR-4. It reaffirms task-specific Use Cases and Port Requirement Set, then performs the smallest useful Shell composition beneath WR-5. `idtspe <TM-ID|LENS-ID|registry alias> <context>` may explicitly request a registered component, but the component still passes normal Use-Case/context routing and its local applicability gate. Broad Discussion may remain sufficient indefinitely; Integration Checkpoints are situational and invoked through the current IDTSPE Use Cases when a coherent whole-state view is useful.
 
 Bootstrap must not silently select a Target, infer a Target invocation mode or execute Target work.
 
@@ -158,7 +158,7 @@ Bootstrap must not silently select a Target, infer a Target invocation mode or e
 
 ## Shell Port Requirement Composition
 
-User/command/component intent may require one or more non-baseline Shell capabilities to be checked/traversed in the current normal IDTSPE pass. This is a **methodology composition rule**, not a second execution runtime and not a requirement that every port have a public command.
+User/command/component intent may require one or more Shell capabilities to be checked/traversed in the current normal IDTSPE pass. This is a **methodology composition rule**, not a second execution runtime and not a requirement that every port have a public command.
 
 ### Command Composition Execution Rule
 
@@ -189,54 +189,46 @@ Concrete direct commands MAY carry declarative `includes` so the same canonical 
 
 ### Registered Command-Prefix Composition
 
-```text
-idtspe.port.trace
-  → includes `planning/commands/recheck-methodology-use-cases.command.md` but intentionally does not include `planning/commands/work-through-idtspe.command.md` (cycle guard)
-  → composition-time contribution establishes/reuses the one incremental working trace before dependency actions start
-  → Work Runtime records/continues the current Turn Work Record
+The following is the current include projection; dependencies execute before their caller, and WR-6/WR-7 follow the selected root through the fundamental current-work Use Case rather than through early includes.
 
+```text
 methodology.use_cases.recheck
-  → mandatory registry-level Use-Case applicability recheck
+  → deepest command prerequisite; the S0 infrastructure is already established before semantic command execution
+
+session.work.maintain
+  → includes methodology.use_cases.recheck
+  → reaffirms the Session State, archive identity, initial snapshot and S0 already bootstrapped before semantic execution
+
+session.input.intake → session.current_work.select → session.route.choose
+  → successive includes from the right to the left, with automatic WR-2 triage between WR-1 and WR-3
+  → WR-1, WR-3 and WR-4; none prematurely executes WR-5..WR-7
 
 idtspe.compose-current-work
-  → includes `planning/commands/include-idtspe-trace-port.command.md` + `planning/commands/recheck-methodology-use-cases.command.md`
-  → resolve/reuse UC-IDTSPE-COMPOSE-CURRENT-WORK
-  → establish the current proportional IDTSPE methodology composition
+  → includes session.route.choose
+  → resolves the proportional composition for WR-4=SHELL
 
 idtspe.port-composition.recheck
-  → includes `planning/commands/include-idtspe-trace-port.command.md` + `planning/commands/recheck-methodology-use-cases.command.md` + `planning/commands/compose-current-idtspe-work.command.md`
-  → refresh/reaffirm IDTSPE.PORT-COMPOSITION-REFRESH using ALL pre-collected DAG contributions and the already composed current IDTSPE work
+  → includes session.route.choose + idtspe.compose-current-work
+  → refreshes/reaffirms the Port Requirement Set from all pre-collected contributions
 
 idtspe.work
-  → includes `planning/commands/include-idtspe-trace-port.command.md` + `planning/commands/recheck-methodology-use-cases.command.md` + `planning/commands/compose-current-idtspe-work.command.md` + `planning/commands/recheck-idtspe-port-composition.command.md`
-  → establish/enter one shared normal Shell pass after both composition stages are current
-  → specialized dependent command nodes execute their named operations inside that same pass
-  → finalize the pass only after selected leaf/root actions complete or are validly REUSED
+  → includes session.route.choose + idtspe.compose-current-work + idtspe.port-composition.recheck
+  → explicitly selects/reaffirms SHELL for the primary subject and executes its admitted capabilities beneath WR-5
+
+idtspe.port.trace
+  → includes session.route.choose only; legacy compatibility visibility over the same Turn Work Record
+  → no active P-02 admission and no second record
 
 idtspe.port.<capability>
-  → explicitly includes the shared IDTSPE base frame
-  → composition-time contribution: named EXPLICIT_REQUIREMENT
-  → runtime action: perform/reuse the canonical capability check/traversal
+  → includes the shared idtspe.work and port-composition prefixes
+  → composition-time named EXPLICIT_REQUIREMENT; runtime applicability/traversal check
 
-idtspe.target-module.apply
-  → full base + idtspe.port.target
-  → Target Module Registry + Target Module Meta-Model
-  → Unit / Collection / Slot / applicability / Target Step Result contracts as needed
-  → selected TM-* Model
-
-idtspe.lens.apply
-  → full base + idtspe.port.lens
-  → Lens Registry + Lens Meta-Model
-  → selected `(LENS-* Model, Analysis Surface, Operation, basis)` application
-  → material Finding Candidates cross Finding Disposition
-
-idtspe.lenses.apply-selected
-  → full base + idtspe.port.lens + idtspe.lenses.select
-  → apply the currently selected `(Lens Model, Analysis Surface, Operation, basis)` Lens Application requests through one shared Lens Meta-Model prefix
-  → material Finding Candidates cross Finding Disposition
+idtspe.target-module.apply / idtspe.lens.apply
+  → enter through their named Target / Lens capability commands
+  → resolve the selected registered model and its natural meta-model/owner
 ```
 
-User-level/specialized IDTSPE commands expose `idtspe.work`, Port Composition Recheck and Turn Work Record directly in their composition even when those nodes are also transitively reachable. Duplicate dependency edges are intentional declaration and are deduplicated before execution.
+Ordinary command roots inherit the current-turn entry chain through WR-4 after S0 and the fundamental Use-Case recheck. For a selected SHELL route, `idtspe.work` reaffirms Port Composition and executes only the needed named capabilities beneath WR-5. Duplicate compatible dependency edges are deduplicated; WR-6/WR-7 occur through the current-work Use Case after leaf work rather than as `includes` prerequisites.
 
 The methodology remains independently executable without Helper/command projection: current Use Cases, owners and natural handoffs determine the same process. The command DAG is a reproducibility/guarantee surface only.
 

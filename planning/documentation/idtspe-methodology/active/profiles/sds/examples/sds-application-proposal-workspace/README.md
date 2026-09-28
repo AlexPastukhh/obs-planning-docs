@@ -1,6 +1,6 @@
 # Methodology Application Evolution — Proposal Workspace example (reviewed r4)
 
-This example adapts the user-supplied r3 archive. It shows an **accepted upstream Application Definition** and an **unselected Proposal** for an Evolution Map with two concrete but planning-incomplete Steps. No downstream Scenario/Feature/etc owner is realized. Start with [PRS](planning/PRS.md) for current/candidate authority.
+This example adapts the user-supplied r3 archive. It shows an **accepted upstream Application Definition** and an **unselected Proposal** for an Evolution Map with two concrete but planning-incomplete Steps. No downstream Scenario/Feature/etc owner is realized. Start with [PRS](planning/PRS.md) for current/candidate authority. This is a **separate SDS Proposal Workspace Archive example**, not the ambient Session State archive: it has a bounded PRS entry instead of the Session State `WORK-MANIFEST.md`/Turn Work Record entry. A live Session State archive may link the identity/basis of this separate ZIP but does not substitute for or nest it by default.
 
 ## Read path
 

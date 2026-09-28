@@ -217,6 +217,20 @@
       "result": "The current work has the **smallest useful IDTSPE composition** for the situation, with relevant methodology components selected or explicitly left unnecessary for now, useful recheck/next-action conditions clear, and the current port-requirement composition refreshed/reaffirmed for the next normal Shell pass. A valid Result may be only: ``text continue Broad Discussion; no Target / Lens / Target Module / Checkpoint / persisted State is useful yet. ``"
     },
     {
+      "id": "UC-IDTSPE-CONDUCT-CURRENT-WORK",
+      "label": "Conduct Current Session Work",
+      "description": "One current Session State and one Turn Work Record describe the input, accepted-state check, bounded primary subject, execution route, actual work, material consequences and closure. A current portable Session State archive is rematerialized at the end of the turn when the host supports it. An explicit separate Proposal Workspace Archive, when requested, remains a separate PRS-centered artifact.",
+      "sources": [
+        "planning/documentation/use-case-registry-map.md",
+        "planning/documentation/idtspe-methodology/active/idtspe-core/use-cases/USE-CASE-REGISTRY.md"
+      ],
+      "instruction": "Resolve UC-IDTSPE-CONDUCT-CURRENT-WORK through planning/documentation/use-case-registry-map.md, then the mapped scoped registry and current owner route (planning/documentation/idtspe-methodology/active/idtspe-core/use-cases/conduct-current-work/UC-IDTSPE-CONDUCT-CURRENT-WORK.md). Preserve its methodology-use boundary and permission model; this Helper projection is invocation/navigation only.",
+      "target": "<Conduct Current Session Work target>",
+      "manualInvocation": true,
+      "trigger": "Every substantive USER↔AI work turn, whether entered through ordinary language or a Planning Command. The thin Session layer supplies file-backed continuity; this Use Case coordinates the current work without taking semantic ownership from the selected task, Core State, Shell or profile.",
+      "result": "One current Session State and one Turn Work Record describe the input, accepted-state check, bounded primary subject, execution route, actual work, material consequences and closure. A current portable Session State archive is rematerialized at the end of the turn when the host supports it. An explicit separate Proposal Workspace Archive, when requested, remains a separate PRS-centered artifact."
+    },
+    {
       "id": "UC-IDTSPE-INTEGRATE-CURRENT-WORK",
       "label": "Integrate Current IDTSPE Work",
       "description": "An **IDTSPE Integration Checkpoint** reconciles material Broad Discussion into the current Unit/Target/Work-Context model: the complete Module-defined Unit inventory when a Target Module Instance exists, applicable Core-defined Units, actually formed Contextual Units, material Unit Resolutions, Current Result Content / OPEN / explicit omission dispositions as applicable, material cross-cutting Core Resolution State, unresolved/revalidation state and a useful continuation point. It does not manufacture completion or approval.",

@@ -79,13 +79,15 @@ When such an archive is produced for continued work:
 - creating or rematerializing the portable archive does not itself select a Proposal, close Q/R/P, create a Decision or determine PRS membership;
 - keep Proposal Workspace Archive packaging distinct from the executable Replacement Package protocol.
 
+A separately requested SDS Proposal Workspace Archive is its own PRS-centered portable artifact. The ambient Session State archive has the accepted `WORK-MANIFEST.md` entry and may refer to the Proposal archive by stable identity/basis; one ZIP must not silently stand in for both archives or nest the Proposal ZIP by default. Shared semantic owners stay singular even when bounded representations overlap.
+
 If the archive is supplied as the current read/work source, begin with its PRS entry point, follow canonical references to the actual Proposal/Q/R/P/Decision owners, and continue the normal selected methodology. Representation may be repackaged when a new portable archive artifact is requested; semantic continuation is not gated on that packaging step.
 
-<a id="work-context-bundle"></a>
 A Proposal Workspace Archive contains the bounded PRS entry, complete target-shaped candidate artifacts referenced by it, and only the supporting context needed for this work. It has **no mandatory ceremonial file tree**: Needs, Pre-Update, `DISCOVERY.md` and `context/` are optional. A subject-specific context file can be referenced from PRS when its detail must survive. The archive is a representation, not a second proposal lifecycle.
 
 For an SDS Application planning archive, apply the SDS temporal rule: the upstream Application Definition may lead downstream realization, while materially planned unrealized Scenario, Feature, Domain, Screen, Slice or Shared Target Bodies remain inside their owning Evolution Step. Their final-shaped paths and bodies do not grant acceptance or realized current-owner authority.
 
+<a id="work-context-bundle"></a>
 ## 1D. Artifact Maintenance / Work Context Bundle Representation
 
 P-14 also owns the physical **maintenance of current work representations** when artifact currentness/placement/packaging is material. This is representation maintenance only: semantic owners still decide the meaning and lifecycle of Needs, Review Coverage, Turn Work Records, Proposals/Decisions, Evidence and other content.

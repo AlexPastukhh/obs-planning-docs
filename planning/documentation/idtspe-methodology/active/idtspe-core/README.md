@@ -42,11 +42,12 @@ Read in order:
 4. [`use-cases/RESPONSIBILITY-MAP.md`](use-cases/RESPONSIBILITY-MAP.md) — IDTSPE Use-Case orchestration responsibility routing;
 5. [`runtime/IDTSPE-DEFAULT-WORK-MODE.md`](runtime/IDTSPE-DEFAULT-WORK-MODE.md);
 6. [`use-cases/USE-CASE-REGISTRY.md`](use-cases/USE-CASE-REGISTRY.md);
-7. [`use-cases/ai-working-boundary/UC-IDTSPE-AI-WORKING-BOUNDARY.md`](use-cases/ai-working-boundary/UC-IDTSPE-AI-WORKING-BOUNDARY.md) — fundamental authority-boundary application;
-8. [`use-cases/compose-current-work/UC-IDTSPE-COMPOSE-CURRENT-WORK.md`](use-cases/compose-current-work/UC-IDTSPE-COMPOSE-CURRENT-WORK.md);
-9. [`runtime/applicability/CONTEXTUAL-METHODOLOGY-APPLICATION-CONTRACT.md`](runtime/applicability/CONTEXTUAL-METHODOLOGY-APPLICATION-CONTRACT.md);
-10. [`runtime/PASS-TRACE-AND-VISIBILITY-CONTRACT.md`](runtime/PASS-TRACE-AND-VISIBILITY-CONTRACT.md);
-11. [`navigation/METHODOLOGY-REGISTRY-DIRECTORY.md`](navigation/METHODOLOGY-REGISTRY-DIRECTORY.md).
+7. [`use-cases/conduct-current-work/UC-IDTSPE-CONDUCT-CURRENT-WORK.md`](use-cases/conduct-current-work/UC-IDTSPE-CONDUCT-CURRENT-WORK.md#uc-idtspe-conduct-current-work) — fundamental work-turn route after Session State/S0 allocation;
+8. [`use-cases/ai-working-boundary/UC-IDTSPE-AI-WORKING-BOUNDARY.md`](use-cases/ai-working-boundary/UC-IDTSPE-AI-WORKING-BOUNDARY.md) — fundamental authority-boundary application;
+9. [`use-cases/compose-current-work/UC-IDTSPE-COMPOSE-CURRENT-WORK.md`](use-cases/compose-current-work/UC-IDTSPE-COMPOSE-CURRENT-WORK.md);
+10. [`runtime/applicability/CONTEXTUAL-METHODOLOGY-APPLICATION-CONTRACT.md`](runtime/applicability/CONTEXTUAL-METHODOLOGY-APPLICATION-CONTRACT.md);
+11. [`runtime/PASS-TRACE-AND-VISIBILITY-CONTRACT.md`](runtime/PASS-TRACE-AND-VISIBILITY-CONTRACT.md);
+12. [`navigation/METHODOLOGY-REGISTRY-DIRECTORY.md`](navigation/METHODOLOGY-REGISTRY-DIRECTORY.md).
 
 After this spine is current, Core bootstrap is sufficient for ordinary routing/composition. Reuse it while trustworthy. Do not read deeper Core owners merely to claim that bootstrap completed.
 
@@ -83,7 +84,7 @@ current situation
 → component-local applicability/materiality
 ```
 
-The fundamental always-active authority-boundary capability is [`UC-IDTSPE-AI-WORKING-BOUNDARY`](use-cases/ai-working-boundary/UC-IDTSPE-AI-WORKING-BOUNDARY.md). The default continuously relevant work-composition capability remains [`UC-IDTSPE-COMPOSE-CURRENT-WORK`](use-cases/compose-current-work/UC-IDTSPE-COMPOSE-CURRENT-WORK.md). Its valid result may be no additional structure beyond Broad Discussion.
+The fundamental full-turn route is [`UC-IDTSPE-CONDUCT-CURRENT-WORK`](use-cases/conduct-current-work/UC-IDTSPE-CONDUCT-CURRENT-WORK.md#uc-idtspe-conduct-current-work) after ambient Session State/S0 bootstrap. It coordinates one Work Record through DIRECT/SHELL selection and archive closure without taking over the composition capability. The fundamental always-active authority-boundary capability is [`UC-IDTSPE-AI-WORKING-BOUNDARY`](use-cases/ai-working-boundary/UC-IDTSPE-AI-WORKING-BOUNDARY.md). The default continuously relevant work-composition capability remains [`UC-IDTSPE-COMPOSE-CURRENT-WORK`](use-cases/compose-current-work/UC-IDTSPE-COMPOSE-CURRENT-WORK.md). Its valid result may be no additional structure beyond Broad Discussion.
 
 ## Canonical Core Owners
 

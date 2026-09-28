@@ -24,7 +24,7 @@ Canonical semantic result: [Planning Resolution State](../documentation/idtspe-m
     "собери пропозал архив"
   ],
   "description": "materialize one portable PRS-centered proposal workspace archive",
-  "meaning": "Materialize the current bounded proposal workspace into one portable archive. Reuse the current Planning Resolution State as the archive's planning/resume surface. If no PRS is currently formed, resolve that absence through the existing Carry-Forward qualification and TM-PLANNING-RESOLUTION-STATE owner: form/reuse a PRS only when the canonical owners say the bounded surviving state needs one; otherwise do not invent an empty PRS or second archive register. Include only the addressable Proposal/workspace artifacts needed by the resulting PRS and selected scope. Proposal, Q/R/P, Decision and carry-forward membership/status remain owned by their existing semantic owners; this command never reclassifies them. Archive paths, persistence and packaging are representation only and never imply acceptance. A Proposal Workspace Archive is not a Replacement Package and MUST NOT use PACKAGE.json, base-files/, replacement-files/ or OBS-ACTION apply protocol structure. Archive membership is scope-driven; Needs, Pre-Update, DISCOVERY.md and context files are optional. SDS downstream future Target Bodies remain Evolution-Step-owned.",
+  "meaning": "Materialize the current bounded proposal workspace into one portable archive. Reuse the current Planning Resolution State as the archive's planning/resume surface. If no PRS is currently formed, resolve that absence through the existing Carry-Forward qualification and TM-PLANNING-RESOLUTION-STATE owner: form/reuse a PRS only when the canonical owners say the bounded surviving state needs one; otherwise do not invent an empty PRS or second archive register. Include only the addressable Proposal/workspace artifacts needed by the resulting PRS and selected scope. Proposal, Q/R/P, Decision and carry-forward membership/status remain owned by their existing semantic owners; this command never reclassifies them. Archive paths, persistence and packaging are representation only and never imply acceptance. A Proposal Workspace Archive is not a Replacement Package and MUST NOT use PACKAGE.json, base-files/, replacement-files/ or OBS-ACTION apply protocol structure. Archive membership is scope-driven; Needs, Pre-Update, DISCOVERY.md and context files are optional. SDS downstream future Target Bodies remain Evolution-Step-owned. A separately requested SDS Proposal Workspace Archive is a distinct ZIP from the ambient Session State archive: PRS is its entry, while Session State uses WORK-MANIFEST.md and may keep a stable reference to this archive; do not nest or substitute one for the other by default.",
   "activeContextBehavior": "Use the current bounded workspace/PRS and checked source basis. When no PRS exists, first follow RESOLUTION.CARRY-FORWARD qualification and TM-PLANNING-RESOLUTION-STATE formation/reuse instead of fabricating archive-local planning state; materialize only after a canonical PRS exists for the bounded workspace. If an existing Proposal Workspace Archive is the selected source, read its PRS entry point and continue ordinary methodology work from the current semantic state; no separate 'continue archive' command is required. Invoke this command only when a portable archive artifact must be created or rematerialized. When the underlying proposal concerns documentation change, route that semantic work through [UC-DOC-PLAN-DOCUMENTATION-CHANGE](../documentation/use-cases/UC-DOC-PLAN-DOCUMENTATION-CHANGE.md); archive creation itself creates no new Use Case or lifecycle.",
   "traversalReadMode": "Read the current PRS plus only the proposal/workspace artifacts and representation context required by the selected archive scope.",
   "ownerFiles": [
@@ -33,7 +33,7 @@ Canonical semantic result: [Planning Resolution State](../documentation/idtspe-m
     "planning/documentation/idtspe-methodology/active/idtspe-core/representation/ARTIFACT-PLACEMENT-AND-IDTSPE-RESPONSE-CONTRACT.md",
     "planning/documentation/use-cases/UC-DOC-PLAN-DOCUMENTATION-CHANGE.md"
   ],
-  "expectedOutput": "One portable Proposal Workspace Archive with an obvious PRS planning/resume entry point, addressable Proposal/workspace artifacts required by the current PRS/scope, and representation-only archive basis/navigation. No duplicated Proposal/Q/R/P/Decision lifecycle, no semantic acceptance inferred from file paths, and no Replacement Package payload.",
+  "expectedOutput": "One portable Proposal Workspace Archive with an obvious PRS planning/resume entry point, addressable Proposal/workspace artifacts required by the current PRS/scope, and representation-only archive basis/navigation. No duplicated Proposal/Q/R/P/Decision lifecycle, no semantic acceptance inferred from file paths, and no Replacement Package payload. It is a separate artifact from the Session State archive.",
   "permissionMode": "artifact-no-commit-push",
   "keyReminders": [
     "PRS is the planning/resume surface; do not invent a second archive planning register.",
@@ -43,13 +43,14 @@ Canonical semantic result: [Planning Resolution State](../documentation/idtspe-m
     "When an archive is already the selected source, ordinary methodology work resumes from PRS without a special continuation command.",
     "This command creates/rematerializes a Proposal Workspace Archive, not a Replacement Package.",
     "Never include PACKAGE.json or replacement-package base-files/replacement-files protocol structure.",
-    "Do not apply locally, commit or push."
+    "Do not apply locally, commit or push.",
+    "When a Session State archive also exists, produce a distinct ZIP for this Proposal workspace; link identity/basis rather than silently merging archives."
   ],
   "userTarget": "<current PRS / proposal-workspace scope to materialize>",
   "palette": true,
   "refinements": [],
   "includes": [
-    "planning/commands/recheck-methodology-use-cases.command.md"
+    "planning/commands/choose-current-work-route.command.md"
   ],
   "ownerRefs": [
     {

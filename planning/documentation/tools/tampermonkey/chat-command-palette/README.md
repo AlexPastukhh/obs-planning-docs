@@ -107,18 +107,17 @@ Helper shows projection provenance separately from semantic meaning:
 
 ## Command Composition Projection
 
-Every Planning Command participates in the mandatory compact methodology Use-Case Registry applicability recheck. Commands that enter normal IDTSPE work additionally compose `idtspe.work`, which refreshes/reaffirms current IDTSPE composition and the Port Requirement Set before the Shell pass.
+Ordinary substantive Planning Commands share the early current-work prefix: methodology Use-Case recheck, Session State/archive and S0, WR-1 intake, automatic WR-2 triage, WR-3 primary subject and WR-4 route choice. The deepest command prerequisite is the Use-Case recheck; S0 infrastructure is established before semantic command execution. WR-6/WR-7 close the turn after the selected root action, not as its includes.
 
-Registered direct-command includes form a semantic command-prefix graph:
+For `WR-4=SHELL`, the command graph composes current work and refreshes the Port Requirement Set before `idtspe.work` performs admitted Shell work beneath WR-5. `DIRECT` does not enter Shell. The registered `idtspe.port.trace` compatibility command does not provide an active P-02 prerequisite.
 
 ```text
 methodology.use_cases.recheck
-└─ idtspe.work
-   ├─ idtspe.port.target
-   │  └─ idtspe.target-module.apply
-   ├─ idtspe.port.lens
-   │  └─ idtspe.lens.apply
-   └─ other named port-capability prefixes
+→ session.work.maintain → session.input.intake
+→ session.current_work.select → session.route.choose
+→ if SHELL: idtspe.compose-current-work → idtspe.port-composition.recheck → idtspe.work
+→ named P-03..P-15 capabilities when admitted
+→ WR-6 / WR-7 under the fundamental current-work Use Case
 ```
 
 The graph guarantees traversal of canonical methodology capabilities; it is not a durable copy of the Shell topology. Direct definitions MUST NOT persist numeric `requiredPorts`, `portRequirements` or `includeFiles` as a second methodology ontology. Current ports are resolved by the canonical composition owner.
@@ -235,7 +234,7 @@ Durable order source:
 planning/documentation/tools/tampermonkey/chat-command-palette/catalog-order.json
 ```
 
-Schema 5 stores ordered stable IDs for Commands, Scenarios and Prompts plus `categories[]`, `fallbackCategoryId` and `commandGroups[]`. Versions 1–4 migrate locally without network access, preserving groups/membership/order and recognizing custom legacy category IDs. Each category has a stable `id`, editable `label` and `order`; group `viewId` must resolve to one category. Empty categories remain visible. Groups are **presentation-only** subdivisions inside the Commands classifications (`General`, `IDTSPE Pass`, `Use Cases`, `Target Modules`, `Lenses`, `Tools / Repository`). Each classification has one ordered group list; there is no separate Primary/Advanced/Semantic presentation tier. Groups never become methodology owners. Command order/group membership uses semantic IDs for UC/TM/Lens cards and direct IDs only for General/Tool capabilities without a semantic owner ID. Every current visible command card belongs to exactly one ordinary classification/group; `All commands` is only a cross-tab overview.
+Schema 5 stores ordered stable IDs for Commands, Scenarios and Prompts plus `categories[]`, `fallbackCategoryId` and `commandGroups[]`. Versions 1–4 migrate locally without network access, preserving groups/membership/order and recognizing custom legacy category IDs. Each category has a stable `id`, editable `label` and `order`; group `viewId` must resolve to one category. Empty categories remain visible. Groups are **presentation-only** subdivisions inside the Commands classifications (`General`, `IDTSPE Pass`, `Use Cases`, `Target Modules`, `Lenses`, `Tools / Repository`). Each classification has one ordered group list; there is no separate Primary/Advanced/Semantic presentation tier. Groups never become methodology owners. Command order/group membership uses semantic IDs for UC/TM/Lens primary cards and direct IDs for focused command operations without a separate semantic-owner card. A focused direct operation may be grouped in a semantic tab when its `ownerRefs` point to that owner but its `methodologyBinding` does not claim the owner’s primary TM/Lens card identity. Its group and kind label must identify it as an operation rather than a second TM. Every current visible command card belongs to exactly one ordinary classification/group; `All commands` is only a cross-tab overview.
 
 When a Commands classification opens, Helper shows all of its groups immediately in a group navigator. `All groups` is the default; the first group selection isolates that group and subsequent selections build a multi-group filter. Selection is remembered per classification. Group containers remain ordered below the navigator and each container has independently persisted collapsed/expanded state. In normal classification view the group name is shown in the navigator and once on the group container, not repeated on every command card; `All commands` may show `Tab › Group` context because it intentionally mixes classifications.
 

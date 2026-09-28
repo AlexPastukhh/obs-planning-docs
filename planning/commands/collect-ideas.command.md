@@ -36,7 +36,7 @@ Scope: legacy compatibility command alias. Current planning behavior is owned by
   "refinements": [],
   "methodologyBinding": null,
   "includes": [
-    "planning/commands/recheck-methodology-use-cases.command.md"
+    "planning/commands/choose-current-work-route.command.md"
   ],
   "ownerRefs": [
     {

@@ -19,7 +19,7 @@ Scope: one direct artifact-maintenance route for the current substantial work/se
     "maintain current work artifacts"
   ],
   "description": "Synchronize the material artifact set, inventory, currentness and placement for the current work context.",
-  "meaning": "Maintain materially useful artifacts referenced by the current Session State/Manifest through P-14 when external/durable representation work is actually material. The Session State directory, Manifest, PRS and Turn Work Records exist independently of P-14.",
+  "meaning": "Maintain material external/durable artifact representations through P-14 when that placement is actually useful. The ambient Session State directory, Manifest, PRS, Work Records and its closure archive remain under Session Runtime and the current-work Use Case; this command consumes their current inventory without requiring a separate Manifest action.",
   "activeContextBehavior": "Use the current Work Context and synchronized Current Work Manifest as the inventory/navigation entry. Maintain only materially useful artifacts; mark current/historical/stale/superseded representation state proportionally, repair missing/stale placement/navigation where authorized, and preserve canonical owner references. Do not create duplicate artifacts merely to satisfy a layout. Archive/bundle materialization is not forced by this command; use the archive-specific command when an archive is explicitly required.",
   "traversalReadMode": "Read P-14 Artifact Placement/Maintenance and the synchronized Manifest inventory, then inspect only artifacts whose representation/currentness/placement may need action. Follow semantic owners only when needed to avoid stale/misleading representation.",
   "ownerFiles": [
@@ -66,7 +66,7 @@ Scope: one direct artifact-maintenance route for the current substantial work/se
     "hostTargetPolicy": "NONE"
   },
   "includes": [
-    "planning/commands/maintain-current-work-manifest.command.md"
+    "planning/commands/choose-current-work-route.command.md"
   ]
 }
 [/PLANNING_COMMAND_DEFINITION]

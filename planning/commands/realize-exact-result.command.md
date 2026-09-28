@@ -56,6 +56,18 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
       "role": "PRIMARY_OWNER",
       "readMode": "REQUIRED"
     }
+  ],
+  "processCalls": [
+    {
+      "id": "selected-sds-evolution-step-question-sweep",
+      "commandPath": "planning/commands/sweep-evolution-step-questions.command.md",
+      "at": {
+        "path": "planning/documentation/idtspe-methodology/active/idtspe-core/target-modules/TM-EXACT-REALIZATION.md",
+        "anchor": "exact-selected-step-readiness-handoff"
+      },
+      "when": "Only when this realization is for a selected SDS Evolution Step; otherwise record evidenced NOT_APPLICABLE. Do not force a Step on a current-state/local or profile-neutral realization.",
+      "context": "Bind the selected Step, current Map/Application/Target Bodies/PRS/Evidence, requested realization scope and authority; consume updated RU-EVO-06 before realization starts."
+    }
   ]
 }
 [/PLANNING_COMMAND_DEFINITION]

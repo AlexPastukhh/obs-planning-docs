@@ -13,7 +13,7 @@ Responsibility ID: `SDS.COMMAND-SURFACE`
 
 SDS extends generic IDTSPE invocation routing without creating a second runtime, a second Use-Case root or a competing semantic naming system. **Generic IDTSPE Core surfaces are owned separately** by [`../../../idtspe-core/commands/IDTSPE-COMMAND-SURFACE-CONTRACT.md`](../../../idtspe-core/commands/IDTSPE-COMMAND-SURFACE-CONTRACT.md); this file owns only the SDS profile extension.
 
-SDS commands inherit the Core command-surface rule that the thin Session interaction contract is ambient after bootstrap/context restoration; they do not route through Session before reaching an SDS owner.
+SDS commands inherit the ambient thin Session interaction contract and the fundamental current-work prerequisite: Session State/archive identity and S0 precede WR-1..WR-4 and the selected SDS action. This common command prefix does not make Session the semantic owner of SDS work.
 
 Profile bootstrap owner: [`../README.md`](../README.md). It is incremental over the primary `planning/README.md` bootstrap; the SDS command surface must not duplicate the profile read set.
 
@@ -43,7 +43,7 @@ idtspe <LENS-ID> <context>
 idtspe lens <Lens alias> <context>
 ```
 
-Bare `idtspe` **does not enable a mode**. IDTSPE is already active; the invocation asks the current Use-Case-driven composition to refresh/reaffirm the smallest useful next methodology action. Broad Discussion with no Target/Lens/Checkpoint is a valid result. Unknown or ambiguous selectors are never guessed.
+Bare `idtspe` **does not enable a mode**. IDTSPE is already active; the invocation explicitly selects/reaffirms `ExecutionRoute=SHELL` for the current primary subject after the Work Runtime gates, then executes the smallest useful admitted Shell composition. Broad Discussion with no Target/Lens/Checkpoint is a valid result. Unknown or ambiguous selectors are never guessed.
 
 ## Current Semantic Registry Boundary
 
@@ -84,8 +84,9 @@ Examples:
 
 ```text
 USER invocation
-→ logically re-evaluate current methodology Use Cases
-→ UC-IDTSPE-COMPOSE-CURRENT-WORK / other applicable current UC
+→ Session State + S0; WR-1 input and WR-2 triage
+→ WR-3 primary subject; WR-4 route choice
+→ if SHELL, reaffirm task-specific Use Cases and UC-IDTSPE-COMPOSE-CURRENT-WORK
 → resolve current SDS registry/component only when useful
 → confirm component-local applicability/materiality
 → selected SDS owner performs its specialized work

@@ -45,17 +45,13 @@ Planning Commands are a USER↔AI invocation surface. The AI follows methodology
 ## Command Resolution
 
 ```text
-1. Start here for an explicit command.
-2. Resolve the direct `planning/commands/*.command.md` whose `commandFamily` contains the trigger.
-3. Read that complete command definition and **fully expand all selected command/component roots and every registered transitive `includes` command-file path edge before semantic execution begins**.
-4. Discover/validate reachable processCalls too, including mixed cycles; retain them as deferred point calls. Merge one dependency DAG from includes only, reject unresolved command paths/cycles, deduplicate shared nodes, and collect declarative contributions (explicit capability requirements, selected semantic components, trace configuration, target/context selectors, permission constraints) from every node.
-5. Establish the dependencies-first execution plan. Included command actions are dependencies, not recursive independent passes; each selected root action executes only after its dependencies completed or were validly `REUSED`.
-6. For substantive command work, establish/reuse the ambient Turn Work Record from S0/WR-1 so command-composition and methodology-routing facts are recorded incrementally before substantive execution.
-7. Run/reaffirm the command at `planning/commands/recheck-methodology-use-cases.command.md`, which applies `UC-DOC-RESOLVE-CURRENT-USE-CASES` plus its mandatory `UC-IDTSPE-AI-WORKING-BOUNDARY` companion, for **every Planning Command invocation**. This is a compact fundamental authority/applicability pass, not execution of every Use Case.
-8. For normal IDTSPE Shell work, refresh/reaffirm the Port Requirement Set before P-01 through `IDTSPE.PORT-COMPOSITION-REFRESH`, using the already-collected explicit leaf requirements.
-9. Execute the resulting DAG dependencies before dependents while following each node's own `ownerRefs` / `ownerFiles` and current selected Use-Case owners. References inherited through included commands need not be repeated on the dependent command.
-10. At each reached processCalls owner point, bind the current context/basis, execute or validly reuse the child composition and consume its result before resuming; follow the Process Call contract.
-11. Preserve the selected root command permission boundary. Semantic-entry activation or included command traversal never expands mutation/commit/push permission.
+1. Start here for an explicit command. For substantive work, bootstrap/reuse the ambient Session State and S0 kernel before semantic command execution; recognize current input/command roots after S0 and record these observations under WR-1.
+2. Resolve the direct planning/commands/*.command.md definition whose commandFamily contains the trigger.
+3. Fully expand all selected roots and transitive includes; discover reachable processCalls as deferred point calls. Validate paths and mixed cycles, merge/deduplicate the include DAG and collect pre-execution contributions before any command action.
+4. Establish dependencies-first order. Execute the deepest methodology Use-Case recheck, then early session.work.maintain activation, WR-1 confirmation, automatic WR-2 triage, WR-3 subject and WR-4 execution route before the ordinary selected leaf.
+5. If WR-4=SHELL, reaffirm the subject-specific Use Cases and Port Requirement Set, then execute idtspe.work and admitted capabilities beneath WR-5. DIRECT follows its selected direct owner; NO_EXECUTION preserves the actual gate.
+6. At each reached processCalls owner point evaluate the gate, bind the current basis and execute/reuse the complete child composition before resuming. Keep one Work Context and root permission boundary.
+7. After the selected root's WR-5 work, follow the fundamental current-work Use Case through WR-6 synchronization and WR-7 Work Record/archive closure. WR-6/WR-7 are not prerequisite includes of the leaf action.
 ```
 
 Do not reconstruct commands from memory, helper output, examples or historical files when the command definition is readable.
@@ -120,7 +116,7 @@ No unresolved choice or fallback authorizes destructive actions, unrelated scope
 ## Command Registry Rules
 
 - one direct `*.command.md` file = one concrete command;
-- every concrete command composes the methodology Use-Case registry applicability recheck, directly or transitively;
+- every ordinary substantive command composes the early current-work chain `WR-4 → WR-3 → WR-1 → session.work.maintain → methodology.use_cases.recheck` directly or transitively; fundamental commands in that same chain are valid partial roots; the recheck remains deepest;
 - canonical command, English name and aliases are unique;
 - `commandFamily` includes the canonical trigger exactly;
 - command files own output, active-context behavior, reads and permissions;
@@ -166,17 +162,17 @@ For methodology work, apply [DOC.EXAMPLE-READING](documentation/principles-and-t
 
 ```text
 raw USER input
-→ bootstrap/reuse Session State
-→ create Turn Work Record S0
-→ WR-1 classify input + resolve command roots/aliases
-→ expand/merge include DAG + collect declarative contributions
+→ bootstrap/reuse Session State and its archive identity
+→ create Turn Work Record S0 with WR-1…WR-7 kernel and authority/methodology refs
+→ WR-1 classify input + recognize command roots/aliases
+→ expand/merge include DAG + collect declarative contributions; record graph under WR-1
 → Use-Case applicability
-→ WR-2 Manifest/PRS/context check
+→ WR-2 automatic Manifest/PRS/context triage (no direct command)
 → WR-3 primary subject
 → WR-4 DIRECT | SHELL | NO_EXECUTION
 → if SHELL: reaffirm task-specific Use Cases + Port Requirement Set
 → execute dependency/semantic actions beneath WR-5
-→ WR-6 / WR-7
+→ WR-6 / WR-7 through the current-work Use Case after the selected root action
 ```
 
 P-02 is not a command-global bootstrap dependency. Command graph discovery is observable WR-1 work and does not itself require Shell.

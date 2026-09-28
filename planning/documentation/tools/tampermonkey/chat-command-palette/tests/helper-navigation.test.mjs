@@ -41,8 +41,31 @@ test('command navigation is derived from semantic identity and exposes UC/TM/Len
     {id:'TOOLS',label:'Tools / Repository'}
   ]);
   assert.equal(navigation.methodologyPrimaryIds(entries,'USE_CASES').length,useCases.length);
-  assert.equal(navigation.methodologyPrimaryIds(entries,'TARGET_MODULES').length,components.filter((item)=>item.kind==='TARGET_MODULE').length);
+  assert.equal(navigation.methodologyPrimaryIds(entries,'TARGET_MODULES').length,components.filter((item)=>item.kind==='TARGET_MODULE').length+1);
   assert.equal(navigation.methodologyPrimaryIds(entries,'LENSES').length,components.filter((item)=>item.kind==='LENS').length);
+});
+
+test('SDS Evolution Step sweep remains a distinct focused card after Map and Step',()=>{
+  const groups=navigation.buildMethodologyViewGroups(entries,'TARGET_MODULES');
+  const group=groups.find((item)=>item.id==='tm.evolution');
+  assert.ok(group);
+  const ids=group.entries.map((entry)=>entry.id);
+  assert.deepEqual(ids,['tm:TM-EVOLUTION-STEPS-MAP','tm:TM-EVOLUTION-STEP','sds.evolution_step.question_sweep']);
+  assert.equal(group.entries[2].__methodologyNav.kindLabel,'SDS operation');
+  assert.equal(group.entries[2].semanticKind,'');
+});
+
+test('IDTSPE Pass presents WR entry, current work and closure in stage order',()=>{
+  const groups=navigation.buildMethodologyViewGroups(entries,'IDTSPE_PASS');
+  const entry=groups.find((item)=>item.id==='idtspe-pass.baseline');
+  const current=groups.find((item)=>item.id==='idtspe-pass.trace');
+  const closure=groups.find((item)=>item.id==='idtspe-pass.session-close');
+  assert.ok(entry&&current&&closure);
+  assert.ok(groups.indexOf(entry)<groups.indexOf(current));
+  assert.ok(groups.indexOf(current)<groups.indexOf(closure));
+  assert.deepEqual(entry.entries.map((item)=>item.id),['methodology.use_cases.recheck','session.work.maintain','session.input.intake']);
+  assert.deepEqual(current.entries.slice(0,3).map((item)=>item.id),['session.current_work.select','session.route.choose','idtspe.work']);
+  assert.deepEqual(closure.entries.map((item)=>item.id),['session.state.synchronize','session.turn.finalize']);
 });
 
 test('every visible command card has canonical Context, Result and Essence projection',()=>{
@@ -57,7 +80,7 @@ test('every command card belongs to one normal tab/group and All commands is onl
   const views=navigation.methodologyViewDefinitions(entries);
   const countByView=new Map(views.map((view)=>[view.id,view.count]));
   assert.equal(countByView.get('USE_CASES'),useCases.length);
-  assert.equal(countByView.get('TARGET_MODULES'),components.filter((item)=>item.kind==='TARGET_MODULE').length);
+  assert.equal(countByView.get('TARGET_MODULES'),components.filter((item)=>item.kind==='TARGET_MODULE').length+1);
   assert.equal(countByView.get('LENSES'),components.filter((item)=>item.kind==='LENS').length);
   assert.equal([...countByView.values()].reduce((sum,count)=>sum+count,0),entries.length);
   const normalGroups=views.flatMap((view)=>navigation.buildMethodologyViewGroups(entries,view.id));

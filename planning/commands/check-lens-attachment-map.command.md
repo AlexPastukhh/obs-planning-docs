@@ -36,7 +36,7 @@ Status: active project command definition; semantic behavior remains in linked o
   "palette": true,
   "refinements": [],
   "includes": [
-    "planning/commands/recheck-methodology-use-cases.command.md"
+    "planning/commands/choose-current-work-route.command.md"
   ],
   "ownerRefs": [
     {

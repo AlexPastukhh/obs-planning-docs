@@ -102,14 +102,14 @@ Current Work Manifest
 → select only the bounded current-pass work that is useful now
 ```
 
-The Manifest is not sticky authority and does not force every listed action into the current pass. Current USER intent and canonical owner state take precedence. After composition, normal Port Composition refresh still runs before P-01; the Manifest never bypasses that refresh.
+The Manifest is not sticky authority and does not force every listed action into the current pass. Current USER intent and canonical owner state take precedence. After composition, normal Port Composition refresh still runs before the first admitted Shell capability; the Manifest never bypasses that refresh.
 
 ## Methodology Composition — What This Use Case May Select
 
 ```text
 Broad Discussion / Key Points
 explicit Shell port requirements when supplied
-Turn Work Record (included by the Shell, not an optional semantic component)
+ambient Turn Work Record (started at S0 above DIRECT/SHELL; not an optional semantic component)
 Core State Units
 Target Formation
 Target Module / Local Target Contract
@@ -122,7 +122,7 @@ Revalidation
 another methodology Use Case
 ```
 
-This is a composition list, not a mandatory sequence. Composition decides what work is useful; `P-01` only routes the selected composition into the Shell. A port that becomes newly material during execution may be reached dynamically without being predicted as a complete route up front.
+This is a composition list, not a mandatory sequence. Composition decides what work is useful; the current Shell entry routes the selected composition into its admitted capabilities. A port that becomes newly material during execution may be reached dynamically without being predicted as a complete route up front.
 
 ## Target Work Unit Composition Rule
 

@@ -39,7 +39,7 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
   "refinements": [],
   "methodologyBinding": null,
   "includes": [
-    "planning/commands/recheck-methodology-use-cases.command.md"
+    "planning/commands/choose-current-work-route.command.md"
   ],
   "ownerRefs": [
     {

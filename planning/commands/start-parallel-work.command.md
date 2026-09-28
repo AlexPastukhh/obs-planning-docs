@@ -36,7 +36,7 @@ Scope: retired fixed parallel-work-scope invocation. No current branch-based coo
   "palette": false,
   "refinements": [],
   "includes": [
-    "planning/commands/recheck-methodology-use-cases.command.md"
+    "planning/commands/choose-current-work-route.command.md"
   ],
   "ownerRefs": [
     {

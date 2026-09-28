@@ -40,7 +40,7 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
     }
   ],
   "includes": [
-    "planning/commands/recheck-methodology-use-cases.command.md"
+    "planning/commands/choose-current-work-route.command.md"
   ],
   "expectedOutput": "The current Turn Work Record remains the single plan/state/trace; any requested legacy P-02 view is a compatibility visibility projection of Shell-specific observable events only.",
   "permissionMode": "read-only-planning",
@@ -51,7 +51,7 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
     "Keep private reasoning out of the observable record."
   ],
   "userTarget": "<current IDTSPE subject/context>",
-  "palette": true,
+  "palette": false,
   "refinements": [],
   "methodologyBinding": {
     "methodologyRuntime": "IDTSPE",

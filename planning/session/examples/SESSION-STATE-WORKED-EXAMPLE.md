@@ -1,6 +1,22 @@
-# Session State worked example — two bounded turns
+# Session State worked example — cold start and two bounded continuation turns
 
-Status: illustrative, synthetic contents; IDs and revisions below belong only to these cases. This is not a mandatory Session directory schema or a second Work Runtime. [Session State Runtime Contract](../session-state-runtime-contract.md) owns physical continuity; Core [Work Record](../../documentation/idtspe-methodology/active/idtspe-core/runtime/WORK-RECORD-PRINCIPLES.md) and [PRS](../../documentation/idtspe-methodology/active/idtspe-core/target-modules/TM-PLANNING-RESOLUTION-STATE.md) own semantics. Each fenced block shows the *complete material content for this bounded case*, not a universal file template. `context/` does not exist in either case.
+Status: illustrative, synthetic contents; IDs and revisions below belong only to these cases. This is not a mandatory Session directory schema or a second Work Runtime. [Session State Runtime Contract](../session-state-runtime-contract.md) owns physical continuity; Core [Work Record](../../documentation/idtspe-methodology/active/idtspe-core/runtime/WORK-RECORD-PRINCIPLES.md) and [PRS](../../documentation/idtspe-methodology/active/idtspe-core/target-modules/TM-PLANNING-RESOLUTION-STATE.md) own semantics. Each fenced block shows the *complete material content for this bounded case*, not a universal file template. `context/` does not exist in any of these cases.
+
+## Case 0 — cold Session State bootstrap and separate archive identities
+
+USER begins one substantive planning turn with no prior Session State. The host allocates `session-state/`, its archive identity and `work-records/TWR-0.md` at S0 before methodology work. The S0 record contains the immutable WR-1…WR-7 kernel and references the exact USER input, Session State location, the current Work Record Principles revision, repository/target `READ_ONLY` authority, Session State `WRITE_ALLOWED` authority, `ContinuationGate: CONTINUE_ALLOWED`, and an `ACCUMULATE` retention rule. There is no accepted Manifest or PRS yet; these are recorded as absent, not invented as pre-existing. The initial archive snapshot carries README navigation and TWR-0/S0 with `Manifest: pending bootstrap`; it is not misrepresented as a completed turn archive.
+
+```text
+WR-1 input: I-0 — "Спланируй первое развитие приложения"
+WR-2: MANIFEST_BOOTSTRAP_REQUIRED; accepted Manifest absent; PRS absent
+WR-3: one bounded subject — initial application development planning
+WR-4: SHELL; ContinuationGate = CONTINUE_ALLOWED
+WR-5: current owner work; an AI-derived future Manifest remains a Proposal
+WR-6: minimal USER-authorized accepted Manifest M-0; candidate refs only in PRS when qualified
+WR-7: actual results/gates recorded; Session State archive rematerialized
+```
+
+`WORK-MANIFEST.md` M-0 holds only exact USER-selected orientation/current facts; it does not silently accept the AI's candidate development plan. An emerging material Question/Proposal qualifies a bounded `resolution/PRS.md` through its owner. `context/` is absent because no carried contextual file is material. The Session State archive has `WORK-MANIFEST.md` as entry and retains TWR-0 plus material PRS/candidate references. If the USER separately requests a portable SDS Proposal Workspace Archive, it is another ZIP with its own bounded `PRS.md` entry and target-shaped candidate bodies; M-0/TWR-0 point to its identity/basis rather than making the two archives one package.
 
 ## Case A — no contextual file and no ceremonial Question
 

@@ -46,7 +46,7 @@ Scope: thin read-only shortcut for current methodology/documentation guidance; s
   "palette": true,
   "refinements": [],
   "includes": [
-    "planning/commands/recheck-methodology-use-cases.command.md"
+    "planning/commands/choose-current-work-route.command.md"
   ],
   "ownerRefs": [
     {

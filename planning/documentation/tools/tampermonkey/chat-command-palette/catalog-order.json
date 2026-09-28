@@ -3,6 +3,10 @@
   "kind": "planning-helper-catalog-order",
   "commands": [
     "methodology.use_cases.recheck",
+    "session.work.maintain",
+    "session.input.intake",
+    "session.current_work.select",
+    "session.route.choose",
     "idtspe.next",
     "idtspe.continue",
     "idtspe.proposal",
@@ -38,6 +42,7 @@
     "current_state.report",
     "command.plan",
     "uc:UC-IDTSPE-AI-WORKING-BOUNDARY",
+    "uc:UC-IDTSPE-CONDUCT-CURRENT-WORK",
     "uc:UC-IDTSPE-COMPOSE-CURRENT-WORK",
     "uc:UC-IDTSPE-MAINTAIN-CURRENT-WORK-STATE",
     "uc:UC-IDTSPE-INTEGRATE-CURRENT-WORK",
@@ -69,10 +74,11 @@
     "tm:TM-DOMAIN-DISCOVERY",
     "tm:TM-DOMAIN-OWNER",
     "tm:TM-IMPLEMENTATION-SLICE",
+    "tm:TM-EVOLUTION-STEPS-MAP",
+    "tm:TM-EVOLUTION-STEP",
+    "sds.evolution_step.question_sweep",
     "tm:TM-SLICE-OWNER",
     "tm:TM-SHARED-IMPLEMENTATION-CAPABILITY",
-    "tm:TM-EVOLUTION-STEP",
-    "tm:TM-EVOLUTION-STEPS-MAP",
     "tm:TM-PROTOTYPE",
     "tm:TM-PRACTICAL-TEST",
     "tm:TM-CODE-REALIZATION",
@@ -142,7 +148,10 @@
     "idtspe.port.handoff",
     "idtspe.port.persistence",
     "idtspe.port.revalidation",
+    "session.state.synchronize",
+    "session.turn.finalize",
     "idtspe.port-composition.recheck",
+    "idtspe.compose-current-work",
     "idtspe.port.trace",
     "idtspe.review",
     "idtspe.review.recheck",
@@ -157,6 +166,7 @@
     "UC-DOC-USE-REPOSITORY-GUIDANCE",
     "UC-DOC-RESOLVE-CURRENT-USE-CASES",
     "UC-IDTSPE-AI-WORKING-BOUNDARY",
+    "UC-IDTSPE-CONDUCT-CURRENT-WORK",
     "UC-IDTSPE-COMPOSE-CURRENT-WORK",
     "UC-IDTSPE-MAINTAIN-CURRENT-WORK-STATE",
     "UC-IDTSPE-INTEGRATE-CURRENT-WORK",
@@ -301,21 +311,25 @@
     {
       "id": "idtspe-pass.baseline",
       "viewId": "IDTSPE_PASS",
-      "label": "P-01 · Invocation / Composition",
+      "label": "Сессия · вход",
       "order": 10,
       "items": [
         "methodology.use_cases.recheck",
-        "idtspe.port-composition.recheck",
-        "idtspe.work"
+        "session.work.maintain",
+        "session.input.intake"
       ]
     },
     {
       "id": "idtspe-pass.trace",
       "viewId": "IDTSPE_PASS",
-      "label": "P-02 · Trace / Visibility",
+      "label": "Сессия · текущая работа",
       "order": 20,
       "items": [
-        "idtspe.port.trace",
+        "session.current_work.select",
+        "session.route.choose",
+        "idtspe.work",
+        "idtspe.compose-current-work",
+        "idtspe.port-composition.recheck",
         "idtspe.trace.inline",
         "idtspe.trace.artifact"
       ]
@@ -414,6 +428,7 @@
       "order": 10,
       "items": [
         "uc:UC-IDTSPE-AI-WORKING-BOUNDARY",
+        "uc:UC-IDTSPE-CONDUCT-CURRENT-WORK",
         "uc:UC-IDTSPE-COMPOSE-CURRENT-WORK",
         "uc:UC-IDTSPE-MAINTAIN-CURRENT-WORK-STATE",
         "uc:UC-IDTSPE-INTEGRATE-CURRENT-WORK",
@@ -504,8 +519,9 @@
       "label": "Evolution",
       "order": 40,
       "items": [
+        "tm:TM-EVOLUTION-STEPS-MAP",
         "tm:TM-EVOLUTION-STEP",
-        "tm:TM-EVOLUTION-STEPS-MAP"
+        "sds.evolution_step.question_sweep"
       ]
     },
     {
@@ -653,6 +669,16 @@
       "items": [
         "sds.lens_attachment_map.check",
         "idtspe.tm_lens_dependency_map.check"
+      ]
+    },
+    {
+      "id": "idtspe-pass.session-close",
+      "viewId": "IDTSPE_PASS",
+      "label": "Сессия · завершение",
+      "order": 90,
+      "items": [
+        "session.state.synchronize",
+        "session.turn.finalize"
       ]
     }
   ],

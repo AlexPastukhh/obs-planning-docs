@@ -41,7 +41,7 @@ Scope: focused read-only Documentation Review projection for semantic ownership,
   "palette": true,
   "refinements": [],
   "includes": [
-    "planning/commands/recheck-methodology-use-cases.command.md"
+    "planning/commands/choose-current-work-route.command.md"
   ],
   "ownerRefs": [
     {

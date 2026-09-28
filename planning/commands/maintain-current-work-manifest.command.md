@@ -20,7 +20,7 @@ Scope: one direct cross-pass current-work coordination route. Reusable semantics
   ],
   "description": "Maintain/reconcile the accepted Session State Current Work Manifest and its re-entry/navigation projection.",
   "meaning": "Maintain the accepted WORK-MANIFEST.md owned by UC-IDTSPE-MAINTAIN-CURRENT-WORK-STATE. Synchronize factual execution consequences and cross-turn coordination directly, while material AI-derived prospective plan changes remain Proposal-first through Core PRS/Proposal semantics. Session State supplies the ambient representation; P-14 is not the reason the Manifest exists.",
-  "activeContextBehavior": "Use the current Work Context and current canonical owner state. Reuse an existing trustworthy Manifest when present; refresh only materially changed coordination/inventory/re-entry information. Current USER input and canonical owner state override stale Manifest projections. When no dedicated Manifest is material, report NOT_APPLICABLE/CHECKED_NO_CHANGE rather than inventing one for tiny one-pass work.",
+  "activeContextBehavior": "Use the current Session State and canonical owner state. Reuse the accepted Manifest and synchronize only established consequences; if a new Session State needs its minimal accepted orientation, follow the Work Record bootstrap rule. A tiny turn does not force substantive Manifest replanning or a P-14 Work Context Bundle. Current USER input and canonical owner state override stale projections.",
   "traversalReadMode": "Read Maintain Current Work State plus only the current owner/artifact references needed to synchronize the Manifest. Do not reread or duplicate full Need/PRS/Review/Turn-Work-Record bodies when compact canonical references are sufficient.",
   "ownerFiles": [
     "planning/documentation/idtspe-methodology/active/idtspe-core/use-cases/maintain-current-work-state/UC-IDTSPE-MAINTAIN-CURRENT-WORK-STATE.md",
@@ -66,9 +66,7 @@ Scope: one direct cross-pass current-work coordination route. Reusable semantics
     "hostTargetPolicy": "NONE"
   },
   "includes": [
-    "planning/commands/work-through-idtspe.command.md",
-    "planning/commands/recheck-idtspe-port-composition.command.md",
-    "planning/commands/idtspe-port-persistence.command.md"
+    "planning/commands/choose-current-work-route.command.md"
   ]
 }
 [/PLANNING_COMMAND_DEFINITION]

@@ -44,6 +44,11 @@ updated RU-REAL-01
 
 The aim is not to manufacture a deliberately rough draft. Produce the best exact result currently justified; practical integration may then reveal Evidence that requires correction.
 
+<a id="exact-selected-step-readiness-handoff"></a>
+## Active-profile selected-Step handoff
+
+When an active SDS profile uses this broad Exact Realization for non-code literal work that realizes a selected Evolution Step, perform/reuse that Step owner’s contextual Question sweep and consume its `RU-EVO-06` conclusions before starting realization. Otherwise this profile-specific gate is not applicable; Core Exact Realization does not globally require an SDS Step.
+
 ## Activation / Scope Gate
 
 Use this Target Module when all are materially true:

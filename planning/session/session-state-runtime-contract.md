@@ -10,7 +10,7 @@ Session State is the ambient file-backed continuity/workspace representation for
 
 ## Bootstrap and re-entry
 
-For substantive work, create/reuse Session State before methodology execution and materialize the current Turn Work Record S0 as early as the host permits. Re-entry reads:
+For substantive work, create/reuse Session State and establish/reuse its portable archive identity before methodology execution; materialize the current Turn Work Record S0 as early as the host permits, then create/reuse an initial portable archive snapshot containing available navigation and S0 before substantive execution when writable with the immutable WR-1…WR-7 kernel and reconstructable authority/methodology/retention references as early as the host permits. The fundamental [current-work Use Case](../documentation/idtspe-methodology/active/idtspe-core/use-cases/conduct-current-work/UC-IDTSPE-CONDUCT-CURRENT-WORK.md#uc-idtspe-conduct-current-work) coordinates the turn after this minimal allocation. If the accepted Manifest is not yet formed, the initial snapshot marks it pending rather than fabricating accepted content. The archive is rematerialized from actual current state at WR-7. Re-entry reads:
 
 ```text
 README.md        navigation/responsibilities
@@ -76,7 +76,7 @@ A current Manifest/PRS/Proposal/Need reference may not be silently pruned. `PINN
 
 Every substantive Session-State turn normally rematerializes a portable archive before response/handoff completion. The archive contains current Manifest, current Turn Work Record, current PRS when material, and material session-owned files required for re-entry. External repository/source trees remain basis refs by default and are not recursively copied merely because cited.
 
-The Session State archive is not a Replacement Package and does not promote Proposal candidates to accepted/current meaning. P-14 remains the external/durable artifact-placement owner when placement outside ambient Session State is material.
+The Session State archive has `WORK-MANIFEST.md` as its re-entry entry point and is distinct from a separately requested PRS-centered Proposal Workspace Archive, including an SDS Application planning archive. Produce separate archive artifacts rather than making one ZIP serve both purposes or nesting the Proposal archive inside Session State by default. Record the separate Proposal archive identity/basis as a reference where needed; overlapping semantic state must point to the same canonical owner instead of becoming divergent independent PRS meanings. The Session State archive is not a Replacement Package and does not promote Proposal candidates to accepted/current meaning. P-14 remains the external/durable artifact-placement owner when placement outside ambient Session State is material.
 
 ## Degraded host behavior
 

@@ -113,7 +113,7 @@ The JSON is intentionally strict so repository writes, build-time validation and
 <a id="planning-command-composition"></a>
 ## Command Composition / Includes
 
-Every Planning Command invocation includes the canonical methodology Use-Case applicability recheck, either directly or transitively through its registered command composition. The recheck scans the Methodology Use-Case Registry Map and only plausibly applicable scoped registry rows; it does **not** execute every Use Case.
+Every Planning Command invocation includes the canonical methodology Use-Case applicability recheck, either directly or transitively through its registered command composition. For ordinary substantive roots, the dependencies-first chain is `WR-4 → WR-3 → WR-1 → session.work.maintain → methodology.use_cases.recheck`; foundational roots within the chain are valid partial entries. S0 and root/alias recognition occur physically before full DAG expansion and are reconciled into the same record; the WR-1 command action confirms/records them, then automatic WR-2 triage occurs before WR-3. WR-6/WR-7 close after the selected root action under the fundamental current-work Use Case, never as mandatory includes of WR-5. The recheck scans the Methodology Use-Case Registry Map and only plausibly applicable scoped registry rows; it does **not** execute every Use Case.
 
 ### Expand First, Execute Dependencies Before Dependents
 
@@ -147,35 +147,32 @@ This is essential for IDTSPE: `IDTSPE.PORT-COMPOSITION-REFRESH` must already kno
 
 For `idtspe.review`, `tmcmd.review.findings`, `idtspe.review.recheck` and current-basis specialized reviews such as `idtspe.review_consistency`, `REVIEW_COVERAGE_MODE` is interpreted during this pre-execution composition stage. The Review Strategy/Coverage owner resolves the bounded Review Subject/Scope/Basis, trustworthy prior record when applicable, review obligations/intents and reusable prior coverage **before** Validation or Lens dependency semantic actions run. It does not select executable Lens applications: P-06 owns Lens applicability/supported-operation resolution and forms the selected `(Lens Model, Analysis Surface, Operation, basis)` applications. `CURRENT_BASIS` derives current-basis obligations; `LOCAL_AFFECTED_RECHECK` derives stale/partial/invalidated/newly exposed/previously blocked obligations. If both modes occur in one bounded review composition, the effective contribution set normalizes them to `LOCAL_AFFECTED_RECHECK` before semantic execution. `tmcmd.pre.update` forms a separate optional plan and contributes no Review Coverage mode.
 
-For normal IDTSPE work the reusable base is:
+For an ordinary substantive command, the early shared prerequisite chain is:
 
 ```text
-idtspe.work
-├─ idtspe.port.trace
-├─ methodology.use_cases.recheck
-└─ idtspe.port-composition.recheck
+methodology.use_cases.recheck
+→ session.work.maintain (Session State/archive identity + S0)
+→ session.input.intake (WR-1; automatic WR-2 follows)
+→ session.current_work.select (WR-3)
+→ session.route.choose (WR-4)
 ```
 
-The one structured Turn Work Record is established by Work Runtime before execution routing so input, Use-Case and composition facts are retained incrementally. When `ExecutionRoute=SHELL`, task-specific Use Cases and the active P-03..P-15 Port Requirement Set refine that same record; no second plan/trace record is created.
+When the selected route is `SHELL`, `idtspe.compose-current-work` and `idtspe.port-composition.recheck` precede `idtspe.work`'s semantic action at WR-5. `DIRECT` does not manufacture a Shell pass. The one structured Turn Work Record already exists above either route, so no active P-02 or separate trace prerequisite is needed. `idtspe.port.trace` remains an explicit legacy compatibility visibility command only.
 
-User-level/specialized IDTSPE operations expose the base frame explicitly even when some dependencies are also reachable transitively. The duplicate edges are intentional declaration and are deduplicated in the merged DAG.
+User-level/specialized IDTSPE operations reuse this chain and, when Shell is selected, the same current Work Context and Port Requirement Set. Shared dependencies and equivalent work are deduplicated in the merged DAG; WR-6/WR-7 occur after selected leaf/root work under the fundamental current-work Use Case.
 
 ```text
 TM-* command/card
-├─ idtspe.work
-├─ idtspe.port-composition.recheck
-├─ idtspe.port.trace
-├─ idtspe.port.target
-├─ idtspe.target-module.apply
-└─ selected TM-* Model
+→ current-work prefix through WR-4
+→ idtspe.compose-current-work + idtspe.port-composition.recheck
+→ idtspe.work + idtspe.port.target
+→ idtspe.target-module.apply + selected TM-* Model
 
 LENS-* command/card
-├─ idtspe.work
-├─ idtspe.port-composition.recheck
-├─ idtspe.port.trace
-├─ idtspe.port.lens
-├─ idtspe.lens.apply
-└─ selected `(LENS-* Model, Analysis Surface, Operation, basis)` application
+→ current-work prefix through WR-4
+→ idtspe.compose-current-work + idtspe.port-composition.recheck
+→ idtspe.work + idtspe.port.lens
+→ idtspe.lens.apply + selected Lens Application
 ```
 
 Named `idtspe.port.*` commands contribute an explicit named capability requirement. Generic `idtspe.target-module.apply` / `idtspe.lens.apply` contribute the reusable Meta-Model/registry/Unit-or-Finding machinery. Concrete TM/Lens cards add only their own selected Model reference; references inherited from the shared prefixes are not copied into every leaf card.
@@ -285,4 +282,4 @@ The [full documentation example command](read-full-documentation-example.command
 <a id="turn-work-record-command-contract"></a>
 ## Turn Work Record / Session State command contract
 
-All substantive command work reuses the ambient Turn Work Record rather than requiring P-02. Command roots/aliases are resolved under WR-1 after S0; `includes` still form the canonical dependencies-first DAG and deferred `processCalls` keep their owner-point semantics. Nested calls share the current Turn Work Record/Session Context. Existing `permissionMode` governs target/repository authority; Session-State maintenance follows the Session runtime authority plane. `TRACE_SINK_PREFERENCE` is visibility/external-retention preference, not canonical Work Record identity or backing-store ownership.
+All substantive command work reuses the ambient Turn Work Record rather than requiring P-02. Command roots/aliases are resolved under WR-1 after S0; `includes` still form the canonical dependencies-first DAG and deferred `processCalls` keep their owner-point semantics. Nested calls share the current Turn Work Record/Session Context. The included Session prefix acts on its own read-only/Session-State authority plane; it does not downgrade authorized target/repository operations of the selected root, whose explicit permission remains the ceiling. Each child action still observes its own narrower constraints. Existing `permissionMode` governs target/repository authority; Session-State maintenance follows the Session runtime authority plane. `TRACE_SINK_PREFERENCE` is visibility/external-retention preference, not canonical Work Record identity or backing-store ownership.

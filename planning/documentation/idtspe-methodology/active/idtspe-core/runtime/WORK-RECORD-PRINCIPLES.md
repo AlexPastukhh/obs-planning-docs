@@ -9,7 +9,7 @@
 <a id="work-record-principles"></a>
 ## 1. Purpose
 
-A **Turn Work Record** is the proposed single evolving plan/state/trace for one substantive assistant work turn.
+A **Turn Work Record** is the single evolving plan/state/trace for one substantive assistant work turn. [Conduct Current Session Work](../use-cases/conduct-current-work/UC-IDTSPE-CONDUCT-CURRENT-WORK.md#uc-idtspe-conduct-current-work) is its fundamental full-turn Use Case; this contract retains the immutable stage semantics.
 
 It begins when current USER input is accepted for work and remains the same record through:
 
@@ -46,7 +46,7 @@ applicable PRS contextual-material refs when already known
 
 Prefer a stable methodology revision/baseline reference when available rather than only a path whose meaning may later move.
 
-Minimal Session State allocation is infrastructure needed to materialize the record; it is not a hidden substantive work item. If the file is physically created after one or two bootstrap observations, reconcile those observations explicitly into S0 rather than pretending the file pre-existed them.
+At bootstrap establish/reuse the Session archive identity as well as the file-backed workspace and S0; an initial portable snapshot carries S0 and truthful navigation before substantive execution when writable, then the archive is rematerialized from actual current state at WR-7. An explicitly requested Proposal Workspace Archive is separately materialized under its PRS-centered owner. Minimal Session State allocation is infrastructure needed to materialize the record; it is not a hidden substantive work item. If the file is physically created after one or two bootstrap observations, reconcile those observations explicitly into S0 rather than pretending the file pre-existed them.
 
 <a id="work-record-zero-state"></a>
 ## 2. Immutable zero-state kernel
@@ -80,7 +80,7 @@ If a material concern cannot truthfully fit beneath the current kernel item, rec
 <a id="work-record-input"></a>
 ## 3. Input principle — WR-1
 
-`WR-1` performs bounded intake/classification and preserves the current input basis.
+`WR-1` performs bounded intake/classification and preserves the current input basis. An included WR-1 command confirms and records command roots/aliases and DAG facts discovered after S0; it must not pretend that recognition happened only after the include dependencies executed. WR-2 triage runs after WR-1 and before the WR-3 action, without a separate command.
 
 For command-driven input, identification of command roots/aliases and the resulting input classification belong to `WR-1`. The runtime may allocate the Session State / physical Work Record before this classification, but full command DAG expansion must not become invisible pre-record work.
 

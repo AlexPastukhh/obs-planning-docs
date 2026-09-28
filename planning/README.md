@@ -70,4 +70,4 @@ README owns structural/bootstrap navigation only. Functional capability meaning 
 <a id="session-state-planning-navigation"></a>
 ## Session State navigation
 
-Substantive USER↔AI work may use the file-backed Session State runtime under [`planning/session/session-state-runtime-contract.md`](session/session-state-runtime-contract.md#session-state-runtime). Session State is continuity infrastructure above DIRECT/SHELL routing and does not replace IDTSPE/SDS semantic owners.
+Substantive USER↔AI work bootstraps or reuses the file-backed Session State runtime under [`planning/session/session-state-runtime-contract.md`](session/session-state-runtime-contract.md#session-state-runtime). Session State is continuity infrastructure above DIRECT/SHELL routing and does not replace IDTSPE/SDS semantic owners. After S0, the fundamental [Conduct Current Session Work Use Case](documentation/idtspe-methodology/active/idtspe-core/use-cases/conduct-current-work/UC-IDTSPE-CONDUCT-CURRENT-WORK.md#uc-idtspe-conduct-current-work) coordinates WR-1…WR-7; the applicability resolver and its authority-boundary companion are reaffirmed on that current basis.

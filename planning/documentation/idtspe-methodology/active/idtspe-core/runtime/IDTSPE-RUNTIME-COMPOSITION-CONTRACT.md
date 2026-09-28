@@ -58,7 +58,7 @@ The current port labels are technical runtime navigation, not a second ontology.
 
 ### Port-Number Migration Compatibility
 
-This methodology-only transition intentionally leaves direct `planning/commands/*` and Helper/group projections unchanged. During the compatibility window, a stale reference is interpreted by its **named semantic port and generation**, never by bare number. Two historical numberings are relevant.
+The direct command graph and Helper now project Work Runtime above Shell. During the compatibility window, a stale reference is interpreted by its **named semantic port and generation**, never by bare number. Two historical numberings are relevant.
 
 Pre-Trace legacy numbering (the repository/helper baseline before `P-02 Trace` was inserted):
 
@@ -82,7 +82,7 @@ legacy P-15 Revalidation  → canonical P-15 Evidence / Revalidation
 Previous Trace-enabled numbering (`1fe3` generation, before standalone Question removal):
 
 ```text
-previous P-02 Trace                 → canonical P-02 Work Plan / State / Trace / Visibility
+previous P-02 Trace                 → Turn Work Record visibility; legacy compatibility projection only, no active Shell port
 previous P-03 Target                → canonical P-03 Target
 previous P-04 Source                → canonical P-04 Source
 previous P-05 Relation              → canonical P-05 Relation

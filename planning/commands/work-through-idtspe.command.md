@@ -49,7 +49,7 @@ Scope: generic IDTSPE work-mode and installed-component dispatcher.
     "hostTargetPolicy": "NONE"
   },
   "includes": [
-    "planning/commands/recheck-methodology-use-cases.command.md",
+    "planning/commands/choose-current-work-route.command.md",
     "planning/commands/compose-current-idtspe-work.command.md",
     "planning/commands/recheck-idtspe-port-composition.command.md"
   ],

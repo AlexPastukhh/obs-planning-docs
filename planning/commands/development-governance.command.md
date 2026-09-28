@@ -40,7 +40,7 @@ Scope: working-context governance shortcut; semantic authority remains in linked
   ],
   "userTarget": "<application/development work in this session>",
   "includes": [
-    "planning/commands/recheck-methodology-use-cases.command.md"
+    "planning/commands/choose-current-work-route.command.md"
   ],
   "ownerRefs": [
     {

@@ -143,7 +143,7 @@ This is routing orientation only, not a mandatory phase sequence or a duplicate 
 
 ## Application development orientation
 
-`Application Definition → Evolution Steps Map → concrete Evolution Step → Step-owned downstream Target Bodies → realization/proof/Target Owner Materialization → current natural owners` is the default orientation when material future application development is planned. Application Definition is the upstream temporal exception and keeps Benefit promise intent; Map is the accepted development manifest/coverage projection; Step owns the bounded future transition. Scenario can be formed before Feature resolution. A Map with one concrete next Step and later `UNESTABLISHED` is valid. None of these relations mandates creating every component for every task.
+`Application Definition → Evolution Steps Map → concrete Evolution Step → Step-owned downstream Target Bodies → realization/proof/Target Owner Materialization → current natural owners` is the default orientation when material future application development is planned. Application Definition is the upstream temporal exception and keeps Benefit promise intent; Map is the accepted development manifest/coverage projection; Step owns the bounded future transition. Scenario can be formed before Feature resolution. A focused `проведи Question sweep для Evolution Step` command projects the existing Step contextual stabilization and `RU-EVO-06` before a selected Step enters realization when applicable; it is not a new Target Module or a requirement on unrelated code changes. A Map with one concrete next Step and later `UNESTABLISHED` is valid. None of these relations mandates creating every component for every task.
 
 ## Canonical SDS Owners
 

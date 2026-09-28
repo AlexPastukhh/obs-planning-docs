@@ -1770,6 +1770,26 @@
       "target": "<Compose Current IDTSPE Work target>"
     },
     {
+      "id": "UC-IDTSPE-CONDUCT-CURRENT-WORK",
+      "kind": "USE_CASE",
+      "scope": "Core",
+      "label": "Conduct Current Session Work",
+      "actionLabel": "Conduct Current Session Work",
+      "description": "One current Session State and one Turn Work Record describe the input, accepted-state check, bounded primary subject, execution route, actual work, material consequences and closure. A current portable Session State archive is rematerialized at the end of the turn when the host supports it. An explicit separate Proposal Workspace Archive, when requested, remains a separate PRS-centered artifact.",
+      "context": "Every substantive USER↔AI work turn, whether entered through ordinary language or a Planning Command. The thin Session layer supplies file-backed continuity; this Use Case coordinates the current work without taking semantic ownership from the selected task, Core State, Shell or profile.",
+      "result": "One current Session State and one Turn Work Record describe the input, accepted-state check, bounded primary subject, execution route, actual work, material consequences and closure. A current portable Session State archive is rematerialized at the end of the turn when the host supports it. An explicit separate Proposal Workspace Archive, when requested, remains a separate PRS-centered artifact.",
+      "essence": "One current Session State and one Turn Work Record describe the input, accepted-state check, bounded primary subject, execution route, actual work, material consequences and closure. A current portable Session State archive is rematerialized at the end of the turn when the host supports it. An explicit separate Proposal Workspace Archive, when requested, remains a separate PRS-centered artifact.",
+      "sources": [
+        "planning/documentation/use-case-registry-map.md",
+        "planning/documentation/idtspe-methodology/active/idtspe-core/use-cases/USE-CASE-REGISTRY.md"
+      ],
+      "aliases": [],
+      "ownerRef": null,
+      "commandId": "",
+      "invocation": "",
+      "target": "<Conduct Current Session Work target>"
+    },
+    {
       "id": "UC-IDTSPE-INTEGRATE-CURRENT-WORK",
       "kind": "USE_CASE",
       "scope": "Core",

@@ -49,7 +49,7 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
     }
   ],
   "includes": [
-    "planning/commands/recheck-methodology-use-cases.command.md",
+    "planning/commands/choose-current-work-route.command.md",
     "planning/commands/compose-current-idtspe-work.command.md"
   ],
   "expectedOutput": "A refreshed/reaffirmed Shell Port Requirement Set for the selected subject is recorded in the current Turn Work Record.",

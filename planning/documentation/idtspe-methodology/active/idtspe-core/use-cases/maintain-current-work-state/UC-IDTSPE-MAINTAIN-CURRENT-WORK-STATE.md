@@ -78,7 +78,7 @@ Current Work Manifest
   re-entry / next-action route
 ```
 
-Activation is proportional. A tiny one-pass task may remain Turn-Work-Record-only. A Manifest becomes material when current work is expected to span several passes/messages, several independently useful artifacts must stay coordinated, revalidation/review work must survive a pass boundary, cross-session/handoff re-entry is material, or the USER explicitly requests central work tracking.
+Activation of rich cross-pass Manifest content is proportional. Substantive Session State retains a minimal accepted Manifest alongside its Turn Work Record even for a tiny one-pass task; it need not invent a prospective future plan. More detailed coordination becomes material when work spans several passes/messages, several independently useful artifacts must stay coordinated, revalidation/review must survive a pass boundary, cross-session/handoff re-entry matters, or the USER explicitly requests central tracking.
 
 ### Goal / action ownership boundary
 
