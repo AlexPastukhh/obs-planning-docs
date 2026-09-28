@@ -27,7 +27,7 @@ No compatibility use creates a second record, working store, semantic lifecycle 
 ## Preserved invariants
 
 - observable work/runtime facts only; never private chain-of-thought;
-- incremental-first recording; end-of-turn reconstruction is recovery-only;
+- incremental-first recording across preparation/continuation; end-of-subject reconstruction is recovery-only;
 - retained snapshots/history remain distinguishable from the current pointer/state;
 - plan changes are explicit rather than silently rewriting the initial basis;
 - Review Coverage, Need, Proposal/QRP/Decision, Targets and semantic owners retain their natural authority;

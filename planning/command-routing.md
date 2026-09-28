@@ -45,13 +45,14 @@ Planning Commands are a USER↔AI invocation surface. The AI follows methodology
 ## Command Resolution
 
 ```text
-1. Start here for an explicit command. For substantive work, bootstrap/reuse the ambient Session State and S0 kernel before semantic command execution; recognize current input/command roots after S0 and record these observations under WR-1.
+1. Start here for an explicit command. For a new bounded substantive subject, bootstrap/reuse the ambient Session State and create S0 before semantic command execution; recognize current input/command roots after S0 and record these observations under WR-1. For review/continuation of the same still-open subject, reuse its record, append the new input event and revalidate its pending composition instead of allocating another S0.
 2. Resolve the direct planning/commands/*.command.md definition whose commandFamily contains the trigger.
 3. Fully expand all selected roots and transitive includes; discover reachable processCalls as deferred point calls. Validate paths and mixed cycles, merge/deduplicate the include DAG and collect pre-execution contributions before any command action.
 4. Establish dependencies-first order. Execute the deepest methodology Use-Case recheck, then early session.work.maintain activation, WR-1 confirmation, automatic WR-2 triage, WR-3 subject and WR-4 execution route before the ordinary selected leaf.
-5. At WR-5, before affected execution of a tentative current Manifest task, perform/reuse the contextual session-task Question sweep and repeat after material candidate/route change until readiness or a real gate. This is semantic current-work behavior, not a universal early command include or a second WR-2. If WR-4=SHELL, reaffirm the subject-specific Use Cases and Port Requirement Set, then execute idtspe.work and admitted capabilities; DIRECT follows its selected direct owner and escalates to SHELL if the sweep reveals material ambiguity. NO_EXECUTION preserves the actual gate. A selected SDS Evolution Step has an additional Step-owned readiness sweep at its realization handoff.
-6. At each reached processCalls owner point evaluate the gate, bind the current basis and execute/reuse the complete child composition before resuming. Keep one Work Context and root permission boundary.
-7. After the selected root's WR-5 work, follow the fundamental current-work Use Case through WR-6 synchronization and WR-7 Work Record/archive closure. WR-6/WR-7 are not prerequisite includes of the leaf action.
+5. At WR-5, prepare every selected executable subject by default, including Manifest reconciliation: if WR-4=SHELL, reaffirm task-specific Use Cases/Port Requirement Set and read the relevant selected Core/profile registry/component owners; for DIRECT prepare only the direct owner/inputs. Record actual reads and selection/applicability facts, then perform/reuse the contextual Question sweep. Repeat affected preparation after material candidate/route/port change until stable readiness or a real gate. WR-2 remains triage. A selected SDS Evolution Step has its distinct Step-owned readiness sweep at realization handoff.
+6. Audit preparation against actual coverage, synchronize Session State and rematerialize its archive. Unless the USER explicitly requests a continuous one-response run, stop with the selected semantic root and all execution-bearing dependencies pending, and report the real preparation result. `includes` guarantees dependency order but never itself authorizes crossing this response boundary. On a later continuation/recheck input reuse the same open Work Record, revalidate source/route/Use-Case/port/Question basis and run only compatible reused or affected changed preparation. A request to recheck preparation does not execute the pending root.
+7. After continuation (or an explicitly authorized continuous run), execute the pending selected direct owner or `idtspe.work` and admitted Shell capabilities in dependencies-first order. At each reached processCalls owner point evaluate its gate, bind the current basis and execute/reuse the complete child composition before resuming; unreached execution points remain pending at the preparation checkpoint. Keep one Work Context and root permission boundary. NO_EXECUTION preserves its actual gate.
+8. After the selected root's WR-5 work and the bounded subject's completion/explicit stop, follow the fundamental current-work Use Case through final WR-6 synchronization and WR-7 Work Record/archive closure. Intermediate response archives do not imply WR-7; focused WR-6/WR-7 commands are not prerequisite includes of the leaf action.
 ```
 
 Do not reconstruct commands from memory, helper output, examples or historical files when the command definition is readable.
@@ -170,10 +171,11 @@ raw USER input
 → WR-2 automatic Manifest/PRS/context triage (no direct command)
 → WR-3 primary subject
 → WR-4 DIRECT | SHELL | NO_EXECUTION
-→ WR-5 contextual session-task Question sweep before affected Manifest execution; repeat after material change
-→ if SHELL: reaffirm task-specific Use Cases + Port Requirement Set
-→ execute dependency/semantic actions beneath WR-5
-→ WR-6 / WR-7 through the current-work Use Case after the selected root action
+→ WR-5 preparation; if SHELL: reaffirm task-specific Use Cases + Port Requirement Set and selected component reads
+→ current-subject Question sweep; repeat affected preparation after material change
+→ verify actual preparation, synchronize Session State, archive and pause by default
+→ continuation in the same record: check basis, execute pending semantic actions
+→ final WR-6 / WR-7 after the selected subject ends
 ```
 
 P-02 is not a command-global bootstrap dependency. Command graph discovery is observable WR-1 work and does not itself require Shell.

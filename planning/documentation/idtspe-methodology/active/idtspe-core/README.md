@@ -42,7 +42,7 @@ Read in order:
 4. [`use-cases/RESPONSIBILITY-MAP.md`](use-cases/RESPONSIBILITY-MAP.md) — IDTSPE Use-Case orchestration responsibility routing;
 5. [`runtime/IDTSPE-DEFAULT-WORK-MODE.md`](runtime/IDTSPE-DEFAULT-WORK-MODE.md);
 6. [`use-cases/USE-CASE-REGISTRY.md`](use-cases/USE-CASE-REGISTRY.md);
-7. [`use-cases/conduct-current-work/UC-IDTSPE-CONDUCT-CURRENT-WORK.md`](use-cases/conduct-current-work/UC-IDTSPE-CONDUCT-CURRENT-WORK.md#uc-idtspe-conduct-current-work) — fundamental work-turn route after Session State/S0 allocation;
+7. [`use-cases/conduct-current-work/UC-IDTSPE-CONDUCT-CURRENT-WORK.md`](use-cases/conduct-current-work/UC-IDTSPE-CONDUCT-CURRENT-WORK.md#uc-idtspe-conduct-current-work) — fundamental selected-subject route after Session State/S0 allocation, including preparation/continuation;
 8. [`use-cases/ai-working-boundary/UC-IDTSPE-AI-WORKING-BOUNDARY.md`](use-cases/ai-working-boundary/UC-IDTSPE-AI-WORKING-BOUNDARY.md) — fundamental authority-boundary application;
 9. [`use-cases/compose-current-work/UC-IDTSPE-COMPOSE-CURRENT-WORK.md`](use-cases/compose-current-work/UC-IDTSPE-COMPOSE-CURRENT-WORK.md);
 10. [`runtime/applicability/CONTEXTUAL-METHODOLOGY-APPLICATION-CONTRACT.md`](runtime/applicability/CONTEXTUAL-METHODOLOGY-APPLICATION-CONTRACT.md);
@@ -84,7 +84,7 @@ current situation
 → component-local applicability/materiality
 ```
 
-The fundamental full-turn route is [`UC-IDTSPE-CONDUCT-CURRENT-WORK`](use-cases/conduct-current-work/UC-IDTSPE-CONDUCT-CURRENT-WORK.md#uc-idtspe-conduct-current-work) after ambient Session State/S0 bootstrap. It coordinates one Work Record through DIRECT/SHELL selection and archive closure without taking over the composition capability. The fundamental always-active authority-boundary capability is [`UC-IDTSPE-AI-WORKING-BOUNDARY`](use-cases/ai-working-boundary/UC-IDTSPE-AI-WORKING-BOUNDARY.md). The default continuously relevant work-composition capability remains [`UC-IDTSPE-COMPOSE-CURRENT-WORK`](use-cases/compose-current-work/UC-IDTSPE-COMPOSE-CURRENT-WORK.md). Its valid result may be no additional structure beyond Broad Discussion.
+The fundamental selected-subject route is [`UC-IDTSPE-CONDUCT-CURRENT-WORK`](use-cases/conduct-current-work/UC-IDTSPE-CONDUCT-CURRENT-WORK.md#uc-idtspe-conduct-current-work) after ambient Session State/S0 bootstrap. It coordinates one open Work Record through verified preparation, archive checkpoints, DIRECT/SHELL execution and final closure without taking over the composition capability. The fundamental always-active authority-boundary capability is [`UC-IDTSPE-AI-WORKING-BOUNDARY`](use-cases/ai-working-boundary/UC-IDTSPE-AI-WORKING-BOUNDARY.md). The default continuously relevant work-composition capability remains [`UC-IDTSPE-COMPOSE-CURRENT-WORK`](use-cases/compose-current-work/UC-IDTSPE-COMPOSE-CURRENT-WORK.md). Its valid result may be no additional structure beyond Broad Discussion.
 
 ## Canonical Core Owners
 
@@ -136,9 +136,11 @@ USER input
 → WR-2 Manifest/PRS/context check
 → WR-3 primary subject
 → WR-4 DIRECT | SHELL | NO_EXECUTION
-→ WR-5 execution (Shell traversal nested here when selected)
-→ WR-6 Session State consequences
-→ WR-7 finalization/archive
+→ WR-5 selected-owner/port preparation and contextual Question sweep
+→ verified Session State archive checkpoint / USER continuation by default
+→ WR-5 current-basis recheck and execution (Shell traversal when selected)
+→ WR-6 final Session State consequences
+→ WR-7 finalization/archive when the subject ends
 ```
 
 Core PRS now has `RU-PRS-03 Contextual Material Coordination` in addition to Active Planning and Tracked Decisions. P-01/P-02 are compatibility labels rather than active Shell ports.

@@ -109,7 +109,7 @@ Helper shows projection provenance separately from semantic meaning:
 
 Ordinary substantive Planning Commands share the early current-work prefix: methodology Use-Case recheck, Session State/archive and S0, WR-1 intake, automatic WR-2 triage, WR-3 primary subject and WR-4 route choice. The deepest command prerequisite is the Use-Case recheck; S0 infrastructure is established before semantic command execution. WR-6/WR-7 close the turn after the selected root action, not as its includes.
 
-Before affected execution of a current Manifest task, the fundamental current-work Use Case performs the contextual WR-5 Question sweep, including in-turn answer/Manifest/PRS integration and recheck after material change. `session.current_work.question_sweep` is its focused direct card in `IDTSPE Pass → Сессия · текущая работа`, after WR-4 and before the `idtspe.work` card; it does not rename WR-2 or become a universal early include. The SDS Evolution Step Question sweep remains a separate focused card in `Target Modules → Evolution` and is conditionally called at a selected Step's realization handoff. They may reuse evidence but retain separate readiness conclusions.
+Every selected subject, including substantive Manifest work, is prepared by default before semantic execution. `session.current_work.prepare` reads the selected current owners/components after route/Port composition; `session.current_work.question_sweep` includes it and checks material Questions after those reads. Their focused direct cards appear in `IDTSPE Pass → Сессия · текущая работа` before `idtspe.work`. The fundamental current-work Use Case audits actual preparation, archives the same open record and waits for USER continuation by default; the Helper graph cannot itself create the response boundary. Neither command renames WR-2 or the SDS Evolution Step sweep. The SDS Evolution Step Question sweep remains a separate focused card in `Target Modules → Evolution` and is conditionally called at a selected Step's realization handoff. They may reuse evidence but retain separate readiness conclusions.
 
 For `WR-4=SHELL`, the command graph composes current work and refreshes the Port Requirement Set before `idtspe.work` performs admitted Shell work beneath WR-5. `DIRECT` does not enter Shell. The registered `idtspe.port.trace` compatibility command does not provide an active P-02 prerequisite.
 
@@ -117,10 +117,12 @@ For `WR-4=SHELL`, the command graph composes current work and refreshes the Port
 methodology.use_cases.recheck
 → session.work.maintain → session.input.intake
 → session.current_work.select → session.route.choose
-→ WR-5 contextual session-task Question sweep before affected Manifest execution
-→ if SHELL: idtspe.compose-current-work → idtspe.port-composition.recheck → idtspe.work
-→ named P-03..P-15 capabilities when admitted
-→ WR-6 / WR-7 under the fundamental current-work Use Case
+→ if SHELL: idtspe.compose-current-work → idtspe.port-composition.recheck
+→ session.current_work.prepare (selected owner/component reads)
+→ session.current_work.question_sweep (current selected subject)
+→ verified preparation archive/checkpoint; USER continuation by default
+→ refresh affected basis, then idtspe.work / direct owner and admitted capabilities
+→ final WR-6 / WR-7 after the bounded subject ends
 ```
 
 The graph guarantees traversal of canonical methodology capabilities; it is not a durable copy of the Shell topology. Direct definitions MUST NOT persist numeric `requiredPorts`, `portRequirements` or `includeFiles` as a second methodology ontology. Current ports are resolved by the canonical composition owner.

@@ -13,8 +13,8 @@ Status: active direct Planning Command; current meaning remains in the linked Us
     "выбери работу на текущий ход",
     "select current turn work"
   ],
-  "description": "Select one bounded primary work subject at WR-3.",
-  "meaning": "After automatic WR-2 triage, select one primary substantive subject from required Manifest reconciliation, an accepted current action or the current input, under the natural owner. Do not execute a second unrelated subject by default.",
+  "description": "Select one bounded primary work subject at WR-3 in the open Work Record.",
+  "meaning": "After automatic WR-2 triage, select one primary substantive subject from required Manifest reconciliation, an accepted current action or current input. On continuation of the same still-open subject, reaffirm it without allocating another record; a distinct subject requires a new S0. Do not execute a second unrelated subject by default.",
   "activeContextBehavior": "Operate only at the reached current Work Record stage; reuse the same Session State and record.",
   "traversalReadMode": "Read the fundamental current-work Use Case and the reached Session/Work Record owner proportionally; reuse current trustworthy state.",
   "ownerFiles": [

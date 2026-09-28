@@ -14,7 +14,7 @@ Status: active direct Planning Command; current meaning remains in the linked Us
     "choose current work route"
   ],
   "description": "Choose DIRECT, SHELL or NO_EXECUTION at WR-4.",
-  "meaning": "Record the execution route for the WR-3 subject separately from ContinuationGate. DIRECT requires resolved deterministic work; SHELL enters task-specific composition; NO_EXECUTION preserves the real gate or absence of executable work.",
+  "meaning": "Record DIRECT, SHELL or NO_EXECUTION for the WR-3 subject separately from ContinuationGate. Reaffirm/revise the same route on preparation recheck or continuation when basis changes; DIRECT requires resolved deterministic work, SHELL enters task-specific composition, and NO_EXECUTION preserves a real gate. A prepared archive pause is neither a route nor a USER_REVIEW_REQUIRED decision.",
   "activeContextBehavior": "Operate only at the reached current Work Record stage; reuse the same Session State and record.",
   "traversalReadMode": "Read the fundamental current-work Use Case and the reached Session/Work Record owner proportionally; reuse current trustworthy state.",
   "ownerFiles": [

@@ -1,6 +1,6 @@
 # Session State worked example — cold start and two bounded continuation turns
 
-Status: illustrative, synthetic contents; IDs and revisions below belong only to these cases. This is not a mandatory Session directory schema or a second Work Runtime. [Session State Runtime Contract](../session-state-runtime-contract.md) owns physical continuity; Core [Work Record](../../documentation/idtspe-methodology/active/idtspe-core/runtime/WORK-RECORD-PRINCIPLES.md) and [PRS](../../documentation/idtspe-methodology/active/idtspe-core/target-modules/TM-PLANNING-RESOLUTION-STATE.md) own semantics. Each fenced block shows the *complete material content for this bounded case*, not a universal file template. `context/` does not exist in any of these cases.
+Status: illustrative, synthetic contents; IDs and revisions below belong only to these cases. This is not a mandatory Session directory schema or a second Work Runtime. [Session State Runtime Contract](../session-state-runtime-contract.md) owns physical continuity; Core [Work Record](../../documentation/idtspe-methodology/active/idtspe-core/runtime/WORK-RECORD-PRINCIPLES.md) and [PRS](../../documentation/idtspe-methodology/active/idtspe-core/target-modules/TM-PLANNING-RESOLUTION-STATE.md) own semantics. Each fenced block shows the *complete material content for this bounded case*, not a universal file template. `context/` does not exist in any of these cases. Cases 0/A/B show a USER-authorized continuous one-response run; Case C shows the default preparation/checkpoint and later continuation in the same record.
 
 ## Case 0 — cold Session State bootstrap and separate archive identities
 
@@ -209,3 +209,25 @@ Prior accepted revision: manifest-history/M-20.md
 ```
 
 `WR-5` stops prospective execution at the existing USER review gate. `WR-6` still reconciles M-20 as accepted, PRS's Proposal/current/candidate relation, TWR-21 and archive pointers. A target-shaped candidate filename or file body does not select the Proposal. If a material answer instead changed the work to a different primary subject, the current TWR would also stop rather than executing that new subject.
+
+## Case C — prepare Manifest work, recheck Questions, then execute the same record
+
+Accepted `WORK-MANIFEST.md` revision M-30 contains one current coordination question: which action should follow completed A-29. The USER asks the AI to reconcile the Manifest but does not select the answer or request a continuous run. Session State creates `TWR-30` at S0, retaining input I-30 and the immutable WR-1…WR-7 kernel. WR-2 identifies substantive Manifest reconciliation; WR-3 selects that as the sole subject, and WR-4 selects `SHELL`.
+
+During preparation, the current Use-Case/Port composition is refreshed for this subject. The relevant Manifest, PRS, Proposal, registry and selected component owners are read; the record distinguishes registry scan, selected owner read, prospective Lens evaluation and actual Lens application. Existing Q-30 is still material. The contextual session-task Question sweep checks for missing material Questions after those reads. The AI verifies each required preparation item against actual coverage and gives the USER a preparation result plus a Session archive **without forming the candidate Manifest yet**:
+
+```text
+TWR-30 / S0 unchanged
+WR-3: Manifest reconciliation, basis M-30 / I-30
+WR-4: SHELL
+WR-5 preparation: selected Use Cases and Port Requirement Set @ basis M-30;
+  relevant owners/registries read, actual coverage recorded;
+  Q-30 still material; no unresolved USER-only prerequisite;
+  selected semantic Manifest action pending
+Status: PREPARED_AWAITING_CONTINUATION
+Archive: current M-30 + PRS + open TWR-30 + retained I-30
+```
+
+The USER asks, “Перепроверь, все ли существенные вопросы нашёл.” The AI re-enters the archive, appends I-31 to **TWR-30**, rechecks affected sources/Questions and records the unchanged or refined result on its current basis. It issues another checkpoint/archive. This is preparation review, not permission to execute the pending Manifest command and not a new TWR/S0.
+
+The USER then says “Продолжай.” The AI appends I-32 to TWR-30, checks current M-30/PRS/owner basis and refreshes/reuses compatible Port/Question coverage with evidence. It executes Manifest reconciliation and forms Proposal P-30 with the complete candidate target Manifest while M-30 stays accepted. PRS carries the current/candidate relation. WR-6 synchronizes the actual result; WR-7 closes TWR-30 because this selected Proposal-forming task has ended and archives the result. USER selection/integration of P-30 is later work under its own selected subject; it is not silently performed by the preparation checkpoint or by forming P-30.

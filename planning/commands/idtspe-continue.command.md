@@ -15,7 +15,7 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
   ],
   "description": "Continue with the currently useful methodology action.",
   "meaning": "Re-evaluate the current Use-Case set and `UC-IDTSPE-COMPOSE-CURRENT-WORK`, then perform the smallest useful ordinary in-scope methodology action. This may continue Broad Discussion, refine current State, invoke an applicable Target Module/Lens, or integrate/revalidate when triggered; it does not require a next Target.",
-  "activeContextBehavior": "Use current Work Context and current/re-evaluated Use-Case applicability. Do not invent a Target or invoke a component only to satisfy a fixed sequence; preserve USER steering and permission boundaries.",
+  "activeContextBehavior": "If current USER intent is to continue an already prepared open subject, reuse its exact Work Record/S0, verify current basis and execute its pending selected action under the existing permission boundary. If no such subject exists, use the current Work Context and re-evaluated Use-Case applicability to select a useful subject for default preparation; do not invent a Target or invoke a component only to satisfy a fixed sequence.",
   "traversalReadMode": "Reuse current reliable IDTSPE/SDS governance; targeted refresh of the selected owner route when uncertain; full bootstrap only when no reliable sufficient governance context exists.",
   "ownerFiles": [
     "planning/documentation/idtspe-methodology/active/idtspe-core/use-cases/compose-current-work/UC-IDTSPE-COMPOSE-CURRENT-WORK.md",
@@ -28,7 +28,8 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
     "IDTSPE is already active; this shortcut does not enable a mode.",
     "Use Cases compose methodology use; Target Modules/Lenses own specialized work.",
     "Broad Discussion or NO_ADDITIONAL_STRUCTURE is a valid proportional outcome.",
-    "Ordinary in-scope progression is not an approval gate; explicit mutation/commit/push permissions remain separate."
+    "Ordinary in-scope progression is not an approval gate; explicit mutation/commit/push permissions remain separate.",
+    "A continuation signal crosses the prepared-task pause only after basis/Question/port recheck; it does not create another Work Record for the same subject."
   ],
   "userTarget": "<current planning state>",
   "palette": true,

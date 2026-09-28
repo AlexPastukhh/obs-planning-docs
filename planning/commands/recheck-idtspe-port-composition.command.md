@@ -13,8 +13,8 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
   "commandFamily": [
     "перепроверь композицию портов"
   ],
-  "description": "Refresh/reaffirm the current IDTSPE Port Requirement Set before a normal Shell pass.",
-  "meaning": "When the current Turn Work Record has selected `ExecutionRoute=SHELL`, refresh/reaffirm the Port Requirement Set for the selected primary subject/current basis. Prior Turn Work Record orientation may be reused as evidence but never as sticky admission authority.",
+  "description": "Refresh/reaffirm the current SHELL Port Requirement Set during preparation and again before execution on continuation.",
+  "meaning": "When WR-4=SHELL, refresh/reaffirm the Port Requirement Set for the selected primary subject/current basis during preparation. On continuation, refresh/reaffirm the current Set and reuse compatible admitted/read coverage only with evidence; prior records or the preparation archive are not sticky authority. When WR-4=DIRECT and this command is reached only through the generic preparation prefix, record evidenced NOT_APPLICABLE for Shell port refresh.",
   "activeContextBehavior": "Compose with the current command set. Fully expand and merge all selected roots before semantic execution; reuse equivalent current work and follow the resulting dependencies-first plan.",
   "traversalReadMode": "Read this command own canonical references plus included-command references proportionally. Do not duplicate reads already satisfied by an unchanged trustworthy shared prefix.",
   "ownerFiles": [
@@ -52,10 +52,10 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
     "planning/commands/choose-current-work-route.command.md",
     "planning/commands/compose-current-idtspe-work.command.md"
   ],
-  "expectedOutput": "A refreshed/reaffirmed Shell Port Requirement Set for the selected subject is recorded in the current Turn Work Record.",
+  "expectedOutput": "A current SHELL Port Requirement Set and admission basis are recorded/reaffirmed in the open Work Record, or an evidenced NOT_APPLICABLE for DIRECT.",
   "permissionMode": "read-only-planning",
   "keyReminders": [
-    "This is a mandatory normal-Shell recheck, not an optional optimization.",
+    "This is a mandatory normal-SHELL recheck at preparation and execution; DIRECT does not force Shell ports.",
     "Collect declarative contributions from ALL expanded command nodes before performing this recheck.",
     "Do not infer positive applicability merely because a capability was explicitly requested; explicit request requires a real check."
   ],

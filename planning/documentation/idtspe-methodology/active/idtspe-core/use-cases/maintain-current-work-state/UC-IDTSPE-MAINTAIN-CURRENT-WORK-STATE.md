@@ -73,7 +73,7 @@ Current Work Manifest
   PRS / QRP / Proposal / Decision refs when material
   Review Coverage refs
   Revalidation Impact / pending-recheck refs
-  current/recent Turn Work Record refs
+  current open/most recent closed Turn Work Record refs
   blockers / permissions / external dependencies
   re-entry / next-action route
 ```
@@ -84,7 +84,7 @@ Activation of rich cross-pass Manifest content is proportional. Substantive Sess
 
 A concise USER Goal may be projected here, but a grounded durable Need remains owned by Need Candidate Collection / Need Set Coordination. AI-generated candidate work remains Finding/Q/R/P/Proposal/etc. and is not promoted to a USER Goal merely because it appears in the Manifest.
 
-Manifest actions are cross-pass coordination. One current turn selects only the bounded useful subset into the Turn Work Record; the Manifest is not copied wholesale into the turn record.
+Manifest actions are cross-pass coordination. One current bounded subject selects only the useful subset into its Work Record; the Manifest is not copied wholesale into that record. A preparation checkpoint retains the current record ref, pending subject/root, archive and next continuation/recheck condition without promoting a tentative execution candidate or Proposal into accepted work meaning.
 
 ### Artifact Inventory
 
@@ -148,11 +148,11 @@ local snapshot ≠ Session-owned second ontology
 
 One accepted current action and optionally one concrete next action are enough for a truthful Session Manifest; later work may remain `UNESTABLISHED`. Do not fill the Manifest with speculative long-range work merely to make a list look complete.
 
-When a material answer/Decision affects the current `WR-3` subject, maintain current work state during `WR-5` so the next contextual sweep sees it. Update PRS and accepted Manifest for exact USER-selected/factual or authorized decomposition meaning with revision/history trace. If the prospective target meaning must still be AI-derived, preserve the accepted Manifest and form/reuse a Proposal plus complete candidate target Manifest; use the existing USER review boundary. A change in tentative candidate/route invalidates previous readiness. `WR-6` finally reconciles Manifest, PRS, TWR, pointers and archive after in-turn changes.
+When a material answer/Decision affects the current `WR-3` subject, maintain current work state during `WR-5` so the next contextual sweep sees it. Update PRS and accepted Manifest for exact USER-selected/factual or authorized decomposition meaning with revision/history trace. If the prospective target meaning must still be AI-derived, preserve the accepted Manifest and form/reuse a Proposal plus complete candidate target Manifest; use the existing USER review boundary. A change in tentative candidate/route invalidates previous readiness. Synchronize Manifest, PRS, Work Record, pointers and archive at each preparation/review response checkpoint; `WR-6` finally reconciles them when the bounded subject ends.
 
 ## Accepted Session Work Manifest contract
 
-Substantive Session State normally maintains one accepted `WORK-MANIFEST.md` as a session-scale Evolving Work Record. It may carry stable hierarchical action IDs, current/next work, Need→action coverage (including `UNPLANNED`), current/recent Turn Work Record refs, bounded PRS navigation, artifact/context/review/revalidation dependencies and re-entry route.
+Substantive Session State normally maintains one accepted `WORK-MANIFEST.md` as a session-scale Evolving Work Record. It may carry stable hierarchical action IDs, current/next work, Need→action coverage (including `UNPLANNED`), current-open/recent-closed Work Record refs, bounded PRS navigation, artifact/context/review/revalidation dependencies and re-entry route. A prepared task points to the same open Work Record on continuation; a different primary task allocates a new S0 and preserves the old record's explicit disposition.
 
 Classification of accepted-Manifest writes:
 

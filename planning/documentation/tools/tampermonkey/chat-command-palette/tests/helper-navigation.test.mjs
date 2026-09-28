@@ -64,7 +64,7 @@ test('IDTSPE Pass presents WR entry, current work and closure in stage order',()
   assert.ok(groups.indexOf(entry)<groups.indexOf(current));
   assert.ok(groups.indexOf(current)<groups.indexOf(closure));
   assert.deepEqual(entry.entries.map((item)=>item.id),['methodology.use_cases.recheck','session.work.maintain','session.input.intake']);
-  assert.deepEqual(current.entries.slice(0,4).map((item)=>item.id),['session.current_work.select','session.route.choose','session.current_work.question_sweep','idtspe.work']);
+  assert.deepEqual(current.entries.slice(0,5).map((item)=>item.id),['session.current_work.select','session.route.choose','session.current_work.prepare','session.current_work.question_sweep','idtspe.work']);
   assert.ok(!current.entries.some((item)=>item.id==='sds.evolution_step.question_sweep'));
   assert.deepEqual(closure.entries.map((item)=>item.id),['session.state.synchronize','session.turn.finalize']);
 });

@@ -7,6 +7,7 @@
     "session.input.intake",
     "session.current_work.select",
     "session.route.choose",
+    "session.current_work.prepare",
     "session.current_work.question_sweep",
     "idtspe.next",
     "idtspe.continue",
@@ -328,6 +329,7 @@
       "items": [
         "session.current_work.select",
         "session.route.choose",
+        "session.current_work.prepare",
         "session.current_work.question_sweep",
         "idtspe.work",
         "idtspe.compose-current-work",

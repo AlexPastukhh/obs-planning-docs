@@ -40,12 +40,20 @@ test('selected SDS Step realization calls the focused sweep conditionally at exi
   assert.ok(!direct.contributions.some(x=>x.kind==='SELECTED_TARGET_MODULE'&&x.value==='TM-EVOLUTION-STEP'));
 });
 
-test('session-task sweep is a distinct WR-5 shortcut over the common WR entry chain',()=>{
+test('preparation precedes the current-subject sweep and both precede execution roots',()=>{
   const session=catalog.expandCommandComposition(definitions,['session.current_work.question_sweep']);
   assert.deepEqual(session.order.slice(0,common.length),common);
+  assert.ok(session.order.indexOf('idtspe.compose-current-work')<session.order.indexOf('idtspe.port-composition.recheck'));
+  assert.ok(session.order.indexOf('idtspe.port-composition.recheck')<session.order.indexOf('session.current_work.prepare'));
+  assert.ok(session.order.indexOf('session.current_work.prepare')<session.order.indexOf('session.current_work.question_sweep'));
   assert.equal(session.order.at(-1),'session.current_work.question_sweep');
   assert.ok(!session.order.includes('sds.evolution_step.question_sweep'));
   assert.ok(!session.order.includes('idtspe.work'));
+  for(const id of ['idtspe.work','idtspe.current-work.manifest.maintain']){
+    const order=catalog.expandCommandComposition(definitions,[id]).order;
+    assert.ok(order.indexOf('session.current_work.question_sweep')<order.indexOf(id));
+    assert.equal(order.at(-1),id);
+  }
   const step=catalog.expandCommandComposition(definitions,['sds.evolution_step.question_sweep']);
   assert.ok(!step.order.includes('session.current_work.question_sweep'));
 });
