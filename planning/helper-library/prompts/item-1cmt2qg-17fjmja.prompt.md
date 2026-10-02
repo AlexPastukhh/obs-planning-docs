@@ -9,8 +9,8 @@ Scope: exact insertion text; not planning-command authority.
   "kind": "prompt",
   "id": "item-1cmt2qg-17fjmja",
   "title": "мерж",
-  "text": "давай команду повершел,для мержа в мейн бранча,что мы создали последним пакетом ",
+  "text": "давай команду повершел,для мержа в мейн бранча,что мы создали последним пакетом. в одну строку",
   "createdAt": "2026-10-01T23:06:54.339Z",
-  "updatedAt": "2026-10-02T00:53:13.689Z"
+  "updatedAt": "2026-10-02T01:31:23.782Z"
 }
 [/PLANNING_HELPER_LIBRARY_ITEM]
