@@ -1,4 +1,4 @@
-# Prompt — без отдельной подготовки
+# Prompt — результаты ревью
 
 Status: active Planning Helper library item
 Scope: exact insertion text; not planning-command authority.
@@ -8,9 +8,9 @@ Scope: exact insertion text; not planning-command authority.
   "schemaVersion": 1,
   "kind": "prompt",
   "id": "item-1rr0tlc-7n0qh0",
-  "title": "без отдельной подготовки",
-  "text": "работай тут без отдельной подготовки в отдельном ответе мне, подготовил воркрекорд и все что надо было сделать по нему и сразу работай, не дожидайся подтверждения. только перепроверь, что прошел все нужные порты, перед работой.",
+  "title": "результаты ревью",
+  "text": "надо сохранять результаты ревью, то что было найдено как проблема, что было найдено как возможность в будущем или возможная проблема и тд.",
   "createdAt": "2026-09-28T05:30:47.957Z",
-  "updatedAt": "2026-09-28T05:30:47.957Z"
+  "updatedAt": "2026-10-04T17:52:31.066Z"
 }
 [/PLANNING_HELPER_LIBRARY_ITEM]
