@@ -4,15 +4,13 @@ This file defines stable **generic USER↔AI interaction** semantics. Planning/m
 
 ## Ambient Interaction Contract
 
-The **ambient interaction contract** is the small set of Session rules that governs USER↔AI interaction across the current working context once loaded at session bootstrap or context restoration.
-
-It is inherited by commands and methodology work; it is not a semantic owner and is not a mandatory navigation hop. Commands route directly to their current semantic owners while remaining subject to these interaction rules.
+The **interaction contract** is a small reusable set of USER↔AI rules for progress, steering and real gates. It may be read/reused when relevant, but it is not part of the mandatory planning bootstrap and is not a semantic owner or navigation hop. Commands and methodology work route directly to their current semantic owners.
 
 ## Session
 
 A **Session** is the current bounded interactive context between USER and AI.
 
-A Session is not a planning ontology and does not imply a second `Session State`, `Session Workflow`, or `Session Checkpoint` beside the active methodology.
+A Session is not a planning ontology and does not imply or automatically activate `Session State`, a `Session Workflow`, a Work Record or a Session Checkpoint beside the active methodology.
 
 ## Work Step
 
@@ -132,10 +130,10 @@ The active IDTSPE Use Cases and component applicability/materiality contracts de
 <a id="session-state-term"></a>
 ## Session State and Work Runtime terms
 
-- **Session State** — ambient continuity/workspace representation; not a semantic owner.
-- **Session State Archive** — portable representation of current Session State; not a Replacement Package and not acceptance authority.
-- **Turn Work Record** — one-turn evolving plan/state/trace from input through finalization.
-- **Execution Route** — `DIRECT | SHELL | NO_EXECUTION`.
-- **Continuation Gate** — `CONTINUE_ALLOWED | USER_REVIEW_REQUIRED | BLOCKED`; never an execution route.
+- **Session State** — optional explicitly activated continuity/workspace representation; not a semantic owner.
+- **Session State Archive** — optional portable representation of active Session State; not a Replacement Package and not acceptance authority.
+- **Turn Work Record** — optional explicitly activated evolving plan/state/trace for a bounded subject.
+- **Execution Route** — legacy/full-Work-Record classification `DIRECT | SHELL | NO_EXECUTION`; not an ambient prerequisite or Shell entry mechanism.
+- **Continuation Gate** — optional Work-Record interaction fact `CONTINUE_ALLOWED | USER_REVIEW_REQUIRED | BLOCKED`; never an execution route.
 
 When material prospective Manifest meaning is not already exactly USER-selected, formal Core Proposal/PRS semantics are required; a GIP may only present/reference them.

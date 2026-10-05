@@ -1,16 +1,20 @@
 <a id="uc-idtspe-conduct-current-work"></a>
 # UC-IDTSPE-CONDUCT-CURRENT-WORK — Conduct Current Session Work
 
-Status: active fundamental IDTSPE methodology-use Use Case  
+Status: optional explicit Session workflow compatibility; not registered as an ambient methodology-use Use Case  
 Responsibility ID: `IDTSPE.UC.CONDUCT-CURRENT-WORK`
 
 ## Situation
 
-Every substantive selected work subject, whether entered through ordinary language or a Planning Command. The same subject may require a preparation response, one or more USER review/recheck messages and a later execution response. The thin Session layer supplies file-backed continuity; this Use Case coordinates the work without taking semantic ownership from the selected task, Core State, Shell or profile.
+The USER explicitly requests the full legacy Session/Work-Record workflow for one bounded subject. Ordinary natural-language work, Planning Commands and IDTSPE Shell do not enter this workflow automatically. Narrower explicit Session prompts may use only the specific Session State / Manifest / Work Record / Question-sweep operation requested without invoking this complete sequence.
 
 ## Result
 
-One current Session State and one still-open Turn Work Record describe the input, accepted-state check, bounded primary subject, execution route, verified preparation, later actual work, material consequences and closure. The portable Session State archive is rematerialized at each response checkpoint and at final closure when the host supports it. An explicit separate Proposal Workspace Archive, when requested, remains a separate PRS-centered artifact.
+For an explicitly requested full legacy workflow, one current Session State and one still-open Turn Work Record describe the input, accepted-state check, bounded primary subject, optional execution-route classification, verified preparation, later actual work, material consequences and closure. The portable Session State archive is rematerialized at each response checkpoint and at final closure when the host supports it. An explicit separate Proposal Workspace Archive, when requested, remains a separate PRS-centered artifact.
+
+## Boundary
+
+This process is **opt-in only**. It MUST NOT be reached as a prerequisite include of ordinary commands, methodology-use resolution, Shell composition or component-local readiness. The reusable manual prompts under `planning/helper-library/prompts/` are the normal way to request Session/Work-Record operations.
 
 ## Process
 
@@ -24,7 +28,7 @@ One current Session State and one still-open Turn Work Record describe the input
 
 ## Command projection and boundaries
 
-The direct `веди сессионную работу` command is an invocation/diagnostic shortcut. When included by another command it reaffirms the early Session/S0 basis; the selected root and this Use Case complete the same record after preparation/continuation. A direct invocation follows this complete Use Case. WR-2 has no separate command; the focused preparation and Question-sweep commands expose existing WR-5 work, but this Use Case performs it for any selected task even without explicit command invocation. The command DAG may be fully discovered and pre-execution contributions collected while execution-bearing actions remain pending across the preparation checkpoint. Focused finalization commands are not prerequisite includes of WR-5.
+The former direct Session/Work-Record commands are retired from the Planning Command catalog. Explicit Helper prompts or direct USER instructions invoke this full workflow or narrower Session operations. Command DAGs do not inherit this process, and completion of a command does not imply WR-6/WR-7 or Session archive closure.
 
 The record is the one work trace for the bounded subject across its response checkpoints, not a second Input/Manifest/PRS ontology. Session State authority to persist its own workspace does not grant repository/target mutation. `UC-IDTSPE-COMPOSE-CURRENT-WORK` retains work-composition ownership, and P-14 owns only material external/durable artifact placement, not Session archive existence. No contextual file or `context/` directory is required merely to enter this Use Case.
 

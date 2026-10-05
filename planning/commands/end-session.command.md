@@ -39,9 +39,7 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
   "userTarget": "<final D/F/Points or active end-session target>",
   "palette": false,
   "refinements": [],
-  "includes": [
-    "planning/commands/choose-current-work-route.command.md"
-  ],
+  "includes": [],
   "ownerRefs": [
     {
       "responsibilityId": "SESSION.END-WORKFLOW",

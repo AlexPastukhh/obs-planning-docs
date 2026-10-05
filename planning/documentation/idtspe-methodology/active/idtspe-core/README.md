@@ -10,15 +10,15 @@ Documentation methodology
 = Use Case / Process / Principles & Terminology / Registry / Template / Example semantics
   and functional rules for using methodology/documentation
 
-Session (`planning/session/`)
-= thin generic USER↔AI interaction runtime
-  work-step visibility / automatic progression / steering / proposal-first mutation boundary
+Optional Session tooling (`planning/session/`)
+= explicitly invoked continuity/workspace facilities and interaction guidance
+  Session State / Work Record / Manifest / global Question sweep / archive only when requested
 
 IDTSPE Core
 = always-active proportional planning/resolution work context
   Broad Discussion / Core State / Targets / Target Modules / Lenses /
   Proposal-Q/R/P-Decision-Evidence-Finding / Integration / Revalidation / Representation
-  + included Shell Pass Work Plan / State / Trace / Visibility runtime orientation/observability
+  + explicit/contextual Shell composition when methodology work requires it
 
 Installed Profiles
 = specialized Target Modules, Lenses, registries, knowledge and planning semantics layered on Core
@@ -42,12 +42,10 @@ Read in order:
 4. [`use-cases/RESPONSIBILITY-MAP.md`](use-cases/RESPONSIBILITY-MAP.md) — IDTSPE Use-Case orchestration responsibility routing;
 5. [`runtime/IDTSPE-DEFAULT-WORK-MODE.md`](runtime/IDTSPE-DEFAULT-WORK-MODE.md);
 6. [`use-cases/USE-CASE-REGISTRY.md`](use-cases/USE-CASE-REGISTRY.md);
-7. [`use-cases/conduct-current-work/UC-IDTSPE-CONDUCT-CURRENT-WORK.md`](use-cases/conduct-current-work/UC-IDTSPE-CONDUCT-CURRENT-WORK.md#uc-idtspe-conduct-current-work) — fundamental selected-subject route after Session State/S0 allocation, including preparation/continuation;
-8. [`use-cases/ai-working-boundary/UC-IDTSPE-AI-WORKING-BOUNDARY.md`](use-cases/ai-working-boundary/UC-IDTSPE-AI-WORKING-BOUNDARY.md) — fundamental authority-boundary application;
-9. [`use-cases/compose-current-work/UC-IDTSPE-COMPOSE-CURRENT-WORK.md`](use-cases/compose-current-work/UC-IDTSPE-COMPOSE-CURRENT-WORK.md);
-10. [`runtime/applicability/CONTEXTUAL-METHODOLOGY-APPLICATION-CONTRACT.md`](runtime/applicability/CONTEXTUAL-METHODOLOGY-APPLICATION-CONTRACT.md);
-11. [`runtime/PASS-TRACE-AND-VISIBILITY-CONTRACT.md`](runtime/PASS-TRACE-AND-VISIBILITY-CONTRACT.md);
-12. [`navigation/METHODOLOGY-REGISTRY-DIRECTORY.md`](navigation/METHODOLOGY-REGISTRY-DIRECTORY.md).
+7. [`use-cases/ai-working-boundary/UC-IDTSPE-AI-WORKING-BOUNDARY.md`](use-cases/ai-working-boundary/UC-IDTSPE-AI-WORKING-BOUNDARY.md) — fundamental authority-boundary application;
+8. [`use-cases/compose-current-work/UC-IDTSPE-COMPOSE-CURRENT-WORK.md`](use-cases/compose-current-work/UC-IDTSPE-COMPOSE-CURRENT-WORK.md);
+9. [`runtime/applicability/CONTEXTUAL-METHODOLOGY-APPLICATION-CONTRACT.md`](runtime/applicability/CONTEXTUAL-METHODOLOGY-APPLICATION-CONTRACT.md);
+10. [`navigation/METHODOLOGY-REGISTRY-DIRECTORY.md`](navigation/METHODOLOGY-REGISTRY-DIRECTORY.md).
 
 After this spine is current, Core bootstrap is sufficient for ordinary routing/composition. Reuse it while trustworthy. Do not read deeper Core owners merely to claim that bootstrap completed.
 
@@ -84,7 +82,7 @@ current situation
 → component-local applicability/materiality
 ```
 
-The fundamental selected-subject route is [`UC-IDTSPE-CONDUCT-CURRENT-WORK`](use-cases/conduct-current-work/UC-IDTSPE-CONDUCT-CURRENT-WORK.md#uc-idtspe-conduct-current-work) after ambient Session State/S0 bootstrap. It coordinates one open Work Record through verified preparation, archive checkpoints, DIRECT/SHELL execution and final closure without taking over the composition capability. The fundamental always-active authority-boundary capability is [`UC-IDTSPE-AI-WORKING-BOUNDARY`](use-cases/ai-working-boundary/UC-IDTSPE-AI-WORKING-BOUNDARY.md). The default continuously relevant work-composition capability remains [`UC-IDTSPE-COMPOSE-CURRENT-WORK`](use-cases/compose-current-work/UC-IDTSPE-COMPOSE-CURRENT-WORK.md). Its valid result may be no additional structure beyond Broad Discussion.
+The fundamental always-active authority-boundary capability is [`UC-IDTSPE-AI-WORKING-BOUNDARY`](use-cases/ai-working-boundary/UC-IDTSPE-AI-WORKING-BOUNDARY.md). The default continuously relevant work-composition capability remains [`UC-IDTSPE-COMPOSE-CURRENT-WORK`](use-cases/compose-current-work/UC-IDTSPE-COMPOSE-CURRENT-WORK.md). Its valid result may be no additional structure beyond Broad Discussion.
 
 ## Canonical Core Owners
 
@@ -98,8 +96,8 @@ Use [`navigation/IDTSPE-CORE-MAP.md`](navigation/IDTSPE-CORE-MAP.md) for a compa
 - [`target-modules/RESPONSIBILITY-MAP.md`](target-modules/RESPONSIBILITY-MAP.md) — Target Module Meta-Model/discovery/supporting-projection routing.
 - [`target-modules/TARGET-MODULE-MODEL.md`](target-modules/TARGET-MODULE-MODEL.md#target-module-meta-model) — Target Module Meta-Model; concrete `TM-*` owners are Target Module Models and form Target Module Instances inside concrete Targets when applied.
 - [`lenses/RESPONSIBILITY-MAP.md`](lenses/RESPONSIBILITY-MAP.md) — Lens Meta-Model/discovery/concrete-Lens responsibility routing.
-- [`runtime/WORK-RECORD-PRINCIPLES.md`](runtime/WORK-RECORD-PRINCIPLES.md#idtspe-work-runtime) — canonical Work Runtime / Turn Work Record contract above DIRECT/SHELL.
-- [`runtime/PASS-TRACE-AND-VISIBILITY-CONTRACT.md`](runtime/PASS-TRACE-AND-VISIBILITY-CONTRACT.md#idtspe-pass-trace) — legacy P-02 compatibility visibility projection only.
+- [`runtime/WORK-RECORD-PRINCIPLES.md`](runtime/WORK-RECORD-PRINCIPLES.md#idtspe-work-runtime) — optional explicit Work Record contract used only when the USER activates session/work-record tracking.
+- [`runtime/PASS-TRACE-AND-VISIBILITY-CONTRACT.md`](runtime/PASS-TRACE-AND-VISIBILITY-CONTRACT.md#idtspe-pass-trace) — legacy P-02 / optional trace compatibility only; not a required Shell prerequisite.
 - [`navigation/METHODOLOGY-REGISTRY-DIRECTORY.md`](navigation/METHODOLOGY-REGISTRY-DIRECTORY.md) — supporting registry-family router used from selected Use-Case Processes.
 - [`knowledge-bases/RESPONSIBILITY-MAP.md`](knowledge-bases/RESPONSIBILITY-MAP.md) — Knowledge Basis/theory/Source-Evidence boundary routing.
 - [`runtime/target-work/RESOLUTION-SLOT-AND-TARGET-FORMATION-SET.md`](runtime/target-work/RESOLUTION-SLOT-AND-TARGET-FORMATION-SET.md) — Target Formation/resolution mechanics.
@@ -127,20 +125,20 @@ The current installed profiles define no separate runtime methodology-use Use Ca
 Target work derives material Requirements from the current task/scope/Sources plus universal Core Target requirements. Target Module Models provide prepared reusable recognition/coverage and Module-defined Unit Definitions; Core-defined Units provide cross-target prepared coverage; uncovered bounded work is completed by locally defined Contextual Units. Canonical detail: [`runtime/target-work/RESOLUTION-SLOT-AND-TARGET-FORMATION-SET.md`](runtime/target-work/RESOLUTION-SLOT-AND-TARGET-FORMATION-SET.md).
 
 <a id="work-runtime-core-entry"></a>
-## Current Work Runtime entry
+## Current work / Shell entry
 
 ```text
-USER input
-→ Session State / Turn Work Record
-→ WR-1 intake
-→ WR-2 Manifest/PRS/context check
-→ WR-3 primary subject
-→ WR-4 DIRECT | SHELL | NO_EXECUTION
-→ WR-5 selected-owner/port preparation and contextual Question sweep
-→ verified Session State archive checkpoint / USER continuation by default
-→ WR-5 current-basis recheck and execution (Shell traversal when selected)
-→ WR-6 final Session State consequences
-→ WR-7 finalization/archive when the subject ends
+USER input / current semantic task
+→ current methodology Use-Case applicability
+→ narrowest natural semantic owner
+→ Broad Discussion / direct deterministic work as sufficient
+→ when explicit/current methodology work requires Shell:
+     UC-IDTSPE-COMPOSE-CURRENT-WORK
+     → Port Requirement Set refresh
+     → admitted P-03..P-15 capabilities
+→ component-local readiness/revalidation/representation as applicable
 ```
 
-Core PRS now has `RU-PRS-03 Contextual Material Coordination` in addition to Active Planning and Tracked Decisions. P-01/P-02 are compatibility labels rather than active Shell ports.
+No Session State, S0/WR stages, DIRECT-vs-SHELL classifier, global session Question sweep, archive checkpoint or continuation pause is required by Core. Those facilities are available only through explicit Session prompts/instructions.
+
+Core PRS retains `RU-PRS-03 Contextual Material Coordination` in addition to Active Planning and Tracked Decisions. P-01/P-02 are compatibility labels rather than active Shell ports.

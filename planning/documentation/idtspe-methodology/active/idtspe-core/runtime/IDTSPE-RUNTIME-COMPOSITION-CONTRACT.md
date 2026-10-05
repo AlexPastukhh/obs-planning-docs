@@ -54,11 +54,11 @@ Requirements come from the current task/scope/Sources plus universal Core Target
 
 A Target-specific shell pass still operates on one primary bounded Target at a time, while the Work Context may contain zero/several Targets. Target Work Units and Core State Units remain distinct compositional roles.
 
-The current port labels are technical runtime navigation, not a second ontology. `P-01` and `P-02` are retired/reserved compatibility labels: invocation/work-record behavior moved above Shell into Work Runtime. Active Shell capability labels remain `P-03..P-15` and are applicability/materiality/explicit-requirement driven.
+The current port labels are technical runtime navigation, not a second ontology. `P-01` and `P-02` are retired/reserved compatibility labels and are not active Shell capabilities. Optional explicit Work Record/trace tooling may project historical P-02 vocabulary, but Shell entry does not depend on it. Active Shell capability labels remain `P-03..P-15` and are applicability/materiality/explicit-requirement driven.
 
 ### Port-Number Migration Compatibility
 
-The direct command graph and Helper now project Work Runtime above Shell. During the compatibility window, a stale reference is interpreted by its **named semantic port and generation**, never by bare number. Two historical numberings are relevant.
+During the compatibility window, a stale reference is interpreted by its **named semantic port and generation**, never by bare number. Two historical numberings are relevant.
 
 Pre-Trace legacy numbering (the repository/helper baseline before `P-02 Trace` was inserted):
 
@@ -82,7 +82,7 @@ legacy P-15 Revalidation  → canonical P-15 Evidence / Revalidation
 Previous Trace-enabled numbering (`1fe3` generation, before standalone Question removal):
 
 ```text
-previous P-02 Trace                 → Turn Work Record visibility; legacy compatibility projection only, no active Shell port
+previous P-02 Trace                 → optional explicit Work Record/trace visibility; legacy compatibility projection only, no active Shell port
 previous P-03 Target                → canonical P-03 Target
 previous P-04 Source                → canonical P-04 Source
 previous P-05 Relation              → canonical P-05 Relation
@@ -103,7 +103,7 @@ A removed Question port is routed by meaning to Requirement guidance, Unit Resol
 
 ## Work-Context Proportionality
 
-The Shell is subordinate to Work Runtime plus Use-Case/contextual composition. Shell starts only when the current Turn Work Record selects `ExecutionRoute=SHELL`; active `P-03..P-15` capabilities are traversed only when composition/materiality or explicit requirements call for them.
+The Shell is subordinate to current Use-Case/contextual composition. Shell starts when it is explicitly invoked by the USER/command surface or when the current semantic operation requires Shell composition; active `P-03..P-15` capabilities are traversed only when composition/materiality or explicit requirements call for them. No Session State, Work Record or DIRECT/SHELL classifier is required for Shell entry.
 
 ```text
 AUTO_COMPOSITION
@@ -119,9 +119,9 @@ An explicit **port/capability requirement** forces a real applicability/traversa
 
 Responsibility ID: `IDTSPE.PORT-COMPOSITION-REFRESH`
 
-This section owns the technical refresh/admission/reuse semantics for the Port Requirement Set. `UC-IDTSPE-COMPOSE-CURRENT-WORK` invokes the refresh when the current Turn Work Record selects SHELL; the Contextual Methodology Application Contract contextualizes applicability; the Turn Work Record represents observable routing/admission facts.
+This section owns the technical refresh/admission/reuse semantics for the Port Requirement Set. `UC-IDTSPE-COMPOSE-CURRENT-WORK` invokes the refresh for an explicit/current Shell composition; the Contextual Methodology Application Contract contextualizes applicability. Observable routing/admission facts may be reported directly or projected into an optional explicit Work Record, but that record is not runtime authority.
 
-Each **SHELL execution** consumes one current Port Requirement Set. Work Runtime first establishes the current Turn Work Record, primary subject and route. When `WR-4=SHELL`, preparation reaffirms current Use-Case applicability and task-specific composition and only then `IDTSPE.PORT-COMPOSITION-REFRESH` refreshes/reaffirms the Port Requirement Set from that composition plus pre-collected command/component contributions. The preparatory Port Requirement Set, actual registry/component reads and admission basis are recorded in the still-open Work Record before its archive checkpoint. On later continuation, refresh/reaffirm the Set on the current basis before executing Shell; compatible preparatory determinations and reads may be `REUSED` with evidence, but neither the archive nor a previous Work Record permits skipping the refresh.
+Each **Shell execution** consumes one current Port Requirement Set. Reaffirm current Use-Case applicability and task-specific composition, then refresh/reaffirm the Port Requirement Set from that composition plus pre-collected command/component contributions. Compatible prior determinations and owner reads may be `REUSED` with evidence when their subject/basis/operation still match; a previous pass or optional archive is never sticky authority.
 
 ```text
 current Use-Case applicability composition
@@ -131,12 +131,11 @@ current Use-Case applicability composition
 + EXPLICIT_REQUIREMENTs collected from the fully expanded command/component DAG BEFORE semantic command execution
 + current DOWNSTREAM_MATERIALITY
 + still-material defer/recheck obligations
-+ current Turn Work Record orientation/evidence (never sticky authority)
 → refresh / reaffirm Port Requirement Set
 → one normal Shell pass
 ```
 
-A preparation checkpoint's or previous pass's admitted/non-admitted port set is **not sticky authority** for the next pass. When the subject/basis/operation and all material requirement inputs remain equivalent, the previous determination may be `REUSED`; otherwise recompute only the affected admission decisions. Reading a selected Lens/Target Module body during preparation is observable owner coverage, not Lens application or Target realization; P-06 and Target-local semantic gates still govern actual execution.
+A previous pass's admitted/non-admitted port set is **not sticky authority** for the next pass. When the subject/basis/operation and all material requirement inputs remain equivalent, the previous determination may be `REUSED`; otherwise recompute only the affected admission decisions. Reading a selected Lens/Target Module body while composing work is observable owner coverage, not Lens application or Target realization; P-06 and Target-local semantic gates still govern actual execution.
 
 Automatic refresh is not automatic focus. Intentionally narrowing/focusing work to a selected subset of ports requires explicit USER intent; ordinary refresh must still admit a newly material prerequisite/port when the current composition requires it.
 
@@ -151,7 +150,7 @@ The Shell does not define Decision types. A material Decision is identified by i
 <a id="idtspe-port-p01"></a>
 ### P-01 / P-02 — RETIRED / RESERVED COMPATIBILITY LABELS
 
-`P-01 Invocation` behavior is owned by Work Runtime entry (`WR-1..WR-4`). `P-02 Pass Work Plan / State / Trace / Visibility` behavior is owned by the Turn Work Record and retained only through the legacy compatibility contract. Neither label is admitted as an active Shell port. Their numbers are intentionally not reused in this migration.
+`P-01 Invocation` and `P-02 Pass Work Plan / State / Trace / Visibility` are retired compatibility concepts, not active Shell ports. Explicit command/Shell invocation is owned by current command/methodology entry surfaces. Optional Session/Work-Record prompts may retain historical P-02-style observability when the USER wants it. Their numbers remain reserved and are not reused.
 
 ### P-03 Target Port
 
@@ -268,15 +267,14 @@ A material mutation/change pass must not silently carry forward a prior review P
 For materially multi-pass work, `UC-IDTSPE-MAINTAIN-CURRENT-WORK-STATE` may retain a Current Work Manifest as cross-pass coordination. The Manifest is current-work orientation, not sticky authority.
 
 ```text
-Current Work Manifest + current USER/canonical owner state
+optional Current Work Manifest + current USER/canonical owner state
 → Compose Current Work
-→ current Port Requirement Set
-→ current Turn Work Record
-→ Final Plan-vs-Actual
-→ refresh Manifest when cross-pass state materially changed
+→ current Port Requirement Set when Shell is used
+→ semantic work/result
+→ refresh Manifest only when that optional cross-pass projection is active and materially changed
 ```
 
-The Turn Work Record remains turn-scoped; the Manifest remains session-scale accepted work. Current USER input, canonical owner state or revalidation may invalidate stale projections.
+The Manifest is situational session-scale coordination, not an ambient Shell prerequisite. Current USER input, canonical owner state or revalidation may invalidate stale projections.
 
 
 ## Integration Checkpoint / Representation Handoff
@@ -407,7 +405,7 @@ not become a second semantic authority.
 
 ## Exit Condition
 
-The Turn Work Record is checkpointed during preparation and closed through WR-7 only when its bounded subject ends, using its immutable S0/kernel, current/refined work state, observable events and explicit adjustments rather than reconstructing them after the fact; substantive work reconciles final plan-vs-actual before completion. An IDTSPE instance is ready to hand off when proportionally:
+An IDTSPE instance is ready to hand off when proportionally:
 
 ```text
 Target purpose/scope and applicable Target Resolution Requirements are sufficiently formed for this checkpoint

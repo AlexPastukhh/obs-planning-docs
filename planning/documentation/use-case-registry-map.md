@@ -7,7 +7,7 @@ Responsibility ID: `DOC.USE-CASE-REGISTRY-MAP`
 
 Purpose: provide the lightweight **cross-scope routing metadata** consumed by the fundamental methodology Use-Case applicability resolver. It maps Use-Case scopes; it does not own the applicability Process or duplicate the Use Cases themselves.
 
-Prerequisite: the primary bootstrap from [`planning/README.md`](../README.md) establishes Session + Documentation + IDTSPE Core. [`UC-DOC-RESOLVE-CURRENT-USE-CASES`](use-cases/UC-DOC-RESOLVE-CURRENT-USE-CASES.md) is the functional methodology entry after bootstrap; this map is its first cross-scope routing data source, not another Use Case.
+Prerequisite: the primary bootstrap from [`planning/README.md`](../README.md) establishes Documentation + IDTSPE Core governance. Optional Session State / Work Record facilities are not a prerequisite of methodology-use routing. [`UC-DOC-RESOLVE-CURRENT-USE-CASES`](use-cases/UC-DOC-RESOLVE-CURRENT-USE-CASES.md) is the functional methodology entry after bootstrap; this map is its first cross-scope routing data source, not another Use Case.
 
 ## Runtime Rule
 
@@ -57,6 +57,6 @@ Create a profile-specific Use Case later only if a recurring situation requires 
 Re-evaluation timing/triggers belong to [`UC-DOC-RESOLVE-CURRENT-USE-CASES`](use-cases/UC-DOC-RESOLVE-CURRENT-USE-CASES.md). Whenever that owner requires an applicability refresh, this map supplies current cross-scope routing metadata; it does not maintain a second trigger list.
 
 <a id="session-state-use-case-navigation"></a>
-## Session State / Work Runtime navigation
+## Optional Session State / Work Record navigation
 
-Session State and the Turn Work Record are ambient runtime infrastructure. After S0 allocation, the Core [Conduct Current Session Work Use Case](idtspe-methodology/active/idtspe-core/use-cases/conduct-current-work/UC-IDTSPE-CONDUCT-CURRENT-WORK.md#uc-idtspe-conduct-current-work) is the functional selected-subject route discoverable through the IDTSPE Core registry; its one open record may span a preparation archive and later USER continuation. This does not add a Session-owned registry row. Use-Case applicability may help establish the current primary subject/route before Shell; when SHELL is selected, task-specific Use Cases and the Port Requirement Set are reaffirmed under the same Work Record during preparation and again on affected re-entry before execution.
+Session State, Turn Work Records, Current Work Manifest, the global session Question sweep and portable Session archives are optional explicit interaction/workspace facilities. They are not ambient methodology infrastructure and are not rows in this functional methodology-routing map. When the USER activates them through a Helper prompt or equivalent instruction, follow [`planning/session/README.md`](../session/README.md) and the optional session contracts without changing methodology Use-Case applicability or Shell semantics.

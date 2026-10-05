@@ -56,9 +56,9 @@ The smallest useful current Work Context is represented coherently around materi
 14. Remove/supersede stale duplicate working representation when current state makes it misleading.
 
 <a id="current-work-manifest"></a>
-## Current Work Manifest — Cross-Pass Coordination Projection
+## Optional Current Work Manifest — Cross-Pass Coordination Projection
 
-When work is materially multi-pass, multi-artifact, handoff-sensitive or explicitly requested to remain visible across messages/sessions, maintain/reuse one compact **Current Work Manifest** as the primary current-work coordination and re-entry projection.
+When the USER explicitly activates cross-pass/session coordination and the work is materially multi-pass, multi-artifact or handoff-sensitive, maintain/reuse one compact **Current Work Manifest** as an optional current-work coordination and re-entry projection. Ordinary one-pass work does not create a Manifest.
 
 The Manifest is not a new semantic owner. It references the natural owners and keeps only enough cross-pass orientation to resume safely:
 
@@ -73,18 +73,18 @@ Current Work Manifest
   PRS / QRP / Proposal / Decision refs when material
   Review Coverage refs
   Revalidation Impact / pending-recheck refs
-  current open/most recent closed Turn Work Record refs
+  optional current/recent Work Record refs when explicit Work Record tracking is active
   blockers / permissions / external dependencies
   re-entry / next-action route
 ```
 
-Activation of rich cross-pass Manifest content is proportional. Substantive Session State retains a minimal accepted Manifest alongside its Turn Work Record even for a tiny one-pass task; it need not invent a prospective future plan. More detailed coordination becomes material when work spans several passes/messages, several independently useful artifacts must stay coordinated, revalidation/review must survive a pass boundary, cross-session/handoff re-entry matters, or the USER explicitly requests central tracking.
+Manifest activation itself is explicit/situational. Do not create even a minimal accepted Manifest merely because substantive work exists. Once activated, its content remains proportional: more detailed coordination becomes material when work spans several passes/messages, several independently useful artifacts must stay coordinated, revalidation/review must survive a pass boundary, cross-session/handoff re-entry matters, or the USER explicitly requests central tracking.
 
 ### Goal / action ownership boundary
 
 A concise USER Goal may be projected here, but a grounded durable Need remains owned by Need Candidate Collection / Need Set Coordination. AI-generated candidate work remains Finding/Q/R/P/Proposal/etc. and is not promoted to a USER Goal merely because it appears in the Manifest.
 
-Manifest actions are cross-pass coordination. One current bounded subject selects only the useful subset into its Work Record; the Manifest is not copied wholesale into that record. A preparation checkpoint retains the current record ref, pending subject/root, archive and next continuation/recheck condition without promoting a tentative execution candidate or Proposal into accepted work meaning.
+Manifest actions are cross-pass coordination. Current semantic work selects only the useful subset; the Manifest is not copied wholesale into another owner. When an optional explicit Work Record is active, it may reference the relevant Manifest action/revision without becoming Manifest authority.
 
 ### Artifact Inventory
 
@@ -109,23 +109,22 @@ last synchronized basis/pass/checkpoint when useful
 important outgoing canonical refs
 ```
 
-These are representation/currentness observations only; they do not redefine Need, Proposal/Decision, Review Coverage, Turn Work Record or semantic-owner lifecycle states.
+These are representation/currentness observations only; they do not redefine Need, Proposal/Decision, Review Coverage, optional Work Record or semantic-owner lifecycle states.
 
 ### Work Runtime / P-14 / P-15 handshake
 
 ```text
-Current Work Manifest
+optional Current Work Manifest
 + current USER input
 + canonical owner state
-→ Compose Current Work
+→ Compose Current Work when methodology composition is material
 → bounded work for this pass
-→ Turn Work Record selected/refined work
-→ execute / reconcile
-→ refresh Manifest when cross-pass state materially changed
+→ execute / reconcile through natural owners
+→ refresh Manifest when this optional cross-pass projection is active and materially changed
 → P-14 updates/rematerializes its representation when material and authorized
 ```
 
-When P-15 identifies material revalidation that will not be completed in the current pass, retain a compact reference/next action in the Manifest before handoff. Do not copy the full Revalidation Impact Set or Turn Work Record execution history when a reference is sufficient.
+When P-15 identifies material revalidation that will not be completed in the current pass and an optional Manifest is active, retain a compact reference/next action there before handoff. Do not copy the full Revalidation Impact Set or execution history when a reference is sufficient.
 
 When several material work artifacts must survive handoff and loose-file fragmentation creates loss/discoverability risk, route the Manifest and related representations through P-14's `Work Context Bundle` pattern rather than inventing a second archive owner.
 
@@ -138,8 +137,8 @@ Slot RESOLVED ≠ parent Unit/Target Requirement automatically resolved
 Unit exists ≠ separate file required
 Contextual Unit existed ≠ durable CU result section required
 local Work Context snapshot ≠ semantic authority
-Current Work Manifest ≠ Need Set / PRS / Review Coverage / Turn Work Record
-Current Work Manifest ≠ Session State / Work Runtime semantic owner
+Current Work Manifest ≠ Need Set / PRS / Review Coverage / optional Work Record
+Current Work Manifest ≠ Session State / Shell / semantic owner
 local snapshot ≠ Session-owned second ontology
 ```
 
@@ -148,11 +147,11 @@ local snapshot ≠ Session-owned second ontology
 
 One accepted current action and optionally one concrete next action are enough for a truthful Session Manifest; later work may remain `UNESTABLISHED`. Do not fill the Manifest with speculative long-range work merely to make a list look complete.
 
-When a material answer/Decision affects the current `WR-3` subject, maintain current work state during `WR-5` so the next contextual sweep sees it. Update PRS and accepted Manifest for exact USER-selected/factual or authorized decomposition meaning with revision/history trace. If the prospective target meaning must still be AI-derived, preserve the accepted Manifest and form/reuse a Proposal plus complete candidate target Manifest; use the existing USER review boundary. A change in tentative candidate/route invalidates previous readiness. Synchronize Manifest, PRS, Work Record, pointers and archive at each preparation/review response checkpoint; `WR-6` finally reconciles them when the bounded subject ends.
+When a material answer/Decision affects current work, update natural Core/Target state immediately so subsequent reasoning sees the current meaning. If an optional accepted Manifest is active, synchronize exact USER-selected/factual or authorized decomposition meaning there with revision/history trace. If prospective target meaning must still be AI-derived, preserve the accepted Manifest and form/reuse a Proposal plus complete candidate target Manifest under the existing USER review boundary. Optional Session State / Work Record / archive projections are synchronized only when they were explicitly activated.
 
-## Accepted Session Work Manifest contract
+## Optional accepted Session Work Manifest contract
 
-Substantive Session State normally maintains one accepted `WORK-MANIFEST.md` as a session-scale Evolving Work Record. It may carry stable hierarchical action IDs, current/next work, Need→action coverage (including `UNPLANNED`), current-open/recent-closed Work Record refs, bounded PRS navigation, artifact/context/review/revalidation dependencies and re-entry route. A prepared task points to the same open Work Record on continuation; a different primary task allocates a new S0 and preserves the old record's explicit disposition.
+When the USER explicitly activates a Session Manifest, `WORK-MANIFEST.md` may serve as a session-scale evolving coordination projection. It may carry stable hierarchical action IDs, current/next work, Need→action coverage (including `UNPLANNED`), optional Work Record refs, bounded PRS navigation, artifact/context/review/revalidation dependencies and re-entry route. No S0/Work Record allocation is implied by Manifest use.
 
 Classification of accepted-Manifest writes:
 
@@ -164,7 +163,7 @@ factual synchronization
 → direct + prior revision
 
 pure task-local decomposition
-→ keep in Turn Work Record by default
+→ keep in the natural current semantic/result owner; optional Work Record only when explicitly active
 
 cross-turn pure decomposition
 → direct Manifest refinement when useful + prior revision

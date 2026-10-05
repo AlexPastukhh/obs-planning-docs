@@ -221,17 +221,9 @@ On re-entry:
 
 Need Set Coordination is not [`Resolution Carry-Forward`](../RESOLUTION-CARRY-FORWARD-CONTRACT.md#resolution-carry-forward) / PRS and must not be used as a global Proposal/Q-R-P/Decision backlog. The same Need may reference canonical carry-forward/PRS state when that state is independently applicable.
 
-## 8. Turn Work Record Boundary
+## 8. Optional Work Record Boundary
 
-```text
-Turn Work Record
-= what execution was planned/current plus what methodology runtime/traversal actually happened in the current pass
-
-Need Set Coordination
-= which USER-grounded wanted outcomes remain tracked across passes/messages/sessions
-```
-
-The Turn Work Record may record Need Set start/sync/close events and Collection/Disposition traversal, but it is not the Need Set authority. A Need Set may survive after the Turn Work Record ends.
+Need Set Coordination is independently sufficient for tracking USER-grounded wanted outcomes across passes/messages/sessions. When a Work Record is explicitly active it may record Need Set start/sync/close events and Collection/Disposition traversal, but it is not the Need Set authority and is never required for Need Set continuity.
 
 ## 9. Command Surface Boundary
 
@@ -248,4 +240,4 @@ Those commands remain thin invocation surfaces over this owner plus existing Col
 <a id="need-manifest-coverage"></a>
 ## Manifest planning coverage
 
-Need Set may project `Need → Manifest Action(s)` coverage, including explicit `UNPLANNED`. Compact Needs may be represented inline in Session State or by `NEEDS.md`; Need ownership/satisfaction remains here and with provenance/evidence. Turn Work Record completion or Manifest action completion never by itself marks a Need satisfied.
+When an explicit Manifest is in use, Need Set may project `Need → Manifest Action(s)` coverage, including explicit `UNPLANNED`. Compact Needs may be represented in any suitable current-work representation such as optional Session State or `NEEDS.md`; Need ownership/satisfaction remains here and with provenance/evidence. Optional Work Record or Manifest completion never by itself marks a Need satisfied.

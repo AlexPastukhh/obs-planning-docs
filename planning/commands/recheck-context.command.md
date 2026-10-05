@@ -34,7 +34,7 @@ Scope: legacy explicit recheck shortcut retained only for compatibility; current
   "palette": false,
   "refinements": [],
   "includes": [
-    "planning/commands/choose-current-work-route.command.md"
+    "planning/commands/recheck-methodology-use-cases.command.md"
   ],
   "ownerRefs": [
     {

@@ -79,7 +79,7 @@ When such an archive is produced for continued work:
 - creating or rematerializing the portable archive does not itself select a Proposal, close Q/R/P, create a Decision or determine PRS membership;
 - keep Proposal Workspace Archive packaging distinct from the executable Replacement Package protocol.
 
-A separately requested SDS Proposal Workspace Archive is its own PRS-centered portable artifact. The ambient Session State archive has the accepted `WORK-MANIFEST.md` entry and may refer to the Proposal archive by stable identity/basis; one ZIP must not silently stand in for both archives or nest the Proposal ZIP by default. Shared semantic owners stay singular even when bounded representations overlap.
+A separately requested SDS Proposal Workspace Archive is its own PRS-centered portable artifact. If an explicit Session State archive is also in use, it may refer to the Proposal archive by stable identity/basis; one ZIP must not silently stand in for both archives or nest the Proposal ZIP by default. Shared semantic owners stay singular even when bounded representations overlap.
 
 If the archive is supplied as the current read/work source, begin with its PRS entry point, follow canonical references to the actual Proposal/Q/R/P/Decision owners, and continue the normal selected methodology. Representation may be repackaged when a new portable archive artifact is requested; semantic continuation is not gated on that packaging step.
 
@@ -90,7 +90,7 @@ For an SDS Application planning archive, apply the SDS temporal rule: the upstre
 <a id="work-context-bundle"></a>
 ## 1D. Artifact Maintenance / Work Context Bundle Representation
 
-P-14 also owns the physical **maintenance of current work representations** when artifact currentness/placement/packaging is material. This is representation maintenance only: semantic owners still decide the meaning and lifecycle of Needs, Review Coverage, Turn Work Records, Proposals/Decisions, Evidence and other content.
+P-14 also owns the physical **maintenance of current work representations** when artifact currentness/placement/packaging is material. This is representation maintenance only: semantic owners still decide the meaning and lifecycle of Needs, Review Coverage, optional Work Records, Proposals/Decisions, Evidence and other content.
 
 At a useful authorized checkpoint P-14 may answer proportionally:
 
@@ -131,7 +131,7 @@ reference to an external canonical owner
 
 Archive membership never establishes acceptance or semantic authority. Repacking/rematerializing the bundle changes representation only unless a natural semantic owner separately changes.
 
-If a Work Context Bundle is the supplied continuation source, start from its Manifest/primary entry, resolve current goal/basis/artifact inventory and canonical refs, then continue normal `Compose Current Work` / Port Composition / Turn Work Record execution. Do not infer semantic truth merely from bundle membership.
+If a Work Context Bundle is the supplied continuation source, start from its selected primary entry, resolve current goal/basis/artifact inventory and canonical refs, then continue the natural semantic route; use `Compose Current Work` / Port Composition only when Shell is actually invoked. An optional Manifest or Work Record may assist re-entry when explicitly present, but neither is required. Do not infer semantic truth merely from bundle membership.
 
 ## 2. Semantic Owner vs Artifact Owner
 
@@ -741,6 +741,6 @@ When material, P-14 may record `Primary Entry`, `Required Outgoing`, `Return / C
 A transient Work Context, local working file and persisted checkpoint can represent one [Planning Resolution State](../target-modules/TM-PLANNING-RESOLUTION-STATE.md#tm-planning-resolution-state). Placement never redefines Proposal/Q/R/P/Decision authority or Carry-Forward qualification. Portable Proposal Workspace Archive rules are owned by [§1C](#representation-proposal-workspace-archive); an executable Replacement Package remains a distinct artifact containing only semantically accepted changes.
 
 <a id="session-state-p14-boundary"></a>
-## Session State / P-14 boundary
+## Optional Session State / P-14 boundary
 
-Fundamental Session State directory/archive existence is owned by `SESSION.STATE-RUNTIME` and is not selected by P-14 materiality. A Session-local `resolution/PRS.md`, Work Record or carried context file may remain ambient/local below durable external/project materialization threshold. P-14 remains canonical when external/durable placement/maintenance is materially required. Session archives may include P-14-managed artifacts/refs without ownership transfer and are never executable Replacement Packages.
+Session State, Work Record and their archive/files are created only when explicitly activated. Their local representations do not by themselves trigger P-14. P-14 remains canonical when external/durable placement/maintenance is materially required. Optional Session archives may include P-14-managed artifacts/refs without ownership transfer and are never executable Replacement Packages.

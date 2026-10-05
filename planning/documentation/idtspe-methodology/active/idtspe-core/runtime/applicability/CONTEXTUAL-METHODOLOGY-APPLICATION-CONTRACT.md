@@ -235,6 +235,7 @@ current Slice planning exposes cancellation/resource-lifetime concern
 The existence of 22 principles does not create a 22-item checklist.
 
 <a id="work-runtime-applicability"></a>
-## Work Runtime applicability checkpoints
+## Shell applicability checkpoint
 
-Use-Case applicability may participate before Shell to establish `WR-3` primary subject and `WR-4` route. Only when `ExecutionRoute=SHELL` is selected is the task-specific Use-Case/Port Requirement Set reaffirmed for that subject/current basis and recorded beneath `WR-5`. Prior Turn Work Record history is orientation, never sticky admission authority.
+Use-Case applicability may establish what methodology is useful before or during explicit Shell composition. When Shell is explicitly invoked or the selected semantic operation requires Shell capabilities, reaffirm task-specific Use Cases and refresh the Port Requirement Set on the current subject/basis. No Session State, Turn Work Record, `WR-3`/`WR-4` route classification or ambient execution ledger is required. Prior optional Work-Record/Session history is orientation only, never sticky admission authority.
+

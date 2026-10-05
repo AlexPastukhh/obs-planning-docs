@@ -45,17 +45,17 @@ Planning Commands are a USER↔AI invocation surface. The AI follows methodology
 ## Command Resolution
 
 ```text
-1. Start here for an explicit command. For a new bounded substantive subject, bootstrap/reuse the ambient Session State and create S0 before semantic command execution; recognize current input/command roots after S0 and record these observations under WR-1. For review/continuation of the same still-open subject, reuse its record, append the new input event and revalidate its pending composition instead of allocating another S0.
-2. Resolve the direct planning/commands/*.command.md definition whose commandFamily contains the trigger.
-3. Fully expand all selected roots and transitive includes; discover reachable processCalls as deferred point calls. Validate paths and mixed cycles, merge/deduplicate the include DAG and collect pre-execution contributions before any command action.
-4. Establish dependencies-first order. Execute the deepest methodology Use-Case recheck, then early session.work.maintain activation, WR-1 confirmation, automatic WR-2 triage, WR-3 subject and WR-4 execution route before the ordinary selected leaf.
-5. At WR-5, prepare every selected executable subject by default, including Manifest reconciliation: if WR-4=SHELL, reaffirm task-specific Use Cases/Port Requirement Set and read the relevant selected Core/profile registry/component owners; for DIRECT prepare only the direct owner/inputs. Record actual reads and selection/applicability facts, then perform/reuse the contextual Question sweep. Repeat affected preparation after material candidate/route/port change until stable readiness or a real gate. WR-2 remains triage. A selected SDS Evolution Step has its distinct Step-owned readiness sweep at realization handoff.
-6. Audit preparation against actual coverage, synchronize Session State and rematerialize its archive. Unless the USER explicitly requests a continuous one-response run, stop with the selected semantic root and all execution-bearing dependencies pending, and report the real preparation result. `includes` guarantees dependency order but never itself authorizes crossing this response boundary. On a later continuation/recheck input reuse the same open Work Record, revalidate source/route/Use-Case/port/Question basis and run only compatible reused or affected changed preparation. A request to recheck preparation does not execute the pending root.
-7. After continuation (or an explicitly authorized continuous run), execute the pending selected direct owner or `idtspe.work` and admitted Shell capabilities in dependencies-first order. At each reached processCalls owner point evaluate its gate, bind the current basis and execute/reuse the complete child composition before resuming; unreached execution points remain pending at the preparation checkpoint. Keep one Work Context and root permission boundary. NO_EXECUTION preserves its actual gate.
-8. After the selected root's WR-5 work and the bounded subject's completion/explicit stop, follow the fundamental current-work Use Case through final WR-6 synchronization and WR-7 Work Record/archive closure. Intermediate response archives do not imply WR-7; focused WR-6/WR-7 commands are not prerequisite includes of the leaf action.
+1. Start here for an explicit command and resolve the direct `planning/commands/*.command.md` definition whose `commandFamily` contains the trigger. Command recognition does not require Session State, a Turn Work Record or a DIRECT/SHELL route selector.
+2. Fully expand all selected roots and transitive `includes`; discover reachable `processCalls` as deferred owner-point calls. Validate paths and mixed cycles, merge/deduplicate the include DAG and collect pre-execution contributions before any command semantic action.
+3. Establish dependencies-first order. Execute only the prerequisites actually declared by the selected command composition. Ordinary commands do not inherit a mandatory Session/Work-Record prefix.
+4. Follow the selected command's current canonical owner/read route proportionally. Refresh reusable governance only as required by the existing Governance Preflight rule.
+5. When an explicit IDTSPE/Shell surface is selected, compose current methodology work and refresh/reaffirm the Port Requirement Set through the canonical IDTSPE owners before admitted Shell capabilities execute. This Shell entry is independent from Session State/Work Record tooling.
+6. Execute dependencies before dependents. At each reached `processCalls` owner point evaluate its gate, bind current subject/scope/operation/basis, execute/reuse the complete child composition, then resume the caller.
+7. Respect real USER/permission/Proposal/Decision gates from their natural owners. There is no generic preparation archive pause or automatic global Question sweep before command execution.
+8. If the USER separately activated Session State, Work Record, Manifest, Question-sweep or archive prompts, synchronize only those explicitly active facilities according to their optional contracts; they are not command prerequisites.
 ```
 
-Do not reconstruct commands from memory, helper output, examples or historical files when the command definition is readable.
+Do not reconstruct commands from memory, Helper output, examples or historical files when the command definition is readable.
 
 ## Governance Preflight / Read-Reuse Rule
 
@@ -117,7 +117,7 @@ No unresolved choice or fallback authorizes destructive actions, unrelated scope
 ## Command Registry Rules
 
 - one direct `*.command.md` file = one concrete command;
-- every ordinary substantive command composes the early current-work chain `WR-4 → WR-3 → WR-1 → session.work.maintain → methodology.use_cases.recheck` directly or transitively; fundamental commands in that same chain are valid partial roots; the recheck remains deepest;
+- commands include only prerequisites material to their own invocation route; there is no mandatory Session State / Work Record / DIRECT-vs-SHELL prefix. Methodology-use recheck may remain a shared prerequisite where the command actually needs methodology orientation;
 - canonical command, English name and aliases are unique;
 - `commandFamily` includes the canonical trigger exactly;
 - command files own output, active-context behavior, reads and permissions;
@@ -159,23 +159,21 @@ Generated Helper artifacts, semantic card labels, scenario-command mappings and 
 For methodology work, apply [DOC.EXAMPLE-READING](documentation/principles-and-terminology.md#doc-example-reading) to relevant inline/linked examples before producing the selected owner's result. The explicit [read-methodology-examples command](commands/read-methodology-examples.command.md) offers the same bounded read operation without Target formation. Reading guidance does not add a hidden includes edge or expand the selected root's permission.
 
 <a id="work-runtime-command-order"></a>
-## Work Runtime command order
+## Command execution order
 
 ```text
-raw USER input
-→ bootstrap/reuse Session State and its archive identity
-→ create Turn Work Record S0 with WR-1…WR-7 kernel and authority/methodology refs
-→ WR-1 classify input + recognize command roots/aliases
-→ expand/merge include DAG + collect declarative contributions; record graph under WR-1
-→ Use-Case applicability
-→ WR-2 automatic Manifest/PRS/context triage (no direct command)
-→ WR-3 primary subject
-→ WR-4 DIRECT | SHELL | NO_EXECUTION
-→ WR-5 preparation; if SHELL: reaffirm task-specific Use Cases + Port Requirement Set and selected component reads
-→ current-subject Question sweep; repeat affected preparation after material change
-→ verify actual preparation, synchronize Session State, archive and pause by default
-→ continuation in the same record: check basis, execute pending semantic actions
-→ final WR-6 / WR-7 after the selected subject ends
+raw USER input / explicit command
+→ resolve direct command root(s)
+→ fully expand/validate transitive includes + inventory deferred processCalls
+→ collect effective composition contributions
+→ execute declared dependencies first
+→ follow current semantic owners
+→ if explicit/current operation enters IDTSPE Shell:
+     compose current work
+     → refresh Port Requirement Set
+     → execute admitted capabilities
+→ execute selected root action
+→ synchronize optional Session/Work-Record tooling only when separately activated
 ```
 
-P-02 is not a command-global bootstrap dependency. Command graph discovery is observable WR-1 work and does not itself require Shell.
+Session State, Work Records, Current Work Manifest, the global session Question sweep and any portable Session archive are optional explicit facilities. They are not prerequisites for ordinary commands or for Shell composition. Component-local readiness/question checks remain owned by their components.

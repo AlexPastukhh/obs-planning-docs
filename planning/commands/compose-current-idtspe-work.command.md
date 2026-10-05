@@ -41,7 +41,7 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
     }
   ],
   "includes": [
-    "planning/commands/choose-current-work-route.command.md"
+    "planning/commands/recheck-methodology-use-cases.command.md"
   ],
   "compositionContributions": [],
   "expectedOutput": "A current proportional IDTSPE methodology composition ready for Port Composition Refresh; this may validly remain Broad Discussion only. When cross-pass retention is material, expose enough consequence for Maintain Current Work State to refresh the Current Work Manifest/re-entry route.",

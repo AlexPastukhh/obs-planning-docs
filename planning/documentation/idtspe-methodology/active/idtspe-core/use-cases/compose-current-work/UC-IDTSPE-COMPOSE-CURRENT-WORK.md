@@ -84,7 +84,7 @@ This Use Case owns current-work **orchestration/composition** only; the linked o
 > Owner: [`Port Composition Refresh Rule`](../../runtime/IDTSPE-RUNTIME-COMPOSITION-CONTRACT.md#idtspe-port-composition-refresh)
 
 14. **Before every normal Shell pass**, refresh or reaffirm the current Port Requirement Set from the selected Use-Case composition, explicit USER/component port requirements, current downstream materiality and still-material defer/recheck obligations. Reuse an unchanged prior determination when its basis remains trustworthy. Previous-pass admission alone does not make a port sticky/automatically active in the next pass. Automatic refresh does not impose a focused subset; explicit USER intent is required to intentionally focus/narrow the port composition. Technical admission/reuse semantics are owned by the Shell runtime contract.
-15. Hand the selected composition to the current Turn Work Record. If `WR-4=SHELL`, refresh/reaffirm the task-specific Port Requirement Set and refine Shell traversal beneath WR-5. The Turn Work Record maintains current execution state/observable events/explicit adjustments and final plan-vs-actual; it does not replace Use-Case/port-composition owners. Session Runtime still owns conversational Progress Updates.
+15. When the current operation explicitly invokes/requires Shell, hand the selected composition to the Port Composition Refresh owner and execute only admitted capabilities. If Shell is not material, continue through the natural semantic owner without manufacturing Shell traversal. Optional Session/Work-Record tooling may observe this work only when separately activated.
 16. Continue automatically through ordinary methodology work while inside USER-authorized scope and no real interaction gate exists. A port that becomes newly material during a pass may be admitted through normal downstream-materiality routing without restarting the full methodology route.
 17. Re-evaluate this Use Case when the canonical [`Methodology Composition Recheck Rule`](../../runtime/applicability/CONTEXTUAL-METHODOLOGY-APPLICATION-CONTRACT.md#idtspe-methodology-composition-recheck) is triggered. Reuse current registry metadata and already-resolved shared runtime prefixes where trustworthy.
 
@@ -109,7 +109,6 @@ The Manifest is not sticky authority and does not force every listed action into
 ```text
 Broad Discussion / Key Points
 explicit Shell port requirements when supplied
-ambient Turn Work Record (started at S0 above DIRECT/SHELL; not an optional semantic component)
 Core State Units
 Target Formation
 Target Module / Local Target Contract
@@ -193,6 +192,6 @@ Slice realization raises resource cleanup + timeout/cancellation risk
 ```
 
 <a id="work-runtime-compose-current"></a>
-## Work Runtime composition
+## Current semantic composition
 
-Compose from accepted Manifest + current USER input + canonical owner state. When a bounded PRS exists, scan material active items plus applicable `RU-PRS-03` contextual entries/handling dispositions as orientation without copying bodies or transferring authority. Establish/reaffirm one primary substantive subject. If `WR-4=SHELL`, compose/reaffirm the smallest useful task-specific Use Cases/Port Requirement Set; if DIRECT, do not manufacture Shell traversal.
+Compose from current USER input + canonical owner state, plus an optional accepted Manifest when the USER has explicitly activated that session projection. When a bounded PRS exists, scan material active items plus applicable `RU-PRS-03` contextual entries/handling dispositions as orientation without copying bodies or transferring authority. Establish the smallest useful semantic subject/scope for the requested work. If the operation explicitly invokes/requires Shell, compose/reaffirm the task-specific Use Cases/Port Requirement Set; otherwise do not manufacture Shell traversal.

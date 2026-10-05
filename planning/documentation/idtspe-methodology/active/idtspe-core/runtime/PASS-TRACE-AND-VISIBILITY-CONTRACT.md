@@ -1,42 +1,42 @@
 <a id="idtspe-pass-trace"></a>
 # PASS TRACE AND VISIBILITY — Legacy P-02 Compatibility Contract
 
-Status: active compatibility contract  
+Status: active compatibility contract; optional visibility only  
 Responsibility ID: `IDTSPE.PASS-TRACE`
 
 ## Current authority
 
-Canonical work-plan/state/trace ownership now belongs to [`IDTSPE.WORK-RUNTIME`](WORK-RECORD-PRINCIPLES.md#idtspe-work-runtime). P-02 is retired/reserved as an active Shell-port label. This contract remains only so historical links, commands and explicit legacy trace vocabulary can project Shell-specific observable facts into the **same current Turn Work Record**.
+`P-02` is retired/reserved as an active Shell-port label. This contract exists only for historical links, explicit legacy trace vocabulary and optional USER-requested visibility. Shell composition/admission/traversal does **not** require a Turn Work Record, Session State or P-02 trace.
+
+When the USER explicitly activates a Work Record, legacy vocabulary may project into that optional record:
 
 ```text
 legacy P-02 Pass Working Record
-→ current Turn Work Record
+→ optional current Turn Work Record
 
 legacy P-02 Initial Work Plan
-→ immutable Turn Work Record S0/kernel + current refinements
+→ optional initial record basis/kernel
 
 legacy P-02 execution events / Plan Delta
-→ observable events / explicit adjustments in the same Turn Work Record
+→ observable events / explicit adjustments
 
 legacy P-02 final Plan-vs-Actual
-→ WR-7 finalization projection
+→ optional final record reconciliation
 ```
 
-No compatibility use creates a second record, working store, semantic lifecycle or permission plane.
+Without an explicit Work Record, report only the observable facts needed by the current result/interaction. No compatibility use creates a semantic lifecycle, permission plane or mandatory backing store.
 
 ## Preserved invariants
 
 - observable work/runtime facts only; never private chain-of-thought;
-- incremental-first recording across preparation/continuation; end-of-subject reconstruction is recovery-only;
-- retained snapshots/history remain distinguishable from the current pointer/state;
-- plan changes are explicit rather than silently rewriting the initial basis;
 - Review Coverage, Need, Proposal/QRP/Decision, Targets and semantic owners retain their natural authority;
-- persistence/visibility does not grant target/repository mutation.
+- persistence/visibility does not grant target/repository mutation;
+- prior trace is reusable only when its subject/basis/operation still matches.
 
 ## Shell projection
 
-When `ExecutionRoute=SHELL`, Shell composition/admission/traversal facts are refined beneath `WR-5` of the existing Turn Work Record. Legacy “P-02 trace” wording means this Shell-specific projection only. Active Shell capabilities keep P-03..P-15 numbering.
+Active Shell capabilities keep `P-03..P-15` numbering. If optional trace/Work-Record tooling is active, Shell admission/traversal facts may be projected into it; otherwise Shell proceeds directly through its current composition and natural result surfaces.
 
 ## Visibility / retention compatibility
 
-INLINE controls conversational visibility. Ambient file-backed storage belongs to Session State. External/durable retained representations beyond Session State route through P-14 when material and authorized. None of these choices changes canonical Work Record identity.
+INLINE controls conversational visibility. Optional file-backed storage may use explicitly activated Session State. External/durable retained representations route through P-14 when material and authorized. None of these choices changes Shell capability semantics or command permission.

@@ -46,16 +46,14 @@ USER input
 ↓
 Use-Case Registry applicability check
 ↓
-UC-IDTSPE-COMPOSE-CURRENT-WORK
-↓
-Turn Work Record / WR-3 primary subject
-↓
-WR-4 DIRECT | SHELL | NO_EXECUTION
-↓
-Broad Discussion
+Broad Discussion / narrowest natural owner
   + only material explicit Core State
   + Target/Target Module only if bounded result helps
   + Lenses/Knowledge only if relevant
+↓ when explicit/current methodology work requires Shell
+UC-IDTSPE-COMPOSE-CURRENT-WORK
+→ Port Requirement Set refresh
+→ admitted Shell capabilities
 ↓ when whole-state integration helps
 UC-IDTSPE-INTEGRATE-CURRENT-WORK
 ↓
@@ -66,7 +64,7 @@ continue / revalidate / handoff / exact work
 
 Broad Discussion may span many turns. Material logical parts may use Key Points; material candidate meaning may become a formal Proposal when addressability/review/lifecycle helps.
 
-Do not force a visible 16-port checklist, full State dump, Target Result or Artifact Placement into every reply. the Turn Work Record records the actual route proportionally; it does not require rendering every untouched port.
+Do not force a visible port checklist, full State dump, Target Result or Artifact Placement into every reply. Report only the methodology structure and Shell traversal that are materially relevant to the current work.
 
 ## Existing Artifacts First
 
@@ -104,6 +102,6 @@ later the question becomes an addressable implementation decision
 ```
 
 <a id="idtspe-default-work-runtime-routing"></a>
-## Selected Work Runtime routing
+## Explicit/contextual Shell entry
 
-IDTSPE remains always applicable as the methodology authority boundary, but that does not mean every turn must execute Shell. Deterministic work whose meaningful choices are already resolved may use `DIRECT`; substantive methodology composition/review uses `SHELL`. A DIRECT operation escalates explicitly to SHELL when unresolved methodology reasoning appears.
+IDTSPE remains always applicable as the methodology authority boundary, but ordinary work does not pass through a generic `DIRECT | SHELL | NO_EXECUTION` classifier. Deterministic work follows its natural owner directly. When the USER explicitly invokes IDTSPE/Shell or current methodology composition materially requires Shell capabilities, compose current work and refresh the Port Requirement Set, then execute only admitted capabilities. Optional Session State / Work Record tooling does not control this entry.

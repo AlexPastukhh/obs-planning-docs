@@ -13,7 +13,7 @@ Responsibility ID: `SDS.COMMAND-SURFACE`
 
 SDS extends generic IDTSPE invocation routing without creating a second runtime, a second Use-Case root or a competing semantic naming system. **Generic IDTSPE Core surfaces are owned separately** by [`../../../idtspe-core/commands/IDTSPE-COMMAND-SURFACE-CONTRACT.md`](../../../idtspe-core/commands/IDTSPE-COMMAND-SURFACE-CONTRACT.md); this file owns only the SDS profile extension.
 
-SDS commands inherit the ambient thin Session interaction contract and the fundamental current-work prerequisite: Session State/archive identity and S0 precede WR-1..WR-4 and the selected SDS action. This common command prefix does not make Session the semantic owner of SDS work.
+SDS commands use the same direct Planning Command composition rules as Core: only declared semantic prerequisites run. Session State, Work Record, Manifest, global Question sweep and DIRECT/SHELL route classification are not inherited prerequisites; they participate only when separately invoked.
 
 Profile bootstrap owner: [`../README.md`](../README.md). It is incremental over the primary `planning/README.md` bootstrap; the SDS command surface must not duplicate the profile read set.
 
@@ -43,7 +43,7 @@ idtspe <LENS-ID> <context>
 idtspe lens <Lens alias> <context>
 ```
 
-Bare `idtspe` **does not enable a mode**. IDTSPE is already active; the invocation explicitly selects/reaffirms `ExecutionRoute=SHELL` for the current primary subject after the Work Runtime gates, then executes the smallest useful admitted Shell composition. Broad Discussion with no Target/Lens/Checkpoint is a valid result. Unknown or ambiguous selectors are never guessed.
+Bare `idtspe` **does not enable a methodology mode**. IDTSPE is already applicable as authority; the invocation explicitly requests Shell composition for the supplied/current semantic subject, then executes the smallest useful admitted composition. No Work Runtime gate or DIRECT/SHELL classification is required. Broad Discussion with no Target/Lens/Checkpoint is a valid result. Unknown or ambiguous selectors are never guessed.
 
 ## Current Semantic Registry Boundary
 
@@ -84,13 +84,13 @@ Examples:
 
 ```text
 USER invocation
-→ Session State + S0; WR-1 input and WR-2 triage
-→ WR-3 primary subject; WR-4 route choice
-→ if SHELL, reaffirm task-specific Use Cases and UC-IDTSPE-COMPOSE-CURRENT-WORK
+→ resolve command roots/includes and applicable methodology Use Cases
+→ when IDTSPE/Shell is explicitly requested, compose current work + refresh Port Requirement Set
 → resolve current SDS registry/component only when useful
-→ confirm component-local applicability/materiality
+→ confirm component-local applicability/materiality/readiness
 → selected SDS owner performs its specialized work
 ```
+
 
 Command identity never changes semantic-owner authority. A command does not bypass the Use-Case-driven work context; explicit selection merely supplies strong invocation context to that composition.
 

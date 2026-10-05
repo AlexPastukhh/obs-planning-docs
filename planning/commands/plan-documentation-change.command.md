@@ -34,7 +34,7 @@ Scope: direct invocation backing the existing documentation-change Use-Case card
     }
   ],
   "includes": [
-    "planning/commands/choose-current-work-route.command.md"
+    "planning/commands/recheck-methodology-use-cases.command.md"
   ],
   "processCalls": [
     {

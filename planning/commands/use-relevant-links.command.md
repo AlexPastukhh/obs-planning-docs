@@ -39,7 +39,7 @@ Scope: apply current link/navigation and evidence-grounding rules to the ongoing
   "palette": true,
   "refinements": [],
   "includes": [
-    "planning/commands/choose-current-work-route.command.md"
+    "planning/commands/recheck-methodology-use-cases.command.md"
   ],
   "ownerRefs": [
     {

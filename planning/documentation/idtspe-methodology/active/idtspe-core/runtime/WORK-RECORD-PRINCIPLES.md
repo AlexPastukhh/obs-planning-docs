@@ -1,17 +1,17 @@
 # WORK-RECORD-PRINCIPLES — Work Runtime / Turn Work Record Contract
 
-**Status:** active Core runtime contract
+**Status:** optional explicit Session/Work-Record contract; not an ambient Core prerequisite
 **Responsibility ID:** `IDTSPE.WORK-RUNTIME`  
-**Scope:** canonical Turn Work Record process above `DIRECT | SHELL` execution routing.  
+**Scope:** compatibility/full-workflow contract used only when the USER explicitly activates Turn Work Record tracking. Ordinary work and Shell do not require this process.  
 **Authority boundary:** this contract coordinates work-record behavior. USER Input Intake, Current Work Manifest, Needs, Core Proposal/Decision/QRP/PRS, Use Cases, Shell capabilities and artifact owners retain their natural semantics.
 
 <a id="idtspe-work-runtime"></a>
 <a id="work-record-principles"></a>
 ## 1. Purpose
 
-A **Turn Work Record** is the single evolving plan/state/trace for one bounded primary work subject. Its established name is retained for compatibility; one record may now span preparation, one or more USER↔AI review/continuation messages and execution. [Conduct Current Session Work](../use-cases/conduct-current-work/UC-IDTSPE-CONDUCT-CURRENT-WORK.md#uc-idtspe-conduct-current-work) is its fundamental Use Case; this contract retains the immutable stage semantics. A separate primary subject starts a new S0/record rather than silently repurposing this one.
+When explicitly activated, a **Turn Work Record** is an evolving plan/state/trace for one bounded primary work subject. Its established name is retained for compatibility; one record may now span preparation, one or more USER↔AI review/continuation messages and execution. [Conduct Current Session Work](../use-cases/conduct-current-work/UC-IDTSPE-CONDUCT-CURRENT-WORK.md#uc-idtspe-conduct-current-work) is the optional full-workflow compatibility route; narrower explicit Session prompts may use only the relevant record/state operation without requiring the whole kernel. A separate primary subject starts a new S0/record rather than silently repurposing this one.
 
-It begins when current USER input is accepted for work and remains the same record through:
+The full compatibility workflow begins only when the USER explicitly requests Work Record/full Session tracking and remains the same record through:
 
 ```text
 input intake
@@ -27,8 +27,12 @@ input intake
 
 Do not create competing input-plan, task-plan and trace ledgers for the same bounded subject.
 
-**Compatibility note:** `IDTSPE.PASS-TRACE` remains a legacy compatibility projection only. P-01/P-02 are retired/reserved Shell labels; the active runtime is this Work Runtime plus the selected DIRECT/SHELL route.
+**Compatibility note:** `IDTSPE.PASS-TRACE` remains a legacy compatibility projection only. P-01/P-02 are retired/reserved Shell labels. IDTSPE Shell has its own explicit/contextual entry and does not depend on this Work Record contract.
 
+
+### Activation boundary
+
+No Planning Command, methodology Use Case, Target Module, Lens, ordinary response or Shell pass may require this record merely as ambient infrastructure. Activate it only from an explicit USER prompt/instruction that asks for Work Record/session tracking.
 
 ### Work Record basis
 
@@ -82,7 +86,7 @@ If a material concern cannot truthfully fit beneath the current kernel item, rec
 <a id="work-record-input"></a>
 ## 3. Input principle — WR-1
 
-`WR-1` performs bounded intake/classification and preserves the current input basis. An included WR-1 command confirms and records command roots/aliases and DAG facts discovered after S0; it must not pretend that recognition happened only after the include dependencies executed. WR-2 triage runs after WR-1 and before the WR-3 action, without a separate command.
+`WR-1` performs bounded intake/classification and preserves the current input basis. When an explicitly activated Work Record observes command-driven work, the WR-1 stage confirms and records command roots/aliases and DAG facts discovered after S0; it must not pretend that recognition happened only after command dependencies executed. WR-2 triage runs after WR-1 and before the WR-3 action inside this optional workflow; no dedicated WR-1/WR-2 Planning Command is required.
 
 When new USER input explicitly continues or reviews preparation of the same still-open subject, append a dated continuation-input event to that record. Do not allocate a new S0 or overwrite the original WR-1/kernel. Reclassify answers, changed instructions and command roots on their actual new basis; re-expand/revalidate the pending command composition when material. A new independent subject gets its own S0. If the USER changes subjects, preserve the prior record's open/suspended or explicit-stop disposition and current Session navigation rather than pretending the old subject was completed.
 
@@ -404,7 +408,7 @@ During `WR-5`, resolve what existing authority permits. An unanswered USER-owned
 
 Session State, current-pointer/history and archive reconciliation also occurs at every preparation/review checkpoint; WR-6 performs the final reconciliation after the bounded subject ends.
 
-This is the **current selected subject** check during preparation and again on affected re-entry before execution, not a second WR-2 stage and not an SDS Evolution Step readiness result. The direct `session.current_work.question_sweep` command exposes this existing WR-5 operation; it does not make the check optional for Manifest or other tasks. If the same task realizes a selected SDS Evolution Step, that Step owner also performs its distinct contextual sweep and `RU-EVO-06` readiness check. Reuse overlapping Question/Evidence work on the same basis, while preserving the separate session-task and Step-readiness conclusions.
+This is the **current selected subject** check during preparation and again on affected re-entry before execution, not a second WR-2 stage and not an SDS Evolution Step readiness result. The explicit Session Question-sweep Helper prompt may invoke this existing optional WR-5 operation when the USER has selected the full Work-Record workflow; no Planning Command makes it ambient or mandatory. If the same task realizes a selected SDS Evolution Step, that Step owner also performs its distinct contextual sweep and `RU-EVO-06` readiness check. Reuse overlapping Question/Evidence work on the same basis, while preserving the separate session-task and Step-readiness conclusions.
 
 ### Execution/refinement principle — WR-5
 

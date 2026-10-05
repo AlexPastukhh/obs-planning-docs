@@ -42,7 +42,7 @@ Status: active focused SDS command over the existing Evolution Step owner.
     "hostTargetPolicy": "NONE"
   },
   "includes": [
-    "planning/commands/choose-current-work-route.command.md"
+    "planning/commands/recheck-methodology-use-cases.command.md"
   ],
   "ownerRefs": [
     {

@@ -541,10 +541,12 @@ If the USER already supplies rationale, alternative-retention preference, amendm
 This rule does not decide **whether** rationale or non-selected alternatives should be retained; it only prevents loss/duplication of retention-related USER input.
 
 <a id="work-runtime-input-handoff"></a>
-## Contextual pre-execution resolution handoff
+## Contextual resolution handoff
 
-Before affected business execution, consume already answered material through `ANSWERED_FROM_*` rather than re-asking. Existing PRS Questions are inputs to a contextual sweep, not its closed set: inspect materially relevant existing state and derive missing Questions for the current subject/maturity. A material USER answer can change the plan, not merely clear a blocker; integrate authorized consequences into PRS/current work during `WR-5`, invalidate prior readiness, and repeat the sweep. Reuse the existing User Question Policy, User Decision Gate and ContinuationGate; no second gate or Question lifecycle is introduced.
+Consume already answered material through `ANSWERED_FROM_*` rather than re-asking. Existing Questions and materially relevant current state remain available to their natural owners, and new Questions are formed when the selected semantic process actually needs them. A material USER answer may change current semantic work; integrate authorized consequences through PRS/current owners and invalidate only affected conclusions.
 
-## Turn Work Record handoff
+A global contextual Question sweep is **not** an ambient pre-execution requirement. It runs only when the USER explicitly invokes that Session/Work-Record facility. Component-local readiness/question checks remain independently authoritative where their own owner requires them.
 
-Input classification/provenance is recorded under `WR-1`. One or more `inputs/*` representations may preserve material provenance without creating a third planning hierarchy. If intake exposes substantive unresolved work, hand it to `WR-3` as a candidate primary subject rather than resolving it invisibly inside intake.
+## Optional Work Record projection
+
+Input classification/provenance may be projected into an explicitly activated Work Record or `inputs/*` representation when continuation value warrants it. Ordinary input intake does not require `WR-1`, does not allocate `WR-3`, and does not create a Session hierarchy merely to begin semantic work. If intake exposes substantive unresolved work, route it through its natural Use-Case/Need/Question/Proposal owner rather than resolving it invisibly inside intake.

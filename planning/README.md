@@ -4,14 +4,15 @@ This area contains repository-level planning, reusable methodology, Session inte
 
 ## Primary Bootstrap
 
-This README is the **primary bootstrap entry from zero or unreliable planning context**. It establishes the generic environment through Session, Documentation and IDTSPE Core, and intentionally stops before any profile.
+This README is the **primary bootstrap entry from zero or unreliable planning context**. It establishes the generic environment through the repository AI working boundary, Documentation and IDTSPE Core, and intentionally stops before any profile. Optional Session State/Work Record tooling is not part of this bootstrap.
 
 Read in this order:
 
-1. [`session/README.md`](session/README.md) — follow its `Bootstrap` section to establish the ambient USER↔AI interaction contract.
-2. [`AI-WORKING-CONTRACT.md`](AI-WORKING-CONTRACT.md) — repository-level working/authority boundary.
-3. [`documentation/README.md`](documentation/README.md) — follow its `Bootstrap` section for generic Documentation and methodology-use navigation.
-4. [`documentation/idtspe-methodology/active/idtspe-core/README.md`](documentation/idtspe-methodology/active/idtspe-core/README.md) — follow its `Bootstrap` section for the generic IDTSPE Core.
+1. [`AI-WORKING-CONTRACT.md`](AI-WORKING-CONTRACT.md) — repository-level working/authority boundary.
+2. [`documentation/README.md`](documentation/README.md) — follow its `Bootstrap` section for generic Documentation and methodology-use navigation.
+3. [`documentation/idtspe-methodology/active/idtspe-core/README.md`](documentation/idtspe-methodology/active/idtspe-core/README.md) — follow its `Bootstrap` section for the generic IDTSPE Core.
+
+Read [`session/README.md`](session/README.md) only when the USER explicitly activates Session State, a Work Record, Current Work Manifest, a global session Question sweep or Session archive behavior.
 
 After those reads, the primary bootstrap is established. Do **not** load an IDTSPE profile merely because it is installed. If a profile becomes applicable, bootstrap that profile from its own `README.md`; profile bootstrap is incremental and assumes this primary bootstrap is already current.
 
@@ -21,7 +22,7 @@ Bootstrap establishes methodology knowledge only. It does not create a Target, S
 
 - [`use-case-registry.md`](use-case-registry.md) — repository-specific operational Use Cases.
 - [`use-cases/`](use-cases/) — canonical owners for those repository-specific Use Cases.
-- [`session/`](session/) — thin generic USER↔AI interaction/runtime contract; no current Session-owned planning methodology Use Cases.
+- [`session/`](session/) — optional explicit Session State / Work Record / continuity tooling plus interaction guidance; it is not a prerequisite of ordinary work or IDTSPE Shell.
 - [`documentation/`](documentation/) — generic reusable repository-documentation methodology and the functional methodology Use-Case entry.
 - [`AI-WORKING-CONTRACT.md`](AI-WORKING-CONTRACT.md) — mandatory repository working/authority contract.
 - [`command-routing.md`](command-routing.md) and [`commands/RESPONSIBILITY-MAP.md`](commands/RESPONSIBILITY-MAP.md) — executable command routing plus Command/Helper responsibility routing; direct definitions remain under [`commands/`](commands/).
@@ -68,6 +69,6 @@ Exact pre-fundamental root navigation snapshots remain under [`legacy/`](legacy/
 README owns structural/bootstrap navigation only. Functional capability meaning belongs in the applicable current semantic owner.
 
 <a id="session-state-planning-navigation"></a>
-## Session State navigation
+## Optional Session State navigation
 
-Substantive USER↔AI work bootstraps or reuses the file-backed Session State runtime under [`planning/session/session-state-runtime-contract.md`](session/session-state-runtime-contract.md#session-state-runtime). Session State is continuity infrastructure above DIRECT/SHELL routing and does not replace IDTSPE/SDS semantic owners. After S0, the fundamental [Conduct Current Session Work Use Case](documentation/idtspe-methodology/active/idtspe-core/use-cases/conduct-current-work/UC-IDTSPE-CONDUCT-CURRENT-WORK.md#uc-idtspe-conduct-current-work) coordinates WR-1…WR-7; the applicability resolver and its authority-boundary companion are reaffirmed on that current basis.
+Session State, Turn Work Records, Current Work Manifest, the global session Question sweep and Session archive materialization are activated only by explicit USER prompt/instruction. Start from [`planning/session/README.md`](session/README.md) when that tooling is requested. These facilities do not select DIRECT/SHELL, do not gate ordinary methodology execution and do not replace IDTSPE/SDS semantic owners.

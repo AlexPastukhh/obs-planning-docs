@@ -109,7 +109,7 @@ A root scenario begins from the ordinary functional entry route. A focused scena
 
 **Type:** ROOT
 **Normal entry:** USER request → Methodology Use-Case Registry Map → relevant scoped registry → selected Use Case(s).
-**Purpose:** demonstrate current Work Runtime: one Turn Work Record exists before route selection; Use-Case applicability and `UC-IDTSPE-COMPOSE-CURRENT-WORK` establish current work; `WR-4=SHELL` enters the active P-03..P-15 capability graph only when needed. This is graph traversal, not a fixed port checklist.
+**Purpose:** demonstrate current methodology composition: Use-Case applicability and `UC-IDTSPE-COMPOSE-CURRENT-WORK` establish useful current work; explicit/contextual Shell invocation enters the active P-03..P-15 capability graph only when needed, without a mandatory Session State/Work Record/route-selection envelope. This is graph traversal, not a fixed port checklist.
 
 ### Step `SCN-01-S1` — establish the smallest useful composition
 
@@ -120,13 +120,13 @@ A root scenario begins from the ordinary functional entry route. A focused scena
 **Possible Result:** A bounded concern and a useful next question, with no unnecessary Target.
 **Derived From / Owners:** `UC-DOC-USE-REPOSITORY-GUIDANCE`, `UC-IDTSPE-COMPOSE-CURRENT-WORK`.
 
-### Step `SCN-01-S1P` — select SHELL and refine the current Turn Work Record
+### Step `SCN-01-S1P` — enter Shell composition when useful
 
 **Trigger / Situation:** The smallest useful composition is known for the current invocation.
-**AI Action:** Use the already-established Turn Work Record, select `ExecutionRoute=SHELL`, reaffirm task-specific Use Cases/Port Requirement Set, and record subsequent work-state/capability results beneath WR-5 as they occur.
-**Why This Step:** Composition and Shell routing are different responsibilities, and a reliable trace should be accumulated during execution rather than reconstructed at the end.
-**Method / Mechanics:** Work Runtime establishes S0/current subject/route. When SHELL is selected, the Turn Work Record records Shell composition/admission origin (`AUTO_COMPOSITION`, `EXPLICIT_REQUIREMENT`, `DOWNSTREAM_MATERIALITY`) and observable result statuses beneath WR-5. Shared prefixes are reused for unchanged subject/basis/operation.
-**Possible Result:** A traceable turn that may remain Broad Discussion-only or dynamically enter any subset of active P-03..P-15 capabilities without manufacturing work for untouched capabilities.
+**AI Action:** When Shell is explicitly requested or materially required by the selected semantic operation, reaffirm task-specific Use Cases, compose current work and refresh the Port Requirement Set before executing admitted P-03..P-15 capabilities.
+**Why This Step:** Methodology composition and Shell capability admission are distinct from optional Session/Work-Record tracking; Shell should be directly invokable without ceremony while remaining observable through its natural results.
+**Method / Mechanics:** Resolve the current semantic subject from the invocation/context, refresh composition on the current basis, then admit/execute only material Shell capabilities with their normal admission origins (`AUTO_COMPOSITION`, `EXPLICIT_REQUIREMENT`, `DOWNSTREAM_MATERIALITY`). An explicitly activated Work Record may mirror these events but is not required.
+**Possible Result:** Work that may remain Broad Discussion-only or dynamically enter any subset of active P-03..P-15 capabilities without manufacturing work for untouched capabilities.
 **Derived From / Owners:** `planning/documentation/idtspe-methodology/active/idtspe-core/runtime/IDTSPE-RUNTIME-COMPOSITION-CONTRACT.md`, `planning/documentation/idtspe-methodology/active/idtspe-core/runtime/PASS-TRACE-AND-VISIBILITY-CONTRACT.md`.
 
 ### Step `SCN-01-S1N` — collect and disposition an unresolved wanted outcome before inventing a solution
@@ -215,7 +215,7 @@ A root scenario begins from the ordinary functional entry route. A focused scena
   "assumptions": [],
   "steps": [
     {"id":"SCN-01-S1","title":"Establish the smallest useful composition","semanticRefs":["UC-DOC-USE-REPOSITORY-GUIDANCE","UC-IDTSPE-COMPOSE-CURRENT-WORK"]},
-    {"id":"SCN-01-S1P","title":"Select SHELL and refine the current Turn Work Record","semanticRefs":["planning/documentation/idtspe-methodology/active/idtspe-core/runtime/IDTSPE-RUNTIME-COMPOSITION-CONTRACT.md","planning/documentation/idtspe-methodology/active/idtspe-core/runtime/PASS-TRACE-AND-VISIBILITY-CONTRACT.md"]},
+    {"id":"SCN-01-S1P","title":"Enter Shell composition when useful","semanticRefs":["planning/documentation/idtspe-methodology/active/idtspe-core/runtime/IDTSPE-RUNTIME-COMPOSITION-CONTRACT.md","planning/documentation/idtspe-methodology/active/idtspe-core/runtime/PASS-TRACE-AND-VISIBILITY-CONTRACT.md"]},
     {"id":"SCN-01-S1N","title":"Collect and disposition an unresolved wanted outcome before inventing a solution","semanticRefs":["planning/documentation/idtspe-methodology/active/idtspe-core/resolution/needs/NEED-CANDIDATE-COLLECTION.md","planning/documentation/idtspe-methodology/active/idtspe-core/resolution/needs/NEED-CANDIDATE-DISPOSITION.md"]},
     {"id":"SCN-01-S2","title":"Deepen meaning only when pressure appears","semanticRefs":["UC-IDTSPE-COMPOSE-CURRENT-WORK","planning/documentation/idtspe-methodology/active/profiles/sds/profile-contracts/SDS-SEMANTIC-COMPOSITION-AND-READINESS.md"]},
     {"id":"SCN-01-S3","title":"Evaluate material surfaces","semanticRefs":["planning/documentation/idtspe-methodology/active/idtspe-core/runtime/target-work/UNIT-AND-TARGET-STEP-RESULT-MODEL.md","planning/documentation/idtspe-methodology/active/idtspe-core/lenses/LENS-REGISTRY.md"]},
@@ -620,4 +620,4 @@ Material Proposal/Decision surfaces remain Core lifecycle State. Ordinary Unit w
 <a id="work-runtime-scenarios"></a>
 ## Work Runtime scenario coverage
 
-Scenario coverage now includes first-session bootstrap, unchanged Manifest, pure decomposition, material Manifest Proposal/review, exact USER-authorized integration, DIRECT deterministic work, DIRECT→SHELL escalation, explicit `idtspe` SHELL routing, read-only target + writable Session State, file-changing Proposal target refs, archive re-entry, contextual material, retention modes, SDS contextual planning, PRS collection conformance and history-ref integrity.
+Optional Work Runtime scenario coverage remains available for explicitly activated Session/Work-Record workflows. Core methodology scenario coverage does not make Session bootstrap, Manifest, DIRECT/SHELL classification, global Question sweep or archive re-entry prerequisites of ordinary work; explicit `idtspe` Shell routing and component-local readiness remain independently covered.

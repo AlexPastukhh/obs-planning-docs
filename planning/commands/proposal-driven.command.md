@@ -37,9 +37,7 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
   "userTarget": "<current task whose interaction should be USER-gated>",
   "palette": true,
   "refinements": [],
-  "includes": [
-    "planning/commands/choose-current-work-route.command.md"
-  ],
+  "includes": [],
   "ownerRefs": [
     {
       "responsibilityId": "SESSION.RUNTIME-CONTRACT",
