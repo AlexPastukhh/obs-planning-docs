@@ -174,9 +174,10 @@ Persistent key:
 obsPlanningHelper:v2:localSnapshot
 ```
 
-Schema v8 keeps:
+Schema v9 keeps:
 
 ```text
+commandCacheSchemaVersion
 planningCommands[]
 useCases[] + useCaseCatalogSha
 semanticComponents[] + semanticComponentCatalogSha
@@ -189,9 +190,11 @@ favoriteCommandIds[]
 favoriteUseCaseIds[]    # compatibility state only
 ```
 
-Semantic command Favorites use stable semantic card IDs. During migration, legacy direct-command favorite/order IDs are recognized so existing local preferences do not disappear; the next local reorder/favorite update writes semantic IDs. Schema v8 retires the old `hiddenCommandIds` / `hiddenUseCaseIds` tombstones entirely: legacy values are discarded during migration, and object presence in the snapshot is the only local existence rule.
+Semantic command Favorites use stable semantic card IDs. During migration, legacy direct-command favorite/order IDs are recognized so existing local preferences do not disappear; the next local reorder/favorite update writes semantic IDs. Schema v8 retired the old `hiddenCommandIds` / `hiddenUseCaseIds` tombstones entirely; schema v9 adds `commandCacheSchemaVersion` so serialized Planning Command cache compatibility can evolve independently from the rest of the local snapshot.
 
-The snapshot is a browser working cache. Losing it must not lose durable semantic truth because current projections can be rebuilt from GitHub with `Hard Reload GitHub`.
+`planningCommands[]` may contain both exact repository-backed cache records and local unsaved command drafts. Startup recovery therefore never treats the whole array as disposable. If current code cannot decode the repository-backed command cache, Helper drops only records with repository evidence (`repositoryKnown` / repository SHA), preserves compatible local command drafts plus prompts/Favorites/other snapshot state, and mounts the UI. With no local drafts it points to `Hard Reload GitHub`; when local drafts survive recovery it points first to `Sync missing` (non-overwriting) or explicit draft save/reconciliation, because `Hard Reload GitHub` intentionally replaces the direct-command catalog and removes unsaved command drafts. If an incompatible local command draft or corruption outside `planningCommands[]` remains, startup still fails closed rather than silently deleting user-owned data.
+
+The snapshot is a browser working cache, but unsaved local drafts are user-owned working data inside that cache. Durable repository projections can be rebuilt from GitHub with `Hard Reload GitHub`; local drafts must be preserved or surfaced explicitly rather than silently discarded.
 
 ## Repository-Backed Catalogs
 

@@ -7,7 +7,9 @@
 
   const KEYS=Object.freeze({settings:'obsPlanningHelper:v1:repositorySettings',token:'obsPlanningHelper:v1:githubToken',localSnapshot:'obsPlanningHelper:v2:localSnapshot'});
   const LEGACY_KEYS=Object.freeze({commandCache:'obsPlanningHelper:v1:commandCatalogCache',localLibrary:'obsPlanningHelper:v1:localLibrary',repositoryLibraryCache:'obsPlanningHelper:v1:repositoryLibraryCache'});
-  const LOCAL_SNAPSHOT_SCHEMA_VERSION=8;
+  const LOCAL_SNAPSHOT_SCHEMA_VERSION=9;
+  const COMMAND_CACHE_SCHEMA_VERSION=1;
+  const SUPPORTED_LOCAL_SNAPSHOT_SCHEMA_VERSIONS=Object.freeze([1,2,3,4,5,6,7,8,LOCAL_SNAPSHOT_SCHEMA_VERSION]);
   const POSITION_KEY='obs-planning-helper-position-v2';
   const DEFAULT_SETTINGS=Object.freeze({owner:'AlexPastukhh',repo:'obs-planning-docs',branch:'main'});
 
@@ -29,8 +31,13 @@
   function normalizeCommandRecord(value){const input=value&&typeof value==='object'?value:{},definition=deps.normalizeCommandDefinition(input.definition||input),path=deps.commandPathForDefinition(definition);if(input.path&&String(input.path)!==path)throw new TypeError(`Planning-command snapshot path mismatch: ${input.path}`);const rawContent=String(input.rawContent||deps.renderCommandDefinitionDocument(definition)).replace(/\r\n?/g,'\n'),parsed=deps.parseCommandDefinitionDocument(rawContent,{path});if(JSON.stringify(deps.toSerializable(deps.stripRuntimeCommandMetadata(parsed)))!==JSON.stringify(deps.toSerializable(definition)))throw new TypeError(`Planning-command snapshot raw content does not match definition: ${definition.id}`);const repositorySha=String(input.repositorySha||'').trim(),repositoryKnown=Boolean(input.repositoryKnown||repositorySha),repositoryTracked=Boolean(input.repositoryTracked||repositoryKnown);return{definition,path,rawContent,repositoryKnown,repositoryTracked,repositorySha};}
   function normalizeHelperRecord(value){const input=value&&typeof value==='object'?value:{},item=deps.normalizeHelperLibraryItem(input.item||input),path=deps.helperLibraryTargetPath(item);if(input.path&&String(input.path)!==path)throw new TypeError(`Helper-library snapshot path mismatch: ${input.path}`);const rawContent=String(input.rawContent||deps.renderHelperLibraryDocument(item)).replace(/\r\n?/g,'\n'),parsed=deps.parseHelperLibraryDocument(rawContent,{kind:item.kind,path});if(JSON.stringify(parsed)!==JSON.stringify(item))throw new TypeError(`Helper-library snapshot raw content does not match item: ${item.kind}:${item.id}`);const repositorySha=String(input.repositorySha||'').trim();return{item,path,rawContent,repositoryKnown:Boolean(input.repositoryKnown||repositorySha),repositorySha};}
   function stripLegacyCommandDirectionPlacement(value){const input=value&&typeof value==='object'?value:{},definition={...(input.definition||input)};delete definition.directionIds;return{...input,definition,rawContent:''};}
+  function isSupportedLocalSnapshot(value){return Boolean(value&&typeof value==='object'&&SUPPORTED_LOCAL_SNAPSHOT_SCHEMA_VERSIONS.includes(value.schemaVersion));}
+  function assertCommandCacheSchema(value){if(value.schemaVersion!==LOCAL_SNAPSHOT_SCHEMA_VERSION||value.commandCacheSchemaVersion==null)return;const version=Number(value.commandCacheSchemaVersion);if(!Number.isInteger(version)||version!==COMMAND_CACHE_SCHEMA_VERSION)throw new TypeError(`Unsupported Planning Helper command-cache schema: ${value.commandCacheSchemaVersion}.`);}
+  function isDisposableRepositoryCommandRecord(value){const input=value&&typeof value==='object'?value:{};return Boolean(input.repositoryKnown||String(input.repositorySha||'').trim());}
+  function recoverRepositoryCommandCache(value){const commands=Array.isArray(value?.planningCommands)?value.planningCommands:[],localCommands=commands.filter((record)=>!isDisposableRepositoryCommandRecord(record));return{raw:{...value,planningCommands:localCommands,commandCacheSchemaVersion:COMMAND_CACHE_SCHEMA_VERSION},discardedRepositoryCommands:commands.length-localCommands.length,preservedLocalCommands:localCommands.length};}
   function normalizePlanningHelperLocalSnapshot(value){
-    if(!value||typeof value!=='object'||![1,2,3,4,5,6,7,LOCAL_SNAPSHOT_SCHEMA_VERSION].includes(value.schemaVersion))throw new TypeError('Unsupported Planning Helper local snapshot schema.');
+    if(!isSupportedLocalSnapshot(value))throw new TypeError('Unsupported Planning Helper local snapshot schema.');
+    assertCommandCacheSchema(value);
     const rawCommands=value.schemaVersion<5?(value.planningCommands||[]).map(stripLegacyCommandDirectionPlacement):(value.planningCommands||[]);
     const planningCommands=rawCommands.map(normalizeCommandRecord).sort((a,b)=>a.path.localeCompare(b.path));
     const helperItems=(value.helperItems||[]).map(normalizeHelperRecord).sort((a,b)=>a.path.localeCompare(b.path));
@@ -48,16 +55,29 @@
     if(useCases.some((entry)=>suppressedRepository.useCases.includes(entry.id)))throw new TypeError('A Use Case cannot be both present and repository-suppressed.');
     if(semanticComponents.some((entry)=>suppressedRepository.semanticComponents.includes(entry.id)))throw new TypeError('A semantic component cannot be both present and repository-suppressed.');
     if(scenarios.some((entry)=>suppressedRepository.scenarios.includes(entry.id)))throw new TypeError('A Scenario cannot be both present and repository-suppressed.');
-    return{schemaVersion:LOCAL_SNAPSHOT_SCHEMA_VERSION,savedAt:cleanIso(value.savedAt,''),planningCommands,helperItems,useCases,useCaseCatalogSha,semanticComponents,semanticComponentCatalogSha,scenarios,scenarioCatalogSha,catalogOrder,catalogOrderSha,suppressedRepository,favoriteCommandIds,favoriteUseCaseIds};
+    return{schemaVersion:LOCAL_SNAPSHOT_SCHEMA_VERSION,commandCacheSchemaVersion:COMMAND_CACHE_SCHEMA_VERSION,savedAt:cleanIso(value.savedAt,''),planningCommands,helperItems,useCases,useCaseCatalogSha,semanticComponents,semanticComponentCatalogSha,scenarios,scenarioCatalogSha,catalogOrder,catalogOrderSha,suppressedRepository,favoriteCommandIds,favoriteUseCaseIds};
   }
   async function loadPlanningHelperLocalSnapshot(){const value=await gmGet(KEYS.localSnapshot,null);return value==null?null:normalizePlanningHelperLocalSnapshot(value);}
-  async function savePlanningHelperLocalSnapshot(value){const normalized=normalizePlanningHelperLocalSnapshot({...value,schemaVersion:LOCAL_SNAPSHOT_SCHEMA_VERSION,savedAt:value?.savedAt||new Date().toISOString()}),payload={...normalized,savedAt:new Date().toISOString()};await gmSet(KEYS.localSnapshot,payload);const checked=await gmGet(KEYS.localSnapshot,null),normalizedChecked=normalizePlanningHelperLocalSnapshot(checked);if(JSON.stringify(normalizedChecked)!==JSON.stringify(payload))throw new Error('Planning Helper local snapshot write-back verification failed.');return payload;}
+  async function savePlanningHelperLocalSnapshot(value){const normalized=normalizePlanningHelperLocalSnapshot({...value,schemaVersion:LOCAL_SNAPSHOT_SCHEMA_VERSION,commandCacheSchemaVersion:COMMAND_CACHE_SCHEMA_VERSION,savedAt:value?.savedAt||new Date().toISOString()}),payload={...normalized,savedAt:new Date().toISOString()};await gmSet(KEYS.localSnapshot,payload);const checked=await gmGet(KEYS.localSnapshot,null),normalizedChecked=normalizePlanningHelperLocalSnapshot(checked);if(JSON.stringify(normalizedChecked)!==JSON.stringify(payload))throw new Error('Planning Helper local snapshot write-back verification failed.');return payload;}
 
   function commandRecordsFromDefinitions(definitions,repositoryKnown=true){return(definitions||[]).map((definition)=>normalizeCommandRecord({definition,repositoryKnown,repositoryTracked:repositoryKnown}));}
   function helperKey(item){return`${item.kind}:${item.id}`;}
   async function loadOrMigratePlanningHelperLocalSnapshot(){
     const existingRaw=await gmGet(KEYS.localSnapshot,null),warnings=[];
-    if(existingRaw!=null){const existing=normalizePlanningHelperLocalSnapshot(existingRaw),needsWrite=existingRaw.schemaVersion!==LOCAL_SNAPSHOT_SCHEMA_VERSION,snapshot=needsWrite?await savePlanningHelperLocalSnapshot(existing):existing;if(needsWrite&&(!existing.semanticComponents.length||!existing.scenarios.length))warnings.push('Planning Helper local snapshot migrated. Commands, semantic components and scenarios are GitHub-backed; use Hard Reload GitHub to restore current repository projections.');return{snapshot,migrated:needsWrite,seededCommands:0,warnings};}
+    if(existingRaw!=null){
+      let existing,commandCacheRecovered=false;
+      try{existing=normalizePlanningHelperLocalSnapshot(existingRaw);}catch(error){
+        if(!isSupportedLocalSnapshot(existingRaw))throw error;
+        const recovery=recoverRepositoryCommandCache(existingRaw);
+        try{existing=normalizePlanningHelperLocalSnapshot(recovery.raw);}catch(recoveryError){throw recoveryError;}
+        commandCacheRecovered=true;
+        const recoveryAction=recovery.preservedLocalCommands?'Use Sync missing to restore missing repository commands without overwriting local drafts, or save/reconcile those drafts before Hard Reload GitHub; Hard Reload replaces the command catalog and removes unsaved command drafts.':'Run Hard Reload GitHub to restore the current repository command catalog.';
+        warnings.push(`Cached Planning Command catalog was incompatible (${error.message||String(error)}). Discarded ${recovery.discardedRepositoryCommands} repository-backed command record(s) and preserved ${recovery.preservedLocalCommands} local command draft(s). Local prompts/favorites and the remaining snapshot state were preserved. ${recoveryAction}`);
+      }
+      const needsWrite=commandCacheRecovered||existingRaw.schemaVersion!==LOCAL_SNAPSHOT_SCHEMA_VERSION||Number(existingRaw.commandCacheSchemaVersion)!==COMMAND_CACHE_SCHEMA_VERSION,snapshot=needsWrite?await savePlanningHelperLocalSnapshot(existing):existing;
+      if(needsWrite&&!commandCacheRecovered&&(!existing.semanticComponents.length||!existing.scenarios.length))warnings.push('Planning Helper local snapshot migrated. Commands, semantic components and scenarios are GitHub-backed; use Hard Reload GitHub to restore current repository projections.');
+      return{snapshot,migrated:needsWrite,seededCommands:0,warnings};
+    }
     let definitions=[];
     try{const legacy=await gmGet(LEGACY_KEYS.commandCache,null);if(legacy&&legacy.schemaVersion===1&&Array.isArray(legacy.definitions)){definitions=legacy.definitions.map((definition)=>{const next={...definition};delete next.directionIds;return next;});deps.validateCommandCatalog(definitions,{allowMissingIncludes:true});}}catch(error){warnings.push(`Legacy planning-command cache ignored: ${error.message||String(error)}`);}deps.validateCommandCatalog(definitions,{allowMissingIncludes:true});
     const helperByKey=new Map();
@@ -72,5 +92,5 @@
   function readPanelPosition(){try{const parsed=JSON.parse(localStorage.getItem(POSITION_KEY)||'{}');return{left:Number.isFinite(parsed.left)?parsed.left:null,top:Number.isFinite(parsed.top)?parsed.top:null,width:Number.isFinite(parsed.width)?parsed.width:null,height:Number.isFinite(parsed.height)?parsed.height:null};}catch(_){return{left:null,top:null,width:null,height:null};}}
   function savePanelPosition(position){try{localStorage.setItem(POSITION_KEY,JSON.stringify({left:position.left,top:position.top,width:position.width,height:position.height}));}catch(_){} }
 
-  return{PLANNING_HELPER_STATE_KEYS:KEYS,PLANNING_HELPER_LEGACY_STATE_KEYS:LEGACY_KEYS,PLANNING_HELPER_DEFAULT_SETTINGS:DEFAULT_SETTINGS,LOCAL_SNAPSHOT_SCHEMA_VERSION,normalizeSettings,validateRepositorySettings,normalizeSuppressedRepository,loadRepositorySettings,saveRepositorySettings,loadGitHubToken,saveGitHubToken,normalizeCommandRecord,normalizeHelperRecord,normalizePlanningHelperLocalSnapshot,loadPlanningHelperLocalSnapshot,savePlanningHelperLocalSnapshot,loadOrMigratePlanningHelperLocalSnapshot,commandRecordsFromDefinitions,readPanelPosition,savePanelPosition};
+  return{PLANNING_HELPER_STATE_KEYS:KEYS,PLANNING_HELPER_LEGACY_STATE_KEYS:LEGACY_KEYS,PLANNING_HELPER_DEFAULT_SETTINGS:DEFAULT_SETTINGS,LOCAL_SNAPSHOT_SCHEMA_VERSION,COMMAND_CACHE_SCHEMA_VERSION,normalizeSettings,validateRepositorySettings,normalizeSuppressedRepository,loadRepositorySettings,saveRepositorySettings,loadGitHubToken,saveGitHubToken,normalizeCommandRecord,normalizeHelperRecord,normalizePlanningHelperLocalSnapshot,loadPlanningHelperLocalSnapshot,savePlanningHelperLocalSnapshot,loadOrMigratePlanningHelperLocalSnapshot,commandRecordsFromDefinitions,readPanelPosition,savePanelPosition};
 });
