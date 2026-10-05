@@ -47,7 +47,7 @@ Repository: [obs-planning-docs](https://github.com/AlexPastukhh/obs-planning-doc
     "hostTargetPolicy": "NONE"
   },
   "includes": [
-    "planning/commands/choose-current-work-route.command.md"
+    "planning/commands/recheck-methodology-use-cases.command.md"
   ],
   "ownerRefs": [
     {

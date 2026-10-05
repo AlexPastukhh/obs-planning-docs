@@ -36,7 +36,7 @@ Scope: generic manual invocation route for one selected current canonical Use Ca
   "palette": false,
   "refinements": [],
   "includes": [
-    "planning/commands/choose-current-work-route.command.md"
+    "planning/commands/recheck-methodology-use-cases.command.md"
   ],
   "ownerRefs": [
     {

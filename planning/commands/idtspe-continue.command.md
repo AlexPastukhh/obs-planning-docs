@@ -15,7 +15,7 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
   ],
   "description": "Continue with the currently useful methodology action.",
   "meaning": "Re-evaluate the current Use-Case set and `UC-IDTSPE-COMPOSE-CURRENT-WORK`, then perform the smallest useful ordinary in-scope methodology action. This may continue Broad Discussion, refine current State, invoke an applicable Target Module/Lens, or integrate/revalidate when triggered; it does not require a next Target.",
-  "activeContextBehavior": "If current USER intent is to continue an already prepared open subject, reuse its exact Work Record/S0, verify current basis and execute its pending selected action under the existing permission boundary. If no such subject exists, use the current Work Context and re-evaluated Use-Case applicability to select a useful subject for default preparation; do not invent a Target or invoke a component only to satisfy a fixed sequence.",
+  "activeContextBehavior": "Use the current Work Context, canonical owner state and re-evaluated Use-Case applicability. If USER intent clearly continues a current bounded semantic subject/action and its basis remains trustworthy, continue that work under the existing permission boundary; otherwise select the smallest useful ordinary methodology action from the current context. Do not invent a Target or invoke a component only to satisfy a fixed sequence. Session State, Work Record, global Question sweep and preparation/checkpoint behavior participate only when the USER separately activates those optional facilities.",
   "traversalReadMode": "Reuse current reliable IDTSPE/SDS governance; targeted refresh of the selected owner route when uncertain; full bootstrap only when no reliable sufficient governance context exists.",
   "ownerFiles": [
     "planning/documentation/idtspe-methodology/active/idtspe-core/use-cases/compose-current-work/UC-IDTSPE-COMPOSE-CURRENT-WORK.md",
@@ -29,7 +29,7 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
     "Use Cases compose methodology use; Target Modules/Lenses own specialized work.",
     "Broad Discussion or NO_ADDITIONAL_STRUCTURE is a valid proportional outcome.",
     "Ordinary in-scope progression is not an approval gate; explicit mutation/commit/push permissions remain separate.",
-    "A continuation signal crosses the prepared-task pause only after basis/Question/port recheck; it does not create another Work Record for the same subject."
+    "A continuation signal does not imply Session State, a Work Record, a global Question sweep or a preparation/checkpoint pause; recheck only the methodology/context basis that is materially affected before continuing."
   ],
   "userTarget": "<current planning state>",
   "palette": true,

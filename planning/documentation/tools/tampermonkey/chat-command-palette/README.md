@@ -107,23 +107,22 @@ Helper shows projection provenance separately from semantic meaning:
 
 ## Command Composition Projection
 
-Ordinary substantive Planning Commands share the early current-work prefix: methodology Use-Case recheck, Session State/archive and S0, WR-1 intake, automatic WR-2 triage, WR-3 primary subject and WR-4 route choice. The deepest command prerequisite is the Use-Case recheck; S0 infrastructure is established before semantic command execution. WR-6/WR-7 close the turn after the selected root action, not as its includes.
+Planning Commands expose only prerequisites material to the selected invocation. There is no universal Session State / Turn Work Record / Manifest / DIRECT-vs-SHELL / global Question-sweep prefix.
 
-Every selected subject, including substantive Manifest work, is prepared by default before semantic execution. `session.current_work.prepare` reads the selected current owners/components after route/Port composition; `session.current_work.question_sweep` includes it and checks material Questions after those reads. Their focused direct cards appear in `IDTSPE Pass → Сессия · текущая работа` before `idtspe.work`. The fundamental current-work Use Case audits actual preparation, archives the same open record and waits for USER continuation by default; the Helper graph cannot itself create the response boundary. Neither command renames WR-2 or the SDS Evolution Step sweep. The SDS Evolution Step Question sweep remains a separate focused card in `Target Modules → Evolution` and is conditionally called at a selected Step's realization handoff. They may reuse evidence but retain separate readiness conclusions.
+`includes[]` remains the canonical command-to-command prerequisite DAG. The resolver fully expands selected roots, deduplicates shared prerequisites, validates `processCalls`, collects pre-execution contributions, then executes dependencies before dependents. Optional Session/Work-Record facilities are Planning Helper **Prompts**, not hidden command dependencies.
 
-For `WR-4=SHELL`, the command graph composes current work and refreshes the Port Requirement Set before `idtspe.work` performs admitted Shell work beneath WR-5. `DIRECT` does not enter Shell. The registered `idtspe.port.trace` compatibility command does not provide an active P-02 prerequisite.
+For explicit IDTSPE/Shell work the reusable composition is:
 
 ```text
-methodology.use_cases.recheck
-→ session.work.maintain → session.input.intake
-→ session.current_work.select → session.route.choose
-→ if SHELL: idtspe.compose-current-work → idtspe.port-composition.recheck
-→ session.current_work.prepare (selected owner/component reads)
-→ session.current_work.question_sweep (current selected subject)
-→ verified preparation archive/checkpoint; USER continuation by default
-→ refresh affected basis, then idtspe.work / direct owner and admitted capabilities
-→ final WR-6 / WR-7 after the bounded subject ends
+methodology.use_cases.recheck                 # when the selected route needs it
+→ idtspe.compose-current-work
+→ idtspe.port-composition.recheck
+→ idtspe.work / selected admitted capabilities
 ```
+
+Ordinary deterministic/direct work follows its natural owner without first classifying itself as `DIRECT`. Bare `idtspe` is explicit Shell intent and therefore enters the Shell composition above directly; Shell does not require a Session State, Turn Work Record, WR-4 or a preparation/archive checkpoint.
+
+The old Session/Work-Record direct commands and legacy `idtspe.trace.*` / `idtspe.port.trace` surfaces are not current Planning Commands. Their retained useful operations are explicit Prompts. A global session Question sweep is likewise prompt-driven and is distinct from component-local readiness checks. The SDS Evolution Step Question sweep remains a focused semantic command owned by the selected Step and may still be called at its realization handoff.
 
 The graph guarantees traversal of canonical methodology capabilities; it is not a durable copy of the Shell topology. Direct definitions MUST NOT persist numeric `requiredPorts`, `portRequirements` or `includeFiles` as a second methodology ontology. Current ports are resolved by the canonical composition owner.
 

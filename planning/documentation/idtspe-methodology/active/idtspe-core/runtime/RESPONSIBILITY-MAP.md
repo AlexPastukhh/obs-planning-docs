@@ -13,7 +13,7 @@ This map routes generic Core runtime, Work Context/Core State, methodology-compo
 |---|---|---|
 | Generic technical IDTSPE Work Context / Shell composition and port semantics | [`IDTSPE-RUNTIME-COMPOSITION-CONTRACT.md`](IDTSPE-RUNTIME-COMPOSITION-CONTRACT.md#idtspe-runtime-composition) — `IDTSPE.RUNTIME-COMPOSITION` | Technical composition only; Use Cases own functional orchestration and semantic components own their own meaning |
 | Per-pass Port Requirement Set refresh/admission/reuse semantics | [`IDTSPE-RUNTIME-COMPOSITION-CONTRACT.md`](IDTSPE-RUNTIME-COMPOSITION-CONTRACT.md#idtspe-port-composition-refresh) — `IDTSPE.PORT-COMPOSITION-REFRESH` | Compose Current Work invokes this contract; it does not redefine technical admission/reuse |
-| Work Record plan/preparation checkpoints/continuation/execution/finalization discipline | [`WORK-RECORD-PRINCIPLES.md`](WORK-RECORD-PRINCIPLES.md#idtspe-work-runtime) — `IDTSPE.WORK-RUNTIME` | One bounded subject may span several USER messages; runtime/orchestration only, not semantic planning/review authority or private reasoning |
+| Optional explicit Work Record compatibility/full-workflow discipline | [`WORK-RECORD-PRINCIPLES.md`](WORK-RECORD-PRINCIPLES.md#idtspe-work-runtime) — `IDTSPE.WORK-RUNTIME` | Activated only by explicit USER session/work-record request; not a prerequisite of ordinary work or Shell |
 | Legacy P-02 compatibility visibility | [`PASS-TRACE-AND-VISIBILITY-CONTRACT.md`](PASS-TRACE-AND-VISIBILITY-CONTRACT.md#idtspe-pass-trace) — `IDTSPE.PASS-TRACE` | Compatibility projection only; not an active Shell port or independent record |
 | Contextual/proportional methodology application | [`applicability/CONTEXTUAL-METHODOLOGY-APPLICATION-CONTRACT.md`](applicability/CONTEXTUAL-METHODOLOGY-APPLICATION-CONTRACT.md#idtspe-contextual-application) — `IDTSPE.CONTEXTUAL-APPLICATION` | Governs proportional methodology composition; local component owners still decide local applicability/materiality |
 | Methodology-composition recheck trigger/contract | [`applicability/CONTEXTUAL-METHODOLOGY-APPLICATION-CONTRACT.md`](applicability/CONTEXTUAL-METHODOLOGY-APPLICATION-CONTRACT.md#idtspe-methodology-composition-recheck) — `IDTSPE.METHODOLOGY-COMPOSITION-RECHECK` | Recheck semantics only; functional applicability resolution remains Documentation-owned |
@@ -39,7 +39,7 @@ input classification ≠ lifecycle authority
 
 | Responsibility | Owns | Does not own |
 |---|---|---|
-| `IDTSPE.WORK-RUNTIME` | Turn Work Record kernel, evolving work mechanics, DIRECT/SHELL routing, observable execution/finalization discipline | Needs, Proposal/QRP/Decision, Review Coverage, Targets or semantic content |
-| `IDTSPE.PASS-TRACE` | legacy P-02 compatibility projection of Shell-specific observable facts into the current Turn Work Record | active Shell port, independent trace/store, semantic authority |
+| `IDTSPE.WORK-RUNTIME` | optional Turn Work Record compatibility/full-workflow mechanics when explicitly activated | ordinary command/Shell entry, Needs, Proposal/QRP/Decision, Review Coverage, Targets or semantic content |
+| `IDTSPE.PASS-TRACE` | legacy P-02 compatibility/optional visibility projection | active Shell port, mandatory Work Record/store, semantic authority |
 
 P-01/P-02 are retired/reserved compatibility labels; active Shell capability numbering remains P-03..P-15.

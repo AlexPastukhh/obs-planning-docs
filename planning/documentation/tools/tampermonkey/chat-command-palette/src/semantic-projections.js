@@ -65,7 +65,6 @@
       lines.push('','command_composition:',
         '  - idtspe.work',
         '  - idtspe.port-composition.recheck',
-        '  - idtspe.port.trace',
         `  - ${port}`,
         `  - ${base}`,
         `  - ${normalized.id} (semantic owner selection)`,

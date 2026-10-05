@@ -44,14 +44,9 @@ repository command definitions / helper
 
 A profile may extend this surface, but a generic Core command must not depend semantically on an SDS-specific command-surface owner merely because SDS is currently installed.
 
-## Ambient Session Inheritance
+## Optional Session / interaction facilities
 
-All command surfaces execute under the thin Session interaction contract once that contract has been established at session bootstrap or context restoration:
-
-- [`planning/session/principles-and-terminology.md`](../../../../../session/principles-and-terminology.md)
-- [`planning/session/session-runtime-contract.md`](../../../../../session/session-runtime-contract.md)
-
-The thin interaction contract remains ambient. Separately, the fundamental current-work Use Case establishes/reuses Session State and S0 before substantive execution; direct command includes guarantee its early WR prefix. This prerequisite does not transfer a selected IDTSPE/profile owner's semantic responsibility to Session. Reload interaction guidance only when the current context/rules cannot be reconstructed safely.
+IDTSPE command surfaces do not require Session State, a Turn Work Record, a Current Work Manifest, a global session Question sweep or a Session archive. Reusable interaction guidance under `planning/session/` may be read when its progress/steering/GIP rules are material, and explicit Session prompts may activate file-backed continuity independently. Neither changes semantic command ownership or Shell entry.
 
 ## Primary User Convenience Surface Inventory — 22
 
@@ -60,7 +55,7 @@ idtspe.bootstrap
 → бутстреп idtspe
 
 idtspe.work
-→ explicit SHELL route for the selected primary subject under the current Turn Work Record
+→ explicit normal Shell composition for the supplied/current semantic subject
 → `idtspe [optional TM/LENS selector + context]` may still dispatch an explicitly selected component
 
 idtspe.next
@@ -146,14 +141,14 @@ These are **22 primary user convenience surfaces**, not the complete direct-comm
 
 `idtspe.bootstrap` is the helper surface for the primary bootstrap owned by `planning/README.md`; it is governance orientation only, stops before profile bootstrap, and has `hostTargetPolicy=NONE`.
 
-IDTSPE is already active; `idtspe.work` does **not** enable a mode. Bare `idtspe` explicitly selects/reaffirms `ExecutionRoute=SHELL` for the WR-3 primary subject after Session State, S0 and WR-1..WR-4. It reaffirms task-specific Use Cases and Port Requirement Set, then performs the smallest useful Shell composition beneath WR-5. `idtspe <TM-ID|LENS-ID|registry alias> <context>` may explicitly request a registered component, but the component still passes normal Use-Case/context routing and its local applicability gate. Broad Discussion may remain sufficient indefinitely; Integration Checkpoints are situational and invoked through the current IDTSPE Use Cases when a coherent whole-state view is useful.
+IDTSPE is already active; `idtspe.work` does **not** enable a mode. Bare `idtspe` explicitly invokes/reaffirms the normal Shell composition for the supplied/current semantic subject. It reaffirms task-specific Use Cases and the Port Requirement Set, then performs the smallest useful admitted Shell work without requiring Session State, a Work Record or a DIRECT/SHELL classifier. `idtspe <TM-ID|LENS-ID|registry alias> <context>` may explicitly request a registered component, but the component still passes normal Use-Case/context routing and its local applicability gate. Broad Discussion may remain sufficient indefinitely; Integration Checkpoints are situational and invoked through the current IDTSPE Use Cases when a coherent whole-state view is useful.
 
 Bootstrap must not silently select a Target, infer a Target invocation mode or execute Target work.
 
 
-`idtspe.next` and `idtspe.continue` are explicit navigation/convenience surfaces, not approval gates between natural AI work steps. Thin Session Runtime allows automatic progression through ordinary in-scope interaction steps, while IDTSPE Use Cases own methodology composition.
+`idtspe.next` and `idtspe.continue` are explicit navigation/convenience surfaces, not approval gates between natural AI work steps. Ordinary in-scope work may progress automatically while IDTSPE Use Cases own methodology composition.
 
-`idtspe.next` does **not** own Shell visibility. `Turn Work Record` owns observability for a normal Shell pass. `idtspe.next` resolves the smallest useful next methodology action from current methodology + current Work Context and presents that action as a **Generic AI Proposal (GIP)**, then stops without executing it. When a current P-13 Handoff / Methodology Direction result exists it may inform that GIP, but Handoff is not required: `idtspe.next` remains valid in Broad Discussion with zero Targets.
+`idtspe.next` does **not** own Shell visibility or require a Work Record. `idtspe.next` resolves the smallest useful next methodology action from current methodology + current Work Context and presents that action as a **Generic AI Proposal (GIP)**, then stops without executing it. When a current P-13 Handoff / Methodology Direction result exists it may inform that GIP, but Handoff is not required: `idtspe.next` remains valid in Broad Discussion with zero Targets.
 
 
 ## Shell Port Requirement Composition
@@ -183,41 +178,29 @@ For Review commands, `REVIEW_COVERAGE_MODE` is also a pre-execution contribution
 
 Several intents that require the same port, registry/meta-model or other shared prefix must not recursively launch several independent `idtspe.work` passes. Shared prefixes are one DAG node and are performed/reused once per current subject/basis/operation.
 
-An explicit **port/capability requirement** means **perform a real applicability/traversal check**; it does not manufacture a positive result. `NOT_APPLICABLE`, `CHECKED_NO_RESULT`, `CHECKED_NO_CHANGE` and `REUSED` remain valid port outcomes. Automatic composition, explicit port requirement and downstream materiality all enter the same port contract; only the Turn Work Record admission-origin fact differs. A user-facing semantic root action such as `примени линзу <Lens>` is stronger than merely requiring P-06 traversal: after the shared Lens prefix resolves the registered Lens, bounded Analysis Surface and supported operation, that root action executes the named Lens once even if normal applicability is confidently false; `APPLIED — no material finding / no useful change` is then a valid semantic result.
+An explicit **port/capability requirement** means **perform a real applicability/traversal check**; it does not manufacture a positive result. `NOT_APPLICABLE`, `CHECKED_NO_RESULT`, `CHECKED_NO_CHANGE` and `REUSED` remain valid port outcomes. Automatic composition, explicit port requirement and downstream materiality all enter the same port contract; admission origin should be reported when material, and may additionally be projected into an optional explicit Work Record. A user-facing semantic root action such as `примени линзу <Lens>` is stronger than merely requiring P-06 traversal: after the shared Lens prefix resolves the registered Lens, bounded Analysis Surface and supported operation, that root action executes the named Lens once even if normal applicability is confidently false; `APPLIED — no material finding / no useful change` is then a valid semantic result.
 
 Concrete direct commands MAY carry declarative `includes` so the same canonical route is guaranteed when the USER invokes work through the Helper. `includes` reference canonical repository paths to registered direct Planning Command definitions; they remain command→command edges and MUST NOT point directly to methodology/Use-Case/owner files or become a parallel numeric `requiredPorts`/file-execution ontology. `ownerFiles` / structured owner references remain read routes, not executable includes. The AI itself works through methodology owners/references/handoffs rather than invoking commands internally.
 
 ### Registered Command-Prefix Composition
 
-The following is the current include projection; dependencies execute before their caller, and WR-6/WR-7 follow the selected root through the fundamental current-work Use Case rather than through early includes.
+The current include projection is route-specific; there is no universal Session/Work-Record prefix:
 
 ```text
 methodology.use_cases.recheck
-  → deepest command prerequisite; the S0 infrastructure is already established before semantic command execution
-
-session.work.maintain
-  → includes methodology.use_cases.recheck
-  → reaffirms the Session State, archive identity, initial snapshot and S0 already bootstrapped before semantic execution
-
-session.input.intake → session.current_work.select → session.route.choose
-  → successive includes from the right to the left, with automatic WR-2 triage between WR-1 and WR-3
-  → WR-1, WR-3 and WR-4; none prematurely executes WR-5..WR-7
+  → shared governance prerequisite only where the selected command needs current methodology orientation
 
 idtspe.compose-current-work
-  → includes session.route.choose
-  → resolves the proportional composition for WR-4=SHELL
+  → includes methodology.use_cases.recheck
+  → resolves proportional current IDTSPE composition
 
 idtspe.port-composition.recheck
-  → includes session.route.choose + idtspe.compose-current-work
+  → includes idtspe.compose-current-work
   → refreshes/reaffirms the Port Requirement Set from all pre-collected contributions
 
 idtspe.work
-  → includes session.route.choose + idtspe.compose-current-work + idtspe.port-composition.recheck
-  → explicitly selects/reaffirms SHELL for the primary subject and executes its admitted capabilities beneath WR-5
-
-idtspe.port.trace
-  → includes session.route.choose only; legacy compatibility visibility over the same Turn Work Record
-  → no active P-02 admission and no second record
+  → includes idtspe.port-composition.recheck
+  → explicit Shell invocation and admitted capability traversal
 
 idtspe.port.<capability>
   → includes the shared idtspe.work and port-composition prefixes
@@ -228,7 +211,7 @@ idtspe.target-module.apply / idtspe.lens.apply
   → resolve the selected registered model and its natural meta-model/owner
 ```
 
-Ordinary command roots inherit the current-subject entry chain through WR-4 after S0 and the fundamental Use-Case recheck. The `session.current_work.prepare` dependency traverses proportional owner/component reads after current work/Port composition, and `session.current_work.question_sweep` follows it for the selected subject. The default preparation checkpoint archives the same open Work Record and defers execution-bearing nodes, including `idtspe.work`, until a USER continuation; an explicit continuous-run instruction may proceed without the pause. On a selected SHELL route, continuation reaffirms Port Composition and executes only needed admitted capabilities beneath WR-5. Duplicate compatible dependency edges are deduplicated on their current basis; final WR-6/WR-7 occur through the current-work Use Case after the subject ends rather than as `includes` prerequisites.
+Ordinary command roots include only prerequisites material to their own route. They do not inherit Session State bootstrap, input/Manifest triage, primary-subject selection, DIRECT/SHELL classification, Work Record preparation, global session Question sweep, archive checkpoint or continuation pause. Duplicate compatible dependency edges are deduplicated on their current basis. Component-local readiness/question checks remain owned by their components.
 
 The methodology remains independently executable without Helper/command projection: current Use Cases, owners and natural handoffs determine the same process. The command DAG is a reproducibility/guarantee surface only.
 
@@ -470,6 +453,6 @@ explicit USER/Source wanted outcome noticed during review
 `idtspe.lenses.select` selects applicable Lens Models **and the materially useful supported operation(s) for the current bounded Analysis Surface**, producing selected Lens Application requests rather than an operation-less Lens list. Selection alone is not application. Review that depends on Lens analysis uses `idtspe.lenses.apply-selected` (or an equivalent natural Lens application route) so each selected `(Lens, Analysis Surface, Operation, basis)` application is actually executed before the review result is finalized.
 
 <a id="work-runtime-command-surface"></a>
-## Work Runtime command projection
+## Optional Work Record command projection
 
-Commands project into the current Turn Work Record. `idtspe.port.trace` is a legacy compatibility visibility surface and no longer a required composition contribution. Explicit `idtspe.work` selects/reaffirms `ExecutionRoute=SHELL` for the already-established primary subject after Work Runtime/Manifest gates. Command UI remains a projection, not methodology authority.
+Commands execute from their own composition and semantic owners. Work-Record trace/visibility is not a Planning Command surface. When the USER separately activates a Work Record through explicit prompts/instructions, command/Shell facts may be projected there proportionally, but Work Record/Manifest gates do not control command execution or Shell entry. Command UI remains a projection, not methodology authority.

@@ -36,12 +36,6 @@
   "fallbackCategoryId": "GENERAL",
   "commands": [
     "methodology.use_cases.recheck",
-    "session.work.maintain",
-    "session.input.intake",
-    "session.current_work.select",
-    "session.route.choose",
-    "session.current_work.prepare",
-    "session.current_work.question_sweep",
     "idtspe.next",
     "idtspe.continue",
     "idtspe.proposal",
@@ -166,8 +160,6 @@
     "lens:LENS-RK-TAG-QUALITY-AND-TAXONOMY",
     "lens:LENS-RK-LANDSCAPE-EVIDENCE-ADEQUACY",
     "idtspe.work",
-    "idtspe.trace.inline",
-    "idtspe.trace.artifact",
     "idtspe.port.target",
     "idtspe.target-module.apply",
     "idtspe.port.source",
@@ -183,11 +175,8 @@
     "idtspe.port.handoff",
     "idtspe.port.persistence",
     "idtspe.port.revalidation",
-    "session.state.synchronize",
-    "session.turn.finalize",
     "idtspe.port-composition.recheck",
     "idtspe.compose-current-work",
-    "idtspe.port.trace",
     "idtspe.review",
     "idtspe.review.recheck",
     "idtspe.unit.resolve",
@@ -254,7 +243,17 @@
     "helper-library:prompt:item-rdl7av-1y97ll2",
     "helper-library:prompt:item-1iy9b3g-8grcmz",
     "helper-library:prompt:item-znt1b6-90rtdk",
-    "helper-library:prompt:item-10n7n2t-1xxpe9b"
+    "helper-library:prompt:item-10n7n2t-1xxpe9b",
+    "helper-library:prompt:session-workspace-explicit-20261005",
+    "helper-library:prompt:session-input-explicit-20261005",
+    "helper-library:prompt:session-manifest-explicit-20261005",
+    "helper-library:prompt:work-record-explicit-20261005",
+    "helper-library:prompt:question-sweep-explicit-20261005",
+    "helper-library:prompt:session-sync-explicit-20261005",
+    "helper-library:prompt:session-finalize-explicit-20261005",
+    "helper-library:prompt:session-artifacts-explicit-20261005",
+    "helper-library:prompt:work-record-inline-explicit-20261005",
+    "helper-library:prompt:work-record-artifact-explicit-20261005"
   ],
   "commandGroups": [
     {
@@ -356,29 +355,21 @@
     {
       "id": "idtspe-pass.baseline",
       "viewId": "IDTSPE_PASS",
-      "label": "Сессия · вход",
+      "label": "Composition entry",
       "order": 10,
       "items": [
-        "methodology.use_cases.recheck",
-        "session.work.maintain",
-        "session.input.intake"
+        "methodology.use_cases.recheck"
       ]
     },
     {
       "id": "idtspe-pass.trace",
       "viewId": "IDTSPE_PASS",
-      "label": "Сессия · текущая работа",
+      "label": "Shell composition",
       "order": 20,
       "items": [
-        "session.current_work.select",
-        "session.route.choose",
-        "session.current_work.prepare",
-        "session.current_work.question_sweep",
         "idtspe.work",
         "idtspe.compose-current-work",
-        "idtspe.port-composition.recheck",
-        "idtspe.trace.inline",
-        "idtspe.trace.artifact"
+        "idtspe.port-composition.recheck"
       ]
     },
     {
@@ -716,16 +707,6 @@
       "items": [
         "sds.lens_attachment_map.check",
         "idtspe.tm_lens_dependency_map.check"
-      ]
-    },
-    {
-      "id": "idtspe-pass.session-close",
-      "viewId": "IDTSPE_PASS",
-      "label": "Сессия · завершение",
-      "order": 90,
-      "items": [
-        "session.state.synchronize",
-        "session.turn.finalize"
       ]
     }
   ]

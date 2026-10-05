@@ -49,7 +49,7 @@
         }
       ],
       "includes": [
-        "planning/commands/choose-current-work-route.command.md"
+        "planning/commands/recheck-methodology-use-cases.command.md"
       ],
       "processCalls": [
         {
@@ -393,7 +393,7 @@
         }
       ],
       "includes": [
-        "planning/commands/choose-current-work-route.command.md"
+        "planning/commands/recheck-methodology-use-cases.command.md"
       ],
       "processCalls": [],
       "compositionContributions": [],
@@ -450,7 +450,7 @@
         }
       ],
       "includes": [
-        "planning/commands/choose-current-work-route.command.md"
+        "planning/commands/recheck-methodology-use-cases.command.md"
       ],
       "processCalls": [],
       "compositionContributions": [],
@@ -496,7 +496,7 @@
         "собери пропозал архив"
       ],
       "description": "materialize one portable PRS-centered proposal workspace archive",
-      "meaning": "Materialize the current bounded proposal workspace into one portable archive. Reuse the current Planning Resolution State as the archive's planning/resume surface. If no PRS is currently formed, resolve that absence through the existing Carry-Forward qualification and TM-PLANNING-RESOLUTION-STATE owner: form/reuse a PRS only when the canonical owners say the bounded surviving state needs one; otherwise do not invent an empty PRS or second archive register. Include only the addressable Proposal/workspace artifacts needed by the resulting PRS and selected scope. Proposal, Q/R/P, Decision and carry-forward membership/status remain owned by their existing semantic owners; this command never reclassifies them. Archive paths, persistence and packaging are representation only and never imply acceptance. A Proposal Workspace Archive is not a Replacement Package and MUST NOT use PACKAGE.json, base-files/, replacement-files/ or OBS-ACTION apply protocol structure. Archive membership is scope-driven; Needs, Pre-Update, DISCOVERY.md and context files are optional. SDS downstream future Target Bodies remain Evolution-Step-owned. A separately requested SDS Proposal Workspace Archive is a distinct ZIP from the ambient Session State archive: PRS is its entry, while Session State uses WORK-MANIFEST.md and may keep a stable reference to this archive; do not nest or substitute one for the other by default.",
+      "meaning": "Materialize the current bounded proposal workspace into one portable archive. Reuse the current Planning Resolution State as the archive's planning/resume surface. If no PRS is currently formed, resolve that absence through the existing Carry-Forward qualification and TM-PLANNING-RESOLUTION-STATE owner: form/reuse a PRS only when the canonical owners say the bounded surviving state needs one; otherwise do not invent an empty PRS or second archive register. Include only the addressable Proposal/workspace artifacts needed by the resulting PRS and selected scope. Proposal, Q/R/P, Decision and carry-forward membership/status remain owned by their existing semantic owners; this command never reclassifies them. Archive paths, persistence and packaging are representation only and never imply acceptance. A Proposal Workspace Archive is not a Replacement Package and MUST NOT use PACKAGE.json, base-files/, replacement-files/ or OBS-ACTION apply protocol structure. Archive membership is scope-driven; Needs, Pre-Update, DISCOVERY.md and context files are optional. SDS downstream future Target Bodies remain Evolution-Step-owned. A separately requested SDS Proposal Workspace Archive is independent from any explicitly activated Session State archive: PRS is its entry; if Session State is also in use it may keep a stable reference to this archive. Do not create, nest or substitute a Session archive by default.",
       "activeContextBehavior": "Use the current bounded workspace/PRS and checked source basis. When no PRS exists, first follow RESOLUTION.CARRY-FORWARD qualification and TM-PLANNING-RESOLUTION-STATE formation/reuse instead of fabricating archive-local planning state; materialize only after a canonical PRS exists for the bounded workspace. If an existing Proposal Workspace Archive is the selected source, read its PRS entry point and continue ordinary methodology work from the current semantic state; no separate 'continue archive' command is required. Invoke this command only when a portable archive artifact must be created or rematerialized. When the underlying proposal concerns documentation change, route that semantic work through [UC-DOC-PLAN-DOCUMENTATION-CHANGE](../documentation/use-cases/UC-DOC-PLAN-DOCUMENTATION-CHANGE.md); archive creation itself creates no new Use Case or lifecycle.",
       "traversalReadMode": "Read the current PRS plus only the proposal/workspace artifacts and representation context required by the selected archive scope.",
       "ownerFiles": [
@@ -540,11 +540,11 @@
         }
       ],
       "includes": [
-        "planning/commands/choose-current-work-route.command.md"
+        "planning/commands/recheck-methodology-use-cases.command.md"
       ],
       "processCalls": [],
       "compositionContributions": [],
-      "expectedOutput": "One portable Proposal Workspace Archive with an obvious PRS planning/resume entry point, addressable Proposal/workspace artifacts required by the current PRS/scope, and representation-only archive basis/navigation. No duplicated Proposal/Q/R/P/Decision lifecycle, no semantic acceptance inferred from file paths, and no Replacement Package payload. It is a separate artifact from the Session State archive.",
+      "expectedOutput": "One portable Proposal Workspace Archive with an obvious PRS planning/resume entry point, addressable Proposal/workspace artifacts required by the current PRS/scope, and representation-only archive basis/navigation. No duplicated Proposal/Q/R/P/Decision lifecycle, no semantic acceptance inferred from file paths, and no Replacement Package payload. If an explicit Session State archive also exists, this remains a separate artifact.",
       "permissionMode": "artifact-no-commit-push",
       "keyReminders": [
         "PRS is the planning/resume surface; do not invent a second archive planning register.",
@@ -555,7 +555,7 @@
         "This command creates/rematerializes a Proposal Workspace Archive, not a Replacement Package.",
         "Never include PACKAGE.json or replacement-package base-files/replacement-files protocol structure.",
         "Do not apply locally, commit or push.",
-        "When a Session State archive also exists, produce a distinct ZIP for this Proposal workspace; link identity/basis rather than silently merging archives."
+        "When an explicitly activated Session State archive also exists, produce a distinct ZIP for this Proposal workspace; link identity/basis rather than silently merging archives."
       ],
       "userTarget": "<current PRS / proposal-workspace scope to materialize>",
       "palette": true,
@@ -594,7 +594,7 @@
         }
       ],
       "includes": [
-        "planning/commands/choose-current-work-route.command.md"
+        "planning/commands/recheck-methodology-use-cases.command.md"
       ],
       "processCalls": [],
       "compositionContributions": [],
@@ -758,7 +758,7 @@
         }
       ],
       "includes": [
-        "planning/commands/choose-current-work-route.command.md"
+        "planning/commands/recheck-methodology-use-cases.command.md"
       ],
       "processCalls": [],
       "compositionContributions": [],
@@ -815,7 +815,7 @@
         }
       ],
       "includes": [
-        "planning/commands/choose-current-work-route.command.md"
+        "planning/commands/recheck-methodology-use-cases.command.md"
       ],
       "processCalls": [],
       "compositionContributions": [],
@@ -918,7 +918,7 @@
         }
       ],
       "includes": [
-        "planning/commands/choose-current-work-route.command.md"
+        "planning/commands/recheck-methodology-use-cases.command.md"
       ],
       "processCalls": [],
       "compositionContributions": [],
@@ -988,69 +988,6 @@
         "lensId": "LENS-UNIT-CENTRIC-PRESENTATION",
         "parentSurface": null,
         "hostTargetPolicy": "RESOLVE_OR_REUSE_TARGET"
-      },
-      "refinements": []
-    },
-    {
-      "schemaVersion": 1,
-      "id": "session.route.choose",
-      "file": "choose-current-work-route.command.md",
-      "command": "определи вид работы",
-      "englishName": "choose current work route",
-      "commandFamily": [
-        "определи вид работы",
-        "choose current work route"
-      ],
-      "description": "Choose DIRECT, SHELL or NO_EXECUTION at WR-4.",
-      "meaning": "Record DIRECT, SHELL or NO_EXECUTION for the WR-3 subject separately from ContinuationGate. Reaffirm/revise the same route on preparation recheck or continuation when basis changes; DIRECT requires resolved deterministic work, SHELL enters task-specific composition, and NO_EXECUTION preserves a real gate. A prepared archive pause is neither a route nor a USER_REVIEW_REQUIRED decision.",
-      "activeContextBehavior": "Operate only at the reached current Work Record stage; reuse the same Session State and record.",
-      "traversalReadMode": "Read the fundamental current-work Use Case and the reached Session/Work Record owner proportionally; reuse current trustworthy state.",
-      "ownerFiles": [
-        "planning/documentation/idtspe-methodology/active/idtspe-core/use-cases/conduct-current-work/UC-IDTSPE-CONDUCT-CURRENT-WORK.md",
-        "planning/documentation/idtspe-methodology/active/idtspe-core/runtime/WORK-RECORD-PRINCIPLES.md",
-        "planning/session/session-state-runtime-contract.md"
-      ],
-      "ownerRefs": [
-        {
-          "responsibilityId": "IDTSPE.UC.CONDUCT-CURRENT-WORK",
-          "path": "planning/documentation/idtspe-methodology/active/idtspe-core/use-cases/conduct-current-work/UC-IDTSPE-CONDUCT-CURRENT-WORK.md",
-          "anchor": "uc-idtspe-conduct-current-work",
-          "why": "Owns the full turn-work orchestration reached by this focused invocation.",
-          "role": "PRIMARY_OWNER",
-          "readMode": "REQUIRED"
-        },
-        {
-          "responsibilityId": "IDTSPE.WORK-RUNTIME",
-          "path": "planning/documentation/idtspe-methodology/active/idtspe-core/runtime/WORK-RECORD-PRINCIPLES.md",
-          "anchor": "work-record-execution-routing",
-          "why": "Owns this immutable Work Record stage and its detailed discipline.",
-          "role": "SUPPORTING_CONTRACT",
-          "readMode": "REQUIRED"
-        }
-      ],
-      "includes": [
-        "planning/commands/select-current-turn-work.command.md"
-      ],
-      "processCalls": [],
-      "compositionContributions": [],
-      "expectedOutput": "WR-4 route and separate continuation gate, with a recorded adjustment if it changes.",
-      "permissionMode": "read-only-planning",
-      "keyReminders": [
-        "One current Session State and Turn Work Record; no duplicate planning hierarchy.",
-        "Keep target/repository authority separate from Session State write authority.",
-        "No command invocation selects a Proposal, grants mutation, commit or push."
-      ],
-      "userTarget": "<current bounded work turn>",
-      "palette": true,
-      "helperPresentation": null,
-      "methodologyBinding": {
-        "methodologyRuntime": "IDTSPE",
-        "profile": null,
-        "surfaceKind": "ORCHESTRATION",
-        "targetModuleId": null,
-        "lensId": null,
-        "parentSurface": null,
-        "hostTargetPolicy": "NONE"
       },
       "refinements": []
     },
@@ -1144,7 +1081,7 @@
         }
       ],
       "includes": [
-        "planning/commands/choose-current-work-route.command.md"
+        "planning/commands/recheck-methodology-use-cases.command.md"
       ],
       "processCalls": [],
       "compositionContributions": [],
@@ -1192,7 +1129,7 @@
         }
       ],
       "includes": [
-        "planning/commands/choose-current-work-route.command.md"
+        "planning/commands/recheck-methodology-use-cases.command.md"
       ],
       "processCalls": [],
       "compositionContributions": [],
@@ -1240,7 +1177,7 @@
         }
       ],
       "includes": [
-        "planning/commands/choose-current-work-route.command.md"
+        "planning/commands/recheck-methodology-use-cases.command.md"
       ],
       "processCalls": [],
       "compositionContributions": [],
@@ -1357,7 +1294,7 @@
         }
       ],
       "includes": [
-        "planning/commands/choose-current-work-route.command.md"
+        "planning/commands/recheck-methodology-use-cases.command.md"
       ],
       "processCalls": [],
       "compositionContributions": [],
@@ -1404,7 +1341,7 @@
         }
       ],
       "includes": [
-        "planning/commands/choose-current-work-route.command.md"
+        "planning/commands/recheck-methodology-use-cases.command.md"
       ],
       "processCalls": [],
       "compositionContributions": [],
@@ -1452,7 +1389,7 @@
         }
       ],
       "includes": [
-        "planning/commands/choose-current-work-route.command.md"
+        "planning/commands/recheck-methodology-use-cases.command.md"
       ],
       "processCalls": [],
       "compositionContributions": [],
@@ -1507,7 +1444,7 @@
         }
       ],
       "includes": [
-        "planning/commands/choose-current-work-route.command.md"
+        "planning/commands/recheck-methodology-use-cases.command.md"
       ],
       "processCalls": [],
       "compositionContributions": [],
@@ -1595,141 +1532,6 @@
     },
     {
       "schemaVersion": 1,
-      "id": "idtspe.trace.artifact",
-      "file": "configure-idtspe-trace-artifact.command.md",
-      "command": "веди трассу idtspe в trace-файле",
-      "englishName": "configure IDTSPE Turn Work Record artifact",
-      "commandFamily": [
-        "веди трассу idtspe в trace-файле"
-      ],
-      "description": "Request retained/external artifact representation of the current Turn Work Record when material and authorized.",
-      "meaning": "Keep the current Turn Work Record canonical. When durable/external retention beyond ambient Session State is requested, route physical placement through P-14 without creating a second semantic trace or expanding target mutation permission.",
-      "activeContextBehavior": "Apply to the current Turn Work Record. Ambient working backing follows Session State; this command changes only visibility/retention intent. External/durable retention is attempted through P-14/current permission and reports BLOCKED/DEFERRED when unavailable.",
-      "traversalReadMode": "Read the included command route and canonical owner files proportionally. Reuse current trustworthy owner/process context; reread only stale, uncertain or newly material owners.",
-      "ownerFiles": [
-        "planning/documentation/idtspe-methodology/active/idtspe-core/runtime/WORK-RECORD-PRINCIPLES.md",
-        "planning/documentation/idtspe-methodology/active/idtspe-core/runtime/PASS-TRACE-AND-VISIBILITY-CONTRACT.md"
-      ],
-      "ownerRefs": [
-        {
-          "responsibilityId": "IDTSPE.WORK-RUNTIME",
-          "path": "planning/documentation/idtspe-methodology/active/idtspe-core/runtime/WORK-RECORD-PRINCIPLES.md",
-          "anchor": "idtspe-work-runtime",
-          "why": "Owns the canonical Turn Work Record and visibility/retention discipline.",
-          "role": "PRIMARY_OWNER",
-          "readMode": "REQUIRED"
-        },
-        {
-          "responsibilityId": "IDTSPE.PASS-TRACE",
-          "path": "planning/documentation/idtspe-methodology/active/idtspe-core/runtime/PASS-TRACE-AND-VISIBILITY-CONTRACT.md",
-          "anchor": "idtspe-pass-trace",
-          "why": "Preserves legacy trace vocabulary as a compatibility projection only.",
-          "role": "SUPPORTING_CONTRACT",
-          "readMode": "REQUIRED"
-        }
-      ],
-      "includes": [
-        "planning/commands/idtspe-port-persistence.command.md"
-      ],
-      "processCalls": [],
-      "compositionContributions": [
-        {
-          "kind": "TRACE_SINK_PREFERENCE",
-          "value": "TRACE_FILE_OR_ARCHIVE_FILE",
-          "why": "Prefer retained file/archive visibility/output for the already-required one Turn Work Record; working-store selection remains with the P-02 owner and persistence authority remains with P-14."
-        }
-      ],
-      "expectedOutput": "The current Turn Work Record remains canonical and an external/durable representation is placed or explicitly BLOCKED/DEFERRED through normal P-14 rules.",
-      "permissionMode": "interaction-policy-only-no-mutation-grant",
-      "keyReminders": [
-        "Artifact retention is representation, not a second trace.",
-        "Ambient Session-State files do not automatically invoke P-14.",
-        "External/durable placement follows P-14 and current permission authority.",
-        "Do not report durable retention as successful when placement is blocked."
-      ],
-      "userTarget": "<current/next IDTSPE pass>",
-      "palette": true,
-      "helperPresentation": null,
-      "methodologyBinding": {
-        "methodologyRuntime": "IDTSPE",
-        "profile": null,
-        "surfaceKind": "ORCHESTRATION",
-        "targetModuleId": null,
-        "lensId": null,
-        "parentSurface": null,
-        "hostTargetPolicy": "NONE"
-      },
-      "refinements": []
-    },
-    {
-      "schemaVersion": 1,
-      "id": "idtspe.trace.inline",
-      "file": "configure-idtspe-trace-inline.command.md",
-      "command": "показывай трассу idtspe в ответе",
-      "englishName": "configure IDTSPE trace inline visibility",
-      "commandFamily": [
-        "показывай трассу idtspe в ответе"
-      ],
-      "description": "Configure inline visibility for the current Turn Work Record without selecting a separate working store.",
-      "meaning": "Prefer an inline conversational projection of the current Turn Work Record. The record may still be file-backed by Session State; INLINE controls visibility, not canonical ownership or working storage.",
-      "activeContextBehavior": "Apply to the current Turn Work Record. Ambient working backing follows Session State; this command changes only visibility/retention intent. Inline projection does not constrain file-backed Session-State backing.",
-      "traversalReadMode": "Read the included command route and canonical owner files proportionally. Reuse current trustworthy owner/process context; reread only stale, uncertain or newly material owners.",
-      "ownerFiles": [
-        "planning/documentation/idtspe-methodology/active/idtspe-core/runtime/WORK-RECORD-PRINCIPLES.md",
-        "planning/documentation/idtspe-methodology/active/idtspe-core/runtime/PASS-TRACE-AND-VISIBILITY-CONTRACT.md"
-      ],
-      "ownerRefs": [
-        {
-          "responsibilityId": "IDTSPE.WORK-RUNTIME",
-          "path": "planning/documentation/idtspe-methodology/active/idtspe-core/runtime/WORK-RECORD-PRINCIPLES.md",
-          "anchor": "idtspe-work-runtime",
-          "why": "Owns the canonical Turn Work Record and visibility/retention discipline.",
-          "role": "PRIMARY_OWNER",
-          "readMode": "REQUIRED"
-        },
-        {
-          "responsibilityId": "IDTSPE.PASS-TRACE",
-          "path": "planning/documentation/idtspe-methodology/active/idtspe-core/runtime/PASS-TRACE-AND-VISIBILITY-CONTRACT.md",
-          "anchor": "idtspe-pass-trace",
-          "why": "Preserves legacy trace vocabulary as a compatibility projection only.",
-          "role": "SUPPORTING_CONTRACT",
-          "readMode": "REQUIRED"
-        }
-      ],
-      "includes": [
-        "planning/commands/choose-current-work-route.command.md"
-      ],
-      "processCalls": [],
-      "compositionContributions": [
-        {
-          "kind": "TRACE_SINK_PREFERENCE",
-          "value": "INLINE",
-          "why": "Prefer inline visibility for the already-required Turn Work Record; this does not select or constrain the P-02 working backing store."
-        }
-      ],
-      "expectedOutput": "The current Turn Work Record uses INLINE visibility proportionally; no independent P-02 record is created.",
-      "permissionMode": "read-only-planning",
-      "keyReminders": [
-        "INLINE is a visibility projection, not a second trace.",
-        "A substantive Turn Work Record may remain file-backed in Session State.",
-        "Do not force P-14 solely for an ambient Session-State working file."
-      ],
-      "userTarget": "<current/next IDTSPE pass>",
-      "palette": true,
-      "helperPresentation": null,
-      "methodologyBinding": {
-        "methodologyRuntime": "IDTSPE",
-        "profile": null,
-        "surfaceKind": "ORCHESTRATION",
-        "targetModuleId": null,
-        "lensId": null,
-        "parentSurface": null,
-        "hostTargetPolicy": "NONE"
-      },
-      "refinements": []
-    },
-    {
-      "schemaVersion": 1,
       "id": "critical_review.apply",
       "file": "critical-review.command.md",
       "command": "крит",
@@ -1776,7 +1578,7 @@
         }
       ],
       "includes": [
-        "planning/commands/choose-current-work-route.command.md"
+        "planning/commands/recheck-methodology-use-cases.command.md"
       ],
       "processCalls": [],
       "compositionContributions": [],
@@ -1826,7 +1628,7 @@
         }
       ],
       "includes": [
-        "planning/commands/choose-current-work-route.command.md"
+        "planning/commands/recheck-methodology-use-cases.command.md"
       ],
       "processCalls": [],
       "compositionContributions": [],
@@ -2084,7 +1886,7 @@
         }
       ],
       "includes": [
-        "planning/commands/choose-current-work-route.command.md"
+        "planning/commands/recheck-methodology-use-cases.command.md"
       ],
       "processCalls": [],
       "compositionContributions": [],
@@ -2245,7 +2047,7 @@
         }
       ],
       "includes": [
-        "planning/commands/choose-current-work-route.command.md"
+        "planning/commands/recheck-methodology-use-cases.command.md"
       ],
       "processCalls": [],
       "compositionContributions": [],
@@ -2295,7 +2097,7 @@
         }
       ],
       "includes": [
-        "planning/commands/choose-current-work-route.command.md"
+        "planning/commands/recheck-methodology-use-cases.command.md"
       ],
       "processCalls": [],
       "compositionContributions": [],
@@ -2471,9 +2273,7 @@
           "readMode": "REQUIRED"
         }
       ],
-      "includes": [
-        "planning/commands/choose-current-work-route.command.md"
-      ],
+      "includes": [],
       "processCalls": [],
       "compositionContributions": [],
       "expectedOutput": "Full replacement archive containing only the active operational-day file plus apply/diff commands; user pastes diff before commit.",
@@ -2604,70 +2404,6 @@
     },
     {
       "schemaVersion": 1,
-      "id": "session.turn.finalize",
-      "file": "finalize-turn-work-record.command.md",
-      "command": "заверши Work Record и архив",
-      "englishName": "finalize turn work record and archive",
-      "commandFamily": [
-        "заверши Work Record и архив",
-        "finalize turn work record and archive"
-      ],
-      "description": "Finalize WR-7 and rematerialize the portable Session State archive.",
-      "meaning": "Close the same Work Record at WR-7 only after the bounded selected subject actually ends or is explicitly stopped; reconcile preparation and execution plan-versus-actual and unresolved gates, then rematerialize Session State archive. A preparation/recheck response instead checkpoints an open record. This command does not make WR-6 a static include prerequisite.",
-      "activeContextBehavior": "Operate only at the reached current Work Record stage; reuse the same Session State and record.",
-      "traversalReadMode": "Read the fundamental current-work Use Case and the reached Session/Work Record owner proportionally; reuse current trustworthy state.",
-      "ownerFiles": [
-        "planning/documentation/idtspe-methodology/active/idtspe-core/use-cases/conduct-current-work/UC-IDTSPE-CONDUCT-CURRENT-WORK.md",
-        "planning/documentation/idtspe-methodology/active/idtspe-core/runtime/WORK-RECORD-PRINCIPLES.md",
-        "planning/session/session-state-runtime-contract.md"
-      ],
-      "ownerRefs": [
-        {
-          "responsibilityId": "IDTSPE.UC.CONDUCT-CURRENT-WORK",
-          "path": "planning/documentation/idtspe-methodology/active/idtspe-core/use-cases/conduct-current-work/UC-IDTSPE-CONDUCT-CURRENT-WORK.md",
-          "anchor": "uc-idtspe-conduct-current-work",
-          "why": "Owns the full turn-work orchestration reached by this focused invocation.",
-          "role": "PRIMARY_OWNER",
-          "readMode": "REQUIRED"
-        },
-        {
-          "responsibilityId": "IDTSPE.WORK-RUNTIME",
-          "path": "planning/documentation/idtspe-methodology/active/idtspe-core/runtime/WORK-RECORD-PRINCIPLES.md",
-          "anchor": "work-record-finalization",
-          "why": "Owns this immutable Work Record stage and its detailed discipline.",
-          "role": "SUPPORTING_CONTRACT",
-          "readMode": "REQUIRED"
-        }
-      ],
-      "includes": [
-        "planning/commands/maintain-session-work.command.md"
-      ],
-      "processCalls": [],
-      "compositionContributions": [],
-      "expectedOutput": "Finalized WR-7 and current Session State archive, or an explicit real host limitation.",
-      "permissionMode": "artifact-no-commit-push",
-      "keyReminders": [
-        "One current Session State and Turn Work Record; no duplicate planning hierarchy.",
-        "Keep target/repository authority separate from Session State write authority.",
-        "No command invocation selects a Proposal, grants mutation, commit or push.",
-        "Do not finalize merely because a preparation archive was issued or the USER asked to recheck Questions."
-      ],
-      "userTarget": "<current bounded work turn>",
-      "palette": true,
-      "helperPresentation": null,
-      "methodologyBinding": {
-        "methodologyRuntime": "IDTSPE",
-        "profile": null,
-        "surfaceKind": "ORCHESTRATION",
-        "targetModuleId": null,
-        "lensId": null,
-        "parentSurface": null,
-        "hostTargetPolicy": "NONE"
-      },
-      "refinements": []
-    },
-    {
-      "schemaVersion": 1,
       "id": "idtspe.continue",
       "file": "idtspe-continue.command.md",
       "command": "продолжи по методологии",
@@ -2677,7 +2413,7 @@
       ],
       "description": "Continue with the currently useful methodology action.",
       "meaning": "Re-evaluate the current Use-Case set and `UC-IDTSPE-COMPOSE-CURRENT-WORK`, then perform the smallest useful ordinary in-scope methodology action. This may continue Broad Discussion, refine current State, invoke an applicable Target Module/Lens, or integrate/revalidate when triggered; it does not require a next Target.",
-      "activeContextBehavior": "If current USER intent is to continue an already prepared open subject, reuse its exact Work Record/S0, verify current basis and execute its pending selected action under the existing permission boundary. If no such subject exists, use the current Work Context and re-evaluated Use-Case applicability to select a useful subject for default preparation; do not invent a Target or invoke a component only to satisfy a fixed sequence.",
+      "activeContextBehavior": "Use the current Work Context, canonical owner state and re-evaluated Use-Case applicability. If USER intent clearly continues a current bounded semantic subject/action and its basis remains trustworthy, continue that work under the existing permission boundary; otherwise select the smallest useful ordinary methodology action from the current context. Do not invent a Target or invoke a component only to satisfy a fixed sequence. Session State, Work Record, global Question sweep and preparation/checkpoint behavior participate only when the USER separately activates those optional facilities.",
       "traversalReadMode": "Reuse current reliable IDTSPE/SDS governance; targeted refresh of the selected owner route when uncertain; full bootstrap only when no reliable sufficient governance context exists.",
       "ownerFiles": [
         "planning/documentation/idtspe-methodology/active/idtspe-core/use-cases/compose-current-work/UC-IDTSPE-COMPOSE-CURRENT-WORK.md",
@@ -2715,7 +2451,7 @@
         "Use Cases compose methodology use; Target Modules/Lenses own specialized work.",
         "Broad Discussion or NO_ADDITIONAL_STRUCTURE is a valid proportional outcome.",
         "Ordinary in-scope progression is not an approval gate; explicit mutation/commit/push permissions remain separate.",
-        "A continuation signal crosses the prepared-task pause only after basis/Question/port recheck; it does not create another Work Record for the same subject."
+        "A continuation signal does not imply Session State, a Work Record, a global Question sweep or a preparation/checkpoint pause; recheck only the methodology/context basis that is materially affected before continuing."
       ],
       "userTarget": "<current planning state>",
       "palette": true,
@@ -2832,7 +2568,7 @@
         "что дальше по методологии"
       ],
       "description": "Show the currently useful methodology action without executing it.",
-      "meaning": "Recheck current methodology Use-Case applicability, refresh/reaffirm current IDTSPE composition and Port Requirement Set, then resolve the smallest useful next methodology action from the current Work Context and surface that action as a Generic AI Proposal (GIP). Stop without executing the proposed action. the current Turn Work Record owns observable route visibility; this command does not.",
+      "meaning": "Recheck current methodology Use-Case applicability, refresh/reaffirm current IDTSPE composition and Port Requirement Set, then resolve the smallest useful next methodology action from the current Work Context and surface that action as a Generic AI Proposal (GIP). Stop without executing the proposed action. No Work Record or Session envelope is required.",
       "activeContextBehavior": "Use current Work Context plus mandatory current Use-Case/port-composition rechecks. Do not invent a Target or component to satisfy a fixed sequence. Produce a GIP only for the next useful action/direction and preserve USER steering and permission boundaries.",
       "traversalReadMode": "Reuse current reliable IDTSPE/SDS governance; targeted refresh of the selected owner route when uncertain; full bootstrap only when no reliable sufficient governance context exists.",
       "ownerFiles": [
@@ -2864,14 +2600,14 @@
       ],
       "processCalls": [],
       "compositionContributions": [],
-      "expectedOutput": "One grounded Generic AI Proposal (GIP) for the smallest useful next methodology action, with concise basis/alternatives/recheck trigger only when useful; no proposed action executed. Any route visibility comes from the current Turn Work Record.",
+      "expectedOutput": "One grounded Generic AI Proposal (GIP) for the smallest useful next methodology action, with concise basis/alternatives/recheck trigger only when useful; no proposed action executed. No Work Record or Session envelope is created implicitly.",
       "permissionMode": "read-only-planning",
       "keyReminders": [
         "IDTSPE is already active; this shortcut does not enable a mode.",
         "Use Cases compose methodology use; Target Modules/Lenses own specialized work.",
         "Broad Discussion or NO_ADDITIONAL_STRUCTURE is a valid proportional outcome.",
         "Ordinary in-scope progression is not an approval gate; explicit mutation/commit/push permissions remain separate.",
-        "This command produces a GIP recommendation/action proposal; it does not own Turn Work Record visibility and does not itself create a formal IDTSPE Proposal."
+        "This command produces a GIP recommendation/action proposal; it does not create a Work Record implicitly and does not itself create a formal IDTSPE Proposal."
       ],
       "userTarget": "<current planning state>",
       "palette": true,
@@ -2934,14 +2670,14 @@
           "why": "Explicitly require the BRANCH capability to receive a real applicability/traversal check in the merged current Shell composition."
         }
       ],
-      "expectedOutput": "Branch capability traversal outcome with observable admission/traversal facts recorded in the current Turn Work Record, including APPLIED / CHECKED_NO_CHANGE / CHECKED_NO_RESULT / NOT_APPLICABLE / REUSED / BLOCKED / DEFERRED as applicable.",
+      "expectedOutput": "Branch capability traversal outcome with observable admission/traversal facts reported for the current Shell pass, including APPLIED / CHECKED_NO_CHANGE / CHECKED_NO_RESULT / NOT_APPLICABLE / REUSED / BLOCKED / DEFERRED as applicable.",
       "permissionMode": "read-only-planning",
       "keyReminders": [
         "This is a named capability requirement, not a parallel numeric-port ontology.",
         "Explicit inclusion requires a real check, not a manufactured positive result.",
         "Shared prefixes and equivalent current work are reused.",
-        "the current Turn Work Record records admission origin and traversal result incrementally.",
-        "The current Turn Work Record records admission origin, observable traversal result and reuse evidence; the named capability remains the semantic owner of its work."
+        "Report admission origin and traversal result proportionally for the current Shell pass.",
+        "Report admission origin, observable traversal result and reuse evidence; the named capability remains the semantic owner of its work."
       ],
       "userTarget": "<current IDTSPE subject/context>",
       "palette": true,
@@ -3004,14 +2740,14 @@
           "why": "Explicitly require the DECISION capability to receive a real applicability/traversal check in the merged current Shell composition."
         }
       ],
-      "expectedOutput": "Decision capability traversal outcome with observable admission/traversal facts recorded in the current Turn Work Record, including APPLIED / CHECKED_NO_CHANGE / CHECKED_NO_RESULT / NOT_APPLICABLE / REUSED / BLOCKED / DEFERRED as applicable.",
+      "expectedOutput": "Decision capability traversal outcome with observable admission/traversal facts reported for the current Shell pass, including APPLIED / CHECKED_NO_CHANGE / CHECKED_NO_RESULT / NOT_APPLICABLE / REUSED / BLOCKED / DEFERRED as applicable.",
       "permissionMode": "read-only-planning",
       "keyReminders": [
         "This is a named capability requirement, not a parallel numeric-port ontology.",
         "Explicit inclusion requires a real check, not a manufactured positive result.",
         "Shared prefixes and equivalent current work are reused.",
-        "the current Turn Work Record records admission origin and traversal result incrementally.",
-        "The current Turn Work Record records admission origin, observable traversal result and reuse evidence; the named capability remains the semantic owner of its work."
+        "Report admission origin and traversal result proportionally for the current Shell pass.",
+        "Report admission origin, observable traversal result and reuse evidence; the named capability remains the semantic owner of its work."
       ],
       "userTarget": "<current IDTSPE subject/context>",
       "palette": true,
@@ -3074,14 +2810,14 @@
           "why": "Explicitly require the HANDOFF capability to receive a real applicability/traversal check in the merged current Shell composition."
         }
       ],
-      "expectedOutput": "Handoff capability traversal outcome with observable admission/traversal facts recorded in the current Turn Work Record, including APPLIED / CHECKED_NO_CHANGE / CHECKED_NO_RESULT / NOT_APPLICABLE / REUSED / BLOCKED / DEFERRED as applicable.",
+      "expectedOutput": "Handoff capability traversal outcome with observable admission/traversal facts reported for the current Shell pass, including APPLIED / CHECKED_NO_CHANGE / CHECKED_NO_RESULT / NOT_APPLICABLE / REUSED / BLOCKED / DEFERRED as applicable.",
       "permissionMode": "read-only-planning",
       "keyReminders": [
         "This is a named capability requirement, not a parallel numeric-port ontology.",
         "Explicit inclusion requires a real check, not a manufactured positive result.",
         "Shared prefixes and equivalent current work are reused.",
-        "the current Turn Work Record records admission origin and traversal result incrementally.",
-        "The current Turn Work Record records admission origin, observable traversal result and reuse evidence; the named capability remains the semantic owner of its work."
+        "Report admission origin and traversal result proportionally for the current Shell pass.",
+        "Report admission origin, observable traversal result and reuse evidence; the named capability remains the semantic owner of its work."
       ],
       "userTarget": "<current IDTSPE subject/context>",
       "palette": true,
@@ -3144,14 +2880,14 @@
           "why": "Explicitly require the LENS capability to receive a real applicability/traversal check in the merged current Shell composition."
         }
       ],
-      "expectedOutput": "Lens capability traversal outcome with observable admission/traversal facts recorded in the current Turn Work Record, including APPLIED / CHECKED_NO_CHANGE / CHECKED_NO_RESULT / NOT_APPLICABLE / REUSED / BLOCKED / DEFERRED as applicable.",
+      "expectedOutput": "Lens capability traversal outcome with observable admission/traversal facts reported for the current Shell pass, including APPLIED / CHECKED_NO_CHANGE / CHECKED_NO_RESULT / NOT_APPLICABLE / REUSED / BLOCKED / DEFERRED as applicable.",
       "permissionMode": "read-only-planning",
       "keyReminders": [
         "This is a named capability requirement, not a parallel numeric-port ontology.",
         "Explicit inclusion requires a real check, not a manufactured positive result.",
         "Shared prefixes and equivalent current work are reused.",
-        "the current Turn Work Record records admission origin and traversal result incrementally.",
-        "The current Turn Work Record records admission origin, observable traversal result and reuse evidence; the named capability remains the semantic owner of its work."
+        "Report admission origin and traversal result proportionally for the current Shell pass.",
+        "Report admission origin, observable traversal result and reuse evidence; the named capability remains the semantic owner of its work."
       ],
       "userTarget": "<current IDTSPE subject/context>",
       "palette": true,
@@ -3214,14 +2950,14 @@
           "why": "Explicitly require the PERSISTENCE capability to receive a real applicability/traversal check in the merged current Shell composition."
         }
       ],
-      "expectedOutput": "Persistence / Artifact Maintenance traversal outcome with observable admission/traversal facts recorded in the current Turn Work Record, including placement/reuse/update/inventory/bundle consequences when material and APPLIED / CHECKED_NO_CHANGE / CHECKED_NO_RESULT / NOT_APPLICABLE / REUSED / BLOCKED / DEFERRED as applicable.",
+      "expectedOutput": "Persistence / Artifact Maintenance traversal outcome with observable admission/traversal facts reported for the current Shell pass, including placement/reuse/update/inventory/bundle consequences when material and APPLIED / CHECKED_NO_CHANGE / CHECKED_NO_RESULT / NOT_APPLICABLE / REUSED / BLOCKED / DEFERRED as applicable.",
       "permissionMode": "read-only-planning",
       "keyReminders": [
         "This is a named capability requirement, not a parallel numeric-port ontology.",
         "Explicit inclusion requires a real check, not a manufactured positive result.",
         "Shared prefixes and equivalent current work are reused.",
-        "the current Turn Work Record records admission origin and traversal result incrementally.",
-        "The current Turn Work Record records admission origin, observable traversal result and reuse evidence; the named capability remains the semantic owner of its work."
+        "Report admission origin and traversal result proportionally for the current Shell pass.",
+        "Report admission origin, observable traversal result and reuse evidence; the named capability remains the semantic owner of its work."
       ],
       "userTarget": "<current IDTSPE subject/context>",
       "palette": true,
@@ -3284,14 +3020,14 @@
           "why": "Explicitly require the PROPOSAL capability to receive a real applicability/traversal check in the merged current Shell composition."
         }
       ],
-      "expectedOutput": "Proposal capability traversal outcome with observable admission/traversal facts recorded in the current Turn Work Record, including APPLIED / CHECKED_NO_CHANGE / CHECKED_NO_RESULT / NOT_APPLICABLE / REUSED / BLOCKED / DEFERRED as applicable.",
+      "expectedOutput": "Proposal capability traversal outcome with observable admission/traversal facts reported for the current Shell pass, including APPLIED / CHECKED_NO_CHANGE / CHECKED_NO_RESULT / NOT_APPLICABLE / REUSED / BLOCKED / DEFERRED as applicable.",
       "permissionMode": "read-only-planning",
       "keyReminders": [
         "This is a named capability requirement, not a parallel numeric-port ontology.",
         "Explicit inclusion requires a real check, not a manufactured positive result.",
         "Shared prefixes and equivalent current work are reused.",
-        "the current Turn Work Record records admission origin and traversal result incrementally.",
-        "The current Turn Work Record records admission origin, observable traversal result and reuse evidence; the named capability remains the semantic owner of its work."
+        "Report admission origin and traversal result proportionally for the current Shell pass.",
+        "Report admission origin, observable traversal result and reuse evidence; the named capability remains the semantic owner of its work."
       ],
       "userTarget": "<current IDTSPE subject/context>",
       "palette": true,
@@ -3354,14 +3090,14 @@
           "why": "Explicitly require the QRP capability to receive a real applicability/traversal check in the merged current Shell composition."
         }
       ],
-      "expectedOutput": "Q/R/P capability traversal outcome with observable admission/traversal facts recorded in the current Turn Work Record, including APPLIED / CHECKED_NO_CHANGE / CHECKED_NO_RESULT / NOT_APPLICABLE / REUSED / BLOCKED / DEFERRED as applicable.",
+      "expectedOutput": "Q/R/P capability traversal outcome with observable admission/traversal facts reported for the current Shell pass, including APPLIED / CHECKED_NO_CHANGE / CHECKED_NO_RESULT / NOT_APPLICABLE / REUSED / BLOCKED / DEFERRED as applicable.",
       "permissionMode": "read-only-planning",
       "keyReminders": [
         "This is a named capability requirement, not a parallel numeric-port ontology.",
         "Explicit inclusion requires a real check, not a manufactured positive result.",
         "Shared prefixes and equivalent current work are reused.",
-        "the current Turn Work Record records admission origin and traversal result incrementally.",
-        "The current Turn Work Record records admission origin, observable traversal result and reuse evidence; the named capability remains the semantic owner of its work."
+        "Report admission origin and traversal result proportionally for the current Shell pass.",
+        "Report admission origin, observable traversal result and reuse evidence; the named capability remains the semantic owner of its work."
       ],
       "userTarget": "<current IDTSPE subject/context>",
       "palette": true,
@@ -3424,14 +3160,14 @@
           "why": "Explicitly require the RELATION capability to receive a real applicability/traversal check in the merged current Shell composition."
         }
       ],
-      "expectedOutput": "Relation capability traversal outcome with observable admission/traversal facts recorded in the current Turn Work Record, including APPLIED / CHECKED_NO_CHANGE / CHECKED_NO_RESULT / NOT_APPLICABLE / REUSED / BLOCKED / DEFERRED as applicable.",
+      "expectedOutput": "Relation capability traversal outcome with observable admission/traversal facts reported for the current Shell pass, including APPLIED / CHECKED_NO_CHANGE / CHECKED_NO_RESULT / NOT_APPLICABLE / REUSED / BLOCKED / DEFERRED as applicable.",
       "permissionMode": "read-only-planning",
       "keyReminders": [
         "This is a named capability requirement, not a parallel numeric-port ontology.",
         "Explicit inclusion requires a real check, not a manufactured positive result.",
         "Shared prefixes and equivalent current work are reused.",
-        "the current Turn Work Record records admission origin and traversal result incrementally.",
-        "The current Turn Work Record records admission origin, observable traversal result and reuse evidence; the named capability remains the semantic owner of its work."
+        "Report admission origin and traversal result proportionally for the current Shell pass.",
+        "Report admission origin, observable traversal result and reuse evidence; the named capability remains the semantic owner of its work."
       ],
       "userTarget": "<current IDTSPE subject/context>",
       "palette": true,
@@ -3494,14 +3230,14 @@
           "why": "Explicitly require the TARGET_STEP_RESULT capability to receive a real applicability/traversal check in the merged current Shell composition."
         }
       ],
-      "expectedOutput": "Target Step Result capability traversal outcome with observable admission/traversal facts recorded in the current Turn Work Record, including APPLIED / CHECKED_NO_CHANGE / CHECKED_NO_RESULT / NOT_APPLICABLE / REUSED / BLOCKED / DEFERRED as applicable.",
+      "expectedOutput": "Target Step Result capability traversal outcome with observable admission/traversal facts reported for the current Shell pass, including APPLIED / CHECKED_NO_CHANGE / CHECKED_NO_RESULT / NOT_APPLICABLE / REUSED / BLOCKED / DEFERRED as applicable.",
       "permissionMode": "read-only-planning",
       "keyReminders": [
         "This is a named capability requirement, not a parallel numeric-port ontology.",
         "Explicit inclusion requires a real check, not a manufactured positive result.",
         "Shared prefixes and equivalent current work are reused.",
-        "the current Turn Work Record records admission origin and traversal result incrementally.",
-        "The current Turn Work Record records admission origin, observable traversal result and reuse evidence; the named capability remains the semantic owner of its work."
+        "Report admission origin and traversal result proportionally for the current Shell pass.",
+        "Report admission origin, observable traversal result and reuse evidence; the named capability remains the semantic owner of its work."
       ],
       "userTarget": "<current IDTSPE subject/context>",
       "palette": true,
@@ -3564,14 +3300,14 @@
           "why": "Explicitly require the REVALIDATION capability to receive a real applicability/traversal check in the merged current Shell composition."
         }
       ],
-      "expectedOutput": "Evidence / Revalidation capability traversal outcome with observable admission/traversal facts recorded in the current Turn Work Record; when material this includes/reuses a Revalidation Impact Set with definitely affected, potentially affected, reuse candidates and required follow-up, plus APPLIED / CHECKED_NO_CHANGE / CHECKED_NO_RESULT / NOT_APPLICABLE / REUSED / BLOCKED / DEFERRED as applicable.",
+      "expectedOutput": "Evidence / Revalidation capability traversal outcome with observable admission/traversal facts reported for the current Shell pass; when material this includes/reuses a Revalidation Impact Set with definitely affected, potentially affected, reuse candidates and required follow-up, plus APPLIED / CHECKED_NO_CHANGE / CHECKED_NO_RESULT / NOT_APPLICABLE / REUSED / BLOCKED / DEFERRED as applicable.",
       "permissionMode": "read-only-planning",
       "keyReminders": [
         "This is a named capability requirement, not a parallel numeric-port ontology.",
         "Explicit inclusion requires a real check, not a manufactured positive result.",
         "Shared prefixes and equivalent current work are reused.",
-        "the current Turn Work Record records admission origin and traversal result incrementally.",
-        "The current Turn Work Record records admission origin, observable traversal result and reuse evidence; the named capability remains the semantic owner of its work."
+        "Report admission origin and traversal result proportionally for the current Shell pass.",
+        "Report admission origin, observable traversal result and reuse evidence; the named capability remains the semantic owner of its work."
       ],
       "userTarget": "<current IDTSPE subject/context>",
       "palette": true,
@@ -3634,14 +3370,14 @@
           "why": "Explicitly require the SOURCE capability to receive a real applicability/traversal check in the merged current Shell composition."
         }
       ],
-      "expectedOutput": "Source capability traversal outcome with observable admission/traversal facts recorded in the current Turn Work Record, including APPLIED / CHECKED_NO_CHANGE / CHECKED_NO_RESULT / NOT_APPLICABLE / REUSED / BLOCKED / DEFERRED as applicable.",
+      "expectedOutput": "Source capability traversal outcome with observable admission/traversal facts reported for the current Shell pass, including APPLIED / CHECKED_NO_CHANGE / CHECKED_NO_RESULT / NOT_APPLICABLE / REUSED / BLOCKED / DEFERRED as applicable.",
       "permissionMode": "read-only-planning",
       "keyReminders": [
         "This is a named capability requirement, not a parallel numeric-port ontology.",
         "Explicit inclusion requires a real check, not a manufactured positive result.",
         "Shared prefixes and equivalent current work are reused.",
-        "the current Turn Work Record records admission origin and traversal result incrementally.",
-        "The current Turn Work Record records admission origin, observable traversal result and reuse evidence; the named capability remains the semantic owner of its work."
+        "Report admission origin and traversal result proportionally for the current Shell pass.",
+        "Report admission origin, observable traversal result and reuse evidence; the named capability remains the semantic owner of its work."
       ],
       "userTarget": "<current IDTSPE subject/context>",
       "palette": true,
@@ -3704,14 +3440,14 @@
           "why": "Explicitly require the TARGET capability to receive a real applicability/traversal check in the merged current Shell composition."
         }
       ],
-      "expectedOutput": "Target capability traversal outcome with observable admission/traversal facts recorded in the current Turn Work Record, including APPLIED / CHECKED_NO_CHANGE / CHECKED_NO_RESULT / NOT_APPLICABLE / REUSED / BLOCKED / DEFERRED as applicable.",
+      "expectedOutput": "Target capability traversal outcome with observable admission/traversal facts reported for the current Shell pass, including APPLIED / CHECKED_NO_CHANGE / CHECKED_NO_RESULT / NOT_APPLICABLE / REUSED / BLOCKED / DEFERRED as applicable.",
       "permissionMode": "read-only-planning",
       "keyReminders": [
         "This is a named capability requirement, not a parallel numeric-port ontology.",
         "Explicit inclusion requires a real check, not a manufactured positive result.",
         "Shared prefixes and equivalent current work are reused.",
-        "the current Turn Work Record records admission origin and traversal result incrementally.",
-        "The current Turn Work Record records admission origin, observable traversal result and reuse evidence; the named capability remains the semantic owner of its work."
+        "Report admission origin and traversal result proportionally for the current Shell pass.",
+        "Report admission origin, observable traversal result and reuse evidence; the named capability remains the semantic owner of its work."
       ],
       "userTarget": "<current IDTSPE subject/context>",
       "palette": true,
@@ -3775,14 +3511,14 @@
           "why": "Explicitly require the VALIDATION capability to receive a real applicability/traversal check in the merged current Shell composition."
         }
       ],
-      "expectedOutput": "Validation capability traversal outcome with observable admission/traversal facts recorded in the current Turn Work Record, including APPLIED / CHECKED_NO_CHANGE / CHECKED_NO_RESULT / NOT_APPLICABLE / REUSED / BLOCKED / DEFERRED as applicable.",
+      "expectedOutput": "Validation capability traversal outcome with observable admission/traversal facts reported for the current Shell pass, including APPLIED / CHECKED_NO_CHANGE / CHECKED_NO_RESULT / NOT_APPLICABLE / REUSED / BLOCKED / DEFERRED as applicable.",
       "permissionMode": "read-only-planning",
       "keyReminders": [
         "This is a named capability requirement, not a parallel numeric-port ontology.",
         "Explicit inclusion requires a real check, not a manufactured positive result.",
         "Shared prefixes and equivalent current work are reused.",
-        "the current Turn Work Record records admission origin and traversal result incrementally.",
-        "The current Turn Work Record records admission origin, observable traversal result and reuse evidence; the named capability remains the semantic owner of its work."
+        "Report admission origin and traversal result proportionally for the current Shell pass.",
+        "Report admission origin, observable traversal result and reuse evidence; the named capability remains the semantic owner of its work."
       ],
       "userTarget": "<current IDTSPE subject/context>",
       "palette": true,
@@ -3928,131 +3664,6 @@
     },
     {
       "schemaVersion": 1,
-      "id": "idtspe.port.trace",
-      "file": "include-idtspe-trace-port.command.md",
-      "command": "включи порт trace",
-      "englishName": "include IDTSPE Pass Work Plan / State / Trace / Visibility capability",
-      "commandFamily": [
-        "включи порт trace"
-      ],
-      "description": "Ensure/reuse the current Turn Work Record trace visibility while preserving the legacy P-02 compatibility entry surface.",
-      "meaning": "Reuse the already-existing Turn Work Record established by Work Runtime. This command no longer admits an active Shell port and does not create a second record. It exposes the legacy P-02 compatibility projection for Shell-specific observable events/visibility when explicitly requested.",
-      "activeContextBehavior": "Operate on the current Turn Work Record. Reuse current state/history and do not open a separate pass ledger or force Shell solely because this compatibility command was invoked.",
-      "traversalReadMode": "Read this command own canonical references plus included-command references proportionally. Do not duplicate reads already satisfied by an unchanged trustworthy shared prefix.",
-      "ownerFiles": [
-        "planning/documentation/idtspe-methodology/active/idtspe-core/runtime/WORK-RECORD-PRINCIPLES.md",
-        "planning/documentation/idtspe-methodology/active/idtspe-core/runtime/PASS-TRACE-AND-VISIBILITY-CONTRACT.md"
-      ],
-      "ownerRefs": [
-        {
-          "responsibilityId": "IDTSPE.WORK-RUNTIME",
-          "path": "planning/documentation/idtspe-methodology/active/idtspe-core/runtime/WORK-RECORD-PRINCIPLES.md",
-          "anchor": "idtspe-work-runtime",
-          "why": "Owns the canonical Turn Work Record plan/state/trace and its execution visibility.",
-          "role": "PRIMARY_OWNER",
-          "readMode": "REQUIRED"
-        },
-        {
-          "responsibilityId": "IDTSPE.PASS-TRACE",
-          "path": "planning/documentation/idtspe-methodology/active/idtspe-core/runtime/PASS-TRACE-AND-VISIBILITY-CONTRACT.md",
-          "anchor": "idtspe-pass-trace",
-          "why": "Preserves the legacy P-02 compatibility projection for Shell-specific observable events.",
-          "role": "SUPPORTING_CONTRACT",
-          "readMode": "REQUIRED"
-        }
-      ],
-      "includes": [
-        "planning/commands/choose-current-work-route.command.md"
-      ],
-      "processCalls": [],
-      "compositionContributions": [],
-      "expectedOutput": "The current Turn Work Record remains the single plan/state/trace; any requested legacy P-02 view is a compatibility visibility projection of Shell-specific observable events only.",
-      "permissionMode": "read-only-planning",
-      "keyReminders": [
-        "P-02 is retired/reserved as an active Shell-port label in the selected Work Runtime topology.",
-        "Do not create a second pass ledger; the Turn Work Record is canonical.",
-        "This compatibility surface does not grant repository mutation permission.",
-        "Keep private reasoning out of the observable record."
-      ],
-      "userTarget": "<current IDTSPE subject/context>",
-      "palette": false,
-      "helperPresentation": null,
-      "methodologyBinding": {
-        "methodologyRuntime": "IDTSPE",
-        "profile": null,
-        "surfaceKind": "ORCHESTRATION",
-        "targetModuleId": null,
-        "lensId": null,
-        "parentSurface": null,
-        "hostTargetPolicy": "NONE"
-      },
-      "refinements": []
-    },
-    {
-      "schemaVersion": 1,
-      "id": "session.input.intake",
-      "file": "intake-session-input.command.md",
-      "command": "прими запрос и материалы",
-      "englishName": "intake session input",
-      "commandFamily": [
-        "прими запрос и материалы",
-        "intake session input"
-      ],
-      "description": "Record current USER input/material and command composition as WR-1.",
-      "meaning": "Confirm the initial input basis and bounded USER fact/answer/decision intake at WR-1; record root/alias recognition and complete DAG discovery already performed after S0. On a later preparation review or continuation of the same subject, append the actual new input/command-basis event without overwriting WR-1 or allocating another S0. Route contextual-material candidates to later PRS/Session disposition.",
-      "activeContextBehavior": "Operate only at the reached current Work Record stage; reuse the same Session State and record.",
-      "traversalReadMode": "Read the fundamental current-work Use Case and the reached Session/Work Record owner proportionally; reuse current trustworthy state.",
-      "ownerFiles": [
-        "planning/documentation/idtspe-methodology/active/idtspe-core/use-cases/conduct-current-work/UC-IDTSPE-CONDUCT-CURRENT-WORK.md",
-        "planning/documentation/idtspe-methodology/active/idtspe-core/runtime/WORK-RECORD-PRINCIPLES.md",
-        "planning/session/session-state-runtime-contract.md"
-      ],
-      "ownerRefs": [
-        {
-          "responsibilityId": "IDTSPE.UC.CONDUCT-CURRENT-WORK",
-          "path": "planning/documentation/idtspe-methodology/active/idtspe-core/use-cases/conduct-current-work/UC-IDTSPE-CONDUCT-CURRENT-WORK.md",
-          "anchor": "uc-idtspe-conduct-current-work",
-          "why": "Owns the full turn-work orchestration reached by this focused invocation.",
-          "role": "PRIMARY_OWNER",
-          "readMode": "REQUIRED"
-        },
-        {
-          "responsibilityId": "IDTSPE.WORK-RUNTIME",
-          "path": "planning/documentation/idtspe-methodology/active/idtspe-core/runtime/WORK-RECORD-PRINCIPLES.md",
-          "anchor": "work-record-input",
-          "why": "Owns this immutable Work Record stage and its detailed discipline.",
-          "role": "SUPPORTING_CONTRACT",
-          "readMode": "REQUIRED"
-        }
-      ],
-      "includes": [
-        "planning/commands/maintain-session-work.command.md"
-      ],
-      "processCalls": [],
-      "compositionContributions": [],
-      "expectedOutput": "New S0 or evidenced reuse of the still-open record; initial WR-1 and any later continuation-input provenance/classification/command-graph facts are current.",
-      "permissionMode": "read-only-planning",
-      "keyReminders": [
-        "One current Session State and Turn Work Record; no duplicate planning hierarchy.",
-        "Keep target/repository authority separate from Session State write authority.",
-        "No command invocation selects a Proposal, grants mutation, commit or push."
-      ],
-      "userTarget": "<current bounded work turn>",
-      "palette": true,
-      "helperPresentation": null,
-      "methodologyBinding": {
-        "methodologyRuntime": "IDTSPE",
-        "profile": null,
-        "surfaceKind": "ORCHESTRATION",
-        "targetModuleId": null,
-        "lensId": null,
-        "parentSurface": null,
-        "hostTargetPolicy": "NONE"
-      },
-      "refinements": []
-    },
-    {
-      "schemaVersion": 1,
       "id": "tmcmd.weuc.interpret",
       "file": "interpret-workspace-evolution.command.md",
       "command": "интерпретируй план с точки зрения эволюции воркспейса",
@@ -4080,7 +3691,7 @@
         }
       ],
       "includes": [
-        "planning/commands/choose-current-work-route.command.md"
+        "planning/commands/recheck-methodology-use-cases.command.md"
       ],
       "processCalls": [],
       "compositionContributions": [],
@@ -4128,7 +3739,7 @@
         }
       ],
       "includes": [
-        "planning/commands/choose-current-work-route.command.md"
+        "planning/commands/recheck-methodology-use-cases.command.md"
       ],
       "processCalls": [],
       "compositionContributions": [],
@@ -4203,75 +3814,6 @@
     },
     {
       "schemaVersion": 1,
-      "id": "idtspe.current-work.manifest.maintain",
-      "file": "maintain-current-work-manifest.command.md",
-      "command": "веди сессионный манифест",
-      "englishName": "maintain current work manifest",
-      "commandFamily": [
-        "веди сессионный манифест",
-        "обнови сессионный манифест",
-        "синхронизируй сессионный манифест",
-        "веди current work manifest",
-        "maintain session manifest",
-        "maintain current work manifest"
-      ],
-      "description": "Maintain/reconcile the accepted Session State Current Work Manifest and its re-entry/navigation projection.",
-      "meaning": "Maintain/reconcile the accepted WORK-MANIFEST.md under its natural owner. When substantive Manifest reconciliation is the selected WR-3 subject, route it through SHELL preparation, Question sweep and the default archive/continuation boundary before forming a Proposal and complete candidate target Manifest. Factual/exact selected synchronization remains governed by its own direct owner and the same default preparation boundary when it is a selected task; ambient WR-2 triage is not a separate Manifest task. Session State supplies representation; AI-derived prospective changes remain Proposal-first.",
-      "activeContextBehavior": "Use the current Session State and canonical owner state. Reuse the accepted Manifest and synchronize only established consequences; if a new Session State needs its minimal accepted orientation, follow the Work Record bootstrap rule. A tiny turn does not force substantive Manifest replanning or a P-14 Work Context Bundle. Current USER input and canonical owner state override stale projections.",
-      "traversalReadMode": "Read Maintain Current Work State plus only the current owner/artifact references needed to synchronize the Manifest. Do not reread or duplicate full Need/PRS/Review/Turn-Work-Record bodies when compact canonical references are sufficient.",
-      "ownerFiles": [
-        "planning/documentation/idtspe-methodology/active/idtspe-core/use-cases/maintain-current-work-state/UC-IDTSPE-MAINTAIN-CURRENT-WORK-STATE.md",
-        "planning/documentation/idtspe-methodology/active/idtspe-core/representation/ARTIFACT-PLACEMENT-AND-IDTSPE-RESPONSE-CONTRACT.md"
-      ],
-      "ownerRefs": [
-        {
-          "responsibilityId": "IDTSPE.UC.MAINTAIN-CURRENT-WORK-STATE",
-          "path": "planning/documentation/idtspe-methodology/active/idtspe-core/use-cases/maintain-current-work-state/UC-IDTSPE-MAINTAIN-CURRENT-WORK-STATE.md",
-          "anchor": "current-work-manifest",
-          "why": "Owns the Current Work Manifest as cross-pass coordination/navigation projection while preserving the natural semantic owners it references.",
-          "role": "PRIMARY_OWNER",
-          "readMode": "REQUIRED"
-        },
-        {
-          "responsibilityId": "REPRESENTATION.ARTIFACT-PLACEMENT",
-          "path": "planning/documentation/idtspe-methodology/active/idtspe-core/representation/ARTIFACT-PLACEMENT-AND-IDTSPE-RESPONSE-CONTRACT.md",
-          "anchor": "representation-artifact-placement",
-          "why": "Owns the Manifest's physical representation, placement/reuse/update and persistence permission boundary.",
-          "role": "SUPPORTING_CONTRACT",
-          "readMode": "REQUIRED"
-        }
-      ],
-      "includes": [
-        "planning/commands/sweep-session-work-questions.command.md"
-      ],
-      "processCalls": [],
-      "compositionContributions": [],
-      "expectedOutput": "After verified preparation and continuation, the accepted Manifest is synchronized or a formal Proposal + complete candidate target Manifest + PRS review state is produced; the preparation response itself reports only checked coverage and archive.",
-      "permissionMode": "artifact-no-commit-push",
-      "keyReminders": [
-        "The Manifest is accepted session-scale work state, not a semantic super-owner.",
-        "Exact USER-selected prospective meaning may integrate directly with authority trace and prior-revision preservation.",
-        "AI-derived material prospective change is Proposal-first.",
-        "Every accepted Manifest write preserves a recoverable previous revision.",
-        "Session State representation is ambient; external/durable artifact placement remains a P-14 concern.",
-        "This root action and execution-bearing dependencies wait after the default preparation archive until USER continuation; includes alone do not create that pause."
-      ],
-      "userTarget": "<current substantial Work Context / session continuity scope>",
-      "palette": true,
-      "helperPresentation": null,
-      "methodologyBinding": {
-        "methodologyRuntime": "IDTSPE",
-        "profile": null,
-        "surfaceKind": "ORCHESTRATION",
-        "targetModuleId": null,
-        "lensId": null,
-        "parentSurface": null,
-        "hostTargetPolicy": "NONE"
-      },
-      "refinements": []
-    },
-    {
-      "schemaVersion": 1,
       "id": "documentation.methodology-baseline.maintain",
       "file": "maintain-project-methodology-baseline.command.md",
       "command": "зафиксируй baseline методологии проекта",
@@ -4314,7 +3856,7 @@
         }
       ],
       "includes": [
-        "planning/commands/choose-current-work-route.command.md"
+        "planning/commands/recheck-methodology-use-cases.command.md"
       ],
       "processCalls": [],
       "compositionContributions": [],
@@ -4329,205 +3871,6 @@
         "Branch/ref writes and selected project planning-document writes are bounded to this operation; do not commit or push."
       ],
       "userTarget": "<project repository/workspace and optional explicit target methodology revision>",
-      "palette": true,
-      "helperPresentation": null,
-      "methodologyBinding": null,
-      "refinements": []
-    },
-    {
-      "schemaVersion": 1,
-      "id": "idtspe.current-work.artifacts.archive",
-      "file": "maintain-session-artifacts-archive.command.md",
-      "command": "веди сессионные артефакты в архиве",
-      "englishName": "maintain current work artifacts in archive",
-      "commandFamily": [
-        "веди сессионные артефакты в архиве",
-        "веди артефакты сессии в архиве",
-        "обнови архив сессионных артефактов",
-        "синхронизируй архив сессионных артефактов",
-        "maintain session artifacts in archive",
-        "maintain current work artifacts archive"
-      ],
-      "description": "Rematerialize the portable ambient Session State archive for re-entry.",
-      "meaning": "Rematerialize the current Session State archive with the accepted Manifest, current Turn Work Record, material PRS and retained session-owned files under the Session retention policy. Keep separately requested Proposal Workspace Archives as distinct PRS-centered output artifacts and record their identity/basis by reference. A P-14 Work Context Bundle is separately optional external representation.",
-      "activeContextBehavior": "Use the current Session State and already synchronized owners. Reuse the archive identity and retain history according to policy. Do not force external P-14 artifact maintenance or package one Proposal Workspace Archive inside the Session archive by default.",
-      "traversalReadMode": "Read Session State Runtime, Work Record closure and only the material current session-owned contents/refs needed for portable re-entry.",
-      "ownerFiles": [
-        "planning/session/session-state-runtime-contract.md",
-        "planning/documentation/idtspe-methodology/active/idtspe-core/runtime/WORK-RECORD-PRINCIPLES.md",
-        "planning/documentation/idtspe-methodology/active/idtspe-core/representation/ARTIFACT-PLACEMENT-AND-IDTSPE-RESPONSE-CONTRACT.md"
-      ],
-      "ownerRefs": [
-        {
-          "responsibilityId": "SESSION.STATE-RUNTIME",
-          "path": "planning/session/session-state-runtime-contract.md",
-          "anchor": "session-state-runtime",
-          "why": "Owns ambient Session State archive closure and retention.",
-          "role": "PRIMARY_OWNER",
-          "readMode": "REQUIRED"
-        },
-        {
-          "responsibilityId": "IDTSPE.WORK-RUNTIME",
-          "path": "planning/documentation/idtspe-methodology/active/idtspe-core/runtime/WORK-RECORD-PRINCIPLES.md",
-          "anchor": "work-record-archive",
-          "why": "Owns WR-7 archive synchronization and truthful closure.",
-          "role": "SUPPORTING_CONTRACT",
-          "readMode": "REQUIRED"
-        }
-      ],
-      "includes": [
-        "planning/commands/choose-current-work-route.command.md"
-      ],
-      "processCalls": [],
-      "compositionContributions": [],
-      "expectedOutput": "One current portable Session State archive distinct from any separately requested Proposal Workspace Archive or external Work Context Bundle.",
-      "permissionMode": "artifact-no-commit-push",
-      "keyReminders": [
-        "Session archive entry is WORK-MANIFEST.md; distinct Proposal Workspace Archive entry is its bounded PRS.",
-        "One Session archive identity is reused/rematerialized; archive membership grants no semantic acceptance.",
-        "No replacement-package payload, local apply, commit or push."
-      ],
-      "userTarget": "<current Work Context artifact set to keep in a portable archive>",
-      "palette": true,
-      "helperPresentation": null,
-      "methodologyBinding": {
-        "methodologyRuntime": "IDTSPE",
-        "profile": null,
-        "surfaceKind": "ORCHESTRATION",
-        "targetModuleId": null,
-        "lensId": null,
-        "parentSurface": null,
-        "hostTargetPolicy": "NONE"
-      },
-      "refinements": []
-    },
-    {
-      "schemaVersion": 1,
-      "id": "idtspe.current-work.artifacts.maintain",
-      "file": "maintain-session-artifacts.command.md",
-      "command": "веди сессионные артефакты",
-      "englishName": "maintain current work artifacts",
-      "commandFamily": [
-        "веди сессионные артефакты",
-        "обнови сессионные артефакты",
-        "синхронизируй сессионные артефакты",
-        "веди артефакты текущей работы",
-        "maintain session artifacts",
-        "maintain current work artifacts"
-      ],
-      "description": "Synchronize the material artifact set, inventory, currentness and placement for the current work context.",
-      "meaning": "Maintain material external/durable artifact representations through P-14 when that placement is actually useful. The ambient Session State directory, Manifest, PRS, Work Records and its closure archive remain under Session Runtime and the current-work Use Case; this command consumes their current inventory without requiring a separate Manifest action.",
-      "activeContextBehavior": "Use the current Work Context and synchronized Current Work Manifest as the inventory/navigation entry. Maintain only materially useful artifacts; mark current/historical/stale/superseded representation state proportionally, repair missing/stale placement/navigation where authorized, and preserve canonical owner references. Do not create duplicate artifacts merely to satisfy a layout. Archive/bundle materialization is not forced by this command; use the archive-specific command when an archive is explicitly required.",
-      "traversalReadMode": "Read P-14 Artifact Placement/Maintenance and the synchronized Manifest inventory, then inspect only artifacts whose representation/currentness/placement may need action. Follow semantic owners only when needed to avoid stale/misleading representation.",
-      "ownerFiles": [
-        "planning/documentation/idtspe-methodology/active/idtspe-core/representation/ARTIFACT-PLACEMENT-AND-IDTSPE-RESPONSE-CONTRACT.md",
-        "planning/documentation/idtspe-methodology/active/idtspe-core/use-cases/maintain-current-work-state/UC-IDTSPE-MAINTAIN-CURRENT-WORK-STATE.md"
-      ],
-      "ownerRefs": [
-        {
-          "responsibilityId": "REPRESENTATION.ARTIFACT-PLACEMENT",
-          "path": "planning/documentation/idtspe-methodology/active/idtspe-core/representation/ARTIFACT-PLACEMENT-AND-IDTSPE-RESPONSE-CONTRACT.md",
-          "anchor": "work-context-bundle",
-          "why": "Owns artifact maintenance, inventory-location reconciliation, representation reuse/update/rematerialization and optional Work Context Bundle selection.",
-          "role": "PRIMARY_OWNER",
-          "readMode": "REQUIRED"
-        },
-        {
-          "responsibilityId": "IDTSPE.UC.MAINTAIN-CURRENT-WORK-STATE",
-          "path": "planning/documentation/idtspe-methodology/active/idtspe-core/use-cases/maintain-current-work-state/UC-IDTSPE-MAINTAIN-CURRENT-WORK-STATE.md",
-          "anchor": "current-work-manifest",
-          "why": "Provides the current cross-pass artifact inventory/navigation projection that artifact maintenance synchronizes rather than replacing.",
-          "role": "SUPPORTING_CONTRACT",
-          "readMode": "REQUIRED"
-        }
-      ],
-      "includes": [
-        "planning/commands/choose-current-work-route.command.md"
-      ],
-      "processCalls": [],
-      "compositionContributions": [],
-      "expectedOutput": "Material artifact representations are synchronized through P-14 as applicable while the ambient Session State remains the re-entry/workspace substrate.",
-      "permissionMode": "artifact-no-commit-push",
-      "keyReminders": [
-        "Artifact maintenance is representation work; semantic owners remain authoritative.",
-        "Synchronize the Current Work Manifest/inventory before relying on it for artifact maintenance.",
-        "Do not duplicate files merely to satisfy a session layout.",
-        "This generic command does not force archive materialization.",
-        "Physical writes remain bounded by current host/user authority; do not commit or push."
-      ],
-      "userTarget": "<current Work Context artifact set>",
-      "palette": true,
-      "helperPresentation": null,
-      "methodologyBinding": {
-        "methodologyRuntime": "IDTSPE",
-        "profile": null,
-        "surfaceKind": "ORCHESTRATION",
-        "targetModuleId": null,
-        "lensId": null,
-        "parentSurface": null,
-        "hostTargetPolicy": "NONE"
-      },
-      "refinements": []
-    },
-    {
-      "schemaVersion": 1,
-      "id": "session.work.maintain",
-      "file": "maintain-session-work.command.md",
-      "command": "веди сессионную работу",
-      "englishName": "maintain session work",
-      "commandFamily": [
-        "веди сессионную работу",
-        "maintain session work"
-      ],
-      "description": "Reaffirm ambient Session State/S0 early; as a direct invocation conduct preparation and later continuation of the bounded subject.",
-      "meaning": "When included, bootstrap/reuse Session State and archive identity, establish S0 for a new bounded subject or reuse the same open record on continuation, and create/reuse a truthful portable snapshot with the immutable WR-1..WR-7 kernel. As a root, follow UC-IDTSPE-CONDUCT-CURRENT-WORK through default preparation/checkpoint, then resume the same record on USER continuation and reach WR-7 only after the subject ends. A dependency never executes the pending subject or finalizes before its caller.",
-      "activeContextBehavior": "Normal substantive work follows the fundamental current-work Use Case even without a command. Reaffirm one Session State and one Work Record; physical bootstrap observations made before the command DAG are reconciled into S0.",
-      "traversalReadMode": "Read Session State Runtime, Work Record Principles and natural owners reached by the current subject proportionally.",
-      "ownerFiles": [
-        "planning/documentation/idtspe-methodology/active/idtspe-core/use-cases/conduct-current-work/UC-IDTSPE-CONDUCT-CURRENT-WORK.md",
-        "planning/session/session-state-runtime-contract.md",
-        "planning/documentation/idtspe-methodology/active/idtspe-core/runtime/WORK-RECORD-PRINCIPLES.md"
-      ],
-      "ownerRefs": [
-        {
-          "responsibilityId": "IDTSPE.UC.CONDUCT-CURRENT-WORK",
-          "path": "planning/documentation/idtspe-methodology/active/idtspe-core/use-cases/conduct-current-work/UC-IDTSPE-CONDUCT-CURRENT-WORK.md",
-          "anchor": "uc-idtspe-conduct-current-work",
-          "why": "Owns the complete current-turn process and early dependency versus direct-root distinction.",
-          "role": "PRIMARY_OWNER",
-          "readMode": "REQUIRED"
-        },
-        {
-          "responsibilityId": "SESSION.STATE-RUNTIME",
-          "path": "planning/session/session-state-runtime-contract.md",
-          "anchor": "session-state-runtime",
-          "why": "Owns the ambient workspace/archive lifecycle.",
-          "role": "SUPPORTING_CONTRACT",
-          "readMode": "REQUIRED"
-        },
-        {
-          "responsibilityId": "IDTSPE.WORK-RUNTIME",
-          "path": "planning/documentation/idtspe-methodology/active/idtspe-core/runtime/WORK-RECORD-PRINCIPLES.md",
-          "anchor": "idtspe-work-runtime",
-          "why": "Owns the immutable Work Record kernel.",
-          "role": "SUPPORTING_CONTRACT",
-          "readMode": "REQUIRED"
-        }
-      ],
-      "includes": [
-        "planning/commands/recheck-methodology-use-cases.command.md"
-      ],
-      "processCalls": [],
-      "compositionContributions": [],
-      "expectedOutput": "Included: current Session State/archive basis and new S0 or evidenced resumed open record. Direct root: verified preparation checkpoint/archive or later bounded result/final archive, with explicit host limitation when necessary.",
-      "permissionMode": "read-only-planning",
-      "keyReminders": [
-        "Included dependency activates/reaffirms Session State and S0 or an existing open record; the selected root follows the preparation gate.",
-        "One open Work Record spans preparation, rechecks and execution of one bounded subject; Shell traversal is nested under WR-5 when selected.",
-        "Material AI-derived Manifest replanning is Proposal-first unless exact target meaning is already USER-selected.",
-        "Do not create parallel Need/PRS/Proposal semantics."
-      ],
-      "userTarget": "<current USER input / session work>",
       "palette": true,
       "helperPresentation": null,
       "methodologyBinding": null,
@@ -4801,7 +4144,7 @@
         }
       ],
       "includes": [
-        "planning/commands/choose-current-work-route.command.md"
+        "planning/commands/recheck-methodology-use-cases.command.md"
       ],
       "processCalls": [],
       "compositionContributions": [],
@@ -4861,7 +4204,7 @@
         }
       ],
       "includes": [
-        "planning/commands/choose-current-work-route.command.md"
+        "planning/commands/recheck-methodology-use-cases.command.md"
       ],
       "processCalls": [],
       "compositionContributions": [],
@@ -4965,7 +4308,7 @@
         }
       ],
       "includes": [
-        "planning/commands/choose-current-work-route.command.md"
+        "planning/commands/recheck-methodology-use-cases.command.md"
       ],
       "processCalls": [
         {
@@ -5139,7 +4482,7 @@
         }
       ],
       "includes": [
-        "planning/commands/choose-current-work-route.command.md"
+        "planning/commands/recheck-methodology-use-cases.command.md"
       ],
       "processCalls": [],
       "compositionContributions": [],
@@ -5186,7 +4529,7 @@
         }
       ],
       "includes": [
-        "planning/commands/choose-current-work-route.command.md"
+        "planning/commands/recheck-methodology-use-cases.command.md"
       ],
       "processCalls": [],
       "compositionContributions": [],
@@ -5649,7 +4992,7 @@
         }
       ],
       "includes": [
-        "planning/commands/choose-current-work-route.command.md"
+        "planning/commands/recheck-methodology-use-cases.command.md"
       ],
       "processCalls": [],
       "compositionContributions": [],
@@ -5827,7 +5170,7 @@
         }
       ],
       "includes": [
-        "planning/commands/choose-current-work-route.command.md"
+        "planning/commands/recheck-methodology-use-cases.command.md"
       ],
       "processCalls": [],
       "compositionContributions": [],
@@ -5874,7 +5217,7 @@
         }
       ],
       "includes": [
-        "planning/commands/choose-current-work-route.command.md"
+        "planning/commands/recheck-methodology-use-cases.command.md"
       ],
       "processCalls": [],
       "compositionContributions": [],
@@ -5890,106 +5233,6 @@
       "palette": false,
       "helperPresentation": null,
       "methodologyBinding": null,
-      "refinements": []
-    },
-    {
-      "schemaVersion": 1,
-      "id": "session.current_work.prepare",
-      "file": "prepare-current-work-record.command.md",
-      "command": "подготовь Work Record текущей задачи",
-      "englishName": "prepare current work record",
-      "commandFamily": [
-        "подготовь Work Record текущей задачи",
-        "prepare current work record"
-      ],
-      "description": "Prepare the selected subject's route, owner/component reads and observable Work Record coverage before Question sweep.",
-      "meaning": "After S0, WR-2 triage, WR-3 subject and WR-4 route, prepare the same Work Record under Work Record Principles. For SHELL, reuse Compose Current Work and Port Composition Refresh; for DIRECT use the relevant direct owner and treat Shell-only requirements as not applicable. Read the selected Core/profile registries and necessary Lens/Target Module/owner bodies, record actual reads, applicability and basis, and expose material Question candidates. Do not execute the selected subject, apply a Lens merely because it was read, or close the record. The contextual Question sweep and final preparation audit/checkpoint follow this action.",
-      "activeContextBehavior": "When included, perform only preparation before the caller's Question sweep. When invoked directly, the fundamental current-work Use Case still performs the subsequent sweep/audit/archive checkpoint for this same open subject. On a request to revisit preparation, reuse compatible coverage and recheck only the affected basis; never allocate a new S0 for the same subject.",
-      "traversalReadMode": "Read current scoped Use-Case/Target Module/Lens registry summaries, then only selected component bodies and material owners. Record exact read/reuse/omission evidence. Do not scan all component bodies or infer a Target merely to prepare.",
-      "ownerFiles": [
-        "planning/documentation/idtspe-methodology/active/idtspe-core/runtime/WORK-RECORD-PRINCIPLES.md",
-        "planning/documentation/idtspe-methodology/active/idtspe-core/runtime/IDTSPE-RUNTIME-COMPOSITION-CONTRACT.md",
-        "planning/session/session-state-runtime-contract.md",
-        "planning/documentation/idtspe-methodology/active/profiles/PROFILE-REGISTRY.md",
-        "planning/documentation/idtspe-methodology/active/idtspe-core/target-modules/TARGET-MODULE-REGISTRY.md",
-        "planning/documentation/idtspe-methodology/active/idtspe-core/lenses/LENS-REGISTRY.md"
-      ],
-      "ownerRefs": [
-        {
-          "responsibilityId": "IDTSPE.WORK-RUNTIME",
-          "path": "planning/documentation/idtspe-methodology/active/idtspe-core/runtime/WORK-RECORD-PRINCIPLES.md",
-          "anchor": "work-record-preparation",
-          "why": "Owns selected-subject preparation, actual coverage, recheck and the default pause before execution.",
-          "role": "PRIMARY_OWNER",
-          "readMode": "REQUIRED"
-        },
-        {
-          "responsibilityId": "IDTSPE.PORT-COMPOSITION-REFRESH",
-          "path": "planning/documentation/idtspe-methodology/active/idtspe-core/runtime/IDTSPE-RUNTIME-COMPOSITION-CONTRACT.md",
-          "anchor": "idtspe-port-composition-refresh",
-          "why": "Owns the conditional SHELL Port Requirement Set refresh before component reads and later execution.",
-          "role": "SUPPORTING_CONTRACT",
-          "readMode": "ON_DEMAND"
-        },
-        {
-          "responsibilityId": "SESSION.STATE-RUNTIME",
-          "path": "planning/session/session-state-runtime-contract.md",
-          "anchor": "session-state-runtime",
-          "why": "Carries the prepared open record through archive checkpoints and re-entry.",
-          "role": "SUPPORTING_CONTRACT",
-          "readMode": "REQUIRED"
-        },
-        {
-          "responsibilityId": "IDTSPE.PROFILE-DISCOVERY",
-          "path": "planning/documentation/idtspe-methodology/active/profiles/PROFILE-REGISTRY.md",
-          "anchor": "idtspe-profile-discovery",
-          "why": "Select only profiles relevant to the current subject before profile-local registry reads.",
-          "role": "SUPPORTING_CONTRACT",
-          "readMode": "ON_DEMAND"
-        },
-        {
-          "responsibilityId": "TARGET-MODULE.DISCOVERY",
-          "path": "planning/documentation/idtspe-methodology/active/idtspe-core/target-modules/TARGET-MODULE-REGISTRY.md",
-          "anchor": "target-module-discovery-registry",
-          "why": "Route plausible reusable Target Module Models when Target Formation or explicit selection is material.",
-          "role": "SUPPORTING_CONTRACT",
-          "readMode": "ON_DEMAND"
-        },
-        {
-          "responsibilityId": "LENS.DISCOVERY",
-          "path": "planning/documentation/idtspe-methodology/active/idtspe-core/lenses/LENS-REGISTRY.md",
-          "anchor": "lens-discovery-registry",
-          "why": "Route current Lens candidates and selected operations without treating a registry scan as application.",
-          "role": "SUPPORTING_CONTRACT",
-          "readMode": "ON_DEMAND"
-        }
-      ],
-      "includes": [
-        "planning/commands/recheck-idtspe-port-composition.command.md"
-      ],
-      "processCalls": [],
-      "compositionContributions": [],
-      "expectedOutput": "The open Work Record records the selected subject/route, current SHELL Port Requirement Set when applicable, selected/read owners/components with basis and outstanding preparation/Question candidates; no task action or WR-7 closure occurs.",
-      "permissionMode": "read-only-planning",
-      "keyReminders": [
-        "S0 exists before Manifest triage; this command prepares the already-selected WR-3 subject.",
-        "SHELL-only composition is conditional; DIRECT does not create a Shell pass.",
-        "Registry scan, component selection/read and Lens application are different facts.",
-        "Question sweep follows material reads and may send affected preparation back for recheck.",
-        "The preparation archive/continuation pause is owned by Work Runtime, not by the include edge alone."
-      ],
-      "userTarget": "<current bounded WR-3 subject, including Manifest work>",
-      "palette": true,
-      "helperPresentation": null,
-      "methodologyBinding": {
-        "methodologyRuntime": "IDTSPE",
-        "profile": null,
-        "surfaceKind": "ORCHESTRATION",
-        "targetModuleId": null,
-        "lensId": null,
-        "parentSurface": null,
-        "hostTargetPolicy": "NONE"
-      },
       "refinements": []
     },
     {
@@ -6095,9 +5338,7 @@
           "readMode": "REQUIRED"
         }
       ],
-      "includes": [
-        "planning/commands/choose-current-work-route.command.md"
-      ],
+      "includes": [],
       "processCalls": [],
       "compositionContributions": [],
       "expectedOutput": "The current task is explicitly USER-gated: cheap GIP-framing research may proceed autonomously; material USER-only grounding gaps are resolved through the minimum useful clarification before the affected Proposal; then each material decision/direction/costly-work/artifact/mutation Proposal is surfaced for USER selection and only the selected Proposal scope proceeds.",
@@ -6210,7 +5451,7 @@
         }
       ],
       "includes": [
-        "planning/commands/choose-current-work-route.command.md"
+        "planning/commands/recheck-methodology-use-cases.command.md"
       ],
       "processCalls": [],
       "compositionContributions": [],
@@ -6261,7 +5502,7 @@
         }
       ],
       "includes": [
-        "planning/commands/choose-current-work-route.command.md"
+        "planning/commands/recheck-methodology-use-cases.command.md"
       ],
       "processCalls": [],
       "compositionContributions": [],
@@ -6310,7 +5551,7 @@
         }
       ],
       "includes": [
-        "planning/commands/choose-current-work-route.command.md"
+        "planning/commands/recheck-methodology-use-cases.command.md"
       ],
       "processCalls": [],
       "compositionContributions": [],
@@ -6493,7 +5734,7 @@
         }
       ],
       "includes": [
-        "planning/commands/choose-current-work-route.command.md"
+        "planning/commands/recheck-methodology-use-cases.command.md"
       ],
       "processCalls": [],
       "compositionContributions": [],
@@ -6524,7 +5765,7 @@
         "сделай idtspe recheck",
         "recheck idtspe review"
       ],
-      "description": "Recheck stale, partial, invalidated, newly exposed or previously blocked Review Coverage from an observable Turn Work Record Review Execution Plan; expose reused-vs-to-execute cells before substantive checks and fall back to initial current-basis review when no reliable prior coverage exists.",
+      "description": "Recheck stale, partial, invalidated, newly exposed or previously blocked Review Coverage from an observable Review Execution Plan; expose reused-vs-to-execute cells before substantive checks and fall back to initial current-basis review when no reliable prior coverage exists.",
       "meaning": "Use the same complete review lifecycle as idtspe.review but select work from the resolved prior/current Review Coverage Record: changed subjects, stale/partial/invalidated cells, newly exposed semantic surfaces, materially affected dependents and resolved blockers. Default to LOCAL_AFFECTED scope, preserve trustworthy unchanged coverage, and disposition all new Finding Candidates plus form/refine a linked Proposal for every material Finding before completion. If no trustworthy prior Review Coverage Record/evidence exists, perform initial current-basis review semantics instead of inventing a review delta.",
       "activeContextBehavior": "During composition planning, resolve the previous Review Coverage Record/basis when available, compare it with current meaning/Evidence and establish the LOCAL_AFFECTED_RECHECK working context before dependency semantic actions begin. Recheck affected/new/weak coverage rather than blindly replaying everything. If no reliable prior record exists, derive initial current-basis cells for the bounded subject. If local review reveals materially broader scope, record/defer it or obtain USER intent before silently expanding globally.",
       "traversalReadMode": "Read Review Strategy/Coverage and reliable prior coverage evidence first when present; then use current Validation/Lens owners for selected recheck cells and Finding Disposition for produced Findings. Do not reconstruct a prior coverage claim from unsupported memory.",
@@ -6593,12 +5834,12 @@
           "why": "Resolve prior/current Review Coverage and derive stale/partial/invalidated/newly exposed LOCAL_AFFECTED review cells before Validation/Lens dependency semantic actions execute."
         }
       ],
-      "expectedOutput": "One Turn Work Record whose initial recheck plan exposes planned fresh execution vs justified reuse before substantive checks, tracks ordered retained state snapshots/current-state pointer and plan changes, and ends with a final current-state snapshot plus plan-vs-actual reconciliation, plus a LOCAL_AFFECTED Review Coverage update (optionally consuming a trustworthy current Revalidation Impact Set, or using the existing prior/current-basis delta / truthful initial current-basis fallback) with executed-vs-reused provenance, all new material Findings dispositioned, linked Proposals and remaining blockers/scope escalation explicit; Review Coverage remains authority and Proposal persistence is not required.",
+      "expectedOutput": "One observable recheck plan/state inside the Review Coverage working context that exposes planned fresh execution vs justified reuse before substantive checks, tracks ordered retained state snapshots/current-state pointer and plan changes when useful, and ends with a final current-state snapshot plus plan-vs-actual reconciliation, plus a LOCAL_AFFECTED Review Coverage update (optionally consuming a trustworthy current Revalidation Impact Set, or using the existing prior/current-basis delta / truthful initial current-basis fallback) with executed-vs-reused provenance, all new material Findings dispositioned, linked Proposals and remaining blockers/scope escalation explicit; Review Coverage remains authority and Proposal persistence is not required.",
       "permissionMode": "read-only-planning",
       "keyReminders": [
         "This command does not include or execute idtspe.review first; both commands use the same Review Strategy/Coverage contract with different coverage selection.",
         "REVIEW_COVERAGE_MODE=LOCAL_AFFECTED_RECHECK is a pre-execution contribution: derive the affected review cells before Validation/Lens dependency actions, not in the root action after them.",
-        "Before P-12/P-06 substantive recheck actions, project fresh-vs-reused current obligations into the same Turn Work Record; preserve the initial recheck plan, retain ordered state snapshots/current-state pointer when historical state views are kept, and record later plan deltas instead of silently rewriting it.",
+        "Before P-12/P-06 substantive recheck actions, maintain fresh-vs-reused current obligations inside the Review Coverage working context; preserve the initial recheck plan, retain ordered state snapshots/current-state pointer when historical state views are kept, and record later plan deltas instead of silently rewriting it. An explicitly active Work Record may mirror this state but is not required.",
         "Generic `перепроверь` routes here in IDTSPE review context; this is semantic review recheck, not a separate coverage-audit command.",
         "Default repeated-review scope is LOCAL_AFFECTED, not global replay.",
         "A trustworthy Revalidation Impact Set is useful changed-basis input but is not required; absence of one must not block the existing prior/current-basis delta or truthful fallback.",
@@ -6631,9 +5872,9 @@
       "commandFamily": [
         "перепроверь композицию портов"
       ],
-      "description": "Refresh/reaffirm the current SHELL Port Requirement Set during preparation and again before execution on continuation.",
-      "meaning": "When WR-4=SHELL, refresh/reaffirm the Port Requirement Set for the selected primary subject/current basis during preparation. On continuation, refresh/reaffirm the current Set and reuse compatible admitted/read coverage only with evidence; prior records or the preparation archive are not sticky authority. When WR-4=DIRECT and this command is reached only through the generic preparation prefix, record evidenced NOT_APPLICABLE for Shell port refresh.",
-      "activeContextBehavior": "Compose with the current command set. Fully expand and merge all selected roots before semantic execution; reuse equivalent current work and follow the resulting dependencies-first plan.",
+      "description": "Refresh/reaffirm the current Shell Port Requirement Set for the current semantic composition.",
+      "meaning": "Refresh/reaffirm the Port Requirement Set for the current explicit/current Shell composition and basis. Reuse compatible admission/read coverage only with evidence; prior passes are not sticky authority. This command is Shell-specific and is not an ambient prerequisite for ordinary non-Shell work.",
+      "activeContextBehavior": "Compose with the current selected command/semantic intent. Fully expand and merge selected command roots before semantic execution so declarative capability requirements are available to this refresh.",
       "traversalReadMode": "Read this command own canonical references plus included-command references proportionally. Do not duplicate reads already satisfied by an unchanged trustworthy shared prefix.",
       "ownerFiles": [
         "planning/documentation/idtspe-methodology/active/idtspe-core/runtime/IDTSPE-RUNTIME-COMPOSITION-CONTRACT.md",
@@ -6667,15 +5908,14 @@
         }
       ],
       "includes": [
-        "planning/commands/choose-current-work-route.command.md",
         "planning/commands/compose-current-idtspe-work.command.md"
       ],
       "processCalls": [],
       "compositionContributions": [],
-      "expectedOutput": "A current SHELL Port Requirement Set and admission basis are recorded/reaffirmed in the open Work Record, or an evidenced NOT_APPLICABLE for DIRECT.",
+      "expectedOutput": "A current Shell Port Requirement Set and admission basis for the current semantic composition.",
       "permissionMode": "read-only-planning",
       "keyReminders": [
-        "This is a mandatory normal-SHELL recheck at preparation and execution; DIRECT does not force Shell ports.",
+        "This is a normal Shell recheck, not a DIRECT-vs-SHELL route selector.",
         "Collect declarative contributions from ALL expanded command nodes before performing this recheck.",
         "Do not infer positive applicability merely because a capability was explicitly requested; explicit request requires a real check."
       ],
@@ -6783,7 +6023,7 @@
         }
       ],
       "includes": [
-        "planning/commands/choose-current-work-route.command.md"
+        "planning/commands/recheck-methodology-use-cases.command.md"
       ],
       "processCalls": [],
       "compositionContributions": [],
@@ -6830,7 +6070,7 @@
         }
       ],
       "includes": [
-        "planning/commands/choose-current-work-route.command.md"
+        "planning/commands/recheck-methodology-use-cases.command.md"
       ],
       "processCalls": [],
       "compositionContributions": [],
@@ -7043,7 +6283,7 @@
         }
       ],
       "includes": [
-        "planning/commands/choose-current-work-route.command.md"
+        "planning/commands/recheck-methodology-use-cases.command.md"
       ],
       "processCalls": [],
       "compositionContributions": [],
@@ -7091,7 +6331,7 @@
         }
       ],
       "includes": [
-        "planning/commands/choose-current-work-route.command.md"
+        "planning/commands/recheck-methodology-use-cases.command.md"
       ],
       "processCalls": [],
       "compositionContributions": [],
@@ -7119,9 +6359,9 @@
       "commandFamily": [
         "проведи idtspe review"
       ],
-      "description": "Run one complete current-basis review pass from an observable Turn Work Record Review Execution Plan: establish proportional Review Coverage, materialize its executable obligations before substantive checks, validate/apply useful Lenses, disposition all produced Finding Candidates, form linked Proposals for every material Finding, self-check coverage completeness, and reconcile initial plan vs actual execution.",
+      "description": "Run one complete current-basis review pass from an observable Review Execution Plan: establish proportional Review Coverage, materialize its executable obligations before substantive checks, validate/apply useful Lenses, disposition all produced Finding Candidates, form linked Proposals for every material Finding, self-check coverage completeness, and reconcile initial plan vs actual execution.",
       "meaning": "Review the bounded current semantic subject through Review Strategy/Coverage, applicable Validation and selected Lens operations. Catch all materially applicable checks already visible on the current basis rather than intentionally deferring them. Every material Finding Candidate produced by this review is passed through canonical Finding Disposition and receives a linked IDTSPE Proposal before the review is semantically complete; RE-3 proposals remain blocked by revalidation and Proposal existence does not imply persistence or selection. Before completion, self-check current coverage against applicable validators/perspectives and record remaining material gaps/blockers. Need collection is not a mandatory review stage.",
-      "activeContextBehavior": "Use current basis and prior coverage when available. During composition planning, establish/refresh the Review Coverage working context for CURRENT_BASIS before dependency semantic actions begin; then materialize the smallest useful ordered Review Execution Plan into the current Turn Work Record before P-12/P-06 substantive checks, so Validation/Lens selection consume already-derived current review cells and execution state is observable from the start. Reuse trustworthy unchanged checks only when they actually satisfy the current coverage cell; apply materially distinct useful Lens/validator checks now. Keep Finding discovery/diagnosis distinct from linked Proposal formation; optional TM-REVIEW-FINDINGS and TM-PROPOSAL-WORKUP Targets are used only when their own results have independent value. Complete with canonical Finding/Proposal handoff and a coverage self-check.",
+      "activeContextBehavior": "Use current basis and prior coverage when available. During composition planning, establish/refresh the Review Coverage working context for CURRENT_BASIS before dependency semantic actions begin; then materialize the smallest useful ordered Review Execution Plan inside the bounded Review Coverage working context before P-12/P-06 substantive checks, so Validation/Lens selection consume already-derived current review cells and execution state is observable from the start. Reuse trustworthy unchanged checks only when they actually satisfy the current coverage cell; apply materially distinct useful Lens/validator checks now. Keep Finding discovery/diagnosis distinct from linked Proposal formation; optional TM-REVIEW-FINDINGS and TM-PROPOSAL-WORKUP Targets are used only when their own results have independent value. Complete with canonical Finding/Proposal handoff and a coverage self-check.",
       "traversalReadMode": "Read this command own canonical references plus included-command references proportionally. Do not duplicate reads already satisfied by an unchanged trustworthy shared prefix.",
       "ownerFiles": [
         "planning/documentation/idtspe-methodology/active/idtspe-core/commands/IDTSPE-COMMAND-SURFACE-CONTRACT.md",
@@ -7204,12 +6444,12 @@
           "why": "Establish or refresh the bounded Review Coverage working context and candidate current-basis review cells before Validation/Lens dependency semantic actions execute."
         }
       ],
-      "expectedOutput": "One Turn Work Record containing the observable initial/current Review Execution Plan, ordered retained state snapshots with an explicit current-state pointer when multiple state views are preserved, execution-state/plan-delta events and final plan-vs-actual reconciliation, plus an updated Review Coverage Record for the current basis with EXECUTED_THIS_PASS vs REUSED_FROM_PRIOR provenance, blockers/remaining coverage, all material Findings dispositioned and linked Proposals formed; the Turn Work Record does not replace Review Coverage authority, no implicit Need collection, and no mandatory Proposal file.",
+      "expectedOutput": "One observable Review Execution Plan/state within the Review Coverage working context, including ordered retained state snapshots/current-state pointer when materially useful, execution-state/plan-delta events and final plan-vs-actual reconciliation, plus an updated Review Coverage Record for the current basis with EXECUTED_THIS_PASS vs REUSED_FROM_PRIOR provenance, blockers/remaining coverage, all material Findings dispositioned and linked Proposals formed; no Work Record is required and any explicitly activated Work Record remains only an optional projection, no implicit Need collection, and no mandatory Proposal file.",
       "permissionMode": "read-only-planning",
       "keyReminders": [
         "Review is an operation over existing P-12 Validation/P-06 Lens capabilities, not a new Shell port.",
         "REVIEW_COVERAGE_MODE=CURRENT_BASIS is a pre-execution contribution: establish the Review Coverage working context before Validation/Lens dependency actions, not in the root action after them.",
-        "Before P-12/P-06 substantive review actions, project the current executable review obligations into the same Turn Work Record; preserve the initial plan, use ordered state snapshots/current-state pointer when retaining multiple state views, record plan deltas/local bounded execution decisions, publish a final current-state snapshot, and reconcile plan-vs-actual at completion.",
+        "Before P-12/P-06 substantive review actions, maintain the current executable review obligations inside the Review Coverage working context; preserve the initial plan when historical comparison is useful, use ordered state snapshots/current-state pointer when retaining multiple state views, record plan deltas/local bounded execution decisions, publish a final current-state snapshot, and reconcile plan-vs-actual at completion. An explicitly active Work Record may mirror this state but is not required.",
         "Catch materially applicable checks visible on the current basis now; do not manufacture extra passes by intentionally deferring obvious checks.",
         "The same semantic surface may be checked through several materially distinct Lenses/operations.",
         "Every material Finding Candidate produced by this review must reach Finding Disposition before review completion unless explicitly blocked/deferred.",
@@ -7262,7 +6502,7 @@
         }
       ],
       "includes": [
-        "planning/commands/choose-current-work-route.command.md"
+        "planning/commands/recheck-methodology-use-cases.command.md"
       ],
       "processCalls": [],
       "compositionContributions": [],
@@ -7312,7 +6552,7 @@
         }
       ],
       "includes": [
-        "planning/commands/choose-current-work-route.command.md"
+        "planning/commands/recheck-methodology-use-cases.command.md"
       ],
       "processCalls": [],
       "compositionContributions": [],
@@ -7399,7 +6639,7 @@
         }
       ],
       "includes": [
-        "planning/commands/choose-current-work-route.command.md"
+        "planning/commands/recheck-methodology-use-cases.command.md"
       ],
       "processCalls": [],
       "compositionContributions": [],
@@ -7858,7 +7098,7 @@
         }
       ],
       "includes": [
-        "planning/commands/choose-current-work-route.command.md"
+        "planning/commands/recheck-methodology-use-cases.command.md"
       ],
       "processCalls": [],
       "compositionContributions": [],
@@ -7874,69 +7114,6 @@
       "palette": true,
       "helperPresentation": null,
       "methodologyBinding": null,
-      "refinements": []
-    },
-    {
-      "schemaVersion": 1,
-      "id": "session.current_work.select",
-      "file": "select-current-turn-work.command.md",
-      "command": "выбери работу на текущий ход",
-      "englishName": "select current turn work",
-      "commandFamily": [
-        "выбери работу на текущий ход",
-        "select current turn work"
-      ],
-      "description": "Select one bounded primary work subject at WR-3 in the open Work Record.",
-      "meaning": "After automatic WR-2 triage, select one primary substantive subject from required Manifest reconciliation, an accepted current action or current input. On continuation of the same still-open subject, reaffirm it without allocating another record; a distinct subject requires a new S0. Do not execute a second unrelated subject by default.",
-      "activeContextBehavior": "Operate only at the reached current Work Record stage; reuse the same Session State and record.",
-      "traversalReadMode": "Read the fundamental current-work Use Case and the reached Session/Work Record owner proportionally; reuse current trustworthy state.",
-      "ownerFiles": [
-        "planning/documentation/idtspe-methodology/active/idtspe-core/use-cases/conduct-current-work/UC-IDTSPE-CONDUCT-CURRENT-WORK.md",
-        "planning/documentation/idtspe-methodology/active/idtspe-core/runtime/WORK-RECORD-PRINCIPLES.md",
-        "planning/session/session-state-runtime-contract.md"
-      ],
-      "ownerRefs": [
-        {
-          "responsibilityId": "IDTSPE.UC.CONDUCT-CURRENT-WORK",
-          "path": "planning/documentation/idtspe-methodology/active/idtspe-core/use-cases/conduct-current-work/UC-IDTSPE-CONDUCT-CURRENT-WORK.md",
-          "anchor": "uc-idtspe-conduct-current-work",
-          "why": "Owns the full turn-work orchestration reached by this focused invocation.",
-          "role": "PRIMARY_OWNER",
-          "readMode": "REQUIRED"
-        },
-        {
-          "responsibilityId": "IDTSPE.WORK-RUNTIME",
-          "path": "planning/documentation/idtspe-methodology/active/idtspe-core/runtime/WORK-RECORD-PRINCIPLES.md",
-          "anchor": "work-record-work-selection",
-          "why": "Owns this immutable Work Record stage and its detailed discipline.",
-          "role": "SUPPORTING_CONTRACT",
-          "readMode": "REQUIRED"
-        }
-      ],
-      "includes": [
-        "planning/commands/intake-session-input.command.md"
-      ],
-      "processCalls": [],
-      "compositionContributions": [],
-      "expectedOutput": "One bounded WR-3 subject and relevant current-work basis.",
-      "permissionMode": "read-only-planning",
-      "keyReminders": [
-        "One current Session State and Turn Work Record; no duplicate planning hierarchy.",
-        "Keep target/repository authority separate from Session State write authority.",
-        "No command invocation selects a Proposal, grants mutation, commit or push."
-      ],
-      "userTarget": "<current bounded work turn>",
-      "palette": true,
-      "helperPresentation": null,
-      "methodologyBinding": {
-        "methodologyRuntime": "IDTSPE",
-        "profile": null,
-        "surfaceKind": "ORCHESTRATION",
-        "targetModuleId": null,
-        "lensId": null,
-        "parentSurface": null,
-        "hostTargetPolicy": "NONE"
-      },
       "refinements": []
     },
     {
@@ -8101,7 +7278,7 @@
         }
       ],
       "includes": [
-        "planning/commands/choose-current-work-route.command.md"
+        "planning/commands/recheck-methodology-use-cases.command.md"
       ],
       "processCalls": [],
       "compositionContributions": [],
@@ -8165,7 +7342,7 @@
         }
       ],
       "includes": [
-        "planning/commands/choose-current-work-route.command.md"
+        "planning/commands/recheck-methodology-use-cases.command.md"
       ],
       "processCalls": [],
       "compositionContributions": [],
@@ -8182,79 +7359,6 @@
       "methodologyBinding": {
         "methodologyRuntime": "IDTSPE",
         "profile": "SDS",
-        "surfaceKind": "ORCHESTRATION",
-        "targetModuleId": null,
-        "lensId": null,
-        "parentSurface": null,
-        "hostTargetPolicy": "NONE"
-      },
-      "refinements": []
-    },
-    {
-      "schemaVersion": 1,
-      "id": "session.current_work.question_sweep",
-      "file": "sweep-session-work-questions.command.md",
-      "command": "проведи Question sweep текущей задачи",
-      "englishName": "sweep current session work questions",
-      "commandFamily": [
-        "проведи Question sweep текущей задачи",
-        "sweep current session work questions"
-      ],
-      "description": "Check material Questions and readiness after the current subject has been prepared.",
-      "meaning": "At WR-5, after selected-subject preparation and material owner/component reads, perform the contextual Question sweep for the bounded WR-3 subject, including Manifest reconciliation when selected. Reuse answered Questions, derive new material Questions, route USER-owned choices and missing prerequisites through their natural gates, and repeat affected preparation/sweep after a material candidate, route or port change until stable readiness or a real gate. Do not turn WR-2 triage into substantive reconciliation or execute the selected task within this focused command.",
-      "activeContextBehavior": "Use the same open Session State and Work Record. A request to verify whether all material Questions were found, supply answers or complete preparation repeats affected coverage and produces another checkpoint/archive without executing the pending task. The fundamental current-work Use Case applies this sweep for every selected subject even without explicit command invocation.",
-      "traversalReadMode": "Read the reached Work Record pre-execution owner and only the material Manifest/PRS/Question/answer/decision and task-owner sources. Reuse current trustworthy answers and avoid a fixed questionnaire.",
-      "ownerFiles": [
-        "planning/documentation/idtspe-methodology/active/idtspe-core/runtime/WORK-RECORD-PRINCIPLES.md",
-        "planning/documentation/idtspe-methodology/active/idtspe-core/use-cases/conduct-current-work/UC-IDTSPE-CONDUCT-CURRENT-WORK.md",
-        "planning/documentation/idtspe-methodology/active/idtspe-core/use-cases/maintain-current-work-state/UC-IDTSPE-MAINTAIN-CURRENT-WORK-STATE.md"
-      ],
-      "ownerRefs": [
-        {
-          "responsibilityId": "IDTSPE.WORK-RUNTIME",
-          "path": "planning/documentation/idtspe-methodology/active/idtspe-core/runtime/WORK-RECORD-PRINCIPLES.md",
-          "anchor": "work-record-pre-execution-question-sweep",
-          "why": "Owns material Question derivation, answer integration and iterative readiness for every prepared selected subject.",
-          "role": "PRIMARY_OWNER",
-          "readMode": "REQUIRED"
-        },
-        {
-          "responsibilityId": "IDTSPE.UC.CONDUCT-CURRENT-WORK",
-          "path": "planning/documentation/idtspe-methodology/active/idtspe-core/use-cases/conduct-current-work/UC-IDTSPE-CONDUCT-CURRENT-WORK.md",
-          "anchor": "uc-idtspe-conduct-current-work",
-          "why": "Coordinates preparation checkpoints and later execution in the same open Work Record.",
-          "role": "SUPPORTING_CONTRACT",
-          "readMode": "REQUIRED"
-        },
-        {
-          "responsibilityId": "IDTSPE.UC.MAINTAIN-CURRENT-WORK-STATE",
-          "path": "planning/documentation/idtspe-methodology/active/idtspe-core/use-cases/maintain-current-work-state/UC-IDTSPE-MAINTAIN-CURRENT-WORK-STATE.md",
-          "anchor": "current-work-manifest",
-          "why": "Owns permitted in-turn accepted Manifest/PRS consequences and Proposal-first prospective changes.",
-          "role": "SUPPORTING_CONTRACT",
-          "readMode": "ON_DEMAND"
-        }
-      ],
-      "includes": [
-        "planning/commands/prepare-current-work-record.command.md"
-      ],
-      "processCalls": [],
-      "compositionContributions": [],
-      "expectedOutput": "Actual Question/answer dispositions and stable current candidate/route/readiness or a USER_REVIEW_REQUIRED/BLOCKED recheck condition, recorded before the preparation archive checkpoint; no task execution.",
-      "permissionMode": "read-only-planning",
-      "keyReminders": [
-        "This is the current-subject WR-5 sweep after preparation, not WR-2 Manifest triage.",
-        "It is distinct from the SDS Evolution Step sweep and RU-EVO-06; evidence may be reused but readiness conclusions remain separate.",
-        "An empty PRS is not readiness proof; already answered USER input is not asked again.",
-        "A changed route or material Question triggers affected preparation/port recheck on the new basis.",
-        "This command does not authorize target/repository mutation or execute the pending task."
-      ],
-      "userTarget": "<current bounded WR-3 subject, including Manifest work>",
-      "palette": true,
-      "helperPresentation": null,
-      "methodologyBinding": {
-        "methodologyRuntime": "IDTSPE",
-        "profile": null,
         "surfaceKind": "ORCHESTRATION",
         "targetModuleId": null,
         "lensId": null,
@@ -8328,69 +7432,6 @@
     },
     {
       "schemaVersion": 1,
-      "id": "session.state.synchronize",
-      "file": "sync-session-state.command.md",
-      "command": "синхронизируй Session State",
-      "englishName": "synchronize session state",
-      "commandFamily": [
-        "синхронизируй Session State",
-        "synchronize session state"
-      ],
-      "description": "Synchronize material Session State consequences at a preparation checkpoint or final WR-6.",
-      "meaning": "Synchronize material Manifest, PRS/context/input, open Work Record and artifact references at preparation/review checkpoints, preserving accepted history; at the end of the bounded subject perform final WR-6 reconciliation. This focused direct invocation does not close the Work Record or become a prerequisite of WR-5.",
-      "activeContextBehavior": "Operate only at the reached current Work Record stage; reuse the same Session State and record.",
-      "traversalReadMode": "Read the fundamental current-work Use Case and the reached Session/Work Record owner proportionally; reuse current trustworthy state.",
-      "ownerFiles": [
-        "planning/documentation/idtspe-methodology/active/idtspe-core/use-cases/conduct-current-work/UC-IDTSPE-CONDUCT-CURRENT-WORK.md",
-        "planning/documentation/idtspe-methodology/active/idtspe-core/runtime/WORK-RECORD-PRINCIPLES.md",
-        "planning/session/session-state-runtime-contract.md"
-      ],
-      "ownerRefs": [
-        {
-          "responsibilityId": "IDTSPE.UC.CONDUCT-CURRENT-WORK",
-          "path": "planning/documentation/idtspe-methodology/active/idtspe-core/use-cases/conduct-current-work/UC-IDTSPE-CONDUCT-CURRENT-WORK.md",
-          "anchor": "uc-idtspe-conduct-current-work",
-          "why": "Owns the full turn-work orchestration reached by this focused invocation.",
-          "role": "PRIMARY_OWNER",
-          "readMode": "REQUIRED"
-        },
-        {
-          "responsibilityId": "IDTSPE.WORK-RUNTIME",
-          "path": "planning/documentation/idtspe-methodology/active/idtspe-core/runtime/WORK-RECORD-PRINCIPLES.md",
-          "anchor": "work-record-session-synchronization",
-          "why": "Owns this immutable Work Record stage and its detailed discipline.",
-          "role": "SUPPORTING_CONTRACT",
-          "readMode": "REQUIRED"
-        }
-      ],
-      "includes": [
-        "planning/commands/maintain-session-work.command.md"
-      ],
-      "processCalls": [],
-      "compositionContributions": [],
-      "expectedOutput": "Current Session State consequences and archive checkpoint or final WR-6 reconciliation without premature acceptance/record closure.",
-      "permissionMode": "artifact-no-commit-push",
-      "keyReminders": [
-        "One current Session State and Turn Work Record; no duplicate planning hierarchy.",
-        "Keep target/repository authority separate from Session State write authority.",
-        "No command invocation selects a Proposal, grants mutation, commit or push."
-      ],
-      "userTarget": "<current bounded work turn>",
-      "palette": true,
-      "helperPresentation": null,
-      "methodologyBinding": {
-        "methodologyRuntime": "IDTSPE",
-        "profile": null,
-        "surfaceKind": "ORCHESTRATION",
-        "targetModuleId": null,
-        "lensId": null,
-        "parentSurface": null,
-        "hostTargetPolicy": "NONE"
-      },
-      "refinements": []
-    },
-    {
-      "schemaVersion": 1,
       "id": "architecture_path.trace",
       "file": "trace-architecture-path.command.md",
       "command": "разбери путь изменения",
@@ -8420,7 +7461,7 @@
         }
       ],
       "includes": [
-        "planning/commands/choose-current-work-route.command.md"
+        "planning/commands/recheck-methodology-use-cases.command.md"
       ],
       "processCalls": [],
       "compositionContributions": [],
@@ -8470,7 +7511,7 @@
         }
       ],
       "includes": [
-        "planning/commands/choose-current-work-route.command.md"
+        "planning/commands/recheck-methodology-use-cases.command.md"
       ],
       "processCalls": [],
       "compositionContributions": [],
@@ -8544,7 +7585,7 @@
         }
       ],
       "includes": [
-        "planning/commands/choose-current-work-route.command.md"
+        "planning/commands/recheck-methodology-use-cases.command.md"
       ],
       "processCalls": [],
       "compositionContributions": [],
@@ -8596,7 +7637,7 @@
         }
       ],
       "includes": [
-        "planning/commands/choose-current-work-route.command.md"
+        "planning/commands/recheck-methodology-use-cases.command.md"
       ],
       "processCalls": [],
       "compositionContributions": [],
@@ -8646,7 +7687,7 @@
         }
       ],
       "includes": [
-        "planning/commands/choose-current-work-route.command.md"
+        "planning/commands/recheck-methodology-use-cases.command.md"
       ],
       "processCalls": [],
       "compositionContributions": [],
@@ -8699,7 +7740,7 @@
         }
       ],
       "includes": [
-        "planning/commands/choose-current-work-route.command.md"
+        "planning/commands/recheck-methodology-use-cases.command.md"
       ],
       "processCalls": [],
       "compositionContributions": [],
@@ -8729,9 +7770,9 @@
         "работай через idtspe",
         "режим idtspe"
       ],
-      "description": "Explicitly force/reaffirm the SHELL execution route for the current selected primary subject inside the ambient Work Runtime.",
-      "meaning": "IDTSPE remains always applicable. Bare `idtspe` selects/reaffirms SHELL for the current WR-3 subject, uses the same S0 Work Record, and traverses the preparation include chain (current Use Cases, Port Requirement Set, selected owner/component reads and Question sweep). The semantic Shell action waits after the default preparation archive until USER continuation unless continuous work was explicitly requested. On continuation, refresh/reaffirm affected composition and execute admitted capabilities in that same record.",
-      "activeContextBehavior": "Treat bare `idtspe` as explicit SHELL-route intent for the current primary subject. Registered TM/Lens selectors contribute intent after Work Runtime/Manifest gates and remain subject to applicability/materiality.",
+      "description": "Explicitly invoke/reaffirm the normal IDTSPE Shell composition for the supplied/current semantic subject.",
+      "meaning": "IDTSPE remains always applicable as methodology authority. Bare `idtspe` is an explicit Shell invocation: resolve/reaffirm applicable methodology Use Cases, compose the smallest useful current IDTSPE work, refresh the Port Requirement Set, and execute admitted capabilities without requiring Session State, a Turn Work Record, DIRECT/SHELL route classification, a global session Question sweep, or a preparation/continuation checkpoint. Registered TM/Lens selectors contribute explicit semantic intent and remain subject to their own applicability/materiality contracts.",
+      "activeContextBehavior": "Treat bare `idtspe` as explicit Shell intent for the supplied/current semantic subject. Reuse trustworthy current methodology/context state; refresh affected composition when the basis changed. Session/Work-Record tooling participates only when separately invoked.",
       "traversalReadMode": "Read current Core/profile Target Module and Lens registry summaries first. For an exact/unique selector, read only the selected component body plus the minimum Core/profile governance it requires. Do not scan/load every module or Lens body. Reuse current reliable governance; targeted refresh when uncertain.",
       "ownerFiles": [
         "planning/documentation/idtspe-methodology/active/idtspe-core/use-cases/compose-current-work/UC-IDTSPE-COMPOSE-CURRENT-WORK.md",
@@ -8770,25 +7811,24 @@
           "responsibilityId": "IDTSPE.RUNTIME-COMPOSITION",
           "path": "planning/documentation/idtspe-methodology/active/idtspe-core/runtime/IDTSPE-RUNTIME-COMPOSITION-CONTRACT.md",
           "anchor": "idtspe-runtime-composition",
-          "why": "Defines the Shell composition entered only after the current Turn Work Record selects ExecutionRoute=SHELL.",
+          "why": "Defines the canonical Shell composition entered by explicit/current semantic Shell invocation.",
           "role": "RUNTIME_ENTRY",
           "readMode": "REQUIRED"
         }
       ],
       "includes": [
-        "planning/commands/sweep-session-work-questions.command.md"
+        "planning/commands/recheck-idtspe-port-composition.command.md"
       ],
       "processCalls": [],
       "compositionContributions": [],
-      "expectedOutput": "A preparation archive with recorded SHELL route, current Use-Case/Port composition and actual read/Question coverage; after continuation, observable admitted Shell traversal/results in the same record.",
+      "expectedOutput": "Observable admitted Shell traversal/results for the current semantic subject, with the current Use-Case/Port composition reported proportionally; no ambient Session archive or Work Record is required.",
       "permissionMode": "read-only-planning",
       "keyReminders": [
-        "Work Runtime and the Turn Work Record exist before Shell route selection.",
-        "This command explicitly selects/reaffirms SHELL; it is not the reason Session State or the Work Record exists.",
+        "This command explicitly invokes Shell composition; it does not require Session State, a Turn Work Record or DIRECT/SHELL route selection.",
         "P-01/P-02 are retired/reserved compatibility labels; active Shell capabilities retain P-03..P-15 numbering.",
         "Broad Discussion may remain sufficient; do not force optional semantic structure.",
-        "This command plans/reviews only and does not grant repository mutation.",
-        "The SHELL semantic action is pending at the default preparation checkpoint, including when this command is included by another root."
+        "Component-local readiness/question checks remain owned by their components; there is no generic session Question sweep prerequisite.",
+        "This command plans/reviews only and does not grant repository mutation."
       ],
       "userTarget": "<optional TM/LENS selector + target/context, or current planning work>",
       "palette": true,

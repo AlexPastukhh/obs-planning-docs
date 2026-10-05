@@ -127,7 +127,7 @@
     assert(raw&&typeof raw==='object'&&!Array.isArray(raw),`compositionContributions[${index}] must be an object.`);
     const known=new Set(['kind','value','why']);for(const key of Object.keys(raw))assert(known.has(key),`Unknown compositionContributions[${index}] field: ${key}`);
     const kind=singleLine(raw.kind,`compositionContributions[${index}].kind`);
-    const allowed=new Set(['WORKING_TRACE_REQUIRED','TRACE_SINK_PREFERENCE','PORT_CAPABILITY_REQUIREMENT','REVIEW_COVERAGE_MODE']);
+    const allowed=new Set(['PORT_CAPABILITY_REQUIREMENT','REVIEW_COVERAGE_MODE']);
     assert(allowed.has(kind),`compositionContributions[${index}].kind is invalid.`);
     const value=singleLine(raw.value,`compositionContributions[${index}].value`);
     if(kind==='REVIEW_COVERAGE_MODE'){
@@ -825,7 +825,6 @@
       lines.push('','command_composition:',
         '  - idtspe.work',
         '  - idtspe.port-composition.recheck',
-        '  - idtspe.port.trace',
         `  - ${port}`,
         `  - ${base}`,
         `  - ${normalized.id} (semantic owner selection)`,

@@ -81,7 +81,7 @@ Review Coverage Record
 
 The record provides the continuity needed by `idtspe.review.recheck`. Do not infer a previous review from memory when no reliable prior record/evidence exists. If no trustworthy prior coverage can be resolved, recheck falls back to an initial current-basis review over the bounded subject rather than inventing a review delta.
 
-The record is transient by default. P-14 Persistence may preserve the same record when it must survive a session boundary, support a long multi-pass review, or has independent durable value. The Turn Work Record may record events that update the record, but it remains execution trace rather than the coverage authority.
+The record is transient by default. P-14 Persistence may preserve the same record when it must survive a session boundary, support a long multi-pass review, or has independent durable value. An explicitly activated Work Record may mirror review events, but review execution does not require one and Review Coverage remains the authority.
 
 <a id="review-coverage-working-context"></a>
 ## 2B. Pre-Execution Review Coverage Working Context
@@ -103,27 +103,25 @@ An existing Pre-Update Plan may be explicitly selected as the bounded Review Sub
 This working context is not another command, Shell port, persisted state kind or second review lifecycle. It is the pre-execution form of the same Review Coverage Record owned here. A selected command requesting a full review completes Finding Disposition, linked Proposal work, coverage update and final self-check after its Validation/Lens dependencies. A diagnostic-only TM-REVIEW-FINDINGS action completes its declared analysis/handoff result and updates diagnostic coverage; it preserves pending Proposal obligations and does not claim full-review completion.
 
 <a id="review-execution-plan-projection"></a>
-## 2C. Review Execution Plan Projection into the Turn Work Record
+## 2C. Review Execution Plan / State
 
-Once the bounded Review Coverage working context has established the current obligations, but **before P-12 Validation / P-06 Lens substantive review actions execute**, project the smallest useful ordered executable review plan into the current Turn Work Record.
+Once the bounded Review Coverage working context has established current obligations, but **before P-12 Validation / P-06 Lens substantive review actions execute**, maintain the smallest useful ordered executable review plan/state inside the same bounded review working context.
 
 ```text
 REVIEW.STRATEGY-COVERAGE
 → owns Review Subject / Scope / Basis, coverage mode, obligations/cells and sufficiency
-
-Turn Work Record
-→ projects those current obligations as executable work items
-→ records planned / started / executed / reused / blocked / deferred state
-→ when multiple state views are retained, records them as ordered state snapshots with one explicit current-state pointer
+→ projects current obligations as executable review items
+→ tracks planned / started / executed / reused / blocked / deferred state
+→ retains ordered state snapshots/current pointer only when that history is useful
 → records plan deltas when coverage obligations materially change
-→ reconciles initial plan with actual execution at pass completion
+→ reconciles initial plan with actual review execution at pass completion
 ```
 
-The projection may include cell IDs, semantic surfaces, requested validator/Lens operations already resolved, expected Finding/Proposal closure work and final coverage self-check. It is operational orientation, not a second source of review sufficiency. P-06 still owns actual Lens applicability/operation selection.
+The executable plan may include cell IDs, semantic surfaces, requested validator/Lens operations already resolved, expected Finding/Proposal closure work and final coverage self-check. It remains review-control state, not a second source of Lens applicability: P-06 still owns actual Lens applicability/operation selection.
 
-The Review Coverage Record and Turn Work Record may be physically co-located in the same file-backed scratch record when useful, but each section MUST identify its owner/boundary. Physical co-location never transfers Review Coverage authority to the Turn Work Record.
+If a Work Record has been explicitly activated for the same subject, it may mirror these events by reference or compact projection. Such a projection is optional and never a prerequisite for `idtspe.review` or `idtspe.review.recheck`.
 
-If new Evidence, invalidation, dependency or Finding changes current coverage obligations during the pass, update the Review Coverage Record under this owner and record the corresponding `PLAN_ADJUSTED` / current work-state change in the Turn Work Record without overwriting the original Initial Review Plan. When a new retained state snapshot is useful, capture the next ordered snapshot and make the former snapshot explicitly historical; before review completion, the final current-state pointer must identify the final review state rather than an earlier snapshot containing stale `PENDING` work.
+If new Evidence, invalidation, dependency or Finding changes current coverage obligations during the pass, update the Review Coverage Record and its executable review state without silently overwriting the earlier plan when historical comparison is material. Before review completion, any retained current-state pointer must identify the final review state rather than a stale snapshot.
 
 ## 3. Current-Pass Completeness
 
@@ -324,21 +322,11 @@ It does not need to execute `idtspe.review` first and therefore must not model `
 
 At recheck start, compare the resolved prior Review Coverage Record/basis with the current basis and expose the delta explicitly. Recheck targets stale/partial/invalidated/newly exposed/previously blocked material first; trustworthy unchanged cells remain reusable with `REUSED_FROM_PRIOR` provenance, prior-cell/basis reference and reuse justification. When no reliable prior record exists, perform initial current-basis review semantics rather than claiming a prior-vs-current delta.
 
-## 10. Turn Work Record Boundary
+## 10. Optional Work Record Boundary
 
-```text
-Turn Work Record
-= what methodology-runtime events actually occurred.
-
-Review Coverage
-= what review perspectives over which semantic surfaces are currently covered,
-  stale, partial or still needed.
-```
-
-The same working trace may record review events, but the Turn Work Record is not the authority for review applicability or coverage sufficiency.
-
+Review Coverage owns review applicability, obligations and coverage sufficiency. An explicitly activated Work Record may record review execution events, but review semantics and recheck continuity are complete without that optional projection.
 
 <a id="turn-work-record-review-projection"></a>
-## Turn Work Record review projection
+## Optional Work Record review projection
 
-Review Strategy/Coverage remains authority for review obligations/cells. Executable review plan/state/actions/deltas are projected into the current Turn Work Record. The Work Record never becomes a second review lifecycle or Review Coverage owner.
+When a Work Record is explicitly active, Review Strategy/Coverage may project compact executable review plan/state/actions/deltas into it. The projection is optional, never becomes a second review lifecycle, and is not required by review commands or Shell composition.

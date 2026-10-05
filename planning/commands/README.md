@@ -92,8 +92,7 @@ The JSON is intentionally strict so repository writes, build-time validation and
 - `commandFamily` contains the canonical `command` exactly.
 - IDs, canonical commands and aliases are unique across the complete catalog.
 - `ownerFiles`, `includes` and `keyReminders` are arrays of strings. `includes` contains canonical repository-relative paths to registered direct `planning/commands/*.command.md` definitions only; every referenced command file must exist, resolve to exactly one registered command, cycles are forbidden and duplicate paths are invalid. Command IDs remain semantic/invocation identities inside the referenced definitions, not dependency locators.
-- `compositionContributions` is an optional structured list collected from **all expanded DAG nodes before semantic execution**. It exposes only pre-execution facts required by composition (for example `TRACE_SINK_PREFERENCE`, `PORT_CAPABILITY_REQUIREMENT`, `REVIEW_COVERAGE_MODE`, or registered component selection). `REVIEW_COVERAGE_MODE` accepts only `CURRENT_BASIS` or `LOCAL_AFFECTED_RECHECK`. It is not another workflow or Shell topology.
-  - `TRACE_SINK_PREFERENCE` expresses **Turn Work Record visibility / external retained-output preference**. It does not select or create a second Work Record. Ambient file-backed backing belongs to Session State; durable/external retained output still follows P-14/permission rules when material.
+- `compositionContributions` is an optional structured list collected from **all expanded DAG nodes before semantic execution**. It exposes only pre-execution facts required by composition (for example `PORT_CAPABILITY_REQUIREMENT`, `REVIEW_COVERAGE_MODE`, or registered component selection). `REVIEW_COVERAGE_MODE` accepts only `CURRENT_BASIS` or `LOCAL_AFFECTED_RECHECK`. It is not another workflow or Shell topology.
 - `ownerRefs` is a required non-empty structured list of the **canonical references added by this command itself**. Each entry names `responsibilityId`, repository `path`, optional canonical `anchor`, human-readable `why`, semantic `role`, and `readMode`. Do not repeat references inherited from `includes`. Every active direct command must expose at least one own canonical reference with `why`; legacy broad `ownerFiles` alone are insufficient.
 - `ownerRefs.role` is one of `PRIMARY_OWNER`, `SUPPORTING_CONTRACT`, `REGISTRY`, `POSSIBLE_DESTINATION`, `VALIDATION_HANDOFF`, `RUNTIME_ENTRY`, `ROUTING`. `readMode` is `REQUIRED`, `ON_DEMAND` or `DESTINATION_ONLY`.
 - `palette` is boolean. `false` keeps a registered command out of the normal palette without making it unregistered.
@@ -113,7 +112,7 @@ The JSON is intentionally strict so repository writes, build-time validation and
 <a id="planning-command-composition"></a>
 ## Command Composition / Includes
 
-Every Planning Command invocation includes the canonical methodology Use-Case applicability recheck, either directly or transitively through its registered command composition. For ordinary substantive roots, the dependencies-first chain is `WR-4 → WR-3 → WR-1 → session.work.maintain → methodology.use_cases.recheck`; foundational roots within the chain are valid partial entries. S0 and root/alias recognition occur physically before full DAG expansion and are reconciled into the same record; the WR-1 command action confirms/records them, then automatic WR-2 triage occurs before WR-3. A continuation of the same open subject reuses S0 and appends its actual input/command-basis event. WR-6/WR-7 close only after the subject ends, never as mandatory includes of WR-5; an intermediate preparation response synchronizes and archives the still-open record. The recheck scans the Methodology Use-Case Registry Map and only plausibly applicable scoped registry rows; it does **not** execute every Use Case.
+`includes` is the canonical command→command prerequisite relation. It remains independent from Session State and Work Record mechanics.
 
 ### Expand First, Execute Dependencies Before Dependents
 
@@ -129,59 +128,27 @@ all selected root commands / semantic component cards
 → establish the dependencies-first execution plan
 → execute deepest/shared dependencies first
 → execute each dependent only after its requirements completed or were validly REUSED
-→ selected root/leaf action executes last on its own branch after the preparation gate opens
+→ selected root/leaf action executes last on its own branch
 ```
 
-Declarative contributions are known at composition time rather than waiting for the node's later runtime action. The Helper/command resolver projects and merges the structured `compositionContributions` from every expanded node plus registered TM/Lens selection metadata before dependency semantic actions begin. They include, when applicable:
+Declarative contributions are known at composition time rather than waiting for the node's later runtime action. They may include explicit named capability/port requirements, selected Target Module/Lens identity, trace/representation preference, review coverage mode/context, target/context selectors and permission constraints.
+
+`includes` MUST NOT encode a universal Session workflow, Work Record lifecycle, global Question sweep or DIRECT/SHELL selector. Those are not prerequisites of ordinary commands.
+
+### Explicit IDTSPE/Shell composition
+
+When the selected command surface explicitly enters the IDTSPE Shell, the reusable command prefix is:
 
 ```text
-explicit named capability/port requirements
-selected Target Module / Lens / Use-Case identity
-trace sink/detail configuration
-current target/context selectors
-review coverage mode/context (`CURRENT_BASIS` or `LOCAL_AFFECTED_RECHECK`)
-permission constraints
+methodology.use_cases.recheck          # when current methodology orientation is required
+→ idtspe.compose-current-work
+→ idtspe.port-composition.recheck
+→ idtspe.work / selected admitted capability
 ```
 
-This is essential for IDTSPE: `IDTSPE.PORT-COMPOSITION-REFRESH` must already know all explicit leaf requirements before it refreshes the Port Requirement Set.
+A named `idtspe.port.*` command contributes its explicit named capability requirement to the merged composition before Port Requirement Set refresh. Generic `idtspe.target-module.apply` / `idtspe.lens.apply` contribute reusable Meta-Model/registry machinery; concrete TM/Lens cards add their selected Model identity. Shared prefixes are deduplicated so several requested capabilities still form one effective Shell composition rather than recursively launching several Shell passes.
 
-For `idtspe.review`, `tmcmd.review.findings`, `idtspe.review.recheck` and current-basis specialized reviews such as `idtspe.review_consistency`, `REVIEW_COVERAGE_MODE` is interpreted during this pre-execution composition stage. The Review Strategy/Coverage owner resolves the bounded Review Subject/Scope/Basis, trustworthy prior record when applicable, review obligations/intents and reusable prior coverage **before** Validation or Lens dependency semantic actions run. It does not select executable Lens applications: P-06 owns Lens applicability/supported-operation resolution and forms the selected `(Lens Model, Analysis Surface, Operation, basis)` applications. `CURRENT_BASIS` derives current-basis obligations; `LOCAL_AFFECTED_RECHECK` derives stale/partial/invalidated/newly exposed/previously blocked obligations. If both modes occur in one bounded review composition, the effective contribution set normalizes them to `LOCAL_AFFECTED_RECHECK` before semantic execution. `tmcmd.pre.update` forms a separate optional plan and contributes no Review Coverage mode.
-
-For an ordinary substantive command, the early shared prerequisite chain is:
-
-```text
-methodology.use_cases.recheck
-→ session.work.maintain (Session State/archive identity + S0)
-→ session.input.intake (WR-1; automatic WR-2 follows)
-→ session.current_work.select (WR-3)
-→ session.route.choose (WR-4)
-```
-
-The preparation dependency chain is `session.route.choose → idtspe.compose-current-work → idtspe.port-composition.recheck → session.current_work.prepare → session.current_work.question_sweep` when `SHELL` is selected. For `DIRECT`, the included Shell-only port refresh is `NOT_APPLICABLE` with basis and preparation uses the relevant direct owner/inputs; current Use-Case orientation may still be reaffirmed without manufacturing a Shell pass. The one structured Work Record already exists above either route, so no active P-02 or separate trace prerequisite is needed. `idtspe.port.trace` remains an explicit legacy compatibility visibility command only.
-
-Before execution of **any** selected subject, including Manifest reconciliation, the fundamental current-work Use Case performs the contextual Question sweep under WR-5 after material owner/component reads. The direct `session.current_work.question_sweep` shortcut includes `session.current_work.prepare`, which transitively includes the early chain and Shell composition; an affected ambiguity may escalate DIRECT to SHELL and repeat preparation on the changed basis. The sweep is separate from the SDS Evolution Step sweep, which checks one selected Step and `RU-EVO-06` at its own handoff. Neither sweep is a renamed WR-2 command or a second Question lifecycle.
-
-The full selected root DAG and contributions are resolved before semantic command execution. By default, the common runtime executes preparatory dependencies through the sweep, audits actual coverage, synchronizes an archive checkpoint and **defers** `idtspe.work`, the selected semantic root and any other execution-bearing nodes until a later USER continuation of the same record. A directly requested preparation/sweep or a request to recheck its completeness also checkpoints without executing the pending task. A USER request for a continuous run may cross the gate in the same response. At re-entry, check the saved DAG/basis and re-evaluate affected nodes; a prior command ID or ZIP is not sticky reuse evidence. Deferred `processCalls` remain at their owner points. This phase gate is owned by the Work Runtime/Use Case, including for ordinary language that has no command include; do not implement it by making WR-6/WR-7 dependencies or by executing a leaf root in the preparation response.
-
-User-level/specialized IDTSPE operations reuse this chain and, when Shell is selected, the same current Work Context and Port Requirement Set. Shared dependencies and equivalent work are deduplicated in the merged DAG; final WR-6/WR-7 occur after selected leaf/root work under the fundamental current-work Use Case.
-
-```text
-TM-* command/card
-→ current-work prefix through WR-4
-→ idtspe.compose-current-work + idtspe.port-composition.recheck + session.current_work.prepare + Question sweep
-→ preparation checkpoint / USER continuation
-→ idtspe.work + idtspe.port.target
-→ idtspe.target-module.apply + selected TM-* Model
-
-LENS-* command/card
-→ current-work prefix through WR-4
-→ idtspe.compose-current-work + idtspe.port-composition.recheck + session.current_work.prepare + Question sweep
-→ preparation checkpoint / USER continuation
-→ idtspe.work + idtspe.port.lens
-→ idtspe.lens.apply + selected Lens Application
-```
-
-Named `idtspe.port.*` commands contribute an explicit named capability requirement. Generic `idtspe.target-module.apply` / `idtspe.lens.apply` contribute the reusable Meta-Model/registry/Unit-or-Finding machinery. Concrete TM/Lens cards add only their own selected Model reference; references inherited from the shared prefixes are not copied into every leaf card.
+There is no automatic Session archive checkpoint, continuation pause or global session Question sweep in this graph. Real USER/Proposal/Decision/permission gates remain owned by their natural contracts. Component-local readiness/question checks, including SDS Evolution Step readiness, remain separate semantic obligations and may still be reached by their owners.
 
 The methodology remains independently executable without Helper/command projection: Use Cases, semantic owners and their natural handoffs define the process. Command composition is a reproducible traversal guarantee over those canonical owners, not a second source of methodology meaning.
 
@@ -219,9 +186,9 @@ Use `includes` for actions required before the caller’s own action. Use option
 1. On reaching the named point in an active caller occurrence, read/reuse its current owner contract and evaluate its gate. A required applicable call must complete before passing that point. A gate that cannot be resolved is `BLOCKED`. An inapplicable branch records `NOT_APPLICABLE` with basis. A point not reached is `NOT_REACHED`, never a successful check.
 2. Bind the current subject, scope, requested operation, input/output state and basis from the caller under `context`. Do not silently reuse stale user placeholders, select unrelated Targets or mix a proposed basis with an applied basis.
 3. Expand the called command’s complete transitive `includes` DAG, collect its contributions before its dependency actions, and execute dependencies before its own action. Its own nested process calls remain deferred until their points are reached. Follow every required owner/read route; an earlier prose link is not proof that work executed.
-4. Share the current Work Context and Turn Work Record. Reconcile newly selected capabilities at this boundary through their current owners. Child contributions apply to this child scope; they do not retroactively alter completed parent actions or leak child-only selection into the resumed caller. Root authority and user constraints remain the ceiling; child constraints may narrow them. No command edge grants mutation/commit/push permission.
+4. Share the current semantic Work Context. If an optional Work Record was explicitly activated, nested calls may append compatible observable events to it; otherwise no Work Record is required. Reconcile newly selected capabilities at this boundary through their current owners. Child contributions apply to this child scope; they do not retroactively alter completed parent actions or leak child-only selection into the resumed caller. Root authority and user constraints remain the ceiling; child constraints may narrow them. No command edge grants mutation/commit/push permission.
 5. Reuse actual prior work only with evidence that subject, scope, operation, basis, applicable owners and coverage still match. This also covers required nested calls at reached points. A prior command ID or a previously read file alone is insufficient. Shared prerequisite checks can be reused proportionally; a changed basis requires the affected refresh. Avoid duplicate passes when the natural owner route already performed the same work.
-6. Record caller/call identity, point, effective context/basis, outcome (`EXECUTED`, `REUSED`, `NOT_APPLICABLE`, `BLOCKED` or `NOT_REACHED`) and evidence in the existing appropriate trace/result. Consume the result, restore the caller’s active context, and resume after the point. Reentering a point after material change reevaluates it; definition-level deduplication is not execution reuse.
+6. Record caller/call identity, point, effective context/basis, outcome (`EXECUTED`, `REUSED`, `NOT_APPLICABLE`, `BLOCKED` or `NOT_REACHED`) and evidence in the appropriate current result/trace when material. An optional explicit Work Record may be used as one such trace, but is not required. Consume the result, restore the caller’s active context, and resume after the point. Reentering a point after material change reevaluates it; definition-level deduplication is not execution reuse.
 
 For example, the Pre-Update route invokes Helper Impact on **proposed** changes before closing the plan. After authorized realization, the natural projection workflow checks the **applied** basis. The first result does not prove the second. This declaration creates no extra review/pre-update coupling.
 
@@ -286,6 +253,8 @@ The read-only `documentation.examples.read` command routes to [DOC.EXAMPLE-READI
 The [full documentation example command](read-full-documentation-example.command.md), `посмотри полный пример документации`, opens the fixed independent Study Tab Launcher case and copied project README for a connected overview. It is separate from selecting relevant examples for the current methodology owner.
 
 <a id="turn-work-record-command-contract"></a>
-## Turn Work Record / Session State command contract
+## Optional Session State / Work Record boundary
 
-All substantive command work reuses the ambient Turn Work Record rather than requiring P-02. Command roots/aliases are resolved under WR-1 after S0; `includes` still form the canonical dependencies-first DAG and deferred `processCalls` keep their owner-point semantics. Nested calls share the current Turn Work Record/Session Context. The included Session prefix acts on its own read-only/Session-State authority plane; it does not downgrade authorized target/repository operations of the selected root, whose explicit permission remains the ceiling. Each child action still observes its own narrower constraints. Existing `permissionMode` governs target/repository authority; Session-State maintenance follows the Session runtime authority plane. `TRACE_SINK_PREFERENCE` is visibility/external-retention preference, not canonical Work Record identity or backing-store ownership.
+Session State, Turn Work Records, Current Work Manifest, the global session Question sweep and Session archive materialization are **not** command-global prerequisites. They are optional explicit facilities invoked through reusable Helper prompts or other direct USER instruction.
+
+Command roots/aliases, `includes` and deferred `processCalls` remain fully valid without Session State. When an optional Work Record is active, command traversal facts may be projected into it proportionally; this projection does not become command authority and does not change root permission. Existing `permissionMode` continues to govern target/repository authority independently from any optional Session-State workspace writes.

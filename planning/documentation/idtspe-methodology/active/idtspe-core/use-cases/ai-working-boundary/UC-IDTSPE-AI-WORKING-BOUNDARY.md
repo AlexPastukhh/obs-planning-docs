@@ -32,10 +32,10 @@ This Result is an ambient working constraint. It does not create a Target, Propo
 ## Process
 
 1. Reaffirm the current [`AI Working Contract`](../../../../../../AI-WORKING-CONTRACT.md#planning-ai-working-contract). Reuse trustworthy current knowledge; reread affected owners when authority, methodology, permission or interaction semantics are stale/uncertain.
-2. Resolve the current USER authorization and permission boundary from the ambient Session contract plus any explicit invocation boundary. A Planning Command can constrain/guarantee traversal for a USER invocation; it does not grant the AI a separate internal command language and does not expand repository mutation/commit/push authority beyond its direct permission contract.
+2. Resolve the current USER authorization and permission boundary from the AI Working Contract plus any explicit invocation/interaction boundary. Read the Session Runtime contract lazily only when its Generic AI Proposal or explicit interaction-policy semantics are material; Session State is not an ambient prerequisite. A Planning Command can constrain/guarantee traversal for a USER invocation; it does not grant the AI a separate internal command language and does not expand repository mutation/commit/push authority beyond its direct permission contract.
 3. For the next material action, distinguish the natural route instead of collapsing all AI output into one ceremony:
    - deterministic work already inside accepted meaning and granted authority → continue through the natural methodology owner;
-   - useful interaction-level recommendation or intended action that benefits from USER review/authorization → use the Session-owned GIP boundary proportionally;
+   - useful interaction-level recommendation or intended action that benefits from USER review/authorization → use the Generic AI Proposal (GIP) interaction boundary proportionally, reading its Session Runtime owner when needed;
    - material selectable semantic change to accepted/current meaning — including a Finding dispositioned as `RE-2` / `RE-4` — → form/refine the canonical formal IDTSPE Proposal before selection; a GIP may present/reference it but MUST NOT substitute for it;
    - USER facts, answers, wanted outcomes, concrete candidate meaning or decisions → classify through the USER-input intake owner rather than inventing USER intent.
 4. Preserve the `No Silent Promotion` invariant from the AI Working Contract and Proposal/Decision lifecycle. AI recommendation, GIP, formal Proposal and accepted Decision remain distinct.
@@ -65,4 +65,4 @@ Commands are a USER↔AI invocation surface. The AI does not call Planning Comma
 <a id="session-state-authority-plane"></a>
 ## Session-State authority plane
 
-Target/repository mutation authority and Session-State workspace authority are independent. A read-only target operation may still maintain Session State/Turn Work Record/Manifest/PRS/archive. Session-State writes never grant target/repository mutation. Current work is handed into `IDTSPE.WORK-RUNTIME`; USER choice/mutation gates remain unchanged.
+Target/repository mutation authority and optional Session-State workspace authority are independent. When the USER explicitly activates Session State / Work Record / Manifest / archive handling, a read-only target operation may still maintain that workspace. Session-State writes never grant target/repository mutation, and ordinary work is not handed through a mandatory Work Runtime. USER choice/mutation gates remain unchanged.

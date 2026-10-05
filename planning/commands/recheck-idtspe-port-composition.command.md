@@ -13,9 +13,9 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
   "commandFamily": [
     "перепроверь композицию портов"
   ],
-  "description": "Refresh/reaffirm the current SHELL Port Requirement Set during preparation and again before execution on continuation.",
-  "meaning": "When WR-4=SHELL, refresh/reaffirm the Port Requirement Set for the selected primary subject/current basis during preparation. On continuation, refresh/reaffirm the current Set and reuse compatible admitted/read coverage only with evidence; prior records or the preparation archive are not sticky authority. When WR-4=DIRECT and this command is reached only through the generic preparation prefix, record evidenced NOT_APPLICABLE for Shell port refresh.",
-  "activeContextBehavior": "Compose with the current command set. Fully expand and merge all selected roots before semantic execution; reuse equivalent current work and follow the resulting dependencies-first plan.",
+  "description": "Refresh/reaffirm the current Shell Port Requirement Set for the current semantic composition.",
+  "meaning": "Refresh/reaffirm the Port Requirement Set for the current explicit/current Shell composition and basis. Reuse compatible admission/read coverage only with evidence; prior passes are not sticky authority. This command is Shell-specific and is not an ambient prerequisite for ordinary non-Shell work.",
+  "activeContextBehavior": "Compose with the current selected command/semantic intent. Fully expand and merge selected command roots before semantic execution so declarative capability requirements are available to this refresh.",
   "traversalReadMode": "Read this command own canonical references plus included-command references proportionally. Do not duplicate reads already satisfied by an unchanged trustworthy shared prefix.",
   "ownerFiles": [
     "planning/documentation/idtspe-methodology/active/idtspe-core/runtime/IDTSPE-RUNTIME-COMPOSITION-CONTRACT.md",
@@ -49,13 +49,12 @@ Scope: one concrete OBS Planning command route. Reusable behavior remains in lin
     }
   ],
   "includes": [
-    "planning/commands/choose-current-work-route.command.md",
     "planning/commands/compose-current-idtspe-work.command.md"
   ],
-  "expectedOutput": "A current SHELL Port Requirement Set and admission basis are recorded/reaffirmed in the open Work Record, or an evidenced NOT_APPLICABLE for DIRECT.",
+  "expectedOutput": "A current Shell Port Requirement Set and admission basis for the current semantic composition.",
   "permissionMode": "read-only-planning",
   "keyReminders": [
-    "This is a mandatory normal-SHELL recheck at preparation and execution; DIRECT does not force Shell ports.",
+    "This is a normal Shell recheck, not a DIRECT-vs-SHELL route selector.",
     "Collect declarative contributions from ALL expanded command nodes before performing this recheck.",
     "Do not infer positive applicability merely because a capability was explicitly requested; explicit request requires a real check."
   ],

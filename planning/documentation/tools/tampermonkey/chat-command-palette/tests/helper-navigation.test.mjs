@@ -55,18 +55,17 @@ test('SDS Evolution Step sweep remains a distinct focused card after Map and Ste
   assert.equal(group.entries[2].semanticKind,'');
 });
 
-test('IDTSPE Pass presents WR entry, current work and closure in stage order',()=>{
+test('IDTSPE Pass exposes direct composition without Session command groups',()=>{
   const groups=navigation.buildMethodologyViewGroups(entries,'IDTSPE_PASS');
   const entry=groups.find((item)=>item.id==='idtspe-pass.baseline');
-  const current=groups.find((item)=>item.id==='idtspe-pass.trace');
-  const closure=groups.find((item)=>item.id==='idtspe-pass.session-close');
-  assert.ok(entry&&current&&closure);
-  assert.ok(groups.indexOf(entry)<groups.indexOf(current));
-  assert.ok(groups.indexOf(current)<groups.indexOf(closure));
-  assert.deepEqual(entry.entries.map((item)=>item.id),['methodology.use_cases.recheck','session.work.maintain','session.input.intake']);
-  assert.deepEqual(current.entries.slice(0,5).map((item)=>item.id),['session.current_work.select','session.route.choose','session.current_work.prepare','session.current_work.question_sweep','idtspe.work']);
-  assert.ok(!current.entries.some((item)=>item.id==='sds.evolution_step.question_sweep'));
-  assert.deepEqual(closure.entries.map((item)=>item.id),['session.state.synchronize','session.turn.finalize']);
+  const shell=groups.find((item)=>item.id==='idtspe-pass.trace');
+  assert.ok(entry&&shell);
+  assert.deepEqual(entry.entries.map((item)=>item.id),['methodology.use_cases.recheck']);
+  assert.deepEqual(shell.entries.map((item)=>item.id),['idtspe.work','idtspe.port-composition.recheck']);
+  assert.ok(!groups.some((item)=>item.id==='idtspe-pass.session-close'));
+  const all=groups.flatMap((item)=>item.entries.map((entry)=>entry.id));
+  for(const id of ['session.work.maintain','session.input.intake','session.current_work.select','session.route.choose','session.current_work.prepare','session.current_work.question_sweep','session.state.synchronize','session.turn.finalize','idtspe.trace.inline','idtspe.trace.artifact']) assert.ok(!all.includes(id),id);
+  assert.ok(!shell.entries.some((item)=>item.id==='sds.evolution_step.question_sweep'));
 });
 
 test('every visible command card has canonical Context, Result and Essence projection',()=>{

@@ -21,9 +21,9 @@ Methodology Use-Case Registry Map / relevant scoped registries
 relevant specialized Documentation + IDTSPE Use Cases
 ↓
 UC-IDTSPE-COMPOSE-CURRENT-WORK      [default continuously relevant]
+↓ when explicit/current methodology work requires Shell
+Port Requirement Set refresh
 ↓
-Turn Work Record: WR-3 primary subject → WR-4 route
-↓ when SHELL
 active P-03..P-15 Shell capability graph
 ↓
 smallest useful IDTSPE projection / dynamic Shell route
@@ -117,7 +117,7 @@ bounded responsibility/result becomes useful
 Target Work / Target Formation ownership routing: [`runtime/target-work/RESPONSIBILITY-MAP.md`](../runtime/target-work/RESPONSIBILITY-MAP.md).
 Target Module Meta-Model / discovery ownership routing: [`target-modules/RESPONSIBILITY-MAP.md`](../target-modules/RESPONSIBILITY-MAP.md).
 
-Work Runtime / Turn Work Record owner: [`runtime/WORK-RECORD-PRINCIPLES.md`](../runtime/WORK-RECORD-PRINCIPLES.md#idtspe-work-runtime). Legacy P-02 compatibility: [`runtime/PASS-TRACE-AND-VISIBILITY-CONTRACT.md`](../runtime/PASS-TRACE-AND-VISIBILITY-CONTRACT.md#idtspe-pass-trace).
+Optional explicit Work Record/full-workflow owner: [`runtime/WORK-RECORD-PRINCIPLES.md`](../runtime/WORK-RECORD-PRINCIPLES.md#idtspe-work-runtime). Legacy P-02 compatibility: [`runtime/PASS-TRACE-AND-VISIBILITY-CONTRACT.md`](../runtime/PASS-TRACE-AND-VISIBILITY-CONTRACT.md#idtspe-pass-trace).
 
 ## 6. Lens System / Findings
 
@@ -220,6 +220,6 @@ It never owns runtime `when/why` routing when a current Use Case/component contr
 - [`lenses/frequent/LENS-TARGET-RESOLUTION-COVERAGE.md`](../lenses/frequent/LENS-TARGET-RESOLUTION-COVERAGE.md) — frequent-conditional coverage evaluation Lens.
 
 <a id="work-runtime-core-map"></a>
-## Work Runtime map
+## Optional Work Record / Shell boundary
 
-`IDTSPE.WORK-RUNTIME` is the current runtime entry above Shell. It owns the Turn Work Record and `DIRECT | SHELL | NO_EXECUTION` routing. When SHELL is selected, active capability IDs remain P-03..P-15. Core PRS exposes `RU-PRS-01 Active Planning`, `RU-PRS-02 Tracked Decisions` and `RU-PRS-03 Contextual Material Coordination`.
+`IDTSPE.WORK-RUNTIME` is optional explicit compatibility/full-workflow tooling, not the runtime entry above Shell. Shell is entered by explicit/current semantic composition and retains active capability IDs P-03..P-15. Core PRS exposes `RU-PRS-01 Active Planning`, `RU-PRS-02 Tracked Decisions` and `RU-PRS-03 Contextual Material Coordination`.

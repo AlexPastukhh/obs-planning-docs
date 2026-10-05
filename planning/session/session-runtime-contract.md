@@ -7,13 +7,13 @@ Status: active generic USER↔AI interaction contract.
 
 Purpose: define clean-chat entry, visible meaningful work steps, automatic progression, steering and real gates without creating a second planning/methodology runtime beside always-active IDTSPE.
 
-## 0. Ambient Bootstrap And Inheritance
+## 0. Reusable interaction guidance
 
-This contract is **must-understand at session bootstrap or safe context restoration**, not must-traverse on every invocation. Once established, its interaction rules remain ambient across ordinary commands, Documentation work, IDTSPE work and profile-specific work.
+This contract is reusable interaction guidance, not part of the mandatory planning bootstrap and not must-traverse on every invocation. Read/reuse it when its steering, progress or Generic AI Proposal rules are material.
 
 ```text
-Session interaction contract is in force
-        ↓ inherited by
+interaction guidance when relevant
+        ↓
 command / natural-language request
         ↓ direct semantic routing
 current Documentation / IDTSPE / profile / repository owner
@@ -69,13 +69,13 @@ current work step reaches its exit condition
 
 Do not ask "continue?" merely because another ordinary step begins.
 
-The [Work Record preparation checkpoint](../documentation/idtspe-methodology/active/idtspe-core/runtime/WORK-RECORD-PRINCIPLES.md#work-record-preparation) is a deliberate exception for every selected executable task by default, including Manifest work: prepare, check Questions and actual coverage, synchronize a Session archive and return a truthful preparation result before task execution. This is a specified two-response workflow boundary, not a request to re-authorize work already authorized. If the USER explicitly requests continuous preparation and execution, progress in one response when the usual real gates permit. On "continue/do it", reuse the same open record and revalidate affected preparation. On "check all Questions/reprepare", stay in preparation and issue another checkpoint. Ordinary steps within either stage continue automatically.
+Session/Work-Record preparation checkpoints exist only when the USER explicitly activates that optional workflow. They are not exceptions to automatic progression for ordinary work.
 
 ## 4. Progress Visibility
 
 If one meaningful step runs long enough that the USER would otherwise lose orientation, provide an occasional concise update describing useful partial progress and current focus.
 
-Progress updates are transient interaction signals, not State Units or Checkpoints. During IDTSPE work they may project facts already recorded by `Turn Work Record`, but Session owns the conversational timing/shape while `IDTSPE.WORK-RUNTIME` owns the observable Turn Work Record plan/state/trace semantics.
+Progress updates are transient interaction signals, not State Units or Checkpoints. When an optional explicit Work Record is active they may project facts already recorded there; otherwise they simply summarize current semantic work. Session owns only conversational timing/shape.
 
 ## 4A. Current Work Manifest Re-entry Projection
 
@@ -133,17 +133,13 @@ A depth transition is not an approval gate by itself.
 
 ## 8. IDTSPE Integration
 
-Broad Discussion, planning state, Targets, Lenses and Integration Checkpoints are IDTSPE-owned. Session runtime governs Work Steps/Progress Updates and USER steering. IDTSPE `Turn Work Record` owns the observable methodology work plan/state/route; Session may project that trace conversationally without becoming its semantic owner.
+Broad Discussion, planning state, Targets, Lenses and Integration Checkpoints are IDTSPE-owned. Session interaction guidance governs only Work Steps/Progress Updates and USER steering. Optional Work Record tracking, when explicitly activated, may provide an additional observable trace without becoming methodology authority.
 
 A situational IDTSPE Integration Checkpoint may be performed whenever its Use Case applies; Session does not maintain a competing generic Checkpoint object.
 
 <a id="session-state-runtime-integration"></a>
-## Session State / Turn Work Record integration
+## Optional Session State / Work Record integration
 
-For substantive work, Session bootstraps/reuses [`SESSION.STATE-RUNTIME`](session-state-runtime-contract.md#session-state-runtime) and one current Turn Work Record before substantive execution. Progress Updates remain transient conversational projections of observable facts already present in that record.
+Session State and Turn Work Records are activated only by explicit USER prompt/instruction. When active, re-entry may use `README.md`, optional accepted `WORK-MANIFEST.md`, bounded `resolution/PRS.md`, retained inputs, Work Record/context refs and archive history as applicable. Their use does not create a DIRECT/SHELL gate or delay ordinary semantic execution by default.
 
-Re-entry order is `README.md` → accepted `WORK-MANIFEST.md` → bounded `resolution/PRS.md` when present → current/retained Work Record/context refs. Session owns interaction timing/shape only.
-
-Material prospective Manifest meaning that AI derives and the USER has not already selected requires the formal Core Proposal + complete candidate target Manifest + PRS route. A Generic AI Proposal may present/reference that formal state but never substitutes for it. Exact USER-selected target meaning may integrate directly with authority trace and recoverable prior revision.
-
-Response completion for substantive Session-State work follows `WR-7` and normally rematerializes the portable Session State archive.
+Material prospective Manifest meaning that AI derives and the USER has not already selected still requires the formal Core Proposal + complete candidate target Manifest + PRS route. A Generic AI Proposal may present/reference that formal state but never substitutes for it. Exact USER-selected target meaning may integrate directly with authority trace and recoverable prior revision.
