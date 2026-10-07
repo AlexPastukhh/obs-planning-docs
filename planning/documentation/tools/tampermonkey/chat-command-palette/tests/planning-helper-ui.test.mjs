@@ -69,3 +69,36 @@ test('Favorites use personal order independently of catalog order and tolerate s
 test('Prompts contains Prompts/Modules inner navigation and Save all replaces standalone order save',async()=>{const fs=await import('node:fs');const source=fs.readFileSync(new URL('../src/planning-helper-ui.js',import.meta.url),'utf8');assert.match(source,/data-library-view="prompts"/);assert.match(source,/data-library-view="modules"/);assert.match(source,/activePromptView='prompts'/);assert.match(source,/if\(surface===SURFACES\.PROMPTS\)activePromptView='prompts'/);assert.match(source,/Save all GitHub/);assert.doesNotMatch(source,/Save order GitHub/);assert.match(source,/onSaveAllRepository/);assert.match(source,/resolveModules:true/);assert.match(source,/Copy ref/);});
 
 test('Hard Reload closes its overlay before applying returned state and modules use a dedicated selected-row accent gutter',async()=>{const fs=await import('node:fs');const source=fs.readFileSync(new URL('../src/planning-helper-ui.js',import.meta.url),'utf8');const start=source.indexOf('function hardReloadRepository'),end=source.indexOf('function saveAllRepository',start),body=source.slice(start,end);assert.ok(body.indexOf('closeOverlay(overlay)')<body.indexOf('applyState(result)'));assert.match(source,/\.row\[data-selected=true\]::before/);assert.match(source,/padding-left:10px/);});
+
+test('background activity replaces global busy freeze and repository work blocks only mutating controls',async()=>{
+  const fs=await import('node:fs');const source=fs.readFileSync(new URL('../src/planning-helper-ui.js',import.meta.url),'utf8');
+  assert.match(source,/backgroundTasks=new Map/);
+  assert.match(source,/function runTask\(/);
+  assert.match(source,/activity-spinner/);
+  assert.match(source,/launcher-count/);
+  assert.match(source,/function repositoryTaskActive/);
+  assert.match(source,/function refreshMutationControls/);
+  assert.doesNotMatch(source,/operationBusy|function setBusy\(/);
+  const start=source.indexOf('function mutationControls'),end=source.indexOf('function refreshMutationControls',start),controls=source.slice(start,end);
+  assert.doesNotMatch(controls,/\.tab|\.search|\.close|\.run-action|\.copy/);
+});
+
+test('action overlays are panel-scoped and release before asynchronous work starts',async()=>{
+  const fs=await import('node:fs');const source=fs.readFileSync(new URL('../src/planning-helper-ui.js',import.meta.url),'utf8');
+  assert.match(source,/\.overlay\{position:absolute/);
+  assert.match(source,/panel\.append\(overlay\)/);
+  assert.match(source,/if\(activeOverlay\)closeOverlay\(activeOverlay\)/);
+  for(const [startName,endName,asyncMarker] of [
+    ['function hardReloadRepository','function saveAllRepository','onHardReloadRepository'],
+    ['function saveAllRepository','function openSettings','onSaveAllRepository'],
+    ['function openImport','async function copyRecoveryRequest','onApplyChatImport'],
+  ]){
+    const start=source.indexOf(startName),end=source.indexOf(endName,start),body=source.slice(start,end);
+    assert.ok(body.indexOf('closeOverlay(overlay)')>=0);
+    assert.ok(body.indexOf('closeOverlay(overlay)')<body.indexOf(asyncMarker));
+  }
+  const bodyStart=source.indexOf('function openCommandBody'),bodyEnd=source.indexOf('function openCommandById',bodyStart),body=source.slice(bodyStart,bodyEnd);
+  assert.ok(body.indexOf('closeOverlay(overlay)')<body.indexOf('copyBody('));
+  assert.ok(body.indexOf('closeOverlay(overlay)')<body.indexOf('insertBody('));
+  assert.match(source,/if\(event\.key==='Escape'&&activeOverlay\)\{closeOverlay\(activeOverlay\);return;\}/);
+});

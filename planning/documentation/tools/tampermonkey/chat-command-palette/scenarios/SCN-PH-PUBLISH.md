@@ -5,9 +5,9 @@ Scope: canonical detailed application behavior owner for explicit Helper→GitHu
 
 **Trigger/input:** per-row `Save GitHub` for a real Planning Command/Prompt/Module/legacy helper record, or global `Save all GitHub` for all pending writable records plus current catalog order/presentation groups.
 
-**Successful result:** a deterministic Command/Prompt/Module target is created, exact-no-op confirmed, or updated using current remote SHA and exact read-back verification; per-row ordered-item saves also persist the current catalog order, while `Save all GitHub` publishes all pending direct-command/helper-library records plus `catalog-order.json` with current ordered stable IDs and presentation-only `commandGroups[]`.
+**Successful result:** the confirmation surface closes before network persistence begins; the Helper remains navigable while a visible background activity indicator tracks the operation. A deterministic Command/Prompt/Module target is created, exact-no-op confirmed, or updated using current remote SHA and exact read-back verification; per-row ordered-item saves also persist the current catalog order, while `Save all GitHub` publishes all pending direct-command/helper-library records plus `catalog-order.json` with current ordered stable IDs and presentation-only `commandGroups[]`.
 
-**Conflict boundary:** optimistic conflicts are reread once. If remote bytes already equal intended bytes, the write is recovered as verified success without a second PUT. If bytes differ, nothing is overwritten automatically. A verified remote result remains remote success even if later local metadata persistence fails.
+**Conflict boundary:** optimistic conflicts are reread once. If remote bytes already equal intended bytes, the write is recovered as verified success without a second PUT. If bytes differ, nothing is overwritten automatically. A verified remote result remains remote success even if later local metadata persistence fails. While a repository task is active, conflicting local/repository mutation controls are disabled to avoid stale-state races, but navigation, search, panel visibility and Run/Copy remain available.
 
 **Semantic boundary:** order/group persistence changes presentation only; it does not change Command/Scenario/UC/TM/Lens meaning. Commands order uses stable semantic IDs for UC/TM/Lens cards.
 

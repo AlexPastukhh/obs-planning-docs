@@ -289,6 +289,8 @@ Imported Use-Case / Target-Module / Lens / Scenario rows are local projection ov
 
 ## GitHub Actions
 
+Repository and other asynchronous Helper actions are non-blocking at the browser level. Confirmation/editor overlays are scoped to the Helper panel and close before long-running work starts. While work continues, the Helper header shows a spinning activity chip and the collapsed `Planning` launcher shows the running-task count. Navigation, search, panel close/reopen, Run and Copy remain available; only state-mutating controls that could race with an active repository operation are temporarily disabled. Completion and failure are reported through the normal status surface instead of a full-screen waiting overlay.
+
 ### Check GitHub
 
 Reads repository inventory/current generated catalogs and reports local/GitHub status for direct command definitions, Use-Case source projection, semantic components, canonical working Scenarios, Prompts, Modules/helper records and catalog order. No local mutation occurs.
@@ -320,7 +322,7 @@ prune Favorite IDs that no longer resolve
 preserve Prompt/Module library content
 ```
 
-The confirmation warns that unsaved local command drafts and local/legacy command rows absent from GitHub are lost. Prompt/Module library content is intentionally outside this replace-sync. The completed reload closes its confirmation overlay automatically; no extra Cancel action is required. No implicit/background hard reload exists.
+The confirmation warns that unsaved local command drafts and local/legacy command rows absent from GitHub are lost. Prompt/Module library content is intentionally outside this replace-sync. After confirmation, the overlay closes immediately and the reload continues as a visible background task; the user may navigate, search, close/reopen the Helper, Run or Copy while conflicting mutation controls remain disabled. No implicit hard reload exists.
 
 ### Save GitHub / Save all GitHub
 
