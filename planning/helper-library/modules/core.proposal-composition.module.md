@@ -1,0 +1,16 @@
+# Module — Proposal Composition / Atomic Transaction
+
+Status: active Planning Helper library item
+Scope: exact insertion text; not planning-command authority.
+
+[PLANNING_HELPER_LIBRARY_ITEM]
+{
+  "schemaVersion": 1,
+  "kind": "module",
+  "id": "core.proposal-composition",
+  "title": "Proposal Composition / Atomic Transaction",
+  "text": "## Proposal Composition / Transaction\n\nВсе новые существенные решения сначала оформляй как Proposals. Не превращай собственную рекомендацию, предложение review или пользовательскую идею автоматически в принятое решение.\n\n### Multiple Proposals\n\nОдин вопрос, finding, Need, FR или design choice может иметь несколько существенно разных разумных `PR-*`. Не схлопывай реальные альтернативы в один вариант ради простоты и не создавай искусственные альтернативы ради количества.\n\nДля существенного Proposal укажи:\n- ID `PR-*`;\n- origin;\n- что он решает/изменяет;\n- rationale;\n- существенные плюсы, минусы и trade-offs;\n- текущий status;\n- traceability к Needs/FR/findings;\n- relations к другим Proposals.\n\nСтатусы: `pending / selected candidate / rejected / superseded / committed`.\n\n### Proposal Relations\n\nИспользуй явно:\n- `REQUIRES PR-x` — без другого Proposal этот вариант нельзя корректно принять;\n- `RECOMMENDED_WITH PR-x` — можно принять отдельно, но совместное принятие существенно предпочтительнее;\n- `CONFLICTS_WITH PR-x` — одновременно включать нельзя;\n- `ALTERNATIVE_TO PR-x` — альтернативные способы решить один предмет;\n- `SUPERSEDES PR-x` — заменяет предыдущий Proposal;\n- `BUNDLE PG-x` — входит в связанную Proposal Group.\n\nДля `PG-*` различай `HARD_BUNDLE / SOFT_BUNDLE / ALTERNATIVE_GROUP / MUTUALLY_EXCLUSIVE_GROUP` и указывай внешние dependencies/conflicts.\n\nНе показывай взаимозависимые решения как независимый набор галочек.\n\n### Candidate Composition\n\nСобирай Recommended Candidate Composition из совместимых Proposals. Показывай included, unresolved alternatives, excluded conflicts, unsatisfied `REQUIRES`, Proposal Groups и существенные non-selected alternatives. Если жизнеспособных существенно разных композиций несколько, покажи несколько вместо искусственного выбора.\n\n### Atomic Transaction\n\nПо умолчанию композиция принимается атомарно.\n\nДо commit:\n- `selected/preferred != committed`;\n- согласие с отдельным Proposal означает выбор кандидата внутри открытой композиции, а не автоматический commit всей композиции;\n- если пользователь хочет отдельно принять только часть, это должно быть явно оформлено как отдельная граница/транзакция commit;\n- изменение одного Proposal требует повторно проверить зависимую Candidate Composition.\n\nСтатусы композиции: `TRANSACTION OPEN / READY FOR COMMIT / BLOCKED / COMMITTED`.\n\nПеред commit проверь покрытие обязательных Needs/FR, hard dependencies, conflicts, unresolved blocking decisions и целостность групп. После commit зафиксируй точный принятый состав и не смешивай его с rejected/superseded вариантами.\n\n### Review Boundary\n\nВ review подтверждённый finding не является Proposal. Finding описывает обнаруженное состояние; Proposal описывает, что предлагается с ним сделать. Если один finding допускает несколько исправлений, сохрани несколько remediation Proposals.",
+  "createdAt": "2026-10-07T18:56:00.000Z",
+  "updatedAt": "2026-10-07T18:56:00.000Z"
+}
+[/PLANNING_HELPER_LIBRARY_ITEM]
