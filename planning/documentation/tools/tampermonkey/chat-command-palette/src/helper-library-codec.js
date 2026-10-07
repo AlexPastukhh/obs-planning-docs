@@ -8,9 +8,9 @@
   const HELPER_LIBRARY_SCHEMA_VERSION = 1;
   const HELPER_LIBRARY_MARKER = 'PLANNING_HELPER_LIBRARY_ITEM';
   const HELPER_LIBRARY_ROOT = 'planning/helper-library';
-  const HELPER_LIBRARY_KINDS = Object.freeze({ COMMAND:'command', PROMPT:'prompt' });
-  const HELPER_LIBRARY_PATHS = Object.freeze({ command:`${HELPER_LIBRARY_ROOT}/commands`, prompt:`${HELPER_LIBRARY_ROOT}/prompts` });
-  const HELPER_LIBRARY_SUFFIXES = Object.freeze({ command:'.helper-command.md', prompt:'.prompt.md' });
+  const HELPER_LIBRARY_KINDS = Object.freeze({ COMMAND:'command', PROMPT:'prompt', MODULE:'module' });
+  const HELPER_LIBRARY_PATHS = Object.freeze({ command:`${HELPER_LIBRARY_ROOT}/commands`, prompt:`${HELPER_LIBRARY_ROOT}/prompts`, module:`${HELPER_LIBRARY_ROOT}/modules` });
+  const HELPER_LIBRARY_SUFFIXES = Object.freeze({ command:'.helper-command.md', prompt:'.prompt.md', module:'.module.md' });
   const ID_PATTERN = /^[a-z0-9][a-z0-9._-]{0,79}$/;
   const LEGACY_LOCAL_STORAGE_KEY = 'obs-planning-helper-command-projections-v1';
 
@@ -22,7 +22,7 @@
   }
   function makeHelperLibraryId(title, text='') { const base=slugify(title); const suffix=hashText(`${title}\n${text}`).slice(0,8); return `${base.slice(0,Math.max(1,79-suffix.length))}-${suffix}`.slice(0,80).replace(/-+$/,''); }
   function normalizeIso(value, fallback) { const text=String(value || '').trim(); if (!text) return fallback; const ms=Date.parse(text); assert(Number.isFinite(ms), `Invalid helper-library timestamp: ${text}`); return new Date(ms).toISOString(); }
-  function normalizeKind(value) { const kind=String(value || '').trim(); assert(kind===HELPER_LIBRARY_KINDS.COMMAND || kind===HELPER_LIBRARY_KINDS.PROMPT, `Unsupported helper-library kind: ${kind || '<empty>'}`); return kind; }
+  function normalizeKind(value) { const kind=String(value || '').trim(); assert(Object.values(HELPER_LIBRARY_KINDS).includes(kind), `Unsupported helper-library kind: ${kind || '<empty>'}`); return kind; }
 
   function normalizeHelperLibraryItem(value, options={}) {
     assert(value && typeof value==='object', 'Helper-library item must be an object.');
@@ -52,7 +52,7 @@
 
   function renderHelperLibraryDocument(item) {
     const normalized=normalizeHelperLibraryItem(item);
-    const kindLabel=normalized.kind===HELPER_LIBRARY_KINDS.COMMAND?'Helper Command':'Prompt';
+    const kindLabel=normalized.kind===HELPER_LIBRARY_KINDS.COMMAND?'Helper Command':normalized.kind===HELPER_LIBRARY_KINDS.MODULE?'Module':'Prompt';
     return `# ${kindLabel} — ${normalized.title}\n\nStatus: active Planning Helper library item\nScope: exact insertion text; not planning-command authority.\n\n[${HELPER_LIBRARY_MARKER}]\n${JSON.stringify(normalized,null,2)}\n[/${HELPER_LIBRARY_MARKER}]\n`;
   }
 

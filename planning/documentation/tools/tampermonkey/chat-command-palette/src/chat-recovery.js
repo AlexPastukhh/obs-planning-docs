@@ -30,7 +30,7 @@
       'I need to restore my OBS Planning Helper local snapshot from GitHub.',
       `Read the current repository ${owner}/${repo} on branch ${branch}.`,
       'Read every direct planning/commands/*.command.md file.',
-      'Also read every direct planning/helper-library/commands/*.helper-command.md file and every direct planning/helper-library/prompts/*.prompt.md file that exists.',
+      'Also read every direct planning/helper-library/commands/*.helper-command.md file, every direct planning/helper-library/prompts/*.prompt.md file, and every direct planning/helper-library/modules/*.module.md file that exists.',
       'This must be the complete current repository recovery set. Planning Helper Restore will reconcile its repository-backed local records to this pasted set while preserving local-only unbacked records.',
       'Return only the exact marker blocks needed by Planning Helper Restore:',
       '- every complete [PLANNING_COMMAND_DEFINITION] ... [/PLANNING_COMMAND_DEFINITION] block, unchanged;',

@@ -13,6 +13,10 @@ test('helper library renders and parses exact command and prompt documents',()=>
   assert.deepEqual(codec.parseHelperLibraryDocument(text,{path:'planning/helper-library/commands/my-command.helper-command.md'}),command);
   const prompt=codec.normalizeHelperLibraryItem({kind:'prompt',id:'review-prompt',title:'Review',text:'Review this carefully.'});
   assert.equal(codec.helperLibraryTargetPath(prompt),'planning/helper-library/prompts/review-prompt.prompt.md');
+  const module=codec.normalizeHelperLibraryItem({kind:'module',id:'review-contract',title:'Review contract',text:'Reusable contract.'});
+  const moduleText=codec.renderHelperLibraryDocument(module);
+  assert.deepEqual(codec.parseHelperLibraryDocument(moduleText,{path:'planning/helper-library/modules/review-contract.module.md'}),module);
+  assert.equal(codec.helperLibraryTargetPath(module),'planning/helper-library/modules/review-contract.module.md');
 });
 
 test('helper library rejects path drift and unsupported fields',()=>{
@@ -63,4 +67,4 @@ test('helper library title is a single printable line',()=>{
 });
 
 
-test('tracked helper-library corpus is strict-parseable and active prompts have unique exact insertion text',()=>{const repoRoot=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'../../../../../..'),promptTextOwner=new Map();for(const [kind,rel] of [['command','planning/helper-library/commands'],['prompt','planning/helper-library/prompts']]){const dir=path.join(repoRoot,rel);for(const name of fs.readdirSync(dir)){if(!codec.helperLibraryFilePattern(kind).test(name))continue;const full=path.join(dir,name),repoRel=path.relative(repoRoot,full).replaceAll(path.sep,'/');let item;assert.doesNotThrow(()=>{item=codec.parseHelperLibraryDocument(fs.readFileSync(full,'utf8'),{kind,path:repoRel})},repoRel);if(kind==='prompt'){const previous=promptTextOwner.get(item.text);assert.equal(previous,undefined,`${repoRel}: exact prompt text duplicates ${previous}`);promptTextOwner.set(item.text,repoRel)}}}});
+test('tracked helper-library corpus is strict-parseable and active prompts have unique exact insertion text',()=>{const repoRoot=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'../../../../../..'),promptTextOwner=new Map();for(const [kind,rel] of [['command','planning/helper-library/commands'],['prompt','planning/helper-library/prompts'],['module','planning/helper-library/modules']]){const dir=path.join(repoRoot,rel);if(!fs.existsSync(dir))continue;for(const name of fs.readdirSync(dir)){if(!codec.helperLibraryFilePattern(kind).test(name))continue;const full=path.join(dir,name),repoRel=path.relative(repoRoot,full).replaceAll(path.sep,'/');let item;assert.doesNotThrow(()=>{item=codec.parseHelperLibraryDocument(fs.readFileSync(full,'utf8'),{kind,path:repoRel})},repoRel);if(kind==='prompt'){const previous=promptTextOwner.get(item.text);assert.equal(previous,undefined,`${repoRel}: exact prompt text duplicates ${previous}`);promptTextOwner.set(item.text,repoRel)}}}});

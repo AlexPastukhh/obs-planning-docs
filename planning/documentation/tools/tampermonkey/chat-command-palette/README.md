@@ -2,7 +2,7 @@
 
 Status: active modular Tampermonkey helper implementation
 Version: `0.39.10`
-Scope: local-first, GitHub-backed **semantic command projection** with canonical methodology working Scenarios, reusable Prompts, explicit repository recovery/publish actions, editable ordered presentation groups, sidebar category/group navigation, canonical `Контекст / Результат / Суть` explanations plus visible command traversal/owner contracts, Favorites, direct Prompt position ordering and a wide/resizable browser UI.
+Scope: local-first, GitHub-backed **semantic command projection** with canonical methodology working Scenarios, reusable Prompts with reusable Modules, explicit repository recovery/publish actions, editable ordered presentation groups, sidebar category/group navigation, canonical `Контекст / Результат / Суть` explanations plus visible command traversal/owner contracts, Favorites, direct Prompt position ordering and a wide/resizable browser UI.
 
 <a id="planning-helper-semantic-projection"></a>
 ## Projection Authority
@@ -23,7 +23,7 @@ SDS planning start: [Application Definition resolution](application-definition.r
 2. `planning/commands/README.md` — direct Planning Command authority.
 3. `planning/documentation/use-case-registry-map.md` and the current IDTSPE Target Module/Lens registries — semantic owners projected into Helper commands.
 4. canonical working Scenario owners — methodology `SCN-*` in `planning/documentation/idtspe-methodology/active/idtspe-core/evaluation/USE-CASE-SCENARIO-MAP.md`, with repository/tool Scenarios owned by their canonical area (for example replacement-package Builder `SCN-06`); these Scenarios do not know about commands.
-5. `planning/helper-library/README.md` — Prompt / legacy helper insertion authority.
+5. `planning/helper-library/README.md` — Prompt / Module / legacy helper insertion authority.
 6. `scenarios/README.md` — Planning Helper **application** behavior (`SCN-PH-*`), separate from methodology working Scenarios (`SCN-*`).
 7. `MANUAL-ACCEPTANCE.md` — browser/real-GitHub acceptance.
 8. focused `src/**` / `tests/**`.
@@ -146,6 +146,7 @@ GitHub durable sources
   current Lens registries/owners
   canonical working Scenario owners
   planning/helper-library/prompts/*.prompt.md
+  planning/helper-library/modules/*.module.md
   catalog-order.json
 
 build-verified GitHub projections
@@ -220,18 +221,18 @@ Canonical methodology-use source is [`planning/documentation/use-case-registry-m
 
 `seed/scenarios.json` aggregates canonical `SCN-*` from their current owners: methodology scenarios from the Core methodology scenario map and repository/tool scenarios from their canonical repository owners (for example replacement-package Builder `SCN-06`). It stores canonical scenario prose + semantic references required for deterministic Helper projection. It does not store command-equivalent prose; command equivalents are computed from current semantic command identities at runtime.
 
-### Prompts
+### Prompts and Modules
 
-Prompt working content remains local-first and independently GitHub-backed through deterministic files in `planning/helper-library/prompts/*.prompt.md`.
+The top-level `Prompts` surface contains an inner `Prompts / Modules` switch and always opens on `Prompts`. Prompt working content remains local-first and independently GitHub-backed through deterministic files in `planning/helper-library/prompts/*.prompt.md`; reusable Modules live in `planning/helper-library/modules/*.module.md`. A Prompt or Module may reference a reusable block as `[[module:<stable-id>]]`. Stored text keeps the reference, while Prompt Run/Copy resolves the current Module bodies recursively at invocation time. Missing references and cycles fail closed rather than sending partially resolved text.
 
 Prompt cards expose two presentation-only ordering mechanisms over the same durable `catalog-order.json` prompt order:
 
 - `↑` / `↓` moves one position;
 - `№` accepts a 1-based target position and moves directly to that slot, clamped to the current list bounds.
 
-Reorder preserves the selected Prompt and current list viewport. Arrow moves never reset the list to the top; a large numeric jump scrolls only enough (`nearest`) to keep the moved card visible. No GitHub write occurs until explicit **Save order GitHub**.
+Modules are not manually ordered in v1; their list is deterministic by title/id. Reorder preserves the selected Prompt and current list viewport. Arrow moves never reset the list to the top; a large numeric jump scrolls only enough (`nearest`) to keep the moved card visible. No GitHub write occurs until an explicit per-row save or **Save all GitHub**. Per-row Prompt save persists the current prompt order together with the prompt so a new prompt cannot be published without its current position.
 
-Hard Reload of direct/semantic/scenario catalogs does **not** overwrite local Prompt content.
+Hard Reload of direct/semantic/scenario catalogs does **not** overwrite local Prompt or Module content. After a confirmed Hard Reload, the confirmation overlay closes immediately and the current helper surface/inner Prompt view remains active.
 
 ## Catalog Order
 
@@ -245,7 +246,7 @@ Schema 5 stores ordered stable IDs for Commands, Scenarios and Prompts plus `cat
 
 When a Commands classification opens, Helper shows all of its groups immediately in a group navigator. `All groups` is the default; the first group selection isolates that group and subsequent selections build a multi-group filter. Selection is remembered per classification. Group containers remain ordered below the navigator and each container has independently persisted collapsed/expanded state. In normal classification view the group name is shown in the navigator and once on the group container, not repeated on every command card; `All commands` may show `Tab › Group` context because it intentionally mixes classifications.
 
-**Manage groups** creates, renames, reorders and deletes groups. Deleting a group moves its cards to `Other / Ungrouped`; cards are never discarded by a layout edit. The detail-pane Group selector changes card membership. `Save order GitHub` explicitly persists `catalog-order.json`; per-user selected-group filters and collapsed/expanded state remain browser-local UI state and are not repository authority.
+**Manage groups** creates, renames, reorders and deletes groups. Deleting a group moves its cards to `Other / Ungrouped`; cards are never discarded by a layout edit. The detail-pane Group selector changes card membership. `Save all GitHub` persists pending local direct-command/helper-library changes together with `catalog-order.json`; per-user selected-group filters and collapsed/expanded state remain browser-local UI state and are not repository authority.
 
 ## ChatGPT Import and Recovery
 
@@ -282,7 +283,7 @@ Use Cases are the Import owner for UC projection state. `upsert.useCases` materi
 
 Deletion semantics are literal CRUD by collection. `delete.commands` removes only the direct `planning/commands/*.command.md` record; if a semantic owner still exists, its card may remain as a generic projection. `delete.useCases` removes only the Use Case, so an independently existing direct command may remain visible as General. `delete.semanticComponents` removes only that Target Module/Lens component, so its independently existing direct command may likewise remain visible as General. There is no hidden-row layer in the current snapshot model. To remove both a semantic capability and its backing command, list both explicitly in the same `delete` payload.
 
-Imported Use-Case / Target-Module / Lens / Scenario rows are local projection overrides for inspection/use; they do not become new semantic authority and are not written into generated `seed/*.json`. Durable semantic repository changes still belong to their canonical owners plus the normal build/projection route. Direct Commands and Prompts retain their existing explicit per-row `Save GitHub` path.
+Imported Use-Case / Target-Module / Lens / Scenario rows are local projection overrides for inspection/use; they do not become new semantic authority and are not written into generated `seed/*.json`. Durable semantic repository changes still belong to their canonical owners plus the normal build/projection route. Direct Commands, Prompts and Modules retain an explicit per-row `Save GitHub` path; `Save all GitHub` publishes all pending local writable records plus catalog order/grouping in one action.
 
 `Restore local items from ChatGPT markers` remains the recovery fallback for complete direct-command/helper-library marker sets and keeps its existing reconcile semantics; the general patch marker is intentionally an Import surface, not a Restore payload.
 
@@ -290,7 +291,7 @@ Imported Use-Case / Target-Module / Lens / Scenario rows are local projection ov
 
 ### Check GitHub
 
-Reads repository inventory/current generated catalogs and reports local/GitHub status for direct command definitions, Use-Case source projection, semantic components, canonical working Scenarios, Prompts/helper records and catalog order. No local mutation occurs.
+Reads repository inventory/current generated catalogs and reports local/GitHub status for direct command definitions, Use-Case source projection, semantic components, canonical working Scenarios, Prompts, Modules/helper records and catalog order. No local mutation occurs.
 
 ### Sync missing
 
@@ -314,16 +315,16 @@ validate all catalogs
 replace local direct-command + semantic + scenario projections and GitHub order/groups
 remove local/legacy command rows absent from GitHub authority
 clear Import suppression for direct Commands / Use Cases / semantic components / Scenarios
-preserve helper-library Import suppression because Prompt/helper-library content is not reloaded
+preserve helper-library Import suppression because Prompt/Module/helper-library content is not reloaded
 prune Favorite IDs that no longer resolve
-preserve Prompt-library content
+preserve Prompt/Module library content
 ```
 
-The confirmation warns that unsaved local command drafts and local/legacy command rows absent from GitHub are lost. Prompt-library content is intentionally outside this replace-sync. No implicit/background hard reload exists.
+The confirmation warns that unsaved local command drafts and local/legacy command rows absent from GitHub are lost. Prompt/Module library content is intentionally outside this replace-sync. The completed reload closes its confirmation overlay automatically; no extra Cancel action is required. No implicit/background hard reload exists.
 
-### Save GitHub / Save order GitHub
+### Save GitHub / Save all GitHub
 
-Per-row direct Command/Prompt save uses optimistic SHA update plus exact read-back verification. Conflicts never overwrite automatically. `Save order GitHub` persists only `catalog-order.json`; it changes presentation order, not semantic meaning.
+Per-row direct Command/Prompt/Module save uses optimistic SHA update plus exact read-back verification. Conflicts never overwrite automatically. Per-row direct Command and Prompt saves also persist the current catalog order. `Save all GitHub` saves every pending local direct-command/helper-library record and the current `catalog-order.json` snapshot in one explicit operation; it replaces the former standalone `Save order GitHub` action. Presentation order still changes presentation only, not semantic meaning.
 
 Repository delete remains unsupported. Local Delete and Import `DELETE` make zero GitHub writes. Both physically remove only the explicitly addressed local object and record same-entity suppression so ordinary `Sync missing` does not immediately restore it; `Hard Reload GitHub` remains the explicit authoritative recovery path for GitHub-backed catalogs.
 
@@ -340,7 +341,7 @@ Lenses
 Tools / Repository
 ```
 
-Inside each classification, `catalog-order.json#commandGroups` supplies smaller **presentation-only** groups such as `Review / Validation`, `Architecture Analysis`, `Application Behavior`, `Evolution`, `Meaning / Ownership` and `Packages / Archives`. The group navigator exposes all groups immediately and can filter to one or several without changing repository state. The selected-command detail pane changes membership; **Manage groups** creates, renames, reorders or deletes groups. Deletion falls back to `Other / Ungrouped`. `Save order GitHub` persists group identity/order/membership; selected filters and collapsed/expanded state stay browser-local. None of these operations changes semantic scope, ownership or applicability.
+Inside each classification, `catalog-order.json#commandGroups` supplies smaller **presentation-only** groups such as `Review / Validation`, `Architecture Analysis`, `Application Behavior`, `Evolution`, `Meaning / Ownership` and `Packages / Archives`. The group navigator exposes all groups immediately and can filter to one or several without changing repository state. The selected-command detail pane changes membership; **Manage groups** creates, renames, reorders or deletes groups. Deletion falls back to `Other / Ungrouped`. `Save all GitHub` persists group identity/order/membership; selected filters and collapsed/expanded state stay browser-local. None of these operations changes semantic scope, ownership or applicability.
 
 `src/methodology-navigation.js` combines stable semantic identity (`semanticKind`, `semanticScope`, tool/general classification) with the optional GitHub-backed presentation group. If a current card has no group yet, compatibility/fallback grouping keeps it visible rather than dropping it. `helperPresentation.navigation` remains compatibility-only input for old cached records and is not a current semantic source.
 
@@ -389,7 +390,7 @@ With Playwright and its Chromium browser available, run `npm run test:browser`. 
 
 **Manage categories** creates, renames and reorders categories. Deleting requires another destination and moves every group/card there; the last category cannot be deleted. Category IDs remain stable across rename. **Manage groups** can move a whole group to another category; the detail pane’s **Category** selector moves an individual card. **All commands** and **Favorites** remain automatic views. Renaming/deleting/moving preserves command identity, Favorites and semantic ownership.
 
-Categories, groups and membership share the local snapshot and explicit **Save order GitHub** / **Hard Reload GitHub** path. Editing categories requires no source change, rebuild or network request. Newly discovered unassigned cards use their available default semantic category, otherwise the declared fallback. Deleted categories are not recreated from a card’s semantic kind. Static default labels in compatibility migration are not a whitelist.
+Categories, groups and membership share the local snapshot and explicit **Save all GitHub** / **Hard Reload GitHub** path. Editing categories requires no source change, rebuild or network request. Newly discovered unassigned cards use their available default semantic category, otherwise the declared fallback. Deleted categories are not recreated from a card’s semantic kind. Static default labels in compatibility migration are not a whitelist.
 
 The **Body** and contract inspector distinguish initial `includes` from deferred `processCalls`. The [command owner](../../../../commands/README.md#planning-command-process-calls) defines execution semantics. The Helper validates and projects calls and their dependency plans; it does not execute semantic AI work in the browser. Command JSON editing/import/export and repository save retain this field.
 

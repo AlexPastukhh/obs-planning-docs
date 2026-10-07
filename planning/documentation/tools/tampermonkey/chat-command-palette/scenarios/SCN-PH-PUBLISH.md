@@ -3,9 +3,9 @@
 Status: active current behavior owner
 Scope: canonical detailed application behavior owner for explicit Helper→GitHub persistence.
 
-**Trigger/input:** per-row `Save GitHub` for a real Planning Command/Prompt/legacy helper record, or global `Save order GitHub` for current catalog order/presentation groups.
+**Trigger/input:** per-row `Save GitHub` for a real Planning Command/Prompt/Module/legacy helper record, or global `Save all GitHub` for all pending writable records plus current catalog order/presentation groups.
 
-**Successful result:** a deterministic Command/Prompt target is created, exact-no-op confirmed, or updated using current remote SHA and exact read-back verification; `Save order GitHub` creates/updates only `catalog-order.json` with current ordered stable IDs and presentation-only `commandGroups[]`.
+**Successful result:** a deterministic Command/Prompt/Module target is created, exact-no-op confirmed, or updated using current remote SHA and exact read-back verification; per-row ordered-item saves also persist the current catalog order, while `Save all GitHub` publishes all pending direct-command/helper-library records plus `catalog-order.json` with current ordered stable IDs and presentation-only `commandGroups[]`.
 
 **Conflict boundary:** optimistic conflicts are reread once. If remote bytes already equal intended bytes, the write is recovered as verified success without a second PUT. If bytes differ, nothing is overwritten automatically. A verified remote result remains remote success even if later local metadata persistence fails.
 
@@ -17,7 +17,7 @@ The path below is the normative current journey. The detailed trigger, result an
 
 | Scenario Path Step | Actor / application interaction | Participant / Feature resolution | Data / result | Attached SR | QRPE / Examples |
 |---|---|---|---|---|---|
-| <a id="sps-ph-publish-01"></a>`SPS-PH-PUBLISH-01 — Request explicit repository save` | User chooses Save GitHub for a direct record or Save order GitHub. | User and Helper; Feature resolution `OPEN` | exact record or catalog-order target | — | See the boundaries and traceability below; this step alone does not prove external effects. |
+| <a id="sps-ph-publish-01"></a>`SPS-PH-PUBLISH-01 — Request explicit repository save` | User chooses Save GitHub for a direct record or Save all GitHub. | User and Helper; Feature resolution `OPEN` | exact record or catalog-order target | — | See the boundaries and traceability below; this step alone does not prove external effects. |
 | <a id="sps-ph-publish-02"></a>`SPS-PH-PUBLISH-02 — Verify target and publish` | Helper checks remote SHA, writes only intended bytes when needed, and verifies read-back. | User and Helper; Feature resolution `OPEN` | created, updated, exact-no-op or conflict | — | See the boundaries and traceability below; this step alone does not prove external effects. |
 | <a id="sps-ph-publish-03"></a>`SPS-PH-PUBLISH-03 — Observe terminal result` | User sees verified success or conflict/uncertainty. | User and Helper; Feature resolution `OPEN` | repository result distinct from local metadata | — | See the boundaries and traceability below; this step alone does not prove external effects. |
 

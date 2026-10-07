@@ -103,11 +103,12 @@ test('presentation groups are one ordered list per tab and support create rename
   order=runtime.deleteCommandGroupInOrder(order,created.id);const fallback=order.commandGroups.find((group)=>group.label==='Other / Ungrouped');assert.ok(fallback);assert.ok(fallback.items.includes('a'));assert.equal(order.commandGroups.some((group)=>group.id===created.id),false);
 });
 
-test('runtime hard-reload source is an authoritative command/catalog replace and preserves prompts only',()=>{
+test('runtime hard-reload source is an authoritative command/catalog replace and preserves prompts plus modules',()=>{
   const source=require('node:fs').readFileSync(require('node:path').resolve(import.meta.dirname,'../src/planning-helper-runtime.js'),'utf8');
-  assert.match(source,/preservedPrompts=memory\.helperRecords\.filter/);
-  assert.match(source,/removedLegacyCommands=memory\.helperRecords\.length-preservedPrompts\.length/);
-  assert.match(source,/planningCommands,helperItems:preservedPrompts,useCases:useCaseCatalog\.useCases/);
+  assert.match(source,/preservedLibrary=memory\.helperRecords\.filter/);
+  assert.match(source,/HELPER_LIBRARY_KINDS\.PROMPT\|\|record\.item\.kind===deps\.HELPER_LIBRARY_KINDS\.MODULE/);
+  assert.match(source,/removedLegacyCommands=memory\.helperRecords\.length-preservedLibrary\.length/);
+  assert.match(source,/planningCommands,helperItems:preservedLibrary,useCases:useCaseCatalog\.useCases/);
   assert.match(source,/catalogOrder:order\.order/);
   assert.match(source,/suppressedRepository:\{helperItems:suppressionState\(snapshot\)\.helperItems\}/);
   assert.doesNotMatch(source,/hiddenCommandIds|hiddenUseCaseIds/);
@@ -222,4 +223,35 @@ test('Favorite moves normalize legacy direct IDs and keep unavailable Favorites 
   const local=state.normalizePlanningHelperLocalSnapshot({...snapshot(),planningCommands:[...snapshot().planningCommands,state.normalizeCommandRecord({definition:pre})],favoriteCommandIds:['tmcmd.pre.update','unavailable','a']});
   const moved=runtime.moveFavoriteCommandInSnapshot(local,'tm:TM-PRE-UPDATE-PLAN',1);
   assert.deepEqual(moved.favoriteCommandIds,['a','unavailable','tm:TM-PRE-UPDATE-PLAN']);
+});
+
+test('modules materialize separately from prompts and report prompt/module usage',()=>{
+  const moduleA=helperItem('module','shared-a','A'),moduleB=helperItem('module','shared-b','[[module:shared-a]]'),prompt=helperItem('prompt','with-module','Before [[module:shared-a]] after');
+  const local=state.normalizePlanningHelperLocalSnapshot({...snapshot(),helperItems:[state.normalizeHelperRecord({item:moduleB,repositoryKnown:true}),state.normalizeHelperRecord({item:prompt,repositoryKnown:true}),state.normalizeHelperRecord({item:moduleA,repositoryKnown:true})]});
+  const memory=runtime.materializeSnapshot(local);
+  assert.equal(memory.promptEntries.length,1);assert.equal(memory.moduleEntries.length,2);
+  assert.deepEqual(memory.moduleEntries.map((entry)=>entry.libraryId),['shared-a','shared-b']);
+  const a=memory.moduleEntries.find((entry)=>entry.libraryId==='shared-a');
+  assert.deepEqual(a.referencedByPrompts.map((entry)=>entry.title),[prompt.title]);
+  assert.deepEqual(a.referencedByModules.map((entry)=>entry.title),[moduleB.title]);
+  assert.equal(memory.promptEntries[0].moduleReferenceCount,1);
+});
+
+test('prompt invocation resolves reusable modules before command side effects',async()=>{
+  const resolver=require('../src/helper-module-resolver.js'),m=helperItem('module','shared','MODULE'),calls=[];
+  const operations={...resolver,async applyCommandSideEffects(id,text){calls.push([id,text]);return text;}};
+  const resolved=await runtime.prepareInvocationBody('Before [[module:shared]] after','prompt-id',{resolveModules:true},operations,[m]);
+  assert.equal(resolved,'Before MODULE after');assert.deepEqual(calls,[['prompt-id','Before MODULE after']]);
+  await assert.rejects(()=>runtime.prepareInvocationBody('[[module:missing]]','prompt-id',{resolveModules:true},operations,[m]),/Unresolved module reference/);
+});
+
+test('create-only helper save refuses replacing an existing stable module id',()=>{
+  const m=helperItem('module','stable','original'),local=state.normalizePlanningHelperLocalSnapshot({...snapshot(),helperItems:[state.normalizeHelperRecord({item:m,repositoryKnown:true})]});
+  assert.throws(()=>runtime.prepareLocalHelperSave(local,{kind:'module',id:'stable',title:'Replacement',text:'changed',createOnly:true}),/already exists/);
+});
+
+test('complete catalog order includes newly materialized prompts so normal save can persist their position',()=>{
+  const p=helperItem('prompt','new-prompt','new'),local=state.normalizePlanningHelperLocalSnapshot({...snapshot(),helperItems:[state.normalizeHelperRecord({item:p,repositoryKnown:false})],catalogOrder:{schemaVersion:5,kind:'planning-helper-catalog-order',commands:[],scenarios:[],prompts:[],categories:[{id:'GENERAL',label:'General',order:10}],fallbackCategoryId:'GENERAL',commandGroups:[]}});
+  const order=runtime.completeCatalogOrder(local);
+  assert.deepEqual(order.prompts,['helper-library:prompt:new-prompt']);
 });

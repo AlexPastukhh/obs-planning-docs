@@ -64,3 +64,8 @@ test('Favorites use personal order independently of catalog order and tolerate s
   assert.deepEqual(favoriteEntries(entries,['c','missing','b','c','a']).map(e=>e.id),['c','b','a']);
   assert.deepEqual(entries.map(e=>e.id),['a','b','c']);
 });
+
+
+test('Prompts contains Prompts/Modules inner navigation and Save all replaces standalone order save',async()=>{const fs=await import('node:fs');const source=fs.readFileSync(new URL('../src/planning-helper-ui.js',import.meta.url),'utf8');assert.match(source,/data-library-view="prompts"/);assert.match(source,/data-library-view="modules"/);assert.match(source,/activePromptView='prompts'/);assert.match(source,/if\(surface===SURFACES\.PROMPTS\)activePromptView='prompts'/);assert.match(source,/Save all GitHub/);assert.doesNotMatch(source,/Save order GitHub/);assert.match(source,/onSaveAllRepository/);assert.match(source,/resolveModules:true/);assert.match(source,/Copy ref/);});
+
+test('Hard Reload closes its overlay before applying returned state and modules use a dedicated selected-row accent gutter',async()=>{const fs=await import('node:fs');const source=fs.readFileSync(new URL('../src/planning-helper-ui.js',import.meta.url),'utf8');const start=source.indexOf('function hardReloadRepository'),end=source.indexOf('function saveAllRepository',start),body=source.slice(start,end);assert.ok(body.indexOf('closeOverlay(overlay)')<body.indexOf('applyState(result)'));assert.match(source,/\.row\[data-selected=true\]::before/);assert.match(source,/padding-left:10px/);});

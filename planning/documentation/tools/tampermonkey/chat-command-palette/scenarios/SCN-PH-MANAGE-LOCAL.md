@@ -20,7 +20,7 @@ Scope: local draft/Favorite/order/layout work without implicit repository mutati
 - choosing a category/group, searching or toggling a Favorite preserves the sidebar scroll position across list refreshes, clamped only if the refreshed sidebar is shorter; collapsing a list group updates it in place;
 - Prompt ordering uses the same local `catalogOrder.prompts` state for both fine-grained `↑` / `↓` moves and direct 1-based `№` target-position moves; entering an empty position performs no move, and entered values are constrained to the current `1..N` range;
 - Prompt reorder preserves the currently selected Prompt and the list viewport. Arrow moves restore the prior `scrollTop` instead of jumping to the beginning; after a large numeric move the selected card is brought into view only with nearest scrolling rather than resetting the list to the top;
-- `Save order GitHub` is required for durable repository order/group layout; local reorder itself performs no implicit repository write;
+- `Save all GitHub` persists durable repository order/group layout together with all pending local writable records; local reorder itself performs no implicit repository write;
 - Prompt edits remain local-first and are not overwritten by semantic-catalog Hard Reload;
 - panel position/size are local UI state only;
 - local Delete physically removes the selected local direct Command or Use Case and records same-entity suppression so ordinary `Sync missing` does not immediately restore it; there is no hidden-row tombstone layer;
@@ -52,4 +52,4 @@ Disposition: `OMITTED`; the selected SPS path and existing detailed boundaries s
 - Create an empty category; it appears immediately. Rename and reorder it without changing its stable ID.
 - Move a card using Category, or a complete group through Manage groups. Semantic identity and Favorites remain intact.
 - Delete a category into a chosen existing destination; all groups/cards remain discoverable. Block deletion of the last category.
-- Save locally, restart and verify; explicit Save order GitHub / Hard Reload GitHub preserves the same category/group catalog. No category management action implicitly accesses GitHub.
+- Save locally, restart and verify; explicit Save all GitHub / Hard Reload GitHub preserves the same category/group catalog. No category management action implicitly accesses GitHub.
