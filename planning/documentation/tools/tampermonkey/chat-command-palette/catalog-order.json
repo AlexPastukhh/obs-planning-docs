@@ -238,6 +238,7 @@
     "helper-library:prompt:scenario.form-and-save",
     "helper-library:prompt:proposal.evaluate-existing",
     "helper-library:prompt:proposal.priority-shallow",
+    "helper-library:prompt:item-pzffx5-1bfdhxg",
     "helper-library:prompt:gdoc-991hn9",
     "helper-library:prompt:gdoc-zip-1rueqqi",
     "helper-library:prompt:item-1ir0x2w-197y55w",
@@ -256,8 +257,7 @@
     "helper-library:prompt:item-znt1b6-90rtdk",
     "helper-library:prompt:item-10n7n2t-1xxpe9b",
     "helper-library:prompt:test.module-prompt-a",
-    "helper-library:prompt:test.module-prompt-b",
-    "helper-library:prompt:item-pzffx5-1bfdhxg"
+    "helper-library:prompt:test.module-prompt-b"
   ],
   "commandGroups": [
     {
