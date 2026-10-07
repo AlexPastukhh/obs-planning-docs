@@ -1,7 +1,7 @@
 # Prompt — Deep semantic traceability extension
 
 Status: active Planning Helper library item
-Scope: exact insertion text; not semantic authority.
+Scope: exact insertion text; not planning-command authority.
 
 [PLANNING_HELPER_LIBRARY_ITEM]
 {
