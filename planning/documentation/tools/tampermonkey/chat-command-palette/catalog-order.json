@@ -60,7 +60,6 @@
     "documentation.links.use",
     "documentation.links.review",
     "documentation.ownership.review",
-    "documentation.methodology-baseline.maintain",
     "idtspe.lenses.select",
     "idtspe.bootstrap",
     "application_sds.bootstrap",
@@ -71,7 +70,6 @@
     "current_state.report",
     "command.plan",
     "uc:UC-IDTSPE-AI-WORKING-BOUNDARY",
-    "uc:UC-IDTSPE-CONDUCT-CURRENT-WORK",
     "uc:UC-IDTSPE-COMPOSE-CURRENT-WORK",
     "uc:UC-IDTSPE-MAINTAIN-CURRENT-WORK-STATE",
     "uc:UC-IDTSPE-INTEGRATE-CURRENT-WORK",
@@ -176,7 +174,6 @@
     "idtspe.port.persistence",
     "idtspe.port.revalidation",
     "idtspe.port-composition.recheck",
-    "idtspe.compose-current-work",
     "idtspe.review",
     "idtspe.review.recheck",
     "idtspe.unit.resolve",
@@ -184,7 +181,9 @@
     "idtspe.branch.explore",
     "idtspe.qrp.review",
     "idtspe.result.compose",
-    "idtspe.revalidate"
+    "idtspe.revalidate",
+    "lens:LENS-PROPOSAL-DECISION-RESOLUTION-CONTEXT",
+    "idtspe.lenses.apply-selected"
   ],
   "useCases": [
     "UC-DOC-USE-REPOSITORY-GUIDANCE",
@@ -211,7 +210,15 @@
     "idtspe.decisions.capture"
   ],
   "scenarios": [
-    "idtspe.decisions.capture"
+    "SCN-01",
+    "SCN-02",
+    "SCN-03",
+    "SCN-04",
+    "SCN-05",
+    "SCN-06",
+    "SCN-07",
+    "SCN-08",
+    "SCN-DOC-REGISTRY-01"
   ],
   "prompts": [
     "helper-library:prompt:file-link-filename-block",
@@ -244,7 +251,9 @@
     "helper-library:prompt:item-rdl7av-1y97ll2",
     "helper-library:prompt:item-1iy9b3g-8grcmz",
     "helper-library:prompt:item-znt1b6-90rtdk",
-    "helper-library:prompt:item-10n7n2t-1xxpe9b"
+    "helper-library:prompt:item-10n7n2t-1xxpe9b",
+    "helper-library:prompt:test.module-prompt-a",
+    "helper-library:prompt:test.module-prompt-b"
   ],
   "commandGroups": [
     {
