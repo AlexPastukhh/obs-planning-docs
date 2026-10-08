@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 5,
+  "schemaVersion": 6,
   "kind": "planning-helper-catalog-order",
   "categories": [
     {
@@ -257,7 +257,20 @@
     "helper-library:prompt:item-znt1b6-90rtdk",
     "helper-library:prompt:item-10n7n2t-1xxpe9b",
     "helper-library:prompt:test.module-prompt-a",
-    "helper-library:prompt:test.module-prompt-b"
+    "helper-library:prompt:test.module-prompt-b",
+    "helper-library:prompt:item-1rc3jle-1vdkydi",
+    "helper-library:prompt:item-qh9zlq-13swcyi",
+    "helper-library:prompt:item-s6z4se-dhvwzb",
+    "helper-library:prompt:question-sweep-explicit-20261005",
+    "helper-library:prompt:session-artifacts-explicit-20261005",
+    "helper-library:prompt:session-finalize-explicit-20261005",
+    "helper-library:prompt:session-input-explicit-20261005",
+    "helper-library:prompt:session-manifest-explicit-20261005",
+    "helper-library:prompt:session-sync-explicit-20261005",
+    "helper-library:prompt:session-workspace-explicit-20261005",
+    "helper-library:prompt:work-record-artifact-explicit-20261005",
+    "helper-library:prompt:work-record-explicit-20261005",
+    "helper-library:prompt:work-record-inline-explicit-20261005"
   ],
   "commandGroups": [
     {
@@ -713,5 +726,6 @@
         "idtspe.tm_lens_dependency_map.check"
       ]
     }
-  ]
+  ],
+  "promptGroups": []
 }
