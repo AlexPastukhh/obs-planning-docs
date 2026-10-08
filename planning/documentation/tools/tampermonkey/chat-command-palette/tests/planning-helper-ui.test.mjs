@@ -102,3 +102,39 @@ test('action overlays are panel-scoped and release before asynchronous work star
   assert.ok(body.indexOf('closeOverlay(overlay)')<body.indexOf('insertBody('));
   assert.match(source,/if\(event\.key==='Escape'&&activeOverlay\)\{closeOverlay\(activeOverlay\);return;\}/);
 });
+
+test('Save all does not discard click based on stale pending counts',async()=>{
+  const fs=await import('node:fs');
+  const source=fs.readFileSync(new URL('../src/planning-helper-ui.js',import.meta.url),'utf8');
+  const section=source.slice(source.indexOf('function saveAllRepository()'),source.indexOf('function openSettings(',source.indexOf('function saveAllRepository()')));
+  assert.doesNotMatch(section,/if\(!total\).*?return/);
+  assert.match(section,/action:\(\)=>options\.onSaveAllRepository\(\)/);
+  assert.match(section,/result\.action==='noop'/);
+  assert.match(section,/result\.ok===false/);
+});
+
+test('Save all UI invokes runtime even when its last rendered pending count was zero',async()=>{
+  const fs=await import('node:fs');
+  const source=fs.readFileSync(new URL('../src/planning-helper-ui.js',import.meta.url),'utf8');
+  const start=source.indexOf('function saveAllRepository()');
+  const section=source.slice(start,source.indexOf('function openSettings(',start));
+  const nodes=[],statuses=[];let calls=0,task=null;
+  const element=()=>({children:[],append(...children){this.children.push(...children);}});
+  const factory=new Function('pendingRepositoryWrites','makeOverlay','document','button','closeOverlay',
+    'runTask','options','applyState','showStatus','repositorySaveFailureMessage',
+    `${section}\nreturn saveAllRepository;`);
+  const handler=factory({commands:0,prompts:0,modules:0,helperCommands:0,order:false},
+    ()=>{const modal=element();nodes.push(modal);return{overlay:{},modal};},
+    {createElement:element},(title,cls,callback)=>({title,click:callback}),()=>{},
+    ({action,onSuccess})=>{task=Promise.resolve().then(action).then(onSuccess);return task;},
+    {onSaveAllRepository:async()=>{calls++;return{ok:true,action:'noop'};}},
+    ()=>{},(message)=>statuses.push(message),(error)=>String(error));
+  handler();
+  assert.equal(nodes.length,1,'zero stale count must still allow confirmation');
+  const actions=nodes[0].children.at(-1);
+  const confirm=actions.children.find((node)=>node.title==='Save all GitHub');
+  assert.ok(confirm);
+  confirm.click();await task;
+  assert.equal(calls,1);
+  assert.ok(statuses.some((message)=>message.includes('No pending GitHub changes.')));
+});
