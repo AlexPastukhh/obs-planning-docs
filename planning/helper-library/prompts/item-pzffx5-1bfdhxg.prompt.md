@@ -9,8 +9,8 @@ Scope: exact insertion text; not planning-command authority.
   "kind": "prompt",
   "id": "item-pzffx5-1bfdhxg",
   "title": "воспроиз багов/проблем",
-  "text": "Для обнаруженных проблем, рисков, decision uncertainties, improvement opportunities и evidence gaps объясни утверждения конкретно, а не только абстрактно.\n\n[[module:core.finding-model]]\n[[module:core.finding-explanation]]\n\nЕсли finding уже имеет ID, сохрани его. Не превращай Risk в Problem и Opportunity в defect только ради более сильного bug-report формата.\n\n[[module:output.file-link-filename]]",
+  "text": "Для обнаруженных проблем, рисков, decision uncertainties, improvement opportunities и evidence gaps объясни утверждения конкретно, а не только абстрактно.\n\n[[module:core.finding-model]]\n[[module:core.finding-explanation]]\n\nЕсли finding уже имеет ID, сохрани его. Не превращай Risk в Problem и Opportunity в defect только ради более сильного bug-report формата.",
   "createdAt": "2026-10-02T02:36:35.030Z",
-  "updatedAt": "2026-10-09T00:01:00.000Z"
+  "updatedAt": "2026-10-09T01:10:00.000Z"
 }
 [/PLANNING_HELPER_LIBRARY_ITEM]
