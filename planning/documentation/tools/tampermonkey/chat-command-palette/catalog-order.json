@@ -270,7 +270,8 @@
     "helper-library:prompt:session-workspace-explicit-20261005",
     "helper-library:prompt:work-record-artifact-explicit-20261005",
     "helper-library:prompt:work-record-explicit-20261005",
-    "helper-library:prompt:work-record-inline-explicit-20261005"
+    "helper-library:prompt:work-record-inline-explicit-20261005",
+    "helper-library:prompt:overview.on-demand"
   ],
   "commandGroups": [
     {
