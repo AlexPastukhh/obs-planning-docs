@@ -9,8 +9,8 @@ Scope: exact insertion text; not planning-command authority.
   "kind": "prompt",
   "id": "session-finalize-explicit-20261005",
   "title": "Сессионную работу — завершить",
-  "text": "Заверши только текущий явно активированный session/work-record context. Зафиксируй фактический итог, незавершённые/open/deferred items и re-entry refs, затем при необходимости rematerialize переносимый Session State archive.\n\nНе трактуй завершение session wrapper как семантическое принятие Proposal/Decision/Target result. Не запускай новые задачи. Если часть работы остаётся открытой, сохрани её честно как open/suspended вместо фиктивного completion.",
-  "createdAt": "2026-10-05T09:50:39Z",
-  "updatedAt": "2026-10-05T09:50:39Z"
+  "text": "Заверши только текущий явно активированный session/work-record context. Зафиксируй фактический итог, незавершённые/open/deferred items и re-entry refs, затем при необходимости rematerialize переносимый Session State archive.\n\nНе трактуй завершение session wrapper как семантическое принятие Proposal/Decision/Target result. Не запускай новые задачи. Если часть работы остаётся открытой, сохрани её честно как open/suspended вместо фиктивного completion.\n\n[[module:output.file-link-filename]]",
+  "createdAt": "2026-10-05T09:50:39.000Z",
+  "updatedAt": "2026-10-09T00:01:00.000Z"
 }
 [/PLANNING_HELPER_LIBRARY_ITEM]
