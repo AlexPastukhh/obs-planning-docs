@@ -228,6 +228,11 @@
     async function updateCatalogGroup(groupId,input){const order=updateCommandGroupInOrder(snapshot.catalogOrder||{},groupId,input);return persist({...snapshot,catalogOrder:order,catalogOrderSha:''});}
     async function deleteCatalogGroup(groupId){const order=deleteCommandGroupInOrder(snapshot.catalogOrder||{},groupId);return persist({...snapshot,catalogOrder:order,catalogOrderSha:''});}
     async function moveCatalogGroup(groupId,delta){const order=moveCommandGroupInOrder(snapshot.catalogOrder||{},groupId,delta);return persist({...snapshot,catalogOrder:order,catalogOrderSha:''});}
+    async function createPromptGroup(label){return persist({...snapshot,catalogOrder:deps.createPromptGroupInOrder(snapshot.catalogOrder,label),catalogOrderSha:''});}
+    async function renamePromptGroup(id,label){return persist({...snapshot,catalogOrder:deps.renamePromptGroupInOrder(snapshot.catalogOrder,id,label),catalogOrderSha:''});}
+    async function deletePromptGroup(id){return persist({...snapshot,catalogOrder:deps.deletePromptGroupInOrder(snapshot.catalogOrder,id),catalogOrderSha:''});}
+    async function assignPromptGroup(promptId,groupId){if(!memory.promptEntries.some(entry=>entry.id===promptId))throw new Error(`Unknown local prompt: ${promptId}`);return persist({...snapshot,catalogOrder:deps.assignPromptGroupInOrder(snapshot.catalogOrder,promptId,groupId),catalogOrderSha:''});}
+    async function movePromptGroup(id,delta){return persist({...snapshot,catalogOrder:deps.movePromptGroupInOrder(snapshot.catalogOrder,id,delta),catalogOrderSha:''});}
     async function createCatalogCategory(input){return persist({...snapshot,catalogOrder:createCommandCategoryInOrder(memory.order,input),catalogOrderSha:''});}
     async function updateCatalogCategory(id,input){return persist({...snapshot,catalogOrder:updateCommandCategoryInOrder(memory.order,id,input),catalogOrderSha:''});}
     async function moveCatalogCategory(id,delta){return persist({...snapshot,catalogOrder:moveCommandCategoryInOrder(memory.order,id,delta),catalogOrderSha:''});}
@@ -238,15 +243,19 @@
       const dirtyCommands=memory.commandRecords.filter((record)=>!record.repositoryKnown);
       const dirtyHelpers=memory.helperRecords.filter((record)=>!record.repositoryKnown);
       const orderDirty=!snapshot.catalogOrderSha;
-      const counts={savedCommands:0,savedHelperItems:0,savedPrompts:0,savedModules:0,savedHelperCommands:0,savedOrder:false};
+      const counts={savedCommands:0,savedHelperItems:0,savedPrompts:0,savedModules:0,savedHelperCommands:0,savedOrder:false,alreadyOnGitHub:0};
       if(!dirtyCommands.length&&!dirtyHelpers.length&&!orderDirty)return{ok:true,action:'noop',...counts,...uiState()};
       const{commandService,helperService,catalogService,settings}=await makeServices();
-      let failedItem='',confirmed=0,locallyRecorded=0,orderAction='';
+      let failedItem='',confirmed=0,locallyRecorded=0,orderAction='',deferredFailures=[];
       try{
         for(const record of dirtyCommands){
           failedItem=record.path;
-          const result=await commandService.save(record.definition);
-          counts.savedCommands++;confirmed++;
+          let result;
+          try{result=await commandService.save(record.definition);}
+          catch(error){if(['verification_mismatch','verification_unknown','conflict'].includes(error?.kind)){deferredFailures.push({path:record.path,error});continue;}throw error;}
+          if(result.action==='noop')counts.alreadyOnGitHub++;
+          else counts.savedCommands++;
+          confirmed++;
           const updated=memory.commandRecords.map((entry)=>entry.path===record.path?
             deps.normalizeCommandRecord({...entry,rawContent:result.rawContent,repositoryKnown:true,repositoryTracked:true,repositorySha:result.sha}):entry);
           await persist({...snapshot,planningCommands:updated});
@@ -254,11 +263,17 @@
         }
         for(const record of dirtyHelpers){
           failedItem=record.path;
-          const result=await helperService.save(record.item);
-          counts.savedHelperItems++;confirmed++;
-          if(record.item.kind===deps.HELPER_LIBRARY_KINDS.PROMPT)counts.savedPrompts++;
-          else if(record.item.kind===deps.HELPER_LIBRARY_KINDS.MODULE)counts.savedModules++;
-          else counts.savedHelperCommands++;
+          let result;
+          try{result=await helperService.save(record.item);}
+          catch(error){if(['verification_mismatch','verification_unknown','conflict'].includes(error?.kind)){deferredFailures.push({path:record.path,error});continue;}throw error;}
+          if(result.action==='noop')counts.alreadyOnGitHub++;
+          else{
+            counts.savedHelperItems++;
+            if(record.item.kind===deps.HELPER_LIBRARY_KINDS.PROMPT)counts.savedPrompts++;
+            else if(record.item.kind===deps.HELPER_LIBRARY_KINDS.MODULE)counts.savedModules++;
+            else counts.savedHelperCommands++;
+          }
+          confirmed++;
           const updated=memory.helperRecords.map((entry)=>entry.path===record.path?
             deps.normalizeHelperRecord({...entry,rawContent:result.rawContent,repositoryKnown:true,repositorySha:result.sha}):entry);
           await persist({...snapshot,helperItems:updated});
@@ -267,7 +282,9 @@
         if(orderDirty){
           failedItem='catalog-order.json';
           const result=await catalogService.saveOrder(completeCatalogOrder(snapshot));
-          counts.savedOrder=true;confirmed++;orderAction=result.action;
+          counts.savedOrder=result.action!=='noop';
+          if(result.action==='noop')counts.alreadyOnGitHub++;
+          confirmed++;orderAction=result.action;
           await persist({...snapshot,catalogOrder:result.order,catalogOrderSha:result.sha});
           locallyRecorded++;
         }
@@ -275,7 +292,8 @@
         return{ok:false,action:confirmed?'save-all-partial':'save-all-failed',settings,
           ...counts,failedItem,error,localSnapshotUpdated:confirmed===locallyRecorded,...uiState()};
       }
-      return{ok:true,settings,action:'save-all',...counts,orderAction,...uiState()};
+      if(deferredFailures.length){const first=deferredFailures[0];return{ok:false,settings,action:confirmed?'save-all-partial':'save-all-failed',...counts,failedItem:first.path,failedItems:deferredFailures.map(({path})=>path),error:first.error,localSnapshotUpdated:true,...uiState()};}
+       return{ok:true,settings,action:'save-all',...counts,orderAction,...uiState()};
     });}
     async function getRecoveryRequest(){const settings=await deps.loadRepositorySettings();return deps.buildRecoveryRequest(settings);}async function loadSettings(){return{settings:await deps.loadRepositorySettings(),token:await deps.loadGitHubToken()};}async function saveSettings(settings,token){return repositoryOperation('Save repository settings',async()=>{const previous=await deps.loadRepositorySettings(),candidate=deps.validateRepositorySettings(settings),sourceChanged=repositorySettingsKey(previous)!==repositorySettingsKey(candidate);if(sourceChanged)await persist(clearRepositoryEvidence(snapshot));await deps.saveGitHubToken(token);await deps.saveRepositorySettings(candidate);return{sourceChanged,...uiState()};});}
     // Every UI and programmatic local mutation must enter the same state queue.
@@ -283,15 +301,15 @@
       toggleFavoriteCommand,moveFavoriteCommand,toggleFavoriteUseCase,
       saveLocalLibraryItem,deleteLocalLibraryItem,moveCatalogItem,moveCatalogItemToPosition,
       assignCatalogGroup,createCatalogGroup,updateCatalogGroup,deleteCatalogGroup,
-      moveCatalogGroup,createCatalogCategory,updateCatalogCategory,moveCatalogCategory,
+      moveCatalogGroup,createPromptGroup,renamePromptGroup,deletePromptGroup,assignPromptGroup,movePromptGroup,createCatalogCategory,updateCatalogCategory,moveCatalogCategory,
       deleteCatalogCategory};
     for(const[name,action]of Object.entries(localMutations))
       localMutations[name]=(...args)=>serializeMutation(()=>action(...args));
     const localUiCallbacks=Object.fromEntries(Object.entries(localMutations).map(([name,action])=>
       [`on${name[0].toUpperCase()}${name.slice(1)}`,action]));
-    const ui=deps.createPlanningHelperUi({surfaces:deps.SURFACES,...uiState(),position:deps.readPanelPosition(),onSavePosition:deps.savePanelPosition,onInsert:async(text,success,id,invocation)=>insertWithClipboard(await prepareInvocationBody(text,id,invocation,deps,memory.helperRecords.map((record)=>record.item)),success,id),onCopy:async(text,id,invocation)=>deps.copyText(await prepareInvocationBody(text,id,invocation,deps,memory.helperRecords.map((record)=>record.item))),onCopyPlain:(text)=>deps.copyText(text),onResolveLibraryText:(text)=>deps.resolveModuleReferences(text,memory.helperRecords.map((record)=>record.item)).text,onGetInvocationSideEffects:(id)=>typeof deps.commandSideEffectIds==='function'?deps.commandSideEffectIds(id):[],onPreviewChatImport:(text,mode)=>previewChatImport(snapshot,text,mode),onApplyChatImport:applyChatText,onGetRecoveryRequest:getRecoveryRequest,onSaveLocalCommandDefinition:saveLocalCommandDefinition,onDeleteLocalCommand:deleteLocalCommand,onDeleteLocalUseCase:deleteLocalUseCase,onToggleFavoriteCommand:toggleFavoriteCommand,onMoveFavoriteCommand:moveFavoriteCommand,onToggleFavoriteUseCase:toggleFavoriteUseCase,onReloadRepositoryCommand:reloadRepositoryCommand,onSaveLocalLibraryItem:saveLocalLibraryItem,onDeleteLocalLibraryItem:deleteLocalLibraryItem,onCheckRepository:checkRepository,onSyncMissingRepository:syncMissingRepository,onHardReloadRepository:hardReloadRepository,onMoveCatalogItem:moveCatalogItem,onMoveCatalogItemToPosition:moveCatalogItemToPosition,onAssignCatalogGroup:assignCatalogGroup,onCreateCatalogGroup:createCatalogGroup,onUpdateCatalogGroup:updateCatalogGroup,onDeleteCatalogGroup:deleteCatalogGroup,onMoveCatalogGroup:moveCatalogGroup,onCreateCatalogCategory:createCatalogCategory,onUpdateCatalogCategory:updateCatalogCategory,onMoveCatalogCategory:moveCatalogCategory,onDeleteCatalogCategory:deleteCatalogCategory,onSaveCatalogOrderRepository:saveCatalogOrderRepository,onSaveRepositoryEntity:saveRepositoryEntity,onSaveAllRepository:saveAllRepository,onLoadSettings:loadSettings,onSaveSettings:saveSettings,startupWarnings,...localUiCallbacks});
+    const ui=deps.createPlanningHelperUi({surfaces:deps.SURFACES,...uiState(),position:deps.readPanelPosition(),onSavePosition:deps.savePanelPosition,onInsert:async(text,success,id,invocation)=>insertWithClipboard(await prepareInvocationBody(text,id,invocation,deps,memory.helperRecords.map((record)=>record.item)),success,id),onCopy:async(text,id,invocation)=>deps.copyText(await prepareInvocationBody(text,id,invocation,deps,memory.helperRecords.map((record)=>record.item))),onCopyPlain:(text)=>deps.copyText(text),onResolveLibraryText:(text)=>deps.resolveModuleReferences(text,memory.helperRecords.map((record)=>record.item)).text,onGetInvocationSideEffects:(id)=>typeof deps.commandSideEffectIds==='function'?deps.commandSideEffectIds(id):[],onPreviewChatImport:(text,mode)=>previewChatImport(snapshot,text,mode),onApplyChatImport:applyChatText,onGetRecoveryRequest:getRecoveryRequest,onSaveLocalCommandDefinition:saveLocalCommandDefinition,onDeleteLocalCommand:deleteLocalCommand,onDeleteLocalUseCase:deleteLocalUseCase,onToggleFavoriteCommand:toggleFavoriteCommand,onMoveFavoriteCommand:moveFavoriteCommand,onToggleFavoriteUseCase:toggleFavoriteUseCase,onReloadRepositoryCommand:reloadRepositoryCommand,onSaveLocalLibraryItem:saveLocalLibraryItem,onDeleteLocalLibraryItem:deleteLocalLibraryItem,onCheckRepository:checkRepository,onSyncMissingRepository:syncMissingRepository,onHardReloadRepository:hardReloadRepository,onMoveCatalogItem:moveCatalogItem,onMoveCatalogItemToPosition:moveCatalogItemToPosition,onAssignCatalogGroup:assignCatalogGroup,onCreateCatalogGroup:createCatalogGroup,onUpdateCatalogGroup:updateCatalogGroup,onDeleteCatalogGroup:deleteCatalogGroup,onMoveCatalogGroup:moveCatalogGroup,onCreatePromptGroup:createPromptGroup,onRenamePromptGroup:renamePromptGroup,onDeletePromptGroup:deletePromptGroup,onAssignPromptGroup:assignPromptGroup,onMovePromptGroup:movePromptGroup,onCreateCatalogCategory:createCatalogCategory,onUpdateCatalogCategory:updateCatalogCategory,onMoveCatalogCategory:moveCatalogCategory,onDeleteCatalogCategory:deleteCatalogCategory,onSaveCatalogOrderRepository:saveCatalogOrderRepository,onSaveRepositoryEntity:saveRepositoryEntity,onSaveAllRepository:saveAllRepository,onLoadSettings:loadSettings,onSaveSettings:saveSettings,startupWarnings,...localUiCallbacks});
     function dispose(){ui?.dispose();if(globalThis[INSTANCE_DISPOSE_KEY]===dispose)delete globalThis[INSTANCE_DISPOSE_KEY];for(const key of LEGACY_DISPOSE_KEYS)if(globalThis[key]===dispose)delete globalThis[key];}globalThis[INSTANCE_DISPOSE_KEY]=dispose;
-    return{dispose,getSnapshot:()=>snapshot,getDefinitions:()=>memory.commandRecords.map((record)=>record.definition),getUseCases:()=>memory.useCases,getLocalLibrary:()=>memory.helperRecords.map((record)=>record.item),previewChatImport:(text,mode)=>previewChatImport(snapshot,text,mode),applyChatImport:applyChatText,saveLocalCommandDefinition,deleteLocalCommand,deleteLocalUseCase,toggleFavoriteCommand,moveFavoriteCommand,toggleFavoriteUseCase,reloadRepositoryCommand,checkRepository,syncMissingRepository,hardReloadRepository,moveCatalogItem,moveCatalogItemToPosition,assignCatalogGroup,createCatalogGroup,updateCatalogGroup,deleteCatalogGroup,moveCatalogGroup,createCatalogCategory,updateCatalogCategory,moveCatalogCategory,deleteCatalogCategory,saveCatalogOrderRepository,saveRepositoryEntity,saveAllRepository,getRepositoryOperation:()=>repositoryLock.active(),...localMutations};
+    return{dispose,getSnapshot:()=>snapshot,getDefinitions:()=>memory.commandRecords.map((record)=>record.definition),getUseCases:()=>memory.useCases,getLocalLibrary:()=>memory.helperRecords.map((record)=>record.item),previewChatImport:(text,mode)=>previewChatImport(snapshot,text,mode),applyChatImport:applyChatText,saveLocalCommandDefinition,deleteLocalCommand,deleteLocalUseCase,toggleFavoriteCommand,moveFavoriteCommand,toggleFavoriteUseCase,reloadRepositoryCommand,checkRepository,syncMissingRepository,hardReloadRepository,moveCatalogItem,moveCatalogItemToPosition,assignCatalogGroup,createCatalogGroup,updateCatalogGroup,deleteCatalogGroup,moveCatalogGroup,createPromptGroup,renamePromptGroup,deletePromptGroup,assignPromptGroup,movePromptGroup,createCatalogCategory,updateCatalogCategory,moveCatalogCategory,deleteCatalogCategory,saveCatalogOrderRepository,saveRepositoryEntity,saveAllRepository,getRepositoryOperation:()=>repositoryLock.active(),...localMutations};
   }
 
   return{startPlanningHelper,createRepositoryOperationLock,materializeSnapshot,mergeChatImport,previewChatImport,compareRepositoryInventory,mergeRemoteMissing,prepareLocalCommandSave,deleteLocalCommandFromSnapshot,deleteLocalUseCaseFromSnapshot,toggleFavoriteCommandInSnapshot,moveFavoriteCommandInSnapshot,toggleFavoriteUseCaseInSnapshot,prepareLocalHelperSave,completeCatalogOrder,clearRepositoryEvidence,persistVerifiedRepositoryResult,prepareInvocationBody,insertWithClipboard,sortByIds,moveId,moveIdToPosition,presentationGroupForId,decoratePresentationGroups,assignCommandGroupInOrder,createCommandGroupInOrder,updateCommandGroupInOrder,deleteCommandGroupInOrder,moveCommandGroupInOrder,createCommandCategoryInOrder,updateCommandCategoryInOrder,moveCommandCategoryInOrder,deleteCommandCategoryInOrder};

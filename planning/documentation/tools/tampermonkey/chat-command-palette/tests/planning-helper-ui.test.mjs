@@ -66,7 +66,7 @@ test('Favorites use personal order independently of catalog order and tolerate s
 });
 
 
-test('Prompts contains Prompts/Modules inner navigation and Save all replaces standalone order save',async()=>{const fs=await import('node:fs');const source=fs.readFileSync(new URL('../src/planning-helper-ui.js',import.meta.url),'utf8');assert.match(source,/data-library-view="prompts"/);assert.match(source,/data-library-view="modules"/);assert.match(source,/activePromptView='prompts'/);assert.match(source,/if\(surface===SURFACES\.PROMPTS\)activePromptView='prompts'/);assert.match(source,/Save all GitHub/);assert.doesNotMatch(source,/Save order GitHub/);assert.match(source,/onSaveAllRepository/);assert.match(source,/resolveModules:true/);assert.match(source,/Copy ref/);});
+test('Prompts contains Prompts/Modules inner navigation and Save all replaces standalone order save',async()=>{const fs=await import('node:fs');const source=fs.readFileSync(new URL('../src/planning-helper-ui.js',import.meta.url),'utf8');assert.match(source,/data-library-view="prompts"/);assert.match(source,/data-library-view="modules"/);assert.match(source,/activePromptView='prompts'/);assert.match(source,/if\(surface===SURFACES\.PROMPTS\)\{activePromptView='prompts';activePromptGroupId='all';\}/);assert.match(source,/Save all GitHub/);assert.doesNotMatch(source,/Save order GitHub/);assert.match(source,/onSaveAllRepository/);assert.match(source,/resolveModules:true/);assert.match(source,/Copy ref/);});
 
 test('Hard Reload closes its overlay before applying returned state and modules use a dedicated selected-row accent gutter',async()=>{const fs=await import('node:fs');const source=fs.readFileSync(new URL('../src/planning-helper-ui.js',import.meta.url),'utf8');const start=source.indexOf('function hardReloadRepository'),end=source.indexOf('function saveAllRepository',start),body=source.slice(start,end);assert.ok(body.indexOf('closeOverlay(overlay)')<body.indexOf('applyState(result)'));assert.match(source,/\.row\[data-selected=true\]::before/);assert.match(source,/padding-left:10px/);});
 
@@ -136,5 +136,19 @@ test('Save all UI invokes runtime even when its last rendered pending count was 
   assert.ok(confirm);
   confirm.click();await task;
   assert.equal(calls,1);
-  assert.ok(statuses.some((message)=>message.includes('No pending GitHub changes.')));
+  assert.ok(statuses.some((message)=>message.includes('GitHub was not contacted.')));
+});
+
+
+test('visible helper version matches the actual generated userscript rather than the local loader',async()=>{
+  const fs=await import('node:fs');
+  const pkg=JSON.parse(fs.readFileSync(new URL('../package.json',import.meta.url),'utf8'));
+  const ui=fs.readFileSync(new URL('../src/planning-helper-ui.js',import.meta.url),'utf8');
+  const generated=fs.readFileSync(new URL('../../chat-command-palette.user.js',import.meta.url),'utf8');
+  const headerVersion=generated.match(/^\/\/ @version\s+(\S+)/m)?.[1];
+  assert.equal(headerVersion,`${pkg.version}-repository-command-registry`);
+  assert.ok(generated.includes(`api.scriptVersion=${JSON.stringify(headerVersion)};api.startPlanningHelper()`));
+  assert.match(ui,/class="helper-version" aria-label="Planning Helper version"/);
+  assert.match(ui,/versionIndicator\.textContent=fullScriptVersion\?/);
+  assert.match(ui,/versionIndicator\.title=fullScriptVersion\?/);
 });

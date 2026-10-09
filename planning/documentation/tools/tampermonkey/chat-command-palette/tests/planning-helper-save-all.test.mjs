@@ -18,8 +18,8 @@ class FakeHelperService {
   async save(item){
     environment.helperWrites.push({kind:item.kind,id:item.id,text:item.text});
     if(environment.remoteGate)await environment.remoteGate.promise;
-    if(environment.failId===item.id)throw new Error(`Simulated GitHub failure: ${item.id}`);
-    return{rawContent:helper.renderHelperLibraryDocument(item),sha:`sha-helper-${item.id}`};
+    if(environment.failId===item.id){const error=new Error(`Simulated GitHub failure: ${item.id}`);if(environment.failKind)error.kind=environment.failKind;throw error;}
+    return{action:environment.noopId===item.id?'noop':'update',rawContent:helper.renderHelperLibraryDocument(item),sha:`sha-helper-${item.id}`};
   }
 }
 let uiCallbacks;
@@ -57,7 +57,7 @@ function initial(records=[],orderSha='sha-existing-order'){
 }
 async function mount(snapshot){
   environment={stored:snapshot,helperWrites:[],commandWrites:[],orderWrites:0,localWrites:0,
-    localGate:null,remoteGate:null,failId:'',failLocalAt:0};
+    localGate:null,remoteGate:null,failId:'',failKind:'',noopId:'',failLocalAt:0};
   const instance=await runtime.startPlanningHelper();
   return{env:environment,instance,ui:uiCallbacks};
 }
@@ -152,5 +152,99 @@ test('single-item GitHub save waits for local edit and receives latest content',
     gate.resolve();await editing;await publishing;
     assert.deepEqual(env.helperWrites.map(x=>x.text),['fresh']);
     assert.equal(instance.getSnapshot().helperItems[0].repositoryKnown,true);
+  }finally{instance.dispose();}
+});
+
+
+test('prompt groups persist separately from prompt files and Save all publishes catalog order',async()=>{
+  const{env,instance,ui}=await mount(initial());
+  try{
+    const saved=await ui.onSaveLocalLibraryItem({kind:'prompt',id:'grouped',title:'Grouped prompt',text:'Keep source intact'});
+    const promptId=`helper-library:prompt:${saved.item.id}`;
+    await ui.onCreatePromptGroup('Review');
+    await ui.onAssignPromptGroup(promptId,'review');
+    assert.deepEqual(instance.getSnapshot().catalogOrder.promptGroups,[{id:'review',label:'Review',items:[promptId]}]);
+    assert.equal(instance.getSnapshot().catalogOrderSha,'');
+    assert.equal(instance.getLocalLibrary().find(x=>x.id==='grouped').text,'Keep source intact');
+    const result=await ui.onSaveAllRepository();
+    assert.equal(result.ok,true);assert.equal(result.savedPrompts,1);assert.equal(result.savedOrder,true);
+    assert.equal(env.orderWrites,1);
+    assert.equal(instance.getSnapshot().catalogOrderSha,'sha-order-updated');
+    await ui.onRenamePromptGroup('review','Review and analysis');
+    await ui.onDeletePromptGroup('review');
+    assert.equal(instance.getSnapshot().catalogOrderSha,'');
+    assert.deepEqual(instance.getSnapshot().catalogOrder.promptGroups,[]);
+    assert.equal(instance.getLocalLibrary().find(x=>x.id==='grouped').text,'Keep source intact');
+  }finally{instance.dispose();}
+});
+
+test('simultaneous prompt group edits and local prompt creation are serialized',async()=>{
+  const{env,instance,ui}=await mount(initial());
+  try{
+    env.localGate=deferred();const gate=env.localGate;
+    const saved=ui.onSaveLocalLibraryItem({kind:'prompt',id:'fresh',title:'Fresh',text:'Latest'});
+    const grouped=ui.onCreatePromptGroup('Review');
+    gate.resolve();await Promise.all([saved,grouped]);
+    await ui.onAssignPromptGroup('helper-library:prompt:fresh','review');
+    assert.equal(instance.getSnapshot().catalogOrder.promptGroups[0].items[0],'helper-library:prompt:fresh');
+    assert.equal(instance.getLocalLibrary()[0].text,'Latest');
+  }finally{instance.dispose();}
+});
+
+
+test('Save all publishes a catalog upgraded from v5 even if no prompt text changed',async()=>{
+  const stored=initial([{id:'clean',text:'unchanged',known:true}],'old-v5-remote-sha');
+  const oldOrder={...stored.catalogOrder,schemaVersion:5};delete oldOrder.promptGroups;
+  const migrated=state.normalizePlanningHelperLocalSnapshot({...stored,catalogOrder:oldOrder});
+  assert.equal(migrated.catalogOrderSha,'');
+  const{env,instance,ui}=await mount(migrated);
+  try{
+    const result=await ui.onSaveAllRepository();
+    assert.equal(result.ok,true);
+    assert.equal(result.savedOrder,true);
+    assert.equal(result.savedHelperItems,0);
+    assert.equal(env.orderWrites,1);
+    assert.equal(env.helperWrites.length,0);
+    assert.equal(instance.getSnapshot().catalogOrderSha,'sha-order-updated');
+  }finally{instance.dispose();}
+});
+
+
+test('one unverified module does not prevent Save all from publishing a new prompt',async()=>{
+  const{env,instance,ui}=await mount(initial([{id:'review.reader-overview',text:'module changed'}]));
+  try{
+    const local=await ui.onSaveLocalLibraryItem({kind:'prompt',id:'test-prompt-123',title:'This is test prompt 123',text:'A newly created prompt'});
+    assert.equal(local.item.id,'test-prompt-123');
+    env.failId='review.reader-overview';
+    env.failKind='verification_mismatch';
+    const result=await ui.onSaveAllRepository();
+    assert.equal(result.ok,false);
+    assert.equal(result.action,'save-all-partial');
+    assert.equal(result.savedPrompts,1);
+    assert.equal(result.savedModules,0);
+    assert.equal(result.savedOrder,true);
+    assert.ok(result.failedItems.some(path=>path.includes('review.reader-overview')));
+    const items=instance.getSnapshot().helperItems;
+    assert.equal(items.find(record=>record.item.id==='test-prompt-123').repositoryKnown,true);
+    assert.equal(items.find(record=>record.item.id==='review.reader-overview').repositoryKnown,false);
+    assert.deepEqual(env.helperWrites.map(row=>row.id),['review.reader-overview','test-prompt-123']);
+  }finally{instance.dispose();}
+});
+
+
+test('Save all acknowledges previously uploaded helpers without counting them as new writes',async()=>{
+  const {env,instance,ui}=await mount(initial([{id:'already',text:'on GitHub'},{id:'newer',text:'new local edit'}]));
+  try{
+    env.noopId='already';
+    const result=await ui.onSaveAllRepository();
+    assert.equal(result.ok,true);
+    assert.equal(result.savedModules,1);
+    assert.equal(result.savedHelperItems,1);
+    assert.equal(result.alreadyOnGitHub,1);
+    assert.deepEqual(env.helperWrites.map(x=>x.id),['already','newer']);
+    assert.ok(instance.getSnapshot().helperItems.every(x=>x.repositoryKnown));
+    const repeated=await ui.onSaveAllRepository();
+    assert.equal(repeated.action,'noop');
+    assert.equal(env.helperWrites.length,2);
   }finally{instance.dispose();}
 });

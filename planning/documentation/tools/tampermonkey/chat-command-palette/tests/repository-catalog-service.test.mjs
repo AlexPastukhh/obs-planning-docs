@@ -18,7 +18,7 @@ test('saveOrder exact no-op performs no write',async()=>{let writes=0;const exis
 
 test('catalog order schema v5 removes legacy presentation levels while upgrading v2/v3 groups',()=>{
   const value=repo.normalizeCatalogOrder({schemaVersion:3,commands:['A','B'],commandGroups:[{id:'g.one',viewId:'GENERAL',label:'One',level:'ADVANCED',order:0,items:['A']},{id:'g.two',viewId:'USE_CASES',label:'Two',level:'SEMANTIC_COMPONENT',order:1,items:['B']}]});
-  assert.equal(value.schemaVersion,5);
+  assert.equal(value.schemaVersion,6);
   assert.deepEqual(value.commandGroups.map((group)=>group.id),['g.one','g.two']);
   assert.ok(value.commandGroups.every((group)=>!('level' in group)));
   const parsed=repo.parseCatalogOrder(repo.renderCatalogOrder(value));

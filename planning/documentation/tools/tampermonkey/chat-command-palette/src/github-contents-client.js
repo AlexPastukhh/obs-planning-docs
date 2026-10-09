@@ -69,6 +69,7 @@
       this.token = String(options.token || '').trim();
       this.transport = options.transport;
       this.apiBase = String(options.apiBase || 'https://api.github.com').replace(/\/$/, '');
+      this._readSequence = 0;
       if (!this.owner || !this.repo || !this.branch) throw new TypeError('GitHub owner, repo and branch are required.');
       if (typeof this.transport !== 'function') throw new TypeError('GitHub transport is required.');
     }
@@ -103,9 +104,14 @@
         return { type:String(entry.type || ''), path:entryPath, name:String(entry.name || ''), sha:String(entry.sha || ''), size:Number(entry.size || 0), htmlUrl:String(entry.html_url || '') };
       });
     }
-    async read(path) {
+    async read(path) { return this._readContent(path,false); }
+    async readFresh(path) { return this._readContent(path,true); }
+    async _readContent(path,fresh) {
       const normalized = normalizeGitHubContentPath(path);
-      const payload = await this._request('GET', this._url(normalized, true));
+      // A unique URL avoids reusing a cached GET after GitHub has accepted a PUT.
+      const url = this._url(normalized, true);
+      const requestUrl = fresh ? `${url}&_verify=${Date.now()}-${++this._readSequence}` : url;
+      const payload = await this._request('GET', requestUrl);
       if (!payload || payload.type !== 'file' || typeof payload.content !== 'string') throw new GitHubClientError('invalid_response', 'GitHub Contents response is not a UTF-8 file.');
       const returnedPath = normalizeGitHubContentPath(payload.path || normalized);
       if (returnedPath !== normalized) throw new GitHubClientError('invalid_response', `GitHub read response changed path (${normalized} -> ${returnedPath}).`);
@@ -137,11 +143,20 @@
         }
         throw error;
       }
-      let readBack;
-      try { readBack = await this.read(normalized); }
-      catch (error) { throw new GitHubClientError('verification_unknown', 'GitHub accepted the write, but read-back verification failed.', { cause:error, writeResult }); }
-      if (readBack.content !== intended) throw new GitHubClientError('verification_mismatch', 'Remote read-back content does not match the intended file.', { writeResult });
-      return { ...readBack, recoveredAfterUnknownWrite:false, recoveredAfterConflict:false };
+      // GitHub can briefly serve a stale contents view after a successful PUT.
+      // Never send a second PUT here: verify the accepted write with fresh GETs.
+      let readBack = null, readError = null;
+      for (const delay of [0, 150, 400, 900]) {
+        if (delay) await new Promise((resolve) => setTimeout(resolve, delay));
+        try {
+          readBack = await this.readFresh(normalized);
+          readError = null;
+          if (readBack.content === intended && (!writeResult.sha || readBack.sha === writeResult.sha))
+            return { ...readBack, recoveredAfterUnknownWrite:false, recoveredAfterConflict:false };
+        } catch (error) { readError = error; }
+      }
+      if (readError) throw new GitHubClientError('verification_unknown', 'GitHub accepted the write, but its current content could not be verified. Check GitHub before retrying.', { cause:readError, writeResult, path:normalized });
+      throw new GitHubClientError('verification_mismatch', 'GitHub accepted the write, but repeated remote read-back content does not match the intended file. Check GitHub before retrying.', { writeResult, path:normalized, remoteSha:readBack?.sha });
     }
     async create({ path, content, message }) { return this.saveVerified({ path, content, message }); }
   }

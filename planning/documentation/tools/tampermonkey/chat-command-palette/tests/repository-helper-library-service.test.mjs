@@ -19,3 +19,19 @@ test('save no-ops when repository bytes already equal the local helper item',asy
 test('explicit save repairs a malformed deterministic remote helper file using its exact current SHA',async()=>{const local=item('command','bad','Bad','fixed'),path=codec.helperLibraryTargetPath(local),malformed={type:'file',path,name:path.split('/').pop(),sha:'broken-sha',content:'# Helper Command — Bad\n\n[PLANNING_HELPER_LIBRARY_ITEM]\n{"schemaVersion":1,"kind":"command","id":"bad","title":"Bad","text":"literal\nnewline"}\n[/PLANNING_HELPER_LIBRARY_ITEM]\n'},{client,calls}=fakeClient([malformed]);const result=await new RepositoryHelperLibraryService(client).save(local);assert.equal(result.action,'update');assert.equal(result.replacedMalformedRemote,true);assert.equal(calls.save[0].baseSha,'broken-sha');assert.equal(calls.save[0].content,codec.renderHelperLibraryDocument(local))});
 
 test('save propagates same-content conflict recovery evidence',async()=>{const command=item('command','c','Command','old'),existing=record(command,'sc'),{client}=fakeClient([existing]);client.saveVerified=async(input)=>({path:input.path,sha:'fresh',content:input.content,recoveredAfterConflict:true});const changed={...command,text:'changed',updatedAt:'2026-08-16T01:00:00.000Z'};const result=await new RepositoryHelperLibraryService(client).save(changed);assert.equal(result.recoveredAfterConflict,true);assert.equal(result.replacedMalformedRemote,false)});
+
+
+test('save checks fresh GitHub state and acknowledges identical file without a PUT',async()=>{
+  const prompt=item('prompt','already-saved','Already saved','same text');
+  const expected=record(prompt,'sha-latest');
+  const calls={ordinary:0,fresh:0,write:0};
+  const client={
+    async read(){calls.ordinary++;return {...expected,sha:'sha-stale',content:'previous text'};},
+    async readFresh(path){calls.fresh++;assert.equal(path,expected.path);return{...expected};},
+    async saveVerified(){calls.write++;throw new Error('Do not write identical GitHub file');}
+  };
+  const result=await new RepositoryHelperLibraryService(client).save(prompt);
+  assert.equal(result.action,'noop');
+  assert.equal(result.sha,'sha-latest');
+  assert.deepEqual(calls,{ordinary:0,fresh:1,write:0});
+});

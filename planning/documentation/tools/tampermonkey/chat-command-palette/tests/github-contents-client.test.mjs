@@ -21,3 +21,31 @@ test('saveVerified preserves a real conflict when reread bytes differ and never 
 test('saveVerified still recovers an unknown network result when remote has intended bytes',async()=>{let n=0;const{client}=clientWith((req)=>{n++;if(n===1)throw new GitHubClientError('network_unknown','unknown');return{status:200,text:JSON.stringify({type:'file',path:'planning/x.md',sha:'fresh',content:b64('exact')})}});const result=await client.saveVerified({path:'planning/x.md',content:'exact',baseSha:'old',message:'Update x'});assert.equal(result.recoveredAfterUnknownWrite,true);assert.equal(result.recoveredAfterConflict,false)});
 
 test('saveVerified preserves conflict when post-conflict reread cannot verify remote content',async()=>{let n=0;const{client,calls}=clientWith((req)=>{n++;if(req.method==='PUT')return{status:409,text:JSON.stringify({message:'sha does not match'})};return{status:503,text:JSON.stringify({message:'unavailable'})}});await assert.rejects(()=>client.saveVerified({path:'planning/x.md',content:'exact',baseSha:'stale',message:'Update x'}),(error)=>error instanceof GitHubClientError&&error.kind==='conflict'&&/could not be verified/.test(error.message));assert.equal(calls.filter((call)=>call.method==='PUT').length,1);assert.equal(calls.filter((call)=>call.method==='GET').length,1)});
+
+
+test('saveVerified rechecks stale read-back using fresh GETs without a second PUT',async()=>{
+  let reads=0;
+  const{client,calls}=clientWith((req)=>{
+    if(req.method==='PUT')return{status:200,text:JSON.stringify({content:{path:'planning/x.md',sha:'new'}})};
+    reads++;
+    return{status:200,text:JSON.stringify({type:'file',path:'planning/x.md',sha:reads===1?'old':'new',content:b64(reads===1?'previous':'exact')})};
+  });
+  const result=await client.saveVerified({path:'planning/x.md',content:'exact',baseSha:'old'});
+  assert.equal(result.content,'exact');
+  assert.equal(result.sha,'new');
+  assert.equal(calls.filter(call=>call.method==='PUT').length,1);
+  const urls=calls.filter(call=>call.method==='GET').map(call=>call.url);
+  assert.equal(urls.length,2);
+  assert.ok(urls.every(url=>url.includes('ref=main')&&url.includes('_verify=')));
+  assert.notEqual(urls[0],urls[1]);
+});
+
+test('saveVerified never repeats PUT if four fresh reads still disagree',async()=>{
+  const{client,calls}=clientWith((req)=>req.method==='PUT'
+    ?{status:200,text:JSON.stringify({content:{path:'planning/x.md',sha:'new'}})}
+    :{status:200,text:JSON.stringify({type:'file',path:'planning/x.md',sha:'old',content:b64('different')})});
+  await assert.rejects(()=>client.saveVerified({path:'planning/x.md',content:'exact',baseSha:'old'}),
+    error=>error instanceof GitHubClientError&&error.kind==='verification_mismatch');
+  assert.equal(calls.filter(call=>call.method==='PUT').length,1);
+  assert.equal(calls.filter(call=>call.method==='GET').length,4);
+});

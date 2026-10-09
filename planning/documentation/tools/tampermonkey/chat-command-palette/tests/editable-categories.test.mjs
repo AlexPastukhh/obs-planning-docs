@@ -8,7 +8,7 @@ const runtime=require('../src/planning-helper-runtime.js');
 const old={schemaVersion:4,commands:['tm:X','a'],commandGroups:[{id:'g',viewId:'TARGET_MODULES',label:'Models',order:0,items:['tm:X']},{id:'custom',viewId:'MY_2',label:'Custom',items:['a']}]};
 
 test('legacy categories migrate, including custom IDs; serialization preserves empty categories',()=>{
-  const order=repo.normalizeCatalogOrder(old);assert.equal(order.schemaVersion,5);
+  const order=repo.normalizeCatalogOrder(old);assert.equal(order.schemaVersion,6);
   assert.deepEqual(order.commandGroups.map(g=>g.items),[['tm:X'],['a']]);
   assert.ok(order.categories.some(c=>c.id==='MY_2'));
   const added=runtime.createCommandCategoryInOrder(order,{label:'Мои проверки'});

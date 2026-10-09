@@ -105,3 +105,18 @@ test('current normalization ignores retired hidden markers so present objects st
 test('snapshot rejects an entity that is both present and repository-suppressed',()=>{assert.throws(()=>state.normalizePlanningHelperLocalSnapshot({schemaVersion:state.LOCAL_SNAPSHOT_SCHEMA_VERSION,planningCommands:[{definition:def}],helperItems:[],useCases:[],semanticComponents:[],scenarios:[],catalogOrder:{},suppressedRepository:{commands:['planning/commands/demo.command.md']}}),/both present and repository-suppressed/)});
 
 test('panel geometry persists width and height in addition to position',()=>{const old=globalThis.localStorage;const map=new Map();globalThis.localStorage={getItem:(k)=>map.get(k)||null,setItem:(k,v)=>map.set(k,v)};try{state.savePanelPosition({left:10,top:20,width:900,height:700});assert.deepEqual(state.readPanelPosition(),{left:10,top:20,width:900,height:700})}finally{if(old===undefined)delete globalThis.localStorage;else globalThis.localStorage=old}});
+
+
+test('catalog-order version upgrade invalidates cached remote SHA, without losing prompt and command order',()=>{
+  const order=repositoryCatalog.normalizeCatalogOrder({commands:['demo.create'],prompts:['helper-library:prompt:p']});
+  const legacy={...order,schemaVersion:5};delete legacy.promptGroups;
+  const upgraded=state.normalizePlanningHelperLocalSnapshot({
+    schemaVersion:state.LOCAL_SNAPSHOT_SCHEMA_VERSION,planningCommands:[],helperItems:[{item:prompt,repositoryKnown:true}],
+    useCases:[],semanticComponents:[],scenarios:[],catalogOrder:legacy,catalogOrderSha:'sha-of-old-remote-v5'});
+  assert.equal(upgraded.catalogOrder.schemaVersion,repositoryCatalog.CATALOG_ORDER_SCHEMA_VERSION);
+  assert.equal(upgraded.catalogOrderSha,'','old remote sha must not certify newly serialized content');
+  assert.deepEqual(upgraded.catalogOrder.commands,['demo.create']);
+  assert.deepEqual(upgraded.catalogOrder.prompts,['helper-library:prompt:p']);
+  const again=state.normalizePlanningHelperLocalSnapshot({...upgraded,catalogOrderSha:'sha-new-v6'});
+  assert.equal(again.catalogOrderSha,'sha-new-v6','current-version remote evidence must remain valid');
+});

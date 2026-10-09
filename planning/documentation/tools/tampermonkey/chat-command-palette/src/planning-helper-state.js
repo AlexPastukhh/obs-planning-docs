@@ -44,7 +44,12 @@
     const useCases=deps.normalizeUseCaseDefinitions(value.useCases||[]),useCaseCatalogSha=String(value.useCaseCatalogSha||'').trim();
     const semanticComponents=deps.normalizeSemanticComponents(value.semanticComponents||[]),semanticComponentCatalogSha=String(value.semanticComponentCatalogSha||'').trim();
     const scenarios=deps.normalizeScenarios(value.scenarios||[]),scenarioCatalogSha=String(value.scenarioCatalogSha||'').trim();
-    const catalogOrder=deps.normalizeCatalogOrder(value.catalogOrder||{}),catalogOrderSha=String(value.catalogOrderSha||'').trim();
+    const catalogOrder=deps.normalizeCatalogOrder(value.catalogOrder||{});
+    // A remote SHA certifies the original catalog bytes, not a normalized migration.
+    // Upgrading v5 to v6 (prompt groups) requires a new GitHub save.
+    const previousOrderVersion=value.catalogOrder?.schemaVersion;
+    const orderWasUpgraded=previousOrderVersion!=null&&Number(previousOrderVersion)!==catalogOrder.schemaVersion;
+    const catalogOrderSha=orderWasUpgraded?'':String(value.catalogOrderSha||'').trim();
     const suppressedRepository=normalizeSuppressedRepository(value.suppressedRepository||{});
     const favoriteCommandIds=normalizeIdList(value.favoriteCommandIds,'favoriteCommandIds',true),favoriteUseCaseIds=normalizeIdList(value.favoriteUseCaseIds,'favoriteUseCaseIds');
     deps.validateCommandCatalog(planningCommands.map((record)=>record.definition),{allowMissingIncludes:true});
