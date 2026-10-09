@@ -9,8 +9,8 @@ Scope: exact insertion text; not planning-command authority.
   "kind": "prompt",
   "id": "work-record-inline-explicit-20261005",
   "title": "Work Record — показать inline",
-  "text": "Если для текущей работы уже явно активирован Work Record, покажи его компактную наблюдаемую проекцию прямо в ответе. Не создавай Work Record только ради этого prompt и не превращай inline-проекцию в обязательную трассу обычной работы.\n\nПокажи только полезные текущие факты: subject/basis, существенные запланированные/выполненные/ожидающие действия, изменения плана и реальные outcomes. Не раскрывай private reasoning. Если Work Record не активирован, скажи это и не запускай Session/Work-Record workflow автоматически.",
-  "createdAt": "2026-10-05T09:50:39Z",
-  "updatedAt": "2026-10-05T09:50:39Z"
+  "text": "Если для текущей работы уже явно активирован Work Record, покажи его компактную наблюдаемую проекцию прямо в ответе. Не создавай Work Record только ради этого prompt и не превращай inline-проекцию в обязательную трассу обычной работы.\n\nПокажи только полезные текущие факты: subject/basis, существенные запланированные/выполненные/ожидающие действия, изменения плана и реальные outcomes. Не раскрывай private reasoning. Если Work Record не активирован, скажи это и не запускай Session/Work-Record workflow автоматически.\n\n[[module:output.file-link-filename]]",
+  "createdAt": "2026-10-05T09:50:39.000Z",
+  "updatedAt": "2026-10-09T00:01:00.000Z"
 }
 [/PLANNING_HELPER_LIBRARY_ITEM]
