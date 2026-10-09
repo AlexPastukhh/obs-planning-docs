@@ -272,7 +272,7 @@
     "helper-library:prompt:work-record-explicit-20261005",
     "helper-library:prompt:work-record-inline-explicit-20261005",
     "helper-library:prompt:overview.on-demand",
-    "helper-library:prompt:direct-file-transfer-host-chatgpt-1aq6paw"
+    "helper-library:prompt:output.publish-forfiles"
   ],
   "commandGroups": [
     {
