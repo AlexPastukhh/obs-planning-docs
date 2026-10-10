@@ -277,7 +277,9 @@
     "helper-library:prompt:overview.on-demand",
     "helper-library:prompt:direct-file-transfer-host-chatgpt-1aq6paw",
     "helper-library:prompt:123-1n2w1xv",
-    "helper-library:prompt:output.publish-forfiles"
+    "helper-library:prompt:output.publish-forfiles",
+    "helper-library:prompt:item-zbay3f-e4bdtu",
+    "helper-library:prompt:r-ste-ddkrhx"
   ],
   "commandGroups": [
     {
@@ -821,7 +823,8 @@
         "helper-library:prompt:item-1rc3jle-1vdkydi",
         "helper-library:prompt:item-1rr0tlc-7n0qh0",
         "helper-library:prompt:item-nl3amm-1bfixd6",
-        "helper-library:prompt:item-qh9zlq-13swcyi"
+        "helper-library:prompt:item-qh9zlq-13swcyi",
+        "helper-library:prompt:r-ste-ddkrhx"
       ]
     },
     {
