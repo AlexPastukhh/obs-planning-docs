@@ -9,8 +9,8 @@ Scope: exact insertion text; not planning-command authority.
   "kind": "prompt",
   "id": "question-sweep-explicit-20261005",
   "title": "Question sweep — явно",
-  "text": "Проведи самостоятельный contextual Question sweep для текущего явно указанного subject. Это глобальная проверка текущей задачи по моему запросу, а не обязательный pre-work этап и не замена component-local readiness/question checks.\n\nИспользуй актуальные owner/contracts, Sources/evidence и уже известные ответы. Не задавай повторно вопрос, который уже надёжно разрешён текущим USER input, Decision или Source. Для каждого материального вопроса дай disposition: ANSWERED/USER-OWNED/BLOCKED/DEFERRED и основание.\n\nЕсли ответ меняет tentative plan/semantic state, укажи, что именно стало stale и что нужно пересчитать. Не выполняй pending business action только потому, что sweep завершён.\n\n[[module:output.file-link-filename]]",
+  "text": "Проведи самостоятельный contextual Question sweep для текущего явно указанного subject. Это глобальная проверка текущей задачи по моему запросу, а не обязательный pre-work этап и не замена component-local readiness/question checks.\n\nИспользуй актуальные owner/contracts, Sources/evidence и уже известные ответы. Не задавай повторно вопрос, который уже надёжно разрешён текущим USER input, Decision или Source. Для каждого материального вопроса дай disposition: ANSWERED/USER-OWNED/BLOCKED/DEFERRED и основание.\n\nЕсли ответ меняет tentative plan/semantic state, укажи, что именно стало stale и что нужно пересчитать. Не выполняй pending business action только потому, что sweep завершён.\n\n[[module:output.file-link-filename]]\n\n[[module:output.r-ste-language]]\n",
   "createdAt": "2026-10-05T09:50:39.000Z",
-  "updatedAt": "2026-10-09T00:01:00.000Z"
+  "updatedAt": "2026-10-10T10:38:47.000Z"
 }
 [/PLANNING_HELPER_LIBRARY_ITEM]
