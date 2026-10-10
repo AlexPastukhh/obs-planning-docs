@@ -11,6 +11,7 @@
   const COMMAND_CACHE_SCHEMA_VERSION=1;
   const SUPPORTED_LOCAL_SNAPSHOT_SCHEMA_VERSIONS=Object.freeze([1,2,3,4,5,6,7,8,LOCAL_SNAPSHOT_SCHEMA_VERSION]);
   const POSITION_KEY='obs-planning-helper-position-v2';
+  const STATE_CHANGED_KEY='obs-planning-helper-cross-tab-state-v1';
   const DEFAULT_SETTINGS=Object.freeze({owner:'AlexPastukhh',repo:'obs-planning-docs',branch:'main'});
 
   function gmGetFn(){return typeof GM_getValue==='function'?GM_getValue:null;}
@@ -63,7 +64,10 @@
     return{schemaVersion:LOCAL_SNAPSHOT_SCHEMA_VERSION,commandCacheSchemaVersion:COMMAND_CACHE_SCHEMA_VERSION,savedAt:cleanIso(value.savedAt,''),planningCommands,helperItems,useCases,useCaseCatalogSha,semanticComponents,semanticComponentCatalogSha,scenarios,scenarioCatalogSha,catalogOrder,catalogOrderSha,suppressedRepository,favoriteCommandIds,favoriteUseCaseIds};
   }
   async function loadPlanningHelperLocalSnapshot(){const value=await gmGet(KEYS.localSnapshot,null);return value==null?null:normalizePlanningHelperLocalSnapshot(value);}
-  async function savePlanningHelperLocalSnapshot(value){const normalized=normalizePlanningHelperLocalSnapshot({...value,schemaVersion:LOCAL_SNAPSHOT_SCHEMA_VERSION,commandCacheSchemaVersion:COMMAND_CACHE_SCHEMA_VERSION,savedAt:value?.savedAt||new Date().toISOString()}),payload={...normalized,savedAt:new Date().toISOString()};await gmSet(KEYS.localSnapshot,payload);const checked=await gmGet(KEYS.localSnapshot,null),normalizedChecked=normalizePlanningHelperLocalSnapshot(checked);if(JSON.stringify(normalizedChecked)!==JSON.stringify(payload))throw new Error('Planning Helper local snapshot write-back verification failed.');return payload;}
+  async function savePlanningHelperLocalSnapshot(value){const normalized=normalizePlanningHelperLocalSnapshot({...value,schemaVersion:LOCAL_SNAPSHOT_SCHEMA_VERSION,commandCacheSchemaVersion:COMMAND_CACHE_SCHEMA_VERSION,savedAt:value?.savedAt||new Date().toISOString()}),payload={...normalized,savedAt:new Date().toISOString()};await gmSet(KEYS.localSnapshot,payload);const checked=await gmGet(KEYS.localSnapshot,null),normalizedChecked=normalizePlanningHelperLocalSnapshot(checked);if(JSON.stringify(normalizedChecked)!==JSON.stringify(payload))throw new Error('Planning Helper local snapshot write-back verification failed.');
+    // Storage events notify other open ChatGPT tabs without requiring extra GM grants.
+    try{if(typeof localStorage!=='undefined')localStorage.setItem(STATE_CHANGED_KEY,`${Date.now()}-${Math.random()}`);}catch(_){}
+    return payload;}
 
   function commandRecordsFromDefinitions(definitions,repositoryKnown=true){return(definitions||[]).map((definition)=>normalizeCommandRecord({definition,repositoryKnown,repositoryTracked:repositoryKnown}));}
   function helperKey(item){return`${item.kind}:${item.id}`;}
@@ -97,5 +101,5 @@
   function readPanelPosition(){try{const parsed=JSON.parse(localStorage.getItem(POSITION_KEY)||'{}');return{left:Number.isFinite(parsed.left)?parsed.left:null,top:Number.isFinite(parsed.top)?parsed.top:null,width:Number.isFinite(parsed.width)?parsed.width:null,height:Number.isFinite(parsed.height)?parsed.height:null};}catch(_){return{left:null,top:null,width:null,height:null};}}
   function savePanelPosition(position){try{localStorage.setItem(POSITION_KEY,JSON.stringify({left:position.left,top:position.top,width:position.width,height:position.height}));}catch(_){} }
 
-  return{PLANNING_HELPER_STATE_KEYS:KEYS,PLANNING_HELPER_LEGACY_STATE_KEYS:LEGACY_KEYS,PLANNING_HELPER_DEFAULT_SETTINGS:DEFAULT_SETTINGS,LOCAL_SNAPSHOT_SCHEMA_VERSION,COMMAND_CACHE_SCHEMA_VERSION,normalizeSettings,validateRepositorySettings,normalizeSuppressedRepository,loadRepositorySettings,saveRepositorySettings,loadGitHubToken,saveGitHubToken,normalizeCommandRecord,normalizeHelperRecord,normalizePlanningHelperLocalSnapshot,loadPlanningHelperLocalSnapshot,savePlanningHelperLocalSnapshot,loadOrMigratePlanningHelperLocalSnapshot,commandRecordsFromDefinitions,readPanelPosition,savePanelPosition};
+  return{PLANNING_HELPER_STATE_CHANGED_KEY:STATE_CHANGED_KEY,PLANNING_HELPER_STATE_KEYS:KEYS,PLANNING_HELPER_LEGACY_STATE_KEYS:LEGACY_KEYS,PLANNING_HELPER_DEFAULT_SETTINGS:DEFAULT_SETTINGS,LOCAL_SNAPSHOT_SCHEMA_VERSION,COMMAND_CACHE_SCHEMA_VERSION,normalizeSettings,validateRepositorySettings,normalizeSuppressedRepository,loadRepositorySettings,saveRepositorySettings,loadGitHubToken,saveGitHubToken,normalizeCommandRecord,normalizeHelperRecord,normalizePlanningHelperLocalSnapshot,loadPlanningHelperLocalSnapshot,savePlanningHelperLocalSnapshot,loadOrMigratePlanningHelperLocalSnapshot,commandRecordsFromDefinitions,readPanelPosition,savePanelPosition};
 });

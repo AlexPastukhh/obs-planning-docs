@@ -24,8 +24,9 @@ class FakeHelperService {
 }
 let uiCallbacks;
 globalThis.ObsPlanningHelper={...codec,...catalog,...helper,...body,...semantic,...repositoryCatalog,...state,
-  createPlanningHelperUi(options){uiCallbacks=options;return{dispose(){}};},
+  createPlanningHelperUi(options){uiCallbacks=options;return{dispose(){},applyState(next){environment.uiRefreshes.push(next);}};},
   async loadOrMigratePlanningHelperLocalSnapshot(){return{snapshot:environment.stored};},
+  async loadPlanningHelperLocalSnapshot(){return environment.stored;},
   async savePlanningHelperLocalSnapshot(next){
     environment.localWrites++;
     if(environment.failLocalAt===environment.localWrites)throw new Error('Simulated local write failure');
@@ -56,7 +57,7 @@ function initial(records=[],orderSha='sha-existing-order'){
     useCases:[],semanticComponents:[],scenarios:[],catalogOrder:{},catalogOrderSha:orderSha});
 }
 async function mount(snapshot){
-  environment={stored:snapshot,helperWrites:[],commandWrites:[],orderWrites:0,localWrites:0,
+  environment={stored:snapshot,helperWrites:[],commandWrites:[],orderWrites:0,localWrites:0,uiRefreshes:[],
     localGate:null,remoteGate:null,failId:'',failKind:'',noopId:'',failLocalAt:0};
   const instance=await runtime.startPlanningHelper();
   return{env:environment,instance,ui:uiCallbacks};
@@ -246,5 +247,20 @@ test('Save all acknowledges previously uploaded helpers without counting them as
     const repeated=await ui.onSaveAllRepository();
     assert.equal(repeated.action,'noop');
     assert.equal(env.helperWrites.length,2);
+  }finally{instance.dispose();}
+});
+
+
+test('open tab refreshes a newer shared Tampermonkey snapshot without overwriting it',async()=>{
+  const{env,instance}=await mount(initial());
+  try{
+    env.stored=state.normalizePlanningHelperLocalSnapshot({...env.stored,
+      catalogOrder:repositoryCatalog.createPromptGroupInOrder(env.stored.catalogOrder,'GitHub group'),catalogOrderSha:'sha-remote'});
+    const changed=await instance.refreshFromSharedState();
+    assert.equal(changed,true);
+    assert.equal(instance.getSnapshot().catalogOrder.promptGroups[0].label,'GitHub group');
+    assert.equal(env.uiRefreshes.length,1);
+    assert.equal(env.localWrites,0);
+    assert.equal(await instance.refreshFromSharedState(),false);
   }finally{instance.dispose();}
 });

@@ -80,3 +80,31 @@ test('Cyrillic prompt-group labels are supported with safe stable IDs',()=>{
   assert.equal(order.promptGroups[0].label,'Мои проверки');
   assert.deepEqual(repo.parseCatalogOrder(repo.renderCatalogOrder(order)).promptGroups,order.promptGroups);
 });
+
+
+test('Sync missing imports remote prompt groups without overwriting local group names or assignments',()=>{
+  const runtime=require('../src/planning-helper-runtime.js');
+  let local=repo.createPromptGroupInOrder(repo.normalizeCatalogOrder({}),'Локальная группа');
+  local=repo.assignPromptGroupInOrder(local,ids[0],local.promptGroups[0].id);
+  const remote=repo.normalizeCatalogOrder({...local,promptGroups:[
+    {id:local.promptGroups[0].id,label:'Remote rename must not win',items:[ids[2]]},
+    {id:'remote',label:'Из GitHub',items:[ids[0],ids[1]]}
+  ]});
+  const result=runtime.mergeMissingPromptGroups(local,remote);
+  assert.equal(result.addedGroups,1);
+  assert.equal(result.addedMemberships,2);
+  assert.equal(result.order.promptGroups[0].label,'Локальная группа');
+  assert.deepEqual(result.order.promptGroups[0].items,[ids[0],ids[2]]);
+  assert.deepEqual(result.order.promptGroups[1].items,[ids[1]]);
+  assert.deepEqual(local.promptGroups[0].items,[ids[0]]);
+  assert.equal(runtime.mergeMissingPromptGroups(result.order,remote).changed,false);
+});
+
+test('Sync missing wiring fetches remote catalog order alongside missing helper content',async()=>{
+  const fs=await import('node:fs');
+  const runtime=fs.readFileSync(new URL('../src/planning-helper-runtime.js',import.meta.url),'utf8');
+  const target=runtime.slice(runtime.indexOf('async function syncMissingRepository(){'),runtime.indexOf('async function hardReloadRepository(){'));
+  assert.match(target,/remoteOrder=await catalogService.readOrder\(\)/);
+  assert.match(target,/mergeMissingPromptGroups\(merged.snapshot.catalogOrder,remoteOrder.order\)/);
+  assert.match(target,/addedPromptGroups:groupMerge.addedGroups/);
+});
