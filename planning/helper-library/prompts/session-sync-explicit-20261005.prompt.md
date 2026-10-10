@@ -9,8 +9,8 @@ Scope: exact insertion text; not planning-command authority.
   "kind": "prompt",
   "id": "session-sync-explicit-20261005",
   "title": "Session State — синхронизация",
-  "text": "Синхронизируй уже активный мной Session State с фактическим текущим состоянием. Обнови только материальные navigation/Manifest/PRS/context/Work Record references, которые действительно изменились. Не создавай отсутствующие сущности ради полноты структуры.\n\nЕсли нужен переносимый archive, rematerialize его из фактического состояния; если архив не нужен, не создавай его. Session-State write authority не расширяет repository mutation authority. Кратко сообщи, что синхронизировано и что осталось внешней canonical reference.\n\n[[module:output.file-link-filename]]",
+  "text": "Синхронизируй уже активный мной Session State с фактическим текущим состоянием. Обнови только материальные navigation/Manifest/PRS/context/Work Record references, которые действительно изменились. Не создавай отсутствующие сущности ради полноты структуры.\n\nЕсли нужен переносимый archive, rematerialize его из фактического состояния; если архив не нужен, не создавай его. Session-State write authority не расширяет repository mutation authority. Кратко сообщи, что синхронизировано и что осталось внешней canonical reference.\n\n[[module:output.file-link-filename]]\n\n[[module:output.r-ste-language]]\n",
   "createdAt": "2026-10-05T09:50:39.000Z",
-  "updatedAt": "2026-10-09T00:01:00.000Z"
+  "updatedAt": "2026-10-10T10:38:47.000Z"
 }
 [/PLANNING_HELPER_LIBRARY_ITEM]
