@@ -183,7 +183,10 @@
     "idtspe.result.compose",
     "idtspe.revalidate",
     "lens:LENS-PROPOSAL-DECISION-RESOLUTION-CONTEXT",
-    "idtspe.lenses.apply-selected"
+    "idtspe.lenses.apply-selected",
+    "helper-library:command:item-1o3bumz-picpur",
+    "helper-library:command:item-1puy321-w7i09l",
+    "helper-library:command:item-1qgcw7x-j0mc7l"
   ],
   "useCases": [
     "UC-DOC-USE-REPOSITORY-GUIDANCE",
@@ -273,7 +276,10 @@
     "helper-library:prompt:work-record-inline-explicit-20261005",
     "helper-library:prompt:overview.on-demand",
     "helper-library:prompt:direct-file-transfer-host-chatgpt-1aq6paw",
-    "helper-library:prompt:123-1n2w1xv"
+    "helper-library:prompt:123-1n2w1xv",
+    "helper-library:prompt:output.publish-forfiles",
+    "helper-library:prompt:item-zbay3f-e4bdtu",
+    "helper-library:prompt:r-ste-ddkrhx"
   ],
   "commandGroups": [
     {
@@ -730,5 +736,107 @@
       ]
     }
   ],
-  "promptGroups": []
+  "promptGroups": [
+    {
+      "id": "planning",
+      "label": "Планирование",
+      "items": [
+        "helper-library:prompt:item-18gpzyy-ux501x",
+        "helper-library:prompt:item-1vpzvge-1pst0i1",
+        "helper-library:prompt:item-n0kr02-sx4j9z",
+        "helper-library:prompt:scenario.form-and-save"
+      ]
+    },
+    {
+      "id": "reviews-decisions",
+      "label": "Проверки и решения",
+      "items": [
+        "helper-library:prompt:item-1i9qpek-jxt1ld",
+        "helper-library:prompt:item-1r03mup-1h8ijml",
+        "helper-library:prompt:item-4sfw20-14wiqdh",
+        "helper-library:prompt:item-lfyxss-756fah",
+        "helper-library:prompt:item-pzffx5-1bfdhxg",
+        "helper-library:prompt:proposal.evaluate-existing",
+        "helper-library:prompt:proposal.priority-shallow",
+        "helper-library:prompt:question-sweep-explicit-20261005"
+      ]
+    },
+    {
+      "id": "overview-publish",
+      "label": "Обзор и публикация",
+      "items": [
+        "helper-library:prompt:output.publish-forfiles",
+        "helper-library:prompt:overview.on-demand"
+      ]
+    },
+    {
+      "id": "sessions-records",
+      "label": "Сессии и Work Record",
+      "items": [
+        "helper-library:prompt:item-s6z4se-dhvwzb",
+        "helper-library:prompt:session-artifacts-explicit-20261005",
+        "helper-library:prompt:session-finalize-explicit-20261005",
+        "helper-library:prompt:session-input-explicit-20261005",
+        "helper-library:prompt:session-manifest-explicit-20261005",
+        "helper-library:prompt:session-sync-explicit-20261005",
+        "helper-library:prompt:session-workspace-explicit-20261005",
+        "helper-library:prompt:work-record-artifact-explicit-20261005",
+        "helper-library:prompt:work-record-explicit-20261005",
+        "helper-library:prompt:work-record-inline-explicit-20261005"
+      ]
+    },
+    {
+      "id": "repos-docs",
+      "label": "Репозитории и документация",
+      "items": [
+        "helper-library:prompt:deep-semantic-traceability-extension-20260821",
+        "helper-library:prompt:gdoc-991hn9",
+        "helper-library:prompt:item-1ir0x2w-197y55w",
+        "helper-library:prompt:item-1iy9b3g-8grcmz",
+        "helper-library:prompt:item-p9hbng-10cvt92",
+        "helper-library:prompt:item-rdl7av-1y97ll2",
+        "helper-library:prompt:item-rx5n6l-4f7nod",
+        "helper-library:prompt:item-z84fhr-1ynaeie",
+        "helper-library:prompt:item-znt1b6-90rtdk",
+        "helper-library:prompt:planning-4je394",
+        "helper-library:prompt:replacement-arch-bootstr-s3labd"
+      ]
+    },
+    {
+      "id": "files-git",
+      "label": "Файлы и Git",
+      "items": [
+        "helper-library:prompt:commands-onboarding-1kge1i0",
+        "helper-library:prompt:direct-file-transfer-host-chatgpt-1aq6paw",
+        "helper-library:prompt:file-link-filename-block",
+        "helper-library:prompt:gdoc-zip-1rueqqi",
+        "helper-library:prompt:item-1cmt2qg-17fjmja",
+        "helper-library:prompt:multiplex-zip-dif-1rtv9yf",
+        "helper-library:prompt:planning-zip-dif-1jskeny",
+        "helper-library:prompt:snapshot-first-tunnel-verify-1aeaeb3"
+      ]
+    },
+    {
+      "id": "work-habits",
+      "label": "Рабочие приёмы",
+      "items": [
+        "helper-library:prompt:item-1rc3jle-1vdkydi",
+        "helper-library:prompt:item-1rr0tlc-7n0qh0",
+        "helper-library:prompt:item-nl3amm-1bfixd6",
+        "helper-library:prompt:item-qh9zlq-13swcyi",
+        "helper-library:prompt:r-ste-ddkrhx"
+      ]
+    },
+    {
+      "id": "tests-legacy",
+      "label": "Тесты и legacy",
+      "items": [
+        "helper-library:prompt:123-1n2w1xv",
+        "helper-library:prompt:item-10n7n2t-1xxpe9b",
+        "helper-library:prompt:item-1jiipnz-9dozvu",
+        "helper-library:prompt:test.module-prompt-a",
+        "helper-library:prompt:test.module-prompt-b"
+      ]
+    }
+  ]
 }
