@@ -793,19 +793,17 @@
         "helper-library:prompt:deep-semantic-traceability-extension-20260821",
         "helper-library:prompt:gdoc-991hn9",
         "helper-library:prompt:item-1ir0x2w-197y55w",
-        "helper-library:prompt:item-1iy9b3g-8grcmz",
         "helper-library:prompt:item-p9hbng-10cvt92",
-        "helper-library:prompt:item-rdl7av-1y97ll2",
         "helper-library:prompt:item-rx5n6l-4f7nod",
         "helper-library:prompt:item-z84fhr-1ynaeie",
-        "helper-library:prompt:item-znt1b6-90rtdk",
         "helper-library:prompt:planning-4je394",
-        "helper-library:prompt:replacement-arch-bootstr-s3labd"
+        "helper-library:prompt:replacement-arch-bootstr-s3labd",
+        "helper-library:prompt:planning-helper.prompt-authoring"
       ]
     },
     {
       "id": "files-git",
-      "label": "Файлы и Git",
+      "label": "Файлы, Git и инструменты",
       "items": [
         "helper-library:prompt:commands-onboarding-1kge1i0",
         "helper-library:prompt:direct-file-transfer-host-chatgpt-1aq6paw",
@@ -814,7 +812,11 @@
         "helper-library:prompt:item-1cmt2qg-17fjmja",
         "helper-library:prompt:multiplex-zip-dif-1rtv9yf",
         "helper-library:prompt:planning-zip-dif-1jskeny",
-        "helper-library:prompt:snapshot-first-tunnel-verify-1aeaeb3"
+        "helper-library:prompt:snapshot-first-tunnel-verify-1aeaeb3",
+        "helper-library:prompt:item-zbay3f-e4bdtu",
+        "helper-library:prompt:item-1iy9b3g-8grcmz",
+        "helper-library:prompt:item-rdl7av-1y97ll2",
+        "helper-library:prompt:item-znt1b6-90rtdk"
       ]
     },
     {
