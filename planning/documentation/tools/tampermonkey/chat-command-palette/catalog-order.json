@@ -283,7 +283,11 @@
     "helper-library:prompt:item-zbay3f-e4bdtu",
     "helper-library:prompt:r-ste-ddkrhx",
     "helper-library:prompt:planning-helper.prompt-authoring",
-    "helper-library:prompt:e-ste-balanced-lkw91a"
+    "helper-library:prompt:e-ste-balanced-lkw91a",
+    "helper-library:prompt:rdg.work.bootstrap",
+    "helper-library:prompt:rdg.work.commit",
+    "helper-library:prompt:rdg.work.crosscut",
+    "helper-library:prompt:rdg.work.plan"
   ],
   "commandGroups": [
     {
