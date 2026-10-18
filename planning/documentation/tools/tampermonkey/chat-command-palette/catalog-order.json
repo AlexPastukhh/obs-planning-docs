@@ -285,7 +285,8 @@
     "helper-library:prompt:rdg.work.bootstrap",
     "helper-library:prompt:rdg.work.commit",
     "helper-library:prompt:rdg.work.crosscut",
-    "helper-library:prompt:rdg.work.plan"
+    "helper-library:prompt:rdg.work.plan",
+    "helper-library:prompt:work.value-quick-check-observatory"
   ],
   "commandGroups": [
     {
