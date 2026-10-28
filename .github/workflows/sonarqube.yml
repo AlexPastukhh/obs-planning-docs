@@ -11,12 +11,16 @@ on:
       - 'planning/documentation/tools/tampermonkey/chat-command-palette/**'
       - 'sonar-project.properties'
       - '.github/workflows/sonarqube.yml'
+      - '.github/scripts/write_sonar_run_metadata.py'
+      - '.github/scripts/test_sonar_run_metadata.py'
 
   pull_request:
     paths:
       - 'planning/documentation/tools/tampermonkey/chat-command-palette/**'
       - 'sonar-project.properties'
       - '.github/workflows/sonarqube.yml'
+      - '.github/scripts/write_sonar_run_metadata.py'
+      - '.github/scripts/test_sonar_run_metadata.py'
 
 permissions:
   contents: read
@@ -32,12 +36,41 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Prepare Sonar run metadata
+        run: |
+          rm -f -- "$RUNNER_TEMP/fortis-sonar-report-task.txt" "$RUNNER_TEMP/fortis-sonar-run.json" "$RUNNER_TEMP/fortis-sonar-checkout-sha.txt"
+          git rev-parse HEAD > "$RUNNER_TEMP/fortis-sonar-checkout-sha.txt"
+
+      - name: Test Sonar run metadata writer
+        run: python3 -I -m unittest discover -s .github/scripts -p test_sonar_run_metadata.py -v
+
       - name: SonarQube Scan
+        id: sonar_scan
         uses: SonarSource/sonarqube-scan-action@7006c4492b2e0ee0f816d36501671557c97f5995
         with:
           # Wait for the server result; a failed gate or timeout must fail CI.
           args: >-
             -Dsonar.qualitygate.wait=true
             -Dsonar.qualitygate.timeout=300
+            -Dsonar.scanner.metadataFilePath=${{ runner.temp }}/fortis-sonar-report-task.txt
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
+      - name: Write advisory Sonar run metadata
+        if: ${{ always() }}
+        timeout-minutes: 1
+        env:
+          FORTIS_PROJECT_KEY: AlexPastukhh_obs-planning-docs
+          FORTIS_PR_HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+          FORTIS_SCAN_OUTCOME: ${{ steps.sonar_scan.outcome }}
+        run: python3 -I .github/scripts/write_sonar_run_metadata.py
+
+      - name: Upload advisory Sonar run metadata
+        if: ${{ always() }}
+        timeout-minutes: 2
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: fortis-sonar-run-${{ github.run_id }}-attempt-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/fortis-sonar-run.json
+          if-no-files-found: error
+          retention-days: 90
