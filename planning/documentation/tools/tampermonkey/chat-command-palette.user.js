@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Reusable Chat Planning Helper
 // @namespace    https://github.com/AlexPastukhh/obs/reusable-docs
-// @version      0.40.8-repository-command-registry
+// @version      0.40.10-repository-command-registry
 // @description  RAM-first OBS Planning Helper with semantic Commands, canonical Scenarios, prompts and explicit repository actions.
 // @author       Reusable docs layer
 // @match        https://chatgpt.com/*
@@ -1414,6 +1414,64 @@
   return{USE_CASE_CATALOG_PATH,SEMANTIC_COMPONENT_CATALOG_PATH,SCENARIO_CATALOG_PATH,CATALOG_ORDER_PATH,CATALOG_ORDER_KIND,CATALOG_ORDER_SCHEMA_VERSION,normalizeCatalogOrder,normalizePromptGroup,promptGroupForId,createPromptGroupInOrder,renamePromptGroupInOrder,deletePromptGroupInOrder,assignPromptGroupInOrder,movePromptGroupInOrder,renderCatalogOrder,parseUseCaseCatalog,parseSemanticComponentCatalog,parseScenarioCatalog,parseCatalogOrder,RepositoryCatalogService};
 });
 
+(function(root,factory){
+  const api=factory();
+  if(typeof module==='object'&&module.exports)module.exports=api;
+  root.ObsPlanningHelper=Object.assign(root.ObsPlanningHelper||{},api);
+})(typeof globalThis!=='undefined'?globalThis:this,function(){
+  'use strict';
+  const CHANNEL='fortis-shared-helper-text-modules-v1';
+  const ID=/^[a-z0-9][a-z0-9._-]{0,79}$/;
+  let running=null;
+  function projectItems(snapshot,kind){
+    const items=(snapshot?.helperItems||[]).map(record=>record?.item||record)
+      .filter(m=>m?.kind===kind&&typeof m.id==='string'&&ID.test(m.id)&&
+        typeof m.title==='string'&&typeof m.text==='string')
+      .map(m=>({id:m.id,title:m.title,text:m.text,updatedAt:m.updatedAt||''}));
+    if(items.length>2000||items.some(m=>m.title.length>300||m.text.length>100000)||
+       new Set(items.map(m=>m.id)).size!==items.length||
+       items.reduce((n,m)=>n+m.text.length,0)>600000)
+      throw new Error('Shared module catalog exceeds safe limits');
+    return items;
+  }
+  function projectModules(snapshot){return projectItems(snapshot,'module');}
+  function projectPrompts(snapshot){return projectItems(snapshot,'prompt');}
+  function createHelperModuleChannel({readSnapshot,Channel=typeof BroadcastChannel==='function'?BroadcastChannel:null}={}){
+    if(!Channel||typeof readSnapshot!=='function')return null;
+    const channel=new Channel(CHANNEL);
+    let stopped=false;
+    let reads=Promise.resolve();
+    async function publish(){
+      if(stopped)return;
+      // Serializes GM-backed snapshot reads to avoid publishing stale catalog.
+      reads=reads.catch(()=>{}).then(async()=>{
+        const snapshot=await readSnapshot();
+        if(stopped||!snapshot)return;
+        channel.postMessage({protocol:CHANNEL,type:'catalog',modules:projectModules(snapshot),prompts:projectPrompts(snapshot)});
+      });
+      try{await reads;}catch(e){/* do not interfere with verified Helper writes */}
+    }
+    const listener=event=>{
+      if(event?.data?.protocol===CHANNEL&&event.data.type==='request')void publish();
+    };
+    if(typeof channel.addEventListener==='function')channel.addEventListener('message',listener);
+    else channel.onmessage=listener;
+    return {publish,close(){
+      stopped=true;
+      channel.close?.();
+    }};
+  }
+  function startSharedModuleChannel(readSnapshot){
+    if(running)return running;
+    running=createHelperModuleChannel({readSnapshot});
+    void running?.publish();
+    return running;
+  }
+  function publishSharedModuleCatalog(){void running?.publish();}
+  return {SHARED_MODULE_CHANNEL:CHANNEL,projectModules,projectPrompts,createHelperModuleChannel,
+    startSharedModuleChannel,publishSharedModuleCatalog};
+});
+
 (function (root, factory) {
   const api=factory(typeof require==='function'?Object.assign({},require('./command-definition-codec.js'),require('./command-catalog.js'),require('./helper-library-codec.js'),require('./semantic-projections.js'),require('./repository-catalog-service.js'),root.ObsPlanningHelper||{}):(root.ObsPlanningHelper||{}));
   if(typeof module==='object'&&module.exports)module.exports=api;
@@ -1483,6 +1541,7 @@
   async function savePlanningHelperLocalSnapshot(value){const normalized=normalizePlanningHelperLocalSnapshot({...value,schemaVersion:LOCAL_SNAPSHOT_SCHEMA_VERSION,commandCacheSchemaVersion:COMMAND_CACHE_SCHEMA_VERSION,savedAt:value?.savedAt||new Date().toISOString()}),payload={...normalized,savedAt:new Date().toISOString()};await gmSet(KEYS.localSnapshot,payload);const checked=await gmGet(KEYS.localSnapshot,null),normalizedChecked=normalizePlanningHelperLocalSnapshot(checked);if(JSON.stringify(normalizedChecked)!==JSON.stringify(payload))throw new Error('Planning Helper local snapshot write-back verification failed.');
     // Storage events notify other open ChatGPT tabs without requiring extra GM grants.
     try{if(typeof localStorage!=='undefined')localStorage.setItem(STATE_CHANGED_KEY,`${Date.now()}-${Math.random()}`);}catch(_){}
+    deps.publishSharedModuleCatalog?.();
     return payload;}
 
   function commandRecordsFromDefinitions(definitions,repositoryKnown=true){return(definitions||[]).map((definition)=>normalizeCommandRecord({definition,repositoryKnown,repositoryTracked:repositoryKnown}));}
@@ -2500,5 +2559,5 @@
 
 (function(){
   'use strict';
-  const api=globalThis.ObsPlanningHelper;if(!api||typeof api.startPlanningHelper!=='function')throw new Error('OBS Planning Helper runtime was not built correctly.');api.scriptVersion="0.40.8-repository-command-registry";api.startPlanningHelper().catch((error)=>console.error('[OBS Planning Helper startup]',error));
+  const api=globalThis.ObsPlanningHelper;if(!api||typeof api.startPlanningHelper!=='function')throw new Error('OBS Planning Helper runtime was not built correctly.');api.scriptVersion="0.40.10-repository-command-registry";api.startPlanningHelper().then(()=>api.startSharedModuleChannel?.(api.loadPlanningHelperLocalSnapshot)).catch((error)=>console.error('[OBS Planning Helper startup]',error));
 })();

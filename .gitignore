@@ -43,3 +43,7 @@
 .obsidian/
 .DS_Store
 Thumbs.db
+
+# Generated Python bytecode.
+__pycache__/
+*.pyc

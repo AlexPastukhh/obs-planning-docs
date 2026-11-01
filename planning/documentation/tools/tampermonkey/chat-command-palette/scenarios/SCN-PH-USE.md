@@ -11,6 +11,21 @@ Scope: canonical detailed application behavior owner for grouped command navigat
 
 **Manual invocation invariant:** each current UC/TM/Lens has one primary semantic Command card. Direct/focused aliases do not create duplicate primary cards. Specific Lenses appear as cards; generic Lens apply and Lens operation variants remain infrastructure/internal selection.
 
+## Notifier Textbox projection
+
+A user may select one local Helper Prompt alongside Modules in a Notifier
+Textbox profile. Helper supplies a read-only local projection of current Prompt
+and Module records through the existing shared channel; it does not select,
+insert or send on the user's behalf. Notifier stores the Prompt ID and resolves
+its current text plus module references when preparing a message. The user
+original remains exact in its archive, with resolved Prompt text and separately
+selected Modules added only to the prepared submission. Missing references or
+cycles block preparation. GitHub access remains explicit in Helper. This
+integration grants no command permissions and does not invoke Planning Commands.
+Helper evidence: `src/shared-module-channel.js` and
+`tests/shared-module-channel.test.mjs`; Notifier evidence lives in its own
+`tests/textbox-helper-prompts.test.mjs` and `tests/textbox-prompt-selector.test.mjs`.
+
 ## RU-SCEN-01 — Scenario Path
 
 The path below is the normative current journey. The detailed trigger, result and boundary above elaborate these steps. Feature resolution remains open where the Helper has no independently accepted Feature owner; implementation files in Traceability are evidence, not Feature identities.

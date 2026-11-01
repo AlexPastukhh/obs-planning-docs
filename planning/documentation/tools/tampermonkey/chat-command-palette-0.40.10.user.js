@@ -1,0 +1,2563 @@
+// ==UserScript==
+// @name         Reusable Chat Planning Helper
+// @namespace    https://github.com/AlexPastukhh/obs/reusable-docs
+// @version      0.40.10-repository-command-registry
+// @description  RAM-first OBS Planning Helper with semantic Commands, canonical Scenarios, prompts and explicit repository actions.
+// @author       Reusable docs layer
+// @match        https://chatgpt.com/*
+// @match        https://chat.openai.com/*
+// @run-at       document-idle
+// @grant        GM_getValue
+// @grant        GM_setValue
+// @grant        GM_xmlhttpRequest
+// @connect      api.github.com
+// ==/UserScript==
+
+// GENERATED FILE — DO NOT EDIT MANUALLY.
+// Runtime source: planning/documentation/tools/tampermonkey/chat-command-palette/src/**
+// GitHub command authority: planning/commands/*.command.md
+// GitHub Use-Case projection root: planning/documentation/use-case-registry-map.md -> mapped current scoped methodology Use-Case registries only.
+// seed/use-cases.json is the build-verified GitHub-backed Use-Case projection used for explicit Hard Reload.
+// GitHub UI-order source: planning/documentation/tools/tampermonkey/chat-command-palette/catalog-order.json
+// Local snapshot is the working cache; current command/semantic/scenario catalogs are not embedded in this userscript.
+// Build: node planning/documentation/tools/tampermonkey/chat-command-palette/build-chat-command-palette.mjs
+
+(function (root, factory) {
+  const api = factory();
+  if (typeof module === 'object' && module.exports) module.exports = api;
+  root.ObsPlanningHelper = Object.assign(root.ObsPlanningHelper || {}, api);
+})(typeof globalThis !== 'undefined' ? globalThis : this, function () {
+  'use strict';
+
+  const OPEN = '[PLANNING_COMMAND_DEFINITION]';
+  const CLOSE = '[/PLANNING_COMMAND_DEFINITION]';
+  const SCHEMA_VERSION = 1;
+  const COMMANDS_PATH = 'planning/commands';
+  const allowedKeys = new Set([
+    'schemaVersion', 'id', 'file', 'command', 'englishName', 'commandFamily',
+    'description', 'meaning', 'activeContextBehavior', 'traversalReadMode',
+    'ownerFiles', 'ownerRefs', 'expectedOutput', 'permissionMode', 'keyReminders',
+    'userTarget', 'palette', 'refinements', 'helperPresentation', 'methodologyBinding', 'includes', 'compositionContributions', 'processCalls'
+  ]);
+
+  function assert(condition, message) {
+    if (!condition) throw new TypeError(message);
+  }
+
+  function nonEmpty(value, field) {
+    const text = String(value == null ? '' : value).trim();
+    assert(text, `${field} is required.`);
+    return text;
+  }
+
+  function singleLine(value, field) {
+    const text = nonEmpty(value, field);
+    assert(!/[\r\n\u0000-\u0008\u000b\u000c\u000e-\u001f\u007f]/.test(text), `${field} must be one safe text line.`);
+    return text;
+  }
+
+  function stringArray(value, field, options = {}) {
+    assert(Array.isArray(value), `${field} must be an array.`);
+    const reader = options.singleLine === false ? nonEmpty : singleLine;
+    const result = value.map((item, index) => reader(item, `${field}[${index}]`));
+    if (options.nonEmpty) assert(result.length > 0, `${field} must not be empty.`);
+    return result;
+  }
+
+  function validateRepositoryPath(value, field = 'repository path') {
+    const text = singleLine(value, field);
+    assert(!text.includes('\\'), `${field} must use forward slashes.`);
+    assert(!text.startsWith('/') && !text.startsWith('//') && !/^[a-zA-Z]:\//.test(text), `${field} must be repository-relative.`);
+    assert(!text.includes('://') && !/[?#`]/.test(text), `${field} contains URL, query, fragment or backtick syntax.`);
+    const parts = text.split('/');
+    assert(parts.every((part) => part && part !== '.' && part !== '..'), `${field} contains an invalid path segment.`);
+    return parts.join('/');
+  }
+
+  function validateId(value, field = 'id') {
+    const id = singleLine(value, field);
+    assert(/^[a-z0-9][a-z0-9._-]*$/.test(id), `${field} must use lowercase safe identifier characters.`);
+    return id;
+  }
+
+  function validateFileName(value) {
+    const file = nonEmpty(value, 'file');
+    assert(file.endsWith('.command.md'), 'file must end with .command.md.');
+    assert(!file.includes('/') && !file.includes('\\'), 'file must be a direct-child filename.');
+    assert(file !== 'README.command.md', 'README.command.md is reserved.');
+    assert(!file.includes('..'), 'file must not contain ..');
+    assert(/^[a-z0-9][a-z0-9._-]*\.command\.md$/.test(file), 'file must use lowercase safe filename characters.');
+    return file;
+  }
+
+  function validateCommandIncludePath(value, field = 'include path') {
+    const path = validateRepositoryPath(value, field);
+    assert(path.startsWith(`${COMMANDS_PATH}/`), `${field} must point under ${COMMANDS_PATH}/.`);
+    const file = path.slice(COMMANDS_PATH.length + 1);
+    assert(!file.includes('/'), `${field} must point to a direct command definition.`);
+    validateFileName(file);
+    return `${COMMANDS_PATH}/${file}`;
+  }
+
+  function normalizeRefinement(raw, index) {
+    assert(raw && typeof raw === 'object' && !Array.isArray(raw), `refinements[${index}] must be an object.`);
+    const known = new Set(['id', 'label', 'description', 'readRequired', 'instruction']);
+    for (const key of Object.keys(raw)) assert(known.has(key), `Unknown refinement field: ${key}`);
+    return {
+      id: validateId(raw.id, `refinements[${index}].id`),
+      label: singleLine(raw.label, `refinements[${index}].label`),
+      description: singleLine(raw.description, `refinements[${index}].description`),
+      readRequired: stringArray(raw.readRequired, `refinements[${index}].readRequired`, { nonEmpty: true }).map((path, pathIndex) => validateRepositoryPath(path, `refinements[${index}].readRequired[${pathIndex}]`)),
+      instruction: singleLine(raw.instruction, `refinements[${index}].instruction`)
+    };
+  }
+
+
+  function normalizeProcessCall(raw,index){
+    const field='processCalls['+index+']';
+    assert(raw&&typeof raw==='object'&&!Array.isArray(raw),field+' must be an object.');
+    const known=new Set(['id','commandPath','at','when','context']);for(const key of Object.keys(raw))assert(known.has(key),'Unknown '+field+' field: '+key);
+    assert(raw.at&&typeof raw.at==='object'&&!Array.isArray(raw.at),field+'.at must be an owner point.');
+    for(const key of Object.keys(raw.at))assert(['path','anchor'].includes(key),'Unknown '+field+'.at field: '+key);
+    const anchor=singleLine(raw.at.anchor,field+'.at.anchor');assert(/^[A-Za-z0-9._-]+$/.test(anchor),field+'.at.anchor must be a safe explicit anchor.');
+    return{id:validateId(raw.id,field+'.id'),commandPath:validateCommandIncludePath(raw.commandPath,field+'.commandPath'),at:{path:validateRepositoryPath(raw.at.path,field+'.at.path'),anchor},when:singleLine(raw.when,field+'.when'),context:singleLine(raw.context,field+'.context')};
+  }
+
+  function normalizeCompositionContribution(raw,index){
+    assert(raw&&typeof raw==='object'&&!Array.isArray(raw),`compositionContributions[${index}] must be an object.`);
+    const known=new Set(['kind','value','why']);for(const key of Object.keys(raw))assert(known.has(key),`Unknown compositionContributions[${index}] field: ${key}`);
+    const kind=singleLine(raw.kind,`compositionContributions[${index}].kind`);
+    const allowed=new Set(['PORT_CAPABILITY_REQUIREMENT','REVIEW_COVERAGE_MODE']);
+    assert(allowed.has(kind),`compositionContributions[${index}].kind is invalid.`);
+    const value=singleLine(raw.value,`compositionContributions[${index}].value`);
+    if(kind==='REVIEW_COVERAGE_MODE'){
+      const modes=new Set(['CURRENT_BASIS','LOCAL_AFFECTED_RECHECK']);
+      assert(modes.has(value),`compositionContributions[${index}].value is invalid for REVIEW_COVERAGE_MODE.`);
+    }
+    return{kind,value,why:singleLine(raw.why,`compositionContributions[${index}].why`)};
+  }
+
+  function normalizeOwnerRef(raw,index){
+    assert(raw&&typeof raw==='object'&&!Array.isArray(raw),`ownerRefs[${index}] must be an object.`);
+    const known=new Set(['responsibilityId','path','anchor','why','role','readMode']);
+    for(const key of Object.keys(raw))assert(known.has(key),`Unknown ownerRefs[${index}] field: ${key}`);
+    const role=singleLine(raw.role,`ownerRefs[${index}].role`);
+    const roles=new Set(['PRIMARY_OWNER','SUPPORTING_CONTRACT','REGISTRY','POSSIBLE_DESTINATION','VALIDATION_HANDOFF','RUNTIME_ENTRY','ROUTING']);
+    assert(roles.has(role),`ownerRefs[${index}].role is invalid.`);
+    const readMode=raw.readMode==null?'REQUIRED':singleLine(raw.readMode,`ownerRefs[${index}].readMode`);
+    assert(new Set(['REQUIRED','ON_DEMAND','DESTINATION_ONLY']).has(readMode),`ownerRefs[${index}].readMode is invalid.`);
+    const anchor=raw.anchor==null||String(raw.anchor).trim()===''?'':singleLine(raw.anchor,`ownerRefs[${index}].anchor`);
+    if(anchor)assert(/^[A-Za-z0-9._-]+$/.test(anchor),`ownerRefs[${index}].anchor must be a safe Markdown anchor id.`);
+    return{
+      responsibilityId: singleLine(raw.responsibilityId,`ownerRefs[${index}].responsibilityId`),
+      path: validateRepositoryPath(raw.path,`ownerRefs[${index}].path`),
+      anchor,
+      why: singleLine(raw.why,`ownerRefs[${index}].why`),
+      role,
+      readMode
+    };
+  }
+
+  function normalizeHelperNavigation(raw, field) {
+    assert(raw && typeof raw === 'object' && !Array.isArray(raw), `${field} must be an object.`);
+    const known = new Set(['viewId','viewLabel','viewOrder','sectionId','sectionLabel','sectionOrder','itemOrder','kindLabel','badges','parentId','related']);
+    for (const key of Object.keys(raw)) assert(known.has(key), `Unknown ${field} field: ${key}`);
+    const integer=(value,name)=>{const n=Number(value);assert(Number.isInteger(n)&&n>=0,`${name} must be a non-negative integer.`);return n;};
+    const result={
+      viewId: singleLine(raw.viewId, `${field}.viewId`),
+      viewLabel: singleLine(raw.viewLabel, `${field}.viewLabel`),
+      viewOrder: integer(raw.viewOrder??0, `${field}.viewOrder`),
+      sectionId: singleLine(raw.sectionId, `${field}.sectionId`),
+      sectionLabel: singleLine(raw.sectionLabel, `${field}.sectionLabel`),
+      sectionOrder: integer(raw.sectionOrder, `${field}.sectionOrder`),
+      itemOrder: integer(raw.itemOrder, `${field}.itemOrder`),
+      kindLabel: singleLine(raw.kindLabel, `${field}.kindLabel`),
+      badges: raw.badges==null?[]:stringArray(raw.badges, `${field}.badges`)
+    };
+    if(raw.parentId!=null)result.parentId=validateId(raw.parentId,`${field}.parentId`);
+    if(raw.related!=null){assert(typeof raw.related==='boolean',`${field}.related must be boolean.`);result.related=raw.related;}
+    return result;
+  }
+
+  function normalizeMethodologyBinding(raw) {
+    if(raw==null)return null;
+    assert(raw&&typeof raw==='object'&&!Array.isArray(raw),'methodologyBinding must be an object.');
+    const known=new Set(['methodologyRuntime','profile','surfaceKind','targetModuleId','lensId','parentSurface','hostTargetPolicy']);
+    for(const key of Object.keys(raw))assert(known.has(key),`Unknown methodologyBinding field: ${key}`);
+    const runtime=singleLine(raw.methodologyRuntime,'methodologyBinding.methodologyRuntime');
+    assert(runtime==='IDTSPE','methodologyBinding.methodologyRuntime must be IDTSPE.');
+    const kinds=new Set(['BOOTSTRAP','WORK_MODE','TARGET_MODULE','TARGET_MODULE_FOCUSED','LENS','ORCHESTRATION','VALIDATOR']);
+    const policies=new Set(['CREATE_OR_REUSE_TARGET','RESOLVE_OR_REUSE_TARGET','NONE']);
+    const surfaceKind=singleLine(raw.surfaceKind,'methodologyBinding.surfaceKind');assert(kinds.has(surfaceKind),'methodologyBinding.surfaceKind is invalid.');
+    const hostTargetPolicy=singleLine(raw.hostTargetPolicy,'methodologyBinding.hostTargetPolicy');assert(policies.has(hostTargetPolicy),'methodologyBinding.hostTargetPolicy is invalid.');
+    const profile=raw.profile==null?null:singleLine(raw.profile,'methodologyBinding.profile');
+    const targetModuleId=raw.targetModuleId==null?null:singleLine(raw.targetModuleId,'methodologyBinding.targetModuleId');
+    if(targetModuleId!=null)assert(/^TM-[A-Z0-9-]+$/.test(targetModuleId),'methodologyBinding.targetModuleId must be TM-*.');
+    const lensId=raw.lensId==null?null:singleLine(raw.lensId,'methodologyBinding.lensId');
+    if(lensId!=null)assert(/^LENS-[A-Z0-9-]+$/.test(lensId),'methodologyBinding.lensId must be LENS-*.');
+    const parentSurface=raw.parentSurface==null?null:validateId(raw.parentSurface,'methodologyBinding.parentSurface');
+    if(surfaceKind==='TARGET_MODULE'||surfaceKind==='TARGET_MODULE_FOCUSED')assert(targetModuleId,'Target Module surfaces require methodologyBinding.targetModuleId.');
+    if(surfaceKind==='LENS')assert(lensId,'Lens surfaces require methodologyBinding.lensId.');
+    return{methodologyRuntime:runtime,profile,surfaceKind,targetModuleId,lensId,parentSurface,hostTargetPolicy};
+  }
+
+  function normalizeHelperPresentation(raw) {
+    if (raw == null) return null;
+    assert(raw && typeof raw === 'object' && !Array.isArray(raw), 'helperPresentation must be an object.');
+    const known = new Set(['whenToUse', 'whatYouGet', 'navigation', 'relatedNavigation']);
+    for (const key of Object.keys(raw)) assert(known.has(key), `Unknown helperPresentation field: ${key}`);
+    const result={
+      whenToUse: singleLine(raw.whenToUse, 'helperPresentation.whenToUse'),
+      whatYouGet: singleLine(raw.whatYouGet, 'helperPresentation.whatYouGet')
+    };
+    if(raw.navigation!=null)result.navigation=normalizeHelperNavigation(raw.navigation,'helperPresentation.navigation');
+    if(raw.relatedNavigation!=null){assert(Array.isArray(raw.relatedNavigation),'helperPresentation.relatedNavigation must be an array.');result.relatedNavigation=raw.relatedNavigation.map((item,index)=>normalizeHelperNavigation(item,`helperPresentation.relatedNavigation[${index}]`));}
+    return result;
+  }
+
+  function normalizeCommandDefinition(raw, options = {}) {
+    assert(raw && typeof raw === 'object' && !Array.isArray(raw), 'Command definition must be a JSON object.');
+    for (const key of Object.keys(raw)) assert(allowedKeys.has(key), `Unknown command definition field: ${key}`);
+    assert(Number(raw.schemaVersion) === SCHEMA_VERSION, `schemaVersion must be ${SCHEMA_VERSION}.`);
+    const command = singleLine(raw.command, 'command');
+    const family = stringArray(raw.commandFamily, 'commandFamily', { nonEmpty: true });
+    assert(family.includes(command), 'commandFamily must contain the canonical command exactly.');
+    assert(new Set(family).size === family.length, 'commandFamily must not contain duplicate aliases.');
+    const file = validateFileName(raw.file);
+    if (options.actualFile) assert(file === options.actualFile, `Definition file ${file} does not match actual filename ${options.actualFile}.`);
+    const refinementsRaw = raw.refinements == null ? [] : raw.refinements;
+    assert(Array.isArray(refinementsRaw), 'refinements must be an array.');
+    const refinements = refinementsRaw.map(normalizeRefinement);
+    assert(new Set(refinements.map((item) => item.id)).size === refinements.length, 'refinement ids must be unique within a command.');
+    const includes = raw.includes == null ? [] : stringArray(raw.includes, 'includes').map((path, index) => validateCommandIncludePath(path, `includes[${index}]`));
+    assert(new Set(includes).size === includes.length, 'includes must not contain duplicate command paths.');
+    const callsRaw=raw.processCalls==null?[]:raw.processCalls;assert(Array.isArray(callsRaw),'processCalls must be an array.');
+    const processCalls=callsRaw.map(normalizeProcessCall);assert(new Set(processCalls.map(call=>call.id)).size===processCalls.length,'processCalls ids must be unique within a command.');
+    const contributionsRaw=raw.compositionContributions==null?[]:raw.compositionContributions;
+    assert(Array.isArray(contributionsRaw),'compositionContributions must be an array.');
+    const compositionContributions=contributionsRaw.map(normalizeCompositionContribution);
+    const contributionKeys=compositionContributions.map((item)=>`${item.kind}|${item.value}`);
+    assert(new Set(contributionKeys).size===contributionKeys.length,'compositionContributions must not contain duplicate kind/value entries.');
+    const ownerRefsRaw=raw.ownerRefs==null?[]:raw.ownerRefs;
+    assert(Array.isArray(ownerRefsRaw),'ownerRefs must be an array.');
+    const ownerRefs=ownerRefsRaw.map(normalizeOwnerRef);
+    const ownerRefKeys=ownerRefs.map((ref)=>`${ref.responsibilityId}|${ref.path}|${ref.anchor}`);
+    assert(new Set(ownerRefKeys).size===ownerRefKeys.length,'ownerRefs must not contain duplicate responsibility/path/anchor entries.');
+    assert(typeof raw.palette === 'boolean', 'palette must be boolean.');
+    return {
+      schemaVersion: SCHEMA_VERSION,
+      id: validateId(raw.id, 'id'),
+      file,
+      command,
+      englishName: singleLine(raw.englishName, 'englishName'),
+      commandFamily: family,
+      description: singleLine(raw.description, 'description'),
+      meaning: singleLine(raw.meaning, 'meaning'),
+      activeContextBehavior: singleLine(raw.activeContextBehavior, 'activeContextBehavior'),
+      traversalReadMode: singleLine(raw.traversalReadMode, 'traversalReadMode'),
+      ownerFiles: stringArray(raw.ownerFiles, 'ownerFiles').map((path, index) => validateRepositoryPath(path, `ownerFiles[${index}]`)),
+      ownerRefs,
+      includes,
+      processCalls,
+      compositionContributions,
+      expectedOutput: singleLine(raw.expectedOutput, 'expectedOutput'),
+      permissionMode: singleLine(raw.permissionMode, 'permissionMode'),
+      keyReminders: stringArray(raw.keyReminders, 'keyReminders', { nonEmpty: true }),
+      userTarget: singleLine(raw.userTarget, 'userTarget'),
+      palette: raw.palette,
+      helperPresentation: normalizeHelperPresentation(raw.helperPresentation),
+      methodologyBinding: normalizeMethodologyBinding(raw.methodologyBinding),
+      refinements
+    };
+  }
+
+  function extractDefinitionBlocks(text) {
+    const source = String(text == null ? '' : text);
+    const blocks = [];
+    let cursor = 0;
+    while (cursor < source.length) {
+      const open = source.indexOf(OPEN, cursor);
+      const closeBefore = source.indexOf(CLOSE, cursor);
+      if (closeBefore !== -1 && (open === -1 || closeBefore < open)) throw new TypeError('Unexpected closing PLANNING_COMMAND_DEFINITION marker.');
+      if (open === -1) break;
+      const nested = source.indexOf(OPEN, open + OPEN.length);
+      const close = source.indexOf(CLOSE, open + OPEN.length);
+      if (close === -1) throw new TypeError('Unclosed PLANNING_COMMAND_DEFINITION marker.');
+      if (nested !== -1 && nested < close) throw new TypeError('Nested PLANNING_COMMAND_DEFINITION blocks are not allowed.');
+      blocks.push(source.slice(open + OPEN.length, close).trim());
+      cursor = close + CLOSE.length;
+    }
+    return blocks;
+  }
+
+  function parseJsonBlock(block, options = {}) {
+    let raw;
+    try { raw = JSON.parse(block); }
+    catch (error) { throw new TypeError(`Invalid command definition JSON: ${error.message}`); }
+    return normalizeCommandDefinition(raw, options);
+  }
+
+  function parseCommandDefinitionDocument(text, options = {}) {
+    const blocks = extractDefinitionBlocks(text);
+    assert(blocks.length === 1, `Command document must contain exactly one definition block; found ${blocks.length}.`);
+    const actualFile = options.path ? String(options.path).replace(/\\/g, '/').split('/').pop() : options.actualFile;
+    const definition = parseJsonBlock(blocks[0], { actualFile });
+    return { ...definition, sourcePath: options.path ? String(options.path).replace(/\\/g, '/') : `${COMMANDS_PATH}/${definition.file}` };
+  }
+
+  function parseCommandDefinitionBatch(text) {
+    const blocks = extractDefinitionBlocks(text);
+    assert(blocks.length > 0, 'No PLANNING_COMMAND_DEFINITION blocks found.');
+    const definitions = blocks.map((block) => parseJsonBlock(block));
+    const ids = new Set();
+    const commands = new Set();
+    const files = new Set();
+    for (const definition of definitions) {
+      assert(!ids.has(definition.id), `Duplicate command id in batch: ${definition.id}`);
+      assert(!commands.has(definition.command), `Duplicate canonical command in batch: ${definition.command}`);
+      assert(!files.has(definition.file), `Duplicate command file in batch: ${definition.file}`);
+      ids.add(definition.id); commands.add(definition.command); files.add(definition.file);
+    }
+    return definitions;
+  }
+
+  function toSerializable(definition) {
+    const normalized = normalizeCommandDefinition(definition);
+    return {
+      schemaVersion: normalized.schemaVersion,
+      id: normalized.id,
+      file: normalized.file,
+      command: normalized.command,
+      englishName: normalized.englishName,
+      commandFamily: normalized.commandFamily,
+      description: normalized.description,
+      meaning: normalized.meaning,
+      activeContextBehavior: normalized.activeContextBehavior,
+      traversalReadMode: normalized.traversalReadMode,
+      ownerFiles: normalized.ownerFiles,
+      ownerRefs: normalized.ownerRefs,
+      includes: normalized.includes,
+      ...(normalized.processCalls.length?{processCalls:normalized.processCalls}:{}),
+      compositionContributions: normalized.compositionContributions,
+      expectedOutput: normalized.expectedOutput,
+      permissionMode: normalized.permissionMode,
+      keyReminders: normalized.keyReminders,
+      userTarget: normalized.userTarget,
+      palette: normalized.palette,
+      ...(normalized.helperPresentation ? { helperPresentation: normalized.helperPresentation } : {}),
+      ...(normalized.methodologyBinding ? { methodologyBinding: normalized.methodologyBinding } : {}),
+      refinements: normalized.refinements
+    };
+  }
+
+  function titleFromEnglishName(name) {
+    return String(name).split(/\s+/).filter(Boolean).map((word) => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+  }
+
+  function renderCommandDefinitionDocument(definition) {
+    const normalized = toSerializable(definition);
+    return [
+      `# ${titleFromEnglishName(normalized.englishName)}`,
+      '',
+      'Status: active project command definition',
+      'Scope: one concrete OBS Planning command route. Reusable behavior remains in linked owner files.',
+      '',
+      OPEN,
+      JSON.stringify(normalized, null, 2),
+      CLOSE,
+      ''
+    ].join('\n');
+  }
+
+  function commandPathForDefinition(definition) {
+    return `${COMMANDS_PATH}/${validateFileName(definition.file)}`;
+  }
+
+  return {
+    COMMAND_DEFINITION_OPEN: OPEN,
+    COMMAND_DEFINITION_CLOSE: CLOSE,
+    COMMAND_DEFINITION_SCHEMA_VERSION: SCHEMA_VERSION,
+    COMMANDS_PATH,
+    extractDefinitionBlocks,
+    normalizeCommandDefinition,
+    parseCommandDefinitionDocument,
+    parseCommandDefinitionBatch,
+    renderCommandDefinitionDocument,
+    commandPathForDefinition,
+    toSerializable,
+    validateRepositoryPath,
+    validateCommandIncludePath,
+    validateId
+  };
+});
+
+(function (root, factory) {
+  const api = factory();
+  if (typeof module === 'object' && module.exports) module.exports = api;
+  root.ObsPlanningHelper = Object.assign(root.ObsPlanningHelper || {}, api);
+})(typeof globalThis !== 'undefined' ? globalThis : this, function () {
+  'use strict';
+
+  const COMMANDS_PATH='planning/commands';
+  function assert(condition, message) { if (!condition) throw new TypeError(message); }
+  function commandPath(definition){return `${COMMANDS_PATH}/${definition.file}`;}
+
+  function commandExecutionReferences(definition){return[...(definition?.includes||[]),...(definition?.processCalls||[]).map(call=>call.commandPath)];}
+
+  function validateCommandCatalog(definitions, options = {}) {
+    assert(Array.isArray(definitions), 'Command catalog must be an array.');
+    const byId = new Map();
+    const byCommand = new Map();
+    const byAlias = new Map();
+    const byFile = new Map();
+    const byPath = new Map();
+    for (const definition of definitions) {
+      assert(definition && typeof definition === 'object', 'Catalog contains an invalid definition.');
+      if (byId.has(definition.id)) throw new TypeError(`Duplicate command id: ${definition.id}`);
+      if (byCommand.has(definition.command)) throw new TypeError(`Duplicate canonical command: ${definition.command}`);
+      if (byFile.has(definition.file)) throw new TypeError(`Duplicate command file: ${definition.file}`);
+      const path=commandPath(definition);
+      if(byPath.has(path))throw new TypeError(`Duplicate command path: ${path}`);
+      byId.set(definition.id, definition);
+      byCommand.set(definition.command, definition);
+      byFile.set(definition.file, definition);
+      byPath.set(path, definition);
+      for (const alias of definition.commandFamily || []) {
+        if (byAlias.has(alias) && byAlias.get(alias).id !== definition.id) {
+          throw new TypeError(`Ambiguous command alias ${alias}: ${byAlias.get(alias).id} vs ${definition.id}`);
+        }
+        byAlias.set(alias, definition);
+      }
+    }
+    const allowMissingIncludes = options.allowMissingIncludes === true;
+    for (const definition of definitions) for (const includedPath of commandExecutionReferences(definition)) {
+      const included=byPath.get(includedPath);
+      if (!included) {
+        if (!allowMissingIncludes) throw new TypeError(`Unknown included command path or process call ${includedPath} in ${definition.id}`);
+        continue;
+      }
+      if (included.id === definition.id) throw new TypeError(`Command ${definition.id} cannot include or call itself.`);
+    }
+    const visiting=new Set(),visited=new Set();
+    function visit(id,stack=[]){
+      if(visited.has(id))return;
+      if(visiting.has(id))throw new TypeError(`Command include cycle / process-call cycle: ${[...stack,id].join(' -> ')}`);
+      visiting.add(id);
+      const definition=byId.get(id);
+      for(const includedPath of commandExecutionReferences(definition)){const included=byPath.get(includedPath);if(included)visit(included.id,[...stack,id]);}
+      visiting.delete(id);visited.add(id);
+    }
+    for(const definition of definitions)visit(definition.id);
+    return { definitions: [...definitions], byId, byCommand, byAlias, byFile, byPath };
+  }
+
+  function visibleCommandDefinitions(definitions) {
+    return validateCommandCatalog(definitions).definitions.filter((definition) => definition.palette === true);
+  }
+
+  function stripRuntimeCommandMetadata(definition) {
+    const result = {};
+    for (const [key, value] of Object.entries(definition || {})) {
+      if (!key.startsWith('__') && key !== 'sourcePath' && key !== 'sourceSha') result[key] = value;
+    }
+    return result;
+  }
+
+  function replaceDefinitionsByFile(currentDefinitions, incomingDefinitions) {
+    const map = new Map((currentDefinitions || []).map((definition) => [definition.file, definition]));
+    for (const definition of incomingDefinitions || []) map.set(definition.file, definition);
+    return [...map.values()].sort((a, b) => a.file.localeCompare(b.file));
+  }
+
+  function expandCommandComposition(definitions,rootIds){
+    const catalog=validateCommandCatalog(definitions,{allowMissingIncludes:true});
+    const roots=[...new Set((Array.isArray(rootIds)?rootIds:[rootIds]).map(String).filter(Boolean))];
+    for(const id of roots)assert(catalog.byId.has(id),`Unknown composition root command id: ${id}`);
+    // Unrelated incomplete local drafts do not invalidate a fully resolved invocation.
+    const checked=new Set();
+    function checkReachable(definition){
+      if(checked.has(definition.id))return;checked.add(definition.id);
+      for(const path of commandExecutionReferences(definition)){
+        const child=catalog.byPath.get(path);assert(child,`Unknown command execution path ${path} in ${definition.id}`);checkReachable(child);
+      }
+    }
+    for(const id of roots)checkReachable(catalog.byId.get(id));
+    const seen=new Set(),order=[];
+    function visit(definition){
+      if(seen.has(definition.id))return;
+      for(const includedPath of definition.includes||[]){const included=catalog.byPath.get(includedPath);if(included)visit(included);}
+      seen.add(definition.id);order.push(definition.id);
+    }
+    for(const id of roots)visit(catalog.byId.get(id));
+    const nodes=order.map((id)=>catalog.byId.get(id));
+    const contributions=[];
+    for(const node of nodes){
+      for(const item of node.compositionContributions||[])contributions.push({...item,sourceCommandId:node.id});
+      const binding=node.methodologyBinding||{};
+      if(binding.targetModuleId)contributions.push({kind:'SELECTED_TARGET_MODULE',value:binding.targetModuleId,why:'Registered Target Module selection contributed by command methodologyBinding before semantic execution.',sourceCommandId:node.id});
+      if(binding.lensId)contributions.push({kind:'SELECTED_LENS',value:binding.lensId,why:'Registered Lens selection contributed by command methodologyBinding before semantic execution.',sourceCommandId:node.id});
+    }
+    const unique=[],seenContrib=new Set();for(const item of contributions){const key=`${item.kind}|${item.value}|${item.sourceCommandId}`;if(!seenContrib.has(key)){seenContrib.add(key);unique.push(item);}}
+    const hasAffectedRecheck=unique.some((item)=>item.kind==='REVIEW_COVERAGE_MODE'&&item.value==='LOCAL_AFFECTED_RECHECK');
+    const effective=hasAffectedRecheck?unique.filter((item)=>!(item.kind==='REVIEW_COVERAGE_MODE'&&item.value==='CURRENT_BASIS')):unique;
+    return{rootIds:roots,order,nodes,contributions:effective,byId:catalog.byId,byPath:catalog.byPath,paths:nodes.map(commandPath)};
+  }
+
+  // Inventory is fully discovered before execution; child plans remain deferred.
+  // Each call occurrence is activated by the executor at its owner point, not by this projection.
+  function expandCommandInvocation(definitions,rootIds){
+    const initial=expandCommandComposition(definitions,rootIds),processCalls=[],seen=new Set();
+    function scan(plan){for(const node of plan.nodes){if(seen.has(node.id))continue;seen.add(node.id);
+      for(const call of node.processCalls||[]){const child=initial.byPath.get(call.commandPath),composition=expandCommandComposition(definitions,[child.id]);processCalls.push({...call,callerId:node.id,composition});scan(composition);}
+    }}scan(initial);return{initial,processCalls};
+  }
+
+  function explicitAnchorCount(source,anchor){
+    const text=String(source||'').replace(/<!--[\s\S]*?-->/g,'');let fence=null,count=0;
+    for(const line of text.split(/\r?\n/)){
+      const marker=line.match(/^ {0,3}(\x60{3,}|~{3,})/);
+      if(marker){if(!fence)fence={char:marker[1][0],length:marker[1].length};else if(marker[1][0]===fence.char&&marker[1].length>=fence.length&&line.slice(marker[0].length).trim()==='')fence=null;continue;}
+      if(fence||/^(?: {4}|\t)/.test(line))continue;
+      const visible=line.replace(/(\x60+).*?\1/g,'');
+      for(const match of visible.matchAll(/(?<!\\)<a\s+id=["']([^"']+)["']\s*>\s*<\/a>/gi))if(match[1]===anchor)count++;
+    }return count;
+  }
+  function validateProcessCallPoint(source,at){
+    const count=explicitAnchorCount(source,at.anchor);
+    assert(count===1,'Expected one process-call owner anchor '+at.path+'#'+at.anchor+'; found '+count+'.');
+  }
+
+  function commandReferencePaths(definition) {
+    const paths = new Set();
+    for (const call of definition?.processCalls || []) paths.add(call.at.path);
+    for (const owner of definition?.ownerFiles || []) paths.add(owner);
+    for (const ref of definition?.ownerRefs || []) if(ref?.path) paths.add(ref.path);
+    for (const refinement of definition?.refinements || []) {
+      for (const owner of refinement?.readRequired || []) paths.add(owner);
+    }
+    return [...paths].sort();
+  }
+
+  return { validateCommandCatalog, visibleCommandDefinitions, stripRuntimeCommandMetadata, replaceDefinitionsByFile, expandCommandComposition, expandCommandInvocation, explicitAnchorCount, validateProcessCallPoint, commandReferencePaths };
+});
+
+(function (root, factory) {
+  const api = factory(typeof require==='function'?require('./command-catalog.js'):(root.ObsPlanningHelper||{}));
+  if (typeof module === 'object' && module.exports) module.exports = api;
+  root.ObsPlanningHelper = Object.assign(root.ObsPlanningHelper || {}, api);
+})(typeof globalThis !== 'undefined' ? globalThis : this, function (deps) {
+  'use strict';
+
+  const MODE = Object.freeze({ ADAPTIVE: 'adaptive', FULL: 'full' });
+
+  function commandReadBlock(definition, mode) {
+    const path = `planning/commands/${definition.file}`;
+    if (mode === MODE.FULL) {
+      return [
+        'source_of_truth:',
+        '  Start from `planning/command-routing.md`.',
+        `  Then read \`${path}\` and follow its complete owner route.`,
+        '',
+        'route_read_rule:',
+        '  Full route reading is required for this invocation.',
+        '  Read the root command-system entry, this command definition and every owner/workflow/template/example required by the definition.',
+        '  Do this even if the command was previously used in this chat.',
+        '  Do not expand into unrelated repository files.',
+        '  Full does not expand permissions.'
+      ];
+    }
+    return [
+      'source_of_truth:',
+      '  Start from `planning/command-routing.md`.',
+      `  Then read \`${path}\` and its linked owner files for this command route.`,
+      '',
+      'route_read_rule:',
+      '  Read or reread the route when it is not current, remembered or certain.',
+      '  Do not rely only on this compact prompt when command behavior is uncertain.'
+    ];
+  }
+
+  function formatFamily(family) { return (family || []).map((item) => `\`${item}\``).join(' / '); }
+
+  function ownerRefLines(definition){const refs=definition.ownerRefs||[];if(!refs.length)return['  - none'];return refs.flatMap((ref)=>{const target=`${ref.path}${ref.anchor?'#'+ref.anchor:''}`;return[`  - ${ref.responsibilityId} → \`${target}\``,`    role: ${ref.role}; read: ${ref.readMode}; why: ${ref.why}`];});}
+
+  function commandPath(definition){return `planning/commands/${definition.file}`;}
+  function includedByLines(definition,definitions){const path=commandPath(definition);const deps=(definitions||[]).filter((item)=>(item.includes||[]).includes(path)).sort((a,b)=>commandPath(a).localeCompare(commandPath(b)));return deps.length?deps.map((dep)=>`  - ${commandPath(dep)} (${dep.id})`):['  - none'];}
+
+  function contributionLines(items){const list=items||[];if(!list.length)return['  - none'];return list.map((item)=>`  - ${item.kind}: ${item.value}${item.sourceCommandId?' | source: '+item.sourceCommandId:''} | why: ${item.why}`);}
+
+  function compositionPlan(definition,definitions){
+    if(!Array.isArray(definitions)||!definitions.length)return{order:[],contributions:[],processCalls:[]};
+    try{const plan=deps.expandCommandInvocation(definitions,[definition.id]);return{order:plan.initial.nodes.map(d=>({id:d.id,path:commandPath(d)})),contributions:plan.initial.contributions,processCalls:plan.processCalls};}
+    catch(error){return{order:[],contributions:[],processCalls:[],error:error.message};}
+  }
+  function processCallLines(plan,definition){
+    const calls=plan.processCalls.length?plan.processCalls:(definition.processCalls||[]).map(call=>({...call,callerId:definition.id}));
+    if(!calls.length)return['  - none'];
+    return calls.flatMap(call=>[
+      '  - '+call.callerId+'/'+call.id+' → '+call.commandPath,
+      '    at: '+call.at.path+'#'+call.at.anchor,
+      '    when: '+call.when,
+      '    context/basis: '+call.context,
+      '    deferred includes, dependencies first: '+(call.composition?.paths.join(' → ')||'resolve from current catalog at invocation'),
+      '    deferred contributions: '+(call.composition?.contributions.map(item=>item.kind+': '+item.value).join('; ')||'none / resolve at invocation')
+    ]);
+  }
+
+
+  function buildCommandBody(definition, mode = MODE.ADAPTIVE, options = {}) {
+    const plan=compositionPlan(definition,options.definitions);
+    return [
+      '[PLANNING_COMMAND]',
+      'Read this whole command body before answering.',
+      'Do not ignore `key_reminders`.',
+      '',
+      'command:',
+      `  ${definition.command}`,
+      '',
+      'english_name:',
+      `  ${definition.englishName}`,
+      '',
+      'command_family:',
+      `  ${formatFamily(definition.commandFamily)}`,
+      '',
+      'command_definition:',
+      `  planning/commands/${definition.file}`,
+      '',
+      'context:',
+      `  ${definition.activeContextBehavior}`,
+      '',
+      'result:',
+      `  ${definition.expectedOutput}`,
+      '',
+      'essence:',
+      `  ${definition.meaning}`,
+      '',
+      'command_includes:',
+      ...((definition.includes||[]).length?(definition.includes||[]).map((path)=>`  - ${path}`):['  - none']),
+      '',
+      'included_by_derived:',
+      ...includedByLines(definition,options.definitions),
+      '  Derived reverse projection only; `includes` remains the single canonical prerequisite relation; `processCalls` declares calls at owner process points.',
+      '  Expand ALL selected roots and transitive includes before semantic execution. Merge them into one DAG, reject cycles, deduplicate shared nodes, collect declarative contributions from every node, then execute dependencies before dependents. The selected/root command action runs last on its branch.',
+      '',
+      'process_calls_deferred:',
+      ...processCallLines(plan,definition),
+      '  Discover/validate all includes and processCalls before work; reject unresolved paths and mixed cycles. Do not flatten deferred calls into the initial DAG or merge their contributions early.',
+      '  At each reached owner point evaluate its gate, bind the current subject/scope/operation/basis, expand the called command and all its includes, collect its contributions, execute dependencies first, then resume the caller. Follow the full child owner/read route.',
+      '  Reuse only evidenced compatible coverage on the current basis, including reached nested calls. A prior command id alone is not reuse evidence. Record EXECUTED / REUSED / NOT_APPLICABLE with basis; BLOCKED or NOT_REACHED is incomplete required work. Preserve caller permissions and Work Context.',
+      ...(plan.error?['  INVALID / INCOMPLETE CATALOG: '+plan.error+'. Resolve before any command execution.']:[]),
+      '',
+      'own_composition_contributions_pre_execution:',
+      ...contributionLines(definition.compositionContributions||[]),
+      '',
+      'effective_composition_contributions_pre_execution:',
+      ...contributionLines(plan.contributions),
+      '  This is the merged contribution set from the fully expanded DAG; these facts are available before the first semantic command action.',
+      '',
+      'expanded_composition_dependencies_first:',
+      ...(plan.order.length?plan.order.map((item,index)=>`  ${index+1}. ${item.path} (${item.id})${item.id===definition.id?'  ← selected/root action':''}`):['  - resolve from current command catalog before execution']),
+      '',
+      'own_canonical_refs:',
+      ...ownerRefLines(definition),
+      '  These are references added by THIS command only; references inherited through included commands are intentionally not repeated.',
+      '',
+      ...commandReadBlock(definition, mode),
+      '',
+      'example_read_rule:',
+      '  Follow planning/documentation/principles-and-terminology.md#doc-example-reading: inspect relevant inline/linked examples of the selected owner before producing its result; reuse current reading with basis, or state that none applies. Examples do not override contracts or authorize execution.',
+
+      '',
+      'key_reminders:',
+      ...(definition.keyReminders || []).map((item) => `  - ${item}`),
+      '',
+      'user_target:',
+      `  ${definition.userTarget}`,
+      '',
+      '[/PLANNING_COMMAND]'
+    ].join('\n');
+  }
+
+  function buildRefinementBody(definition, refinement) {
+    return [
+      '[PLANNING_COMMAND_REFINEMENT]',
+      'command:',
+      `  ${definition.command}`,
+      '',
+      'command_definition:',
+      `  planning/commands/${definition.file}`,
+      '',
+      'refinement:',
+      `  ${refinement.id}`,
+      '',
+      'read_required:',
+      ...(refinement.readRequired || []).map((path) => `  - \`${path}\``),
+      '',
+      'instruction:',
+      `  ${refinement.instruction}`,
+      '',
+      '[/PLANNING_COMMAND_REFINEMENT]'
+    ].join('\n');
+  }
+
+  function buildUseCaseInvocationBody(genericDefinition,useCase,mode=MODE.ADAPTIVE){
+    const full=mode===MODE.FULL;
+    return [
+      '[PLANNING_COMMAND]',
+      'Read this whole command body before answering.',
+      'Do not ignore `key_reminders`.',
+      '',
+      'command:',
+      `  ${useCase.label}`,
+      '',
+      'english_name:',
+      `  invoke use case · ${useCase.label}`,
+      '',
+      'command_definition:',
+      `  planning/commands/${genericDefinition.file}`,
+      '',
+      'use_case_id:',
+      `  ${useCase.id}`,
+      '',
+      'source_of_truth:',
+      '  Start from `planning/command-routing.md`.',
+      `  Then read \`planning/commands/${genericDefinition.file}\` and resolve \`${useCase.id}\` in \`${useCase.sources[0]}\`.`,
+      '  Follow the current UC owner route; the Helper projection is not semantic authority.',
+      '',
+      'route_read_rule:',
+      `  ${full?'Read the complete relevant current owner route for this UC.':'Read or reread the selected UC route when it is not current, remembered or certain.'}`,
+      '  Follow planning/documentation/principles-and-terminology.md#doc-example-reading for relevant inline/linked examples; examples remain non-authoritative.',
+      '  Do not expand permissions merely because the UC is selected.',
+      '',
+      'key_reminders:',
+      ...genericDefinition.keyReminders.map((item)=>`  - ${item}`),
+      `  - Current UC result: ${useCase.description||useCase.label}`,
+      '',
+      'user_target:',
+      `  ${useCase.target||'<current target>'}`,
+      '',
+      '[/PLANNING_COMMAND]'
+    ].join('\n');
+  }
+
+  function useCaseInvocationCommandId(useCaseId){return `uc.invoke.${String(useCaseId||'').toLowerCase()}`;}
+  function buildUseCaseInvocationEntry(genericDefinition,useCase){return{id:useCaseInvocationCommandId(useCase.id),entityType:'use-case-invocation-command',useCaseId:useCase.id,label:useCase.label,command:useCase.label,englishName:`invoke use case · ${useCase.label}`,description:`Manual invocation of ${useCase.id} through its current canonical owner route`,adaptiveBody:buildUseCaseInvocationBody(genericDefinition,useCase,MODE.ADAPTIVE),fullBody:buildUseCaseInvocationBody(genericDefinition,useCase,MODE.FULL),refinementBodies:[],stateLabel:'Generated UC invocation · canonical registry remains authority'};}
+
+  function buildCommandEntry(definition,definitions) {
+    return {
+      ...definition,
+      label: definition.command,
+      adaptiveBody: buildCommandBody(definition, MODE.ADAPTIVE,{definitions}),
+      fullBody: buildCommandBody(definition, MODE.FULL,{definitions}),
+      refinementBodies: (definition.refinements || []).map((refinement) => ({ ...refinement, body: buildRefinementBody(definition, refinement) }))
+    };
+  }
+
+  function buildCommandEntries(definitions) { const all=definitions||[]; return all.filter((definition) => definition.palette === true).map((definition)=>buildCommandEntry(definition,all)); }
+
+  return { MODE, commandReadBlock, buildCommandBody, buildRefinementBody, buildUseCaseInvocationBody, useCaseInvocationCommandId, buildUseCaseInvocationEntry, buildCommandEntry, buildCommandEntries };
+});
+
+(function (root, factory) {
+  const api=factory();
+  if(typeof module==='object'&&module.exports)module.exports=api;
+  root.ObsPlanningHelper=Object.assign(root.ObsPlanningHelper||{},api);
+})(typeof globalThis!=='undefined'?globalThis:this,function(){
+  'use strict';
+
+  // Use Cases/Target Modules/Lenses are semantic classifications inside the Commands
+  // surface. USE_CASES remains exported only as a compatibility symbol for older caches/tests.
+  const SURFACES=Object.freeze({COMMANDS:'Commands',SCENARIOS:'Scenarios',PROMPTS:'Prompts',USE_CASES:'Use Cases'});
+  const MODE=Object.freeze({ADAPTIVE:'adaptive',FULL:'full'});
+  const SEMANTIC_KINDS=Object.freeze({USE_CASE:'USE_CASE',TARGET_MODULE:'TARGET_MODULE',LENS:'LENS'});
+  const PROVENANCE=Object.freeze({DIRECT:'DIRECT CURRENT',GENERIC:'GENERIC CURRENT',GENERATED:'GENERATED'});
+
+  function safeLine(value,label){const text=String(value==null?'':value).trim();if(!text)throw new TypeError(`${label} is required.`);if(/[\r\n\u0000-\u001f\u007f]/.test(text))throw new TypeError(`${label} must be one safe line.`);return text;}
+  function safePath(value,label){const text=safeLine(value,label).replace(/\\/g,'/');if(text.startsWith('/')||text.includes('://')||text.split('/').some((part)=>!part||part==='.'||part==='..'))throw new TypeError(`${label} must be a safe repository-relative path.`);return text;}
+  function uniqueStrings(values,reader){const out=[];for(const raw of Array.isArray(values)?values:[]){const value=reader(raw);if(!out.includes(value))out.push(value);}return out;}
+
+  function normalizeUseCaseDefinition(value){
+    if(!value||typeof value!=='object')throw new TypeError('Use-Case definition must be an object.');
+    const id=safeLine(value.id,'Use-Case id');if(!/^UC-[A-Z0-9-]+$/.test(id))throw new TypeError(`Invalid Use-Case id: ${id}`);
+    const label=safeLine(value.label,`${id} label`),description=String(value.description||label).trim();
+    const sources=uniqueStrings(value.sources,(v)=>safePath(v,`${id} source`));if(!sources.length)throw new TypeError(`Use-Case source registry is required: ${id}`);
+    const instruction=String(value.instruction||'').trim();if(!instruction)throw new TypeError(`Use-Case instruction is required: ${id}`);
+    const target=String(value.target||`<${label} target>`).trim(),commandId=String(value.commandId||'').trim();
+    const result={id,label,description,sources,instruction,target,manualInvocation:value.manualInvocation!==false,trigger:String(value.trigger||'').trim(),result:String(value.result||'').trim()};if(commandId)result.commandId=commandId;return result;
+  }
+  function normalizeUseCaseDefinitions(values){const definitions=(Array.isArray(values)?values:[]).map(normalizeUseCaseDefinition);const ids=definitions.map((entry)=>entry.id);if(new Set(ids).size!==ids.length)throw new TypeError('Duplicate Use-Case ids in local/repository catalog.');return definitions;}
+
+  function normalizeSemanticComponent(value){
+    if(!value||typeof value!=='object')throw new TypeError('Semantic component must be an object.');
+    const id=safeLine(value.id,'Semantic component id'),kind=safeLine(value.kind,`${id} kind`),scope=safeLine(value.scope||'Core',`${id} scope`);
+    if(!Object.values(SEMANTIC_KINDS).includes(kind))throw new TypeError(`Unsupported semantic component kind: ${kind}`);
+    if(kind===SEMANTIC_KINDS.USE_CASE&&!/^UC-[A-Z0-9-]+$/.test(id))throw new TypeError(`Invalid Use-Case component id: ${id}`);
+    if(kind===SEMANTIC_KINDS.TARGET_MODULE&&!/^TM-[A-Z0-9-]+$/.test(id))throw new TypeError(`Invalid Target Module component id: ${id}`);
+    if(kind===SEMANTIC_KINDS.LENS&&!/^LENS-[A-Z0-9-]+$/.test(id))throw new TypeError(`Invalid Lens component id: ${id}`);
+    const label=safeLine(value.label||id,`${id} label`),actionLabel=safeLine(value.actionLabel||label,`${id} actionLabel`),description=String(value.description||label).trim();
+    const sources=uniqueStrings(value.sources,(v)=>safePath(v,`${id} source`));if(!sources.length)throw new TypeError(`Semantic component sources are required: ${id}`);
+    const aliases=uniqueStrings(value.aliases||[],(v)=>safeLine(v,`${id} alias`));
+    const context=String(value.context||'').trim(),result=String(value.result||'').trim(),essence=String(value.essence||description||label).trim();
+    const ownerRef=value.ownerRef&&typeof value.ownerRef==='object'?{semanticId:safeLine(value.ownerRef.semanticId||id,`${id} ownerRef semanticId`),path:safePath(value.ownerRef.path,`${id} ownerRef path`),anchor:safeLine(value.ownerRef.anchor,`${id} ownerRef anchor`),why:safeLine(value.ownerRef.why,`${id} ownerRef why`),role:safeLine(value.ownerRef.role||'PRIMARY_OWNER',`${id} ownerRef role`),readMode:safeLine(value.ownerRef.readMode||'REQUIRED',`${id} ownerRef readMode`)}:null;
+    return{id,kind,scope,label,actionLabel,description,context,result,essence,sources,aliases,ownerRef,commandId:String(value.commandId||'').trim(),invocation:String(value.invocation||'').trim(),target:String(value.target||`<${label} target>`).trim()};
+  }
+  function normalizeSemanticComponents(values){const out=(Array.isArray(values)?values:[]).map(normalizeSemanticComponent),ids=out.map((x)=>x.id);if(new Set(ids).size!==ids.length)throw new TypeError('Duplicate semantic component ids.');return out;}
+
+  function normalizeScenario(value){
+    if(!value||typeof value!=='object')throw new TypeError('Scenario must be an object.');
+    const id=safeLine(value.id,'Scenario id');if(!/^SCN-[A-Z0-9-]+$/.test(id))throw new TypeError(`Invalid Scenario id: ${id}`);
+    const type=safeLine(value.type||'FOCUSED',`${id} type`),title=safeLine(value.title,`${id} title`),entryRoute=String(value.entryRoute||'').trim(),assumptions=(Array.isArray(value.assumptions)?value.assumptions:[]).map((x)=>String(x||'').trim()).filter(Boolean);
+    const steps=(Array.isArray(value.steps)?value.steps:[]).map((step)=>{const sid=safeLine(step.id,`${id} step id`),stitle=safeLine(step.title,`${sid} title`),semanticRefs=uniqueStrings(step.semanticRefs||[],(x)=>safeLine(x,`${sid} semantic ref`)),canonicalText=String(step.canonicalText||'').trim();return{id:sid,title:stitle,semanticRefs,canonicalText};});
+    if(!steps.length)throw new TypeError(`Scenario must contain steps: ${id}`);return{id,type,title,entryRoute,assumptions,steps,canonicalIntro:String(value.canonicalIntro||'').trim(),source:String(value.source||'').trim()};
+  }
+  function normalizeScenarios(values){const out=(Array.isArray(values)?values:[]).map(normalizeScenario),ids=out.map((x)=>x.id);if(new Set(ids).size!==ids.length)throw new TypeError('Duplicate scenario ids.');return out;}
+
+  function readRule(mode,kind){const exampleRule='Follow planning/documentation/principles-and-terminology.md#doc-example-reading: read/reuse relevant inline/linked owner examples and check basis; examples remain non-authoritative.';if(mode===MODE.FULL)return [exampleRule,`Full ${kind} reading is required for this invocation.`,'Read every listed source, resolve the selected current entry and follow the complete relevant owner route.','Read materially defining principles/workflows/templates/integration rules reached by that route.','Do not expand into unrelated families.','Full changes read depth only; it does not expand permissions.'];return [exampleRule,`Use remembered ${kind} context only while clearly sufficient.`,'Resolve/read listed sources and the current owner route when not current, uncertain, changed or challenged.','Do not rely only on this compact prompt when ownership/status/boundaries are uncertain.'];}
+  function buildSemanticBody(kind,definition,mode){
+    const normalized=kind==='use_case'?normalizeUseCaseDefinition(definition):normalizeSemanticComponent(definition),marker=kind==='use_case'?'PLANNING_USE_CASE':'PLANNING_SEMANTIC_ENTRY',idField=kind==='use_case'?'use_case_id':`${kind}_id`;
+    const lines=[`[${marker}]`,`${idField}:`,`  ${normalized.id}`,'',`${kind}:`,`  ${normalized.label}`,'','mode:',`  ${mode}`];
+    if(kind==='use_case')lines.push('','semantic_owner:','  Use this Use Case as the current functional methodology-use guide: decide which methodology/documentation actions and components are relevant to the current situation, then follow the selected owner route. The Use Case does not replace specialized Target Module, Lens, profile or repository semantics.','', 'command_composition:', '  - methodology.use_cases.recheck', `  - ${normalized.id} (selected Use-Case owner/process)`, '  Fully resolve the registry-level applicability composition first. Selecting this Use Case does not execute every other Use Case; if this selected process later enters normal IDTSPE Shell work, its natural route supplies idtspe.work and the current Port Composition refresh.');
+    else {
+      lines.push('','semantic_owner:',`  Resolve and use ${normalized.id} as the current ${normalized.kind==='TARGET_MODULE'?'Target Module':'Lens'} owner. This Helper row is an invocation projection only.`);
+      const isTarget=normalized.kind===SEMANTIC_KINDS.TARGET_MODULE;
+      const base=isTarget?'idtspe.target-module.apply':'idtspe.lens.apply';
+      const port=isTarget?'idtspe.port.target':'idtspe.port.lens';
+      lines.push('','command_composition:',
+        '  - idtspe.work',
+        '  - idtspe.port-composition.recheck',
+        `  - ${port}`,
+        `  - ${base}`,
+        `  - ${normalized.id} (semantic owner selection)`,
+        '  Fully expand ALL selected roots/includes before semantic execution, merge/deduplicate one DAG, collect explicit component/capability contributions, then execute dependencies before dependents. This concrete semantic component is the leaf action on its branch.');
+      const ref=normalized.ownerRef;lines.push('','own_canonical_refs:',ref?`  - ${ref.semanticId} → \`${ref.path}#${ref.anchor}\` | role: ${ref.role}; read: ${ref.readMode}; why: ${ref.why}`:'  - resolve concrete component owner from current registry; shared registry/Meta-Model/port refs come from included commands.');
+    }
+    lines.push('','source_of_truth:',...(normalized.sources||[]).map((s)=>`  - \`${s}\``));
+    if(kind==='use_case')lines.push('','route_resolution:','  Resolve this exact current Use-Case entry. Follow its current owner route and then the current owner links/read-order to every principle, workflow, template and integration rule materially defining this Use Case. Do not treat this Helper body as a frozen list of all future owner paths.');
+    lines.push('','read_rule:',...readRule(mode,kind).map((x)=>`  ${x}`));
+    if(kind==='use_case')lines.push('','instruction:',`  ${normalized.instruction}`);
+    else if(normalized.invocation)lines.push('','canonical_invocation:',`  ${normalized.invocation}`);
+    if(kind==='use_case')lines.push('','permission:','  Methodology-navigation/read context only. Use-Case activation does not grant executable-command, repository-mutation, archive, commit or push permission and does not itself perform specialized Target/Lens work.');
+    else lines.push('','permission:','  Semantic invocation only. Mutation/test/package/commit/push permission is not granted by this projection; use the selected owner and host/session authority.');
+    lines.push('','user_target:',`  ${normalized.target}`,`[/${marker}]`);return lines.join('\n');
+  }
+  function buildSemanticEntries(useCases=[]){const definitions=normalizeUseCaseDefinitions(useCases);return{[SURFACES.USE_CASES]:definitions.map((d)=>({...d,adaptiveBody:buildSemanticBody('use_case',d,MODE.ADAPTIVE),fullBody:buildSemanticBody('use_case',d,MODE.FULL)}))};}
+
+  function semanticCardId(component){const c=normalizeSemanticComponent(component);return`${c.kind===SEMANTIC_KINDS.USE_CASE?'uc':c.kind===SEMANTIC_KINDS.TARGET_MODULE?'tm':'lens'}:${c.id}`;}
+  function kindLabel(component){const c=normalizeSemanticComponent(component);return`${c.scope} ${c.kind===SEMANTIC_KINDS.USE_CASE?'UC':c.kind===SEMANTIC_KINDS.TARGET_MODULE?'TM':'Lens'}`;}
+  function fullSemanticLabel(component){const c=normalizeSemanticComponent(component);return`${c.actionLabel} · ${kindLabel(c)} · ${c.id}`;}
+  function componentMatchDefinition(component,definition){const c=component,d=definition||{},binding=d.methodologyBinding||{};if(c.kind===SEMANTIC_KINDS.USE_CASE)return Boolean(c.commandId)&&d.id===c.commandId;if(c.kind===SEMANTIC_KINDS.TARGET_MODULE)return binding.targetModuleId===c.id;if(c.kind===SEMANTIC_KINDS.LENS)return binding.lensId===c.id;return false;}
+  function chooseDirectDefinition(component,definitions){const matches=(definitions||[]).filter((d)=>d.palette!==false&&componentMatchDefinition(component,d));if(!matches.length)return null;if(component.commandId){const exact=matches.find((d)=>d.id===component.commandId);if(exact)return exact;}if(component.kind===SEMANTIC_KINDS.TARGET_MODULE){const primary=matches.filter((d)=>d.methodologyBinding?.surfaceKind==='TARGET_MODULE');if(primary.length===1)return primary[0];if(primary.length>1)return primary.find((d)=>!String(d.description||'').toLowerCase().includes('legacy'))||primary[0];}if(matches.length===1)return matches[0];return null;}
+  function entryRefs(entry){return new Set([entry.canonicalId,...(entry.scenarioRefs||[])].filter(Boolean));}
+  function scenarioUsesForEntry(entry,scenarios){const refs=entryRefs(entry),uses=[];for(const scenario of scenarios||[])for(const step of scenario.steps||[])if((step.semanticRefs||[]).some((ref)=>refs.has(ref)))uses.push({scenarioId:scenario.id,scenarioTitle:scenario.title,stepId:step.id,stepTitle:step.title});return uses;}
+  function attachScenarioUses(entries,scenarios){return(entries||[]).map((entry)=>({...entry,scenarioUses:scenarioUsesForEntry(entry,scenarios)}));}
+  function commandEquivalentsForScenarioStep(entries,step){const refs=new Set(step?.semanticRefs||[]);return(entries||[]).filter((entry)=>[...entryRefs(entry)].some((ref)=>refs.has(ref)));}
+
+  return{SURFACES,MODE,SEMANTIC_KINDS,SEMANTIC_PROVENANCE:PROVENANCE,normalizeUseCaseDefinition,normalizeUseCaseDefinitions,normalizeSemanticComponent,normalizeSemanticComponents,normalizeScenario,normalizeScenarios,buildSemanticBody,buildSemanticEntries,semanticCardId,kindLabel,fullSemanticLabel,chooseDirectDefinition,scenarioUsesForEntry,attachScenarioUses,commandEquivalentsForScenarioStep};
+});
+
+(function (root, factory) {
+  const api = factory();
+  if (typeof module === 'object' && module.exports) module.exports = api;
+  root.ObsPlanningHelper = Object.assign(root.ObsPlanningHelper || {}, api);
+})(typeof globalThis !== 'undefined' ? globalThis : this, function () {
+  'use strict';
+
+  const HELPER_LIBRARY_SCHEMA_VERSION = 1;
+  const HELPER_LIBRARY_MARKER = 'PLANNING_HELPER_LIBRARY_ITEM';
+  const HELPER_LIBRARY_ROOT = 'planning/helper-library';
+  const HELPER_LIBRARY_KINDS = Object.freeze({ COMMAND:'command', PROMPT:'prompt', MODULE:'module' });
+  const HELPER_LIBRARY_PATHS = Object.freeze({ command:`${HELPER_LIBRARY_ROOT}/commands`, prompt:`${HELPER_LIBRARY_ROOT}/prompts`, module:`${HELPER_LIBRARY_ROOT}/modules` });
+  const HELPER_LIBRARY_SUFFIXES = Object.freeze({ command:'.helper-command.md', prompt:'.prompt.md', module:'.module.md' });
+  const ID_PATTERN = /^[a-z0-9][a-z0-9._-]{0,79}$/;
+  const LEGACY_LOCAL_STORAGE_KEY = 'obs-planning-helper-command-projections-v1';
+
+  function assert(condition, message) { if (!condition) throw new TypeError(message); }
+  function hashText(value) { let hash=2166136261; for (const ch of String(value || '')) { hash^=ch.codePointAt(0); hash=Math.imul(hash,16777619); } return (hash>>>0).toString(36); }
+  function slugify(value) {
+    const slug=String(value || '').normalize('NFKD').toLowerCase().replace(/[^a-z0-9._-]+/g,'-').replace(/^-+|-+$/g,'').slice(0,56);
+    return slug || `item-${hashText(value)}`;
+  }
+  function makeHelperLibraryId(title, text='') { const base=slugify(title); const suffix=hashText(`${title}\n${text}`).slice(0,8); return `${base.slice(0,Math.max(1,79-suffix.length))}-${suffix}`.slice(0,80).replace(/-+$/,''); }
+  function normalizeIso(value, fallback) { const text=String(value || '').trim(); if (!text) return fallback; const ms=Date.parse(text); assert(Number.isFinite(ms), `Invalid helper-library timestamp: ${text}`); return new Date(ms).toISOString(); }
+  function normalizeKind(value) { const kind=String(value || '').trim(); assert(Object.values(HELPER_LIBRARY_KINDS).includes(kind), `Unsupported helper-library kind: ${kind || '<empty>'}`); return kind; }
+
+  function normalizeHelperLibraryItem(value, options={}) {
+    assert(value && typeof value==='object', 'Helper-library item must be an object.');
+    const kind=normalizeKind(options.kind || value.kind);
+    const title=String(value.title || '').trim();
+    const text=String(value.text == null ? '' : value.text).replace(/\r\n?/g,'\n');
+    assert(title.length>0 && title.length<=160, 'Helper-library title must contain 1..160 characters.');
+    assert(!/[\r\n\u0000-\u001f\u007f]/.test(title), 'Helper-library title must be one printable line.');
+    assert(text.trim().length>0 && text.length<=100000, 'Helper-library text must contain 1..100000 characters and cannot be whitespace-only.');
+    const id=String(value.id || options.id || makeHelperLibraryId(title,text)).trim();
+    assert(ID_PATTERN.test(id), `Invalid helper-library id: ${id || '<empty>'}`);
+    const now=options.now || new Date().toISOString();
+    const createdAt=normalizeIso(value.createdAt, now);
+    const updatedAt=normalizeIso(value.updatedAt, now);
+    return { schemaVersion:HELPER_LIBRARY_SCHEMA_VERSION, kind, id, title, text, createdAt, updatedAt };
+  }
+
+  function helperLibraryTargetPath(item) {
+    const normalized=normalizeHelperLibraryItem(item);
+    return `${HELPER_LIBRARY_PATHS[normalized.kind]}/${normalized.id}${HELPER_LIBRARY_SUFFIXES[normalized.kind]}`;
+  }
+
+  function helperLibraryFilePattern(kind) {
+    const suffix=HELPER_LIBRARY_SUFFIXES[normalizeKind(kind)].replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
+    return new RegExp(`^[a-z0-9][a-z0-9._-]{0,79}${suffix}$`);
+  }
+
+  function renderHelperLibraryDocument(item) {
+    const normalized=normalizeHelperLibraryItem(item);
+    const kindLabel=normalized.kind===HELPER_LIBRARY_KINDS.COMMAND?'Helper Command':normalized.kind===HELPER_LIBRARY_KINDS.MODULE?'Module':'Prompt';
+    return `# ${kindLabel} — ${normalized.title}\n\nStatus: active Planning Helper library item\nScope: exact insertion text; not planning-command authority.\n\n[${HELPER_LIBRARY_MARKER}]\n${JSON.stringify(normalized,null,2)}\n[/${HELPER_LIBRARY_MARKER}]\n`;
+  }
+
+  function extractMarker(text) {
+    const source=String(text || '').replace(/\r\n?/g,'\n');
+    const open=`[${HELPER_LIBRARY_MARKER}]`, close=`[/${HELPER_LIBRARY_MARKER}]`;
+    const lines=source.split('\n');
+    const opens=[], closes=[];
+    for(let index=0;index<lines.length;index++){
+      if(lines[index]===open)opens.push(index);
+      if(lines[index]===close)closes.push(index);
+    }
+    assert(opens.length===1 && closes.length===1 && closes[0]>opens[0], 'Helper-library document must contain exactly one line-delimited marker block.');
+    return lines.slice(opens[0]+1,closes[0]).join('\n').trim();
+  }
+
+  function parseHelperLibraryDocument(text, options={}) {
+    let parsed; try { parsed=JSON.parse(extractMarker(text)); } catch (error) { throw new TypeError(`Invalid helper-library JSON: ${error.message}`); }
+    const allowed=new Set(['schemaVersion','kind','id','title','text','createdAt','updatedAt']);
+    for (const key of Object.keys(parsed || {})) assert(allowed.has(key), `Unsupported helper-library field: ${key}`);
+    assert(parsed.schemaVersion===HELPER_LIBRARY_SCHEMA_VERSION, `Unsupported helper-library schemaVersion: ${parsed.schemaVersion}`);
+    const item=normalizeHelperLibraryItem(parsed, options.kind ? {kind:options.kind} : {});
+    if (options.path) assert(String(options.path)===helperLibraryTargetPath(item), `Helper-library document path does not match item id/kind: ${options.path}`);
+    return item;
+  }
+
+
+  function parseHelperLibraryBatch(text) {
+    const source=String(text || '').replace(/\r\n?/g,'\n');
+    const open=`[${HELPER_LIBRARY_MARKER}]`, close=`[/${HELPER_LIBRARY_MARKER}]`;
+    const lines=source.split('\n');
+    const blocks=[];
+    for(let index=0;index<lines.length;index++){
+      if(lines[index]!==open)continue;
+      const end=lines.indexOf(close,index+1);
+      assert(end>index, 'Unclosed helper-library marker block.');
+      let parsed;
+      try{parsed=JSON.parse(lines.slice(index+1,end).join('\n').trim());}
+      catch(error){throw new TypeError(`Invalid helper-library JSON: ${error.message}`);}
+      blocks.push(normalizeHelperLibraryItem(parsed));
+      index=end;
+    }
+    const seen=new Set();
+    for(const item of blocks){const key=`${item.kind}:${item.id}`;assert(!seen.has(key),`Duplicate helper-library item in batch: ${key}`);seen.add(key);}
+    return blocks;
+  }
+
+  function normalizeHelperLibraryCollection(items) {
+    assert(Array.isArray(items), 'Helper-library collection must be an array.');
+    const result=items.map((item)=>normalizeHelperLibraryItem(item));
+    const seen=new Set();
+    for (const item of result) { const key=`${item.kind}:${item.id}`; assert(!seen.has(key), `Duplicate helper-library item: ${key}`); seen.add(key); }
+    return result;
+  }
+
+  function planningCommandProjectionText(value) {
+    const command=String(value.command || '').trim();
+    const englishName=String(value.englishName || '').trim();
+    const family=String(value.family || '').trim();
+    const target=String(value.target || '').trim();
+    const reminders=Array.isArray(value.reminders)?value.reminders.map((item)=>String(item).trim()).filter(Boolean):[];
+    assert(command && englishName && family && target && reminders.length, 'Legacy local command projection is incomplete.');
+    assert(family.includes(command), 'Legacy local command family does not include its canonical command.');
+    return [
+      '[PLANNING_COMMAND]',
+      'Read this whole command body before answering.',
+      'Do not ignore `key_reminders`.',
+      '', 'command:', `  ${command}`,
+      '', 'english_name:', `  ${englishName}`,
+      '', 'command_family:', `  ${family}`,
+      '', 'source_of_truth:', '  Start from `planning/command-routing.md`.', '  Then follow the currently registered command route and linked owner files.',
+      '', 'route_read_rule:', '  Read or reread the route when it is not current, remembered or certain.', '  Do not rely only on this compact local projection when command behavior is uncertain.',
+      '', 'key_reminders:', ...reminders.map((item)=>`  - ${item}`),
+      '', 'user_target:', `  ${target}`,
+      '', '[/PLANNING_COMMAND]'
+    ].join('\n');
+  }
+
+  function legacyProjectionToHelperItem(value, options={}) {
+    const text=planningCommandProjectionText(value);
+    const title=String(value.englishName || value.command || 'Local command').trim();
+    const legacyId=String(value.id || '').trim();
+    const id=ID_PATTERN.test(legacyId)?legacyId:makeHelperLibraryId(title,text);
+    return normalizeHelperLibraryItem({ kind:HELPER_LIBRARY_KINDS.COMMAND, id, title, text, createdAt:value.createdAt, updatedAt:value.updatedAt }, { now:options.now });
+  }
+
+  function parseLegacyProjectionRegistry(raw, options={}) {
+    if (!raw) return [];
+    let parsed; try { parsed=typeof raw==='string'?JSON.parse(raw):raw; } catch (error) { throw new TypeError(`Legacy local command registry is invalid JSON: ${error.message}`); }
+    assert(parsed && parsed.schemaVersion===1 && Array.isArray(parsed.commands), 'Unsupported legacy local command registry schema.');
+    return normalizeHelperLibraryCollection(parsed.commands.map((item)=>legacyProjectionToHelperItem(item,options)));
+  }
+
+  function mergeHelperLibrary(remoteItems, localItems) {
+    const remote=normalizeHelperLibraryCollection(remoteItems || []), local=normalizeHelperLibraryCollection(localItems || []);
+    const byKey=new Map();
+    for (const item of remote) byKey.set(`${item.kind}:${item.id}`, { ...item, source:'repo', hasRepo:true, hasLocal:false });
+    for (const item of local) {
+      const key=`${item.kind}:${item.id}`, previous=byKey.get(key);
+      byKey.set(key,{ ...item, source:previous?'local+repo':'local', hasRepo:Boolean(previous), hasLocal:true });
+    }
+    return [...byKey.values()].sort((a,b)=>a.kind.localeCompare(b.kind)||a.title.localeCompare(b.title)||a.id.localeCompare(b.id));
+  }
+
+  return { HELPER_LIBRARY_SCHEMA_VERSION, HELPER_LIBRARY_MARKER, HELPER_LIBRARY_ROOT, HELPER_LIBRARY_KINDS, HELPER_LIBRARY_PATHS, HELPER_LIBRARY_SUFFIXES, LEGACY_LOCAL_STORAGE_KEY, makeHelperLibraryId, normalizeHelperLibraryItem, normalizeHelperLibraryCollection, helperLibraryTargetPath, helperLibraryFilePattern, renderHelperLibraryDocument, parseHelperLibraryDocument, parseHelperLibraryBatch, legacyProjectionToHelperItem, parseLegacyProjectionRegistry, mergeHelperLibrary };
+});
+
+(function (root, factory) {
+  const api=factory(typeof require==='function'?Object.assign({},root.ObsPlanningHelper||{},require('./helper-library-codec.js')):(root.ObsPlanningHelper||{}));
+  if(typeof module==='object'&&module.exports)module.exports=api;
+  root.ObsPlanningHelper=Object.assign(root.ObsPlanningHelper||{},api);
+})(typeof globalThis!=='undefined'?globalThis:this,function(deps){
+  'use strict';
+
+  const MODULE_REFERENCE_PATTERN=/\[\[module:([a-z0-9][a-z0-9._-]{0,79})\]\]/g;
+  const DEFAULT_MAX_DEPTH=24;
+  const DEFAULT_MAX_LENGTH=100000;
+
+  function moduleReference(id){
+    const value=String(id||'').trim();
+    if(!/^[a-z0-9][a-z0-9._-]{0,79}$/.test(value))throw new TypeError(`Invalid module id: ${value||'<empty>'}`);
+    return `[[module:${value}]]`;
+  }
+
+  function findModuleReferences(text){
+    const out=[];
+    for(const match of String(text==null?'':text).matchAll(MODULE_REFERENCE_PATTERN))out.push(match[1]);
+    return out;
+  }
+
+  function resolveModuleReferences(text,items,options={}){
+    const maxDepth=Number.isInteger(options.maxDepth)&&options.maxDepth>0?options.maxDepth:DEFAULT_MAX_DEPTH;
+    const maxLength=Number.isInteger(options.maxLength)&&options.maxLength>0?options.maxLength:DEFAULT_MAX_LENGTH;
+    const modules=new Map();
+    for(const raw of items||[]){
+      const item=raw?.item||raw;
+      if(!item||item.kind!==deps.HELPER_LIBRARY_KINDS.MODULE)continue;
+      if(modules.has(item.id))throw new TypeError(`Duplicate module id: ${item.id}`);
+      modules.set(item.id,item);
+    }
+    function expand(value,stack){
+      if(stack.length>maxDepth)throw new Error(`Module expansion exceeds ${maxDepth} nested levels: ${stack.join(' → ')}`);
+      const output=String(value==null?'':value).replace(MODULE_REFERENCE_PATTERN,(reference,id)=>{
+        const module=modules.get(id);
+        if(!module)throw new Error(`Unresolved module reference: ${reference}`);
+        if(stack.includes(id))throw new Error(`Module reference cycle: ${[...stack,id].join(' → ')}`);
+        return expand(module.text,[...stack,id]);
+      });
+      if(output.length>maxLength)throw new Error(`Resolved text exceeds ${maxLength} characters.`);
+      return output;
+    }
+    const source=String(text==null?'':text),references=findModuleReferences(source),resolved=expand(source,[]);
+    return{text:resolved,references};
+  }
+
+  return{MODULE_REFERENCE_PATTERN,DEFAULT_MAX_DEPTH,DEFAULT_MAX_LENGTH,moduleReference,findModuleReferences,resolveModuleReferences};
+});
+
+(function (root, factory) {
+  const api = factory(root.ObsPlanningHelper || (typeof require === 'function' ? Object.assign({}, require('./command-definition-codec.js'), require('./command-catalog.js'), require('./helper-library-codec.js')) : {}));
+  if (typeof module === 'object' && module.exports) module.exports = api;
+  root.ObsPlanningHelper = Object.assign(root.ObsPlanningHelper || {}, api);
+})(typeof globalThis !== 'undefined' ? globalThis : this, function (deps) {
+  'use strict';
+
+  const PATCH_START='[PLANNING_HELPER_PATCH]',PATCH_END='[/PLANNING_HELPER_PATCH]';
+  const PATCH_COLLECTIONS=Object.freeze(['commands','helperItems','useCases','semanticComponents','scenarios']);
+
+  function normalizePatchSection(value,label){const input=value==null?{}:value;if(!input||typeof input!=='object'||Array.isArray(input))throw new TypeError(`${label} must be an object.`);for(const key of Object.keys(input))if(!PATCH_COLLECTIONS.includes(key))throw new TypeError(`Unsupported ${label} field: ${key}`);const out={};for(const key of PATCH_COLLECTIONS){const items=input[key]==null?[]:input[key];if(!Array.isArray(items))throw new TypeError(`${label}.${key} must be an array.`);out[key]=items;}return out;}
+  function parsePlanningHelperPatch(source){const blocks=[...String(source||'').matchAll(/\[PLANNING_HELPER_PATCH\]\s*([\s\S]*?)\s*\[\/PLANNING_HELPER_PATCH\]/g)];if(blocks.length>1)throw new TypeError('Only one PLANNING_HELPER_PATCH block is allowed per import.');if(!blocks.length)return null;let raw;try{raw=JSON.parse(blocks[0][1]);}catch(error){throw new TypeError(`Invalid PLANNING_HELPER_PATCH JSON: ${error.message||String(error)}`);}if(!raw||typeof raw!=='object'||Array.isArray(raw))throw new TypeError('PLANNING_HELPER_PATCH must contain one JSON object.');if(Number(raw.schemaVersion)!==1)throw new TypeError(`Unsupported PLANNING_HELPER_PATCH schemaVersion: ${raw.schemaVersion}`);for(const key of Object.keys(raw))if(!['schemaVersion','upsert','delete','catalogOrder'].includes(key))throw new TypeError(`Unsupported PLANNING_HELPER_PATCH field: ${key}`);const upsert=normalizePatchSection(raw.upsert,'upsert'),del=normalizePatchSection(raw.delete,'delete');for(const key of PATCH_COLLECTIONS)for(const item of del[key])if(typeof item!=='string'||!item.trim())throw new TypeError(`delete.${key} must contain non-empty string keys.`);return{schemaVersion:1,upsert,delete:del,catalogOrder:raw.catalogOrder==null?null:raw.catalogOrder};}
+
+  function parseChatImport(text) {
+    const source=String(text || '');
+    const definitions=source.includes('[PLANNING_COMMAND_DEFINITION]') ? deps.parseCommandDefinitionBatch(source) : [];
+    const helperItems=source.includes('[PLANNING_HELPER_LIBRARY_ITEM]') ? deps.parseHelperLibraryBatch(source) : [];
+    const patch=source.includes(PATCH_START)?parsePlanningHelperPatch(source):null;
+    if(!definitions.length&&!helperItems.length&&!patch)throw new TypeError('No planning-command definitions, helper-library items or Planning Helper patch found.');
+    if(definitions.length)deps.validateCommandCatalog(definitions,{allowMissingIncludes:true});
+    return { definitions, helperItems, patch };
+  }
+
+  function buildRecoveryRequest(settings) {
+    const owner=String(settings?.owner || '').trim();
+    const repo=String(settings?.repo || '').trim();
+    const branch=String(settings?.branch || '').trim();
+    if(!owner||!repo||!branch)throw new TypeError('Repository settings are required for a recovery request.');
+    return [
+      'I need to restore my OBS Planning Helper local snapshot from GitHub.',
+      `Read the current repository ${owner}/${repo} on branch ${branch}.`,
+      'Read every direct planning/commands/*.command.md file.',
+      'Also read every direct planning/helper-library/commands/*.helper-command.md file, every direct planning/helper-library/prompts/*.prompt.md file, and every direct planning/helper-library/modules/*.module.md file that exists.',
+      'This must be the complete current repository recovery set. Planning Helper Restore will reconcile its repository-backed local records to this pasted set while preserving local-only unbacked records.',
+      'Return only the exact marker blocks needed by Planning Helper Restore:',
+      '- every complete [PLANNING_COMMAND_DEFINITION] ... [/PLANNING_COMMAND_DEFINITION] block, unchanged;',
+      '- every complete [PLANNING_HELPER_LIBRARY_ITEM] ... [/PLANNING_HELPER_LIBRARY_ITEM] block, unchanged.',
+      'Do not summarize, omit, rename, reformat or wrap the result in Markdown fences. Do not invent missing items. Do not include files that no longer exist in the repository.',
+      'The browser helper will restore this text locally and will not fetch GitHub itself.'
+    ].join('\n');
+  }
+
+  return { PATCH_START, PATCH_END, parsePlanningHelperPatch, parseChatImport, buildRecoveryRequest };
+});
+
+(function (root, factory) {
+  const api = factory();
+  if (typeof module === 'object' && module.exports) module.exports = api;
+  root.ObsPlanningHelper = Object.assign(root.ObsPlanningHelper || {}, api);
+})(typeof globalThis !== 'undefined' ? globalThis : this, function () {
+  'use strict';
+
+  class GitHubClientError extends Error {
+    constructor(kind, message, details = {}) { super(message); this.name = 'GitHubClientError'; this.kind = kind; this.status = details.status || 0; this.details = details; }
+  }
+
+  function normalizeGitHubContentPath(value) {
+    const text = String(value == null ? '' : value).replace(/\\/g, '/').trim();
+    if (!text) throw new TypeError('GitHub content path is required.');
+    if (/^[a-zA-Z]:\//.test(text) || text.startsWith('/') || text.startsWith('//') || text.includes('://') || /[?#]/.test(text)) throw new TypeError('GitHub content path must be repository-relative.');
+    const parts = text.split('/');
+    if (parts.some((part) => !part || part === '.' || part === '..')) throw new TypeError('GitHub content path contains an invalid segment.');
+    return parts.join('/');
+  }
+
+  function utf8ToBase64(text) {
+    const bytes = new TextEncoder().encode(String(text));
+    let binary = '';
+    for (let i = 0; i < bytes.length; i += 0x8000) binary += String.fromCharCode(...bytes.subarray(i, i + 0x8000));
+    if (typeof btoa === 'function') return btoa(binary);
+    if (typeof Buffer !== 'undefined') return Buffer.from(bytes).toString('base64');
+    throw new Error('No base64 encoder available.');
+  }
+
+  function base64ToUtf8(value) {
+    const compact = String(value || '').replace(/\s+/g, '');
+    let bytes;
+    if (typeof atob === 'function') bytes = Uint8Array.from(atob(compact), (char) => char.charCodeAt(0));
+    else if (typeof Buffer !== 'undefined') bytes = Uint8Array.from(Buffer.from(compact, 'base64'));
+    else throw new Error('No base64 decoder available.');
+    try { return new TextDecoder('utf-8', { fatal:true }).decode(bytes); }
+    catch (error) { throw new GitHubClientError('invalid_utf8', 'Repository text is not valid UTF-8.', { cause:error }); }
+  }
+
+  function statusKind(status) {
+    if (status === 401) return 'auth';
+    if (status === 403) return 'permission';
+    if (status === 404) return 'not_found';
+    if (status === 409 || status === 422) return 'conflict';
+    if (status >= 500) return 'remote_failure';
+    return 'request_failed';
+  }
+
+  function createGmTransport(gmRequest) {
+    if (typeof gmRequest !== 'function') throw new TypeError('GM_xmlhttpRequest is required.');
+    return (request) => new Promise((resolve, reject) => gmRequest({
+      method: request.method,
+      url: request.url,
+      headers: request.headers,
+      data: request.body,
+      timeout: request.timeoutMs || 20000,
+      onload: (response) => resolve({ status: response.status, text: response.responseText || '' }),
+      ontimeout: () => reject(new GitHubClientError('network_unknown', 'GitHub request timed out; remote state may be unknown.')),
+      onerror: (error) => reject(new GitHubClientError('network_unknown', 'GitHub request failed; remote state may be unknown.', { cause:error })),
+      onabort: () => reject(new GitHubClientError('network_unknown', 'GitHub request was aborted; remote state may be unknown.'))
+    }));
+  }
+
+  class GitHubContentsClient {
+    constructor(options = {}) {
+      this.owner = String(options.owner || '').trim();
+      this.repo = String(options.repo || '').trim();
+      this.branch = String(options.branch || 'main').trim();
+      this.token = String(options.token || '').trim();
+      this.transport = options.transport;
+      this.apiBase = String(options.apiBase || 'https://api.github.com').replace(/\/$/, '');
+      this._readSequence = 0;
+      if (!this.owner || !this.repo || !this.branch) throw new TypeError('GitHub owner, repo and branch are required.');
+      if (typeof this.transport !== 'function') throw new TypeError('GitHub transport is required.');
+    }
+    _url(path, withRef = true) {
+      const normalized = normalizeGitHubContentPath(path);
+      const encoded = normalized.split('/').map(encodeURIComponent).join('/');
+      return `${this.apiBase}/repos/${encodeURIComponent(this.owner)}/${encodeURIComponent(this.repo)}/contents/${encoded}${withRef ? `?ref=${encodeURIComponent(this.branch)}` : ''}`;
+    }
+    _headers() {
+      const headers = { Accept:'application/vnd.github+json', 'X-GitHub-Api-Version':'2022-11-28' };
+      if (this.token) headers.Authorization = `Bearer ${this.token}`;
+      return headers;
+    }
+    async _request(method, url, body) {
+      let response;
+      try { response = await this.transport({ method, url, headers:{ ...this._headers(), ...(body ? {'Content-Type':'application/json'} : {}) }, body:body ? JSON.stringify(body) : undefined, timeoutMs:20000 }); }
+      catch (error) { if (error instanceof GitHubClientError) throw error; throw new GitHubClientError('network_unknown', error?.message || 'GitHub network request failed.', { cause:error }); }
+      let payload = null;
+      try { payload = response.text ? JSON.parse(response.text) : null; }
+      catch (error) { throw new GitHubClientError('invalid_response', `GitHub returned invalid JSON: ${error.message}`); }
+      if (response.status < 200 || response.status >= 300) throw new GitHubClientError(statusKind(response.status), payload?.message || `GitHub request failed with status ${response.status}.`, { status:response.status, payload });
+      return payload;
+    }
+    async listDirectory(path) {
+      const normalized = normalizeGitHubContentPath(path);
+      const payload = await this._request('GET', this._url(normalized, true));
+      if (!Array.isArray(payload)) throw new GitHubClientError('invalid_response', 'GitHub Contents response is not a directory listing.');
+      if (payload.length > 500) throw new GitHubClientError('limit_exceeded', `GitHub directory contains more than 500 direct entries: ${normalized}`);
+      return payload.map((entry) => {
+        const entryPath = normalizeGitHubContentPath(entry.path);
+        if (!entryPath.startsWith(`${normalized}/`) || entryPath.slice(normalized.length + 1).includes('/')) throw new GitHubClientError('invalid_response', 'GitHub directory returned an entry outside the requested direct-child scope.');
+        return { type:String(entry.type || ''), path:entryPath, name:String(entry.name || ''), sha:String(entry.sha || ''), size:Number(entry.size || 0), htmlUrl:String(entry.html_url || '') };
+      });
+    }
+    async read(path) { return this._readContent(path,false); }
+    async readFresh(path) { return this._readContent(path,true); }
+    async _readContent(path,fresh) {
+      const normalized = normalizeGitHubContentPath(path);
+      // A unique URL avoids reusing a cached GET after GitHub has accepted a PUT.
+      const url = this._url(normalized, true);
+      const requestUrl = fresh ? `${url}&_verify=${Date.now()}-${++this._readSequence}` : url;
+      const payload = await this._request('GET', requestUrl);
+      if (!payload || payload.type !== 'file' || typeof payload.content !== 'string') throw new GitHubClientError('invalid_response', 'GitHub Contents response is not a UTF-8 file.');
+      const returnedPath = normalizeGitHubContentPath(payload.path || normalized);
+      if (returnedPath !== normalized) throw new GitHubClientError('invalid_response', `GitHub read response changed path (${normalized} -> ${returnedPath}).`);
+      return { path:returnedPath, sha:String(payload.sha || ''), content:base64ToUtf8(payload.content), htmlUrl:String(payload.html_url || '') };
+    }
+    async write({ path, content, baseSha = '', message }) {
+      const normalized = normalizeGitHubContentPath(path);
+      const body = { message:String(message || `Update ${normalized}`), content:utf8ToBase64(content), branch:this.branch };
+      if (baseSha) body.sha = String(baseSha);
+      const payload = await this._request('PUT', this._url(normalized, false), body);
+      const returnedPath = normalizeGitHubContentPath(payload?.content?.path || normalized);
+      if (returnedPath !== normalized) throw new GitHubClientError('invalid_response', `GitHub write response changed path (${normalized} -> ${returnedPath}).`);
+      return { path:returnedPath, sha:String(payload?.content?.sha || ''), htmlUrl:String(payload?.content?.html_url || '') };
+    }
+    async saveVerified({ path, content, baseSha = '', message }) {
+      const normalized = normalizeGitHubContentPath(path);
+      const intended = String(content);
+      let writeResult;
+      try { writeResult = await this.write({ path:normalized, content:intended, baseSha, message }); }
+      catch (error) {
+        const recoverable = error instanceof GitHubClientError && (error.kind === 'network_unknown' || error.kind === 'conflict');
+        if (!recoverable) throw error;
+        let after = null, readError = null;
+        try { after = await this.read(normalized); } catch (nextError) { readError = nextError; }
+        if (after?.content === intended) return { ...after, recoveredAfterUnknownWrite:error.kind === 'network_unknown', recoveredAfterConflict:error.kind === 'conflict' };
+        if (error.kind === 'conflict') {
+          if (readError) throw new GitHubClientError('conflict', 'GitHub rejected the stale write and the current remote content could not be verified; nothing was overwritten.', { status:error.status, cause:error, verificationCause:readError, path:normalized });
+          throw new GitHubClientError('conflict', 'GitHub content changed since it was read and now differs from the intended file; nothing was overwritten.', { status:error.status, cause:error, path:normalized, remoteSha:String(after?.sha || '') });
+        }
+        throw error;
+      }
+      // GitHub can briefly serve a stale contents view after a successful PUT.
+      // Never send a second PUT here: verify the accepted write with fresh GETs.
+      let readBack = null, readError = null;
+      for (const delay of [0, 150, 400, 900]) {
+        if (delay) await new Promise((resolve) => setTimeout(resolve, delay));
+        try {
+          readBack = await this.readFresh(normalized);
+          readError = null;
+          if (readBack.content === intended && (!writeResult.sha || readBack.sha === writeResult.sha))
+            return { ...readBack, recoveredAfterUnknownWrite:false, recoveredAfterConflict:false };
+        } catch (error) { readError = error; }
+      }
+      if (readError) throw new GitHubClientError('verification_unknown', 'GitHub accepted the write, but its current content could not be verified. Check GitHub before retrying.', { cause:readError, writeResult, path:normalized });
+      throw new GitHubClientError('verification_mismatch', 'GitHub accepted the write, but repeated remote read-back content does not match the intended file. Check GitHub before retrying.', { writeResult, path:normalized, remoteSha:readBack?.sha });
+    }
+    async create({ path, content, message }) { return this.saveVerified({ path, content, message }); }
+  }
+
+  return { GitHubClientError, GitHubContentsClient, createGmTransport, normalizeGitHubContentPath, utf8ToBase64, base64ToUtf8, statusKind };
+});
+
+(function (root, factory) {
+  const api=factory(typeof require==='function'?Object.assign({},root.ObsPlanningHelper||{},require('./command-definition-codec.js'),require('./command-catalog.js')):(root.ObsPlanningHelper||{}));
+  if(typeof module==='object'&&module.exports)module.exports=api;
+  root.ObsPlanningHelper=Object.assign(root.ObsPlanningHelper||{},api);
+})(typeof globalThis!=='undefined'?globalThis:this,function(deps){
+  'use strict';
+  const COMMANDS_PATH=deps.COMMANDS_PATH||'planning/commands';
+  const COMMAND_FILE_PATTERN=/^[a-z0-9][a-z0-9._-]*\.command\.md$/;
+
+  class RepositoryCommandService{
+    constructor(client,options={}){this.client=client;this.commandsPath=options.commandsPath||COMMANDS_PATH;if(this.commandsPath!==COMMANDS_PATH)throw new TypeError(`Command repository operations are confined to ${COMMANDS_PATH}.`);}
+    _target(definition){const normalized=deps.normalizeCommandDefinition(definition);if(!COMMAND_FILE_PATTERN.test(normalized.file))throw new TypeError('Invalid command filename.');return{definition:normalized,path:`${this.commandsPath}/${normalized.file}`};}
+    async listRemote(){const entries=await this.client.listDirectory(this.commandsPath);return entries.filter((entry)=>entry.type==='file'&&COMMAND_FILE_PATTERN.test(entry.name)).map((entry)=>({kind:'planning-command',path:entry.path,name:entry.name,sha:String(entry.sha||'')})).sort((a,b)=>a.path.localeCompare(b.path));}
+    async readRemote(path){const normalizedPath=String(path||'');const prefix=`${this.commandsPath}/`;const file=normalizedPath.startsWith(prefix)?normalizedPath.slice(prefix.length):'';if(!COMMAND_FILE_PATTERN.test(file)||normalizedPath!==`${prefix}${file}`)throw new TypeError(`Invalid repository command path: ${normalizedPath||'<empty>'}.`);const remote=await this.client.read(normalizedPath);const definition=deps.stripRuntimeCommandMetadata(deps.parseCommandDefinitionDocument(remote.content,{path:normalizedPath}));return{kind:'planning-command',path:normalizedPath,name:file,sha:String(remote.sha||''),definition,rawContent:remote.content.replace(/\r\n?/g,'\n')};}
+    async loadCatalog(options={}){const entries=await this.listRemote();const records=[];for(const entry of entries)records.push(await this.readRemote(entry.path));deps.validateCommandCatalog(records.map((record)=>record.definition));if(!records.length&&!options.allowEmpty)throw new TypeError('Repository command catalog contains no direct .command.md definitions.');return records;}
+    async save(definition){const target=this._target(definition);const content=deps.renderCommandDefinitionDocument(target.definition);const current=await this.loadCatalog({allowEmpty:true});const currentByPath=new Map(current.map((record)=>[record.path,record]));const existing=currentByPath.get(target.path)||null;const merged=deps.replaceDefinitionsByFile(current.map((record)=>record.definition),[target.definition]);deps.validateCommandCatalog(merged);const pointSources=new Map();for(const call of deps.expandCommandInvocation(merged,[target.definition.id]).processCalls){if(!pointSources.has(call.at.path)){const remote=await this.client.read(call.at.path);pointSources.set(call.at.path,remote.content);}deps.validateProcessCallPoint(pointSources.get(call.at.path),call.at);}if(existing&&existing.rawContent===content)return{ok:true,action:'noop',path:target.path,sha:existing.sha,definition:target.definition,rawContent:content};const action=existing?'update':'create';const write=await this.client.saveVerified({path:target.path,content,baseSha:existing?.sha||'',message:`${action==='create'?'Add':'Update'} planning command ${target.definition.command}`});return{ok:true,action,path:target.path,sha:String(write.sha||''),definition:target.definition,rawContent:content,recoveredAfterUnknownWrite:Boolean(write.recoveredAfterUnknownWrite),recoveredAfterConflict:Boolean(write.recoveredAfterConflict)};}
+  }
+  return{RepositoryCommandService,COMMAND_FILE_PATTERN};
+});
+
+(function (root, factory) {
+  const api=factory(typeof require==='function'?Object.assign({},root.ObsPlanningHelper||{},require('./helper-library-codec.js')):(root.ObsPlanningHelper||{}));
+  if(typeof module==='object'&&module.exports)module.exports=api;
+  root.ObsPlanningHelper=Object.assign(root.ObsPlanningHelper||{},api);
+})(typeof globalThis!=='undefined'?globalThis:this,function(deps){
+  'use strict';
+
+  function inferKindFromPath(path){const text=String(path||'');for(const kind of Object.values(deps.HELPER_LIBRARY_KINDS)){const prefix=`${deps.HELPER_LIBRARY_PATHS[kind]}/`;if(text.startsWith(prefix)&&deps.helperLibraryFilePattern(kind).test(text.slice(prefix.length)))return kind;}throw new TypeError(`Invalid helper-library repository path: ${text||'<empty>'}.`);}
+
+  class RepositoryHelperLibraryService{
+    constructor(client){this.client=client;}
+    async listRemote(kind){const normalizedKind=String(kind||'');const root=deps.HELPER_LIBRARY_PATHS[normalizedKind];if(!root)throw new TypeError(`Unsupported helper-library kind: ${normalizedKind||'<empty>'}`);let entries;try{entries=await this.client.listDirectory(root);}catch(error){if(error?.kind==='not_found')return[];throw error;}const pattern=deps.helperLibraryFilePattern(normalizedKind);return entries.filter((entry)=>entry.type==='file'&&pattern.test(entry.name)).map((entry)=>({kind:normalizedKind,path:entry.path,name:entry.name,sha:String(entry.sha||'')})).sort((a,b)=>a.path.localeCompare(b.path));}
+    async listRemoteAll(){const records=[];for(const kind of Object.values(deps.HELPER_LIBRARY_KINDS))records.push(...await this.listRemote(kind));return records.sort((a,b)=>a.path.localeCompare(b.path));}
+    async readRemote(path){const kind=inferKindFromPath(path);const remote=await this.client.read(path);const item=deps.parseHelperLibraryDocument(remote.content,{kind,path});return{kind,path:String(path),name:String(path).split('/').pop(),sha:String(remote.sha||''),item,rawContent:remote.content.replace(/\r\n?/g,'\n')};}
+    async save(value){const item=deps.normalizeHelperLibraryItem(value);const path=deps.helperLibraryTargetPath(item);const content=deps.renderHelperLibraryDocument(item);let existing=null;try{const remote=await (typeof this.client.readFresh==='function'?this.client.readFresh(path):this.client.read(path));const rawContent=remote.content.replace(/\r\n?/g,'\n');try{const parsed=deps.parseHelperLibraryDocument(remote.content,{kind:item.kind,path});existing={sha:String(remote.sha||''),item:parsed,rawContent,malformed:false};}catch(parseError){existing={sha:String(remote.sha||''),item:null,rawContent,malformed:true,parseError};}}catch(error){if(error?.kind!=='not_found')throw error;}
+      if(existing&&!existing.malformed&&existing.rawContent===content)return{ok:true,action:'noop',path,sha:existing.sha,item,rawContent:content};const action=existing?'update':'create';const write=await this.client.saveVerified({path,content,baseSha:existing?.sha||'',message:`${action==='create'?'Add':'Update'} Planning Helper ${item.kind} ${item.title}`});return{ok:true,action,path,sha:String(write.sha||''),item,rawContent:content,recoveredAfterUnknownWrite:Boolean(write.recoveredAfterUnknownWrite),recoveredAfterConflict:Boolean(write.recoveredAfterConflict),replacedMalformedRemote:Boolean(existing?.malformed)};
+    }
+  }
+  return{RepositoryHelperLibraryService,inferKindFromPath};
+});
+
+(function (root, factory) {
+  const api=factory(typeof require==='function'?Object.assign({},require('./semantic-projections.js'),root.ObsPlanningHelper||{}):(root.ObsPlanningHelper||{}));
+  if(typeof module==='object'&&module.exports)module.exports=api;
+  root.ObsPlanningHelper=Object.assign(root.ObsPlanningHelper||{},api);
+})(typeof globalThis!=='undefined'?globalThis:this,function(deps){
+  'use strict';
+
+  const USE_CASE_CATALOG_PATH='planning/documentation/tools/tampermonkey/chat-command-palette/seed/use-cases.json';
+  const SEMANTIC_COMPONENT_CATALOG_PATH='planning/documentation/tools/tampermonkey/chat-command-palette/seed/semantic-components.json';
+  const SCENARIO_CATALOG_PATH='planning/documentation/tools/tampermonkey/chat-command-palette/seed/scenarios.json';
+  const CATALOG_ORDER_PATH='planning/documentation/tools/tampermonkey/chat-command-palette/catalog-order.json';
+  const CATALOG_ORDER_KIND='planning-helper-catalog-order';
+  const CATALOG_ORDER_SCHEMA_VERSION=6;
+
+  function normalizeIdOrder(value,label){const result=[];for(const raw of Array.isArray(value)?value:[]){const id=String(raw||'').trim();if(!id)continue;if(/[\r\n\u0000-\u001f\u007f]/.test(id))throw new TypeError(`${label} contains unsafe id.`);if(!result.includes(id))result.push(id);}return result;}
+  const LEGACY_COMMAND_CATEGORIES=[{"id":"GENERAL","label":"General","order":0},{"id":"IDTSPE_PASS","label":"IDTSPE Pass","order":10},{"id":"USE_CASES","label":"Use Cases","order":20},{"id":"TARGET_MODULES","label":"Target Modules","order":30},{"id":"LENSES","label":"Lenses","order":40},{"id":"TOOLS","label":"Tools / Repository","order":50}];
+  function normalizeCommandCategory(value,index){
+    const id=String(value?.id||'').trim().toUpperCase(),label=String(value?.label||'').trim();
+    if(!/^[A-Z][A-Z0-9_-]*$/.test(id)||id==='ALL')throw new TypeError('Category requires a safe non-reserved id.');
+    if(!label||/[\r\n\u0000-\u001f\u007f]/.test(label))throw new TypeError('Category requires a safe label.');
+    return{id,label,order:Number.isFinite(Number(value.order))?Number(value.order):index*10};
+  }
+  function normalizeCommandGroup(value,index){const input=value&&typeof value==='object'?value:{},id=String(input.id||'').trim(),viewId=String(input.viewId||'').trim().toUpperCase(),label=String(input.label||'').trim();if(!id||/[\r\n\u0000-\u001f\u007f]/.test(id))throw new TypeError(`commandGroups[${index}] requires a safe id.`);if(!/^[A-Z][A-Z0-9_-]*$/.test(viewId))throw new TypeError(`commandGroups[${index}] requires a viewId.`);if(!label||/[\r\n\u0000-\u001f\u007f]/.test(label))throw new TypeError(`commandGroups[${index}] requires a safe label.`);const order=Number.isFinite(Number(input.order))?Number(input.order):index*10,items=normalizeIdOrder(input.items,`commandGroups[${index}].items`);return{id,viewId,label,order,items};}
+  function normalizePromptGroup(value,index){
+    const id=String(value?.id||'').trim(),label=String(value?.label||'').trim();
+    if(!/^[a-z0-9][a-z0-9._-]{0,63}$/.test(id)||['all','ungrouped'].includes(id))throw new TypeError(`promptGroups[${index}] requires a safe non-reserved id.`);
+    if(!label||/[\r\n\u0000-\u001f\u007f]/.test(label))throw new TypeError(`promptGroups[${index}] requires a safe label.`);
+    return{id,label,items:normalizeIdOrder(value?.items,`promptGroups[${index}].items`)};
+  }
+  function promptGroupForId(order,id){return(order?.promptGroups||[]).find(group=>(group.items||[]).includes(id))||null;}
+  function createPromptGroupInOrder(value,label){
+    const order=normalizeCatalogOrder(value),name=String(label||'').trim();
+    const slug=name.toLowerCase().normalize('NFKD').replace(/[^a-z0-9._-]+/g,'-').replace(/^-+|-+$/g,'').slice(0,64);
+    const fallback=()=>{let hash=2166136261;for(const char of name){hash=Math.imul(hash^char.codePointAt(0),16777619)>>>0;}return`group-${hash.toString(36)}`;};
+    const id=slug||fallback();
+    if(!name||/[\r\n\u0000-\u001f\u007f]/.test(name)||!id||['all','ungrouped'].includes(id))throw new TypeError('Prompt group requires a nonempty safe name.');
+    if(order.promptGroups.some(group=>group.id===id))throw new TypeError(`Prompt group already exists: ${id}`);
+    return normalizeCatalogOrder({...order,promptGroups:[...order.promptGroups,{id,label:name,items:[]}]});
+  }
+  function renamePromptGroupInOrder(value,id,label){
+    const order=normalizeCatalogOrder(value),name=String(label||'').trim();
+    if(!name||/[\r\n\u0000-\u001f\u007f]/.test(name))throw new TypeError('Prompt group requires a safe label.');
+    if(!order.promptGroups.some(group=>group.id===id))throw new Error(`Unknown prompt group: ${id}`);
+    return normalizeCatalogOrder({...order,promptGroups:order.promptGroups.map(group=>group.id===id?{...group,label:name}:group)});
+  }
+  function deletePromptGroupInOrder(value,id){
+    const order=normalizeCatalogOrder(value);
+    if(!order.promptGroups.some(group=>group.id===id))throw new Error(`Unknown prompt group: ${id}`);
+    return normalizeCatalogOrder({...order,promptGroups:order.promptGroups.filter(group=>group.id!==id)});
+  }
+  function assignPromptGroupInOrder(value,promptId,groupId){
+    const order=normalizeCatalogOrder(value),id=String(promptId||'').trim(),target=String(groupId||'').trim();
+    if(!id)throw new TypeError('A prompt id is required.');
+    if(target&&!order.promptGroups.some(group=>group.id===target))throw new Error(`Unknown prompt group: ${target}`);
+    return normalizeCatalogOrder({...order,promptGroups:order.promptGroups.map(group=>({...group,items:group.id===target?[...group.items.filter(item=>item!==id),id]:group.items.filter(item=>item!==id)}))});
+  }
+  function movePromptGroupInOrder(value,id,delta){
+    const order=normalizeCatalogOrder(value),groups=[...order.promptGroups],index=groups.findIndex(group=>group.id===id);
+    if(index<0)throw new Error(`Unknown prompt group: ${id}`);
+    const target=Math.max(0,Math.min(groups.length-1,index+(delta<0?-1:1)));
+    if(index!==target){const[group]=groups.splice(index,1);groups.splice(target,0,group);}
+    return normalizeCatalogOrder({...order,promptGroups:groups});
+  }
+  function normalizeCatalogOrder(value={}){const input=value&&typeof value==='object'?value:{},version=input.schemaVersion==null?1:Number(input.schemaVersion);if(![1,2,3,4,5,CATALOG_ORDER_SCHEMA_VERSION].includes(version))throw new TypeError(`Unsupported catalog-order schemaVersion: ${input.schemaVersion}`);if(input.kind!=null&&String(input.kind)!==CATALOG_ORDER_KIND)throw new TypeError(`Unsupported catalog-order kind: ${input.kind}`);const commandGroups=(Array.isArray(input.commandGroups)?input.commandGroups:[]).map(normalizeCommandGroup),groupIds=commandGroups.map((group)=>group.id);if(new Set(groupIds).size!==groupIds.length)throw new TypeError('Duplicate command-group ids.');const categories=(version<5?[...LEGACY_COMMAND_CATEGORIES,...[...new Set(commandGroups.map(g=>g.viewId))].filter(id=>!LEGACY_COMMAND_CATEGORIES.some(c=>c.id===id)).map((id,i)=>({id,label:id,order:60+i*10}))]:input.categories);
+    if(!Array.isArray(categories)||!categories.length)throw new TypeError('At least one category is required.');
+    const normalizedCategories=categories.map(normalizeCommandCategory),categoryIds=new Set(normalizedCategories.map(c=>c.id));
+    if(categoryIds.size!==normalizedCategories.length)throw new TypeError('Duplicate category ids.');
+    for(const group of commandGroups)if(!categoryIds.has(group.viewId))throw new TypeError('Unknown category for group '+group.id+': '+group.viewId);
+    const fallbackCategoryId=version<5?'GENERAL':String(input.fallbackCategoryId||'');
+    if(!categoryIds.has(fallbackCategoryId))throw new TypeError('Unknown fallback category.');
+    const promptGroups=(Array.isArray(input.promptGroups)?input.promptGroups:[]).map(normalizePromptGroup);
+    if(new Set(promptGroups.map(group=>group.id)).size!==promptGroups.length)throw new TypeError('Duplicate prompt-group ids.');
+    const promptMembership=new Set();for(const group of promptGroups)for(const id of group.items){if(promptMembership.has(id))throw new TypeError(`Prompt ${id} belongs to multiple groups.`);promptMembership.add(id);}
+    const membership=new Map();for(const group of commandGroups)for(const id of group.items){if(membership.has(id))throw new TypeError(`Command card ${id} belongs to multiple groups: ${membership.get(id)}, ${group.id}.`);membership.set(id,group.id);}return{schemaVersion:CATALOG_ORDER_SCHEMA_VERSION,kind:CATALOG_ORDER_KIND,categories:normalizedCategories,fallbackCategoryId,commands:normalizeIdOrder(input.commands,'commands'),useCases:normalizeIdOrder(input.useCases,'useCases'),scenarios:normalizeIdOrder(input.scenarios,'scenarios'),prompts:normalizeIdOrder(input.prompts,'prompts'),commandGroups,promptGroups};}
+  function renderCatalogOrder(value){return JSON.stringify(normalizeCatalogOrder(value),null,2)+'\n';}
+
+  function parseSeed(text,{path,kind,normalize,label}){let value;try{value=JSON.parse(String(text||''));}catch(error){throw new TypeError(`Invalid ${label} repository catalog JSON at ${path}: ${error.message}`);}if(!value||value.schemaVersion!==1||value.kind!==kind||!Array.isArray(value.items))throw new TypeError(`Invalid ${label} repository catalog shape at ${path}.`);const items=normalize(value.items);if(!items.length)throw new TypeError(`${label} repository catalog is empty at ${path}.`);return{schemaVersion:1,kind,generatedFrom:String(value.generatedFrom||''),items};}
+  function parseUseCaseCatalog(text,path=USE_CASE_CATALOG_PATH){const parsed=parseSeed(text,{path,kind:'use-case-seed',normalize:deps.normalizeUseCaseDefinitions,label:'Use-Case'});return{...parsed,useCases:parsed.items};}
+  function parseSemanticComponentCatalog(text,path=SEMANTIC_COMPONENT_CATALOG_PATH){const parsed=parseSeed(text,{path,kind:'semantic-component-seed',normalize:deps.normalizeSemanticComponents,label:'semantic-component'});return{...parsed,components:parsed.items};}
+  function parseScenarioCatalog(text,path=SCENARIO_CATALOG_PATH){const parsed=parseSeed(text,{path,kind:'scenario-seed',normalize:deps.normalizeScenarios,label:'Scenario'});return{...parsed,scenarios:parsed.items};}
+  function parseCatalogOrder(text,path=CATALOG_ORDER_PATH){let value;try{value=JSON.parse(String(text||''));}catch(error){throw new TypeError(`Invalid catalog-order JSON at ${path}: ${error.message}`);}return normalizeCatalogOrder(value);}
+
+  class RepositoryCatalogService{
+    constructor(client){this.client=client;}
+    async readUseCases(){const remote=await this.client.read(USE_CASE_CATALOG_PATH);const parsed=parseUseCaseCatalog(remote.content);return{path:USE_CASE_CATALOG_PATH,sha:String(remote.sha||''),useCases:parsed.useCases,generatedFrom:parsed.generatedFrom,rawContent:remote.content.replace(/\r\n?/g,'\n')};}
+    async readSemanticComponents(){const remote=await this.client.read(SEMANTIC_COMPONENT_CATALOG_PATH);const parsed=parseSemanticComponentCatalog(remote.content);return{path:SEMANTIC_COMPONENT_CATALOG_PATH,sha:String(remote.sha||''),components:parsed.components,generatedFrom:parsed.generatedFrom,rawContent:remote.content.replace(/\r\n?/g,'\n')};}
+    async readScenarios(){const remote=await this.client.read(SCENARIO_CATALOG_PATH);const parsed=parseScenarioCatalog(remote.content);return{path:SCENARIO_CATALOG_PATH,sha:String(remote.sha||''),scenarios:parsed.scenarios,generatedFrom:parsed.generatedFrom,rawContent:remote.content.replace(/\r\n?/g,'\n')};}
+    async readOrder(){try{const remote=await this.client.read(CATALOG_ORDER_PATH);return{path:CATALOG_ORDER_PATH,sha:String(remote.sha||''),order:parseCatalogOrder(remote.content),rawContent:remote.content.replace(/\r\n?/g,'\n')};}catch(error){if(error?.kind==='not_found')return{path:CATALOG_ORDER_PATH,sha:'',order:normalizeCatalogOrder({}),rawContent:''};throw error;}}
+    async saveOrder(value){const order=normalizeCatalogOrder(value),content=renderCatalogOrder(order);let existing=null;try{const remote=await this.client.read(CATALOG_ORDER_PATH);existing={sha:String(remote.sha||''),rawContent:remote.content.replace(/\r\n?/g,'\n')};}catch(error){if(error?.kind!=='not_found')throw error;}if(existing&&existing.rawContent===content)return{ok:true,action:'noop',path:CATALOG_ORDER_PATH,sha:existing.sha,order,rawContent:content};const action=existing?'update':'create';const write=await this.client.saveVerified({path:CATALOG_ORDER_PATH,content,baseSha:existing?.sha||'',message:`${action==='create'?'Add':'Update'} Planning Helper catalog order`});return{ok:true,action,path:CATALOG_ORDER_PATH,sha:String(write.sha||''),order,rawContent:content,recoveredAfterUnknownWrite:Boolean(write.recoveredAfterUnknownWrite),recoveredAfterConflict:Boolean(write.recoveredAfterConflict)};}
+  }
+
+  return{USE_CASE_CATALOG_PATH,SEMANTIC_COMPONENT_CATALOG_PATH,SCENARIO_CATALOG_PATH,CATALOG_ORDER_PATH,CATALOG_ORDER_KIND,CATALOG_ORDER_SCHEMA_VERSION,normalizeCatalogOrder,normalizePromptGroup,promptGroupForId,createPromptGroupInOrder,renamePromptGroupInOrder,deletePromptGroupInOrder,assignPromptGroupInOrder,movePromptGroupInOrder,renderCatalogOrder,parseUseCaseCatalog,parseSemanticComponentCatalog,parseScenarioCatalog,parseCatalogOrder,RepositoryCatalogService};
+});
+
+(function(root,factory){
+  const api=factory();
+  if(typeof module==='object'&&module.exports)module.exports=api;
+  root.ObsPlanningHelper=Object.assign(root.ObsPlanningHelper||{},api);
+})(typeof globalThis!=='undefined'?globalThis:this,function(){
+  'use strict';
+  const CHANNEL='fortis-shared-helper-text-modules-v1';
+  const ID=/^[a-z0-9][a-z0-9._-]{0,79}$/;
+  let running=null;
+  function projectItems(snapshot,kind){
+    const items=(snapshot?.helperItems||[]).map(record=>record?.item||record)
+      .filter(m=>m?.kind===kind&&typeof m.id==='string'&&ID.test(m.id)&&
+        typeof m.title==='string'&&typeof m.text==='string')
+      .map(m=>({id:m.id,title:m.title,text:m.text,updatedAt:m.updatedAt||''}));
+    if(items.length>2000||items.some(m=>m.title.length>300||m.text.length>100000)||
+       new Set(items.map(m=>m.id)).size!==items.length||
+       items.reduce((n,m)=>n+m.text.length,0)>600000)
+      throw new Error('Shared module catalog exceeds safe limits');
+    return items;
+  }
+  function projectModules(snapshot){return projectItems(snapshot,'module');}
+  function projectPrompts(snapshot){return projectItems(snapshot,'prompt');}
+  function createHelperModuleChannel({readSnapshot,Channel=typeof BroadcastChannel==='function'?BroadcastChannel:null}={}){
+    if(!Channel||typeof readSnapshot!=='function')return null;
+    const channel=new Channel(CHANNEL);
+    let stopped=false;
+    let reads=Promise.resolve();
+    async function publish(){
+      if(stopped)return;
+      // Serializes GM-backed snapshot reads to avoid publishing stale catalog.
+      reads=reads.catch(()=>{}).then(async()=>{
+        const snapshot=await readSnapshot();
+        if(stopped||!snapshot)return;
+        channel.postMessage({protocol:CHANNEL,type:'catalog',modules:projectModules(snapshot),prompts:projectPrompts(snapshot)});
+      });
+      try{await reads;}catch(e){/* do not interfere with verified Helper writes */}
+    }
+    const listener=event=>{
+      if(event?.data?.protocol===CHANNEL&&event.data.type==='request')void publish();
+    };
+    if(typeof channel.addEventListener==='function')channel.addEventListener('message',listener);
+    else channel.onmessage=listener;
+    return {publish,close(){
+      stopped=true;
+      channel.close?.();
+    }};
+  }
+  function startSharedModuleChannel(readSnapshot){
+    if(running)return running;
+    running=createHelperModuleChannel({readSnapshot});
+    void running?.publish();
+    return running;
+  }
+  function publishSharedModuleCatalog(){void running?.publish();}
+  return {SHARED_MODULE_CHANNEL:CHANNEL,projectModules,projectPrompts,createHelperModuleChannel,
+    startSharedModuleChannel,publishSharedModuleCatalog};
+});
+
+(function (root, factory) {
+  const api=factory(typeof require==='function'?Object.assign({},require('./command-definition-codec.js'),require('./command-catalog.js'),require('./helper-library-codec.js'),require('./semantic-projections.js'),require('./repository-catalog-service.js'),root.ObsPlanningHelper||{}):(root.ObsPlanningHelper||{}));
+  if(typeof module==='object'&&module.exports)module.exports=api;
+  root.ObsPlanningHelper=Object.assign(root.ObsPlanningHelper||{},api);
+})(typeof globalThis!=='undefined'?globalThis:this,function(deps){
+  'use strict';
+
+  const KEYS=Object.freeze({settings:'obsPlanningHelper:v1:repositorySettings',token:'obsPlanningHelper:v1:githubToken',localSnapshot:'obsPlanningHelper:v2:localSnapshot'});
+  const LEGACY_KEYS=Object.freeze({commandCache:'obsPlanningHelper:v1:commandCatalogCache',localLibrary:'obsPlanningHelper:v1:localLibrary',repositoryLibraryCache:'obsPlanningHelper:v1:repositoryLibraryCache'});
+  const LOCAL_SNAPSHOT_SCHEMA_VERSION=9;
+  const COMMAND_CACHE_SCHEMA_VERSION=1;
+  const SUPPORTED_LOCAL_SNAPSHOT_SCHEMA_VERSIONS=Object.freeze([1,2,3,4,5,6,7,8,LOCAL_SNAPSHOT_SCHEMA_VERSION]);
+  const POSITION_KEY='obs-planning-helper-position-v2';
+  const STATE_CHANGED_KEY='obs-planning-helper-cross-tab-state-v1';
+  const DEFAULT_SETTINGS=Object.freeze({owner:'AlexPastukhh',repo:'obs-planning-docs',branch:'main'});
+
+  function gmGetFn(){return typeof GM_getValue==='function'?GM_getValue:null;}
+  function gmSetFn(){return typeof GM_setValue==='function'?GM_setValue:null;}
+  async function gmGet(key,fallback){const fn=gmGetFn();return fn?await fn(key,fallback):fallback;}
+  async function gmSet(key,value){const fn=gmSetFn();if(!fn)throw new Error('Tampermonkey GM_setValue is unavailable; reinstall the generated Planning Helper userscript and accept its GM grants.');await fn(key,value);}
+
+  function normalizeSettings(value){const input=value&&typeof value==='object'?value:{};return{owner:String(input.owner==null?'':input.owner).trim(),repo:String(input.repo==null?'':input.repo).trim(),branch:String(input.branch==null?'':input.branch).trim()};}
+  function validateRepositorySettings(value){const settings=normalizeSettings(value);if(!settings.owner||!settings.repo||!settings.branch)throw new TypeError('Owner, repository and branch are required.');for(const[field,text]of Object.entries(settings)){if(/[\r\n\u0000-\u001f\u007f]/.test(text))throw new TypeError(`${field} contains unsafe control characters.`);}return settings;}
+  async function loadRepositorySettings(){const stored=await gmGet(KEYS.settings,null);return stored==null?{...DEFAULT_SETTINGS}:validateRepositorySettings(stored);}
+  async function saveRepositorySettings(settings){const value=validateRepositorySettings(settings);await gmSet(KEYS.settings,value);return value;}
+  async function loadGitHubToken(){return String(await gmGet(KEYS.token,'')||'').trim();}
+  async function saveGitHubToken(token){const value=String(token||'').trim();await gmSet(KEYS.token,value);return Boolean(value);}
+
+  function cleanIso(value,fallback=''){const text=String(value||'').trim();if(!text)return fallback;const ms=Date.parse(text);if(!Number.isFinite(ms))throw new TypeError(`Invalid snapshot timestamp: ${text}`);return new Date(ms).toISOString();}
+  function normalizeIdList(value,label,preserveOrder=false){const result=[];for(const raw of Array.isArray(value)?value:[]){const id=String(raw||'').trim();if(!id)continue;if(/[\r\n\u0000-\u001f\u007f]/.test(id))throw new TypeError(`${label} contains unsafe id.`);if(!result.includes(id))result.push(id);}return preserveOrder?result:result.sort();}
+  function normalizeSuppressedRepository(value){const input=value&&typeof value==='object'?value:{};return{commands:normalizeIdList(input.commands,'suppressedRepository.commands'),helperItems:normalizeIdList(input.helperItems,'suppressedRepository.helperItems'),useCases:normalizeIdList(input.useCases,'suppressedRepository.useCases'),semanticComponents:normalizeIdList(input.semanticComponents,'suppressedRepository.semanticComponents'),scenarios:normalizeIdList(input.scenarios,'suppressedRepository.scenarios')};}
+  function normalizeCommandRecord(value){const input=value&&typeof value==='object'?value:{},definition=deps.normalizeCommandDefinition(input.definition||input),path=deps.commandPathForDefinition(definition);if(input.path&&String(input.path)!==path)throw new TypeError(`Planning-command snapshot path mismatch: ${input.path}`);const rawContent=String(input.rawContent||deps.renderCommandDefinitionDocument(definition)).replace(/\r\n?/g,'\n'),parsed=deps.parseCommandDefinitionDocument(rawContent,{path});if(JSON.stringify(deps.toSerializable(deps.stripRuntimeCommandMetadata(parsed)))!==JSON.stringify(deps.toSerializable(definition)))throw new TypeError(`Planning-command snapshot raw content does not match definition: ${definition.id}`);const repositorySha=String(input.repositorySha||'').trim(),repositoryKnown=Boolean(input.repositoryKnown||repositorySha),repositoryTracked=Boolean(input.repositoryTracked||repositoryKnown);return{definition,path,rawContent,repositoryKnown,repositoryTracked,repositorySha};}
+  function normalizeHelperRecord(value){const input=value&&typeof value==='object'?value:{},item=deps.normalizeHelperLibraryItem(input.item||input),path=deps.helperLibraryTargetPath(item);if(input.path&&String(input.path)!==path)throw new TypeError(`Helper-library snapshot path mismatch: ${input.path}`);const rawContent=String(input.rawContent||deps.renderHelperLibraryDocument(item)).replace(/\r\n?/g,'\n'),parsed=deps.parseHelperLibraryDocument(rawContent,{kind:item.kind,path});if(JSON.stringify(parsed)!==JSON.stringify(item))throw new TypeError(`Helper-library snapshot raw content does not match item: ${item.kind}:${item.id}`);const repositorySha=String(input.repositorySha||'').trim();return{item,path,rawContent,repositoryKnown:Boolean(input.repositoryKnown||repositorySha),repositorySha};}
+  function stripLegacyCommandDirectionPlacement(value){const input=value&&typeof value==='object'?value:{},definition={...(input.definition||input)};delete definition.directionIds;return{...input,definition,rawContent:''};}
+  function isSupportedLocalSnapshot(value){return Boolean(value&&typeof value==='object'&&SUPPORTED_LOCAL_SNAPSHOT_SCHEMA_VERSIONS.includes(value.schemaVersion));}
+  function assertCommandCacheSchema(value){if(value.schemaVersion!==LOCAL_SNAPSHOT_SCHEMA_VERSION||value.commandCacheSchemaVersion==null)return;const version=Number(value.commandCacheSchemaVersion);if(!Number.isInteger(version)||version!==COMMAND_CACHE_SCHEMA_VERSION)throw new TypeError(`Unsupported Planning Helper command-cache schema: ${value.commandCacheSchemaVersion}.`);}
+  function isDisposableRepositoryCommandRecord(value){const input=value&&typeof value==='object'?value:{};return Boolean(input.repositoryKnown||String(input.repositorySha||'').trim());}
+  function recoverRepositoryCommandCache(value){const commands=Array.isArray(value?.planningCommands)?value.planningCommands:[],localCommands=commands.filter((record)=>!isDisposableRepositoryCommandRecord(record));return{raw:{...value,planningCommands:localCommands,commandCacheSchemaVersion:COMMAND_CACHE_SCHEMA_VERSION},discardedRepositoryCommands:commands.length-localCommands.length,preservedLocalCommands:localCommands.length};}
+  function normalizePlanningHelperLocalSnapshot(value){
+    if(!isSupportedLocalSnapshot(value))throw new TypeError('Unsupported Planning Helper local snapshot schema.');
+    assertCommandCacheSchema(value);
+    const rawCommands=value.schemaVersion<5?(value.planningCommands||[]).map(stripLegacyCommandDirectionPlacement):(value.planningCommands||[]);
+    const planningCommands=rawCommands.map(normalizeCommandRecord).sort((a,b)=>a.path.localeCompare(b.path));
+    const helperItems=(value.helperItems||[]).map(normalizeHelperRecord).sort((a,b)=>a.path.localeCompare(b.path));
+    const useCases=deps.normalizeUseCaseDefinitions(value.useCases||[]),useCaseCatalogSha=String(value.useCaseCatalogSha||'').trim();
+    const semanticComponents=deps.normalizeSemanticComponents(value.semanticComponents||[]),semanticComponentCatalogSha=String(value.semanticComponentCatalogSha||'').trim();
+    const scenarios=deps.normalizeScenarios(value.scenarios||[]),scenarioCatalogSha=String(value.scenarioCatalogSha||'').trim();
+    const catalogOrder=deps.normalizeCatalogOrder(value.catalogOrder||{});
+    // A remote SHA certifies the original catalog bytes, not a normalized migration.
+    // Upgrading v5 to v6 (prompt groups) requires a new GitHub save.
+    const previousOrderVersion=value.catalogOrder?.schemaVersion;
+    const orderWasUpgraded=previousOrderVersion!=null&&Number(previousOrderVersion)!==catalogOrder.schemaVersion;
+    const catalogOrderSha=orderWasUpgraded?'':String(value.catalogOrderSha||'').trim();
+    const suppressedRepository=normalizeSuppressedRepository(value.suppressedRepository||{});
+    const favoriteCommandIds=normalizeIdList(value.favoriteCommandIds,'favoriteCommandIds',true),favoriteUseCaseIds=normalizeIdList(value.favoriteUseCaseIds,'favoriteUseCaseIds');
+    deps.validateCommandCatalog(planningCommands.map((record)=>record.definition),{allowMissingIncludes:true});
+    if(new Set(planningCommands.map((record)=>record.path)).size!==planningCommands.length)throw new TypeError('Duplicate planning-command path in local snapshot.');
+    if(new Set(helperItems.map((record)=>record.path)).size!==helperItems.length)throw new TypeError('Duplicate helper-library path in local snapshot.');
+    if(planningCommands.some((record)=>suppressedRepository.commands.includes(record.path)))throw new TypeError('A planning command cannot be both present and repository-suppressed.');
+    if(helperItems.some((record)=>suppressedRepository.helperItems.includes(record.path)))throw new TypeError('A helper-library item cannot be both present and repository-suppressed.');
+    if(useCases.some((entry)=>suppressedRepository.useCases.includes(entry.id)))throw new TypeError('A Use Case cannot be both present and repository-suppressed.');
+    if(semanticComponents.some((entry)=>suppressedRepository.semanticComponents.includes(entry.id)))throw new TypeError('A semantic component cannot be both present and repository-suppressed.');
+    if(scenarios.some((entry)=>suppressedRepository.scenarios.includes(entry.id)))throw new TypeError('A Scenario cannot be both present and repository-suppressed.');
+    return{schemaVersion:LOCAL_SNAPSHOT_SCHEMA_VERSION,commandCacheSchemaVersion:COMMAND_CACHE_SCHEMA_VERSION,savedAt:cleanIso(value.savedAt,''),planningCommands,helperItems,useCases,useCaseCatalogSha,semanticComponents,semanticComponentCatalogSha,scenarios,scenarioCatalogSha,catalogOrder,catalogOrderSha,suppressedRepository,favoriteCommandIds,favoriteUseCaseIds};
+  }
+  async function loadPlanningHelperLocalSnapshot(){const value=await gmGet(KEYS.localSnapshot,null);return value==null?null:normalizePlanningHelperLocalSnapshot(value);}
+  async function savePlanningHelperLocalSnapshot(value){const normalized=normalizePlanningHelperLocalSnapshot({...value,schemaVersion:LOCAL_SNAPSHOT_SCHEMA_VERSION,commandCacheSchemaVersion:COMMAND_CACHE_SCHEMA_VERSION,savedAt:value?.savedAt||new Date().toISOString()}),payload={...normalized,savedAt:new Date().toISOString()};await gmSet(KEYS.localSnapshot,payload);const checked=await gmGet(KEYS.localSnapshot,null),normalizedChecked=normalizePlanningHelperLocalSnapshot(checked);if(JSON.stringify(normalizedChecked)!==JSON.stringify(payload))throw new Error('Planning Helper local snapshot write-back verification failed.');
+    // Storage events notify other open ChatGPT tabs without requiring extra GM grants.
+    try{if(typeof localStorage!=='undefined')localStorage.setItem(STATE_CHANGED_KEY,`${Date.now()}-${Math.random()}`);}catch(_){}
+    deps.publishSharedModuleCatalog?.();
+    return payload;}
+
+  function commandRecordsFromDefinitions(definitions,repositoryKnown=true){return(definitions||[]).map((definition)=>normalizeCommandRecord({definition,repositoryKnown,repositoryTracked:repositoryKnown}));}
+  function helperKey(item){return`${item.kind}:${item.id}`;}
+  async function loadOrMigratePlanningHelperLocalSnapshot(){
+    const existingRaw=await gmGet(KEYS.localSnapshot,null),warnings=[];
+    if(existingRaw!=null){
+      let existing,commandCacheRecovered=false;
+      try{existing=normalizePlanningHelperLocalSnapshot(existingRaw);}catch(error){
+        if(!isSupportedLocalSnapshot(existingRaw))throw error;
+        const recovery=recoverRepositoryCommandCache(existingRaw);
+        try{existing=normalizePlanningHelperLocalSnapshot(recovery.raw);}catch(recoveryError){throw recoveryError;}
+        commandCacheRecovered=true;
+        const recoveryAction=recovery.preservedLocalCommands?'Use Sync missing to restore missing repository commands without overwriting local drafts, or save/reconcile those drafts before Hard Reload GitHub; Hard Reload replaces the command catalog and removes unsaved command drafts.':'Run Hard Reload GitHub to restore the current repository command catalog.';
+        warnings.push(`Cached Planning Command catalog was incompatible (${error.message||String(error)}). Discarded ${recovery.discardedRepositoryCommands} repository-backed command record(s) and preserved ${recovery.preservedLocalCommands} local command draft(s). Local prompts/favorites and the remaining snapshot state were preserved. ${recoveryAction}`);
+      }
+      const needsWrite=commandCacheRecovered||existingRaw.schemaVersion!==LOCAL_SNAPSHOT_SCHEMA_VERSION||Number(existingRaw.commandCacheSchemaVersion)!==COMMAND_CACHE_SCHEMA_VERSION,snapshot=needsWrite?await savePlanningHelperLocalSnapshot(existing):existing;
+      if(needsWrite&&!commandCacheRecovered&&(!existing.semanticComponents.length||!existing.scenarios.length))warnings.push('Planning Helper local snapshot migrated. Commands, semantic components and scenarios are GitHub-backed; use Hard Reload GitHub to restore current repository projections.');
+      return{snapshot,migrated:needsWrite,seededCommands:0,warnings};
+    }
+    let definitions=[];
+    try{const legacy=await gmGet(LEGACY_KEYS.commandCache,null);if(legacy&&legacy.schemaVersion===1&&Array.isArray(legacy.definitions)){definitions=legacy.definitions.map((definition)=>{const next={...definition};delete next.directionIds;return next;});deps.validateCommandCatalog(definitions,{allowMissingIncludes:true});}}catch(error){warnings.push(`Legacy planning-command cache ignored: ${error.message||String(error)}`);}deps.validateCommandCatalog(definitions,{allowMissingIncludes:true});
+    const helperByKey=new Map();
+    try{const repoCache=await gmGet(LEGACY_KEYS.repositoryLibraryCache,null),records=repoCache?.schemaVersion===2&&Array.isArray(repoCache.records)?repoCache.records:repoCache?.schemaVersion===1&&Array.isArray(repoCache.items)?repoCache.items.map((item)=>({item})):[];for(const record of records){const item=deps.normalizeHelperLibraryItem(record.item||record);helperByKey.set(helperKey(item),normalizeHelperRecord({item,repositoryKnown:true,repositorySha:record.sha||''}));}}catch(error){warnings.push(`Legacy repository-library cache ignored: ${error.message||String(error)}`);}
+    try{const local=await gmGet(LEGACY_KEYS.localLibrary,null);if(local&&local.schemaVersion===1&&Array.isArray(local.items))for(const raw of local.items){const item=deps.normalizeHelperLibraryItem(raw),key=helperKey(item),previous=helperByKey.get(key);helperByKey.set(key,normalizeHelperRecord({item,repositoryKnown:Boolean(previous?.repositoryKnown),repositorySha:previous?.repositorySha||''}));}}catch(error){warnings.push(`Legacy local helper library ignored: ${error.message||String(error)}`);}
+    try{let raw='';try{raw=typeof localStorage!=='undefined'?localStorage.getItem(deps.LEGACY_LOCAL_STORAGE_KEY)||'':'';}catch(_){}if(raw){for(const item of deps.parseLegacyProjectionRegistry(raw)){const key=helperKey(item);if(!helperByKey.has(key))helperByKey.set(key,normalizeHelperRecord({item,repositoryKnown:false}));}}}catch(error){warnings.push(`Legacy page-local command projections ignored: ${error.message||String(error)}`);}
+    const snapshot=await savePlanningHelperLocalSnapshot({schemaVersion:LOCAL_SNAPSHOT_SCHEMA_VERSION,planningCommands:commandRecordsFromDefinitions(definitions,true),helperItems:[...helperByKey.values()],useCases:[],useCaseCatalogSha:'',semanticComponents:[],semanticComponentCatalogSha:'',scenarios:[],scenarioCatalogSha:'',catalogOrder:deps.normalizeCatalogOrder({}),catalogOrderSha:'',suppressedRepository:{},favoriteCommandIds:[],favoriteUseCaseIds:[]});
+    warnings.push('Commands, semantic components and scenarios are repository-backed catalogs. Use Hard Reload GitHub to populate/restore them from the configured repository.');
+    return{snapshot,migrated:true,seededCommands:definitions.length,warnings};
+  }
+
+  function readPanelPosition(){try{const parsed=JSON.parse(localStorage.getItem(POSITION_KEY)||'{}');return{left:Number.isFinite(parsed.left)?parsed.left:null,top:Number.isFinite(parsed.top)?parsed.top:null,width:Number.isFinite(parsed.width)?parsed.width:null,height:Number.isFinite(parsed.height)?parsed.height:null};}catch(_){return{left:null,top:null,width:null,height:null};}}
+  function savePanelPosition(position){try{localStorage.setItem(POSITION_KEY,JSON.stringify({left:position.left,top:position.top,width:position.width,height:position.height}));}catch(_){} }
+
+  return{PLANNING_HELPER_STATE_CHANGED_KEY:STATE_CHANGED_KEY,PLANNING_HELPER_STATE_KEYS:KEYS,PLANNING_HELPER_LEGACY_STATE_KEYS:LEGACY_KEYS,PLANNING_HELPER_DEFAULT_SETTINGS:DEFAULT_SETTINGS,LOCAL_SNAPSHOT_SCHEMA_VERSION,COMMAND_CACHE_SCHEMA_VERSION,normalizeSettings,validateRepositorySettings,normalizeSuppressedRepository,loadRepositorySettings,saveRepositorySettings,loadGitHubToken,saveGitHubToken,normalizeCommandRecord,normalizeHelperRecord,normalizePlanningHelperLocalSnapshot,loadPlanningHelperLocalSnapshot,savePlanningHelperLocalSnapshot,loadOrMigratePlanningHelperLocalSnapshot,commandRecordsFromDefinitions,readPanelPosition,savePanelPosition};
+});
+
+(function(root,factory){
+  const api=factory();
+  if(typeof module==='object'&&module.exports)module.exports=api;
+  root.ObsPlanningHelper=Object.assign(root.ObsPlanningHelper||{},api);
+})(typeof globalThis!=='undefined'?globalThis:this,function(){
+  'use strict';
+  const START='[OBS_PLANNING_HELPER_STATE]',END='[/OBS_PLANNING_HELPER_STATE]';
+  const SAFE_SNAPSHOT_KEYS=['schemaVersion','commandCacheSchemaVersion','savedAt','planningCommands','helperItems',
+    'useCases','useCaseCatalogSha','semanticComponents','semanticComponentCatalogSha','scenarios',
+    'scenarioCatalogSha','catalogOrder','catalogOrderSha','suppressedRepository','favoriteCommandIds','favoriteUseCaseIds'];
+  function inventory(snapshot,settings){
+    const s=snapshot||{},order=s.catalogOrder||{},helpers=s.helperItems||[],commands=s.planningCommands||[];
+    const members=new Map();for(const group of order.promptGroups||[])for(const id of group.items||[])members.set(id,group.id);
+    const prompts=helpers.filter(r=>r.item?.kind==='prompt').map(r=>({
+      id:r.item.id,title:r.item.title,group:members.get(`helper-library:prompt:${r.item.id}`)||'ungrouped',
+      pending:!r.repositoryKnown,repositorySha:r.repositorySha||null,chars:(r.item.text||'').length,
+      updatedAt:r.item.updatedAt||null
+    }));
+    const modules=helpers.filter(r=>r.item?.kind==='module').map(r=>({id:r.item.id,title:r.item.title,
+      pending:!r.repositoryKnown,repositorySha:r.repositorySha||null,chars:(r.item.text||'').length}));
+    const helperCommands=helpers.filter(r=>r.item?.kind==='command').map(r=>({id:r.item.id,title:r.item.title,pending:!r.repositoryKnown}));
+    const commandEntries=commands.map(r=>({id:r.definition?.id,path:r.path,pending:!r.repositoryKnown}));
+    const pending={commands:commandEntries.filter(r=>r.pending).length,prompts:prompts.filter(r=>r.pending).length,
+      modules:modules.filter(r=>r.pending).length,helperCommands:helperCommands.filter(r=>r.pending).length,
+      catalogOrder:!s.catalogOrderSha};
+    const groups=(order.promptGroups||[]).map(g=>({id:g.id,label:g.label,promptIds:(g.items||[]).slice()}));
+    const owner=String(settings?.owner||''),repo=String(settings?.repo||''),branch=String(settings?.branch||'');
+    return{repository:{owner,repo,branch},localSnapshotSavedAt:s.savedAt||null,snapshotSchemaVersion:s.schemaVersion||null,
+      counts:{prompts:prompts.length,modules:modules.length,helperCommands:helperCommands.length,
+        commands:commandEntries.length,scenarios:(s.scenarios||[]).length,useCases:(s.useCases||[]).length,
+        semanticComponents:(s.semanticComponents||[]).length,promptGroups:groups.length},
+      pending,repositoryOrderSha:s.catalogOrderSha||null,groups,prompts,modules,helperCommands,
+      commands:commandEntries,scenarios:(s.scenarios||[]).map(x=>({id:x.id,title:x.title})),
+      useCases:(s.useCases||[]).map(x=>({id:x.id,label:x.label})),
+      semanticComponents:(s.semanticComponents||[]).map(x=>({id:x.id,kind:x.kind,label:x.label})),
+      favoriteCommandIds:[...(s.favoriteCommandIds||[])],favoriteUseCaseIds:[...(s.favoriteUseCaseIds||[])],
+      suppressedRepository:s.suppressedRepository||{}};
+  }
+  function exportPlanningHelperState(snapshot,settings,mode='summary'){
+    if(!['summary','full'].includes(mode))throw new TypeError('Unknown state export mode.');
+    const state=inventory(snapshot,settings);
+    const result={exportVersion:1,mode,generatedAt:new Date().toISOString(),...state};
+    if(mode==='full'){
+      // The token is stored under a separate GM key. Explicitly copy only state
+      // fields: do not copy arbitrary keys or credentials into the export.
+      result.localSnapshot=Object.fromEntries(SAFE_SNAPSHOT_KEYS.filter(k=>
+        Object.prototype.hasOwnProperty.call(snapshot||{},k)).map(k=>[k,snapshot[k]]));
+    }
+    return `${START}\n${JSON.stringify(result,null,mode==='full'?0:2)}\n${END}`;
+  }
+  return{exportPlanningHelperState,inventoryPlanningHelperState:inventory};
+});
+
+(function (root, factory) {
+  const api = factory();
+  if (typeof module === 'object' && module.exports) module.exports = api;
+  root.ObsPlanningHelper = Object.assign(root.ObsPlanningHelper || {}, api);
+})(typeof globalThis !== 'undefined' ? globalThis : this, function () {
+  'use strict';
+
+  let cachedComposer=null;
+  function usableCachedComposer(entry){const element=entry?.element;return Boolean(element&&element.isConnected!==false&&!element.hasAttribute?.('disabled'));}
+  function isVisibleComposer(element){return Boolean(element&&element.getClientRects().length>0&&!element.hasAttribute('disabled'));}
+  function clearComposerCache(){cachedComposer=null;}
+  function findComposer(doc=document){
+    if(usableCachedComposer(cachedComposer))return{...cachedComposer,cacheHit:true};
+    cachedComposer=null;
+    for(const selector of ['#prompt-textarea[contenteditable="true"]','[data-testid="composer-textarea"][contenteditable="true"]','textarea[data-testid="composer-textarea"]']){
+      const element=doc.querySelector(selector);if(isVisibleComposer(element)){cachedComposer={element,selector,fallback:false};return{...cachedComposer,cacheHit:false};}
+    }
+    for(const selector of ['textarea[placeholder]','[contenteditable="true"][role="textbox"]'])for(const element of doc.querySelectorAll(selector))if(isVisibleComposer(element)){cachedComposer={element,selector,fallback:true};return{...cachedComposer,cacheHit:false};}
+    return{element:null,selector:null,fallback:true,cacheHit:false};
+  }
+  function getComposerText(element){if(typeof HTMLTextAreaElement!=='undefined'&&(element instanceof HTMLTextAreaElement||element instanceof HTMLInputElement))return element.value||'';return element.textContent||'';}
+  function composerDocument(element){if(element?.ownerDocument)return element.ownerDocument;if(typeof document!=='undefined')return document;return null;}
+  function composerSelection(doc){if(doc&&typeof doc.getSelection==='function')return doc.getSelection();if(typeof window!=='undefined'&&typeof window.getSelection==='function')return window.getSelection();return null;}
+  function dispatchInputEvent(element,data){try{element.dispatchEvent(new InputEvent('input',{bubbles:true,composed:true,inputType:'insertText',data}));}catch(_){element.dispatchEvent(new Event('input',{bubbles:true,composed:true}));}}
+  function insertContenteditableText(element,text){
+    const exact=String(text),doc=composerDocument(element);if(!doc||typeof doc.createRange!=='function'||typeof doc.createTextNode!=='function')return false;
+    const range=doc.createRange(),node=doc.createTextNode(exact);range.selectNodeContents(element);range.collapse(false);range.insertNode(node);
+    if(node.data!==exact)return false;
+    if(typeof range.setStartAfter==='function'){range.setStartAfter(node);range.collapse(true);}
+    const selection=composerSelection(doc);if(selection&&typeof selection.removeAllRanges==='function'&&typeof selection.addRange==='function'){selection.removeAllRanges();selection.addRange(range);}
+    dispatchInputEvent(element,exact);return true;
+  }
+  function diagnostic(startedAt,foundAt,readAt,finishedAt,found,commandId,current,text,ok,reason){console.debug('[OBS Planning Helper insertion]',{commandId,ok,reason,selector:found.selector,fallbackSelector:found.fallback,composerCacheHit:Boolean(found.cacheHit),draftLength:current.length,bodyLength:text.length,findMs:Number((foundAt-startedAt).toFixed(2)),readMs:Number((readAt-foundAt).toFixed(2)),insertMs:Number((finishedAt-readAt).toFixed(2)),totalMs:Number((finishedAt-startedAt).toFixed(2))});}
+  function insertIntoComposer(text,commandId=null){
+    const body=String(text);const startedAt=performance.now();const found=findComposer();const foundAt=performance.now(),composer=found.element;
+    if(!composer){console.debug('[OBS Planning Helper insertion]',{commandId,ok:false,reason:'composer-not-found',composerCacheHit:false,findMs:Number((foundAt-startedAt).toFixed(2)),bodyLength:body.length});return{ok:false,reason:'composer-not-found'};}
+    let current='',readAt=foundAt;
+    try{
+      composer.focus();current=getComposerText(composer);readAt=performance.now();const hasText=current.trim().length>0;const addition=hasText?`\n\n${body}`:body;
+      if(typeof HTMLTextAreaElement!=='undefined'&&(composer instanceof HTMLTextAreaElement||composer instanceof HTMLInputElement)){
+        const next=hasText?`${current}\n\n${body}`:body;const proto=composer instanceof HTMLTextAreaElement?HTMLTextAreaElement.prototype:HTMLInputElement.prototype;const setter=Object.getOwnPropertyDescriptor(proto,'value')?.set;if(setter)setter.call(composer,next);else composer.value=next;dispatchInputEvent(composer,addition);
+      }else{
+        const inserted=insertContenteditableText(composer,addition);
+        if(!inserted){clearComposerCache();const rejectedAt=performance.now();diagnostic(startedAt,foundAt,readAt,rejectedAt,found,commandId,current,body,false,'contenteditable-direct-insert-rejected');return{ok:false,reason:'contenteditable-direct-insert-rejected'};}
+      }
+      const finishedAt=performance.now();diagnostic(startedAt,foundAt,readAt,finishedAt,found,commandId,current,body,true,undefined);return{ok:true,cacheHit:Boolean(found.cacheHit)};
+    }catch(error){clearComposerCache();const failedAt=performance.now();diagnostic(startedAt,foundAt,readAt,failedAt,found,commandId,current,body,false,error instanceof Error?error.message:String(error));return{ok:false,reason:'composer-mutation-failed',error};}
+  }
+  function copyText(text){
+    const exact=String(text);
+    try{
+      const textarea=document.createElement('textarea');textarea.value=exact;textarea.style.position='fixed';textarea.style.left='-10000px';textarea.style.top='0';textarea.style.opacity='0';textarea.setAttribute('aria-hidden','true');document.body.appendChild(textarea);textarea.focus({preventScroll:true});textarea.select();let copied=false;try{copied=Boolean(document.execCommand('copy'));}finally{textarea.remove();}if(copied)return true;
+    }catch(_){}
+    try{if(navigator?.clipboard?.writeText)return Promise.resolve(navigator.clipboard.writeText(exact)).then(()=>true,()=>false);}catch(_){}
+    return false;
+  }
+  return{isVisibleComposer,findComposer,getComposerText,insertContenteditableText,insertIntoComposer,copyText,clearComposerCache};
+});
+
+(function (root, factory) {
+  const api=factory();
+  if(typeof module==='object'&&module.exports)module.exports=api;
+  root.ObsPlanningHelper=Object.assign(root.ObsPlanningHelper||{},api);
+})(typeof globalThis!=='undefined'?globalThis:this,function(){
+  'use strict';
+
+  const VIEW_IDS=Object.freeze({ALL:'ALL',GENERAL:'GENERAL',IDTSPE_PASS:'IDTSPE_PASS',USE_CASES:'USE_CASES',TARGET_MODULES:'TARGET_MODULES',LENSES:'LENSES',TOOLS:'TOOLS'});
+  const VIEW_META=Object.freeze({
+    GENERAL:{label:'General',order:0},IDTSPE_PASS:{label:'IDTSPE Pass',order:5},USE_CASES:{label:'Use Cases',order:10},TARGET_MODULES:{label:'Target Modules',order:20},LENSES:{label:'Lenses',order:30},TOOLS:{label:'Tools / Repository',order:40}
+  });
+  function kindLabelFor(entry){if(entry?.semanticKind==='USE_CASE')return`${entry.semanticScope||'Core'} UC`;if(entry?.semanticKind==='TARGET_MODULE')return`${entry.semanticScope||'Core'} TM`;if(entry?.semanticKind==='LENS')return`${entry.semanticScope||'Core'} Lens`;if(entry?.presentationGroup?.viewId===VIEW_IDS.IDTSPE_PASS)return'IDTSPE Pass';if(entry?.presentationGroup?.viewId===VIEW_IDS.TARGET_MODULES&&entry?.entityType==='planning-command')return'SDS operation';if(entry?.commandCategory==='TOOL')return'Tool';return'General';}
+  function semanticNavigation(entry){
+    const group=entry?.presentationGroup;if(group){const viewId=String(group.viewId||'').toUpperCase(),meta=group.viewLabel?{label:group.viewLabel,order:group.viewOrder}:VIEW_META[viewId]||{label:viewId||'General',order:90};return{viewId,viewLabel:meta.label,viewOrder:meta.order,sectionId:String(group.id||'UNGROUPED'),sectionLabel:String(group.label||'Other / Ungrouped'),sectionOrder:Number(group.order)||0,itemOrder:Number(group.itemOrder)||0,kindLabel:kindLabelFor(entry)};}
+    if(entry?.semanticKind==='USE_CASE')return{viewId:VIEW_IDS.USE_CASES,viewLabel:'Use Cases',viewOrder:10,sectionId:String(entry.semanticScope||'Core').toUpperCase(),sectionLabel:entry.semanticScope||'Core',sectionOrder:entry.semanticScope==='Documentation'?0:10,itemOrder:Number(entry.semanticOrder)||0,kindLabel:`${entry.semanticScope||'Core'} UC`};
+    if(entry?.semanticKind==='TARGET_MODULE')return{viewId:VIEW_IDS.TARGET_MODULES,viewLabel:'Target Modules',viewOrder:20,sectionId:String(entry.semanticScope||'Core').toUpperCase(),sectionLabel:entry.semanticScope==='SDS'?'Profile · SDS':'IDTSPE Core',sectionOrder:entry.semanticScope==='Core'?0:10,itemOrder:Number(entry.semanticOrder)||0,kindLabel:`${entry.semanticScope||'Core'} TM`};
+    if(entry?.semanticKind==='LENS')return{viewId:VIEW_IDS.LENSES,viewLabel:'Lenses',viewOrder:30,sectionId:String(entry.semanticScope||'Core').toUpperCase(),sectionLabel:entry.semanticScope==='SDS'?'Profile · SDS':'IDTSPE Core',sectionOrder:entry.semanticScope==='Core'?0:10,itemOrder:Number(entry.semanticOrder)||0,kindLabel:`${entry.semanticScope||'Core'} Lens`};
+    if(entry?.commandCategory==='TARGET_MODULES')return{viewId:VIEW_IDS.TARGET_MODULES,viewLabel:'Target Modules',viewOrder:20,sectionId:'OPERATIONS',sectionLabel:'Focused operations',sectionOrder:90,itemOrder:0,kindLabel:'SDS operation'};
+    if(entry?.commandCategory==='TOOL')return{viewId:VIEW_IDS.TOOLS,viewLabel:'Tools / Repository',viewOrder:40,sectionId:'TOOLS',sectionLabel:'Tools / Repository',sectionOrder:0,itemOrder:0,kindLabel:'Tool'};
+    return{viewId:VIEW_IDS.GENERAL,viewLabel:'General',viewOrder:0,sectionId:'GENERAL',sectionLabel:'General',sectionOrder:0,itemOrder:0,kindLabel:'General'};
+  }
+  // Compatibility fallbacks are read-only: imported legacy records may still expose helperPresentation,
+  // while current navigation is derived from semantic identity plus repository-backed presentation groups.
+  function legacyPresentation(entry){return entry?.helperPresentation||entry?.definition?.helperPresentation||null;}
+  function primaryNavigation(entry){return entry?.semanticKind||entry?.commandCategory?semanticNavigation(entry):(legacyPresentation(entry)?.navigation||semanticNavigation(entry));}
+  function relatedNavigation(){return[];}
+  function allNavigationRows(entries){return(entries||[]).filter((entry)=>entry?.palette!==false).map((entry)=>({entry,nav:primaryNavigation(entry),related:false}));}
+  function methodologyViewDefinitions(entries,categories){
+    const rows=allNavigationRows(entries),counts=new Map(),meta=new Map();
+    for(const {nav} of rows){counts.set(nav.viewId,(counts.get(nav.viewId)||0)+1);meta.set(nav.viewId,{id:nav.viewId,label:nav.viewLabel,order:nav.viewOrder});}
+    const views=Array.isArray(categories)?categories:[...meta.values()];
+    return views.map(view=>({...view,count:counts.get(view.id)||0})).sort((a,b)=>a.order-b.order||a.id.localeCompare(b.id));
+  }
+  function methodologyPrimaryIds(entries,viewId){return allNavigationRows(entries).filter((row)=>row.nav.viewId===viewId).map((row)=>row.entry.id);}
+  function methodologyRelatedIds(){return[];}
+  function buildMethodologyViewGroups(entries,viewId){const sectionMap=new Map();for(const row of allNavigationRows(entries).filter((item)=>item.nav.viewId===viewId)){const nav=row.nav,key=nav.sectionId;if(!sectionMap.has(key))sectionMap.set(key,{id:key,label:nav.sectionLabel,order:Number(nav.sectionOrder)||0,entries:[]});sectionMap.get(key).entries.push({...row.entry,__methodologyNav:{...nav,viewId,sectionId:key,related:false}});}const sections=[...sectionMap.values()].sort((a,b)=>a.order-b.order||a.label.localeCompare(b.label));for(const section of sections)section.entries.sort((a,b)=>(Number(a.__methodologyNav?.itemOrder)||0)-(Number(b.__methodologyNav?.itemOrder)||0)||String(a.label||a.id).localeCompare(String(b.label||b.id)));return sections.filter((section)=>section.entries.length);}
+  function normalizeSelectedGroupIds(groups,selected){const keys=(groups||[]).map((group)=>String(group.id)),allowed=new Set(keys),values=Array.isArray(selected)?[...new Set(selected.map(String).filter((id)=>allowed.has(id)))]:[];return !values.length||values.length===keys.length?null:values;}
+  function toggleSelectedGroupId(groups,selected,id){const keys=(groups||[]).map((group)=>String(group.id)),key=String(id||'');if(!keys.includes(key))return normalizeSelectedGroupIds(groups,selected);if(!Array.isArray(selected))return[key];const next=new Set(normalizeSelectedGroupIds(groups,selected)||[]);if(next.has(key))next.delete(key);else next.add(key);return normalizeSelectedGroupIds(groups,[...next]);}
+  function filterGroupsBySelection(groups,selected){const normalized=normalizeSelectedGroupIds(groups,selected);if(!normalized)return[...(groups||[])];const keep=new Set(normalized);return(groups||[]).filter((group)=>keep.has(String(group.id)));}
+  function buildAllMethodologyGroups(entries,categories){const views=methodologyViewDefinitions(entries,categories),groups=[];for(const view of views)for(const group of buildMethodologyViewGroups(entries,view.id))groups.push({...group,id:`${view.id}::${group.id}`,sourceGroupId:group.id,viewId:view.id,viewLabel:view.label,order:group.order});const rank=new Map(views.map((view,index)=>[view.id,index]));return groups.sort((a,b)=>rank.get(a.viewId)-rank.get(b.viewId)||a.order-b.order||a.label.localeCompare(b.label));}
+
+  return{METHODOLOGY_VIEW_IDS:VIEW_IDS,semanticNavigation,methodologyViewDefinitions,methodologyPrimaryIds,methodologyRelatedIds,buildMethodologyViewGroups,buildAllMethodologyGroups,normalizeSelectedGroupIds,toggleSelectedGroupId,filterGroupsBySelection};
+});
+
+(function (root, factory) {
+  const api=factory();
+  if(typeof module==='object'&&module.exports)module.exports=api;
+  root.ObsPlanningHelper=Object.assign(root.ObsPlanningHelper||{},api);
+})(typeof globalThis!=='undefined'?globalThis:this,function(){
+  'use strict';
+
+  const SIDE_EFFECT_MARKER='PLANNING_COMMAND_SIDE_EFFECT';
+  const CHAT_CONTEXT_STORAGE_KEY='obsPlanningHelper:chatContextCaptures:v1';
+  const UUID_V4=/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+  const COMMAND_SIDE_EFFECTS=Object.freeze({
+    'replacement_archive.create':Object.freeze(['capture-chat-context'])
+  });
+
+  function defaultRandomUUID(){
+    const cryptoApi=globalThis.crypto;
+    if(!cryptoApi||typeof cryptoApi.randomUUID!=='function')throw new Error('Command side effect requires crypto.randomUUID().');
+    return cryptoApi.randomUUID();
+  }
+
+  function commandSideEffectIds(commandId){return [...(COMMAND_SIDE_EFFECTS[String(commandId||'').trim()]||[])];}
+
+  function ordinaryChatContext(locationLike=globalThis.location,title=(globalThis.document&&globalThis.document.title)||''){
+    const origin=String(locationLike?.origin||'');
+    const pathname=String(locationLike?.pathname||'');
+    const match=pathname.match(/^\/c\/([A-Za-z0-9_-]{8,})\/?$/);
+    if(origin!=='https://chatgpt.com'||!match)throw new Error('Bind this invocation requires an ordinary https://chatgpt.com/c/<conversation> tab.');
+    const conversationKey=match[1];
+    const observedTitle=String(title||'').replace(/\s*[|–—-]\s*ChatGPT\s*$/i,'').trim()||`Chat ${conversationKey.slice(0,8)}`;
+    return{conversationKey,observedTitle};
+  }
+
+  function readCaptureStore(storage=globalThis.sessionStorage){
+    if(!storage||typeof storage.getItem!=='function'||typeof storage.setItem!=='function')throw new Error('Bind this invocation requires sessionStorage in the current ChatGPT tab.');
+    const raw=storage.getItem(CHAT_CONTEXT_STORAGE_KEY);
+    if(!raw)return{schemaVersion:1,captures:{}};
+    try{
+      const parsed=JSON.parse(raw);
+      if(parsed&&parsed.schemaVersion===1&&parsed.captures&&typeof parsed.captures==='object'&&!Array.isArray(parsed.captures))return parsed;
+    }catch(_){}
+    throw new Error('Stored ChatGPT context capture data is invalid; clear this tab session before retrying binding.');
+  }
+
+  function persistChatContextCapture(chatContextToken,context={}){
+    const token=String(chatContextToken||'').trim();
+    if(!UUID_V4.test(token))throw new Error('capture-chat-context requires a UUID v4 chatContextToken.');
+    const storage=context.storage||globalThis.sessionStorage;
+    const chat=ordinaryChatContext(context.location||globalThis.location,context.title===undefined?(globalThis.document&&globalThis.document.title)||'':context.title);
+    const store=readCaptureStore(storage);
+    if(Object.prototype.hasOwnProperty.call(store.captures,token))throw new Error('capture-chat-context token already exists in this tab session.');
+    const capturedAt=String(typeof context.now==='function'?context.now():new Date().toISOString());
+    store.captures[token]={chatContextToken:token,conversationKey:chat.conversationKey,observedTitle:chat.observedTitle,capturedAt};
+    storage.setItem(CHAT_CONTEXT_STORAGE_KEY,JSON.stringify(store));
+    return store.captures[token];
+  }
+
+  function buildCaptureChatContextBody(chatContextToken){
+    const token=String(chatContextToken||'').trim();
+    if(!UUID_V4.test(token))throw new TypeError('capture-chat-context requires a UUID v4 chatContextToken.');
+    return[
+      `[${SIDE_EFFECT_MARKER}]`,
+      'effect:',
+      '  capture-chat-context',
+      '',
+      'chatContextToken:',
+      `  ${token}`,
+      '',
+      'obsAction:',
+      '  required:',
+      '    true',
+      '  field:',
+      '    chatContextToken',
+      '  exactValue:',
+      `    ${token}`,
+      '  scope:',
+      '    this-invocation-only',
+      '  carryForward:',
+      '    false',
+      `[/${SIDE_EFFECT_MARKER}]`
+    ].join('\n');
+  }
+
+  async function captureChatContextSideEffect(context={}){
+    const randomUUID=typeof context.randomUUID==='function'?context.randomUUID:defaultRandomUUID;
+    const chatContextToken=String(randomUUID()).trim();
+    if(!UUID_V4.test(chatContextToken))throw new Error('capture-chat-context generated an invalid UUID v4 chatContextToken.');
+    const capture=persistChatContextCapture(chatContextToken,context);
+    return{body:buildCaptureChatContextBody(chatContextToken),chatContextToken,capture};
+  }
+
+  const DEFAULT_SIDE_EFFECT_HANDLERS=Object.freeze({'capture-chat-context':captureChatContextSideEffect});
+
+  function normalizeEffectIds(value){
+    if(value==null)return[];
+    if(!Array.isArray(value))throw new TypeError('Command invocation side effects must be an array.');
+    return value.map((item)=>String(item||'').trim()).filter(Boolean);
+  }
+
+  async function applyCommandSideEffects(commandId,commandBody,options={}){
+    const id=String(commandId||'').trim(),base=String(commandBody==null?'':commandBody);
+    const allowed=normalizeEffectIds((options.bindings||COMMAND_SIDE_EFFECTS)[id]);
+    const effectIds=normalizeEffectIds(options.effectIds);
+    if(!effectIds.length)return base;
+    for(const effectId of effectIds)if(!allowed.includes(effectId))throw new Error(`Command side effect ${effectId} is not registered for ${id||'<empty>'}.`);
+    const handlers=options.handlers||DEFAULT_SIDE_EFFECT_HANDLERS,appended=[];
+    for(const effectId of effectIds){
+      const handler=handlers[effectId];
+      if(typeof handler!=='function')throw new Error(`Unknown command side effect: ${effectId}`);
+      const result=await handler({commandId:id,commandBody:base,randomUUID:options.randomUUID,storage:options.storage,location:options.location,title:options.title,now:options.now});
+      const body=typeof result==='string'?result:result?.body;
+      if(typeof body!=='string'||!body.trim())throw new Error(`Command side effect ${effectId} returned no body.`);
+      appended.push(body);
+    }
+    return[base,...appended].join('\n\n');
+  }
+
+  return{SIDE_EFFECT_MARKER,CHAT_CONTEXT_STORAGE_KEY,UUID_V4,COMMAND_SIDE_EFFECTS,DEFAULT_SIDE_EFFECT_HANDLERS,commandSideEffectIds,ordinaryChatContext,readCaptureStore,persistChatContextCapture,buildCaptureChatContextBody,captureChatContextSideEffect,applyCommandSideEffects};
+});
+
+(function (root, factory) {
+  const api=factory(root.ObsPlanningHelper||{});
+  if(typeof module==='object'&&module.exports)module.exports=api;
+  root.ObsPlanningHelper=Object.assign(root.ObsPlanningHelper||{},api);
+})(typeof globalThis!=='undefined'?globalThis:this,function(deps){
+  'use strict';
+  const HOST_ID='obs-planning-helper-host';
+  const FAVORITES_GROUP_ID='__favorites__';
+
+  function filterPromptEntries(entries,order,groupId='all'){
+    const selected=String(groupId||'all');
+    if(selected==='all')return[...(entries||[])];
+    const groups=order?.promptGroups||[],group=groups.find(item=>item.id===selected);
+    const assigned=new Set(groups.flatMap(item=>item.items||[]));
+    if(selected==='ungrouped')return(entries||[]).filter(entry=>!assigned.has(entry.id));
+    if(!group)return[];
+    const ids=new Set(group.items||[]);return(entries||[]).filter(entry=>ids.has(entry.id));
+  }
+  function commandDisplayGroups(groups,entries,favoriteIds){
+    return [{id:FAVORITES_GROUP_ID,label:'Favorites',favorite:true,entries:favoriteEntries(entries,favoriteIds).filter((entry)=>entry.palette!==false)},...groups];
+  }
+
+  function repositorySaveFailureMessage(error){
+    const detail=error?.message||String(error);
+    if(error?.kind==='conflict'){
+      if(error?.details?.verificationCause)return `GitHub write conflicted; current remote content could not be verified; nothing was overwritten: ${detail}`;
+      return `GitHub content changed and differs from intended local content; nothing was overwritten: ${detail}`;
+    }
+    if(error?.kind==='verification_mismatch'||error?.kind==='verification_unknown')return `GitHub acknowledged a write, but its result is not verified. Do not assume it failed or repeat blindly: ${detail}`;
+    return `GitHub save failed or could not be verified: ${detail}`;
+  }
+
+  function favoriteEntries(entries,favoriteIds){
+    const byId=new Map((entries||[]).map(entry=>[entry.id,entry]));
+    const ids=[...new Set((favoriteIds||[]).map(id=>String(id||'').trim()).filter(Boolean))];
+    return ids.map(id=>byId.get(id)).filter(Boolean);
+  }
+
+  function createPlanningHelperUi(options={}){
+    const SURFACES=options.surfaces||deps.SURFACES;document.getElementById(HOST_ID)?.remove();document.getElementById('obs-command-helper-host')?.remove();
+    const host=document.createElement('div');host.id=HOST_ID;document.documentElement.appendChild(host);const root=host.attachShadow({mode:'open'});
+    const saved=options.position||{},defaultWidth=Math.min(980,Math.max(560,window.innerWidth-32)),defaultHeight=Math.min(780,Math.max(420,window.innerHeight-32));let width=saved.width??defaultWidth,height=saved.height??defaultHeight,left=saved.left??Math.max(12,window.innerWidth-width-18),top=saved.top??Math.max(12,window.innerHeight-height-22);
+    const ALL_METHODOLOGY_VIEW=deps.METHODOLOGY_VIEW_IDS?.ALL||'ALL';
+    const GROUP_FILTER_KEY='obs-planning-helper-group-filter-v1',GROUP_COLLAPSE_KEY='obs-planning-helper-group-collapse-v1',ACTIVE_VIEW_KEY='obs-planning-helper-active-command-view-v1',SIDEBAR_COLLAPSE_KEY='obs-planning-helper-sidebar-collapse-v1';
+    let activeSurface=SURFACES.COMMANDS,activeMethodologyView=readLocalText(ACTIVE_VIEW_KEY)||null,activePromptView='prompts',activePromptGroupId='all',selectedCommandId='',selectedPromptId='',commandEntries=[...(options.commandEntries||[])],scenarioEntries=[...(options.scenarioEntries||[])],promptEntries=[...(options.promptEntries||[])],moduleEntries=[...(options.moduleEntries||[])],useCaseEntries=[...(options.useCaseEntries||[])],favoriteCommandIds=[...(options.favoriteCommandIds||[])],favoriteUseCaseIds=[...(options.favoriteUseCaseIds||[])],catalogOrder=options.catalogOrder||{commandGroups:[]},pendingRepositoryWrites=options.pendingRepositoryWrites||{commands:0,prompts:0,modules:0,helperCommands:0,order:false};let activeOverlay=null,isOpen=false,statusTimer=null,insertionBusy=false,dashboardOpen=document.documentElement.dataset.obsPlanningDashboardOpen==='true',lastToggleToken=document.documentElement.dataset.obsPlanningCommandsToggle||'',resizeTimer=null,activeCommandDetail=null,commandCardNodes=new Map();
+    const meaningOpen=new Map(),backgroundTasks=new Map();let favoriteMoveBusy=false,taskSequence=0;
+    function readLocalText(key){try{return String(localStorage.getItem(key)||'').trim();}catch(_){return'';}}
+    function writeLocalText(key,value){try{if(value==null||value==='')localStorage.removeItem(key);else localStorage.setItem(key,String(value));}catch(_){}}
+    function readLocalJson(key,fallback){try{const raw=localStorage.getItem(key);return raw==null?fallback:JSON.parse(raw);}catch(_){return fallback;}}
+    function writeLocalJson(key,value){try{localStorage.setItem(key,JSON.stringify(value));}catch(_){}}
+    function filterStateKey(viewId){return `${GROUP_FILTER_KEY}:${viewId}`;}
+    function collapseStateKey(viewId,groupId){return `${GROUP_COLLAPSE_KEY}:${viewId}:${groupId}`;}
+
+
+    root.innerHTML=`<style>
+:host{all:initial}*{box-sizing:border-box}button,input,textarea{font:inherit}.launcher{position:fixed;right:18px;bottom:22px;z-index:2147483647;border:1px solid #64748b;border-radius:999px;padding:9px 13px;background:#111827;color:#f8fafc;font:700 12px system-ui;cursor:pointer}.panel{position:fixed;left:${left}px;top:${top}px;width:${width}px;height:${height}px;max-width:calc(100vw - 16px);max-height:calc(100vh - 16px);min-width:min(560px,calc(100vw - 16px));min-height:360px;z-index:2147483647;display:none;flex-direction:column;overflow:hidden;resize:both;border:1px solid #475569;border-radius:14px;background:#0b1220;color:#f8fafc;box-shadow:0 20px 60px rgba(0,0,0,.5);font:13px/1.4 system-ui}.panel[data-open=true]{display:flex}.header{display:flex;align-items:center;gap:8px;padding:10px;background:#111b2e;border-bottom:1px solid #334155;cursor:grab}.title{flex:1}.title-main{font-weight:800}.title-sub{color:#94a3b8;font-size:11px}.helper-version{color:#94a3b8;font:10px/1.2 ui-monospace,SFMono-Regular,Consolas,monospace;white-space:nowrap;flex-shrink:0}.activity{display:none;align-items:center;gap:5px;padding:4px 7px;border:1px solid #334155;border-radius:999px;color:#bfdbfe;font-size:10px;white-space:nowrap}.activity[data-active=true]{display:flex}.activity-spinner{display:inline-block;animation:planning-spin .9s linear infinite}@keyframes planning-spin{to{transform:rotate(360deg)}}.launcher-activity{display:none;margin-left:5px}.launcher[data-active=true] .launcher-activity{display:inline}.tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;padding:7px}.tab,.tool{padding:7px}.command-views{display:flex;gap:5px;padding:0 8px 8px}.command-view{padding:6px 9px}.command-view[aria-selected=true]{background:#0f766e}.row.focused{margin-left:22px}.row.related{opacity:.9;border-top:1px dashed #334155;padding-top:5px}.tab[aria-selected=true]{background:#1d4ed8}.surface-tools{display:flex;gap:6px;padding:7px 8px;border-top:1px solid #1e293b;border-bottom:1px solid #1e293b;flex-wrap:wrap}.search-wrap{padding:8px}.search{width:100%;padding:8px;background:#020817;color:#fff;border:1px solid #334155;border-radius:8px}.body{overflow:auto;padding:8px;min-height:0;flex:1}.entry-group{margin:6px 0;border:1px solid #26364f;border-radius:10px;background:#0d1728}.entry-head{display:flex;align-items:center;gap:6px;padding:8px 10px}.entry-head summary{cursor:pointer;list-style:none;flex:1;font-weight:800}.entry-head summary::-webkit-details-marker{display:none}.entry-meta{display:block;color:#94a3b8;font-size:11px;font-weight:400}.entry-entries{padding:0 7px 7px 20px}.row{position:relative;display:grid;grid-template-columns:minmax(420px,1fr) auto;gap:8px;margin:5px 0;align-items:start;padding-left:10px;border-radius:8px}.insert{padding:8px 8px 8px 2px;text-align:left;min-width:0}.row-label{display:block;font-weight:750;white-space:normal}.row-meta{display:block;color:#94a3b8;font-size:11px;margin-top:2px}.actions{display:flex;gap:5px;flex-wrap:nowrap;justify-content:flex-end;align-items:flex-start}button{border:1px solid #475569;border-radius:8px;background:#17243a;color:#f8fafc;cursor:pointer}button:hover,button:focus-visible{background:#243750}button:disabled{opacity:.55;cursor:wait}.copy,.full,.body-action,.scenario-action,.run-action,.open-command,.edit-library,.edit-command,.delete-library,.delete-command,.reload-command,.repo-library,.repo-command,.favorite-toggle,.move,.group-move,.explain-action,.group-action{padding:5px 8px}.favorite-toggle{min-width:32px;font-size:15px}.delete-library,.delete-command{color:#fecaca}.status{margin:0 8px 8px;padding:8px;border-radius:8px;background:#172554;color:#bfdbfe;white-space:pre-wrap}.empty{padding:18px;color:#94a3b8;text-align:center}.overlay{position:absolute;inset:0;z-index:20;background:rgba(2,8,23,.72);display:flex;align-items:center;justify-content:center;padding:18px}.modal{width:min(820px,calc(100% - 36px));max-height:calc(100% - 36px);overflow:auto;background:#0b1220;color:#f8fafc;border:1px solid #475569;border-radius:14px;padding:14px;font:13px/1.45 system-ui}.modal h2{margin:0 0 8px}.modal p{color:#cbd5e1}.modal textarea{width:100%;min-height:360px;padding:10px;background:#020817;color:#f8fafc;border:1px solid #475569;border-radius:8px;font:12px/1.45 ui-monospace,monospace}.modal input,.modal select{width:100%;padding:8px;background:#020817;color:#fff;border:1px solid #475569;border-radius:8px}.group-level{display:inline-block;margin-left:8px;padding:1px 6px;border:1px solid #475569;border-radius:999px;color:#cbd5e1;font-size:10px;text-transform:uppercase;letter-spacing:.04em}.group-editor{display:grid;grid-template-columns:minmax(180px,1fr) 160px auto;gap:6px;align-items:center;margin:6px 0;padding:7px;border:1px solid #26364f;border-radius:8px;background:#0d1728}.group-editor-actions{display:flex;gap:5px;flex-wrap:wrap}.fields{display:grid;grid-template-columns:1fr 1fr;gap:8px}.field{display:grid;gap:4px}.field-wide{grid-column:1/-1}.modal-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:10px}.preview{margin-top:10px;padding:10px;border:1px solid #334155;border-radius:8px;background:#07101f;white-space:pre-wrap}.scenario-card{border:1px solid #26364f;border-radius:10px;background:#0d1728;margin:6px 0;padding:10px}.scenario-intro,.scenario-step-text,.body-text{white-space:pre-wrap;font:12px/1.45 ui-monospace,monospace;background:#07101f;border:1px solid #334155;border-radius:8px;padding:10px}.scenario-step{margin-top:12px}.scenario-step h3{margin:0 0 6px}.equivalents{display:flex;flex-direction:column;gap:6px;margin-top:8px}.equivalent{display:flex;gap:8px;align-items:flex-start;justify-content:space-between;border-left:3px solid #475569;padding:6px 8px;background:#0b1220}.equivalent-main{min-width:0}.danger{color:#fecaca}.ok{color:#bbf7d0}
+.library-views{display:none;gap:5px;overflow:auto;flex-wrap:nowrap;padding:0 8px 8px}.library-views[data-visible=true]{display:flex}.library-view{min-width:150px;padding:6px 9px;white-space:nowrap;text-align:left;display:flex;justify-content:space-between;gap:7px}.library-view[aria-selected=true]{background:#0f766e}.library-view-count{margin-left:5px;color:#94a3b8;font-size:10px}.library-view[aria-selected=true] .library-view-count{color:#ccfbf1}.module-ref{display:inline-block;margin-top:5px;padding:4px 6px;border:1px solid #2e4562;border-radius:7px;background:#07101f;color:#8fd6ff;font:11px/1.4 ui-monospace,monospace;overflow-wrap:anywhere}.module-badge{display:inline-block;margin-left:7px;padding:1px 6px;border:1px solid #0f766e;border-radius:999px;color:#99f6e4;font-size:9px;text-transform:uppercase;letter-spacing:.04em}.resolved-preview{max-height:240px;overflow:auto}.field-hint{color:#94a3b8;font-size:10px}.modal input[readonly]{color:#94a3b8}.usage-list{display:grid;gap:5px;margin:8px 0}.usage-item{padding:7px;border:1px solid #334155;border-radius:8px;background:#07101f}
+.command-views{display:flex;gap:5px;overflow:auto;flex-wrap:nowrap;padding:0}.command-view{white-space:nowrap;width:100%;text-align:left;display:flex;justify-content:space-between;gap:7px}.command-view-count{margin-left:5px;color:#94a3b8;font-size:10px}.command-view[aria-selected=true]{background:#0f766e}.command-view[aria-selected=true] .command-view-count{color:#ccfbf1}.surface-tools{flex-wrap:nowrap;overflow-x:auto;padding:5px 8px}.surface-tools button{white-space:nowrap;padding:5px 7px}.tabs{padding:5px 7px}.tab{padding:6px}.search-wrap{padding:6px 8px}.search{padding:7px}.command-group-nav{display:none!important}.body.command-body{padding:0;overflow:hidden}.command-layout{display:grid;grid-template-columns:210px minmax(320px,1.15fr) minmax(330px,.95fr);height:100%;min-height:0}.command-sidebar{overflow:auto;border-right:1px solid #334155;background:#091426;padding:8px;min-width:0}.command-sidebar-title{font-size:10px;text-transform:uppercase;letter-spacing:.06em;color:#94a3b8;font-weight:800;margin:8px 4px 5px}.command-sidebar .command-views{flex-direction:column;margin-bottom:10px}.group-nav-top{display:grid;gap:6px;margin:0 0 7px}.group-nav-title{font-weight:800}.group-nav-hint,.group-nav-stats{font-size:10px;color:#94a3b8}.group-nav-actions{display:grid;grid-template-columns:1fr 1fr;gap:4px}.group-nav-actions .group-action:first-child{grid-column:1/-1}.group-chip-list{display:grid;gap:5px}.group-chip{display:grid;grid-template-columns:20px minmax(0,1fr) auto;align-items:center;gap:5px;padding:6px 7px;border-radius:8px;background:#111b2e;color:#cbd5e1;text-align:left}.group-chip.all{grid-template-columns:minmax(0,1fr) auto}.group-chip[aria-pressed=true]{background:#164e63;border-color:#0e7490;color:#ecfeff}.group-chip.all[aria-pressed=true]{background:#334155;border-color:#64748b}.group-chip-index,.group-chip-count{font-size:10px;color:#94a3b8}.group-chip[aria-pressed=true] .group-chip-index,.group-chip[aria-pressed=true] .group-chip-count{color:#cffafe}.command-list{overflow:auto;padding:8px;min-width:0}.command-detail{overflow:auto;border-left:1px solid #334155;background:#08111f;padding:12px;min-width:0}.command-detail.empty-detail{color:#94a3b8;display:flex;align-items:center;justify-content:center;text-align:center}.command-detail-title{font-size:16px;font-weight:850;margin:0 0 4px}.command-detail-path{font-size:11px;color:#94a3b8;margin-bottom:10px}.meaning-box,.contract-box{border:1px solid #334155;border-radius:9px;background:#0d1728;padding:9px;margin:7px 0}.meaning-box summary,.contract-box h3{margin:0 0 5px;font-size:11px}.meaning-box p,.contract-box p{margin:0;color:#cbd5e1;font-size:11px;line-height:1.45;white-space:pre-wrap}.contract-list{display:grid;gap:6px}.contract-path{padding:7px;border:1px solid #2e4562;border-radius:7px;background:#07101f;color:#8fd6ff;font:11px/1.4 ui-monospace,monospace;overflow-wrap:anywhere}.owner-ref{border:1px solid #2e4562;border-radius:8px;padding:8px;background:#07101f}.owner-ref-head{display:flex;gap:5px;flex-wrap:wrap;align-items:center}.owner-ref-id{font-weight:800;font-size:11px}.contract-badge{border:1px solid #475569;border-radius:999px;padding:1px 6px;color:#cbd5e1;font-size:9px}.contract-badge.required{border-color:#0f766e;color:#99f6e4}.owner-ref-path{margin-top:5px;color:#8fd6ff;font:10px/1.4 ui-monospace,monospace;overflow-wrap:anywhere}.owner-ref-why{margin-top:5px;color:#cbd5e1;font-size:10px;line-height:1.4}.contract-empty{color:#94a3b8;font-size:10px}.detail-actions{display:flex;gap:5px;flex-wrap:wrap;margin:10px 0}.detail-group-field{display:grid;gap:5px;margin-top:10px}.detail-group-field label{font-size:11px;font-weight:800}.detail-group-field select{width:100%;padding:7px;background:#020817;color:#fff;border:1px solid #475569;border-radius:8px}.detail-note{color:#94a3b8;font-size:10px;margin-top:6px}.command-group{margin:7px 0;border:1px solid #26364f;border-radius:10px;background:#0d1728;overflow:hidden;scroll-margin-top:8px}.command-group-head{width:100%;display:grid;grid-template-columns:26px minmax(0,1fr) auto auto;gap:7px;align-items:center;padding:8px 9px;text-align:left;border:0;border-bottom:1px solid #26364f;border-radius:0;background:#111b2e}.command-group-order{width:24px;height:24px;border:1px solid #475569;border-radius:7px;display:grid;place-items:center;color:#94a3b8;font-size:10px}.command-group-label{font-weight:800;min-width:0}.command-group-count{font-size:10px;color:#94a3b8}.command-group-chevron{color:#94a3b8}.command-group[data-collapsed=true] .command-group-rows{display:none}.command-group[data-collapsed=true] .command-group-chevron{transform:rotate(-90deg)}.command-card{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:7px;padding:8px 9px;border-top:1px solid #1e293b;background:#0b1220;cursor:pointer}.command-card:hover{background:#101d31}.command-card[data-selected=true]{background:#10294a;box-shadow:inset 3px 0 0 #3b82f6}.command-card-label{font-weight:750}.command-card-meta{font-size:10px;color:#94a3b8;margin-top:2px}.command-card-context{display:none;font-size:10px;color:#64748b;margin-top:3px}.command-layout[data-all=true] .command-card-context{display:block}.command-card-actions{display:flex;gap:3px;align-items:start}.command-card-actions button{padding:4px 6px}.favorite-order-controls{display:grid;gap:2px}.favorite-order-controls button{padding:1px 6px;line-height:1.2;min-width:26px}.favorite-order-controls button:disabled{cursor:default}.group-editor{grid-template-columns:minmax(180px,1fr) auto}.group-editor .group-level{display:none}.group-manager-note{color:#cbd5e1}.non-command-body{padding:8px;overflow:auto;height:100%}.row[data-selected=true]{background:#10294a}.row[data-selected=true]::before{content:'';position:absolute;left:0;top:3px;bottom:3px;width:4px;border-radius:999px;background:#38bdf8}.position-control{display:grid;grid-template-columns:auto 58px auto;gap:4px;align-items:center}.position-control .move{padding:5px 7px}.position-input{width:58px;padding:5px 4px;text-align:center;background:#020817;color:#fff;border:1px solid #475569;border-radius:8px}.position-label{grid-column:1/-1;color:#94a3b8;font-size:9px;text-align:center}.prompt-actions{align-items:flex-start}.prompt-actions .run-action,.prompt-actions .copy,.prompt-actions .edit-library,.prompt-actions .repo-library,.prompt-actions .delete-library{margin-top:0}
+@media(max-width:1050px){.command-layout{grid-template-columns:190px minmax(320px,1fr) 330px}.title-sub{display:none}}
+@media(max-width:880px){.command-layout{grid-template-columns:180px 1fr}.command-detail{display:none}.panel{min-width:min(560px,calc(100vw - 16px))}}
+@media(max-width:760px){.panel{min-width:0;width:calc(100vw - 16px)!important;left:8px!important}.command-layout{grid-template-columns:1fr}.command-sidebar{display:none}.row{grid-template-columns:1fr}.actions{justify-content:flex-start;flex-wrap:wrap}.entry-entries{padding-left:7px}.command-group-head{grid-template-columns:24px minmax(0,1fr) auto}.command-group-count{display:none}}
+.sidebar-section .group-nav-title{display:none}.sidebar-section>summary,.meaning-box>summary{cursor:pointer}.sidebar-section>summary:focus-visible,.meaning-box>summary:focus-visible{outline:2px solid #5eead4;outline-offset:2px}.meaning-box:not([open])>summary{margin-bottom:0}.favorite-group{border-color:#526749}.favorite-group .command-card-context{display:block}
+.prompt-group-toolbar[hidden]{display:none}.prompt-group-toolbar{display:flex;gap:5px;flex-wrap:wrap;align-items:center;padding:5px 8px 8px}.prompt-group-chip{border-radius:999px;padding:4px 8px;font-size:11px;white-space:nowrap}.prompt-group-chip[aria-pressed=true]{border-color:#3b82f6;background:#1e40af;color:#eff6ff}.prompt-group-count{margin-left:5px;color:#9caec5;font-size:10px}.prompt-group-head{padding:0 8px 7px;color:#94a3b8;font-size:11px}.prompt-group-badge{display:inline-block;margin-top:4px;padding:1px 6px;border:1px solid #2e4562;color:#8fd6ff;border-radius:999px;font-size:10px}.prompt-group-tools{display:flex;gap:5px;flex-wrap:wrap;margin-top:8px}.prompt-group-tools button{padding:5px 9px}.prompt-group-manager{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:6px 0;padding:6px 8px;border:1px solid #26364f;border-radius:8px}.prompt-group-manager .group-editor-actions{display:flex;gap:4px}.prompt-group-manager .group-editor-actions button{padding:4px 7px}
+@media(max-width:760px){.prompt-group-toolbar{padding:5px 7px}.prompt-group-chip{font-size:10px}.prompt-group-manager{flex-wrap:wrap}}
+</style><button class="launcher" type="button"><span class="launcher-label">Planning</span><span class="launcher-activity"><span class="activity-spinner">↻</span> <span class="launcher-count">0</span></span></button><section class="panel" data-open="false"><div class="header"><div class="title"><div class="title-main">OBS Planning Helper</div><div class="title-sub">local working cache · GitHub-backed semantic Commands + canonical Scenarios · explicit Hard Reload</div></div><small class="helper-version" aria-label="Planning Helper version"></small><div class="activity" data-active="false"><span class="activity-spinner">↻</span><span class="activity-text"></span></div><button class="close" type="button">×</button></div><div class="tabs">${[SURFACES.COMMANDS,SURFACES.SCENARIOS,SURFACES.PROMPTS].filter(Boolean).map((surface)=>`<button class="tab" type="button" data-surface="${surface}" aria-selected="false">${surface}</button>`).join('')}</div><div class="command-views"></div><div class="library-views" data-visible="false"><button class="library-view" type="button" data-library-view="prompts" aria-selected="true"><span>Prompts</span><small class="library-view-count prompt-count"></small></button><button class="library-view" type="button" data-library-view="modules" aria-selected="false"><span>Modules</span><small class="library-view-count module-count"></small></button></div><div class="surface-tools"><button class="tool new-library" type="button">New</button><button class="tool import-chat" type="button">Import</button><button class="tool restore-chat" type="button">Restore copy</button><button class="tool recovery-request" type="button">Recovery request</button><button class="tool copy-state" type="button">Copy state</button><button class="tool check-github" type="button">Check GitHub</button><button class="tool sync-github" type="button">Sync missing</button><button class="tool hard-reload" type="button">Hard Reload GitHub</button><button class="tool manage-groups" type="button">Manage groups</button><button class="tool save-all" type="button">Save all GitHub</button><button class="tool settings" type="button">Settings</button></div><div class="search-wrap"><input class="search" type="search" placeholder="Search current surface…"></div><div class="command-group-nav" data-visible="false"></div><div class="prompt-group-toolbar" hidden></div><div class="body"></div></section>`;
+
+    const fullScriptVersion=String(globalThis.ObsPlanningHelper?.scriptVersion||'').trim();
+    const versionIndicator=root.querySelector('.helper-version');
+    versionIndicator.textContent=fullScriptVersion?`v${fullScriptVersion.split('-')[0]}`:'v?';
+    versionIndicator.title=fullScriptVersion?`Planning Helper userscript: ${fullScriptVersion}`:'Planning Helper version unavailable';
+    const launcher=root.querySelector('.launcher'),panel=root.querySelector('.panel'),header=root.querySelector('.header'),activity=root.querySelector('.activity'),activityText=root.querySelector('.activity-text'),launcherCount=root.querySelector('.launcher-count'),closeButton=root.querySelector('.close'),searchInput=root.querySelector('.search'),body=root.querySelector('.body'),tabButtons=[...root.querySelectorAll('.tab')],commandViewBar=root.querySelector('.command-views'),libraryViewBar=root.querySelector('.library-views'),libraryViewButtons=[...root.querySelectorAll('.library-view')],commandGroupNav=root.querySelector('.command-group-nav'),newLibraryButton=root.querySelector('.new-library'),manageGroupsButton=root.querySelector('.manage-groups'),saveAllButton=root.querySelector('.save-all'),promptGroupToolbar=root.querySelector('.prompt-group-toolbar');
+    const manageCategoriesButton=button('Manage categories','manage-categories',openCategoryManager);manageGroupsButton.before(manageCategoriesButton);
+    function entriesForSurface(surface){if(surface===SURFACES.COMMANDS)return commandEntries;if(surface===SURFACES.SCENARIOS)return scenarioEntries;if(surface===SURFACES.PROMPTS)return activePromptView==='modules'?moduleEntries:promptEntries;if(surface===SURFACES.USE_CASES)return useCaseEntries;return[];}
+    function renderLibraryViewButtons(){libraryViewBar.dataset.visible=String(activeSurface===SURFACES.PROMPTS);root.querySelector('.prompt-count').textContent=String(promptEntries.length);root.querySelector('.module-count').textContent=String(moduleEntries.length);for(const control of libraryViewButtons)control.setAttribute('aria-selected',String(control.dataset.libraryView===activePromptView));if(activeSurface===SURFACES.PROMPTS)searchInput.placeholder=activePromptView==='modules'?'Search modules…':'Search prompts…';}
+    function promptGroups(){return catalogOrder.promptGroups||[];}
+    function promptGroupForEntry(id){return promptGroups().find(group=>group.items.includes(id))||null;}
+    function promptGroupName(id){return promptGroups().find(group=>group.id===id)?.label||'Ungrouped';}
+    function renderPromptGroupToolbar(){
+      promptGroupToolbar.replaceChildren();
+      const visible=activeSurface===SURFACES.PROMPTS&&activePromptView==='prompts';promptGroupToolbar.hidden=!visible;
+      if(!visible)return;
+      const groups=promptGroups(),counts=new Map(groups.map(group=>[group.id,0]));let ungrouped=0;
+      for(const entry of promptEntries){const group=promptGroupForEntry(entry.id);if(group)counts.set(group.id,counts.get(group.id)+1);else ungrouped++;}
+      if(!['all','ungrouped',...groups.map(group=>group.id)].includes(activePromptGroupId))activePromptGroupId='all';
+      function chip(id,label,count){const control=button(label,'prompt-group-chip',()=>{activePromptGroupId=id;renderEntries(searchInput.value);});control.setAttribute('aria-pressed',String(id===activePromptGroupId));const number=document.createElement('small');number.className='prompt-group-count';number.textContent=String(count);control.append(number);return control;}
+      promptGroupToolbar.append(chip('all','All prompts',promptEntries.length));
+      for(const group of groups)promptGroupToolbar.append(chip(group.id,group.label,counts.get(group.id)||0));
+      if(ungrouped||groups.length)promptGroupToolbar.append(chip('ungrouped','Ungrouped',ungrouped));
+      promptGroupToolbar.append(button('Manage groups','prompt-group-manage',openPromptGroupManager));
+    }
+    function updatePromptGroup(action,label){return runTask({key:`prompt-group:${++taskSequence}`,label:'Updating prompt groups…',action,onSuccess:(result)=>{applyState(result);showStatus(label||'Prompt groups updated locally. Save all GitHub to publish.',7000);}});}
+    function openPromptGroupManager(){
+      const{overlay,modal}=makeOverlay('Prompt groups');const description=document.createElement('p');description.textContent='All prompts is the default view. Select a group to filter. Group changes remain local until Save all GitHub.';modal.append(description);
+      const field=document.createElement('input');field.placeholder='New group name';field.setAttribute('aria-label','New prompt group name');const add=button('Create group','prompt-group-pick',()=>{const name=field.value.trim();if(!name){showStatus('Enter a group name.');return;}closeOverlay(overlay);updatePromptGroup(()=>options.onCreatePromptGroup(name));});const create=document.createElement('div');create.className='prompt-group-tools';create.append(field,add);modal.append(create);
+      for(const group of promptGroups()){
+        const line=document.createElement('div');line.className='prompt-group-manager';const name=document.createElement('input');name.value=group.label;name.setAttribute('aria-label',`Rename ${group.label}`);
+        const actions=document.createElement('div');actions.className='group-editor-actions';
+        const operate=(action)=>{closeOverlay(overlay);updatePromptGroup(action);};
+        actions.append(button('Save','prompt-group-pick',()=>operate(()=>options.onRenamePromptGroup(group.id,name.value))),button('↑','prompt-group-pick',()=>operate(()=>options.onMovePromptGroup(group.id,-1))),button('↓','prompt-group-pick',()=>operate(()=>options.onMovePromptGroup(group.id,1))),button('Delete','prompt-group-pick',()=>{if(!confirm(`Delete prompt group "${group.label}"? Its prompts will become Ungrouped.`))return;activePromptGroupId='all';operate(()=>options.onDeletePromptGroup(group.id));}));line.append(name,actions);modal.append(line);
+      }
+      const footer=document.createElement('div');footer.className='modal-actions';footer.append(button('Close','',()=>closeOverlay(overlay)));modal.append(footer);
+    }
+    function openPromptGroupPicker(entry){
+      const{overlay,modal}=makeOverlay(`Group · ${entry.title||entry.id}`);const note=document.createElement('p');note.textContent='Select a group for this prompt. It remains the same GitHub prompt file.';modal.append(note);
+      const select=document.createElement('select');select.setAttribute('aria-label','Prompt group');
+      for(const [id,label] of [['','Ungrouped'],...promptGroups().map(group=>[group.id,group.label])]){const option=document.createElement('option');option.value=id;option.textContent=label;option.selected=(promptGroupForEntry(entry.id)?.id||'')===id;select.append(option);}modal.append(select);
+      const actions=document.createElement('div');actions.className='modal-actions';actions.append(button('Cancel','',()=>closeOverlay(overlay)),button('Move','prompt-group-pick',()=>{const target=select.value;closeOverlay(overlay);updatePromptGroup(()=>options.onAssignPromptGroup(entry.id,target));}));modal.append(actions);
+    }
+    function currentMethodologyViews(){return deps.methodologyViewDefinitions?deps.methodologyViewDefinitions(commandEntries,catalogOrder.categories):[];}
+    function normalizeActiveMethodologyView(){const views=currentMethodologyViews();if(activeMethodologyView===ALL_METHODOLOGY_VIEW)return views;if(!views.some((view)=>view.id===activeMethodologyView))activeMethodologyView=views[0]?.id||ALL_METHODOLOGY_VIEW;return views;}
+    function renderMethodologyViewButtons(){const views=normalizeActiveMethodologyView();commandViewBar.innerHTML='';for(const view of views){const control=document.createElement('button');control.type='button';control.className='command-view';control.dataset.commandView=view.id;control.innerHTML='<span class="command-view-label"></span><small class="command-view-count"></small>';control.querySelector('.command-view-label').textContent=view.label;control.querySelector('.command-view-count').textContent=String(view.count||0);control.setAttribute('aria-selected',String(view.id===activeMethodologyView));control.addEventListener('click',()=>switchMethodologyView(view.id));commandViewBar.append(control);}const all=document.createElement('button');all.type='button';all.className='command-view';all.dataset.commandView=ALL_METHODOLOGY_VIEW;all.innerHTML='<span class="command-view-label">All commands</span><small class="command-view-count"></small>';all.querySelector('.command-view-count').textContent=String(commandEntries.length);all.setAttribute('aria-selected',String(activeMethodologyView===ALL_METHODOLOGY_VIEW));all.addEventListener('click',()=>switchMethodologyView(ALL_METHODOLOGY_VIEW));commandViewBar.append(all);manageGroupsButton.disabled=activeMethodologyView===ALL_METHODOLOGY_VIEW;manageGroupsButton.title=activeMethodologyView===ALL_METHODOLOGY_VIEW?'Choose a normal command tab to manage its groups.':'Create, rename, reorder or delete groups in the current command tab.';searchInput.placeholder=activeMethodologyView===ALL_METHODOLOGY_VIEW?'Search across all commands…':`Search ${views.find((view)=>view.id===activeMethodologyView)?.label||'commands'}…`; }
+    function applyState(result={}){if(result.commandEntries)commandEntries=[...result.commandEntries];if(result.scenarioEntries)scenarioEntries=[...result.scenarioEntries];if(result.promptEntries)promptEntries=[...result.promptEntries];if(result.moduleEntries)moduleEntries=[...result.moduleEntries];if(result.useCaseEntries)useCaseEntries=[...result.useCaseEntries];if(result.favoriteCommandIds)favoriteCommandIds=[...result.favoriteCommandIds];if(result.favoriteUseCaseIds)favoriteUseCaseIds=[...result.favoriteUseCaseIds];if(result.catalogOrder)catalogOrder=result.catalogOrder;if(result.pendingRepositoryWrites)pendingRepositoryWrites=result.pendingRepositoryWrites;renderMethodologyViewButtons();renderLibraryViewButtons();renderEntries(searchInput.value);}
+    function setCommandEntries(entries){commandEntries=[...(entries||[])];renderMethodologyViewButtons();if(activeSurface===SURFACES.COMMANDS)renderEntries(searchInput.value);}function setScenarioEntries(entries){scenarioEntries=[...(entries||[])];if(activeSurface===SURFACES.SCENARIOS)renderEntries(searchInput.value);}function setUseCaseEntries(entries){useCaseEntries=[...(entries||[])];if(activeSurface===SURFACES.USE_CASES)renderEntries(searchInput.value);}function setLibraryEntries(result={}){if(result.promptEntries)promptEntries=[...result.promptEntries];if(result.moduleEntries)moduleEntries=[...result.moduleEntries];renderLibraryViewButtons();if(activeSurface===SURFACES.PROMPTS)renderEntries(searchInput.value);}
+    function showStatus(text,ms=5000){let node=root.querySelector('.status');if(!node){node=document.createElement('div');node.className='status';panel.append(node);}node.textContent=String(text||'');if(statusTimer!==null)clearTimeout(statusTimer);if(ms>0)statusTimer=setTimeout(()=>node.remove(),ms);}
+    function repositoryTaskActive(){return[...backgroundTasks.values()].some((task)=>task.repository);}
+    function mutationControls(){return[...root.querySelectorAll('.new-library,.import-chat,.restore-chat,.check-github,.sync-github,.hard-reload,.manage-groups,.manage-categories,.save-all,.settings,.edit-library,.edit-command,.delete-library,.delete-command,.reload-command,.repo-library,.repo-command,.move,.group-move,.group-action,.prompt-group-manage,.prompt-group-chip,.prompt-group-pick,.category-save,.category-up,.category-down,.category-delete,.category-create-action,.favorite-toggle,.favorite-order-controls button,.position-input,.detail-group-field select')];}
+    function refreshMutationControls(){const blocked=repositoryTaskActive();for(const control of mutationControls()){if(blocked){if(control.dataset.repositoryBlocked!=='true'){control.dataset.repositoryBlocked='true';control.dataset.repositoryWasDisabled=control.disabled?'true':'false';control.disabled=true;}}else if(control.dataset.repositoryBlocked==='true'){control.disabled=control.dataset.repositoryWasDisabled==='true';delete control.dataset.repositoryBlocked;delete control.dataset.repositoryWasDisabled;}}}
+    function updateActivity(){const tasks=[...backgroundTasks.values()],count=tasks.length+(insertionBusy?1:0),labels=[...tasks.map((task)=>task.label),...(insertionBusy?['Inserting…']:[])];launcher.dataset.active=String(count>0);launcherCount.textContent=String(count);activity.dataset.active=String(count>0);activityText.textContent=count===1?labels[0]:`${count} background tasks`;refreshMutationControls();}
+    function setButtonPending(control,pending,label){if(!control)return;if(pending){control.dataset.pendingLabel=control.textContent;control.textContent=label||'Working…';control.disabled=true;}else if(control.dataset.pendingLabel!=null){control.textContent=control.dataset.pendingLabel;delete control.dataset.pendingLabel;control.disabled=false;}}
+    function runTask({key,label,button:control=null,pendingLabel='Working…',repository=false,action,onSuccess,onError}){const taskKey=String(key||`task-${++taskSequence}`);if(backgroundTasks.has(taskKey)){showStatus(`${label||'Operation'} is already running.`,5000);return backgroundTasks.get(taskKey).promise;}const task={key:taskKey,label:label||'Working…',repository,promise:null};backgroundTasks.set(taskKey,task);updateActivity();setButtonPending(control,true,pendingLabel);task.promise=(async()=>{try{const result=await action();if(onSuccess)await onSuccess(result);return result;}catch(error){if(onError)onError(error);else showStatus(error.message||String(error),8000);return undefined;}finally{backgroundTasks.delete(taskKey);updateActivity();setButtonPending(control,false);}})();return task.promise;}
+    function setOpen(value){isOpen=Boolean(value);panel.dataset.open=String(isOpen);launcher.style.display=isOpen||dashboardOpen?'none':'block';if(isOpen)keepPanelInViewport();}
+    function switchSurface(surface){activeSurface=surface;if(surface===SURFACES.PROMPTS){activePromptView='prompts';activePromptGroupId='all';}for(const button of tabButtons)button.setAttribute('aria-selected',String(button.dataset.surface===surface));commandViewBar.style.display=surface===SURFACES.COMMANDS?'flex':'none';commandGroupNav.dataset.visible=String(surface===SURFACES.COMMANDS);if(surface===SURFACES.COMMANDS)renderMethodologyViewButtons();newLibraryButton.style.display=surface===SURFACES.SCENARIOS?'none':'inline-block';manageGroupsButton.style.display=surface===SURFACES.COMMANDS?'inline-block':'none';manageCategoriesButton.style.display=manageGroupsButton.style.display;renderLibraryViewButtons();searchInput.value='';renderEntries('');}function switchPromptLibraryView(view){activePromptView=view==='modules'?'modules':'prompts';if(activePromptView==='prompts')activePromptGroupId='all';searchInput.value='';renderLibraryViewButtons();renderEntries('');}function switchMethodologyView(view){activeMethodologyView=view;writeLocalText(ACTIVE_VIEW_KEY,view);renderMethodologyViewButtons();searchInput.value='';renderEntries('');}
+    async function insertBody(text,success,id,invocation={}){if(!text||insertionBusy)return;insertionBusy=true;updateActivity();try{showStatus(await options.onInsert(text,success,id,invocation),7000);}catch(error){showStatus(error.message||String(error),7000);}finally{insertionBusy=false;updateActivity();}}
+    async function copyBody(text,id,invocation={}){try{showStatus(await options.onCopy(text,id,invocation)?'Copied.':'Copy failed.',4000);}catch(error){showStatus(error.message||String(error),7000);}}
+    function button(text,cls,handler,title=''){const b=document.createElement('button');b.type='button';b.textContent=text;b.className=cls;if(title)b.title=title;b.addEventListener('click',(event)=>{event.preventDefault();event.stopPropagation();handler(event,b);});return b;}
+    function commandExecutionId(entry){return entry?.directCommandId||entry?.id||'';}
+    function scenarioUseGroups(entry){const byId=new Map();for(const use of entry?.scenarioUses||[]){if(!byId.has(use.scenarioId))byId.set(use.scenarioId,{scenarioId:use.scenarioId,scenarioTitle:use.scenarioTitle,steps:[]});byId.get(use.scenarioId).steps.push({stepId:use.stepId,stepTitle:use.stepTitle});}return[...byId.values()];}
+    function commandMetadataText(entry){const definition=entry.definition||null,binding=definition?.methodologyBinding||null;return[
+      entry.provenance||entry.stateLabel?`Provenance: ${entry.provenance||entry.stateLabel}`:'',
+      entry.canonicalId?`Semantic owner: ${entry.canonicalId}`:'',
+      entry.semanticKind?`Kind: ${entry.semanticScope||'Core'} ${entry.semanticKind}`:'',
+      entry.directCommandId?`Direct command id: ${entry.directCommandId}`:'',
+      definition?.command?`Direct trigger: ${definition.command}`:'',
+      definition?.commandFamily?.length?`Aliases: ${definition.commandFamily.join(' · ')}`:'',
+      definition?.permissionMode?`Permission: ${definition.permissionMode}`:'',
+      binding?.targetModuleId?`Target Module: ${binding.targetModuleId}`:'',
+      binding?.lensId?`Lens: ${binding.lensId}`:'',
+      entry.repositoryPath?`Command source: ${entry.repositoryPath}`:'',
+      (entry.ownerFiles||[]).length?`Owners / sources:\n${(entry.ownerFiles||[]).map((x)=>`- ${x}`).join('\n')}`:'',
+      (entry.semanticSources||[]).length?`Semantic sources:\n${(entry.semanticSources||[]).map((x)=>`- ${x}`).join('\n')}`:''
+    ].filter(Boolean).join('\n\n');}
+    function openCommandExplanation(entry){const{overlay,modal}=makeOverlay(`Контекст / Результат / Суть · ${entry.actionLabel||entry.label||entry.id}`);for(const [label,value] of [['Контекст',entry.context],['Результат',entry.result],['Суть',entry.essence]]){const h=document.createElement('h3');h.textContent=label;const box=document.createElement('div');box.className='preview';box.textContent=String(value||'—');modal.append(h,box);}const actions=document.createElement('div');actions.className='modal-actions';actions.append(button('Close','',()=>closeOverlay(overlay)));modal.append(actions);}
+    function commandGroupsForView(viewId){return(catalogOrder?.commandGroups||[]).filter((group)=>group.viewId===viewId).sort((a,b)=>(Number(a.order)||0)-(Number(b.order)||0)||String(a.label).localeCompare(String(b.label)));}
+    function commandGroupsForEntry(entry){const viewId=deps.semanticNavigation?deps.semanticNavigation(entry).viewId:'';return commandGroupsForView(viewId);}
+    function activeGroupView(){if(activeMethodologyView&&activeMethodologyView!==ALL_METHODOLOGY_VIEW)return activeMethodologyView;return deps.METHODOLOGY_VIEW_IDS?.GENERAL||'GENERAL';}
+    function openGroupPicker(entry){const viewId=deps.semanticNavigation?deps.semanticNavigation(entry).viewId:'GENERAL',groups=commandGroupsForEntry(entry),{overlay,modal}=makeOverlay(`Группа · ${entry.actionLabel||entry.label||entry.id}`),note=document.createElement('p');note.textContent='Grouping is presentation-only. Save all GitHub persists membership. Other / Ungrouped keeps cards visible if their group is removed.';modal.append(note);const actions=document.createElement('div');actions.className='modal-actions';const assign=(groupId,control)=>{closeOverlay(overlay);runTask({label:'Updating group…',button:control,pendingLabel:'Updating…',action:()=>options.onAssignCatalogGroup(entry.id,groupId,viewId),onSuccess:(result)=>{applyState(result);showStatus(groupId?'Group changed locally; use Save all GitHub to persist it.':'Moved to Other / Ungrouped locally; use Save all GitHub to persist it.',7000);}});};actions.append(button('Other / Ungrouped','group-action',(_event,control)=>assign('',control)));for(const group of groups)if(group.label!=='Other / Ungrouped')actions.append(button(group.label,'group-action',(_event,control)=>assign(group.id,control)));actions.append(button('Cancel','',()=>closeOverlay(overlay)));modal.append(actions);}
+    function categorySelect(selectedId,excludeId=''){
+      const select=document.createElement('select');select.setAttribute('aria-label','Category');
+      for(const category of currentMethodologyViews()){if(category.id===excludeId)continue;const option=document.createElement('option');option.value=category.id;option.textContent=category.label;option.selected=category.id===selectedId;select.append(option);}return select;
+    }
+    function applyPresentationEdit(overlay,operation,label='Updated locally; use Save all GitHub to persist it.'){closeOverlay(overlay);return runTask({label:'Updating local state…',action:operation,onSuccess:(result)=>{applyState(result);showStatus(label,7000);}});}
+    function openCategoryManager(){
+      const {overlay,modal}=makeOverlay('Manage categories'),note=document.createElement('p');
+      note.textContent='Create, rename and reorder categories. Delete moves all groups and cards to the destination you choose. All commands and Favorites are automatic views. Changes are local until Save all GitHub.';modal.append(note);
+      for(const category of currentMethodologyViews()){
+        const row=document.createElement('div');row.className='category-editor group-editor';row.dataset.categoryId=category.id;
+        const name=document.createElement('input');name.value=category.label;name.setAttribute('aria-label','Category name');
+        const actions=document.createElement('div');actions.className='group-editor-actions';
+        actions.append(button('Save','category-save',()=>applyPresentationEdit(overlay,()=>options.onUpdateCatalogCategory(category.id,{label:name.value}))),button('↑','category-up',()=>applyPresentationEdit(overlay,()=>options.onMoveCatalogCategory(category.id,-1))),button('↓','category-down',()=>applyPresentationEdit(overlay,()=>options.onMoveCatalogCategory(category.id,1))));
+        const destination=categorySelect('',category.id);destination.setAttribute('aria-label','Move contents to');
+        const remove=button('Delete →','category-delete danger',()=>applyPresentationEdit(overlay,()=>options.onDeleteCatalogCategory(category.id,destination.value)));remove.disabled=!destination.options.length;
+        actions.append(remove,destination);row.append(name,actions);modal.append(row);
+      }
+      const create=document.createElement('div');create.className='category-create group-editor';const name=document.createElement('input');name.placeholder='New category name';name.setAttribute('aria-label','New category name');
+      create.append(name,button('Create category','category-create-action',()=>applyPresentationEdit(overlay,()=>options.onCreateCatalogCategory({label:name.value}))));modal.append(create,button('Close','',()=>closeOverlay(overlay)));
+    }
+    function openGroupManager(){const viewId=activeGroupView(),view=currentMethodologyViews().find((item)=>item.id===viewId),{overlay,modal}=makeOverlay(`Manage groups · ${view?.label||viewId}`),note=document.createElement('p');note.className='group-manager-note';note.textContent='One ordered presentation-group list per tab. Create, rename, reorder or delete groups. Deleting a group moves its cards to Other / Ungrouped. Collapsed/expanded state and selected group filters are personal UI state and are saved automatically.';modal.append(note);for(const group of commandGroupsForView(viewId)){const row=document.createElement('div');row.className='group-editor';const name=document.createElement('input');name.value=group.label;name.disabled=group.label==='Other / Ungrouped';const actions=document.createElement('div');actions.className='group-editor-actions';actions.append(button('Save','group-action',()=>applyPresentationEdit(overlay,()=>options.onUpdateCatalogGroup(group.id,{label:name.value}),'Group updated locally; use Save all GitHub to persist it.')),button('↑','group-action',()=>applyPresentationEdit(overlay,()=>options.onMoveCatalogGroup(group.id,-1),'Group moved locally; use Save all GitHub to persist it.')),button('↓','group-action',()=>applyPresentationEdit(overlay,()=>options.onMoveCatalogGroup(group.id,1),'Group moved locally; use Save all GitHub to persist it.')));if(group.label!=='Other / Ungrouped')actions.append(button('Delete','danger',()=>applyPresentationEdit(overlay,()=>options.onDeleteCatalogGroup(group.id),'Group deleted locally; its cards moved to Other / Ungrouped. Use Save all GitHub to persist it.')));const destination=categorySelect(viewId);destination.setAttribute('aria-label','Group category');actions.append(destination,button('Move to category','group-move-category',()=>applyPresentationEdit(overlay,()=>options.onUpdateCatalogGroup(group.id,{viewId:destination.value}))));row.append(name,actions);modal.append(row);}const h=document.createElement('h3');h.textContent='New group';const createRow=document.createElement('div');createRow.className='group-editor';const newName=document.createElement('input');newName.placeholder='Group name';const createActions=document.createElement('div');createActions.className='group-editor-actions';createActions.append(button('Create','group-action',()=>applyPresentationEdit(overlay,()=>options.onCreateCatalogGroup({viewId,label:newName.value}),'Group created locally; use Save all GitHub to persist it.')));createRow.append(newName,createActions);const footer=document.createElement('div');footer.className='modal-actions';footer.append(button('Close','',()=>closeOverlay(overlay)));modal.append(h,createRow,footer);}
+    function openCommandBody(entry){const{overlay,modal}=makeOverlay(`Body · ${entry.label||entry.command||entry.id}`),meta=document.createElement('div');meta.className='preview ok';meta.textContent=commandMetadataText(entry)||'Semantic invocation projection.';const adaptiveTitle=document.createElement('h3');adaptiveTitle.textContent='Canonical invocation body';const pre=document.createElement('div');pre.className='body-text';pre.textContent=entry.adaptiveBody||entry.text||'';modal.append(meta,adaptiveTitle,pre);if(entry.fullBody&&entry.fullBody!==entry.adaptiveBody){const fullTitle=document.createElement('h3');fullTitle.textContent='Full-read invocation body';const full=document.createElement('div');full.className='body-text';full.textContent=entry.fullBody;modal.append(fullTitle,full);}const actions=document.createElement('div');actions.className='modal-actions';actions.append(button('Copy body','copy',()=>{closeOverlay(overlay);copyBody(entry.adaptiveBody||entry.text,commandExecutionId(entry));}),button('Run','run-action',()=>{closeOverlay(overlay);insertBody(entry.adaptiveBody||entry.text,`Inserted ${entry.label||entry.id}`,commandExecutionId(entry));}));if(entry.fullBody&&entry.fullBody!==entry.adaptiveBody)actions.append(button('Run Full','full',()=>{closeOverlay(overlay);insertBody(entry.fullBody,`Inserted full ${entry.label||entry.id}`,commandExecutionId(entry));}));actions.append(button('Close','',()=>closeOverlay(overlay)));modal.append(actions);}
+    function openCommandById(id){closeOverlay(activeOverlay);switchSurface(SURFACES.COMMANDS);searchInput.value=String(id||'');renderEntries(searchInput.value);}
+    function openScenarioDetails(entry){const{overlay,modal}=makeOverlay(entry.label||`${entry.id} · ${entry.title}`),meta=document.createElement('p');meta.textContent=[`Type: ${entry.type}`,entry.entryRoute?`Entry route: ${entry.entryRoute}`:'',entry.assumptions?.length?`Assumptions: ${entry.assumptions.join(' · ')}`:''].filter(Boolean).join('\n');const intro=document.createElement('div');intro.className='scenario-intro';intro.textContent=entry.canonicalIntro||'';modal.append(meta,intro);for(const step of entry.steps||[]){const section=document.createElement('section');section.className='scenario-step';const h=document.createElement('h3');h.textContent=`${step.id} · ${step.title}`;const prose=document.createElement('div');prose.className='scenario-step-text';prose.textContent=step.canonicalText||'';section.append(h,prose);const equivalents=document.createElement('div');equivalents.className='equivalents';for(const eq of step.commandEquivalents||[]){const card=document.createElement('div');card.className='equivalent';const main=document.createElement('div');main.className='equivalent-main';const strong=document.createElement('strong');strong.textContent=eq.label||eq.id;const small=document.createElement('div');small.className='row-meta';small.textContent=[eq.provenance||eq.stateLabel,eq.canonicalId].filter(Boolean).join(' · ');main.append(strong,small);const actions=document.createElement('div');actions.className='actions';actions.append(button('Run','run-action',()=>{closeOverlay(overlay);insertBody(eq.adaptiveBody,`Inserted ${eq.label||eq.id}`,commandExecutionId(eq));}),button('Body','body-action',()=>{closeOverlay(overlay);openCommandBody(eq);}),button('Open command','open-command',()=>openCommandById(eq.id)));card.append(main,actions);equivalents.append(card);}if((step.commandEquivalents||[]).length){const title=document.createElement('div');title.className='row-meta';title.textContent='Derived command equivalents';section.append(title,equivalents);}modal.append(section);}const actions=document.createElement('div');actions.className='modal-actions';actions.append(button('Close','',()=>closeOverlay(overlay)));modal.append(actions);}
+    function openCommandScenarios(entry){const groups=scenarioUseGroups(entry),{overlay,modal}=makeOverlay(`Scenarios · ${entry.label||entry.id}`);if(!groups.length){const empty=document.createElement('p');empty.textContent='This command has no canonical Scenario equivalents.';modal.append(empty);}for(const group of groups){const scenario=scenarioEntries.find((item)=>item.id===group.scenarioId),card=document.createElement('div');card.className='scenario-card';const title=document.createElement('strong');title.textContent=`${group.scenarioId} · ${group.scenarioTitle}`;const steps=document.createElement('div');steps.className='row-meta';steps.textContent=group.steps.map((step)=>`${step.stepId}: ${step.stepTitle}`).join('\n');const actions=document.createElement('div');actions.className='modal-actions';actions.append(button('Open scenario','scenario-action',()=>{closeOverlay(overlay);if(scenario)openScenarioDetails(scenario);else{switchSurface(SURFACES.SCENARIOS);searchInput.value=group.scenarioId;renderEntries(searchInput.value);}}));card.append(title,steps,actions);modal.append(card);}const actions=document.createElement('div');actions.className='modal-actions';actions.append(button('Close','',()=>closeOverlay(overlay)));modal.append(actions);}
+    function groupsForActiveView(){const all=entriesForSurface(SURFACES.COMMANDS);return activeMethodologyView===ALL_METHODOLOGY_VIEW?(deps.buildAllMethodologyGroups?deps.buildAllMethodologyGroups(all,catalogOrder.categories):[]):(deps.buildMethodologyViewGroups?deps.buildMethodologyViewGroups(all,activeMethodologyView):[]);}
+    function selectedGroupIds(groups){return deps.normalizeSelectedGroupIds?deps.normalizeSelectedGroupIds(groups,readLocalJson(filterStateKey(activeMethodologyView),null)):null;}
+    function saveSelectedGroupIds(groups,ids){const normalized=deps.normalizeSelectedGroupIds?deps.normalizeSelectedGroupIds(groups,ids):ids;writeLocalJson(filterStateKey(activeMethodologyView),normalized);return normalized;}
+    function groupCollapsed(group){return readLocalText(collapseStateKey(group.favorite?'GLOBAL':activeMethodologyView,group.id))==='1';}
+    function setGroupCollapsed(group,value){writeLocalText(collapseStateKey(group.favorite?'GLOBAL':activeMethodologyView,group.id),value?'1':'0');}
+    function renderGroupNavigator(groups,target=commandGroupNav){target.innerHTML='';if(target===commandGroupNav)target.dataset.visible=String(activeSurface===SURFACES.COMMANDS);if(activeSurface!==SURFACES.COMMANDS)return;const selected=selectedGroupIds(groups),top=document.createElement('div');top.className='group-nav-top';const title=document.createElement('span');title.className='group-nav-title';title.textContent='Groups';const hint=document.createElement('span');hint.className='group-nav-hint';hint.textContent='First group click isolates it; select more to combine.';const stats=document.createElement('span');stats.className='group-nav-stats';stats.textContent=selected?`Selected ${selected.length} / ${groups.length}`:`All ${groups.length}`;const navActions=document.createElement('span');navActions.className='group-nav-actions';navActions.append(button('Expand','group-action',()=>{for(const group of commandDisplayGroups(visibleGroupsForSelection(groups,selected),commandEntries,favoriteCommandIds))setGroupCollapsed(group,false);renderEntries(searchInput.value);}),button('Collapse','group-action',()=>{for(const group of commandDisplayGroups(visibleGroupsForSelection(groups,selected),commandEntries,favoriteCommandIds))setGroupCollapsed(group,true);renderEntries(searchInput.value);}));top.append(title,hint,stats,navActions);const chips=document.createElement('div');chips.className='group-chip-list';const all=button('All groups','group-chip all',()=>{saveSelectedGroupIds(groups,null);renderEntries(searchInput.value);});all.setAttribute('aria-pressed',String(!selected));const allCount=document.createElement('span');allCount.className='group-chip-count';allCount.textContent=String(groups.length);all.append(allCount);chips.append(all);groups.forEach((group,index)=>{const label=activeMethodologyView===ALL_METHODOLOGY_VIEW?`${group.viewLabel} · ${group.label}`:group.label,chip=button(label,'group-chip',()=>{const next=deps.toggleSelectedGroupId?deps.toggleSelectedGroupId(groups,selected,group.id):(selected?.includes(group.id)?selected.filter((id)=>id!==group.id):[...(selected||[]),group.id]);saveSelectedGroupIds(groups,next);renderEntries(searchInput.value);});chip.setAttribute('aria-pressed',String(Boolean(selected?.includes(group.id))));const indexNode=document.createElement('span');indexNode.className='group-chip-index';indexNode.textContent=String(index+1);chip.prepend(indexNode);const count=document.createElement('span');count.className='group-chip-count';count.textContent=String(group.entries.length);chip.append(count);chips.append(chip);});target.append(top,chips);}
+    function visibleGroupsForSelection(groups,selected){if(deps.filterGroupsBySelection)return deps.filterGroupsBySelection(groups,selected);if(!selected)return groups;const ids=new Set(selected);return groups.filter((group)=>ids.has(group.id));}
+    function commandMatches(entry,needle){return!needle||JSON.stringify([entry.id,entry.label,entry.description,entry.command,entry.context,entry.result,entry.essence,entry.__methodologyNav?.kindLabel||(deps.semanticNavigation?deps.semanticNavigation(entry).kindLabel:null),entry.provenance,entry.stateLabel]).toLowerCase().includes(needle);}
+    function favoriteOrderControls(entry,group){
+      const controls=document.createElement('div');controls.className='favorite-order-controls';
+      const visibleIds=group.entries.map(item=>item.id),index=visibleIds.indexOf(entry.id);
+      for(const [delta,label,cls]of [[-1,'↑','favorite-up'],[1,'↓','favorite-down']]){
+        const description='Move '+(entry.actionLabel||entry.label||entry.id)+(delta<0?' up':' down')+' in Favorites';
+        const control=button(label,cls,()=>moveFavorite(entry.id,delta,visibleIds),description);
+        control.setAttribute('aria-label',description);
+        control.disabled=favoriteMoveBusy||typeof options.onMoveFavoriteCommand!=='function'||(delta<0?index===0:index===visibleIds.length-1);
+        controls.append(control);
+      }
+      return controls;
+    }
+    async function moveFavorite(id,delta,visibleIds){
+      if(favoriteMoveBusy)return;
+      favoriteMoveBusy=true;
+      const scrolls=['.command-list','.command-detail'].map(selector=>[selector,body.querySelector(selector)?.scrollTop||0]);
+      for(const control of body.querySelectorAll('.favorite-order-controls button'))control.disabled=true;
+      try{
+        const result=await options.onMoveFavoriteCommand(id,delta,visibleIds);
+        favoriteMoveBusy=false;applyState(result);
+      }catch(error){favoriteMoveBusy=false;renderEntries(searchInput.value);showStatus(error.message||String(error),7000);}
+      for(const [selector,scrollTop]of scrolls){const pane=body.querySelector(selector);if(pane)pane.scrollTop=scrollTop;}
+      const card=[...body.querySelectorAll('.favorite-group .command-card')].find(row=>row.dataset.entryId===id);
+      const preferred=card?.querySelector(delta<0?'.favorite-up':'.favorite-down');
+      (preferred&&!preferred.disabled?preferred:card?.querySelector('.favorite-order-controls button:not(:disabled)'))?.focus({preventScroll:true});
+    }
+    function selectCommand(entry){selectedCommandId=entry?.id||'';for(const[row,id]of commandCardNodes)row.dataset.selected=String(id===selectedCommandId);if(activeCommandDetail)renderCommandDetail(activeCommandDetail,entry||null);}
+    function commandCard(entry,group){const row=document.createElement('div');row.className='command-card';row.dataset.selected=String(entry.id===selectedCommandId);row.dataset.entryId=entry.id;commandCardNodes.set(row,entry.id);const main=document.createElement('div');const label=document.createElement('div');label.className='command-card-label';label.textContent=entry.actionLabel||entry.label||entry.command||entry.id;const meta=document.createElement('div');meta.className='command-card-meta';meta.textContent=[entry.__methodologyNav?.kindLabel||(deps.semanticNavigation?deps.semanticNavigation(entry).kindLabel:null),entry.description,entry.provenance||entry.stateLabel].filter(Boolean).join(' · ');main.append(label,meta);if(group.favorite||activeMethodologyView===ALL_METHODOLOGY_VIEW){const context=document.createElement('div');context.className='command-card-context';const nav=entry.__methodologyNav||(deps.semanticNavigation?deps.semanticNavigation(entry):null);context.textContent=[nav?.viewLabel,nav?.sectionLabel].filter(Boolean).join(' › ');main.append(context);}const actions=document.createElement('div');actions.className='command-card-actions';actions.append(button('Run','run-action',()=>insertBody(entry.adaptiveBody||entry.text,`Inserted ${entry.label||entry.id}`,commandExecutionId(entry))));const isFav=favoriteCommandIds.includes(entry.id);actions.append(button(isFav?'★':'☆','favorite-toggle',async()=>{try{applyState(await options.onToggleFavoriteCommand(entry.id));}catch(error){showStatus(error.message||String(error),7000);}},isFav?'Remove favorite':'Add favorite'));if(group.favorite)actions.append(favoriteOrderControls(entry,group));row.append(main,actions);row.addEventListener('click',(event)=>{if(event.target.closest('button'))return;selectCommand(entry);});return row;}
+    function appendCommandContract(container,entry){const definition=entry?.definition||null,includes=[...(entry?.effectiveCommandDag||definition?.includes||[])],ownerRefs=[...(definition?.ownerRefs||[])],source=entry?.repositoryPath||(definition?.file?`planning/commands/${definition.file}`:'');const includesBox=document.createElement('section');includesBox.className='contract-box';const includesTitle=document.createElement('h3');includesTitle.textContent='Effective command DAG';const includesList=document.createElement('div');includesList.className='contract-list';if(includes.length){for(const include of includes){const row=document.createElement('div');row.className='contract-path';row.textContent=include;includesList.append(row);}}else{const empty=document.createElement('div');empty.className='contract-empty';empty.textContent=entry?.compositionRoot||'No composition root resolved.';includesList.append(empty);}includesBox.append(includesTitle,includesList);const rootLabel=document.createElement('div');rootLabel.className='contract-path';rootLabel.textContent=`Composition root: ${entry?.compositionRoot||source||'not resolved'}`;includesBox.prepend(rootLabel);container.append(includesBox);const calls=entry?.processCallPlan||definition?.processCalls||[];if(calls.length){const box=document.createElement('section');box.className='contract-box process-call-contract';const title=document.createElement('h3');title.textContent='Calls during the process';box.append(title);for(const call of calls){const row=document.createElement('div');row.className='contract-path';row.style.whiteSpace='pre-wrap';row.textContent=(call.callerId?call.callerId+'/':'')+call.id+' → '+call.commandPath+'\nAt: '+call.at.path+'#'+call.at.anchor+'\nWhen: '+call.when+'\nContext: '+call.context;box.append(row);}container.append(box);}const refsBox=document.createElement('section');refsBox.className='contract-box';const refsTitle=document.createElement('h3');refsTitle.textContent='Owners';refsBox.append(refsTitle);const semanticOwner=definition?null:(entry?.semanticOwnerRef||null);if(semanticOwner){const card=document.createElement('div');card.className='owner-ref';const head=document.createElement('div');head.className='owner-ref-head';const id=document.createElement('span');id.className='owner-ref-id';id.textContent=semanticOwner.semanticId;const role=document.createElement('span');role.className='contract-badge';role.textContent=semanticOwner.role||'PRIMARY_OWNER';const mode=document.createElement('span');mode.className=`contract-badge${semanticOwner.readMode==='REQUIRED'?' required':''}`;mode.textContent=semanticOwner.readMode||'REQUIRED';head.append(id,role,mode);const path=document.createElement('div');path.className='owner-ref-path';path.textContent=`${semanticOwner.path}${semanticOwner.anchor?`#${semanticOwner.anchor}`:''}`;const why=document.createElement('div');why.className='owner-ref-why';why.textContent=semanticOwner.why||'';card.append(head,path,why);refsBox.append(card);}if(ownerRefs.length){const heading=document.createElement('h4');heading.textContent='Direct command owners';refsBox.append(heading);}if(ownerRefs.length){const list=document.createElement('div');list.className='contract-list';for(const ref of ownerRefs){const card=document.createElement('div');card.className='owner-ref';const head=document.createElement('div');head.className='owner-ref-head';const id=document.createElement('span');id.className='owner-ref-id';id.textContent=ref.responsibilityId||'canonical owner';const role=document.createElement('span');role.className='contract-badge';role.textContent=ref.role||'OWNER';const mode=document.createElement('span');mode.className=`contract-badge${ref.readMode==='REQUIRED'?' required':''}`;mode.textContent=ref.readMode||'REQUIRED';head.append(id,role,mode);const path=document.createElement('div');path.className='owner-ref-path';path.textContent=`${ref.path||''}${ref.anchor?`#${ref.anchor}`:''}`;const why=document.createElement('div');why.className='owner-ref-why';why.textContent=ref.why||'';card.append(head,path,why);list.append(card);}refsBox.append(list);}else if(!semanticOwner){const fallback=document.createElement('div');fallback.className='contract-list';const sources=definition?[]:[...(entry?.semanticSources||entry?.ownerFiles||[])];if(sources.length){for(const path of sources){const row=document.createElement('div');row.className='contract-path';row.textContent=path;fallback.append(row);}const note=document.createElement('div');note.className='contract-empty';note.textContent='This semantic projection has source paths but no direct command ownerRefs/why metadata.';fallback.append(note);}else{const empty=document.createElement('div');empty.className='contract-empty';empty.textContent=definition?'No direct command owners declared.':'No structured canonical references on this card.';fallback.append(empty);}refsBox.append(fallback);}container.append(refsBox);const sourceBox=document.createElement('section');sourceBox.className='contract-box';const sourceTitle=document.createElement('h3');sourceTitle.textContent='Direct component-specific command';const sourceValue=document.createElement('div');sourceValue.className=source?'contract-path':'contract-empty';sourceValue.textContent=source||'Direct component-specific command: none';sourceBox.append(sourceTitle,sourceValue);container.append(sourceBox);}
+    function renderCommandDetail(container,entry){container.innerHTML='';if(!entry){container.classList.add('empty-detail');container.textContent='Select a command to see Context, Result, Essence and actions.';return;}container.classList.remove('empty-detail');const nav=deps.semanticNavigation?deps.semanticNavigation(entry):null,title=document.createElement('h2');title.className='command-detail-title';title.textContent=entry.actionLabel||entry.label||entry.command||entry.id;const path=document.createElement('div');path.className='command-detail-path';path.textContent=[nav?.viewLabel,nav?.sectionLabel].filter(Boolean).join(' › ');container.append(title,path);for(const [key,label] of [['context','Контекст'],['result','Результат'],['essence','Суть']]){
+      const box=document.createElement('details');box.className='meaning-box';box.dataset.meaning=key;
+      const stateKey=JSON.stringify([entry.id,key]);box.open=meaningOpen.get(stateKey)===true;
+      const summary=document.createElement('summary');summary.textContent=label;
+      const p=document.createElement('p');p.textContent=String(entry[key]||'—');box.append(summary,p);
+      box.addEventListener('toggle',()=>{if(box.isConnected)meaningOpen.set(stateKey,box.open);});container.append(box);
+    }appendCommandContract(container,entry);const actions=document.createElement('div');actions.className='detail-actions';const uses=scenarioUseGroups(entry);actions.append(button('Run','run-action',()=>insertBody(entry.adaptiveBody||entry.text,`Inserted ${entry.label||entry.id}`,commandExecutionId(entry))),button('Body','body-action',()=>openCommandBody(entry)),button(`Scenarios ${uses.length}`,'scenario-action',()=>openCommandScenarios(entry)));const isFav=favoriteCommandIds.includes(entry.id);actions.append(button(isFav?'★ Favorite':'☆ Favorite','favorite-toggle',async()=>{try{applyState(await options.onToggleFavoriteCommand(entry.id));}catch(error){showStatus(error.message||String(error),7000);}}));const executionId=commandExecutionId(entry),invocationEffects=typeof options.onGetInvocationSideEffects==='function'?options.onGetInvocationSideEffects(executionId):[];if(invocationEffects.includes('capture-chat-context'))actions.append(button('Bind + Run','bind-insert',()=>insertBody(entry.adaptiveBody||entry.text,`Inserted ${entry.label||entry.id} with chat binding`,executionId,{effectIds:['capture-chat-context']}),'Create a one-invocation chatContextToken.'));container.append(actions);const field=document.createElement('div');field.className='detail-group-field';const fieldLabel=document.createElement('label');fieldLabel.textContent='Group';const select=document.createElement('select'),viewId=nav?.viewId||'',groups=commandGroupsForView(viewId);for(const group of groups){const option=document.createElement('option');option.value=group.id;option.textContent=group.label;option.selected=group.id===nav?.sectionId;select.append(option);}select.addEventListener('change',async()=>{try{applyState(await options.onAssignCatalogGroup(entry.id,select.value,viewId));showStatus('Group changed locally; use Save all GitHub to persist it.',6000);}catch(error){showStatus(error.message||String(error),7000);}});const category=categorySelect(viewId);category.className='detail-category-select';category.addEventListener('change',async()=>{try{applyState(await options.onAssignCatalogGroup(entry.id,'',category.value));showStatus('Category changed locally; use Save all GitHub to persist it.',6000);}catch(error){showStatus(error.message||String(error),7000);}});const categoryLabel=document.createElement('label');categoryLabel.textContent='Category';field.append(categoryLabel,category,fieldLabel,select);container.append(field);const note=document.createElement('div');note.className='detail-note';note.textContent='Group changes presentation only; semantic identity and ownership do not change.';container.append(note);if(entry.entityType==='planning-command'||entry.entityType==='semantic-command-direct'){const admin=document.createElement('div');admin.className='detail-actions';admin.append(button('Edit','edit-command',()=>openCommandEditor(entry)),button('Reload','reload-command',(_event,control)=>reloadCommand(entry,control)),button('Save GitHub','repo-command',(_event,control)=>saveRepository(entry,control)),button('Delete','delete-command',()=>deleteCommand(entry)));container.append(admin);}}
+    function sidebarSection(label,key,content){
+      const section=document.createElement('details');section.className='sidebar-section';section.dataset.section=key;
+      section.open=readLocalText(SIDEBAR_COLLAPSE_KEY+':'+key)!=='1';
+      const summary=document.createElement('summary');summary.className='command-sidebar-title';summary.textContent=label;
+      section.append(summary,content);section.addEventListener('toggle',()=>{if(section.isConnected)writeLocalText(SIDEBAR_COLLAPSE_KEY+':'+key,section.open?'0':'1');});return section;
+    }
+    function renderCommandSurface(needle){
+      commandCardNodes=new Map();
+      const groups=groupsForActiveView(),selected=selectedGroupIds(groups);
+      const visible=commandDisplayGroups(visibleGroupsForSelection(groups,selected),commandEntries,favoriteCommandIds)
+        .map((group)=>({...group,entries:group.entries.filter((entry)=>commandMatches(entry,needle))}));
+      const visibleEntries=visible.flatMap((group)=>group.entries);
+      const selectedEntry=visibleEntries.find((entry)=>entry.id===selectedCommandId)||visibleEntries[0]||null;
+      selectedCommandId=selectedEntry?.id||'';
+      const layout=document.createElement('div');layout.className='command-layout';layout.dataset.all=String(activeMethodologyView===ALL_METHODOLOGY_VIEW);
+      const sidebar=document.createElement('aside');sidebar.className='command-sidebar';
+      const groupNav=document.createElement('div');renderGroupNavigator(groups,groupNav);
+      sidebar.append(sidebarSection('Categories','categories',commandViewBar),sidebarSection('Groups','groups',groupNav));
+      const list=document.createElement('div');list.className='command-list';
+      const detail=document.createElement('aside');detail.className='command-detail';
+      for(const group of visible){
+        if(!group.entries.length&&!group.favorite)continue;
+        const section=document.createElement('section');section.className='command-group';section.dataset.groupId=group.id;
+        section.dataset.collapsed=String(groupCollapsed(group));if(group.favorite)section.classList.add('favorite-group');
+        const head=document.createElement('button');head.type='button';head.className='command-group-head';head.setAttribute('aria-expanded',String(!groupCollapsed(group)));
+        const order=document.createElement('span');order.className='command-group-order';order.textContent=group.favorite?'★':String(groups.findIndex((item)=>item.id===group.id)+1);
+        const label=document.createElement('span');label.className='command-group-label';label.textContent=!group.favorite&&activeMethodologyView===ALL_METHODOLOGY_VIEW?group.viewLabel+' · '+group.label:group.label;
+        const count=document.createElement('span');count.className='command-group-count';count.textContent=group.entries.length+' command'+(group.entries.length===1?'':'s');
+        const chev=document.createElement('span');chev.className='command-group-chevron';chev.textContent='⌄';head.append(order,label,count,chev);
+        head.addEventListener('click',()=>{const collapsed=section.dataset.collapsed!=='true';setGroupCollapsed(group,collapsed);section.dataset.collapsed=String(collapsed);head.setAttribute('aria-expanded',String(!collapsed));});
+        const rows=document.createElement('div');rows.className='command-group-rows';
+        for(const entry of group.entries)rows.append(commandCard(entry,group));
+        if(group.favorite&&!group.entries.length){const empty=document.createElement('div');empty.className='empty';empty.textContent=needle?'No favorites match this search.':'Use ☆ on a command to add it to Favorites.';rows.append(empty);}
+        section.append(head,rows);list.append(section);
+      }
+      if(!visibleEntries.length){const empty=document.createElement('div');empty.className='empty';empty.textContent='No commands for the current search and group selection.';list.append(empty);}
+      activeCommandDetail=detail;renderCommandDetail(detail,selectedEntry);layout.append(sidebar,list,detail);body.append(layout);
+    }
+    function makeEntryRow(entry,{favorite=false}={}){
+      const row=document.createElement('div');row.className='row';row.dataset.entryId=entry.id;
+      const promptView=activeSurface===SURFACES.PROMPTS&&activePromptView==='prompts',moduleView=activeSurface===SURFACES.PROMPTS&&activePromptView==='modules';
+      if(promptView)row.dataset.selected=String(entry.id===selectedPromptId);
+      if(entry.__methodologyNav?.parentId)row.classList.add('focused');if(entry.__methodologyNav?.related)row.classList.add('related');
+      const info=document.createElement('div');info.className='insert';const label=document.createElement('span');label.className='row-label';label.textContent=entry.label||entry.title||entry.command||entry.id;
+      if(moduleView){const badge=document.createElement('span');badge.className='module-badge';badge.textContent='module';label.append(badge);}
+      const meta=document.createElement('span');meta.className='row-meta';
+      if(moduleView){const promptUses=entry.referencedByPrompts?.length||0,moduleUses=entry.referencedByModules?.length||0,uses=`used by ${promptUses} prompt${promptUses===1?'':'s'}${moduleUses?` · ${moduleUses} module${moduleUses===1?'':'s'}`:''}`;meta.textContent=[entry.description,uses,entry.moduleReferenceCount?`${entry.moduleReferenceCount} nested reference${entry.moduleReferenceCount===1?'':'s'}`:''].filter(Boolean).join(' · ');}
+      else{const refSuffix=promptView&&entry.moduleReferenceCount?`${entry.moduleReferenceCount} module reference${entry.moduleReferenceCount===1?'':'s'}`:'';meta.textContent=[entry.__methodologyNav?.kindLabel,entry.description,entry.provenance||entry.stateLabel,refSuffix].filter(Boolean).join(' · ');}
+      info.append(label,meta);
+      if(promptView&&activePromptGroupId==='all'){const badge=document.createElement('small');badge.className='prompt-group-badge';badge.textContent=promptGroupForEntry(entry.id)?.label||'Ungrouped';info.append(badge);}
+      if(moduleView){const ref=document.createElement('code');ref.className='module-ref';ref.textContent=entry.moduleReference||`[[module:${entry.libraryId}]]`;info.append(ref);}
+      row.append(info);const actions=document.createElement('div');actions.className='actions';
+      if(activeSurface===SURFACES.COMMANDS){const uses=scenarioUseGroups(entry);actions.append(button('Run','run-action',()=>insertBody(entry.adaptiveBody||entry.text,`Inserted ${entry.label||entry.id}`,commandExecutionId(entry))),button('Смысл','explain-action',()=>openCommandExplanation(entry),'Контекст / Результат / Суть'),button('Body','body-action',()=>openCommandBody(entry)),button(`Scenarios ${uses.length}`,'scenario-action',()=>openCommandScenarios(entry)),button('Group','group-action',()=>openGroupPicker(entry),'Move this card to another presentation group'));const isFav=favoriteCommandIds.includes(entry.id);actions.append(button(isFav?'★':'☆','favorite-toggle',async()=>{try{applyState(await options.onToggleFavoriteCommand(entry.id));}catch(error){showStatus(error.message||String(error),7000);}},isFav?'Remove favorite':'Add favorite'));}
+      else if(promptView){actions.classList.add('prompt-actions');const invocation={resolveModules:true};actions.append(button('Run','run-action',()=>insertBody(entry.adaptiveBody||entry.text,`Inserted ${entry.label||entry.id}`,entry.id,invocation)),button('Copy','copy',()=>copyBody(entry.adaptiveBody||entry.text,entry.id,invocation)),button('Group','prompt-group-pick',()=>openPromptGroupPicker(entry)));if(!favorite&&activePromptGroupId==='all'){const control=document.createElement('div');control.className='position-control';const up=button('↑','move',()=>moveEntry(entry,-1),'Move up'),input=document.createElement('input'),down=button('↓','move',()=>moveEntry(entry,1),'Move down'),positionLabel=document.createElement('div');input.className='position-input';input.type='number';input.min='1';input.max=String(promptEntries.length);input.value=String(Math.max(1,promptEntries.findIndex((item)=>item.id===entry.id)+1));input.setAttribute('aria-label','Card position');positionLabel.className='position-label';positionLabel.textContent='№ позиции';let committed=false;const commit=()=>{if(committed)return;committed=true;moveEntryToPosition(entry,input.valueAsNumber);};input.addEventListener('click',(event)=>event.stopPropagation());input.addEventListener('keydown',(event)=>{if(event.key==='Enter'){event.preventDefault();commit();input.blur();}else if(event.key==='Escape'){event.preventDefault();committed=true;input.value=String(Math.max(1,promptEntries.findIndex((item)=>item.id===entry.id)+1));input.blur();}});input.addEventListener('blur',commit);control.append(up,input,down,positionLabel);actions.append(control);}}
+      else if(moduleView){actions.append(button('Copy ref','copy',()=>copyModuleReference(entry)),button('Preview','body-action',()=>openModulePreview(entry)));}
+      if(!favorite&&activeSurface!==SURFACES.PROMPTS)actions.append(button('↑','move',()=>moveEntry(entry,-1),'Move up'),button('↓','move',()=>moveEntry(entry,1),'Move down'));
+      const executionId=commandExecutionId(entry),invocationEffects=typeof options.onGetInvocationSideEffects==='function'?options.onGetInvocationSideEffects(executionId):[];if(activeSurface===SURFACES.COMMANDS&&invocationEffects.includes('capture-chat-context')){const bindInvocation={effectIds:['capture-chat-context']};actions.append(button('Bind + Run','bind-insert',()=>insertBody(entry.adaptiveBody||entry.text,`Inserted ${entry.label||entry.id} with chat binding`,executionId,bindInvocation),'Create a one-invocation chatContextToken and require only this OBS-ACTION to echo it.'));}
+      if(activeSurface===SURFACES.COMMANDS&&(entry.entityType==='planning-command'||entry.entityType==='semantic-command-direct'))actions.append(button('Edit','edit-command',()=>openCommandEditor(entry)),button('Reload','reload-command',(_event,control)=>reloadCommand(entry,control)),button('Save GitHub','repo-command',(_event,control)=>saveRepository(entry,control)),button('Delete','delete-command',()=>deleteCommand(entry)));
+      else if(entry.entityType==='prompt'||entry.entityType==='module'||entry.entityType==='legacy-helper-command')actions.append(button('Edit','edit-library',()=>openLibraryEditor(entry)),button('Save GitHub','repo-library',(_event,control)=>saveRepository(entry,control)),button('Delete','delete-library',()=>deleteLibrary(entry)));
+      row.append(actions);if(promptView)row.addEventListener('click',(event)=>{if(event.target.closest('button,input'))return;selectedPromptId=entry.id;for(const node of body.querySelectorAll('.row[data-selected]'))node.dataset.selected=String(node===row);});return row;
+    }
+    function makeScenarioRow(entry){const card=document.createElement('div');card.className='scenario-card';card.dataset.entryId=entry.id;const title=document.createElement('strong');title.textContent=entry.label||`${entry.id} · ${entry.title}`;const meta=document.createElement('div');meta.className='row-meta';meta.textContent=[entry.type,entry.entryRoute].filter(Boolean).join(' · ');const actions=document.createElement('div');actions.className='actions';actions.append(button('Open','scenario-action',()=>openScenarioDetails(entry)));if((entry.steps||[]).some((step)=>(step.commandEquivalents||[]).length)){const count=new Set((entry.steps||[]).flatMap((step)=>(step.commandEquivalents||[]).map((eq)=>eq.id))).size;actions.append(button(`${count} command equivalents`,'body-action',()=>openScenarioDetails(entry)));}actions.append(button('↑','move',()=>moveEntry(entry,-1),'Move up'),button('↓','move',()=>moveEntry(entry,1),'Move down'));card.append(title,meta,actions);return card;}
+    function captureListViewport(){const scroller=body.querySelector(activeSurface===SURFACES.COMMANDS?'.command-list':'.non-command-body');return{surface:activeSurface,scrollTop:scroller?.scrollTop||0};}
+    function restoreListViewport(viewport,id,{ensureVisible=false}={}){requestAnimationFrame(()=>{if(!viewport||viewport.surface!==activeSurface)return;const scroller=body.querySelector(activeSurface===SURFACES.COMMANDS?'.command-list':'.non-command-body');if(!scroller)return;scroller.scrollTop=viewport.scrollTop;if(ensureVisible&&id){const rows=[...scroller.querySelectorAll('[data-entry-id]')],target=rows.find((node)=>node.dataset.entryId===id);if(target){const outer=scroller.getBoundingClientRect(),inner=target.getBoundingClientRect();if(inner.top<outer.top||inner.bottom>outer.bottom)target.scrollIntoView({block:'nearest'});}}});}
+    async function moveEntry(entry,delta){const viewport=captureListViewport();if(activeSurface===SURFACES.PROMPTS)selectedPromptId=entry.id;try{const result=await options.onMoveCatalogItem(activeSurface,entry.id,delta);applyState(result);restoreListViewport(viewport,entry.id);showStatus('Order changed locally. Save all GitHub when this order should be durable.',5000);}catch(error){showStatus(error.message||String(error),7000);}}
+    async function moveEntryToPosition(entry,position){const viewport=captureListViewport();selectedPromptId=entry.id;try{if(typeof options.onMoveCatalogItemToPosition!=='function')throw new Error('Direct position reorder is unavailable.');const result=await options.onMoveCatalogItemToPosition(activeSurface,entry.id,position);applyState(result);restoreListViewport(viewport,entry.id,{ensureVisible:true});showStatus('Order changed locally. Save all GitHub when this order should be durable.',5000);}catch(error){showStatus(error.message||String(error),7000);}}
+    function renderEntries(query=''){queueMicrotask(refreshMutationControls);const sidebarScrollTop=body.querySelector('.command-sidebar')?.scrollTop||0;body.innerHTML='';activeCommandDetail=null;commandCardNodes=new Map();const all=entriesForSurface(activeSurface),needle=String(query||'').trim().toLowerCase();body.classList.toggle('command-body',activeSurface===SURFACES.COMMANDS);renderPromptGroupToolbar();if(activeSurface===SURFACES.COMMANDS){renderCommandSurface(needle);body.querySelector('.command-sidebar').scrollTop=sidebarScrollTop;return;}commandGroupNav.dataset.visible='false';const wrapper=document.createElement('div');wrapper.className='non-command-body';const grouped=activeSurface===SURFACES.PROMPTS&&activePromptView==='prompts'?filterPromptEntries(all,catalogOrder,activePromptGroupId):all;const entries=needle?grouped.filter((entry)=>JSON.stringify([entry.id,entry.label,entry.title,entry.description,entry.command,entry.context,entry.result,entry.essence,entry.canonicalIntro,(entry.steps||[]).map((step)=>[step.title,step.canonicalText])]).toLowerCase().includes(needle)):grouped;if(activeSurface===SURFACES.PROMPTS&&activePromptView==='prompts'&&entries.length&&!entries.some((entry)=>entry.id===selectedPromptId))selectedPromptId=entries[0].id;if(!entries.length){const empty=document.createElement('div');empty.className='empty';empty.textContent=activeSurface===SURFACES.SCENARIOS?'No local catalog rows. Use Hard Reload GitHub to restore current repository content.':activeSurface===SURFACES.PROMPTS&&activePromptView==='modules'?'No modules.':activeSurface===SURFACES.PROMPTS&&activePromptView==='prompts'&&activePromptGroupId!=='all'?'No prompts in this group.':'No items.';wrapper.append(empty);body.append(wrapper);return;}if(activeSurface===SURFACES.SCENARIOS){for(const entry of entries)wrapper.append(makeScenarioRow(entry));body.append(wrapper);return;}for(const entry of entries)wrapper.append(makeEntryRow(entry));body.append(wrapper);}
+    function makeOverlay(titleText){if(activeOverlay)closeOverlay(activeOverlay);const overlay=document.createElement('div');overlay.className='overlay';const modal=document.createElement('section');modal.className='modal';const title=document.createElement('h2');title.textContent=titleText;modal.append(title);overlay.append(modal);panel.append(overlay);activeOverlay=overlay;return{overlay,modal};}
+    function closeOverlay(overlay){if(!overlay)return;overlay.remove();if(activeOverlay===overlay)activeOverlay=null;}
+    function commandDraft(){return{schemaVersion:1,id:'new.command',file:'new-command.command.md',command:'новая команда',englishName:'new command',commandFamily:['новая команда','new command'],description:'describe command',meaning:'describe command meaning',activeContextBehavior:'Use the selected current target.',traversalReadMode:'Targeted/full by current owner uncertainty.',ownerFiles:['planning/command-routing.md'],expectedOutput:'Expected result.',permissionMode:'read-only',keyReminders:['Follow the current owner route.'],userTarget:'<target>',palette:true,refinements:[]};}
+    function openCommandEditor(entry=null){const{overlay,modal}=makeOverlay(entry?'Edit Planning Command':'New Planning Command');const note=document.createElement('p');note.textContent='Edit the GitHub-backed command definition locally first. Save GitHub on the row is explicit and separate.';const textarea=document.createElement('textarea');textarea.value=JSON.stringify(entry?.definition||commandDraft(),null,2);const actions=document.createElement('div');actions.className='modal-actions';actions.append(button('Cancel','',()=>closeOverlay(overlay)),button('Save local','',(_event,control)=>{const value=textarea.value,existingId=entry?.directCommandId||entry?.id||'';closeOverlay(overlay);runTask({key:`local-command-save:${existingId||'new'}`,label:'Saving local command…',button:control,pendingLabel:'Saving…',action:()=>options.onSaveLocalCommandDefinition(value,existingId),onSuccess:(result)=>{applyState(result);showStatus(result.unchanged?'No local content change.':'Saved locally; GitHub was not changed.');}});}));modal.append(note,textarea,actions);}
+    function suggestedModuleId(value){return String(value||'module').toLowerCase().normalize('NFKD').replace(/[^a-z0-9._-]+/g,'-').replace(/^-+|-+$/g,'').slice(0,80)||'module';}
+    function openLibraryEditor(entry=null){
+      const kind=entry?.libraryKind||(activePromptView==='modules'?deps.HELPER_LIBRARY_KINDS.MODULE:deps.HELPER_LIBRARY_KINDS.PROMPT),isModule=kind===deps.HELPER_LIBRARY_KINDS.MODULE,isNew=!entry,{overlay,modal}=makeOverlay(`${entry?'Edit':'New'} ${isModule?'module':'prompt'}`),fields=document.createElement('div');fields.className='fields';
+      const titleWrap=document.createElement('label');titleWrap.className='field field-wide';titleWrap.innerHTML='<span>Title</span>';const title=document.createElement('input');title.value=entry?.title||'';titleWrap.append(title);fields.append(titleWrap);
+      let idInput=null,refInput=null,idTouched=false;
+      if(isModule){const idWrap=document.createElement('label');idWrap.className='field';idWrap.innerHTML=`<span>Module id${entry?' (stable)':''}</span>`;idInput=document.createElement('input');idInput.value=entry?.libraryId||suggestedModuleId(title.value);idInput.readOnly=Boolean(entry);idWrap.append(idInput);const refWrap=document.createElement('label');refWrap.className='field';refWrap.innerHTML='<span>Reference</span>';refInput=document.createElement('input');refInput.readOnly=true;refWrap.append(refInput);fields.append(idWrap,refWrap);}
+      const currentGroup=entry?promptGroupForEntry(entry.id)?.id||'':activePromptGroupId==='all'||activePromptGroupId==='ungrouped'?'':activePromptGroupId;
+      let promptGroupSelect=null;
+      if(!isModule){const wrap=document.createElement('label');wrap.className='field';wrap.textContent='Group';promptGroupSelect=document.createElement('select');promptGroupSelect.setAttribute('aria-label','Prompt group');for(const[id,label]of[['','Ungrouped'],...promptGroups().map(group=>[group.id,group.label])]){const option=document.createElement('option');option.value=id;option.textContent=label;option.selected=id===currentGroup;promptGroupSelect.append(option);}wrap.append(promptGroupSelect);fields.append(wrap);}
+      const textWrap=document.createElement('label');textWrap.className='field field-wide';textWrap.innerHTML=`<span>${isModule?'Reusable module text':'Prompt template'}</span>`;const textarea=document.createElement('textarea');textarea.value=entry?.text||'';textWrap.append(textarea);
+      const hint=document.createElement('p');hint.className='field-hint';hint.textContent=isModule?'The module id is the stable reference key. After the first local save it is locked. Nested module references are allowed and resolved recursively.':'May contain [[module:<id>]] references. Run and Copy use the fully resolved text.';
+      const previewTitle=document.createElement('h3');previewTitle.textContent=isModule?'Resolved module preview':'Resolved insertion preview';const preview=document.createElement('div');preview.className='resolved-preview preview';
+      const refreshPreview=()=>{if(isModule&&isNew&&idInput&&!idTouched)idInput.value=suggestedModuleId(title.value);if(refInput)refInput.value=`[[module:${idInput.value}]]`;try{preview.textContent=typeof options.onResolveLibraryText==='function'?options.onResolveLibraryText(textarea.value):textarea.value;preview.className='resolved-preview preview ok';}catch(error){preview.textContent=error.message||String(error);preview.className='resolved-preview preview danger';}};
+      title.addEventListener('input',refreshPreview);textarea.addEventListener('input',refreshPreview);if(idInput&&isNew)idInput.addEventListener('input',()=>{idTouched=true;if(refInput)refInput.value=`[[module:${idInput.value}]]`;});
+      const note=document.createElement('p');note.textContent='Save local updates the local working cache only. Save GitHub on the row, or Save all GitHub in the toolbar, makes it durable.';const actions=document.createElement('div');actions.className='modal-actions';actions.append(button('Cancel','',()=>closeOverlay(overlay)),button('Save local','',(_event,control)=>{const payload={kind,id:isModule?idInput.value:(entry?.libraryId||''),title:title.value,text:textarea.value,createdAt:entry?.createdAt||'',createOnly:isNew};closeOverlay(overlay);runTask({key:`local-helper-save:${kind}:${payload.id||'new'}`,label:`Saving local ${isModule?'module':'prompt'}…`,button:control,pendingLabel:'Saving…',action:()=>options.onSaveLocalLibraryItem(payload),onSuccess:async(result)=>{applyState(result);if(promptGroupSelect){const desired=promptGroupSelect.value,recordId=`helper-library:prompt:${result.item.id}`;const oldGroup=promptGroupForEntry(recordId)?.id||'';if(desired!==oldGroup){applyState(await options.onAssignPromptGroup(recordId,desired));}}showStatus(result.unchanged?'No local content change.':'Saved locally; GitHub was not changed.');}});}));modal.append(fields,textWrap,hint,previewTitle,preview,note,actions);refreshPreview();
+    }
+    async function copyModuleReference(entry){const ref=entry.moduleReference||`[[module:${entry.libraryId}]]`;try{const copied=typeof options.onCopyPlain==='function'?await options.onCopyPlain(ref):await options.onCopy(ref);showStatus(copied?`Copied module reference: ${ref}`:'Copy failed.',5000);}catch(error){showStatus(error.message||String(error),7000);}}
+    function openModulePreview(entry){const{overlay,modal}=makeOverlay(`Module preview · ${entry.title||entry.libraryId}`),ref=document.createElement('div');ref.className='module-ref';ref.textContent=entry.moduleReference||`[[module:${entry.libraryId}]]`;const preview=document.createElement('div');preview.className='preview';try{preview.textContent=typeof options.onResolveLibraryText==='function'?options.onResolveLibraryText(entry.text):entry.text;preview.classList.add('ok');}catch(error){preview.textContent=error.message||String(error);preview.classList.add('danger');}const actions=document.createElement('div');actions.className='modal-actions';actions.append(button('Copy ref','copy',()=>{closeOverlay(overlay);copyModuleReference(entry);}),button('Close','',()=>closeOverlay(overlay)));modal.append(ref,preview,actions);}
+    function reloadCommand(entry,control=null){const id=entry.directCommandId||entry.id;return runTask({key:`repo-reload:${id}`,label:`Reloading ${entry.label||id}…`,button:control,pendingLabel:'Reloading…',repository:true,action:()=>options.onReloadRepositoryCommand(id),onSuccess:(result)=>{applyState(result);showStatus(`Reloaded ${result.path} from GitHub.`);},onError:(error)=>showStatus(`Reload failed: ${error.message||String(error)}`,8000)});}
+    function saveRepository(entry,control=null){const reference=(entry.entityType==='planning-command'||entry.entityType==='semantic-command-direct')?{type:'planning-command',id:entry.directCommandId||entry.id}:{type:'helper',kind:entry.libraryKind,id:entry.libraryId},key=reference.type==='planning-command'?reference.id:`${reference.kind}:${reference.id}`;return runTask({key:`repo-save:${key}`,label:`Saving ${entry.label||entry.title||key}…`,button:control,pendingLabel:'Saving…',repository:true,action:()=>options.onSaveRepositoryEntity(reference),onSuccess:(result)=>{applyState(result);showStatus(result.localSnapshotUpdated===false?`GitHub ${result.action} succeeded, but local snapshot refresh failed: ${result.localSnapshotError}`:`GitHub ${result.action}: ${result.path}`,8000);},onError:(error)=>showStatus(repositorySaveFailureMessage(error),9000)});}
+    async function deleteCommand(entry){try{applyState(await options.onDeleteLocalCommand(entry.directCommandId||entry.id));showStatus('Removed locally. Hard Reload GitHub restores repository-backed catalog rows.');}catch(error){showStatus(error.message||String(error),7000);}}
+    async function deleteUseCase(entry){try{applyState(await options.onDeleteLocalUseCase(entry.id));showStatus('Use Case removed locally. Sync missing will keep it suppressed; Hard Reload GitHub restores repository-backed catalog rows.');}catch(error){showStatus(error.message||String(error),7000);}}
+    async function deleteLibrary(entry){if(entry.libraryKind===deps.HELPER_LIBRARY_KINDS.MODULE){const users=[...(entry.referencedByPrompts||[]).map((item)=>`Prompt · ${item.title||item.id}`),...(entry.referencedByModules||[]).map((item)=>`Module · ${item.title||item.id}`)];if(users.length){const{overlay,modal}=makeOverlay(`Cannot delete module · ${entry.title||entry.libraryId}`),p=document.createElement('p');p.textContent='This stable module reference is still used. Remove those references first:';const list=document.createElement('div');list.className='usage-list';for(const value of users){const item=document.createElement('div');item.className='usage-item';item.textContent=value;list.append(item);}const actions=document.createElement('div');actions.className='modal-actions';actions.append(button('Close','',()=>closeOverlay(overlay)));modal.append(p,list,actions);return;}}try{applyState(await options.onDeleteLocalLibraryItem(entry.libraryKind,entry.libraryId));showStatus('Removed from local cache. GitHub was not changed.');}catch(error){showStatus(error.message||String(error),7000);}}
+    function openImport(mode){const{overlay,modal}=makeOverlay(mode==='restore'?'Restore local items from ChatGPT markers':'Import local items from ChatGPT markers'),textarea=document.createElement('textarea');const preview=document.createElement('div');preview.className='preview';const actions=document.createElement('div');actions.className='modal-actions';const updatePreview=()=>{try{const result=options.onPreviewChatImport(textarea.value,mode);preview.textContent=(result.lines||[]).join('\n')||'No recognized marker blocks.';preview.className='preview ok';}catch(error){preview.textContent=error.message||String(error);preview.className='preview danger';}};textarea.addEventListener('input',updatePreview);actions.append(button('Cancel','',()=>closeOverlay(overlay)),button(mode==='restore'?'Restore local':'Import local','',(_event,control)=>{const text=textarea.value;closeOverlay(overlay);runTask({key:`chat-import:${mode}`,label:mode==='restore'?'Restoring local items…':'Importing local items…',button:control,pendingLabel:mode==='restore'?'Restoring…':'Importing…',repository:true,action:()=>options.onApplyChatImport(text,mode),onSuccess:(result)=>{applyState(result);showStatus(`${mode==='restore'?'Restore':'Import'} complete. GitHub requests: 0.`);}});}));modal.append(textarea,preview,actions);updatePreview();}
+    function copyLocalState(){
+      const{overlay,modal}=makeOverlay('Copy local state for ChatGPT');
+      const note=document.createElement('p');note.textContent='Overview includes all prompt titles, groups, modules, commands, scenarios, favorites and sync flags without their full texts. Full state additionally includes exact local prompt/module/command content. GitHub token is never included.';
+      const warning=document.createElement('p');warning.textContent='Full state may contain private text. Review before sharing with ChatGPT. No data is sent automatically.';
+      const output=document.createElement('textarea');output.setAttribute('aria-label','Local state export');output.readOnly=true;output.style.cssText='width:100%;min-height:170px;background:#050c17;color:#dbeafe;border:1px solid #334155;border-radius:7px;padding:8px;font:11px ui-monospace,monospace';
+      const actions=document.createElement('div');actions.className='modal-actions';
+      async function copy(mode){
+        try{
+          const data=await options.onExportLocalState(mode);
+          output.value=data;
+          const copied=await (options.onCopyPlain?.(data)||options.onCopy(data));
+          showStatus(copied?`Copied ${mode==='full'?'full state':'state overview'} (${data.length} chars). Paste into ChatGPT.`:'Clipboard unavailable: select the text in the dialog and copy manually.',9000);
+        }catch(error){showStatus(`State export failed: ${error.message||String(error)}`,9000);}
+      }
+      actions.append(button('Cancel','',()=>closeOverlay(overlay)),button('Copy overview','',()=>copy('summary')),button('Copy full state','',()=>copy('full')));
+      modal.append(note,warning,output,actions);
+    }
+    async function copyRecoveryRequest(){try{const text=await options.onGetRecoveryRequest();showStatus(await options.onCopy(text)?'Recovery request copied.':'Could not copy recovery request.',7000);}catch(error){showStatus(error.message||String(error),7000);}}
+    function shortPaths(paths){const rows=(paths||[]).map((path)=>String(path).split('/').pop());return rows.length?rows.join(', '):'—';}
+    function inventoryText(result){const i=result.inventory;function line(label,b){return`${label}: local ${b.local}, GitHub ${b.remote}, overlap ${b.common}\n  local-only: ${shortPaths(b.localOnly)}\n  GitHub-only: ${shortPaths(b.remoteOnly)}${b.suppressedRemote?.length?`\n  suppressed locally: ${shortPaths(b.suppressedRemote)}`:''}${b.knownChanged?.length?`\n  changed: ${shortPaths(b.knownChanged)}`:''}`;}return`Repository: ${result.settings.owner}/${result.settings.repo}@${result.settings.branch}\n\n${line('Direct command definitions',i.planningCommands)}\n\n${line('Use-Case semantic source catalog',i.useCases)}\n\n${line('Semantic component projection',i.semanticComponents)}\n\n${line('Canonical scenario projection',i.scenarios)}\n\n${line('Prompts',i.prompts)}\n\n${line('Modules',i.modules)}\n\nCatalog order changed: ${i.catalogOrderChanged?'yes':'no/unknown'}`;}
+    function checkRepository(control=null){showStatus('Checking GitHub…',9000);return runTask({key:'repo-check',label:'Checking GitHub…',button:control,pendingLabel:'Checking…',repository:true,action:()=>options.onCheckRepository(),onSuccess:(result)=>{if(isOpen&&!activeOverlay){const{overlay,modal}=makeOverlay('GitHub inventory check'),pre=document.createElement('div');pre.className='preview ok';pre.textContent=inventoryText(result);const actions=document.createElement('div');actions.className='modal-actions';actions.append(button('Close','',()=>closeOverlay(overlay)));modal.append(pre,actions);}showStatus('GitHub inventory checked; local cache unchanged.');},onError:(error)=>showStatus(`GitHub check failed: ${error.message||String(error)}`,9000)});}
+    function syncMissingRepository(control=null){showStatus('Syncing GitHub-only records…',9000);return runTask({key:'repo-sync-missing',label:'Syncing missing GitHub items…',button:control,pendingLabel:'Syncing…',repository:true,action:()=>options.onSyncMissingRepository(),onSuccess:(result)=>{applyState(result);showStatus(`Sync complete: ${result.addedCommands||0} command(s), ${result.addedSemanticComponents||0} semantic component(s), ${result.addedScenarios||0} scenario(s), ${result.addedPrompts||0} prompt(s), ${result.addedModules||0} module(s), ${result.addedPromptGroups||0} prompt group(s), ${result.addedPromptAssignments||0} group assignments. Existing local same-ID/path records and local group edits were not overwritten.`,9000);},onError:(error)=>showStatus(`GitHub sync failed: ${error.message||String(error)}`,9000)});}
+    function hardReloadRepository(){const{overlay,modal}=makeOverlay('Hard Reload GitHub');const p=document.createElement('p');p.textContent='Authoritative replace-sync from GitHub: reload every direct command plus UC/TM/Lens/Scenario projection, delete local command rows that no longer exist in GitHub (including legacy helper-command rows), restore hidden GitHub rows, and replace local order/groups (including prompt groups) with GitHub catalog-order.json. Prompts and Modules remain separate helper-library content and are preserved. Unsaved local command edits/grouping will be lost.';const actions=document.createElement('div');actions.className='modal-actions';actions.append(button('Cancel','',()=>closeOverlay(overlay)),button('Hard Reload','danger',()=>{closeOverlay(overlay);runTask({key:'repo-hard-reload',label:'Hard Reload GitHub…',pendingLabel:'Reloading…',repository:true,action:()=>options.onHardReloadRepository(),onSuccess:(result)=>{try{applyState(result);}catch(uiError){showStatus(`Hard Reload completed, but UI refresh failed: ${uiError.message||String(uiError)}`,9000);return;}showStatus(`Hard Reload complete: ${result.commands} direct definitions, ${result.semanticComponents} semantic components, ${result.scenarios} scenarios; removed ${result.removedLegacyCommands||0} local legacy command row(s). GitHub order and prompt/command groups loaded authoritatively.`,9000);},onError:(error)=>showStatus(`Hard Reload failed: ${error.message||String(error)}`,9000)});}));modal.append(p,actions);}
+    function saveAllRepository(){const pending=pendingRepositoryWrites||{};const{overlay,modal}=makeOverlay('Save all GitHub'),p=document.createElement('p');p.textContent='Check and persist pending changes at execution time, after any in-flight local saves. Counts below are locally unverified records, NOT a count of required GitHub writes. Identical GitHub files will be acknowledged without new commits.';const list=document.createElement('div');list.className='usage-list';for(const [label,value] of [['Direct commands',pending.commands||0],['Prompts',pending.prompts||0],['Modules',pending.modules||0],['Legacy helper commands',pending.helperCommands||0],['Catalog order / groups',pending.order?'pending':'already verified']]){const item=document.createElement('div');item.className='usage-item';item.textContent=`${label}: ${value}`;list.append(item);}const actions=document.createElement('div');actions.className='modal-actions';actions.append(button('Cancel','',()=>closeOverlay(overlay)),button('Save all GitHub','',()=>{closeOverlay(overlay);runTask({key:'repo-save-all',label:'Saving all to GitHub…',pendingLabel:'Saving…',repository:true,action:()=>options.onSaveAllRepository(),onSuccess:(result)=>{applyState(result);if(result.ok===false){const saved=(result.savedCommands||0)+(result.savedHelperItems||0)+(result.savedOrder?1:0);showStatus(`Save all ${result.failedItems?.length?'partially completed; unresolved items: '+result.failedItems.join(', '):'stopped at '+(result.failedItem||'unknown item')} after ${saved} GitHub write(s); ${result.alreadyOnGitHub||0} already identical on GitHub (no writes). ${repositorySaveFailureMessage(result.error)}${result.localSnapshotUpdated?'':' WARNING: GitHub wrote content but local snapshot update failed.'}`,15000);return;}if(result.action==='noop'){showStatus('Nothing marked as pending locally; GitHub was not contacted. If you expected changes, reinstall the latest generated userscript.',11000);return;}showStatus(`Save all complete: ${result.savedCommands||0} command(s), ${result.savedPrompts||0} prompt(s), ${result.savedModules||0} module(s)${result.savedOrder?', catalog order saved':''}; ${result.alreadyOnGitHub||0} already identical on GitHub (no writes).`,9000);},onError:(error)=>showStatus(repositorySaveFailureMessage(error),9000)});}));modal.append(p,list,actions);}
+    function openSettings(control=null){return runTask({key:'load-settings',label:'Loading settings…',button:control,pendingLabel:'Loading…',action:()=>options.onLoadSettings(),onSuccess:(current)=>{if(!isOpen||activeOverlay)return;const{overlay,modal}=makeOverlay('Repository settings'),fields=document.createElement('div');fields.className='fields';function add(labelText,value,type='text',wide=false){const wrap=document.createElement('label');wrap.className=`field${wide?' field-wide':''}`;const span=document.createElement('span');span.textContent=labelText;const input=document.createElement('input');input.type=type;input.value=value||'';wrap.append(span,input);fields.append(wrap);return input;}const owner=add('Owner',current.settings.owner),repo=add('Repository',current.settings.repo),branch=add('Branch',current.settings.branch),token=add('GitHub token — used only by explicit GitHub actions',current.token,'password',true);const note=document.createElement('p');note.textContent='Normal search/insert/copy/edit/reorder is local-only. Hard Reload is the authoritative command/semantic/scenario replace-sync: GitHub absence removes local command rows, while Prompts/Modules remain separate helper-library content. Save all GitHub persists pending helper content and UI order/grouping together.';const actions=document.createElement('div');actions.className='modal-actions';actions.append(button('Cancel','',()=>closeOverlay(overlay)),button('Save settings','',()=>{const nextSettings={owner:owner.value,repo:repo.value,branch:branch.value},nextToken=token.value;closeOverlay(overlay);runTask({key:'save-settings',label:'Saving repository settings…',repository:true,action:()=>options.onSaveSettings(nextSettings,nextToken),onSuccess:(result)=>{applyState(result);showStatus(result.sourceChanged?'Repository settings saved; repository evidence cleared for the new source.':'Repository settings saved.');}});}));modal.append(fields,note,actions);}});}
+    function keepPanelInViewport(){const rect=panel.getBoundingClientRect(),w=Math.min(rect.width||width,Math.max(320,window.innerWidth-16)),h=Math.min(rect.height||height,Math.max(320,window.innerHeight-16));width=w;height=h;panel.style.width=`${w}px`;panel.style.height=`${h}px`;left=Math.min(Math.max(left,8),Math.max(8,window.innerWidth-w-8));top=Math.min(Math.max(top,8),Math.max(8,window.innerHeight-h-8));panel.style.left=`${left}px`;panel.style.top=`${top}px`;}
+    function persistGeometry(){const rect=panel.getBoundingClientRect();width=rect.width;height=rect.height;left=rect.left;top=rect.top;options.onSavePosition?.({left,top,width,height});}
+    function enableDragging(){let pointerId=null,startX=0,startY=0,startLeft=0,startTop=0;function down(event){if(event.button!==0||event.target.closest('button'))return;pointerId=event.pointerId;startX=event.clientX;startY=event.clientY;const rect=panel.getBoundingClientRect();startLeft=rect.left;startTop=rect.top;header.setPointerCapture(pointerId);}function move(event){if(pointerId!==event.pointerId)return;left=startLeft+event.clientX-startX;top=startTop+event.clientY-startY;keepPanelInViewport();}function finish(event){if(pointerId===null)return;try{header.releasePointerCapture(pointerId);}catch(_){}pointerId=null;persistGeometry();}header.addEventListener('pointerdown',down);header.addEventListener('pointermove',move);header.addEventListener('pointerup',finish);header.addEventListener('pointercancel',finish);return()=>{header.removeEventListener('pointerdown',down);header.removeEventListener('pointermove',move);header.removeEventListener('pointerup',finish);header.removeEventListener('pointercancel',finish);};}
+    const resizeObserver=typeof ResizeObserver==='function'?new ResizeObserver(()=>{if(!isOpen)return;if(resizeTimer)clearTimeout(resizeTimer);resizeTimer=setTimeout(()=>{keepPanelInViewport();persistGeometry();},180);}):null;resizeObserver?.observe(panel);
+    function consumeToggle(token){const next=String(token||'');if(next&&next!==lastToggleToken){lastToggleToken=next;setOpen(!isOpen);}}function handleShortcut(event){if(event.repeat)return;if(event.key==='Escape'&&activeOverlay){closeOverlay(activeOverlay);return;}if(event.altKey&&!event.ctrlKey&&!event.metaKey&&event.key==='F2'){event.preventDefault();setOpen(!isOpen);}else if(event.key==='Escape'&&isOpen)setOpen(false);}
+    const observer=new MutationObserver((mutations)=>{for(const mutation of mutations){if(mutation.attributeName==='data-obs-planning-dashboard-open'){dashboardOpen=document.documentElement.dataset.obsPlanningDashboardOpen==='true';launcher.style.display=isOpen||dashboardOpen?'none':'block';}if(mutation.attributeName==='data-obs-planning-commands-toggle')consumeToggle(document.documentElement.dataset.obsPlanningCommandsToggle);}});observer.observe(document.documentElement,{attributes:true,attributeFilter:['data-obs-planning-dashboard-open','data-obs-planning-commands-toggle']});
+    tabButtons.forEach((b)=>b.addEventListener('click',()=>switchSurface(b.dataset.surface)));libraryViewButtons.forEach((b)=>b.addEventListener('click',()=>switchPromptLibraryView(b.dataset.libraryView)));launcher.addEventListener('click',()=>setOpen(true));closeButton.addEventListener('click',()=>setOpen(false));searchInput.addEventListener('input',()=>renderEntries(searchInput.value));newLibraryButton.addEventListener('click',()=>{if(activeSurface===SURFACES.COMMANDS)openCommandEditor();else if(activeSurface===SURFACES.PROMPTS)openLibraryEditor();});root.querySelector('.import-chat').addEventListener('click',()=>openImport('import'));root.querySelector('.restore-chat').addEventListener('click',()=>openImport('restore'));root.querySelector('.recovery-request').addEventListener('click',copyRecoveryRequest);root.querySelector('.copy-state').addEventListener('click',copyLocalState);root.querySelector('.check-github').addEventListener('click',(event)=>checkRepository(event.currentTarget));root.querySelector('.sync-github').addEventListener('click',(event)=>syncMissingRepository(event.currentTarget));root.querySelector('.hard-reload').addEventListener('click',hardReloadRepository);manageGroupsButton.addEventListener('click',openGroupManager);saveAllButton.addEventListener('click',saveAllRepository);root.querySelector('.settings').addEventListener('click',(event)=>openSettings(event.currentTarget));window.addEventListener('resize',keepPanelInViewport);window.addEventListener('keydown',handleShortcut,true);const disableDragging=enableDragging();switchSurface(SURFACES.COMMANDS);if(options.startupWarnings?.length)setTimeout(()=>showStatus(options.startupWarnings.join('\n'),10000),100);
+    function dispose(){if(statusTimer!==null)clearTimeout(statusTimer);if(resizeTimer)clearTimeout(resizeTimer);resizeObserver?.disconnect();observer.disconnect();disableDragging();window.removeEventListener('resize',keepPanelInViewport);window.removeEventListener('keydown',handleShortcut,true);host.remove();}
+    return{applyState,setCommandEntries,setScenarioEntries,setUseCaseEntries,setLibraryEntries,switchSurface,setOpen,showStatus,dispose,host,root};
+  }
+
+  return{createPlanningHelperUi,repositorySaveFailureMessage,favoriteEntries,commandDisplayGroups,filterPromptEntries};
+});
+
+(function (root, factory) {
+  const api=factory(typeof require==='function'?Object.assign({},root.ObsPlanningHelper||{},require('./repository-catalog-service.js'),require('./helper-module-resolver.js'),require('./methodology-navigation.js'),require('./command-side-effects.js')):(root.ObsPlanningHelper||{}));
+  if(typeof module==='object'&&module.exports)module.exports=api;
+  root.ObsPlanningHelper=Object.assign(root.ObsPlanningHelper||{},api);
+})(typeof globalThis!=='undefined'?globalThis:this,function(deps){
+  'use strict';
+
+  const INSTANCE_DISPOSE_KEY='__obsPlanningHelperDisposeV4';
+  const LEGACY_DISPOSE_KEYS=['__obsPlanningHelperDisposeV3','__obsPlanningHelperDisposeV2','__obsCommandHelperDisposeV1'];
+  function createRepositoryOperationLock(){let active='';return{isBusy:()=>Boolean(active),active:()=>active,async run(label,task){if(active){const error=new Error(`Repository operation already in progress: ${active}.`);error.kind='busy';throw error;}active=String(label||'repository operation');try{return await task();}finally{active='';}}};}
+  function helperKey(item){return`${item.kind}:${item.id}`;}
+  function repositorySettingsKey(settings){return`${String(settings?.owner||'').trim().toLowerCase()}/${String(settings?.repo||'').trim().toLowerCase()}@${String(settings?.branch||'').trim()}`;}
+  function sortByIds(entries,ids){const order=new Map((ids||[]).map((id,index)=>[String(id),index]));function rank(entry){if(order.has(entry.id))return order.get(entry.id);if(entry.directCommandId&&order.has(entry.directCommandId))return order.get(entry.directCommandId);return Number.MAX_SAFE_INTEGER;}return[...(entries||[])].map((entry,index)=>({entry,index})).sort((a,b)=>rank(a.entry)-rank(b.entry)||a.index-b.index).map(({entry})=>entry);}
+  function orderedIdsForMove(configured,currentIds){const current=[...new Set((currentIds||[]).map(String))],known=new Set(current),result=[];for(const id of configured||[])if(known.has(String(id))&&!result.includes(String(id)))result.push(String(id));for(const id of current)if(!result.includes(id))result.push(id);return result;}
+  function moveId(configured,currentIds,id,delta){const order=orderedIdsForMove(configured,currentIds),value=String(id||''),index=order.indexOf(value);if(index<0)throw new Error(`Order item not found: ${value||'<empty>'}`);const target=Math.max(0,Math.min(order.length-1,index+(delta<0?-1:1)));if(target===index)return order;order.splice(index,1);order.splice(target,0,value);return order;}
+  function moveIdToPosition(configured,currentIds,id,position){const order=orderedIdsForMove(configured,currentIds),value=String(id||''),index=order.indexOf(value);if(index<0)throw new Error(`Order item not found: ${value||'<empty>'}`);const numeric=Number(position);if(!Number.isFinite(numeric))throw new TypeError('Order position must be a finite number.');const target=Math.max(0,Math.min(order.length-1,Math.trunc(numeric)-1));if(target===index)return order;order.splice(index,1);order.splice(target,0,value);return order;}
+  function presentationGroupForId(order,id){for(const group of order?.commandGroups||[]){const index=group.items.indexOf(String(id));if(index>=0)return{id:group.id,viewId:group.viewId,viewLabel:order.categories?.find(c=>c.id===group.viewId)?.label,viewOrder:order.categories?.find(c=>c.id===group.viewId)?.order,label:group.label,order:group.order,itemOrder:index};}return null;}
+  function decoratePresentationGroups(entries,order){return(entries||[]).map((entry)=>{const group=presentationGroupForId(order,entry.id);if(group)return{...entry,presentationGroup:group};
+      const inferred=deps.semanticNavigation?.(entry)?.viewId,category=order.categories.find(c=>c.id===inferred)||order.categories.find(c=>c.id===order.fallbackCategoryId);
+      return category?{...entry,presentationGroup:{id:category.id+'.unassigned',viewId:category.id,viewLabel:category.label,viewOrder:category.order,label:'Other / Ungrouped',order:9999,itemOrder:0}}:entry;});}
+  function slug(value){return String(value||'group').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'')||'group';}
+  function nextGroupId(order,viewId,label){const base=`${String(viewId||'general').toLowerCase()}.${slug(label)}`,used=new Set((order.commandGroups||[]).map((group)=>group.id));if(!used.has(base))return base;let n=2;while(used.has(`${base}-${n}`))n++;return`${base}-${n}`;}
+  function ensureUngroupedGroup(order,viewId){const view=String(viewId||'GENERAL').toUpperCase(),existing=order.commandGroups.find((group)=>group.viewId===view&&group.label==='Other / Ungrouped');if(existing)return existing.id;const max=Math.max(0,...order.commandGroups.filter((group)=>group.viewId===view).map((group)=>Number(group.order)||0)),id=nextGroupId(order,view,'other-ungrouped');order.commandGroups.push({id,viewId:view,label:'Other / Ungrouped',order:max+10,items:[]});return id;}
+  function assignCommandGroupInOrder(value,id,groupId,viewId=''){const order=deps.normalizeCatalogOrder(value||{}),itemId=String(id||'').trim();let targetId=String(groupId||'').trim();if(!itemId)throw new Error('Command card id is required.');const current=order.commandGroups.find((group)=>group.items.includes(itemId));if(!targetId)targetId=ensureUngroupedGroup(order,viewId||current?.viewId||'GENERAL');let found=false;order.commandGroups=order.commandGroups.map((group)=>{const items=group.items.filter((item)=>item!==itemId);if(group.id===targetId){found=true;items.push(itemId);}return{...group,items};});if(!found)throw new Error(`Command group not found: ${targetId}`);return deps.normalizeCatalogOrder(order);}
+  function createCommandGroupInOrder(value,{viewId,label}={}){const order=deps.normalizeCatalogOrder(value||{}),view=String(viewId||'').trim().toUpperCase(),name=String(label||'').trim();if(!view)throw new Error('Command group view is required.');if(!name)throw new Error('Command group label is required.');const max=Math.max(0,...order.commandGroups.filter((group)=>group.viewId===view).map((group)=>Number(group.order)||0));order.commandGroups.push({id:nextGroupId(order,view,name),viewId:view,label:name,order:max+10,items:[]});return deps.normalizeCatalogOrder(order);}
+  function updateCommandGroupInOrder(value,groupId,{label,viewId}={}){const order=deps.normalizeCatalogOrder(value||{}),id=String(groupId||'').trim(),group=order.commandGroups.find((item)=>item.id===id);if(!group)throw new Error(`Command group not found: ${id}`);const name=label==null?group.label:String(label).trim();if(!name)throw new Error('Command group label is required.');group.label=name;if(viewId&&viewId!==group.viewId){group.viewId=String(viewId).toUpperCase();group.order=Math.max(0,...order.commandGroups.filter(g=>g.viewId===group.viewId).map(g=>g.order))+10;}return deps.normalizeCatalogOrder(order);}
+  function moveCommandGroupInOrder(value,groupId,delta){const order=deps.normalizeCatalogOrder(value||{}),id=String(groupId||'').trim(),group=order.commandGroups.find((item)=>item.id===id);if(!group)throw new Error(`Command group not found: ${id}`);const siblings=order.commandGroups.filter((item)=>item.viewId===group.viewId).sort((a,b)=>(Number(a.order)||0)-(Number(b.order)||0)||a.label.localeCompare(b.label)),index=siblings.findIndex((item)=>item.id===id),target=Math.max(0,Math.min(siblings.length-1,index+(delta<0?-1:1)));if(target===index)return order;const temp=siblings[index].order;siblings[index].order=siblings[target].order;siblings[target].order=temp;return deps.normalizeCatalogOrder(order);}
+  function deleteCommandGroupInOrder(value,groupId){const order=deps.normalizeCatalogOrder(value||{}),id=String(groupId||'').trim(),group=order.commandGroups.find((item)=>item.id===id);if(!group)throw new Error(`Command group not found: ${id}`);if(group.label==='Other / Ungrouped')throw new Error('Other / Ungrouped is the fallback group and cannot be deleted.');const fallbackId=ensureUngroupedGroup(order,group.viewId),fallback=order.commandGroups.find((item)=>item.id===fallbackId);fallback.items.push(...group.items.filter((item)=>!fallback.items.includes(item)));order.commandGroups=order.commandGroups.filter((item)=>item.id!==id);return deps.normalizeCatalogOrder(order);}
+  function createCommandCategoryInOrder(value,{label}={}){
+    const order=deps.normalizeCatalogOrder(value),base='CAT_'+slug(label).replace(/-/g,'_').toUpperCase();let id=base,n=2;
+    while(order.categories.some(c=>c.id===id))id=base+'_'+n++;
+    order.categories.push({id,label,order:Math.max(...order.categories.map(c=>c.order))+10});return deps.normalizeCatalogOrder(order);
+  }
+  function updateCommandCategoryInOrder(value,id,{label}={}){
+    const order=deps.normalizeCatalogOrder(value),category=order.categories.find(c=>c.id===id);
+    if(!category)throw new Error('Category not found: '+id);category.label=label;return deps.normalizeCatalogOrder(order);
+  }
+  function moveCommandCategoryInOrder(value,id,delta){
+    const order=deps.normalizeCatalogOrder(value),categories=order.categories.sort((a,b)=>a.order-b.order||a.id.localeCompare(b.id)),ids=moveId([],categories.map(c=>c.id),id,delta);
+    order.categories=ids.map((id,i)=>({...categories.find(c=>c.id===id),order:i*10}));return deps.normalizeCatalogOrder(order);
+  }
+  function deleteCommandCategoryInOrder(value,id,destinationId){
+    const order=deps.normalizeCatalogOrder(value);
+    if(!order.categories.some(c=>c.id===id))throw new Error('Category not found: '+id);
+    if(id===destinationId||!order.categories.some(c=>c.id===destinationId))throw new Error('Choose another destination category; the last category cannot be deleted.');
+    let rank=Math.max(0,...order.commandGroups.filter(g=>g.viewId===destinationId).map(g=>g.order));
+    for(const group of order.commandGroups.filter(g=>g.viewId===id).sort((a,b)=>a.order-b.order||a.id.localeCompare(b.id))){group.viewId=destinationId;group.order=(rank+=10);}
+    order.categories=order.categories.filter(c=>c.id!==id);if(order.fallbackCategoryId===id)order.fallbackCategoryId=destinationId;
+    return deps.normalizeCatalogOrder(order);
+  }
+
+
+
+
+  const DIRECT_PRESENTATION=Object.freeze({
+    'sds.evolution_step.question_sweep':{actionLabel:'Проведи Question sweep для Evolution Step',tail:'SDS · Evolution Step operation',category:'TARGET_MODULES'},
+    'critical_review.apply':{actionLabel:'Критически проверить',tail:'General · Critical Review',scenarioRefs:['planning/documentation/review-diff-review-workflow.md']},
+    'idtspe.next':{actionLabel:'Показать следующий methodology action',tail:'General · IDTSPE Next',scenarioRefs:['UC-IDTSPE-COMPOSE-CURRENT-WORK']},
+    'idtspe.continue':{actionLabel:'Продолжить methodology work',tail:'General · IDTSPE Continue',scenarioRefs:['UC-IDTSPE-COMPOSE-CURRENT-WORK']},
+    'idtspe.review_consistency':{actionLabel:'Проверить consistency текущей работы',tail:'General · Consistency Review',scenarioRefs:['planning/documentation/idtspe-methodology/active/idtspe-core/use-case-processes/CROSS-OWNER-CONSISTENCY-REVIEW.use-case-process.md']},
+    'idtspe.lenses.select':{actionLabel:'Подобрать применимые Lenses',tail:'General · Lens Selection',scenarioRefs:['planning/documentation/idtspe-methodology/active/idtspe-core/lenses/LENS-REGISTRY.md','planning/documentation/idtspe-methodology/active/idtspe-core/lenses/LENS-MODEL.md']},
+    'replacement_archive.create':{actionLabel:'Собрать Replacement Package',tail:'Tool · UC-REPO-BUILD-REPLACEMENT-PACKAGE',category:'TOOL',scenarioRefs:['planning/use-cases/UC-REPO-BUILD-REPLACEMENT-PACKAGE.md','planning/documentation/build-replacement-archive-workflow.md']},
+    'proposal_archive.create':{actionLabel:'Создать proposal workspace archive',tail:'Tool · Proposal Archive',category:'TOOL',scenarioRefs:['planning/documentation/idtspe-methodology/active/idtspe-core/target-modules/TM-PLANNING-RESOLUTION-STATE.md#tm-planning-resolution-state','planning/documentation/idtspe-methodology/active/idtspe-core/representation/ARTIFACT-PLACEMENT-AND-IDTSPE-RESPONSE-CONTRACT.md#representation-proposal-workspace-archive']},
+    'archive_source.use':{actionLabel:'Использовать выбранный archive как source',tail:'Tool · Archive Source',category:'TOOL',scenarioRefs:['planning/command-routing.md#archive-read-source-boundary']},
+    'helper.impact.check':{actionLabel:'Проверить влияние на хелпер',tail:'Tool · Helper Impact',category:'TOOL',scenarioRefs:['planning/use-cases/UC-REPO-CHECK-HELPER-IMPACT.md']},
+    'sds.lens_attachment_map.check':{actionLabel:'Составить карту атачментов Lens',tail:'Tool · On-demand Attachment Audit',category:'TOOL',scenarioRefs:['planning/documentation/idtspe-methodology/active/idtspe-core/target-modules/TARGET-MODULE-MODEL.md','planning/documentation/idtspe-methodology/active/profiles/sds/registries/LENS-REGISTRY.md']},
+    'idtspe.tm_lens_dependency_map.check':{actionLabel:'Составить карту зависимостей TM/Lens',tail:'Tool · On-demand Dependency Audit',category:'TOOL',scenarioRefs:['planning/documentation/principles-and-terminology.md']},
+    'helper.command.add':{actionLabel:'Создать / изменить Planning Command',tail:'Tool · Planning Command',category:'TOOL',scenarioRefs:['planning/use-cases/UC-REPO-MAINTAIN-PLANNING-COMMAND.md','planning/documentation/tampermonkey-command-projection-workflow.md']},
+    'documentation.links.review':{actionLabel:'Проверить связность документации',tail:'General · Documentation Links',scenarioRefs:['planning/documentation/use-cases/UC-DOC-REVIEW-DOCUMENTATION.md','planning/documentation/principles-and-terminology.md']},
+    'documentation.methodology-baseline.maintain':{actionLabel:'Зафиксировать baseline методологии проекта',tail:'General · Methodology Baseline',scenarioRefs:['planning/documentation/use-cases/UC-DOC-ESTABLISH-PROJECT-METHODOLOGY-BASELINE.md','planning/documentation/principles-and-terminology.md#doc-project-methodology-baseline']},
+    'command.plan':{actionLabel:'Спланировать command route',tail:'General · Command Route',scenarioRefs:['planning/command-routing.md']},
+    'session.proposal_driven':{actionLabel:'Включить proposal-driven gating',tail:'General · Session Interaction',scenarioRefs:['planning/session/session-runtime-contract.md']},
+    'idtspe.proposal':{actionLabel:'Работать через Proposal lifecycle',tail:'General · IDTSPE Proposal Lifecycle',scenarioRefs:['planning/documentation/idtspe-methodology/active/idtspe-core/resolution/proposal-decision/PROPOSAL-AND-DECISION-LIFECYCLE.md#resolution-proposal-decision-lifecycle','planning/documentation/idtspe-methodology/active/idtspe-core/lenses/required/LENS-PROPOSAL-DECISION-RESOLUTION-CONTEXT.md']},
+    'idtspe.decisions.capture':{actionLabel:'Зафиксировать принятые решения',tail:'General · IDTSPE Decision Capture',scenarioRefs:['planning/documentation/idtspe-methodology/active/idtspe-core/runtime/interaction/USER-INPUT-DECISION-AND-ANSWER-INTAKE-RULE.md','planning/documentation/idtspe-methodology/active/idtspe-core/lenses/required/LENS-PROPOSAL-DECISION-RESOLUTION-CONTEXT.md']},
+    'idtspe.needs.collect':{actionLabel:'Собрать новые потребности',tail:'IDTSPE · Need Candidate Collection',scenarioRefs:['planning/documentation/idtspe-methodology/active/idtspe-core/resolution/needs/NEED-CANDIDATE-COLLECTION.md']},
+    'idtspe.needs.disposition':{actionLabel:'Диспозировать собранные потребности',tail:'IDTSPE · Need Candidate Disposition',scenarioRefs:['planning/documentation/idtspe-methodology/active/idtspe-core/resolution/needs/NEED-CANDIDATE-DISPOSITION.md']},
+    'idtspe.needs.set.start':{actionLabel:'Начать новый набор потребностей',tail:'IDTSPE · Need Set Coordination',scenarioRefs:['planning/documentation/idtspe-methodology/active/idtspe-core/resolution/needs/NEED-SET-COORDINATION.md#need-set-start']},
+    'idtspe.needs.set.sync':{actionLabel:'Синхронизировать текущие потребности',tail:'IDTSPE · Need Set Coordination',scenarioRefs:['planning/documentation/idtspe-methodology/active/idtspe-core/resolution/needs/NEED-SET-COORDINATION.md#need-set-sync']},
+    'idtspe.needs.set.close':{actionLabel:'Закрыть текущий набор потребностей',tail:'IDTSPE · Need Set Coordination',scenarioRefs:['planning/documentation/idtspe-methodology/active/idtspe-core/resolution/needs/NEED-SET-COORDINATION.md#need-set-close']},
+    'idtspe.findings.disposition':{actionLabel:'Диспозировать Findings',tail:'IDTSPE · Finding Disposition',scenarioRefs:['planning/documentation/idtspe-methodology/active/idtspe-core/resolution/findings/FINDING-DISPOSITION.md#resolution-escalation']},
+    'idtspe.review':{actionLabel:'Провести IDTSPE review',tail:'IDTSPE · Review',scenarioRefs:['planning/documentation/idtspe-methodology/active/ai-reviewability/REVIEW-STRATEGY-AND-COVERAGE-CONTRACT.md']},
+    'idtspe.review.recheck':{actionLabel:'Перепроверить изменившееся coverage',tail:'IDTSPE · Review Recheck',scenarioRefs:['planning/documentation/idtspe-methodology/active/ai-reviewability/REVIEW-STRATEGY-AND-COVERAGE-CONTRACT.md#review-recheck-operation']},
+    'idtspe.bootstrap':{actionLabel:'Загрузить IDTSPE Core',tail:'General · Bootstrap'},
+    'application_sds.bootstrap':{actionLabel:'Загрузить SDS profile',tail:'General · Bootstrap'},
+    'documentation_principles.read':{actionLabel:'Загрузить guidance по документации',tail:'General · Documentation Guidance'},
+    'governance.development':{actionLabel:'Загрузить governance разработки',tail:'General · Development Governance'},
+    'current_state.report':{actionLabel:'Показать текущее состояние',tail:'General · Current State'},
+    'application_reality.review':{actionLabel:'Разобрать текущую реальность',tail:'General · Application Reality'},
+    'application_research.research':{actionLabel:'Исследовать альтернативы решения',tail:'General · Solution Alternatives'},
+    'application_solution.plan':{actionLabel:'Сформировать решение приложения',tail:'General · Application Solution'},
+    'application_realization.review':{actionLabel:'Проверить feasibility реализации',tail:'General · Application Realization'},
+    'workspace_uses.discover':{actionLabel:'Изучить Workspace Use Cases',tail:'General · Architecture Inputs'},
+    'architecture_path.trace':{actionLabel:'Разобрать путь изменения системы',tail:'General · Architecture Path'},
+    'architecture_pressure.review':{actionLabel:'Оценить давление на архитектуру',tail:'General · Architecture Pressure'},
+    'architecture_decision.plan':{actionLabel:'Выбрать архитектурное решение',tail:'General · Architecture Decision'}
+  });
+  function directExplanation(entry){const definition=entry?.definition||{};return{context:String(definition.activeContextBehavior||entry.description||'').trim(),result:String(definition.expectedOutput||entry.description||'').trim(),essence:String(definition.meaning||entry.description||entry.command||entry.id||'').trim()};}
+  function directPresentation(entry){const meta=DIRECT_PRESENTATION[entry.id]||{};const actionLabel=meta.actionLabel||entry.command||entry.label||entry.id,tail=meta.tail||`General · ${entry.englishName||entry.id}`;return{actionLabel,label:`${actionLabel} · ${tail}`,commandCategory:meta.category||'GENERAL',scenarioRefs:[...(meta.scenarioRefs||[])],...directExplanation(entry)};}
+  function componentBody(component,useCase,mode){if(component.kind==='USE_CASE'&&useCase)return deps.buildSemanticBody('use_case',useCase,mode);return deps.buildSemanticBody(component.kind==='TARGET_MODULE'?'target_module':'lens',component,mode);}
+  function useCaseSemanticComponent(useCase,previous=null){const item=deps.normalizeUseCaseDefinition(useCase),prior=previous&&previous.kind==='USE_CASE'?deps.normalizeSemanticComponent(previous):null;return deps.normalizeSemanticComponent({id:item.id,kind:'USE_CASE',scope:prior?.scope||(item.id.startsWith('UC-DOC-')?'Documentation':'Core'),label:item.label,actionLabel:prior?.actionLabel||item.label,description:item.description,context:item.trigger||item.description,result:item.result||item.description,essence:item.description,sources:item.sources,aliases:prior?.aliases||[],commandId:item.commandId||prior?.commandId||'',invocation:'',target:item.target});}
+  function semanticDirectIds(component,definitions){const c=deps.normalizeSemanticComponent(component),ids=[];for(const definition of definitions||[]){if(definition.palette===false)continue;const binding=definition.methodologyBinding||{},matches=c.kind==='USE_CASE'?Boolean(c.commandId)&&definition.id===c.commandId:c.kind==='TARGET_MODULE'?binding.targetModuleId===c.id:binding.lensId===c.id;if(matches&&!ids.includes(definition.id))ids.push(definition.id);}return ids;}
+
+  function materializeSnapshot(snapshot){
+    const commandRecords=[...(snapshot.planningCommands||[])],helperRecords=[...(snapshot.helperItems||[])],useCases=deps.normalizeUseCaseDefinitions(snapshot.useCases||[]),semanticComponents=deps.normalizeSemanticComponents(snapshot.semanticComponents||[]),scenarios=deps.normalizeScenarios(snapshot.scenarios||[]),order=deps.normalizeCatalogOrder(snapshot.catalogOrder||{});
+    const definitions=commandRecords.map((record)=>record.definition);deps.validateCommandCatalog(definitions,{allowMissingIncludes:true});
+    const commandByFile=new Map(commandRecords.map((record)=>[record.definition.file,record])),commandById=new Map(commandRecords.map((record)=>[record.definition.id,record])),helperByKey=new Map(helperRecords.map((record)=>[helperKey(record.item),record])),useCaseById=new Map(useCases.map((entry)=>[entry.id,entry]));
+    const rawPlanningEntries=deps.buildCommandEntries(definitions).map((entry)=>{const record=commandById.get(entry.id),stateLabel=record?.repositoryKnown?'Registered · GitHub content verified':record?.repositoryTracked?'Registered · local draft changed':'Local command draft · not GitHub verified';return{...entry,entityType:'planning-command',definition:record?.definition||null,rawContent:record?.rawContent||'',repositoryPath:record?.path||'',repositoryKnown:Boolean(record?.repositoryKnown),repositoryTracked:Boolean(record?.repositoryTracked),repositorySha:record?.repositorySha||'',ownerFiles:[...(record?.definition?.ownerFiles||[])],stateLabel};});
+    const rawEntryById=new Map(rawPlanningEntries.map((entry)=>[entry.id,entry])),consumedDirectIds=new Set(),semanticCommandEntries=[],useCaseComponentById=new Map(semanticComponents.filter((component)=>component.kind==='USE_CASE').map((component)=>[component.id,component])),effectiveSemanticComponents=[...semanticComponents.filter((component)=>component.kind!=='USE_CASE'),...useCases.map((useCase)=>useCaseSemanticComponent(useCase,useCaseComponentById.get(useCase.id)))];
+    for(const component of effectiveSemanticComponents){
+      const directDefinition=deps.chooseDirectDefinition(component,definitions),directEntry=directDefinition?rawEntryById.get(directDefinition.id):null;
+      for(const definition of definitions)if(definition.palette!==false&&((component.kind==='USE_CASE'&&component.commandId&&definition.id===component.commandId)||(component.kind==='TARGET_MODULE'&&definition.methodologyBinding?.targetModuleId===component.id)||(component.kind==='LENS'&&definition.methodologyBinding?.lensId===component.id)))consumedDirectIds.add(definition.id);
+      const adaptiveBody=directEntry?.adaptiveBody||componentBody(component,useCaseById.get(component.id),deps.MODE.ADAPTIVE),fullBody=directEntry?.fullBody||componentBody(component,useCaseById.get(component.id),deps.MODE.FULL),record=directDefinition?commandById.get(directDefinition.id):null;
+      semanticCommandEntries.push({
+        ...(directEntry||{}),id:deps.semanticCardId(component),entityType:directEntry?'semantic-command-direct':'semantic-command',canonicalId:component.id,semanticKind:component.kind,semanticScope:component.scope,semanticSources:[...component.sources],semanticOwnerRef:component.ownerRef?{...component.ownerRef}:null,compositionRoot:component.kind==='TARGET_MODULE'?'planning/commands/apply-idtspe-target-module.command.md':component.kind==='LENS'?'planning/commands/apply-idtspe-lens.command.md':(directDefinition?.file?`planning/commands/${directDefinition.file}`:''),actionLabel:component.actionLabel,label:deps.fullSemanticLabel(component),description:component.description,context:component.context||useCaseById.get(component.id)?.trigger||component.description,result:component.result||useCaseById.get(component.id)?.result||component.description,essence:component.essence||component.description,adaptiveBody,fullBody,provenance:directEntry?deps.SEMANTIC_PROVENANCE.DIRECT:deps.SEMANTIC_PROVENANCE.GENERIC,directCommandId:directDefinition?.id||'',definition:directDefinition||null,rawContent:record?.rawContent||'',repositoryPath:record?.path||'',repositoryKnown:Boolean(record?.repositoryKnown),repositoryTracked:Boolean(record?.repositoryTracked),repositorySha:record?.repositorySha||'',ownerFiles:[...(directDefinition?.ownerFiles||component.sources)],stateLabel:directEntry?'DIRECT CURRENT':'GENERIC CURRENT'
+      });
+    }
+    const directEntries=rawPlanningEntries.filter((entry)=>!consumedDirectIds.has(entry.id)&&entry.palette!==false).map((entry)=>({...entry,...directPresentation(entry),canonicalId:'',semanticKind:'',semanticScope:'',semanticSources:[],provenance:deps.SEMANTIC_PROVENANCE.DIRECT,stateLabel:'DIRECT CURRENT'}));
+    const primaryCommands=deps.attachScenarioUses([...semanticCommandEntries,...directEntries],scenarios).map(entry=>{
+      const id=entry.directCommandId||entry.definition?.id||(entry.semanticKind==='TARGET_MODULE'?'idtspe.target-module.apply':entry.semanticKind==='LENS'?'idtspe.lens.apply':'');if(!id)return entry;
+      try{const plan=deps.expandCommandInvocation(definitions,[id]);return{...entry,effectiveCommandDag:plan.initial.paths,processCallPlan:plan.processCalls.map(({composition,...call})=>call)};}catch(_){return entry;}
+    });
+    const helperEntries=helperRecords.map((record)=>{const item=record.item,evidence=record.repositorySha?'local · GitHub SHA verified':record.repositoryKnown?'local · repository-backed content; SHA unverified':'local · repository match not verified',entityType=item.kind===deps.HELPER_LIBRARY_KINDS.COMMAND?'legacy-helper-command':item.kind===deps.HELPER_LIBRARY_KINDS.MODULE?'module':'prompt';return{id:`helper-library:${item.kind}:${item.id}`,entityType,libraryId:item.id,libraryKind:item.kind,label:item.kind===deps.HELPER_LIBRARY_KINDS.COMMAND?`Legacy insertion · ${item.title}`:item.title,title:item.title,description:item.kind===deps.HELPER_LIBRARY_KINDS.COMMAND?`Legacy helper-command compatibility · ${evidence}`:evidence,text:item.text,adaptiveBody:item.text,repositoryPath:record.path,repositoryKnown:Boolean(record.repositoryKnown),repositoryTracked:Boolean(record.repositoryKnown),repositorySha:record.repositorySha||'',createdAt:item.createdAt,updatedAt:item.updatedAt};});
+    const legacyCommandEntries=helperEntries.filter((entry)=>entry.libraryKind===deps.HELPER_LIBRARY_KINDS.COMMAND),groupedCommandEntries=decoratePresentationGroups([...primaryCommands,...legacyCommandEntries],order),commandEntries=sortByIds(groupedCommandEntries,order.commands),promptEntries=sortByIds(helperEntries.filter((entry)=>entry.libraryKind===deps.HELPER_LIBRARY_KINDS.PROMPT),order.prompts).map((entry)=>({...entry,moduleReferenceCount:deps.findModuleReferences?.(entry.text)?.length||0})),rawModuleEntries=helperEntries.filter((entry)=>entry.libraryKind===deps.HELPER_LIBRARY_KINDS.MODULE).sort((a,b)=>String(a.title||'').localeCompare(String(b.title||''))||String(a.libraryId||'').localeCompare(String(b.libraryId||''))),moduleEntries=rawModuleEntries.map((entry)=>{const promptUses=promptEntries.filter((candidate)=>(deps.findModuleReferences?.(candidate.text)||[]).includes(entry.libraryId)),moduleUses=rawModuleEntries.filter((candidate)=>candidate.libraryId!==entry.libraryId&&(deps.findModuleReferences?.(candidate.text)||[]).includes(entry.libraryId));return{...entry,moduleReference:deps.moduleReference?deps.moduleReference(entry.libraryId):`[[module:${entry.libraryId}]]`,referencedByPrompts:promptUses.map((candidate)=>({id:candidate.id,title:candidate.title})),referencedByModules:moduleUses.map((candidate)=>({id:candidate.id,title:candidate.title})),moduleReferenceCount:deps.findModuleReferences?.(entry.text)?.length||0};}),legacySemanticIdByDirect=new Map(semanticCommandEntries.filter((entry)=>entry.directCommandId).map((entry)=>[entry.directCommandId,entry.id])),favoriteCommandIds=[...new Set((snapshot.favoriteCommandIds||[]).map((id)=>legacySemanticIdByDirect.get(String(id))||String(id)))];
+    const scenarioEntries=sortByIds(scenarios.map((scenario)=>({...scenario,entityType:'methodology-scenario',label:`${scenario.id} · ${scenario.title}`,steps:(scenario.steps||[]).map((step)=>({...step,commandEquivalents:deps.commandEquivalentsForScenarioStep(primaryCommands,step).map((entry)=>({id:entry.id,label:entry.label,actionLabel:entry.actionLabel||entry.command||entry.label,adaptiveBody:entry.adaptiveBody||entry.text||'',fullBody:entry.fullBody||'',provenance:entry.provenance||entry.stateLabel||'',stateLabel:entry.stateLabel||'',canonicalId:entry.canonicalId||'',directCommandId:entry.directCommandId||'',entityType:entry.entityType||'',ownerFiles:[...(entry.ownerFiles||[])],repositoryPath:entry.repositoryPath||''}))}))})),order.scenarios);
+    // Compatibility projection only; the UI no longer exposes Use Cases as a peer surface.
+    const useCaseEntries=deps.buildSemanticEntries(useCases)[deps.SURFACES.USE_CASES]||[];
+    return{commandRecords,helperRecords,useCases,semanticComponents,scenarios,order,commandByFile,commandById,helperByKey,commandEntries,localCommandEntries:sortByIds(legacyCommandEntries,order.commands),promptEntries,moduleEntries,scenarioEntries,useCaseEntries,favoriteCommandIds,legacySemanticIdByDirect};
+  }
+
+  function suppressionState(snapshot){return deps.normalizeSuppressedRepository(snapshot?.suppressedRepository||{});}
+  function withoutValue(values,value){return(values||[]).filter((item)=>item!==value);}
+  function withValue(values,value){return[...new Set([...(values||[]),value])];}
+  function commandDeletePath(value,current){const key=String(value||'').trim(),byId=current.commandById.get(key),byFile=current.commandByFile.get(key);if(byId)return byId.path;if(byFile)return byFile.path;if(/^planning\/commands\/[^/]+\.command\.md$/.test(key))return key;if(/^[^/]+\.command\.md$/.test(key))return`planning/commands/${key}`;throw new TypeError(`Unknown planning-command delete key: ${key||'<empty>'}. Use a current command id/file or planning/commands/<file>.command.md.`);}
+  function helperDeletePath(value,current){const key=String(value||'').trim(),byKey=current.helperByKey.get(key);if(byKey)return byKey.path;if(/^planning\/helper-library\/(commands|prompts|modules)\/[^/]+\.(helper-command|prompt|module)\.md$/.test(key))return key;throw new TypeError(`Unknown helper-item delete key: ${key||'<empty>'}. Use kind:id or an exact planning/helper-library path.`);}
+  function sameJson(a,b){return JSON.stringify(a)===JSON.stringify(b);}
+  function emptyPatch(){return{upsert:{commands:[],helperItems:[],useCases:[],semanticComponents:[],scenarios:[]},delete:{commands:[],helperItems:[],useCases:[],semanticComponents:[],scenarios:[]},catalogOrder:null};}
+  function assertUniqueKeys(values,keyOf,label){const seen=new Set();for(const value of values){const key=keyOf(value);if(seen.has(key))throw new TypeError(`Duplicate ${label}: ${key}`);seen.add(key);}return seen;}
+  function assertNoOverlap(upserts,deletes,label){for(const key of upserts)if(deletes.has(key))throw new TypeError(`${label} cannot be both upserted and deleted in one import: ${key}`);}
+  function normalizeImportIntent(current,parsed){const patch=parsed.patch||emptyPatch(),commands=[...(parsed.definitions||[]),...(patch.upsert.commands||[])].map((value)=>deps.normalizeCommandDefinition(value)),commandPaths=assertUniqueKeys(commands,(item)=>deps.commandPathForDefinition(item),'planning-command upsert path'),commandIds=assertUniqueKeys(commands,(item)=>item.id,'planning-command upsert id'),commandDeletes=(patch.delete.commands||[]).map((value)=>commandDeletePath(value,current)),commandDeleteSet=assertUniqueKeys(commandDeletes,(value)=>value,'planning-command delete');assertNoOverlap(commandPaths,commandDeleteSet,'Planning command');
+    const helperItems=[...(parsed.helperItems||[]),...(patch.upsert.helperItems||[])].map((value)=>deps.normalizeHelperLibraryItem(value)),helperPaths=assertUniqueKeys(helperItems,(item)=>deps.helperLibraryTargetPath(item),'helper-item upsert path'),helperDeletes=(patch.delete.helperItems||[]).map((value)=>helperDeletePath(value,current)),helperDeleteSet=assertUniqueKeys(helperDeletes,(value)=>value,'helper-item delete');assertNoOverlap(helperPaths,helperDeleteSet,'Helper item');
+    const useCases=(patch.upsert.useCases||[]).map((value)=>deps.normalizeUseCaseDefinition(value)),useCaseIds=assertUniqueKeys(useCases,(item)=>item.id,'Use-Case upsert id'),useCaseDeletes=(patch.delete.useCases||[]).map((value)=>String(value).trim()),useCaseDeleteSet=assertUniqueKeys(useCaseDeletes,(value)=>value,'Use-Case delete id');assertNoOverlap(useCaseIds,useCaseDeleteSet,'Use Case');
+    const semanticComponents=(patch.upsert.semanticComponents||[]).map((value)=>deps.normalizeSemanticComponent(value));for(const item of semanticComponents)if(item.kind==='USE_CASE')throw new TypeError(`Import Use Cases through upsert.useCases; semanticComponents is only for Target Modules and Lenses: ${item.id}`);const componentIds=assertUniqueKeys(semanticComponents,(item)=>item.id,'semantic-component upsert id'),componentDeletes=(patch.delete.semanticComponents||[]).map((value)=>String(value).trim());for(const id of componentDeletes){const existing=current.semanticComponents.find((item)=>item.id===id);if(id.startsWith('UC-')||existing?.kind==='USE_CASE')throw new TypeError(`Delete Use Cases through delete.useCases; semanticComponents is only for Target Modules and Lenses: ${id}`);}const componentDeleteSet=assertUniqueKeys(componentDeletes,(value)=>value,'semantic-component delete id');assertNoOverlap(componentIds,componentDeleteSet,'Semantic component');
+    const scenarios=(patch.upsert.scenarios||[]).map((value)=>deps.normalizeScenario(value)),scenarioIds=assertUniqueKeys(scenarios,(item)=>item.id,'Scenario upsert id'),scenarioDeletes=(patch.delete.scenarios||[]).map((value)=>String(value).trim()),scenarioDeleteSet=assertUniqueKeys(scenarioDeletes,(value)=>value,'Scenario delete id');assertNoOverlap(scenarioIds,scenarioDeleteSet,'Scenario');
+    return{patch,commands,commandDeletes,helperItems,helperDeletes,useCases,useCaseDeletes,semanticComponents,componentDeletes,scenarios,scenarioDeletes};}
+  function mergeRestoreChatImport(snapshot,parsed){if(parsed.patch)throw new TypeError('PLANNING_HELPER_PATCH is supported by Import, not Restore.');const current=materializeSnapshot(snapshot),suppressed=suppressionState(snapshot),commandSeed=current.commandRecords.filter((record)=>!record.repositoryKnown),helperSeed=current.helperRecords.filter((record)=>!record.repositoryKnown),commandMap=new Map(commandSeed.map((record)=>[record.definition.file,record])),helperMap=new Map(helperSeed.map((record)=>[helperKey(record.item),record]));const restoreCommandFiles=new Set((parsed.definitions||[]).map((definition)=>deps.normalizeCommandDefinition(definition).file)),restoreHelperKeys=new Set((parsed.helperItems||[]).map((item)=>helperKey(deps.normalizeHelperLibraryItem(item)))),removedRepositoryCommands=current.commandRecords.filter((record)=>record.repositoryKnown&&!restoreCommandFiles.has(record.definition.file)).length,removedRepositoryHelperItems=current.helperRecords.filter((record)=>record.repositoryKnown&&!restoreHelperKeys.has(helperKey(record.item))).length;for(const definition of parsed.definitions||[]){const normalized=deps.normalizeCommandDefinition(definition),path=deps.commandPathForDefinition(normalized),idCollision=[...commandMap.values()].find((record)=>record.definition.id===normalized.id&&record.definition.file!==normalized.file);if(idCollision)throw new TypeError(`Planning command id ${normalized.id} already belongs to ${idCollision.definition.file}.`);commandMap.set(normalized.file,deps.normalizeCommandRecord({definition:normalized,path,rawContent:deps.renderCommandDefinitionDocument(normalized),repositoryKnown:true,repositoryTracked:true,repositorySha:''}));suppressed.commands=withoutValue(suppressed.commands,path);}for(const itemValue of parsed.helperItems||[]){const item=deps.normalizeHelperLibraryItem(itemValue),path=deps.helperLibraryTargetPath(item);helperMap.set(helperKey(item),deps.normalizeHelperRecord({item,path,rawContent:deps.renderHelperLibraryDocument(item),repositoryKnown:true,repositorySha:''}));suppressed.helperItems=withoutValue(suppressed.helperItems,path);}const next=deps.normalizePlanningHelperLocalSnapshot({...snapshot,planningCommands:[...commandMap.values()],helperItems:[...helperMap.values()],suppressedRepository:suppressed});return{snapshot:next,newCommandRecords:[],newHelperRecords:[],removedRepositoryCommands,removedRepositoryHelperItems,parsed,lines:[...(parsed.definitions||[]).map((definition)=>`RESTORE planning/commands/${definition.file}`),...(parsed.helperItems||[]).map((item)=>`RESTORE ${deps.helperLibraryTargetPath(item)}`),...((removedRepositoryCommands||removedRepositoryHelperItems)?[`RECONCILE remove stale repository-backed local records: ${removedRepositoryCommands} command(s), ${removedRepositoryHelperItems} helper item(s)`]:[])]};}
+  function mergeImportChatPatch(snapshot,parsed){const current=materializeSnapshot(snapshot),intent=normalizeImportIntent(current,parsed),patch=intent.patch,commandMap=new Map(current.commandRecords.map((record)=>[record.path,record])),helperMap=new Map(current.helperRecords.map((record)=>[record.path,record])),useCaseMap=new Map(current.useCases.map((entry)=>[entry.id,entry])),componentMap=new Map(current.semanticComponents.map((entry)=>[entry.id,entry])),scenarioMap=new Map(current.scenarios.map((entry)=>[entry.id,entry])),suppressed=suppressionState(snapshot),lines=[],newCommandRecords=[],newHelperRecords=[];let useCasesChanged=false,componentsChanged=false,scenariosChanged=false,favoriteCommandIds=[...(snapshot.favoriteCommandIds||[])],favoriteUseCaseIds=[...(snapshot.favoriteUseCaseIds||[])];
+    for(const path of intent.commandDeletes){const record=commandMap.get(path),semanticEntry=record?current.commandEntries.find((entry)=>entry.directCommandId===record.definition.id&&entry.canonicalId):null;if(record){commandMap.delete(path);lines.push(`DELETE ${path}${semanticEntry?` · semantic card ${semanticEntry.id} remains as generic projection`:''}`);favoriteCommandIds=withoutValue(favoriteCommandIds,record.definition.id);}else lines.push(`SUPPRESS ${path}`);suppressed.commands=withValue(suppressed.commands,path);}
+    for(const path of intent.helperDeletes){if(helperMap.delete(path))lines.push(`DELETE ${path}`);else lines.push(`SUPPRESS ${path}`);suppressed.helperItems=withValue(suppressed.helperItems,path);}
+    for(const id of intent.useCaseDeletes){if(useCaseMap.delete(id)){useCasesChanged=true;lines.push(`DELETE use-case ${id}`);}else lines.push(`SUPPRESS use-case ${id}`);suppressed.useCases=withValue(suppressed.useCases,id);suppressed.semanticComponents=withoutValue(suppressed.semanticComponents,id);favoriteUseCaseIds=withoutValue(favoriteUseCaseIds,id);favoriteCommandIds=withoutValue(favoriteCommandIds,`uc:${id}`);}
+    for(const id of intent.componentDeletes){const component=componentMap.get(id);if(componentMap.delete(id)){componentsChanged=true;lines.push(`DELETE semantic-component ${id}`);}else lines.push(`SUPPRESS semantic-component ${id}`);suppressed.semanticComponents=withValue(suppressed.semanticComponents,id);if(component)favoriteCommandIds=withoutValue(favoriteCommandIds,deps.semanticCardId(component));}
+    for(const id of intent.scenarioDeletes){if(scenarioMap.delete(id)){scenariosChanged=true;lines.push(`DELETE scenario ${id}`);}else lines.push(`SUPPRESS scenario ${id}`);suppressed.scenarios=withValue(suppressed.scenarios,id);}
+    for(const normalized of intent.commands){const path=deps.commandPathForDefinition(normalized),previous=current.commandByFile.get(normalized.file),idCollision=[...commandMap.values()].find((record)=>record.definition.id===normalized.id&&record.path!==path);if(idCollision)throw new TypeError(`Planning command id ${normalized.id} already belongs to ${idCollision.definition.file}.`);const rendered=deps.renderCommandDefinitionDocument(normalized),unchanged=Boolean(previous)&&previous.rawContent===rendered,record=deps.normalizeCommandRecord({definition:normalized,path,rawContent:rendered,repositoryKnown:unchanged&&Boolean(previous?.repositoryKnown),repositoryTracked:Boolean(previous?.repositoryTracked||previous?.repositoryKnown),repositorySha:unchanged?previous?.repositorySha||'':''});commandMap.set(path,record);suppressed.commands=withoutValue(suppressed.commands,path);lines.push(`${previous?(unchanged?'UNCHANGED':'UPDATE'):'ADD'} ${path}`);if(!previous)newCommandRecords.push(record);}
+    for(const item of intent.helperItems){const path=deps.helperLibraryTargetPath(item),previous=current.helperByKey.get(helperKey(item)),rendered=deps.renderHelperLibraryDocument(item),unchanged=Boolean(previous)&&previous.rawContent===rendered,record=deps.normalizeHelperRecord({item,path,rawContent:rendered,repositoryKnown:unchanged&&Boolean(previous?.repositoryKnown),repositorySha:unchanged?previous?.repositorySha||'':''});helperMap.set(path,record);suppressed.helperItems=withoutValue(suppressed.helperItems,path);lines.push(`${previous?(unchanged?'UNCHANGED':'UPDATE'):'ADD'} ${path}`);if(!previous)newHelperRecords.push(record);}
+    for(const item of intent.useCases){const previous=current.useCases.find((entry)=>entry.id===item.id),previousComponent=current.semanticComponents.find((entry)=>entry.id===item.id&&entry.kind==='USE_CASE'),component=useCaseSemanticComponent(item,previousComponent);useCaseMap.set(item.id,item);componentMap.set(item.id,component);suppressed.useCases=withoutValue(suppressed.useCases,item.id);suppressed.semanticComponents=withoutValue(suppressed.semanticComponents,item.id);const unchanged=Boolean(previous)&&sameJson(previous,item),componentUnchanged=Boolean(previousComponent)&&sameJson(previousComponent,component);if(!unchanged)useCasesChanged=true;if(!componentUnchanged)componentsChanged=true;lines.push(`${previous?(unchanged?'UNCHANGED':'UPDATE'):'ADD'} use-case ${item.id}`);lines.push(`${previousComponent?(componentUnchanged?'UNCHANGED':'UPDATE'):'ADD'} semantic-component ${item.id} · coupled Use-Case projection`);}
+    for(const item of intent.semanticComponents){const previous=current.semanticComponents.find((entry)=>entry.id===item.id);componentMap.set(item.id,item);suppressed.semanticComponents=withoutValue(suppressed.semanticComponents,item.id);const unchanged=Boolean(previous)&&sameJson(previous,item);if(!unchanged)componentsChanged=true;lines.push(`${previous?(unchanged?'UNCHANGED':'UPDATE'):'ADD'} semantic-component ${item.id}`);}
+    for(const item of intent.scenarios){const previous=current.scenarios.find((entry)=>entry.id===item.id);scenarioMap.set(item.id,item);suppressed.scenarios=withoutValue(suppressed.scenarios,item.id);const unchanged=Boolean(previous)&&sameJson(previous,item);if(!unchanged)scenariosChanged=true;lines.push(`${previous?(unchanged?'UNCHANGED':'UPDATE'):'ADD'} scenario ${item.id}`);}
+    let catalogOrder=snapshot.catalogOrder,catalogOrderSha=snapshot.catalogOrderSha;if(patch.catalogOrder!=null){const nextOrder=deps.normalizeCatalogOrder(patch.catalogOrder),unchanged=sameJson(deps.normalizeCatalogOrder(snapshot.catalogOrder||{}),nextOrder);catalogOrder=nextOrder;if(!unchanged)catalogOrderSha='';lines.push(`${unchanged?'UNCHANGED':'UPDATE'} catalog-order`);}
+    let next=deps.normalizePlanningHelperLocalSnapshot({...snapshot,planningCommands:[...commandMap.values()],helperItems:[...helperMap.values()],useCases:[...useCaseMap.values()],useCaseCatalogSha:useCasesChanged?'':snapshot.useCaseCatalogSha,semanticComponents:[...componentMap.values()],semanticComponentCatalogSha:componentsChanged?'':snapshot.semanticComponentCatalogSha,scenarios:[...scenarioMap.values()],scenarioCatalogSha:scenariosChanged?'':snapshot.scenarioCatalogSha,catalogOrder,catalogOrderSha,suppressedRepository:suppressed,favoriteCommandIds,favoriteUseCaseIds});const importedOrderedEntities=patch.catalogOrder==null&&(intent.commands.length||intent.commandDeletes.length||intent.helperItems.some((item)=>item.kind===deps.HELPER_LIBRARY_KINDS.PROMPT)||intent.helperDeletes.some((path)=>path.includes('/prompts/'))||intent.scenarios.length||intent.scenarioDeletes.length);if(importedOrderedEntities)next=deps.normalizePlanningHelperLocalSnapshot({...next,catalogOrder:completeCatalogOrder(next),catalogOrderSha:''});return{snapshot:next,newCommandRecords,newHelperRecords,removedRepositoryCommands:0,removedRepositoryHelperItems:0,parsed,lines};}
+  function completeCatalogOrder(snapshot){const memory=materializeSnapshot(snapshot),order=deps.normalizeCatalogOrder(snapshot.catalogOrder||{});order.commands=orderedIdsForMove(order.commands,memory.commandEntries.map((entry)=>entry.id));order.scenarios=orderedIdsForMove(order.scenarios,memory.scenarioEntries.map((entry)=>entry.id));order.prompts=orderedIdsForMove(order.prompts,memory.promptEntries.map((entry)=>entry.id));return deps.normalizeCatalogOrder(order);}
+  function mergeChatImport(snapshot,parsed,mode='import'){if(mode==='restore')return mergeRestoreChatImport(snapshot,parsed);if(mode!=='import')throw new TypeError(`Unsupported chat-import mode: ${mode}`);return mergeImportChatPatch(snapshot,parsed);}
+  function previewChatImport(snapshot,text,mode='import'){const parsed=deps.parseChatImport(text),merged=mergeChatImport(snapshot,parsed,mode);return{...merged,mode};}
+  function inventoryBucket(localRecords,remoteEntries,suppressedPaths=[]){const suppressed=new Set(suppressedPaths||[]),localMap=new Map((localRecords||[]).map((record)=>[record.path,record])),remoteMap=new Map((remoteEntries||[]).map((entry)=>[entry.path,entry])),localOnly=[...localMap.keys()].filter((path)=>!remoteMap.has(path)).sort(),remoteOnly=[...remoteMap.keys()].filter((path)=>!localMap.has(path)&&!suppressed.has(path)).sort(),suppressedRemote=[...remoteMap.keys()].filter((path)=>!localMap.has(path)&&suppressed.has(path)).sort(),common=[...localMap.keys()].filter((path)=>remoteMap.has(path)).sort(),knownChanged=common.filter((path)=>{const local=localMap.get(path),remote=remoteMap.get(path);return Boolean(local.repositorySha)&&Boolean(remote.sha)&&local.repositorySha!==remote.sha;});return{local:localMap.size,remote:remoteMap.size,common:common.length,localOnly,remoteOnly,suppressedRemote,knownChanged};}
+  function compareIdInventory(localItems,remoteItems,localSha='',remoteSha='',marker='catalog',suppressedIds=[]){const suppressed=new Set(suppressedIds||[]),localIds=(localItems||[]).map((u)=>u.id),remoteIds=(remoteItems||[]).map((u)=>u.id),localSet=new Set(localIds),remoteSet=new Set(remoteIds);return{local:localIds.length,remote:remoteIds.length,common:localIds.filter((id)=>remoteSet.has(id)).length,localOnly:localIds.filter((id)=>!remoteSet.has(id)),remoteOnly:remoteIds.filter((id)=>!localSet.has(id)&&!suppressed.has(id)),suppressedRemote:remoteIds.filter((id)=>!localSet.has(id)&&suppressed.has(id)),knownChanged:Boolean(localSha&&remoteSha&&localSha!==remoteSha)?[marker]:[]};}
+  function compareUseCaseInventory(snapshot,remoteUseCases,remoteSha=''){return compareIdInventory(snapshot.useCases||[],remoteUseCases,snapshot.useCaseCatalogSha||'',remoteSha,'seed/use-cases.json',suppressionState(snapshot).useCases);}
+  function compareRepositoryInventory(snapshot,remoteCatalog){const memory=materializeSnapshot(snapshot),remoteCommands=(remoteCatalog?.commands||[]).filter((entry)=>entry.kind==='planning-command'),remoteHelpers=remoteCatalog?.helperItems||[],suppressed=suppressionState(snapshot);return{planningCommands:inventoryBucket(memory.commandRecords,remoteCommands,suppressed.commands),useCases:compareUseCaseInventory(snapshot,remoteCatalog?.useCases||[],remoteCatalog?.useCaseSha||''),semanticComponents:compareIdInventory(snapshot.semanticComponents||[],remoteCatalog?.semanticComponents||[],snapshot.semanticComponentCatalogSha||'',remoteCatalog?.semanticComponentSha||'','seed/semantic-components.json',suppressed.semanticComponents),scenarios:compareIdInventory(snapshot.scenarios||[],remoteCatalog?.scenarios||[],snapshot.scenarioCatalogSha||'',remoteCatalog?.scenarioSha||'','seed/scenarios.json',suppressed.scenarios),helperCommands:inventoryBucket(memory.helperRecords.filter((record)=>record.item.kind===deps.HELPER_LIBRARY_KINDS.COMMAND),remoteHelpers.filter((entry)=>entry.kind===deps.HELPER_LIBRARY_KINDS.COMMAND),suppressed.helperItems),prompts:inventoryBucket(memory.helperRecords.filter((record)=>record.item.kind===deps.HELPER_LIBRARY_KINDS.PROMPT),remoteHelpers.filter((entry)=>entry.kind===deps.HELPER_LIBRARY_KINDS.PROMPT),suppressed.helperItems),modules:inventoryBucket(memory.helperRecords.filter((record)=>record.item.kind===deps.HELPER_LIBRARY_KINDS.MODULE),remoteHelpers.filter((entry)=>entry.kind===deps.HELPER_LIBRARY_KINDS.MODULE),suppressed.helperItems),catalogOrderChanged:Boolean(snapshot.catalogOrderSha&&remoteCatalog?.catalogOrderSha&&snapshot.catalogOrderSha!==remoteCatalog.catalogOrderSha)};}
+
+  function prepareLocalCommandSave(snapshot,value,existingId=''){const memory=materializeSnapshot(snapshot),raw=typeof value==='string'?JSON.parse(value):(value&&typeof value==='object'?value:{}),definition=deps.normalizeCommandDefinition(raw),previous=existingId?memory.commandById.get(String(existingId)):null;if(existingId&&!previous)throw new Error(`Planning command not found: ${existingId}`);if(previous&&(definition.id!==previous.definition.id||definition.file!==previous.definition.file))throw new TypeError('Editing an existing command cannot change its id or file. Create a new command draft instead.');const collisionByFile=memory.commandRecords.find((record)=>record.definition.file===definition.file&&record.definition.id!==definition.id);if(collisionByFile)throw new TypeError(`Planning command file ${definition.file} already belongs to ${collisionByFile.definition.id}.`);const collisionById=memory.commandRecords.find((record)=>record.definition.id===definition.id&&record.definition.file!==definition.file);if(collisionById)throw new TypeError(`Planning command id ${definition.id} already belongs to ${collisionById.definition.file}.`);const rawContent=deps.renderCommandDefinitionDocument(definition);if(previous&&previous.rawContent===rawContent)return{changed:false,definition:previous.definition,record:previous,snapshot};const record=deps.normalizeCommandRecord({definition,rawContent,repositoryKnown:false,repositoryTracked:Boolean(previous?.repositoryTracked||previous?.repositoryKnown),repositorySha:''}),records=[...memory.commandRecords.filter((entry)=>entry.definition.id!==definition.id),record];deps.validateCommandCatalog(records.map((entry)=>entry.definition),{allowMissingIncludes:true});const suppressed=suppressionState(snapshot);suppressed.commands=withoutValue(suppressed.commands,record.path);return{changed:true,definition,record,snapshot:{...snapshot,planningCommands:records,suppressedRepository:suppressed}};}
+  function deleteLocalCommandFromSnapshot(snapshot,id){const memory=materializeSnapshot(snapshot),value=String(id||'').trim(),record=memory.commandById.get(value);if(!record)throw new Error(`Planning command not found: ${value||'<empty>'}`);const suppressed=suppressionState(snapshot);suppressed.commands=withValue(suppressed.commands,record.path);return deps.normalizePlanningHelperLocalSnapshot({...snapshot,planningCommands:memory.commandRecords.filter((entry)=>entry.definition.id!==value),suppressedRepository:suppressed,favoriteCommandIds:(snapshot.favoriteCommandIds||[]).filter((id)=>id!==value)});}
+  function deleteLocalUseCaseFromSnapshot(snapshot,id){const value=String(id||'').trim();if(!(snapshot.useCases||[]).some((entry)=>entry.id===value))throw new Error(`Use Case not found: ${value||'<empty>'}`);const suppressed=suppressionState(snapshot);suppressed.useCases=withValue(suppressed.useCases,value);return deps.normalizePlanningHelperLocalSnapshot({...snapshot,useCases:(snapshot.useCases||[]).filter((entry)=>entry.id!==value),useCaseCatalogSha:'',suppressedRepository:suppressed,favoriteUseCaseIds:(snapshot.favoriteUseCaseIds||[]).filter((id)=>id!==value),favoriteCommandIds:(snapshot.favoriteCommandIds||[]).filter((id)=>id!==`uc:${value}`)});}
+  function toggleFavoriteCommandInSnapshot(snapshot,id){const memory=materializeSnapshot(snapshot),value=String(id||'').trim(),entry=memory.commandEntries.find((candidate)=>candidate.id===value);if(!entry)throw new Error(`Command row not found: ${value||'<empty>'}`);const aliases=new Set([value,entry.directCommandId||''].filter(Boolean)),ids=new Set(snapshot.favoriteCommandIds||[]),isFavorite=[...aliases].some((candidate)=>ids.has(candidate))||memory.favoriteCommandIds.includes(value);for(const candidate of aliases)ids.delete(candidate);if(!isFavorite)ids.add(value);return deps.normalizePlanningHelperLocalSnapshot({...snapshot,favoriteCommandIds:[...ids]});}
+  function moveFavoriteCommandInSnapshot(snapshot,id,delta,visibleIds=null){
+    if(delta!==-1&&delta!==1)throw new TypeError('Favorite direction must be -1 or 1.');
+    const memory=materializeSnapshot(snapshot),normalize=id=>memory.legacySemanticIdByDirect.get(String(id))||String(id);
+    const value=normalize(id),ids=[...memory.favoriteCommandIds];
+    const available=new Set(memory.commandEntries.filter(entry=>entry.palette!==false).map(entry=>entry.id));
+    if(!ids.includes(value)||!available.has(value))throw new Error('Favorite command not found: '+value);
+    const visible=visibleIds==null?available:new Set(visibleIds.map(normalize));
+    const orderedVisible=ids.filter(candidate=>available.has(candidate)&&visible.has(candidate)),index=orderedVisible.indexOf(value);
+    if(index<0)throw new Error('Favorite command is not in the visible list: '+value);
+    const neighbor=orderedVisible[index+delta];
+    // Swap visible neighbors in the full personal order; filtered-out entries keep their slots.
+    if(neighbor!==undefined){const from=ids.indexOf(value),to=ids.indexOf(neighbor);[ids[from],ids[to]]=[ids[to],ids[from]];}
+    return deps.normalizePlanningHelperLocalSnapshot({...snapshot,favoriteCommandIds:ids});
+  }
+  function toggleFavoriteUseCaseInSnapshot(snapshot,id){const value=String(id||'').trim();if(!(snapshot.useCases||[]).some((entry)=>entry.id===value))throw new Error(`Use Case not found: ${value||'<empty>'}`);const ids=new Set(snapshot.favoriteUseCaseIds||[]);if(ids.has(value))ids.delete(value);else ids.add(value);return deps.normalizePlanningHelperLocalSnapshot({...snapshot,favoriteUseCaseIds:[...ids]});}
+  function prepareLocalHelperSave(snapshot,value,now=new Date().toISOString()){const memory=materializeSnapshot(snapshot),input=value&&typeof value==='object'?value:{},key=`${String(input.kind||'')}:${String(input.id||'')}`,previous=input.id?memory.helperByKey.get(key):null;if(input.createOnly&&previous)throw new TypeError(`Helper-library item already exists: ${key}`);if(previous){const stable=deps.normalizeHelperLibraryItem({...input,kind:previous.item.kind,id:previous.item.id,createdAt:previous.item.createdAt,updatedAt:previous.item.updatedAt}),unchanged=stable.title===previous.item.title&&stable.text===previous.item.text;if(unchanged)return{changed:false,item:previous.item,record:previous,snapshot};const item=deps.normalizeHelperLibraryItem({...stable,updatedAt:now}),record=deps.normalizeHelperRecord({item,rawContent:deps.renderHelperLibraryDocument(item),repositoryKnown:false,repositorySha:''});const suppressed=suppressionState(snapshot);suppressed.helperItems=withoutValue(suppressed.helperItems,record.path);return{changed:true,item,record,snapshot:{...snapshot,helperItems:[...memory.helperRecords.filter((entry)=>helperKey(entry.item)!==helperKey(item)),record],suppressedRepository:suppressed}};}const item=deps.normalizeHelperLibraryItem({...input,createdAt:input.createdAt||now,updatedAt:now}),record=deps.normalizeHelperRecord({item,rawContent:deps.renderHelperLibraryDocument(item),repositoryKnown:false,repositorySha:''});const suppressed=suppressionState(snapshot);suppressed.helperItems=withoutValue(suppressed.helperItems,record.path);return{changed:true,item,record,snapshot:{...snapshot,helperItems:[...memory.helperRecords,record],suppressedRepository:suppressed}};}
+  function clearRepositoryEvidence(snapshot){const memory=materializeSnapshot(snapshot);return deps.normalizePlanningHelperLocalSnapshot({...snapshot,planningCommands:memory.commandRecords.map((record)=>deps.normalizeCommandRecord({...record,repositoryKnown:false,repositoryTracked:false,repositorySha:''})),helperItems:memory.helperRecords.map((record)=>deps.normalizeHelperRecord({...record,repositoryKnown:false,repositorySha:''})),useCaseCatalogSha:'',semanticComponentCatalogSha:'',scenarioCatalogSha:'',catalogOrderSha:'',suppressedRepository:{}});}
+  async function persistVerifiedRepositoryResult(persist,next,result,settings,uiState){try{await persist(next);return{settings,...result,localSnapshotUpdated:true,localSnapshotError:'',...uiState()};}catch(error){return{settings,...result,localSnapshotUpdated:false,localSnapshotError:error?.message||String(error),...uiState()};}}
+  function mergeRemoteMissing(snapshot,remoteRecords={}){const memory=materializeSnapshot(snapshot),suppressed=suppressionState(snapshot),commandSuppressed=new Set(suppressed.commands),helperSuppressed=new Set(suppressed.helperItems),useCaseSuppressed=new Set(suppressed.useCases),componentSuppressed=new Set(suppressed.semanticComponents),scenarioSuppressed=new Set(suppressed.scenarios),commandMap=new Map(memory.commandRecords.map((record)=>[record.path,record])),helperMap=new Map(memory.helperRecords.map((record)=>[record.path,record])),addedCommands=[],addedHelpers=[];for(const remote of remoteRecords.commands||[]){if(commandMap.has(remote.path)||commandSuppressed.has(remote.path))continue;const record=deps.normalizeCommandRecord({definition:remote.definition,path:remote.path,rawContent:remote.rawContent,repositoryKnown:true,repositoryTracked:true,repositorySha:remote.sha});commandMap.set(record.path,record);addedCommands.push(record);}deps.validateCommandCatalog([...commandMap.values()].map((record)=>record.definition),{allowMissingIncludes:true});for(const remote of remoteRecords.helperItems||[]){if(helperMap.has(remote.path)||helperSuppressed.has(remote.path))continue;const record=deps.normalizeHelperRecord({item:remote.item,path:remote.path,rawContent:remote.rawContent,repositoryKnown:true,repositorySha:remote.sha});helperMap.set(record.path,record);addedHelpers.push(record);}const mergeById=(current,incoming,suppressedIds)=>{const map=new Map((current||[]).map((entry)=>[entry.id,entry])),added=[];for(const item of incoming||[]){if(map.has(item.id)||suppressedIds.has(item.id))continue;map.set(item.id,item);added.push(item);}return{items:[...map.values()],added};};const uc=mergeById(snapshot.useCases,remoteRecords.useCases,useCaseSuppressed),components=mergeById(snapshot.semanticComponents,remoteRecords.semanticComponents,componentSuppressed),scenarios=mergeById(snapshot.scenarios,remoteRecords.scenarios,scenarioSuppressed);const next=deps.normalizePlanningHelperLocalSnapshot({...snapshot,planningCommands:[...commandMap.values()],helperItems:[...helperMap.values()],useCases:uc.items,semanticComponents:components.items,scenarios:scenarios.items,useCaseCatalogSha:uc.added.length?'':snapshot.useCaseCatalogSha,semanticComponentCatalogSha:components.added.length?'':snapshot.semanticComponentCatalogSha,scenarioCatalogSha:scenarios.added.length?'':snapshot.scenarioCatalogSha});return{snapshot:next,addedCommands,addedHelpers,addedUseCases:uc.added,addedSemanticComponents:components.added,addedScenarios:scenarios.added};}
+  function mergeMissingPromptGroups(localOrder,remoteOrder){
+    const local=deps.normalizeCatalogOrder(localOrder||{}),remote=deps.normalizeCatalogOrder(remoteOrder||{});
+    const groups=local.promptGroups.map(g=>({...g,items:[...g.items]}));
+    const byId=new Map(groups.map(g=>[g.id,g]));
+    const assigned=new Set(groups.flatMap(g=>g.items));
+    let addedGroups=0,addedMemberships=0;
+    for(const remoteGroup of remote.promptGroups){
+      let group=byId.get(remoteGroup.id);
+      if(!group){group={id:remoteGroup.id,label:remoteGroup.label,items:[]};groups.push(group);byId.set(group.id,group);addedGroups++;}
+      for(const id of remoteGroup.items){
+        if(!assigned.has(id)){group.items.push(id);assigned.add(id);addedMemberships++;}
+      }
+    }
+    const merged=deps.normalizeCatalogOrder({...local,promptGroups:groups});
+    return{order:merged,addedGroups,addedMemberships,changed:!sameJson(merged,local)};
+  }
+  async function prepareInvocationBody(text,id,invocation={},operations=deps,moduleItems=[]){let body=String(text==null?'':text);if(invocation?.resolveModules){if(typeof operations.resolveModuleReferences!=='function')throw new Error('Reusable module resolution is unavailable.');body=operations.resolveModuleReferences(body,moduleItems).text;}if(typeof operations.applyCommandSideEffects!=='function')return body;return operations.applyCommandSideEffects(id,body,{effectIds:invocation?.effectIds||[]});}
+
+  async function insertWithClipboard(text,success,id,operations=deps){let copied=false;try{const copyResult=operations.copyText(text);copied=copyResult&&typeof copyResult.then==='function'?Boolean(await copyResult):Boolean(copyResult);}catch(_){copied=false;}const result=operations.insertIntoComposer(text,id);if(result.ok)return copied?`${success} · clipboard ready`:`${success} · clipboard copy failed`;return copied?`Direct insertion failed (${result.reason}). The exact text is in the clipboard — paste manually.`:`Direct insertion failed (${result.reason}) and clipboard copy also failed.`;}
+
+  async function startPlanningHelper(){
+    for(const key of [INSTANCE_DISPOSE_KEY,...LEGACY_DISPOSE_KEYS]){const previous=globalThis[key];if(typeof previous==='function'){try{previous();}catch(_){}}}
+    const repositoryLock=createRepositoryOperationLock(),loaded=await deps.loadOrMigratePlanningHelperLocalSnapshot();
+    let snapshot=loaded.snapshot,memory=materializeSnapshot(snapshot),mutationTail=Promise.resolve();
+    const startupWarnings=[...(loaded.warnings||[])];
+    if(loaded.migrated)startupWarnings.push('Planning Helper migrated existing local data into the current local-cache schema.');
+    // Serialize the complete read/modify/write operation, not just the storage write.
+    // Otherwise two edits can both derive their next snapshot from the same old state.
+    function serializeMutation(action){
+      const result=mutationTail.then(action,action);
+      mutationTail=result.catch(()=>{});
+      return result;
+    }
+    function repositoryOperation(label,action){
+      // Keep the existing fail-fast lock for competing GitHub operations, but wait
+      // behind prior local writes and exclude new local mutations until finished.
+      return repositoryLock.run(label,()=>serializeMutation(action));
+    }
+    function uiState(){const dirtyHelpers=memory.helperRecords.filter((record)=>!record.repositoryKnown);return{commandEntries:memory.commandEntries,localCommandEntries:memory.localCommandEntries,promptEntries:memory.promptEntries,moduleEntries:memory.moduleEntries,scenarioEntries:memory.scenarioEntries,useCaseEntries:memory.useCaseEntries,catalogOrder:memory.order,favoriteCommandIds:[...memory.favoriteCommandIds],favoriteUseCaseIds:[...(snapshot.favoriteUseCaseIds||[])],pendingRepositoryWrites:{commands:memory.commandRecords.filter((record)=>!record.repositoryKnown).length,prompts:dirtyHelpers.filter((record)=>record.item.kind===deps.HELPER_LIBRARY_KINDS.PROMPT).length,modules:dirtyHelpers.filter((record)=>record.item.kind===deps.HELPER_LIBRARY_KINDS.MODULE).length,helperCommands:dirtyHelpers.filter((record)=>record.item.kind===deps.HELPER_LIBRARY_KINDS.COMMAND).length,order:!snapshot.catalogOrderSha}};}
+    async function persist(next){snapshot=await deps.savePlanningHelperLocalSnapshot(next);memory=materializeSnapshot(snapshot);return uiState();}
+    async function makeClient(){const settings=await deps.loadRepositorySettings(),token=await deps.loadGitHubToken();if(typeof GM_xmlhttpRequest!=='function')throw new Error('GM_xmlhttpRequest is unavailable; reinstall the generated Planning Helper userscript and accept its GM grants.');return{client:new deps.GitHubContentsClient({...settings,token,transport:deps.createGmTransport(GM_xmlhttpRequest)}),settings,token};}
+    async function makeServices(){const{client,settings}=await makeClient();return{commandService:new deps.RepositoryCommandService(client,{commandsPath:deps.COMMANDS_PATH}),helperService:new deps.RepositoryHelperLibraryService(client),catalogService:new deps.RepositoryCatalogService(client),settings};}
+    async function applyChatText(text,mode='import'){return repositoryOperation(mode==='restore'?'Restore local snapshot':'Import chat items',async()=>{const parsed=deps.parseChatImport(text),merged=mergeChatImport(snapshot,parsed,mode);await persist(merged.snapshot);return{ok:true,mode,createdLocal:merged.newCommandRecords.length+merged.newHelperRecords.length,removedRepositoryCommands:merged.removedRepositoryCommands||0,removedRepositoryHelperItems:merged.removedRepositoryHelperItems||0,errors:[],...uiState()};});}
+    async function saveLocalCommandDefinition(value,existingId=''){const prepared=prepareLocalCommandSave(snapshot,value,existingId);if(!prepared.changed)return{definition:prepared.definition,unchanged:true,...uiState()};let next=prepared.snapshot;if(!existingId)next={...next,catalogOrder:completeCatalogOrder(next),catalogOrderSha:''};const state=await persist(next);return{definition:prepared.definition,unchanged:false,...state};}
+    async function deleteLocalCommand(id){let next=deleteLocalCommandFromSnapshot(snapshot,id);next={...next,catalogOrder:completeCatalogOrder(next),catalogOrderSha:''};return persist(next);}async function deleteLocalUseCase(id){return persist(deleteLocalUseCaseFromSnapshot(snapshot,id));}async function toggleFavoriteCommand(id){return persist(toggleFavoriteCommandInSnapshot(snapshot,id));}async function moveFavoriteCommand(id,delta,visibleIds){return persist(moveFavoriteCommandInSnapshot(snapshot,id,delta,visibleIds));}async function toggleFavoriteUseCase(id){return persist(toggleFavoriteUseCaseInSnapshot(snapshot,id));}
+    async function reloadRepositoryCommand(id){return repositoryOperation('Reload planning command from GitHub',async()=>{const{commandService,settings}=await makeServices(),record=memory.commandById.get(String(id||''));if(!record)throw new Error(`Planning command not found: ${id||'<empty>'}`);const remote=await commandService.readRemote(record.path),replacement=deps.normalizeCommandRecord({definition:remote.definition,path:remote.path,rawContent:remote.rawContent,repositoryKnown:true,repositoryTracked:true,repositorySha:remote.sha}),records=memory.commandRecords.map((entry)=>entry.definition.id===record.definition.id?replacement:entry);deps.validateCommandCatalog(records.map((entry)=>entry.definition),{allowMissingIncludes:true});const state=await persist({...snapshot,planningCommands:records});return{settings,path:remote.path,sha:remote.sha,...state};});}
+    async function saveLocalLibraryItem(value){const input=value&&typeof value==='object'?value:{},key=`${String(input.kind||'')}:${String(input.id||'')}`,existed=Boolean(input.id&&memory.helperByKey.has(key)),prepared=prepareLocalHelperSave(snapshot,value);if(!prepared.changed)return{item:prepared.item,unchanged:true,...uiState()};let next=prepared.snapshot;if(!existed&&prepared.item.kind===deps.HELPER_LIBRARY_KINDS.PROMPT)next={...next,catalogOrder:completeCatalogOrder(next),catalogOrderSha:''};const state=await persist(next);return{item:prepared.item,unchanged:false,...state};}async function deleteLocalLibraryItem(kind,id){const key=`${kind}:${id}`;if(kind===deps.HELPER_LIBRARY_KINDS.MODULE){const module=memory.moduleEntries.find((entry)=>entry.libraryId===id);if(!module)throw new Error(`Module not found: ${id||'<empty>'}`);const users=[...(module.referencedByPrompts||[]).map((entry)=>`Prompt: ${entry.title}`),...(module.referencedByModules||[]).map((entry)=>`Module: ${entry.title}`)];if(users.length)throw new Error(`Module ${id} is still referenced by ${users.length} item(s): ${users.join('; ')}. Remove those references before deleting it.`);}let next={...snapshot,helperItems:memory.helperRecords.filter((record)=>helperKey(record.item)!==key)};if(kind===deps.HELPER_LIBRARY_KINDS.PROMPT)next={...next,catalogOrder:completeCatalogOrder(next),catalogOrderSha:''};return persist(next);}
+    async function checkRepository(){return repositoryOperation('Check GitHub inventory',async()=>{const{commandService,helperService,catalogService,settings}=await makeServices(),commands=await commandService.listRemote(),helperItems=await helperService.listRemoteAll(),useCaseCatalog=await catalogService.readUseCases(),semanticCatalog=await catalogService.readSemanticComponents(),scenarioCatalog=await catalogService.readScenarios(),order=await catalogService.readOrder(),remoteCatalog={commands,helperItems,useCases:useCaseCatalog.useCases,useCaseSha:useCaseCatalog.sha,semanticComponents:semanticCatalog.components,semanticComponentSha:semanticCatalog.sha,scenarios:scenarioCatalog.scenarios,scenarioSha:scenarioCatalog.sha,catalogOrderSha:order.sha};return{settings,inventory:compareRepositoryInventory(snapshot,remoteCatalog),remoteCatalog};});}
+    async function syncMissingRepository(){return repositoryOperation('Sync missing from GitHub',async()=>{const{commandService,helperService,catalogService,settings}=await makeServices(),commands=await commandService.listRemote(),helperItems=await helperService.listRemoteAll(),useCaseCatalog=await catalogService.readUseCases(),semanticCatalog=await catalogService.readSemanticComponents(),scenarioCatalog=await catalogService.readScenarios(),remoteOrder=await catalogService.readOrder(),remoteCatalog={commands,helperItems,useCases:useCaseCatalog.useCases,useCaseSha:useCaseCatalog.sha,semanticComponents:semanticCatalog.components,semanticComponentSha:semanticCatalog.sha,scenarios:scenarioCatalog.scenarios,scenarioSha:scenarioCatalog.sha},inventory=compareRepositoryInventory(snapshot,remoteCatalog),commandMissing=new Set(inventory.planningCommands.remoteOnly),helperMissing=new Set([...inventory.helperCommands.remoteOnly,...inventory.prompts.remoteOnly,...inventory.modules.remoteOnly]),remoteCommands=[],remoteHelpers=[];for(const entry of commands)if(commandMissing.has(entry.path))remoteCommands.push(await commandService.readRemote(entry.path));for(const entry of helperItems)if(helperMissing.has(entry.path))remoteHelpers.push(await helperService.readRemote(entry.path));const merged=mergeRemoteMissing(snapshot,{commands:remoteCommands,helperItems:remoteHelpers,useCases:useCaseCatalog.useCases.filter((entry)=>inventory.useCases.remoteOnly.includes(entry.id)),semanticComponents:semanticCatalog.components.filter((entry)=>inventory.semanticComponents.remoteOnly.includes(entry.id)),scenarios:scenarioCatalog.scenarios.filter((entry)=>inventory.scenarios.remoteOnly.includes(entry.id))});const groupMerge=mergeMissingPromptGroups(merged.snapshot.catalogOrder,remoteOrder.order);
+        const nextOrder=groupMerge.changed?groupMerge.order:merged.snapshot.catalogOrder;
+        const matchedRemote=JSON.stringify(nextOrder)===JSON.stringify(remoteOrder.order);
+        const orderSha=groupMerge.changed?(matchedRemote?remoteOrder.sha:''):merged.snapshot.catalogOrderSha;
+        await persist({...merged.snapshot,catalogOrder:nextOrder,catalogOrderSha:orderSha});return{settings,
+          addedPromptGroups:groupMerge.addedGroups,addedPromptAssignments:groupMerge.addedMemberships,addedCommands:merged.addedCommands.length,addedUseCases:merged.addedUseCases.length,addedSemanticComponents:merged.addedSemanticComponents.length,addedScenarios:merged.addedScenarios.length,addedHelperCommands:merged.addedHelpers.filter((record)=>record.item.kind===deps.HELPER_LIBRARY_KINDS.COMMAND).length,addedPrompts:merged.addedHelpers.filter((record)=>record.item.kind===deps.HELPER_LIBRARY_KINDS.PROMPT).length,addedModules:merged.addedHelpers.filter((record)=>record.item.kind===deps.HELPER_LIBRARY_KINDS.MODULE).length,inventoryBefore:inventory,...uiState()};});}
+    async function hardReloadRepository(){return repositoryOperation('Hard Reload GitHub catalogs',async()=>{const{commandService,catalogService,settings}=await makeServices(),commandRecords=await commandService.loadCatalog(),useCaseCatalog=await catalogService.readUseCases(),semanticCatalog=await catalogService.readSemanticComponents(),scenarioCatalog=await catalogService.readScenarios(),order=await catalogService.readOrder(),planningCommands=commandRecords.map((remote)=>deps.normalizeCommandRecord({definition:remote.definition,path:remote.path,rawContent:remote.rawContent,repositoryKnown:true,repositoryTracked:true,repositorySha:remote.sha}));deps.validateCommandCatalog(planningCommands.map((record)=>record.definition));const preservedLibrary=memory.helperRecords.filter((record)=>record.item.kind===deps.HELPER_LIBRARY_KINDS.PROMPT||record.item.kind===deps.HELPER_LIBRARY_KINDS.MODULE),removedLegacyCommands=memory.helperRecords.length-preservedLibrary.length;let next=deps.normalizePlanningHelperLocalSnapshot({...snapshot,planningCommands,helperItems:preservedLibrary,useCases:useCaseCatalog.useCases,useCaseCatalogSha:useCaseCatalog.sha,semanticComponents:semanticCatalog.components,semanticComponentCatalogSha:semanticCatalog.sha,scenarios:scenarioCatalog.scenarios,scenarioCatalogSha:scenarioCatalog.sha,catalogOrder:order.order,catalogOrderSha:order.sha,suppressedRepository:{helperItems:suppressionState(snapshot).helperItems}});const valid=materializeSnapshot(next),validCommandIds=new Set(valid.commandEntries.map((entry)=>entry.id)),validUseCaseIds=new Set(useCaseCatalog.useCases.map((entry)=>entry.id));next=deps.normalizePlanningHelperLocalSnapshot({...next,favoriteCommandIds:(next.favoriteCommandIds||[]).filter((id)=>validCommandIds.has(valid.legacySemanticIdByDirect.get(String(id))||String(id))),favoriteUseCaseIds:(next.favoriteUseCaseIds||[]).filter((id)=>validUseCaseIds.has(String(id)))});const state=await persist(next);return{settings,commands:planningCommands.length,semanticComponents:semanticCatalog.components.length,scenarios:scenarioCatalog.scenarios.length,removedLegacyCommands,orderPath:order.path,orderSha:order.sha,...state};});}
+    async function moveCatalogItem(surface,id,delta){const currentIds=surface===deps.SURFACES.COMMANDS?memory.commandEntries.map((entry)=>entry.id):surface===deps.SURFACES.SCENARIOS?memory.scenarioEntries.map((entry)=>entry.id):surface===deps.SURFACES.PROMPTS?memory.promptEntries.map((entry)=>entry.id):[];if(!currentIds.length)throw new Error(`No reorderable items on ${surface}.`);const key=surface===deps.SURFACES.COMMANDS?'commands':surface===deps.SURFACES.SCENARIOS?'scenarios':'prompts',order=deps.normalizeCatalogOrder(snapshot.catalogOrder||{});order[key]=moveId(order[key],currentIds,id,delta);return persist({...snapshot,catalogOrder:order,catalogOrderSha:''});}
+    async function moveCatalogItemToPosition(surface,id,position){const currentIds=surface===deps.SURFACES.COMMANDS?memory.commandEntries.map((entry)=>entry.id):surface===deps.SURFACES.SCENARIOS?memory.scenarioEntries.map((entry)=>entry.id):surface===deps.SURFACES.PROMPTS?memory.promptEntries.map((entry)=>entry.id):[];if(!currentIds.length)throw new Error(`No reorderable items on ${surface}.`);const key=surface===deps.SURFACES.COMMANDS?'commands':surface===deps.SURFACES.SCENARIOS?'scenarios':'prompts',order=deps.normalizeCatalogOrder(snapshot.catalogOrder||{});order[key]=moveIdToPosition(order[key],currentIds,id,position);return persist({...snapshot,catalogOrder:order,catalogOrderSha:''});}
+    async function assignCatalogGroup(id,groupId,viewId){const order=assignCommandGroupInOrder(snapshot.catalogOrder||{},id,groupId,viewId);return persist({...snapshot,catalogOrder:order,catalogOrderSha:''});}
+    async function createCatalogGroup(input){const order=createCommandGroupInOrder(snapshot.catalogOrder||{},input);return persist({...snapshot,catalogOrder:order,catalogOrderSha:''});}
+    async function updateCatalogGroup(groupId,input){const order=updateCommandGroupInOrder(snapshot.catalogOrder||{},groupId,input);return persist({...snapshot,catalogOrder:order,catalogOrderSha:''});}
+    async function deleteCatalogGroup(groupId){const order=deleteCommandGroupInOrder(snapshot.catalogOrder||{},groupId);return persist({...snapshot,catalogOrder:order,catalogOrderSha:''});}
+    async function moveCatalogGroup(groupId,delta){const order=moveCommandGroupInOrder(snapshot.catalogOrder||{},groupId,delta);return persist({...snapshot,catalogOrder:order,catalogOrderSha:''});}
+    async function createPromptGroup(label){return persist({...snapshot,catalogOrder:deps.createPromptGroupInOrder(snapshot.catalogOrder,label),catalogOrderSha:''});}
+    async function renamePromptGroup(id,label){return persist({...snapshot,catalogOrder:deps.renamePromptGroupInOrder(snapshot.catalogOrder,id,label),catalogOrderSha:''});}
+    async function deletePromptGroup(id){return persist({...snapshot,catalogOrder:deps.deletePromptGroupInOrder(snapshot.catalogOrder,id),catalogOrderSha:''});}
+    async function assignPromptGroup(promptId,groupId){if(!memory.promptEntries.some(entry=>entry.id===promptId))throw new Error(`Unknown local prompt: ${promptId}`);return persist({...snapshot,catalogOrder:deps.assignPromptGroupInOrder(snapshot.catalogOrder,promptId,groupId),catalogOrderSha:''});}
+    async function movePromptGroup(id,delta){return persist({...snapshot,catalogOrder:deps.movePromptGroupInOrder(snapshot.catalogOrder,id,delta),catalogOrderSha:''});}
+    async function createCatalogCategory(input){return persist({...snapshot,catalogOrder:createCommandCategoryInOrder(memory.order,input),catalogOrderSha:''});}
+    async function updateCatalogCategory(id,input){return persist({...snapshot,catalogOrder:updateCommandCategoryInOrder(memory.order,id,input),catalogOrderSha:''});}
+    async function moveCatalogCategory(id,delta){return persist({...snapshot,catalogOrder:moveCommandCategoryInOrder(memory.order,id,delta),catalogOrderSha:''});}
+    async function deleteCatalogCategory(id,destinationId){let order=memory.order;for(const entry of memory.commandEntries)if(!presentationGroupForId(order,entry.id))order=assignCommandGroupInOrder(order,entry.id,'',entry.presentationGroup.viewId);return persist({...snapshot,catalogOrder:deleteCommandCategoryInOrder(order,id,destinationId),catalogOrderSha:''});}
+    async function saveCatalogOrderRepository(){return repositoryOperation('Save catalog order to GitHub',async()=>{const{catalogService,settings}=await makeServices(),result=await catalogService.saveOrder(snapshot.catalogOrder),state=await persist({...snapshot,catalogOrder:result.order,catalogOrderSha:result.sha});return{settings,...result,...state};});}
+    async function saveRepositoryEntity(reference){return repositoryOperation('Save item to GitHub',async()=>{const{commandService,helperService,catalogService,settings}=await makeServices(),type=String(reference?.type||'');let result,next,saveOrder=false;if(type==='planning-command'){const record=memory.commandById.get(String(reference.id||''));if(!record)throw new Error(`Local planning command not found: ${reference?.id||'<empty>'}`);result=await commandService.save(record.definition);next={...snapshot,planningCommands:memory.commandRecords.map((entry)=>entry.path===record.path?deps.normalizeCommandRecord({...entry,rawContent:result.rawContent,repositoryKnown:true,repositoryTracked:true,repositorySha:result.sha}):entry)};saveOrder=true;}else if(type==='helper'){const key=`${reference?.kind}:${reference?.id}`,record=memory.helperByKey.get(key);if(!record)throw new Error(`Local helper item not found: ${key}`);result=await helperService.save(record.item);next={...snapshot,helperItems:memory.helperRecords.map((entry)=>entry.path===record.path?deps.normalizeHelperRecord({...entry,rawContent:result.rawContent,repositoryKnown:true,repositorySha:result.sha}):entry)};saveOrder=record.item.kind===deps.HELPER_LIBRARY_KINDS.PROMPT;}else throw new TypeError(`Unsupported repository entity type: ${type||'<empty>'}`);if(saveOrder){const completedOrder=completeCatalogOrder(next),orderResult=await catalogService.saveOrder(completedOrder);next={...next,catalogOrder:orderResult.order,catalogOrderSha:orderResult.sha};result={...result,orderAction:orderResult.action,orderPath:orderResult.path,orderSha:orderResult.sha};}return persistVerifiedRepositoryResult(persist,next,result,settings,uiState);});}
+    async function saveAllRepository(){return repositoryOperation('Save all pending changes to GitHub',async()=>{
+      const dirtyCommands=memory.commandRecords.filter((record)=>!record.repositoryKnown);
+      const dirtyHelpers=memory.helperRecords.filter((record)=>!record.repositoryKnown);
+      const orderDirty=!snapshot.catalogOrderSha;
+      const counts={savedCommands:0,savedHelperItems:0,savedPrompts:0,savedModules:0,savedHelperCommands:0,savedOrder:false,alreadyOnGitHub:0};
+      if(!dirtyCommands.length&&!dirtyHelpers.length&&!orderDirty)return{ok:true,action:'noop',...counts,...uiState()};
+      const{commandService,helperService,catalogService,settings}=await makeServices();
+      let failedItem='',confirmed=0,locallyRecorded=0,orderAction='',deferredFailures=[];
+      try{
+        for(const record of dirtyCommands){
+          failedItem=record.path;
+          let result;
+          try{result=await commandService.save(record.definition);}
+          catch(error){if(['verification_mismatch','verification_unknown','conflict'].includes(error?.kind)){deferredFailures.push({path:record.path,error});continue;}throw error;}
+          if(result.action==='noop')counts.alreadyOnGitHub++;
+          else counts.savedCommands++;
+          confirmed++;
+          const updated=memory.commandRecords.map((entry)=>entry.path===record.path?
+            deps.normalizeCommandRecord({...entry,rawContent:result.rawContent,repositoryKnown:true,repositoryTracked:true,repositorySha:result.sha}):entry);
+          await persist({...snapshot,planningCommands:updated});
+          locallyRecorded++;
+        }
+        for(const record of dirtyHelpers){
+          failedItem=record.path;
+          let result;
+          try{result=await helperService.save(record.item);}
+          catch(error){if(['verification_mismatch','verification_unknown','conflict'].includes(error?.kind)){deferredFailures.push({path:record.path,error});continue;}throw error;}
+          if(result.action==='noop')counts.alreadyOnGitHub++;
+          else{
+            counts.savedHelperItems++;
+            if(record.item.kind===deps.HELPER_LIBRARY_KINDS.PROMPT)counts.savedPrompts++;
+            else if(record.item.kind===deps.HELPER_LIBRARY_KINDS.MODULE)counts.savedModules++;
+            else counts.savedHelperCommands++;
+          }
+          confirmed++;
+          const updated=memory.helperRecords.map((entry)=>entry.path===record.path?
+            deps.normalizeHelperRecord({...entry,rawContent:result.rawContent,repositoryKnown:true,repositorySha:result.sha}):entry);
+          await persist({...snapshot,helperItems:updated});
+          locallyRecorded++;
+        }
+        if(orderDirty){
+          failedItem='catalog-order.json';
+          const result=await catalogService.saveOrder(completeCatalogOrder(snapshot));
+          counts.savedOrder=result.action!=='noop';
+          if(result.action==='noop')counts.alreadyOnGitHub++;
+          confirmed++;orderAction=result.action;
+          await persist({...snapshot,catalogOrder:result.order,catalogOrderSha:result.sha});
+          locallyRecorded++;
+        }
+      }catch(error){
+        return{ok:false,action:confirmed?'save-all-partial':'save-all-failed',settings,
+          ...counts,failedItem,error,localSnapshotUpdated:confirmed===locallyRecorded,...uiState()};
+      }
+      if(deferredFailures.length){const first=deferredFailures[0];return{ok:false,settings,action:confirmed?'save-all-partial':'save-all-failed',...counts,failedItem:first.path,failedItems:deferredFailures.map(({path})=>path),error:first.error,localSnapshotUpdated:true,...uiState()};}
+       return{ok:true,settings,action:'save-all',...counts,orderAction,...uiState()};
+    });}
+    async function exportLocalState(mode='summary'){const settings=await deps.loadRepositorySettings();return deps.exportPlanningHelperState(snapshot,settings,mode);}
+    async function getRecoveryRequest(){const settings=await deps.loadRepositorySettings();return deps.buildRecoveryRequest(settings);}async function loadSettings(){return{settings:await deps.loadRepositorySettings(),token:await deps.loadGitHubToken()};}async function saveSettings(settings,token){return repositoryOperation('Save repository settings',async()=>{const previous=await deps.loadRepositorySettings(),candidate=deps.validateRepositorySettings(settings),sourceChanged=repositorySettingsKey(previous)!==repositorySettingsKey(candidate);if(sourceChanged)await persist(clearRepositoryEvidence(snapshot));await deps.saveGitHubToken(token);await deps.saveRepositorySettings(candidate);return{sourceChanged,...uiState()};});}
+    // Every UI and programmatic local mutation must enter the same state queue.
+    const localMutations={saveLocalCommandDefinition,deleteLocalCommand,deleteLocalUseCase,
+      toggleFavoriteCommand,moveFavoriteCommand,toggleFavoriteUseCase,
+      saveLocalLibraryItem,deleteLocalLibraryItem,moveCatalogItem,moveCatalogItemToPosition,
+      assignCatalogGroup,createCatalogGroup,updateCatalogGroup,deleteCatalogGroup,
+      moveCatalogGroup,createPromptGroup,renamePromptGroup,deletePromptGroup,assignPromptGroup,movePromptGroup,createCatalogCategory,updateCatalogCategory,moveCatalogCategory,
+      deleteCatalogCategory};
+    for(const[name,action]of Object.entries(localMutations))
+      localMutations[name]=(...args)=>serializeMutation(()=>action(...args));
+    const localUiCallbacks=Object.fromEntries(Object.entries(localMutations).map(([name,action])=>
+      [`on${name[0].toUpperCase()}${name.slice(1)}`,action]));
+    const ui=deps.createPlanningHelperUi({surfaces:deps.SURFACES,...uiState(),position:deps.readPanelPosition(),onSavePosition:deps.savePanelPosition,onInsert:async(text,success,id,invocation)=>insertWithClipboard(await prepareInvocationBody(text,id,invocation,deps,memory.helperRecords.map((record)=>record.item)),success,id),onCopy:async(text,id,invocation)=>deps.copyText(await prepareInvocationBody(text,id,invocation,deps,memory.helperRecords.map((record)=>record.item))),onCopyPlain:(text)=>deps.copyText(text),onResolveLibraryText:(text)=>deps.resolveModuleReferences(text,memory.helperRecords.map((record)=>record.item)).text,onGetInvocationSideEffects:(id)=>typeof deps.commandSideEffectIds==='function'?deps.commandSideEffectIds(id):[],onPreviewChatImport:(text,mode)=>previewChatImport(snapshot,text,mode),onApplyChatImport:applyChatText,onGetRecoveryRequest:getRecoveryRequest,onExportLocalState:exportLocalState,onSaveLocalCommandDefinition:saveLocalCommandDefinition,onDeleteLocalCommand:deleteLocalCommand,onDeleteLocalUseCase:deleteLocalUseCase,onToggleFavoriteCommand:toggleFavoriteCommand,onMoveFavoriteCommand:moveFavoriteCommand,onToggleFavoriteUseCase:toggleFavoriteUseCase,onReloadRepositoryCommand:reloadRepositoryCommand,onSaveLocalLibraryItem:saveLocalLibraryItem,onDeleteLocalLibraryItem:deleteLocalLibraryItem,onCheckRepository:checkRepository,onSyncMissingRepository:syncMissingRepository,onHardReloadRepository:hardReloadRepository,onMoveCatalogItem:moveCatalogItem,onMoveCatalogItemToPosition:moveCatalogItemToPosition,onAssignCatalogGroup:assignCatalogGroup,onCreateCatalogGroup:createCatalogGroup,onUpdateCatalogGroup:updateCatalogGroup,onDeleteCatalogGroup:deleteCatalogGroup,onMoveCatalogGroup:moveCatalogGroup,onCreatePromptGroup:createPromptGroup,onRenamePromptGroup:renamePromptGroup,onDeletePromptGroup:deletePromptGroup,onAssignPromptGroup:assignPromptGroup,onMovePromptGroup:movePromptGroup,onCreateCatalogCategory:createCatalogCategory,onUpdateCatalogCategory:updateCatalogCategory,onMoveCatalogCategory:moveCatalogCategory,onDeleteCatalogCategory:deleteCatalogCategory,onSaveCatalogOrderRepository:saveCatalogOrderRepository,onSaveRepositoryEntity:saveRepositoryEntity,onSaveAllRepository:saveAllRepository,onLoadSettings:loadSettings,onSaveSettings:saveSettings,startupWarnings,...localUiCallbacks});
+    async function refreshFromSharedState(){
+      return serializeMutation(async()=>{
+        if(typeof deps.loadPlanningHelperLocalSnapshot!=='function')return false;
+        const current=await deps.loadPlanningHelperLocalSnapshot();
+        if(!current||JSON.stringify(current)===JSON.stringify(snapshot))return false;
+        const refreshed=materializeSnapshot(current);
+        snapshot=current;memory=refreshed;
+        ui?.applyState?.(uiState());
+        return true;
+      });
+    }
+    const onSharedStorage=(event)=>{if(event.key===deps.PLANNING_HELPER_STATE_CHANGED_KEY)refreshFromSharedState().catch(()=>{});};
+    const onTabVisible=()=>{if(typeof document!=='undefined'&&document.visibilityState==='visible')refreshFromSharedState().catch(()=>{});};
+    if(typeof window!=='undefined'&&window.addEventListener)window.addEventListener('storage',onSharedStorage);
+    if(typeof document!=='undefined'&&document.addEventListener)document.addEventListener('visibilitychange',onTabVisible);
+    function dispose(){if(typeof window!=='undefined'&&window.removeEventListener)window.removeEventListener('storage',onSharedStorage);if(typeof document!=='undefined'&&document.removeEventListener)document.removeEventListener('visibilitychange',onTabVisible);ui?.dispose();if(globalThis[INSTANCE_DISPOSE_KEY]===dispose)delete globalThis[INSTANCE_DISPOSE_KEY];for(const key of LEGACY_DISPOSE_KEYS)if(globalThis[key]===dispose)delete globalThis[key];}globalThis[INSTANCE_DISPOSE_KEY]=dispose;
+    return{dispose,getSnapshot:()=>snapshot,getDefinitions:()=>memory.commandRecords.map((record)=>record.definition),getUseCases:()=>memory.useCases,getLocalLibrary:()=>memory.helperRecords.map((record)=>record.item),previewChatImport:(text,mode)=>previewChatImport(snapshot,text,mode),applyChatImport:applyChatText,saveLocalCommandDefinition,deleteLocalCommand,deleteLocalUseCase,toggleFavoriteCommand,moveFavoriteCommand,toggleFavoriteUseCase,reloadRepositoryCommand,checkRepository,syncMissingRepository,hardReloadRepository,moveCatalogItem,moveCatalogItemToPosition,assignCatalogGroup,createCatalogGroup,updateCatalogGroup,deleteCatalogGroup,moveCatalogGroup,createPromptGroup,renamePromptGroup,deletePromptGroup,assignPromptGroup,movePromptGroup,createCatalogCategory,updateCatalogCategory,moveCatalogCategory,deleteCatalogCategory,saveCatalogOrderRepository,saveRepositoryEntity,saveAllRepository,getRepositoryOperation:()=>repositoryLock.active(),exportLocalState,refreshFromSharedState,...localMutations};
+  }
+
+  return{startPlanningHelper,createRepositoryOperationLock,materializeSnapshot,mergeMissingPromptGroups,mergeChatImport,previewChatImport,compareRepositoryInventory,mergeRemoteMissing,prepareLocalCommandSave,deleteLocalCommandFromSnapshot,deleteLocalUseCaseFromSnapshot,toggleFavoriteCommandInSnapshot,moveFavoriteCommandInSnapshot,toggleFavoriteUseCaseInSnapshot,prepareLocalHelperSave,completeCatalogOrder,clearRepositoryEvidence,persistVerifiedRepositoryResult,prepareInvocationBody,insertWithClipboard,sortByIds,moveId,moveIdToPosition,presentationGroupForId,decoratePresentationGroups,assignCommandGroupInOrder,createCommandGroupInOrder,updateCommandGroupInOrder,deleteCommandGroupInOrder,moveCommandGroupInOrder,createCommandCategoryInOrder,updateCommandCategoryInOrder,moveCommandCategoryInOrder,deleteCommandCategoryInOrder};
+});
+
+(function(){
+  'use strict';
+  const api=globalThis.ObsPlanningHelper;if(!api||typeof api.startPlanningHelper!=='function')throw new Error('OBS Planning Helper runtime was not built correctly.');api.scriptVersion="0.40.10-repository-command-registry";api.startPlanningHelper().then(()=>api.startSharedModuleChannel?.(api.loadPlanningHelperLocalSnapshot)).catch((error)=>console.error('[OBS Planning Helper startup]',error));
+})();

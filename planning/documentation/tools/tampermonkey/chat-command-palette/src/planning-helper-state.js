@@ -67,6 +67,7 @@
   async function savePlanningHelperLocalSnapshot(value){const normalized=normalizePlanningHelperLocalSnapshot({...value,schemaVersion:LOCAL_SNAPSHOT_SCHEMA_VERSION,commandCacheSchemaVersion:COMMAND_CACHE_SCHEMA_VERSION,savedAt:value?.savedAt||new Date().toISOString()}),payload={...normalized,savedAt:new Date().toISOString()};await gmSet(KEYS.localSnapshot,payload);const checked=await gmGet(KEYS.localSnapshot,null),normalizedChecked=normalizePlanningHelperLocalSnapshot(checked);if(JSON.stringify(normalizedChecked)!==JSON.stringify(payload))throw new Error('Planning Helper local snapshot write-back verification failed.');
     // Storage events notify other open ChatGPT tabs without requiring extra GM grants.
     try{if(typeof localStorage!=='undefined')localStorage.setItem(STATE_CHANGED_KEY,`${Date.now()}-${Math.random()}`);}catch(_){}
+    deps.publishSharedModuleCatalog?.();
     return payload;}
 
   function commandRecordsFromDefinitions(definitions,repositoryKnown=true){return(definitions||[]).map((definition)=>normalizeCommandRecord({definition,repositoryKnown,repositoryTracked:repositoryKnown}));}

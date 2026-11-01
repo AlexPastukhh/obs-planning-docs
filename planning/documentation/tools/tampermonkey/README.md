@@ -1,5 +1,54 @@
 # OBS Tampermonkey Tools
 
+## Observatory reminder module — current-request context (19.10.2026)
+
+Ordinary TextModule fortis.observatory-telemetry now references
+current-message identity from the Notifier behavior and the
+Repo sender that recovers enrollment internally. It must not
+encourage remembering any ID from a one-time bootstrap.
+The source file has changed; existing local Helper GM copies are
+NOT automatically changed or pushed to GitHub. Use the normal
+Planning Helper module editor/import and Save GitHub workflows.
+
+## Fortis Observatory module + safe AI attachment (2026-10-19)
+
+The canonical repo library now includes ordinary module
+fortis.observatory-telemetry, saved as
+planning/helper-library/modules/fortis.observatory-telemetry.module.md.
+It is a concise Observatory reminder, not JS behavior; it contains
+no credentials and no fixed session/task IDs.
+
+To add it to actual local Planning Helper GM state NOW, use the
+EXISTING Prompts → Modules → Import UI and paste the module file's
+PLANNING_HELPER_LIBRARY_ITEM block. Then Save GitHub on its row
+(or Save all GitHub if intended). On other installations, Sync missing
+imports it back to Helper GM and Notifier sees it live.
+Repo file creation alone is NOT a browser GM import.
+
+For AI-assisted use: the read-only source catalog CLI
+planning/helper-library/tools/notifier_module_refs.py
+lists Module IDs and generates pasteable [[module:id]] references.
+Notifier v5.7.1 has an explicit user-approved «Подключить по ID»
+field in ⚙. It attaches only IDs validated against the already
+available live Helper catalog. No second creator/editor, no Notifier
+GitHub implementation, and no silent AI modification of GM state.
+
+## 19.10.2026 — Planning Helper 0.40.9 shared-module read channel
+
+Planning Helper remains the ONLY creator/editor of local TextModules
+using its existing GM snapshot and existing Save GitHub, Sync missing,
+Hard Reload and GitHub settings. No second editor was added.
+The helper source shared-module-channel.js publishes a bounded
+read-only projection (id/title/text only) over same-site
+BroadcastChannel fortis-shared-helper-text-modules-v1. It responds
+to read requests and broadcasts after confirmed local snapshot
+writes, including GitHub-loaded changes. No GitHub credential,
+prompt/command data, or Helper administrative action is exposed.
+Notifier 5.7.0 stores only profile references to module IDs.
+
+Manual installation in owner Edge required for BOTH existing
+userscripts. Real cross-userscript browser communication pending.
+
 Status: active reusable/project planning tool index
 Doc version: v0.30.0-command-catalog-refresh
 Scope: tracked Tampermonkey scripts used by the OBS planning system, including reusable projection/runtime tools and one explicitly bounded project-local repository documentation prototype.

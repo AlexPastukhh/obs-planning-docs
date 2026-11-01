@@ -109,3 +109,9 @@ Do not put GitHub tokens or other secrets in helper-library records. The Plannin
 ## Legacy Migration
 
 Older browser-local command/library/cache records may be migrated once into `obsPlanningHelper:v2:localSnapshot`. Legacy keys are not deleted by this migration. No GitHub request is made during migration.
+
+## RDG: авторский источник и производная доставка
+
+Записи `rdg.work.*` (4 Prompts и 9 Modules) генерируются из авторских файлов `rd-graphs/work-kit/prompts/` и `rd-graphs/work-kit/modules/`. `work-kit/build-import.cjs` собирает адресный import по тем же IDs; записи этой helper-library — форма доставки. Смысловые изменения сначала внесите в авторский источник, затем пересоберите import и обновите соответствующие записи с read-back. Не редактируйте две версии независимо.
+
+Локально установленный Helper обновляется через Import local поверх прежних IDs. Check GitHub / Sync missing не заменяют существующий локальный текст. Перед новым чатом проверьте раскрытый bootstrap. Старые bootstrap-idtspe/SDS не являются точкой входа текущей RDG-модели.

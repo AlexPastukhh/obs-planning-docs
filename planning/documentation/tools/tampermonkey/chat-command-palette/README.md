@@ -15,6 +15,20 @@ Responsibility ID: `HELPER.SEMANTIC-PROJECTION`
 
 The Helper owns projection/runtime mechanics only. Semantic command meaning and process stay with direct command definitions plus the projected methodology/repository owners. Registered command `includes` are canonical command-file-path edges forming a reproducible USER-invocation composition guarantee over those existing owners; they do not make Helper UI, generated seeds, numeric Shell ports or presentation groups methodology authority. Generated `seed/*.json`, userscript bytes and scenario-command reverse indexes are derived artifacts. Categories and presentation groups are editable presentation configuration, with no methodology authority.
 
+## Notifier Textbox reuse (0.40.10)
+
+The existing local read-only module catalog also projects Prompts as a separate
+optional `prompts[]` array. Only id/title/text/updatedAt of local Prompt/Module
+records are projected; commands, GitHub credentials and repository metadata are
+excluded. Notifier 5.7.29 selects one optional Prompt per profile and resolves its
+module references from the same catalog at preparation time. Selection stores
+only the prompt ID, never inserts or sends by itself, and never invokes GitHub.
+The exact user's original stays in the existing original archive; the resolved
+Prompt and additional selected Modules augment only the prepared submission.
+Missing Prompt/Module references and cycles block preparation. Legacy consumers
+continue reading the unchanged `modules[]` field. See `SCN-PH-USE` and
+`tests/shared-module-channel.test.mjs` for the Helper boundary/evidence.
+
 ## Read Order
 
 SDS planning start: [Application Definition resolution](application-definition.resolution.md) and its [candidate Application Definition](application-definition.proposal.md). These files retain proposal/Q/R/P/decision state separately from the current implementation and Scenario owners below.
