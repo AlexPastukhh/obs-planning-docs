@@ -286,7 +286,9 @@
     "helper-library:prompt:rdg.work.commit",
     "helper-library:prompt:rdg.work.crosscut",
     "helper-library:prompt:rdg.work.plan",
-    "helper-library:prompt:work.value-quick-check-observatory"
+    "helper-library:prompt:work.value-quick-check-observatory",
+    "helper-library:prompt:item-1k7zjt1-17diktw",
+    "helper-library:prompt:item-8bodwz-1yxlkvv"
   ],
   "commandGroups": [
     {
@@ -805,7 +807,9 @@
         "helper-library:prompt:item-z84fhr-1ynaeie",
         "helper-library:prompt:planning-4je394",
         "helper-library:prompt:replacement-arch-bootstr-s3labd",
-        "helper-library:prompt:planning-helper.prompt-authoring"
+        "helper-library:prompt:planning-helper.prompt-authoring",
+        "helper-library:prompt:item-1k7zjt1-17diktw",
+        "helper-library:prompt:item-8bodwz-1yxlkvv"
       ]
     },
     {
