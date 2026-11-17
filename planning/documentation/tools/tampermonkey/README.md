@@ -8,7 +8,7 @@ Scope: tracked Tampermonkey scripts used by the OBS planning system, including r
 
 ```text
 planning/documentation/tools/tampermonkey/chat-command-palette.user.js
-  generated install artifact for the modular Commands / Scenarios / Prompts helper;
+  generated install artifact for the modular RDG Commands («Линзы») / Scenarios / Prompts helper; existing Planning Commands remain available as an explicit legacy editor view;
   source/build/tests live under `chat-command-palette/`;
   planning-command definitions live under `planning/commands/`;
   current methodology UCs/TMs/Lenses project into one semantic Commands surface; direct-backed rows remain editable command drafts, canonical working Scenarios are separately inspectable, Prompts use the helper library, and explicit GitHub actions are user-triggered;

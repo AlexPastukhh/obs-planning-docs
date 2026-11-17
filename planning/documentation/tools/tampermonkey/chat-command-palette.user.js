@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Reusable Chat Planning Helper
 // @namespace    https://github.com/AlexPastukhh/obs/reusable-docs
-// @version      0.40.8-repository-command-registry
+// @version      0.40.9-repository-command-registry
 // @description  RAM-first OBS Planning Helper with semantic Commands, canonical Scenarios, prompts and explicit repository actions.
 // @author       Reusable docs layer
 // @match        https://chatgpt.com/*
@@ -11,6 +11,7 @@
 // @grant        GM_setValue
 // @grant        GM_xmlhttpRequest
 // @connect      api.github.com
+// @connect      raw.githubusercontent.com
 // ==/UserScript==
 
 // GENERATED FILE — DO NOT EDIT MANUALLY.
@@ -765,9 +766,11 @@
 })(typeof globalThis!=='undefined'?globalThis:this,function(){
   'use strict';
 
-  // Use Cases/Target Modules/Lenses are semantic classifications inside the Commands
-  // surface. USE_CASES remains exported only as a compatibility symbol for older caches/tests.
-  const SURFACES=Object.freeze({COMMANDS:'Commands',SCENARIOS:'Scenarios',PROMPTS:'Prompts',USE_CASES:'Use Cases'});
+  // OBS Use Cases/Target Modules/Lens Models remain semantic classifications inside
+  // existing Planning Commands. The separate RDG-owned launcher surface is a read-only
+  // external command catalog and does not change those semantic projections.
+  // USE_CASES remains exported only as a compatibility symbol for older caches/tests.
+  const SURFACES=Object.freeze({LENSES:'Линзы',COMMANDS:'Commands',SCENARIOS:'Scenarios',PROMPTS:'Prompts',USE_CASES:'Use Cases'});
   const MODE=Object.freeze({ADAPTIVE:'adaptive',FULL:'full'});
   const SEMANTIC_KINDS=Object.freeze({USE_CASE:'USE_CASE',TARGET_MODULE:'TARGET_MODULE',LENS:'LENS'});
   const PROVENANCE=Object.freeze({DIRECT:'DIRECT CURRENT',GENERIC:'GENERIC CURRENT',GENERATED:'GENERATED'});
@@ -1632,6 +1635,85 @@
   return{isVisibleComposer,findComposer,getComposerText,insertContenteditableText,insertIntoComposer,copyText,clearComposerCache};
 });
 
+(function(root,factory){
+  const api=factory();
+  if(typeof module==='object'&&module.exports)module.exports=api;
+  root.ObsPlanningHelper=Object.assign(root.ObsPlanningHelper||{},api);
+})(typeof globalThis!=='undefined'?globalThis:this,function(){
+  'use strict';
+  const KEY='obsPlanningHelper:v1:rdgCommandCatalog';
+  const URL='https://raw.githubusercontent.com/AlexPastukhh/rd-graphs/main/work-kit/helper-commands/catalog.json';
+  const ID=/^rdg\.lens\.([a-z][a-z0-9-]{0,79})$/;
+  const DIGEST=/^[0-9a-f]{64}$/;
+  const SECRET=/(?:ghp_[A-Za-z0-9]{20}|Bearer\s+[A-Za-z0-9._~+/-]{16}|-----BEGIN (?:RSA |EC |OPENSSH )?PRIVATE KEY)/i;
+  function validateRdgCommandCatalog(value){
+    if(!value||value.schemaVersion!==1||value.kind!=='rdg-chat-launcher-commands'||
+       value.complete!==true||!DIGEST.test(value.catalogRevision||'')||
+       !Array.isArray(value.commands)||value.commands.length<1||value.commands.length>250)
+      throw new Error('RDG command catalog is incomplete or incompatible; previous cache retained');
+    const ids=new Set(),keys=new Set(),commands=[];
+    for(const raw of value.commands){
+      if(!raw||typeof raw!=='object'||Array.isArray(raw))throw new Error('Invalid RDG command');
+      const match=typeof raw.id==='string'?ID.exec(raw.id):null;
+      const ref=raw.lensRef;
+      if(!match||ids.has(raw.id)||Object.keys(raw).length!==6||Object.keys(raw).some(k=>!['id','kind','title','description','lensRef','insertText'].includes(k))||!ref||typeof ref!=='object'||Array.isArray(ref)||Object.keys(ref).length!==3||Object.keys(ref).some(k=>!['role','lensKey','modelProfile'].includes(k))||ref.role!=='lens'||ref.lensKey!==match[1]||
+        ref.modelProfile!=='rdg-decision-v1'||keys.has(match[1])||raw.kind!=='lens-launcher')
+        throw new Error('Duplicate or invalid RDG command reference');
+      for(const [field,max] of [['title',300],['description',1200],['insertText',5000]]){
+        if(typeof raw[field]!=='string'||!raw[field].trim()||raw[field].length>max||SECRET.test(raw[field]))
+          throw new Error('Invalid RDG command field: '+field);
+      }
+      if(!raw.insertText.includes('rdg-agent.py lens --lens '+match[1]))
+        throw new Error('RDG command does not specify supported lens read');
+      ids.add(raw.id);keys.add(match[1]);
+      commands.push({id:raw.id,kind:raw.kind,title:raw.title,
+        description:raw.description,lensRef:{role:ref.role,lensKey:ref.lensKey,modelProfile:ref.modelProfile},insertText:raw.insertText});
+    }
+    return {schemaVersion:1,kind:value.kind,complete:true,
+      catalogRevision:value.catalogRevision,commands};
+  }
+  function currentStorage(){
+    if(typeof GM_getValue!=='function'||typeof GM_setValue!=='function')
+      throw new Error('Tampermonkey GM storage is unavailable');
+    return {get:(key)=>GM_getValue(key,null),set:(key,value)=>GM_setValue(key,value)};
+  }
+  function rdgCommandRequest(url=URL){
+    return new Promise((resolve,reject)=>{
+      if(typeof GM_xmlhttpRequest!=='function'){reject(new Error('Tampermonkey HTTP grant unavailable'));return;}
+      GM_xmlhttpRequest({
+        method:'GET',url:url+'?refresh='+Date.now(),anonymous:true,timeout:15000,
+        headers:{Accept:'application/json','Cache-Control':'no-cache'},
+        onload:r=>r.status===200?resolve(r.responseText):reject(new Error('RDG catalog HTTP '+r.status)),
+        onerror:()=>reject(new Error('RDG catalog request failed')),
+        ontimeout:()=>reject(new Error('RDG catalog request timed out'))
+      });
+    });
+  }
+  async function loadRdgCommandCache(storage=currentStorage()){
+    try{
+      const value=await storage.get(KEY);
+      if(!value||typeof value!=='object'||typeof value.savedAt!=='string')return null;
+      return {...validateRdgCommandCatalog(value),savedAt:value.savedAt};
+    }catch(_){return null;}
+  }
+  async function refreshRdgCommandCache(storage=currentStorage(),request=rdgCommandRequest){
+    const payload=await request();
+    const parsed=typeof payload==='string'?JSON.parse(payload):payload;
+    const fresh={...validateRdgCommandCatalog(parsed),savedAt:new Date().toISOString()};
+    await storage.set(KEY,fresh);
+    const stored=await loadRdgCommandCache(storage);
+    if(!stored||JSON.stringify(stored)!==JSON.stringify(fresh))
+      throw new Error('RDG cache save verification failed');
+    return stored;
+  }
+  async function initializeRdgCommandCache(storage=currentStorage(),request=rdgCommandRequest){
+    return await loadRdgCommandCache(storage)||await refreshRdgCommandCache(storage,request);
+  }
+  return {RDG_COMMAND_CATALOG_URL:URL,RDG_COMMAND_CACHE_KEY:KEY,
+    validateRdgCommandCatalog,loadRdgCommandCache,refreshRdgCommandCache,
+    initializeRdgCommandCache,rdgCommandRequest};
+});
+
 (function (root, factory) {
   const api=factory();
   if(typeof module==='object'&&module.exports)module.exports=api;
@@ -1837,10 +1919,10 @@
     const SURFACES=options.surfaces||deps.SURFACES;document.getElementById(HOST_ID)?.remove();document.getElementById('obs-command-helper-host')?.remove();
     const host=document.createElement('div');host.id=HOST_ID;document.documentElement.appendChild(host);const root=host.attachShadow({mode:'open'});
     const saved=options.position||{},defaultWidth=Math.min(980,Math.max(560,window.innerWidth-32)),defaultHeight=Math.min(780,Math.max(420,window.innerHeight-32));let width=saved.width??defaultWidth,height=saved.height??defaultHeight,left=saved.left??Math.max(12,window.innerWidth-width-18),top=saved.top??Math.max(12,window.innerHeight-height-22);
-    const ALL_METHODOLOGY_VIEW=deps.METHODOLOGY_VIEW_IDS?.ALL||'ALL';
+    const ALL_METHODOLOGY_VIEW=deps.METHODOLOGY_VIEW_IDS?.ALL||'ALL',LENSES_SURFACE=SURFACES.LENSES||'Линзы';
     const GROUP_FILTER_KEY='obs-planning-helper-group-filter-v1',GROUP_COLLAPSE_KEY='obs-planning-helper-group-collapse-v1',ACTIVE_VIEW_KEY='obs-planning-helper-active-command-view-v1',SIDEBAR_COLLAPSE_KEY='obs-planning-helper-sidebar-collapse-v1';
-    let activeSurface=SURFACES.COMMANDS,activeMethodologyView=readLocalText(ACTIVE_VIEW_KEY)||null,activePromptView='prompts',activePromptGroupId='all',selectedCommandId='',selectedPromptId='',commandEntries=[...(options.commandEntries||[])],scenarioEntries=[...(options.scenarioEntries||[])],promptEntries=[...(options.promptEntries||[])],moduleEntries=[...(options.moduleEntries||[])],useCaseEntries=[...(options.useCaseEntries||[])],favoriteCommandIds=[...(options.favoriteCommandIds||[])],favoriteUseCaseIds=[...(options.favoriteUseCaseIds||[])],catalogOrder=options.catalogOrder||{commandGroups:[]},pendingRepositoryWrites=options.pendingRepositoryWrites||{commands:0,prompts:0,modules:0,helperCommands:0,order:false};let activeOverlay=null,isOpen=false,statusTimer=null,insertionBusy=false,dashboardOpen=document.documentElement.dataset.obsPlanningDashboardOpen==='true',lastToggleToken=document.documentElement.dataset.obsPlanningCommandsToggle||'',resizeTimer=null,activeCommandDetail=null,commandCardNodes=new Map();
-    const meaningOpen=new Map(),backgroundTasks=new Map();let favoriteMoveBusy=false,taskSequence=0;
+    let activeSurface=LENSES_SURFACE,activeMethodologyView=readLocalText(ACTIVE_VIEW_KEY)||null,activePromptView='prompts',activePromptGroupId='all',selectedCommandId='',selectedPromptId='',commandEntries=[...(options.commandEntries||[])],scenarioEntries=[...(options.scenarioEntries||[])],promptEntries=[...(options.promptEntries||[])],moduleEntries=[...(options.moduleEntries||[])],useCaseEntries=[...(options.useCaseEntries||[])],favoriteCommandIds=[...(options.favoriteCommandIds||[])],favoriteUseCaseIds=[...(options.favoriteUseCaseIds||[])],catalogOrder=options.catalogOrder||{commandGroups:[]},pendingRepositoryWrites=options.pendingRepositoryWrites||{commands:0,prompts:0,modules:0,helperCommands:0,order:false};let activeOverlay=null,isOpen=false,statusTimer=null,insertionBusy=false,dashboardOpen=document.documentElement.dataset.obsPlanningDashboardOpen==='true',lastToggleToken=document.documentElement.dataset.obsPlanningCommandsToggle||'',resizeTimer=null,activeCommandDetail=null,commandCardNodes=new Map();
+    const meaningOpen=new Map(),backgroundTasks=new Map();let favoriteMoveBusy=false,taskSequence=0,rdgCatalog=null,rdgLoading=false,rdgError='';
     function readLocalText(key){try{return String(localStorage.getItem(key)||'').trim();}catch(_){return'';}}
     function writeLocalText(key,value){try{if(value==null||value==='')localStorage.removeItem(key);else localStorage.setItem(key,String(value));}catch(_){}}
     function readLocalJson(key,fallback){try{const raw=localStorage.getItem(key);return raw==null?fallback:JSON.parse(raw);}catch(_){return fallback;}}
@@ -1859,13 +1941,13 @@
 .sidebar-section .group-nav-title{display:none}.sidebar-section>summary,.meaning-box>summary{cursor:pointer}.sidebar-section>summary:focus-visible,.meaning-box>summary:focus-visible{outline:2px solid #5eead4;outline-offset:2px}.meaning-box:not([open])>summary{margin-bottom:0}.favorite-group{border-color:#526749}.favorite-group .command-card-context{display:block}
 .prompt-group-toolbar[hidden]{display:none}.prompt-group-toolbar{display:flex;gap:5px;flex-wrap:wrap;align-items:center;padding:5px 8px 8px}.prompt-group-chip{border-radius:999px;padding:4px 8px;font-size:11px;white-space:nowrap}.prompt-group-chip[aria-pressed=true]{border-color:#3b82f6;background:#1e40af;color:#eff6ff}.prompt-group-count{margin-left:5px;color:#9caec5;font-size:10px}.prompt-group-head{padding:0 8px 7px;color:#94a3b8;font-size:11px}.prompt-group-badge{display:inline-block;margin-top:4px;padding:1px 6px;border:1px solid #2e4562;color:#8fd6ff;border-radius:999px;font-size:10px}.prompt-group-tools{display:flex;gap:5px;flex-wrap:wrap;margin-top:8px}.prompt-group-tools button{padding:5px 9px}.prompt-group-manager{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:6px 0;padding:6px 8px;border:1px solid #26364f;border-radius:8px}.prompt-group-manager .group-editor-actions{display:flex;gap:4px}.prompt-group-manager .group-editor-actions button{padding:4px 7px}
 @media(max-width:760px){.prompt-group-toolbar{padding:5px 7px}.prompt-group-chip{font-size:10px}.prompt-group-manager{flex-wrap:wrap}}
-</style><button class="launcher" type="button"><span class="launcher-label">Planning</span><span class="launcher-activity"><span class="activity-spinner">↻</span> <span class="launcher-count">0</span></span></button><section class="panel" data-open="false"><div class="header"><div class="title"><div class="title-main">OBS Planning Helper</div><div class="title-sub">local working cache · GitHub-backed semantic Commands + canonical Scenarios · explicit Hard Reload</div></div><small class="helper-version" aria-label="Planning Helper version"></small><div class="activity" data-active="false"><span class="activity-spinner">↻</span><span class="activity-text"></span></div><button class="close" type="button">×</button></div><div class="tabs">${[SURFACES.COMMANDS,SURFACES.SCENARIOS,SURFACES.PROMPTS].filter(Boolean).map((surface)=>`<button class="tab" type="button" data-surface="${surface}" aria-selected="false">${surface}</button>`).join('')}</div><div class="command-views"></div><div class="library-views" data-visible="false"><button class="library-view" type="button" data-library-view="prompts" aria-selected="true"><span>Prompts</span><small class="library-view-count prompt-count"></small></button><button class="library-view" type="button" data-library-view="modules" aria-selected="false"><span>Modules</span><small class="library-view-count module-count"></small></button></div><div class="surface-tools"><button class="tool new-library" type="button">New</button><button class="tool import-chat" type="button">Import</button><button class="tool restore-chat" type="button">Restore copy</button><button class="tool recovery-request" type="button">Recovery request</button><button class="tool copy-state" type="button">Copy state</button><button class="tool check-github" type="button">Check GitHub</button><button class="tool sync-github" type="button">Sync missing</button><button class="tool hard-reload" type="button">Hard Reload GitHub</button><button class="tool manage-groups" type="button">Manage groups</button><button class="tool save-all" type="button">Save all GitHub</button><button class="tool settings" type="button">Settings</button></div><div class="search-wrap"><input class="search" type="search" placeholder="Search current surface…"></div><div class="command-group-nav" data-visible="false"></div><div class="prompt-group-toolbar" hidden></div><div class="body"></div></section>`;
+</style><button class="launcher" type="button"><span class="launcher-label">Planning</span><span class="launcher-activity"><span class="activity-spinner">↻</span> <span class="launcher-count">0</span></span></button><section class="panel" data-open="false"><div class="header"><div class="title"><div class="title-main">OBS Planning Helper</div><div class="title-sub">local working cache · GitHub-backed semantic Commands + canonical Scenarios · explicit Hard Reload</div></div><small class="helper-version" aria-label="Planning Helper version"></small><div class="activity" data-active="false"><span class="activity-spinner">↻</span><span class="activity-text"></span></div><button class="close" type="button">×</button></div><div class="tabs">${[LENSES_SURFACE,SURFACES.SCENARIOS,SURFACES.PROMPTS].filter(Boolean).map((surface)=>`<button class="tab" type="button" data-surface="${surface}" aria-selected="false">${surface}</button>`).join('')}</div><div class="command-views"></div><div class="library-views" data-visible="false"><button class="library-view" type="button" data-library-view="prompts" aria-selected="true"><span>Prompts</span><small class="library-view-count prompt-count"></small></button><button class="library-view" type="button" data-library-view="modules" aria-selected="false"><span>Modules</span><small class="library-view-count module-count"></small></button></div><div class="surface-tools"><button class="tool rdg-refresh" type="button">Обновить RDG</button><button class="tool legacy-commands" type="button">Planning Commands</button><button class="tool new-library" type="button">New</button><button class="tool import-chat" type="button">Import</button><button class="tool restore-chat" type="button">Restore copy</button><button class="tool recovery-request" type="button">Recovery request</button><button class="tool copy-state" type="button">Copy state</button><button class="tool check-github" type="button">Check GitHub</button><button class="tool sync-github" type="button">Sync missing</button><button class="tool hard-reload" type="button">Hard Reload GitHub</button><button class="tool manage-groups" type="button">Manage groups</button><button class="tool save-all" type="button">Save all GitHub</button><button class="tool settings" type="button">Settings</button></div><div class="search-wrap"><input class="search" type="search" placeholder="Search current surface…"></div><div class="command-group-nav" data-visible="false"></div><div class="prompt-group-toolbar" hidden></div><div class="body"></div></section>`;
 
     const fullScriptVersion=String(globalThis.ObsPlanningHelper?.scriptVersion||'').trim();
     const versionIndicator=root.querySelector('.helper-version');
     versionIndicator.textContent=fullScriptVersion?`v${fullScriptVersion.split('-')[0]}`:'v?';
     versionIndicator.title=fullScriptVersion?`Planning Helper userscript: ${fullScriptVersion}`:'Planning Helper version unavailable';
-    const launcher=root.querySelector('.launcher'),panel=root.querySelector('.panel'),header=root.querySelector('.header'),activity=root.querySelector('.activity'),activityText=root.querySelector('.activity-text'),launcherCount=root.querySelector('.launcher-count'),closeButton=root.querySelector('.close'),searchInput=root.querySelector('.search'),body=root.querySelector('.body'),tabButtons=[...root.querySelectorAll('.tab')],commandViewBar=root.querySelector('.command-views'),libraryViewBar=root.querySelector('.library-views'),libraryViewButtons=[...root.querySelectorAll('.library-view')],commandGroupNav=root.querySelector('.command-group-nav'),newLibraryButton=root.querySelector('.new-library'),manageGroupsButton=root.querySelector('.manage-groups'),saveAllButton=root.querySelector('.save-all'),promptGroupToolbar=root.querySelector('.prompt-group-toolbar');
+    const launcher=root.querySelector('.launcher'),panel=root.querySelector('.panel'),header=root.querySelector('.header'),activity=root.querySelector('.activity'),activityText=root.querySelector('.activity-text'),launcherCount=root.querySelector('.launcher-count'),closeButton=root.querySelector('.close'),searchInput=root.querySelector('.search'),body=root.querySelector('.body'),tabButtons=[...root.querySelectorAll('.tab')],commandViewBar=root.querySelector('.command-views'),libraryViewBar=root.querySelector('.library-views'),libraryViewButtons=[...root.querySelectorAll('.library-view')],commandGroupNav=root.querySelector('.command-group-nav'),newLibraryButton=root.querySelector('.new-library'),manageGroupsButton=root.querySelector('.manage-groups'),saveAllButton=root.querySelector('.save-all'),promptGroupToolbar=root.querySelector('.prompt-group-toolbar'),rdgRefreshButton=root.querySelector('.rdg-refresh'),legacyCommandsButton=root.querySelector('.legacy-commands'),rdgOtherTools=[...root.querySelectorAll('.surface-tools .tool')].filter(node=>node!==rdgRefreshButton&&node!==legacyCommandsButton);
     const manageCategoriesButton=button('Manage categories','manage-categories',openCategoryManager);manageGroupsButton.before(manageCategoriesButton);
     function entriesForSurface(surface){if(surface===SURFACES.COMMANDS)return commandEntries;if(surface===SURFACES.SCENARIOS)return scenarioEntries;if(surface===SURFACES.PROMPTS)return activePromptView==='modules'?moduleEntries:promptEntries;if(surface===SURFACES.USE_CASES)return useCaseEntries;return[];}
     function renderLibraryViewButtons(){libraryViewBar.dataset.visible=String(activeSurface===SURFACES.PROMPTS);root.querySelector('.prompt-count').textContent=String(promptEntries.length);root.querySelector('.module-count').textContent=String(moduleEntries.length);for(const control of libraryViewButtons)control.setAttribute('aria-selected',String(control.dataset.libraryView===activePromptView));if(activeSurface===SURFACES.PROMPTS)searchInput.placeholder=activePromptView==='modules'?'Search modules…':'Search prompts…';}
@@ -1916,7 +1998,7 @@
     function setButtonPending(control,pending,label){if(!control)return;if(pending){control.dataset.pendingLabel=control.textContent;control.textContent=label||'Working…';control.disabled=true;}else if(control.dataset.pendingLabel!=null){control.textContent=control.dataset.pendingLabel;delete control.dataset.pendingLabel;control.disabled=false;}}
     function runTask({key,label,button:control=null,pendingLabel='Working…',repository=false,action,onSuccess,onError}){const taskKey=String(key||`task-${++taskSequence}`);if(backgroundTasks.has(taskKey)){showStatus(`${label||'Operation'} is already running.`,5000);return backgroundTasks.get(taskKey).promise;}const task={key:taskKey,label:label||'Working…',repository,promise:null};backgroundTasks.set(taskKey,task);updateActivity();setButtonPending(control,true,pendingLabel);task.promise=(async()=>{try{const result=await action();if(onSuccess)await onSuccess(result);return result;}catch(error){if(onError)onError(error);else showStatus(error.message||String(error),8000);return undefined;}finally{backgroundTasks.delete(taskKey);updateActivity();setButtonPending(control,false);}})();return task.promise;}
     function setOpen(value){isOpen=Boolean(value);panel.dataset.open=String(isOpen);launcher.style.display=isOpen||dashboardOpen?'none':'block';if(isOpen)keepPanelInViewport();}
-    function switchSurface(surface){activeSurface=surface;if(surface===SURFACES.PROMPTS){activePromptView='prompts';activePromptGroupId='all';}for(const button of tabButtons)button.setAttribute('aria-selected',String(button.dataset.surface===surface));commandViewBar.style.display=surface===SURFACES.COMMANDS?'flex':'none';commandGroupNav.dataset.visible=String(surface===SURFACES.COMMANDS);if(surface===SURFACES.COMMANDS)renderMethodologyViewButtons();newLibraryButton.style.display=surface===SURFACES.SCENARIOS?'none':'inline-block';manageGroupsButton.style.display=surface===SURFACES.COMMANDS?'inline-block':'none';manageCategoriesButton.style.display=manageGroupsButton.style.display;renderLibraryViewButtons();searchInput.value='';renderEntries('');}function switchPromptLibraryView(view){activePromptView=view==='modules'?'modules':'prompts';if(activePromptView==='prompts')activePromptGroupId='all';searchInput.value='';renderLibraryViewButtons();renderEntries('');}function switchMethodologyView(view){activeMethodologyView=view;writeLocalText(ACTIVE_VIEW_KEY,view);renderMethodologyViewButtons();searchInput.value='';renderEntries('');}
+    function switchSurface(surface){activeSurface=surface;if(surface===SURFACES.PROMPTS){activePromptView='prompts';activePromptGroupId='all';}for(const button of tabButtons)button.setAttribute('aria-selected',String(button.dataset.surface===surface));commandViewBar.style.display=surface===SURFACES.COMMANDS?'flex':'none';commandGroupNav.dataset.visible=String(surface===SURFACES.COMMANDS);if(surface===SURFACES.COMMANDS)renderMethodologyViewButtons();newLibraryButton.style.display=(surface===SURFACES.SCENARIOS||surface===LENSES_SURFACE)?'none':'inline-block';manageGroupsButton.style.display=surface===SURFACES.COMMANDS?'inline-block':'none';manageCategoriesButton.style.display=manageGroupsButton.style.display;const isRdg=surface===LENSES_SURFACE;for(const control of rdgOtherTools)control.style.display=isRdg?'none':'';if(!isRdg){newLibraryButton.style.display=surface===SURFACES.SCENARIOS?'none':'inline-block';manageGroupsButton.style.display=surface===SURFACES.COMMANDS?'inline-block':'none';manageCategoriesButton.style.display=manageGroupsButton.style.display;}rdgRefreshButton.style.display=isRdg?'inline-block':'none';legacyCommandsButton.style.display=isRdg||surface===SURFACES.COMMANDS?'inline-block':'none';legacyCommandsButton.textContent=surface===SURFACES.COMMANDS?'← Линзы':'Planning Commands';renderLibraryViewButtons();if(isRdg)searchInput.placeholder='Search RDG commands…';else if(surface===SURFACES.COMMANDS)searchInput.placeholder='Search Planning Commands…';searchInput.value='';renderEntries('');}function switchPromptLibraryView(view){activePromptView=view==='modules'?'modules':'prompts';if(activePromptView==='prompts')activePromptGroupId='all';searchInput.value='';renderLibraryViewButtons();renderEntries('');}function switchMethodologyView(view){activeMethodologyView=view;writeLocalText(ACTIVE_VIEW_KEY,view);renderMethodologyViewButtons();searchInput.value='';renderEntries('');}
     async function insertBody(text,success,id,invocation={}){if(!text||insertionBusy)return;insertionBusy=true;updateActivity();try{showStatus(await options.onInsert(text,success,id,invocation),7000);}catch(error){showStatus(error.message||String(error),7000);}finally{insertionBusy=false;updateActivity();}}
     async function copyBody(text,id,invocation={}){try{showStatus(await options.onCopy(text,id,invocation)?'Copied.':'Copy failed.',4000);}catch(error){showStatus(error.message||String(error),7000);}}
     function button(text,cls,handler,title=''){const b=document.createElement('button');b.type='button';b.textContent=text;b.className=cls;if(title)b.title=title;b.addEventListener('click',(event)=>{event.preventDefault();event.stopPropagation();handler(event,b);});return b;}
@@ -2076,7 +2158,63 @@
     function restoreListViewport(viewport,id,{ensureVisible=false}={}){requestAnimationFrame(()=>{if(!viewport||viewport.surface!==activeSurface)return;const scroller=body.querySelector(activeSurface===SURFACES.COMMANDS?'.command-list':'.non-command-body');if(!scroller)return;scroller.scrollTop=viewport.scrollTop;if(ensureVisible&&id){const rows=[...scroller.querySelectorAll('[data-entry-id]')],target=rows.find((node)=>node.dataset.entryId===id);if(target){const outer=scroller.getBoundingClientRect(),inner=target.getBoundingClientRect();if(inner.top<outer.top||inner.bottom>outer.bottom)target.scrollIntoView({block:'nearest'});}}});}
     async function moveEntry(entry,delta){const viewport=captureListViewport();if(activeSurface===SURFACES.PROMPTS)selectedPromptId=entry.id;try{const result=await options.onMoveCatalogItem(activeSurface,entry.id,delta);applyState(result);restoreListViewport(viewport,entry.id);showStatus('Order changed locally. Save all GitHub when this order should be durable.',5000);}catch(error){showStatus(error.message||String(error),7000);}}
     async function moveEntryToPosition(entry,position){const viewport=captureListViewport();selectedPromptId=entry.id;try{if(typeof options.onMoveCatalogItemToPosition!=='function')throw new Error('Direct position reorder is unavailable.');const result=await options.onMoveCatalogItemToPosition(activeSurface,entry.id,position);applyState(result);restoreListViewport(viewport,entry.id,{ensureVisible:true});showStatus('Order changed locally. Save all GitHub when this order should be durable.',5000);}catch(error){showStatus(error.message||String(error),7000);}}
-    function renderEntries(query=''){queueMicrotask(refreshMutationControls);const sidebarScrollTop=body.querySelector('.command-sidebar')?.scrollTop||0;body.innerHTML='';activeCommandDetail=null;commandCardNodes=new Map();const all=entriesForSurface(activeSurface),needle=String(query||'').trim().toLowerCase();body.classList.toggle('command-body',activeSurface===SURFACES.COMMANDS);renderPromptGroupToolbar();if(activeSurface===SURFACES.COMMANDS){renderCommandSurface(needle);body.querySelector('.command-sidebar').scrollTop=sidebarScrollTop;return;}commandGroupNav.dataset.visible='false';const wrapper=document.createElement('div');wrapper.className='non-command-body';const grouped=activeSurface===SURFACES.PROMPTS&&activePromptView==='prompts'?filterPromptEntries(all,catalogOrder,activePromptGroupId):all;const entries=needle?grouped.filter((entry)=>JSON.stringify([entry.id,entry.label,entry.title,entry.description,entry.command,entry.context,entry.result,entry.essence,entry.canonicalIntro,(entry.steps||[]).map((step)=>[step.title,step.canonicalText])]).toLowerCase().includes(needle)):grouped;if(activeSurface===SURFACES.PROMPTS&&activePromptView==='prompts'&&entries.length&&!entries.some((entry)=>entry.id===selectedPromptId))selectedPromptId=entries[0].id;if(!entries.length){const empty=document.createElement('div');empty.className='empty';empty.textContent=activeSurface===SURFACES.SCENARIOS?'No local catalog rows. Use Hard Reload GitHub to restore current repository content.':activeSurface===SURFACES.PROMPTS&&activePromptView==='modules'?'No modules.':activeSurface===SURFACES.PROMPTS&&activePromptView==='prompts'&&activePromptGroupId!=='all'?'No prompts in this group.':'No items.';wrapper.append(empty);body.append(wrapper);return;}if(activeSurface===SURFACES.SCENARIOS){for(const entry of entries)wrapper.append(makeScenarioRow(entry));body.append(wrapper);return;}for(const entry of entries)wrapper.append(makeEntryRow(entry));body.append(wrapper);}
+    async function loadRdgCatalog(explicitRefresh){
+      if(rdgLoading)return;
+      rdgLoading=true;rdgRefreshButton.disabled=true;rdgError='';
+      if(activeSurface===LENSES_SURFACE)renderEntries(searchInput.value);
+      try{
+        const action=explicitRefresh?options.onRefreshRdgCommands:options.onLoadRdgCommands;
+        if(typeof action!=='function')throw new Error('RDG catalog adapter is unavailable');
+        rdgCatalog=await action();rdgError='';
+        if(explicitRefresh)showStatus('RDG: полный каталог сохранён ('+rdgCatalog.commands.length+' команд).',7000);
+      }catch(error){
+        rdgError=error?.message||String(error);
+        if(activeSurface===LENSES_SURFACE)showStatus('RDG: '+rdgError+' Последний пригодный кэш сохраняется.',9000);
+      }finally{
+        rdgLoading=false;rdgRefreshButton.disabled=false;
+        if(activeSurface===LENSES_SURFACE)renderEntries(searchInput.value);
+      }
+    }
+    async function insertRdgCommand(command){
+      if(insertionBusy)return;
+      insertionBusy=true;updateActivity();
+      try{
+        if(typeof options.onInsertRdgCommand!=='function')throw new Error('RDG composer adapter is unavailable');
+        showStatus(await options.onInsertRdgCommand(command.insertText,'RDG command inserted: '+command.id),7000);
+      }catch(error){showStatus(error?.message||String(error),7000);}
+      finally{insertionBusy=false;updateActivity();}
+    }
+    function renderRdgEntries(needle){
+      commandGroupNav.dataset.visible='false';
+      const wrapper=document.createElement('div');wrapper.className='non-command-body';
+      const count=rdgCatalog?.commands?.length||0;
+      const status=document.createElement('p');status.className='row-meta';
+      const saved=rdgCatalog?.savedAt?new Date(rdgCatalog.savedAt).toLocaleString():'—';
+      status.textContent=rdgLoading?'Получение полного каталога RDG…':
+        'RDG Commands · '+count+' · кэш от '+saved+(rdgCatalog?' · версия '+rdgCatalog.catalogRevision.slice(0,12):'');
+      wrapper.append(status);
+      if(rdgError){const warning=document.createElement('p');warning.className='danger';warning.textContent='Ошибка обновления: '+rdgError;wrapper.append(warning);}
+      const commands=(rdgCatalog?.commands||[]).filter(c=>
+        !needle||[c.id,c.title,c.description,c.lensRef.lensKey].join(' ').toLowerCase().includes(needle));
+      if(!commands.length){
+        const empty=document.createElement('div');empty.className='empty';
+        empty.textContent=rdgCatalog?'Команды по запросу не найдены.':'Каталог RDG пока недоступен. Нажмите «Обновить RDG».';
+        wrapper.append(empty);
+      }
+      for(const c of commands){
+        const row=document.createElement('div');row.className='row';row.dataset.entryId=c.id;
+        const info=document.createElement('div'),title=document.createElement('strong'),meta=document.createElement('div');
+        title.className='row-label';title.textContent=c.title;
+        meta.className='row-meta';meta.textContent=c.description+' · '+c.id;
+        info.append(title,meta);
+        const actions=document.createElement('div');actions.className='actions';
+        actions.append(button('Вставить','run-action',()=>{void insertRdgCommand(c);}));
+        if(typeof options.onCopyPlain==='function')actions.append(button('Copy','copy',()=>{void options.onCopyPlain(c.insertText);}));
+        row.append(info,actions);wrapper.append(row);
+      }
+      body.append(wrapper);
+    }
+    function renderEntries(query=''){queueMicrotask(refreshMutationControls);const sidebarScrollTop=body.querySelector('.command-sidebar')?.scrollTop||0;body.innerHTML='';activeCommandDetail=null;commandCardNodes=new Map();const all=entriesForSurface(activeSurface),needle=String(query||'').trim().toLowerCase();body.classList.toggle('command-body',activeSurface===SURFACES.COMMANDS);renderPromptGroupToolbar();if(activeSurface===LENSES_SURFACE){renderRdgEntries(needle);return;}if(activeSurface===SURFACES.COMMANDS){renderCommandSurface(needle);body.querySelector('.command-sidebar').scrollTop=sidebarScrollTop;return;}commandGroupNav.dataset.visible='false';const wrapper=document.createElement('div');wrapper.className='non-command-body';const grouped=activeSurface===SURFACES.PROMPTS&&activePromptView==='prompts'?filterPromptEntries(all,catalogOrder,activePromptGroupId):all;const entries=needle?grouped.filter((entry)=>JSON.stringify([entry.id,entry.label,entry.title,entry.description,entry.command,entry.context,entry.result,entry.essence,entry.canonicalIntro,(entry.steps||[]).map((step)=>[step.title,step.canonicalText])]).toLowerCase().includes(needle)):grouped;if(activeSurface===SURFACES.PROMPTS&&activePromptView==='prompts'&&entries.length&&!entries.some((entry)=>entry.id===selectedPromptId))selectedPromptId=entries[0].id;if(!entries.length){const empty=document.createElement('div');empty.className='empty';empty.textContent=activeSurface===SURFACES.SCENARIOS?'No local catalog rows. Use Hard Reload GitHub to restore current repository content.':activeSurface===SURFACES.PROMPTS&&activePromptView==='modules'?'No modules.':activeSurface===SURFACES.PROMPTS&&activePromptView==='prompts'&&activePromptGroupId!=='all'?'No prompts in this group.':'No items.';wrapper.append(empty);body.append(wrapper);return;}if(activeSurface===SURFACES.SCENARIOS){for(const entry of entries)wrapper.append(makeScenarioRow(entry));body.append(wrapper);return;}for(const entry of entries)wrapper.append(makeEntryRow(entry));body.append(wrapper);}
     function makeOverlay(titleText){if(activeOverlay)closeOverlay(activeOverlay);const overlay=document.createElement('div');overlay.className='overlay';const modal=document.createElement('section');modal.className='modal';const title=document.createElement('h2');title.textContent=titleText;modal.append(title);overlay.append(modal);panel.append(overlay);activeOverlay=overlay;return{overlay,modal};}
     function closeOverlay(overlay){if(!overlay)return;overlay.remove();if(activeOverlay===overlay)activeOverlay=null;}
     function commandDraft(){return{schemaVersion:1,id:'new.command',file:'new-command.command.md',command:'новая команда',englishName:'new command',commandFamily:['новая команда','new command'],description:'describe command',meaning:'describe command meaning',activeContextBehavior:'Use the selected current target.',traversalReadMode:'Targeted/full by current owner uncertainty.',ownerFiles:['planning/command-routing.md'],expectedOutput:'Expected result.',permissionMode:'read-only',keyReminders:['Follow the current owner route.'],userTarget:'<target>',palette:true,refinements:[]};}
@@ -2136,7 +2274,7 @@
     const resizeObserver=typeof ResizeObserver==='function'?new ResizeObserver(()=>{if(!isOpen)return;if(resizeTimer)clearTimeout(resizeTimer);resizeTimer=setTimeout(()=>{keepPanelInViewport();persistGeometry();},180);}):null;resizeObserver?.observe(panel);
     function consumeToggle(token){const next=String(token||'');if(next&&next!==lastToggleToken){lastToggleToken=next;setOpen(!isOpen);}}function handleShortcut(event){if(event.repeat)return;if(event.key==='Escape'&&activeOverlay){closeOverlay(activeOverlay);return;}if(event.altKey&&!event.ctrlKey&&!event.metaKey&&event.key==='F2'){event.preventDefault();setOpen(!isOpen);}else if(event.key==='Escape'&&isOpen)setOpen(false);}
     const observer=new MutationObserver((mutations)=>{for(const mutation of mutations){if(mutation.attributeName==='data-obs-planning-dashboard-open'){dashboardOpen=document.documentElement.dataset.obsPlanningDashboardOpen==='true';launcher.style.display=isOpen||dashboardOpen?'none':'block';}if(mutation.attributeName==='data-obs-planning-commands-toggle')consumeToggle(document.documentElement.dataset.obsPlanningCommandsToggle);}});observer.observe(document.documentElement,{attributes:true,attributeFilter:['data-obs-planning-dashboard-open','data-obs-planning-commands-toggle']});
-    tabButtons.forEach((b)=>b.addEventListener('click',()=>switchSurface(b.dataset.surface)));libraryViewButtons.forEach((b)=>b.addEventListener('click',()=>switchPromptLibraryView(b.dataset.libraryView)));launcher.addEventListener('click',()=>setOpen(true));closeButton.addEventListener('click',()=>setOpen(false));searchInput.addEventListener('input',()=>renderEntries(searchInput.value));newLibraryButton.addEventListener('click',()=>{if(activeSurface===SURFACES.COMMANDS)openCommandEditor();else if(activeSurface===SURFACES.PROMPTS)openLibraryEditor();});root.querySelector('.import-chat').addEventListener('click',()=>openImport('import'));root.querySelector('.restore-chat').addEventListener('click',()=>openImport('restore'));root.querySelector('.recovery-request').addEventListener('click',copyRecoveryRequest);root.querySelector('.copy-state').addEventListener('click',copyLocalState);root.querySelector('.check-github').addEventListener('click',(event)=>checkRepository(event.currentTarget));root.querySelector('.sync-github').addEventListener('click',(event)=>syncMissingRepository(event.currentTarget));root.querySelector('.hard-reload').addEventListener('click',hardReloadRepository);manageGroupsButton.addEventListener('click',openGroupManager);saveAllButton.addEventListener('click',saveAllRepository);root.querySelector('.settings').addEventListener('click',(event)=>openSettings(event.currentTarget));window.addEventListener('resize',keepPanelInViewport);window.addEventListener('keydown',handleShortcut,true);const disableDragging=enableDragging();switchSurface(SURFACES.COMMANDS);if(options.startupWarnings?.length)setTimeout(()=>showStatus(options.startupWarnings.join('\n'),10000),100);
+    rdgRefreshButton.addEventListener('click',()=>{void loadRdgCatalog(true);});legacyCommandsButton.addEventListener('click',()=>switchSurface(activeSurface===SURFACES.COMMANDS?LENSES_SURFACE:SURFACES.COMMANDS));tabButtons.forEach((b)=>b.addEventListener('click',()=>switchSurface(b.dataset.surface)));libraryViewButtons.forEach((b)=>b.addEventListener('click',()=>switchPromptLibraryView(b.dataset.libraryView)));launcher.addEventListener('click',()=>setOpen(true));closeButton.addEventListener('click',()=>setOpen(false));searchInput.addEventListener('input',()=>renderEntries(searchInput.value));newLibraryButton.addEventListener('click',()=>{if(activeSurface===SURFACES.COMMANDS)openCommandEditor();else if(activeSurface===SURFACES.PROMPTS)openLibraryEditor();});root.querySelector('.import-chat').addEventListener('click',()=>openImport('import'));root.querySelector('.restore-chat').addEventListener('click',()=>openImport('restore'));root.querySelector('.recovery-request').addEventListener('click',copyRecoveryRequest);root.querySelector('.copy-state').addEventListener('click',copyLocalState);root.querySelector('.check-github').addEventListener('click',(event)=>checkRepository(event.currentTarget));root.querySelector('.sync-github').addEventListener('click',(event)=>syncMissingRepository(event.currentTarget));root.querySelector('.hard-reload').addEventListener('click',hardReloadRepository);manageGroupsButton.addEventListener('click',openGroupManager);saveAllButton.addEventListener('click',saveAllRepository);root.querySelector('.settings').addEventListener('click',(event)=>openSettings(event.currentTarget));window.addEventListener('resize',keepPanelInViewport);window.addEventListener('keydown',handleShortcut,true);const disableDragging=enableDragging();switchSurface(LENSES_SURFACE);void loadRdgCatalog(false);if(options.startupWarnings?.length)setTimeout(()=>showStatus(options.startupWarnings.join('\n'),10000),100);
     function dispose(){if(statusTimer!==null)clearTimeout(statusTimer);if(resizeTimer)clearTimeout(resizeTimer);resizeObserver?.disconnect();observer.disconnect();disableDragging();window.removeEventListener('resize',keepPanelInViewport);window.removeEventListener('keydown',handleShortcut,true);host.remove();}
     return{applyState,setCommandEntries,setScenarioEntries,setUseCaseEntries,setLibraryEntries,switchSurface,setOpen,showStatus,dispose,host,root};
   }
@@ -2475,7 +2613,7 @@
       localMutations[name]=(...args)=>serializeMutation(()=>action(...args));
     const localUiCallbacks=Object.fromEntries(Object.entries(localMutations).map(([name,action])=>
       [`on${name[0].toUpperCase()}${name.slice(1)}`,action]));
-    const ui=deps.createPlanningHelperUi({surfaces:deps.SURFACES,...uiState(),position:deps.readPanelPosition(),onSavePosition:deps.savePanelPosition,onInsert:async(text,success,id,invocation)=>insertWithClipboard(await prepareInvocationBody(text,id,invocation,deps,memory.helperRecords.map((record)=>record.item)),success,id),onCopy:async(text,id,invocation)=>deps.copyText(await prepareInvocationBody(text,id,invocation,deps,memory.helperRecords.map((record)=>record.item))),onCopyPlain:(text)=>deps.copyText(text),onResolveLibraryText:(text)=>deps.resolveModuleReferences(text,memory.helperRecords.map((record)=>record.item)).text,onGetInvocationSideEffects:(id)=>typeof deps.commandSideEffectIds==='function'?deps.commandSideEffectIds(id):[],onPreviewChatImport:(text,mode)=>previewChatImport(snapshot,text,mode),onApplyChatImport:applyChatText,onGetRecoveryRequest:getRecoveryRequest,onExportLocalState:exportLocalState,onSaveLocalCommandDefinition:saveLocalCommandDefinition,onDeleteLocalCommand:deleteLocalCommand,onDeleteLocalUseCase:deleteLocalUseCase,onToggleFavoriteCommand:toggleFavoriteCommand,onMoveFavoriteCommand:moveFavoriteCommand,onToggleFavoriteUseCase:toggleFavoriteUseCase,onReloadRepositoryCommand:reloadRepositoryCommand,onSaveLocalLibraryItem:saveLocalLibraryItem,onDeleteLocalLibraryItem:deleteLocalLibraryItem,onCheckRepository:checkRepository,onSyncMissingRepository:syncMissingRepository,onHardReloadRepository:hardReloadRepository,onMoveCatalogItem:moveCatalogItem,onMoveCatalogItemToPosition:moveCatalogItemToPosition,onAssignCatalogGroup:assignCatalogGroup,onCreateCatalogGroup:createCatalogGroup,onUpdateCatalogGroup:updateCatalogGroup,onDeleteCatalogGroup:deleteCatalogGroup,onMoveCatalogGroup:moveCatalogGroup,onCreatePromptGroup:createPromptGroup,onRenamePromptGroup:renamePromptGroup,onDeletePromptGroup:deletePromptGroup,onAssignPromptGroup:assignPromptGroup,onMovePromptGroup:movePromptGroup,onCreateCatalogCategory:createCatalogCategory,onUpdateCatalogCategory:updateCatalogCategory,onMoveCatalogCategory:moveCatalogCategory,onDeleteCatalogCategory:deleteCatalogCategory,onSaveCatalogOrderRepository:saveCatalogOrderRepository,onSaveRepositoryEntity:saveRepositoryEntity,onSaveAllRepository:saveAllRepository,onLoadSettings:loadSettings,onSaveSettings:saveSettings,startupWarnings,...localUiCallbacks});
+    const ui=deps.createPlanningHelperUi({surfaces:deps.SURFACES,...uiState(),position:deps.readPanelPosition(),onSavePosition:deps.savePanelPosition,onInsert:async(text,success,id,invocation)=>insertWithClipboard(await prepareInvocationBody(text,id,invocation,deps,memory.helperRecords.map((record)=>record.item)),success,id),onCopy:async(text,id,invocation)=>deps.copyText(await prepareInvocationBody(text,id,invocation,deps,memory.helperRecords.map((record)=>record.item))),onCopyPlain:(text)=>deps.copyText(text),onLoadRdgCommands:()=>deps.initializeRdgCommandCache(),onRefreshRdgCommands:()=>deps.refreshRdgCommandCache(),onInsertRdgCommand:(text,success)=>insertWithClipboard(text,success,null),onResolveLibraryText:(text)=>deps.resolveModuleReferences(text,memory.helperRecords.map((record)=>record.item)).text,onGetInvocationSideEffects:(id)=>typeof deps.commandSideEffectIds==='function'?deps.commandSideEffectIds(id):[],onPreviewChatImport:(text,mode)=>previewChatImport(snapshot,text,mode),onApplyChatImport:applyChatText,onGetRecoveryRequest:getRecoveryRequest,onExportLocalState:exportLocalState,onSaveLocalCommandDefinition:saveLocalCommandDefinition,onDeleteLocalCommand:deleteLocalCommand,onDeleteLocalUseCase:deleteLocalUseCase,onToggleFavoriteCommand:toggleFavoriteCommand,onMoveFavoriteCommand:moveFavoriteCommand,onToggleFavoriteUseCase:toggleFavoriteUseCase,onReloadRepositoryCommand:reloadRepositoryCommand,onSaveLocalLibraryItem:saveLocalLibraryItem,onDeleteLocalLibraryItem:deleteLocalLibraryItem,onCheckRepository:checkRepository,onSyncMissingRepository:syncMissingRepository,onHardReloadRepository:hardReloadRepository,onMoveCatalogItem:moveCatalogItem,onMoveCatalogItemToPosition:moveCatalogItemToPosition,onAssignCatalogGroup:assignCatalogGroup,onCreateCatalogGroup:createCatalogGroup,onUpdateCatalogGroup:updateCatalogGroup,onDeleteCatalogGroup:deleteCatalogGroup,onMoveCatalogGroup:moveCatalogGroup,onCreatePromptGroup:createPromptGroup,onRenamePromptGroup:renamePromptGroup,onDeletePromptGroup:deletePromptGroup,onAssignPromptGroup:assignPromptGroup,onMovePromptGroup:movePromptGroup,onCreateCatalogCategory:createCatalogCategory,onUpdateCatalogCategory:updateCatalogCategory,onMoveCatalogCategory:moveCatalogCategory,onDeleteCatalogCategory:deleteCatalogCategory,onSaveCatalogOrderRepository:saveCatalogOrderRepository,onSaveRepositoryEntity:saveRepositoryEntity,onSaveAllRepository:saveAllRepository,onLoadSettings:loadSettings,onSaveSettings:saveSettings,startupWarnings,...localUiCallbacks});
     async function refreshFromSharedState(){
       return serializeMutation(async()=>{
         if(typeof deps.loadPlanningHelperLocalSnapshot!=='function')return false;
@@ -2500,5 +2638,5 @@
 
 (function(){
   'use strict';
-  const api=globalThis.ObsPlanningHelper;if(!api||typeof api.startPlanningHelper!=='function')throw new Error('OBS Planning Helper runtime was not built correctly.');api.scriptVersion="0.40.8-repository-command-registry";api.startPlanningHelper().catch((error)=>console.error('[OBS Planning Helper startup]',error));
+  const api=globalThis.ObsPlanningHelper;if(!api||typeof api.startPlanningHelper!=='function')throw new Error('OBS Planning Helper runtime was not built correctly.');api.scriptVersion="0.40.9-repository-command-registry";api.startPlanningHelper().catch((error)=>console.error('[OBS Planning Helper startup]',error));
 })();

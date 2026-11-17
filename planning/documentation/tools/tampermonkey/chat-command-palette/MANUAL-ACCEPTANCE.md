@@ -160,3 +160,15 @@ Canonical application semantics: [`scenarios/README.md`](scenarios/README.md). A
 - [ ] No cross-view highlighting/selection machinery is required.
 - [ ] `Hard Reload GitHub` replaces commands/semantic/scenarios/order/groups from GitHub, removes local command rows absent from GitHub (including legacy helper-command rows), preserves Prompt-library content and prunes stale favorites.
 - [ ] Direct-backed semantic rows may expose Edit/Reload/Save/Delete; projection-only semantic rows do not.
+
+## RDG-owned launcher commands — browser/manual acceptance (new)
+
+- [ ] Installed Tampermonkey script has `@connect raw.githubusercontent.com`; the new top-level `Линзы` tab is visible and the old Planning Commands editor remains reachable via `Planning Commands`, then `← Линзы`.
+- [ ] After RDG catalog PR is merged, an empty RDG GM cache causes **one** complete 200/JSON request for all 21 commands on startup; the list includes `work`, `model`, `operate`, `develop`.
+- [ ] Close/reopen the panel, switch views, search, insert/copy and reload the ChatGPT page while a valid RDG GM cache exists: **zero** new RDG HTTP requests; all buttons remain available offline.
+- [ ] `Обновить RDG` performs **one** full request and atomically replaces the cached catalog, showing count/version/time. No per-command fetch, timer or automatic polling.
+- [ ] Disconnect network or return 404, timeout, malformed JSON, missing/duplicate commands or `complete=false`: a visible error appears, and previously valid buttons and their exact texts stay unchanged.
+- [ ] Click `work` and `operate`: the existing composer adapter inserts the **exact** `insertText` from the RDG catalog, without submitting the message or causing RDG Graph/Action mutations; it does not synthesize instructions from lens metadata.
+- [ ] After the user sends the inserted message, the authorized RDG Agent/API can read the actual latest lens definition and apply the method appropriately. Missing/unavailable RDG access must be reported without inventing meaning.
+- [ ] Existing Prompts/Modules, custom command drafts, categories, favorites, Scenarios and Notifier behavior remain usable; no GM secrets or GitHub tokens appear in RDG cache or inserted text.
+- [ ] Distinguish **source build**, **published RDG catalog**, **installed userscript** and **user browser acceptance**. Neither a Windows source Pull nor JavaScript mocks count as installation proof.
