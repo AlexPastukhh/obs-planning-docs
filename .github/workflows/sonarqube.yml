@@ -44,6 +44,20 @@ jobs:
       - name: Test Sonar run metadata writer
         run: python3 -I -m unittest discover -s .github/scripts -p test_sonar_run_metadata.py -v
 
+      - name: Prepare Node.js for real Helper test coverage
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: planning/documentation/tools/tampermonkey/chat-command-palette/package-lock.json
+
+      - name: Verify Helper source and generate LCOV coverage
+        working-directory: planning/documentation/tools/tampermonkey/chat-command-palette
+        run: |
+          npm ci --include=dev --ignore-scripts --no-audit --no-fund
+          npm run verify
+          npm run coverage:sonar
+
       - name: SonarQube Scan
         id: sonar_scan
         uses: SonarSource/sonarqube-scan-action@7006c4492b2e0ee0f816d36501671557c97f5995
