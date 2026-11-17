@@ -71,7 +71,7 @@ test('one credential-free Tampermonkey GET requests all RDG commands',async()=>{
       calls++;
       assert.equal(settings.method,'GET');
       assert.equal(settings.anonymous,true);
-      assert.match(settings.url,/^https:\/\/raw\.githubusercontent\.com\/AlexPastukhh\/rd-graphs\/main\/work-kit\/helper-commands\/catalog\.json\?refresh=/);
+      assert.match(settings.url,/^https:\/\/raw\.githubusercontent\.com\/AlexPastukhh\/rd-graphs\/main\/kit\/helper-commands\/catalog\.json\?refresh=/);
       settings.onload({status:200,responseText:JSON.stringify(catalog)});
     };
     const text=await rdg.rdgCommandRequest();

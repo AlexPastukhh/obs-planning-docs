@@ -5,7 +5,7 @@
 })(typeof globalThis!=='undefined'?globalThis:this,function(){
   'use strict';
   const KEY='obsPlanningHelper:v1:rdgCommandCatalog';
-  const URL='https://raw.githubusercontent.com/AlexPastukhh/rd-graphs/main/work-kit/helper-commands/catalog.json';
+  const URL='https://raw.githubusercontent.com/AlexPastukhh/rd-graphs/main/kit/helper-commands/catalog.json';
   const ID=/^rdg\.lens\.([a-z][a-z0-9-]{0,79})$/;
   const DIGEST=/^[0-9a-f]{64}$/;
   const SECRET=/(?:ghp_[A-Za-z0-9]{20}|Bearer\s+[A-Za-z0-9._~+/-]{16}|-----BEGIN (?:RSA |EC |OPENSSH )?PRIVATE KEY)/i;
