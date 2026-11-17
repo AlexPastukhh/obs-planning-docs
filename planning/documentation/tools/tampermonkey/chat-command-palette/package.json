@@ -7,6 +7,10 @@
     "build:check": "node build-chat-command-palette.mjs --check",
     "test": "node verify-chat-command-palette.mjs --tests-only",
     "test:browser": "node tests/planning-helper-ui.browser.mjs && node tests/editable-categories.browser.mjs",
-    "verify": "node verify-chat-command-palette.mjs"
+    "verify": "node verify-chat-command-palette.mjs",
+    "coverage:sonar": "node scripts/sonar-coverage.mjs"
+  },
+  "devDependencies": {
+    "jsdom": "26.1.0"
   }
 }
