@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Reusable Chat Planning Helper
 // @namespace    https://github.com/AlexPastukhh/obs/reusable-docs
-// @version      0.40.9-repository-command-registry
+// @version      0.41.0-repository-command-registry
 // @description  RAM-first OBS Planning Helper with semantic Commands, canonical Scenarios, prompts and explicit repository actions.
 // @author       Reusable docs layer
 // @match        https://chatgpt.com/*
@@ -770,7 +770,7 @@
   // existing Planning Commands. The separate RDG-owned launcher surface is a read-only
   // external command catalog and does not change those semantic projections.
   // USE_CASES remains exported only as a compatibility symbol for older caches/tests.
-  const SURFACES=Object.freeze({LENSES:'Линзы',COMMANDS:'Commands',SCENARIOS:'Scenarios',PROMPTS:'Prompts',USE_CASES:'Use Cases'});
+  const SURFACES=Object.freeze({RDG_COMMANDS:'Команды',COMMANDS:'Commands',SCENARIOS:'Scenarios',PROMPTS:'Prompts',USE_CASES:'Use Cases'});
   const MODE=Object.freeze({ADAPTIVE:'adaptive',FULL:'full'});
   const SEMANTIC_KINDS=Object.freeze({USE_CASE:'USE_CASE',TARGET_MODULE:'TARGET_MODULE',LENS:'LENS'});
   const PROVENANCE=Object.freeze({DIRECT:'DIRECT CURRENT',GENERIC:'GENERIC CURRENT',GENERATED:'GENERATED'});
@@ -1641,36 +1641,74 @@
   root.ObsPlanningHelper=Object.assign(root.ObsPlanningHelper||{},api);
 })(typeof globalThis!=='undefined'?globalThis:this,function(){
   'use strict';
-  const KEY='obsPlanningHelper:v1:rdgCommandCatalog';
-  const URL='https://raw.githubusercontent.com/AlexPastukhh/rd-graphs/main/kit/helper-commands/catalog.json';
+
+  // V2 has an independent key; never mistake an existing V1 lens-only cache for
+  // a complete general command catalog. Existing OBS local state is untouched.
+  const KEY='obsPlanningHelper:v2:rdgCommandCatalog';
+  const URL='https://raw.githubusercontent.com/AlexPastukhh/rd-graphs/main/kit/helper-commands/catalog-v2.json';
   const ID=/^rdg\.lens\.([a-z][a-z0-9-]{0,79})$/;
+  const COMMAND_ID=/^rdg\.command\.[a-z][a-z0-9-]{0,79}$/;
+  const GROUP_ID=/^[a-z][a-z0-9-]{0,79}$/;
   const DIGEST=/^[0-9a-f]{64}$/;
   const SECRET=/(?:ghp_[A-Za-z0-9]{20}|Bearer\s+[A-Za-z0-9._~+/-]{16}|-----BEGIN (?:RSA |EC |OPENSSH )?PRIVATE KEY)/i;
+  const KINDS=new Set(['lens-launcher','workflow','instruction']);
+  function exactFields(value,fields){
+    return value&&typeof value==='object'&&!Array.isArray(value)&&
+      Object.keys(value).length===fields.length&&Object.keys(value).every(field=>fields.includes(field));
+  }
+  function nonsecret(value,max){
+    return typeof value==='string'&&!!value.trim()&&value.length<=max&&!SECRET.test(value);
+  }
   function validateRdgCommandCatalog(value){
-    if(!value||value.schemaVersion!==1||value.kind!=='rdg-chat-launcher-commands'||
-       value.complete!==true||!DIGEST.test(value.catalogRevision||'')||
-       !Array.isArray(value.commands)||value.commands.length<1||value.commands.length>250)
-      throw new Error('RDG command catalog is incomplete or incompatible; previous cache retained');
-    const ids=new Set(),keys=new Set(),commands=[];
-    for(const raw of value.commands){
-      if(!raw||typeof raw!=='object'||Array.isArray(raw))throw new Error('Invalid RDG command');
-      const match=typeof raw.id==='string'?ID.exec(raw.id):null;
-      const ref=raw.lensRef;
-      if(!match||ids.has(raw.id)||Object.keys(raw).length!==6||Object.keys(raw).some(k=>!['id','kind','title','description','lensRef','insertText'].includes(k))||!ref||typeof ref!=='object'||Array.isArray(ref)||Object.keys(ref).length!==3||Object.keys(ref).some(k=>!['role','lensKey','modelProfile'].includes(k))||ref.role!=='lens'||ref.lensKey!==match[1]||
-        ref.modelProfile!=='rdg-decision-v1'||keys.has(match[1])||raw.kind!=='lens-launcher')
-        throw new Error('Duplicate or invalid RDG command reference');
-      for(const [field,max] of [['title',300],['description',1200],['insertText',5000]]){
-        if(typeof raw[field]!=='string'||!raw[field].trim()||raw[field].length>max||SECRET.test(raw[field]))
-          throw new Error('Invalid RDG command field: '+field);
-      }
-      if(!raw.insertText.includes('rdg-agent.py lens --lens '+match[1]))
-        throw new Error('RDG command does not specify supported lens read');
-      ids.add(raw.id);keys.add(match[1]);
-      commands.push({id:raw.id,kind:raw.kind,title:raw.title,
-        description:raw.description,lensRef:{role:ref.role,lensKey:ref.lensKey,modelProfile:ref.modelProfile},insertText:raw.insertText});
+    if(!exactFields(value,['schemaVersion','kind','complete','catalogRevision','groups','commands'])||
+       value.schemaVersion!==2||value.kind!=='rdg-chat-commands'||value.complete!==true||
+       !DIGEST.test(value.catalogRevision||'')||!Array.isArray(value.groups)||
+       value.groups.length<1||value.groups.length>30||!Array.isArray(value.commands)||
+       value.commands.length<1||value.commands.length>250)
+      throw new Error('RDG v2 command catalog is incomplete or incompatible; previous cache retained');
+    const groupIds=new Set(),groups=[];
+    for(const raw of value.groups){
+      if(!exactFields(raw,['id','title','description'])||
+         typeof raw.id!=='string'||!GROUP_ID.test(raw.id)||groupIds.has(raw.id)||
+         !nonsecret(raw.title,160)||!nonsecret(raw.description,500))
+        throw new Error('Invalid RDG command group');
+      groupIds.add(raw.id);
+      groups.push({id:raw.id,title:raw.title,description:raw.description});
     }
-    return {schemaVersion:1,kind:value.kind,complete:true,
-      catalogRevision:value.catalogRevision,commands};
+    const ids=new Set(),lensKeys=new Set(),commands=[];
+    for(const raw of value.commands){
+      if(!exactFields(raw,['id','kind','title','description','groupId','lensRefs','insertText'])||
+         typeof raw.id!=='string'||ids.has(raw.id)||!KINDS.has(raw.kind)||
+         !groupIds.has(raw.groupId)||!nonsecret(raw.title,300)||
+         !nonsecret(raw.description,1200)||!nonsecret(raw.insertText,8000)||
+         !Array.isArray(raw.lensRefs)||raw.lensRefs.length>12)
+        throw new Error('Invalid RDG command fields or group');
+      const match=ID.exec(raw.id);
+      const isLens=raw.kind==='lens-launcher';
+      if(isLens?(!match||raw.lensRefs.length!==1):
+        (!COMMAND_ID.test(raw.id)||(raw.kind==='workflow'&&raw.lensRefs.length<1)))
+        throw new Error('Invalid RDG command kind or identity');
+      const refs=[],seenRefs=new Set();
+      for(const ref of raw.lensRefs){
+        if(!exactFields(ref,['role','lensKey','modelProfile'])||
+           ref.role!=='lens'||typeof ref.lensKey!=='string'||!GROUP_ID.test(ref.lensKey)||
+           ref.modelProfile!=='rdg-decision-v1'||seenRefs.has(ref.lensKey)||
+           !raw.insertText.includes('rdg-agent.py lens --lens '+ref.lensKey))
+          throw new Error('Invalid RDG command lens reference');
+        refs.push({role:ref.role,lensKey:ref.lensKey,modelProfile:ref.modelProfile});
+        seenRefs.add(ref.lensKey);
+      }
+      if(isLens){
+        if(refs[0].lensKey!==match[1]||lensKeys.has(match[1]))
+          throw new Error('Duplicate or mismatched RDG lens launcher');
+        lensKeys.add(match[1]);
+      }
+      ids.add(raw.id);
+      commands.push({id:raw.id,kind:raw.kind,title:raw.title,description:raw.description,
+        groupId:raw.groupId,lensRefs:refs,insertText:raw.insertText});
+    }
+    return {schemaVersion:2,kind:value.kind,complete:true,
+      catalogRevision:value.catalogRevision,groups,commands};
   }
   function currentStorage(){
     if(typeof GM_getValue!=='function'||typeof GM_setValue!=='function')
@@ -1693,7 +1731,8 @@
     try{
       const value=await storage.get(KEY);
       if(!value||typeof value!=='object'||typeof value.savedAt!=='string')return null;
-      return {...validateRdgCommandCatalog(value),savedAt:value.savedAt};
+      const {savedAt,...manifest}=value;
+      return {...validateRdgCommandCatalog(manifest),savedAt};
     }catch(_){return null;}
   }
   async function refreshRdgCommandCache(storage=currentStorage(),request=rdgCommandRequest){
@@ -1919,9 +1958,9 @@
     const SURFACES=options.surfaces||deps.SURFACES;document.getElementById(HOST_ID)?.remove();document.getElementById('obs-command-helper-host')?.remove();
     const host=document.createElement('div');host.id=HOST_ID;document.documentElement.appendChild(host);const root=host.attachShadow({mode:'open'});
     const saved=options.position||{},defaultWidth=Math.min(980,Math.max(560,window.innerWidth-32)),defaultHeight=Math.min(780,Math.max(420,window.innerHeight-32));let width=saved.width??defaultWidth,height=saved.height??defaultHeight,left=saved.left??Math.max(12,window.innerWidth-width-18),top=saved.top??Math.max(12,window.innerHeight-height-22);
-    const ALL_METHODOLOGY_VIEW=deps.METHODOLOGY_VIEW_IDS?.ALL||'ALL',LENSES_SURFACE=SURFACES.LENSES||'Линзы';
+    const ALL_METHODOLOGY_VIEW=deps.METHODOLOGY_VIEW_IDS?.ALL||'ALL',RDG_COMMANDS_SURFACE=SURFACES.RDG_COMMANDS||'Команды';
     const GROUP_FILTER_KEY='obs-planning-helper-group-filter-v1',GROUP_COLLAPSE_KEY='obs-planning-helper-group-collapse-v1',ACTIVE_VIEW_KEY='obs-planning-helper-active-command-view-v1',SIDEBAR_COLLAPSE_KEY='obs-planning-helper-sidebar-collapse-v1';
-    let activeSurface=LENSES_SURFACE,activeMethodologyView=readLocalText(ACTIVE_VIEW_KEY)||null,activePromptView='prompts',activePromptGroupId='all',selectedCommandId='',selectedPromptId='',commandEntries=[...(options.commandEntries||[])],scenarioEntries=[...(options.scenarioEntries||[])],promptEntries=[...(options.promptEntries||[])],moduleEntries=[...(options.moduleEntries||[])],useCaseEntries=[...(options.useCaseEntries||[])],favoriteCommandIds=[...(options.favoriteCommandIds||[])],favoriteUseCaseIds=[...(options.favoriteUseCaseIds||[])],catalogOrder=options.catalogOrder||{commandGroups:[]},pendingRepositoryWrites=options.pendingRepositoryWrites||{commands:0,prompts:0,modules:0,helperCommands:0,order:false};let activeOverlay=null,isOpen=false,statusTimer=null,insertionBusy=false,dashboardOpen=document.documentElement.dataset.obsPlanningDashboardOpen==='true',lastToggleToken=document.documentElement.dataset.obsPlanningCommandsToggle||'',resizeTimer=null,activeCommandDetail=null,commandCardNodes=new Map();
+    let activeSurface=RDG_COMMANDS_SURFACE,activeRdgGroupId='all',activeMethodologyView=readLocalText(ACTIVE_VIEW_KEY)||null,activePromptView='prompts',activePromptGroupId='all',selectedCommandId='',selectedPromptId='',commandEntries=[...(options.commandEntries||[])],scenarioEntries=[...(options.scenarioEntries||[])],promptEntries=[...(options.promptEntries||[])],moduleEntries=[...(options.moduleEntries||[])],useCaseEntries=[...(options.useCaseEntries||[])],favoriteCommandIds=[...(options.favoriteCommandIds||[])],favoriteUseCaseIds=[...(options.favoriteUseCaseIds||[])],catalogOrder=options.catalogOrder||{commandGroups:[]},pendingRepositoryWrites=options.pendingRepositoryWrites||{commands:0,prompts:0,modules:0,helperCommands:0,order:false};let activeOverlay=null,isOpen=false,statusTimer=null,insertionBusy=false,dashboardOpen=document.documentElement.dataset.obsPlanningDashboardOpen==='true',lastToggleToken=document.documentElement.dataset.obsPlanningCommandsToggle||'',resizeTimer=null,activeCommandDetail=null,commandCardNodes=new Map();
     const meaningOpen=new Map(),backgroundTasks=new Map();let favoriteMoveBusy=false,taskSequence=0,rdgCatalog=null,rdgLoading=false,rdgError='';
     function readLocalText(key){try{return String(localStorage.getItem(key)||'').trim();}catch(_){return'';}}
     function writeLocalText(key,value){try{if(value==null||value==='')localStorage.removeItem(key);else localStorage.setItem(key,String(value));}catch(_){}}
@@ -1939,15 +1978,15 @@
 @media(max-width:880px){.command-layout{grid-template-columns:180px 1fr}.command-detail{display:none}.panel{min-width:min(560px,calc(100vw - 16px))}}
 @media(max-width:760px){.panel{min-width:0;width:calc(100vw - 16px)!important;left:8px!important}.command-layout{grid-template-columns:1fr}.command-sidebar{display:none}.row{grid-template-columns:1fr}.actions{justify-content:flex-start;flex-wrap:wrap}.entry-entries{padding-left:7px}.command-group-head{grid-template-columns:24px minmax(0,1fr) auto}.command-group-count{display:none}}
 .sidebar-section .group-nav-title{display:none}.sidebar-section>summary,.meaning-box>summary{cursor:pointer}.sidebar-section>summary:focus-visible,.meaning-box>summary:focus-visible{outline:2px solid #5eead4;outline-offset:2px}.meaning-box:not([open])>summary{margin-bottom:0}.favorite-group{border-color:#526749}.favorite-group .command-card-context{display:block}
-.prompt-group-toolbar[hidden]{display:none}.prompt-group-toolbar{display:flex;gap:5px;flex-wrap:wrap;align-items:center;padding:5px 8px 8px}.prompt-group-chip{border-radius:999px;padding:4px 8px;font-size:11px;white-space:nowrap}.prompt-group-chip[aria-pressed=true]{border-color:#3b82f6;background:#1e40af;color:#eff6ff}.prompt-group-count{margin-left:5px;color:#9caec5;font-size:10px}.prompt-group-head{padding:0 8px 7px;color:#94a3b8;font-size:11px}.prompt-group-badge{display:inline-block;margin-top:4px;padding:1px 6px;border:1px solid #2e4562;color:#8fd6ff;border-radius:999px;font-size:10px}.prompt-group-tools{display:flex;gap:5px;flex-wrap:wrap;margin-top:8px}.prompt-group-tools button{padding:5px 9px}.prompt-group-manager{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:6px 0;padding:6px 8px;border:1px solid #26364f;border-radius:8px}.prompt-group-manager .group-editor-actions{display:flex;gap:4px}.prompt-group-manager .group-editor-actions button{padding:4px 7px}
-@media(max-width:760px){.prompt-group-toolbar{padding:5px 7px}.prompt-group-chip{font-size:10px}.prompt-group-manager{flex-wrap:wrap}}
-</style><button class="launcher" type="button"><span class="launcher-label">Planning</span><span class="launcher-activity"><span class="activity-spinner">↻</span> <span class="launcher-count">0</span></span></button><section class="panel" data-open="false"><div class="header"><div class="title"><div class="title-main">OBS Planning Helper</div><div class="title-sub">local working cache · GitHub-backed semantic Commands + canonical Scenarios · explicit Hard Reload</div></div><small class="helper-version" aria-label="Planning Helper version"></small><div class="activity" data-active="false"><span class="activity-spinner">↻</span><span class="activity-text"></span></div><button class="close" type="button">×</button></div><div class="tabs">${[LENSES_SURFACE,SURFACES.SCENARIOS,SURFACES.PROMPTS].filter(Boolean).map((surface)=>`<button class="tab" type="button" data-surface="${surface}" aria-selected="false">${surface}</button>`).join('')}</div><div class="command-views"></div><div class="library-views" data-visible="false"><button class="library-view" type="button" data-library-view="prompts" aria-selected="true"><span>Prompts</span><small class="library-view-count prompt-count"></small></button><button class="library-view" type="button" data-library-view="modules" aria-selected="false"><span>Modules</span><small class="library-view-count module-count"></small></button></div><div class="surface-tools"><button class="tool rdg-refresh" type="button">Обновить RDG</button><button class="tool legacy-commands" type="button">Planning Commands</button><button class="tool new-library" type="button">New</button><button class="tool import-chat" type="button">Import</button><button class="tool restore-chat" type="button">Restore copy</button><button class="tool recovery-request" type="button">Recovery request</button><button class="tool copy-state" type="button">Copy state</button><button class="tool check-github" type="button">Check GitHub</button><button class="tool sync-github" type="button">Sync missing</button><button class="tool hard-reload" type="button">Hard Reload GitHub</button><button class="tool manage-groups" type="button">Manage groups</button><button class="tool save-all" type="button">Save all GitHub</button><button class="tool settings" type="button">Settings</button></div><div class="search-wrap"><input class="search" type="search" placeholder="Search current surface…"></div><div class="command-group-nav" data-visible="false"></div><div class="prompt-group-toolbar" hidden></div><div class="body"></div></section>`;
+.prompt-group-toolbar[hidden],.rdg-group-toolbar[hidden]{display:none}.prompt-group-toolbar,.rdg-group-toolbar{display:flex;gap:5px;flex-wrap:wrap;align-items:center;padding:5px 8px 8px}.prompt-group-chip{border-radius:999px;padding:4px 8px;font-size:11px;white-space:nowrap}.prompt-group-chip[aria-pressed=true]{border-color:#3b82f6;background:#1e40af;color:#eff6ff}.prompt-group-count{margin-left:5px;color:#9caec5;font-size:10px}.prompt-group-head{padding:0 8px 7px;color:#94a3b8;font-size:11px}.prompt-group-badge{display:inline-block;margin-top:4px;padding:1px 6px;border:1px solid #2e4562;color:#8fd6ff;border-radius:999px;font-size:10px}.prompt-group-tools{display:flex;gap:5px;flex-wrap:wrap;margin-top:8px}.prompt-group-tools button{padding:5px 9px}.rdg-command-group{border:1px solid #26364f;border-radius:10px;padding:10px;margin:9px 0;background:#0d1728}.rdg-group-title{font-size:13px;margin:0 0 4px;font-weight:800}.rdg-command-group .row{grid-template-columns:minmax(0,1fr) auto;margin:7px 0}.rdg-command-group .row-meta{overflow-wrap:anywhere}.prompt-group-manager{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:6px 0;padding:6px 8px;border:1px solid #26364f;border-radius:8px}.prompt-group-manager .group-editor-actions{display:flex;gap:4px}.prompt-group-manager .group-editor-actions button{padding:4px 7px}
+@media(max-width:760px){.prompt-group-toolbar,.rdg-group-toolbar{padding:5px 7px}.prompt-group-chip{font-size:10px}.prompt-group-manager{flex-wrap:wrap}}
+</style><button class="launcher" type="button"><span class="launcher-label">Planning</span><span class="launcher-activity"><span class="activity-spinner">↻</span> <span class="launcher-count">0</span></span></button><section class="panel" data-open="false"><div class="header"><div class="title"><div class="title-main">OBS Planning Helper</div><div class="title-sub">RDG Команды · Planning Commands · Scenarios · Prompts</div></div><small class="helper-version" aria-label="Planning Helper version"></small><div class="activity" data-active="false"><span class="activity-spinner">↻</span><span class="activity-text"></span></div><button class="close" type="button">×</button></div><div class="tabs">${[RDG_COMMANDS_SURFACE,SURFACES.SCENARIOS,SURFACES.PROMPTS].filter(Boolean).map((surface)=>`<button class="tab" type="button" data-surface="${surface}" aria-selected="false">${surface}</button>`).join('')}</div><div class="command-views"></div><div class="library-views" data-visible="false"><button class="library-view" type="button" data-library-view="prompts" aria-selected="true"><span>Prompts</span><small class="library-view-count prompt-count"></small></button><button class="library-view" type="button" data-library-view="modules" aria-selected="false"><span>Modules</span><small class="library-view-count module-count"></small></button></div><div class="surface-tools"><button class="tool rdg-refresh" type="button">Обновить RDG</button><button class="tool legacy-commands" type="button">Planning Commands</button><button class="tool new-library" type="button">New</button><button class="tool import-chat" type="button">Import</button><button class="tool restore-chat" type="button">Restore copy</button><button class="tool recovery-request" type="button">Recovery request</button><button class="tool copy-state" type="button">Copy state</button><button class="tool check-github" type="button">Check GitHub</button><button class="tool sync-github" type="button">Sync missing</button><button class="tool hard-reload" type="button">Hard Reload GitHub</button><button class="tool manage-groups" type="button">Manage groups</button><button class="tool save-all" type="button">Save all GitHub</button><button class="tool settings" type="button">Settings</button></div><div class="search-wrap"><input class="search" type="search" placeholder="Search current surface…"></div><div class="command-group-nav" data-visible="false"></div><div class="rdg-group-toolbar" hidden></div><div class="prompt-group-toolbar" hidden></div><div class="body"></div></section>`;
 
     const fullScriptVersion=String(globalThis.ObsPlanningHelper?.scriptVersion||'').trim();
     const versionIndicator=root.querySelector('.helper-version');
     versionIndicator.textContent=fullScriptVersion?`v${fullScriptVersion.split('-')[0]}`:'v?';
     versionIndicator.title=fullScriptVersion?`Planning Helper userscript: ${fullScriptVersion}`:'Planning Helper version unavailable';
-    const launcher=root.querySelector('.launcher'),panel=root.querySelector('.panel'),header=root.querySelector('.header'),activity=root.querySelector('.activity'),activityText=root.querySelector('.activity-text'),launcherCount=root.querySelector('.launcher-count'),closeButton=root.querySelector('.close'),searchInput=root.querySelector('.search'),body=root.querySelector('.body'),tabButtons=[...root.querySelectorAll('.tab')],commandViewBar=root.querySelector('.command-views'),libraryViewBar=root.querySelector('.library-views'),libraryViewButtons=[...root.querySelectorAll('.library-view')],commandGroupNav=root.querySelector('.command-group-nav'),newLibraryButton=root.querySelector('.new-library'),manageGroupsButton=root.querySelector('.manage-groups'),saveAllButton=root.querySelector('.save-all'),promptGroupToolbar=root.querySelector('.prompt-group-toolbar'),rdgRefreshButton=root.querySelector('.rdg-refresh'),legacyCommandsButton=root.querySelector('.legacy-commands'),rdgOtherTools=[...root.querySelectorAll('.surface-tools .tool')].filter(node=>node!==rdgRefreshButton&&node!==legacyCommandsButton);
+    const launcher=root.querySelector('.launcher'),panel=root.querySelector('.panel'),header=root.querySelector('.header'),activity=root.querySelector('.activity'),activityText=root.querySelector('.activity-text'),launcherCount=root.querySelector('.launcher-count'),closeButton=root.querySelector('.close'),searchInput=root.querySelector('.search'),body=root.querySelector('.body'),tabButtons=[...root.querySelectorAll('.tab')],commandViewBar=root.querySelector('.command-views'),libraryViewBar=root.querySelector('.library-views'),libraryViewButtons=[...root.querySelectorAll('.library-view')],commandGroupNav=root.querySelector('.command-group-nav'),newLibraryButton=root.querySelector('.new-library'),manageGroupsButton=root.querySelector('.manage-groups'),saveAllButton=root.querySelector('.save-all'),promptGroupToolbar=root.querySelector('.prompt-group-toolbar'),rdgGroupToolbar=root.querySelector('.rdg-group-toolbar'),rdgRefreshButton=root.querySelector('.rdg-refresh'),legacyCommandsButton=root.querySelector('.legacy-commands'),rdgOtherTools=[...root.querySelectorAll('.surface-tools .tool')].filter(node=>node!==rdgRefreshButton&&node!==legacyCommandsButton);
     const manageCategoriesButton=button('Manage categories','manage-categories',openCategoryManager);manageGroupsButton.before(manageCategoriesButton);
     function entriesForSurface(surface){if(surface===SURFACES.COMMANDS)return commandEntries;if(surface===SURFACES.SCENARIOS)return scenarioEntries;if(surface===SURFACES.PROMPTS)return activePromptView==='modules'?moduleEntries:promptEntries;if(surface===SURFACES.USE_CASES)return useCaseEntries;return[];}
     function renderLibraryViewButtons(){libraryViewBar.dataset.visible=String(activeSurface===SURFACES.PROMPTS);root.querySelector('.prompt-count').textContent=String(promptEntries.length);root.querySelector('.module-count').textContent=String(moduleEntries.length);for(const control of libraryViewButtons)control.setAttribute('aria-selected',String(control.dataset.libraryView===activePromptView));if(activeSurface===SURFACES.PROMPTS)searchInput.placeholder=activePromptView==='modules'?'Search modules…':'Search prompts…';}
@@ -1998,7 +2037,7 @@
     function setButtonPending(control,pending,label){if(!control)return;if(pending){control.dataset.pendingLabel=control.textContent;control.textContent=label||'Working…';control.disabled=true;}else if(control.dataset.pendingLabel!=null){control.textContent=control.dataset.pendingLabel;delete control.dataset.pendingLabel;control.disabled=false;}}
     function runTask({key,label,button:control=null,pendingLabel='Working…',repository=false,action,onSuccess,onError}){const taskKey=String(key||`task-${++taskSequence}`);if(backgroundTasks.has(taskKey)){showStatus(`${label||'Operation'} is already running.`,5000);return backgroundTasks.get(taskKey).promise;}const task={key:taskKey,label:label||'Working…',repository,promise:null};backgroundTasks.set(taskKey,task);updateActivity();setButtonPending(control,true,pendingLabel);task.promise=(async()=>{try{const result=await action();if(onSuccess)await onSuccess(result);return result;}catch(error){if(onError)onError(error);else showStatus(error.message||String(error),8000);return undefined;}finally{backgroundTasks.delete(taskKey);updateActivity();setButtonPending(control,false);}})();return task.promise;}
     function setOpen(value){isOpen=Boolean(value);panel.dataset.open=String(isOpen);launcher.style.display=isOpen||dashboardOpen?'none':'block';if(isOpen)keepPanelInViewport();}
-    function switchSurface(surface){activeSurface=surface;if(surface===SURFACES.PROMPTS){activePromptView='prompts';activePromptGroupId='all';}for(const button of tabButtons)button.setAttribute('aria-selected',String(button.dataset.surface===surface));commandViewBar.style.display=surface===SURFACES.COMMANDS?'flex':'none';commandGroupNav.dataset.visible=String(surface===SURFACES.COMMANDS);if(surface===SURFACES.COMMANDS)renderMethodologyViewButtons();newLibraryButton.style.display=(surface===SURFACES.SCENARIOS||surface===LENSES_SURFACE)?'none':'inline-block';manageGroupsButton.style.display=surface===SURFACES.COMMANDS?'inline-block':'none';manageCategoriesButton.style.display=manageGroupsButton.style.display;const isRdg=surface===LENSES_SURFACE;for(const control of rdgOtherTools)control.style.display=isRdg?'none':'';if(!isRdg){newLibraryButton.style.display=surface===SURFACES.SCENARIOS?'none':'inline-block';manageGroupsButton.style.display=surface===SURFACES.COMMANDS?'inline-block':'none';manageCategoriesButton.style.display=manageGroupsButton.style.display;}rdgRefreshButton.style.display=isRdg?'inline-block':'none';legacyCommandsButton.style.display=isRdg||surface===SURFACES.COMMANDS?'inline-block':'none';legacyCommandsButton.textContent=surface===SURFACES.COMMANDS?'← Линзы':'Planning Commands';renderLibraryViewButtons();if(isRdg)searchInput.placeholder='Search RDG commands…';else if(surface===SURFACES.COMMANDS)searchInput.placeholder='Search Planning Commands…';searchInput.value='';renderEntries('');}function switchPromptLibraryView(view){activePromptView=view==='modules'?'modules':'prompts';if(activePromptView==='prompts')activePromptGroupId='all';searchInput.value='';renderLibraryViewButtons();renderEntries('');}function switchMethodologyView(view){activeMethodologyView=view;writeLocalText(ACTIVE_VIEW_KEY,view);renderMethodologyViewButtons();searchInput.value='';renderEntries('');}
+    function switchSurface(surface){activeSurface=surface;if(surface===RDG_COMMANDS_SURFACE)activeRdgGroupId='all';if(surface===SURFACES.PROMPTS){activePromptView='prompts';activePromptGroupId='all';}for(const button of tabButtons)button.setAttribute('aria-selected',String(button.dataset.surface===surface));commandViewBar.style.display=surface===SURFACES.COMMANDS?'flex':'none';commandGroupNav.dataset.visible=String(surface===SURFACES.COMMANDS);if(surface===SURFACES.COMMANDS)renderMethodologyViewButtons();newLibraryButton.style.display=(surface===SURFACES.SCENARIOS||surface===RDG_COMMANDS_SURFACE)?'none':'inline-block';manageGroupsButton.style.display=surface===SURFACES.COMMANDS?'inline-block':'none';manageCategoriesButton.style.display=manageGroupsButton.style.display;const isRdg=surface===RDG_COMMANDS_SURFACE;for(const control of rdgOtherTools)control.style.display=isRdg?'none':'';if(!isRdg){newLibraryButton.style.display=surface===SURFACES.SCENARIOS?'none':'inline-block';manageGroupsButton.style.display=surface===SURFACES.COMMANDS?'inline-block':'none';manageCategoriesButton.style.display=manageGroupsButton.style.display;}rdgRefreshButton.style.display=isRdg?'inline-block':'none';legacyCommandsButton.style.display=isRdg||surface===SURFACES.COMMANDS?'inline-block':'none';legacyCommandsButton.textContent=surface===SURFACES.COMMANDS?'← Команды':'Planning Commands';renderLibraryViewButtons();if(isRdg)searchInput.placeholder='Search RDG commands…';else if(surface===SURFACES.COMMANDS)searchInput.placeholder='Search Planning Commands…';searchInput.value='';renderEntries('');}function switchPromptLibraryView(view){activePromptView=view==='modules'?'modules':'prompts';if(activePromptView==='prompts')activePromptGroupId='all';searchInput.value='';renderLibraryViewButtons();renderEntries('');}function switchMethodologyView(view){activeMethodologyView=view;writeLocalText(ACTIVE_VIEW_KEY,view);renderMethodologyViewButtons();searchInput.value='';renderEntries('');}
     async function insertBody(text,success,id,invocation={}){if(!text||insertionBusy)return;insertionBusy=true;updateActivity();try{showStatus(await options.onInsert(text,success,id,invocation),7000);}catch(error){showStatus(error.message||String(error),7000);}finally{insertionBusy=false;updateActivity();}}
     async function copyBody(text,id,invocation={}){try{showStatus(await options.onCopy(text,id,invocation)?'Copied.':'Copy failed.',4000);}catch(error){showStatus(error.message||String(error),7000);}}
     function button(text,cls,handler,title=''){const b=document.createElement('button');b.type='button';b.textContent=text;b.className=cls;if(title)b.title=title;b.addEventListener('click',(event)=>{event.preventDefault();event.stopPropagation();handler(event,b);});return b;}
@@ -2161,7 +2200,7 @@
     async function loadRdgCatalog(explicitRefresh){
       if(rdgLoading)return;
       rdgLoading=true;rdgRefreshButton.disabled=true;rdgError='';
-      if(activeSurface===LENSES_SURFACE)renderEntries(searchInput.value);
+      if(activeSurface===RDG_COMMANDS_SURFACE)renderEntries(searchInput.value);
       try{
         const action=explicitRefresh?options.onRefreshRdgCommands:options.onLoadRdgCommands;
         if(typeof action!=='function')throw new Error('RDG catalog adapter is unavailable');
@@ -2169,10 +2208,10 @@
         if(explicitRefresh)showStatus('RDG: полный каталог сохранён ('+rdgCatalog.commands.length+' команд).',7000);
       }catch(error){
         rdgError=error?.message||String(error);
-        if(activeSurface===LENSES_SURFACE)showStatus('RDG: '+rdgError+' Последний пригодный кэш сохраняется.',9000);
+        if(activeSurface===RDG_COMMANDS_SURFACE)showStatus('RDG: '+rdgError+' Последний пригодный кэш сохраняется.',9000);
       }finally{
         rdgLoading=false;rdgRefreshButton.disabled=false;
-        if(activeSurface===LENSES_SURFACE)renderEntries(searchInput.value);
+        if(activeSurface===RDG_COMMANDS_SURFACE)renderEntries(searchInput.value);
       }
     }
     async function insertRdgCommand(command){
@@ -2184,37 +2223,86 @@
       }catch(error){showStatus(error?.message||String(error),7000);}
       finally{insertionBusy=false;updateActivity();}
     }
+    function renderRdgGroupToolbar(){
+      rdgGroupToolbar.replaceChildren();
+      const visible=activeSurface===RDG_COMMANDS_SURFACE;
+      rdgGroupToolbar.hidden=!visible;
+      if(!visible||!rdgCatalog)return;
+      const groups=rdgCatalog.groups||[];
+      if(!['all',...groups.map(group=>group.id)].includes(activeRdgGroupId))activeRdgGroupId='all';
+      function chip(id,title,count){
+        const control=button(title,'prompt-group-chip rdg-group-chip',()=>{
+          activeRdgGroupId=id;renderEntries(searchInput.value);
+        });
+        control.dataset.rdgGroup=id;
+        control.setAttribute('aria-pressed',String(id===activeRdgGroupId));
+        const number=document.createElement('small');number.className='prompt-group-count';
+        number.textContent=String(count);control.append(number);
+        return control;
+      }
+      rdgGroupToolbar.append(chip('all','Все команды',rdgCatalog.commands.length));
+      for(const group of groups){
+        rdgGroupToolbar.append(chip(group.id,group.title,
+          rdgCatalog.commands.filter(command=>command.groupId===group.id).length));
+      }
+    }
     function renderRdgEntries(needle){
       commandGroupNav.dataset.visible='false';
-      const wrapper=document.createElement('div');wrapper.className='non-command-body';
+      const wrapper=document.createElement('div');wrapper.className='non-command-body rdg-command-body';
       const count=rdgCatalog?.commands?.length||0;
       const status=document.createElement('p');status.className='row-meta';
       const saved=rdgCatalog?.savedAt?new Date(rdgCatalog.savedAt).toLocaleString():'—';
       status.textContent=rdgLoading?'Получение полного каталога RDG…':
         'RDG Commands · '+count+' · кэш от '+saved+(rdgCatalog?' · версия '+rdgCatalog.catalogRevision.slice(0,12):'');
       wrapper.append(status);
-      if(rdgError){const warning=document.createElement('p');warning.className='danger';warning.textContent='Ошибка обновления: '+rdgError;wrapper.append(warning);}
-      const commands=(rdgCatalog?.commands||[]).filter(c=>
-        !needle||[c.id,c.title,c.description,c.lensRef.lensKey].join(' ').toLowerCase().includes(needle));
+      if(rdgError){
+        const warning=document.createElement('p');warning.className='danger';
+        warning.textContent='Ошибка обновления: '+rdgError;wrapper.append(warning);
+      }
+      const commands=(rdgCatalog?.commands||[]).filter(command=>
+        (!needle||[
+          command.id,command.kind,command.title,command.description,
+          ...command.lensRefs.map(ref=>ref.lensKey)
+        ].join(' ').toLowerCase().includes(needle))&&
+        (activeRdgGroupId==='all'||command.groupId===activeRdgGroupId));
       if(!commands.length){
         const empty=document.createElement('div');empty.className='empty';
         empty.textContent=rdgCatalog?'Команды по запросу не найдены.':'Каталог RDG пока недоступен. Нажмите «Обновить RDG».';
         wrapper.append(empty);
       }
-      for(const c of commands){
-        const row=document.createElement('div');row.className='row';row.dataset.entryId=c.id;
-        const info=document.createElement('div'),title=document.createElement('strong'),meta=document.createElement('div');
-        title.className='row-label';title.textContent=c.title;
-        meta.className='row-meta';meta.textContent=c.description+' · '+c.id;
-        info.append(title,meta);
-        const actions=document.createElement('div');actions.className='actions';
-        actions.append(button('Вставить','run-action',()=>{void insertRdgCommand(c);}));
-        if(typeof options.onCopyPlain==='function')actions.append(button('Copy','copy',()=>{void options.onCopyPlain(c.insertText);}));
-        row.append(info,actions);wrapper.append(row);
+      for(const group of rdgCatalog?.groups||[]){
+        const items=commands.filter(command=>command.groupId===group.id);
+        if(!items.length)continue;
+        const section=document.createElement('section');section.className='rdg-command-group';
+        section.dataset.rdgGroup=group.id;
+        const heading=document.createElement('h3');heading.className='rdg-group-title';
+        heading.textContent=group.title+' · '+items.length;
+        const detail=document.createElement('p');detail.className='row-meta';
+        detail.textContent=group.description;
+        section.append(heading,detail);
+        for(const command of items){
+          const row=document.createElement('div');row.className='row';row.dataset.entryId=command.id;
+          const info=document.createElement('div'),title=document.createElement('strong'),meta=document.createElement('div');
+          title.className='row-label';title.textContent=command.title;
+          const kind=command.kind==='lens-launcher'?'Линза':
+            command.kind==='workflow'?'Составная команда':'Инструкция';
+          meta.className='row-meta';
+          meta.textContent=command.description+' · '+kind+
+            (command.lensRefs.length?' · '+command.lensRefs.map(ref=>ref.lensKey).join(' + '):'')+
+            ' · '+command.id;
+          info.append(title,meta);
+          const actions=document.createElement('div');actions.className='actions';
+          actions.append(button('Вставить','run-action',()=>{void insertRdgCommand(command);}));
+          if(typeof options.onCopyPlain==='function'){
+            actions.append(button('Copy','copy',()=>{void options.onCopyPlain(command.insertText);}));
+          }
+          row.append(info,actions);section.append(row);
+        }
+        wrapper.append(section);
       }
       body.append(wrapper);
     }
-    function renderEntries(query=''){queueMicrotask(refreshMutationControls);const sidebarScrollTop=body.querySelector('.command-sidebar')?.scrollTop||0;body.innerHTML='';activeCommandDetail=null;commandCardNodes=new Map();const all=entriesForSurface(activeSurface),needle=String(query||'').trim().toLowerCase();body.classList.toggle('command-body',activeSurface===SURFACES.COMMANDS);renderPromptGroupToolbar();if(activeSurface===LENSES_SURFACE){renderRdgEntries(needle);return;}if(activeSurface===SURFACES.COMMANDS){renderCommandSurface(needle);body.querySelector('.command-sidebar').scrollTop=sidebarScrollTop;return;}commandGroupNav.dataset.visible='false';const wrapper=document.createElement('div');wrapper.className='non-command-body';const grouped=activeSurface===SURFACES.PROMPTS&&activePromptView==='prompts'?filterPromptEntries(all,catalogOrder,activePromptGroupId):all;const entries=needle?grouped.filter((entry)=>JSON.stringify([entry.id,entry.label,entry.title,entry.description,entry.command,entry.context,entry.result,entry.essence,entry.canonicalIntro,(entry.steps||[]).map((step)=>[step.title,step.canonicalText])]).toLowerCase().includes(needle)):grouped;if(activeSurface===SURFACES.PROMPTS&&activePromptView==='prompts'&&entries.length&&!entries.some((entry)=>entry.id===selectedPromptId))selectedPromptId=entries[0].id;if(!entries.length){const empty=document.createElement('div');empty.className='empty';empty.textContent=activeSurface===SURFACES.SCENARIOS?'No local catalog rows. Use Hard Reload GitHub to restore current repository content.':activeSurface===SURFACES.PROMPTS&&activePromptView==='modules'?'No modules.':activeSurface===SURFACES.PROMPTS&&activePromptView==='prompts'&&activePromptGroupId!=='all'?'No prompts in this group.':'No items.';wrapper.append(empty);body.append(wrapper);return;}if(activeSurface===SURFACES.SCENARIOS){for(const entry of entries)wrapper.append(makeScenarioRow(entry));body.append(wrapper);return;}for(const entry of entries)wrapper.append(makeEntryRow(entry));body.append(wrapper);}
+    function renderEntries(query=''){queueMicrotask(refreshMutationControls);const sidebarScrollTop=body.querySelector('.command-sidebar')?.scrollTop||0;body.innerHTML='';activeCommandDetail=null;commandCardNodes=new Map();const all=entriesForSurface(activeSurface),needle=String(query||'').trim().toLowerCase();body.classList.toggle('command-body',activeSurface===SURFACES.COMMANDS);renderPromptGroupToolbar();renderRdgGroupToolbar();if(activeSurface===RDG_COMMANDS_SURFACE){renderRdgEntries(needle);return;}if(activeSurface===SURFACES.COMMANDS){renderCommandSurface(needle);body.querySelector('.command-sidebar').scrollTop=sidebarScrollTop;return;}commandGroupNav.dataset.visible='false';const wrapper=document.createElement('div');wrapper.className='non-command-body';const grouped=activeSurface===SURFACES.PROMPTS&&activePromptView==='prompts'?filterPromptEntries(all,catalogOrder,activePromptGroupId):all;const entries=needle?grouped.filter((entry)=>JSON.stringify([entry.id,entry.label,entry.title,entry.description,entry.command,entry.context,entry.result,entry.essence,entry.canonicalIntro,(entry.steps||[]).map((step)=>[step.title,step.canonicalText])]).toLowerCase().includes(needle)):grouped;if(activeSurface===SURFACES.PROMPTS&&activePromptView==='prompts'&&entries.length&&!entries.some((entry)=>entry.id===selectedPromptId))selectedPromptId=entries[0].id;if(!entries.length){const empty=document.createElement('div');empty.className='empty';empty.textContent=activeSurface===SURFACES.SCENARIOS?'No local catalog rows. Use Hard Reload GitHub to restore current repository content.':activeSurface===SURFACES.PROMPTS&&activePromptView==='modules'?'No modules.':activeSurface===SURFACES.PROMPTS&&activePromptView==='prompts'&&activePromptGroupId!=='all'?'No prompts in this group.':'No items.';wrapper.append(empty);body.append(wrapper);return;}if(activeSurface===SURFACES.SCENARIOS){for(const entry of entries)wrapper.append(makeScenarioRow(entry));body.append(wrapper);return;}for(const entry of entries)wrapper.append(makeEntryRow(entry));body.append(wrapper);}
     function makeOverlay(titleText){if(activeOverlay)closeOverlay(activeOverlay);const overlay=document.createElement('div');overlay.className='overlay';const modal=document.createElement('section');modal.className='modal';const title=document.createElement('h2');title.textContent=titleText;modal.append(title);overlay.append(modal);panel.append(overlay);activeOverlay=overlay;return{overlay,modal};}
     function closeOverlay(overlay){if(!overlay)return;overlay.remove();if(activeOverlay===overlay)activeOverlay=null;}
     function commandDraft(){return{schemaVersion:1,id:'new.command',file:'new-command.command.md',command:'новая команда',englishName:'new command',commandFamily:['новая команда','new command'],description:'describe command',meaning:'describe command meaning',activeContextBehavior:'Use the selected current target.',traversalReadMode:'Targeted/full by current owner uncertainty.',ownerFiles:['planning/command-routing.md'],expectedOutput:'Expected result.',permissionMode:'read-only',keyReminders:['Follow the current owner route.'],userTarget:'<target>',palette:true,refinements:[]};}
@@ -2274,7 +2362,7 @@
     const resizeObserver=typeof ResizeObserver==='function'?new ResizeObserver(()=>{if(!isOpen)return;if(resizeTimer)clearTimeout(resizeTimer);resizeTimer=setTimeout(()=>{keepPanelInViewport();persistGeometry();},180);}):null;resizeObserver?.observe(panel);
     function consumeToggle(token){const next=String(token||'');if(next&&next!==lastToggleToken){lastToggleToken=next;setOpen(!isOpen);}}function handleShortcut(event){if(event.repeat)return;if(event.key==='Escape'&&activeOverlay){closeOverlay(activeOverlay);return;}if(event.altKey&&!event.ctrlKey&&!event.metaKey&&event.key==='F2'){event.preventDefault();setOpen(!isOpen);}else if(event.key==='Escape'&&isOpen)setOpen(false);}
     const observer=new MutationObserver((mutations)=>{for(const mutation of mutations){if(mutation.attributeName==='data-obs-planning-dashboard-open'){dashboardOpen=document.documentElement.dataset.obsPlanningDashboardOpen==='true';launcher.style.display=isOpen||dashboardOpen?'none':'block';}if(mutation.attributeName==='data-obs-planning-commands-toggle')consumeToggle(document.documentElement.dataset.obsPlanningCommandsToggle);}});observer.observe(document.documentElement,{attributes:true,attributeFilter:['data-obs-planning-dashboard-open','data-obs-planning-commands-toggle']});
-    rdgRefreshButton.addEventListener('click',()=>{void loadRdgCatalog(true);});legacyCommandsButton.addEventListener('click',()=>switchSurface(activeSurface===SURFACES.COMMANDS?LENSES_SURFACE:SURFACES.COMMANDS));tabButtons.forEach((b)=>b.addEventListener('click',()=>switchSurface(b.dataset.surface)));libraryViewButtons.forEach((b)=>b.addEventListener('click',()=>switchPromptLibraryView(b.dataset.libraryView)));launcher.addEventListener('click',()=>setOpen(true));closeButton.addEventListener('click',()=>setOpen(false));searchInput.addEventListener('input',()=>renderEntries(searchInput.value));newLibraryButton.addEventListener('click',()=>{if(activeSurface===SURFACES.COMMANDS)openCommandEditor();else if(activeSurface===SURFACES.PROMPTS)openLibraryEditor();});root.querySelector('.import-chat').addEventListener('click',()=>openImport('import'));root.querySelector('.restore-chat').addEventListener('click',()=>openImport('restore'));root.querySelector('.recovery-request').addEventListener('click',copyRecoveryRequest);root.querySelector('.copy-state').addEventListener('click',copyLocalState);root.querySelector('.check-github').addEventListener('click',(event)=>checkRepository(event.currentTarget));root.querySelector('.sync-github').addEventListener('click',(event)=>syncMissingRepository(event.currentTarget));root.querySelector('.hard-reload').addEventListener('click',hardReloadRepository);manageGroupsButton.addEventListener('click',openGroupManager);saveAllButton.addEventListener('click',saveAllRepository);root.querySelector('.settings').addEventListener('click',(event)=>openSettings(event.currentTarget));window.addEventListener('resize',keepPanelInViewport);window.addEventListener('keydown',handleShortcut,true);const disableDragging=enableDragging();switchSurface(LENSES_SURFACE);void loadRdgCatalog(false);if(options.startupWarnings?.length)setTimeout(()=>showStatus(options.startupWarnings.join('\n'),10000),100);
+    rdgRefreshButton.addEventListener('click',()=>{void loadRdgCatalog(true);});legacyCommandsButton.addEventListener('click',()=>switchSurface(activeSurface===SURFACES.COMMANDS?RDG_COMMANDS_SURFACE:SURFACES.COMMANDS));tabButtons.forEach((b)=>b.addEventListener('click',()=>switchSurface(b.dataset.surface)));libraryViewButtons.forEach((b)=>b.addEventListener('click',()=>switchPromptLibraryView(b.dataset.libraryView)));launcher.addEventListener('click',()=>setOpen(true));closeButton.addEventListener('click',()=>setOpen(false));searchInput.addEventListener('input',()=>renderEntries(searchInput.value));newLibraryButton.addEventListener('click',()=>{if(activeSurface===SURFACES.COMMANDS)openCommandEditor();else if(activeSurface===SURFACES.PROMPTS)openLibraryEditor();});root.querySelector('.import-chat').addEventListener('click',()=>openImport('import'));root.querySelector('.restore-chat').addEventListener('click',()=>openImport('restore'));root.querySelector('.recovery-request').addEventListener('click',copyRecoveryRequest);root.querySelector('.copy-state').addEventListener('click',copyLocalState);root.querySelector('.check-github').addEventListener('click',(event)=>checkRepository(event.currentTarget));root.querySelector('.sync-github').addEventListener('click',(event)=>syncMissingRepository(event.currentTarget));root.querySelector('.hard-reload').addEventListener('click',hardReloadRepository);manageGroupsButton.addEventListener('click',openGroupManager);saveAllButton.addEventListener('click',saveAllRepository);root.querySelector('.settings').addEventListener('click',(event)=>openSettings(event.currentTarget));window.addEventListener('resize',keepPanelInViewport);window.addEventListener('keydown',handleShortcut,true);const disableDragging=enableDragging();switchSurface(RDG_COMMANDS_SURFACE);void loadRdgCatalog(false);if(options.startupWarnings?.length)setTimeout(()=>showStatus(options.startupWarnings.join('\n'),10000),100);
     function dispose(){if(statusTimer!==null)clearTimeout(statusTimer);if(resizeTimer)clearTimeout(resizeTimer);resizeObserver?.disconnect();observer.disconnect();disableDragging();window.removeEventListener('resize',keepPanelInViewport);window.removeEventListener('keydown',handleShortcut,true);host.remove();}
     return{applyState,setCommandEntries,setScenarioEntries,setUseCaseEntries,setLibraryEntries,switchSurface,setOpen,showStatus,dispose,host,root};
   }
@@ -2638,5 +2726,5 @@
 
 (function(){
   'use strict';
-  const api=globalThis.ObsPlanningHelper;if(!api||typeof api.startPlanningHelper!=='function')throw new Error('OBS Planning Helper runtime was not built correctly.');api.scriptVersion="0.40.9-repository-command-registry";api.startPlanningHelper().catch((error)=>console.error('[OBS Planning Helper startup]',error));
+  const api=globalThis.ObsPlanningHelper;if(!api||typeof api.startPlanningHelper!=='function')throw new Error('OBS Planning Helper runtime was not built correctly.');api.scriptVersion="0.41.0-repository-command-registry";api.startPlanningHelper().catch((error)=>console.error('[OBS Planning Helper startup]',error));
 })();
