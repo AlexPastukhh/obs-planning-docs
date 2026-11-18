@@ -25,7 +25,7 @@ const out=run.stdout.split('\n').map(line=>{
   files++;
   return 'SF:'+sourceRoot+src;
 }).join('\n');
-if(files<5||!out.includes('SF:'+sourceRoot+'src/rdg-lens-launcher.js')||
+if(files<5||!out.includes('SF:'+sourceRoot+'src/rdg-command-catalog.js')||
    !out.includes('SF:'+sourceRoot+'src/planning-helper-ui.js')||
    !out.includes('end_of_record'))
   throw new Error('LCOV missing expected Planning Helper source coverage');

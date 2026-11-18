@@ -9,7 +9,7 @@
   // existing Planning Commands. The separate RDG-owned launcher surface is a read-only
   // external command catalog and does not change those semantic projections.
   // USE_CASES remains exported only as a compatibility symbol for older caches/tests.
-  const SURFACES=Object.freeze({LENSES:'Линзы',COMMANDS:'Commands',SCENARIOS:'Scenarios',PROMPTS:'Prompts',USE_CASES:'Use Cases'});
+  const SURFACES=Object.freeze({RDG_COMMANDS:'Команды',COMMANDS:'Commands',SCENARIOS:'Scenarios',PROMPTS:'Prompts',USE_CASES:'Use Cases'});
   const MODE=Object.freeze({ADAPTIVE:'adaptive',FULL:'full'});
   const SEMANTIC_KINDS=Object.freeze({USE_CASE:'USE_CASE',TARGET_MODULE:'TARGET_MODULE',LENS:'LENS'});
   const PROVENANCE=Object.freeze({DIRECT:'DIRECT CURRENT',GENERIC:'GENERIC CURRENT',GENERATED:'GENERATED'});

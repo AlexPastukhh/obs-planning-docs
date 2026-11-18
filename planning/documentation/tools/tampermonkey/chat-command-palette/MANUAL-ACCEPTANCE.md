@@ -1,9 +1,11 @@
 # OBS Planning Helper Manual Acceptance
 
 Status: active acceptance plan; execution evidence remains separate from automated tests  
-Version: v1.7.0 / Planning Helper `0.36.0`
+Version: RDG Commands v2 / Planning Helper `0.41.0`; original SCN-PH checks retained for Planning Commands
 
 Canonical application semantics: [`scenarios/README.md`](scenarios/README.md). Automated tests do **not** mark these browser/remote checks complete.
+
+**Surface terminology:** The new top-level **Команды** is the RDG-owned grouped read-only command catalog. References to the older semantic **Commands** editor in the legacy SCN-PH sections below mean **Planning Commands** (opened by its button from the RDG surface). The Prompt/Module groups are a separate editor and are not used for RDG commands.
 
 <a id="scn-ph-discover"></a>
 ## `SCN-PH-DISCOVER`
@@ -161,14 +163,19 @@ Canonical application semantics: [`scenarios/README.md`](scenarios/README.md). A
 - [ ] `Hard Reload GitHub` replaces commands/semantic/scenarios/order/groups from GitHub, removes local command rows absent from GitHub (including legacy helper-command rows), preserves Prompt-library content and prunes stale favorites.
 - [ ] Direct-backed semantic rows may expose Edit/Reload/Save/Delete; projection-only semantic rows do not.
 
-## RDG-owned launcher commands — browser/manual acceptance (new)
+<a id="rdg-command-workflow-acceptance"></a>
+## RDG Command Workflow Acceptance (new v2)
 
-- [ ] Installed Tampermonkey script has `@connect raw.githubusercontent.com`; the new top-level `Линзы` tab is visible and the old Planning Commands editor remains reachable via `Planning Commands`, then `← Линзы`.
-- [ ] After RDG catalog PR is merged, an empty RDG GM cache causes **one** complete 200/JSON request for all 21 commands on startup; the list includes `work`, `model`, `operate`, `develop`.
-- [ ] Close/reopen the panel, switch views, search, insert/copy and reload the ChatGPT page while a valid RDG GM cache exists: **zero** new RDG HTTP requests; all buttons remain available offline.
-- [ ] `Обновить RDG` performs **one** full request and atomically replaces the cached catalog, showing count/version/time. No per-command fetch, timer or automatic polling.
-- [ ] Disconnect network or return 404, timeout, malformed JSON, missing/duplicate commands or `complete=false`: a visible error appears, and previously valid buttons and their exact texts stay unchanged.
-- [ ] Click `work` and `operate`: the existing composer adapter inserts the **exact** `insertText` from the RDG catalog, without submitting the message or causing RDG Graph/Action mutations; it does not synthesize instructions from lens metadata.
-- [ ] After the user sends the inserted message, the authorized RDG Agent/API can read the actual latest lens definition and apply the method appropriately. Missing/unavailable RDG access must be reported without inventing meaning.
-- [ ] Existing Prompts/Modules, custom command drafts, categories, favorites, Scenarios and Notifier behavior remain usable; no GM secrets or GitHub tokens appear in RDG cache or inserted text.
-- [ ] Distinguish **source build**, **published RDG catalog**, **installed userscript** and **user browser acceptance**. Neither a Windows source Pull nor JavaScript mocks count as installation proof.
+Run this **after RDG v2 publication and OBS Helper v0.41.0 installation**. The v1 screenshot showing 21 entries is evidence for the previous release only, **not** proof of v2 or a full RDG chat workflow.
+
+- [ ] Confirm the current local Windows repo and generated userscript match the accepted OBS v2 merge, the Tampermonkey Local Loader still requires the stable `chat-command-palette.user.js` path, and the displayed Helper version is v0.41.0. Do not replace or clear existing Tampermonkey data.
+- [ ] The primary tab is **Команды**, not **Линзы**. The read-only RDG group chips show **Все команды (22)**, **Начало работы (1)** and **Линзы (21)**. Group headings and descriptions appear in the declared RDG order. No RDG Module editor is offered.
+- [ ] With an empty **v2-specific** GM cache, one anonymous GET fetches the complete catalog (schema v2, RDG current catalogRevision) from the public RDG GitHub main. Starting again with a valid cache, using search, changing group, Copy, or Insert makes zero RDG requests. The old v1 cache and OBS snapshot remain unmodified.
+- [ ] Search for Bootstrap, for the `orient` lens ref and for a lens name, then switch group chips. The expected result is found only in the correct group. **Обновить RDG** makes exactly one bulk GET and updates the entire valid catalog; a rejected/timeout/incomplete response preserves the previous good v2 cache and displays an error.
+- [ ] In a **new chat**, select **Начало работы** → **Начать работу с RDG · Bootstrap** → **Вставить**. The exact RDG-owned command text must appear in the ChatGPT composer **without auto-submit**, with real refs to `orient` and `work` and additional onboarding instructions. Copy produces the same bytes.
+- [ ] Send this Bootstrap message only as the user intends. ChatGPT must verify authorized RDG Agent/API and read current full structured definitions of `orient` and `work` (including identity/revision, Canon/Info and required sources), or clearly report unavailable access. It must identify the intended real task/process/permissions and give a useful bounded continuation. Bootstrap alone must **not** create Graph/Action/process or request an artificial permission.
+- [ ] Follow up in the same chat by selecting **Линзы** group → one applicable direct lens command. Check exact insertion, real authorized lens read, correct scope and a meaningful result; do not equate the button text with the actual definition.
+- [ ] Click **Planning Commands**, then **← Команды**. Existing direct command definitions, Scenarios, user Prompts/Modules, saved Favorites, Notifier and local snapshots are still available; no RDG group action mutates the OBS repository.
+- [ ] If a protected operation truly becomes necessary, check that it uses its own exact scope and authorization mechanism; a Bootstrap/lens button never grants permission.
+
+**Record evidence:** runtime Helper version, public RDG catalogRevision, anonymous GET count, insertion without submission, identities/revisions returned by RDG Agent or explicit access failure, and permitted next step. Automated tests cover schema/cache/group logic but cannot certify actual Windows/Tampermonkey/ChatGPT/RDG integration.

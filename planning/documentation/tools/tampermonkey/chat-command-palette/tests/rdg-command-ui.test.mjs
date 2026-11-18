@@ -4,50 +4,74 @@ import {createRequire} from 'node:module';
 import {JSDOM} from 'jsdom';
 const require=createRequire(import.meta.url);
 const {createPlanningHelperUi}=require('../src/planning-helper-ui.js');
-const text='Примени линзу RDG work. python3 -B tools/rdg-agent.py lens --lens work --model-profile rdg-decision-v1';
-const command={id:'rdg.lens.work',kind:'lens-launcher',title:'Work',description:'RDG Work',lensRef:{role:'lens',lensKey:'work',modelProfile:'rdg-decision-v1'},insertText:text};
-const cache={catalogRevision:'a'.repeat(64),savedAt:'2026-11-17T02:00:00Z',commands:[command]};
+const ref=key=>({role:'lens',lensKey:key,modelProfile:'rdg-decision-v1'});
+const text='Примени RDG work. python3 -B tools/rdg-agent.py lens --lens work --model-profile rdg-decision-v1';
+const bootstrapText='Начни RDG с orient и work. rdg-agent.py lens --lens orient; rdg-agent.py lens --lens work';
+const command={id:'rdg.lens.work',kind:'lens-launcher',title:'Work',description:'RDG Work',
+  groupId:'lenses',lensRefs:[ref('work')],insertText:text};
+const bootstrap={id:'rdg.command.bootstrap',kind:'workflow',title:'Bootstrap',description:'Начать работу',
+  groupId:'start',lensRefs:[ref('orient'),ref('work')],insertText:bootstrapText};
+const groups=[{id:'start',title:'Начало работы',description:'Вход в работу'},
+  {id:'lenses',title:'Линзы',description:'Адресные методики'}];
+const cache={catalogRevision:'a'.repeat(64),savedAt:'2026-11-18T02:00:00Z',groups,
+  commands:[bootstrap,command]};
 const flush=()=>new Promise(resolve=>setTimeout(resolve,0));
 
-test('RDG command UI renders cached entries, searches, refreshes, inserts exact text and preserves Planning Commands',async()=>{
-  const dom=new JSDOM('<!doctype html><html><body></body></html>',{url:'https://chatgpt.com/c/rdg-test',pretendToBeVisual:true});
+test('RDG Commands UI groups bootstrap and lenses like Prompts; exact insert, search, refresh and legacy remain independent',async()=>{
+  const dom=new JSDOM('<!doctype html><html><body></body></html>',{
+    url:'https://chatgpt.com/c/rdg-test',pretendToBeVisual:true
+  });
   const globals=['window','document','localStorage','MutationObserver','HTMLElement','Element','Node','Event'];
   const prior=globals.map(key=>[key,Object.getOwnPropertyDescriptor(globalThis,key)]);
-  for(const key of globals)Object.defineProperty(globalThis,key,{configurable:true,writable:true,value:key==='window'?dom.window:dom.window[key]});
+  for(const key of globals)Object.defineProperty(globalThis,key,{
+    configurable:true,writable:true,value:key==='window'?dom.window:dom.window[key]
+  });
   let ui;
   try{
-    let loads=0,refreshes=0;const insertions=[],copies=[];
+    let loads=0,refreshes=0;
+    const insertions=[],copies=[];
     ui=createPlanningHelperUi({
-      surfaces:{LENSES:'Линзы',COMMANDS:'Commands',SCENARIOS:'Scenarios',PROMPTS:'Prompts'},
+      surfaces:{RDG_COMMANDS:'Команды',COMMANDS:'Commands',SCENARIOS:'Scenarios',PROMPTS:'Prompts'},
       commandEntries:[{id:'legacy',label:'Existing Planning Command',text:'legacy body'}],
       onLoadRdgCommands:async()=>{loads++;return cache;},
-      onRefreshRdgCommands:async()=>{refreshes++;return {...cache,catalogRevision:'b'.repeat(64),commands:[command]};},
+      onRefreshRdgCommands:async()=>{refreshes++;
+        return {...cache,catalogRevision:'b'.repeat(64),groups:[{...groups[0],title:'Старт'},groups[1]]};
+      },
       onInsertRdgCommand:async(value)=>{insertions.push(value);return 'RDG text inserted';},
       onCopyPlain:async(value)=>{copies.push(value);return true;},
     });
-    ui.setOpen(true);
-    await flush();await flush();
+    ui.setOpen(true);await flush();await flush();
     const root=ui.root;
     assert.equal(loads,1);
-    assert.equal(root.querySelector('[data-surface="Линзы"]')?.getAttribute('aria-selected'),'true');
-    assert.equal(root.querySelectorAll('.row[data-entry-id="rdg.lens.work"]').length,1);
-    assert.match(root.querySelector('.non-command-body').textContent,/1 · кэш от/);
-    root.querySelector('[data-entry-id="rdg.lens.work"] .run-action').click();
-    await flush();
-    assert.deepEqual(insertions,[text]);
+    assert.equal(root.querySelector('[data-surface="Команды"]')?.getAttribute('aria-selected'),'true');
+    assert.equal(root.querySelectorAll('.rdg-command-group').length,2);
+    assert.equal(root.querySelector('[data-rdg-group="start"] .rdg-group-title').textContent,'Начало работы · 1');
+    assert.equal(root.querySelector('[data-rdg-group="lenses"] .rdg-group-title').textContent,'Линзы · 1');
+    assert.equal(root.querySelectorAll('.row[data-entry-id]').length,2);
+    assert.match(root.querySelector('.non-command-body').textContent,/2 · кэш от/);
+    assert.equal(root.querySelectorAll('.rdg-group-chip').length,3);
+    root.querySelector('[data-entry-id="rdg.command.bootstrap"] .run-action').click();
+    await flush();assert.deepEqual(insertions,[bootstrapText]);
     root.querySelector('[data-entry-id="rdg.lens.work"] .copy').click();
-    await flush();
-    assert.deepEqual(copies,[text]);
+    await flush();assert.deepEqual(copies,[text]);
+
+    root.querySelector('.rdg-group-chip[data-rdg-group="lenses"]').click();
+    assert.equal(root.querySelectorAll('.row[data-entry-id]').length,1);
+    assert.equal(root.querySelectorAll('.row[data-entry-id="rdg.command.bootstrap"]').length,0);
+    root.querySelector('.rdg-group-chip[data-rdg-group="all"]').click();
     const search=root.querySelector('.search');
     search.value='absent';search.dispatchEvent(new dom.window.Event('input',{bubbles:true}));
     assert.equal(root.querySelectorAll('.row[data-entry-id]').length,0);
-    search.value='work';search.dispatchEvent(new dom.window.Event('input',{bubbles:true}));
-    assert.equal(root.querySelectorAll('.row[data-entry-id]').length,1);
+    search.value='orient';search.dispatchEvent(new dom.window.Event('input',{bubbles:true}));
+    assert.equal(root.querySelectorAll('.row[data-entry-id="rdg.command.bootstrap"]').length,1);
+    search.value='';search.dispatchEvent(new dom.window.Event('input',{bubbles:true}));
     root.querySelector('.rdg-refresh').click();await flush();await flush();
     assert.equal(refreshes,1);
     assert.match(root.querySelector('.non-command-body').textContent,/bbbbbbbbbbbb/);
+    assert.equal(root.querySelector('[data-rdg-group="start"] .rdg-group-title').textContent,'Старт · 1');
+
     root.querySelector('.legacy-commands').click();
-    assert.equal(root.querySelector('.legacy-commands').textContent,'← Линзы');
+    assert.equal(root.querySelector('.legacy-commands').textContent,'← Команды');
     assert.equal(root.querySelector('.rdg-refresh').style.display,'none');
     root.querySelector('.legacy-commands').click();
     assert.equal(root.querySelector('.legacy-commands').textContent,'Planning Commands');
