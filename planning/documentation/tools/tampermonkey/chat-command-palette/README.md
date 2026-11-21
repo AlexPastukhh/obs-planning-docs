@@ -406,7 +406,9 @@ The first top-level tab is **Команды**. RDG owns its commands, previews, 
 
 The Helper displays the returned RDG revision. Commands with no assigned group appear in **Без группы**. Search, group navigation, copy and insert use the last validated live response. When a refresh fails, that copy remains available.
 
-Manage the catalog through RDG Agent/API. The separate **Planning Commands**, Scenarios, Prompts and Modules continue to use their own existing sources. See [manual acceptance](MANUAL-ACCEPTANCE.md#rdg-command-workflow-acceptance) for the local loader setup and browser check.
+**Новая команда**, **Изменить** and **Группы RDG** send edits to the same catalog through the authenticated RDG tab. Each save uses the displayed catalog revision and the RDG schema, preflight, apply, receipt and readback. An editor opened over an older revision stops and requests an update. RDG Agent/API shares the same catalog.
+
+The separate **Planning Commands**, Scenarios, Prompts and Modules continue to use their own existing sources. See [manual acceptance](MANUAL-ACCEPTANCE.md#rdg-command-workflow-acceptance) for the local loader setup and browser check.
 
 ### SonarQube coverage evidence
 
