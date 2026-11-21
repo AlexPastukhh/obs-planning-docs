@@ -220,3 +220,35 @@ test('stale catalog editors stop at read and arbitrary operations never reach th
   }),/Некорректный/);
   assert.equal(storage.size(),0);
 });
+
+test('an editor request removed during preflight cannot apply afterwards',async()=>{
+  const storage=memory();
+  const messages=[];
+  let worker;
+  const transactionId='e7ea6eae-128e-49bf-8d07-36c07d877a8c';
+  await assert.rejects(rdg.rdgCommandRequest({
+    storage,requestId,timeoutMs:45,mutation:{namespaceId,revision:2,
+      steps:[{op:'group_edit',id:'lenses',changes:{title:'Expired change'}}]},
+    openTab:url=>{
+      worker=rdg.serveRdgCatalogRequest({
+        url:rdg.RDG_BROWSER_ORIGIN+'/session/'+session+'/'+new URL(url).hash,storage,
+        fetchCatalog:async(_address,options)=>{
+          const message=JSON.parse(options.body);
+          messages.push(message.method);
+          let value;
+          if(message.method==='chat_catalog')value=catalog;
+          else if(message.method==='schema')value={request:{op:'chat_catalog_edit',expectedCatalogRevision:2,transactionId}};
+          else if(message.method==='preflight'){
+            await storage.remove(rdg.RDG_COMMAND_CACHE_KEY+':request:'+requestId);
+            value={accepted:false,inputBinding:{sha256:'fixture'}};
+          }else assert.fail('late apply is forbidden');
+          return {ok:true,json:async()=>value};
+        }
+      });
+      return {close(){}};
+    }
+  }),/Ответ на запись RDG не получен/);
+  await worker;
+  assert.deepEqual(messages,['chat_catalog','schema','preflight']);
+  assert.equal(storage.size(),0);
+});

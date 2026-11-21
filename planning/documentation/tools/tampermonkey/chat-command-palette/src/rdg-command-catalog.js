@@ -138,6 +138,10 @@
     const key=REQUEST_PREFIX+requestId;
     const pending=await storage.get(key);
     if(!Number.isFinite(pending?.expiresAt)||pending.expiresAt<=Date.now())return;
+    const stillRequested=async()=>{
+      const current=await storage.get(key);
+      return current?.expiresAt===pending.expiresAt&&pending.expiresAt>Date.now();
+    };
     const request=async message=>{
       const response=await fetchCatalog(new URL('command',page).href,{
         method:'POST',credentials:'same-origin',mode:'same-origin',cache:'no-store',redirect:'error',
@@ -158,18 +162,18 @@
     try{
       const mutation=pending.mutation;
       const catalog=mutation===undefined?await request({method:'chat_catalog'}):
-        await applyCatalogEdit(request,mutation);
+        await applyCatalogEdit(request,mutation,stillRequested);
       reply={ok:true,catalog:validateRdgCommandCatalog(catalog)};
     }catch(error){
       const message=error?.message||'';
       reply={ok:false,message:message.startsWith('RDG API · ')||message.startsWith('Каталог RDG ')?message:
         'Не удалось выполнить запрос через браузерную сессию RDG.'};
     }
-    if(pending.expiresAt>Date.now()&&(await storage.get(key))?.expiresAt===pending.expiresAt)
+    if(await stillRequested())
       await storage.set(key,reply);
   }
 
-  async function applyCatalogEdit(request,mutation){
+  async function applyCatalogEdit(request,mutation,stillRequested){
     if(!validMutation(mutation))throw new Error('Каталог RDG отклонил запрос редактирования.');
     const catalog=validateRdgCommandCatalog(await request({method:'chat_catalog'}));
     if(catalog.namespaceId!==mutation.namespaceId||catalog.revision!==mutation.revision)
@@ -183,6 +187,7 @@
     const preview=await request({method:'preflight',request:transaction});
     if(preview?.accepted!==false||!preview.inputBinding)
       throw new Error('Каталог RDG не подтвердил предварительную проверку.');
+    if(!await stillRequested())throw new Error('Каталог RDG не получил подтверждение активного запроса.');
     const result=await request({method:'apply',request:transaction,expectedInputBinding:preview.inputBinding});
     if(result?.published!==true)
       throw new Error('Каталог RDG не подтвердил публикацию. Проверьте результат обновлением.');
