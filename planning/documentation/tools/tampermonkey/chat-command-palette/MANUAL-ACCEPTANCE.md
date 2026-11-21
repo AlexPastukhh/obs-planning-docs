@@ -1,7 +1,7 @@
 # OBS Planning Helper Manual Acceptance
 
 Status: active acceptance plan; execution evidence remains separate from automated tests  
-Version: RDG Commands v2 / Planning Helper `0.41.0`; original SCN-PH checks retained for Planning Commands
+Version: RDG Commands v2 / Planning Helper `0.42.0`; original SCN-PH checks retained for Planning Commands
 
 Canonical application semantics: [`scenarios/README.md`](scenarios/README.md). Automated tests do **not** mark these browser/remote checks complete.
 
@@ -164,18 +164,20 @@ Canonical application semantics: [`scenarios/README.md`](scenarios/README.md). A
 - [ ] Direct-backed semantic rows may expose Edit/Reload/Save/Delete; projection-only semantic rows do not.
 
 <a id="rdg-command-workflow-acceptance"></a>
-## RDG Command Workflow Acceptance (new v2)
+## RDG Command Workflow Acceptance
 
-Run this **after RDG v2 publication and OBS Helper v0.41.0 installation**. The v1 screenshot showing 21 entries is evidence for the previous release only, **not** proof of v2 or a full RDG chat workflow.
+Run this **after RDG v2 publication and OBS Helper v0.42.0 installation**. The v1 screenshot showing 21 entries is evidence for the previous release only, **not** proof of v2 or a full RDG chat workflow.
 
-- [ ] Confirm the current local Windows repo and generated userscript match the accepted OBS v2 merge, the Tampermonkey Local Loader still requires the stable `chat-command-palette.user.js` path, and the displayed Helper version is v0.41.0. Do not replace or clear existing Tampermonkey data.
-- [ ] The primary tab is **Команды**, not **Линзы**. The read-only RDG group chips show **Все команды (22)**, **Начало работы (1)** and **Линзы (21)**. Group headings and descriptions appear in the declared RDG order. No RDG Module editor is offered.
+- [ ] Confirm the current local Windows repo and generated userscript match the accepted OBS v2 merge, the Tampermonkey Local Loader still requires the stable `chat-command-palette.user.js` path, and the displayed Helper version is v0.42.0. Do not replace or clear existing Tampermonkey data.
+- [ ] On a fresh RDG layout, **Команды** shows **Все команды (24)**, **Начало работы (1)**, **Структурированные линзы (21)** and **Плейн-текст (2)**.
+- [ ] In **Управлять группами**, create, rename and reorder a group. Use **Группа…** to move a command into it. Reload the page and choose **Обновить RDG** to verify the layout persists. Delete the new group and locate the command in **Без группы**. Check the same insertion text before and after moving it.
+- [ ] Group edits are local. In an authorized test repository, explicitly use **Save all GitHub** and verify the saved `catalog-order.json` contains the separate `rdgGroups` layout.
 - [ ] With an empty **v2-specific** GM cache, one anonymous GET fetches the complete catalog (schema v2, RDG current catalogRevision) from the public RDG GitHub main. Starting again with a valid cache, using search, changing group, Copy, or Insert makes zero RDG requests. The old v1 cache and OBS snapshot remain unmodified.
 - [ ] Search for Bootstrap, for the `orient` lens ref and for a lens name, then switch group chips. The expected result is found only in the correct group. **Обновить RDG** makes exactly one bulk GET and updates the entire valid catalog; a rejected/timeout/incomplete response preserves the previous good v2 cache and displays an error.
 - [ ] In a **new chat**, select **Начало работы** → **Начать работу с RDG · Bootstrap** → **Вставить**. The exact RDG-owned command text must appear in the ChatGPT composer **without auto-submit**, with real refs to `orient` and `work` and additional onboarding instructions. Copy produces the same bytes.
 - [ ] Send this Bootstrap message only as the user intends. ChatGPT must verify authorized RDG Agent/API and read current full structured definitions of `orient` and `work` (including identity/revision, Canon/Info and required sources), or clearly report unavailable access. It must identify the intended real task/process/permissions and give a useful bounded continuation. Bootstrap alone must **not** create Graph/Action/process or request an artificial permission.
-- [ ] Follow up in the same chat by selecting **Линзы** group → one applicable direct lens command. Check exact insertion, real authorized lens read, correct scope and a meaningful result; do not equate the button text with the actual definition.
-- [ ] Click **Planning Commands**, then **← Команды**. Existing direct command definitions, Scenarios, user Prompts/Modules, saved Favorites, Notifier and local snapshots are still available; no RDG group action mutates the OBS repository.
+- [ ] Follow up in the same chat by selecting **Структурированные линзы** → one applicable direct lens command. Check exact insertion, real authorized lens read, correct scope and a meaningful result; do not equate the button text with the actual definition.
+- [ ] Click **Planning Commands**, then **← Команды**. Existing direct command definitions, Scenarios, user Prompts/Modules, saved Favorites, Notifier and local snapshots are still available; local RDG group edits make no repository writes.
 - [ ] If a protected operation truly becomes necessary, check that it uses its own exact scope and authorization mechanism; a Bootstrap/lens button never grants permission.
 
 **Record evidence:** runtime Helper version, public RDG catalogRevision, anonymous GET count, insertion without submission, identities/revisions returned by RDG Agent or explicit access failure, and permitted next step. Automated tests cover schema/cache/group logic but cannot certify actual Windows/Tampermonkey/ChatGPT/RDG integration.

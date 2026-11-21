@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Reusable Chat Planning Helper
 // @namespace    https://github.com/AlexPastukhh/obs/reusable-docs
-// @version      0.41.0-repository-command-registry
+// @version      0.42.0-repository-command-registry
 // @description  RAM-first OBS Planning Helper with semantic Commands, canonical Scenarios, prompts and explicit repository actions.
 // @author       Reusable docs layer
 // @match        https://chatgpt.com/*
@@ -1346,45 +1346,60 @@
     return{id,label,order:Number.isFinite(Number(value.order))?Number(value.order):index*10};
   }
   function normalizeCommandGroup(value,index){const input=value&&typeof value==='object'?value:{},id=String(input.id||'').trim(),viewId=String(input.viewId||'').trim().toUpperCase(),label=String(input.label||'').trim();if(!id||/[\r\n\u0000-\u001f\u007f]/.test(id))throw new TypeError(`commandGroups[${index}] requires a safe id.`);if(!/^[A-Z][A-Z0-9_-]*$/.test(viewId))throw new TypeError(`commandGroups[${index}] requires a viewId.`);if(!label||/[\r\n\u0000-\u001f\u007f]/.test(label))throw new TypeError(`commandGroups[${index}] requires a safe label.`);const order=Number.isFinite(Number(input.order))?Number(input.order):index*10,items=normalizeIdOrder(input.items,`commandGroups[${index}].items`);return{id,viewId,label,order,items};}
-  function normalizePromptGroup(value,index){
+  function normalizeItemGroup(value,index,field){
     const id=String(value?.id||'').trim(),label=String(value?.label||'').trim();
-    if(!/^[a-z0-9][a-z0-9._-]{0,63}$/.test(id)||['all','ungrouped'].includes(id))throw new TypeError(`promptGroups[${index}] requires a safe non-reserved id.`);
-    if(!label||/[\r\n\u0000-\u001f\u007f]/.test(label))throw new TypeError(`promptGroups[${index}] requires a safe label.`);
-    return{id,label,items:normalizeIdOrder(value?.items,`promptGroups[${index}].items`)};
+    if(!/^[a-z0-9][a-z0-9._-]{0,79}$/.test(id)||id.length>(field==='promptGroups'?64:80)||['all','ungrouped'].includes(id))
+      throw new TypeError(`${field}[${index}] requires a safe non-reserved id.`);
+    if(!label||/[\r\n\u0000-\u001f\u007f]/.test(label))throw new TypeError(`${field}[${index}] requires a safe label.`);
+    return{id,label,items:normalizeIdOrder(value?.items,`${field}[${index}].items`)};
   }
+  function normalizePromptGroup(value,index){return normalizeItemGroup(value,index,'promptGroups');}
+  function normalizeItemGroups(groups,field){
+    const normalized=groups.map((group,index)=>normalizeItemGroup(group,index,field));
+    if(new Set(normalized.map(group=>group.id)).size!==normalized.length)throw new TypeError(`Duplicate group ids in ${field}.`);
+    const membership=new Set();
+    for(const group of normalized)for(const id of group.items){
+      if(membership.has(id))throw new TypeError(`${id} belongs to multiple groups in ${field}.`);
+      membership.add(id);
+    }
+    return normalized;
+  }
+  function groupKind(field){return field==='promptGroups'?'prompt group':'RDG group';}
   function promptGroupForId(order,id){return(order?.promptGroups||[]).find(group=>(group.items||[]).includes(id))||null;}
-  function createPromptGroupInOrder(value,label){
+  function createItemGroupInOrder(value,label,field='promptGroups'){
     const order=normalizeCatalogOrder(value),name=String(label||'').trim();
     const slug=name.toLowerCase().normalize('NFKD').replace(/[^a-z0-9._-]+/g,'-').replace(/^-+|-+$/g,'').slice(0,64);
     const fallback=()=>{let hash=2166136261;for(const char of name){hash=Math.imul(hash^char.codePointAt(0),16777619)>>>0;}return`group-${hash.toString(36)}`;};
     const id=slug||fallback();
-    if(!name||/[\r\n\u0000-\u001f\u007f]/.test(name)||!id||['all','ungrouped'].includes(id))throw new TypeError('Prompt group requires a nonempty safe name.');
-    if(order.promptGroups.some(group=>group.id===id))throw new TypeError(`Prompt group already exists: ${id}`);
-    return normalizeCatalogOrder({...order,promptGroups:[...order.promptGroups,{id,label:name,items:[]}]});
+    if(!name||/[\r\n\u0000-\u001f\u007f]/.test(name)||!id||['all','ungrouped'].includes(id))throw new TypeError('Group requires a nonempty safe name.');
+    if(order[field].some(group=>group.id===id))throw new TypeError(`Group already exists: ${id}`);
+    return normalizeCatalogOrder({...order,[field]:[...order[field],{id,label:name,items:[]}]});
   }
-  function renamePromptGroupInOrder(value,id,label){
+  function renameItemGroupInOrder(value,id,label,field='promptGroups'){
     const order=normalizeCatalogOrder(value),name=String(label||'').trim();
-    if(!name||/[\r\n\u0000-\u001f\u007f]/.test(name))throw new TypeError('Prompt group requires a safe label.');
-    if(!order.promptGroups.some(group=>group.id===id))throw new Error(`Unknown prompt group: ${id}`);
-    return normalizeCatalogOrder({...order,promptGroups:order.promptGroups.map(group=>group.id===id?{...group,label:name}:group)});
+    if(!name||/[\r\n\u0000-\u001f\u007f]/.test(name))throw new TypeError('Group requires a safe label.');
+    if(!order[field].some(group=>group.id===id))throw new Error(`Unknown ${groupKind(field)}: ${id}`);
+    return normalizeCatalogOrder({...order,[field]:order[field].map(group=>group.id===id?{...group,label:name}:group)});
   }
-  function deletePromptGroupInOrder(value,id){
+  function deleteItemGroupInOrder(value,id,field='promptGroups'){
     const order=normalizeCatalogOrder(value);
-    if(!order.promptGroups.some(group=>group.id===id))throw new Error(`Unknown prompt group: ${id}`);
-    return normalizeCatalogOrder({...order,promptGroups:order.promptGroups.filter(group=>group.id!==id)});
+    if(!order[field].some(group=>group.id===id))throw new Error(`Unknown ${groupKind(field)}: ${id}`);
+    return normalizeCatalogOrder({...order,[field]:order[field].filter(group=>group.id!==id)});
   }
-  function assignPromptGroupInOrder(value,promptId,groupId){
-    const order=normalizeCatalogOrder(value),id=String(promptId||'').trim(),target=String(groupId||'').trim();
-    if(!id)throw new TypeError('A prompt id is required.');
-    if(target&&!order.promptGroups.some(group=>group.id===target))throw new Error(`Unknown prompt group: ${target}`);
-    return normalizeCatalogOrder({...order,promptGroups:order.promptGroups.map(group=>({...group,items:group.id===target?[...group.items.filter(item=>item!==id),id]:group.items.filter(item=>item!==id)}))});
+  function assignItemGroupInOrder(value,itemId,groupId,field='promptGroups'){
+    const order=normalizeCatalogOrder(value),id=String(itemId||'').trim(),target=String(groupId||'').trim();
+    if(!id)throw new TypeError('An item id is required.');
+    if(target&&!order[field].some(group=>group.id===target))throw new Error(`Unknown ${groupKind(field)}: ${target}`);
+    const groups=order[field].map(group=>({...group,items:group.items.filter(item=>item!==id)}));
+    if(target)groups.find(group=>group.id===target).items.push(id);
+    return normalizeCatalogOrder({...order,[field]:groups});
   }
-  function movePromptGroupInOrder(value,id,delta){
-    const order=normalizeCatalogOrder(value),groups=[...order.promptGroups],index=groups.findIndex(group=>group.id===id);
-    if(index<0)throw new Error(`Unknown prompt group: ${id}`);
+  function moveItemGroupInOrder(value,id,delta,field='promptGroups'){
+    const order=normalizeCatalogOrder(value),groups=[...order[field]],index=groups.findIndex(group=>group.id===id);
+    if(index<0)throw new Error(`Unknown ${groupKind(field)}: ${id}`);
     const target=Math.max(0,Math.min(groups.length-1,index+(delta<0?-1:1)));
     if(index!==target){const[group]=groups.splice(index,1);groups.splice(target,0,group);}
-    return normalizeCatalogOrder({...order,promptGroups:groups});
+    return normalizeCatalogOrder({...order,[field]:groups});
   }
   function normalizeCatalogOrder(value={}){const input=value&&typeof value==='object'?value:{},version=input.schemaVersion==null?1:Number(input.schemaVersion);if(![1,2,3,4,5,CATALOG_ORDER_SCHEMA_VERSION].includes(version))throw new TypeError(`Unsupported catalog-order schemaVersion: ${input.schemaVersion}`);if(input.kind!=null&&String(input.kind)!==CATALOG_ORDER_KIND)throw new TypeError(`Unsupported catalog-order kind: ${input.kind}`);const commandGroups=(Array.isArray(input.commandGroups)?input.commandGroups:[]).map(normalizeCommandGroup),groupIds=commandGroups.map((group)=>group.id);if(new Set(groupIds).size!==groupIds.length)throw new TypeError('Duplicate command-group ids.');const categories=(version<5?[...LEGACY_COMMAND_CATEGORIES,...[...new Set(commandGroups.map(g=>g.viewId))].filter(id=>!LEGACY_COMMAND_CATEGORIES.some(c=>c.id===id)).map((id,i)=>({id,label:id,order:60+i*10}))]:input.categories);
     if(!Array.isArray(categories)||!categories.length)throw new TypeError('At least one category is required.');
@@ -1393,10 +1408,10 @@
     for(const group of commandGroups)if(!categoryIds.has(group.viewId))throw new TypeError('Unknown category for group '+group.id+': '+group.viewId);
     const fallbackCategoryId=version<5?'GENERAL':String(input.fallbackCategoryId||'');
     if(!categoryIds.has(fallbackCategoryId))throw new TypeError('Unknown fallback category.');
-    const promptGroups=(Array.isArray(input.promptGroups)?input.promptGroups:[]).map(normalizePromptGroup);
-    if(new Set(promptGroups.map(group=>group.id)).size!==promptGroups.length)throw new TypeError('Duplicate prompt-group ids.');
-    const promptMembership=new Set();for(const group of promptGroups)for(const id of group.items){if(promptMembership.has(id))throw new TypeError(`Prompt ${id} belongs to multiple groups.`);promptMembership.add(id);}
-    const membership=new Map();for(const group of commandGroups)for(const id of group.items){if(membership.has(id))throw new TypeError(`Command card ${id} belongs to multiple groups: ${membership.get(id)}, ${group.id}.`);membership.set(id,group.id);}return{schemaVersion:CATALOG_ORDER_SCHEMA_VERSION,kind:CATALOG_ORDER_KIND,categories:normalizedCategories,fallbackCategoryId,commands:normalizeIdOrder(input.commands,'commands'),useCases:normalizeIdOrder(input.useCases,'useCases'),scenarios:normalizeIdOrder(input.scenarios,'scenarios'),prompts:normalizeIdOrder(input.prompts,'prompts'),commandGroups,promptGroups};}
+    const promptGroups=normalizeItemGroups(Array.isArray(input.promptGroups)?input.promptGroups:[],'promptGroups');
+    if(input.rdgGroups!==undefined&&!Array.isArray(input.rdgGroups))throw new TypeError('rdgGroups must be an array.');
+    const rdgGroups=input.rdgGroups===undefined?{}:{rdgGroups:normalizeItemGroups(input.rdgGroups,'rdgGroups')};
+    const membership=new Map();for(const group of commandGroups)for(const id of group.items){if(membership.has(id))throw new TypeError(`Command card ${id} belongs to multiple groups: ${membership.get(id)}, ${group.id}.`);membership.set(id,group.id);}return{schemaVersion:CATALOG_ORDER_SCHEMA_VERSION,kind:CATALOG_ORDER_KIND,categories:normalizedCategories,fallbackCategoryId,commands:normalizeIdOrder(input.commands,'commands'),useCases:normalizeIdOrder(input.useCases,'useCases'),scenarios:normalizeIdOrder(input.scenarios,'scenarios'),prompts:normalizeIdOrder(input.prompts,'prompts'),commandGroups,promptGroups,...rdgGroups};}
   function renderCatalogOrder(value){return JSON.stringify(normalizeCatalogOrder(value),null,2)+'\n';}
 
   function parseSeed(text,{path,kind,normalize,label}){let value;try{value=JSON.parse(String(text||''));}catch(error){throw new TypeError(`Invalid ${label} repository catalog JSON at ${path}: ${error.message}`);}if(!value||value.schemaVersion!==1||value.kind!==kind||!Array.isArray(value.items))throw new TypeError(`Invalid ${label} repository catalog shape at ${path}.`);const items=normalize(value.items);if(!items.length)throw new TypeError(`${label} repository catalog is empty at ${path}.`);return{schemaVersion:1,kind,generatedFrom:String(value.generatedFrom||''),items};}
@@ -1414,7 +1429,7 @@
     async saveOrder(value){const order=normalizeCatalogOrder(value),content=renderCatalogOrder(order);let existing=null;try{const remote=await this.client.read(CATALOG_ORDER_PATH);existing={sha:String(remote.sha||''),rawContent:remote.content.replace(/\r\n?/g,'\n')};}catch(error){if(error?.kind!=='not_found')throw error;}if(existing&&existing.rawContent===content)return{ok:true,action:'noop',path:CATALOG_ORDER_PATH,sha:existing.sha,order,rawContent:content};const action=existing?'update':'create';const write=await this.client.saveVerified({path:CATALOG_ORDER_PATH,content,baseSha:existing?.sha||'',message:`${action==='create'?'Add':'Update'} Planning Helper catalog order`});return{ok:true,action,path:CATALOG_ORDER_PATH,sha:String(write.sha||''),order,rawContent:content,recoveredAfterUnknownWrite:Boolean(write.recoveredAfterUnknownWrite),recoveredAfterConflict:Boolean(write.recoveredAfterConflict)};}
   }
 
-  return{USE_CASE_CATALOG_PATH,SEMANTIC_COMPONENT_CATALOG_PATH,SCENARIO_CATALOG_PATH,CATALOG_ORDER_PATH,CATALOG_ORDER_KIND,CATALOG_ORDER_SCHEMA_VERSION,normalizeCatalogOrder,normalizePromptGroup,promptGroupForId,createPromptGroupInOrder,renamePromptGroupInOrder,deletePromptGroupInOrder,assignPromptGroupInOrder,movePromptGroupInOrder,renderCatalogOrder,parseUseCaseCatalog,parseSemanticComponentCatalog,parseScenarioCatalog,parseCatalogOrder,RepositoryCatalogService};
+  return{USE_CASE_CATALOG_PATH,SEMANTIC_COMPONENT_CATALOG_PATH,SCENARIO_CATALOG_PATH,CATALOG_ORDER_PATH,CATALOG_ORDER_KIND,CATALOG_ORDER_SCHEMA_VERSION,normalizeCatalogOrder,normalizePromptGroup,promptGroupForId,createPromptGroupInOrder:createItemGroupInOrder,renamePromptGroupInOrder:renameItemGroupInOrder,deletePromptGroupInOrder:deleteItemGroupInOrder,assignPromptGroupInOrder:assignItemGroupInOrder,movePromptGroupInOrder:moveItemGroupInOrder,createItemGroupInOrder,renameItemGroupInOrder,deleteItemGroupInOrder,assignItemGroupInOrder,moveItemGroupInOrder,renderCatalogOrder,parseUseCaseCatalog,parseSemanticComponentCatalog,parseScenarioCatalog,parseCatalogOrder,RepositoryCatalogService};
 });
 
 (function (root, factory) {
@@ -2037,7 +2052,7 @@
     function setButtonPending(control,pending,label){if(!control)return;if(pending){control.dataset.pendingLabel=control.textContent;control.textContent=label||'Working…';control.disabled=true;}else if(control.dataset.pendingLabel!=null){control.textContent=control.dataset.pendingLabel;delete control.dataset.pendingLabel;control.disabled=false;}}
     function runTask({key,label,button:control=null,pendingLabel='Working…',repository=false,action,onSuccess,onError}){const taskKey=String(key||`task-${++taskSequence}`);if(backgroundTasks.has(taskKey)){showStatus(`${label||'Operation'} is already running.`,5000);return backgroundTasks.get(taskKey).promise;}const task={key:taskKey,label:label||'Working…',repository,promise:null};backgroundTasks.set(taskKey,task);updateActivity();setButtonPending(control,true,pendingLabel);task.promise=(async()=>{try{const result=await action();if(onSuccess)await onSuccess(result);return result;}catch(error){if(onError)onError(error);else showStatus(error.message||String(error),8000);return undefined;}finally{backgroundTasks.delete(taskKey);updateActivity();setButtonPending(control,false);}})();return task.promise;}
     function setOpen(value){isOpen=Boolean(value);panel.dataset.open=String(isOpen);launcher.style.display=isOpen||dashboardOpen?'none':'block';if(isOpen)keepPanelInViewport();}
-    function switchSurface(surface){activeSurface=surface;if(surface===RDG_COMMANDS_SURFACE)activeRdgGroupId='all';if(surface===SURFACES.PROMPTS){activePromptView='prompts';activePromptGroupId='all';}for(const button of tabButtons)button.setAttribute('aria-selected',String(button.dataset.surface===surface));commandViewBar.style.display=surface===SURFACES.COMMANDS?'flex':'none';commandGroupNav.dataset.visible=String(surface===SURFACES.COMMANDS);if(surface===SURFACES.COMMANDS)renderMethodologyViewButtons();newLibraryButton.style.display=(surface===SURFACES.SCENARIOS||surface===RDG_COMMANDS_SURFACE)?'none':'inline-block';manageGroupsButton.style.display=surface===SURFACES.COMMANDS?'inline-block':'none';manageCategoriesButton.style.display=manageGroupsButton.style.display;const isRdg=surface===RDG_COMMANDS_SURFACE;for(const control of rdgOtherTools)control.style.display=isRdg?'none':'';if(!isRdg){newLibraryButton.style.display=surface===SURFACES.SCENARIOS?'none':'inline-block';manageGroupsButton.style.display=surface===SURFACES.COMMANDS?'inline-block':'none';manageCategoriesButton.style.display=manageGroupsButton.style.display;}rdgRefreshButton.style.display=isRdg?'inline-block':'none';legacyCommandsButton.style.display=isRdg||surface===SURFACES.COMMANDS?'inline-block':'none';legacyCommandsButton.textContent=surface===SURFACES.COMMANDS?'← Команды':'Planning Commands';renderLibraryViewButtons();if(isRdg)searchInput.placeholder='Search RDG commands…';else if(surface===SURFACES.COMMANDS)searchInput.placeholder='Search Planning Commands…';searchInput.value='';renderEntries('');}function switchPromptLibraryView(view){activePromptView=view==='modules'?'modules':'prompts';if(activePromptView==='prompts')activePromptGroupId='all';searchInput.value='';renderLibraryViewButtons();renderEntries('');}function switchMethodologyView(view){activeMethodologyView=view;writeLocalText(ACTIVE_VIEW_KEY,view);renderMethodologyViewButtons();searchInput.value='';renderEntries('');}
+    function switchSurface(surface){activeSurface=surface;if(surface===RDG_COMMANDS_SURFACE)activeRdgGroupId='all';if(surface===SURFACES.PROMPTS){activePromptView='prompts';activePromptGroupId='all';}for(const button of tabButtons)button.setAttribute('aria-selected',String(button.dataset.surface===surface));commandViewBar.style.display=surface===SURFACES.COMMANDS?'flex':'none';commandGroupNav.dataset.visible=String(surface===SURFACES.COMMANDS);if(surface===SURFACES.COMMANDS)renderMethodologyViewButtons();newLibraryButton.style.display=(surface===SURFACES.SCENARIOS||surface===RDG_COMMANDS_SURFACE)?'none':'inline-block';manageGroupsButton.style.display=surface===SURFACES.COMMANDS?'inline-block':'none';manageCategoriesButton.style.display=manageGroupsButton.style.display;const isRdg=surface===RDG_COMMANDS_SURFACE;for(const control of rdgOtherTools)control.style.display=isRdg?'none':'';if(isRdg&&typeof options.onEditRdgGroups==='function')saveAllButton.style.display='';if(!isRdg){newLibraryButton.style.display=surface===SURFACES.SCENARIOS?'none':'inline-block';manageGroupsButton.style.display=surface===SURFACES.COMMANDS?'inline-block':'none';manageCategoriesButton.style.display=manageGroupsButton.style.display;}rdgRefreshButton.style.display=isRdg?'inline-block':'none';legacyCommandsButton.style.display=isRdg||surface===SURFACES.COMMANDS?'inline-block':'none';legacyCommandsButton.textContent=surface===SURFACES.COMMANDS?'← Команды':'Planning Commands';renderLibraryViewButtons();if(isRdg)searchInput.placeholder='Search RDG commands…';else if(surface===SURFACES.COMMANDS)searchInput.placeholder='Search Planning Commands…';searchInput.value='';renderEntries('');}function switchPromptLibraryView(view){activePromptView=view==='modules'?'modules':'prompts';if(activePromptView==='prompts')activePromptGroupId='all';searchInput.value='';renderLibraryViewButtons();renderEntries('');}function switchMethodologyView(view){activeMethodologyView=view;writeLocalText(ACTIVE_VIEW_KEY,view);renderMethodologyViewButtons();searchInput.value='';renderEntries('');}
     async function insertBody(text,success,id,invocation={}){if(!text||insertionBusy)return;insertionBusy=true;updateActivity();try{showStatus(await options.onInsert(text,success,id,invocation),7000);}catch(error){showStatus(error.message||String(error),7000);}finally{insertionBusy=false;updateActivity();}}
     async function copyBody(text,id,invocation={}){try{showStatus(await options.onCopy(text,id,invocation)?'Copied.':'Copy failed.',4000);}catch(error){showStatus(error.message||String(error),7000);}}
     function button(text,cls,handler,title=''){const b=document.createElement('button');b.type='button';b.textContent=text;b.className=cls;if(title)b.title=title;b.addEventListener('click',(event)=>{event.preventDefault();event.stopPropagation();handler(event,b);});return b;}
@@ -2223,13 +2238,76 @@
       }catch(error){showStatus(error?.message||String(error),7000);}
       finally{insertionBusy=false;updateActivity();}
     }
+    function defaultRdgGroups(){
+      return (rdgCatalog?.groups||[]).map(group=>({id:group.id,label:group.title,
+        items:rdgCatalog.commands.filter(command=>command.groupId===group.id).map(command=>command.id)}));
+    }
+    function rdgGroups(){return catalogOrder.rdgGroups??defaultRdgGroups();}
+    function rdgMembership(groups){
+      return new Map(groups.flatMap(group=>group.items.map(id=>[id,group.id])));
+    }
+    function editRdgGroup(operation,...args){
+      return runTask({key:`rdg-group:${++taskSequence}`,label:'Сохранение групп RDG…',
+        action:()=>options.onEditRdgGroups(defaultRdgGroups(),operation,...args),
+        onSuccess:result=>{applyState(result);showStatus('Группы RDG сохранены в Helper.',7000);}});
+    }
+    function openRdgGroupManager(){
+      const {overlay,modal}=makeOverlay('Группы RDG');
+      const name=document.createElement('input');name.placeholder='Название новой группы';
+      name.setAttribute('aria-label','Название новой группы RDG');
+      const create=document.createElement('div');create.className='prompt-group-tools';
+      const edit=(operation,...args)=>{closeOverlay(overlay);return editRdgGroup(operation,...args);};
+      create.append(name,button('Создать группу','prompt-group-pick',()=>{
+        if(!name.value.trim()){showStatus('Введите название группы.');return;}
+        return edit('create',name.value);
+      }));
+      modal.append(create);
+      const groups=rdgGroups();
+      groups.forEach((group,index)=>{
+        const line=document.createElement('div');line.className='prompt-group-manager';line.dataset.rdgEditGroup=group.id;
+        const label=document.createElement('input');label.value=group.label;
+        label.setAttribute('aria-label','Название группы '+group.label);
+        const actions=document.createElement('div');actions.className='group-editor-actions';
+        const up=button('↑','prompt-group-pick',()=>edit('move',group.id,-1));
+        const down=button('↓','prompt-group-pick',()=>edit('move',group.id,1));
+        up.disabled=index===0;down.disabled=index===groups.length-1;
+        up.setAttribute('aria-label','Переместить группу вверх');
+        down.setAttribute('aria-label','Переместить группу вниз');
+        actions.append(button('Переименовать','prompt-group-pick',()=>edit('rename',group.id,label.value)),up,down,
+          button('Удалить','prompt-group-pick',()=>{
+            if(confirm('Удалить группу «'+group.label+'»? Её команды перейдут в «Без группы».'))
+              return edit('remove',group.id);
+          }));
+        line.append(label,actions);modal.append(line);
+      });
+      const footer=document.createElement('div');footer.className='modal-actions';
+      footer.append(button('Закрыть','',()=>closeOverlay(overlay)));modal.append(footer);
+    }
+    function openRdgGroupPicker(command){
+      const {overlay,modal}=makeOverlay('Группа · '+command.title);
+      const groups=rdgGroups(),selected=rdgMembership(groups).get(command.id)||'';
+      const select=document.createElement('select');select.setAttribute('aria-label','Группа команды RDG');
+      for(const [id,label] of [['','Без группы'],...groups.map(group=>[group.id,group.label])]){
+        const option=document.createElement('option');option.value=id;option.textContent=label;
+        option.selected=id===selected;select.append(option);
+      }
+      const actions=document.createElement('div');actions.className='modal-actions';
+      actions.append(button('Отмена','',()=>closeOverlay(overlay)),button('Переместить','prompt-group-pick',()=>{
+        closeOverlay(overlay);return editRdgGroup('assign',command.id,select.value);
+      }));
+      modal.append(select,actions);
+    }
     function renderRdgGroupToolbar(){
       rdgGroupToolbar.replaceChildren();
       const visible=activeSurface===RDG_COMMANDS_SURFACE;
       rdgGroupToolbar.hidden=!visible;
       if(!visible||!rdgCatalog)return;
-      const groups=rdgCatalog.groups||[];
-      if(!['all',...groups.map(group=>group.id)].includes(activeRdgGroupId))activeRdgGroupId='all';
+      const groups=rdgGroups(),membership=rdgMembership(groups),counts=new Map();
+      for(const command of rdgCatalog.commands){
+        const id=membership.get(command.id)||'ungrouped';
+        counts.set(id,(counts.get(id)||0)+1);
+      }
+      if(!['all','ungrouped',...groups.map(group=>group.id)].includes(activeRdgGroupId))activeRdgGroupId='all';
       function chip(id,title,count){
         const control=button(title,'prompt-group-chip rdg-group-chip',()=>{
           activeRdgGroupId=id;renderEntries(searchInput.value);
@@ -2241,10 +2319,11 @@
         return control;
       }
       rdgGroupToolbar.append(chip('all','Все команды',rdgCatalog.commands.length));
-      for(const group of groups){
-        rdgGroupToolbar.append(chip(group.id,group.title,
-          rdgCatalog.commands.filter(command=>command.groupId===group.id).length));
-      }
+      for(const group of groups)rdgGroupToolbar.append(chip(group.id,group.label,counts.get(group.id)||0));
+      if(counts.has('ungrouped')||activeRdgGroupId==='ungrouped')
+        rdgGroupToolbar.append(chip('ungrouped','Без группы',counts.get('ungrouped')||0));
+      if(typeof options.onEditRdgGroups==='function')
+        rdgGroupToolbar.append(button('Управлять группами','prompt-group-manage',openRdgGroupManager));
     }
     function renderRdgEntries(needle){
       commandGroupNav.dataset.visible='false';
@@ -2259,27 +2338,31 @@
         const warning=document.createElement('p');warning.className='danger';
         warning.textContent='Ошибка обновления: '+rdgError;wrapper.append(warning);
       }
+      const groups=rdgGroups(),membership=rdgMembership(groups);
+      const groupFor=command=>membership.get(command.id)||'ungrouped';
       const commands=(rdgCatalog?.commands||[]).filter(command=>
         (!needle||[
           command.id,command.kind,command.title,command.description,
           ...command.lensRefs.map(ref=>ref.lensKey)
         ].join(' ').toLowerCase().includes(needle))&&
-        (activeRdgGroupId==='all'||command.groupId===activeRdgGroupId));
+        (activeRdgGroupId==='all'||groupFor(command)===activeRdgGroupId));
       if(!commands.length){
         const empty=document.createElement('div');empty.className='empty';
         empty.textContent=rdgCatalog?'Команды по запросу не найдены.':'Каталог RDG пока недоступен. Нажмите «Обновить RDG».';
         wrapper.append(empty);
       }
-      for(const group of rdgCatalog?.groups||[]){
-        const items=commands.filter(command=>command.groupId===group.id);
+      for(const group of [...groups,{id:'ungrouped',label:'Без группы'}]){
+        const items=commands.filter(command=>groupFor(command)===group.id);
         if(!items.length)continue;
         const section=document.createElement('section');section.className='rdg-command-group';
         section.dataset.rdgGroup=group.id;
         const heading=document.createElement('h3');heading.className='rdg-group-title';
-        heading.textContent=group.title+' · '+items.length;
-        const detail=document.createElement('p');detail.className='row-meta';
-        detail.textContent=group.description;
-        section.append(heading,detail);
+        heading.textContent=group.label+' · '+items.length;section.append(heading);
+        const description=rdgCatalog?.groups.find(row=>row.id===group.id)?.description;
+        if(description){
+          const detail=document.createElement('p');detail.className='row-meta';detail.textContent=description;
+          section.append(detail);
+        }
         for(const command of items){
           const row=document.createElement('div');row.className='row';row.dataset.entryId=command.id;
           const info=document.createElement('div'),title=document.createElement('strong'),meta=document.createElement('div');
@@ -2293,6 +2376,8 @@
           info.append(title,meta);
           const actions=document.createElement('div');actions.className='actions';
           actions.append(button('Вставить','run-action',()=>{void insertRdgCommand(command);}));
+          if(typeof options.onEditRdgGroups==='function')
+            actions.append(button('Группа…','prompt-group-pick',()=>openRdgGroupPicker(command)));
           if(typeof options.onCopyPlain==='function'){
             actions.append(button('Copy','copy',()=>{void options.onCopyPlain(command.insertText);}));
           }
@@ -2621,6 +2706,16 @@
     async function updateCatalogGroup(groupId,input){const order=updateCommandGroupInOrder(snapshot.catalogOrder||{},groupId,input);return persist({...snapshot,catalogOrder:order,catalogOrderSha:''});}
     async function deleteCatalogGroup(groupId){const order=deleteCommandGroupInOrder(snapshot.catalogOrder||{},groupId);return persist({...snapshot,catalogOrder:order,catalogOrderSha:''});}
     async function moveCatalogGroup(groupId,delta){const order=moveCommandGroupInOrder(snapshot.catalogOrder||{},groupId,delta);return persist({...snapshot,catalogOrder:order,catalogOrderSha:''});}
+    async function editRdgGroups(defaults,operation,...args){
+      const actions={
+        create:deps.createItemGroupInOrder,rename:deps.renameItemGroupInOrder,
+        remove:deps.deleteItemGroupInOrder,assign:deps.assignItemGroupInOrder,move:deps.moveItemGroupInOrder
+      };
+      if(!Object.hasOwn(actions,operation))throw new Error('Unknown RDG group operation.');
+      const order=snapshot.catalogOrder;
+      const base=order.rdgGroups===undefined?{...order,rdgGroups:defaults}:order;
+      return persist({...snapshot,catalogOrder:actions[operation](base,...args,'rdgGroups'),catalogOrderSha:''});
+    }
     async function createPromptGroup(label){return persist({...snapshot,catalogOrder:deps.createPromptGroupInOrder(snapshot.catalogOrder,label),catalogOrderSha:''});}
     async function renamePromptGroup(id,label){return persist({...snapshot,catalogOrder:deps.renamePromptGroupInOrder(snapshot.catalogOrder,id,label),catalogOrderSha:''});}
     async function deletePromptGroup(id){return persist({...snapshot,catalogOrder:deps.deletePromptGroupInOrder(snapshot.catalogOrder,id),catalogOrderSha:''});}
@@ -2695,7 +2790,7 @@
       toggleFavoriteCommand,moveFavoriteCommand,toggleFavoriteUseCase,
       saveLocalLibraryItem,deleteLocalLibraryItem,moveCatalogItem,moveCatalogItemToPosition,
       assignCatalogGroup,createCatalogGroup,updateCatalogGroup,deleteCatalogGroup,
-      moveCatalogGroup,createPromptGroup,renamePromptGroup,deletePromptGroup,assignPromptGroup,movePromptGroup,createCatalogCategory,updateCatalogCategory,moveCatalogCategory,
+      moveCatalogGroup,editRdgGroups,createPromptGroup,renamePromptGroup,deletePromptGroup,assignPromptGroup,movePromptGroup,createCatalogCategory,updateCatalogCategory,moveCatalogCategory,
       deleteCatalogCategory};
     for(const[name,action]of Object.entries(localMutations))
       localMutations[name]=(...args)=>serializeMutation(()=>action(...args));
@@ -2726,5 +2821,5 @@
 
 (function(){
   'use strict';
-  const api=globalThis.ObsPlanningHelper;if(!api||typeof api.startPlanningHelper!=='function')throw new Error('OBS Planning Helper runtime was not built correctly.');api.scriptVersion="0.41.0-repository-command-registry";api.startPlanningHelper().catch((error)=>console.error('[OBS Planning Helper startup]',error));
+  const api=globalThis.ObsPlanningHelper;if(!api||typeof api.startPlanningHelper!=='function')throw new Error('OBS Planning Helper runtime was not built correctly.');api.scriptVersion="0.42.0-repository-command-registry";api.startPlanningHelper().catch((error)=>console.error('[OBS Planning Helper startup]',error));
 })();

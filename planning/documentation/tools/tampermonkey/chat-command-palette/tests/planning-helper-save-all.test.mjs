@@ -73,6 +73,35 @@ test('two concurrent local edits preserve both items instead of overwriting stal
     assert.equal(env.localWrites,2);
   }finally{instance.dispose();}
 });
+test('RDG group edits serialize, persist locally and publish only the order through Save all',async()=>{
+  const defaults=[{id:'lenses',label:'Structured',items:['rdg.lens.work']}];
+  const first=await mount(initial([{id:'existing',text:'Kept',known:true}]));
+  let stored;
+  try{
+    await Promise.all([
+      first.ui.onEditRdgGroups(defaults,'create','Custom'),
+      first.ui.onEditRdgGroups(defaults,'assign','rdg.lens.work','custom')
+    ]);
+    const order=first.instance.getSnapshot().catalogOrder;
+    assert.deepEqual(order.rdgGroups,[
+      {id:'lenses',label:'Structured',items:[]},
+      {id:'custom',label:'Custom',items:['rdg.lens.work']}
+    ]);
+    assert.deepEqual(defaults[0].items,['rdg.lens.work']);
+    assert.equal(first.env.orderWrites,0);
+    const saved=await first.ui.onSaveAllRepository();
+    assert.equal(saved.ok,true);assert.equal(saved.savedOrder,true);
+    assert.equal(first.env.orderWrites,1);
+    assert.deepEqual(first.env.commandWrites,[]);
+    assert.deepEqual(first.env.helperWrites,[]);
+    stored=first.env.stored;
+    assert.equal(stored.catalogOrderSha,'sha-order-updated');
+  }finally{first.instance.dispose();}
+  const second=await mount(stored);
+  try{
+    assert.deepEqual(second.ui.catalogOrder.rdgGroups,stored.catalogOrder.rdgGroups);
+  }finally{second.instance.dispose();}
+});
 test('Save all waits for a still-running local edit and publishes its newest text',async()=>{
   const{env,instance,ui}=await mount(initial());
   try{
