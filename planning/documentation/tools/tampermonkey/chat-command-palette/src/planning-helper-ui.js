@@ -287,7 +287,7 @@
         const action=explicitRefresh?options.onRefreshRdgCommands:options.onLoadRdgCommands;
         if(typeof action!=='function')throw new Error('RDG catalog adapter is unavailable');
         rdgCatalog=await action();rdgError='';
-        if(explicitRefresh)showStatus('RDG: полный каталог сохранён ('+rdgCatalog.commands.length+' команд).',7000);
+        if(explicitRefresh)showStatus('RDG: живой каталог обновлён ('+rdgCatalog.commands.length+' команд).',7000);
       }catch(error){
         rdgError=error?.message||String(error);
         if(activeSurface===RDG_COMMANDS_SURFACE)showStatus('RDG: '+rdgError+' Последний пригодный кэш сохраняется.',9000);
@@ -305,12 +305,19 @@
       }catch(error){showStatus(error?.message||String(error),7000);}
       finally{insertionBusy=false;updateActivity();}
     }
+    function visibleRdgGroups(){
+      if(!rdgCatalog)return [];
+      const groups=rdgCatalog.groups;
+      return rdgCatalog.commands.some(command=>command.groupId===null)?
+        [...groups,{id:'ungrouped',title:'Без группы',description:''}]:groups;
+    }
+    function rdgGroupId(command){return command.groupId??'ungrouped';}
     function renderRdgGroupToolbar(){
       rdgGroupToolbar.replaceChildren();
       const visible=activeSurface===RDG_COMMANDS_SURFACE;
       rdgGroupToolbar.hidden=!visible;
       if(!visible||!rdgCatalog)return;
-      const groups=rdgCatalog.groups||[];
+      const groups=visibleRdgGroups();
       if(!['all',...groups.map(group=>group.id)].includes(activeRdgGroupId))activeRdgGroupId='all';
       function chip(id,title,count){
         const control=button(title,'prompt-group-chip rdg-group-chip',()=>{
@@ -325,7 +332,7 @@
       rdgGroupToolbar.append(chip('all','Все команды',rdgCatalog.commands.length));
       for(const group of groups){
         rdgGroupToolbar.append(chip(group.id,group.title,
-          rdgCatalog.commands.filter(command=>command.groupId===group.id).length));
+          rdgCatalog.commands.filter(command=>rdgGroupId(command)===group.id).length));
       }
     }
     function renderRdgEntries(needle){
@@ -335,7 +342,7 @@
       const status=document.createElement('p');status.className='row-meta';
       const saved=rdgCatalog?.savedAt?new Date(rdgCatalog.savedAt).toLocaleString():'—';
       status.textContent=rdgLoading?'Получение полного каталога RDG…':
-        'RDG Commands · '+count+' · кэш от '+saved+(rdgCatalog?' · версия '+rdgCatalog.catalogRevision.slice(0,12):'');
+        'RDG Commands · '+count+' · кэш от '+saved+(rdgCatalog?' · версия '+rdgCatalog.revision:'');
       wrapper.append(status);
       if(rdgError){
         const warning=document.createElement('p');warning.className='danger';
@@ -346,14 +353,14 @@
           command.id,command.kind,command.title,command.description,
           ...command.lensRefs.map(ref=>ref.lensKey)
         ].join(' ').toLowerCase().includes(needle))&&
-        (activeRdgGroupId==='all'||command.groupId===activeRdgGroupId));
+        (activeRdgGroupId==='all'||rdgGroupId(command)===activeRdgGroupId));
       if(!commands.length){
         const empty=document.createElement('div');empty.className='empty';
         empty.textContent=rdgCatalog?'Команды по запросу не найдены.':'Каталог RDG пока недоступен. Нажмите «Обновить RDG».';
         wrapper.append(empty);
       }
-      for(const group of rdgCatalog?.groups||[]){
-        const items=commands.filter(command=>command.groupId===group.id);
+      for(const group of visibleRdgGroups()){
+        const items=commands.filter(command=>rdgGroupId(command)===group.id);
         if(!items.length)continue;
         const section=document.createElement('section');section.className='rdg-command-group';
         section.dataset.rdgGroup=group.id;
@@ -361,7 +368,7 @@
         heading.textContent=group.title+' · '+items.length;
         const detail=document.createElement('p');detail.className='row-meta';
         detail.textContent=group.description;
-        section.append(heading,detail);
+        section.append(heading);if(group.description)section.append(detail);
         for(const command of items){
           const row=document.createElement('div');row.className='row';row.dataset.entryId=command.id;
           const info=document.createElement('div'),title=document.createElement('strong'),meta=document.createElement('div');
