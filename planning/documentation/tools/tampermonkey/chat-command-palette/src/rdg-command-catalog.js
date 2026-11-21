@@ -5,113 +5,156 @@
 })(typeof globalThis!=='undefined'?globalThis:this,function(){
   'use strict';
 
-  // V2 has an independent key; never mistake an existing V1 lens-only cache for
-  // a complete general command catalog. Existing OBS local state is untouched.
-  const KEY='obsPlanningHelper:v2:rdgCommandCatalog';
-  const URL='https://raw.githubusercontent.com/AlexPastukhh/rd-graphs/main/kit/helper-commands/catalog-v2.json';
-  const ID=/^rdg\.lens\.([a-z][a-z0-9-]{0,79})$/;
+  const ORIGIN='http://localhost:18880';
+  const KEY='obsPlanningHelper:rdgLiveCommandCatalog';
+  const REQUEST_PREFIX=KEY+':request:';
+  const REQUEST_TIMEOUT=30000;
+  const UUID=/^[0-9a-f]{8}(?:-[0-9a-f]{4}){3}-[0-9a-f]{12}$/;
+  const SESSION=/^\/session\/([A-Za-z0-9_-]{43})\/$/;
+  const ID=/^[a-z][a-z0-9-]{0,79}$/;
   const COMMAND_ID=/^rdg\.command\.[a-z][a-z0-9-]{0,79}$/;
-  const GROUP_ID=/^[a-z][a-z0-9-]{0,79}$/;
-  const DIGEST=/^[0-9a-f]{64}$/;
-  const SECRET=/(?:ghp_[A-Za-z0-9]{20}|Bearer\s+[A-Za-z0-9._~+/-]{16}|-----BEGIN (?:RSA |EC |OPENSSH )?PRIVATE KEY)/i;
+  const SECRET=/(?:ghp_[A-Za-z0-9]{20}|Bearer\s+[A-Za-z0-9._~+/-]{16}|-----BEGIN (?:RSA |EC |OPENSSH )?PRIVATE KEY|rdg_[A-Za-z0-9_-]{40,100})/i;
   const KINDS=new Set(['lens-launcher','workflow','instruction']);
   function exactFields(value,fields){
     return value&&typeof value==='object'&&!Array.isArray(value)&&
-      Object.keys(value).length===fields.length&&Object.keys(value).every(field=>fields.includes(field));
+      Object.keys(value).length===fields.length&&fields.every(field=>Object.hasOwn(value,field));
   }
-  function nonsecret(value,max){
-    return typeof value==='string'&&!!value.trim()&&value.length<=max&&!SECRET.test(value);
+  function safeText(value,max,multiline=false){
+    const controls=multiline?/[\x00-\x08\x0b\x0c\x0e-\x1f\x7f]/:/[\x00-\x1f\x7f]/;
+    return typeof value==='string'&&!!value.trim()&&Array.from(value).length<=max&&
+      !SECRET.test(value)&&!controls.test(value);
+  }
+  function identifier(value){
+    return typeof value==='string'&&ID.test(value);
   }
   function validateRdgCommandCatalog(value){
-    if(!exactFields(value,['schemaVersion','kind','complete','catalogRevision','groups','commands'])||
-       value.schemaVersion!==2||value.kind!=='rdg-chat-commands'||value.complete!==true||
-       !DIGEST.test(value.catalogRevision||'')||!Array.isArray(value.groups)||
-       value.groups.length<1||value.groups.length>30||!Array.isArray(value.commands)||
-       value.commands.length<1||value.commands.length>250)
-      throw new Error('RDG v2 command catalog is incomplete or incompatible; previous cache retained');
-    const groupIds=new Set(),groups=[];
-    for(const raw of value.groups){
-      if(!exactFields(raw,['id','title','description'])||
-         typeof raw.id!=='string'||!GROUP_ID.test(raw.id)||groupIds.has(raw.id)||
-         !nonsecret(raw.title,160)||!nonsecret(raw.description,500))
-        throw new Error('Invalid RDG command group');
-      groupIds.add(raw.id);
-      groups.push({id:raw.id,title:raw.title,description:raw.description});
+    if(!exactFields(value,['schemaVersion','namespaceId','complete','revision','groups','commands'])||
+       value.schemaVersion!==1||value.complete!==true||typeof value.namespaceId!=='string'||
+       !UUID.test(value.namespaceId)||!Number.isSafeInteger(value.revision)||value.revision<0||
+       !Array.isArray(value.groups)||value.groups.length>30||
+       !Array.isArray(value.commands)||value.commands.length>250||
+       (value.revision===0&&(value.groups.length||value.commands.length)))
+      throw new Error('Ответ каталога RDG неполный или несовместимый.');
+
+    const groupIds=new Set();
+    for(const group of value.groups){
+      if(!exactFields(group,['id','title','description'])||
+         !identifier(group.id)||['all','ungrouped'].includes(group.id)||groupIds.has(group.id)||
+         !safeText(group.title,160)||!safeText(group.description,500,true))
+        throw new Error('Некорректная группа команд RDG.');
+      groupIds.add(group.id);
     }
-    const ids=new Set(),lensKeys=new Set(),commands=[];
-    for(const raw of value.commands){
-      if(!exactFields(raw,['id','kind','title','description','groupId','lensRefs','insertText'])||
-         typeof raw.id!=='string'||ids.has(raw.id)||!KINDS.has(raw.kind)||
-         !groupIds.has(raw.groupId)||!nonsecret(raw.title,300)||
-         !nonsecret(raw.description,1200)||!nonsecret(raw.insertText,8000)||
-         !Array.isArray(raw.lensRefs)||raw.lensRefs.length>12)
-        throw new Error('Invalid RDG command fields or group');
-      const match=ID.exec(raw.id);
-      const isLens=raw.kind==='lens-launcher';
-      if(isLens?(!match||raw.lensRefs.length!==1):
-        (!COMMAND_ID.test(raw.id)||(raw.kind==='workflow'&&raw.lensRefs.length<1)))
-        throw new Error('Invalid RDG command kind or identity');
-      const refs=[],seenRefs=new Set();
-      for(const ref of raw.lensRefs){
-        if(!exactFields(ref,['role','lensKey','modelProfile'])||
-           ref.role!=='lens'||typeof ref.lensKey!=='string'||!GROUP_ID.test(ref.lensKey)||
-           ref.modelProfile!=='rdg-decision-v1'||seenRefs.has(ref.lensKey)||
-           !raw.insertText.includes('rdg-agent.py lens --lens '+ref.lensKey))
-          throw new Error('Invalid RDG command lens reference');
-        refs.push({role:ref.role,lensKey:ref.lensKey,modelProfile:ref.modelProfile});
-        seenRefs.add(ref.lensKey);
+
+    const commandIds=new Set();
+    for(const command of value.commands){
+      if(!exactFields(command,['id','kind','title','description','groupId','lensRefs','insertText'])||
+         typeof command.id!=='string'||commandIds.has(command.id)||!KINDS.has(command.kind)||
+         (command.groupId!==null&&!groupIds.has(command.groupId))||
+         !safeText(command.title,300)||!safeText(command.description,1200,true)||
+         !safeText(command.insertText,8000,true)||!Array.isArray(command.lensRefs)||command.lensRefs.length>12)
+        throw new Error('Некорректная команда RDG.');
+      const keys=new Set();
+      for(const ref of command.lensRefs){
+        if(!exactFields(ref,['role','lensKey','modelProfile'])||ref.role!=='lens'||
+           ref.modelProfile!=='rdg-decision-v1'||!identifier(ref.lensKey)||keys.has(ref.lensKey))
+          throw new Error('Некорректная ссылка на линзу RDG.');
+        keys.add(ref.lensKey);
       }
-      if(isLens){
-        if(refs[0].lensKey!==match[1]||lensKeys.has(match[1]))
-          throw new Error('Duplicate or mismatched RDG lens launcher');
-        lensKeys.add(match[1]);
-      }
-      ids.add(raw.id);
-      commands.push({id:raw.id,kind:raw.kind,title:raw.title,description:raw.description,
-        groupId:raw.groupId,lensRefs:refs,insertText:raw.insertText});
+      const validKind=command.kind==='lens-launcher'?
+        keys.size===1&&command.id==='rdg.lens.'+command.lensRefs[0].lensKey:
+        COMMAND_ID.test(command.id)&&(command.kind==='instruction'||keys.size>0);
+      if(!validKind)throw new Error('Некорректный тип или идентификатор команды RDG.');
+      commandIds.add(command.id);
     }
-    return {schemaVersion:2,kind:value.kind,complete:true,
-      catalogRevision:value.catalogRevision,groups,commands};
+    return value;
   }
+
   function currentStorage(){
-    if(typeof GM_getValue!=='function'||typeof GM_setValue!=='function')
-      throw new Error('Tampermonkey GM storage is unavailable');
-    return {get:(key)=>GM_getValue(key,null),set:(key,value)=>GM_setValue(key,value)};
+    return {
+      get:key=>GM_getValue(key,null),
+      set:(key,value)=>GM_setValue(key,value),
+      remove:key=>GM_deleteValue(key),
+      listen:(key,callback)=>{
+        const listener=GM_addValueChangeListener(key,(_key,_before,after,remote)=>{
+          if(remote)callback(after);
+        });
+        return ()=>GM_removeValueChangeListener(listener);
+      }
+    };
   }
-  function rdgCommandRequest(url=URL){
-    return new Promise((resolve,reject)=>{
-      if(typeof GM_xmlhttpRequest!=='function'){reject(new Error('Tampermonkey HTTP grant unavailable'));return;}
-      GM_xmlhttpRequest({
-        method:'GET',url:url+'?refresh='+Date.now(),anonymous:true,timeout:15000,
-        headers:{Accept:'application/json','Cache-Control':'no-cache'},
-        onload:r=>r.status===200?resolve(r.responseText):reject(new Error('RDG catalog HTTP '+r.status)),
-        onerror:()=>reject(new Error('RDG catalog request failed')),
-        ontimeout:()=>reject(new Error('RDG catalog request timed out'))
+
+  async function rdgCommandRequest({
+    storage=currentStorage(),
+    openTab=url=>GM_openInTab(url,{active:true}),
+    requestId=globalThis.crypto.randomUUID(),
+    timeoutMs=REQUEST_TIMEOUT
+  }={}){
+    const key=REQUEST_PREFIX+requestId;
+    await storage.set(key,{expiresAt:Date.now()+timeoutMs});
+    let tab,timer,unlisten,completed=false;
+    try{
+      const response=await new Promise((resolve,reject)=>{
+        unlisten=storage.listen(key,result=>{
+          if(result?.ok===true||result?.ok===false)resolve(result);
+        });
+        timer=setTimeout(()=>reject(new Error('RDG не ответил. Войдите во вкладке RDG и повторите обновление.')),timeoutMs);
+        tab=openTab(ORIGIN+'/#obs-helper-catalog='+requestId);
+        if(!tab)throw new Error('Tampermonkey не смог открыть вкладку RDG.');
       });
-    });
+      completed=true;
+      if(!response.ok)throw new Error(response.message);
+      return response.catalog;
+    }finally{
+      clearTimeout(timer);
+      unlisten?.();
+      if(completed)tab?.close();
+      await storage.remove(key);
+    }
   }
+
+  async function serveRdgCatalogRequest({url=location.href,storage=currentStorage(),fetchCatalog=fetch}={}){
+    const page=new URL(url);
+    const session=SESSION.exec(page.pathname);
+    const requestId=page.hash.slice('#obs-helper-catalog='.length);
+    if(page.origin!==ORIGIN||!session||!page.hash.startsWith('#obs-helper-catalog=')||!UUID.test(requestId))
+      return;
+    const key=REQUEST_PREFIX+requestId;
+    const pending=await storage.get(key);
+    if(!Number.isFinite(pending?.expiresAt)||pending.expiresAt<=Date.now())return;
+    let reply;
+    try{
+      const response=await fetchCatalog(new URL('command',page).href,{
+        method:'POST',credentials:'same-origin',mode:'same-origin',cache:'no-store',redirect:'error',
+        headers:{'Content-Type':'application/json','X-RDG-Session':session[1]},
+        body:JSON.stringify({method:'chat_catalog'})
+      });
+      reply=response.ok?{ok:true,catalog:validateRdgCommandCatalog(await response.json())}:
+        {ok:false,message:'RDG API · HTTP '+response.status};
+    }catch(_){
+      reply={ok:false,message:'Не удалось прочитать каталог через браузерную сессию RDG.'};
+    }
+    if(pending.expiresAt>Date.now()&&(await storage.get(key))?.expiresAt===pending.expiresAt)
+      await storage.set(key,reply);
+  }
+
   async function loadRdgCommandCache(storage=currentStorage()){
     try{
       const value=await storage.get(KEY);
-      if(!value||typeof value!=='object'||typeof value.savedAt!=='string')return null;
-      const {savedAt,...manifest}=value;
-      return {...validateRdgCommandCatalog(manifest),savedAt};
+      if(!value||typeof value.savedAt!=='string')return null;
+      const {savedAt,...catalog}=value;
+      return {...validateRdgCommandCatalog(catalog),savedAt};
     }catch(_){return null;}
   }
   async function refreshRdgCommandCache(storage=currentStorage(),request=rdgCommandRequest){
-    const payload=await request();
-    const parsed=typeof payload==='string'?JSON.parse(payload):payload;
-    const fresh={...validateRdgCommandCatalog(parsed),savedAt:new Date().toISOString()};
+    const catalog=validateRdgCommandCatalog(await request());
+    const previous=await loadRdgCommandCache(storage);
+    if(previous?.namespaceId===catalog.namespaceId&&previous.revision>catalog.revision)return previous;
+    const fresh={...catalog,savedAt:new Date().toISOString()};
     await storage.set(KEY,fresh);
-    const stored=await loadRdgCommandCache(storage);
-    if(!stored||JSON.stringify(stored)!==JSON.stringify(fresh))
-      throw new Error('RDG cache save verification failed');
-    return stored;
+    const saved=await loadRdgCommandCache(storage);
+    if(saved?.namespaceId===fresh.namespaceId&&saved.revision>=fresh.revision)return saved;
+    throw new Error('Не удалось подтвердить сохранение каталога RDG.');
   }
-  async function initializeRdgCommandCache(storage=currentStorage(),request=rdgCommandRequest){
-    return await loadRdgCommandCache(storage)||await refreshRdgCommandCache(storage,request);
-  }
-  return {RDG_COMMAND_CATALOG_URL:URL,RDG_COMMAND_CACHE_KEY:KEY,
-    validateRdgCommandCatalog,loadRdgCommandCache,refreshRdgCommandCache,
-    initializeRdgCommandCache,rdgCommandRequest};
+  return {RDG_BROWSER_ORIGIN:ORIGIN,RDG_COMMAND_CACHE_KEY:KEY,
+    validateRdgCommandCatalog,loadRdgCommandCache,refreshRdgCommandCache,rdgCommandRequest,serveRdgCatalogRequest};
 });

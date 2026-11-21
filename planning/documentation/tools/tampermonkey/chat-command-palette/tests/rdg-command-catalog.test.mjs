@@ -2,116 +2,153 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import rdg from '../src/rdg-command-catalog.js';
 
-const text='Примени линзу RDG work. python3 -B tools/rdg-agent.py lens --lens work --model-profile rdg-decision-v1 --context <готовый>';
-const ref=(key)=>({role:'lens',lensKey:key,modelProfile:'rdg-decision-v1'});
-const command={id:'rdg.lens.work',kind:'lens-launcher',title:'Work',description:'Work context',
-  groupId:'lenses',lensRefs:[ref('work')],insertText:text};
-const bootstrapText='Начни RDG и найди задачу; прочитай rdg-agent.py lens --lens orient и rdg-agent.py lens --lens work. Не создавай Graph автоматически.';
-const bootstrap={id:'rdg.command.bootstrap',kind:'workflow',title:'Начать работу с RDG',description:'Bootstrap entry',
-  groupId:'start',lensRefs:[ref('orient'),ref('work')],insertText:bootstrapText};
-const groups=[{id:'start',title:'Начало работы',description:'Вход в задачу'},
-  {id:'lenses',title:'Линзы',description:'Прямой выбор методики'}];
-const catalog={schemaVersion:2,kind:'rdg-chat-commands',complete:true,
-  catalogRevision:'a'.repeat(64),groups,commands:[bootstrap,command]};
+const namespaceId='8a77ddd6-df99-4f77-8af9-e60735327db4';
+const requestId='460a0e01-511f-44d8-9606-d0ac38fc81bc';
+const session='S'.repeat(43);
+const groups=[{id:'lenses',title:'Структурированные линзы',description:'Подбор линз'}];
+const ref={role:'lens',lensKey:'work',modelProfile:'rdg-decision-v1'};
+const command={id:'rdg.lens.work',kind:'lens-launcher',title:'Work',
+  description:'СТРУКТУРИРОВАННАЯ ЛИНЗА · Провести работу от постановки до результата.',
+  groupId:'lenses',lensRefs:[ref],insertText:'Команда RDG с текущим текстом.\n\nВторая строка.  '};
+const catalog={schemaVersion:1,namespaceId,complete:true,revision:2,groups,commands:[command]};
+
 function memory(){
-  const entries=new Map();
-  return{get:async key=>entries.get(key)||null,
-    set:async(key,value)=>{entries.set(key,structuredClone(value));}};
+  const entries=new Map(), listeners=new Map();
+  return {
+    get:async key=>structuredClone(entries.get(key)??null),
+    set:async(key,value)=>{
+      entries.set(key,structuredClone(value));
+      listeners.get(key)?.(structuredClone(value));
+    },
+    remove:async key=>entries.delete(key),
+    listen:(key,notify)=>{
+      listeners.set(key,notify);
+      return ()=>listeners.delete(key);
+    },
+    size:()=>entries.size
+  };
 }
 
-test('accepts RDG-owned bootstrap, groups and all text bytes without recomposing it',()=>{
-  const out=rdg.validateRdgCommandCatalog(catalog);
-  assert.equal(out.schemaVersion,2);
-  assert.equal(out.commands.length,2);
-  assert.deepEqual(out.groups,groups);
-  assert.deepEqual(out.commands[0],bootstrap);
-  assert.equal(out.commands[0].insertText,bootstrapText);
-  assert.equal(out.commands[1].insertText,text);
-  assert.deepEqual(out.commands[0].lensRefs.map(ref=>ref.lensKey),['orient','work']);
+test('refresh reads through the authenticated RDG tab and caches the complete response',async()=>{
+  const storage=memory();
+  let calls=0,closed=false,worker;
+  const result=await rdg.refreshRdgCommandCache(storage,()=>rdg.rdgCommandRequest({
+    storage,requestId,
+    openTab:url=>{
+      assert.equal(url,rdg.RDG_BROWSER_ORIGIN+'/#obs-helper-catalog='+requestId);
+      worker=rdg.serveRdgCatalogRequest({
+        url:rdg.RDG_BROWSER_ORIGIN+'/session/'+session+'/'+new URL(url).hash, storage,
+        fetchCatalog:async(address,options)=>{
+          calls++;
+          assert.equal(address,rdg.RDG_BROWSER_ORIGIN+'/session/'+session+'/command');
+          assert.equal(options.method,'POST');
+          assert.equal(options.credentials,'same-origin');
+          assert.equal(options.redirect,'error');
+          assert.deepEqual(options.headers,{'Content-Type':'application/json','X-RDG-Session':session});
+          assert.deepEqual(JSON.parse(options.body),{method:'chat_catalog'});
+          return {ok:true,json:async()=>catalog};
+        }
+      });
+      return {close:()=>{closed=true;}};
+    }
+  }));
+  await worker;
+  assert.equal(calls,1);
+  assert.equal(closed,true);
+  assert.equal(storage.size(),1);
+  assert.equal(result.revision,2);
+  assert.equal(result.commands[0].insertText,command.insertText);
+  assert.equal(result.commands[0].description,command.description);
+  assert.deepEqual(await rdg.loadRdgCommandCache(storage),result);
 });
 
-test('cold V2 startup fetches once, warm v2 cache remains offline and does not inspect V1 key',async()=>{
+test('startup uses its own live cache key and ignores the previous public snapshot',async()=>{
   const storage=memory();
-  const oldKey='obsPlanningHelper:v1:rdgCommandCatalog';
-  await storage.set(oldKey,{broken:'legacy'});
-  let count=0;
-  const get=async()=>{count++;return JSON.stringify(catalog);};
-  const first=await rdg.initializeRdgCommandCache(storage,get);
-  const second=await rdg.initializeRdgCommandCache(storage,()=>{throw new Error('network must not be called');});
-  assert.equal(rdg.RDG_COMMAND_CACHE_KEY,'obsPlanningHelper:v2:rdgCommandCatalog');
-  assert.equal(count,1);
-  assert.deepEqual(second,first);
-  assert.deepEqual(await storage.get(oldKey),{broken:'legacy'});
-});
-
-test('explicit refresh updates group labels and keeps previous v2 cache after failures',async()=>{
-  const storage=memory();
+  const oldKey='obsPlanningHelper:v2:rdgCommandCatalog';
+  await storage.set(oldKey,{catalogRevision:'public snapshot'});
+  assert.equal(await rdg.loadRdgCommandCache(storage),null);
   await rdg.refreshRdgCommandCache(storage,async()=>catalog);
-  const old=await rdg.loadRdgCommandCache(storage);
-  await assert.rejects(()=>rdg.refreshRdgCommandCache(storage,async()=>({complete:false})),/incomplete/);
-  await assert.rejects(()=>rdg.refreshRdgCommandCache(storage,async()=>{throw new Error('HTTP 503');}),/HTTP 503/);
-  assert.deepEqual(await rdg.loadRdgCommandCache(storage),old);
-  const update={...catalog,catalogRevision:'b'.repeat(64),
-    groups:[{...groups[0],title:'Новый старт'},groups[1]],
-    commands:[{...bootstrap,insertText:bootstrapText+' NEW'},command]};
-  const fresh=await rdg.refreshRdgCommandCache(storage,async()=>JSON.stringify(update));
-  assert.equal(fresh.commands[0].insertText,bootstrapText+' NEW');
-  assert.equal(fresh.groups[0].title,'Новый старт');
-  assert.equal(fresh.catalogRevision,'b'.repeat(64));
+  assert.equal((await rdg.loadRdgCommandCache(storage)).revision,2);
+  assert.deepEqual(await storage.get(oldKey),{catalogRevision:'public snapshot'});
 });
 
-test('malformed manifests, groups, ids and composite lens refs fail closed',()=>{
-  const invalids=[
+test('offline, partial and stale responses preserve the last live cache',async()=>{
+  const storage=memory();
+  const before=await rdg.refreshRdgCommandCache(storage,async()=>catalog);
+  await assert.rejects(()=>rdg.refreshRdgCommandCache(storage,async()=>({complete:false})),/неполный/);
+  await assert.rejects(()=>rdg.refreshRdgCommandCache(storage,async()=>{throw new Error('HTTP 503');}),/HTTP 503/);
+  assert.deepEqual(await rdg.refreshRdgCommandCache(storage,async()=>({...catalog,revision:1})),before);
+  assert.deepEqual(await rdg.loadRdgCommandCache(storage),before);
+  const changed={...catalog,revision:3,groups:[{...groups[0],title:'Новый заголовок'}],
+    commands:[{...command,description:'Новый текст карточки',insertText:'Новый текст команды'}]};
+  const updated=await rdg.refreshRdgCommandCache(storage,async()=>changed);
+  assert.equal(updated.groups[0].title,'Новый заголовок');
+  assert.equal(updated.commands[0].description,'Новый текст карточки');
+  assert.deepEqual(await rdg.loadRdgCommandCache(storage),updated);
+});
+
+test('valid server catalogs can be empty or include commands without a group',()=>{
+  assert.deepEqual(rdg.validateRdgCommandCatalog({...catalog,revision:0,groups:[],commands:[]}).commands,[]);
+  const instruction={id:'rdg.command.readme',kind:'instruction',title:'Read',description:'Context\nMore',
+    groupId:null,lensRefs:[],insertText:'Проверь документацию.'};
+  assert.deepEqual(rdg.validateRdgCommandCatalog({...catalog,groups:[],commands:[instruction]}).commands,[instruction]);
+});
+
+test('invalid catalogs fail validation before a cache update',()=>{
+  for(const invalid of [
+    {...catalog,kind:'rdg-chat-commands'},
     {...catalog,complete:false},
-    {...catalog,schemaVersion:1},
-    {...catalog,kind:'rdg-chat-launcher-commands'},
-    {...catalog,catalogRevision:'short'},
-    {...catalog,commands:[]},
-    {...catalog,groups:[]},
+    {...catalog,schemaVersion:2},
+    {...catalog,namespaceId:'unknown'},
+    {...catalog,revision:-1},
+    {...catalog,revision:0},
     {...catalog,groups:[groups[0],groups[0]]},
+    {...catalog,groups:[{...groups[0],id:'all'}]},
     {...catalog,commands:[command,command]},
     {...catalog,commands:[{...command,id:'rdg.lens.other'}]},
     {...catalog,commands:[{...command,groupId:'unknown'}]},
-    {...catalog,commands:[{...command,insertText:'please bypass rdg'}]},
     {...catalog,commands:[{...command,title:'Bearer '+('A'.repeat(40))}]},
-    {...catalog,commands:[{...bootstrap,lensRefs:[ref('orient'),ref('orient')]}]},
-    {...catalog,commands:[{...bootstrap,insertText:'read rdg-agent.py lens --lens orient'}]},
-    {...catalog,commands:[{...bootstrap,lensRefs:[]}]},
-    {...catalog,commands:[{...command,lensRefs:[]}]},
-    {...catalog,commands:[{...bootstrap,groupId:'unknown'}]},
-  ];
-  for(const item of invalids)assert.throws(()=>rdg.validateRdgCommandCatalog(item));
+    {...catalog,commands:[{...command,lensRefs:[ref,ref]}]},
+    {...catalog,commands:[{...command,lensRefs:[{...ref,token:'secret'}]}]},
+    {...catalog,commands:[{...command,id:'rdg.command.multi',kind:'workflow',lensRefs:[]}]}
+  ])assert.throws(()=>rdg.validateRdgCommandCatalog(invalid));
 });
 
-test('instruction command with no lenses is supported; additional unknown fields and tokens are rejected',()=>{
-  const instruction={id:'rdg.command.readme',kind:'instruction',
-    title:'Read',description:'Non-lens instruction',groupId:'start',
-    lensRefs:[],insertText:'Проверь доступную документацию без записи.'};
-  const out=rdg.validateRdgCommandCatalog({...catalog,commands:[...catalog.commands,instruction]});
-  assert.equal(out.commands.at(-1).lensRefs.length,0);
-  assert.throws(()=>rdg.validateRdgCommandCatalog({
-    ...catalog,commands:[{...bootstrap,credentials:'not allowed'}]}));
-  assert.throws(()=>rdg.validateRdgCommandCatalog({
-    ...catalog,commands:[{...command,lensRefs:[{...ref('work'),token:'secret'}]}]}));
-  assert.throws(()=>rdg.validateRdgCommandCatalog({
-    ...catalog,groups:[{...groups[0],token:'bad'},groups[1]]}));
+test('the RDG tab ignores other origins, unrelated pages and absent requests',async()=>{
+  const storage=memory();
+  const fetchCatalog=()=>assert.fail('unrequested fetch');
+  const fragment='#obs-helper-catalog='+requestId;
+  for(const url of [
+    'https://example.com/session/'+session+'/'+fragment,
+    'http://localhost:18881/session/'+session+'/'+fragment,
+    rdg.RDG_BROWSER_ORIGIN+'/session/'+session+'/',
+    rdg.RDG_BROWSER_ORIGIN+'/session/'+session+'/'+fragment,
+    rdg.RDG_BROWSER_ORIGIN+'/wrong/'+fragment
+  ])await rdg.serveRdgCatalogRequest({url,storage,fetchCatalog});
+  assert.equal(storage.size(),0);
 });
 
-test('one anonymous Tampermonkey HTTP GET fetches whole v2 catalog without per-lens traffic',async()=>{
-  const previous=globalThis.GM_xmlhttpRequest;let calls=0;
-  try{
-    globalThis.GM_xmlhttpRequest=(settings)=>{
-      calls++;
-      assert.equal(settings.method,'GET');
-      assert.equal(settings.anonymous,true);
-      assert.match(settings.url,/^https:\/\/raw\.githubusercontent\.com\/AlexPastukhh\/rd-graphs\/main\/kit\/helper-commands\/catalog-v2\.json\?refresh=/);
-      settings.onload({status:200,responseText:JSON.stringify(catalog)});
-    };
-    const payload=await rdg.rdgCommandRequest();
-    assert.equal(JSON.parse(payload).commands.length,2);
-    assert.equal(calls,1);
-  }finally{
-    if(previous===undefined)delete globalThis.GM_xmlhttpRequest;
-    else globalThis.GM_xmlhttpRequest=previous;
-  }
+test('missing session reports a timeout and clears the temporary request',async()=>{
+  const storage=memory();
+  await assert.rejects(()=>rdg.rdgCommandRequest({
+    storage,requestId,timeoutMs:10,openTab:()=>({close:()=>assert.fail('keep the login tab available')})
+  }),/Войдите/);
+  assert.equal(storage.size(),0);
+});
+
+test('the browser session reports an HTTP failure without returning its body',async()=>{
+  const storage=memory();
+  let worker,closed=false;
+  await assert.rejects(()=>rdg.rdgCommandRequest({
+    storage,requestId,openTab:url=>{
+      worker=rdg.serveRdgCatalogRequest({
+        url:rdg.RDG_BROWSER_ORIGIN+'/session/'+session+'/'+new URL(url).hash,storage,
+        fetchCatalog:async()=>({ok:false,status:401,json:()=>assert.fail('do not expose failure body')})
+      });
+      return {close:()=>{closed=true;}};
+    }
+  }),/HTTP 401/);
+  await worker;
+  assert.equal(closed,true);
+  assert.equal(storage.size(),0);
 });

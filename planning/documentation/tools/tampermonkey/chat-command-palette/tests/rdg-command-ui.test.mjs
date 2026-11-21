@@ -13,7 +13,7 @@ const bootstrap={id:'rdg.command.bootstrap',kind:'workflow',title:'Bootstrap',de
   groupId:'start',lensRefs:[ref('orient'),ref('work')],insertText:bootstrapText};
 const groups=[{id:'start',title:'Начало работы',description:'Вход в работу'},
   {id:'lenses',title:'Линзы',description:'Адресные методики'}];
-const cache={catalogRevision:'a'.repeat(64),savedAt:'2026-11-18T02:00:00Z',groups,
+const cache={revision:1,savedAt:'2026-11-18T02:00:00Z',groups,
   commands:[bootstrap,command]};
 const flush=()=>new Promise(resolve=>setTimeout(resolve,0));
 
@@ -35,7 +35,8 @@ test('RDG Commands UI groups bootstrap and lenses like Prompts; exact insert, se
       commandEntries:[{id:'legacy',label:'Existing Planning Command',text:'legacy body'}],
       onLoadRdgCommands:async()=>{loads++;return cache;},
       onRefreshRdgCommands:async()=>{refreshes++;
-        return {...cache,catalogRevision:'b'.repeat(64),groups:[{...groups[0],title:'Старт'},groups[1]]};
+        return {...cache,revision:2,groups:[{...groups[0],title:'Старт'},groups[1]],
+          commands:[bootstrap,{...command,description:'СТРУКТУРИРОВАННАЯ ЛИНЗА · Проверенное превью',groupId:null}]};
       },
       onInsertRdgCommand:async(value)=>{insertions.push(value);return 'RDG text inserted';},
       onCopyPlain:async(value)=>{copies.push(value);return true;},
@@ -67,8 +68,11 @@ test('RDG Commands UI groups bootstrap and lenses like Prompts; exact insert, se
     search.value='';search.dispatchEvent(new dom.window.Event('input',{bubbles:true}));
     root.querySelector('.rdg-refresh').click();await flush();await flush();
     assert.equal(refreshes,1);
-    assert.match(root.querySelector('.non-command-body').textContent,/bbbbbbbbbbbb/);
+    assert.match(root.querySelector('.non-command-body').textContent,/версия 2/);
     assert.equal(root.querySelector('[data-rdg-group="start"] .rdg-group-title').textContent,'Старт · 1');
+    root.querySelector('.rdg-group-chip[data-rdg-group="ungrouped"]').click();
+    assert.equal(root.querySelector('[data-rdg-group="ungrouped"] .rdg-group-title').textContent,'Без группы · 1');
+    assert.match(root.querySelector('[data-entry-id="rdg.lens.work"] .row-meta').textContent,/^СТРУКТУРИРОВАННАЯ ЛИНЗА · Проверенное превью/);
 
     root.querySelector('.legacy-commands').click();
     assert.equal(root.querySelector('.legacy-commands').textContent,'← Команды');
