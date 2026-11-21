@@ -249,6 +249,16 @@
     async function updateCatalogGroup(groupId,input){const order=updateCommandGroupInOrder(snapshot.catalogOrder||{},groupId,input);return persist({...snapshot,catalogOrder:order,catalogOrderSha:''});}
     async function deleteCatalogGroup(groupId){const order=deleteCommandGroupInOrder(snapshot.catalogOrder||{},groupId);return persist({...snapshot,catalogOrder:order,catalogOrderSha:''});}
     async function moveCatalogGroup(groupId,delta){const order=moveCommandGroupInOrder(snapshot.catalogOrder||{},groupId,delta);return persist({...snapshot,catalogOrder:order,catalogOrderSha:''});}
+    async function editRdgGroups(defaults,operation,...args){
+      const actions={
+        create:deps.createItemGroupInOrder,rename:deps.renameItemGroupInOrder,
+        remove:deps.deleteItemGroupInOrder,assign:deps.assignItemGroupInOrder,move:deps.moveItemGroupInOrder
+      };
+      if(!Object.hasOwn(actions,operation))throw new Error('Unknown RDG group operation.');
+      const order=snapshot.catalogOrder;
+      const base=order.rdgGroups===undefined?{...order,rdgGroups:defaults}:order;
+      return persist({...snapshot,catalogOrder:actions[operation](base,...args,'rdgGroups'),catalogOrderSha:''});
+    }
     async function createPromptGroup(label){return persist({...snapshot,catalogOrder:deps.createPromptGroupInOrder(snapshot.catalogOrder,label),catalogOrderSha:''});}
     async function renamePromptGroup(id,label){return persist({...snapshot,catalogOrder:deps.renamePromptGroupInOrder(snapshot.catalogOrder,id,label),catalogOrderSha:''});}
     async function deletePromptGroup(id){return persist({...snapshot,catalogOrder:deps.deletePromptGroupInOrder(snapshot.catalogOrder,id),catalogOrderSha:''});}
@@ -323,7 +333,7 @@
       toggleFavoriteCommand,moveFavoriteCommand,toggleFavoriteUseCase,
       saveLocalLibraryItem,deleteLocalLibraryItem,moveCatalogItem,moveCatalogItemToPosition,
       assignCatalogGroup,createCatalogGroup,updateCatalogGroup,deleteCatalogGroup,
-      moveCatalogGroup,createPromptGroup,renamePromptGroup,deletePromptGroup,assignPromptGroup,movePromptGroup,createCatalogCategory,updateCatalogCategory,moveCatalogCategory,
+      moveCatalogGroup,editRdgGroups,createPromptGroup,renamePromptGroup,deletePromptGroup,assignPromptGroup,movePromptGroup,createCatalogCategory,updateCatalogCategory,moveCatalogCategory,
       deleteCatalogCategory};
     for(const[name,action]of Object.entries(localMutations))
       localMutations[name]=(...args)=>serializeMutation(()=>action(...args));

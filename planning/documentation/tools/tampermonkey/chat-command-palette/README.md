@@ -1,7 +1,7 @@
 # OBS Planning Helper — Developer / Build Entry
 
 Status: active modular Tampermonkey helper implementation
-Version: `0.41.0`
+Version: `0.42.0`
 Scope: RDG-owned grouped **Команды** (bootstrap and 21 lens launchers) alongside an independently accessible legacy GitHub-backed **Planning Commands** semantic editor and canonical working Scenarios, reusable Prompts with reusable Modules, explicit repository recovery/publish actions, editable ordered presentation groups, sidebar category/group navigation, canonical `Контекст / Результат / Суть` explanations plus visible command traversal/owner contracts, Favorites, direct Prompt position ordering and a wide/resizable browser UI.
 
 <a id="planning-helper-semantic-projection"></a>
@@ -220,6 +220,12 @@ Canonical methodology-use source is [`planning/documentation/use-case-registry-m
 ### Working Scenarios
 
 `seed/scenarios.json` aggregates canonical `SCN-*` from their current owners: methodology scenarios from the Core methodology scenario map and repository/tool scenarios from their canonical repository owners (for example replacement-package Builder `SCN-06`). It stores canonical scenario prose + semantic references required for deterministic Helper projection. It does not store command-equivalent prose; command equivalents are computed from current semantic command identities at runtime.
+
+### RDG Command Groups
+
+In **Команды**, **Управлять группами** creates, renames, reorders and deletes groups. **Группа…** moves a command to a group or to **Без группы**. Deleting a group sends its commands to **Без группы**.
+
+The RDG catalog supplies the initial arrangement. The first edit copies that arrangement into the local Helper snapshot. **Обновить RDG** refreshes command text and availability while retaining the edited arrangement. Commands added to the catalog after a local arrangement exists appear in **Без группы** until moved. With **Save all GitHub**, the existing Helper save path publishes the arrangement to `catalog-order.json` as optional `rdgGroups[]`, alongside its separate prompt and Planning Command groups.
 
 ### Prompts and Modules
 

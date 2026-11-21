@@ -119,7 +119,7 @@
     function setButtonPending(control,pending,label){if(!control)return;if(pending){control.dataset.pendingLabel=control.textContent;control.textContent=label||'Working…';control.disabled=true;}else if(control.dataset.pendingLabel!=null){control.textContent=control.dataset.pendingLabel;delete control.dataset.pendingLabel;control.disabled=false;}}
     function runTask({key,label,button:control=null,pendingLabel='Working…',repository=false,action,onSuccess,onError}){const taskKey=String(key||`task-${++taskSequence}`);if(backgroundTasks.has(taskKey)){showStatus(`${label||'Operation'} is already running.`,5000);return backgroundTasks.get(taskKey).promise;}const task={key:taskKey,label:label||'Working…',repository,promise:null};backgroundTasks.set(taskKey,task);updateActivity();setButtonPending(control,true,pendingLabel);task.promise=(async()=>{try{const result=await action();if(onSuccess)await onSuccess(result);return result;}catch(error){if(onError)onError(error);else showStatus(error.message||String(error),8000);return undefined;}finally{backgroundTasks.delete(taskKey);updateActivity();setButtonPending(control,false);}})();return task.promise;}
     function setOpen(value){isOpen=Boolean(value);panel.dataset.open=String(isOpen);launcher.style.display=isOpen||dashboardOpen?'none':'block';if(isOpen)keepPanelInViewport();}
-    function switchSurface(surface){activeSurface=surface;if(surface===RDG_COMMANDS_SURFACE)activeRdgGroupId='all';if(surface===SURFACES.PROMPTS){activePromptView='prompts';activePromptGroupId='all';}for(const button of tabButtons)button.setAttribute('aria-selected',String(button.dataset.surface===surface));commandViewBar.style.display=surface===SURFACES.COMMANDS?'flex':'none';commandGroupNav.dataset.visible=String(surface===SURFACES.COMMANDS);if(surface===SURFACES.COMMANDS)renderMethodologyViewButtons();newLibraryButton.style.display=(surface===SURFACES.SCENARIOS||surface===RDG_COMMANDS_SURFACE)?'none':'inline-block';manageGroupsButton.style.display=surface===SURFACES.COMMANDS?'inline-block':'none';manageCategoriesButton.style.display=manageGroupsButton.style.display;const isRdg=surface===RDG_COMMANDS_SURFACE;for(const control of rdgOtherTools)control.style.display=isRdg?'none':'';if(!isRdg){newLibraryButton.style.display=surface===SURFACES.SCENARIOS?'none':'inline-block';manageGroupsButton.style.display=surface===SURFACES.COMMANDS?'inline-block':'none';manageCategoriesButton.style.display=manageGroupsButton.style.display;}rdgRefreshButton.style.display=isRdg?'inline-block':'none';legacyCommandsButton.style.display=isRdg||surface===SURFACES.COMMANDS?'inline-block':'none';legacyCommandsButton.textContent=surface===SURFACES.COMMANDS?'← Команды':'Planning Commands';renderLibraryViewButtons();if(isRdg)searchInput.placeholder='Search RDG commands…';else if(surface===SURFACES.COMMANDS)searchInput.placeholder='Search Planning Commands…';searchInput.value='';renderEntries('');}function switchPromptLibraryView(view){activePromptView=view==='modules'?'modules':'prompts';if(activePromptView==='prompts')activePromptGroupId='all';searchInput.value='';renderLibraryViewButtons();renderEntries('');}function switchMethodologyView(view){activeMethodologyView=view;writeLocalText(ACTIVE_VIEW_KEY,view);renderMethodologyViewButtons();searchInput.value='';renderEntries('');}
+    function switchSurface(surface){activeSurface=surface;if(surface===RDG_COMMANDS_SURFACE)activeRdgGroupId='all';if(surface===SURFACES.PROMPTS){activePromptView='prompts';activePromptGroupId='all';}for(const button of tabButtons)button.setAttribute('aria-selected',String(button.dataset.surface===surface));commandViewBar.style.display=surface===SURFACES.COMMANDS?'flex':'none';commandGroupNav.dataset.visible=String(surface===SURFACES.COMMANDS);if(surface===SURFACES.COMMANDS)renderMethodologyViewButtons();newLibraryButton.style.display=(surface===SURFACES.SCENARIOS||surface===RDG_COMMANDS_SURFACE)?'none':'inline-block';manageGroupsButton.style.display=surface===SURFACES.COMMANDS?'inline-block':'none';manageCategoriesButton.style.display=manageGroupsButton.style.display;const isRdg=surface===RDG_COMMANDS_SURFACE;for(const control of rdgOtherTools)control.style.display=isRdg?'none':'';if(isRdg&&typeof options.onEditRdgGroups==='function')saveAllButton.style.display='';if(!isRdg){newLibraryButton.style.display=surface===SURFACES.SCENARIOS?'none':'inline-block';manageGroupsButton.style.display=surface===SURFACES.COMMANDS?'inline-block':'none';manageCategoriesButton.style.display=manageGroupsButton.style.display;}rdgRefreshButton.style.display=isRdg?'inline-block':'none';legacyCommandsButton.style.display=isRdg||surface===SURFACES.COMMANDS?'inline-block':'none';legacyCommandsButton.textContent=surface===SURFACES.COMMANDS?'← Команды':'Planning Commands';renderLibraryViewButtons();if(isRdg)searchInput.placeholder='Search RDG commands…';else if(surface===SURFACES.COMMANDS)searchInput.placeholder='Search Planning Commands…';searchInput.value='';renderEntries('');}function switchPromptLibraryView(view){activePromptView=view==='modules'?'modules':'prompts';if(activePromptView==='prompts')activePromptGroupId='all';searchInput.value='';renderLibraryViewButtons();renderEntries('');}function switchMethodologyView(view){activeMethodologyView=view;writeLocalText(ACTIVE_VIEW_KEY,view);renderMethodologyViewButtons();searchInput.value='';renderEntries('');}
     async function insertBody(text,success,id,invocation={}){if(!text||insertionBusy)return;insertionBusy=true;updateActivity();try{showStatus(await options.onInsert(text,success,id,invocation),7000);}catch(error){showStatus(error.message||String(error),7000);}finally{insertionBusy=false;updateActivity();}}
     async function copyBody(text,id,invocation={}){try{showStatus(await options.onCopy(text,id,invocation)?'Copied.':'Copy failed.',4000);}catch(error){showStatus(error.message||String(error),7000);}}
     function button(text,cls,handler,title=''){const b=document.createElement('button');b.type='button';b.textContent=text;b.className=cls;if(title)b.title=title;b.addEventListener('click',(event)=>{event.preventDefault();event.stopPropagation();handler(event,b);});return b;}
@@ -305,13 +305,76 @@
       }catch(error){showStatus(error?.message||String(error),7000);}
       finally{insertionBusy=false;updateActivity();}
     }
+    function defaultRdgGroups(){
+      return (rdgCatalog?.groups||[]).map(group=>({id:group.id,label:group.title,
+        items:rdgCatalog.commands.filter(command=>command.groupId===group.id).map(command=>command.id)}));
+    }
+    function rdgGroups(){return catalogOrder.rdgGroups??defaultRdgGroups();}
+    function rdgMembership(groups){
+      return new Map(groups.flatMap(group=>group.items.map(id=>[id,group.id])));
+    }
+    function editRdgGroup(operation,...args){
+      return runTask({key:`rdg-group:${++taskSequence}`,label:'Сохранение групп RDG…',
+        action:()=>options.onEditRdgGroups(defaultRdgGroups(),operation,...args),
+        onSuccess:result=>{applyState(result);showStatus('Группы RDG сохранены в Helper.',7000);}});
+    }
+    function openRdgGroupManager(){
+      const {overlay,modal}=makeOverlay('Группы RDG');
+      const name=document.createElement('input');name.placeholder='Название новой группы';
+      name.setAttribute('aria-label','Название новой группы RDG');
+      const create=document.createElement('div');create.className='prompt-group-tools';
+      const edit=(operation,...args)=>{closeOverlay(overlay);return editRdgGroup(operation,...args);};
+      create.append(name,button('Создать группу','prompt-group-pick',()=>{
+        if(!name.value.trim()){showStatus('Введите название группы.');return;}
+        return edit('create',name.value);
+      }));
+      modal.append(create);
+      const groups=rdgGroups();
+      groups.forEach((group,index)=>{
+        const line=document.createElement('div');line.className='prompt-group-manager';line.dataset.rdgEditGroup=group.id;
+        const label=document.createElement('input');label.value=group.label;
+        label.setAttribute('aria-label','Название группы '+group.label);
+        const actions=document.createElement('div');actions.className='group-editor-actions';
+        const up=button('↑','prompt-group-pick',()=>edit('move',group.id,-1));
+        const down=button('↓','prompt-group-pick',()=>edit('move',group.id,1));
+        up.disabled=index===0;down.disabled=index===groups.length-1;
+        up.setAttribute('aria-label','Переместить группу вверх');
+        down.setAttribute('aria-label','Переместить группу вниз');
+        actions.append(button('Переименовать','prompt-group-pick',()=>edit('rename',group.id,label.value)),up,down,
+          button('Удалить','prompt-group-pick',()=>{
+            if(confirm('Удалить группу «'+group.label+'»? Её команды перейдут в «Без группы».'))
+              return edit('remove',group.id);
+          }));
+        line.append(label,actions);modal.append(line);
+      });
+      const footer=document.createElement('div');footer.className='modal-actions';
+      footer.append(button('Закрыть','',()=>closeOverlay(overlay)));modal.append(footer);
+    }
+    function openRdgGroupPicker(command){
+      const {overlay,modal}=makeOverlay('Группа · '+command.title);
+      const groups=rdgGroups(),selected=rdgMembership(groups).get(command.id)||'';
+      const select=document.createElement('select');select.setAttribute('aria-label','Группа команды RDG');
+      for(const [id,label] of [['','Без группы'],...groups.map(group=>[group.id,group.label])]){
+        const option=document.createElement('option');option.value=id;option.textContent=label;
+        option.selected=id===selected;select.append(option);
+      }
+      const actions=document.createElement('div');actions.className='modal-actions';
+      actions.append(button('Отмена','',()=>closeOverlay(overlay)),button('Переместить','prompt-group-pick',()=>{
+        closeOverlay(overlay);return editRdgGroup('assign',command.id,select.value);
+      }));
+      modal.append(select,actions);
+    }
     function renderRdgGroupToolbar(){
       rdgGroupToolbar.replaceChildren();
       const visible=activeSurface===RDG_COMMANDS_SURFACE;
       rdgGroupToolbar.hidden=!visible;
       if(!visible||!rdgCatalog)return;
-      const groups=rdgCatalog.groups||[];
-      if(!['all',...groups.map(group=>group.id)].includes(activeRdgGroupId))activeRdgGroupId='all';
+      const groups=rdgGroups(),membership=rdgMembership(groups),counts=new Map();
+      for(const command of rdgCatalog.commands){
+        const id=membership.get(command.id)||'ungrouped';
+        counts.set(id,(counts.get(id)||0)+1);
+      }
+      if(!['all','ungrouped',...groups.map(group=>group.id)].includes(activeRdgGroupId))activeRdgGroupId='all';
       function chip(id,title,count){
         const control=button(title,'prompt-group-chip rdg-group-chip',()=>{
           activeRdgGroupId=id;renderEntries(searchInput.value);
@@ -323,10 +386,11 @@
         return control;
       }
       rdgGroupToolbar.append(chip('all','Все команды',rdgCatalog.commands.length));
-      for(const group of groups){
-        rdgGroupToolbar.append(chip(group.id,group.title,
-          rdgCatalog.commands.filter(command=>command.groupId===group.id).length));
-      }
+      for(const group of groups)rdgGroupToolbar.append(chip(group.id,group.label,counts.get(group.id)||0));
+      if(counts.has('ungrouped')||activeRdgGroupId==='ungrouped')
+        rdgGroupToolbar.append(chip('ungrouped','Без группы',counts.get('ungrouped')||0));
+      if(typeof options.onEditRdgGroups==='function')
+        rdgGroupToolbar.append(button('Управлять группами','prompt-group-manage',openRdgGroupManager));
     }
     function renderRdgEntries(needle){
       commandGroupNav.dataset.visible='false';
@@ -341,27 +405,31 @@
         const warning=document.createElement('p');warning.className='danger';
         warning.textContent='Ошибка обновления: '+rdgError;wrapper.append(warning);
       }
+      const groups=rdgGroups(),membership=rdgMembership(groups);
+      const groupFor=command=>membership.get(command.id)||'ungrouped';
       const commands=(rdgCatalog?.commands||[]).filter(command=>
         (!needle||[
           command.id,command.kind,command.title,command.description,
           ...command.lensRefs.map(ref=>ref.lensKey)
         ].join(' ').toLowerCase().includes(needle))&&
-        (activeRdgGroupId==='all'||command.groupId===activeRdgGroupId));
+        (activeRdgGroupId==='all'||groupFor(command)===activeRdgGroupId));
       if(!commands.length){
         const empty=document.createElement('div');empty.className='empty';
         empty.textContent=rdgCatalog?'Команды по запросу не найдены.':'Каталог RDG пока недоступен. Нажмите «Обновить RDG».';
         wrapper.append(empty);
       }
-      for(const group of rdgCatalog?.groups||[]){
-        const items=commands.filter(command=>command.groupId===group.id);
+      for(const group of [...groups,{id:'ungrouped',label:'Без группы'}]){
+        const items=commands.filter(command=>groupFor(command)===group.id);
         if(!items.length)continue;
         const section=document.createElement('section');section.className='rdg-command-group';
         section.dataset.rdgGroup=group.id;
         const heading=document.createElement('h3');heading.className='rdg-group-title';
-        heading.textContent=group.title+' · '+items.length;
-        const detail=document.createElement('p');detail.className='row-meta';
-        detail.textContent=group.description;
-        section.append(heading,detail);
+        heading.textContent=group.label+' · '+items.length;section.append(heading);
+        const description=rdgCatalog?.groups.find(row=>row.id===group.id)?.description;
+        if(description){
+          const detail=document.createElement('p');detail.className='row-meta';detail.textContent=description;
+          section.append(detail);
+        }
         for(const command of items){
           const row=document.createElement('div');row.className='row';row.dataset.entryId=command.id;
           const info=document.createElement('div'),title=document.createElement('strong'),meta=document.createElement('div');
@@ -375,6 +443,8 @@
           info.append(title,meta);
           const actions=document.createElement('div');actions.className='actions';
           actions.append(button('Вставить','run-action',()=>{void insertRdgCommand(command);}));
+          if(typeof options.onEditRdgGroups==='function')
+            actions.append(button('Группа…','prompt-group-pick',()=>openRdgGroupPicker(command)));
           if(typeof options.onCopyPlain==='function'){
             actions.append(button('Copy','copy',()=>{void options.onCopyPlain(command.insertText);}));
           }
