@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Reusable Chat Planning Helper
 // @namespace    https://github.com/AlexPastukhh/obs/reusable-docs
-// @version      0.43.0-repository-command-registry
+// @version      0.44.0-repository-command-registry
 // @description  RAM-first OBS Planning Helper with semantic Commands, canonical Scenarios, prompts and explicit repository actions.
 // @author       Reusable docs layer
 // @match        https://chatgpt.com/*
@@ -1711,7 +1711,20 @@
     return value;
   }
 
+  const EDIT_OPS=new Set(['group_create','group_edit','group_move','group_delete',
+    'command_create','command_edit','command_move','command_delete']);
+  function validMutation(value){
+    return exactFields(value,['namespaceId','revision','steps'])&&typeof value.namespaceId==='string'&&
+      UUID.test(value.namespaceId)&&Number.isSafeInteger(value.revision)&&value.revision>0&&
+      Array.isArray(value.steps)&&value.steps.length>0&&value.steps.length<=100&&
+      value.steps.every(step=>step&&EDIT_OPS.has(step.op));
+  }
+
   function currentStorage(){
+    if(typeof GM_getValue!=='function'||typeof GM_setValue!=='function'||
+       typeof GM_deleteValue!=='function'||typeof GM_addValueChangeListener!=='function'||
+       typeof GM_removeValueChangeListener!=='function'||typeof GM_openInTab!=='function')
+      throw new Error('Обновите разрешения в шапке Tampermonkey Local Loader и перезагрузите страницу.');
     return {
       get:key=>GM_getValue(key,null),
       set:(key,value)=>GM_setValue(key,value),
@@ -1729,17 +1742,21 @@
     storage=currentStorage(),
     openTab=url=>GM_openInTab(url,{active:true}),
     requestId=globalThis.crypto.randomUUID(),
-    timeoutMs=REQUEST_TIMEOUT
+    timeoutMs=REQUEST_TIMEOUT,mutation=null
   }={}){
     const key=REQUEST_PREFIX+requestId;
-    await storage.set(key,{expiresAt:Date.now()+timeoutMs});
+    if(mutation!==null&&!validMutation(mutation))throw new Error('Некорректный запрос редактирования каталога RDG.');
+    await storage.set(key,{expiresAt:Date.now()+timeoutMs,...(mutation?{mutation}:{})});
     let tab,timer,unlisten,completed=false;
     try{
       const response=await new Promise((resolve,reject)=>{
         unlisten=storage.listen(key,result=>{
           if(result?.ok===true||result?.ok===false)resolve(result);
         });
-        timer=setTimeout(()=>reject(new Error('RDG не ответил. Войдите во вкладке RDG и повторите обновление.')),timeoutMs);
+        const timeoutMessage=mutation?
+          'Ответ на запись RDG не получен. Обновите каталог, чтобы проверить результат перед повтором.':
+          'RDG не ответил. Войдите во вкладке RDG и повторите обновление.';
+        timer=setTimeout(()=>reject(new Error(timeoutMessage)),timeoutMs);
         tab=openTab(ORIGIN+'/#obs-helper-catalog='+requestId);
         if(!tab)throw new Error('Tampermonkey не смог открыть вкладку RDG.');
       });
@@ -1763,20 +1780,66 @@
     const key=REQUEST_PREFIX+requestId;
     const pending=await storage.get(key);
     if(!Number.isFinite(pending?.expiresAt)||pending.expiresAt<=Date.now())return;
-    let reply;
-    try{
+    const request=async message=>{
       const response=await fetchCatalog(new URL('command',page).href,{
         method:'POST',credentials:'same-origin',mode:'same-origin',cache:'no-store',redirect:'error',
         headers:{'Content-Type':'application/json','X-RDG-Session':session[1]},
-        body:JSON.stringify({method:'chat_catalog'})
+        body:JSON.stringify(message)
       });
-      reply=response.ok?{ok:true,catalog:validateRdgCommandCatalog(await response.json())}:
-        {ok:false,message:'RDG API · HTTP '+response.status};
-    }catch(_){
-      reply={ok:false,message:'Не удалось прочитать каталог через браузерную сессию RDG.'};
+      if(!response.ok){
+        let code='';
+        try{
+          const data=await response.json();
+          if(typeof data.error==='string'&&/^[A-Z][A-Z0-9_ ]{0,150}$/.test(data.error))code=' · '+data.error;
+        }catch(_){}
+        throw new Error('RDG API · HTTP '+response.status+code);
+      }
+      return response.json();
+    };
+    let reply;
+    try{
+      const mutation=pending.mutation;
+      const catalog=mutation===undefined?await request({method:'chat_catalog'}):
+        await applyCatalogEdit(request,mutation);
+      reply={ok:true,catalog:validateRdgCommandCatalog(catalog)};
+    }catch(error){
+      const message=error?.message||'';
+      reply={ok:false,message:message.startsWith('RDG API · ')||message.startsWith('Каталог RDG ')?message:
+        'Не удалось выполнить запрос через браузерную сессию RDG.'};
     }
     if(pending.expiresAt>Date.now()&&(await storage.get(key))?.expiresAt===pending.expiresAt)
       await storage.set(key,reply);
+  }
+
+  async function applyCatalogEdit(request,mutation){
+    if(!validMutation(mutation))throw new Error('Каталог RDG отклонил запрос редактирования.');
+    const catalog=validateRdgCommandCatalog(await request({method:'chat_catalog'}));
+    if(catalog.namespaceId!==mutation.namespaceId||catalog.revision!==mutation.revision)
+      throw new Error('Каталог RDG изменился. Обновите список и откройте редактор снова.');
+    const schema=await request({method:'schema',op:'chat_catalog_edit'});
+    const draft=schema.request;
+    if(draft?.op!=='chat_catalog_edit'||draft.expectedCatalogRevision!==mutation.revision||
+       typeof draft.transactionId!=='string'||!UUID.test(draft.transactionId))
+      throw new Error('Каталог RDG изменился. Обновите список и откройте редактор снова.');
+    const transaction={...draft,note:'Изменение команд и групп из Planning Helper',steps:mutation.steps};
+    const preview=await request({method:'preflight',request:transaction});
+    if(preview?.accepted!==false||!preview.inputBinding)
+      throw new Error('Каталог RDG не подтвердил предварительную проверку.');
+    const result=await request({method:'apply',request:transaction,expectedInputBinding:preview.inputBinding});
+    if(result?.published!==true)
+      throw new Error('Каталог RDG не подтвердил публикацию. Проверьте результат обновлением.');
+    const receipt=await request({method:'receipt',transactionId:transaction.transactionId});
+    if(receipt?.published!==true||!receipt.participants?.some(row=>row.owner?.kind==='chatCommandCatalog'))
+      throw new Error('Каталог RDG не подтвердил квитанцию записи. Проверьте результат обновлением.');
+    const latest=validateRdgCommandCatalog(await request({method:'chat_catalog'}));
+    if(latest.namespaceId!==mutation.namespaceId||latest.revision<=mutation.revision)
+      throw new Error('Каталог RDG не вернул сохранённую ревизию. Проверьте результат обновлением.');
+    return latest;
+  }
+
+  function editRdgCommandCatalog(catalog,steps){
+    const mutation={namespaceId:catalog.namespaceId,revision:catalog.revision,steps};
+    return refreshRdgCommandCache(currentStorage(),()=>rdgCommandRequest({mutation}));
   }
 
   async function loadRdgCommandCache(storage=currentStorage()){
@@ -1798,7 +1861,7 @@
     throw new Error('Не удалось подтвердить сохранение каталога RDG.');
   }
   return {RDG_BROWSER_ORIGIN:ORIGIN,RDG_COMMAND_CACHE_KEY:KEY,
-    validateRdgCommandCatalog,loadRdgCommandCache,refreshRdgCommandCache,rdgCommandRequest,serveRdgCatalogRequest};
+    validateRdgCommandCatalog,loadRdgCommandCache,refreshRdgCommandCache,editRdgCommandCatalog,rdgCommandRequest,serveRdgCatalogRequest};
 });
 
 (function (root, factory) {
@@ -2019,7 +2082,7 @@
 
 
     root.innerHTML=`<style>
-:host{all:initial}*{box-sizing:border-box}button,input,textarea{font:inherit}.launcher{position:fixed;right:18px;bottom:22px;z-index:2147483647;border:1px solid #64748b;border-radius:999px;padding:9px 13px;background:#111827;color:#f8fafc;font:700 12px system-ui;cursor:pointer}.panel{position:fixed;left:${left}px;top:${top}px;width:${width}px;height:${height}px;max-width:calc(100vw - 16px);max-height:calc(100vh - 16px);min-width:min(560px,calc(100vw - 16px));min-height:360px;z-index:2147483647;display:none;flex-direction:column;overflow:hidden;resize:both;border:1px solid #475569;border-radius:14px;background:#0b1220;color:#f8fafc;box-shadow:0 20px 60px rgba(0,0,0,.5);font:13px/1.4 system-ui}.panel[data-open=true]{display:flex}.header{display:flex;align-items:center;gap:8px;padding:10px;background:#111b2e;border-bottom:1px solid #334155;cursor:grab}.title{flex:1}.title-main{font-weight:800}.title-sub{color:#94a3b8;font-size:11px}.helper-version{color:#94a3b8;font:10px/1.2 ui-monospace,SFMono-Regular,Consolas,monospace;white-space:nowrap;flex-shrink:0}.activity{display:none;align-items:center;gap:5px;padding:4px 7px;border:1px solid #334155;border-radius:999px;color:#bfdbfe;font-size:10px;white-space:nowrap}.activity[data-active=true]{display:flex}.activity-spinner{display:inline-block;animation:planning-spin .9s linear infinite}@keyframes planning-spin{to{transform:rotate(360deg)}}.launcher-activity{display:none;margin-left:5px}.launcher[data-active=true] .launcher-activity{display:inline}.tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;padding:7px}.tab,.tool{padding:7px}.command-views{display:flex;gap:5px;padding:0 8px 8px}.command-view{padding:6px 9px}.command-view[aria-selected=true]{background:#0f766e}.row.focused{margin-left:22px}.row.related{opacity:.9;border-top:1px dashed #334155;padding-top:5px}.tab[aria-selected=true]{background:#1d4ed8}.surface-tools{display:flex;gap:6px;padding:7px 8px;border-top:1px solid #1e293b;border-bottom:1px solid #1e293b;flex-wrap:wrap}.search-wrap{padding:8px}.search{width:100%;padding:8px;background:#020817;color:#fff;border:1px solid #334155;border-radius:8px}.body{overflow:auto;padding:8px;min-height:0;flex:1}.entry-group{margin:6px 0;border:1px solid #26364f;border-radius:10px;background:#0d1728}.entry-head{display:flex;align-items:center;gap:6px;padding:8px 10px}.entry-head summary{cursor:pointer;list-style:none;flex:1;font-weight:800}.entry-head summary::-webkit-details-marker{display:none}.entry-meta{display:block;color:#94a3b8;font-size:11px;font-weight:400}.entry-entries{padding:0 7px 7px 20px}.row{position:relative;display:grid;grid-template-columns:minmax(420px,1fr) auto;gap:8px;margin:5px 0;align-items:start;padding-left:10px;border-radius:8px}.insert{padding:8px 8px 8px 2px;text-align:left;min-width:0}.row-label{display:block;font-weight:750;white-space:normal}.row-meta{display:block;color:#94a3b8;font-size:11px;margin-top:2px}.actions{display:flex;gap:5px;flex-wrap:nowrap;justify-content:flex-end;align-items:flex-start}button{border:1px solid #475569;border-radius:8px;background:#17243a;color:#f8fafc;cursor:pointer}button:hover,button:focus-visible{background:#243750}button:disabled{opacity:.55;cursor:wait}.copy,.full,.body-action,.scenario-action,.run-action,.open-command,.edit-library,.edit-command,.delete-library,.delete-command,.reload-command,.repo-library,.repo-command,.favorite-toggle,.move,.group-move,.explain-action,.group-action{padding:5px 8px}.favorite-toggle{min-width:32px;font-size:15px}.delete-library,.delete-command{color:#fecaca}.status{margin:0 8px 8px;padding:8px;border-radius:8px;background:#172554;color:#bfdbfe;white-space:pre-wrap}.empty{padding:18px;color:#94a3b8;text-align:center}.overlay{position:absolute;inset:0;z-index:20;background:rgba(2,8,23,.72);display:flex;align-items:center;justify-content:center;padding:18px}.modal{width:min(820px,calc(100% - 36px));max-height:calc(100% - 36px);overflow:auto;background:#0b1220;color:#f8fafc;border:1px solid #475569;border-radius:14px;padding:14px;font:13px/1.45 system-ui}.modal h2{margin:0 0 8px}.modal p{color:#cbd5e1}.modal textarea{width:100%;min-height:360px;padding:10px;background:#020817;color:#f8fafc;border:1px solid #475569;border-radius:8px;font:12px/1.45 ui-monospace,monospace}.modal input,.modal select{width:100%;padding:8px;background:#020817;color:#fff;border:1px solid #475569;border-radius:8px}.group-level{display:inline-block;margin-left:8px;padding:1px 6px;border:1px solid #475569;border-radius:999px;color:#cbd5e1;font-size:10px;text-transform:uppercase;letter-spacing:.04em}.group-editor{display:grid;grid-template-columns:minmax(180px,1fr) 160px auto;gap:6px;align-items:center;margin:6px 0;padding:7px;border:1px solid #26364f;border-radius:8px;background:#0d1728}.group-editor-actions{display:flex;gap:5px;flex-wrap:wrap}.fields{display:grid;grid-template-columns:1fr 1fr;gap:8px}.field{display:grid;gap:4px}.field-wide{grid-column:1/-1}.modal-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:10px}.preview{margin-top:10px;padding:10px;border:1px solid #334155;border-radius:8px;background:#07101f;white-space:pre-wrap}.scenario-card{border:1px solid #26364f;border-radius:10px;background:#0d1728;margin:6px 0;padding:10px}.scenario-intro,.scenario-step-text,.body-text{white-space:pre-wrap;font:12px/1.45 ui-monospace,monospace;background:#07101f;border:1px solid #334155;border-radius:8px;padding:10px}.scenario-step{margin-top:12px}.scenario-step h3{margin:0 0 6px}.equivalents{display:flex;flex-direction:column;gap:6px;margin-top:8px}.equivalent{display:flex;gap:8px;align-items:flex-start;justify-content:space-between;border-left:3px solid #475569;padding:6px 8px;background:#0b1220}.equivalent-main{min-width:0}.danger{color:#fecaca}.ok{color:#bbf7d0}
+:host{all:initial}*{box-sizing:border-box}button,input,textarea{font:inherit}.rdg-editor{display:grid;gap:8px}.rdg-field{display:grid;gap:4px}.rdg-field[hidden]{display:none}.rdg-field :is(input,select,textarea){background:#0b1220;color:#e2e8f0;border:1px solid #475569;border-radius:5px;padding:6px;min-width:0}.launcher{position:fixed;right:18px;bottom:22px;z-index:2147483647;border:1px solid #64748b;border-radius:999px;padding:9px 13px;background:#111827;color:#f8fafc;font:700 12px system-ui;cursor:pointer}.panel{position:fixed;left:${left}px;top:${top}px;width:${width}px;height:${height}px;max-width:calc(100vw - 16px);max-height:calc(100vh - 16px);min-width:min(560px,calc(100vw - 16px));min-height:360px;z-index:2147483647;display:none;flex-direction:column;overflow:hidden;resize:both;border:1px solid #475569;border-radius:14px;background:#0b1220;color:#f8fafc;box-shadow:0 20px 60px rgba(0,0,0,.5);font:13px/1.4 system-ui}.panel[data-open=true]{display:flex}.header{display:flex;align-items:center;gap:8px;padding:10px;background:#111b2e;border-bottom:1px solid #334155;cursor:grab}.title{flex:1}.title-main{font-weight:800}.title-sub{color:#94a3b8;font-size:11px}.helper-version{color:#94a3b8;font:10px/1.2 ui-monospace,SFMono-Regular,Consolas,monospace;white-space:nowrap;flex-shrink:0}.activity{display:none;align-items:center;gap:5px;padding:4px 7px;border:1px solid #334155;border-radius:999px;color:#bfdbfe;font-size:10px;white-space:nowrap}.activity[data-active=true]{display:flex}.activity-spinner{display:inline-block;animation:planning-spin .9s linear infinite}@keyframes planning-spin{to{transform:rotate(360deg)}}.launcher-activity{display:none;margin-left:5px}.launcher[data-active=true] .launcher-activity{display:inline}.tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;padding:7px}.tab,.tool{padding:7px}.command-views{display:flex;gap:5px;padding:0 8px 8px}.command-view{padding:6px 9px}.command-view[aria-selected=true]{background:#0f766e}.row.focused{margin-left:22px}.row.related{opacity:.9;border-top:1px dashed #334155;padding-top:5px}.tab[aria-selected=true]{background:#1d4ed8}.surface-tools{display:flex;gap:6px;padding:7px 8px;border-top:1px solid #1e293b;border-bottom:1px solid #1e293b;flex-wrap:wrap}.search-wrap{padding:8px}.search{width:100%;padding:8px;background:#020817;color:#fff;border:1px solid #334155;border-radius:8px}.body{overflow:auto;padding:8px;min-height:0;flex:1}.entry-group{margin:6px 0;border:1px solid #26364f;border-radius:10px;background:#0d1728}.entry-head{display:flex;align-items:center;gap:6px;padding:8px 10px}.entry-head summary{cursor:pointer;list-style:none;flex:1;font-weight:800}.entry-head summary::-webkit-details-marker{display:none}.entry-meta{display:block;color:#94a3b8;font-size:11px;font-weight:400}.entry-entries{padding:0 7px 7px 20px}.row{position:relative;display:grid;grid-template-columns:minmax(420px,1fr) auto;gap:8px;margin:5px 0;align-items:start;padding-left:10px;border-radius:8px}.insert{padding:8px 8px 8px 2px;text-align:left;min-width:0}.row-label{display:block;font-weight:750;white-space:normal}.row-meta{display:block;color:#94a3b8;font-size:11px;margin-top:2px}.actions{display:flex;gap:5px;flex-wrap:nowrap;justify-content:flex-end;align-items:flex-start}button{border:1px solid #475569;border-radius:8px;background:#17243a;color:#f8fafc;cursor:pointer}button:hover,button:focus-visible{background:#243750}button:disabled{opacity:.55;cursor:wait}.copy,.full,.body-action,.scenario-action,.run-action,.open-command,.edit-library,.edit-command,.delete-library,.delete-command,.reload-command,.repo-library,.repo-command,.favorite-toggle,.move,.group-move,.explain-action,.group-action{padding:5px 8px}.favorite-toggle{min-width:32px;font-size:15px}.delete-library,.delete-command{color:#fecaca}.status{margin:0 8px 8px;padding:8px;border-radius:8px;background:#172554;color:#bfdbfe;white-space:pre-wrap}.empty{padding:18px;color:#94a3b8;text-align:center}.overlay{position:absolute;inset:0;z-index:20;background:rgba(2,8,23,.72);display:flex;align-items:center;justify-content:center;padding:18px}.modal{width:min(820px,calc(100% - 36px));max-height:calc(100% - 36px);overflow:auto;background:#0b1220;color:#f8fafc;border:1px solid #475569;border-radius:14px;padding:14px;font:13px/1.45 system-ui}.modal h2{margin:0 0 8px}.modal p{color:#cbd5e1}.modal textarea{width:100%;min-height:360px;padding:10px;background:#020817;color:#f8fafc;border:1px solid #475569;border-radius:8px;font:12px/1.45 ui-monospace,monospace}.modal input,.modal select{width:100%;padding:8px;background:#020817;color:#fff;border:1px solid #475569;border-radius:8px}.group-level{display:inline-block;margin-left:8px;padding:1px 6px;border:1px solid #475569;border-radius:999px;color:#cbd5e1;font-size:10px;text-transform:uppercase;letter-spacing:.04em}.group-editor{display:grid;grid-template-columns:minmax(180px,1fr) 160px auto;gap:6px;align-items:center;margin:6px 0;padding:7px;border:1px solid #26364f;border-radius:8px;background:#0d1728}.group-editor-actions{display:flex;gap:5px;flex-wrap:wrap}.fields{display:grid;grid-template-columns:1fr 1fr;gap:8px}.field{display:grid;gap:4px}.field-wide{grid-column:1/-1}.modal-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:10px}.preview{margin-top:10px;padding:10px;border:1px solid #334155;border-radius:8px;background:#07101f;white-space:pre-wrap}.scenario-card{border:1px solid #26364f;border-radius:10px;background:#0d1728;margin:6px 0;padding:10px}.scenario-intro,.scenario-step-text,.body-text{white-space:pre-wrap;font:12px/1.45 ui-monospace,monospace;background:#07101f;border:1px solid #334155;border-radius:8px;padding:10px}.scenario-step{margin-top:12px}.scenario-step h3{margin:0 0 6px}.equivalents{display:flex;flex-direction:column;gap:6px;margin-top:8px}.equivalent{display:flex;gap:8px;align-items:flex-start;justify-content:space-between;border-left:3px solid #475569;padding:6px 8px;background:#0b1220}.equivalent-main{min-width:0}.danger{color:#fecaca}.ok{color:#bbf7d0}
 .library-views{display:none;gap:5px;overflow:auto;flex-wrap:nowrap;padding:0 8px 8px}.library-views[data-visible=true]{display:flex}.library-view{min-width:150px;padding:6px 9px;white-space:nowrap;text-align:left;display:flex;justify-content:space-between;gap:7px}.library-view[aria-selected=true]{background:#0f766e}.library-view-count{margin-left:5px;color:#94a3b8;font-size:10px}.library-view[aria-selected=true] .library-view-count{color:#ccfbf1}.module-ref{display:inline-block;margin-top:5px;padding:4px 6px;border:1px solid #2e4562;border-radius:7px;background:#07101f;color:#8fd6ff;font:11px/1.4 ui-monospace,monospace;overflow-wrap:anywhere}.module-badge{display:inline-block;margin-left:7px;padding:1px 6px;border:1px solid #0f766e;border-radius:999px;color:#99f6e4;font-size:9px;text-transform:uppercase;letter-spacing:.04em}.resolved-preview{max-height:240px;overflow:auto}.field-hint{color:#94a3b8;font-size:10px}.modal input[readonly]{color:#94a3b8}.usage-list{display:grid;gap:5px;margin:8px 0}.usage-item{padding:7px;border:1px solid #334155;border-radius:8px;background:#07101f}
 .command-views{display:flex;gap:5px;overflow:auto;flex-wrap:nowrap;padding:0}.command-view{white-space:nowrap;width:100%;text-align:left;display:flex;justify-content:space-between;gap:7px}.command-view-count{margin-left:5px;color:#94a3b8;font-size:10px}.command-view[aria-selected=true]{background:#0f766e}.command-view[aria-selected=true] .command-view-count{color:#ccfbf1}.surface-tools{flex-wrap:nowrap;overflow-x:auto;padding:5px 8px}.surface-tools button{white-space:nowrap;padding:5px 7px}.tabs{padding:5px 7px}.tab{padding:6px}.search-wrap{padding:6px 8px}.search{padding:7px}.command-group-nav{display:none!important}.body.command-body{padding:0;overflow:hidden}.command-layout{display:grid;grid-template-columns:210px minmax(320px,1.15fr) minmax(330px,.95fr);height:100%;min-height:0}.command-sidebar{overflow:auto;border-right:1px solid #334155;background:#091426;padding:8px;min-width:0}.command-sidebar-title{font-size:10px;text-transform:uppercase;letter-spacing:.06em;color:#94a3b8;font-weight:800;margin:8px 4px 5px}.command-sidebar .command-views{flex-direction:column;margin-bottom:10px}.group-nav-top{display:grid;gap:6px;margin:0 0 7px}.group-nav-title{font-weight:800}.group-nav-hint,.group-nav-stats{font-size:10px;color:#94a3b8}.group-nav-actions{display:grid;grid-template-columns:1fr 1fr;gap:4px}.group-nav-actions .group-action:first-child{grid-column:1/-1}.group-chip-list{display:grid;gap:5px}.group-chip{display:grid;grid-template-columns:20px minmax(0,1fr) auto;align-items:center;gap:5px;padding:6px 7px;border-radius:8px;background:#111b2e;color:#cbd5e1;text-align:left}.group-chip.all{grid-template-columns:minmax(0,1fr) auto}.group-chip[aria-pressed=true]{background:#164e63;border-color:#0e7490;color:#ecfeff}.group-chip.all[aria-pressed=true]{background:#334155;border-color:#64748b}.group-chip-index,.group-chip-count{font-size:10px;color:#94a3b8}.group-chip[aria-pressed=true] .group-chip-index,.group-chip[aria-pressed=true] .group-chip-count{color:#cffafe}.command-list{overflow:auto;padding:8px;min-width:0}.command-detail{overflow:auto;border-left:1px solid #334155;background:#08111f;padding:12px;min-width:0}.command-detail.empty-detail{color:#94a3b8;display:flex;align-items:center;justify-content:center;text-align:center}.command-detail-title{font-size:16px;font-weight:850;margin:0 0 4px}.command-detail-path{font-size:11px;color:#94a3b8;margin-bottom:10px}.meaning-box,.contract-box{border:1px solid #334155;border-radius:9px;background:#0d1728;padding:9px;margin:7px 0}.meaning-box summary,.contract-box h3{margin:0 0 5px;font-size:11px}.meaning-box p,.contract-box p{margin:0;color:#cbd5e1;font-size:11px;line-height:1.45;white-space:pre-wrap}.contract-list{display:grid;gap:6px}.contract-path{padding:7px;border:1px solid #2e4562;border-radius:7px;background:#07101f;color:#8fd6ff;font:11px/1.4 ui-monospace,monospace;overflow-wrap:anywhere}.owner-ref{border:1px solid #2e4562;border-radius:8px;padding:8px;background:#07101f}.owner-ref-head{display:flex;gap:5px;flex-wrap:wrap;align-items:center}.owner-ref-id{font-weight:800;font-size:11px}.contract-badge{border:1px solid #475569;border-radius:999px;padding:1px 6px;color:#cbd5e1;font-size:9px}.contract-badge.required{border-color:#0f766e;color:#99f6e4}.owner-ref-path{margin-top:5px;color:#8fd6ff;font:10px/1.4 ui-monospace,monospace;overflow-wrap:anywhere}.owner-ref-why{margin-top:5px;color:#cbd5e1;font-size:10px;line-height:1.4}.contract-empty{color:#94a3b8;font-size:10px}.detail-actions{display:flex;gap:5px;flex-wrap:wrap;margin:10px 0}.detail-group-field{display:grid;gap:5px;margin-top:10px}.detail-group-field label{font-size:11px;font-weight:800}.detail-group-field select{width:100%;padding:7px;background:#020817;color:#fff;border:1px solid #475569;border-radius:8px}.detail-note{color:#94a3b8;font-size:10px;margin-top:6px}.command-group{margin:7px 0;border:1px solid #26364f;border-radius:10px;background:#0d1728;overflow:hidden;scroll-margin-top:8px}.command-group-head{width:100%;display:grid;grid-template-columns:26px minmax(0,1fr) auto auto;gap:7px;align-items:center;padding:8px 9px;text-align:left;border:0;border-bottom:1px solid #26364f;border-radius:0;background:#111b2e}.command-group-order{width:24px;height:24px;border:1px solid #475569;border-radius:7px;display:grid;place-items:center;color:#94a3b8;font-size:10px}.command-group-label{font-weight:800;min-width:0}.command-group-count{font-size:10px;color:#94a3b8}.command-group-chevron{color:#94a3b8}.command-group[data-collapsed=true] .command-group-rows{display:none}.command-group[data-collapsed=true] .command-group-chevron{transform:rotate(-90deg)}.command-card{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:7px;padding:8px 9px;border-top:1px solid #1e293b;background:#0b1220;cursor:pointer}.command-card:hover{background:#101d31}.command-card[data-selected=true]{background:#10294a;box-shadow:inset 3px 0 0 #3b82f6}.command-card-label{font-weight:750}.command-card-meta{font-size:10px;color:#94a3b8;margin-top:2px}.command-card-context{display:none;font-size:10px;color:#64748b;margin-top:3px}.command-layout[data-all=true] .command-card-context{display:block}.command-card-actions{display:flex;gap:3px;align-items:start}.command-card-actions button{padding:4px 6px}.favorite-order-controls{display:grid;gap:2px}.favorite-order-controls button{padding:1px 6px;line-height:1.2;min-width:26px}.favorite-order-controls button:disabled{cursor:default}.group-editor{grid-template-columns:minmax(180px,1fr) auto}.group-editor .group-level{display:none}.group-manager-note{color:#cbd5e1}.non-command-body{padding:8px;overflow:auto;height:100%}.row[data-selected=true]{background:#10294a}.row[data-selected=true]::before{content:'';position:absolute;left:0;top:3px;bottom:3px;width:4px;border-radius:999px;background:#38bdf8}.position-control{display:grid;grid-template-columns:auto 58px auto;gap:4px;align-items:center}.position-control .move{padding:5px 7px}.position-input{width:58px;padding:5px 4px;text-align:center;background:#020817;color:#fff;border:1px solid #475569;border-radius:8px}.position-label{grid-column:1/-1;color:#94a3b8;font-size:9px;text-align:center}.prompt-actions{align-items:flex-start}.prompt-actions .run-action,.prompt-actions .copy,.prompt-actions .edit-library,.prompt-actions .repo-library,.prompt-actions .delete-library{margin-top:0}
 @media(max-width:1050px){.command-layout{grid-template-columns:190px minmax(320px,1fr) 330px}.title-sub{display:none}}
@@ -2271,6 +2334,155 @@
       }catch(error){showStatus(error?.message||String(error),7000);}
       finally{insertionBusy=false;updateActivity();}
     }
+    function canEditRdg(){return rdgCatalog?.revision>0&&typeof options.onEditRdgCatalog==='function';}
+    function rdgField(form,name,label,value,{choices,kind='text',maxLength}={}){
+      const wrapper=document.createElement('label');
+      wrapper.className='rdg-field';
+      const control=document.createElement(choices?'select':kind==='multiline'?'textarea':'input');
+      control.name=name;
+      if(choices){
+        for(const [id,title] of choices){
+          const option=document.createElement('option');option.value=id;option.textContent=title;control.append(option);
+        }
+      }else if(kind==='number'){
+        control.type='number';control.min='1';control.step='1';
+      }else if(maxLength)control.maxLength=maxLength;
+      control.value=value??'';
+      wrapper.append(document.createTextNode(label),control);form.append(wrapper);
+      return control;
+    }
+    function rdgPlacement(peers,value){
+      const position=Number(value);
+      if(!Number.isInteger(position)||position<1||position>peers.length+1)
+        throw new Error('Позиция должна быть от 1 до '+(peers.length+1)+'.');
+      return peers[position-1]?.id??null;
+    }
+    function rdgEditor(title,snapshot,build,{remove}={}){
+      const {overlay,modal}=makeOverlay(title);
+      const form=document.createElement('div');form.className='rdg-editor';
+      const error=document.createElement('p');error.className='danger';error.setAttribute('role','alert');
+      const actions=document.createElement('div');actions.className='modal-actions';
+      let busy=false;
+      async function save(makeSteps){
+        if(busy||rdgLoading)return;
+        let steps;
+        try{
+          steps=makeSteps();
+        }catch(problem){error.textContent=problem.message;return;}
+        if(!steps.length){closeOverlay(overlay);return;}
+        busy=true;rdgLoading=true;rdgRefreshButton.disabled=true;error.textContent='';
+        for(const b of actions.querySelectorAll('button'))b.disabled=true;
+        try{
+          rdgCatalog=await options.onEditRdgCatalog(snapshot,steps);
+          rdgError='';closeOverlay(overlay);showStatus('Изменения сохранены в RDG.',6500);
+        }catch(problem){
+          error.textContent=problem?.message||String(problem);
+        }finally{
+          busy=false;rdgLoading=false;rdgRefreshButton.disabled=false;
+          for(const b of actions.querySelectorAll('button'))b.disabled=false;
+          if(activeSurface===RDG_COMMANDS_SURFACE)renderEntries(searchInput.value);
+        }
+      }
+      actions.append(button('Отмена','tool',()=>{if(!busy)closeOverlay(overlay);}),
+        button('Сохранить в RDG','tool rdg-save',()=>{void save(build);}));
+      if(remove)actions.append(button('Удалить','danger rdg-delete',()=>{
+        if(confirm(remove.confirmation))void save(()=>[remove.step]);
+      }));
+      modal.append(form,error,actions);
+      return form;
+    }
+    function rdgSlug(value){
+      const key=value.trim();
+      if(!/^[a-z][a-z0-9-]{0,79}$/.test(key))throw new Error('ID должен начинаться с латинской буквы и содержать только строчные латинские буквы, цифры и дефисы.');
+      return key;
+    }
+    function rdgRequired(value,title){
+      const text=value.trim();
+      if(!text)throw new Error('Заполните поле «'+title+'».');
+      return text;
+    }
+    function openRdgGroupEditor(group=null){
+      const snapshot=rdgCatalog,peers=snapshot.groups.filter(row=>row.id!==group?.id);
+      const previousPosition=group?snapshot.groups.findIndex(row=>row.id===group.id)+1:peers.length+1;
+      const form=rdgEditor(group?'Изменить группу RDG':'Новая группа RDG',snapshot,()=>{
+        const groupId=group?.id??rdgSlug(id.value);
+        const changes={title:rdgRequired(title.value,'Название'),description:rdgRequired(description.value,'Описание')};
+        const beforeId=rdgPlacement(peers,position.value);
+        if(!group)return [{op:'group_create',id:groupId,...changes,beforeId}];
+        const steps=[];
+        if(group.title!==changes.title||group.description!==changes.description)
+          steps.push({op:'group_edit',id:groupId,changes});
+        if(Number(position.value)!==previousPosition)steps.push({op:'group_move',id:groupId,beforeId});
+        return steps;
+      },{remove:group&&{confirmation:'Удалить группу «'+group.title+'»? Её команды перейдут в «Без группы».',
+        step:{op:'group_delete',id:group.id}}});
+      const id=rdgField(form,'group-id','ID группы',group?.id,{maxLength:80});
+      id.readOnly=Boolean(group);
+      const title=rdgField(form,'group-title','Название',group?.title,{maxLength:160});
+      const description=rdgField(form,'group-description','Описание',group?.description,{kind:'multiline',maxLength:500});
+      const position=rdgField(form,'group-position','Позиция',previousPosition,{kind:'number'});
+    }
+    function openRdgGroups(){
+      const {overlay,modal}=makeOverlay('Группы RDG');
+      modal.append(button('Создать группу','tool rdg-group-create',()=>openRdgGroupEditor()));
+      for(const group of rdgCatalog.groups){
+        const row=document.createElement('div');row.className='row';
+        const main=document.createElement('div');
+        const title=document.createElement('strong');title.textContent=group.title;
+        const description=document.createElement('div');description.className='row-meta';description.textContent=group.description;
+        main.append(title,description);
+        row.append(main,button('Изменить','tool rdg-group-edit',()=>openRdgGroupEditor(group)));
+        modal.append(row);
+      }
+      const actions=document.createElement('div');actions.className='modal-actions';
+      actions.append(button('Закрыть','tool',()=>closeOverlay(overlay)));modal.append(actions);
+    }
+    function openRdgCommandEditor(command=null){
+      const snapshot=rdgCatalog,other=snapshot.commands.filter(row=>row.id!==command?.id);
+      const initialGroup=command?command.groupId:(snapshot.groups.find(g=>g.id===activeRdgGroupId)?.id??null);
+      const choices=[['instruction','Инструкция'],['workflow','Составная команда'],['lens-launcher','Линза']];
+      const peersFor=groupId=>other.filter(row=>row.groupId===groupId);
+      const previousPosition=command?
+        snapshot.commands.filter(row=>row.groupId===initialGroup).findIndex(row=>row.id===command.id)+1:
+        peersFor(initialGroup).length+1;
+      const form=rdgEditor(command?'Изменить команду RDG':'Новая команда RDG',snapshot,()=>{
+        const groupId=group.value||null;
+        const keys=lenses.value.split(/[\s,]+/).filter(Boolean).map(rdgSlug);
+        if(new Set(keys).size!==keys.length||keys.length>12)throw new Error('Укажите до 12 разных ключей линз.');
+        if(kind.value==='lens-launcher'&&keys.length!==1)throw new Error('Команде линзы нужен один ключ линзы.');
+        if(kind.value==='workflow'&&!keys.length)throw new Error('Составной команде нужна хотя бы одна линза.');
+        const commandId=kind.value==='lens-launcher'?'rdg.lens.'+keys[0]:(command?.id??'rdg.command.'+rdgSlug(id.value));
+        if(command&&commandId!==command.id)throw new Error('Ключ действующей команды линзы задаёт её ID.');
+        const changes={kind:kind.value,title:rdgRequired(title.value,'Заголовок карточки'),
+          description:rdgRequired(description.value,'Превью карточки'),
+          lensRefs:keys.map(lensKey=>({role:'lens',lensKey,modelProfile:'rdg-decision-v1'})),
+          insertText:body.value};
+        rdgRequired(changes.insertText,'Текст для вставки');
+        const beforeId=rdgPlacement(peersFor(groupId),position.value);
+        if(!command)return [{op:'command_create',id:commandId,groupId,...changes,beforeId}];
+        const delta=Object.fromEntries(Object.entries(changes).filter(([key,value])=>JSON.stringify(value)!==JSON.stringify(command[key])));
+        const steps=[];
+        if(Object.keys(delta).length)steps.push({op:'command_edit',id:commandId,changes:delta});
+        if(groupId!==initialGroup||Number(position.value)!==previousPosition)
+          steps.push({op:'command_move',id:commandId,groupId,beforeId});
+        return steps;
+      },{remove:command&&{confirmation:'Удалить команду «'+command.title+'» из каталога RDG?',
+        step:{op:'command_delete',id:command.id}}});
+      const kind=rdgField(form,'command-kind','Тип команды',command?.kind??'instruction',{
+        choices:command?choices.filter(([value])=>(value==='lens-launcher')===(command.kind==='lens-launcher')):choices});
+      const id=rdgField(form,'command-id','ID команды',command?.id,{maxLength:80});
+      id.readOnly=Boolean(command);
+      kind.addEventListener('change',()=>{id.closest('label').hidden=!command&&kind.value==='lens-launcher';});
+      const title=rdgField(form,'command-title','Заголовок карточки',command?.title,{maxLength:300});
+      const description=rdgField(form,'command-preview','Превью карточки',command?.description,{kind:'multiline',maxLength:1200});
+      const group=rdgField(form,'command-group','Группа',initialGroup??'',{
+        choices:[['','Без группы'],...snapshot.groups.map(row=>[row.id,row.title])]});
+      const position=rdgField(form,'command-position','Позиция в группе',previousPosition,{kind:'number'});
+      group.addEventListener('change',()=>{position.value=String(peersFor(group.value||null).length+1);});
+      const lenses=rdgField(form,'command-lenses','Ключи линз через запятую',command?.lensRefs.map(ref=>ref.lensKey).join(', '));
+      const body=rdgField(form,'command-text','Текст для вставки',command?.insertText,{kind:'multiline',maxLength:8000});
+      body.rows=8;
+    }
     function visibleRdgGroups(){
       if(!rdgCatalog)return [];
       const groups=rdgCatalog.groups;
@@ -2296,6 +2508,9 @@
         return control;
       }
       rdgGroupToolbar.append(chip('all','Все команды',rdgCatalog.commands.length));
+      if(canEditRdg())rdgGroupToolbar.append(
+        button('Новая команда','tool rdg-new-command',()=>openRdgCommandEditor()),
+        button('Группы RDG','tool rdg-manage-groups',()=>openRdgGroups()));
       for(const group of groups){
         rdgGroupToolbar.append(chip(group.id,group.title,
           rdgCatalog.commands.filter(command=>rdgGroupId(command)===group.id).length));
@@ -2348,6 +2563,7 @@
           info.append(title,meta);
           const actions=document.createElement('div');actions.className='actions';
           actions.append(button('Вставить','run-action',()=>{void insertRdgCommand(command);}));
+          if(canEditRdg())actions.append(button('Изменить','tool rdg-edit-command',()=>openRdgCommandEditor(command)));
           if(typeof options.onCopyPlain==='function'){
             actions.append(button('Copy','copy',()=>{void options.onCopyPlain(command.insertText);}));
           }
@@ -2756,7 +2972,7 @@
       localMutations[name]=(...args)=>serializeMutation(()=>action(...args));
     const localUiCallbacks=Object.fromEntries(Object.entries(localMutations).map(([name,action])=>
       [`on${name[0].toUpperCase()}${name.slice(1)}`,action]));
-    const ui=deps.createPlanningHelperUi({surfaces:deps.SURFACES,...uiState(),position:deps.readPanelPosition(),onSavePosition:deps.savePanelPosition,onInsert:async(text,success,id,invocation)=>insertWithClipboard(await prepareInvocationBody(text,id,invocation,deps,memory.helperRecords.map((record)=>record.item)),success,id),onCopy:async(text,id,invocation)=>deps.copyText(await prepareInvocationBody(text,id,invocation,deps,memory.helperRecords.map((record)=>record.item))),onCopyPlain:(text)=>deps.copyText(text),onLoadRdgCommands:()=>deps.loadRdgCommandCache(),onRefreshRdgCommands:()=>deps.refreshRdgCommandCache(),onInsertRdgCommand:(text,success)=>insertWithClipboard(text,success,null),onResolveLibraryText:(text)=>deps.resolveModuleReferences(text,memory.helperRecords.map((record)=>record.item)).text,onGetInvocationSideEffects:(id)=>typeof deps.commandSideEffectIds==='function'?deps.commandSideEffectIds(id):[],onPreviewChatImport:(text,mode)=>previewChatImport(snapshot,text,mode),onApplyChatImport:applyChatText,onGetRecoveryRequest:getRecoveryRequest,onExportLocalState:exportLocalState,onSaveLocalCommandDefinition:saveLocalCommandDefinition,onDeleteLocalCommand:deleteLocalCommand,onDeleteLocalUseCase:deleteLocalUseCase,onToggleFavoriteCommand:toggleFavoriteCommand,onMoveFavoriteCommand:moveFavoriteCommand,onToggleFavoriteUseCase:toggleFavoriteUseCase,onReloadRepositoryCommand:reloadRepositoryCommand,onSaveLocalLibraryItem:saveLocalLibraryItem,onDeleteLocalLibraryItem:deleteLocalLibraryItem,onCheckRepository:checkRepository,onSyncMissingRepository:syncMissingRepository,onHardReloadRepository:hardReloadRepository,onMoveCatalogItem:moveCatalogItem,onMoveCatalogItemToPosition:moveCatalogItemToPosition,onAssignCatalogGroup:assignCatalogGroup,onCreateCatalogGroup:createCatalogGroup,onUpdateCatalogGroup:updateCatalogGroup,onDeleteCatalogGroup:deleteCatalogGroup,onMoveCatalogGroup:moveCatalogGroup,onCreatePromptGroup:createPromptGroup,onRenamePromptGroup:renamePromptGroup,onDeletePromptGroup:deletePromptGroup,onAssignPromptGroup:assignPromptGroup,onMovePromptGroup:movePromptGroup,onCreateCatalogCategory:createCatalogCategory,onUpdateCatalogCategory:updateCatalogCategory,onMoveCatalogCategory:moveCatalogCategory,onDeleteCatalogCategory:deleteCatalogCategory,onSaveCatalogOrderRepository:saveCatalogOrderRepository,onSaveRepositoryEntity:saveRepositoryEntity,onSaveAllRepository:saveAllRepository,onLoadSettings:loadSettings,onSaveSettings:saveSettings,startupWarnings,...localUiCallbacks});
+    const ui=deps.createPlanningHelperUi({surfaces:deps.SURFACES,...uiState(),position:deps.readPanelPosition(),onSavePosition:deps.savePanelPosition,onInsert:async(text,success,id,invocation)=>insertWithClipboard(await prepareInvocationBody(text,id,invocation,deps,memory.helperRecords.map((record)=>record.item)),success,id),onCopy:async(text,id,invocation)=>deps.copyText(await prepareInvocationBody(text,id,invocation,deps,memory.helperRecords.map((record)=>record.item))),onCopyPlain:(text)=>deps.copyText(text),onLoadRdgCommands:()=>deps.loadRdgCommandCache(),onRefreshRdgCommands:()=>deps.refreshRdgCommandCache(),onEditRdgCatalog:(catalog,steps)=>deps.editRdgCommandCatalog(catalog,steps),onInsertRdgCommand:(text,success)=>insertWithClipboard(text,success,null),onResolveLibraryText:(text)=>deps.resolveModuleReferences(text,memory.helperRecords.map((record)=>record.item)).text,onGetInvocationSideEffects:(id)=>typeof deps.commandSideEffectIds==='function'?deps.commandSideEffectIds(id):[],onPreviewChatImport:(text,mode)=>previewChatImport(snapshot,text,mode),onApplyChatImport:applyChatText,onGetRecoveryRequest:getRecoveryRequest,onExportLocalState:exportLocalState,onSaveLocalCommandDefinition:saveLocalCommandDefinition,onDeleteLocalCommand:deleteLocalCommand,onDeleteLocalUseCase:deleteLocalUseCase,onToggleFavoriteCommand:toggleFavoriteCommand,onMoveFavoriteCommand:moveFavoriteCommand,onToggleFavoriteUseCase:toggleFavoriteUseCase,onReloadRepositoryCommand:reloadRepositoryCommand,onSaveLocalLibraryItem:saveLocalLibraryItem,onDeleteLocalLibraryItem:deleteLocalLibraryItem,onCheckRepository:checkRepository,onSyncMissingRepository:syncMissingRepository,onHardReloadRepository:hardReloadRepository,onMoveCatalogItem:moveCatalogItem,onMoveCatalogItemToPosition:moveCatalogItemToPosition,onAssignCatalogGroup:assignCatalogGroup,onCreateCatalogGroup:createCatalogGroup,onUpdateCatalogGroup:updateCatalogGroup,onDeleteCatalogGroup:deleteCatalogGroup,onMoveCatalogGroup:moveCatalogGroup,onCreatePromptGroup:createPromptGroup,onRenamePromptGroup:renamePromptGroup,onDeletePromptGroup:deletePromptGroup,onAssignPromptGroup:assignPromptGroup,onMovePromptGroup:movePromptGroup,onCreateCatalogCategory:createCatalogCategory,onUpdateCatalogCategory:updateCatalogCategory,onMoveCatalogCategory:moveCatalogCategory,onDeleteCatalogCategory:deleteCatalogCategory,onSaveCatalogOrderRepository:saveCatalogOrderRepository,onSaveRepositoryEntity:saveRepositoryEntity,onSaveAllRepository:saveAllRepository,onLoadSettings:loadSettings,onSaveSettings:saveSettings,startupWarnings,...localUiCallbacks});
     async function refreshFromSharedState(){
       return serializeMutation(async()=>{
         if(typeof deps.loadPlanningHelperLocalSnapshot!=='function')return false;
@@ -2782,5 +2998,5 @@
 (function(){
   'use strict';
   const api=globalThis.ObsPlanningHelper;if(!api||typeof api.startPlanningHelper!=='function')throw new Error('OBS Planning Helper runtime was not built correctly.');if(location.origin===api.RDG_BROWSER_ORIGIN){if(window.top===window.self)api.serveRdgCatalogRequest().catch((error)=>console.error('[OBS Planning Helper RDG catalog]',error));return;}if(!['https://chatgpt.com','https://chat.openai.com'].includes(location.origin))return;
-  api.scriptVersion="0.43.0-repository-command-registry";api.startPlanningHelper().catch((error)=>console.error('[OBS Planning Helper startup]',error));
+  api.scriptVersion="0.44.0-repository-command-registry";api.startPlanningHelper().catch((error)=>console.error('[OBS Planning Helper startup]',error));
 })();

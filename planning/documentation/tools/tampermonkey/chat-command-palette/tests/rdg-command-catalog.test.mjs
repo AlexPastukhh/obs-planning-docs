@@ -136,19 +136,87 @@ test('missing session reports a timeout and clears the temporary request',async(
   assert.equal(storage.size(),0);
 });
 
-test('the browser session reports an HTTP failure without returning its body',async()=>{
+test('the browser session reports an HTTP failure without exposing free-form response text',async()=>{
   const storage=memory();
   let worker,closed=false;
   await assert.rejects(()=>rdg.rdgCommandRequest({
     storage,requestId,openTab:url=>{
       worker=rdg.serveRdgCatalogRequest({
         url:rdg.RDG_BROWSER_ORIGIN+'/session/'+session+'/'+new URL(url).hash,storage,
-        fetchCatalog:async()=>({ok:false,status:401,json:()=>assert.fail('do not expose failure body')})
+        fetchCatalog:async()=>({ok:false,status:401,json:async()=>({error:'free-form internal response'})})
       });
       return {close:()=>{closed=true;}};
     }
   }),/HTTP 401/);
   await worker;
   assert.equal(closed,true);
+  assert.equal(storage.size(),0);
+});
+
+test('an editor request uses the authenticated catalog transaction and verifies its receipt and readback',async()=>{
+  const storage=memory();
+  const steps=[{op:'group_edit',id:'lenses',changes:{title:'New title'}}];
+  const transactionId='e7ea6eae-128e-49bf-8d07-36c07d877a8c';
+  const binding={sha256:'test-binding'};
+  const revised={...catalog,revision:3,groups:[{...groups[0],title:'New title'}]};
+  const seen=[];
+  let worker;
+  const result=await rdg.rdgCommandRequest({
+    storage,requestId,mutation:{namespaceId,revision:2,steps},
+    openTab:url=>{
+      worker=rdg.serveRdgCatalogRequest({
+        url:rdg.RDG_BROWSER_ORIGIN+'/session/'+session+'/'+new URL(url).hash,storage,
+        fetchCatalog:async(address,options)=>{
+          assert.equal(address,rdg.RDG_BROWSER_ORIGIN+'/session/'+session+'/command');
+          const message=JSON.parse(options.body);
+          seen.push(message);
+          let value;
+          switch(message.method){
+            case 'chat_catalog':value=seen.length===1?catalog:revised;break;
+            case 'schema':value={request:{op:'chat_catalog_edit',expectedCatalogRevision:2,transactionId,note:'',steps:[]}};break;
+            case 'preflight':value={accepted:false,inputBinding:binding};break;
+            case 'apply':value={published:true};break;
+            case 'receipt':value={published:true,participants:[{owner:{kind:'chatCommandCatalog'}}]};break;
+            default:assert.fail('unexpected RDG operation '+message.method);
+          }
+          return {ok:true,json:async()=>value};
+        }
+      });
+      return {close(){}};
+    }
+  });
+  await worker;
+  assert.deepEqual(seen.map(r=>r.method),['chat_catalog','schema','preflight','apply','receipt','chat_catalog']);
+  assert.deepEqual(seen[1],{method:'schema',op:'chat_catalog_edit'});
+  assert.deepEqual(seen[2].request.steps,steps);
+  assert.deepEqual(seen[3],{method:'apply',request:seen[2].request,expectedInputBinding:binding});
+  assert.deepEqual(seen[4],{method:'receipt',transactionId});
+  assert.deepEqual(result,revised);
+});
+
+test('stale catalog editors stop at read and arbitrary operations never reach the RDG tab',async()=>{
+  const storage=memory();
+  const steps=[{op:'group_edit',id:'lenses',changes:{title:'New title'}}];
+  const seen=[];
+  let worker;
+  await assert.rejects(rdg.rdgCommandRequest({
+    storage,requestId,mutation:{namespaceId,revision:1,steps},
+    openTab:url=>{
+      worker=rdg.serveRdgCatalogRequest({
+        url:rdg.RDG_BROWSER_ORIGIN+'/session/'+session+'/'+new URL(url).hash,storage,
+        fetchCatalog:async(_address,options)=>{
+          seen.push(JSON.parse(options.body).method);
+          return {ok:true,json:async()=>catalog};
+        }
+      });
+      return {close(){}};
+    }
+  }),/изменился/);
+  await worker;
+  assert.deepEqual(seen,['chat_catalog']);
+  await assert.rejects(rdg.rdgCommandRequest({
+    storage,requestId,mutation:{namespaceId,revision:2,steps:[{op:'lock_remove'}]},
+    openTab:()=>assert.fail('unexpected authenticated tab')
+  }),/Некорректный/);
   assert.equal(storage.size(),0);
 });

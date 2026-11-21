@@ -166,10 +166,12 @@ Canonical application semantics: [`scenarios/README.md`](scenarios/README.md). A
 <a id="rdg-command-workflow-acceptance"></a>
 ## RDG Command Workflow Acceptance
 
-Use the installed local RDG Viewer at `http://localhost:18880` and Helper 0.43.0 or newer.
+Use the installed local RDG Viewer at `http://localhost:18880` and Helper 0.44.0 or newer.
 
 - [ ] If the installed Tampermonkey script is a Local Loader that uses `@require`, copy the new `@match http://localhost/session/*` and the four new grants (`GM_openInTab`, `GM_deleteValue`, `GM_addValueChangeListener`, `GM_removeValueChangeListener`) from the generated userscript header to the loader's own header. Keep the existing ChatGPT matches, grants and stable local `@require` path. Save the loader, reload ChatGPT and sign in to RDG through its usual browser login.
 - [ ] Open **Команды** in ChatGPT. Click **Обновить RDG**. Verify that the temporary local RDG tab returns the catalog and closes. Compare the visible revision, group labels and lens preview descriptions with a read of `chat_catalog` via RDG Agent.
 - [ ] Verify that navigating groups, searching, Copy and Insert use the local copy without additional RDG requests. Confirm exact insertion without sending.
 - [ ] With RDG unavailable, click **Обновить RDG** and verify that the previous live catalog stays visible and an error is shown. Once RDG is available again, retry and confirm the new revision can be loaded.
+- [ ] In a disposable catalog fixture, use **Группы RDG** to create a group and **Новая команда** to create a command. Edit its preview and move it to the new group. Verify the new revision and exact values via Agent.
+- [ ] In the same fixture, open the editor over a previously fetched revision and save an independent catalog edit through Agent. The old editor must show the revision conflict. After **Обновить RDG** the independent edit is visible.
 - [ ] Switch to **Planning Commands** and verify the separate legacy editor still opens.

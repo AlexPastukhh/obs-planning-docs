@@ -69,7 +69,20 @@
     return value;
   }
 
+  const EDIT_OPS=new Set(['group_create','group_edit','group_move','group_delete',
+    'command_create','command_edit','command_move','command_delete']);
+  function validMutation(value){
+    return exactFields(value,['namespaceId','revision','steps'])&&typeof value.namespaceId==='string'&&
+      UUID.test(value.namespaceId)&&Number.isSafeInteger(value.revision)&&value.revision>0&&
+      Array.isArray(value.steps)&&value.steps.length>0&&value.steps.length<=100&&
+      value.steps.every(step=>step&&EDIT_OPS.has(step.op));
+  }
+
   function currentStorage(){
+    if(typeof GM_getValue!=='function'||typeof GM_setValue!=='function'||
+       typeof GM_deleteValue!=='function'||typeof GM_addValueChangeListener!=='function'||
+       typeof GM_removeValueChangeListener!=='function'||typeof GM_openInTab!=='function')
+      throw new Error('Обновите разрешения в шапке Tampermonkey Local Loader и перезагрузите страницу.');
     return {
       get:key=>GM_getValue(key,null),
       set:(key,value)=>GM_setValue(key,value),
@@ -87,17 +100,21 @@
     storage=currentStorage(),
     openTab=url=>GM_openInTab(url,{active:true}),
     requestId=globalThis.crypto.randomUUID(),
-    timeoutMs=REQUEST_TIMEOUT
+    timeoutMs=REQUEST_TIMEOUT,mutation=null
   }={}){
     const key=REQUEST_PREFIX+requestId;
-    await storage.set(key,{expiresAt:Date.now()+timeoutMs});
+    if(mutation!==null&&!validMutation(mutation))throw new Error('Некорректный запрос редактирования каталога RDG.');
+    await storage.set(key,{expiresAt:Date.now()+timeoutMs,...(mutation?{mutation}:{})});
     let tab,timer,unlisten,completed=false;
     try{
       const response=await new Promise((resolve,reject)=>{
         unlisten=storage.listen(key,result=>{
           if(result?.ok===true||result?.ok===false)resolve(result);
         });
-        timer=setTimeout(()=>reject(new Error('RDG не ответил. Войдите во вкладке RDG и повторите обновление.')),timeoutMs);
+        const timeoutMessage=mutation?
+          'Ответ на запись RDG не получен. Обновите каталог, чтобы проверить результат перед повтором.':
+          'RDG не ответил. Войдите во вкладке RDG и повторите обновление.';
+        timer=setTimeout(()=>reject(new Error(timeoutMessage)),timeoutMs);
         tab=openTab(ORIGIN+'/#obs-helper-catalog='+requestId);
         if(!tab)throw new Error('Tampermonkey не смог открыть вкладку RDG.');
       });
@@ -121,20 +138,66 @@
     const key=REQUEST_PREFIX+requestId;
     const pending=await storage.get(key);
     if(!Number.isFinite(pending?.expiresAt)||pending.expiresAt<=Date.now())return;
-    let reply;
-    try{
+    const request=async message=>{
       const response=await fetchCatalog(new URL('command',page).href,{
         method:'POST',credentials:'same-origin',mode:'same-origin',cache:'no-store',redirect:'error',
         headers:{'Content-Type':'application/json','X-RDG-Session':session[1]},
-        body:JSON.stringify({method:'chat_catalog'})
+        body:JSON.stringify(message)
       });
-      reply=response.ok?{ok:true,catalog:validateRdgCommandCatalog(await response.json())}:
-        {ok:false,message:'RDG API · HTTP '+response.status};
-    }catch(_){
-      reply={ok:false,message:'Не удалось прочитать каталог через браузерную сессию RDG.'};
+      if(!response.ok){
+        let code='';
+        try{
+          const data=await response.json();
+          if(typeof data.error==='string'&&/^[A-Z][A-Z0-9_ ]{0,150}$/.test(data.error))code=' · '+data.error;
+        }catch(_){}
+        throw new Error('RDG API · HTTP '+response.status+code);
+      }
+      return response.json();
+    };
+    let reply;
+    try{
+      const mutation=pending.mutation;
+      const catalog=mutation===undefined?await request({method:'chat_catalog'}):
+        await applyCatalogEdit(request,mutation);
+      reply={ok:true,catalog:validateRdgCommandCatalog(catalog)};
+    }catch(error){
+      const message=error?.message||'';
+      reply={ok:false,message:message.startsWith('RDG API · ')||message.startsWith('Каталог RDG ')?message:
+        'Не удалось выполнить запрос через браузерную сессию RDG.'};
     }
     if(pending.expiresAt>Date.now()&&(await storage.get(key))?.expiresAt===pending.expiresAt)
       await storage.set(key,reply);
+  }
+
+  async function applyCatalogEdit(request,mutation){
+    if(!validMutation(mutation))throw new Error('Каталог RDG отклонил запрос редактирования.');
+    const catalog=validateRdgCommandCatalog(await request({method:'chat_catalog'}));
+    if(catalog.namespaceId!==mutation.namespaceId||catalog.revision!==mutation.revision)
+      throw new Error('Каталог RDG изменился. Обновите список и откройте редактор снова.');
+    const schema=await request({method:'schema',op:'chat_catalog_edit'});
+    const draft=schema.request;
+    if(draft?.op!=='chat_catalog_edit'||draft.expectedCatalogRevision!==mutation.revision||
+       typeof draft.transactionId!=='string'||!UUID.test(draft.transactionId))
+      throw new Error('Каталог RDG изменился. Обновите список и откройте редактор снова.');
+    const transaction={...draft,note:'Изменение команд и групп из Planning Helper',steps:mutation.steps};
+    const preview=await request({method:'preflight',request:transaction});
+    if(preview?.accepted!==false||!preview.inputBinding)
+      throw new Error('Каталог RDG не подтвердил предварительную проверку.');
+    const result=await request({method:'apply',request:transaction,expectedInputBinding:preview.inputBinding});
+    if(result?.published!==true)
+      throw new Error('Каталог RDG не подтвердил публикацию. Проверьте результат обновлением.');
+    const receipt=await request({method:'receipt',transactionId:transaction.transactionId});
+    if(receipt?.published!==true||!receipt.participants?.some(row=>row.owner?.kind==='chatCommandCatalog'))
+      throw new Error('Каталог RDG не подтвердил квитанцию записи. Проверьте результат обновлением.');
+    const latest=validateRdgCommandCatalog(await request({method:'chat_catalog'}));
+    if(latest.namespaceId!==mutation.namespaceId||latest.revision<=mutation.revision)
+      throw new Error('Каталог RDG не вернул сохранённую ревизию. Проверьте результат обновлением.');
+    return latest;
+  }
+
+  function editRdgCommandCatalog(catalog,steps){
+    const mutation={namespaceId:catalog.namespaceId,revision:catalog.revision,steps};
+    return refreshRdgCommandCache(currentStorage(),()=>rdgCommandRequest({mutation}));
   }
 
   async function loadRdgCommandCache(storage=currentStorage()){
@@ -156,5 +219,5 @@
     throw new Error('Не удалось подтвердить сохранение каталога RDG.');
   }
   return {RDG_BROWSER_ORIGIN:ORIGIN,RDG_COMMAND_CACHE_KEY:KEY,
-    validateRdgCommandCatalog,loadRdgCommandCache,refreshRdgCommandCache,rdgCommandRequest,serveRdgCatalogRequest};
+    validateRdgCommandCatalog,loadRdgCommandCache,refreshRdgCommandCache,editRdgCommandCatalog,rdgCommandRequest,serveRdgCatalogRequest};
 });
